@@ -658,46 +658,12 @@ function fleet_arrival_logic(){
     
     
     
-    
-    if (trade_goods="female_her") or (trade_goods="male_her"){
-        // if (owner  = eFACTION.Inquisition) then show_message("A");
-        
-        var next=0;
-        if (!instance_exists(obj_p_fleet)) then next=1;
-        if (instance_exists(obj_p_fleet)){
-            with(obj_p_fleet){if (action!="") then instance_deactivate_object(id);}
-            var pfa;pfa=instance_nearest(x,y,obj_p_fleet);
-            if (point_distance(x,y,pfa.x,pfa.y)<40) then next=2;
-            if (point_distance(x,y,pfa.x,pfa.y)>=40) then next=1;
-        }
-        instance_activate_object(obj_p_fleet);
-        if (next=1){
-            action_x=choose(room_width*-1,room_width*2);
-            action_y=choose(room_height*-1,room_height*2);
-            action_spd=256;
-            action="";            
-            set_fleet_movement();
-            trade_goods="|DELETE|";
-            obj_controller.disposition[4]-=15;
-            scr_popup("Inquisitor Mission Failed","The radical Inquisitor has departed from the planned intercept coordinates.  They will now be nearly impossible to track- the mission is a failure.","inquisition","");
-            scr_event_log("red","Inquisition Mission Failed: The radical Inquisitor has departed from the planned intercept coordinates.");
-        }
-        if (next=2){
-            action="";
-            var tixt,gender;
-            if (trade_goods="male_her") then gender="he";if (trade_goods="female_her") then gender="she";
-            tixt="You have located the radical Inquisitor.  As you prepare to destroy their ship, and complete the mission, you recieve a hail- it appears as though "+string(gender)+" wishes to speak.";
-            if (trade_goods="male_her") then scr_popup("Inquisitor Located",tixt,"inquisition","1");
-            if (trade_goods="female_her") then scr_popup("Inquisitor Located",tixt,"inquisition","2");
-        }
-        instance_deactivate_object(id);
-        instance_deactivate_object(id);
-        exit;
-    }
-    
-    
-    
-    
+    if (owner == eFACTION.Inquisition){
+    	if (fleet_has_cargo("radical_inquisitor")){
+    		radical_inquisitor_mission_ship_arrival();
+    		exit;
+    	}
+    }    
     
     
     if (!navy){

@@ -549,6 +549,64 @@ function alternative_manage_views(x1, y1) {
             }
         }
     }
+    // === Capture Image Button ===
+    var _last_button_x = _squad_button.x2; // default if no profile/bio drawn
+    var _last_button_y = _squad_button.y1;
+
+    // if profile is visible, place after profile toggle
+    if (!view_squad) {
+        _last_button_x = management_buttons.profile_toggle.x2;
+        _last_button_y = management_buttons.profile_toggle.y1;
+
+        // if bio visible, place after bio toggle
+        if (unit_profile) {
+            _last_button_x = management_buttons.bio_toggle.x2;
+            _last_button_y = management_buttons.bio_toggle.y1;
+        }
+    }
+
+    var _capture_button = management_buttons.capture_image;
+    _capture_button.update({
+        x1: _last_button_x,
+        y1: _last_button_y
+    });
+
+    if (is_struct(obj_controller.unit_focus) && _capture_button.draw(!text_bar)) {
+        // Capture the sprite frame as PNG
+        var spr = obj_controller.unit_manage_image.unit_sprite;
+        var _unit = obj_controller.unit_focus; //unit struct
+        if (sprite_exists(spr)) {
+            var w = sprite_get_width(spr);
+            var h = sprite_get_height(spr);
+
+            // create surface and draw sprite frame 0
+            var surf = surface_create(w, h);
+            surface_set_target(surf);
+            draw_clear_alpha(c_black, 0);
+            draw_sprite(spr, 0, 0, 0);
+            surface_reset_target();
+
+            // save to local game folder
+            var base_name = working_directory + $"\\main\\marine_capture_{_unit.name()}_{_unit.marine_number}{_unit.company}";
+            var extension = ".png";
+            var index = 0;
+            var path;
+
+            for (var i=0;i<=1000;i++){ // safety limit
+                path = base_name + string(index) + extension;
+                if (!file_exists(path)) {
+                    break;
+                }
+                index++;
+            }
+            surface_save(surf, path);
+
+            // cleanup
+            surface_free(surf);
+
+            show_debug_message("Marine image saved to: " + path);
+        }
+    }
 }
 
 

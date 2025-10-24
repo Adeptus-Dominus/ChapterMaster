@@ -1,3 +1,4 @@
+
 /// @function reset_popup_options()
 /// @description Resets all popup option variables to empty strings
 
@@ -7,6 +8,7 @@ enum POPUP_TYPE {
 	ARTIFACT_EQUIP = 8,
 	ITEM_GIFT = 9,
 	ADD_TAGS = 12,
+	SYSTEM_DEBUG = 13,
 	BATTLE_OPTIONS = 98,
 	FLEET_MOVE = 99,
 }
@@ -15,6 +17,53 @@ function reset_popup_options(){
 	with (obj_popup){
 		options = [];
 	}
+}
+
+function popup_defualt_click_action(){
+    if (hide){
+        exit;
+    }
+    if (instances_exist_any([obj_fleet])){
+        exit;
+    }
+    if (!instance_exists(obj_controller)){
+        exit;
+    }
+    if (obj_controller.scrollbar_engaged){
+        exit;
+    }
+
+    if (battle_special>0){
+        alarm[0]=1;
+        cooldown=10;
+        exit;
+    }
+
+    if (type=POPUP_TYPE.BATTLE_OPTIONS){
+        obj_controller.cooldown=10;
+        if (instance_exists(obj_turn_end)){
+            obj_turn_end.current_battle+=1;
+            obj_turn_end.alarm[0]=1;
+        }
+        obj_controller.force_scroll=0;
+        instance_destroy();
+        exit;
+    }
+
+    if (!array_length(options) && type<5){
+        popup_default_close();
+    }
+}
+
+function popup_default_close(){
+    obj_controller.cooldown=10;
+    if (instance_exists(obj_turn_end) && obj_controller.complex_event==false){
+        if (number!=0){
+            obj_turn_end.alarm[1]=4;
+        }
+    }
+    instance_destroy();
+    exit;
 }
 
 function popup_window_draw(){
@@ -53,7 +102,28 @@ function popup_window_draw(){
 	}
 }
 
+
+function evaluate_popup_option(opt){
+	var _allow = true;
+	if (struct_exists(opt,"requires")){
+		var _requirements = opt.requires
+	}
+	else{
+		return true
+	}
+
+	if (struct_exists(_requirements,"req")){
+		if (obj_controller.requisition < _requirements.req){
+			_allow = false;
+		}
+	}
+
+	return _allow;
+}
+
+
 function draw_popup_options(){
+	press = -1;
 	if (array_length(options)){
 
 
@@ -98,9 +168,12 @@ function draw_popup_options(){
 				entered_option = i;
 				if (scr_click_left()) {
 					press = i;
+					show_debug_message(_opt);
 					if (is_struct(_opt) && struct_exists(_opt, "method")){
 			            if (is_callable(_opt.method)){
+			            	show_debug_message(_opt);
 			            	script_execute(_opt.method);
+			            	press = -1;
 			            }
 					}
 				}
@@ -137,7 +210,12 @@ function draw_popup_options(){
 		}
 	} else {
 		if (scr_click_left()){
-			instance_destroy();
+			popup_defualt_click_action();
+		}
+	}
+	if (press > -1 && press < array_length(options)){
+		if (!is_struct(options[press]) && options[press] == ""){
+			press = -1;
 		}
 	}
 }

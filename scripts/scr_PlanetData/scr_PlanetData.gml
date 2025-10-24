@@ -781,6 +781,9 @@ function PlanetData(planet, system) constructor{
 
 
 	static planet_info_screen = function(){
+        if (!instance_exists(obj_star_select)){
+            exit;
+        }
 		var improve=0
         var xx=15;
         var yy=25;
@@ -813,7 +816,9 @@ function PlanetData(planet, system) constructor{
 
 
         if (!_succession){
-            if (player_disposition>=0) and (origional_owner<=5) and (current_owner<=5) and (population>0) then draw_text(xx+534,yy+176,"Disposition: "+string(min(100,player_disposition))+"/100");
+            if (player_disposition>=0) and (origional_owner<=5) and (current_owner<=5) and (population>0){
+                draw_text(xx+534,yy+176,"Disposition: "+string(min(100,player_disposition))+"/100");
+            }
             if (player_disposition>-30) and (player_disposition<0) and (current_owner<=5) and (population>0){
                 draw_text(xx+534,yy+176,"Disposition: ???/100");
             }
@@ -869,25 +874,25 @@ function PlanetData(planet, system) constructor{
         
         var pop_string = $"Population: {display_population()}";
 
-        if (instance_exists(obj_star_select)){
-            var _button_manager = obj_star_select.button_manager;
-            _button_manager.update({
-                label:pop_string,
-                tooltip : "population data toggle with 'P'",
-                keystroke : press_exclusive(ord("P")),
-                x1 : xx+480,
-                y1 : yy+217,
-                w : 200,
-                h : 22
-            });
-            _button_manager.update_loc();
-            if (_button_manager.draw()){
-                obj_star_select.population = !obj_star_select.population;
-                if (obj_star_select.population){
-                    obj_star_select.potential_doners = find_population_doners(system.id);
-                }
+
+        var _button_manager = obj_star_select.button_manager;
+        _button_manager.update({
+            label:pop_string,
+            tooltip : "population data toggle with 'P'",
+            keystroke : press_exclusive(ord("P")),
+            x1 : xx+480,
+            y1 : yy+217,
+            w : 200,
+            h : 22
+        });
+        _button_manager.update_loc();
+        if (_button_manager.draw()){
+            obj_star_select.population = !obj_star_select.population;
+            if (obj_star_select.population){
+                obj_star_select.potential_doners = find_population_doners(system.id);
             }
         }
+
         
         if (is_craftworld=0) and (is_hulk=0){
             var y7=240,temp3=string(scr_display_number(guardsmen));
@@ -1171,16 +1176,17 @@ function PlanetData(planet, system) constructor{
         var company_data = obj_controller.company_data;
         var squad_index = company_data.company_squads[company_data.cur_squad];
         var current_squad=obj_ini.squads[squad_index];
-        current_squad.set_location(loading_name,0,planet);
+        current_squad.set_location(system.name,0,planet);
+        var _mission = obj_star_select.mission;
         current_squad.assignment={
-            type:mission,
+            type:_mission,
             location:system.name,
             ident:planet,
         };
         var operation_data = {
             type:"squad", 
             reference:squad_index,
-            job:mission,
+            job:_mission,
             task_time : 0
         };
         add_operatives(operation_data)
@@ -1197,17 +1203,18 @@ function PlanetData(planet, system) constructor{
 
     static planet_selection_logic = function(){
         var planet_is_allies = scr_is_planet_owned_by_allies(system, planet);
-        var garrison_issue = (!planet_is_allies || system.p_pdf[planet]<1);
+        var garrison_issue = (!planet_is_allies || pdf<=0);
+        var _mission = variable_instance_exists(obj_star_select,"mission") ? obj_star_select.mission : "";
 
         var _loading =  obj_star_select.loading;
         var garrison_assignment = obj_controller.view_squad && _loading;
-        if (garrison_assignment && (garrison_issue && mission=="garrison")){
+        if (garrison_assignment && (garrison_issue && _mission=="garrison")){
             planet_draw = c_red;
             tooltip_draw("Can't garrison on non-friendly planet or planet with no friendly PDF", 150);                  
         }
         if (mouse_check_button_pressed(mb_left)){
             if (garrison_assignment){
-                if (!(garrison_issue && mission=="garrison")){
+                if (!(garrison_issue && _mission=="garrison")){
                     create_planet_garrison();
                     exit;
                 }

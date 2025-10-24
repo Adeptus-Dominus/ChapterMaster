@@ -42,7 +42,7 @@ if (obj_controller.selecting_planet>target.planets){
     obj_controller.selecting_planet = 0;
 }
 var click_accepted = (!obj_controller.menu) and (!obj_controller.zoomed) and (!instance_exists(obj_bomb_select)) and (!instance_exists(obj_drop_select));
-if (click_accepted) {
+if (click_accepted && (!debug || !debug_slate.entered())) {
     if (scr_click_left(0)) {
         var closes=0,sta1=0,sta2=0;
         var mouse_consts = return_mouse_consts();
@@ -110,25 +110,12 @@ if (target.craftworld=0) and (target.space_hulk=0){
 }
 
 
-if (global.cheat_debug && obj_controller.selecting_planet && !loading)
-    {
-        draw_set_color(c_gray);
-        var rect = [(( 184) - 123), ( 200), (( 184) + 123), ( 226)];
-        draw_rectangle(rect[0],rect[1],rect[2],rect[3], false);
-        draw_set_color(c_black);
-        draw_text(( 184), ( 204), "Debug");
-        draw_set_color(c_white);
-        draw_set_alpha(0.2);
-        if (point_and_click(rect)){
-            debug = true;
-        }
-        if (scr_hit(rect)){
-            draw_rectangle((( 184) - 123), ( 200), (( 184) + 123), ( 226), false);
-        }
-    }
+if (global.cheat_debug && obj_controller.selecting_planet && !loading){
+    draw_planet_debug_options();
+}
 
 
-if (obj_controller.menu == 0){
+if (obj_controller.menu == 0 && !debug){
     if (manage_units_button.draw(has_player_forces)){
         var _viewer = obj_controller.location_viewer
         _viewer.update_garrison_log();
@@ -145,6 +132,7 @@ if (obj_controller.menu == 0){
                 selections : []
             });
             instance_destroy();
+            pop_draw_return_values();
             exit;
         }
     }
@@ -160,7 +148,9 @@ if (loading!=0){
 
 
 //the draw and click on planets logic
-planet_selection_action();
+if (!debug){
+    planet_selection_action();
+}
 
 draw_set_font(fnt_40k_14b);
 
@@ -265,6 +255,7 @@ if (obj_controller.selecting_planet!=0){
             }else if (feature.destroy){
                 feature = "";
                 instance_destroy();
+                pop_draw_return_values();
                 exit;
             }
         }
@@ -377,10 +368,12 @@ if (obj_controller.selecting_planet!=0){
     var current_button="";
     var shutter_x = main_data_slate.XX-165;
     var shutter_y = 296+165;
-    if (shutter_1.draw_shutter(shutter_x, shutter_y, button1, 0.5, true)) then current_button=button1;
-    if (shutter_2.draw_shutter(shutter_x, shutter_y+47, button2,0.5, true))then current_button=button2;
-    if (shutter_3.draw_shutter(shutter_x, shutter_y+(47*2), button3,0.5, true))then current_button=button3;
-    if (shutter_4.draw_shutter(shutter_x, shutter_y+(47*3), button4,0.5, true))then current_button=button4;
+    if (!debug){
+        if (shutter_1.draw_shutter(shutter_x, shutter_y, button1, 0.5, true)) then current_button=button1;
+        if (shutter_2.draw_shutter(shutter_x, shutter_y+47, button2,0.5, true))then current_button=button2;
+        if (shutter_3.draw_shutter(shutter_x, shutter_y+(47*2), button3,0.5, true))then current_button=button3;
+        if (shutter_4.draw_shutter(shutter_x, shutter_y+(47*3), button4,0.5, true))then current_button=button4;
+    }
     if (current_button!=""){
         if (array_contains(["Build","Base","Arsenal","Gene-Vault"],current_button)){
             var building=instance_create(x,y,obj_temp_build);

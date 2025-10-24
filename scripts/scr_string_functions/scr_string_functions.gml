@@ -19,6 +19,39 @@ function string_upper_first(_string) {
 	}
 }
 
+function string_gender_third_person(gender){
+    var _string = "they";
+    switch(gender){
+        case GENDER.Female:
+            _string = "she";
+            break;
+        case GENDER.Male:
+            _string = "he";
+            break;
+    }
+
+    return _string;
+}
+
+
+function string_gender_pronouns(gender){
+     var _string = "their";
+    switch(gender){
+        case GENDER.Female:
+            _string ="her"
+            break;
+        case GENDER.Male:
+            _string ="his"
+            break;
+        case GENDER.Neutral:
+            _string = "their";
+            break;
+    }
+
+    return _string;
+}
+
+
 /// @function string_plural
 /// @description This function formats a string into a plural form by adding affixes following common rules.
 /// @param {string} _string

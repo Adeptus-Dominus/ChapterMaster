@@ -17,6 +17,34 @@ has_player_forces = array_sum(target.p_player);
 
 manage_units_button = new UnitButtonObject({x1 :115, y1:200, style : "pixel", label:"Manage Units"});
 
+//if (global.cheat_debug){
+	debug_button = new UnitButtonObject({x1 :36, y1:185, style : "pixel", label:"Debug"});
+
+    debug_options = new RadioSet([
+       {
+           str1 : "Edit Forces",
+
+       },
+       {
+           str1 : "Add Problem",
+
+       },
+       {
+           str1 : "Add Feature",
+
+       },                     
+    ],"Debug options",{x1 : 36, y1 : 129, max_width : 300});
+
+    debug_slate = new DataSlate({
+        style : "plain",
+        XX : 36,
+        YY : 100,
+        set_width : true,
+        width : 310,
+        height : 900,
+    });
+//}
+
 torpedo = scr_item_count("Cyclonic Torpedo");
 
 feature= "";

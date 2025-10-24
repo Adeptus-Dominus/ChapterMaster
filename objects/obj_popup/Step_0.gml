@@ -2,10 +2,6 @@ try {
 	if (hide == true) {
 		exit;
 	}
-
-	if ((cooldown >= 0) && (cooldown <= 40)) {
-		cooldown -= 1;
-	}
 	if (instance_exists(obj_controller)) {
 		if (obj_controller.zoomed == 1) {
 			with (obj_controller) {
@@ -17,11 +13,6 @@ try {
 	for (var i=0;i<array_length(options);i++){
 		if (keyboard_check_pressed(ord(string(i+1))) && (cooldown <= 0)){
 			press = i;
-		}
-	}
-	if (press > -1){
-		if (options[press] == ""){
-			press = -1;
 		}
 	}
 
@@ -107,184 +98,6 @@ try {
 			text = $"You prepare to have a large public memorial for your fallen marines on the planet surface as a show of defiance. The chapter are pleased by such an act and the population of the planet are mesmerized by the spectacle. The governor is furious not only has his incompetence to deal with the planets xenos issue been made public in such a way that the sector commander has now heard about it but he perceives his failures are being paraded in font of him\n nGovernor Disposition : -30";
 		}
 	}
-
-	if ((image == "debug_banshee") && (cooldown <= 0)) {
-		if (planet == 2) {
-			if ((press == 0) || (press == 2)) {
-				if (press == 0) {
-					amount = 7;
-				}
-				if (press == 2) {
-					amount = 9;
-				}
-				with (obj_star) {
-					if ((choose(0, 1, 1) == 1) && (owner != eFACTION.Eldar) && (owner != 1)) {
-						var fleet;
-						fleet = instance_create(x, y, obj_en_fleet);
-						fleet.owner = obj_popup.amount;
-						if (obj_popup.amount == 7) {
-							fleet.sprite_index = spr_fleet_ork;
-							fleet.capital_number = 3;
-							present_fleet[7] += 1;
-						}
-						if (obj_popup.amount == 9) {
-							if (present_fleet[1] == 0) {
-								vision = 0;
-							}
-							fleet.sprite_index = spr_fleet_tyranid;
-							fleet.capital_number = 3;
-							fleet.frigate_number = 6;
-							fleet.escort_number = 16;
-							present_fleet[9] += 1;
-						}
-						fleet.image_index = 4;
-						fleet.orbiting = id;
-					}
-				}
-				instance_destroy();
-			}
-			if (press == 1) {
-				with (obj_star) {
-					if ((choose(0, 1, 1) == 1) && (owner != eFACTION.Eldar) && (owner != 1)) {
-						var h;
-						h = 0;
-						repeat (4) {
-							h += 1;
-							if ((p_type[h] != "Dead") && (p_type[h] != "")) {
-								p_traitors[h] = 5;
-								p_chaos[h] = 4;
-							}
-						}
-					}
-				}
-				instance_destroy();
-			}
-		}
-		if (planet == 5) {
-			if (press == 0) {
-				var fleet, tar;
-				tar = instance_nearest(x, y, obj_star);
-				fleet = instance_create(tar.x, tar.y, obj_en_fleet);
-				fleet.owner = eFACTION.Ork;
-				fleet.sprite_index = spr_fleet_ork;
-				fleet.capital_number = 2;
-				fleet.frigate_number = 5;
-				tar.present_fleet[7] += 1;
-				fleet.image_index = 4;
-				fleet.orbiting = id;
-				instance_destroy();
-			}
-			if (press == 1) {
-				var fleet, tar;
-				tar = instance_nearest(x, y, obj_star);
-				fleet = instance_create(tar.x, tar.y, obj_en_fleet);
-				fleet.owner = eFACTION.Tau;
-				fleet.sprite_index = spr_fleet_tau;
-				fleet.capital_number = 2;
-				fleet.frigate_number = 5;
-				tar.present_fleet[8] += 1;
-				fleet.image_index = 4;
-				fleet.orbiting = id;
-				instance_destroy();
-			}
-			if (press == 2) {
-				instance_destroy();
-			}
-		}
-		if (planet == 3) {
-			if (press == 0) {
-				var fleet, tar;
-				tar = instance_nearest(x, y, obj_star);
-				fleet = instance_create(tar.x, tar.y, obj_en_fleet);
-				fleet.owner = eFACTION.Imperium;
-				fleet.sprite_index = spr_fleet_imperial;
-				fleet.capital_number = 2;
-				fleet.frigate_number = 5;
-				tar.present_fleet[2] += 1;
-				fleet.image_index = 4;
-				fleet.orbiting = id;
-				instance_destroy();
-			}
-			if (press == 1) {
-				var fleet, tar;
-				tar = instance_nearest(x, y, obj_star);
-				fleet = instance_create(tar.x, tar.y, obj_en_fleet);
-				fleet.owner = eFACTION.Chaos;
-				fleet.sprite_index = spr_fleet_chaos;
-				fleet.capital_number = 2;
-				fleet.frigate_number = 5;
-				tar.present_fleet[10] += 1;
-				fleet.image_index = 4;
-				fleet.orbiting = id;
-				instance_destroy();
-			}
-			if (press == 2) {
-				planet = 5;
-				cooldown = 30;
-				add_option(["Ork",  "Tau", "Cancel"]);
-				text = "Ork, Tau, Cancel?";
-				press = 0;
-				exit;
-			}
-		}
-		if (planet == 1) {
-			if (press == 0) {
-				planet = 2;
-				cooldown = 30;
-				text = "Select a faction";
-				add_option(["Orks",  "Chaos", "Tyranids"]);
-				press = 0;
-				exit;
-			}
-			if (press == 1) {
-				planet = 3;
-				cooldown = 30;
-				add_option(["Imperium",  "Heretic", "Xeno"]);
-				text = "Imperium, Heretic, or Xeno?";
-				press = 0;
-				exit;
-			}
-			if (press == 2) {
-				var flit1, flit2, onceh;
-				onceh = 0;
-				flit1 = instance_nearest(x, y, obj_p_fleet);
-				flit2 = instance_nearest(x, y, obj_en_fleet);
-
-				if (instance_exists(flit1) && instance_exists(flit2)) {
-					if (point_distance(x, y, flit1.x, flit1.y) > point_distance(x, y, flit2.x, flit2.y)) {
-						with (flit2) {
-							instance_destroy();
-						}
-					} else {
-						with (flit1) {
-							instance_destroy();
-						}
-					}
-					onceh = 1;
-				}
-				if ((onceh == 0) && (!instance_exists(flit1)) && instance_exists(flit2)) {
-					if (point_distance(x, y, flit2.x, flit2.y) <= 40) {
-						with (flit2) {
-							instance_destroy();
-						}
-					}
-					onceh = 1;
-				}
-				if ((onceh == 0) && instance_exists(flit1) && (!instance_exists(flit2))) {
-					if (point_distance(x, y, flit1.x, flit1.y) <= 40) {
-						with (flit1) {
-							instance_destroy();
-						}
-					}
-					onceh = 1;
-				}
-
-				instance_destroy();
-			}
-		}
-		exit;
-	}
-
 	if (((title == "Inquisition Mission") || (title == "Inquisition Recon")) && (title != "Artifact Located") && (obj_controller.demanding == 1)) {
 		demand = 1;
 	}
@@ -440,112 +253,7 @@ try {
 	if (title == "Scheduled Event:2") {
 		exit;
 	}
-
-	if ((image == "inquisition") && (loc == "contraband")) {
-		demand = 0;
-		add_option(["Hand over all Chaos and Daemonic Artifacts",  "Over your dead body"], true);
-		var arti;
-		if (press == 0) {
-			var contraband = [];
-			for (var i = 0; i < array_length(obj_ini.artifact_struct); i++) {
-				if (obj_ini.artifact != "") {
-					arti = fetch_artifact(i);
-					if (arti.inquisition_disaprove()) {
-						array_push(contraband, i);
-					}
-				}
-			}
-			for (i = 0; i < array_length(contraband); i++) {
-				delete_artifact(contraband[i]);
-			}
-			obj_controller.cooldown = 10;
-			reset_popup_options();
-			loc = "";
-			text = $"All Chaos and Daemonic Artifacts present have been handed over to the Inquisitor.  They remain seething, but your destruction has been stalled.  Or so {global.chapter_name} imagine.";
-			exit;
-		}
-
-		if (press == 1) {
-			obj_controller.cooldown = 10;
-			if (number != 0 && instance_exists(obj_turn_end)) {
-				obj_turn_end.alarm[1] = 4;
-			}
-			instance_destroy();
-		}
-	}
-
-	if (image == "ruins_fort") {
-		if ((press == 0) && (obj_controller.requisition >= 1000)) {
-			obj_controller.requisition -= 1000;
-			text = "Resources have been spent on the planet to restore the fortress.  The planet's defense rating has increased to 5 (";
-			reset_popup_options();
-			text += string(star_system.p_fortified[planet]) + "+";
-			text += string(5 - star_system.p_fortified[planet]) + ")";
-			star_system.p_fortified[planet] = max(star_system.p_fortified[planet], 5);
-			cooldown = 15;
-			exit;
-		}
-		if (press == 1) {
-			var req = floor(random_range(200, 500)) + 1;
-			image = "";
-			text = $"Much of the fortress is demolished in order to salvage adamantium and raw materials.  The opration has yielded {req} requisition.";
-			reset_popup_options();
-			obj_controller.requisition += req;
-			cooldown = 15;
-			exit;
-		}
-
-		/*
-        if (loot="fortress"){// Fortress
-        var gene,pop;gene=floor(random_range(20,40))+1;pop=instance_create(0,0,obj_popup);
-        pop.image="ruins_fort";pop.title="Ancient Ruins: Fortress";
-        pop.text="Your battle brothers have found a massive, ancient fortress that has fallen into disrepair.  Gun batteries rusted, and walls covered in moss and undergrowth, it is a pale shadow of its former glory.  It is possible to repair the structure.  What is thy will?";
-        pop.add_option="Repair the fortress to boost planet defenses.  (1000 Req)";
-        pop.add_option="Salvage raw materials from the fortress.";
-        }
-        */
-	}
-
-	if (image == "mechanicus" && (title == "Mechanicus Mission" || title == "Mechanicus Mission Accepted")){
-		mechanicus_mission_procedures();
-	}
-
-	if (image == "geneseed_lab") {
-		if (press == 0) {
-			image = "";
-			text = "{estimate} gene-seed has been added to the chapter vaults.";
-			reset_popup_options();
-			obj_controller.gene_seed += estimate;
-			with (obj_ground_mission) {
-				instance_destroy();
-			}
-			cooldown = 15;
-			exit;
-		}
-		if (press == 1) {
-			var req;
-			req = floor(random_range(200, 500)) + 1;
-			image = "";
-			text = "Technological components have been salvaged, granting " + string(req) + " requisition.";
-			reset_popup_options();
-			obj_controller.requisition += req;
-			with (obj_ground_mission) {
-				instance_destroy();
-			}
-			cooldown = 15;
-			exit;
-		}
-		if (press == 2) {
-			with (obj_ground_mission) {
-				instance_destroy();
-			}
-			obj_controller.cooldown = 15;
-			cooldown = 15;
-			instance_destroy();
-			exit;
-		}
-	}
-
+	
     if (image == "ancient_ruins" && woopwoopwoop && move_to_next_stage()) {
         instance_deactivate_all(true);
         instance_activate_object(obj_ground_mission);
@@ -669,286 +377,12 @@ try {
         }
     }
 
-	else if (image == "gene_bad") {
-		var _opt = "Dispose of ";
-		if (obj_controller.gene_seed <= 30) {
-			_opt += "100% of the gene-seed.";
-		}
-		if ((obj_controller.gene_seed > 30) && (obj_controller.gene_seed < 60)) {
-			_opt += "50% of all gene-seed.";
-		}
-		if (obj_controller.gene_seed >= 60) {
-			_opt += "33% of all gene-seed.";
-		}
-		option2 = "Tell the apothecaries to let it be.";
-		add_option([_opt, option2], true);
-	}
-
 	else if (((title == "Inquisition Mission") || (title == "Inquisition Recon")) && (array_length(options) == 0)) {
-		add_option(["Accept",  "Refuse"]);
-	}
-	else if (title == "Inquisitor Located") {
-		add_option(["Destroy their vessel",  "Hear them out"]);
-	}
-	else if (title == "Necron Tomb Excursion") {
-		add_option(["Begin the Mission",  "Not Yet"]);
-	}
-	else if (title == "Necron Tunnels : 1") {
-		add_option(["Continue",  "Return to the surface"]);
-	}
-	else if (title == "Necron Tunnels : 2") {
-		add_option(["Continue",  "Return to the surface"]);
-	}
-	else if (title == "Necron Tunnels : 3") {
-		add_option(["Continue",  "Return to the surface"]);
+		add_option(["Accept",  "Refuse"], true);
 	}
 
-	if ((title == "He Built It") && (array_length(options) == 0) && (string_count("submerged", text) == 0)) {
-		add_option(["Execute the heretic",  "Move him to the Penitorium", "I see no problem"]);
-	}
 
 	if ((press == 0) && (array_length(options)) || ((demand == 1) && (mission != "") && (string_count("Inquisition", title) > 0)) || ((demand == 1) && (title == "Inquisition Recon"))) {
-		if (image == "gene_bad") {
-			var onceh;
-			onceh = 0;
-			if ((obj_controller.gene_seed <= 30) && (onceh == 0)) {
-				obj_controller.gene_seed = 0;
-			}
-			if ((obj_controller.gene_seed > 30) && (obj_controller.gene_seed < 60) && (onceh == 0)) {
-				obj_controller.gene_seed = round(obj_controller.gene_seed * 0.5);
-			}
-			if ((obj_controller.gene_seed >= 60) && (onceh == 0)) {
-				obj_controller.gene_seed = round(obj_controller.gene_seed * 0.66);
-			}
-		}
-
-		if ((title == "Inquisitor Located") || (title == "Artifact Offered") || (title == "Mercy Plea")) {
-			with (obj_en_fleet) {
-				if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
-					instance_destroy();
-				}
-			}
-
-			if (obj_controller.demanding == 0) {
-				obj_controller.disposition[4] += 1;
-			}
-			if (obj_controller.demanding == 1) {
-				obj_controller.disposition[4] += choose(0, 0, 1);
-			}
-
-			if ((title == "Artifact Offered") || (title == "Mercy Plea")) {
-				obj_controller.disposition[4] -= choose(0, 1);
-			}
-
-			title = "Inquisition Mission Completed";
-			image = "exploding_ship";
-			text = "The Inquisitor's ship begans to bank and turn, to flee, but is immediately fired upon by your fleet.  The ship explodes, taking the Inquisitor with it.  The mission has been accomplished.";
-			reset_popup_options();
-
-			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
-
-			exit;
-		}
-		if (title == "He Built It") {
-			scr_kill_unit(ma_co, ma_id);
-			var company_to_order = ma_co;
-			with (obj_ini) {
-				scr_company_order(company_to_order);
-			}
-		}
-
-		if (title == "Necron Tomb Excursion") {
-			instance_activate_all();
-			var player_forces, penalty, roll;
-			player_forces = 0;
-			penalty = 0;
-			roll = floor(random(100)) + 1;
-			with (obj_star) {
-				if (name != obj_popup.loc) {
-					instance_deactivate_object(id);
-				}
-			}
-			if (!instance_exists(obj_temp8)) {
-				instance_create(obj_star.x, obj_star.y, obj_temp8);
-			}
-			player_forces = obj_star.p_player[planet];
-			instance_activate_object(obj_star);
-			cooldown = 30;
-
-			obj_temp8.stage += 1;
-			obj_temp8.loc = loc;
-			obj_temp8.wid = planet;
-
-			title = $"Necron Tunnels : {obj_temp8.stage}";
-			if (obj_temp8.stage == 1) {
-				image = "necron_tunnels_1";
-				text = "Your marines enter the massive tunnel complex, following the energy readings.  At first the walls are cramped and tiny, closing about them, but the tunnels widen at a rapid pace.";
-				add_option([ "Continue","Return to the surface"],true);
-			}
-			exit;
-		}
-
-		if (string_count("Necron Tunnels", title) > 0 && instance_exists(obj_temp8)) {
-			var player_forces, penalty, roll, battle;
-			player_forces = 0;
-			penalty = 0;
-			roll = floor(random(100)) + 1;
-			battle = 0;
-			instance_activate_all();
-			var mission_star = star_by_name(obj_temp8.loc);
-
-			player_forces = obj_star.p_player[obj_temp8.wid];
-
-			obj_temp8.popup = obj_turn_end.current_popup;
-
-			// SMALL TEAM OF MARINES
-			if (player_forces > 6) {
-				penalty = 10;
-			}
-			if (player_forces > 10) {
-				penalty = 20;
-			}
-			if (player_forces >= 20) {
-				penalty = 30;
-			}
-			if (player_forces >= 40) {
-				penalty = 50;
-			}
-			if (player_forces >= 60) {
-				penalty = 100;
-			}
-			roll += penalty;
-
-			// roll=30;if (string_count("3",title)>0) then roll=70;
-
-			// Result
-			if (roll <= 60) {
-				obj_temp8.stage += 1;
-				title = $"Necron Tunnels : {obj_temp8.stage}";
-
-				if (obj_temp8.stage == 2) {
-					image = "necron_tunnels_2";
-					text = "The energy readings are much stronger, now that your marines are deep inside the tunnels.  What was once cramped is now luxuriously large, the tunnel ceiling far overhead decorated by stalactites.";
-				} else if (obj_temp8.stage == 3) {
-					image = "necron_tunnels_3";
-					text = "After several hours of descent the entrance to the Necron Tomb finally looms ahead- dancing, sickly green light shining free.  Your marine confirms that the Plasma Bomb is ready.";
-				} else if (obj_temp8.stage >= 4) {
-					image = "";
-					title = "Inquisition Mission Completed";
-					text = "Your marines finally enter the deepest catacombs of the Necron Tomb.  There they place the Plasma Bomb and arm it.  All around are signs of increasing Necron activity.  With half an hour set, your men escape back to the surface.  There is a brief rumble as the charge goes off, your mission a success.";
-					reset_popup_options();
-
-					if (obj_controller.demanding == 0) {
-						obj_controller.disposition[4] += 1;
-					}
-					if (obj_controller.demanding == 1) {
-						obj_controller.disposition[4] += choose(0, 0, 1);
-					}
-
-					instance_activate_object(obj_star);
-					mission_star = star_by_name(obj_temp8.loc);
-					var ppp = 0;
-					remove_planet_problem(planet, "necron", mission_star);
-					seal_tomb_world(mission_star.p_feature[planet]);
-					// mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.NecronTomb)[0]].sealed = 1;
-					with (obj_temp8) {
-						instance_destroy();
-					}
-					instance_activate_object(obj_star);
-
-					scr_event_log("", $"Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
-					scr_gov_disp(mission_star.name, planet, choose(3, 4, 5, 6, 7));
-					var have_bomb = scr_check_equip("Plasma Bomb", self.loc, self.planet, 1);
-					exit;
-				}
-			}
-			if ((roll > 60) && (roll <= 82)) {
-				// Necron Wraith attack
-				battle = 1;
-			}
-			if ((roll > 82) && (roll <= 92)) {
-				// Tomb Spyder attack
-				battle = 2;
-			}
-			if ((roll > 92) && (roll <= 97)) {
-				// Tomb Stalker
-				battle = 3;
-			}
-			if (roll > 97) {
-				// Tomb World wakes up
-				if (player_forces <= 30) {
-					battle = 4;
-				}
-				if (player_forces > 30) {
-					battle = 5;
-				}
-				if (player_forces > 100) {
-					battle = 6;
-				}
-			}
-
-			if (battle > 0) {
-				var that_one;
-				instance_deactivate_all(true);
-				instance_activate_object(obj_controller);
-				instance_activate_object(obj_ini);
-				instance_activate_object(obj_temp8);
-
-				instance_create(0, 0, obj_ncombat);
-			    _roster = new Roster();
-			    with (_roster){
-			        roster_location = obj_temp8.loc;
-			        roster_planet = obj_temp8.wid;
-			        determine_full_roster();
-			        only_locals();
-			        update_roster();
-			        if (array_length(selected_units)){  
-			            setup_battle_formations();
-			            add_to_battle();
-			        }               
-			    }
-			    delete _roster;			
-
-
-				instance_activate_object(obj_star);
-				with (obj_star) {
-					if (name != obj_temp8.loc) {
-						instance_deactivate_object(id);
-					}
-				}
-
-				that_one = instance_nearest(0, 0, obj_star);
-				instance_activate_object(obj_star);
-
-				obj_ncombat.battle_object = that_one;
-				instance_deactivate_object(obj_star);
-				obj_ncombat.battle_loc = loc;
-				obj_ncombat.battle_id = planet;
-				obj_ncombat.dropping = 0;
-				obj_ncombat.attacking = 0;
-				obj_ncombat.enemy = 13;
-				obj_ncombat.threat = 1;
-				obj_ncombat.formation_set = 1;
-
-				if (battle == 1) {
-					obj_ncombat.battle_special = "wraith_attack";
-				} else if (battle == 2) {
-					obj_ncombat.battle_special = "spyder_attack";
-				} else if (battle == 3) {
-					obj_ncombat.battle_special = "stalker_attack";
-				} else if (battle == 4) {
-					obj_ncombat.battle_special = "wake1_attack";
-				} else if (battle == 5) {
-					obj_ncombat.battle_special = "wake2_attack";
-				} else if (battle == 6) {
-					obj_ncombat.battle_special = "wake2_attack";
-				}
-
-				instance_destroy();
-			}
-
-			exit;
-		}
 
 		if (title == "Inquisition Recon") {
 			var mission_star, onceh;
@@ -999,38 +433,13 @@ try {
 						if (demand) {
 							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to cleanse by fire the mutants in Hive {planet_numeral_name(planet, mission_star)} within {estimate} months.";
 						}
-					} else if (mission == "inquisitor") {
-						scr_event_log("", $"Inquisition Mission Accepted: A radical Inquisitor enroute to {mission_star.name} must be removed.  Estimated arrival in {estimate} months.", mission_star.name);
-						if (demand) {
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  A radical inquisitor is enroute to {mission_star.name}, expected within {estimate} months.  They are to be silenced and removed.";
-						}
 					}
-
 					if (mission == "spyrer") {
 						scr_event_log("", $"Inquisition Mission Accepted: The Spyrer on {mission_star.name} {scr_roman(planet)} must be killed within {estimate} months.", mission_star.name);
 						if (demand) {
 							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  An out of control Spyrer on Hive {mission_star.name} {scr_roman(onceh)} must be removed within {estimate} months.";
 						}
-					} else if (mission == "necron") {
-						scr_event_log("", $"Inquisition Mission Accepted: {global.chapter_name} have been given a Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
-
-						image = "necron_cave";
-						title = "New Equipment";
-						fancy_title = 0;
-						text_center = 0;
-						text = $"{global.chapter_name} have been provided with 1x Plasma Bomb in order to complete the mission.";
-
-						if (demand) {
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(onceh)}.  It is expected to be completed within {estimate} months.";
-						}
-						reset_popup_options();
-						scr_add_item("Plasma Bomb", 1);
-						obj_controller.cooldown = 10;
-						if (demand) {
-							demand = 0;
-						}
-						exit;
-					} else if (mission == "tyranid_org") {
+					}  else if (mission == "tyranid_org") {
 						image = "webber";
 						title = "New Equipment";
 						fancy_title = 0;
@@ -1145,9 +554,6 @@ try {
 	}
 
 	if ((press == 1) && (option2 != "")) {
-		if (image == "gene_bad") {
-			scr_loyalty("Mutant Gene-Seed", "+");
-		}
 
 		if (mission == "spyrer") {
 			obj_controller.disposition[4] -= 2;
@@ -1160,31 +566,6 @@ try {
 				instance_destroy();
 			}
 			instance_destroy();
-		}
-
-		if (title == "Artifact Offered") {
-			with (obj_en_fleet) {
-				if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
-					instance_destroy();
-				}
-			}
-
-			var last_artifact = scr_add_artifact("random", "", 4);
-
-			reset_popup_options();
-			title = "Inquisition Mission Completed";
-			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
-			text += $" some form of {obj_ini.artifact[last_artifact]}.  Once it is safely stowed away your ship is then ordered to fire.  The Inquisitor's own seems to hesitate an instant before banking away, but is quickly destroyed.";
-			image = "exploding_ship";
-			reset_popup_options();
-			scr_event_log("", "Artifact recovered from radical Inquisitor.");
-			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
-			exit;
-		}
-
-		if (title == "He Built It") {
-			obj_ini.god[ma_co, ma_id] += 10;
-			reset_popup_options();
 		}
 
 		if (title == "Mercy Plea") {
@@ -1200,71 +581,6 @@ try {
 			exit;
 		}
 
-		if (title == "Inquisitor Located") {
-			var offer, gender, gender2;
-			offer = choose(1, 1, 2, 2, 3);
-			if (planet == 1) {
-				gender = "he";
-			}
-			if (planet == 2) {
-				gender = "she";
-			}
-			if (planet == 1) {
-				gender2 = "his";
-			}
-			if (planet == 2) {
-				gender2 = "her";
-			}
-
-			if (offer == 1) {
-				title = "Artifact Offered";
-				text = "The Inquisitor claims that this is a massive misunderstanding, and " + string(gender) + " wishes to prove " + string(gender2) + $" innocence.  If {global.chapter_name} allow their ship to leave " + string(gender) + $" will give {global.chapter_name} an artifact.";
-				add_option("Destroy their vessel");
-				add_option("Take the artifact and then destroy them");
-				add_option("Take the artifact and spare them");
-				exit;
-			}
-
-			if (offer == 2) {
-				title = "Mercy Plea";
-				text = "The Inquisitor claims that " + string(gender) + $" has key knowledge that would grant the Imperium vital power over the forces of Chaos.  If {global.chapter_name} allow " + string(gender2) + " ship to leave the forces of Chaos within this sector will be weakened.";
-				add_option("Destroy their vessel");
-				add_option("Search their ship");
-				add_option("Spare them");
-				exit;
-			}
-
-			if (offer == 3) {
-				var gender2;
-				if (planet == 1) {
-					gender2 = "his";
-				}
-				if (planet == 2) {
-					gender2 = "her";
-				}
-				with (obj_en_fleet) {
-					if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
-						with (obj_p_fleet) {
-							if (action != "") {
-								instance_deactivate_object(id);
-							}
-						}
-						with (instance_nearest(x, y, obj_p_fleet)) {
-							scr_add_corruption(true, "1d3");
-						}
-						instance_activate_object(obj_p_fleet);
-						instance_destroy();
-					}
-				}
-				title = "Inquisition Mission Completed";
-				image = "exploding_ship";
-				text = $"{global.chapter_name} allow communications.  As soon as the vox turns on {global.chapter_name} hear a sickly, hateful voice.  They begin to speak of the inevitable death of your marines, the fall of all that is and ever shall be, and " + string(gender2) + " Lord of Decay.  Their ship is fired upon and destroyed without hesitation.";
-				reset_popup_options();
-				scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
-				exit;
-			}
-			exit;
-		}
 		if (image == "artifact2") {
 			scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
 			var man_size, ship_id, comp, plan, i;
@@ -1286,73 +602,6 @@ try {
 
 		obj_controller.cooldown = 10;
 
-		if (obj_controller.complex_event == false) {
-			if (number != 0 && instance_exists(obj_turn_end)) {
-				obj_turn_end.alarm[1] = 4;
-			}
-			instance_destroy();
-		}
-	}
-
-	if ((press == 2) && (option3 != "")) {
-		if (title == "Artifact Offered") {
-			with (obj_en_fleet) {
-				if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
-					action_x = choose(room_width * -1, room_width * 2);
-					action_y = choose(room_height * -1, room_height * 2);
-					alarm[4] = 1;
-					trade_goods = "|DELETE|";
-					action_spd = 256;
-					action = "";
-				}
-			}
-			var last_artifact = scr_add_artifact("random", "", 4);
-			
-			reset_popup_options();
-			title = "Inquisition Mission Completed";
-			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
-			text += $" some form of {obj_ini.artifact[last_artifact]}.  As promised {global.chapter_name} allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
-			image = "artifact_recovered";
-			reset_popup_options();
-			scr_event_log("", "Artifact Recovered from radical Inquisitor.");
-			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
-
-	        add_event({
-	        	e_id : "inquisitor_spared",
-	        	duration : irandom_range(6, 18) + 1,
-	        	variation : 1,
-	        })
-
-			exit;
-		}
-		if (title == "Mercy Plea") {
-			with (obj_en_fleet) {
-				if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
-					action_x = choose(room_width * -1, room_width * 2);
-					action_y = choose(room_height * -1, room_height * 2);
-					trade_goods = "|DELETE|";
-					alarm[4] = 1;
-					action_spd = 256;
-					action = "";
-				}
-			}
-			title = "Inquisition Mission Completed";
-			text = $"{global.chapter_name} allow the Inquisitor to leave, trusting in their words.  If they truly do have key information it is a risk {global.chapter_name} are willing to take.  What's the worst that could happen?";
-			image = "artifact_recovered";
-			reset_popup_options();
-
-			scr_event_log("", "Inquisition Mission Completed?: The radical Inquisitor has been allowed to flee in order to weaken the forces of Chaos, as they promised.");
-
-	        add_event({
-	        	e_id : "inquisitor_spared",
-	        	duration : irandom_range(6, 18) + 1,
-	        	variation : 2,
-	        })
-
-			exit;
-		}
-
-		obj_controller.cooldown = 10;
 		if (obj_controller.complex_event == false) {
 			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
@@ -1574,14 +823,7 @@ try {
 			add_option(["Continue"]);
 		}
 		if (press == 0) {
-			obj_controller.complex_event = false;
-			if (instance_exists(obj_turn_end)) {
-				if (number != 0) {
-					obj_turn_end.alarm[1] = 4;
-				}
-				instance_destroy();
-			}
-			instance_destroy();
+			popup_default_close();
 		}
 	}
 } catch (_exception) {

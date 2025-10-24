@@ -14,7 +14,7 @@ function draw_sprite_flipped(_sprite, _subimg, _x, _y) {
 /// @function return_sprite_mirrored(sprite)
 /// @param sprite The sprite index to mirror
 /// @returns A new sprite index that is the mirrored version
-function return_sprite_mirrored(_spr) {
+function return_sprite_mirrored(_spr, delete_sprite=true) {
     var _w = sprite_get_width(_spr);
     var _h = sprite_get_height(_spr);
     var _frames = sprite_get_number(_spr);
@@ -45,7 +45,9 @@ function return_sprite_mirrored(_spr) {
     }
 
     // Optional: delete old sprite to free memory
-    sprite_delete(_spr);
+    if (delete_sprite){
+        sprite_delete(_spr);
+    }
 
     return _new_sprite;
 }

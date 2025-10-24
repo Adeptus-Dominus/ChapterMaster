@@ -11,6 +11,9 @@ function location_out_of_player_control(unit_loc){
 	static _locs = ["Terra", "Mechanicus Vessel", "Lost", "Mars"];
 	return (array_contains(_locs,unit_loc ));
 }
+
+#macro planet_problem_keys ["meeting_trap","meeting","succession","mech_raider","mech_bionics","mech_mars","mech_tomb1","fallen","great_crusade","harlequins","fund_elder","provide_garrison","hunt_beast","protect_raiders","join_communion","join_parade","recover_artifacts","train_forces","spyrer","inquisitor","recon","cleanse","purge","tyranid_org","artifact_loan","necron","ethereal","demon_world"]
+
 function mission_name_key(mission){
 	var mission_key = {
 		"meeting_trap" : "Chaos Lord Meeting",
@@ -714,7 +717,11 @@ function increment_mission_completion(mission_data){
 		mission_data.completion = 0;
 	}
 	mission_data.completion++;
-	return (mission_data.completion/mission_data.required_months)*100;
+    if (!struct_exists(mission_data, "required_months") || mission_data.required_months <= 0) {
+        log_error("Invalid required_months in mission_data");
+        return 0;
+    }
+	return (mission_data.completion/mission_data.required_months) * 100;
 }
 //search problem data for a given and key and iff applicable value on that key
 //TODO increase filtering and search options
@@ -724,7 +731,7 @@ function problem_has_key_and_value(planet, problem,key,value="",star="none"){
 		var problem_data = p_problem_other_data[planet][problem];
 		if (struct_exists(problem_data, key)){
 			if (value==""){
-				has_data=true
+				has_data=true;
 			} else if( problem_data[$ key] == value){
 				has_data=true;
 			}
@@ -735,9 +742,4 @@ function problem_has_key_and_value(planet, problem,key,value="",star="none"){
 		}
 	}
 	return 	has_data;
-}
-
-
-function mission_rewards(){
-
 }

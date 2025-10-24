@@ -171,6 +171,12 @@ function init_manage_buttons(){
             label: "Show Bio",
             tooltip: "Click here or press B to Toggle Unit Biography."
         }),
+        capture_image: new UnitButtonObject({
+            style: "pixel",
+            label: "Capture Image",
+            tooltip: "Click to create a local png of the given marine in the game folder."
+        }),
+
         company_namer : new TextBarArea(800, 108, 600, false),
     };
 }

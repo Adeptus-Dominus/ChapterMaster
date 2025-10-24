@@ -379,7 +379,7 @@ function ArtifactStruct(Index) constructor {
         return false;
     };
 
-    static inquisition_disprove = function() {
+    static inquisition_disaprove = function() {
         var inquis_tags = ["daemonic", "chaos_gift", "chaos"];
         if (has_tag("inq")) {
             return false;
@@ -595,7 +595,7 @@ function ArtifactStruct(Index) constructor {
 function corrupt_artifact_collectors(last_artifact) {
     try {
         var arti = fetch_artifact(last_artifact);
-        if (arti.inquisition_disprove()) {
+        if (arti.inquisition_disaprove()) {
             for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
                 var _unit = obj_controller.display_unit[i];
                 if (obj_controller.man_sel[i] == 1) {

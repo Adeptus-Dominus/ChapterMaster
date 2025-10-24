@@ -465,11 +465,9 @@ function HoverBox() constructor{
 
 function exit_adhoc_manage(){
 	scr_toggle_manage();
-	if (struct_exists(selection_data,"system")){
-	    if (instance_exists(selection_data.system)){
-	   		selection_data.system.alarm[3]=2;
-	    }		
-	}
+    if (struct_exists(selection_data, "system") && instance_exists(selection_data.system)){
+   		selection_data.system.alarm[3]=2;
+    }		
 };
  function update_garrison_manage(){
 	location_viewer.update_garrison_log();
