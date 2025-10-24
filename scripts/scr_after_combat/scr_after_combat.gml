@@ -130,6 +130,21 @@ function distribute_experience(_units, _total_exp) {
     return _exp_reward;
 }
 
+
+function after_battle_slime_and_equipment_maintenance(unit){
+    if (unit.base_group=="astartes"){
+        if (marine_dead[i]=0) and (unit.gene_seed_mutations.mucranoid==1) and (ally[i]=false){
+            var muck=roll_dice_unit(1,100,"high",unit);
+            if (muck==1){    //slime  armour damaged due to mucranoid
+                if (unit.armour != ""){
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(unit.armour());
+                    obj_ncombat.mucra[marine_co[i]]=1;
+                    obj_ncombat.slime+=unit.get_armour_data("maintenance");
+                }
+            }
+        }
+    }
+}
 /// @mixin
 function after_battle_part2() {
     var _unit;
@@ -137,43 +152,34 @@ function after_battle_part2() {
     for (var i=0;i<array_length(unit_struct);i++){
         _unit=unit_struct[i];
         if (marine_dead[i]=0) and (marine_type[i]=="Death Company"){
-            if( _unit.role()!="Death Company"){
+            if (_unit.role()!="Death Company"){
                 _unit.update_role("Death Company");
             }
         }
-        if (_unit.base_group=="astartes"){
-            if (marine_dead[i]=0) and (_unit.gene_seed_mutations.mucranoid==1) and (ally[i]=false){
-                var muck=roll_dice_unit(1,100,"high",_unit);
-                if (muck==1){    //slime  armour damaged due to mucranoid
-                    if (_unit.armour != ""){
-                        obj_controller.specialist_point_handler.add_to_armoury_repair(_unit.armour());
-                        obj_ncombat.mucra[marine_co[i]]=1;
-                        obj_ncombat.slime+=_unit.get_armour_data("maintenance");
-                    }
-                }
-            }
-        }
 
-        if (ally[i]=false){
-            if (marine_dead[i]=0) and (obj_ini.gear[marine_co[i],marine_id[i]]="Plasma Bomb") and (obj_ncombat.defeat=0) and (string_count("mech",obj_ncombat.battle_special)=0){
-                if (obj_ncombat.plasma_bomb=0) and (obj_ncombat.enemy=13) and (awake_tomb_world(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id])==1){
-                    if (((obj_ncombat.battle_object.p_necrons[obj_ncombat.battle_id]-2)<3) and (obj_ncombat.dropping!=0)) or ((obj_ncombat.battle_object.p_necrons[obj_ncombat.battle_id]-1)<3){
+        if (!marine_dead[i] && !ally[i]){
+            after_battle_slime_and_equipment_maintenance();
+
+            if (_unit.gear()="Plasma Bomb") and (obj_ncombat.defeat=0) and (string_count("mech_tomb2",obj_ncombat.battle_special)){
+                if (obj_ncombat.plasma_bomb=0) and (obj_ncombat.enemy=13) and (awake_tomb_world(battle_object.p_feature[battle_id])==1){
+                    if (((obj_ncombat.battle_object.p_necrons[obj_ncombat.battle_id]-2)<3) and (dropping!=0)) or ((battle_object.p_necrons[battle_id]-1)<3){
                         obj_ncombat.plasma_bomb+=1;
-                        obj_ini.gear[marine_co[i],marine_id[i]]="";
+                        unit.update_gear("",false,false);
                     }
                 }
             }
-            if (marine_dead[i]=0) and (obj_ini.gear[marine_co[i],marine_id[i]]="Exterminatus") and (obj_ncombat.dropping!=0) and (obj_ncombat.defeat=0){
+            if (_unit.gear()="Exterminatus") and (obj_ncombat.dropping!=0) and (obj_ncombat.defeat=0){
                 if (obj_ncombat.exterminatus=0){
                     obj_ncombat.exterminatus+=1;
                     _unit.update_gear("", false,false);
                 }
                 // obj_ncombat.exterminatus+=1;scr_add_item("Exterminatus",1);
-                // obj_ini.gear[marine_co[i],marine_id[i]]="";
+                // _unit.gear()="";
             }
         }
 
-        var destroy;destroy=0;
+
+        var destroy=0;
         if ((marine_dead[i]>0) or (obj_ncombat.defeat!=0)) and (marine_type[i]!="") and (ally[i]=false){
             var comm=false;
             if (_unit.IsSpecialist(SPECIALISTS_STANDARD,true)){
@@ -184,7 +190,7 @@ function after_battle_part2() {
                 } else if (array_contains([string("Venerable {0}",obj_ini.role[100][6]), "Codiciery", "Lexicanum"], _unit.role())){
                     recent=false
                 }
-                if (recent=true) then scr_recent("death_"+string(marine_type[i]),string(obj_ini.name[marine_co[i],marine_id[i]]),marine_co[i]);            
+                if (recent=true) then scr_recent($"death_{unit.name_role()}");           
             } else {
                 obj_ncombat.final_marine_deaths+=1;
             }
@@ -331,12 +337,12 @@ function after_battle_part2() {
                     }
                     if (dece<=eqp_chance) then scr_add_item(marine_wep2[i],1);
                 }
-                if (wah=4) and (obj_ini.gear[marine_co[i],marine_id[i]]!=""){
+                if (wah=4) and (_unit.gear()!=""){
                     if (string_count("&",marine_gear[i])>0){eqp_chance=90;artif=true;}
                     if (marine_dead[i]=2) or (destroy=2) then dece=9999;
                     if (obj_ini.race[marine_co[i],marine_id[i]]!=1) then dece=9999;
 
-                    if (obj_ini.gear[marine_co[i],marine_id[i]]="Exterminatus"){
+                    if (_unit.gear()="Exterminatus"){
                         if (obj_ncombat.defeat=0){
                             dece=0;
                             if (obj_ncombat.dropping!=0) then obj_ncombat.exterminatus+=1;
@@ -352,7 +358,7 @@ function after_battle_part2() {
                                 if (obj_ncombat.post_equipment_lost[o]=marine_gear[i]){last=1;obj_ncombat.post_equipments_lost[o]+=1;artif=true;}
                                 if (obj_ncombat.post_equipment_lost[o]="") and (last=0){last=o;obj_ncombat.post_equipment_lost[o]=marine_gear[i];obj_ncombat.post_equipments_lost[o]=1;artif=true;}
                                 if (artif=true) then obj_ncombat.post_equipment_lost[o]=clean_tags(obj_ncombat.post_equipment_lost[o]);
-                                obj_ini.gear[marine_co[i],marine_id[i]]="";
+                                _unit.gear()="";
                                 // wep2[0,i]="";armour[0,i]="";gear[0,i]="";mobi[0,i]="";
                             }
                         }

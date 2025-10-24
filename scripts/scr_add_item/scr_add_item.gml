@@ -64,7 +64,9 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
 						break;
 					}
 				}
-				if (_quality == "worst") return "no_item"; // fallback, unchanged
+				if (_quality == "worst"){
+					return "no_item"; // fallback, unchanged
+				}
 				break;
 		
 			case "best":
@@ -74,7 +76,9 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
 						break;
 					}
 				}
-				if (_quality == "best") return "no_item"; // fallback, unchanged
+				if (_quality == "best"){
+					return "no_item"; // fallback, unchanged
+				}
 				break;
 		}
 
@@ -96,4 +100,16 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
 
 		return _quality;
 	}
+}
+
+
+function EquipmentTracker() constructor {
+	static add_item = function(item,quality){
+		array_push(items,{item,quality});
+	}
+
+	static item_count = function(){
+		return array_length(items)
+	}
+	items = [];
 }
