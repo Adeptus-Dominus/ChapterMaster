@@ -243,12 +243,12 @@ if (_total_damaged_count > 0) {
 
 
 
-if (post_equipment_lost[1]!=""){
+if (post_equipment_lost.item_count()){
     part6="Equipment Lost: ";
     
-    part7 += arrays_to_string_with_counts(post_equipment_lost, post_equipments_lost, true, false);
+    part7 += post_equipment_lost.item_description_string();
 	if (ground_mission){
-        part7 += " Some may be recoverable."
+        part7 += " Some may be recoverable.";
     }
     newline=part6;
     scr_newtext();
@@ -258,6 +258,10 @@ if (post_equipment_lost[1]!=""){
     scr_newtext();
 }
 
+if (post_equipment_recovered.item_count()){
+    newline = $"Equipment Recovered: {post_equipment_lost.item_description_string()}";
+    scr_newtext();
+}
 
 
 if (total_battle_exp_gain>0){
@@ -285,8 +289,7 @@ if (total_battle_exp_gain>0){
 }
 
 if (ground_mission){
-	obj_ground_mission.post_equipment_lost = post_equipment_lost
-	obj_ground_mission.post_equipments_lost = post_equipments_lost
+	obj_ground_mission.post_equipment_lost = post_equipment_lost;
 }
 
 if (slime>0){
@@ -315,13 +318,10 @@ if (battle_special="study2a") then reduce_fortification=false;
 if (battle_special="study2b") then reduce_fortification=false;
 
 if (fortified>0) and (!instance_exists(obj_nfort)) and (reduce_fortification=true){
-    part9="Fortification level of "+string(battle_loc);
-    if (battle_id=1) then part9+=" I";
-    if (battle_id=2) then part9+=" II";
-    if (battle_id=3) then part9+=" III";
-    if (battle_id=4) then part9+=" IV";
-    if (battle_id=5) then part9+=" V";
+    part9=$"Fortification level of {planet_numeral_name(battle_id, battle_object)}";
+
     part9+=$" has decreased to {fortified-1} ({fortified}-1)";
+
     newline=part9;
     scr_newtext();
     battle_object.p_fortified[battle_id]-=1;
@@ -338,10 +338,10 @@ if (fortified>0) and (!instance_exists(obj_nfort)) and (reduce_fortification=tru
 
 
 
-if (defeat == 0) and (battle_special="space_hulk"){
+if (!defeat) and (battle_special == "space_hulk"){
     var enemy_power=0,
     loot=0,
-    dicey=roll_dice_chapter(1, 100, "low"),
+    dicey=roll_dice_chapter(1, 100, "low");
     ex=0;
 
     if (enemy=7){
@@ -385,19 +385,35 @@ if (string_count("ruins",battle_special)>0){
     scr_newtext();
 }
 
-var reduce_power=true;
-if (battle_special="tyranid_org") then reduce_power=false;
-if (battle_special="ship_demon") then reduce_power=false;
-if (string_count("_attack",battle_special)>0) then reduce_power=false;
-if (string_count("ruins",battle_special)>0) then reduce_power=false;
-if (battle_special="space_hulk") then reduce_power=false;
-if (battle_special="fallen1") then reduce_power=false;
-if (battle_special="fallen2") then reduce_power=false;
-if (battle_special="study2a") then reduce_power=false;
-if (battle_special="study2b") then reduce_power=false;
-if (defeat == 0) and (reduce_power=true){
-    var enemy_power,new_power, power_reduction, final_pow, requisition_reward;
-    enemy_power=0;new_power=0; power_reduction=0; requisition_reward=0;
+var _reduce_power = true;
+
+// Events that should *not* reduce power
+var _non_power_reduce_events = [
+    "tyranid_org",
+    "ship_demon",
+    "space_hulk",
+    "fallen1",
+    "fallen2",
+    "study2a",
+    "study2b",
+    "protect_raiders"
+];
+
+// Disable power reduction for matching events
+if (array_contains(_non_power_reduce_events, battle_special)) {
+    _reduce_power = false;
+}
+else if (string_count("_attack", battle_special) > 0) {
+    _reduce_power = false;
+}
+else if (string_count("ruins", battle_special) > 0) {
+    _reduce_power = false;
+}
+
+
+if (defeat == 0 && _reduce_power){
+
+    var enemy_power=0,new_power=0, power_reduction=0, requisition_reward=0;
 
     if (enemy=2){
         enemy_power=battle_object.p_guardsmen[battle_id];
@@ -427,7 +443,10 @@ if (defeat == 0) and (reduce_power=true){
     }
     else if (enemy=10){
         enemy_power=battle_object.p_traitors[battle_id];
-        part10="Heretic";if (threat=7) then part10="Daemon";
+        part10="Heretic";
+        if (threat==7){
+            part10="Daemon";
+        }
     }
     else if (enemy=11){
         enemy_power=battle_object.p_chaos[battle_id];
