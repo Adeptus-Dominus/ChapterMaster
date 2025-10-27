@@ -258,6 +258,10 @@ if (post_equipment_lost.item_count()){
     scr_newtext();
 }
 
+if (post_equipment_recovered.item_count()){
+    newline = $"Equipment Recovered: {post_equipment_lost.item_description_string()}";
+    scr_newtext();
+}
 
 
 if (total_battle_exp_gain>0){
@@ -334,7 +338,7 @@ if (fortified>0) and (!instance_exists(obj_nfort)) and (reduce_fortification=tru
 
 
 
-if (!defeat) and (battle_special="space_hulk"){
+if (!defeat) and (battle_special == "space_hulk"){
     var enemy_power=0,
     loot=0,
     dicey=roll_dice_chapter(1, 100, "low");
@@ -407,7 +411,7 @@ else if (string_count("ruins", battle_special) > 0) {
 }
 
 
-if (defeat == 0) and (_reduce_power=true){
+if (defeat == 0 && _reduce_power){
 
     var enemy_power=0,new_power=0, power_reduction=0, requisition_reward=0;
 
@@ -440,7 +444,9 @@ if (defeat == 0) and (_reduce_power=true){
     else if (enemy=10){
         enemy_power=battle_object.p_traitors[battle_id];
         part10="Heretic";
-        if (threat=7) then part10="Daemon";
+        if (threat==7){
+            part10="Daemon";
+        }
     }
     else if (enemy=11){
         enemy_power=battle_object.p_chaos[battle_id];

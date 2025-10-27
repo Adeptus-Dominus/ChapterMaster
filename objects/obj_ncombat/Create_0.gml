@@ -139,6 +139,8 @@ repeat(70){i+=1;
 }
 
 post_equipment_lost = new EquipmentTracker();
+post_equipment_recovered = new EquipmentTracker();
+
 slime=0;
 unit_recovery_score=0;
 apothecaries_alive=0;

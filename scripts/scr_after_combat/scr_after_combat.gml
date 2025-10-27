@@ -130,15 +130,14 @@ function distribute_experience(_units, _total_exp) {
     return _exp_reward;
 }
 
-
 function after_battle_slime_and_equipment_maintenance(unit){
     if (unit.base_group=="astartes"){
-        if (marine_dead[i]=0) and (unit.gene_seed_mutations.mucranoid==1) and (ally[i]=false){
+        if (unit.gene_seed_mutations.mucranoid==1) {
             var muck=roll_dice_unit(1,100,"high",unit);
             if (muck==1){    //slime  armour damaged due to mucranoid
                 if (unit.armour != ""){
                     obj_controller.specialist_point_handler.add_to_armoury_repair(unit.armour());
-                    obj_ncombat.mucra[marine_co[i]]=1;
+                    obj_ncombat.mucra[unit.company]=1;
                     obj_ncombat.slime+=unit.get_armour_data("maintenance");
                 }
             }
@@ -151,14 +150,14 @@ function after_battle_part2() {
 
     for (var i=0;i<array_length(unit_struct);i++){
         _unit=unit_struct[i];
-        if (marine_dead[i]=0) and (marine_type[i]=="Death Company"){
+        if (!marine_dead[i] && marine_type[i]=="Death Company"){
             if (_unit.role()!="Death Company"){
                 _unit.update_role("Death Company");
             }
         }
 
         if (!marine_dead[i] && !ally[i]){
-            after_battle_slime_and_equipment_maintenance();
+            after_battle_slime_and_equipment_maintenance(_unit);
 
             if (_unit.gear()="Plasma Bomb") and (obj_ncombat.defeat=0) and (string_count("mech_tomb2",obj_ncombat.battle_special)){
                 if (obj_ncombat.plasma_bomb=0) and (obj_ncombat.enemy=13) and (awake_tomb_world(battle_object.p_feature[battle_id])==1){
@@ -180,8 +179,8 @@ function after_battle_part2() {
 
 
         var destroy=0;
-        if ((marine_dead[i]>0) or (obj_ncombat.defeat!=0)) and (marine_type[i]!="") and (ally[i]=false){
-            after_combat_recover_marine_gene_seed();
+        if ((marine_dead[i] || obj_ncombat.defeat!=0) && !ally[i]){
+            after_combat_recover_marine_gene_seed(_unit);
             after_combat_dead_marine_equipment_recovered(_unit);
         }
     }
@@ -263,14 +262,14 @@ function after_battle_part1() {
     }
 }
 
-function after_combat_recover_marine_gene_seed(){
+function after_combat_recover_marine_gene_seed(unit){
    var comm=false;
-    if (_unit.IsSpecialist(SPECIALISTS_STANDARD,true)){
+    if (unit.IsSpecialist(SPECIALISTS_STANDARD,true)){
         obj_ncombat.final_command_deaths+=1;
         var recent=true;
-        if (is_specialist(_unit.role, SPECIALISTS_TRAINEES)){
+        if (is_specialist(unit.role, SPECIALISTS_TRAINEES)){
             recent=false
-        } else if (array_contains([string("Venerable {0}",obj_ini.role[100][6]), "Codiciery", "Lexicanum"], _unit.role())){
+        } else if (array_contains([string("Venerable {0}",obj_ini.role[100][6]), "Codiciery", "Lexicanum"], unit.role())){
             recent=false
         }
         if (recent=true) then scr_recent($"death_{unit.name_role()}");           
@@ -282,20 +281,20 @@ function after_combat_recover_marine_gene_seed(){
     // show_message("ded; increase final deaths");
 
     if (obj_controller.blood_debt=1){
-        if (_unit.role()==obj_ini.role[100][12]){
+        if (unit.role()==obj_ini.role[100][eROLE.Scout]){
             obj_controller.penitent_current+=2
         } else {obj_controller.penitent_current+=4;}
         obj_controller.penitent_turn=0;
         obj_controller.penitent_turnly=0;
     }
 
-    if (obj_ini.race[marine_co[i], marine_id[i]] == 1) {
-        var _birthday = obj_ini.age[marine_co[i], marine_id[i]];
+    if (unit.base_group == "astartes") {
+        var _birthday = unit.age();
         var _current_year = (obj_controller.millenium * 1000) + obj_controller.year;
         var _seed_harvestable = 0;
         var _seed_lost = 0;
 
-        if (_birthday <= (_current_year - 10) && obj_ini.zygote == 0) {
+        if (_birthday <= (_current_year - 10) && unit.gene_seed_mutations.zygote == 0) {
             _seed_lost++;
             if (irandom_range(1, 10) > 1) {
                 _seed_harvestable++;
@@ -314,7 +313,7 @@ function after_combat_recover_marine_gene_seed(){
 
     var last=0;
 
-    var _unit_role = _unit.role();
+    var _unit_role = unit.role();
     if (!struct_exists(obj_ncombat.units_lost_counts, _unit_role)) {
         obj_ncombat.units_lost_counts[$ _unit_role] = 1;
     } else {
@@ -322,13 +321,10 @@ function after_combat_recover_marine_gene_seed(){
     }
 
     // Determine which companies to crunch
-    obj_ncombat.crunch[marine_co[i]]=1;
+    obj_ncombat.crunch[unit.company]=1;
 }
 
 function after_combat_dead_marine_equipment_recovered(unit){
-    if (ally[i]){
-        return;
-    }
     var _equipment = unit.unit_equipment_data();
 
     var _equip_slots = struct_get_names(_equipment);
@@ -338,8 +334,17 @@ function after_combat_dead_marine_equipment_recovered(unit){
     if (scr_has_adv("Scavangers")){
         basic_recover_chance += 10;
     }
-    if (obj_ncombat.defending=false) then basic_recover_chance-=10;
-    if (obj_ncombat.dropping=1) then basic_recover_chance-=20;
+    if (!obj_ncombat.defending){
+        basic_recover_chance-=10;
+    }
+    if (obj_ncombat.dropping=1){
+        if (scr_has_adv("Lightning Warriors")){
+            basic_recover_chance-=10;
+        } else {
+            basic_recover_chance-=25;
+        }
+        
+    }
 
     for (var i=0; i<array_length(_equip_slots);i++){
 
@@ -358,10 +363,10 @@ function after_combat_dead_marine_equipment_recovered(unit){
         }
         //if (obj_ini.race[marine_co[i], marine_id[i]]!=1) then _specific_item_chance=9999;
 
-        var _specific_type_recovery = basic_recover_chance += item.recovery_chance;
+        var _specific_type_recovery = basic_recover_chance + _item.recovery_chance;
 
         if (_item.is_artifact && _specific_type_recovery < 90){
-            _specific_type_recovery = 90;
+            _specific_type_recovery = 95;
         }
 
         if (_item.name="Exterminatus"){
@@ -376,11 +381,15 @@ function after_combat_dead_marine_equipment_recovered(unit){
             }
         }
 
-        if (_specific_item_chance > basic_recover_chance){
+        if (_specific_item_chance > _specific_type_recovery){
             _recover = false;
             if (!_item.is_artifact){
-                post_equipment_lost.add_item(_item.name, _item.quality, unit.uid);
+                obj_ncombat.post_equipment_lost.add_item(_item.name, _item.quality, unit.uid);
             }
+        } else {
+            if (!_item.is_artifact){
+                obj_ncombat.post_equipment_recovered.add_item(_item.name, _item.quality, unit.uid);
+            }           
         }
 
         switch(_slot){

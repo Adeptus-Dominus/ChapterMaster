@@ -133,12 +133,17 @@ function EquipmentTracker() constructor {
 		var _item_names = struct_get_names(item_types);
 		var _string = ""
 		for (var i=0;i<array_length(_item_names);i++){
-			_string += string_plural(_item_names[i], item_types[$_item_names[i]])", ";
+			_string += $"{item_types[$ _item_names[i]]}" + string_plural(_item_names[i], item_types[$ _item_names[i]]) + ", ";
 		}
+    // Trim trailing comma and space
+    if (string_length(_string) >= 2) {
+        _string = string_copy(_string, 1, string_length(_string) - 2);
+    }
+		return _string;
 	}
 
 	static has_item = function(item){
-		return struct_exists(items, item) ? items[$item] : 0;
+		return struct_exists(item_types, item) ? item_types[$item] : 0;
 	}
 
 	items = [];

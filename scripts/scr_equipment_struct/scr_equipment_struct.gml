@@ -21,8 +21,9 @@ global.tag_recovery_values = {
 function EquipmentStruct(item_data, core_type, quality_request = "none", arti_struct = -1) constructor {
     type = core_type;
 
-    if (arti_struct > -1){
+    if (is_real(arti_struct) && arti_struct > -1) {
         is_artifact = true;
+        artifact_id = arti_struct;
     } else {
         is_artifact = false;
     }
@@ -81,13 +82,14 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
         }
     }
 
-    if (recovery_chance ==0){
+    if (recovery_chance == 0){
         var _recover_values = struct_get_names(global.tag_recovery_values);
         for (var i=0;i<array_length(_recover_values);i++){
             if (has_tag(_recover_values[i])){
                 recovery_chance += global.tag_recovery_values[$_recover_values[i]];
             }
-        }        
+        }
+        recovery_chance = clamp(recovery_chance, 0, 100);        
     }
 
     // All methods and functions are bllow;

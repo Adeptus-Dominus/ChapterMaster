@@ -99,7 +99,7 @@ function scr_ruins_recover_from_dead(){
 	pop.image="ancient_ruins";
 	pop.title="Ancient Ruins: Recovery";
 	if (route < 4){
-		var _weapon_text = ""
+		var _weapon_text = "";
 		
 		var some_recoverable = false;
 		//calculate equipment degredation
@@ -114,13 +114,15 @@ function scr_ruins_recover_from_dead(){
 			_recovered.items = recoverables;
 			_recovered.collate_types();
 			_weapon_text = _recovered.item_description_string();
+
+			some_recoverable = array_length(recoverables) > 0;
 		} else {
 			some_recoverable = false;
 
 		}
 		
 
-		if (some_recoverable == true){
+		if (some_recoverable){
 			pop.text=$"Your strike team locates the site where the previous expedition made their last stand. They airlift whatever equipment and vehicles remain, disposing of anything beyond saving;. {_weapon_text} is repaired and restored to the armamentarium";
 		}else{
 			pop.text=$"our strike team locates the site where the previous expedition made their last stand. They cannot find any intact equipment, and are forced to burn the derelicts to prevent capture; no equipment is added to the armamentarium"
@@ -349,10 +351,8 @@ function scr_ruins_combat_end() {
         recoverable_gene_seed = obj_ground_mission.recoverable_gene_seed;
 
         if (array_length(_equip_lost.items)){
-        	var _half_destroy = floor(array_length(_equip_lost.items)/2);
-        	for (var i=0;i<array_length(_half_destroy);i++){
-        		_equip_lost.items = delete_random_index(_equip_lost.items);
-        	}
+			_equip_lost.items = array_shuffle(_equip_lost.items);
+			array_delete(_equip_lost.items, 0, floor(array_length(_equip_lost.items)/2));
         }
 
         if (array_length(_equip_lost.items) > 0) {
