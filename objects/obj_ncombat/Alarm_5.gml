@@ -605,9 +605,11 @@ if (defeat == 0 && _reduce_power){
 			seal_tomb_world(battle_object.p_feature[battle_id])
         }
 
-        if (plasma_bomb<=0){
+        else if (plasma_bomb<=0){
             battle_object.p_necrons[battle_id]=3;// newline_color="yellow";
-            if (dropping!=0) then newline="Deep Strike Ineffective; Plasma Bomb required";
+            if (dropping!=0){
+                newline="Deep Strike Ineffective; Plasma Bomb required";
+            }
             if (dropping=0) then newline="Attack Ineffective; Plasma Bomb required";
             scr_newtext();
         }

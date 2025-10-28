@@ -144,6 +144,22 @@ function after_battle_slime_and_equipment_maintenance(unit){
         }
     }
 }
+
+function check_for_plasma_bomb_and_tomb(unit){
+    if (obj_ncombat.plasma_bomb || obj_ncombat.defeat){
+        return;
+    }
+    var _star = obj_ncombat.battle_object;
+    var _planet = obj_ncombat.battle_id;
+    if (unit.gear() == "Plasma Bomb" && !string_count("mech_tomb2",obj_ncombat.battle_special)){
+        if (obj_ncombat.enemy=13 && awake_tomb_world(_star.p_feature[_planet])){
+            if (((_star.p_necrons[_planet]-2)<3) and (dropping!=0)) or ((_star.p_necrons[_planet]-1)<3){
+                obj_ncombat.plasma_bomb+=1;
+                unit.update_gear("",false,false);
+            }
+        }
+    }
+}
 /// @mixin
 function after_battle_part2() {
     var _unit;
@@ -159,14 +175,9 @@ function after_battle_part2() {
         if (!marine_dead[i] && !ally[i]){
             after_battle_slime_and_equipment_maintenance(_unit);
 
-            if (_unit.gear()="Plasma Bomb") and (obj_ncombat.defeat=0) and (string_count("mech_tomb2",obj_ncombat.battle_special)){
-                if (obj_ncombat.plasma_bomb=0) and (obj_ncombat.enemy=13) and (awake_tomb_world(battle_object.p_feature[battle_id])==1){
-                    if (((obj_ncombat.battle_object.p_necrons[obj_ncombat.battle_id]-2)<3) and (dropping!=0)) or ((battle_object.p_necrons[battle_id]-1)<3){
-                        obj_ncombat.plasma_bomb+=1;
-                        unit.update_gear("",false,false);
-                    }
-                }
-            }
+            check_for_plasma_bomb_and_tomb(_unit)
+
+
             if (_unit.gear()="Exterminatus") and (obj_ncombat.dropping!=0) and (obj_ncombat.defeat=0){
                 if (obj_ncombat.exterminatus=0){
                     obj_ncombat.exterminatus+=1;
