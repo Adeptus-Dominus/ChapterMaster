@@ -168,14 +168,43 @@ function PlanetData(planet, system) constructor{
 	}
 
 	static add_forces = function(faction, val){
-		planet_forces[faction] = clamp(planet_forces[faction]+val,0,12);
-		var _new_val = planet_forces[faction];
-		switch (faction){
-			case eFACTION.Ork:
-				system.p_orks[planet] = _new_val;
-				break;
-		}
+		var _new_val = planet_forces[faction]+val;
+		return edit_forces(faction,_new_val);
 	}
+
+    static edit_forces = function(faction, val){
+        planet_forces[faction] = clamp(val,0,12);
+        var _new_val = planet_forces[faction];
+        switch (faction){
+            case eFACTION.Ork:
+                system.p_orks[planet] = _new_val;
+                break;
+            case eFACTION.Tau:
+                system.p_tau[planet] = _new_val;
+                break;
+            case eFACTION.Tyranids:
+                system.p_tyranids[planet] = _new_val;
+                break;
+            case eFACTION.Necrons:
+                system.p_necrons[planet] = _new_val;
+                break;
+            case eFACTION.Eldar:
+                system.p_eldar[planet] = _new_val;
+                break;
+            case eFACTION.Chaos:
+                system.p_chaos[planet] = _new_val;
+                break;
+            case eFACTION.Heretics:
+                system.p_traitors[planet] = _new_val;
+                break;
+            case eFACTION.Ecclesiarchy:
+                system.p_sisters[planet] = _new_val;
+                break;                                  
+        }
+
+        return _new_val
+
+    }
 
 
 
