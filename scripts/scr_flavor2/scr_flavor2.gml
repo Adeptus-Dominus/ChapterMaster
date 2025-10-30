@@ -203,10 +203,9 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 			if (ranz = 2) then m1 = string(_hostile_shots) + " " + string(_hostile_weapon) + "z are clamped onto " + string(target_type) + ".  ";
 			if (ranz = 3) then m1 = string(_hostile_shots) + " " + string(_hostile_weapon) + "z are flung into " + string(target_type) + ".  ";
 		}
-		if (_hostile_weapon = "Melee1") and(enemy = 7) {
+		if (_hostile_weapon == "Melee1") and (enemy == eFACTION.Orks) {
 			flavor = 1;
-			var ranz;
-			ranz = choose(1, 2, 3);
+			var ranz = choose(1, 2, 3);
 			if (ranz = 1) then m1 = string(_hostile_shots) + " Orks club and smash at " + string(target_type) + ".  ";
 			if (ranz = 2) then m1 = string(_hostile_shots) + " Orks shoot their Slugas and smash gunbarrels into " + string(target_type) + ".  ";
 			if (ranz = 3) then m1 = string(_hostile_shots) + " Orks claw and punch at " + string(target_type) + ".  ";
