@@ -1482,18 +1482,23 @@ global.modular_drawing_items = [
 
 function fetch_marine_components_to_memory(){
     array_foreach(global.modular_drawing_items, function(_element, _index){
-        if (_element.position != "weapon" && sprite_exists((_element.sprite))){
-            sprite_prefetch(_element.sprite);
-            if (struct_exists(_element, "overides")){
-                var _override_areas = struct_get_names(_element.overides);
-                for (var i = 0;i<array_length(_override_areas);i++){
-                    sprite_prefetch(_element.overides[$_override_areas[i]]);
+        try{
+            if (_element.position != "weapon" && sprite_exists((_element.sprite))){
+                sprite_prefetch(_element.sprite);
+                if (struct_exists(_element, "overides")){
+                    var _override_areas = struct_get_names(_element.overides);
+                    for (var i = 0;i<array_length(_override_areas);i++){
+                        sprite_prefetch(_element.overides[$_override_areas[i]]);
+                    }
                 }
             }
             if (struct_exists(_element, "shadows")){
                 sprite_prefetch(_element.shadows);
             }
-        }
+        } catch(_exception) {
+            // Sprite prefetch failure logged but non-fatal
+            show_debug_message($"Sprite prefetch failed for element at index {_index}: {_exception}");
+         }
     });
 }
 
