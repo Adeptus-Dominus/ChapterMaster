@@ -1,4 +1,5 @@
 {
+    "$schema": "./chapter_schema.json",
     "chapter": {
         "id": 1,
         "name": "Dark Angels",
@@ -52,7 +53,7 @@
             "trim": "Grey",
             "lens": "Red",
             "weapon": "Dark Red",
-            "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
+            "special": 0 // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours // todo update ref for new name
         },
         "culture_styles": [
@@ -122,11 +123,13 @@
             "gear": "",
             "mobi": ""
         },
-        "artifact": {
-            "name": "Sword of Secrets",
-            "description": "A master-crafted Power Sword of formidable potency created soon after the disappearance of Lion El'Jonson. It is the mightiest of the Heavenfall Blades",
-            "base_weapon_type": "Power Sword"
-        },
+        "artifact": [
+            {
+                "name": "Sword of Secrets",
+                "description": "A master-crafted Power Sword of formidable potency created soon after the disappearance of Lion El'Jonson. It is the mightiest of the Heavenfall Blades",
+                "base_weapon_type": "Power Sword"
+            }
+        ],
         "company_titles": [
             "",
             "Deathwing",
