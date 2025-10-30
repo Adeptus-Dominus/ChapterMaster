@@ -76,7 +76,7 @@ try {
                         // ** Start Mobility Items **
                         if (unit.mobility_item() != req_mobi) {
                             var stop_mobi = false;
-                            if (unit_armour.has_tags(["terminator", "dreadnought"])) {
+                            if (is_struct(unit_armour) && unit_armour.has_tags(["terminator", "dreadnought"])) {
                                 unit.update_mobility_item("");
                             } else {
                                 unit.update_mobility_item(req_mobi);
