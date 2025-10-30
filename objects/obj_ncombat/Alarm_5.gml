@@ -568,7 +568,7 @@ if (defeat == 0 && _reduce_power){
         scr_newtext();
     }
     
-    if (enemy == eFACTION.Necron && p_data.forces[eFACTION.Necron]<3 && awake_tomb_world(p_data.features) == 1){
+    if (enemy == eFACTION.Necrons && p_data.forces[eFACTION.Necrons]<3 && awake_tomb_world(p_data.features) == 1){
     
         // var bombs;bombs=scr_check_equip("Plasma Bomb",battle_loc,battle_id,0);
         // var bombs;bombs=scr_check_equip("Plasma Bomb","","",0);
@@ -699,7 +699,7 @@ if (obj_ini.omophagea){
 
     if (allies>0){
         alter_disposition([
-            [eFACTION.Imperim,-choose(1,0,0)],
+            [eFACTION.Imperium,-choose(1,0,0)],
             [eFACTION.Inquisition, -choose(0,0,1)],
             [eFACTION.Ecclesiarchy, -choose(0,0,1)],
         ]);
