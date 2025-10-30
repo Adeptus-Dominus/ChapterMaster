@@ -346,7 +346,7 @@ if (!defeat) and (battle_special == "space_hulk"){
     dicey=roll_dice_chapter(1, 100, "low");
     ex=0;
 
-    if (enemy == eFACTION,Ork || enemy==eFACTION.Tyranids ||enemy=eFACTION.Heretics){
+    if (enemy == eFACTION.Ork || enemy == eFACTION.Tyranids || enemy == eFACTION.Heretics){
         enemy_power=p_data.add_forces(enemy,-1);
         battle_object.p_orks[battle_id]-=1;
     }
