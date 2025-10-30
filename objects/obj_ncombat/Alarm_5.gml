@@ -12,6 +12,8 @@ var line_break = "--------------------------------------------------------------
 if (turn_count >= 50){
     part1 = "Your forces make a fighting retreat \n"
 }
+
+p_data = new PlanetData(battle_object, battle_id);
 // check for wounded marines here to finish off, if defeated defending
 var roles = obj_ini.role[100];
 var ground_mission = (instance_exists(obj_ground_mission));
@@ -318,7 +320,7 @@ if (battle_special="study2a") then reduce_fortification=false;
 if (battle_special="study2b") then reduce_fortification=false;
 
 if (fortified>0) and (!instance_exists(obj_nfort)) and (reduce_fortification=true){
-    part9=$"Fortification level of {planet_numeral_name(battle_id, battle_object)}";
+    part9=$"Fortification level of {p_data.name()}";
 
     part9+=$" has decreased to {fortified-1} ({fortified}-1)";
 
@@ -344,17 +346,8 @@ if (!defeat) and (battle_special == "space_hulk"){
     dicey=roll_dice_chapter(1, 100, "low");
     ex=0;
 
-    if (enemy=7){
-        enemy_power=battle_object.p_orks[battle_id];
-        battle_object.p_orks[battle_id]-=1;
-    }
-    else if (enemy=9){
-        enemy_power=battle_object.p_tyranids[battle_id];
-        battle_object.p_tyranids[battle_id]-=1;
-    }
-    else if (enemy=10){
-        enemy_power=battle_object.p_traitors[battle_id];
-        battle_object.p_traitors[battle_id]-=1;
+    if (enemy == eFACTION.Ork || enemy == eFACTION.Tyranids || enemy == eFACTION.Heretics){
+        enemy_power=p_data.add_forces(enemy,-1);
     }
 
     part10="Space Hulk Exploration at ";
@@ -539,22 +532,12 @@ if (defeat == 0 && _reduce_power){
         }
     }
 
-    if (enemy=5){battle_object.p_sisters[battle_id]=new_power;}
-    else if (enemy=6){battle_object.p_eldar[battle_id]=new_power;}
-    else if (enemy=7){battle_object.p_orks[battle_id]=new_power;}
-    else if (enemy=8){battle_object.p_tau[battle_id]=new_power;}
-    else if (enemy=9){battle_object.p_tyranids[battle_id]=new_power;}
-    else if (enemy=10){battle_object.p_traitors[battle_id]=new_power;}
-    else if (enemy=11){battle_object.p_chaos[battle_id]=new_power;}
-    else if (enemy=13){battle_object.p_necrons[battle_id]=new_power;}
+    if (enemy >= 5){
+        p_data.edit_forces(enemy, new_power)
+    }
 
     if (enemy!=2) and (string_count("cs_meeting_battle",battle_special)=0){
-        part10+=" forces on "+string(battle_loc);
-        if (battle_id=1) then part10+=" I";
-        if (battle_id=2) then part10+=" II";
-        if (battle_id=3) then part10+=" III";
-        if (battle_id=4) then part10+=" IV";
-        if (battle_id=5) then part10+=" V";
+        part10+=$" forces on {p_data.name()}"
         if (new_power == 0){
             part10+=$" were completely wiped out. Previous power: {
                 enemy_power}. Reduction: {power_reduction}.";
@@ -571,14 +554,10 @@ if (defeat == 0 && _reduce_power){
         if (new_power<=0) and (enemy_power>0) then battle_object.p_raided[battle_id]=1;
     }
     if (enemy=2){
-        part10+=" Imperial Guard Forces on "+string(battle_loc);
-        if (battle_id=1) then part10+=" I";
-        if (battle_id=2) then part10+=" II";
-        if (battle_id=3) then part10+=" III";
-        if (battle_id=4) then part10+=" IV";
-        if (battle_id=5) then part10+=" V";
+        part10+=$" Imperial Guard Forces on {p_data.name()}";
         part10+=" were reduced to "+string(battle_object.p_guardsmen[battle_id])+" ("+string(enemy_power)+"-"+string(threat)+")";
-        newline=part10;scr_newtext();
+        newline=part10;
+        scr_newtext();
     }
 
 
@@ -589,7 +568,7 @@ if (defeat == 0 && _reduce_power){
         scr_newtext();
     }
     
-    if (enemy=13) and (battle_object.p_necrons[battle_id]<3) and (awake_tomb_world(battle_object.p_feature[battle_id])== 1){
+    if (enemy == eFACTION.Necrons && p_data.forces[eFACTION.Necrons]<3 && awake_tomb_world(p_data.features) == 1){
     
         // var bombs;bombs=scr_check_equip("Plasma Bomb",battle_loc,battle_id,0);
         // var bombs;bombs=scr_check_equip("Plasma Bomb","","",0);
@@ -602,12 +581,14 @@ if (defeat == 0 && _reduce_power){
             newline="Plasma Bomb used to seal the Necron Tomb.";
             newline_color="yellow";
             scr_newtext();
-			seal_tomb_world(battle_object.p_feature[battle_id])
+			seal_tomb_world(p_data.features)
         }
 
-        if (plasma_bomb<=0){
-            battle_object.p_necrons[battle_id]=3;// newline_color="yellow";
-            if (dropping!=0) then newline="Deep Strike Ineffective; Plasma Bomb required";
+        else if (plasma_bomb<=0){
+            p_data.edit_forces(enemy, 3)
+            if (dropping!=0){
+                newline="Deep Strike Ineffective; Plasma Bomb required";
+            }
             if (dropping=0) then newline="Attack Ineffective; Plasma Bomb required";
             scr_newtext();
         }
@@ -644,14 +625,14 @@ if (defeat == 0 && _reduce_power){
     }*/
 }
 
-if (defeat == 0) and (enemy=9) and (battle_special="tyranid_org"){
+if (defeat == 0) and (enemy==eFACTION.Tyranids) and (battle_special="tyranid_org"){
     // show_message(string(captured_gaunt));
-    if (captured_gaunt=1) then newline=captured_gaunt+" Gaunt organism have been captured.";
-    if (captured_gaunt>1) or (captured_gaunt=0) then newline=captured_gaunt+" Gaunt organisms have been captured.";
+
+    newline = $"{string_plural_count("Gaunt organism", captured_gaunt)} have been captured.";
     scr_newtext();
 
     if (captured_gaunt>0){
-        var why,thatta;why=0;thatta=0;
+        var why=0,thatta=0;
         instance_activate_object(obj_star);
         // with(obj_star){if (name!=obj_ncombat.battle_loc) then instance_deactivate_object(id);}
         // thatta=obj_star;
@@ -664,10 +645,14 @@ if (defeat == 0) and (enemy=9) and (battle_special="tyranid_org"){
     scr_event_log("","Inquisition Mission Completed: A Gaunt organism has been captured for the Inquisition.");
 
     if (captured_gaunt>1){
-        if (instance_exists(obj_turn_end)) then scr_popup("Inquisition Mission Completed","You have captured several Gaunt organisms.  The Inquisitor is pleased with your work, though she notes that only one is needed- the rest are to be purged.  It will be stored until it may be retrieved.  The mission is a success.","inquisition","");
+        if (instance_exists(obj_turn_end)){
+            scr_popup("Inquisition Mission Completed","You have captured several Gaunt organisms.  The Inquisitor is pleased with your work, though she notes that only one is needed- the rest are to be purged.  It will be stored until it may be retrieved.  The mission is a success.","inquisition","");
+        }
     }
     if (captured_gaunt=1){
-        if (instance_exists(obj_turn_end)) then scr_popup("Inquisition Mission Completed","You have captured a Gaunt organism- the Inquisitor is pleased with your work.  The Tyranid will be stored until it may be retrieved.  The mission is a success.","inquisition","");
+        if (instance_exists(obj_turn_end)){
+            scr_popup("Inquisition Mission Completed","You have captured a Gaunt organism- the Inquisitor is pleased with your work.  The Tyranid will be stored until it may be retrieved.  The mission is a success.","inquisition","");
+        }
     }
     instance_deactivate_object(obj_star);
 }
@@ -679,7 +664,7 @@ newline=line_break;
 scr_newtext();
 
 if (((leader)) or ((battle_special="ChaosWarband") and (!obj_controller.faction_defeated[10]))) and (!defeat){
-    var nep;nep=false;
+    var nep=false;
     newline="The enemy Leader has been killed!";newline_color="yellow";scr_newtext();
     newline=line_break;
     scr_newtext();
@@ -713,14 +698,19 @@ if (obj_ini.omophagea){
     if (thirsty>0) then eatme-=(thirsty*6);if (really_thirsty>0) then eatme-=(really_thirsty*15);
 
     if (allies>0){
-        obj_controller.disposition[2]-=choose(1,0,0);
-        obj_controller.disposition[4]-=choose(0,0,1);
-        obj_controller.disposition[5]-=choose(0,0,1);
+        alter_disposition([
+            [eFACTION.Imperium,-choose(1,0,0)],
+            [eFACTION.Inquisition, -choose(0,0,1)],
+            [eFACTION.Ecclesiarchy, -choose(0,0,1)],
+        ]);
     }
-    if (present_inquisitor>0) then obj_controller.disposition[4]-=2;
+    if (present_inquisitor>0){
+        alter_disposition(eFACTION.Inquisition,-4);
+    }
 
-    if (eatme<=25){endline=0;
-        if (thirsty=0) and (really_thirsty=0){
+    if (eatme<=25){
+        endline=0;
+        if (!thirsty && !really_thirsty){
             var ran;ran=choose(1,2);
             newline="One of your marines slowly makes his way towards the fallen enemies, as if in a spell.  Once close enough the helmet is removed and he begins shoveling parts of their carcasses into his mouth.";
             newline="Two marines are sharing a quick discussion, and analysis of the battle, when one of the two suddenly drops down and begins shoveling parts of enemy corpses into his mouth.";
@@ -736,7 +726,7 @@ if (obj_ini.omophagea){
             newline=$"One of your Death Company {roles[6]} blitzes to the fallen enemy lines.  Massive mechanical hands begin to rend and smash at the fallen corpses, trying to squeeze their flesh and blood through the sarcophogi opening.";
         }
 
-        newline+="  Almost at once most of the present "+string(global.chapter_name)+" follow suite, joining in and starting a massive feeding frenzy.  The sight is gruesome to behold.";
+        newline+=$"  Almost at once most of the present {global.chapter_name} follow suit, joining in and starting a massive feeding frenzy.  The sight is gruesome to behold.";
         scr_newtext();
 
 
