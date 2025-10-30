@@ -348,7 +348,6 @@ if (!defeat) and (battle_special == "space_hulk"){
 
     if (enemy == eFACTION.Ork || enemy == eFACTION.Tyranids || enemy == eFACTION.Heretics){
         enemy_power=p_data.add_forces(enemy,-1);
-        battle_object.p_orks[battle_id]-=1;
     }
 
     part10="Space Hulk Exploration at ";
@@ -699,18 +698,19 @@ if (obj_ini.omophagea){
     if (thirsty>0) then eatme-=(thirsty*6);if (really_thirsty>0) then eatme-=(really_thirsty*15);
 
     if (allies>0){
-        alter_disposition[
+        alter_disposition([
             [eFACTION.Imperim,-choose(1,0,0)],
             [eFACTION.Inquisition, -choose(0,0,1)],
             [eFACTION.Ecclesiarchy, -choose(0,0,1)],
-        ]
+        ]);
     }
     if (present_inquisitor>0){
         alter_disposition(eFACTION.Inquisition,-4);
     }
 
-    if (eatme<=25){endline=0;
-        if (thirsty=0) and (really_thirsty=0){
+    if (eatme<=25){
+        endline=0;
+        if (!thirsty && !really_thirsty){
             var ran;ran=choose(1,2);
             newline="One of your marines slowly makes his way towards the fallen enemies, as if in a spell.  Once close enough the helmet is removed and he begins shoveling parts of their carcasses into his mouth.";
             newline="Two marines are sharing a quick discussion, and analysis of the battle, when one of the two suddenly drops down and begins shoveling parts of enemy corpses into his mouth.";
