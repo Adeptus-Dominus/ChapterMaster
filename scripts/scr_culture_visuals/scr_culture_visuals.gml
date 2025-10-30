@@ -1491,11 +1491,14 @@ function fetch_marine_components_to_memory(){
                         sprite_prefetch(_element.overides[$_override_areas[i]]);
                     }
                 }
-                if (struct_exists(_element, "shadows")){
-                    sprite_prefetch(_element.shadows);
-                }
             }
-        }
+            if (struct_exists(_element, "shadows")){
+                sprite_prefetch(_element.shadows);
+            }
+        } catch(_exception) {
+            // Sprite prefetch failure logged but non-fatal
+            show_debug_message($"Sprite prefetch failed for element at index {_index}: {_exception}");
+         }
     });
 }
 

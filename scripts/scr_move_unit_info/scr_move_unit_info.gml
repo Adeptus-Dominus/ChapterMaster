@@ -22,7 +22,7 @@ function scr_move_unit_info(start_company,end_company, start_slot, end_slot, eva
 
 		obj_ini.TTRPG[end_company][end_slot] = variable_clone(obj_ini.TTRPG[start_company][start_slot]);
 		var temp_struct = fetch_unit(end_company, end_slot);
-		if (is_string(temp_struct)){
+		if (is_struct(temp_struct)){
 			temp_struct.company = end_company;
 			temp_struct.marine_number = end_slot;
 		}	else {
