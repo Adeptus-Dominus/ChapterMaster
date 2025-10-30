@@ -726,7 +726,7 @@ if (obj_ini.omophagea){
             newline=$"One of your Death Company {roles[6]} blitzes to the fallen enemy lines.  Massive mechanical hands begin to rend and smash at the fallen corpses, trying to squeeze their flesh and blood through the sarcophogi opening.";
         }
 
-        newline+=$"  Almost at once most of the present {global.chapter_name} follow suite, joining in and starting a massive feeding frenzy.  The sight is gruesome to behold.";
+        newline+=$"  Almost at once most of the present {global.chapter_name} follow suit, joining in and starting a massive feeding frenzy.  The sight is gruesome to behold.";
         scr_newtext();
 
 
