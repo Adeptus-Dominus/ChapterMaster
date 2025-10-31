@@ -518,10 +518,20 @@ player_forge_data = {
 selection_data=false;
 selections = [];
 production_research = {
+	animal : [0,{}],
+
+	metallurgy : [2,{}],
+	mechanisms : [1,{}],
+	chemistry : [1,{}],
+
+	combustion : [1,{}],
+	plastics : [1,{}],
+	mechnchem : [1,{}],
+
     flame : [0,{}],
     bolt : [1,{}],
     plasma : [0,{}],
-    psi : [0,{}],
+    psi : [1,{}],
     melta : [0,{}],
     grav : [0,{}],
     chasis : [0,{}],
@@ -533,15 +543,58 @@ production_research = {
         {
             stealth : [0,{}],
             armour : [0,{}],
-		}
-    ]
+		},
+    ],
 }
+		if (scr_has_disadv("Tech Regression: Late Conventional")) {
+			with(production_research) {
+			plastics = [0,{}];
+			mechnchem = [0,{}];
+			bolt = [0,{}];
+			power_fields = [0,{}];
+			}
+		}
+		if (scr_has_disadv("Tech Regression: Medieval")) {
+			with(production_research) {
+			metallurgy = [1,{}];
+			combustion = [0,{}];
+			plastics = [0,{}];
+			mechnchem = [0,{}];
+			bolt = [0,{}];
+			power_fields = [0,{}];
+			}
+		}
+		if (scr_has_disadv("Tech Regression: Stone Age")) {
+			with(production_research) {
+			metallurgy = [0,{}];
+			mechanisms = [0,{}];
+			chemistry = [0,{}];
+			combustion = [0,{}];
+			plastics = [0,{}];
+			mechnchem = [0,{}];
+			bolt = [0,{}];
+			psi = [0,{}];
+			power_fields = [0,{}];
+			}
+		}
 
 production_research_pathways ={
+	// 
+	// Tribal Tech - Animal Husbandry, Rune Analysis
+	animal : [["Animal Husbandry"],{}],
+    psi : [["Rune Analysis", "Psionic Resonance Valves"],{}],
+	// Early Conventional Tech - Early Metallurgy, Early Mechanisms, Early Chemistry
+	metallurgy : [["Early Metallurgy", "Advanced Metallurgy"],{}],
+	mechanisms : [["Early Mechanisms"],{}],
+	chemistry : [["Early Chemistry"],{}],
+	// Late Conventional Tech - Combustion, Advanced Metallurgy, Advanced Mechanisms and Chemistry, Plastics
+	combustion : [["Combustion"],{}],
+	plastics : [["Plastics"],{}],
+	mechnchem : [["Advanced Mechanisms and Chemistry"],{}],
+	// Techs of 40k
     flame : [["Promethium Tank Brazing"],{}],
     bolt : [["Hardened Barrel Boring", "Projectile Propellant Purification"],{}],
     plasma : [[ "Plasma Coil Magnetization"],{}],
-    psi : [["Psionic Resonance Valves"],{}],
     melta : [["Atomic Chamber Construction"],{}],
     grav : [["Gravitic Reaction Principle"],{}],
     chasis : [[],{}],
