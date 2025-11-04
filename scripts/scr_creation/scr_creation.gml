@@ -100,13 +100,13 @@ function bulk_selection_buttons_setup(){
             cords : [500, 322],
         },
         {
-            text : $"Pauldron 1: {col[right_pauldron]}",
+            text : $"Pauldron 1: {col[left_pauldron]}",
             tooltip:"First Pauldron",
             tooltip2:"The color of your Astartes' left Pauldron.  Normally this Pauldron displays their rank and designation.",
             cords : [500, 357],
         },
         {
-            text : $"Pauldron 2: {col[left_pauldron]}",
+            text : $"Pauldron 2: {col[right_pauldron]}",
             tooltip:"Second Pauldron",
             tooltip2:"The color of your Astartes' right Pauldron.  Normally this Pauldron contains the Chapter Insignia.",
             cords : [500, 392],
