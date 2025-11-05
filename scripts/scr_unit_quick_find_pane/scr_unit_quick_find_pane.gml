@@ -69,12 +69,15 @@ function UnitQuickFindPanel() constructor{
 	    		} else if (unit_location[0]==location_types.ship){
 	    			if (_unit.ship_location<_ship_count && _unit.ship_location>-1){
 	    				obj_ini.ship_carrying[_unit.ship_location]+=_unit.get_unit_size();
+						if (_unit.ship_location == 3) {
+							show_debug_message($"ship '{_unit.ship_location}' now has '{obj_ini.ship_carrying[_unit.ship_location]}' cargo in scr_unit_quick_find_pane.gml");
+						 }
 	    			}
 	    		}
 	    	}
 	    	try{
 
-		    	for (var u=1;u<array_length(obj_ini.veh_race);u++){
+		    	for (var u=0;u<array_length(obj_ini.veh_race[co]);u++){
 		    		if (obj_ini.veh_race[co][u]==0) then continue;
 		    		if (obj_ini.veh_wid[co][u]>0){
 		    			unit_location = obj_ini.veh_loc[co][u];
