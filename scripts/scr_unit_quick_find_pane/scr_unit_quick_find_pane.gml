@@ -69,9 +69,6 @@ function UnitQuickFindPanel() constructor{
 	    		} else if (unit_location[0]==location_types.ship){
 	    			if (_unit.ship_location<_ship_count && _unit.ship_location>-1){
 	    				obj_ini.ship_carrying[_unit.ship_location]+=_unit.get_unit_size();
-						if (_unit.ship_location == 3) {
-							show_debug_message($"ship '{_unit.ship_location}' now has '{obj_ini.ship_carrying[_unit.ship_location]}' cargo in scr_unit_quick_find_pane.gml");
-						 }
 	    			}
 	    		}
 	    	}
