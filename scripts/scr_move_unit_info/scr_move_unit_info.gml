@@ -20,12 +20,19 @@ function scr_move_unit_info(start_company,end_company, start_slot, end_slot, eva
 		obj_ini.age[end_company][end_slot]=obj_ini.age[start_company][start_slot];
 		obj_ini.mobi[end_company][end_slot]=obj_ini.mobi[start_company][start_slot];
 
-		obj_ini.TTRPG[end_company][end_slot] = variable_clone(obj_ini.TTRPG[start_company][start_slot]);
-		var temp_struct = fetch_unit(end_company, end_slot);
-		if (is_struct(temp_struct)){
-			temp_struct.company = end_company;
-			temp_struct.marine_number = end_slot;
-		}	else {
+		var _temp_struct = obj_ini.TTRPG[end_company][end_slot];
+
+		obj_ini.TTRPG[end_company][end_slot] = obj_ini.TTRPG[start_company][start_slot];
+
+		obj_ini.TTRPG[start_company][start_slot] = _temp_struct;
+		_temp_struct.company = start_company;
+		_temp_struct.marine_number = start_slot;
+
+		var _temp_struct = fetch_unit([end_company, end_slot]);
+		if (is_struct(_temp_struct)){
+			_temp_struct.company = end_company;
+			_temp_struct.marine_number = end_slot;
+		} else {
 			obj_ini.TTRPG[end_company][end_slot] = new TTRPG_stats("chapter", end_company,end_slot ,"blank");
 		}
 
