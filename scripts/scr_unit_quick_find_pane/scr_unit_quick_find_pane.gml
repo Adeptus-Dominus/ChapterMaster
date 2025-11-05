@@ -74,7 +74,7 @@ function UnitQuickFindPanel() constructor{
 	    	}
 	    	try{
 
-		    	for (var u=1;u<array_length(obj_ini.veh_race);u++){
+		    	for (var u=0;u<array_length(obj_ini.veh_race[co]);u++){
 		    		if (obj_ini.veh_race[co][u]==0) then continue;
 		    		if (obj_ini.veh_wid[co][u]>0){
 		    			unit_location = obj_ini.veh_loc[co][u];
