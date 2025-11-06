@@ -224,7 +224,7 @@ function defualt_target_movement(){
         target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction+90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
     }
 
-    if (y>target.y && target_distance>closing_distance) ){
+    if ((y>target.y && target_distance>closing_distance) ){
         direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);
     } else if (y<target.y && target_distance>closing_distance){
         direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);
