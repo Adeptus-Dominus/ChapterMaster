@@ -174,13 +174,13 @@ wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 	wen8=choose(1,2,3);
 }
 //Damaged Dreadnought
-else if (ruins_type=7){
-	wep1=("Contemptor Dreadnought");
-	wen1=1
+else if (ruins_type==7){
+	wep1="Contemptor Dreadnought";
+	wen1=1;
 	wep2=choose("Twin-linked Volkite Culverins","Heavy Conversion Beamer","Kheres Assault Cannon");
-	wen2=1
-	wep3=("Contemptor CCW")
-	wen3=3
+	wen2=1;
+	wep3="Contemptor CCW";
+	wen3=3;
 }
 
 
