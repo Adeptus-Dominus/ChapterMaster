@@ -200,21 +200,9 @@ else if (ruins_type==7){
 	    pop.text="My lord, your brothers have found sealed chamber in these ruins. It bears symbols of one of the ancient legions. After your tech-marines managed to open this chamber, they've found a number of relics that can be brought back to service. They've found:  "+string(wen1)+"x "+string(wep1)+", "+string(wen2)+"x "+string(wep2)+","+string(wen3)+"x "+string(wep3)+","+string(wen4)+"x "+string(wep4)+","+string(wen5)+"x "+string(wep5)+","+string(wen6)+"x "+string(wep6)+","+string(wen7)+"x "+string(wep7)+", and "+string(wen8)+"x "+string(wep8)+" have been added to the Armamentarium.";
 	}
 	else if (loot="gene_seed"){// Requisition
-	    var gene,pop;gene=floor(random_range(20,40))+1;
-	    pop=instance_create(0,0,obj_popup);
-	    pop.image="geneseed_lab";
-	    pop.title="Ancient Ruins: Gene-seed";
-	    pop.text="My lord, your battle brothers have located a hidden, fortified laboratory within the ruins.  Contained are a number of bio-vaults with astartes gene-seed; "+string(gene)+" in number.  Your marines are not able to determine the integrity or origin.";
-	    var options = [
-		    "Add the gene-seed to chapter vaults.", 
-		    "Salvage the laboratory for requisition.",
-		    "Leave the laboratory as is.",
-	    ]
-	    pop.add_option(options);
-	    pop.estimate=gene;
+		ancient_gene_lab_ruins_loot();
 	}
 	else if (loot="bunker"){// Bunker
-	    var gene=floor(random_range(20,40))+1,pop=instance_create(0,0,obj_popup);;
 	    pop.image="ruins_bunker";
 	    pop.title="Ancient Ruins: Bunker Network";
 	    pop.text="Your battle brothers have found several entrances into an ancient bunker network.  Its location has been handed over to the PDF.  The planet's defense rating has increased to ";
@@ -224,19 +212,7 @@ else if (ruins_type==7){
 	    star_system.p_fortified[planet]=min(star_system.p_fortified[planet]+1,5);
 	}
 	else if (loot="fortress"){// Fortress
-	    var pop,gene=floor(random_range(20,40))+1;
-	    pop=instance_create(0,0,obj_popup);
-	    pop.image="ruins_fort";
-	    pop.title="Ancient Ruins: Fortress";
-	    pop.planet = planet;
-	    pop.feature = _ruins;
-	    pop.star_system = star_system;
-	    pop.text="Praise the Emperor! We have found a massive, ancient fortress in needs of repairs. The gun batteries are rusted, and the walls are covered in moss with huge hole in it. Such a pity that such a majestic building is now a pale shadow of its former glory.  It is possible to repair the structure.  What is thy will?";
-	    var options = [
-		    "Repair the fortress to boost defenses.  (1000 Req)", 
-		    "Salvage raw materials from the fortress."
-	    ]
-	    pop.add_option(options);
+		ancient_fortress_ruins_loot()
 	}
 	else if (loot="starship"){// Starship
 	    var pop=instance_create(0,0,obj_popup);
@@ -253,3 +229,103 @@ else if (ruins_type==7){
 
 	}
 }
+
+function ancient_gene_lab_ruins_loot(){
+    var _text = $"My lord, your battle brothers have located a hidden, fortified laboratory within the ruins.  Contained are a number of bio-vaults with astartes gene-seed; {gene} in number.  Your marines are not able to determine the integrity or origin.";
+
+    var _pop_data = {
+    	gene_found : gene,
+    	options : [
+		{
+			str1: "Add the gene-seed to chapter vaults.",
+			method: function() {
+				image = "";
+				var _estimate = irandom_range(3,15)
+				text = string(_estimate) + " gene-seed has been added to the chapter vaults.";
+				reset_popup_options();
+				obj_controller.gene_seed += _estimate;
+				//scr_play_sound(snd_success);
+				with (obj_ground_mission) {
+					instance_destroy();
+				}
+			},
+		},
+		{
+			str1: "Salvage the laboratory for requisition.",
+			method: function() {
+				var _req = floor(random_range(200, 500)) + 1;
+				image = "";
+				text = "Technological components have been salvaged, granting " + string(_req) + " requisition.";
+				reset_popup_options();
+				obj_controller.requisition += _req;
+				//scr_play_sound(snd_salvage);
+				with (obj_ground_mission) {
+					instance_destroy();
+				}
+			},
+		},
+		{
+			str1: "Leave the laboratory as is.",
+			method: function() {
+				with (obj_ground_mission) {
+					instance_destroy();
+				}
+				//scr_play_sound(snd_cancel);
+				popup_default_close();
+			},
+		},
+	],
+    }
+    scr_popup(
+    	"Ancient Ruins: Gene-seed",
+    	_text,
+    	"geneseed_lab",
+    	_pop_data,
+    );
+
+}
+
+function ancient_fortress_ruins_loot(star_system, planet, _ruins){
+	var _pop_data = {};
+    _pop_data.planet = planet;
+    _pop_data.feature = _ruins;
+    _pop_data.star = star_system;
+    _pop_data.options = [
+	    {
+	    	str1 : "Repair the fortress to boost defenses.  (1000 Req)",
+	    	method : function(){
+	    		var _star = pop_data.star;
+	    		var _planet = pop_data.planet;
+				obj_controller.requisition -= 1000;
+				text = "Resources have been spent on the planet to restore the fortress.  The planet's defense rating has increased to 5 (";
+				reset_popup_options();
+				text += string(_star.p_fortified[_planet]) + "+";
+				text += string(5 - _star.p_fortified[_planet]) + ")";
+				_star.p_fortified[_planet] = max(_star.p_fortified[_planet], 5);
+				cooldown = 15;
+				exit;
+	    	},
+	    	requires : {
+	    		req : 1000,
+	    	}
+	    },
+	    {
+	    	str1 : "Salvage raw materials from the fortress.",
+	    	method : function(){
+				var req = irandom_range(200, 500);
+				image = "";
+				text = $"Much of the fortress is demolished in order to salvage adamantium and raw materials.  The opration has yielded {req} requisition.";
+				reset_popup_options();
+				obj_controller.requisition += req;
+				cooldown = 15;
+				exit;
+	    	}
+	    }
+    ]
+    scr_popup(
+    	"Ancient Ruins: Fortress",
+    	"Praise the Emperor! We have found a massive, ancient fortress in needs of repairs. The gun batteries are rusted, and the walls are covered in moss with huge hole in it. Such a pity that such a majestic building is now a pale shadow of its former glory.  It is possible to repair the structure.  What is thy will?",
+    	"ruins_fort",
+    	_pop_data
+    );
+};

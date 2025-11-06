@@ -32,8 +32,8 @@ function new_colony_fleet (doner_star, doner_planet, target, target_planet, miss
 
     new_colonise_fleet.cargo_data.colonize = new_cargo; 
 
-    new_colonise_fleet.action_x=target.x;
-    new_colonise_fleet.action_y=target.y;
+    new_colonise_fleet.action_x = target.x;
+    new_colonise_fleet.action_y = target.y;
     new_colonise_fleet.target = target;
     with (new_colonise_fleet){
         set_fleet_movement();
@@ -54,8 +54,29 @@ function fleet_has_cargo(desired_cargo, fleet="none"){
     }
 }
 
+
+function fleet_add_cargo(new_cargo,data,overwrite = false,fleet = "none"){
+    if (fleet == "none"){
+        var _add = true;
+        if (fleet_has_cargo(new_cargo) && !overwrite){
+            _add = false;
+        }
+
+        if (_add){
+            cargo_data[$ new_cargo] = data;
+        }
+    } else {
+        with (fleet){
+            fleet_add_cargo(new_cargo,data,overwrite);
+        }
+    }
+}
+
+
+
+//TODO integrate this into PlanetData constructor
 function deploy_colonisers(star){
-    var lag=1,r=0;
+    var lag=1;
 
     var data = cargo_data.colonize;
     if (data.target_planet>0){
@@ -77,10 +98,13 @@ function deploy_colonisers(star){
         }
         scr_alert("green","duhuhuhu",alert_string,star.x,star.y);
     } else {
-        for (r=1;r<=star.planets;r++){
-            if (data.mission == "new_colony") && (star.p_population[r]<=0) then continue;
+        for (var r=1;r<=star.planets;r++){
+            if (data.mission == "new_colony" && star.p_population[r]<=0){
+                continue;
+            }
+            //TODO sort out some of the issues of this regarding difference with large and small planet populations
             if (star.p_type[r]!="") and (star.p_type[r]!="Dead") {
-                if (lag=1){
+                if (lag == 1){
                     star.p_population[r] += data.colonists;
                     star.p_large[r]=0;
                     guardsmen=0;
@@ -95,7 +119,6 @@ function deploy_colonisers(star){
                 
                 star.dispo[r]=min(obj_ini.imperium_disposition,obj_controller.disposition[2])+irandom_range(-4,4);
                 if (star.name=obj_ini.home_name) and (star.p_type[r]=obj_ini.home_type) and (obj_controller.homeworld_rule!=1) then star.dispo[r]=-5000;
-
             }
         }  
     }

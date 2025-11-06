@@ -329,6 +329,7 @@ function set_up_visual_overides(){
             shader_set(right_left_swap_shader);
 
             _flip_mod.sprite = return_sprite_mirrored(_mod.sprite, false);
+            //sprite_set_offset(_flip_mod.sprite,sprite_get_xoffset(_mod.sprite),sprite_get_yoffset(_mod.sprite));
 
 
              if (struct_exists(_flip_mod, "subcomponents")){
@@ -1427,25 +1428,77 @@ global.modular_drawing_items = [
         shadows : spr_mk7_right_arm_shadow,
         body_types : [0], 
         flip : true,
-    }
+    },
+    {
+        position : "armour",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_complex,
+        shadows : spr_tartaros_shadows,
+        body_types : [2], 
+    },
+    {
+        position : "right_arm",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_right_arm,
+        shadows : spr_tartaros_right_arm_shadows,
+        body_types : [2], 
+        flip : true,
+    },
+    {
+        position : "gorget",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_gorget,
+        shadows : spr_tartaros_gorget_shadows,
+        body_types : [2], 
+    },
+    {
+        position : "head",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_head_variants,
+        shadows : spr_tartaros_head_shadows,
+        body_types : [2], 
+    },
+    {
+        position : "forehead",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_forehead_variants,
+        shadows : spr_tartaros_forehead_shadows,
+        body_types : [2], 
+    },
+    {
+        position : "right_leg",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_right_leg,
+        shadows : spr_tartaros_right_leg_shadows,
+        body_types : [2], 
+        flip : true,
+        subcomponents : [
+            [spr_blank, spr_blank,spr_blank,spr_tartaros_leg_rivets],
+        ],
+    },
 
 ];
 
 
 function fetch_marine_components_to_memory(){
     array_foreach(global.modular_drawing_items, function(_element, _index){
-        if (_element.position != "weapon" && sprite_exists((_element.sprite))){
-            sprite_prefetch(_element.sprite);
-            if (struct_exists(_element, "overides")){
-                var _override_areas = struct_get_names(_element.overides);
-                for (var i = 0;i<array_length(_override_areas);i++){
-                    sprite_prefetch(_element.overides[$_override_areas[i]]);
+        try{
+            if (_element.position != "weapon" && sprite_exists((_element.sprite))){
+                sprite_prefetch(_element.sprite);
+                if (struct_exists(_element, "overides")){
+                    var _override_areas = struct_get_names(_element.overides);
+                    for (var i = 0;i<array_length(_override_areas);i++){
+                        sprite_prefetch(_element.overides[$_override_areas[i]]);
+                    }
                 }
             }
             if (struct_exists(_element, "shadows")){
                 sprite_prefetch(_element.shadows);
             }
-        }
+        } catch(_exception) {
+            // Sprite prefetch failure logged but non-fatal
+            show_debug_message($"Sprite prefetch failed for element at index {_index}: {_exception}");
+         }
     });
 }
 

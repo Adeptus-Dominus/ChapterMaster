@@ -103,5 +103,16 @@ function get_shader_array(wanted_colour){
     return _cols;
 }
 
+function get_colour_name (wanted_colour){
+    var _instance = instance_exists(obj_controller) ? obj_controller : obj_creation;
+    var _cols = ""
+    with (_instance){
+        _cols = col[clamp(wanted_colour,0,array_length(col)-1)];
+    }
+
+    return _cols;    
+}
+
+
 
 

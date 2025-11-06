@@ -64,7 +64,9 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
 						break;
 					}
 				}
-				if (_quality == "worst") return "no_item"; // fallback, unchanged
+				if (_quality == "worst"){
+					return "no_item"; // fallback, unchanged
+				}
 				break;
 		
 			case "best":
@@ -74,7 +76,9 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
 						break;
 					}
 				}
-				if (_quality == "best") return "no_item"; // fallback, unchanged
+				if (_quality == "best"){
+					return "no_item"; // fallback, unchanged
+				}
 				break;
 		}
 
@@ -96,4 +100,52 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
 
 		return _quality;
 	}
+}
+
+
+function EquipmentTracker() constructor {
+	static add_item = function(item, quality = "standard", owner = -1){
+		array_push(items,{item,quality,owner});
+		if (!struct_exists(item_types, item)){
+			item_types[$ item] = 0;
+		}
+
+		item_types[$ item]++;
+	}
+
+	static collate_types = function(){
+		item_types = {};
+		for (var i=0;i<array_length(items);i++){
+			var _item = items[i].item;
+			if (!struct_exists(item_types, _item)){
+				item_types[$ _item] = 0;
+			}
+
+			item_types[$ _item]++;			
+		}
+	}
+
+	static item_count = function(){
+		return array_length(items)
+	}
+
+	static item_description_string = function(){
+		var _item_names = struct_get_names(item_types);
+		var _string = ""
+		for (var i=0;i<array_length(_item_names);i++){
+			_string += $"{item_types[$ _item_names[i]]}" + string_plural(_item_names[i], item_types[$ _item_names[i]]) + ", ";
+		}
+    // Trim trailing comma and space
+    if (string_length(_string) >= 2) {
+        _string = string_copy(_string, 1, string_length(_string) - 2);
+    }
+		return _string;
+	}
+
+	static has_item = function(item){
+		return struct_exists(item_types, item) ? item_types[$item] : 0;
+	}
+
+	items = [];
+	item_types = {};
 }

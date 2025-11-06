@@ -3,11 +3,10 @@
 
 function scr_get_planet_with_feature(star, feature){
 	for(var i = 1; i <= star.planets; i++){
-		if(planet_feature_bool(star.p_feature[i], feature) == 1)
-			{
-				return i;
-			}
+		if (planet_feature_bool(star.p_feature[i], feature)){
+			return i;
 		}
+	}
 	return -1;
 }
 

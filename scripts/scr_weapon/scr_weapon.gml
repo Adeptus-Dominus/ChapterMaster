@@ -428,6 +428,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 1,
 		"tags": ["banner"],
+		"recovery_chance" : 99,
 	},
 	"Eviscerator": {
 		"abbreviation": "Evisc",

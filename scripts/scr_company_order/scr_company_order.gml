@@ -35,7 +35,7 @@ function temp_marine_variables(co, unit_num){
 		array_push(temp_mobi,mobi[co][unit_num]);
 		array_push(temp_spe,spe[co][unit_num]);
 		array_push(temp_god,god[co][unit_num]);
-		array_push(temp_struct,jsonify_marine_struct(co,unit_num));
+		array_push(temp_struct,variable_clone(TTRPG[co][unit_num]));
 		scr_wipe_unit(co,unit_num);
 }
 function sort_all_companies(){
@@ -336,23 +336,22 @@ function scr_company_order(company) {
 
 	// Return here
 	for (i=0;i<array_length(temp_name);i++){
-	        race[co][i]=temp_race[i];
-	        name[co][i]=temp_name[i];
-	        role[co][i]=temp_role[i];
-	        wep1[co][i]=temp_wep1[i];
-	        wep2[co][i]=temp_wep2[i];
-	        armour[co][i]=temp_armour[i];
-	        gear[co][i]=temp_gear[i];
-	        mobi[co][i]=temp_mobi[i];
-	        age[co][i]=temp_age[i];
-	        spe[co][i]=temp_spe[i];
-	        god[co][i]=temp_god[i];
-			unit = fetch_unit([co, i]);
-			unit.load_json_data(json_parse(temp_struct[i]))
-			unit.company = co;
-			unit.marine_number = i;
-			unit.movement_after_math();
-			delete temp_struct[i];
+        race[co][i]=temp_race[i];
+        name[co][i]=temp_name[i];
+        role[co][i]=temp_role[i];
+        wep1[co][i]=temp_wep1[i];
+        wep2[co][i]=temp_wep2[i];
+        armour[co][i]=temp_armour[i];
+        gear[co][i]=temp_gear[i];
+        mobi[co][i]=temp_mobi[i];
+        age[co][i]=temp_age[i];
+        spe[co][i]=temp_spe[i];
+        god[co][i]=temp_god[i];
+		TTRPG[co][i] = temp_struct[i];
+		var unit = TTRPG[co][i];
+		unit.company = co;
+		unit.marine_number = i;
+		unit.movement_after_math();
 	}
 /*	i=0;repeat(300){i+=1;
 	    if (role[co][i]="Death Company"){
