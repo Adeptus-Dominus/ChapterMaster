@@ -22,7 +22,7 @@ function scr_vehicle_order(company_number) {
     var temp_race, temp_loc, temp_name, temp_role, temp_wep1, temp_lid, temp_wid, temp_wep2, temp_wep3, temp_upgrade, temp_acc, temp_hp, temp_chaos, temp_uid;
 
     // init arrays
-    for (var i = 0; i < array_length(obj_ini.TTRPG[company_number]); i++) { 
+    for (var i = 0; i < array_length(obj_ini.veh_role[company_number]); i++) { 
         temp_race[company_number][i] = 0;
         temp_loc[company_number][i] = "";
         temp_name[company_number][i] = "";
