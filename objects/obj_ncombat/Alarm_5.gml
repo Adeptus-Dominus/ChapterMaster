@@ -13,7 +13,7 @@ if (turn_count >= 50){
     part1 = "Your forces make a fighting retreat \n"
 }
 
-p_data = new PlanetData(battle_object, battle_id);
+p_data = new PlanetData(battle_id, battle_object);
 // check for wounded marines here to finish off, if defeated defending
 var roles = obj_ini.role[100];
 var ground_mission = (instance_exists(obj_ground_mission));
