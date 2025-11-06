@@ -401,7 +401,7 @@ function scr_fleet_advisor(){
             }
             draw_text_ext(xx + 200, yy + 450, $"Tech Fulfillment\n{_ship.tech_fulfilment}/{_ship.minimum_tech_requirements}",-1, 130);
             if (scr_hit(xx + 200, yy + 440, xx + 330, yy + 490)){
-                tooltip_draw("Ships without a minimum amount of technical capabilities onboard suffer greatly in combat situations and are prone to malfunctions, weapons jams, slower reload times and a range of other issues. Make sure ships have a contingent of techmarines or marines with high enough technical knowledge to fulfil a ships needs");
+                tooltip_draw("Ships without a minimum amount of technical capabilities onboard suffer greatly in combat situations and are prone to malfunctions, weapons jams, slower reload times and a range of other issues. Make sure ships have a contingent of techmarines or marines with high enough technical knowledge to fulfil a ships needs and calm their machine spirits");
             }
             var _view_button = fleet_temps.tech_fulfilment_view;
             _view_button.x1 = 335;

@@ -141,7 +141,7 @@ function inquisitor_inspection_structure() constructor {
             if (pidx >= star.planets) { continue; }
             if (!is_array(star.p_upgrades[pidx]) || array_length(star.p_upgrades[pidx]) == 0) { continue; }
 
-            var base_search = search_planet_features(star.p_upgrades[pidx], P_features.Secret_Base);
+            var base_search = search_planet_features(star.p_upgrades[pidx], P_features.SecretBase);
             if (array_length(base_search) > 0) {
                 any_found = true;
                 var player_base = star.p_upgrades[pidx][base_search[0]];
@@ -239,7 +239,7 @@ function inquisitor_inspection_structure() constructor {
             if (pidx >= star.planets) { continue; }
             if (!is_array(star.p_upgrades[pidx]) || array_length(star.p_upgrades[pidx]) == 0) { continue; }
 
-            var vault_search = search_planet_features(star.p_upgrades[pidx], P_features.Gene_Vault);
+            var vault_search = search_planet_features(star.p_upgrades[pidx], P_features.GeneVault);
             if (array_length(vault_search) > 0) {
                 var gene_vault = star.p_upgrades[pidx][vault_search[0]];
                 gene_vault.inquis_hidden = 0;

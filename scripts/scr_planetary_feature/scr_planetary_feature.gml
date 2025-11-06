@@ -71,7 +71,7 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 		planet_display = "Dormant Necron Tomb";
 		break;
 
-	case P_features.Secret_Base:
+	case P_features.SecretBase:
 		base_type = base_types.Lair;
 		inquis_hidden =1;
 		planet_display = "Hidden Secret Base";
@@ -618,7 +618,7 @@ function planet_selection_action(){
 /// @mixin PlanetData
 function check_for_stc_grab_mission(){
     // STC Grab
-    if (has_feature(P_features.STC_Fragment)){
+    if (has_feature(P_features.STCFragment)){
         var _techs=0,_mech_techs = 0;
         var _units = obj_controller.display_unit;
         for (var frag=0; frag < array_length(_units); frag++){
@@ -1000,7 +1000,7 @@ function remove_stc_from_planet(){
 
 	with(obj_star_select){instance_destroy();}
 	with(obj_fleet_select){instance_destroy();}
-	pdata.delete_feature(P_features.STC_Fragment);
+	pdata.delete_feature(P_features.STCFragment);
 	scr_add_stc_fragment();// STC here
 
 
@@ -1048,7 +1048,7 @@ function send_stc_to_adeptus_mech(){
 	with (obj_ground_mission){
 	var _target_planet;
 	_target_planet = instance_nearest(x, y, obj_star);
-	pdata.delete_feature(P_features.STC_Fragment);
+	pdata.delete_feature(P_features.STCFragment);
 
 	scr_return_ship(pdata.system.name, self, pdata.planet);
 

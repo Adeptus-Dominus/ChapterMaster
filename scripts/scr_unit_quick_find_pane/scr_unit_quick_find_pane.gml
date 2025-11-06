@@ -63,7 +63,8 @@ function UnitQuickFindPanel() constructor{
 			}
 		} else if (unit_location[0]==location_types.ship){
 			if (unit.ship_location<ship_count && unit.ship_location>-1){
-				obj_ini.ship_carrying[unit.ship_location]+=unit.get_unit_size();
+				var _ship = fetch_ship(unit.ship_location);
+				_ship.carrying += unit.get_unit_size();
 			}
 		}
 	}
@@ -90,7 +91,8 @@ function UnitQuickFindPanel() constructor{
 				garrison_log[$ unit_location].vehicles++;
 			}
 		} else if (obj_ini.veh_lid[co][u]>-1){
-			obj_ini.ship_carrying[obj_ini.veh_lid[co][u]]+=scr_unit_size("",obj_ini.veh_role[co][u],true);
+			var _ship = fetch_ship(obj_ini.veh_lid[co][u]);
+			_ship.carrying += scr_unit_size("",obj_ini.veh_role[co][u],true);
 		}
 	}
 

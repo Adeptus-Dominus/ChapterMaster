@@ -225,7 +225,7 @@ function scr_explore_ruins() {
 
 /// @mixin PlanetData
 function scr_check_for_ruins_exploration(){
-	var _ruins_list =  get_features(P_features.Ancient_Ruins);
+	var _ruins_list =  get_features(P_features.AncientRuins);
 	var _explore_ruins=0;
     if (array_length(_ruins_list) > 0){
 		for (var _ruin = 0; _ruin < array_length(_ruins_list); _ruin++){

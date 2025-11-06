@@ -52,7 +52,7 @@ function scr_inquisition_mission(event, forced_mission = -1){
         for(var s = 0, _len =  array_length(all_stars); s <_len; s++){
             var _star = all_stars[s];
 
-            if (scr_star_has_planet_with_feature(_star, P_features.Necron_Tomb) && !awake_necron_star(_star.id)){
+            if (scr_star_has_planet_with_feature(_star, P_features.NecronTomb) && !awake_necron_star(_star.id)){
                 array_push(necron_tomb_worlds, _star);
                 found_sleeping_necrons = true;
             }
@@ -198,11 +198,11 @@ function mission_inquisition_tomb_world(tomb_worlds){
         _star = tomb_worlds;
     }
 
-    var planet = scr_get_planet_with_feature(_star, P_features.Necron_Tomb);
+    var planet = scr_get_planet_with_feature(_star, P_features.NecronTomb);
 
     if (planet == -1){
         planet = irandom_range(1,_star.planets);
-        array_push(_star.p_feature[planet],new NewPlanetFeature(P_features.Necron_Tomb));
+        array_push(_star.p_feature[planet],new NewPlanetFeature(P_features.NecronTomb));
     }
     
     var eta = scr_mission_eta(_star.x, _star.y,1)
@@ -696,7 +696,7 @@ function mission_investigate_planet(){
 		var stars = scr_get_stars();
 		var _valid_stars = array_filter_ext(stars,
 		function(_star,index){			
-			if (scr_star_has_planet_with_feature(_star, P_features.Ancient_Ruins)){
+			if (scr_star_has_planet_with_feature(_star, P_features.AncientRuins)){
 				var fleet = instance_nearest(_star.x,_star.y,obj_p_fleet);
 				if (fleet == undefined || point_distance(_star.x,_star.y,fleet.x,fleet.y)>=160){
 					return true;
@@ -712,7 +712,7 @@ function mission_investigate_planet(){
 		}
 	    	
 		var _star = array_random_element(_valid_stars);
-		var planet = scr_get_planet_with_feature(_star, P_features.Ancient_Ruins);
+		var planet = scr_get_planet_with_feature(_star, P_features.AncientRuins);
 		if (planet == -1){
 			log_error("RE: Investigate Planet, couldn't pick a planet");
 			exit;
@@ -844,7 +844,7 @@ function necron_tomb_mission_sequence(){
             mission_star = star_by_name(pop_data.loc);
             remove_planet_problem(planet, "necron", mission_star);
             seal_tomb_world(mission_star.p_feature[planet]);
-            // mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.Necron_Tomb)[0]].sealed = 1;
+            // mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.NecronTomb)[0]].sealed = 1;
 
             scr_event_log("", $"Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
             scr_gov_disp(mission_star.name, planet, irandom_range(3, 7));
