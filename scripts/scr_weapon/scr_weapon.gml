@@ -1263,13 +1263,13 @@ global.weapons = {
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	"Kheres Assault Cannon": {
-		"abbreviation": "AssCann",
+		"abbreviation": "KhrAssCnn",
 		"attack": {
 			"standard": 280,
 			"master_crafted": 300,
 			"artifact": 320
 		},
-		"description": "AForged in the forges of Mars and carried into battle by the mightiest of the Emperor’s warriors, the Kheres Assault Cannon is a weapon of devastating reputation. Its rotary barrels roar with unceasing fury, unleashing a deluge of mass-reactive shells that tear through flesh, ceramite, and adamantium alike..",
+		"description": "Forged in the forges of Mars and carried into battle by the mightiest of the Emperor's warriors, the Kheres Assault Cannon is a weapon of devastating reputation. Its rotary barrels roar with unceasing fury, unleashing a deluge of mass-reactive shells that tear through flesh, ceramite, and adamantium alike.",
 		"melee_hands": 2.1,
 		"ranged_hands": 3,
 		"ammo": 5,
