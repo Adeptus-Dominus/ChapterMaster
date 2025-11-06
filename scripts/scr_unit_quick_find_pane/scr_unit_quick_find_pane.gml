@@ -3,6 +3,7 @@
 function UnitQuickFindPanel() constructor{
 	main_panel = new DataSlate();
 	garrison_log = {};
+	ship_count = 0;
 	tab_buttons = {
 	    "fleets":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
 	    "garrisons":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
@@ -18,7 +19,7 @@ function UnitQuickFindPanel() constructor{
 		return struct_exists(garrison_log, name);
 	}
 
-	static player_force_stars=function(){
+	static player_force_stars = function(){
 		var _names = struct_get_names(garrison_log);
 		var _stars = [];
 		for (var i=0;i<array_length(_names);i++){
@@ -31,78 +32,96 @@ function UnitQuickFindPanel() constructor{
 		return _stars;
 	}
 
+	static add_unit_to_garrison_log = function(_unit,unit_location){
+		if (!struct_exists(garrison_log, unit_location[2])){
+			garrison_log[$ unit_location[2]] = {
+				units:[_unit],
+				vehicles:0, 
+				garrison:false, 
+				healers:0, 
+				techies:0
+			}
+		} else {
+			array_push(garrison_log[$ unit_location[2]].units, _unit);
+		}
+	}
+
+	static evaluate_unit_for_garrison_log = function(unit){
+
+		var unit_location, group;
+
+		if (unit.name() == "" || !unit.controllable()) then return;
+		unit_location = unit.marine_location();
+		if (unit_location[0]==location_types.planet && unit_location[2] != ""){
+
+			add_unit_to_garrison_log(unit,unit_location);
+			group = garrison_log[$ unit_location[2]];
+			if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES)){
+				group.healers++;
+			} else if (unit.IsSpecialist(SPECIALISTS_TECHS)){
+				group.techies++;
+			}
+		} else if (unit_location[0]==location_types.ship){
+			if (unit.ship_location<ship_count && unit.ship_location>-1){
+				obj_ini.ship_carrying[unit.ship_location]+=unit.get_unit_size();
+			}
+		}
+	}
+
+	static evaluate_vehicle_for_garrison_log = function(company, array_slot){
+
+		var co = company;
+		var u = array_slot;
+
+		if (obj_ini.veh_race[co][u]==0) then return;
+		if (obj_ini.veh_wid[co][u]>0){
+			unit_location = obj_ini.veh_loc[co][u];
+			var _unit = [co, u];
+			if (!struct_exists(garrison_log, unit_location)){
+				garrison_log[$ unit_location] = {
+					units:[_unit],
+					vehicles:1, 
+					garrison:false, 
+					healers:0, 
+					techies:0
+				}
+			} else {
+				array_push(garrison_log[$ unit_location].units, _unit);
+				garrison_log[$ unit_location].vehicles++;
+			}
+		} else if (obj_ini.veh_lid[co][u]>-1){
+			obj_ini.ship_carrying[obj_ini.veh_lid[co][u]]+=scr_unit_size("",obj_ini.veh_role[co][u],true);
+		}
+	}
+
+
 	static update_garrison_log = function(){
 		try{
-		for (var i = 0;i<array_length(obj_ini.ship_data); i++){
-			var _ship = obj_ini.ship_data[i];
-			_ship.carrying=0;
-		};
-		var _unit, unit_location, group;
-		delete garrison_log;
-	    garrison_log = {};
-	    obj_controller.specialist_point_handler.calculate_research_points(false);
-	    var _ship_count = array_length(obj_ini.ship_data);
-	    // show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
-	    for (var co=0;co<=obj_ini.companies;co++){
-	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
-				/// @type {Struct.TTRPG_stats}
-	    		_unit = fetch_unit([co, u]);
-	    		if (_unit.name() == "" || !_unit.controllable()) then continue;
-	    		unit_location = _unit.marine_location();
-	    		if (unit_location[0]==location_types.planet && unit_location[2] != ""){
-	    			if (!struct_exists(garrison_log, unit_location[2])){
-	    				garrison_log[$ unit_location[2]] = {
-	    					units:[_unit],
-	    					vehicles:0, 
-	    					garrison:false, 
-	    					healers:0, 
-	    					techies:0
-	    				}
-	    			} else {
-	    				array_push(garrison_log[$ unit_location[2]].units, _unit);
-	    			}
-	    			group = garrison_log[$ unit_location[2]];
-	    			if (_unit.IsSpecialist(SPECIALISTS_APOTHECARIES)){
-						group.healers++;
-	    			} else if (_unit.IsSpecialist(SPECIALISTS_TECHS)){
-						group.techies++;
-	    			}
-	    		} else if (unit_location[0]==location_types.ship){
-	    			if (_unit.ship_location<_ship_count && _unit.ship_location>-1){
-	    				var _ship = obj_ini.ship_data[_unit.ship_location];
-	    				_ship.carrying+=_unit.get_unit_size();
-	    			}
-	    		}
-	    	}
-	    	try{
-
-		    	for (var u=1;u<array_length(obj_ini.veh_race);u++){
-		    		if (obj_ini.veh_race[co][u]==0) then continue;
-		    		if (obj_ini.veh_wid[co][u]>0){
-		    			unit_location = obj_ini.veh_loc[co][u];
-		    			_unit = [co, u];
-		    			if (!struct_exists(garrison_log, unit_location)){
-		    				garrison_log[$ unit_location] = {
-		    					units:[_unit],
-		    					vehicles:1, 
-		    					garrison:false, 
-		    					healers:0, 
-		    					techies:0
-		    				}
-		    			} else {
-		    				array_push(garrison_log[$ unit_location].units, _unit);
-		    				garrison_log[$ unit_location].vehicles++;
-		    			}
-		    		} else if (obj_ini.veh_lid[co][u]>-1){
-		    			var _ship = obj_ini.ship_data[obj_ini.veh_lid[co][u]];
-		    			_ship.carrying+=scr_unit_size("",obj_ini.veh_role[co][u],true);
-		    		}
+			for (var i = 0;i<array_length(obj_ini.ship_data); i++){
+				var _ship = obj_ini.ship_data[i];
+				_ship.carrying=0;
+			};
+			var _unit;
+			delete garrison_log;
+		    garrison_log = {};
+		    obj_controller.specialist_point_handler.calculate_research_points(false);
+		    ship_count = array_length(obj_ini.ship_data);
+		    // show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
+		    for (var co=0;co<=obj_ini.companies;co++){
+		    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
+					/// @type {Struct.TTRPG_stats}
+		    		_unit = fetch_unit([co, u]);
+		    		evaluate_unit_for_garrison_log(_unit);
 		    	}
-		    }catch(_exception){
-				handle_exception(_exception);
-			}
-	    }
-	    update_mission_log();
+		    	try{
+			    	for (var u=0;u<array_length(obj_ini.veh_race[co]);u++){
+			    		evaluate_vehicle_for_garrison_log(co ,u);
+			    	}
+			    }catch(_exception){
+					handle_exception(_exception);
+				}
+		    }
+		    update_mission_log();
 	    }catch(_exception){
 			handle_exception(_exception);
 		}	
@@ -454,8 +473,8 @@ function UnitQuickFindPanel() constructor{
 
 function HoverBox() constructor{
 	root_item = "none";
-	relative_x=0;
-	relative_y=0;
+	relative_x = 0;
+	relative_y = 0;
 	location = [0,0,0,0];
 	static draw = function(xx, yy, button_text){
 		location = draw_unit_buttons([relative_x, relative_y], button_text,[1,1], c_green,, fnt_40k_14b, 1);
@@ -469,11 +488,31 @@ function exit_adhoc_manage(){
    		selection_data.system.alarm[3]=2;
     }		
 };
+
  function update_garrison_manage(){
 	location_viewer.update_garrison_log();
-	if (struct_exists(location_viewer.garrison_log, selection_data.system.name)){
-		var sys_name = selection_data.system.name;
-		group_selection(location_viewer.garrison_log[$sys_name].units,selection_data);
+	var _selection = [];
+	var sys_name = "";
+	var _ships = -1;
+	var _planets = 0
+	if (struct_exists(selection_data, "system")&& instance_exists(selection_data.system)){
+		if (struct_exists(location_viewer.garrison_log, selection_data.system.name)){
+			var sys_name = selection_data.system.name;
+		}
+	}
+
+	if (struct_exists(selection_data , "ships")){
+		_ships = selection_data.ships;
+	}
+
+	if (struct_exists(selection_data , "planets")){
+		_planets = selection_data.planets;
+	}
+
+	_selection = collect_role_group("all",[sys_name, _planets,_ships]);
+
+	if (array_length(_selection)){
+		group_selection(_selection,selection_data);
 	} else {
 		exit_adhoc_manage();		
 	} 	
@@ -541,7 +580,7 @@ function jail_selection(){
     	}
     	_unit = display_unit[f];
  		if (_unit.controllable()){
-            if (is_struct(display_unit[f])){
+            if (is_struct(display_unit[f]) &&  !_unit.in_jail()){
                 obj_ini.god[_unit.company][_unit.marine_number]+=10;
                 ma_god[f]+=10;
                 man_sel[f]=0;

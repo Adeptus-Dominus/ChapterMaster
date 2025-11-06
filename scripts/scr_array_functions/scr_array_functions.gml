@@ -100,6 +100,11 @@ function array_random_index(choice_array){
 	return irandom(array_length(choice_array) - 1);
 }
 
+function delete_random_index(choice_array){
+	array_delete(choice_array,irandom(array_length(choice_array) - 1),1);
+	return choice_array;
+}
+
 /// @function array_to_string_list
 /// @description Converts an array into a string, with each element on a newline.
 /// @param {array} stacktrace stacktrace.

@@ -655,6 +655,11 @@ var all_advantages = [
         {
             name : "Lightning Warriors",
             description : "Your chapter's style of warfare is built around the speedy execution of battle. Infantry have boosted attack at the cost of defense as well as two additional Land speeders and Biker squads.",
+            perks : [
+                "Reduced Chances of loosing equipment during raids by 15%",
+                "Marines mmore likely spawn with lightning warrior trait",
+                "3% increase to base boarding capabilities",
+            ],
             value : 30,
             meta : ["Doctrine"],
         },
