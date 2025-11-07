@@ -698,7 +698,7 @@ if (obj_ini.omophagea){
     if (thirsty>0) then eatme-=(thirsty*6);if (really_thirsty>0) then eatme-=(really_thirsty*15);
 
     if (allies>0){
-        alter_disposition([
+        alter_dispositions([
             [eFACTION.Imperium,-choose(1,0,0)],
             [eFACTION.Inquisition, -choose(0,0,1)],
             [eFACTION.Ecclesiarchy, -choose(0,0,1)],
