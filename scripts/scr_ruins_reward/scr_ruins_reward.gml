@@ -202,7 +202,7 @@ wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 	    star_system.p_fortified[planet]=min(star_system.p_fortified[planet]+1,5);
 	}
 	else if (loot="fortress"){// Fortress
-		ancient_fortress_ruins_loot()
+		ancient_fortress_ruins_loot(star_system, planet, _ruins)
 	}
 	else if (loot="starship"){// Starship
 	    var pop=instance_create(0,0,obj_popup);
@@ -270,7 +270,7 @@ function ancient_gene_lab_ruins_loot(){
     	"Ancient Ruins: Gene-seed",
     	_text,
     	"geneseed_lab",
-    	_pop_data,
+    	_pop_data
     );
 
 }
