@@ -1342,15 +1342,8 @@ function ComplexSet(_unit) constructor {
 				break;
 			case "Tartaros":
 				add_group({
-					armour: spr_tartaros_complex,
-					left_arm: spr_tartaros_left_arm,
-					right_arm: spr_tartaros_right_arm,
-					right_leg: spr_tartaros_right_leg,
-					left_leg: spr_tartaros_left_leg,
 					chest_variants: spr_tartaros_chest,
-					gorget: spr_tartaros_gorget,
 					mouth_variants: spr_tartaros_faceplate,
-					head: spr_tartaros_head_variants,
 					left_trim: spr_tartaros_left_trim,
 					right_trim: spr_tartaros_right_trim
 				});

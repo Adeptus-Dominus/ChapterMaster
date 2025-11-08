@@ -446,6 +446,7 @@ global.base_stats = {
 };
 
 function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}) constructor {
+    uid = scr_uuid_generate();
     constitution = 0;
     strength = 0;
     luck = 0;
@@ -1420,23 +1421,23 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     //get equipment data methods by deafult they garb all equipment data and return an equipment struct e.g new EquipmentStruct(item_data, core_type,quality="none")
     static get_armour_data = function(type = "all") {
-        return gear_weapon_data("armour", armour(), type, false, armour_quality);
+        return gear_weapon_data("armour", armour(), type, false, armour_quality, armour(true));
     };
 
     static get_gear_data = function(type = "all") {
-        return gear_weapon_data("gear", gear(), type, false, gear_quality);
+        return gear_weapon_data("gear", gear(), type, false, gear_quality, gear(true));
     };
 
     static get_mobility_data = function(type = "all") {
-        return gear_weapon_data("mobility", mobility_item(), type, false, mobility_item_quality);
+        return gear_weapon_data("mobility", mobility_item(), type, false, mobility_item_quality, mobility_item(true));
     };
 
     static get_weapon_one_data = function(type = "all") {
-        return gear_weapon_data("weapon", weapon_one(), type, false, weapon_one_quality);
+        return gear_weapon_data("weapon", weapon_one(), type, false, weapon_one_quality, weapon_one(true));
     };
 
     static get_weapon_two_data = function(type = "all") {
-        return gear_weapon_data("weapon", weapon_two(), type, false, weapon_two_quality);
+        return gear_weapon_data("weapon", weapon_two(), type, false, weapon_two_quality, weapon_two(true));
     };
 
     static damage_resistance = function() {
@@ -2113,12 +2114,24 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static is_at_location = function(location = "", planet = 0, ship = -1) {
         var is_at_loc = false;
-        if (planet > 0) {
-            if (location_string == location && planet_location == planet) {
+        var _multi_ship = is_array(ship);
+        var _multi_planet = is_array(planet);
+        if ((planet > 0 || _multi_planet )&& location_string == location) {
+            if (_multi_planet){
+                if (array_contains(planet, planet_location)){
+                    is_at_loc = true;
+                }
+            }
+            else if ( planet_location == planet) {
                 is_at_loc = true;
             }
-        } else if (ship > -1) {
-            if (ship_location == ship) {
+        } else if (_multi_ship || ship > -1) {
+            if (_multi_ship){
+                if (array_contains(ship, ship_location)){
+                    is_at_loc = true;
+                }
+            }
+            else if (ship_location == ship) {
                 is_at_loc = true;
             }
         } else if (ship == -1 && planet == 0) {
@@ -2467,4 +2480,19 @@ function jsonify_marine_struct(company, marine, stringify=true) {
 /// @returns {Struct.TTRPG_stats} unit
 function fetch_unit(unit) {
     return obj_ini.TTRPG[unit[0]][unit[1]];
+}
+
+
+function fetch_unit_uid(uuid){
+    for (var i=0;i<obj_ini.companies;i++){
+        var _comp_length = array_length(obj_ini.TTRPG[i]);
+        for (var s=0;s<_comp_length;s++){
+            var _unit = fetch_unit([i,s]);
+            if (_unit.uid == uuid){
+                return _unit;
+            }
+        }
+    }
+
+    return "none";
 }

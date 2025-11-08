@@ -8,46 +8,64 @@ enum eSTART_FACTION {
 	Reserved,
 }
 
-function set_complex_livery_buttons(){
-    var _type = complex_livery_radio.selection_val("value");
-    var _name = complex_livery_radio.selection_val("display_name");
-    complex_livery_buttons = [
-		new UnitButtonObject({
-            x1: 500, 
-            y1: 252, 
-            style : "pixel",
-            tooltip : $"Primary Helm Colour\nPrimary helm colour of {_name}",
-            label:$"Helm Primary : {col[complex_livery_data[$_type].helm_primary]}",
-            area : "helm_primary",
-            role_id : _type,
-            alpha: custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1,
-			
-        }),
-		new UnitButtonObject({
-            x1: 500, 
-            y1: 287, 
-            style : "pixel",
-            tooltip : $"Secondary Helm Colour\Secondary helm colour of {_name}",
-            label:$"Helm Secondary : {col[complex_livery_data[$_type].helm_secondary]}",
-            area : "helm_secondary",
-            role_id : _type,
-            alpha: custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1,
-			
-        }),
-		new UnitButtonObject({
-            x1: 500, 
-            y1: 322, 
-            style : "pixel",
-            tooltip : $"Helm lens Colour\helm lens colour of {_name}",
-            label:$"Lens : {col[complex_livery_data[$_type].helm_lens]}",
-            area : "helm_lens",
-            role_id : _type,
-            alpha: custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1,
-			
-        }),        
-    ]
-    advanced_helmet_livery.current_selection = complex_livery_data[$_type].helm_pattern;
+function set_complex_livery_buttons() {
+	try {
+	    var _type  = complex_livery_radio.selection_val("value");
+	    var _name  = complex_livery_radio.selection_val("display_name");
+	    var _data  = complex_livery_data[$_type];
+	    var _alpha = (custom != eCHAPTER_TYPE.CUSTOM) ? 0.5 : 1;
+
+	    // --- Ensure stored colour indices are always valid ---
+	    _data.helm_primary   = clamp(_data.helm_primary,   0, array_length(col) - 1);
+	    _data.helm_secondary = clamp(_data.helm_secondary, 0, array_length(col) - 1);
+	    _data.helm_lens      = clamp(_data.helm_lens,      0, array_length(col) - 1);
+
+	    // --- Build button objects ---
+	    complex_livery_buttons = [
+	        new UnitButtonObject({
+	            x1: 500,
+	            y1: 252,
+	            style: "pixel",
+	            tooltip: $"Primary Helm Colour\nPrimary helm colour of {_name}",
+	            label: $"Helm Primary : {get_colour_name(_data.helm_primary)}",
+	            area: "helm_primary",
+	            role_id: _type,
+	            alpha: _alpha,
+	        }),
+
+	        new UnitButtonObject({
+	            x1: 500,
+	            y1: 287,
+	            style: "pixel",
+	            tooltip: $"Secondary Helm Colour\nSecondary helm colour of {_name}",
+	            label: $"Helm Secondary : {get_colour_name(_data.helm_secondary)}",
+	            area: "helm_secondary",
+	            role_id: _type,
+	            alpha: _alpha,
+	        }),
+
+	        new UnitButtonObject({
+	            x1: 500,
+	            y1: 322,
+	            style: "pixel",
+	            tooltip: $"Helm Lens Colour\nHelm lens colour of {_name}",
+	            label: $"Lens : {get_colour_name(_data.helm_lens)}",
+	            area: "helm_lens",
+	            role_id: _type,
+	            alpha: _alpha,
+	        }),
+	    ];
+
+	    // --- Update current pattern selection ---
+	    advanced_helmet_livery.current_selection = _data.helm_pattern;
+	}
+	catch (_exception) {
+	    handle_exception(_exception);
+	}
 }
+
+
+
 function update_creation_roles_radio(start_role = 1){
     var _role_data = [];
 
@@ -82,13 +100,13 @@ function bulk_selection_buttons_setup(){
             cords : [500, 322],
         },
         {
-            text : $"Pauldron 1: {col[right_pauldron]}",
+            text : $"Pauldron 1: {col[left_pauldron]}",
             tooltip:"First Pauldron",
             tooltip2:"The color of your Astartes' left Pauldron.  Normally this Pauldron displays their rank and designation.",
             cords : [500, 357],
         },
         {
-            text : $"Pauldron 2: {col[left_pauldron]}",
+            text : $"Pauldron 2: {col[right_pauldron]}",
             tooltip:"Second Pauldron",
             tooltip2:"The color of your Astartes' right Pauldron.  Normally this Pauldron contains the Chapter Insignia.",
             cords : [500, 392],

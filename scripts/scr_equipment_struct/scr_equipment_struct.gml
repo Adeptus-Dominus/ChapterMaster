@@ -11,10 +11,23 @@ global.tag_maintenance_values = {
     "xenos" : 1,
     "dreadnought" : 0.6,
     "vehicle" : 0.4,
+    "terminator" : 0.6,
 }
 
-function EquipmentStruct(item_data, core_type, quality_request = "none") constructor {
+global.tag_recovery_values = {
+    "terminator" : 30,
+};
+
+function EquipmentStruct(item_data, core_type, quality_request = "none", arti_struct = -1) constructor {
     type = core_type;
+
+    if (is_real(arti_struct) && arti_struct > -1) {
+        is_artifact = true;
+        artifact_id = arti_struct;
+    } else {
+        is_artifact = false;
+    }
+    artifact_id = arti_struct;
 
     // Struct defaults;
     hp_mod = 0;
@@ -39,6 +52,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
     req_exp = 0;
     maintenance = 0;
     specials = "";
+    recovery_chance = 0;
     quality = quality_request == "none" ? "standard" : quality_request;
     // Struct defaults end;
 
@@ -66,6 +80,16 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
                 maintenance += global.tag_maintenance_values[$_maintenance_names[i]];
             }
         }
+    }
+
+    if (recovery_chance == 0){
+        var _recover_values = struct_get_names(global.tag_recovery_values);
+        for (var i=0;i<array_length(_recover_values);i++){
+            if (has_tag(_recover_values[i])){
+                recovery_chance += global.tag_recovery_values[$_recover_values[i]];
+            }
+        }
+        recovery_chance = clamp(recovery_chance, 0, 100);        
     }
 
     // All methods and functions are bllow;
@@ -334,7 +358,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
     };
 }
 
-function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_class = false, quality_request = "standard") {
+function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_class = false, quality_request = "standard", arti_struct = -1) {
     var item_data_set = false;
     var equip_area = false;
     gear_areas = ["gear", "armour", "mobility"];
@@ -374,7 +398,7 @@ function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_cl
     if (is_struct(item_data_set)) {
         if (wanted_data == "all") {
             item_data_set.name = item;
-            return new EquipmentStruct(item_data_set, search_area, quality_request);
+            return new EquipmentStruct(item_data_set, search_area, quality_request, arti_struct);
         }
         if (struct_exists(item_data_set, wanted_data)) {
             if (is_struct(item_data_set[$ wanted_data])) {
