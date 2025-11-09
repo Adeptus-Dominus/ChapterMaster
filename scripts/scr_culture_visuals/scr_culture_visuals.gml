@@ -2039,6 +2039,7 @@ base: {
     sprite: spr_weapon_cthon_autocannon,
   }]
 },  
+
 	
 	//40k weapons
   "Assault Cannon": {
@@ -2235,7 +2236,33 @@ base: {
     },
     variants: [
         {
-            sprite: spr_twl_Volkite_Culverins,
+            sprite: spr_Volkite_Culverins,
+        }
+    ]    
+},
+"Heavy Conversion Beamer":{
+     base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_Contemptor_Conversion_Beamer,
+        }
+    ]    
+},
+"Kheres Assault Cannon":{
+     base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_Contemptor_assault_cannon,
         }
     ]    
 },
