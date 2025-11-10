@@ -53,7 +53,7 @@ function dec_to_hex() {
 // - Must utilize random or pseudo-random values for all other bits
 function scr_uuid_generate() {
     var unix_epoch = function() {
-        return round(date_second_span(date_create_datetime(1970, 1, 1, 1, 0, 0), date_current_datetime()));
+        return round(date_second_span(date_create_datetime(1970, 1, 1, 15, 0, 0), date_current_datetime()));
     }
 
     // seed randomness with time and since game start, in microseconds
