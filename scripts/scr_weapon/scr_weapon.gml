@@ -171,8 +171,8 @@ global.weapons = {
 			"artifact": 175
 		},
 		"description": "The smaller brother of the Ryzan Plasma Gun, it shares its characteristics as well as sleek design and purple glow. Once a regular weapon for Sergeants and some Moritats in the Legiones Astartes, with even some Consuls or Centurions favouring them over Volkites or Disintegrators, the humble Ryzan Plasma Pistol has earned its place as a vaunted relic of any armoury lucky enough to have it.",
-		"melee_hands": 1,
-		"ranged_hands": 2,
+		"melee_hands": 0,
+		"ranged_hands": 1,
 		"ammo": 18,
 		"range": 14,
 		"spli": 5,
