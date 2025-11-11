@@ -1161,7 +1161,7 @@ global.weapons = {
 		"description": "A pistol variant of the plasma gun, this dangerous-to-use weapon has exceptional armor-piercing capabilities.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
-		"ammo": 0,
+		"ammo": 16,
 		"range": 3.1,
 		"spli": 1,
 		"arp": 1,
@@ -2090,7 +2090,7 @@ global.weapons = {
 		"description": "An advanced thermal weapon from a bygone era, Volkite sakers are optimized for spreading damage across swaths of enemy troops.",
 		"melee_hands": 0,
 		"ranged_hands": 0,
-		"ammo": 25,
+		"ammo": 25,2
 		"range": 18,
 		"spli": 30,
 		"arp": 0,
