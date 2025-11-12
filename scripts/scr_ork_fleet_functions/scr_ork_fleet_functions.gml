@@ -64,7 +64,7 @@ function ork_fleet_arrive_target(){
     if (_ork_fleet=="none") then return;
     var aler=0;
 
-    var _imperial_ship = scr_orbiting_fleet([eFACTION.Imperium, eFaction.Mechanicus]);
+    var _imperial_ship = scr_orbiting_fleet([eFACTION.Imperium, eFACTION.Mechanicus]);
     if (_imperial_ship == "none" && planets>0 && !has_orbiting_player_fleet()){
         var _allow_landing = true,ork_attack_planet=0,l=0;
         var _planets = shuffled_planet_array();
