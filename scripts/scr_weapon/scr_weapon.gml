@@ -72,7 +72,7 @@ global.weapons = {
 			"master_crafted": 270,
 			"artifact": 290
 		},
-		"description": "Ancient volkite type weponry usually mounted on vehicles. It features two volkite culverins and is meant for long forgotten contemptor pattern dreadnaught.",
+		"description": "Ancient volkite type weaponry usually mounted on vehicles. It features two volkite culverins and is meant for long forgotten contemptor pattern dreadnaught.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 10,
