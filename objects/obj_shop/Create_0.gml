@@ -85,6 +85,50 @@ tab_buttons = {
 var require_tool_tip = "requires: #"
 if (shop = "equipment") {
     i = 0;
+	// Tribal shop weapons
+    i += 1;
+    item[i] = "Wooden Club";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+    forge_cost[i] = 10;
+    i += 1;
+    item[i] = "Wooden Spear";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+    forge_cost[i] = 10;
+    i += 1;
+    item[i] = "Ritual Stone Knife";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 5;
+    if (research.psi[0]>0){
+    forge_cost[i] = 100;
+    }
+    i += 1;
+    item[i] = "Stone Hammer";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+    forge_cost[i] = 10;
+	// Early Conventional Weapons
+	i += 1;
+    item[i] = "Early Metal Sword";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+	if (research.metallurgy[0]>0){
+		forge_cost[i] = 10;
+	} else {
+		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.metallurgy[0][0]}"
+	}
+	// Late Conventional Melee Weapons
+	i += 1;
+    item[i] = "Steel Sword";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+	if (research.metallurgy[0]>1){
+		forge_cost[i] = 10;
+	} else {
+		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.metallurgy[0][1]}"
+	}
+	// Weapons of 40k
     i += 1;
     item[i] = "Combat Knife";
     item_stocked[i] = scr_item_count(item[i]);
@@ -324,6 +368,38 @@ if (shop = "equipment") {
     }
 
 
+	// Tribal ranged weapons
+    i += 1;
+    item[i] = "Bow";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+    forge_cost[i] = 10;
+    i += 1;
+    item[i] = "Sling";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+    forge_cost[i] = 10;
+	// Early Conventional Ranged Weapons
+	i += 1;
+    item[i] = "Crossbow";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+	if (research.mechanisms[0]>0){
+		forge_cost[i] = 10;
+	} else {
+		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.mechanisms[0][0]}"
+	}
+	// Late Conventional Ranged Weapons
+	i += 1;
+    item[i] = "Hellgun";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+	if (research.plastics[0]>0){
+		forge_cost[i] = 10;
+	} else {
+		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.plastics[0][0]}"
+	}
+	// Weapons of 40k
     i += 1;
     item[i] = "Bolt Pistol";
     item_stocked[i] = scr_item_count(item[i]);
@@ -812,6 +888,43 @@ if (shop = "equipment2") {
             }
         }
     }    
+	// Tribal armour
+    i += 1;
+    item[i] = "Tribalwear";
+    item_stocked[i] = scr_item_count(item[i]);
+    forge_cost[i] = 25;
+    item_cost[i] = 1;
+	// Early conventional armour
+	i += 1;
+    item[i] = "Chainmail";
+    item_stocked[i] = scr_item_count(item[i]);
+	if (research.metallurgy[0] > 0){
+		forge_cost[i] = 50;
+	} else {
+		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.metallurgy[0][0]}"
+    }
+    item_cost[i] = 2;
+	// Late conventional Armour
+	i += 1;
+    item[i] = "Plate Armour";
+    item_stocked[i] = scr_item_count(item[i]);
+	if (research.metallurgy[0] > 1){
+		forge_cost[i] = 125;
+	} else {
+		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.metallurgy[0][1]}"
+    }
+    item_cost[i] = 5;
+
+	i += 1;
+    item[i] = "Flak Armour";
+    item_stocked[i] = scr_item_count(item[i]);
+	if (research.plastics[0] > 0){
+		forge_cost[i] = 100;
+	} else {
+		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.plastics[0][0]}"
+    }
+    item_cost[i] = 4;
+	// 40k armour
     i += 1;
     item[i] = "Scout Armour";
     item_stocked[i] = scr_item_count(item[i]);
@@ -878,6 +991,16 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     item_stocked[i] = scr_item_count("Cataphractii");
     nobuy[i] = 1;
 
+	i += 1;
+    item[i] = "Animal Mount";
+    item_stocked[i] = scr_item_count(item[i]);
+	if (research.animal[0] > 0){
+		forge_cost[i] = 100;
+	} else {
+		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.animal[0][0]}"
+    }
+    item_cost[i] = 5;
+
     i += 1;
     x_mod[i] = 9;
     item[i] = "Jump Pack";
@@ -933,21 +1056,64 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
         item_cost[i] = 0;
     }
 
+// Tribal tools
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Primitive Tools";
+    item_stocked[i] = scr_item_count(item[i]);
+    forge_cost[i] = 50;
+    item_cost[i] = 3;
+// Conventional tools
+	i += 1;
+    x_mod[i] = 9;
+    item[i] = "Combi-Tool";
+    item_stocked[i] = scr_item_count(item[i]);
+	if (research.metallurgy[0]>0){
+		forge_cost[i] = 75;
+	} else {
+		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.metallurgy[0][0]}"
+	}
+    item_cost[i] = 5;
+// 40k items
     i += 1;
     x_mod[i] = 9;
     item[i] = "Servo-arm";
     item_stocked[i] = scr_item_count(item[i]);
-    forge_cost[i] = 750;
+    // Requires mechnchem progression
+    if (research.mechnchem[0] > 0) {
+        forge_cost[i] = 750;
+    } else {
+        forge_cost[i] = 0;
+        tooltip_overide[i] = $"{require_tool_tip} {research_pathways.mechnchem[0][0]}";
+    }
     item_cost[i] = 30;
-	forge_cost[i] = 150;
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
-
+// Tribal Medicine
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Medical Herb Pack";
+    forge_cost[i] = 25; // It in theory should be easier to instruct a marine/serf/other subject to gather them than purchase with requisition
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 5;
+// Conventional Medical Tech
+	i += 1;
+    x_mod[i] = 9;
+    item[i] = "Sororitas Medkit";
+	if (research.chemistry[0]>0){
+		forge_cost[i] = 50;
+	} else {
+		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.chemistry[0][0]}"
+	}
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 5;
+// 40k Medical
     i += 1;
     x_mod[i] = 9;
     item[i] = "Bionics";
+	// To add mechnchem dependency
     forge_cost[i] = 20;
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 5;
@@ -955,22 +1121,44 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     x_mod[i] = 9;
     item[i] = "Narthecium";
     item_stocked[i] = scr_item_count(item[i]);
+	// to add mechnchem dependency
     forge_cost[i] = 500;
     item_cost[i] = 10;
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+// Tribal psychic accessories
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Psychic Accessories";
+    if (research.psi[0]>0){
+    forge_cost[i] = 100;
+    }
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 10;
+// 40k accessories
     i += 1;
     x_mod[i] = 9;
     item[i] = "Psychic Hood";
     item_stocked[i] = scr_item_count(item[i]);
+    if (research.psi[0]>1){ // Rune analysis, or even higher? Though, I think Hood should require some metalworking too.
     forge_cost[i] = 1000;
+    } else { forge_cost[i] = 0;
+	}
     item_cost[i] = 100;
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+// Tribal shield
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Wooden Shield";
+    forge_cost[i] = 15;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 2;
+// 40k tools
     i += 1;
     x_mod[i] = 9;
     item[i] = "Combat Shield";
@@ -1016,6 +1204,7 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     item_stocked[i] = scr_item_count(item[i]);
     nobuy[i] = 1;
     item_cost[i] = 0;   
+	// To add mechnchem dependency
     forge_cost[i] = 80; 
 
     mc=0;
@@ -1213,7 +1402,12 @@ if (shop = "vehicles") {
     item[i] = "Bike";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 35;
-	forge_cost[i] = 150*player_hanger;
+    if (research.combustion[0] > 0) {
+        forge_cost[i] = 150 * player_hanger;
+    } else {
+        forge_cost[i] = 0;
+        tooltip_overide[i] = $"{require_tool_tip} {research_pathways.combustion[0][0]}";
+    }
     i += 1;
     item[i] = "Dreadnought";
     item_stocked[i] = scr_item_count(item[i]);
@@ -1634,6 +1828,79 @@ if (shop = "vehicles") {
 if (shop == "production"){
     i = 0;
     var research_item;
+    // Tribal research
+    if (research.psi[0] == 0){
+        i++;
+        item[i] = ["research", research_pathways.psi[0][research.psi[0]], ["psi"]];
+        item_stocked[i] = 0;
+        forge_cost[i] = 1000;
+        tooltip_overide[i] = "Even though our ancestors, or even we, claimed that 'there are no gods in the ground and in the sky. This is the Imperial Truth' long ago, there is no use denying that psionics exist. To make use of, or guard against, we need to study how can we interact with it in the material world. Preliminary research suggests that certain signs - 'marks' - may hold clues to it. \nRequired for: Ritual Stone Knife, Psychic Accessories.";
+    }
+	if (research.animal[0] == 0){
+        i++;
+        item[i] = ["research", research_pathways.animal[0][research.animal[0]], ["animal"]];
+        item_stocked[i] = 0;
+        forge_cost[i] = 1000;
+		tooltip_overide[i] = "While unusual, it is not impossible for us to try making use of the local - or the one we encounter on our travels - fauna, to help us move things around. \nRequired for: Animal Mount.";
+	}
+	// Early Conventional Tech
+	if (research.metallurgy[0] == 0){
+        i++;
+        item[i] = ["research", research_pathways.metallurgy[0][research.metallurgy[0]], ["metallurgy"]];
+        item_stocked[i] = 0;
+        forge_cost[i] = 500;
+		tooltip_overide[i] = "Our options to forge weaponry are going to be very limited with access to just carpentry and stoneworking. Building basic metalworking tools and facilities will expand these options. \nRequired for: Early Metal Sword, Chainmail Armour, Combi-Tool."; // Iron Armour and numerous other items
+	}
+	if (research.mechanisms[0] == 0){
+        i++;
+        item[i] = ["research", research_pathways.mechanisms[0][research.mechanisms[0]], ["mechanisms"]];
+        item_stocked[i] = 0;
+        forge_cost[i] = 500;
+		tooltip_overide[i] = "Constructing devices which can make use of potential and kinetic energies more efficiently requires some precision tools and facilities. \nRequired for: Crossbow."; // Balista, Catapult and numerous other items
+	}
+	if (research.chemistry[0] == 0){
+        i++;
+        item[i] = ["research", research_pathways.chemistry[0][research.chemistry[0]], ["chemistry"]];
+        item_stocked[i] = 0;
+        forge_cost[i] = 500;
+		tooltip_overide[i] = "We need facilities to convert certain liquids and gases into resources that can be used in forging. \nRequired for: Sororitas Medkit."; // and numerous other items
+	}
+	// Late Conventional Tech
+	if (research.metallurgy[0] == 1){
+        i++;
+        item[i] = ["research", research_pathways.metallurgy[0][research.metallurgy[0]], ["metallurgy"]];
+        item_stocked[i] = 0;
+        forge_cost[i] = 1000;
+		tooltip_overide[i] = "While our current metalworking facilities are enough for simple things, we need to expand them to be able to make more complex materials, such as steel. \nRequired for: Steel Sword, Plate Armour."; // Steel Armour and numerous other items
+	}
+	if (research.combustion[0] == 0){
+        i++;
+        item[i] = ["research", research_pathways.combustion[0][research.combustion[0]], ["combustion"]];
+        item_stocked[i] = 0;
+		if (research.metallurgy[0] > 0 && research.mechanisms[0] > 0 && research.chemistry[0] > 0){
+        forge_cost[i] = 1000;
+		} else { forge_cost[i] = 0; 
+		}
+		tooltip_overide[i] = "If we want capability to build our own vehicles, we need ways to make them mobile. Combustion engines are the old, but reliable method of giving them locomotion. \nRequired for: Bike."; // and other vehicles
+	}
+	if (research.plastics[0] == 0){
+        i++;
+        item[i] = ["research", research_pathways.plastics[0][research.plastics[0]], ["plastics"]];
+        item_stocked[i] = 0;
+		if (research.combustion[0] > 0){
+        forge_cost[i] = 1000;
+		} else { forge_cost[i] = 0;
+		}
+		tooltip_overide[i] = "We can expand our chemical facilities to accomodate plastic making. \nRequired for: Hellguns, Flak Armour."; // Lasgun and its variants, Composite armour and other items
+	}
+	if (research.mechnchem[0] == 0){
+        i++;
+        item[i] = ["research", research_pathways.mechnchem[0][research.mechnchem[0]], ["mechnchem"]];
+        item_stocked[i] = 0;
+        forge_cost[i] = 1000;
+		tooltip_overide[i] = "To forge proper medical tools and bionics, some improvements to mechanism making and chemical facilities are required. \nRequired for: Bionics, Narthecium, Servo-arm.";
+	}
+    //Research of 40k
     if (research.flame[0] == 0){
         i++;
         item[i] = ["research", research_pathways.flame[0][research.flame[0]], ["flame"]];
@@ -1642,7 +1909,7 @@ if (shop == "production"){
         tooltip_overide[i] = "This research grants the ability to fabricate and harness Promethium Tanks, allowing for the construction of flame-based weaponry. This technology taps into the potent destructive potential of Promethium, turning it into a terrifying tool of war, capable of reducing enemies to ash.\nUnlocks: Flamers, Heavy Flamers, Incinerator.\nRequired for: Heavy Flamer Sponsons, Flamestorm Cannon Sponsons, Inferno Cannon, Servo-harness, Combi-flamer.";
 
     }
-    if (research.psi[0] == 0){
+    if (research.psi[0] == 1){
         i++;
         item[i] = ["research", research_pathways.psi[0][research.psi[0]], ["psi"]];
         item_stocked[i] = 0;

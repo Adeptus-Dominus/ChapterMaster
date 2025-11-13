@@ -1,4 +1,150 @@
 global.weapons = {
+	// Might as well try to sort stuff chronologically, I guess?
+	// Tribal tier weapons
+	"Wooden Spear": {
+		"abbreviation": "WdnSpear",
+		"attack": {
+			"standard": 8,
+			"master_crafted": 10,
+			"artifact": 12
+		},
+		"description": "A stick with one end sharpened to a point, which may also be fire-hardened. Usually seen used by primitives and ferals.",
+		"melee_hands": 1,
+		"ranged_hands": 0.5,
+		"ammo": 0,
+		"range": 1,
+		"spli": 3,
+		"arp": 0,
+		// "special_properties": ["Parry"], - "Parry" might be too much for wood at this rate
+		"tags": ["spear", "martial", "primitive"],
+	},
+	"Wooden Club": {
+		"abbreviation": "WdnClb",
+		"attack": {
+			"standard": 10,
+			"master_crafted": 11,
+			"artifact": 12
+		},
+		"description": "The most primitive weapon known to man since ancient times - a heavy stick. To bash skulls of foes with.",
+		"melee_hands": 1,
+		"ranged_hands": 0.5,
+		"ammo": 0,
+		"range": 1,
+		"spli": 2,
+		"arp": 0,
+		"tags": ["martial", "primitive"],
+	},
+	"Ritual Stone Knife": {
+		"abbreviation": "RtlStnKnf",
+		"attack": {
+			"standard": 10,
+			"master_crafted": 12,
+			"artifact": 15
+		},
+		"description": "A stone knife, with inscribed runes. Usually seen used by shamans and cult leaders in various rituals and sacrifices.",
+		"melee_hands": 0.25,
+		"ranged_hands": 0,
+		"ammo": 0,
+		"range": 1,
+		"spli": 5,
+		"arp": 0,
+		"special_description": "Spell damage +10%",
+		"tags": ["force", "knife", "primitive"],
+	},
+	"Stone Hammer": {
+		"abbreviation": "StnHmmr",
+		"attack": {
+			"standard": 15,
+			"master_crafted": 17,
+			"artifact": 20
+		},
+		"description": "A flattened rock attacked to a piece of wood. With a few other tools, it could be a caveman's way of repairing things...",
+		"melee_hands": 0.6,
+		"ranged_hands": 0.6,
+		"ammo": 0,
+		"range": 1,
+		"spli": 2, // I'm thinking it might be a good idea to have 'alternative attacks' - like power attack, with low spli, but higher attack, or swing strike with high spli but less damage.
+		"arp": 0,
+	},
+	"Bow": {
+		"abbreviation": "Bow",
+		"attack": { // Logically, we should tie attack power to the strength of the user - and the weapon's capability to stay functional with that strength applied to it.
+			"standard": 10,
+			"master_crafted": 12,
+			"artifact": 15
+		},
+		"description": "A primitive ranged weapon, typically made from wood, relying on the strength of the user.",
+		"melee_hands": 1,
+		"ranged_hands": 1.25, // 1 hand is used to hold the bow itself, while the arrow can be pulled by just 2 fingers.
+		"ammo": 10,
+		"range": 5, // Should probably also be affected by strength stat of the user
+		"spli": 2, // Should be affected by agility, I guess? How quickly can a person pull an arrow out of a quiver, install in the bow, aim, apply force and release.
+		"arp": 0, // Also Strength, if we want to go into depth with this?
+	},
+	"Sling": {
+		"abbreviation": "Slng",
+		"attack": { // Same as bow above
+			"standard": 10,
+			"master_crafted": 12,
+			"artifact": 13
+		},
+		"description": "A primitive ranged weapon, allows throwing pebbles and similar 'ammunition' further.",
+		"melee_hands": 1,
+		"ranged_hands": 1.25, // 1 hand is used to hold the bow itself, while the arrow can be pulled by just 2 fingers.
+		"ammo": 10,
+		"range": 4, // Should probably also be affected by strength stat of the user
+		"spli": 2, // Should be affected by agility, I guess? How quickly can a person pick a pebble up, install in the sling, aim, apply force and release.
+		"arp": 0, // Also Strength, if we want to go into depth with this?
+	},
+	// Early Conventional Weapons
+	"Crossbow": {
+		"abbreviation": "Crsbow",
+		"attack": {
+			"standard": 15,
+			"master_crafted": 18,
+			"artifact": 20
+		},
+		"description": "A simple ranged weapon, typically made from wood.",
+		"melee_hands": 1,
+		"ranged_hands": 1.25, 
+		"ammo": 10,
+		"range": 5, // Should probably also be affected by strength stat of the user
+		"spli": 2, // Should be affected by agility, I guess? How quickly can a person pull an arrow out of a quiver, install in the bow, aim, apply force and release.
+		"arp": 0, // Also Strength, if we want to go into depth with this?
+	},
+	"Early Metal Sword": {
+		"abbreviation": "MtlSrd",
+		"attack": {
+			"standard": 15,
+			"master_crafted": 18,
+			"artifact": 20
+		},
+		"description": "A sword made out of simple to forge metals, such as bronze or iron.",
+		"melee_hands": 1,
+		"ranged_hands": 0.5,
+		"ammo": 0,
+		"range": 1,
+		"spli": 2,
+		"arp": 0,
+		"tags": ["martial", "primitive"],
+	},
+	// Late Conventional Weapons
+	"Steel Sword": {
+		"abbreviation": "StlSrd",
+		"attack": {
+			"standard": 20,
+			"master_crafted": 25,
+			"artifact": 30
+		},
+		"description": "A sword made out of steel. Would be a decent weapon, if it had a power field.",
+		"melee_hands": 1,
+		"ranged_hands": 0.5,
+		"ammo": 0,
+		"range": 1,
+		"spli": 2,
+		"arp": 0,
+		"tags": ["martial", "primitive"],
+	},
 	//30k Weapons
 	//Volkite Pack
 	"Volkite Culverin": {
@@ -2417,6 +2563,50 @@ global.gear = {
 			"req_exp": 100,
 			"maintenance" : 2.5,
 		},
+	// Tribal wear
+		"Tribalwear": {
+			"abbreviation": "Trblwr",
+			"armour_value": {
+				"standard": 2,
+				"master_crafted": 3,
+				"artifact": 4
+			},
+			"description": "Garmets made from animal hides and plant material. Usually seen used by primitives and ferals.",
+			"tags": ["primitive"],
+		},
+	// Early Conventional Armours
+		"Chainmail": {
+			"abbreviation": "Chnml",
+			"armour_value": {
+				"standard": 4,
+				"master_crafted": 5,
+				"artifact": 6
+			},
+			"description": "An armour made out of small metal rings, forming a mesh. Effectiveness is limited considering the foes we are supposed to face.",
+			"tags": ["primitive"],
+		},
+	// Late Conventional Armour
+		"Plate Armour": {
+			"abbreviation": "PltArm",
+			"armour_value": {
+				"standard": 6,
+				"master_crafted": 8,
+				"artifact": 10
+			},
+			"description": "An armour made out of steel. Effectiveness is limited considering the foes we are supposed to face.",
+			// "tags": ["primitive"],
+		},
+		"Flak Armour": {
+			"abbreviation": "FlkArm",
+			"armour_value": {
+				"standard": 7,
+				"master_crafted": 8,
+				"artifact": 10
+			},
+			"description": "The armour used by the standard imperial forces, adjusted to be useable by space marines.",
+			// "tags": ["primitive"],
+		},
+	// 40k armours
 		"Scout Armour": {
 			"abbreviation": "SctArm",
 			"armour_value": {
@@ -2753,9 +2943,20 @@ global.gear = {
 		}
 	},
 	"gear": {
+	// Tribal Medicine
+		"Medical Herb Pack": {
+			"abbreviation": "MedHrbPck",
+			"special_properties": ["Medkit"],
+			"description": "A collection of various ingredients - from plant, mushroom and animal-based - that have a medical use. Primitive, so usefulness is limited.",
+			"melee_hands": -0.9,
+			"ranged_hands": -0.9,
+			"tags": ["primitive"],
+		},
+	//Gear of 40k
 		"Sororitas Medkit": {
 			"abbreviation": "SorMed",
 			"description": "A multi-purpose medkit designed to deal with basic battlefield ailments until further medical assistance can be sought.",
+		// Add encumbrance values perhaps?
 		},
 		"Bionics": {
 			"abbreviation": "Bncs",
@@ -2778,6 +2979,15 @@ global.gear = {
 				"artifact": 10 // Adjusted
 			}, // I also had an idea to make Nartheciums and Servo Arms give bonuses to melee and ranged, when master-crafted or artifact, indicating measuring devices that help to find weakpoints and deal more damage, but I'm not sure if You're okay with that
 		},
+	// Tribal psychic equipment
+		"Psychic Accessories": {
+			"abbreviation": "PsyAcs",
+			"description": "Collection of bracelets, amulets and rings with inscribed runes. Designed to protect the user from psychic powers and help him focus.",
+			"specials": {
+				"psychic_focus": 5
+			},
+		},
+	// 40k psychic equipment
 		"Psychic Hood": {
 			"abbreviation": "PsyHd",
 			"description": "An arcane hood that protects Psykers from enemy psychic powers and enhances control of their psychic abilities.",
@@ -2808,6 +3018,21 @@ global.gear = {
 				"artifact": 45 // Adjusted
 			},
 		},
+	// Tribal tier gear
+		"Wooden Shield": {
+			"description": "Several wooden planks and/or animal hides attached together to form a protective layer. Rather inefficient against foes with serious weaponry.",
+			"abbreviation": "WdnShld",
+			"armour_value": {
+				"standard": 1,
+				"master_crafted": 2,
+				"artifact": 3
+			},
+			"weight": 2,
+			"tags": ["shield", "primitive"],
+			"melee_hands": -0.2,
+			"ranged_hands": -0.2,
+		},
+	// 40k tier gear
 		"Combat Shield": {
 			"description": "A lighter, more maneuverable version of a Storm Shield. Due to its flexibility, Combat Shields leave other hand of a Space Marine free to use other hand-to-hand weaponry.",
 			"abbreviation": "CmbtShld",
@@ -2834,6 +3059,34 @@ global.gear = {
 			"special_properties": ["Planet Destroyer"],
 			"description": "A weapon of the Emperor, and His divine judgment, this weapon can be placed upon a planet to obliterate it entirely.",
 		},
+	// Tribal Vehicle armour (ideas)
+		/*
+		"Wooden Armour": {
+		"description": "Vehicle armour with wooden frames and potentially animal hides. Rather inefficient against foes with serious weaponry.",
+		"abbreviation": "WdnArmr",
+		"armour_value": {
+			"standard": 2,
+			"master_crafted": 3,
+			"artifact": 4
+		},
+		"damage_resistance_mod": -5, // Damage resistance in this case stands for capability to avoid being hit - wood does have a weight, so it tends to add some inertia to movement
+		"tags": ["vehicle", "primitive"],
+		},
+		*/
+		/*
+		"Stone Armour": {
+		"description": "Rocks and earthworks are used for fortification of this vehicle. While more effective, it renders the vehicle immobile.",
+		"abbreviation": "StnArmr",
+		"armour_value": {
+			"standard": 5,
+			"master_crafted": 6,
+			"artifact": 7
+		},
+		"damage_resistance_mod": -100, // Being immobile penalty.
+		"tags": ["vehicle", "primitive"],
+		},
+		*/
+	// Vehicle accessories of 40k
 		"Smoke Launchers": {
 			"description": "Useful for providing concealment in open terrain, these launchers project wide-spectrum concealing smoke to prevent accurate targeting of the vehicle.",
 			"abbreviation": "SmkLnchrs",
@@ -2884,6 +3137,14 @@ global.gear = {
 		}
 	},
 	"mobility": {
+	// Tribal tier mobility item idea
+		"Animal Mount": {
+			"abbreviation": "AnmlMnt",
+			"description": "An animal that is harnessed to serve as a source for locomotion of a vehicle, or a mount for a marine.",
+			// "second_profiles": ["Animal Claws"], - other potential options are Horns, Kicks and Bites.
+			"damage_resistance_mod": 5,
+		},
+	// Mobility items of 40k
 		"Bike": {
 			"abbreviation": "Bike",
 			"second_profiles": ["Twin Linked Bolters"],
@@ -2932,6 +3193,35 @@ global.gear = {
 			"melee_hands": -1,
 			"ranged_hands": 1,
 		},
+	// Tribal repair item
+		"Primitive Tools": {
+			"abbreviation": "PrmtvTls",
+			"special_properties": ["Repairs Vehicles"],
+			"second_profiles": ["Stone Hammer"],
+			"description": "A collection of primitive tools, that allow some measure of repairs.",
+			"damage_resistance_mod": {
+				"standard": 0, // Adjusted
+				"master_crafted": 1, // Adjusted
+				"artifact": 2 // Adjusted
+			},
+			"melee_hands": -0.9,
+			"ranged_hands": -0.9,
+		},
+	// Conventional repair item
+		"Combi-Tool": {
+			"abbreviation": "CmbTl",
+			"special_properties": ["Repairs Vehicles"],
+			// "second_profiles": ["Stone Hammer"],
+			"description": "The standard utility and maintenance tool in the imperium.",
+			"damage_resistance_mod": {
+				"standard": 0, // Adjusted
+				"master_crafted": 2, // Adjusted
+				"artifact": 4 // Adjusted
+			},
+			"melee_hands": -0.45,
+			"ranged_hands": -0.45,
+		},
+	// 40k items
 		"Servo-arm": {
 			"abbreviation": "SrvArm",
 			"special_properties": ["Repairs Vehicles"],
