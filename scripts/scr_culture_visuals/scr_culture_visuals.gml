@@ -1482,18 +1482,23 @@ global.modular_drawing_items = [
 
 function fetch_marine_components_to_memory(){
     array_foreach(global.modular_drawing_items, function(_element, _index){
-        if (_element.position != "weapon" && sprite_exists((_element.sprite))){
-            sprite_prefetch(_element.sprite);
-            if (struct_exists(_element, "overides")){
-                var _override_areas = struct_get_names(_element.overides);
-                for (var i = 0;i<array_length(_override_areas);i++){
-                    sprite_prefetch(_element.overides[$_override_areas[i]]);
+        try{
+            if (_element.position != "weapon" && sprite_exists((_element.sprite))){
+                sprite_prefetch(_element.sprite);
+                if (struct_exists(_element, "overides")){
+                    var _override_areas = struct_get_names(_element.overides);
+                    for (var i = 0;i<array_length(_override_areas);i++){
+                        sprite_prefetch(_element.overides[$_override_areas[i]]);
+                    }
                 }
             }
             if (struct_exists(_element, "shadows")){
                 sprite_prefetch(_element.shadows);
             }
-        }
+        } catch(_exception) {
+            // Sprite prefetch failure logged but non-fatal
+            show_debug_message($"Sprite prefetch failed for element at index {_index}: {_exception}");
+         }
     });
 }
 
@@ -2034,6 +2039,7 @@ base: {
     sprite: spr_weapon_cthon_autocannon,
   }]
 },  
+
 	
 	//40k weapons
   "Assault Cannon": {
@@ -2230,7 +2236,33 @@ base: {
     },
     variants: [
         {
-            sprite: spr_twl_Volkite_Culverins,
+            sprite: spr_Volkite_Culverins,
+        }
+    ]    
+},
+"Heavy Conversion Beamer":{
+     base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_Contemptor_Conversion_Beamer,
+        }
+    ]    
+},
+"Kheres Assault Cannon":{
+     base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_Contemptor_assault_cannon,
         }
     ]    
 },

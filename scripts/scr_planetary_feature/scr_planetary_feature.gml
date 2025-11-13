@@ -407,10 +407,10 @@ function ground_mission_leave_it_function(){
 /// @mixin PlanetData
 function discover_artifact_popup(feature){
     obj_controller.menu = MENU.Default;
-    if ((planet_type == "Dead" || current_owner == eFACTION.Player)) {
+    /*if ((planet_type == "Dead" || current_owner == eFACTION.Player)) {
         alarm[4] = 1;
         exit;
-    }
+    }*/
 
     var pop = instance_create(0, 0, obj_popup);
     pop.image = "artifact";

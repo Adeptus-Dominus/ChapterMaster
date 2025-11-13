@@ -151,7 +151,7 @@ function inquisitor_inspection_structure() constructor {
                 if (player_base.torture > 0) { _poor_base_practice += 1; }
                 if (player_base.narcotics > 0) { _poor_base_practice += 3; }
 
-                alter_disposition([
+                alter_dispositions([
                     [eFACTION.Imperium, -_poor_base_practice * 2],
                     [eFACTION.Inquisition, -_poor_base_practice * 3],
                     [eFACTION.Ecclesiarchy, -_poor_base_practice * 3]
@@ -205,7 +205,7 @@ function inquisitor_inspection_structure() constructor {
                 }
 
                 var perc = ((dem_local * 10) + (cha_local * 3)) / 100;
-                alter_disposition([
+                alter_dispositions([
                     [eFACTION.Imperium, -max(round(obj_controller.disposition[eFACTION.Imperium] / 6 * perc), round(8 * perc))],
                     [eFACTION.Inquisition, -max(round(obj_controller.disposition[eFACTION.Inquisition] / 4 * perc), round(10 * perc))],
                     [eFACTION.Ecclesiarchy, -max(round(obj_controller.disposition[eFACTION.Ecclesiarchy] / 4 * perc), round(10 * perc))]
@@ -248,7 +248,7 @@ function inquisitor_inspection_structure() constructor {
                 obj_controller.loyalty -= 10;
                 obj_controller.loyalty_hidden -= 10;
 
-                alter_disposition([[eFACTION.Inquisition, -tem1_base * 3]]);
+                alter_disposition(eFACTION.Inquisition, -tem1_base * 3);
 
                 finds.secret_gene_flag = true;
 
@@ -371,7 +371,7 @@ function inquisitor_inspection_structure() constructor {
         };
 
         if (popup >= 1) {
-            scr_popup(pop_tit, pop_txt, "inquisition", pop_spe, _pop_data);
+            scr_popup(pop_tit, pop_txt, "inquisition", _pop_data);
         }
     };
 

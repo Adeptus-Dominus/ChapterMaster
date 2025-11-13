@@ -389,9 +389,9 @@ function scr_management(argument0) {
 			nam[22] = "Rhino";
 			nam[23] = "Land Speeder";
 			nam[24] = "Whirlwind";
-	        for (var i=0;i<array_length(obj_ini.name[0]);i++) {
-	        	if (obj_ini.name[company][i] == "") then continue;
-	        	unit = fetch_unit([company,i]);
+	        for (var i=0;i<array_length(obj_ini.TTRPG[company]);i++) {
+				unit = obj_ini.TTRPG[company][i];
+	        	if (unit.name() == "") then continue;
 	            if (unit.role()=role_names[eROLE.Captain]){
 					num[1]++;
 					nam[1] = unit.name();
@@ -415,16 +415,16 @@ function scr_management(argument0) {
 				if (unit.role() == role_names[eROLE.Scout]) then num[17]++;
 				if (unit.role() == "Venerable " + string(role_names[eROLE.Dreadnought])) then num[18]++;
 				if (unit.role() == role_names[eROLE.Dreadnought]) then num[19]++;
-				// Vehicles
-				if (i <= 100){
-					if (obj_ini.veh_role[company,i] == "Land Raider") then num[20]++;
-					if (obj_ini.veh_role[company,i] == "Predator") then num[21]++;
-					if (obj_ini.veh_role[company,i] == "Rhino") then num[22]++;
-					if (obj_ini.veh_role[company,i] == "Land Speeder") then num[23]++;
-					if (obj_ini.veh_role[company,i] == "Whirlwind") then num[24]++;
-				}
-				
-	        }
+		    }
+			
+			// Vehicles
+			for (var i=0;i<array_length(obj_ini.veh_role[company]);i++) {
+				if (obj_ini.veh_role[company][i] == "Land Raider") then num[20]++;
+				if (obj_ini.veh_role[company][i] == "Predator") then num[21]++;
+				if (obj_ini.veh_role[company][i] == "Rhino") then num[22]++;
+				if (obj_ini.veh_role[company][i] == "Land Speeder") then num[23]++;
+				if (obj_ini.veh_role[company][i] == "Whirlwind") then num[24]++;
+			}
 			
 	        with(obj_managment_panel){
 	        	if (manage!=obj_controller.temp[71]) then instance_deactivate_object(id);

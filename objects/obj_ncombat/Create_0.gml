@@ -133,13 +133,14 @@ repeat(70){i+=1;
     dead_ene[i]="";
     dead_ene_n[i]=0;
     
-    post_equipment_lost[i]="";
-    post_equipments_lost[i]=0;
-    
     crunch[i]=0;
     
     if (i<=10) then mucra[i]=0;
 }
+
+post_equipment_lost = new EquipmentTracker();
+post_equipment_recovered = new EquipmentTracker();
+
 slime=0;
 unit_recovery_score=0;
 apothecaries_alive=0;

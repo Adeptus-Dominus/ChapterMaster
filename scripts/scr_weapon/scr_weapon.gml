@@ -72,6 +72,7 @@ global.weapons = {
 			"master_crafted": 270,
 			"artifact": 290
 		},
+
 		"description": "Ancient volkite type weaponry usually mounted on vehicles. It features two volkite culverins and is meant for long forgotten contemptor pattern dreadnaught.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
@@ -428,6 +429,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 1,
 		"tags": ["banner"],
+		"recovery_chance" : 99,
 	},
 	"Eviscerator": {
 		"abbreviation": "Evisc",
@@ -1262,6 +1264,22 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
+	"Kheres Assault Cannon": {
+		"abbreviation": "KhrAssCnn",
+		"attack": {
+			"standard": 280,
+			"master_crafted": 300,
+			"artifact": 320
+		},
+		"description": "Forged in the forges of Mars and carried into battle by the mightiest of the Emperor's warriors, the Kheres Assault Cannon is a weapon of devastating reputation. Its rotary barrels roar with unceasing fury, unleashing a deluge of mass-reactive shells that tear through flesh, ceramite, and adamantium alike.",
+		"melee_hands": 2.1,
+		"ranged_hands": 3,
+		"ammo": 5,
+		"range": 14,
+		"spli": 20,
+		"arp": 1,
+		"tags": ["heavy_ranged", "dreadnought", "ancient"]
+	},
 	"Autocannon": {
 		"abbreviation": "Autocnn",
 		"attack": {
@@ -1325,6 +1343,22 @@ global.weapons = {
 		"spli": 3,
 		"arp": 1,
 		"tags": ["heavy_ranged", "ancient"]
+	},
+	"Heavy Conversion Beamer": {
+		"abbreviation": "HvyCnvBm",
+		"attack": {
+			"standard": 500,
+			"master_crafted": 550,
+			"artifact": 600
+		},
+		"description": "An ancient relic of the Dark Age of Technology, the Heavy Conversion Beamer is a marvel of destructive science rarely entrusted to Imperial commanders. This esoteric weapon channels vast reserves of energy into a focused beam of coruscating light, tearing matter apart at the molecular level and converting it into raw energy in a cataclysmic chain reaction. The weapon’s lethality grows with distance — the further its target, the more apocalyptic the discharge. To stand at the far end of a Heavy Conversion Beamer’s wrath is to be annihilated in a searing blaze that leaves nothing but scorched ruin in its wake. Few battlefields have witnessed its fury and remained unchanged, for the weapon is as much a terror to its enemies as a reminder of the Imperium’s dwindling grasp on its most potent technologies.",
+		"melee_hands": 0,
+		"ranged_hands": 1,
+		"ammo": 1,
+		"range": 20,
+		"spli": 3,
+		"arp": 1,
+		"tags": ["heavy_ranged", "ancient", "dreadnought"]
 	},
 	"Integrated Bolter": {
 		"abbreviation": "IntgBltr",

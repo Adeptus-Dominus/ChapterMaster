@@ -146,7 +146,7 @@ function init_garrison_mission(planet, star, mission_slot){
         gar_pop.image="";
         gar_pop.cooldown=8;
         obj_controller.cooldown=8;	    
-	    scr_event_log("",$"Garrison commited to {numeral_name} for {garrison_length} months.", target.name);
+	    scr_event_log("",$"Garrison committed to {numeral_name} for {garrison_length} months.", star.name );
 	}	
 }
 
@@ -241,7 +241,7 @@ function init_protect_raider_mission(squad){
 	} else {
 
 	    instance_create(0,0,obj_ncombat);
-	    obj_ncombat.enemy=eFACTION.Eldar;
+	    obj_ncombat.enemy = eFACTION.Eldar;
 	    obj_ncombat.battle_object = selection_data.system;
 	    obj_ncombat.battle_loc = selection_data.system.name;
 	    obj_ncombat.battle_id = selection_data.planet;

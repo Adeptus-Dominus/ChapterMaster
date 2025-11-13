@@ -172,6 +172,16 @@ function planet_imperium_ground_total(planet_check){
     return p_guardsmen[planet_check]+p_pdf[planet_check]+p_sisters[planet_check]+p_player[planet_check];
 }
 
+/// @function star_by_name(search_name)
+/// @description 
+/// Searches all `obj_star` instances and returns the one with a matching name.
+///
+/// @param {String} search_name  
+/// The name of the star to find.
+///
+/// @returns {Instance | String}
+/// Returns the `obj_star` instance that matches `search_name`,  
+/// or the string `"none"` if no matching star is found.
 function star_by_name(search_name){
 	with(obj_star){
 		if (name == search_name){
@@ -182,6 +192,12 @@ function star_by_name(search_name){
 }
 
 //use this to quickly make a loop through a stars planets in an unordered way
+/// @function shuffled_planet_array()
+/// @description 
+/// Returns an array of all planet indices in a random (unordered) order.
+///
+/// @returns {Array} 
+/// A shuffled array containing all planet indices from 1 to `planets`.
 function shuffled_planet_array(){
 	var _planets = [];
 	for (var i=1;i<=planets;i++){
@@ -192,6 +208,34 @@ function shuffled_planet_array(){
 
 }
 
+/// @function distance_removed_star(origional_x, origional_y, [star_offset=choose(2,3)], [disclude_hulk=true], [disclude_elder=true], [disclude_deads=true], [warp_concious=true])
+/// @description 
+/// Finds a star that is a certain distance away from the given coordinates, skipping over certain disallowed star types.
+///
+/// @param {Real} origional_x  
+/// The x-coordinate to start searching from.
+///
+/// @param {Real} origional_y  
+/// The y-coordinate to start searching from.
+///
+/// @param {Real} [star_offset=choose(2,3)]  
+/// The number of nearest stars to skip before returning a result.
+///
+/// @param {Boolean} [disclude_hulk=true]  
+/// Placeholder flag to potentially exclude hulk-type stars (not yet used).
+///
+/// @param {Boolean} [disclude_elder=true]  
+/// If `true`, excludes stars owned by the `eFACTION.Eldar` faction.
+///
+/// @param {Boolean} [disclude_deads=true]  
+/// If `true`, excludes any stars detected as dead via `is_dead_star()`.
+///
+/// @param {Boolean} [warp_concious=true]  
+/// Placeholder flag for future warp-lane aware selection logic (currently unused).
+///
+/// @returns {Instance}  
+/// Returns the `obj_star` instance found after skipping the specified number of nearby stars,  
+/// ignoring any that are disqualified by the exclusion conditions.
 function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3), disclude_hulk=true, disclude_elder=true, disclude_deads=true, warp_concious=true){
 	var from = instance_nearest(origional_x,origional_y,obj_star);
 	var _deactivated = [];

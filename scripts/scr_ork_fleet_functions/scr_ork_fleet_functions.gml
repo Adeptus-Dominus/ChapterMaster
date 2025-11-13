@@ -64,13 +64,11 @@ function ork_fleet_arrive_target(){
     if (_ork_fleet=="none") then return;
     var aler=0;
 
-    var _imperial_ship = scr_orbiting_fleet([eFACTION.Player, eFACTION.Imperium]);
-    if (_imperial_ship == "none" && planets>0){
-        var _allow_landing=true,ork_attack_planet=0,l=0;
+    var _imperial_ship = scr_orbiting_fleet([eFACTION.Imperium, eFACTION.Mechanicus]);
+    if (_imperial_ship == "none" && planets>0 && !has_orbiting_player_fleet()){
+        var _allow_landing = true,ork_attack_planet=0,l=0;
         var _planets = shuffled_planet_array();
-        var i=-1
-        repeat(planets){
-            i++;
+        for (var i=0;i<array_length(_planets); i++){
             l = _planets[i];
             if (ork_attack_planet=0) and (p_tyranids[l]>0){
                 ork_attack_planet=l;
@@ -78,7 +76,7 @@ function ork_fleet_arrive_target(){
             }
         }
         if (ork_attack_planet>0){
-            p_tyranids[ork_attack_planet]-=floor(_ork_fleet.capital_number+(_ork_fleet.frigate_number/2));
+            p_tyranids[ork_attack_planet] -= floor(_ork_fleet.capital_number+(_ork_fleet.frigate_number/2));
 
             var _pdata = new PlanetData(ork_attack_planet, self);
 
