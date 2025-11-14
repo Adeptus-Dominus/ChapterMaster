@@ -18,8 +18,12 @@ void_wid=0;
 void_hei=0;
 player_fleet=false;
 
+select_all_button = new UnitButtonObject();
+
+manage_units_button = new UnitButtonObject({style : "pixel"});
+
 selection_window.inside_method = function(){
-	var mnz=0;
+	var _minimised=0;
 	var xx = selection_window.XX;
 	var yy = selection_window.YY;
 	draw_set_font(fnt_40k_14);
@@ -30,30 +34,38 @@ selection_window.inside_method = function(){
     // draw_text(view_xview[0]+46,view_yview[0]+117,"Title");
     // draw_text(view_xview[0]+46,view_yview[0]+142,"1#2#3#4#5#6#7#8#9#10#11#1#13#14#15#16#17#18#19#20#21#22#23#24#25");    
 
-    var type="capital",lines=0,posi=-1,colu=1,x3=48,y3=60,escorts,frigates,capitals,ty=0,current_ship=0,current_fleet=0,name="",sal=0,selection_box,scale=1,void_h=122,shew,ship_health=0;
-    escorts=escort;
-    frigates=frigate;
-    capitals=capital;
+    var type="capital",lines=0,posi=-1,colu=1,x3=48,y3=60,ty=0,current_ship=0,current_fleet=0,name="",sal=0,selection_box,scale=1,void_h=122,_show,ship_health=0;
+    var escorts=escort;
+    var frigates=frigate;
+    var capitals=capital;
 
     current_fleet=instance_nearest(x,y,obj_p_fleet);
 
-    if (escorts>0) then ty++;
-    if (frigates>0) then ty++;
-    if (capitals>0) then ty++;
+    ty = capitals>0 + frigates>0 +escorts>0;
+
 	draw_set_halign(fa_center);
 	var set = "capitol";
-	var fleet_sel = "[X]";
-    if (!fleet_all) then fleet_sel = "[ ]";
 
-    var fleet_all_click = false;
+    var _fleet_all_click = false;
     if (!fleet_minimized){
-    	if (point_and_click(draw_unit_buttons([xx+width-60, yy+40], fleet_sel,[1,1],c_red))){
-    		fleet_all = fleet_all==1?0:1;
-    		fleet_all_click=true;  		
+    	select_all_button.update({
+    		x1 : xx+width-60,
+    		y1 : yy+40,
+    		label : fleet_all ? "[X]" : "[ ]",
+    		color : c_red,
+    	})
+    	if (select_all_button.draw()){
+    		fleet_all = fleet_all == 1 ? 0 : 1;
+    		_fleet_all_click=true;  		
     	}
 
         var math_string = (string_width("Manage Units")/2)+6
-        if (point_and_click(draw_unit_buttons([center_draw-math_string, yy+height-50], "Manage Units",[1,1],c_blue))){
+        manage_units_button.update({
+        	x1 : center_draw - math_string,
+        	y1 : yy+height-50,
+        	label : "Manage Units"
+        });
+        if (manage_units_button.draw()){
 
             var _fleet_array = fleet_full_ship_array(current_fleet);
             var _fleet_marines = collect_role_group("all", ["", 0, _fleet_array]);
@@ -74,6 +86,7 @@ selection_window.inside_method = function(){
 	draw_set_halign(fa_center);
 	var ship_type,current_ship, sel_set, full_id;
 	if (screen_expansion>0){
+		//An astonishing bit of duke era code that has been botched into the modern era. Why does it work? honestly who can be fucked to read and find out
 	    for(var j=0; j<(escorts+frigates+capitals); j++){
 	    	draw_set_color(c_gray);
 	        y3+=20;
@@ -81,12 +94,12 @@ selection_window.inside_method = function(){
 	        lines++;
 	        posi++;
 	        scale=1;
-	        shew=1;
+	        _show=1;
 	        ship_health=100;
 	        if (colu==1) then void_h=min(void_h+20,560);
         
 	        if (posi==0){
-	            if (mnz=0) then draw_text(center_draw,yy+y3,string_hash_to_newline("=Capital Ships="));
+	            if (!_minimised) then draw_text(center_draw,yy+y3,"=Capital Ships=");
 	            y3+=20;
 	            if (y3>height-50) then break;
 	            set = "capitol";
@@ -95,7 +108,7 @@ selection_window.inside_method = function(){
 	        if (posi==capitals) and (frigates>0){
 	        	y3+=20;
 	        	if (y3>height-50) then break;
-	        	if (mnz=0) then draw_text(center_draw,yy+y3,string_hash_to_newline("=Frigates="));
+	        	if (!_minimised) then draw_text(center_draw,yy+y3,"=Frigates=");
 	        	y3+=20;
 	        	if (y3>height-50) then break;
 
@@ -104,7 +117,7 @@ selection_window.inside_method = function(){
 	        if (posi==capitals+frigates) and (escorts>0){
 	        	y3+=20;
 	        	if (y3>height-50) then break;
-	        	if (mnz=0) then draw_text(center_draw,yy+y3,string_hash_to_newline("=Escorts="));
+	        	if (!_minimised) then draw_text(center_draw,yy+y3,"=Escorts=");
 	        	y3+=20;
 	        	if (y3>height-50) then break;
 	        	set = "escort";
@@ -135,7 +148,9 @@ selection_window.inside_method = function(){
 	        		}
 		        	break;					        	
 	        }
-	        if (fleet_all_click) then ship_select=fleet_all;
+	        if (_fleet_all_click){
+	        	ship_select=fleet_all;
+	        }
         
 	        /*if (y3>670) and (posi<=escorts+frigates+capitals){
 	            lines=1;
@@ -159,7 +174,7 @@ selection_window.inside_method = function(){
 	                		if (string_width(name)*scale>135) then scale-=0.05;
 	                	}
 	                }
-	                shew=2;
+	                _show=2;
 	            }
 	            if (point_and_click([xx+10,yy+y3,xx+width-10,yy+y3+18])){
                     if (!(obj_controller.fest_scheduled>0 && obj_controller.fest_sid==full_id)){
@@ -171,21 +186,23 @@ selection_window.inside_method = function(){
                 	}
 	            }
 
-	            ship_health=round(_ship.ship_hp_percentage);
+	            ship_health=round(_ship.ship_hp_percentage());
 
 	            if (ship_select==0){
 	            	selection_box="[ ]";
 	            }else if (ship_select==1){ 
 	            	selection_box="[x] ";
 	            }
-	            if (mnz==0){
+	            if (!_minimised){
 	            	draw_text(xx+width-25,yy+y3,selection_box);
-	            	if (shew==2) then draw_text(xx+width-60,yy+y3,$"{ship_health}%");
+	            	if (_show==2) then draw_text(xx+width-60,yy+y3,$"{ship_health}%");
+
+		            if (ship_health<=60) and (ship_health>40) then draw_set_color(c_yellow);
+		            if (ship_health<=40) and (ship_health>20) then draw_set_color(c_orange);
+		            if (ship_health<=20) then draw_set_color(c_red);
+
+	            	draw_text_transformed(center_draw,yy+y3,name,scale,1,0);
 	            }
-	            if (ship_health<=60) and (ship_health>40) then draw_set_color(c_yellow);
-	            if (ship_health<=40) and (ship_health>20) then draw_set_color(c_orange);
-	            if (ship_health<=20) then draw_set_color(c_red);
-	            if (mnz=0) then draw_text_transformed(center_draw,yy+y3,name,scale,1,0);
 	            draw_set_color(c_gray);
 	        }
 	        switch(set){
