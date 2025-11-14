@@ -5,6 +5,7 @@ function point_on_circle(start_x, start_y, radius, angle){
     return [_final_x, _final_y];
 }
 
+
 function find_ship_combat_target(primary_target_type = obj_en_ship, secondary_target_type = -1){
     if (instance_exists(primary_target_type) && !instance_exists(secondary_target_type)){
         target=instance_nearest(x,y,obj_p_ship);
