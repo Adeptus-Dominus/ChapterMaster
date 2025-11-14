@@ -47,13 +47,13 @@ function scr_add_vehicle(vehicle_type, target_company,otherdata={} ,weapon1 = "s
 					if (first != -1) {
 						var _ship = obj_ini.ship_data[first];
 						obj_ini.veh_lid[target_company][good] = first;
-						obj_ini.veh_loc[target_company][good] = obj_ini.ship_location[first];
+						obj_ini.veh_loc[target_company][good] = obj_ini.ship_data[first].location;
 						obj_ini.veh_wid[target_company][good] = 0;
 						_ship.carrying += 1;
 					} else if ((first == -1) && (backup != -1)) {
 						var _ship = obj_ini.ship_data[backup];
 						obj_ini.veh_lid[target_company][good] = backup;
-						obj_ini.veh_loc[target_company][good] = obj_ini.ship_location[backup];
+						obj_ini.veh_loc[target_company][good] = obj_ini.ship_data[backup.location];
 						obj_ini.veh_wid[target_company][good] = 0;
 						_ship.carrying += 1;
 					} else if ((first == -1) && (backup == -1)) {
