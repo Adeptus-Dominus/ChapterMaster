@@ -75,13 +75,6 @@ if (show>0 && current_battle<=battles && current_battle>-1){
     }
     if (!instance_exists(obj_fleet) && !instance_exists(obj_ncombat)){
         main_slate.draw_with_dimensions(535, 200, 530, 400);
-    } else {
-        if (instance_exists(obj_fleet)){
-            ready_set++;
-            if (ready_set >=20){
-                start_fleet_battle();
-            }
-        }
     }
 }
 
