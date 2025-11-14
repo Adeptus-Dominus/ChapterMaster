@@ -465,7 +465,7 @@ function draw_planet_debug_problems(){
 						break;
 																		
 					default:
-						scr_popup("error","no specific debug action created please consider helping to make one");
+						scr_popup("error","no specific debug action created please consider helping to make one","");
 						break;
 				}
 			}

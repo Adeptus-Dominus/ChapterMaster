@@ -5,8 +5,8 @@ function scr_vehicle_count(role, location="") {
     var _vehicle_count = 0;
     var _fetch = fetch_deep_array;
 
-    for (var j = 0; j < 11; j++) {
-        for (var i = 1; i <= 100; i++) {
+    for (var j = 0; j <=obj_ini.companies; j++) {
+        for (var i = 0; i < array_length(obj_ini.veh_role[j]); i++) {
             var _array_key = [j, i];
 
              if (_fetch(obj_ini.veh_role, _array_key) != role){

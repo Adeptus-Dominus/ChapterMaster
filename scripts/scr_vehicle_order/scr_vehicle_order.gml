@@ -22,7 +22,7 @@ function scr_vehicle_order(company_number) {
     var temp_race, temp_loc, temp_name, temp_role, temp_wep1, temp_lid, temp_wid, temp_wep2, temp_wep3, temp_upgrade, temp_acc, temp_hp, temp_chaos, temp_uid;
 
     // init arrays
-    for (var i = 0; i < 301; i++) { // TODO why 301?
+    for (var i = 0; i < array_length(obj_ini.veh_role[company_number]); i++) { 
         temp_race[company_number][i] = 0;
         temp_loc[company_number][i] = "";
         temp_name[company_number][i] = "";
@@ -40,7 +40,7 @@ function scr_vehicle_order(company_number) {
     }
 
 	// Check for vehicles
-    for (var i = 1; i <= 150; i++) { // TODO why 150?
+    for (var i = 0; i < array_length(obj_ini.veh_role[company_number]); i++) {
         var _is_vehicle_role =
         	veh_role[company_number][i] = "Rhino" // TODO change to enums/string ids
         	|| veh_role[company_number][i] = "Predator"
@@ -49,7 +49,6 @@ function scr_vehicle_order(company_number) {
         	|| veh_role[company_number][i] = "Land Raider";
 
         if (_is_vehicle_role) {
-            vehicle_count++;
             temp_race[company_number, vehicle_count] = veh_race[company_number][i];
             temp_loc[company_number, vehicle_count] = veh_loc[company_number][i];
             temp_name[company_number, vehicle_count] = veh_name[company_number][i];
@@ -64,13 +63,13 @@ function scr_vehicle_order(company_number) {
             temp_hp[company_number, vehicle_count] = veh_hp[company_number][i];
             temp_chaos[company_number, vehicle_count] = veh_chaos[company_number][i];
             temp_uid[company_number, vehicle_count] = veh_uid[company_number][i];
-
-            reset_vehicle_variable_arrays(company_number,i);
+            vehicle_count++;
         }
+        reset_vehicle_variable_arrays(company_number,i);
     }
 
     // do the ordering
-    for (var i = 1; i <= vehicle_count; i++) { // TODO why 150?
+    for (var i = 0; i < vehicle_count; i++) {
         veh_race[company_number][i] = temp_race[company_number][i];
         veh_loc[company_number][i] = temp_loc[company_number][i];
         veh_name[company_number][i] = temp_name[company_number][i];
