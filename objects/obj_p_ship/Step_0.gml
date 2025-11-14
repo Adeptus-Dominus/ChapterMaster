@@ -32,7 +32,7 @@ if (hp<=0) and (x>-5000){
         obj_fleet.capital-=1;
         obj_fleet.capital_lost+=1;
     }
-    if (class="Strike Cruiser"){
+    if (class="Strike Cruiser") or (class="Armed Freighter"){
         obj_fleet.frigate-=1;
         obj_fleet.frigate_lost+=1;
     }
@@ -86,7 +86,7 @@ if (hp>0) and (instance_exists(target)){
         o_dist=64;
         action="broadside";
     }
-   else  if (class="Battle Barge") or (class="Strike Cruiser"){
+   else  if (class="Battle Barge") or (class="Strike Cruiser") or (class="Armed Freighter"){
         o_dist=300;
         action="attack";
     }
