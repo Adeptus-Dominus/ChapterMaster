@@ -455,10 +455,15 @@ try{
     handle_exception(_exception);
 }
 // Right here need to sort the battles within the obj_turn_end
-with(obj_turn_end){scr_battle_sort();}
+with(obj_turn_end){
+    order_end_turn_battles();
+    end_turn_battle_next_sequence(false, 20);
+}
 
 for(var i=1; i<=10; i++){
-    if (turns_ignored[i]>0) and (turns_ignored[i]<500) then turns_ignored[i]-=1;
+    if (turns_ignored[i]<500){
+        turns_ignored[i] = clamp(turns_ignored[i]-1, 0, 500);
+    }
 }
 if (known[eFACTION.Eldar]>=2) and (faction_gender[6]==2) and (turn%10==0) then turns_ignored[6]+=floor(random_range(0,6));
 
