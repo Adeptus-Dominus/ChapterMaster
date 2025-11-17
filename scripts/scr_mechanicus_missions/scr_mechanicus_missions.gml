@@ -39,14 +39,12 @@ function mechanicus_missions_end_turn(planet){
 	        if (roll1>=98) then battli=2;// very oops, much necron, wow
 	    
 	        if (battli>0) and (p_player[planet]>0){// Quene the battle
-	            obj_turn_end.battles+=1;
-	            obj_turn_end.battle[obj_turn_end.battles]=1;
-	            obj_turn_end.battle_world[obj_turn_end.battles]=planet;
-	            obj_turn_end.battle_opponent[obj_turn_end.battles]=13;
-	            obj_turn_end.battle_location[obj_turn_end.battles]=name;
-	            obj_turn_end.battle_object[obj_turn_end.battles]=id;
-	            if (battli=1) then obj_turn_end.battle_special[obj_turn_end.battles]="study2a";
-	            if (battli=2) then obj_turn_end.battle_special[obj_turn_end.battles]="study2b";
+	        	var _battle = new EndTurnBattle(EndTurnBattleTypes.Ground, self.id);
+	        	_battle.special = battli==1 ? "study2a" : "study2b";
+	        	_battle.opponent = eFACTION.Necrons;
+	        	_battle.planet = planet;
+
+	        	add_battle_to_end_turn_stack(_battle);
 	        
 	            if (obj_turn_end.battle_opponent[obj_turn_end.battles]==11){
 	                if (planet_feature_bool(p_feature[planet],P_features.ChaosWarband)==1){

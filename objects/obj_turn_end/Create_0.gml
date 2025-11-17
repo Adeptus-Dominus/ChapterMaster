@@ -73,7 +73,7 @@ alert_alpha[1]=0.2;
 alert_char[1]=1;
 i=-1
 
-handle_discovered_governor_assasinations()
+handle_discovered_governor_assasinations();
 
 
 if (audiences>0){// This is a one-off change all messages to declare war

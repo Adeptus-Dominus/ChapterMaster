@@ -5,9 +5,22 @@ enum EndTurnBattleTypes {
     Fleet,
 }
 function EndTurnBattle constructor(battle_type, system){
-
+    type = battle_type;
+    system = system;
+    planet = 1;
+    special = "";
+    opponent = 7;
 }
 
+function add_battle_to_end_turn_stack(new_battle){
+    with (obj_turn_end){
+        if (new_battle.type == Fleet){
+            array_insert(battles, new_battle, 0);
+        } else {
+            array_push(battles,new_battle);
+        }
+    }
+}
 
 function check_for_finished_end_turn_battles(){
     if (!array_length(battle)) or (current_battle>battles){
