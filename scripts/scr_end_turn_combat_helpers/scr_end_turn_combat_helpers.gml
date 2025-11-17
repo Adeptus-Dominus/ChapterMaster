@@ -43,14 +43,13 @@ function order_end_turn_battles(){
         
         if (battles<=i) and (i>=2){
             if (battle[i]!=0) and (battle[i-1]!=0) and (battle_world[i]=-50) and (battle_world[i-1]>0){
-                var tem1, tem2, tem3, tem4, tem5, tem6, tem7;
-                tem1=battle[i-1];
-                tem2=battle_location[i-1];
-                tem3=battle_world[i-1];
-                tem4=battle_opponent[i-1];
-                tem5=battle_object[i-1];
-                tem6=battle_pobject[i-1];
-                tem7=battle_special[i-1];
+                var tem1=battle[i-1];
+                var tem2=battle_location[i-1];
+                var tem3=battle_world[i-1];
+                var tem4=battle_opponent[i-1];
+                var tem5=battle_object[i-1];
+                var tem6=battle_pobject[i-1];
+                var tem7=battle_special[i-1];
                 
                 battle[i-1]=battle[i];
                 battle_location[i-1]=battle_location[i];

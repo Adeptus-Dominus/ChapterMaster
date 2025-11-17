@@ -25,6 +25,13 @@
 
 #macro ALLIANCE_GRADES ["Hated", "Hostile","Suspicious","Uneasy","Neutral","Allies","Close Allies","Battle Brothers"]
 
+#macro AUTO_BATTLE_FORCES_GRADE = ["None", "Minimal Forces", "Sparse Forces", "Moderate Forces", "Numerous Forces", "Very Numerous", "Overwhelming"]
+
+#macro FORTIFICATION_GRADES = ["None", "Sparse","Light","Moderate","Heavy","Major","Extreme", "Maximum"]
+
+#macro FORTIFICATION_GRADES_DESCRIPTIONS = ["None", "Minimally","Lightly","Moderately","Highly","Extremely","Maximally", "Maximum"]
+
+
 enum eFACTION {
     Player = 1,
     Imperium,

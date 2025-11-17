@@ -973,7 +973,7 @@ function PlanetData(planet, system) constructor{
                 draw_set_alpha(1);
                 draw_set_color(0);
             }
-            var forti_string = ["None", "Sparse","Light","Moderate","Heavy","Major","Extreme"];
+            var forti_string = FORTIFICATION_GRADES;
             var planet_forti = $"Defenses: {forti_string[fortification_level]}";
 
             draw_text(xx+480,yy+280,planet_forti);

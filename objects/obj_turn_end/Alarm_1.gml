@@ -62,9 +62,8 @@ if (!_is_audience){
     current_popup+=1;
     
     
-    if (popup[current_popup]!=0){
-        var pip;
-        pip=instance_create(0,0,obj_popup);
+    if (current_popup>=0 && current_popup<array_length(popup)){
+        var pip=instance_create(0,0,obj_popup);
         pip.title=popup_type[current_popup];
         pip.text=popup_text[current_popup];
         pip.image=popup_image[current_popup];
@@ -106,25 +105,14 @@ if (!_is_audience){
         
         
     }
-    if (current_popup>popups) or (popup[1]=0){
-        if (popups_end=0) then popups_end=1;
-        // obj_controller.x=first_x;
-        // obj_controller.y=first_y;
-        // instance_destroy();
-    }
-
-
-
+    popups_end = current_popup>=array_length(popup);
 
     // obj_controller.x=first_x;
     // obj_controller.y=first_y;
     // instance_destroy();
 }
 
-
-// if (current_popup>popups) or (popup[1]=0) then popups_end=1;
-
-if (popups_end=1){
+if (popups_end){
 
 
     /*if (popups=0){
@@ -144,7 +132,8 @@ if (popups_end=1){
     with(obj_controller){
         year_fraction+=84;
         if (year_fraction>999){
-            year+=1;year_fraction=0;
+            year+=1;
+            year_fraction=0;
         }
         if (year>=1000){
             millenium+=1;year-=1000;

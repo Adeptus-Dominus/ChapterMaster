@@ -38,6 +38,7 @@ if (battles>0) and (current_battle<=battles){
         
         
         if (battle_world[current_battle]>=1){
+            var _p_data = new PlanetData(battle_world[current_battle], battle_object[current_battle]);
         
             scr_count_forces(string(battle_location[current_battle]),battle_world[current_battle],true);
             
@@ -51,16 +52,11 @@ if (battles>0) and (current_battle<=battles){
             
             strin[3]="";
             
-            var tempy;tempy=0;
+            var tempy=0;
             tempy=battle_object[current_battle].p_owner[battle_world[current_battle]];
             
-            if (tempy=1) or (tempy=2) or (tempy=3){
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]]=1) then strin[3]="Minimally";
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]]=2) then strin[3]="Lightly";
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]]=3) then strin[3]="Moderately";
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]]=4) then strin[3]="Highly";
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]]=5) then strin[3]="Extremely";
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]]=6) then strin[3]="Maximally";
+            if ((tempy>=1) || (tempy=2) || (tempy=3)){
+                strin[3] = FORTIFICATION_GRADES_DESCRIPTIONS[clamp(_p_data.fortification_level, 0, 6)];
             }
             
             tempy=0;
@@ -68,19 +64,20 @@ if (battles>0) and (current_battle<=battles){
             if (battle_opponent[current_battle]=8) then tempy=battle_object[current_battle].p_tau[battle_world[current_battle]];
             if (battle_opponent[current_battle]=9) then tempy=battle_object[current_battle].p_tyranids[battle_world[current_battle]];
             if (battle_opponent[current_battle]=10) then tempy=battle_object[current_battle].p_traitors[battle_world[current_battle]];
-            if (battle_opponent[current_battle]=30){tempy=1;strin[4]="Master Spyrer";}
+            if (battle_opponent[current_battle]=30){
+                tempy=1;
+                strin[4]="Master Spyrer";
+            }
             
             if (battle_opponent[current_battle]<=20){
-                if (tempy=1) then strin[4]="Minimal Forces";
-                if (tempy=2) then strin[4]="Sparse Forces";
-                if (tempy=3) then strin[4]="Moderate Forces";
-                if (tempy=4) then strin[4]="Numerous Forces";
-                if (tempy=5) then strin[4]="Very Numerous";
-                if (tempy=6) then strin[4]="Overwhelming";
+                tempy = clamp(tempy, 0, 6);
+                strin[4] = AUTO_BATTLE_FORCES_GRADE[tempy];
             }
         }
         
-        if (obj_controller.zoomed=1) then with(obj_controller){scr_zoom();}
+        if (obj_controller.zoomed=1){
+            scr_zoom()
+        };
     }
     instance_activate_object(obj_star);
     
