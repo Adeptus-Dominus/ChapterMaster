@@ -393,7 +393,7 @@ try {
             obj_controller.current_eventing="chaos_meeting_end";
             with(obj_temp_meeting){instance_destroy();}with(obj_popup){instance_destroy();}
             if (instance_exists(obj_turn_end)){
-                obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
+                obj_turn_end.combating=0;// setup_audience_and_popup_timer(1);
             }
             var pip;pip = instance_create(0,0,obj_popup);
             pip.title = "Enemies Vanquished";
@@ -409,7 +409,7 @@ try {
             with(obj_temp_meeting){instance_destroy();}
             with(obj_popup){instance_destroy();}
             if (instance_exists(obj_turn_end)){
-                obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
+                obj_turn_end.combating=0;// setup_audience_and_popup_timer(1);
             }
             var pip = instance_create(0,0,obj_popup);
             pip.title = "Survived";
@@ -447,7 +447,7 @@ try {
                     instance_destroy();
                 }
                 if (instance_exists(obj_turn_end)){
-                    obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
+                    obj_turn_end.combating=0;// setup_audience_and_popup_timer(1);
                 }
                 var pip = instance_create(0,0,obj_popup);
                 pip.title = "Chaos Lord Killed";

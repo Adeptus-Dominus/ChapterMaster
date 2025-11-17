@@ -107,7 +107,8 @@ if (instance_exists(obj_controller)){
     
     
     if (obj_controller.current_eventing="chaos_meeting_end") and (instance_exists(obj_turn_end)){
-        obj_turn_end.alarm[1]=1;obj_controller.current_eventing="";
+        setup_audience_and_popup_timer(1);
+        obj_controller.current_eventing="";
     }
 }
 

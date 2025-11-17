@@ -1,7 +1,19 @@
-function add_new_end_turn_battle(){
+
+
+enum EndTurnBattleTypes {
+    Ground,
+    Fleet,
+}
+function EndTurnBattle constructor(battle_type, system){
 
 }
 
+
+function check_for_finished_end_turn_battles(){
+    if (!array_length(battle)) or (current_battle>battles){
+        setup_audience_and_popup_timer();
+    }
+}
 function end_turn_battle_next_sequence(next_battle = true, wait_time = 1){
     if (next_battle){
         obj_turn_end.current_battle++;
@@ -13,20 +25,11 @@ function end_turn_battle_next_sequence(next_battle = true, wait_time = 1){
 
 
         order_end_turn_battles();
-        collect_next_end_turn_fleet_battle();
+        collect_next_end_turn_battle();
 
         instance_activate_object(obj_star);
 
-
-
-
-        if (battle[1]=0) or (current_battle>battles){//                         This is temporary for the sake of testing
-            if (battle[1]=0){
-                obj_controller.x=first_x;
-                obj_controller.y=first_y;
-            }
-            alarm[1]=1;
-        }
+        check_for_finished_end_turn_battles();
     }
 
     wait_and_execute(wait_time,_main_func,[],obj_turn_end)
@@ -119,8 +122,7 @@ function next_end_turn_battle_variables(){
                 strin[2]=info_vehicles;
                 
                 if (info_mahreens+info_vehicles=0){
-                    if (battles>current_battle) then alarm[4]=1;
-                    if (battles=current_battle) then alarm[1]=1;
+                    end_turn_battle_next_sequence();
                 }
                 
                 strin[3]="";
@@ -158,15 +160,7 @@ function next_end_turn_battle_variables(){
 
     instance_activate_object(obj_star);
 
-
-
-
-
-
-    if (battle[1]=0) or (current_battle>battles){//                         This is temporary for the sake of testing
-        if (battle[1]=0){obj_controller.x=first_x;obj_controller.y=first_y;}
-        alarm[1]=1;
-    }
+    end_turn_battle_next_sequence();
 
 }
 
@@ -243,12 +237,8 @@ function collect_next_end_turn_battle(){
             strin[2]=info_vehicles;
             
             if (info_mahreens+info_vehicles=0){
-                if (battles>current_battle){
-                    wait_and_execute(1, next_end_turn_battle_variables,[],self);
-                }
-                if (battles=current_battle){
-                    alarm[1]=1;
-                }
+                end_turn_battle_next_sequence();
+                exit;
             }
             
             strin[3]="";

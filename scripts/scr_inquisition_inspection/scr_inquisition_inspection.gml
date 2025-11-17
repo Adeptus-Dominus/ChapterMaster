@@ -362,7 +362,9 @@ function inquisitor_inspection_structure() constructor {
                     str1: "Over your dead body",
                     method: function() {
                         obj_controller.cooldown = 10;
-                        if (number != 0 && instance_exists(obj_turn_end)) { obj_turn_end.alarm[1] = 4; }
+                        if (number != 0 && instance_exists(obj_turn_end)) {
+                             setup_audience_and_popup_timer(4);
+                         }
                         instance_destroy();
                         exit;
                     }

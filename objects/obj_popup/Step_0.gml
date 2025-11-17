@@ -166,7 +166,7 @@ try {
 				}
 				if ((press == 2) && instance_exists(obj_turn_end)) {
 					if (number != 0) {
-						obj_turn_end.alarm[1] = 4;
+						setup_audience_and_popup_timer(4);
 					}
 					with (obj_temp_meeting) {
 						instance_destroy();
@@ -245,7 +245,7 @@ try {
 			}
 			obj_controller.cooldown = 10;
 			if (number != 0 && instance_exists(obj_turn_end)) {
-				obj_turn_end.alarm[1] = 4;
+				setup_audience_and_popup_timer(4);
 			}
 			instance_destroy();
 		}
@@ -547,7 +547,7 @@ try {
 		obj_controller.cooldown = 10;
 		if (obj_controller.complex_event == false) {
 			if (number != 0 && instance_exists(obj_turn_end)) {
-				obj_turn_end.alarm[1] = 4;
+				setup_audience_and_popup_timer(4);
 			}
 			instance_destroy();
 		}
@@ -604,7 +604,7 @@ try {
 
 		if (obj_controller.complex_event == false) {
 			if (number != 0 && instance_exists(obj_turn_end)) {
-				obj_turn_end.alarm[1] = 4;
+				setup_audience_and_popup_timer(4);
 			}
 			instance_destroy();
 		}

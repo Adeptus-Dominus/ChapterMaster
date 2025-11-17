@@ -5,7 +5,7 @@ function necron_tomb_raid_post_battle_sequence(){
 		if (defeat == 1) {
 		    obj_controller.combat=0;
 		    obj_controller.cooldown=10;
-		    obj_turn_end.alarm[1]=4;
+		    setup_audience_and_popup_timer(4);
 		}
 
 		else if (defeat == 0){

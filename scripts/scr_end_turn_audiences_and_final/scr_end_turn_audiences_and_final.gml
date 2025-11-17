@@ -1,67 +1,67 @@
+function scr_end_turn_check_audiences_and_popups(){
+	var _is_audience = false;
+	if (array_length(audience_stack) > 0){
+	    var current_audience = audience_stack[0];
+	    _is_audience = true;
+	}
 
-var _is_audience = false;
-if (array_length(audience_stack) > 0){
-    var current_audience = audience_stack[0];
-    _is_audience = true;
+
+	if (_is_audience){
+	    with(obj_controller){
+	        if (zoomed=1){
+	            scr_zoom();
+	        }
+	    }
+
+	    //show_debug_message(current_audience);
+
+	    if (obj_controller.menu != MENU.Diplomacy){
+	        scr_toggle_diplomacy();
+	    }
+	    obj_controller.audience = current_audience.faction;
+	    obj_controller.diplomacy = current_audience.faction;
+	    obj_controller.audience_data = current_audience.audience_data;
+	    
+	    if (obj_controller.diplomacy=10) and (obj_controller.faction_gender[10]=2){
+	        scr_music("blood",60);
+	    }
+	    
+	    if (string_count("intro",current_audience.topic)>0){
+	        obj_controller.known[obj_controller.diplomacy]=2;
+	        obj_controller.faction_justmet=1;
+	        if (obj_controller.diplomacy=6){
+
+	             scr_dialogue("intro1");
+
+	        }
+	        if (obj_controller.diplomacy!=6){
+	            //show_debug_message("new_intro");
+	            scr_dialogue("intro");
+
+	        }
+	    }else {
+	        scr_dialogue(current_audience.topic);
+	        
+	    }
+	    array_delete(audience_stack, 0, 1);
+	    exit;
+	}
+
+
+	if (!_is_audience){
+	    turn_end_popups();
+	}
+
 }
 
-
-if (_is_audience){
-    with(obj_controller){
-        if (zoomed=1){
-            scr_zoom();
-        }
-    }
-
-    show_debug_message(current_audience);
-
-    if (obj_controller.menu != MENU.Diplomacy){
-        scr_toggle_diplomacy();
-    }
-    obj_controller.audience=current_audience.faction;
-    obj_controller.diplomacy=current_audience.faction;
-    obj_controller.audience_data = current_audience.audience_data;
-    
-    if (obj_controller.diplomacy=10) and (obj_controller.faction_gender[10]=2){
-        scr_music("blood",60);
-    }
-    
-    if (string_count("intro",current_audience.topic)>0){
-        obj_controller.known[obj_controller.diplomacy]=2;
-        obj_controller.faction_justmet=1;
-        if (obj_controller.diplomacy=6){
-
-             scr_dialogue("intro1");
-
-        }
-        if (obj_controller.diplomacy!=6){
-            //show_debug_message("new_intro");
-            scr_dialogue("intro");
-
-        }
-    }else {
-        scr_dialogue(current_audience.topic);
-        
-    }
-    array_delete(audience_stack, 0, 1);
-    exit;
+function setup_audience_and_popup_timer(timer = 1){
+	wait_and_execute(timer,scr_end_turn_check_audiences_and_popups,[], obj_turn_end);
 }
 
-
-
-
-
-
-
-
-
-// if (current_audience<=audiences) then alarm[1]=5;
-
-
-if (!_is_audience){
-    current_popup+=1;
-    
-    
+function turn_end_popups(){
+	current_popup+=1;
+	    
+	    
     if (current_popup>=0 && current_popup<array_length(popup)){
         var pip=instance_create(0,0,obj_popup);
         pip.title=popup_type[current_popup];
@@ -107,28 +107,32 @@ if (!_is_audience){
     }
     popups_end = current_popup>=array_length(popup);
 
+
+	if (popups_end){
+		final_end_turn_sequence();
+	}
     // obj_controller.x=first_x;
     // obj_controller.y=first_y;
     // instance_destroy();
 }
 
-if (popups_end){
+	    /*if (popups=0){
+	        obj_controller.x=first_x;
+	        obj_controller.y=first_y;
+	        instance_destroy();
+	    }*/
 
-
-    /*if (popups=0){
-        obj_controller.x=first_x;
-        obj_controller.y=first_y;
-        instance_destroy();
-    }*/
-
-
-    obj_controller.x=first_x;
-    obj_controller.y=first_y;
+function final_end_turn_sequence(){
+    obj_controller.x = first_x;
+    obj_controller.y = first_y;
     
     alarm[2]=10;
     obj_controller.menu=0;
     combating=0;
-    
+    increment_in_game_time();
+}
+
+function increment_in_game_time(){
     with(obj_controller){
         year_fraction+=84;
         if (year_fraction>999){
@@ -136,12 +140,9 @@ if (popups_end){
             year_fraction=0;
         }
         if (year>=1000){
-            millenium+=1;year-=1000;
+            millenium+=1;
+            year-=1000;
         }
         // menu=0;
     }
-    
 }
-
-/* */
-/*  */

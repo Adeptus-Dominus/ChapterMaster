@@ -61,6 +61,8 @@ battle_opponent =  [];// faction ID
 battle_object =  [];// faction object for the fleets
 battle_pobject =  [];// player object for the fleets
 battle_special = [];
+
+battle = [];
     
 
 audiences = 0;

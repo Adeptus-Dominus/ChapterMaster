@@ -48,7 +48,9 @@ if (closing=true) and (fading=-1) and (fade_alpha<=0){
     }
     
     with(obj_popup){
-        if (number!=0) then obj_turn_end.alarm[1]=10;
+        if (number!=0){
+            setup_audience_and_popup_timer(10);
+        }
         instance_destroy();
     }
     obj_controller.cooldown=30;

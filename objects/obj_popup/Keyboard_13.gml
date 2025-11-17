@@ -17,7 +17,7 @@ if (array_length(options == 0) && type<5){
     obj_controller.cooldown=10;
     if (number!=0) and (obj_controller.complex_event=false){
         if (instance_exists(obj_turn_end)){
-            obj_turn_end.alarm[1]=4;
+            setup_audience_and_popup_timer(4);
         }
     }
     instance_destroy();
