@@ -44,18 +44,20 @@ function mechanicus_missions_end_turn(planet){
 	        	_battle.opponent = eFACTION.Necrons;
 	        	_battle.planet = planet;
 
-	        	add_battle_to_end_turn_stack(_battle);
-	        
-	            if (obj_turn_end.battle_opponent[obj_turn_end.battles]==11){
+	        	
+	        	//clearly reserved for an unfinished version of the mission where the player has to instead fight CSSM
+	            if (_battle.opponent == 11){
 	                if (planet_feature_bool(p_feature[planet],P_features.ChaosWarband)==1){
-	                    obj_turn_end.battle_special[obj_turn_end.battles]="ChaosWarband";
+	                    _battle.special="ChaosWarband";
 	                }
 	            }
+
+	            _battle.add_to_stack();
 	        }
 	        if (battli>0) and (p_player[planet]<=0){// XDDDDD
 	            scr_popup("Mechanicus Mission Failed","The Mechanicus Research team on planet "+string(name)+" "+scr_roman(planet)+" have been killed by Necrons in the absence of your astartes.  The Mechanicus are absolutely livid, doubly so because of the promised security they did not recieve.","","");
-	            obj_controller.turns_ignored[3]+=choose(8,10,12,14,16,18,20,22,24);
-	            obj_controller.disposition[3]-=25;
+	            obj_controller.turns_ignored[eFACTION.Mechanicus]+=choose(8,10,12,14,16,18,20,22,24);
+	            alter_disposition(eFACTION.Mechanicus,-25);
 	            remove_planet_problem(planet,"mech_tomb2");
 	        }
 	    }

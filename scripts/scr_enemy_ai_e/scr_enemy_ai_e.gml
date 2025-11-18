@@ -385,58 +385,7 @@ function scr_enemy_ai_e() {
     } // End AI battle
 
     if (battle > 0) {
-        if (present_fleet[1] > 0) and((present_fleet[6] + present_fleet[7] + present_fleet[8] + present_fleet[9] + present_fleet[10] + present_fleet[13] > 0) or((present_fleet[2] > 0) and(obj_controller.faction_status[2] = "War"))) {
-            var i, onceh;
-            i = 1;
-            onceh = 0;
-
-            repeat(9) {
-                i += 1;
-                var special_stop = false;;
-                if (i = 10) or(i = 11) {
-                    special_stop = has_problem_star("meeting")||has_problem_star("meeting_trap");
-                }
-
-                if (obj_controller.faction_status[i] = "War") and(onceh = 0) and(!special_stop) { // Quene battle
-                    obj_turn_end.battles += 1;
-                    obj_turn_end.battle[obj_turn_end.battles] = 1;
-                    obj_turn_end.battle_world[obj_turn_end.battles] = -50;
-                    obj_turn_end.battle_opponent[obj_turn_end.battles] = i; // Who triggered it first
-                    obj_turn_end.battle_location[obj_turn_end.battles] = name;
-                    // obj_turn_end.battle_object[obj_turn_end.battles]=instance_nearest(x,y,obj_en_fleet);
-                    obj_turn_end.battle_pobject[obj_turn_end.battles] = instance_nearest(x, y, obj_p_fleet);
-
-                    if (i = 10) {
-                        obj_controller.temp[1049] = string(name);
-                        with(obj_temp2) {
-                            instance_destroy();
-                        }
-                        with(obj_temp3) {
-                            instance_destroy();
-                        }
-                        with(obj_en_fleet) {
-                            if (action = "") and(orbiting = obj_controller.temp[1049]) and(owner = 10) {
-                                if (string_count("warband", trade_goods) > 0) then instance_create(x, y, obj_temp2);
-                                if (string_lower(trade_goods) = "csm") then instance_create(x, y, obj_temp3);
-                            }
-                        }
-                        if (instance_exists(obj_temp2)) {
-                            obj_turn_end.battle_special[obj_turn_end.battles] = "BLOOD";
-                            with(obj_temp2) {
-                                instance_destroy();
-                            }
-                        }
-                        if (instance_exists(obj_temp3)) {
-                            obj_turn_end.battle_special[obj_turn_end.battles] = "CSM";
-                            with(obj_temp2) {
-                                instance_destroy();
-                            }
-                        }
-                    }
-                    onceh = 1;
-                }
-            }
-        }
+        add_system_end_turn_fleet_battles();
     }
 
     instance_activate_object(obj_p_fleet);
@@ -483,37 +432,17 @@ function scr_enemy_ai_e() {
                     tixt += " seems to have vanished, presumably gone into hiding.";
                     scr_popup("Spyrer Rampage", tixt, "spyrer", "");
                 } else if ((p_player[run] <= 20)){
-                    obj_turn_end.battles += 1;
-                    obj_turn_end.battle[obj_turn_end.battles] = 1;
-                    obj_turn_end.battle_world[obj_turn_end.battles] = run;
-                    obj_turn_end.battle_opponent[obj_turn_end.battles] = 30;
-                    obj_turn_end.battle_location[obj_turn_end.battles] = name;
-                    obj_turn_end.battle_object[obj_turn_end.battles] = id;
-                    obj_turn_end.battle_special[obj_turn_end.battles] = "spyrer";                    
+                    var _battle = new EndTurnBattle(EndTurnBattleTypes.Ground, self);
+                    _battle.planet = run;
+                    _battle.battle_special = "spyrer";
+                     _battle.battle_opponent = 30;
+
+                    _battle.add_to_stack();                
                 }
             }
 
             if (p_player[run] > 0) and (has_problem_planet(run,  "fallen")) {
-                var chan;
-                chan = choose(1, 2, 3, 4);
-                if (chan <= 2) {
-                    obj_turn_end.battles += 1;
-                    obj_turn_end.battle[obj_turn_end.battles] = 1;
-                    obj_turn_end.battle_world[obj_turn_end.battles] = run;
-                    obj_turn_end.battle_opponent[obj_turn_end.battles] = 10;
-                    obj_turn_end.battle_location[obj_turn_end.battles] = name;
-                    obj_turn_end.battle_object[obj_turn_end.battles] = id;
-                    if (chan = 1) then obj_turn_end.battle_special[obj_turn_end.battles] = "fallen1";
-                    if (chan = 2) then obj_turn_end.battle_special[obj_turn_end.battles] = "fallen2";
-
-                }else if (chan >= 3) {
-                    if (remove_planet_problem(run, "fallen")){
-                        tixt = "Your marines have scoured " + planet_numeral_name(run);
-                        tixt += " in search of the Fallen.  Despite their best efforts, and meticulous searching, none have been found.  It appears as though the information was faulty or out of date.";
-                        scr_popup("Hunt the Fallen", tixt, "fallen", "");
-                        scr_event_log("", $"Mission Successful: No Fallen located upon {planet_numeral_name(run)}");
-                    }
-                }
+                setup_fallen_capture_battle();
             }
         }
         if (p_player[run] > 0 && has_problem_planet(run,"necron")){
@@ -583,13 +512,10 @@ function scr_enemy_ai_e() {
 
                 // other battle crap here
                 if (battle_opponent > 0) {
-                    // obj_controller.x=self.x;obj_controller.y=self.y;
-                    obj_turn_end.battles += 1;
-                    obj_turn_end.battle[obj_turn_end.battles] = 1;
-                    obj_turn_end.battle_world[obj_turn_end.battles] = run;
-                    obj_turn_end.battle_opponent[obj_turn_end.battles] = battle_opponent;
-                    obj_turn_end.battle_location[obj_turn_end.battles] = name;
-                    obj_turn_end.battle_object[obj_turn_end.battles] = id;
+                    var _battle = new EndTurnBattle(EndTurnBattleTypes.Ground, self);
+                    _battle.planet = run;
+                    _battle.battle_opponent = battle_opponent;
+                    _battle.add_to_stack(); 
                 }
             }
         }

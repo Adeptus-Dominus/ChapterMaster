@@ -10,17 +10,21 @@ function EndTurnBattle constructor(battle_type, system){
     planet = 1;
     special = "";
     opponent = 7;
-}
+    player_object = -1;
 
-function add_battle_to_end_turn_stack(new_battle){
-    with (obj_turn_end){
-        if (new_battle.type == Fleet){
-            array_insert(battles, new_battle, 0);
-        } else {
-            array_push(battles,new_battle);
-        }
+    static add_to_stack = function(){
+        var _new_battle = self;
+        location = system.name;
+        with (obj_turn_end){
+            if (_new_battle.type == Fleet){
+                array_insert(battles, _new_battle, 0);
+            } else {
+                array_push(battles,_new_battle);
+            }
+        }        
     }
 }
+
 
 function check_for_finished_end_turn_battles(){
     if (!array_length(battle)) or (current_battle>battles){
@@ -484,5 +488,64 @@ function draw_player_ground_combat_options(){
         delete _roster;
         instance_deactivate_object(battle_object[current_battle]);
     }
+    
+}
+
+function add_system_end_turn_fleet_battles(){
+
+    //IF no valid enemy or player fleets just skip this step
+    var _nearest_en_fleet = instance_nearest(x,y,obj_en_fleet);
+    if (_nearest_en_fleet.x != x && _nearest_en_fleet.y != y) {
+        exit;
+    }
+
+    var _nearest_p_fleet = instance_nearest(x,y,obj_p_fleet);
+
+    if (_nearest_p_fleet.x != x && _nearest_p_fleet.y != y || _nearest_p_fleet.action == "move") {
+        exit;
+    }
+
+    var _orbiting_fleets = scr_orbiting_fleets_all();
+
+    if (!array_length(_orbiting_fleets)){
+        exit;
+    }
+    var _largest_fleet = -1;
+    var _largest_score = 0;
+
+    for (var i=0;i<array_length(_orbiting_fleets);i++){
+        var _cur_fleet = _orbiting_fleets[i];
+        if (fleet_faction_status(_cur_fleet)!="War"){
+            continue;
+        }
+        if (_cur_fleet.owner == 10 || _cur_fleet.owner == 11){
+            if (has_problem_star("meeting")||has_problem_star("meeting_trap")){
+                continue;
+            }
+        }
+        var _cur_largest = standard_fleet_strength_calc(_cur_fleet);
+        if (_cur_largest >  _largest_score){
+            _largest_fleet = _cur_fleet.id;
+            _largest_score = _cur_largest;
+        }
+    }
+
+    if (_largest_score <=0 || !instance_exists(_largest_fleet)){
+        exit;
+    }
+
+    var _fleet_battle = new EndTurnBattle(EndTurnBattleTypes.Fleet, self);
+
+    _fleet_battle.opponent = _largest_fleet.owner;
+
+    if (fleet_has_cargo("warband", _largest_fleet)){
+        _fleet_battle.special = "BLOOD";
+    }
+
+    if (fleet_has_cargo("csm", _largest_fleet)){
+        _fleet_battle.special = "CSM";
+    }
+
+    _fleet_battle.add_to_stack();
     
 }

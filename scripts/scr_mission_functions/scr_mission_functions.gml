@@ -500,6 +500,26 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
     }	
 }
 
+///@mixin obj_star
+function setup_fallen_capture_battle(planet){
+    var chan = choose(1, 2, 3, 4);
+    if (chan <= 2) {
+        var _battle = new EndTurnBattle(EndTurnBattleTypes.Ground, self);
+        _battle.planet = planet;
+        _battle.battle_special = chan == 1 ? "fallen1" : "fallen2";
+        _battle.battle_opponent = 10;
+        _battle.add_to_stack();  
+
+
+    }else if (chan >= 3) {
+        if (remove_planet_problem(planet, "fallen")){
+            tixt = "Your marines have scoured " + planet_numeral_name(planet);
+            tixt += " in search of the Fallen.  Despite their best efforts, and meticulous searching, none have been found.  It appears as though the information was faulty or out of date.";
+            scr_popup("Hunt the Fallen", tixt, "fallen", "");
+            scr_event_log("", $"Mission Successful: No Fallen located upon {planet_numeral_name(planet)}");
+        }
+    }
+}
 //TODO allow most of these functions to be condensed and allow arrays of problems or planets and maybe increase filtering options
 //filtering options could be done via universal methods that all the filters to be passed to many other game systems
 function has_any_problem_planet(planet, star="none"){

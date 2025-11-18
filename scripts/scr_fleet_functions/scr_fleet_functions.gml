@@ -476,6 +476,19 @@ function scr_orbiting_fleet(faction, system="none"){
 	return _found_fleet;	
 }
 
+function scr_orbiting_fleets_all(system="none"){
+	var xx = system == "none" ? x : system.x;
+	var yy = system == "none" ? y : system.y;
+	var _found_fleets = [];
+	with (obj_en_fleet){
+		if (x==xx && y==yy){
+			array_push(_found_fleets, id);					
+		}
+	}
+
+	return _found_fleets; 
+}
+
 
 /// @function object_distance(obj_1, obj_2)
 /// @description Returns the distance in pixels between two instances or objects based on their `x` and `y` coordinates.
@@ -556,13 +569,34 @@ function get_orbiting_fleets(faction,system="none"){
 	return _fleets;	
 }
 
+function standard_fleet_strength_calc(fleet = "none"){
+	if (fleet == "none"){
+		return capital_number + (frigate_number/2) + (escort_number/4);
+	} else { 
+		with (fleet){
+			return standard_fleet_strength_calc();
+		}
+	}
+}
+
+function fleet_faction_status(fleet = "none"){
+	if (fleet == "none"){
+		return obj_controller.faction_status[owner];
+	} else { 
+		with (fleet){
+			return fleet_faction_status();
+		}
+	}
+}	
+}
+
 function sector_imperial_fleet_strength(){
 	obj_controller.imp_ships = 0;
     var _imperial_planet_count = 0;
     var _mech_worlds = 0;
     with(obj_en_fleet){
         if (owner==eFACTION.Imperium){
-            var _imperial_fleet_defence_score = capital_number + (frigate_number/2) + (escort_number/4);
+            var _imperial_fleet_defence_score = standard_fleet_strength_calc();
             obj_controller.imp_ships += _imperial_fleet_defence_score;
         }
     }
