@@ -4,7 +4,7 @@ enum EndTurnBattleTypes {
     Ground,
     Fleet,
 }
-function EndTurnBattle constructor(battle_type, system){
+function EndTurnBattle (battle_type, system)constructor{
     type = battle_type;
     system = system;
     planet = 1;

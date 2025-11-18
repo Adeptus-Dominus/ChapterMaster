@@ -588,7 +588,7 @@ function fleet_faction_status(fleet = "none"){
 		}
 	}
 }	
-}
+
 
 function sector_imperial_fleet_strength(){
 	obj_controller.imp_ships = 0;
