@@ -456,7 +456,6 @@ try{
 }
 // Right here need to sort the battles within the obj_turn_end
 with(obj_turn_end){
-    order_end_turn_battles();
     end_turn_battle_next_sequence(false, 20);
 }
 
