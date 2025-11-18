@@ -168,21 +168,37 @@ function merge_ork_fleets(){
     }
 }
 
-function init_ork_waagh(overide = false){
-    var waaagh=roll_dice(1,100);
-
-    var _ork_stars = scr_get_stars(false,[eFACTION.Ork]);
-
-    var _ork_star_count = array_length(_ork_stars);
-    if (_ork_star_count>=5 && (waaagh<=_ork_star_count || overide) && obj_controller.known[eFACTION.Ork]==0)/* or (obj_controller.is_test_map=true)*/{
-        obj_controller.known[eFACTION.Ork]=0.5;
-        //set an alarm for all ork controlled planets
-
-
-        scr_popup("WAAAAGH!","The greenskins have swelled in activity, their numbers increasing seemingly without relent.  A massive Warboss has risen to take control, leading most of the sector's Orks on a massive WAAAGH!","waaagh","");
+function init_ork_waagh(overide=false) {
+var waaagh = irandom(300);
+var waaagh_1 =irandom(4);
+var _ork_stars = scr_get_stars(false, [eFACTION.Ork]);
+var _ork_stars_count = array_length(_ork_stars);
+//
+if ((_ork_stars_count>=45) &&  (waaagh_1==3 || overide ) && obj_controller.known[eFACTION.Ork]==0)
+{
+scr_popup("WAAAAGH!","The greenskins have gone unchallenged for far too long. A towering Warboss has rallied the ork hordes and halted their infighting. Now unified, the greenskins pose a dire threat to the entire sector!","waaagh","");
+        scr_event_log("red","Ork WAAAAGH! begins");
+        obj_controller.known[eFACTION.Ork]=0.5;	
+}
+else if ((_ork_stars_count<=5) && (waaagh_1==3 || overide) && obj_controller.known[eFACTION.Ork]==0)
+{
+scr_popup("WAAAAGH!","The orks are nearly defeated, but in a final desperate push, a new Warboss has mustered a fresh WAAAGH! and begun reclaiming their lost worlds.","waaagh","");
         scr_event_log("red","Ork WAAAAGH! begins.");
-        
-        var ork_waagh_activity = [];
+        obj_controller.known[eFACTION.Ork]=0.5;	
+}
+else if ((_ork_stars_count>=5 && _ork_stars_count <=35) && (waaagh==33 || overide) && obj_controller.known[eFACTION.Ork]==0)
+{
+
+	scr_popup("WAAAAGH!","The greenskins have swelled in activity, their numbers increasing seemingly without relent.  A massive Warboss has risen to take control, leading most of the sector's Orks on a massive WAAAGH!","waaagh","");
+        scr_event_log("red","Ork WAAAAGH! begins.");
+        obj_controller.known[eFACTION.Ork]=0.5;	
+}
+else
+{
+	//if no waaagh is triggered
+	return;
+}
+var ork_waagh_activity = [];
         var _any_ork_star = [];
         for (var p=0;p<array_length(_ork_stars);p++){
             with(_ork_stars[p]){
@@ -214,7 +230,7 @@ function init_ork_waagh(overide = false){
 
         if (_waaagh_star_found){
             var _pdata = new PlanetData(_waaagh_star[1], _waaagh_star[0]);
-
+ 
             var _boss = _pdata.add_feature(P_features.OrkWarboss);
             if (overide){
                 _boss.player_hidden = false;
@@ -227,8 +243,13 @@ function init_ork_waagh(overide = false){
         } else {
             out_of_system_warboss(true);
         }
+		if (waaagh>=15 && waaagh<=100){
+		scr_popup("WAAAAGH!","My lord, our Auspex scans indicate that the Ork Warboss is currently within the "+string(_pdata.system.name)+" system.We must strike swiftly before he relocates. ","waaagh","");
+    	 scr_event_log("red",$"boss on {_pdata.name()}", _pdata.system.name);
+		}
+	
     }
-}
+
 
 function out_of_system_warboss(overide = false){
 
