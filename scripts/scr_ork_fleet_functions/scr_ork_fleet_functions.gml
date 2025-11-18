@@ -170,7 +170,7 @@ function merge_ork_fleets(){
 
 function init_ork_waagh(overide=false) {
 var waaagh = irandom(300);
-var waaagh_1 =irandom(4);
+var waaagh_1 =irandom(3);
 var _ork_stars = scr_get_stars(false, [eFACTION.Ork]);
 var _ork_stars_count = array_length(_ork_stars);
 //
@@ -186,7 +186,7 @@ scr_popup("WAAAAGH!","The orks are nearly defeated, but in a final desperate pus
         scr_event_log("red","Ork WAAAAGH! begins.");
         obj_controller.known[eFACTION.Ork]=0.5;	
 }
-else if ((_ork_stars_count>=5 && _ork_stars_count <=35) && (waaagh==33 || overide) && obj_controller.known[eFACTION.Ork]==0)
+else if ((_ork_stars_count>=6 && _ork_stars_count <=35) && (waaagh==33 || overide) && obj_controller.known[eFACTION.Ork]==0)
 {
 
 	scr_popup("WAAAAGH!","The greenskins have swelled in activity, their numbers increasing seemingly without relent.  A massive Warboss has risen to take control, leading most of the sector's Orks on a massive WAAAGH!","waaagh","");
@@ -243,7 +243,7 @@ var ork_waagh_activity = [];
         } else {
             out_of_system_warboss(true);
         }
-		if (waaagh<=300){
+		if (_waaagh_star_found){
 		scr_popup("WAAAAGH!","My lord, our Auspex scans indicate that the Ork Warboss is currently within the "+string(_pdata.system.name)+" system.We must strike swiftly before he relocates. ","waaagh","");
     	 scr_event_log("red",$"boss on {_pdata.name()}", _pdata.system.name);
 		}
