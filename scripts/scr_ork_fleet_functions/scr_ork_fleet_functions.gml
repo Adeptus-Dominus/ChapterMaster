@@ -243,7 +243,7 @@ var ork_waagh_activity = [];
         } else {
             out_of_system_warboss(true);
         }
-		if (waaagh>=15 && waaagh<=100){
+		if (waaagh<=300){
 		scr_popup("WAAAAGH!","My lord, our Auspex scans indicate that the Ork Warboss is currently within the "+string(_pdata.system.name)+" system.We must strike swiftly before he relocates. ","waaagh","");
     	 scr_event_log("red",$"boss on {_pdata.name()}", _pdata.system.name);
 		}
