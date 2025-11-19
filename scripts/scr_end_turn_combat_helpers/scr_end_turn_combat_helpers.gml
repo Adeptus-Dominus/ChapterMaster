@@ -6,22 +6,128 @@ enum EndTurnBattleTypes {
 }
 function EndTurnBattle (battle_type, system)constructor{
     type = battle_type;
-    system = system;
+    self.system = system;
     planet = 1;
     special = "";
     opponent = 7;
     player_object = -1;
+    slate = new DataSlate();
+    slate.inside_method = function(){
+        var xxx=slate.XX;
+        var yyy=slate.YY;
+        var i=current_battle;
+        
+        // if (battle_world[i]>0) then draw_sprite(spr_attacked,0,xxx+12,yyy+54);
+        var _img = type;
+
+        scr_image("attacked",_img,xxx+12,yyy+54,254,174);
+        
+        draw_set_font(fnt_40k_14);
+        draw_set_halign(fa_left);
+        draw_set_color(c_gray);
+        draw_text(xxx+8,yyy+13,$"{current_battle}/{battles}");
+        
+        draw_set_halign(fa_center);
+        draw_set_font(fnt_40k_30b);
+        
+        if (type == EndTurnBattleTypes.Ground){
+            draw_text_transformed(xxx+265,yyy+11,$"Forces Attacked! ({pdata.name()})",0.7,0.7,0);
+        } else {
+            draw_text_transformed(xxx+265,yyy+11,$"Fleet Attacked! ({location} System)",0.7,0.7,0);
+        }
+        
+        scr_image("ui/force",1,xxx+378-32,yyy+86-32,64,64);
+        // draw_sprite(spr_force_icon,1,xxx+378,yyy+86);
+        
+        draw_set_font(fnt_40k_14);
+        draw_set_halign(fa_left);
+        if (type == EndTurnBattleTypes.Fleet){
+            draw_player_fleet_combat_options();
+        } else if (type == EndTurnBattleTypes.Ground){
+           draw_player_ground_combat_options();
+        }        
+    }
 
     static add_to_stack = function(){
         var _new_battle = self;
         location = system.name;
+        if (type == EndTurnBattleTypes.Ground){
+            pdata = new PlanetData(planet,system);
+        }
         with (obj_turn_end){
             if (_new_battle.type == Fleet){
-                array_insert(battles, _new_battle, 0);
+                _new_battle.collect_fleet_battle_variables();
+                //final check that there definatly are infact enemy ships to fight
+                if (array_length(_new_battle.enemy_fleets)){
+                    array_insert(battles, _new_battle, 0);
+                }
             } else {
                 array_push(battles,_new_battle);
             }
         }        
+    }
+
+    static new_ship_class_tracker = function(){
+        return {
+            capital : 0,
+            frigate : 0,
+            escort : 0,
+        };
+    }
+    static collect_fleet_battle_variables = function(){
+        var _fleets = scr_orbiting_fleets_all(system);
+        enemy_fleets = [];
+        allied_fleets = [];
+
+        for (var i=0;i<array_length(_fleets);i++){
+            var _cur_ships = new_ship_class_tracker()
+            var _fleet = _fleets[i];
+            _cur_ships.capital += _fleet.capital_number;
+            _cur_ships.frigate += _fleet.frigate_number;
+            _cur_ships.escort += _fleet.escort_number;
+            _cur_ships.owner = _fleet.owner;
+            var _status = fleet_faction_status(_fleet);
+            if (_status == "War"){
+                array_push(enemy_fleets, _cur_ships);
+            } else {
+                array_push(allied_fleets, _cur_ships);               
+            }
+        }
+
+        caps = array_length(player_object.capital_num);
+        frigs = array_length(player_object.frigate_num);
+        escorts = array_length(player_object.escort_num);
+
+        var capital_percentage = 0;
+
+        for (var i = 0;i<caps;i++){
+            var _ship = fetch_ship(player_object.capital_num[i]);
+            capital_percentage += _ship.ship_hp_percentage();
+        }
+        capital_percentage /= caps
+
+        var frigs_percentage = 0;
+
+        for (var i = 0;i<frigs;i++){
+            var _ship = fetch_ship(player_object.frigate_num[i]);
+            frigs_percentage += _ship.ship_hp_percentage();
+        }
+        frigs_percentage /= frigs
+
+        var escorts_percentage = 0;
+
+        for (var i = 0;i<escorts;i++){
+            var _ship = fetch_ship(player_object.escort_num[i]);
+            escorts_percentage += _ship.ship_hp_percentage();
+        }
+        escorts_percentage /= escorts
+          
+    }
+
+    static draw = function(){
+        add_draw_return_values();
+        slate.draw_with_dimensions(535, 200, 530, 400);
+        pop_draw_return_values();
     }
 }
 
@@ -70,28 +176,7 @@ function next_end_turn_battle_variables(){
             obj_controller.x=battle_star.x;
             obj_controller.y=battle_star.y;
             show=current_battle;
-            
-            if (battle_world[current_battle]=-50){
-                strin[1]=string(battle_pobject[current_battle].capital_number);
-                strin[2]=string(battle_pobject[current_battle].frigate_number);
-                strin[3]=string(battle_pobject[current_battle].escort_number);
-                // pull health values here
-                strin[4]=string(battle_pobject[current_battle].capital_health);
-                strin[5]=string(battle_pobject[current_battle].frigate_health);
-                strin[6]=string(battle_pobject[current_battle].escort_health);
-                
-                // Here
-                strin[7]=string(battle_object[current_battle].capital_number);
-                strin[8]=string(battle_object[current_battle].frigate_number);
-                strin[9]=string(battle_object[current_battle].escort_number);
-                // pull health values here
-                strin[10]="100";
-                strin[11]="100";
-                strin[12]="100";            
-            }
-            
-            
-            
+
             if (battle_world[current_battle]>=1){
                 var _p_data = new PlanetData(battle_world[current_battle], battle_object[current_battle]);
             
@@ -158,56 +243,7 @@ function collect_next_end_turn_battle(){
         obj_controller.y=battle_star.y;
 
         show=current_battle;
-        
-        if (battle_world[current_battle] == -50){
-            strin[1]=string(round(battle_pobject[current_battle].capital_number));
-            strin[2]=string(round(battle_pobject[current_battle].frigate_number));
-            strin[3]=string(round(battle_pobject[current_battle].escort_number));
-            // pull health values here
-            strin[4]=string(round(battle_pobject[current_battle].capital_health));
-            strin[5]=string(round(battle_pobject[current_battle].frigate_health));
-            strin[6]=string(round(battle_pobject[current_battle].escort_health));
-            
-            // pull enemy ships here
-            
-            var e=1;
-            repeat(10){
-                e+=1;
-                if (e=11) then e=13;
-                if (battle_star.present_fleet[e]>0){
-                    obj_controller.temp[1070]=battle_star.id;
-                    obj_controller.temp[1071]=e;
-                    obj_controller.temp[1072]=0;
-                    obj_controller.temp[1073]=0;
-                    obj_controller.temp[1074]=0;
-                    
-                    with(obj_en_fleet){
-                        if (orbiting=obj_controller.temp[1070]) and (owner=obj_controller.temp[1071]){
-                            obj_controller.temp[1072]+=round(capital_number);
-                            obj_controller.temp[1073]+=round(frigate_number);
-                            obj_controller.temp[1074]+=round(escort_number);
-                        }
-                    }
-                    
-                    var l1,l2;l1=0;l2=0;
-                    if (obj_controller.faction_status[e]!="War"){
-                        repeat(10){l1+=1;if (allied_fleet[l1]=0) and (l2=0) then l2=l1;}
-                        allied_fleet[l2]=e;
-                        acap[l2]=obj_controller.temp[1072];
-                        afri[l2]=obj_controller.temp[1073];
-                        aesc[l2]=obj_controller.temp[1074];
-                    }
-                    if (obj_controller.faction_status[e]="War") or (e=9) or (e=13){
-                        repeat(10){l1+=1;if (enemy_fleet[l1]=0) and (l2=0) then l2=l1;}
-                        enemy_fleet[l2]=e;
-                        ecap[l2]=obj_controller.temp[1072];
-                        efri[l2]=obj_controller.temp[1073];
-                        eesc[l2]=obj_controller.temp[1074];
-                    }
-                }
-            }
-            
-        }
+    
         
         if (battle_world[current_battle]>=1){
             scr_count_forces(string(battle_location[current_battle]),battle_world[current_battle],true);
@@ -262,68 +298,73 @@ function draw_player_fleet_combat_options(){
     
     draw_text(xxx+12,yyy+237,"Enemy Fleets:");
     draw_text(xxx+332,yyy+237,"Allied Fleets:");
-    
-	draw_text(xxx+310,yyy+118,$"{strin[1]} {string_plural("Battleship",strin[1])} ({strin[4]}% HP)");
-	draw_text(xxx+310,yyy+138,$"{strin[2]} {string_plural("Frigate",strin[2])} ({strin[5]}% HP)");
-	draw_text(xxx+310,yyy+158,$"{strin[3]} {string_plural("Escort",strin[3])} ({strin[6]}% HP)");
+
+	draw_text(xxx+310,yyy+118,$"{caps} {string_plural("Battleship",caps)} ({capital_percentage}% HP)");
+	draw_text(xxx+310,yyy+138,$"{frigs} {string_plural("Frigate",frigs)} ({frigs_percentage}% HP)");
+	draw_text(xxx+310,yyy+158,$"{escorts} {string_plural("Escort",escorts)} ({escorts_percentage}% HP)");
 
     
     draw_set_halign(fa_center);
     
-    for (var i=1;i<array_length(enemy_fleet);i++){
+    for (var i=0;i<array_length(enemy_fleets);i++){
         // draw_sprite(spr_force_icon,enemy_fleet[1],xxx+44,yyy+269);
-    	if (i>1){
+    	if (i>0){
         	xxx+=110;
         }
-        if (enemy_fleet[i]!=0){
-	        scr_image("ui/force",enemy_fleet[i],xxx+44-32,yyy+269-32,64,64);
-	        var shw="";
-	        shw += $"{ecap[i]} :"+string_plural( "Battleship",ecap[i]) + "\n";
-	        shw += $"{efri[i]} :"+string_plural("Frigate",efri[i]) + "\n";
-	        shw +=$"{eesc[i]} :"+string_plural( "Escort",eesc[i]) + "\n";
-	        
-	        draw_text_transformed(xxx+44,yyy+286,shw,0.7,1,0);
-	        draw_set_halign(fa_center);
-	        draw_set_font(fnt_40k_14b);
-    	}
-        if (array_length(allied_fleet)<i){
-        	var _ali_mod = 330;
-	        if (allied_fleet[i]!=0){
-	            // draw_sprite(spr_force_icon,allied_fleet[1],xxx+374,yyy+269);
-	            scr_image("ui/force",allied_fleet[i],xxx + 44+ _ali_mod -32,yyy+269-32,64,64);
-	            var shw="";
-		        shw += $"{acap[i]} : {string_plural( "Battleship",acap[i])} \n";
-		        shw += $"{afri[i]} :{string_plural( "Frigate",afri[i])} \n";
-		        shw +=$"{aesc[i]} :{string_plural( "Escort",aesc[i])} \n";	            
-	            
-	            draw_text_transformed(xxx+44+_ali_mod,yyy+286,shw,0.7,1,0);
-	            draw_set_halign(fa_center);
-	            draw_set_font(fnt_40k_14b);
-	        }            	
-        }
+        var _fleet = enemy_fleets[i];
+
+        scr_image("ui/force",_fleet.owner,xxx+44-32,yyy+269-32,64,64);
+        var shw="";
+
+        shw += $"{_fleet.capital} :"+string_plural( "Battleship",_fleet.capital) + "\n";
+        shw += $"{_fleet.frigate} :"+string_plural("Frigate",_fleet.frigate) + "\n";
+        shw +=$"{_fleet.escort} :"+string_plural( "Escort",_fleet.escort) + "\n";
+        
+        draw_text_transformed(xxx+44,yyy+286,shw,0.7,1,0);
+        draw_set_halign(fa_center);
+        draw_set_font(fnt_40k_14b);
 
     }
     var xxx=main_slate.XX;
+    for (var i=0;i<array_length(allied_fleets);i++){
+        // draw_sprite(spr_force_icon,enemy_fleet[1],xxx+44,yyy+269);
+        var _ali_mod = 330;
+        if (i>0){
+            xxx+=110;
+        }
+        var _fleet = allied_fleets[i];
+
+        scr_image("ui/force",_fleet.owner,xxx+44-32+_ali_mod,yyy+269-32,64,64);
+        var shw="";
+        shw += $"{_fleet.capital} :"+string_plural( "Battleship",_fleet.capital) + "\n";
+        shw += $"{_fleet.frigate} :"+string_plural("Frigate",_fleet.frigate) + "\n";
+        shw +=$"{_fleet.escort} :"+string_plural( "Escort",_fleet.escort) + "\n";
+        
+        draw_text_transformed(xxx+44+_ali_mod,yyy+286,shw,0.7,1,0);
+        draw_set_halign(fa_center);
+        draw_set_font(fnt_40k_14b);
+
+    }
+
+    var xxx=main_slate.XX;
 
     var _retreat_button = draw_unit_buttons([xxx+180,yyy+350],"Retreat");
-    var _battle_sys = battle_pobject[current_battle];
     if (point_and_click(_retreat_button)){
         with(obj_fleet_select){
         	instance_destroy();
         }
-        var that=instance_nearest(_battle_sys.x,_battle_sys.y,obj_p_fleet);
-        that.alarm[3]=1;
+        
+        player_object.alarm[3]=1;
         var that2=instance_create(0,0,obj_popup);
         that2.type=99;
         obj_controller.force_scroll=1;        	
     }
 
     var _fight_button = draw_unit_buttons([xxx+272,yyy+350],"Fight");
-    if (point_and_click(_fight_button) && enemy_fleet[1]!=0){
+    if (point_and_click(_fight_button)){
         instance_activate_all();
 
-        var _star =  star_by_name(battle_location[current_battle]);
-        setup_fleet_battle(enemy_fleet[1], _star);
+        setup_fleet_battle(opponent, system);
 
         if (instance_exists(obj_fleet)){
             wait_and_execute(20, start_fleet_battle,[] , obj_turn_end);
@@ -463,7 +504,7 @@ function add_system_end_turn_fleet_battles(){
 
     var _nearest_p_fleet = instance_nearest(x,y,obj_p_fleet);
 
-    if (_nearest_p_fleet.x != x && _nearest_p_fleet.y != y || _nearest_p_fleet.action == "move") {
+    if (_nearest_p_fleet.x != x || _nearest_p_fleet.y != y || _nearest_p_fleet.action == "move") {
         exit;
     }
 
@@ -499,6 +540,8 @@ function add_system_end_turn_fleet_battles(){
     var _fleet_battle = new EndTurnBattle(EndTurnBattleTypes.Fleet, self);
 
     _fleet_battle.opponent = _largest_fleet.owner;
+
+    _fleet_battle.player_object = _nearest_p_fleet;
 
     if (fleet_has_cargo("warband", _largest_fleet)){
         _fleet_battle.special = "BLOOD";

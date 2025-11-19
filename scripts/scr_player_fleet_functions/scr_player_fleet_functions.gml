@@ -486,19 +486,19 @@ function selected_ship_types(){
 	var capitals=0,frigates=0,escorts=0,i;
     for (i=0; i<array_length(capital);i++){
         if(capital[i]!="" && capital_sel[i]){
-            capitals=true
+            capitals++;
             break;
         }
     } 
     for (i=0; i<array_length(frigate);i++){
         if(frigate[i]!="" && frigate_sel[i]){
-            frigates=true
+            frigates++;
             break;
         }
     } 
     for (i=0; i<array_length(escort);i++){
         if(escort[i]!="" && escort_sel[i]){
-            escorts=true
+            escorts++;
             break;
         }
     }
