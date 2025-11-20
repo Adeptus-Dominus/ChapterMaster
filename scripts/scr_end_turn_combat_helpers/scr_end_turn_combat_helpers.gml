@@ -4,6 +4,8 @@ enum EndTurnBattleTypes {
     Ground,
     Fleet,
 }
+
+
 function EndTurnBattle (battle_type, system)constructor{
     type = battle_type;
     self.system = system;
@@ -184,8 +186,8 @@ function end_turn_battle_next_sequence(next_battle = true, wait_time = 1){
     /* */
 }
 
-function c(){
-    if (array_length(battle<=0) || (current_battle>array_length(battle)<=0){
+function collect_next_end_turn_battle(){
+    if (array_length(battle<=0) || (current_battle>array_length(battle)<=0)){
         exit;
     }
     var xx, yy;

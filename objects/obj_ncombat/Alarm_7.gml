@@ -269,25 +269,7 @@ try {
         };
     }
     if ((dropping+attacking=0)) and (string_count("_attack",battle_special)=0) and (string_count("mech",battle_special)=0) and (string_count("ruins",battle_special)=0) and (battle_special!="ship_demon") and (string_count("cs_meeting",battle_special)=0){
-        
-        if (instance_exists(obj_turn_end)){
-            var _battle_index = obj_turn_end.current_battle;
-            if (_battle_index<array_length(obj_turn_end.battle_object)){
-                var _battle_object=obj_turn_end.battle_object[_battle_index];
-
-                var _planet = obj_turn_end.battle_world[_battle_index];
-                
-                _battle_object.p_player[_planet]-=world_size;
-
-                if (defeat == 1){
-                    _battle_object.p_player[_planet]=0;
-                };
-            }
-            obj_controller.combat=0;
-            with(obj_turn_end){
-                end_turn_battle_next_sequence();
-            }
-        }
+        end_of_turn_defence_battle_cleanup();
     }
     if (string_count("ruins",battle_special)>0) and (defeat=1){
         //TODO this logic is wrong assumes all player units died in ruins
@@ -395,7 +377,7 @@ try {
             if (instance_exists(obj_turn_end)){
                 obj_turn_end.combating=0;// setup_audience_and_popup_timer(1);
             }
-            var pip;pip = instance_create(0,0,obj_popup);
+            var pip = instance_create(0,0,obj_popup);
             pip.title = "Enemies Vanquished";
             pip.text = "Not only have you killed the Chaos Lord, "+string(obj_controller.faction_leader[eFACTION.Chaos])+", but also all of your battle brothers that questioned your rule.  As you stand, alone, among the broken corpses of your enemies you begin to question what exactly it is that you accomplished.  No matter the results, you feel as though your actions have been noticed.";
         }

@@ -152,3 +152,26 @@ function space_hulk_explore_battle_aftermath(){
 	    }
 	}
 }
+
+function end_of_turn_defence_battle_cleanup(){
+        
+    if (instance_exists(obj_turn_end)){
+        var _battle_index = obj_turn_end.current_battle;
+
+        var _battle = obj_turn_end.battle[_battle_index];
+        var _battle_object = _battle.system;
+
+        var _planet = _battle_object.planet
+        
+        _battle_object.p_player[_planet]-=world_size;
+
+        if (defeat == 1){
+            _battle_object.p_player[_planet] = 0;
+        };
+
+        obj_controller.combat=0;
+        with(obj_turn_end){
+            end_turn_battle_next_sequence();
+        }
+    }
+}

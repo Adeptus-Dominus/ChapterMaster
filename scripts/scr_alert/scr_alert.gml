@@ -16,6 +16,45 @@ function set_alert_draw_colour(alert_colour) {
     }
 }
 
+function EndTurnAlert(type, text,colour)constructor{
+    self.type=type;
+    self.text=text;
+    char=0;
+    alpha=1;
+    txt="";
+    self.color=colour;	
+
+    static draw = function(){
+    	var _fast = obj_turn_end.fast;
+        if (_fast>=i) and (string_length(txt)<string_length(text)){
+            char+=1;
+            txt=string_copy(text,0,char);
+        }
+        if (_fast>=i) and (alpha<1){
+        	alpha+=0.03;
+        }
+        if (obj_turn_end.fadeout){
+			alpha-=0.05;     	
+        }
+        set_alert_draw_colour(color);
+        draw_set_alpha(min(1,alpha));
+        
+        if (obj_controller.zoomed=0){
+            draw_text(32,+46+(i*20),string_hash_to_newline(txt));
+            // draw_text(view_xview[0]+16.5,view_yview[0]+40.5+(i*12),string(alert_txt[i]));
+        }
+        /*if (obj_controller.zoomed=1){
+            draw_text_transformed(80,80+(i*24),string(alert_txt[i]),2,2,0);
+            draw_text_transformed(81,81+(i*24),string(alert_txt[i]),2,2,0);
+        }*/
+        
+        if (obj_controller.zoomed=1){
+            draw_text_transformed(32,92+(i*40),string_hash_to_newline(txt),2,2,0);
+            // draw_text_transformed(122,122+(i*36),string(alert_txt[i]),3,3,0);
+        }
+    }
+}
+
 function scr_alert(colour, alert_type, alert_text, xx=00, yy=00) {
 
 	// color / type / text /x/y
@@ -26,16 +65,9 @@ function scr_alert(colour, alert_type, alert_text, xx=00, yy=00) {
 
 
 	// if (obj_turn_end.alerts>0){
-	if (instance_exists(obj_turn_end)){
-	    if (obj_turn_end.alert_type[obj_turn_end.alerts]!="-"+string(alert_text)) and (alert_type!="blank") and (colour!="blank"){
-	        obj_turn_end.alerts+=1;
-	        obj_turn_end.alert[obj_turn_end.alerts]=1;
-	        obj_turn_end.alert_color[obj_turn_end.alerts]=colour; // takes green, yellow, red, purple, default GM colorcodes(with c_ prefix), decimal, hexadecimal(with $ prefix, 6 or 8 digits) and CSS(with # prefix)
-	        // if (colour="purple") then obj_turn_end.alert_color[obj_turn_end.alerts]="red";
-	        obj_turn_end.alert_type[obj_turn_end.alerts]=alert_type;
-	        obj_turn_end.alert_text[obj_turn_end.alerts]="-"+string(alert_text);
-	        obj_turn_end.alert[obj_turn_end.alerts]=1;
-	    }
+	if (instance_exists(obj_turn_end) && (alert_type!="blank" && colour!="blank")){
+		var _new_alert = new EndTurnAlert(alert_type,alert_text,colour);
+		array_push(obj_turn_end.alert, _new_alert);
 	}
 
 
