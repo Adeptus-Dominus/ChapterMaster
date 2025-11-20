@@ -21,8 +21,7 @@ instance_activate_object(obj_turn_end);
 
 if (player_started=0){
     with(obj_turn_end){
-        current_battle+=1;
-        alarm[0]=1;
+        end_turn_battle_next_sequence();
     }
 }
 if (player_started=1){
@@ -34,7 +33,8 @@ if (player_started=1){
     taxt+=" fleet at "+string(battle_system.name)+".";scr_event_log("",taxt);
     
     if (instance_exists(obj_star_select)) then with(obj_star_select){
-        alarm[1]=1;player_fleet=0;
+        alarm[1]=1;
+        player_fleet=0;
         var i=-1;repeat(15){i+=1;en_fleet[i]=0;}
     }
     if (instance_exists(pla_fleet)){

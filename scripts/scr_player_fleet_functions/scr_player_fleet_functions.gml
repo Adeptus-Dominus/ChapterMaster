@@ -267,8 +267,9 @@ function add_ship_to_fleet(index, fleet="none"){
 }
 function player_retreat_from_fleet_combat(){
 	try{
+	var _battle = fetch_current_battle();
 	var p_strength,ratio,diceh,_roll_100;
-    var mfleet = obj_turn_end.battle[obj_turn_end.current_battle].player_object;
+    var mfleet = _battle.player_object;
     var _fleet_ships = fleet_full_ship_array(mfleet);
     var en_strength=0;
 
@@ -279,11 +280,11 @@ function player_retreat_from_fleet_combat(){
     _roll_100=roll_dice_chapter(1, 100, "low");
     
 
-    var _loc_star = star_by_name(obj_turn_end.battle_location[obj_turn_end.current_battle]);
+    var _loc_star = _battle.system;
 
     obj_controller.temp[2001]=real(_loc_star.id);
-    obj_controller.temp[2002]=real(obj_turn_end.battle_opponent[obj_turn_end.current_battle]);
-    var _battle_opponent = obj_turn_end.battle_opponent[obj_turn_end.current_battle]; 
+    obj_controller.temp[2002]=real(_battle.opponent);
+    var _battle_opponent = _battle.opponent; 
 
     var cap_total=0,frig_total=0,escort_total=0;
     with(obj_en_fleet){
@@ -385,7 +386,7 @@ function player_retreat_from_fleet_combat(){
     with(obj_temp_inq){
     	instance_destroy();
     }
-    var _p_fleet = obj_turn_end.battle[obj_turn_end.current_battle].player_object;
+    var _p_fleet = fetch_current_battle().player_object;
     instance_create(_p_fleet.x,_p_fleet.y,obj_temp_inq);
     with(obj_en_fleet){
         if (navy=1) and (point_distance(x,y,obj_temp_inq.x,obj_temp_inq.y)<40) and (trade_goods="player_hold") then trade_goods="";

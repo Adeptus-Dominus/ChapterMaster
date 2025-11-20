@@ -59,8 +59,6 @@ function necron_tomb_raid_post_battle_sequence(){
 /// @mixin obj_ncombat
 function protect_raiders_battle_aftermath(){
      instance_activate_object(obj_star);
-    // show_message(obj_turn_end.current_battle);
-    // show_message(obj_turn_end.battle_world[obj_turn_end.current_battle]);
     // title / text / image / speshul
     var cur_star = battle_object;
     var planet = battle_id;
@@ -89,9 +87,10 @@ function protect_raiders_battle_aftermath(){
 function hunt_fallen_battle_aftermath(){
 	if (!defeat){
 	    with (obj_turn_end){
-	        remove_planet_problem(battle_world[current_battle], "fallen", battle_object[current_battle])
-	        var tixt="The Fallen on "+ battle_object[current_battle].name;
-	        tixt+=scr_roman(battle_world[current_battle]);
+	    	var _battle = fetch_current_battle();
+	        remove_planet_problem(_battle.planet, "fallen", _battle.system);
+	        var tixt="The Fallen on "+ _battle.system.name;
+	        tixt+=scr_roman(_battle.planet);
 	        scr_event_log("",$"Mission Succesful: {tixt} have been captured or purged.");
 	        tixt+=$" have been captured or purged.  They shall be brought to the Chapter {obj_ini.role[100][14]}s posthaste, in order to account for their sins.  ";
 	        var _tex_options = [

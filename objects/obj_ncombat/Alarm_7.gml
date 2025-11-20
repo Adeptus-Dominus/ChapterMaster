@@ -286,11 +286,10 @@ try {
     
     if ((string_count("spyrer",battle_special)>0))/* and (string_count("demon",battle_special)>0))*/ and (defeat=0){
         instance_activate_object(obj_star);
-        // show_message(obj_turn_end.current_battle);
-        // show_message(obj_turn_end.battle_world[obj_turn_end.current_battle]);
+
         // title / text / image / speshul
-        var cur_star = obj_turn_end.battle_object[obj_turn_end.current_battle];
-        var planet = obj_turn_end.battle_world[obj_turn_end.current_battle]
+        var cur_star = obj_turn_end.battle[obj_turn_end.current_battle].system;
+        var planet = obj_turn_end.battle[obj_turn_end.current_battle].planet;
         var _planet_string = scr_roman_numerals()[planet-1];
             
         remove_planet_problem(planet ,"spyrer",cur_star)

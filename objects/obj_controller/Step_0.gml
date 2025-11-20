@@ -577,7 +577,7 @@ try {
             man_sel[i] = 0;
         }
         if (b > -1 && b < array_length(obj_ini.ship_data)) {
-            obj_ini.ship_data.carrying -= man_size;
+            obj_ini.ship_data[b].carrying -= man_size;
         }
         reset_ship_manage_arrays();
         cooldown = 10;

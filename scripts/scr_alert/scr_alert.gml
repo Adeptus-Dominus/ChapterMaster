@@ -22,15 +22,27 @@ function EndTurnAlert(type, text,colour)constructor{
     char=0;
     alpha=1;
     txt="";
-    self.color=colour;	
+    self.color=colour;
+    static turn = 0
+
+    static alert_count = 0
+    if (turn != obj_controller.turn){
+    	turn = obj_controller.turn;
+    	alert_count = 0;
+    }
+
+    alert_id = alert_count;
+
+    alert_count++;
+
 
     static draw = function(){
     	var _fast = obj_turn_end.fast;
-        if (_fast>=i) and (string_length(txt)<string_length(text)){
+        if (_fast>=alert_id) and (string_length(txt)<string_length(text)){
             char+=1;
             txt=string_copy(text,0,char);
         }
-        if (_fast>=i) and (alpha<1){
+        if (_fast>=alert_id) and (alpha<1){
         	alpha+=0.03;
         }
         if (obj_turn_end.fadeout){
@@ -40,7 +52,7 @@ function EndTurnAlert(type, text,colour)constructor{
         draw_set_alpha(min(1,alpha));
         
         if (obj_controller.zoomed=0){
-            draw_text(32,+46+(i*20),string_hash_to_newline(txt));
+            draw_text(32,+46+(alert_id*20),string_hash_to_newline(txt));
             // draw_text(view_xview[0]+16.5,view_yview[0]+40.5+(i*12),string(alert_txt[i]));
         }
         /*if (obj_controller.zoomed=1){
@@ -49,7 +61,7 @@ function EndTurnAlert(type, text,colour)constructor{
         }*/
         
         if (obj_controller.zoomed=1){
-            draw_text_transformed(32,92+(i*40),string_hash_to_newline(txt),2,2,0);
+            draw_text_transformed(32,92+(alert_id*40),string_hash_to_newline(txt),2,2,0);
             // draw_text_transformed(122,122+(i*36),string(alert_txt[i]),3,3,0);
         }
     }

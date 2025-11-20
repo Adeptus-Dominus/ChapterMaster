@@ -6,6 +6,9 @@ enum EndTurnBattleTypes {
 }
 
 
+function fetch_current_battle(){
+    return obj_turn_end.battle[obj_turn_end.current_battle];
+}
 function EndTurnBattle (battle_type, system)constructor{
     type = battle_type;
     self.system = system;
@@ -27,7 +30,7 @@ function EndTurnBattle (battle_type, system)constructor{
         draw_set_font(fnt_40k_14);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
-        draw_text(xxx+8,yyy+13,$"{current_battle}/{battles}");
+        draw_text(xxx+8,yyy+13,$"{current_battle+1}/{array_length(battle)}");
         
         draw_set_halign(fa_center);
         draw_set_font(fnt_40k_30b);
@@ -61,12 +64,12 @@ function EndTurnBattle (battle_type, system)constructor{
                 _new_battle.collect_fleet_battle_variables();
                 //final check that there definatly are infact enemy ships to fight
                 if (array_length(_new_battle.enemy_fleets)){
-                    array_insert(battles, _new_battle, 0);
+                    array_insert(battle, _new_battle, 0);
                 }
             } else {
                 _new_battle.collect_ground_battle_variables();
                 if (roster.total_selected()){
-                    array_push(battles,_new_battle);
+                    array_push(battle,_new_battle);
                 }
             }
         }        
@@ -161,16 +164,18 @@ function EndTurnBattle (battle_type, system)constructor{
 
 
 function check_for_finished_end_turn_battles(){
-    if (!array_length(battle)) or (current_battle>battles){
+    if (!array_length(battle) || current_battle >= array_length(battle)){
+        show_debug_message("battles_over");
         setup_audience_and_popup_timer();
     }
 }
 function end_turn_battle_next_sequence(next_battle = true, wait_time = 1){
+    show_debug_message("sequence");
     if (next_battle){
         obj_turn_end.current_battle++;
     }
     obj_controller.force_scroll=0;
-    static _main_func = function(){
+    var _main_func = function(){
         instance_activate_object(obj_star);
         combating=0;
 
@@ -187,7 +192,7 @@ function end_turn_battle_next_sequence(next_battle = true, wait_time = 1){
 }
 
 function collect_next_end_turn_battle(){
-    if (array_length(battle<=0) || (current_battle>array_length(battle)<=0)){
+    if (array_length(battle) <=0 || current_battle>array_length(battle)){
         exit;
     }
     var xx, yy;
@@ -301,7 +306,7 @@ function draw_player_fleet_combat_options(){
 function draw_player_ground_combat_options(){
     var xxx=main_slate.XX;
     var yyy=main_slate.YY;
-    if (battle_opponent[current_battle]<=20){
+    if (opponent<=20){
         draw_text(xxx+310,yyy+118, $"{player_marines} Marines");
         draw_text(xxx+310,yyy+138, $"{player_vehicles} Vehicles");
 
@@ -318,7 +323,7 @@ function draw_player_ground_combat_options(){
     
     
     draw_set_halign(fa_center);
-    // draw_sprite(spr_force_icon,battle_opponent[current_battle],xxx+44,yyy+289);
+ 
     scr_image("ui/force",opponent,xxx+44-32,yyy+289-32,64,64);
     draw_text_transformed(xxx+44,yyy+316,enemy_forces_descripton,0.75,1,0);
     draw_set_halign(fa_center);
@@ -337,8 +342,8 @@ function draw_player_ground_combat_options(){
     }
 
     if (_init_battle){
-        var _loc = battle_location[current_battle]
-        var _planet = battle_world[current_battle]                                                   // Fight fight fight, ground
+        var _loc = location
+        var _planet = planet;                                             // Fight fight fight, ground
         obj_controller.cooldown=8;
 
         // Start battle here
@@ -348,13 +353,13 @@ function draw_player_ground_combat_options(){
         instance_deactivate_all(true);
         instance_activate_object(obj_controller);
         instance_activate_object(obj_ini);
-        instance_activate_object(battle_object[current_battle]);
+        instance_activate_object(system);
 
-        var _battle_obj = battle_object[current_battle];
+        var _battle_obj = system;
         
         instance_create(0,0,obj_ncombat);
-        obj_ncombat.enemy=battle_opponent[current_battle];
-        obj_ncombat.battle_object=_battle_obj;
+        obj_ncombat.enemy = opponent;
+        obj_ncombat.battle_object=system;
         obj_ncombat.battle_loc=_loc;
         obj_ncombat.battle_id=_planet;
 
@@ -384,6 +389,8 @@ function draw_player_ground_combat_options(){
         obj_ncombat.battle_special=special;
         obj_ncombat.battle_climate=_planet_data.planet_type;
 
+
+        //TODO recover and move to mopdern syntax
         // show_message(string(battle_object[current_battle].p_feature[battle_world[current_battle]]));
         /*if (scr_planetary_feature.plant_feature_bool(battle_object[current_battle].p_feature[battle_world[current_battle]], P_features.Monastery)==1){
             // show_message(string(battle_object[current_battle].p_defenses[battle_world[current_battle]]));
@@ -410,7 +417,7 @@ function draw_player_ground_combat_options(){
             }              
         }
         delete roster;
-        instance_deactivate_object(battle_object[current_battle]);
+        instance_deactivate_object(system);
     }
     
 }

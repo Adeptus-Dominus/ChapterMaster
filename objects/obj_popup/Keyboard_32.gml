@@ -23,8 +23,7 @@ if (array_length(options) == 0) and (type<5){
 
 if (type=POPUP_TYPE.BATTLE_OPTIONS){
     obj_controller.cooldown=10;
-    obj_turn_end.current_battle+=1;
-    obj_turn_end.alarm[0]=1;
+    end_turn_battle_next_sequence();
     obj_controller.force_scroll=0;
     instance_destroy();
 }

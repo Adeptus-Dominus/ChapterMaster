@@ -21,9 +21,13 @@ if (array_length(alert)) and (popups_end=1) {
     }
 }
 
+if (popups_end && !array_length(alert)){
+    instance_destroy();
+}
+
 draw_set_alpha(1);
-if (show>-1 && current_battle<battles && current_battle>-1){
-    var _cur_battle = battles[current_battle];
+if (show>-1 && current_battle<array_length(battle) && current_battle>-1){
+    var _cur_battle = battle[current_battle];
     _cur_battle.draw();
 }
 

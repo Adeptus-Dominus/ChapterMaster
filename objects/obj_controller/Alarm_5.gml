@@ -559,3 +559,9 @@ with (obj_p_fleet){
 instance_activate_object(obj_star);
 instance_activate_object(obj_en_fleet);
 
+
+// Right here need to sort the battles within the obj_turn_end
+with(obj_turn_end){
+    end_turn_battle_next_sequence(true, 20);
+}
+

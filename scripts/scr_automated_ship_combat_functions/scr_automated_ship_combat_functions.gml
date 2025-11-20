@@ -402,7 +402,7 @@ function ship_combat_cleanup(){
         }
         
         if (player_started=0) and (instance_exists(obj_turn_end)){
-            _player_battle_fleet=obj_turn_end.battle[obj_turn_end.current_battle].player_object;
+            _player_battle_fleet=fetch_current_battle().player_object;
         }
         
         
@@ -434,32 +434,18 @@ function ship_combat_cleanup(){
         
         
         if (!player_started && instance_exists(obj_turn_end)){
-            with(obj_star){
-                if (name!=obj_turn_end.battle_location[obj_turn_end.current_battle]){
-                    x-=10000;
-                    y-=10000;
-                }
-            }
+            ii = fetch_current_battle().system;
         } else {
             with(obj_star){
-                if (id!=obj_fleet.battle_system){
-                    x-=10000;y-=10000;
+                if (id==obj_fleet.battle_system){
+                    ii = self.id;
                 }
             }
         }
-        ii=instance_nearest(room_width,room_height,obj_star);
+
         obj_controller.temp[1070]=ii.id;
         
-        with(obj_star){
-            if (x<-5000) and (y<-5000){x+=10000;y+=10000;
-            }
-        }
-        
-        
-        
-        
-        
-        
+
         
         op=0;var ofleet;ofleet=0;
         for (var op=0;op<array_length(enemy);op++){
