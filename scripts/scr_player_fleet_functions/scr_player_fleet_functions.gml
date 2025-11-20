@@ -590,6 +590,17 @@ function get_nearest_player_fleet(nearest_x, nearest_y, is_static=false, is_movi
 	return chosen_fleet;	
 }
 
+/// @mixin obj_star
+function has_orbiting_player_fleet(){
+	if (instance_exists(obj_p_fleet)){
+		var _nearest = instance_nearest(x,y,obj_p_fleet);
+		if (point_distance(_nearest.x, _nearest.y,x,y) == 0){
+			return true
+		}
+	}
+	return false;
+}
+
 function calculate_fleet_content_size(ship_array){
 	var total_content = 0;
 	for (var i=0;i<array_length(ship_array);i++){

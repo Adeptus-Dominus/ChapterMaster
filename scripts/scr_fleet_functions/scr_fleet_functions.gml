@@ -1057,6 +1057,8 @@ function fleet_arrival_logic(){
             }
             
             instance_activate_object(obj_star);
+        } else {
+        	cur_star.present_fleet[eFACTION.Ork]++;
         }
        
 
