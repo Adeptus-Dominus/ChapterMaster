@@ -454,10 +454,6 @@ try{
 } catch(_exception){
     handle_exception(_exception);
 }
-// Right here need to sort the battles within the obj_turn_end
-with(obj_turn_end){
-    end_turn_battle_next_sequence(false, 20);
-}
 
 for(var i=1; i<=10; i++){
     if (turns_ignored[i]<500){

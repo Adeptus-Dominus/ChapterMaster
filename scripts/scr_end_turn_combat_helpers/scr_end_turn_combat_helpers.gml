@@ -62,7 +62,10 @@ function EndTurnBattle (battle_type, system)constructor{
                     array_insert(battles, _new_battle, 0);
                 }
             } else {
-                array_push(battles,_new_battle);
+                _new_battle.collect_ground_battle_variables();
+                if (roster.total_selected()){
+                    array_push(battles,_new_battle);
+                }
             }
         }        
     }
@@ -104,7 +107,7 @@ function EndTurnBattle (battle_type, system)constructor{
             var _ship = fetch_ship(player_object.capital_num[i]);
             capital_percentage += _ship.ship_hp_percentage();
         }
-        capital_percentage /= caps
+        capital_percentage /= caps;
 
         var frigs_percentage = 0;
 
@@ -112,7 +115,7 @@ function EndTurnBattle (battle_type, system)constructor{
             var _ship = fetch_ship(player_object.frigate_num[i]);
             frigs_percentage += _ship.ship_hp_percentage();
         }
-        frigs_percentage /= frigs
+        frigs_percentage /= frigs;
 
         var escorts_percentage = 0;
 
@@ -120,8 +123,31 @@ function EndTurnBattle (battle_type, system)constructor{
             var _ship = fetch_ship(player_object.escort_num[i]);
             escorts_percentage += _ship.ship_hp_percentage();
         }
-        escorts_percentage /= escorts
+        escorts_percentage /= escorts;
           
+    }
+
+    static collect_ground_battle_variables = function(){
+        roster = new Roster();
+        roster.location = system.name;
+        roster.roster_planet = planet;
+        roster.determine_full_roster();
+        roster.only_locals();
+
+        player_marines = roster.marines_total(true);
+        player_vehicles = roster.vehicles_total(true);
+
+        fortified_description = FORTIFICATION_GRADES_DESCRIPTIONS[pdata.fortification_level];
+
+        enemy_forces_descripton = "";
+        if (opponent >= 3 && opponent <= 13){
+            var _op_grade = pdata.planet_forces[opponent];
+            enemy_forces_descripton = AUTO_BATTLE_FORCES_GRADE[clamp(_op_grade,0,7)];
+        }
+        if (battle_opponent[current_battle]=30){
+            enemy_forces_descripton = "Master Spyrer";
+        }
+
     }
 
     static draw = function(){
@@ -158,134 +184,29 @@ function end_turn_battle_next_sequence(next_battle = true, wait_time = 1){
     /* */
 }
 
-
-function next_end_turn_battle_variables(){
-    var battle_o=0;
-    current_battle+=1;
-    combating=0;
-
-    instance_activate_object(obj_star);
-
-    if (battles>0) and (current_battle<=battles){
-
-        var  ii=0,good=0;
-        var battle_star = star_by_name(battle_location[current_battle]);
-        obj_controller.temp[1060]=battle_location[current_battle];
-        
-        if (battle_star!="none"){
-            obj_controller.x=battle_star.x;
-            obj_controller.y=battle_star.y;
-            show=current_battle;
-
-            if (battle_world[current_battle]>=1){
-                var _p_data = new PlanetData(battle_world[current_battle], battle_object[current_battle]);
-            
-                scr_count_forces(string(battle_location[current_battle]),battle_world[current_battle],true);
-                
-                strin[1]=info_mahreens;
-                strin[2]=info_vehicles;
-                
-                if (info_mahreens+info_vehicles=0){
-                    end_turn_battle_next_sequence();
-                }
-                
-                strin[3]="";
-                
-                var tempy=0;
-                tempy=battle_object[current_battle].p_owner[battle_world[current_battle]];
-                
-                if ((tempy>=1) || (tempy=2) || (tempy=3)){
-                    strin[3] = FORTIFICATION_GRADES_DESCRIPTIONS[clamp(_p_data.fortification_level, 0, 6)];
-                }
-                
-                tempy=0;
-                if (battle_opponent[current_battle]=7) then tempy=battle_object[current_battle].p_orks[battle_world[current_battle]];
-                if (battle_opponent[current_battle]=8) then tempy=battle_object[current_battle].p_tau[battle_world[current_battle]];
-                if (battle_opponent[current_battle]=9) then tempy=battle_object[current_battle].p_tyranids[battle_world[current_battle]];
-                if (battle_opponent[current_battle]=10) then tempy=battle_object[current_battle].p_traitors[battle_world[current_battle]];
-                if (battle_opponent[current_battle]=30){
-                    tempy=1;
-                    strin[4]="Master Spyrer";
-                }
-                
-                if (battle_opponent[current_battle]<=20){
-                    tempy = clamp(tempy, 0, 6);
-                    strin[4] = AUTO_BATTLE_FORCES_GRADE[tempy];
-                }
-            }
-            
-            if (obj_controller.zoomed=1){
-                scr_zoom()
-            };
-        }
-        instance_activate_object(obj_star);
-        
-    }
-
-    instance_activate_object(obj_star);
-
-    end_turn_battle_next_sequence();
-
-}
-
-function collect_next_end_turn_battle(){
-    if (battles<=0) || (current_battle>battles){
+function c(){
+    if (array_length(battle<=0) || (current_battle>array_length(battle)<=0){
         exit;
     }
-    var ii, xx, yy, good;
-    ii=0;
-    good=0;
+    var xx, yy;
+    var ii=0;
+    var good=0;
+
+    var _battle = battle[current_battle];
     
-    var battle_star = star_by_name(battle_location[current_battle]);
+    var battle_star = _battle.system;
     
     if (battle_star != "none"){// trying to find the star
         obj_controller.x=battle_star.x;
         obj_controller.y=battle_star.y;
 
         show=current_battle;
-    
         
-        if (battle_world[current_battle]>=1){
-            scr_count_forces(string(battle_location[current_battle]),battle_world[current_battle],true);
-            
-            strin[1]=info_mahreens;
-            strin[2]=info_vehicles;
-            
-            if (info_mahreens+info_vehicles=0){
-                end_turn_battle_next_sequence();
-                exit;
+        if (obj_controller.zoomed=1){
+            with(obj_controller){
+                scr_zoom();
             }
-            
-            strin[3]="";
-            
-            var tempy=0;
-            tempy=battle_object[current_battle].p_owner[battle_world[current_battle]];
-            
-            if (tempy=1) or (tempy=2) or (tempy=3){
-                var array_string = FORTIFICATION_GRADES_DESCRIPTIONS;
-                var battle_fortification = battle_object[current_battle].p_fortified[battle_world[current_battle]];
-                strin[3] = array_string[clamp(battle_fortification, 1, 6)];
-            }
-            
-            tempy=0;
-            if (battle_opponent[current_battle]=7) then tempy=battle_object[current_battle].p_orks[battle_world[current_battle]];
-            if (battle_opponent[current_battle]=8) then tempy=battle_object[current_battle].p_tau[battle_world[current_battle]];
-            if (battle_opponent[current_battle]=9) then tempy=battle_object[current_battle].p_tyranids[battle_world[current_battle]];
-            if (battle_opponent[current_battle]=10) then tempy=battle_object[current_battle].p_traitors[battle_world[current_battle]];
-            if (battle_opponent[current_battle]=13) then tempy=battle_object[current_battle].p_necrons[battle_world[current_battle]];
-            
-            if (tempy=1) then strin[4]="Minimal Forces";
-            if (tempy=2) then strin[4]="Sparse Forces";
-            if (tempy=3) then strin[4]="Moderate Forces";
-            if (tempy=4) then strin[4]="Numerous Forces";
-            if (tempy=5) then strin[4]="Very Numerous";
-            if (tempy=6) then strin[4]="Overwhelming";
-            
-            // if (battle_opponent[current_battle]=2) then obj_controller.alarm[7]=1;
-            obj_controller.cooldown=9999;
         }
-        
-        if (obj_controller.zoomed=1) then with(obj_controller){scr_zoom();}
     }
     instance_activate_object(obj_star);   
 }
@@ -314,13 +235,13 @@ function draw_player_fleet_combat_options(){
         var _fleet = enemy_fleets[i];
 
         scr_image("ui/force",_fleet.owner,xxx+44-32,yyy+269-32,64,64);
-        var shw="";
+        var _ship_type_string="";
 
-        shw += $"{_fleet.capital} :"+string_plural( "Battleship",_fleet.capital) + "\n";
-        shw += $"{_fleet.frigate} :"+string_plural("Frigate",_fleet.frigate) + "\n";
-        shw +=$"{_fleet.escort} :"+string_plural( "Escort",_fleet.escort) + "\n";
+        _ship_type_string += $"{_fleet.capital} :"+string_plural( "Battleship",_fleet.capital) + "\n";
+        _ship_type_string += $"{_fleet.frigate} :"+string_plural("Frigate",_fleet.frigate) + "\n";
+        _ship_type_string +=$"{_fleet.escort} :"+string_plural( "Escort",_fleet.escort) + "\n";
         
-        draw_text_transformed(xxx+44,yyy+286,shw,0.7,1,0);
+        draw_text_transformed(xxx+44,yyy+286,_ship_type_string,0.7,1,0);
         draw_set_halign(fa_center);
         draw_set_font(fnt_40k_14b);
 
@@ -335,12 +256,12 @@ function draw_player_fleet_combat_options(){
         var _fleet = allied_fleets[i];
 
         scr_image("ui/force",_fleet.owner,xxx+44-32+_ali_mod,yyy+269-32,64,64);
-        var shw="";
-        shw += $"{_fleet.capital} :"+string_plural( "Battleship",_fleet.capital) + "\n";
-        shw += $"{_fleet.frigate} :"+string_plural("Frigate",_fleet.frigate) + "\n";
-        shw +=$"{_fleet.escort} :"+string_plural( "Escort",_fleet.escort) + "\n";
+        var _ship_type_string="";
+        _ship_type_string += $"{_fleet.capital} :"+string_plural( "Battleship",_fleet.capital) + "\n";
+        _ship_type_string += $"{_fleet.frigate} :"+string_plural("Frigate",_fleet.frigate) + "\n";
+        _ship_type_string +=$"{_fleet.escort} :"+string_plural( "Escort",_fleet.escort) + "\n";
         
-        draw_text_transformed(xxx+44+_ali_mod,yyy+286,shw,0.7,1,0);
+        draw_text_transformed(xxx+44+_ali_mod,yyy+286,_ship_type_string,0.7,1,0);
         draw_set_halign(fa_center);
         draw_set_font(fnt_40k_14b);
 
@@ -379,9 +300,11 @@ function draw_player_ground_combat_options(){
     var xxx=main_slate.XX;
     var yyy=main_slate.YY;
     if (battle_opponent[current_battle]<=20){
-        draw_text(xxx+310,yyy+118, $"{string(strin[1])} Marines");
-        draw_text(xxx+310,yyy+138, $"{string(strin[2])} Vehicles");
-        if (strin[3]!="") then draw_text(xxx+310,yyy+158,string(strin[3])+" Fortified");// Not / Barely / Lightly / Moderately / Highly / Maximally
+        draw_text(xxx+310,yyy+118, $"{player_marines} Marines");
+        draw_text(xxx+310,yyy+138, $"{player_vehicles} Vehicles");
+
+        draw_text(xxx+310,yyy+158,$"{fortified_description} Fortified");// Not / Barely / Lightly / Moderately / Highly / Maximally
+
     }
     
     draw_set_font(fnt_40k_14b);
@@ -394,9 +317,10 @@ function draw_player_ground_combat_options(){
     
     draw_set_halign(fa_center);
     // draw_sprite(spr_force_icon,battle_opponent[current_battle],xxx+44,yyy+289);
-    scr_image("ui/force",battle_opponent[current_battle],xxx+44-32,yyy+289-32,64,64);
-    draw_text_transformed(xxx+44,yyy+316,string(strin[4]),0.75,1,0);
-    draw_set_halign(fa_center);draw_set_font(fnt_40k_14b);
+    scr_image("ui/force",opponent,xxx+44-32,yyy+289-32,64,64);
+    draw_text_transformed(xxx+44,yyy+316,enemy_forces_descripton,0.75,1,0);
+    draw_set_halign(fa_center);
+    draw_set_font(fnt_40k_14b);
     
 
     var _init_battle = false;
@@ -455,7 +379,7 @@ function draw_player_ground_combat_options(){
 
         if (obj_ncombat.enemy==13) then obj_ncombat.fortified=0;
 
-        obj_ncombat.battle_special=battle_special[current_battle];
+        obj_ncombat.battle_special=special;
         obj_ncombat.battle_climate=_planet_data.planet_type;
 
         // show_message(string(battle_object[current_battle].p_feature[battle_world[current_battle]]));
@@ -476,19 +400,14 @@ function draw_player_ground_combat_options(){
         }
 
         //
-        _roster = new Roster();
-        with (_roster){
-            roster_location = _loc;
-            roster_planet = _planet;
-            determine_full_roster();
-            only_locals();
-            update_roster();
-            if (array_length(selected_units)){  
+        with (roster){
+            //final check that there are in fact player units present
+            if (total_selected()){  
                 setup_battle_formations();
                 add_to_battle();
             }              
         }
-        delete _roster;
+        delete roster;
         instance_deactivate_object(battle_object[current_battle]);
     }
     

@@ -285,7 +285,7 @@ try {
             }
             obj_controller.combat=0;
             with(obj_turn_end){
-                alarm[4]=1;
+                end_turn_battle_next_sequence();
             }
         }
     }

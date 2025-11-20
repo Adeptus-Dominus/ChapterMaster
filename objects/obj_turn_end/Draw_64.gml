@@ -34,7 +34,7 @@ if (alerts>0) and (popups_end=1){
 }
 
 draw_set_alpha(1);
-if (show>0 && current_battle<battles && current_battle>-1){
+if (show>-1 && current_battle<battles && current_battle>-1){
     var _cur_battle = battles[current_battle];
     _cur_battle.draw();
 }

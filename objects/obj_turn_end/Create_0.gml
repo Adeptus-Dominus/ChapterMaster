@@ -59,8 +59,6 @@ battle_location = [];
 battle_world =  [];// Be like -50 for space battle
 battle_opponent =  [];// faction ID
 battle_object =  [];// faction object for the fleets
-battle_pobject =  [];// player object for the fleets
-battle_special = [];
 
 battle = [];
     
@@ -96,7 +94,7 @@ if (audiences>0){// This is a one-off change all messages to declare war
 
 alerts=0;
 fast=0;
-show=0;
+show=-1;
 
 
 /* */

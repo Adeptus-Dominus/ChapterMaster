@@ -268,7 +268,7 @@ function add_ship_to_fleet(index, fleet="none"){
 function player_retreat_from_fleet_combat(){
 	try{
 	var p_strength,ratio,diceh,_roll_100;
-    var mfleet=obj_turn_end.battle_pobject[obj_turn_end.current_battle];;
+    var mfleet = obj_turn_end.battle[obj_turn_end.current_battle].player_object;
     var _fleet_ships = fleet_full_ship_array(mfleet);
     var en_strength=0;
 
@@ -382,8 +382,11 @@ function player_retreat_from_fleet_combat(){
     obj_controller.menu=0;
     
     // 139;
-    with(obj_temp_inq){instance_destroy();}
-    instance_create(obj_turn_end.battle_pobject[obj_turn_end.current_battle].x,obj_turn_end.battle_pobject[obj_turn_end.current_battle].y,obj_temp_inq);
+    with(obj_temp_inq){
+    	instance_destroy();
+    }
+    var _p_fleet = obj_turn_end.battle[obj_turn_end.current_battle].player_object;
+    instance_create(_p_fleet.x,_p_fleet.y,obj_temp_inq);
     with(obj_en_fleet){
         if (navy=1) and (point_distance(x,y,obj_temp_inq.x,obj_temp_inq.y)<40) and (trade_goods="player_hold") then trade_goods="";
     }

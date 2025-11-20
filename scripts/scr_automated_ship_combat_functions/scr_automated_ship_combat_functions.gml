@@ -402,7 +402,7 @@ function ship_combat_cleanup(){
         }
         
         if (player_started=0) and (instance_exists(obj_turn_end)){
-            _player_battle_fleet=obj_turn_end.battle_pobject[obj_turn_end.current_battle];
+            _player_battle_fleet=obj_turn_end.battle[obj_turn_end.current_battle].player_object;
         }
         
         

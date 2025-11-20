@@ -10,6 +10,7 @@ function Roster() constructor{
     squad_buttons = [];
     company_buttons = [];
     roster_local_string = "";
+
     local_button = new ToggleButton();
         local_button.str1 = "Local Forces";
         local_button.text_halign = fa_center;
@@ -396,15 +397,35 @@ function Roster() constructor{
     }
 
 
-    static marines_total = function(){
+    static marines_total = function(selected_only = false){
         var _marines = 0;
-        for (var i=0;i<array_length(full_roster_units);i++){
-            _marines += is_struct(full_roster_units[i]);
+        if (!selected_only){
+            for (var i=0;i<array_length(full_roster_units);i++){
+                _marines += is_struct(full_roster_units[i]);
+            }
         }
+
         for (var i=0;i<array_length(selected_units);i++){
             _marines += is_struct(selected_units[i]);
         }
         return _marines;
+    }
+
+    static vehicles_total = function(selected_only = false){
+        var _marines = 0;
+        if (!selected_only){
+            for (var i=0;i<array_length(full_roster_units);i++){
+                _marines += is_array(full_roster_units[i]);
+            }
+        }
+        for (var i=0;i<array_length(selected_units);i++){
+            _marines += is_array(selected_units[i]);
+        }
+        return _marines;
+    }
+
+    static total_selected = function(){
+        return array_length(selected_units);
     }
     static purge_bombard_score = function(){
         var _purge_score = 0;
