@@ -54,6 +54,6 @@ if (view_x+view_y>0){
 
 
 
-// show_message(obj_turn_end.current_battle);
+
 with(obj_controller){instance_activate_all();}
 instance_destroy();

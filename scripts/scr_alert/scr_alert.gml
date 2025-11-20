@@ -37,6 +37,7 @@ function EndTurnAlert(type, text,colour)constructor{
 
 
     static draw = function(){
+    	add_draw_return_values();
     	var _fast = obj_turn_end.fast;
         if (_fast>=alert_id) and (string_length(txt)<string_length(text)){
             char+=1;
@@ -52,7 +53,7 @@ function EndTurnAlert(type, text,colour)constructor{
         draw_set_alpha(min(1,alpha));
         
         if (obj_controller.zoomed=0){
-            draw_text(32,+46+(alert_id*20),string_hash_to_newline(txt));
+            draw_text(32,+66+(alert_id*20),string_hash_to_newline(txt));
             // draw_text(view_xview[0]+16.5,view_yview[0]+40.5+(i*12),string(alert_txt[i]));
         }
         /*if (obj_controller.zoomed=1){
@@ -61,9 +62,10 @@ function EndTurnAlert(type, text,colour)constructor{
         }*/
         
         if (obj_controller.zoomed=1){
-            draw_text_transformed(32,92+(alert_id*40),string_hash_to_newline(txt),2,2,0);
+            draw_text_transformed(32,232+(alert_id*40),string_hash_to_newline(txt),2,2,0);
             // draw_text_transformed(122,122+(i*36),string(alert_txt[i]),3,3,0);
         }
+        pop_draw_return_values();
     }
 }
 

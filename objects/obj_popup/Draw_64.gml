@@ -82,7 +82,7 @@ try{
 			if (instance_exists(obj_turn_end)) {
 				var _pop_count = array_length(obj_turn_end.popup);
 				if (_pop_count) {
-					draw_text(x1 + 20, y1 + (sprite_height * 0.07), $"{obj_turn_end.current_popup}/{_pop_count}");
+					draw_text(x1 + 20, y1 + (sprite_height * 0.07), $"{obj_turn_end.current_popup+1}/{_pop_count}");
 				}
 			}
 			if (image == "debug") {
@@ -125,7 +125,7 @@ try{
 				image_bot = (sprite_height * 0.07) + image_hei + 5;
 			}
 
-			draw_popup_options()
+			draw_popup_options();
 		}
 
 		if (type == "duel") {}

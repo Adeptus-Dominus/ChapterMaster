@@ -11,7 +11,7 @@ draw_set_halign(fa_left);
 draw_set_color(CM_GREEN_COLOR);
 
 	
-if (array_length(alert)) and (popups_end=1) {
+if (array_length(alert) && popups_end) {
     for (var i=0;i<array_length(alert);i++){
         var _cur_alert = alert[i];
         _cur_alert.draw();
