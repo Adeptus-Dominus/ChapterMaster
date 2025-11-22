@@ -168,7 +168,7 @@ function merge_ork_fleets(){
     }
 }
 
-function init_ork_waagh(overide=false) {
+function init_ork_waagh(override=false) {
 var waaagh = irandom(300);
 var waaagh_1 = irandom(3);
 var _ork_stars = scr_get_stars(false, [eFACTION.Ork]);
