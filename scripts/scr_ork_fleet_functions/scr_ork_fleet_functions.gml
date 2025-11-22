@@ -170,23 +170,23 @@ function merge_ork_fleets(){
 
 function init_ork_waagh(overide=false) {
 var waaagh = irandom(300);
-var waaagh_1 =irandom(3);
+var waaagh_1 = irandom(3);
 var _ork_stars = scr_get_stars(false, [eFACTION.Ork]);
 var _ork_stars_count = array_length(_ork_stars);
 //
-if ((_ork_stars_count>=45) &&  (waaagh_1==3 || overide ) && obj_controller.known[eFACTION.Ork]==0)
+if ((_ork_stars_count > 45) &&  (waaagh_1 == 3 || overide ) && obj_controller.known[eFACTION.Ork]==0)
 {
 scr_popup("WAAAAGH!","The greenskins have gone unchallenged for far too long. A towering Warboss has rallied the ork hordes and halted their infighting. Now unified, the greenskins pose a dire threat to the entire sector!","waaagh","");
         scr_event_log("red","Ork WAAAAGH! begins");
         obj_controller.known[eFACTION.Ork]=0.5;	
 }
-else if ((_ork_stars_count<=5) && (waaagh_1==3 || overide) && obj_controller.known[eFACTION.Ork]==0)
+else if ((_ork_stars_count = 5) && (waaagh_1 == 3 || overide) && obj_controller.known[eFACTION.Ork]==0)
 {
 scr_popup("WAAAAGH!","The orks are nearly defeated, but in a final desperate push, a new Warboss has mustered a fresh WAAAGH! and begun reclaiming their lost worlds.","waaagh","");
         scr_event_log("red","Ork WAAAAGH! begins.");
         obj_controller.known[eFACTION.Ork]=0.5;	
 }
-else if ((_ork_stars_count>=6 && _ork_stars_count <=35) && (waaagh==33 || overide) && obj_controller.known[eFACTION.Ork]==0)
+else if ((_ork_stars_count >= 5 && _ork_stars_count <= 45) && (waaagh==33 || overide) && obj_controller.known[eFACTION.Ork]==0)
 {
 
 	scr_popup("WAAAAGH!","The greenskins have swelled in activity, their numbers increasing seemingly without relent.  A massive Warboss has risen to take control, leading most of the sector's Orks on a massive WAAAGH!","waaagh","");
