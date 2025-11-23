@@ -10,6 +10,24 @@ function scr_get_planet_with_feature(star, feature){
 	return -1;
 }
 
+/// takes details on on two planet populations if population 1 is bigger than population 2 returns true else returns false
+/// needs both the literal pop number and the boolean for if it is a large population or not
+function population_larger(large_pop,pop,large_pop2,pop2){
+    var _is_larger=false;
+
+    if (!large_pop2 && large_pop1 && floor(pop2/LARGE_PLANET_MOD)<pop1){
+    	_is_larger=true;
+    }
+    if (large_pop2 && large_pop1 && pop2<pop1){
+    	_is_larger = true;
+    }
+    if (!large_pop2 && !large_pop1 && pop2<(pop1/LARGE_PLANET_MOD)){
+    	_is_larger = true;
+    }
+
+    return _is_larger;	
+}
+
 //TODO make an adaptive allies system
 function NSystemSearchHelpers() constructor{
 	static default_allies = [

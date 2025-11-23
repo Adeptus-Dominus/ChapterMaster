@@ -5,24 +5,28 @@ function navy_orbiting_planet_end_turn_action(){
 
 
 	if (trade_goods="" && _is_orbiting){
-	    if (orbiting.present_fleet[20]>0) then exit;
+	    if (orbiting.present_fleet[20]>0){
+	    	end_sequence_finished = true;
+	    }
 	}
 
 
 	// Check if the ground battle is victorious or not
-	if (_war_with_player && trade_goods="invading_player" && guardsmen_unloaded=1) {
+	if (!end_sequence_finished && _war_with_player && trade_goods="invading_player" && guardsmen_unloaded=1) {
 		navy_finish_destroying_player_world();
 	}
 
 	// Invade the player homeworld as needed
-	navy_attack_player_world();
+	if (!end_sequence_finished){
+		navy_attack_player_world();
+	}
 	// Bombard the shit out of the player homeworld
-	if (_war_with_player && trade_goods="" && !guardsmen_unloaded && _is_orbiting){
+	if (!end_sequence_finished &&_war_with_player && trade_goods="" && !guardsmen_unloaded && _is_orbiting){
 		navy_bombard_player_world();
 	}
 
 
-	if (_war_with_player && action="" && trade_goods="" && guardsmen_unloaded=0) {
+	if (!end_sequence_finished &&_war_with_player && action="" && trade_goods="" && guardsmen_unloaded=0) {
 	    navy_hunt_player_assets()
 	}
 
@@ -30,7 +34,9 @@ function navy_orbiting_planet_end_turn_action(){
 	if (!new_navy_ships_forge()){
 		exit;
 	}
-	if (trade_goods=="building_ships") then exit;
+	if (trade_goods=="building_ships"){
+		end_sequence_finished = true;;
+	}
 
 
 	//OK this calculates how many imperial guard the ships have and can have at a max
@@ -50,7 +56,7 @@ function navy_orbiting_planet_end_turn_action(){
 		send_navy_to_forge();
 	}
 	// Bombard the shit out of things when able
-	 else if (trade_goods=="" && _is_orbiting && action=""){
+	 else if (trade_goods=="" && action=""){
 	    imperial_navy_bombard();
 	}
 
@@ -238,7 +244,7 @@ function imperial_navy_bombard(){
     
             if (hol=false){
                 var p,bombard,deaths,hurss,scare,onceh,wob,kill;
-                p=0;bombard=0;deaths=0;hurss=0;onceh=0;wob=0;kill=0;
+                var p=0,bombard=0,deaths=0,hurss=0,onceh=0,wob=0,kill=0;
             
                 repeat(orbiting.planets){
                     p+=1;
@@ -554,7 +560,7 @@ function navy_bombard_player_world(){
 
 function fleet_max_guard(){
 	var maxi=0, i=0;
-	for (i=1;i<array_length(capital_imp);i++){
+	for (i=0;i<array_length(capital_imp);i++){
 	    if (capital_max_imp[i]>0) {
 	    	if (capital_number>i){
 	    		capital_max_imp[i]=0;
@@ -563,7 +569,7 @@ function fleet_max_guard(){
 	    	}
 	    }
 	}
-	for (i=1;i<array_length(frigate_imp);i++){
+	for (i=0;i<array_length(frigate_imp);i++){
 	    if (frigate_max_imp[i]>0) {
 	    	if (frigate_number>i){
 	    		frigate_max_imp[i]=0;
@@ -572,7 +578,7 @@ function fleet_max_guard(){
 	    	}
 	    }
 	}
-	for (i=1;i<array_length(escort_imp);i++){
+	for (i=0;i<array_length(escort_imp);i++){
 	    if (escort_max_imp[i]>0) {
 	    	if (escort_number>i){
 	    		escort_max_imp[i]=0;
@@ -586,7 +592,7 @@ function fleet_max_guard(){
 
 function fleet_guard_current(){
 	var curr=0,i=0;
-	for (i=1;i<array_length(capital_imp);i++){
+	for (i=0;i<array_length(capital_imp);i++){
 	    if (capital_imp[i]>0){ 
 	      	if (capital_number<=i){
 	    		if (!guardsmen_unloaded){
@@ -595,7 +601,7 @@ function fleet_guard_current(){
 	    	}
 	    }
 	}
-	for (i=1;i<array_length(frigate_imp);i++){
+	for (i=0;i<array_length(frigate_imp);i++){
 	    if (frigate_imp[i]>0){
 	      	if (frigate_number<=i){
 	    		if (!guardsmen_unloaded){
@@ -605,7 +611,7 @@ function fleet_guard_current(){
 	    }
 	}
 
-	for (i=1;i<array_length(escort_imp);i++){
+	for (i=0;i<array_length(escort_imp);i++){
 	    if (escort_imp[i]>0){
 	      	if (escort_number<=i){
 	    		if (!guardsmen_unloaded){
@@ -641,37 +647,35 @@ function scr_navy_unload_guard(planet){
 
 function scr_navy_planet_action(){
 	if (action=="" && is_orbiting() && !guardsmen_unloaded){// Unload if problem sector, otherwise patrol
-	    var selected_planet=0,highest=0,popu=0,popu_large=false;
+	    var selected_planet=0,highest=0,_target_pop=0,_popu_large=false;
     
-	    for (var p=1;p<=orbiting.planets;p++){
+	    for (var p=1; p<=orbiting.planets; p++){
 	    	var planet_enemies = planet_imperial_base_enemies(p, orbiting);
 
-	        if (planet_enemies > highest && orbiting.p_type[p]!="Daemon"){
+	        if (planet_enemies > highest && orbiting.p_type[p] != "Daemon"){
 	            selected_planet=p;
 	            highest=planet_enemies;
-	            popu=orbiting.p_population[p];
-	            if (orbiting.p_large[p]) then popu_large=true;
+	            _target_pop=orbiting.p_population[p];
+	            if (orbiting.p_large[p]){
+	            	_popu_large=true;
+	            }
 	        }
         
 	        // New shit here, prioritize higher population worlds
 	        if (planet_enemies>=highest && orbiting.p_type[p]!="Daemon" && p>1){
-	            if (orbiting.p_orks[p]+orbiting.p_chaos[p]+orbiting.p_tyranids[p]+orbiting.p_necrons[p]+orbiting.p_tau[p]+orbiting.p_traitors[p]>0){
-	                var isnew=false;
+	        	var _large_planet_pop = orbiting.p_large[p]
+	        	var _planet_pop = orbiting.p_population[p];
+	            if (has_imperial_enemies(p, orbiting)){
                 
-	                if (!popu_large && orbiting.p_large[p]=true && floor(popu/1000000000)<orbiting.p_population[p]) then isnew=true;
-	                if (!popu_large && orbiting.p_large[p]=true && popu<orbiting.p_population[p]) then isnew=true;
-	                if (!popu_large && orbiting.p_large[p]=false && popu<(orbiting.p_population[p]/1000000000)) then isnew=true;
-                
-	                if (isnew=true){
+	                if (population_larger(_large_planet_pop,_planet_pop,_popu_large,_target_pop)){
 	                    selected_planet=p;
 	                    highest=planet_imperial_base_enemies(p, orbiting);
-	                    popu_large = orbiting.p_large[p];
+	                    _popu_large = _large_planet_pop;
 	                }
-                
 	            }
 	        }
         
-	        if (obj_controller.faction_status[eFACTION.Imperium]="War"){
+	        if (obj_controller.faction_status[eFACTION.Imperium]=="War"){
 	        	if (orbiting.p_owner[p]=1 && orbiting.p_player[p]=0 && highest=0){
 	        		selected_planet=p;
 	        		highest=0.5;
@@ -689,7 +693,7 @@ function scr_navy_planet_action(){
 
 	    if (selected_planet>0 && highest>0 && array_sum(orbiting.p_guardsmen)<=0){
 	        if (highest>2 || orbiting.p_pdf[selected_planet]=0){
-	            scr_navy_unload_guard(selected_planet)
+	            scr_navy_unload_guard(selected_planet);
 	        }
 	    }
     
@@ -697,7 +701,7 @@ function scr_navy_planet_action(){
 	    if (obj_controller.faction_status[eFACTION.Imperium]=="War"){
 	        if (scr_orbiting_fleet(eFACTION.Player)!="none") then _player_planet=true;
 
-            for (var r=1;r<=orbiting.planets;r++){
+            for (var r=1; r<=orbiting.planets; r++){
 	            _player_planet = orbiting.p_owner[r]==eFACTION.Player;
 	            if (!_player_planet){
 	            	_player_planet = planet_feature_bool(orbiting.p_feature[r], P_features.Monastery);
@@ -705,7 +709,7 @@ function scr_navy_planet_action(){
 	        }
 	    }
     
-	    if (selected_planet=0 && highest=0 && !_player_planet){
+	    if (selected_planet == 0 && highest == 0 && !_player_planet){
 	        var halp=0;
 	        var stars_needing_help = [];
         
@@ -723,7 +727,7 @@ function scr_navy_planet_action(){
 
 	            if (_star_distance<=600){
                 
-	                var star_to_rescue=instance_nearest(_current_star.x,_current_star.y,obj_star);
+	                var star_to_rescue = instance_nearest(_current_star.x,_current_star.y,obj_star);
 	                with(star_to_rescue){
 	                	array_replace_value(p_halp, 1,1.1);
 	                }
@@ -737,20 +741,27 @@ function scr_navy_planet_action(){
         
 	        // Patrol otherwise
 	        if (halp=0){
-	            with(orbiting){y-=10000;}
+	            with(orbiting){
+	            	y-=10000;
+	            }
 	            with(obj_star){
 	            	if (craftworld=1 || space_hulk=1) then y-=10000;
 	            }
             
-	            var next,ndis;
 	            var ndir=floor(random_range(0,360))+1;
 	            if (y<=300) then ndir=floor(random_range(180,359))+1;
-	            if (y>(room_height-300)) then ndir=floor(random_range(0,180))+1;
-	            if (x<=300) then ndir=choose(floor(random_range(0,90))+1,floor(random_range(270,359))+1);
-	            if (x>(room_width-300)) then ndir=floor(random_range(90,270))+1;
+	            if (y>(room_height-300)){
+	            	ndir=irandom_range(0,180);
+	            }
+	            if (x<=300){
+	            	ndir=choose(irandom_range(1,91),irandom_range(270,360));
+	            }
+	            if (x>(room_width-300)){
+	            	ndir=irandom_range(90,270);
+	            }
             
 	            ndis=random_range(200,400);
-	            next=instance_nearest(x+lengthdir_x(ndis,ndir),y+lengthdir_y(ndis,ndir),obj_star);
+	            var next=instance_nearest(x+lengthdir_x(ndis,ndir),y+lengthdir_y(ndis,ndir),obj_star);
 	            // next=instance_nearest(x,y,obj_star);
             
 	            with(obj_star){
@@ -767,13 +778,19 @@ function scr_navy_planet_action(){
 }
 
 function has_imperial_enemies(planet, system){
-	return system.p_orks[planet]+system.p_chaos[planet]+system.p_tyranids[planet]+system.p_necrons[planet]+system.p_tau[planet]+system.p_traitors[planet];
+	var _enemies = system.p_orks[planet]+system.p_chaos[planet]+system.p_tyranids[planet]+system.p_necrons[planet]+system.p_tau[planet]+system.p_traitors[planet];
+
+	if (obj_controller.faction_status[eFACTION.Imperium] == "War"){
+		_enemies +=system.p_player[planet];
+	}
+
+	return _enemies;
 }
 
 function navy_load_up_guardsmen_or_move_planet(planet, valid_next_planet){
     var _player_war=false;
     var _pdata = new PlanetData(planet, orbiting)
-    if (_pdata.player_forces>0 && obj_controller.faction_status[eFACTION.Imperium]=="War")){
+    if (_pdata.player_forces>0 && obj_controller.faction_status[eFACTION.Imperium]=="War"){
     	_player_war=true;
 	}
 	if (planet<=0 || _player_war){
@@ -827,7 +844,7 @@ function scr_navy_recruit_new_guard(){
 
 
     var o=0,that=0,te=0,te_large=0;
-    for (var o=1;o<=orbiting.planets;o++)
+    for (var o=1;o<=orbiting.planets;o++){
         if (orbiting.p_owner[o]<=5){
         	var _imp_enemies = has_imperial_enemies(o, orbiting);
         	if (_imp_enemies){
@@ -836,20 +853,13 @@ function scr_navy_recruit_new_guard(){
         	if (orbiting.p_population[o] <= 0){
         		continue;
         	}
-            if (orbiting.p_population[o]>te){
-                te=orbiting.p_population[o];
-                that=o;
-            }
-            if (orbiting.p_large[o]=1 && te_large=0){
-                te=orbiting.p_population[o];
-                that=o;
-                te_large=1;
-            }
-            if (te_large=1 && orbiting.p_population[o]>te && orbiting.p_large[o]=1){
-                te=orbiting.p_population[o];
-                that=o;
-                te_large=1;
-            }
+        	var _cur_large = orbiting.p_large[o];
+        	var _cur_pop = orbiting.p_population[o];
+        	if (that == 0 || population_larger(_cur_large,_cur_pop,te_large,te)){
+                te = _cur_pop;
+                that = o; 
+                te_large = _cur_large;       		
+        	}
         }
     }
 
@@ -900,12 +910,12 @@ function scr_navy_find_recruit_world(){
         with(obj_star){
             for (var o =1 ; o<=planets;o++){
 	        	if (planet_needed <= 3){
-	        		if (!p_large[o] && p_population[o]<(_guard_wanted*6)){
+	        		if (!p_large[o] && p_population[o] < (_guard_wanted*6)){
 	        			continue;
 	        		}
 	        	}
 	        	if (planet_needed < 5 && planet_needed > 2){
-	        		if (p_large[o] and (p_population[o]<0.1){
+	        		if (p_large[o] && p_population[o]<0.1){
 	        			continue;
 	        		}
 	        	}

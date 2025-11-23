@@ -68,7 +68,7 @@ function scr_enemy_ai_a() {
 	        var planet_coords = [x,y];
 	        with(obj_en_fleet){
 	        	//checks if there is already an inquis ship investigating planet
-	            if (owner=4){
+	            if (owner==4){
 	                if (point_distance(action_x,action_y,planet_coords[0],planet_coords[1])<30 && 
 	                	string_count("investigate_dead",trade_goods)>0){
 	                	stop=true;
