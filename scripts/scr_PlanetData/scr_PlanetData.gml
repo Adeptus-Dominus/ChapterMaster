@@ -62,6 +62,11 @@ function PlanetData(planet, system) constructor{
     	}
     	return pop_value;
     }
+    static populaton_large_conversion = function(){
+        if (large_population){
+            pop_value /= large_pop_conversion;
+        }
+    }
 
     static send_colony_ship = function(target, targ_planet, type){
         new_colony_fleet(system, planet, target, targ_planet, type);
@@ -115,6 +120,10 @@ function PlanetData(planet, system) constructor{
     }
 
     guardsmen = system.p_guardsmen[planet];
+    static edit_guardsmen = function(edit_val){
+        system.p_guardsmen[planet] += edit_val;
+        guardsmen = system.p_guardsmen[planet];
+    }
     pdf = system.p_pdf[planet];
     fortification_level  = system.p_fortified[planet];
     static alter_fortification = function(alteration){

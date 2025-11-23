@@ -708,7 +708,7 @@ function scr_enemy_ai_a() {
 	            if (rand1>rand2){
 	                /*if (tyranids_score<=3) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.6);
 	                if (tyranids_score>=4) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.5);*/
-	                var onh;onh=0;
+	                var onh=0;
 	                if (tyranids_score=1) and (onh=0){p_guardsmen[_run]-=2000;onh=1;}
 	                if (tyranids_score=2) and (onh=0){p_guardsmen[_run]-=30000;onh=1;}
 	                if (tyranids_score=3) and (onh=0){p_guardsmen[_run]-=100000;onh=1;}
