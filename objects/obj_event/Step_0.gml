@@ -34,16 +34,23 @@ if (closing=true) and (fading=-1) and (fade_alpha<=0){
         p1=obj_controller.fest_type;
         p3="";
         p2=obj_controller.fest_planet;
+
+
         
         if (p2>0) then p3=string(obj_controller.fest_star)+" "+scr_roman(obj_controller.fest_wid);
-        if (p2<=0) then p3=+" the vessel '"+string(obj_ini.ship[obj_controller.fest_sid])+"'";
+        if (p2<=0){
+            var _ship = fetch_ship(obj_controller.fest_sid);
+            p3=+$" the vessel '{_ship.name}'";
+        }
         
         scr_alert("green","event",string(p1)+" on "+string(p3)+" ends.",0,0);
         scr_event_log("green",string(p1)+" on "+string(p3)+" ends.", p3);
     }
     
     with(obj_popup){
-        if (number!=0) then obj_turn_end.alarm[1]=10;
+        if (number!=0){
+            setup_audience_and_popup_timer(10);
+        }
         instance_destroy();
     }
     obj_controller.cooldown=30;

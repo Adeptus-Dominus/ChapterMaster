@@ -316,8 +316,8 @@ function complete_garrison_mission(targ_planet, problem_index){
                 _mission_string+=$"while stationed {p_garrison.garrison_leader.name_role()} makes several notable observations and is able to instruct the planets defense core leaving the world better defended (fortifications++).";
             }
             //TODO just generall apply this each turn with a garrison to see if a cult is found
-            if (planet_feature_bool(p_feature[targ_planet], P_features.Gene_Stealer_Cult)){
-                var cult = return_planet_features(planet.features,P_features.Gene_Stealer_Cult)[0];
+            if (planet_feature_bool(p_feature[targ_planet], P_features.GeneStealerCult)){
+                var cult = return_planet_features(planet.features,P_features.GeneStealerCult)[0];
                 if (cult.hiding){
                     widom_test = tester.standard_test(p_garrison.garrison_leader, "wisdom",0, ["tyranids"]);
                     if (widom_test[0]){
@@ -353,10 +353,10 @@ function complete_train_forces_mission(targ_planet, problem_index){
         	var _tyannic_vet = _trainer.has_trait("tyrannic_vet");
         	if (_tyannic_vet){
         		_wis_test_difficulty += 10;
-        		if (planet.has_feature(P_features.Gene_Stealer_Cult)){
-        			var _cult = planet.get_features(P_features.Gene_Stealer_Cult)[0];
+        		if (planet.has_feature(P_features.GeneStealerCult)){
+        			var _cult = planet.get_features(P_features.GeneStealerCult)[0];
         			if (_cult.hiding){
-        				planet.delete_feature(P_features.Gene_Stealer_Cult);
+        				planet.delete_feature(P_features.GeneStealerCult);
         				_mission_string += $"Fortune has smiled on this mission, {_trainer.name_role()}'s abilities as a Veteran of dealing with the Tyranids came in handy and in a short period was able to discern the existencee of a cult. He was able to organise those  he considered to be still loyal to rally an extermiation of the cult, reeports suggest he was so successful as to have completely wiped the genestealer presence from the planet";
         			}
         		}
@@ -500,6 +500,26 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
     }	
 }
 
+///@mixin obj_star
+function setup_fallen_capture_battle(planet){
+    var chan = choose(1, 2, 3, 4);
+    if (chan <= 2) {
+        var _battle = new EndTurnBattle(EndTurnBattleTypes.Ground, self);
+        _battle.planet = planet;
+        _battle.battle_special = chan == 1 ? "fallen1" : "fallen2";
+        _battle.battle_opponent = 10;
+        _battle.add_to_stack();  
+
+
+    }else if (chan >= 3) {
+        if (remove_planet_problem(planet, "fallen")){
+            tixt = "Your marines have scoured " + planet_numeral_name(planet);
+            tixt += " in search of the Fallen.  Despite their best efforts, and meticulous searching, none have been found.  It appears as though the information was faulty or out of date.";
+            scr_popup("Hunt the Fallen", tixt, "fallen", "");
+            scr_event_log("", $"Mission Successful: No Fallen located upon {planet_numeral_name(planet)}");
+        }
+    }
+}
 //TODO allow most of these functions to be condensed and allow arrays of problems or planets and maybe increase filtering options
 //filtering options could be done via universal methods that all the filters to be passed to many other game systems
 function has_any_problem_planet(planet, star="none"){

@@ -73,11 +73,11 @@ recruiting_button.update({
 	target : target,
 });
 recruiting_button.bind_method = function(){
-    if (!p_data.has_feature(P_features.Recruiting_World)) {
-        p_data.add_feature(P_features.Recruiting_World);
+    if (!p_data.has_feature(P_features.RecruitingWorld)) {
+        p_data.add_feature(P_features.RecruitingWorld);
         obj_controller.recruiting_worlds += $"{planet_numeral_name(obj_controller.selecting_planet, target)}|";
     } else {
-        delete_features(target.p_feature[obj_controller.selecting_planet], P_features.Recruiting_World);
+        delete_features(target.p_feature[obj_controller.selecting_planet], P_features.RecruitingWorld);
         obj_controller.recruiting_worlds=string_replace(obj_controller.recruiting_worlds,string(target.name)+" "+scr_roman(obj_controller.selecting_planet)+"|","");
     }
 };
@@ -89,7 +89,7 @@ recruitment_type_button.update({
 	target : target,
 });
 recruitment_type_button.bind_method = function(){
-    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+    var _recruit_world = p_data.get_features(P_features.RecruitingWorld)[0];
     if (_recruit_world.recruit_type < 1) {
         _recruit_world.recruit_type++
     } else {
@@ -104,7 +104,7 @@ recruitment_costdown_button.update({
 	target : target,
 });
 recruitment_costdown_button.bind_method = function(){
-    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+    var _recruit_world = p_data.get_features(P_features.RecruitingWorld)[0];
     _recruit_world.recruit_cost--
 };
 
@@ -115,7 +115,7 @@ recruitment_costup_button.update({
 	target : target,
 });
 recruitment_costup_button.bind_method = function(){
-    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+    var _recruit_world = p_data.get_features(P_features.RecruitingWorld)[0];
     _recruit_world.recruit_cost++
 };
 

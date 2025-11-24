@@ -35,7 +35,8 @@ function scr_vehicle_count(role, location="") {
                     }
                 } else if (_ship == -1 && _planet == 0) {
                     if (_v_ship > -1) {
-                        if (obj_ini.ship_location[_v_ship]  == _location) {
+                        var _shipstruct = obj_ini.ship_data[selecting_ship];
+                        if (_shipstruct.location  == _location) {
                             is_at_loc = true;
                         }
                     } else if (_loc == _location) {

@@ -5,66 +5,123 @@ function add_fleet_ships_to_combat(fleet, combat){
 	var _ship_id;
 	var _ships = fleet_full_ship_array(fleet);
 	var _ship_array_length = array_length(_ships);
+	show_debug_message($"{_ships}")
 	for (var i=0;i<_ship_array_length;i++){
 		try{
 			if (i>=array_length(_ships)) then break;
 			_ship_id = _ships[i];
-			if (obj_ini.ship_hp[_ship_id]<=0 || obj_ini.ship[_ship_id]==""){
+			var _ship_d = obj_ini.ship_data[i];
+			if (_ship_d.hp<=0){
 				continue;
 			}
-	        if (obj_ini.ship_size[_ship_id]>=3) then combat.capital++;
-	        if (obj_ini.ship_size[_ship_id]==2) then combat.frigate++;
-	        if (obj_ini.ship_size[_ship_id]==1) then combat.escort++;
+	        if (_ship_d.size>=3) then combat.capital++;
+	        if (_ship_d.size==2) then combat.frigate++;
+	        if (_ship_d.size==1) then combat.escort++;
+
+	        array_push(combat.ship_data , _ship_d);
 	        
-	        array_push(combat.ship_class, player_ships_class(_ship_id));
-	        array_push(combat.ship, obj_ini.ship[_ship_id]);
 	        array_push(combat.ship_id, _ship_id);
-	        array_push(combat.ship_size, obj_ini.ship_size[_ship_id]);
-	        array_push(combat.ship_leadership, 100);
-	        array_push(combat.ship_hp, obj_ini.ship_hp[_ship_id]);
-	        array_push(combat.ship_maxhp, obj_ini.ship_maxhp[_ship_id]);
-	        array_push(combat.ship_conditions, obj_ini.ship_conditions[_ship_id]);
-	        array_push(combat.ship_speed, obj_ini.ship_speed[_ship_id]);
-	        array_push(combat.ship_turning, obj_ini.ship_turning[_ship_id]);
-	        array_push(combat.ship_front_armour, obj_ini.ship_front_armour[_ship_id]);
-	        array_push(combat.ship_other_armour, obj_ini.ship_other_armour[_ship_id]);
-	        array_push(combat.ship_weapons, obj_ini.ship_weapons[_ship_id]);
 	        
-	        array_push(combat.ship_wep, obj_ini.ship_wep[_ship_id]);
-	        array_push(combat.ship_wep_facing, obj_ini.ship_wep_facing[_ship_id]);
-	        array_push(combat.ship_wep_condition, obj_ini.ship_wep_condition[_ship_id]);
-	        
-	        array_push(combat.ship_capacity, obj_ini.ship_capacity[_ship_id]);
-	        array_push(combat.ship_carrying, obj_ini.ship_carrying[_ship_id]);
-	        array_push(combat.ship_contents, obj_ini.ship_contents[_ship_id]);
-	        array_push(combat.ship_turrets, obj_ini.ship_turrets[_ship_id]);
         } catch (_exception){
         	handle_exception(_exception);
         }		
 	}
+    sort_ships_into_columns(obj_fleet);
+
+    with (obj_fleet){
+        player_fleet_ship_spawner();
+    }
+}
+
+function add_ai_fleet_to_combat(en_fleet, fleet_battle, status = -1){
+	array_push(fleet_battle.enemy, en_fleet.owner);
+	array_push(fleet_battle.enemy_status, status);
+
+	array_push(fleet_battle.en_capital, en_fleet.capital_number);
+	array_push(fleet_battle.en_frigate, en_fleet.frigate_number);
+	array_push(fleet_battle.en_escort, en_fleet.escort_number);
+
+    if (fleet_has_cargo("warband", en_fleet)){
+    	fleet_battle.csm_exp+=2;
+    }
+    if (fleet_has_cargo("csm", en_fleet)){
+        fleet_battle.csm_exp++;
+    }
+}
+
+function setup_fleet_battle(combating, star){
+
+	obj_controller.combat=combating;
+	var _p_fleet = get_nearest_player_fleet(x,y,true);
+	var good = (_p_fleet!="none" and instance_exists(star));
+	if (!good){
+		obj_controller.combat = 0;
+		exit;
+	}
+	show_debug_message($"create combat {combating}");
+    instance_create(0,0,obj_fleet);
+    obj_fleet.target_enemy = combating;
+    instance_activate_object(obj_en_fleet);
+    for (var e=2;e<12;e++){
+        var _fleets = get_orbiting_fleets(e, star);
+        show_debug_message($"fleet : {_fleets}");
+        if (!array_length(_fleets)){
+            continue;
+        }
+        if (e == combating || obj_controller.faction_status[e]=="War"){
+        	show_debug_message("target combat fleet");
+            for (var f=0;f<array_length(_fleets);f++){
+                add_ai_fleet_to_combat(_fleets[f], obj_fleet);
+            }
+        } else if (obj_controller.faction_status[e]!="War" && e != combating){
+            for (var f=0;f<array_length(_fleets);f++){
+                add_ai_fleet_to_combat(_fleets[f], obj_fleet, 1);
+            }                   
+        }
+    }
+
+    obj_fleet.pla_fleet = _p_fleet;
+    add_fleet_ships_to_combat(_p_fleet, obj_fleet);
+
+    for (var i=0;i<star.planets;i++){
+         if (planet_feature_bool(star.p_feature[i], P_features.Monastery) == 1){
+         	obj_fleet.player_lasers=target.p_lasers[i];
+        }
+    }
+
+    obj_fleet.battle_system=star;
+}
+
+function start_fleet_battle(){    
+    obj_controller.combat=1;
+    obj_fleet.player_started=1;
+    instance_deactivate_all(true);
+    instance_activate_object(obj_controller);
+    instance_activate_object(obj_ini);
+    instance_activate_object(obj_fleet);
+    instance_activate_object(obj_cursor);
+    instance_activate_object(obj_en_ship);
+    instance_activate_object(obj_p_ship);
+    instance_activate_object(obj_al_ship);
+    instance_deactivate_object(obj_star);
 }
 
 function sort_ships_into_columns(combat){
 	var col = 5;
 	with (combat){
-	    for (var k = 0;k<array_length(combat.ship_size);k++){// This determines the number of ships in each column
-            if ((combat.column[col]="capital" && combat.ship_size[k]>=3)) then combat.column_num[col]+=1;
-            if ((combat.column[col-1]="capital" && combat.ship_size[k]>=3)) then combat.column_num[col-1]+=1;
-            if ((combat.column[col-2]="capital" && combat.ship_size[k]>=3)) then combat.column_num[col-2]+=1;
-            if ((combat.column[col-3]="capital" && combat.ship_size[k]>=3)) then combat.column_num[col-3]+=1;
-            if ((combat.column[col-4]="capital" && combat.ship_size[k]>=3)) then combat.column_num[col-4]+=1;
-        
-            if (combat.ship_class[k]=combat.column[col]) then combat.column_num[col]+=1;
-            if (combat.ship_class[k]=combat.column[col-1]) then combat.column_num[col-1]+=1;
-            if (combat.ship_class[k]=combat.column[col-2]) then combat.column_num[col-2]+=1;
-            if (combat.ship_class[k]=combat.column[col-3]) then combat.column_num[col-3]+=1;
-            if (combat.ship_class[k]=combat.column[col-4]) then combat.column_num[col-4]+=1;
-            
-            if ((combat.column[col]="escort" && combat.ship_size[k]=1)) then combat.column_num[col]+=1;
-            if ((combat.column[col-1]="escort" && combat.ship_size[k]=1)) then combat.column_num[col-1]+=1;
-            if ((combat.column[col-2]="escort" && combat.ship_size[k]=1)) then combat.column_num[col-2]+=1;
-            if ((combat.column[col-3]="escort" && combat.ship_size[k]=1)) then combat.column_num[col-3]+=1;
-            if ((combat.column[col-4]="escort" && combat.ship_size[k]=1)) then combat.column_num[col-4]+=1;
+	    for (var k = 0;k<array_length(ship_data);k++){// This determines the number of ships in each column
+	    	var _ship = combat.ship_data[k];
+	    	for (var col = 5;col>0;col--){
+	    		 if ((combat.column[col]="capital" &&  _ship.size>=3)){
+	    		 	combat.column_num[col]++;
+	    		 }
+	    		 else if (combat.column[col]=="frigate"&& _ship.size==2){
+	    		 	combat.column_num[col]++;
+	    		 }
+				else if ((combat.column[col]=="escort" && _ship.size==1)){
+					combat.column_num[col]++;
+				}
+	    	}
 	    }		
 	}
 
@@ -81,7 +138,7 @@ function player_fleet_ship_spawner(){
 	    if (col<5) then x2-=column_width[col];
 
 		if (column_num[col]>0){// Start ship creation
-		    if (column[col]=="capital"){
+		    if (column[col] == "capital" || column[col] == "Battle Barge"){
 		    	hei=160;
 		    	sizz=3;
 		    }
@@ -97,30 +154,34 @@ function player_fleet_ship_spawner(){
 		    	hei=64;
 		    	sizz=1;
 		    }
-		    else if (column[col]=="escort"){hei=64;sizz=1;}
+		    else if (column[col]=="escort"){
+		    	hei=64;
+		    	sizz=1;
+		    }
 
-		    temp1=column_num[col]*hei;
-		    temp2=((room_height/2)-(temp1/2))+64;
+		    temp1 = max(column_num[col],1) * hei;
+		    temp2 = ((room_height/2)-(temp1/2))+64;
 		    if (column_num[col]=1) then temp2+=20;
 		    
 		    // show_message(string(column_num[col])+" "+string(column[col])+" X:"+string(x2));
 		    for (var k = 0;k<array_length(ship_id);k++){
-		        if (ship_class[k]==column[col] || (player_ships_class(ship_id[k])==column[col])){
+		    	var _ship = ship_data[k];
+		        if (_ship.class==column[col] || (player_ships_class(ship_id[k])==column[col])){
 		        	man=-1;
-		            if (sizz>=3 && ship_class[k]!="") {
+		            if (sizz>=3 && _ship.class!="") {
 		            	man=instance_create(x2,temp2,obj_p_capital);
 		            	man.ship_id=ship_id[k];
-		            	temp2+=hei;
+		            	temp2 += hei;
 		            }
-		            if (sizz=2 && ship_class[k]!="") {
+		            if (sizz=2 && _ship.class!="") {
 		            	man=instance_create(x2,temp2,obj_p_cruiser);
 		            	man.ship_id=ship_id[k];
-		            	temp2+=hei;
+		            	temp2 += hei;
 		            }
-		            if (sizz=1 && ship_class[k]!="") {
+		            if (sizz=1 && _ship.class!="") {
 		            	man=instance_create(x2,temp2,obj_p_escort);
 		            	man.ship_id=ship_id[k];
-		            	temp2+=hei;
+		            	temp2 += hei;
 		            }
 		            if (instance_exists(man)){
 			            with (man){
@@ -136,181 +197,103 @@ function player_fleet_ship_spawner(){
 	}// End repeat		
 }
 
+function draw_ellipse_rotated(){
+
+}
+//data must have keys, shields, recharge, and reboot
+function ShipShieldGenerator(data) constructor{
+	move_data_to_current_scope(data);
+	destroyed = false;
+	disabled = false;
+	disabled_timer = 0;
+	x_scale = 1;
+	y_scale = 1;
+	shield_sprite = spr_ship_shields;
+	var _ship_sprite = ship.sprite_index;
+	x_scale = sprite_get_width(_ship_sprite) / sprite_get_width(shield_sprite);
+	y_scale = sprite_get_height(_ship_sprite) / sprite_get_height(shield_sprite);
+
+
+	static draw = function(){
+		if (shields > 0 && !destroyed && !disabled){
+			draw_sprite_ext(shield_sprite, 0, ship.x, ship.y, x_scale, y_scale, ship.direction, c_white, 1);
+
+	        draw_set_color(c_white);
+	        var shield_percent = $"{(shields/maxshields)*100}%"
+	        
+	        draw_text_transformed(ship.x,ship.y-ship.sprite_height,shield_percent,x_scale*obj_controller.scale_mod,y_scale*obj_controller.scale_mod,0);
+		
+		}
+	}
+
+	static active = function(){
+		return (shields && !destroyed && !disabled);
+	}
+
+	static step = function(){
+		if (destroyed){
+			exit;
+		}
+		if (disabled){
+			disabled_timer++;
+			if (disabled_timer >= shields_reboot_time){
+				disabled_timer = 0;
+				disabled = false;
+			} else {
+				exit;
+			}
+		}
+
+		if (!disabled){
+			if (shields<maxshields){
+				shields += recharge_rate;
+			}
+		}
+	}
+}
 
 function setup_player_combat_ship(){
 	action="";
 	direction=0;
 
+	ship_data = obj_ini.ship_data[ship_id];
+	weapons = ship_data.weapons;
 
-	cooldown1=0;
-	cooldown2=0;
-	cooldown3=0;
-	cooldown4=0;
-	cooldown5=0;
-
-
-	name=obj_ini.ship[ship_id];
-	class=obj_ini.ship_class[ship_id];
-	hp=obj_ini.ship_hp[ship_id]*1;
-	maxhp=obj_ini.ship_hp[ship_id]*1;
-	conditions=obj_ini.ship_conditions[ship_id];
-	shields=obj_ini.ship_shields[ship_id]*100;
+	name=ship_data.name;
+	class=ship_data.class;
+	hp=ship_data.hp;
+	size = ship_data.size;
+	maxhp=ship_data.max_hp;
+	shields=ship_data.shields*100;
 	maxshields=shields;
-	armour_front=obj_ini.ship_front_armour[ship_id];
-	armour_other=obj_ini.ship_other_armour[ship_id];
-	weapons=obj_ini.ship_weapons[ship_id];
-	turrets=0;
+	armour_front = ship_data.front_armour;
+	side_armour=ship_data.side_armour;
+	rear_armour = ship_data.rear_armour;
+	turrets=array_length(ship_data.turrets);
 	ship_colour=obj_controller.body_colour_replace;
-	max_speed = obj_ini.ship_speed[ship_id];
-    weapon = obj_ini.ship_wep[ship_id];
-    
-    weapon_facing[1]="";
-    weapon_cooldown[1]=0;
-    weapon_hp[1]=hp/4;
-    weapon_dam[1]=0;
-    weapon_ammo[1]=999;
-    weapon_range[1]=0;
-    weapon_minrange[1]=0;
-    weapon_facing[2]="";
-    weapon_cooldown[2]=0;
-    weapon_hp[2]=hp/4;
-    weapon_dam[2]=0;
-    weapon_ammo[2]=999;
-    weapon_range[2]=0;
-    weapon_minrange[2]=0;
-
-    weapon_facing[3]="";
-    weapon_cooldown[3]=0;
-    weapon_hp[3]=hp/4;
-    weapon_dam[3]=0;
-    weapon_ammo[3]=999;
-    weapon_range[3]=0;
-    weapon_minrange[3]=0;
-
-    weapon_facing[4]="";
-    weapon_cooldown[4]=0;
-    weapon_hp[4]=hp/4;
-    weapon_dam[4]=0;
-    weapon_ammo[4]=999;
-    weapon_range[4]=0;
-    weapon_minrange[4]=0;
-
-    weapon_facing[5]="";
-    weapon_cooldown[5]=0;
-    weapon_hp[5]=hp/4;
-    weapon_dam[5]=0;
-    weapon_ammo[5]=999;
-    weapon_range[5]=0;
-    weapon_minrange[5]=0;
-
-
-
-
-
-	if (class="Battle Barge"){
-	    turrets=3;
-	    weapons=5;
-	    shield_size=3;
-	    sprite_index=spr_ship_bb;
-	    weapon_facing[1]="left";
-	    weapon_dam[1]=15;
-	    weapon_range[1]=450;
-	    weapon_cooldown[1]=30;
-	    weapon_facing[2]="right";
-	    weapon_dam[2]=15;
-	    weapon_range[2]=450;
-	    weapon_cooldown[2]=30;
-	    weapon_facing[3]="special";
-	    weapon_cooldown[3]=90;
-	    weapon_ammo[3]=3;
-	    weapon_range[3]=9999;
-	    weapon_facing[4]="front";
-	    weapon_dam[4]=12;
-	    weapon_range[4]=1000;
-	    weapon_cooldown[4]=120;// volley several
-	    weapon_facing[5]="most";
-	    weapon_dam[5]=16;
-	    weapon_range[5]=300;
-	    weapon_cooldown[5]=30;
-	}
-
-	else if (class=="Slaughtersong" || class=="Gloriana"){turrets=3;
-		weapons=5;shield_size=3;sprite_index=spr_ship_song;
-	    weapon_facing[1]="most";
-	    weapon_dam[1]=16;
-	    weapon_range[1]=550;
-	    weapon_cooldown[1]=26;
-	    weapon_facing[2]="most";
-	    weapon_dam[2]=16;
-	    weapon_range[2]=550;
-	    weapon_cooldown[2]=26;
-	    weapon_facing[3]="most";
-	    weapon_dam[3]=16;
-	    weapon_range[3]=550;
-	    weapon_cooldown[3]=26;
-	    weapon_facing[4]="front";
-	    weapon_dam[4]=32;
-	    weapon_range[4]=1000;
-	    weapon_cooldown[4]=90;
-	}
-
-
-	else if (class="Strike Cruiser"){turrets=1;
-		weapons=4;shield_size=1;sprite_index=spr_ship_stri;
-	    weapon_facing[1]="left";
-	    weapon_dam[1]=8;
-	    weapon_range[1]=300;
-	    weapon_cooldown[1]=30;
-	    weapon_facing[2]="right";
-	    weapon_dam[2]=8;
-	    weapon_range[2]=300;
-	    weapon_cooldown[2]=30;
-	    weapon_facing[3]="special";
-	    weapon_cooldown[3]=90;
-	    weapon_ammo[3]=3;
-	    weapon_range[3]=9999;
-	    weapon_facing[4]="most";
-	    weapon_dam[4]=12;
-	    weapon_range[4]=300;
-	    weapon_cooldown[4]=30;
-	}
-
-	else if (class="Hunter"){turrets=1;
-		weapons=2;
-		shield_size=1;sprite_index=spr_ship_hunt;
-	    weapon_facing[1]="front";
-	    weapon_dam[1]=8;
-	    weapon_range[1]=450;
-	    weapon_cooldown[1]=60;
-	    weapon_facing[2]="most";
-	    weapon_dam[2]=8;
-	    weapon_range[2]=300;
-	    weapon_cooldown[2]=60;
-	}
-
-	else if (class="Gladius"){
-		turrets=1;
-		weapons=2;
-		shield_size=1;
-		sprite_index=spr_ship_glad;
-	    weapon_facing[1]="most";
-	    weapon_dam[1]=8;
-	    weapon_range[1]=300;
-	    weapon_cooldown[1]=30;
-	}
+	max_speed = ship_data.max_speed;
+	sprite_index = ship_data.sprite_index;
+	
+    for (var i=0;i<array_length(weapons);i++){
+    	weapons[i].ship = id;
+    }
+	shields = new ShipShieldGenerator({shields, maxshields, recharge_rate:ship_data.shields_recharge_rate, shields_reboot:ship_data.shields_reboot_time, ship:id})
 
 
 	// STC Bonuses
 	if (obj_controller.stc_bonus[5]=5){
-		armour_front=round(armour_front*1.1);armour_other=round(armour_other*1.1);
+		armour_front=round(armour_front*1.1);
+		side_armour=round(side_armour*1.1);
 	}
 	if (obj_controller.stc_bonus[6]=2){
-		armour_front=round(armour_front*1.1);armour_other=round(armour_other*1.1);
+		armour_front=round(armour_front*1.1);
+		side_armour=round(side_armour*1.1);
 	}
 
 
 	var i=0, unit, b=0;
 
+	boarders = 0;
 	for (var co=0;co<=obj_ini.companies;co++){
 	    for (i=0;i<array_length(obj_ini.name[co]);i++){
 	        if (obj_ini.name[co][i]=="") then continue;

@@ -213,9 +213,7 @@ if (max_ships>0)and (instance_exists(obj_star_select)){
             bomb_score = 0;
             for(var i=0; i<array_length(ship_ide); i++){
                 if (ship_all[i]==1){
-                    var _class = player_ships_class(ship_ide[i]);
-                    if (_class=="capital") then bomb_score+=3;
-                    if (_class=="frigate") then bomb_score+=1;
+                    bomb_score += ship_bombard_score(ship_ide);
                 }
             }                        
             // Start bombardment here

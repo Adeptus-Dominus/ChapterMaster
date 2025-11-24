@@ -10,6 +10,7 @@ function Roster() constructor{
     squad_buttons = [];
     company_buttons = [];
     roster_local_string = "";
+
     local_button = new ToggleButton();
         local_button.str1 = "Local Forces";
         local_button.text_halign = fa_center;
@@ -300,10 +301,11 @@ function Roster() constructor{
             	 	 }
             	 }
 				if (obj_ini.veh_lid[co][i]>-1){
-        	 	 	if (obj_ini.veh_lid[co][i]>= array_length(obj_ini.ship_location)){
+        	 	 	if (obj_ini.veh_lid[co][i]>= array_length(obj_ini.ship_data)){
         	 	 		obj_ini.veh_lid[co][i] = -1;
         	 	 	}
-        	 	 	if (obj_ini.ship_location[obj_ini.veh_lid[co][i]] == roster_location){
+                    var _ship = obj_ini.ship_data[obj_ini.veh_lid[co][i]];
+        	 	 	if (_ship.location == roster_location){
         	 	 		_allow=true;
         	 	 	}
         	 	}
@@ -342,8 +344,9 @@ function Roster() constructor{
         var _ship_index;
         for (var s=0;s<array_length(_ships);s++){
             _ship_index = _ships[s];
-            if (obj_ini.ship_carrying[_ship_index]>0){
-                new_ship_button(obj_ini.ship[_ship_index],_ship_index);
+            var _ship = obj_ini.ship_data[_ship_index];
+            if (_ship.carrying>0){
+                new_ship_button(_ship.name,_ship_index);
             }
         }
     }
@@ -394,29 +397,42 @@ function Roster() constructor{
     }
 
 
-    static marines_total = function(){
+    static marines_total = function(selected_only = false){
         var _marines = 0;
-        for (var i=0;i<array_length(full_roster_units);i++){
-            _marines += is_struct(full_roster_units[i]);
+        if (!selected_only){
+            for (var i=0;i<array_length(full_roster_units);i++){
+                _marines += is_struct(full_roster_units[i]);
+            }
         }
+
         for (var i=0;i<array_length(selected_units);i++){
             _marines += is_struct(selected_units[i]);
         }
         return _marines;
+    }
+
+    static vehicles_total = function(selected_only = false){
+        var _marines = 0;
+        if (!selected_only){
+            for (var i=0;i<array_length(full_roster_units);i++){
+                _marines += is_array(full_roster_units[i]);
+            }
+        }
+        for (var i=0;i<array_length(selected_units);i++){
+            _marines += is_array(selected_units[i]);
+        }
+        return _marines;
+    }
+
+    static total_selected = function(){
+        return array_length(selected_units);
     }
     static purge_bombard_score = function(){
         var _purge_score = 0;
         for (var i=0;i<array_length(ships);i++){
             if (ships[i].active){
                 var _id = ships[i].ship_id;
-                var _class = player_ships_class(ship_id);
-                if (obj_ini.ship_class[_id] == "Gloriana"){
-                    _purge_score += 4;
-                } else if (_class=="capital"){
-                    _purge_score += 3;
-                } else if( _class=="frigate"){
-                    _purge_score += 1;
-                }                      
+                _purge_score += ship_bombard_score(_id);                 
             }
         }  
         return _purge_score;       

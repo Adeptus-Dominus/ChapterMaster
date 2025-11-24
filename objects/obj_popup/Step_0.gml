@@ -166,7 +166,7 @@ try {
 				}
 				if ((press == 2) && instance_exists(obj_turn_end)) {
 					if (number != 0) {
-						obj_turn_end.alarm[1] = 4;
+						setup_audience_and_popup_timer(4);
 					}
 					with (obj_temp_meeting) {
 						instance_destroy();
@@ -237,7 +237,7 @@ try {
 					p3 = string(obj_controller.fest_star) + " " + scr_roman(obj_controller.fest_wid);
 				}
 				if (p2 <= 0) {
-					p3 = +" the vessel '" + string(obj_ini.ship[obj_controller.fest_sid]) + "'";
+					p3 = +" the vessel '{obj_ini.ship_data[obj_controller.fest_sid].name}'";
 				}
 
 				scr_alert("green", "event", string(p1) + " on " + string(p3) + " ends.", 0, 0);
@@ -245,7 +245,7 @@ try {
 			}
 			obj_controller.cooldown = 10;
 			if (number != 0 && instance_exists(obj_turn_end)) {
-				obj_turn_end.alarm[1] = 4;
+				setup_audience_and_popup_timer(4);
 			}
 			instance_destroy();
 		}
@@ -358,7 +358,8 @@ try {
         }
         if (press == 2) {
             // Return to ship, exit
-            scr_return_ship(obj_ini.ship[obj_ground_mission.ship_id], obj_ground_mission, obj_ground_mission.num);
+            var _ship = fetch_ship(obj_ground_mission.ship_id);
+            scr_return_ship(_ship.name, obj_ground_mission, obj_ground_mission.num);
             var man_size, ship_id, comp, plan, i;
             ship_id = 0;
             man_size = 0;
@@ -503,7 +504,7 @@ try {
 						last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.home_name, 2);
 					} else if (obj_ini.fleet_type != ePlayerBase.home_world) {
 						image = "artifact_given";
-						last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship[0], 501);
+						last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship_data[0].name, 501);
 					}
 
 					title = "New Artifact";
@@ -514,7 +515,7 @@ try {
 						text += "within your Fortress Monastery.";
 					}
 					if (obj_ini.fleet_type != ePlayerBase.home_world) {
-						text += $"upon your ship '{obj_ini.ship[0]}'.";
+						text += $"upon your ship '{obj_ini.ship_data[0].name}'.";
 					}
 					scr_event_log("", "Inquisition Mission Accepted: The Inquisition has left an Artifact in your care.");
 
@@ -546,7 +547,7 @@ try {
 		obj_controller.cooldown = 10;
 		if (obj_controller.complex_event == false) {
 			if (number != 0 && instance_exists(obj_turn_end)) {
-				obj_turn_end.alarm[1] = 4;
+				setup_audience_and_popup_timer(4);
 			}
 			instance_destroy();
 		}
@@ -588,7 +589,7 @@ try {
 			man_size = 0;
 			comp = 0;
 			plan = 0;
-			ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
+			ship_id = get_ship_by_name(obj_ground_mission.loc);
 			obj_controller.menu = 0;
 			obj_controller.managing = 0;
 			obj_controller.cooldown = 10;
@@ -603,7 +604,7 @@ try {
 
 		if (obj_controller.complex_event == false) {
 			if (number != 0 && instance_exists(obj_turn_end)) {
-				obj_turn_end.alarm[1] = 4;
+				setup_audience_and_popup_timer(4);
 			}
 			instance_destroy();
 		}

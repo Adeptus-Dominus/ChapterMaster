@@ -243,8 +243,8 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 
 				//if (man_role=obj_ini.role[100][12]) and (corruption>=13) then obj_ini.god[target_company][good]=2;// Khorne!!!1 XDDDDDDD
 
-				if (missing = 1) and(man_role == obj_ini.role[100][12]) {
-					if (string_count("has joined the X Company", obj_turn_end.alert_text[obj_turn_end.alerts])) {
+				if (missing = 1) and (man_role == obj_ini.role[100][12]) {
+					if (instance_exists(obj_turn_end)) {
 						scr_alert("red", $"recruiting", "Not enough {obj_ini.role[100][12]} equipment in the armoury!", 0, 0);
 					}
 				}

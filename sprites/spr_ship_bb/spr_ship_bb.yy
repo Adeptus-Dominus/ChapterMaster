@@ -23,7 +23,7 @@
   ],
   "name":"spr_ship_bb",
   "nineSlice":null,
-  "origin":4,
+  "origin":9,
   "parent":{
     "name":"Imperium",
     "path":"folders/Sprites/Ships/Imperium.yy",
@@ -75,7 +75,7 @@
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":155,
+    "xorigin":182,
     "yorigin":56,
   },
   "swatchColours":null,

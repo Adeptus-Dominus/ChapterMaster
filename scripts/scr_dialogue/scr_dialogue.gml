@@ -372,12 +372,8 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 	    obj_controller.chaos_rating+=1;
     
 	    // Casket, Chalice, Tome
-	    if (obj_ini.fleet_type=ePlayerBase.home_world){
-	    	scr_add_artifact("chaos_gift","",0,obj_ini.home_name,2);
-	    }
-	    if (obj_ini.fleet_type != ePlayerBase.home_world){
-	    	scr_add_artifact("chaos_gift","",0,obj_ini.ship[0],501);
-	    }
+	    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("chaos_gift","",0,obj_ini.home_name,2);
+	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("chaos_gift","",0,obj_ini.ship_data[0].name,501);
 	}
 	if (string_count("cs_meeting_battle",diplo_keyphrase)>0){
 	    var current_eventing=diplo_keyphrase;combating=1;
