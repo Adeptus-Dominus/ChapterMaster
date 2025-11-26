@@ -1179,8 +1179,8 @@ function PlanetData(planet, system) constructor{
         	kill = large_population ? strength*0.15 : strength*15000000
         }
         else if  (current_owner=8) and (pdf>0){
-            wob=strength*(irandom_range(49, 51) * 100000);
-            system.p_pdf[planet]-=wob;
+
+            system.p_pdf[planet]-= strength*(irandom_range(49, 51) * 100000);
             if (pdf<0){
             	system.p_pdf[planet]=0;
             }

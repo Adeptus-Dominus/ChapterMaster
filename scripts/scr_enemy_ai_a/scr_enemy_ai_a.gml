@@ -2,27 +2,23 @@
 function scr_enemy_ai_a() {
 	system_garrison = [];
 	system_sabatours = [];
+	system_datas = [0];
+
+	for (var i=1;i<=planets;i++){
+		array_push(system_datas,new PlanetData(i, self));
+	}
 	// guardsmen hop from planet to planet
-	if (system_guard_total()>0) and (present_fleet[eFACTION.Imperium]){
+	if (system_guard_total()>0 && present_fleet[eFACTION.Imperium]){
 	    var cur_planet=0,most_enemies_found=0,current_guard_planet=0,most_enemies_planet=0;
 
-	    repeat(planets){
-	    	cur_planet+=1;
-	    	if (p_guardsmen[cur_planet]>0) and (current_guard_planet=0) then current_guard_planet=cur_planet;
-	    }
-	    cur_planet=0;
-	    var imperium_enemies;
-	    repeat(planets){
-	    	cur_planet+=1;
-	    	imperium_enemies=planet_imperial_base_enemies(cur_planet);
-	        if (imperium_enemies>most_enemies_found){
-	            most_enemies_found=imperium_enemies;
-	            most_enemies_planet=cur_planet;
-	        }
-	    }
-	    if (planet_imperial_base_enemies(current_guard_planet)==0) and (most_enemies_planet!=current_guard_planet){
-	        p_guardsmen[most_enemies_planet]=p_guardsmen[current_guard_planet];
-	        p_guardsmen[current_guard_planet]=0;
+	    var _guard_planets = guard_find_planet_with_most_enemy_forces();
+
+	    if (_guard_planets[0] > 0  && _guard_planets[1] > 0){
+	    	var _next = _guard_planets[0];
+	    	var _current = _guard_planets[1];
+	    	p_guardsmen[_next] = p_guardsmen[_current];
+	    	p_guardsmen[_current] = 0;
+
 	    }
 	}
 

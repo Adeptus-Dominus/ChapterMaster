@@ -3,7 +3,9 @@
 try_and_report_loop("enemy fleet main end turn action",function(){
 var orb=orbiting;
 
-if (round(owner)!=eFACTION.Imperium) and (navy=1) then owner= noone;
+if (round(owner)!=eFACTION.Imperium) and (navy=1){
+	owner= noone;
+}
 
 //TODO centralise orbiting logic
 var _is_orbiting = is_orbiting();
@@ -40,6 +42,8 @@ if (_is_orbiting) {
 			 handle_exception(_exception);
 		}
 	}
+} else {
+	turns_static = 0;
 }
 
 if (navy && action=="" && _is_orbiting) {

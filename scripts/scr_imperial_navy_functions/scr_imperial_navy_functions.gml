@@ -63,7 +63,7 @@ function navy_orbiting_planet_end_turn_action(){
 
 	// If the guardsmen all die then move on
 	var o=0;
-	if (guardsmen_unloaded=1 && _is_orbiting){
+	if (!end_sequence_finished && guardsmen_unloaded=1{
 	    var o=0,guardsmen_alive=1;
 	    repeat(orbiting.planets){
             o+=1;
@@ -237,43 +237,54 @@ function send_navy_to_forge(){
 }
 
 function imperial_navy_bombard(){
-    if (guardsmen_unloaded=0 || (array_sum(orbiting.p_guardsmen)==0 && guardsmen_unloaded=1) || (array_sum(orbiting.p_player)>0 && obj_controller.faction_status[eFACTION.Imperium]=="War")){
-        if (orbiting.present_fleet[6]+orbiting.present_fleet[7]+orbiting.present_fleet[8]+orbiting.present_fleet[9]+orbiting.present_fleet[10]+orbiting.present_fleet[13]=0){
-            var hol=false;
-            if ((orbiting.present_fleet[1]>0 && obj_controller.faction_status[eFACTION.Imperium]="War")) then hol=true;
-    
-            if (hol=false){
-                var p,bombard,deaths,hurss,scare,onceh,wob,kill;
-                var p=0,bombard=0,deaths=0,hurss=0,onceh=0,wob=0,kill=0;
-            
-                repeat(orbiting.planets){
-                    p+=1;
-                    if (orbiting.p_type[p]!="Daemon"){
-                        if (orbiting.p_population[p]=0 && orbiting.p_tyranids[p]>0 && onceh=0){
-                            bombard=p;
-                            onceh=1;
-                        }
-                        if (orbiting.p_population[p]=0 && orbiting.p_orks[p]>0 && orbiting.p_owner[p]=7 && onceh=0){
-                        	bombard=p;onceh=1;
-                        }
-                        if (orbiting.p_owner[p]=8 && orbiting.p_tau[p]+orbiting.p_pdf[p]>0 && onceh=0){
-                            bombard=p;
-                            onceh=1;
-                        }
-                        if (orbiting.p_owner[p]=10 && (orbiting.p_chaos[p]+orbiting.p_traitors[p]+orbiting.p_pdf[p]>0 || orbiting.p_heresy[p]>=50)){bombard=p;onceh=1;}
-                    }
-                }
-            
-                if (bombard>0){
+	if (turns_static < 12){
+		exit;
+	}
+	var _fleets = get_orbiting_fleets([6,7,8,9,10,11,12,13],orbiting);
+	if (array_length(_fleets)){
+		exit;
+	}
 
-                	var _p_data = new PlanetData(bombard, orbiting);
-                	scare=(capital_number*3)+frigate_number;
-                	_p_data.suffer_navy_bombard(scare);
-                   
-                    exit;
-                }
+	if ((orbiting.present_fleet[1]>0 && obj_controller.faction_status[eFACTION.Imperium]="War")){
+		exit;
+	}
+
+    for (var p=0;p<=orbiting.planets;p++){
+        if (orbiting.p_type[p]!="Daemon"){
+            if (orbiting.p_population[p]=0 && orbiting.p_tyranids[p]>0 && onceh=0){
+                bombard=p;
+
+            }
+            else if (orbiting.p_population[p]=0 && orbiting.p_orks[p]>0 && orbiting.p_owner[p]=7 && onceh=0){
+            	bombard=p;
+            }
+            else if (orbiting.p_owner[p]=8 && orbiting.p_tau[p]+orbiting.p_pdf[p]>0 && onceh=0){
+                bombard=p;
+
+            }
+            else if (orbiting.p_owner[p]=10 && (orbiting.p_chaos[p]+orbiting.p_traitors[p]+orbiting.p_pdf[p]>0 || orbiting.p_heresy[p]>=50)){
+            	bombard=p;
+            }
+            else{
+            	var _cults = return_planet_features(orbiting.p_features[p],P_features.Gene_Stealer_Cult);
+            	if (array_length(_cults)){
+            		if (!_cults[0].hiding){
+            			bombard=p;
+            		}
+            	}
             }
         }
+    }
+
+    if (bombard>0){
+		if (guardsmen_unloaded){
+			navy_load_guardsmen();
+		}
+    	var _p_data = new PlanetData(bombard, orbiting);
+    	scare=(capital_number*3)+frigate_number;
+    	_p_data.suffer_navy_bombard(scare);
+       
+        exit;
     }    
 }
 
@@ -777,16 +788,6 @@ function scr_navy_planet_action(){
 	}	
 }
 
-function has_imperial_enemies(planet, system){
-	var _enemies = system.p_orks[planet]+system.p_chaos[planet]+system.p_tyranids[planet]+system.p_necrons[planet]+system.p_tau[planet]+system.p_traitors[planet];
-
-	if (obj_controller.faction_status[eFACTION.Imperium] == "War"){
-		_enemies +=system.p_player[planet];
-	}
-
-	return _enemies;
-}
-
 function navy_load_up_guardsmen_or_move_planet(planet, valid_next_planet){
     var _player_war=false;
     var _pdata = new PlanetData(planet, orbiting)
@@ -802,16 +803,7 @@ function navy_load_up_guardsmen_or_move_planet(planet, valid_next_planet){
         _pdata.edit_guardsmen(-_pdata.guardsmen)
         exit;
     }else {// Get back onboard
-        var new_capacity;
-        var maxi = fleet_max_guard();
-        new_capacity=orbiting.p_guardsmen[1]+orbiting.p_guardsmen[2]+orbiting.p_guardsmen[3]+orbiting.p_guardsmen[4]/maxi;
-    	
-    	for (var i=0;i<max(capital_number,frigate_number,escort_number);i++){
-    		if (capital_number>=i) then capital_imp[i]=floor(capital_max_imp[i]*new_capacity);
-    		if (frigate_number>=i) then frigate_imp[i]=floor(frigate_max_imp[i]*new_capacity);
-    		if (escort_number>=i) then escort_imp[i]=floor(escort_max_imp[i]*new_capacity);
-    	}
-    	orbiting.p_guardsmen = array_create(5,0);
+        navy_load_guardsmen();
 
         trade_goods="";
         guardsmen_unloaded=0;
@@ -819,23 +811,39 @@ function navy_load_up_guardsmen_or_move_planet(planet, valid_next_planet){
     }	
 }
 
-function scr_navy_has_unloaded_guardsmen_turn_end(){
-    var _next_planet=0,highest=0,_current_planet=0;
+function navy_load_guardsmen(){
+    var new_capacity;
+    var maxi = fleet_max_guard();
+    new_capacity = min(orbiting.p_guardsmen[1]+orbiting.p_guardsmen[2]+orbiting.p_guardsmen[3]+orbiting.p_guardsmen[4], maxi);
 	
-	for (var o=1;o<=orbiting.planets;o++){
-		if (orbiting.p_guardsmen[o]>0){
-			_current_planet=o;
+	for (var i=0;i<max(capital_number,frigate_number,escort_number);i++){
+		if (new_capacity > 0 && capital_number >= i){
+			capital_imp[i] = min(capital_max_imp[i],new_capacity);
+			new_capacity -=capital_imp[i];
 		}
-		var _enemy_count = has_imperial_enemies(o, orbiting);
-        if (_enemy_count > highest && orbiting.p_type[o]!="Daemon"){
-            _next_planet=o;
-            highest=_enemy_count;
-        }    		
-	}
+		if (new_capacity > 0 && frigate_number >= i){
+			frigate_imp[i] = min(frigate_max_imp[i],new_capacity);
+			new_capacity -=frigate_imp[i];
+		}
 
+		if (new_capacity > 0 && capital_number >= i){
+			escort_imp[i] = min(escort_max_imp[i],new_capacity);
+			new_capacity -=escort_imp[i];
+		}
+	}
+	orbiting.p_guardsmen = array_create(5,0);	
+}
+
+function scr_navy_has_unloaded_guardsmen_turn_end(){
+    var _next_planet=0,_current_planet=0;
+
+	var _move_data = planet_with_most_enemy_forces(orbiting);
+
+	_next_planet = _move_data[0];
+	_current_planet = _move_data[1];
 
     // Move on, man
-    if (has_imperial_enemies(_current_planet, orbiting)==0){
+    if (_next_planet > 0 && has_imperial_enemies(_current_planet, orbiting)==0){
     	navy_load_up_guardsmen_or_move_planet(_current_planet,_next_planet);
     }	
 }
