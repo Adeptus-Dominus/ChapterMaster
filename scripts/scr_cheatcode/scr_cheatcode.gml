@@ -515,27 +515,25 @@ function system_debug_options(){
 
 	if (planet == 3) {
 		if (press == 0) {
-			var fleet, tar;
-			tar = instance_nearest(x, y, obj_star);
-			fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+			var fleet, star;
+			fleet = instance_create(star.x, star.y, obj_en_fleet);
 			fleet.owner = eFACTION.Imperium;
 			fleet.sprite_index = spr_fleet_imperial;
 			fleet.capital_number = 2;
 			fleet.frigate_number = 5;
-			tar.present_fleet[2] += 1;
+			star.present_fleet[2] += 1;
 			fleet.image_index = 4;
 			fleet.orbiting = id;
 			instance_destroy();
 		}
 		if (press == 1) {
-			var fleet, tar;
-			tar = instance_nearest(x, y, obj_star);
-			fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+			var fleet, star;
+			fleet = instance_create(star.x, star.y, obj_en_fleet);
 			fleet.owner = eFACTION.Chaos;
 			fleet.sprite_index = spr_fleet_chaos;
 			fleet.capital_number = 2;
 			fleet.frigate_number = 5;
-			tar.present_fleet[10] += 1;
+			star.present_fleet[10] += 1;
 			fleet.image_index = 4;
 			fleet.orbiting = id;
 			instance_destroy();
@@ -574,11 +572,13 @@ function system_debug_options(){
 }
 
 function new_system_debug_popup(){
-    var pop = instance_create(mouse_x, mouse_y, obj_popup)
-    pop.image = "debug_banshee"
-    pop.title = "DEBUG"
-    pop.planet = 1
-    pop.text = "What would you like to do?"
+    var pop = instance_create(0, 0, obj_popup)
+    pop.image = "debug_banshee";
+    pop.title = "DEBUG";
+    pop.planet = 1;
+    pop.star = instance_nearest(mouse_x, mouse_y,obj_star);
+    pop.text = $"What would you like to do at {pop.star.name}?";
+
     pop.add_option(
     	[
     		{
@@ -599,7 +599,6 @@ function new_system_debug_popup(){
     		}
     	]
     );
-    pop.type = POPUP_TYPE.SYSTEM_DEBUG;
 }
 
 function system_debug_enemy_invasion(){
@@ -642,7 +641,7 @@ function system_debug_enemy_invasion_spawn(){
 		with (obj_star) {
 			if ((choose(0, 1, 1) == 1) && (owner != eFACTION.Eldar) && (owner != 1)) {
 				var fleet;
-				fleet = instance_create(x, y, obj_en_fleet);
+				fleet = instance_create(star.x, star.y, obj_en_fleet);
 				fleet.owner = obj_popup.invasion_faction;
 				if (obj_popup.invasion_faction == 7) {
 					fleet.sprite_index = spr_fleet_ork;
@@ -704,28 +703,26 @@ function system_debug_spawn_fleet() {
 }
 
 function debug_spawn_imperium_fleet() {
-	var fleet, tar;
-	tar = instance_nearest(x, y, obj_star);
-	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	var fleet;
+	fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Imperium;
 	fleet.sprite_index = spr_fleet_imperial;
 	fleet.capital_number = 2;
 	fleet.frigate_number = 5;
-	tar.present_fleet[2] += 1;
+	star.present_fleet[2] += 1;
 	fleet.image_index = 4;
 	fleet.orbiting = id;
 	instance_destroy();
 }
 
 function debug_spawn_heretic_fleet() {
-	var fleet, tar;
-	tar = instance_nearest(x, y, obj_star);
-	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	var fleet;
+	fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Chaos;
 	fleet.sprite_index = spr_fleet_chaos;
 	fleet.capital_number = 2;
 	fleet.frigate_number = 5;
-	tar.present_fleet[10] += 1;
+	star.present_fleet[10] += 1;
 	fleet.image_index = 4;
 	fleet.orbiting = id;
 	instance_destroy();
@@ -750,28 +747,26 @@ function debug_add_xenos_fleet_options() {
 	]);
 }
 function debug_spawn_ork_fleet() {
-	var fleet, tar;
-	tar = instance_nearest(x, y, obj_star);
-	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	var fleet, star;
+	fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Ork;
 	fleet.sprite_index = spr_fleet_ork;
 	fleet.capital_number = 2;
 	fleet.frigate_number = 5;
-	tar.present_fleet[7] += 1;
+	star.present_fleet[7] += 1;
 	fleet.image_index = 4;
 	fleet.orbiting = id;
 	instance_destroy();
 }
 
 function debug_spawn_tau_fleet() {
-	var fleet, tar;
-	tar = instance_nearest(x, y, obj_star);
-	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	var fleet, star;
+	fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Tau;
 	fleet.sprite_index = spr_fleet_tau;
 	fleet.capital_number = 2;
 	fleet.frigate_number = 5;
-	tar.present_fleet[8] += 1;
+	star.present_fleet[8] += 1;
 	fleet.image_index = 4;
 	fleet.orbiting = id;
 	instance_destroy();
