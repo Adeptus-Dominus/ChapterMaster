@@ -132,7 +132,7 @@ function ork_fleet_arrive_target(){
             if (!_fleet_persists){
                 scr_alert("green","owner",$"Ork ships have crashed across the {name} system.",x,y);
             } else {
-                scr_alert("green","owner",$"Ork ships Spill their ravenouss hordes accross {name} system and the green skin captains turn their guns towards the surface.",x,y);
+                scr_alert("green","owner",$"Ork ships unload their sizable ork contingent across {name} system, yet sizable fleet remains in orbit.",x,y);
             }
         } else {
             var new_wagh_star = distance_removed_star(x,y, choose(2,3,4,5));
@@ -152,7 +152,7 @@ function ork_fleet_arrive_target(){
 }
 
 
-//TOSO provide logic for fleets to attack each other
+//TODO provide logic for fleets to attack each other
 function merge_ork_fleets(){
 
     var _stars_with_ork_fleets = stars_with_faction_fleets(eFACTION.Ork);
@@ -175,16 +175,16 @@ function init_ork_waagh(override = false) {
     var _ork_stars_count = array_length(_ork_stars);
 
     if ((_ork_stars_count > 45) &&  (waaagh_1 == 3 || override ) && obj_controller.known[eFACTION.Ork] == 0) {
-        scr_popup("WAAAAGH!", "The greenskins have gone unchallenged for far too long. A towering Warboss has rallied the ork hordes and halted their infighting. Now unified, the greenskins pose a dire threat to the entire sector!", "waaagh", "");
+        scr_popup("Green Giant Awakens!", "Orks, in an unusual display of behavior, are going on their so called /WAAAGH!/ in our sector.  Considering that they already are a dominant force, some imperial agents express concerns whether imperium can even maintain influence in this sector, let alone contain the ork menace!", "waaagh", "");
         scr_event_log("red", "Ork WAAAAGH! begins");
         obj_controller.known[eFACTION.Ork] = 0.5;
     } else if ((_ork_stars_count > 0 && _ork_stars_count <= 5) && (waaagh_1 == 3 || override) && obj_controller.known[eFACTION.Ork] == 0) {
-        scr_popup("WAAAAGH!", "The orks are nearly defeated, but in a final desperate push, a new Warboss has mustered a fresh WAAAGH! and begun reclaiming their lost worlds.", "waaagh", "");
+        scr_popup("Ork Counter-attack!", "While we have almost succeeded in eliminating the orks from the sector, it seems they are launching a counter-attack with a new Warboss. It might be prudent to deal with this so called /WAAAGH!/ before it can threaten imperium again.", "waaagh", "");
         scr_event_log("red", "Ork WAAAAGH! begins.");
         obj_controller.known[eFACTION.Ork] = 0.5;
     } else if ((_ork_stars_count >= 5 && _ork_stars_count <= 45) && (waaagh == 33 || override) && obj_controller.known[eFACTION.Ork] == 0) {
-        scr_popup("WAAAAGH!", "The greenskins have swelled in activity, their numbers increasing seemingly without relent.  A massive Warboss has risen to take control, leading most of the sector's Orks on a massive WAAAGH!", "waaagh", "");
-        scr_event_log("red", "Ork WAAAAGH! begins.");
+        scr_popup("Ork Rampage!", "Various sources report that orks exhibit increased activity.  It seems that an ork Warboss has risen and unified orks, leading most of them on their so called /WAAAGH!/.", "waaagh", "");
+        scr_event_log("red", "Ork WAAAAGH! begins."); // TODO consider adding flavor texts when trait 'Tolerant' or 'Enemy: Orks' is in effect, also applies to line 343
         obj_controller.known[eFACTION.Ork] = 0.5;
     } else {
         //if no waaagh is triggered
@@ -260,7 +260,7 @@ function out_of_system_warboss(overide = false){
             faction_leader[eFACTION.Ork] = _warboss.name;
             faction_title[7]="Warboss";
             faction_status[eFACTION.Ork]="War";
-            scr_audience(eFACTION.Ork, "new_warboss", -40,"War", 0, 2);     
+            scr_audience(eFACTION.Ork, "new_warboss", -40,"War", 0, 2);      // TODO change starting disposition when trait 'Tolerant' is in effect
         } else {
             known[eFACTION.Ork] = 0.5;
         }
@@ -340,8 +340,8 @@ function out_of_system_warboss(overide = false){
         var _ork_leader = obj_controller.faction_leader[eFACTION.Ork];
         var tix=$"Warboss {_ork_leader} leads a WAAAGH! into Sector {obj_ini.sector_name}.";
         scr_alert("red","lol",string(tix),starf.x,starf.y);
+        scr_popup("Ork Invasion!",$"A so called /WAAAGH!/ led by the Warboss {_ork_leader} has arrived in {obj_ini.sector_name}.  The forefront of the ork group is headed for the {starf.name} system.","waaagh","");
         scr_event_log("red",tix);
-        scr_popup("WAAAAGH!",$"A WAAAGH! led by the Warboss {_ork_leader} has arrived in {obj_ini.sector_name}.  With him is a massive Ork fleet.  Numbering in the dozens of battleships, they carry with them countless greenskins.  The forefront of the WAAAGH! is destined for the {starf.name} system.","waaagh","");
     }
     }
 }
