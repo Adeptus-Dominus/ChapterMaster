@@ -132,7 +132,7 @@ function ork_fleet_arrive_target(){
             if (!_fleet_persists){
                 scr_alert("green","owner",$"Ork ships have crashed across the {name} system.",x,y);
             } else {
-                scr_alert("green","owner",$"Ork ships unload their sizable ork contingent across {name} system, yet sizable fleet remains in orbit.",x,y);
+                scr_alert("green","owner",$"Ork ships unload their sizable ork contingent across {name} system, yet considerable fleet strength remains in orbit.",x,y);
             }
         } else {
             var new_wagh_star = distance_removed_star(x,y, choose(2,3,4,5));
