@@ -1,10 +1,12 @@
 function navy_orbiting_planet_end_turn_action(){
 	end_sequence_finished = false;
 	var _war_with_player = obj_controller.faction_status[eFACTION.Imperium] == "War";
-	if trade_goods != "player_hold" {
+	if (trade_goods != "player_hold") {
 
 
-	if (trade_goods="" && _is_orbiting){
+	if (trade_goods="" ){
+		///basicically if there is a player fleet enroute for this star and the player is at war with the navy it will trigger
+		///meaning the navy fleet is going to sit and wait fot the player to arrive
 	    if (orbiting.present_fleet[20]>0){
 	    	end_sequence_finished = true;
 	    }
@@ -21,11 +23,12 @@ function navy_orbiting_planet_end_turn_action(){
 		navy_attack_player_world();
 	}
 	// Bombard the shit out of the player homeworld
-	if (!end_sequence_finished &&_war_with_player && trade_goods="" && !guardsmen_unloaded && _is_orbiting){
+	if (!end_sequence_finished &&_war_with_player && trade_goods="" && !guardsmen_unloaded ){
 		navy_bombard_player_world();
 	}
 
 
+	//hunt the player like the dog they are
 	if (!end_sequence_finished &&_war_with_player && action="" && trade_goods="" && guardsmen_unloaded=0) {
 	    navy_hunt_player_assets()
 	}
@@ -41,11 +44,9 @@ function navy_orbiting_planet_end_turn_action(){
 
 	//OK this calculates how many imperial guard the ships have and can have at a max
 	guardsmen_ratio = fleet_remaining_guard_ratio();
-	with(obj_temp_inq){instance_destroy();}
 
 
-
-	if (action="" && _is_orbiting && guardsmen_unloaded=1){// Move from one planet to another
+	if (action="" && guardsmen_unloaded=1){// Move from one planet to another
 		scr_navy_has_unloaded_guardsmen_turn_end();
 	}
 
@@ -61,31 +62,15 @@ function navy_orbiting_planet_end_turn_action(){
 	}
 
 
-	// If the guardsmen all die then move on
-	var o=0;
-	if (!end_sequence_finished && guardsmen_unloaded=1{
-	    var o=0,guardsmen_alive=1;
-	    repeat(orbiting.planets){
-            o+=1;
-	        if (orbiting.p_guardsmen[o]>0){
-	        	guardsmen_alive=false;
-	        	break;
-	        }
-	    }
-	    if (guardsmen_alive=1){
-            guardsmen_unloaded=0;
-            guardsmen_ratio=0;
-            trade_goods="";
-        }
-	}
-
+	// If the guardsmen all die then move on and find recruit world this should really be handled by guardsmen_ratio but will monitor for now
+	check_navy_guard_still_live();
 
 	// Go to recruiting grounds
 	if ((guardsmen_unloaded=0 && guardsmen_ratio<0.5 && (trade_goods="")) || trade_goods="recr"){// determine what sort of planet is needed
 		scr_navy_find_recruit_world();
-	}
+	}s
 	// Get recruits
-	if (action=""  && trade_goods="goto_recruiting" && _is_orbiting){
+	if (action=""  && trade_goods="goto_recruiting"){
 		scr_navy_recruit_new_guard();
 	}
 	scr_navy_planet_action();
@@ -96,7 +81,24 @@ function navy_orbiting_planet_end_turn_action(){
 	}	
 }
 
-
+function check_navy_guard_still_live(){
+	var o=0;
+	if (!end_sequence_finished && guardsmen_unloaded=1){
+	    var o=0,guardsmen_dead=true;
+	    repeat(orbiting.planets){
+            o+=1;
+	        if (orbiting.p_guardsmen[o]>0){
+	        	guardsmen_dead=false;
+	        	break;
+	        }
+	    }
+	    if (guardsmen_dead){
+            guardsmen_unloaded=0;
+            guardsmen_ratio=0;
+            trade_goods="";
+        }
+	}
+}
 
 function build_new_navy_fleet(construction_forge){
 	    new_navy_fleet=instance_create(construction_forge.x,construction_forge.y,obj_en_fleet);
@@ -291,10 +293,10 @@ function imperial_navy_bombard(){
 
 function navy_hunt_player_assets(){
 	var hold = false;
-    if (_is_orbiting){
-		var player_owns_planet = scr_get_planet_with_owner(orbiting, eFACTION.Player);	    	
-        hold = player_owns_planet or (orbiting.present_fleet[eFACTION.Player] > 0)
-    }
+
+	var player_owns_planet = scr_get_planet_with_owner(orbiting, eFACTION.Player);	    	
+    hold = player_owns_planet or (orbiting.present_fleet[eFACTION.Player] > 0)
+
 
     if (hold){
         // Chase player fleets
@@ -355,10 +357,14 @@ function navy_hunt_player_assets(){
             if (fleet_distance<homeworld_distance && fleet_distance<7000 && fleet_distance>40 && instance_exists(obj_temp7)) {// Go towards that fleet
                 planet_nearby=instance_nearest(fleet_nearby.x,fleet_nearby.y,obj_star);
             
-                if (instance_exists(planet_nearby) && _is_orbiting){
+                if (instance_exists(planet_nearby)){
 					if (fleet_distance<=500 && planet_nearby!=orbiting){// Case 1; really close, wait for them to make the move
-                        with(obj_temp7){instance_destroy();}
-                        with(obj_temp8){instance_destroy();}
+                        with(obj_temp7){
+                        	instance_destroy();
+                        }
+                        with(obj_temp8){
+                        	instance_destroy();
+                        }
                         exit;
                     }
                     if (fleet_distance>500) {// Case 2; kind of far away, move closer

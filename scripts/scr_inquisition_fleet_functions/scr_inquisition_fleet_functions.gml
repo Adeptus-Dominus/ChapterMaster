@@ -260,3 +260,67 @@ function inquisitor_ship_approaches(){
     }
 }
 
+
+///@Mixin obj_star
+function inquisitor_inspect_base(){
+    var chapter_asset_discovery,yep=0,stop=false;
+   
+    if (present_fleet[1]=0){
+        chapter_asset_discovery = roll_dice_chapter(20, 100, "high");
+    } else {
+        chapter_asset_discovery = roll_dice_chapter(2, 100, "high");
+    }
+
+    // 137 ; chapter_asset_discovery=floor(random(20))+1;
+
+    var cur_planet=0;
+    if (chapter_asset_discovery<=5){
+        repeat(planets){
+            cur_planet+=1;
+            if (p_first[cur_planet]=1) and (p_owner[cur_planet]=2) then p_owner[cur_planet]=1;
+            if (p_type[cur_planet]=="Dead") and (array_length(p_upgrades[cur_planet])>0){
+                if (planet_feature_bool(p_feature[cur_planet], [P_features.Secret_Base,P_features.Arsenal,P_features.Gene_Vault])==0) /*and (string_count(".0|",p_upgrades[cur_planet])>0)*/{
+                    yep=cur_planet;
+                }
+            }
+        }
+    }
+    
+    //if an inquis wants to check out a dead world with chapter assets
+    if (yep>0){
+        var planet_coords = [x,y];
+        with(obj_en_fleet){
+            //checks if there is already an inquis ship investigating planet
+            if (owner==4){
+                if (point_distance(action_x,action_y,planet_coords[0],planet_coords[1])<30 && 
+                    string_count("investigate_dead",trade_goods)>0){
+                    stop=true;
+                }
+            }
+        }
+        
+
+        if (!stop){
+            var plap=0,old_x=x,old_y=y,flee=0;
+            var _current_planet_name = name;
+            var launch_planet, launch_point_found=false;
+            launch_planet = nearest_star_with_ownership(x,y, [eFACTION.Imperium, eFACTION.Mechanicus], self.id);
+            if (launch_planet != "none"){
+                if (instance_exists(launch_planet)){
+                    flee=instance_create(launch_planet.x,launch_planet.y,obj_en_fleet);
+                    with (flee){
+                        base_inquis_fleet();
+                    }
+                    flee.action_x=x;
+                    flee.action_y=y;
+                    flee.trade_goods+="|investigate_dead|";
+                    with (flee){
+                        set_fleet_movement();
+                    }
+                }
+            }
+        }
+    }
+    
+}
+
