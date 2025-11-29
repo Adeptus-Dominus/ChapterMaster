@@ -102,6 +102,38 @@ function popup_window_draw(){
 	}
 }
 
+function PopupOption(data) constructor {
+	move_data_to_current_scope(data);
+	if !(struct_exists(self,"choice_func")){
+		choice_func = popup_default_close;
+	}
+}
+
+function add_option(option, if_empty = false,use_default_option = true){
+    if (if_empty){
+        if (array_length(options)){
+            return;
+        }
+    }
+    if (is_array(option)){
+        for (var i=0;i<array_length(option);i++){
+            add_option(option[i],false,use_default_option);
+        }
+    }
+    else if (array_length(options)<10){
+    	if (use_default_option){
+    		array_push(options, new PopupOption(option));
+    	}else{
+    		array_push(options, option);
+    	}
+    }
+}
+
+function replace_options(option,if_empty = false,use_default_option = true){
+    options = [];
+    add_option(option,if_empty,use_default_option);
+
+}
 
 function evaluate_popup_option(opt){
 	var _allow = true;
@@ -166,13 +198,18 @@ function draw_popup_options(){
 			if (scr_hit(_string_x, _string_y, _string_x + _string_width + 5, _string_y + _string_height)){
 				draw_sprite(spr_popup_select, 0, x1 + 8.5, y1 + 21 + sz);
 				entered_option = i;
+				current_option = _opt;
+				var _is_struct = is_struct(_opt);
+				if (_is_struct && struct_exists(_opt, "hover")){
+					if (is_callable(_opt.hover)){
+		            	script_execute(_opt.hover);
+		            }					
+				}
 				if (scr_click_left()) {
 					press = i;
-					show_debug_message(_opt);
-					if (is_struct(_opt) && struct_exists(_opt, "method")){
-			            if (is_callable(_opt.method)){
-			            	show_debug_message(_opt);
-			            	script_execute(_opt.method);
+					if (_is_struct && struct_exists(_opt, "choice_func")){
+			            if (is_callable(_opt.choice_func)){
+			            	script_execute(_opt.choice_func);
 			            	press = -1;
 			            }
 					}
