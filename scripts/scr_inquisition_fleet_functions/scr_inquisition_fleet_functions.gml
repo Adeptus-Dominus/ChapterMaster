@@ -54,11 +54,11 @@ function radical_inquisitor_mission_ship_arrival(){
         _radical_inquisitor.options = [
             {
                 str1 : "Destroy their vessel",
-                method: mission_hunt_inquisitor_destroy_inquisitor_ship,
+                choice_func: mission_hunt_inquisitor_destroy_inquisitor_ship,
             },
             {
                 str1 : "Hear them out",
-                method: mission_hunt_inquisitor_hear_out_radical_inquisitor,
+                choice_func: mission_hunt_inquisitor_hear_out_radical_inquisitor,
             }
         ];
         _radical_inquisitor.inquisitor_ship = self.id;

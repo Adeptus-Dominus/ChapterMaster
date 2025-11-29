@@ -238,7 +238,7 @@ function ancient_gene_lab_ruins_loot(){
     	options : [
 		{
 			str1: "Add the gene-seed to chapter vaults.",
-			method: function() {
+			choice_func: function() {
 				image = "";
 				var _estimate = irandom_range(3,15)
 				text = string(_estimate) + " gene-seed has been added to the chapter vaults.";
@@ -252,7 +252,7 @@ function ancient_gene_lab_ruins_loot(){
 		},
 		{
 			str1: "Salvage the laboratory for requisition.",
-			method: function() {
+			choice_func: function() {
 				var _req = floor(random_range(200, 500)) + 1;
 				image = "";
 				text = "Technological components have been salvaged, granting " + string(_req) + " requisition.";
@@ -266,7 +266,7 @@ function ancient_gene_lab_ruins_loot(){
 		},
 		{
 			str1: "Leave the laboratory as is.",
-			method: function() {
+			choice_func: function() {
 				with (obj_ground_mission) {
 					instance_destroy();
 				}
@@ -293,7 +293,7 @@ function ancient_fortress_ruins_loot(star_system, planet, _ruins){
     _pop_data.options = [
 	    {
 	    	str1 : "Repair the fortress to boost defenses.  (1000 Req)",
-	    	method : function(){
+	    	choice_func : function(){
 	    		var _star = pop_data.star;
 	    		var _planet = pop_data.planet;
 				obj_controller.requisition -= 1000;
@@ -311,7 +311,7 @@ function ancient_fortress_ruins_loot(star_system, planet, _ruins){
 	    },
 	    {
 	    	str1 : "Salvage raw materials from the fortress.",
-	    	method : function(){
+	    	choice_func : function(){
 				var req = irandom_range(200, 500);
 				image = "";
 				text = $"Much of the fortress is demolished in order to salvage adamantium and raw materials.  The opration has yielded {req} requisition.";

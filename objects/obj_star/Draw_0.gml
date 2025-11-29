@@ -93,7 +93,3 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
 draw_set_valign(fa_top)
 
 
-
-
-
-

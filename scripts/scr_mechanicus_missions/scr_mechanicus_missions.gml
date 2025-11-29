@@ -189,11 +189,11 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
             _mission_data.options =[
 				{
 					str1:"Accept",
-					method : accept_mechanicus_land_raider_mission,
+					choice_func : accept_mechanicus_land_raider_mission,
 				},
 				{
 					str1:"Refuse",
-					method : popup_default_close,
+					choice_func : popup_default_close,
 				},
 			]
 			_evented = true;
@@ -203,11 +203,11 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
             _mission_data.options =[
 				{
 					str1:"Accept",
-					method :accept_mechanicus_bionics_mission,
+					choice_func :accept_mechanicus_bionics_mission,
 				},
 				{
 					str1:"Refuse",
-					method :popup_default_close
+					choice_func :popup_default_close
 				},
 			]
 			_evented = true;
@@ -217,11 +217,11 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
             _mission_data.options =[
 				{
 					str1:"Accept",
-					method : accept_mechanicus_mars_mission
+					choice_func : accept_mechanicus_mars_mission
 				},
 				{
 					str1:"Refuse",
-					method : popup_default_close,
+					choice_func : popup_default_close,
 				},
 			]
 			_evented = true;
@@ -258,11 +258,11 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
         _mission_data.options =[
 			{
 				str1:"Accept",
-				method : accept_mechanicus_tomb_mission,
+				choice_func : accept_mechanicus_tomb_mission,
 			},
 			{
 				str1:"Refuse",
-				method : popup_default_close,
+				choice_func : popup_default_close,
 			},
 		]
 		var text=$"Mechanicus Techpriests have established a research site on a Necron Tomb World in the {star.name} system.  They are requesting some of your forces to provide security for the research team until the tests may be completed.  Further information is on a need-to-know basis.  Can your chapter handle this mission?";

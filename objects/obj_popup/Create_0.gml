@@ -46,27 +46,9 @@ reset=0;
 demand=0;
 
 options = [];
-add_option = function(option, if_empty = false){
-    if (if_empty){
-        if (array_length(options)){
-            return;
-        }
-    }
-    if (is_array(option)){
-        for (var i=0;i<array_length(option);i++){
-            add_option(option[i])
-        }
-    }
-    else if (array_length(options)<10){
-        array_push(options, option);
-    }
-}
 
-replace_options = function(option){
-    options = [];
-    add_option(option);
-
-}
+add_option = method(self,add_option);
+replace_options =  method(self,replace_options);
 
 entered_option = -1;
 
