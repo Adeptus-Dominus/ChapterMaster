@@ -175,7 +175,7 @@ function init_ork_waagh(override = false) {
     var _ork_stars_count = array_length(_ork_stars);
 
     if ((_ork_stars_count > 45) &&  (waaagh_1 == 3 || override ) && obj_controller.known[eFACTION.Ork] == 0) {
-        scr_popup("Green Giant Awakens!", "Orks, in an unusual display of behavior, are going on their so called /WAAAGH!/ in our sector.  Considering that they already are a dominant force, some imperial agents express concerns whether imperium can even maintain influence in this sector, let alone contain the ork menace!", "waaagh", "");
+        scr_popup( "Sector-Wide WAAAGH!", "Chapter Master, the ork menace has reached critical mass. A powerful Warboss commands the greenskin forces, which now dominate the sector. Though we despise these primitive xenos, we must acknowledge the gravity of the threat - the Imperium's hold on this sector hangs by a thread.", "waaagh", "");
         scr_event_log("red", "Ork WAAAAGH! begins");
         obj_controller.known[eFACTION.Ork] = 0.5;
     } else if ((_ork_stars_count > 0 && _ork_stars_count <= 5) && (waaagh_1 == 3 || override) && obj_controller.known[eFACTION.Ork] == 0) {
