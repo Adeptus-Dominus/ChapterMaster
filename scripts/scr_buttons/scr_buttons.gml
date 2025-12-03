@@ -70,6 +70,7 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
     max_width = -1;
     h = 0;
     w = 0;
+    scale_text=false;
 
     move_data_to_current_scope(data);
 
@@ -81,10 +82,18 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
         draw_set_valign(valign);
 
         if (max_width > -1) {
-            w = string_width_ext(text, -1, max_width);
-            h = string_height_ext(text, -1, max_width);
-            x2 = x1 + w;
-            y2 = y1 + h;
+            if (!scale_text){
+                w = string_width_ext(text, -1, max_width);
+                h = string_height_ext(text, -1, max_width);
+                x2 = x1 + w;
+                y2 = y1 + h;
+            } else{
+                w = max_width;
+                scale = calc_text_scale_confines(text,max_width);
+                h = string_height(text) * scale;
+            }
+        } else {
+            w = string_width(text);
         }
 
         pop_draw_return_values();
@@ -104,7 +113,11 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
         draw_set_color(colour);
 
         if (max_width > -1) {
-            draw_text_ext_outline(x1, y1, text, -1, max_width, c_black, colour);
+            if (!scale_text){
+                draw_text_ext_outline(x1, y1, text, -1, max_width, c_black, colour);
+            }else{
+                draw_text_transformed(x1, y1, text, scale, scale, 0)
+            }
         } else {
             draw_text_outline(x1, y1, text, c_black, colour);
         }
@@ -250,6 +263,15 @@ function draw_unit_buttons(position, text, size_mod = [1.5, 1.5], colour = c_gra
     pop_draw_return_values();
 
     return [position[0], position[1], x2, y2];
+}
+
+function standard_loc_data(){
+    x1 = 0;
+    y1 = 0;
+    y2 = 0;
+    x2 = 0;
+    w = 0;
+    h = 0;
 }
 
 /// @function UnitButtonObject(data)

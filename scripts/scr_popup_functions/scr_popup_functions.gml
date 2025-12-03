@@ -62,6 +62,9 @@ function popup_default_close(){
             obj_turn_end.alarm[1]=4;
         }
     }
+    if (struct_exists(pop_data,"marine_display_image")){
+    	pop_data.marine_display_image.destroy_image();
+    }
     instance_destroy();
     exit;
 }
@@ -155,6 +158,9 @@ function evaluate_popup_option(opt){
 
 
 function draw_popup_options(){
+	if (struct_exists(pop_data, "marine_display_triggered")){
+		pop_data.marine_display_triggered = false;
+	}
 	press = -1;
 	if (array_length(options)){
 
@@ -218,27 +224,11 @@ function draw_popup_options(){
 
 			sz += _string_height;
 		}
-
-		t8 = (y1 + 20 + sz) + 5;
-
-		if (image == "new_forge_master") {
-			var new_master_image = false;
-			if (pathway == "selection_options") {
-				if (entered_option == 0) {
-					new_master_image = techs[charisma_pick].draw_unit_image();
-					techs[charisma_pick].stat_display();
-				} else if (entered_option == 1) {
-					new_master_image = techs[talent_pick].draw_unit_image();
-					techs[talent_pick].stat_display();
-				} else if (entered_option == 2) {
-					new_master_image = techs[experience_pick].draw_unit_image();
-					techs[experience_pick].stat_display();
-				}
-				if (is_struct(new_master_image)) {
-					new_master_image.draw( 1208, 210, true);
-				}
-			}
+		if (struct_exists(pop_data, "marine_display_triggered") && pop_data.marine_display_triggered){
+			pop_data.marine_display_image.draw( 1208, 210, true);
+			pop_data.marine_stat_display.stat_display();
 		}
+		t8 = (y1 + 20 + sz) + 5;
 		if (t8 < (oy + sprite_height)) {
 			y_scale = t8 / (oy + sprite_height);
 		}

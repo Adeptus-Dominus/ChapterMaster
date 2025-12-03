@@ -8,11 +8,11 @@ function scr_enemy_ai_a() {
 		array_push(system_datas,new PlanetData(i, self));
 	}
 	// guardsmen hop from planet to planet
-	//not sure we really need this as it's handled with tht navyt fleet functions but fuck it updated it and leaving it fot the sec
+	//not sure we really need this as it's handled with tht navy fleet functions but fuck it updated it and leaving it fot the sec
 	if (system_guard_total()>0 && present_fleet[eFACTION.Imperium]){
 	    var cur_planet=0,most_enemies_found=0,current_guard_planet=0,most_enemies_planet=0;
 
-	    var _guard_planets = guard_find_planet_with_most_enemy_forces();
+	    var _guard_planets = guard_find_planet_with_most_enemy_forces(self);
 
 	    if (_guard_planets[0] > 0  && _guard_planets[1] > 0){
 	    	var _next = _guard_planets[0];
@@ -99,7 +99,6 @@ function scr_enemy_ai_a() {
 	    var necrons_score=p_necrons[_run];
 	    var sisters_score=p_sisters[_run];
 	    // if (p_eldar[_run]>0) then eldar_score=p_eldar[_run]+1;
-    	if (p_tyranids[_run]<4) then tyranids_score=0;
 
 	    if (p_tyranids[_run]>0) and (stop!=1) and (p_owner[_run]!=9){// This might have been causing the problem
 	        /*if (p_tyranids[_run]<5) and (p_guardsmen[_run]>0){
@@ -110,7 +109,6 @@ function scr_enemy_ai_a() {
 	        }*/
 	        if (p_tyranids[_run]>=5) then tyranids_score=7;
 	    }
-    
      	var pdf_with_player=_planet_data.pdf_will_support_player();
     	var pdf_loss_reduction=_planet_data.pdf_loss_reduction_calc();//redues man loss from battle loss if higher defences
     	
@@ -289,7 +287,7 @@ function scr_enemy_ai_a() {
     	var _active_garrison = pdf_with_player && garrison.viable_garrison>0;
 	    // Guard attack
 	    if (guard_score>0) and (guard_attack!="") and (guard_score>0.5){
-        
+        	show_debug_message($"{name}:{guard_attack}")
 	        if (guard_attack="ork") then tempor=choose(1,2,3,4,5,6)*planet_forces[eFACTION.Ork];
 	        if (guard_attack="tau") then tempor=choose(1,2,3,4,5,6)*planet_forces[eFACTION.Tau];
 	        if (guard_attack="traitors") then tempor=choose(1,2,3,4,5,6)*traitors_score;
@@ -306,23 +304,32 @@ function scr_enemy_ai_a() {
         
 	        if (guard_attack="pdf"){
 	            if (pdf_with_player){
-	            	pdf_mod=floor(random(6+garrison.total_garrison*0.1))+1;
+	            	pdf_mod=irandom_range(1,6+garrison.total_garrison*0.1);
 	            }else{
 	            	pdf_mod=irandom(5)+1;
-	            }      	
+	            }    
 	            rand1=(choose(3,4,5,6)*guard_score)*choose(1,1.25,1.25);
 	            rand2=(pdf_mod*pdf_score)*choose(1,1.25);
+	            show_debug_message($"{name} guard attack guard_Win:{rand1>rand2}");
 	            if (rand1>rand2){
-
+	          		var _pdf_before = p_pdf[_run];
 	                if (guard_score<=3) then p_pdf[_run]=floor(p_pdf[_run]*(min(0.95, 0.7+pdf_loss_reduction)));
 	                if (guard_score>=4) then p_pdf[_run]=floor(p_pdf[_run]*(min(0.95, 0.55+pdf_loss_reduction)));
 	                if (guard_score>=4) and (p_pdf[_run]<30000) then p_pdf[_run]*=(min(0.95, 1+pdf_loss_reduction));
 	                if (guard_score>=3) and (p_pdf[_run]<10000) then p_pdf[_run]*=(min(0.95, 0+pdf_loss_reduction));
 	                if (guard_score>=2) and (p_pdf[_run]<2000) then p_pdf[_run]=0;
 	                if (guard_score>=1) and (p_pdf[_run]<200) then p_pdf[_run]=0;
+		            if (_planet_data.population_influences[eFACTION.Tyranids] > 50 && _planet_data.has_feature(P_features.Gene_Stealer_Cult)){
+		            	var _cur_influ = p_influence[_run][eFACTION.Tyranids];
+		            	var _influence_reduction = _cur_influ *  (p_pdf[_run]/_pdf_before);
+		            	adjust_influence(eFACTION.Tyranids,-min(_influence_reduction,_cur_influ-3) , _run);
+		            	if (p_influence[_run][eFACTION.Tyranids] < 20){
+		            		_planet_data.delete_feature(P_features.Gene_Stealer_Cult);
+		            	}
+		            }	                
 	            }
 	            if (p_pdf[_run]=0) and (pdf_with_player){
-	                if (planet_feature_bool(p_feature[_run],P_features.Monastery)==0) and (p_player[_run]<=0){
+	                if (!_planet_data.has_feature(P_features.Monastery)) and (p_player[_run]<=0){
 	                	p_owner[_run]=2;
 	                	dispo[_run]=-50;
 	                }
@@ -333,7 +340,9 @@ function scr_enemy_ai_a() {
 	            if (guard_attack="tau") then after_combat_tau-=1;
 	            if (guard_attack="traitors") then after_combat_traitor-=1;
 	            if (guard_attack="csm") then after_combat_csm-=1;
-	            if (guard_attack="tyranids") then after_combat_tyranids-=1;
+	            if (guard_attack="tyranids"){
+	            	after_combat_tyranids-=1;
+	            }
 	        }
 	    }
     
@@ -367,7 +376,9 @@ function scr_enemy_ai_a() {
 	        if (pdf_attack=="sisters") then after_combat_sisters=tempor;
         
 	        if (pdf_attack=="guard"){
+
 	            rand2=(choose(1,2,3,4,5,6)*guard_score)*choose(1,1.25,2);
+	            show_debug_message($"{name} : pdf attack ,pdf win {rand1>rand2}");
 	            if (rand1>rand2){
 	                if (pdf_score<=3) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.7);
 	                if (pdf_score>=4) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.6);
@@ -762,7 +773,17 @@ function scr_enemy_ai_a() {
 	    p_traitors[_run]=after_combat_traitor;
 	    p_chaos[_run]=after_combat_csm;
 	    p_necrons[_run]=after_combat_necrons;
-	    if (p_tyranids[_run]>4) then p_tyranids[_run]=after_combat_tyranids;
+	    if (p_tyranids[_run] != after_combat_tyranids){
+	    	p_tyranids[_run] = after_combat_tyranids;
+	    	if (_planet_data.has_feature(P_features.Gene_Stealer_Cult)){
+	    		adjust_influence(eFACTION.Tyranids,-min(p_influence[_run][eFACTION.Tyranids]-4, 5),_run);
+	    		var _cult = _planet_data.get_features(P_features.Gene_Stealer_Cult)[0];
+	    		if (p_influence[_run][eFACTION.Tyranids]<5){
+	    			_cult.hiding = true;
+	    		}
+	    	}
+	    }
+
 	    p_sisters[_run]=after_combat_sisters;
     
     

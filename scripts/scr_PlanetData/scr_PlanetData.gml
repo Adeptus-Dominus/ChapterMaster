@@ -62,10 +62,11 @@ function PlanetData(planet, system) constructor{
     	}
     	return pop_value;
     }
-    static populaton_large_conversion = function(){
+    static populaton_large_conversion = function(pop_value){
         if (large_population){
             pop_value /= large_pop_conversion;
         }
+        return pop_value;
     }
 
     static send_colony_ship = function(target, targ_planet, type){
@@ -737,14 +738,20 @@ function PlanetData(planet, system) constructor{
 	    // if (p_tyranids[planet]>0) and (guard_attack="") then guard_attack="tyranids";
 	    if (planet_forces[eFACTION.Tyranids]>=4){
 	    	guard_attack="tyranids";
-	    }else if (planet_forces[eFACTION.Tyranids]<4 && planet_forces[eFACTION.Tyranids]>0){
-			 if (has_feature(P_features.Gene_Stealer_Cult)){
+	    }else if (planet_forces[eFACTION.Tyranids]>0){
+			if (has_feature(P_features.Gene_Stealer_Cult)){
 	 			var _hidden_cult = get_features(P_features.Gene_Stealer_Cult)[0].hiding;
 	 			if (!_hidden_cult){
 	 				guard_attack="tyranids";
-	 			}
-	 		}
-	    }	
+	 			}else if (population_influences[eFACTION.Tyranids]>=50){
+                    guard_attack="pdf";
+                }
+	 		} else {
+                guard_attack="tyranids";
+            }
+	    } else if (population_influences[eFACTION.Tyranids]>=50){
+            guard_attack="pdf";
+        }	
 
 	    return guard_attack;		
 	}
@@ -771,7 +778,9 @@ function PlanetData(planet, system) constructor{
 				}
 			} else if (current_owner == eFACTION.Tau){
 				_pdf_attack="guard";
-			}
+			}else if  (has_feature(P_features.Gene_Stealer_Cult) && population_influences[eFACTION.Tyranids]>=50){
+                _pdf_attack="guard";
+            }
 		}
 
 		if (_pdf_attack==""){
@@ -1199,11 +1208,21 @@ function PlanetData(planet, system) constructor{
         	kill = strength * population_small_conversion(0.15);
             if (system.p_heresy[planet]>0) then system.p_heresy[planet]=max(0,system.p_heresy[planet]-5);
         }
+        var _pop_percentage_kill = (kill/population)*100;
     	edit_population(kill*-1);
         if (system.p_pdf[planet]<0) then system.p_pdf[planet]=0;
+        if (population_influences[eFACTION.Tyranids] > 3){
+            var _max_influence_reduction = min(_pop_percentage_kill,population_influences[eFACTION.Tyranids]-3);
+            adjust_influence(eFACTION.Tyranids,-_max_influence_reduction,planet,system);
+            if (has_feature(P_features.Gene_Stealer_Cult)){
+                if (population_influences[eFACTION.Tyranids]<20){
+                    delete_feature(P_features.Gene_Stealer_Cult);
+                }
+            }
+        }
     
         if (population+pdf<=0) and (current_owner=1) and (obj_controller.faction_status[eFACTION.Imperium]="War"){
-            if (planet_feature_bool(system.p_feature[planet],P_features.Monastery)==0){
+            if (!has_feature(P_features.Monastery)){
             	current_owner=2;
             	add_disposition(-50);
             }

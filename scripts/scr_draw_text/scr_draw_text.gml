@@ -119,7 +119,7 @@ function draw_text_shadow(_x, _y, _text){
     draw_text(_x, _y, _text);
 }
 
-function calc_text_scale_confines(text, width, buffer){
+function calc_text_scale_confines(text, width, buffer = 0){
     var _scale = 1;
     var _string_width = string_width(text);
     if (_string_width > (width - buffer)){

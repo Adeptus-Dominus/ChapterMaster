@@ -307,10 +307,9 @@ function UnitQuickFindPanel() constructor{
 						draw_text( _xx+320, _yy+10,"apothecary\npoint total");
 						draw_text(_xx+400, _yy+10,"apothecary\npoint use");
 						draw_text(_xx+60, _yy+50,"Orbiting");
-						draw_text( _xx+60, _yy+100,"I");
-						draw_text(_xx+60, _yy+150,"II");
-						draw_text(_xx+60, _yy+200,"III");
-						draw_text(_xx+60, _yy+300,"IV");
+						for (var s=1;s<=4;s++){
+							draw_text( _xx+60, _yy+50 + (50*s),scr_roman(s));
+						}
 						var _y_line = _yy+50;
 						for (var o=0;o<5;o++){
 							var _area_item = _system_point_data[o];
@@ -409,6 +408,7 @@ function UnitQuickFindPanel() constructor{
 		}
 	}
 	static draw = function(){
+		add_draw_return_values();
 		if (obj_controller.menu==0 && obj_controller.zoomed==0 ){
 			if (!instances_exist_any([obj_fleet_select,obj_star_select])){
 
@@ -467,6 +467,7 @@ function UnitQuickFindPanel() constructor{
 				}
 			}			
 		}
+		pop_draw_return_values();
 	}
 }
 
@@ -699,6 +700,124 @@ function setup_planet_mission_group(){
 			array_push(return_place, obj_controller.ma_lid[i]);
 		}
 	}
+}
+
+function HelpfulPlaces()constructor{
+	main_panel = new DataSlate({draggable:true,cherub:true});
+	var _imperial_help_requests =  stars_with_help_requests();
+
+	entered = function(){
+		return main_panel.entered();
+	}
+
+	help_requests = [];
+
+	for (var i=0;i<array_length(_imperial_help_requests);i++){
+		var _star = _imperial_help_requests[i];
+		var _data = {
+			name : _star.name,
+			star_id : _star,
+			system_count : _star.planets
+		}
+
+		var _helps = 0;
+		for (var i=1;i<=_star.planets;i++){
+			if (_star.p_halp[i] > 0){
+				_helps++;
+			}
+		}
+		_data.help_requests = _helps;
+
+		_data.hover = method(_data,function(){
+			tooltip_draw($"View {name}");
+		});
+
+		_data.click_left = method(_data,function(){
+			set_map_pan_to_loc(star_id);
+		});
+
+		array_push(help_requests,_data);
+	}
+
+	static x1 = 1289;
+	static y1 = 318;
+	main_panel.XX=x1;
+	main_panel.YY=y1;
+	help_table = new Table(
+	{
+		row_key_draw : ["name","system_count","help_requests"],
+		headings : ["System", "Planets", "Planets\nRequesting Help"],
+		row_data : help_requests
+	}
+	);
+
+
+
+	var _navy_fleets = [];
+
+	with (obj_en_fleet){
+		if (owner != eFACTION.Imperium || !navy){
+			continue;
+		}
+
+		var _data = {
+			fleet : id,
+			location : "warp",
+			remaining_guard :$"{ fleet_remaining_guard_ratio() * 100 }%",
+		}
+		if (is_orbiting()){
+			_data.location = orbiting.name;
+		}
+
+
+		array_push(_navy_fleets, _data);
+	}
+
+	navy_table = new Table(
+	{
+		row_key_draw : ["location","remaining_guard"],
+		headings : ["Location", "Remmaining\nGuard"],
+		row_data : help_requests
+	})
+	
+	places_radio = new RadioSet([
+		{
+	        str1 : "Help Requests",
+
+	    },
+		{
+	        str1 : "Navy Fleets",
+
+	    }
+	]);
+
+	main_panel.inside_method = function(){
+		places_radio.update({
+			x1: x1 + 30,
+			y1: y1 + 25,
+		});
+		places_radio.draw();
+
+
+		switch (places_radio.current_selection){
+			case 1:
+				navy_table.update({x1:x1+40,y1:y1+50});
+				navy_table.draw();
+				break;
+			case 0:
+				help_table.update({x1:x1+40,y1:y1+50});
+				help_table.draw();
+				break;
+		}
+	}
+
+	static draw = function(){
+		x1 = main_panel.XX;
+		y1 = main_panel.YY;
+		main_panel.draw(,, 0.35, 0.6);
+	}
+
+
 }
 
 

@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_buttons",
+  "%Name":"scr_Table",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_buttons",
+  "name":"scr_Table",
   "parent":{
     "name":"User Interface",
     "path":"folders/Scripts/User Interface.yy",

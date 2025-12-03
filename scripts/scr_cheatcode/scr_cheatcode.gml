@@ -220,10 +220,7 @@ function scr_cheatcode(argument0) {
 							awaken_tomb_event();
 						}
 					} else if (cheat_arguments[0] == "techuprising") {
-						var pip = instance_create(0, 0, obj_popup);
-						pip.title = "Technical Differences!";
-						pip.text = "You Recive an Urgent Transmision A serious breakdown in culture has coccured causing believers in tech heresy to demand that they are given preseidence and assurance to continue their practises";
-						pip.image = "tech_uprising";
+						tech_uprising_event();
 					} else if (cheat_arguments[0] == "inspection") {
 						new_inquisitor_inspection();
 					} else if (cheat_arguments[0] == "slaughtersong") {
