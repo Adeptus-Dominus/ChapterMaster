@@ -452,8 +452,7 @@ function inquisition_inspection_loyalty(inspection_type){
 
             if (instance_exists(obj_en_fleet)) and (instance_exists(obj_p_fleet)){
                 var player_inspection_fleet=instance_nearest(obj_en_fleet.x,obj_en_fleet.y,obj_p_fleet);
-				 that = instance_nearest(player_inspection_fleet.x, player_inspection_fleet.y, obj_star);
-        _inspect_results.star = that;
+				 _inspect_results.star = instance_nearest(player_inspection_fleet.x, player_inspection_fleet.y, obj_star);
 
                 _inspect_results.ships = fleet_full_ship_array(player_inspection_fleet);
 
