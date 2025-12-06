@@ -578,7 +578,7 @@ function system_debug_enemy_invasion_spawn(){
 		with (obj_star) {
 			if ((choose(0, 1, 1) == 1) && (owner != eFACTION.Eldar) && (owner != 1)) {
 				var fleet;
-				fleet = instance_create(star.x, star.y, obj_en_fleet);
+				fleet = instance_create(x, y, obj_en_fleet);
 				fleet.owner = obj_popup.invasion_faction;
 				if (obj_popup.invasion_faction == 7) {
 					fleet.sprite_index = spr_fleet_ork;
@@ -640,8 +640,7 @@ function system_debug_spawn_fleet() {
 }
 
 function debug_spawn_imperium_fleet() {
-	var fleet;
-	fleet = instance_create(star.x, star.y, obj_en_fleet);
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Imperium;
 	fleet.sprite_index = spr_fleet_imperial;
 	fleet.capital_number = 2;
@@ -653,8 +652,7 @@ function debug_spawn_imperium_fleet() {
 }
 
 function debug_spawn_heretic_fleet() {
-	var fleet;
-	fleet = instance_create(star.x, star.y, obj_en_fleet);
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Chaos;
 	fleet.sprite_index = spr_fleet_chaos;
 	fleet.capital_number = 2;
@@ -684,8 +682,7 @@ function debug_add_xenos_fleet_options() {
 	]);
 }
 function debug_spawn_ork_fleet() {
-	var fleet, star;
-	fleet = instance_create(star.x, star.y, obj_en_fleet);
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Ork;
 	fleet.sprite_index = spr_fleet_ork;
 	fleet.capital_number = 2;
@@ -697,8 +694,7 @@ function debug_spawn_ork_fleet() {
 }
 
 function debug_spawn_tau_fleet() {
-	var fleet;
-	fleet = instance_create(star.x, star.y, obj_en_fleet);
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Tau;
 	fleet.sprite_index = spr_fleet_tau;
 	fleet.capital_number = 2;

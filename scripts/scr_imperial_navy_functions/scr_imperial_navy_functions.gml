@@ -37,7 +37,7 @@ function navy_orbiting_planet_end_turn_action(){
 
 	if (trade_goods=="building_ships"){
 		var _forge = scr_get_planet_with_type(orbiting,"Forge");
-		if (_forge  == -1 || star.p_owner[i] != eFACTION.Mechanicus){
+		if (_forge  == -1 || orbiting.p_owner[i] != eFACTION.Mechanicus){
 			trade_goods = "";
 		} else {
 			end_sequence_finished = true;
@@ -86,9 +86,6 @@ function navy_orbiting_planet_end_turn_action(){
 
 	if (!end_sequence_finished){
 		scr_navy_planet_action();
-	}
-	if (is_orbiting()){
-		show_debug_message($"orbiting  guard : {orbiting.p_guardsmen}, {orbiting.name}");
 	}
 	/* */
 	}	
@@ -245,7 +242,6 @@ function send_navy_to_forge(){
             var target_forge = forge_list[go_there];
             action_x=target_forge.x;
             action_y=target_forge.y;
-            trade_goods="goto_forge";// show_message("D");
             set_fleet_movement();
         } else {
         	scr_alert("Yellow","Sector Info","The sector has no active Forge Worlds as a result The imperial navy are unable to effectivly recover from Combat losses");
@@ -363,7 +359,6 @@ function navy_hunt_player_assets(){
             if (homeworld_distance<fleet_distance && homeworld_distance<5000 && homeworld_distance>40) {// Go towards planet
                 action_x=homeworld_nearby.x;
 				action_y=homeworld_nearby.y;
-				set_fleet_movement();// show_message("B");
                 with(obj_temp7){instance_destroy();}
                 with(obj_temp8){instance_destroy();}
                 exit;
@@ -595,13 +590,11 @@ function navy_bombard_player_world(){
 
 
 function fleet_max_guard(){
-	show_debug_message($"{capital_imp},{frigate_imp},{capital_max_imp},{frigate_max_imp}");
 	var _maxi=0;
 
 	_maxi = array_sum(capital_max_imp,_maxi,0,capital_number-1);
 	_maxi = array_sum(frigate_max_imp,_maxi,0,frigate_number-1);
 	_maxi = array_sum(escort_max_imp,_maxi,0,escort_number-1);
-	show_debug_message(_maxi);
 	return _maxi;
 }
 
@@ -611,7 +604,6 @@ function fleet_guard_current(){
 	_maxi = array_sum(capital_imp,_maxi,0,capital_number-1);
 	_maxi = array_sum(frigate_imp,_maxi,0,frigate_number-1);
 	_maxi = array_sum(escort_imp,_maxi,0,escort_number-1);
-	show_debug_message(_maxi);
 	return _maxi;	
 }
 
@@ -619,7 +611,6 @@ function fleet_guard_current(){
 function fleet_remaining_guard_ratio(){
 	var _curr = fleet_guard_current();
 	var _maxi = fleet_max_guard();
-	show_debug_message($"current guard {_curr},max{_maxi}");
 	guardsmen_ratio = 0;
 	if (guardsmen_unloaded) {
 		if (is_orbiting()){
@@ -646,11 +637,9 @@ function scr_navy_unload_guard(planet){
 	array_set_value(escort_imp, 0);
 	array_set_value(capital_imp, 0);
 
-	show_debug_message($"total guard :{total_guard}, {orbiting}, {planet}");
 
     orbiting.p_guardsmen[planet] += total_guard;
 
-    show_debug_message($"landed guard :{orbiting.p_guardsmen[planet]}");
     guardsmen_unloaded=1;
     end_sequence_finished = true;
 }
@@ -658,7 +647,6 @@ function scr_navy_unload_guard(planet){
 
 function scr_navy_planet_action(){
 	if (action=="" && is_orbiting() && !guardsmen_unloaded){// Unload if problem sector, otherwise patrol
-		show_debug_message($"guard get fighting sequence {orbiting.name}");
 	    var selected_planet=0,highest=0,_target_pop=0,_popu_large=false;
     
 	    for (var p=1; p<=orbiting.planets; p++){
@@ -702,17 +690,13 @@ function scr_navy_planet_action(){
 	        	}
 	        }
 	    }
-	    show_debug_message($"{selected_planet},{highest}");
 	    var _pdf_handling_it =  (orbiting.p_influence[selected_planet][eFACTION.Imperium]>50) && (orbiting.p_pdf[selected_planet]>=0 && highest<=2);
 
 	    if (selected_planet>0 && highest>0 && array_sum(orbiting.p_guardsmen)<=0){
 	        if (!_pdf_handling_it){
-	        	show_debug_message("unload_guard");
 	            scr_navy_unload_guard(selected_planet);
-	            show_debug_message($"landed guard :{orbiting.p_guardsmen}");
 	        }
 	    }
-	    show_debug_message($"landed guard :{orbiting.p_guardsmen}");
     
 	    var _player_planet=false;
 	    if (obj_controller.faction_status[eFACTION.Imperium]=="War"){
@@ -752,7 +736,6 @@ function scr_navy_planet_action(){
 	                action_x=_current_star.x;
 	                action_y=_current_star.y;
 	                set_fleet_movement();
-	                halp=1;// show_message("F");
 	            }
 	        }
         
@@ -788,14 +771,12 @@ function scr_navy_planet_action(){
             
 	            action_x=next.x;
                 action_y=next.y;
-                set_fleet_movement();// show_message("G");
 	        }
 	    }
 	}	
 }
 
 function navy_load_up_guardsmen_or_move_planet(planet, valid_next_planet){
-	show_debug_message("load guardsmen or move");
     var _player_war=false;
     var _pdata = new PlanetData(planet, orbiting)
     if (_pdata.player_forces>0 && obj_controller.faction_status[eFACTION.Imperium]=="War"){
@@ -818,10 +799,9 @@ function navy_load_up_guardsmen_or_move_planet(planet, valid_next_planet){
 }
 
 function navy_load_guardsmen(){
-	show_debug_message("load guardsmen");
     var _new_capacity;
     var _maxi = fleet_max_guard();
-    _new_capacity = min(orbiting.p_guardsmen[1]+orbiting.p_guardsmen[2]+orbiting.p_guardsmen[3]+orbiting.p_guardsmen[4], _maxi);
+    _new_capacity = min(array_sum(orbiting.p_guardsmen), _maxi);
 	
 	for (var i=0;i<max(capital_number,frigate_number,escort_number);i++){
 		if (_new_capacity > 0 && capital_number >= i){
@@ -889,7 +869,7 @@ function scr_navy_recruit_new_guard(){
     // if (orbiting.p_population[that]<guard_wanted && orbiting.p_large[that]=0) then trade_goods="";
     if (recruit_planet.population > guard_wanted || recruit_planet.large_population){
         if (recruit_planet.large_population) {
-        	guard_wanted = recruit_planet.populaton_large_conversion(1000000000);
+        	guard_wanted = recruit_planet.population_large_conversion(1000000000);
 
         }
 		var _max_array = max_array_length([capital_imp,frigate_imp,escort_imp]);
@@ -911,7 +891,6 @@ function scr_navy_recruit_new_guard(){
 
 
 function scr_navy_find_recruit_world(){
-	show_debug_message("find recruit planet");
 	var _maxi = fleet_max_guard();
 	var _curr = fleet_guard_current();
     var _guard_wanted=_maxi-_curr,planet_needed=0;
@@ -975,7 +954,6 @@ function scr_navy_find_recruit_world(){
 
 function create_start_imperial_fleets(){
 	// Create an imperial fleet
-	show_debug_message("trigger navy creation");
 	with(obj_controller){
 	with(obj_p_fleet){
 	    var steh=instance_nearest(x,y,obj_star);

@@ -2,18 +2,26 @@
 
 ///@mixin obj_popup
 function tech_uprising_event_aftermath(){
-	var tech, t, i, check_tech, location_techs, location_heretics, delete_positions, heretic_data = [0, 0, 0], loyal_data = [0, 0, 0];
+	var tech, t, i, check_tech, location_techs, location_heretics, delete_positions;
 	techs = collect_role_group(SPECIALISTS_TECHS);
 	var tech_count = array_length(techs);
 	for (i = 0; i < tech_count; i++) {
+		var heretic_data = [0, 0, 0]
+		var loyal_data = [0, 0, 0];
 		delete_positions = [];
 		location_techs = [];
 		location_heretics = [];
 		tech = techs[i];
 		if (tech.has_trait("tech_heretic")) {
 			array_push(location_heretics, tech);
+			heretic_data[0] += tech.weapon_skill;
+			heretic_data[1] += tech.wisdom;
+			heretic_data[2] += tech.ballistic_skill;
 		} else {
 			array_push(location_techs, tech);
+			loyal_data[0] += tech.weapon_skill;
+			loyal_data[1] += tech.wisdom;
+			loyal_data[2] += tech.ballistic_skill;
 		}
 		//loop techs to fins out which techs are in the same  location
 		for (t = i + 1; t < tech_count; t++) {
@@ -48,7 +56,7 @@ function tech_uprising_event_aftermath(){
 				}
 				if (heretic_tally > loyal_tally) {
 					purge_target = location_techs;
-				} else if (loyal_tally < heretic_tally) {
+				} else if (heretic_tally < loyal_tally) {
 					purge_target = location_heretics;
 				}
 				if (purge_target == "none") {
@@ -65,12 +73,12 @@ function tech_uprising_event_aftermath(){
 				}
 			}
 		}
-		if (array_length(delete_positions) > 0) {
-			for (t = 0; t < array_length(delete_positions); t++) {
-				array_delete(techs, delete_positions[t], 1);
-				tech_count--;
-			}
-		}
+	    if (array_length(delete_positions) > 0) {
+	        for (t = array_length(delete_positions) - 1; t >= 0; t--) {
+	            array_delete(techs, delete_positions[t], 1);
+	            tech_count--;
+	        }
+	    }
 	}
 	if (press == 0) {
 		text = "With neither faction receiving your favor it is not long until the BloodLetting begins. Within a month a brutal civil war engulfs the Tech ranks with losses suffered on both sides";

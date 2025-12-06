@@ -108,7 +108,7 @@ function Table(data) constructor{
 
 			_row_level += row_h;
 		}
+		pop_draw_return_values();
 	}
-	pop_draw_return_values();
 }
 

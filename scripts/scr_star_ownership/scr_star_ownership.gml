@@ -35,11 +35,11 @@ function scr_star_ownership(argument0) {
 	    if (p_type[run]=="Dead" && p_owner[run]!=eFACTION.Imperium && p_first[run]!=eFACTION.Player && p_first[run]!=eFACTION.Ecclesiarchy){
 	    	p_owner[run]=eFACTION.Imperium;
 	    }
-	    if (p_owner[run]=eFACTION.Tau && p_tau[run]=0 && p_pdf[run]=0){
+	    if (p_owner[run]==eFACTION.Tau && p_tau[run]=0 && p_pdf[run]=0){
 	    	p_owner[run]=eFACTION.Imperium;
 	    	p_influence[run][eFACTION.Tau]=round(p_influence[run][eFACTION.Tau]/2);
 	    }
-	    if (p_owner[run]=10 && p_chaos[run]=0 && p_traitors[run]=0 && p_population[run]<=0){
+	    if (p_owner[run]==10 && p_chaos[run]==0 && p_traitors[run]==0 && p_population[run]<=0){
 	    	p_owner[run]=p_first[run];
 	    	p_heresy[run]=0;
 	    	if (p_owner[run]=10){
@@ -57,7 +57,7 @@ function scr_star_ownership(argument0) {
     			tyranids_owner++;
     			_nid_chosen = true;
     		}
-    	} else if (p_tyranids[run]>=5 && p_population[run]=0){
+    	} else if (p_tyranids[run]>=5 && p_population[run]==0){
 	    	p_owner[run]=eFACTION.Tyranids;
 	    	tyranids_owner++;
 	    	_nid_chosen = true;
@@ -74,8 +74,8 @@ function scr_star_ownership(argument0) {
 			    	if (p_type[run] != "Forge"){
 			    		imperium_owner++;
 			    	} else {
-			    		p_owner[run]=eFACTION.Mechanicus
-			    		forge_owner++
+			    		p_owner[run]=eFACTION.Mechanicus;
+			    		forge_owner++;
 			    	}
 		    		break;
 		    	case eFACTION.Mechanicus:
@@ -108,12 +108,16 @@ function scr_star_ownership(argument0) {
 	        if (array_length(p_feature[run]) != 0){
 	            if (planet_feature_bool(p_feature[run], P_features.Daemonic_Incursion)){
 	            	p_heresy[run]+=2;
-	                if (p_large[run]=0 && p_population[run]>10000) then p_population[run]=floor(p_population[run]*0.5);
-	                if (p_large[run]=1) then p_population[run]=p_population[run]*0.7;
+	                if (!p_large[run] && p_population[run]>10000){
+	                	p_population[run]=floor(p_population[run]*0.5);
+	                }
+	                else if (p_large[run]){
+	                	p_population[run]=p_population[run]*0.7;
+	                }
 	            }
 	        }
 	        if (p_tyranids[run]>4){
-	            if (p_large[run]=0){
+	            if (!p_large[run]){
 	            	p_population[run]= p_population[run]<=400000 ? 0  : 1 floor(p_population[run]*0.1);
 	            }
 	            else {

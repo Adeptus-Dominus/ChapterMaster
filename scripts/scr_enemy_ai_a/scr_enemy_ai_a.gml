@@ -47,8 +47,7 @@ function scr_enemy_ai_a() {
     var garrison_force=false, total_garrison=0;
     var _planet_data;
 	for (var _run =1;_run<=planets;_run++){
-		_planet_data = new PlanetData(_run, self);
-		array_push(system_datas, _planet_data);
+		_planet_data = system_datas[run];
 		garrison_force=false;
 		var garrison = new GarrisonForce(p_operatives[_run], true);
 		var sabatours = new GarrisonForce(p_operatives[_run], true, "sabotage");

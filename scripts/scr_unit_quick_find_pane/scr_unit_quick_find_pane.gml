@@ -704,10 +704,6 @@ function HelpfulPlaces()constructor{
 	main_panel = new DataSlate({draggable:true,cherub:true});
 	var _imperial_help_requests =  stars_with_help_requests();
 
-	entered = function(){
-		return main_panel.entered();
-	}
-
 	var _help_requests = [];
 
 	for (var i=0;i<array_length(_imperial_help_requests);i++){
@@ -745,6 +741,7 @@ function HelpfulPlaces()constructor{
 	static entered = function(){
 		return main_panel.entered();
 	}
+	
 	help_table = new Table(
 	{
 		row_key_draw : ["name","system_count","help_requests"],

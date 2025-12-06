@@ -321,4 +321,5 @@ function max_array_length(arrays = []){
 			_max = _arr_len;
 		}
 	}
+	return _max;
 }

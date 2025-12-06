@@ -7,7 +7,6 @@ function stars_with_help_requests(){
 
 	with (obj_star){
 		if (array_sum(p_halp)){
-			show_debug_message($"{array_sum(p_halp)}")
 			array_push(_stars,id);
 		}
 	}

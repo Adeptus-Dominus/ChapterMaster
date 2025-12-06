@@ -11,7 +11,7 @@
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
 #macro SHOP_SELL_MOD 0.8
-#macro LARGE_PLANET_MOD 1000000000
+#macro LARGE_PLANET_MOD 1000000000 // Population threshold for large planet classification
 
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"

@@ -62,7 +62,7 @@ function PlanetData(planet, system) constructor{
     	}
     	return pop_value;
     }
-    static populaton_large_conversion = function(pop_value){
+    static population_large_conversion = function(pop_value){
         if (large_population){
             pop_value /= large_pop_conversion;
         }
@@ -121,10 +121,12 @@ function PlanetData(planet, system) constructor{
     }
 
     guardsmen = system.p_guardsmen[planet];
+
     static edit_guardsmen = function(edit_val){
-        system.p_guardsmen[planet] += edit_val;
+        system.p_guardsmen[planet] = max(0, system.p_guardsmen[planet] + edit_val);
         guardsmen = system.p_guardsmen[planet];
     }
+
     pdf = system.p_pdf[planet];
     fortification_level  = system.p_fortified[planet];
     static alter_fortification = function(alteration){
@@ -1208,7 +1210,9 @@ function PlanetData(planet, system) constructor{
         	kill = strength * population_small_conversion(0.15);
             if (system.p_heresy[planet]>0) then system.p_heresy[planet]=max(0,system.p_heresy[planet]-5);
         }
-        var _pop_percentage_kill = (kill/population)*100;
+
+        var _pop_percentage_kill = population > 0 ? (kill / population) * 100 : 0;
+
     	edit_population(kill*-1);
         if (system.p_pdf[planet]<0) then system.p_pdf[planet]=0;
         if (population_influences[eFACTION.Tyranids] > 3){

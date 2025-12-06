@@ -104,7 +104,7 @@ draw_sprite_ext(spr_servo_left_arm, 0,27+_screen_width,165+_screen_height/3, 2, 
 draw_sprite_ext(spr_servo_right_arm, 0,27,165+_screen_height/3, 2, 2, 0, c_white, 1);
 draw_sprite_ext(spr_servo_skull_head, 0,27+_screen_width/2,165, 2, 2, 0, c_white, 1);
 
-var system_string = target.name+" System"
+var system_string = target.name+" System";
 if (target.owner!=1) then draw_set_color(0);
 if (target.owner  = eFACTION.Player) then draw_set_color(c_blue);
 if (target.craftworld=0) and (target.space_hulk=0){

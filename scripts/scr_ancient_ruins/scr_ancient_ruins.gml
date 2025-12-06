@@ -259,6 +259,8 @@ function scr_explore_ruins() {
 	}
 }
 
+
+///@mixin obj_popup
 function ruins_exploration_main_sequence(){
  	// Begin
     var _ruins = obj_ground_mission.explore_feature;

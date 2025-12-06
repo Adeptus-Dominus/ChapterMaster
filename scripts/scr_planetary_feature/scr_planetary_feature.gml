@@ -608,7 +608,7 @@ function discover_stc_fragment_popup(techies, mechanicus_reps){
         } else if (mechanicus_reps > 0){
         	pop.text = $"{_text}; what it might contain is unknown. The present Tech Priests wish to send it to Mars, and refuse to take the device off-world otherwise.";
         } else{
-			pop.text = $"{_text}; what it might csontain is unknown. The ground team has no {obj_ini.role[100][16]}s or Tech Priests, so you have no choice but to leave it be or notify the Mechanicus about its location.";
+			pop.text = $"{_text}; what it might contain is unknown. The ground team has no {obj_ini.role[100][16]}s or Tech Priests, so you have no choice but to leave it be or notify the Mechanicus about its location.";
         }
 
         array_push(options, {str1 : "Send it to the Adeptus Mechanicuss.", choice_func : send_stc_to_adeptus_mech});
