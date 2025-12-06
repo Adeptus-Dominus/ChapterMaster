@@ -6,6 +6,8 @@ function Table(data) constructor{
 
 	column_widths = [];
 
+	set_column_widths  = [];
+
 	row_key_draw = [];
 
 	halign = fa_center;
@@ -32,12 +34,17 @@ function Table(data) constructor{
 
 			var _heading = headings[i];
 
-			if (array_length(column_widths) >= i){
-				array_push(column_widths, _heading.w)
+			if (i<array_length(set_column_widths) && set_column_widths[i]>0){
+				array_push(column_widths, set_column_widths[i]);
+			} else{
+				if (array_length(column_widths) <= i){
+					array_push(column_widths, _heading.w)
+				}
+				if (column_widths[i] == 0){
+					column_widths[i] = _heading.w;
+				}				
 			}
-			if (column_widths[i] == 0){
-				column_widths[i] = _heading.w;
-			}
+
 
 			_heading.update({
 				max_width : column_widths[i],
@@ -69,6 +76,10 @@ function Table(data) constructor{
 		var _row_level = y1 + header_h + 5;
 		var _cols = array_length(column_widths);
 		for (var i=0;i<array_length(row_data);i++){
+			//TODO add built in support for scrolling tables
+			if (_row_level > y2 - row_h){
+				break;
+			}
 			_col_draw_x = x1;
 			var _row = row_data[i];
 			var _row_entered = scr_hit_dimensions(_col_draw_x,_row_level,w,row_h);
@@ -78,17 +89,20 @@ function Table(data) constructor{
 					_col_draw_x += column_widths[d] + col_spacing;
 				}
 			} else if (is_struct(_row)){
-				for (var d=0;d<array_length(row_key_draw) && d < _cols;d++){
+				for (var d=0; d<array_length(row_key_draw) && d < _cols;d++){
 
 					var _key = row_key_draw[d];
 					draw_text(_col_draw_x+(column_widths[d]/2),_row_level,_row[$_key]);
 					_col_draw_x += column_widths[d] + col_spacing;
 				}
 				if (_row_entered && struct_exists(_row,"hover")){
+					//show_debug_message($"click : {struct_exists(_row,"click_left")}");
 					_row.hover();
 				}
-				if (scr_click_left() && _row_entered && struct_exists(_row,"click_left")){
-					_row.click_left();
+				if (_row_entered && struct_exists(_row,"click_left")){
+					if (scr_click_left()){
+						_row.click_left();
+					}
 				}
 			}
 

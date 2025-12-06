@@ -303,6 +303,8 @@ function UnitButtonObject(data = false) constructor {
     set_height_width = false;
 
     static update_loc = function() {
+        add_draw_return_values();
+        draw_set_font(font);
         if (label != "") {
             if (!set_width) {
                 w = string_width(label) + 10;
@@ -314,6 +316,7 @@ function UnitButtonObject(data = false) constructor {
         }
         x2 = x1 + w;
         y2 = y1 + h;
+        pop_draw_return_values();
     };
 
     static update = function(data) {
@@ -409,11 +412,12 @@ function UnitButtonObject(data = false) constructor {
                     }
                 }
             }
+            pop_draw_return_values();
             return clicked;
         } else {
+            pop_draw_return_values();
             return false;
         }
-        pop_draw_return_values();
     };
 }
 
@@ -445,8 +449,10 @@ function PurchaseButton(req) : UnitButtonObject() constructor {
                 }
                 obj_controller.requisition -= req_value;
             }
+            pop_draw_return_values();
             return clicked;
         } else {
+            pop_draw_return_values();
             return false;
         }
         pop_draw_return_values();

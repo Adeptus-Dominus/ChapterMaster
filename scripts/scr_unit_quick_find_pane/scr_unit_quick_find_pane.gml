@@ -105,7 +105,6 @@ function UnitQuickFindPanel() constructor{
 	    garrison_log = {};
 	    obj_controller.specialist_point_handler.calculate_research_points(false);
 	    ship_count = array_length(obj_ini.ship_carrying);
-	    // show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
 	    for (var co=0;co<=obj_ini.companies;co++){
 	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
 				/// @type {Struct.TTRPG_stats}
@@ -607,7 +606,6 @@ function load_selection(){
 }
 
 function unload_selection(){
-	//show_debug_message("{0},{1},{2}",obj_controller.selecting_ship,man_size,selecting_location);
     if (man_size>0 && obj_controller.selecting_ship>=0 && !instance_exists(obj_star_select)&& 
     	!location_out_of_player_control(selecting_location) && selecting_location!="Warp"){
         cooldown=8000;
@@ -721,8 +719,8 @@ function HelpfulPlaces()constructor{
 		}
 
 		var _helps = 0;
-		for (var i=1;i<=_star.planets;i++){
-			if (_star.p_halp[i] > 0){
+		for (var h=1;h<=_star.planets;h++){
+			if (_star.p_halp[h] > 0){
 				_helps++;
 			}
 		}
@@ -743,6 +741,10 @@ function HelpfulPlaces()constructor{
 	static y1 = 318;
 	main_panel.XX=x1;
 	main_panel.YY=y1;
+
+	static entered = function(){
+		return main_panel.entered();
+	}
 	help_table = new Table(
 	{
 		row_key_draw : ["name","system_count","help_requests"],
@@ -760,23 +762,27 @@ function HelpfulPlaces()constructor{
 			continue;
 		}
 		var _guard_percentage = fleet_remaining_guard_ratio() * 100;
-		show_debug_message(fleet_remaining_guard_ratio());
 
 		var _data = {
 			fleet_id : id,
-			location : "warp",
+			location : "Warp",
 			remaining_guard :$"{ _guard_percentage }%",
+			action : trade_goods,
 		}
 		if (is_orbiting()){
 			_data.location = orbiting.name;
-			show_debug_message($"orbiting guard {orbiting.p_guardsmen}");
 		}
 
 		_data.hover = method(_data,function(){
-			tooltip_draw($"View fleet");
+			if (location != "Warp"){
+				tooltip_draw($"View fleet at {location}");
+			} else {
+				tooltip_draw($"View fleet");
+			}
+			
 		});
 
-		_data.click_left = method(_data,function(){
+		_data.click_left = method(_data, function(){
 			set_map_pan_to_loc(fleet_id);
 		});
 
@@ -790,7 +796,49 @@ function HelpfulPlaces()constructor{
 		headings : ["Location", "Remaining\nGuard"],
 		row_data : _navy_fleets
 	});
-	
+
+	var _forges = [];
+
+	var _columns = [];
+	var _longest_name = 0;
+	with (obj_star){ 
+		var _forge = scr_get_planet_with_type(id,"Forge");
+		if (_forge > 0){
+			var _data = {
+				system : id,
+				planet : _forge,
+				name : planet_numeral_name(_forge),
+				owner_name : obj_controller.faction[p_owner[_forge]],
+				owner : p_owner[_forge],
+				owner_status : obj_controller.faction_status[p_owner[_forge]],
+			};
+
+			_data.click_left = method(_data, function(){
+				set_map_pan_to_loc(system);
+			});
+
+			_data.hover = method(_data,function(){
+				tooltip_draw($"click to view {system.name} system");
+				
+			});
+
+			var _name_length = string_width(_data.name);
+			if (_name_length > _longest_name){
+				_longest_name = _name_length;
+			}
+
+			array_push(_forges , _data);
+		}
+	}
+	array_push(_columns , _longest_name);
+
+	forges_table = new Table({
+		row_key_draw : ["name","owner_name","owner_status"],
+		headings : ["Name", "   Owner   ", "  Owner\nStatus  "],
+		row_data : _forges,
+		set_column_widths : _columns,
+	});
+
 	places_radio = new RadioSet([
 		{
 	        str1 : "Help Requests",
@@ -799,6 +847,9 @@ function HelpfulPlaces()constructor{
 		{
 	        str1 : "Navy Fleets",
 
+	    },
+	    {
+	    	str1 :"Forge Worlds",
 	    }
 	]);
 
@@ -809,16 +860,24 @@ function HelpfulPlaces()constructor{
 		});
 		places_radio.draw();
 
-
+		var _new_position = {
+			x1:x1+40,
+			y1:y1+50,
+			y2:y1 + main_panel.height,
+		}
 		switch (places_radio.current_selection){
 			case 1:
-				navy_table.update({x1:x1+40,y1:y1+50});
+				navy_table.update(_new_position);
 				navy_table.draw();
 				break;
 			case 0:
-				help_table.update({x1:x1+40,y1:y1+50});
+				help_table.update(_new_position);
 				help_table.draw();
 				break;
+			case 2:
+				forges_table.update(_new_position);
+				forges_table.draw();
+				break;				
 		}
 	}
 
