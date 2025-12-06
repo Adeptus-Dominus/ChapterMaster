@@ -220,10 +220,7 @@ function scr_cheatcode(argument0) {
 							awaken_tomb_event();
 						}
 					} else if (cheat_arguments[0] == "techuprising") {
-						var pip = instance_create(0, 0, obj_popup);
-						pip.title = "Technical Differences!";
-						pip.text = "You Recive an Urgent Transmision A serious breakdown in culture has coccured causing believers in tech heresy to demand that they are given preseidence and assurance to continue their practises";
-						pip.image = "tech_uprising";
+						tech_uprising_event();
 					} else if (cheat_arguments[0] == "inspection") {
 						new_inquisitor_inspection();
 					} else if (cheat_arguments[0] == "slaughtersong") {
@@ -511,95 +508,34 @@ function draw_planet_debug_forces(){
 }
 
 
-function system_debug_options(){
-
-	if (planet == 3) {
-		if (press == 0) {
-			var fleet, tar;
-			tar = instance_nearest(x, y, obj_star);
-			fleet = instance_create(tar.x, tar.y, obj_en_fleet);
-			fleet.owner = eFACTION.Imperium;
-			fleet.sprite_index = spr_fleet_imperial;
-			fleet.capital_number = 2;
-			fleet.frigate_number = 5;
-			tar.present_fleet[2] += 1;
-			fleet.image_index = 4;
-			fleet.orbiting = id;
-			instance_destroy();
-		}
-		if (press == 1) {
-			var fleet, tar;
-			tar = instance_nearest(x, y, obj_star);
-			fleet = instance_create(tar.x, tar.y, obj_en_fleet);
-			fleet.owner = eFACTION.Chaos;
-			fleet.sprite_index = spr_fleet_chaos;
-			fleet.capital_number = 2;
-			fleet.frigate_number = 5;
-			tar.present_fleet[10] += 1;
-			fleet.image_index = 4;
-			fleet.orbiting = id;
-			instance_destroy();
-		}
-		if (press == 2) {
-			planet = 5;
-			cooldown = 30;
-			add_option(["Ork",  "Tau", "Cancel"]);
-			text = "Ork, Tau, Cancel?";
-			press = 0;
-			exit;
-		}
-	}
-	if (planet == 1) {
-		if (press == 0) {
-			planet = 2;
-			cooldown = 30;
-			text = "Select a faction";
-			add_option(["Orks",  "Chaos", "Tyranids"]);
-			press = 0;
-			exit;
-		}
-		if (press == 1) {
-			planet = 3;
-			cooldown = 30;
-			add_option(["Imperium",  "Heretic", "Xeno"]);
-			text = "Imperium, Heretic, or Xeno?";
-			press = 0;
-			exit;
-		}
-		if (press == 2) {
-			
-		}
-	}
-	exit;
-}
-
 function new_system_debug_popup(){
-    var pop = instance_create(mouse_x, mouse_y, obj_popup)
-    pop.image = "debug_banshee"
-    pop.title = "DEBUG"
-    pop.planet = 1
-    pop.text = "What would you like to do?"
+    var pop = instance_create(0, 0, obj_popup)
+    pop.image = "debug_banshee";
+    pop.title = "DEBUG";
+    pop.planet = 1;
+    pop.star = instance_nearest(mouse_x, mouse_y,obj_star);
+    pop.text = $"What would you like to do at {pop.star.name}?";
+
     pop.add_option(
     	[
     		{
     			str1 : "Enemy invasion",
-    			method : system_debug_enemy_invasion,
+    			choice_func : system_debug_enemy_invasion,
     		},
     		{
     			str1 : "Spawn Fleet",
-    			method : system_debug_spawn_fleet,
+    			choice_func : system_debug_spawn_fleet,
     		},
     		{
     			str1 : "Delete Fleet",
-    			method :system_debug_remove_fleet
+    			choice_func :system_debug_remove_fleet
     		}, 
     		{
     			str1 : "Cancel",
-				method : popup_default_close,
+				choice_func : popup_default_close,
     		}
     	]
     );
-    pop.type = POPUP_TYPE.SYSTEM_DEBUG;
 }
 
 function system_debug_enemy_invasion(){
@@ -607,21 +543,21 @@ function system_debug_enemy_invasion(){
 	replace_options([
 		{
 			str1: "Orks",
-			method : function(){
+			choice_func : function(){
 				invasion_faction = eFACTION.Ork;
 				system_debug_enemy_invasion_spawn();
 			}
 		},
 		{
 			str1: "Chaos",
-			method : function(){
+			choice_func : function(){
 				invasion_faction = 9;
 				system_debug_enemy_invasion_spawn();
 			}
 		},
 		{
 			str1: "Tyranids",
-			method : function(){
+			choice_func : function(){
 				invasion_faction = eFACTION.Tyranids;
 				system_debug_enemy_invasion_spawn();
 			}
@@ -690,42 +626,38 @@ function system_debug_spawn_fleet() {
 	replace_options([
 		{
 			str1: "Imperium",
-			method: debug_spawn_imperium_fleet,
+			choice_func: debug_spawn_imperium_fleet,
 		},
 		{
 			str1: "Heretic",
-			method: debug_spawn_heretic_fleet,
+			choice_func: debug_spawn_heretic_fleet,
 		},
 		{
 			str1: "Xeno",
-			method: debug_add_xenos_fleet_options,
+			choice_func: debug_add_xenos_fleet_options,
 		},
 	]);
 }
 
 function debug_spawn_imperium_fleet() {
-	var fleet, tar;
-	tar = instance_nearest(x, y, obj_star);
-	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Imperium;
 	fleet.sprite_index = spr_fleet_imperial;
 	fleet.capital_number = 2;
 	fleet.frigate_number = 5;
-	tar.present_fleet[2] += 1;
+	star.present_fleet[2] += 1;
 	fleet.image_index = 4;
 	fleet.orbiting = id;
 	instance_destroy();
 }
 
 function debug_spawn_heretic_fleet() {
-	var fleet, tar;
-	tar = instance_nearest(x, y, obj_star);
-	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Chaos;
 	fleet.sprite_index = spr_fleet_chaos;
 	fleet.capital_number = 2;
 	fleet.frigate_number = 5;
-	tar.present_fleet[10] += 1;
+	star.present_fleet[10] += 1;
 	fleet.image_index = 4;
 	fleet.orbiting = id;
 	instance_destroy();
@@ -737,81 +669,77 @@ function debug_add_xenos_fleet_options() {
 	replace_options([
 		{
 			str1: "Ork",
-			method: debug_spawn_ork_fleet,
+			choice_func: debug_spawn_ork_fleet,
 		},
 		{
 			str1: "Tau",
-			method: debug_spawn_tau_fleet,
+			choice_func: debug_spawn_tau_fleet,
 		},
 		{
 			str1: "Cancel",
-			method: popup_default_close,
+			choice_func: popup_default_close,
 		},
 	]);
 }
 function debug_spawn_ork_fleet() {
-	var fleet, tar;
-	tar = instance_nearest(x, y, obj_star);
-	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Ork;
 	fleet.sprite_index = spr_fleet_ork;
 	fleet.capital_number = 2;
 	fleet.frigate_number = 5;
-	tar.present_fleet[7] += 1;
+	star.present_fleet[7] += 1;
 	fleet.image_index = 4;
 	fleet.orbiting = id;
 	instance_destroy();
 }
 
 function debug_spawn_tau_fleet() {
-	var fleet, tar;
-	tar = instance_nearest(x, y, obj_star);
-	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
 	fleet.owner = eFACTION.Tau;
 	fleet.sprite_index = spr_fleet_tau;
 	fleet.capital_number = 2;
 	fleet.frigate_number = 5;
-	tar.present_fleet[8] += 1;
+	star.present_fleet[8] += 1;
 	fleet.image_index = 4;
 	fleet.orbiting = id;
 	instance_destroy();
 }
 
 function system_debug_remove_fleet(){
-	var onceh = 0;
-	var flit1 = instance_nearest(x, y, obj_p_fleet);
-	var flit2 = instance_nearest(x, y, obj_en_fleet);
-
-	if (instance_exists(flit1) && instance_exists(flit2)) {
-		if (point_distance(x, y, flit1.x, flit1.y) > point_distance(x, y, flit2.x, flit2.y)) {
-			with (flit2) {
-				instance_destroy();
-			}
-		} else {
-			with (flit1) {
-				instance_destroy();
-			}
+	var _opts = [];
+	var _fleets = [];
+	var _x = star.x;
+	var _y = star.y;
+	with(obj_en_fleet){
+		if (_x == x && _y == y){
+			array_push(_fleets, id);
 		}
-		onceh = 1;
 	}
-	if ((onceh == 0) && (!instance_exists(flit1)) && instance_exists(flit2)) {
-		if (point_distance(x, y, flit2.x, flit2.y) <= 40) {
-			with (flit2) {
-				instance_destroy();
-			}
+	function DeleteFleetOption(fleet_id)constructor{
+		str1 =  $"delete {obj_controller.faction[fleet_id.owner]} fleet {fleet_id.id}";
+		self.fleet_id = fleet_id;
+		static choice_func =  function(){
+			show_debug_message($"destroy {current_option.fleet_id}")
+			instance_destroy(current_option.fleet_id);
+			popup_default_close();
+		};
+		static hover =  function(){
+			draw_set_color(c_red);
+			draw_circle(current_option.fleet_id.x,current_option.fleet_id.y, 20, true);
 		}
-		onceh = 1;
-	}
-	if ((onceh == 0) && instance_exists(flit1) && (!instance_exists(flit2))) {
-		if (point_distance(x, y, flit1.x, flit1.y) <= 40) {
-			with (flit1) {
-				instance_destroy();
-			}
-		}
-		onceh = 1;
 	}
 
-	instance_destroy();
+	for (var i=0;i<array_length(_fleets);i++){
+		var _fleet = _fleets[i];
+
+		var _opt = new DeleteFleetOption(_fleet);
+		array_push(_opts,_opt)
+	}
+	array_push(_opts,{"str1" : "exit",choice_func:popup_default_close});
+
+	replace_options(_opts,false,false);
+
+	text = "Which fleet would you like to delete?";
 }
 
 

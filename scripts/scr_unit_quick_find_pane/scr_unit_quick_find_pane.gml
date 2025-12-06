@@ -105,7 +105,6 @@ function UnitQuickFindPanel() constructor{
 	    garrison_log = {};
 	    obj_controller.specialist_point_handler.calculate_research_points(false);
 	    ship_count = array_length(obj_ini.ship_carrying);
-	    // show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
 	    for (var co=0;co<=obj_ini.companies;co++){
 	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
 				/// @type {Struct.TTRPG_stats}
@@ -307,10 +306,9 @@ function UnitQuickFindPanel() constructor{
 						draw_text( _xx+320, _yy+10,"apothecary\npoint total");
 						draw_text(_xx+400, _yy+10,"apothecary\npoint use");
 						draw_text(_xx+60, _yy+50,"Orbiting");
-						draw_text( _xx+60, _yy+100,"I");
-						draw_text(_xx+60, _yy+150,"II");
-						draw_text(_xx+60, _yy+200,"III");
-						draw_text(_xx+60, _yy+300,"IV");
+						for (var s=1;s<=4;s++){
+							draw_text( _xx+60, _yy+50 + (50*s),scr_roman(s));
+						}
 						var _y_line = _yy+50;
 						for (var o=0;o<5;o++){
 							var _area_item = _system_point_data[o];
@@ -409,6 +407,7 @@ function UnitQuickFindPanel() constructor{
 		}
 	}
 	static draw = function(){
+		add_draw_return_values();
 		if (obj_controller.menu==0 && obj_controller.zoomed==0 ){
 			if (!instances_exist_any([obj_fleet_select,obj_star_select])){
 
@@ -467,6 +466,7 @@ function UnitQuickFindPanel() constructor{
 				}
 			}			
 		}
+		pop_draw_return_values();
 	}
 }
 
@@ -606,7 +606,6 @@ function load_selection(){
 }
 
 function unload_selection(){
-	//show_debug_message("{0},{1},{2}",obj_controller.selecting_ship,man_size,selecting_location);
     if (man_size>0 && obj_controller.selecting_ship>=0 && !instance_exists(obj_star_select)&& 
     	!location_out_of_player_control(selecting_location) && selecting_location!="Warp"){
         cooldown=8000;
@@ -699,6 +698,193 @@ function setup_planet_mission_group(){
 			array_push(return_place, obj_controller.ma_lid[i]);
 		}
 	}
+}
+
+function HelpfulPlaces()constructor{
+	main_panel = new DataSlate({draggable:true,cherub:true});
+	var _imperial_help_requests =  stars_with_help_requests();
+
+	var _help_requests = [];
+
+	for (var i=0;i<array_length(_imperial_help_requests);i++){
+		var _star = _imperial_help_requests[i];
+		var _data = {
+			name : _star.name,
+			star_id : _star,
+			system_count : _star.planets
+		}
+
+		var _helps = 0;
+		for (var h=1;h<=_star.planets;h++){
+			if (_star.p_halp[h] > 0){
+				_helps++;
+			}
+		}
+		_data.help_requests = _helps;
+
+		_data.hover = method(_data,function(){
+			tooltip_draw($"View {name}");
+		});
+
+		_data.click_left = method(_data,function(){
+			set_map_pan_to_loc(star_id);
+		});
+
+		array_push(_help_requests,_data);
+	}
+
+	static x1 = 1289;
+	static y1 = 318;
+	main_panel.XX=x1;
+	main_panel.YY=y1;
+
+	static entered = function(){
+		return main_panel.entered();
+	}
+	
+	help_table = new Table(
+	{
+		row_key_draw : ["name","system_count","help_requests"],
+		headings : ["System", "Planets", "Planets\nRequesting Help"],
+		row_data : _help_requests
+	}
+	);
+
+
+
+	var _navy_fleets = [];
+
+	with (obj_en_fleet){
+		if (owner != eFACTION.Imperium || !navy){
+			continue;
+		}
+		var _guard_percentage = fleet_remaining_guard_ratio() * 100;
+
+		var _data = {
+			fleet_id : id,
+			location : "Warp",
+			remaining_guard :$"{ _guard_percentage }%",
+			action : trade_goods,
+		}
+		if (is_orbiting()){
+			_data.location = orbiting.name;
+		}
+
+		_data.hover = method(_data,function(){
+			if (location != "Warp"){
+				tooltip_draw($"View fleet at {location}");
+			} else {
+				tooltip_draw($"View fleet");
+			}
+			
+		});
+
+		_data.click_left = method(_data, function(){
+			set_map_pan_to_loc(fleet_id);
+		});
+
+
+		array_push(_navy_fleets, _data);
+	}
+
+	navy_table = new Table(
+	{
+		row_key_draw : ["location","remaining_guard"],
+		headings : ["Location", "Remaining\nGuard"],
+		row_data : _navy_fleets
+	});
+
+	var _forges = [];
+
+	var _columns = [];
+	var _longest_name = 0;
+	with (obj_star){ 
+		var _forge = scr_get_planet_with_type(id,"Forge");
+		if (_forge > 0){
+			var _data = {
+				system : id,
+				planet : _forge,
+				name : planet_numeral_name(_forge),
+				owner_name : obj_controller.faction[p_owner[_forge]],
+				owner : p_owner[_forge],
+				owner_status : obj_controller.faction_status[p_owner[_forge]],
+			};
+
+			_data.click_left = method(_data, function(){
+				set_map_pan_to_loc(system);
+			});
+
+			_data.hover = method(_data,function(){
+				tooltip_draw($"click to view {system.name} system");
+				
+			});
+
+			var _name_length = string_width(_data.name);
+			if (_name_length > _longest_name){
+				_longest_name = _name_length;
+			}
+
+			array_push(_forges , _data);
+		}
+	}
+	array_push(_columns , _longest_name);
+
+	forges_table = new Table({
+		row_key_draw : ["name","owner_name","owner_status"],
+		headings : ["Name", "   Owner   ", "  Owner\nStatus  "],
+		row_data : _forges,
+		set_column_widths : _columns,
+	});
+
+	places_radio = new RadioSet([
+		{
+	        str1 : "Help Requests",
+
+	    },
+		{
+	        str1 : "Navy Fleets",
+
+	    },
+	    {
+	    	str1 :"Forge Worlds",
+	    }
+	]);
+
+	main_panel.inside_method = function(){
+		places_radio.update({
+			x1: x1 + 30,
+			y1: y1 + 25,
+		});
+		places_radio.draw();
+
+		var _new_position = {
+			x1:x1+40,
+			y1:y1+50,
+			y2:y1 + main_panel.height,
+		}
+		switch (places_radio.current_selection){
+			case 1:
+				navy_table.update(_new_position);
+				navy_table.draw();
+				break;
+			case 0:
+				help_table.update(_new_position);
+				help_table.draw();
+				break;
+			case 2:
+				forges_table.update(_new_position);
+				forges_table.draw();
+				break;				
+		}
+	}
+
+	static draw = function(){
+		x1 = main_panel.XX;
+		y1 = main_panel.YY;
+		main_panel.draw(,, 0.35, 0.6);
+	}
+
+
 }
 
 

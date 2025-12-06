@@ -530,7 +530,6 @@ with(obj_creation){
     instance_destroy();
 }
 
-
 create_complex_star_routes(_player_star.id);
 
 /* //135 testing crusade object

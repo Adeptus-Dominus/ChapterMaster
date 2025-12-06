@@ -25,7 +25,7 @@ function SpecialistPointHandler() constructor{
                 if (!struct_exists(armoury_repairs, item)){
                     armoury_repairs[$ item] = count;
                 } else {
-                    armoury_repairs[$ item]+=count;
+                    armoury_repairs[$ item] += count;
                 }
             }
         }
@@ -111,7 +111,9 @@ function SpecialistPointHandler() constructor{
         forge_points = floor(forge_points);
         //in this instance tech  are techmarines with the "tech_heretic" trait
         if (turn_end){
-            if (array_length(techs)==0) then scr_loyalty("Upset Machine Spirits","+");
+            if (array_length(techs)==0){
+                scr_loyalty("Upset Machine Spirits","+");
+            }
 
             tech_ideology_spread();
             new_tech_heretic_spawn();
@@ -119,8 +121,7 @@ function SpecialistPointHandler() constructor{
             if (forge_master==-1){ 
                 var tech_count = scr_role_count(obj_ini.role[100][16]);
                 if (tech_count>1){
-                    var last_master = obj_ini.previous_forge_masters[array_length(obj_ini.previous_forge_masters)-1];
-                    scr_popup("New Forge Master",$"The Demise of Forge Master {last_master} means a replacement must be chosen. Several Options have already been put forward to you but it is ultimatly your decision.","new_forge_master","");
+                    setup_new_forge_master_popup(techs);
                 } else if (tech_count==1){
                     scr_role_count(obj_ini.role[100][16],"","units")[0].update_role("Forge Master");
                 }
@@ -286,7 +287,8 @@ function SpecialistPointHandler() constructor{
                         if (forge_master>-1){
 
                         }*/
-                        scr_popup("Technical Differences!","You Recive an Urgent Transmision A serious breakdown in culture has coccured causing believers in tech heresy to demand that they are given preseidence and assurance to continue their practises","tech_uprising","");
+
+                        tech_uprising_event();
                     }
                 }
             }

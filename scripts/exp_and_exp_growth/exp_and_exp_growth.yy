@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"exp_and_exp_growth",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"marines_and_profiles",
+    "path":"folders/Scripts/marines_and_profiles.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

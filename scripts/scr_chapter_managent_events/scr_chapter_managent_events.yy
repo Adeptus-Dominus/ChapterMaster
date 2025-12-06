@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_chapter_managent_events",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_chapter_managent_events",
+  "parent":{
+    "name":"events_and_missions",
+    "path":"folders/Scripts/events_and_missions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

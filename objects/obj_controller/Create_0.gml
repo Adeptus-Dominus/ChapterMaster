@@ -354,6 +354,13 @@ menu_buttons = {
 
 }
 
+helpful_places_button = new UnitButtonObject({
+    style: "pixel",
+    label: "System Data",
+});
+
+helpful_places = false;
+
 instance_create(x,y, obj_planet_map);
 new_button_highlight="";
 // new_button_highlighting=0;
@@ -1303,6 +1310,7 @@ if (global.custom==eCHAPTER_TYPE.RANDOM){
 // ** Sets up loyalty **
 loyalty=100;
 loyalty_hidden=100;// Updated when inquisitors do an inspection
+
 // ** Sets up gene seed **
 gene_seed=20;
 if scr_has_disadv("Sieged") then gene_seed=floor(random_range(250,400));
@@ -1321,13 +1329,13 @@ system_fleet_strength = 0;
 specialist_point_handler = new SpecialistPointHandler();
 specialist_point_handler.calculate_research_points(true);
 
-
+ 
 //** sets up marine_by_location views
 location_viewer = new UnitQuickFindPanel();
 
 // ** Sets up the number of marines per company **
-marines=0;
-marines=obj_ini.specials+obj_ini.firsts+obj_ini.seconds+obj_ini.thirds+obj_ini.fourths+obj_ini.fifths;
+marines = 0;
+marines = obj_ini.specials+obj_ini.firsts+obj_ini.seconds+obj_ini.thirds+obj_ini.fourths+obj_ini.fifths;
 marines+=obj_ini.sixths+obj_ini.sevenths+obj_ini.eighths+obj_ini.ninths+obj_ini.tenths;
 command=0;
 command=obj_ini.commands;

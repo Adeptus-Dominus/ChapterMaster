@@ -212,11 +212,11 @@ function mission_inquisition_tomb_world(tomb_worlds){
     var _options = [
         {
             str1 :"Accept",
-            method: init_mission_inquisition_tomb_world,
+            choice_func: init_mission_inquisition_tomb_world,
         },
         {
             str1 :"Refuse",
-            method: popup_default_close,
+            choice_func: popup_default_close,
         }
     ]
     var _pop_data = {
@@ -312,11 +312,11 @@ function mission_inquistion_hunt_inquisitor(star_id = -1){
     var _options = [
         {
             str1 :"Accept",
-            method: init_mission_hunt_inquisitor,
+            choice_func: init_mission_hunt_inquisitor,
         },
         {
             str1 :"Refuse",
-            method: popup_default_close,
+            choice_func: popup_default_close,
         }
     ];
 
@@ -387,16 +387,16 @@ function mission_hunt_inquisitor_hear_out_radical_inquisitor(){
             [ 
                 {
                     str1 : "Destroy their vessel",
-                    method : mission_hunt_inquisitor_destroy_inquisitor_ship,
+                    choice_func : mission_hunt_inquisitor_destroy_inquisitor_ship,
 
                 },
                 {
                     str1 : "Take the artifact and then destroy them",
-                    method : mission_hunt_inquisitor_take_artifact_double_cross,
+                    choice_func : mission_hunt_inquisitor_take_artifact_double_cross,
                 },
                 {
                     str1 : "Take the artifact and spare them",
-                    method : mission_hunt_inquisitor_take_artifact_bribe,
+                    choice_func : mission_hunt_inquisitor_take_artifact_bribe,
                 }
             ]
         );
@@ -410,16 +410,16 @@ function mission_hunt_inquisitor_hear_out_radical_inquisitor(){
             [ 
                 {
                     str1 : "Destroy their vessel",
-                    method : mission_hunt_inquisitor_destroy_inquisitor_ship,
+                    choice_func : mission_hunt_inquisitor_destroy_inquisitor_ship,
 
                 },
                 {
                     str1 : "Search their ship",
-                    //method : instance_destroy,
+                    //choice_func : instance_destroy, // TODO: Implement proper ship search logic
                 },
                 {
                     str1 : "Spare them",
-                    method : mission_hunt_inquisitor_show_mercy,
+                    choice_func : mission_hunt_inquisitor_show_mercy,
                 }
             ]
         )
@@ -756,11 +756,11 @@ function setup_necron_tomb_raid(planet){
             options : [
                 {
                     str1 : "Begin the Mission",
-                    method : necron_tomb_mission_start,
+                    choice_func : necron_tomb_mission_start,
                 },
                 {
                     str1 : "Not Yet",
-                    method : instance_destroy,
+                    choice_func : instance_destroy,
                 }
             ]
         }
@@ -779,12 +779,12 @@ function necron_tomb_mission_start(){
         [ 
             {
                 str1 : "Continue",
-                method : necron_tomb_mission_sequence,
+                choice_func : necron_tomb_mission_sequence,
 
             },
             {
                 str1 : "Return to the surface",
-                method : instance_destroy,
+                choice_func : instance_destroy,
             }
         ]
     )
