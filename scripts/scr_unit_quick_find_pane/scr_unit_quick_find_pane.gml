@@ -710,7 +710,7 @@ function HelpfulPlaces()constructor{
 		return main_panel.entered();
 	}
 
-	help_requests = [];
+	var _help_requests = [];
 
 	for (var i=0;i<array_length(_imperial_help_requests);i++){
 		var _star = _imperial_help_requests[i];
@@ -736,7 +736,7 @@ function HelpfulPlaces()constructor{
 			set_map_pan_to_loc(star_id);
 		});
 
-		array_push(help_requests,_data);
+		array_push(_help_requests,_data);
 	}
 
 	static x1 = 1289;
@@ -747,7 +747,7 @@ function HelpfulPlaces()constructor{
 	{
 		row_key_draw : ["name","system_count","help_requests"],
 		headings : ["System", "Planets", "Planets\nRequesting Help"],
-		row_data : help_requests
+		row_data : _help_requests
 	}
 	);
 
@@ -759,15 +759,26 @@ function HelpfulPlaces()constructor{
 		if (owner != eFACTION.Imperium || !navy){
 			continue;
 		}
+		var _guard_percentage = fleet_remaining_guard_ratio() * 100;
+		show_debug_message(fleet_remaining_guard_ratio());
 
 		var _data = {
-			fleet : id,
+			fleet_id : id,
 			location : "warp",
-			remaining_guard :$"{ fleet_remaining_guard_ratio() * 100 }%",
+			remaining_guard :$"{ _guard_percentage }%",
 		}
 		if (is_orbiting()){
 			_data.location = orbiting.name;
+			show_debug_message($"orbiting guard {orbiting.p_guardsmen}");
 		}
+
+		_data.hover = method(_data,function(){
+			tooltip_draw($"View fleet");
+		});
+
+		_data.click_left = method(_data,function(){
+			set_map_pan_to_loc(fleet_id);
+		});
 
 
 		array_push(_navy_fleets, _data);
@@ -776,9 +787,9 @@ function HelpfulPlaces()constructor{
 	navy_table = new Table(
 	{
 		row_key_draw : ["location","remaining_guard"],
-		headings : ["Location", "Remmaining\nGuard"],
-		row_data : help_requests
-	})
+		headings : ["Location", "Remaining\nGuard"],
+		row_data : _navy_fleets
+	});
 	
 	places_radio = new RadioSet([
 		{

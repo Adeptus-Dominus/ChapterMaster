@@ -46,15 +46,16 @@ if (_is_orbiting) {
 	turns_static = 0;
 }
 
-if (navy && action=="" && _is_orbiting) {
-	navy_orbiting_planet_end_turn_action();
-}
+
+
 
 var dir=0;
 var ret=0;
 
-
-if (action=="" && _is_orbiting){
+if (navy && action=="" && _is_orbiting) {
+    navy_orbiting_planet_end_turn_action();
+}
+else if (action=="" && _is_orbiting){
     var max_dis=400;
     
 

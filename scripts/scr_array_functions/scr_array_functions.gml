@@ -3,10 +3,10 @@
 function array_iter_length(choice_array, offset, length){
 	if (length == 0){
 		if (offset==0){
-			length = array_length(choice_array);
+			length = array_length(choice_array)-1;
 		}
 		else if (offset){
-			length = array_length(choice_array) - offset;
+			length = array_length(choice_array) - offset - 1;
 		} else {
 			length = offset*-1;
 		}

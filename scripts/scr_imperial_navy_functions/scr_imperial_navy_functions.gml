@@ -1,5 +1,7 @@
 function navy_orbiting_planet_end_turn_action(){
 	end_sequence_finished = false;
+	orbiting = instance_nearest(x,y,obj_star);
+
 	var _war_with_player = obj_controller.faction_status[eFACTION.Imperium] == "War";
 	if (trade_goods != "player_hold") {
 
@@ -33,18 +35,17 @@ function navy_orbiting_planet_end_turn_action(){
 	    navy_hunt_player_assets()
 	}
 
-	//Eldar shit I think? Doesn't check for eldar ships
-	if (!new_navy_ships_forge()){
-		exit;
-	}
 	if (trade_goods=="building_ships"){
-		var _forge =scr_get_planet_with_type(orbiting,"Forge");
+		var _forge = scr_get_planet_with_type(orbiting,"Forge");
 		if (_forge  == -1 || star.p_owner[i] != eFACTION.Mechanicus){
 			trade_goods = "";
 		} else {
 			end_sequence_finished = true;
 		}
 	}
+	//Eldar shit I think? Doesn't check for eldar ships
+	new_navy_ships_forge();
+
 
 
 	//OK this calculates how many imperial guard the ships have and can have at a max
@@ -71,7 +72,7 @@ function navy_orbiting_planet_end_turn_action(){
 	check_navy_guard_still_live();
 
 	// Go to recruiting grounds
-	if ((guardsmen_unloaded=0 && guardsmen_ratio<0.5 && (trade_goods="")) || trade_goods="recr"){// determine what sort of planet is needed
+	if ((guardsmen_unloaded = 0 && guardsmen_ratio<0.5 && (trade_goods!="goto_forge") && trade_goods!="building_ships") || trade_goods="recr"){// determine what sort of planet is needed
 		scr_navy_find_recruit_world();
 	}
 	// Get recruits
@@ -86,7 +87,9 @@ function navy_orbiting_planet_end_turn_action(){
 	if (!end_sequence_finished){
 		scr_navy_planet_action();
 	}
-
+	if (is_orbiting()){
+		show_debug_message($"orbiting  guard : {orbiting.p_guardsmen}, {orbiting.name}");
+	}
 	/* */
 	}	
 }
@@ -158,7 +161,9 @@ function new_navy_ships_forge(){
             }
         }
         
-        if (!advance) then return false;
+        if (!advance){
+        	exit;
+        }
 
         //TODO here we can make fleet be restored more quickly by better forge worlds 
         if (escort_number<12)  {
@@ -185,11 +190,11 @@ function new_navy_ships_forge(){
         }
     
         if (capital_number>=1 && frigate_number>=5 && escort_number>=12){
-            var i=0;
+            var i=-1;
             repeat(capital_number){i+=1;
                 capital_max_imp[i]=(((floor(random(15))+1)*1000000)+15000000)*2;
             }
-            i=0;
+            i=-1;
             repeat(frigate_number){i+=1;
                 frigate_max_imp[i]=(500000+(floor(random(50))+1)*10000)*2;
             }
@@ -198,9 +203,7 @@ function new_navy_ships_forge(){
 
     
         //if (trade_goods="building_ships" || !advance) then exit;
-        return advance;
-    } else{
-    	return true;
+        end_sequence_finished = true;
     } 
 }
 //TODO further breakup into a nvay fleet functions script
@@ -454,8 +457,10 @@ function navy_attack_player_world(){
 	        for (i = 1; i <= orbiting.planets; i++) {
 	            if (orbiting.p_owner[i]=eFACTION.Player) 
 					and (planet_feature_bool(orbiting.p_feature[i],P_features.Monastery)==0) 
-					and (orbiting.p_guardsmen[i]=0) 
-					then tar=i;
+					and (orbiting.p_guardsmen[i]==0) {
+						tar=i;
+					}
+					
 	        }
 	        if (tar){
 	            guardsmen_unloaded=1;
@@ -590,96 +595,62 @@ function navy_bombard_player_world(){
 
 
 function fleet_max_guard(){
-	var _maxi=0, i=0;
-	for (i=0;i<array_length(capital_imp);i++){
-	    if (capital_max_imp[i]>0) {
-	    	if (capital_number>i){
-	    		capital_max_imp[i]=0;
-	    	} else if (capital_number<=i){
-	    		_maxi+=capital_max_imp[i];
-	    	}
-	    }
-	}
-	for (i=0;i<array_length(frigate_imp);i++){
-	    if (frigate_max_imp[i]>0) {
-	    	if (frigate_number>i){
-	    		frigate_max_imp[i]=0;
-	    	} else if (frigate_number<=i){
-	    		_maxi+=frigate_max_imp[i];
-	    	}
-	    }
-	}
-	for (i=0;i<array_length(escort_imp);i++){
-	    if (escort_max_imp[i]>0) {
-	    	if (escort_number>i){
-	    		escort_max_imp[i]=0;
-	    	} else if (escort_number<=i){
-	    		_maxi+=escort_max_imp[i];
-	    	}
-	    }
-	}
+	show_debug_message($"{capital_imp},{frigate_imp},{capital_max_imp},{frigate_max_imp}");
+	var _maxi=0;
+
+	_maxi = array_sum(capital_max_imp,_maxi,0,capital_number-1);
+	_maxi = array_sum(frigate_max_imp,_maxi,0,frigate_number-1);
+	_maxi = array_sum(escort_max_imp,_maxi,0,escort_number-1);
+	show_debug_message(_maxi);
 	return _maxi;
 }
 
+///@mixin obj_en_fleet
 function fleet_guard_current(){
-	var _curr=0,i=0;
-	for (i=0;i<array_length(capital_imp);i++){
-	    if (capital_imp[i]>0){ 
-	      	if (capital_number<=i){
-	    		if (!guardsmen_unloaded){
-	    			_curr+=capital_imp[i];
-	    		}
-	    	}
-	    }
-	}
-	for (i=0;i<array_length(frigate_imp);i++){
-	    if (frigate_imp[i]>0){
-	      	if (frigate_number<=i){
-	    		if (!guardsmen_unloaded){
-	    			_curr+=frigate_imp[i];
-	    		}
-	    	}
-	    }
-	}
-
-	for (i=0;i<array_length(escort_imp);i++){
-	    if (escort_imp[i]>0){
-	      	if (escort_number<=i){
-	    		if (!guardsmen_unloaded){
-	    			_curr+=escort_imp[i];
-	    		}
-	    	}
-	    }
-	}
-	return _curr;	
+	var _maxi=0;
+	_maxi = array_sum(capital_imp,_maxi,0,capital_number-1);
+	_maxi = array_sum(frigate_imp,_maxi,0,frigate_number-1);
+	_maxi = array_sum(escort_imp,_maxi,0,escort_number-1);
+	show_debug_message(_maxi);
+	return _maxi;	
 }
 
+///@mixin obj_en_fleet
 function fleet_remaining_guard_ratio(){
 	var _curr = fleet_guard_current();
 	var _maxi = fleet_max_guard();
-	guardsmen_ratio=1;
-	if (guardsmen_unloaded=0){
-		guardsmen_ratio=_curr/_maxi;
-	} else {
+	show_debug_message($"current guard {_curr},max{_maxi}");
+	guardsmen_ratio = 0;
+	if (guardsmen_unloaded) {
 		if (is_orbiting()){
 			_curr = array_sum(orbiting.p_guardsmen);
 		}
 
-		guardsmen_ratio=_curr/_maxi;
+		guardsmen_ratio = _curr/_maxi;
+		if (_curr <= 0){
+			guardsmen_unloaded = false;
+		}
 	}
-	return guardsmen_ratio;
+	if (_maxi > 0){
+		guardsmen_ratio = _curr/_maxi;
+	}
+	return clamp(guardsmen_ratio,0,1);
 }
 
+
+//TODO allow for splitting forces
 function scr_navy_unload_guard(planet){
-	var total_guard = array_sum(capital_imp);
-	total_guard += array_sum(frigate_imp);
-	total_guard += array_sum(escort_imp);
+	var total_guard = fleet_guard_current();
 
 	array_set_value(frigate_imp, 0);
 	array_set_value(escort_imp, 0);
 	array_set_value(capital_imp, 0);
 
-    orbiting.p_guardsmen[planet] = total_guard;
+	show_debug_message($"total guard :{total_guard}, {orbiting}, {planet}");
+
+    orbiting.p_guardsmen[planet] += total_guard;
+
+    show_debug_message($"landed guard :{orbiting.p_guardsmen[planet]}");
     guardsmen_unloaded=1;
     end_sequence_finished = true;
 }
@@ -687,6 +658,7 @@ function scr_navy_unload_guard(planet){
 
 function scr_navy_planet_action(){
 	if (action=="" && is_orbiting() && !guardsmen_unloaded){// Unload if problem sector, otherwise patrol
+		show_debug_message($"guard get fighting sequence {orbiting.name}");
 	    var selected_planet=0,highest=0,_target_pop=0,_popu_large=false;
     
 	    for (var p=1; p<=orbiting.planets; p++){
@@ -730,12 +702,17 @@ function scr_navy_planet_action(){
 	        	}
 	        }
 	    }
+	    show_debug_message($"{selected_planet},{highest}");
+	    var _pdf_handling_it =  (orbiting.p_influence[selected_planet][eFACTION.Imperium]>50) && (orbiting.p_pdf[selected_planet]>=0 && highest<=2);
 
 	    if (selected_planet>0 && highest>0 && array_sum(orbiting.p_guardsmen)<=0){
-	        if (highest>2 || orbiting.p_pdf[selected_planet]=0){
+	        if (!_pdf_handling_it){
+	        	show_debug_message("unload_guard");
 	            scr_navy_unload_guard(selected_planet);
+	            show_debug_message($"landed guard :{orbiting.p_guardsmen}");
 	        }
 	    }
+	    show_debug_message($"landed guard :{orbiting.p_guardsmen}");
     
 	    var _player_planet=false;
 	    if (obj_controller.faction_status[eFACTION.Imperium]=="War"){
@@ -749,7 +726,7 @@ function scr_navy_planet_action(){
 	        }
 	    }
     
-	    if (selected_planet == 0 && highest == 0 && !_player_planet){
+	    if (((selected_planet == 0 && highest == 0) || _pdf_handling_it) && !_player_planet){
 	        var halp=0;
 	        var stars_needing_help = [];
         
@@ -818,6 +795,7 @@ function scr_navy_planet_action(){
 }
 
 function navy_load_up_guardsmen_or_move_planet(planet, valid_next_planet){
+	show_debug_message("load guardsmen or move");
     var _player_war=false;
     var _pdata = new PlanetData(planet, orbiting)
     if (_pdata.player_forces>0 && obj_controller.faction_status[eFACTION.Imperium]=="War"){
@@ -828,35 +806,36 @@ function navy_load_up_guardsmen_or_move_planet(planet, valid_next_planet){
 	}
 
     if  (valid_next_planet>0) {// Jump to next planet
-        orbiting.p_guardsmen[that] = _pdata.guardsmen;
+        orbiting.p_guardsmen[valid_next_planet] = _pdata.guardsmen;
         _pdata.edit_guardsmen(-_pdata.guardsmen)
         end_sequence_finished = true;
     }else {// Get back onboard
         navy_load_guardsmen();
 
         trade_goods="";
-        guardsmen_unloaded=0;
+        guardsmen_unloaded=false;
     }	
 }
 
 function navy_load_guardsmen(){
-    var new_capacity;
+	show_debug_message("load guardsmen");
+    var _new_capacity;
     var _maxi = fleet_max_guard();
-    new_capacity = min(orbiting.p_guardsmen[1]+orbiting.p_guardsmen[2]+orbiting.p_guardsmen[3]+orbiting.p_guardsmen[4], _maxi);
+    _new_capacity = min(orbiting.p_guardsmen[1]+orbiting.p_guardsmen[2]+orbiting.p_guardsmen[3]+orbiting.p_guardsmen[4], _maxi);
 	
 	for (var i=0;i<max(capital_number,frigate_number,escort_number);i++){
-		if (new_capacity > 0 && capital_number >= i){
-			capital_imp[i] = min(capital_max_imp[i],new_capacity);
-			new_capacity -=capital_imp[i];
+		if (_new_capacity > 0 && capital_number >= i){
+			capital_imp[i] = min(capital_max_imp[i],_new_capacity);
+			_new_capacity -=capital_imp[i];
 		}
-		if (new_capacity > 0 && frigate_number >= i){
-			frigate_imp[i] = min(frigate_max_imp[i],new_capacity);
-			new_capacity -=frigate_imp[i];
+		if (_new_capacity > 0 && frigate_number >= i){
+			frigate_imp[i] = min(frigate_max_imp[i],_new_capacity);
+			_new_capacity -=frigate_imp[i];
 		}
 
-		if (new_capacity > 0 && capital_number >= i){
-			escort_imp[i] = min(escort_max_imp[i],new_capacity);
-			new_capacity -=escort_imp[i];
+		if (_new_capacity > 0 && capital_number >= i){
+			escort_imp[i] = min(escort_max_imp[i],_new_capacity);
+			_new_capacity -=escort_imp[i];
 		}
 	}
 	orbiting.p_guardsmen = array_create(5,0);	
@@ -871,9 +850,13 @@ function scr_navy_has_unloaded_guardsmen_turn_end(){
 	_current_planet = _move_data[1];
 
     // Move on, man
-    if (_next_planet > 0 && has_imperial_enemies(_current_planet, orbiting)==0){
-    	navy_load_up_guardsmen_or_move_planet(_current_planet,_next_planet);
-    }	
+    if (_current_planet){
+	    if (!has_imperial_enemies(_current_planet, orbiting)){
+	    	navy_load_up_guardsmen_or_move_planet(_current_planet,_next_planet);
+	    }
+	} else {
+		guardsmen_unloaded = false;
+	}
 }
 
 function scr_navy_recruit_new_guard(){
@@ -928,6 +911,7 @@ function scr_navy_recruit_new_guard(){
 
 
 function scr_navy_find_recruit_world(){
+	show_debug_message("find recruit planet");
 	var _maxi = fleet_max_guard();
 	var _curr = fleet_guard_current();
     var _guard_wanted=_maxi-_curr,planet_needed=0;
@@ -980,11 +964,127 @@ function scr_navy_find_recruit_world(){
 	    	trade_goods="recruiting";
 	    } else {
 	        trade_goods="goto_recruiting";
-	        action_x=c_plan.x;
-	        action_y=c_plan.y;
+	        action_x=_nearest.x;
+	        action_y=_nearest.y;
 	        set_fleet_movement();
 	        end_sequence_finished = true;	        
 	    }
+	}
+}
+
+
+function create_start_imperial_fleets(){
+	// Create an imperial fleet
+	show_debug_message("trigger navy creation");
+	with(obj_controller){
+	with(obj_p_fleet){
+	    var steh=instance_nearest(x,y,obj_star);
+		
+		var choices = [
+		  eFACTION.Player,
+		  eFACTION.Imperium,
+		  eFACTION.Mechanicus,
+		  eFACTION.Inquisition,
+		  eFACTION.Ecclesiarchy
+		]
+
+	    for(var b=1; b<=4; b++) {
+			var is_valid = array_contains(choices, steh.p_first[b])
+	        if is_valid and (steh.dispo[b]>-30) and (steh.dispo[b]<0) {
+				var curr_imp_dispo = obj_controller.disposition[eFACTION.Imperium]
+	            steh.dispo[b]=min(obj_ini.imperium_disposition,curr_imp_dispo)+choose(-1,-2,-3,-4,0,1,2,3,4);
+	        }
+	    }
+		if (steh.visited==0) {
+			for(var planet_num = 1; planet_num<5; planet_num++) {
+			    if (array_length(steh.p_feature[planet_num])!=0) {
+					with(steh){
+						scr_planetary_feature(planet_num);
+					}
+				}
+			}
+			steh.visited = 1
+		}
+	}
+
+	var _good_navy_stars = [];
+
+	with(obj_star){
+	    var sco=0;
+		for(var o=1; o<=4; o++){
+	        if (p_type[o]="Hive") then sco+=3;
+	        if (p_type[o]="Temperate") then sco+=1;
+	    }
+	    if (sco>=4){
+	    	array_push(_good_navy_stars,id);
+	    }
+	}
+
+	if (array_length(_good_navy_stars) < target_navy_number){
+
+	    with(obj_star) {
+	        var sco=0;
+	        for(var o=1; o<=planets; o++){
+	            if (p_type[o]=="Hive") then sco+=3;
+	            if (p_type[o]=="Temperate") then sco+=1;
+	             if (p_type[o]=="Shrine") then sco+=1;
+	        }
+	        if (sco>=3  && !array_contains(_good_navy_stars,id)){
+	        	array_push(_good_navy_stars,id);
+	        }
+	    }
+	}
+	_good_navy_stars = array_shuffle(_good_navy_stars);
+
+	for (var i=0; i<array_length(_good_navy_stars); i++){
+		if (i >= target_navy_number){
+			break;
+		}
+
+		var _star = _good_navy_stars[i];
+
+		setup_start_imperial_navy_fleet(_star);
+		
+
+	}	
+	}
+}
+
+function setup_start_imperial_navy_fleet(system){
+    var ii=0;
+    var nav = instance_create(system.x,system.y,obj_en_fleet);
+    var _star = system;
+    _star.present_fleet[eFACTION.Imperium] += 1;
+    with (nav){
+	    orbiting=system;
+
+	    owner=eFACTION.Imperium;
+	    navy=1;
+	    
+	    capital_number = choose(1,2,3);
+	    frigate_number = (capital_number*2)+3;
+	    escort_number=12;
+	    home_x=x;
+	    home_y=y;
+	    warp_able=true;
+	    
+	    image_speed=0;
+	    ii+=capital_number-1;
+	    ii+=round((frigate_number/2));
+	    ii+=round((escort_number/4));
+	    if (ii<=1) and (capital_number+frigate_number+escort_number>0){
+	    	ii=1;
+	    }
+	    image_index=ii;
+
+        for(var i=0; i<capital_number; i++){
+            capital_max_imp[i]=(((floor(random(15))+1)*1000000)+15000000)*2;
+            capital_imp[i]=capital_max_imp[i];
+        }
+        for(var i=0; i<frigate_number; i++){
+            frigate_max_imp[i]=(500000+(floor(random(50))+1)*10000)*2;
+            frigate_imp[i]=frigate_max_imp[i];
+        }
 	}
 }
 

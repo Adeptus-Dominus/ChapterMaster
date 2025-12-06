@@ -33,16 +33,19 @@ function guard_find_planet_with_most_enemy_forces(system, current_planet = 0){
 	var _next_planet=0,_highest=0;
 	for (var o=1; o <= system.planets;o++){
 		if (current_planet == 0 && system.p_guardsmen[o]>0){
-			_current_planet = o;
+			current_planet = o;
 		}
 		var _enemy_count = has_imperial_enemies(o, system);
         if (_enemy_count > _highest && system.p_type[o]!="Daemon"){
-            _next_planets=o;
+            _next_planet=o;
             _highest = _enemy_count;
         }    		
 	}
+	if (_next_planet == current_planet){
+		_next_planet = 0;
+	}
 
-	return [_next_planet,_current_planet];
+	return [_next_planet,current_planet];
 }
 
 function ensure_no_planet_negatives(planet){
