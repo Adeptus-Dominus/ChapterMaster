@@ -415,7 +415,7 @@ function mission_hunt_inquisitor_hear_out_radical_inquisitor(){
                 },
                 {
                     str1 : "Search their ship",
-                    //choice_func : instance_destroy,
+                    //choice_func : instance_destroy, // TODO: Implement proper ship search logic
                 },
                 {
                     str1 : "Spare them",

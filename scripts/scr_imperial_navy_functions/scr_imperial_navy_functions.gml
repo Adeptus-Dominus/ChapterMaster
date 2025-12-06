@@ -557,7 +557,7 @@ function navy_bombard_player_world(){
                     }
                     if (PDF_loses>0) then bombard_report_string+=$" and {scr_display_number(PDF_loses)} PDF lost.";
                     if (PDF_loses<=0 && civilian_losses>0) then bombard_report_string+=".";
-                    if (civilian_losses=0 && PDF_loses>0) then bombard_report_string+=" {PDF_loses}  PDF lost.";
+                    if (civilian_losses=0 && PDF_loses>0) then bombard_report_string+=$" {PDF_loses}  PDF lost.";
                     
                     if (bombard_report_string!="") {
                         scr_alert("red","owner",bombard_report_string,orbiting.x,orbiting.y);
