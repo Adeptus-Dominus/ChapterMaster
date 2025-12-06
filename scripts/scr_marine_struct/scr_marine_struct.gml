@@ -2116,14 +2116,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var _is_at_loc = false;
         var _multi_ship = is_array(ship);
         var _multi_planet = is_array(planet);
-        if ((planet > 0 || _multi_planet ) && location_string == location) {
+        if ((_multi_planet || planet > 0) && location_string == location) {
             if (_multi_planet){
-                if (array_contains(planet, planet_location)){
-                    _is_at_loc = true;
-                }
+                
+                _is_at_loc = array_contains(planet, planet_location);
             }
-            else if ( planet_location == planet) {
-                _is_at_loc = true;
+            else {
+                _is_at_loc = planet_location == planet;
             }
         } else if (_multi_ship) {
 
