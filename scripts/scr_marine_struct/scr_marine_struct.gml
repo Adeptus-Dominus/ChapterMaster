@@ -2113,37 +2113,36 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static specialist_tooltips = specialistfunct;
 
     static is_at_location = function(location = "", planet = 0, ship = -1) {
-        var is_at_loc = false;
+        var _is_at_loc = false;
         var _multi_ship = is_array(ship);
         var _multi_planet = is_array(planet);
         if ((planet > 0 || _multi_planet ) && location_string == location) {
             if (_multi_planet){
                 if (array_contains(planet, planet_location)){
-                    is_at_loc = true;
+                    _is_at_loc = true;
                 }
             }
             else if ( planet_location == planet) {
-                is_at_loc = true;
+                _is_at_loc = true;
             }
-        } else if (_multi_ship || ship > -1) {
-            if (_multi_ship){
-                if (array_contains(ship, ship_location)){
-                    is_at_loc = true;
-                }
-            }
-            else if (ship_location == ship) {
-                is_at_loc = true;
-            }
-        } else if (ship == -1 && planet == 0) {
+        } else if (_multi_ship) {
+
+            _is_at_loc = array_contains(ship, ship_location);
+            
+        } else if (ship > -1){
+
+            _is_at_loc = ship_location == ship;
+
+        }else if (ship == -1 && planet == 0) {
             if (ship_location > -1) {
                 if (obj_ini.ship_location[ship_location] == location) {
-                    is_at_loc = true;
+                    _is_at_loc = true;
                 }
             } else if (location_string == location) {
-                is_at_loc = true;
+                _is_at_loc = true;
             }
         }
-        return is_at_loc;
+        return _is_at_loc;
     };
 
     static edit_corruption = function(edit) {
