@@ -186,7 +186,7 @@ function init_protect_raider_mission(squad){
 	var _tester = global.character_tester;
 
 	var _pdata = new PlanetData(selection_data.planet, selection_data.system);
-	var _mod = _squad_wisdom+_squad_dex/10;
+	var _mod = _squad_wisdom+_squad_dex/20;
 	if (scr_has_adv("Ambushers")){
 		_mod += 10
 	}
@@ -201,7 +201,6 @@ function init_protect_raider_mission(squad){
 			scr_toggle_manage();
 			var gar_pop = instance_create(0, 0, obj_popup);			
 		    gar_pop.title=$"Strange Disappearance";
-		    gar_pop.pathway = "protect_raiders";
 		    gar_pop.pdata = _pdata;
 		    gar_pop.text=$"Your Marines make planet fall and are directed to report to the governor for the duration of the operation after a period of reconnaissance dig in for their ambush. After a two weeks have passed A message from the governor reaches your astropaths that your marines have not been heard of for some time, The raiders also were not noted to have arrived onor left the planet";
 		    //pip.image="event_march"
@@ -221,8 +220,16 @@ function init_protect_raider_mission(squad){
 
 		    gar_pop.text += "\nThe total loss of a squad in what was meant to be a routine operation is bad for moral and your chapters reputation you must now decide how to proceed";
 
-		    gar_pop.add_option("Suppress the Information");
-		    gar_pop.add_option("Hold a Memorial");			
+		    gar_pop.add_option({
+		    	str1: "Suppress the Information",
+		    	choice_func:protect_raiders_suppress_information
+		    });
+
+
+		    gar_pop.add_option({
+		    	str1:"Hold a Memorial",
+		    	choice_func:protect_raiders_hold_memorial
+		    });			
 		} else {
 			scr_toggle_manage();
 			var gar_pop = instance_create(0, 0, obj_popup);		
@@ -255,6 +262,38 @@ function init_protect_raider_mission(squad){
 	    exit_adhoc_manage();
 	    delete _roster;
 	}	
+}
+
+function protect_raiders_suppress_information(){
+	title = "Captains Disgruntled";
+	options1 = "continue";
+	pathway = "";
+	var _caps = scr_role_count(obj_ini.roles[100][eROLE.Captain]);
+	var _worst = -1;
+	var _worst_hit  = -1;
+	for (var i=0;i<array_length(_caps);i++){
+		if (!irandom(2)){
+			var _cap = _caps[i];
+			var _loyalty_hit = irandom(6);
+			if (_loyalty_hit>_worst_hit){
+				_worst_hit = _loyalty_hit;
+				_worst = i;
+			}
+		}
+	}
+	
+	if (_worst == -1){
+		text = $"You are able to convince your captains of the strategic need to cover up the incidence, various excuses are made and fake logs that cover up the disaster of the mission"
+	} else {
+		text = $"Not all of your captains are convinced of the need to use deceit and a none have breached the order but it has soured your relations with a few namely {_caps[_worst].name_role()}"
+	}	
+}
+
+function protect_raiders_hold_memorial(){
+		reset_popup_options();
+		options1 = "continue";
+		_pdata.add_disposition(-30);
+		text =  $"You prepare to have a large public memorial for your fallen marines on the planet surface as a show of defiance. The chapter are pleased by such an act and the population of the planet are mesmerized by the spectacle. The governor is furious not only has his incompetence to deal with the planets xenos issue been made public in such a way that the sector commander has now heard about it but he perceives his failures are being paraded in font of him\n nGovernor Disposition : -30";
 }
 
 function init_train_forces_mission(planet, star, mission_slot, marine){

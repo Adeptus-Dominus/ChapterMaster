@@ -18,6 +18,8 @@ void_wid=0;
 void_hei=0;
 player_fleet=false;
 
+helpful_navigator=new HelpfulPlaces();
+
 selection_window.inside_method = function(){
 	var mnz=0;
 	var xx = selection_window.XX;
@@ -201,5 +203,5 @@ selection_window.inside_method = function(){
 	        }			        
 	    }
 	}
-    selection_window.currently_entered = scr_hit([xx,yy, xx+width, yy+selection_window.height]);
+    selection_window.currently_entered = scr_hit([xx,yy, xx+width, yy+selection_window.height]) || helpful_navigator.entered();
 }

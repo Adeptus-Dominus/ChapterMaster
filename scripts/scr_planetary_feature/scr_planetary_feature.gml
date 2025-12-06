@@ -426,12 +426,12 @@ function discover_artifact_popup(feature){
 
     var _take_arti = {
     	str1 : "Swiftly take the Artifact",
-    	method : ground_forces_collect_artifact
+    	choice_func : ground_forces_collect_artifact
     }
     if ((current_owner >= eFACTION.Tyranids) || ((current_owner == eFACTION.Ork) && (pdf <= 0))) {
     	pop.add_option([{
     		str1 :  "Let it be",
-    		method : ground_mission_leave_it_function,
+    		choice_func : ground_mission_leave_it_function,
     	}, _take_arti]);
     } else {
 	    var _opt1 = "Request audience with the ";
@@ -441,7 +441,7 @@ function discover_artifact_popup(feature){
 	            _opt1 += "Planetary Governor";
 	            pop.add_option({
 	            	str1: "Gift the Artifact to the Sector Commander.",
-	            	method : function(){
+	            	choice_func : function(){
 	            		gift_artifact(eFACTION.Imperium, false);
 	            		instance_destroy();
 	            	},
@@ -449,17 +449,17 @@ function discover_artifact_popup(feature){
 	            break;
 	        case eFACTION.Mechanicus:
 	            _opt1 += "Mechanicus";
-	            pop.add_option({str1 : "Let it be.  The Mechanicus' wrath is not lightly provoked.", method : ground_mission_leave_it_function,});
+	            pop.add_option({str1 : "Let it be.  The Mechanicus' wrath is not lightly provoked.", choice_func : ground_mission_leave_it_function,});
 	            break;
 	        case eFACTION.Inquisition:
 	            _opt1 += "Inquisition";
-	            pop.add_option({method : ground_mission_leave_it_function, str1 : "Let it be.  The Inquisition's wrath is not lightly provoked."});
+	            pop.add_option({choice_func : ground_mission_leave_it_function, str1 : "Let it be.  The Inquisition's wrath is not lightly provoked."});
 	            break;
 	        case eFACTION.Ecclesiarchy:
 	            _opt1 += "Ecclesiarchy";
 	            pop.add_option({
 	            	str1 : "Gift the Artifact to the Ecclesiarchy.",
-	            	method : function(){
+	            	choice_func : function(){
 	            		gift_artifact(eFACTION.Ecclesiarchy, false);
 	            		instance_destroy();
 	            	},
@@ -469,7 +469,7 @@ function discover_artifact_popup(feature){
 	            _opt1 += "Eldar";
 	           	pop.add_option({
 	            	str1 : "Gift the Artifact to the Eldar.",
-	            	method : function(){
+	            	choice_func : function(){
 	            		gift_artifact(eFACTION.Eldar, false);
 	            		instance_destroy();
 	            	},
@@ -479,7 +479,7 @@ function discover_artifact_popup(feature){
 	            _opt1 += "Tau";
 	           	pop.add_option({
 	            	str1 : "Gift the Artifact to the Tau Empire.",
-	            	method : function(){
+	            	choice_func : function(){
 	            		gift_artifact(eFACTION.Tau, false);
 	            		instance_destroy();
 	            	},
@@ -490,7 +490,7 @@ function discover_artifact_popup(feature){
         pop.add_option([
 	        {
 	        	str1 : _opt1, 
-	        	method : governor_negotiate_artifact
+	        	choice_func : governor_negotiate_artifact
 	        },
         	_take_arti
         ]);
@@ -591,7 +591,7 @@ function discover_stc_fragment_popup(techies, mechanicus_reps){
             pop.text = $"{_text}. The present Tech Priests stress they will not condone a mission to steal the STC Fragment.";
         } else if (techies > 0) {
             pop.text = $"{_text}. Taking it may be seen as an act of war. What is thy will?";
-            pop.add_option({str1 : "Attempt to steal the STC Fragment.", method:remove_stc_from_planet}); // TODO: Fix this option, as it crashes the game when the battle starts);
+            pop.add_option({str1 : "Attempt to steal the STC Fragment.", choice_func:remove_stc_from_planet}); // TODO: Fix this option, as it crashes the game when the battle starts);
         } else {
             pop.text = $"{_text}. Taking it may be seen as an act of war. The ground team has no Techmarines, so you have no choice but to leave it be.";
         }
@@ -599,7 +599,7 @@ function discover_stc_fragment_popup(techies, mechanicus_reps){
 
     	var _text = $"An STC Fragment appears to be located upon {name()}"
         if (techies > 0){
-          array_push(options, {str1 : "Swiftly take the STC Fragment.", method:remove_stc_from_planet});
+          array_push(options, {str1 : "Swiftly take the STC Fragment.", choice_func:remove_stc_from_planet});
           if (mechanicus_reps == 0){
           	pop.text = $"{_text}; what it might contain is unknown. Your {obj_ini.role[100][16]}s wish to reclaim, identify, and put it to use immediately. What is thy will?";
           } else {
@@ -611,10 +611,10 @@ function discover_stc_fragment_popup(techies, mechanicus_reps){
 			pop.text = $"{_text}; what it might csontain is unknown. The ground team has no {obj_ini.role[100][16]}s or Tech Priests, so you have no choice but to leave it be or notify the Mechanicus about its location.";
         }
 
-        array_push(options, {str1 : "Send it to the Adeptus Mechanicuss.", method : send_stc_to_adeptus_mech});
+        array_push(options, {str1 : "Send it to the Adeptus Mechanicuss.", choice_func : send_stc_to_adeptus_mech});
     }
     array_push(options,{str1: "Leave it.",
-    		 method : ground_mission_leave_it_function
+    		 choice_func : ground_mission_leave_it_function
     });
 
     pop.add_option(options);

@@ -18,6 +18,36 @@ function planet_imperial_base_enemies(planet, star="none"){
 	}
 }
 
+
+function has_imperial_enemies(planet, system){
+	var _enemies = system.p_orks[planet]+system.p_chaos[planet]+system.p_tyranids[planet]+system.p_necrons[planet]+system.p_tau[planet]+system.p_traitors[planet];
+
+	if (obj_controller.faction_status[eFACTION.Imperium] == "War"){
+		_enemies += system.p_player[planet];
+	}
+
+	return _enemies;
+}
+
+function guard_find_planet_with_most_enemy_forces(system, current_planet = 0){
+	var _next_planet=0,_highest=0;
+	for (var o=1; o <= system.planets;o++){
+		if (current_planet == 0 && system.p_guardsmen[o]>0){
+			current_planet = o;
+		}
+		var _enemy_count = has_imperial_enemies(o, system);
+        if (_enemy_count > _highest && system.p_type[o]!="Daemon"){
+            _next_planet=o;
+            _highest = _enemy_count;
+        }    		
+	}
+	if (_next_planet == current_planet){
+		_next_planet = 0;
+	}
+
+	return [_next_planet,current_planet];
+}
+
 function ensure_no_planet_negatives(planet){
     if (p_eldar[planet]<0) then p_eldar[planet]=0;
     if (p_orks[planet]<0) then p_orks[planet]=0;

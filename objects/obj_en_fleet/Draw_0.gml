@@ -75,8 +75,11 @@ if (within=1) or (selected>0){
     var fleet_descript="";
     if (owner  = eFACTION.Player) then fleet_descript="Renegade Fleet";
     if (owner = eFACTION.Imperium){
-        if (navy=0) then fleet_descript="Defense Fleet";
-        if (navy=1) then fleet_descript="Imperial Navy";
+        if (navy=1){
+            fleet_descript="Imperial Navy";
+        }else{
+            fleet_descript="Defense Fleet";
+        }
     }
     if (navy=0){
         if (owner = eFACTION.Imperium){
@@ -144,6 +147,12 @@ if (fleet_descript!="" && within){
     draw_set_alpha(0.5);
     draw_circle(x+(coords[0]*scale),y+(coords[1])*scale,12*scale,0);
     draw_set_alpha(1);
+    if (navy && owner == eFACTION.Imperium){
+        draw_set_color(global.star_name_colors[eFACTION.Mechanicus]);
+        draw_circle(x+(coords[0]*scale),y+(coords[1])*scale,12*scale,1);
+        draw_circle(x+(coords[0]*scale),y+(coords[1])*scale,12.1*scale,1);
+        draw_circle(x+(coords[0]*scale),y+(coords[1])*scale,12.2*scale,1);
+    }
 }
 if (draw_icon){
     draw_sprite_ext(spr_faction_icons, owner,x+(coords[0]*scale)-(32*scale),y+(coords[1]*scale)-(32*scale),1*scale,1*scale,0,c_white,1)

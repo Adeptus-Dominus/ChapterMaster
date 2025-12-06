@@ -20,7 +20,7 @@ function scr_void_click() {
     }
 
 
-	if (instance_exists(obj_star_select)){
+	else if (instance_exists(obj_star_select)){
 	    if (obj_controller.selecting_planet>0){// This prevents clicking onto a new star by pressing the buttons or planet panel
 	        if (scr_hit(xx+(27*scale),yy+(166*scale),xx+(727*scale),yy+(458*scale))){if (obj_star_select.button1!="") then good=false;}
 	        if (scr_hit(xx+(348*scale),yy+(461*scale),xx+(348*scale)+(246*scale),yy+(461*scale)+(26*scale))){if (obj_star_select.button1!="") then good=false;}
@@ -28,6 +28,14 @@ function scr_void_click() {
 	        if (scr_hit(xx+(348*scale),yy+(517*scale),xx+(348*scale)+(246*scale),yy+(517*scale)+(26*scale))){if (obj_star_select.button3!="") then good=false;}
 	        if (scr_hit(xx+(348*scale),yy+(545*scale),xx+(348*scale)+(246*scale),yy+(545*scale)+(26*scale))){if (obj_star_select.button4!="") then good=false;}
 	    }
+	} else {
+		if (obj_controller.helpful_places!=false){
+			if (!instances_exist_any([obj_turn_end,obj_ncombat,obj_fleet,obj_fleet_select,obj_popup,obj_star_select])){
+				if (obj_controller.helpful_places.entered()){
+					good=false;
+				}
+			}
+		}
 	}
 
 	if (obj_controller.popup=3){// Prevent hitting through the planet select

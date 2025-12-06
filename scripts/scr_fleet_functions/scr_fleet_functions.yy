@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_fleet_functions",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"fleet",
+    "path":"folders/Scripts/fleet.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

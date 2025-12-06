@@ -10,6 +10,8 @@ if (instance_exists(obj_fleet)) then exit;
 if (global.load>=0) then exit;
 if (invis==true) then exit;
 
+
+add_draw_return_values();
 if (is_test_map==true){
     draw_set_color(c_yellow);
     draw_set_alpha(0.5);
@@ -49,6 +51,25 @@ if (menu == MENU.Diplomacy){
 }
 // Main UI
 if (!zoomed && !zui){
+    add_draw_return_values();
+    if (menu == MENU.Default){
+        location_viewer.draw();
+        helpful_places_button.update({x1 : 1451,y1:62+sprite_get_height(spr_new_banner)});
+
+        if (helpful_places_button.draw()){
+
+            if (helpful_places == false){
+                helpful_places = new HelpfulPlaces();
+            } else{
+                helpful_places = false;
+            }
+        }
+        if (helpful_places != false){
+            if (!instances_exist_any([obj_turn_end,obj_ncombat,obj_fleet,obj_fleet_select,obj_popup,obj_star_select])){
+                helpful_places.draw();
+            }
+        }
+    }
     draw_sprite(spr_new_ui,menu==0,0,0);
     draw_set_color(c_white);
 
@@ -175,10 +196,7 @@ if (!zoomed && !zui){
     draw_set_color(16291875);
     draw_text(495-10,16,string(marines)+"/"+string(command));
     draw_text(495.5-10,16.5,string(marines)+"/"+string(command));
-
-    if (menu==MENU.Default){
-        location_viewer.draw();
-    }
+    pop_draw_return_values();
 }
 draw_set_font(fnt_40k_14b);
 draw_set_color(c_red);
@@ -226,6 +244,8 @@ try{
     menu = MENU.Default;
 }
 
+
+pop_draw_return_values();
 
 
 

@@ -341,7 +341,7 @@ function inquisitor_inspection_structure() constructor {
             options: [
                 {
                     str1: "Hand over all Chaos and Daemonic Artifacts",
-                    method: function() {
+                    choice_func: function() {
                         var contraband = [];
                         for (var i = 0; i < array_length(obj_ini.artifact_struct); i++) {
                             if (obj_ini.artifact[i] != "") {
@@ -360,7 +360,7 @@ function inquisitor_inspection_structure() constructor {
                 },
                 {
                     str1: "Over your dead body",
-                    method: function() {
+                    choice_func: function() {
                         obj_controller.cooldown = 10;
                         if (number != 0 && instance_exists(obj_turn_end)) { obj_turn_end.alarm[1] = 4; }
                         instance_destroy();

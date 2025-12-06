@@ -737,11 +737,11 @@ function scr_random_event(execute_now) {
 	    	options : [
 	    		{
 	    			str1:_opt1,
-	    			method : event_dispose_of_mutated_gene,
+	    			choice_func : event_dispose_of_mutated_gene,
 	    		},
 	    		{
 	    			str1:_opt2,
-	    			method : function(){
+	    			choice_func : function(){
 	    				scr_loyalty("Mutant Gene-Seed", "+");
 	    				popup_default_close();
 	    			}

@@ -479,7 +479,6 @@ if (p_owner[2]=1){
     
 }
 
-obj_controller.alarm[9]=2;
 if (obj_controller.is_test_map!=true) and (p_owner[2]!=1){
     for(var i=1; i<=4; i++){p_guardsmen[i]=0;}
 }

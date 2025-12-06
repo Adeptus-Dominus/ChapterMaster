@@ -32,7 +32,9 @@ switch(owner){
 }
 // 
 var scale = obj_controller.zoomed ? 3.5 : 1;
-if (obj_controller.zoomed=0) then draw_text_transformed(x,y-32,ppp,scale,scale,0);
+if (!obj_controller.zoomed){
+    draw_text_transformed(x,y-32,ppp,scale,scale,0);
+}
 
 draw_set_halign(fa_left);
 
@@ -54,7 +56,7 @@ if (player_fleet.just_left){
     }
 }
 
-if (owner  == eFACTION.Player) and (player_fleet.action==""){
+if (owner  == eFACTION.Player && player_fleet.action==""){
     var xx = __view_get( e__VW.XView, 0 );
     var yy = __view_get( e__VW.YView, 0 );
     var free =  !(currently_entered);

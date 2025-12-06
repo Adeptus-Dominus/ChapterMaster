@@ -2,17 +2,23 @@
 /// @description Returns true if mouse is hovering on the specified rectangle area.
 /// @returns {bool}
 function scr_hit(x1=0, y1=0, x2=0, y2=0) {
-	var mouse_consts = return_mouse_consts();
+	var _mouse_consts = return_mouse_consts();
 	if (is_array(x1)){
-		return point_in_rectangle(mouse_consts[0],mouse_consts[1],x1[0],x1[1],x1[2],x1[3]);
+		return point_in_rectangle(_mouse_consts[0],_mouse_consts[1],x1[0],x1[1],x1[2],x1[3]);
 	} else {
-		return point_in_rectangle(mouse_consts[0],mouse_consts[1],x1, y1, x2, y2);
+		return point_in_rectangle(_mouse_consts[0],_mouse_consts[1],x1, y1, x2, y2);
 	}
 }
 
 function scr_hit_relative(x1, relative = [0,0]){
-	var mouse_consts = return_mouse_consts();
-	return point_in_rectangle(mouse_consts[0],mouse_consts[1],relative[0] + x1[0],relative[1] + x1[1],relative[0] + x1[2],relative[1] + x1[3]);
+	var _mouse_consts = return_mouse_consts();
+	return point_in_rectangle(_mouse_consts[0],_mouse_consts[1],relative[0] + x1[0],relative[1] + x1[1],relative[0] + x1[2],relative[1] + x1[3]);
+}
+
+function scr_hit_dimensions(x1=0, y1=0,w=0,h=0){
+	var _mouse_consts = return_mouse_consts();
+	return point_in_rectangle(_mouse_consts[0],_mouse_consts[1],x1, y1,x1+w, y1+h);
+
 }
 
 /// @function point_and_click
@@ -57,8 +63,8 @@ function point_and_click(rect, cooldown = 60, lock_bypass = false) {
 		}
 	}
 
-	var mouse_consts = return_mouse_consts();
-	var point_check = point_in_rectangle(mouse_consts[0], mouse_consts[1], rect[0], rect[1],rect[2], rect[3]);
+	var _mouse_consts = return_mouse_consts();
+	var point_check = point_in_rectangle(_mouse_consts[0], _mouse_consts[1], rect[0], rect[1],rect[2], rect[3]);
 	if (point_check && cooldown > 0) {
 		if (controller_exist) {
 			obj_controller.cooldown = cooldown * delta_time/1000000;
@@ -81,7 +87,7 @@ function point_and_click(rect, cooldown = 60, lock_bypass = false) {
 	}
 
 	if(is_debug_overlay_open()){
-		show_debug_message($"Mouse Clicked at: x: {mouse_consts[0]} y: {mouse_consts[1]} {array_to_string_list(debug_get_callstack(), true)}!");
+		show_debug_message($"Mouse Clicked at: x: {_mouse_consts[0]} y: {_mouse_consts[1]} {array_to_string_list(debug_get_callstack(), true)}!");
 	}
 
 	return true;
@@ -196,8 +202,8 @@ function return_mouse_consts(){
 }
 
 function mouse_distance_less(xx, yy, distance){
-	var mouse_consts = return_mouse_consts();
-	return (point_distance(xx,yy,mouse_consts[0],mouse_consts[1])<=distance)
+	var _mouse_consts = return_mouse_consts();
+	return (point_distance(xx,yy,_mouse_consts[0],_mouse_consts[1])<=distance)
 }
 
 function return_mouse_consts_tooltip(){
