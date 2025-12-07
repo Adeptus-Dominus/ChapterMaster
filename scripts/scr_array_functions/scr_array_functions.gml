@@ -3,10 +3,10 @@
 function array_iter_length(choice_array, offset, length){
 	if (length == 0){
 		if (offset==0){
-			length = array_length(choice_array);
+			length = array_length(choice_array)-1;
 		}
 		else if (offset){
-			length = array_length(choice_array) - offset;
+			length = array_length(choice_array) - offset - 1;
 		} else {
 			length = offset*-1;
 		}
@@ -316,4 +316,16 @@ function array_create_advanced(_size = 1, _default = 0) {
 	}
 
 	return _array;
+}
+
+
+function max_array_length(arrays = []){
+	var _max = 0;
+	for (var i=0;i<array_length(arrays);i++){
+		var _arr_len = array_length(arrays[i]);
+		if (_arr_len > _max){
+			_max = _arr_len;
+		}
+	}
+	return _max;
 }

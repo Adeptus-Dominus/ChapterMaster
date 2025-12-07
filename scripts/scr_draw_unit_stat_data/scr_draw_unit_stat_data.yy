@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_draw_unit_stat_data",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"marines_and_profiles",
+    "path":"folders/Scripts/marines_and_profiles.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

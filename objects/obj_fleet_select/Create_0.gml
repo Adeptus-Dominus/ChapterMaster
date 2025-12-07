@@ -22,6 +22,8 @@ select_all_button = new UnitButtonObject();
 
 manage_units_button = new UnitButtonObject({style : "pixel"});
 
+helpful_navigator=new HelpfulPlaces();
+
 selection_window.inside_method = function(){
 	var _minimised=0;
 	var xx = selection_window.XX;
@@ -218,5 +220,5 @@ selection_window.inside_method = function(){
 	        }			        
 	    }
 	}
-    selection_window.currently_entered = scr_hit([xx,yy, xx+width, yy+selection_window.height]);
+    selection_window.currently_entered = scr_hit([xx,yy, xx+width, yy+selection_window.height]) || helpful_navigator.entered();
 }

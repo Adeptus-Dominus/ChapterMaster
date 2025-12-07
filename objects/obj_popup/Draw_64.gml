@@ -125,7 +125,12 @@ try{
 				image_bot = (sprite_height * 0.07) + image_hei + 5;
 			}
 
-			draw_popup_options();
+			try{
+				draw_popup_options();
+			} catch(_exception){
+				handle_exception(_exception);
+				popup_default_close();
+			}
 		}
 
 		if (type == "duel") {}

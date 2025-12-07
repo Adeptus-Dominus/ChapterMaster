@@ -8,7 +8,7 @@ function scr_star_ownership(argument0) {
 	ork_owner=0;tau_owner=0;player_owner=0;eldar_owner=0;traitors_owner=0;forge_owner=0;imperium_owner=0;tyranids_owner=0;necrons_owner=0;nun_owner=0;
 
 	repeat(planets){
-		run+=1;
+		run++;
 		p_chaos[run] = clamp(p_chaos[run], 0, 6);
 		p_tau[run] = clamp(p_tau[run], 0, 6);
 		p_orks[run] = clamp(p_orks[run], 0, 6);
@@ -26,56 +26,81 @@ function scr_star_ownership(argument0) {
 	    }
 	    if (_set_to_first){
 	    	var _first = p_first[run];
-	    	if (p_first[run] == eFACTION.Ork && p_orks[run] <= 0){
+	    	if (p_first[run] == eFACTION.Ork){
 	    		p_owner[run]=2;
 	    	} else {
-	    		p_owner[run]=p_first[run];
+	    		p_owner[run] = p_first[run];
 	    	}
 	    }
-	    if (p_type[run]=="Dead") and (p_owner[run]!=eFACTION.Imperium) and (p_first[run]!=eFACTION.Player) and (p_first[run]!=eFACTION.Ecclesiarchy){
+	    if (p_type[run]=="Dead" && p_owner[run]!=eFACTION.Imperium && p_first[run]!=eFACTION.Player && p_first[run]!=eFACTION.Ecclesiarchy){
 	    	p_owner[run]=eFACTION.Imperium;
 	    }
-	    if (p_owner[run]=eFACTION.Tau) and (p_tau[run]=0) and (p_pdf[run]=0){
+	    if (p_owner[run]==eFACTION.Tau && p_tau[run]=0 && p_pdf[run]=0){
 	    	p_owner[run]=eFACTION.Imperium;
 	    	p_influence[run][eFACTION.Tau]=round(p_influence[run][eFACTION.Tau]/2);
 	    }
-	    if (p_owner[run]=10) and (p_chaos[run]=0) and (p_traitors[run]=0) and (p_population[run]<=0){
+	    if (p_owner[run]==10 && p_chaos[run]==0 && p_traitors[run]==0 && p_population[run]<=0){
 	    	p_owner[run]=p_first[run];
 	    	p_heresy[run]=0;
 	    	if (p_owner[run]=10){
 	    		p_owner[run]=2;
 	    	}
 	    }
-	    if (p_type[run]="Daemon"){
+	    if (p_type[run]=="Daemon"){
 	    	p_owner[run]=10;
 	    }
 
 	    var _nid_chosen = false;
     	if (planet_feature_bool(p_feature[run], P_features.GeneStealerCult)){
     		if (p_influence[run][eFACTION.Tyranids]>50){
-    			p_owner[run]=9;
-    			tyranids_owner+=1;
+    			p_owner[run]=eFACTION.Tyranids;
+    			tyranids_owner++;
     			_nid_chosen = true;
     		}
-    	} else if (p_tyranids[run]>=5) and (p_population[run]=0){
-	    	p_owner[run]=9;
-	    	tyranids_owner+=1;
+    	} else if (p_tyranids[run]>=5 && p_population[run]==0){
+	    	p_owner[run]=eFACTION.Tyranids;
+	    	tyranids_owner++;
 	    	_nid_chosen = true;
 	    }
 
 
 	    if (p_type[run]!="Dead" && !_nid_chosen){
-		    if (p_owner[run]=eFACTION.Player) then player_owner+=1;
-		    if (p_owner[run]=eFACTION.Imperium)  then imperium_owner+=1;
-		    if (p_owner[run]=eFACTION.Mechanicus)  then forge_owner+=1;
-		    if (p_owner[run]=5)  then nun_owner+=1;
-		    // if (p_orks[run]>0) and (p_type[run]!="Dead") then ork_owner+=1;
-		    if (p_owner[run]=6) and (p_type[run]=="Craftworld") then eldar_owner=999;
-		    if (p_owner[run]=7)  then ork_owner+=1;
-		    if (p_owner[run]=8)  then tau_owner+=1;
-		    if (p_owner[run]=10)  then traitors_owner+=1;
-		    if (p_owner[run]=11)  then traitors_owner+=1;
-		    if (p_owner[run]=13)  then necrons_owner+=1;
+	    	switch (p_owner[run])
+	    	{
+		    	case eFACTION.Player:
+		    		player_owner++;
+		    		break;
+		    	case eFACTION.Imperium:
+			    	if (p_type[run] != "Forge"){
+			    		imperium_owner++;
+			    	} else {
+			    		p_owner[run]=eFACTION.Mechanicus;
+			    		forge_owner++;
+			    	}
+		    		break;
+		    	case eFACTION.Mechanicus:
+		    		forge_owner++;
+		    		break;
+		    	case eFACTION.Ecclesiarchy:
+		    		nun_owner++;
+		    		break;
+		    	case eFACTION.Eldar:
+		    		eldar_owner=999;
+		    		break;
+		    	case eFACTION.Ork:
+		    		ork_owner++;
+		    		break;
+		    	case eFACTION.Tau:
+		    		tau_owner++;
+		    		break;	
+		    	case eFACTION.Chaos:
+		    	case eFACTION.Heretics:
+		    		traitors_owner++;
+		    		break;	
+		    	case eFACTION.Necrons:
+		    		necrons_owner++;
+		    		break;			    				    				    				    				    				    				    		
+	    	}
 		}
     
     
@@ -83,14 +108,21 @@ function scr_star_ownership(argument0) {
 	        if (array_length(p_feature[run]) != 0){
 	            if (planet_feature_bool(p_feature[run], P_features.DaemonicIncursion)==1){
 	            	p_heresy[run]+=2;
-	                if (p_large[run]=0) and (p_population[run]>10000) then p_population[run]=floor(p_population[run]*0.5);
-	                if (p_large[run]=1) then p_population[run]=p_population[run]*0.7;
+	                if (!p_large[run] && p_population[run]>10000){
+	                	p_population[run]=floor(p_population[run]*0.5);
+	                }
+	                else if (p_large[run]){
+	                	p_population[run]=p_population[run]*0.7;
+	                }
 	            }
 	        }
 	        if (p_tyranids[run]>4){
-	            if (p_large[run]=0) then p_population[run]=floor(p_population[run]*0.1);
-	            if (p_large[run]=0) and (p_population[run]<=400000) then p_population[run]=0;
-	            if (p_large[run]=1) then p_population[run]=p_population[run]*0.1;
+	            if (!p_large[run]){
+	            	p_population[run]= p_population[run]<=400000 ? 0  : 1 floor(p_population[run]*0.1);
+	            }
+	            else {
+	            	p_population[run] = p_population[run]*0.1;
+	            }
 	        }
 	        if (array_length(p_feature[run])!=0){
 	            if (p_type[run]!="Dead") and (planet_feature_bool(p_feature[run], P_features.DaemonicIncursion)==1) and (p_heresy[run]>=100){
@@ -109,13 +141,13 @@ function scr_star_ownership(argument0) {
 	}
 
 
-	// if (player_owner>0) and (player_owner>=imperium_owner) and (player_owner>=forge_owner) and (player_owner>=necrons_owner) and (player_owner>=ork_owner) and (player_owner>=tau_owner) and (player_owner>=traitors_owner){owner  = eFACTION.Player;}
+	// if (player_owner>0 && player_owner>=imperium_owner && player_owner>=forge_owner && player_owner>=necrons_owner && player_owner>=ork_owner && player_owner>=tau_owner && player_owner>=traitors_owner){owner  = eFACTION.Player;}
 
 	if (necrons_owner>0){
 		owner = eFACTION.Necrons;
-	} else 	if (player_owner>0) and (player_owner>=necrons_owner) and (player_owner>=ork_owner) and (player_owner>=tau_owner) and (player_owner>=traitors_owner){
+	} else 	if (player_owner>0 && player_owner>=necrons_owner && player_owner>=ork_owner && player_owner>=tau_owner && player_owner>=traitors_owner){
 		owner  = eFACTION.Player;
-	} else 	if (nun_owner>0) and (nun_owner>=forge_owner) and (nun_owner>=tau_owner) and (nun_owner>=necrons_owner) and (nun_owner>=traitors_owner) and (nun_owner>=ork_owner) and (nun_owner>=imperium_owner) and (player_owner=0){
+	} else 	if (nun_owner>0 && nun_owner>=forge_owner && nun_owner>=tau_owner && nun_owner>=necrons_owner && nun_owner>=traitors_owner && nun_owner>=ork_owner && nun_owner>=imperium_owner && player_owner=0){
 		owner = eFACTION.Ecclesiarchy;
 	} else if (tyranids_owner>0){
 		owner = eFACTION.Tyranids;
@@ -125,13 +157,13 @@ function scr_star_ownership(argument0) {
 		owner = eFACTION.Mechanicus;
 	} else if (traitors_owner=planets){
 		owner = eFACTION.Chaos;
-	} else if (traitors_owner>imperium_owner) and (traitors_owner>forge_owner) and (traitors_owner>necrons_owner) and (traitors_owner>player_owner) and (traitors_owner>tau_owner) and (traitors_owner>ork_owner){
+	} else if (traitors_owner>imperium_owner && traitors_owner>forge_owner && traitors_owner>necrons_owner && traitors_owner>player_owner && traitors_owner>tau_owner && traitors_owner>ork_owner){
 		owner = eFACTION.Chaos;
-	} else if (tau_owner>imperium_owner) and (tau_owner>forge_owner) and (tau_owner>ork_owner) and (tau_owner>necrons_owner) and (tau_owner>player_owner) and (tau_owner>traitors_owner){
+	} else if (tau_owner>imperium_owner && tau_owner>forge_owner && tau_owner>ork_owner && tau_owner>necrons_owner && tau_owner>player_owner && tau_owner>traitors_owner){
 		owner = eFACTION.Tau
-	} else if (ork_owner>imperium_owner) && (ork_owner>forge_owner) && (ork_owner>player_owner) and (ork_owner>tau_owner) and (ork_owner>traitors_owner) and (ork_owner>necrons_owner){
+	} else if (ork_owner>imperium_owner) && (ork_owner>forge_owner) && (ork_owner>player_owner && ork_owner>tau_owner && ork_owner>traitors_owner && ork_owner>necrons_owner){
 		owner = eFACTION.Ork;
-	} else 	if (imperium_owner>0) and (imperium_owner>=forge_owner) and (imperium_owner>=tau_owner) and (imperium_owner>=necrons_owner) and (imperium_owner>=traitors_owner) and (imperium_owner>=ork_owner) and (player_owner=0){
+	} else 	if (imperium_owner>0 && imperium_owner>=forge_owner && imperium_owner>=tau_owner && imperium_owner>=necrons_owner && imperium_owner>=traitors_owner && imperium_owner>=ork_owner && player_owner=0){
 		owner = eFACTION.Imperium;
 	}
 

@@ -11,6 +11,9 @@ function DataSlate(data={}) constructor{
 	percent_cut=0;
 	set_width = false;
 
+	draggable = false;
+	cherub = false;
+
 	top_anchor = [340, 14];
 
 	style = "default";
@@ -18,16 +21,24 @@ function DataSlate(data={}) constructor{
 	tooltip_drawing = [];
 
 	blend_col = 5998382;
-
+	draw_top_piece = true;
 	move_data_to_current_scope(data, true);
 
-	draw_top_piece = true;
+	drag_engaged = false;
 
 	top_piece_style = "aquila";
 
+	draw_offsets = [];
+
+	decoration_scale = 0;
+
 
 	static entered = function(){
-		return (scr_hit(XX-4,YY,XX + width,YY + height));
+		var _hit =  (scr_hit(XX-4,YY,XX + width,YY + height));
+		if (!_hit && cherub){
+			_hit = hit_cherub();
+		}
+		return _hit || drag_engaged;
 	}
 
 	static draw_with_dimensions = function(xx = -1,yy = -1, Width=-1 , Height=-1){
@@ -40,6 +51,31 @@ function DataSlate(data={}) constructor{
 		var _scale_x =  width/860;
 		var _scale_y =  height/850;
 		draw(xx,yy, _scale_x, _scale_y);
+	}
+
+	static hit_cherub = function(){
+		var _box_aug = 80*(decoration_scale*2.5);
+		var _x_loc = XX+(width/2);
+		var _y_loc = YY;
+		return (scr_hit_dimensions(_x_loc-(_box_aug), _y_loc-_box_aug, _box_aug*2, _box_aug));		
+	}
+
+	static drag_logic = function(){
+		if (!drag_engaged){
+			if (hit_cherub()){
+				drag_engaged = (device_mouse_check_button_pressed(0,mb_left));
+				var _mouse_consts = return_mouse_consts();
+				draw_offsets = [_mouse_consts[0]-XX,_mouse_consts[1]-YY];
+			}
+		} else {
+			drag_engaged = !(device_mouse_check_button_released(0,mb_left));
+		}
+
+		if (drag_engaged){
+			var _mouse_consts = return_mouse_consts();
+			XX = _mouse_consts[0] - draw_offsets[0];
+			YY = _mouse_consts[1] - draw_offsets[1];
+		}
 	}
 
 	static draw = function(xx= -1,yy = -1, scale_x=1, scale_y=1){
@@ -56,6 +92,19 @@ function DataSlate(data={}) constructor{
 		}
 
 		decoration_scale = min(scale_x, scale_y)
+
+		if (cherub){
+			var _x_loc = XX+(width/2);
+			var _y_loc = YY;
+			draw_sprite_ext(spr_pixel_cherub, 0, _x_loc, _y_loc , decoration_scale*2.5, decoration_scale*2.5, 0, c_white, 1);
+			if (draggable){
+				drag_logic();
+			}
+		}
+
+		/*if (draggable && scr_hit(XX+(width/2)-(60*decoration_scale,) YY-(60*decoration_scale) ,XX+(width/2)+(60*decoration_scale),YY)){
+			
+		}*/
 
 		switch (style){
 			case "default":

@@ -231,9 +231,9 @@ function evaluate_chosen_diplomacy_option(diplo_pressed){
     var _opt = diplo_option[diplo_pressed];
 
     var _pressed_option = _opt.key;
-    if (struct_exists(_opt, "method")){
-        if (is_callable(_opt.method)){
-            script_execute(_opt.method);
+    if (struct_exists(_opt, "choice_func")){
+        if (is_callable(_opt.choice_func)){
+            script_execute(_opt.choice_func);
         }
     }
     if (_opt.goto != ""){
@@ -276,7 +276,7 @@ function scr_emmisary_diplomacy_routes(){
 	}
 	else if (diplomacy_pathway == "Khorne_path")  {
 		scr_diplomacy_hit(0, ,function(){
-			//TODO central get cm method
+			//TODO central get cm choice_func
 	        var chapter_master = obj_ini.TTRPG[0,0];
 			cooldown=8000;
 			diplomacy_pathway = "sacrifice_lib";

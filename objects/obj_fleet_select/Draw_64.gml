@@ -28,7 +28,7 @@ try {
 		var center_draw = xx + (selection_window.width / 2);
 		var width = selection_window.width;
 		draw_set_halign(fa_center);
-		draw_text(center_draw, yy + 50, string_hash_to_newline(string(global.chapter_name) + " Fleet"));
+		draw_text(center_draw, yy + 50,$"{global.chapter_name} Fleet");
 		draw_set_halign(fa_left);
 
 		draw_set_color(c_gray);
@@ -52,3 +52,9 @@ try {
 	handle_exception(_exception);
 	instance_destroy();
 }
+
+
+helpful_navigator.draw();
+
+
+

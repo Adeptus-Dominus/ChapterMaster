@@ -97,7 +97,14 @@ if (target.craftworld=1) then draw_sprite(spr_star_screen,5,27,165);
 if (target.space_hulk=1) then draw_sprite(spr_star_screen,6,27,165);
 if (target.craftworld=0) and (target.space_hulk=0) then draw_sprite_ext(target.sprite_index,target.image_index,77,287,1.25,1.25,0,c_white,1);
 
-var system_string = target.name+" System"
+var _screen_height = sprite_get_height(spr_star_screen);
+var _screen_width = sprite_get_width(spr_star_screen);
+
+draw_sprite_ext(spr_servo_left_arm, 0,27+_screen_width,165+_screen_height/3, 2, 2, 0, c_white, 1);
+draw_sprite_ext(spr_servo_right_arm, 0,27,165+_screen_height/3, 2, 2, 0, c_white, 1);
+draw_sprite_ext(spr_servo_skull_head, 0,27+_screen_width/2,165, 2, 2, 0, c_white, 1);
+
+var system_string = target.name+" System";
 if (target.owner!=1) then draw_set_color(0);
 if (target.owner  = eFACTION.Player) then draw_set_color(c_blue);
 if (target.craftworld=0) and (target.space_hulk=0){

@@ -287,15 +287,15 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    var options = [
 		    {
 		    	str1 : "Allow the official successor to become Planetary Governor.",
-		    	method : allow_governor_successor,
+		    	choice_func : allow_governor_successor,
 		    }, 
 		    {
 		    	str1 : "Ensure that a sympathetic successor will be the one to rule.",
-		    	method : install_sympathetic_successor,
+		    	choice_func : install_sympathetic_successor,
 		    },
 		    {
 		    	str1 : "Remove all successors and install a loyal Chapter Serf.",
-		    	method : install_chapter_surf,
+		    	choice_func : install_chapter_surf,
 		    },
 	    ]
 	    pip.add_option(options);    

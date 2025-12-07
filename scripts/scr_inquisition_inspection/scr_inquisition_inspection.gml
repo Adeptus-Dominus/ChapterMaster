@@ -341,7 +341,7 @@ function inquisitor_inspection_structure() constructor {
             options: [
                 {
                     str1: "Hand over all Chaos and Daemonic Artifacts",
-                    method: function() {
+                    choice_func: function() {
                         var contraband = [];
                         for (var i = 0; i < array_length(obj_ini.artifact_struct); i++) {
                             if (obj_ini.artifact[i] != "") {
@@ -360,7 +360,7 @@ function inquisitor_inspection_structure() constructor {
                 },
                 {
                     str1: "Over your dead body",
-                    method: function() {
+                    choice_func: function() {
                         obj_controller.cooldown = 10;
                         if (number != 0 && instance_exists(obj_turn_end)) {
                              setup_audience_and_popup_timer(4);
@@ -454,6 +454,7 @@ function inquisition_inspection_loyalty(inspection_type){
 
             if (instance_exists(obj_en_fleet)) and (instance_exists(obj_p_fleet)){
                 var player_inspection_fleet=instance_nearest(obj_en_fleet.x,obj_en_fleet.y,obj_p_fleet);
+				 _inspect_results.star = instance_nearest(player_inspection_fleet.x, player_inspection_fleet.y, obj_star);
 
                 _inspect_results.ships = fleet_full_ship_array(player_inspection_fleet);
 
@@ -471,6 +472,7 @@ function inquisition_inspection_loyalty(inspection_type){
                 if (player_inspection_fleet.hurssy>0) then hurr+=player_inspection_fleet.hurssy;
                 var ca, ia;
                 
+				var player_ships = fleet_full_ship_array(player_inspection_fleet);
                 var _search_units = collect_role_group("all",["",0,player_ships]);
 
                 _inspect_results.inquisitor_inspect_units(_search_units);
