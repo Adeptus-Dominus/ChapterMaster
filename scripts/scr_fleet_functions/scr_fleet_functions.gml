@@ -351,7 +351,7 @@ function scr_efleet_arrive_at_trade_loc(){
 	        }
 		}      
     
-	    //if no fleet find a valid plaanet with player forces
+	    //if no fleet find a valid planet with player forces
 	    if (action == ""){
 	    	var _player_star = nearest_star_with_ownership(x, y, 1);
 	    	if (_player_star != "none"){
@@ -405,7 +405,6 @@ function scr_efleet_arrive_at_trade_loc(){
         	scr_trade_dep();
         }
         
-        trade_goods="return";
         if (target!=noone){
         	target=noone;
         }
@@ -421,7 +420,7 @@ function scr_efleet_arrive_at_trade_loc(){
 			action_y=home_y; 
 			set_fleet_movement();                  	
         }
-
+        trade_goods="return";
         if (action_eta==0){
         	instance_destroy();
         }
@@ -651,7 +650,7 @@ function fleet_arrival_logic(){
     
     
     
-    if (trade_goods="return"){
+    if (trade_goods=="return"){
         // with(instance_nearest(x,y,obj_star)){present_fleets-=1;}
         instance_destroy();
     }
@@ -705,7 +704,7 @@ function fleet_arrival_logic(){
         if (fleet_has_cargo("ork_warboss")) cancel=true;
         if (fleet_has_cargo("csm")) then cancel=true;
 
-        if (!cancel && ((trade_goods!="" && trade_goods!="return" && owner!=eFACTION.Tyranids && owner!=eFACTION.Chaos) || (fleet_has_cargo("player_goods")))){
+        if (!cancel && ((trade_goods!="return" && owner!=eFACTION.Tyranids && owner!=eFACTION.Chaos) || (fleet_has_cargo("player_goods")))){
         	if (scr_efleet_arrive_at_trade_loc()){
         		exit;
         	}
