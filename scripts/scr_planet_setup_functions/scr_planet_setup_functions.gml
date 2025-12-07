@@ -413,6 +413,7 @@ function setup_star_planet_defualts(){
     }
 
     wait_and_execute(1,scr_income,[],obj_controller);
+    wait_and_execute(10,create_start_imperial_fleets,[],obj_controller);
 
     var i=choose(0,1);
     if (i==1) and (planets>0){
@@ -571,7 +572,6 @@ function setup_star_planet_defualts(){
         
     }
 
-    obj_controller.alarm[9]=2;
     if (obj_controller.is_test_map!=true) and (p_owner[2]!=1){
         for(var i=1; i<=4; i++){p_guardsmen[i]=0;}
     } 
