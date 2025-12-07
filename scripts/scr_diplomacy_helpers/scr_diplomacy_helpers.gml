@@ -56,7 +56,6 @@ function valid_diplomacy_options(){
         for (var i=array_length(obj_controller.diplo_option)-1;i>=0;i--){
             var _opt = obj_controller.diplo_option[i];
             if (struct_exists(_opt, "option_text") && _opt.option_text != ""){
-                if (goto)
                 valid = true;
             } else {
                 array_delete(obj_controller.diplo_option, i, 1);
