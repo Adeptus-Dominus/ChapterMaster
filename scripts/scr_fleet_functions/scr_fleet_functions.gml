@@ -49,7 +49,7 @@ function fleets_next_location(fleet = "none", visited = []) {
         array_push(visited, fleet.id);
 
         // Check if the fleet has a 'target' variable
-        if (variable_instance_exists(fleet, "target")) {
+        if (action != "" && variable_instance_exists(fleet, "target")) {
             // If the target is valid and not already in the visited list, proceed recursively
             var fleet_target_valid = scr_valid_fleet_target(fleet.target);
             if (!fleet_target_valid) {

@@ -3,12 +3,7 @@
 function imperial_navy_fleet_construction(){
 	// ** Check number of navy fleets **
 
-	var new_navy_fleets = [];
-	with(obj_en_fleet){
-	    if (owner==eFACTION.Imperium) and (navy==1) {
-	    	array_push(new_navy_fleets, id);
-	    }
-	}
+	var new_navy_fleets = get_imperial_navy_fleets();
 	//delete navy fleets if more than required
 	var navy_fleet_count = array_length(new_navy_fleets);
 	var cur_fleet;
@@ -22,12 +17,16 @@ function imperial_navy_fleet_construction(){
 				navy_fleet_count--;
 				array_delete(new_navy_fleets, i, 1);
 				i--;
-				if (navy_fleet_count<=target_navy_number) then break;
+				if (navy_fleet_count<=target_navy_number){
+					break;
+				}
 			}
 		} 
 
 		//if system needs more navy fleets get forge world to make some
 	} else if (navy_fleet_count<target_navy_number) {
+
+		//TODO make standadised system for collating active forge worlds as we  do this a lot
 		var forge_systems = [];
 	    with(obj_star){
 	        var good=false;
@@ -49,19 +48,24 @@ function imperial_navy_fleet_construction(){
 						})
 			            if (enemy_fleet_count == 0){
 			                good=true;
-			                if (instance_nearest(x,y,obj_en_fleet).navy) then good=false;
+			                var _nearest = instance_nearest(x,y,obj_en_fleet)
+			                if (_nearest.x ==x && _nearest.y==y && _nearest.navy){
+			                	good=false;
+			                }
 			            }
 	            }
 	        }
 	        if (good){
 	        	good = x<=room_width && y<=room_height;
 	        }
-	        if (good==true) then array_push(forge_systems, id);
+	        if (good==true){
+	        	array_push(forge_systems, id);
+	        }
 	    }
 	// After initial navy fleet construction fleet growth is handled in obj_en_fleet.alarm_5
 		if (array_length(forge_systems)){
 		    var construction_forge,new_navy_fleet;
-		    construction_forge=choose_array(forge_systems);
+		    construction_forge = array_random_element(forge_systems);
 		    build_new_navy_fleet(construction_forge)
 		}
 	}

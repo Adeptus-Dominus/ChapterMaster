@@ -1066,4 +1066,18 @@ function setup_start_imperial_navy_fleet(system){
 	}
 }
 
+function get_imperial_navy_fleets(){
+	var _fleets = [];
+
+	with (obj_en_fleet){
+		if (owner != eFACTION.Imperium || !navy){
+			continue;
+		} else if (owner == eFACTION.Imperium && navy){
+			array_push(_fleets, id);
+		}
+	}
+
+	return _fleets;
+}
+
 

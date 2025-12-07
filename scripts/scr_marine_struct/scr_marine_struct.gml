@@ -785,15 +785,38 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     //adds a trait to a marines trait list
-    static add_trait = function(trait) {
-        var balance_value;
+    static add_trait = function(trait,return_stat_diff = false, return_description = false) {
+
+        if (return_stat_diff){
+            var _start_stats = _unit.get_stat_line();
+        }
         if (struct_exists(global.trait_list, trait)) {
             if (!array_contains(traits, trait)) {
+
+                var _return_string = "";
                 var selec_trait = global.trait_list[$ trait];
                 stat_boosts(selec_trait);
                 array_push(traits, trait);
+
+                if (return_stat_diff){
+                    var _end_stats = _unit.get_stat_line();
+
+                    var _stat_diff = compare_stats(_end_stats,_start_stats);
+                }
+
+                if (return_description){
+                    _return_string += $"{name_role()} Has gained the trait {selec_trait.display_name}";
+                }
+
+                if (return_stat_diff){
+                    _return_string +=$", {(print_stat_diffs(_stat_diff))}"
+                }
+
+                return_return_string
             }
         }
+
+        return "";
     };
 
     static has_trait = marine_has_trait;
@@ -2233,7 +2256,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static get_stat_line = function() {
-        return {
+        return variable_clone({
             "constitution": constitution,
             "strength": strength,
             "luck": luck,
@@ -2245,7 +2268,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             "intelligence": intelligence,
             "weapon_skill": weapon_skill,
             "ballistic_skill": ballistic_skill
-        };
+        });
     };
 
     //TODO: Make this into a universal stat gathering function from all gear, for any stat;

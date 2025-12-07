@@ -165,7 +165,7 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 	    var gar_pop=instance_create(0,0,obj_popup);
 	    //TODO some new universal methods for popups
 	    gar_pop.title=$"Marines assigned to hunt beasts around {numeral_name}";
-	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.";
+	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.\n It would be best to send at least one amrine that has experience with such tasks";
 	    //pip.image="event_march"
 	    gar_pop.add_option("Happy Hunting");
         gar_pop.image="";
@@ -490,18 +490,19 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         	remove_planet_problem(targ_planet, "hunt_beast");
         	return;
         }
+        var _successful_hunters = [];
+        var _largest_pass= 0;
         for (var i=0;i<array_length(_hunters);i++){
         	_unit = _hunters[i];
 			_unit_pass = _tester.standard_test(_unit, "weapon_skill",10, ["beast"]);
 			if (_unit_pass[0]){
 				if (!_success) then _success=true;
+				_largest_pass = max(_largest_pass,_unit_pass[1]);
 			}
 			if (_unit_pass[0]){
-				var _start_stats = variable_clone(_unit.get_stat_line());
-				_unit.add_trait("beast_slayer");
-				var end_stat = _unit.get_stat_line();
-				var _stat_diff = compare_stats(end_stat,_start_stats);
-				_unit_report_string += $"{_unit.name_role()} Has gained the trait {global.trait_list.beast_slayer.display_name}, {(print_stat_diffs(_stat_diff))}\n";
+
+				var _unit_report_string += _unit.add_trait("beast_slayer",true, true);
+				array_push(_successful_hunters, _unit);
 			} else {
 				var _tough_check = _tester.standard_test(_unit, "constitution",_unit.luck);
 				if (!_tough_check[0]){
@@ -522,6 +523,22 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 			}
 			_unit.job="none"
         }
+
+        var _pop_data = "";
+        var _navy_fleets = get_imperial_navy_fleets();
+        if (array_length(_successful_hunters) && _largest_pass > 15 && array_length(_navy_fleets)){
+	        _pop_data = {
+	        	trophy_owner : array_random_element(_successful_hunters),
+	        	system: self.name,
+	        	planet : targ_planet,
+	        	target_fleet : array_random_element(_navy_fleets)
+	        };
+
+	        var _options = {
+	        	choice_func : init_deliver_trophy_mission,
+	        	str1 : "Continue",
+	        }
+	    }
         if (_success){
         	_mission_string = $"The mission was a success and a great number of beasts rounded up and slain, your marines were able to gain great skills and the prestige of your chapter has increased greatly across the planets populace."
         	if (_deaths){
@@ -532,13 +549,45 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         	_mission_string = $"The mission was a failiure. The governor is disapointed and the legend of your chapter has undoubtedly been diminished";
         	_mission_string += $"\n{_unit_report_string}";
         }
-        scr_popup($"Beast Hunt on {planet_numeral_name(i)}",_mission_string,"","");
+        scr_popup($"Beast Hunt on {planet_numeral_name(i)}",_mission_string,"",_pop_data);
         remove_planet_problem(targ_planet, "hunt_beast");
+
     } else {
         remove_planet_problem(targ_planet, "hunt_beast");
     }	
 }
+function init_deliver_trophy_mission(){
+	text = $"After your marines return there is a great feast to honour them. Much fanfare is made of the great trophy {_pop_data.trophy_owner.name_role()} bears, a great monstrous head as tall as he is that the governor proclaims must be the largest of it's kind and the momst fearsome beast in the sector.";
 
+	text += $"\n\nAn astropathic message is later recieved from the Commander of an Imperial Navy fleet explaining that his fleet is currrently home to the {irandom_numeral(100)},{irandom_numeral(100)} and {irandom_numeral(100)} {_pop_data.system} Regiments and pleads that the trophy be delivered to his fleet in order to boost the moral of the regiments and fleet in general";
+
+	replace_options([
+		{
+			str1 : "Refuse and place the trophy into the Librarium",
+			choice_func : function(){
+
+			}
+
+		},
+		{
+			str1 : "Accept",
+			choice_func : function(){
+				text = $"You Send a reply to tell the commander you accept and will ensure the trophy is delivered in person by the marine that slew the beast";
+				var _targ_fleet = pop_data.target_fleet;
+
+				var _targ_fleet_intercept = fleets_next_location(_targ_fleet);
+				if (_targ_fleet.action==""){
+					text += $"\n\n the fleet in question is currently active around the  {_targ_fleet_intercept.name} system";
+				} else {
+					text += $"\n\n the fleet will next be accessible around the  {_targ_fleet_intercept.name} system";
+				}
+
+				reset_popup_options();
+			}
+		}
+	])
+
+}
 //TODO allow most of these functions to be condensed and allow arrays of problems or planets and maybe increase filtering options
 //filtering options could be done via universal methods that all the filters to be passed to many other game systems
 function has_any_problem_planet(planet, star="none"){
