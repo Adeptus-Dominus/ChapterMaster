@@ -26,7 +26,7 @@
   ],
   "name":"spr_mk7_left_trim",
   "nineSlice":null,
-  "origin":9,
+  "origin":0,
   "parent":{
     "name":"mk_7_complex",
     "path":"folders/Sprites/Marine Viewer/body_types/mk_7_complex.yy",
@@ -89,7 +89,7 @@
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":-2,
+    "xorigin":0,
     "yorigin":0,
   },
   "swatchColours":null,
