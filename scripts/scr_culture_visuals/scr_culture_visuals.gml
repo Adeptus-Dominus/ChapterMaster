@@ -699,6 +699,11 @@ global.modular_drawing_items = [
         sprite : spr_mk7_complex_crux_belt,
         body_types :[0, 2],
         position : "belt",
+		offsets : {
+            "Tartaros" : {
+                x : 7
+            }
+        },
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"],
         exp : {
             min : 100,
@@ -708,6 +713,11 @@ global.modular_drawing_items = [
         sprite : spr_crux_belt_fancy,
         body_types :[0, 2],
         position : "belt",
+		offsets : {
+            "Tartaros" : {
+                x : 7
+            }
+        },
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"],
         assign_by_rank : 3,
         exp : {
@@ -2535,7 +2545,9 @@ base: {
   variants: [
     {
       sprite: spr_weapon_powfist4
+	  
     },
+	
     {
       sprite: spr_weapon_powfist,
       body_types: [0, 1],
