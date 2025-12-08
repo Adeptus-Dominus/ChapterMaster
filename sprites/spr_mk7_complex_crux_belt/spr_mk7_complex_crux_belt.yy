@@ -23,7 +23,7 @@
   ],
   "name":"spr_mk7_complex_crux_belt",
   "nineSlice":null,
-  "origin":0,
+  "origin":9,
   "parent":{
     "name":"mk_7_complex",
     "path":"folders/Sprites/Marine Viewer/body_types/mk_7_complex.yy",
@@ -77,7 +77,7 @@
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":0,
+    "xorigin":-2,
     "yorigin":0,
   },
   "swatchColours":null,
