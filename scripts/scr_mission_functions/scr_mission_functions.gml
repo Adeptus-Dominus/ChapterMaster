@@ -559,7 +559,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 function init_deliver_trophy_mission(){
 	text = $"After your marines return there is a great feast to honour them. Much fanfare is made of the great trophy {_pop_data.trophy_owner.name_role()} bears, a great monstrous head as tall as he is that the governor proclaims must be the largest of it's kind and the momst fearsome beast in the sector.";
 
-	text += $"\n\nAn astropathic message is later recieved from the Commander of an Imperial Navy fleet explaining that his fleet is currrently home to the {irandom_numeral(100)},{irandom_numeral(100)} and {irandom_numeral(100)} {_pop_data.system} Regiments and pleads that the trophy be delivered to his fleet in order to boost the moral of the regiments and fleet in general";
+	text += $"\n\nAn astropathic message is later recieved from the Commander of an Imperial Navy fleet explaining that his fleet is currrently home to the {irandom_numeral(100)},{irandom_numeral(100)} and {irandom_numeral(100)} {_pop_data.system} Regiments and pleads that the trophy be handed over to his fleet in order to boost the moral of the regiments and fleet in general";
 
 	replace_options([
 		{
@@ -582,12 +582,84 @@ function init_deliver_trophy_mission(){
 					text += $"\n\n the fleet will next be accessible around the  {_targ_fleet_intercept.name} system";
 				}
 
+				pop_data.target_fleet = target_fleet.uid;
+
+				var _fleet_event = new FleetEvent(pop_data);
+
+				_fleet_event.turn_end = "deliver_trophy_end_turn_check";
+				_fleet_event.destroy = "deliver_trophy_mission_fleet_destroyed";
+				_fleet_event.timer_end = "deliver_trophy_mission_timed_out";
+
+				_fleet_event.timer = 120;
+
+				_targ_fleet.add_event(_fleet_event);
+
+
 				reset_popup_options();
 			}
 		}
-	])
+	]);
 
 }
+
+
+///@mixin FleetEvent
+function deliver_trophy_mission_timed_out(){
+	scr_popup(
+		"Objective Forgotten", 
+		$"It has been so long in the life of a mortal that the commanders that once saught your delivery of the trophy from the hunt on {event_data.system} have now all either died or moved to greener pastures. The trophy will instead remain in the chapters possession",
+	);
+}
+
+///@mixin FleetEvent
+function deliver_trophy_mission_fleet_destroyed(){
+	scr_popup(
+		"Fleet Destroyed", 
+		$"With the Imperial Navy fleet containing the regiments from {event_data.system} destroyed there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
+	);	
+}
+
+///@mixin FleetEvent
+function deliver_trophy_end_turn_check(){
+	var _navy_fleet = get_fleet_uid(fleet_uid);
+	if (!instance_exists(_navy_fleet)){
+		deliver_trophy_mission_fleet_destroyed();
+		return;
+	}
+
+	var _ratio =0;
+	with (_navy_fleet){
+		_ratio = fleet_remaining_guard_ratio();
+	}
+
+	if (_ratio<=0){
+		scr_popup(
+			"Regiments Destroyed ", 
+			$"The guard Regiments from {event_data.system} serving in the imperial navy fleet have been annihilated wholesale there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
+		);	
+		return;		
+	}
+
+	if (is_orbiting(_navy_fleet)){
+		var _nearest_player = instance_at_location(_navy_fleet.x,_navy_fleet.y,obj_p_fleet);
+		if (instance_exists(_nearest_player)){
+			var _ships = fleet_full_ship_array(_nearest_player);
+			var _marine = get_unit_uid(event_data.trophy_owner);
+			var _present = _marine.is_at_location("", 0, _ships);
+			var _meet_point = _navy_fleet.orbiting;  
+			if (_present){
+				var _text = "{_marine.role(name)} is able to rendevous with the imperial navy at {_meet_point.name}."
+				_text += $" The guard regiments of {event_data.system} are overjoyed at the delivery of the trophy and find the beast that the head came from adorns tmany of the regiments banners";
+				scr_popup(
+					"Trophy Delivered ", 
+					_text,
+				);					
+			}
+		}
+	}
+}
+
+
 //TODO allow most of these functions to be condensed and allow arrays of problems or planets and maybe increase filtering options
 //filtering options could be done via universal methods that all the filters to be passed to many other game systems
 function has_any_problem_planet(planet, star="none"){

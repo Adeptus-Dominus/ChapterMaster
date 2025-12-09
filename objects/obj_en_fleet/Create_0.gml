@@ -23,6 +23,36 @@ etah=0;
 safe=0;
 last_turn_check = 0;
 uid = scr_uuid_generate();
+
+events = [];
+
+add_event = function(event){
+    event.fleet_uid = uid;
+    array_push(events, event);
+}
+
+check_events = function(){
+    for (var i=array_length(events)-1;i>=0;i--){
+        var _event = events[i];
+
+        _event.turn_sequence();
+
+        if (_event.state == "destroy"){
+            array_delete(events,i,1);
+        }
+
+    }
+}
+
+check_events_destructions = function(){
+    for (var i=array_length(events)-1;i>=0;i--){
+        var _event = events[i];
+
+        _event.destroy_sequence();
+
+        array_delete(events,i,1);
+    }
+}
 //TODO set up special save method for faction specific fleet variables
 inquisitor=-1;
 
@@ -103,7 +133,7 @@ serialize = function(){
     return save_data;
 }
 deserialize = function(save_data){
-    var exclusions = ["id","cargo_data"]; // skip automatic setting of certain vars, handle explicitly later
+    var exclusions = ["id","cargo_data","events"]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);
@@ -132,6 +162,17 @@ deserialize = function(save_data){
         }        
     }    
 
+    if (save_data, "events"){
+        for (var i=0;i<array_length(save_data.events);i++){
+            var _saved_event = save_data.events[i];
+            var _event = new FleetEvent();
+            with (_event){
+                move_data_to_current_scope(_saved_event);
+            }
+            array_push(events, _event);
+        }
+
+    }
     if(save_data.orbiting != 0 && action == ""){
         var nearest_star = instance_nearest(x, y, obj_star);
         orbiting = nearest_star;

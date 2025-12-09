@@ -549,11 +549,19 @@ location_viewer.update_mission_log();
 init_ork_waagh();
 return_lost_ships_chance();
 //complex route plotting for player fleets
+
+with (obj_en_fleet){
+    if (array_length(events)){
+        check_events();
+    }
+}
+
 with (obj_p_fleet){
     if (array_length(complex_route)>0  && action == ""){
         set_new_player_fleet_course(complex_route);
     }
 }
+
 
 });
 
