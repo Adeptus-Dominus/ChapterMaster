@@ -2559,7 +2559,8 @@ base: {
   },
   variants: [
     {
-      sprite: spr_weapon_powfist4
+      sprite: spr_weapon_powfist4,
+	  shadows : spr_weapon_powfist4_shadows,
 	  
     },
 	
@@ -2582,7 +2583,8 @@ base: {
   },
   variants: [
     {
-      sprite: spr_weapon_lightning2
+      sprite: spr_weapon_lightning2,
+	  shadows : spr_weapon_lightning2_shadows,
     },
 
     {
@@ -2608,6 +2610,7 @@ base: {
     },
     {
         sprite: spr_weapon_boltstorm_gauntlet,
+		shadows : spr_weapon_boltstorm_gauntlet_shadows,
         body_types: [2],
         weapon_data: {
             display_type: "terminator_fist",
@@ -2644,6 +2647,7 @@ base: {
     },
     {
       sprite: spr_weapon_chainfist,
+	  shadows : spr_weapon_chainfist_shadows, 
         weapon_data: {
           display_type: "terminator_fist",
         },
