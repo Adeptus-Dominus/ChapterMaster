@@ -442,7 +442,36 @@ function draw_planet_debug_features(){
 		{
 			e_num : P_features.Ancient_Ruins,
 			name : "Ancient Ruins"
-		}
+		},
+		{
+			e_num : P_features.Artifact,
+			name : "Artefact"
+		},
+		{
+			e_num : P_features.STC_Fragment,
+			name : "STC Fragment"
+		},
+		{
+			e_num : P_features.Sororitas_Cathedral,
+			name : "Sororitas Cathedral"
+		},
+		{
+			e_num : P_features.OrkWarboss,
+			name : "Ork Warboss"
+		},
+		{
+			e_num : P_features.OrkStronghold,
+			name : "Ork stronghold"
+		},
+		{
+			e_num : P_features.Monastery,
+			name : "Fortress Monestary"
+		},
+		{
+			e_num : P_features.Starship,
+			name : "Ancient Starship"
+		},
+
 	]
 
 	var base_y = 220;
