@@ -213,7 +213,7 @@ function scr_explore_ruins() {
 			pip.text += ". What is thy will?";
 		}
 
-		pip.add_options([
+		pip.add_option([
 			{
 				str1: "Explore the ruins.",
 				choice_func:ruins_exploration_main_sequence
