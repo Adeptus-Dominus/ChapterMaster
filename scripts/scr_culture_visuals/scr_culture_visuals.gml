@@ -1486,6 +1486,21 @@ global.modular_drawing_items = [
             [spr_blank, spr_blank,spr_blank,spr_tartaros_leg_rivets],
         ],
     },
+	{
+        position : "right_trim",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_right_trim,
+        shadows : spr_tartaros_right_trim_shadows,
+        body_types : [2], 
+		flip : true,
+    },
+	{
+        position : "chest_variants",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_chest,
+        shadows : spr_tartaros_chest_shadows,
+        body_types : [2], 
+    },
 
 ];
 
