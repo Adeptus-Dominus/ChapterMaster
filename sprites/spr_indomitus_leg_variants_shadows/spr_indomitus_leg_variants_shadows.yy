@@ -1,20 +1,20 @@
 {
   "$GMSprite":"v2",
-  "%Name":"spr_indomitus_right_shin",
+  "%Name":"spr_indomitus_leg_variants_shadows",
   "bboxMode":0,
-  "bbox_bottom":248,
-  "bbox_left":16,
-  "bbox_right":68,
-  "bbox_top":194,
+  "bbox_bottom":259,
+  "bbox_left":11,
+  "bbox_right":169,
+  "bbox_top":165,
   "collisionKind":1,
   "collisionTolerance":0,
   "DynamicTexturePage":false,
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"b1bed381-dffb-49f9-b787-37a97bc22f95","name":"b1bed381-dffb-49f9-b787-37a97bc22f95","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"v1","%Name":"c47c8ef5-80d7-495f-aed4-2018547c6479","name":"c47c8ef5-80d7-495f-aed4-2018547c6479","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"v1","%Name":"aa2b5092-d69b-4dac-8052-e89d83b7a246","name":"aa2b5092-d69b-4dac-8052-e89d83b7a246","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b1984530-db57-4951-bec4-a09cab003f1a","name":"b1984530-db57-4951-bec4-a09cab003f1a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"f11ec996-00a0-4383-95d7-687ed1f9f302","name":"f11ec996-00a0-4383-95d7-687ed1f9f302","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"220fdf6f-48b5-4de0-9576-27b046131605","name":"220fdf6f-48b5-4de0-9576-27b046131605","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -23,7 +23,7 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"5ed376c2-9d33-44c5-9f13-c15f43e640b4","blendMode":0,"displayName":"default","isLocked":false,"name":"5ed376c2-9d33-44c5-9f13-c15f43e640b4","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_indomitus_right_shin",
+  "name":"spr_indomitus_leg_variants_shadows",
   "nineSlice":null,
   "origin":9,
   "parent":{
@@ -35,7 +35,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"spr_indomitus_right_shin",
+    "%Name":"spr_indomitus_leg_variants_shadows",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -59,7 +59,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_indomitus_right_shin",
+    "name":"spr_indomitus_leg_variants_shadows",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
@@ -73,14 +73,14 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b1bed381-dffb-49f9-b787-37a97bc22f95","path":"sprites/spr_indomitus_right_shin/spr_indomitus_right_shin.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"48a05983-ea7b-44c3-a992-de9cc1664717","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b1984530-db57-4951-bec4-a09cab003f1a","path":"sprites/spr_indomitus_leg_variants_shadows/spr_indomitus_leg_variants_shadows.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"764ed5f4-cd44-421c-9173-78dc4b5c4698","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c47c8ef5-80d7-495f-aed4-2018547c6479","path":"sprites/spr_indomitus_right_shin/spr_indomitus_right_shin.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"21dded79-bee1-4a00-b8ed-516dcd97f1e7","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f11ec996-00a0-4383-95d7-687ed1f9f302","path":"sprites/spr_indomitus_leg_variants_shadows/spr_indomitus_leg_variants_shadows.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"72be29e1-0c21-472d-922f-72b530477e36","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"aa2b5092-d69b-4dac-8052-e89d83b7a246","path":"sprites/spr_indomitus_right_shin/spr_indomitus_right_shin.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"1961e603-5686-438f-aff5-54e527aeb5a6","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"220fdf6f-48b5-4de0-9576-27b046131605","path":"sprites/spr_indomitus_leg_variants_shadows/spr_indomitus_leg_variants_shadows.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"d185e240-e0cf-4973-93cf-cd6660ec621e","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

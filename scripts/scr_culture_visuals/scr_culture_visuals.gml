@@ -1133,14 +1133,6 @@ global.modular_drawing_items = [
     },
     {
         position: "right_shin",
-        body_types: [2],
-        sprite: spr_indomitus_right_shin,
-        armours : ["Terminator Armour"],
-       // shadows : spr_indomitus_left_shin_shadow
-       flip : true,        
-    }, 
-    {
-        position: "right_shin",
         body_types: [0],
         sprite: spr_right_shin_spikes,
         traits : ["blunt", "cunning", "brute"],
@@ -1439,6 +1431,47 @@ global.modular_drawing_items = [
         body_types : [0], 
         flip : true,
     },
+	//Indomitus Sprites
+	{
+		position : "armour",
+        armours : ["Terminator Armour"],
+        sprite : spr_indomitus_complex,
+        shadows : spr_indomitus_complex_shadows,
+        body_types : [2], 
+	},
+	{
+		position : "head",
+        armours : ["Terminator Armour"],
+        sprite : spr_indomitus_head_variants,
+        shadows : spr_indomitus_head_variants_shadows,
+        body_types : [2],
+	},
+	{
+		position : "right_arm",
+        armours : ["Terminator Armour"],
+        sprite : spr_indomitus_right_arm,
+        shadows : spr_indomitus_right_arm_shadows,
+        body_types : [2],
+		flip : true,
+	},
+	{
+		position : "right_leg",
+        armours : ["Terminator Armour"],
+        sprite : spr_indomitus_leg_variants,
+        shadows : spr_indomitus_leg_variants_shadows,
+        body_types : [2],
+	},
+	{
+        position: "right_shin",
+        body_types: [2],
+        sprite: spr_indomitus_right_shin,
+        armours : ["Terminator Armour"],
+		shadows: spr_indomitus_right_shin_shadows,
+        flip : true,        
+    }, 
+	
+	
+	//Tartaros Sprites
     {
         position : "armour",
         armours : ["Tartaros"],
