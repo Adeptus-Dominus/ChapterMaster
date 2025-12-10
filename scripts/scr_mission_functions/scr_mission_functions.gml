@@ -86,13 +86,15 @@ function scr_new_governor_mission(planet, problem = ""){
 	};
 	if (problem != ""){
 		if (problem == "provide_garrison"){
-			if (system_garrison[planet-1].garrison_force) then exit;
+			if (system_garrison[planet-1].garrison_force){
+				exit;
+			}
 			mission_data.reason = choose("stability", "importance");
 		} else if (problem=="purge_enemies"){
 			var enemy = 0;
 			if (planets>1){
 				for (var i=1;i<=planets;i++){
-					if(i=planet) then continue;
+					if (i=planet) then continue;
 					if (p_owner[i]==eFACTION.Imperium){
 						enemy=i;
 						break;
@@ -167,7 +169,9 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 	    gar_pop.title=$"Marines assigned to hunt beasts around {numeral_name}";
 	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.\n It would be best to send at least one amrine that has experience with such tasks";
 	    //pip.image="event_march"
-	    gar_pop.add_option("Happy Hunting");
+	    gar_pop.add_option({
+	    	str1: "Happy Hunting"
+	    });
         gar_pop.image="";
         gar_pop.cooldown=8;
         obj_controller.cooldown=20;	    
@@ -501,7 +505,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 			}
 			if (_unit_pass[0]){
 
-				var _unit_report_string += _unit.add_trait("beast_slayer",true, true);
+				_unit_report_string += _unit.add_trait("beast_slayer",true, true);
 				array_push(_successful_hunters, _unit);
 			} else {
 				var _tough_check = _tester.standard_test(_unit, "constitution",_unit.luck);
@@ -653,12 +657,21 @@ function deliver_trophy_end_turn_check(){
 				_text += $" While The task is for the most part thankless your chapters esteem has risen greatly with the exploits of {_marine.role(name)} spreading far and wide amoung guard regiments.";
 				var _roll = roll_dice_chapter(1, 100, "high");
 				if (_roll>30 && _roll<70){
-					//TODO would be cool to have this changed tobe a guard specific piece of equipment
+					//TODO would be cool to have this changed to be a guard specific piece of equipment
 					_text += "In return for your labour and in honour of your chapter the commander of the guard division has a brand new Land Raider destined for the army diverted to your chapter";
 					scr_add_vehicle("Land Raider");
 				} else if (_roll>=70){
-					scr_get_stars(true)
-					_text += "During the concourse that follows with the fleet command your marines learn of a old battle ground discovered on "
+					var _wanted_types = ["Ice","Desert","Agri","Lava","Death"];
+					var _star = scr_get_stars(true,[],_wanted_types)[0];
+					_text += "During the concourse that follows with the fleet command your marines learn of a old battle ground discovered on {_star.name}.";
+					_text += "According too intel it appeared to be an old astartes battle ground from an unknown age, communications have been passed onto the adeptus mechanicus who will no doubt pick the site clean should they reach it befre you do";
+
+					var _planet = scr_get_planet_with_type(_wanted_types);
+					var _battle_ground = new NewPlanetFeature(P_features.AstartesBattleGround);
+
+					_battle_ground.player_hidden = false;
+
+					_star.add_feature(_planet,_battle_ground);
 				}
 				scr_popup(
 					"Trophy Delivered ", 

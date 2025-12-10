@@ -118,6 +118,9 @@ function add_option(option, if_empty = false,use_default_option = true){
             return;
         }
     }
+    if (is_string(option)){
+    	option = {st1:option}
+    }
     if (is_array(option)){
         for (var i=0;i<array_length(option);i++){
             add_option(option[i],false,use_default_option);

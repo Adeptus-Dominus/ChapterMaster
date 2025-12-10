@@ -515,7 +515,11 @@ function draw_planet_debug_problems(){
 					case "mech_bionics":
 						spawn_mechanicus_mission("mech_bionics");
 						break;
-																		
+					case "hunt_beast":
+						with (target){
+							scr_new_governor_mission(obj_controller.selecting_planet,"hunt_beast");
+						}
+						break;								
 					default:
 						scr_popup("error","no specific debug action created please consider helping to make one","");
 						break;

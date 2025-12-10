@@ -102,9 +102,16 @@ function scr_is_star_owned_by_allies(star) {
 }
 
 function scr_get_planet_with_type(star, type){
+	var _is_array = is_array(type); 
 	for (var i = 1; i <= star.planets; i++){
-		if(star.p_type[i] == type){
-			return i;
+		if (!_is_array){
+			if(star.p_type[i] == type){
+				return i;
+			}
+		} else{
+			if (array_contains(type,star.p_type[i])){
+				return i;
+			}
 		}
 	}
 	return -1;

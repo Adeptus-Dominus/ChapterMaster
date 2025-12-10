@@ -26,7 +26,8 @@ enum P_features {
 			Forge,
 			Gene_Stealer_Cult,
 			Mission,
-			OrkStronghold
+			OrkStronghold,
+			AstartesBattleGround
 
 	};
 	
@@ -60,13 +61,16 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		hiding=true;
 		name = global.name_generator.generate_genestealer_cult_name();		
 		break;
-		case P_features.Necron_Tomb:
+	case P_features.Necron_Tomb:
 		awake = 0;
 		sealed = 0;
-		player_hidden = 1
+		player_hidden = 1;
 		planet_display = "Dormant Necron Tomb";
 		break;
-
+	case P_features.AstartesBattleGround:
+		player_hidden = 1;
+		explored = 0;
+		break;
 	case P_features.Secret_Base:
 		base_type = base_types.Lair;
 		inquis_hidden =1;

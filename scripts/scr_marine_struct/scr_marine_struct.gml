@@ -812,7 +812,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                     _return_string +=$", {(print_stat_diffs(_stat_diff))}"
                 }
 
-                return_return_string
+                return _return_string
             }
         }
 

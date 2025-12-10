@@ -24,8 +24,7 @@ if (instance_exists(obj_controller)){
         if (instance_exists(obj_turn_end)) then scr_alert("","ass","Warboss "+string(obj_controller.faction_leader[eFACTION.Ork])+" has been killed.",0,0);
     }
 }
-
-if ()
+check_events_destructions();
 
 /* */
 /*  */

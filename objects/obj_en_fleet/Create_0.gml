@@ -162,7 +162,7 @@ deserialize = function(save_data){
         }        
     }    
 
-    if (save_data, "events"){
+    if (struct_exists(save_data, "events")){
         for (var i=0;i<array_length(save_data.events);i++){
             var _saved_event = save_data.events[i];
             var _event = new FleetEvent();

@@ -70,6 +70,11 @@ p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
 p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
 
+
+add_feature = function(planet, feature){
+    array_push(p_feature[planet], feature);
+}
+
 system_player_ground_forces = 0;
 garrison = false;
 
