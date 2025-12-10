@@ -465,10 +465,7 @@ function draw_planet_debug_features(){
 		},
 		{
 			e_num : P_features.Monastery,
-		{
-			e_num : P_features.Monastery,
 			name : "Fortress Monastery"
-		},
 		},
 		{
 			e_num : P_features.Starship,
