@@ -172,14 +172,15 @@ function scr_get_stars(shuffled=false, ownership=[], types = []) {
 		if (!_owner_sort && !_types_sort){
 			var _add = true;
 		} else {
-			var _add = true
+			var _add = true;
 			if (_owner_sort && !array_contains(ownership,owner)){
-				_add = false
+				_add = false;
 			}
 			if (_add && _types_sort){
+				_add = false;
 				for (var i=1;i<=planets;i++){
-					types = array_delete_value(types, p_type[i]);
-					if (!array_length(types)){
+					if (array_contains(types,p_type[i])){
+						_add = true;
 						break;
 					}
 				}

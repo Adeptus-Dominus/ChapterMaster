@@ -496,7 +496,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         	_unit = _hunters[i];
 			_unit_pass = _tester.standard_test(_unit, "weapon_skill",10, ["beast"]);
 			if (_unit_pass[0]){
-				if (!_success) then _success=true;
+				_success=true;
 				_largest_pass = max(_largest_pass,_unit_pass[1]);
 			}
 			if (_unit_pass[0]){
@@ -649,7 +649,17 @@ function deliver_trophy_end_turn_check(){
 			var _meet_point = _navy_fleet.orbiting;  
 			if (_present){
 				var _text = "{_marine.role(name)} is able to rendevous with the imperial navy at {_meet_point.name}."
-				_text += $" The guard regiments of {event_data.system} are overjoyed at the delivery of the trophy and find the beast that the head came from adorns tmany of the regiments banners";
+				_text += $" The guard regiments of {event_data.system} are overjoyed at the delivery of the trophy and find the beast that the head came from adorns many of the regiments banners.";
+				_text += $" While The task is for the most part thankless your chapters esteem has risen greatly with the exploits of {_marine.role(name)} spreading far and wide amoung guard regiments.";
+				var _roll = roll_dice_chapter(1, 100, "high");
+				if (_roll>30 && _roll<70){
+					//TODO would be cool to have this changed tobe a guard specific piece of equipment
+					_text += "In return for your labour and in honour of your chapter the commander of the guard division has a brand new Land Raider destined for the army diverted to your chapter";
+					scr_add_vehicle("Land Raider");
+				} else if (_roll>=70){
+					scr_get_stars(true)
+					_text += "During the concourse that follows with the fleet command your marines learn of a old battle ground discovered on "
+				}
 				scr_popup(
 					"Trophy Delivered ", 
 					_text,
