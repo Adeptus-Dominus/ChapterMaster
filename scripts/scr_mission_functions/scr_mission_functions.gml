@@ -620,7 +620,7 @@ function accept_deliver_trophy_mission(){
 function deliver_trophy_mission_timed_out(){
 	scr_popup(
 		"Objective Forgotten", 
-		$"It has been so long in the life of a mortal that the commanders that once saught your delivery of the trophy from the hunt on {event_data.system} have now all either died or moved to greener pastures. The trophy will instead remain in the chapters possession",
+		$"It has been so long in the life of a mortal that the commanders that once saught your delivery of the trophy from the hunt on {fleetevent_data.system} have now all either died or moved to greener pastures. The trophy will instead remain in the chapters possession",
 	);
 }
 
@@ -628,13 +628,13 @@ function deliver_trophy_mission_timed_out(){
 function deliver_trophy_mission_fleet_destroyed(){
 	scr_popup(
 		"Fleet Destroyed", 
-		$"With the Imperial Navy fleet containing the regiments from {event_data.system} destroyed there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
+		$"With the Imperial Navy fleet containing the regiments from {fleetevent_data.system} destroyed there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
 	);	
 }
 
 ///@mixin FleetEvent
 function deliver_trophy_end_turn_check(){
-	show_debug_message($"evetn_Data  = {event_data}");
+	show_debug_message($"evetn_Data  = {fleetevent_data}");
 	var _navy_fleet = get_fleet_uid(fleet_uid);
 	if (!instance_exists(_navy_fleet)){
 		deliver_trophy_mission_fleet_destroyed();
@@ -649,7 +649,7 @@ function deliver_trophy_end_turn_check(){
 	if (_ratio<=0){
 		scr_popup(
 			"Regiments Destroyed ", 
-			$"The guard Regiments from {event_data.system} serving in the imperial navy fleet have been annihilated wholesale there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
+			$"The guard Regiments from {fleetevent_data.system} serving in the imperial navy fleet have been annihilated wholesale there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
 		);	
 		return;		
 	}
@@ -658,19 +658,19 @@ function deliver_trophy_end_turn_check(){
 		var _nearest_player = instance_at_location(_navy_fleet.x,_navy_fleet.y,obj_p_fleet);
 		if (instance_exists(_nearest_player)){
 			var _ships = fleet_full_ship_array(_nearest_player);
-			var _marine = get_unit_uid(event_data.trophy_owner);
+			var _marine = fetch_unit_uid(fleetevent_data.trophy_owner);
 			var _present = _marine.is_at_location("", 0, _ships);
 			var _meet_point = _navy_fleet.orbiting;  
 			if (_present){
 				var _text = "{_marine.role(name)} is able to rendevous with the imperial navy at {_meet_point.name}."
-				_text += $" The guard regiments of {event_data.system} are overjoyed at the delivery of the trophy and find the beast that the head came from adorns many of the regiments banners.";
+				_text += $" The guard regiments of {fleetevent_data.system} are overjoyed at the delivery of the trophy and find the beast that the head came from adorns many of the regiments banners.";
 				_text += $" While The task is for the most part thankless your chapters esteem has risen greatly with the exploits of {_marine.role(name)} spreading far and wide amoung guard regiments.";
 				var _roll = roll_dice_chapter(1, 100, "high");
 				if (_roll>30 && _roll<70){
 					//TODO would be cool to have this changed to be a guard specific piece of equipment
-					_text += "In return for your labour and in honour of your chapter the commander of the guard division has a brand new Land Raider destined for the army diverted to your chapter";
-					scr_add_vehicle("Land Raider");
-				} else if (_roll>=70){
+					_text += "In return for your labour and in honour of your chapter the commander of the guard division has a brand new Rhino destined for the army diverted to your chapter";
+					scr_add_vehicle("Rhino");
+				} else if (_roll>=70 ){
 					var _wanted_types = ["Ice","Desert","Agri","Lava","Death"];
 					var _star = scr_get_stars(true,[],_wanted_types)[0];
 					_text += "During the concourse that follows with the fleet command your marines learn of a old battle ground discovered on {_star.name}.";

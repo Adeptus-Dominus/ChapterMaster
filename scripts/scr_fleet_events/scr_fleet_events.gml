@@ -5,9 +5,9 @@ function add_event_to_fleet(event , fleet){
 
 
 
-function FleetEvent(event_data) constructor{
+function FleetEvent(_event_data) constructor{
 
-	self.event_data = event_data;
+	self.fleetevent_data = _event_data;
 	
 	static load_json_data = function(data){	
 		 var names = variable_struct_get_names(data);

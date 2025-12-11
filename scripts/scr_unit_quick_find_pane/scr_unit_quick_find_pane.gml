@@ -183,17 +183,17 @@ function UnitQuickFindPanel() constructor{
 									system : _sys.name,
 									system_id : _sys.id,
 									target : id,
-									important_person : _event.event_data.trophy_owner,
-									person_name : _event.event_data.delivering_marine,
+									important_person : _event.fleetevent_data.trophy_owner,
+									person_name : _event.fleetevent_data.delivering_marine,
 									planet : 0,
-									start_system : _event.event_data.system,
+									start_system : _event.fleetevent_data.system,
 									time : _event.timer,
 								};
 
 								_mission_data.click_left = method(_mission_data,function(){
 									set_map_pan_to_loc(system_id);
 								});
-								
+
 								_mission_data.hover = method(_mission_data,function(){
 									tooltip_draw($"You are to have {person_name} deliver trophy hunted on {start_system} to the {start_system} regiments\n\nLeft click to see target fleet intercept system right click to view the trophy bearing marine {person_name}");
 								});
