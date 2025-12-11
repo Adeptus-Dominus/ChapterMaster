@@ -443,11 +443,11 @@ function draw_planet_debug_options(){
 function draw_planet_debug_features(){
 	static _addable_features = [
 		{
-			e_num : P_features.Gene_Stealer_Cult,
+			e_num : P_features.GeneStealerCult,
 			name : "GeneStealer Cult"
 		},
 		{
-			e_num : P_features.Ancient_Ruins,
+			e_num : P_features.AncientRuins,
 			name : "Ancient Ruins"
 		},
 		{
@@ -455,11 +455,11 @@ function draw_planet_debug_features(){
 			name : "Artefact"
 		},
 		{
-			e_num : P_features.STC_Fragment,
+			e_num : P_features.STCFragment,
 			name : "STC Fragment"
 		},
 		{
-			e_num : P_features.Sororitas_Cathedral,
+			e_num : P_features.SororitasCathedral,
 			name : "Sororitas Cathedral"
 		},
 		{
