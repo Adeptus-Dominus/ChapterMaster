@@ -8,7 +8,7 @@ function mechanicus_missions_end_turn(planet){
             var percent_complete = increment_mission_completion(_prob_data);                
         	scr_alert("",$"mission",$"Mechanicus Mission on {planet_numeral_name(planet)} is {floor(percent_complete)}% complete.",0,0);
         	if (percent_complete>=100){
-        		remove_planet_problem(planet,"mech_raider")
+        		remove_planet_problem(planet,"mech_raider");
         		scr_mission_reward("mech_raider",id,planet);
         	}
         }     	

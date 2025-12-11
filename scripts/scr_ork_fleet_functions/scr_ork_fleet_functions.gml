@@ -18,7 +18,7 @@ function new_ork_fleet(xx,yy){
 
 function orks_end_turn_growth(){
     for (i=1;i<=planets;i++){
-        var _pdata = new PlanetData(i, self);
+        var _pdata = system_datas[i].refresh_data();
         if (!p_orks[i]){
             var _strongholds = _pdata.get_features(P_features.OrkStronghold);
             for (var s=0;s<array_length(_strongholds);s++){

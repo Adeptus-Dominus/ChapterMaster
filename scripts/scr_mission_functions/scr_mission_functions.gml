@@ -86,7 +86,7 @@ function scr_new_governor_mission(planet, problem = ""){
 	};
 	if (problem != ""){
 		if (problem == "provide_garrison"){
-			if (system_garrison[planet-1].garrison_force){
+			if (system_garrison[planet].garrison_force){
 				exit;
 			}
 			mission_data.reason = choose("stability", "importance");
@@ -308,9 +308,9 @@ function init_train_forces_mission(planet, star, mission_slot, marine){
 function complete_garrison_mission(targ_planet, problem_index){
 	var planet = new PlanetData(targ_planet, self);
     if (problem_has_key_and_value(targ_planet,problem_index,"stage", "active")){
-        if (planet.current_owner == eFACTION.Imperium && system_garrison[targ_planet-1].garrison_force){
+        if (planet.current_owner == eFACTION.Imperium && system_garrison[targ_planet].garrison_force){
             var _mission_string = $"The garrison on {planet_numeral_name(targ_planet)} has finished the period of garrison support agreed with the planetary governor.";
-            var p_garrison = system_garrison[targ_planet-1];
+            var p_garrison = system_garrison[targ_planet];
             var  result = p_garrison.garrison_disposition_change(id, targ_planet);
             if (!p_garrison.garrison_leader){
                 p_garrison.find_leader();
@@ -674,12 +674,14 @@ function deliver_trophy_end_turn_check(){
 					var _wanted_types = ["Ice","Desert","Agri","Lava","Death"];
 					var _star = scr_get_stars(true,[],_wanted_types)[0];
 					_text += "During the concourse that follows with the fleet command your marines learn of a old battle ground discovered on {_star.name}.";
-					_text += "According too intel it appeared to be an old astartes battle ground from an unknown age, communications have been passed onto the adeptus mechanicus who will no doubt pick the site clean should they reach it befre you do";
+					_text += "According too intel it appeared to be an old astartes battle ground from an unknown age, communications have been passed onto the adeptus mechanicus who will no doubt pick the site clean should they reach it before you do";
 
 					var _planet = scr_get_planet_with_type(_wanted_types);
-					var _battle_ground = new NewPlanetFeature(P_features.AstartesBattleGround);
+					var _battle_ground = new NewPlanetFeature(P_features.OldBattleGround);
 
 					_battle_ground.player_hidden = false;
+
+					_battle_ground.imperium_known = true;
 
 					_star.add_feature(_planet,_battle_ground);
 				}

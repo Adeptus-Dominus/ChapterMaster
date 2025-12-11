@@ -27,7 +27,7 @@ enum P_features {
 			Gene_Stealer_Cult,
 			Mission,
 			OrkStronghold,
-			AstartesBattleGround
+			OldBattleGround
 
 	};
 	
@@ -67,8 +67,12 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		player_hidden = 1;
 		planet_display = "Dormant Necron Tomb";
 		break;
-	case P_features.AstartesBattleGround:
-		player_hidden = 1;
+	case P_features.OldBattleGround:
+		player_hidden = true;
+		imperium_known = false
+		//This is janky but we have no way of defining non player astartes 
+		faction1 = "astartes";
+		faction2 = "imperium";
 		explored = 0;
 		break;
 	case P_features.Secret_Base:

@@ -1,10 +1,14 @@
 
 function scr_enemy_ai_a() {
-	system_garrison = [];
-	system_sabatours = [];
+	system_garrison = [0];
+	system_sabatours = [0];
 	system_datas = [0];
 
 	for (var i=1;i<=planets;i++){
+		var garrison = new GarrisonForce(p_operatives[i], true);
+		var sabatours = new GarrisonForce(p_operatives[i], true, "sabotage");
+		array_push(system_garrison, garrison);
+		array_push(system_sabatours, sabatours);
 		array_push(system_datas,new PlanetData(i, self));
 	}
 	// guardsmen hop from planet to planet
@@ -46,15 +50,10 @@ function scr_enemy_ai_a() {
     var _planet_data;
 	for (var _run =1;_run<=planets;_run++){
 		_planet_data = system_datas[_run];
-		garrison_force=false;
-		var garrison = new GarrisonForce(p_operatives[_run], true);
-		var sabatours = new GarrisonForce(p_operatives[_run], true, "sabotage");
-		_planet_data.garrison = garrison;
-		_planet_data.sabatours = sabatours;
+		garrison = _planet_data.garrisons;
+		sabatours = _planet_data.sabatours;
 
 		garrison_force = garrison.garrison_force;
-		array_push(system_garrison, garrison);
-		array_push(system_sabatours, sabatours);
 
 		stop=0;
 	    ensure_no_planet_negatives(_run);
