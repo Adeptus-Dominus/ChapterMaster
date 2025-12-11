@@ -361,6 +361,7 @@ function TradeAttempt(diplomacy) constructor{
 			trade_type : trade_type,
 			max_take : max_take,
 			number_last : 0,
+			diplomacy_faction
 		});
 		with (_option){
 			bind_method = function(){
@@ -434,7 +435,8 @@ function TradeAttempt(diplomacy) constructor{
 			max_number : max_count,
 			disp : trade_disp,
 			trade_type : trade_type,
-			number_last : 0,		
+			number_last : 0,	
+			diplomacy_faction	
 		});
 		with (_option){
 			bind_method = function(){

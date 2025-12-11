@@ -412,6 +412,7 @@ function scr_cheatcode(argument0) {
 
 /// @mixin obj_Star_Select
 function draw_planet_debug_options(){
+	try{
 	add_draw_return_values();
 	draw_set_halign(fa_left);
 	draw_set_color(c_white);
@@ -420,9 +421,11 @@ function draw_planet_debug_options(){
 		debug_slate.inside_method = function(){
 			debug_options.draw()
 		    if (debug_options.current_selection == 0){
-		    	draw_planet_debug_forces()
+		    	draw_planet_debug_forces();
 		    } else if (debug_options.current_selection == 1){
-		    	draw_planet_debug_problems()
+		    	draw_planet_debug_problems();
+		    } else if (debug_options.current_selection == 2){
+		    	draw_planet_debug_features();
 		    }
 		}
 		debug_slate.draw()
@@ -432,6 +435,65 @@ function draw_planet_debug_options(){
         //scroll_problems = new ScrollableContainer()
     }
     pop_draw_return_values();
+	}catch(_exception){
+		handle_exception(_exception);
+	}
+}
+
+function draw_planet_debug_features(){
+	static _addable_features = [
+		{
+			e_num : P_features.Gene_Stealer_Cult,
+			name : "GeneStealer Cult"
+		},
+		{
+			e_num : P_features.Ancient_Ruins,
+			name : "Ancient Ruins"
+		},
+		{
+			e_num : P_features.Artifact,
+			name : "Artefact"
+		},
+		{
+			e_num : P_features.STC_Fragment,
+			name : "STC Fragment"
+		},
+		{
+			e_num : P_features.Sororitas_Cathedral,
+			name : "Sororitas Cathedral"
+		},
+		{
+			e_num : P_features.OrkWarboss,
+			name : "Ork Warboss"
+		},
+		{
+			e_num : P_features.OrkStronghold,
+			name : "Ork stronghold"
+		},
+		{
+			e_num : P_features.Monastery,
+			name : "Fortress Monastery"
+		},
+		{
+			e_num : P_features.Starship,
+			name : "Ancient Starship"
+		},
+
+	]
+
+	var base_y = 220;
+	base_y += 2;
+
+
+	for (var i=0;i<array_length(_addable_features);i++){
+		var _y = base_y + i * 20;
+		var _feat = _addable_features[i];
+		draw_text(38, _y, _feat.name);
+		if (point_and_click([38, _y, 337,_y+20])){
+			var _new_feat = new NewPlanetFeature(_feat.e_num);
+			array_push(target.p_feature[obj_controller.selecting_planet], _new_feat);
+		}
+	}
 }
 
 function draw_planet_debug_problems(){
