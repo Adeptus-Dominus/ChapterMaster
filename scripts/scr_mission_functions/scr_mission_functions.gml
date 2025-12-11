@@ -12,7 +12,7 @@ function location_out_of_player_control(unit_loc){
 	return (array_contains(_locs,unit_loc ));
 }
 
-#macro planet_problem_keys ["meeting_trap","meeting","succession","mech_raider","mech_bionics","mech_mars","mech_tomb1","fallen","great_crusade","harlequins","fund_elder","provide_garrison","hunt_beast","protect_raiders","join_communion","join_parade","recover_artifacts","train_forces","spyrer","inquisitor","recon","cleanse","purge","tyranid_org","artifact_loan","necron","ethereal","demon_world"]
+#macro planet_problem_keys ["meeting_trap","meeting","succession","mech_raider","mech_bionics","mech_mars","mech_tomb1","fallen","great_crusade","harlequins","fund_elder","provide_garrison","hunt_beast","protect_raiders","join_communion","join_parade","recover_artifacts","train_forces","spyrer","inquisitor","recon","cleanse","purge","tyranid_org","artifact_loan","necron","ethereal","demon_world","deliver_trophy"]
 
 function mission_name_key(mission){
 	var mission_key = {
@@ -152,32 +152,6 @@ function init_garrison_mission(planet, star, mission_slot){
 	}	
 }
 
-
-
-
-function init_beast_hunt_mission(planet, star, mission_slot){
-	var problems_data = star.p_problem_other_data[planet]
-	var mission_data = problems_data[mission_slot];
-	if (mission_data.stage == "preliminary"){
-		var numeral_name = planet_numeral_name(planet, star);
-		mission_data.stage = "active";
-		var _mission_length=(irandom_range(2,5));
-		star.p_timer[planet][mission_slot] = _mission_length;
-	    //pop.image="ancient_ruins";
-	    var gar_pop=instance_create(0,0,obj_popup);
-	    //TODO some new universal methods for popups
-	    gar_pop.title=$"Marines assigned to hunt beasts around {numeral_name}";
-	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.\n It would be best to send at least one amrine that has experience with such tasks";
-	    //pip.image="event_march"
-	    gar_pop.add_option({
-	    	str1: "Happy Hunting"
-	    });
-        gar_pop.image="";
-        gar_pop.cooldown=8;
-        obj_controller.cooldown=20;	    
-	    scr_event_log("",$"Beast hunters deployed to {numeral_name} for {_mission_length} months.", star.name);
-	}	
-}
 
 function role_compare(unit, role){
 	return unit.role() == obj_ini.role[100][role];
@@ -475,6 +449,32 @@ function complete_train_forces_mission(targ_planet, problem_index){
         }
 	 }
 }
+
+function init_beast_hunt_mission(planet, star, mission_slot){
+	var problems_data = star.p_problem_other_data[planet]
+	var mission_data = problems_data[mission_slot];
+	if (mission_data.stage == "preliminary"){
+		var numeral_name = planet_numeral_name(planet, star);
+		mission_data.stage = "active";
+		var _mission_length=(irandom_range(2,5));
+		star.p_timer[planet][mission_slot] = _mission_length;
+	    //pop.image="ancient_ruins";
+	    var gar_pop=instance_create(0,0,obj_popup);
+	    //TODO some new universal methods for popups
+	    gar_pop.title=$"Marines assigned to hunt beasts around {numeral_name}";
+	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.";
+	    //pip.image="event_march"
+	    gar_pop.add_option({
+	    	str1: "Happy Hunting"
+	    });
+        gar_pop.image="";
+        gar_pop.cooldown=8;
+        obj_controller.cooldown=20;	    
+	    scr_event_log("",$"Beast hunters deployed to {numeral_name} for {_mission_length} months.", star.name);
+	}	
+}
+
+
 function complete_beast_hunt_mission(targ_planet, problem_index){
     var planet = new PlanetData(targ_planet, self);
     if (problem_has_key_and_value(targ_planet,problem_index,"stage","active")){
@@ -530,7 +530,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 
         var _pop_data = "";
         var _navy_fleets = get_imperial_navy_fleets();
-        if (array_length(_successful_hunters) && _largest_pass > 15 && array_length(_navy_fleets)){
+        if (array_length(_successful_hunters) && _largest_pass > 20 && array_length(_navy_fleets)){
 	        _pop_data = {
 	        	trophy_owner : array_random_element(_successful_hunters),
 	        	system: self.name,
@@ -542,6 +542,8 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 	        	choice_func : init_deliver_trophy_mission,
 	        	str1 : "Continue",
 	        }
+
+	        _pop_data.options = _options;
 	    }
         if (_success){
         	_mission_string = $"The mission was a success and a great number of beasts rounded up and slain, your marines were able to gain great skills and the prestige of your chapter has increased greatly across the planets populace."
@@ -561,49 +563,56 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
     }	
 }
 function init_deliver_trophy_mission(){
-	text = $"After your marines return there is a great feast to honour them. Much fanfare is made of the great trophy {_pop_data.trophy_owner.name_role()} bears, a great monstrous head as tall as he is that the governor proclaims must be the largest of it's kind and the momst fearsome beast in the sector.";
+	text = $"After your marines return there is a great feast to honour them. Much fanfare is made of the great trophy {pop_data.trophy_owner.name_role()} bears, a great monstrous head as tall as he is that the governor proclaims must be the largest of it's kind and the momst fearsome beast in the sector.";
 
-	text += $"\n\nAn astropathic message is later recieved from the Commander of an Imperial Navy fleet explaining that his fleet is currrently home to the {irandom_numeral(100)},{irandom_numeral(100)} and {irandom_numeral(100)} {_pop_data.system} Regiments and pleads that the trophy be handed over to his fleet in order to boost the moral of the regiments and fleet in general";
+	text += $"\n\nAn astropathic message is later recieved from the Commander of an Imperial Navy fleet explaining that his fleet is currrently home to the {irandom_numeral(100)},{irandom_numeral(100)} and {irandom_numeral(100)} {pop_data.system} Regiments and pleads that the trophy be handed over to his fleet in order to boost the moral of the regiments and fleet in general";
 
 	replace_options([
 		{
 			str1 : "Refuse and place the trophy into the Librarium",
 			choice_func : function(){
-
+				scr_add_artifact();
 			}
 
 		},
 		{
 			str1 : "Accept",
-			choice_func : function(){
-				text = $"You Send a reply to tell the commander you accept and will ensure the trophy is delivered in person by the marine that slew the beast";
-				var _targ_fleet = pop_data.target_fleet;
-
-				var _targ_fleet_intercept = fleets_next_location(_targ_fleet);
-				if (_targ_fleet.action==""){
-					text += $"\n\n the fleet in question is currently active around the  {_targ_fleet_intercept.name} system";
-				} else {
-					text += $"\n\n the fleet will next be accessible around the  {_targ_fleet_intercept.name} system";
-				}
-
-				pop_data.target_fleet = target_fleet.uid;
-
-				var _fleet_event = new FleetEvent(pop_data);
-
-				_fleet_event.turn_end = "deliver_trophy_end_turn_check";
-				_fleet_event.destroy = "deliver_trophy_mission_fleet_destroyed";
-				_fleet_event.timer_end = "deliver_trophy_mission_timed_out";
-
-				_fleet_event.timer = 120;
-
-				_targ_fleet.add_event(_fleet_event);
-
-
-				reset_popup_options();
-			}
+			choice_func : accept_deliver_trophy_mission
 		}
 	]);
 
+}
+
+
+
+function accept_deliver_trophy_mission(){
+	text = $"You Send a reply to tell the commander you accept and will ensure the trophy is delivered in person by the marine that slew the beast";
+	var _targ_fleet = pop_data.target_fleet;
+
+	var _targ_fleet_intercept = fleets_next_location(_targ_fleet);
+	if (_targ_fleet.action==""){
+		text += $"\n\n the fleet in question is currently active around the  {_targ_fleet_intercept.name} system";
+	} else {
+		text += $"\n\n the fleet will next be accessible around the  {_targ_fleet_intercept.name} system";
+	}
+
+	pop_data.target_fleet = _targ_fleet.uid;
+
+	pop_data.delivering_marine = pop_data.trophy_owner.name_role();
+	var _t_owner = pop_data.trophy_owner;
+	pop_data.trophy_owner = _t_owner.uid;
+
+	var _fleet_event = new FleetEvent(pop_data);
+
+	_fleet_event.turn_end = "deliver_trophy_end_turn_check";
+	_fleet_event.destroy = "deliver_trophy_mission_fleet_destroyed";
+	_fleet_event.timer_end = "deliver_trophy_mission_timed_out";
+
+	_fleet_event.timer = 120;
+
+	_targ_fleet.add_event(_fleet_event);
+
+	reset_popup_options();
 }
 
 
@@ -625,6 +634,7 @@ function deliver_trophy_mission_fleet_destroyed(){
 
 ///@mixin FleetEvent
 function deliver_trophy_end_turn_check(){
+	show_debug_message($"evetn_Data  = {event_data}");
 	var _navy_fleet = get_fleet_uid(fleet_uid);
 	if (!instance_exists(_navy_fleet)){
 		deliver_trophy_mission_fleet_destroyed();

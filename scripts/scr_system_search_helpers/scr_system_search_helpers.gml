@@ -377,11 +377,9 @@ function find_population_doners(doner_to=0){
 
 function planet_numeral_name(planet, star="none"){
 	if (star=="none"){
-		//show_debug_message($"{planet}, numeral name")
 		return $"{name} {int_to_roman(planet)}";
 	} else {
 		with (star){
-			//show_debug_message($"{planet}, numeral name")
 			return $"{name} {int_to_roman(planet)}";
 		}		
 	}

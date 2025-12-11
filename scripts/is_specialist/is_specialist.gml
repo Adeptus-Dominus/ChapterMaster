@@ -405,6 +405,9 @@ function group_selection(group, selection_data={}) {
                 unit = group[i];
                 add_man_to_manage_arrays(unit);
 
+                if (!struct_exists(selection_data , "purpose_code")){
+                	selection_data.purpose_code = "manage";
+                }
                 if (selection_data.purpose_code == "forge_assignment") {
                     if (unit.job != "none") {
                         if (unit.job.type == "forge" && unit.job.planet == selection_data.planet) {
@@ -434,7 +437,6 @@ function group_selection(group, selection_data={}) {
             	managing = -1;
             }
         }
-        show_debug_message($"manage_success {obj_controller.menu}");
     } catch (_exception) {
         //handle and send player back to map
         handle_exception(_exception);

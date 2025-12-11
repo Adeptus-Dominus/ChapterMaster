@@ -192,7 +192,6 @@ function planet_training_sequence(local_apothecary_points) {
 	        var recruit_chance = 999;
 	        var aspirant = 0;
 	        var new_recruit_corruption = find_recruit_corruption(planet_type);
-			show_debug_message($"new_recruit_corruption: {new_recruit_corruption}");
 	        var months_to_neo = 72;
 	        var dista = 0;
 	        var onceh = 0;

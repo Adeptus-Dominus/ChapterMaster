@@ -24,7 +24,7 @@ function instances_exist_any(instance_set = []){
 	return _exists;
 }
 
-function instance_at_location(xx,yy,obj){
-	var _nearest = instance_nearest(xx, yy, obj);
-	return (_nearest.x == xx && _nearest.y == yy) ? _nearest : -1;
+function instance_at_location(xx,yy,obj_type){
+	var _nearest = instance_nearest(xx, yy, obj_type);
+	return (_nearest.x == xx && _nearest.y == yy) ? _nearest : noone;
 }

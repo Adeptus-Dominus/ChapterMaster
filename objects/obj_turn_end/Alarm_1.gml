@@ -13,7 +13,6 @@ if (_is_audience){
         }
     }
 
-    show_debug_message(current_audience);
 
     if (obj_controller.menu != MENU.Diplomacy){
         scr_toggle_diplomacy();
@@ -35,7 +34,6 @@ if (_is_audience){
 
         }
         if (obj_controller.diplomacy!=6){
-            //show_debug_message("new_intro");
             scr_dialogue("intro");
 
         }

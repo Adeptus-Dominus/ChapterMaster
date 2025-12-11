@@ -788,7 +788,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static add_trait = function(trait,return_stat_diff = false, return_description = false) {
 
         if (return_stat_diff){
-            var _start_stats = _unit.get_stat_line();
+            var _start_stats = get_stat_line();
         }
         if (struct_exists(global.trait_list, trait)) {
             if (!array_contains(traits, trait)) {
@@ -799,7 +799,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 array_push(traits, trait);
 
                 if (return_stat_diff){
-                    var _end_stats = _unit.get_stat_line();
+                    var _end_stats = get_stat_line();
 
                     var _stat_diff = compare_stats(_end_stats,_start_stats);
                 }

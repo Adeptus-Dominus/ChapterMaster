@@ -99,9 +99,20 @@ function Table(data) constructor{
 					//show_debug_message($"click : {struct_exists(_row,"click_left")}");
 					_row.hover();
 				}
-				if (_row_entered && struct_exists(_row,"click_left")){
-					if (scr_click_left()){
-						_row.click_left();
+				if (_row_entered){
+					if (struct_exists(_row,"hover")){
+						//show_debug_message($"click : {struct_exists(_row,"click_left")}");
+						_row.hover();
+					}					
+					if (struct_exists(_row,"click_left")){
+						if (scr_click_left()){
+							_row.click_left();
+						}
+					}
+					if (struct_exists(_row,"click_right")){
+						if (scr_click_right()){
+							_row.click_right();
+						}
 					}
 				}
 			}

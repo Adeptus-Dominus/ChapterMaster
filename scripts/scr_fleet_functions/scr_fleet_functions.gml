@@ -19,7 +19,7 @@ function set_fleet_target(targ_x, targ_y, final_target){
 	action_x = targ_x;
 	action_y = targ_y;
 	target = final_target;
-	action_eta=floor(point_distance(x,y,targ_x,targ_y)/128)+1;
+	action_eta = floor(point_distance(x,y,targ_x,targ_y)/128)+1;
 }
 
 function scr_valid_fleet_target(target) {
@@ -61,7 +61,7 @@ function fleets_next_location(fleet = "none", visited = []) {
         array_push(visited, fleet.id);
 
         // Check if the fleet has a 'target' variable
-        if (action != "" && variable_instance_exists(fleet, "target")) {
+        if (fleet.action != "" && variable_instance_exists(fleet, "target")) {
             // If the target is valid and not already in the visited list, proceed recursively
             var fleet_target_valid = scr_valid_fleet_target(fleet.target);
             if (!fleet_target_valid) {

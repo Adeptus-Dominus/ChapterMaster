@@ -31,9 +31,11 @@ function FeatureSelected(Feature, system, planet) constructor{
 	}
 
 	draw_planet_features = function(xx,yy){
+		add_draw_return_values();
 	    draw_set_halign(fa_center);
+	    draw_set_valign(fa_top);
 	    draw_set_font(fnt_40k_14);
-	    //draw_sprite(spr_planet_screen,0,xx,yy);
+	    //draw_sprite(spr_planset_screen,0,xx,yy);
 	    if (exit_sequence){
 	    	xx-=(25*exit_count);
 	    	main_slate.draw(xx,yy, 1.38,1.38);
@@ -338,6 +340,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 			draw_set_color(c_gray);
 			draw_text_ext(xx+10, yy+40,body,-1,area_width-20);
 		}
+		pop_draw_return_values();
 		return "done";
 	}
 }

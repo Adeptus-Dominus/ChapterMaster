@@ -519,7 +519,25 @@ function draw_planet_debug_problems(){
 						with (target){
 							scr_new_governor_mission(obj_controller.selecting_planet,"hunt_beast");
 						}
-						break;								
+						break;	
+					case "deliver_trophy":
+						var _unit = fetch_unit(scr_random_marine("",0));
+						var _navy_fleets = get_imperial_navy_fleets();
+						var _pop_data = {
+				        	trophy_owner : _unit,
+				        	system: target.name,
+				        	planet : obj_controller.selecting_planet,
+				        	target_fleet : array_random_element(_navy_fleets)							
+						}
+
+						var _pop = instance_create(0,0,obj_popup);
+
+						_pop.pop_data = _pop_data;
+
+						with (_pop){
+							init_deliver_trophy_mission();
+						}
+						break;
 					default:
 						scr_popup("error","no specific debug action created please consider helping to make one","");
 						break;

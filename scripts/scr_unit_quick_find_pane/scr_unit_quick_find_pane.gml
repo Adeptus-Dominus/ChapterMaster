@@ -125,7 +125,7 @@ function UnitQuickFindPanel() constructor{
 		}	
 	}
 
-	update_mission_log = function(){
+	static update_mission_log = function(){
 		mission_log=[];
 		var temp_log=[];
 		var p, i, problems;
@@ -136,15 +136,19 @@ function UnitQuickFindPanel() constructor{
 					if (problems[p] != ""){
 						if (problem_has_key_and_value(i,p,"stage","preliminary")) then continue;
 						var mission_explain =  mission_name_key(problems[p]);
-						if (mission_explain!="none"){
-							array_push(temp_log,
-								{
-									system : name,
-									mission : mission_explain,
-									time : p_timer[i][p],
-									planet : i
-								}
-							)
+						if (mission_explain != "none"){
+							var _data = {
+								system : name,
+								mission : mission_explain,
+								time : p_timer[i][p],
+								planet : i,
+							};
+							
+							_data.click_left = method(_data,function(){
+								set_map_pan_to_loc(system);
+							});
+
+							array_push(temp_log,_data);
 						}
 					}
 				}
@@ -165,8 +169,67 @@ function UnitQuickFindPanel() constructor{
 				}				
 			}
 		}
+		with (obj_en_fleet){
+			if (array_length(events)){
+				for (var i=0;i<array_length(events);i++){
+					var _event = events[i];
+					if (struct_exists(_event, "turn_end")){
+						switch (_event.turn_end){
+							case "deliver_trophy_end_turn_check":
+								var _mission = $"Deliver Trophy Guard";
+								var _sys = fleets_next_location();
+								var _mission_data = {
+									mission : _mission,
+									system : _sys.name,
+									system_id : _sys.id,
+									target : id,
+									important_person : _event.event_data.trophy_owner,
+									person_name : _event.event_data.delivering_marine,
+									planet : 0,
+									start_system : _event.event_data.system,
+									time : _event.timer,
+								};
+
+								_mission_data.click_left = method(_mission_data,function(){
+									set_map_pan_to_loc(system_id);
+								});
+								
+								_mission_data.hover = method(_mission_data,function(){
+									tooltip_draw($"You are to have {person_name} deliver trophy hunted on {start_system} to the {start_system} regiments\n\nLeft click to see target fleet intercept system right click to view the trophy bearing marine {person_name}");
+								});
+
+								_mission_data.click_right = method(_mission_data,function(){
+									var _unit = fetch_unit_uid(important_person);
+									if (_unit != "none"){
+										var _unit_l = [fetch_unit_uid(important_person)];
+									};
+
+									group_selection(_unit_l);
+								});
+
+								array_push(temp_log,_mission_data);
+								break;
+						}
+					}
+				}
+			}
+		}
 		mission_log = temp_log;
+
+		var _data = {
+			x1 : xx+60,
+			y1 : yy+50,
+			y2 : yy  + h,
+			set_column_widths : [80,130],
+			headings : ["Location", "Mission","Time\nRemaining"],
+			row_data : mission_log,
+			row_key_draw : ["system","mission","time"],
+		}
+		mission_table = new Table(_data);
+
+		show_debug_message(mission_table);
 	}
+
 	hover_item="none";
 	travel_target = [];
 	travel_time = 0;
@@ -180,8 +243,10 @@ function UnitQuickFindPanel() constructor{
 	current_hover=-1;
 	hover_count=0;
 	main_panel.inside_method = function(){
-		var xx = main_panel.XX;
-		var yy = main_panel.YY;
+		xx = main_panel.XX;
+		yy = main_panel.YY;
+		w = main_panel.width;
+		h = main_panel.height
 		is_entered = scr_hit(xx, yy, xx+main_panel.width, yy+main_panel.height);
 		if (view_area=="fleets"){
 			var cur_fleet;
@@ -366,44 +431,11 @@ function UnitQuickFindPanel() constructor{
 		    	}
 		    }			
 		} else if (view_area == "missions"){
-			draw_set_color(c_white);
-			draw_set_halign(fa_center);
-		    draw_text(xx+80, yy+50, "Location");
-		    draw_text(xx+160, yy+50, "Mission");
-		    draw_text(xx+290, yy+50, "Time Remaining");
-		    var i = 0;
-		    while(i<array_length(mission_log) && (90+(20*i)+12 +20)<main_panel.height)		
-			{
-				mission = mission_log[i];
-				entered=false;
-				if (scr_hit(xx+10, yy+90+(20*i),xx+main_panel.width,yy+90+(20*i)+18)){
-					draw_set_color(c_gray);
-					draw_rectangle(xx+10+20, yy+90+(20*i)-2,xx+main_panel.width-20,yy+90+(20*i)+18, 0)
-					draw_set_color(c_white);
-					entered=true;
-				}
-				if (mission.system!=""){
-			    	draw_text(xx+80, yy+90+(20*i), $"{mission.system} {scr_roman_numerals()[mission.planet-1]}" );
-				}
-			    draw_set_halign(fa_left);
-			    if (entered){
-			    	draw_text(xx+160-20, yy+90+(20*i), mission.mission);
-			    } else {
-			    	draw_text(xx+160-20, yy+90+(20*i), string_truncate(mission.mission,150));
-			    }
-			    draw_set_halign(fa_center);
-			    if (!entered){
-			    	draw_text(xx+310, yy+90+(20*i), mission.time);
-			    }
-			    if (point_and_click([xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18])){
-			    	var star = star_by_name(mission.system);
-			    	if (star!="none")
-			    	travel_target = [star.x, star.y];
-			    	travel_increments = [(travel_target[0]-obj_controller.x)/15,(travel_target[1]-obj_controller.y)/15];
-			    	travel_time = 0;
-			    }
-			    i++;
-			}			
+			mission_table.update({
+				x1 : xx+60,
+				y1 : yy+50,
+			});
+			mission_table.draw();
 		}
 	}
 	static draw = function(){

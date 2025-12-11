@@ -526,7 +526,6 @@ function mission_hunt_inquisitor_show_mercy(){
 
 function mission_hunt_inquisitor_destroy_inquisitor_ship(){
 
-    show_debug_message("mission_hunt_inquisitor_destroy_inquisitor_ship");
     var _final_disp_mod = 0;
 
     if (obj_controller.demanding == 0) {
