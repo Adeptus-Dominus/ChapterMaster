@@ -7,11 +7,11 @@ function FeatureSelected(Feature, system, planet) constructor{
 	feature = Feature;
 	main_slate = new DataSlateMKTwo();
 	exit_sequence = false;
-	entrance_sequence=true;
-	remove=false;
-	destroy=false;
+	entrance_sequence = true;
+	remove = false;
+	destroy = false;
 	exit_count = 0;
-	enter_count=18;
+	enter_count = 18;
 	planet_data = new PlanetData(planet,system);
 
 	if (feature.f_type == P_features.Forge){

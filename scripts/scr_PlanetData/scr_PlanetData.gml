@@ -156,7 +156,7 @@ function PlanetData(planet, system) constructor{
 
     static alter_influence = function(faction,value){
         adjust_influence(eFACTION.Tyranids, -1, planet,system);
-        population_influences = p_influence[planet];
+        population_influences = system.p_influence[planet];
     }
 
     static send_colony_ship = function(target, targ_planet, type){
@@ -344,7 +344,7 @@ function PlanetData(planet, system) constructor{
         }
 
         var _orks = planet_forces[eFACTION.Ork];
-        if ((current_owner == eFACTION.Ork) && (_orks < 5) && (planet_forces[eFACTION.Heretics] == 0) && (p_player[i] <= 0 || !is_garrison_force)) {
+        if ((current_owner == eFACTION.Ork) && (_orks < 5) && (planet_forces[eFACTION.Heretics] == 0) && (player_forces <= 0 || !is_garrison_force)) {
             if ((_orks> 0) && (_ork_growth <= _ork_growth_threshold)) {
                 if (sabotage_force) {
                     if (irandom(3) < 2) {
@@ -1151,7 +1151,7 @@ function PlanetData(planet, system) constructor{
         var size = ["", "Small", "", "Large"];
         if ( feat_count > 0){
             for (i =0; i <  feat_count ;i++){
-                cur_feature= features[i]
+                cur_feature = features[i]
                 if (cur_feature.planet_display != 0){
                     if (cur_feature.f_type == P_features.Gene_Stealer_Cult){
                         if (!cur_feature.hiding){
@@ -1253,7 +1253,8 @@ function PlanetData(planet, system) constructor{
             system.p_tyranids[planet]-=2;
         }
         else if  (planet_forces[eFACTION.Ork]>0){
-            if (strength>2) then strength=2;if (strength<1) then strength=0;
+            if (strength>2) then strength=2;
+			if (strength<1) then strength=0;
             system.p_orks[planet]-=2;
         }
         else if  (current_owner=eFACTION.Tau) and (planet_forces[eFACTION.Tau]>0){
@@ -1422,7 +1423,7 @@ function PlanetData(planet, system) constructor{
             if (has_awake_tomb) {
                 // Necron fleets, woooo
                 //necrons kill populatin
-                if ((population > 0) && (p_player[i] + pdf  + guardsmen + planet_forces[eFACTION.Tyranids] == 0)) {
+                if ((population > 0) && (player_forces + pdf  + guardsmen + planet_forces[eFACTION.Tyranids] == 0)) {
                     population = population * 0.75;
                     if ((large_population == 0) && (population <= 5000)) {
                         population = 0;
@@ -1643,7 +1644,7 @@ function PlanetData(planet, system) constructor{
                 current_owner = 10;
                 scr_alert("red", "owner", $"{name()} has fallen to heretics!", x, y);
 
-                if (visited == 1) {
+                if (system.visited == 1) {
                     //visited variable check whether the star has been visited or not 1 for true 0 for false
                     if (planet_type == "Forge") {
                         add_disposition(-10);

@@ -52,6 +52,7 @@ function scr_enemy_ai_d() {
 	        }
 	    }
     }
+
     for (var i=1;i<=planets;i++){
         problem_count_down(i);
         if (planet_problemless(i)) then continue;
@@ -445,10 +446,9 @@ function scr_enemy_ai_d() {
 
 	// Local problems will go here
 	var planet;
-	for (var i=0;i<=planets;i++){
-		planet=i+1;
+	for (var planet=1;i<=planets;i++){
 		if (i < array_length(system_garrison)){
-			var garrison = system_garrison[i];
+			var garrison = system_garrison[planet];
 			if (garrison.garrison_force){
 				if (garrison.garrison_disposition_change(self,planet)!="none"){
 					dispo[planet]+=garrison.dispo_change;
