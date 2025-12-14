@@ -1,6 +1,6 @@
 {
   "$GMSprite":"v2",
-  "%Name":"spr_roman_centurian_crest",
+  "%Name":"spr_roman_centurian_crest_shadows",
   "bboxMode":0,
   "bbox_bottom":87,
   "bbox_left":18,
@@ -12,18 +12,18 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"4222ce55-7f54-4a66-95c9-ff9eee82fe09","name":"4222ce55-7f54-4a66-95c9-ff9eee82fe09","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"v1","%Name":"0ceb9280-e7f4-46b5-9428-9b85c4225bcb","name":"0ceb9280-e7f4-46b5-9428-9b85c4225bcb","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"v1","%Name":"08b44966-5437-4fcd-8103-4f567e0a2b6d","name":"08b44966-5437-4fcd-8103-4f567e0a2b6d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"73fb2e54-bca2-4a05-a728-324abcb8c7b3","name":"73fb2e54-bca2-4a05-a728-324abcb8c7b3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"dd649fd8-7e35-4852-a36d-a78f4f914d36","name":"dd649fd8-7e35-4852-a36d-a78f4f914d36","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a0b1ca09-62e6-4c9f-8416-e3bf08dc95a4","name":"a0b1ca09-62e6-4c9f-8416-e3bf08dc95a4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":232,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"64b58388-e289-40ea-a052-9e4c81b52b82","blendMode":0,"displayName":"default","isLocked":false,"name":"64b58388-e289-40ea-a052-9e4c81b52b82","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"7fceefbe-933c-4ffb-8ec7-96347aed443d","blendMode":0,"displayName":"default","isLocked":false,"name":"7fceefbe-933c-4ffb-8ec7-96347aed443d","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_roman_centurian_crest",
+  "name":"spr_roman_centurian_crest_shadows",
   "nineSlice":null,
   "origin":9,
   "parent":{
@@ -35,7 +35,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"spr_roman_centurian_crest",
+    "%Name":"spr_roman_centurian_crest_shadows",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -59,7 +59,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_roman_centurian_crest",
+    "name":"spr_roman_centurian_crest_shadows",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
@@ -73,14 +73,14 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"4222ce55-7f54-4a66-95c9-ff9eee82fe09","path":"sprites/spr_roman_centurian_crest/spr_roman_centurian_crest.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"a284da04-ccd9-4298-9dca-3872d20dcfe4","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"73fb2e54-bca2-4a05-a728-324abcb8c7b3","path":"sprites/spr_roman_centurian_crest_shadows/spr_roman_centurian_crest_shadows.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"001696c8-96cc-41d7-bab5-4b7c7b9064aa","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"0ceb9280-e7f4-46b5-9428-9b85c4225bcb","path":"sprites/spr_roman_centurian_crest/spr_roman_centurian_crest.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"4c8bdcf6-0c0f-486e-b515-939638b9cbec","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"dd649fd8-7e35-4852-a36d-a78f4f914d36","path":"sprites/spr_roman_centurian_crest_shadows/spr_roman_centurian_crest_shadows.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"508f7cdc-6556-4fd2-ae19-caa00fdda7cd","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"08b44966-5437-4fcd-8103-4f567e0a2b6d","path":"sprites/spr_roman_centurian_crest/spr_roman_centurian_crest.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"ff0385ab-3109-4154-8852-72c12e65f560","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a0b1ca09-62e6-4c9f-8416-e3bf08dc95a4","path":"sprites/spr_roman_centurian_crest_shadows/spr_roman_centurian_crest_shadows.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"9c501913-e408-4d53-892f-f15ccb3b6246","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

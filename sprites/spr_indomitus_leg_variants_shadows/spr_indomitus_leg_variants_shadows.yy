@@ -5,15 +5,15 @@
   "bbox_bottom":259,
   "bbox_left":11,
   "bbox_right":169,
-  "bbox_top":165,
+  "bbox_top":166,
   "collisionKind":1,
   "collisionTolerance":0,
   "DynamicTexturePage":false,
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"b1984530-db57-4951-bec4-a09cab003f1a","name":"b1984530-db57-4951-bec4-a09cab003f1a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
     {"$GMSpriteFrame":"v1","%Name":"f11ec996-00a0-4383-95d7-687ed1f9f302","name":"f11ec996-00a0-4383-95d7-687ed1f9f302","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"1401c2ba-1a86-4c4d-b731-8f28f0ae33d8","name":"1401c2ba-1a86-4c4d-b731-8f28f0ae33d8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
     {"$GMSpriteFrame":"v1","%Name":"220fdf6f-48b5-4de0-9576-27b046131605","name":"220fdf6f-48b5-4de0-9576-27b046131605","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
@@ -73,11 +73,11 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b1984530-db57-4951-bec4-a09cab003f1a","path":"sprites/spr_indomitus_leg_variants_shadows/spr_indomitus_leg_variants_shadows.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"764ed5f4-cd44-421c-9173-78dc4b5c4698","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
                 "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f11ec996-00a0-4383-95d7-687ed1f9f302","path":"sprites/spr_indomitus_leg_variants_shadows/spr_indomitus_leg_variants_shadows.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"72be29e1-0c21-472d-922f-72b530477e36","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+              },"Disabled":false,"id":"72be29e1-0c21-472d-922f-72b530477e36","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"1401c2ba-1a86-4c4d-b731-8f28f0ae33d8","path":"sprites/spr_indomitus_leg_variants_shadows/spr_indomitus_leg_variants_shadows.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"c3473bf9-c426-4a16-9150-c0f4322bded3","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
                 "0":{"$SpriteFrameKeyframe":"","Id":{"name":"220fdf6f-48b5-4de0-9576-27b046131605","path":"sprites/spr_indomitus_leg_variants_shadows/spr_indomitus_leg_variants_shadows.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"d185e240-e0cf-4973-93cf-cd6660ec621e","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},

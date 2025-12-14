@@ -652,6 +652,7 @@ global.modular_drawing_items = [
     },
     {
         sprite : spr_roman_centurian_crest,
+		shadows : spr_roman_centurian_crest_shadows,
         body_types :[0],
         cultures : ["Roman", "Greek", "Gladiator"],
         position : "crest",
