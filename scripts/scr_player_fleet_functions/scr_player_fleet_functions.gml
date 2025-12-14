@@ -31,6 +31,14 @@ function init_player_fleet_arrays(){
 	ship_turrets=[];
 	ship_lost = [];	
 }
+
+function get_player_fleet_intercept_time(star,time_abundance){
+	var _travel = -1
+	var _nearest_player_fleet = instance_nearest(star.x, star.y, obj_p_fleet);
+	if (instance_exists(_nearest_player_fleet)){
+		_travel = get_viable_travel_time(time_abundance, _nearest_player_fleet.x, _nearest_player_fleet.y, star.x, star.y, _nearest_fleet, false);
+	}
+}
 function fleet_has_roles(fleet="none", roles){
 	var all_ships = fleet_full_ship_array(fleet);
 	var unit;

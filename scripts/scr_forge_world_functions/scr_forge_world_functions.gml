@@ -25,50 +25,71 @@ function imperial_navy_fleet_construction(){
 
 		//if system needs more navy fleets get forge world to make some
 	} else if (navy_fleet_count<target_navy_number) {
+		//TODO make standadised system for collating active forge worlds as we  do this a lot		
+		var _forge_systems = get_imperium_forge_systems();
 
-		//TODO make standadised system for collating active forge worlds as we  do this a lot
-		var forge_systems = [];
-	    with(obj_star){
-	        var good=false;
-	        for(var o=1; o<=planets; o++) {
-	            if (p_type[o]=="Forge") 
-					and (p_owner[o]==eFACTION.Mechanicus) 
-					and (p_orks[o]+p_tau[o]+p_tyranids[o]+p_chaos[o]+p_traitors[o]+p_necrons[o]==0) {
-						
-						var enemy_fleets = [
-							eFACTION.Ork,
-							eFACTION.Tau,
-							eFACTION.Tyranids,
-							eFACTION.Chaos,
-							eFACTION.Necrons
-						]
-					
-						var enemy_fleet_count = array_reduce(enemy_fleets, function(prev, curr) {
-							return prev + present_fleet[curr]
-						})
-			            if (enemy_fleet_count == 0){
-			                good=true;
-			                var _nearest = instance_nearest(x,y,obj_en_fleet)
-			                if (_nearest.x ==x && _nearest.y==y && _nearest.navy){
-			                	good=false;
-			                }
-			            }
-	            }
-	        }
-	        if (good){
-	        	good = x<=room_width && y<=room_height;
-	        }
-	        if (good==true){
-	        	array_push(forge_systems, id);
-	        }
-	    }
+		for (var i=array_length(_forge_systems);i>=0;i--){
+			var _sys = _forge_systems[i];
+			var good=true;
+			for(var o=1; o<=_sys.planets; o++) {
+				
+				if (_sys[p_type] == "Forge"){
+	                var _nearest = instance_nearest(x,y,obj_en_fleet)
+	                if (_nearest.x ==x && _nearest.y==y && _nearest.navy){
+	                	good=false;
+	                	break;
+	                }					
+				}
+			}
+
+			if (!good){
+				array_delete(_forge_systems,i,1);
+			}
+		}
 	// After initial navy fleet construction fleet growth is handled in obj_en_fleet.alarm_5
 		if (array_length(forge_systems)){
-		    var construction_forge,new_navy_fleet;
+		    var construction_forge;
 		    construction_forge = array_random_element(forge_systems);
 		    build_new_navy_fleet(construction_forge)
 		}
 	}
+}
+
+function get_imperium_forge_systems(){
+	var forge_systems = [];
+    with(obj_star){
+        var good=false;
+        for(var o=1; o<=planets; o++) {
+            if (p_type[o]=="Forge") 
+				and (p_owner[o]==eFACTION.Mechanicus) 
+				and (p_orks[o]+p_tau[o]+p_tyranids[o]+p_chaos[o]+p_traitors[o]+p_necrons[o]==0) {
+					
+					var enemy_fleets = [
+						eFACTION.Ork,
+						eFACTION.Tau,
+						eFACTION.Tyranids,
+						eFACTION.Chaos,
+						eFACTION.Necrons
+					]
+				
+					var enemy_fleet_count = array_reduce(enemy_fleets, function(prev, curr) {
+						return prev + present_fleet[curr]
+					});
+
+					good = enemy_fleet_count<=0;
+            }
+            if (good){
+            	break;
+            }
+        }
+        if (good){
+        	good = x<=room_width && y<=room_height;
+        }
+        if (good){
+        	array_push(forge_systems, id);
+        }
+    }
+    return forge_systems;
 }
 
 function build_planet_defence_fleets(){

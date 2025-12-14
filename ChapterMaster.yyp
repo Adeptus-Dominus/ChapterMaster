@@ -865,6 +865,7 @@
     {"id":{"name":"scr_marine_struct","path":"scripts/scr_marine_struct/scr_marine_struct.yy",},},
     {"id":{"name":"scr_master_loc","path":"scripts/scr_master_loc/scr_master_loc.yy",},},
     {"id":{"name":"scr_max_marine","path":"scripts/scr_max_marine/scr_max_marine.yy",},},
+    {"id":{"name":"scr_mechanicus_fleet_functions","path":"scripts/scr_mechanicus_fleet_functions/scr_mechanicus_fleet_functions.yy",},},
     {"id":{"name":"scr_mechanicus_missions","path":"scripts/scr_mechanicus_missions/scr_mechanicus_missions.yy",},},
     {"id":{"name":"scr_mission_eta","path":"scripts/scr_mission_eta/scr_mission_eta.yy",},},
     {"id":{"name":"scr_mission_functions","path":"scripts/scr_mission_functions/scr_mission_functions.yy",},},

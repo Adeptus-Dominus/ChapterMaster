@@ -69,7 +69,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		break;
 	case P_features.OldBattleGround:
 		player_hidden = true;
-		imperium_known = false
+		imperium_known = false;
 		//This is janky but we have no way of defining non player astartes 
 		faction1 = "astartes";
 		faction2 = "imperium";
@@ -77,7 +77,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		break;
 	case P_features.Secret_Base:
 		base_type = base_types.Lair;
-		inquis_hidden =1;
+		inquis_hidden = 1;
 		planet_display = "Hidden Secret Base";
 		player_hidden = 0;
 		style = "UTL";

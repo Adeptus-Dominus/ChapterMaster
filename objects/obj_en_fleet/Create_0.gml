@@ -4,8 +4,8 @@ capital_number=0;
 frigate_number=0;
 escort_number=0;
 guardsmen=0;
-home_x=0;
-home_y=0;
+home_x=x;
+home_y=y;
 selected=0;
 ret=0;
 hurt=0;
@@ -55,6 +55,8 @@ check_events_destructions = function(){
 }
 //TODO set up special save method for faction specific fleet variables
 inquisitor=-1;
+
+set_movement = method(self,set_fleet_movement);
 
 cargo_data = {};
 

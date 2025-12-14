@@ -97,7 +97,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 	    draw_set_halign(fa_center);
 		switch (feature.f_type){
 			case P_features.Forge:
-				draw_text_transformed(xx+(area_width/2), yy +10, "Chapter Forge", 2, 2, 0);
+				draw_text_transformed(xx+(w/2), yy +10, "Chapter Forge", 2, 2, 0);
 				draw_set_halign(fa_left);
 				draw_set_color(c_gray);
 
@@ -105,22 +105,22 @@ function FeatureSelected(Feature, system, planet) constructor{
 				forge_assign_button.update({x1:xx+10,y1 : yy+70});
 				forge_assign_button.draw();
 				//TODO move over to using the draw button object ot streamline this
-				var next_position = {x1:x1+10, y1: yy+95};
+				var _next_position = {x1:xx+10, y1: yy+95};
 				if (feature.size<3){
 					var upgrade_cost = 2000 * feature.size;
-					forge_upgrade_button.update(next_position);
+					forge_upgrade_button.update(_next_position);
 					forge_upgrade_button.update({
 						label:$"Upgrade Forge ({upgrade_cost} req)",
 					});
 					forge_upgrade_button.draw();
-					next_position={
+					_next_position={
 						x1:forge_upgrade_button.x1,
 						y1:forge_upgrade_button.y2,
 					}
 				}
 				if (feature.size>1 && !feature.vehicle_hanger){
 					var upgrade_cost = 3000;
-					var build_coords = draw_unit_buttons(next_position, $"Build Vehicle Hanger({upgrade_cost} req)",[1,1],c_red);
+					var build_coords = draw_unit_buttons(_next_position, $"Build Vehicle Hanger({upgrade_cost} req)",[1,1],c_red);
 					if (scr_hit(build_coords)){
 						tooltip_draw("Required to Build Vehicles in the Forge")
 					}
@@ -130,7 +130,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 						array_push(obj_controller.player_forge_data.vehicle_hanger,[obj_controller.selected.name,planet_data.planet]);
 					}					
 				} else if(feature.vehicle_hanger){
-					draw_text(next_position[0], next_position[1], "Forge has a vehicle hanger")
+					draw_text(_next_position[0], _next_position[1], "Forge has a vehicle hanger Allowing vehicles to be coonstructed behavior");
 					//TODO somthing if the forge has a hanger
 				}		
 				break;
@@ -158,6 +158,10 @@ function FeatureSelected(Feature, system, planet) constructor{
 				title = "Ancinet Ruins";
 				body = "Unload Marines onto the planet to explore the ruins";
 				break;
+			case P_features.OldBattleGround:
+				generic=true;
+				title = "Old Battlefield";
+				body = "The site of a previously unrecorded battle between {feature.faction1} and {feature.faction2} forces long forgotten";
 			case P_features.STC_Fragment:
 				generic=true;
 				title = "STC Fragment";
@@ -180,7 +184,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				body = $"The Cult of {feature.name} {control_string}";
 				break;				
 			case P_features.Victory_Shrine:
-				draw_text_transformed(xx+(area_width/2), yy +10, "Victory Shrine", 2, 2, 0);
+				draw_text_transformed(xx+(w/2), yy +10, "Victory Shrine", 2, 2, 0);
 				draw_set_halign(fa_left);
 				draw_set_color(c_gray);				
 				/*if (!feature.parade){
@@ -192,7 +196,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				}*/
 				break;																	
 			case P_features.Monastery:
-				draw_text_transformed(xx+(area_width/2), yy +10, feature.name, 2, 2, 0);
+				draw_text_transformed(xx+(w/2), yy +10, feature.name, 2, 2, 0);
 				if (feature.forge==0){
 					draw_text_transformed(xx+80, yy +50, "Forge", 1, 1, 0);
 					if (draw_building_builder(xx+40, yy+70,500,spr_forge_holo)){
@@ -329,18 +333,18 @@ function FeatureSelected(Feature, system, planet) constructor{
 						mission_description=$"The governor of {planet_name} has expressed his distaste of the neighboring governance of {target.name} {feature.target} he has expressed his views that they engage in heretical ways and harbor xenos enemies though in truth it is more likely that he simply wishes his political enemies disposed of, whatever the case his planet has great economic means and he has made bare his plans to compensate the emperors angels for their aid";
 						break;	
 				}
-				draw_text_transformed(xx+(area_width/2), yy +5, mission_name_key(feature.problem), 2, 2, 0);
+				draw_text_transformed(xx+(w/2), yy +5, mission_name_key(feature.problem), 2, 2, 0);
 				draw_set_halign(fa_left);
 				draw_set_color(c_gray);
-				draw_text_ext(xx+10, yy+40,mission_description,-1,area_width-20);
-				var text_body_height = string_height_ext(string_hash_to_newline(mission_description),-1,area_width-20);
+				draw_text_ext(xx+10, yy+40,mission_description,-1,w-20);
+				var text_body_height = string_height_ext(string_hash_to_newline(mission_description),-1,w-20);
 				if (help!="none"){
-					draw_text_ext(xx+10, yy+40+text_body_height+10,help,-1,area_width-20);
-					text_body_height += string_height_ext(string_hash_to_newline(mission_description),-1,area_width-20)+10;
+					draw_text_ext(xx+10, yy+40+text_body_height+10,help,-1,w-20);
+					text_body_height += string_height_ext(string_hash_to_newline(mission_description),-1,w-20)+10;
 				}
 				
 				if (button_text!="none"){
-					var _button = draw_unit_buttons([xx+((area_width/2)-(string_width(button_text)/2)), yy+40+text_body_height+10], button_text);
+					var _button = draw_unit_buttons([xx+((w/2)-(string_width(button_text)/2)), yy+40+text_body_height+10], button_text);
 					if (button_tooltip != "" && scr_hit(_button)){
 						tooltip_draw(button_tooltip);
 					}
@@ -356,11 +360,11 @@ function FeatureSelected(Feature, system, planet) constructor{
 				break;
 		}
 		if (generic){
-			draw_text_ext_transformed(xx+(area_width/2), yy +5, title, -1, area_width-20, 2, 2, 0)
+			draw_text_ext_transformed(xx+(w/2), yy +5, title, -1, w-20, 2, 2, 0)
 
 			draw_set_halign(fa_left);
 			draw_set_color(c_gray);
-			draw_text_ext(xx+10, yy+40,body,-1,area_width-20);
+			draw_text_ext(xx+10, yy+40,body,-1,w-20);
 		}
 		pop_draw_return_values();
 		return "done";
