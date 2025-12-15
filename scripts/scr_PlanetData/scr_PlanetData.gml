@@ -1762,7 +1762,7 @@ function PlanetData(planet, system) constructor{
 
     }
 
-    static check_old_battles_feature = functions(){
+    static check_old_battles_feature = function(){
         if (has_feature(P_features.OldBattleGround)){
             var _feats = get_features(P_features.OldBattleGround);
             for (var i=0;i<array_length(_feats);i++){

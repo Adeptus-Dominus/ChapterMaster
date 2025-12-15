@@ -590,7 +590,7 @@ function accept_deliver_trophy_mission(){
 	var _targ_fleet = pop_data.target_fleet;
 
 	var _targ_fleet_intercept = fleets_next_location(_targ_fleet);
-	if (_targ_fleet.action==""){
+	if (_targ_fleet.action == ""){
 		text += $"\n\n the fleet in question is currently active around the  {_targ_fleet_intercept.name} system";
 	} else {
 		text += $"\n\n the fleet will next be accessible around the  {_targ_fleet_intercept.name} system";
@@ -664,7 +664,7 @@ function deliver_trophy_end_turn_check(){
 			if (_present){
 				var _text = "{_marine.role(name)} is able to rendevous with the imperial navy at {_meet_point.name}."
 				_text += $" The guard regiments of {fleetevent_data.system} are overjoyed at the delivery of the trophy and find the beast that the head came from adorns many of the regiments banners.";
-				_text += $" While The task is for the most part thankless your chapters esteem has risen greatly with the exploits of {_marine.role(name)} spreading far and wide amoung guard regiments.";
+				_text += $" While The task is for the most part thankless your chapters esteem has risen greatly with the exploits of {_marine.name_role()} spreading far and wide amoung guard regiments.";
 				var _roll = roll_dice_chapter(1, 100, "high");
 				if (_roll>30 && _roll<70){
 					//TODO would be cool to have this changed to be a guard specific piece of equipment

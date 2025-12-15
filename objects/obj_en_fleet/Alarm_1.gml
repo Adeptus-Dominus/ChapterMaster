@@ -346,7 +346,9 @@ else if (action=="" && _is_orbiting){
                     	action_x=plin.x;
                     	action_y=plin.y;
                     	set_fleet_movement();
-                    	if (n!=5) then good=5;
+                    	if (n!=5){
+                            good=5;
+                        }
                     }
                 }
             }
