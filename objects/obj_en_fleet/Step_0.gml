@@ -31,16 +31,13 @@ if (ii_check=0){
     ii_check=10;
     
     if (owner != eFACTION.Eldar) and (owner  != eFACTION.Inquisition){
-        var ii=0;
-        ii+=capital_number;
-        ii+=round((frigate_number/2));
-        ii+=round((escort_number/4));
+        var ii=round(standard_fleet_strength_calc());
         if (ii<=1) then ii=1;
         image_index=ii;
         image_index=min(image_index,9);
     }
     if (owner = eFACTION.Eldar){
-        var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
+        var ii=round(standard_fleet_strength_calc());
         if (ii<=1) then ii=1;image_index=ii;
         image_index=min(image_index,5);
     }

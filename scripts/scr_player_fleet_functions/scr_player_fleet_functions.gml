@@ -239,10 +239,7 @@ function delete_ship_from_fleet(index, fleet){
 	}
 }
 function set_player_fleet_image(){
-    var ii=0;
-    ii+=capital_number;
-    ii+=round((frigate_number/2));
-    ii+=round((escort_number/4));
+    var ii=round(standard_fleet_strength_calc())
     if (ii<=1) then ii=1;
     image_index=min(ii,9);	
 }

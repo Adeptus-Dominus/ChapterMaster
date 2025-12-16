@@ -283,7 +283,7 @@ function scr_enemy_ai_d() {
 	                fleet.frigate_number=round(random_range(4,8));
 	                fleet.escort_number=round(random_range(8,18));*/
                 
-	                fleet.image_index=floor((fleet.capital_number)+(fleet.frigate_number/2)+(fleet.escort_number/4));
+	                fleet.image_index=round(standard_fleet_strength_calc());
 	                fleet.image_alpha=0;
                 
 	                fleet.action_x=x;

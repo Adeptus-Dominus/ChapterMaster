@@ -72,7 +72,7 @@ function build_planet_defence_fleets(){
 	var _defence_fleet_log = {};
     with(obj_en_fleet){
         if (owner==eFACTION.Imperium){
-        	var _imperial_fleet_defence_score = capital_number + (frigate_number/2) + (escort_number/4);
+        	var _imperial_fleet_defence_score = round(standard_fleet_strength_calc());
             obj_controller.imp_ships += _imperial_fleet_defence_score;
             //log this to prevent double work later figuring out if a planet has an orbiting defence fleet
             if (!navy && action=="" && is_orbiting()){
