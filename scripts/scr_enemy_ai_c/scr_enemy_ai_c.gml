@@ -117,7 +117,7 @@ function scr_enemy_ai_c() {
 		                }
 		                /*if (fleet!=0){
 		                    if (instance_exists(fleet)) then with(fleet){
-		                        var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
+		                        var ii=round(standard_fleet_strength_calc());
 		                        if (ii<=1) then ii=1;image_index=ii;
 		                    }
 		                }*/
@@ -319,7 +319,7 @@ function scr_enemy_ai_c() {
 	                }
 	                /*if (fleet!=0){
 	                    if (instance_exists(fleet)) then with(fleet){
-	                        var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
+	                        var ii=round(standard_fleet_strength_calc());
 	                        if (ii<=1) then ii=1;image_index=ii;
 	                    }
 	                }*/
@@ -343,7 +343,7 @@ function scr_enemy_ai_c() {
 		                if (p_type[i]="Death") or (p_type[i]="Hive") then ship.capital_number+=choose(0,1,1);
 		                ship.capital_number+=1;
 		                ship.escort_number+=3;
-		                ship.image_index=floor((ship.capital_number)+(ship.frigate_number/2)+(ship.escort_number/4));
+		                ship.image_index=round(standard_fleet_strength_calc());
 		                p_type[i]="Dead";
 						delete_features(p_feature[i], P_features.Reclamation_pools);// show_message("D");
 		                if (planets=1) and (p_type[1]="Dead") then image_alpha=0.33;

@@ -77,7 +77,7 @@ function ork_fleet_arrive_target(){
             }
         }
         if (ork_attack_planet>0){
-            p_tyranids[ork_attack_planet] -= floor(_ork_fleet.capital_number+(_ork_fleet.frigate_number/2));
+            p_tyranids[ork_attack_planet] -= round(standard_fleet_strength_calc());
 
             var _pdata = new PlanetData(ork_attack_planet, self);
 

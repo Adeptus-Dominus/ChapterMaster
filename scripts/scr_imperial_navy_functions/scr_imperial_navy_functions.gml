@@ -127,9 +127,7 @@ function build_new_navy_fleet(construction_forge){
     	    navy=1;
     	    
     	    var total_ships=0;
-    	    total_ships+=capital_number-1;
-    	    total_ships+=round((frigate_number/2));
-    	    total_ships+=round((escort_number/4));
+    	    total_ships+=round(standard_fleet_strength_calc());
     	    if (total_ships<=1 && capital_number+frigate_number+escort_number>0) then total_ships=1;
     	    choose_fleet_sprite_image()
     	    image_index=total_ships;
@@ -178,10 +176,7 @@ function new_navy_ships_forge(){
             if (capital_number>1) then capital_number=1;
         }
         if (onceh=1){
-            var ii=0;
-            ii+=capital_number;
-            ii+=round((frigate_number/2));
-            ii+=round((escort_number/4));
+            var ii=round(standard_fleet_strength_calc());
 
             image_index=ii<=1?1:ii;
         }
@@ -1047,10 +1042,8 @@ function setup_start_imperial_navy_fleet(system){
 	    warp_able=true;
 	    
 	    image_speed=0;
-	    ii+=capital_number-1;
-	    ii+=round((frigate_number/2));
-	    ii+=round((escort_number/4));
-	    if (ii<=1) and (capital_number+frigate_number+escort_number>0){
+	    ii+=round(standard_fleet_strength_calc());
+	    if (ii<=1) and (ii>0){
 	    	ii=1;
 	    }
 	    image_index=ii;

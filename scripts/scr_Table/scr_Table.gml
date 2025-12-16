@@ -18,9 +18,7 @@ function Table(data) constructor{
 
 	move_data_to_current_scope(data);
 
-	update();
-
-	static update = function(data){
+	static update = function(data={}){
 		move_data_to_current_scope(data);
 		w = 0;
 		column_widths = [];
@@ -60,7 +58,7 @@ function Table(data) constructor{
 			w += column_widths[i] + col_spacing;
 		}
 	}
-
+	update();
 	static draw = function(){
 		add_draw_return_values();
 

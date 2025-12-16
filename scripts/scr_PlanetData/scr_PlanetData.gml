@@ -503,10 +503,7 @@ function PlanetData(planet, system) constructor{
 
                     }
                 }
-                var ii=0;
-                ii+=capital_number;
-                ii+=round((frigate_number/2));
-                ii+=round((escort_number/4));
+                var ii=round(standard_fleet_strength_calc());
                 if (ii<=1) then ii=1;
                 image_index=ii; 
                 //if big enough flee bugger off to new star

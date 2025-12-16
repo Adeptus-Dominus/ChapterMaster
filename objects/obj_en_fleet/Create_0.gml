@@ -53,6 +53,8 @@ check_events_destructions = function(){
         array_delete(events,i,1);
     }
 }
+last_turn_check = 0
+last_turn_image_check = -1;
 //TODO set up special save method for faction specific fleet variables
 inquisitor=-1;
 

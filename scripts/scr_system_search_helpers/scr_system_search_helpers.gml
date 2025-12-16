@@ -276,25 +276,25 @@ function shuffled_planet_array(){
 /// ignoring any that are disqualified by the exclusion conditions.
 function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3), disclude_hulk=true, disclude_elder=true, disclude_deads=true, warp_concious=true){
 	var from = instance_nearest(origional_x,origional_y,obj_star);
-	var _deactivated = [];
+	var deactivated = [];
     for(var i=0; i<star_offset; i++){
         from=instance_nearest(origional_x,origional_y,obj_star);
         with(from){
-        	array_push(_deactivated, id);
+        	array_push(deactivated, id);
         	instance_deactivate_object(id);
         };
         from=instance_nearest(origional_x,origional_y,obj_star);
         if (instance_exists(from)){
 	        if (disclude_elder && from.owner==eFACTION.Eldar){
 	        	i--;
-	        	array_push(_deactivated, id);
+	        	array_push(deactivated, id);
 	        	instance_deactivate_object(from);
 	        	continue;
 	        }
 	        if (disclude_deads){
 	        	if (is_dead_star(from)){
 		        	i--;
-		        	array_push(_deactivated, id);
+		        	array_push(deactivated, id);
 		        	instance_deactivate_object(from);
 		        	continue;        		
 	        	}
@@ -302,8 +302,8 @@ function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3
 	    }        
     }
     //from=instance_nearest(origional_x,origional_y,obj_star);
-    for (var i=0;i<array_length(_deactivated);i++){
-    	instance_activate_object(_deactivated[i]);
+    for (var i=0;i<array_length(deactivated);i++){
+    	instance_activate_object(deactivated[i]);
     }
 
     //TODO finish this off to make the distance remove more concious of warp lanes
@@ -328,37 +328,47 @@ function nearest_star_proper(xx,yy) {
 }
 
 
-function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore_dead = true){
+function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore_dead = true,keep_deactivated=false){
 	var nearest = "none"
-	var _deactivated = [];
+	obj_controller.deactivated_stars = [];
 	var total_stars =  instance_number(obj_star);
 	var i=0;
 	if (!is_array(ownership)){
 		ownership = [ownership];
 	}
+	static deactivate = function(deactiv_id){
+		array_push(obj_controller.deactivated_stars, deactiv_id.id);
+		instance_deactivate_object(deactiv_id.id);		
+	}
 	while (nearest=="none" && i<total_stars){
+		var _deactivate = false;
 		i++;
 		var cur_star =  instance_nearest(xx,yy, obj_star);
 		if (!instance_exists(cur_star)){
 			break;
 		}
+		if ((ignore_dead && is_dead_star(cur_star))){
+			deactivate(cur_star.id);
+			continue;
+		}
+
 		if (start_star!="none"){
 			if (start_star.id == cur_star.id || (ignore_dead && is_dead_star(cur_star))){
-				array_push(_deactivated, cur_star.id);
-				instance_deactivate_object(cur_star.id);
+				deactivate(cur_star.id);
 				continue;
 			}
 		}
 		if (array_contains(ownership, cur_star.owner)){
-			nearest=cur_star.id;
+			nearest = cur_star.id;
 		} else {
-			array_push(_deactivated, cur_star.id);
-			instance_deactivate_object(cur_star.id);
+			deactivate(cur_star.id);
 		}
 	}
-    for (i=0;i<array_length(_deactivated);i++){
-    	instance_activate_object(_deactivated[i]);
-    }
+	if (!keep_deactivated){
+	    for (i=0;i<array_length(obj_controller.deactivated_stars);i++){
+	    	instance_activate_object(obj_controller.deactivated_stars[i]);
+	    }
+	}
 	return nearest;
 }
 
