@@ -384,7 +384,6 @@ function scr_cheatcode(argument0) {
 				case "forgemastermeet":
 					var _forge_master = scr_role_count("Forge Master", "", "units");
 					if (array_length(_forge_master)>0){
-						show_debug_message("meet forge master");
 						obj_controller.menu_lock = false;
 						instance_destroy(obj_popup_dialogue);
 						scr_toggle_diplomacy();
@@ -392,7 +391,6 @@ function scr_cheatcode(argument0) {
 						obj_controller.character_diplomacy = _forge_master[0];
 						diplo_txt="Greetings chapter master";
 					} else {
-						show_debug_message("no forge master");
 					}
 					break;
 			}
@@ -470,6 +468,10 @@ function draw_planet_debug_features(){
 		{
 			e_num : P_features.Starship,
 			name : "Ancient Starship"
+		},
+		{
+			e_num : P_features.OldBattleGround,
+			name : "Old  Battle Ground"
 		},
 
 	]

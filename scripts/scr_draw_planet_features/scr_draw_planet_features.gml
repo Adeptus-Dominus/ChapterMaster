@@ -161,7 +161,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 			case P_features.OldBattleGround:
 				generic=true;
 				title = "Old Battlefield";
-				body = "The site of a previously unrecorded battle between {feature.faction1} and {feature.faction2} forces long forgotten";
+				body = "The site of a previously unrecorded battle between {feature.faction1} and {feature.faction2} forces long forgotten\nUnload Marines to search Techmarines are advisable to help, it would be best any tech priests not be aware of such an operation it may create a conflict of interest";
 			case P_features.STC_Fragment:
 				generic=true;
 				title = "STC Fragment";

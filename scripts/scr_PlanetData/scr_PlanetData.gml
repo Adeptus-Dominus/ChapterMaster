@@ -1762,21 +1762,35 @@ function PlanetData(planet, system) constructor{
     static check_old_battles_feature = function(){
         if (has_feature(P_features.OldBattleGround)){
             var _feats = get_features(P_features.OldBattleGround);
+
             for (var i=0;i<array_length(_feats);i++){
                 var _battle = _feats[i];
 
+                var _fleet_enroute = false;
+                var _sys = system
                 if (_battle.imperium_known){
-                    var _mech_fleet = spawn_mechanicus_explore_fleet();
-                    if (!instance_exists(_mech_fleet)){
-                        continue;
+                    with (obj_en_fleet){
+                        if (owner != eFACTION.Mechanicus){
+                            continue;
+                        }
+                        if (instance_exists(target) &&target.id== _sys.id){
+                            _fleet_enroute = true;
+                        }
                     }
+                    if (!_fleet_enroute){
+                        var _mech_fleet = spawn_mechanicus_explore_fleet();
+                        if (!instance_exists(_mech_fleet)){
+                            continue;
+                        }
 
-                    var _star = instance_nearest(_mech_fleet.x,_mech_fleet.y,obj_star);
-                    _mech_fleet.action_x = system.x;
-                    _mech_fleet.action_y = system.y;
-                    var _time = get_player_fleet_intercept_time(system,10);
-                    _mech_fleet.set_movement(true,"move",);
-                    scr_popup("Mechanicus Exploration", $"A Mechanicus Exploration fleet has set off from {_star.name} to explore the battle grounds of {name()}. It will arrive in aproximatly {_time} months time");
+                        var _star = instance_nearest(_mech_fleet.x,_mech_fleet.y,obj_star);
+                        _mech_fleet.action_x = system.x;
+                        _mech_fleet.action_y = system.y;
+                        _mech_fleet.target = system;
+                        var _time = get_player_fleet_intercept_time(system,10);
+                        _mech_fleet.set_movement(true,"move",);
+                        scr_popup("Mechanicus Exploration", $"A Mechanicus Exploration fleet has set off from {_star.name} to explore the battle grounds of {name()}. It will arrive in aproximatly {_time} months time");
+                    }
                 }
             }
  

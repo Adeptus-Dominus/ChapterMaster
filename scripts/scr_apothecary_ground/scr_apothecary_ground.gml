@@ -194,18 +194,23 @@ function apothecary_simple(){
 			cur_units = _unit_spread[$_cur_loc][p];
 			cur_apoths = _apoth_spread[$_cur_loc][p];
 			cur_techs = _tech_spread[$_cur_loc][p];
+
+			var _cur_tech_count = array_length(cur_techs);
+			var _cur_unit_count = array_length(cur_units);
+			var _cur_apoth_count = array_length(cur_apoths);
+
 			for (var a=0;a<array_length(cur_apoths);a++){
 				_unit = cur_apoths[a];
 				_loc_heal_points+=_unit.apothecary_point_generation(turn_end)[0];
 			}
-			for (var a=0;a<array_length(cur_techs);a++){
+			for (var a=0;a<_cur_tech_count;a++){
 				_unit = cur_techs[a];
 				var tech_gen = _unit.forge_point_generation(turn_end)[0];
 				_loc_forge_points += tech_gen;
 			}
 			_point_breakdown.heal_points = _loc_heal_points;
 			_point_breakdown.forge_points = _loc_forge_points;
-			for (var a=0;a<array_length(cur_units);a++){
+			for (var a=0;a<_cur_unit_count;a++){
 				points_spent = 0;
 				_unit = cur_units[a];
 				if (is_array(_unit) && _loc_forge_points>0){				
@@ -286,7 +291,14 @@ function apothecary_simple(){
 				with (cur_system){
 		 			if (array_length(p_feature[p])!=0){
 		 				var _planet_data = new PlanetData(p, self);
-		 				_planet_data.recover_starship(cur_techs);
+		 				if (_cur_unit_count){
+		 					_planet_data.search_old_battle_grounds(cur_units);
+		 				}
+
+		 				if (cur_tech_count){
+		 					_planet_data.recover_starship(cur_techs);
+		 				}
+		 				
 			            if (_planet_data.planet_training(_loc_heal_points)){
 
 			            }

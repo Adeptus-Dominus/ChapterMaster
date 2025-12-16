@@ -73,6 +73,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		//This is janky but we have no way of defining non player astartes 
 		faction1 = "astartes";
 		faction2 = "imperium";
+		explore_size = irandom_range(1000, 10000);
 		explored = 0;
 		break;
 	case P_features.Secret_Base:
@@ -380,6 +381,11 @@ function scr_planetary_feature(planet_num) {
 				case P_features.OrkWarboss:
 				    var lop=$"Ork Warboss discovered on {numeral_n}.";
 				    scr_alert("red","feature",lop,x,y);
+				    scr_event_log("red",lop);
+					break;	
+				case P_features.OldBattleGround:
+					var lop=$"Old Battle Ground discovered on {numeral_n}.";
+				    scr_alert("green","feature",lop,x,y);
 				    scr_event_log("red",lop);
 					break;		
 			}
