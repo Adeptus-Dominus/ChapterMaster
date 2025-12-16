@@ -809,7 +809,7 @@ function fleet_arrival_logic(){
     for (var i=0;i<array_length(_other_orbiting) && is_orbiting();i++){
     	var _other_fleet = _other_orbiting[i];
 
-	    var _other_fleet_strength=standard_fleet_strength_calc(_other_fleet);
+	    var _other_fleet_strength = standard_fleet_strength_calc(_other_fleet);
 
 	    
 	    var _same_owner = owner == _other_fleet.owner;
@@ -884,32 +884,11 @@ function fleet_arrival_logic(){
         //basically if the tau fleet is weakened or small instead of trying a hostile takeover
         //they instrsd instigste a tau propaganda campaign and get the fuck out the system
         
-        //if tau fleet is too weak then flee
+        //if tau fleet is too weak then flee  
         if (standard_fleet_strength_calc()<3){// Start influence thing
             
             with (orbiting){
-            var  tau_influence;	            	
-	            var tau_influence_chance=roll_dice(1,100,"high");
-	            var tau_influence_planet=irandom(orbiting.planets)+1;	            	
-                if (p_type[tau_influence_planet]!="Dead"){
-                
-                    scr_alert("green","owner",$"Tau ship broadcasts subversive messages to {planet_numeral_name(tau_influence_planet)}.",sta.x,sta.y);
-                    tau_influence = p_influence[tau_influence_planet][eFACTION.Tau]
-                
-                    if (tau_influence_chance<=70) and (tau_influence<70){
-                    	adjust_influence[tau_influence_planet](eFACTION.Tau, 10, tau_influence_planet);
-                        if (p_type[tau_influence_planet]=="Forge"){
-                        	adjust_influence(eFACTION.Tau, -5, tau_influence_planet);
-                        }
-                    }
-                    
-                    if (tau_influence_chance<=3) and (tau_influence<70){
-                        adjust_influence(eFACTION.Tau, 30, tau_influence_planet);
-                        if (p_type[tau_influence_planet]=="Forge"){
-                        	adjust_influence(eFACTION.Tau, -25, tau_influence_planet);
-                        }
-                    }
-                }
+            	tau_broadcast_propaganda_to_planet();
             }
 	        var _chosen =false;
 	        var _chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
@@ -999,7 +978,6 @@ function fleet_arrival_logic(){
  
     }
 
-    show_debug_message($"fleet orbiting {instance_nearest(x,y,obj_star)} : {obj_controller.faction[owner]}: cur_targ {target}");
 }
 
 function choose_fleet_sprite_image(){
