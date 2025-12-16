@@ -42,5 +42,6 @@ function __init_global() {
     global.ui_click_lock = false;
     global.name_generator = new NameGenerator();
     global.star_sprites = ds_map_create();
+    global.en_fleet_sprites = ds_map_create();
     global.base_component_surface = -1;
 }

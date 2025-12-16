@@ -579,7 +579,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.0.901",
+    "IDEVersion":"2024.1400.0.904",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -728,6 +728,7 @@
     {"id":{"name":"DiploCommonComponents","path":"scripts/DiploCommonComponents/DiploCommonComponents.yy",},},
     {"id":{"name":"draw_line_dashed","path":"scripts/draw_line_dashed/draw_line_dashed.yy",},},
     {"id":{"name":"draw_set_blend_mode","path":"scripts/draw_set_blend_mode/draw_set_blend_mode.yy",},},
+    {"id":{"name":"ds_map_helpers","path":"scripts/ds_map_helpers/ds_map_helpers.yy",},},
     {"id":{"name":"exp_and_exp_growth","path":"scripts/exp_and_exp_growth/exp_and_exp_growth.yy",},},
     {"id":{"name":"explode_script","path":"scripts/explode_script/explode_script.yy",},},
     {"id":{"name":"instance_create","path":"scripts/instance_create/instance_create.yy",},},

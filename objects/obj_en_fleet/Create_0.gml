@@ -21,7 +21,9 @@ warp_able = false;
 ii_check=floor(random(5))+1;
 etah=0;
 safe=0;
-last_turn_check = 0;
+last_turn_check = 0
+last_turn_image_check = -1;
+uid = scr_uuid_generate();
 //TODO set up special save method for faction specific fleet variables
 inquisitor=-1;
 
