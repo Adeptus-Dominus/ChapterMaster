@@ -333,8 +333,8 @@ function complete_garrison_mission(targ_planet, problem_index){
                 _mission_string+=$"while stationed {p_garrison.garrison_leader.name_role()} makes several notable observations and is able to instruct the planets defense core leaving the world better defended (fortifications++).";
             }
             //TODO just generall apply this each turn with a garrison to see if a cult is found
-            if (planet_feature_bool(p_feature[targ_planet], P_features.Gene_Stealer_Cult)){
-                var cult = return_planet_features(planet.features,P_features.Gene_Stealer_Cult)[0];
+            if (planet_feature_bool(p_feature[targ_planet], P_features.GeneStealerCult)){
+                var cult = return_planet_features(planet.features,P_features.GeneStealerCult)[0];
                 if (cult.hiding){
                     widom_test = tester.standard_test(p_garrison.garrison_leader, "wisdom",0, ["tyranids"]);
                     if (widom_test[0]){
@@ -370,10 +370,10 @@ function complete_train_forces_mission(targ_planet, problem_index){
         	var _tyannic_vet = _trainer.has_trait("tyrannic_vet");
         	if (_tyannic_vet){
         		_wis_test_difficulty += 10;
-        		if (planet.has_feature(P_features.Gene_Stealer_Cult)){
-        			var _cult = planet.get_features(P_features.Gene_Stealer_Cult)[0];
+        		if (planet.has_feature(P_features.GeneStealerCult)){
+        			var _cult = planet.get_features(P_features.GeneStealerCult)[0];
         			if (_cult.hiding){
-        				planet.delete_feature(P_features.Gene_Stealer_Cult);
+        				planet.delete_feature(P_features.GeneStealerCult);
         				_mission_string += $"Fortune has smiled on this mission, {_trainer.name_role()}'s abilities as a Veteran of dealing with the Tyranids came in handy and in a short period was able to discern the existencee of a cult. He was able to organise those  he considered to be still loyal to rally an extermiation of the cult, reeports suggest he was so successful as to have completely wiped the genestealer presence from the planet";
         			}
         		}

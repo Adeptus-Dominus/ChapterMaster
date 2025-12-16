@@ -320,12 +320,12 @@ function scr_enemy_ai_a() {
 	                if (guard_score>=3) and (p_pdf[_run]<10000) then p_pdf[_run]*=(min(0.95, 0+pdf_loss_reduction));
 	                if (guard_score>=2) and (p_pdf[_run]<2000) then p_pdf[_run]=0;
 	                if (guard_score>=1) and (p_pdf[_run]<200) then p_pdf[_run]=0;
-		            if (_planet_data.population_influences[eFACTION.Tyranids] > 50 && _planet_data.has_feature(P_features.Gene_Stealer_Cult)){
+		            if (_planet_data.population_influences[eFACTION.Tyranids] > 50 && _planet_data.has_feature(P_features.GeneStealerCult)){
 		            	var _cur_influ = p_influence[_run][eFACTION.Tyranids];
 		            	var _influence_reduction = _cur_influ *  (p_pdf[_run]/_pdf_before);
 		            	adjust_influence(eFACTION.Tyranids,-min(_influence_reduction,_cur_influ-3) , _run);
 		            	if (p_influence[_run][eFACTION.Tyranids] < 20){
-		            		_planet_data.delete_feature(P_features.Gene_Stealer_Cult);
+		            		_planet_data.delete_feature(P_features.GeneStealerCult);
 		            	}
 		            }	                
 	            }
@@ -776,9 +776,9 @@ function scr_enemy_ai_a() {
 	    p_necrons[_run]=after_combat_necrons;
 	    if (p_tyranids[_run] != after_combat_tyranids){
 	    	p_tyranids[_run] = after_combat_tyranids;
-	    	if (_planet_data.has_feature(P_features.Gene_Stealer_Cult)){
+	    	if (_planet_data.has_feature(P_features.GeneStealerCult)){
 	    		adjust_influence(eFACTION.Tyranids,-min(p_influence[_run][eFACTION.Tyranids]-4, 5),_run);
-	    		var _cult = _planet_data.get_features(P_features.Gene_Stealer_Cult)[0];
+	    		var _cult = _planet_data.get_features(P_features.GeneStealerCult)[0];
 	    		if (p_influence[_run][eFACTION.Tyranids]<5){
 	    			_cult.hiding = true;
 	    		}

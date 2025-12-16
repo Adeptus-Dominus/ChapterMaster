@@ -743,7 +743,7 @@ function PlanetData(planet, system) constructor{
 
 	    }else if (planet_forces[eFACTION.Tyranids]>0){
 			if (has_feature(P_features.GeneStealerCult)){
-	 			var _hidden_cult = get_features(P_features.Gene_Stealer_Cult)[0].hiding;
+	 			var _hidden_cult = get_features(P_features.GeneStealerCult)[0].hiding;
 
 	 			if (!_hidden_cult){
 	 				guard_attack="tyranids";
@@ -782,7 +782,7 @@ function PlanetData(planet, system) constructor{
 				}
 			} else if (current_owner == eFACTION.Tau){
 				_pdf_attack="guard";
-			}else if  (has_feature(P_features.Gene_Stealer_Cult) && population_influences[eFACTION.Tyranids]>=50){
+			}else if  (has_feature(P_features.GeneStealerCult) && population_influences[eFACTION.Tyranids]>=50){
                 _pdf_attack="guard";
             }
 		}
@@ -1220,9 +1220,9 @@ function PlanetData(planet, system) constructor{
         if (population_influences[eFACTION.Tyranids] > 3){
             var _max_influence_reduction = min(_pop_percentage_kill,population_influences[eFACTION.Tyranids]-3);
             adjust_influence(eFACTION.Tyranids,-_max_influence_reduction,planet,system);
-            if (has_feature(P_features.Gene_Stealer_Cult)){
+            if (has_feature(P_features.GeneStealerCult)){
                 if (population_influences[eFACTION.Tyranids]<20){
-                    delete_feature(P_features.Gene_Stealer_Cult);
+                    delete_feature(P_features.GeneStealerCult);
                 }
             }
         }
