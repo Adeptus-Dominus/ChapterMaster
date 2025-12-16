@@ -320,7 +320,7 @@ function nearest_star_proper(xx,yy) {
 }
 
 
-function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore_dead = true){
+function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore_dead = true,keep_deactivated=false){
 	var nearest = "none"
 	var _deactivated = [];
 	var total_stars =  instance_number(obj_star);
@@ -328,29 +328,39 @@ function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore
 	if (!is_array(ownership)){
 		ownership = [ownership];
 	}
+	deactivate = function(deactiv_id){
+		array_push(_deactivated, deactiv_id.id);
+		instance_deactivate_object(deactiv_id.id);		
+	}
 	while (nearest=="none" && i<total_stars){
+		var _deactivate = false;
 		i++;
 		var cur_star =  instance_nearest(xx,yy, obj_star);
 		if (!instance_exists(cur_star)){
 			break;
 		}
+		if ((ignore_dead && is_dead_star(cur_star))){
+			deactivate(cur_star.id);
+			continue;
+		}
+
 		if (start_star!="none"){
 			if (start_star.id == cur_star.id || (ignore_dead && is_dead_star(cur_star))){
-				array_push(_deactivated, cur_star.id);
-				instance_deactivate_object(cur_star.id);
+				deactivate(cur_star.id);
 				continue;
 			}
 		}
 		if (array_contains(ownership, cur_star.owner)){
-			nearest=cur_star.id;
+			nearest = cur_star.id;
 		} else {
-			array_push(_deactivated, cur_star.id);
-			instance_deactivate_object(cur_star.id);
+			deactivate(cur_star.id);
 		}
 	}
-    for (i=0;i<array_length(_deactivated);i++){
-    	instance_activate_object(_deactivated[i]);
-    }
+	if (!keep_deactivated){
+	    for (i=0;i<array_length(_deactivated);i++){
+	    	instance_activate_object(_deactivated[i]);
+	    }
+	}
 	return nearest;
 }
 

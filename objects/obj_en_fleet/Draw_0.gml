@@ -101,7 +101,6 @@ if (_reset){
     draw_set_alpha(1);
     if (navy && owner == eFACTION.Imperium){
         draw_set_color(global.star_name_colors[eFACTION.Mechanicus]);
-        draw_circle_with_outline_width();
         draw_circle_with_outline_width(_xx,_yy,12,0.3);
     }
 

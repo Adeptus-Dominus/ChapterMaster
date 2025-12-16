@@ -624,6 +624,8 @@ function fleet_arrival_logic(){
     action_x=0;
     action_y=0;
     is_orbiting();
+
+    arrival_logic_finished = false;
     
     // cur_star.present_fleets+=1;if (owner = eFACTION.Tau) then cur_star.tau_fleets+=1;
     
@@ -791,145 +793,129 @@ function fleet_arrival_logic(){
 
     }
 
+    var _fleet_strength = standard_fleet_strength_calc();
     for (var i=0;i<array_length(_other_orbiting);i++){
     	var _other_fleet = _other_orbiting[i];
-	    _other_fleet=instance_nearest(old_x,old_y,obj_en_fleet);
-	    var mergus=false;
-	    
-	    mergus=_other_fleet.image_index;
-	    if (mergus<3) then mergus=0;
-	    if (mergus>=3) then mergus=10;
-	    if (owner = eFACTION.Tau) and (mergus>=3) then mergus=0;
-	    if (string_count("_her",trade_goods)=0) then mergus=99;// was 999
-	    
-	    // Think this might be causing the crash
-	    if (owner=eFACTION.Tau) and (sta.present_fleet[eFACTION.Imperium]+sta.present_fleet[eFACTION.Player]>=1) 
-			and (sta.present_fleet[eFACTION.Tau]=1 && image_index=1) and (ret=0) then mergus=15;
 
-	    if (_other_fleet.owner=eFACTION.Tau) and (owner=eFACTION.Tau) and (ret=1) then mergus=0;
+	    var _other_fleet_strength=standard_fleet_strength_calc(_other_fleet);
+
 	    
-	    
-	    
-	    
-	    if (owner=eFACTION.Tau) and (image_index=1){
-	        // show_message("Tau|||  Other Owner: "+string(cur_star.owner)+"   ret: "+string(ret)+"    mergus: "+string(mergus));
+	    var _same_owner = owner == _other_fleet.owner;
+
+	    var _attempt_merge = _same_owner && _other_fleet_strength + _fleet_strength <= 9;
+
+	    if (_same_owner && !_attempt_merge && owner==eFACTION){
+	    	var _faction_check = obj_controller.faction_status[eFACTION.Mechanicus]=="War"?1:2;
+	    	var _len = _faction_check == 1?3:4
+	    	if (array_sum(orbiting.present_fleet,0,_faction_check,_len)>0){
+	    		_attempt_merge=true;
+	    	}
+
 	    }
-	    
+
+	    if (string_count("_her",trade_goods)=0){
+	    	_attempt_merge = false;
+	    }
+
 	    if (owner=eFACTION.Chaos) and (fleet_has_cargo("csm")) or ( fleet_has_cargo("warband")){
-	    	mergus=0;
+	    	var _csm = fleet_has_cargo("warband");
+	    	_attempt_merge = false;
 	    }
-	    // if (cur_star.owner!=owner) then mergus=0;
+	   
+	    // if (cur_star.owner!=owner) then _other_fleet_strength=0;
 	    
 	    
 	    
 	    
 	    //This will never trigger at the moment
-	    if ((_other_fleet.owner=self.owner) and (_other_fleet.action="") and (mergus=1999){// Merge the fleets
+	    if (_attempt_merge){// Merge the fleets
 	    	merge_fleets(id,_other_fleet)
 	        
 	    }// End merge fleets
 	    
-	    
-	    
-	    if (owner=eFACTION.Tau) and (mergus=15){                                               // Get the fuck out
-	        var new_star;new_star=0;ret=1;
-	        
-	        
-	        instance_activate_object(obj_star);// new_star
-	        
-	        
-	        
-	        if (image_index=1){// Start influence thing
-	            
-	            with (orbiting){
-	            var  tau_influence;	            	
-		            var tau_influence_chance=irandom(100)+1;
-		            var tau_influence_planet=irandom(orbiting.planets)+1;	            	
-	                if (p_type[tau_influence_planet]!="Dead"){
-	                
-	                    scr_alert("green","owner",$"Tau ship broadcasts subversive messages to {planet_numeral_name(tau_influence_planet)}.",sta.x,sta.y);
-	                    tau_influence = p_influence[tau_influence_planet][eFACTION.Tau]
-	                
-	                    if (tau_influence_chance<=70) and (tau_influence<70){
-	                    	adjust_influence[tau_influence_planet](eFACTION.Tau, 10, tau_influence_planet);
-	                        if (p_type[tau_influence_planet]=="Forge"){
-	                        	adjust_influence(eFACTION.Tau, -5, tau_influence_planet);
-	                        }
-	                    }
-	                    
-	                    if (tau_influence_chance<=3) and (tau_influence<70){
-	                        adjust_influence(eFACTION.Tau, 30, tau_influence_planet);
-	                        if (p_type[tau_influence_planet]=="Forge"){
-	                        	adjust_influence(eFACTION.Tau, -25, tau_influence_planet);
-	                        }
-	                    }
-	                }
-	            }
-	        } 
-	        
-	        
-	        
-	        instance_deactivate_object(orbiting);
-	        
-	        with(obj_star){
-	        	if (owner != eFACTION.Tau) then instance_deactivate_object(instance_id);
-	        }
-	        
-	        var good=0;
-	        
-	        repeat(100){
-	            var xx, yy;
-	            if (good=0){
-	                xx=x+choose(random(300),random(300)*-1);
-	                yy=y+choose(random(300),random(300)*-1);
-	                new_star=instance_nearest(xx,yy,obj_star);
-	                if (new_star.owner!=eFACTION.Tau) then with(new_star){instance_deactivate_object(id);}
-	                if (new_star.owner=eFACTION.Tau) then good=1;
-	            }
-	        }
-	        
-	        // show_message("Get the fuck out working?: "+string(good));
-	        
-	        if (new_star.owner==eFACTION.Tau){
-	            // show_message("Tau fleet actually fleeing");
-	            action_x=new_star.x;
-	            action_y=new_star.y;
-	            set_fleet_movement();
-	        }
-	        
-	        instance_activate_object(obj_star);
-	        // This appears bugged
-	    }
 
-	    var _csm = fleet_has_cargo("warband");
+	    //if fleet is damaged but existing fleet is too large to merge feck off elsewhere preferably somewhere friendly
+	    else if (_same_owner && (owner == eFACTION.Tau || (owner = eFACTION.Chaos && !csm))){// Move somewhere new
 
-	    if (cur_star.x=old_x) and (cur_star.y=old_y) and (cur_star.owner=self.owner) and (cur_star.action="") and ((owner = eFACTION.Tau) or (owner = eFACTION.Chaos)) and (mergus=10) and (!_csm){// Move somewhere new
-	        var stue, stue2;stue=0;stue2=0;
-	        var goood=0;
-	        
-	        with(obj_star){
-	        	if (is_dead_star()){
-	        		instance_deactivate_object(id);
+	        var _chosen =false;
+	        var _chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
+	        while (_chosen_id != "none"){
+	        	if (scr_orbiting_fleet(eFACTION.Imperium) != "none"){
+	        		_chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
+	        	} else {
+	        		break;
 	        	}
 	        }
-	        stue=instance_nearest(x,y,obj_star);
-	        instance_deactivate_object(stue);
-	        repeat(10){
-	            if (goood=0){
-	                stue2=instance_nearest(x+choose(random(400),random(400)*-1),y+choose(random(400),random(400)*-1),obj_star);
-	                if (owner = eFACTION.Tau) and (stue2.owner = eFACTION.Tau) then goood=1;
-	                if (owner = eFACTION.Chaos) and (stue2.owner != eFACTION.Chaos) then goood=1;
-	                if (stue2.planets=0) then goood=0;
-	                if (stue.present_fleet[eFACTION.Imperium]>0) or (stue.present_fleet[eFACTION.Player]>0) then goood=0;
-	                if (stue2.planets=1) and (stue2.p_type[1]="Dead") then goood=0;
-	                }
-	            }
-	        action_x=stue2.x;
-	        action_y=stue2.y;
-	        set_fleet_movement();// stue.present_fleets-=1;
-	        instance_activate_object(obj_star);
+
+	        instance_activate_object(obj_star);   
+	        if (_chosen_id !="none"){
+	        	action_x=_chosen_id.x;
+	        	action_y=_chosen_id.y;
+	        	set_fleet_movement();
+	        	arrival_logic_finished = true;
+	        }
+
+	        //TODO somelogc to go find somewhere else if there are no avialable rebuild planets
 	    }
-    }	    
+    }
+
+	if (owner=eFACTION.Tau && !arrival_logic_finished) {                                    
+        
+       
+        //so i'mjust sort of crudely interpreting things how i think duke meant to make it
+        //basically if the tau fleet is weakened or small instead of trying a hostile takeover
+        //they instrsd instigste a tau propaganda campaign and get the fuck out the system
+        
+        //if tau fleet is too weak then flee
+        if (standard_fleet_strength_calc()<3){// Start influence thing
+            
+            with (orbiting){
+            var  tau_influence;	            	
+	            var tau_influence_chance=roll_dice(1,100,"high");
+	            var tau_influence_planet=irandom(orbiting.planets)+1;	            	
+                if (p_type[tau_influence_planet]!="Dead"){
+                
+                    scr_alert("green","owner",$"Tau ship broadcasts subversive messages to {planet_numeral_name(tau_influence_planet)}.",sta.x,sta.y);
+                    tau_influence = p_influence[tau_influence_planet][eFACTION.Tau]
+                
+                    if (tau_influence_chance<=70) and (tau_influence<70){
+                    	adjust_influence[tau_influence_planet](eFACTION.Tau, 10, tau_influence_planet);
+                        if (p_type[tau_influence_planet]=="Forge"){
+                        	adjust_influence(eFACTION.Tau, -5, tau_influence_planet);
+                        }
+                    }
+                    
+                    if (tau_influence_chance<=3) and (tau_influence<70){
+                        adjust_influence(eFACTION.Tau, 30, tau_influence_planet);
+                        if (p_type[tau_influence_planet]=="Forge"){
+                        	adjust_influence(eFACTION.Tau, -25, tau_influence_planet);
+                        }
+                    }
+                }
+            }
+	        var _chosen =false;
+	        var _chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
+	        while (_chosen_id != "none"){
+	        	if (scr_orbiting_fleet(eFACTION.Imperium) != "none"){
+	        		_chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
+	        	} else {
+	        		break;
+	        	}
+	        }
+
+	        instance_activate_object(obj_star);   
+	        if (_chosen_id !="none"){
+	        	action_x=_chosen_id.x;
+	        	action_y=_chosen_id.y;
+	        	set_fleet_movement();
+	        	arrival_logic_finished = true;
+	        }
+        } 
+        
+     
+    }
+
+
     
     
     
@@ -940,7 +926,7 @@ function fleet_arrival_logic(){
     // If the connected planet is owned by orks then choose a random one within 400 not owned by orks
     
     
-    if (owner == eFACTION.Ork){
+    else if (owner == eFACTION.Ork){
     	if (is_orbiting()){
     		with (orbiting){
     			ork_fleet_arrive_target();
@@ -1031,9 +1017,9 @@ function merge_fleets(main_fleet, merge_fleet){
 	}
 	main_fleet.guardsmen += merge_fleet.guardsmen;
 
-	//This bit allseems a bit superfluouse but keepingjust in case it breaks something
+	//This bit allseems a bit superfluouse but keepingjust in case it breaks something]
+	var _is_orbiting = is_orbiting(merge_fleet);
 	switch(merge_fleet.owner){
-		var _is_orbiting = is_orbiting(merge_fleet);
 		case eFACTION.Tau:
 			obj_controller.tau_fleets--;
 			if (_is_orbiting){
