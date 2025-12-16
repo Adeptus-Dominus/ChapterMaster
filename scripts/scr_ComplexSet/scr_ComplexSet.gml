@@ -1329,23 +1329,15 @@ function ComplexSet(_unit) constructor {
 				break;
 			case "Terminator Armour":
 				add_group({
-					armour: spr_indomitus_complex,
-					left_arm: spr_indomitus_left_arm,
-					right_arm: spr_indomitus_right_arm,
 					backpack: spr_indomitus_backpack_variants,
 					chest_variants: spr_indomitus_chest_variants,
-					leg_variants: spr_indomitus_leg_variants,
-					head: spr_indomitus_head_variants,
 					belt: spr_indomitus_belt
 				});
 				armour_type = ArmourType.Terminator;
 				break;
 			case "Tartaros":
 				add_group({
-					chest_variants: spr_tartaros_chest,
 					mouth_variants: spr_tartaros_faceplate,
-					left_trim: spr_tartaros_left_trim,
-					right_trim: spr_tartaros_right_trim
 				});
 				armour_type = ArmourType.Terminator;
 				break;

@@ -263,7 +263,7 @@ global.weapons = {
 		"melee_hands": 2,
 		"ranged_hands": 1,
 		"ammo": 0,
-		"range": 1.5,
+		"range": 1,
 		"spli": 6,
 		"arp": 1,
 		"tags": ["power",]

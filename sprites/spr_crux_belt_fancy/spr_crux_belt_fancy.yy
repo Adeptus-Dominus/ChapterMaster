@@ -23,7 +23,7 @@
   ],
   "name":"spr_crux_belt_fancy",
   "nineSlice":null,
-  "origin":0,
+  "origin":9,
   "parent":{
     "name":"specialist",
     "path":"folders/Sprites/Marine Viewer/body_types/specialist.yy",
@@ -77,7 +77,7 @@
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":0,
+    "xorigin":-2,
     "yorigin":0,
   },
   "swatchColours":null,
