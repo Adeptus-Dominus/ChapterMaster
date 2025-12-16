@@ -790,6 +790,8 @@ function fleet_arrival_logic(){
     }
 
 
+    //interactions and merging with other already present fleets
+
     var old_x=x,old_y=y;
     var _other_orbiting = [];
     var _id = id;
