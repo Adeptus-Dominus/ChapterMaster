@@ -29,7 +29,7 @@ if (_khorne_cargo && owner=eFACTION.Chaos) {
 
 if (_is_orbiting) {
 	turns_static++;
-	if (turns_static>5 && owner==eFACTION.Ork){
+	if (turns_static>5 && owner == eFACTION.Ork){
 		if (!irandom(7)){
 			ork_fleet_move();
 			_is_orbiting=false;

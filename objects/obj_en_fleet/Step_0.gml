@@ -115,14 +115,7 @@ if (owner = eFACTION.Tyranids) and (trade_goods=""){
 }
 
 if (global.load>=0){
-    if (owner = eFACTION.Imperium) then sprite_index=spr_fleet_imperial;
-    if (owner = eFACTION.Mechanicus) then sprite_index=spr_fleet_mechanicus;
-    if (owner  = eFACTION.Inquisition) then sprite_index=spr_fleet_inquisition;
-    if (owner = eFACTION.Eldar) then sprite_index=spr_fleet_eldar;
-    if (owner = eFACTION.Ork) then sprite_index=spr_fleet_ork;
-    if (owner = eFACTION.Tau) then sprite_index=spr_fleet_tau;
-    if (owner = eFACTION.Tyranids) then sprite_index=spr_fleet_tyranid;
-    if (owner = eFACTION.Chaos) then sprite_index=spr_fleet_chaos;
+    choose_fleet_sprite_image();
 }
 if (image_index=0) then image_index=1;
 

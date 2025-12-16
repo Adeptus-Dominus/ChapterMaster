@@ -14,7 +14,19 @@ function distribute_strength_to_fleet(strength, fleet){
 	}
 }
 
+
+function standard_fleet_strength_calc(fleet = "none"){
+	if (fleet == "none"){
+		return capital_number + (frigate_number/2) + (escort_number/4);
+	} else { 
+		with (fleet){
+			return standard_fleet_strength_calc();
+		}
+	}
+}
+
 //to be run within with scope
+//@mixin obj_en_fleet
 function set_fleet_target(targ_x, targ_y, final_target){
 	action_x = targ_x;
 	action_y = targ_y;
@@ -708,7 +720,7 @@ function fleet_arrival_logic(){
         if (fleet_has_cargo("ork_warboss")) cancel=true;
         if (fleet_has_cargo("csm")) then cancel=true;
 
-        if (!cancel && ((trade_goods!="return" && owner!=eFACTION.Tyranids && owner!=eFACTION.Chaos) || (fleet_has_cargo("player_goods")))){
+        if (!cancel && ((trade_goods!="return" && owner!=eFACTION.Tyranids && owner!=eFACTION.Chaos) && (fleet_has_cargo("player_goods")))){
         	if (scr_efleet_arrive_at_trade_loc()){
         		exit;
         	}
@@ -794,7 +806,7 @@ function fleet_arrival_logic(){
     }
 
     var _fleet_strength = standard_fleet_strength_calc();
-    for (var i=0;i<array_length(_other_orbiting);i++){
+    for (var i=0;i<array_length(_other_orbiting) && is_orbiting();i++){
     	var _other_fleet = _other_orbiting[i];
 
 	    var _other_fleet_strength=standard_fleet_strength_calc(_other_fleet);
@@ -804,16 +816,16 @@ function fleet_arrival_logic(){
 
 	    var _attempt_merge = _same_owner && _other_fleet_strength + _fleet_strength <= 9;
 
-	    if (_same_owner && !_attempt_merge && owner==eFACTION){
-	    	var _faction_check = obj_controller.faction_status[eFACTION.Mechanicus]=="War"?1:2;
-	    	var _len = _faction_check == 1?3:4
+	    if (_same_owner && !_attempt_merge && owner==eFACTION.Tau){
+	    	var _faction_check = obj_controller.faction_status[eFACTION.Tau]=="War" ? 1 : 2;
+	    	var _len = _faction_check == 1 ? 3 : 4;
 	    	if (array_sum(orbiting.present_fleet,0,_faction_check,_len)>0){
 	    		_attempt_merge=true;
 	    	}
 
 	    }
 
-	    if (string_count("_her",trade_goods)=0){
+	    if (!string_count("_her",trade_goods)){
 	    	_attempt_merge = false;
 	    }
 
@@ -837,25 +849,31 @@ function fleet_arrival_logic(){
 	    //if fleet is damaged but existing fleet is too large to merge feck off elsewhere preferably somewhere friendly
 	    else if (_same_owner && (owner == eFACTION.Tau || (owner = eFACTION.Chaos && !csm))){// Move somewhere new
 
-	        var _chosen =false;
-	        var _chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
-	        while (_chosen_id != "none"){
-	        	if (scr_orbiting_fleet(eFACTION.Imperium) != "none"){
-	        		_chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
-	        	} else {
-	        		break;
-	        	}
-	        }
+	    	if (standard_fleet_strength_calc()<3){
 
-	        instance_activate_object(obj_star);   
-	        if (_chosen_id !="none"){
-	        	action_x=_chosen_id.x;
-	        	action_y=_chosen_id.y;
-	        	set_fleet_movement();
-	        	arrival_logic_finished = true;
-	        }
+		        var _chosen =false;
+		        var _chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
+		        while (_chosen_id != "none"){
+		        	if (scr_orbiting_fleet(eFACTION.Imperium) != "none"){
+		        		_chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
+		        	} else {
+		        		break;
+		        	}
+		        }
 
-	        //TODO somelogc to go find somewhere else if there are no avialable rebuild planets
+		        instance_activate_object(obj_star);   
+		        if (_chosen_id !="none"){
+		        	action_x=_chosen_id.x;
+		        	action_y=_chosen_id.y;
+		        	set_fleet_movement();
+		        	arrival_logic_finished = true;
+		        }
+
+		        //TODO somelogc to go find somewhere else if there are no avialable rebuild planets
+		    } else {
+
+	        	_chosen_id = nearest_star_with_ownership(x,y,[2,3,4,5,7],orbiting);
+	        }
 	    }
     }
 
@@ -910,7 +928,7 @@ function fleet_arrival_logic(){
 	        	set_fleet_movement();
 	        	arrival_logic_finished = true;
 	        }
-        } 
+        }
         
      
     }
@@ -980,6 +998,8 @@ function fleet_arrival_logic(){
         instance_activate_object(obj_star);
  
     }
+
+    show_debug_message($"fleet orbiting {instance_nearest(x,y,obj_star)} : {obj_controller.faction[owner]}: cur_targ {target}");
 }
 
 function choose_fleet_sprite_image(){
