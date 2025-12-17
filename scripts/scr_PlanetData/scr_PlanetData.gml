@@ -658,7 +658,7 @@ function PlanetData(planet, system) constructor{
         return _training_happend;
     };
 
-    static search_old_battle_grounds(){
+    static search_old_battle_grounds = function(){
         if (!has_feature(P_features.OldBattleGround)){
             exit;
         }
