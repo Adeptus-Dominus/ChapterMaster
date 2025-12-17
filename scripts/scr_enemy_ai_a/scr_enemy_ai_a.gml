@@ -526,7 +526,7 @@ function scr_enemy_ai_a() {
             					if (p_type[_run] == "Forge") {
 					                dispo[_run] -= 5; // 10 Disposition decrease for the planet govrnor if it's overrun by orks
 					                obj_controller.disposition[3] -= 5; // obj_controller.disposition[3] refer to the disposition of the toaster jocks.
-					            } else if (planet_feature_bool(p_feature[_run], P_features.Sororitas_Cathedral) or(p_type[_run] == "Shrine")) {
+					            } else if (planet_feature_bool(p_feature[_run], P_features.SororitasCathedral) or(p_type[_run] == "Shrine")) {
 					                dispo[_run] -= 10; // diso[_run] is the disposition of the planet. where _run refer to the planet that is currently running the code.
 					                obj_controller.disposition[5] -= 3; // obj_controller.disposition[2] refer to the disposition of the sororitas while 3 refer to mechanicus
 					            } else dispo[_run] -= 5;
@@ -747,7 +747,7 @@ function scr_enemy_ai_a() {
 					        if (p_type[_run] == "Forge") { //visited variable check whether the star has been visisted or not 1 for true 0 for false
 					            dispo[_run] -= 10; // 10 Disposition decrease for the planet govrnor if it's overrun by necrons
 					            obj_controller.disposition[3] -= 10; // 10 dis decrease for the faction mechanicus
-					        } else if (planet_feature_bool(p_feature[_run], P_features.Sororitas_Cathedral) or(p_type[_run] == "Shrine")) {
+					        } else if (planet_feature_bool(p_feature[_run], P_features.SororitasCathedral) or(p_type[_run] == "Shrine")) {
 					            dispo[_run] -= 10; // 10 Disposition decrease for the planet govrnor if it's overrun by necrons
 					            obj_controller.disposition[5] -= 5; // 5 dis decrease for the Nurses
 					        } else dispo[_run] -= 10;

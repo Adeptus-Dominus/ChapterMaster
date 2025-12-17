@@ -1,5 +1,5 @@
 enum P_features {
-			Sororitas_Cathedral,
+			SororitasCathedral,
 			NecronTomb,
 			Artifact, 
 			STCFragment,
@@ -135,7 +135,7 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 		cave_depth =irandom(3);//allow_multiple levels of caves, option to go deeper
 		planet_display = "Unexplored Cave Network";
 		break;
-	case P_features.Sororitas_Cathedral:
+	case P_features.SororitasCathedral:
 		player_hidden = 1;
 		planet_display = "Sororitas Cathedral";
 		break;
@@ -407,7 +407,7 @@ function scr_planetary_feature(planet_num) {
 			feat.player_hidden =0;
 			var numeral_n = planet_numeral_name(planet_num);
 			switch (feat.f_type){
-				case P_features.Sororitas_Cathedral:
+				case P_features.SororitasCathedral:
 					if (obj_controller.known[eFACTION.Ecclesiarchy]=0) then obj_controller.known[eFACTION.Ecclesiarchy]=1;
 				    var lop=$"Sororitas Cathedral discovered on {numeral_n}.";
 				    scr_alert("green","feature",lop,x,y);

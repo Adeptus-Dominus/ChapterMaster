@@ -281,7 +281,7 @@ function inquisitor_inspect_base(){
                 p_owner[cur_planet]=1;
             }
             if (p_type[cur_planet]=="Dead") and (array_length(p_upgrades[cur_planet])>0){
-                if (planet_feature_bool(p_feature[cur_planet], [P_features.Secret_Base,P_features.Arsenal,P_features.Gene_Vault])==0) /*and (string_count(".0|",p_upgrades[cur_planet])>0)*/{
+                if (planet_feature_bool(p_feature[cur_planet], [P_features.SecretBase,P_features.Arsenal,P_features.GeneVault])==0) /*and (string_count(".0|",p_upgrades[cur_planet])>0)*/{
                     yep=cur_planet;
                 }
             }

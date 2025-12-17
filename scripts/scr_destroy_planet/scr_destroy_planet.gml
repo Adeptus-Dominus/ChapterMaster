@@ -124,7 +124,7 @@ function scr_destroy_planet(destruction_method) {
             
             decare_war_on_imperium_audiences()
 
-            if (planet_feature_bool(you.p_feature[baid], P_features.Sororitas_Cathedral) == 1) {
+            if (planet_feature_bool(you.p_feature[baid], P_features.SororitasCathedral) == 1) {
                 obj_controller.disposition[5] -= 30;
             }
         } else if (you.p_owner[baid] == eFACTION.Imperium && (you.p_type[baid] == "Temperate" || you.p_type[baid] == "Desert")) {

@@ -453,7 +453,7 @@ function setup_star_planet_defualts(){
                         if (goo==0){
                             switch (ranb){
                                 case 1:
-                                    array_push(p_feature[i], new PlanetFeature(P_features.Sororitas_Cathedral))
+                                    array_push(p_feature[i], new PlanetFeature(P_features.SororitasCathedral))
                                     if (p_heresy[i]>10) then p_heresy[i]-=10;
                                     p_sisters[i]=choose(2,2,3);
                                     adjust_influence(eFACTION.Ecclesiarchy, (p_sisters[i]*10)-irandom(3), i)

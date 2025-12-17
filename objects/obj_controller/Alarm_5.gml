@@ -30,7 +30,7 @@ try_and_report_loop("chaos_spread", function(){
     if (faction_gender[eFACTION.Chaos]==1) and (faction_defeated[eFACTION.Chaos]==0) and (turn>=chaos_turn) then repeat(times){
         if (_star.p_type[plani]!="Dead") and (_star.planets>0) and (turn>=20){
             var cathedral=0;
-            if (planet_feature_bool(_star.p_feature[plani], P_features.Sororitas_Cathedral)==1) then cathedral=choose(0,1,1);
+            if (planet_feature_bool(_star.p_feature[plani], P_features.SororitasCathedral)==1) then cathedral=choose(0,1,1);
         
             if (cathedral=0){
                 if (_star.p_heresy[plani]>=0) and (_star.p_heresy[plani]<10){

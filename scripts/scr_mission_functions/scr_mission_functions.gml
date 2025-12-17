@@ -632,65 +632,6 @@ function deliver_trophy_mission_fleet_destroyed(){
 	);	
 }
 
-///@mixin FleetEvent
-function deliver_trophy_end_turn_check(){
-	show_debug_message($"evetn_Data  = {fleetevent_data}");
-	var _navy_fleet = get_fleet_uid(fleet_uid);
-	if (!instance_exists(_navy_fleet)){
-		deliver_trophy_mission_fleet_destroyed();
-		return;
-	}
-
-	var _ratio =0;
-	with (_navy_fleet){
-		_ratio = fleet_remaining_guard_ratio();
-	}
-
-	if (_ratio<=0){
-		scr_popup(
-			"Regiments Destroyed ", 
-			$"The guard Regiments from {fleetevent_data.system} serving in the imperial navy fleet have been annihilated wholesale there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
-		);	
-		return;		
-	}
-
-	if (is_orbiting(_navy_fleet)){
-		var _nearest_player = instance_at_location(_navy_fleet.x,_navy_fleet.y,obj_p_fleet);
-		if (instance_exists(_nearest_player)){
-			var _ships = fleet_full_ship_array(_nearest_player);
-			var _marine = fetch_unit_uid(fleetevent_data.trophy_owner);
-			var _present = _marine.is_at_location("", 0, _ships);
-			var _meet_point = _navy_fleet.orbiting;  
-			if (_present){
-				var _text = "{_marine.role(name)} is able to rendevous with the imperial navy at {_meet_point.name}."
-				_text += $" The guard regiments of {fleetevent_data.system} are overjoyed at the delivery of the trophy and find the beast that the head came from adorns many of the regiments banners.";
-				_text += $" While The task is for the most part thankless your chapters esteem has risen greatly with the exploits of {_marine.role(name)} spreading far and wide amoung guard regiments.";
-				var _roll = roll_dice_chapter(1, 100, "high");
-				if (_roll>30 && _roll<70){
-					//TODO would be cool to have this changed to be a guard specific piece of equipment
-					_text += "In return for your labour and in honour of your chapter the commander of the guard division has a brand new Rhino destined for the army diverted to your chapter";
-					scr_add_vehicle("Rhino");
-				} else if (_roll>=70 ){
-					var _wanted_types = ["Ice","Desert","Agri","Lava","Death"];
-					var _star = scr_get_stars(true,[],_wanted_types)[0];
-					_text += "During the concourse that follows with the fleet command your marines learn of a old battle ground discovered on {_star.name}.";
-					_text += "According too intel it appeared to be an old astartes battle ground from an unknown age, communications have been passed onto the adeptus mechanicus who will no doubt pick the site clean should they reach it befre you do";
-
-					var _planet = scr_get_planet_with_type(_wanted_types);
-					var _battle_ground = new NewPlanetFeature(P_features.AstartesBattleGround);
-
-					_battle_ground.player_hidden = false;
-
-					_star.add_feature(_planet,_battle_ground);
-				}
-				scr_popup(
-					"Trophy Delivered ", 
-					_text,
-				);					
-			}
-		}
-	}
-}
 
 
 //TODO allow most of these functions to be condensed and allow arrays of problems or planets and maybe increase filtering options

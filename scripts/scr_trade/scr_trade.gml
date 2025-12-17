@@ -226,7 +226,7 @@ function TradeAttempt(diplomacy) constructor{
 	            repeat(planets){
 	            	q+=1;
 	            	if (p_owner[q]=5) then ahuh=1;
-	                if (p_owner[q]<6) and (planet_feature_bool(p_feature[q],P_features.Sororitas_Cathedral) == 1) then ahuh=1;
+	                if (p_owner[q]<6) and (planet_feature_bool(p_feature[q],P_features.SororitasCathedral) == 1) then ahuh=1;
 	            }
 	            if (ahuh=1){
 	            	array_push(viable_faction_trade_stars, id);
