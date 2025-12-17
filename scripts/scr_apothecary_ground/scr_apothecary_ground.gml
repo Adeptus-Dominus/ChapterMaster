@@ -295,7 +295,7 @@ function apothecary_simple(){
 		 					_planet_data.search_old_battle_grounds(cur_units);
 		 				}
 
-		 				if (cur_tech_count){
+		 				if (_cur_tech_count){
 		 					_planet_data.recover_starship(cur_techs);
 		 				}
 		 				

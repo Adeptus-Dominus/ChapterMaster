@@ -161,7 +161,8 @@ function FeatureSelected(Feature, system, planet) constructor{
 			case P_features.OldBattleGround:
 				generic=true;
 				title = "Old Battlefield";
-				body = "The site of a previously unrecorded battle between {feature.faction1} and {feature.faction2} forces long forgotten\nUnload Marines to search Techmarines are advisable to help, it would be best any tech priests not be aware of such an operation it may create a conflict of interest";
+				body = $"The site of a previously unrecorded battle between {feature.faction1} and {feature.faction2} forces long forgotten\nUnload Marines to search Techmarines are advisable to help, it would be best any tech priests not be aware of such an operation it may create a conflict of interest";
+				break;
 			case P_features.STC_Fragment:
 				generic=true;
 				title = "STC Fragment";
@@ -364,7 +365,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 
 			draw_set_halign(fa_left);
 			draw_set_color(c_gray);
-			draw_text_ext(xx+10, yy+40,body,-1,w-20);
+			draw_text_ext(xx+10, yy+45,body,-1,w-20);
 		}
 		pop_draw_return_values();
 		return "done";

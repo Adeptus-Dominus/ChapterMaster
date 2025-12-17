@@ -428,7 +428,7 @@ function PurchaseButton(req) : UnitButtonObject() constructor {
     static draw = function(allow_click = true) {
         add_draw_return_values();
 
-        draw_sprite_ext(spr_requisition, 0, x1, y1, _scale, _scale, 0, c_white, 1);
+        draw_sprite_ext(spr_requisition, 0, x1, y1, scale, scale, 0, c_white, 1);
         var _but = draw_unit_buttons([x1 + (get_sprite_width(spr_requisition) * scale), y1, x2, y2], label, [1, 1], color,,, alpha);
         var _sh = sprite_get_height(spr_requisition);
         var _scale = (y2 - y1) / _sh;

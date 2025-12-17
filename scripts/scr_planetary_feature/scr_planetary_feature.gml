@@ -75,6 +75,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		faction2 = "imperium";
 		explore_size = irandom_range(1000, 10000);
 		explored = 0;
+		planet_display = "Old Battle Ground";
 		break;
 	case P_features.Secret_Base:
 		base_type = base_types.Lair;
@@ -236,7 +237,9 @@ function system_feature_bool(system, search_feature){
 	for (var sys =1; sys<5; sys++){
 		sys_bool = planet_feature_bool(system[sys], search_feature)
 		if (sys_bool==1){
-		break;}
+			sys_bool = sys;
+			break;
+		}
 	}
 	return sys_bool;
 }

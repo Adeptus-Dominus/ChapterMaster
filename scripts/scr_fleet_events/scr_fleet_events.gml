@@ -53,6 +53,7 @@ function FleetEvent(_event_data) constructor{
 		"deliver_trophy_mission_timed_out" : deliver_trophy_mission_timed_out,
 		"deliver_trophy_mission_fleet_destroyed" : deliver_trophy_mission_fleet_destroyed,
 		"deliver_trophy_end_turn_check" :deliver_trophy_end_turn_check,
+		"mech_fleet_explore_battle_grounds":mech_fleet_explore_battle_grounds
 	}
 
 

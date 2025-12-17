@@ -116,6 +116,10 @@ function PlanetData(planet, system) constructor{
         system.dispo[planet] = player_disposition;
     }
 
+    static collect_planet_group(group=SPECIALISTS_STANDARD,opposite=false,search_conditions = {companies:"all"}){
+        return(collect_role_group(group,[system.name,planet],opposite,search_conditions))
+    }
+
     static owner_faction_disposition = function(){
         return obj_controller.disposition[current_owner];
     }
@@ -1149,6 +1153,8 @@ function PlanetData(planet, system) constructor{
         
         var to_show=0,temp9="";t=-1;
 
+
+        //TODO makeeverything below calculated once and OOP
         var fit =  array_create(11, "");
         var planet_displays = [], i;
         var feat_count, _cur_feature;
@@ -1782,7 +1788,7 @@ function PlanetData(planet, system) constructor{
                         if (owner != eFACTION.Mechanicus){
                             continue;
                         }
-                        if (instance_exists(target) && target.id== _sys.id){
+                        if (instance_exists(target) && target.id == _sys.id){
                             _fleet_enroute = true;
                         }
                     }
@@ -1793,11 +1799,15 @@ function PlanetData(planet, system) constructor{
                         }
 
                         var _star = instance_nearest(_mech_fleet.x,_mech_fleet.y,obj_star);
-                        _mech_fleet.action_x = system.x;
-                        _mech_fleet.action_y = system.y;
-                        _mech_fleet.target = system;
                         var _time = get_player_fleet_intercept_time(system,10);
-                        _mech_fleet.set_movement(true,"move",);
+                        var  _sys = system;
+                        with (_mech_fleet){
+                            action_x = _sys.x;
+                            action_y = _sys.y;
+                            target = _sys;
+                            set_movement(true,"move",);
+                        }
+
                         scr_popup("Mechanicus Exploration", $"A Mechanicus Exploration fleet has set off from {_star.name} to explore the battle grounds of {name()}. It will arrive in aproximatly {_time} months time");
                     }
                 }
@@ -1808,6 +1818,7 @@ function PlanetData(planet, system) constructor{
 
 
 }
+
 
 
 

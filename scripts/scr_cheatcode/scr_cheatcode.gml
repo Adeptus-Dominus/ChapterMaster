@@ -471,7 +471,7 @@ function draw_planet_debug_features(){
 		},
 		{
 			e_num : P_features.OldBattleGround,
-			name : "Old  Battle Ground"
+			name : "Old Battle Ground"
 		},
 
 	]
@@ -486,7 +486,9 @@ function draw_planet_debug_features(){
 		draw_text(38, _y, _feat.name);
 		if (point_and_click([38, _y, 337,_y+20])){
 			var _new_feat = new NewPlanetFeature(_feat.e_num);
-			array_push(target.p_feature[obj_controller.selecting_planet], _new_feat);
+			_new_feat.imperium_known = true;
+			_new_feat.player_hidden = false;
+			target.add_feature(obj_controller.selecting_planet,_new_feat)
 		}
 	}
 }

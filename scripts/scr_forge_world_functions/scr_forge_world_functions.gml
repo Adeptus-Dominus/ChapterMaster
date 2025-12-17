@@ -28,7 +28,11 @@ function imperial_navy_fleet_construction(){
 		//TODO make standadised system for collating active forge worlds as we  do this a lot		
 		var _forge_systems = get_imperium_forge_systems();
 
-		for (var i=array_length(_forge_systems);i>=0;i--){
+		if (array_length(_forge_systems) == 0 && obj_controller.faction_status[eFACTION.Imperium] != "War"){
+			scr_alert("red", "forge_world", "No active uncontested forge worlds imperial navy unable to rebuild at speed");
+		}
+
+		for (var i=array_length(_forge_systems)-1;i>=0;i--){
 			var _sys = _forge_systems[i];
 			var good=true;
 			for(var o=1; o<=_sys.planets; o++) {
@@ -47,16 +51,16 @@ function imperial_navy_fleet_construction(){
 			}
 		}
 	// After initial navy fleet construction fleet growth is handled in obj_en_fleet.alarm_5
-		if (array_length(forge_systems)){
+		if (array_length(_forge_systems)){
 		    var construction_forge;
-		    construction_forge = array_random_element(forge_systems);
+		    construction_forge = array_random_element(_forge_systems);
 		    build_new_navy_fleet(construction_forge)
 		}
 	}
 }
 
 function get_imperium_forge_systems(){
-	var forge_systems = [];
+	var _forge_systems = [];
     with(obj_star){
         var good=false;
         for(var o=1; o<=planets; o++) {
@@ -74,7 +78,7 @@ function get_imperium_forge_systems(){
 				
 					var enemy_fleet_count = array_reduce(enemy_fleets, function(prev, curr) {
 						return prev + present_fleet[curr]
-					});
+					}, 0);
 
 					good = enemy_fleet_count<=0;
             }
@@ -86,10 +90,10 @@ function get_imperium_forge_systems(){
         	good = x<=room_width && y<=room_height;
         }
         if (good){
-        	array_push(forge_systems, id);
+        	array_push(_forge_systems, id);
         }
     }
-    return forge_systems;
+    return _forge_systems;
 }
 
 function build_planet_defence_fleets(){

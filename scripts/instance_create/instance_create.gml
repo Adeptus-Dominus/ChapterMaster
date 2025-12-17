@@ -28,3 +28,20 @@ function instance_at_location(xx,yy,obj_type){
 	var _nearest = instance_nearest(xx, yy, obj_type);
 	return (_nearest.x == xx && _nearest.y == yy) ? _nearest : noone;
 }
+
+function instance_distance(instance_1,instance_2){
+	return point_distance(instance_1.x, instance_1.y, instance_2.x, instance_2.y)
+}
+
+function nearest_instance(instance_array,check_instance){
+	var _inst = instance_array[0];
+	var _inst_dist = instance_distance(_inst,check_instance);
+	for (var i=1;i<array_length(instance_array);i++){
+		var _cur_inst = instance_array[i];
+		var _cur_inst_dist = instance_distance(_cur_inst,check_instance);
+		if (_cur_inst_dist<_inst_dist){
+			_inst_dist = _cur_inst_dist;
+			_inst = _cur_inst;
+		}
+	}
+}

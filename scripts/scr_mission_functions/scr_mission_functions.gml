@@ -450,34 +450,116 @@ function complete_train_forces_mission(targ_planet, problem_index){
 	 }
 }
 
+function get_beast_rumor(_planet_type, _beast_name){
+    switch (_planet_type){
+        case "Feudal":
+            return choose(
+                $"Peasants whisper prayers at night, for {_beast_name} walks the old forest paths.",
+                $"Knights of the realm have failed to slay {_beast_name}, their banners now hang in tatters.",
+                $"Church bells toll whenever {_beast_name} is sighted."
+            );
+
+        case "Ice":
+            return choose(
+                $"The ice cracks when {_beast_name} hunts.",
+                $"Entire hab-blocks were found frozen solid in the wake of {_beast_name}.",
+                $"The wind carries the howls of {_beast_name} across the tundra."
+            );
+
+        case "Death":
+            return choose(
+                $"Nothing lives long where {_beast_name} roams.",
+                $"Scavenger clans refuse entire regions claimed by {_beast_name}.",
+                $"Even apex predators flee the shadow of {_beast_name}."
+            );
+    }
+
+    return "";
+}
+
+
+function get_beast_name_by_planet_type(_planet_type){
+    switch (_planet_type){
+        case "Feudal":
+            return choose(
+                "The Thorn-King",
+                "Blackwood Stalker",
+                "Crowned Razorback",
+                "Cathedral Stag",
+                "Old Bloodfather",
+                "The Green Tyrant"
+            );
+
+        case "Ice":
+            return choose(
+                "The Frostwyrm",
+                "Glacial Leviathan",
+                "The Howling Pale",
+                "Rimehorn Colossus",
+                "White Death Ursid",
+                "Icebound Devourer"
+            );
+
+        case "Death":
+            return choose(
+                "The Charnel Leviathan",
+                "God-Eater Beast",
+                "Void-Spined Terror",
+                "Apex Predatrix",
+                "Emperor’s Bane",
+                "The Unending Maw"
+            );
+    }
+
+    return "Unknown Horror";
+}
+
+
+function format_beast_trophy(_beast_name){
+    return choose(
+        $"The Severed Crown of {_beast_name}",
+        $"The Fanged Skull of {_beast_name}",
+        $"The Head of {_beast_name}",
+        $"The Blackened Remains of {_beast_name}"
+    );
+}
+
+
 function init_beast_hunt_mission(planet, star, mission_slot){
-	var problems_data = star.p_problem_other_data[planet]
-	var mission_data = problems_data[mission_slot];
+	var _problems_data = star.p_problem_other_data[planet];
+	var mission_data = _problems_data[mission_slot];
 	if (mission_data.stage == "preliminary"){
 		var numeral_name = planet_numeral_name(planet, star);
 		mission_data.stage = "active";
 		var _mission_length=(irandom_range(2,5));
 		star.p_timer[planet][mission_slot] = _mission_length;
+		star.p_problem_other_data = {};
 	    //pop.image="ancient_ruins";
 	    var gar_pop=instance_create(0,0,obj_popup);
 	    //TODO some new universal methods for popups
-	    gar_pop.title=$"Marines assigned to hunt beasts around {numeral_name}";
-	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.";
+
+	    var _beast_name = get_beast_name_by_planet_type(star.p_type[planet]);
+	    gar_pop.title=$"Marines assigned to hunt {_beast_name} beasts around {numeral_name}";
+	    gar_pop.text=$"The governor thanks you for lending your warriors to a task beneath their station — yet one whose outcome will be remembered. And that your marines shall find the  {_beast_name} a suitable challenge. As things stand rumours say {get_beast_rumor(_beast_name, star.p_type[planet])}";
 	    //pip.image="event_march"
 	    gar_pop.add_option({
 	    	str1: "Happy Hunting"
 	    });
         gar_pop.image="";
         gar_pop.cooldown=8;
+        gar_pop.pop_data.beast_name = _beast_name;
+        mission_data.beast_name = _beast_name;
         obj_controller.cooldown=20;	    
 	    scr_event_log("",$"Beast hunters deployed to {numeral_name} for {_mission_length} months.", star.name);
 	}	
 }
 
 
+///@mixin obj_star
 function complete_beast_hunt_mission(targ_planet, problem_index){
     var planet = new PlanetData(targ_planet, self);
     if (problem_has_key_and_value(targ_planet,problem_index,"stage","active")){
+    	var _problem_data = p_problem_other_data[targ_planet][problem_index];
         _mission_string = "";
         var man_conditions = {
             "job": "hunt_beast",
@@ -535,7 +617,8 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 	        	trophy_owner : array_random_element(_successful_hunters),
 	        	system: self.name,
 	        	planet : targ_planet,
-	        	target_fleet : array_random_element(_navy_fleets)
+	        	target_fleet : array_random_element(_navy_fleets),
+	        	beast :_problem_data.beast_name,
 	        };
 
 	        var _options = {
@@ -563,7 +646,10 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
     }	
 }
 function init_deliver_trophy_mission(){
-	text = $"After your marines return there is a great feast to honour them. Much fanfare is made of the great trophy {pop_data.trophy_owner.name_role()} bears, a great monstrous head as tall as he is that the governor proclaims must be the largest of it's kind and the momst fearsome beast in the sector.";
+	pop_data.trophy_name = format_beast_trophy(pop_data.beast);
+	text = $"Much fanfare is made of the great trophy {pop_data.trophy_owner.name_role()} bears: {pop_data.trophy_name}.";
+	text += $" The governor proclaims it proof that {_beast_name} was the most fearsome predator in the sector.";
+
 
 	text += $"\n\nAn astropathic message is later recieved from the Commander of an Imperial Navy fleet explaining that his fleet is currrently home to the {irandom_numeral(100)},{irandom_numeral(100)} and {irandom_numeral(100)} {pop_data.system} Regiments and pleads that the trophy be handed over to his fleet in order to boost the moral of the regiments and fleet in general";
 
@@ -631,6 +717,17 @@ function deliver_trophy_mission_fleet_destroyed(){
 		$"With the Imperial Navy fleet containing the regiments from {fleetevent_data.system} destroyed there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
 	);	
 }
+
+function get_beast_epithet(_planet_type){
+    switch (_planet_type){
+        case "Feudal": return "The King-Slayer";
+        case "Ice":    return "The Pale Reaper";
+        case "Death":  return "The Emperor’s Fang";
+    }
+    return "";
+}
+
+
 
 ///@mixin FleetEvent
 function deliver_trophy_end_turn_check(){

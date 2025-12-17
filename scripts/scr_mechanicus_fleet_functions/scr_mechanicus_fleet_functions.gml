@@ -20,3 +20,32 @@ function spawn_mechanicus_explore_fleet(){
 
 	return _fleet;
 }
+
+///@mixin FleetEvent
+function mech_fleet_explore_battle_grounds(){
+	var _navy_fleet = get_fleet_uid(fleet_uid);
+
+	if (!is_orbiting(_navy_fleet)){
+		return;
+	}
+
+	var _has_battle = system_feature_bool(orbiting.p_feature,P_features.OldBattleGround);
+	if (_has_battle){
+		var _p_data = orbiting.system_datas[_has_battle];
+		_p_data.refresh_data();
+	} else{
+		return;
+	}
+
+	var _battle_ground = _p_data.get_features(P_features.OldBattleGround)[0];
+
+	if (_battle_ground.explored == 0){
+		var _text = $"The Mechanicus have arrived on {_p_data.name()} It will now be impossible to access the site without Mechanicus surveillance any potential rescources will now be fully put towards their aimsin service of the Ommnissiah";
+		scr_popup($"Mechanicus Scavange {_p_data.name()}")
+	} else {
+		var _marines = _p_data.collect_planet_group("all");
+		if (array_length(_marines)){
+			if ()
+		}
+	}
+}

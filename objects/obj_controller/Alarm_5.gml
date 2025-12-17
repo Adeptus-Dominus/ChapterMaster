@@ -135,7 +135,12 @@ if (scr_has_adv("Tech-Scavengers")){
         scr_alert("","loot",tix,0,0);
     }
 }
-imperial_navy_fleet_construction();
+
+try{
+    imperial_navy_fleet_construction();
+}catch(_exception){
+    handle_exception(_exception);
+}
 
 // ** Adeptus Mechanicus Geneseed Tithe **
 if (gene_tithe==0) and (faction_status[eFACTION.Imperium]!="War"){

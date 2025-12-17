@@ -14,11 +14,12 @@ var show=name;
 if (global.cheat_debug){
     show = $"{name}";
     for (var i=1;i<=planets;i++){
-        for (p=0;p<array_length(p_problem);p++){
+        for (p=0;p<array_length(p_problem[i]);p++){
             show  += $"\n{p_problem[i][p]} : {p_problem[i][p]}";
         }
     }
 }
+
 scale = min(camera_get_view_width(view_camera[0])/global.default_view_width, 2.4);
 draw_set_color(c_white);
 draw_set_alpha(0.25);
