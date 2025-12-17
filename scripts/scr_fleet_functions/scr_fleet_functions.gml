@@ -704,7 +704,7 @@ function fleet_arrival_logic(){
         if (fleet_has_cargo("ork_warboss")) cancel=true;
         if (fleet_has_cargo("csm")) then cancel=true;
 
-        if (!cancel && ((trade_goods!="return" && owner!=eFACTION.Tyranids && owner!=eFACTION.Chaos) || (fleet_has_cargo("player_goods")))){
+        if (!cancel && ((trade_goods!="return" && owner!=eFACTION.Tyranids && owner!=eFACTION.Chaos) && (fleet_has_cargo("player_goods")))){
         	if (scr_efleet_arrive_at_trade_loc()){
         		exit;
         	}
