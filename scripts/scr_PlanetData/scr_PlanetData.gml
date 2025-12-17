@@ -658,6 +658,15 @@ function PlanetData(planet, system) constructor{
         return _training_happend;
     };
 
+    static search_old_battle_grounds(){
+        if (!has_feature(P_features.OldBattleGround)){
+            exit;
+        }
+
+        var _battle = get_features(P_features.OldBattleGround)[0];
+    }
+
+
     static recover_starship = function(techs){
     	try {
 			var engineer_count = array_length(techs);
@@ -1773,7 +1782,7 @@ function PlanetData(planet, system) constructor{
                         if (owner != eFACTION.Mechanicus){
                             continue;
                         }
-                        if (instance_exists(target) &&target.id== _sys.id){
+                        if (instance_exists(target) && target.id== _sys.id){
                             _fleet_enroute = true;
                         }
                     }
