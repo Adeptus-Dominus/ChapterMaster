@@ -119,7 +119,7 @@ function add_option(option, if_empty = false,use_default_option = true){
         }
     }
     if (is_string(option)){
-    	option = {st1:option}
+    	option = {str1:option}
     }
     if (is_array(option)){
         for (var i=0;i<array_length(option);i++){

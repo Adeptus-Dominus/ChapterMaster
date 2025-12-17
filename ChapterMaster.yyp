@@ -1556,6 +1556,7 @@
     {"id":{"name":"spr_rocket_ork","path":"sprites/spr_rocket_ork/spr_rocket_ork.yy",},},
     {"id":{"name":"spr_rocket_whirl","path":"sprites/spr_rocket_whirl/spr_rocket_whirl.yy",},},
     {"id":{"name":"spr_rocket","path":"sprites/spr_rocket/spr_rocket.yy",},},
+    {"id":{"name":"spr_roman_centurian_crest_shadows","path":"sprites/spr_roman_centurian_crest_shadows/spr_roman_centurian_crest_shadows.yy",},},
     {"id":{"name":"spr_roman_centurian_crest","path":"sprites/spr_roman_centurian_crest/spr_roman_centurian_crest.yy",},},
     {"id":{"name":"spr_roman_cloak","path":"sprites/spr_roman_cloak/spr_roman_cloak.yy",},},
     {"id":{"name":"spr_roman_tabbard","path":"sprites/spr_roman_tabbard/spr_roman_tabbard.yy",},},
