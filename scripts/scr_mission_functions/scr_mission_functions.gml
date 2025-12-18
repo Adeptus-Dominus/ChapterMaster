@@ -557,9 +557,9 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 
 ///@mixin obj_star
 function complete_beast_hunt_mission(targ_planet, problem_index){
-    var planet = new PlanetData(targ_planet, self);
+    var _planet = new PlanetData(targ_planet, self);
     if (problem_has_key_and_value(targ_planet,problem_index,"stage","active")){
-    	var _problem_data = p_problem_other_data[targ_planet][problem_index];
+    	var _problem_data = problems_data[problem_index];
         _mission_string = "";
         var man_conditions = {
             "job": "hunt_beast",
@@ -619,6 +619,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 	        	planet : targ_planet,
 	        	target_fleet : array_random_element(_navy_fleets),
 	        	beast :_problem_data.beast_name,
+	        	system_type : _planet.planet_type;
 	        };
 
 	        var _options = {
@@ -761,7 +762,8 @@ function deliver_trophy_end_turn_check(){
 			if (_present){
 				var _text = "{_marine.role(name)} is able to rendevous with the imperial navy at {_meet_point.name}."
 				_text += $" The guard regiments of {fleetevent_data.system} are overjoyed at the delivery of the trophy and find the beast that the head came from adorns many of the regiments banners.";
-				_text += $" While The task is for the most part thankless your chapters esteem has risen greatly with the exploits of {_marine.name_role()} spreading far and wide amoung guard regiments.";
+				var _marine_epithet = get_beast_epithet(fleetevent_data.planet_type);
+				_text += $" While The task is for the most part thankless your chapters esteem has risen greatly with the exploits of {_marine.name_role()} spreading far and wide amoung guard regiments and has garnered the epithet {_marine_epithet}.";
 				var _roll = roll_dice_chapter(1, 100, "high");
 				if (_roll>30 && _roll<70){
 					//TODO would be cool to have this changed to be a guard specific piece of equipment
