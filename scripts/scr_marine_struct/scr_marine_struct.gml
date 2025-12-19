@@ -820,7 +820,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return "";
     };
 
-    static add_epithet(epithet){
+    static add_epithet = function(epithet){
+        if (is_string(epithet)){
+            epithet = {
+                title : epithet,
+                story : "",
+            }
+        }
         array_push(epithets,epithet);
     }
 
@@ -2004,7 +2010,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     }
 
     //quick way of getting name and role combined in string
-    static name_role = function() {
+    static name_role = function(include_epithet = true) {
         var temp_role = role();
         if (squad != "none") {
             if (struct_exists(obj_ini.squad_types[$ obj_ini.squads[squad].type], temp_role)) {
@@ -2014,9 +2020,12 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 }
             }
         }
+
         var _name = "{temp_role} {name()}";
-        if (array_length(epithest)){
-            _name += $" {epithets[0]}";
+        if (include_epithet){
+            if (array_length(epithets)){
+                _name += $" {epithets[0].title}";
+            }
         }
         return string("{0} {1}", temp_role, name());
     };

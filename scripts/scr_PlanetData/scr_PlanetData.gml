@@ -116,7 +116,7 @@ function PlanetData(planet, system) constructor{
         system.dispo[planet] = player_disposition;
     }
 
-    static collect_planet_group(group=SPECIALISTS_STANDARD,opposite=false,search_conditions = {companies:"all"}){
+    static collect_planet_group = function(group=SPECIALISTS_STANDARD,opposite=false,search_conditions = {companies:"all"}){
         return(collect_role_group(group,[system.name,planet],opposite,search_conditions))
     }
 

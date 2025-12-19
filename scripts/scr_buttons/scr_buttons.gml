@@ -69,6 +69,7 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor{
     tooltip = "";
     max_width = -1;
     scale_text=false;
+    scale = 1;
 
     move_data_to_current_scope(data);
 
@@ -91,7 +92,8 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor{
                 h = string_height(text) * scale;
             }
         } else {
-            w = string_width(text);
+            w = string_width(text) * scale;
+            h = string_height(text) * scale;
         }
 
         pop_draw_return_values();

@@ -446,6 +446,22 @@ function reset_manage_unit_constants(unit){
     unit_manage_image = unit.draw_unit_image();
 
     temp[122] = unit.handle_stat_growth();
+
+    var _string_data = {
+        colour : #50a076,
+        scale : 0.7,
+        halign :fa_center,
+        font :fnt_40k_30b,
+        scale_text :true,
+        max_width : 250,
+    };
+
+    var _name=unit.name();
+    if (array_length(unit.epithets)){
+        _name += unit.epithets[0].title;
+    }
+    unit_manage_constants.name = new ReactiveString(_name,0,0,_string_data);
+
     /*if (man[sel]="vehicle"){
     // TODO
 }*/
@@ -706,8 +722,12 @@ function draw_sprite_and_unit_equip_data(){
             draw_set_font(fnt_40k_14b);
             draw_text_transformed_outline(_name_box.x1, _name_box.y1, _name_box.text1, 1, 1, 0);
             draw_text_transformed_outline(_name_box.x1, _name_box.y2, _name_box.text2, 1, 1, 0);
-            draw_set_font(fnt_40k_30b);
-            draw_text_transformed_outline(_name_box.x1, _name_box.y3, _name_box.text3, 0.7, 0.7, 0);
+
+            unit_manage_constants.name.update({
+                x1: xx + 402,
+                y1: yy + 76,
+            });
+            unit_manage_constants.name.draw();
 
 
             // Draw unit info

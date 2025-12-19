@@ -474,7 +474,7 @@ function get_beast_rumor(_planet_type, _beast_name){
             );
     }
 
-    return "";
+    return $"{_beast_name} is the most fesarsome fauna in the entire segment according to locals";
 }
 
 
@@ -511,7 +511,7 @@ function get_beast_name_by_planet_type(_planet_type){
             );
     }
 
-    return "Unknown Horror";
+    return "Glistening Horror";
 }
 
 
@@ -533,14 +533,13 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 		mission_data.stage = "active";
 		var _mission_length=(irandom_range(2,5));
 		star.p_timer[planet][mission_slot] = _mission_length;
-		star.p_problem_other_data = {};
 	    //pop.image="ancient_ruins";
 	    var gar_pop=instance_create(0,0,obj_popup);
 	    //TODO some new universal methods for popups
 
 	    var _beast_name = get_beast_name_by_planet_type(star.p_type[planet]);
-	    gar_pop.title=$"Marines assigned to hunt {_beast_name} beasts around {numeral_name}";
-	    gar_pop.text=$"The governor thanks you for lending your warriors to a task beneath their station — yet one whose outcome will be remembered. And that your marines shall find the  {_beast_name} a suitable challenge. As things stand rumours say {get_beast_rumor(_beast_name, star.p_type[planet])}";
+	    gar_pop.title=$"Hunt {_beast_name} beasts around {numeral_name}";
+	    gar_pop.text=$"The governor thanks you for lending your warriors to a task beneath their station — yet one whose outcome will be remembered. And that your marines shall find the  {_beast_name} a suitable challenge. As things stand rumours say {get_beast_rumor(star.p_type[planet])}";
 	    //pip.image="event_march"
 	    gar_pop.add_option({
 	    	str1: "Happy Hunting"
@@ -559,7 +558,7 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 function complete_beast_hunt_mission(targ_planet, problem_index){
     var _planet = new PlanetData(targ_planet, self);
     if (problem_has_key_and_value(targ_planet,problem_index,"stage","active")){
-    	var _problem_data = problems_data[problem_index];
+    	var _problem_data = _planet.problems_data[problem_index];
         _mission_string = "";
         var man_conditions = {
             "job": "hunt_beast",
@@ -619,7 +618,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 	        	planet : targ_planet,
 	        	target_fleet : array_random_element(_navy_fleets),
 	        	beast :_problem_data.beast_name,
-	        	system_type : _planet.planet_type;
+	        	planet_type : _planet.planet_type,
 	        };
 
 	        var _options = {
@@ -649,7 +648,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 function init_deliver_trophy_mission(){
 	pop_data.trophy_name = format_beast_trophy(pop_data.beast);
 	text = $"Much fanfare is made of the great trophy {pop_data.trophy_owner.name_role()} bears: {pop_data.trophy_name}.";
-	text += $" The governor proclaims it proof that {_beast_name} was the most fearsome predator in the sector.";
+	text += $" The governor proclaims it proof that {pop_data.beast} was the most fearsome predator in the sector.";
 
 
 	text += $"\n\nAn astropathic message is later recieved from the Commander of an Imperial Navy fleet explaining that his fleet is currrently home to the {irandom_numeral(100)},{irandom_numeral(100)} and {irandom_numeral(100)} {pop_data.system} Regiments and pleads that the trophy be handed over to his fleet in order to boost the moral of the regiments and fleet in general";

@@ -527,11 +527,14 @@ function draw_planet_debug_problems(){
 					case "deliver_trophy":
 						var _unit = fetch_unit(scr_random_marine("",0));
 						var _navy_fleets = get_imperial_navy_fleets();
+						var _plan_type = target.p_type[obj_controller.selecting_planet];
 						var _pop_data = {
 				        	trophy_owner : _unit,
 				        	system: target.name,
 				        	planet : obj_controller.selecting_planet,
-				        	target_fleet : array_random_element(_navy_fleets)							
+				        	target_fleet : array_random_element(_navy_fleets),
+				        	beast : get_beast_name_by_planet_type(_plan_type)	,
+				        	planet_type :_plan_type	,		
 						}
 
 						var _pop = instance_create(0,0,obj_popup);

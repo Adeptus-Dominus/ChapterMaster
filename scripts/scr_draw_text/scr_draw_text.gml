@@ -62,16 +62,20 @@ function draw_text_glow_transformed(_x, _y, _text, _text_scale = [1,1], _angle =
 
 /// @function draw_text_outline
 /// @description This function will draw text in a similar way to draw_text(), only now the text will have an outline that may improve readability.
-function draw_text_outline(_x, _y, _text, _outl_col=c_black, _text_col=-1){
+function draw_text_outline(_x, _y, _text, _outl_col=c_black, _text_col=-1,scale =1){
     var _cur_color = draw_get_color();
     draw_set_color(_outl_col);
-    draw_text(_x-1.5, _y, _text);
-    draw_text(_x+1.5, _y, _text);
-    draw_text(_x, _y-1.5, _text);
-    draw_text(_x, _y+1.5, _text);
-    if (_text_col != -1) draw_set_color(_text_col);
-    else draw_set_color(_cur_color);
-    draw_text(_x, _y, _text);
+    draw_text_transformed(_x-1.5, _y, _text, scale, scale, 0);
+    draw_text_transformed(_x+1.5, _y, _text, scale, scale, 0);
+    draw_text_transformed(_x, _y-1.5, _text, scale, scale, 0);
+    draw_text_transformed(_x, _y+1.5, _text, scale, scale, 0);
+    if (_text_col != -1){
+        draw_set_color(_text_col);
+    }
+    else{
+        draw_set_color(_cur_color);
+    }
+    draw_text_transformed(_x, _y, _text,scale, scale, 0);
     draw_set_color(_cur_color);
 }
 
