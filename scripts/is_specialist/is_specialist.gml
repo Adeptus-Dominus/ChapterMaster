@@ -275,6 +275,7 @@ function SearchConditions(data) constructor{
 	location = "";
 	max_wanted = 0;
 	companies = "all";
+	allegiance = "";
 
 	static update_constants = function(data){
 		move_data_to_current_scope(data);
@@ -302,54 +303,99 @@ function SearchConditions(data) constructor{
 
 	update_constants(data);
 
-	static evaluate = function(unit){
-		if (unit.name()==""){
-			return false;
-		}
+	static oposite_switch = function(val){
+		return opposite ? !val : val;
+	}
+
+	static company_evaluate = function(){
+		var _add = true;
 		if (search_companies){
 			if (search_multiple_companies){
 				if (!array_contains(_wanted_companies, unit.company)){
-					return false;
+					_add = false;
 				}
 			} else {
 				if (_wanted_companies != unit.company){
-					return false;
+					_add = false;
 				}
 			}
+			_add = oposite_switch(_add);
 		}
 
-		var _add = false;
+		return _add;
+	}
+
+	static group_evaluate = function(){
+
+		var _add = true;
 		if (group!="all"){
 			var _group = group;
 			if (group_is_array){
 				if (group_search_heads) {
-					_is_special_group = unit.IsSpecialist(_group[0], _group[1], _group[2]);
+					_add = unit.IsSpecialist(_group[0], _group[1], _group[2]);
 				} else {
-					_is_special_group = unit.IsSpecialist(_group[0], _group[1]);
+					_add = unit.IsSpecialist(_group[0], _group[1]);
 				}
 			} else {
-				_is_special_group = unit.IsSpecialist(_group);
+				_add = unit.IsSpecialist(_group);
 			}
-		} else {
-			_is_special_group = true;
+			_add = oposite_switch(_add);
 		}
-	    if ((_is_special_group && !opposite) || (!_is_special_group && opposite)){
-	    	if (location==""){
-	    		_add=true;
-	   		} else if (!complex_location){
+		return _add;
+	}
+
+	static location_evaluate = function(){
+		var _add = true;
+		if (location!=""){
+	   		if (!complex_location){
 	       		_add=unit.is_at_location(location);
 	       	} else {
 	       		_add=unit.is_at_location(location[0], location[1], location[2]);
 	       	}
-	    }
+	       	_add = oposite_switch(_add);
+		}
+
+		return _add;
+	}
+
+	static checks_order = [
+		company_evaluate,
+		group_evaluate,
+		location_evaluate
+	];
+
+
+	static evaluate = function(unit){
+		self.unit = unit;
+		if (unit.name()==""){
+			return false;
+		}
+
+		var _add = true;
+		for (var i=0;i<array_length(checks_order);i++){
+			_add = checks_order[i]();
+			if (!_add){
+				return false;
+			}
+		}
+
 	    if (_add){
 	    	if (struct_exists(self, "stat")){
-	    		_add = stat_valuator(stat, unit);
-	    	}
-	    	if (struct_exists(self,"job")){
-	    		_add = (unit.assignment() == job);
+	    		_add = oposite_switch(stat_valuator(stat, unit));
 	    	}
 	    }
+
+	    if (_add){
+	    	if (struct_exists(self,"job")){
+	    		_add = oposite_switch((unit.assignment() == job));
+	    	});
+		}
+
+		if (_add){
+			if (allegiance != ""){
+				_add = oposite_switch(unit.allegiance == allegiance);
+			}
+		}
 
 	    if (max_wanted > 0 && _add){
 	    	found++;
@@ -381,6 +427,26 @@ function UnitGroup(units) constructor{
 		}
 
 		return false;
+	}
+
+	static has_base_group = function(group){
+		for (var i=0;i<array_length(units);i++){
+			if (units.base_group == group){
+				return true;
+			}
+		}
+
+		return false;		
+	}
+
+	static has_allegiance = function(allegiance){
+		for (var i=0;i<array_length(units);i++){
+			if (units.allegiance == allegiance){
+				return true;
+			}
+		}
+
+		return false;		
 	}
 
 	static get_from = function(search_conditions = {}){

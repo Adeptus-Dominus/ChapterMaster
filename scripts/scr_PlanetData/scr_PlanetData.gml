@@ -667,12 +667,35 @@ function PlanetData(planet, system) constructor{
             exit;
         }
 
-        var _units = UnitGroup(units);
+        
+
+        var _marines = [];
+        for (var i=0;i<array_length(_units);i++){
+            if (is_struct(_units[i])){
+                array_push(_marines,_units[i]);
+            }
+        }
+        var _units = UnitGroup(_marines);
         var _battle = get_features(P_features.OldBattleGround)[0];
 
         var _techmarines = _units.get_from({
             group : SPECIALISTS_TECHS
         });
+
+
+        //snitch_time
+        if (_techmarines.has_role("Techpriest")){
+            var _priests = _techmarines.get_from({
+                allegiance : "mechanicus"
+            });
+
+            if (array_length(_priests) > 0){
+                text = "";
+                scr_popup("Conflict of Interest",)
+            }
+        }
+
+
     }
 
 
@@ -1583,16 +1606,16 @@ function PlanetData(planet, system) constructor{
                 var find_nid_chance = 50 - planet_garrison.total_garrison;
                 if (population_influences[eFACTION.Tyranids] > 50) {
                     var find_cult_chance = irandom(50);
-                    var alert_text = $"A hidden Genestealer Cult in {name} Has suddenly burst forth from hiding!";
+                    var alert_text = $"A hidden Genestealer Cult on {name()} Has suddenly burst forth from hiding!";
                     if (planet_garrison.garrison_force) {
-                        var alert_text = $"A hidden Genestealer Cult in {name} Has been discovered by marine garrisons!";
+                        var alert_text = $"A hidden Genestealer Cult on {name()} Has been discovered by marine garrisons!";
                         find_cult_chance -= 25;
                     }
                     if (find_cult_chance < 1) {
                         cult.hiding = false;
                         scr_popup("System Lost", alert_text, "Genestealer Cult", "");
                         set_new_owner(eFACTION.Tyranids);
-                        scr_event_log("red", $"A hidden Genestealer Cult in {name} {i} has Started a revolt.", name);
+                        scr_event_log("red", $"A hidden Genestealer Cult on {name()} has Started a revolt.", system.name);
                         edit_forces(eFACTION.Tyranids,1);
                     }
                 }
@@ -1715,12 +1738,12 @@ function PlanetData(planet, system) constructor{
                             }
 
                             scr_alert("purple", "owner", tixt, x, y);
-                            scr_event_log("purple", tixt, name);
+                            scr_event_log("purple", tixt, system.name);
                         }
                     } else {
                         tixt = $"Marine garrisons prevents rebellion on {name()}";
                         scr_alert("green", "owner", tixt, x, y);
-                        scr_event_log("green", tixt, name);
+                        scr_event_log("green", tixt, system.name);
                         corruption -= irandom(5);
                     }
                     // Cult crushed; don't bother showing if there's already fighting going on over there
@@ -1756,7 +1779,7 @@ function PlanetData(planet, system) constructor{
                     var n_name = name();
                     scr_popup("Heretic Revolt", $"A massive heretic uprising on {n_name} threatens to plunge the star system into chaos.", "chaos_cultist", "");
                     scr_alert("red", "owner", $"Massive heretic uprising on {n_name}.", x, y);
-                    scr_event_log("purple", $"Massive heretic uprising on {n_name}.", name);
+                    scr_event_log("purple", $"Massive heretic uprising on {n_name}.", system.name);
                 } // Huge uprising
 
                 if ((_rando >= 100) && (planet_forces[eFACTION.Heretics] < 5)) {
@@ -1771,7 +1794,7 @@ function PlanetData(planet, system) constructor{
 
                 if ((_rando >= 41) && (!notixt) && tixt != "") {
                     scr_alert("red", "owner", tixt, x, y);
-                    scr_event_log("purple", tixt, name);
+                    scr_event_log("purple", tixt, system.name);
                 }
                 // if (planet_forces[eFACTION.Heretics]>2){obj_controller.x=self.x;obj_controller.y=self.y;}
             } // End traitors cult

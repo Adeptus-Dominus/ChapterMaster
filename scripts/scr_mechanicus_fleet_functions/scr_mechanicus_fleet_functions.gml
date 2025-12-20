@@ -41,11 +41,15 @@ function mech_fleet_explore_battle_grounds(){
 
 	if (_battle_ground.explored == 0){
 		var _text = $"The Mechanicus have arrived on {_p_data.name()} It will now be impossible to access the site without Mechanicus surveillance any potential rescources will now be fully put towards their aimsin service of the Ommnissiah";
-		scr_popup($"Mechanicus Scavange {_p_data.name()}",_text, "mech");
+		scr_popup($"Mechanicus Scavange {_p_data.name()}", _text, "mech");
 	} else {
 		var _marines = _p_data.collect_planet_group("all");
 		if (array_length(_marines)){
-			if (true){}
+			var _heritecs = obj_controller.tech_status == "heretics";
+			if (_heritecs){
+				_text = "The Rumours of the heretical practices of your marines have not gone un-noticed your presence is thusly even more enraging to mechanicus";
+			}
+
 		}
 	}
 }
