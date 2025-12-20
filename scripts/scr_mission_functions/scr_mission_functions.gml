@@ -130,29 +130,6 @@ function init_marine_acting_strange(){
     scr_event_log("color",text);
 }
 
-function init_garrison_mission(planet, star, mission_slot){
-	var problems_data = star.p_problem_other_data[planet]
-	var mission_data = problems_data[mission_slot];
-	if (mission_data.stage == "preliminary"){
-		var numeral_name = planet_numeral_name(planet, star);
-		mission_data.stage = "active";
-		var garrison_length=(10+irandom(6));
-		star.p_timer[planet][mission_slot] = garrison_length;
-	    //pop.image="ancient_ruins";
-	    var gar_pop=instance_create(0,0,obj_popup);
-	    //TODO some new universal methods for popups
-	    gar_pop.title=$"Requested Garrison Provided to {numeral_name}";
-	    gar_pop.text=$"The governor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
-	    //pip.image="event_march"
-	    gar_pop.add_option("Commence Garrison");
-        gar_pop.image="";
-        gar_pop.cooldown=8;
-        obj_controller.cooldown=8;	    
-	    scr_event_log("",$"Garrison committed to {numeral_name} for {garrison_length} months.", star.name );
-	}	
-}
-
-
 function role_compare(unit, role){
 	return unit.role() == obj_ini.role[100][role];
 }
@@ -274,32 +251,25 @@ function protect_raiders_hold_memorial(){
 		text =  $"You prepare to have a large public memorial for your fallen marines on the planet surface as a show of defiance. The chapter are pleased by such an act and the population of the planet are mesmerized by the spectacle. The governor is furious not only has his incompetence to deal with the planets xenos issue been made public in such a way that the sector commander has now heard about it but he perceives his failures are being paraded in font of him\n nGovernor Disposition : -30";
 }
 
-function init_train_forces_mission(planet, star, mission_slot, marine){
-	var _pdata = new PlanetData(planet, star);
-	var mission_data = _pdata.problems_data[mission_slot];
+function init_garrison_mission(planet, star, mission_slot){
+	var problems_data = star.p_problem_other_data[planet]
+	var mission_data = problems_data[mission_slot];
 	if (mission_data.stage == "preliminary"){
-		var numeral_name = _pdata.name();
+		var numeral_name = planet_numeral_name(planet, star);
 		mission_data.stage = "active";
-		var _mission_length=(irandom_range(3,12));
-		star.p_timer[planet][mission_slot] = _mission_length;
+		var garrison_length=(10+irandom(6));
+		star.p_timer[planet][mission_slot] = garrison_length;
 	    //pop.image="ancient_ruins";
 	    var gar_pop=instance_create(0,0,obj_popup);
 	    //TODO some new universal methods for popups
-	    gar_pop.title=$"Training forces on {numeral_name} begins";
-	    gar_pop.text=$"{marine.name_role()} Has taken leave of his current post in order to aid the governor of {numeral_name} and his pdf commanders with training local forces and bolstering defences.";
-	    var _is_cap = role_compare(marine, eROLE.Captain);
-
-	    if (_is_cap){
-	    	gar_pop.text += "the governor seems to be impressed that such a high ranking officer has been assigned to his request (disp +3)";
-	    	_pdata.add_disposition(3);
-	    }
-
+	    gar_pop.title=$"Requested Garrison Provided to {numeral_name}";
+	    gar_pop.text=$"The governor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
 	    //pip.image="event_march"
-	    gar_pop.add_option($"Good luck {marine.name()}");
+	    gar_pop.add_option("Commence Garrison");
         gar_pop.image="";
-        gar_pop.cooldown=500;
-        obj_controller.cooldown=500;	    
-	    scr_event_log("",$"{marine.name_role()} deployed to {numeral_name} for {_mission_length} months.", star.name);
+        gar_pop.cooldown=8;
+        obj_controller.cooldown=8;	    
+	    scr_event_log("",$"Garrison committed to {numeral_name} for {garrison_length} months.", star.name );
 	}	
 }
 
@@ -353,6 +323,39 @@ function complete_garrison_mission(targ_planet, problem_index){
         remove_planet_problem(targ_planet, "provide_garrison");
     }	
 }
+
+
+
+function init_train_forces_mission(planet, star, mission_slot, marine){
+	var _pdata = new PlanetData(planet, star);
+	var mission_data = _pdata.problems_data[mission_slot];
+	if (mission_data.stage == "preliminary"){
+		var numeral_name = _pdata.name();
+		mission_data.stage = "active";
+		var _mission_length=(irandom_range(3,12));
+		star.p_timer[planet][mission_slot] = _mission_length;
+	    //pop.image="ancient_ruins";
+	    var gar_pop=instance_create(0,0,obj_popup);
+	    //TODO some new universal methods for popups
+	    gar_pop.title=$"Training forces on {numeral_name} begins";
+	    gar_pop.text=$"{marine.name_role()} Has taken leave of his current post in order to aid the governor of {numeral_name} and his pdf commanders with training local forces and bolstering defences.";
+	    var _is_cap = role_compare(marine, eROLE.Captain);
+
+	    if (_is_cap){
+	    	gar_pop.text += "the governor seems to be impressed that such a high ranking officer has been assigned to his request (disp +3)";
+	    	_pdata.add_disposition(3);
+	    }
+
+	    //pip.image="event_march"
+	    gar_pop.add_option($"Good luck {marine.name()}");
+        gar_pop.image="";
+        gar_pop.cooldown=500;
+        obj_controller.cooldown=500;	    
+	    scr_event_log("",$"{marine.name_role()} deployed to {numeral_name} for {_mission_length} months.", star.name);
+	}	
+}
+
+
 function complete_train_forces_mission(targ_planet, problem_index){
 	var planet = new PlanetData(targ_planet, self);
 	 if (problem_has_key_and_value(targ_planet,problem_index,"stage","active")){
@@ -420,7 +423,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         		disp_loss = -5;
         		_mission_string += "The orgional training mission was a failiure"
         		if (_brute){
-        			_mission_string += "in no short part due to his brutish nature";
+        			_mission_string += "in no short part due to his brutish nature (Trait : Brute)";
         		}
         		_mission_string += ".";
 
@@ -731,7 +734,6 @@ function get_beast_epithet(_planet_type){
 
 ///@mixin FleetEvent
 function deliver_trophy_end_turn_check(){
-	show_debug_message($"evetn_Data  = {fleetevent_data}");
 	var _navy_fleet = get_fleet_uid(fleet_uid);
 	if (!instance_exists(_navy_fleet)){
 		deliver_trophy_mission_fleet_destroyed();
@@ -926,7 +928,7 @@ function remove_planet_problem(planet, problem, star="none"){
 	if (star=="none"){
 		for (var i = 0;i<array_length(p_problem[planet]);i++){
 			if (p_problem[planet][i] == problem){
-				p_problem[planet][i]="";
+				p_problem[planet][i] = "";
 				p_timer[planet][i]=-1;
 				p_problem_other_data[planet][i]={};
 				_had_problem=true;
@@ -984,11 +986,12 @@ function problem_count_down(planet, count_change=1){
 }
 
 //add a new problem
-function add_new_problem(planet, problem, timer,star="none", other_data={}){
+///@mixin obj_star
+function add_new_problem(planet=1, problem="", timer=1,star="none", other_data={}){
 	var problem_added=false;
 	if (star=="none"){
 		for (var i=0;i<array_length(p_problem[planet]);i++){
-			if (p_problem[planet][i] ==""){
+			if (p_problem[planet][i] == timer){
 				p_problem[planet][i]= problem;
 				p_problem_other_data[planet][i]=other_data;
 				p_timer[planet][i] = timer;

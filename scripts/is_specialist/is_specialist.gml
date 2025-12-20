@@ -229,10 +229,13 @@ function collect_role_group(group=SPECIALISTS_STANDARD, location="", opposite=fa
 	var _total_count = 0;
 	if (struct_exists(search_conditions, "max")){
 		_max_count =  search_conditions.max;
+		search_conditions.max_wanted = search_conditions.max;
 	}
-	if (!struct_exists(search_conditions, "companies")){
-		search_conditions.companies = "all";
-	}
+	search_conditions.group = group;
+	search_conditions.location = location;
+	search_conditions.opposite = opposite;
+
+	var _conditions = new SearchConditions(search_conditions);
 	for (var com=0;com<=10;com++){
     	if (_max_count>0){
     		if (array_length(_units)>=_max_count){
@@ -242,55 +245,158 @@ function collect_role_group(group=SPECIALISTS_STANDARD, location="", opposite=fa
 		var _wanted_companies = search_conditions.companies;
 		if (_wanted_companies!="all"){
 			if (is_array(_wanted_companies)){
-				if (!array_contains(_wanted_companies, com)) then continue;
+				if (!array_contains(_wanted_companies, com)){
+					continue;
+				}
 			} else {
-				if (_wanted_companies != com) then continue;
+				if (_wanted_companies != com){
+					continue;
+				}
 			}
 		}
 	    for (var i=0;i<array_length(obj_ini.TTRPG[com]);i++){
-	    	if (_max_count>0){
-	    		if (array_length(_units)>=_max_count){
+	    	if (_conditions.end_loop){
 	    			break;
-	    		}
 	    	}
-	    	if array_length(_units)
-	    	_add=false;
-			unit=fetch_unit([com,i]);
-			if (unit.name()=="") then continue;
-			if (group!="all"){
-				if (is_array(group)){
-					if (array_length(group) == 3) {
-						_is_special_group = unit.IsSpecialist(group[0], group[1], group[2]);
-					} else {
-						_is_special_group = unit.IsSpecialist(group[0], group[1]);
-					}
-				} else {
-					_is_special_group = unit.IsSpecialist(group);
-				}
-			} else {
-				_is_special_group = true;
-			}
-	        if ((_is_special_group && !opposite) || (!_is_special_group && opposite)){
-	        	if (location==""){
-	        		_add=true;
-	       		} else if (!is_array(location)){
-		       		_add=unit.is_at_location(location);
-		       	} else {
-		       		_add=unit.is_at_location(location[0], location[1], location[2]);
-		       	}
+			_unit=fetch_unit([com,i]);
+
+	        if (_conditions.evaluate(_unit)){
+	        	array_push(_units, _unit);
 	        }
-	        if (_add){
-	        	if (struct_exists(search_conditions, "stat")){
-	        		_add = stat_valuator(search_conditions.stat, unit);
-	        	}
-	        	if (struct_exists(search_conditions,"job")){
-	        		_add =  (unit.assignment() == search_conditions.job);
-	        	}
-	        }
-	        if (_add) then array_push(_units, obj_ini.TTRPG[com][i]);
 	    }    
 	}
 	return _units;
+}
+
+
+function SearchConditions(data) constructor{
+	group = "all";
+	opposite = false;
+	location = "";
+	max_wanted = 0;
+	companies = "all";
+
+	static update_constants = function(data){
+		move_data_to_current_scope(data);
+		group_is_complex = is_array(group);
+		if (group_is_complex){
+			if (array_length(_group) == 3){
+				group_search_heads = true;
+			} else { 
+				group_search_heads = false;
+			}
+		}
+		complex_location = is_array(location);
+
+		search_companies = !is_string(companies);
+		if (search_companies){
+			search_multiple_companies = is_array(search_companies);
+		}
+
+		if (max_wanted > 0){
+			found = 0;
+		}
+
+		end_loop = false;
+	}
+
+	update_constants(data);
+
+	static evaluate = function(unit){
+		if (unit.name()==""){
+			return false;
+		}
+		if (search_companies){
+			if (search_multiple_companies){
+				if (!array_contains(_wanted_companies, unit.company)){
+					return false;
+				}
+			} else {
+				if (_wanted_companies != unit.company){
+					return false;
+				}
+			}
+		}
+
+		var _add = false;
+		if (group!="all"){
+			var _group = group;
+			if (group_is_array){
+				if (group_search_heads) {
+					_is_special_group = unit.IsSpecialist(_group[0], _group[1], _group[2]);
+				} else {
+					_is_special_group = unit.IsSpecialist(_group[0], _group[1]);
+				}
+			} else {
+				_is_special_group = unit.IsSpecialist(_group);
+			}
+		} else {
+			_is_special_group = true;
+		}
+	    if ((_is_special_group && !opposite) || (!_is_special_group && opposite)){
+	    	if (location==""){
+	    		_add=true;
+	   		} else if (!complex_location){
+	       		_add=unit.is_at_location(location);
+	       	} else {
+	       		_add=unit.is_at_location(location[0], location[1], location[2]);
+	       	}
+	    }
+	    if (_add){
+	    	if (struct_exists(self, "stat")){
+	    		_add = stat_valuator(stat, unit);
+	    	}
+	    	if (struct_exists(self,"job")){
+	    		_add = (unit.assignment() == job);
+	    	}
+	    }
+
+	    if (max_wanted > 0 && _add){
+	    	found++;
+	    	if (found>max_wanted){
+	    		_add = false;
+	    		end_loop = true;
+	    	}
+	    }
+
+
+	    return _add;
+	}
+
+}
+
+
+function UnitGroup(units) constructor{
+	self.units = units;
+
+	static number = function(){
+		return array_length(units);
+	}
+
+	static has_role = function(role){
+		for (var i=0;i<array_length(units);i++){
+			if (units.role() == role){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	static get_from = function(search_conditions = {}){
+		var _wanted = [];
+		var conditions = new SearchConditions(search_conditions);
+		for (var i=0;i<array_length(units);i++){
+			if (conditions.evaluate(units[i])){
+				array_push(_wanted,units[i]);
+			}
+			if (conditions.end_loop){
+				break;
+			}
+		}
+
+		return new UnitGroup(_wanted);
+	}
 }
 
 function stat_valuator(search_params, unit){

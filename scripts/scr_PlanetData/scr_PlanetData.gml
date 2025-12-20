@@ -662,12 +662,17 @@ function PlanetData(planet, system) constructor{
         return _training_happend;
     };
 
-    static search_old_battle_grounds = function(){
-        if (!has_feature(P_features.OldBattleGround)){
+    static search_old_battle_grounds = function(units = []){
+        if (!has_feature(P_features.OldBattleGround) || !array_length(units)){
             exit;
         }
 
+        var _units = UnitGroup(units);
         var _battle = get_features(P_features.OldBattleGround)[0];
+
+        var _techmarines = _units.get_from({
+            group : SPECIALISTS_TECHS
+        });
     }
 
 

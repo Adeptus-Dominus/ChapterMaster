@@ -48,7 +48,6 @@ function fleet_has_roles(fleet="none", roles){
 			if (unit.planet_location<1){
 				if (array_contains(all_ships,unit.ship_location)){
 					if (array_contains(roles, unit.role())){
-
 						return true;
 					}
 				}
