@@ -689,9 +689,16 @@ function PlanetData(planet, system) constructor{
                 allegiance : "mechanicus"
             });
 
-            if (array_length(_priests) > 0){
-                text = "";
-                scr_popup("Conflict of Interest",)
+            if (_priests.number > 0){
+                if (_priests.number == _techmarines.number){
+                    text = "Without any technical staff wholly loyal to the chapter the TechPriests Quickly set too Work sequestering any valuable resources for the Omnissiah";
+                    text +=
+                    scr_popup("Mars Control");
+                } else {
+                    text = "After Unloading Marines too site it becomes clear there is discontent among the group.\n";
+                    text = "A contingent of the force comprised of  Techpriests are unhappy with the decision.\n";
+                    scr_popup("Conflict of Interest",)
+                }
             }
         }
 
@@ -1073,7 +1080,7 @@ function PlanetData(planet, system) constructor{
         
         
         if (!is_hulk){
-            if (improve=1){
+            if (improve){
                 draw_set_color(c_green);
                 draw_rectangle(xx+481,yy+280,xx+716,yy+298,0);
                 draw_sprite(spr_requisition,0,xx+657,yy+283);

@@ -15,6 +15,7 @@ var spikky=0;
 var roll=0;
 var novice_type="";
 var unit;
+var _roles = active_roles();
 
 
 try_and_report_loop("chaos_spread", function(){
@@ -82,7 +83,7 @@ while (i<array_length(recruit_name)){
     };
     if  (recruit_distance[i]<=0) then recruit_training[i]-=1;
     if (recruit_training[i]<=0){
-        scr_add_man(obj_ini.role[100][12],10,recruit_exp[i],recruit_name[i],recruit_corruption[i],false,"default",recruit_data[i]);
+        scr_add_man(_roles[12],10,recruit_exp[i],recruit_name[i],recruit_corruption[i],false,"default",recruit_data[i]);
         if (recruit_first=="") then recruit_first=recruit_name[i];
         recruits_finished+=1;
         array_delete(recruit_name,i,1);
@@ -101,9 +102,9 @@ with(obj_ini){
     scr_company_order(10);
 }
 if (recruits_finished==1){
-    scr_alert("green","recruitment",$"{obj_ini.role[100][12]} {recruit_first} has joined X Company.",0,0);
+    scr_alert("green","recruitment",$"{_roles[12]} {recruit_first} has joined X Company.",0,0);
 }else if  (recruits_finished>1){
-    scr_alert("green","recruitment",$"{recruits_finished}x {obj_ini.role[100][12]} have joined X Company.",0,0);
+    scr_alert("green","recruitment",$"{recruits_finished}x {_roles[12]} have joined X Company.",0,0);
 }
 
 
@@ -414,10 +415,10 @@ if (disposition[eFACTION.Ork]>=60) then scr_loyalty("Xeno Associate","+");
 if (disposition[eFACTION.Tau]>=60) then scr_loyalty("Xeno Associate","+");
 
 var loyalty_counter=0;
-loyalty_counter=scr_role_count(obj_ini.role[100][15],"");
+loyalty_counter=scr_role_count(_roles[15],"");
 if (loyalty_counter==0) then scr_loyalty("Lack of Apothecary","+");
 
-loyalty_counter=scr_role_count(obj_ini.role[100][14],"");
+loyalty_counter=scr_role_count(_roles[14],"");
 if (loyalty_counter==0) then scr_loyalty("Undevout","+");
 // TODO in another PR rework how Non-Codex Size is determined, perhaps the inquisition needs to pass some checks or do an investigation event 
 // which you could eventually interrupt (kill the team) and cover it up?

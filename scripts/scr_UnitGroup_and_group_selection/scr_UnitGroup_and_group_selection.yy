@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_UnitGroup_and_group_selection",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_UnitGroup_and_group_selection",
+  "parent":{
+    "name":"marines_and_profiles",
+    "path":"folders/Scripts/marines_and_profiles.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

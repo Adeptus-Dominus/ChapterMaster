@@ -958,6 +958,7 @@
     {"id":{"name":"scr_unit_size","path":"scripts/scr_unit_size/scr_unit_size.yy",},},
     {"id":{"name":"scr_unit_spawn_functions","path":"scripts/scr_unit_spawn_functions/scr_unit_spawn_functions.yy",},},
     {"id":{"name":"scr_unit_traits","path":"scripts/scr_unit_traits/scr_unit_traits.yy",},},
+    {"id":{"name":"scr_UnitGroup_and_group_selection","path":"scripts/scr_UnitGroup_and_group_selection/scr_UnitGroup_and_group_selection.yy",},},
     {"id":{"name":"scr_uuid_generate","path":"scripts/scr_uuid_generate/scr_uuid_generate.yy",},},
     {"id":{"name":"scr_vehicle_count","path":"scripts/scr_vehicle_count/scr_vehicle_count.yy",},},
     {"id":{"name":"scr_vehicle_helpers","path":"scripts/scr_vehicle_helpers/scr_vehicle_helpers.yy",},},
