@@ -147,19 +147,20 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 	}
 
 	static garrison_report = function(){
-		var system = obj_star_select.target;
-		var planet = obj_controller.selecting_planet;
+		var _system = obj_star_select.target;
+		var _p = obj_controller.selecting_planet;
+		var _planet = _system.system_datas[_p];
 		var report_string = "Hail My lord.##";
-		report_string+=$"Report for garrison on {system.name} {scr_roman_numerals()[planet-1]} is as follows#";
+		report_string+=$"Report for garrison on {_planet.name()} is as follows#";
 		if ((array_length(garrison_squads)) > 1){
 			report_string+= $"The garrison is comprised of {array_length(garrison_squads)} squads,"
 		} else {report_string+="The garrison is comprised of a single _squad,"}
 
 		report_string+= $" with a total man count of {total_garrison}.#"
-        if (system.p_owner[planet] != eFACTION.Player && system.dispo[planet] >=-100) {
-            var disposition = disposition_description_chart(system.dispo[planet]);
+        if (_planet.current_owner!= eFACTION.Player && _planet.disposition >=-100) {
+            var disposition = disposition_description_chart(_planet.disposition);
             report_string += $"Our Relationship with the Rulers of the planet is {disposition}#";
-        } else if (system.dispo[planet] < -1000) {
+        } else if (_planet.disposition < -1000) {
         	if (system.p_owner[planet] == eFACTION.Player){
             	report_string += $"Rule of the planet is going well";
         	} else {

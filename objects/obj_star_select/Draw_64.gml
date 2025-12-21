@@ -170,8 +170,8 @@ draw_set_font(fnt_40k_14b);
 
 if (obj_controller.selecting_planet!=0){
     if (p_data.planet != obj_controller.selecting_planet){
-        delete p_data;
         p_data = new PlanetData(obj_controller.selecting_planet, target);
+        target.system_datas[obj_controller.selecting_planet] = p_data;
     }
 // Buttons that are available
     if (!buttons_selected){
@@ -273,7 +273,7 @@ if (obj_controller.selecting_planet!=0){
             }
         }
     }else if (garrison!="" && !population){
-        if (garrison.garrison_force ){
+        if (garrison.garrison_force){
             draw_set_font(fnt_40k_14);
             if (!garrison.garrison_leader){
                 garrison.find_leader()
@@ -312,66 +312,7 @@ if (obj_controller.selecting_planet!=0){
     } else if (population){
         garrison_data_slate.title = "Population Report";
         garrison_data_slate.inside_method = function(){
-            draw_set_color(c_gray);
-            var xx = garrison_data_slate.XX;
-            var yy = garrison_data_slate.YY;                
-            var cur_planet = obj_controller.selecting_planet;
-            var half_way =  garrison_data_slate.height/2;
-            var spacing_x = 100
-            var spacing_y = 65
-            draw_set_halign(fa_left);
-            if (!target.space_hulk) {
-                if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War") {
-                    colonist_button.update({
-                        x1:xx+35,
-                        y1:half_way,
-                        allow_click : array_length(potential_doners),
-                    });
-                    colonist_button.draw();
-
-                    recruiting_button.update({
-                        x1:xx+(spacing_x*2)+15,
-                        y1:half_way,
-                        allow_click : true,
-                    });
-                    recruiting_button.draw();
-                    if (p_data.has_feature(P_features.Recruiting_World)) {
-                        var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
-                        if (_recruit_world.recruit_type == 0) && (obj_controller.faction_status[p_data.current_owner] != "War" && obj_controller.faction_status[p_data.current_owner] != "Antagonism" || p_data.player_disposition >= 50) {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Open: Voluntery");
-                        } else if (_recruit_world.recruit_type == 0 && p_data.player_disposition <= 50) {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Covert: Voluntery");
-                        } else {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Abduct");
-                        }
-                        recruitment_type_button.update({
-                            x1:xx+(spacing_x*3)+35,
-                            y1:half_way,
-                            allow_click : true,
-                        });
-                        recruitment_type_button.draw();
-
-                        draw_text(xx+(spacing_x*3)-15, half_way+(spacing_y)-20, $"Req:{_recruit_world.recruit_cost * 2}");
-                        if (_recruit_world.recruit_cost > 0) {
-                            recruitment_costdown_button.update({
-                                x1:xx+(spacing_x*2)+35,
-                                y1:half_way+(spacing_y),
-                                allow_click : true,
-                            });
-                            recruitment_costdown_button.draw();
-                        }
-                        if (_recruit_world.recruit_cost < 5) {
-                            recruitment_costup_button.update({
-                                x1:xx+(spacing_x*3)+35,
-                                y1:half_way+(spacing_y),
-                                allow_click : true,
-                            });
-                            recruitment_costup_button.draw();
-                        }
-                    }
-                }
-            }
-
+            p_data.draw_planet_population_controls();
         }
         garrison_data_slate.draw(344+main_data_slate.width-4, 160, 0.6, 0.6);          
     }   
