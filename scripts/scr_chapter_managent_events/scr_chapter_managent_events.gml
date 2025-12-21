@@ -286,3 +286,180 @@ function new_forge_master_chosen(pick){
 		}
 	}
 }
+
+
+
+function strange_build_event(){
+	log_message("RE: Fey Mood");
+	var _search_params = {trait : ["crafter","tinkerer"], trait_any : true}
+	var marine_and_company = scr_random_marine("",0, _search_params);
+	if (marine_and_company == "none"){
+		marine_and_company = scr_random_marine("",0, "none");
+	}
+	if(marine_and_company != "none"){
+		var marine = marine_and_company[0];
+		var company = marine_and_company[1];
+		var text="";
+		var _unit = fetch_unit(marine_and_company);
+		var role =  _unit.role();
+	    text = _unit.name_role();
+	    text+=" is taken by a strange mood and starts building!";  
+
+        
+	    var crafted_object;
+	    var craft_roll=roll_dice_chapter(1, 100, "low");
+		var heritical_item = false;
+        
+		//this bit should be improved, idk what duke was checking for here
+		//TODO make craft chance reflective of crafters skill, rewards players for having skilled tech area
+        if (scr_has_disadv("Tech-Heresy")) {
+			craft_roll+=20;
+		}
+		if (_unit.has_trait("tech_heretic")){
+			craft_roll+=60;
+		}
+		if (scr_has_adv("Crafter")) {
+            if (craft_roll>80) {
+				craft_roll-=10;
+			}
+			if (craft_roll<60) {
+				craft_roll+=10;
+			}
+        }
+
+	    if (craft_roll<=50){
+			crafted_object=choose("Icon","Icon","Statue");		
+		}
+	    else if ((craft_roll>50) && (craft_roll<=60)) {
+			crafted_object=choose("Bike","Rhino");
+		}
+	    else if ((craft_roll>60) && (craft_roll<=80)) {
+			crafted_object="Artifact";
+		}
+		else {
+			crafted_object=choose("baby","robot","demon","fusion");
+			heritical_item=1;
+		}
+        
+
+    	add_event({
+    		e_id : "strange_building",
+    		duration : 1,
+    		name : _unit.name(),
+    		company : company,
+    		marine : marine,
+    		crafted : crafted_object,
+    	})
+		
+		scr_popup("Can He Build marine?!?",text,"tech_build","");
+    
+		var marine_is_planetside = _unit.planet_location>0;
+        if (marine_is_planetside && heritical_item) {
+        	var _system = star_by_name(_unit.location_string);
+        	var _planet = _unit.planet_location;
+            if (_system!="none"){
+            	with (_system){
+            		p_hurssy[_planet]+=6;
+					p_hurssy_time[_planet]=2;
+            	}	               
+            }
+        }
+        else if (!marine_is_planetside and heritical_item){
+            var _fleet = find_ships_fleet(_unit.ship_location);
+            if (_fleet!="none"){
+            	//the intended code for here was to add some sort of chaos event on the ship stashed up ready to fire in a few turns
+            }
+        }
+        return true;
+	}
+	return false;
+}
+
+function init_mutated_gene_random_event(){
+	//TODO make reprocussions to ignoring this
+	log_message("RE: Gene-Seed Mutation");
+    var text = "The Chapter's gene-seed has mutated!  Apothecaries are scrambling to control the damage and prevent further contamination.  What is thy will?";
+	var _opt1 = "Dispose of ";
+	var _percent_remove = 0;
+	if (obj_controller.gene_seed <= 30) {
+		_opt1 += "100% of the gene-seed.";
+		_percent_remove = 100;
+	}
+	if ((obj_controller.gene_seed > 30) && (obj_controller.gene_seed < 60)) {
+		_opt1 += "50% of all gene-seed.";
+		_percent_remove = 50;
+	}
+	if (obj_controller.gene_seed >= 60) {
+		_opt1 += "33% of all gene-seed.";
+		_percent_remove = 33;
+	}
+
+	var _opt2 = "Tell the apothecaries to let it be.";
+
+
+    var _pop_data = {
+    	percent_remove : _percent_remove,
+    	options : [
+    		{
+    			str1:_opt1,
+    			choice_func : event_dispose_of_mutated_gene,
+    		},
+    		{
+    			str1:_opt2,
+    			choice_func : function(){
+    				scr_loyalty("Mutant Gene-Seed", "+");
+    				popup_default_close();
+    			}
+    		},	    		
+    	]
+    }
+
+    scr_popup("Gene-Seed Mutated!",text,"gene_bad",_pop_data);
+    scr_event_log("red","The Chapter Gene-Seed has mutated.");
+
+    return true;
+}
+
+
+function event_dispose_of_mutated_gene(){
+	if (pop_data.percent_remove > 0){
+		obj_controller.gene_seed -= (obj_controller.gene_seed * (pop_data.percent_remove/100))
+	}
+	popup_default_close();
+}
+
+
+function init_marine_distinguishment_event(){
+	log_message("RE: Promotion");
+    var marine_and_company = scr_random_marine([obj_ini.role[100][8],obj_ini.role[100][12],obj_ini.role[100][9],obj_ini.role[100][10]],0);
+	if(marine_and_company == "none")
+	{
+		log_error("RE: Promotion, couldn't pick a space marine");
+		return false;
+	}
+	var marine=marine_and_company[1];
+	var company=marine_and_company[0];
+	var _unit = fetch_unit(marine_and_company);
+	var role=_unit.role();
+	var text = _unit.name_role();
+	var company_text = scr_convert_company_to_string(company);
+	//var company_text = scr_company_string(company);
+	if(company_text != ""){
+		company_text = $"({company_text})";
+	}
+	text += company_text;
+	text += " has distinguished himself.\n\nHe is up for review to be promoted.";
+	
+	if (company != 10){
+		_unit.add_exp(10);
+	}
+	else {
+		_unit.add_exp(max(20, _unit.experience));
+	}
+	
+	scr_popup("Promotions!",text,"distinguished","");
+    scr_event_log("green",text);
+	return true;
+}
+
+

@@ -67,7 +67,7 @@ function SearchConditions(data) constructor{
 		move_data_to_current_scope(data);
 		group_is_complex = is_array(group);
 		if (group_is_complex){
-			if (array_length(_group) == 3){
+			if (array_length(group) == 3){
 				group_search_heads = true;
 			} else { 
 				group_search_heads = false;
@@ -174,7 +174,7 @@ function SearchConditions(data) constructor{
 	    if (_add){
 	    	if (struct_exists(self,"job")){
 	    		_add = oposite_switch((unit.assignment() == job));
-	    	});
+	    	}
 		}
 
 		if (_add){
@@ -185,7 +185,7 @@ function SearchConditions(data) constructor{
 
 	    if (max_wanted > 0 && _add){
 	    	found++;
-	    	if (found>max_wanted){
+	    	if (found > max_wanted){
 	    		_add = false;
 	    		end_loop = true;
 	    	}
@@ -231,7 +231,6 @@ function UnitGroup(units) constructor{
 				return true;
 			}
 		}
-
 		return false;		
 	}
 
