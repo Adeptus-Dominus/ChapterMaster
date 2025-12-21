@@ -100,6 +100,10 @@ function PlanetData(planet, system) constructor{
 
     refresh_data();
 
+    static total_corruption(){
+        return secret_corruption + corruption;
+    }
+
     static edit_player_forces = function(val){
         system.p_player[planet]+=val;
         player_forces = system.p_player[planet];
