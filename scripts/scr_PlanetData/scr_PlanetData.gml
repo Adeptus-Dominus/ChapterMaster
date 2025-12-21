@@ -1851,6 +1851,105 @@ function PlanetData(planet, system) constructor{
         }
     }
 
+    static purge = scr_purge_world;
+
+    static assasinate_governor_setup = function(){
+        var aroll=roll_dice_chapter(1, 100, "high");
+        var chance = 100;
+        // var siz_penalty=0;
+        var o=0;
+        var yep=0;
+    
+        // Disposition
+        aroll += floor(star.dispo[planet] / 10);
+
+        // Advantages
+        if (scr_has_adv("Ambushers")){
+            aroll+=10;
+        }
+        if (scr_has_adv("Lightning Warriors")){
+            aroll+=5;
+        }
+
+        // Size - unused
+        // if ((action_score > 5) && (action_score <= 10)) { siz_penalty = 5; }
+        // if ((action_score > 10) && (action_score <= 20)) { siz_penalty = 20; }
+        // if ((action_score > 20) && (action_score <= 50)) { siz_penalty = 30; }
+        // if ((action_score > 50) && (action_score <= 100)) { siz_penalty = 50; }
+        // if ((action_score > 100) && (action_score <= 200)) { siz_penalty = 75; }
+        // if (action_score > 200) { siz_penalty = 125; }
+    
+        var spec1=0,spec2=0,txt=""; // TODO consider making it a battle with Planetary governor's guards
+        txt="Your Astartes descend upon the surface of {name()} and plot the movements and schedule of the governor.  ";    
+        txt+="Once the time is right their target is ambushed "
+        txt+="choose("in their home","in the streets","while driving","taking a piss")+" and tranquilized.  ";
+    
+        if(scr_has_disadv("Never Forgive")) then spec1=1;
+        if (global.chapter_name="Space Wolves" || obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
+            spec1=3;
+        }
+        else if (global.chapter_name="Iron Hands" || obj_ini.progenitor == ePROGENITOR.IRON_HANDS) {
+            spec1=6;
+        }
+        if (obj_ini.omophagea=1){
+            spec1=choose(spec1,20);
+        }
+    
+        if (spec1=1) then txt+="They are brought to the already-prepared facilities for Fallen, tortured to make "+string(choose("him","him","her"))+" appear a heretic, and then incinerated.  ";
+        if (spec1=3) then txt+=string(choose("He","He","She"))+" is tossed to the Fenrisian Wolves and viciously mauled, torn apart, and eaten.  The beasts leave nothing but bloody scraps.  ";
+        if (spec1=6) then txt+=string(choose("He","He","She"))+" is stuck in with the other criminals, and scum, to be turned into a servitor.  Soon nothing remains that could be likened to the former Governor.  ";
+        if (spec1=20){
+            if (action_score>1) then txt+="Things get out of hand, and the Governor is torn limb from limb and consumed.  "+string(choose("His","His","Her"))+" flesh is torn off and eaten, bone pulverized, and marrow sucked free.  ";
+            if (action_score=1) then txt+="Your battle brother chops apart the Governor and eats a sizeable portion of "+string(choose("his","his","her"))+" flesh, focusing upon the eyes, teeth, and fingers.  Once full the rest is disposed of.  ";
+        }
+    
+        if (spec1=0){
+            spec2=choose(1,2,3,4,5,5,5);
+            if (spec2=1) then txt+="Their still-living body is disintegrated by acid.  ";
+            if (spec2=2) then txt+="The Governor is jettisoned into the local star at the first opporunity.  ";
+            if (spec2=3) then txt+=string(choose("He","He","She"))+" is burned as fuel for one of your vessels.  ";
+            if (spec2=4) then txt+="A few grenades is all it takes to blow "+string(choose("his","his","her"))+" body to smithereens.  ";
+            if (spec2=5) then txt+=string(choose("He","He","She"))+" is executed in a mundane fashion and buried.  ";
+        }
+    
+        txt+="What is thy will?";
+    
+        var pip=instance_create(0,0,obj_popup);
+        pip.title="Planetary Governor Assassinated";
+        pip.text=txt;
+        pip.planet=planet;
+        pip.p_data = new PlanetData(planet,star);
+        var options = [
+            {
+                str1 : "Allow the official successor to become Planetary Governor.",
+                choice_func : allow_governor_successor,
+            }, 
+            {
+                str1 : "Ensure that a sympathetic successor will be the one to rule.",
+                choice_func : install_sympathetic_successor,
+            },
+            {
+                str1 : "Remove all successors and install a loyal Chapter Serf.",
+                choice_func : install_chapter_surf,
+            },
+        ]
+        pip.add_option(options);    
+        pip.cooldown=20;
+    
+        // Result-  this is the multiplier for the chance of discovery with the inquisition, can also be used to determine
+        // the new Governor disposition if they are the official successor
+        if (aroll < chance){// Discovered
+            pip.estimate=2;
+        } else if (aroll >= chance){// Success
+            pip.estimate=1;
+        }
+        // If there are enemy non-chaos forces then they may be used as a cover
+        // Does not work with chaos because if the governor dies, with chaos present, the new governor would possibly be investigated
+        if (planet_forces[eFACTION.Ork]>=4) or (planet_forces[eFACTION.Necrons]>=3) or (planet_forces[eFACTION.Tyranids]>=5){
+            pip.estimate=pip.estimate*0.5;
+        }
+    }
+
 
 }
 
