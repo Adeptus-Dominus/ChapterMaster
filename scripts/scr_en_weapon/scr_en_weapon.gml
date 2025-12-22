@@ -593,11 +593,11 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 		if (argument0 = "Zoanthrope Blast") {
 			atta = 250;
 			arp = 4;
-			rang = 6;
+			rang = 8;
 				spli = 1;
 		}
 		if (argument0 = "Carnifex Claws") {
-			atta = 200;
+			atta = 225;
 			arp = 4;
 			rang = 1;
 			spli = 3;
@@ -790,6 +790,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			arp = 1;
 			rang = 6;
 			amm = 12;
+			spli = 3;
 		}
 		if (argument0 = "Storm Bolter") {
 			atta = 180;
@@ -1057,7 +1058,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 	repeat(30) {
 		if (wep[b] = name) and(goody = 0) {
 			att[b] += atta * man_number;
-			apa[b] += arp * man_number;
+			apa[b] += arp;
 			range[b] = rang;
 			wep_num[b] += man_number;
 			if (obj_ncombat.started = 0) then ammo[b] = amm;
@@ -1073,7 +1074,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 		wep[first] = name;
 		splash[first] = spli;
 		att[first] += atta * man_number;
-		apa[first] += arp * man_number;
+		apa[first] += arp;
 		range[first] = rang;
 		wep_num[first] += man_number;
 		if (obj_ncombat.started = 0) then ammo[first] = amm;
