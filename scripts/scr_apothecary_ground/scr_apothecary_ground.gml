@@ -1,4 +1,3 @@
-
 enum eSystemLoc {
 	orbit,
 	planet1,
@@ -14,88 +13,77 @@ function calculate_full_chapter_spread(){
 	var _apoth_spread = {};
 	var _unit_spread = {};
     for(var company=0;company<11;company++){
-    	var _company_length = (array_length(obj_ini.name[company]));
+
+    	var _marine_len = (array_length(obj_ini.name[company]));
+    	var _veh_len = (array_length(obj_ini.veh_hp[company]));
+    	var _company_length = max(_marine_len, _veh_len);
+
     	for (var v=0; v < _company_length; v++) {
     		key_val = "";
-    		if (obj_ini.name[company][v]=="") then continue;
-    		_unit = fetch_unit([company, v]);
-    		_mar_loc = _unit.marine_location();
-    		if (_unit.base_group=="astartes"){
-	    		if (_unit.IsSpecialist()){
-	    			obj_controller.command++;
-	    		} else {
-	    			obj_controller.marines++;
-	    		}
-	    	}
-	        tech_points_used += _unit.equipment_maintenance_burden();
-		    _is_tech = (_unit.IsSpecialist(SPECIALISTS_TECHS));
-		    if (_is_tech){
-		    	add_forge_points_to_stack(_unit);
-		    }
-		    is_healer = (((_unit.IsSpecialist(SPECIALISTS_APOTHECARIES,true) && _unit.gear()=="Narthecium") || (_unit.role()=="Sister Hospitaler")) && _unit.hp()>=10);
-		    if (is_healer){
-		    	add_apoth_points_to_stack(_unit);
-		    }
-		  	if (_mar_loc[2]!="Warp" && _mar_loc[2]!="Lost"){
-  	    		if (_mar_loc[0]=location_types.planet){
-  	    			array_slot = _mar_loc[1];
-  	    		} else if (_mar_loc[0] == location_types.ship){
-  	    			array_slot=eSystemLoc.orbit;
-  	    		}
-  	    		key_val = _mar_loc[2];
-  	    	} else if (_mar_loc[0] == location_types.ship){
-  	    		if instance_exists(obj_p_fleet){
-  	    			with (obj_p_fleet){
-  	    				if (array_contains(capital_num, _mar_loc[1]) ||
-  	    					array_contains(frigate_num, _mar_loc[1])||
-  	    					array_contains(escort_num, _mar_loc[1])
-  	    				){
-  	    					key_val=$"{id}";
-  	    					array_slot=eSystemLoc.orbit;
-  	    					break;
-  	    				}
-  	    			}
-  	    		}
-  	    	}
-  	    	if (key_val!=""){
-				if (! struct_exists(_unit_spread, key_val)){
-					_unit_spread[$key_val] = [[],[],[],[],[]];
-					_tech_spread[$key_val]  = [[],[],[],[],[]];
-					_apoth_spread[$key_val]  = [[],[],[],[],[]];
+
+    		if (v < _marine_len){
+	    		if (obj_ini.name[company][v]!=""){
+		    		_unit = fetch_unit([company, v]);
+		    		_mar_loc = _unit.marine_location();
+		    		if (_unit.base_group=="astartes"){
+			    		if (_unit.IsSpecialist()){
+			    			obj_controller.command++;
+			    		} else {
+			    			obj_controller.marines++;
+			    		}
+			    	}
+			        tech_points_used += _unit.equipment_maintenance_burden();
+				    _is_tech = (_unit.IsSpecialist(SPECIALISTS_TECHS));
+				    if (_is_tech){
+				    	add_forge_points_to_stack(_unit);
+				    }
+				    is_healer = (((_unit.IsSpecialist(SPECIALISTS_APOTHECARIES,true) && _unit.gear()=="Narthecium") || (_unit.role()=="Sister Hospitaler")) && _unit.hp()>=10);
+				    if (is_healer){
+				    	add_apoth_points_to_stack(_unit);
+				    }
+				  	if (_mar_loc[2]!="Warp" && _mar_loc[2]!="Lost"){
+			  	    	if (_mar_loc[0]=location_types.planet){
+			  	    		array_slot = _mar_loc[1];
+			  	    	} else if (_mar_loc[0] == location_types.ship){
+			  	    		array_slot=eSystemLoc.orbit;
+			  	    	}
+			  	    	key_val = _mar_loc[2];
+			  	    } else if (_mar_loc[0] == location_types.ship){
+			  	    	key_val="LID:"+string(_mar_loc[1]);
+			  	    	array_slot=eSystemLoc.orbit;
+			  	    }
+			  	    if (key_val!=""){
+						if (! struct_exists(_unit_spread, key_val)){
+							_unit_spread[$key_val] = [[],[],[],[],[]];
+							_tech_spread[$key_val]  = [[],[],[],[],[]];
+							_apoth_spread[$key_val]  = [[],[],[],[],[]];
+						}
+						array_push(_unit_spread[$key_val][array_slot] ,_unit);
+						if (_is_tech){
+							array_push(_tech_spread[$key_val][array_slot] ,_unit);
+						}
+						if (is_healer)	{
+							array_push(_apoth_spread[$key_val][array_slot] ,_unit);
+						}		
+					}
 				}
-				array_push(_unit_spread[$key_val][array_slot] ,_unit);
-				if (_is_tech){
-					array_push(_tech_spread[$key_val][array_slot] ,_unit);
-				}
-				if (is_healer)	{
-					array_push(_apoth_spread[$key_val][array_slot] ,_unit);
-				}		
 			}
+
 			key_val="";
-            if (v<array_length(obj_ini.veh_hp[company]) && company>0){
+            if (company>0 && v < _veh_len){
             	if (obj_ini.veh_race[company][v]!=0){
             		if(obj_ini.veh_lid[company][v]>-1){
 	            		veh_location = obj_ini.veh_lid[company][v];
 	            		var _ship_loc = obj_ini.ship_location[veh_location];
 	            		if (_ship_loc == "Warp" || _ship_loc=="Lost"){
-			  	    		if instance_exists(obj_p_fleet){
-			  	    			with (obj_p_fleet){
-			  	    				if (array_contains(capital_num, veh_location) ||
-			  	    					array_contains(frigate_num, veh_location)||
-			  	    					array_contains(escort_num, veh_location)
-			  	    				){
-			  	    					key_val=string(id);
-			  	    					array_slot=eSystemLoc.orbit;
-			  	    					break;
-			  	    				}
-			  	    			}
-			  	    		}
+	            			key_val="LID:"+string(veh_location);
+	            			array_slot=eSystemLoc.orbit;
 			  	    	} else if (obj_ini.ship_location[veh_location] != ""){
 			  	    		array_slot=eSystemLoc.orbit;
 			  	    		key_val=obj_ini.ship_location[veh_location];
 			  	    	}
 		            }            	
-	            	if (obj_ini.veh_wid[company][v]>0){
+	            	else if (obj_ini.veh_wid[company][v]>0){
 	            		key_val = obj_ini.veh_loc[company][v];
 	            		if (key_val!=""){
 		            		array_slot = obj_ini.veh_wid[company][v];
@@ -219,7 +207,7 @@ function apothecary_simple(){
 		                    forge_veh_maintenance.small_vehicles = struct_exists(forge_veh_maintenance, "small_vehicles") ?forge_veh_maintenance.small_vehicles + 0.2 :0.2;
 		                    _loc_forge_points-=0.2;
 		                    tech_points_used+=0.2;
-		                }							
+		                }		
 						while (points_spent<10 && obj_ini.veh_hp[_unit[0]][_unit[1]]<100 && _loc_forge_points>0){
 							points_spent++;
 							if (turn_end){
@@ -296,6 +284,3 @@ function apothecary_simple(){
 		}
 	}
 }
-
-
-
