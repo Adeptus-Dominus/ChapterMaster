@@ -1081,10 +1081,13 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 }
 
 // Global Enemy Weapons
-// Convention:
+// Convention: (freely changeable, but i started with this)
+// attack -> armor_penetration -> range -> splash -> ammo -> special
 // Array of 2 elements contains range from-to values
 // Array of more than 2 elements indicates specific attack values to randomly choose from
 // Exception is "special" attribute, which is always array of strings
+// Poison means dmg is added when picking weakness to poison and toxins as geneseed mutation
+// Siege means a range increase when there is a siege situation (attacking a fortification) (only one weapon uses it so far)
 
 global.en_weapons = {
 
@@ -1097,7 +1100,7 @@ global.en_weapons = {
         "armor_penetration": 0,
         "range": 1,
         "splash": 0,
-        "special": ["poison"],
+        "special": ["poison"], // poison adds 40 dmg (20% increase)
     },
     "Lash Whip": {
         "attack": 80,
@@ -1134,7 +1137,7 @@ global.en_weapons = {
         "armor_penetration": 0,
         "range": 5,
         "splash": 0,
-		"special": ["poison"],
+		"special": ["poison"], // poison adds 8, 12, 16, 20 dmg (20% increase)
     },
     "Zoanthrope Blast": {
         "attack": 200,
@@ -1159,14 +1162,14 @@ global.en_weapons = {
         "armor_penetration": 0,
         "range": 2.1,
         "splash": 0,
-		"special": ["poison"],
+		"special": ["poison"], // poison adds 20 dmg (20% increase)
     },
     "Fleshborer": {
         "attack": 15,
         "armor_penetration": 0,
         "range": 2.1,
         "splash": 0,
-		"special": ["poison"],
+		"special": ["poison"], // poison adds 4 dmg (4/15 increase)
     },
     "Scything Talons": {
         "attack": 30,
@@ -1257,7 +1260,7 @@ global.en_weapons = {
         "armor_penetration": 0,
         "range": 1,
         "splash": 3,
-        "special": ["poison"],
+        "special": ["poison"], // poison adds 10 dmg (1/6 increase)
     },
     "Khorne Demon Melee": {
         "attack": 350,
@@ -1276,7 +1279,7 @@ global.en_weapons = {
         "armor_penetration": 0,
         "range": 2,
         "splash": 3,
-        "special": ["poison"],
+        "special": ["poison"], // poison adds 160 dmg (160% increase)
     },
     "Possessed Claws": {
         "attack": 250,
@@ -1975,7 +1978,7 @@ global.en_weapons = {
         "armor_penetration": 1,
         "range": 2,
         "splash": 0,
-		"special": ["Siege"],
+		"special": ["Siege"], // Siege means +3 range in siege situations
     },
     "Earthshaker Cannon": {
         "attack": 300,
@@ -2038,7 +2041,7 @@ global.en_weapons = {
         "armor_penetration": 0,
         "range": 1,
         "splash": 0,
-        "special": ["poison"],
+        "special": ["poison"], // poison adds 40 dmg (4/9 increase)
     },
     "Imperium Power Weapon": {
         "attack": 120,
