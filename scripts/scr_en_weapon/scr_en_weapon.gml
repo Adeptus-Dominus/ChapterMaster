@@ -2141,7 +2141,7 @@ global.en_weapons = {
         "splash": 3,
     },
     "Lightning Gun": {
-        "attack": [80, 80, 80, 120],
+        "attack": [80, 80, 80, 150],
         "armor_penetration": 0,
         "range": 5,
         "splash": 0,
