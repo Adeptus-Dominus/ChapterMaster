@@ -13,8 +13,7 @@ if (__b__){
     bomb_score=0;
     for(var i=0; i<array_length(ship_ide); i++){
         if (ship_all[i]==1){
-            if (obj_ini.ship_class[ship_ide[i]]=="Battle Barge") then bomb_score+=3;
-            if (obj_ini.ship_class[ship_ide[i]]=="Strike Cruiser") then bomb_score+=1;
+            bomb_score += ship_bombard_score(ship_ide);
         }
     }
 

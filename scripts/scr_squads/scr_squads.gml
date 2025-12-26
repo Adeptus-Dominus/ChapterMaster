@@ -539,7 +539,8 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		} else if (same_loc_type){
 			if (loc_type==location_types.ship){
 				if (exact_loc){
-					final_loc_status=$"aboard {obj_ini.ship[loc_id]}"
+					var _ship = fetch_ship(loc_id);
+					final_loc_status=$"aboard {_ship.name}"
 				} else if (in_orbit){
 					final_loc_status=$"various ships orbiting {system}"
 				}

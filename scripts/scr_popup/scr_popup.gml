@@ -8,13 +8,13 @@ function scr_popup(type, text, image, popup_special="") {
 
 	if (instance_exists(obj_turn_end)){
 	    obj_turn_end.popups++;
-	    obj_turn_end.popup[obj_turn_end.popups]=1;
-	    obj_turn_end.popup_type[obj_turn_end.popups]=type;
-	    obj_turn_end.popup_text[obj_turn_end.popups]=text;
-	    obj_turn_end.popup_image[obj_turn_end.popups]=image;
-	    obj_turn_end.popup_special[obj_turn_end.popups]=popup_special;
+	    array_push(obj_turn_end.popup, 1);
+	    array_push(obj_turn_end.popup_type,type);
+	    array_push(obj_turn_end.popup_text, text);
+	    array_push(obj_turn_end.popup_image, image);
+	    array_push(obj_turn_end.popup_special, popup_special);
 	} else {
-	    var pip=instance_create(0,0,obj_popup);
+	    var pip = instance_create(0,0,obj_popup);
 	    pip.title=type;
 	    pip.text=text;
 

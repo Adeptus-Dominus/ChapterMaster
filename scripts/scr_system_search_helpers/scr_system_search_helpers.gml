@@ -319,6 +319,21 @@ function nearest_star_proper(xx,yy) {
 	return "none";
 }
 
+function nearest_warp_joined(_start_star){
+	var total_stars =  instance_number(obj_star);
+	for (var i=0;i<total_stars;i++){
+		var _trial_star = instance_nearest(obj_star.x, obj_star.y,obj_star);
+		var _join = determine_warp_join(_start_star,_trial_star ) ;
+		if (_join> 0){
+			instance_activate_object(obj_star);
+			return _trial_star.id;
+		}
+		instance_deactivate_object(id);
+	}
+	instance_activate_object(obj_star);
+	return "none";
+}
+
 
 function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore_dead = true){
 	var nearest = "none"
@@ -530,4 +545,24 @@ function planet_has_forces(star, planet_id, faction, minimum_strength = 1){
 			break;
 	}
 	return found;
+}
+
+
+function planet_all_forces(star, planet_id){
+	var forces_list;
+	with (star){
+		forces_list = [
+			p_tau[planet_id], 
+			p_tyranids[planet_id],
+			p_orks[planet_id],
+			p_eldar[planet_id],
+			p_necrons[planet_id],
+			p_demons[planet_id],
+			p_player[planet_id],
+			p_chaos[planet_id],
+			p_traitors[planet_id]
+
+		]
+	}
+	return array_sum(forces_list);
 }

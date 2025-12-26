@@ -347,65 +347,17 @@ function scr_toggle_fleet_area() {
                 hide_banner = 1;
                 //TODO rewrite all this shit when fleets finally become OOP
                 menu = MENU.Fleet;
+                fleet_advisor_data_setup();
+
 
                 cooldown = 8000;
                 click = 1;
-                for (var i = 37; i <= 41; i++) {
-                    temp[i] = "";
-                }
 
-                for (var i = 101; i < 120; i++) {
-                    temp[i] = "";
-                }
+            } else if (menu == 16) {
+                menu = 0;
 
-                var g = 0,
-                    u = 0,
-                    m = 0,
-                    d = 0;
-                temp[37] = 0;
-                temp[38] = 0;
-                temp[39] = 0;
-                for (var i = 0; i < array_length(obj_ini.ship); i++) {
-                    if (obj_ini.ship[i] != "") {
-                        if (obj_ini.ship_size[i] == 3) {
-                            temp[37]++;
-                        }
-                        if (obj_ini.ship_size[i] == 2) {
-                            temp[38]++;
-                        }
-                        if (obj_ini.ship_size[i] == 1) {
-                            temp[39]++;
-                        }
-                    }
-                }
-
-                g = 0;
-                temp[41] = "1";
-                for (var i = 0; i < array_length(obj_ini.ship); i++) {
-                    if ((g != 0) && (obj_ini.ship[i] != "")) {
-                        if ((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) < u) {
-                            g = i;
-                            u = obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i];
-                        }
-                    }
-                    if ((g == 0) && (obj_ini.ship[i] != "")) {
-                        g = i;
-                        u = obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i];
-                    }
-                    if (obj_ini.ship[i] != "") {
-                        m = i;
-                    }
-                    if ((obj_ini.ship[i] != "") && ((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) < 0.25)) {
-                        d += 1;
-                    }
-                }
-                if (g != 0) {
-                    temp[40] = string(obj_ini.ship_class[g]) + " '" + string(obj_ini.ship[g]) + "'";
-                    temp[41] = string(u);
-                    temp[42] = string(d);
-                }
-                man_max = m;
-                man_current = 0;
+                cooldown = 8000;
+                click = 1;
             }
         }
     });

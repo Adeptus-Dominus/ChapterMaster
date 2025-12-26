@@ -28,6 +28,9 @@ penitent_end=0;
 man_size=0;
 home_planet = 2;
 artifact_struct = array_create(200);
+flagship = 0;
+
+ship_weapons = [];
 
 // Equipment- maybe the bikes should go here or something?          yes they should
 equipment = {};
@@ -54,7 +57,10 @@ var company=-1;
 repeat(11){
     company+=1;v=-1;// show_message("v company: "+string(company));
     repeat(205){v+=1;// show_message(string(company)+"."+string(v));
-        last_ship[company,v] = {uid : "", name : ""};
+        last_ship[company,v] = {
+            uid : "", 
+            name : ""
+        };
         veh_race[company,v]=0;
         veh_loc[company,v]="";
         veh_name[company,v]="";
@@ -131,6 +137,43 @@ serialize = function(){
             array_push(artifact_struct_trimmed, artifact_struct[i]);
         }
     }
+
+    var ship_structs = [];
+
+    for (var s = 0; s < array_length(ship_data); s++){
+        var _ship = ship_data[s];
+        var left_broad = variable_clone(_ship.left_broad_positions);
+        var right_broad = variable_clone(_ship.right_broad_positions);
+        var center_cannons = variable_clone(_ship.forward_positions);
+
+        var _lb = array_length(left_broad);
+        var _rb = array_length(right_broad);
+        var _cb = array_length(center_cannons);
+        var _longest = max(_lb, _rb, _cb);
+        for (var i=0;i < _longest; i++){
+            if (i<_lb){
+                if (left_broad[i].weapon != false){
+                    left_broad[i].weapon = jsonify_struct(left_broad[i].weapon);
+                }
+            }
+            if (i<_rb){
+                if (right_broad[i].weapon != false){
+                    right_broad[i].weapon = jsonify_struct(right_broad[i].weapon);
+                }
+            }
+            if (i<_cb){
+                if (center_cannons[i].weapon != false){
+                    center_cannons[i].weapon = jsonify_struct(center_cannons[i].weapon);
+                }
+            }                        
+        }
+        var _copy_ship = variable_clone(_ship);
+        _copy_ship.left_broad_positions = left_broad;
+        _copy_ship.right_broad_positions = right_broad;
+        _copy_ship.forward_positions = center_cannons;
+
+        array_push(ship_structs, jsonify_struct(_copy_ship));
+    }
     
 
     var save_data = {
@@ -146,7 +189,9 @@ serialize = function(){
         marine_structs: marines,
         squad_structs: squads,
         equipment: equipment,
-        gene_slaves: gene_slaves
+        gene_slaves: gene_slaves,
+        ship_weapons,
+        ship_structs : ship_structs,
         // marines,
         // squads
     }
@@ -163,7 +208,7 @@ serialize = function(){
 }
 
 deserialize = function(save_data){
-    var exclusions = ["complex_livery_data", "full_liveries","company_liveries", "squad_types", "marine_structs", "squad_structs"]; // skip automatic setting of certain vars, handle explicitly later
+    var exclusions = ["complex_livery_data", "full_liveries","company_liveries", "squad_types", "marine_structs", "squad_structs", "ship_weapons","ship_structs"]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);
@@ -251,6 +296,58 @@ deserialize = function(save_data){
             } else {
                 array_push(obj_ini.artifact_struct, arti_struct); //load empty ones into the rest of the slots
             }
+        }
+    }
+
+    ship_weapons = [];
+    if (struct_exists(save_data, "ship_weapons")){
+        show_debug_message(save_data.ship_weapons);
+        var _wep_data = save_data.ship_weapons;
+        for (var i=0 ; i<array_length(_wep_data);i++){
+            array_push(ship_weapons,[]);
+            for (var w=0;w<array_length(_wep_data[i]);w++){
+                var _weapon = _wep_data[i][w];
+                array_push(ship_weapons[i], new ShipWeapon(_weapon.name, _weapon));
+            }
+        }
+    }
+
+    if struct_exists(save_data, "ship_structs"){
+        for (var s=0 ;s<array_length(save_data.ship_structs);s++){
+            var _data = save_data.ship_structs[s];
+            var _ship = new ShipStruct();
+            _ship.weapons = [];
+            with (_ship){
+                move_data_to_current_scope(_data);
+            }
+            var left_broad = _ship.left_broad_positions;
+            var right_broad = _ship.right_broad_positions;
+            var center_cannons = _ship.forward_positions;
+
+            var _lb = array_length(left_broad);
+            var _rb = array_length(right_broad);
+            var _cb = array_length(center_cannons);
+            var _longest = max(_lb, _rb, _cb);
+            for (var i=0;i < _longest; i++){
+                if (i<_lb){
+                    if (left_broad[i].weapon != false){
+                        left_broad[i].weapon = new ShipWeapon(left_broad[i].weapon.name, left_broad[i].weapon);
+                    }
+                }
+                if (i<_rb){
+                    if (right_broad[i].weapon != false){
+                        right_broad[i].weapon = new ShipWeapon(right_broad[i].weapon.name, right_broad[i].weapon);
+
+                    }
+                }
+                if (i<_cb){
+                    if (center_cannons[i].weapon != false){
+                        center_cannons[i].weapon = new ShipWeapon(center_cannons[i].weapon.name, center_cannons[i].weapon);
+
+                    }
+                }                        
+            }
+            array_push(ship_data, _ship);                   
         }
     }
 

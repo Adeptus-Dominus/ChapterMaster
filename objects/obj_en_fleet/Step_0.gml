@@ -49,14 +49,14 @@ if (ii_check=0){
 }
 
 
-if (owner = eFACTION.Tyranids){
+/*if (owner = eFACTION.Tyranids){
     image_alpha=0;
     if (instance_exists(obj_p_fleet)){
-        var bundy;bundy=instance_nearest(x,y,obj_p_fleet);
+        var bundy=instance_nearest(x,y,obj_p_fleet);
         if (bundy.action="") and (self.action="") and (point_distance(bundy.x,bundy.y,x,y)<90) and (bundy.x>x) and (bundy.y<y) then image_alpha=1;
     }
     if (instance_nearest(x,y-32,obj_star).vision=1) and (action="") then image_alpha=1;
-}
+}*/
 
 
 

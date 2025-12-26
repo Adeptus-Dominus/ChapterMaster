@@ -108,7 +108,8 @@ function add_vehicle_to_manage_arrays(unit){
 		array_push(ma_wid,obj_ini.veh_wid[unit[0]][unit[1]]);
 		array_push(ma_race,obj_ini.veh_race[unit[0]][unit[1]]);
 		if (obj_ini.veh_lid[unit[0]][unit[1]]>-1){
-			array_push(ma_loc,obj_ini.ship_location[obj_ini.veh_lid[unit[0]][unit[1]]]);
+            var _ship = obj_ini.ship_data[fetch_deep_array(obj_ini.veh_lid,unit)];
+			array_push(ma_loc,_ship.location);
 		} else {
 			array_push(ma_loc,obj_ini.veh_loc[unit[0]][unit[1]]);
 		}
@@ -160,13 +161,15 @@ function scr_company_view(company) {
         if (unit.name() != "") {
             unit_loc = unit.marine_location();
 
-            // Check if unit is on a lost ship
-            if (
-                unit_loc[0] == location_types.ship &&
-                obj_ini.ship_location[unit_loc[1]] == "Lost"
-            ) {
-                continue;
+            // Check if unit is on a lost ship            
+            if (unit_loc[0] == location_types.ship){
+                var _ship = obj_ini.ship_data[unit_loc[1]];
+                if (_ship.location == "Lost"){
+                    continue;
+                }
             }
+
+            // Check if unit is on a lost ship
 
             mans += 1;
             add_man_to_manage_arrays(unit);
@@ -198,11 +201,11 @@ function scr_company_view(company) {
         }
 
         // Check if unit is on a lost ship
-        if (
-            obj_ini.veh_lid[company][i] > -1 &&
-            obj_ini.ship_location[obj_ini.veh_lid[company][i]] == "Lost"
-        ) {
-            continue
+        if (obj_ini.veh_lid[company][i]){
+            var _ship = obj_ini.ship_data[obj_ini.veh_lid[company][i]];
+            if (_ship.location == "Lost"){
+                continue;
+            }
         }
 
         add_vehicle_to_manage_arrays([company, i]);

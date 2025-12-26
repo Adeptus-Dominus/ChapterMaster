@@ -63,7 +63,8 @@ function UnitQuickFindPanel() constructor{
 			}
 		} else if (unit_location[0]==location_types.ship){
 			if (unit.ship_location<ship_count && unit.ship_location>-1){
-				obj_ini.ship_carrying[unit.ship_location]+=unit.get_unit_size();
+				var _ship = fetch_ship(unit.ship_location);
+				_ship.carrying += unit.get_unit_size();
 			}
 		}
 	}
@@ -90,36 +91,39 @@ function UnitQuickFindPanel() constructor{
 				garrison_log[$ unit_location].vehicles++;
 			}
 		} else if (obj_ini.veh_lid[co][u]>-1){
-			obj_ini.ship_carrying[obj_ini.veh_lid[co][u]]+=scr_unit_size("",obj_ini.veh_role[co][u],true);
+			var _ship = fetch_ship(obj_ini.veh_lid[co][u]);
+			_ship.carrying += scr_unit_size("",obj_ini.veh_role[co][u],true);
 		}
 	}
 
 
 	static update_garrison_log = function(){
 		try{
-		for (var i = 0;i<array_length(obj_ini.ship_carrying); i++){
-			obj_ini.ship_carrying[i]=0;
-		};
-		var _unit;
-		delete garrison_log;
-	    garrison_log = {};
-	    obj_controller.specialist_point_handler.calculate_research_points(false);
-	    ship_count = array_length(obj_ini.ship_carrying);
-	    for (var co=0;co<=obj_ini.companies;co++){
-	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
-				/// @type {Struct.TTRPG_stats}
-	    		_unit = fetch_unit([co, u]);
-	    		evaluate_unit_for_garrison_log(_unit);
-	    	}
-	    	try{
-		    	for (var u=0;u<array_length(obj_ini.veh_race[co]);u++){
-		    		evaluate_vehicle_for_garrison_log(co ,u);
+			for (var i = 0;i<array_length(obj_ini.ship_data); i++){
+				var _ship = obj_ini.ship_data[i];
+				_ship.carrying=0;
+			};
+			var _unit;
+			delete garrison_log;
+		    garrison_log = {};
+		    obj_controller.specialist_point_handler.calculate_research_points(false);
+		    ship_count = array_length(obj_ini.ship_data);
+		    // show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
+		    for (var co=0;co<=obj_ini.companies;co++){
+		    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
+					/// @type {Struct.TTRPG_stats}
+		    		_unit = fetch_unit([co, u]);
+		    		evaluate_unit_for_garrison_log(_unit);
 		    	}
-		    }catch(_exception){
-				handle_exception(_exception);
-			}
-	    }
-	    update_mission_log();
+		    	try{
+			    	for (var u=0;u<array_length(obj_ini.veh_race[co]);u++){
+			    		evaluate_vehicle_for_garrison_log(co ,u);
+			    	}
+			    }catch(_exception){
+					handle_exception(_exception);
+				}
+		    }
+		    update_mission_log();
 	    }catch(_exception){
 			handle_exception(_exception);
 		}	
@@ -628,8 +632,9 @@ function unload_selection(){
                 // selecting location is the ship right now; get it's orbit location
                 boba.loading_name=selecting_location;
                 boba.depth=self.depth-50;
-                // sel_uid=obj_ini.ship_uid[selecting_ship];
-                scr_company_load(obj_ini.ship_location[selecting_ship]);
+
+                var _ship = obj_ini.ship_data[selecting_ship];
+                scr_company_load(_ship.location);
             }
         }
     }	

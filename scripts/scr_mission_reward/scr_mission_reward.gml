@@ -14,8 +14,6 @@ function scr_mission_reward(mission, star, planet) {
 
 
 	if (mission="mars_spelunk"){
-
-
 	    var roll1=roll_dice_chapter(1, 100, "high");;// For the first STC
 	    var found_stc=0,found_artifact=0,found_requisition=0;
 	    var techs_lost=0, techs_alive=0;

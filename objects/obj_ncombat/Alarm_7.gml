@@ -8,8 +8,7 @@ try {
         audio_sound_gain(snd_royal,0.25*obj_controller.master_volume*obj_controller.music_volume,2000);
     }
     
-    // scr_dead_marines(1);
-    
+
     // Execute the cleaning scripts
     // Check for any more battles
     
@@ -270,25 +269,7 @@ try {
         };
     }
     if ((dropping+attacking=0)) and (string_count("_attack",battle_special)=0) and (string_count("mech",battle_special)=0) and (string_count("ruins",battle_special)=0) and (battle_special!="ship_demon") and (string_count("cs_meeting",battle_special)=0){
-        
-        if (instance_exists(obj_turn_end)){
-            var _battle_index = obj_turn_end.current_battle;
-            if (_battle_index<array_length(obj_turn_end.battle_object)){
-                var _battle_object=obj_turn_end.battle_object[_battle_index];
-
-                var _planet = obj_turn_end.battle_world[_battle_index];
-                
-                _battle_object.p_player[_planet]-=world_size;
-
-                if (defeat == 1){
-                    _battle_object.p_player[_planet]=0;
-                };
-            }
-            obj_controller.combat=0;
-            with(obj_turn_end){
-                alarm[4]=1;
-            }
-        }
+        end_of_turn_defence_battle_cleanup();
     }
     if (string_count("ruins",battle_special)>0) and (defeat=1){
         //TODO this logic is wrong assumes all player units died in ruins
@@ -305,11 +286,10 @@ try {
     
     if ((string_count("spyrer",battle_special)>0))/* and (string_count("demon",battle_special)>0))*/ and (defeat=0){
         instance_activate_object(obj_star);
-        // show_message(obj_turn_end.current_battle);
-        // show_message(obj_turn_end.battle_world[obj_turn_end.current_battle]);
+
         // title / text / image / speshul
-        var cur_star = obj_turn_end.battle_object[obj_turn_end.current_battle];
-        var planet = obj_turn_end.battle_world[obj_turn_end.current_battle]
+        var cur_star = obj_turn_end.battle[obj_turn_end.current_battle].system;
+        var planet = obj_turn_end.battle[obj_turn_end.current_battle].planet;
         var _planet_string = scr_roman_numerals()[planet-1];
             
         remove_planet_problem(planet ,"spyrer",cur_star)
@@ -355,20 +335,22 @@ try {
                 
         if (diceh<=15){
             var ship,ship_hp,i=-1;
-            for (var i=0;i<array_length(obj_ini.ship);i++){
-                ship[i]=obj_ini.ship[i];
-                ship_hp[i]=obj_ini.ship_hp[i];
+            for (var i=0;i<array_length(obj_ini.ship_data);i++){
+                var _ship = fetch_ship(i);
+                ship[i]=__ship.name;
+                ship_hp[i]=_ship.hp;
                 if (i=battle_id){
-                    obj_ini.ship_hp[i]=-50;
-                    scr_recent("ship_destroyed",obj_ini.ship[i],i);
+                    _ship.hp=-50;
+                    scr_recent("ship_destroyed",_ship.name,i);
                 }
             }
-            var _pop = instance_create(0,0,obj_popup);
-            _pop.image = "";
-            _pop.title = "Ship Destroyed";
-            _pop.text=$"A handful of loyalist {global.chapter_name} make a fighting retreat to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then overload the main reactor.  Your ship explodes in a brilliant cloud of fire.";
-            scr_event_log("red",$"A handful of loyalist {global.chapter_name} overload the main reactor of your vessel '"+string(obj_ini.ship[battle_id])+"'.");
-            _pop.mission="loyalist_destroy_ship";
+            var pop=instance_create(0,0,obj_popup);
+            var _ship = fetch_ship(battle_id);
+            pop.image="";
+            pop.title="Ship Destroyed";
+            pop.text=$"A handful of loyalist {global.chapter_name} make a fighting retreat to the engine of the vessel, '{_ship.name}', and then overload the main reactor.  Your ship explodes in a brilliant cloud of fire.";
+            scr_event_log("red",$"A handful of loyalist {global.chapter_name} make a fighting retreat to the engine of the vessel, '{_ship.name}'.");
+            pop.mission="loyalist_destroy_ship";
 
             scr_ini_ship_cleanup();
         }
@@ -392,9 +374,9 @@ try {
             obj_controller.current_eventing="chaos_meeting_end";
             with(obj_temp_meeting){instance_destroy();}with(obj_popup){instance_destroy();}
             if (instance_exists(obj_turn_end)){
-                obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
+                obj_turn_end.combating=0;// setup_audience_and_popup_timer(1);
             }
-            var pip;pip = instance_create(0,0,obj_popup);
+            var pip = instance_create(0,0,obj_popup);
             pip.title = "Enemies Vanquished";
             pip.text = "Not only have you killed the Chaos Lord, "+string(obj_controller.faction_leader[eFACTION.Chaos])+", but also all of your battle brothers that questioned your rule.  As you stand, alone, among the broken corpses of your enemies you begin to question what exactly it is that you accomplished.  No matter the results, you feel as though your actions have been noticed.";
         }
@@ -408,7 +390,7 @@ try {
             with(obj_temp_meeting){instance_destroy();}
             with(obj_popup){instance_destroy();}
             if (instance_exists(obj_turn_end)){
-                obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
+                obj_turn_end.combating=0;// setup_audience_and_popup_timer(1);
             }
             var pip = instance_create(0,0,obj_popup);
             pip.title = "Survived";
@@ -446,7 +428,7 @@ try {
                     instance_destroy();
                 }
                 if (instance_exists(obj_turn_end)){
-                    obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
+                    obj_turn_end.combating=0;// setup_audience_and_popup_timer(1);
                 }
                 var pip = instance_create(0,0,obj_popup);
                 pip.title = "Chaos Lord Killed";
@@ -461,15 +443,22 @@ try {
     if (battle_special="ship_demon"){
         if (defeat == 1){
             var ship,ship_hp,i;i=-1;
-            repeat(51){i+=1;
-                ship[i]=obj_ini.ship[i];ship_hp[i]=obj_ini.ship_hp[i];
-                if (i=battle_id){obj_ini.ship_hp[i]=-50;scr_recent("ship_destroyed",obj_ini.ship[i],i);}
+            for (var i=0;i<array_length(obj_ini.ship_data);i++){
+                var _ship = fetch_ship(i);
+                ship = _ship.name;
+                ship_hp = _ship.hp;
+                if (i=battle_id){
+                    _ship.hp=-50;
+                    scr_recent("ship_destroyed",_ship.name,i);
+                }
             }
-            var _pop = instance_create(0,0,obj_popup);
-            _pop.image = "";
-            _pop.title = "Ship Destroyed";
-            _pop.text = "The daemon has slayed all of your marines onboard.  It works its way to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then tears into the main reactor.  Your ship explodes in a brilliant cloud of fire.";
-            scr_event_log("red","A daemon unbound from an Artifact wreaks havoc upon and destroys your vessel '"+string(obj_ini.ship[battle_id])+"'.");
+            var _ship = fetch_ship(battle_id);
+            var pop=instance_create(0,0,obj_popup);
+
+            pop.image="";
+            pop.title="Ship Destroyed";
+            pop.text="The daemon has slayed all of your marines onboard.  It works its way to the engine of the vessel, '"+string(_ship.name)+"', and then tears into the main reactor.  Your ship explodes in a brilliant cloud of fire.";
+            scr_event_log("red","A daemon unbound from an Artifact wreaks havoc upon and destroys your vessel '"+string(_ship.name)+"'.");
             
             scr_ini_ship_cleanup();
         }

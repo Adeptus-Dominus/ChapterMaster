@@ -79,7 +79,8 @@ function scr_crusade() {
 	           	}
                 if (dead){               	
                     var man_size=0;
-                    obj_ini.ship_carrying[unit.ship_location]-=unit.get_unit_size();
+                    var _ship = obj_ini.ship_data[unit.ship_location];
+                    _ship.carrying-=unit.get_unit_size();
                 	if (unit.IsSpecialist(SPECIALISTS_STANDARD,true)){
                 		obj_controller.command--;
                 	} else {
@@ -126,7 +127,7 @@ function scr_crusade() {
 	if (roll3<=10) then artifacts+=1;
 	if (artifacts>0) then repeat(artifacts){
 	    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.home_name,2);
-	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[0],501);
+	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship_data[0].name,501);
 	}
 
 
@@ -177,7 +178,7 @@ function launch_crusade(){
 		}
 		var travel_leeway = 10;
 		if (_nearest_player_fleet.action == "move"){
-			travel_leeway += _nearest_player_fleet.eta;
+			travel_leeway += _nearest_player_fleet.action_eta;
 		}
 		var _eta = get_viable_travel_time(travel_leeway, _nearest_player_fleet.x, _nearest_player_fleet.y, star_id.x,star_id.y, _nearest_player_fleet,false)
 		scr_popup("Crusade",$"Fellow Astartes legions are preparing to embark on a Crusade to a nearby sector.  Your forces are expected at {star_id.name}; {_eta} months from now your ships there shall begin their journey.","crusade","");

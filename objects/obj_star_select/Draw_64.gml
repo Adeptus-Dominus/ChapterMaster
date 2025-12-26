@@ -22,8 +22,8 @@ if (loading=1){
     xx=xx;
     yy=yy;
 } else if (loading==1){
-    var  temp1, dist;
-    dist=999;
+    var  temp1, target_distance;
+    target_distance=999;
     
     obj_controller.selecting_planet=0;
     button1="";
@@ -210,11 +210,11 @@ if (obj_controller.selecting_planet!=0){
 
                 chock = !p_data.xenos_and_heretics();
                 if (chock==1){
-                    if (p_data.has_upgrade(P_features.Secret_Base)){
+                    if (p_data.has_upgrade(P_features.SecretBase)){
                         button1="Base";
                     }else if (p_data.has_upgrade(P_features.Arsenal)){
                         button1="Arsenal"; 
-                    }else if (p_data.has_upgrade(P_features.Gene_Vault)){
+                    }else if (p_data.has_upgrade(P_features.GeneVault)){
                         button1="Gene-Vault";
                     }else if (array_length(p_data.upgrades)==0){
                         button1="Build";
@@ -230,7 +230,7 @@ if (obj_controller.selecting_planet!=0){
         }
         
         if (obj_controller.recruiting_worlds_bought>0 && !p_data.at_war()){
-            if (!p_data.has_feature(P_features.Recruiting_World) && p_data.planet_type != "Dead" && !target.space_hulk){
+            if (!p_data.has_feature(P_features.RecruitingWorld) && p_data.planet_type != "Dead" && !target.space_hulk){
                 button4="+Recruiting";
             }
         }
@@ -251,7 +251,12 @@ if (obj_controller.selecting_planet!=0){
     var slate_draw_scale = 420/850;
     if (feature!=""){
         if (is_struct(feature)){
-            feature.draw_planet_features(344+main_data_slate.width-4,165)
+            try{
+                feature.draw_planet_features(344+main_data_slate.width-4,165);
+            } catch(_exception){
+                handle_exception(_exception);
+                feature = "";
+            }
             if (feature.remove){
                 feature="";
             }else if (feature.destroy){
@@ -324,8 +329,8 @@ if (obj_controller.selecting_planet!=0){
                         allow_click : true,
                     });
                     recruiting_button.draw();
-                    if (p_data.has_feature(P_features.Recruiting_World)) {
-                        var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+                    if (p_data.has_feature(P_features.RecruitingWorld)) {
+                        var _recruit_world = p_data.get_features(P_features.RecruitingWorld)[0];
                         if (_recruit_world.recruit_type == 0) && (obj_controller.faction_status[p_data.current_owner] != "War" && obj_controller.faction_status[p_data.current_owner] != "Antagonism" || p_data.player_disposition >= 50) {
                             draw_text(xx+(spacing_x*3)+35, half_way-20, "Open: Voluntery");
                         } else if (_recruit_world.recruit_type == 0 && p_data.player_disposition <= 50) {
@@ -381,9 +386,9 @@ if (obj_controller.selecting_planet!=0){
             var building=instance_create(x,y,obj_temp_build);
             building.target=target;
             building.planet=obj_controller.selecting_planet;
-            if (p_data.has_upgrade(P_features.Secret_Base)) then building.lair=1;
+            if (p_data.has_upgrade(P_features.SecretBase)) then building.lair=1;
             if (p_data.has_upgrade(P_features.Arsenal)) then building.arsenal=1;
-            if (p_data.has_upgrade(P_features.Gene_Vault)) then building.gene_vault=1;
+            if (p_data.has_upgrade(P_features.GeneVault)) then building.gene_vault=1;
             obj_controller.temp[104]=string(scr_master_loc());
             obj_controller.menu=60;
             with(obj_star_select){
@@ -444,11 +449,11 @@ if (obj_controller.selecting_planet!=0){
             }
         }else if (current_button=="+Recruiting"){
             if (obj_controller.recruiting_worlds_bought > 0 && p_data.current_owner <= 5 && !p_data.at_war()) {
-                if (!p_data.has_feature(P_features.Recruiting_World)) {
+                if (!p_data.has_feature(P_features.RecruitingWorld)) {
                     if (obj_controller.faction_status[eFACTION.Imperium] == "War") {
                         obj_controller.recruiting_worlds_bought -= 1;
                     }
-                    array_push(target.p_feature[obj_controller.selecting_planet], new NewPlanetFeature(P_features.Recruiting_World));
+                    array_push(target.p_feature[obj_controller.selecting_planet], new PlanetFeature(P_features.RecruitingWorld));
 
                     if (obj_controller.selecting_planet) {
                         obj_controller.recruiting_worlds += planet_numeral_name(obj_controller.selecting_planet, target);
@@ -502,17 +507,37 @@ if (target!=0){
         // x3=46;y3=252;
         x3=49;y3=441;
         
-        repeat(7){i+=1;
-            if (en_fleet[i]>0){
+        var _combating = 0;
+        for (var i=0;i<array_length(en_fleet);i++){
+            if (en_fleet[i]>1){
                 // draw_sprite_ext(spr_force_icon,en_fleet[i],x3,y3,0.5,0.5,0,c_white,1);
                 scr_image("ui/force",en_fleet[i],x3-16,y3-16,32,32);
+                //draw_rectangle_array()
+                if (point_and_click([x3-24, y3-24, x3+48, y3+48])){
+                    _combating=en_fleet[i];
+                    show_debug_message("battle ")
+                }
                 x3+=64;
             }
         }
         
-        
+        if (_combating>0){
+            setup_fleet_battle(_combating, target);
+            fleet_start = 0;
+        }        
     }
 }
+
+
+if (instance_exists(obj_fleet)){
+    fleet_start++;
+    if (fleet_start == 500){
+        start_fleet_battle();
+    }
+}
+draw_planet_debug_options();
+
+
 
 pop_draw_return_values();
 

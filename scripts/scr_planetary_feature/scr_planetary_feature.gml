@@ -1,34 +1,34 @@
 enum P_features {
-			Sororitas_Cathedral,
-			Necron_Tomb,
+			SororitasCathedral,
+			NecronTomb,
 			Artifact, 
-			STC_Fragment,
-			Ancient_Ruins,
-			Cave_Network,
-			Recruiting_World, 
+			STCFragment,
+			AncientRuins,
+			CaveNetwork,
+			RecruitingWorld, 
 			Monastery,
 			Warlord6,
 			OrkWarboss,
 			Warlord10,
-			Special_Force,
+			SpecialForce,
 			ChaosWarband,
 			Webway,
-			Secret_Base,
+			SecretBase,
 			Starship,
-			Succession_War,
-			Mechanicus_Forge,
-			Reclamation_pools,
-			Capillary_Towers,
-			Daemonic_Incursion,
-			Victory_Shrine,
+			SuccessionWar,
+			MechanicusForge,
+			ReclamationPools,
+			CapillaryTowers,
+			DaemonicIncursion,
+			VictoryShrine,
 			Arsenal,
-			Gene_Vault,
+			GeneVault,
 			Forge,
-			Gene_Stealer_Cult,
+			GeneStealerCult,
 			Mission,
-			OrkStronghold
-
-	};
+			OrkStronghold,
+	        ShipDock
+};
 	
 enum base_types{
 	Lair,
@@ -43,31 +43,35 @@ function PlayerForge() constructor{
 }
 
 // Function creates a new struct planet feature of a  specified type
-function NewPlanetFeature(feature_type, other_data={}) constructor{
+function PlanetFeature(feature_type, other_data={}) constructor{
 	f_type = feature_type;
+	player_hidden=false;
 	static reveal_to_player = function(){
 		if (player_hidden == 1){
 			player_hidden = 0;
 		}
 	}
+	uid = scr_uuid_generate();
 	switch(f_type){
-	case P_features.Gene_Stealer_Cult:
+	case P_features.GeneStealerCult:
 		PDF_control = 0;
 		sealed = 0;
-		player_hidden = 1;
+		player_hidden = false;
+		hive_summoned=false;
 		planet_display = "Genestealer Cult";
 		cult_age = 0;
 		hiding=true;
 		name = global.name_generator.generate_genestealer_cult_name();		
 		break;
-		case P_features.Necron_Tomb:
+
+		case P_features.NecronTomb:
 		awake = 0;
 		sealed = 0;
 		player_hidden = 1
 		planet_display = "Dormant Necron Tomb";
 		break;
 
-	case P_features.Secret_Base:
+	case P_features.SecretBase:
 		base_type = base_types.Lair;
 		inquis_hidden =1;
 		planet_display = "Hidden Secret Base";
@@ -97,7 +101,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		player_hidden = 0;
 		built = obj_controller.turn+3;
 		break;
-	case P_features.Gene_Vault:
+	case P_features.GeneVault:
 		inquis_hidden=1;
 		planet_display = "Arsenal";
 		player_hidden = 0;
@@ -110,7 +114,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		player_hidden = 0;
 		engineer_score = 0;
 	break;	
-	case P_features.Ancient_Ruins:
+	case P_features.AncientRuins:
 		static ruins_explored = scr_ruins_explored;
 		static explore = scr_explore_ruins;
 		static determine_race = scr_ruins_determine_race;
@@ -121,17 +125,17 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		static ruins_combat_end=scr_ruins_combat_end;
 		scr_ancient_ruins_setup();
 		break;
-	case P_features.STC_Fragment:
+	case P_features.STCFragment:
 		player_hidden = 1;
 		Fragment_type =0;
 		planet_display = "STC Fragment";
 		break;
-	case P_features.Cave_Network:
+	case P_features.CaveNetwork:
 		player_hidden = 1;
 		cave_depth =irandom(3);//allow_multiple levels of caves, option to go deeper
 		planet_display = "Unexplored Cave Network";
 		break;
-	case P_features.Sororitas_Cathedral:
+	case P_features.SororitasCathedral:
 		player_hidden = 1;
 		planet_display = "Sororitas Cathedral";
 		break;
@@ -157,11 +161,36 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		forge=0;
 		name=global.name_generator.generate_imperial_ship_name();
 		break;
-	case P_features.Recruiting_World:
+	case P_features.RecruitingWorld:
 		planet_display="Recruitment";
 		player_hidden = 0;
         recruit_type = 0;
         recruit_cost = 0;
+		break;
+	case P_features.ShipDock:
+		player_hidden = 0;
+		size = 1;
+		move_data_to_current_scope(other_data);
+		switch(size){
+			case 1:
+				capacity = 3;
+				break;
+			case 2:
+				capacity = 9;
+				break;
+			case 3:
+				capacity = 20;
+				break;								
+		}
+		space_taken = 0;
+		static has_dock_space = function(dock_space_wanted){
+			if (size >= dock_space_wanted){
+				return (capacity-space_taken >= dock_space_wanted);
+			} else {
+				return false;
+			}
+		}
+		planet_display = "Docks";
 		break;
 	case P_features.ChaosWarband:
 		if !(struct_exists(other_data, "patron")){
@@ -182,6 +211,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
             variable_struct_set(self, names[i], variable_struct_get(data, names[i]))
         }
 	}
+	move_data_to_current_scope(other_data);
 }
 function move_feature_to_fleet(planet, feature_slot, fleet, cargo_key){
 	var _feat = p_feature[planet][feature_slot];
@@ -192,6 +222,30 @@ function move_feature_to_fleet(planet, feature_slot, fleet, cargo_key){
 function move_feature_to_planet(cargo_key, star, planet){
 	
 }
+function search_system_features_uid(system, uuid){
+	var sys_bool = false;
+	for (var sys =1; sys<5; sys++){
+		sys_bool = search_planet_features_uid(system[sys], uuid)
+		if (sys_bool!=false){
+			break;
+		}
+	}
+	return sys_bool;
+}
+
+function search_planet_features_uid(planet, uuid){
+	var feature_count = array_length(planet);
+	var _feature = false;
+	if (feature_count > 0){
+		for (var fc = 0; fc < feature_count; fc++){
+			if (planet[fc].uid == uuid){
+				return planet[fc];
+			}
+		}
+	}
+	return _feature;	
+}
+
 // returns an array of all the positions that a certain planet feature occurs on th p_feature array of a planet
 // this works for both planet_Features and planet upgrades
 function search_planet_features(planet, search_feature){
@@ -274,11 +328,28 @@ function awake_necron_star(star){
 		return 0
 }
 
+function planet_player_hidden_feature(planet){
+	for (var i=0;i<array_length(planet);i++){
+		if (is_struct(planet[i])){
+			if (planet[i].player_hidden) then return true;
+		}
+	}
+	return false;
+}
+
+function system_player_hidden_feature(system){
+	for (var i=1;i<=system.planets;i++){
+		if (planet_player_hidden_feature(system.p_feature[i])) then return true;
+	}
+
+	return false;
+}
+
 
 //returns 1 if awake tomb world on planet 0 if tombs on planet but not awake and 2 if no tombs on planet
 function awake_tomb_world(planet){
 	var awake_tomb = 0;
-	 var tombs = search_planet_features(planet, P_features.Necron_Tomb);
+	 var tombs = search_planet_features(planet, P_features.NecronTomb);
 	 if (array_length(tombs)>0){
 		 for (var tomb =0;tomb<array_length(tombs);tomb++){
 			 if (planet[tombs[tomb]].awake = 1){
@@ -295,7 +366,7 @@ function awake_tomb_world(planet){
 //selas a tomb world and switche off awake so will no longer spawn necrons or necron fleets
 function seal_tomb_world(planet){
 	var awake_tomb = 0;
-	 var tombs = search_planet_features(planet, P_features.Necron_Tomb);
+	 var tombs = search_planet_features(planet, P_features.NecronTomb);
 	 if (array_length(tombs)>0){
 		 for (var tomb =0;tomb<array_length(tombs);tomb++){
 			awake_tomb = 1;
@@ -311,7 +382,7 @@ function seal_tomb_world(planet){
 //awakens a tomb world so necrons and necron fleets will spawn
 function awaken_tomb_world(planet){
 	var awake_tomb = 0;
-	 var tombs = search_planet_features(planet, P_features.Necron_Tomb);
+	 var tombs = search_planet_features(planet, P_features.NecronTomb);
 	 if (array_length(tombs)>0){
 		 for (var tomb =0;tomb<array_length(tombs);tomb++){
 			if (planet[tombs[tomb]].awake == 0){
@@ -336,7 +407,7 @@ function scr_planetary_feature(planet_num) {
 			feat.player_hidden =0;
 			var numeral_n = planet_numeral_name(planet_num);
 			switch (feat.f_type){
-				case P_features.Sororitas_Cathedral:
+				case P_features.SororitasCathedral:
 					if (obj_controller.known[eFACTION.Ecclesiarchy]=0) then obj_controller.known[eFACTION.Ecclesiarchy]=1;
 				    var lop=$"Sororitas Cathedral discovered on {numeral_n}.";
 				    scr_alert("green","feature",lop,x,y);
@@ -344,7 +415,7 @@ function scr_planetary_feature(planet_num) {
 				    if (p_heresy[planet_num]>10) then p_heresy[planet_num]-=10;
 				    p_sisters[planet_num]=choose(2,2,3);goo=1;
 					break;
-				case P_features.Necron_Tomb:
+				case P_features.NecronTomb:
 				    var lop=$"Necron Tomb discovered on {numeral_n}.";
 				    scr_alert("red","feature",lop,x,y);
 				    scr_event_log("red",lop);
@@ -354,17 +425,17 @@ function scr_planetary_feature(planet_num) {
 					scr_alert("green","feature",lop,x,y);
 					scr_event_log("",lop);
 					break;
-				case P_features.STC_Fragment:
+				case P_features.STCFragment:
 					var lop=$"STC Fragment located on {numeral_n}.";
 					 scr_alert("green","feature",lop,x,y);
 					 scr_event_log("",lop);
 					 break;
-				case P_features.Ancient_Ruins:
+				case P_features.AncientRuins:
 					var lop=$"A {feat.ruins_size} Ancient Ruins discovered on {string(name)} {scr_roman(planet_num)}.";
 					scr_alert("green","feature",lop,x,y);
 					scr_event_log("",lop);
 					break;
-				case P_features.Cave_Network:
+				case P_features.CaveNetwork:
 					var lop=$"Extensive Cave Network discovered on {numeral_n}.";
 			        scr_alert("green","feature",lop,x,y);
 			        scr_event_log("",lop);
@@ -386,7 +457,7 @@ function create_starship_event(){
 		return false;
 	}else {
 		var planet=irandom(star.planets-1)+1;
-		array_push(star.p_feature[planet], new NewPlanetFeature(P_features.Starship))
+		array_push(star.p_feature[planet], new PlanetFeature(P_features.Starship))
 		scr_event_log("","Ancient Starship discovered on "+string(star.name)+" "+scr_roman(planet)+".", star.name);
 	}
 }
@@ -547,7 +618,7 @@ function planet_selection_action(){
 /// @mixin PlanetData
 function check_for_stc_grab_mission(){
     // STC Grab
-    if (has_feature(P_features.STC_Fragment)){
+    if (has_feature(P_features.STCFragment)){
         var _techs=0,_mech_techs = 0;
         var _units = obj_controller.display_unit;
         for (var frag=0; frag < array_length(_units); frag++){
@@ -929,7 +1000,7 @@ function remove_stc_from_planet(){
 
 	with(obj_star_select){instance_destroy();}
 	with(obj_fleet_select){instance_destroy();}
-	pdata.delete_feature(P_features.STC_Fragment);
+	pdata.delete_feature(P_features.STCFragment);
 	scr_add_stc_fragment();// STC here
 
 
@@ -977,7 +1048,7 @@ function send_stc_to_adeptus_mech(){
 	with (obj_ground_mission){
 	var _target_planet;
 	_target_planet = instance_nearest(x, y, obj_star);
-	pdata.delete_feature(P_features.STC_Fragment);
+	pdata.delete_feature(P_features.STCFragment);
 
 	scr_return_ship(pdata.system.name, self, pdata.planet);
 

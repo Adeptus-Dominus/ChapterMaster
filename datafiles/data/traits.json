@@ -464,7 +464,7 @@
     },
     "perfectionist": {
         "display_name": "Perfectionist",
-        "flavour_text": "Obsessed with doing things correctly",
+        "flavour_text": "Obsessed with doing things correctly and Training to perfection",
         "wisdom": [
             2,
             2,
@@ -487,7 +487,8 @@
         "piety": [
             2,
             1
-        ]
+        ],
+        "effect": "When captaining a ship weapons have a 10% increased reload time"
     },
     "guardian": {
         "display_name": "Guardian",

@@ -42,8 +42,7 @@ function popup_defualt_click_action(){
     if (type=POPUP_TYPE.BATTLE_OPTIONS){
         obj_controller.cooldown=10;
         if (instance_exists(obj_turn_end)){
-            obj_turn_end.current_battle+=1;
-            obj_turn_end.alarm[0]=1;
+            end_turn_battle_next_sequence();
         }
         obj_controller.force_scroll=0;
         instance_destroy();
@@ -59,7 +58,7 @@ function popup_default_close(){
     obj_controller.cooldown=10;
     if (instance_exists(obj_turn_end) && obj_controller.complex_event==false){
         if (number!=0){
-            obj_turn_end.alarm[1]=4;
+            setup_audience_and_popup_timer(4);
         }
     }
     if (struct_exists(pop_data,"marine_display_image")){

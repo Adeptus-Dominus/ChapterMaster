@@ -110,7 +110,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 					//TODO somthing if the forge has a hanger
 				}		
 				break;
-			case P_features.Necron_Tomb:
+			case P_features.NecronTomb:
 
 				generic=true;
 				if (feature.awake==0 && feature.sealed==0){
@@ -129,17 +129,17 @@ function FeatureSelected(Feature, system, planet) constructor{
 				title = "Unknown Artifact";
 				body = "Unload Marines onto the planet to search for the artifact";
 				break;	
-			case P_features.Ancient_Ruins:
+			case P_features.AncientRuins:
 				generic=true;
 				title = "Ancinet Ruins";
 				body = "Unload Marines onto the planet to explore the ruins";
 				break;
-			case P_features.STC_Fragment:
+			case P_features.STCFragment:
 				generic=true;
 				title = "STC Fragment";
 				body = $"Unload a {obj_ini.role[100][16]} and whatever entourage you deem necessary to recover the STC Fragment";
 				break;
-			case P_features.Gene_Stealer_Cult:
+			case P_features.GeneStealerCult:
 				generic=true;
 				var cult_control = planet_data.population_influences[eFACTION.Tyranids];
 				title = $"Cult of {feature.name}";
@@ -155,7 +155,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				}
 				body = $"The Cult of {feature.name} {control_string}";
 				break;				
-			case P_features.Victory_Shrine:
+			case P_features.VictoryShrine:
 				draw_text_transformed(xx+(area_width/2), yy +10, "Victory Shrine", 2, 2, 0);
 				draw_set_halign(fa_left);
 				draw_set_color(c_gray);				
@@ -187,12 +187,12 @@ function FeatureSelected(Feature, system, planet) constructor{
 					body = "Without a force of orks to hold it together the fortress is slowly pulled apart from within by the inhabitants, It's capabilities will constantly decrease until soon there will be nothing left";
 				}
 				break
-            case P_features.Recruiting_World:
+            case P_features.RecruitingWorld:
                 generic = true;
                 var _planet = planet_data.planet;
                 var _star = obj_star_select.target;
                 var p_data = new PlanetData(_planet, _star);
-                var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+                var _recruit_world = p_data.get_features(P_features.RecruitingWorld)[0];
                 var _spare_apoth_points = p_data.get_local_apothecary_points();
                 title = "Marine Recruitment";
                 body = $"There are {_spare_apoth_points} apothecary rescource points available for recruit screening,\n\n";
@@ -224,6 +224,35 @@ function FeatureSelected(Feature, system, planet) constructor{
                     body += "To increase recruit success chance more apothecaries will be required on the planet surface.";
                 }
                 break;
+            case P_features.ShipDock:
+                title = "Ship Dock";
+                var _size_description = "";
+                var _size_literal;
+                var _monestary = planet_data.has_feature(P_features.Monastery);
+
+                switch(feature.size){
+                	case 1:
+                		_size_description = "are small and unsuited to working on medium and large vessels and are mostly for the convieniencce of local traders of the planet";
+                		_size_literal = "Escort";
+                		break;
+                	case 2:
+                		_size_description = "are large establishments plenty capable of of working on a range of larger ships simultaniously, however they are still unsuited to working on the largest ships beyond basic repairs";
+                		_size_literal = "Frigate";
+                		break;
+                	case 3:
+                		_size_description = "are huge facilities capable of working on all grades of ships and undertaking most works any captain could requir for a price";
+                		_size_literal = "Capital";
+                		break;                		                		
+                }
+                var _base_dock = _monestary ? "Your Fortress Monestary docks" : $"The Docks of {planet_data.name()}";
+                var _description = $"{_base_dock} {_size_description}\n\n";
+                _description += $"The docks are capable of berthing {feature.capacity} ships of sizes up to {_size_literal} ships, ships being worked on in berths will not be able to participate in combat while they are being worked on and will take 2 months to recomission to duty once work has commenced";
+                draw_set_halign(fa_left);
+                draw_text_ext(xx+10, yy+40,_description,-1,area_width-20);
+                var _off_height = string_height_ext(_description, -1,area_width-20);
+                //draw_unit_buttons([xx+10, ]);
+                break;
+
 			case P_features.Mission:
 				var mission_description=$"";
 				var planet_name = planet_numeral_name(planet_data.planet, obj_star_select.target);

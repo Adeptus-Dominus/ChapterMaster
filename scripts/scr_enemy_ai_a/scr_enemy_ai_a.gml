@@ -320,12 +320,12 @@ function scr_enemy_ai_a() {
 	                if (guard_score>=3) and (p_pdf[_run]<10000) then p_pdf[_run]*=(min(0.95, 0+pdf_loss_reduction));
 	                if (guard_score>=2) and (p_pdf[_run]<2000) then p_pdf[_run]=0;
 	                if (guard_score>=1) and (p_pdf[_run]<200) then p_pdf[_run]=0;
-		            if (_planet_data.population_influences[eFACTION.Tyranids] > 50 && _planet_data.has_feature(P_features.Gene_Stealer_Cult)){
+		            if (_planet_data.population_influences[eFACTION.Tyranids] > 50 && _planet_data.has_feature(P_features.GeneStealerCult)){
 		            	var _cur_influ = p_influence[_run][eFACTION.Tyranids];
 		            	var _influence_reduction = _cur_influ *  (p_pdf[_run]/_pdf_before);
 		            	adjust_influence(eFACTION.Tyranids,-min(_influence_reduction,_cur_influ-3) , _run);
 		            	if (p_influence[_run][eFACTION.Tyranids] < 20){
-		            		_planet_data.delete_feature(P_features.Gene_Stealer_Cult);
+		            		_planet_data.delete_feature(P_features.GeneStealerCult);
 		            	}
 		            }	                
 	            }
@@ -526,7 +526,7 @@ function scr_enemy_ai_a() {
             					if (p_type[_run] == "Forge") {
 					                dispo[_run] -= 5; // 10 Disposition decrease for the planet govrnor if it's overrun by orks
 					                obj_controller.disposition[3] -= 5; // obj_controller.disposition[3] refer to the disposition of the toaster jocks.
-					            } else if (planet_feature_bool(p_feature[_run], P_features.Sororitas_Cathedral) or(p_type[_run] == "Shrine")) {
+					            } else if (planet_feature_bool(p_feature[_run], P_features.SororitasCathedral) or(p_type[_run] == "Shrine")) {
 					                dispo[_run] -= 10; // diso[_run] is the disposition of the planet. where _run refer to the planet that is currently running the code.
 					                obj_controller.disposition[5] -= 3; // obj_controller.disposition[2] refer to the disposition of the sororitas while 3 refer to mechanicus
 					            } else dispo[_run] -= 5;
@@ -747,7 +747,7 @@ function scr_enemy_ai_a() {
 					        if (p_type[_run] == "Forge") { //visited variable check whether the star has been visisted or not 1 for true 0 for false
 					            dispo[_run] -= 10; // 10 Disposition decrease for the planet govrnor if it's overrun by necrons
 					            obj_controller.disposition[3] -= 10; // 10 dis decrease for the faction mechanicus
-					        } else if (planet_feature_bool(p_feature[_run], P_features.Sororitas_Cathedral) or(p_type[_run] == "Shrine")) {
+					        } else if (planet_feature_bool(p_feature[_run], P_features.SororitasCathedral) or(p_type[_run] == "Shrine")) {
 					            dispo[_run] -= 10; // 10 Disposition decrease for the planet govrnor if it's overrun by necrons
 					            obj_controller.disposition[5] -= 5; // 5 dis decrease for the Nurses
 					        } else dispo[_run] -= 10;
@@ -776,9 +776,9 @@ function scr_enemy_ai_a() {
 	    p_necrons[_run]=after_combat_necrons;
 	    if (p_tyranids[_run] != after_combat_tyranids){
 	    	p_tyranids[_run] = after_combat_tyranids;
-	    	if (_planet_data.has_feature(P_features.Gene_Stealer_Cult)){
+	    	if (_planet_data.has_feature(P_features.GeneStealerCult)){
 	    		adjust_influence(eFACTION.Tyranids,-min(p_influence[_run][eFACTION.Tyranids]-4, 5),_run);
-	    		var _cult = _planet_data.get_features(P_features.Gene_Stealer_Cult)[0];
+	    		var _cult = _planet_data.get_features(P_features.GeneStealerCult)[0];
 	    		if (p_influence[_run][eFACTION.Tyranids]<5){
 	    			_cult.hiding = true;
 	    		}
@@ -814,10 +814,10 @@ function scr_enemy_ai_a() {
 			}else if (p_owner[_run] = 10) {
 				who_cleansed="Chaos"
 				make_alert=true;				
-			} else if (planet_feature_bool(p_feature[_run], P_features.Gene_Stealer_Cult) && p_tyranids[_run] <= 0){
+			} else if (planet_feature_bool(p_feature[_run], P_features.GeneStealerCult) && p_tyranids[_run] <= 0){
 				who_cleansed="Gene Stealer Cult"
 				make_alert=true;
-				delete_features(p_feature[_run], P_features.Gene_Stealer_Cult);
+				delete_features(p_feature[_run], P_features.GeneStealerCult);
 				adjust_influence(eFACTION.Tyranids, -25, _run);
 			}
 			 if (make_alert){

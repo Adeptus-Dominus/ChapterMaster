@@ -16,7 +16,7 @@ if (beg!=0)/* and (instance_exists(obj_fleet_controller))*/{
                                         //^have this be the same as roomSettings Height and Width or fleets will auto end!
 
                 combat_end-=1;
-                log_message("Fleet Combat Ended- Loss - Enemy:"+string(enemy[1]));
+                log_message("Fleet Combat Ended- Loss - Enemy:"+string(enemy[0]));
             }
         }
     }
@@ -25,7 +25,7 @@ if (beg!=0)/* and (instance_exists(obj_fleet_controller))*/{
         start=6;
         obj_p_ship.alarm[3]=1;
         alarm[0]=10;
-        log_message("Fleet Combat Ended- Victory - Enemy:"+string(enemy[1]));
+        log_message("Fleet Combat Ended- Victory - Enemy:"+string(enemy[0]));
     }
     
     if (combat_end>-1) and (instance_number(obj_en_ship)=0) then combat_end-=1;
@@ -45,6 +45,7 @@ if (start=5){
                 las.direction=point_direction(las.x,las.y,player_lasers_target.x,player_lasers_target.y)+round(random_range(-4,4));
                 las.image_xscale=1.5;las.image_yscale=1.5;las.speed=30;las.dam=30;
                 las.sprite_index=spr_ground_las;las.image_index=0;las.image_speed=0;
+                las.explosion_sprite = spr_explosion;   
             }
             
         }

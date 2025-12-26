@@ -13,6 +13,10 @@ function calculate_full_chapter_spread(){
 	var _tech_spread = {};
 	var _apoth_spread = {};
 	var _unit_spread = {};
+	for (var i=0;i<array_length(obj_ini.ship_data);i++){
+		var _ship = obj_ini.ship_data[i];
+		_ship.tech_crew = 0;
+	}
     for(var company=0;company<11;company++){
     	var _company_length = (array_length(obj_ini.name[company]));
     	for (var v=0; v < _company_length; v++) {
@@ -44,7 +48,11 @@ function calculate_full_chapter_spread(){
   	    		}
   	    		key_val = _mar_loc[2];
   	    	} else if (_mar_loc[0] == location_types.ship){
-  	    		if instance_exists(obj_p_fleet){
+  	    		var _ship = obj_ini.ship_data[_mar_loc[1]];
+  	    		if (_is_tech){
+  	    			_ship.tech_crew++;
+  	    		}
+  	    		if (instance_exists(obj_p_fleet)){
   	    			with (obj_p_fleet){
   	    				if (array_contains(capital_num, _mar_loc[1]) ||
   	    					array_contains(frigate_num, _mar_loc[1])||
@@ -76,7 +84,8 @@ function calculate_full_chapter_spread(){
             	if (obj_ini.veh_race[company][v]!=0){
             		if(obj_ini.veh_lid[company][v]>-1){
 	            		veh_location = obj_ini.veh_lid[company][v];
-	            		var _ship_loc = obj_ini.ship_location[veh_location];
+	            		var _ship = obj_ini.ship_data[veh_location];
+	            		var _ship_loc = _ship.location;
 	            		if (_ship_loc == "Warp" || _ship_loc=="Lost"){
 			  	    		if instance_exists(obj_p_fleet){
 			  	    			with (obj_p_fleet){
@@ -90,9 +99,9 @@ function calculate_full_chapter_spread(){
 			  	    				}
 			  	    			}
 			  	    		}
-			  	    	} else if (obj_ini.ship_location[veh_location] != ""){
+			  	    	} else if (_ship_loc != ""){
 			  	    		array_slot=eSystemLoc.orbit;
-			  	    		key_val=obj_ini.ship_location[veh_location];
+			  	    		key_val=_ship_loc;
 			  	    	}
 		            }            	
 	            	if (obj_ini.veh_wid[company][v]>0){
@@ -156,7 +165,7 @@ function apothecary_simple(){
 		}
 		if (!marines_present){
 			if (obj_controller.gene_seed == 0) and (obj_controller.recruiting > 0) {
-				var _training_ground = system_feature_bool(self.p_feature, P_features.Recruiting_World);
+				var _training_ground = system_feature_bool(self.p_feature, P_features.RecruitingWorld);
 				if (_training_ground){
                     obj_controller.recruiting = 0;
                     scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);

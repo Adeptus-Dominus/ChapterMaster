@@ -253,7 +253,7 @@ function scr_add_artifact(artifact_type="random", artifact_tags="", is_identifie
             artifact_location = obj_ini.home_name;
             ship_id = 2;
         } else {
-            artifact_location = obj_ini.ship[0];
+            artifact_location = obj_ini.ship_data[0].name;
             ship_id = 501;
         }
     }
@@ -313,8 +313,8 @@ function ArtifactStruct(Index) constructor {
 
     static ship_id = function() {
         var _index = obj_ini.artifact_sid[index] - 500;
-        if (_index >= array_length(obj_ini.ship_location)){
-            obj_ini.artifact_sid[index] = 500 + array_length(obj_ini.ship_location) -1;
+        if (_index >= array_length(obj_ini.ship_data)){
+            obj_ini.artifact_sid[index] = 500 + array_length(obj_ini.ship_data) -1;
         }
         return obj_ini.artifact_sid[index] - 500;
     };
@@ -325,7 +325,7 @@ function ArtifactStruct(Index) constructor {
 
     static location_string = function() {
         if (sid() >= 500) {
-            return obj_ini.ship[ship_id()];
+            return obj_ini.ship_data[ship_id()].name;
         } else {
             return $"{loc()} {sid()}";
         }
@@ -337,10 +337,11 @@ function ArtifactStruct(Index) constructor {
             identifiable = 1;
         }
         if (sid() >= 500) {
-            if (obj_ini.ship_location[ship_id()] == obj_ini.home_name) {
+            var _ship = obj_ini.ship_data[ship_id()];
+            if (_ship.location == obj_ini.home_name) {
                 identifiable = 1;
             }
-            if (obj_ini.ship_class[ship_id()] == "Battle Barge") {
+            if (_ship.class == "Battle Barge") {
                 identifiable = 1;
             }
         }
@@ -425,7 +426,8 @@ function ArtifactStruct(Index) constructor {
             if (_ship_id > 0) {
                 var demonSummonChance = roll_dice_chapter(1, 100, "high");
 
-                if ((demonSummonChance <= 60) && (obj_ini.ship_carrying[_ship_id] > 0)) {
+                var _ship = obj_ini.ship_data[_ship_id];
+                if (demonSummonChance <= 60 && _ship.carrying) {
                     instance_create(0, 0, obj_ncombat);
                     obj_ncombat.battle_special = "ship_demon";
                     obj_ncombat.formation_set = 1;
@@ -487,7 +489,7 @@ function ArtifactStruct(Index) constructor {
                     unit.update_mobility_item("", false, true);
                 }
                 bearer = false;
-                obj_ini.artifact_equipped[index] = false;
+                obj_ini.artifact_struct[index].equipped() = false;
             } else if (equipped()) {
                 var _b_type = determine_base_type();
                 var _bearer = false;

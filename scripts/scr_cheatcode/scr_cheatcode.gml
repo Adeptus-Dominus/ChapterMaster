@@ -65,10 +65,10 @@ function scr_cheatcode(argument0) {
 					break;
 				case "artifact":
 					if (cheat_arguments[0] == "1") {
-						scr_add_artifact("random", "", 6, obj_ini.ship[0], 501);
+						scr_add_artifact("random", "", 6, obj_ini.ship_data[0].name, 501);
 					} else {
 						repeat(real(cheat_arguments[1])){
-							scr_add_artifact(cheat_arguments[0], "", 6, obj_ini.ship[0], 501);
+							scr_add_artifact(cheat_arguments[0], "", 6, obj_ini.ship_data[0].name, 501);
 						}
 					}
 					break;
@@ -117,7 +117,7 @@ function scr_cheatcode(argument0) {
 					break;
 				case "inquisarti":
 					scr_quest(0, "artifact_loan", 4, 10);
-					var last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship[0], 501);
+					var last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship_data[0].name, 501);
 					break;
 				case "govmission":
 					var problem = "";
@@ -190,21 +190,21 @@ function scr_cheatcode(argument0) {
 				case "artifactpopulate":
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
-							array_push(p_feature[i], new NewPlanetFeature(P_features.Artifact));
+							array_push(p_feature[i], new PlanetFeature(P_features.Artifact));
 						}
 					}
 					break;
 				case "ruinspopulate":
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
-							array_push(p_feature[i], new NewPlanetFeature(P_features.Ancient_Ruins));
+							array_push(p_feature[i], new PlanetFeature(P_features.AncientRuins));
 						}
 					}
 					break;		
 				case "stcpopulate":
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
-							array_push(p_feature[i], new NewPlanetFeature(P_features.STC_Fragment));
+							array_push(p_feature[i], new NewPlanetFeature(P_features.STCFragment));
 						}
 					}
 					break;	
@@ -375,6 +375,13 @@ function scr_cheatcode(argument0) {
 					var _fleet = get_nearest_player_fleet(0,0);
 					add_ship_to_fleet(new_player_ship("Gloriana"),_fleet);
 					break;
+        		case "nidinvasion":
+		            with (obj_star){
+		                if (system_feature_bool(p_feature,P_features.GeneStealerCult)){
+		                    summon_new_hive_fleet();
+		                }
+		            }
+		            break;
 				case "zoom":
 					set_zoom_to_default();
 					break;
@@ -436,11 +443,11 @@ function draw_planet_debug_options(){
 function draw_planet_debug_features(){
 	static _addable_features = [
 		{
-			e_num : P_features.Gene_Stealer_Cult,
+			e_num : P_features.GeneStealerCult,
 			name : "GeneStealer Cult"
 		},
 		{
-			e_num : P_features.Ancient_Ruins,
+			e_num : P_features.AncientRuins,
 			name : "Ancient Ruins"
 		},
 		{
@@ -448,11 +455,11 @@ function draw_planet_debug_features(){
 			name : "Artefact"
 		},
 		{
-			e_num : P_features.STC_Fragment,
+			e_num : P_features.STCFragment,
 			name : "STC Fragment"
 		},
 		{
-			e_num : P_features.Sororitas_Cathedral,
+			e_num : P_features.SororitasCathedral,
 			name : "Sororitas Cathedral"
 		},
 		{

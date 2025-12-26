@@ -280,7 +280,7 @@ function imperial_navy_bombard(){
             	_bombard=p;
             }
             else{
-            	var _cults = return_planet_features(orbiting.p_feature[p],P_features.Gene_Stealer_Cult);
+            	var _cults = return_planet_features(orbiting.p_feature[p],P_features.GeneStealerCult);
             	if (array_length(_cults)){
             		if (!_cults[0].hiding){
             			_bombard=p;

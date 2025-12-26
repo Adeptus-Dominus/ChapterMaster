@@ -18,7 +18,7 @@ function scr_enemy_ai_b() {
         total_garrison = cur_garrison.total_garrison;
         is_garrison_force = cur_garrison.garrison_force;
 
-        var planet_string = $"{string(name)} {scr_roman_numerals()[i - 1]}";
+        var planet_string = planet_numeral_name(i);
         // Orks grow in number
         var ork_growth = floor(random(100)) + 1;
         success = false; // This part handles the increasing in numbers
@@ -197,7 +197,7 @@ function scr_enemy_ai_b() {
                     if (p_type[i] == "Forge") {
                         dispo[i] -= 10; // 10 disposition decreases for the respective planet
                         obj_controller.disposition[3] -= 3; // 10 disposition decrease for the toaster Fetishest since they aren't that numerous
-                    } else if (planet_feature_bool(p_feature[i], P_features.Sororitas_Cathedral) || (p_type[i] == "Shrine")) {
+                    } else if (planet_feature_bool(p_feature[i], P_features.SororitasCathedral) || (p_type[i] == "Shrine")) {
                         dispo[i] -= 4; // similarly 10 disposition decrease, note those nurses are a bit pissy and
                         // and you can't easily gain their favor because you cannot ask them to "step down" from office.
                         obj_controller.disposition[5] -= 5;
@@ -288,11 +288,10 @@ function scr_enemy_ai_b() {
                     scr_alert("red", "owner", $"Massive heretic uprising on {n_name}.", x, y);
                     scr_event_log("purple", $"Massive heretic uprising on {n_name}.", name);
                 } // Huge uprising
-
                 if ((rando >= 100) && (p_traitors[i] < 5)) {
                     p_traitors[i] = 6;
                     p_owner[i] = 10;
-                    array_push(p_feature[i], new NewPlanetFeature(P_features.Daemonic_Incursion));
+                    array_push(p_feature[i], new PlanetFeature(P_features.DaemonicIncursion));
 
                     if (p_heresy[i] >= 80) {
                         p_heresy[i] = 95;
@@ -307,61 +306,10 @@ function scr_enemy_ai_b() {
                     scr_alert("red", "owner", tixt, x, y);
                     scr_event_log("purple", tixt, name);
                 }
-                // if (p_traitors[i]>2){obj_controller.x=self.x;obj_controller.y=self.y;}
-            } // End traitors cult
-        }
-        // Genestealer cults grow in number
-        if (planet_feature_bool(p_feature[i], P_features.Gene_Stealer_Cult)) {
-            var cult = return_planet_features(p_feature[i], P_features.Gene_Stealer_Cult)[0];
-            cult.cult_age++;
-            adjust_influence(eFACTION.Tyranids, cult.cult_age / 100, i);
-            var planet_garrison = system_garrison[i - 1];
-            if (cult.hiding) {
-                var find_nid_chance = 50 - planet_garrison.total_garrison;
-                if (p_influence[i][eFACTION.Tyranids] > 50) {
-                    var find_cult_chance = irandom(50);
-                    var alert_text = $"A hidden Genestealer Cult in {name} Has suddenly burst forth from hiding!";
-                    if (planet_garrison.garrison_force) {
-                        var alert_text = $"A hidden Genestealer Cult in {name} Has been discovered by marine garrison!";
-                        find_cult_chance -= 25;
-                    }
-                    if (find_cult_chance < 1) {
-                        cult.hiding = false;
-                        scr_popup("System Lost", alert_text, "Genestealer Cult", "");
-                        owner = eFACTION.Tyranids;
-                        scr_event_log("red", $"A hidden Genestealer Cult in {name} {i} has Started a revolt.", name);
-                        p_tyranids[i] += 1;
-                    }
-                }
             }
-            if ((!cult.hiding) && (p_tyranids[i] <= 3) && (p_type[i] != "Space Hulk") && (p_influence[i][eFACTION.Tyranids] > 10)) {
-                var spread = 0;
-                rando = irandom(150);
-                rando -= p_influence[i][eFACTION.Tyranids];
-                if (rando <= 15) {
-                    spread = 1;
-                }
-
-                if ((p_type[i] == "Lava") && (p_tyranids[i] == 2)) {
-                    spread = 0;
-                }
-                if (((p_type[i] == "Ice") || (p_type[i] == "Desert")) && (p_tyranids[i] == 3)) {
-                    spread = 0;
-                }
-
-                if (spread == 1) {
-                    p_tyranids[i] += 1;
-                }
-            }
-            if (p_influence[i][eFACTION.Tyranids] > 55) {
-                p_owner[i] = eFACTION.Tyranids;
-            }
-        } else if (p_influence[i][eFACTION.Tyranids] > 5) {
-            adjust_influence(eFACTION.Tyranids, -1, i);
-            if ((irandom(200) + (p_influence[i][eFACTION.Tyranids] / 10)) > 195) {
-                array_push(p_feature[i], new NewPlanetFeature(P_features.Gene_Stealer_Cult));
-            }
-        }
+		}
+		// Genestealer cults grow in number
+		genestealer_cult_end_turn_growth(i);
 
         // Spread influence on controlled sector
         if ((p_type[i] != "Space Hulk") && (p_type[i] != "Dead")) {
@@ -470,7 +418,7 @@ function scr_enemy_ai_b() {
                             if (p_type[i] == "Forge") {
                                 dispo[i] -= 10; // 10 disposition decreases for the respective planet
                                 obj_controller.disposition[eFACTION.Mechanicus] -= 10; // 10 disposition decrease for the toaster Fetishest since they aren't that many toasters in 41 millennia
-                            } else if (planet_feature_bool(p_feature[i], P_features.Sororitas_Cathedral) || (p_type[i] == "Shrine")) {
+                            } else if (planet_feature_bool(p_feature[i], P_features.SororitasCathedral) || (p_type[i] == "Shrine")) {
                                 dispo[i] -= 10; // 10 disposition decreases for the respective planet
                                 obj_controller.disposition[5] -= 5;
                             } else {

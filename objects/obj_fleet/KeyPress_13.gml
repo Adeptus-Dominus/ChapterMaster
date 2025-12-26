@@ -1,39 +1,33 @@
-var __b__;
-__b__ = action_if_variable(obj_controller.cooldown, 0, 2);
-if !__b__
-{
-__b__ = action_if_variable(start, 7, 0);
-if !__b__
-{
-{
-start = 5;
-// show_message(string(ships_max));
 
-/*en_capital_max=en_capital;
-en_frigate_max=en_frigate;
-en_escort_max=en_escort;*/
 
-beg=1;
-
-/* */
+//this is key press enter because who the fuck knows whar keypress_13 is
+var _cool = obj_controller.cooldown;
+if (_cool){
+	exit;
 }
-}
-}
-__b__ = action_if_variable(obj_controller.cooldown, 0, 2);
-if !__b__
-{
-__b__ = action_if_variable(start, 7, 0);
-if __b__
-{
 
-// End battle crap here
+//why 7? idk ask duke
+if (start != 7){
+	{
+		start = 5;
+		// show_message(string(ships_max));
 
-instance_activate_all();
-room_speed=30;
-alarm[7]=1;
+		/*en_capital_max=en_capital;
+		en_frigate_max=en_frigate;
+		en_escort_max=en_escort;*/
 
+		beg=1;
 
-/* */
-}
+		/* */
+	}
+}else {
+
+	// End battle crap heres
+
+	instance_activate_all();
+	room_speed=30;
+	wait_and_execute(1, ship_combat_cleanup,[] , self);
+
+	/* */
 }
 /*  */

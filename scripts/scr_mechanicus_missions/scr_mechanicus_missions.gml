@@ -39,25 +39,25 @@ function mechanicus_missions_end_turn(planet){
 	        if (roll1>=98) then battli=2;// very oops, much necron, wow
 	    
 	        if (battli>0) and (p_player[planet]>0){// Quene the battle
-	            obj_turn_end.battles+=1;
-	            obj_turn_end.battle[obj_turn_end.battles]=1;
-	            obj_turn_end.battle_world[obj_turn_end.battles]=planet;
-	            obj_turn_end.battle_opponent[obj_turn_end.battles]=13;
-	            obj_turn_end.battle_location[obj_turn_end.battles]=name;
-	            obj_turn_end.battle_object[obj_turn_end.battles]=id;
-	            if (battli=1) then obj_turn_end.battle_special[obj_turn_end.battles]="study2a";
-	            if (battli=2) then obj_turn_end.battle_special[obj_turn_end.battles]="study2b";
-	        
-	            if (obj_turn_end.battle_opponent[obj_turn_end.battles]==11){
+	        	var _battle = new EndTurnBattle(EndTurnBattleTypes.Ground, self.id);
+	        	_battle.special = battli==1 ? "study2a" : "study2b";
+	        	_battle.opponent = eFACTION.Necrons;
+	        	_battle.planet = planet;
+
+	        	
+	        	//clearly reserved for an unfinished version of the mission where the player has to instead fight CSSM
+	            if (_battle.opponent == 11){
 	                if (planet_feature_bool(p_feature[planet],P_features.ChaosWarband)==1){
-	                    obj_turn_end.battle_special[obj_turn_end.battles]="ChaosWarband";
+	                    _battle.special="ChaosWarband";
 	                }
 	            }
+
+	            _battle.add_to_stack();
 	        }
 	        if (battli>0) and (p_player[planet]<=0){// XDDDDD
 	            scr_popup("Mechanicus Mission Failed","The Mechanicus Research team on planet "+string(name)+" "+scr_roman(planet)+" have been killed by Necrons in the absence of your astartes.  The Mechanicus are absolutely livid, doubly so because of the promised security they did not recieve.","","");
-	            obj_controller.turns_ignored[3]+=choose(8,10,12,14,16,18,20,22,24);
-	            obj_controller.disposition[3]-=25;
+	            obj_controller.turns_ignored[eFACTION.Mechanicus]+=choose(8,10,12,14,16,18,20,22,24);
+	            alter_disposition(eFACTION.Mechanicus,-25);
 	            remove_planet_problem(planet,"mech_tomb2");
 	        }
 	    }
@@ -76,6 +76,7 @@ function mechanicus_missions_end_turn(planet){
                     scr_event_log("","Mechanicus Mission Completed: The Mechanicus research team on "+string(name)+" "+scr_roman(planet)+" have completed their work.");
                 }
                 else if (reward==2){
+
                 	
                 	var last_artifact = scr_add_artifact("random", "", 0);
                     text="The Mechanicus Research team on planet "+string(name)+" "+scr_roman(planet)+" have completed their work without any major setbacks.  Pleased with your astartes' work, they have granted your Chapter an artifact, to be used as you see fit.";
@@ -148,8 +149,8 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
 	
 		
 	with(obj_star){
-		if(scr_star_has_planet_with_feature(id,P_features.Necron_Tomb)) and (awake_necron_star(id)!= 0){
-			var planet = scr_get_planet_with_feature(id, P_features.Necron_Tomb);
+		if(scr_star_has_planet_with_feature(id,P_features.NecronTomb)) and (awake_necron_star(id)!= 0){
+			var planet = scr_get_planet_with_feature(id, P_features.NecronTomb);
 			if(scr_is_planet_owned_by_allies(self, planet)){
 				array_push(mechanicus_missions, "mech_tomb");
 				break;
@@ -237,8 +238,8 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
 		stars = scr_get_stars();
 		var valid_stars = array_filter_ext(stars, 
 		function(star,index) {
-			if(scr_star_has_planet_with_feature(star,P_features.Necron_Tomb)) and (awake_necron_star(star)!= 0){
-				var planet = scr_get_planet_with_feature(star, P_features.Necron_Tomb);
+			if(scr_star_has_planet_with_feature(star,P_features.NecronTomb)) and (awake_necron_star(star)!= 0){
+				var planet = scr_get_planet_with_feature(star, P_features.NecronTomb);
 				if(scr_is_planet_owned_by_allies(star, planet)) {
 					return true;
 				}
@@ -408,9 +409,10 @@ function mechanicus_mars_mission_target_time_elapsed(planet){
                     techs_taken+=1;
                 }
                 if (_unit.ship_location>-1){
-                    ship_planet=obj_ini.ship_location[_unit.ship_location];
+                	var _ship = fetch_ship(_unit.ship_location)
+                    ship_planet = _ship.location;
                     if (ship_planet=name){
-                        obj_ini.ship_carrying[_unit.ship_location]-=_unit.get_unit_size();
+                        _ship.carrying -= _unit.get_unit_size();
                         _unit.location_string="Mechanicus Vessel";
                         _unit.planet_location=0;
                         _unit.ship_location=-1;

@@ -103,14 +103,14 @@ if (owner  == eFACTION.Player && player_fleet.action==""){
             draw_line_dashed(x,y,sys.x,sys.y,16,scale);
             
             draw_set_font(fnt_40k_14b);
-            var eta=0;       
+            var _eta=0;       
 
-            eta = calculate_fleet_eta(mine.x,mine.y,sys.x,sys.y, selection_travel_speed, ,,player_fleet.warp_able);
+            _eta = calculate_fleet_eta(mine.x,mine.y,sys.x,sys.y, selection_travel_speed, ,,player_fleet.warp_able);
 
-            if (sys.storm>0) or (instance_nearest(x,y,obj_star).storm>0) then eta="N/A";
+            if (sys.storm>0) or (instance_nearest(x,y,obj_star).storm>0) then _eta="N/A";
             
             draw_set_font(fnt_40k_14b);
-            eta = "ETA "+string(eta) + "#Press SHIFT to ignore way points";
+            _eta = "ETA "+string(_eta) + "#Press SHIFT to ignore way points";
             var speed_string = "";
             var viable=true;
             var types = [0,0,0];
@@ -127,9 +127,9 @@ if (owner  == eFACTION.Player && player_fleet.action==""){
                     }                     
                 } 
             }
-            eta+=speed_string;      
+            _eta+=speed_string;      
 
-            draw_text_transformed(sys.x+17,sys.y,string_hash_to_newline(eta),scale,scale,0);
+            draw_text_transformed(sys.x+17,sys.y,string_hash_to_newline(_eta),scale,scale,0);
             if (mouse_check_button(mb_right) && viable){
                 var ship_count = player_fleet_ship_count(player_fleet);
                 var fleet_selected = player_fleet_selected_count(player_fleet);

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_automated_ship_combat_functions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_automated_ship_combat_functions",
+  "parent":{
+    "name":"fleet",
+    "path":"folders/Scripts/fleet.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

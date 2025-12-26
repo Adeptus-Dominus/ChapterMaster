@@ -129,19 +129,19 @@ try_and_report_loop("player alarm 1",function(){
         if (instance_exists(steh)) and (steh!=0){
         
         if (steh.p_type[1]="Craftworld"){
-            var dist, rando;
-            dist=999;rando=floor(random(100))+1;
-            dist=point_distance(x,y,steh.old_x,steh.old_y);
+            var target_distance, rando;
+            target_distance=999;rando=floor(random(100))+1;
+            target_distance=point_distance(x,y,steh.old_x,steh.old_y);
             
-            // show_message("Dist: "+string(dist)+", Rando: "+string(rando));
+            // show_message("target_distance: "+string(target_distance)+", Rando: "+string(rando));
             
-            if (rando>=95) and (dist<=300){
+            if (rando>=95) and (target_distance<=300){
                 obj_controller.known[eFACTION.Eldar]=1;
                 scr_alert("green","elfs","Eldar Craftworld discovered.",steh.old_x,steh.old_y);
                 with(obj_en_fleet){if (owner = eFACTION.Eldar) then image_alpha=1;}
             }
             // Quene eldar introduction
-            // if (rando>=95) and (dist<=300) then show_message("MON'KEIGH");
+            // if (rando>=95) and (target_distance<=300) then show_message("MON'KEIGH");
         }
         }
         

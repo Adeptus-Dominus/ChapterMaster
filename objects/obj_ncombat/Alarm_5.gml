@@ -480,10 +480,10 @@ if (defeat == 0 && _reduce_power){
                 var who_return="";
                 var make_alert = true;
                 var planet_string = $"{name} {scr_roman(battle_planet)}";
-                if (planet_feature_bool(p_feature[battle_planet], P_features.Gene_Stealer_Cult)==1){
+                if (planet_feature_bool(p_feature[battle_planet], P_features.GeneStealerCult)==1){
                     who_cleansed="Gene Stealer Cult"
                     make_alert=true;
-                    delete_features(p_feature[battle_planet], P_features.Gene_Stealer_Cult);
+                    delete_features(p_feature[battle_planet], P_features.GeneStealerCult);
                     adjust_influence(eFACTION.Tyranids, -25, battle_planet);
                 } 
                 if (make_alert){

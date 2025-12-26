@@ -182,12 +182,10 @@ function set_fleet_movement(fastest_route = true, new_action="move", minimum_eta
 
 		    mine=instance_nearest(x,y,obj_star);
 	        
-	        var eta = calculate_fleet_eta(x,y,action_x,action_y,action_spd,_target_is_sys,is_orbiting(),warp_able);
-	        action_eta = eta;
-	        if (action_eta<=0) or (owner  != eFACTION.Inquisition){
-	            action_eta=eta;
-	            
-	        } else if (owner  = eFACTION.Inquisition) and (action_eta<2) and (string_count("_her",trade_goods)=0){
+	        var _eta = calculate_fleet_eta(x,y,action_x,action_y,action_spd,_target_is_sys,is_orbiting(),warp_able);
+	        action_eta = _eta;
+	        
+	        if (owner  = eFACTION.Inquisition) and (action_eta<2) and (string_count("_her",trade_goods)=0){
 	        	action_eta=2;
 	        }
 	        if (is_orbiting()){
@@ -211,10 +209,11 @@ function load_unit_to_fleet(fleet, unit){
 
 	for (var i=0;i<array_length(all_ships);i++){
 		var ship_ident = all_ships[i];
-		  if (obj_ini.ship_capacity[ship_ident]>obj_ini.ship_carrying[ship_ident]){
-		  	obj_ini.ship_carrying[ship_ident]+=unit.size;
+		var _ship = obj_ini.ship_data[ship_ident];
+		  if (ship_ident.has_space(unit.size)){
+		  	_ship.carrying+=unit.size;
 		  	unit.planet_location=0;
-		  	unit.location_string=obj_ini.ship_location[ship_ident];
+		  	unit.location_string=_ship.location;
 		  	unit.ship_location=ship_ident;
 		  	loaded=true;
 		  	break
@@ -224,7 +223,7 @@ function load_unit_to_fleet(fleet, unit){
 }
 function calculate_fleet_eta(xx,yy,xxx,yyy, fleet_speed,star1=true, star2=true,warp_able=false){
 	var warp_lane = false;
-	eta = 0;
+	_eta = 0;
 		//Some duke unfinished webway stuff copied here for reference
 		/*for (var w = 1;w<5;w++){
 			if (planet_feature_bool(mine.p_feature[w], P_features.Webway)==1) then web1=1;
@@ -237,21 +236,21 @@ function calculate_fleet_eta(xx,yy,xxx,yyy, fleet_speed,star1=true, star2=true,w
 	} else if (star1){
 		star1 = instance_nearest(xx,yy, obj_star);
 	}
-	eta=floor(point_distance(xx,yy,xxx,yyy)/fleet_speed)+1;
-	if (!warp_lane) then eta*=2;
-	if (warp_lane && warp_able) then eta = ceil(eta/warp_lane);
-	if (!star2) then return eta;
+	_eta=floor(point_distance(xx,yy,xxx,yyy)/fleet_speed)+1;
+	if (!warp_lane) then _eta*=2;
+	if (warp_lane && warp_able) then _eta = ceil(_eta/warp_lane);
+	if (!star2) then return _eta;
 
 	//check end location for warp storm
 	if (instance_exists(star2)){
 		if(star2.object_index == obj_star) {
 			if (star2.storm){
-				eta += 10000;
+				_eta += 10000;
 			}
 		}
 
 	}
-	return eta;
+	return _eta;
 }
 
 
@@ -476,6 +475,19 @@ function scr_orbiting_fleet(faction, system="none"){
 	return _found_fleet;	
 }
 
+function scr_orbiting_fleets_all(system="none"){
+	var xx = system == "none" ? x : system.x;
+	var yy = system == "none" ? y : system.y;
+	var _found_fleets = [];
+	with (obj_en_fleet){
+		if (x==xx && y==yy){
+			array_push(_found_fleets, id);					
+		}
+	}
+
+	return _found_fleets; 
+}
+
 
 /// @function object_distance(obj_1, obj_2)
 /// @description Returns the distance in pixels between two instances or objects based on their `x` and `y` coordinates.
@@ -556,13 +568,34 @@ function get_orbiting_fleets(faction,system="none"){
 	return _fleets;	
 }
 
+function standard_fleet_strength_calc(fleet = "none"){
+	if (fleet == "none"){
+		return capital_number + (frigate_number/2) + (escort_number/4);
+	} else { 
+		with (fleet){
+			return standard_fleet_strength_calc();
+		}
+	}
+}
+
+function fleet_faction_status(fleet = "none"){
+	if (fleet == "none"){
+		return obj_controller.faction_status[owner];
+	} else { 
+		with (fleet){
+			return fleet_faction_status();
+		}
+	}
+}	
+
+
 function sector_imperial_fleet_strength(){
 	obj_controller.imp_ships = 0;
     var _imperial_planet_count = 0;
     var _mech_worlds = 0;
     with(obj_en_fleet){
         if (owner==eFACTION.Imperium){
-            var _imperial_fleet_defence_score = capital_number + (frigate_number/2) + (escort_number/4);
+            var _imperial_fleet_defence_score = standard_fleet_strength_calc();
             obj_controller.imp_ships += _imperial_fleet_defence_score;
         }
     }
@@ -1123,9 +1156,9 @@ function fleet_respond_crusade(){
 	var min_dist = 40;
 	var to_ignore = [eFACTION.Imperium, eFACTION.Mechanicus,eFACTION.Inquisition, eFACTION.Ecclesiarchy];
 	
-	var dist = point_distance(x,y,ns.x,ns.y)
+	var target_distance = point_distance(x,y,ns.x,ns.y)
 	var valid_target = !array_contains_ext(ns.p_owner, to_ignore, false)
-    if valid_target and dist <= max_dist and dist >= min_dist and (owner = eFACTION.Imperium) 
+    if valid_target and target_distance <= max_dist and target_distance >= min_dist and (owner = eFACTION.Imperium) 
 		then ok = true;
 
     // if ((ns.owner>5) or (ns.owner  = eFACTION.Player)) and (point_distance(x,y,ns.x,ns.y)<=max_dis) and (point_distance(x,y,ns.x,ns.y)>40) and (owner = eFACTION.Imperium){

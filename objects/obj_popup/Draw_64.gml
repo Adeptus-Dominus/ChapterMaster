@@ -72,7 +72,7 @@ try{
 					draw_set_color(255);
 				}
 			}
-			draw_text_transformed(x1 + (sprite_width / 2), y1 + (sprite_height * 0.07), string_hash_to_newline(string(title)), 1.1, 1.1, 0);
+			draw_text_transformed(x1 + (sprite_width / 2), y1 + (sprite_height * 0.07), title, 1.1, 1.1, 0);
 			// draw_text(xx+320.5,yy+123.5,string(title));
 
 			draw_set_font(fnt_40k_14);
@@ -80,12 +80,13 @@ try{
 			draw_set_color(CM_GREEN_COLOR);
 
 			if (instance_exists(obj_turn_end)) {
-				if (obj_turn_end.popups > 0) {
-					draw_text(x1 + 20, y1 + (sprite_height * 0.07), $"{obj_turn_end.current_popup}/{obj_turn_end.popups}" )
+				var _pop_count = array_length(obj_turn_end.popup);
+				if (_pop_count) {
+					draw_text(x1 + 20, y1 + (sprite_height * 0.07), $"{obj_turn_end.current_popup+1}/{_pop_count}");
 				}
 			}
 			if (image == "debug") {
-				draw_text_ext(x1 + 20, y1 + (sprite_height * 0.18), string_hash_to_newline(string(text)), -1, sprite_width - 40);
+				draw_text_ext(x1 + 20, y1 + (sprite_height * 0.18), string_hash_to_newline(text), -1, sprite_width - 40);
 			} else if (image == "") {
 				if (size == 1) {
 					draw_text_ext(x1 + 5, y1 + (sprite_height * 0.18), string_hash_to_newline(string(text)), -1, width);

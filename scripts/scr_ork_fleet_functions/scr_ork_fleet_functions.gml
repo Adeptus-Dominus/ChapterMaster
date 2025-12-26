@@ -82,8 +82,8 @@ function ork_fleet_arrive_target(){
 
             //generate refugee ships to spread tyranids
             if (p_tyranids[ork_attack_planet]<=0){
-                if (planet_feature_bool(p_feature[ork_attack_planet], P_features.Gene_Stealer_Cult)){
-                    _pdata.delete_feature(P_features.Gene_Stealer_Cult);
+                if (planet_feature_bool(p_feature[ork_attack_planet], P_features.GeneStealerCult)){
+                    _pdata.delete_feature(P_features.GeneStealerCult);
                     adjust_influence(eFACTION.Tyranids, -25, ork_attack_planet);
                     var nearest_imperial = nearest_star_with_ownership(x,y,eFACTION.Imperium, self.id);
                     if (nearest_imperial != "none"){

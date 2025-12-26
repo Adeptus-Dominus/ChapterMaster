@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_ship_weapon_struct",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_ship_weapon_struct",
+  "parent":{
+    "name":"fleet",
+    "path":"folders/Scripts/fleet.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

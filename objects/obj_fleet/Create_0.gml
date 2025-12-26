@@ -3,12 +3,17 @@
 instance_activate_object(obj_controller);
 log_message("Fleet Combat Started");
 
-beg=0;fallen=0;fallen_command=0;
+beg=0;fallen=0;
+fallen_command=0;
 obj_controller.cooldown=20;
-sel_x1=0;sel_y1=0;control=0;
+sel_x1=0;
+sel_y1=0;control=0;
 ships_selected=0;
 battle_special="";
-csm_exp=0;star_name="";
+csm_exp=0;
+star_name="";
+
+explosions = [];
 
 // woohoo=0;
 left_down=0;
@@ -19,9 +24,19 @@ obj_controller.x=0;
 obj_controller.y=240;
 obj_controller.combat=1;
 is_zoomed=obj_controller.zoomed;
-start=0;combat_end=170;
+start=0;
+combat_end=170;
 
-if (obj_controller.zoomed=0) then with(obj_controller){scr_zoom();}
+fleet_select_box = false;
+
+if (obj_controller.zoomed=0){
+    set_zoom_to_default()
+} else {
+    with(obj_controller){
+        scr_zoom();
+     }
+     set_zoom_to_default();
+}
 
 enemy=0;
 enemy_status="attacking";
@@ -34,7 +49,7 @@ player_lasers=0;
 player_lasers_cd=70;
 player_lasers_target=0;
 pla_fleet=0;
-ene_fleet=0;
+battle_system=0;
 victory=false;
 
 instance_deactivate_all(true);
@@ -63,27 +78,23 @@ k=-1;
 j=-1;
 
 
-repeat(6){k+=1;j=-1;
-    repeat(11){j+=1;
-        enemy[j]=0;
-        enemy_status[j]=0;
-        
-        /*en_column[j,k]="";
-        en_width[j,k]=0;en_height[j,k]=0;
-        en_num[j,k]=0;en_size[j,k]=0;*/
-        
-        en_capital[j]=0;
-        en_capital_max[j]=0;
-        en_capital_lost[j]=0;
-        en_frigate[j]=0;
-        en_frigate_max[j]=0;
-        en_frigate_lost[j]=0;
-        en_escort[j]=0;
-        en_escort_max[j]=0;
-        en_escort_lost[j]=0;
-        en_ships_max[j]=0;
-    }
-}
+enemy = [];
+enemy_status = [];
+
+/*en_column[j,k]="";
+en_width[j,k]=0;en_height[j,k]=0;
+en_num[j,k]=0;en_size[j,k]=0;*/
+
+en_capital = [];
+en_capital_max = [];
+en_capital_lost = [];
+en_frigate = [];
+en_frigate_max = [];
+en_frigate_lost = [];
+en_escort = [];
+en_escort_max = [];
+en_escort_lost = [];
+en_ships_max = [];
 // Should be 0-5 for each of the factions
 
 
@@ -157,7 +168,8 @@ ship_id = [];
 
 
 // screwing around below here
-alarm[6]=2;
+wait_and_execute(2, start_enemy_fleet_spawn,[] , self);
+
 // 
 // waiting at this point- show loading screen
 // in this time the obj_controller passes over which units will be fighting, similar to the below code

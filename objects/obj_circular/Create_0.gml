@@ -31,7 +31,7 @@ with(obj_p_ship){
             
             if (ced<=30) then act="attack_turn";
             med=point_distance(x,y,ce.x,ce.y);
-            if (med<=o_dist+50){
+            if (med<=closing_distance+50){
                 act="attack";
                 target=ce;
             }
