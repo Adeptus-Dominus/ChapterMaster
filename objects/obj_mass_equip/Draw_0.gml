@@ -25,7 +25,7 @@ if (total_role_number>0){
         draw_rectangle(xx+114,yy+626,xx+560,yy+665,0);draw_set_alpha(1);
         if (scr_click_left()) and (good1+good2+good3+good4+good5=5){
             engage=true;refresh=true;
-            effect_create_above(ef_firework,xx+800,yy+400,5,c_yellow);
+            effect_create_depth(-15000,ef_firework,xx+800,yy+400,5,c_yellow);
         }
     }draw_set_alpha(1);
     
@@ -114,7 +114,7 @@ if (total_role_number > 0 && tab > -1) {
             false,  // do not limit to available items
         );
     }
-
+    
     draw_set_color(0);
     draw_rectangle(xx + 1183, yy + 160, xx + 1506, yy + 747, 0);
     
@@ -127,37 +127,37 @@ if (total_role_number > 0 && tab > -1) {
     var slot_name = get_slot_name(obj_controller.settings, tab);
     draw_text_transformed(xx + 1203, yy + 174, string_hash_to_newline($"Select {slot_name}"), 0.6, 0.6, 0);
     draw_set_font(fnt_40k_14b);
-
+    
     var x3 = xx + 1205; // Starting x position for the first column
     var y3 = yy + 205; // Starting y position
     var space = 18; // Amount to move down for each item
     var items_per_column = 24;
     var column_width = 146;
     var column_gap = 3;
-
+    
     for (var h = 0; h < array_length(item_name); h++) {
         if (h > 0 && h % items_per_column == 0) {
             x3 += column_width;
             y3 = yy + 205;
         }
-
+        
         draw_set_color(c_gray);
         var scale = string_width(string_hash_to_newline(item_name[h])) >= 140 ? 0.75 : 1;
         draw_text_transformed(x3, y3, string_hash_to_newline(item_name[h]), scale, 1, 0);
-
+        
         // keep track of the item's bottom right corner
         var item_x2 = x3 + (column_width - column_gap);
         var item_y2 = y3 + space - 1;
-
+        
         if (scr_hit(x3, y3, item_x2, item_y2)) {
             draw_set_color(c_white);
             draw_set_alpha(0.2);
             draw_text_transformed(x3, y3, string_hash_to_newline(item_name[h]), scale, 1, 0);
             draw_set_alpha(1);
-
+            
             if (scr_click_left()) {
                 var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
-
+                
                 switch (tab) {
                     // slots
                     case 0: obj_ini.wep1[100, role] = buh; break;
@@ -178,7 +178,7 @@ if (total_role_number > 0 && tab > -1) {
         }
         y3 += space;
     }
-
+    
     draw_set_halign(fa_center);
     draw_set_font(fnt_40k_14b);
     draw_set_color(c_gray);

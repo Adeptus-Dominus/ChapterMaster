@@ -6,7 +6,7 @@ function __global_object_depths() {
     // Initialise the global array that allows the lookup of the depth of a given object
     // GM2.0 does not have a depth on objects so on import from 1.x a global array is created
     // NOTE: MacroExpansion is used to insert the array initialisation at import time
-
+    
     // insert the generated arrays here
     global.__objectDepths[0] = -5000; // obj_fleet
     global.__objectDepths[1] = 0; // obj_circular
@@ -96,8 +96,8 @@ function __global_object_depths() {
     global.__objectDepths[85] = -1; // obj_star_event
     global.__objectDepths[86] = -999999999; // obj_halp
     global.__objectDepths[87] = -11; // obj_fleet_show
-
-
+    
+    
     global.__objectNames[0] = "obj_fleet";
     global.__objectNames[1] = "obj_circular";
     global.__objectNames[2] = "obj_fleet_spawner";
@@ -186,10 +186,10 @@ function __global_object_depths() {
     global.__objectNames[85] = "obj_star_event";
     global.__objectNames[86] = "obj_halp";
     global.__objectNames[87] = "obj_fleet_show";
-
-
+    
+    
     // create another array that has the correct entries
-    var len = array_length_1d(global.__objectDepths);
+    var len = array_length(global.__objectDepths);
     global.__objectID2Depth = [];
     for( var i=0; i<len; ++i ) {
         var objID = asset_get_index( global.__objectNames[i] );
@@ -197,6 +197,4 @@ function __global_object_depths() {
             global.__objectID2Depth[ objID ] = global.__objectDepths[i];
         } // end if
     } // end for
-
-
 }

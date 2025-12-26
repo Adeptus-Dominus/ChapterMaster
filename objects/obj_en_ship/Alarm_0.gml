@@ -12,9 +12,10 @@ cooldown[5]=0;
 
 
 
-if (class="Apocalypse Class Battleship"){sprite_index=spr_ship_apoc;
+if (class="Apocalypse Class Battleship"){
+    sprite_index=spr_ship_apoc;
     ship_size=3;
-
+    
     name="";
     hp=1200;
     maxhp=1200;
@@ -57,9 +58,10 @@ if (class="Apocalypse Class Battleship"){sprite_index=spr_ship_apoc;
     
 }
 
-if (class="Nemesis Class Fleet Carrier"){sprite_index=spr_ship_nem;
+if (class="Nemesis Class Fleet Carrier"){
+    sprite_index=spr_ship_nem;
     ship_size=3;
-
+    
     name="";
     hp=1000;
     maxhp=1000;
@@ -96,9 +98,10 @@ if (class="Nemesis Class Fleet Carrier"){sprite_index=spr_ship_nem;
     
 }
 
-if (class="Avenger Class Grand Cruiser"){sprite_index=spr_ship_aven;
+if (class="Avenger Class Grand Cruiser"){
+    sprite_index=spr_ship_aven;
     ship_size=2;
-
+    
     name="";
     hp=1000;
     maxhp=1000;
@@ -134,9 +137,10 @@ if (class="Avenger Class Grand Cruiser"){sprite_index=spr_ship_aven;
     
 }
 
-if (class="Sword Class Frigate"){sprite_index=spr_ship_sword;
+if (class="Sword Class Frigate"){
+    sprite_index=spr_ship_sword;
     ship_size=1;
-
+    
     name="";
     hp=100;
     maxhp=100;
@@ -164,9 +168,10 @@ if (class="Sword Class Frigate"){sprite_index=spr_ship_sword;
 
 // Eldar
 
-if (class="Void Stalker"){sprite_index=spr_ship_void;
+if (class="Void Stalker"){
+    sprite_index=spr_ship_void;
     ship_size=3;
-
+    
     name="";
     hp=1000;
     maxhp=1000;
@@ -209,9 +214,10 @@ if (class="Void Stalker"){sprite_index=spr_ship_void;
     
 }
 
-if (class="Shadow Class"){sprite_index=spr_ship_shadow;
+if (class="Shadow Class"){
+    sprite_index=spr_ship_shadow;
     ship_size=3;
-
+    
     name="";
     hp=600;
     maxhp=600;
@@ -241,9 +247,10 @@ if (class="Shadow Class"){sprite_index=spr_ship_shadow;
     
 }
 
-if (class="Hellebore"){sprite_index=spr_ship_hellebore;
+if (class="Hellebore"){
+    sprite_index=spr_ship_hellebore;
     ship_size=1;
-
+    
     name="";
     hp=200;
     maxhp=200;
@@ -280,9 +287,10 @@ if (class="Hellebore"){sprite_index=spr_ship_hellebore;
     
 }
 
-if (class="Aconite"){sprite_index=spr_ship_aconite;
+if (class="Aconite"){
+    sprite_index=spr_ship_aconite;
     ship_size=1;
-
+    
     name="";
     hp=200;
     maxhp=200;
@@ -311,9 +319,10 @@ if (class="Aconite"){sprite_index=spr_ship_aconite;
 
 // Orks
 
-if (class="Dethdeala"){sprite_index=spr_ship_deth;
+if (class="Dethdeala"){
+    sprite_index=spr_ship_deth;
     ship_size=3;
-
+    
     name="";
     hp=1200;
     maxhp=1200;
@@ -361,9 +370,10 @@ if (class="Dethdeala"){sprite_index=spr_ship_deth;
         
 }
 
-if (class="Gorbag's Revenge"){sprite_index=spr_ship_gorbag;
+if (class="Gorbag's Revenge"){
+    sprite_index=spr_ship_gorbag;
     ship_size=3;
-
+    
     name="";
     hp=1200;
     maxhp=1200;
@@ -414,9 +424,10 @@ if (class="Gorbag's Revenge"){sprite_index=spr_ship_gorbag;
     
 }
 
-if (class="Kroolboy") or (class="Slamblasta"){ship_size=3;
+if (class="Kroolboy") or (class="Slamblasta"){
+    ship_size=3;
     sprite_index=spr_ship_krool;
-
+    
     if (class="Kroolboy") then sprite_index=spr_ship_krool;
     
     if (class="Slamblasta") then sprite_index=spr_ship_slam;
@@ -457,9 +468,10 @@ if (class="Kroolboy") or (class="Slamblasta"){ship_size=3;
     
 }
 
-if (class="Battlekroozer"){sprite_index=spr_ship_kroozer;
+if (class="Battlekroozer"){
+    sprite_index=spr_ship_kroozer;
     ship_size=3;
-
+    
     name="";
     hp=1000;
     maxhp=1000;
@@ -510,9 +522,10 @@ if (class="Battlekroozer"){sprite_index=spr_ship_kroozer;
     
 }
 
-if (class="Ravager"){sprite_index=spr_ship_ravager;
+if (class="Ravager"){
+    sprite_index=spr_ship_ravager;
     ship_size=1;
-
+    
     name="";
     hp=100;
     maxhp=100;
@@ -544,9 +557,10 @@ if (class="Ravager"){sprite_index=spr_ship_ravager;
 
 // Tau
 
-if (class="Custodian"){sprite_index=spr_ship_custodian;
+if (class="Custodian"){
+    sprite_index=spr_ship_custodian;
     ship_size=3;
-
+    
     name="";
     hp=1000;
     maxhp=1000;
@@ -590,9 +604,10 @@ if (class="Custodian"){sprite_index=spr_ship_custodian;
     
 }
 
-if (class="Protector"){sprite_index=spr_ship_protector;
+if (class="Protector"){
+    sprite_index=spr_ship_protector;
     ship_size=2;
-
+    
     name="";
     hp=600;
     maxhp=600;
@@ -636,9 +651,10 @@ if (class="Protector"){sprite_index=spr_ship_protector;
     
 }
 
-if (class="Emissary"){sprite_index=spr_ship_emissary;
+if (class="Emissary"){
+    sprite_index=spr_ship_emissary;
     ship_size=2;
-
+    
     name="";
     hp=400;
     maxhp=400;
@@ -682,9 +698,10 @@ if (class="Emissary"){sprite_index=spr_ship_emissary;
     
 }
 
-if (class="Warden"){sprite_index=spr_ship_warden;
+if (class="Warden"){
+    sprite_index=spr_ship_warden;
     ship_size=1;
-
+    
     name="";
     hp=100;
     maxhp=100;
@@ -714,9 +731,10 @@ if (class="Warden"){sprite_index=spr_ship_warden;
     
 }
 
-if (class="Castellan"){sprite_index=spr_ship_castellan;
+if (class="Castellan"){
+    sprite_index=spr_ship_castellan;
     ship_size=1;
-
+    
     name="";
     hp=100;
     maxhp=100;
@@ -749,9 +767,10 @@ if (class="Castellan"){sprite_index=spr_ship_castellan;
 
 // Chaos
 
-if (class="Desecrator"){sprite_index=spr_ship_dese;
+if (class="Desecrator"){
+    sprite_index=spr_ship_dese;
     ship_size=3;
-
+    
     name="";
     hp=1200;
     maxhp=1200;
@@ -799,9 +818,10 @@ if (class="Desecrator"){sprite_index=spr_ship_dese;
         
 }
 
-if (class="Avenger"){sprite_index=spr_ship_veng;
+if (class="Avenger"){
+    sprite_index=spr_ship_veng;
     ship_size=2;
-
+    
     name="";
     hp=1000;
     maxhp=1000;
@@ -831,9 +851,10 @@ if (class="Avenger"){sprite_index=spr_ship_veng;
     
 }
 
-if (class="Carnage") or (class="Daemon"){sprite_index=spr_ship_carnage;
+if (class="Carnage") or (class="Daemon"){
+    sprite_index=spr_ship_carnage;
     ship_size=2;
-
+    
     name="";
     hp=1000;
     maxhp=1000;
@@ -867,14 +888,16 @@ if (class="Carnage") or (class="Daemon"){sprite_index=spr_ship_carnage;
     weapon_range[3]=300;
     weapon_cooldown[3]=45;
     
-    if (class="Daemon"){sprite_index=spr_ship_daemon;
+    if (class="Daemon"){
+        sprite_index=spr_ship_daemon;
         image_alpha=0.1;
-}
+    }
 }
 
-if (class="Iconoclast"){sprite_index=spr_ship_icono;
+if (class="Iconoclast"){
+    sprite_index=spr_ship_icono;
     ship_size=1;
-
+    
     name="";
     hp=100;
     maxhp=100;
@@ -900,9 +923,10 @@ if (class="Iconoclast"){sprite_index=spr_ship_icono;
 
 // Tyranids
 
-if (class="Leviathan"){sprite_index=spr_ship_leviathan;
+if (class="Leviathan"){
+    sprite_index=spr_ship_leviathan;
     ship_size=3;
-
+    
     name="";
     hp=1000;
     maxhp=1000;
@@ -944,9 +968,10 @@ if (class="Leviathan"){sprite_index=spr_ship_leviathan;
     
 }
 
-if (class="Razorfiend"){sprite_index=spr_ship_razorfiend;
+if (class="Razorfiend"){
+    sprite_index=spr_ship_razorfiend;
     ship_size=2;
-
+    
     name="";
     hp=600;
     maxhp=600;
@@ -982,9 +1007,10 @@ if (class="Razorfiend"){sprite_index=spr_ship_razorfiend;
     
 }
 
-if (class="Stalker"){sprite_index=spr_ship_stalker;
+if (class="Stalker"){
+    sprite_index=spr_ship_stalker;
     ship_size=1;
-
+    
     name="";
     hp=100;
     maxhp=100;
@@ -1020,9 +1046,10 @@ if (class="Stalker"){sprite_index=spr_ship_stalker;
     
 }
 
-if (class="Prowler"){sprite_index=spr_ship_prowler;
+if (class="Prowler"){
+    sprite_index=spr_ship_prowler;
     ship_size=1;
-
+    
     name="";
     hp=100;
     maxhp=100;
@@ -1064,9 +1091,10 @@ if (owner = eFACTION.Tyranids){
         
         if (obj_fleet.en_mutation[i]="Spore Clouds") then shields=shields+100;
         
-        if (obj_fleet.en_mutation[i]="Health"){hp=floor(hp*1.1);
+        if (obj_fleet.en_mutation[i]="Health"){
+            hp=floor(hp*1.1);
             maxhp=hp;
-    }
+        }
         if (obj_fleet.en_mutation[i]="Armour") then armour_front+=1;
         
         if (obj_fleet.en_mutation[i]="Speed") then speed_bonus=speed_bonus*1.1;
@@ -1084,9 +1112,10 @@ if (owner = eFACTION.Tyranids){
 
 
 // Necrons
-if (class="Cairn Class"){sprite_index=spr_ship_cairn;
+if (class="Cairn Class"){
+    sprite_index=spr_ship_cairn;
     ship_size=3;
-
+    
     name="";
     hp=1100;
     maxhp=1100;
@@ -1122,9 +1151,10 @@ if (class="Cairn Class"){sprite_index=spr_ship_cairn;
      
 }
 
-if (class="Reaper Class"){sprite_index=spr_ship_reaper;
+if (class="Reaper Class"){
+    sprite_index=spr_ship_reaper;
     ship_size=3;
-
+    
     name="";
     hp=900;
     maxhp=900;
@@ -1160,9 +1190,10 @@ if (class="Reaper Class"){sprite_index=spr_ship_reaper;
      
 }
 
-if (class="Shroud Class"){ship_size=2;
+if (class="Shroud Class"){
+    ship_size=2;
     sprite_index=spr_ship_shroud;
-
+    
     name="";
     hp=400;
     maxhp=400;
@@ -1186,9 +1217,10 @@ if (class="Shroud Class"){ship_size=2;
     
 }
 
-if (class="Jackal Class"){ship_size=2;
+if (class="Jackal Class"){
+    ship_size=2;
     sprite_index=spr_ship_jackal;
-
+    
     name="";
     hp=100;
     maxhp=100;
@@ -1212,9 +1244,10 @@ if (class="Jackal Class"){ship_size=2;
     
 }
 
-if (class="Dirge Class"){ship_size=2;
+if (class="Dirge Class"){
+    ship_size=2;
     sprite_index=spr_ship_dirge;
-
+    
     name="";
     hp=100;
     maxhp=100;

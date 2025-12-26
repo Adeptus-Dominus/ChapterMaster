@@ -12,16 +12,16 @@ var explo;
 __b__ = action_if_variable(owner, 6, 0);
 if (!__b__){
     image_angle=direction;
-
+    
     if (obj_fleet.start!=5) then exit;
-
+        
     if (class="Daemon") and (image_alpha<1) then image_alpha+=0.006;
-
+        
     o_dist=0;
     spid=0;
-
+    
     if (shields>0) and (shields<maxshields) then shields+=0.02;
-
+        
     // Need to every couple of seconds check this
     // with obj_en_ship if not big then disable, check nearest, and activate once more
     if (instance_exists(obj_en_ship)) then target=instance_nearest(x,y,obj_en_ship);
@@ -55,7 +55,7 @@ if (!__b__){
                 explo.y+=random_range(sprite_width*0.25,sprite_width*-0.25);
             }
         }
-        if (owner == eFACTION.Tyranids) then effect_create_above(ef_firework,x,y,1,c_purple);
+        if (owner == eFACTION.Tyranids) then effect_create_depth(-15000,ef_firework,x,y,1,c_purple);
         instance_destroy();
     }
     // While ship is alive, attack
@@ -388,21 +388,21 @@ if (!__b__){
 __b__ = action_if_variable(owner, 6, 0);
 if (__b__){
     image_angle=direction;
-
+    
     if (obj_fleet.start!=5) then exit;
-
+        
     o_dist=0;
     spid=0;
-
+    
     if (shields>0) and (shields<maxshields) then shields+=0.03;
     // Need to every couple of seconds check this
     // with obj_en_ship if not big then disable, check nearest, and activate once more
     if (instance_exists(obj_en_ship)) then target=instance_nearest(x,y,obj_en_ship);
-
+        
     if (hp<=0){
         gud=0;
         for(var wh=1; wh<=5; wh++){if (obj_fleet.enemy[wh]==owner) then gud=wh;}
-
+        
         if (class=="Void Stalker") then obj_fleet.en_capital_lost[gud]+=1;
         if (class=="Shadow Class") then obj_fleet.en_frigate_lost[gud]+=1;
         if (class=="Hellebore") or (class=="Aconite") then obj_fleet.en_escort_lost[gud]+=1;
@@ -415,7 +415,7 @@ if (__b__){
         husk.image_angle=image_angle;
         husk.depth=depth;
         husk.image_speed=0;
-
+        
         for(var i=0; i<choose(4,5,6); i++){
             explo=instance_create(x,y,obj_explosion);
             explo.image_xscale=0.5;
@@ -465,7 +465,7 @@ if (__b__){
             }
         }
         if (turret_cool>0) then turret_cool-=1;
-
+        
         targe=0;
         dist=9999;
         xx=x;

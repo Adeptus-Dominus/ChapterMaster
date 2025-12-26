@@ -19,7 +19,7 @@ if (sprite_index!=spr_flame2){
                 other.enemy_hp[t]-=d;
                 
                 if (other.enemies_alive=0){
-                    effect_create_above(ef_firework,other.x,other.y,1,c_green);
+                    effect_create_depth(-15000,ef_firework,other.x,other.y,1,c_green);
                     with(other){instance_destroy();}
                     instance_destroy();
                 }
@@ -52,7 +52,7 @@ if (sprite_index=spr_flame2) and (life=5){
                 other.enemy_hp[t]-=d;
                 
                 if (other.enemies_alive=0){
-                    effect_create_above(ef_firework,other.x,other.y,1,c_green);
+                    effect_create_depth(-15000,ef_firework,other.x,other.y,1,c_green);
                     with(other){instance_destroy();}
                 }
             }
