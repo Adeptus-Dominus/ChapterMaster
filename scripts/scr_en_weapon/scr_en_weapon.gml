@@ -1079,3 +1079,1078 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 	apa[i]=0;
 	*/
 }
+
+// Global Enemy Weapons
+// Convention: (freely changeable, but i started with this)
+// attack -> armor_penetration -> range -> splash -> ammo -> special
+// Array of 2 elements contains range from-to values
+// Array of more than 2 elements indicates specific attack values to randomly choose from
+// Exception is "special" attribute, which is always array of strings
+// Poison means dmg is added when picking weakness to poison and toxins as geneseed mutation
+// Siege means a range increase when there is a siege situation (attacking a fortification) (only one weapon uses it so far)
+
+global.en_weapons = {
+
+    // =====================
+    // Tyranid Weapons
+    // =====================
+
+    "Venom Claws": {
+        "attack": 200,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 0,
+        "special": ["poison"], // poison adds 40 dmg (20% increase)
+    },
+    "Lash Whip": {
+        "attack": 80,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 0,
+    },
+    "Bonesword": {
+        "attack": 120,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+    },
+    "Heavy Venom Cannon": {
+        "attack": 150,
+        "armor_penetration": 1,
+        "range": 8,
+        "splash": 0,
+    },
+    "Crushing Claws": {
+        "attack": 90,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Rending Claws": {
+        "attack": 80,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Devourer": {
+        "attack": [40, 60, 80, 100],
+        "armor_penetration": 0,
+        "range": 5,
+        "splash": 0,
+		"special": ["poison"], // poison adds 8, 12, 16, 20 dmg (20% increase)
+    },
+    "Zoanthrope Blast": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 2,
+        "splash": 0,
+    },
+    "Carnifex Claws": {
+        "attack": 300,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Venom Cannon": {
+        "attack": 150,
+        "armor_penetration": 0,
+        "range": 5,
+        "splash": 0,
+    },
+    "Deathspitter": {
+        "attack": 100,
+        "armor_penetration": 0,
+        "range": 2.1,
+        "splash": 0,
+		"special": ["poison"], // poison adds 20 dmg (20% increase)
+    },
+    "Fleshborer": {
+        "attack": 15,
+        "armor_penetration": 0,
+        "range": 2.1,
+        "splash": 0,
+		"special": ["poison"], // poison adds 4 dmg (4/15 increase)
+    },
+    "Scything Talons": {
+        "attack": 30,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 0,
+    },
+    "Genestealer Claws": {
+        "attack": [105, 105, 130],
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+    },
+	"Tyranid Witchfire": { // Dont know why tyranids would have witchfire, but it's in the original code
+        "attack": 100,
+        "armor_penetration": 1,
+        "range": 2,
+        "splash": 0,
+    },
+	"Tyranid Autogun": {
+        "attack": 20,
+        "armor_penetration": 0,
+        "range": 6,
+        "splash": 3,
+		"ammo": 12,
+    },
+    "Lictor Claws": {
+        "attack": 300,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 0,
+    },
+    "Flesh Hooks": {
+        "attack": 50,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 0,
+		"ammo": 1,
+    },
+
+    // =====================
+    // Chaos / Daemonic Weapons
+    // =====================
+
+    "Warpsword": {
+        "attack": 300,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Iron Claw": {
+        "attack": 400,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+    },
+    "Maulerfiend Claws": {
+        "attack": 300,
+        "armor_penetration": 300,
+        "range": 1,
+        "splash": 3,
+    },
+	"Chaos Witchfire": { // Dont know why tyranids would have witchfire, but it's in the original code
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 5.1,
+        "splash": 0,
+    },
+    "Eldritch Fire": {
+        "attack": 80,
+        "armor_penetration": 1,
+        "range": 5.1,
+    },
+    "Bloodletter Melee": {
+        "attack": 70,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+    },
+    "Daemonette Melee": {
+        "attack": 65,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+    },
+    "Plaguebearer Melee": {
+        "attack": 60,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+        "special": ["poison"], // poison adds 10 dmg (1/6 increase)
+    },
+    "Khorne Demon Melee": {
+        "attack": 350,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Demon Melee": {
+        "attack": 250,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Nurgle Vomit": {
+        "attack": 100,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 3,
+        "special": ["poison"], // poison adds 160 dmg (160% increase)
+    },
+    "Possessed Claws": {
+        "attack": 250,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Baleflame": {
+        "attack": 120,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 0,
+    },
+    "Defiler Claws": {
+        "attack": 350,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Daemonhost Claws": {
+        "attack": 350,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Daemonhost Powers": {
+        "attack": [100, 300],
+        "armor_penetration": [100, 300],
+        "range": [1, 6],
+        "splash": [0, 0, 1, 1], // Doubled up to keep convention
+    },
+
+    // =====================
+    // Necron Weapons
+    // =====================
+
+    "Staff of Light": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Staff of Light Shooting": {
+        "attack": 180,
+        "armor_penetration": 0,
+        "range": 3,
+        "splash": 3,
+    },
+    "Warscythe": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+    },
+    "Gauss Flayer": {
+        "attack": [30, 30, 30, 50, 50, 70],
+        "armor_penetration": 1, // Original code had no armor penetration for this weapon, Flayer Array has arp 1 so will this does as well
+        "range": 6.1,
+        "splash": 0,
+    },
+    "Gauss Blaster": {
+        "attack": [70, 70, 70, 70, 70, 100],
+        "armor_penetration": [0, 0, 0, 0, 0, 1],
+        "range": 6.1,
+        "splash": 0,
+    },
+    "Gauss Cannon": {
+        "attack": 180,
+        "armor_penetration": 1,
+        "range": 10,
+        "splash": 3,
+    },
+    "Gauss Particle Cannon": {
+        "attack": 300,
+        "armor_penetration": 1,
+        "range": 10.1,
+        "splash": 3,
+    },
+    "Overcharged Gauss Cannon": {
+        "attack": 250,
+        "armor_penetration": 1,
+        "range": 8.1,
+        "splash": 3,
+    },
+    "Wraith Claws": {
+        "attack": 80,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+    },
+    "Necron Claws": { // Renamed from just "Claws" to avoid confusion
+        "attack": 300,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+    },
+    "Gauss Flux Arc": {
+        "attack": 180,
+        "armor_penetration": 1,
+        "range": 8,
+        "splash": 3,
+    },
+    "Particle Whip": {
+        "attack": 300,
+        "armor_penetration": 1,
+        "range": 4.1,
+        "splash": 3,
+    },
+    "Gauss Flayer Array": {
+        "attack": 180,
+        "armor_penetration": 1,
+        "range": 8.1,
+        "splash": 3,
+    },
+    "Doomsday Cannon": {
+        "attack": 300,
+        "armor_penetration": 1,
+        "range": 6.1,
+        "splash": 3,
+    },
+
+    // =====================
+    // Aeldari Weapons
+    // =====================
+
+    "Web Spinner": {
+        "attack": 40,
+        "armor_penetration": 0,
+        "range": 2.1,
+        "splash": 3,
+        "ammo": 1
+    },
+    "Fusion Gun": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 2,
+        "splash": 0,
+        "ammo": 4,
+    },
+    "Firepike": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 2,
+        "splash": 0,
+        "ammo": 4,
+    },
+    "Singing Spear": {
+        "attack": 120,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+    },
+    "Singing Spear Throw": {
+        "attack": 120,
+        "armor_penetration": 1,
+        "range": 2,
+        "splash": 3,
+    },
+    "Witchblade": {
+        "attack": 100,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+    },
+    "Psyshock": {
+        "attack": 50,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 0,
+    },
+    "Wailing Doom": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Avatar Smite": {
+        "attack": 300,
+        "armor_penetration": 1,
+        "range": 2,
+        "splash": 0,
+		"ammo": 2,
+    },
+    "Ranger Long Rifle": {
+        "attack": 60,
+        "armor_penetration": 0,
+        "range": 25,
+        "splash": 0,
+    },
+    "Pathfinder Long Rifle": {
+        "attack": 70,
+        "armor_penetration": 0,
+        "range": 25,
+        "splash": 0,
+    },
+    "Shuriken Catapult": {
+        "attack": 35,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 0,
+    },
+    "Twin Linked Shuriken Catapult": {
+        "attack": 50,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 0,
+    },
+    "Avenger Shuriken Catapult": {
+        "attack": 40,
+        "armor_penetration": 0,
+        "range": 3,
+        "splash": 0,
+    },
+    "Aeldari Plasma Pistol": {
+        "attack": 60,
+        "armor_penetration": 1,
+        "range": 3.1,
+        "splash": 0,
+    },
+    "Aeldari Power Weapon": {
+        "attack": 80,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+    },
+	"Aeldari Power Blades": {
+        "attack": 80,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+    },
+    "Shuriken Pistol": {
+        "attack": 25,
+        "armor_penetration": 0,
+        "range": 2.1,
+        "splash": 0,
+    },
+    "Executioner": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+    },
+    "Scorpion Chainsword": {
+        "attack": 40,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+    },
+    "Mandiblaster": {
+        "attack": 20,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 0,
+    },
+    "Biting Blade": {
+        "attack": 70,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+    },
+	"Scorpian's Claw": {
+        "attack": 150,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Scorpion's Claw": {
+        "attack": 150,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Meltabomb": {
+        "attack": 0,
+        "armor_penetration": 200,
+        "range": 1,
+        "splash": 1,
+    },
+    "Deathspinner": {
+        "attack": 50,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 0,
+    },
+    "Dual Deathspinner": {
+        "attack": 80,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 0,
+    },
+    "Reaper Launcher": {
+        "attack": 150,
+        "armor_penetration": 80,
+        "range": 20,
+        "splash": 3,
+		"ammo": 8,
+    },
+    "Eldar Missile Launcher": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 20,
+        "splash": 3,
+		"ammo": 4,
+    },
+    "Laser Lance": {
+        "attack": 80,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 3,
+    },
+    "Fusion Pistol": {
+        "attack": 100,
+        "armor_penetration": 1,
+        "range": 1.1,
+        "splash": 0,
+		"ammo": 4,
+    },
+    "Harlequin's Kiss": {
+        "attack": 350,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 0,
+		"ammo": 1,
+    },
+    "Wraithcannon": {
+        "attack": 80,
+        "armor_penetration": 1,
+        "range": 2.1,
+        "splash": 0,
+    },
+    "Pulse Laser": {
+        "attack": 80,
+        "armor_penetration": 1,
+        "range": 15,
+        "splash": 0,
+    },
+    "Bright Lance": {
+        "attack": 100,
+        "armor_penetration": 1,
+        "range": 8,
+        "splash": 0,
+    },
+    "Shuriken Cannon": {
+        "attack": 65,
+        "armor_penetration": 0,
+        "range": 3,
+        "splash": 0,
+    },
+    "Prism Cannon": {
+        "attack": 250,
+        "armor_penetration": 1,
+        "range": 20,
+        "splash": 0,
+    },
+    "Twin Linked Doomweaver": {
+        "attack": 100,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 0,
+    },
+    "Starcannon": {
+        "attack": 140,
+        "armor_penetration": 1,
+        "range": 3,
+        "splash": 3,
+    },
+	"Two Power Fists": {
+        "attack": 300,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+    },
+	"Aeldari Flamer": {
+        "attack": 100,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 3,
+		"ammo": 4,
+    },
+    "Titan Starcannon": {
+        "attack": 220,
+        "armor_penetration": 1,
+        "range": 4,
+        "splash": 3,
+    },
+    "Phantom Pulsar": {
+        "attack": 500,
+        "armor_penetration": 1,
+        "range": 20,
+        "splash": 3,
+    },
+
+    // =====================
+    // Ork Weapons
+    // =====================
+
+    "Choppa": {
+        "attack": 28,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+    },
+    "Power Klaw": {
+        "attack": 150,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Slugga": {
+        "attack": 27,
+        "armor_penetration": 0,
+        "range": 3.1,
+        "splash": 3,
+		"ammo": 4,
+    },
+    "Tankbusta Bomb": {
+        "attack": 264,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+		"ammo": 1,
+    },
+    "Big Shoota": {
+        "attack": 100,
+        "armor_penetration": 0,
+        "range": 12,
+        "splash": 0,
+		"ammo": 30,
+    },
+	"Dakkagun": {
+        "attack": 150,
+        "armor_penetration": 0,
+        "range": 10,
+        "splash": 0,
+		"ammo": 20,
+    },
+    "Deffgun": {
+        "attack": 120,
+        "armor_penetration": 0,
+        "range": 8,
+        "splash": 0,
+		"ammo": 20,
+    },
+    "Snazzgun": {
+        "attack": 80,
+        "armor_penetration": 0,
+        "range": 10,
+        "splash": 0,
+    },
+    "Grot Blasta": {
+        "attack": 12,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 0,
+		"ammo": 6,
+    },
+    "Kannon": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 10.1,
+        "splash": 3,
+		"ammo": 5,
+    },
+    "Shoota": {
+        "attack": 30,
+        "armor_penetration": 0,
+        "range": 6,
+        "splash": 0,
+    },
+    "Burna": {
+        "attack": 140,
+        "armor_penetration": 1,
+        "range": 2,
+        "splash": 3,
+		"ammo": 4,
+    },
+    "Skorcha": {
+        "attack": 160,
+        "armor_penetration": 1,
+        "range": 2,
+        "splash": 3,
+		"ammo": 6,
+    },
+    "Rokkit Launcha": {
+        "attack": 150,
+        "armor_penetration": 1,
+        "range": 15,
+        "splash": 3,
+    },
+    "Krooz Missile": {
+        "attack": 250,
+        "armor_penetration": 1,
+        "range": 15,
+        "splash": 3,
+    },
+
+    // =====================
+    // T'au Empire
+    // =====================
+
+    "Fusion Blaster": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 2,
+        "splash": 0,
+		"ammo": 4,
+    },
+    "Plasma Rifle": {
+        "attack": 120,
+        "armor_penetration": 1,
+        "range": 10,
+        "splash": 0,
+    },
+    "Cyclic Ion Blaster": {
+        "attack": 180,
+        "armor_penetration": 0,
+        "range": 6,
+        "splash": 3,
+    },
+    "Burst Rifle": {
+        "attack": 130,
+        "armor_penetration": 0,
+        "range": 16,
+        "splash": 3,
+    },
+    "Missile Pod": {
+        "attack": 160,
+        "armor_penetration": 1,
+        "range": 15,
+        "splash": 3,
+		"ammo": 6,
+    },
+    "Smart Missile System": {
+        "attack": 150,
+        "armor_penetration": 1,
+        "range": 15,
+        "splash": 0,
+    },
+    "Small Railgun": {
+        "attack": 150,
+        "armor_penetration": 1,
+        "range": 18,
+        "splash": 0,
+    },
+	"Pulse Rifle": {
+        "attack": 37,
+        "armor_penetration": 0,
+        "range": 12,
+        "splash": 0,
+    },
+    "Rail Rifle": {
+        "attack": 65,
+        "armor_penetration": 0,
+        "range": 14,
+        "splash": 0,
+    },
+    "Kroot Rifle": {
+        "attack": 25,
+        "armor_penetration": 0,
+        "range": 6,
+        "splash": 0,
+    },
+    "Vespid Crystal": {
+        "attack": 60,
+        "armor_penetration": 0,
+        "range": 2.1,
+        "splash": 0,
+    },
+    "Railgun": {
+        "attack": 400,
+        "armor_penetration": 1,
+        "range": 20,
+        "splash": 0,
+    },
+
+    // =====================
+    // Imperium / Chaos Space Marines Weapons
+    // =====================
+
+    "Multi-Melta": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 4.1,
+        "splash": 0,
+        "ammo": 6,
+    },
+	"Imperium Plasma Pistol": {
+        "attack": 70,
+        "armor_penetration": 1,
+        "range": 3.1,
+        "splash": 0,
+    },
+    "Meltagun": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 2,
+        "splash": 0,
+		"ammo": 4,
+    },
+    "Imperium Flamer": {
+        "attack": 160,
+        "armor_penetration": 0,
+        "range": 2.1,
+        "splash": 3,
+		"ammo": 4,
+    },
+    "Imperium Heavy Flamer": {
+        "attack": 250,
+        "armor_penetration": 0,
+        "range": 2.1,
+        "splash": 3,
+		"ammo": 6,
+    },
+    "Combi-Flamer": {
+        "attack": 160,
+        "armor_penetration": 0,
+        "range": 2.1,
+        "splash": 3,
+		"ammo": 1,
+    },
+    "Bolter": {
+        "attack": 45,
+        "armor_penetration": 0,
+        "range": 12,
+        "splash": 0,
+		"ammo": 15,
+    },
+    "Bolt Pistol": {
+        "attack": 35,
+        "armor_penetration": 0,
+        "range": 3.1,
+        "splash": 0,
+		"ammo": 18,
+    },
+	"Sonic Blaster": {
+        "attack": 120,
+        "armor_penetration": 0,
+        "range": 3,
+        "splash": 3,
+    },
+	"Rubric Bolter": {
+        "attack": 80,
+        "armor_penetration": 0,
+        "range": 12,
+        "splash": 0,
+		"ammo": 15,
+    },
+    "Storm Bolter": {
+        "attack": 65,
+        "armor_penetration": 0,
+        "range": 8,
+        "splash": 3,
+		"ammo": 10,
+    },
+    "Heavy Bolter": {
+        "attack": 120,
+        "armor_penetration": 0,
+        "range": 16,
+        "splash": 0,
+    },
+    "Twin Linked Heavy Bolters": {
+        "attack": 240,
+        "armor_penetration": 0,
+        "range": 16,
+        "splash": 3,
+    },
+    "Lascannon": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 20,
+        "splash": 0,
+		"ammo": 8,
+    },
+    "Twin Linked Lascannon": {
+        "attack": 300,
+        "armor_penetration": 1,
+        "range": 20,
+        "splash": 0,
+    },
+    "Missile Launcher": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 20,
+        "splash": 3,
+		"ammo": 4,
+    },
+    "Battle Cannon": {
+        "attack": 300,
+        "armor_penetration": 1,
+        "range": 12,
+        "splash": 0,
+    },
+    "Demolisher Cannon": {
+        "attack": 500,
+        "armor_penetration": 1,
+        "range": 2,
+        "splash": 0,
+		"special": ["Siege"], // Siege means +3 range in siege situations
+    },
+    "Earthshaker Cannon": {
+        "attack": 300,
+        "armor_penetration": 0,
+        "range": 12,
+        "splash": 3,
+    },
+    "Havoc Launcher": {
+        "attack": 100,
+        "armor_penetration": 0,
+        "range": 12,
+        "splash": 0,
+    },
+    "Reaper Autocannon": {
+        "attack": 320,
+        "armor_penetration": 0,
+        "range": 18,
+        "splash": 3,
+		"ammo": 10,
+    },
+    "Lasgun": {
+        "attack": 20,
+        "armor_penetration": 0,
+        "range": 6,
+        "splash": 0,
+		"ammo": 30,
+    },
+    "Multi-Laser": {
+        "attack": [60, 75, 90, 105],
+        "armor_penetration": 0,
+        "range": 10,
+        "splash": 0,
+    },
+    "Imperium Autogun": {
+        "attack": 20,
+        "armor_penetration": 0,
+        "range": 6,
+        "splash": 0,
+		"ammo": 12,
+    },
+
+    // =====================
+    // Imperium Melee / Specialist
+    // =====================
+
+    "Chainsword": {
+        "attack": 45,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 0,
+    },
+    "Chainaxe": {
+        "attack": 55,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 0,
+    },
+    "Poisoned Chainsword": {
+        "attack": 90,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 0,
+        "special": ["poison"], // poison adds 40 dmg (4/9 increase)
+    },
+    "Imperium Power Weapon": {
+        "attack": 120,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 0,
+    },
+    "Power Sword": {
+        "attack": 120,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 0,
+    },
+	"Force Weapon": {
+        "attack": 400,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+    },
+	"Chainfist": {
+        "attack": 300,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Power Fist": {
+        "attack": 425,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+    },
+    "Blessed Weapon": {
+        "attack": 150,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 0,
+    },
+    "Electro-Flail": {
+        "attack": 125,
+        "armor_penetration": 1,
+        "range": 1,
+        "splash": 3,
+    },
+    "Neural Whip": {
+        "attack": 85,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+    },
+    "Sarissa": {
+        "attack": 65,
+        "armor_penetration": 0,
+        "range": 2,
+        "splash": 0,
+    },
+    "Ogryn Melee": {
+        "attack": 90,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 0,
+    },
+    "Ripper Gun": {
+        "attack": 40,
+        "armor_penetration": 0,
+        "range": 3,
+        "splash": 0,
+		"ammo": 5,
+    },
+    "Adepta Sororitas Bolter": {
+        "attack": 35,
+        "armor_penetration": 0,
+        "range": 12,
+        "splash": 0,
+		"ammo": 15,
+    }
+	,"Seraphim Pistols": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 4,
+        "splash": 0,
+    },
+    "Laser Mace": {
+        "attack": 200,
+        "armor_penetration": 1,
+        "range": 5.1,
+        "splash": 3,
+    },
+
+    // =====================
+    // Mechanicum / Other
+    // =====================
+
+    "Phased Plasma-fusil": {
+        "attack": 100,
+        "armor_penetration": 1,
+        "range": 7.1,
+        "splash": 3,
+    },
+    "Lightning Gun": {
+        "attack": [80, 80, 80, 150],
+        "armor_penetration": 0,
+        "range": 5,
+        "splash": 0,
+    },
+    "Thallax Melee": {
+        "attack": 80,
+        "armor_penetration": 0,
+        "range": 1,
+        "splash": 3,
+    }
+};
+// End of Global Enemy Weapons
