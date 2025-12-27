@@ -561,7 +561,7 @@ function TradeAttempt(diplomacy) constructor{
 	}
 	var _info_val = 0;
 	with (obj_controller){
-		if (random_event_next != EVENT.none) and ((string_count("WL10|",useful_info)>0) or (turn<chaos_turn)) and ((string_count("WL7|",useful_info)>0) or (known[eFACTION.Ork]<1)) and  (string_count("WG|",useful_info)>1) and (string_count("CM|",useful_info)>0){
+		if (random_event_next != eEVENT.none) and ((string_count("WL10|",useful_info)>0) or (turn<chaos_turn)) and ((string_count("WL7|",useful_info)>0) or (known[eFACTION.Ork]<1)) and  (string_count("WG|",useful_info)>1) and (string_count("CM|",useful_info)>0){
 			_info_val=1000;
 		}
 	}

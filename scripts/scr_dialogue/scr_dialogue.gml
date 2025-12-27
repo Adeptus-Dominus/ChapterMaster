@@ -2099,7 +2099,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 	
 			for(var i=30; i<30; i++){
 	            if (rando==5) and (string_count("CM|",obj_controller.useful_info)>0) then rando-=1;
-	            if (rando==4) and (random_event_next != EVENT.none) then rando-=1;
+	            if (rando==4) and (random_event_next != eEVENT.none) then rando-=1;
 	            if (rando==3) and ((turn<chaos_turn) or (known[eFACTION.Chaos]>3)) then rando-=1;
 	            if (rando==2) and ((known[eFACTION.Ork]<0) or (known[eFACTION.Ork]>=3) or (string_count("WL7|",obj_controller.useful_info)=1)) then rando-=1;
 	            if (rando==1) and (string_count("WG|",obj_controller.useful_info)>1) then rando=5;         
@@ -2124,27 +2124,27 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 	        // * Next random event *
 	        if (rando==4){
 	            scr_random_event(false);
-	            if (random_event_next == EVENT.strange_behavior) and (obj_controller.disposition[6]<15) then diplo_text="One of your Mon'keigh soldiers will no longer act as you expect him to. Be wary, when one Mon'keigh is influenced the rest of the herd will be.";
-	            else if (random_event_next == EVENT.strange_behavior) and (obj_controller.disposition[6]>=15) then diplo_text="One of your soldiers will no longer act as you expect him to. Be wary, when one is influenced the rest of the herd will be.";
-	            else if (random_event_next == EVENT.space_hulk) then diplo_text="It comes from the warp, a relic from the past. It is steeped in the energies of the ethereal tides. Beware.";
-	            else if (random_event_next == EVENT.promotion) then diplo_text="One of your soldiers will cover himself in glory. As his “Chapter Master”, a title I find inherently foolish, you may wish to reward him.";
-	            else if (random_event_next == EVENT.strange_building) then diplo_text="The Red robed ones, their “Machine God”, calls to them. Soon, one shall lose their tenuos grip on the here and now and follow the pictures in his head.";
-	            else if (random_event_next == EVENT.sororitas) then diplo_text="Your priestesses of war, who worship He Who Fell, will gather their forces soon, to stay.";
-	            else if (random_event_next == EVENT.inquisition_mission) then diplo_text="They will come very soon, the bearers of hellfire and hate. They will scour the sector for so-called ''Heresy''.";
-	            else if (random_event_next == EVENT.inquisition_planet) then diplo_text="Your questions askers seek to learn more of a planet.  Warp meddlers and free thinkers would be well-served with caution. Beware, Chapter Master.";
-	            else if (random_event_next == EVENT.rogue_trader) then diplo_text="Free thinkers, traders in the vast expanse. They are coming, perhaps you aught to set out your wares?";
-	            else if (random_event_next == EVENT.fleet_delay) then diplo_text="Mon'keigh, your fleets may be delayed by my kin. Eldar Pirates, your kind would call them.";
-	            else if (random_event_next == EVENT.harlequins) then diplo_text="Rillietann. They have come. They are on some world, hidden, or soon will be.";
-	            else if (random_event_next == EVENT.succession_war) then diplo_text="Your underlings fight for power, Mon'keigh.  Someone will die who believes he is important. His children and ''friends'' will vie for the rite to call himself or herself governor. Or king. Or whatever self aggrandising title your people name yourselves.";
-	            else if (random_event_next == EVENT.random_fun) then diplo_text="Something will happen soon. The runes do not show me exactly what will happen, only that it concerns you. Watch the horizon, Mon'keigh.";
-	            else if (random_event_next == EVENT.warp_storms) then diplo_text="The tides of the Immaterium are unsettled. Of course, it's hard to calculate where the Immaterium will affect the Materium, but I predict it will come soon.";
-	            else if (random_event_next == EVENT.enemy_forces) then diplo_text="From beyond your circle of firelight, they are coming. Rest not Mon'keigh, for they will come soon and are bent on destruction."; 
-	            else if (random_event_next == EVENT.crusade) then diplo_text="Soon, your masters will call you to heel like a dog to attack the foes of man. One of your ''Crusades'' of hate, ignorance and bigotry will be called."; 
-	            else if (random_event_next == EVENT.enemy) then diplo_text="You will make an enemy among your fellow man. Soon they shall whisper into their lord's ear, telling that you are a threat, a beetle to be crushed beneath their boot.  You would do well to speak carefully, for some time.";
-	            else if (random_event_next == EVENT.mutation) then diplo_text="Your 'battle brothers' are twisting like snakes beneath your feet. Watch yourself, Chapter Master.";
-	            else if (random_event_next == EVENT.ship_lost) then diplo_text="The Immaterium will swallow one of your ships.  Do not look for it to return.";
-	            else if (random_event_next == EVENT.chaos_invasion) then diplo_text="Your twisted brethren, who fell to the lure of the Immaterium, will soon arrive with their wrath and demons. Beware.";
-	            else if (random_event_next == EVENT.necron_awaken) then diplo_text="Our old enemies, the men of metal, are close. You call them “Necrons”, and you will need to fight them soon. Or flee, it matters not to me.";            
+	            if (random_event_next == eEVENT.strange_behavior) and (obj_controller.disposition[6]<15) then diplo_text="One of your Mon'keigh soldiers will no longer act as you expect him to. Be wary, when one Mon'keigh is influenced the rest of the herd will be.";
+	            else if (random_event_next == eEVENT.strange_behavior) and (obj_controller.disposition[6]>=15) then diplo_text="One of your soldiers will no longer act as you expect him to. Be wary, when one is influenced the rest of the herd will be.";
+	            else if (random_event_next == eEVENT.space_hulk) then diplo_text="It comes from the warp, a relic from the past. It is steeped in the energies of the ethereal tides. Beware.";
+	            else if (random_event_next == eEVENT.promotion) then diplo_text="One of your soldiers will cover himself in glory. As his “Chapter Master”, a title I find inherently foolish, you may wish to reward him.";
+	            else if (random_event_next == eEVENT.strange_building) then diplo_text="The Red robed ones, their “Machine God”, calls to them. Soon, one shall lose their tenuos grip on the here and now and follow the pictures in his head.";
+	            else if (random_event_next == eEVENT.sororitas) then diplo_text="Your priestesses of war, who worship He Who Fell, will gather their forces soon, to stay.";
+	            else if (random_event_next == eEVENT.inquisition_mission) then diplo_text="They will come very soon, the bearers of hellfire and hate. They will scour the sector for so-called ''Heresy''.";
+	            else if (random_event_next == eEVENT.inquisition_planet) then diplo_text="Your questions askers seek to learn more of a planet.  Warp meddlers and free thinkers would be well-served with caution. Beware, Chapter Master.";
+	            else if (random_event_next == eEVENT.rogue_trader) then diplo_text="Free thinkers, traders in the vast expanse. They are coming, perhaps you aught to set out your wares?";
+	            else if (random_event_next == eEVENT.fleet_delay) then diplo_text="Mon'keigh, your fleets may be delayed by my kin. Eldar Pirates, your kind would call them.";
+	            else if (random_event_next == eEVENT.harlequins) then diplo_text="Rillietann. They have come. They are on some world, hidden, or soon will be.";
+	            else if (random_event_next == eEVENT.succession_war) then diplo_text="Your underlings fight for power, Mon'keigh.  Someone will die who believes he is important. His children and ''friends'' will vie for the rite to call himself or herself governor. Or king. Or whatever self aggrandising title your people name yourselves.";
+	            else if (random_event_next == eEVENT.random_fun) then diplo_text="Something will happen soon. The runes do not show me exactly what will happen, only that it concerns you. Watch the horizon, Mon'keigh.";
+	            else if (random_event_next == eEVENT.warp_storms) then diplo_text="The tides of the Immaterium are unsettled. Of course, it's hard to calculate where the Immaterium will affect the Materium, but I predict it will come soon.";
+	            else if (random_event_next == eEVENT.enemy_forces) then diplo_text="From beyond your circle of firelight, they are coming. Rest not Mon'keigh, for they will come soon and are bent on destruction."; 
+	            else if (random_event_next == eEVENT.crusade) then diplo_text="Soon, your masters will call you to heel like a dog to attack the foes of man. One of your ''Crusades'' of hate, ignorance and bigotry will be called."; 
+	            else if (random_event_next == eEVENT.enemy) then diplo_text="You will make an enemy among your fellow man. Soon they shall whisper into their lord's ear, telling that you are a threat, a beetle to be crushed beneath their boot.  You would do well to speak carefully, for some time.";
+	            else if (random_event_next == eEVENT.mutation) then diplo_text="Your 'battle brothers' are twisting like snakes beneath your feet. Watch yourself, Chapter Master.";
+	            else if (random_event_next == eEVENT.ship_lost) then diplo_text="The Immaterium will swallow one of your ships.  Do not look for it to return.";
+	            else if (random_event_next == eEVENT.chaos_invasion) then diplo_text="Your twisted brethren, who fell to the lure of the Immaterium, will soon arrive with their wrath and demons. Beware.";
+	            else if (random_event_next == eEVENT.necron_awaken) then diplo_text="Our old enemies, the men of metal, are close. You call them “Necrons”, and you will need to fight them soon. Or flee, it matters not to me.";            
 	            else {
 					diplo_text="[Missing Dialogue: "+string(random_event_next)+" forcast.]"; // this will print a number rather that a string which is less than ideal, but we can just add new flavour text whem we get the bug reports
 				}

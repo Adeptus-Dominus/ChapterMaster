@@ -28,9 +28,9 @@ function scr_inquisition_mission(event, forced_mission = -1){
     if (global.cheat_debug){
         show_debug_message("find mission");
     }
-    if (event == EVENT.inquisition_planet){
+    if (event == eEVENT.inquisition_planet){
         mission_investigate_planet();
-    } else if (event == EVENT.inquisition_mission){
+    } else if (event == eEVENT.inquisition_mission){
     
 		var inquisition_missions =
 		[

@@ -86,7 +86,7 @@ enum eINQUISITION_MISSION {
     demon_world
 }
 
-enum EVENT {
+enum eEVENT {
     //good
     space_hulk,
     promotion,

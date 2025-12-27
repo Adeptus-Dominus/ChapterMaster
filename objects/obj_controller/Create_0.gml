@@ -751,7 +751,7 @@ diplo_option = [];
 diplo_alpha = 0;
 // ** Sets combat to not true **
 combat = 0;
-random_event_next = EVENT.none;
+random_event_next = eEVENT.none;
 useful_info = "";
 
 // ** Sets the reason for loss of loyalty **

@@ -154,34 +154,34 @@ function scr_cheatcode(argument0) {
 					show_debug_message($"{mission},");
 					switch (mission){
 						case "1": //default 
-							scr_inquisition_mission(EVENT.inquisition_mission);
+							scr_inquisition_mission(eEVENT.inquisition_mission);
 						break;
 						case "planet":
-							scr_inquisition_mission(EVENT.inquisition_planet);
+							scr_inquisition_mission(eEVENT.inquisition_planet);
 						break;
 						case "spyrer": 
-							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.spyrer);
+							scr_inquisition_mission(eEVENT.inquisition_mission, eINQUISITION_MISSION.spyrer);
 						break;
 						case "artifact": 
-							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.artifact);
+							scr_inquisition_mission(eEVENT.inquisition_mission, eINQUISITION_MISSION.artifact);
 						break;
 						case "inquisitor": 
-							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.inquisitor);
+							scr_inquisition_mission(eEVENT.inquisition_mission, eINQUISITION_MISSION.inquisitor);
 						break;
 						case "purge": 
-							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.purge);
+							scr_inquisition_mission(eEVENT.inquisition_mission, eINQUISITION_MISSION.purge);
 						break;
 						case "tomb_world": 
-							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.tomb_world);
+							scr_inquisition_mission(eEVENT.inquisition_mission, eINQUISITION_MISSION.tomb_world);
 						break;
 						case "tyranid_organism": 
-							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.tyranid_organism);
+							scr_inquisition_mission(eEVENT.inquisition_mission, eINQUISITION_MISSION.tyranid_organism);
 						break;
 						case "demon": 
-							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.demon_world);
+							scr_inquisition_mission(eEVENT.inquisition_mission, eINQUISITION_MISSION.demon_world);
 						break;
 						default: 
-							scr_inquisition_mission(EVENT.inquisition_mission);
+							scr_inquisition_mission(eEVENT.inquisition_mission);
 						break;
 					}
 					show_debug_message("inquisitor mission initiated");
