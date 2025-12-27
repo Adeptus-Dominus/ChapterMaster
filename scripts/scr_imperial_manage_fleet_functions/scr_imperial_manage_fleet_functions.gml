@@ -72,31 +72,80 @@ function fleet_add_cargo(new_cargo,data,overwrite = false,fleet = "none"){
     }
 }
 
-
-
 //TODO integrate this into PlanetData constructor
 function deploy_colonisers(star){
     var lag=1;
 
     var data = cargo_data.colonize;
-    if (data.target_planet>0){
-        var targ_planet = data.target_planet;
-        if (!star.p_large[targ_planet]){
-            star.p_population[targ_planet] += data.colonists;
-        } else {
-            star.p_population[targ_planet] += data.colonists/power(10,8);
+    if (data.target_planet > 0){
+    var targ_planet = data.target_planet;
+    var _pop_add = 0;
+
+    if (!star.p_large[targ_planet]){
+        _pop_add = data.colonists;
+        star.p_population[targ_planet] += _pop_add;
+    } else {
+        _pop_add = data.colonists / power(10, 8);
+        star.p_population[targ_planet] += _pop_add;
+    }
+
+    if (!variable_instance_exists(star.id, "p_max_population")){
+        star.p_max_population = array_create(array_length(star.p_population), 0);
+    }
+
+    if (!variable_instance_exists(star.id, "p_target_pdf")){
+        star.p_target_pdf = array_create(array_length(star.p_population), 0);
+        for (var _j = 0; _j < array_length(star.p_target_pdf); _j++){
+            star.p_target_pdf[_j] = star.p_pdf[_j];
         }
-        var start_influ = star.p_influence[targ_planet][eFACTION.Tyranids];
-        with (star){
-            merge_influences(data.colonist_influence,targ_planet);
-        }
-        var colony_purpose = data.mission=="new_colony"? "recolonise" : "bolster population" ;
-        var alert_string = $"Imperial citizens {colony_purpose} {planet_numeral_name(targ_planet, star)} I.";
-        var player_vision = star.p_player[targ_planet]>0 || star.p_owner[targ_planet] == eFACTION.Player;
-        if (star.p_influence[targ_planet][eFACTION.Tyranids]>start_influ && (player_vision)){
-            alert_string += " They bring with them traces of a Genestelar Cult";
-        }
-        scr_alert("green","duhuhuhu",alert_string,star.x,star.y);
+    }
+
+    var _pop_mult = 0.25;
+    var _pdf_mult = 1.0;
+
+    switch (star.p_type[targ_planet]){
+        case "Lava":       _pop_mult = 0.2; _pdf_mult = 0.2; break;
+        case "Desert":     _pop_mult = 0.5; _pdf_mult = 0.5; break;
+        case "Hive":       _pop_mult = 1; _pdf_mult = 1.5; break;
+        case "Agri":       _pop_mult = 1; _pdf_mult = 0.7; break;
+        case "Temperate":  _pop_mult = 1; _pdf_mult = 1; break;
+        case "Shrine":     _pop_mult = 1; _pdf_mult = 1; break;
+        case "Ice":        _pop_mult = 0.5; _pdf_mult = 0.5; break;
+        case "Feudal":     _pop_mult = 1; _pdf_mult = 0.5; break;
+        case "Forge":      _pop_mult = 1; _pdf_mult = 3; break;
+        case "Death":      _pop_mult = 0.10; _pdf_mult = 3; break;
+        case "Craftworld": _pop_mult = 0.00; _pdf_mult = 0.0; break;
+    }
+
+    var _target_pop_add = _pop_add * _pop_mult;
+    star.p_max_population[targ_planet] += _target_pop_add;
+
+    var _pdf_target_add = ceil(_pop_add * 0.001 * _pdf_mult);
+    star.p_target_pdf[targ_planet] += _pdf_target_add;
+
+    if (star.p_max_population[targ_planet] < 0) star.p_max_population[targ_planet] = 0;
+    if (star.p_target_pdf[targ_planet] < 0) star.p_target_pdf[targ_planet] = 0;
+
+    var start_influ = star.p_influence[targ_planet][eFACTION.Tyranids];
+    with (star){
+        merge_influences(data.colonist_influence, targ_planet);
+    }
+
+    var colony_purpose = data.mission=="new_colony"? "recolonise" : "bolster population";
+    var alert_string = $"Imperial citizens {colony_purpose} {planet_numeral_name(targ_planet, star)} I.";
+    var player_vision = star.p_player[targ_planet]>0 || star.p_owner[targ_planet] == eFACTION.Player;
+    if (star.p_influence[targ_planet][eFACTION.Tyranids] > start_influ && player_vision){
+        alert_string += "They bring with them traces of a Genestealer Cult";
+    }
+
+    show_debug_message(
+        "[COLONISE] " + planet_numeral_name(targ_planet, star) +
+        " | +pop=" + string(_pop_add) +
+        " | +target_pop=" + string(_target_pop_add) +
+        " | +target_pdf=" + string(_pdf_target_add)
+    );
+
+    scr_alert("green","duhuhuhu",alert_string,star.x,star.y);
     } else {
         for (var r=1;r<=star.planets;r++){
             if (data.mission == "new_colony" && star.p_population[r]<=0){

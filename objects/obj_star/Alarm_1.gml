@@ -74,32 +74,35 @@ for(var i=1; i<=4; i++){
             p_max_population[i] = p_population[i];
             break;
     }
-    // Sets military on planet
-    if (p_population[i]>=10000000){
-        var military=p_population[i]/470;
-        p_guardsmen[i]=floor(military*0.25);
-        p_pdf[i]=floor(military*0.75);
-    }
-    if (p_population[i]>=5000000) and (p_population[i]<10000000){
-        var military=p_population[i]/200;
-        p_guardsmen[i]=floor(military*0.25);
-        p_pdf[i]=floor(military*0.75);
-    }
-    if (p_population[i]>=100000) and (p_population[i]<5000000){
-        var military=p_population[i]/50;
-        p_guardsmen[i]=floor(military*0.25);
-        p_pdf[i]=floor(military*0.75);
-    }
-    if (p_population[i]<100000) and (p_population[i]>5) and (p_large[i]==0){
-        p_pdf[i]=floor(p_population[i]/25);
-    }
-    if (p_population[i]<2000) and (p_population[i]>5) and (p_large[i]==0){
-        p_pdf[i]=floor(p_population[i]/10);
-    }
-    if (p_large[i]==1){
-        p_guardsmen[i]=floor(p_population[i]*1250000);
-        p_pdf[i]=p_guardsmen[i]*3;
-    }
+
+	if (p_population[i]>=10000000){
+	    var military=p_population[i]/470;
+	    p_guardsmen[i]=floor(military*0.25);
+	    p_pdf[i]=floor(military*0.75);
+	}
+	if (p_population[i]>=5000000) and (p_population[i]<10000000){
+	    var military=p_population[i]/200;
+	    p_guardsmen[i]=floor(military*0.25);
+	    p_pdf[i]=floor(military*0.75);
+	}
+	if (p_population[i]>=100000) and (p_population[i]<5000000){
+	    var military=p_population[i]/50;
+	    p_guardsmen[i]=floor(military*0.25);
+	    p_pdf[i]=floor(military*0.75);
+	}
+	if (p_population[i]<100000) and (p_population[i]>5) and (p_large[i]==0){
+	    p_pdf[i]=floor(p_population[i]/25);
+	}
+	if (p_population[i]<2000) and (p_population[i]>5) and (p_large[i]==0){
+	    p_pdf[i]=floor(p_population[i]/10);
+	}
+	if (p_large[i]==1){
+	    p_guardsmen[i]=floor(p_population[i]*1250000);
+	    p_pdf[i]=p_guardsmen[i]*3;
+	}
+
+	//the pdf on planet gen is set as the target_pdf
+	p_target_pdf[i] = p_pdf[i];
     
     if (p_population[i]<1000000)  and (p_large[i]==0)then p_pop[i]=string(p_population[i]);
     if (p_population[i]>999999)  and (p_large[i]==0)and (p_population[i]<1000000000) then p_pop[i]=string(p_population[i]/1000000)+"M";

@@ -261,109 +261,178 @@ if (obj_controller.selecting_planet!=0){
                 exit;
             }
         }
-    }else if (garrison!="" && !population){
-        if (garrison.garrison_force ){
-            draw_set_font(fnt_40k_14);
-            if (!garrison.garrison_leader){
-                garrison.find_leader()
-                garrison.garrison_disposition_change(target, obj_controller.selecting_planet, true);
-                garrison_data_slate.sub_title = $"Garrison Leader {garrison.garrison_leader.name_role()}"
-                garrison_data_slate.body_text = garrison.garrison_report();
-            }
-            garrison_data_slate.inside_method=function(){
-                garrison_data_slate.title = "Garrison Report"
-                draw_set_color(c_gray);
-                var xx = garrison_data_slate.XX;
-                var yy = garrison_data_slate.YY;
-                var cur_planet = obj_controller.selecting_planet;
-                var half_way =  yy+garrison_data_slate.height/2;
-                draw_set_halign(fa_left);
-                draw_line(xx+10, half_way, garrison_data_slate.width-10, half_way);
-                var defence_data  = determine_pdf_defence(target.p_pdf[cur_planet], garrison,target.p_fortified[cur_planet]);
-                var defence_string = $"Planetary Defence : {defence_data[0]}";
-                draw_text(xx+20, half_way, defence_string);
-                if (scr_hit(xx+20, half_way+10, xx+20+string_width(defence_string), half_way+10+20)){
-                    tooltip_draw(defence_data[1], 400);
-                }
-                if (garrison.dispo_change!="none"){
-                    if (garrison.dispo_change>55){
-                        draw_text(xx+20, half_way+30, $"Garrison Disposition Effect : Positive");
-                    } else if (garrison.dispo_change>44){
-                        draw_text(xx+20, half_way+30, $"Garrison Disposition Effect : Neutral");
-                    } else{ 
-                        draw_text(xx+20, half_way+30, $"Garrison Disposition Effect : Negative");
+   } else if (population){
+    garrison_data_slate.title = "Population Report";
+    garrison_data_slate.inside_method = function(){
+        draw_set_color(c_gray);
+        var xx = garrison_data_slate.XX;
+        var yy = garrison_data_slate.YY;                
+        var cur_planet = obj_controller.selecting_planet;
+        var half_way =  garrison_data_slate.height/2;
+        var spacing_x = 100;
+        var spacing_y = 65;
+        draw_set_halign(fa_left);
+
+        if (!target.space_hulk) {
+            if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War") {
+                colonist_button.update({
+                    x1:xx+35,
+                    y1:half_way,
+                    allow_click : array_length(potential_doners),
+                });
+                colonist_button.draw();
+
+                recruiting_button.update({
+                    x1:xx+(spacing_x*2)+15,
+                    y1:half_way,
+                    allow_click : true,
+                });
+                recruiting_button.draw();
+
+                if (p_data.has_feature(P_features.Recruiting_World)) {
+                    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+                    if (_recruit_world.recruit_type == 0) && (obj_controller.faction_status[p_data.current_owner] != "War" && obj_controller.faction_status[p_data.current_owner] != "Antagonism" || p_data.player_disposition >= 50) {
+                        draw_text(xx+(spacing_x*3)+35, half_way-20, "Open: Voluntery");
+                    } else if (_recruit_world.recruit_type == 0 && p_data.player_disposition <= 50) {
+                        draw_text(xx+(spacing_x*3)+35, half_way-20, "Covert: Voluntery");
+                    } else {
+                        draw_text(xx+(spacing_x*3)+35, half_way-20, "Abduct");
                     }
-                }
-            }
-            garrison_data_slate.draw(340+main_data_slate.width, 160, 0.6, 0.6);
-
-        } 
-    } else if (population){
-        garrison_data_slate.title = "Population Report";
-        garrison_data_slate.inside_method = function(){
-            draw_set_color(c_gray);
-            var xx = garrison_data_slate.XX;
-            var yy = garrison_data_slate.YY;                
-            var cur_planet = obj_controller.selecting_planet;
-            var half_way =  garrison_data_slate.height/2;
-            var spacing_x = 100
-            var spacing_y = 65
-            draw_set_halign(fa_left);
-            if (!target.space_hulk) {
-                if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War") {
-                    colonist_button.update({
-                        x1:xx+35,
-                        y1:half_way,
-                        allow_click : array_length(potential_doners),
-                    });
-                    colonist_button.draw();
-
-                    recruiting_button.update({
-                        x1:xx+(spacing_x*2)+15,
+                    recruitment_type_button.update({
+                        x1:xx+(spacing_x*3)+35,
                         y1:half_way,
                         allow_click : true,
                     });
-                    recruiting_button.draw();
-                    if (p_data.has_feature(P_features.Recruiting_World)) {
-                        var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
-                        if (_recruit_world.recruit_type == 0) && (obj_controller.faction_status[p_data.current_owner] != "War" && obj_controller.faction_status[p_data.current_owner] != "Antagonism" || p_data.player_disposition >= 50) {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Open: Voluntery");
-                        } else if (_recruit_world.recruit_type == 0 && p_data.player_disposition <= 50) {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Covert: Voluntery");
-                        } else {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Abduct");
-                        }
-                        recruitment_type_button.update({
-                            x1:xx+(spacing_x*3)+35,
-                            y1:half_way,
+                    recruitment_type_button.draw();
+
+                    draw_text(xx+(spacing_x*3)-15, half_way+(spacing_y)-20, $"Req:{_recruit_world.recruit_cost * 2}");
+                    if (_recruit_world.recruit_cost > 0) {
+                        recruitment_costdown_button.update({
+                            x1:xx+(spacing_x*2)+35,
+                            y1:half_way+(spacing_y),
                             allow_click : true,
                         });
-                        recruitment_type_button.draw();
-
-                        draw_text(xx+(spacing_x*3)-15, half_way+(spacing_y)-20, $"Req:{_recruit_world.recruit_cost * 2}");
-                        if (_recruit_world.recruit_cost > 0) {
-                            recruitment_costdown_button.update({
-                                x1:xx+(spacing_x*2)+35,
-                                y1:half_way+(spacing_y),
-                                allow_click : true,
-                            });
-                            recruitment_costdown_button.draw();
-                        }
-                        if (_recruit_world.recruit_cost < 5) {
-                            recruitment_costup_button.update({
-                                x1:xx+(spacing_x*3)+35,
-                                y1:half_way+(spacing_y),
-                                allow_click : true,
-                            });
-                            recruitment_costup_button.draw();
-                        }
+                        recruitment_costdown_button.draw();
+                    }
+                    if (_recruit_world.recruit_cost < 5) {
+                        recruitment_costup_button.update({
+                            x1:xx+(spacing_x*3)+35,
+                            y1:half_way+(spacing_y),
+                            allow_click : true,
+                        });
+                        recruitment_costup_button.draw();
                     }
                 }
             }
-
         }
-        garrison_data_slate.draw(344+main_data_slate.width-4, 160, 0.6, 0.6);          
-    }   
+		
+var p = cur_planet;
+
+function fmt_compact(_n){
+    _n = abs(_n);
+    if (_n >= 1000000000) return string_format(_n / 1000000000, 0, 2) + "B";
+    if (_n >= 1000000)    return string_format(_n / 1000000,    0, 2) + "M";
+    if (_n >= 1000)       return string_format(_n / 1000,       0, 1) + "K";
+    return string(floor(_n));
+}
+
+var LARGE_POP_CONVERSION = 1000000000;
+
+var _supported_pop_stored = target.p_max_population[p];
+var _cur_pop_stored       = target.p_population[p];
+var _max_pop_stored       = target.p_max_population[p];
+
+var _is_large = (target.p_large[p] == 1);
+
+var _supported_pop_abs = _is_large ? (_supported_pop_stored * LARGE_POP_CONVERSION) : _supported_pop_stored;
+var _cur_pop_abs       = _is_large ? (_cur_pop_stored       * LARGE_POP_CONVERSION) : _cur_pop_stored;
+var _max_pop_abs       = _is_large ? (_max_pop_stored       * LARGE_POP_CONVERSION) : _max_pop_stored;
+
+draw_set_color(c_white);
+draw_set_halign(fa_left);
+
+var _base_x = xx + 35;
+var _base_y = half_way + spacing_y + 60;
+var _line_h = 18;
+
+draw_text(
+    _base_x,
+    _base_y,
+    "Max supported population: " + fmt_compact(_supported_pop_abs)
+);
+
+var POP_GROWTH_RATE = 0.00025;
+var _pop_growth_abs = 0;
+
+if (_cur_pop_abs > 0 && _supported_pop_abs > 0 && _cur_pop_abs < _supported_pop_abs){
+    _pop_growth_abs = ceil(_cur_pop_abs * POP_GROWTH_RATE);
+    _pop_growth_abs = min(_pop_growth_abs, _supported_pop_abs - _cur_pop_abs);
+} else if (_cur_pop_abs > 0 && _supported_pop_abs <= 0) {
+    _pop_growth_abs = ceil(_cur_pop_abs * POP_GROWTH_RATE);
+}
+
+draw_text(
+    _base_x,
+    _base_y + _line_h,
+    "Pop growth/turn (0.025%): +" + fmt_compact(_pop_growth_abs)
+);
+
+var _has_target_pdf = variable_instance_exists(target.id, "p_target_pdf");
+var _target_pdf     = _has_target_pdf ? target.p_target_pdf[p] : 0;
+
+draw_text(
+    _base_x,
+    _base_y + (_line_h * 2),
+    "Target PDF: " + fmt_compact(_target_pdf)
+);
+
+var _pdf_cap = 0;
+var _support_pct = 0;
+
+if (_has_target_pdf && _target_pdf > 0 && _max_pop_abs > 0){
+    var _pop_ratio = clamp(_cur_pop_abs / _max_pop_abs, 0, 1);
+    _pdf_cap = floor(_target_pdf * _pop_ratio);
+
+    if (_pdf_cap > 0){
+        _support_pct = (target.p_pdf[p] / _pdf_cap) * 100;
+    } else if (target.p_pdf[p] > 0){
+        _support_pct = 999;
+    }
+}
+
+draw_text(
+    _base_x,
+    _base_y + (_line_h * 3),
+    "Supported PDF (current pop): " + fmt_compact(_pdf_cap)
+);
+
+var PDF_GROWTH_RATE = 0.01;
+var _pdf_growth = 0;
+
+if (_has_target_pdf && _target_pdf > 0 && _pdf_cap > 0){
+    if (target.p_pdf[p] < _pdf_cap){
+        _pdf_growth = ceil(_target_pdf * PDF_GROWTH_RATE);
+        _pdf_growth = min(_pdf_growth, _pdf_cap - target.p_pdf[p]);
+    }
+}
+
+draw_text(
+    _base_x,
+    _base_y + (_line_h * 4),
+    "PDF growth per turn: +" + fmt_compact(_pdf_growth)
+);
+
+draw_text(
+    _base_x,
+    _base_y + (_line_h * 5),
+    "PDF capacity usage: " +
+    string_format(_support_pct, 0, 1) + "% (" +
+    fmt_compact(target.p_pdf[p]) + " of " + fmt_compact(_pdf_cap) + ")"
+);
+
+    }
+    garrison_data_slate.draw(344+main_data_slate.width-4, 160, 0.6, 0.6);          
+}
     if (obj_controller.selecting_planet>0){
         main_data_slate.draw(344,160, slate_draw_scale, slate_draw_scale+0.1);
     }

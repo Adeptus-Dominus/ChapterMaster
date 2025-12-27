@@ -33,7 +33,6 @@ function orks_end_turn_growth(){
     }
 }
 
-
 function ork_fleet_move(){
     
 

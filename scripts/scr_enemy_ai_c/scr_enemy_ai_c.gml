@@ -9,8 +9,6 @@ function scr_enemy_ai_c() {
 
 	// Orks spread
 	orks_end_turn_growth();
-
-
 	// traitors below here
 	i=0;
 	if array_sum(p_traitors){

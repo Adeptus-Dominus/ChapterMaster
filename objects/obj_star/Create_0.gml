@@ -40,6 +40,7 @@ p_large = array_create(_planet_array_size, 0);
 p_pop = array_create(_planet_array_size, "");
 p_guardsmen = array_create(_planet_array_size, 0);
 p_pdf = array_create(_planet_array_size, 0);
+p_target_pdf = array_create(_planet_array_size, 0);
 p_fortified = array_create(_planet_array_size, 0);
 p_station = array_create(_planet_array_size, 0);
 p_player = array_create(_planet_array_size, 0);

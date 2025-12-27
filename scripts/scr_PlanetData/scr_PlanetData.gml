@@ -344,7 +344,7 @@ function PlanetData(planet, system) constructor{
         
             // Check for industrial facilities
             var fleet_buildable = ((planet_type!="Dead" && planet_type!="Lava") || _has_warboss || _has_stronghold);
-            if (fleet_buildable && planet_forces[eFACTION.Ork]>=4){// Used to not have Ice either
+            if (fleet_buildable && planet_forces[eFACTION.Ork]>=4 && pdf < 200000){// Used to not have Ice either
 
                 if (instance_exists(obj_p_fleet)){
                     var ppp=instance_nearest(x,y,obj_p_fleet);
