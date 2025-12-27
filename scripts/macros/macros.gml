@@ -42,14 +42,14 @@ enum eFACTION {
     Necrons = 13
 }
 
-enum GENDER {
+enum eGENDER {
     Female,
     Male,
     Neutral
 }
 
 function set_gender(){
-    return choose(GENDER.Female, GENDER.Male);
+    return choose(eGENDER.Female, eGENDER.Male);
 }
 
 enum MENU {
