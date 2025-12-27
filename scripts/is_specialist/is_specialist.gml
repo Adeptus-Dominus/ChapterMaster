@@ -1,7 +1,3 @@
-❌ Formatting made the code invalid!
-Syntax error at line 109, column 27:
-unexpected '[$'
-
 #macro SPECIALISTS_APOTHECARIES "apothecaries"
 #macro SPECIALISTS_CHAPLAINS "chaplains"
 #macro SPECIALISTS_LIBRARIANS "librarians"
