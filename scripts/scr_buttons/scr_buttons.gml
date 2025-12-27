@@ -399,35 +399,10 @@ function UnitButtonObject(data = false) constructor {
                 _temp_alpha = 0.5;
                 allow_click = false;
             }
-            _button_click_area = draw_unit_buttons(
-                w > 0
-                    ? [
-                        x1,
-                        y1,
-                        x2,
-                        y2
-                    ]
-                    : [
-                        x1,
-                        y1
-                    ],
-                label,
-                [
-                    text_scale,
-                    text_scale
-                ],
-                active ? color : inactive_col,
-,
-                font,
-                _temp_alpha
-            );
+            _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1], label, [text_scale, text_scale], active ? color : inactive_col,, font, _temp_alpha);
         } else if (style == "pixel") {
-            var _widths = [
-                sprite_get_width(spr_pixel_button_left),
-                sprite_get_width(spr_pixel_button_middle),
-                sprite_get_width(spr_pixel_button_right)
-            ];
-
+            var _widths = [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)];
+    
             var height_scale = h / sprite_get_height(spr_pixel_button_left);
             _widths[0] *= height_scale;
             _widths[2] *= height_scale;
@@ -442,23 +417,18 @@ function UnitButtonObject(data = false) constructor {
             draw_set_halign(fa_center);
             draw_set_valign(fa_middle);
             draw_set_color(color);
-
+    
             draw_text_transformed(_text_position_x, y1 + ((h * height_scale) / 2), label, text_scale, text_scale, 0);
-
+    
             x2 = x1 + array_sum(_widths);
             y2 = y1 + h;
-            _button_click_area = [
-                x1,
-                y1,
-                x2,
-                y2
-            ];
+            _button_click_area = [x1, y1, x2, y2];
         }
-
+    
         if (scr_hit(x1, y1, x2, y2) && tooltip != "") {
             tooltip_draw(tooltip);
         }
-
+    
         if (allow_click && active) {
             var clicked = point_and_click(_button_click_area) || keystroke;
             if (clicked) {
