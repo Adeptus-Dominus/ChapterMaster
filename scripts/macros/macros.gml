@@ -72,7 +72,7 @@ enum eLUCK {
     neutral = 0,
     good = 1
 }
-enum GOD_MISSION {
+enum eGOD_MISSION {
     artifact
 }
 enum INQUISITION_MISSION {
