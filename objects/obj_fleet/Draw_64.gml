@@ -117,7 +117,7 @@ if (combat_end <= 120){
 if (start == 7) {
     // ## todo: calculate all of this once at the end of the battle ##
 
-    var _margin_categories = max(!!capital_max + !!frigate_max + !!escort_max, 1);
+    var _margin_categories = max(bool(capital_max) + bool(frigate_max) + bool(escort_max), 1);
     var _margin_percent = (
         (max(capital, 0) / max(1, capital_max)) +
         (max(frigate, 0) / max(1, frigate_max)) +
