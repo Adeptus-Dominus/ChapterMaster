@@ -61,6 +61,8 @@ function Table(data) constructor {
         }
     };
 
+    update(data);
+
     static draw = function() {
         add_draw_return_values();
 
