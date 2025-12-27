@@ -29,7 +29,7 @@ if __b__
 // End battle crap here
 
 instance_activate_all();
-room_speed=30;
+game_set_speed(30, gamespeed_fps);
 alarm[7]=1;
 
 

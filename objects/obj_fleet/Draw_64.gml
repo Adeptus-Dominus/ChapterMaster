@@ -51,7 +51,7 @@ if (start==0) {
 }
 
 // fast forward icon
-if (room_speed != 90 && start == 5) {
+if (gamespeed_fps != 90 && start == 5) {
     draw_set_alpha(1);
     var _ff_h = sprite_get_height(spr_fast_forward);
     draw_sprite(spr_fast_forward, 0, 12, (_surface_h / 2) - (_ff_h / 2));
