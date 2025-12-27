@@ -136,7 +136,7 @@ function role_groups(group, include_trainee = false, include_heads = true) {
 
 /// @description Checks if a given unit's role is a specialist within a specific role group.
 /// @param {string} unit_role The role of the unit to check.
-/// @param {integer} type The type of specialist group to check (default is SPECIALISTS_STANDARD).
+/// @param {string} type The type of specialist group to check (default is SPECIALISTS_STANDARD).
 /// @param {bool} include_trainee Whether to include trainee roles (default is false).
 /// @param {bool} include_heads Whether to include head roles (default is true).
 /// @returns {bool}
