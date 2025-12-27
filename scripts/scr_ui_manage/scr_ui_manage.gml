@@ -79,7 +79,7 @@ function load_marines_into_ship(system, ship, units, reload = false) {
     man_size = 0;
     man_current = 0;
     if (reload == false) {
-        menu = MENU.Manage;
+        menu = eMENU.Manage;
     }
     selecting_ship = -1;
     if (managing == -1 && obj_controller.selection_data.purpose != "Ship Management") {
@@ -1252,7 +1252,7 @@ function scr_ui_manage() {
         if (point_and_click([xx + 25, yy + 70, xx + 70, yy + 140])) {
             man_size = 0;
             man_current = 0;
-            menu = MENU.Manage;;
+            menu = eMENU.Manage;;
         }
 
         var top, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "";

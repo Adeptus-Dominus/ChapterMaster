@@ -117,7 +117,7 @@ function basic_diplomacy_screen(){
             }
             yy=__view_get( e__VW.YView, 0 );
         }
-		if (menu==MENU.Diplomacy) and (diplomacy==10.1){
+		if (menu==eMENU.Diplomacy) and (diplomacy==10.1){
 			scr_emmisary_diplomacy_routes();
 		}
         /*if (force_goodbye=1){

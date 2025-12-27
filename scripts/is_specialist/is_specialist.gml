@@ -377,7 +377,7 @@ function group_selection(group, selection_data={}) {
         obj_controller.selection_data = selection_data;
         set_zoom_to_default();
         with(obj_controller) {
-        	if (menu != MENU.Manage){
+        	if (menu != eMENU.Manage){
         		scr_toggle_manage();
         	} else {
         		basic_manage_settings();

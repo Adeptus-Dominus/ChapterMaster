@@ -172,7 +172,7 @@ if ((menu == 15) && (cooldown <= 0)) {
 } */
 
 // ** Diplomacy **
-if ((menu == MENU.Diplomacy) && (diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)) && (cooldown <= 0) && (diplomacy < 10)) {
+if ((menu == eMENU.Diplomacy) && (diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)) && (cooldown <= 0) && (diplomacy < 10)) {
     if ((trading == 0) && valid_diplomacy_options()) {
         if ((force_goodbye == 0) && (cooldown <= 0)) {}
         if ((force_goodbye != 0) && (cooldown <= 0)) {
@@ -200,7 +200,7 @@ if ((menu == MENU.Diplomacy) && (diplomacy > 0) || ((diplomacy < -5) && (diploma
     }
 }
 // Diplomacy
-if ((zoomed == 0) && (cooldown <= 0) && (menu == MENU.Diplomacy) && (diplomacy == 0)) {
+if ((zoomed == 0) && (cooldown <= 0) && (menu == eMENU.Diplomacy) && (diplomacy == 0)) {
     xx += 55;
     yy -= 20;
     var onceh = 0;
@@ -236,12 +236,12 @@ scr_menu_clear_up(function() {
         yy = yy + 0;
 
         if ((mouse_x >= xx + 22) && (mouse_y >= yy + 84) && (mouse_x < xx + 98) && (mouse_y < yy + 126)) {
-            menu = MENU.Manage;
+            menu = eMENU.Manage;
             cooldown = 8000;
         }
     }
     // Selecting individual marines
-    if ((menu == MENU.Manage) && (managing > 0) || (managing < 0) && (!view_squad || !company_report)) {
+    if ((menu == eMENU.Manage) && (managing > 0) || (managing < 0) && (!view_squad || !company_report)) {
         var unit;
         var eventing = false, bb = "";
         xx = __view_get(e__VW.XView, 0) + 0;
@@ -270,7 +270,7 @@ scr_menu_clear_up(function() {
     if ((menu == 50) && (managing > 0) && (cooldown <= 0)) {
         if ((mouse_x >= xx + 217) && (mouse_y >= yy + 28) && (mouse_x < xx + 250) && (mouse_y < yy + 59)) {
             cooldown = 8;
-            menu = MENU.Manage;
+            menu = eMENU.Manage;
             click = 1;
         }
     }

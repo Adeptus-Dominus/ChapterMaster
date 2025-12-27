@@ -490,7 +490,7 @@ try {
 
     income = income_base + income_home + income_forge + income_agri + income_training + income_fleet + income_trade + income_tribute;
 
-    if ((menu == MENU.Diplomacy) && ((diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)))) {
+    if ((menu == eMENU.Diplomacy) && ((diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)))) {
         if (string_length(diplo_txt) < string_length(diplo_text)) {
             diplo_char += 2;
             diplo_txt = string_copy(diplo_text, 0, diplo_char);

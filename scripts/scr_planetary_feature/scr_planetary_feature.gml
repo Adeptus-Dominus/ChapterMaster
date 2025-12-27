@@ -406,7 +406,7 @@ function ground_mission_leave_it_function(){
 
 /// @mixin PlanetData
 function discover_artifact_popup(feature){
-    obj_controller.menu = MENU.Default;
+    obj_controller.menu = eMENU.Default;
     /*if ((planet_type == "Dead" || current_owner == eFACTION.Player)) {
         alarm[4] = 1;
         exit;
@@ -578,7 +578,7 @@ function check_for_stc_grab_mission(){
 /// @mixin PlanetData
 function discover_stc_fragment_popup(techies, mechanicus_reps){
     var _owner = current_owner;
-    obj_controller.menu = MENU.Default;
+    obj_controller.menu = eMENU.Default;
     var pop = instance_create(0, 0, obj_popup);
     pop.image = "stc";
     pop.title = "STC Fragment Located";

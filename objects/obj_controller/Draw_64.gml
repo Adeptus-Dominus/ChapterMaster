@@ -34,7 +34,7 @@ draw_set_valign(fa_top);
 draw_set_halign(fa_left);
 var xx = 0;
 var yy = 0;
-if (menu == MENU.Diplomacy) {
+if (menu == eMENU.Diplomacy) {
     add_draw_return_values();
     if (diplomacy > 0) {
         draw_diplomacy_diplo_text();
@@ -61,7 +61,7 @@ if (menu == MENU.Diplomacy) {
 // Main UI
 if (!zoomed && !zui) {
     add_draw_return_values();
-    if (menu == MENU.Default) {
+    if (menu == eMENU.Default) {
         location_viewer.draw();
         helpful_places_button
             .update({
@@ -265,7 +265,7 @@ function draw_line(x1, y1, y_slide, variable) {
 }
 
 try {
-    if (menu == MENU.Manage) {
+    if (menu == eMENU.Manage) {
         if (managing != 0) {
             draw_sprite_and_unit_equip_data();
         }
@@ -275,14 +275,14 @@ try {
         if (managing > 0) {
             company_specific_management();
         }
-    } else if (menu == MENU.Armamentarium) {
+    } else if (menu == eMENU.Armamentarium) {
         scr_draw_armentarium_gui();
-    } else if (menu == MENU.Librarium) {
+    } else if (menu == eMENU.Librarium) {
         scr_librarium_gui();
     }
 } catch (_exception) {
     handle_exception(_exception);
-    menu = MENU.Default;
+    menu = eMENU.Default;
 }
 
 pop_draw_return_values();

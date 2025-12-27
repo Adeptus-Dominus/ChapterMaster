@@ -97,10 +97,7 @@ chapter_made = 0;
 map_scale = 1;
 scale_mod = 1;
 unit_manage_constants = {};
-unit_manage_constants.current_data = [
-    -1,
-    -1
-];
+unit_manage_constants.current_data = [-1, -1];
 management_buttons = false;
 
 diplomacy_pathway = "";
@@ -111,12 +108,7 @@ ready = false;
 chaos_gods = {};
 
 function build_chaos_gods() {
-    var _god_names = [
-        "Khorne",
-        "Slaanesh",
-        "Nurgle",
-        "Tzeentch"
-    ];
+    var _god_names = ["Khorne", "Slaanesh", "Nurgle", "Tzeentch"];
     for (var _i = 0; _i < 4; _i++) {
         chaos_gods[$ _god_names[_i]] = {};
         chaos_gods[$ _god_names[_i]].favour = 0;
@@ -393,10 +385,7 @@ unit_focus = false;
 filter_mode = false;
 manage_tags = [];
 pauldron_trim = 0;
-last_unit = [
-    0,
-    0
-];
+last_unit = [0, 0];
 ui_coloring = "";
 ui_melee_penalty = 0;
 ui_ranged_penalty = 0;
@@ -535,126 +524,41 @@ player_forge_data = {
 selection_data = false;
 selections = [];
 production_research = {
-    flame: [
-        0,
-        {}
-    ],
-    bolt: [
-        1,
-        {}
-    ],
-    plasma: [
-        0,
-        {}
-    ],
-    psi: [
-        0,
-        {}
-    ],
-    melta: [
-        0,
-        {}
-    ],
-    grav: [
-        0,
-        {}
-    ],
-    chasis: [
-        0,
-        {}
-    ],
-    chain: [
-        0,
-        {}
-    ],
-    power_fields: [
-        1,
-        {}
-    ],
-    las: [
-        0,
-        {}
-    ],
+    flame: [0, {}],
+    bolt: [1, {}],
+    plasma: [0, {}],
+    psi: [0, {}],
+    melta: [0, {}],
+    grav: [0, {}],
+    chasis: [0, {}],
+    chain: [0, {}],
+    power_fields: [1, {}],
+    las: [0, {}],
     armour: [
         0,
         {
-            stealth: [
-                0,
-                {}
-            ],
-            armour: [
-                0,
-                {}
-            ],
+            stealth: [0, {}],
+            armour: [0, {}],
         }
     ],
 };
 
 production_research_pathways = {
-    flame: [
-        ["Promethium Tank Brazing"],
-        {}
-    ],
-    bolt: [
-        [
-            "Hardened Barrel Boring",
-            "Projectile Propellant Purification"
-        ],
-        {}
-    ],
-    plasma: [
-        ["Plasma Coil Magnetization"],
-        {}
-    ],
-    psi: [
-        ["Psionic Resonance Valves"],
-        {}
-    ],
-    melta: [
-        ["Atomic Chamber Construction"],
-        {}
-    ],
-    grav: [
-        ["Gravitic Reaction Principle"],
-        {}
-    ],
-    chasis: [
-        [],
-        {}
-    ],
-    chain: [
-        ["Adamantine Links"],
-        {}
-    ],
-    power_fields: [
-        [
-            "Power Field Cooling",
-            "Mono-molecular Edge Sheathing"
-        ],
-        {}
-    ],
-    las: [
-        ["Light Condensement Chamber"],
-        {}
-    ],
+    flame: [["Promethium Tank Brazing"], {}],
+    bolt: [["Hardened Barrel Boring", "Projectile Propellant Purification"], {}],
+    plasma: [["Plasma Coil Magnetization"], {}],
+    psi: [["Psionic Resonance Valves"], {}],
+    melta: [["Atomic Chamber Construction"], {}],
+    grav: [["Gravitic Reaction Principle"], {}],
+    chasis: [[], {}],
+    chain: [["Adamantine Links"], {}],
+    power_fields: [["Power Field Cooling", "Mono-molecular Edge Sheathing"], {}],
+    las: [["Light Condensement Chamber"], {}],
     armour: [
-        [
-            "Ceramite Casting Chambers",
-            "Enhanced Nerve Interfacing"
-        ],
+        ["Ceramite Casting Chambers", "Enhanced Nerve Interfacing"],
         {
-            stealth: [
-                ["Advanced Servo Motors"],
-                {}
-            ],
-            armour: [
-                [
-                    "Advanced Ceramite Bonding",
-                    "Lightened Ceramite Compound",
-                    "Ceremite Void Hardening"
-                ],
-                {}
-            ],
+            stealth: [["Advanced Servo Motors"], {}],
+            armour: [["Advanced Ceramite Bonding", "Lightened Ceramite Compound", "Ceremite Void Hardening"], {}],
         }
     ],
 };
@@ -851,31 +755,7 @@ random_event_next = EVENT.none;
 useful_info = "";
 
 // ** Sets the reason for loss of loyalty **
-var loyalReasons = [
-    "Heretic Contact",
-    "Heretical Homeworld",
-    "Traitorous Marines",
-    "Use of Sorcery",
-    "Mutant Gene-Seed",
-    "Non-Codex Arming",
-    "Non-Codex Size",
-    "Lack of Apothecary",
-    "Upset Machine Spirits",
-    "Undevout",
-    "Irreverence for His Servants",
-    "Unvigilant",
-    "Conduct Unbecoming",
-    "Refusing to Crusade",
-    "Eldar Contact",
-    "Ork Contact",
-    "Tau Contact",
-    "Xeno Trade",
-    "Xeno Associate",
-    "Inquisitor Killer",
-    "Crossing the Inquisition",
-    "Avoiding Inspections",
-    "Lost Standard"
-];
+var loyalReasons = ["Heretic Contact", "Heretical Homeworld", "Traitorous Marines", "Use of Sorcery", "Mutant Gene-Seed", "Non-Codex Arming", "Non-Codex Size", "Lack of Apothecary", "Upset Machine Spirits", "Undevout", "Irreverence for His Servants", "Unvigilant", "Conduct Unbecoming", "Refusing to Crusade", "Eldar Contact", "Ork Contact", "Tau Contact", "Xeno Trade", "Xeno Associate", "Inquisitor Killer", "Crossing the Inquisition", "Avoiding Inspections", "Lost Standard"];
 
 for (var i = 0; i < array_length(loyalReasons); i++) {
     loyal[i + 1] = loyalReasons[i];
@@ -969,12 +849,7 @@ bat_landspeeder_column = 4;
 bat_scout_column = 1;
 // ** Sets up disposition per faction **
 
-imperial_factions = [
-    eFACTION.Imperium,
-    eFACTION.Mechanicus,
-    eFACTION.Inquisition,
-    eFACTION.Ecclesiarchy
-];
+imperial_factions = [eFACTION.Imperium, eFACTION.Mechanicus, eFACTION.Inquisition, eFACTION.Ecclesiarchy];
 faction[0] = "";
 disposition[0] = 0;
 faction[eFACTION.Player] = "Player";
@@ -1279,22 +1154,7 @@ serialize = function() {
         forge_queue: specialist_point_handler.forge_queue,
         chapter_master_data: chapter_master,
     };
-    var excluded_from_save = [
-        "temp",
-        "serialize",
-        "deserialize",
-        "build_chaos_gods",
-        "company_data",
-        "menu_buttons",
-        "location_viewer",
-        "production_research_pathways",
-        "specialist_point_handler",
-        "spec_train_data",
-        "tooltips",
-        "last_unit",
-        "unit_manage_constants",
-        "unit_manage_image"
-    ];
+    var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data", "menu_buttons", "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data", "tooltips", "last_unit", "unit_manage_constants", "unit_manage_image"];
     var excluded_from_save_start = ["restart_"];
 
     copy_serializable_fields(object_controller, save_data, excluded_from_save, excluded_from_save_start);
@@ -1360,72 +1220,26 @@ spec_train_data = [
     {
         name: "Techmarine",
         min_exp: 30,
-        coord_offset: [
-            0,
-            0
-        ],
-        req: [
-            [
-                "technology",
-                34,
-                "exmore"
-            ]
-        ],
+        coord_offset: [0, 0],
+        req: [["technology", 34, "exmore"]],
     },
     {
         name: "Librarian",
         min_exp: 0,
-        coord_offset: [
-            0,
-            -7
-        ],
-        req: [
-            [
-                "psionic",
-                1,
-                "exmore"
-            ]
-        ],
+        coord_offset: [0, -7],
+        req: [["psionic", 1, "exmore"]],
     },
     {
         name: "Chaplain",
         min_exp: 60,
-        coord_offset: [
-            7,
-            -7
-        ],
-        req: [
-            [
-                "piety",
-                34,
-                "exmore"
-            ],
-            [
-                "charisma",
-                29,
-                "exmore"
-            ]
-        ],
+        coord_offset: [7, -7],
+        req: [["piety", 34, "exmore"], ["charisma", 29, "exmore"]],
     },
     {
         name: "Apothecary",
         min_exp: 60,
-        coord_offset: [
-            7,
-            0
-        ],
-        req: [
-            [
-                "technology",
-                29,
-                "exmore"
-            ],
-            [
-                "intelligence",
-                44,
-                "exmore"
-            ]
-        ],
+        coord_offset: [7, 0],
+        req: [["technology", 29, "exmore"], ["intelligence", 44, "exmore"]],
     }
 ];
 // Redefines training based on chapter

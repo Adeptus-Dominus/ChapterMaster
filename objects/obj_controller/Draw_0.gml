@@ -12,7 +12,7 @@ try {
     handle_exception(_exception);
     main_map_defaults();
 }
-if (menu == MENU.Diplomacy) {
+if (menu == eMENU.Diplomacy) {
     try {
         /*if (audience > 0 && instance_exists(obj_turn_end)){
 	     menu = 20;

@@ -1,5 +1,5 @@
 // Checks which systems you can see the planets
-if (obj_controller.menu != MENU.Default){
+if (obj_controller.menu != eMENU.Default){
     exit;
 }
 if (instances_exist_any([obj_drop_select,obj_saveload,obj_bomb_select])){

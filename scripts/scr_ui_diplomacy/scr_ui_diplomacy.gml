@@ -447,7 +447,7 @@ function faction_disposition_rating_string(diplomacy){
 }
 
 function scr_ui_diplomacy() {
-	if (menu != MENU.Diplomacy){
+	if (menu != eMENU.Diplomacy){
 		return;
 	}
 

@@ -13,18 +13,18 @@ function scr_ui_advisors() {
     // This script draws all of the ADVISOR screens
 
     // ** Fleet **
-    if (menu = MENU.Fleet) {
+    if (menu = eMENU.Fleet) {
         scr_fleet_advisor();
     }
 
 
     // ** Apothecarium **
-    else if (menu = MENU.Apothecarion) {
+    else if (menu = eMENU.Apothecarion) {
         scr_apothecarium();
     }
 
     // ** Reclusium **
-    if ((floor(menu) == MENU.Reclusiam)) {
+    if ((floor(menu) == eMENU.Reclusiam)) {
         draw_sprite(spr_rock_bg, 0, xx, yy);
 
         draw_set_alpha(0.75);
@@ -89,7 +89,7 @@ function scr_ui_advisors() {
 
             draw_set_font(fnt_40k_30b);
             draw_set_halign(fa_center);
-            if (menu == MENU.Reclusiam){
+            if (menu == eMENU.Reclusiam){
                 draw_text_transformed(xx + 1262, yy + 70, "Penitorium", 0.6, 0.6, 0);
             }
             if (menu = 12.1) then draw_text_transformed(xx + 1262, yy + 70, "Scheduling Event", 0.6, 0.6, 0);
@@ -691,7 +691,7 @@ function scr_ui_advisors() {
 
     }
 
-    if (menu == MENU.Manage) and (managing == 0) {
+    if (menu == eMENU.Manage) and (managing == 0) {
         draw_set_alpha(1);
         draw_sprite(spr_rock_bg, 0, xx, yy);
         draw_set_font(fnt_40k_30b);
