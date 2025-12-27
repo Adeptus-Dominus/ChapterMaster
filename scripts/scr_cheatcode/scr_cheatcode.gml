@@ -160,25 +160,25 @@ function scr_cheatcode(argument0) {
 							scr_inquisition_mission(EVENT.inquisition_planet);
 						break;
 						case "spyrer": 
-							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.spyrer);
+							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.spyrer);
 						break;
 						case "artifact": 
-							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.artifact);
+							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.artifact);
 						break;
 						case "inquisitor": 
-							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.inquisitor);
+							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.inquisitor);
 						break;
 						case "purge": 
-							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.purge);
+							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.purge);
 						break;
 						case "tomb_world": 
-							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.tomb_world);
+							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.tomb_world);
 						break;
 						case "tyranid_organism": 
-							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.tyranid_organism);
+							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.tyranid_organism);
 						break;
 						case "demon": 
-							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.demon_world);
+							scr_inquisition_mission(EVENT.inquisition_mission, eINQUISITION_MISSION.demon_world);
 						break;
 						default: 
 							scr_inquisition_mission(EVENT.inquisition_mission);

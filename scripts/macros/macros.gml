@@ -75,7 +75,7 @@ enum eLUCK {
 enum eGOD_MISSION {
     artifact
 }
-enum INQUISITION_MISSION {
+enum eINQUISITION_MISSION {
     purge,
     inquisitor,
     spyrer,
