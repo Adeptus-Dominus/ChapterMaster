@@ -48,13 +48,13 @@ function scr_random_event(execute_now) {
 			var player_luck;
 			var luck_roll = roll_dice_chapter(1, 100, "low");
 
-			if (luck_roll<=45) then player_luck=luck.good;
-			if (luck_roll>45) and (luck_roll<55) then player_luck=luck.neutral;
-			if (luck_roll>=55) then player_luck=luck.bad;
+			if (luck_roll<=45) then player_luck=eLUCK.good;
+			if (luck_roll>45) and (luck_roll<55) then player_luck=eLUCK.neutral;
+			if (luck_roll>=55) then player_luck=eLUCK.bad;
 
 		
 				var events;
-				if(player_luck == luck.good){
+				if(player_luck == eLUCK.good){
 					events = 
 					[
 						EVENT.space_hulk,
@@ -67,7 +67,7 @@ function scr_random_event(execute_now) {
 						EVENT.mechanicus_mission
 					];
 				}
-				else if(player_luck == luck.neutral){
+				else if(player_luck == eLUCK.neutral){
 					events = 
 					[
 						EVENT.strange_behavior,
@@ -77,7 +77,7 @@ function scr_random_event(execute_now) {
 						EVENT.random_fun,
 					];
 				}
-				else if(player_luck == luck.bad){
+				else if(player_luck == eLUCK.bad){
 					events = 
 					[
 						EVENT.warp_storms,

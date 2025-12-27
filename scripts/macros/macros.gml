@@ -64,10 +64,10 @@ enum MENU {
     EventLog = 17,
     Diplomacy = 20,
     Settings = 21,
-    GameHelp = 30,
+    GameHelp = 30
 }
 
-enum luck {
+enum eLUCK {
     bad = -1,
     neutral = 0,
     good = 1
