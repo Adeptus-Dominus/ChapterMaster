@@ -1736,7 +1736,7 @@ function scr_get_body_data (body_item_key,body_slot="none"){
         }
         return item_key_map;
     }
-    return false;
+    // return false; // Unreachable, commented to silence compiler message GM2047
 }
 
 

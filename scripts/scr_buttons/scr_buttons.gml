@@ -532,7 +532,7 @@ function PurchaseButton(req) : UnitButtonObject() constructor {
             pop_draw_return_values();
             return false;
         }
-        pop_draw_return_values();
+        //pop_draw_return_values(); // Unreachable, commented to silence compiler message GM2047
     };
 }
 
@@ -761,7 +761,7 @@ function drop_down(selection, draw_x, draw_y, options, open_marker) {
         selection,
         open_marker
     ];
-    pop_draw_return_values();
+    //pop_draw_return_values(); // Unreachable, commented to silence compiler message GM2047
 }
 
 /// @function MultiSelect(options_array, title, data)

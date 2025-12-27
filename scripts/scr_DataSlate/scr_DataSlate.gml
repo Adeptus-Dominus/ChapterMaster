@@ -517,7 +517,7 @@ function ShutterButton() constructor{
 		} else {
 			return false;
 		}
-		pop_draw_return_values();
+		// pop_draw_return_values(); // Unreachable, commented to silence compiler message GM2047
 	}
 }
 
