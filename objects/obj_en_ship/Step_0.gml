@@ -413,7 +413,7 @@ if (!__b__) {
             if ((facing == "right") && (point_direction(x, y, target_r.x, target_r.y) < 337) && (point_direction(x, y, target_r.x, target_r.y) > 203)) {
                 ok = 2;
             }
-            if ((facing == "left") && (point_direction(x, y, target_r.x, target_r.y) > 22) && (point_direction(x, y, target_r.x, target_r.y) < 157)) {
+            if ((facing == "left") && (point_direction(x, y, target_l.x, target_l.y) > 22) && (point_direction(x, y, target_l.x, target_l.y) < 157)) {
                 ok = 2;
             }
 
@@ -432,9 +432,9 @@ if (!__b__) {
 
                 // if (f=3) and (ship_id=2) then show_message("ammo: "+string(ammo)+" | range: "+string(range));
 
-                if (ammo < 0) {
-                    ok = 0;
-                }
+                //if (ammo < 0) {
+                    //ok = 0;
+                //}
                 ok = 3;
 
                 if ((string_count("orpedo", wep) == 0) && (string_count("Interceptor", wep) == 0) && (string_count("ommerz", wep) == 0) && (string_count("Claws", wep) == 0) && (string_count("endrils", wep) == 0) && (ok == 3) && (owner != eFACTION.Necrons)) {
@@ -477,13 +477,13 @@ if (!__b__) {
                     if (string_count("Plasma", wep) == 1) {
                         bull.sprite_index = spr_ground_plasma;
                         bull.image_xscale = 2;
-                        bullimage_yscale = 2;
+                        bull.image_yscale = 2;
                         bull.speed = 15;
                     }
                     if (string_count("Pyro-Acid", wep) == 1) {
                         bull.sprite_index = spr_glob;
                         bull.image_xscale = 2;
-                        bullimage_yscale = 2;
+                        bull.image_yscale = 2;
                     }
 
                     if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.Eldar)) {
@@ -566,10 +566,10 @@ if (!__b__) {
 
                 if (((string_count("Claws", wep) == 1) || (string_count("endrils", wep) == 1)) && (ok == 3)) {
                     if (target.shields <= 0) {
-                        target.hp -= weapon_dam[wep];
+                        target.hp -= dam;
                     }
                     if (target.shields > 0) {
-                        target.shields -= weapon_dam[wep];
+                        target.shields -= dam;
                     }
                 }
                 if (((string_count("Interceptor", wep) == 1) || (string_count("ommerz", wep) == 1) || (string_count("Manta", wep) == 1) || (string_count("Glands", wep) == 1) || (string_count("Eldar Launch", wep) == 1)) && (ok == 3)) {
@@ -829,7 +829,7 @@ if (__b__) {
             if ((facing == "right") && (point_direction(x, y, target_r.x, target_r.y) < 337) && (point_direction(x, y, target_r.x, target_r.y) > 203)) {
                 ok = 2;
             }
-            if ((facing == "left") && (point_direction(x, y, target_r.x, target_r.y) > 22) && (point_direction(x, y, target_r.x, target_r.y) < 157)) {
+            if ((facing == "left") && (point_direction(x, y, target_l.x, target_l.y) > 22) && (point_direction(x, y, target_l.x, target_l.y) < 157)) {
                 ok = 2;
             }
 
@@ -848,9 +848,9 @@ if (__b__) {
 
                 // if (f=3) and (ship_id=2) then show_message("ammo: "+string(ammo)+" | range: "+string(range));
 
-                if (ammo < 0) {
-                    ok = 0;
-                }
+                //if (ammo < 0) {
+                    //ok = 0;
+                //}
                 ok = 3;
 
                 if ((string_count("orpedo", wep) == 0) && (string_count("Interceptor", wep) == 0) && (string_count("ommerz", wep) == 0) && (string_count("Claws", wep) == 0) && (string_count("endrils", wep) == 0) && (ok == 3)) {
@@ -893,13 +893,13 @@ if (__b__) {
                     if (string_count("Plasma", wep) == 1) {
                         bull.sprite_index = spr_ground_plasma;
                         bull.image_xscale = 2;
-                        bullimage_yscale = 2;
+                        bull.image_yscale = 2;
                         bull.speed = 15;
                     }
                     if (string_count("Pyro-Acid", wep) == 1) {
                         bull.sprite_index = spr_glob;
                         bull.image_xscale = 2;
-                        bullimage_yscale = 2;
+                        bull.image_yscale = 2;
                     }
 
                     if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.Eldar)) {
@@ -942,10 +942,10 @@ if (__b__) {
                 }
                 if (((string_count("Claws", wep) == 1) || (string_count("endrils", wep) == 1)) && (ok == 3)) {
                     if (target.shields <= 0) {
-                        target.hp -= weapon_dam[wep];
+                        target.hp -= dam;
                     }
                     if (target.shields > 0) {
-                        target.shields -= weapon_dam[wep];
+                        target.shields -= dam;
                     }
                 }
                 if (((string_count("Interceptor", wep) == 1) || (string_count("ommerz", wep) == 1) || (string_count("Manta", wep) == 1) || (string_count("Glands", wep) == 1) || (string_count("Eldar Launch", wep) == 1)) && (ok == 3)) {
