@@ -780,7 +780,7 @@ function MultiSelect(options_array, title, data = {}) constructor {
     y1 = 0;
     x2 = 0;
     y2 = 0;
-    on_change = false;
+    on_change = void();
     active_col = CM_GREEN_COLOR;
     inactive_col = c_gray;
     max_width = 0;
@@ -1284,7 +1284,7 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords) {
     return _new_val;
 }
 
-function MainMenuButton(sprite = spr_ui_but_1, sprite_hover = spr_ui_hov_1, xx = 0, yy = 0, Hot_key = -1, Click_function = false) constructor {
+function MainMenuButton(sprite = spr_ui_but_1, sprite_hover = spr_ui_hov_1, xx = 0, yy = 0, Hot_key = -1, Click_function = void()) constructor {
     mouse_enter = 0;
     base_sprite = sprite;
     hover_sprite = sprite_hover;

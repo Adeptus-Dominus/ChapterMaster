@@ -61,7 +61,7 @@ function scr_menu_clear_up(specific_area_function) {
     return false;
 }
 
-function scr_change_menu(wanted_menu, specific_area_function=false) {
+function scr_change_menu(wanted_menu, specific_area_function=void()) {
     var continue_sequence = false;
     if (obj_controller.menu_lock){
         return false;
