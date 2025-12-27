@@ -204,21 +204,8 @@ function LabeledIcon(icon, text, x1 = 0, y1 = 0, data = false) constructor {
 /// @param {array} [scale=[1,1]] Scale factors [x,y].
 /// @param {sprite} [hover_sprite=-1] Optional hover sprite.
 /// @returns {array} [x1, y1, x2, y2] bounding box.
-function draw_sprite_as_button(
-    position,
-    choice_sprite,
-    scale = [
-        1,
-        1
-    ],
-    hover_sprite = -1
-) {
-    var _pos = [
-        position[0],
-        position[1],
-        position[0] + (sprite_get_width(choice_sprite) * scale[0]),
-        position[1] + (sprite_get_height(choice_sprite) * scale[1])
-    ];
+function draw_sprite_as_button(position, choice_sprite, scale = [1, 1], hover_sprite = -1) {
+    var _pos = [position[0], position[1], position[0] + (sprite_get_width(choice_sprite) * scale[0]), position[1] + (sprite_get_height(choice_sprite) * scale[1])];
     draw_sprite_ext(choice_sprite, 0, position[0], position[1], scale[0], scale[1], 0, c_white, scr_hit(_pos) ? 1 : 0.9);
     return _pos;
 }
@@ -235,20 +222,7 @@ function draw_sprite_as_button(
 /// @param {bool} [bg=false] Draw background rectangle.
 /// @param {color} [bg_color=c_black] Background color.
 /// @returns {array} [x1, y1, x2, y2] bounding box.
-function draw_unit_buttons(
-    position,
-    text,
-    size_mod = [
-        1.5,
-        1.5
-    ],
-    colour = c_gray,
-    _halign = fa_center,
-    font = fnt_40k_14b,
-    alpha_mult = 1,
-    bg = false,
-    bg_color = c_black
-) {
+function draw_unit_buttons(position, text, size_mod = [1.5, 1.5], colour = c_gray, _halign = fa_center, font = fnt_40k_14b, alpha_mult = 1, bg = false, bg_color = c_black) {
     // TODO: fix halign usage
     // Store current state of all global vars
     add_draw_return_values();
@@ -288,12 +262,7 @@ function draw_unit_buttons(
     // Reset all global vars to their previous state
     pop_draw_return_values();
 
-    return [
-        position[0],
-        position[1],
-        x2,
-        y2
-    ];
+    return [position[0], position[1], x2, y2];
 }
 
 function standard_loc_data() {
@@ -402,7 +371,7 @@ function UnitButtonObject(data = false) constructor {
             _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1], label, [text_scale, text_scale], active ? color : inactive_col,, font, _temp_alpha);
         } else if (style == "pixel") {
             var _widths = [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)];
-    
+
             var height_scale = h / sprite_get_height(spr_pixel_button_left);
             _widths[0] *= height_scale;
             _widths[2] *= height_scale;
@@ -417,18 +386,18 @@ function UnitButtonObject(data = false) constructor {
             draw_set_halign(fa_center);
             draw_set_valign(fa_middle);
             draw_set_color(color);
-    
+
             draw_text_transformed(_text_position_x, y1 + ((h * height_scale) / 2), label, text_scale, text_scale, 0);
-    
+
             x2 = x1 + array_sum(_widths);
             y2 = y1 + h;
             _button_click_area = [x1, y1, x2, y2];
         }
-    
+
         if (scr_hit(x1, y1, x2, y2) && tooltip != "") {
             tooltip_draw(tooltip);
         }
-    
+
         if (allow_click && active) {
             var clicked = point_and_click(_button_click_area) || keystroke;
             if (clicked) {
@@ -464,23 +433,7 @@ function PurchaseButton(req) : UnitButtonObject() constructor {
     static draw = function(allow_click = true) {
         add_draw_return_values();
 
-        var _but = draw_unit_buttons(
-            [
-                x1,
-                y1,
-                x2,
-                y2
-            ],
-            label,
-            [
-                1,
-                1
-            ],
-            color,
-,
-,
-            alpha
-        );
+        var _but = draw_unit_buttons([x1, y1, x2, y2], label, [1, 1], color,,, alpha);
         var _sh = sprite_get_height(spr_requisition);
         var _scale = (y2 - y1) / _sh;
         draw_sprite_ext(spr_requisition, 0, x1, y2, _scale, _scale, 0, c_white, 1);
@@ -502,7 +455,6 @@ function PurchaseButton(req) : UnitButtonObject() constructor {
             pop_draw_return_values();
             return false;
         }
-        //pop_draw_return_values(); // Unreachable, commented to silence compiler message GM2047
     };
 }
 
@@ -511,10 +463,7 @@ function slider_bar() constructor {
     y1 = 0;
     w = 102;
     h = 15;
-    value_limits = [
-        0,
-        0
-    ];
+    value_limits = [0, 0];
     value_increments = 1;
     value = 0;
     dragging = false;
@@ -535,12 +484,7 @@ function slider_bar() constructor {
         if (dragging) {
             dragging = mouse_check_button(mb_left);
         }
-        var _rect = [
-            x1,
-            y1,
-            x1 + w,
-            y1 + h
-        ];
+        var _rect = [x1, y1, x1 + w, y1 + h];
         draw_rectangle_array(_rect, 1);
         width_increments = w / ((value_limits[1] - value_limits[0]) / value_increments);
         var __rel_cur_pos = increments * (value - value_limits[0]);
@@ -617,12 +561,7 @@ function TextBarArea(XX, YY, Max_width = 400, requires_input = false) constructo
             }
         }
         string_h = string_height("LOL");
-        var rect = [
-            xx - (bar_wid / 2),
-            yy,
-            xx + (bar_wid / 2),
-            yy - 8 + string_h
-        ];
+        var rect = [xx - (bar_wid / 2), yy, xx + (bar_wid / 2), yy - 8 + string_h];
         background.XX = rect[0];
         background.YY = rect[1];
         background.width = rect[2] - rect[0];
@@ -673,18 +612,7 @@ function TextBarArea(XX, YY, Max_width = 400, requires_input = false) constructo
 function drop_down(selection, draw_x, draw_y, options, open_marker) {
     add_draw_return_values();
     if (selection != "") {
-        var drop_down_area = draw_unit_buttons(
-            [
-                draw_x,
-                draw_y
-            ],
-            selection,
-            [
-                1,
-                1
-            ],
-            c_green
-        );
+        var drop_down_area = draw_unit_buttons([draw_x, draw_y], selection, [1, 1], c_green);
         draw_set_color(c_red);
         if (array_length(options) > 1) {
             if (scr_hit(drop_down_area)) {
@@ -694,22 +622,7 @@ function drop_down(selection, draw_x, draw_y, options, open_marker) {
                     if (options[col] == selection) {
                         continue;
                     }
-                    var cur_option = draw_unit_buttons(
-                        [
-                            draw_x,
-                            draw_y + roll_down_offset
-                        ],
-                        options[col],
-                        [
-                            1,
-                            1
-                        ],
-                        c_red,
-,
-,
-,
-                        true
-                    );
+                    var cur_option = draw_unit_buttons([draw_x, draw_y + roll_down_offset], options[col], [1, 1], c_red,,,, true);
                     if (point_and_click(cur_option)) {
                         selection = options[col];
                         open_marker = false;
@@ -727,11 +640,7 @@ function drop_down(selection, draw_x, draw_y, options, open_marker) {
             }
         }
     }
-    return [
-        selection,
-        open_marker
-    ];
-    //pop_draw_return_values(); // Unreachable, commented to silence compiler message GM2047
+    return [selection, open_marker];
 }
 
 /// @function MultiSelect(options_array, title, data)
