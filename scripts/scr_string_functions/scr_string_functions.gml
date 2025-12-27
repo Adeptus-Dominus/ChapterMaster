@@ -6,22 +6,21 @@ function string_upper_first(_string) {
     try {
         var _first_char = string_char_at(_string, 1);
         var _modified_string = _string;
-    
+
         _first_char = string_upper(_first_char);
-        
+
         _modified_string = string_delete(_modified_string, 1, 1);
         _modified_string = string_insert(_first_char, _modified_string, 1);
-    
+
         return _modified_string;
-	}
-    catch(_exception) {
+    } catch (_exception) {
         handle_exception(_exception);
-	}
+    }
 }
 
-function string_gender_third_person(gender){
+function string_gender_third_person(gender) {
     var _string = "they";
-    switch(gender){
+    switch (gender) {
         case eGENDER.Female:
             _string = "she";
             break;
@@ -33,15 +32,14 @@ function string_gender_third_person(gender){
     return _string;
 }
 
-
-function string_gender_pronouns(gender){
-     var _string = "their";
-    switch(gender){
+function string_gender_pronouns(gender) {
+    var _string = "their";
+    switch (gender) {
         case eGENDER.Female:
-            _string ="her"
+            _string = "her";
             break;
         case eGENDER.Male:
-            _string ="his"
+            _string = "his";
             break;
         case eGENDER.Neutral:
             _string = "their";
@@ -50,7 +48,6 @@ function string_gender_pronouns(gender){
 
     return _string;
 }
-
 
 /// @function string_plural
 /// @description This function formats a string into a plural form by adding affixes following common rules.
@@ -66,14 +63,11 @@ function string_plural(_string, _variable = 2) {
     var _last_two_chars = string_copy(_string, string_length(_string) - 1, 2);
     if (_last_char == "y") {
         return string_copy(_string, 1, string_length(_string) - 1) + "ies";
-    }
-    else if (array_contains(["s", "x", "z", "ch", "sh"], _last_char)) {
+    } else if (array_contains(["s", "x", "z", "ch", "sh"], _last_char)) {
         return _string + "es";
-    }
-    else if (_last_char == "f" || _last_two_chars == "fe") {
+    } else if (_last_char == "f" || _last_two_chars == "fe") {
         return string_copy(_string, 1, string_length(_string) - string_length(_last_two_chars)) + "ves";
-    }
-    else {
+    } else {
         return _string + "s";
     }
 }
@@ -102,7 +96,7 @@ function string_truncate(_string, _max_width) {
         var i = string_length(_string);
         while (_text_width + _ellipsis_width > _max_width && i > 0) {
             i--;
-            _string = string_delete(_string, i+1, 1);
+            _string = string_delete(_string, i + 1, 1);
             _text_width = string_width(_string + _ellipsis);
         }
         return _string + _ellipsis;
@@ -170,15 +164,15 @@ function integer_to_words(_integer, _capitalize_first = false, _ordinal = false)
 /// @param {string} _string
 /// @returns {string}
 function string_reverse(_string) {
-	var str,length,i,out,char;
-	str=_string
-	out=""
-	length=string_length(_string)
-	for(i=0;i<string_length(_string);i+=1){
-        char=string_char_at(str,length-i)
-        out+=char
-	}
-	return out;
+    var str, length, i, out, char;
+    str = _string;
+    out = "";
+    length = string_length(_string);
+    for (i = 0; i < string_length(_string); i += 1) {
+        char = string_char_at(str, length - i);
+        out += char;
+    }
+    return out;
 }
 
 /// @function string_rpos
@@ -187,7 +181,7 @@ function string_reverse(_string) {
 /// @param {string} _string
 /// @returns {real}
 function string_rpos(_sub_string, _string) {
-	/*
+    /*
 	**  Usage:
 	**      string_rpos(substr,str)
 	**
@@ -200,16 +194,16 @@ function string_rpos(_sub_string, _string) {
 	**      substring within the given string
 	*/
 
-    var sub,str,pos,ind;
+    var sub, str, pos, ind;
     sub = _sub_string;
     str = _string;
     pos = 0;
     ind = 0;
     do {
         pos += ind;
-        ind = string_pos(sub,str);
-        str = string_delete(str,1,ind);
-    } until (ind == 0);
+        ind = string_pos(sub, str);
+        str = string_delete(str, 1, ind);
+    } until (ind == 0)
     return pos;
 }
 
@@ -219,20 +213,20 @@ function string_rpos(_sub_string, _string) {
 /// @param {bool} possessive Add 's affix?
 /// @param {bool} flavour Add company designation text (Veteran, Battle, Reserve, etc.)?
 /// @returns {string}
-function scr_convert_company_to_string(company_num, possessive = false, flavour=false){
-	var _company_num = company_num;
-	var _suffixes = ["st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th", "th"];
-	var _flavours = ["Veteran", "Battle", "Battle", "Battle", "Battle", "Reserve", "Reserve", "Reserve", "Reserve", "Scout"];
-	var _str_company = possessive ? "Company's" : "Company";
+function scr_convert_company_to_string(company_num, possessive = false, flavour = false) {
+    var _company_num = company_num;
+    var _suffixes = ["st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th", "th"];
+    var _flavours = ["Veteran", "Battle", "Battle", "Battle", "Battle", "Reserve", "Reserve", "Reserve", "Reserve", "Scout"];
+    var _str_company = possessive ? "Company's" : "Company";
 
-	if (_company_num < 1) || (_company_num > 10) {
-		return "";	
-	} else {
-		var _flavour_text = flavour ? _flavours[_company_num - 1] : "";
-		_company_num = string(_company_num) + _suffixes[_company_num - 1];
-		var _converted_string = string_join(" ", _company_num, _flavour_text, _str_company);
-		return _converted_string;
-	}
+    if ((_company_num < 1) || (_company_num > 10)) {
+        return "";
+    } else {
+        var _flavour_text = flavour ? _flavours[_company_num - 1] : "";
+        _company_num = string(_company_num) + _suffixes[_company_num - 1];
+        var _converted_string = string_join(" ", _company_num, _flavour_text, _str_company);
+        return _converted_string;
+    }
 }
 
 /// @function scr_convert_company_to_string
@@ -240,45 +234,98 @@ function scr_convert_company_to_string(company_num, possessive = false, flavour=
 /// @param {string} _string
 /// @returns {real}
 function string_to_integer(_string) {
-	// The purpose of this is to allow a marine's
-	// name to generate a semi-unique variable for the future display of veterency
-	// decorations when inspected in management.  Whether it is odd, from 0-9, and so
-	// on can determine what shows on their picture at certain experience values.
+    // The purpose of this is to allow a marine's
+    // name to generate a semi-unique variable for the future display of veterency
+    // decorations when inspected in management.  Whether it is odd, from 0-9, and so
+    // on can determine what shows on their picture at certain experience values.
 
-	var lol,m1,val;
-	lol=_string;val=0;
-	m1=string_length(lol);
+    var lol, m1, val;
+    lol = _string;
+    val = 0;
+    m1 = string_length(lol);
 
-    repeat(m1){
-        if (string_lower(string_char_at(lol,0))="a") then val+=1;
-        if (string_lower(string_char_at(lol,0))="b") then val+=2;
-        if (string_lower(string_char_at(lol,0))="c") then val+=3;
-        if (string_lower(string_char_at(lol,0))="d") then val+=4;
-        if (string_lower(string_char_at(lol,0))="e") then val+=5;
-        if (string_lower(string_char_at(lol,0))="f") then val+=6;
-        if (string_lower(string_char_at(lol,0))="g") then val+=7;
-        if (string_lower(string_char_at(lol,0))="h") then val+=8;
-        if (string_lower(string_char_at(lol,0))="i") then val+=9;
-        if (string_lower(string_char_at(lol,0))="j") then val+=10;
-        if (string_lower(string_char_at(lol,0))="k") then val+=11;
-        if (string_lower(string_char_at(lol,0))="l") then val+=12;
-        if (string_lower(string_char_at(lol,0))="m") then val+=13;
-        if (string_lower(string_char_at(lol,0))="n") then val+=14;
-        if (string_lower(string_char_at(lol,0))="o") then val+=15;
-        if (string_lower(string_char_at(lol,0))="p") then val+=16;
-        if (string_lower(string_char_at(lol,0))="q") then val+=17;
-        if (string_lower(string_char_at(lol,0))="r") then val+=18;
-        if (string_lower(string_char_at(lol,0))="s") then val+=19;
-        if (string_lower(string_char_at(lol,0))="t") then val+=20;
-        if (string_lower(string_char_at(lol,0))="u") then val+=21;
-        if (string_lower(string_char_at(lol,0))="v") then val+=22;
-        if (string_lower(string_char_at(lol,0))="w") then val+=23;
-        if (string_lower(string_char_at(lol,0))="x") then val+=24;
-        if (string_lower(string_char_at(lol,0))="y") then val+=25;
-        if (string_lower(string_char_at(lol,0))="z") then val+=26;
-        lol=string_delete(lol,0,1);
+    repeat (m1) {
+        if (string_lower(string_char_at(lol, 0)) == "a") {
+            val += 1;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "b") {
+            val += 2;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "c") {
+            val += 3;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "d") {
+            val += 4;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "e") {
+            val += 5;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "f") {
+            val += 6;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "g") {
+            val += 7;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "h") {
+            val += 8;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "i") {
+            val += 9;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "j") {
+            val += 10;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "k") {
+            val += 11;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "l") {
+            val += 12;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "m") {
+            val += 13;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "n") {
+            val += 14;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "o") {
+            val += 15;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "p") {
+            val += 16;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "q") {
+            val += 17;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "r") {
+            val += 18;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "s") {
+            val += 19;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "t") {
+            val += 20;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "u") {
+            val += 21;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "v") {
+            val += 22;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "w") {
+            val += 23;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "x") {
+            val += 24;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "y") {
+            val += 25;
+        }
+        if (string_lower(string_char_at(lol, 0)) == "z") {
+            val += 26;
+        }
+        lol = string_delete(lol, 0, 1);
     }
-    return(val);
+    return val;
 }
 
 /// @description Replaces underscores with spaces and capitalizes the first letter of each word.
@@ -286,20 +333,19 @@ function format_underscore_string(input_string) {
     // Split the string into words
     var words = string_split(input_string, "_");
     var result = "";
-    
+
     // Loop through each word and capitalize the first letter
-    for (var i = 0; i < array_length(words); i++)
-    {
+    for (var i = 0; i < array_length(words); i++) {
         // Capitalize the first character and concatenate it with the rest of the word
         var word = string_upper_first(words[i]);
         result += word;
-        
+
         // Add a space after each word (except for the last one)
         if (i < array_length(words) - 1) {
             result += " ";
         }
     }
-    
+
     return result;
 }
 
@@ -358,17 +404,16 @@ function string_starts_with_any(_str, _prefixes) {
     return false;
 }
 
-
 //this can be way more efficient nby reading the string and finding keys rather than the other way around but until it satrts to cause issues i ccan;t be assed
-function string_interpolate_from_struct(interpolate_string,data){
-    var _names=struct_get_names(data);
+function string_interpolate_from_struct(interpolate_string, data) {
+    var _names = struct_get_names(data);
     var _name_length = array_length(_names);
     show_debug_message(_names);
-    for (var i=0;i<_name_length;i++){
-        var _name=_names[i];
+    for (var i = 0; i < _name_length; i++) {
+        var _name = _names[i];
         var _replace_string = "{" + $"{_name}" + "}";
         show_debug_message(_replace_string);
-        interpolate_string = string_replace_all(interpolate_string, _replace_string, data[$_name]);
+        interpolate_string = string_replace_all(interpolate_string, _replace_string, data[$ _name]);
     }
 
     return interpolate_string;

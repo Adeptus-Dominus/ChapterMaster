@@ -7,7 +7,7 @@ if (__b__) {
             bad = 0;
         }
     }
-    if (bad = 0) {
+    if (bad == 0) {
         var ent;
         var xx = __view_get(e__VW.XView, 0) + 0;
         var yy = __view_get(e__VW.YView, 0) + 0;
@@ -22,9 +22,7 @@ if (__b__) {
         draw_set_halign(fa_center);
         draw_text(xx + 800, yy + 74, string(global.chapter_name) + " Event Log");
         draw_set_halign(fa_left);
-        var t = 0,
-            p = -1,
-            cur_event;
+        var t = 0, p = -1, cur_event;
         var ent = array_length(event);
         draw_set_color(CM_GREEN_COLOR);
         if (ent == 0) {
@@ -33,14 +31,15 @@ if (__b__) {
             p = -1;
             draw_set_font(fnt_40k_14);
             draw_set_alpha(0.8);
-            for (var t=top - 1; t<ent; t++){
+            for (var t = top - 1; t < ent; t++) {
                 p++;
                 cur_event = event[t];
-                if (cur_event.text != "") { // 1554
+                if (cur_event.text != "") {
+                    // 1554
                     set_alert_draw_colour(cur_event.colour);
                     draw_text_ext(xx + 25, yy + 120 + (p * 26), $"{cur_event.date}  (Turn {cur_event.turn}) - {cur_event.text}", -1, 1554);
                     if (cur_event.event_target != "none") {
-                        if (point_and_click(draw_unit_buttons([xx + 1400, yy + 120 + (p * 26)], "View", [1, 1], c_green, , fnt_40k_14b, 1,true))) {
+                        if (point_and_click(draw_unit_buttons([xx + 1400, yy + 120 + (p * 26)], "View", [1, 1], c_green,, fnt_40k_14b, 1, true))) {
                             var view_star = star_by_name(cur_event.event_target);
                             if (view_star != "none") {
                                 main_map_defaults();
@@ -61,7 +60,7 @@ if (__b__) {
         cubey = 30;
         scrolly = (y2 - y1) + 12; // The maximum amount of moving around that the cube does
         my = max(1, ent - 24); // The maximum number of scroll chunks
-        chunk_size = scrolly / (my);
+        chunk_size = scrolly / my;
         y5 = (top - 1) * chunk_size;
         draw_rectangle(x1, y1 + y5, x2, y1 + y5 + cubey, 0);
     }
@@ -78,13 +77,13 @@ if (__b__) {
     draw_rectangle(0, 0, room_width, room_height, 0);
     draw_set_alpha(1);
     draw_sprite(spr_help_panel, 0, xx, yy);
-    if (scr_hit(xx + 1104, yy + 72, xx + 1137, yy + 105) = false) {
+    if (scr_hit(xx + 1104, yy + 72, xx + 1137, yy + 105) == false) {
         draw_sprite(spr_help_exit, 0, xx + 1104, yy + 72);
     }
-    if (scr_hit(xx + 1104, yy + 72, xx + 1137, yy + 105) = true) {
+    if (scr_hit(xx + 1104, yy + 72, xx + 1137, yy + 105) == true) {
         draw_sprite(spr_help_exit, 1, xx + 1104, yy + 72);
         if (scr_click_left()) {
-            with(obj_controller) {
+            with (obj_controller) {
                 main_map_defaults();
                 onceh = 1;
                 click = 1;
@@ -107,16 +106,16 @@ if (__b__) {
     draw_text(xx + 466 + 4, yy + 136 + 6, string_hash_to_newline("Topics"));
     x1 = xx + 466;
     y1 = yy + 166;
-    repeat(20) {
+    repeat (20) {
         t += 1;
         if (topics[t] != "") {
             draw_set_color(c_gray);
             draw_set_alpha(0.75);
-            if (topic = topics[t]) {
+            if (topic == topics[t]) {
                 draw_set_alpha(1);
             }
             draw_text(x1 + 2, y1 + 2, string_hash_to_newline(string(topics[t])));
-            if (scr_hit(x1, y1, x1 + 198, y1 + 22) = true) {
+            if (scr_hit(x1, y1, x1 + 198, y1 + 22) == true) {
                 draw_set_alpha(0.2);
                 draw_rectangle(x1, y1, x1 + 198, y1 + 22, 0);
                 draw_set_alpha(1);
@@ -153,7 +152,7 @@ if (__b__) {
         if (info != "") {
             draw_text_ext(xx + 663, yy + 197, string_hash_to_newline(string(p1)), -1, 469);
         }
-        if (info = "") {
+        if (info == "") {
             y2 -= 40;
         }
         if (strategy != "") {

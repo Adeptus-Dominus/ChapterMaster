@@ -1,5 +1,3 @@
-
-with(obj_controller){
-   audience_stack = [];
+with (obj_controller) {
+    audience_stack = [];
 }
-

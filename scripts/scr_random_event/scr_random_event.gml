@@ -62,24 +62,9 @@ function scr_random_event(execute_now) {
 
             var events;
             if (player_luck == eLUCK.good) {
-                events = [
-                    eEVENT.space_hulk,
-                    eEVENT.promotion,
-                    eEVENT.strange_building,
-                    eEVENT.sororitas,
-                    eEVENT.rogue_trader,
-                    eEVENT.inquisition_mission,
-                    eEVENT.inquisition_planet,
-                    eEVENT.mechanicus_mission
-                ];
+                events = [eEVENT.space_hulk, eEVENT.promotion, eEVENT.strange_building, eEVENT.sororitas, eEVENT.rogue_trader, eEVENT.inquisition_mission, eEVENT.inquisition_planet, eEVENT.mechanicus_mission];
             } else if (player_luck == eLUCK.neutral) {
-                events = [
-                    eEVENT.strange_behavior,
-                    eEVENT.fleet_delay,
-                    eEVENT.harlequins,
-                    eEVENT.succession_war,
-                    eEVENT.random_fun
-                ];
+                events = [eEVENT.strange_behavior, eEVENT.fleet_delay, eEVENT.harlequins, eEVENT.succession_war, eEVENT.random_fun];
             } else if (player_luck == eLUCK.bad) {
                 events = [
                     eEVENT.warp_storms,
@@ -265,15 +250,7 @@ function scr_random_event(execute_now) {
         }
     } else if (chosen_event == eEVENT.promotion) {
         log_message("RE: Promotion");
-        var marine_and_company = scr_random_marine(
-            [
-                obj_ini.role[100][8],
-                obj_ini.role[100][12],
-                obj_ini.role[100][9],
-                obj_ini.role[100][10]
-            ],
-            0
-        );
+        var marine_and_company = scr_random_marine([obj_ini.role[100][8], obj_ini.role[100][12], obj_ini.role[100][9], obj_ini.role[100][10]], 0);
         if (marine_and_company == "none") {
             log_error("RE: Promotion, couldn't pick a space marine");
             exit;
