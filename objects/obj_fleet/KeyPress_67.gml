@@ -1,4 +1,3 @@
-
 /*obj_p_capital.hp=0;
 obj_en_ship.hp=0;
 obj_en_ship.shields=0;
