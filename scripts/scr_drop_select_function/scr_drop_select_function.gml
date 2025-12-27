@@ -392,7 +392,11 @@ function drop_select_draw() {
                         _purge_score = array_length(roster.selected_units);
                     }
 
-                    scr_purge_world(p_target, planet_number, purge, _purge_score);
+                    var _p_data = p_target.system_data[planet_number];
+
+                    _p_data.refresh_data();
+
+                    _p_data.purge();
                 }
             }
         }

@@ -1,11 +1,20 @@
 function GovernorProfile(){
-	born = obj_controlller.turn - irandom_range(240,2400);
+	born = obj_controlller.turn - irandom_range(240,4800);
+
+	uid = scr_uuid_generate();
 
 	static age = function(){
-		born - obj_controlller.turn;
+		var _age = born - obj_controlller.turn;
+		if (_age < 0){
+			_age =  (born * -1) + obj_controlller.turn;
+		}
+
+		_age/=12;
+
+		return age;
 	}
 
-	gender = choose(GENDER.Female,GENDER.Male);
+	gender = set_gender();
 
 	name = global.name_generator.generate_imperial_name();
 

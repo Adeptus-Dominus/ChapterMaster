@@ -733,7 +733,7 @@ function PlanetData(planet, system) constructor{
 		        _starship.funds_spent+=_requisition_spend;
 		    
 		        if (_requisition_spend>0 && _starship.funds_spent<_target_spend){
-		            scr_alert("green","owner",$"{_requisition_spend} Requision spent on Ancient Ship repairs in materials and outfitting (outfitting {(_starship.funds_spent/_target_spend)*100}%)",system.x,system.y);
+		            scr_alert("green","owner",$"{_requisition_spend} Requisition spent on Ancient Ship repairs in materials and outfitting (outfitting {(_starship.funds_spent/_target_spend)*100}%)",system.x,system.y);
 		        }
 		        if (_starship.funds_spent>=_target_spend && _starship.engineer_score>=2000){// u2=tar;
 		        	//TODO refactor into general new ship logic
@@ -1972,7 +1972,7 @@ function PlanetData(planet, system) constructor{
         if (spec1=0){
             spec2=choose(1,2,3,4,5,5,5);
             if (spec2=1) then txt+="Their still-living body is disintegrated by acid.  ";
-            if (spec2=2) then txt+="The Governor is jettisoned into the local star at the first opporunity.  ";
+            if (spec2=2) then txt+="The Governor is jettisoned into the local star at the first opportunity.  ";
             if (spec2=3) then txt+=string(choose("He","He","She"))+" is burned as fuel for one of your vessels.  ";
             if (spec2=4) then txt+="A few grenades is all it takes to blow "+string(choose("his","his","her"))+" body to smithereens.  ";
             if (spec2=5) then txt+=string(choose("He","He","She"))+" is executed in a mundane fashion and buried.  ";

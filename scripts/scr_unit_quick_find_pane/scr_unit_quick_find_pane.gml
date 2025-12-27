@@ -528,7 +528,7 @@ function exit_adhoc_manage(){
 	var _planets = 0
 	if (struct_exists(selection_data, "system")&& instance_exists(selection_data.system)){
 		if (struct_exists(location_viewer.garrison_log, selection_data.system.name)){
-			var sys_name = selection_data.system.name;
+			sys_name = selection_data.system.name;
 		}
 	}
 
