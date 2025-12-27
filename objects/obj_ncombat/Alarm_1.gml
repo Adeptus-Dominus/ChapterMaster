@@ -1,5 +1,7 @@
 
 var a1;a1="";
+var _roles = active_roles();
+
 
 if (ally>0) and (ally_forces>0){
     if (ally=3){
@@ -133,24 +135,24 @@ if (string_count("_attack",battle_special)>0){
 
 
 if (tacticals>0) and (veterans>0){
-    p2=string(tacticals+veterans)+" "+string(obj_ini.role[100][8])+"s, ";
+    p2=string(tacticals+veterans)+" "+string(_roles[8])+"s, ";
 }
 if (tacticals>0) and (veterans=0){
-    if (tacticals=1) then p2=string(tacticals)+" "+string(obj_ini.role[100][8])+", ";
-    if (tacticals>1) then p2=string(tacticals)+" "+string(obj_ini.role[100][8])+"s, ";
+    if (tacticals=1) then p2=string(tacticals)+" "+string(_roles[8])+", ";
+    if (tacticals>1) then p2=string(tacticals)+" "+string(_roles[8])+"s, ";
 }
 if (tacticals=0) and (veterans>0){
-    if (veterans=1) then p2=string(veterans)+" "+string(obj_ini.role[100][3])+", ";
-    if (veterans>1) then p2=string(veterans)+" "+string(obj_ini.role[100][3])+"s, ";
+    if (veterans=1) then p2=string(veterans)+" "+string(_roles[3])+", ";
+    if (veterans>1) then p2=string(veterans)+" "+string(_roles[3])+"s, ";
 }
 
 if (assaults>0){
-    if (assaults=1) then p2+=string(assaults)+" "+string(obj_ini.role[100][10])+", ";
-    if (assaults>1) then p2+=string(assaults)+" "+string(obj_ini.role[100][10])+"s, ";
+    if (assaults=1) then p2+=string(assaults)+" "+string(_roles[10])+", ";
+    if (assaults>1) then p2+=string(assaults)+" "+string(_roles[10])+"s, ";
 }
 if (devastators>0){
-    if (devastators=1) then p2+=string(devastators)+" "+string(obj_ini.role[100][9])+", ";
-    if (devastators>1) then p2+=string(devastators)+" "+string(obj_ini.role[100][9])+"s, ";
+    if (devastators=1) then p2+=string(devastators)+" "+string(_roles[9])+", ";
+    if (devastators>1) then p2+=string(devastators)+" "+string(_roles[9])+"s, ";
 }
 
 if (temp<200) and (terminators>0){
@@ -159,37 +161,37 @@ if (temp<200) and (terminators>0){
 }
 
 if (temp<200) and (chaplains>0){
-    if (chaplains=1) then p2+=string(chaplains)+" "+string(obj_ini.role[100][14])+", ";
-    if (chaplains>1) then p2+=string(chaplains)+" "+string(obj_ini.role[100][14])+", ";
+    if (chaplains=1) then p2+=string(chaplains)+" "+string(_roles[14])+", ";
+    if (chaplains>1) then p2+=string(chaplains)+" "+string(_roles[14])+", ";
 }
 
 if (temp<200) and (apothecaries>0){
-    if (apothecaries=1) then p2+=string(apothecaries)+" "+string(obj_ini.role[100][15])+", ";
-    if (apothecaries>1) then p2+=string(apothecaries)+" "+string(obj_ini.role[100][15])+", ";
+    if (apothecaries=1) then p2+=string(apothecaries)+" "+string(_roles[15])+", ";
+    if (apothecaries>1) then p2+=string(apothecaries)+" "+string(_roles[15])+", ";
 }
 
 if (temp<200) and (librarians>0){
-    if (librarians=1) then p2+=string(librarians)+" "+string(obj_ini.role[100,17])+", ";
-    if (librarians>1) then p2+=string(librarians)+" "+string(obj_ini.role[100,17])+", ";
+    if (librarians=1) then p2+=string(librarians)+" "+string(_roles[17])+", ";
+    if (librarians>1) then p2+=string(librarians)+" "+string(_roles[17])+", ";
 }
 
 if (temp<200) and (techmarines>0){
-    if (techmarines=1) then p2+=string(techmarines)+" "+string(obj_ini.role[100][16])+", ";
-    if (techmarines>1) then p2+=string(techmarines)+" "+string(obj_ini.role[100][16])+", ";
+    if (techmarines=1) then p2+=string(techmarines)+" "+string(_roles[16])+", ";
+    if (techmarines>1) then p2+=string(techmarines)+" "+string(_roles[16])+", ";
 }
 if (temp<200) and (sgts>0){
-    if (techmarines=1) then p2+=string(techmarines)+" "+string(obj_ini.role[100][18])+", ";
-    if (techmarines>1) then p2+=string(techmarines)+" "+string(obj_ini.role[100][18])+", ";
+    if (techmarines=1) then p2+=string(techmarines)+" "+string(_roles[18])+", ";
+    if (techmarines>1) then p2+=string(techmarines)+" "+string(_roles[18])+", ";
 }
 if (temp<200) and (vet_sgts>0){
-    if (techmarines=1) then p2+=string(techmarines)+" "+string(obj_ini.role[100][19])+", ";
-    if (techmarines>1) then p2+=string(techmarines)+" "+string(obj_ini.role[100][19])+", ";
+    if (techmarines=1) then p2+=string(techmarines)+" "+string(_roles[19])+", ";
+    if (techmarines>1) then p2+=string(techmarines)+" "+string(_roles[19])+", ";
 }
 
 
 if (scouts>0){
-    if (scouts=1) then p2+=string(scouts)+" "+string(obj_ini.role[100][12])+", ";
-    if (scouts>1) then p2+=string(scouts)+" "+string(obj_ini.role[100][12])+"s, ";
+    if (scouts=1) then p2+=string(scouts)+" "+string(_roles[12])+", ";
+    if (scouts>1) then p2+=string(scouts)+" "+string(_roles[12])+"s, ";
 }
 
 
@@ -226,8 +228,8 @@ if (standard_bearers>1) and (dropping=0) then p5="  Chapter Ancients hold your C
 
 if (dreadnoughts+predators+land_raiders>3){
     p6="  Forming up the armoured division is ";
-    if (dreadnoughts=1) then p6+=string(dreadnoughts)+" "+string(obj_ini.role[100][6])+", ";
-    if (dreadnoughts>1) then p6+=string(dreadnoughts)+" "+string(obj_ini.role[100][6])+"s, ";
+    if (dreadnoughts=1) then p6+=string(dreadnoughts)+" "+string(_roles[6])+", ";
+    if (dreadnoughts>1) then p6+=string(dreadnoughts)+" "+string(_roles[6])+"s, ";
     
     if (rhinos=1) then p6+=string(rhinos)+" Rhino, ";
     if (rhinos>1) then p6+=string(rhinos)+" Rhinos, ";

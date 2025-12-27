@@ -3,12 +3,7 @@
 function imperial_navy_fleet_construction(){
 	// ** Check number of navy fleets **
 
-	var new_navy_fleets = [];
-	with(obj_en_fleet){
-	    if (owner==eFACTION.Imperium) and (navy==1) {
-	    	array_push(new_navy_fleets, id);
-	    }
-	}
+	var new_navy_fleets = get_imperial_navy_fleets();
 	//delete navy fleets if more than required
 	var navy_fleet_count = array_length(new_navy_fleets);
 	var cur_fleet;
@@ -22,49 +17,83 @@ function imperial_navy_fleet_construction(){
 				navy_fleet_count--;
 				array_delete(new_navy_fleets, i, 1);
 				i--;
-				if (navy_fleet_count<=target_navy_number) then break;
+				if (navy_fleet_count<=target_navy_number){
+					break;
+				}
 			}
 		} 
 
 		//if system needs more navy fleets get forge world to make some
 	} else if (navy_fleet_count<target_navy_number) {
-		var forge_systems = [];
-	    with(obj_star){
-	        var good=false;
-	        for(var o=1; o<=planets; o++) {
-	            if (p_type[o]=="Forge") 
-					and (p_owner[o]==eFACTION.Mechanicus) 
-					and (p_orks[o]+p_tau[o]+p_tyranids[o]+p_chaos[o]+p_traitors[o]+p_necrons[o]==0) {
-						
-						var enemy_fleets = [
-							eFACTION.Ork,
-							eFACTION.Tau,
-							eFACTION.Tyranids,
-							eFACTION.Chaos,
-							eFACTION.Necrons
-						]
-					
-						var enemy_fleet_count = array_reduce(enemy_fleets, function(prev, curr) {
-							return prev + present_fleet[curr]
-						})
-			            if (enemy_fleet_count == 0){
-			                good=true;
-			                if (instance_nearest(x,y,obj_en_fleet).navy) then good=false;
-			            }
-	            }
-	        }
-	        if (good){
-	        	good = x<=room_width && y<=room_height;
-	        }
-	        if (good==true) then array_push(forge_systems, id);
-	    }
+		//TODO make standadised system for collating active forge worlds as we  do this a lot		
+		var _forge_systems = get_imperium_forge_systems();
+
+		if (array_length(_forge_systems) == 0 && obj_controller.faction_status[eFACTION.Imperium] != "War"){
+			scr_alert("red", "forge_world", "No active uncontested forge worlds imperial navy unable to rebuild at speed");
+		}
+
+		for (var i=array_length(_forge_systems)-1;i>=0;i--){
+			var _sys = _forge_systems[i];
+			var good=true;
+			for(var o=1; o<=_sys.planets; o++) {
+				
+				if (_sys[p_type] == "Forge"){
+	                var _nearest = instance_nearest(x,y,obj_en_fleet)
+	                if (_nearest.x ==x && _nearest.y==y && _nearest.navy){
+	                	good=false;
+	                	break;
+	                }					
+				}
+			}
+
+			if (!good){
+				array_delete(_forge_systems,i,1);
+			}
+		}
 	// After initial navy fleet construction fleet growth is handled in obj_en_fleet.alarm_5
-		if (array_length(forge_systems)){
-		    var construction_forge,new_navy_fleet;
-		    construction_forge=choose_array(forge_systems);
+		if (array_length(_forge_systems)){
+		    var construction_forge;
+		    construction_forge = array_random_element(_forge_systems);
 		    build_new_navy_fleet(construction_forge)
 		}
 	}
+}
+
+function get_imperium_forge_systems(){
+	var _forge_systems = [];
+    with(obj_star){
+        var good=false;
+        for(var o=1; o<=planets; o++) {
+            if (p_type[o]=="Forge") 
+				and (p_owner[o]==eFACTION.Mechanicus) 
+				and (p_orks[o]+p_tau[o]+p_tyranids[o]+p_chaos[o]+p_traitors[o]+p_necrons[o]==0) {
+					
+					var enemy_fleets = [
+						eFACTION.Ork,
+						eFACTION.Tau,
+						eFACTION.Tyranids,
+						eFACTION.Chaos,
+						eFACTION.Necrons
+					]
+				
+					var enemy_fleet_count = array_reduce(enemy_fleets, function(prev, curr) {
+						return prev + present_fleet[curr]
+					}, 0);
+
+					good = enemy_fleet_count<=0;
+            }
+            if (good){
+            	break;
+            }
+        }
+        if (good){
+        	good = x<=room_width && y<=room_height;
+        }
+        if (good){
+        	array_push(_forge_systems, id);
+        }
+    }
+    return _forge_systems;
 }
 
 function build_planet_defence_fleets(){
@@ -72,7 +101,7 @@ function build_planet_defence_fleets(){
 	var _defence_fleet_log = {};
     with(obj_en_fleet){
         if (owner==eFACTION.Imperium){
-        	var _imperial_fleet_defence_score = capital_number + (frigate_number/2) + (escort_number/4);
+        	var _imperial_fleet_defence_score = round(standard_fleet_strength_calc());
             obj_controller.imp_ships += _imperial_fleet_defence_score;
             //log this to prevent double work later figuring out if a planet has an orbiting defence fleet
             if (!navy && action=="" && is_orbiting()){

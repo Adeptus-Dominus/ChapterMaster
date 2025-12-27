@@ -29,7 +29,7 @@ if (_khorne_cargo && owner=eFACTION.Chaos) {
 
 if (_is_orbiting) {
 	turns_static++;
-	if (turns_static>5 && owner==eFACTION.Ork){
+	if (turns_static>5 && owner == eFACTION.Ork){
 		if (!irandom(7)){
 			ork_fleet_move();
 			_is_orbiting=false;
@@ -329,7 +329,7 @@ else if (action=="" && _is_orbiting){
                         new_fleet.image_index=1;
                         
                         /*with(new_fleet){
-                            var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
+                            var ii=floor(standard_fleet_strength_calc());
                             if (ii<=1) then ii=1;image_index=ii;
                         }*/
                         
@@ -346,7 +346,9 @@ else if (action=="" && _is_orbiting){
                     	action_x=plin.x;
                     	action_y=plin.y;
                     	set_fleet_movement();
-                    	if (n!=5) then good=5;
+                    	if (n!=5){
+                            good=5;
+                        }
                     }
                 }
             }

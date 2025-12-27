@@ -478,6 +478,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     religion_sub_cult = "none";
     base_group = "none";
     role_history = [];
+    epithets = [];
     enum eROLE_TAG {
         Techmarine = 0,
             Librarian = 1,
@@ -785,16 +786,49 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     //adds a trait to a marines trait list
-    static add_trait = function(trait) {
-        var balance_value;
+    static add_trait = function(trait,return_stat_diff = false, return_description = false) {
+
+        if (return_stat_diff){
+            var _start_stats = get_stat_line();
+        }
         if (struct_exists(global.trait_list, trait)) {
             if (!array_contains(traits, trait)) {
+
+                var _return_string = "";
                 var selec_trait = global.trait_list[$ trait];
                 stat_boosts(selec_trait);
                 array_push(traits, trait);
+
+                if (return_stat_diff){
+                    var _end_stats = get_stat_line();
+
+                    var _stat_diff = compare_stats(_end_stats,_start_stats);
+                }
+
+                if (return_description){
+                    _return_string += $"{name_role()} Has gained the trait {selec_trait.display_name}";
+                }
+
+                if (return_stat_diff){
+                    _return_string +=$", {(print_stat_diffs(_stat_diff))}"
+                }
+
+                return _return_string
             }
         }
+
+        return "";
     };
+
+    static add_epithet = function(epithet){
+        if (is_string(epithet)){
+            epithet = {
+                title : epithet,
+                story : "",
+            }
+        }
+        array_push(epithets,epithet);
+    }
 
     static has_trait = marine_has_trait;
 
@@ -1976,7 +2010,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     }
 
     //quick way of getting name and role combined in string
-    static name_role = function() {
+    static name_role = function(include_epithet = true) {
         var temp_role = role();
         if (squad != "none") {
             if (struct_exists(obj_ini.squad_types[$ obj_ini.squads[squad].type], temp_role)) {
@@ -1984,6 +2018,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 if (struct_exists(role_info, "role")) {
                     temp_role = role_info[$ "role"];
                 }
+            }
+        }
+
+        var _name = "{temp_role} {name()}";
+        if (include_epithet){
+            if (array_length(epithets)){
+                _name += $" {epithets[0].title}";
             }
         }
         return string("{0} {1}", temp_role, name());
@@ -2233,7 +2274,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static get_stat_line = function() {
-        return {
+        return variable_clone({
             "constitution": constitution,
             "strength": strength,
             "luck": luck,
@@ -2245,7 +2286,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             "intelligence": intelligence,
             "weapon_skill": weapon_skill,
             "ballistic_skill": ballistic_skill
-        };
+        });
     };
 
     //TODO: Make this into a universal stat gathering function from all gear, for any stat;

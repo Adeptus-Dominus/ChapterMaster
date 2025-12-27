@@ -272,19 +272,14 @@ function spawn_chaos_warlord(){
 				array_push(candidate_systems, self)
 	    }
 		
-		var fleet_target = array_reduce(candidate_systems, method({nfleet}, function(prev, curr) {
-				if !prev
-					return curr
-				var prev_dist = point_distance(prev.x, prev.y, nfleet.x, nfleet.y)
-				var curr_dist = point_distance(curr.x, curr.y, nfleet.x, nfleet.y)
-				
-				return (prev_dist > curr_dist) ? curr : prev;
-		}),noone);
+        if (array_length(candidate_systems)){
+    		var fleet_target = nearest_instance(candidate_systems,nfleet);
 
-        with (nfleet){
-            nfleet.action_x=fleet_target.x;
-            nfleet.action_y=fleet_target.y;            
-            set_fleet_movement()    
+            with (nfleet){
+                nfleet.action_x=fleet_target.x;
+                nfleet.action_y=fleet_target.y;            
+                set_fleet_movement()    
+            }
         }
 	
 	    var tix=$"Chaos Lord {faction_leader[eFACTION.Chaos]} continues his Black Crusade into Sector {obj_ini.sector_name}.";
@@ -298,7 +293,7 @@ function spawn_chaos_warlord(){
 function destroy_khorne_fleet(){
     var chaos_lord_killed=false;
     with(instance_nearest(x, y, obj_star)){
-		if system_feature_bool(p_feature, P_features.ChaosWarband == 1) then chaos_lord_killed=true;
+		if system_feature_bool(p_feature, P_features.ChaosWarband) then chaos_lord_killed=true;
     }
     if (chaos_lord_killed){
         obj_controller.faction_defeated[10]=1;

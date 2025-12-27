@@ -69,6 +69,21 @@ p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
 p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
 p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
+p_governor = [];
+
+for (var i=1;i<8;i++){
+    array_push(p_governor, new GovernorProfile());
+}
+
+
+system_datas = array_create(8, 0);
+system_garrison = array_create(8, 0);
+
+system_sabatours = array_create(8, 0)
+
+add_feature = function(planet, feature){
+    array_push(p_feature[planet], feature);
+}
 
 system_player_ground_forces = 0;
 garrison = false;

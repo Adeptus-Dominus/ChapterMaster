@@ -18,9 +18,7 @@ function Table(data) constructor{
 
 	move_data_to_current_scope(data);
 
-	update();
-
-	static update = function(data){
+	static update = function(data={}){
 		move_data_to_current_scope(data);
 		w = 0;
 		column_widths = [];
@@ -60,7 +58,7 @@ function Table(data) constructor{
 			w += column_widths[i] + col_spacing;
 		}
 	}
-
+	update();
 	static draw = function(){
 		add_draw_return_values();
 
@@ -99,9 +97,20 @@ function Table(data) constructor{
 					//show_debug_message($"click : {struct_exists(_row,"click_left")}");
 					_row.hover();
 				}
-				if (_row_entered && struct_exists(_row,"click_left")){
-					if (scr_click_left()){
-						_row.click_left();
+				if (_row_entered){
+					if (struct_exists(_row,"hover")){
+						//show_debug_message($"click : {struct_exists(_row,"click_left")}");
+						_row.hover();
+					}					
+					if (struct_exists(_row,"click_left")){
+						if (scr_click_left()){
+							_row.click_left();
+						}
+					}
+					if (struct_exists(_row,"click_right")){
+						if (scr_click_right()){
+							_row.click_right();
+						}
 					}
 				}
 			}

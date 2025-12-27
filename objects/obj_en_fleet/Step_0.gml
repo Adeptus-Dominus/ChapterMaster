@@ -31,16 +31,13 @@ if (ii_check=0){
     ii_check=10;
     
     if (owner != eFACTION.Eldar) and (owner  != eFACTION.Inquisition){
-        var ii=0;
-        ii+=capital_number;
-        ii+=round((frigate_number/2));
-        ii+=round((escort_number/4));
+        var ii=round(standard_fleet_strength_calc());
         if (ii<=1) then ii=1;
         image_index=ii;
         image_index=min(image_index,9);
     }
     if (owner = eFACTION.Eldar){
-        var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
+        var ii=round(standard_fleet_strength_calc());
         if (ii<=1) then ii=1;image_index=ii;
         image_index=min(image_index,5);
     }
@@ -118,14 +115,7 @@ if (owner = eFACTION.Tyranids) and (trade_goods=""){
 }
 
 if (global.load>=0){
-    if (owner = eFACTION.Imperium) then sprite_index=spr_fleet_imperial;
-    if (owner = eFACTION.Mechanicus) then sprite_index=spr_fleet_mechanicus;
-    if (owner  = eFACTION.Inquisition) then sprite_index=spr_fleet_inquisition;
-    if (owner = eFACTION.Eldar) then sprite_index=spr_fleet_eldar;
-    if (owner = eFACTION.Ork) then sprite_index=spr_fleet_ork;
-    if (owner = eFACTION.Tau) then sprite_index=spr_fleet_tau;
-    if (owner = eFACTION.Tyranids) then sprite_index=spr_fleet_tyranid;
-    if (owner = eFACTION.Chaos) then sprite_index=spr_fleet_chaos;
+    choose_fleet_sprite_image();
 }
 if (image_index=0) then image_index=1;
 

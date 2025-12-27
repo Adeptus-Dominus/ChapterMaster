@@ -26,7 +26,8 @@ enum P_features {
 			Forge,
 			Gene_Stealer_Cult,
 			Mission,
-			OrkStronghold
+			OrkStronghold,
+			OldBattleGround
 
 	};
 	
@@ -60,16 +61,25 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		hiding=true;
 		name = global.name_generator.generate_genestealer_cult_name();		
 		break;
-		case P_features.Necron_Tomb:
+	case P_features.Necron_Tomb:
 		awake = 0;
 		sealed = 0;
-		player_hidden = 1
+		player_hidden = 1;
 		planet_display = "Dormant Necron Tomb";
 		break;
-
+	case P_features.OldBattleGround:
+		player_hidden = true;
+		imperium_known = false;
+		//This is janky but we have no way of defining non player astartes 
+		faction1 = "astartes";
+		faction2 = "imperium";
+		explore_size = irandom_range(1000, 10000);
+		explored = 0;
+		planet_display = "Old Battle Ground";
+		break;
 	case P_features.Secret_Base:
 		base_type = base_types.Lair;
-		inquis_hidden =1;
+		inquis_hidden = 1;
 		planet_display = "Hidden Secret Base";
 		player_hidden = 0;
 		style = "UTL";
@@ -227,7 +237,9 @@ function system_feature_bool(system, search_feature){
 	for (var sys =1; sys<5; sys++){
 		sys_bool = planet_feature_bool(system[sys], search_feature)
 		if (sys_bool==1){
-		break;}
+			sys_bool = sys;
+			break;
+		}
 	}
 	return sys_bool;
 }
@@ -372,6 +384,11 @@ function scr_planetary_feature(planet_num) {
 				case P_features.OrkWarboss:
 				    var lop=$"Ork Warboss discovered on {numeral_n}.";
 				    scr_alert("red","feature",lop,x,y);
+				    scr_event_log("red",lop);
+					break;	
+				case P_features.OldBattleGround:
+					var lop=$"Old Battle Ground discovered on {numeral_n}.";
+				    scr_alert("green","feature",lop,x,y);
 				    scr_event_log("red",lop);
 					break;		
 			}

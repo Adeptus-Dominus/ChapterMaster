@@ -22,3 +22,11 @@ function action_draw_ellipse(argument0, argument1, argument2, argument3, argumen
 
 
 }
+
+
+function draw_circle_with_outline_width(xx,yy,r,w){
+	for (var i=0.0;i<w;i+=0.1){
+		draw_circle(xx,yy,r+i,1);
+	}
+}
+

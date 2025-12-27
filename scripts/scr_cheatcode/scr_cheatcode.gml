@@ -384,7 +384,6 @@ function scr_cheatcode(argument0) {
 				case "forgemastermeet":
 					var _forge_master = scr_role_count("Forge Master", "", "units");
 					if (array_length(_forge_master)>0){
-						show_debug_message("meet forge master");
 						obj_controller.menu_lock = false;
 						instance_destroy(obj_popup_dialogue);
 						scr_toggle_diplomacy();
@@ -392,7 +391,6 @@ function scr_cheatcode(argument0) {
 						obj_controller.character_diplomacy = _forge_master[0];
 						diplo_txt="Greetings chapter master";
 					} else {
-						show_debug_message("no forge master");
 					}
 					break;
 			}
@@ -471,6 +469,10 @@ function draw_planet_debug_features(){
 			e_num : P_features.Starship,
 			name : "Ancient Starship"
 		},
+		{
+			e_num : P_features.OldBattleGround,
+			name : "Old Battle Ground"
+		},
 
 	]
 
@@ -484,7 +486,9 @@ function draw_planet_debug_features(){
 		draw_text(38, _y, _feat.name);
 		if (point_and_click([38, _y, 337,_y+20])){
 			var _new_feat = new NewPlanetFeature(_feat.e_num);
-			array_push(target.p_feature[obj_controller.selecting_planet], _new_feat);
+			_new_feat.imperium_known = true;
+			_new_feat.player_hidden = false;
+			target.add_feature(obj_controller.selecting_planet,_new_feat)
 		}
 	}
 }
@@ -515,7 +519,32 @@ function draw_planet_debug_problems(){
 					case "mech_bionics":
 						spawn_mechanicus_mission("mech_bionics");
 						break;
-																		
+					case "hunt_beast":
+						with (target){
+							scr_new_governor_mission(obj_controller.selecting_planet,"hunt_beast");
+						}
+						break;	
+					case "deliver_trophy":
+						var _unit = fetch_unit(scr_random_marine("",0));
+						var _navy_fleets = get_imperial_navy_fleets();
+						var _plan_type = target.p_type[obj_controller.selecting_planet];
+						var _pop_data = {
+				        	trophy_owner : _unit,
+				        	system: target.name,
+				        	planet : obj_controller.selecting_planet,
+				        	target_fleet : array_random_element(_navy_fleets),
+				        	beast : get_beast_name_by_planet_type(_plan_type)	,
+				        	planet_type :_plan_type	,		
+						}
+
+						var _pop = instance_create(0,0,obj_popup);
+
+						_pop.pop_data = _pop_data;
+
+						with (_pop){
+							init_deliver_trophy_mission();
+						}
+						break;
 					default:
 						scr_popup("error","no specific debug action created please consider helping to make one","");
 						break;

@@ -120,7 +120,6 @@ function exit_diplomacy_dialogue(){
         if (complex_event==false){
 
             obj_turn_end.alarm[1]=1;
-            show_debug_message("next_audience");
         }
         if (complex_event=true){
             // TODO

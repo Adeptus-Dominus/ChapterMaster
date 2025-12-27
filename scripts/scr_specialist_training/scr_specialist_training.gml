@@ -1,14 +1,15 @@
 
 function specialistfunct (specialist, req_exp) {
+	var _roles = active_roles();
     var spec_tips = [
-        string("{0} Potential", obj_ini.role[100][16]),
-        string("{0} Potential", obj_ini.role[100][15]),
-        string("{0} Potential", obj_ini.role[100][14]),
-        string("{0} Potential", obj_ini.role[100][17]),
-        string("{0} Applicant", obj_ini.role[100][16]),
-        string("{0} Applicant", obj_ini.role[100][15]),
-        string("{0} Applicant", obj_ini.role[100][14]),
-        string("{0} Applicant", obj_ini.role[100][17]),
+        string("{0} Potential", _roles[16]),
+        string("{0} Potential", _roles[15]),
+        string("{0} Potential", _roles[14]),
+        string("{0} Potential", _roles[17]),
+        string("{0} Applicant", _roles[16]),
+        string("{0} Applicant", _roles[15]),
+        string("{0} Applicant", _roles[14]),
+        string("{0} Applicant", _roles[17]),
         string("Promote to Marine")
     ];
 
@@ -50,7 +51,7 @@ function specialistfunct (specialist, req_exp) {
             break;
     }
 
-    if (role() == obj_ini.role[100][12]) {
+    if (role() == _roles[12]) {
         colors[0] = c_fuchsia;
     }
 
@@ -59,7 +60,7 @@ function specialistfunct (specialist, req_exp) {
     }
 
     if (experience >= req_exp) {
-        if (!(role() == obj_ini.role[100][12])) {
+        if (!(role() == _roles[12])) {
             spec_tip = tips_list[1];
         } else {
             spec_tip = tips_list[2];
@@ -77,6 +78,7 @@ function specialistfunct (specialist, req_exp) {
 //   specialist - Integer index (0: Techmarine, 1: Librarian, 2: Chaplain, 3: Apothecary)
 // Returns: Array containing company and position of selected marine, or "none" if no suitable marine found
 function spec_data_set(specialist) {
+	var _roles = active_roles();
     var _data = spec_train_data[specialist];
     var _search = {
 		"stat": _data.req,
@@ -89,10 +91,10 @@ function spec_data_set(specialist) {
 
     var random_marine=scr_random_marine( // TODO LOW SEARCH_OPTIONAL // Make this function handle optional search_params
         [
-            obj_ini.role[100][8],
-            obj_ini.role[100][18],
-            obj_ini.role[100][10],
-            obj_ini.role[100][9]
+            _roles[8],
+            _roles[18],
+            _roles[10],
+            _roles[9]
         ],
         _data.min_exp,
         _search
@@ -102,13 +104,14 @@ function spec_data_set(specialist) {
 
 
 function apothecary_training(){
+	var _roles = active_roles();
 	// ** Training **
 	// * Apothecary *
 	var recruit_count=0;
 	var training_points_values = ARR_apothecary_training_tiers;
 	apothecary_recruit_points += training_points_values[training_apothecary]
 
-	novice_type = string("{0} Aspirant",obj_ini.role[100][15])
+	novice_type = string("{0} Aspirant",_roles[15])
 	if (training_apothecary>0){
 	    recruit_count=scr_role_count(novice_type,"");
 
@@ -123,7 +126,7 @@ function apothecary_training(){
 	                apothecary_recruit_points-=48;
 	                unit = fetch_unit(random_marine);
 	                scr_alert("green","recruitment",unit.name_role()+" has finished training.",0,0);
-	                unit.update_role(obj_ini.role[100][15]);
+	                unit.update_role(_roles[15]);
                     unit.role_tag = [0, 0, 0, 0];
 	                unit.add_exp(10);
 
@@ -171,7 +174,7 @@ function apothecary_training(){
 	            }                  
 	        } else {
                 training_apothecary = 0;
-	            scr_alert("red","recruitment",$"No marines available for {obj_ini.role[100][eROLE.Apothecary]} traning",0,0);
+	            scr_alert("red","recruitment",$"No marines available for {_roles[eROLE.Apothecary]} traning",0,0);
 	        }
 	    }
 	}	
@@ -179,13 +182,14 @@ function apothecary_training(){
 
 
 function chaplain_training(){
+	var _roles = active_roles();
 	// * Chaplain training *
 	// TODO add functionality for Space Wolves and Iron Hands
 	var recruit_count=0;
 	var training_points_values = ARR_chaplain_training_tiers;
 	if (global.chapter_name!="Space Wolves") and (global.chapter_name!="Iron Hands"){
 		chaplain_points += training_points_values[training_chaplain];
-	    novice_type = string("{0} Aspirant",obj_ini.role[100][14]);
+	    novice_type = string("{0} Aspirant",_roles[14]);
 
 	    if (training_chaplain>0){
 	        recruit_count=scr_role_count(novice_type,"");
@@ -197,7 +201,7 @@ function chaplain_training(){
 	                    unit = fetch_unit(random_marine);
 	                    scr_alert("green","recruitment",unit.name_role()+" has finished training.",0,0);
 	                    chaplain_points-=48;
-	                    unit.update_role(obj_ini.role[100][14]);
+	                    unit.update_role(_roles[14]);
                         unit.role_tag = [0, 0, 0, 0];
 	                    unit.add_exp(10);
 	                    chaplain_aspirant=0;
@@ -242,7 +246,7 @@ function chaplain_training(){
 	                }                      
                 } else {
                     training_chaplain = 0;
-                    scr_alert("red","recruitment",$"No remaining {obj_ini.role[100][eROLE.Chaplain]} applicant marines for training",0,0);
+                    scr_alert("red","recruitment",$"No remaining {_roles[eROLE.Chaplain]} applicant marines for training",0,0);
                 }
 	        }
 	    }
@@ -251,6 +255,7 @@ function chaplain_training(){
 
 
 function librarian_training(){
+	var _roles = active_roles();	
 	var recruit_count=0;
 	// * Psycher Training *
 	var training_points_values = ARR_chaplain_training_tiers;
@@ -309,11 +314,12 @@ function librarian_training(){
 }
 
 function techmarine_training(){
+	var _roles = active_roles();	
 	var recruit_count=0;
 
 	var training_points_values = [ 0, 1,2,4,6,10,14];
 	tech_points += training_points_values[training_techmarine];
-	novice_type = string("{0} Aspirant",obj_ini.role[100][16]);
+	novice_type = string("{0} Aspirant",_roles[16]);
 	if (training_techmarine>0){
 	    recruit_count=scr_role_count(novice_type,"");
 
@@ -330,7 +336,7 @@ function techmarine_training(){
 	                unit = fetch_unit(random_marine)
 	                tech_points-=360;
 
-	                unit.update_role(obj_ini.role[100][16]);
+	                unit.update_role(_roles[16]);
                     unit.role_tag = [0, 0, 0, 0];
 	                unit.add_exp(30);
 	                
@@ -418,7 +424,7 @@ function techmarine_training(){
 	            }    
 	        } else{
 	            training_techmarine = 0;
-                scr_alert("red","recruitment",$"No marines with sufficient technology aptitude for {obj_ini.role[100][eROLE.Techmarine]} training",0,0);
+                scr_alert("red","recruitment",$"No marines with sufficient technology aptitude for {_roles[eROLE.Techmarine]} training",0,0);
 	        }
 	    }
 	}

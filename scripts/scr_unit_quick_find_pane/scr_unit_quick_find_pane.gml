@@ -1,14 +1,14 @@
 // Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+// https : //help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function UnitQuickFindPanel() constructor{
 	main_panel = new DataSlate();
 	garrison_log = {};
 	ship_count = 0;
 	tab_buttons = {
-	    "fleets":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
-	    "garrisons":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
-	    "hider":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
-	    "missions":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
+	    "fleets" : new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
+	    "garrisons" : new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
+	    "hider" : new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
+	    "missions" : new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
 	}
 
 	static detail_slate = new DataSlateMKTwo();
@@ -35,11 +35,11 @@ function UnitQuickFindPanel() constructor{
 	static add_unit_to_garrison_log = function(_unit,unit_location){
 		if (!struct_exists(garrison_log, unit_location[2])){
 			garrison_log[$ unit_location[2]] = {
-				units:[_unit],
-				vehicles:0, 
-				garrison:false, 
-				healers:0, 
-				techies:0
+				units : [_unit],
+				vehicles : 0, 
+				garrison : false, 
+				healers : 0, 
+				techies : 0
 			}
 		} else {
 			array_push(garrison_log[$ unit_location[2]].units, _unit);
@@ -79,11 +79,11 @@ function UnitQuickFindPanel() constructor{
 			var _unit = [co, u];
 			if (!struct_exists(garrison_log, unit_location)){
 				garrison_log[$ unit_location] = {
-					units:[_unit],
-					vehicles:1, 
-					garrison:false, 
-					healers:0, 
-					techies:0
+					units : [_unit],
+					vehicles : 1, 
+					garrison : false, 
+					healers : 0, 
+					techies : 0
 				}
 			} else {
 				array_push(garrison_log[$ unit_location].units, _unit);
@@ -125,7 +125,7 @@ function UnitQuickFindPanel() constructor{
 		}	
 	}
 
-	update_mission_log = function(){
+	static update_mission_log = function(){
 		mission_log=[];
 		var temp_log=[];
 		var p, i, problems;
@@ -136,15 +136,19 @@ function UnitQuickFindPanel() constructor{
 					if (problems[p] != ""){
 						if (problem_has_key_and_value(i,p,"stage","preliminary")) then continue;
 						var mission_explain =  mission_name_key(problems[p]);
-						if (mission_explain!="none"){
-							array_push(temp_log,
-								{
-									system : name,
-									mission : mission_explain,
-									time : p_timer[i][p],
-									planet : i
-								}
-							)
+						if (mission_explain != "none"){
+							var _data = {
+								system  :  name,
+								mission  :  mission_explain,
+								time  :  p_timer[i][p],
+								planet  :  i,
+							};
+							
+							_data.click_left = method(_data,function(){
+								set_map_pan_to_loc(system);
+							});
+
+							array_push(temp_log,_data);
 						}
 					}
 				}
@@ -156,17 +160,76 @@ function UnitQuickFindPanel() constructor{
 				if (mission_explain!="none"){
 					array_push(temp_log,
 						{
-							system : "",
-							mission : mission_explain,
-							time : obj_controller.quest_end[i] - obj_controller.turn,
-							planet : 0
+							system  :  "",
+							mission  :  mission_explain,
+							time  :  obj_controller.quest_end[i] - obj_controller.turn,
+							planet  :  0
 						}
 					)
 				}				
 			}
 		}
+		with (obj_en_fleet){
+			if (array_length(events)){
+				for (var i=0;i<array_length(events);i++){
+					var _event = events[i];
+					if (struct_exists(_event, "turn_end")){
+						switch (_event.turn_end){
+							case "deliver_trophy_end_turn_check" : 
+								var _mission = $"Deliver Trophy Guard";
+								var _sys = fleets_next_location();
+								var _mission_data = {
+									mission  :  _mission,
+									system  :  _sys.name,
+									system_id  :  _sys.id,
+									target  :  id,
+									important_person  :  _event.fleetevent_data.trophy_owner,
+									person_name  :  _event.fleetevent_data.delivering_marine,
+									planet  :  0,
+									start_system  :  _event.fleetevent_data.system,
+									time  :  _event.timer,
+								};
+
+								_mission_data.click_left = method(_mission_data,function(){
+									set_map_pan_to_loc(system_id);
+								});
+
+								_mission_data.hover = method(_mission_data,function(){
+									tooltip_draw($"You are to have {person_name} deliver trophy hunted on {start_system} to the {start_system} regiments\n\nLeft click to see target fleet intercept system right click to view the trophy bearing marine {person_name}");
+								});
+
+								_mission_data.click_right = method(_mission_data,function(){
+									var _unit = fetch_unit_uid(important_person);
+									if (_unit != "none"){
+										var _unit_l = [fetch_unit_uid(important_person)];
+									};
+
+									group_selection(_unit_l);
+								});
+
+								array_push(temp_log,_mission_data);
+								break;
+						}
+					}
+				}
+			}
+		}
 		mission_log = temp_log;
+
+		var _data = {
+			x1  :  xx+60,
+			y1  :  yy+50,
+			y2  :  yy  + h,
+			set_column_widths  :  [80,130],
+			headings  :  ["Location", "Mission","Time\nRemaining"],
+			row_data  :  mission_log,
+			row_key_draw  :  ["system","mission","time"],
+		}
+		mission_table = new Table(_data);
+
+		show_debug_message(mission_table);
 	}
+
 	hover_item="none";
 	travel_target = [];
 	travel_time = 0;
@@ -180,8 +243,10 @@ function UnitQuickFindPanel() constructor{
 	current_hover=-1;
 	hover_count=0;
 	main_panel.inside_method = function(){
-		var xx = main_panel.XX;
-		var yy = main_panel.YY;
+		xx = main_panel.XX;
+		yy = main_panel.YY;
+		w = main_panel.width;
+		h = main_panel.height
 		is_entered = scr_hit(xx, yy, xx+main_panel.width, yy+main_panel.height);
 		if (view_area=="fleets"){
 			var cur_fleet;
@@ -355,55 +420,22 @@ function UnitQuickFindPanel() constructor{
 			}else if (hover_item!="none"){
 		    	if point_and_click(hover_item.draw(xx+10, yy+90+(20*hover_item.root_item), "Manage")){
 					group_selection(garrison_log[$system_names[hover_item.root_item]].units,{
-						purpose:$"{system_names[hover_item.root_item]} Management",
-						purpose_code : "manage",
-						number:0,
-						system:star_by_name(system_names[hover_item.root_item]).id,
-						feature:"none",
-						planet : 0,
-						selections : []
+						purpose : $"{system_names[hover_item.root_item]} Management",
+						purpose_code  :  "manage",
+						number : 0,
+						system : star_by_name(system_names[hover_item.root_item]).id,
+						feature : "none",
+						planet  :  0,
+						selections  :  []
 					});
 		    	}
 		    }			
 		} else if (view_area == "missions"){
-			draw_set_color(c_white);
-			draw_set_halign(fa_center);
-		    draw_text(xx+80, yy+50, "Location");
-		    draw_text(xx+160, yy+50, "Mission");
-		    draw_text(xx+290, yy+50, "Time Remaining");
-		    var i = 0;
-		    while(i<array_length(mission_log) && (90+(20*i)+12 +20)<main_panel.height)		
-			{
-				mission = mission_log[i];
-				entered=false;
-				if (scr_hit(xx+10, yy+90+(20*i),xx+main_panel.width,yy+90+(20*i)+18)){
-					draw_set_color(c_gray);
-					draw_rectangle(xx+10+20, yy+90+(20*i)-2,xx+main_panel.width-20,yy+90+(20*i)+18, 0)
-					draw_set_color(c_white);
-					entered=true;
-				}
-				if (mission.system!=""){
-			    	draw_text(xx+80, yy+90+(20*i), $"{mission.system} {scr_roman_numerals()[mission.planet-1]}" );
-				}
-			    draw_set_halign(fa_left);
-			    if (entered){
-			    	draw_text(xx+160-20, yy+90+(20*i), mission.mission);
-			    } else {
-			    	draw_text(xx+160-20, yy+90+(20*i), string_truncate(mission.mission,150));
-			    }
-			    draw_set_halign(fa_center);
-			    if (!entered){
-			    	draw_text(xx+310, yy+90+(20*i), mission.time);
-			    }
-			    if (point_and_click([xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18])){
-			    	var star = star_by_name(mission.system);
-			    	if (star!="none")
-			    	travel_target = [star.x, star.y];
-			    	travel_increments = [(travel_target[0]-obj_controller.x)/15,(travel_target[1]-obj_controller.y)/15];
-			    	travel_time = 0;
-			    }
-			    i++;
-			}			
+			mission_table.update({
+				x1  :  xx+60,
+				y1  :  yy+50,
+			});
+			mission_table.draw();
 		}
 	}
 	static draw = function(){
@@ -496,7 +528,7 @@ function exit_adhoc_manage(){
 	var _planets = 0
 	if (struct_exists(selection_data, "system")&& instance_exists(selection_data.system)){
 		if (struct_exists(location_viewer.garrison_log, selection_data.system.name)){
-			var sys_name = selection_data.system.name;
+			sys_name = selection_data.system.name;
 		}
 	}
 
@@ -701,7 +733,7 @@ function setup_planet_mission_group(){
 }
 
 function HelpfulPlaces()constructor{
-	main_panel = new DataSlate({draggable:true,cherub:true});
+	main_panel = new DataSlate({draggable : true,cherub : true});
 	var _imperial_help_requests =  stars_with_help_requests();
 
 	var _help_requests = [];
@@ -709,9 +741,9 @@ function HelpfulPlaces()constructor{
 	for (var i=0;i<array_length(_imperial_help_requests);i++){
 		var _star = _imperial_help_requests[i];
 		var _data = {
-			name : _star.name,
-			star_id : _star,
-			system_count : _star.planets
+			name  :  _star.name,
+			star_id  :  _star,
+			system_count  :  _star.planets
 		}
 
 		var _helps = 0;
@@ -744,9 +776,9 @@ function HelpfulPlaces()constructor{
 	
 	help_table = new Table(
 	{
-		row_key_draw : ["name","system_count","help_requests"],
-		headings : ["System", "Planets", "Planets\nRequesting Help"],
-		row_data : _help_requests
+		row_key_draw  :  ["name","system_count","help_requests"],
+		headings  :  ["System", "Planets", "Planets\nRequesting Help"],
+		row_data  :  _help_requests
 	}
 	);
 
@@ -761,10 +793,10 @@ function HelpfulPlaces()constructor{
 		var _guard_percentage = fleet_remaining_guard_ratio() * 100;
 
 		var _data = {
-			fleet_id : id,
-			location : "Warp",
-			remaining_guard :$"{ _guard_percentage }%",
-			action : trade_goods,
+			fleet_id  :  id,
+			location  :  "Warp",
+			remaining_guard  : $"{ _guard_percentage }%",
+			action  :  trade_goods,
 		}
 		if (is_orbiting()){
 			_data.location = orbiting.name;
@@ -789,9 +821,9 @@ function HelpfulPlaces()constructor{
 
 	navy_table = new Table(
 	{
-		row_key_draw : ["location","remaining_guard"],
-		headings : ["Location", "Remaining\nGuard"],
-		row_data : _navy_fleets
+		row_key_draw  :  ["location","remaining_guard"],
+		headings  :  ["Location", "Remaining\nGuard"],
+		row_data  :  _navy_fleets
 	});
 
 	var _forges = [];
@@ -802,12 +834,12 @@ function HelpfulPlaces()constructor{
 		var _forge = scr_get_planet_with_type(id,"Forge");
 		if (_forge > 0){
 			var _data = {
-				system : id,
-				planet : _forge,
-				name : planet_numeral_name(_forge),
-				owner_name : obj_controller.faction[p_owner[_forge]],
-				owner : p_owner[_forge],
-				owner_status : obj_controller.faction_status[p_owner[_forge]],
+				system  :  id,
+				planet  :  _forge,
+				name  :  planet_numeral_name(_forge),
+				owner_name  :  obj_controller.faction[p_owner[_forge]],
+				owner  :  p_owner[_forge],
+				owner_status  :  obj_controller.faction_status[p_owner[_forge]],
 			};
 
 			_data.click_left = method(_data, function(){
@@ -830,48 +862,48 @@ function HelpfulPlaces()constructor{
 	array_push(_columns , _longest_name);
 
 	forges_table = new Table({
-		row_key_draw : ["name","owner_name","owner_status"],
-		headings : ["Name", "   Owner   ", "  Owner\nStatus  "],
-		row_data : _forges,
-		set_column_widths : _columns,
+		row_key_draw  :  ["name","owner_name","owner_status"],
+		headings  :  ["Name", "   Owner   ", "  Owner\nStatus  "],
+		row_data  :  _forges,
+		set_column_widths  :  _columns,
 	});
 
 	places_radio = new RadioSet([
 		{
-	        str1 : "Help Requests",
+	        str1  :  "Help Requests",
 
 	    },
 		{
-	        str1 : "Navy Fleets",
+	        str1  :  "Navy Fleets",
 
 	    },
 	    {
-	    	str1 :"Forge Worlds",
+	    	str1  : "Forge Worlds",
 	    }
 	]);
 
 	main_panel.inside_method = function(){
 		places_radio.update({
-			x1: x1 + 30,
-			y1: y1 + 25,
+			x1 :  x1 + 30,
+			y1 :  y1 + 25,
 		});
 		places_radio.draw();
 
 		var _new_position = {
-			x1:x1+40,
-			y1:y1+50,
-			y2:y1 + main_panel.height,
+			x1 : x1+40,
+			y1 : y1+50,
+			y2 : y1 + main_panel.height,
 		}
 		switch (places_radio.current_selection){
-			case 1:
+			case 1 : 
 				navy_table.update(_new_position);
 				navy_table.draw();
 				break;
-			case 0:
+			case 0 : 
 				help_table.update(_new_position);
 				help_table.draw();
 				break;
-			case 2:
+			case 2 : 
 				forges_table.update(_new_position);
 				forges_table.draw();
 				break;				

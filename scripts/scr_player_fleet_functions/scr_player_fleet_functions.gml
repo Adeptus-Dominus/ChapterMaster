@@ -31,6 +31,14 @@ function init_player_fleet_arrays(){
 	ship_turrets=[];
 	ship_lost = [];	
 }
+
+function get_player_fleet_intercept_time(star,time_abundance){
+	var _travel = -1
+	var _nearest_player_fleet = instance_nearest(star.x, star.y, obj_p_fleet);
+	if (instance_exists(_nearest_player_fleet)){
+		_travel = get_viable_travel_time(time_abundance, _nearest_player_fleet.x, _nearest_player_fleet.y, star.x, star.y, _nearest_player_fleet, false);
+	}
+}
 function fleet_has_roles(fleet="none", roles){
 	var all_ships = fleet_full_ship_array(fleet);
 	var unit;
@@ -40,7 +48,6 @@ function fleet_has_roles(fleet="none", roles){
 			if (unit.planet_location<1){
 				if (array_contains(all_ships,unit.ship_location)){
 					if (array_contains(roles, unit.role())){
-
 						return true;
 					}
 				}
@@ -239,10 +246,7 @@ function delete_ship_from_fleet(index, fleet){
 	}
 }
 function set_player_fleet_image(){
-    var ii=0;
-    ii+=capital_number;
-    ii+=round((frigate_number/2));
-    ii+=round((escort_number/4));
+    var ii=round(standard_fleet_strength_calc())
     if (ii<=1) then ii=1;
     image_index=min(ii,9);	
 }

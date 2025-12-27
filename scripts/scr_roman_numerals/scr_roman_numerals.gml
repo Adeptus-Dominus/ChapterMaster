@@ -20,7 +20,7 @@ function int_to_roman(_num) {
         return "";
     }
     
-    var _roman_numerals = [
+    static _roman_numerals = [
         100, "C", 90, "XC", 50, "L", 40, "XL",
         10, "X", 9, "IX", 5, "V", 4, "IV", 1, "I"
     ];
@@ -38,4 +38,9 @@ function int_to_roman(_num) {
     }
     
     return _result;
+}
+
+
+function irandom_numeral(max_val){
+	return int_to_roman(irandom_range(1, max_val));
 }

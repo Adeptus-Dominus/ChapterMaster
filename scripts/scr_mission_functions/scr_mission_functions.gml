@@ -12,7 +12,7 @@ function location_out_of_player_control(unit_loc){
 	return (array_contains(_locs,unit_loc ));
 }
 
-#macro planet_problem_keys ["meeting_trap","meeting","succession","mech_raider","mech_bionics","mech_mars","mech_tomb1","fallen","great_crusade","harlequins","fund_elder","provide_garrison","hunt_beast","protect_raiders","join_communion","join_parade","recover_artifacts","train_forces","spyrer","inquisitor","recon","cleanse","purge","tyranid_org","artifact_loan","necron","ethereal","demon_world"]
+#macro planet_problem_keys ["meeting_trap","meeting","succession","mech_raider","mech_bionics","mech_mars","mech_tomb1","fallen","great_crusade","harlequins","fund_elder","provide_garrison","hunt_beast","protect_raiders","join_communion","join_parade","recover_artifacts","train_forces","spyrer","inquisitor","recon","cleanse","purge","tyranid_org","artifact_loan","necron","ethereal","demon_world","deliver_trophy"]
 
 function mission_name_key(mission){
 	var mission_key = {
@@ -86,13 +86,15 @@ function scr_new_governor_mission(planet, problem = ""){
 	};
 	if (problem != ""){
 		if (problem == "provide_garrison"){
-			if (system_garrison[planet-1].garrison_force) then exit;
+			if (system_garrison[planet].garrison_force){
+				exit;
+			}
 			mission_data.reason = choose("stability", "importance");
 		} else if (problem=="purge_enemies"){
 			var enemy = 0;
 			if (planets>1){
 				for (var i=1;i<=planets;i++){
-					if(i=planet) then continue;
+					if (i=planet) then continue;
 					if (p_owner[i]==eFACTION.Imperium){
 						enemy=i;
 						break;
@@ -126,53 +128,6 @@ function init_marine_acting_strange(){
 	text += " is behaving strangely.";
 	scr_alert("color","lol",text,0,0);
     scr_event_log("color",text);
-}
-
-function init_garrison_mission(planet, star, mission_slot){
-	var problems_data = star.p_problem_other_data[planet]
-	var mission_data = problems_data[mission_slot];
-	if (mission_data.stage == "preliminary"){
-		var numeral_name = planet_numeral_name(planet, star);
-		mission_data.stage = "active";
-		var garrison_length=(10+irandom(6));
-		star.p_timer[planet][mission_slot] = garrison_length;
-	    //pop.image="ancient_ruins";
-	    var gar_pop=instance_create(0,0,obj_popup);
-	    //TODO some new universal methods for popups
-	    gar_pop.title=$"Requested Garrison Provided to {numeral_name}";
-	    gar_pop.text=$"The governor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
-	    //pip.image="event_march"
-	    gar_pop.add_option("Commence Garrison");
-        gar_pop.image="";
-        gar_pop.cooldown=8;
-        obj_controller.cooldown=8;	    
-	    scr_event_log("",$"Garrison committed to {numeral_name} for {garrison_length} months.", star.name );
-	}	
-}
-
-
-
-
-function init_beast_hunt_mission(planet, star, mission_slot){
-	var problems_data = star.p_problem_other_data[planet]
-	var mission_data = problems_data[mission_slot];
-	if (mission_data.stage == "preliminary"){
-		var numeral_name = planet_numeral_name(planet, star);
-		mission_data.stage = "active";
-		var _mission_length=(irandom_range(2,5));
-		star.p_timer[planet][mission_slot] = _mission_length;
-	    //pop.image="ancient_ruins";
-	    var gar_pop=instance_create(0,0,obj_popup);
-	    //TODO some new universal methods for popups
-	    gar_pop.title=$"Marines assigned to hunt beasts around {numeral_name}";
-	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.";
-	    //pip.image="event_march"
-	    gar_pop.add_option("Happy Hunting");
-        gar_pop.image="";
-        gar_pop.cooldown=8;
-        obj_controller.cooldown=20;	    
-	    scr_event_log("",$"Beast hunters deployed to {numeral_name} for {_mission_length} months.", star.name);
-	}	
 }
 
 function role_compare(unit, role){
@@ -296,32 +251,25 @@ function protect_raiders_hold_memorial(){
 		text =  $"You prepare to have a large public memorial for your fallen marines on the planet surface as a show of defiance. The chapter are pleased by such an act and the population of the planet are mesmerized by the spectacle. The governor is furious not only has his incompetence to deal with the planets xenos issue been made public in such a way that the sector commander has now heard about it but he perceives his failures are being paraded in font of him\n nGovernor Disposition : -30";
 }
 
-function init_train_forces_mission(planet, star, mission_slot, marine){
-	var _pdata = new PlanetData(planet, star);
-	var mission_data = _pdata.problems_data[mission_slot];
+function init_garrison_mission(planet, star, mission_slot){
+	var problems_data = star.p_problem_other_data[planet]
+	var mission_data = problems_data[mission_slot];
 	if (mission_data.stage == "preliminary"){
-		var numeral_name = _pdata.name();
+		var numeral_name = planet_numeral_name(planet, star);
 		mission_data.stage = "active";
-		var _mission_length=(irandom_range(3,12));
-		star.p_timer[planet][mission_slot] = _mission_length;
+		var garrison_length=(10+irandom(6));
+		star.p_timer[planet][mission_slot] = garrison_length;
 	    //pop.image="ancient_ruins";
 	    var gar_pop=instance_create(0,0,obj_popup);
 	    //TODO some new universal methods for popups
-	    gar_pop.title=$"Training forces on {numeral_name} begins";
-	    gar_pop.text=$"{marine.name_role()} Has taken leave of his current post in order to aid the governor of {numeral_name} and his pdf commanders with training local forces and bolstering defences.";
-	    var _is_cap = role_compare(marine, eROLE.Captain);
-
-	    if (_is_cap){
-	    	gar_pop.text += "the governor seems to be impressed that such a high ranking officer has been assigned to his request (disp +3)";
-	    	_pdata.add_disposition(3);
-	    }
-
+	    gar_pop.title=$"Requested Garrison Provided to {numeral_name}";
+	    gar_pop.text=$"The governor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
 	    //pip.image="event_march"
-	    gar_pop.add_option($"Good luck {marine.name()}");
+	    gar_pop.add_option("Commence Garrison");
         gar_pop.image="";
-        gar_pop.cooldown=500;
-        obj_controller.cooldown=500;	    
-	    scr_event_log("",$"{marine.name_role()} deployed to {numeral_name} for {_mission_length} months.", star.name);
+        gar_pop.cooldown=8;
+        obj_controller.cooldown=8;	    
+	    scr_event_log("",$"Garrison committed to {numeral_name} for {garrison_length} months.", star.name );
 	}	
 }
 
@@ -330,9 +278,9 @@ function init_train_forces_mission(planet, star, mission_slot, marine){
 function complete_garrison_mission(targ_planet, problem_index){
 	var planet = new PlanetData(targ_planet, self);
     if (problem_has_key_and_value(targ_planet,problem_index,"stage", "active")){
-        if (planet.current_owner == eFACTION.Imperium && system_garrison[targ_planet-1].garrison_force){
+        if (planet.current_owner == eFACTION.Imperium && system_garrison[targ_planet].garrison_force){
             var _mission_string = $"The garrison on {planet_numeral_name(targ_planet)} has finished the period of garrison support agreed with the planetary governor.";
-            var p_garrison = system_garrison[targ_planet-1];
+            var p_garrison = system_garrison[targ_planet];
             var  result = p_garrison.garrison_disposition_change(id, targ_planet);
             if (!p_garrison.garrison_leader){
                 p_garrison.find_leader();
@@ -375,6 +323,39 @@ function complete_garrison_mission(targ_planet, problem_index){
         remove_planet_problem(targ_planet, "provide_garrison");
     }	
 }
+
+
+
+function init_train_forces_mission(planet, star, mission_slot, marine){
+	var _pdata = new PlanetData(planet, star);
+	var mission_data = _pdata.problems_data[mission_slot];
+	if (mission_data.stage == "preliminary"){
+		var numeral_name = _pdata.name();
+		mission_data.stage = "active";
+		var _mission_length=(irandom_range(3,12));
+		star.p_timer[planet][mission_slot] = _mission_length;
+	    //pop.image="ancient_ruins";
+	    var gar_pop=instance_create(0,0,obj_popup);
+	    //TODO some new universal methods for popups
+	    gar_pop.title=$"Training forces on {numeral_name} begins";
+	    gar_pop.text=$"{marine.name_role()} Has taken leave of his current post in order to aid the governor of {numeral_name} and his pdf commanders with training local forces and bolstering defences.";
+	    var _is_cap = role_compare(marine, eROLE.Captain);
+
+	    if (_is_cap){
+	    	gar_pop.text += "the governor seems to be impressed that such a high ranking officer has been assigned to his request (disp +3)";
+	    	_pdata.add_disposition(3);
+	    }
+
+	    //pip.image="event_march"
+	    gar_pop.add_option($"Good luck {marine.name()}");
+        gar_pop.image="";
+        gar_pop.cooldown=500;
+        obj_controller.cooldown=500;	    
+	    scr_event_log("",$"{marine.name_role()} deployed to {numeral_name} for {_mission_length} months.", star.name);
+	}	
+}
+
+
 function complete_train_forces_mission(targ_planet, problem_index){
 	var planet = new PlanetData(targ_planet, self);
 	 if (problem_has_key_and_value(targ_planet,problem_index,"stage","active")){
@@ -442,7 +423,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         		disp_loss = -5;
         		_mission_string += "The orgional training mission was a failiure"
         		if (_brute){
-        			_mission_string += "in no short part due to his brutish nature";
+        			_mission_string += "in no short part due to his brutish nature (Trait : Brute)";
         		}
         		_mission_string += ".";
 
@@ -471,9 +452,116 @@ function complete_train_forces_mission(targ_planet, problem_index){
         }
 	 }
 }
+
+function get_beast_rumor(_planet_type, _beast_name){
+    switch (_planet_type){
+        case "Feudal":
+            return choose(
+                $"Peasants whisper prayers at night, for {_beast_name} walks the old forest paths.",
+                $"Knights of the realm have failed to slay {_beast_name}, their banners now hang in tatters.",
+                $"Church bells toll whenever {_beast_name} is sighted."
+            );
+
+        case "Ice":
+            return choose(
+                $"The ice cracks when {_beast_name} hunts.",
+                $"Entire hab-blocks were found frozen solid in the wake of {_beast_name}.",
+                $"The wind carries the howls of {_beast_name} across the tundra."
+            );
+
+        case "Death":
+            return choose(
+                $"Nothing lives long where {_beast_name} roams.",
+                $"Scavenger clans refuse entire regions claimed by {_beast_name}.",
+                $"Even apex predators flee the shadow of {_beast_name}."
+            );
+    }
+
+    return $"{_beast_name} is the most fesarsome fauna in the entire segment according to locals";
+}
+
+
+function get_beast_name_by_planet_type(_planet_type){
+    switch (_planet_type){
+        case "Feudal":
+            return choose(
+                "The Thorn-King",
+                "Blackwood Stalker",
+                "Crowned Razorback",
+                "Cathedral Stag",
+                "Old Bloodfather",
+                "The Green Tyrant"
+            );
+
+        case "Ice":
+            return choose(
+                "The Frostwyrm",
+                "Glacial Leviathan",
+                "The Howling Pale",
+                "Rimehorn Colossus",
+                "White Death Ursid",
+                "Icebound Devourer"
+            );
+
+        case "Death":
+            return choose(
+                "The Charnel Leviathan",
+                "God-Eater Beast",
+                "Void-Spined Terror",
+                "Apex Predatrix",
+                "Emperor’s Bane",
+                "The Unending Maw"
+            );
+    }
+
+    return "Glistening Horror";
+}
+
+
+function format_beast_trophy(_beast_name){
+    return choose(
+        $"The Severed Crown of {_beast_name}",
+        $"The Fanged Skull of {_beast_name}",
+        $"The Head of {_beast_name}",
+        $"The Blackened Remains of {_beast_name}"
+    );
+}
+
+
+function init_beast_hunt_mission(planet, star, mission_slot){
+	var _problems_data = star.p_problem_other_data[planet];
+	var mission_data = _problems_data[mission_slot];
+	if (mission_data.stage == "preliminary"){
+		var numeral_name = planet_numeral_name(planet, star);
+		mission_data.stage = "active";
+		var _mission_length=(irandom_range(2,5));
+		star.p_timer[planet][mission_slot] = _mission_length;
+	    //pop.image="ancient_ruins";
+	    var gar_pop=instance_create(0,0,obj_popup);
+	    //TODO some new universal methods for popups
+
+	    var _beast_name = get_beast_name_by_planet_type(star.p_type[planet]);
+	    gar_pop.title=$"Hunt {_beast_name} beasts around {numeral_name}";
+	    gar_pop.text=$"The governor thanks you for lending your warriors to a task beneath their station — yet one whose outcome will be remembered. And that your marines shall find the  {_beast_name} a suitable challenge. As things stand rumours say {get_beast_rumor(star.p_type[planet])}";
+	    //pip.image="event_march"
+	    gar_pop.add_option({
+	    	str1: "Happy Hunting"
+	    });
+        gar_pop.image="";
+        gar_pop.cooldown=8;
+        gar_pop.pop_data.beast_name = _beast_name;
+        mission_data.beast_name = _beast_name;
+        obj_controller.cooldown=20;	    
+	    scr_event_log("",$"Beast hunters deployed to {numeral_name} for {_mission_length} months.", star.name);
+	}	
+}
+
+
+///@mixin obj_star
 function complete_beast_hunt_mission(targ_planet, problem_index){
-    var planet = new PlanetData(targ_planet, self);
+    var _planet = new PlanetData(targ_planet, self);
     if (problem_has_key_and_value(targ_planet,problem_index,"stage","active")){
+    	var _problem_data = _planet.problems_data[problem_index];
         _mission_string = "";
         var man_conditions = {
             "job": "hunt_beast",
@@ -490,18 +578,19 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         	remove_planet_problem(targ_planet, "hunt_beast");
         	return;
         }
+        var _successful_hunters = [];
+        var _largest_pass= 0;
         for (var i=0;i<array_length(_hunters);i++){
         	_unit = _hunters[i];
 			_unit_pass = _tester.standard_test(_unit, "weapon_skill",10, ["beast"]);
 			if (_unit_pass[0]){
-				if (!_success) then _success=true;
+				_success=true;
+				_largest_pass = max(_largest_pass,_unit_pass[1]);
 			}
 			if (_unit_pass[0]){
-				var _start_stats = variable_clone(_unit.get_stat_line());
-				_unit.add_trait("beast_slayer");
-				var end_stat = _unit.get_stat_line();
-				var _stat_diff = compare_stats(end_stat,_start_stats);
-				_unit_report_string += $"{_unit.name_role()} Has gained the trait {global.trait_list.beast_slayer.display_name}, {(print_stat_diffs(_stat_diff))}\n";
+
+				_unit_report_string += _unit.add_trait("beast_slayer",true, true);
+				array_push(_successful_hunters, _unit);
 			} else {
 				var _tough_check = _tester.standard_test(_unit, "constitution",_unit.luck);
 				if (!_tough_check[0]){
@@ -522,6 +611,26 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 			}
 			_unit.job="none"
         }
+
+        var _pop_data = "";
+        var _navy_fleets = get_imperial_navy_fleets();
+        if (array_length(_successful_hunters) && _largest_pass > 20 && array_length(_navy_fleets)){
+	        _pop_data = {
+	        	trophy_owner : array_random_element(_successful_hunters),
+	        	system: self.name,
+	        	planet : targ_planet,
+	        	target_fleet : array_random_element(_navy_fleets),
+	        	beast :_problem_data.beast_name,
+	        	planet_type : _planet.planet_type,
+	        };
+
+	        var _options = {
+	        	choice_func : init_deliver_trophy_mission,
+	        	str1 : "Continue",
+	        }
+
+	        _pop_data.options = _options;
+	    }
         if (_success){
         	_mission_string = $"The mission was a success and a great number of beasts rounded up and slain, your marines were able to gain great skills and the prestige of your chapter has increased greatly across the planets populace."
         	if (_deaths){
@@ -532,12 +641,159 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         	_mission_string = $"The mission was a failiure. The governor is disapointed and the legend of your chapter has undoubtedly been diminished";
         	_mission_string += $"\n{_unit_report_string}";
         }
-        scr_popup($"Beast Hunt on {planet_numeral_name(i)}",_mission_string,"","");
+        scr_popup($"Beast Hunt on {planet_numeral_name(i)}",_mission_string,"",_pop_data);
         remove_planet_problem(targ_planet, "hunt_beast");
+
     } else {
         remove_planet_problem(targ_planet, "hunt_beast");
     }	
 }
+function init_deliver_trophy_mission(){
+	pop_data.trophy_name = format_beast_trophy(pop_data.beast);
+	text = $"Much fanfare is made of the great trophy {pop_data.trophy_owner.name_role()} bears: {pop_data.trophy_name}.";
+	text += $" The governor proclaims it proof that {pop_data.beast} was the most fearsome predator in the sector.";
+
+
+	text += $"\n\nAn astropathic message is later recieved from the Commander of an Imperial Navy fleet explaining that his fleet is currrently home to the {irandom_numeral(100)},{irandom_numeral(100)} and {irandom_numeral(100)} {pop_data.system} Regiments and pleads that the trophy be handed over to his fleet in order to boost the moral of the regiments and fleet in general";
+
+	replace_options([
+		{
+			str1 : "Refuse and place the trophy into the Librarium",
+			choice_func : function(){
+				scr_add_artifact();
+			}
+
+		},
+		{
+			str1 : "Accept",
+			choice_func : accept_deliver_trophy_mission
+		}
+	]);
+
+}
+
+
+
+function accept_deliver_trophy_mission(){
+	text = $"You Send a reply to tell the commander you accept and will ensure the trophy is delivered in person by the marine that slew the beast";
+	var _targ_fleet = pop_data.target_fleet;
+
+	var _targ_fleet_intercept = fleets_next_location(_targ_fleet);
+	if (_targ_fleet.action == ""){
+		text += $"\n\n the fleet in question is currently active around the  {_targ_fleet_intercept.name} system";
+	} else {
+		text += $"\n\n the fleet will next be accessible around the  {_targ_fleet_intercept.name} system";
+	}
+
+	pop_data.target_fleet = _targ_fleet.uid;
+
+	pop_data.delivering_marine = pop_data.trophy_owner.name_role();
+	var _t_owner = pop_data.trophy_owner;
+	pop_data.trophy_owner = _t_owner.uid;
+
+	var _fleet_event = new FleetEvent(pop_data);
+
+	_fleet_event.turn_end = "deliver_trophy_end_turn_check";
+	_fleet_event.destroy = "deliver_trophy_mission_fleet_destroyed";
+	_fleet_event.timer_end = "deliver_trophy_mission_timed_out";
+
+	_fleet_event.timer = 120;
+
+	_targ_fleet.add_event(_fleet_event);
+
+	reset_popup_options();
+}
+
+
+///@mixin FleetEvent
+function deliver_trophy_mission_timed_out(){
+	scr_popup(
+		"Objective Forgotten", 
+		$"It has been so long in the life of a mortal that the commanders that once saught your delivery of the trophy from the hunt on {fleetevent_data.system} have now all either died or moved to greener pastures. The trophy will instead remain in the chapters possession",
+	);
+}
+
+///@mixin FleetEvent
+function deliver_trophy_mission_fleet_destroyed(){
+	scr_popup(
+		"Fleet Destroyed", 
+		$"With the Imperial Navy fleet containing the regiments from {fleetevent_data.system} destroyed there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
+	);	
+}
+
+function get_beast_epithet(_planet_type){
+    switch (_planet_type){
+        case "Feudal": return "The King-Slayer";
+        case "Ice":    return "The Pale Reaper";
+        case "Death":  return "The Emperor’s Fang";
+    }
+    return "";
+}
+
+
+
+///@mixin FleetEvent
+function deliver_trophy_end_turn_check(){
+	var _navy_fleet = get_fleet_uid(fleet_uid);
+	if (!instance_exists(_navy_fleet)){
+		deliver_trophy_mission_fleet_destroyed();
+		return;
+	}
+
+	var _ratio =0;
+	with (_navy_fleet){
+		_ratio = fleet_remaining_guard_ratio();
+	}
+
+	if (_ratio<=0){
+		scr_popup(
+			"Regiments Destroyed ", 
+			$"The guard Regiments from {fleetevent_data.system} serving in the imperial navy fleet have been annihilated wholesale there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
+		);	
+		return;		
+	}
+
+	if (is_orbiting(_navy_fleet)){
+		var _nearest_player = instance_at_location(_navy_fleet.x,_navy_fleet.y,obj_p_fleet);
+		if (instance_exists(_nearest_player)){
+			var _ships = fleet_full_ship_array(_nearest_player);
+			var _marine = fetch_unit_uid(fleetevent_data.trophy_owner);
+			var _present = _marine.is_at_location("", 0, _ships);
+			var _meet_point = _navy_fleet.orbiting;  
+			if (_present){
+				var _text = "{_marine.role(name)} is able to rendevous with the imperial navy at {_meet_point.name}."
+				_text += $" The guard regiments of {fleetevent_data.system} are overjoyed at the delivery of the trophy and find the beast that the head came from adorns many of the regiments banners.";
+				var _marine_epithet = get_beast_epithet(fleetevent_data.planet_type);
+				_text += $" While The task is for the most part thankless your chapters esteem has risen greatly with the exploits of {_marine.name_role()} spreading far and wide amoung guard regiments and has garnered the epithet {_marine_epithet}.";
+				var _roll = roll_dice_chapter(1, 100, "high");
+				if (_roll>30 && _roll<70){
+					//TODO would be cool to have this changed to be a guard specific piece of equipment
+					_text += "In return for your labour and in honour of your chapter the commander of the guard division has a brand new Rhino destined for the army diverted to your chapter";
+					scr_add_vehicle("Rhino");
+				} else if (_roll>=70 ){
+					var _wanted_types = ["Ice","Desert","Agri","Lava","Death"];
+					var _star = scr_get_stars(true,[],_wanted_types)[0];
+					_text += "During the concourse that follows with the fleet command your marines learn of a old battle ground discovered on {_star.name}.";
+					_text += "According too intel it appeared to be an old astartes battle ground from an unknown age, communications have been passed onto the adeptus mechanicus who will no doubt pick the site clean should they reach it before you do";
+
+					var _planet = scr_get_planet_with_type(_wanted_types);
+					var _battle_ground = new NewPlanetFeature(P_features.OldBattleGround);
+
+					_battle_ground.player_hidden = false;
+
+					_battle_ground.imperium_known = true;
+
+					_star.add_feature(_planet,_battle_ground);
+				}
+				scr_popup(
+					"Trophy Delivered ", 
+					_text,
+				);					
+			}
+		}
+	}
+}
+
 
 //TODO allow most of these functions to be condensed and allow arrays of problems or planets and maybe increase filtering options
 //filtering options could be done via universal methods that all the filters to be passed to many other game systems
@@ -672,7 +928,7 @@ function remove_planet_problem(planet, problem, star="none"){
 	if (star=="none"){
 		for (var i = 0;i<array_length(p_problem[planet]);i++){
 			if (p_problem[planet][i] == problem){
-				p_problem[planet][i]="";
+				p_problem[planet][i] = "";
 				p_timer[planet][i]=-1;
 				p_problem_other_data[planet][i]={};
 				_had_problem=true;
@@ -730,11 +986,12 @@ function problem_count_down(planet, count_change=1){
 }
 
 //add a new problem
-function add_new_problem(planet, problem, timer,star="none", other_data={}){
+///@mixin obj_star
+function add_new_problem(planet=1, problem="", timer=1,star="none", other_data={}){
 	var problem_added=false;
 	if (star=="none"){
 		for (var i=0;i<array_length(p_problem[planet]);i++){
-			if (p_problem[planet][i] ==""){
+			if (p_problem[planet][i] == timer){
 				p_problem[planet][i]= problem;
 				p_problem_other_data[planet][i]=other_data;
 				p_timer[planet][i] = timer;

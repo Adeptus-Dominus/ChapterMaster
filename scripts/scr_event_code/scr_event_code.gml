@@ -92,7 +92,7 @@ function event_end_turn_action(){
 	        // Starts chaos invasion
 		    if (_event.e_id=="chaos_invasion"){ 
 				var xx=0,yy=0,flee=0,dirr=0;
-	            var star_id = scr_random_find(1,true,"","");
+	            var star_id = scr_random_find(0,true,"","");
 				if(star_id != undefined){
 	                scr_event_log("purple",$"Chaos Fleets exit the warp near the {star_id.name} system.", star_id.name);
 	                for(var j=0; j<4; j++){
@@ -103,9 +103,9 @@ function event_end_turn_action(){
 						flee.owner=eFACTION.Chaos;
 	                    flee.sprite_index=spr_fleet_chaos;
 						flee.image_index=4;
-	                    flee.capital_number=choose(0,1);
-						flee.frigate_number=choose(2,3);
-						flee.escort_number=choose(4,5,6);
+	                    flee.capital_number=choose(0,0,0,1);
+						flee.frigate_number=choose(2,2,,3);
+						flee.escort_number=choose(4,4,4,5,6);
 	                    flee.cargo_data.csm = true;
 						obj_controller.chaos_fleets+=1;
 	                    flee.action_x=star_id.x;
@@ -301,91 +301,6 @@ function handle_discovered_governor_assasinations(){
 	}
 }
 
-function strange_build_event(){
-	log_message("RE: Fey Mood");
-	var _search_params = {trait : ["crafter","tinkerer"], trait_any : true}
-	var marine_and_company = scr_random_marine("",0, _search_params);
-	if (marine_and_company == "none"){
-		marine_and_company = scr_random_marine("",0, "none");
-	}
-	if(marine_and_company != "none"){
-		var marine = marine_and_company[0];
-		var company = marine_and_company[1];
-		var text="";
-		var _unit = fetch_unit(marine_and_company);
-		var role =  _unit.role();
-	    text = _unit.name_role();
-	    text+=" is taken by a strange mood and starts building!";  
-
-        
-	    var crafted_object;
-	    var craft_roll=roll_dice_chapter(1, 100, "low");
-		var heritical_item = false;
-        
-		//this bit should be improved, idk what duke was checking for here
-		//TODO make craft chance reflective of crafters skill, rewards players for having skilled tech area
-        if (scr_has_disadv("Tech-Heresy")) {
-			craft_roll+=20;
-		}
-		if (_unit.has_trait("tech_heretic")){
-			craft_roll+=60;
-		}
-		if (scr_has_adv("Crafter")) {
-            if (craft_roll>80) {
-				craft_roll-=10;
-			}
-			if (craft_roll<60) {
-				craft_roll+=10;
-			}
-        }
-
-	    if (craft_roll<=50){
-			crafted_object=choose("Icon","Icon","Statue");		
-		}
-	    else if ((craft_roll>50) && (craft_roll<=60)) {
-			crafted_object=choose("Bike","Rhino");
-		}
-	    else if ((craft_roll>60) && (craft_roll<=80)) {
-			crafted_object="Artifact";
-		}
-		else {
-			crafted_object=choose("baby","robot","demon","fusion");
-			heritical_item=1;
-		}
-        
-
-    	add_event({
-    		e_id : "strange_building",
-    		duration : 1,
-    		name : _unit.name(),
-    		company : company,
-    		marine : marine,
-    		crafted : crafted_object,
-    	})
-		
-		scr_popup("Can He Build marine?!?",text,"tech_build","");
-    
-		var marine_is_planetside = _unit.planet_location>0;
-        if (marine_is_planetside && heritical_item) {
-        	var _system = star_by_name(_unit.location_string);
-        	var _planet = _unit.planet_location;
-            if (_system!="none"){
-            	with (_system){
-            		p_hurssy[_planet]+=6;
-					p_hurssy_time[_planet]=2;
-            	}	               
-            }
-        }
-        else if (!marine_is_planetside and heritical_item){
-            var _fleet = find_ships_fleet(_unit.ship_location);
-            if (_fleet!="none"){
-            	//the intended code for here was to add some sort of chaos event on the ship stashed up ready to fire in a few turns
-            }
-        }
-        return true;
-	}
-	return false;
-}
 function make_faction_enemy_event(){
 	log_message("RE: Enemy");
 		
@@ -405,7 +320,7 @@ function make_faction_enemy_event(){
 	
 	if(array_length(factions) == 0){
 		log_error("RE: Enemy, no faction could be chosen");
-		exit;
+		return false;
 	}
 	var chosen_faction = array_random_element(factions);
 	
@@ -449,12 +364,4 @@ function make_faction_enemy_event(){
 	    return true;
 	}
 	return false;
-}
-
-
-function event_dispose_of_mutated_gene(){
-	if (pop_data.percent_remove > 0){
-		obj_controller.gene_seed -= (obj_controller.gene_seed * (pop_data.percent_remove/100))
-	}
-	popup_default_close();
 }

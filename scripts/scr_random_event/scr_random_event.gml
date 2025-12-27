@@ -36,7 +36,9 @@ function scr_random_event(execute_now) {
 		if(execute_now)
 		{
 			var random_event_roll = irandom(100);
-		    if ((last_event+30)<=turn) then random_event_roll=1;// If 30 turns without random event then do one
+		    if ((last_event+30)<=turn){
+		    	random_event_roll=1;// If 30 turns without random event then do one
+		    }
 			if (random_event_roll>5) then exit;// Frequency of events
 			if ((turn-15)<last_event) then exit;// Minimum interval between
 		}
@@ -47,6 +49,18 @@ function scr_random_event(execute_now) {
 		else {
 			var player_luck;
 			var luck_roll = roll_dice_chapter(1, 100, "low");
+
+			if (obj_controller.marines > 1500){
+				luck_roll+=20;
+			}
+			else if (obj_controller.marines > 1000){
+				luck_roll+=10;
+			}
+			else if (obj_controller.marines > 500){
+				luck_roll+=5;
+			}else if (obj_controller.marines <500){
+				luck_roll-=5;
+			}
 
 			if (luck_roll<=45) then player_luck=luck.good;
 			if (luck_roll>45) and (luck_roll<55) then player_luck=luck.neutral;
@@ -82,11 +96,11 @@ function scr_random_event(execute_now) {
 					[
 						EVENT.warp_storms,
 						EVENT.enemy_forces,
-						EVENT.crusade, // Reportly breaks often because of lack of imperial fleets and eats player ships // TODO LOW CRUSADE_EVENT // fix
+						EVENT.crusade,
 						EVENT.enemy, // Save-scumming event, Should probably base this on something else than tech-scavs
 						EVENT.mutation,
 						EVENT.ship_lost, // Another save-scumming event, mainly due to rarity of player ships
-						//EVENT.chaos_invasion, // Spawns Chaos fleets way too close to player owned worlds with no warning and usually lots of big ships, save-scum galore and encourages fleet-based chapters // TODO LOW INVASION_EVENT // Make them spawn way farther with more warning, make them have a different goal or remove this event entirely
+						EVENT.chaos_invasion, 
 						EVENT.necron_awaken, // Inquisitor check for this is inverted
 						EVENT.fallen, // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
 					];
@@ -122,7 +136,7 @@ function scr_random_event(execute_now) {
 							}
 							break;
 						case EVENT.mechanicus_mission:
-							if (known[eFACTION.Mechanicus] == 0 || obj_controller.disposition[3] < 50 || obj_controller.faction_status[eFACTION.Mechanicus] == "War") {
+							if (known[eFACTION.Mechanicus] == 0 || obj_controller.disposition[3] < 40 || obj_controller.faction_status[eFACTION.Mechanicus] == "War") {
 								events_share[i] -= 1;
 								events_total -= 1;
 							}
@@ -132,10 +146,7 @@ function scr_random_event(execute_now) {
 							}
 							break;
 						case EVENT.enemy:
-							if(scr_has_adv("Scavangers")){
-								events_share[i] += 2;
-								events_total += 2;
-							}
+
 							break;
 						case EVENT.mutation:
 							if(gene_seed < 5){
@@ -275,36 +286,7 @@ function scr_random_event(execute_now) {
 	}
 	
 	else if (chosen_event == EVENT.promotion){
-		log_message("RE: Promotion");
-	    var marine_and_company = scr_random_marine([obj_ini.role[100][8],obj_ini.role[100][12],obj_ini.role[100][9],obj_ini.role[100][10]],0);
-		if(marine_and_company == "none")
-		{
-			log_error("RE: Promotion, couldn't pick a space marine");
-			exit;
-		}
-		var marine=marine_and_company[1];
-		var company=marine_and_company[0];
-		var _unit = obj_ini.TTRPG[company][marine];
-		var role=_unit.role();
-		var text = _unit.name_role();
-		var company_text = scr_convert_company_to_string(company);
-		//var company_text = scr_company_string(company);
-		if(company_text != ""){
-			company_text = "("+company_text+")";
-		}
-		text += company_text;
-		text += " has distinguished himself.##He åis up for review to be promoted.";
-		
-		if (company != 10){
-			_unit.add_exp(10);
-		}
-		else {
-			_unit.add_exp(max(20, _unit.experience));
-		}
-		
-		scr_popup("Promotions!",text,"distinguished","");
-        scr_event_log("green",text);
-		_evented = true;
+		_evented = init_marine_distinguishment_event()
 	}
     
 	else if (chosen_event == EVENT.strange_building){
@@ -659,11 +641,11 @@ function scr_random_event(execute_now) {
 				log_error("RE: Enemy Forces, couldn't find a planet in the " + star_id.name +" system for the enemy");
 				exit;			
 			}
-			var planet = eligible_planets[irandom(array_length(eligible_planets) - 1)];
+			var planet = array_random_element(eligible_planets);
 			//var enemy = choose(7,8,9,10,13);
 			var enemy = choose(7,8,9);
 			var text;
-			var max_enemies_on_planet = 5; // I don't know the actual value, i need to change it;
+			var max_enemies_on_planet = 6; // I don't know the actual value, i need to change it;
 			switch(enemy)
 			{
 				case 7:
@@ -681,22 +663,22 @@ function scr_random_event(execute_now) {
 					star_id.p_tyranids[planet] += 5;
 					star_id.p_tyranids[planet] = min(star_id.p_tyranids[planet], max_enemies_on_planet);
 					break;
-				//case 10: this doesn't work
-				//	text = "Heretics";
-				//	star_id.p_heretics[planet] = 4;
-				//	star_id.p_heretics[planet] = min(star_id.p_heretics[planet], max_enemies_on_planet);
-				//	break;
-				//case 13:
-				//	text = "Necron"; // I don't know if its a good idea to spawn necrons from this event, leaving it in for now
-				//	star_id.p_necron[planet] = 4;
-				//	star_id.p_necron[planet] = min(star_id.p_necron[planet], max_enemies_on_planet);
-				//	break;
+				case 10: 
+					text = "Heretics";
+					star_id.p_heretics[planet] = 4;
+					star_id.p_heretics[planet] = min(star_id.p_heretics[planet], max_enemies_on_planet);
+					break;
+				case 13:
+					text = "Necron"; // I don't know if its a good idea to spawn necrons from this event, leaving it in for now
+					star_id.p_necron[planet] = 4;
+					star_id.p_necron[planet] = min(star_id.p_necron[planet], max_enemies_on_planet);
+					break;
 				default:
 					log_error("RE: Enemy Forces, couldn't pick an enemy faction");
 					exit;
 			}
-			scr_alert("red","enemy", $"{text} forces suddenly appear at {star_id.name} {planet}!",star_id.x,star_id.y);
-            scr_event_log("red",$"{text} forces suddenly appear at {star_id.name} {planet}!");
+			scr_alert("red","enemy", $"A Space Hulk carrying {text} breaches Space and has crashed Into {star_id.name} {planet}!",star_id.x,star_id.y);
+            scr_event_log("red",$"A Space Hulk carrying {text}  Space Hulk Crashes Into System {star_id.name} {planet}!");
 			_evented = true;
 		}
 	}
@@ -711,47 +693,7 @@ function scr_random_event(execute_now) {
 	}
     
 	else if ((chosen_event == EVENT.mutation)) {
-		//TODO make reprocussions to ignoring this
-		log_message("RE: Gene-Seed Mutation");
-	    var text = "The Chapter's gene-seed has mutated!  Apothecaries are scrambling to control the damage and prevent further contamination.  What is thy will?";
-		var _opt1 = "Dispose of ";
-		var _percent_remove = 0;
-		if (obj_controller.gene_seed <= 30) {
-			_opt1 += "100% of the gene-seed.";
-			_percent_remove = 100;
-		}
-		if ((obj_controller.gene_seed > 30) && (obj_controller.gene_seed < 60)) {
-			_opt1 += "50% of all gene-seed.";
-			_percent_remove = 50;
-		}
-		if (obj_controller.gene_seed >= 60) {
-			_opt1 += "33% of all gene-seed.";
-			_percent_remove = 33;
-		}
-
-		var _opt2 = "Tell the apothecaries to let it be.";
-
-
-	    var _pop_data = {
-	    	percent_remove : _percent_remove,
-	    	options : [
-	    		{
-	    			str1:_opt1,
-	    			choice_func : event_dispose_of_mutated_gene,
-	    		},
-	    		{
-	    			str1:_opt2,
-	    			choice_func : function(){
-	    				scr_loyalty("Mutant Gene-Seed", "+");
-	    				popup_default_close();
-	    			}
-	    		},	    		
-	    	]
-	    }
-
-	    scr_popup("Gene-Seed Mutated!",text,"gene_bad",_pop_data);
-		_evented = true;
-	    scr_event_log("red","The Chapter Gene-Seed has mutated.");
+		init_mutated_gene_random_event();
 	}
 
 	else if (chosen_event == EVENT.ship_lost){
@@ -842,10 +784,13 @@ function event_fallen(){
 			log_error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
 			return;
 		}
+
+		var _planet = system_datas[planet];
+		_planet.refresh_data();
 		
-		var text = "Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
+		var text = $"Sources indicate one of the Fallen may be upon {_planet.name()} .  We have {eta} months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
 		scr_popup("Hunt the Fallen",text,"fallen","");
-		scr_event_log("","Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to investigate.");
+		scr_event_log("",$"Sources indicate one of the Fallen may be upon {_planet.name()}.  We have {eta} months to investigate.");
 		var star_alert = instance_create(star.x+16,star.y-24,obj_star_event);
 		star_alert.image_alpha=1;
 		star_alert.image_speed=1;

@@ -100,11 +100,21 @@ function point_and_click_sprite(x1, y1, sprite, x_scale = 1, y_scale = 1){
 }
 
 function scr_click_left(cooldown = 60, lock_bypass = false){
+
+	return click_controller(cooldown,lock_bypass);
+}
+
+function scr_click_right(cooldown = 60, lock_bypass = false){
+
+	return click_controller(cooldown,lock_bypass ,mb_right);
+}
+
+function click_controller(cooldown = 60, lock_bypass = false, mouse_button_lr=mb_left){
 	if (lock_bypass == false && global.ui_click_lock == true) {
 		return false;
 	}
 
-	var mouse_clicked = event_number==ev_gui ? device_mouse_check_button_pressed(0,mb_left) : mouse_check_button_pressed(mb_left);
+	var mouse_clicked = event_number==ev_gui ? device_mouse_check_button_pressed(0,mouse_button_lr) : mouse_check_button_pressed(mouse_button_lr);
 	if (!mouse_clicked) {
 		return false;
 	}
@@ -153,7 +163,7 @@ function scr_click_left(cooldown = 60, lock_bypass = false){
 		show_debug_message($"Mouse Clicked! {array_to_string_list(debug_get_callstack(), true)}");
 	}
 
-	return mouse_clicked;
+	return mouse_clicked;	
 }
 
 function mouse_button_held(_button = mb_left) {

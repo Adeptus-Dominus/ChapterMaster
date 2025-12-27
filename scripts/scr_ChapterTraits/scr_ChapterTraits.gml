@@ -41,14 +41,12 @@ function ChapterTrait(_id, _name, _description, _points_cost, _meta = []) constr
 function Advantage(_id, _name, _description, _points_cost) : ChapterTrait(_id, _name, _description, _points_cost) constructor {
 
     static add = function(slot){
-        show_debug_message($"Adding adv {name} to slot {slot} for points {points}");
         obj_creation.adv[slot] = name;
         obj_creation.adv_num[slot] = id;
         obj_creation.points+=points;
         add_meta();
     }
     static remove = function(slot){
-        show_debug_message($"removing adv {name} from slot {slot} for points {points}");
         obj_creation.adv[slot] = "";
         obj_creation.points-=points;
         obj_creation.adv_num[slot]=0;
@@ -72,7 +70,6 @@ function Advantage(_id, _name, _description, _points_cost) : ChapterTrait(_id, _
 function Disadvantage(_id, _name, _description, _points_cost) : ChapterTrait(_id, _name, _description, _points_cost) constructor {
 
     static add = function(slot){
-        show_debug_message($"Adding disadv {name} to slot {slot} for points {points}");
         obj_creation.dis[slot] = name;
         obj_creation.dis_num[slot] = id;
         obj_creation.points-=points;
@@ -80,7 +77,6 @@ function Disadvantage(_id, _name, _description, _points_cost) : ChapterTrait(_id
     }
 
     static remove = function(slot){
-        show_debug_message($"Removing disadv {name} from slot {slot} for points {points}");
         obj_creation.dis[slot] = "";
         obj_creation.points+=points;
         obj_creation.dis_num[slot]=0;

@@ -325,13 +325,6 @@ function scr_load_controller(save_id){
 	        obj_controller.turns_ignored[g]=ini_read_real("Factions","turns_ignored"+string(g),0);
 	    }
 	    //
-	    var g;g=0;
-	    repeat(50){g+=1;
-	        obj_controller.quest[g]=ini_read_string("Ongoing","quest"+string(g),"");
-	        obj_controller.quest_faction[g]=ini_read_real("Ongoing","quest_faction"+string(g),0);
-	        obj_controller.quest_end[g]=ini_read_real("Ongoing","quest_end"+string(g),0);
-	    }
-	    //
 	    obj_controller.justmet=0;
 	    obj_controller.check_number=ini_read_real("Controller","check_number",0);
 	    obj_controller.year_fraction=ini_read_real("Controller","year_fraction",0);

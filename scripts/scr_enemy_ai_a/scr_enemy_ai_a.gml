@@ -1,16 +1,19 @@
 
 function scr_enemy_ai_a() {
-	system_garrison = [];
-	system_sabatours = [];
+	system_garrison = [0];
+	system_sabatours = [0];
 	system_datas = [0];
 
 	for (var i=1;i<=planets;i++){
+		var garrison = new GarrisonForce(p_operatives[i], true);
+		var sabatours = new GarrisonForce(p_operatives[i], true, "sabotage");
+		array_push(system_garrison, garrison);
+		array_push(system_sabatours, sabatours);
 		array_push(system_datas,new PlanetData(i, self));
 	}
 	// guardsmen hop from planet to planet
 	//not sure we really need this as it's handled with tht navy fleet functions but fuck it updated it and leaving it fot the sec
 	if (system_guard_total()>0 && present_fleet[eFACTION.Imperium]){
-		show_debug_message($"system_has_guard {p_guardsmen}");
 	    var cur_planet=0,most_enemies_found=0,current_guard_planet=0,most_enemies_planet=0;
 
 	    var _guard_planets = guard_find_planet_with_most_enemy_forces(self);
@@ -22,7 +25,6 @@ function scr_enemy_ai_a() {
 	    	p_guardsmen[_current] = 0;
 
 	    }
-	    show_debug_message($"system_has_guard {p_guardsmen}");
 	}
 
 	if (obj_controller.faction_defeated[10]>0) and (obj_controller.faction_gender[10]=2){
@@ -48,15 +50,10 @@ function scr_enemy_ai_a() {
     var _planet_data;
 	for (var _run =1;_run<=planets;_run++){
 		_planet_data = system_datas[_run];
-		garrison_force=false;
-		var garrison = new GarrisonForce(p_operatives[_run], true);
-		var sabatours = new GarrisonForce(p_operatives[_run], true, "sabotage");
-		_planet_data.garrison = garrison;
-		_planet_data.sabatours = sabatours;
+		garrison = _planet_data.garrisons;
+		sabatours = _planet_data.sabatours;
 
 		garrison_force = garrison.garrison_force;
-		array_push(system_garrison, garrison);
-		array_push(system_sabatours, sabatours);
 
 		stop=0;
 	    ensure_no_planet_negatives(_run);
@@ -288,7 +285,6 @@ function scr_enemy_ai_a() {
     	var _active_garrison = pdf_with_player && garrison.viable_garrison>0;
 	    // Guard attack
 	    if (guard_score>0) and (guard_attack!="") and (guard_score>0.5){
-        	show_debug_message($"{name}:{guard_attack}")
 	        if (guard_attack="ork") then tempor=choose(1,2,3,4,5,6)*planet_forces[eFACTION.Ork];
 	        if (guard_attack="tau") then tempor=choose(1,2,3,4,5,6)*planet_forces[eFACTION.Tau];
 	        if (guard_attack="traitors") then tempor=choose(1,2,3,4,5,6)*traitors_score;
@@ -311,7 +307,6 @@ function scr_enemy_ai_a() {
 	            }    
 	            rand1=(choose(3,4,5,6)*guard_score)*choose(1,1.25,1.25);
 	            rand2=(pdf_mod*pdf_score)*choose(1,1.25);
-	            show_debug_message($"{name} guard attack guard_Win:{rand1>rand2}");
 	            if (rand1>rand2){
 	          		var _pdf_before = p_pdf[_run];
 	                if (guard_score<=3) then p_pdf[_run]=floor(p_pdf[_run]*(min(0.95, 0.7+pdf_loss_reduction)));
@@ -379,7 +374,6 @@ function scr_enemy_ai_a() {
 	        if (pdf_attack=="guard"){
 
 	            rand2=(choose(1,2,3,4,5,6)*guard_score)*choose(1,1.25,2);
-	            show_debug_message($"{name} : pdf attack ,pdf win {rand1>rand2}");
 	            if (rand1>rand2){
 	                if (pdf_score<=3) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.7);
 	                if (pdf_score>=4) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.6);

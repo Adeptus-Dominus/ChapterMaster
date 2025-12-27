@@ -7,11 +7,11 @@ function FeatureSelected(Feature, system, planet) constructor{
 	feature = Feature;
 	main_slate = new DataSlateMKTwo();
 	exit_sequence = false;
-	entrance_sequence=true;
-	remove=false;
-	destroy=false;
+	entrance_sequence = true;
+	remove = false;
+	destroy = false;
 	exit_count = 0;
-	enter_count=18;
+	enter_count = 18;
 	planet_data = new PlanetData(planet,system);
 
 	if (feature.f_type == P_features.Forge){
@@ -28,17 +28,50 @@ function FeatureSelected(Feature, system, planet) constructor{
 				}
 			}
 		}
+		forge_assign_button = new UnitButtonObject({
+			label:"Assign To Forge",
+			color:CM_RED_COLOR,
+			bind_method :function(){
+				obj_controller.unit_profile = false;
+				obj_controller.view_squad = false;
+				group_selection(techs,{
+					purpose:"Forge Assignment",
+					purpose_code : "forge_assignment",
+					number:worker_capacity,
+					system:planet_data.system,
+					feature:feature,
+					planet : planet_data.planet,
+					selections : []
+				});
+				destroy=true;				
+			},
+			bind_scope :self,
+		});
+
+		forge_upgrade_button = new UnitButtonObject({
+			color:CM_RED_COLOR,
+			bind_scope :self,
+			bind_method :function(){
+				obj_controller.requisition -=  upgrade_cost;
+				feature.size++;
+				worker_capacity*=2;				
+			}
+		})
 	}
 
+	exit_button = new UnitButtonObject({label:"<---",color:CM_RED_COLOR});
+
 	draw_planet_features = function(xx,yy){
+		add_draw_return_values();
 	    draw_set_halign(fa_center);
+	    draw_set_valign(fa_top);
 	    draw_set_font(fnt_40k_14);
-	    //draw_sprite(spr_planet_screen,0,xx,yy);
+	    //draw_sprite(spr_planset_screen,0,xx,yy);
 	    if (exit_sequence){
 	    	xx-=(25*exit_count);
 	    	main_slate.draw(xx,yy, 1.38,1.38);
 	    	exit_count++;
-	    	if (xx-25<=obj_star_select.main_data_slate.XX) then remove=true;
+	    	remove = (xx-25<=obj_star_select.main_data_slate.XX);
 	    } else if (entrance_sequence){
 	    	enter_count--;
 	    	xx-=(25*enter_count);
@@ -47,56 +80,47 @@ function FeatureSelected(Feature, system, planet) constructor{
 	    }else {
 	    	main_slate.draw(xx,yy, 1.4,1.4);
 	    }
-	    var area_width = main_slate.width;
-	    var area_height = main_slate.height;
-	    var generic = false;
-	    var title="", body="";
-	    var _button_tooltip = "";
+	    w  = main_slate.width;
+	    h = main_slate.height;
+	    generic = false;
+	    title="";
+	    body="";
+	    button_tooltip = "";
 	    //draw_glow_dot(xx+150, yy+150);
 	    //rack_and_pinion(xx+230, yy+170);
 	    var rectangle = [];
 	    draw_set_color(c_green);
-	    if (point_and_click(draw_unit_buttons([xx+12, yy+20], "<---",[1,1],c_red))){
+	    exit_button.update({x1:xx+12,y1:yy+20});
+	    if (exit_button.draw()){
 	    	exit_sequence=true;
 	    };
 	    draw_set_halign(fa_center);
 		switch (feature.f_type){
 			case P_features.Forge:
-				draw_text_transformed(xx+(area_width/2), yy +10, "Chapter Forge", 2, 2, 0);
+				draw_text_transformed(xx+(w/2), yy +10, "Chapter Forge", 2, 2, 0);
 				draw_set_halign(fa_left);
 				draw_set_color(c_gray);
 
 				draw_text(xx+10, yy+50, $"Working Techs : {feature.techs_working}/{worker_capacity}");
-				if (point_and_click(draw_unit_buttons([xx+10, yy+70], "Assign To Forge",[1,1],c_red))){
-					obj_controller.unit_profile = false;
-					obj_controller.view_squad = false;
-					group_selection(techs,{
-						purpose:"Forge Assignment",
-						purpose_code : "forge_assignment",
-						number:worker_capacity,
-						system:planet_data.system,
-						feature:feature,
-						planet : planet_data.planet,
-						selections : []
-					});
-					destroy=true;
-
-				}
+				forge_assign_button.update({x1:xx+10,y1 : yy+70});
+				forge_assign_button.draw();
 				//TODO move over to using the draw button object ot streamline this
-				var next_position = [xx+10, yy+95];
+				var _next_position = {x1:xx+10, y1: yy+95};
 				if (feature.size<3){
 					var upgrade_cost = 2000 * feature.size;
-					var last_button = draw_unit_buttons(next_position, $"Upgrade Forge ({upgrade_cost} req)",[1,1],c_red);
-					next_position = [last_button[0], last_button[3]];
-					if (point_and_click(last_button) && obj_controller.requisition>=upgrade_cost){
-						obj_controller.requisition -=  upgrade_cost;
-						feature.size++;
-						worker_capacity*=2;
+					forge_upgrade_button.update(_next_position);
+					forge_upgrade_button.update({
+						label:$"Upgrade Forge ({upgrade_cost} req)",
+					});
+					forge_upgrade_button.draw();
+					_next_position={
+						x1:forge_upgrade_button.x1,
+						y1:forge_upgrade_button.y2,
 					}
 				}
 				if (feature.size>1 && !feature.vehicle_hanger){
 					var upgrade_cost = 3000;
-					var build_coords = draw_unit_buttons(next_position, $"Build Vehicle Hanger({upgrade_cost} req)",[1,1],c_red);
+					var build_coords = draw_unit_buttons(_next_position, $"Build Vehicle Hanger({upgrade_cost} req)",[1,1],c_red);
 					if (scr_hit(build_coords)){
 						tooltip_draw("Required to Build Vehicles in the Forge")
 					}
@@ -106,7 +130,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 						array_push(obj_controller.player_forge_data.vehicle_hanger,[obj_controller.selected.name,planet_data.planet]);
 					}					
 				} else if(feature.vehicle_hanger){
-					draw_text(next_position[0], next_position[1], "Forge has a vehicle hanger")
+					draw_text(_next_position[0], _next_position[1], "Forge has a vehicle hanger Allowing vehicles to be coonstructed behavior");
 					//TODO somthing if the forge has a hanger
 				}		
 				break;
@@ -134,6 +158,11 @@ function FeatureSelected(Feature, system, planet) constructor{
 				title = "Ancinet Ruins";
 				body = "Unload Marines onto the planet to explore the ruins";
 				break;
+			case P_features.OldBattleGround:
+				generic=true;
+				title = "Old Battlefield";
+				body = $"The site of a previously unrecorded battle between {feature.faction1} and {feature.faction2} forces long forgotten\nUnload Marines to search Techmarines are advisable to help, it would be best any tech priests not be aware of such an operation it may create a conflict of interest";
+				break;
 			case P_features.STC_Fragment:
 				generic=true;
 				title = "STC Fragment";
@@ -156,7 +185,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				body = $"The Cult of {feature.name} {control_string}";
 				break;				
 			case P_features.Victory_Shrine:
-				draw_text_transformed(xx+(area_width/2), yy +10, "Victory Shrine", 2, 2, 0);
+				draw_text_transformed(xx+(w/2), yy +10, "Victory Shrine", 2, 2, 0);
 				draw_set_halign(fa_left);
 				draw_set_color(c_gray);				
 				/*if (!feature.parade){
@@ -168,7 +197,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				}*/
 				break;																	
 			case P_features.Monastery:
-				draw_text_transformed(xx+(area_width/2), yy +10, feature.name, 2, 2, 0);
+				draw_text_transformed(xx+(w/2), yy +10, feature.name, 2, 2, 0);
 				if (feature.forge==0){
 					draw_text_transformed(xx+80, yy +50, "Forge", 1, 1, 0);
 					if (draw_building_builder(xx+40, yy+70,500,spr_forge_holo)){
@@ -265,7 +294,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 						mission_description=$"The governor of {planet_name} has sent many requests to the sector commander for help with defending against xenos raids on the populace of the planet, the reports seem to suggest the xenos in question are in fact dark eldar.";
 						help = "Set a squad to ambush";
 						button_text = "Send Squad";
-						_button_tooltip = "milage may vary on playability of this mission progress at your own risk";
+						button_tooltip = "milage may vary on playability of this mission progress at your own risk";
 						button_function = function(){
 							var dudes = collect_role_group("all", obj_star_select.target.name);
 							group_selection(dudes,{
@@ -305,20 +334,20 @@ function FeatureSelected(Feature, system, planet) constructor{
 						mission_description=$"The governor of {planet_name} has expressed his distaste of the neighboring governance of {target.name} {feature.target} he has expressed his views that they engage in heretical ways and harbor xenos enemies though in truth it is more likely that he simply wishes his political enemies disposed of, whatever the case his planet has great economic means and he has made bare his plans to compensate the emperors angels for their aid";
 						break;	
 				}
-				draw_text_transformed(xx+(area_width/2), yy +5, mission_name_key(feature.problem), 2, 2, 0);
+				draw_text_transformed(xx+(w/2), yy +5, mission_name_key(feature.problem), 2, 2, 0);
 				draw_set_halign(fa_left);
 				draw_set_color(c_gray);
-				draw_text_ext(xx+10, yy+40,mission_description,-1,area_width-20);
-				var text_body_height = string_height_ext(string_hash_to_newline(mission_description),-1,area_width-20);
+				draw_text_ext(xx+10, yy+40,mission_description,-1,w-20);
+				var text_body_height = string_height_ext(string_hash_to_newline(mission_description),-1,w-20);
 				if (help!="none"){
-					draw_text_ext(xx+10, yy+40+text_body_height+10,help,-1,area_width-20);
-					text_body_height+=string_height_ext(string_hash_to_newline(mission_description),-1,area_width-20)+10;
+					draw_text_ext(xx+10, yy+40+text_body_height+10,help,-1,w-20);
+					text_body_height += string_height_ext(string_hash_to_newline(mission_description),-1,w-20)+10;
 				}
 				
 				if (button_text!="none"){
-					var _button = draw_unit_buttons([xx+((area_width/2)-(string_width(button_text)/2)), yy+40+text_body_height+10], button_text);
-					if (_button_tooltip != "" && scr_hit(_button)){
-						tooltip_draw(_button_tooltip);
+					var _button = draw_unit_buttons([xx+((w/2)-(string_width(button_text)/2)), yy+40+text_body_height+10], button_text);
+					if (button_tooltip != "" && scr_hit(_button)){
+						tooltip_draw(button_tooltip);
 					}
 					if (point_and_click(_button)){
 						if (is_callable(button_function)){
@@ -332,12 +361,13 @@ function FeatureSelected(Feature, system, planet) constructor{
 				break;
 		}
 		if (generic){
-			draw_text_ext_transformed(xx+(area_width/2), yy +5, title, -1, area_width-20, 2, 2, 0)
+			draw_text_ext_transformed(xx+(w/2), yy +5, title, -1, w-20, 2, 2, 0)
 
 			draw_set_halign(fa_left);
 			draw_set_color(c_gray);
-			draw_text_ext(xx+10, yy+40,body,-1,area_width-20);
+			draw_text_ext(xx+10, yy+45,body,-1,w-20);
 		}
+		pop_draw_return_values();
 		return "done";
 	}
 }

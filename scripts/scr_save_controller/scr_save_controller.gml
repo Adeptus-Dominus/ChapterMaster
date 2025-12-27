@@ -219,12 +219,6 @@ function scr_save_controller(save_id){
     }
     //
     var g;g=0;
-    repeat(50){g+=1;
-        ini_write_string("Ongoing","quest"+string(g),obj_controller.quest[g]);
-        ini_write_real("Ongoing","quest_faction"+string(g),obj_controller.quest_faction[g]);
-        ini_write_real("Ongoing","quest_end"+string(g),obj_controller.quest_end[g]);
-    }
-    var g;g=0;
     //
     ini_write_real("Controller","justmet",obj_controller.faction_justmet);
     ini_write_real("Controller","check_number",obj_controller.check_number);

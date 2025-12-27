@@ -15,9 +15,11 @@ draw_set_halign(fa_center);
 draw_set_valign(fa_top);
 draw_set_color(0);
 
+
+try{
 var temp1=0;
-var xx=__view_get( e__VW.XView, 0 )+0;
-var yy=__view_get( e__VW.YView, 0 )+0;
+var xx = 0;
+var yy = 0;
 if (loading=1){
     xx=xx;
     yy=yy;
@@ -92,26 +94,31 @@ if (click_accepted && (!debug || !debug_slate.entered())) {
     }
 }
 
-if (target.craftworld=0) and (target.space_hulk=0) then draw_sprite(spr_star_screen,target.planets,27,165);
-if (target.craftworld=1) then draw_sprite(spr_star_screen,5,27,165);
-if (target.space_hulk=1) then draw_sprite(spr_star_screen,6,27,165);
-if (target.craftworld=0) and (target.space_hulk=0) then draw_sprite_ext(target.sprite_index,target.image_index,77,287,1.25,1.25,0,c_white,1);
+var _standard_star = !target.craftworld && !target.space_hulk;
+
+if (_standard_star){
+    draw_sprite(spr_star_screen,target.planets,27,165);
+    draw_sprite_ext(target.sprite_index,target.image_index,77,287,1.25,1.25,0,c_white,1);
+}else if (target.craftworld){
+    draw_sprite(spr_star_screen,5,27,165);
+} else if(target.space_hulk){
+    draw_sprite_ext(target.sprite_index,target.image_index,77,287,1.25,1.25,0,c_white,1);
+}
 
 var _screen_height = sprite_get_height(spr_star_screen);
 var _screen_width = sprite_get_width(spr_star_screen);
 
+//TODO bottle these into a constructor for re-use
 draw_sprite_ext(spr_servo_left_arm, 0,27+_screen_width,165+_screen_height/3, 2, 2, 0, c_white, 1);
 draw_sprite_ext(spr_servo_right_arm, 0,27,165+_screen_height/3, 2, 2, 0, c_white, 1);
 draw_sprite_ext(spr_servo_skull_head, 0,27+_screen_width/2,165, 2, 2, 0, c_white, 1);
 
-var system_string = target.name+" System";
-if (target.owner!=1) then draw_set_color(0);
-if (target.owner  = eFACTION.Player) then draw_set_color(c_blue);
-if (target.craftworld=0) and (target.space_hulk=0){
-    draw_text_transformed(184,180,system_string,1,1,0);
-}
+var system_string = $"{target.name} System";
 
-if (target.craftworld=0) and (target.space_hulk=0){
+draw_set_color(target.owner == eFACTION.Player ? c_blue : 0);
+
+if (_standard_star){
+    draw_text_transformed(184,180,system_string,1,1,0);
     draw_set_color(global.star_name_colors[target.owner]);
     draw_text_transformed(184,180,system_string,1,1,0);
 }
@@ -150,7 +157,7 @@ if (loading!=0){
     draw_set_font(fnt_40k_14);
     draw_set_color(CM_GREEN_COLOR);
     draw_text(184,202,
-    string_hash_to_newline("Select Destination"));
+    "Select Destination");
 }
 
 
@@ -163,8 +170,8 @@ draw_set_font(fnt_40k_14b);
 
 if (obj_controller.selecting_planet!=0){
     if (p_data.planet != obj_controller.selecting_planet){
-        delete p_data;
         p_data = new PlanetData(obj_controller.selecting_planet, target);
+        target.system_datas[obj_controller.selecting_planet] = p_data;
     }
 // Buttons that are available
     if (!buttons_selected){
@@ -179,7 +186,9 @@ if (obj_controller.selecting_planet!=0){
                 if (p_data.player_forces>0){
                     if (is_enemy){
                         button1="Attack";
-                        button2="Purge";
+                        if (p_data.population){
+                            button2="Purge";
+                        }
                     }
                 }
             }
@@ -192,7 +201,9 @@ if (obj_controller.selecting_planet!=0){
                 else {
                     button1="Attack";
                     button2="Raid";
-                    button3="Purge";
+                    if (p_data.population){
+                        button2="Purge";
+                    }
                 }
                 
                 if (torpedo>0){
@@ -262,7 +273,7 @@ if (obj_controller.selecting_planet!=0){
             }
         }
     }else if (garrison!="" && !population){
-        if (garrison.garrison_force ){
+        if (garrison.garrison_force){
             draw_set_font(fnt_40k_14);
             if (!garrison.garrison_leader){
                 garrison.find_leader()
@@ -301,66 +312,7 @@ if (obj_controller.selecting_planet!=0){
     } else if (population){
         garrison_data_slate.title = "Population Report";
         garrison_data_slate.inside_method = function(){
-            draw_set_color(c_gray);
-            var xx = garrison_data_slate.XX;
-            var yy = garrison_data_slate.YY;                
-            var cur_planet = obj_controller.selecting_planet;
-            var half_way =  garrison_data_slate.height/2;
-            var spacing_x = 100
-            var spacing_y = 65
-            draw_set_halign(fa_left);
-            if (!target.space_hulk) {
-                if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War") {
-                    colonist_button.update({
-                        x1:xx+35,
-                        y1:half_way,
-                        allow_click : array_length(potential_doners),
-                    });
-                    colonist_button.draw();
-
-                    recruiting_button.update({
-                        x1:xx+(spacing_x*2)+15,
-                        y1:half_way,
-                        allow_click : true,
-                    });
-                    recruiting_button.draw();
-                    if (p_data.has_feature(P_features.Recruiting_World)) {
-                        var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
-                        if (_recruit_world.recruit_type == 0) && (obj_controller.faction_status[p_data.current_owner] != "War" && obj_controller.faction_status[p_data.current_owner] != "Antagonism" || p_data.player_disposition >= 50) {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Open: Voluntery");
-                        } else if (_recruit_world.recruit_type == 0 && p_data.player_disposition <= 50) {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Covert: Voluntery");
-                        } else {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Abduct");
-                        }
-                        recruitment_type_button.update({
-                            x1:xx+(spacing_x*3)+35,
-                            y1:half_way,
-                            allow_click : true,
-                        });
-                        recruitment_type_button.draw();
-
-                        draw_text(xx+(spacing_x*3)-15, half_way+(spacing_y)-20, $"Req:{_recruit_world.recruit_cost * 2}");
-                        if (_recruit_world.recruit_cost > 0) {
-                            recruitment_costdown_button.update({
-                                x1:xx+(spacing_x*2)+35,
-                                y1:half_way+(spacing_y),
-                                allow_click : true,
-                            });
-                            recruitment_costdown_button.draw();
-                        }
-                        if (_recruit_world.recruit_cost < 5) {
-                            recruitment_costup_button.update({
-                                x1:xx+(spacing_x*3)+35,
-                                y1:half_way+(spacing_y),
-                                allow_click : true,
-                            });
-                            recruitment_costup_button.draw();
-                        }
-                    }
-                }
-            }
-
+            p_data.draw_planet_population_controls();
         }
         garrison_data_slate.draw(344+main_data_slate.width-4, 160, 0.6, 0.6);          
     }   
@@ -381,7 +333,7 @@ if (obj_controller.selecting_planet!=0){
             var building=instance_create(x,y,obj_temp_build);
             building.target=target;
             building.planet=obj_controller.selecting_planet;
-            if (p_data.has_upgrade(P_features.Secret_Base)) then building.lair=1;
+            building.lair = p_data.has_upgrade(P_features.Secret_Base);
             if (p_data.has_upgrade(P_features.Arsenal)) then building.arsenal=1;
             if (p_data.has_upgrade(P_features.Gene_Vault)) then building.gene_vault=1;
             obj_controller.temp[104]=string(scr_master_loc());
@@ -498,23 +450,24 @@ if (target!=0){
         draw_set_font(fnt_40k_14b);
         draw_text(37.5,413.5,"Select Fleet Combat");
         
-        var i,x3,y3;i=0;
         // x3=46;y3=252;
-        x3=49;y3=441;
+        var x3=49,y3=441;
         
-        repeat(7){i+=1;
+        for (var i=1;i<=7;i++){
             if (en_fleet[i]>0){
                 // draw_sprite_ext(spr_force_icon,en_fleet[i],x3,y3,0.5,0.5,0,c_white,1);
                 scr_image("ui/force",en_fleet[i],x3-16,y3-16,32,32);
                 x3+=64;
             }
         }
-        
-        
     }
 }
 
 pop_draw_return_values();
+}catch(_exception){
+    handle_exception(_exception);
+    instance_destroy();
+}
 
 /* */
 
