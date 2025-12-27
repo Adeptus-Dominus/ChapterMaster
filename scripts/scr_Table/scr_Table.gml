@@ -18,8 +18,6 @@ function Table(data) constructor{
     
     move_data_to_current_scope(data);
     
-    update();
-    
     static update = function(data){
         move_data_to_current_scope(data);
         w = 0; 
