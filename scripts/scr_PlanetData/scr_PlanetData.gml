@@ -254,13 +254,7 @@ function PlanetData(planet, system) constructor {
             } else {
                 var _duration = (choose(1, 2) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
             }
-            add_event({
-                duration: _duration,
-                e_id: "governor_assassination",
-                variant: assaination_type,
-                system: system.name,
-                planet: planet,
-            });
+            add_event({duration: _duration, e_id: "governor_assassination", variant: assaination_type, system: system.name, planet: planet});
         }
         return _text;
     };
@@ -967,16 +961,7 @@ function PlanetData(planet, system) constructor {
         var pop_string = $"Population: {display_population()}";
 
         var _button_manager = obj_star_select.button_manager;
-        _button_manager
-            .update({
-                label: pop_string,
-                tooltip: "population data toggle with 'P'",
-                keystroke: press_exclusive(ord("P")),
-                x1: xx + 480,
-                y1: yy + 217,
-                w: 200,
-                h: 22,
-            });
+        _button_manager.update({label: pop_string, tooltip: "population data toggle with 'P'", keystroke: press_exclusive(ord("P")), x1: xx + 480, y1: yy + 217, w: 200, h: 22});
         _button_manager.update_loc();
         if (_button_manager.draw()) {
             obj_star_select.population = !obj_star_select.population;

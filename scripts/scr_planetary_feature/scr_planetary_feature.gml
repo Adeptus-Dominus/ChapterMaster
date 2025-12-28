@@ -434,15 +434,7 @@ function discover_artifact_popup(feature) {
         choice_func: ground_forces_collect_artifact,
     };
     if ((current_owner >= eFACTION.Tyranids) || ((current_owner == eFACTION.Ork) && (pdf <= 0))) {
-        pop.add_option(
-            [
-                {
-                    str1: "Let it be",
-                    choice_func: ground_mission_leave_it_function,
-                },
-                _take_arti
-            ]
-        );
+        pop.add_option([{str1: "Let it be", choice_func: ground_mission_leave_it_function}, _take_arti]);
     } else {
         var _opt1 = "Request audience with the ";
         switch (current_owner) {
@@ -459,17 +451,11 @@ function discover_artifact_popup(feature) {
                 break;
             case eFACTION.Mechanicus:
                 _opt1 += "Mechanicus";
-                pop.add_option({
-                    str1: "Let it be.  The Mechanicus' wrath is not lightly provoked.",
-                    choice_func: ground_mission_leave_it_function,
-                });
+                pop.add_option({str1: "Let it be.  The Mechanicus' wrath is not lightly provoked.", choice_func: ground_mission_leave_it_function});
                 break;
             case eFACTION.Inquisition:
                 _opt1 += "Inquisition";
-                pop.add_option({
-                    choice_func: ground_mission_leave_it_function,
-                    str1: "Let it be.  The Inquisition's wrath is not lightly provoked.",
-                });
+                pop.add_option({choice_func: ground_mission_leave_it_function, str1: "Let it be.  The Inquisition's wrath is not lightly provoked."});
                 break;
             case eFACTION.Ecclesiarchy:
                 _opt1 += "Ecclesiarchy";
@@ -503,15 +489,7 @@ function discover_artifact_popup(feature) {
                 break;
         }
         _opt1 += " regarding the Artifact.";
-        pop.add_option(
-            [
-                {
-                    str1: _opt1,
-                    choice_func: governor_negotiate_artifact,
-                },
-                _take_arti
-            ]
-        );
+        pop.add_option([{str1: _opt1, choice_func: governor_negotiate_artifact}, _take_arti]);
     }
 }
 
@@ -609,20 +587,14 @@ function discover_stc_fragment_popup(techies, mechanicus_reps) {
             pop.text = $"{_text}. The present Tech Priests stress they will not condone a mission to steal the STC Fragment.";
         } else if (techies > 0) {
             pop.text = $"{_text}. Taking it may be seen as an act of war. What is thy will?";
-            pop.add_option({
-                str1: "Attempt to steal the STC Fragment.",
-                choice_func: remove_stc_from_planet,
-            }); // TODO: Fix this option, as it crashes the game when the battle starts);
+            pop.add_option({str1: "Attempt to steal the STC Fragment.", choice_func: remove_stc_from_planet}); // TODO: Fix this option, as it crashes the game when the battle starts);
         } else {
             pop.text = $"{_text}. Taking it may be seen as an act of war. The ground team has no Techmarines, so you have no choice but to leave it be.";
         }
     } else {
         var _text = $"An STC Fragment appears to be located upon {name()}";
         if (techies > 0) {
-            array_push(options, {
-                str1: "Swiftly take the STC Fragment.",
-                choice_func: remove_stc_from_planet,
-            });
+            array_push(options, {str1: "Swiftly take the STC Fragment.", choice_func: remove_stc_from_planet});
             if (mechanicus_reps == 0) {
                 pop.text = $"{_text}; what it might contain is unknown. Your {obj_ini.role[100][16]}s wish to reclaim, identify, and put it to use immediately. What is thy will?";
             } else {
@@ -634,15 +606,9 @@ function discover_stc_fragment_popup(techies, mechanicus_reps) {
             pop.text = $"{_text}; what it might contain is unknown. The ground team has no {obj_ini.role[100][16]}s or Tech Priests, so you have no choice but to leave it be or notify the Mechanicus about its location.";
         }
 
-        array_push(options, {
-            str1: "Send it to the Adeptus Mechanicuss.",
-            choice_func: send_stc_to_adeptus_mech,
-        });
+        array_push(options, {str1: "Send it to the Adeptus Mechanicuss.", choice_func: send_stc_to_adeptus_mech});
     }
-    array_push(options, {
-        str1: "Leave it.",
-        choice_func: ground_mission_leave_it_function,
-    });
+    array_push(options, {str1: "Leave it.", choice_func: ground_mission_leave_it_function});
 
     pop.add_option(options);
 }

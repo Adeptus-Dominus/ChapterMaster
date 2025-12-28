@@ -120,153 +120,19 @@ draw_helms = true;
 var _culture_styles_array = [];
 
 for (var i = 0; i < array_length(global.culture_styles); i++) {
-    array_push(_culture_styles_array, {
-        str1: global.culture_styles[i],
-        font: fnt_40k_14b,
-    });
+    array_push(_culture_styles_array, {str1: global.culture_styles[i], font: fnt_40k_14b});
 }
 
 buttons = {
     home_world_recruit_share: new ToggleButton(),
-    complex_homeworld: new ToggleButton({
-        x1: 550,
-        y1: 422,
-        active: false,
-        str1: "Spawn System Options",
-        tooltip: "Click for Complex Spawn System Options",
-        button_color: CM_GREEN_COLOR,
-    }),
-    home_spawn_loc_options: new RadioSet(
-        [
-            {
-                str1: "Fringe",
-                font: fnt_40k_30b,
-                tooltip: "Your home system sits at the edge of the sector",
-            },
-            {
-                str1: "Central",
-                font: fnt_40k_30b,
-                tooltip: "Your home system is relativly central in the sector",
-            }
-        ],
-        "Home Spwan\nLocation"
-    ),
-    recruit_home_relationship: new RadioSet(
-        [
-            {
-                str1: "Share Planet",
-                font: fnt_40k_14b,
-                tooltip: "Your recruit world will be the same planet as your home world",
-            },
-            {
-                str1: "Share System",
-                font: fnt_40k_14b,
-                tooltip: "Your recruit world will be in the the same system as your home world",
-            },
-            {
-                str1: "Seperate",
-                font: fnt_40k_14b,
-                tooltip: "Your recruit world will be in a different system to your homeworld",
-            }
-        ],
-        "Recruit world"
-    ),
-    home_warp: new RadioSet(
-        [
-            {
-                str1: "Secluded",
-                font: fnt_40k_14b,
-                tooltip: "Your home system is logistically secluded with no major warp routes",
-            },
-            {
-                str1: "Connected",
-                font: fnt_40k_14b,
-                tooltip: "Your home system is connected to the larger imperium and system by warp routes",
-            },
-            {
-                str1: "Warp Hub",
-                font: fnt_40k_14b,
-                tooltip: "Your home system is in a very stable warp area, accessible by several warp lanes",
-            }
-        ],
-        "Home warp access"
-    ),
-    home_planets: new RadioSet(
-        [
-            {
-                str1: "one",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "two",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "three",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "four",
-                font: fnt_40k_14b,
-            }
-        ],
-        "Home System Planets"
-    ),
+    complex_homeworld: new ToggleButton({x1: 550, y1: 422, active: false, str1: "Spawn System Options", tooltip: "Click for Complex Spawn System Options", button_color: CM_GREEN_COLOR}),
+    home_spawn_loc_options: new RadioSet([{str1: "Fringe", font: fnt_40k_30b, tooltip: "Your home system sits at the edge of the sector"}, {str1: "Central", font: fnt_40k_30b, tooltip: "Your home system is relativly central in the sector"}], "Home Spwan\nLocation"),
+    recruit_home_relationship: new RadioSet([{str1: "Share Planet", font: fnt_40k_14b, tooltip: "Your recruit world will be the same planet as your home world"}, {str1: "Share System", font: fnt_40k_14b, tooltip: "Your recruit world will be in the the same system as your home world"}, {str1: "Seperate", font: fnt_40k_14b, tooltip: "Your recruit world will be in a different system to your homeworld"}], "Recruit world"),
+    home_warp: new RadioSet([{str1: "Secluded", font: fnt_40k_14b, tooltip: "Your home system is logistically secluded with no major warp routes"}, {str1: "Connected", font: fnt_40k_14b, tooltip: "Your home system is connected to the larger imperium and system by warp routes"}, {str1: "Warp Hub", font: fnt_40k_14b, tooltip: "Your home system is in a very stable warp area, accessible by several warp lanes"}], "Home warp access"),
+    home_planets: new RadioSet([{str1: "one", font: fnt_40k_14b}, {str1: "two", font: fnt_40k_14b}, {str1: "three", font: fnt_40k_14b}, {str1: "four", font: fnt_40k_14b}], "Home System Planets"),
     culture_styles: new MultiSelect(_culture_styles_array, "Chapter Visual Styles"),
-    company_liveries_choice: new RadioSet(
-        [
-            {
-                str1: "HQ",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "I",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "II",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "III",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "IV",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "V",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "VI",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "VII",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "VIII",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "IX",
-                font: fnt_40k_14b,
-            },
-            {
-                str1: "X",
-                font: fnt_40k_14b,
-            }
-        ],
-        "Companies"
-    ),
-    livery_switch: new UnitButtonObject({
-        x1: 570,
-        y1: 215,
-        label: "Simple Livery",
-    }),
+    company_liveries_choice: new RadioSet([{str1: "HQ", font: fnt_40k_14b}, {str1: "I", font: fnt_40k_14b}, {str1: "II", font: fnt_40k_14b}, {str1: "III", font: fnt_40k_14b}, {str1: "IV", font: fnt_40k_14b}, {str1: "V", font: fnt_40k_14b}, {str1: "VI", font: fnt_40k_14b}, {str1: "VII", font: fnt_40k_14b}, {str1: "VIII", font: fnt_40k_14b}, {str1: "IX", font: fnt_40k_14b}, {str1: "X", font: fnt_40k_14b}], "Companies"),
+    livery_switch: new UnitButtonObject({x1: 570, y1: 215, label: "Simple Livery"}),
 };
 
 with (buttons) {

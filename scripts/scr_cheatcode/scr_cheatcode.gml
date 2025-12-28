@@ -228,13 +228,7 @@ function scr_cheatcode(argument0) {
                         event_fallen();
                     } else if (cheat_arguments[0] == "surfremove") {
                         var _star_id = scr_random_find(0, true, "", "");
-                        add_event({
-                            duration: 2,
-                            e_id: "governor_assassination",
-                            variant: 2,
-                            system: _star_id.name,
-                            planet: irandom_range(1, _star_id.planets),
-                        });
+                        add_event({duration: 2, e_id: "governor_assassination", variant: 2, system: _star_id.name, planet: irandom_range(1, _star_id.planets)});
                     } else if (cheat_arguments[0] == "strangebuild") {
                         show_debug_message("strange build");
                         strange_build_event();
@@ -550,8 +544,8 @@ function draw_planet_debug_forces() {
         // Handle minus click
         if (point_and_click([147, _y, 167, _y + 20])) {
             target[$ key][current_planet] = clamp(target[$ key][current_planet] - 1, 0, 6);
-        } else // Handle plus click
-        if (point_and_click([177, _y, 197, _y + 20])) {
+        } else if (point_and_click([177, _y, 197, _y + 20])) {
+            // Handle plus click
             target[$ key][current_planet] = clamp(target[$ key][current_planet] + 1, 0, 6);
         }
     }
@@ -566,26 +560,7 @@ function new_system_debug_popup() {
     pop.star = instance_nearest(mouse_x, mouse_y, obj_star);
     pop.text = $"What would you like to do at {pop.star.name}?";
 
-    pop.add_option(
-        [
-            {
-                str1: "Enemy invasion",
-                choice_func: system_debug_enemy_invasion,
-            },
-            {
-                str1: "Spawn Fleet",
-                choice_func: system_debug_spawn_fleet,
-            },
-            {
-                str1: "Delete Fleet",
-                choice_func: system_debug_remove_fleet,
-            },
-            {
-                str1: "Cancel",
-                choice_func: popup_default_close,
-            }
-        ]
-    );
+    pop.add_option([{str1: "Enemy invasion", choice_func: system_debug_enemy_invasion}, {str1: "Spawn Fleet", choice_func: system_debug_spawn_fleet}, {str1: "Delete Fleet", choice_func: system_debug_remove_fleet}, {str1: "Cancel", choice_func: popup_default_close}]);
 }
 
 function system_debug_enemy_invasion() {
@@ -672,22 +647,7 @@ function system_debug_enemy_invasion_spawn() {
 
 function system_debug_spawn_fleet() {
     text = "Imperium, Heretic, or Xeno?";
-    replace_options(
-        [
-            {
-                str1: "Imperium",
-                choice_func: debug_spawn_imperium_fleet,
-            },
-            {
-                str1: "Heretic",
-                choice_func: debug_spawn_heretic_fleet,
-            },
-            {
-                str1: "Xeno",
-                choice_func: debug_add_xenos_fleet_options,
-            }
-        ]
-    );
+    replace_options([{str1: "Imperium", choice_func: debug_spawn_imperium_fleet}, {str1: "Heretic", choice_func: debug_spawn_heretic_fleet}, {str1: "Xeno", choice_func: debug_add_xenos_fleet_options}]);
 }
 
 function debug_spawn_imperium_fleet() {
@@ -716,22 +676,7 @@ function debug_spawn_heretic_fleet() {
 
 function debug_add_xenos_fleet_options() {
     text = "Select Xeno faction to spawn:";
-    replace_options(
-        [
-            {
-                str1: "Ork",
-                choice_func: debug_spawn_ork_fleet,
-            },
-            {
-                str1: "Tau",
-                choice_func: debug_spawn_tau_fleet,
-            },
-            {
-                str1: "Cancel",
-                choice_func: popup_default_close,
-            }
-        ]
-    );
+    replace_options([{str1: "Ork", choice_func: debug_spawn_ork_fleet}, {str1: "Tau", choice_func: debug_spawn_tau_fleet}, {str1: "Cancel", choice_func: popup_default_close}]);
 }
 
 function debug_spawn_ork_fleet() {
@@ -790,10 +735,7 @@ function system_debug_remove_fleet() {
         var _opt = new DeleteFleetOption(_fleet);
         array_push(_opts, _opt);
     }
-    array_push(_opts, {
-        "str1": "exit",
-        choice_func: popup_default_close,
-    });
+    array_push(_opts, {"str1": "exit", choice_func: popup_default_close});
 
     replace_options(_opts, false, false);
 

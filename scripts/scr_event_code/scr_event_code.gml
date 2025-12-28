@@ -57,8 +57,8 @@ function event_end_turn_action() {
                     scr_alert("", "", twix, 0, 0);
                     scr_event_log("", twix, _star_name);
                 }
-            } else // Changes relation to good
-            if (_event.e_id == "enemy_imperium") {
+            } else if (_event.e_id == "enemy_imperium") {
+                // Changes relation to good
                 scr_alert("green", "enemy", "You have made amends with your enemy in the Imperium.", 0, 0);
                 disposition[eFACTION.Imperium] += 20;
                 scr_event_log("", "Amends made with Imperium.");
@@ -74,8 +74,8 @@ function event_end_turn_action() {
                 scr_alert("green", "enemy", "You have made amends with your enemy in the Ecclesiarchy.", 0, 0);
                 disposition[eFACTION.Ecclesiarchy] += 20;
                 scr_event_log("", "Amends made with Ecclesiarchy enemy.");
-            } else // Sector commander losses its mind
-            if (_event.e_id == "imperium_daemon") {
+            } else if (_event.e_id == "imperium_daemon") {
+                // Sector commander losses its mind
                 var alert_string = $"Sector Commander {faction_leader[eFACTION.Imperium]} has gone insane.";
                 scr_alert("red", "lol", alert_string, 0, 0);
                 faction_defeated[eFACTION.Imperium] = 1;
@@ -342,14 +342,7 @@ function strange_build_event() {
             heritical_item = 1;
         }
 
-        add_event({
-            e_id: "strange_building",
-            duration: 1,
-            name: _unit.name(),
-            company: company,
-            marine: marine,
-            crafted: crafted_object,
-        });
+        add_event({e_id: "strange_building", duration: 1, name: _unit.name(), company: company, marine: marine, crafted: crafted_object});
 
         scr_popup("Can He Build marine?!?", text, "tech_build", "");
 
@@ -426,10 +419,7 @@ function make_faction_enemy_event() {
             exit;
     }
     if (_e_name != "") {
-        add_event({
-            duration: irandom_range(12, 96),
-            e_id: _e_name,
-        });
+        add_event({duration: irandom_range(12, 96), e_id: _e_name});
         alter_disposition(chosen_faction, -20);
         text += "; relations with them will be soured for the forseable future.";
         scr_popup("Diplomatic Incident", text, "angry", "");

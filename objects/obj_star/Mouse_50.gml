@@ -12,8 +12,8 @@ if (!global.ui_click_lock) {
     if (obj_controller.location_viewer.is_entered) {
         exit;
     }
-    // if ((obj_controller.zoomed==0) and (mouse_y <__view_get( e__VW.YView, 0 )+62)) or (obj_controller.menu!=0) then exit;
-    // if ((obj_controller.zoomed==0) and (mouse_y>__view_get( e__VW.YView, 0 )+830)) or (obj_controller.menu!=0) then exit;
+    // if ((obj_controller.zoomed==0) and (mouse_y <camera_get_view_y(view_camera[0])+62)) or (obj_controller.menu!=0) then exit;
+    // if ((obj_controller.zoomed==0) and (mouse_y>camera_get_view_y(view_camera[0])+830)) or (obj_controller.menu!=0) then exit;
     if ((p_type[1] == "Craftworld") && (obj_controller.known[eFACTION.Eldar] == 0)) {
         exit;
     }

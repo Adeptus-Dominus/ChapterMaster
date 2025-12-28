@@ -51,11 +51,7 @@ function TradeAttempt(diplomacy) constructor {
         }
     };
 
-    clear_button = new UnitButtonObject({
-        x1: 510,
-        y1: 649,
-        label: "Clear",
-    });
+    clear_button = new UnitButtonObject({x1: 510, y1: 649, label: "Clear"});
     clear_button.bind_method = clear_options;
     clear_button.bind_scope = self;
 
@@ -270,9 +266,7 @@ function TradeAttempt(diplomacy) constructor {
             show_debug_message("trade_success");
             if (_success) {
                 successful_trade_attempt();
-                scr_dialogue("agree", {
-                    prepend: "[[Trade Accepted.  Shipment initialized.]]",
-                });
+                scr_dialogue("agree", {prepend: "[[Trade Accepted.  Shipment initialized.]]"});
                 //force_goodbye=1;
                 obj_controller.trading = 0;
                 if ((diplomacy_faction == 6) || (diplomacy_faction == 7) || (diplomacy_faction == 8)) {
@@ -291,9 +285,7 @@ function TradeAttempt(diplomacy) constructor {
                     diplo_text = "";
                 }
                 annoyed[_dip] += 1;
-                scr_dialogue("disagree", {
-                    prepend: "[[Trade Refused]]",
-                });
+                scr_dialogue("disagree", {prepend: "[[Trade Refused]]"});
                 rando = choose(1, 2, 3);
                 if (_rela == "hostile") {
                     force_goodbye = 1;
@@ -331,11 +323,7 @@ function TradeAttempt(diplomacy) constructor {
         }
     };
 
-    offer_button = new UnitButtonObject({
-        x1: 630,
-        y1: 649,
-        label: "Offer",
-    });
+    offer_button = new UnitButtonObject({x1: 630, y1: 649, label: "Offer"});
     offer_button.bind_method = function() {
         if (obj_controller.diplo_last != " offer") {
             attempt_trade();
@@ -343,11 +331,7 @@ function TradeAttempt(diplomacy) constructor {
     };
     offer_button.bind_scope = self;
 
-    exit_button = new UnitButtonObject({
-        x1: 818,
-        y1: 796,
-        label: "Exit",
-    });
+    exit_button = new UnitButtonObject({x1: 818, y1: 796, label: "Exit"});
 
     exit_button.bind_method = function() {
         with (obj_controller) {
@@ -368,15 +352,7 @@ function TradeAttempt(diplomacy) constructor {
     exit_button.bind_scope = self;
 
     static new_demand_buttons = function(trade_disp, name, trade_type, max_take = 100000) {
-        var _option = new UnitButtonObject({
-            label: name,
-            number: 0,
-            disp: trade_disp,
-            trade_type: trade_type,
-            max_take: max_take,
-            number_last: 0,
-            diplomacy_faction,
-        });
+        var _option = new UnitButtonObject({label: name, number: 0, disp: trade_disp, trade_type: trade_type, max_take: max_take, number_last: 0, diplomacy_faction});
         with (_option) {
             bind_method = function() {
                 if (max_take == 1) {
@@ -443,15 +419,7 @@ function TradeAttempt(diplomacy) constructor {
     }
 
     static new_offer_option = function(trade_disp = -100, name, trade_type, max_count = 1) {
-        var _option = new UnitButtonObject({
-            label: name,
-            number: 0,
-            max_number: max_count,
-            disp: trade_disp,
-            trade_type: trade_type,
-            number_last: 0,
-            diplomacy_faction,
-        });
+        var _option = new UnitButtonObject({label: name, number: 0, max_number: max_count, disp: trade_disp, trade_type: trade_type, number_last: 0, diplomacy_faction});
         with (_option) {
             bind_method = function() {
                 if (max_number == 1) {

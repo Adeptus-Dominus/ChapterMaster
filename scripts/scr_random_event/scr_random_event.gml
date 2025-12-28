@@ -690,10 +690,7 @@ function scr_random_event(execute_now) {
     } else if (chosen_event == eEVENT.chaos_invasion) {
         log_message("RE: Chaos Invasion");
 
-        add_event({
-            e_id: "chaos_invasion",
-            duration: 1,
-        });
+        add_event({e_id: "chaos_invasion", duration: 1});
 
         var psyker_intolerant = scr_has_disadv("Psyker Intolerant");
         var has_chief_psyker = scr_role_count("Chief " + string(obj_ini.role[100][17]), "") >= 1;
