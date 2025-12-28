@@ -2,10 +2,10 @@
 #macro DEFAULT_TOOLTIP_VIEW_OFFSET 32
 #macro DEFAULT_LINE_GAP -1
 #macro LB_92 "############################################################################################"
-#macro DATE_TIME_1 current_day"-"current_month"-"current_year"-"format_time(current_hour)""format_time(current_minute)""format_time(format_time(current_second))""
-#macro DATE_TIME_2 current_day"-"current_month"-"current_year"|"format_time(current_hour)":"format_time(current_minute)":"format_time(current_second)""
-#macro DATE_TIME_3 current_day"-"current_month"-"current_year" "format_time(current_hour)":"format_time(current_minute)":"format_time(current_second)""
-#macro TIME_1 format_time(current_hour)":"format_time(current_minute)":"format_time(current_second)""
+#macro DATE_TIME_1 (current_day+"-"+current_month+"-"+current_year+"-"+format_time(current_hour)+""+format_time(current_minute)+""+format_time(current_second)+"")
+#macro DATE_TIME_2 (current_day+"-"+current_month+"-"+current_year+"|"+format_time(current_hour)+":"+format_time(current_minute)+":"+format_time(current_second)+"")
+#macro DATE_TIME_3 (current_day+"-"+current_month+"-"+current_year+" "+format_time(current_hour)+":"+format_time(current_minute)+":"+format_time(current_second)+"")
+#macro TIME_1 (format_time(current_hour)+":"+format_time(current_minute)+":"+format_time(current_second)+"")
 #macro CM_GREEN_COLOR #34bc75
 #macro CM_RED_COLOR #bf4040
 #macro MANAGE_MAN_SEE 34
@@ -20,7 +20,7 @@
 #macro LIST_BASIC_POWER_ARMOUR ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour","Power Armour"]
 #macro LIST_TERMINATOR_ARMOUR ["Terminator Armour", "Tartaros","Cataphractii"]
 #macro FACTION_NAMES ["","Your Chapter", "Imperium of Man","Adeptus Mechanicus","Inquisition","Ecclesiarchy","Eldar","Orks", "Tyranid Hive","Tau Empire","Chaos","Heretics","Genestealer Cults", "Necron Dynasties"]
-#macro XENOS_FACTIONS [6,7,8,9]
+#macro XENOS_FACTIONS [6,7,8,9,12,13]
 
 #macro FLEET_MOVE_OPTIONS ["move", "crusade1","crusade2","crusade3", "mars_spelunk1"]
 

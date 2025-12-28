@@ -495,12 +495,6 @@ ERROR: C:\Users\Sinthorion\AppData\Local\GameMakerStudio2\GMS2TEMP\conv\gmx\Chap
 ERROR: C:\Users\Sinthorion\AppData\Local\GameMakerStudio2\GMS2TEMP\conv\gmx\ChapterMaster_7ABEC6D2\scripts\scr_chaos_alliance_test\scr_chaos_alliance_test.gml - 89: unexpected syntax error
 Too many errors - GML not processed : ${project_dir}\scripts\scr_chaos_alliance_test\scr_chaos_alliance_test.gml
 
-Converting GML script: ${project_dir}\scripts\scr_zoom\scr_zoom.gml
-Converted builtin - line 5: view_visible[0]=true -> __view_set( e__VW.Visible, 0, true )
-Converted builtin - line 5: view_visible[1]=false -> __view_set( e__VW.Visible, 1, false )
-Converted builtin - line 6: view_visible[0]=false -> __view_set( e__VW.Visible, 0, false )
-Converted builtin - line 6: view_visible[1]=true -> __view_set( e__VW.Visible, 1, true )
-
 Converting GML script: ${project_dir}\scripts\scr_start_load\scr_start_load.gml
 ERROR: C:\Users\Sinthorion\AppData\Local\GameMakerStudio2\GMS2TEMP\conv\gmx\ChapterMaster_7ABEC6D2\scripts\scr_start_load\scr_start_load.gml - 272: unexpected syntax error
 ERROR: C:\Users\Sinthorion\AppData\Local\GameMakerStudio2\GMS2TEMP\conv\gmx\ChapterMaster_7ABEC6D2\scripts\scr_start_load\scr_start_load.gml - 272: unexpected terminal operator new
@@ -1060,12 +1054,6 @@ Converted builtin - line 230: view_yview[0] -> __view_get( e__VW.YView, 0 )
 Converted builtin - line 231: view_yview[0] -> __view_get( e__VW.YView, 0 )
 Converted builtin - line 248: view_yview[0] -> __view_get( e__VW.YView, 0 )
 
-Converting GML script: ${project_dir}\objects\obj_controller\KeyPress_32.gml
-Converted builtin - line 33: view_visible[0]=false -> __view_set( e__VW.Visible, 0, false )
-Converted builtin - line 33: view_visible[1]=true -> __view_set( e__VW.Visible, 1, true )
-Converted builtin - line 34: view_visible[0]=true -> __view_set( e__VW.Visible, 0, true )
-Converted builtin - line 34: view_visible[1]=false -> __view_set( e__VW.Visible, 1, false )
-
 Converting GML script: ${project_dir}\objects\obj_mass_equip\Draw_0.gml
 Converted builtin - line 3: view_xview[0] -> __view_get( e__VW.XView, 0 )
 Converted builtin - line 4: view_yview[0] -> __view_get( e__VW.YView, 0 )
@@ -1128,10 +1116,6 @@ Converted builtin - line 89: view_xview[0] -> __view_get( e__VW.XView, 0 )
 Converted builtin - line 7: view_yview[0] -> __view_get( e__VW.YView, 0 )
 Converted builtin - line 89: view_yview[0] -> __view_get( e__VW.YView, 0 )
 
-Converting GML script: ${project_dir}\objects\obj_p_fleet\Alarm_3.gml
-Converted builtin - line 16: view_visible[0]=true -> __view_set( e__VW.Visible, 0, true )
-Converted builtin - line 16: view_visible[1]=false -> __view_set( e__VW.Visible, 1, false )
-
 Converting GML script: ${project_dir}\objects\obj_p_fleet\Mouse_50.gml
 Converted builtin - line 21: view_yview[0] -> __view_get( e__VW.YView, 0 )
 Converted builtin - line 22: view_yview[0] -> __view_get( e__VW.YView, 0 )
@@ -1153,10 +1137,6 @@ Converted builtin - line 26: view_yview[0] -> __view_get( e__VW.YView, 0 )
 Converting GML script: ${project_dir}\objects\obj_en_fleet\Alarm_4.gml
 Removing instance reference from builtin - line 7 : self.
 Converted builtin - line 7: instance_id -> instance_id_get( 0 )
-
-Converting GML script: ${project_dir}\objects\obj_en_fleet\Alarm_3.gml
-Converted builtin - line 15: view_visible[0]=true -> __view_set( e__VW.Visible, 0, true )
-Converted builtin - line 15: view_visible[1]=false -> __view_set( e__VW.Visible, 1, false )
 
 Converting GML script: ${project_dir}\objects\obj_en_fleet\Alarm_1.gml
 ERROR: C:\Users\Sinthorion\AppData\Local\GameMakerStudio2\GMS2TEMP\conv\gmx\ChapterMaster_7ABEC6D2\objects\obj_en_fleet\Alarm_1.gml - 908: unexpected syntax error
@@ -1360,12 +1340,6 @@ Converted builtin - line 364: view_yview[0] -> __view_get( e__VW.YView, 0 )
 Converted builtin - line 458: view_yview[0] -> __view_get( e__VW.YView, 0 )
 Converted builtin - line 506: view_yview[0] -> __view_get( e__VW.YView, 0 )
 
-Converting GML script: ${project_dir}\objects\obj_popup\KeyPress_32.gml
-Converted builtin - line 5: view_visible[0]=false -> __view_set( e__VW.Visible, 0, false )
-Converted builtin - line 5: view_visible[1]=true -> __view_set( e__VW.Visible, 1, true )
-Converted builtin - line 6: view_visible[0]=true -> __view_set( e__VW.Visible, 0, true )
-Converted builtin - line 6: view_visible[1]=false -> __view_set( e__VW.Visible, 1, false )
-
 Converting GML script: ${project_dir}\objects\obj_popup_dialogue\Step_0.gml
 Converted builtin - line 12: view_xview[0] -> __view_get( e__VW.XView, 0 )
 Converted builtin - line 13: view_yview[0] -> __view_get( e__VW.YView, 0 )
@@ -1415,10 +1389,6 @@ Converted builtin - line 4: view_yview[0] -> __view_get( e__VW.YView, 0 )
 
 Converting GML script: ${project_dir}\objects\obj_star\Alarm_4.gml
 Converted builtin - line 33: instance_id -> instance_id_get( 0 )
-
-Converting GML script: ${project_dir}\objects\obj_star\Alarm_3.gml
-Converted builtin - line 16: view_visible[0]=true -> __view_set( e__VW.Visible, 0, true )
-Converted builtin - line 16: view_visible[1]=false -> __view_set( e__VW.Visible, 1, false )
 
 Converting GML script: ${project_dir}\objects\obj_star\Mouse_50.gml
 Converted builtin - line 17: view_yview[0] -> __view_get( e__VW.YView, 0 )
