@@ -261,12 +261,12 @@ function find_ships_fleet(index) {
     return _chosen_fleet;
 }
 
-function add_ship_to_fleet(index, _fleet = "none") {
+function add_ship_to_fleet(index, fleet = noone) {
     var _escorts = ["Escort", "Hunter", "Gladius"];
     var _capitals = ["Gloriana", "Battle Barge"];
     var _frigates = ["Strike Cruiser"];
 
-    if (_fleet == "none") {
+    if (fleet == noone) {
         if (array_contains(_capitals, obj_ini.ship_class[index])) {
             array_push(capital, obj_ini.ship[index]);
             array_push(capital_num, index);
@@ -287,7 +287,7 @@ function add_ship_to_fleet(index, _fleet = "none") {
             escort_number++;
         }
     } else {
-        with (_fleet) {
+        with (fleet) {
             add_ship_to_fleet(index);
         }
     }
@@ -473,10 +473,10 @@ function player_retreat_from_fleet_combat() {
     }
 }
 
-function fleet_full_ship_array(fleet = "none", exclude_capitals = false, exclude_frigates = false, exclude_escorts = false) {
+function fleet_full_ship_array(fleet = noone, exclude_capitals = false, exclude_frigates = false, exclude_escorts = false) {
     var all_ships = [];
     var _ship_count = array_length(obj_ini.ship);
-    if (fleet == "none") {
+    if (fleet == noone) {
         if (!exclude_capitals) {
             for (var i = 0; i < array_length(capital_num); i++) {
                 if (capital_num[i] < _ship_count) {
