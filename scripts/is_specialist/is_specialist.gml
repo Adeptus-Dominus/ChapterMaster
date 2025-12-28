@@ -14,7 +14,7 @@
 #macro SPECIALISTS_HEADS "heads"
 
 /// @description Retrieves the active roles from the game, either from the obj_creation or obj_ini object.
-/// @returns {array}
+/// @returns {array<string>}
 function active_roles() {
     var _roles = instance_exists(obj_creation) ? obj_creation.role[100] : obj_ini.role[100];
     return _roles;
@@ -315,15 +315,14 @@ function collect_by_religeon(religion, sub_cult = "", location = "") {
     return _units;
 }
 
-/// @description Processes the selection of units based on group parameters and updates controller data
-/// @param {array} group The array of units to process for selection
-/// @param {struct} selection_data Data structure containing selection parameters and state
-
 enum MissionSelectType {
     Units,
     Squads,
 }
 
+/// @description Processes the selection of units based on group parameters and updates controller data
+/// @param {array} group The array of units to process for selection
+/// @param {struct} selection_data Data structure containing selection parameters and state
 function group_selection(group, selection_data = {}) {
     try {
         var unit, s, unit_location;

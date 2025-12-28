@@ -14,8 +14,8 @@ function interpret_diag_string(string_data, data) {
     // Case 2: Raw string
     if (is_string(string_data)) {
         return string_interpolate_from_struct(string_data, data);
-    } else // Case 3: Structs → interpret
-    if (is_struct(string_data)) {
+    } else if (is_struct(string_data)) {
+        // Case 3: Structs → interpret
         // Multipart sequences
         if (struct_exists(string_data, "multi_part")) {
             for (var i = 0; i < array_length(string_data.parts); i++) {
