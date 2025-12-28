@@ -735,7 +735,7 @@ inquisitor_gender = array_create(11, 0);
 inquisitor_type = array_create(11, "");
 inquisitor = array_create(11, "");
 
-for (var i = 0, l = array_length(inquisitor_gender); i < l; i++) {
+for (var i = 0; i < 11; i++) { // The Magic number isn't great but it's quicker to read as long as you read the preceeding four lines and see it's the same magic number.
     inquisitor_gender[i] = choose(0, 0, 0, 1, 1, 1, 1);
     inquisitor_type[i] = choose("Ordo Malleus", "Ordo Xenos", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus");
     inquisitor[i] = global.name_generator.generate_imperial_name(inquisitor_gender[i]);
@@ -1366,6 +1366,7 @@ temp[33] = string_upper(scr_thought()); // Thought of the day
 var njm = 34, com = 0, vih = 0, word = "", masta = 0, forga = 0, chapla = 0, apa = 0, liba = 0, techa = 0, libra = 0, coda = 0, lexa = 0, apotha = 0, old_dudes = 0;
 
 var honoh = 0, termi = 0, veter = 0, capt = 0, chap = 0, apoth = 0, stand = 0, dread = 0, champ = 0, tact = 0, assa = 0, deva = 0, rhino = 0, speeder = 0, raider = 0, standard = 0, bike = 0, scou = 0, whirl = 0, pred = 0, lib = 0, serg = 0, vet_serg = 0;
+
 for (var mm = 0; mm <= 100; mm++) {
     if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.ChapterMaster]) {
         masta = 1;
@@ -1426,8 +1427,10 @@ if (liba == 1) {
 
 vih = string_pos(",", temp[njm]);
 temp[njm] = string_delete(temp[njm], vih, 1);
+
 njm += 1;
 temp[njm] = "Specialist branches staffed by";
+
 if (techa > 0) {
     temp[njm] += $", {string_plural_count(obj_ini.role[100][16], techa)}";
 }

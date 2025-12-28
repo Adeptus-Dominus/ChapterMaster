@@ -30,8 +30,7 @@ try {
         fortified = 0;
     }
 
-    var i = 0, u;
-    i = xxx / 10;
+    var u;
 
     if ((fortified > 1) && (enemy + threat != 17)) {
         u = instance_create(0, 0, obj_nfort);
@@ -63,11 +62,14 @@ try {
         u.maxhp[1] = u.hp[1];
     }
 
-    for (var j = 0; j < 10; j++) {
-        i -= 1;
-        u = instance_create(i * 10, 240, obj_enunit);
-        u.column = i - ((xxx / 10) - 10);
+    var u_index = (xxx / 10);
+    
+    for (var i = 0; i < 10; i++) {
+        u_index--;
+        u = instance_create(u_index * 10, 240, obj_enunit);
+        u.column = u_index - ((xxx / 10) - 10);
     }
+    
     // *** Enemy Forces Special Event ***
     // * Malcadon Spyrer *
     if (string_count("spyrer", battle_special) > 0) {

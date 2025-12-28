@@ -160,7 +160,7 @@ if (!zoomed && !zui) {
         }
     } // Checks if the chapter name is less than 140 chars, adjusts chapter_master_name_width accordingly
     var chapter_master_name_width = 1;
-    for (var i = 0; i < 10; i++) {
+    repeat (10) {
         if ((string_width(string_hash_to_newline(string(global.chapter_name))) * chapter_master_name_width) > 140) {
             chapter_master_name_width -= 0.1;
         }

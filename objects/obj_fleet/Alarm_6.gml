@@ -88,7 +88,7 @@ if (total_allies > 0) {
 
 // Buffs here
 // if (ambushers=1) or (enemy=8) then
-attack_mode = "offensive";
+// attack_mode = "offensive";
 // if (enemy=9) then attack_mode="defensive";
 
 if ((ambushers == 1) && (ambushers == 999)) {

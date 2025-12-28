@@ -3,23 +3,17 @@ if (instance_number(obj_ncombat) > 1) {
 }
 
 set_zoom_to_default();
-var co, i;
-co = -1;
-co = 0;
-i = 0;
-hue = 0;
 
+hue = 0;
 turn_count = 0;
+
 log_message("Ground Combat Started");
 
 audio_stop_sound(snd_royal);
 audio_play_sound(snd_battle, 0, true);
 audio_sound_gain(snd_battle, 0, 0);
-var nope = 0;
-if ((obj_controller.master_volume == 0) || (obj_controller.music_volume == 0)) {
-    nope = 1;
-}
-if (nope != 1) {
+
+if ((obj_controller.master_volume != 0) && (obj_controller.music_volume != 0)) {
     audio_sound_gain(snd_battle, 0.25 * obj_controller.master_volume * obj_controller.music_volume, 2000);
 }
 
@@ -57,11 +51,9 @@ instance_activate_object(obj_cursor);
 instance_activate_object(obj_ini);
 instance_activate_object(obj_img);
 
-var i, u;
-i = 11;
-repeat (10) {
-    i -= 1; // This creates the objects to then be filled in
-    u = instance_create(i * 10, 240, obj_pnunit);
+var u;
+for (var i = 10; i >= 0; i--) {
+    u = instance_create(i * 10, 240, obj_pnunit); // This creates the objects to then be filled in
 }
 
 instance_create(0, 0, obj_centerline);
@@ -140,7 +132,6 @@ enemy_forces = 0;
 enemy_max = 0;
 hulk_forces = 0;
 
-i = -1;
 combat_messages = [];
 combat_messages_to_show = 24;
 combat_messages_shown = 0;
@@ -152,8 +143,7 @@ dead_enemies = 0;
 units_lost_counts = {};
 vehicles_lost_counts = {};
 
-repeat (70) {
-    i += 1;
+for (var i = 0; i < 70; i++) {
     lines[i] = "";
     lines_color[i] = "";
     combat_messages[i] = "";
@@ -269,60 +259,73 @@ ambushers = 0;
 if (scr_has_adv("Ambushers")) {
     ambushers = 1;
 }
+
 bolter_drilling = 0;
 if (scr_has_adv("Bolter Drilling")) {
     bolter_drilling = 1;
 }
+
 enemy_eldar = 0;
 if (scr_has_adv("Enemy: Eldar")) {
     enemy_eldar = 1;
 }
+
 enemy_fallen = 0;
 if (scr_has_adv("Enemy: Fallen")) {
     enemy_fallen = 1;
 }
+
 enemy_orks = 0;
 if (scr_has_adv("Enemy: Orks")) {
     enemy_orks = 1;
 }
+
 enemy_tau = 0;
 if (scr_has_adv("Enemy: Tau")) {
     enemy_tau = 1;
 }
+
 enemy_tyranids = 0;
 if (scr_has_adv("Enemy: Tyranids")) {
     enemy_tyranids = 1;
 }
+
 enemy_necrons = 0;
 if (scr_has_adv("Enemy: Necrons")) {
     enemy_necrons = 1;
 }
+
 lightning = 0;
 if (scr_has_adv("Lightning Warriors")) {
     lightning = 1;
 }
+
 siege = 0;
 if (scr_has_adv("Siege Masters")) {
     siege = 1;
 }
+
 slow = 0;
 if (scr_has_adv("Devastator Doctrine")) {
     slow = 1;
 }
+
 melee = 0;
 if (scr_has_adv("Assault Doctrine")) {
     melee = 1;
 }
-//
+
 black_rage = 0;
 if (scr_has_disadv("Black Rage")) {
     black_rage = 1;
     red_thirst = 1;
 }
+
 shitty_luck = 0;
 if (scr_has_disadv("Shitty Luck")) {
     shitty_luck = 1;
 }
+
 favoured_by_the_warp = 0;
 if (scr_has_adv("Favoured By The Warp")) {
     favoured_by_the_warp = 1;
@@ -336,12 +339,12 @@ betchers = obj_ini.betchers; // slight melee penalty
 catalepsean = obj_ini.catalepsean; // minor global attack decrease
 occulobe = obj_ini.occulobe; // penalty if morning and susceptible to flash grenades
 mucranoid = obj_ini.mucranoid; // chance to short-circuit
-//
+
 global_melee = 1;
 global_bolter = 1;
 global_attack = 1;
 global_defense = 1;
-//
+
 if ((ambushers == 1) && (ambushers == 999)) {
     global_attack = global_attack * 1.1;
 }

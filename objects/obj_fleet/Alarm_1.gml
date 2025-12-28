@@ -388,8 +388,7 @@ repeat (5) {
 
 /* */
 
-attack_mode = "offensive";
-
+// attack_mode = "offensive";
 // if (ambushers=1) or (enemy=8) then attack_mode="offensive";
 // if (enemy=9) then attack_mode="defensive";
 
