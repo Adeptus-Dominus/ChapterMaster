@@ -1,7 +1,40 @@
 function NameGenerator() constructor {
+    // vars // TODO put these into a struct or dict or something
+    sector_names = [];
+    sector_used_names = [];
+
+    star_names = [];
+    star_used_names = [];
+    star_names_generic_counter = 0; // TODO once we migrate Star data to proper structs and jsons, this can probably be removed
+
+    space_marines_names = [];
+    space_marines_used_names = [];
+
+    imperial_names = [];
+    imperial_used_names = [];
+
+    chaos_names = [];
+    chaos_used_names = [];
+
+    eldar_syllables = [];
+
+    ork_name_composites = [];
+
+    imperial_ship_names = [];
+    imperial_ship_used_names = [];
+
+    ork_ship_names = [];
+    ork_ship_used_names = [];
+
+    hulk_name_composites = [];
+
+    tau_name_composites = [];
+
+    genestealer_cult_names = [];
+
     // TODO after save rework is finished, check if these static can be converted to instance versions
     static LoadSimpleNames = function(file_name, fallback_value, json_names_property_name = "names") {
-        if (json_names_property_name == noone) {
+        if (json_names_property_name == "") {
             json_names_property_name = "names";
         }
 
@@ -16,9 +49,20 @@ function NameGenerator() constructor {
         return [fallback_value];
     };
 
-    static LoadCompositeNames = function(file_name, json_names_property_names = ["prefixes", "suffixes", "special"]) {
+    static LoadCompositeNames = function(
+        file_name,
+        json_names_property_names = [
+            "prefixes",
+            "suffixes",
+            "special"
+        ]
+    ) {
         if (json_names_property_names == []) {
-            json_names_property_names = ["prefixes", "suffixes", "special"];
+            json_names_property_names = [
+                "prefixes",
+                "suffixes",
+                "special"
+            ];
         }
 
         var file_loader = new JsonFileListLoader();
@@ -42,40 +86,31 @@ function NameGenerator() constructor {
         return result;
     };
 
-    // vars // TODO put these into a struct or dict or something
+    // init
+
     sector_names = LoadSimpleNames("sector", "Sector 1");
-    sector_used_names = [];
 
     star_names = LoadSimpleNames("star", "Star 1");
-    star_used_names = [];
-    star_names_generic_counter = 0; // TODO once we migrate Star data to proper structs and jsons, this can probably be removed
 
     space_marines_names = LoadSimpleNames("space_marine", "Space Marine 1");
-    space_marines_used_names = [];
 
     imperial_names = LoadSimpleNames("imperial", "Imperial 1");
-    imperial_used_names = [];
 
     chaos_names = LoadSimpleNames("chaos", "Chaos 1");
-    chaos_used_names = [];
 
     eldar_syllables = LoadCompositeNames("eldar", ["first_syllables", "second_syllables", "third_syllables"]);
 
     ork_name_composites = LoadCompositeNames("ork", ["prefixes", "suffixes", "special"]);
 
     imperial_ship_names = LoadSimpleNames("imperial_ship", "Imperial Ship 1");
-    imperial_ship_used_names = [];
 
     ork_ship_names = LoadSimpleNames("ork_ship", "Ork Ship 1");
-    ork_ship_used_names = [];
 
     hulk_name_composites = LoadCompositeNames("hulk", ["prefixes", "suffixes"]);
 
     tau_name_composites = LoadCompositeNames("tau", ["prefixes", "suffixes"]);
 
     genestealer_cult_names = LoadCompositeNames("genestealercult", ["main", "embelishment", "title"]);
-
-    // init
 
     static SimpleNameGeneration = function(names, used_names, entity_name, reset_on_using_up_all_names = true) {
         try {
