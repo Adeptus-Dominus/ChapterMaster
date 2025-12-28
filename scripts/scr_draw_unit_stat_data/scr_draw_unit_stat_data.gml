@@ -2,13 +2,12 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function scr_draw_unit_stat_data(manage = false, data_block = {x1: 1008, y1: 520, w: 569, h: 303}, squeezed = false) {
     var _cur_font = draw_get_font();
+    var xx = 0;
+    var yy = 0;
     draw_set_font(fnt_40k_14);
-    if (event_number == ev_gui) {
-        xx = 0;
-        yy = 0;
-    } else {
-        var xx = camera_get_view_x(view_camera[0]) + 0;
-        var yy = camera_get_view_y(view_camera[0]) + 0;
+    if (event_number != ev_gui) {
+        xx = camera_get_view_x(view_camera[0]) + 0;
+        yy = camera_get_view_y(view_camera[0]) + 0;
     }
     var stat_tool_tips = [];
     var trait_tool_tips = [];
@@ -28,21 +27,21 @@ function scr_draw_unit_stat_data(manage = false, data_block = {x1: 1008, y1: 520
     data_block.y_mid = (data_block.y1 + data_block.y2) / 2;
 
     var attribute_box = {
-        x1: data_block.x1 + (squeezed ? 42 : 84),
-        y1: data_block.y1 + 8,
-        w: 32,
-        h: 48,
+        attr_top_left_x: data_block.x1 + (squeezed ? 42 : 84),
+        attr_top_left_y: data_block.y1 + 8,
+        attr_w: 32,
+        attr_h: 48,
+        attr_bottom_right_x: (attr_top_left_x + attr_w),
+        attr_bottom_right_y: (attr_top_left_y + attr_h),
+        x_mid: (attr_top_left_x + attr_bottom_right_x) / 2,
+        y_mid: (attr_top_left_y + attr_bottom_right_y) / 2,
         enter: function() {
-            return scr_hit(x1, y1, x2, y2);
+            return scr_hit(attr_top_left_x, attr_top_left_y, attr_bottom_right_x, attr_bottom_right_y);
         },
         draw: function(outline) {
-            draw_rectangle(x1, y1, x2, y2, outline);
+            draw_rectangle(attr_top_left_x, attr_top_left_y, attr_bottom_right_x, attr_bottom_right_y, outline);
         },
     };
-    attribute_box.x2 = attribute_box.x1 + attribute_box.w;
-    attribute_box.y2 = attribute_box.y1 + attribute_box.h;
-    attribute_box.x_mid = (attribute_box.x1 + attribute_box.x2) / 2;
-    attribute_box.y_mid = (attribute_box.y1 + attribute_box.y2) / 2;
 
     stat_display_list = [["Measure of how quick and nimble unit is as well as their base ability to manipulate and do tasks with their hands.##Influences Ranged Attack", "dexterity"], ["How strong a unit. Strong units can wield heavier equipment without penalties and are more deadly in close combat.##Influences Melee Attack#Influences Melee Burden Cap#Influences Ranged Burden Cap", "strength"], ["Unit's general toughness and resistance to damage.##Influences Health#Influences Damage Resistance", "constitution"], ["Measure of learnt knowledge and specialist skill aptitude.##Influences esoteric knowledge and use of force weapons", "intelligence"], ["Unit's perception and street smarts including certain types of battlefield knowledge.##Influences tactical decisions and garrison effects", "wisdom"], ["Unit's faith in their given religion or general aptitude towards faith.##Influences resistance to corruption", "piety"], ["General skill with close combat weaponry.##Influences Melee Attack#Influences Melee Burden Cap", "weapon_skill"], ["General skill with ballistic and ranged weaponry.##Influences Ranged Attack#Influences Ranged Burden Cap", "ballistic_skill"], ["...Luck...", "luck"], ["Skill and understanding of technology and various technical thingies and ability to interact with the machine spirit.##Influences Forge point output", "technology"], ["General likeability and ability to interact with people.##Influences disposition increases and decreases#Influences ability to spread corruption", "charisma"]];
     // draw_set_color(c_gray);
