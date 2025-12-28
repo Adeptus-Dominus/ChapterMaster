@@ -149,7 +149,7 @@ function ChapterData() constructor {
     custom_advisors = {};
 
     /// @desc Returns true if loaded successfully, false if not.
-    /// @param {Enum.eCHAPTERS} chapter_id
+    /// @param {Real} chapter_id
     /// @param {Bool} use_app_data if set to true will read from %AppData%/Local/ChapterMaster instead of /datafiles
     /// @returns {Bool}
     function load_from_json(chapter_id, use_app_data = false) {

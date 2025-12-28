@@ -42,7 +42,13 @@ function population_larger(large_pop1, pop1, large_pop2, pop2) {
 
 //TODO make an adaptive allies system
 function NSystemSearchHelpers() constructor {
-    static default_allies = [eFACTION.Player, eFACTION.Imperium, eFACTION.Mechanicus, eFACTION.Inquisition, eFACTION.Ecclesiarchy];
+    static default_allies = [
+        eFACTION.Player,
+        eFACTION.Imperium,
+        eFACTION.Mechanicus,
+        eFACTION.Inquisition,
+        eFACTION.Ecclesiarchy
+    ];
 }
 
 global.SystemHelps = new NSystemSearchHelpers();
@@ -50,7 +56,12 @@ global.SystemHelps = new NSystemSearchHelpers();
 function fetch_faction_group(group = "imperium_default") {
     switch (group) {
         case "imperium_default":
-            var imperium = [eFACTION.Imperium, eFACTION.Mechanicus, eFACTION.Inquisition, eFACTION.Ecclesiarchy];
+            var imperium = [
+                eFACTION.Imperium,
+                eFACTION.Mechanicus,
+                eFACTION.Inquisition,
+                eFACTION.Ecclesiarchy
+            ];
             if (obj_controller.faction_status[eFACTION.Imperium] != "War") {
                 array_push(imperium, eFACTION.Player);
             }
@@ -389,9 +400,9 @@ function nearest_from_array(xx, yy, list) {
     return _nearest;
 }
 
-function is_dead_star(star = "none") {
+function is_dead_star(star = noone) {
     var dead_star = true;
-    if (star == "none") {
+    if (star == noone) {
         for (var i = 1; i <= planets; i++) {
             if (p_type[i] != "dead") {
                 dead_star = false;
@@ -451,7 +462,26 @@ function meet_system_governors(system) {
 
 function scr_planet_image_numbers(p_type) {
     var image = 0;
-    image_map = ["", "Lava", "Lava", "Desert", "Forge", "Hive", "Death", "Agri", "Feudal", "Temperate", "Ice", "Dead", "Daemon", "Craftworld", "", "Space Hulk", "", "Shrine"];
+    image_map = [
+        "",
+        "Lava",
+        "Lava",
+        "Desert",
+        "Forge",
+        "Hive",
+        "Death",
+        "Agri",
+        "Feudal",
+        "Temperate",
+        "Ice",
+        "Dead",
+        "Daemon",
+        "Craftworld",
+        "",
+        "Space Hulk",
+        "",
+        "Shrine"
+    ];
     for (var i = 0; i < array_length(image_map); i++) {
         if (image_map[i] == p_type) {
             return i;

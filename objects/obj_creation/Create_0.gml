@@ -358,13 +358,13 @@ all_chapters[eCHAPTERS.CUSTOM_9].splash = custom_splash;
 all_chapters[eCHAPTERS.CUSTOM_10].splash = custom_splash;
 
 // Load from files to overwrite hardcoded ones
-for (var c = 1; c < 40; c++) {
+for (var c = 1; c < 31; c++) {
     var use_app_data = false;
     if (c < array_length(all_chapters) && all_chapters[c].origin == eCHAPTER_ORIGINS.CUSTOM) {
         use_app_data = true;
     }
     var json_chapter = new ChapterData();
-    var success = json_chapter.load_from_json(eCHAPTERS[c], use_app_data);
+    var success = json_chapter.load_from_json(c, use_app_data);
     if (success) {
         all_chapters[c] = new ChapterDataLite(json_chapter.id, json_chapter.origin, json_chapter.founding, json_chapter.name, json_chapter.flavor,);
         all_chapters[c].json = true;
