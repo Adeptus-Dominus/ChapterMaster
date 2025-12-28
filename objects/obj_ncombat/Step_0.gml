@@ -22,7 +22,7 @@ if (fack == 1) {
 instance_activate_object(obj_centerline);
 instance_activate_object(obj_cursor);
 
-if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_show == 24) && (defeat_message == 0)) {
+if (((fugg >= 60) || (fugg2 >= 60)) && (combat_messages_shown == 0) && (combat_messages_to_show == 24) && (defeat_message == 0)) {
     fugg = 0;
     fugg2 = 0;
     with (obj_pnunit) {
@@ -40,7 +40,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
             }
         }
     }
-    if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
+    if (((combat_messages_shown == 999) || (combat_messages == 0)) && (timer_stage == 2)) {
         newline_color = "yellow";
         if (obj_ncombat.enemy != 6) {
             if ((enemy_forces <= 0) || (!instance_exists(obj_enunit)) && (defeat_message == 0)) {
@@ -64,7 +64,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
                 instance_activate_object(obj_pnunit);
             }
         }
-        messages_shown = 105;
+        combat_messages_shown = 105;
         done = 1;
         scr_newtext();
         timer_stage = 3;
@@ -72,7 +72,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
     }
 
     // show_message("Shown: "+string(messages_shown)+"#Messages: "+string(messages)+"#Timer Stage: "+string(timer_stage));
-    if (((messages_shown == 999) || (messages == 0)) && ((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0)) {
+    if (((combat_messages_shown == 999) || (array_length(combat_messages) == 0)) && ((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0)) {
         newline_color = "yellow";
         if (obj_ncombat.enemy != 6) {
             if (((player_forces <= 0) || (!instance_exists(obj_pnunit))) && (defeat_message == 0)) {
@@ -96,7 +96,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
                 instance_activate_object(obj_pnunit);
             }
         }
-        messages_shown = 105;
+        combat_messages_shown = 105;
         done = 1;
         scr_newtext();
         timer_stage = 5;

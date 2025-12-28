@@ -410,73 +410,6 @@ ERROR: C:\Users\Sinthorion\AppData\Local\GameMakerStudio2\GMS2TEMP\conv\gmx\Chap
 ERROR: C:\Users\Sinthorion\AppData\Local\GameMakerStudio2\GMS2TEMP\conv\gmx\ChapterMaster_7ABEC6D2\objects\obj_temp_build\Create_0.gml - 9: unexpected terminal operator new
 Too many errors - GML not processed : ${project_dir}\objects\obj_temp_build\Create_0.gml
 
-Converting GML script: ${project_dir}\objects\obj_credits\Draw_0.gml
-Converted string - line 63: '_blank' -> "_blank"
-
-Converting GML script: ${project_dir}\objects\obj_cuicons\Destroy_0.gml
-Converted string - line 7: "\icons\custom" -> "\\icons\\custom"
-
-Converting GML script: ${project_dir}\objects\obj_cuicons\Alarm_2.gml
-Converted string - line 5: "\icons\custom" -> "\\icons\\custom"
-Converted string - line 18: "\icons\custom" -> "\\icons\\custom"
-Converted string - line 19: "\icons\custom" -> "\\icons\\custom"
-
-Converting GML script: ${project_dir}\objects\obj_cuicons\Alarm_1.gml
-Converted string - line 11: "\icons\custom" -> "\\icons\\custom"
-Converted string - line 22: "\icons\custom" -> "\\icons\\custom"
-Converted string - line 24: "\icons\custom" -> "\\icons\\custom"
-Converted string - line 33: "\icons\custom" -> "\\icons\\custom"
-
-Converting GML script: ${project_dir}\objects\obj_cuicons\Alarm_0.gml
-Converted string - line 6: "\icons\custom" -> "\\icons\\custom"
-
-Converting GML script: ${project_dir}\objects\obj_controller\Alarm_1.gml
-Converted builtin - line 268: instance_id -> instance_id_get( 0 )
-
-Converting GML script: ${project_dir}\objects\obj_saveload\Create_0.gml
-Converted string - line 99: "\screen" -> "\\screen"
-Converted string - line 99: "\screen" -> "\\screen"
-Converted string - line 100: "\screen" -> "\\screen"
-Converted string - line 100: "\screen" -> "\\screen"
-Converted string - line 101: "\screen" -> "\\screen"
-Converted string - line 101: "\screen" -> "\\screen"
-Converted string - line 102: "\screen" -> "\\screen"
-Converted string - line 102: "\screen" -> "\\screen"
-
-Converting GML script: ${project_dir}\objects\obj_saveload\Alarm_4.gml
-Converted string - line 7: "\screen" -> "\\screen"
-Converted string - line 7: "\screen" -> "\\screen"
-Converted string - line 8: "\screen" -> "\\screen"
-Converted string - line 8: "\screen" -> "\\screen"
-Converted string - line 9: "\screen" -> "\\screen"
-Converted string - line 9: "\screen" -> "\\screen"
-Converted string - line 10: "\screen" -> "\\screen"
-Converted string - line 10: "\screen" -> "\\screen"
-
-Converting GML script: ${project_dir}\objects\obj_saveload\Mouse_61.gml
-Converted string - line 12: "\screen" -> "\\screen"
-Converted string - line 12: "\screen" -> "\\screen"
-Converted string - line 13: "\screen" -> "\\screen"
-Converted string - line 13: "\screen" -> "\\screen"
-Converted string - line 14: "\screen" -> "\\screen"
-Converted string - line 14: "\screen" -> "\\screen"
-Converted string - line 15: "\screen" -> "\\screen"
-Converted string - line 15: "\screen" -> "\\screen"
-
-Converting GML script: ${project_dir}\objects\obj_saveload\Mouse_60.gml
-Converted string - line 9: "\screen" -> "\\screen"
-Converted string - line 9: "\screen" -> "\\screen"
-Converted string - line 10: "\screen" -> "\\screen"
-Converted string - line 10: "\screen" -> "\\screen"
-Converted string - line 11: "\screen" -> "\\screen"
-Converted string - line 11: "\screen" -> "\\screen"
-Converted string - line 12: "\screen" -> "\\screen"
-Converted string - line 12: "\screen" -> "\\screen"
-
-Converting GML script: ${project_dir}\objects\obj_en_fleet\Alarm_4.gml
-Removing instance reference from builtin - line 7 : self.
-Converted builtin - line 7: instance_id -> instance_id_get( 0 )
-
 Converting GML script: ${project_dir}\objects\obj_en_fleet\Alarm_1.gml
 ERROR: C:\Users\Sinthorion\AppData\Local\GameMakerStudio2\GMS2TEMP\conv\gmx\ChapterMaster_7ABEC6D2\objects\obj_en_fleet\Alarm_1.gml - 908: unexpected syntax error
 ERROR: C:\Users\Sinthorion\AppData\Local\GameMakerStudio2\GMS2TEMP\conv\gmx\ChapterMaster_7ABEC6D2\objects\obj_en_fleet\Alarm_1.gml - 908: unexpected terminal operator new
@@ -548,33 +481,7 @@ ERROR: C:\Users\Sinthorion\AppData\Local\GameMakerStudio2\GMS2TEMP\conv\gmx\Chap
 ERROR: C:\Users\Sinthorion\AppData\Local\GameMakerStudio2\GMS2TEMP\conv\gmx\ChapterMaster_7ABEC6D2\objects\obj_en_fleet\Alarm_1.gml - 2231: unexpected syntax error
 Too many errors - GML not processed : ${project_dir}\objects\obj_en_fleet\Alarm_1.gml
 
-Converting GML script: ${project_dir}\objects\obj_popup\Step_0.gml
-Converted string - line 8: '1' -> "1"
-Converted string - line 9: '2' -> "2"
-Converted string - line 10: '3' -> "3"
 
-Converting GML script: ${project_dir}\objects\obj_star\Alarm_4.gml
-Converted builtin - line 33: instance_id -> instance_id_get( 0 )
-
-Windows NSIS Installer Script has been set to default due to changes in GameMaker Studio 2
-Missing audiogroup for sound: 'snd_blood' - setting to default audio group
-Missing audiogroup for sound: 'snd_diboz' - setting to default audio group
-Missing audiogroup for sound: 'snd_legal' - setting to default audio group
-Missing audiogroup for sound: 'snd_prologue' - setting to default audio group
-Missing audiogroup for sound: 'snd_royal' - setting to default audio group
-Missing audiogroup for sound: 'snd_vode' - setting to default audio group
-Missing audiogroup for sound: 'snd_battle' - setting to default audio group
-Missing audiogroup for sound: 'snd_postbattle' - setting to default audio group
-Missing audiogroup for sound: 'snd_defeat' - setting to default audio group
-Missing audiogroup for sound: 'snd_buzz' - setting to default audio group
-Missing audiogroup for sound: 'snd_redownload' - setting to default audio group
-Missing audiogroup for sound: 'snd_click' - setting to default audio group
-Missing audiogroup for sound: 'snd_click_small' - setting to default audio group
-Missing audiogroup for sound: 'snd_end_turn' - setting to default audio group
-Missing audiogroup for sound: 'snd_error' - setting to default audio group
-Missing audiogroup for sound: 'snd_stc' - setting to default audio group
-Missing audiogroup for sound: 'snd_identify' - setting to default audio group
-Game speed set to 30
 Added compatibility script 'action/action_another_room.gml'
 Added compatibility script 'action/action_color.gml'
 Added compatibility script 'action/action_draw_ellipse.gml'

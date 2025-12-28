@@ -88,10 +88,10 @@ if (__b__) {
             }
 
             function reset_combat_message_arrays() {
-                for (var i = 0; i < array_length(message); i++) {
-                    message[i] = "";
-                    message_sz[i] = 0;
-                    message_priority[i] = 0;
+                for (var i = 0; i < array_length(combat_messages); i++) {
+                    combat_messages[i] = "";
+                    combat_message_sz[i] = 0;
+                    combat_message_priority[i] = 0;
                 }
             }
             if ((timer_stage == 1) || (timer_stage == 5)) {
@@ -129,17 +129,16 @@ if (__b__) {
                         turn_count++;
                     }
                 }
-                messages = 0;
-                messages_to_show = 24;
+                combat_messages = [];
+                combat_messages_to_show = 24;
                 largest = 0;
                 random_messages = 0;
                 priority = 0;
-                messages_shown = 0;
+                combat_messages_shown = 0;
                 reset_combat_message_arrays();
                 timer_stage = 2;
                 timer = 0;
                 done = 0;
-                messages_shown = 0;
             } else if (timer_stage == 3) {
                 if (battle_over != 1) {
                     alarm[8] = 15;
@@ -158,17 +157,16 @@ if (__b__) {
                         obj_enunit.alarm[8] = 4;
                         turns += 1;
                     }
-                    var messages = 0;
-                    messages_to_show = 24;
+                    combat_messages = [];
+                    combat_messages_to_show = 24;
                     largest = 0;
                     random_messages = 0;
                     priority = 0;
-                    messages_shown = 0;
+                    combat_messages_shown = 0;
                     reset_combat_message_arrays();
                     timer_stage = 4;
                     timer = 0;
                     done = 0;
-                    messages_shown = 0;
                 }
                 if (enemy == 6) {
                     if (instance_exists(obj_pnunit)) {
@@ -184,17 +182,16 @@ if (__b__) {
                     // alarm[9]=5;
                     var i;
                     i = 0;
-                    messages = 0;
-                    messages_to_show = 24;
+                    combat_messages = [];
+                    combat_messages_to_show = 24;
                     largest = 0;
                     random_messages = 0;
                     priority = 0;
-                    messages_shown = 0;
+                    combat_messages_shown = 0;
                     reset_combat_message_arrays();
                     timer_stage = 4;
                     timer = 0;
                     done = 0;
-                    messages_shown = 0;
                 }
             }
         }

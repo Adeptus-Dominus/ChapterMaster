@@ -7,6 +7,9 @@ if (dropping) {
     squeeze_map_forces();
 }
 
+//TODO refactor so that unit structs are created for ally forces
+
+/*
 if ((ally > 0) && (ally_forces > 0)) {
     if (ally == 3) {
         if (ally_forces >= 1) {
@@ -15,9 +18,6 @@ if ((ally > 0) && (ally_forces > 0)) {
             ii = 0;
             good = 0;
 
-            //TODO refactor so that unit structs are created for ally forces
-
-            /* 
             if (instance_exists(thata)){
 
                 ii=array_length(marine_type);
@@ -57,9 +57,9 @@ if ((ally > 0) && (ally_forces > 0)) {
                 repeat(50){if (good=0){ii+=1;if (thata.dudes[ii]="") and (thata.dudes_num[ii]=0) then good=ii;}}
                 if (good>0){thata.dudes[ii]="Skitarii";thata.dudes_num[ii]=20;thata.dudes_vehicle[ii]=0;}
                 thata.alarm[1]=1;
-            }*/
+            }
         }
     }
-}
+}*/
 
 instance_activate_object(obj_enunit);
