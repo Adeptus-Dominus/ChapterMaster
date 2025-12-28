@@ -17,7 +17,7 @@ function NameGenerator() constructor {
     };
 
     static LoadCompositeNames = function(file_name, json_names_property_names = ["prefixes", "suffixes", "special"]) {
-        if (json_names_property_names == noone) {
+        if (json_names_property_names == []) {
             json_names_property_names = ["prefixes", "suffixes", "special"];
         }
 
