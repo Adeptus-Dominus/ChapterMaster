@@ -729,10 +729,10 @@ function scr_initialize_custom() {
 	man_size = 0;
 	psy_powers = obj_creation.discipline;
 
-	progenitor_disposition = obj_creation.disposition[1];
+	progenitor_disposition = obj_creation.disposition[eFACTION.Player];
 	astartes_disposition = obj_creation.disposition[6];
-	imperium_disposition = obj_creation.disposition[2];
-	guard_disposition = obj_creation.disposition[2];
+	imperium_disposition = obj_creation.disposition[eFACTION.Imperium];
+	guard_disposition = obj_creation.disposition[eFACTION.Imperium];
 	inquisition_disposition = obj_creation.disposition[4];
 	ecclesiarchy_disposition = obj_creation.disposition[5];
 	mechanicus_disposition = obj_creation.disposition[3];

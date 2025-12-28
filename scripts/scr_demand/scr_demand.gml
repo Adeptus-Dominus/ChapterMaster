@@ -71,9 +71,9 @@ function scr_demand(demand_type) {
 	    }
 	    resistance=min(instance_number(obj_temp2),8);
 	    with(obj_temp2){instance_destroy();}
-	    if (obj_controller.disposition[2]<30) then resistance+=1;
-	    if (obj_controller.disposition[2]<10) then resistance+=2;    
-	    if (obj_controller.disposition[2]<=-60) then resistance+=100;
+	    if (obj_controller.disposition[eFACTION.Imperium]<30) then resistance+=1;
+	    if (obj_controller.disposition[eFACTION.Imperium]<10) then resistance+=2;    
+	    if (obj_controller.disposition[eFACTION.Imperium]<=-60) then resistance+=100;
 	    if (rela="hostile") or (faction_status[eFACTION.Imperium]="Antagonism") then resistance+=2;
 	    if (faction_status[eFACTION.Imperium]="War") then resistance+=3;
 

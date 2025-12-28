@@ -90,9 +90,9 @@ function scr_chapter_random(custom_or_random) {
 	mucranoid = 0;
 	disposition = array_create(8, 0);
 	// disposition[0]=0;
-	// disposition[1]=0;// Prog
-	// disposition[2]=0;// Imp
-	// disposition[3]=0;// Mech
+	// disposition[eFACTION.Player]=0;// Prog
+	// disposition[eFACTION.Imperium]=0;// Imp
+	// disposition[eFACTION.Mechanicus]=0;// Mech
 	// disposition[4]=0;// Inq
 	// disposition[5]=0;// Ecclesiarchy
 	// disposition[6]=0;// Astartes

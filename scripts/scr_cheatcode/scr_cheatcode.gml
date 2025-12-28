@@ -303,10 +303,10 @@ function scr_cheatcode(argument0) {
                     }
                     break;
                 case "depimp":
-                    obj_controller.disposition[2] = real(cheat_arguments[0]);
+                    obj_controller.disposition[eFACTION.Imperium] = real(cheat_arguments[0]);
                     break;
                 case "depmec":
-                    obj_controller.disposition[3] = real(cheat_arguments[0]);
+                    obj_controller.disposition[eFACTION.Mechanicus] = real(cheat_arguments[0]);
                     break;
                 case "depinq":
                     obj_controller.disposition[4] = real(cheat_arguments[0]);

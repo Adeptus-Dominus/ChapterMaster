@@ -190,7 +190,7 @@ try {
             var ii=0,good=0;
     
             if (remove_planet_problem(battle_id, "mech_tomb", battle_object)){
-                obj_controller.disposition[3]-=10;
+                obj_controller.disposition[eFACTION.Mechanicus]-=10;
                 
                 if (battle_special="study2a"){
                     scr_popup("Mechanicus Mission Failed","All of your Astartes and the Mechanicus Research party have been killed down to the last man.  The research is a bust, and the Adeptus Mechanicus is furious with your chapter for not providing enough security.  Relations with them are worse than before.","","");

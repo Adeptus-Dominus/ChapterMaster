@@ -528,7 +528,7 @@ function scr_enemy_ai_a() {
 					                obj_controller.disposition[3] -= 5; // obj_controller.disposition[3] refer to the disposition of the toaster jocks.
 					            } else if (planet_feature_bool(p_feature[_run], P_features.Sororitas_Cathedral) or(p_type[_run] == "Shrine")) {
 					                dispo[_run] -= 10; // diso[_run] is the disposition of the planet. where _run refer to the planet that is currently running the code.
-					                obj_controller.disposition[5] -= 3; // obj_controller.disposition[2] refer to the disposition of the sororitas while 3 refer to mechanicus
+					                obj_controller.disposition[5] -= 3; // obj_controller.disposition[eFACTION.Imperium] refer to the disposition of the sororitas while 3 refer to mechanicus
 					            } else dispo[_run] -= 5;
 					        }
 					    } // diso[_run] is the disposition of the planet. where _run refer to the planet that is currently running the code.

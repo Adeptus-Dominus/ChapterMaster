@@ -452,7 +452,7 @@ function meet_system_governors(system){
 	with (system){
         for (var i=1;i<=planets;i++){
             if (p_first[i]<=5) and (dispo[i]>-30) and (dispo[i]<0){
-                dispo[i]=min(obj_ini.imperium_disposition,obj_controller.disposition[2])+irandom(8)-4;
+                dispo[i]=min(obj_ini.imperium_disposition,obj_controller.disposition[eFACTION.Imperium])+irandom(8)-4;
             } 
 
         }

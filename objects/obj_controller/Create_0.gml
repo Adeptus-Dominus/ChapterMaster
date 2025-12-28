@@ -853,21 +853,21 @@ imperial_factions = [eFACTION.Imperium, eFACTION.Mechanicus, eFACTION.Inquisitio
 faction[0] = "";
 disposition[0] = 0;
 faction[eFACTION.Player] = "Player";
-disposition[1] = 0;
+disposition[eFACTION.Player] = 0;
 faction[eFACTION.Imperium] = "Imperium";
-disposition[3] = 0;
-faction[3] = "Mechanicus";
-disposition[4] = 0;
+disposition[eFACTION.Imperium] = 0;
+faction[eFACTION.Mechanicus] = "Mechanicus";
+disposition[eFACTION.Mechanicus] = 0;
 faction[4] = "Inquisition";
 disposition[4] = 0;
 faction[5] = "Ecclesiarchy";
 disposition[5] = 0;
 // ** Initial disposition for Imperial factions **
 if (instance_exists(obj_ini)) {
-    faction[2] = "Imperium";
-    disposition[2] = obj_ini.imperium_disposition;
-    faction[3] = "Mechanicus";
-    disposition[3] = obj_ini.mechanicus_disposition;
+    faction[eFACTION.Imperium] = "Imperium";
+    disposition[eFACTION.Imperium] = obj_ini.imperium_disposition;
+    faction[eFACTION.Mechanicus] = "Mechanicus";
+    disposition[eFACTION.Mechanicus] = obj_ini.mechanicus_disposition;
     faction[4] = "Inquisition";
     disposition[4] = obj_ini.inquisition_disposition;
     faction[5] = "Ecclesiarchy";
@@ -992,7 +992,7 @@ known[eFACTION.Mechanicus] = 1;
 // eldar mission testing
 // known[eFACTION.Eldar]=2;
 // disposition[4]=90;
-// disposition[3]=60;
+// disposition[eFACTION.Mechanicus]=60;
 // ** Sets diplomacy annoyed status **
 annoyed = array_create(14, 0);
 // ** Sets diplomacy ignore status **

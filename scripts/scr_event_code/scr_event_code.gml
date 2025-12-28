@@ -272,17 +272,17 @@ function handle_discovered_governor_assasinations() {
             if (_event.variant == 1) {
                 alter_dispositions([[eFACTION.Imperium, -7], [eFACTION.Inquisition, -10], [eFACTION.Ecclesiarchy, -5]]);
 
-                if (obj_controller.disposition[4] > 0 && obj_controller.disposition[2] > 0) {
+                if (obj_controller.disposition[4] > 0 && obj_controller.disposition[eFACTION.Imperium] > 0) {
                     _event.e_id = "assassination_angryish";
                 }
             } else if (_event.variant == 2) {
                 alter_disposition(eFACTION.Inquisition, -3);
-                if (obj_controller.disposition[4] > 0 && obj_controller.disposition[2] > 0) {
+                if (obj_controller.disposition[4] > 0 && obj_controller.disposition[eFACTION.Imperium] > 0) {
                     _event.e_id = "assassination_angry";
                 }
             }
 
-            if ((obj_controller.disposition[4] <= 0) || (obj_controller.disposition[2] <= 0)) {
+            if ((obj_controller.disposition[4] <= 0) || (obj_controller.disposition[eFACTION.Imperium] <= 0)) {
                 obj_controller.alarm[8] = 1;
             } else {
                 scr_audience(4, _event.e_id, 0, "", 0, 0, _event);

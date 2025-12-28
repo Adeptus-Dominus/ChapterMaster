@@ -711,8 +711,6 @@
     {"id":{"name":"__init_global","path":"scripts/__init_global/__init_global.yy",},},
     {"id":{"name":"__init_view","path":"scripts/__init_view/__init_view.yy",},},
     {"id":{"name":"__view_get","path":"scripts/__view_get/__view_get.yy",},},
-    {"id":{"name":"__view_set_internal","path":"scripts/__view_set_internal/__view_set_internal.yy",},},
-    {"id":{"name":"__view_set","path":"scripts/__view_set/__view_set.yy",},},
     {"id":{"name":"action_another_room","path":"scripts/action_another_room/action_another_room.yy",},},
     {"id":{"name":"action_color","path":"scripts/action_color/action_color.yy",},},
     {"id":{"name":"action_draw_ellipse","path":"scripts/action_draw_ellipse/action_draw_ellipse.yy",},},

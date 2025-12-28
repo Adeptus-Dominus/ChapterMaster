@@ -702,8 +702,8 @@ function ground_forces_collect_artifact() {
             scr_event_log("", "Artifact has been forcibly recovered.");
 
             if (pdata.planet_type != "Dead") {
-                if (pdata.current_owner == 2) {
-                    obj_controller.disposition[2] -= 1;
+                if (pdata.current_owner == eFACTION.Imperium) {
+                    obj_controller.disposition[eFACTION.Imperium] -= 1;
                 }
                 if (pdata.current_owner == eFACTION.Mechanicus) {
                     obj_controller.disposition[3] -= 10;
@@ -724,8 +724,8 @@ function ground_forces_collect_artifact() {
             pop.text += $"It has been stowed away upon {loc}.  It appears to be a " + string(obj_ini.artifact[last_artifact]) + " but should be brought home and identified posthaste.";
             scr_event_log("red", "Artifact forcibly recovered.  Collateral damage is caused.");
 
-            if (pdata.current_owner == 2) {
-                obj_controller.disposition[2] -= 2;
+            if (pdata.current_owner == eFACTION.Imperium) {
+                obj_controller.disposition[eFACTION.Imperium] -= 2;
             }
             if (pdata.current_owner == eFACTION.Mechanicus) {
                 obj_controller.disposition[3] -= max(obj_controller.disposition[3] / 3, 20);
@@ -901,7 +901,7 @@ function remove_stc_from_planet() {
             pop.text += "The STC Fragment has been safely recovered and stowed away.  It is ready to be decrypted or gifted at your convenience.";
 
             /*if (pdata.planet_type!="Dead"){
-	        if (pdata.current_owner=2) then obj_controller.disposition[2]-=1;
+	        if (pdata.current_owner=2) then obj_controller.disposition[eFACTION.Imperium]-=1;
 	        if (pdata.current_owner=eFACTION.Mechanicus) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
 	        if (pdata.current_owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/4,10);
 	        if (pdata.current_owner=5) then obj_controller.disposition[5]-=3;
@@ -919,7 +919,7 @@ function remove_stc_from_planet() {
             pop.text = "Your forces descend into the vaults of the Mechanicus Forge.  Sentries, automated defenses, and blast doors stand in their way.##";
             pop.text += "Half-way through the mission a small army of Praetorian Servitors and Skitarii bear down upon your men.  The Mechanicus guards seem to be upset.";
 
-            /*if (pdata.current_owner=2) then obj_controller.disposition[2]-=2;*/
+            /*if (pdata.current_owner=2) then obj_controller.disposition[eFACTION.Imperium]-=2;*/
             if (pdata.current_owner == eFACTION.Mechanicus) {
                 obj_controller.disposition[3] -= 40;
             }

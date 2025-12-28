@@ -492,7 +492,7 @@ if (defeat == 0 && _reduce_power){
                         p_owner[battle_planet] = eFACTION.Player;
                      } else if (p_first[battle_planet] == 3 || p_type[battle_planet]=="Forge"){
                         who_return="mechanicus";
-                        obj_controller.disposition[3] += 10;
+                        obj_controller.disposition[eFACTION.Mechanicus] += 10;
                         p_owner[battle_planet] = eFACTION.Mechanicus
                      }else  if (p_type[battle_planet]!="Dead"){
                         who_return="the governor";
@@ -733,7 +733,7 @@ if (obj_ini.omophagea){
         // check for pdf/guardsmen
         eatme=roll_dice_chapter(1, 100, "high");
         if (eatme<=10) and (allies>0){
-            obj_controller.disposition[2]-=2;
+            obj_controller.disposition[eFACTION.Imperium]-=2;
             if (allies=1){
                 newline="Local PDF have been eaten!";
                 newline_color="red";scr_newtext();

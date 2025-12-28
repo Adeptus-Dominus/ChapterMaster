@@ -135,9 +135,9 @@ if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors"
         mucranoid=0;
         
         disposition[0]=0;
-        disposition[1]=0;// Prog
-        disposition[2]=0;// Imp
-        disposition[3]=0;// Mech
+        disposition[eFACTION.Player]=0;// Prog
+        disposition[eFACTION.Imperium]=0;// Imp
+        disposition[eFACTION.Mechanicus]=0;// Mech
         disposition[4]=0;// Inq
         disposition[5]=0;// Ecclesiarchy
         disposition[6]=0;// Astartes

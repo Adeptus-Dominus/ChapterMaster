@@ -133,7 +133,7 @@ function scr_enemy_ai_d() {
                 scr_event_log("","Fleet embarks upon Crusade.");
             }else {
                 // hit loyalty here
-                obj_controller.disposition[2]-=5;
+                obj_controller.disposition[eFACTION.Imperium]-=5;
                 obj_controller.disposition[4]-=10;
                 scr_alert("red","crusade","No ships designated for Crusade.",x,y);
                 scr_loyalty("Refusing to Crusade","+");

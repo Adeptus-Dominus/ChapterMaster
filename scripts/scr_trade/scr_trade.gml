@@ -3,7 +3,7 @@ function TradeAttempt(diplomacy) constructor {
     relative_trade_values = {
         "Test": 5000,
         "Requisition": 1,
-        "Recruiting Planet": obj_controller.disposition[2] < 70 ? 4000 : 2000,
+        "Recruiting Planet": obj_controller.disposition[eFACTION.Imperium] < 70 ? 4000 : 2000,
         "License: Repair": 750,
         "License: Crusade": 1500,
         "Terminator Armour": 400,

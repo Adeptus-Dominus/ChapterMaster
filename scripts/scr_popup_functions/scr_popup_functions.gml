@@ -613,7 +613,7 @@ function default_popup_image_index(){
 function allow_governor_successor(){
 	var randa = roll_dice_chapter(1, 100, "high");
 	var randa2 = roll_dice(1, 100);
-	p_data.set_player_disposition(obj_controller.disposition[2] +  choose(-1, -2, -3, -4, 0, 1, 2, 3, 4));
+	p_data.set_player_disposition(obj_controller.disposition[eFACTION.Imperium] +  choose(-1, -2, -3, -4, 0, 1, 2, 3, 4));
 
 	var _text_last = "";
 	if (randa <= 3) {

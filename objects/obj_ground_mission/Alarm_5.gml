@@ -28,8 +28,8 @@ if (mission="good") and (plan.p_first[num]=3) and (plan.p_type[num]="Forge"){
     pop.text+="The STC Fragment has been safely recovered and stowed away.  It is ready to be decrypted or gifted at your convenience.";
     
     /*if (plan.p_type[num]!="Dead"){
-        if (plan.p_owner[num]=2) then obj_controller.disposition[2]-=1;
-        if (plan.p_owner[num]=3) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
+        if (plan.p_owner[num]=eFACTION.Imperium) then obj_controller.disposition[eFACTION.Imperium]-=1;
+        if (plan.p_owner[num]=eFACTION.Mechanicus) then obj_controller.disposition[eFACTION.Mechanicus]-=10;// max(obj_controller.disposition/4,10)
         if (plan.p_owner[num]=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/4,10);
         if (plan.p_owner[num]=5) then obj_controller.disposition[5]-=3;
         if (plan.p_owner[num]=8) then obj_controller.disposition[8]-=3;
@@ -46,17 +46,17 @@ if (mission="bad") and (plan.p_first[num]=3) and (plan.p_type[num]="Forge"){
     pop.text="Your forces descend into the vaults of the Mechanicus Forge.  Sentries, automated defenses, and blast doors stand in their way.##";
     pop.text+="Half-way through the mission a small army of Praetorian Servitors and Skitarii bear down upon your men.  The Mechanicus guards seem to be upset.";
     
-    /*if (plan.p_owner[num]=2) then obj_controller.disposition[2]-=2;*/
-    if (plan.p_owner[num]=3){obj_controller.disposition[3]-=40;}
+    /*if (plan.p_owner[num]=eFACTION.Imperium) then obj_controller.disposition[eFACTION.Imperium]-=2;*/
+    if (plan.p_owner[num]=eFACTION.Mechanicus){obj_controller.disposition[eFACTION.Mechanicus]-=40;}
     /*if (plan.p_owner[num]=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/3,20);
-    if (plan.p_owner[num]=5) then obj_controller.disposition[5]-=max(obj_controller.disposition[3]/4,15);
+    if (plan.p_owner[num]=5) then obj_controller.disposition[5]-=max(obj_controller.disposition[5]/4,15);
     if (plan.p_owner[num]=6) then obj_controller.disposition[6]-=15;
     if (plan.p_owner[num]=8) then obj_controller.disposition[8]-=8;*/
     
-    if (plan.p_owner[num]>3) and (plan.p_owner[num]<=6){
+    if (plan.p_owner[num]>=eFACTION.Inquisition) and (plan.p_owner[num]<=eFACTION.Eldar){ // Inquisition Ecclesiarchy Eldar did you mean for it to be these three factions
         scr_audience(plan.p_owner[num], "artifact_angry",);
     }
-    if (plan.p_owner[num]=3) and (obj_controller.faction_status[eFACTION.Mechanicus]!="War"){
+    if (plan.p_owner[num]=eFACTION.Mechanicus) and (obj_controller.faction_status[eFACTION.Mechanicus]!="War"){
         scr_audience(plan.p_owner[num], "declare_war", -20);
     }
     

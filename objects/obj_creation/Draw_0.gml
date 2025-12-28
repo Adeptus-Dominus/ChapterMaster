@@ -340,12 +340,12 @@ try {
 		draw_set_font(fnt_40k_14b);
 		draw_set_halign(fa_right);
 
-		draw_text(650, 550, string_hash_to_newline("Imperium (" + string(disposition[2]) + ")"));
-		draw_text(650, 575, string_hash_to_newline("Adeptus Mechanicus (" + string(disposition[3]) + ")"));
+		draw_text(650, 550, string_hash_to_newline("Imperium (" + string(disposition[eFACTION.Imperium]) + ")"));
+		draw_text(650, 575, string_hash_to_newline("Adeptus Mechanicus (" + string(disposition[eFACTION.Mechanicus]) + ")"));
 		draw_text(650, 600, string_hash_to_newline("Ecclesiarchy (" + string(disposition[5]) + ")"));
 		draw_text(650, 625, string_hash_to_newline("Inquisition (" + string(disposition[4]) + ")"));
 		if (founding != ePROGENITOR.NONE) {
-			draw_text(650, 650, string_hash_to_newline("Progenitor (" + string(disposition[1]) + ")"));
+			draw_text(650, 650, string_hash_to_newline("Progenitor (" + string(disposition[eFACTION.Player]) + ")"));
 		}
 		draw_text(650, 675, "Adeptus Astartes (" + string(disposition[6]) + ")");
 
@@ -357,11 +357,11 @@ try {
 			draw_rectangle(655, 552 + 100, 1150, 567 + 100, 1);
 		}
 		draw_rectangle(655, 552 + 125, 1150, 567 + 125, 1);
-		if (disposition[2] > 0) {
-			draw_rectangle(655, 552, 655 + (disposition[2] * 4.95), 567, 0);
+		if (disposition[eFACTION.Imperium] > 0) {
+			draw_rectangle(655, 552, 655 + (disposition[eFACTION.Imperium] * 4.95), 567, 0);
 		}
-		if (disposition[3] > 0) {
-			draw_rectangle(655, 552 + 25, 655 + (disposition[3] * 4.95), 567 + 25, 0);
+		if (disposition[eFACTION.Mechanicus] > 0) {
+			draw_rectangle(655, 552 + 25, 655 + (disposition[eFACTION.Mechanicus] * 4.95), 567 + 25, 0);
 		}
 		if (disposition[5] > 0) {
 			draw_rectangle(655, 552 + 50, 655 + (disposition[5] * 4.95), 567 + 50, 0);
@@ -369,8 +369,8 @@ try {
 		if (disposition[4] > 0) {
 			draw_rectangle(655, 552 + 75, 655 + (disposition[4] * 4.95), 567 + 75, 0);
 		}
-		if ((disposition[1] > 0) && (founding != ePROGENITOR.NONE)) {
-			draw_rectangle(655, 552 + 100, 655 + (disposition[1] * 4.95), 567 + 100, 0);
+		if ((disposition[eFACTION.Player] > 0) && (founding != ePROGENITOR.NONE)) {
+			draw_rectangle(655, 552 + 100, 655 + (disposition[eFACTION.Player] * 4.95), 567 + 100, 0);
 		}
 		if (disposition[6] > 0) {
 			draw_rectangle(655, 552 + 125, 655 + (disposition[6] * 4.95), 567 + 125, 0);

@@ -117,7 +117,7 @@ function deploy_colonisers(star){
 
                 scr_alert("green","duhuhuhu",$"Imperial citizens recolonize {planet_numeral_name(r, star)} I.",star.x,star.y);
                 
-                star.dispo[r]=min(obj_ini.imperium_disposition,obj_controller.disposition[2])+irandom_range(-4,4);
+                star.dispo[r]=min(obj_ini.imperium_disposition,obj_controller.disposition[eFACTION.Imperium])+irandom_range(-4,4);
                 if (star.name=obj_ini.home_name) and (star.p_type[r]=obj_ini.home_type) and (obj_controller.homeworld_rule!=1) then star.dispo[r]=-5000;
             }
         }  

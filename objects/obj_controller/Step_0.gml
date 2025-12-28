@@ -116,8 +116,8 @@ try {
     }
     if (cheatcode == "dep") {
         global.cheat_disp = 1;
-        obj_controller.disposition[2] = 100;
-        obj_controller.disposition[3] = 100;
+        obj_controller.disposition[eFACTION.Imperium] = 100;
+        obj_controller.disposition[eFACTION.Mechanicus] = 100;
         obj_controller.disposition[4] = 100;
         obj_controller.disposition[5] = 100;
         obj_controller.disposition[6] = 100;
