@@ -77,18 +77,7 @@ if (!zoomed && !zui) {
             }
         }
         if (helpful_places != false) {
-            if (
-                !instances_exist_any(
-                    [
-                        obj_turn_end,
-                        obj_ncombat,
-                        obj_fleet,
-                        obj_fleet_select,
-                        obj_popup,
-                        obj_star_select
-                    ]
-                )
-            ) {
+            if (!instances_exist_any([obj_turn_end, obj_ncombat, obj_fleet, obj_fleet_select, obj_popup, obj_star_select])) {
                 helpful_places.draw();
             }
         }
@@ -166,16 +155,7 @@ if (!zoomed && !zui) {
             sector_imperial_fleet_strength();
         }
         draw_text(850, 60, $"Sector Fleet Strength {imp_ships}/{max_fleet_strength}");
-        if (
-            scr_hit(
-                [
-                    700,
-                    60,
-                    1000,
-                    80
-                ]
-            )
-        ) {
+        if (scr_hit(700, 60, 1000, 80)) {
             tooltip_draw("The relative strength of the imperial navy and defence fleet forces and their max supported strength. Increase The number of imperial aligned planets and active forge worlds to increase the limit");
         }
     } // Checks if the chapter name is less than 140 chars, adjusts chapter_master_name_width accordingly
