@@ -14,8 +14,8 @@ if (__b__) {
                 }
 
                 var xxx, yyy;
-                xxx = __view_get(e__VW.XView, 0) + 535;
-                yyy = __view_get(e__VW.YView, 0) + 200;
+                xxx = camera_get_view_x(view_camera[0]) + 535;
+                yyy = camera_get_view_y(view_camera[0]) + 200;
 
                 if ((cooldown <= 0) && (battle_world[current_battle] == -50) && (combating == 0)) {
                     if ((mouse_x >= xxx + 132) && (mouse_y >= yyy + 354) && (mouse_x < xxx + 259) && (mouse_y < yyy + 389)) {

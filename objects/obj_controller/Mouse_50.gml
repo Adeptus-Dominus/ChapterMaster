@@ -1,7 +1,7 @@
 // This script handles left click interactions throught the main menus of the game
 var xx, yy;
-xx = __view_get(e__VW.XView, 0);
-yy = __view_get(e__VW.YView, 0);
+xx = camera_get_view_x(view_camera[0]);
+yy = camera_get_view_y(view_camera[0]);
 
 if ((trading > 0) && (force_goodbye != 0)) {
     trading = 0;
@@ -244,8 +244,8 @@ scr_menu_clear_up(function() {
     if ((menu == eMENU.Manage) && (managing > 0) || (managing < 0) && (!view_squad || !company_report)) {
         var unit;
         var eventing = false, bb = "";
-        xx = __view_get(e__VW.XView, 0) + 0;
-        yy = __view_get(e__VW.YView, 0) + 0;
+        xx = camera_get_view_x(view_camera[0]) + 0;
+        yy = camera_get_view_y(view_camera[0]) + 0;
         var top = man_current, sel, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "", squad_sel = 0;
         var stop = 0;
 

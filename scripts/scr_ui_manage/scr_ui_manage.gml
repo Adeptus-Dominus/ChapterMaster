@@ -94,15 +94,7 @@ function load_marines_into_ship(system, ship, units, reload = false) {
 /// @param {string} purpose_code - Code that identifies the selection’s purpose
 function command_slot_prompt(search_params, role_group_params, purpose, purpose_code) {
     var candidates = collect_role_group(role_group_params.group, role_group_params.location, role_group_params.opposite, search_params);
-    group_selection(candidates, {
-        purpose: purpose,
-        purpose_code: purpose_code,
-        number: 1,
-        target_company: managing,
-        feature: "none",
-        planet: 0,
-        selections: [],
-    });
+    group_selection(candidates, {purpose: purpose, purpose_code: purpose_code, number: 1, target_company: managing, feature: "none", planet: 0, selections: []});
 }
 
 /// @desc Displays a selectable prompt for special roles to be assigned.
@@ -208,11 +200,7 @@ function reset_manage_unit_constants(unit) {
             _psionic = $"{_psionic}\n{max(0, unit.corruption())}% Corruption.";
         }
 
-        unit_manage_constants.psy = new LabeledIcon(spr_icon_psyker, _psionic, 0, 0, {
-            icon_width: 24,
-            icon_height: 24,
-            tooltip: $"==Psychic Stats==\n{_tooltip}",
-        });
+        unit_manage_constants.psy = new LabeledIcon(spr_icon_psyker, _psionic, 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Psychic Stats==\n{_tooltip}"});
         // Damage Resistance
 
         var _res_tool = "Health damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.\n\nContributing factors:\n";
@@ -250,11 +238,7 @@ function reset_manage_unit_constants(unit) {
         }
         _res_tool += $"CON: {unit.constitution / 2}%\nEXP: {unit.experience / 10}%";
 
-        unit_manage_constants.damage_res = new LabeledIcon(spr_icon_iron_halo, $"{_damage_res}%", 0, 0, {
-            icon_width: 24,
-            icon_height: 24,
-            tooltip: _res_tool,
-        });
+        unit_manage_constants.damage_res = new LabeledIcon(spr_icon_iron_halo, $"{_damage_res}%", 0, 0, {icon_width: 24, icon_height: 24, tooltip: _res_tool});
         var _hp_val = $"{round(unit.hp())}/{round(unit.max_health())}";
         var _hp_tool = "A measure of how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\n";
         _hp_tool += $"CON: {round(100 * (1 + ((unit.constitution - 40) * 0.025)))}\n";
@@ -290,11 +274,7 @@ function reset_manage_unit_constants(unit) {
             }
         }
 
-        unit_manage_constants.hp = new LabeledIcon(spr_icon_health, _hp_val, 0, 0, {
-            icon_width: 24,
-            icon_height: 24,
-            tooltip: _hp_tool,
-        });
+        unit_manage_constants.hp = new LabeledIcon(spr_icon_health, _hp_val, 0, 0, {icon_width: 24, icon_height: 24, tooltip: _hp_tool});
 
         // -------------------------
         // Armour Rating
@@ -337,51 +317,23 @@ function reset_manage_unit_constants(unit) {
             _armour_tool += "STC Bonus: x1.05\n";
         }
 
-        unit_manage_constants.armour = new LabeledIcon(spr_icon_shield2, _armour_val, 0, 0, {
-            icon_width: 24,
-            icon_height: 24,
-            tooltip: _armour_tool,
-        });
+        unit_manage_constants.armour = new LabeledIcon(spr_icon_shield2, _armour_val, 0, 0, {icon_width: 24, icon_height: 24, tooltip: _armour_tool});
 
-        unit_manage_constants.exp = new LabeledIcon(spr_icon_veteran, string(floor(unit.experience)), 0, 0, {
-            icon_width: 24,
-            icon_height: 24,
-            tooltip: $"==Experience==\nA measurement of how battle-hardened the unit is. Provides various bonuses across the board. Every 15 EXP, a new stat is assigned. Hover over the unit’s stats in the marine profile to see projected growth over time.",
-        });
+        unit_manage_constants.exp = new LabeledIcon(spr_icon_veteran, string(floor(unit.experience)), 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Experience==\nA measurement of how battle-hardened the unit is. Provides various bonuses across the board. Every 15 EXP, a new stat is assigned. Hover over the unit’s stats in the marine profile to see projected growth over time."});
 
         // Melee Attack
         var _melee = unit.melee_attack();
-        unit_manage_constants.melee_attack = new LabeledIcon(spr_icon_weapon_skill, $"{round(_melee[0])}", 0, 0, {
-            icon_width: 24,
-            icon_height: 24,
-            tooltip: $"==Melee Attack==\n{_melee[1]}",
-            colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR,
-        });
+        unit_manage_constants.melee_attack = new LabeledIcon(spr_icon_weapon_skill, $"{round(_melee[0])}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Melee Attack==\n{_melee[1]}", colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR});
 
         var _carry = _melee[2];
-        unit_manage_constants.melee_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {
-            icon_width: 24,
-            icon_height: 24,
-            tooltip: $"==Melee Burden==\n{_carry[2]}",
-            colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR,
-        });
+        unit_manage_constants.melee_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Melee Burden==\n{_carry[2]}", colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR});
 
         // Ranged Attack
         var _range = unit.ranged_attack();
-        unit_manage_constants.ranged_attack = new LabeledIcon(spr_icon_ballistic_skill, $"{round(_range[0])}", 0, 0, {
-            icon_width: 24,
-            icon_height: 24,
-            tooltip: $"==Ranged Attack==\n{_range[1]}",
-            colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR,
-        });
+        unit_manage_constants.ranged_attack = new LabeledIcon(spr_icon_ballistic_skill, $"{round(_range[0])}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Ranged Attack==\n{_range[1]}", colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR});
 
         var _carry = _range[2];
-        unit_manage_constants.ranged_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {
-            icon_width: 24,
-            icon_height: 24,
-            tooltip: $"==Ranged Burden==\n{_carry[2]}",
-            colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR,
-        });
+        unit_manage_constants.ranged_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Ranged Burden==\n{_carry[2]}", colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR});
 
         // -------------------------
         // Bionics
@@ -426,11 +378,7 @@ function reset_manage_unit_constants(unit) {
             }
         }
 
-        unit_manage_constants.bionics = new LabeledIcon(spr_icon_bionics, _bionic_val, 0, 0, {
-            icon_width: 24,
-            icon_height: 24,
-            tooltip: _bionic_tool,
-        });
+        unit_manage_constants.bionics = new LabeledIcon(spr_icon_bionics, _bionic_val, 0, 0, {icon_width: 24, icon_height: 24, tooltip: _bionic_tool});
 
         if (is_struct(unit_manage_image)) {
             try {
@@ -445,8 +393,7 @@ function reset_manage_unit_constants(unit) {
         /*if (man[sel]="vehicle"){
     // TODO
 }*/
-    }
-    catch (_exception) {} //not sure handling with normal method exception could just be a pain here
+    } catch (_exception) {} //not sure handling with normal method exception could just be a pain here
 }
 
 function company_specific_management() {
@@ -502,13 +449,7 @@ function alternative_manage_views(x1, y1) {
         init_manage_buttons();
     }
     var _squad_button = management_buttons.squad_toggle;
-    _squad_button
-        .update({
-            x1: x1 + 5,
-            y1: y1 + 6,
-            label: !obj_controller.view_squad && !obj_controller.company_report ? "Squad View" : "Company View",
-            keystroke: keyboard_check_pressed(ord("S")) && allow_shortcuts,
-        });
+    _squad_button.update({x1: x1 + 5, y1: y1 + 6, label: !obj_controller.view_squad && !obj_controller.company_report ? "Squad View" : "Company View", keystroke: keyboard_check_pressed(ord("S")) && allow_shortcuts});
 
     if (company_data.has_squads) {
         if (_squad_button.draw(!text_bar)) {
@@ -521,26 +462,14 @@ function alternative_manage_views(x1, y1) {
 
     if (!view_squad) {
         var _profile_toggle = management_buttons.profile_toggle;
-        _profile_toggle
-            .update({
-                label: !unit_profile ? "Show Profile" : "Hide Profile",
-                x1: _squad_button.x2,
-                y1: _squad_button.y1,
-                keystroke: keyboard_check_pressed(ord("P")) && allow_shortcuts,
-            });
+        _profile_toggle.update({label: !unit_profile ? "Show Profile" : "Hide Profile", x1: _squad_button.x2, y1: _squad_button.y1, keystroke: keyboard_check_pressed(ord("P")) && allow_shortcuts});
         if (_profile_toggle.draw(!text_bar)) {
             unit_profile = !unit_profile;
         }
 
         if (unit_profile) {
             var bio_toggle = management_buttons.bio_toggle;
-            bio_toggle
-                .update({
-                    label: !unit_bio ? "Show Bio" : "Hide Bio",
-                    x1: _profile_toggle.x2,
-                    y1: _profile_toggle.y1,
-                    keystroke: keyboard_check_pressed(ord("B")) && allow_shortcuts,
-                });
+            bio_toggle.update({label: !unit_bio ? "Show Bio" : "Hide Bio", x1: _profile_toggle.x2, y1: _profile_toggle.y1, keystroke: keyboard_check_pressed(ord("B")) && allow_shortcuts});
             if (bio_toggle.draw(!text_bar)) {
                 unit_bio = !unit_bio;
             }
@@ -563,11 +492,7 @@ function alternative_manage_views(x1, y1) {
     }
 
     var _capture_button = management_buttons.capture_image;
-    _capture_button
-        .update({
-            x1: _last_button_x,
-            y1: _last_button_y,
-        });
+    _capture_button.update({x1: _last_button_x, y1: _last_button_y});
 
     if (is_struct(obj_controller.unit_focus) && _capture_button.draw(!text_bar)) {
         // Capture the sprite frame as PNG
@@ -718,144 +643,74 @@ function draw_sprite_and_unit_equip_data() {
             // Equipment
             var _armour = unit_manage_constants.armour_string;
 
-            _armour
-                .update({
-                    x1: x_left,
-                    y1: yy + 179,
-                });
+            _armour.update({x1: x_left, y1: yy + 179});
 
             _armour.draw();
 
             var _gear = unit_manage_constants.gear_string;
 
-            _gear
-                .update({
-                    x1: x_left,
-                    y1: yy + 305,
-                });
+            _gear.update({x1: x_left, y1: yy + 305});
 
             _gear.draw();
 
             var _mobi = unit_manage_constants.mobi_string;
 
-            _mobi
-                .update({
-                    x1: x_left,
-                    y1: yy + 326,
-                });
+            _mobi.update({x1: x_left, y1: yy + 326});
 
             _mobi.draw();
 
             var _wep1 = unit_manage_constants.wep1_string;
 
-            _wep1
-                .update({
-                    x1: x_left,
-                    y1: yy + 204,
-                });
+            _wep1.update({x1: x_left, y1: yy + 204});
 
             _wep1.draw();
 
             var _wep2 = unit_manage_constants.wep2_string;
 
-            _wep2
-                .update({
-                    x1: x_left,
-                    y1: yy + 254,
-                });
+            _wep2.update({x1: x_left, y1: yy + 254});
 
             _wep2.draw();
 
             // Stats
             // Bionics trackers
-            unit_manage_constants
-                .bionics
-                .update({
-                    x1: x_left + 84,
-                    y1: yy + 63,
-                });
+            unit_manage_constants.bionics.update({x1: x_left + 84, y1: yy + 63});
             unit_manage_constants.bionics.draw();
 
-            unit_manage_constants
-                .armour
-                .update({
-                    x1: x_left - 6,
-                    y1: yy + 87,
-                });
+            unit_manage_constants.armour.update({x1: x_left - 6, y1: yy + 87});
             unit_manage_constants.armour.draw();
 
-            unit_manage_constants
-                .hp
-                .update({
-                    x1: x_left - 6,
-                    y1: yy + 63,
-                });
+            unit_manage_constants.hp.update({x1: x_left - 6, y1: yy + 63});
             unit_manage_constants.hp.draw();
 
             // Experience
-            unit_manage_constants
-                .exp
-                .update({
-                    x1: x_left - 6,
-                    y1: yy + 39,
-                });
+            unit_manage_constants.exp.update({x1: x_left - 6, y1: yy + 39});
             unit_manage_constants.exp.draw();
 
-            unit_manage_constants
-                .damage_res
-                .update({
-                    x1: x_left + 84,
-                    y1: yy + 87,
-                });
+            unit_manage_constants.damage_res.update({x1: x_left + 84, y1: yy + 87});
 
             unit_manage_constants.damage_res.draw();
 
             // Psyker things
 
             if (array_length(selected_unit.powers_known)) {
-                unit_manage_constants
-                    .psy
-                    .update({
-                        x1: x_left + 84,
-                        y1: yy + 39,
-                    });
+                unit_manage_constants.psy.update({x1: x_left + 84, y1: yy + 39});
 
                 unit_manage_constants.psy.draw();
             }
 
-            unit_manage_constants
-                .melee_attack
-                .update({
-                    x1: x_left - 6,
-                    y1: yy + 111,
-                });
+            unit_manage_constants.melee_attack.update({x1: x_left - 6, y1: yy + 111});
 
             unit_manage_constants.melee_attack.draw();
 
-            unit_manage_constants
-                .ranged_attack
-                .update({
-                    x1: x_left - 6,
-                    y1: yy + 135,
-                });
+            unit_manage_constants.ranged_attack.update({x1: x_left - 6, y1: yy + 135});
 
             unit_manage_constants.ranged_attack.draw();
 
-            unit_manage_constants
-                .melee_burden
-                .update({
-                    x1: x_left + 84,
-                    y1: yy + 111,
-                });
+            unit_manage_constants.melee_burden.update({x1: x_left + 84, y1: yy + 111});
 
             unit_manage_constants.melee_burden.draw();
 
-            unit_manage_constants
-                .ranged_burden
-                .update({
-                    x1: x_left + 84,
-                    y1: yy + 135,
-                });
+            unit_manage_constants.ranged_burden.update({x1: x_left + 84, y1: yy + 135});
 
             unit_manage_constants.ranged_burden.draw();
         }
@@ -900,7 +755,7 @@ function scr_ui_manage() {
         var unit, x1, x2, x3, y1, y2, y3, text;
         var tooltip_text = "", bionic_tooltip = "";
         company_data.tooltip_drawing = [];
-        var xx = __view_get(e__VW.XView, 0) + 0, yy = __view_get(e__VW.YView, 0) + 0, bb = "", img = 0;
+        var xx = camera_get_view_x(view_camera[0]) + 0, yy = camera_get_view_y(view_camera[0]) + 0, bb = "", img = 0;
 
         // Draw BG
         draw_set_alpha(1);
@@ -1061,20 +916,7 @@ function scr_ui_manage() {
             ];
 
             if (!scr_has_disadv("Psyker Intolerant")) {
-                array_push(_command_slots_data, {
-                    search_params: {
-                        companies: [managing, 0],
-                    },
-                    role_group_params: {
-                        group: [SPECIALISTS_LIBRARIANS, false, false],
-                        location: "",
-                        opposite: false,
-                    },
-                    purpose: $"{int_to_roman(managing)} Company Librarian Candidates",
-                    purpose_code: "librarian_promote",
-                    button_text: "Librarian Required",
-                    unit_check: "lib",
-                });
+                array_push(_command_slots_data, {search_params: {companies: [managing, 0]}, role_group_params: {group: [SPECIALISTS_LIBRARIANS, false, false], location: "", opposite: false}, purpose: $"{int_to_roman(managing)} Company Librarian Candidates", purpose_code: "librarian_promote", button_text: "Librarian Required", unit_check: "lib"});
             }
 
             return _command_slots_data;
@@ -1145,8 +987,8 @@ function scr_ui_manage() {
             sel_all = "";
 
             draw_set_color(c_black);
-            xx = __view_get(e__VW.XView, 0) + 0;
-            yy = __view_get(e__VW.YView, 0) + 0;
+            xx = camera_get_view_x(view_camera[0]) + 0;
+            yy = camera_get_view_y(view_camera[0]) + 0;
             draw_rectangle(xx + 974, yy + 165, xx + 1005, yy + 822, 0);
             draw_set_color(c_gray);
             draw_rectangle(xx + 974, yy + 165, xx + 1005, yy + 822, 1);
@@ -1193,7 +1035,7 @@ function scr_ui_manage() {
             var selected_unit = obj_controller.unit_focus;
             if ((selected_unit.name() != "") && (selected_unit.race() != 0)) {
                 draw_set_alpha(1);
-                var xx = __view_get(e__VW.XView, 0) + 0, yy = __view_get(e__VW.YView, 0) + 0;
+                var xx = camera_get_view_x(view_camera[0]) + 0, yy = camera_get_view_y(view_camera[0]) + 0;
                 if (obj_controller.unit_profile && !instance_exists(obj_popup)) {
                     stats_displayed = true;
                     selected_unit.stat_display(true);
@@ -1223,8 +1065,8 @@ function scr_ui_manage() {
         bb = "";
         img = 0;
 
-        xx = __view_get(e__VW.XView, 0) + 0;
-        yy = __view_get(e__VW.YView, 0) + 0;
+        xx = camera_get_view_x(view_camera[0]) + 0;
+        yy = camera_get_view_y(view_camera[0]) + 0;
 
         // BG
         draw_set_alpha(1);
@@ -1326,8 +1168,8 @@ function scr_ui_manage() {
         draw_set_font(fnt_40k_14b);
         draw_text_transformed(xx + 320, yy + 402, $"Click a Ship to Load Selection (Req. {man_size} Space)", 1, 1, 0);
 
-        xx = __view_get(e__VW.XView, 0) + 0;
-        yy = __view_get(e__VW.YView, 0) + 0;
+        xx = camera_get_view_x(view_camera[0]) + 0;
+        yy = camera_get_view_y(view_camera[0]) + 0;
 
         // draw_text_transformed(xx + 488, yy + 426, "Selection Size: " + string(man_size), 0.4, 0.4, 0);
         scr_scrollbar(974, 172, 1005, 790, 34, ship_max, ship_current);

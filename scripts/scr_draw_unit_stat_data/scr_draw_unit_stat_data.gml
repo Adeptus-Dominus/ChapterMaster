@@ -1,23 +1,14 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-function scr_draw_unit_stat_data(
-    manage = false,
-    data_block = {
-        x1: 1008,
-        y1: 520,
-        w: 569,
-        h: 303,
-    },
-    squeezed = false
-) {
+function scr_draw_unit_stat_data(manage = false, data_block = {x1: 1008, y1: 520, w: 569, h: 303}, squeezed = false) {
     var _cur_font = draw_get_font();
     draw_set_font(fnt_40k_14);
     if (event_number == ev_gui) {
         xx = 0;
         yy = 0;
     } else {
-        var xx = __view_get(e__VW.XView, 0) + 0;
-        var yy = __view_get(e__VW.YView, 0) + 0;
+        var xx = camera_get_view_x(view_camera[0]) + 0;
+        var yy = camera_get_view_y(view_camera[0]) + 0;
     }
     var stat_tool_tips = [];
     var trait_tool_tips = [];

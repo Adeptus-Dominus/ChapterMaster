@@ -41,7 +41,7 @@ if (instance_exists(obj_p_ship) && (control == 1)) {
 }
 
 if ((start == 5) && (obj_controller.zoomed == 0)) {
-    if ((mouse_x >= __view_get(e__VW.XView, 0) + 12) && (mouse_y >= __view_get(e__VW.YView, 0) + 436) && (mouse_x < __view_get(e__VW.XView, 0) + 48) && (mouse_y < __view_get(e__VW.YView, 0) + 480) && (gamespeed_fps < 90)) {
+    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 12) && (mouse_y >= camera_get_view_y(view_camera[0]) + 436) && (mouse_x < camera_get_view_x(view_camera[0]) + 48) && (mouse_y < camera_get_view_y(view_camera[0]) + 480) && (gamespeed_fps < 90)) {
         game_set_speed(gamespeed_fps + 30, gamespeed_fps);
     }
 }

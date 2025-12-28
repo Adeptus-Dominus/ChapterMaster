@@ -1,18 +1,21 @@
+if ((selected == 1) && (!instance_exists(obj_circular)) && (obj_fleet.control != 0)) {
+    var stahp;
+    stahp = 0;
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
 
-if (selected=1) and (!instance_exists(obj_circular)) and (obj_fleet.control!=0){
-    var stahp;stahp=0;
-    var xx=__view_get( e__VW.XView, 0);
-    var yy=__view_get( e__VW.YView, 0);
-    
-    if (obj_fleet.start=5) and (obj_controller.zoomed=0){
-        if (point_in_rectangle(mouse_x,mouse_y, xx+12,yy+436,xx+48,yy+480)) then stahp=1;
-    }
-    else if (obj_fleet.start=5) and (obj_controller.zoomed=1){
-        if (point_in_rectangle(mouse_x,mouse_y, xx+24,yy+872,xx+90,yy+960)) then stahp=1;
-    }// and (room_speed<90)
-    
-    if (stahp=0){
-        paction="";
+    if ((obj_fleet.start == 5) && (obj_controller.zoomed == 0)) {
+        if (point_in_rectangle(mouse_x, mouse_y, xx + 12, yy + 436, xx + 48, yy + 480)) {
+            stahp = 1;
+        }
+    } else if ((obj_fleet.start == 5) && (obj_controller.zoomed == 1)) {
+        if (point_in_rectangle(mouse_x, mouse_y, xx + 24, yy + 872, xx + 90, yy + 960)) {
+            stahp = 1;
+        }
+    } // and (room_speed<90)
+
+    if (stahp == 0) {
+        paction = "";
         /*target_x=mouse_x;
         target_y=mouse_y;
         
@@ -32,11 +35,10 @@ if (selected=1) and (!instance_exists(obj_circular)) and (obj_fleet.control!=0){
         if (!instance_exists(obj_en_ship)){
             paction="turn";
         }*/
-        
-        instance_create(20,20,obj_circular);
+
+        instance_create(20, 20, obj_circular);
     }
 }
-
 
 /* */
 /*  */

@@ -7,8 +7,8 @@ stop = 0;
 bx = x;
 by = y;
 if ((follow_control == true) && instance_exists(obj_controller)) {
-    xx += __view_get(e__VW.XView, 0);
-    yy += __view_get(e__VW.YView, 0);
+    xx += camera_get_view_x(view_camera[0]);
+    yy += camera_get_view_y(view_camera[0]);
 }
 
 highlighted = false;
@@ -20,9 +20,9 @@ if (button_id == 1) {
         if ((mouse_x >= bx) && (mouse_x <= bx + wid)) {
             if (mouse_x >= +bx + (134 * scaling)) {
                 var dif1, dif2;
-                dif1 = mouse_x - (__view_get(e__VW.XView, 0) + bx + (134 * scaling));
+                dif1 = mouse_x - (camera_get_view_x(view_camera[0]) + bx + (134 * scaling));
                 dif2 = dif1 * 1.25;
-                if (mouse_y < __view_get(e__VW.YView, 0) + by + dif2) {
+                if (mouse_y < camera_get_view_y(view_camera[0]) + by + dif2) {
                     stop = 1;
                 }
             }
@@ -47,13 +47,13 @@ if (button_id == 1) {
 if (button_id == 2) {
     wid = 142 * scaling;
     hei = 43 * scaling;
-    if ((mouse_y >= __view_get(e__VW.YView, 0) + by) && (mouse_y <= __view_get(e__VW.YView, 0) + by + hei)) {
-        if ((mouse_x >= __view_get(e__VW.XView, 0) + bx) && (mouse_x <= __view_get(e__VW.XView, 0) + bx + wid)) {
-            if (mouse_x >= __view_get(e__VW.XView, 0) + bx + (134 * scaling)) {
+    if ((mouse_y >= camera_get_view_y(view_camera[0]) + by) && (mouse_y <= camera_get_view_y(view_camera[0]) + by + hei)) {
+        if ((mouse_x >= camera_get_view_x(view_camera[0]) + bx) && (mouse_x <= camera_get_view_x(view_camera[0]) + bx + wid)) {
+            if (mouse_x >= camera_get_view_x(view_camera[0]) + bx + (134 * scaling)) {
                 var dif1, dif2;
-                dif1 = mouse_x - (__view_get(e__VW.XView, 0) + bx + (134 * scaling));
+                dif1 = mouse_x - (camera_get_view_x(view_camera[0]) + bx + (134 * scaling));
                 dif2 = dif1 * 1.25;
-                if (mouse_y < __view_get(e__VW.YView, 0) + by + dif2) {
+                if (mouse_y < camera_get_view_y(view_camera[0]) + by + dif2) {
                     stop = 1;
                 }
             }
@@ -66,13 +66,13 @@ if (button_id == 2) {
 if (button_id == 3) {
     wid = 115 * scaling;
     hei = 43 * scaling;
-    if ((mouse_y >= __view_get(e__VW.YView, 0) + by) && (mouse_y <= __view_get(e__VW.YView, 0) + by + hei)) {
-        if ((mouse_x >= __view_get(e__VW.XView, 0) + bx) && (mouse_x <= __view_get(e__VW.XView, 0) + bx + wid)) {
-            if (mouse_x >= __view_get(e__VW.XView, 0) + bx + (108 * scaling)) {
+    if ((mouse_y >= camera_get_view_y(view_camera[0]) + by) && (mouse_y <= camera_get_view_y(view_camera[0]) + by + hei)) {
+        if ((mouse_x >= camera_get_view_x(view_camera[0]) + bx) && (mouse_x <= camera_get_view_x(view_camera[0]) + bx + wid)) {
+            if (mouse_x >= camera_get_view_x(view_camera[0]) + bx + (108 * scaling)) {
                 var dif1, dif2;
-                dif1 = mouse_x - (__view_get(e__VW.XView, 0) + bx + (108 * scaling));
+                dif1 = mouse_x - (camera_get_view_x(view_camera[0]) + bx + (108 * scaling));
                 dif2 = dif1 * 2;
-                if (mouse_y < __view_get(e__VW.YView, 0) + by + dif2) {
+                if (mouse_y < camera_get_view_y(view_camera[0]) + by + dif2) {
                     stop = 1;
                 }
             }
@@ -85,13 +85,13 @@ if (button_id == 3) {
 if (button_id == 4) {
     wid = 108 * scaling;
     hei = 42 * scaling;
-    if ((mouse_y >= __view_get(e__VW.YView, 0) + by) && (mouse_y <= __view_get(e__VW.YView, 0) + by + hei)) {
-        if ((mouse_x >= __view_get(e__VW.XView, 0) + bx) && (mouse_x <= __view_get(e__VW.XView, 0) + bx + wid)) {
-            if (mouse_x >= __view_get(e__VW.XView, 0) + bx + (108 * scaling)) {
+    if ((mouse_y >= camera_get_view_y(view_camera[0]) + by) && (mouse_y <= camera_get_view_y(view_camera[0]) + by + hei)) {
+        if ((mouse_x >= camera_get_view_x(view_camera[0]) + bx) && (mouse_x <= camera_get_view_x(view_camera[0]) + bx + wid)) {
+            if (mouse_x >= camera_get_view_x(view_camera[0]) + bx + (108 * scaling)) {
                 var dif1, dif2;
-                dif1 = mouse_x - (__view_get(e__VW.XView, 0) + bx + (108 * scaling));
+                dif1 = mouse_x - (camera_get_view_x(view_camera[0]) + bx + (108 * scaling));
                 dif2 = dif1 * 2;
-                if (mouse_y < __view_get(e__VW.YView, 0) + by + hei - dif2) {
+                if (mouse_y < camera_get_view_y(view_camera[0]) + by + hei - dif2) {
                     stop = 1;
                 }
             }
@@ -114,7 +114,6 @@ if ((highlighted == false) && (highlight > 0)) {
     highlight -= 0.04;
 }
 
-
 var freq;
 freq = 150;
 if (line > 0) {
@@ -136,7 +135,7 @@ if ((line == 0) && (floor(random(freq)) == 3)) {
 /* */
 /*  */
 
-if (highlighted == true && target > 10 && scr_click_left(,true)) { // Tip of the day: no idea why, but if you split this into two lines, the check will never pass;
+if (highlighted == true && target > 10 && scr_click_left(, true)) {
+    // Tip of the day: no idea why, but if you split this into two lines, the check will never pass;
     obj_ingame_menu.effect = self.target;
 }
-

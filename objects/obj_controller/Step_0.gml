@@ -424,8 +424,8 @@ try {
         if (!view_squad) {
             var c = 0, fx = "";
             var xx, yy, bb = "";
-            xx = __view_get(e__VW.XView, 0) + 0;
-            yy = __view_get(e__VW.YView, 0) + 0;
+            xx = camera_get_view_x(view_camera[0]) + 0;
+            yy = camera_get_view_y(view_camera[0]) + 0;
 
             if (managing <= 10) {
                 c = managing;

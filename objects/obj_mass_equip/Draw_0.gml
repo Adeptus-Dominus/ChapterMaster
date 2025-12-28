@@ -1,6 +1,6 @@
 var xx, yy;
-xx = __view_get(e__VW.XView, 0) + 0;
-yy = __view_get(e__VW.YView, 0) + 0;
+xx = camera_get_view_x(view_camera[0]) + 0;
+yy = camera_get_view_y(view_camera[0]) + 0;
 
 if (total_role_number > 0) {
     draw_set_color(c_gray);
@@ -105,26 +105,7 @@ if (total_role_number > 0) {
 
 if (total_role_number > 0 && tab > -1) {
     item_name = [];
-    var infanty_roles = [
-        eROLE.ChapterMaster,
-        eROLE.HonourGuard,
-        eROLE.Veteran,
-        eROLE.Terminator,
-        eROLE.Captain,
-        eROLE.Champion,
-        eROLE.Tactical,
-        eROLE.Devastator,
-        eROLE.Assault,
-        eROLE.Ancient,
-        eROLE.Scout,
-        eROLE.Chaplain,
-        eROLE.Apothecary,
-        eROLE.Techmarine,
-        eROLE.Librarian,
-        eROLE.Sergeant,
-        eROLE.VeteranSergeant,
-        eROLE.Dreadnought
-    ];
+    var infanty_roles = [eROLE.ChapterMaster, eROLE.HonourGuard, eROLE.Veteran, eROLE.Terminator, eROLE.Captain, eROLE.Champion, eROLE.Tactical, eROLE.Devastator, eROLE.Assault, eROLE.Ancient, eROLE.Scout, eROLE.Chaplain, eROLE.Apothecary, eROLE.Techmarine, eROLE.Librarian, eROLE.Sergeant, eROLE.VeteranSergeant, eROLE.Dreadnought];
     // hand slots
     if ((tab == 0 || tab == 1) && array_get_index(infanty_roles, obj_controller.settings) >= 0) {
         // Get all available hand weapons

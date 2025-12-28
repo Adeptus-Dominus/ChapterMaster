@@ -4,8 +4,8 @@ function scr_ui_advisors() {
     var romanNumerals;
     romanNumerals = scr_roman_numerals();
 
-    xx = __view_get(e__VW.XView, 0) + 0;
-    yy = __view_get(e__VW.YView, 0) + 0;
+    xx = camera_get_view_x(view_camera[0]) + 0;
+    yy = camera_get_view_y(view_camera[0]) + 0;
     blurp = "";
     eta = 0;
 
@@ -14,8 +14,8 @@ function scr_ui_advisors() {
     // ** Fleet **
     if (menu == eMENU.Fleet) {
         scr_fleet_advisor();
-    } else // ** Apothecarium **
-    if (menu == eMENU.Apothecarion) {
+    } else if (menu == eMENU.Apothecarion) {
+        // ** Apothecarium **
         scr_apothecarium();
     }
 
@@ -781,8 +781,8 @@ function scr_ui_advisors() {
     // ** Librarium **
     if (menu == 13) {
         scr_librarium();
-    } else // ** Armamentarium **
-    if (menu == 14) {
+    } else if (menu == 14) {
+        // ** Armamentarium **
         scr_draw_armentarium();
     } else if (menu == 15) {
         // **recruiting**

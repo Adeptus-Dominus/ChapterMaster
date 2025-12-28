@@ -5,11 +5,11 @@ function scr_ui_settings() {
     var xx, yy;
     var tool1 = "", tool2 = "";
     var che = false;
-	var cx, cy;
+    var cx, cy;
     var x5 = 0, y5 = 0, x6 = 0;
     var too_img = 0;
-    xx = __view_get(e__VW.XView, 0) + 0;
-    yy = __view_get(e__VW.YView, 0) + 0;
+    xx = camera_get_view_x(view_camera[0]) + 0;
+    yy = camera_get_view_y(view_camera[0]) + 0;
 
     if ((menu >= 21) && (menu <= 24)) {
         draw_sprite(spr_settings_bg, 0, xx, yy);
@@ -64,7 +64,7 @@ function scr_ui_settings() {
                     keyboard_string = bat_formation[formating];
                 }
             } else {
-				text_bar = 0;
+                text_bar = 0;
             }
         }
 
@@ -90,13 +90,13 @@ function scr_ui_settings() {
             che = true;
         } else {
             che = false;
-		}
+        }
 
         cx = xx + 757;
         cy = yy + 120;
 
         // Defines the attack command
-		var _formation_name = "Attack Formation";
+        var _formation_name = "Attack Formation";
         draw_text(cx, cy, _formation_name);
 
         cx -= 35;
@@ -111,22 +111,22 @@ function scr_ui_settings() {
         if (scr_hit(cx, cy, cx + string_width(_formation_name), cy + sprite_get_height(spr_creation_check))) {
             tool1 = _formation_name;
             tool2 = "Can't be used in Raids. Can use any vehicles.";
-			if (scr_click_left() && formating > 3 && bat_formation_type[formating] != 1) {
-				bat_formation_type[formating] = 1;
-				scr_ui_formation_bars();
-			}
+            if (scr_click_left() && formating > 3 && bat_formation_type[formating] != 1) {
+                bat_formation_type[formating] = 1;
+                scr_ui_formation_bars();
+            }
         }
 
         if (bat_formation_type[formating] == 2) {
             che = true;
         } else {
             che = false;
-		}
+        }
 
         // Defines the Raid action
         cx = xx + 757;
         cy = yy + 155;
-		_formation_name = "Raid Formation";
+        _formation_name = "Raid Formation";
         draw_text(cx, cy, _formation_name);
 
         cx -= 35;
@@ -141,10 +141,10 @@ function scr_ui_settings() {
         if (scr_hit(cx, cy, cx + string_width(_formation_name), cy + sprite_get_height(spr_creation_check))) {
             tool1 = _formation_name;
             tool2 = "Can only be used in Raids. Prevents the use of all vehicles aside from Dreadnoughts and Land Speeders. Starts in melee.";
-			if (scr_click_left() && formating > 3 && bat_formation_type[formating] != 2) {
-				bat_formation_type[formating] = 2;
-				scr_ui_formation_bars();
-			}
+            if (scr_click_left() && formating > 3 && bat_formation_type[formating] != 2) {
+                bat_formation_type[formating] = 2;
+                scr_ui_formation_bars();
+            }
         }
 
         draw_set_color(c_gray);
@@ -288,19 +288,19 @@ function scr_ui_settings() {
             scr_image("formation", too_img, xx + 1271, yy + 252, 239, 297);
         }
 
-		if (tool1 != "") {
-			draw_set_alpha(1);
-			draw_set_font(fnt_40k_14);
-			draw_set_halign(fa_left);
-			draw_set_color(0);
-			draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + string_width_ext(tool2, -1, 500) + 24, mouse_y + 44 + string_height_ext(tool2, -1, 500), 0);
-			draw_set_color(c_gray);
-			draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + string_width_ext(tool2, -1, 500) + 24, mouse_y + 44 + string_height_ext(tool2, -1, 500), 1);
-			draw_set_font(fnt_40k_14b);
-			draw_text(mouse_x + 22, mouse_y + 22, string(tool1));
-			draw_set_font(fnt_40k_14);
-			draw_text_ext(mouse_x + 22, mouse_y + 42, string(tool2), -1, 500);
-		}
+        if (tool1 != "") {
+            draw_set_alpha(1);
+            draw_set_font(fnt_40k_14);
+            draw_set_halign(fa_left);
+            draw_set_color(0);
+            draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + string_width_ext(tool2, -1, 500) + 24, mouse_y + 44 + string_height_ext(tool2, -1, 500), 0);
+            draw_set_color(c_gray);
+            draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + string_width_ext(tool2, -1, 500) + 24, mouse_y + 44 + string_height_ext(tool2, -1, 500), 1);
+            draw_set_font(fnt_40k_14b);
+            draw_text(mouse_x + 22, mouse_y + 22, string(tool1));
+            draw_set_font(fnt_40k_14);
+            draw_text_ext(mouse_x + 22, mouse_y + 42, string(tool2), -1, 500);
+        }
     }
 
     if (menu == 23) {
@@ -321,7 +321,7 @@ function scr_ui_settings() {
             draw_set_halign(fa_center);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_30b);
-            draw_text_transformed(xx + 800, yy + 66, string(obj_ini.role[100, settings]) + " Settings", 1, 1, 0);
+            draw_text_transformed(xx + 800, yy + 66, string(obj_ini.role[100][settings]) + " Settings", 1, 1, 0);
 
             // New: 678,160
             // Old: 444,550
@@ -330,10 +330,10 @@ function scr_ui_settings() {
             draw_set_font(fnt_40k_30b);
             draw_set_color(c_gray);
             draw_set_halign(fa_left);
-            draw_text_transformed(xx + 678, yy + 160, obj_ini.role[co, ide], 0.6, 0.6, 0);
+            draw_text_transformed(xx + 678, yy + 160, obj_ini.role[co][ide], 0.6, 0.6, 0);
             var wid, hei;
             wid = 0;
-            hei = string_height_ext(string(obj_ini.role[co, ide]) + "Q", -1, 580) * 0.6;
+            hei = string_height_ext(string(obj_ini.role[co][ide]) + "Q", -1, 580) * 0.6;
             draw_rectangle(xx + 678 - 1, yy + 160 - 1, xx + 1056, yy + 160 + hei, 1);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_14b);
@@ -349,23 +349,23 @@ function scr_ui_settings() {
                 y5 += spacing;
                 if (gg == 0) {
                     title = "Main Weapon: ";
-                    geh = obj_ini.wep1[co, ide];
+                    geh = obj_ini.wep1[co][ide];
                 }
                 if (gg == 1) {
                     title = "Secondary Weapon: ";
-                    geh = obj_ini.wep2[co, ide];
+                    geh = obj_ini.wep2[co][ide];
                 }
                 if (gg == 2) {
                     title = "Armour: ";
-                    geh = obj_ini.armour[co, ide];
+                    geh = obj_ini.armour[co][ide];
                 }
                 if (gg == 3) {
                     title = "Special Item: ";
-                    geh = obj_ini.gear[co, ide];
+                    geh = obj_ini.gear[co][ide];
                 }
                 if (gg == 4) {
                     title = "Mobility Item: ";
-                    geh = obj_ini.mobi[co, ide];
+                    geh = obj_ini.mobi[co][ide];
                 }
 
                 draw_set_halign(fa_right);
@@ -380,8 +380,8 @@ function scr_ui_settings() {
                     draw_rectangle(x5, y5, x5 - string_width(title), y5 + string_height(title) - 2, 0);
 
                     var nep = false;
-                    
-                    if (((obj_ini.armour[co, ide] == "Terminator Armour") || (obj_ini.armour[co, ide] == "Dreadnought")) && (gg == 3)) {
+
+                    if (((obj_ini.armour[co][ide] == "Terminator Armour") || (obj_ini.armour[co][ide] == "Dreadnought")) && (gg == 3)) {
                         nep = true;
                     }
                     if ((ide == 6) && ((gg == 2) || (gg == 4))) {
@@ -905,21 +905,21 @@ function scr_ui_settings() {
             }
 
             draw_set_alpha(1);
-            if (obj_ini.race[100, ide] != 0) {
+            if (obj_ini.race[100][ide] != 0) {
                 // Creates mass_equip here
                 // if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
                 yyy += 31;
                 draw_set_color(c_gray);
                 draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
                 draw_set_color(0);
-                draw_text(xxx, yyy, obj_ini.role[100, ide]);
+                draw_text(xxx, yyy, obj_ini.role[100][ide]);
                 if (scr_hit(xxx, yyy, xxx + 289, yyy + 20) == true) {
                     /*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
                     draw_set_alpha(0.1);
                     draw_set_color(c_white);
                     draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
                     draw_set_alpha(1);
-                    tool1 = string(obj_ini.role[100, ide]) + " Settings";
+                    tool1 = string(obj_ini.role[100][ide]) + " Settings";
                     tool2 = "Click to open the settings for this unit.";
                     if (scr_click_left()) {
                         settings = ide;

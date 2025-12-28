@@ -26,7 +26,7 @@ function scr_menu_clear_up(specific_area_function) {
                 exit;
             }
             if ((zoomed == 0) && (cooldown <= 0) && (menu >= 500) && (menu <= 510)) {
-                if (mouse_y >= __view_get(e__VW.YView, 0) + 27) {
+                if (mouse_y >= camera_get_view_y(view_camera[0]) + 27) {
                     cooldown = 8000;
                     if ((menu >= 500) && (temp[menu - 434] == "")) {
                         menu = 0;
@@ -43,8 +43,8 @@ function scr_menu_clear_up(specific_area_function) {
             }*/
 
             diyst = 999;
-            xx = __view_get(e__VW.XView, 0);
-            yy = __view_get(e__VW.YView, 0);
+            xx = camera_get_view_x(view_camera[0]);
+            yy = camera_get_view_y(view_camera[0]);
 
             if (menu == 0) {
                 hide_banner = 0;
@@ -156,26 +156,10 @@ function basic_manage_settings() {
 
 function init_manage_buttons() {
     management_buttons = {
-        squad_toggle: new UnitButtonObject({
-            style: "pixel",
-            label: "Squad View",
-            tooltip: "Click here or press S to toggle Squad View.",
-        }),
-        profile_toggle: new UnitButtonObject({
-            style: "pixel",
-            label: "Show Profile",
-            tooltip: "Click here or press P to show unit profile.",
-        }),
-        bio_toggle: new UnitButtonObject({
-            style: "pixel",
-            label: "Show Bio",
-            tooltip: "Click here or press B to Toggle Unit Biography.",
-        }),
-        capture_image: new UnitButtonObject({
-            style: "pixel",
-            label: "Capture Image",
-            tooltip: "Click to create a local png of the given marine in the game folder.",
-        }),
+        squad_toggle: new UnitButtonObject({style: "pixel", label: "Squad View", tooltip: "Click here or press S to toggle Squad View."}),
+        profile_toggle: new UnitButtonObject({style: "pixel", label: "Show Profile", tooltip: "Click here or press P to show unit profile."}),
+        bio_toggle: new UnitButtonObject({style: "pixel", label: "Show Bio", tooltip: "Click here or press B to Toggle Unit Biography."}),
+        capture_image: new UnitButtonObject({style: "pixel", label: "Capture Image", tooltip: "Click to create a local png of the given marine in the game folder."}),
         company_namer: new TextBarArea(800, 108, 600, false),
     };
 }
@@ -281,13 +265,7 @@ function scr_toggle_lib() {
                 artifact_destroy = new ShutterButton();
                 artifact_namer = new TextBarArea(xx + 622, yy + 460, 350);
                 set_chapter_arti_data();
-                artifact_slate = new DataSlate({
-                    set_width: true,
-                    XX: 392,
-                    YY: 500,
-                    width: 460,
-                    height: 240,
-                });
+                artifact_slate = new DataSlate({set_width: true, XX: 392, YY: 500, width: 460, height: 240});
             }
         }
     });

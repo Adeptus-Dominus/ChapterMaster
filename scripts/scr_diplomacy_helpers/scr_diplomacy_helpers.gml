@@ -100,8 +100,8 @@ function add_diplomacy_option(option = {}) {
 }
 
 function basic_diplomacy_screen() {
-    var yy = __view_get(e__VW.YView, 0);
-    var xx = __view_get(e__VW.XView, 0);
+    var yy = camera_get_view_y(view_camera[0]);
+    var xx = camera_get_view_x(view_camera[0]);
     if (trading == 0 && valid_diplomacy_options()) {
         if (!force_goodbye) {
             draw_set_halign(fa_center);
@@ -123,10 +123,7 @@ function basic_diplomacy_screen() {
             for (var slot = 0; slot < opts; slot++) {
                 var _opt = diplo_option[slot];
 
-                _opt.update({
-                    x1: xx + 354,
-                    y1: yy + 694,
-                });
+                _opt.update({x1: xx + 354, y1: yy + 694});
 
                 if (_opt.draw()) {
                     diplo_pressed = slot;
@@ -137,7 +134,7 @@ function basic_diplomacy_screen() {
             if (diplo_pressed > -1) {
                 evaluate_chosen_diplomacy_option(diplo_pressed);
             }
-            yy = __view_get(e__VW.YView, 0);
+            yy = camera_get_view_y(view_camera[0]);
         }
         if ((menu == eMENU.Diplomacy) && (diplomacy == 10.1)) {
             scr_emmisary_diplomacy_routes();
@@ -196,17 +193,7 @@ function draw_character_diplomacy() {
             obj_controller.diplo_image = _diplo_unit.draw_unit_image();
         }
         obj_controller.diplo_image.draw(210, 520 - 271, true, 1, 1, 0, CM_GREEN_COLOR, 1);
-        _diplo_unit
-            .stat_display(
-                false,
-                {
-                    x1: 10,
-                    y1: 520,
-                    w: 569,
-                    h: 303,
-                },
-                true
-            );
+        _diplo_unit.stat_display(false, {x1: 10, y1: 520, w: 569, h: 303}, true);
         draw_sprite(spr_holo_pad, 0, 210, 520);
     };
 
@@ -231,17 +218,7 @@ function draw_character_diplomacy() {
             obj_controller.master_image = _master.draw_unit_image();
         }
         obj_controller.master_image.draw(1108 + 200, 520 - 271, true, 1, 1, 0, CM_GREEN_COLOR, 1);
-        _master
-            .stat_display(
-                false,
-                {
-                    x1: 1108,
-                    y1: 520,
-                    w: 569,
-                    h: 303,
-                },
-                true
-            );
+        _master.stat_display(false, {x1: 1108, y1: 520, w: 569, h: 303}, true);
         draw_sprite(spr_holo_pad, 0, 1108 + 200, 520);
     };
     _cm_slate.draw_with_dimensions();

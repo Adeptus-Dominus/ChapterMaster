@@ -13,12 +13,7 @@ try {
             if (role_number[co] > 0) {
                 for (i = 0; i < array_length(obj_ini.role[co]); i++) {
                     if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
-                        unit = fetch_unit(
-                            [
-                                co,
-                                i
-                            ]
-                        );
+                        unit = fetch_unit([co, i]);
                         if (unit.squad != "none") {
                             var _squad = fetch_squad(unit.squad);
                             if (!_squad.allow_bulk_swap) {
@@ -81,16 +76,7 @@ try {
                         // ** Start Mobility Items **
                         if (unit.mobility_item() != req_mobi) {
                             var stop_mobi = false;
-                            if (
-                                is_struct(unit_armour)
-                                && unit_armour
-                                    .has_tags(
-                                        [
-                                            "terminator",
-                                            "dreadnought"
-                                        ]
-                                    )
-                            ) {
+                            if (is_struct(unit_armour) && unit_armour.has_tags(["terminator", "dreadnought"])) {
                                 unit.update_mobility_item("");
                             } else {
                                 unit.update_mobility_item(req_mobi);

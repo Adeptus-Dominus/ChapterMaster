@@ -14,7 +14,7 @@ if (obj_controller.audience > 0) {
 }
 
 if ((show == 0) && (obj_controller.zoomed == 0) && (current_popup == 0)) {
-    draw_sprite(spr_loading, image_index, __view_get(e__VW.XView, 0) + 23, __view_get(e__VW.YView, 0) + 73);
+    draw_sprite(spr_loading, image_index, camera_get_view_x(view_camera[0]) + 23, camera_get_view_y(view_camera[0]) + 73);
 }
 if ((show == 0) && (obj_controller.zoomed == 1) && (current_popup == 0)) {
     draw_sprite_ext(spr_loading, image_index, 40, 40, 2, 2, 0, c_white, 1);
@@ -22,8 +22,8 @@ if ((show == 0) && (obj_controller.zoomed == 1) && (current_popup == 0)) {
 
 if ((show > 0) && (current_battle <= battles)) {
     var xxx, yyy, i;
-    xxx = __view_get(e__VW.XView, 0) + 535;
-    yyy = __view_get(e__VW.YView, 0) + 200;
+    xxx = camera_get_view_x(view_camera[0]) + 535;
+    yyy = camera_get_view_y(view_camera[0]) + 200;
     i = current_battle;
 
     draw_sprite(spr_purge_panel, 0, xxx, yyy);
