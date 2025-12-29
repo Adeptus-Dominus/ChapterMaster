@@ -81,21 +81,28 @@ jobs:
         name: Find The yyp File
         run: |
           # Search for .yyp file recursively in the repository
-          $yyp = Get-ChildItem -Path ${{ github.workspace }} -Recurse -Filter *.yyp
+          $yypFiles = Get-ChildItem -Path ${{ github.workspace }} -Recurse -Filter ChapterMaster.yyp
           
           # Check if the file was found
-          if ($yyp.Count -eq 0) {
-          Write-Error "No .yyp file found in the repository"
-          exit 1
+          if ($yypFiles.Count -eq 0) {
+            Write-Error "No .yyp file found in the repository"
+            exit 1
           }
+
+          $yypPath = $yypFiles[0].FullName
+          
+          if ($yypFiles.Count -gt 1) {
+            Write-Host "::warning:: Multiple .yyp files found. Using the first one: $yypPath"
+          }
+
           # If found, output the path of the .yyp file
-          Write-Output "YYP file found at: $yyp"
-          "yyp-path=$yyp" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Output "YYP file found at: $yypPath"
+          "yyp-path=$yypPath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           
       # This step sets up the GameMaker build CLI tool Igor https://github.com/bscotch/igor-setup
       - id: igor_setup
         name: Setup Igor
-        uses: bscotch/igor-setup@v1.1.4
+        uses: bscotch/igor-setup@v1.2.1
         with:
           target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
           access-key: ${{ secrets.GM_ACCESS_KEY }}
@@ -103,7 +110,7 @@ jobs:
       # Update the version.json file with build date and other versioning information
       - id: igor_build
         name: Build with Igor
-        uses: bscotch/igor-build@v1.0.4
+        uses: bscotch/igor-build@v1.1.0
         with:
           yyp-path: ${{ steps.find_yyp.outputs.yyp-path }}
           user-dir: ${{ steps.igor_setup.outputs.user-dir }}
