@@ -235,50 +235,30 @@ function scr_convert_company_to_string(company_num, possessive = false, flavour=
 	}
 }
 
-/// @function scr_convert_company_to_string
-/// @description This script converts a word or longer string into an integer, with each letter corresponding to a value from 1-26.
-/// @param {string} _string
+/// @function string_to_integer
+/// @description Converts a string into an integer sum where a=1, b=2, ..., z=26.
+/// @param {string} _string The input text to convert.
 /// @returns {real}
 function string_to_integer(_string) {
-	// The purpose of this is to allow a marine's
-	// name to generate a semi-unique variable for the future display of veterency
-	// decorations when inspected in management.  Whether it is odd, from 0-9, and so
-	// on can determine what shows on their picture at certain experience values.
+    // The purpose of this is to allow a marine's
+    // name to generate a semi-unique variable for the future display of veterency
+    // decorations when inspected in management.  Whether it is odd, from 0-9, and so
+    // on can determine what shows on their picture at certain experience values.
+    var _total_val = 0;
+    var _lower_str = string_lower(_string);
+    var _len = string_length(_lower_str);
 
-	var lol,m1,val;
-	lol=_string;val=0;
-	m1=string_length(lol);
+    for (var i = 1; i <= _len; i++) {
+        // Get the ASCII/UTF-8 value of the character (1-indexed in GML)
+        var _char_code = string_ord_at(_lower_str, i);
 
-    repeat(m1){
-        if (string_lower(string_char_at(lol,0))="a") then val+=1;
-        if (string_lower(string_char_at(lol,0))="b") then val+=2;
-        if (string_lower(string_char_at(lol,0))="c") then val+=3;
-        if (string_lower(string_char_at(lol,0))="d") then val+=4;
-        if (string_lower(string_char_at(lol,0))="e") then val+=5;
-        if (string_lower(string_char_at(lol,0))="f") then val+=6;
-        if (string_lower(string_char_at(lol,0))="g") then val+=7;
-        if (string_lower(string_char_at(lol,0))="h") then val+=8;
-        if (string_lower(string_char_at(lol,0))="i") then val+=9;
-        if (string_lower(string_char_at(lol,0))="j") then val+=10;
-        if (string_lower(string_char_at(lol,0))="k") then val+=11;
-        if (string_lower(string_char_at(lol,0))="l") then val+=12;
-        if (string_lower(string_char_at(lol,0))="m") then val+=13;
-        if (string_lower(string_char_at(lol,0))="n") then val+=14;
-        if (string_lower(string_char_at(lol,0))="o") then val+=15;
-        if (string_lower(string_char_at(lol,0))="p") then val+=16;
-        if (string_lower(string_char_at(lol,0))="q") then val+=17;
-        if (string_lower(string_char_at(lol,0))="r") then val+=18;
-        if (string_lower(string_char_at(lol,0))="s") then val+=19;
-        if (string_lower(string_char_at(lol,0))="t") then val+=20;
-        if (string_lower(string_char_at(lol,0))="u") then val+=21;
-        if (string_lower(string_char_at(lol,0))="v") then val+=22;
-        if (string_lower(string_char_at(lol,0))="w") then val+=23;
-        if (string_lower(string_char_at(lol,0))="x") then val+=24;
-        if (string_lower(string_char_at(lol,0))="y") then val+=25;
-        if (string_lower(string_char_at(lol,0))="z") then val+=26;
-        lol=string_delete(lol,0,1);
+        // In ASCII: 'a' is 97. Subtracting 96 makes 'a' = 1, 'b' = 2, etc.
+        if (_char_code >= 97 && _char_code <= 122) {
+            _total_val += (_char_code - 96);
+        }
     }
-    return(val);
+
+    return _total_val;
 }
 
 /// @description Replaces underscores with spaces and capitalizes the first letter of each word.
