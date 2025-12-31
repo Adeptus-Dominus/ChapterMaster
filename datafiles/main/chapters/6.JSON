@@ -1,4 +1,5 @@
 {
+    "$schema": "./chapter_schema.json",
     "chapter": {
         "id": 6,
         "name": "Iron Hands",
@@ -53,7 +54,7 @@
             "trim": "Silver",
             "lens": "Dark Red",
             "weapon": "Silver",
-            "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
+            "special": 0 // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours // todo update ref for new name
         },
         "names": {
@@ -124,7 +125,7 @@
             "armour": "",
             "bionics": 10
         },
-        "artifact": {},
+        "artifact": [],
         "company_titles": [
             "",
             "Clan Avernii",
