@@ -235,15 +235,16 @@ function scr_convert_company_to_string(company_num, possessive = false, flavour=
 	}
 }
 
+/* This was used to generate random game seed. Now randomise() and random_get_seed() are used.
 /// @function string_to_integer
 /// @description Converts a string into an integer sum where a=1, b=2, ..., z=26.
 /// @param {string} _string The input text to convert.
 /// @returns {real}
+// The purpose of this is to allow a marine's
+// name to generate a semi-unique variable for the future display of veterency
+// decorations when inspected in management.  Whether it is odd, from 0-9, and so
+// on can determine what shows on their picture at certain experience values.
 function string_to_integer(_string) {
-    // The purpose of this is to allow a marine's
-    // name to generate a semi-unique variable for the future display of veterency
-    // decorations when inspected in management.  Whether it is odd, from 0-9, and so
-    // on can determine what shows on their picture at certain experience values.
     var _total_val = 0;
     var _lower_str = string_lower(_string);
     var _len = string_length(_lower_str);
@@ -260,6 +261,7 @@ function string_to_integer(_string) {
 
     return _total_val;
 }
+ */
 
 /// @description Replaces underscores with spaces and capitalizes the first letter of each word.
 function format_underscore_string(input_string) {
