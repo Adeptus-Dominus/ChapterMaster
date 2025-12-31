@@ -172,6 +172,14 @@ if (class="Gloriana"){
         weapon_cooldown[2]=60;
     }
 
+    if (class="Armed Freighter"){turrets=2;
+        weapons=1;shield_size=1;sprite_index=spr_ship_stri;
+        weapon_facing[1]="most";
+        weapon_dam[1]=8;
+        weapon_range[1]=300;
+        weapon_cooldown[1]=30;
+    }
+
     if (class="Gladius"){turrets=1;
         weapons=2;shield_size=1;sprite_index=spr_ship_glad;
         weapon_facing[1]="most";
