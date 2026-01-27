@@ -98,7 +98,7 @@ if (within=1) or (selected>0){
     if (capital_number=0) and (frigate_number=0) and (escort_number=1) then ppp=escort[0];
     // ppp=acted;
     // 
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_40k_14b);
     draw_set_halign(fa_center);
     if (obj_controller.zoomed) then draw_text_transformed(x,y-48,string_hash_to_newline(ppp),text_size,text_size,0);// was 1.4

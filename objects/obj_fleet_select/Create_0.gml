@@ -18,6 +18,8 @@ void_wid=0;
 void_hei=0;
 player_fleet=false;
 
+helpful_navigator=new HelpfulPlaces();
+
 selection_window.inside_method = function(){
 	var mnz=0;
 	var xx = selection_window.XX;
@@ -54,19 +56,16 @@ selection_window.inside_method = function(){
 
         var math_string = (string_width("Manage Units")/2)+6
         if (point_and_click(draw_unit_buttons([center_draw-math_string, yy+height-50], "Manage Units",[1,1],c_blue))){
-            var fleet_array = fleet_full_ship_array(current_fleet);
-            var fleet_marines_temp = [];
-            var fleet_marines = [];
-            for (var i = 0; i < array_length(fleet_array); i++) {
-                fleet_marines_temp = collect_role_group("all", ["", 0, fleet_array[i]]);
-                array_copy(fleet_marines, array_length(fleet_marines), fleet_marines_temp, 0, array_length(fleet_marines_temp));
-            }
 
-            group_selection(fleet_marines,{
+            var _fleet_array = fleet_full_ship_array(current_fleet);
+            var _fleet_marines = collect_role_group("all", ["", 0, _fleet_array]);
+
+            group_selection(_fleet_marines,{
                 purpose:"Ship Management",
                 purpose_code : "manage",
                 number:0,
                 system:0,
+                ships : _fleet_array,
                 feature:"none",
                 planet : 0,
                 selections : []
@@ -204,5 +203,5 @@ selection_window.inside_method = function(){
 	        }			        
 	    }
 	}
-    selection_window.currently_entered = scr_hit([xx,yy, xx+width, yy+selection_window.height]);
+    selection_window.currently_entered = scr_hit([xx,yy, xx+width, yy+selection_window.height]) || helpful_navigator.entered();
 }

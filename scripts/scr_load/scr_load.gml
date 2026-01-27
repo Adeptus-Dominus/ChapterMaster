@@ -63,7 +63,7 @@ function scr_load(save_part, save_id) {
 		/// the object doesnt want to work
 		with(obj_controller){
 			var exclusions = ["specialist_point_handler", "location_viewer", "id",
-			 "techs","apoths","forge_queue","point_breakdown","apothecary_points", "forge_points"]; // skip automatic setting of certain vars, handle explicitly later
+			 "techs","apoths","forge_queue","point_breakdown","apothecary_points", "forge_points", "chapter_master_data"]; // skip automatic setting of certain vars, handle explicitly later
 
 			// Automatic var setting
 			var all_names = struct_get_names(save_data);
@@ -90,6 +90,14 @@ function scr_load(save_part, save_id) {
 					variable_struct_set(specialist_point_handler, prop, variable_struct_get(save_data, prop));
 				}
 			}
+			chapter_master = new scr_chapter_master();
+			if (struct_exists(save_data, "chapter_master_data")){
+				var _data = variable_struct_get(save_data, "chapter_master_data");	
+				with (chapter_master){
+					move_data_to_current_scope(_data, true);
+				}
+			}
+	
 			specialist_point_handler.calculate_research_points();
 			location_viewer = new UnitQuickFindPanel();
 			scr_colors_initialize();

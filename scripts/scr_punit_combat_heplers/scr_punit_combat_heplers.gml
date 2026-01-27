@@ -266,7 +266,7 @@ function block_composition_string() {
 
 function draw_block_composition(_x1, _composition_string) {
 	draw_set_alpha(1);
-	draw_set_color(38144);
+	draw_set_color(CM_GREEN_COLOR);
 	draw_line_width(_x1+5,450,817,685, 2);
 	draw_set_font(fnt_40k_14b);
 	draw_text(817,688,"Row Composition:");

@@ -2,8 +2,8 @@ function scr_ui_popup() {
 	// 48,48      over like 256, down to 480-128
 
 	if (obj_controller.menu=60){
-		var xx,yy;
-	    xx=__view_get( e__VW.XView, 0 )+25;yy=__view_get( e__VW.YView, 0 )+165;
+	    var xx=__view_get( e__VW.XView, 0 )+25;
+		var yy=__view_get( e__VW.YView, 0 )+165;
     
 	    draw_sprite(spr_popup_large,1,xx,yy);
 	    // draw_set_color(0);draw_rectangle(xx+31,yy+29,xx+593,yy+402,0);
@@ -13,7 +13,12 @@ function scr_ui_popup() {
 	    draw_set_font(fnt_40k_30b);
 	    draw_set_halign(fa_center);
 	    var planet_upgrades = obj_temp_build.target.p_upgrades[obj_controller.selecting_planet];
-	    var un_upgraded = 0,arsenal = 0, gene_vault=0,s_base=0,ttitle="",i=0;
+	    var un_upgraded = 0;
+		var arsenal = 0;
+		var gene_vault=0;
+		var s_base=0;
+		var ttitle="";
+		var woob="";
 
 	    if (planet_feature_bool(planet_upgrades, P_features.Secret_Base)==1){s_base=1}
 	    if (planet_feature_bool(planet_upgrades, P_features.Arsenal)==1){arsenal=1}
@@ -24,7 +29,7 @@ function scr_ui_popup() {
 			draw_text_transformed(xx + 312, yy + 10, string_hash_to_newline(title), 0.7, 0.7, 0);
 		
 			draw_set_font(fnt_40k_14b);
-			draw_text(xx + 312, yy + 45, string_hash_to_newline("Select a Secret Lair style."));
+			draw_text(xx + 312, yy + 45, "Select a Secret Lair style.");
 			draw_set_halign(fa_left);
 		
 			var styles = [
@@ -91,8 +96,9 @@ function scr_ui_popup() {
 	    if (s_base>0){
 		    var search_list =search_planet_features(planet_upgrades, P_features.Secret_Base);
 		    if (array_length(search_list) > 0){
-			    var woob="",secret=true;
-				var s_base = planet_upgrades[search_list[0]];
+			    woob="";
+				var secret=true;
+				s_base = planet_upgrades[search_list[0]];
 				if (s_base.built>obj_controller.turn){
 					draw_set_font(fnt_40k_14b);
 		        	draw_text(xx+21,yy+65,string_hash_to_newline($"This feature will be constructed in {s_base.built-obj_controller.turn} months."));
@@ -103,18 +109,20 @@ function scr_ui_popup() {
 			        for (r=1;r<13;r++){
 			        	alp=1;
 			        	cost=0;
-			            if (r==1){if (s_base.forge>0) then alp=0.33;cost=1000;butt="Forge";tooltip2="A modest, less elaborate forge able to employ a handful of Astartes or Techpriest.";}
-			            else if (r==2){if (s_base.hippo>0) then alp=0.33;cost=1000;butt="Hippodrome";tooltip2="A moderate sized garage fit to hold, service, and display vehicles.";}
-			            else if  (r==3){if (s_base.beastarium>0) then alp=0.33;cost=1000;butt="Beastarium";tooltip2="An enclosure with simulated greenery and foilage meant to hold beasts.";}
-			            else if  (r==4){if (s_base.torture>0) then alp=0.33;cost=500;butt="Torture Chamber";tooltip2="Only the best for the best.  A room full of torture tools and devices.";}
-			            else if  (r==5){if (s_base.narcotics>0) then alp=0.33;cost=500;butt="Narcotics";tooltip2="Several boxes worth of Obscura, Black Lethe, Kyxa... line it up.";}
-			            else if  (r==6){if (s_base.relic>0) then alp=10+fuck.relic;cost=500;butt="Relic Room";tooltip2="A room meant for displaying trophies.  May be purchased successive times.";}
-			            else if  (r==7){if (s_base.cookery>0) then alp=0.33;cost=250;butt="Cookery";tooltip2="A larger, well-stocked cookery, complete with a number of Imperial Chef servants.";}
-			            else if  (r==8){if (s_base.vox>0) then alp=0.33;cost=250;butt="Vox Casters";tooltip2="All the bass one could ever imaginably need.";}
-			            else if  (r==9){if (s_base.librarium>0) then alp=0.33;cost=250;butt="Librarium";tooltip2="A study fit to hold a staggering amount of tomes and scrolls.";}
-			            else if  (r==10){if (s_base.throne>0) then alp=0.33;cost=250;butt="Throne";tooltip2="A massive, ego boosting throne.";}
-			            else if  (r==11){if (s_base.stasis>0) then alp=0.33;cost=200;butt="Stasis Pods";tooltip2="Though they start empty, you may capture and display your foes in these.";}
-			            else if  (r==12){if (s_base.swimming>0) then alp=0.33;cost=100;butt="Swimming Pool";tooltip2="A large body of water meant for excersize or relaxation.";}
+						switch(r){
+				            case 1: if (s_base.forge>0) then alp=0.33;cost=1000;butt="Forge";tooltip2="A modest, less elaborate forge able to employ a handful of Astartes or Techpriest."; break;
+				            case 2: if (s_base.hippo>0) then alp=0.33;cost=1000;butt="Hippodrome";tooltip2="A moderate sized garage fit to hold, service, and display vehicles."; break;
+				            case 3: if (s_base.beastarium>0) then alp=0.33;cost=1000;butt="Beastarium";tooltip2="An enclosure with simulated greenery and foilage meant to hold beasts."; break;
+				            case 4: if (s_base.torture>0) then alp=0.33;cost=500;butt="Torture Chamber";tooltip2="Only the best for the best.  A room full of torture tools and devices."; break;
+				            case 5: if (s_base.narcotics>0) then alp=0.33;cost=500;butt="Narcotics";tooltip2="Several boxes worth of Obscura, Black Lethe, Kyxa... line it up."; break;
+				            case 6: if (s_base.relic>0) then alp=10+fuck.relic;cost=500;butt="Relic Room";tooltip2="A room meant for displaying trophies.  May be purchased successive times."; break;
+				            case 7: if (s_base.cookery>0) then alp=0.33;cost=250;butt="Cookery";tooltip2="A larger, well-stocked cookery, complete with a number of Imperial Chef servants."; break;
+				            case 8: if (s_base.vox>0) then alp=0.33;cost=250;butt="Vox Casters";tooltip2="All the bass one could ever imaginably need."; break;
+				            case 9: if (s_base.librarium>0) then alp=0.33;cost=250;butt="Librarium";tooltip2="A study fit to hold a staggering amount of tomes and scrolls."; break;
+				            case 10: if (s_base.throne>0) then alp=0.33;cost=250;butt="Throne";tooltip2="A massive, ego boosting throne."; break;
+				            case 11: if (s_base.stasis>0) then alp=0.33;cost=200;butt="Stasis Pods";tooltip2="Though they start empty, you may capture and display your foes in these."; break;
+				            case 12: if (s_base.swimming>0) then alp=0.33;cost=100;butt="Swimming Pool";tooltip2="A large body of water meant for excersize or relaxation."; break;
+						}
 			            tooltip=butt;
 		            
 			            draw_set_font(fnt_40k_14);draw_set_alpha(alp);draw_set_color(c_gray);
@@ -133,21 +141,23 @@ function scr_ui_popup() {
 			                tcost=cost;
 			                if (scr_click_left()) and (obj_controller.requisition>=tcost) and (alp!=0.33){
 			                    obj_controller.requisition-=tcost;
-			                    if (r=1){
-			                    	s_base.forge=1;
-			                    	s_base.forge_data = new PlayerForge();
-			                    }
-			                    else if (r==2){s_base.hippo=1;}
-			                    else if (r==3){s_base.beastarium=1}
-			                    else if (r==4){s_base.torture=1}
-			                    else if (r==5){s_base.narcotics=1}
-			                    else if (r==6){s_base.relic=1}
-			                    else if (r==7){s_base.cookery=1}
-			                    else if (r==8){s_base.vox=1}
-			                    else if (r==9){s_base.librarium=1}
-			                    else if (r==10){s_base.throne=1}
-			                    else if (r==11){s_base.stasis=1}
-			                    else if (r==12){s_base.swimming=1};
+			                    switch(r){
+									case 1:
+				                    	s_base.forge=1;
+				                    	s_base.forge_data = new PlayerForge();
+										break;
+				                    case 2: s_base.hippo=1; break;
+				                    case 3: s_base.beastarium=1; break;
+				                    case 4: s_base.torture=1; break;
+				                    case 5: s_base.narcotics=1; break;
+				                    case 6: s_base.relic=1; break;
+				                    case 7: s_base.cookery=1; break;
+				                    case 8: s_base.vox=1; break;
+				                    case 9: s_base.librarium=1; break;
+				                    case 10: s_base.throne=1; break;
+				                    case 11: s_base.stasis=1; break;
+				                    case 12: s_base.swimming=1; break;
+								}
 			                }
 			            }
 			        }
@@ -201,31 +211,35 @@ function scr_ui_popup() {
 			            if (fuck.target.p_player[obj_controller.selecting_planet]>0) then woob+="Imperial Chefs are currently bustling to and from the kitchen, cooking savory treats and food for those present.  ";
 			            if (fuck.target.p_player[obj_controller.selecting_planet]=0) then woob+="The Imperial Chefs are mostly idle, making use of the other rooms and facilities.  ";
 			        }
-		        
-			        if (s_base.stock==1)  {woob+="  One of the chambers is hollowed out to display war trophies and gear.  ";}
-			        else if (s_base.stock==2){woob+="  One of the chambers holds war trophies from recent conquests.  ";}
-			        else if (s_base.stock==3){woob+="  War trophies taken from several Xeno races are displayed in the Relic Room.  ";}
-			        else if (s_base.stock==4){woob+="  Your Relic Room contains trophies and skulls, taken from every Xeno race.  ";}
-			        else if (s_base.stock==5){woob+="  Your Relic Room contains trophies, skulls, and suits of armour taken from Xenos races.  ";}
-			        else if (s_base.stock==6) {woob+="  Your Relic Room contains wargear and suits of armour from all races, several Adeptus Astartes suits included.  ";}
-			        else if (s_base.stock==7)  {woob+="  One of the chambers holds wargear and suits of armour from all races.  A suit of Terminator armour is included, half of the armour taken off to reveal the inner workings.";}
-			        else if (s_base.stock==8)  {woob+="  Your Relic Room's trophies, skulls, and armours now spill out into the hallways, such is their number.  ";}
-			        else if (s_base.stock==9) { woob+="  Many of the xenos war trophies and suits of armour are placed around the Lair, filling out spare surfaces.  ";}
-			        else if (s_base.stock==10) { woob+="  In addition to the many war trophies your Relic Room also has small amounts of gold coins.  ";}
-			        else if (s_base.stock==11) { woob+="  In addition to the many war trophies your Relic Room also has small piles of gold coins and clutter.  ";}
-			        else if (s_base.stock==12) { woob+="  In addition to the many war trophies your Relic Room also has sizeable piles of gold.  ";}
-			        else if (s_base.stock==13)  {woob+="  In addition to the many war trophies your Relic Room also has chests and cabinets full of gold.  ";}
-			        else if (s_base.stock==14)  {woob+="  In addition to the many war trophies your Relic Room also has chests full to the brim of gold and many precious gems.  ";}
-			        else if (s_base.stock==15) { woob+="  War trophies, chests of gold, precious gems, your lair has it all.  ";}
-			        else if (s_base.stock==16)  {woob+="  War trophies, chests of gold, precious gems, your lair has it all, and in abundance.  ";}
-			        else if (s_base.stock==17)  {woob+="  The abundant gold and gem piles have begun to spill out into the hallway.  ";}
-			        else if (s_base.stock==18) { woob+="  The abundant gold and gems spill out into the hallway, your forces idly stepping across it.  ";}
-			        else if (s_base.stock==19) { woob+="  A sizeable portion of your lair is carelessly covered in gold coins, objects, and gems.  ";}
-			        else if (s_base.stock==20)  {woob+="  Much of your lair is carelessly covered in gold coins, objects, and gems.  ";}
-			        else if (s_base.stock>=21) and (s_base.stock<25)  {woob+="  Your abundant wealth is evident in your lair- every surface and much of the floor smothered by gold or gems.  ";}
-			        else if (s_base.stock>=25) and (s_base.stock<30)  {woob+="  Gold and gems are everywhere, occasionally attached to the walls and ceiling where able.  ";}
-			        else if (s_base.stock>=30)  {woob+="  Gold and gems are EVERYWHERE.  The main chamber in particular is a sea of gold and gems, especially deep at the corners.  In all it is nearly three feet deep.  Coins clink and settle as your forces walk through the room.  ";}
-		        
+					switch(s_base.stock){
+				        case 1: woob+="  One of the chambers is hollowed out to display war trophies and gear.  "; break;
+				        case 2: woob+="  One of the chambers holds war trophies from recent conquests.  "; break;
+				        case 3: woob+="  War trophies taken from several Xeno races are displayed in the Relic Room.  "; break;
+				        case 4: woob+="  Your Relic Room contains trophies and skulls, taken from every Xeno race.  "; break;
+				        case 5: woob+="  Your Relic Room contains trophies, skulls, and suits of armour taken from Xenos races.  "; break;
+				        case 6: woob+="  Your Relic Room contains wargear and suits of armour from all races, several Adeptus Astartes suits included.  "; break;
+				        case 7: woob+="  One of the chambers holds wargear and suits of armour from all races.  A suit of Terminator armour is included, half of the armour taken off to reveal the inner workings."; break;
+				        case 8: woob+="  Your Relic Room's trophies, skulls, and armours now spill out into the hallways, such is their number.  "; break;
+				        case 9: woob+="  Many of the xenos war trophies and suits of armour are placed around the Lair, filling out spare surfaces.  "; break;
+				        case 10: woob+="  In addition to the many war trophies your Relic Room also has small amounts of gold coins.  "; break;
+				        case 11: woob+="  In addition to the many war trophies your Relic Room also has small piles of gold coins and clutter.  "; break;
+				        case 12: woob+="  In addition to the many war trophies your Relic Room also has sizeable piles of gold.  "; break;
+				        case 13: woob+="  In addition to the many war trophies your Relic Room also has chests and cabinets full of gold.  "; break;
+				        case 14: woob+="  In addition to the many war trophies your Relic Room also has chests full to the brim of gold and many precious gems.  "; break;
+				        case 15: woob+="  War trophies, chests of gold, precious gems, your lair has it all.  "; break;
+				        case 16: woob+="  War trophies, chests of gold, precious gems, your lair has it all, and in abundance.  "; break;
+				        case 17: woob+="  The abundant gold and gem piles have begun to spill out into the hallway.  "; break;
+				        case 18: woob+="  The abundant gold and gems spill out into the hallway, your forces idly stepping across it.  "; break;
+				        case 19: woob+="  A sizeable portion of your lair is carelessly covered in gold coins, objects, and gems.  "; break;
+				        case 20: woob+="  Much of your lair is carelessly covered in gold coins, objects, and gems.  "; break;
+				        case 21: case 22: case 23: case 24: woob+="  Your abundant wealth is evident in your lair- every surface and much of the floor smothered by gold or gems.  "; break;
+				        case 25: case 26: case 27: case 28: case 29: woob+="  Gold and gems are everywhere, occasionally attached to the walls and ceiling where able.  "; break;
+				        default: 
+							if (s_base.stock >= 30) {
+								woob+="  Gold and gems are EVERYWHERE.  The main chamber in particular is a sea of gold and gems, especially deep at the corners.  In all it is nearly three feet deep.  Coins clink and settle as your forces walk through the room.  ";
+							}
+							break;
+					}
 			        if (s_base.forge>0) then woob+="  Your lair has a forge, fit to be used by several astartes at once.  ";
 			        if (s_base.hippo>0) then woob+="  Your lair has a hippodrome, or garage, that holds luxury vehicles.  ";
 			        if (s_base.torture>0) then woob+="  One of the rooms is a well-stocked torture chamber.  ";
@@ -275,8 +289,8 @@ function scr_ui_popup() {
     		}
     		if (planet_feature_bool(planet_upgrades, P_features.Gene_Vault)==1){
     			var gene_vault = planet_upgrades[search_planet_features(planet_upgrades, P_features.Gene_Vault)[0]];
-	          if (gene_vault.inquis_hidden == 1) then woob="A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Due to its secret nature you may amass Gene-Seed and Test-Slave Incubators without fear of Inquisition reprisal or taking offense.";
-	          if (gene_vault.inquis_hidden == 0) then woob="A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Since being discovered all the contents are known to the Inquisition.  Your Gene-Seed remains protected but you may wish to build a new, secret one.";  
+	            if (gene_vault.inquis_hidden == 1) then woob="A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Due to its secret nature you may amass Gene-Seed and Test-Slave Incubators without fear of Inquisition reprisal or taking offense.";
+	            if (gene_vault.inquis_hidden == 0) then woob="A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Since being discovered all the contents are known to the Inquisition.  Your Gene-Seed remains protected but you may wish to build a new, secret one.";  
 	     }
 	     if (arsenal!=0) or (gene_vault!=0){
  			draw_text_ext(xx+21,yy+65,string_hash_to_newline(string(woob)),-1,595);
@@ -338,10 +352,7 @@ function scr_ui_popup() {
 	                obj_controller.requisition-=4000;
 	            }
 	        }draw_set_halign(fa_left);
-        
 	    }
-    
-    
     
 	    draw_set_font(fnt_40k_30b);
 	    draw_set_color(c_gray);
@@ -360,13 +371,7 @@ function scr_ui_popup() {
 	    }draw_set_halign(fa_left);
 	}
 
-
-
-
-
-
 	if (selected!=0) and (!instance_exists(selected)) then selected=0;
-
 
 	var xx=__view_get( e__VW.XView, 0 )+0;
 	var yy=__view_get( e__VW.YView, 0 )+0;
@@ -512,34 +517,6 @@ function scr_ui_popup() {
 		        tooltip_draw(tool1)
 		    }
 		}
-
 	}
 	exit;
-
-
-	if (mouse_x>=__view_get( e__VW.XView, 0 )+113) and (mouse_y>=__view_get( e__VW.YView, 0 )+4) and (mouse_x<__view_get( e__VW.XView, 0 )+185) and (mouse_y<__view_get( e__VW.YView, 0 )+19) and (zoomed=0){
-	    var blurp,blurp2,lines,i;blurp="";blurp2="";lines=0;i=0;draw_set_halign(fa_left);
-    
-	    repeat(20){
-	        i++;if (loyal_num[i]>1){
-	            blurp+=string(loyal[i])+": -"+string(loyal_num[i])+"#";
-	            blurp2+=string(loyal[i])+": #";
-	            lines++;
-	        }
-	    }
-    
-	    if (lines>0){
-	        var wi=183+93;
-	        if (string_count("Irreverance",blurp)>0) then wi+=51;
-        
-	        draw_set_color(c_black);
-	        draw_rectangle(__view_get( e__VW.XView, 0 )+113,__view_get( e__VW.YView, 0 )+24,__view_get( e__VW.XView, 0 )+wi,__view_get( e__VW.YView, 0 )+30+(lines*10),0);
-	        draw_set_color(38144);
-	        draw_rectangle(__view_get( e__VW.XView, 0 )+113,__view_get( e__VW.YView, 0 )+24,__view_get( e__VW.XView, 0 )+wi,__view_get( e__VW.YView, 0 )+30+(lines*10),1);
-        
-	        draw_set_font(fnt_info);
-	        draw_text_transformed(__view_get( e__VW.XView, 0 )+24+93,__view_get( e__VW.YView, 0 )+26,string_hash_to_newline(string(blurp)),0.7,0.7,0);
-	        draw_text_transformed(__view_get( e__VW.XView, 0 )+24.5+93,__view_get( e__VW.YView, 0 )+26,string_hash_to_newline(string(blurp2)),0.7,0.7,0);
-	    }
-	}
 }

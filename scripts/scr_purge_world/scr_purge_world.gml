@@ -89,23 +89,23 @@ function scr_purge_world(star, planet, action_type, action_score) {
 		var _displayed_killed = star.p_large[planet] == 1 ? $"{kill} billion" : scr_display_number(floor(kill));
 	    txt1 += $"##The world had {_displayed_population} Imperium subjects. {_displayed_killed} were purged over the duration of the bombardment.##Heresy has fallen down to {max(0, heres_after)}%.";
     
-	    if (pop_after=0){
+	    if (pop_after<=0){
 	        if (star.p_owner[planet]=2) and (obj_controller.faction_status[2]!="War"){
-	            if (star.p_type[planet]="Temperate") or (star.p_type[planet]="Hive") or (star.p_type[planet]="Desert"){
-	                obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=2;
-	                obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
+	            if (star.p_type[planet]="Temperate" || star.p_type[planet]="Hive" || star.p_type[planet]="Desert"){
+	            	var _disp_hit = -10;
+		            if (star.p_type[planet]="Temperate") then _disp_hit = -5;
+		            if (star.p_type[planet]="Desert") then _disp_hit = -3;         	
+
+	                scr_audience(eFACTION.Imperium, "bombard_angry", _disp_hit, "", 0, 0);
 	            }
-	            if (star.p_type[planet]="Temperate") then obj_controller.disposition[2]-=5;
-	            if (star.p_type[planet]="Desert") then obj_controller.disposition[2]-=3;
-	            if (star.p_type[planet]="Hive") then obj_controller.disposition[2]-=10;
 	        }
 	    }
 	    if (star.p_owner[planet]=3) and (obj_controller.faction_status[3]!="War"){
-	        obj_controller.audiences+=1;
-	        obj_controller.audien[obj_controller.audiences]=3;
-	        obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
-	        if (star.p_type[planet]="Forge") then obj_controller.disposition[3]-=15;
-	        if (star.p_type[planet]="Ice") then obj_controller.disposition[3]-=7;
+
+	    	if (star.p_type[planet]="Forge") then _disp_hit =-15;
+	        if (star.p_type[planet]="Ice") then _disp_hit =-7;
+	    	scr_audience(eFACTION.Inquisition, "bombard_angry", _disp_hit, "", 0, 0);
+
 	    }
 
     
@@ -279,14 +279,26 @@ function scr_purge_world(star, planet, action_type, action_score) {
     
 	    txt+="What is thy will?";
     
-	    var he;he=instance_create(star.x,star.y,obj_temp6);
-	    var pip;pip=instance_create(0,0,obj_popup);
+	    var pip=instance_create(0,0,obj_popup);
 	    pip.title="Planetary Governor Assassinated";
-	    pip.text=txt;pip.planet=planet;
-    
-	    pip.option1="Allow the official successor to become Planetary Governor.";
-	    pip.option2="Ensure that a sympathetic successor will be the one to rule.";
-	    pip.option3="Remove all successors and install a loyal Chapter Serf.";
+	    pip.text=txt;
+	    pip.planet=planet;
+	    pip.p_data = new PlanetData(planet,star);
+	    var options = [
+		    {
+		    	str1 : "Allow the official successor to become Planetary Governor.",
+		    	choice_func : allow_governor_successor,
+		    }, 
+		    {
+		    	str1 : "Ensure that a sympathetic successor will be the one to rule.",
+		    	choice_func : install_sympathetic_successor,
+		    },
+		    {
+		    	str1 : "Remove all successors and install a loyal Chapter Serf.",
+		    	choice_func : install_chapter_surf,
+		    },
+	    ]
+	    pip.add_option(options);    
 	    pip.cooldown=20;
     
 	    // Result-  this is the multiplier for the chance of discovery with the inquisition, can also be used to determine
@@ -298,7 +310,9 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    }
 	    // If there are enemy non-chaos forces then they may be used as a cover
 	    // Does not work with chaos because if the governor dies, with chaos present, the new governor would possibly be investigated
-	    if (star.p_orks[planet]>=4) or (star.p_necrons[planet]>=3) or (star.p_tyranids[planet]>=5) then pip.estimate=pip.estimate*0.5;
+	    if (star.p_orks[planet]>=4) or (star.p_necrons[planet]>=3) or (star.p_tyranids[planet]>=5){
+	    	pip.estimate=pip.estimate*0.5;
+	    }
 	}
 
 

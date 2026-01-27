@@ -837,8 +837,6 @@ function scr_initialize_custom() {
 		}
 	}
 
-	if (scr_has_adv ("Kings of Space")) {battle_barges += 1;}
-	if (scr_has_adv("Boarders")){ strike_cruisers += 2;}
 	if (scr_has_disadv("Obliterated")){ if (obj_creation.fleet_type == ePlayerBase.home_world) {
 		battle_barges = 0;
 		strike_cruisers = 2;
@@ -851,6 +849,8 @@ function scr_initialize_custom() {
 		hunters = 0;
 		}
 	}
+	if (scr_has_adv ("Kings of Space")) {battle_barges += 1;}
+	if (scr_has_adv("Boarders")){ strike_cruisers += 2;}
 	if(struct_exists(obj_creation, "extra_ships")){
 		battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
 		strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;
@@ -1130,7 +1130,7 @@ function scr_initialize_custom() {
 		tenth += 5;
 	}
 	if  scr_has_disadv ("Small Reclusiam") {
-		chaplains -= 5;
+		chaplains = max(1, chaplains - 5);
 		tenth += 5;
 	}
 	if scr_has_adv ("Reverent Guardians") {
@@ -1275,6 +1275,7 @@ function scr_initialize_custom() {
 					devastator = devastator + real(s_val);
 					break;
 				case "dreadnought":
+				case "Contemptor Dreadnought":
 					dreadnought = dreadnought + real(s_val);
 					break;
 			}
@@ -1383,7 +1384,6 @@ function scr_initialize_custom() {
 	// Initialize default marines for loadouts
 	for (var i = 0; i <= 100; i++) {
 		race[100, i] = 1;
-		loc[100, i] = "";
 		name[100, i] = "";
 		role[100, i] = "";
 		wep1[100, i] = "";
@@ -1399,7 +1399,6 @@ function scr_initialize_custom() {
 	// Initialize special marines
 	for (var i = 0; i <= 500; i++) {
 		race[0, i] = 1;
-		loc[0, i] = "";
 		name[0, i] = "";
 		role[0, i] = "";
 		wep1[0, i] = "";
@@ -2220,18 +2219,34 @@ function scr_initialize_custom() {
 	}
 
 
-	var squad_names = struct_get_names(st);
+	var _squad_names = struct_get_names(st);
 	// show_debug_message($" {squad_names}");
 	// show_debug_message($"^^^ Squad names");
 	
 
-	for (var st_iter = 0; st_iter < array_length(squad_names); st_iter++) {
-		var s_group = st[$squad_names[st_iter]];
-		squad_types[$squad_names[st_iter]] = {};
-		for (var iter_2 = 0; iter_2 < array_length(s_group); iter_2++) {
-			squad_types[$squad_names[st_iter]][$s_group[iter_2][0]] = s_group[iter_2][1];
-		}
+	for (var st_iter = 0; st_iter < array_length(_squad_names); st_iter++) {
+        var _squad_name = _squad_names[st_iter];
+        var _squad_data = st[$ _squad_name];
+        squad_types[$ _squad_name] = {};
+        var _new_squad_data = squad_types[$ _squad_name];
+        // Guard: ensure array and entries are well-formed before indexing
+        if (!is_array(_squad_data)) {
+            continue;
+        }
+        var _len = array_length(_squad_data);
+        for (var iter_2 = 0; iter_2 < _len; iter_2++) {
+            var _entry = _squad_data[iter_2];
+            if (!is_array(_entry) || array_length(_entry) < 2) {
+                continue;
+            }
+            var _data_name = _entry[0];
+            if (!is_string(_data_name) || _data_name == "") {
+                continue;
+            }
+            _new_squad_data[$ _data_name] = _entry[1];
+        }
 	}
+
 	if(scr_has_adv("Ambushers")){
 		var _class_data = squad_types.tactical_squad.type_data.class;
 		array_push(_class_data, "scout")
@@ -2267,7 +2282,6 @@ function scr_initialize_custom() {
 	for (var c = 0; c <11; c++){
 		for (var i = 0; i < 501; i++) {
 			race[c, i] = 1;
-			loc[c, i] = "";
 			name[c, i] = "";
 			role[c, i] = "";
 			wep1[c, i] = "";
@@ -3157,14 +3171,44 @@ function scr_initialize_custom() {
         scr_add_item("MK4 Maximus", irandom_range(3, 18));
 	}
 
-	if(scr_has_adv("Ancient Armoury")){
-		scr_add_item("MK4 Maximus", irandom_range(5, 10));
-		scr_add_item("MK5 Heresy", irandom_range(5, 10));
-		scr_add_item("MK3 Iron Armour", irandom_range(1, 5));
-		scr_add_item("MK6 Corvus", irandom_range(10, 15));
-		scr_add_item("MK7 Aquila", -10);
-		scr_add_item("MK8 Errant", -1);
+	//Fixed Loot tagble 
+if(scr_has_adv("Ancient Armoury")){
+//armour
+var armm5="";
+	armm5=choose("Tartaros","Cataphractii");
+	scr_add_item("MK3 Iron Armour",irandom_range(2,5));
+	scr_add_item("MK4 Maximus",irandom_range(5,10));
+	scr_add_item("MK5 Heresy",irandom_range(5,10));
+	scr_add_item("MK6 Corvus",irandom_range(5,10));//Lowered to balance other buffs
+	scr_add_item("MK7 Aquila", -10);
+	scr_add_item("MK8 Errant", -1);
+//weapons (I'm not sure about replacing all 40k weapons with 30k)
+ var armm1="",armk1=0,armm2="",armk2=0,armm3="",armk3=0,armm4="",armk4=0;
+ 	scr_add_item("Bolter", -15);
+ 	scr_add_item("Bolt Pistol", -5);
+ 	scr_add_item("Lascannon",-5);
+ 	scr_add_item("Heavy Bolter",-5)
+ 	scr_add_item("Phobos Bolter",10);
+ 	scr_add_item("Phobos Bolt Pistol",3);
+ 	scr_add_item("Mars Heavy Bolter",5);
+	scr_add_item("Serpha Jump Pack",5);
+	scr_add_item("Jump Pack",-5);
+ 	armm1=choose("Volkite Culverin","Volkite Caliver","Mars Plasma Cannon","Ryza Lascannon","Grav-Cannon","Proteus Multi-Melta","Cthon Autocannon");
+ 	armk1=irandom_range(2,5);
+ 	armm2=choose("Primus Melta Gun","Ryza Plasma Gun","Volkite Charger","Grav-Gun");
+ 	armk2=irandom_range(2,5)
+ 	armm3=choose("Ryza Plasma Pistol","Volkite Serpenta")
+ 	armk3=irandom_range(1,3)
+ 	armk4=choose("Power Sword","Power Fist", "Lightining Claw","Power Axe","Power Scythe")
+ 	armk4=irandom_range(1,3)
+	scr_add_item(armm1,armk1);
+	scr_add_item(armm2,armk2);
+	scr_add_item(armm3,armk3);
+	scr_add_item(armm4,armk4);
+	scr_add_item(armm5,1);
+	
 	}
+
 
     gene_slaves = [];
     
@@ -3222,14 +3266,15 @@ function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, acce
 function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1="default", wep2="default", gear="default", mobi="default", armour="default"){
 	// log_message($"adding unit to company ttrpg_name {ttrpg_name}, company {company}, slot {slot}, role_name {role_name}, role_id {role_id}")
 	obj_ini.TTRPG[company][slot] = new TTRPG_stats("chapter", company, slot, ttrpg_name);
+    var spawn_unit = fetch_unit([company,slot]);
 	obj_ini.race[company][slot] = 1;
-	obj_ini.loc[company][slot] = obj_ini.home_name;
+	spawn_unit.location_string = obj_ini.home_name;
 	obj_ini.role[company][slot] = role_name;
 	
 	if(obj_ini.name[company][slot] == ""){
 		obj_ini.name[company][slot] = global.name_generator.generate_space_marine_name();
 	}
-	var spawn_unit = fetch_unit([company,slot]);
+
 
 	if(wep1 != ""){
 		if(wep1 == "default"){

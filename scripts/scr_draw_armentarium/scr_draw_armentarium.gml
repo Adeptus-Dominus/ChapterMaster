@@ -10,29 +10,50 @@ function drop_down_sandwich(selection, draw_x, draw_y, options, open_marker,left
 }
 
 function set_up_armentarium(){
-        static xx=__view_get( e__VW.XView, 0 );
-        static yy=__view_get( e__VW.YView, 0 );    
-        menu=14;
-        onceh=1;
-        cooldown=8000;
-        click=1;
-        temp[36]=scr_role_count(obj_ini.role[100][16],"");
-        temp[37]=temp[36]+scr_role_count(string(obj_ini.role[100][16])+" Aspirant","");
-        specialist_point_handler.calculate_research_points();
-        in_forge=false
-        forge_button = new ShutterButton();
-        stc_flashes = new GlowDot();
-        /*for (var i =0;i<3;i++){
-            for (var f =0;f<7;f++){
-                stc_flashes[i][f] = new GlowDot();
-               // stc_flashes[i][f].flash_size
-            }
-        }*/
-        speeding_bits = {
-            "wargear":new SpeedingDot(0, 0,(210/6)*stc_wargear),
-            "vehicles":new SpeedingDot(0, 0,(210/6)*stc_vehicles),
-            "ships":new SpeedingDot(0, 0,(210/6)*stc_ships)
-		}        
+    static xx=__view_get( e__VW.XView, 0 );
+    static yy=__view_get( e__VW.YView, 0 );    
+    menu=14;
+    onceh=1;
+    cooldown=8000;
+    click=1;
+    temp[36]=scr_role_count(obj_ini.role[100][16],"");
+    temp[37]=temp[36]+scr_role_count(string(obj_ini.role[100][16])+" Aspirant","");
+    specialist_point_handler.calculate_research_points();
+    in_forge=false
+    forge_button = new ShutterButton();
+    forge_button.cover_text = "FORGE";
+    stc_flashes = new GlowDot();
+    gift_stc_button = new UnitButtonObject(
+        {
+            x1: 650, 
+            y1: 467,
+            style : "pixel",
+            label : "Gift",
+            set_width : true,
+            w : 90,
+        }
+    );
+    identify_stc_button = new  UnitButtonObject(
+        {
+            x1: 670, 
+            y1: 467,
+            style : "pixel",
+            label : "Identify",
+            set_width : true,
+            w : 90,
+        }
+    );
+    /*for (var i =0;i<3;i++){
+        for (var f =0;f<7;f++){
+            stc_flashes[i][f] = new GlowDot();
+           // stc_flashes[i][f].flash_size
+        }
+    }*/
+    speeding_bits = {
+        "wargear":new SpeedingDot(0, 0,(210/6)*stc_wargear),
+        "vehicles":new SpeedingDot(0, 0,(210/6)*stc_vehicles),
+        "ships":new SpeedingDot(0, 0,(210/6)*stc_ships)
+	}        
 }
 
 function same_locations(first_loc,second_loc){
@@ -74,6 +95,54 @@ function identify_stc(area){
             break;                      
     }
 }
+
+function scr_draw_armentarium_gui(){
+    if (!in_forge){
+        draw_set_alpha(1);
+        draw_set_font(fnt_40k_14);
+        draw_set_halign(fa_left);
+        draw_text(384, 468, string(stc_wargear_un + stc_vehicles_un + stc_ships_un )+ " Unidentified Fragments");
+        var _has_stc = stc_wargear_un + stc_vehicles_un + stc_ships_un > 0;
+        if (!_has_stc){
+            var _tools = "No STCs Available";
+            gift_stc_button.tooltip = _tools;
+            identify_stc_button.tooltip = _tools;
+        }
+        if (gift_stc_button.draw(_has_stc)){
+            setup_gift_stc_popup();
+        }
+        identify_stc_button.update({x1 :gift_stc_button.x2});
+        if (identify_stc_button.draw(_has_stc)){
+            audio_play_sound(snd_stc,-500,0)
+            audio_sound_gain(snd_stc,master_volume*effect_volume,0);
+
+
+            if (stc_wargear_un > 0 && 
+            stc_wargear < MAX_STC_PER_SUBCATEGORY) {
+                    
+                stc_wargear_un--;
+               identify_stc("wargear");
+            }
+            else if (stc_vehicles_un > 0 && 
+            stc_vehicles < MAX_STC_PER_SUBCATEGORY) {
+                    
+                stc_vehicles_un--;
+               identify_stc("vehicles");
+            }
+            else if(stc_ships_un > 0 && 
+            stc_ships < MAX_STC_PER_SUBCATEGORY) {
+                
+                stc_ships_un--;
+                identify_stc("ships");
+            }
+            
+            // Refresh the shop
+            instance_create(1000,1000,obj_shop);
+            set_up_armentarium();             
+        }
+    }
+}
+
 function scr_draw_armentarium(){
     var _recruit_pace = ARR_recruitment_pace;
     var _train_tiers  = ARR_techmarine_training_tiers;
@@ -132,83 +201,7 @@ function scr_draw_armentarium(){
 
 
     if (!in_forge){
-        draw_set_font(fnt_40k_14);
-        draw_set_halign(fa_left);
-        draw_text(xx + 384, yy + 468, string_hash_to_newline(string(stc_wargear_un + stc_vehicles_un + stc_ships_un) + " Unidentified Fragments"));
 
-        draw_set_halign(fa_center);
-
-        // Identify STC
-        if (stc_wargear_un + stc_vehicles_un + stc_ships_un = 0) then draw_set_alpha(0.5);
-        draw_set_color(c_gray);
-        draw_rectangle(xx + 621, yy + 466, xx + 720, yy + 486, 0);
-        draw_set_color(0);
-        draw_text(xx + 670, yy + 467, string_hash_to_newline("Identify"));
-        if (mouse_x > xx + 621) and(mouse_y > yy + 466) and(mouse_x < xx + 720) and(mouse_y < yy + 486) {
-            draw_set_color(0);
-            draw_set_alpha(0.2);
-            draw_rectangle(xx + 621, yy + 466, xx + 720, yy + 486, 0);
-            if (mouse_check_button_pressed(mb_left)){
-                if (stc_wargear_un + stc_vehicles_un + stc_ships_un > 0){
-                        
-                    cooldown=8000;
-                    audio_play_sound(snd_stc,-500,0)
-                    audio_sound_gain(snd_stc,master_volume*effect_volume,0);
-
-
-                    if (stc_wargear_un > 0 && 
-                    stc_wargear < MAX_STC_PER_SUBCATEGORY) {
-                            
-                        stc_wargear_un--;
-                       identify_stc("wargear");
-                    }
-                    else if (stc_vehicles_un > 0 && 
-                    stc_vehicles < MAX_STC_PER_SUBCATEGORY) {
-                            
-                        stc_vehicles_un--;
-                       identify_stc("vehicles");
-                    }
-                    else if(stc_ships_un > 0 && 
-                    stc_ships < MAX_STC_PER_SUBCATEGORY) {
-                        
-                        stc_ships_un--;
-                        identify_stc("ships");
-                    }
-                    
-                    // Refresh the shop
-                    instance_create(1000,1000,obj_shop);
-                    set_up_armentarium();           
-                } 
-            }
-        }
-        draw_set_alpha(1);
-
-        if (stc_wargear_un + stc_vehicles_un + stc_ships_un = 0) then draw_set_alpha(0.5);
-        draw_set_color(c_gray);
-        draw_rectangle(xx + 733, yy + 466, xx + 790, yy + 486, 0);
-        draw_set_color(0);
-        draw_text(xx + 761, yy + 467, string_hash_to_newline("Gift"));
-        if (mouse_x > xx + 733) and(mouse_y > yy + 466) and(mouse_x < xx + 790) and(mouse_y < yy + 486) {
-            draw_set_color(0);
-            draw_set_alpha(0.2);
-            draw_rectangle(xx + 733, yy + 466, xx + 790, yy + 486, 0);
-            if (mouse_check_button_pressed(mb_left)){
-                if (stc_wargear_un+stc_vehicles_un+stc_ships_un>0){
-                    var chick=0;
-                    if (known[eFACTION.Imperium]>1) and (faction_defeated[2]==0) then chick=1;
-                    if (known[eFACTION.Mechanicus]>1) and (faction_defeated[3]==0) then chick=1;
-                    if (known[eFACTION.Inquisition]>1) and (faction_defeated[4]==0) then chick=1;
-                    if (known[eFACTION.Ecclesiarchy]>1) and (faction_defeated[5]==0) then chick=1;
-                    if (known[eFACTION.Eldar]>1) and (faction_defeated[6]==0) then chick=1;
-                    if (known[eFACTION.Tau]>1) and (faction_defeated[8]==0) then chick=1;
-                    if (chick!=0){
-                        var pop=instance_create(0,0,obj_popup);
-                        pop.type=9.1;
-                        cooldown=8000;
-                    }
-                }
-            }
-        }
         draw_set_alpha(1);
 
         draw_set_font(fnt_40k_12);
@@ -223,7 +216,7 @@ function scr_draw_armentarium(){
         yyy1 = max_techs - temp[37];
         if (yyy1 < 0) then yyy1 = yyy1 * -1;
         yyy = (yyy1 * 2);
-        if (disposition[3] mod 2 == 0) then yyy += 2;
+        if (disposition[3] % 2 == 0) then yyy += 2;
         else {
             yyy += 1;
         }
@@ -287,13 +280,13 @@ function scr_draw_armentarium(){
 
 
 
-        var forge_buttons= [xx + 450 + 16, y_offset+40+string_height(research_eta_message), 0, 0]
+        var forge_buttons = [xx + 450 + 16, y_offset+40+string_height(research_eta_message), 0, 0]
         if (forge_button.draw_shutter(forge_buttons[0]+60, forge_buttons[1], "Enter Forge", 0.5)){
             in_forge=true;
         }
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
-        draw_text_transformed(xx + 605, yy + 432, string_hash_to_newline("STC Fragments"), 0.75, 0.75, 0);
+        draw_text_transformed(xx + 605, yy + 432, "STC Fragments", 0.75, 0.75, 0);
         draw_set_font(fnt_40k_12);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);       
@@ -398,7 +391,7 @@ function scr_draw_armentarium(){
             }
         }
 
-        draw_set_color(38144);           
+        draw_set_color(CM_GREEN_COLOR);           
        // draw_rectangle(xx + 711, yy + 539, xx + 728, yy + 539 + hi, 0);
         draw_set_alpha(1);
         draw_set_color(c_gray);

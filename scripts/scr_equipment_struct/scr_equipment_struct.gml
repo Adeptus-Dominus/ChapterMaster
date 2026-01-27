@@ -1,5 +1,33 @@
-function EquipmentStruct(item_data, core_type, quality_request = "none") constructor {
+global.tag_maintenance_values = {
+    "heavy_ranged" : 0.5,
+    "power" : 0.5,
+    "ancient" : 1.0,
+    "plasma" : 0.8,
+    "melta" : 0.8,
+    "las" : 0.1,
+    "bolt" : 0.01,
+    "chain" : 0.01,
+    "flame" : 0.02,
+    "xenos" : 1,
+    "dreadnought" : 0.6,
+    "vehicle" : 0.4,
+    "terminator" : 0.6,
+}
+
+global.tag_recovery_values = {
+    "terminator" : 30,
+};
+
+function EquipmentStruct(item_data, core_type, quality_request = "none", arti_struct = -1) constructor {
     type = core_type;
+
+    if (is_real(arti_struct) && arti_struct > -1) {
+        is_artifact = true;
+        artifact_id = arti_struct;
+    } else {
+        is_artifact = false;
+    }
+    artifact_id = arti_struct;
 
     // Struct defaults;
     hp_mod = 0;
@@ -24,6 +52,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
     req_exp = 0;
     maintenance = 0;
     specials = "";
+    recovery_chance = 0;
     quality = quality_request == "none" ? "standard" : quality_request;
     // Struct defaults end;
 
@@ -45,9 +74,22 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
 
     // Placeholder maintenance values;
     if (maintenance == 0) {
-        if (has_tags(["heavy_ranged", "power", "plasma", "melta"])) {
-            maintenance += 0.05;
+        var _maintenance_names = struct_get_names(global.tag_maintenance_values);
+        for (var i=0;i<array_length(_maintenance_names);i++){
+            if (has_tag(_maintenance_names[i])){
+                maintenance += global.tag_maintenance_values[$_maintenance_names[i]];
+            }
         }
+    }
+
+    if (recovery_chance == 0){
+        var _recover_values = struct_get_names(global.tag_recovery_values);
+        for (var i=0;i<array_length(_recover_values);i++){
+            if (has_tag(_recover_values[i])){
+                recovery_chance += global.tag_recovery_values[$_recover_values[i]];
+            }
+        }
+        recovery_chance = clamp(recovery_chance, 0, 100);        
     }
 
     // All methods and functions are bllow;
@@ -324,7 +366,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
 }
 
 /// @param {string} search_area possible values: "any", "weapon", "gear', "armour", "mobility";
-function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_class = false, quality_request = "standard") {
+function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_class = false, quality_request = "standard", arti_struct = -1) {
     var item_data_set = false;
     var equip_area = false;
     gear_areas = ["gear", "armour", "mobility"];
@@ -364,7 +406,7 @@ function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_cl
     if (is_struct(item_data_set)) {
         if (wanted_data == "all") {
             item_data_set.name = item;
-            return new EquipmentStruct(item_data_set, search_area, quality_request);
+            return new EquipmentStruct(item_data_set, search_area, quality_request, arti_struct);
         }
         if (struct_exists(item_data_set, wanted_data)) {
             if (is_struct(item_data_set[$ wanted_data])) {
@@ -402,23 +444,29 @@ function quality_string_conversion(quality_request) {
     }
 }
 
+function gen_item_tooltip(item){
+    var _tooltip = "";
+    var _equip_data=gear_weapon_data("any", item);
+
+    if (is_struct(_equip_data)){
+        _tooltip=$"{_equip_data.item_tooltip_desc_gen()}";
+    }
+
+    return _tooltip;
+}
+
 function quality_color(_item_quality) {
     switch (_item_quality) {
         case "standard":
             return draw_get_color();
-            break;
         case "master_crafted":
             return #bf9340;
-            break;
         case "artificer":
             return #bf4040;
-            break;
         case "artifact":
             return #40bfbf;
-            break;
         case "exemplary":
             return #80bf40;
-            break;
     }
 }
 

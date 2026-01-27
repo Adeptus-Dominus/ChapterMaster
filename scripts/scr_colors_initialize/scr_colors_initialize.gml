@@ -37,7 +37,8 @@ enum Colors {
     Purple,
     Pink,
     Imperial_Fists,
-    Raptors_Green
+    Raptors_Green,
+    Screamer_Pink
 }
 function scr_colors_initialize() {
 
@@ -50,8 +51,8 @@ function scr_colors_initialize() {
         ["Dark Metal", 105, 105, 105],
         ["Dark Grey", 70, 70, 70],
         ["Lighter Black", 52, 52, 52],
-        ["Black", 35, 35, 35],
-        ["Red", 201, 0, 0],
+        ["Black", 30, 32, 34],
+        ["Red", 220, 41, 41],
         ["Sanguine Red", 150, 0, 0],
         ["Dark Red", 124, 0, 0],
         ["Gold", 229, 162, 22],
@@ -77,11 +78,11 @@ function scr_colors_initialize() {
         ["Enchanted Blue", 58, 110, 158],
         ["Ultramarine", 4, 78, 168],
         ["Dark Ultramarine", 31, 74, 127],
-        ["Purple", 117, 0, 217],
+        ["Purple", 138, 45, 207],
         ["Pink", 255, 0, 198],
         ["Imperial Fists", 255, 200, 0],
         ["Raptors Green", 65, 74, 29],
-
+        ["Screamer Pink", 122, 14, 68]
     ];
 
 	global.colors_count = array_length(colors_array);
@@ -101,6 +102,17 @@ function get_shader_array(wanted_colour){
 
     return _cols;
 }
+
+function get_colour_name (wanted_colour){
+    var _instance = instance_exists(obj_controller) ? obj_controller : obj_creation;
+    var _cols = ""
+    with (_instance){
+        _cols = col[clamp(wanted_colour,0,array_length(col)-1)];
+    }
+
+    return _cols;    
+}
+
 
 
 

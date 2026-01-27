@@ -111,68 +111,8 @@ if (shop = "equipment") {
     item_cost[i] = 10;
     forge_cost[i] = 40;
     i += 1;
-    if (global.cheat_debug) {
-        //Debug space for 30k weapons
-        //Volkite Pack
-        item[i] = "Volkite Serpenta";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-        item[i] = "Volkite Charger";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-        item[i] = "Volkite Caliver";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-        item[i] ="Volkite Culverin";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-        //Bolt Pack
-        item[i] = "Phobos Bolt Pistol";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-        item[i] = "Phobos Bolter";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-        item[i] = "Mars Heavy Bolter";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-        item[i] = "Tigris Combi Bolter";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-        //Plasma Pack
-        item[i] = "Ryza Plasma Gun";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-        item[i] = "Ryza Plasma Pistol";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-        item[i] = "Mars Plasma Cannon";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-        //End of debug space for 30k weapons
-    }
+	
+ 
     item[i] = "Power Axe";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 40;
@@ -599,6 +539,11 @@ if (shop = "equipment") {
     item_stocked[i] = scr_item_count(item[i]);
     nobuy[i] = 1;
     i += 1;
+    x_mod[i] = 9;
+    item[i] = "Webber";
+    item_stocked[i] = scr_item_count(item[i]);
+    nobuy[i] = 1;
+    i += 1;
     item[i] = "Sniper Rifle";
     forge_cost[i] = 200;
     item_stocked[i] = scr_item_count(item[i]);
@@ -625,6 +570,146 @@ if (shop = "equipment") {
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+	i += 1;
+	//Debug space for 30k weapons
+       //Volkite Pack
+        item[i] = "Volkite Serpenta";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        nobuy[i] = 1;
+		i += 1;
+        nobuy[i] = 1;
+        item[i] = "Volkite Charger";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+        item[i] = "Volkite Caliver";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+        item[i] ="Volkite Culverin";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+        //Bolt Pack
+        item[i] = "Phobos Bolt Pistol";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+        item[i] = "Phobos Bolter";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+        item[i] = "Mars Heavy Bolter";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+        item[i] = "Tigris Combi Bolter";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+        //Plasma Pack
+        item[i] = "Ryza Plasma Gun";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+        item[i] = "Ryza Plasma Pistol";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+        item[i] = "Mars Plasma Cannon";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+		item[i] = "Primus Melta Gun";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+		item[i] = "Proteus Multi-Melta";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+		item[i] = "Phaestos Flamer";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+		item[i] = "Power Scythe";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+		item[i] = "Ryza Lascannon";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        nobuy[i] = 1;
+		item[i] = "Cthon Autocannon";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+		item[i] = "Contemptor Dreadnought";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+		nobuy[i]=1
+        i += 1;
+		nobuy[i]=1;
+		item[i] = "Twin-linked Volkite Culverins";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+		nobuy[i]=1;
+		item[i] = "Contemptor CCW";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+		nobuy[i]=1;
+		  i += 1;
+		item[i] = "Heavy Conversion Beamer";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+		nobuy[i]=1;
+		  i += 1;
+		item[i] = "Kheres Assault Cannon";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+		nobuy[i]=1;
+		  i += 1;
+		
+		
     var mc = 0;
     repeat(i) {
         mc++;
@@ -807,8 +892,11 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     mk_4_tool_tip = tooltip_overide[i];
     tooltip_overide[i] += $"STC wargear component 6"; 
 }
+    i += 1;
+    item[i] = "Cataphractii";
+    item_stocked[i] = scr_item_count("Cataphractii");
+    nobuy[i] = 1;
 
-    
     i += 1;
     x_mod[i] = 9;
     item[i] = "Jump Pack";
@@ -819,6 +907,14 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+
+    i += 1;
+    x_mod[i] = 9;
+    nobuy[i] = 1;
+	item[i] = "Serpha Jump Pack";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 0;
+    forge_cost[i] = 0;
 
     i += 1;
     x_mod[i] = 9;

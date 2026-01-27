@@ -7,6 +7,7 @@
 
 
 for (var i=0;i<array_length(queue);i++){
+	add_draw_return_values();
 	var _tip = queue[i];
 	var _tooltip = _tip.tooltip;
 	var _width =_tip.width;
@@ -22,12 +23,7 @@ for (var i=0;i<array_length(queue);i++){
 	var _header_w=0;
 	var _cursor_offset = 20;
 
-	// Remember global variables
-	var _curr_font = draw_get_font();
-	var _curr_color = draw_get_color();
-	var _curr_halign = draw_get_halign();
-	var _curr_alpha = draw_get_alpha();
-
+	draw_set_valign(fa_top);
 	draw_set_halign(fa_left);
 	draw_set_alpha(1)
 
@@ -81,6 +77,16 @@ for (var i=0;i<array_length(queue);i++){
 		_rect_y += _cursor_offset;
 	}
 
+	// Check if the tooltip goes over the left part of the screen and flip right if so
+	if (_rect_x < _screen_hpadding) {
+ 		_rect_x = _coords[0] + _cursor_offset;
+	}
+
+// Check if the tooltip goes over the top part of the screen and flip down if so
+	if (_rect_y < _screen_vpadding) {
+	    _rect_y = _coords[1] + _cursor_offset;
+	}
+
 	// Draw the tooltip background
 	// draw_sprite_ext(spr_tooltip1, 0, _rect_x, _rect_y, x_scale, y_scale, 0, c_white, 1);
 	// draw_sprite_ext(spr_tooltip1, 1, _rect_x, _rect_y, x_scale, y_scale, 0, c_white, 1);
@@ -101,11 +107,7 @@ for (var i=0;i<array_length(queue);i++){
 	draw_set_font(_font);
 	draw_text_ext_transformed_colour(_rect_x + _text_padding_x, _rect_y + _text_padding_y, _tooltip, DEFAULT_LINE_GAP, _text_w, 1,1,0, _text_color, _text_color, _text_color, _text_color, 1);
 
-	// Revert global variables
-	draw_set_font(_curr_font);
-	draw_set_color(_curr_color);
-	draw_set_halign(_curr_halign);
-	draw_set_alpha(_curr_alpha);
+	pop_draw_return_values();
 }
 
 queue=[];

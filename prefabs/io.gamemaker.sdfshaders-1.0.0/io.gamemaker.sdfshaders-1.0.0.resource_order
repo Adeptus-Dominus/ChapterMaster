@@ -1,0 +1,7 @@
+{
+  "FolderOrderSettings":[],
+  "ResourceOrderSettings":[
+    {"name":"__yy_sdf_blur_shader","order":2,"path":"shaders/__yy_sdf_blur_shader/__yy_sdf_blur_shader.yy",},
+    {"name":"__yy_sdf_effect_shader","order":1,"path":"shaders/__yy_sdf_effect_shader/__yy_sdf_effect_shader.yy",},
+  ],
+}

@@ -10,8 +10,3 @@ obj_cursor.image_yscale=1;
 
 
 
-
-
-
-
-

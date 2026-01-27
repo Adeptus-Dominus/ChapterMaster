@@ -419,7 +419,7 @@ if (did){
         } 
     }
 
-
+    instance_activate_object(obj_ini);
     if (field=="both"){
         if (obj_ini.fleet_type==ePlayerBase.penitent) then orkz+=3;
         orkz+=3;
@@ -529,7 +529,6 @@ instance_activate_all();
 with(obj_creation){
     instance_destroy();
 }
-
 
 create_complex_star_routes(_player_star.id);
 

@@ -11,14 +11,61 @@
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
 #macro SHOP_SELL_MOD 0.8
+#macro LARGE_PLANET_MOD 1000000000 // Population threshold for large planet classification
 
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
 
 // Basic, because we don't include Artificer Armour
 #macro LIST_BASIC_POWER_ARMOUR ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour","Power Armour"]
-#macro LIST_TERMINATOR_ARMOUR ["Terminator Armour", "Tartaros"]
+#macro LIST_TERMINATOR_ARMOUR ["Terminator Armour", "Tartaros","Cataphractii"]
+#macro FACTION_NAMES ["","Your Chapter", "Imperium of Man","Adeptus Mechanicus","Inquisition","Ecclesiarchy","Eldar","Orks", "Tyranid Hive","Tau Empire","Chaos","Heretics","Genestealer Cults", "Necron Dynasties"]
+#macro XENOS_FACTIONS [6,7,8,9]
 
+#macro FLEET_MOVE_OPTIONS ["move", "crusade1","crusade2","crusade3", "mars_spelunk1"]
+
+#macro ALLIANCE_GRADES ["Hated", "Hostile","Suspicious","Uneasy","Neutral","Allies","Close Allies","Battle Brothers"]
+
+enum eFACTION {
+    Player = 1,
+    Imperium,
+    Mechanicus,
+    Inquisition,
+    Ecclesiarchy,
+    Eldar,
+    Ork,
+    Tau,
+    Tyranids,
+    Chaos,
+    Heretics,
+    Genestealer,
+    Necrons = 13
+}
+
+enum GENDER {
+    Female,
+    Male,
+    Neutral
+}
+
+function set_gender(){
+    return choose(GENDER.Female, GENDER.Male);
+}
+
+enum MENU {
+    Default = 0,
+    Manage = 1,
+    Apothecarion = 11,
+    Reclusiam = 12,
+    Librarium = 13,
+    Armamentarium = 14,
+    Recruiting = 15,
+    Fleet = 16,
+    EventLog = 17,
+    Diplomacy = 20,
+    Settings = 21,
+    GameHelp = 30,
+}
 
 enum luck {
     bad = -1,

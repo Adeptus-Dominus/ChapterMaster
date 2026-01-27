@@ -32,7 +32,7 @@ function create_squad(squad_type, company, squad_loadout = true, squad_index=fal
 					obj_ini.TTRPG[company][i]= new TTRPG_stats("chapter", company,i,"blank");
 				}
 				unit = fetch_unit([company, i]);
-				if ((unit.name() =="") or (unit.base_group=="none")) then continue;
+				if ((unit.name() =="" || unit.base_group=="none")) then continue;
 				if (unit.squad == "none"){
 					if (unit.role() == sgt_types[s]){
 						squad_fulfilment[$ sgt_types[s]] += 1;
@@ -289,6 +289,11 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		}
 	}
 
+
+	static stat_av = function(stat){
+		
+	}
+
 	static add_type_data = function(data){
 		type_data=data;
 		display_name = type_data[$"display_data"];
@@ -321,6 +326,20 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 			squad_fulfilment[$ _wanted_unit_role] =0;	//create a fulfilment structure to log members of squad
 		}
 		return squad_unit_types;
+	}
+
+	static get_squad_structs = function(){
+		var _struct_array  = [];
+		for (var i = array_length(members)-1; i >= 0;i--){
+			unit = fetch_unit(members[i]);
+			if (unit.name() == ""){
+				array_delete(members, i, 1);
+				continue;
+			} else {
+				array_push(_struct_array, unit);
+			}
+		}
+		return _struct_array;
 	}
 	// for creating a new sergeant from existing squad members
 	static new_sergeant = function(veteran=false){
@@ -428,9 +447,11 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		}
 		members = [];
 	}
+
 	static fetch_member= function(index){
 		return fetch_unit(members[index]);
 	}
+	
 	static add_member = function(comp, unit_number){
 		array_push(members, [comp, unit_number]);
 		life_members++;

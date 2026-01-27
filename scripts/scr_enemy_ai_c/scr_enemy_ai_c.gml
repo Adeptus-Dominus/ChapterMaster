@@ -173,11 +173,16 @@ function scr_enemy_ai_c() {
 	var aler=0;
 	if (present_fleet[10]>0) and (present_fleet[1]+present_fleet[2]=0) and (boat!="none") and (planets>0) {
 
-	    var ii,gud;ii=0;gud=0;
-	    repeat(planets){ii+=1;if (gud=0){if (planets>=ii) and (p_type[ii]!="Dead") and (p_owner[ii]!=10) then gud=ii;}}
+	    var ii=0,gud=0;
+	    repeat(planets){
+	    	ii+=1;
+	    	if (gud=0){
+	    		if (planets>=ii) and (p_type[ii]!="Dead") and (p_owner[ii]!=10) then gud=ii;
+	    	}
+	    }
     
 	    if (gud!=0) and (instance_exists(boat)){
-	        if (boat.trade_goods="csm"){
+	        if (fleet_has_cargo("csm", boat)){
 	            if (p_chaos[gud]<4){
 	                p_chaos[gud]+=max(1,floor(boat.image_index*0.5));
 	                if (p_chaos[gud]>4) then p_chaos[gud]=4;

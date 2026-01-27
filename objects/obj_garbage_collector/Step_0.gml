@@ -2,9 +2,10 @@ if (gc_timer > 0) {
     gc_timer -= 1;
     // show_debug_message($"obj_garbage_collector: gc_timer = {gc_timer}");
 } else {
-
-
-    gc_timer = 50; // Default is every frame, so de-facto 1;
+    gc_timer = 50;
+    switch (os_type){
+        case os_macosx: gc_timer = 10000; break;
+    }
     gc_collect();
 
     wait_and_execute(0, function(){

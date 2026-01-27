@@ -13,9 +13,42 @@ function ColourItem(xx,yy) constructor{
 	self.xx=xx;
 	self.yy=yy;
     data_slate = new DataSlate();
+
+    static swap_role_set = function(type_start, type_end){
+        var _full_livs = obj_creation.full_liveries;
+        var _comp_livs = obj_creation.company_liveries;
+        switch(type_start){
+            case 1:_full_livs[role_set] = variable_clone(map_colour);break;
+            case 0:_full_livs[0] = variable_clone(map_colour);break;
+            case 2:_comp_livs[role_set] = variable_clone(map_colour);break;
+        }
+
+        switch(type_end){
+            case 1:
+                role_set = obj_creation.roles_radio.selection_val("role_id");
+                role_set = role_set == noone ? 0: role_set;
+                map_colour = variable_clone(_full_livs[role_set]);
+                break;
+            case 0:
+                role_set = 0
+                map_colour = variable_clone(_full_livs[0]);
+                break;
+            case 2:
+                role_set = obj_creation.buttons.company_liveries_choice.current_selection;
+                if (role_set == -1){
+                    role_set = 1;
+                }
+                map_colour = variable_clone(_comp_livs[role_set]);
+                break;
+        }
+        shuffle_dummy();
+        reset_image(); 
+        colour_pick=false;
+    }
     static scr_unit_draw_data = function(default_val = 0){
         map_colour = {
             is_changed : false,
+            block_company_colours : false,
             left_leg_lower : default_val,
             left_leg_upper : default_val,
             left_leg_knee : default_val,
@@ -127,6 +160,18 @@ function ColourItem(xx,yy) constructor{
         company_marks: "Company Marks"
     }
 
+    var _radio_opts = [];
+    var _names = struct_get_names(name_maps);
+    for (var i=0;i<array_length(_names);i++){
+        array_push(_radio_opts, {
+            str1 : name_maps[$ _names[i]],
+            font : fnt_40k_14b,
+            area_id : _names[i],
+        });
+    }
+    colours_radio = new RadioSet(_radio_opts);
+
+
     static lower_left = ["left_leg_lower","left_leg_upper","left_leg_knee"];
 
     static lower_right = ["right_leg_lower","right_leg_upper","right_leg_knee"];
@@ -162,25 +207,32 @@ function ColourItem(xx,yy) constructor{
         map_colour.weapon_primary = struct_cols.weapon_color;
         map_colour.weapon_secondary = struct_cols.weapon_color;
         set_pattern(struct_cols.main_trim, trim_all);
+        switch (armour_style) {
+            case 0: // Full body
+                set_pattern(struct_cols.main_color, full_body);
+                break;
 
-        if (armour_style==0){
-            set_pattern(struct_cols.main_color,full_body);
-        } else if (armour_style==1){//Breastplate
-            set_pattern(struct_cols.secondary_color, chest);
-            set_pattern(struct_cols.main_color, head_set);
-            set_pattern(struct_cols.main_color, legs);
-        }else if (armour_style==2){//Vertical
-            set_pattern(struct_cols.secondary_color, upper_left);
-            set_pattern(struct_cols.main_color, lower_right);
-            set_pattern(struct_cols.main_color, upper_right);
-            set_pattern(struct_cols.secondary_color, lower_left);
-            set_pattern(struct_cols.main_color, head_set);
-        }else if (armour_style==3){//Quadrant
-            set_pattern(struct_cols.secondary_color, upper_left);
-            set_pattern(struct_cols.secondary_color, lower_right);
-            set_pattern(struct_cols.main_color, upper_right);
-            set_pattern(struct_cols.main_color, lower_left);
-            set_pattern(struct_cols.main_color, head_set);
+            case 1: // Breastplate
+                set_pattern(struct_cols.secondary_color, chest);
+                set_pattern(struct_cols.main_color, head_set);
+                set_pattern(struct_cols.main_color, legs);
+                break;
+
+            case 2: // Vertical
+                set_pattern(struct_cols.secondary_color, upper_left);
+                set_pattern(struct_cols.main_color, lower_right);
+                set_pattern(struct_cols.main_color, upper_right);
+                set_pattern(struct_cols.secondary_color, lower_left);
+                set_pattern(struct_cols.main_color, head_set);
+                break;
+
+            case 3: // Quadrant
+                set_pattern(struct_cols.secondary_color, upper_left);
+                set_pattern(struct_cols.secondary_color, lower_right);
+                set_pattern(struct_cols.main_color, upper_right);
+                set_pattern(struct_cols.main_color, lower_left);
+                set_pattern(struct_cols.main_color, head_set);
+                break;
         }
         reset_image();
         return variable_clone(map_colour);
@@ -256,8 +308,8 @@ function ColourItem(xx,yy) constructor{
                 }
             }
         	if (is_struct(colour_pick)){
-        		var action = colour_pick.draw();
-        		if (action == "destroy"){
+        		var _action = colour_pick.draw();
+        		if (_action == "destroy"){
         			colour_pick=false;
         		} else {
                     var _reset = false;
@@ -283,10 +335,16 @@ function ColourItem(xx,yy) constructor{
                     if (_reset){
                         map_colour[$ colour_pick.area] = colour_pick.chosen;
                         map_colour.is_changed = true;
-                        if (!obj_creation.buttons.company_options_toggle.company_view){
-                            obj_creation.full_liveries[role_set] = variable_clone(map_colour);
-                        } else {
-                            obj_creation.company_liveries[role_set] = variable_clone(map_colour);
+                        switch(obj_creation.livery_selection_options.current_selection){
+                            case 0:
+                                obj_creation.full_liveries[0] = variable_clone(map_colour);
+                                break;
+                            case 1:
+                                obj_creation.full_liveries[role_set] = variable_clone(map_colour);
+                                break;
+                            case 2:
+                                obj_creation.company_liveries[role_set] = variable_clone(map_colour);
+                                break;                                                                
                         }
                         delete dummy_image;
                         dummy_image = false;                        
@@ -370,9 +428,7 @@ function ColourItem(xx,yy) constructor{
                     hover_pos = _body_loc;
         		}
         		if (point_and_click(_rel_position)){
-        			colour_pick = new colour_picker(20, yy+350, 350);
-        			colour_pick.area = _body_loc;
-        			colour_pick.title = _body_loc;
+        			new_colour_pick(_body_loc);
         		}
         	}
             if (colour_return != false){
@@ -386,6 +442,12 @@ function ColourItem(xx,yy) constructor{
         }
         data_slate.draw(0,5,0.45, 1);
     }
+
+    static new_colour_pick = function (body_loc, x_pos=20, y_pos = yy+350, col_width=350){
+        colour_pick = new ColourPicker(x_pos, y_pos, col_width);
+        colour_pick.area = body_loc;
+        colour_pick.title = body_loc;        
+    }
 }
 
 enum eMarineIcons {
@@ -397,7 +459,7 @@ enum eMarineIcons {
 }
 
 function get_marine_icon_set(key){
-    sprite_set = false;
+    var sprite_set = false;
     if (key==eMarineIcons.Chapter){
         sprite_set = global.chapter_symbols;
     } else if (key==eMarineIcons.Role){
@@ -407,7 +469,7 @@ function get_marine_icon_set(key){
     }else if (key==eMarineIcons.Company){
         sprite_set = global.company_markings;
     }
-    return sprite_set;
+    return variable_clone(sprite_set);
 }
 
 function setup_complex_livery_shader(setup_role, unit = "none"){
@@ -419,7 +481,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
     var _is_unit = unit != "none";
    if (_in_creation) {
         var data_set = variable_clone(obj_creation.livery_picker.map_colour);
-        if (obj_creation.buttons.company_options_toggle.company_view){
+        if (obj_creation.livery_selection_options.current_selection == 2){
             var _base = obj_creation.full_liveries[0];
             var _component_names = struct_get_names(_base);
             for (var i=0;i<array_length(_component_names);i++){
@@ -493,6 +555,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
                     array_push(_distinct_colours, _colour);
                 }
             }
+            var _choice = 0;
             if (array_length(_distinct_colours)){
                 var _choice = cloth_variation%array_length(_distinct_colours);
             }
@@ -540,53 +603,64 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
     };       
 
     var colours_instance = instance_exists(obj_creation) ? obj_creation : obj_controller;
-    for (var i=0;i<array_length(spot_names);i++){
-        var colour = data_set[$ spot_names[i]];
+    var _position_count = array_length(spot_names);
+    for (var i=0;i<_position_count;i++){
+
+        var _colour_position = spot_names[i];
+
+        var _colour = variable_clone(data_set[$ _colour_position]);
+
         
-        if (!is_array(colour)){
-            set_complex_shader_area(spot_names[i], colour);
+        if (!is_array(_colour)){
+            set_complex_shader_area(_colour_position, _colour);
         } else {
-            if (colour[0] == "texture"){
-                if (struct_exists(global.textures, colour[1])){
-                    var name = colour[1];
-                    if (!struct_exists(_textures, name)){
-                        _textures[$name] = {
-                            texture : global.textures[$ colour[1]],
-                            areas : [complex_colour_swaps[$ spot_names[i]]],
+            if (_colour[0] == "texture"){
+                if (struct_exists(global.textures, _colour[1])){
+                    var _name = _colour[1];
+                    show_debug_message(_name);
+                    if (!struct_exists(_textures, _name)){
+                        _textures[$ _name] = {
+                            texture : global.textures[$ _colour[1]],
+                            areas : [complex_colour_swaps[$ _colour_position]],
                         }
                     } else {
-                        array_push(_textures[$name].areas, complex_colour_swaps[$ spot_names[i]]);
+                        var _tex_data = _textures[$_name]
+                        array_push(_tex_data.areas, complex_colour_swaps[$ _colour_position]);
                     }                    
                 }
-            } else if (colour[0] == "icon"){
-                var _data = colour[1]
+            } else if (_colour[0] == "icon"){
+                var _data = _colour[1];
+                show_debug_message($"data : {_data}");
                 var sub_key = "";
                 var main_key = "";
                 var _tex_set = false;
-                if (array_contains(["right_pauldron", "left_pauldron"], spot_names[i])){
+                if (array_contains(["right_pauldron", "left_pauldron"], _colour_position)){
                     sub_key = "pauldron";
-                }  else if (array_contains(["right_leg_knee", "left_leg_knee"], spot_names[i])){ 
+                }  else if (array_contains(["right_leg_knee", "left_leg_knee"], _colour_position)){ 
                     sub_key = "knees";
                 }
-
                 main_key = get_marine_icon_set(_data.type);
+                show_debug_message($"{sub_key}, {main_key}");
                 if (sub_key != "" && is_struct(main_key)){
-                    var _tex_set = main_key[$ sub_key];
+                    var _tex_set = variable_clone(main_key[$ sub_key]);
                 }
+                show_debug_message($"{_tex_set}");
                 if (is_struct(_tex_set)){
                     if (struct_exists(_tex_set, _data.icon)){
-                        var name = colour[1];
-                        if (!struct_exists(_textures, name)){
-                            _textures[$name] = {
-                                texture : _tex_set[$ _data.icon],
-                                areas : [complex_colour_swaps[$ spot_names[i]]],
+                        var _name = _data.icon;
+                        show_debug_message(_name);
+                        if (!struct_exists(_textures, _name)){
+                            _textures[$ _name] = {
+                                texture : _tex_set[$ _name],
+                                areas : [complex_colour_swaps[$ _colour_position]],
                             }
                         } else {
-                            array_push(_textures[$name].areas, complex_colour_swaps[$ spot_names[i]]);
+                            var _tex_data = _textures[$_name]
+                            array_push(_tex_data.areas, complex_colour_swaps[$ _colour_position]);
                         }                    
                     }
                 }
-                set_complex_shader_area(spot_names[i],_data.colour);               
+                set_complex_shader_area(_colour_position,_data.colour);               
             }
         }
     } 
@@ -631,7 +705,7 @@ global.textures = {
 
 };
 
-function colour_picker(xx,yy, max_width=400) constructor{
+function ColourPicker(xx,yy, max_width=400) constructor{
 	x=xx;
 	y=yy;
 	chosen = -1;
@@ -641,7 +715,9 @@ function colour_picker(xx,yy, max_width=400) constructor{
     markings = false;
     self.max_width = max_width;
     base_colour = 0;
-    markings_options  = new radio_set(       
+    title = "";
+
+    markings_options  = new RadioSet(       
        [ {
                    str1 : "None",
                    font : fnt_40k_14b,
@@ -667,7 +743,7 @@ function colour_picker(xx,yy, max_width=400) constructor{
                    font : fnt_40k_14b,
                    tooltip : "If selected You will be able to pick an icon or icon set after selecting a base colour"
                }
-        ],
+        ]
     ,"Markings");
 
     static textures_surface = surface_create(1, 1);
@@ -755,7 +831,7 @@ function colour_picker(xx,yy, max_width=400) constructor{
                     draw_set_color(make_color_rgb(obj_creation.col_r[i], obj_creation.col_g[i], obj_creation.col_b[i]));
                     box_coords = [box_x+(box_size*column), box_y+(box_size*row), box_x+(box_size*column)+box_size, box_y+(box_size*row)+box_size];
                     draw_rectangle_array(box_coords, 0);
-                    draw_set_color(38144);
+                    draw_set_color(CM_GREEN_COLOR);
                     draw_rectangle_array(box_coords, 1);
                     if (scr_hit(box_coords)) {
                         draw_set_color(c_white);

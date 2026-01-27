@@ -76,7 +76,7 @@ try {
                         // ** Start Mobility Items **
                         if (unit.mobility_item() != req_mobi) {
                             var stop_mobi = false;
-                            if (unit_armour.has_tags(["terminator", "dreadnought"])) {
+                            if (is_struct(unit_armour) && unit_armour.has_tags(["terminator", "dreadnought"])) {
                                 unit.update_mobility_item("");
                             } else {
                                 unit.update_mobility_item(req_mobi);
@@ -264,9 +264,9 @@ try {
 
         refresh = false;
 
-        if (tab > 0) {
+        if (tab > -1) {
             item_name = [];
-            var is_hand_slot = tab == 1 || tab == 2;
+            var is_hand_slot = tab == 0 || tab == 1;
             scr_get_item_names(
                 item_name,
                 obj_controller.settings, // eROLE

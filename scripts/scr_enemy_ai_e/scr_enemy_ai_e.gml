@@ -416,7 +416,7 @@ function scr_enemy_ai_e() {
                         }
                         with(obj_en_fleet) {
                             if (action = "") and(orbiting = obj_controller.temp[1049]) and(owner = 10) {
-                                if (string_count("Khorne_warband", trade_goods) > 0) then instance_create(x, y, obj_temp2);
+                                if (string_count("warband", trade_goods) > 0) then instance_create(x, y, obj_temp2);
                                 if (string_lower(trade_goods) = "csm") then instance_create(x, y, obj_temp3);
                             }
                         }
@@ -515,19 +515,9 @@ function scr_enemy_ai_e() {
                     }
                 }
             }
-
         }
-        if (p_player[run] > 0 && has_problem_planet(run,"necron")) {
-            log_message($"player on planet with necron mission {name} planet: {run}")
-            var have_bomb;
-            have_bomb = scr_check_equip("Plasma Bomb", name, run, 0);
-            log_message($"have bomb? {have_bomb} ")
-            if (have_bomb > 0) {
-                var tixt;
-                tixt = "Your marines on " + planet_numeral_name(run);
-                tixt += " are prepared and ready to enter the Necron Tombs.  A Plasma Bomb is in tow.";
-                scr_popup("Necron Tomb Excursion", tixt, "necron_cave", "blarg|" + string(name) + "|" + string(run) + "|999|");
-            }
+        if (p_player[run] > 0 && has_problem_planet(run,"necron")){
+            setup_necron_tomb_raid(run);
         }
         if (p_player[run] > 0) and(force_count > 0) {
             for (force = 2; force < 14; force++) {
@@ -712,9 +702,10 @@ function scr_enemy_ai_e() {
             repeat(200) {
                 i += 1;
                 good = 0;
-                if (obj_ini.role[co, i] != "") and(obj_ini.loc[co, i] = name) and(obj_ini.TTRP[co, i].planet_location == floor(chaos_meeting)) then good += 1;
-                if (obj_ini.role[co, i] != obj_ini.role[100, 6]) and(obj_ini.role[co, i] != "Venerable " + string(obj_ini.role[100, 6])) then good += 1;
-                if (string_count("Dread", obj_ini.armour[co, i]) = 0) or(obj_ini.role[co, i] == obj_ini.role[100][eROLE.ChapterMaster]) then good += 1;
+                var _unit = fetch_unit([co,i]);
+                if (_unit.role() != "" && _unit.location_string = name) and(_unit.planet_location == floor(chaos_meeting)) then good += 1;
+                if (_unit.role() != obj_ini.role[100, 6]) and(_unit.role() != "Venerable " + string(obj_ini.role[100, 6])) then good += 1;
+                if (string_count("Dread", obj_ini.armour[co, i]) = 0) or(_unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) then good += 1;
 
                 if (good = 3) {
                     obj_temp_meeting.dudes += 1;
@@ -722,7 +713,7 @@ function scr_enemy_ai_e() {
                     obj_temp_meeting.present[otm] = 1;
                     obj_temp_meeting.co[otm] = co;
                     obj_temp_meeting.ide[otm] = i;
-                    if (obj_ini.role[co, i] == obj_ini.role[100][eROLE.ChapterMaster]) then master_present = 1;
+                    if (_unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) then master_present = 1;
                 }
             }
         }

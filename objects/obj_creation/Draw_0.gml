@@ -1,3 +1,6 @@
+
+add_draw_return_values();
+draw_set_valign(fa_top);
 try {
 	//read
 	// 850,860
@@ -60,7 +63,7 @@ try {
 				draw_sprite(spr_creation_other, 5, 0, 68);
 			}
 
-			draw_set_color(38144);
+			draw_set_color(CM_GREEN_COLOR);
 			draw_rectangle(0, 68, 374, 781, 1);
 		}
 
@@ -142,12 +145,14 @@ try {
 
 	else if (slide == eCREATIONSLIDES.CHAPTERLIVERY) {
 		scr_livery_setup();
+	} else if (slide == eCREATIONSLIDES.CHAPTERROLES) {
+		scr_role_setup();
 	}
 
 	/* Gene Seed Mutations, Disposition */
 
 	else if (slide == eCREATIONSLIDES.CHAPTERGENE) {
-		draw_set_color(38144);
+		draw_set_color(CM_GREEN_COLOR);
 		draw_set_font(fnt_40k_30b);
 		draw_set_halign(fa_center);
 		draw_set_alpha(1);
@@ -158,7 +163,7 @@ try {
 
 		draw_text(800, 80, string_hash_to_newline(string(chapter_name)));
 
-		draw_set_color(38144);
+		draw_set_color(CM_GREEN_COLOR);
 		draw_set_halign(fa_left);
 		draw_text_transformed(580, 118, string_hash_to_newline("Successor Chapters: " + string(successors)), 0.6, 0.6, 0);
 		draw_set_font(fnt_40k_14b);
@@ -374,7 +379,7 @@ try {
 
 	/* Chapter Master */
 	if (slide == eCREATIONSLIDES.CHAPTERMASTER) {
-		draw_set_color(38144);
+		draw_set_color(CM_GREEN_COLOR);
 		draw_set_font(fnt_40k_30b);
 		draw_set_halign(fa_center);
 		draw_set_alpha(1);
@@ -385,7 +390,7 @@ try {
 		tooltip2 = "";
 		obj_cursor.image_index = 0;
 
-		draw_set_color(38144);
+		draw_set_color(CM_GREEN_COLOR);
 		draw_set_halign(fa_left);
 		draw_text_transformed(580, 100, string_hash_to_newline("Chapter Master Name: "), 0.9, 0.9, 0);
 		draw_set_font(fnt_40k_14b);
@@ -416,7 +421,7 @@ try {
 			draw_rectangle(580 - 2, 144 - 2, 582 + 350, 146 + hei, 1);
 
 			var _refresh_cm_name_btn = [943, 142, 947 + hei, 146 + hei];
-			draw_unit_buttons(_refresh_cm_name_btn, "?", [1, 1], 38144, , fnt_40k_14b);
+			draw_unit_buttons(_refresh_cm_name_btn, "?", [1, 1], CM_GREEN_COLOR, , fnt_40k_14b);
 			if (point_and_click(_refresh_cm_name_btn)) {
 				var _new_cm_name = global.name_generator.generate_space_marine_name();
 				show_debug_message($"regen name of chapter_master_name from {chapter_master_name} to {_new_cm_name}");
@@ -675,10 +680,10 @@ try {
 
 		var q, x3, y3;
 		q = 1;
-		x3 = (room_width / 2) - 65;
+		x3 = (room_width / 2) - 77;
 		y3 = 790;
-		draw_set_color(38144);
-		repeat (6) {
+		draw_set_color(CM_GREEN_COLOR);
+		repeat (7) {
 			draw_circle(x3, y3, 10, 1);
 			draw_circle(x3, y3, 9.5, 1);
 			draw_circle(x3, y3, 9, 1);
@@ -694,16 +699,16 @@ try {
 		}
 	}
 
-	if ((slide >= 2) || (goto_slide >= 2)) {
+	if ((slide >= eCREATIONSLIDES.CHAPTERTRAITS) || (goto_slide >= eCREATIONSLIDES.CHAPTERTRAITS)) {
 		draw_set_alpha(1);
 		draw_sprite(spr_creation_arrow, 0, 607, 761);
 		draw_sprite(spr_creation_arrow, 1, 927, 761);
-		if (slide == 1) {
+		if (slide == eCREATIONSLIDES.CHAPTERSELECT) {
 			draw_sprite(spr_creation_arrow, 2, 607, 761);
 		}
 
 		// skip to end >> button
-		if ((slide >= 2) && (slide < 6) && (custom != eCHAPTER_TYPE.CUSTOM)) {
+		if ((slide >= eCREATIONSLIDES.CHAPTERTRAITS) && (slide < eCREATIONSLIDES.CHAPTERMASTER) && (custom != eCHAPTER_TYPE.CUSTOM)) {
 			draw_set_alpha(0.8);
 			if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && scr_hit(927 + 64 + 12, 761 + 12, 927 + 128 - 12, 761 + 64 - 12)) {
 				draw_set_alpha(1);
@@ -715,13 +720,14 @@ try {
 				scr_creation(4);
 				scr_creation(5);
 				scr_creation(6);
+				scr_creation(7);
 			}
 		}
 		draw_set_alpha(1);
 
-		var q = 1, x3 = (room_width / 2) - 65, y3 = 790;
-		draw_set_color(38144);
-		repeat (6) {
+		var q = 1, x3 = (room_width / 2) - 77, y3 = 790;
+		draw_set_color(CM_GREEN_COLOR);
+		repeat (7) {
 			draw_circle(x3, y3, 10, 1);
 			draw_circle(x3, y3, 9.5, 1);
 			draw_circle(x3, y3, 9, 1);
@@ -736,20 +742,21 @@ try {
 			q += 1;
 		}
 
-		if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0))) {
-			if (point_and_click([925, 756, 997, 824]) && !instance_exists(obj_creation_popup)) {
+		//TODO refactor to make arrow buttoon objects
+		if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && (!instance_exists(obj_creation_popup))) {
+			if (point_and_click([925, 756, 997, 824])) {
 				// Next slide
-				if (slide >= 2 && slide <= 6) {
+				if (slide >= eCREATIONSLIDES.CHAPTERTRAITS && slide <= eCREATIONSLIDES.CHAPTERMASTER) {
 					scr_creation(slide);
 				}
 			}
 
-			if (point_and_click([604, 756, 675, 824]) && (!instance_exists(obj_creation_popup))) {
+			if (point_and_click([604, 756, 675, 824])) {
 				// Previous slide
 				change_slide = 1;
 				goto_slide = slide - 1;
 				popup = "";
-				if (goto_slide == 1) {
+				if (goto_slide == eCREATIONSLIDES.CHAPTERSELECT) {
 					highlight = 0;
 					highlighting = 0;
 					old_highlight = 0;
@@ -769,7 +776,7 @@ try {
 		var _height = string_height_ext(string_hash_to_newline(tooltip2), -1, 500);
 
 		draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + max(_width1, _width2) + 24, mouse_y + 44 + _height, 0);
-		draw_set_color(38144);
+		draw_set_color(CM_GREEN_COLOR);
 		draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + max(_width1, _width2) + 24, mouse_y + 44 + _height, 1);
 		draw_set_font(fnt_40k_14b);
 		draw_text(mouse_x + 22, mouse_y + 22, string_hash_to_newline(string(tooltip)));
@@ -780,3 +787,5 @@ try {
 	handle_exception(_exception);
     room_goto(Main_Menu);
 }
+
+pop_draw_return_values();

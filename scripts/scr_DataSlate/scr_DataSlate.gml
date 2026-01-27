@@ -1,4 +1,4 @@
-function DataSlate() constructor{
+function DataSlate(data={}) constructor{
 	static_line=1;
 	title="";
 	sub_title="";
@@ -11,19 +11,34 @@ function DataSlate() constructor{
 	percent_cut=0;
 	set_width = false;
 
+	draggable = false;
+	cherub = false;
+
+	top_anchor = [340, 14];
+
 	style = "default";
 
 	tooltip_drawing = [];
 
 	blend_col = 5998382;
+	draw_top_piece = true;
+	move_data_to_current_scope(data, true);
+
+	drag_engaged = false;
+
+	top_piece_style = "aquila";
+
+	draw_offsets = [];
+
+	decoration_scale = 0;
+
 
 	static entered = function(){
-		return (scr_hit(
-                    XX-4,
-                    YY,
-                    XX + width,
-                    YY + height,
-                ));
+		var _hit =  (scr_hit(XX-4,YY,XX + width,YY + height));
+		if (!_hit && cherub){
+			_hit = hit_cherub();
+		}
+		return _hit || drag_engaged;
 	}
 
 	static draw_with_dimensions = function(xx = -1,yy = -1, Width=-1 , Height=-1){
@@ -36,6 +51,31 @@ function DataSlate() constructor{
 		var _scale_x =  width/860;
 		var _scale_y =  height/850;
 		draw(xx,yy, _scale_x, _scale_y);
+	}
+
+	static hit_cherub = function(){
+		var _box_aug = 80*(decoration_scale*2.5);
+		var _x_loc = XX+(width/2);
+		var _y_loc = YY;
+		return (scr_hit_dimensions(_x_loc-(_box_aug), _y_loc-_box_aug, _box_aug*2, _box_aug));		
+	}
+
+	static drag_logic = function(){
+		if (!drag_engaged){
+			if (hit_cherub()){
+				drag_engaged = (device_mouse_check_button_pressed(0,mb_left));
+				var _mouse_consts = return_mouse_consts();
+				draw_offsets = [_mouse_consts[0]-XX,_mouse_consts[1]-YY];
+			}
+		} else {
+			drag_engaged = !(device_mouse_check_button_released(0,mb_left));
+		}
+
+		if (drag_engaged){
+			var _mouse_consts = return_mouse_consts();
+			XX = _mouse_consts[0] - draw_offsets[0];
+			YY = _mouse_consts[1] - draw_offsets[1];
+		}
 	}
 
 	static draw = function(xx= -1,yy = -1, scale_x=1, scale_y=1){
@@ -51,19 +91,34 @@ function DataSlate() constructor{
 			height = 850*scale_y;
 		}
 
+		decoration_scale = min(scale_x, scale_y)
+
+		if (cherub){
+			var _x_loc = XX+(width/2);
+			var _y_loc = YY;
+			draw_sprite_ext(spr_pixel_cherub, 0, _x_loc, _y_loc , decoration_scale*2.5, decoration_scale*2.5, 0, c_white, 1);
+			if (draggable){
+				drag_logic();
+			}
+		}
+
+		/*if (draggable && scr_hit(XX+(width/2)-(60*decoration_scale,) YY-(60*decoration_scale) ,XX+(width/2)+(60*decoration_scale),YY)){
+			
+		}*/
+
 		switch (style){
 			case "default":
-				draw_sprite_ext(spr_data_slate,1, XX,YY, scale_x, scale_y, 0, c_white, 1);
+				draw_sprite_ext(spr_slate_featureless,1, XX,YY, scale_x, scale_y, 0, c_white, 1);
 				break;
 			case "decorated":
 				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
 				draw_sprite_stretched(spr_slate_side, 0, XX,YY, width, height);
-				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, blend_col, 0.05);
+				draw_rectangle_color_simple(XX,YY, XX+width,YY+height, 0, blend_col, 0.05);
 				break;
 
 			case "plain":
 				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
-				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, blend_col, 0.05);				
+				draw_rectangle_color_simple(XX,YY, XX+width,YY+height, 0, blend_col, 0.05);				
 				break;
 		}
 
@@ -101,8 +156,18 @@ function DataSlate() constructor{
 				var _slate_scaley = height/sprite_get_height(spr_slate_side);
 				draw_sprite(spr_data_slate_corner_decoration, 0,XX+width - (70*_slate_scalex), YY + (7*_slate_scaley));
 				break;
+			case "default":
+				if (draw_top_piece){
+					if (top_piece_style == "aquila"){
+						draw_sprite_ext(spr_slate_top,1, XX+(top_anchor[0]*scale_x),YY + (top_anchor[1] * scale_y ), decoration_scale, decoration_scale, 0, c_white, 1);
+					}
+
+				}
+				break;
 
 		}
+		x2 = XX+width;
+		y2 = YY+height;
 	}
 
 	static draw_cut = function(xx,yy, scale_x=1, scale_y=1, middle_percent=percent_cut){
@@ -318,18 +383,70 @@ function ShutterButton() constructor{
 	YY=0;
 	width=0;
 	height=0;
+	cover_text = "";
+	tooltip = "";
+
+	/*cover_sprite = spr_shutter_button_cover;
+	static make_custom_cover(){
+
+	}*/
 	right_rack = new RackAndPinion();
 	left_rack = new RackAndPinion("backward");
 	background = new DataSlate();
+
+	static hit = function(){
+		return scr_hit(XX, YY, XX+width, YY+height);
+	}
+	background.inside_method = function(){
+		var yy = YY;
+		var xx = XX;
+		var text_draw = xx+(width/2)-(string_width(text)*(3*scale)/2);
+		if (hit()){
+			draw_rectangle_color_simple(xx, yy, xx+width, yy+height, false, CM_GREEN_COLOR, 0.35)
+		}
+		draw_set_halign(fa_left);
+		draw_set_color(c_red);
+		if (click_timer>0){
+			draw_text_transformed(text_draw, yy+(24*scale), text, 3*scale, 3*scale, 0);
+		} else {
+			draw_text_transformed(text_draw, yy+(20*scale), text, 3*scale, 3*scale, 0);
+		}
+	}
+
 	background.style = "plain";
+	style = "plain";
 
 	/*draw_with_dimensions = function(xx,yy, ,width, entered){
 		draw_shutter();
 	}*/
+	inside_method = function(){
+		var yy = YY;
+		var xx = XX;
+		var text_draw = xx+(width/2)-(string_width(text)*(3*scale)/2);		
+		if (point_and_click([XX, YY, XX+width, YY+height]) || click_timer>0 ){
+			shutter_backdrop = 7;
+			click_timer++;
+		} else {
+			shutter_backdrop = 6;
+		}
+		draw_sprite_ext(spr_shutter_button, shutter_backdrop, XX, YY, scale, scale, 0, c_white, 1);
+		draw_set_halign(fa_left);
+		draw_set_color(c_red);
+		if (click_timer>0){
+			draw_text_transformed(text_draw, yy+(24*scale), text, 3*scale, 3*scale, 0);
+		} else {
+			draw_text_transformed(text_draw, yy+(20*scale), text, 3*scale, 3*scale, 0);
+		}
+	}
 
-	draw_shutter = function(xx,yy,text, scale=1, entered = ""){
-		XX=xx;
-		YY=yy;
+	draw_shutter = function(xx=-1,yy=-1,text, scale=1, entered = ""){
+		add_draw_return_values();
+		if (xx != -1){
+			XX=xx;
+		}
+		if (yy != -1){
+			YY=yy;
+		}
         draw_set_alpha(1);
         self.scale = scale;
         self.text = text;
@@ -346,7 +463,10 @@ function ShutterButton() constructor{
 			entered=entered;
 		}
 
-		var shutter_backdrop = 5;
+		if (tooltip!= "" && scr_hit(xx, yy, xx+width, yy+height)){
+			tooltip_draw(tooltip);
+		}
+		var shutter_backdrop = 6;
 		if (entered || click_timer>0){
 			if (time_open<24){
 				time_open++;
@@ -355,10 +475,6 @@ function ShutterButton() constructor{
 			} else {
 				right_rack.draw(xx+width, yy, true);
 				left_rack.draw(xx, yy, true);
-			}
-			if (point_and_click([xx, yy, xx+width, yy+height]) || click_timer>0 ){
-				shutter_backdrop = 6;
-				click_timer++;
 			}
 		} else if (time_open>0){
 			time_open--;
@@ -371,29 +487,28 @@ function ShutterButton() constructor{
 
 		var main_sprite = 0;
 		if (time_open<2){
-			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1)
+			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);
+			if (cover_text != ""){
+				draw_set_valign(fa_top);
+				draw_set_font(fnt_Embossed_metal);
+				var _cover_scale = 3*scale;
+				while (string_width(cover_text) * _cover_scale > width-(5*scale)){
+					_cover_scale -= 0.1;
+				}
+				var text_draw = xx+(width/2)-((string_width(cover_text)*(_cover_scale))/2);
+				draw_set_color(c_black);
+				draw_text_transformed(text_draw, yy+(_cover_scale*1), cover_text, _cover_scale, _cover_scale, 0);
+			}
 		} else if (time_open>=2){
 
 			main_sprite=floor(time_open/6) + 1;
 
-			//draw_sprite_ext(spr_shutter_button, shutter_backdrop, xx, yy, scale, scale, 0, c_white, 1)
-			background.inside_method = function(){
-				var yy = YY;
-				var xx = XX;
-				var text_draw = xx+(width/2)-(string_width(text)*(3*scale)/2);
-				if (scr_hit(xx, yy, xx+width, yy+height)){
-					draw_rectangle_color_simple(xx, yy, xx+width, yy+height, false, CM_GREEN_COLOR, 0.35)
-				}
-				draw_set_halign(fa_left);
-				draw_set_color(c_red);
-				if (click_timer>0){
-					draw_text_transformed(text_draw, yy+(24*scale), text, 3*scale, 3*scale, 0);
-				} else {
-					draw_text_transformed(text_draw, yy+(20*scale), text, 3*scale, 3*scale, 0);
-				}
+			if (style == "plain"){
+				inside_method();
+			} else if (style == "slate"){
+				background.draw_with_dimensions(xx, yy, width, height);
 			}
-			background.draw_with_dimensions(xx, yy, width, height);
-			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);	
+			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);
 		}
 		draw_set_color(c_grey);
 		if (click_timer>7){
@@ -402,6 +517,7 @@ function ShutterButton() constructor{
 		} else {
 			return false;
 		}
+		pop_draw_return_values();
 	}
 }
 

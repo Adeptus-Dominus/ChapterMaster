@@ -97,6 +97,9 @@ chapter_made = 0;
 // obj_cuicons.alarm[1]=1; // Clean up custom icons
 map_scale = 1;
 scale_mod = 1;
+unit_manage_constants = {};
+unit_manage_constants.current_data = [-1,-1];
+management_buttons = false;
 
 
 diplomacy_pathway = "";
@@ -118,69 +121,6 @@ function build_chaos_gods(){
 	
 }
 build_chaos_gods()
-
-// ** Resets global vars **
-obj_controller.restart_name="";
-obj_controller.restart_founding="";
-obj_controller.restart_secret="";
-for(var i=0; i<=11; i++){obj_controller.restart_title[i]="";}
-obj_controller.restart_icon=0;
-obj_controller.restart_powers="";
-for(var ad=0; ad<5; ad ++){
-    obj_controller.restart_adv[ad]="";
-    obj_controller.restart_dis[ad]="";
-}
-obj_controller.restart_recruiting_type="";
-obj_controller.restart_trial="";
-obj_controller.restart_recruiting_name="";
-obj_controller.restart_home_type="";
-obj_controller.restart_home_name="";
-obj_controller.restart_fleet_type=0;
-obj_controller.restart_recruiting_exists=0;
-obj_controller.restart_homeworld_exists=0;
-obj_controller.restart_homeworld_rule=0;
-obj_controller.restart_battle_cry="";
-obj_controller.restart_main_color="";
-obj_controller.restart_secondary_color="";
-obj_controller.restart_trim_color="";
-obj_controller.restart_pauldron2_color="";
-obj_controller.restart_pauldron_color="";
-obj_controller.restart_lens_color="";
-obj_controller.restart_weapon_color="";
-obj_controller.restart_col_special=0;
-obj_controller.restart_trim=0;
-obj_controller.restart_skin_color=0;
-obj_controller.restart_hapothecary="";
-obj_controller.restart_hchaplain="";
-obj_controller.restart_clibrarian="";
-obj_controller.restart_fmaster="";
-obj_controller.restart_recruiter="";
-obj_controller.restart_admiral="";
-obj_controller.restart_equal_specialists=0;
-obj_controller.restart_load_to_ships=[0,0,0];
-obj_controller.restart_successors=0;
-obj_controller.restart_mutations=0;
-obj_controller.restart_preomnor=0;
-obj_controller.restart_voice=0;
-obj_controller.restart_doomed=0;
-obj_controller.restart_lyman=0;
-obj_controller.restart_omophagea=0;
-obj_controller.restart_ossmodula=0;
-obj_controller.restart_membrane=0;
-obj_controller.restart_zygote=0;
-obj_controller.restart_betchers=0;
-obj_controller.restart_catalepsean=0;
-obj_controller.restart_secretions=0;
-obj_controller.restart_occulobe=0;
-obj_controller.restart_mucranoid=0;
-obj_controller.restart_master_name="";
-obj_controller.restart_master_melee=0;
-obj_controller.restart_master_ranged=0;
-obj_controller.restart_master_specialty=0;
-obj_controller.restart_strength=0;
-obj_controller.restart_cooperation=0;
-obj_controller.restart_purity=0;
-obj_controller.restart_stability=0;
 
 // ** Sets default equipement for roles **
 // 100 is defaults, 101 is the allowable starting equipment
@@ -396,6 +336,7 @@ hide_banner=0;
 // ui stuff
 var xx=__view_get( e__VW.XView, 0 );
 var yy=__view_get( e__VW.YView, 0 );
+menu_lock = false;
 menu_buttons = {
     "chapter_manage":new MainMenuButton(spr_ui_but_1, spr_ui_hov_1,,,ord("M"),scr_toggle_manage),
     "chapter_settings":new MainMenuButton(spr_ui_but_1, spr_ui_hov_1,,,ord("S"),scr_toggle_setting),
@@ -412,6 +353,13 @@ menu_buttons = {
     "menu":new MainMenuButton(spr_ui_but_4, spr_ui_hov_4,,,,scr_in_game_menu),
 
 }
+
+helpful_places_button = new UnitButtonObject({
+    style: "pixel",
+    label: "System Data",
+});
+
+helpful_places = false;
 
 instance_create(x,y, obj_planet_map);
 new_button_highlight="";
@@ -434,12 +382,15 @@ unit_bio=false;
 view_squad=false;
 company_report=false;
 company_data = {};
+unit_focus = false;
 filter_mode = false;
-pauldron_trim=0;
-last_unit=[0,0];
+manage_tags = [];
+pauldron_trim = 0;
+last_unit = [0,0];
 ui_coloring=""; 
-ui_melee_penalty=0;
-ui_ranged_penalty=0;
+ui_melee_penalty = 0;
+ui_ranged_penalty = 0;
+management_tags = [];
 
 // ** Sets default mouse vars **
 current_target=false;
@@ -565,7 +516,7 @@ identifiable=0;
 repair_ships=0;
 forge_points = 0;
 master_craft_chance = 0;
-tech_status = "Cult Mechanicus";
+tech_status = "cult_mechanicus";
 forge_string="";
 player_forge_data = {
     player_forges : 0,
@@ -684,11 +635,8 @@ for(var i=0; i<501; i++){
         penit_co[i]=0;
         penit_id[i]=0;
     }
-    if (i<=100){
-        event[i]="";
-        event_duration[i]=0;
-    }
 }
+event = [];
 // ship management arrays
 // they are used to display a paginated subset of ships
 // at a particular location for the load to ship screen.
@@ -710,6 +658,7 @@ sel_system_x=0;
 sel_system_y=0;
 popup_master_crafted=0;
 close_popups = true;
+unit_manage_image = false;
 // ** Sets starting turn **
 turn=1;
 // turn=40;
@@ -754,37 +703,9 @@ array_set_range(temp, 0, 199, "");
 temp[90] = 0;
 temp[9000] = "";
 // ** Resets all audiences **
+audience_stack = [];
 audiences=0;
-audien[0]=0;
-audien[1]=0;
-audien[2]=0;
-audien[3]=0;
-audien[4]=0;
-audien[5]=0;
-audien[6]=0;
-audien[7]=0;
-audien[8]=0;
-audien[9]=0;
-audien[10]=0;
-audien[11]=0;
-audien[12]=0;
-audien[13]=0;
-audien[14]=0;
-audien_topic[0]="";
-audien_topic[1]="";
-audien_topic[2]="";
-audien_topic[3]="";
-audien_topic[4]="";
-audien_topic[5]="";
-audien_topic[6]="";
-audien_topic[7]="";
-audien_topic[8]="";
-audien_topic[9]="";
-audien_topic[10]="";
-audien_topic[11]="";
-audien_topic[12]="";
-audien_topic[13]="";
-audien_topic[14]="";
+
 // ** Sets default recruiting vars **
 recruits=0;
 recruiting_worlds="";
@@ -824,10 +745,8 @@ diplo_last="";
 diplo_text="";
 diplo_txt="";
 diplo_char=0;
-for(var q=0; q<6; q++){
-    diplo_option[q]="";
-    diplo_goto[q]="";
-}
+diplo_option = [];
+
 diplo_alpha=0;
 // ** Sets combat to not true **
 combat=0;
@@ -872,46 +791,6 @@ inqis_flag_lair=0;
 inqis_flag_gene=0;
 
 faction_justmet=0;
-
-trade_mine[0]="";
-trade_mine[1]="Requisition";
-trade_mine[2]="Gene-Seed";
-trade_mine[3]="STC Fragment";
-trade_mine[4]="Info Chip";
-trade_theirs[0]="";
-trade_theirs[1]="";
-trade_theirs[2]="";
-trade_theirs[3]="";
-trade_theirs[4]="";
-trade_theirs[5]="";
-trade_theirs[6]="";
-trade_disp[0]=0;
-trade_disp[1]=0;
-trade_disp[2]=0;
-trade_disp[3]=0;
-trade_disp[4]=0;
-trade_disp[5]=0;
-trade_disp[6]=0;
-trade_take[0]="";
-trade_take[1]="";
-trade_take[2]="";
-trade_take[3]="";
-trade_take[4]="";
-trade_tnum[0]=0;
-trade_tnum[1]=0;
-trade_tnum[2]=0;
-trade_tnum[3]=0;
-trade_tnum[4]=0;
-trade_give[0]="";
-trade_give[1]="";
-trade_give[2]="";
-trade_give[3]="";
-trade_give[4]="";
-trade_mnum[0]=0;
-trade_mnum[1]=0;
-trade_mnum[2]=0;
-trade_mnum[3]=0;
-trade_mnum[4]=0;
 // ** Sets up starting requisition **
 requisition=500;
 if (instance_exists(obj_ini)){
@@ -923,6 +802,10 @@ if (instance_exists(obj_ini)){
     }
 }
 if (is_test_map==true) then requisition=50000;
+
+chapter_master = new scr_chapter_master();
+
+trade_attempt = false;
 // ** Sets income **
 income=0;
 income_last=0;
@@ -992,21 +875,7 @@ bat_whirlwind_column=1;
 bat_landspeeder_column=4;
 bat_scout_column=1;
 // ** Sets up disposition per faction **
-enum eFACTION {
-	Player = 1,
-	Imperium,
-	Mechanicus,
-	Inquisition,
-	Ecclesiarchy,
-	Eldar,
-	Ork,
-	Tau,
-	Tyranids,
-	Chaos,
-	Heretics,
-    Genestealer,
-	Necrons = 13
-}
+
 
 imperial_factions = [
     eFACTION.Imperium,
@@ -1295,10 +1164,11 @@ serialize = function(){
         loyalty,
         spec_train_data,
         forge_queue: specialist_point_handler.forge_queue,
+        chapter_master_data : chapter_master
 
     }
     var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",
-            "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data"]
+            "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data", "tooltips", "last_unit", "unit_manage_constants", "unit_manage_image"];
     var excluded_from_save_start = ["restart_"];
 
     copy_serializable_fields(object_controller, save_data, excluded_from_save, excluded_from_save_start);
@@ -1308,7 +1178,6 @@ serialize = function(){
 
 // Deserialization is done within scr_load
 #endregion
-
 
 // ** Loads the game **
 if (global.load>=0){
@@ -1441,6 +1310,7 @@ if (global.custom==eCHAPTER_TYPE.RANDOM){
 // ** Sets up loyalty **
 loyalty=100;
 loyalty_hidden=100;// Updated when inquisitors do an inspection
+
 // ** Sets up gene seed **
 gene_seed=20;
 if scr_has_disadv("Sieged") then gene_seed=floor(random_range(250,400));
@@ -1457,15 +1327,15 @@ squads = false;
 system_fleet_strength = 0;
 // **sets up starting forge_points
 specialist_point_handler = new SpecialistPointHandler();
-specialist_point_handler.calculate_research_points();
+specialist_point_handler.calculate_research_points(true);
 
-
+ 
 //** sets up marine_by_location views
 location_viewer = new UnitQuickFindPanel();
 
 // ** Sets up the number of marines per company **
-marines=0;
-marines=obj_ini.specials+obj_ini.firsts+obj_ini.seconds+obj_ini.thirds+obj_ini.fourths+obj_ini.fifths;
+marines = 0;
+marines = obj_ini.specials+obj_ini.firsts+obj_ini.seconds+obj_ini.thirds+obj_ini.fourths+obj_ini.fifths;
 marines+=obj_ini.sixths+obj_ini.sevenths+obj_ini.eighths+obj_ini.ninths+obj_ini.tenths;
 command=0;
 command=obj_ini.commands;

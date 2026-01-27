@@ -94,32 +94,40 @@ function scr_ruins_player_forces_defeated(){
 
 //revcover equipment of fallen marines from ruins
 function scr_ruins_recover_from_dead(){
-	var pop=instance_create(0,0,obj_popup);var route = random(5);
+	var pop=instance_create(0,0,obj_popup);
+	var route = random(5);
 	pop.image="ancient_ruins";
 	pop.title="Ancient Ruins: Recovery";
 	if (route < 4){
-		var weapon_text = ""
-	
-		//calculate equipment degredation
-		var equipment_deg = floor((obj_controller.turn - failiure_turn)/7)
+		var _weapon_text = "";
+		
 		var some_recoverable = false;
-		if (array_length(recoverables)>0){
-				for (var item =0;item<array_length(recoverables);item++){
-					var i_set = recoverables[item]
-					i_set[1] -= equipment_deg;
-					if (i_set[1]> 0){
-						some_recoverable = true;
-						scr_add_item(i_set[0],i_set[1])
-						weapon_text += $", {i_set[0]} x {i_set[1]}"
-					}
-				}
-			if (some_recoverable == true){
-				pop.text=$"Your strike team locates the site where the previous expedition made their last stand. They airlift whatever equipment and vehicles remain, disposing of anything beyond saving;.{ weapon_text}is repaired and restored to the armamentarium";
-			}else{
-				pop.text=$"our strike team locates the site where the previous expedition made their last stand. They cannot find any intact equipment, and are forced to burn the derelicts to prevent capture; no equipment is added to the armamentarium"
+		//calculate equipment degredation
+		var equipment_deg = (obj_controller.turn - failiure_turn)/ 120;
+		if (equipment_deg < 1 && array_length(recoverables)){
+			var _recovered = new EquipmentTracker();
+			var _recover_picks = ceil((1 - equipment_deg) * array_length(recoverables));
+			recoverables = array_shuffle(recoverables);
+			if (_recover_picks < array_length(recoverables) ){
+				array_delete(recoverables, _recover_picks, array_length(recoverables) - _recover_picks)
 			}
+			_recovered.items = recoverables;
+			_recovered.collate_types();
+			_weapon_text = _recovered.item_description_string();
+
+			some_recoverable = array_length(recoverables) > 0;
+		} else {
+			some_recoverable = false;
+
 		}
-	
+		
+
+		if (some_recoverable){
+			pop.text=$"Your strike team locates the site where the previous expedition made their last stand. They airlift whatever equipment and vehicles remain, disposing of anything beyond saving;. {_weapon_text} is repaired and restored to the armamentarium";
+		}else{
+			pop.text=$"our strike team locates the site where the previous expedition made their last stand. They cannot find any intact equipment, and are forced to burn the derelicts to prevent capture; no equipment is added to the armamentarium"
+		}
+
 		//calculate geneseed degredation
 		if (obj_controller.turn - failiure_turn > 2){
 			recoverable_gene_seed -= obj_controller.turn - failiure_turn
@@ -205,37 +213,169 @@ function scr_explore_ruins() {
 			pip.text += ". What is thy will?";
 		}
 
-		pip.option1 = "Explore the ruins.";
-		pip.option2 = "Do nothing.";
-		pip.option3 = "Return your marines to the ship.";
+		pip.add_option([
+			{
+				str1: "Explore the ruins.",
+				choice_func:ruins_exploration_main_sequence
+			},
+			{
+				str1:"Do nothing.",
+				choice_func : function(){
+					            // Nothing
+		            scr_toggle_manage();
+		            with (obj_ground_mission) {
+		                instance_destroy();
+		            }
+		            instance_destroy();
+		            exit;
+				},
+			},
+			{
+				str1 : "Return your marines to the ship.",
+				choice_func : function(){
+		            // Return to ship, exit
+		            scr_return_ship(obj_ini.ship[obj_ground_mission.ship_id], obj_ground_mission, obj_ground_mission.num);
+		            var man_size, ship_id, comp, plan, i;
+		            ship_id = 0;
+		            man_size = 0;
+		            comp = 0;
+		            plan = 0;
+		            ship_id = obj_ground_mission.ship_id;
+		            obj_controller.menu = 0;
+		            obj_controller.managing = 0;
+		            obj_controller.cooldown = 10;
+		            with (obj_ground_mission) {
+		                instance_destroy();
+		            }
+		            instance_destroy();
+		            exit;					
+				}
+			}
+		]
+		);
 		pip.image = "ancient_ruins";
 	} catch (_exception) {
 		handle_exception(_exception);
 	}
 }
 
-function scr_check_for_ruins_exploration(select_planet, star){
-	var _planet_features = star.p_feature[select_planet]
-	var _ruins_list =  search_planet_features( _planet_features, P_features.Ancient_Ruins)
+
+///@mixin obj_popup
+function ruins_exploration_main_sequence(){
+ 	// Begin
+    var _ruins = obj_ground_mission.explore_feature;
+    var ruins_battle = 0, ruins_fact = 0, ruins_disp = 0, ruins_reward = 0, dice, battle_threat = 0;
+
+    _ruins.determine_race();
+
+    dice = roll_dice_chapter(1, 100, "high");
+    ruins_battle = dice <= 50;
+
+    // ruins_battle=1;
+
+    if (ruins_battle == 1) {
+        dice = roll_dice_chapter(1, 100, "low");
+
+        if (dice >= 0 && dice <= 60) {
+            battle_threat = 1;
+        } else if (dice > 60 && dice <= 90) {
+            battle_threat = 2;
+        } else if (dice < 99) {
+            battle_threat = 3;
+        } else {
+            battle_threat = 4;
+        }
+
+        switch (_ruins.ruins_race) {
+        case eFACTION.Player:
+        case eFACTION.Imperium:
+        case eFACTION.Chaos:
+            ruins_battle = choose(10, 10, 10, 10, 11, 11, 12);
+            break;
+        case eFACTION.Ecclesiarchy:
+            ruins_battle = 10;
+            break;
+        case eFACTION.Eldar:
+            ruins_battle = choose(6, 6, 10, 10, 10, 12);
+            break;
+        default:
+            ruins_battle = choose(6, 10, 12);
+            break;
+        }
+
+        obj_ground_mission.ruins_race = _ruins.ruins_race;
+        obj_ground_mission.ruins_battle = ruins_battle;
+        obj_ground_mission.battle_threat = battle_threat;
+
+        reset_popup_options();
+        text = "Your marines descended into the ancient ruins, mapping them out as they go.  They quickly determine the ruins were once ";
+        switch (_ruins.ruins_race) {
+        case eFACTION.Player:
+            text += "a Space Marine fortification from earlier times.";
+            break;
+        case eFACTION.Imperium:
+            text += "golden-age Imperial ruins, lost to time.";
+            break;
+        case eFACTION.Ecclesiarchy:
+            text += "a magnificent temple of the Imperial Cult.";
+            break;
+        case eFACTION.Eldar:
+            text += "Eldar colonization structures from an unknown time.";
+            break;
+        case eFACTION.Chaos:
+            text += "golden-age Imperial ruins, since decorated with spikes and bones.";
+            break;
+        }
+
+        if (_ruins.failed_exploration == 1) {
+            text += $"{global.chapter_name} see the scarring in the walls and round impacts where your brothers died to clense this place of it's foul inhabitants";
+        }
+        text += "  Unfortunantly, it's too late before your Battle Brothers discern the ruins are still inhabited.  Shapes begin to descend upon them from all directions, masked in the shadows.";
+
+        cooldown = 15;
+        add_option({
+        	str1:"To Battle",
+        	choice_func : function(){
+		        instance_deactivate_all(true);
+		        instance_activate_object(obj_ground_mission);
+		        instance_activate_object(obj_popup);
+		        var _explore_feature = obj_ground_mission.explore_feature;
+		        _explore_feature.suprise_attack();
+		        instance_destroy(self.id);
+		        instance_destroy();        		
+        	}
+        })
+        exit;
+    } else {
+        var obj = obj_ground_mission.obj;
+        instance_activate_object(obj_star);
+        scr_ruins_reward(star_by_name(obj_ground_mission.battle_loc), obj_ground_mission.num, obj_ground_mission.explore_feature);
+        instance_destroy();
+        exit;
+    }	
+}
+
+
+/// @mixin PlanetData
+function scr_check_for_ruins_exploration(){
+	var _ruins_list =  get_features(P_features.Ancient_Ruins);
 	var _explore_ruins=0;
     if (array_length(_ruins_list) > 0){
 		for (var _ruin = 0; _ruin < array_length(_ruins_list); _ruin++){
-			var _specific_ruins = _ruins_list[_ruin];
-			var _cur_ruins = _planet_features[_specific_ruins];
+			var _cur_ruins = _ruins_list[_ruin];
 			if ( _cur_ruins.exploration_complete == false){
-				 _explore_ruins = _planet_features[_specific_ruins];
+				 _explore_ruins = _cur_ruins;
 				break;
 			}else{
 				_explore_ruins=0;
 			}
 		}
 		if (_explore_ruins!=0){
-			_explore_ruins.star = star;
-			_explore_ruins.planet = select_planet;									
+			_explore_ruins.star = system;
+			_explore_ruins.planet = planet;									
 			_explore_ruins.explore();
 		}
     }
-
 }
 
 
@@ -339,25 +479,18 @@ function scr_ruins_combat_end() {
             pop.text+="Now that they have been discovered, the Eldar seem to have vanished without a trace.  Scans reveal nothing.";
         }
         forces_defeated();
-        var equip_lost = obj_ground_mission.post_equipment_lost;
-        var equip_count_lost = obj_ground_mission.post_equipments_lost;
-        if (equip_lost[1]!=""){
-            for (var i = 0; i < array_length(equip_lost); i++) { // glorified repeat loop, fix later
-                if (equip_lost[i]!="") and (equip_count_lost[i]>0) {
-                    var _new_equip = floor(equip_count_lost[i]/2);
-                    if (_new_equip == 0) {
-                        _new_equip++;
-                    }
-                    array_push(recoverables, [equip_lost[i],_new_equip])
-                }
-            }
-            recoverable_gene_seed = obj_ground_mission.recoverable_gene_seed;
-            if (recoverable_gene_seed > 1) {
-                recoverable_gene_seed = floor(recoverable_gene_seed/2);
-            }
-            if (array_length(recoverables) > 0) {
-                unrecovered_items=true;
-            }
+        var _equip_lost = obj_ground_mission.post_equipment_lost;
+
+        recoverable_gene_seed = obj_ground_mission.recoverable_gene_seed;
+
+        if (array_length(_equip_lost.items)){
+			_equip_lost.items = array_shuffle(_equip_lost.items);
+			array_delete(_equip_lost.items, 0, floor(array_length(_equip_lost.items)/2));
+        }
+
+        if (array_length(_equip_lost.items) > 0) {
+        	recoverables = _equip_lost.items;
+            unrecovered_items=true;
         }
     }
 }

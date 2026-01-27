@@ -78,6 +78,26 @@ if (string_count("spyrer", battle_special) > 0) {
 	enemies[1] = 1;
 	u.flank = 1;
 }
+
+if (battle_special == "protect_raiders") {
+	fortified = 0;
+	threat = 3;
+	u = instance_create(20, 240, obj_enunit);
+	u.dudes[1] = "Dire Avenger";
+	u.dudes_num[1] = 40;
+	u.dudes_special[1] = "shimmershield";
+	u.dudes[2] = "Dire Avenger Exarch";
+	u.dudes_num[2] = 4;
+	u.dudes_special[2] = "shimmershield";
+	u.dudes[3] = "Autarch";
+	u.dudes_num[3] = 1;
+	u.dudes[4] = "Farseer";
+	u.dudes_num[4] = 1;
+	u.dudes_special[4] = "farseer_powers";
+	u.dudes[5] = "Night Spinner";
+	u.dudes_num[5] = 1;
+	u.enemy = eFACTION.Eldar;
+}
 // * Small Fallen Group *
 if (battle_special = "fallen1") {
 	fortified = 0;
@@ -2230,7 +2250,7 @@ if (enemy = 10) and(battle_special != "ship_demon") and(battle_special != "falle
 }
 
 // ** Chaos Space Marines Forces **
-if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeting_battle", battle_special) = 0) {
+if (enemy = 11) and(battle_special != "ChaosWarband") and(string_count("cs_meeting_battle", battle_special) = 0) {
 	// Small CSM Group
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
@@ -2452,7 +2472,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 }
 
 // ** World Eaters Forces **
-if (enemy = 11) and(battle_special = "world_eaters") {
+if (enemy = 11) and(battle_special = "ChaosWarband") {
 	// Small WE Group
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);

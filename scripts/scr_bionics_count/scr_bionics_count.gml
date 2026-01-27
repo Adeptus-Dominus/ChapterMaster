@@ -13,10 +13,11 @@ function scr_bionics_count(argument0, argument1, argument2, argument3) {
 
 	repeat(11){i=0;
 	    repeat(300){i+=1;
+	    	var _unit = fetch_unit([com, i]);
 	        if (argument0="star"){
-	            if (obj_ini.race[com,i]=1) and (obj_ini.loc[com][i]=argument1) and (obj_ini.TTRPG[com][i].planet_location=argument2){
-	                if (argument3="total") then count+=obj_ini.TTRPG[com][i].bionics;
-	                if (argument3="number") and (obj_ini.TTRPG[com][i].bionics>0) then count+=1;
+	            if (obj_ini.race[com,i]=1) and (_unit.location_string=argument1) and (_unit.planet_location=argument2){
+	                if (argument3="total") then count+=_unit.bionics;
+	                if (argument3="number") and (_unit.bionics>0) then count+=1;
 	            }
 	        }
 	    }    

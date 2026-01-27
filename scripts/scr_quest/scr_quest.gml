@@ -68,11 +68,18 @@ function scr_quest(quest_satus=0, quest_name, quest_fac, quest_end) {
 	            disposition[4]-=10;
 	            obj_controller.qsfx=1;
 	        }else {
+	        	var _result_text = "";
 	            delete_artifact(wanted_arti);
 	            i=wanted_arti;
-	            if (obj_controller.demanding=0) then obj_controller.disposition[4]+=1;
-	            if (obj_controller.demanding=1) then obj_controller.disposition[4]+=choose(0,0,1);
-	            scr_popup("Inquisition Mission Completed","The Inquisition has asked for the return of the Artifact, and your Chapter was able to hand it over without complications.  The mission has been accomplished.","inquisition","");
+	            if (obj_controller.demanding=0){
+	            	obj_controller.disposition[4]+=1;
+	            	obj_controller.inspection_passes++;
+	            	_result_text = "(Disposition : 1\nInspection Passes : +1(yieldable in diplommacy))";
+	            }
+	            if (obj_controller.demanding=1){
+	            	obj_controller.disposition[4]+=choose(0,0,1);
+	            }
+	            scr_popup("Inquisition Mission Completed","The Inquisition has asked for the return of the Artifact, and your Chapter was able to hand it over without complications.  The mission has been accomplished." + _result_text,"inquisition","");
 	            scr_event_log("","Inquisition Mission Completed: The entrusted Artifact has been returned to the Inquisition.");
 	        }
 	    }
@@ -152,12 +159,13 @@ function scr_quest(quest_satus=0, quest_name, quest_fac, quest_end) {
         
 	        flit.image_index=0;
 	        flit.capital_number=1;
-	        flit.trade_goods="none";
+	        flit.trade_goods="";
         
 	        if (instance_exists(obj_temp2)){flit.action_x=obj_temp2.x;flit.action_y=obj_temp2.y;flit.target=instance_nearest(flit.action_x,flit.action_y,obj_p_fleet);}
 	        if (!instance_exists(obj_temp2)) and (instance_exists(obj_ground_mission)){flit.action_x=obj_ground_mission.x;flit.action_y=obj_ground_mission.y;flit.target=instance_nearest(flit.action_x,flit.action_y,obj_p_fleet);}
-        
-	        flit.alarm[4]=1;
+        	with(flit){
+        		set_fleet_movement();
+        	}
         
 	        with(obj_temp2){instance_destroy();}
 	        with(obj_temp3){instance_destroy();}

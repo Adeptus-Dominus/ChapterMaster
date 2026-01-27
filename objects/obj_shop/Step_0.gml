@@ -7,7 +7,9 @@ var i,xx,yy,x2,y2;i=0;
 xx=__view_get( e__VW.XView, 0 )+0;
 yy=__view_get( e__VW.YView, 0 )+0;
 
-if (construction_started>0) then construction_started-=1;
+if (construction_started>0){
+	construction_started-=1;
+}
 
 
 /* */

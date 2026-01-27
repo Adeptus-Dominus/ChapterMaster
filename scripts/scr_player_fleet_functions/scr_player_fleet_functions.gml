@@ -399,7 +399,7 @@ function player_retreat_from_fleet_combat(){
         }
     }
     
-    type=98;
+    type=POPUP_TYPE.BATTLE_OPTIONS;
     title="Fleet Retreating";
     cooldown=15;
     obj_controller.menu=0;
@@ -502,7 +502,7 @@ function set_fleet_location(location){
 		for (i=0;i<array_length(obj_ini.name[co]);i++){
 			unit = fetch_unit([co,i]);
 			if (array_contains(fleet_ships, unit.ship_location)){
-				obj_ini.loc[co][i]=location;
+				unit.location_string=location;
 			}
 		}
 	}
@@ -610,6 +610,17 @@ function get_nearest_player_fleet(nearest_x, nearest_y, is_static=false, is_movi
 		}
 	}
 	return chosen_fleet;	
+}
+
+/// @mixin obj_star
+function has_orbiting_player_fleet(){
+	if (instance_exists(obj_p_fleet)){
+		var _nearest = instance_nearest(x,y,obj_p_fleet);
+		if (point_distance(_nearest.x, _nearest.y,x,y) == 0){
+			return true
+		}
+	}
+	return false;
 }
 
 function calculate_fleet_content_size(ship_array){

@@ -29,6 +29,7 @@ function reset_manage_arrays() {
         ma_wep2=[];
         ma_armour=[];
         ma_health=[];
+        ma_health_string=[];
         ma_chaos=[];
         ma_exp=[];
         ma_promote=[];
@@ -36,6 +37,7 @@ function reset_manage_arrays() {
         ma_view = [];
         squad = [];
     }
+    manage_tags = [];
     reset_ship_manage_arrays();
 }
 
@@ -66,7 +68,10 @@ function add_man_to_manage_arrays(unit){
         array_push(ma_wep2,unit.weapon_two());
         array_push(ma_armour,unit.armour());
         array_push(ma_gear,unit.gear());
+
         array_push(ma_health,unit.hp());
+        array_push(ma_health_string,$"{round((unit.hp() / unit.max_health()) * 100)}% HP");
+
         array_push(ma_mobi,unit.mobility_item());
         array_push(ma_chaos,unit.corruption);
         array_push(ma_exp,unit.experience);
@@ -114,6 +119,9 @@ function add_vehicle_to_manage_arrays(unit){
 		array_push(ma_armour,obj_ini.veh_wep3[unit[0]][unit[1]]);
 		array_push(ma_gear,obj_ini.veh_upgrade[unit[0]][unit[1]]);
 		array_push(ma_health,obj_ini.veh_hp[unit[0]][unit[1]]);
+		var _percent = round((obj_ini.veh_hp[unit[0]][unit[1]] / 100) * 100);
+        array_push(ma_health_string, $"{_percent}% HP");
+
 		array_push(ma_mobi,obj_ini.veh_acc[unit[0]][unit[1]]);
 		array_push(ma_chaos,0);
 		array_push(ma_exp,0);
@@ -493,13 +501,13 @@ function company_manage_actions(){
         unit_profile=false;
     }
     // Previous company
-    if (point_and_click([xx+424, yy+80,xx+496,yy+128]) || keyboard_check_pressed(ord(string("N")))){
+    if (point_and_click([xx+424, yy+80,xx+496,yy+128]) || (keyboard_check_pressed(ord(string("N"))) && allow_shortcuts)){
     	var new_view = managing == 1 ? 15 : managing-1;
     	switch_view_company(new_view)
     }
 
     // Next company
-    if (point_and_click([xx+1105, yy+80,xx+1178,yy+128]) || keyboard_check_pressed(ord(string("M")))){
+    if (point_and_click([xx+1105, yy+80,xx+1178,yy+128]) || (keyboard_check_pressed(ord(string("M"))) && allow_shortcuts)){
     	var new_view = managing == 15 ? 1 : managing+1;
     	switch_view_company(new_view)
     } 	 	 

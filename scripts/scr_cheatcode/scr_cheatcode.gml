@@ -141,11 +141,17 @@ function scr_cheatcode(argument0) {
 
 				case "mechmission":
 					show_debug_message("mech_mission");
-					spawn_mechanicus_mission();
-          break;
+
+					if (array_length(cheat_arguments)){
+						spawn_mechanicus_mission(cheat_arguments[0]);
+					} else {
+						spawn_mechanicus_mission();
+					}
+         		 break;
 
 				case "inquismission": 
 					var mission = cheat_arguments[0];
+					show_debug_message($"{mission},");
 					switch (mission){
 						case "1": //default 
 							scr_inquisition_mission(EVENT.inquisition_mission);
@@ -178,6 +184,8 @@ function scr_cheatcode(argument0) {
 							scr_inquisition_mission(EVENT.inquisition_mission);
 						break;
 					}
+					show_debug_message("inquisitor mission initiated");
+					obj_controller.location_viewer.update_mission_log();
 					break;
 				case "artifactpopulate":
 					with (obj_star) {
@@ -212,21 +220,38 @@ function scr_cheatcode(argument0) {
 							awaken_tomb_event();
 						}
 					} else if (cheat_arguments[0] == "techuprising") {
-						var pip = instance_create(0, 0, obj_popup);
-						pip.title = "Technical Differences!";
-						pip.text = "You Recive an Urgent Transmision A serious breakdown in culture has coccured causing believers in tech heresy to demand that they are given preseidence and assurance to continue their practises";
-						pip.image = "tech_uprising";
+						tech_uprising_event();
 					} else if (cheat_arguments[0] == "inspection") {
 						new_inquisitor_inspection();
 					} else if (cheat_arguments[0] == "slaughtersong") {
 						create_starship_event();
 					} else if (cheat_arguments[0] == "fallen"){
 						event_fallen();
-					} else {
+					}else if (cheat_arguments[0] == "surfremove"){
+						var _star_id = scr_random_find(0,true,"","");
+			            add_event({
+			                duration : 2,
+			                e_id : "governor_assassination",
+			                variant : 2,
+			                system : _star_id.name,
+			                planet : irandom_range(1, _star_id.planets),
+			            });						
+					} else if (cheat_arguments[0] == "strangebuild"){
+						show_debug_message("strange build");
+						strange_build_event();
+					}else if (cheat_arguments[0] == "factionenemy"){
+						make_faction_enemy_event();
+					}else if (cheat_arguments[0] == "stopall"){
+						obj_controller.last_event = 1000000;
+						show_debug_message($"last event : {obj_controller.last_event}")
+					}else if (cheat_arguments[0] == "startevents"){
+						obj_controller.last_event = 0;
+						show_debug_message($"last event : {obj_controller.last_event}")
+					}else {
 						with (obj_controller) {
 							scr_random_event(false);
 						}
-					}
+					} 
 					break;
 				case "infreq":
 					if (global.cheat_req == 0) {
@@ -356,10 +381,429 @@ function scr_cheatcode(argument0) {
 				case "orkinvasion":
 					out_of_system_warboss();
 					break;
-
+				case "forgemastermeet":
+					var _forge_master = scr_role_count("Forge Master", "", "units");
+					if (array_length(_forge_master)>0){
+						show_debug_message("meet forge master");
+						obj_controller.menu_lock = false;
+						instance_destroy(obj_popup_dialogue);
+						scr_toggle_diplomacy();
+						obj_controller.diplomacy = -1;
+						obj_controller.character_diplomacy = _forge_master[0];
+						diplo_txt="Greetings chapter master";
+					} else {
+						show_debug_message("no forge master");
+					}
+					break;
 			}
 		}
 	} catch(_exception) {
 		show_debug_message(_exception.longMessage);
 	}
 }
+
+
+/// @mixin obj_Star_Select
+function draw_planet_debug_options(){
+	try{
+	add_draw_return_values();
+	draw_set_halign(fa_left);
+	draw_set_color(c_white);
+	draw_set_alpha(1);
+	if (debug) {
+		debug_slate.inside_method = function(){
+			debug_options.draw()
+		    if (debug_options.current_selection == 0){
+		    	draw_planet_debug_forces();
+		    } else if (debug_options.current_selection == 1){
+		    	draw_planet_debug_problems();
+		    } else if (debug_options.current_selection == 2){
+		    	draw_planet_debug_features();
+		    }
+		}
+		debug_slate.draw()
+	}
+    if (debug_button.draw()){
+        debug = !debug;
+        //scroll_problems = new ScrollableContainer()
+    }
+    pop_draw_return_values();
+	}catch(_exception){
+		handle_exception(_exception);
+	}
+}
+
+function draw_planet_debug_features(){
+	static _addable_features = [
+		{
+			e_num : P_features.Gene_Stealer_Cult,
+			name : "GeneStealer Cult"
+		},
+		{
+			e_num : P_features.Ancient_Ruins,
+			name : "Ancient Ruins"
+		},
+		{
+			e_num : P_features.Artifact,
+			name : "Artefact"
+		},
+		{
+			e_num : P_features.STC_Fragment,
+			name : "STC Fragment"
+		},
+		{
+			e_num : P_features.Sororitas_Cathedral,
+			name : "Sororitas Cathedral"
+		},
+		{
+			e_num : P_features.OrkWarboss,
+			name : "Ork Warboss"
+		},
+		{
+			e_num : P_features.OrkStronghold,
+			name : "Ork stronghold"
+		},
+		{
+			e_num : P_features.Monastery,
+			name : "Fortress Monastery"
+		},
+		{
+			e_num : P_features.Starship,
+			name : "Ancient Starship"
+		},
+
+	]
+
+	var base_y = 220;
+	base_y += 2;
+
+
+	for (var i=0;i<array_length(_addable_features);i++){
+		var _y = base_y + i * 20;
+		var _feat = _addable_features[i];
+		draw_text(38, _y, _feat.name);
+		if (point_and_click([38, _y, 337,_y+20])){
+			var _new_feat = new NewPlanetFeature(_feat.e_num);
+			array_push(target.p_feature[obj_controller.selecting_planet], _new_feat);
+		}
+	}
+}
+
+function draw_planet_debug_problems(){
+	var base_y = 220;
+	var _keys = planet_problem_keys;
+	base_y += 2;
+	for (var i=0;i<array_length(_keys);i++){
+		var _y = base_y + i * 20;
+		draw_text(38, _y, _keys[i]);
+		if (scr_hit(38, _y, 337,_y+20)){
+			tooltip_draw(mission_name_key(_keys[i]));
+			if (scr_click_left()){
+				switch(_keys[i]){
+					case "inquisitor":
+						mission_inquistion_hunt_inquisitor(target.id);
+						break;
+					case "necron":
+						mission_inquisition_tomb_world(target.id);
+						break;
+					case "mech_raider":
+						spawn_mechanicus_mission("mech_raider");
+						break;
+					case "mech_mars":
+						spawn_mechanicus_mission("mech_mars");
+						break;
+					case "mech_bionics":
+						spawn_mechanicus_mission("mech_bionics");
+						break;
+																		
+					default:
+						scr_popup("error","no specific debug action created please consider helping to make one","");
+						break;
+				}
+			}
+		}
+	}
+}
+
+function draw_planet_debug_forces(){
+	add_draw_return_values();
+    var current_planet = obj_controller.selecting_planet;
+    var base_y = 220;
+    // Close window if clicked outside
+    if (!scr_hit([36,base_y,337,base_y+281]) && scr_click_left()) {
+        debug = 0;
+        exit;
+    }
+
+    // Define factions and their struct keys
+    var faction_names = [
+        "Orks", "Tau", "Tyranids", "Traitors",
+        "CSM", "Daemons", "Necrons", "Sisters"
+    ];
+    var faction_keys = [
+        "p_orks", "p_tau", "p_tyranids", "p_traitors",
+        "p_chaos", "p_demons", "p_necrons", "p_sisters"
+    ];
+
+    // Loop through each faction row
+    base_y += 2;
+    for (var i = 0; i < array_length(faction_names); i++) {
+        var _y = base_y + i * 20;
+        var key = faction_keys[i];
+
+        // Draw faction name and value
+        draw_text(38, _y, faction_names[i] + ": " + string(target[$ key][current_planet]));
+
+        // Draw [-] [+] controls
+        draw_text(147, _y, "[-] [+]");
+
+        // Handle minus click
+        if (point_and_click([147, _y, 167, _y + 20])) {
+            target[$ key][current_planet] = clamp(target[$key][current_planet] - 1, 0, 6);
+        }
+        // Handle plus click
+        else if (point_and_click([177, _y, 197, _y + 20])) {
+            target[$ key][current_planet] = clamp(target[$key][current_planet] + 1, 0, 6);
+        }
+    }
+    pop_draw_return_values();
+}
+
+
+function new_system_debug_popup(){
+    var pop = instance_create(0, 0, obj_popup)
+    pop.image = "debug_banshee";
+    pop.title = "DEBUG";
+    pop.planet = 1;
+    pop.star = instance_nearest(mouse_x, mouse_y,obj_star);
+    pop.text = $"What would you like to do at {pop.star.name}?";
+
+    pop.add_option(
+    	[
+    		{
+    			str1 : "Enemy invasion",
+    			choice_func : system_debug_enemy_invasion,
+    		},
+    		{
+    			str1 : "Spawn Fleet",
+    			choice_func : system_debug_spawn_fleet,
+    		},
+    		{
+    			str1 : "Delete Fleet",
+    			choice_func :system_debug_remove_fleet
+    		}, 
+    		{
+    			str1 : "Cancel",
+				choice_func : popup_default_close,
+    		}
+    	]
+    );
+}
+
+function system_debug_enemy_invasion(){
+	text = "Select a faction";
+	replace_options([
+		{
+			str1: "Orks",
+			choice_func : function(){
+				invasion_faction = eFACTION.Ork;
+				system_debug_enemy_invasion_spawn();
+			}
+		},
+		{
+			str1: "Chaos",
+			choice_func : function(){
+				invasion_faction = 9;
+				system_debug_enemy_invasion_spawn();
+			}
+		},
+		{
+			str1: "Tyranids",
+			choice_func : function(){
+				invasion_faction = eFACTION.Tyranids;
+				system_debug_enemy_invasion_spawn();
+			}
+		},
+	]);
+}
+
+
+//TODO refactor and allow for greater range of factions
+function system_debug_enemy_invasion_spawn(){
+	if (invasion_faction != 9) {
+		if (invasion_faction == 0) {
+			amount = 7;
+		}
+		if (invasion_faction == 2) {
+			amount = 9;
+		}
+		with (obj_star) {
+			if ((choose(0, 1, 1) == 1) && (owner != eFACTION.Eldar) && (owner != 1)) {
+				var fleet;
+				fleet = instance_create(x, y, obj_en_fleet);
+				fleet.owner = obj_popup.invasion_faction;
+				if (obj_popup.invasion_faction == 7) {
+					fleet.sprite_index = spr_fleet_ork;
+					fleet.capital_number = 3;
+					present_fleet[7] += 1;
+				}
+				if (obj_popup.invasion_faction == 9) {
+					if (present_fleet[1] == 0) {
+						vision = 0;
+					}
+					fleet.sprite_index = spr_fleet_tyranid;
+					fleet.capital_number = 3;
+					fleet.frigate_number = 6;
+					fleet.escort_number = 16;
+					present_fleet[9] += 1;
+				}
+				fleet.image_index = 4;
+				fleet.orbiting = id;
+			}
+		}
+		instance_destroy();
+	}
+	if (invasion_faction == 9) {
+		with (obj_star) {
+			if ((choose(0, 1, 1) == 1) && (owner != eFACTION.Eldar) && (owner != 1)) {
+				var h;
+				h = 0;
+				repeat (4) {
+					h += 1;
+					if ((p_type[h] != "Dead") && (p_type[h] != "")) {
+						p_traitors[h] = 5;
+						p_chaos[h] = 4;
+					}
+				}
+			}
+		}
+		instance_destroy();
+	}
+}
+
+
+
+function system_debug_spawn_fleet() {
+	text = "Imperium, Heretic, or Xeno?";
+	replace_options([
+		{
+			str1: "Imperium",
+			choice_func: debug_spawn_imperium_fleet,
+		},
+		{
+			str1: "Heretic",
+			choice_func: debug_spawn_heretic_fleet,
+		},
+		{
+			str1: "Xeno",
+			choice_func: debug_add_xenos_fleet_options,
+		},
+	]);
+}
+
+function debug_spawn_imperium_fleet() {
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
+	fleet.owner = eFACTION.Imperium;
+	fleet.sprite_index = spr_fleet_imperial;
+	fleet.capital_number = 2;
+	fleet.frigate_number = 5;
+	star.present_fleet[2] += 1;
+	fleet.image_index = 4;
+	fleet.orbiting = id;
+	instance_destroy();
+}
+
+function debug_spawn_heretic_fleet() {
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
+	fleet.owner = eFACTION.Chaos;
+	fleet.sprite_index = spr_fleet_chaos;
+	fleet.capital_number = 2;
+	fleet.frigate_number = 5;
+	star.present_fleet[10] += 1;
+	fleet.image_index = 4;
+	fleet.orbiting = id;
+	instance_destroy();
+}
+
+
+function debug_add_xenos_fleet_options() {
+	text = "Select Xeno faction to spawn:";
+	replace_options([
+		{
+			str1: "Ork",
+			choice_func: debug_spawn_ork_fleet,
+		},
+		{
+			str1: "Tau",
+			choice_func: debug_spawn_tau_fleet,
+		},
+		{
+			str1: "Cancel",
+			choice_func: popup_default_close,
+		},
+	]);
+}
+function debug_spawn_ork_fleet() {
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
+	fleet.owner = eFACTION.Ork;
+	fleet.sprite_index = spr_fleet_ork;
+	fleet.capital_number = 2;
+	fleet.frigate_number = 5;
+	star.present_fleet[7] += 1;
+	fleet.image_index = 4;
+	fleet.orbiting = id;
+	instance_destroy();
+}
+
+function debug_spawn_tau_fleet() {
+	var fleet = instance_create(star.x, star.y, obj_en_fleet);
+	fleet.owner = eFACTION.Tau;
+	fleet.sprite_index = spr_fleet_tau;
+	fleet.capital_number = 2;
+	fleet.frigate_number = 5;
+	star.present_fleet[8] += 1;
+	fleet.image_index = 4;
+	fleet.orbiting = id;
+	instance_destroy();
+}
+
+function system_debug_remove_fleet(){
+	var _opts = [];
+	var _fleets = [];
+	var _x = star.x;
+	var _y = star.y;
+	with(obj_en_fleet){
+		if (_x == x && _y == y){
+			array_push(_fleets, id);
+		}
+	}
+	function DeleteFleetOption(fleet_id)constructor{
+		str1 =  $"delete {obj_controller.faction[fleet_id.owner]} fleet {fleet_id.id}";
+		self.fleet_id = fleet_id;
+		static choice_func =  function(){
+			show_debug_message($"destroy {current_option.fleet_id}")
+			instance_destroy(current_option.fleet_id);
+			popup_default_close();
+		};
+		static hover =  function(){
+			draw_set_color(c_red);
+			draw_circle(current_option.fleet_id.x,current_option.fleet_id.y, 20, true);
+		}
+	}
+
+	for (var i=0;i<array_length(_fleets);i++){
+		var _fleet = _fleets[i];
+
+		var _opt = new DeleteFleetOption(_fleet);
+		array_push(_opts,_opt)
+	}
+	array_push(_opts,{"str1" : "exit",choice_func:popup_default_close});
+
+	replace_options(_opts,false,false);
+
+	text = "Which fleet would you like to delete?";
+}
+
+
+
+

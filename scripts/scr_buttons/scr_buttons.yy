@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_buttons",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"User Interface",
+    "path":"folders/Scripts/User Interface.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

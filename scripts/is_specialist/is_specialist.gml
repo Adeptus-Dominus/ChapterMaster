@@ -2,6 +2,7 @@
 #macro SPECIALISTS_CHAPLAINS "chaplains"
 #macro SPECIALISTS_LIBRARIANS "librarians"
 #macro SPECIALISTS_TECHS "techs"
+#macro SPECIALISTS_TECHMARINES "techmarines"
 #macro SPECIALISTS_STANDARD "standard"
 #macro SPECIALISTS_VETERANS "veterans"
 #macro SPECIALISTS_RANK_AND_FILE "rank_and_file"
@@ -70,6 +71,17 @@ function role_groups(group, include_trainee = false, include_heads = true) {
 				_roles[eROLE.Techmarine],
 				"Techpriest"
 			];
+			if (include_trainee) {
+				array_push(_role_list, $"{_roles[eROLE.Techmarine]} Aspirant");
+			}
+			if (include_heads) {
+				array_push(_role_list, "Forge Master");
+			}
+			break;
+		case SPECIALISTS_TECHMARINES:
+			_role_list = [
+				_roles[eROLE.Techmarine],
+			]
 			if (include_trainee) {
 				array_push(_role_list, $"{_roles[eROLE.Techmarine]} Aspirant");
 			}
@@ -352,37 +364,34 @@ function collect_by_religeon(religion, sub_cult="", location=""){
 /// @description Processes the selection of units based on group parameters and updates controller data
 /// @param {array} group The array of units to process for selection
 /// @param {struct} selection_data Data structure containing selection parameters and state
-function group_selection(group, selection_data) {
+
+enum MissionSelectType {
+	Units,
+	Squads
+}
+
+
+function group_selection(group, selection_data={}) {
     try {
         var unit, s, unit_location;
         obj_controller.selection_data = selection_data;
         set_zoom_to_default();
         with(obj_controller) {
-            basic_manage_settings();
-            with(obj_fleet_select) {
-                instance_destroy();
-            }
-            with(obj_star_select) {
-                instance_destroy();
-            }
+        	if (menu != MENU.Manage){
+        		scr_toggle_manage();
+        	} else {
+        		basic_manage_settings();
+        	}
 
             exit_button = new ShutterButton();
             proceed_button = new ShutterButton();
             selection_data.start_count = 0;
+           	instance_destroy(obj_managment_panel);
+            if (!struct_exists(selection_data, "select_type")){
+            	selection_data.select_type = MissionSelectType.Units;
+            }
             // Resets selections for next turn
-            man_size = 0;
-            selecting_location = "";
-            selecting_types = "";
-            selecting_ship = -1;
-            selecting_planet = 0;
-            sel_uid = 0;
-            reset_manage_arrays();
-            alll = 0;
-            cooldown = 10;
-            sel_loading = -1;
-            unload = 0;
-            alarm[6] = 7;
-            view_squad = false;
+            scr_ui_refresh();
             managing = -1;
             new_company_struct();
             var vehicles = [];
@@ -416,7 +425,16 @@ function group_selection(group, selection_data) {
             other_manage_data();
             man_current = 0;
             man_max = MANAGE_MAN_MAX;
+
+            if (selection_data.select_type == MissionSelectType.Squads){
+            	new_company_struct();
+            	company_data.has_squads = true;
+            	company_data.squad_location = selection_data.system.name;
+            	company_data.squad_search();
+            	managing = -1;
+            }
         }
+        show_debug_message($"manage_success {obj_controller.menu}");
     } catch (_exception) {
         //handle and send player back to map
         handle_exception(_exception);
