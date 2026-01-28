@@ -74,11 +74,11 @@ function scr_load(save_part, save_id) {
 					continue;
 				}
 				var loaded_value = struct_get(save_data, var_name);
-				// show_debug_message($"obj_controller var: {var_name}  -  val: {loaded_value}");
+				// show_debug_message_adv($"obj_controller var: {var_name}  -  val: {loaded_value}");
 				try {
 					variable_struct_set(obj_controller, var_name, loaded_value);	
 				} catch (e){
-					show_debug_message(e);
+					show_debug_message_adv(e);
 				}
 			}
 			specialist_point_handler = new SpecialistPointHandler();

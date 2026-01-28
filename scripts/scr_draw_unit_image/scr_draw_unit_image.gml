@@ -539,7 +539,7 @@ function scr_draw_unit_image(_background = false) {
     }
     surface_reset_target();
     shader_reset();
-    //show_debug_message($"1{get_marine_icon_set(2)}");
+    //show_debug_message_adv($"1{get_marine_icon_set(2)}");
     var _complex_sprite_names = struct_get_names(complex_set);
     for (var i = 0; i < array_length(_complex_sprite_names); i++) {
         var _area = _complex_sprite_names[i];

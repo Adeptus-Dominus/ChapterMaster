@@ -72,7 +72,7 @@
     
     The Machine God watches over you.
 */
-show_debug_message("Creating Controller");
+show_debug_message_adv("Creating Controller");
 log_message("Creating Controller");
 scr_colors_initialize();
 is_test_map=false;

@@ -26,7 +26,7 @@ function scr_inquisition_mission(event, forced_mission = -1){
         return;
     }
     if (global.cheat_debug){
-        show_debug_message("find mission");
+        show_debug_message_adv("find mission");
     }
     if (event == EVENT.inquisition_planet){
         mission_investigate_planet();
@@ -207,7 +207,7 @@ function mission_inquisition_tomb_world(tomb_worlds){
     
     var eta = scr_mission_eta(_star.x, _star.y,1)
     if (global.cheat_debug){
-        show_debug_message("mission popup");
+        show_debug_message_adv("mission popup");
     }
     var _options = [
         {
@@ -526,7 +526,7 @@ function mission_hunt_inquisitor_show_mercy(){
 
 function mission_hunt_inquisitor_destroy_inquisitor_ship(){
 
-    show_debug_message("mission_hunt_inquisitor_destroy_inquisitor_ship");
+    show_debug_message_adv("mission_hunt_inquisitor_destroy_inquisitor_ship");
     var _final_disp_mod = 0;
 
     if (obj_controller.demanding == 0) {

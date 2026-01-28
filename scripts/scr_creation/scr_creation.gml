@@ -160,7 +160,7 @@ function scr_creation(slide_num) {
 		setup_chapter_trait_select();
 	}
 	
-	show_debug_message($"calling scr_creation with input {slide_num}");
+	show_debug_message_adv($"calling scr_creation with input {slide_num}");
 	if (slide_num == eCREATIONSLIDES.CHAPTERTRAITS && custom!=eCHAPTER_TYPE.PREMADE){
 	    if (name_bad=1){/*(sound_play(bad);*/}
 	    if (name_bad=0){
