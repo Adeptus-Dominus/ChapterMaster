@@ -10,7 +10,7 @@ function DeepCloneStruct(clone_struct) {
 
 function move_data_to_current_scope(move_struct, overide=true){
     if (!is_struct(move_struct)){
-        show_debug_message_advanced(move_struct);
+        show_debug_message_adv(move_struct);
     } else {
         try{
             var _data_names = struct_get_names(move_struct);

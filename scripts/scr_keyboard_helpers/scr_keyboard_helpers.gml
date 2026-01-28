@@ -42,7 +42,7 @@ function press_with_held(press_choice, hold_choice){
 		cur_vert_key =  _virtual_keys[i];
 		if (cur_vert_key==press_choice || cur_vert_key==hold_choice) then continue;
 		if (keyboard_check(cur_vert_key)){
-			show_debug_message_advanced($"non viable click {keyboard_check_pressed(press_choice)},{keyboard_check(hold_choice)}");
+			show_debug_message_adv($"non viable click {keyboard_check_pressed(press_choice)},{keyboard_check(hold_choice)}");
 			return false;
 		}
 

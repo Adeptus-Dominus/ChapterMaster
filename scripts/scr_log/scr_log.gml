@@ -216,10 +216,10 @@ function os_type_format(_os_type) {
     }
 }
 
-/// @func show_debug_message_advanced(_message)
+/// @func show_debug_message_adv(_message)
 /// @desc Prints a debug message to the console prefixed with the time, source object, event, and line number.
 /// @param {Any} _message  The value or string to be logged.
-function show_debug_message_advanced(_message) {
+function show_debug_message_adv(_message) {
     var _stack = debug_get_callstack();
     
     // _stack[0] is this 'log' function itself

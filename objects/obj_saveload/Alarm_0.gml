@@ -61,7 +61,7 @@ if (load_part==6){
     txt="Praise to the Machine God";
     if (global.restart>0) then txt="Praise be to the Emperor";
     with(obj_controller){
-		// show_debug_message_advanced($"load section 5");
+		// show_debug_message_adv($"load section 5");
         scr_load(5,global.load);
         
     }
@@ -78,7 +78,7 @@ if (load_part == 5) {
 	}
 
 	with (obj_controller) {
-		// show_debug_message_advanced($"load section 4");
+		// show_debug_message_adv($"load section 4");
 		scr_load(4, global.load);
 	}
 	trickle = 2;
@@ -91,7 +91,7 @@ if (load_part == 4) {
 		txt = "Donning Power Armour";
 	}
 	with (obj_controller) {
-		// show_debug_message_advanced($"load section 3");
+		// show_debug_message_adv($"load section 3");
 		scr_load(3, global.load);
 	}
 	trickle = 2;
@@ -104,7 +104,7 @@ if (load_part == 3) {
 		txt = "Rousing the Machine Spirit";
 	}
 	with (obj_controller) {
-		// show_debug_message_advanced($"load section 2");
+		// show_debug_message_adv($"load section 2");
 		scr_load(2, global.load);
 	}
 	trickle = 2;
@@ -117,7 +117,7 @@ if (load_part == 2) {
 		txt = "Turtle Waxing Scalp";
 	}
 	with (obj_controller) {
-		// show_debug_message_advanced($"load section 1");
+		// show_debug_message_adv($"load section 1");
 		scr_load(1, global.load);
 	}
 	trickle = 2;

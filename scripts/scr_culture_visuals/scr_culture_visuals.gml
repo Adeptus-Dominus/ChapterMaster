@@ -14,9 +14,9 @@ function load_visual_sets(){
         }
         for (var i=0;i<array_length(_raw_data);i++){
             var _sepcific_vis_set = $"{_vis_set_directory}\\{_raw_data[i]}";
-            // show_debug_message_advanced(_raw_data[i]);
+            // show_debug_message_adv(_raw_data[i]);
             if (directory_exists(_sepcific_vis_set)){
-                // show_debug_message_advanced(_raw_data[i]);
+                // show_debug_message_adv(_raw_data[i]);
                 var _data_buffer = buffer_load($"{_sepcific_vis_set}\\data.json");
                 if (_data_buffer == -1) {
                     buffer_delete(_data_buffer);
@@ -41,7 +41,7 @@ function load_visual_sets(){
 function load_symbol_sets(global_area, main_key, sub_sets){
     var _cons_directory = working_directory + $"\\main\\{main_key}";
     if (directory_exists(_cons_directory)){
-        // show_debug_message_advanced($"{_cons_directory}")
+        // show_debug_message_adv($"{_cons_directory}")
         var _file_buffer = buffer_load($"{_cons_directory}\\load_sets.json");
         if (_file_buffer == -1) {
             throw (false);
@@ -116,7 +116,7 @@ global.company_markings = {
 function load_vis_set_to_global(directory, data) {
     for (var i = 0; i < array_length(data); i++) {
         var _sprite_item = data[i];
-        // show_debug_message_advanced(_sprite_item);
+        // show_debug_message_adv(_sprite_item);
 
         if (directory_exists(directory + $"\\{_sprite_item.name}")) {
             var _sprite_direct = directory + $"\\{_sprite_item.name}";
@@ -289,7 +289,7 @@ function set_up_visual_overides(){
         }
         if (struct_exists(_item,"cultures")){
             var _cultures = _item.cultures;
-            // show_debug_message_advanced($"{array_length(_cultures)}");
+            // show_debug_message_adv($"{array_length(_cultures)}");
             for (var s=0;s<array_length(_cultures);s++){
                 var _culture = _cultures[s];
                 if (!array_contains(global.culture_styles,_culture)){
