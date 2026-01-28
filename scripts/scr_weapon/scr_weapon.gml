@@ -760,6 +760,28 @@ global.weapons = {
 		"maintenance" : 0.1,
 		"tags": ["power", "dual", "dreadnought", "fist"],
 	},
+	"Contemptor CCW": {
+		"abbreviation": "ConCCW",
+		"attack": {
+			"standard": 600,
+			"master_crafted": 700,
+			"artifact": 850
+		},
+		"melee_mod": {
+			"standard": 1.2,
+			"master_crafted": 1.2,
+			"artifact": 1.2
+		},
+		"description": "A specialized Lightning Claw variant designed for Dreadnoughts, these claws are capable of ripping through enemy vehicles and infantry with ease.",
+		"melee_hands": 5,
+		"ranged_hands": 0,
+		"ammo": 0,
+		"range": 1,
+		"spli": 15,
+		"arp": 3,
+		"maintenance" : 0.1,
+		"tags": ["power", "dual", "dreadnought", "fist"],
+	},
 	"Thunder Hammer": {
 		"abbreviation": "ThndHmr",
 		"attack": {
@@ -1366,6 +1388,22 @@ global.weapons = {
 		"arp": 2,
 		"tags": ["heavy_ranged", "terminator", "dreadnought"]
 	},
+	"Kheres Assault Cannon": {
+		"abbreviation": "KhrAssCnn",
+		"attack": {
+			"standard": 440,
+			"master_crafted": 460,
+			"artifact": 480
+		},
+		"description": "Forged in the forges of Mars and carried into battle by the mightiest of the Emperor's warriors, the Kheres Assault Cannon is a weapon of devastating reputation. Its rotary barrels roar with unceasing fury, unleashing a deluge of mass-reactive shells that tear through flesh, ceramite, and adamantium alike.",
+		"melee_hands": 2.1,
+		"ranged_hands": 3,
+		"ammo": 5,
+		"range": 14,
+		"spli": 20,
+		"arp": 2,
+		"tags": ["heavy_ranged", "terminator", "dreadnought", "ancient"]
+	},
 	"Autocannon": {
 		"abbreviation": "Autocnn",
 		"attack": {
@@ -1529,17 +1567,17 @@ global.weapons = {
 	"Infernus Heavy Bolter": {
 		"abbreviation": "InfrHvyBltr",
 		"attack": {
-			"standard": 320,
-			"master_crafted": 352,
-			"artifact": 384
+			"standard": 250,
+			"master_crafted": 300,
+			"artifact": 450
 		},
 		"description": "The Deathwatch mag-clamp rare suspensor discs onto their infernus heavy bolters that reduce the weapon’s effective weight considerably. Such weapons are further bolstered by underslung heavy flamers that can incinerate those enemies that make it through the hail of explosive bolts.",
 		"melee_hands": 1,
 		"ranged_hands": 2.2,
 		"ammo": 10,
-		"range": 16,
-		"spli": 6,
-		"arp": 1,
+		"range": 14,
+		"spli": 12,
+		"arp": 2,
 		"second_profiles": ["Flamer"],
 		"tags": ["heavy_ranged", "combi", "bolt"]
 	},
@@ -2477,6 +2515,39 @@ global.gear = {
 			"tags": ["dreadnought"],
 			"maintenance" : 1,
 		},
+		"Contemptor Dreadnought": { 
+			"abbreviation": "Cntmptr",
+			"armour_value": {
+				"standard": 40,
+				"master_crafted": 45,
+				"artifact": 50
+			},
+			"ranged_mod": {
+				"standard": -10,
+				"master_crafted": 0,
+				"artifact": 10
+			},
+			"melee_mod": {
+				"standard": -10,
+				"master_crafted": 0,
+				"artifact": 10
+			},
+			"hp_mod":{
+				"standard": 30,
+				"master_crafted": 35,
+				"artifact": 50
+			},
+			"damage_resistance_mod": {
+				"standard": 20,
+				"master_crafted": 25,
+				"artifact": 40
+			},
+			"melee_hands": 8,
+			"ranged_hands": 8,
+			"description": "PLACEHOLDER",
+			"tags": ["dreadnought", "ancient"],
+			"maintenance" : 1,
+		},
 		"Tartaros": {
 			"abbreviation": "Tartrs",
 			"armour_value": {
@@ -3098,6 +3169,16 @@ global.gear = {
 			},
 			"tags": ["power_only", "jump"],
 		},
+		"Serpha Jump Pack": {
+			"abbreviation": "SphJmpPck",
+			"special_properties": ["Hammer of Wrath"],
+			"description": "Once the mainstay of the Legiones Astartes, now the Serpha Pattern Jump Pack is nothing but a sad reminder of these better times and of the terrible atrocities that followed. Mainly used by the Traitors in the modern Imperium, it is nonetheless seen in the Loyalist armouries in which it is prized for its superior energy cells and power cabling, but doesn't provide as reliable of a thruster as, for instance, the most common in the 41st millennium Mark VII Mars Pattern.",
+			"damage_resistance_mod": {
+				"standard": 30,
+				"master_crafted": 35,
+				"artifact": 40
+			},
+			"tags": ["power_only", "jump", "ancient"],
 		"Heavy Weapons Pack": {
 			"abbreviation": "HvyWpPck",
 			"description": "A heavy ammunition backpack commonly used by devastators in conjunction with a heavy support weapon.",
