@@ -216,8 +216,9 @@ function os_type_format(_os_type) {
     }
 }
 
-/// @description Formats the GM constant to a readable OS name.
-/// @param {string} _message - GM constant for the OS.
+/// @func show_debug_message_advanced(_message)
+/// @desc Prints a debug message to the console prefixed with the time, source object, event, and line number.
+/// @param {Any} _message  The value or string to be logged.
 function show_debug_message_advanced(_message) {
     var _stack = debug_get_callstack();
     
@@ -225,5 +226,7 @@ function show_debug_message_advanced(_message) {
     // _stack[1] is the script/object event that called this
     var _caller = _stack[1];
     
-    show_debug_message($"[{_caller}] {_message}");
+    var _time = string_format(current_hour, 2, 0) + ":" + string_format(current_minute, 2, 0) + ":" + string_format(current_second, 2, 0);
+
+    show_debug_message($"{_time} | DEBUG | {_caller} >> {_message}");
 }
