@@ -6,7 +6,7 @@ img_cache: {
     "creation/chapters": [somesprite1, somesprite2, ...];
 }
  */
-show_debug_message("obj_img spawned");
+show_debug_message_advanced("obj_img spawned");
 
 image_cache = {};
 

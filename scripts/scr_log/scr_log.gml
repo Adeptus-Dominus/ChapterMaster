@@ -215,3 +215,15 @@ function os_type_format(_os_type) {
         return _os_type_dictionary.os_unknown;
     }
 }
+
+/// @description Formats the GM constant to a readable OS name.
+/// @param {string} _message - GM constant for the OS.
+function show_debug_message_advanced(_message) {
+    var _stack = debug_get_callstack();
+    
+    // _stack[0] is this 'log' function itself
+    // _stack[1] is the script/object event that called this
+    var _caller = _stack[1];
+    
+    show_debug_message($"[{_caller}] {_message}");
+}

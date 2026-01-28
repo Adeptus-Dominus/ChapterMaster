@@ -131,7 +131,7 @@ function scr_cheatcode(argument0) {
 							var existing_problem = false; //has_any_problem_planet(i);
 							if (!existing_problem) {
 								if (p_owner[i] == eFACTION.Imperium) {
-									show_debug_message("mission");
+									show_debug_message_advanced("mission");
 									scr_new_governor_mission(i, problem);
 								}
 							}
@@ -140,7 +140,7 @@ function scr_cheatcode(argument0) {
 					break;
 
 				case "mechmission":
-					show_debug_message("mech_mission");
+					show_debug_message_advanced("mech_mission");
 
 					if (array_length(cheat_arguments)){
 						spawn_mechanicus_mission(cheat_arguments[0]);
@@ -151,7 +151,7 @@ function scr_cheatcode(argument0) {
 
 				case "inquismission": 
 					var mission = cheat_arguments[0];
-					show_debug_message($"{mission},");
+					show_debug_message_advanced($"{mission},");
 					switch (mission){
 						case "1": //default 
 							scr_inquisition_mission(EVENT.inquisition_mission);
@@ -184,7 +184,7 @@ function scr_cheatcode(argument0) {
 							scr_inquisition_mission(EVENT.inquisition_mission);
 						break;
 					}
-					show_debug_message("inquisitor mission initiated");
+					show_debug_message_advanced("inquisitor mission initiated");
 					obj_controller.location_viewer.update_mission_log();
 					break;
 				case "artifactpopulate":
@@ -210,12 +210,12 @@ function scr_cheatcode(argument0) {
 					break;	
 				case "event":
 					if (cheat_arguments[0] == "crusade") {
-						show_debug_message("crusading");
+						show_debug_message_advanced("crusading");
 						with (obj_controller) {
 							launch_crusade();
 						}
 					} else if (cheat_arguments[0] == "tomb") {
-						show_debug_message("necron_tomb_awaken");
+						show_debug_message_advanced("necron_tomb_awaken");
 						with (obj_controller) {
 							awaken_tomb_event();
 						}
@@ -237,16 +237,16 @@ function scr_cheatcode(argument0) {
 			                planet : irandom_range(1, _star_id.planets),
 			            });						
 					} else if (cheat_arguments[0] == "strangebuild"){
-						show_debug_message("strange build");
+						show_debug_message_advanced("strange build");
 						strange_build_event();
 					}else if (cheat_arguments[0] == "factionenemy"){
 						make_faction_enemy_event();
 					}else if (cheat_arguments[0] == "stopall"){
 						obj_controller.last_event = 1000000;
-						show_debug_message($"last event : {obj_controller.last_event}")
+						show_debug_message_advanced($"last event : {obj_controller.last_event}")
 					}else if (cheat_arguments[0] == "startevents"){
 						obj_controller.last_event = 0;
-						show_debug_message($"last event : {obj_controller.last_event}")
+						show_debug_message_advanced($"last event : {obj_controller.last_event}")
 					}else {
 						with (obj_controller) {
 							scr_random_event(false);
@@ -384,7 +384,7 @@ function scr_cheatcode(argument0) {
 				case "forgemastermeet":
 					var _forge_master = scr_role_count("Forge Master", "", "units");
 					if (array_length(_forge_master)>0){
-						show_debug_message("meet forge master");
+						show_debug_message_advanced("meet forge master");
 						obj_controller.menu_lock = false;
 						instance_destroy(obj_popup_dialogue);
 						scr_toggle_diplomacy();
@@ -392,13 +392,13 @@ function scr_cheatcode(argument0) {
 						obj_controller.character_diplomacy = _forge_master[0];
 						diplo_txt="Greetings chapter master";
 					} else {
-						show_debug_message("no forge master");
+						show_debug_message_advanced("no forge master");
 					}
 					break;
 			}
 		}
 	} catch(_exception) {
-		show_debug_message(_exception.longMessage);
+		show_debug_message_advanced(_exception.longMessage);
 	}
 }
 
@@ -781,7 +781,7 @@ function system_debug_remove_fleet(){
 		str1 =  $"delete {obj_controller.faction[fleet_id.owner]} fleet {fleet_id.id}";
 		self.fleet_id = fleet_id;
 		static choice_func =  function(){
-			show_debug_message($"destroy {current_option.fleet_id}")
+			show_debug_message_advanced($"destroy {current_option.fleet_id}")
 			instance_destroy(current_option.fleet_id);
 			popup_default_close();
 		};

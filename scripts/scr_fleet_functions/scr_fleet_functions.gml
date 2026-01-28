@@ -443,7 +443,7 @@ function scr_efleet_arrive_at_trade_loc(){
 /// // Find a fleet orbiting this star that belongs to faction 3
 /// var fleet_id = scr_orbiting_fleet(3);
 /// if (fleet_id != "none") {
-///     show_debug_message("Faction fleet found: " + string(fleet_id));
+///     show_debug_message_advanced("Faction fleet found: " + string(fleet_id));
 /// }
 ///
 /// // Find fleets from multiple factions
@@ -487,7 +487,7 @@ function scr_orbiting_fleet(faction, system="none"){
 /// ```gml
 /// var dist = object_distance(player, enemy);
 /// if (dist < 100) {
-///     show_debug_message("Enemy is within range!");
+///     show_debug_message_advanced("Enemy is within range!");
 /// }
 /// ```
 ///
@@ -507,7 +507,7 @@ function object_distance(obj_1, obj_2){
 /// ```gml
 /// var fleet_id = scr_orbiting_player_fleet();
 /// if (fleet_id != -1) {
-///     show_debug_message("Fleet orbiting star: " + string(fleet_id));
+///     show_debug_message_advanced("Fleet orbiting star: " + string(fleet_id));
 /// }
 /// ```
 ///

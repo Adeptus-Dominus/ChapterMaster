@@ -229,7 +229,7 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
         if (_evented){
         	scr_popup("Mechanicus Mission",text,"mechanicus",_mission_data);
         }
-        //show_debug_message(_mission_data);
+        //show_debug_message_advanced(_mission_data);
     }
 
     else if (chosen_mission=="mech_tomb") {

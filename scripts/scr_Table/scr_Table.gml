@@ -96,7 +96,7 @@ function Table(data) constructor{
 					_col_draw_x += column_widths[d] + col_spacing;
 				}
 				if (_row_entered && struct_exists(_row,"hover")){
-					//show_debug_message($"click : {struct_exists(_row,"click_left")}");
+					//show_debug_message_advanced($"click : {struct_exists(_row,"click_left")}");
 					_row.hover();
 				}
 				if (_row_entered && struct_exists(_row,"click_left")){

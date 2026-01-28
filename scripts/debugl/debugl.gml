@@ -23,7 +23,7 @@ function log_warning(_text) {
 }
 
 function show_debug_message_time(_text) {
-    show_debug_message($"[{TIME_1}] {_text}");
+    show_debug_message_advanced($"[{TIME_1}] {_text}");
 }
 
 function debug_get_current_call(_depth = 1) {

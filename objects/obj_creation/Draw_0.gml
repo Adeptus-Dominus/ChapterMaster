@@ -424,7 +424,7 @@ try {
 			draw_unit_buttons(_refresh_cm_name_btn, "?", [1, 1], CM_GREEN_COLOR, , fnt_40k_14b);
 			if (point_and_click(_refresh_cm_name_btn)) {
 				var _new_cm_name = global.name_generator.generate_space_marine_name();
-				show_debug_message($"regen name of chapter_master_name from {chapter_master_name} to {_new_cm_name}");
+				show_debug_message_advanced($"regen name of chapter_master_name from {chapter_master_name} to {_new_cm_name}");
 				chapter_master_name = _new_cm_name;
 			}
 		}

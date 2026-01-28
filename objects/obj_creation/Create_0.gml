@@ -556,10 +556,10 @@ founding_chapters = array_filter(all_chapters, function(item){ return item.origi
 successor_chapters = array_filter(all_chapters, function(item){ return item.origin == eCHAPTER_ORIGINS.SUCCESSOR});
 custom_chapters = array_filter(all_chapters, function(item){ return item.origin == eCHAPTER_ORIGINS.CUSTOM});
 other_chapters = array_filter(all_chapters, function(item){ return item.origin == eCHAPTER_ORIGINS.NON_CANON});
-// show_debug_message($"founding: {founding_chapters}");
-// show_debug_message($"successor: {successor_chapters}");
-// show_debug_message($"custom: {custom_chapters}");
-// show_debug_message($"other: {other_chapters}");
+// show_debug_message_advanced($"founding: {founding_chapters}");
+// show_debug_message_advanced($"successor: {successor_chapters}");
+// show_debug_message_advanced($"custom: {custom_chapters}");
+// show_debug_message_advanced($"other: {other_chapters}");
 
 
 // TODO refactor into struct constructors stored in which are struct arrays 

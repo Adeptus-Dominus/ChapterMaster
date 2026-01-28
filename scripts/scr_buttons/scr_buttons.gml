@@ -1223,7 +1223,7 @@ function MainMenuButton(sprite=spr_ui_but_1, sprite_hover=spr_ui_hov_1, xx=0, yy
         }
         if (hot_key!=-1 && !clicked){
             clicked = press_with_held(hot_key,vk_alt);
-            //show_debug_message($"{clicked}");
+            //show_debug_message_advanced($"{clicked}");
         }
         draw_set_alpha(1);
         draw_sprite(base_sprite,floor(ossilate),xx,yy);

@@ -120,7 +120,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			amm = 6;
 			break;
 		default:
-	        show_debug_message("Incorrect name: " + string(name) + " line 123 script scr_en_weapon.gml");
+	        show_debug_message_advanced("Incorrect name: " + string(name) + " line 123 script scr_en_weapon.gml");
 	        break;
 	}
 	switch(obj_ncombat.enemy){
@@ -145,7 +145,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					spli = 3;
 					break;
 				default:
-			        show_debug_message("Incorrect name: " + string(name) + " line 149 script scr_en_weapon.gml");
+			        show_debug_message_advanced("Incorrect name: " + string(name) + " line 149 script scr_en_weapon.gml");
 			        break;
 			}
 			break;
@@ -369,7 +369,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					spli = 3;
 					break;
 				default:
-			        show_debug_message("Incorrect name: " + string(name) + " line 372 script scr_en_weapon.gml");
+			        show_debug_message_advanced("Incorrect name: " + string(name) + " line 372 script scr_en_weapon.gml");
 			        break;
 			}
 			break;
@@ -473,7 +473,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					spli = 3;
 					break;
 				default:
-			        show_debug_message("Incorrect name: " + string(name) + " line 476 script scr_en_weapon.gml");
+			        show_debug_message_advanced("Incorrect name: " + string(name) + " line 476 script scr_en_weapon.gml");
 			        break;
 			}
 			break;
@@ -545,7 +545,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					rang = 20;
 					break;
 				default:
-			        show_debug_message("Incorrect name: " + string(name) + " line 548 script scr_en_weapon.gml");
+			        show_debug_message_advanced("Incorrect name: " + string(name) + " line 548 script scr_en_weapon.gml");
 			        break;
 			}
 			break;
@@ -647,7 +647,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					amm = 1;
 					break;
 				default:
-			        show_debug_message("Incorrect name: " + string(name) + " line 650 script scr_en_weapon.gml");
+			        show_debug_message_advanced("Incorrect name: " + string(name) + " line 650 script scr_en_weapon.gml");
 			        break;
 			}
 			break;
@@ -926,7 +926,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					spli = choose(0, 1);
 					break;
 				default:
-			        show_debug_message("Incorrect name: " + string(name) + " line 929 script scr_en_weapon.gml");
+			        show_debug_message_advanced("Incorrect name: " + string(name) + " line 929 script scr_en_weapon.gml");
 			        break;
 			}
 			break;
@@ -1016,7 +1016,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					spli = 3;
 					break
 				default:
-			        show_debug_message("Incorrect name: " + string(name) + " line 1019 script scr_en_weapon.gml");
+			        show_debug_message_advanced("Incorrect name: " + string(name) + " line 1019 script scr_en_weapon.gml");
 			        break;
 			}
 			break;
