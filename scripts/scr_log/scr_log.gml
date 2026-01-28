@@ -224,7 +224,7 @@ function show_debug_message_adv(_message) {
     
     // _stack[0] is this 'log' function itself
     // _stack[1] is the script/object event that called this
-    var _caller = _stack[1];
+    var _caller = array_length(_stack) > 1 ? _stack[1] : "unknown";
     
     var _time = string_format(current_hour, 2, 0) + ":" + string_format(current_minute, 2, 0) + ":" + string_format(current_second, 2, 0);
 
