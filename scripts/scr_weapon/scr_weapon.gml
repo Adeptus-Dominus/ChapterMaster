@@ -3179,6 +3179,7 @@ global.gear = {
 				"artifact": 40
 			},
 			"tags": ["power_only", "jump", "ancient"],
+		},
 		"Heavy Weapons Pack": {
 			"abbreviation": "HvyWpPck",
 			"description": "A heavy ammunition backpack commonly used by devastators in conjunction with a heavy support weapon.",
