@@ -421,7 +421,7 @@ function scr_toggle_diplomacy() {
                 diplomacy = 0;
                 hide_banner = 1;
                 character_diplomacy = false;
-                show_debug_message("set_diplo")
+                show_debug_message_adv("set_diplo")
             }
         }
     });

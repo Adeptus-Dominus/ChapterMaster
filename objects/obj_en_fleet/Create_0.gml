@@ -113,18 +113,18 @@ deserialize = function(save_data){
             continue;
         }
         var loaded_value = struct_get(save_data, var_name);
-        // show_debug_message($"en_fleet {en_fleet_instance.id}  - var: {var_name}  -  val: {loaded_value}");
+        // show_debug_message_adv($"en_fleet {en_fleet_instance.id}  - var: {var_name}  -  val: {loaded_value}");
         try {
             variable_struct_set(self, var_name, loaded_value);	
         } catch (e){
-            show_debug_message(e);
+            show_debug_message_adv(e);
         }
     }
      if(struct_exists(save_data, "cargo_data")){
         variable_struct_set(self, "cargo_data", save_data.cargo_data);
-        show_debug_message("cargo_data");
+        show_debug_message_adv("cargo_data");
         if (fleet_has_cargo("ork_warboss")){
-            show_debug_message("warboss_fleet");
+            show_debug_message_adv("warboss_fleet");
             var _boss = new NewPlanetFeature(P_features.OrkWarboss);
             _boss.load_json_data(cargo_data.ork_warboss)
             cargo_data.ork_warboss = _boss;
@@ -134,7 +134,7 @@ deserialize = function(save_data){
     if(save_data.orbiting != 0 && action == ""){
         var nearest_star = instance_nearest(x, y, obj_star);
         orbiting = nearest_star;
-        // show_debug_message($"p_fleet id {id} deserialized: {self}");
+        // show_debug_message_adv($"p_fleet id {id} deserialized: {self}");
     }
 }
 

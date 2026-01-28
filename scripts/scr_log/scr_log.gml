@@ -215,3 +215,18 @@ function os_type_format(_os_type) {
         return _os_type_dictionary.os_unknown;
     }
 }
+
+/// @func show_debug_message_adv(_message)
+/// @desc Prints a debug message to the console prefixed with the time, source object, event, and line number.
+/// @param {Any} _message  The value or string to be logged.
+function show_debug_message_adv(_message) {
+    var _stack = debug_get_callstack();
+    
+    // _stack[0] is this 'log' function itself
+    // _stack[1] is the script/object event that called this
+    var _caller = array_length(_stack) > 1 ? _stack[1] : "unknown";
+    
+    var _time = string_format(current_hour, 2, 0) + ":" + string_format(current_minute, 2, 0) + ":" + string_format(current_second, 2, 0);
+
+    show_debug_message($"{_time} | DEBUG | {_caller} >> {_message}");
+}
