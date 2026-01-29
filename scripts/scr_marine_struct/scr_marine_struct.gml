@@ -1809,7 +1809,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 psychic_bonus *= IsSpecialist(SPECIALISTS_LIBRARIANS) ? 1 : 0.25;
                 psychic_bonus = round(psychic_bonus);
                 primary_weapon.attack += psychic_bonus;
-                basic_wep_string += $"Psychic Power: +{psychic_bonus}#";
+                explanation_string += $"Psychic Power: +{psychic_bonus}#";
             }
         }
         

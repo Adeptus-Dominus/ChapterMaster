@@ -365,7 +365,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
     };
 }
 
-/// @param {string} search_area possible values: "any", "weapon", "gear', "armour", "mobility";
+/// @param {string} search_area possible values: "any", "weapon", "gear", "armour", "mobility"
 function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_class = false, quality_request = "standard", arti_struct = -1) {
     var item_data_set = false;
     var equip_area = false;

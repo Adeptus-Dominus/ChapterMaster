@@ -127,7 +127,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			amm = 6;
 			break;
 		default:
-			show_debug_message_adv($"Unkown weapon name: {name}; script: scr_en_weapon.gml");
+			show_debug_message_adv($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
 			break;
 	}
 
@@ -152,7 +152,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 3;
 				break;
 			default:
-				show_debug_message_adv($"Unkown weapon name: {name}; script: scr_en_weapon.gml");
+				show_debug_message_adv($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
 				break;
 		}
 	}
@@ -387,7 +387,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 3;
 				break;
 			default:
-				show_debug_message_adv($"Unkown weapon name: {name}; script: scr_en_weapon.gml");
+				show_debug_message_adv($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
 				break;
 		}
 	}
@@ -492,7 +492,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 3;
 				break;
 			default:
-				show_debug_message_adv($"Unkown weapon name: {name}; script: scr_en_weapon.gml");
+				show_debug_message_adv($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
 				break;
 		}
 	}
@@ -566,7 +566,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 20;
 				break;
 			default:
-				show_debug_message_adv($"Unkown weapon name: {name}; script: scr_en_weapon.gml");
+				show_debug_message_adv($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
 				break;
 		}
 	}
@@ -640,7 +640,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				arp = 1;
 				rang = 2.1;
 				if (obj_ini.preomnor = 1) {
-					atta = 19;
+					atta = 90;
 				}
 				break;
 			case "Scything Talons":
@@ -677,12 +677,12 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				amm = 1;
 				break;
 			default:
-				show_debug_message_adv($"Unkown weapon name: {name}; script: scr_en_weapon.gml");
+				show_debug_message_adv($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
 				break;
 		}
 	}
 
-	if (obj_ncombat.enemy >= 10) or(obj_ncombat.enemy = 2) or(obj_ncombat.enemy = 5) or(obj_ncombat.enemy = 1) {
+	if (obj_ncombat.enemy >= 10 || obj_ncombat.enemy == 2 || obj_ncombat.enemy == 5 || obj_ncombat.enemy == 1) {
 		switch(name) {
 			case "Plasma Pistol":
 				atta = 70;
@@ -970,7 +970,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = choose(0, 1);
 				break;
 			default:
-				show_debug_message_adv($"Unkown weapon name: {name}; script: scr_en_weapon.gml");
+				show_debug_message_adv($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
 				break;
 		}
 	}
@@ -1062,7 +1062,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 3;
 				break;
 			default:
-				show_debug_message_adv($"Unkown weapon name: {name}; script: scr_en_weapon.gml");
+				show_debug_message_adv($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
 				break;
 		}
 	}
