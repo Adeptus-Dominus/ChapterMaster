@@ -121,8 +121,6 @@ hostile_splash=0;
 
 alarm[1]=4;
 
-action_set_alarm(1, 3);
-
 hit = function() {
     return scr_hit(x1, y1, x2, y2) && obj_ncombat.fadein <= 0;
 };

@@ -259,13 +259,9 @@ function after_battle_part1() {
                 // Techmarines for saving vehicles;
                 if (unit.IsSpecialist(SPECIALISTS_TECHS, true)) {
                     skill_level = unit.technology / 10;
-                    if (marine_mobi[i]=="Servo-arm") {
-                        skill_level *= 1.5; 
-                    } else if (marine_mobi[i]=="Servo-harness") {
-                        skill_level *= 2;
-                    }
-                    skill_level += random(unit.luck / 2);
-                    obj_ncombat.vehicle_recovery_score += skill_level;
+					skill_level += random(unit.luck / 2);
+					skill_level += unit.gear_special_value("combi_tool");
+                    obj_ncombat.vehicle_recovery_score += round(skill_level);
                     obj_ncombat.techmarines_alive++;
                 }
             }

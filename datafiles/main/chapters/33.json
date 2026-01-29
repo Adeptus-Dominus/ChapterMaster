@@ -620,7 +620,7 @@
                     }
                 ]
             ],
-            "sternguard_veteran_squad": [
+            "veteran_squad": [
                 // Proteus Kill Team - Versatile 
                 [
                     "Veteran",
@@ -717,129 +717,130 @@
                     }
                 ]
             ],
-            "vanguard_veteran_squad": [
-                // Malleus Kill Team - Anti Vehicle / Anti Large
-                // Vanguard Veteran Sergeant
-                [
-                    "Veteran Sergeant",
-                    {
-                        "max": 1,
-                        "min": 1,
-                        "role": "Malleus Watch Sergeant",
-                        "loadout": {
-                            "required": {
-                                "wep1": [
-                                    "Stalker Pattern Bolter",
-                                    1
-                                ],
-                                "wep2": [
-                                    "Combat Knife",
-                                    1
-                                ]
-                            }
-                        }
-                    }
-                ],
-                // Vanguard Veterans
-                [
-                    "Veteran",
-                    {
-                        "max": 4,
-                        "min": 1,
-                        "role": "Vanguard Veteran",
-                        "loadout": {
-                            "required": {
-                                "wep1": [
-                                    "",
-                                    0
-                                ],
-                                "wep2": [
-                                    "",
-                                    0
-                                ]
-                            },
-                            "option": {
-                                "wep1": [
-                                    [
-                                        [
-                                            "Infernus Heavy Bolter",
-                                            "Infernus Heavy Bolter",
-                                            "Infernus Heavy Bolter",
-                                            "Infernus Heavy Bolter",
-                                            "Missile Launcher",
-                                            "Missile Launcher",
-                                            "Multi-Melta",
-                                            "Lascannon"
-                                        ],
-                                        3
-                                    ],
-                                    [
-                                        [
-                                            "Stalker Pattern Bolter"
-                                        ],
-                                        2,
-                                        {
-                                            "wep2": "Combat Knife"
-                                        }
-                                    ]
-                                ]
-                            }
-                        }
-                    }
-                ],
-                [
-                    "Terminator",
-                    {
-                        "max": 4,
-                        "min": 1,
-                        "role": "Terminator",
-                        "loadout": {
-                            "required": {
-                                "wep1": [
-                                    "Plasma Cannon",
-                                    1
-                                ]
-                            },
-                            "option": {
-                                "wep1": [
-                                    [
-                                        [
-                                            "Heavy Thunder Hammer"
-                                        ],
-                                        1
-                                    ],
-                                    [
-                                        [
-                                            "Lascannon"
-                                        ],
-                                        1
-                                    ],
-                                    [
-                                        [
-                                            "Multi-Melta"
-                                        ],
-                                        1
-                                    ],
-                                ],
-                            }
-                        }
-                    }
-                ],
-                [
-                    "type_data",
-                    {
-                        "display_data": "Malleus Kill Team",
-                        "formation_options": [
-                            "devastator",
-                            "veteran",
-                            "assault",
-                            "scout",
-                            "tactical",
-                            "terminator"
-                        ]
-                    }
-                ]
-            ],
+            // Will return as soon as custom squads are supported;
+            // "veteran_squad": [
+            //     // Malleus Kill Team - Anti Vehicle / Anti Large
+            //     // Vanguard Veteran Sergeant
+            //     [
+            //         "Veteran Sergeant",
+            //         {
+            //             "max": 1,
+            //             "min": 1,
+            //             "role": "Malleus Watch Sergeant",
+            //             "loadout": {
+            //                 "required": {
+            //                     "wep1": [
+            //                         "Stalker Pattern Bolter",
+            //                         1
+            //                     ],
+            //                     "wep2": [
+            //                         "Combat Knife",
+            //                         1
+            //                     ]
+            //                 }
+            //             }
+            //         }
+            //     ],
+            //     // Vanguard Veterans
+            //     [
+            //         "Veteran",
+            //         {
+            //             "max": 4,
+            //             "min": 1,
+            //             "role": "Vanguard Veteran",
+            //             "loadout": {
+            //                 "required": {
+            //                     "wep1": [
+            //                         "",
+            //                         0
+            //                     ],
+            //                     "wep2": [
+            //                         "",
+            //                         0
+            //                     ]
+            //                 },
+            //                 "option": {
+            //                     "wep1": [
+            //                         [
+            //                             [
+            //                                 "Infernus Heavy Bolter",
+            //                                 "Infernus Heavy Bolter",
+            //                                 "Infernus Heavy Bolter",
+            //                                 "Infernus Heavy Bolter",
+            //                                 "Missile Launcher",
+            //                                 "Missile Launcher",
+            //                                 "Multi-Melta",
+            //                                 "Lascannon"
+            //                             ],
+            //                             3
+            //                         ],
+            //                         [
+            //                             [
+            //                                 "Stalker Pattern Bolter"
+            //                             ],
+            //                             2,
+            //                             {
+            //                                 "wep2": "Combat Knife"
+            //                             }
+            //                         ]
+            //                     ]
+            //                 }
+            //             }
+            //         }
+            //     ],
+            //     [
+            //         "Terminator",
+            //         {
+            //             "max": 4,
+            //             "min": 1,
+            //             "role": "Terminator",
+            //             "loadout": {
+            //                 "required": {
+            //                     "wep1": [
+            //                         "Plasma Cannon",
+            //                         1
+            //                     ]
+            //                 },
+            //                 "option": {
+            //                     "wep1": [
+            //                         [
+            //                             [
+            //                                 "Heavy Thunder Hammer"
+            //                             ],
+            //                             1
+            //                         ],
+            //                         [
+            //                             [
+            //                                 "Lascannon"
+            //                             ],
+            //                             1
+            //                         ],
+            //                         [
+            //                             [
+            //                                 "Multi-Melta"
+            //                             ],
+            //                             1
+            //                         ],
+            //                     ],
+            //                 }
+            //             }
+            //         }
+            //     ],
+            //     [
+            //         "type_data",
+            //         {
+            //             "display_data": "Malleus Kill Team",
+            //             "formation_options": [
+            //                 "devastator",
+            //                 "veteran",
+            //                 "assault",
+            //                 "scout",
+            //                 "tactical",
+            //                 "terminator"
+            //             ]
+            //         }
+            //     ]
+            // ],
             "terminator_squad": [
                 // Purgatus Kill Team - Librarian Led assassins
                 // Librarian Leader

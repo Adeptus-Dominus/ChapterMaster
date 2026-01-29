@@ -19,11 +19,14 @@ try {
         move_unit_block("east");
     }
 
-    if (!instance_exists(enemy)) then exit;
-    if (collision_point(x+10,y,obj_enunit,0,1)) or (collision_point(x-10,y,obj_enunit,0,1)) then engaged=1;
-    if (!collision_point(x+10,y,obj_enunit,0,1)) and (!collision_point(x-10,y,obj_enunit,0,1)) then engaged=0;
+    if (!instance_exists(enemy)) {
+        engaged = false;
+        exit;
+    }
 
-    var once_only;once_only=0;
+    engaged = collision_point(x-14, y, obj_enunit, 0, 1) || collision_point(x+14, y, obj_enunit, 0, 1);
+
+    var once_only=0;
     var range_shoot="";
     var dist=point_distance(x,y,enemy.x,enemy.y)/10;
 
@@ -68,26 +71,26 @@ try {
                 enemy2=enemy;
             }
 
-            
+
             if (range[i]>=dist) and (ammo[i]!=0 || range[i]==1){
                 if (range[i]!=1) and (engaged=0) then range_shoot="ranged";
                 if ((range[i]!=floor(range[i]) || floor(range[i])=1) && engaged=1) then range_shoot="melee";
             }
-            
+
             if (range_shoot="ranged") and (range[i]>=dist){// Weapon meets preliminary checks
                 var ap=0;
                 if (apa[i]>att[i]) then ap=1;// Determines if it is AP or not
                 if (wep[i]="Missile Launcher") then ap=1;
                 if (string_count("Lascan",wep[i])>0) then ap=1;
                 if (instance_number(obj_enunit)=1) and (obj_enunit.men=0) and (obj_enunit.veh>0) then ap=1;
-                
-                
+
+
                 if (instance_exists(enemy)){
                     if (obj_enunit.veh>0) and (obj_enunit.men=0) and (apa[i]>10) then ap=1;
-                    
+
                     if (ap=1) and (once_only=0){// Check for vehicles
                         var enemy2,g=0,good=0;
-                        
+
                         if (enemy.veh>0){
                             good=scr_target(enemy,"veh");// First target has vehicles, blow it to hell
                             scr_shoot(i,enemy,good,"arp","ranged");
@@ -109,17 +112,17 @@ try {
                         if (good=0) then ap=0;// Fuck it, shoot at infantry
                     }
                 }
-                
-                
-                
-                
-                
-                
+
+
+
+
+
+
                 if (instance_exists(enemy)) and (once_only=0){
                     if (enemy.medi>0) and (enemy.veh=0){
                         good=scr_target(enemy,"medi");// First target has vehicles, blow it to hell
                         scr_shoot(i,enemy,good,"medi","ranged");
-                    
+
                         if (good=0) and (instance_number(obj_enunit)>1){// First target does not have vehicles, cycle through objects to find one that has vehicles
                             var x2=enemy.x;
                             repeat(instance_number(obj_enunit)-1){
@@ -136,15 +139,15 @@ try {
                         // Was previously ap=1;
                     }
                 }
-                
-                
-                
-                
-                
+
+
+
+
+
                 if (instance_exists(enemy)){
                     if (ap=0) and (once_only=0){// Check for men
                         var g,good,enemy2;g=0;good=0;
-                        
+
                         if (enemy.men+enemy.medi>0){
                             good=scr_target(enemy,"men");// First target has vehicles, blow it to hell
                             scr_shoot(i,enemy,good,"att","ranged");
@@ -163,17 +166,17 @@ try {
                         }
                     }
                 }
-            }else if  (range_shoot="melee") and ((range[i]==1) or (range[i]!=floor(range[i]))){// Weapon meets preliminary checks 
+            }else if  (range_shoot="melee") and ((range[i]==1) or (range[i]!=floor(range[i]))){// Weapon meets preliminary checks
                 var ap=0;
                 if (apa[i]==1) then ap=1;// Determines if it is AP or not
-                
+
                 if (enemy.men=0) and (apa[i]=0) and (att[i]>=80){
                     apa[i]=floor(att[i]/2);ap=1;
                 }
-                
+
                 if (apa[i]==1) and (once_only=0){// Check for vehicles
                     var enemy2,g=0,good=0;
-                    
+
                     if (enemy.veh>0){
                         good=scr_target(enemy,"veh");// First target has vehicles, blow it to hell
                         if (range[i]=1) then scr_shoot(i,enemy,good,"arp","melee");
@@ -181,10 +184,10 @@ try {
                     if (good!=0) then once_only=1;
                     if (good=0) and (att[i]>0) then ap=0;// Fuck it, shoot at infantry
                 }
-                
+
                 if (enemy.veh=0) and (enemy.medi>0) and (once_only=0){// Check for vehicles
                     var enemy2,g=0,good=0;
-                    
+
                     if (enemy.medi>0){
                         good=scr_target(enemy,"medi");// First target has vehicles, blow it to hell
                         if (range[i]=1) then scr_shoot(i,enemy,good,"medi","melee");
@@ -192,12 +195,12 @@ try {
                     if (good!=0) then once_only=1;
                     if (good=0) and (att[i]>0) then ap=0;// Fuck it, shoot at infantry
                 }
-                
-                
-                
+
+
+
                 if (ap=0) and (once_only=0){// Check for men
                     var  g=0,good=0,enemy2;
-                    
+
                     if (enemy.men>0) and (once_only=0){
                         // show_message(string(wep[i])+" attacking");
                         good=scr_target(enemy,"men");
@@ -206,9 +209,9 @@ try {
                     if (good!=0) then once_only=1;
                 }
             }
-            
-            
-            
+
+
+
         }
     }
 

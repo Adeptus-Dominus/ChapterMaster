@@ -340,6 +340,11 @@ if (shop = "equipment") {
     item_cost[i] = 80;
 	forge_cost[i] = 230; 
     i += 1;
+    item[i] = "Shotgun";
+    forge_cost[i] = 100;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 10;
+    i += 1;
     x_mod[i] = 9;
     item[i] = "Combiflamer";
     item_stocked[i] = scr_item_count(item[i]);
@@ -407,6 +412,13 @@ if (shop = "equipment") {
     if (research.flame[0]<1) then forge_cost[i] = 0;
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 12;
+    i += 1;
+    item[i] = "Wrist-Mounted Storm Bolter";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 300;
+    if (research.bolt[0]<2) then forge_cost[i] = 0;
+    nobuy[i] = 1;
     i += 1;
     item[i] = "Hand Flamer";
     forge_cost[i] = 75;
@@ -536,6 +548,13 @@ if (shop = "equipment") {
     forge_cost[i] = 200;
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 10;
+    if (global.chapter_name == "Deathwatch"){
+        i += 1;
+        item[i] = "Deathwatch Sniper Rifle";
+        forge_cost[i] = 500;
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 200;
+    }
     i += 1;
     item[i] = "Missile Launcher";
     forge_cost[i] = 300;
@@ -932,6 +951,13 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Cyclone Missile System";
+    forge_cost[i] = 350;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 150;
 
     i += 1;
     x_mod[i] = 9;

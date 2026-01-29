@@ -1,3 +1,4 @@
+// TODO: Merge all update function into one;
 /// @mixin
 function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = true, quality = "any") {
 	var is_artifact = !is_string(new_armour);
@@ -316,6 +317,8 @@ function scr_update_unit_gear(new_gear, from_armoury = true, to_armoury = true, 
 	return "complete";
 }
 
+// TODO: Expand restriction tag checking and error logging to other update functions;
+/// @mixin
 function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, to_armoury = true, quality = "any") {
 	var is_artifact = !is_string(new_mobility_item);
 	var _old_mobility_item = mobility_item();
@@ -327,42 +330,64 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 		new_mobility_item = obj_ini.artifact[artifact_id];
 	}
 
-	var _armour_data = get_armour_data();
-	if (is_struct(_armour_data)) {
-		if (_armour_data.has_tag("terminator")) {
-			if (!array_contains(["Servo-arm", "Servo-harness", "Conversion Beamer Pack"], new_mobility_item)) {
-				return "incompatible with terminator";
+	if (!unequipping) {
+		var _mobility_data = gear_weapon_data("mobility", new_mobility_item);
+		if (!is_struct(_mobility_data)) {
+			log_error($"Failed to equip {new_mobility_item} for {name()} - can't find the item in the item database!");
+			return false;
+		}
+
+		var exp_require = _mobility_data.req_exp;
+		if (exp_require > experience) {
+			log_error($"Failed to equip {new_mobility_item} for {name()} - not enough EXP! ({experience}<{exp_require})");
+			return false;
+		}
+
+		var _armour_data = get_armour_data();
+		if (is_struct(_armour_data)) {
+			if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator")) {
+				log_error($"Failed to equip {new_mobility_item} for {name()} - can't use with terminator armour! (Current: {armour()})");
+				return false;
+			} else if (!_armour_data.has_tag("terminator") && _mobility_data.has_tag("terminator_only")) {
+				log_error($"Failed to equip {new_mobility_item} for {name()} - requires terminator armour! (Current: {armour()})");
+				return false;
 			}
-		}
-		if (new_mobility_item == "Jump Pack" && !_armour_data.has_tag("power_armour")) {
-			return "requires power armour";
-		}
-	} else {
-		if (new_mobility_item == "Jump Pack") {
-			return "requires power armour";
+
+			if (_mobility_data.has_tag("power_only") && !_armour_data.has_tag("power_armour")) {
+				log_error($"Failed to equip {new_mobility_item} for {name()} - requires power armour! (Current: {armour()})");
+				return false;
+			}
+		} else {
+			if (new_mobility_item == "Jump Pack") {
+				log_error($"Failed to equip {new_mobility_item} for {name()} - requires armour!)");
+				return false;
+			}
+			if (_mobility_data.has_tag("terminator")) {
+				log_error($"Failed to equip {new_mobility_item} for {name()} - requires terminator armour!");
+				return false;
+			}
 		}
 	}
 
 	var same_quality = quality == "any" || quality == mobility_item_quality;
 	if (_old_mobility_item == new_mobility_item && same_quality) {
-		return "no change";
+		return true;
 	}
 
+	// Have enough items check;
 	if (from_armoury && !is_artifact && !unequipping) {
 		if (scr_item_count(new_mobility_item, quality) > 0) {
-			var exp_require = gear_weapon_data("weapon", new_mobility_item, "req_exp", false, quality);
-			if (exp_require > experience) {
-				return "exp_low";
-			}
 			quality = scr_add_item(new_mobility_item, -1, quality);
 			quality = quality != undefined ? quality : "standard";
 		} else {
-			return "no_items";
+			log_error($"Failed to equip {new_mobility_item} for {name()} - not enough items of {quality} quality!");
+			return false;
 		}
 	} else {
 		quality = quality == "any" ? "standard" : quality;
 	}
 
+	// Return old items to stockpile;
 	if (_old_mobility_item != "") {
 		if (to_armoury) {
 			if (!is_string(mobility_item(true))) {
@@ -390,7 +415,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 	update_health(portion * max_health());
 	get_unit_size();
 
-	return "complete";
+	return true;
 }
 
 

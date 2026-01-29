@@ -920,7 +920,15 @@ global.modular_drawing_items = [
         },        
 
     },
-	 {
+    {
+      sprite : spr_cyclone_launcher,
+      body_types :[2],
+      position : "backpack_augment",
+      equipped : {
+          "mobi" : "Cyclone Missile System"
+      },    
+    },
+    {
         sprite : spr_jump_pack_serpha_complex,
         body_types :[0],
         position : "backpack_augment",
@@ -3086,6 +3094,60 @@ base: {
   variants: [
     {
       sprite: spr_weapon_relic_blade
+    }
+  ]
+},
+
+"Wrist-Mounted Storm Bolter": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_sbolter,
+  }]
+},
+
+"Shotgun": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_shotgun,
+  }]
+},
+
+"Omnissian Axe": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 3,
+      arm_type : 3,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_omnissian_axe
+    }
+  ]
+},
+
+"Deathwatch Sniper Rifle": {
+  base: {
+    weapon_data: {
+      display_type: "melee_twohand",
+      new_weapon_draw: true,
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_sniper
     }
   ]
 }

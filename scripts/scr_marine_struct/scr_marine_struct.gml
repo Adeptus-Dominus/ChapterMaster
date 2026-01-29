@@ -722,7 +722,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static update_mobility_item = scr_update_unit_mobility_item;
 
     static max_health = function(base = false) {
-        var max_h = 100 * (1 + ((constitution - 40) * 0.025));
+        var max_h = 100 * (1 + ((constitution - 40) * 0.05));
         if (!base) {
             max_h += gear_weapon_data("armour", armour(), "hp_mod");
             max_h += gear_weapon_data("gear", gear(), "hp_mod");
@@ -734,7 +734,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static increase_max_health = function(increase) {
-        return max_health() + (increase * (1 + ((constitution - 40) * 0.025))); //calculate the effect of unit_health buffs
+        return max_health() + (increase * (1 + ((constitution - 40) * 0.05))); //calculate the effect of unit_health buffs
     };
 
     // used both to load unit data from save and to add preset base_stats
@@ -1447,7 +1447,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         damage_res += get_mobility_data("damage_resistance_mod");
         damage_res += get_weapon_one_data("damage_resistance_mod");
         damage_res += get_weapon_two_data("damage_resistance_mod");
-        damage_res = min(75, damage_res + floor(((constitution * 0.005) + (experience / 1000)) * 100));
+        damage_res = min(75, damage_res + floor((constitution * 0.005) * 100));
         return damage_res;
     };
 
@@ -1699,14 +1699,16 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static melee_attack = function(weapon_slot = 0) {
+        var _format_sign = function(_num) {
+            _num = format_number_with_sign(round(_num));
+            return _num;
+        };
+        
         encumbered_melee = false;
-        melee_att = 100 * (((weapon_skill / 100) * (strength / 20)) + (experience / 1000) + 0.1);
-        var explanation_string = string_concat("#Stats: ", format_number_with_sign(round(((melee_att / 100) - 1) * 100)), "%#");
-        explanation_string += "  Base: +10%#";
-        explanation_string += string_concat("  WSxSTR: ", format_number_with_sign(round((((weapon_skill / 100) * (strength / 20)) - 1) * 100)), "%#");
-        explanation_string += string_concat("  EXP: ", format_number_with_sign(round((experience / 1000) * 100)), "%#");
-
-        melee_carrying = melee_hands_limit();
+        var _melee_mod = 1;
+        var explanation_string = "";
+        
+        var melee_carrying = melee_hands_limit();
         var _wep1 = get_weapon_one_data();
         var _wep2 = get_weapon_two_data();
         if (!is_struct(_wep1)) {
@@ -1730,7 +1732,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 primary_weapon.attack = strength / 3; //calculate damage from player fists
                 primary_weapon.name = "fists";
                 primary_weapon.range = 1;
-                primary_weapon.ammo = -1;
             } else {
                 if (!valid1 && valid2) {
                     primary_weapon = _wep2;
@@ -1747,7 +1748,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                         secondary_weapon = highest;
                     } else {
                         primary_weapon = highest;
-                        melee_att *= 0.5;
+                        _melee_mod += 0.5;
                         if (primary_weapon.has_tag("flame")) {
                             explanation_string += $"Primary is Flame: -50%#";
                         } else if (primary_weapon.has_tag("pistol")) {
@@ -1764,9 +1765,42 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 primary_weapon = _wep2;
             }
         }
-
+        
         var basic_wep_string = $"{primary_weapon.name}: {primary_weapon.attack}#";
-
+        explanation_string = basic_wep_string + explanation_string;
+        
+        _melee_mod += (weapon_skill / 100) + (experience / 500);
+        explanation_string += $"#Stats:#";
+        explanation_string += $"  WS: {_format_sign((weapon_skill / 100) * 100)}%#";
+        explanation_string += $"  EXP: {_format_sign((experience / 500) * 100)}%#";
+        
+        if (primary_weapon.has_tag("martial") || primary_weapon.has_tag("savage")) {
+            var bonus_modifier = 0;
+            var martial_bonus = 0;
+            var savage_bonus = 0;
+        
+            if (primary_weapon.has_tag("martial")) {
+                martial_bonus = dexterity / 100;
+            }
+            if (primary_weapon.has_tag("savage")) {
+                savage_bonus = strength / 100;
+            }
+        
+            bonus_modifier = martial_bonus + savage_bonus;
+            _melee_mod += bonus_modifier;
+        
+            if (martial_bonus != 0) {
+                explanation_string += $"  DEX (Martial): {_format_sign(martial_bonus * 100)}%#";
+            }
+            if (savage_bonus != 0) {
+                explanation_string += $"  STR (Savage): {_format_sign(savage_bonus * 100)}%#";
+            }
+        } else {
+            _melee_mod += (strength / 200) + (dexterity / 200);
+            explanation_string += $"  STR: {_format_sign((strength / 200) * 100)}%#";
+            explanation_string += $"  DEX: {_format_sign((dexterity / 200) * 100)}%#";
+        }
+        
         if (psionic > 0) {
             if (has_force_weapon()) {
                 var psychic_bonus = psionic * 20;
@@ -1775,15 +1809,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 psychic_bonus *= IsSpecialist(SPECIALISTS_LIBRARIANS) ? 1 : 0.25;
                 psychic_bonus = round(psychic_bonus);
                 primary_weapon.attack += psychic_bonus;
-                basic_wep_string += $"Psychic Power: +{psychic_bonus}#";
+                explanation_string += $"Psychic Power: +{psychic_bonus}#";
             }
         }
-
-        explanation_string = basic_wep_string + explanation_string;
-
+        
         if (melee_carrying[0] > melee_carrying[1]) {
             encumbered_melee = true;
-            melee_att *= 0.6;
+            _melee_mod *= 0.6;
             explanation_string += $"Encumbered: x0.6#";
         }
         if (!encumbered_melee) {
@@ -1793,23 +1825,24 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             total_gear_mod += get_mobility_data("melee_mod");
             total_gear_mod += _wep1.melee_mod;
             total_gear_mod += _wep2.melee_mod;
-            melee_att += total_gear_mod;
-            explanation_string += $"#Gear Mod: {(total_gear_mod / 100) * 100}%#";
+            total_gear_mod /= 100;
+            _melee_mod += total_gear_mod;
+            explanation_string += $"#Gear Mod: {_format_sign(total_gear_mod * 100)}%#";
             //TODO make trait data like this more structured to be able to be moddable
             if (has_trait("feet_floor") && mobility_item() != "") {
-                melee_att *= 0.9;
+                _melee_mod *= 0.9;
                 explanation_string += $"{global.trait_list.feet_floor.display_name}: x0.9#";
             }
             if (primary_weapon.has_tag("fist") && has_trait("brawler")) {
-                melee_att *= 1.1;
+                _melee_mod *= 1.1;
                 explanation_string += $"{global.trait_list.brawler.display_name}: x1.1#";
             }
             if (primary_weapon.has_tag("power") && has_trait("duelist")) {
-                melee_att *= 1.3;
+                _melee_mod *= 1.3;
                 explanation_string += $"{global.trait_list.duelist.display_name}: x1.3#";
             }
         }
-        var final_attack = floor((melee_att / 100) * primary_weapon.attack);
+        var final_attack = floor(_melee_mod * primary_weapon.attack);
         if (secondary_weapon != "none" && !encumbered_melee) {
             var side_arm_data = "Standard: x0.5";
             var secondary_modifier = 0.5;
@@ -1827,12 +1860,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 secondary_modifier = 0.3;
                 side_arm_data = "Flame: x0.3";
             }
-            var side_arm = floor(secondary_modifier * ((melee_att / 100) * secondary_weapon.attack));
+            var side_arm = floor(secondary_modifier * (_melee_mod * secondary_weapon.attack));
             if (side_arm > 0) {
                 final_attack += side_arm;
-                explanation_string += $"Side Arm: +{side_arm}({side_arm_data})#";
+                explanation_string += $"Side Arm: +{side_arm} ({side_arm_data})#";
             }
         }
+        
         melee_damage_data = [final_attack, explanation_string, melee_carrying, primary_weapon, secondary_weapon];
         return melee_damage_data;
     };

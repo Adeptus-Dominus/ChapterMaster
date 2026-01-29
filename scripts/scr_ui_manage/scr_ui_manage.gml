@@ -249,7 +249,7 @@ function reset_manage_unit_constants(unit){
             _res_tool += $"{name}: {dr}%\n";
         }
     }
-    _res_tool += $"CON: {unit.constitution / 2}%\nEXP: {unit.experience / 10}%";
+    _res_tool += $"CON: {round(unit.constitution / 2)}%"
 
     unit_manage_constants.damage_res = new LabeledIcon(spr_icon_iron_halo, $"{_damage_res}%",0,0,{
         icon_width : 24,
