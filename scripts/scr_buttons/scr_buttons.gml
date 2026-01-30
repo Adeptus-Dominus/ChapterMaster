@@ -686,8 +686,10 @@ function drop_down(selection, draw_x, draw_y, options, open_marker) {
             }
         }
     }
-    return [selection, open_marker];
+
     pop_draw_return_values();
+
+    return [selection, open_marker];
 }
 
 /// @function MultiSelect(options_array, title, data)
