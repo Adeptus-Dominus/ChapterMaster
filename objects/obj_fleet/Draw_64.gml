@@ -1,4 +1,4 @@
-var _ui_green = CM_GREEN_COLOR
+var _ui_green = CM_GREEN_COLOR;
 var _text_color = #080000;
 var _surface_w = surface_get_width(application_surface);
 var _surface_h = surface_get_height(application_surface);
@@ -15,7 +15,6 @@ var _bbox_y2;
 var _bbox_x_from_center;
 var _bbox_y_from_center;
 
-
 if (left_down) {
     draw_set_alpha(0.5);
     draw_set_color(_ui_green);
@@ -25,7 +24,7 @@ if (left_down) {
 draw_set_font(fnt_menu);
 
 // begin box
-if (start==0) {
+if (start == 0) {
     var _begin_x = _surface_w / 2;
     var _begin_y = 56;
     var _begin_w_half = 128;
@@ -35,7 +34,7 @@ if (start==0) {
     draw_set_valign(fa_middle);
     _text_draw_width = string_width(_begin_text);
     _text_draw_height = string_height(_begin_text);
-    _bbox_x_from_center = ( _text_draw_width / 2) + _padding_x;
+    _bbox_x_from_center = (_text_draw_width / 2) + _padding_x;
     _bbox_y_from_center = (_text_draw_height / 2) + _padding_y;
     _bbox_x1 = _begin_x - _bbox_x_from_center;
     _bbox_y1 = _begin_y - _bbox_y_from_center;
@@ -73,7 +72,7 @@ if (start < 7) {
         _stat_numbers += $"{_newline}{string(frigate)}";
     }
     if (escort) {
-        _newline = (capital || frigate ? "\n" : "");
+        _newline = capital || frigate ? "\n" : "";
         _stat_headers += $"{_newline}Escorts:";
         _stat_numbers += $"{_newline}{string(escort)}";
     }
@@ -83,7 +82,7 @@ if (start < 7) {
         draw_set_valign(fa_top);
 
         // add the widths for the box size plus a bit between
-        _text_draw_width = (string_width(_stat_headers) + string_width(_stat_numbers) + 8);
+        _text_draw_width = string_width(_stat_headers) + string_width(_stat_numbers) + 8;
         _text_draw_height = string_height(_stat_numbers);
 
         _bbox_x1 = 1;
@@ -107,43 +106,40 @@ if (start < 7) {
 }
 
 // end of combat fade
-if (combat_end <= 120){
+if (combat_end <= 120) {
     draw_set_color(0);
     draw_set_alpha((120 - combat_end) / 100);
-    draw_rectangle(0 ,0, room_width, room_height, 0);
+    draw_rectangle(0, 0, room_width, room_height, 0);
 }
 
 // end of combat results
 if (start == 7) {
     // ## todo: calculate all of this once at the end of the battle ##
 
-    var _margin_categories = max(!!capital_max + !!frigate_max + !!escort_max, 1);
-    var _margin_percent = (
-        (max(capital, 0) / max(1, capital_max)) +
-        (max(frigate, 0) / max(1, frigate_max)) +
-        (max(escort, 0) / max(1, escort_max))
-    );
+    var _count = (capital_max > 0) + (frigate_max > 0) + (escort_max > 0);
+    var _margin_categories = max(_count, 1);
+    var _margin_percent = (max(capital, 0) / max(1, capital_max)) + (max(frigate, 0) / max(1, frigate_max)) + (max(escort, 0) / max(1, escort_max));
     _margin_percent /= max(_margin_categories, 1);
     var _result_box_header;
-    if (_margin_percent>=0.95){
+    if (_margin_percent >= 0.95) {
         _result_box_header = "Major Victory";
-    } else if (_margin_percent>=0.75) {
+    } else if (_margin_percent >= 0.75) {
         _result_box_header = "Victory";
-    } else if (_margin_percent>0.01) {
+    } else if (_margin_percent > 0.01) {
         _result_box_header = "Minor Victory";
-    } else if (_margin_percent<=0.01){
+    } else if (_margin_percent <= 0.01) {
         _result_box_header = "Defeat";
     }
     var _result_box_footer = "[ Enter ] to Continue";
     var _result_box_text = "";
-    var _all_lost = capital_lost+frigate_lost+escort_lost;
-    var _wiped_out = _all_lost>=(capital_max+frigate_max+escort_max);
+    var _all_lost = capital_lost + frigate_lost + escort_lost;
+    var _wiped_out = _all_lost >= (capital_max + frigate_max + escort_max);
 
     if (capital_max) {
         _result_box_text += $"\nBattleships Lost: {string(capital_lost)} ({string((capital_lost / max(0, capital_max)) * 100)}%)";
     }
     if (frigate_max) {
-        _result_box_text += $"\nCruisers Lost: {string(frigate_lost)} ({string((frigate_lost / max(0, frigate_max)) * 100)}%)"
+        _result_box_text += $"\nCruisers Lost: {string(frigate_lost)} ({string((frigate_lost / max(0, frigate_max)) * 100)}%)";
     }
     if (escort_max) {
         _result_box_text += $"\nEscorts Lost: {string(escort_lost)} ({string((escort_lost / max(0, escort_max)) * 100)}%)";
@@ -168,10 +164,10 @@ if (start == 7) {
     var _result_image_w = 409;
     var _result_image_h = 247;
 
-    var _result_center_x = (_surface_w / 2);
+    var _result_center_x = _surface_w / 2;
     var _result_center_y = (_surface_h / 2) + (_result_image_h / 2) + _padding_y;
 
-    _bbox_x_from_center = ( _result_text_width / 2) + _padding_x;
+    _bbox_x_from_center = (_result_text_width / 2) + _padding_x;
     _bbox_y_from_center = (_result_text_height / 2) + _padding_y;
     _bbox_x1 = _result_center_x - _bbox_x_from_center;
     _bbox_y1 = _result_center_y - _bbox_y_from_center;
