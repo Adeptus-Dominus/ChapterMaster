@@ -179,7 +179,7 @@ deserialize = function(save_data){
         try {
             variable_struct_set(obj_ini, var_name, loaded_value);	
         } catch (e){
-            global.logger.error(e);
+            global.logger.exception("Deserialization failed", e);
         }
     }
 

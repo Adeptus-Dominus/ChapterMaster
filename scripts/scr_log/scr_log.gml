@@ -243,7 +243,7 @@ function Logger() constructor {
         return _clean;
     };
 
-    static _write = function(_level, _level_label, _message) {
+    static _write = function(_level, _level_label, _message, _exception = "") {
         if (_level < active_level) {
             return;
         }
@@ -253,6 +253,10 @@ function Logger() constructor {
         var _caller = _get_caller();
 
         var _out = $"{_time} | {_level_label} | {_caller} >> {_message}";
+
+        if (_exception != "") {
+            _out += $"\n{_exception}";
+        }
 
         show_debug_message(_out);
     };
@@ -280,5 +284,10 @@ function Logger() constructor {
     /// @param {Any} message
     static critical = function(_message) {
         _write(eLOG_LEVEL.Critical, "CRITICAL", _message);
+    };
+
+    /// @param {Any} message
+    static exception = function(_message, _exception) {
+        _write(eLOG_LEVEL.Error, "ERROR", _message, _exception);
     };
 }
