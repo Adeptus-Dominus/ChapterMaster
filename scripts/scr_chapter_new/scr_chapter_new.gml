@@ -516,7 +516,7 @@ function scr_chapter_new(chapter_identifier) {
 			}
 		}
 
-		var _open_disadv = 1;
+		var _open_disadv = 0;
 		for (var i=0;i<array_length(obj_creation.all_disadvantages);i++){
 			var _disadv = obj_creation.all_disadvantages[i];
 			if (array_contains(chapter_object.disadvantages, _disadv.name)){
