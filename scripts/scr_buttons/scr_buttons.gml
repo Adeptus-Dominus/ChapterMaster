@@ -557,15 +557,16 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
     background.draw_top_piece = false;
 
     static render_logic = function() {
-        draw_set_valign(fa_top);
+        draw_set_valign(fa_middle);
         draw_set_halign(fa_center);
         draw_set_alpha(1);
         draw_set_font(fnt_fancy);
 
         var _display_string = $"{current_text}";
         var _text_w = string_width(_display_string);
+        var _center_y = background.YY + (background.height / 2);
 
-        draw_text(xx, yy + 2, _display_string);
+        draw_text(xx, _center_y, _display_string);
 
         if (allow_input) {
             obj_cursor.image_index = 2;
@@ -574,7 +575,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
             if (_is_blink_on) {
                 var _cursor_x = xx + (_text_w / 2);
 
-                draw_text(_cursor_x, yy + 2, "|");
+                draw_text(_cursor_x, _center_y, "|");
             }
         }
     };
@@ -583,6 +584,8 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
 
     static draw = function(_string_area) {
         add_draw_return_values();
+
+        draw_set_font(fnt_fancy);
 
         current_text = _string_area;
 
