@@ -92,7 +92,7 @@ deserialize = function(save_data){
         try {
             variable_struct_set(self, var_name, loaded_value);	
         } catch (e){
-            global.logger.debug(e);
+            global.logger.error(e);
         }
     }
     

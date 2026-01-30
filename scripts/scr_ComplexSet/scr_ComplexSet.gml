@@ -973,7 +973,7 @@ function ComplexSet(_unit) constructor {
 
 		var _texture_draws = setup_complex_livery_shader(unit.role(), unit);
 
-		global.logger.debug(_texture_draws);
+		// global.logger.debug(_texture_draws);
 		draw_cloaks();
 		//draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
 
