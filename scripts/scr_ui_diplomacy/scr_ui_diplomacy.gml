@@ -120,7 +120,7 @@ function exit_diplomacy_dialogue(){
         if (complex_event==false){
 
             obj_turn_end.alarm[1]=1;
-            show_debug_message_adv("next_audience");
+            global.logger.debug("next_audience");
         }
         if (complex_event=true){
             // TODO
@@ -576,7 +576,7 @@ function scr_ui_diplomacy() {
 
 	if (diplomacy == -1){
 		if (!is_struct(character_diplomacy)){
-			show_debug_message_adv("no valid diplomacy target");
+			global.logger.debug("no valid diplomacy target");
 			diplomacy = 0;
 		} else {
 		    // draw_sprite(spr_diplo_splash,diplomacy,xx+916,yy+33);

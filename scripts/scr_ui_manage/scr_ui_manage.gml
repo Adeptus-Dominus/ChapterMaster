@@ -602,7 +602,7 @@ function alternative_manage_views(x1, y1) {
             // cleanup
             surface_free(surf);
 
-            show_debug_message_adv("Marine image saved to: " + path);
+            global.logger.debug("Marine image saved to: " + path);
         }
     }
 }

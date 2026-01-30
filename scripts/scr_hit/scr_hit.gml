@@ -69,25 +69,25 @@ function point_and_click(rect, cooldown = 60, lock_bypass = false) {
 		if (controller_exist) {
 			obj_controller.cooldown = cooldown * delta_time/1000000;
 			if(is_debug_overlay_open()){
-				show_debug_message_adv($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+				global.logger.debug($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
 			}
 		}  if (main_menu_exists) {
 			obj_main_menu.cooldown = cooldown * delta_time/1000000;
 			if(is_debug_overlay_open()){
-				show_debug_message_adv($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+				global.logger.debug($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
 			}
 		} else if (creation_screen_exists) {
 			obj_creation.cooldown = cooldown * delta_time/1000000;
 			if(is_debug_overlay_open()){
-				show_debug_message_adv($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+				global.logger.debug($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
 			}
 		}
 		// log_message("scr_click_left: clicked and set cooldown!");
-		// show_debug_message_adv($"{array_to_string_list(debug_get_callstack())}");
+		// global.logger.debug($"{array_to_string_list(debug_get_callstack())}");
 	}
 
 	if(is_debug_overlay_open()){
-		show_debug_message_adv($"Mouse Clicked at: x: {_mouse_consts[0]} y: {_mouse_consts[1]} {array_to_string_list(debug_get_callstack(), true)}!");
+		global.logger.debug($"Mouse Clicked at: x: {_mouse_consts[0]} y: {_mouse_consts[1]} {array_to_string_list(debug_get_callstack(), true)}!");
 	}
 
 	return true;
@@ -116,10 +116,10 @@ function scr_click_left(cooldown = 60, lock_bypass = false){
 		return false;
 	} else if (controller_exist && cooldown > 0) {
 		// log_message("scr_click_left: clicked and set cooldown!");
-		// show_debug_message_adv($"{array_to_string_list(debug_get_callstack())}");
+		// global.logger.debug($"{array_to_string_list(debug_get_callstack())}");
 		obj_controller.cooldown = cooldown * delta_time/1000000;
 		if(is_debug_overlay_open()){
-			show_debug_message_adv($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+			global.logger.debug($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
 		}
 	} else if (!controller_exist) {
 		var main_menu_exists = instance_exists(obj_main_menu);
@@ -132,7 +132,7 @@ function scr_click_left(cooldown = 60, lock_bypass = false){
 			} else if (cooldown > 0) {
 				obj_main_menu.cooldown = cooldown * delta_time/1000000;
 				if(is_debug_overlay_open()){
-					show_debug_message_adv($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+					global.logger.debug($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
 				}
 			}
 		} else if (creation_screen_exists) {
@@ -143,14 +143,14 @@ function scr_click_left(cooldown = 60, lock_bypass = false){
 			} else if (cooldown > 0) {
 				obj_creation.cooldown = cooldown * delta_time/1000000;
 				if(is_debug_overlay_open()){
-					show_debug_message_adv($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+					global.logger.debug($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
 				}
 			}
 		}
 	}
 
 	if(is_debug_overlay_open()){
-		show_debug_message_adv($"Mouse Clicked! {array_to_string_list(debug_get_callstack(), true)}");
+		global.logger.debug($"Mouse Clicked! {array_to_string_list(debug_get_callstack(), true)}");
 	}
 
 	return mouse_clicked;

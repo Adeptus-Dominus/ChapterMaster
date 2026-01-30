@@ -1,5 +1,5 @@
 try {
-    // show_debug_message_adv("alarm 7 start");
+    // global.logger.debug("alarm 7 start");
     audio_stop_sound(snd_battle);
     audio_play_sound(snd_royal,0,true);
     audio_sound_gain(snd_royal, 0, 0);

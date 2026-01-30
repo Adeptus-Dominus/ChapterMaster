@@ -651,7 +651,7 @@ function trial_map(trial_name){
 /// @mixin obj_ini
 function scr_initialize_custom() {
 
-	// show_debug_message_adv("Executing scr_initialize_custom");
+	// global.logger.debug("Executing scr_initialize_custom");
 	
 	progenitor = obj_creation.founding;
 	successors = obj_creation.successors;
@@ -861,7 +861,7 @@ function scr_initialize_custom() {
 
 	var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
 	// log_message(ship_summary_str);
-	// show_debug_message_adv(ship_summary_str);
+	// global.logger.debug(ship_summary_str);
 
 	if (battle_barges>=1){
 	 	for (v=0;v<battle_barges;v++){
@@ -1231,7 +1231,7 @@ function scr_initialize_custom() {
 		for (var s = 0; s < array_length(c_specialist_names); s++) {
 			var s_name = c_specialist_names[s];
 			var s_val = struct_get(c_specialists, s_name);
-			// show_debug_message_adv($"updating specialist {s_name} with {s_val})");
+			// global.logger.debug($"updating specialist {s_name} with {s_val})");
 			switch (s_name) {
 				case "chaplains":
 					chaplains = chaplains + real(s_val);
@@ -1504,7 +1504,7 @@ function scr_initialize_custom() {
 						var value = c_roles[$ c_rolename][$ attribute];
 						// var dbg_m = $"role {c_roleid} {c_rolename} updated {attribute} to {typeof(value)} {value}";
 						// log_message(dbg_m);
-						// show_debug_message_adv(dbg_m);
+						// global.logger.debug(dbg_m);
 						switch (attribute){
 							case "name": role[defaults_slot][c_roleid] = value; break;
 							case "wep1": wep1[defaults_slot][c_roleid] = value; break;
@@ -1993,32 +1993,32 @@ function scr_initialize_custom() {
 		],
 	};
 
-	// show_debug_message_adv($"squads object for chapter {chapter_name}");
-	// show_debug_message_adv($"{st}");
+	// global.logger.debug($"squads object for chapter {chapter_name}");
+	// global.logger.debug($"{st}");
 
 
 	if(struct_exists(obj_creation, "custom_squads")){
 		var custom_squads = obj_creation.custom_squads;
-		// show_debug_message_adv($"custom roles {custom_squads}");
+		// global.logger.debug($"custom roles {custom_squads}");
 		if(array_length(struct_get_names(custom_squads)) != 0){
 			var names = struct_get_names(st);
-			// show_debug_message_adv($"names {names}");
+			// global.logger.debug($"names {names}");
 			for(var n = 0; n < array_length(names); n++){
 				var squad_name = names[n];
-				// show_debug_message_adv($"matched squad name name {squad_name}");
+				// global.logger.debug($"matched squad name name {squad_name}");
 
 				if(struct_exists(custom_squads, squad_name)){
 					var custom_squad = struct_get(custom_squads, squad_name);
-					// show_debug_message_adv($"overwriting squad layout for {squad_name}");
-					// show_debug_message_adv($"{custom_squad}")
+					// global.logger.debug($"overwriting squad layout for {squad_name}");
+					// global.logger.debug($"{custom_squad}")
 					variable_struct_set(st, squad_name, custom_squad);
 				}
 			}
 		}
 	}
 
-	// show_debug_message_adv($"roles object for chapter {chapter_name} after setting from obj");
-	// show_debug_message_adv($"{st}");
+	// global.logger.debug($"roles object for chapter {chapter_name} after setting from obj");
+	// global.logger.debug($"{st}");
 
 	if (global.chapter_name == "Salamanders") {
 		st[$ "assault_squad"][0] = 
@@ -2221,8 +2221,8 @@ function scr_initialize_custom() {
 
 
 	var _squad_names = struct_get_names(st);
-	// show_debug_message_adv($" {squad_names}");
-	// show_debug_message_adv($"^^^ Squad names");
+	// global.logger.debug($" {squad_names}");
+	// global.logger.debug($"^^^ Squad names");
 	
 
 	for (var st_iter = 0; st_iter < array_length(_squad_names); st_iter++) {
@@ -2252,8 +2252,8 @@ function scr_initialize_custom() {
 		var _class_data = squad_types.tactical_squad.type_data.class;
 		array_push(_class_data, "scout")
 	}
-	// show_debug_message_adv("Squad types");
-	// show_debug_message_adv(squad_types);
+	// global.logger.debug("Squad types");
+	// global.logger.debug(squad_types);
 	#endregion
 
 	for (i = 0; i <= 20; i++) {
@@ -3298,7 +3298,7 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 			spawn_unit.update_armour(armour, false, false);
 		}
 		
-		// show_debug_message_adv($"updating coy {company}:{slot} {role_name} armour to {armour}: {_msg} : {spawn_unit.armour()} : {obj_ini.armour[company][slot]}");
+		// global.logger.debug($"updating coy {company}:{slot} {role_name} armour to {armour}: {_msg} : {spawn_unit.armour()} : {obj_ini.armour[company][slot]}");
 	}
 	if(gear != ""){
 		if(gear == "default"){

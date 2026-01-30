@@ -243,7 +243,7 @@ function unit_stat_growth(grow_stat=false){
             return undefined;
         }
 	} else {
-		// show_debug_message_adv($"{total_traited}")
+		// global.logger.debug($"{total_traited}")
 		return stat_gain_chances;
 
 	}

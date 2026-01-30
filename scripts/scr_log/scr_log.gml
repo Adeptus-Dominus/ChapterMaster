@@ -4,6 +4,14 @@
 #macro STR_error_message $"The error log is automatically copied into your clipboard and a copy is created at: \nC:>Users>(UserName)>AppData>Local>ChapterMaster>Logs\n\nPlease, follow these steps:\n1) Create a bug report on our 'Chapter Master Discord' server.\n2) Press CTRL+V to paste the error log.\n3) Title the report with the error log's first line.\n4) If the log isn't pasted, locate and attach the latest error log file.\n\nThank you!"
 #macro STR_error_message_ps $"P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum."
 
+enum eLOG_LEVEL {
+    Debug,
+    Info,
+    Warning,
+    Error,
+    Critical
+}
+
 /// @description Logs the _message into a file in the Logs folder.
 /// @param {string} _message - The message to log.
 function create_error_file(_message) {
@@ -216,17 +224,70 @@ function os_type_format(_os_type) {
     }
 }
 
-/// @func show_debug_message_adv(_message)
-/// @desc Prints a debug message to the console prefixed with the time, source object, event, and line number.
-/// @param {Any} _message  The value or string to be logged.
-function show_debug_message_adv(_message) {
-    var _stack = debug_get_callstack();
-    
-    // _stack[0] is this 'log' function itself
-    // _stack[1] is the script/object event that called this
-    var _caller = array_length(_stack) > 1 ? _stack[1] : "unknown";
-    
-    var _time = string_format(current_hour, 2, 0) + ":" + string_format(current_minute, 2, 0) + ":" + string_format(current_second, 2, 0);
+/// @function Logger() constructor
+/// @description A Python-inspired logger that traces the callsite and timestamp for every message.
+function Logger() constructor {
+    static active_level = eLOG_LEVEL.Debug;
 
-    show_debug_message($"{_time} | DEBUG | {_caller} >> {_message}");
+    /// @description Extracts the calling script and line number.
+    /// @returns {string}
+    static _get_caller = function() {
+        var _stack = debug_get_callstack(4);
+        if (array_length(_stack) < 4) {
+            return "unknown";
+        }
+
+        var _raw = _stack[3];
+        var _clean = clean_stacktrace_line(_raw);
+
+        return _clean;
+    };
+
+    static _write = function(_level, _level_label, _message, _exception = "") {
+        if (_level < active_level) {
+            return;
+        }
+
+        var _t = date_current_datetime();
+        var _time = $"{format_time(date_get_hour(_t))}:{format_time(date_get_minute(_t))}:{format_time(date_get_second(_t))}";
+        var _caller = _get_caller();
+
+        var _out = $"{_time} | {_level_label} | {_caller} >> {_message}";
+
+        if (_exception != "") {
+            _out += $"\n{_exception}";
+        }
+
+        show_debug_message(_out);
+    };
+
+    /// @param {Any} message
+    static debug = function(_message) {
+        _write(eLOG_LEVEL.Debug, "DEBUG", _message);
+    };
+
+    /// @param {Any} message
+    static info = function(_message) {
+        _write(eLOG_LEVEL.Info, "INFO", _message);
+    };
+
+    /// @param {Any} message
+    static warn = function(_message) {
+        _write(eLOG_LEVEL.Warning, "WARN", _message);
+    };
+
+    /// @param {Any} message
+    static error = function(_message) {
+        _write(eLOG_LEVEL.Error, "ERROR", _message);
+    };
+
+    /// @param {Any} message
+    static critical = function(_message) {
+        _write(eLOG_LEVEL.Critical, "CRITICAL", _message);
+    };
+
+    /// @param {Any} message
+    static exception = function(_message, _exception) {
+        _write(eLOG_LEVEL.Error, "ERROR", _message, _exception);
+    };
 }
