@@ -614,7 +614,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
         var _y2 = yy + _string_h;
 
         var _mouse_hover = scr_hit(_x1, _y1, _x2, _y2);
-        var _mouse_click = scr_click_left();
+        var _mouse_click = scr_click_left(0, true);
         var _enter_pressed = press_exclusive(vk_enter);
 
         if (cooloff == 0) {
@@ -1256,7 +1256,7 @@ function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x
             draw_set_blend_mode(bm_normal);
 
             oscillate_down = true;
-            is_clicked = scr_click_left();
+            is_clicked = scr_click_left(0, true);
         } else {
             if (oscillate_down) {
                 oscillate += 0.2;
