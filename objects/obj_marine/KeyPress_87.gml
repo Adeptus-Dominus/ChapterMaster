@@ -1,3 +1,1 @@
-
-wounded=choose(0,0,0,0,8);
-
+wounded = choose(0, 0, 0, 0, 8);

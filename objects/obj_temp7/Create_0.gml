@@ -1,7 +1,4 @@
-
-num=0;
-loc="";
-managing=0;
-type="";
-
-
+num = 0;
+loc = "";
+managing = 0;
+type = "";

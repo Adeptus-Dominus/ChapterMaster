@@ -97,7 +97,6 @@ function __global_object_depths() {
     global.__objectDepths[86] = -999999999; // obj_halp
     global.__objectDepths[87] = -11; // obj_fleet_show
 
-
     global.__objectNames[0] = "obj_fleet";
     global.__objectNames[1] = "obj_circular";
     global.__objectNames[2] = "obj_fleet_spawner";
@@ -187,16 +186,13 @@ function __global_object_depths() {
     global.__objectNames[86] = "obj_halp";
     global.__objectNames[87] = "obj_fleet_show";
 
-
     // create another array that has the correct entries
     var len = array_length_1d(global.__objectDepths);
     global.__objectID2Depth = [];
-    for( var i=0; i<len; ++i ) {
-        var objID = asset_get_index( global.__objectNames[i] );
+    for (var i = 0; i < len; ++i) {
+        var objID = asset_get_index(global.__objectNames[i]);
         if (objID >= 0) {
-            global.__objectID2Depth[ objID ] = global.__objectDepths[i];
+            global.__objectID2Depth[objID] = global.__objectDepths[i];
         } // end if
     } // end for
-
-
 }

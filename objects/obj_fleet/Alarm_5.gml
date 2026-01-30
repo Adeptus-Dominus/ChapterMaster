@@ -1,4 +1,3 @@
-
-if (combat_end=170) then room_speed=30;
-
-
+if (combat_end == 170) {
+    room_speed = 30;
+}

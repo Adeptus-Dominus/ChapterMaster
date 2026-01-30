@@ -1,4 +1,4 @@
-function draw_sprite_rectangle(sprite_index, subimage, x1, y1, x2, y2){
+function draw_sprite_rectangle(sprite_index, subimage, x1, y1, x2, y2) {
     var w = x1 - x2;
     var h = y1 - y2;
     draw_sprite_stretched(sprite_index, subimage, x1, y1, w, h);
@@ -15,4 +15,3 @@ function draw_centered_sprite_stretched(sprite_index, subimage, width, height) {
     // Draw the stretched sprite at the center of the screen
     draw_sprite_stretched(sprite_index, subimage, _x_center, _y_center, width, height);
 }
-

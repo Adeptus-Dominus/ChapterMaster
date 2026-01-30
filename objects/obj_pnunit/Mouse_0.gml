@@ -1,4 +1,3 @@
-
 /*show_message("Engaged "+string(engaged)+"
 "+string(dudes_num[1])+"x "+string(dudes[1])+"
 "+string(dudes_num[2])+"x "+string(dudes[2])+"
@@ -11,7 +10,6 @@
 "+string(dudes_num[9])+"x "+string(dudes[9])+"
 "+string(dudes_num[10])+"x "+string(dudes[10]));
 */
-
 
 /*show_message("Engaged "+string(engaged)+"
 "+string(wep_num[1])+"x "+string(wep[1])+": ATT"+string(att[1])+" ARP"+string(apa[1])+" solo:"+string(wep_solo[1])+"
@@ -29,7 +27,6 @@
 
 /*var blarg;blarg=wep;
 show_message(blarg);*/
-
 
 /*show_message("Engaged "+string(engaged)+"
 "+string(dudes_num[1])+"x "+string(dudes[1])+"
@@ -49,8 +46,10 @@ show_message(blarg);*/
 "+string(dudes_num[15])+"x "+string(dudes[15])+"
 "+string(dudes_num[16])+"x "+string(dudes[16]));*/
 
-var i=0;
-repeat(50){i+=1;
-    if (marine_type[i]!="") then show_message(string(i)+", "+string(marine_type[i])+", HP: "+string(marine_hp[i]));
+var i = 0;
+repeat (50) {
+    i += 1;
+    if (marine_type[i] != "") {
+        show_message(string(i) + ", " + string(marine_type[i]) + ", HP: " + string(marine_hp[i]));
+    }
 }
-

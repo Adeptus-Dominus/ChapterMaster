@@ -1,4 +1,3 @@
-
 /*instance_activate_object(obj_pnunit);
 
 show_message("Engaged "+string(engaged)+"
@@ -18,7 +17,6 @@ show_message("Engaged "+string(engaged)+"
 "+string(dudes_num[14])+"x "+string(dudes[14])+" "+string(dudes_vehicle[14])+"
 "+string(dudes_num[15])+"x "+string(dudes[15])+" "+string(dudes_vehicle[15])+"
 "+string(dudes_num[16])+"x "+string(dudes[16])+" "+string(dudes_vehicle[16]));*/
-
 
 /* */
 /*  */

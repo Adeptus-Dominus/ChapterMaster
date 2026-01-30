@@ -1,21 +1,21 @@
 global.tag_maintenance_values = {
-    "heavy_ranged" : 0.5,
-    "power" : 0.5,
-    "ancient" : 1.0,
-    "plasma" : 0.8,
-    "melta" : 0.8,
-    "las" : 0.1,
-    "bolt" : 0.01,
-    "chain" : 0.01,
-    "flame" : 0.02,
-    "xenos" : 1,
-    "dreadnought" : 0.6,
-    "vehicle" : 0.4,
-    "terminator" : 0.6,
-}
+    "heavy_ranged": 0.5,
+    "power": 0.5,
+    "ancient": 1.0,
+    "plasma": 0.8,
+    "melta": 0.8,
+    "las": 0.1,
+    "bolt": 0.01,
+    "chain": 0.01,
+    "flame": 0.02,
+    "xenos": 1,
+    "dreadnought": 0.6,
+    "vehicle": 0.4,
+    "terminator": 0.6,
+};
 
 global.tag_recovery_values = {
-    "terminator" : 30,
+    "terminator": 30,
 };
 
 function EquipmentStruct(item_data, core_type, quality_request = "none", arti_struct = -1) constructor {
@@ -75,21 +75,21 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
     // Placeholder maintenance values;
     if (maintenance == 0) {
         var _maintenance_names = struct_get_names(global.tag_maintenance_values);
-        for (var i=0;i<array_length(_maintenance_names);i++){
-            if (has_tag(_maintenance_names[i])){
-                maintenance += global.tag_maintenance_values[$_maintenance_names[i]];
+        for (var i = 0; i < array_length(_maintenance_names); i++) {
+            if (has_tag(_maintenance_names[i])) {
+                maintenance += global.tag_maintenance_values[$ _maintenance_names[i]];
             }
         }
     }
 
-    if (recovery_chance == 0){
+    if (recovery_chance == 0) {
         var _recover_values = struct_get_names(global.tag_recovery_values);
-        for (var i=0;i<array_length(_recover_values);i++){
-            if (has_tag(_recover_values[i])){
-                recovery_chance += global.tag_recovery_values[$_recover_values[i]];
+        for (var i = 0; i < array_length(_recover_values); i++) {
+            if (has_tag(_recover_values[i])) {
+                recovery_chance += global.tag_recovery_values[$ _recover_values[i]];
             }
         }
-        recovery_chance = clamp(recovery_chance, 0, 100);        
+        recovery_chance = clamp(recovery_chance, 0, 100);
     }
 
     // All methods and functions are bllow;
@@ -114,10 +114,50 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
         }
         switch (item_type) {
             default:
-                stat_order = ["description", "special_description", "quality", "armour_value", "damage_resistance_mod", "hp_mod", "ranged_mod", "melee_mod", "attack", "spli", "range", "ammo", "melee_hands", "ranged_hands", "maintenance", "special_properties", "req_exp", "tags", "specials"];
+                stat_order = [
+                    "description",
+                    "special_description",
+                    "quality",
+                    "armour_value",
+                    "damage_resistance_mod",
+                    "hp_mod",
+                    "ranged_mod",
+                    "melee_mod",
+                    "attack",
+                    "spli",
+                    "range",
+                    "ammo",
+                    "melee_hands",
+                    "ranged_hands",
+                    "maintenance",
+                    "special_properties",
+                    "req_exp",
+                    "tags",
+                    "specials"
+                ];
                 break;
             case "weapon":
-                stat_order = ["description", "special_description", "quality", "attack", "spli", "range", "ammo", "ranged_mod", "melee_mod", "armour_value", "hp_mod", "damage_resistance_mod", "melee_hands", "ranged_hands", "maintenance", "special_properties", "req_exp", "tags", "specials"];
+                stat_order = [
+                    "description",
+                    "special_description",
+                    "quality",
+                    "attack",
+                    "spli",
+                    "range",
+                    "ammo",
+                    "ranged_mod",
+                    "melee_mod",
+                    "armour_value",
+                    "hp_mod",
+                    "damage_resistance_mod",
+                    "melee_hands",
+                    "ranged_hands",
+                    "maintenance",
+                    "special_properties",
+                    "req_exp",
+                    "tags",
+                    "specials"
+                ];
                 break;
         }
 
@@ -208,17 +248,14 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
                             array_push(special_properties_array, special_properties[k]);
                         }
                     }
-                    if (arp=4){
-                        array_push(special_properties_array, "Anti Vehicle")
-                    } 
-                    else if (arp=1){
-                        array_push(special_properties_array, "Low Penetration")
-                    }
-					else if (arp=2){
-                        array_push(special_properties_array, "Medium Penetration")
-                    }
-					else if (arp=3){
-                        array_push(special_properties_array, "High Penetration")
+                    if (arp == 4) {
+                        array_push(special_properties_array, "Anti Vehicle");
+                    } else if (arp == 1) {
+                        array_push(special_properties_array, "Low Penetration");
+                    } else if (arp == 2) {
+                        array_push(special_properties_array, "Medium Penetration");
+                    } else if (arp == 3) {
+                        array_push(special_properties_array, "High Penetration");
                     }
                     if (array_length(second_profiles) > 0) {
                         for (var h = 0; h < array_length(second_profiles); h++) {
@@ -369,7 +406,11 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
 function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_class = false, quality_request = "standard", arti_struct = -1) {
     var item_data_set = false;
     var equip_area = false;
-    gear_areas = ["gear", "armour", "mobility"];
+    gear_areas = [
+        "gear",
+        "armour",
+        "mobility"
+    ];
     if (search_area == "any") {
         data_found = false;
         for (i = 0; i < 3; i++) {
@@ -435,7 +476,7 @@ function quality_string_conversion(quality_request) {
         master_crafted: "Master Crafted",
         artificer: "Articifer",
         artifact: "Artifact",
-        exemplary: "Exemplary"
+        exemplary: "Exemplary",
     };
     if (struct_exists(quality_conversions, quality_request)) {
         return quality_conversions[$ quality_request];
@@ -444,12 +485,12 @@ function quality_string_conversion(quality_request) {
     }
 }
 
-function gen_item_tooltip(item){
+function gen_item_tooltip(item) {
     var _tooltip = "";
-    var _equip_data=gear_weapon_data("any", item);
+    var _equip_data = gear_weapon_data("any", item);
 
-    if (is_struct(_equip_data)){
-        _tooltip=$"{_equip_data.item_tooltip_desc_gen()}";
+    if (is_struct(_equip_data)) {
+        _tooltip = $"{_equip_data.item_tooltip_desc_gen()}";
     }
 
     return _tooltip;

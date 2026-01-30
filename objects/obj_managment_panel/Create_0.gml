@@ -13,11 +13,11 @@ italic[0] = 0;
 bold[0] = 0;
 var i;
 i = 0;
-repeat(30) {
+repeat (30) {
     i += 1;
     line[i] = "";
     italic[i] = 0;
-    bold[i] = 0
+    bold[i] = 0;
 }
 
 slate_panel = new DataSlate();

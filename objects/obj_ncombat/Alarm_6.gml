@@ -1,5 +1,6 @@
-
-if (battle_over=1) then exit;
+if (battle_over == 1) {
+    exit;
+}
 
 /*if (messages_to_show = 24){
     if (enemy_forces<=0) or (!instance_exists(obj_enunit)) and (defeat_message=0){defeat_message=1;

@@ -1,6 +1,5 @@
 function find_open_artifact_slot() {
-    var i = 0,
-        last_artifact = -1;
+    var i = 0, last_artifact = -1;
     for (var i = 0; i < array_length(obj_ini.artifact); i++) {
         if (last_artifact == -1) {
             if (obj_ini.artifact[i] == "") {
@@ -12,22 +11,18 @@ function find_open_artifact_slot() {
     return last_artifact;
 }
 
-function scr_add_artifact(artifact_type="random", artifact_tags="", is_identified=4, artifact_location = "", ship_id) {
+function scr_add_artifact(artifact_type = "random", artifact_tags = "", is_identified = 4, artifact_location = "", ship_id) {
     last_artifact = find_open_artifact_slot();
     if (last_artifact == -1) {
         exit;
     }
     var tags = [];
-    var good = true,
-        new_tags;
+    var good = true, new_tags;
     var rand1 = floor(random(100)) + 1;
     var rand2 = floor(random(100)) + 1;
 
     var base_type = "";
-	var base_type_detail = "",
-        t3 = "",
-        t4 = "",
-        t5 = "";
+    var base_type_detail = "", t3 = "", t4 = "", t5 = "";
 
     if ((artifact_type == "random") || (artifact_type == "random_nodemon")) {
         if (good) {
@@ -304,7 +299,12 @@ function ArtifactStruct(Index) constructor {
 
     static can_equip = function() {
         _can_equip = true;
-        var none_equips = ["Statue", "Casket", "Chalice", "Robot"];
+        var none_equips = [
+            "Statue",
+            "Casket",
+            "Chalice",
+            "Robot"
+        ];
         if (array_contains(none_equips, type())) {
             _can_equip = false;
         }
@@ -313,8 +313,8 @@ function ArtifactStruct(Index) constructor {
 
     static ship_id = function() {
         var _index = obj_ini.artifact_sid[index] - 500;
-        if (_index >= array_length(obj_ini.ship_location)){
-            obj_ini.artifact_sid[index] = 500 + array_length(obj_ini.ship_location) -1;
+        if (_index >= array_length(obj_ini.ship_location)) {
+            obj_ini.artifact_sid[index] = 500 + array_length(obj_ini.ship_location) - 1;
         }
         return obj_ini.artifact_sid[index] - 500;
     };
@@ -379,7 +379,11 @@ function ArtifactStruct(Index) constructor {
     };
 
     static inquisition_disaprove = function() {
-        var inquis_tags = ["daemonic", "chaos_gift", "chaos"];
+        var inquis_tags = [
+            "daemonic",
+            "chaos_gift",
+            "chaos"
+        ];
         if (has_tag("inq")) {
             return false;
         } else {
@@ -401,7 +405,20 @@ function ArtifactStruct(Index) constructor {
         #macro ART_NECRONS []
 
         var faction_preferences = [
-            [], ART_PLAYER, ART_IMPERIUM, ART_MECHANICUS, ART_INQUISITION, ART_ECCLESIARCHY, ART_ELDAR, ART_ORK, ART_TAU, ART_TYRANIDS, ART_CHAOS, ART_CHAOS, ART_TYRANIDS, ART_NECRONS
+            [],
+            ART_PLAYER,
+            ART_IMPERIUM,
+            ART_MECHANICUS,
+            ART_INQUISITION,
+            ART_ECCLESIARCHY,
+            ART_ELDAR,
+            ART_ORK,
+            ART_TAU,
+            ART_TYRANIDS,
+            ART_CHAOS,
+            ART_CHAOS,
+            ART_TYRANIDS,
+            ART_NECRONS
         ];
         if (faction < 0 || faction >= array_length(faction_preferences)) {
             // Logging or fallback
@@ -421,7 +438,7 @@ function ArtifactStruct(Index) constructor {
 
     static destroy_arti = function() {
         if (has_tag("daemonic")) {
-			var _ship_id = ship_id();
+            var _ship_id = ship_id();
             if (_ship_id > 0) {
                 var demonSummonChance = roll_dice_chapter(1, 100, "high");
 
@@ -550,16 +567,16 @@ function ArtifactStruct(Index) constructor {
         obj_ini.artifact_equipped[index] = false;
     };
 
-    static equip_on_unit = function(unit, slot=-1){
-        var _item  = determine_base_type();
-        if (_item == "mobility"){
+    static equip_on_unit = function(unit, slot = -1) {
+        var _item = determine_base_type();
+        if (_item == "mobility") {
             unit.update_mobility_item(index);
-        } else if (_item == "gear"){
+        } else if (_item == "gear") {
             unit.update_gear(index);
-        } else if (_item == "armour"){
+        } else if (_item == "armour") {
             unit.update_armour(index);
-        } else if (_item == "weapon"){
-            if (slot == -1 || slot == 0){
+        } else if (_item == "weapon") {
+            if (slot == -1 || slot == 0) {
                 unit.update_weapon_one(index);
             } else {
                 unit.update_weapon_two(index);
@@ -580,7 +597,7 @@ function ArtifactStruct(Index) constructor {
             pip.cooldown = 8;
             obj_controller.cooldown = 8;
         }
-    }
+    };
 
     custom_data = {};
     name = "";
@@ -602,9 +619,9 @@ function corrupt_artifact_collectors(last_artifact) {
                             _unit.edit_corruption(choose(0, 2, 4, 6, 8));
                         }
                     } else if (obj_controller.man[i] == "vehicle" && is_array(_unit)) {
-                        var _val = get_deep_array(obj_ini.veh_chaos,_unit)
+                        var _val = get_deep_array(obj_ini.veh_chaos, _unit);
                         _val += choose(0, 2, 4, 6, 8);
-                        alter_deep_array(obj_ini.veh_chaos,_unit, _val) 
+                        alter_deep_array(obj_ini.veh_chaos, _unit, _val);
                     }
                 }
             }
@@ -614,15 +631,16 @@ function corrupt_artifact_collectors(last_artifact) {
     }
 }
 
-function fetch_artifact(index){
+function fetch_artifact(index) {
     if (index < 0 || index >= array_length(obj_ini.artifact_struct)) {
-       return undefined;
+        return undefined;
     }
     return obj_ini.artifact_struct[index];
 }
+
 function delete_artifact(index) {
     if (index < array_length(obj_ini.artifact)) {
-        with(obj_ini) {
+        with (obj_ini) {
             artifact_struct[index].unequip_from_unit();
             artifact[index] = "";
             artifact_tags[index] = [];
@@ -640,56 +658,41 @@ function delete_artifact(index) {
             }
         }*/
         obj_controller.artifacts -= 1;
-        with(obj_controller) {
+        with (obj_controller) {
             set_chapter_arti_data();
         }
     }
 }
 
-
-function equip_artifact_popup_setup(){
+function equip_artifact_popup_setup() {
     instance_destroy(obj_popup);
-    var pop=instance_create(0,0,obj_popup);
-    pop.type=POPUP_TYPE.ARTIFACT_EQUIP;
-    cooldown=8; 
-    with (pop){
+    var pop = instance_create(0, 0, obj_popup);
+    pop.type = POPUP_TYPE.ARTIFACT_EQUIP;
+    cooldown = 8;
+    with (pop) {
         target_company_radio(10000);
-        main_slate = new DataSlate({
-            style : "decorated",
-            XX : 945,
-            YY : 66,
-            set_width : true,
-            width : 635,
-            height : 400,
-        });
+        main_slate = new DataSlate({style: "decorated", XX: 945, YY: 66, set_width: true, width: 635, height: 400});
         companies_select.current_selection = -1;
         companies_select.YY = 110;
-        cancel_button = new UnitButtonObject(
+        cancel_button = new UnitButtonObject({x1: 945, y1: main_slate.YY + main_slate.height, style: "pixel", label: "Cancel"});
+        var _weapon_slot_options = [
             {
-                x1: 945, 
-                y1: main_slate.YY+main_slate.height, 
-                style : "pixel",
-                label : "Cancel"
-            }
-        );
-        var _weapon_slot_options = [ 
-            {
-                str1 : "Weapon One",
-                font : fnt_40k_14b,
-                val : 0
+                str1: "Weapon One",
+                font: fnt_40k_14b,
+                val: 0,
             },
             {
-                str1 : "Weapon Two",
-                font : fnt_40k_14b,
-                val : 0
+                str1: "Weapon Two",
+                font: fnt_40k_14b,
+                val: 0,
             }
-        ]
-        weapon_slot_select = new RadioSet(_weapon_slot_options, "Weapon slot", {max_width : 580, x1:1200, y1:130});
+        ];
+        weapon_slot_select = new RadioSet(_weapon_slot_options, "Weapon slot", {max_width: 580, x1: 1200, y1: 130});
         weapon_slot_select.current_selection = 0;
-    } 
+    }
 }
 
-function equip_artifact_popup_draw(){
+function equip_artifact_popup_draw() {
     arti = obj_ini.artifact_struct[obj_controller.menu_artifact];
     main_slate.draw_with_dimensions();
     draw_set_color(CM_GREEN_COLOR);
@@ -698,25 +701,24 @@ function equip_artifact_popup_draw(){
     draw_text(951 + 312, 48 + 26, $"Equip Artifact ({arti.name})");
     draw_set_font(fnt_40k_12);
     draw_set_halign(fa_left);
-    if (arti.determine_base_type() == "weapon"){
+    if (arti.determine_base_type() == "weapon") {
         weapon_slot_select.draw();
     }
     companies_select.draw();
-    if (companies_select.changed){
-        var _company_marines = collect_role_group("all", "", false, {companies:companies_select.current_selection});
+    if (companies_select.changed) {
+        var _company_marines = collect_role_group("all", "", false, {companies: companies_select.current_selection});
         var _selec_data = {
-            purpose_code : "artifact_equip",
-            number : 1,
-            purpose :$"Equip Artifact ({obj_ini.artifact[obj_controller.menu_artifact]})",
-            artifact : obj_controller.menu_artifact,
-            slot : weapon_slot_select.current_selection,
-        }
+            purpose_code: "artifact_equip",
+            number: 1,
+            purpose: $"Equip Artifact ({obj_ini.artifact[obj_controller.menu_artifact]})",
+            artifact: obj_controller.menu_artifact,
+            slot: weapon_slot_select.current_selection,
+        };
         group_selection(_company_marines, _selec_data);
         instance_destroy();
     }
 
-    if (cancel_button.draw()){
+    if (cancel_button.draw()) {
         instance_destroy();
     }
-
 }

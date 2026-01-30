@@ -1,17 +1,19 @@
 draw_size = min(400, column_size);
 
-if (draw_size > 0){
+if (draw_size > 0) {
     draw_set_alpha(1);
     draw_set_color(c_red);
 
-    if (instance_exists(obj_centerline)){
-        centerline_offset=x-obj_centerline.x;
+    if (instance_exists(obj_centerline)) {
+        centerline_offset = x - obj_centerline.x;
     }
 
-    if (veh_type[1]=="Defenses"){
-        draw_size=0;
-        if (instance_exists(obj_nfort)) then draw_size=400;
-        centerline_offset=135;
+    if (veh_type[1] == "Defenses") {
+        draw_size = 0;
+        if (instance_exists(obj_nfort)) {
+            draw_size = 400;
+        }
+        centerline_offset = 135;
         draw_set_color(c_gray);
     }
 
@@ -34,5 +36,5 @@ if (draw_size > 0){
         draw_block_composition(x1, composition_string);
     }
 
-    draw_block_fadein()
+    draw_block_fadein();
 }

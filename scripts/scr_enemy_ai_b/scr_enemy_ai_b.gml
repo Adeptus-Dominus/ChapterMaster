@@ -2,12 +2,7 @@ function scr_enemy_ai_b() {
     // Imperial Repleneshes numbers
     // If no enemies and guard < pop /470 then increase guardsman
     // If no enemies and population < max_pop then increase by like 1%
-    var rando = 0,
-        success = false,
-        i = 0,
-        is_garrison_force = false,
-        total_garrison = 0,
-        sabotage_force = false;
+    var rando = 0, success = false, i = 0, is_garrison_force = false, total_garrison = 0, sabotage_force = false;
 
     i = 0;
     for (i = 1; i <= planets; i++) {
@@ -45,8 +40,7 @@ function scr_enemy_ai_b() {
 
         // increasing necrons
         if (array_length(p_feature[i]) != 0) {
-            var has_awake_tomb = false,
-                nfleet = 0;
+            var has_awake_tomb = false, nfleet = 0;
             if (awake_tomb_world(p_feature[i]) == 1) {
                 has_awake_tomb = true;
             }
@@ -99,7 +93,7 @@ function scr_enemy_ai_b() {
                         present_fleet[eFACTION.Necrons] += 1;
                     }
                     var enemy_fleets = 0;
-                    with(necron_fleet) {
+                    with (necron_fleet) {
                         if (owner == eFACTION.Necrons) {
                             var ii = 0;
                             ii += capital_number;
@@ -133,15 +127,21 @@ function scr_enemy_ai_b() {
                         necron_fleet.capital_number -= 1;
                         necron_fleet.frigate_number -= necron_fleet2.frigate_number;
                         necron_fleet.escort_number -= necron_fleet2.escort_number;
-                        var nearest_planet_coords = [0, 0];
+                        var nearest_planet_coords = [
+                            0,
+                            0
+                        ];
                         var found_near_planet = false;
-                        with(obj_star) {
+                        with (obj_star) {
                             if (present_fleet[eFACTION.Necrons] == 0) {
                                 if (!array_contains(p_type, "Dead")) {
                                     for (var plan = 1; plan <= planets; plan++) {
                                         if (p_owner[plan] <= 5) {
                                             found_near_planet = true;
-                                            nearest_planet_coords = [x, y];
+                                            nearest_planet_coords = [
+                                                x,
+                                                y
+                                            ];
                                             break;
                                         }
                                     }
@@ -445,9 +445,7 @@ function scr_enemy_ai_b() {
                         p_guardsmen[i] = 0;
                     }
 
-                    var targ = 0,
-                        have = 0,
-                        badd = 1;
+                    var targ = 0, have = 0, badd = 1;
 
                     targ = planets;
                     for (var s = 1; s <= planets; s++) {

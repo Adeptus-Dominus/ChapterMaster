@@ -79,7 +79,7 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
                         col = obj_controller.bat_assault_column;
                         obj_ncombat.assaults += 1;
                     }
-                    if (unit.role() == obj_ini.role[100, 17]) {
+                    if (unit.role() == obj_ini.role[100][17]) {
                         col = obj_controller.bat_librarian_column;
                         obj_ncombat.librarians += 1;
                     }
@@ -193,7 +193,7 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
                         col = obj_controller.bat_command_column;
                         obj_ncombat.important_dudes += 1;
                     }
-                    if (unit.role() == "Chief " + string(obj_ini.role[100, 17])) {
+                    if (unit.role() == "Chief " + string(obj_ini.role[100][17])) {
                         col = obj_controller.bat_command_column;
                         obj_ncombat.important_dudes += 1;
                         if (obj_ncombat.big_mofo > 3) {

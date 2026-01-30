@@ -1,25 +1,27 @@
 // Counts the number of total vehicles for the player
 // TODO this should be function defined in Chapter struct, or something similar
-function scr_vehicle_count(role, location="") {
-
+function scr_vehicle_count(role, location = "") {
     var _vehicle_count = 0;
     var _fetch = fetch_deep_array;
 
-    for (var j = 0; j <=obj_ini.companies; j++) {
+    for (var j = 0; j <= obj_ini.companies; j++) {
         for (var i = 0; i < array_length(obj_ini.veh_role[j]); i++) {
-            var _array_key = [j, i];
+            var _array_key = [
+                j,
+                i
+            ];
 
-             if (_fetch(obj_ini.veh_role, _array_key) != role){
-                continue
-             }
+            if (_fetch(obj_ini.veh_role, _array_key) != role) {
+                continue;
+            }
 
-             if (location==""){
-                _add=true;
-            } else if (!is_array(location)){
+            if (location == "") {
+                _add = true;
+            } else if (!is_array(location)) {
                 _add = _fetch(obj_ini.veh_loc, _array_key) == location;
             } else {
                 var _planet = location[1];
-                var _ship = location[2]
+                var _ship = location[2];
                 var _location = location[0];
                 var is_at_loc = false;
                 var _loc = _fetch(obj_ini.veh_loc, _array_key);
@@ -35,7 +37,7 @@ function scr_vehicle_count(role, location="") {
                     }
                 } else if (_ship == -1 && _planet == 0) {
                     if (_v_ship > -1) {
-                        if (obj_ini.ship_location[_v_ship]  == _location) {
+                        if (obj_ini.ship_location[_v_ship] == _location) {
                             is_at_loc = true;
                         }
                     } else if (_loc == _location) {
@@ -43,10 +45,10 @@ function scr_vehicle_count(role, location="") {
                     }
                 }
                 _add = is_at_loc;
-            }   
-            if (!_add){
+            }
+            if (!_add) {
                 continue;
-            }              
+            }
 
             _vehicle_count++;
         }

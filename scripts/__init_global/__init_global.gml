@@ -33,11 +33,11 @@ function __init_global() {
         "Gothic",
         "Wolf Cult",
         "Runic"
-    ];    
-    
-    try{
+    ];
+
+    try {
         load_visual_sets();
-    } catch(_exception){
+    } catch (_exception) {
         handle_exception(_exception);
     }
     global.chapter_name = "None";
