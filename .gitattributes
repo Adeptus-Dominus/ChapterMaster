@@ -1,5 +1,12 @@
+* text working-tree-encoding=UTF-8
+
 # Set the default behavior, in case people don't have core.autocrlf set.
 * text=auto
+
+# For safety
+*.yyp text eol=crlf
+*.yy text eol=crlf
+*.gml text eol=crlf
 
 # Re-classify .yy files (for GMS 2 projects)
 *.yy linguist-language=GML
