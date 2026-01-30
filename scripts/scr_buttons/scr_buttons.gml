@@ -3,6 +3,7 @@
 // --------------------
 
 global.draw_return_stack = [];
+#macro UI_CURSOR_BLINK_RATE 500
 
 /// @function add_draw_return_values()
 /// @description Saves the current draw state (alpha, font, color, halign, valign) to a global stack.
@@ -459,146 +460,190 @@ function PurchaseButton(req) : UnitButtonObject() constructor {
     };
 }
 
-function slider_bar() constructor {
-    x1 = 0;
-    y1 = 0;
-    w = 102;
-    h = 15;
-    value_limits = [0, 0];
-    value_increments = 1;
-    value = 0;
+/// @function SliderBar(_x, _y, _w, _h, _limits, _inc)
+/// @description A functional slider bar for numerical input.
+/// @param {real} _x Starting X position.
+/// @param {real} _y Starting Y position.
+/// @param {real} _w Width of the bar.
+/// @param {real} _h Height of the bar.
+/// @param {array<real>} _limits Array [min, max].
+/// @param {real} _inc Increment step value.
+function SliderBar(_x = 0, _y = 0, _w = 100, _h = 16, _limits = [0, 100], _inc = 1) constructor {
+    xx = _x;
+    yy = _y;
+    width = _w;
+    height = _h;
+    value_limits = _limits;
+    value_increments = _inc;
+    value = _limits[0];
+    
     dragging = false;
-    slider_pos = 0;
 
-    static update = function(data) {
-        var _data_presets = struct_get_names(data);
-        for (var i = 0; i < array_length(_data_presets); i++) {
-            self[$ _data_presets[i]] = data[$ _data_presets[i]];
+    /// @param {struct} _data Struct containing keys to override.
+    static update_data = function(_data) {
+        var _names = struct_get_names(_data);
+        var _count = array_length(_names);
+        var _i = 0;
+        repeat (_count) {
+            var _key = _names[_i];
+            self[$ _key] = _data[$ _key];
+            _i++;
         }
     };
 
-    function draw() {
+    /// @description Returns the current value of the slider.
+    /// @returns {real}
+    static draw = function() {
         add_draw_return_values();
-        if (value < value_limits[0]) {
-            value = value_limits[0];
+        
+        var _mouse_vars = return_mouse_consts();
+        var _mx = _mouse_vars[0];
+        var _my = _mouse_vars[1];
+        var _rect = [xx, yy, xx + width, yy + height];
+        
+        if (point_and_click([_rect[0], _rect[1], _rect[2], _rect[3]])) {
+            dragging = true;
         }
+
         if (dragging) {
-            dragging = mouse_check_button(mb_left);
-        }
-        var _rect = [x1, y1, x1 + w, y1 + h];
-        draw_rectangle_array(_rect, 1);
-        width_increments = w / ((value_limits[1] - value_limits[0]) / value_increments);
-        var __rel_cur_pos = increments * (value - value_limits[0]);
-        var _mouse_pos = return_mouse_consts();
-        var _lit_cur_pos = _rel_cur_pos + x1;
-        if (scr_hit(_rect) && !dragging) {
-            if (point_distance(_lit_cur_pos, 0, _mouse_pos[0], 0) > increments) {
-                if (mouse_check_button(mb_left)) {
-                    dragging = true;
-                }
-            }
-        }
-        if (dragging) {
-            if (_mouse_pos[0] > _rect[2]) {
-                value = value_limits[1];
-            } else if (_mouse_pos[0] < _rect[0]) {
-                value = value_limits[0];
+            if (!mouse_button_held(mb_left)) {
+                dragging = false;
             } else {
-                var mouse_rel = _mouse_pos[0] - x1;
-                var increment_count = mouse_rel / width_increments;
-                value = value_limits[0] + (increment_count * value_increments);
+                var _rel_x = clamp(_mx - xx, 0, width);
+                var _percentage = _rel_x / width;
+                var _total_range = value_limits[1] - value_limits[0];
+                
+                var _raw_val = value_limits[0] + (_percentage * _total_range);
+                value = round(_raw_val / value_increments) * value_increments;
             }
         }
+
+        value = clamp(value, value_limits[0], value_limits[1]);
+
+        draw_set_alpha(1.0);
+        draw_set_color(c_dkgray);
+        draw_rectangle_array(_rect, true);
+        
+        var _knob_pos = ((value - value_limits[0]) / (value_limits[1] - value_limits[0])) * width;
+        draw_set_color(dragging ? c_white : c_gray);
+        draw_rectangle(xx, yy, xx + _knob_pos, yy + height, false);
+        
         pop_draw_return_values();
-    }
+        return value;
+    };
 }
 
-/// @function TextBarArea(XX, YY, Max_width, requires_input)
+/// @function TextBarArea(_x, _y, _max_width, _requires_input)
 /// @constructor
 /// @category UI
 /// @description Input text area with background and cursor handling.
-/// @param {real} XX X position.
-/// @param {real} YY Y position.
-/// @param {real} [Max_width=400] Max width of text bar.
-/// @param {bool} [requires_input=false] If true, input is required.
+/// @param {real} _x X position.
+/// @param {real} _y Y position.
+/// @param {real} [_max_width=400] Max width of text bar.
+/// @param {bool} [_requires_input=false] If true, input is required.
 /// @returns {TextBarArea}
-function TextBarArea(XX, YY, Max_width = 400, requires_input = false) constructor {
+function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) constructor {
+    xx = _x;
+    yy = _y;
+    max_width = _max_width;
+    requires_input = _requires_input;
+
     allow_input = false;
-    self.requires_input = requires_input;
-    xx = XX;
-    yy = YY;
-    max_width = Max_width;
     draw_col = c_gray;
     cooloff = 0;
+    current_text = "";
+
     background = new DataSlate();
     background.draw_top_piece = false;
 
-    // Draw BG
-    current_text = "";
+    static render_logic = function() {
+        draw_set_valign(fa_top);
+        draw_set_halign(fa_center);
+        draw_set_alpha(1);
+        draw_set_font(fnt_fancy);
 
-    static draw = function(string_area) {
+        var _display_string = $"{current_text}";
+        var _text_w = string_width(_display_string);
+
+        draw_text(xx, yy + 2, _display_string);
+
+        if (allow_input) {
+            obj_cursor.image_index = 2;
+
+            var _is_blink_on = (current_time div UI_CURSOR_BLINK_RATE) % 2 == 0;
+            if (_is_blink_on) {
+                var _cursor_x = xx + (_text_w / 2);
+
+                draw_text(_cursor_x, yy + 2, "|");
+            }
+        }
+    };
+
+    render_content = method(self, render_logic);
+
+    static draw = function(_string_area) {
         add_draw_return_values();
+
+        current_text = _string_area;
 
         if (cooloff > 0) {
             cooloff--;
         }
-        if (allow_input) {
-            string_area = keyboard_string;
-        }
-        draw_set_alpha(1);
-        //draw_sprite(spr_rock_bg,0,xx,yy);
-        draw_set_font(fnt_40k_30b);
-        draw_set_halign(fa_center);
-        draw_set_color(draw_col); // CM_GREEN_COLOR
-        var bar_wid = max_width, click_check, string_h;
-        draw_set_alpha(0.25);
-        if (string_area != "") {
-            bar_wid = max(max_width, string_width(string_area));
-        } else {
-            if (requires_input) {
-                draw_set_color(CM_RED_COLOR);
-            } else {
-                draw_set_color(CM_GREEN_COLOR);
-            }
-        }
-        string_h = string_height("LOL");
-        var rect = [xx - (bar_wid / 2), yy, xx + (bar_wid / 2), yy - 8 + string_h];
-        background.XX = rect[0];
-        background.YY = rect[1];
-        background.width = rect[2] - rect[0];
-        background.height = rect[3] - rect[1];
 
-        click_check = point_and_click(rect);
-        obj_cursor.image_index = 0;
+        if (allow_input) {
+            current_text = keyboard_string;
+        }
+
+        var _cursor_padding = string_width("|");
+        var _bar_wid = max_width;
+        var _string_h = string_height("M");
+
+        if (current_text != "") {
+            _bar_wid = max(max_width, string_width($"' {current_text} '") + _cursor_padding + 20);
+            draw_set_color(draw_col);
+        } else {
+            draw_set_color(requires_input ? CM_RED_COLOR : CM_GREEN_COLOR);
+        }
+
+        var _x1 = xx - (_bar_wid / 2);
+        var _y1 = yy;
+        var _x2 = xx + (_bar_wid / 2);
+        var _y2 = yy + _string_h;
+
+        var _mouse_hover = scr_hit(_x1, _y1, _x2, _y2);
+        var _mouse_click = scr_click_left();
+        var _enter_pressed = press_exclusive(vk_enter);
+
         if (cooloff == 0) {
-            if (allow_input && mouse_check_button(mb_left) && !click_check) {
+            // Deactivate on Enter or Clicking Away
+            if (allow_input && (_enter_pressed || (_mouse_click && !_mouse_hover))) {
                 allow_input = false;
                 cooloff = 5;
-            } else if (!allow_input && click_check) {
-                obj_cursor.image_index = 2;
+            } else if (!allow_input && _mouse_click && _mouse_hover) {
+                // Activate on Clicking Inside
                 allow_input = true;
-                keyboard_string = string_area;
+                keyboard_string = current_text;
                 cooloff = 5;
             }
         }
 
-        draw_set_alpha(1);
+        if (_mouse_hover || allow_input) {
+            obj_cursor.image_index = 2;
+        } else {
+            obj_cursor.image_index = 0;
+        }
 
-        draw_set_font(fnt_fancy);
-        current_text = string_area;
-        background.inside_method = function() {
-            draw_set_valign(fa_top);
-            if (!allow_input) {
-                draw_text(xx, yy + 2, $"''{current_text}'' ");
-            }
-            if (allow_input) {
-                obj_cursor.image_index = 2;
-                draw_text(xx, yy + 2, $"''{current_text}|''");
-            }
-        };
+        background.XX = _x1;
+        background.YY = _y1;
+        background.width = _x2 - _x1;
+        background.height = _y2 - _y1;
+        background.inside_method = render_content;
+
         background.draw_with_dimensions();
+
         pop_draw_return_values();
-        return string_area;
+
+        return current_text;
     };
 }
 
@@ -617,7 +662,7 @@ function drop_down(selection, draw_x, draw_y, options, open_marker) {
         draw_set_color(c_red);
         if (array_length(options) > 1) {
             if (scr_hit(drop_down_area)) {
-                current_target = true;
+                obj_controller.current_target = true;
                 var roll_down_offset = 4 + string_height(selection);
                 for (var col = 0; col < array_length(options); col++) {
                     if (options[col] == selection) {
@@ -632,12 +677,12 @@ function drop_down(selection, draw_x, draw_y, options, open_marker) {
                 }
                 if (!scr_hit(draw_x, draw_y, draw_x + 5 + string_width(selection), draw_y + roll_down_offset)) {
                     open_marker = false;
-                    if (current_target) {
-                        current_target = false;
+                    if (obj_controller.current_target) {
+                        obj_controller.current_target = false;
                     }
                 }
             } else {
-                current_target = false;
+                obj_controller.current_target = false;
             }
         }
     }
@@ -1166,77 +1211,96 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords) {
 }
 
 
-function MainMenuButton(sprite=spr_ui_but_1, sprite_hover=spr_ui_hov_1, xx=0, yy=0, Hot_key=-1, Click_function=false) constructor{
-    mouse_enter=0;
-    base_sprite = sprite;
-    hover_sprite = sprite_hover;
-    ossilate = 24;
-    ossilate_down = true;
-    hover_alpha=0;
-    XX=xx;
-    YY=yy;
-    hot_key = Hot_key;
-    clicked=false;
-    click_function = Click_function;
-    static draw = function(xx=XX,yy=YY,text="", x_scale=1, y_scale=1, width=108, height=42){
-        draw_set_valign(fa_top);
-        draw_set_halign(fa_left);
+/// @function MainMenuButton
+/// @description A UI button component featuring hover animations, oscillation effects, and Alt-key shortcut support.
+/// @param {Asset.GMSprite} _sprite The base sprite index for the button.
+/// @param {Asset.GMSprite} _sprite_hover The additive blend sprite used for hover effects.
+/// @param {real} _x The default X coordinate for the button.
+/// @param {real} _y The default Y coordinate for the button.
+/// @param {Constant.VirtualKey} _hot_key The keyboard constant used for Alt + Key activation.
+/// @param {function} _on_click The callback function to execute upon activation.
+function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x = 0, _y = 0, _hot_key = -1, _on_click) constructor {
+    base_sprite = _sprite;
+    hover_sprite = _sprite_hover;
+    xx = _x;
+    yy = _y;
+    hot_key = _hot_key;
+    on_click = _on_click;
+
+    oscillate = 24.0;
+    oscillate_down = true;
+    hover_alpha = 0.0;
+    is_clicked = false;
+
+    static draw = function(_x = xx, _y = yy, _text = "", _x_scale = 1.0, _y_scale = 1.0, _w = 108, _h = 42) {
         add_draw_return_values();
-        clicked=false;
-        height *=y_scale
-        width *=x_scale;
-        if (scr_hit(xx, yy, xx+width, yy+height)){
-            if (ossilate>0){
-                ossilate-=1;
-            }
-            if (ossilate<0){
-                ossilate=0;
-            }
-            if (hover_alpha<1){
-                hover_alpha+=0.42
-            }
+
+        var _final_w = _w * _x_scale;
+        var _final_h = _h * _y_scale;
+        var _is_hovering = scr_hit(_x, _y, _x + _final_w, _y + _final_h);
+
+        is_clicked = false;
+
+        if (_is_hovering) {
+            oscillate = max(0, oscillate - 1.0);
+            hover_alpha = min(1.0, hover_alpha + 0.42);
+
             draw_set_blend_mode(bm_add);
             draw_set_alpha(hover_alpha);
-            draw_sprite(hover_sprite,0,xx,yy);
+            draw_sprite_ext(hover_sprite, 0, _x, _y, _x_scale, _y_scale, 0, c_white, hover_alpha);
             draw_set_blend_mode(bm_normal);
-            ossilate_down = true;
-            clicked = device_mouse_check_button_pressed(0,mb_left);
+
+            oscillate_down = true;
+            is_clicked = scr_click_left();
         } else {
-            if (ossilate_down){
-                if (ossilate<24)then ossilate+=0.2;
-                if (ossilate==24) then ossilate_down=false;
-            } else {
-                if (ossilate>8){
-                    ossilate-=0.2;
+            if (oscillate_down) {
+                oscillate += 0.2;
+                if (oscillate >= 24) {
+                    oscillate_down = false;
                 }
-                if (ossilate==8){
-                    ossilate_down=true;
+            } else {
+                oscillate -= 0.2;
+                if (oscillate <= 8) {
+                    oscillate_down = true;
                 }
             }
-            if (hover_alpha>0){
-                hover_alpha-=0.04
+
+            if (hover_alpha > 0) {
+                hover_alpha -= 0.04;
                 draw_set_blend_mode(bm_add);
                 draw_set_alpha(hover_alpha);
-                draw_sprite(hover_sprite,0,xx,yy);
+                draw_sprite_ext(hover_sprite, 0, _x, _y, _x_scale, _y_scale, 0, c_white, hover_alpha);
                 draw_set_blend_mode(bm_normal);
             }
         }
-        if (hot_key!=-1 && !clicked){
-            clicked = press_with_held(hot_key,vk_alt);
-            //show_debug_message_adv($"{clicked}");
-        }
-        draw_set_alpha(1);
-        draw_sprite(base_sprite,floor(ossilate),xx,yy);
-        draw_set_color(c_white);
-        draw_set_halign(fa_center);
-        draw_set_font(fnt_cul_14);
-        draw_text_ext(xx+(width/2),yy+4, text, 18*y_scale, width-(15*x_scale));
-        if (clicked){
-            if (click_function){
-                click_function();
+
+        if (hot_key != -1 && !is_clicked) {
+            if (press_with_held(hot_key, vk_alt)) {
+                is_clicked = true;
             }
         }
+
+        draw_set_alpha(1.0);
+        draw_sprite_ext(base_sprite, floor(oscillate), _x, _y, _x_scale, _y_scale, 0, c_white, 1.0);
+
+        draw_set_color(c_white);
+        draw_set_halign(fa_center);
+        draw_set_valign(fa_top);
+        draw_set_font(fnt_cul_14);
+
+        var _text_x = _x + (_final_w / 2);
+        var _text_y = _y + (4 * _y_scale);
+        var _sep = 18 * _y_scale;
+        var _line_w = _final_w - (15 * _x_scale);
+
+        draw_text_ext(_text_x, _text_y, _text, _sep, _line_w);
+
+        if (is_clicked && is_callable(on_click)) {
+            on_click();
+        }
+
         pop_draw_return_values();
-        return clicked;
-    }
+        return is_clicked;
+    };
 }
+
