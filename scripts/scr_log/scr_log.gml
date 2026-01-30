@@ -9,7 +9,7 @@ enum eLOG_LEVEL {
     Info,
     Warning,
     Error,
-    Critical
+    Critical,
 }
 
 /// @description Logs the _message into a file in the Logs folder.
@@ -36,7 +36,7 @@ function copy_last_messages_file() {
 /// @param {string} _stacktrace - Optional.
 /// @param {string} _critical - Optional.
 /// @param {string} _report_title - Optional. Preset title for the bug report.
-function handle_error(_header, _message, _stacktrace="", _critical = false, _report_title="") {
+function handle_error(_header, _message, _stacktrace = "", _critical = false, _report_title = "") {
     var _full_message = "";
     var _header_section = "";
     var _info_section = "";
@@ -113,7 +113,7 @@ function handle_error(_header, _message, _stacktrace="", _critical = false, _rep
 /// @param {string} custom_title - Optional custom title for the error popup.
 /// @param {bool} critical - Whether the error is critical (default: false).
 /// @param {string} error_marker - Optional marker for the error.
-function handle_exception(_exception, custom_title=STR_error_message_head, critical=false, error_marker="") {
+function handle_exception(_exception, custom_title = STR_error_message_head, critical = false, error_marker = "") {
     var _header = critical ? STR_error_message_head2 : custom_title;
     var _message = _exception.longMessage;
     var _stacktrace = array_to_string_list(_exception.stacktrace);
@@ -132,7 +132,7 @@ function handle_exception(_exception, custom_title=STR_error_message_head, criti
 /// @param {array} args - Arguments to pass to the function.
 /// @param {function} catch_custom - Custom function to run on error.
 /// @param {array} catch_args - Arguments to pass to the custom function.
-function try_and_report_loop(dev_marker="Generic Error", func, turn_end=true, args=[], catch_custom=0, catch_args=[]) {
+function try_and_report_loop(dev_marker = "Generic Error", func, turn_end = true, args = [], catch_custom = 0, catch_args = []) {
     try {
         method_call(func, args);
     } catch (_exception) {
@@ -146,7 +146,7 @@ function try_and_report_loop(dev_marker="Generic Error", func, turn_end=true, ar
 /// @description Shows a popup for errors triggered by an unexpected condition(s).
 /// @param {string} _message - The message to display to the user.
 /// @param {string} _header - Optional header for the popup (default: "Assertion Error").
-function assert_error_popup(_message, _header="Assertion Error") {
+function assert_error_popup(_message, _header = "Assertion Error") {
     var _stacktrace_array = debug_get_callstack();
 
     array_shift(_stacktrace_array); // throw away the first line, it's this function
@@ -158,7 +158,7 @@ function assert_error_popup(_message, _header="Assertion Error") {
 }
 
 exception_unhandled_handler(function(_exception) {
-    handle_exception(_exception, , true);
+    handle_exception(_exception,, true);
     return 0;
 });
 
@@ -177,7 +177,7 @@ function markdown_codeblock(_message, _language = "") {
 /// @returns {string}
 function format_time(_time) {
     if (_time < 10) {
-        _time = $"0{_time}"
+        _time = $"0{_time}";
     }
     return string(_time);
 }
@@ -214,7 +214,7 @@ function os_type_format(_os_type) {
         os_gdk: "Microsoft GDK",
         os_xboxseriesxs: "Xbox Series X/S",
         os_switch: "Nintendo Switch",
-        os_unknown: "Unknown OS"
+        os_unknown: "Unknown OS",
     };
 
     if (struct_exists(_os_type_dictionary, _os_type)) {

@@ -12,7 +12,7 @@ try {
             var i = 0;
             if (role_number[co] > 0) {
                 for (i = 0; i < array_length(obj_ini.role[co]); i++) {
-                    if (obj_ini.role[co][i] == obj_ini.role[100, role]) {
+                    if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
                         unit = fetch_unit([co, i]);
                         if (unit.squad != "none") {
                             var _squad = fetch_squad(unit.squad);
@@ -125,15 +125,15 @@ try {
         good4 = 0;
         good5 = 0;
 
-        req_armour = obj_ini.armour[100, role];
-        req_wep1 = obj_ini.wep1[100, role];
-        req_wep2 = obj_ini.wep2[100, role];
-        req_gear = obj_ini.gear[100, role];
-        req_mobi = obj_ini.mobi[100, role];
+        req_armour = obj_ini.armour[100][role];
+        req_wep1 = obj_ini.wep1[100][role];
+        req_wep2 = obj_ini.wep2[100][role];
+        req_gear = obj_ini.gear[100][role];
+        req_mobi = obj_ini.mobi[100][role];
 
         for (var co = 0; co < 11; co++) {
             for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
-                if (obj_ini.role[co][i] == obj_ini.role[100, role]) {
+                if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
                     role_number[co] += 1;
 
                     // Weapon1
@@ -207,7 +207,7 @@ try {
                     }
                 }
 
-                if (obj_ini.role[co][i] == obj_ini.role[100, role]) {
+                if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
                     _total_role_gear.add(obj_ini.wep1[co][i]);
                     _total_role_gear.add(obj_ini.wep2[co][i]);
                     _total_role_gear.add(obj_ini.armour[co][i]);
@@ -249,11 +249,11 @@ try {
         }
         total_roles = "";
         if (total_role_number > 0) {
-            total_roles = $"You currently have {total_role_number}x {obj_ini.role[100, role]} across all companies.";
+            total_roles = $"You currently have {total_role_number}x {obj_ini.role[100][role]} across all companies.";
             for (var i = 0; i < 11; i++) {
                 var _company_name = i == 0 ? "HQ" : $"{romanNumerals[i - 1]} Company";
 
-                if ((role_number[i] > 0)) {
+                if (role_number[i] > 0) {
                     total_roles += $" {_company_name}: {role_number[i]};";
                 }
             }

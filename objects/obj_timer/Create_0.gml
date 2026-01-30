@@ -10,4 +10,4 @@ execute_end_function = function() {
     }
     // global.logger.debug("Killing Myself!");
     instance_destroy(self);
-}
+};

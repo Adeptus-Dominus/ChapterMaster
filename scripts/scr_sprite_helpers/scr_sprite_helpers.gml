@@ -3,18 +3,16 @@ function draw_sprite_flipped(_sprite, _subimg, _x, _y) {
     var _sprite_xoffset = sprite_get_xoffset(_sprite);
     _sprite_xoffset *= 2;
 
-    draw_sprite_ext(_sprite, _subimg, _x + _sprite_width - _sprite_xoffset, _y, -1, 1, 0, c_white, 1)
+    draw_sprite_ext(_sprite, _subimg, _x + _sprite_width - _sprite_xoffset, _y, -1, 1, 0, c_white, 1);
 }
 
-
-
 /// @function return_sprite_mirrored(sprite)
 /// @param sprite The sprite index to mirror
 /// @returns A new sprite index that is the mirrored version
 /// @function return_sprite_mirrored(sprite)
 /// @param sprite The sprite index to mirror
 /// @returns A new sprite index that is the mirrored version
-function return_sprite_mirrored(_spr, delete_sprite=true) {
+function return_sprite_mirrored(_spr, delete_sprite = true) {
     var _w = sprite_get_width(_spr);
     var _h = sprite_get_height(_spr);
     var _frames = sprite_get_number(_spr);
@@ -45,7 +43,7 @@ function return_sprite_mirrored(_spr, delete_sprite=true) {
     }
 
     // Optional: delete old sprite to free memory
-    if (delete_sprite){
+    if (delete_sprite) {
         sprite_delete(_spr);
     }
 

@@ -1,15 +1,21 @@
 function uuid_array_implode() {
     var _string = "", i = 0, _uuid_array = argument0, sep = "-";
 
-    repeat 8 { _string += _uuid_array[i++]; }
+    repeat (8) {
+        _string += _uuid_array[i++];
+    }
     _string += sep;
 
-    repeat 3 {
-        repeat 4 { _string += _uuid_array[i++]; }
+    repeat (3) {
+        repeat (4) {
+            _string += _uuid_array[i++];
+        }
         _string += sep;
     }
 
-    repeat 12 { _string += _uuid_array[i++]; }
+    repeat (12) {
+        _string += _uuid_array[i++];
+    }
 
     return _string;
 }
@@ -26,15 +32,18 @@ function dec_to_hex() {
         } else {
             return argument2;
         }
-    }
+    };
 
     var dec, hex, _characters, _selection, byte, hi, lo;
     dec = argument0;
-    if (dec) { hex = ""; } else { hex = "0"; }
+    if (dec) {
+        hex = "";
+    } else {
+        hex = "0";
+    }
     _characters = {
-        numbers : "0123456789",
-        uppercase : "ABCDEF"
-//        lowercase : "abcdef"
+        numbers: "0123456789",
+        uppercase: "ABCDEF", //        lowercase : "abcdef"
     };
     _selection = $"{_characters.numbers}{_characters.uppercase}";
     while (dec) {
@@ -54,7 +63,7 @@ function dec_to_hex() {
 function scr_uuid_generate() {
     var unix_epoch = function() {
         return round(date_second_span(date_create_datetime(1970, 1, 1, 15, 0, 0), date_current_datetime()));
-    }
+    };
 
     // seed randomness with time and since game start, in microseconds
     var _date = get_timer() + (unix_epoch() * 1000000), uuid = array_create(32), _random;
@@ -62,19 +71,19 @@ function scr_uuid_generate() {
     for (var i = 0; i < array_length(uuid); i++) {
         _random = floor((_date + random(1) * 16)) % 16;
 
-        switch i {
-        // Version bit
-        case 12:
-            uuid[i] = "4";
-            break;
-        // Variant bit (RFC 4122 variant 1)
-        case 16:
-            uuid[i] = dec_to_hex(_random & $3|$8);
-            break;
-        // Standard random bits
-        default:
-            uuid[i] = dec_to_hex(_random);
-            break;
+        switch (i) {
+            // Version bit
+            case 12:
+                uuid[i] = "4";
+                break;
+            // Variant bit (RFC 4122 variant 1)
+            case 16:
+                uuid[i] = dec_to_hex(_random & $3 | $8);
+                break;
+            // Standard random bits
+            default:
+                uuid[i] = dec_to_hex(_random);
+                break;
         }
     }
 

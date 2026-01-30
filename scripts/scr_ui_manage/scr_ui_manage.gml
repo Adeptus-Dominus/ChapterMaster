@@ -55,19 +55,19 @@ function load_marines_into_ship(system, ship, units, reload = false) {
             }
 
             if (_unit_ship_id == -1) {
-                if (reload){
-                    if (_is_marine){
+                if (reload) {
+                    if (_is_marine) {
                         _unit.last_ship = {
                             uid: "",
-                            name: ""
+                            name: "",
                         };
                     } else {
-                        set_vehicle_last_ship(_unit, true)
+                        set_vehicle_last_ship(_unit, true);
                     }
                 }
-                continue;                
+                continue;
             }
-            if (_unit_ship_id<array_length(sh_cargo_max)){
+            if (_unit_ship_id < array_length(sh_cargo_max)) {
                 if (sh_cargo[_unit_ship_id] + _unit_size <= sh_cargo_max[_unit_ship_id]) {
                     _load_into_ship(system, _unit_ship_id, units, _unit_size, q, reload);
                     man_sel[q] = 0;
@@ -92,24 +92,16 @@ function load_marines_into_ship(system, ship, units, reload = false) {
 /// @param {struct} role_group_params - Parameters defining the role group
 /// @param {string} purpose - Display purpose for the selection
 /// @param {string} purpose_code - Code that identifies the selection’s purpose
-function command_slot_prompt(search_params, role_group_params, purpose, purpose_code){
+function command_slot_prompt(search_params, role_group_params, purpose, purpose_code) {
     var candidates = collect_role_group(role_group_params.group, role_group_params.location, role_group_params.opposite, search_params);
-    group_selection(candidates, {
-        purpose: purpose,
-        purpose_code: purpose_code,
-        number: 1,
-        target_company: managing,
-        feature: "none",
-        planet: 0,
-        selections: []
-    });
+    group_selection(candidates, {purpose: purpose, purpose_code: purpose_code, number: 1, target_company: managing, feature: "none", planet: 0, selections: []});
 }
 
 /// @desc Displays a selectable prompt for special roles to be assigned.
 /// @param {number} xx - X coordinate for the UI element
 /// @param {number} yy - Y coordinate for the UI element
 /// @param {string} slot_text - The prompt text displayed in the UI
-function command_slot_draw(xx, yy, slot_text){
+function command_slot_draw(xx, yy, slot_text) {
     draw_set_color(c_black);
     draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 0);
     draw_set_color(c_gray);
@@ -126,334 +118,294 @@ function command_slot_draw(xx, yy, slot_text){
     }
 }
 
-function reset_manage_unit_constants(unit){
-    try{
-    if (is_struct(unit_manage_constants)) {
-        gc_struct(unit_manage_constants);
-        delete unit_manage_constants;
-    }
-
-    unit_manage_constants = {};
-    last_unit = [unit.company, unit.marine_number];
-    marine_armour[0] = unit.armour();
-    fix_right = 0;
-    equip_data = unit.unit_equipment_data();
-    unit_manage_constants.faction_owner = "1";
-    if (unit.race() != 1) {
-        unit_manage_constants.owner = unit.race();
-    }
-
-    unit_manage_constants.current_data = last_unit;
-
-    var _damage_res = unit.damage_resistance();
-
-    //armour
-    var _data = {
-        tooltip :$"==Armour==\n {is_struct(equip_data.armour_data) ? equip_data.armour_data.item_tooltip_desc_gen() : ""}",
-        colour : quality_color(unit.armour_quality),
-        max_width : 187,
-    }
-
-    unit_manage_constants.armour_string = new ReactiveString(unit.equipments_qual_string("armour", true), 0,0,_data);
-    // Sets up the description for the equipement of current marine
-
-    // Gear
-
-    var _data = {
-        tooltip : $"==Gear==\n{is_struct(equip_data.gear_data) ? equip_data.gear_data.item_tooltip_desc_gen() : ""}",
-        colour : quality_color(unit.gear_quality),
-        max_width : 187,
-    }
-
-    unit_manage_constants.gear_string = new ReactiveString(unit.equipments_qual_string("gear", true), 0,0,_data);
-
-    //mobility
-    var _data = {
-        tooltip : $"==Back/Mobilitiy==\n{is_struct(equip_data.mobility_data) ? equip_data.mobility_data.item_tooltip_desc_gen() : ""}",
-        colour : quality_color(unit.mobility_item_quality),
-        max_width : 187,
-    }
-
-    unit_manage_constants.mobi_string = new ReactiveString(unit.equipments_qual_string("mobi", true), 0,0,_data);
-
-    var _data = {
-        tooltip : $"==First Weapon==\n{is_struct(equip_data.weapon_one_data) ? equip_data.weapon_one_data.item_tooltip_desc_gen() : ""}",
-        colour : quality_color(unit.weapon_one_quality),
-        max_width : 187,
-    }
-
-    unit_manage_constants.wep1_string = new ReactiveString(unit.equipments_qual_string("wep1", true), 0,0,_data);
-
-    //mobility
-    var _data = {
-        tooltip : $"==Second Weapon==\n{is_struct(equip_data.weapon_two_data) ? equip_data.weapon_two_data.item_tooltip_desc_gen() : ""}",
-        colour : quality_color(unit.weapon_two_quality),
-        max_width : 187,
-    }
-
-    unit_manage_constants.wep2_string = new ReactiveString(unit.equipments_qual_string("wep2", true), 0,0,_data);
-
-
-    // Psyker things
-    var _psionic = "";
-    var _psy_powers_known = unit.powers_known;
-    var _psy_powers_count = array_length(_psy_powers_known);
-    var _tooltip = "";
-    if (_psy_powers_count > 0) {
-        _psionic = $"{unit.psionic}/{_psy_powers_count}";
-        _tooltip = generate_marine_powers_description_string(unit);
-    }
-
-    // Corruption
-    if ((obj_controller.chaos_rating > 0) && (_psionic != "")) {
-        _psionic = $"{_psionic}\n{max(0, unit.corruption())}% Corruption.";
-    }
-
-    unit_manage_constants.psy = new LabeledIcon(spr_icon_psyker, _psionic, 0, 0, {
-        icon_width : 24,
-        icon_height : 24,
-        tooltip: $"==Psychic Stats==\n{_tooltip}",
-    });
-    // Damage Resistance
-
-    var _res_tool = "Health damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.\n\nContributing factors:\n";
-    var equipment_types = ["armour", "weapon_one", "weapon_two", "mobility", "gear"];
-
-    for (var i = 0; i < array_length(equipment_types); i++) {
-        var equipment_type = equipment_types[i];
-        var dr = 0;
-        var name = "";
-        switch (equipment_type) {
-            case "armour":
-                dr = unit.get_armour_data("damage_resistance_mod");
-                name = unit.get_armour_data("name");
-                break;
-            case "weapon_one":
-                dr = unit.get_weapon_one_data("damage_resistance_mod");
-                name = unit.get_weapon_one_data("name");
-                break;
-            case "weapon_two":
-                dr = unit.get_weapon_two_data("damage_resistance_mod");
-                name = unit.get_weapon_two_data("name");
-                break;
-            case "mobility":
-                dr = unit.get_mobility_data("damage_resistance_mod");
-                name = unit.get_mobility_data("name");
-                break;
-            case "gear":
-                dr = unit.get_gear_data("damage_resistance_mod");
-                name = unit.get_gear_data("name");
-                break;
+function reset_manage_unit_constants(unit) {
+    try {
+        if (is_struct(unit_manage_constants)) {
+            gc_struct(unit_manage_constants);
+            delete unit_manage_constants;
         }
-        if (dr != 0) {
-            _res_tool += $"{name}: {dr}%\n";
+
+        unit_manage_constants = {};
+        last_unit = [
+            unit.company,
+            unit.marine_number
+        ];
+        marine_armour[0] = unit.armour();
+        fix_right = 0;
+        equip_data = unit.unit_equipment_data();
+        unit_manage_constants.faction_owner = "1";
+        if (unit.race() != 1) {
+            unit_manage_constants.owner = unit.race();
         }
-    }
-    _res_tool += $"CON: {round(unit.constitution / 2)}%"
 
-    unit_manage_constants.damage_res = new LabeledIcon(spr_icon_iron_halo, $"{_damage_res}%",0,0,{
-        icon_width : 24,
-        icon_height : 24,
-        tooltip: _res_tool,
-    })
-    var _hp_val = $"{round(unit.hp())}/{round(unit.max_health())}";
-    var _hp_tool = "A measure of how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\n";
-    _hp_tool += $"CON: {round(100 * (1 + ((unit.constitution - 40) * 0.025)))}\n";
+        unit_manage_constants.current_data = last_unit;
 
-    for (var i = 0; i < array_length(equipment_types); i++) {
-        var equipment_type = equipment_types[i];
-        var hp_mod = 0;
-        var name = "";
-        switch (equipment_type) {
-            case "armour":
-                hp_mod = unit.get_armour_data("hp_mod");
-                name = unit.get_armour_data("name");
-                break;
-            case "weapon_one":
-                hp_mod = unit.get_weapon_one_data("hp_mod");
-                name = unit.get_weapon_one_data("name");
-                break;
-            case "weapon_two":
-                hp_mod = unit.get_weapon_two_data("hp_mod");
-                name = unit.get_weapon_two_data("name");
-                break;
-            case "mobility":
-                hp_mod = unit.get_mobility_data("hp_mod");
-                name = unit.get_mobility_data("name");
-                break;
-            case "gear":
-                hp_mod = unit.get_gear_data("hp_mod");
-                name = unit.get_gear_data("name");
-                break;
+        var _damage_res = unit.damage_resistance();
+
+        //armour
+        var _data = {
+            tooltip: $"==Armour==\n {is_struct(equip_data.armour_data) ? equip_data.armour_data.item_tooltip_desc_gen() : ""}",
+            colour: quality_color(unit.armour_quality),
+            max_width: 187,
+        };
+
+        unit_manage_constants.armour_string = new ReactiveString(unit.equipments_qual_string("armour", true), 0, 0, _data);
+        // Sets up the description for the equipement of current marine
+
+        // Gear
+
+        var _data = {
+            tooltip: $"==Gear==\n{is_struct(equip_data.gear_data) ? equip_data.gear_data.item_tooltip_desc_gen() : ""}",
+            colour: quality_color(unit.gear_quality),
+            max_width: 187,
+        };
+
+        unit_manage_constants.gear_string = new ReactiveString(unit.equipments_qual_string("gear", true), 0, 0, _data);
+
+        //mobility
+        var _data = {
+            tooltip: $"==Back/Mobilitiy==\n{is_struct(equip_data.mobility_data) ? equip_data.mobility_data.item_tooltip_desc_gen() : ""}",
+            colour: quality_color(unit.mobility_item_quality),
+            max_width: 187,
+        };
+
+        unit_manage_constants.mobi_string = new ReactiveString(unit.equipments_qual_string("mobi", true), 0, 0, _data);
+
+        var _data = {
+            tooltip: $"==First Weapon==\n{is_struct(equip_data.weapon_one_data) ? equip_data.weapon_one_data.item_tooltip_desc_gen() : ""}",
+            colour: quality_color(unit.weapon_one_quality),
+            max_width: 187,
+        };
+
+        unit_manage_constants.wep1_string = new ReactiveString(unit.equipments_qual_string("wep1", true), 0, 0, _data);
+
+        //mobility
+        var _data = {
+            tooltip: $"==Second Weapon==\n{is_struct(equip_data.weapon_two_data) ? equip_data.weapon_two_data.item_tooltip_desc_gen() : ""}",
+            colour: quality_color(unit.weapon_two_quality),
+            max_width: 187,
+        };
+
+        unit_manage_constants.wep2_string = new ReactiveString(unit.equipments_qual_string("wep2", true), 0, 0, _data);
+
+        // Psyker things
+        var _psionic = "";
+        var _psy_powers_known = unit.powers_known;
+        var _psy_powers_count = array_length(_psy_powers_known);
+        var _tooltip = "";
+        if (_psy_powers_count > 0) {
+            _psionic = $"{unit.psionic}/{_psy_powers_count}";
+            _tooltip = generate_marine_powers_description_string(unit);
         }
-        if (hp_mod != 0) {
-            _hp_tool += $"{name}: {format_number_with_sign(hp_mod)}%\n";
+
+        // Corruption
+        if ((obj_controller.chaos_rating > 0) && (_psionic != "")) {
+            _psionic = $"{_psionic}\n{max(0, unit.corruption())}% Corruption.";
         }
-    }
 
-    unit_manage_constants.hp = new LabeledIcon(spr_icon_health, _hp_val, 0, 0, {
-        icon_width : 24,
-        icon_height : 24,
-        tooltip: _hp_tool,
-    });
+        unit_manage_constants.psy = new LabeledIcon(spr_icon_psyker, _psionic, 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Psychic Stats==\n{_tooltip}"});
+        // Damage Resistance
 
+        var _res_tool = "Health damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.\n\nContributing factors:\n";
+        var equipment_types = [
+            "armour",
+            "weapon_one",
+            "weapon_two",
+            "mobility",
+            "gear"
+        ];
 
-    // -------------------------
-    // Armour Rating
-    // -------------------------
-    var _armour_val = $"{unit.armour_calc()}";
-    var _armour_tool = "Reduces incoming damage at a flat rate. Certain enemies may attack in ways that may bypass your armor entirely, for example power weapons and some warp sorceries.\n\nContributing factors:\n";
-
-    for (var i = 0; i < array_length(equipment_types); i++) {
-        var equipment_type = equipment_types[i];
-        var ac = 0;
-        var name = "";
-        switch (equipment_type) {
-            case "armour":
-                ac = unit.get_armour_data("armour_value");
-                name = unit.get_armour_data("name");
-                break;
-            case "weapon_one":
-                ac = unit.get_weapon_one_data("armour_value");
-                name = unit.get_weapon_one_data("name");
-                break;
-            case "weapon_two":
-                ac = unit.get_weapon_two_data("armour_value");
-                name = unit.get_weapon_two_data("name");
-                break;
-            case "mobility":
-                ac = unit.get_mobility_data("armour_value");
-                name = unit.get_mobility_data("name");
-                break;
-            case "gear":
-                ac = unit.get_gear_data("armour_value");
-                name = unit.get_gear_data("name");
-                break;
-        }
-        if (ac != 0) {
-            _armour_tool += $"{name}: {ac}\n";
-        }
-    }
-
-    if (obj_controller.stc_bonus[1] == 5 || obj_controller.stc_bonus[2] == 3) {
-        _armour_tool += "STC Bonus: x1.05\n";
-    }
-
-    unit_manage_constants.armour = new LabeledIcon(spr_icon_shield2, _armour_val, 0, 0, {
-        icon_width : 24,
-        icon_height : 24,
-        tooltip: _armour_tool,
-    });
-
-    unit_manage_constants.exp = new LabeledIcon(spr_icon_veteran, string(floor(unit.experience)), 0, 0, {
-        icon_width : 24,
-        icon_height : 24,
-        tooltip: $"==Experience==\nA measurement of how battle-hardened the unit is. Provides various bonuses across the board. Every 15 EXP, a new stat is assigned. Hover over the unit’s stats in the marine profile to see projected growth over time.",
-    });
-
-    // Melee Attack
-    var _melee = unit.melee_attack();
-    unit_manage_constants.melee_attack = new LabeledIcon(spr_icon_weapon_skill, $"{round(_melee[0])}", 0, 0, {
-        icon_width : 24,
-        icon_height : 24,
-        tooltip: $"==Melee Attack==\n{_melee[1]}",
-        colour : unit.encumbered_melee? #bf4040 : CM_GREEN_COLOR
-    });
-
-    var _carry = _melee[2];
-    unit_manage_constants.melee_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {
-        icon_width : 24,
-        icon_height : 24,
-        tooltip: $"==Melee Burden==\n{_carry[2]}",
-        colour : unit.encumbered_melee? #bf4040 : CM_GREEN_COLOR
-    });
-
-    // Ranged Attack
-    var _range = unit.ranged_attack();
-    unit_manage_constants.ranged_attack = new LabeledIcon(spr_icon_ballistic_skill, $"{round(_range[0])}", 0, 0, {
-        icon_width : 24,
-        icon_height : 24,
-        tooltip: $"==Ranged Attack==\n{_range[1]}",
-        colour : unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR
-    });
-
-    var _carry = _range[2];
-    unit_manage_constants.ranged_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {
-        icon_width : 24,
-        icon_height : 24,
-        tooltip: $"==Ranged Burden==\n{_carry[2]}",
-        colour : unit.encumbered_ranged? #bf4040 : CM_GREEN_COLOR
-    });
-
-
-
-    // -------------------------
-    // Bionics
-    // -------------------------
-    var _bionic_val = $"{unit.bionics}";
-    var _bionic_tool = "Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight.";
-    _bionic_tool += "\nThere is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going.";
-    _bionic_tool += "\nFor everyone else? It's time for the emperor's mercy.";
-    _bionic_tool += "\n\nCurrent Bionic Augmentations:\n";
-
-    var _body_parts = ARR_body_parts;
-    var _body_parts_display = ARR_body_parts_display;
-
-    for (var part = 0; part < array_length(_body_parts); part++) {
-        if (struct_exists(unit.body[$ _body_parts[part]], "bionic")) {
-            var part_display = _body_parts_display[part];
-            _bionic_tool += $"Bionic {part_display}";
-            switch (part_display) {
-                case "Left Leg":
-                case "Right Leg":
-                    _bionic_tool += " (CON: +2 STR: +1 DEX: -2)\n";
+        for (var i = 0; i < array_length(equipment_types); i++) {
+            var equipment_type = equipment_types[i];
+            var dr = 0;
+            var name = "";
+            switch (equipment_type) {
+                case "armour":
+                    dr = unit.get_armour_data("damage_resistance_mod");
+                    name = unit.get_armour_data("name");
                     break;
-                case "Left Eye":
-                case "Right Eye":
-                    _bionic_tool += " (CON: +1 WIS: +1 DEX: +1)\n";
+                case "weapon_one":
+                    dr = unit.get_weapon_one_data("damage_resistance_mod");
+                    name = unit.get_weapon_one_data("name");
                     break;
-                case "Left Arm":
-                case "Right Arm":
-                    _bionic_tool += " (CON: +2 STR: +2 WS: -1)\n";
+                case "weapon_two":
+                    dr = unit.get_weapon_two_data("damage_resistance_mod");
+                    name = unit.get_weapon_two_data("name");
                     break;
-                case "Torso":
-                    _bionic_tool += " (CON: +4 STR: +1 DEX: -1)\n";
+                case "mobility":
+                    dr = unit.get_mobility_data("damage_resistance_mod");
+                    name = unit.get_mobility_data("name");
                     break;
-                case "Throat":
-                    _bionic_tool += " (CHA: -1)\n";
-                    break;
-                case "Jaw":
-                case "Head":
-                    _bionic_tool += " (CON: +1)\n";
+                case "gear":
+                    dr = unit.get_gear_data("damage_resistance_mod");
+                    name = unit.get_gear_data("name");
                     break;
             }
+            if (dr != 0) {
+                _res_tool += $"{name}: {dr}%\n";
+            }
         }
-    }
+        _res_tool += $"CON: {round(unit.constitution / 2)}%";
 
-    unit_manage_constants.bionics = new LabeledIcon(spr_icon_bionics, _bionic_val, 0, 0, {
-        icon_width : 24,
-        icon_height : 24,
-        tooltip: _bionic_tool,
-    });
+        unit_manage_constants.damage_res = new LabeledIcon(spr_icon_iron_halo, $"{_damage_res}%", 0, 0, {icon_width: 24, icon_height: 24, tooltip: _res_tool});
+        var _hp_val = $"{round(unit.hp())}/{round(unit.max_health())}";
+        var _hp_tool = "A measure of how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\n";
+        _hp_tool += $"CON: {round(100 * (1 + ((unit.constitution - 40) * 0.025)))}\n";
 
-    if (is_struct(unit_manage_image)) {
-        try {
-            unit_manage_image.destroy_image();
+        for (var i = 0; i < array_length(equipment_types); i++) {
+            var equipment_type = equipment_types[i];
+            var hp_mod = 0;
+            var name = "";
+            switch (equipment_type) {
+                case "armour":
+                    hp_mod = unit.get_armour_data("hp_mod");
+                    name = unit.get_armour_data("name");
+                    break;
+                case "weapon_one":
+                    hp_mod = unit.get_weapon_one_data("hp_mod");
+                    name = unit.get_weapon_one_data("name");
+                    break;
+                case "weapon_two":
+                    hp_mod = unit.get_weapon_two_data("hp_mod");
+                    name = unit.get_weapon_two_data("name");
+                    break;
+                case "mobility":
+                    hp_mod = unit.get_mobility_data("hp_mod");
+                    name = unit.get_mobility_data("name");
+                    break;
+                case "gear":
+                    hp_mod = unit.get_gear_data("hp_mod");
+                    name = unit.get_gear_data("name");
+                    break;
+            }
+            if (hp_mod != 0) {
+                _hp_tool += $"{name}: {format_number_with_sign(hp_mod)}%\n";
+            }
         }
-        delete unit_manage_image;
-    }
 
-    unit_manage_image = unit.draw_unit_image();
+        unit_manage_constants.hp = new LabeledIcon(spr_icon_health, _hp_val, 0, 0, {icon_width: 24, icon_height: 24, tooltip: _hp_tool});
 
-    temp[122] = unit.handle_stat_growth();
-    /*if (man[sel]="vehicle"){
+        // -------------------------
+        // Armour Rating
+        // -------------------------
+        var _armour_val = $"{unit.armour_calc()}";
+        var _armour_tool = "Reduces incoming damage at a flat rate. Certain enemies may attack in ways that may bypass your armor entirely, for example power weapons and some warp sorceries.\n\nContributing factors:\n";
+
+        for (var i = 0; i < array_length(equipment_types); i++) {
+            var equipment_type = equipment_types[i];
+            var ac = 0;
+            var name = "";
+            switch (equipment_type) {
+                case "armour":
+                    ac = unit.get_armour_data("armour_value");
+                    name = unit.get_armour_data("name");
+                    break;
+                case "weapon_one":
+                    ac = unit.get_weapon_one_data("armour_value");
+                    name = unit.get_weapon_one_data("name");
+                    break;
+                case "weapon_two":
+                    ac = unit.get_weapon_two_data("armour_value");
+                    name = unit.get_weapon_two_data("name");
+                    break;
+                case "mobility":
+                    ac = unit.get_mobility_data("armour_value");
+                    name = unit.get_mobility_data("name");
+                    break;
+                case "gear":
+                    ac = unit.get_gear_data("armour_value");
+                    name = unit.get_gear_data("name");
+                    break;
+            }
+            if (ac != 0) {
+                _armour_tool += $"{name}: {ac}\n";
+            }
+        }
+
+        if (obj_controller.stc_bonus[1] == 5 || obj_controller.stc_bonus[2] == 3) {
+            _armour_tool += "STC Bonus: x1.05\n";
+        }
+
+        unit_manage_constants.armour = new LabeledIcon(spr_icon_shield2, _armour_val, 0, 0, {icon_width: 24, icon_height: 24, tooltip: _armour_tool});
+
+        unit_manage_constants.exp = new LabeledIcon(spr_icon_veteran, string(floor(unit.experience)), 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Experience==\nA measurement of how battle-hardened the unit is. Provides various bonuses across the board. Every 15 EXP, a new stat is assigned. Hover over the unit’s stats in the marine profile to see projected growth over time."});
+
+        // Melee Attack
+        var _melee = unit.melee_attack();
+        unit_manage_constants.melee_attack = new LabeledIcon(spr_icon_weapon_skill, $"{round(_melee[0])}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Melee Attack==\n{_melee[1]}", colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR});
+
+        var _carry = _melee[2];
+        unit_manage_constants.melee_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Melee Burden==\n{_carry[2]}", colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR});
+
+        // Ranged Attack
+        var _range = unit.ranged_attack();
+        unit_manage_constants.ranged_attack = new LabeledIcon(spr_icon_ballistic_skill, $"{round(_range[0])}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Ranged Attack==\n{_range[1]}", colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR});
+
+        var _carry = _range[2];
+        unit_manage_constants.ranged_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Ranged Burden==\n{_carry[2]}", colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR});
+
+        // -------------------------
+        // Bionics
+        // -------------------------
+        var _bionic_val = $"{unit.bionics}";
+        var _bionic_tool = "Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight.";
+        _bionic_tool += "\nThere is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going.";
+        _bionic_tool += "\nFor everyone else? It's time for the emperor's mercy.";
+        _bionic_tool += "\n\nCurrent Bionic Augmentations:\n";
+
+        var _body_parts = ARR_body_parts;
+        var _body_parts_display = ARR_body_parts_display;
+
+        for (var part = 0; part < array_length(_body_parts); part++) {
+            if (struct_exists(unit.body[$ _body_parts[part]], "bionic")) {
+                var part_display = _body_parts_display[part];
+                _bionic_tool += $"Bionic {part_display}";
+                switch (part_display) {
+                    case "Left Leg":
+                    case "Right Leg":
+                        _bionic_tool += " (CON: +2 STR: +1 DEX: -2)\n";
+                        break;
+                    case "Left Eye":
+                    case "Right Eye":
+                        _bionic_tool += " (CON: +1 WIS: +1 DEX: +1)\n";
+                        break;
+                    case "Left Arm":
+                    case "Right Arm":
+                        _bionic_tool += " (CON: +2 STR: +2 WS: -1)\n";
+                        break;
+                    case "Torso":
+                        _bionic_tool += " (CON: +4 STR: +1 DEX: -1)\n";
+                        break;
+                    case "Throat":
+                        _bionic_tool += " (CHA: -1)\n";
+                        break;
+                    case "Jaw":
+                    case "Head":
+                        _bionic_tool += " (CON: +1)\n";
+                        break;
+                }
+            }
+        }
+
+        unit_manage_constants.bionics = new LabeledIcon(spr_icon_bionics, _bionic_val, 0, 0, {icon_width: 24, icon_height: 24, tooltip: _bionic_tool});
+
+        if (is_struct(unit_manage_image)) {
+            try {
+                unit_manage_image.destroy_image();
+            }
+            delete unit_manage_image;
+        }
+
+        unit_manage_image = unit.draw_unit_image();
+
+        temp[122] = unit.handle_stat_growth();
+        /*if (man[sel]="vehicle"){
     // TODO
 }*/
-    } catch(_exception){
-        //not sure handling with normal method exception could just be a pain here
-    }
+    } catch (_exception) {} //not sure handling with normal method exception could just be a pain here
 }
-function company_specific_management(){
+
+function company_specific_management() {
     add_draw_return_values();
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
@@ -485,35 +437,30 @@ function company_specific_management(){
         }
     }
     // Draw the company followed by chapters name
-    draw_text(800, 64,  $"{_company_name}, {global.chapter_name}");
-    if (managing <= 10 ) {
+    draw_text(800, 64, $"{_company_name}, {global.chapter_name}");
+    if (managing <= 10) {
         var _text_input = management_buttons.company_namer;
-        
+
         obj_ini.company_title[managing] = _text_input.draw(obj_ini.company_title[managing]);
         _allow_shorts = !_text_input.allow_input;
     } else {
         _allow_shorts = true;
     }
-    if (allow_shortcuts){
+    if (allow_shortcuts) {
         allow_shortcuts = _allow_shorts;
     }
-    pop_draw_return_values()
+    pop_draw_return_values();
 }
 
 function alternative_manage_views(x1, y1) {
     //for some reason management_buttons keeps dying so hopefully this will solve the issue until something better can be found
-    if (!is_struct(management_buttons)){
+    if (!is_struct(management_buttons)) {
         init_manage_buttons();
     }
     var _squad_button = management_buttons.squad_toggle;
-    _squad_button.update({
-        x1: x1 + 5,
-        y1: y1 + 6,
-        label: !obj_controller.view_squad && !obj_controller.company_report ? "Squad View" : "Company View",
-        keystroke: keyboard_check_pressed(ord("S")) && allow_shortcuts
-    });
+    _squad_button.update({x1: x1 + 5, y1: y1 + 6, label: !obj_controller.view_squad && !obj_controller.company_report ? "Squad View" : "Company View", keystroke: keyboard_check_pressed(ord("S")) && allow_shortcuts});
 
-    if (company_data.has_squads){
+    if (company_data.has_squads) {
         if (_squad_button.draw(!text_bar)) {
             view_squad = !view_squad;
             if (view_squad) {
@@ -524,24 +471,14 @@ function alternative_manage_views(x1, y1) {
 
     if (!view_squad) {
         var _profile_toggle = management_buttons.profile_toggle;
-        _profile_toggle.update({
-            label: !unit_profile ? "Show Profile" : "Hide Profile",
-            x1: _squad_button.x2,
-            y1: _squad_button.y1,
-            keystroke: keyboard_check_pressed(ord("P")) && allow_shortcuts
-        });
+        _profile_toggle.update({label: !unit_profile ? "Show Profile" : "Hide Profile", x1: _squad_button.x2, y1: _squad_button.y1, keystroke: keyboard_check_pressed(ord("P")) && allow_shortcuts});
         if (_profile_toggle.draw(!text_bar)) {
             unit_profile = !unit_profile;
         }
 
         if (unit_profile) {
             var bio_toggle = management_buttons.bio_toggle;
-            bio_toggle.update({
-                label: !unit_bio ? "Show Bio" : "Hide Bio",
-                x1: _profile_toggle.x2,
-                y1: _profile_toggle.y1,
-                keystroke: keyboard_check_pressed(ord("B")) && allow_shortcuts
-            });
+            bio_toggle.update({label: !unit_bio ? "Show Bio" : "Hide Bio", x1: _profile_toggle.x2, y1: _profile_toggle.y1, keystroke: keyboard_check_pressed(ord("B")) && allow_shortcuts});
             if (bio_toggle.draw(!text_bar)) {
                 unit_bio = !unit_bio;
             }
@@ -564,10 +501,7 @@ function alternative_manage_views(x1, y1) {
     }
 
     var _capture_button = management_buttons.capture_image;
-    _capture_button.update({
-        x1: _last_button_x,
-        y1: _last_button_y
-    });
+    _capture_button.update({x1: _last_button_x, y1: _last_button_y});
 
     if (is_struct(obj_controller.unit_focus) && _capture_button.draw(!text_bar)) {
         // Capture the sprite frame as PNG
@@ -590,7 +524,8 @@ function alternative_manage_views(x1, y1) {
             var index = 0;
             var path;
 
-            for (var i=0;i<=1000;i++){ // safety limit
+            for (var i = 0; i <= 1000; i++) {
+                // safety limit
                 path = base_name + string(index) + extension;
                 if (!file_exists(path)) {
                     break;
@@ -607,12 +542,11 @@ function alternative_manage_views(x1, y1) {
     }
 }
 
-
-function draw_sprite_and_unit_equip_data(){
+function draw_sprite_and_unit_equip_data() {
     draw_set_font(fnt_40k_14);
-    draw_set_halign(fa_left);    
+    draw_set_halign(fa_left);
     // Swap between squad view and normal view
-    company_data.unit_ui_panel.inside_method = function(){
+    company_data.unit_ui_panel.inside_method = function() {
         var _unit_tooltips = [];
         draw_set_color(c_gray);
         var xx = company_data.unit_ui_panel.XX;
@@ -621,7 +555,7 @@ function draw_sprite_and_unit_equip_data(){
         draw_set_font(fnt_40k_14b);
         if (is_struct(obj_controller.unit_focus)) {
             var selected_unit = obj_controller.unit_focus; //unit struct
-            if (!array_equals([selected_unit.company, selected_unit.marine_number], unit_manage_constants.current_data)){
+            if (!array_equals([selected_unit.company, selected_unit.marine_number], unit_manage_constants.current_data)) {
                 reset_manage_unit_constants(selected_unit);
             }
             ///tooltip_text stacks hover over type tooltips into an array and draws them last so as not to create drawing order issues
@@ -672,7 +606,7 @@ function draw_sprite_and_unit_equip_data(){
                     var cur_squad = company_data.grab_current_squad();
                     var sgt_possible = cur_squad.type != "command_squad" && !selected_unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS);
                     if (selected_unit != cur_squad.squad_leader) {
-                        if (point_and_click(draw_unit_buttons([xx + 200 + 50, yy + 329], "Make Sgt", [1, 1], #50a076, , , sgt_possible ? 1 : 0.5)) && sgt_possible) {
+                        if (point_and_click(draw_unit_buttons([xx + 200 + 50, yy + 329], "Make Sgt", [1, 1], #50a076,,, sgt_possible ? 1 : 0.5)) && sgt_possible) {
                             cur_squad.change_sgt(selected_unit);
                         }
                     }
@@ -689,7 +623,7 @@ function draw_sprite_and_unit_equip_data(){
                 y1: yy + 36,
                 text1: "",
                 text2: "",
-                text3: selected_unit.name()
+                text3: selected_unit.name(),
             };
             _name_box.y2 = _name_box.y1 + 20;
             _name_box.y3 = _name_box.y2 + 20;
@@ -709,7 +643,6 @@ function draw_sprite_and_unit_equip_data(){
             draw_set_font(fnt_40k_30b);
             draw_text_transformed_outline(_name_box.x1, _name_box.y3, _name_box.text3, 0.7, 0.7, 0);
 
-
             // Draw unit info
             draw_set_font(fnt_40k_14);
             // Left side of the screen
@@ -719,118 +652,84 @@ function draw_sprite_and_unit_equip_data(){
             // Equipment
             var _armour = unit_manage_constants.armour_string;
 
-            _armour.update({x1:x_left, y1 :yy + 179});
+            _armour.update({x1: x_left, y1: yy + 179});
 
             _armour.draw();
 
             var _gear = unit_manage_constants.gear_string;
 
-            _gear.update({x1:x_left, y1 :yy + 305});
+            _gear.update({x1: x_left, y1: yy + 305});
 
             _gear.draw();
 
-
             var _mobi = unit_manage_constants.mobi_string;
 
-            _mobi.update({x1:x_left, y1 :yy + 326});
+            _mobi.update({x1: x_left, y1: yy + 326});
 
             _mobi.draw();
 
-
             var _wep1 = unit_manage_constants.wep1_string;
 
-            _wep1.update({x1:x_left, y1 :yy + 204});
+            _wep1.update({x1: x_left, y1: yy + 204});
 
             _wep1.draw();
 
-
             var _wep2 = unit_manage_constants.wep2_string;
 
-            _wep2.update({x1:x_left, y1 :yy + 254});
+            _wep2.update({x1: x_left, y1: yy + 254});
 
-            _wep2.draw(); 
+            _wep2.draw();
 
             // Stats
             // Bionics trackers
-            unit_manage_constants.bionics.update({
-                x1 : x_left+84, 
-                y1 : yy+63,
-            });
+            unit_manage_constants.bionics.update({x1: x_left + 84, y1: yy + 63});
             unit_manage_constants.bionics.draw();
 
-            unit_manage_constants.armour.update({
-                x1 : x_left-6, 
-                y1 : yy+87,
-            });
+            unit_manage_constants.armour.update({x1: x_left - 6, y1: yy + 87});
             unit_manage_constants.armour.draw();
 
-            unit_manage_constants.hp.update({
-                x1 : x_left-6, 
-                y1 : yy + 63,
-            });
+            unit_manage_constants.hp.update({x1: x_left - 6, y1: yy + 63});
             unit_manage_constants.hp.draw();
 
             // Experience
-            unit_manage_constants.exp.update({
-                x1 : x_left-6, 
-                y1 : yy + 39,
-            });
+            unit_manage_constants.exp.update({x1: x_left - 6, y1: yy + 39});
             unit_manage_constants.exp.draw();
 
-            unit_manage_constants.damage_res.update({
-                x1 : x_left+84, 
-                y1: yy+87,
-            });
+            unit_manage_constants.damage_res.update({x1: x_left + 84, y1: yy + 87});
 
             unit_manage_constants.damage_res.draw();
 
-             // Psyker things
+            // Psyker things
 
-            if (array_length(selected_unit.powers_known)){
-                unit_manage_constants.psy.update({
-                    x1 : x_left+84, 
-                    y1: yy+39,
-                });
+            if (array_length(selected_unit.powers_known)) {
+                unit_manage_constants.psy.update({x1: x_left + 84, y1: yy + 39});
 
                 unit_manage_constants.psy.draw();
             }
 
-            unit_manage_constants.melee_attack.update({
-                x1 : x_left-6, 
-                y1: yy+111,
-            });
+            unit_manage_constants.melee_attack.update({x1: x_left - 6, y1: yy + 111});
 
             unit_manage_constants.melee_attack.draw();
 
-            unit_manage_constants.ranged_attack.update({
-                x1 : x_left-6, 
-                y1: yy+135,
-            });
+            unit_manage_constants.ranged_attack.update({x1: x_left - 6, y1: yy + 135});
 
             unit_manage_constants.ranged_attack.draw();
 
-            unit_manage_constants.melee_burden.update({
-                x1 : x_left+84, 
-                y1: yy+111,
-            });
+            unit_manage_constants.melee_burden.update({x1: x_left + 84, y1: yy + 111});
 
             unit_manage_constants.melee_burden.draw();
 
+            unit_manage_constants.ranged_burden.update({x1: x_left + 84, y1: yy + 135});
 
-            unit_manage_constants.ranged_burden.update({
-                x1 : x_left+84, 
-                y1: yy+135,
-            });
-
-            unit_manage_constants.ranged_burden.draw();   
-
+            unit_manage_constants.ranged_burden.draw();
         }
-        setup_tooltip_list(_unit_tooltips)
-    }
-    if (!instance_exists(obj_popup)){
+        setup_tooltip_list(_unit_tooltips);
+    };
+    if (!instance_exists(obj_popup)) {
         company_data.unit_ui_panel.draw_with_dimensions();
     }
 }
+
 /// @mixin
 function scr_ui_manage() {
     if (combat != 0) {
@@ -864,7 +763,7 @@ function scr_ui_manage() {
         }
         var unit, x1, x2, x3, y1, y2, y3, text;
         var tooltip_text = "", bionic_tooltip = "";
-		company_data.tooltip_drawing = [];
+        company_data.tooltip_drawing = [];
         var xx = __view_get(e__VW.XView, 0) + 0, yy = __view_get(e__VW.YView, 0) + 0, bb = "", img = 0;
 
         // Draw BG
@@ -882,13 +781,12 @@ function scr_ui_manage() {
             if (struct_exists(selection_data, "purpose")) {
                 draw_text(xx + 800, yy + 74, $"{selection_data.purpose}");
             }
-            if (selection_data.select_type == MissionSelectType.Squads){
+            if (selection_data.select_type == MissionSelectType.Squads) {
                 view_squad = true;
             }
         }
 
         draw_set_font(fnt_40k_14);
-
 
         if (managing >= 0) {
             // Draw arrows
@@ -900,7 +798,7 @@ function scr_ui_manage() {
             x1: xx + 1008,
             y1: yy + 141,
             w: 568,
-            h: 681
+            h: 681,
         };
         right_ui_block.x2 = right_ui_block.x1 + right_ui_block.w;
         right_ui_block.y2 = right_ui_block.y1 + right_ui_block.h;
@@ -909,7 +807,7 @@ function scr_ui_manage() {
             x1: right_ui_block.x1,
             y1: yy + 520,
             w: 569,
-            h: 302
+            h: 302,
         };
         actions_block.x2 = actions_block.x1 + actions_block.w;
         actions_block.y2 = actions_block.y1 + actions_block.h;
@@ -918,7 +816,6 @@ function scr_ui_manage() {
         draw_rectangle_color_simple(actions_block.x1, actions_block.y1, actions_block.x2, actions_block.y2, 1, c_gray);
         draw_rectangle_color_simple(actions_block.x1 + 1, actions_block.y1 + 1, actions_block.x2 - 1, actions_block.y2 - 1, 1, c_black);
         draw_rectangle_color_simple(actions_block.x1 + 2, actions_block.y1 + 2, actions_block.x2 - 2, actions_block.y2 - 2, 1, c_gray);
-
 
         draw_set_color(c_white);
         // Back
@@ -940,113 +837,135 @@ function scr_ui_manage() {
 
         //tooltip text to tell you if a unit is eligible for special roles
 
-        get_command_slots_data = function(){
+        get_command_slots_data = function() {
             var _command_slots_data = [
                 {
                     search_params: {},
                     role_group_params: {
                         group: "captain_candidates",
                         location: "",
-                        opposite: false
+                        opposite: false,
                     },
                     purpose: $"{int_to_roman(managing)} Company Captain Candidates",
                     purpose_code: "captain_promote",
                     button_text: "New Captain Required",
-                    unit_check: "captain"
+                    unit_check: "captain",
                 },
                 {
                     search_params: {
-                        stat: [["weapon_skill", 44, "more"]],
-                        companies: managing
+                        stat: [
+                            [
+                                "weapon_skill",
+                                44,
+                                "more"
+                            ]
+                        ],
+                        companies: managing,
                     },
                     role_group_params: {
-                        group: [SPECIALISTS_STANDARD, true, true],
+                        group: [
+                            SPECIALISTS_STANDARD,
+                            true,
+                            true
+                        ],
                         location: "",
-                        opposite: true
+                        opposite: true,
                     },
                     purpose: $"{int_to_roman(managing)} Company Champion Candidates",
                     purpose_code: "champion_promote",
                     button_text: "Champion Required",
-                    unit_check: "champion"
+                    unit_check: "champion",
                 },
                 {
                     search_params: {
-                        companies: managing
+                        companies: managing,
                     },
                     role_group_params: {
-                        group: [SPECIALISTS_STANDARD, true, true],
+                        group: [
+                            SPECIALISTS_STANDARD,
+                            true,
+                            true
+                        ],
                         location: "",
-                        opposite: true
+                        opposite: true,
                     },
                     purpose: $"{int_to_roman(managing)} Company Ancient Candidates",
                     purpose_code: "ancient_promote",
                     button_text: "Ancient Required",
-                    unit_check: "ancient"
+                    unit_check: "ancient",
                 },
                 {
                     search_params: {
-                        companies: [managing, 0]
+                        companies: [
+                            managing,
+                            0
+                        ],
                     },
                     role_group_params: {
-                        group: [SPECIALISTS_CHAPLAINS, false, false],
+                        group: [
+                            SPECIALISTS_CHAPLAINS,
+                            false,
+                            false
+                        ],
                         location: "",
-                        opposite: false
+                        opposite: false,
                     },
                     purpose: $"{int_to_roman(managing)} Company Chaplain Candidates",
                     purpose_code: "chaplain_promote",
                     button_text: "Chaplain Required",
-                    unit_check: "chaplain"
+                    unit_check: "chaplain",
                 },
                 {
                     search_params: {
-                        companies: [managing, 0],
+                        companies: [
+                            managing,
+                            0
+                        ],
                     },
                     role_group_params: {
-                        group: [SPECIALISTS_APOTHECARIES, false, false],
+                        group: [
+                            SPECIALISTS_APOTHECARIES,
+                            false,
+                            false
+                        ],
                         location: "",
-                        opposite: false
+                        opposite: false,
                     },
                     purpose: $"{int_to_roman(managing)} Company Apothecary Candidates",
                     purpose_code: "apothecary_promote",
                     button_text: "Apothecary Required",
-                    unit_check: "apothecary"
+                    unit_check: "apothecary",
                 },
                 {
                     search_params: {
-                        companies: [managing, 0],
+                        companies: [
+                            managing,
+                            0
+                        ],
                     },
                     role_group_params: {
-                        group: [SPECIALISTS_TECHS, false, false],
+                        group: [
+                            SPECIALISTS_TECHS,
+                            false,
+                            false
+                        ],
                         location: "",
-                        opposite: false
+                        opposite: false,
                     },
                     purpose: $"{int_to_roman(managing)} Company Tech Marine Candidates",
                     purpose_code: "tech_marine_promote",
                     button_text: "Tech Marine Required",
-                    unit_check: "tech_marine"
+                    unit_check: "tech_marine",
                 }
             ];
 
-            if(!scr_has_disadv("Psyker Intolerant")){
-                array_push(_command_slots_data, {
-                    search_params: {
-                        companies: [managing, 0]
-                    },
-                    role_group_params: {
-                        group: [SPECIALISTS_LIBRARIANS, false, false],
-                        location: "",
-                        opposite: false
-                    },
-                    purpose: $"{int_to_roman(managing)} Company Librarian Candidates",
-                    purpose_code: "librarian_promote",
-                    button_text: "Librarian Required",
-                    unit_check: "lib"
-                });
+            if (!scr_has_disadv("Psyker Intolerant")) {
+                array_push(_command_slots_data, {search_params: {companies: [managing, 0]}, role_group_params: {group: [SPECIALISTS_LIBRARIANS, false, false], location: "", opposite: false}, purpose: $"{int_to_roman(managing)} Company Librarian Candidates", purpose_code: "librarian_promote", button_text: "Librarian Required", unit_check: "lib"});
             }
-            
+
             return _command_slots_data;
-        }
-        
+        };
+
         if (!obj_controller.view_squad) {
             var repetitions = min(man_max, MANAGE_MAN_SEE);
             man_count = 0;
@@ -1070,14 +989,14 @@ function scr_ui_manage() {
                 }
             }
 
-            var _only_display_selected = (instance_exists(obj_popup) && (obj_popup.type == 5 || obj_popup.type == 5.1 || obj_popup.type == 6));
+            var _only_display_selected = instance_exists(obj_popup) && (obj_popup.type == 5 || obj_popup.type == 5.1 || obj_popup.type == 6);
             for (var i = 0; i < max(0, repetitions); i++) {
                 draw_set_font(fnt_40k_14);
                 if (sel >= array_length(display_unit)) {
                     break;
                 }
 
-                while  ((sel <= array_length(display_unit) - 1) && (man[sel] == "hide" || (man_sel[sel] != 1 && _only_display_selected))) {
+                while ((sel <= array_length(display_unit) - 1) && (man[sel] == "hide" || (man_sel[sel] != 1 && _only_display_selected))) {
                     sel += 1;
                 }
                 if (sel >= array_length(display_unit)) {
@@ -1146,7 +1065,7 @@ function scr_ui_manage() {
 
             yy += 8;
             var _draw_selec_buttons = !obj_controller.unit_profile && !stats_displayed;
-            if (_draw_selec_buttons && instance_exists(obj_popup)){
+            if (_draw_selec_buttons && instance_exists(obj_popup)) {
                 _draw_selec_buttons = obj_popup.type != POPUP_TYPE.EQUIP;
             }
             if (_draw_selec_buttons) {
@@ -1161,7 +1080,7 @@ function scr_ui_manage() {
             if ((selected_unit.name() != "") && (selected_unit.race() != 0)) {
                 draw_set_alpha(1);
                 var xx = __view_get(e__VW.XView, 0) + 0, yy = __view_get(e__VW.YView, 0) + 0;
-                if ((obj_controller.unit_profile) && !instance_exists(obj_popup)) {
+                if (obj_controller.unit_profile && !instance_exists(obj_popup)) {
                     stats_displayed = true;
                     selected_unit.stat_display(true);
                     //tooltip_draw(stat_x, stat_y+string_height(stat_display),0,0,100,17);
@@ -1252,7 +1171,7 @@ function scr_ui_manage() {
         if (point_and_click([xx + 25, yy + 70, xx + 70, yy + 140])) {
             man_size = 0;
             man_current = 0;
-            menu = MENU.Manage;;
+            menu = MENU.Manage;
         }
 
         var top, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "";
@@ -1271,7 +1190,12 @@ function scr_ui_manage() {
                 temp3 = sh_hp[sel];
                 temp4 = string(sh_cargo[sel]) + " / " + string(sh_cargo_max[sel]) + " Space Used";
 
-                main_rect = [xx + 25, yy + 64, xx + 974, yy + 85];
+                main_rect = [
+                    xx + 25,
+                    yy + 64,
+                    xx + 974,
+                    yy + 85
+                ];
 
                 draw_set_color(c_black);
                 draw_rectangle(main_rect[0], main_rect[1], main_rect[2], main_rect[3], 0);
@@ -1301,8 +1225,7 @@ function scr_ui_manage() {
     }
 }
 
-
-function draw_manage_selection_buttons(xx,yy){
+function draw_manage_selection_buttons(xx, yy) {
     var sel_loading = obj_controller.selecting_ship;
     var _non_control_loc = location_out_of_player_control(selecting_location);
     //draws hover over tooltips
@@ -1502,14 +1425,14 @@ function draw_manage_selection_buttons(xx,yy){
 
     button.label = "Manage Tags";
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("F"));
-    button.tooltip = "Press Shift F" //Press Shift F";
+    button.tooltip = "Press Shift F"; //Press Shift F";
     button.alpha = 0.5;
 
     button.alpha = 1;
     if (button.draw()) {
-        if (!instance_exists(obj_popup)){
+        if (!instance_exists(obj_popup)) {
             set_up_tag_manager();
-        } else if (obj_popup.type == POPUP_TYPE.ADD_TAGS){
+        } else if (obj_popup.type == POPUP_TYPE.ADD_TAGS) {
             instance_destroy(obj_popup);
         }
     }
@@ -1554,7 +1477,12 @@ function draw_manage_selection_buttons(xx,yy){
         button.w = 128;
         button.x2 = button.x1 + button.w;
         button.y2 = button.y1 + button.h;
-        var inf_button_pos = [button.x1, button.y1, button.x2, button.y2];
+        var inf_button_pos = [
+            button.x1,
+            button.y1,
+            button.x2,
+            button.y2
+        ];
         button.label = "All Infantry";
         button.alpha = 1;
         button.font = fnt_40k_12;

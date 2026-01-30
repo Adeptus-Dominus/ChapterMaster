@@ -1,24 +1,20 @@
 function scr_enemy_ai_e() {
-
     // Guess I'll handle all of the ship combat in here
     // This needs to keep on running in each sector until only one faction's fleet remains
     var imperium_enemies = present_fleet[7] + present_fleet[8] + present_fleet[9] + present_fleet[10] + present_fleet[13];
 
     var standard_xenos_enemies = present_fleet[2] + present_fleet[7] + present_fleet[8] + present_fleet[10] + present_fleet[13];
 
-    var imperium_fleets = present_fleet[2]+present_fleet[3];
-
+    var imperium_fleets = present_fleet[2] + present_fleet[3];
 
     var have_fleets, battle, battle2;
     have_fleets = 0;
     battle = 0;
     battle2 = 0;
 
-
-    var attack = array_create(20,0);
-    var strength = array_create(20,0);
-    var damage = array_create(20,0);
-
+    var attack = array_create(20, 0);
+    var strength = array_create(20, 0);
+    var damage = array_create(20, 0);
 
     for (var i = 1; i <= 13; i += 1) {
         if (present_fleet[i]) {
@@ -26,124 +22,140 @@ function scr_enemy_ai_e() {
         }
     }
 
-    if (present_fleet[1] > 0) { // Battle1 is reserved for player battles
-        var battle_if_war = [8,eFACTION.Mechanicus,eFACTION.Imperium];
-        
-        var always_battle = [7,9];
+    if (present_fleet[1] > 0) {
+        // Battle1 is reserved for player battles
+        var battle_if_war = [
+            8,
+            eFACTION.Mechanicus,
+            eFACTION.Imperium
+        ];
 
-        for (var i=0;i<array_length(battle_if_war);i++){
+        var always_battle = [
+            7,
+            9
+        ];
+
+        for (var i = 0; i < array_length(battle_if_war); i++) {
             var cur_targ = battle_if_war[i];
-            if (present_fleet[cur_targ] > 0) and (obj_controller.faction_status[cur_targ] == "War"){
+            if ((present_fleet[cur_targ] > 0) && (obj_controller.faction_status[cur_targ] == "War")) {
                 battle = 1;
                 break;
             }
         }
-        if (!battle){
-           for (var i=0;i<array_length(always_battle);i++){
+        if (!battle) {
+            for (var i = 0; i < array_length(always_battle); i++) {
                 var cur_targ = always_battle[i];
-                if (present_fleet[cur_targ] > 0) and (obj_controller.faction_status[cur_targ] == "War"){
+                if ((present_fleet[cur_targ] > 0) && (obj_controller.faction_status[cur_targ] == "War")) {
                     battle = 1;
                     break;
-                }            
-           }
+                }
+            }
         }
 
-        if (present_fleet[10] > 0) and(obj_controller.faction_status[10] = "War") {
-            
-            if (!battle){
-                if (!has_problem_star( "meeting") && !has_problem_star( "meeting_trap")){
+        if ((present_fleet[10] > 0) && (obj_controller.faction_status[10] == "War")) {
+            if (!battle) {
+                if (!has_problem_star("meeting") && !has_problem_star("meeting_trap")) {
                     battle = 1;
                 }
             }
         }
-        if (present_fleet[13] > 0) then battle = 1;
-    }
-
-    if (battle2 == 0){
-        if (present_fleet[2] > 0){
-            if (imperium_enemies > 0) then battle2 = 2;
-        }
-        else if (present_fleet[3] > 0){
-            if (imperium_enemies > 0) then battle2 = 3;
-        }
-        else if (present_fleet[6] > 0){
-            if (standard_xenos_enemies > 0) then battle2 = 6;
-        }
-        else if (present_fleet[7] > 0){
-            if (standard_xenos_enemies-present_fleet[7] > 0) then battle2 = 7;
-        }
-        else if (present_fleet[8] > 0){
-            if (standard_xenos_enemies-present_fleet[8] > 0) then battle2 = 8;
-        }
-        else if (present_fleet[9] > 0){
-            if (standard_xenos_enemies-present_fleet[9] > 0) then battle2 = 9;
-        }
-        else if (present_fleet[10] > 0){
-            if (standard_xenos_enemies-present_fleet[10] > 0) then battle2 = 10;
-        }
-        else if (present_fleet[13]-present_fleet[13] > 0){
-            if (standard_xenos_enemies > 0) then battle2 = 13;
+        if (present_fleet[13] > 0) {
+            battle = 1;
         }
     }
 
-
+    if (battle2 == 0) {
+        if (present_fleet[2] > 0) {
+            if (imperium_enemies > 0) {
+                battle2 = 2;
+            }
+        } else if (present_fleet[3] > 0) {
+            if (imperium_enemies > 0) {
+                battle2 = 3;
+            }
+        } else if (present_fleet[6] > 0) {
+            if (standard_xenos_enemies > 0) {
+                battle2 = 6;
+            }
+        } else if (present_fleet[7] > 0) {
+            if (standard_xenos_enemies - present_fleet[7] > 0) {
+                battle2 = 7;
+            }
+        } else if (present_fleet[8] > 0) {
+            if (standard_xenos_enemies - present_fleet[8] > 0) {
+                battle2 = 8;
+            }
+        } else if (present_fleet[9] > 0) {
+            if (standard_xenos_enemies - present_fleet[9] > 0) {
+                battle2 = 9;
+            }
+        } else if (present_fleet[10] > 0) {
+            if (standard_xenos_enemies - present_fleet[10] > 0) {
+                battle2 = 10;
+            }
+        } else if (present_fleet[13] - present_fleet[13] > 0) {
+            if (standard_xenos_enemies > 0) {
+                battle2 = 13;
+            }
+        }
+    }
 
     instance_activate_object(obj_en_fleet);
-    if (battle2 > 0) and(battle = 0) { // AI only battle
+    if ((battle2 > 0) && (battle == 0)) {
+        // AI only battle
         var i, f, shiyp;
         i = 0;
         f = 1;
         shiyp = 0;
 
-        repeat(10) {
+        repeat (10) {
             f += 1;
-            if (f == 11) then f = 13;
+            if (f == 11) {
+                f = 13;
+            }
             if (present_fleet[f] > 0) {
                 obj_controller.temp[1049] = self.id;
                 obj_controller.temp[1050] = f;
                 var _orbiting = self.id;
                 var _wanted_owner = f;
                 var fleet_strength = 0;
-                with(obj_en_fleet) {
-                    if (orbiting = _orbiting) and(owner = _wanted_owner) {
+                with (obj_en_fleet) {
+                    if ((orbiting == _orbiting) && (owner == _wanted_owner)) {
                         fleet_strength = self.escort_number + (self.frigate_number * 4) + (self.capital_number * 8);
-                        if (owner == fleet_has_cargo("ork_warboss")){
-                            fleet_strength*=1.5;
+                        if (owner == fleet_has_cargo("ork_warboss")) {
+                            fleet_strength *= 1.5;
                         }
                     }
                 }
 
                 strength[f] = fleet_strength;
 
-                if (f = 7) and(strength[7] > 0){
+                if ((f == 7) && (strength[7] > 0)) {
                     strength[f] = strength[f] * 0.8;
-                }
-                else if (f = 9) and(strength[9] > 0){
+                } else if ((f == 9) && (strength[9] > 0)) {
                     strength[f] = strength[f] * 1.1;
-                }
-                else if (f = 10) and(strength[10] > 0){
+                } else if ((f == 10) && (strength[10] > 0)) {
                     strength[f] = strength[f] * 1.1;
-                }
-                else if (f = 11) and(strength[13] > 0){
+                } else if ((f == 11) && (strength[13] > 0)) {
                     strength[13] = strength[13] * 2;
                 }
 
                 // if (f=10) or (f=2) then show_message("["+string(f)+"] Fleet strength: "+string(strength[f]));
 
-                with(obj_en_ship) {
-                    if (x < -7000) and(y < -7000) {
+                with (obj_en_ship) {
+                    if ((x < -7000) && (y < -7000)) {
                         x += 10000;
                         y += 10000;
                     }
                 }
-                with(obj_en_ship) {
-                    if (x < -7000) and(y < -7000) {
+                with (obj_en_ship) {
+                    if ((x < -7000) && (y < -7000)) {
                         x += 10000;
                         y += 10000;
                     }
                 }
-                with(obj_en_ship) {
-                    if (x < -7000) and(y < -7000) {
+                with (obj_en_ship) {
+                    if ((x < -7000) && (y < -7000)) {
                         x += 10000;
                         y += 10000;
                     }
@@ -152,38 +164,63 @@ function scr_enemy_ai_e() {
             }
         } // This grabs the "strength" from all present fleets and adds it to the temporary variable for this AI battle
 
-
         // Determine who will attack who
         var still_battling, rond;
         still_battling = true;
         rond = 0;
 
-        repeat(5) {
+        repeat (5) {
             rond += 1;
             still_battling = false;
-            if (strength[2] + strength[3] > 0) and (strength[6] + strength[7] + strength[8] + strength[9] + strength[10] + strength[13] > 0) then still_battling = true;
-            if (strength[6] > 0) and(strength[2] + strength[7] + strength[8] + strength[9] + strength[10] + strength[13] > 0) then still_battling = true;
-            if (strength[7] > 0) and(strength[2] + strength[6] + strength[8] + strength[9] + strength[10] + strength[13] > 0) then still_battling = true;
-            if (strength[8] > 0) and(strength[2] + strength[6] + strength[7] + strength[9] + strength[10] + strength[13] > 0) then still_battling = true;
-            if (strength[9] > 0) and(strength[2] + strength[6] + strength[7] + strength[8] + strength[10] + strength[13] > 0) then still_battling = true;
-            if (strength[10] > 0) and(strength[2] + strength[6] + strength[7] + strength[8] + strength[9] + strength[13] > 0) then still_battling = true;
-            if (strength[13] > 0) and(strength[2] + strength[6] + strength[7] + strength[8] + strength[9] + strength[10] > 0) then still_battling = true;
+            if ((strength[2] + strength[3] > 0) && (strength[6] + strength[7] + strength[8] + strength[9] + strength[10] + strength[13] > 0)) {
+                still_battling = true;
+            }
+            if ((strength[6] > 0) && (strength[2] + strength[7] + strength[8] + strength[9] + strength[10] + strength[13] > 0)) {
+                still_battling = true;
+            }
+            if ((strength[7] > 0) && (strength[2] + strength[6] + strength[8] + strength[9] + strength[10] + strength[13] > 0)) {
+                still_battling = true;
+            }
+            if ((strength[8] > 0) && (strength[2] + strength[6] + strength[7] + strength[9] + strength[10] + strength[13] > 0)) {
+                still_battling = true;
+            }
+            if ((strength[9] > 0) && (strength[2] + strength[6] + strength[7] + strength[8] + strength[10] + strength[13] > 0)) {
+                still_battling = true;
+            }
+            if ((strength[10] > 0) && (strength[2] + strength[6] + strength[7] + strength[8] + strength[9] + strength[13] > 0)) {
+                still_battling = true;
+            }
+            if ((strength[13] > 0) && (strength[2] + strength[6] + strength[7] + strength[8] + strength[9] + strength[10] > 0)) {
+                still_battling = true;
+            }
 
             // show_message(string(name)+" Round "+string(rond)+": "+string(still_battling));
 
-            if (still_battling = true) {
+            if (still_battling == true) {
                 var who;
                 who = 0;
 
                 // Imperial Fleet Attacks
                 who = 2;
                 if (strength[who] > 0) {
-                    if (strength[9] > 0) and(attack[who] = 0) then attack[who] = 9;
-                    if (strength[10] > 0) and(attack[who] = 0) then attack[who] = 10;
-                    if (strength[13] > 0) and(attack[who] = 0) then attack[who] = 13;
-                    if (strength[7] > 0) and(attack[who] = 0) then attack[who] = 7;
-                    if (strength[8] > 0) and(attack[who] = 0) then attack[who] = 8;
-                    if (strength[6] > 0) and(attack[who] = 0) then attack[who] = 6;
+                    if ((strength[9] > 0) && (attack[who] == 0)) {
+                        attack[who] = 9;
+                    }
+                    if ((strength[10] > 0) && (attack[who] == 0)) {
+                        attack[who] = 10;
+                    }
+                    if ((strength[13] > 0) && (attack[who] == 0)) {
+                        attack[who] = 13;
+                    }
+                    if ((strength[7] > 0) && (attack[who] == 0)) {
+                        attack[who] = 7;
+                    }
+                    if ((strength[8] > 0) && (attack[who] == 0)) {
+                        attack[who] = 8;
+                    }
+                    if ((strength[6] > 0) && (attack[who] == 0)) {
+                        attack[who] = 6;
+                    }
                     damage[attack[who]] += strength[who] / 2;
 
                     // if (attack[who]=10) then show_message("Imperial Fleet damage: "+string(damage[10])+", Strength: "+string(strength[2]));
@@ -194,10 +231,16 @@ function scr_enemy_ai_e() {
                 who = 6;
                 if (strength[who] > 0) {
                     i = 11;
-                    if (strength[13] > 0) and(13 != who) then attack[who] = 13;
-                    if (attack[who] != 13) then repeat(9) {
-                        i -= 1;
-                        if (strength[i] > 0) and(i != who) then attack[who] = i;
+                    if ((strength[13] > 0) && (13 != who)) {
+                        attack[who] = 13;
+                    }
+                    if (attack[who] != 13) {
+                        repeat (9) {
+                            i -= 1;
+                            if ((strength[i] > 0) && (i != who)) {
+                                attack[who] = i;
+                            }
+                        }
                     }
                     damage[attack[who]] += strength[who] / 2;
                 }
@@ -205,12 +248,24 @@ function scr_enemy_ai_e() {
                 // Ork Fleet Attacks
                 who = 7;
                 if (strength[who] > 0) {
-                    if (strength[9] > 0) and(attack[who] = 0) then attack[who] = 9;
-                    if (strength[13] > 0) and(attack[who] = 0) then attack[who] = 13;
-                    if (strength[10] > 0) and(attack[who] = 0) then attack[who] = 10;
-                    if (strength[8] > 0) and(attack[who] = 0) then attack[who] = 8;
-                    if (strength[2] > 0) and(attack[who] = 0) then attack[who] = 2;
-                    if (strength[6] > 0) and(attack[who] = 0) then attack[who] = 6;
+                    if ((strength[9] > 0) && (attack[who] == 0)) {
+                        attack[who] = 9;
+                    }
+                    if ((strength[13] > 0) && (attack[who] == 0)) {
+                        attack[who] = 13;
+                    }
+                    if ((strength[10] > 0) && (attack[who] == 0)) {
+                        attack[who] = 10;
+                    }
+                    if ((strength[8] > 0) && (attack[who] == 0)) {
+                        attack[who] = 8;
+                    }
+                    if ((strength[2] > 0) && (attack[who] == 0)) {
+                        attack[who] = 2;
+                    }
+                    if ((strength[6] > 0) && (attack[who] == 0)) {
+                        attack[who] = 6;
+                    }
                     damage[attack[who]] += strength[who] / 2;
                     // show_message(string(who)+" attacking "+string(attack[who])+" for "+string(strength[who]/2));
                 }
@@ -218,11 +273,21 @@ function scr_enemy_ai_e() {
                 // Tau Fleet Attacks
                 who = 8;
                 if (strength[who] > 0) {
-                    if (strength[13] > 0) and(attack[who] = 0) then attack[who] = 13;
-                    if (strength[9] > 0) and(attack[who] = 0) then attack[who] = 9;
-                    if (strength[7] > 0) and(attack[who] = 0) then attack[who] = 7;
-                    if (strength[10] > 0) and(attack[who] = 0) then attack[who] = 10;
-                    if (strength[2] > 0) and(attack[who] = 0) then attack[who] = 2;
+                    if ((strength[13] > 0) && (attack[who] == 0)) {
+                        attack[who] = 13;
+                    }
+                    if ((strength[9] > 0) && (attack[who] == 0)) {
+                        attack[who] = 9;
+                    }
+                    if ((strength[7] > 0) && (attack[who] == 0)) {
+                        attack[who] = 7;
+                    }
+                    if ((strength[10] > 0) && (attack[who] == 0)) {
+                        attack[who] = 10;
+                    }
+                    if ((strength[2] > 0) && (attack[who] == 0)) {
+                        attack[who] = 2;
+                    }
                     damage[attack[who]] += strength[who] / 2;
                 }
 
@@ -230,10 +295,16 @@ function scr_enemy_ai_e() {
                 who = 9;
                 if (strength[who] > 0) {
                     i = 1;
-                    if (strength[13] > 0) and(13 != who) then attack[who] = 13;
-                    if (attack[who] != 13) then repeat(9) {
-                        i += 1;
-                        if (strength[i] > 0) and(i != who) then attack[who] = i;
+                    if ((strength[13] > 0) && (13 != who)) {
+                        attack[who] = 13;
+                    }
+                    if (attack[who] != 13) {
+                        repeat (9) {
+                            i += 1;
+                            if ((strength[i] > 0) && (i != who)) {
+                                attack[who] = i;
+                            }
+                        }
                     }
                     damage[attack[who]] += strength[who] / 2;
                 }
@@ -241,12 +312,24 @@ function scr_enemy_ai_e() {
                 // Chaos Fleet Attacks
                 who = 10;
                 if (strength[who] > 0) {
-                    if (strength[9] > 0) and(attack[who] = 0) then attack[who] = 9;
-                    if (strength[13] > 0) and(attack[who] = 0) then attack[who] = 13;
-                    if (strength[2] > 0) and(attack[who] = 0) then attack[who] = 2;
-                    if (strength[6] > 0) and(attack[who] = 0) then attack[who] = 6;
-                    if (strength[7] > 0) and(attack[who] = 0) then attack[who] = 7;
-                    if (strength[8] > 0) and(attack[who] = 0) then attack[who] = 8;
+                    if ((strength[9] > 0) && (attack[who] == 0)) {
+                        attack[who] = 9;
+                    }
+                    if ((strength[13] > 0) && (attack[who] == 0)) {
+                        attack[who] = 13;
+                    }
+                    if ((strength[2] > 0) && (attack[who] == 0)) {
+                        attack[who] = 2;
+                    }
+                    if ((strength[6] > 0) && (attack[who] == 0)) {
+                        attack[who] = 6;
+                    }
+                    if ((strength[7] > 0) && (attack[who] == 0)) {
+                        attack[who] = 7;
+                    }
+                    if ((strength[8] > 0) && (attack[who] == 0)) {
+                        attack[who] = 8;
+                    }
                     damage[attack[who]] += strength[who] / 2;
                     // if (attack[who]=2) then show_message("Chaos Fleet damage: "+string(damage[2])+", Strength: "+string(strength[10]));
                 }
@@ -254,71 +337,86 @@ function scr_enemy_ai_e() {
                 // Necron Fleet Attacks
                 who = 13;
                 if (strength[who] > 0) {
-                    if (strength[6] > 0) and(attack[who] = 0) then attack[who] = 6;
-                    if (strength[9] > 0) and(attack[who] = 0) then attack[who] = 9;
-                    if (strength[2] > 0) and(attack[who] = 0) then attack[who] = 2;
-                    if (strength[10] > 0) and(attack[who] = 0) then attack[who] = 10;
-                    if (strength[7] > 0) and(attack[who] = 0) then attack[who] = 7;
-                    if (strength[8] > 0) and(attack[who] = 0) then attack[who] = 8;
+                    if ((strength[6] > 0) && (attack[who] == 0)) {
+                        attack[who] = 6;
+                    }
+                    if ((strength[9] > 0) && (attack[who] == 0)) {
+                        attack[who] = 9;
+                    }
+                    if ((strength[2] > 0) && (attack[who] == 0)) {
+                        attack[who] = 2;
+                    }
+                    if ((strength[10] > 0) && (attack[who] == 0)) {
+                        attack[who] = 10;
+                    }
+                    if ((strength[7] > 0) && (attack[who] == 0)) {
+                        attack[who] = 7;
+                    }
+                    if ((strength[8] > 0) && (attack[who] == 0)) {
+                        attack[who] = 8;
+                    }
                     damage[attack[who]] += strength[who] / 2;
                 }
 
                 // Attacking has been determined, work out damage
                 var i;
                 i = 1;
-                repeat(9) {
+                repeat (9) {
                     i += 1;
                     strength[i] -= damage[i];
                     damage[i] = 0;
                     //  if (strength[i]>0) and (present_fleet[i]>0) then show_message(string(name)+"] Fleet:"+string(i)+" surviving at "+string(strength[i])+" in round "+string(rond));
-                    if (strength[i] <= 0) and(present_fleet[i] > 0) {
+                    if ((strength[i] <= 0) && (present_fleet[i] > 0)) {
                         // show_message(string(name)+"] Fleet:"+string(i)+" beat to shit in round "+string(rond));
                         obj_controller.temp[1049] = i;
                         obj_controller.temp[1050] = self.id;
-                        with(obj_en_fleet) {
-                            if (owner = obj_controller.temp[1049]) and(orbiting = obj_controller.temp[1050]) then instance_destroy();
+                        with (obj_en_fleet) {
+                            if ((owner == obj_controller.temp[1049]) && (orbiting == obj_controller.temp[1050])) {
+                                instance_destroy();
+                            }
                         }
                     }
                 }
 
-
                 strength[13] -= damage[13];
                 damage[13] = 0;
                 //  if (strength[i]>0) and (present_fleet[i]>0) then show_message(string(name)+"] Fleet:"+string(i)+" surviving at "+string(strength[i])+" in round "+string(rond));
-                if (strength[13] <= 0) and(present_fleet[13] > 0) {
+                if ((strength[13] <= 0) && (present_fleet[13] > 0)) {
                     // show_message(string(name)+"] Fleet:"+string(i)+" beat to shit in round "+string(rond));
                     obj_controller.temp[1049] = 13;
                     obj_controller.temp[1050] = self.id;
-                    with(obj_en_fleet) {
-                        if (owner = obj_controller.temp[1049]) and(orbiting = obj_controller.temp[1050]) then instance_destroy();
+                    with (obj_en_fleet) {
+                        if ((owner == obj_controller.temp[1049]) && (orbiting == obj_controller.temp[1050])) {
+                            instance_destroy();
+                        }
                     }
                 }
-
             }
         }
 
         // Those 5 battle intervals have finished
         // Clean up the surviving fleet(s)
 
-
         var i;
         i = 1;
-        repeat(10) {
+        repeat (10) {
             i += 1;
-            if (i = 11) then i = 13;
-            if (strength[i] > 0) and(present_fleet[i] > 0) {
+            if (i == 11) {
+                i = 13;
+            }
+            if ((strength[i] > 0) && (present_fleet[i] > 0)) {
                 // Get RACE[X] ORBITING[Y] and STRENGTH[z]
                 obj_controller.temp[1047] = strength[i];
                 obj_controller.temp[1048] = 0;
                 obj_controller.temp[1049] = i;
                 obj_controller.temp[1050] = self.id;
 
-                with(obj_en_fleet) {
-                    if (owner != obj_controller.temp[1049]) and(orbiting != obj_controller.temp[1050]) {
+                with (obj_en_fleet) {
+                    if ((owner != obj_controller.temp[1049]) && (orbiting != obj_controller.temp[1050])) {
                         x -= 10000;
                         y -= 10000;
                     }
-                    if (owner = obj_controller.temp[1049]) and(orbiting = obj_controller.temp[1050]) {
+                    if ((owner == obj_controller.temp[1049]) && (orbiting == obj_controller.temp[1050])) {
                         obj_controller.temp[1048] += escort_number;
                         obj_controller.temp[1048] += frigate_number * 4;
                         obj_controller.temp[1048] += capital_number * 8;
@@ -327,44 +425,56 @@ function scr_enemy_ai_e() {
 
                 // show_message("Fleet "+string(owner)+" has "+string(obj_controller.temp[1048])+" strength remaining after the battle");
 
-
                 // if (i=10) and (strength[i]>0) then show_message("STR "+string(strength[10])+" < "+string(obj_controller.temp[1048])+" ?");
 
-                if (strength[i] < obj_controller.temp[1048]) { // Need to remove ships if !=
-                    repeat(40) {
-                        if (obj_controller.temp[1047] > obj_controller.temp[1048]) then with(obj_en_fleet) {
-                            if (owner = obj_controller.temp[1049]) and(orbiting = obj_controller.temp[1050]) {
-                                if (escort_number > 0) and(escort_number + frigate_number + capital_number != 1) {
-                                    escort_number -= 1;
-                                    obj_controller.temp[1047] -= 1;
-                                    // show_message("removed an escort, escorts left: "+string(escort_number));
-                                    if (escort_number + frigate_number + capital_number <= 0) then instance_destroy();
+                if (strength[i] < obj_controller.temp[1048]) {
+                    // Need to remove ships if !=
+                    repeat (40) {
+                        if (obj_controller.temp[1047] > obj_controller.temp[1048]) {
+                            with (obj_en_fleet) {
+                                if ((owner == obj_controller.temp[1049]) && (orbiting == obj_controller.temp[1050])) {
+                                    if ((escort_number > 0) && (escort_number + frigate_number + capital_number != 1)) {
+                                        escort_number -= 1;
+                                        obj_controller.temp[1047] -= 1;
+                                        // show_message("removed an escort, escorts left: "+string(escort_number));
+                                        if (escort_number + frigate_number + capital_number <= 0) {
+                                            instance_destroy();
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
                 if (strength[i] < obj_controller.temp[1048]) {
-                    repeat(20) {
-                        if (obj_controller.temp[1047] < obj_controller.temp[1048]) then with(obj_en_fleet) {
-                            if (owner = obj_controller.temp[1049]) and(orbiting = obj_controller.temp[1050]) {
-                                if (frigate_number > 0) and(escort_number + frigate_number + capital_number != 1) {
-                                    frigate_number -= 1;
-                                    obj_controller.temp[1047] -= 4;
-                                    // show_message("removed a frigate, frigates left: "+string(frigate_number));
-                                    if (escort_number + frigate_number + capital_number <= 0) then instance_destroy();
+                    repeat (20) {
+                        if (obj_controller.temp[1047] < obj_controller.temp[1048]) {
+                            with (obj_en_fleet) {
+                                if ((owner == obj_controller.temp[1049]) && (orbiting == obj_controller.temp[1050])) {
+                                    if ((frigate_number > 0) && (escort_number + frigate_number + capital_number != 1)) {
+                                        frigate_number -= 1;
+                                        obj_controller.temp[1047] -= 4;
+                                        // show_message("removed a frigate, frigates left: "+string(frigate_number));
+                                        if (escort_number + frigate_number + capital_number <= 0) {
+                                            instance_destroy();
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                    repeat(10) {
-                        if (obj_controller.temp[1047] < obj_controller.temp[1048]) then with(obj_en_fleet) {
-                            if (owner = obj_controller.temp[1049]) and(orbiting = obj_controller.temp[1050]) {
-                                if (capital_number > 0) and(escort_number + frigate_number + capital_number != 1) {
-                                    capital_number -= 1;
-                                    obj_controller.temp[1047] -= 8;
-                                    // show_message("removed a capital ship, capitals left: "+string(capital_number));
-                                    if (escort_number + frigate_number + capital_number <= 0) then instance_destroy();
+                    repeat (10) {
+                        if (obj_controller.temp[1047] < obj_controller.temp[1048]) {
+                            with (obj_en_fleet) {
+                                if ((owner == obj_controller.temp[1049]) && (orbiting == obj_controller.temp[1050])) {
+                                    if ((capital_number > 0) && (escort_number + frigate_number + capital_number != 1)) {
+                                        capital_number -= 1;
+                                        obj_controller.temp[1047] -= 8;
+                                        // show_message("removed a capital ship, capitals left: "+string(capital_number));
+                                        if (escort_number + frigate_number + capital_number <= 0) {
+                                            instance_destroy();
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -375,8 +485,8 @@ function scr_enemy_ai_e() {
                 // show_message("Surviving fleet ("+string(i)+") strength: "+string(strength[i]));
                 // I'd hope that removes enough ships from the survivor
             }
-            with(obj_en_fleet) {
-                if (x < -5000) and(y < -5000) {
+            with (obj_en_fleet) {
+                if ((x < -5000) && (y < -5000)) {
                     x += 10000;
                     y += 10000;
                 }
@@ -385,19 +495,20 @@ function scr_enemy_ai_e() {
     } // End AI battle
 
     if (battle > 0) {
-        if (present_fleet[1] > 0) and((present_fleet[6] + present_fleet[7] + present_fleet[8] + present_fleet[9] + present_fleet[10] + present_fleet[13] > 0) or((present_fleet[2] > 0) and(obj_controller.faction_status[2] = "War"))) {
+        if ((present_fleet[1] > 0) && ((present_fleet[6] + present_fleet[7] + present_fleet[8] + present_fleet[9] + present_fleet[10] + present_fleet[13] > 0) || ((present_fleet[2] > 0) && (obj_controller.faction_status[2] == "War")))) {
             var i, onceh;
             i = 1;
             onceh = 0;
 
-            repeat(9) {
+            repeat (9) {
                 i += 1;
-                var special_stop = false;;
-                if (i = 10) or(i = 11) {
-                    special_stop = has_problem_star("meeting")||has_problem_star("meeting_trap");
+                var special_stop = false;
+                if ((i == 10) || (i == 11)) {
+                    special_stop = has_problem_star("meeting") || has_problem_star("meeting_trap");
                 }
 
-                if (obj_controller.faction_status[i] = "War") and(onceh = 0) and(!special_stop) { // Quene battle
+                if ((obj_controller.faction_status[i] == "War") && (onceh == 0) && (!special_stop)) {
+                    // Quene battle
                     obj_turn_end.battles += 1;
                     obj_turn_end.battle[obj_turn_end.battles] = 1;
                     obj_turn_end.battle_world[obj_turn_end.battles] = -50;
@@ -406,29 +517,33 @@ function scr_enemy_ai_e() {
                     // obj_turn_end.battle_object[obj_turn_end.battles]=instance_nearest(x,y,obj_en_fleet);
                     obj_turn_end.battle_pobject[obj_turn_end.battles] = instance_nearest(x, y, obj_p_fleet);
 
-                    if (i = 10) {
+                    if (i == 10) {
                         obj_controller.temp[1049] = string(name);
-                        with(obj_temp2) {
+                        with (obj_temp2) {
                             instance_destroy();
                         }
-                        with(obj_temp3) {
+                        with (obj_temp3) {
                             instance_destroy();
                         }
-                        with(obj_en_fleet) {
-                            if (action = "") and(orbiting = obj_controller.temp[1049]) and(owner = 10) {
-                                if (string_count("warband", trade_goods) > 0) then instance_create(x, y, obj_temp2);
-                                if (string_lower(trade_goods) = "csm") then instance_create(x, y, obj_temp3);
+                        with (obj_en_fleet) {
+                            if ((action == "") && (orbiting == obj_controller.temp[1049]) && (owner == 10)) {
+                                if (string_count("warband", trade_goods) > 0) {
+                                    instance_create(x, y, obj_temp2);
+                                }
+                                if (string_lower(trade_goods) == "csm") {
+                                    instance_create(x, y, obj_temp3);
+                                }
                             }
                         }
                         if (instance_exists(obj_temp2)) {
                             obj_turn_end.battle_special[obj_turn_end.battles] = "BLOOD";
-                            with(obj_temp2) {
+                            with (obj_temp2) {
                                 instance_destroy();
                             }
                         }
                         if (instance_exists(obj_temp3)) {
                             obj_turn_end.battle_special[obj_turn_end.battles] = "CSM";
-                            with(obj_temp2) {
+                            with (obj_temp2) {
                                 instance_destroy();
                             }
                         }
@@ -454,13 +569,13 @@ function scr_enemy_ai_e() {
     beetle = 0;
     chaos_meeting = 0;
 
-    repeat(planets) {
+    repeat (planets) {
         run += 1;
         force = 1;
         var forces_list = [];
         var force_count = 0;
-        if (p_player[run] > 0 && struct_exists(obj_controller.location_viewer.garrison_log, name)){
-            forces_list = scr_count_forces(name, run, true, true)
+        if (p_player[run] > 0 && struct_exists(obj_controller.location_viewer.garrison_log, name)) {
+            forces_list = scr_count_forces(name, run, true, true);
             force_count = forces_list[0] + forces_list[1];
         }
 
@@ -469,31 +584,31 @@ function scr_enemy_ai_e() {
             spyrer = 0;
             fallen = 0;
 
-            if (p_player[run] > 0){
-                if (has_problem_planet(run,  "meeting")) {
+            if (p_player[run] > 0) {
+                if (has_problem_planet(run, "meeting")) {
                     chaos_meeting = run;
-                } else if (has_problem_planet(run,  "meeting_trap")){
+                } else if (has_problem_planet(run, "meeting_trap")) {
                     chaos_meeting = run + 0.1;
                 }
-            } 
-            if (has_problem_planet(run,  "spyrer")) {
-                if (p_player[run] > 20){
+            }
+            if (has_problem_planet(run, "spyrer")) {
+                if (p_player[run] > 20) {
                     var tixt;
                     tixt = "The Spyrer on " + planet_numeral_name(run);
                     tixt += " seems to have vanished, presumably gone into hiding.";
                     scr_popup("Spyrer Rampage", tixt, "spyrer", "");
-                } else if ((p_player[run] <= 20)){
+                } else if (p_player[run] <= 20) {
                     obj_turn_end.battles += 1;
                     obj_turn_end.battle[obj_turn_end.battles] = 1;
                     obj_turn_end.battle_world[obj_turn_end.battles] = run;
                     obj_turn_end.battle_opponent[obj_turn_end.battles] = 30;
                     obj_turn_end.battle_location[obj_turn_end.battles] = name;
                     obj_turn_end.battle_object[obj_turn_end.battles] = id;
-                    obj_turn_end.battle_special[obj_turn_end.battles] = "spyrer";                    
+                    obj_turn_end.battle_special[obj_turn_end.battles] = "spyrer";
                 }
             }
 
-            if (p_player[run] > 0) and (has_problem_planet(run,  "fallen")) {
+            if ((p_player[run] > 0) && has_problem_planet(run, "fallen")) {
                 var chan;
                 chan = choose(1, 2, 3, 4);
                 if (chan <= 2) {
@@ -503,11 +618,14 @@ function scr_enemy_ai_e() {
                     obj_turn_end.battle_opponent[obj_turn_end.battles] = 10;
                     obj_turn_end.battle_location[obj_turn_end.battles] = name;
                     obj_turn_end.battle_object[obj_turn_end.battles] = id;
-                    if (chan = 1) then obj_turn_end.battle_special[obj_turn_end.battles] = "fallen1";
-                    if (chan = 2) then obj_turn_end.battle_special[obj_turn_end.battles] = "fallen2";
-
-                }else if (chan >= 3) {
-                    if (remove_planet_problem(run, "fallen")){
+                    if (chan == 1) {
+                        obj_turn_end.battle_special[obj_turn_end.battles] = "fallen1";
+                    }
+                    if (chan == 2) {
+                        obj_turn_end.battle_special[obj_turn_end.battles] = "fallen2";
+                    }
+                } else if (chan >= 3) {
+                    if (remove_planet_problem(run, "fallen")) {
                         tixt = "Your marines have scoured " + planet_numeral_name(run);
                         tixt += " in search of the Fallen.  Despite their best efforts, and meticulous searching, none have been found.  It appears as though the information was faulty or out of date.";
                         scr_popup("Hunt the Fallen", tixt, "fallen", "");
@@ -516,10 +634,10 @@ function scr_enemy_ai_e() {
                 }
             }
         }
-        if (p_player[run] > 0 && has_problem_planet(run,"necron")){
+        if (p_player[run] > 0 && has_problem_planet(run, "necron")) {
             setup_necron_tomb_raid(run);
         }
-        if (p_player[run] > 0) and(force_count > 0) {
+        if ((p_player[run] > 0) && (force_count > 0)) {
             for (force = 2; force < 14; force++) {
                 battle_opponent = 0;
 
@@ -562,13 +680,13 @@ function scr_enemy_ai_e() {
                         }
                         break;
                     case 10:
-                         var pause = has_problem_planet(run,"meeting")||has_problem_planet(run,"meeting_trap");
+                        var pause = has_problem_planet(run, "meeting") || has_problem_planet(run, "meeting_trap");
                         if (p_guardsmen[run] + p_pdf[run] == 0 && p_player[run] > 0 && p_traitors[run] > 0 && pause == 0 && obj_controller.faction_status[10] == "War") {
                             battle_opponent = 10;
                         }
                         break;
                     case 11:
-                        var pause = has_problem_planet(run,"meeting")||has_problem_planet(run,"meeting_trap");
+                        var pause = has_problem_planet(run, "meeting") || has_problem_planet(run, "meeting_trap");
                         if (p_guardsmen[run] + p_pdf[run] == 0 && p_player[run] > 0 && p_chaos[run] > 0 && pause == 0 && obj_controller.faction_status[10] == "War") {
                             battle_opponent = 11;
                         }
@@ -579,7 +697,6 @@ function scr_enemy_ai_e() {
                         }
                         break;
                 }
-
 
                 // other battle crap here
                 if (battle_opponent > 0) {
@@ -619,34 +736,45 @@ function scr_enemy_ai_e() {
                     ml = 32;
                     build_rate = 4;
                     build_rate2 = 6;
-                    if (scr_has_adv("Siege Masters")){
+                    if (scr_has_adv("Siege Masters")) {
                         md = 300;
                         ms = 400;
                         ml = 48;
                         build_rate2 = 5;
                     }
-                    if (scr_has_adv("Crafters")){
+                    if (scr_has_adv("Crafters")) {
                         build_rate = 3;
-                        if (choose(0, 1) = 1) {
-                            if (p_silo[run] < ms) then p_silo[run] += 1;
-                            if (p_defenses[run] < md) then p_defenses[run] += 1;
+                        if (choose(0, 1) == 1) {
+                            if (p_silo[run] < ms) {
+                                p_silo[run] += 1;
+                            }
+                            if (p_defenses[run] < md) {
+                                p_defenses[run] += 1;
+                            }
                         }
                     }
-                    if (p_silo[run] < ms) then p_silo[run] += 1;
-                    if (p_defenses[run] < md) then p_defenses[run] += 1;
+                    if (p_silo[run] < ms) {
+                        p_silo[run] += 1;
+                    }
+                    if (p_defenses[run] < md) {
+                        p_defenses[run] += 1;
+                    }
 
-                    if ((obj_controller.turn / build_rate) = round(obj_controller.turn / build_rate)) and(p_lasers[run] > ml) then p_lasers[run] += 1;
-                    if ((obj_controller.turn / build_rate2) = round(obj_controller.turn / build_rate2)) and(p_fortified[run] < 5) then p_fortified[run] += 1;
-                    if (monestary.forge>0){
+                    if (((obj_controller.turn / build_rate) == round(obj_controller.turn / build_rate)) && (p_lasers[run] > ml)) {
+                        p_lasers[run] += 1;
+                    }
+                    if (((obj_controller.turn / build_rate2) == round(obj_controller.turn / build_rate2)) && (p_fortified[run] < 5)) {
+                        p_fortified[run] += 1;
+                    }
+                    if (monestary.forge > 0) {
                         obj_controller.player_forge_data.player_forges += sqr(monestary.forge_data.size);
-                        if (monestary.forge_data.vehicle_hanger){
-                            array_push(obj_controller.player_forge_data.vehicle_hanger,[name,run]);
+                        if (monestary.forge_data.vehicle_hanger) {
+                            array_push(obj_controller.player_forge_data.vehicle_hanger, [name, run]);
                         }
                     }
                 }
-            }            
+            }
         } // End p_feature!=""
-
 
         // Work on upgrades
         if (array_length(p_upgrades[run]) > 0) {
@@ -659,10 +787,10 @@ function scr_enemy_ai_e() {
                         if (upgrade_type == P_features.Arsenal) {
                             display_type = "Arsenal";
                             obj_controller.und_armouries++;
-                        }else if (upgrade_type == P_features.Secret_Base) {
+                        } else if (upgrade_type == P_features.Secret_Base) {
                             display_type = "Lair";
                             obj_controller.und_lairs++;
-                        }else if (upgrade_type == P_features.Gene_Vault) {
+                        } else if (upgrade_type == P_features.Gene_Vault) {
                             display_type = "Gene Vault";
                             obj_controller.und_gene_vaults++;
                         }
@@ -670,19 +798,21 @@ function scr_enemy_ai_e() {
                         scr_alert("green", "owner", string(tx), x, y);
                         scr_event_log("", string(tx));
                     }
-                    if (upgrade.built<=obj_controller.turn && upgrade_type == P_features.Secret_Base){
-                        if (upgrade.forge > 0){
-                            obj_controller.player_forge_data.player_forges+=sqr(upgrade.forge_data.size);
-                            if (upgrade.forge_data.vehicle_hanger){
-                                array_push(obj_controller.player_forge_data.vehicle_hanger,[name,run]);
-                            }                            
+                    if (upgrade.built <= obj_controller.turn && upgrade_type == P_features.Secret_Base) {
+                        if (upgrade.forge > 0) {
+                            obj_controller.player_forge_data.player_forges += sqr(upgrade.forge_data.size);
+                            if (upgrade.forge_data.vehicle_hanger) {
+                                array_push(obj_controller.player_forge_data.vehicle_hanger, [name, run]);
+                            }
                         }
                     }
                 }
             }
         }
 
-        if (p_population[run] < 0) then p_population[run] = 0;
+        if (p_population[run] < 0) {
+            p_population[run] = 0;
+        }
     }
 
     if (chaos_meeting > 0) {
@@ -696,59 +826,68 @@ function scr_enemy_ai_e() {
         co = -1;
         good = 0;
         master_present = 0;
-        repeat(11) {
+        repeat (11) {
             co += 1;
             i = 0;
-            repeat(200) {
+            repeat (200) {
                 i += 1;
                 good = 0;
-                var _unit = fetch_unit([co,i]);
-                if (_unit.role() != "" && _unit.location_string = name) and(_unit.planet_location == floor(chaos_meeting)) then good += 1;
-                if (_unit.role() != obj_ini.role[100, 6]) and(_unit.role() != "Venerable " + string(obj_ini.role[100, 6])) then good += 1;
-                if (string_count("Dread", obj_ini.armour[co, i]) = 0) or(_unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) then good += 1;
+                var _unit = fetch_unit([co, i]);
+                if ((_unit.role() != "" && _unit.location_string == name) && (_unit.planet_location == floor(chaos_meeting))) {
+                    good += 1;
+                }
+                if ((_unit.role() != obj_ini.role[100][6]) && (_unit.role() != "Venerable " + string(obj_ini.role[100][6]))) {
+                    good += 1;
+                }
+                if ((string_count("Dread", obj_ini.armour[co][i]) == 0) || (_unit.role() == obj_ini.role[100][eROLE.ChapterMaster])) {
+                    good += 1;
+                }
 
-                if (good = 3) {
+                if (good == 3) {
                     obj_temp_meeting.dudes += 1;
                     otm = obj_temp_meeting.dudes;
                     obj_temp_meeting.present[otm] = 1;
                     obj_temp_meeting.co[otm] = co;
                     obj_temp_meeting.ide[otm] = i;
-                    if (_unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) then master_present = 1;
+                    if (_unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
+                        master_present = 1;
+                    }
                 }
             }
         }
 
         // title / text / image / speshul
         var popup_text = "A cloaked, ragged figure approaches your forces and hails you. ";
-        if (master_present = 1) and(otm <= 21) {
+        if ((master_present == 1) && (otm <= 21)) {
             var effect;
             effect = "meeting_1t";
-            if (chaos_meeting == floor(chaos_meeting)) then effect = "meeting_1";
+            if (chaos_meeting == floor(chaos_meeting)) {
+                effect = "meeting_1";
+            }
             scr_popup("Chaos Meeting", $"{popup_text}He is to bring you to meet with their master and you have few enough forces to be permitted.  What is thy will?", "chaos_messenger", effect);
         }
-        if (master_present = 1) and(otm > 21) {
+        if ((master_present == 1) && (otm > 21)) {
             scr_popup("Chaos Meeting", $"{popup_text}He is to bring you to their master, but before the meeting proceeds, you must bring fewer forces.  Only yourself and up to two squads will be allowed in the presence of {obj_controller.faction_title[10]} {obj_controller.faction_leader[10]}.", "chaos_messenger", "meeting_2");
-            with(obj_temp_meeting) {
+            with (obj_temp_meeting) {
                 instance_destroy();
             }
         }
-        if (master_present = 0) and(otm > 21) {
-            scr_popup("Chaos Meeting",  $"{popup_text}The meeting was supposed to be with the Chaos Lord, and yourself, but you are not planet-side.  Land on the planet with up to two squads and the meeting will proceed.", "chaos_messenger", "meeting_3");
-            with(obj_temp_meeting) {
+        if ((master_present == 0) && (otm > 21)) {
+            scr_popup("Chaos Meeting", $"{popup_text}The meeting was supposed to be with the Chaos Lord, and yourself, but you are not planet-side.  Land on the planet with up to two squads and the meeting will proceed.", "chaos_messenger", "meeting_3");
+            with (obj_temp_meeting) {
                 instance_destroy();
             }
         }
     }
 
-    for (var i=1;i<=planets;i++){
+    for (var i = 1; i <= planets; i++) {
         var existing_problem = has_any_problem_planet(i);
-        if (!existing_problem){
-            if (!irandom(50) && p_owner[i]==eFACTION.Imperium){
-                if (p_owner[i] == eFACTION.Imperium){
+        if (!existing_problem) {
+            if (!irandom(50) && p_owner[i] == eFACTION.Imperium) {
+                if (p_owner[i] == eFACTION.Imperium) {
                     scr_new_governor_mission(i);
                 }
             }
         }
     }
-    
 }

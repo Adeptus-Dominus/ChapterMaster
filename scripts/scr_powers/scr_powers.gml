@@ -17,7 +17,7 @@
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
 global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
 
-function generate_marine_powers_description_string(unit){
+function generate_marine_powers_description_string(unit) {
     var _psy_powers_known = unit.powers_known;
     var _psy_powers_count = array_length(_psy_powers_known);
     var _psy_discipline = unit.psy_discipline();
@@ -46,7 +46,7 @@ function generate_marine_powers_description_string(unit){
         _tooltip += get_power_data(_psy_powers_known[i], "name");
         _tooltip += smart_delimeter_sign(_psy_powers_count, i, false);
     }
-    return  _tooltip;
+    return _tooltip;
 }
 
 /// @desc Psychic powers execution mess. Called in the scope of obj_pnunit.
@@ -133,7 +133,7 @@ function scr_powers(caster_id) {
 
         if ((_power_id == "force_dome") || (_power_id == "stormbringer")) {
             var _buff_casts = 8;
-            repeat(_buff_casts) {
+            repeat (_buff_casts) {
                 var _target_data = find_valid_target(_power_data);
                 _marine_index = _target_data.index;
                 _marine_column = _target_data.column;
@@ -155,7 +155,7 @@ function scr_powers(caster_id) {
             }
         } else if (_power_id == "fire_shield") {
             var _buff_casts = 9;
-            repeat(_buff_casts) {
+            repeat (_buff_casts) {
                 var _target_data = find_valid_target(_power_data);
                 _marine_index = _target_data.index;
                 _marine_column = _target_data.column;
@@ -167,7 +167,7 @@ function scr_powers(caster_id) {
             marine_iron[caster_id] += 1;
         } else if (_power_id == "endurance") {
             var _buff_casts = 5;
-            repeat(_buff_casts) {
+            repeat (_buff_casts) {
                 var _target_data = find_valid_target(_power_data);
                 _marine_index = _target_data.index;
                 _marine_column = _target_data.column;
@@ -177,7 +177,7 @@ function scr_powers(caster_id) {
             }
         } else if (_power_id == "hysterical_frenzy") {
             var _buff_casts = 5;
-            repeat(_buff_casts) {
+            repeat (_buff_casts) {
                 var _target_data = find_valid_target(_power_data);
                 _marine_index = _target_data.index;
                 _marine_column = _target_data.column;
@@ -471,7 +471,7 @@ function power_conditions_check(conditions_array) {
 
 /// @mixin
 function player_select_powers() {
-    if (race[100, 17] != 0) {
+    if (race[100][17] != 0) {
         var _starting_powers = PSY_DISCIPLINES_STARTING;
         var _discipline_index = array_get_index(_starting_powers, discipline);
         if (_discipline_index == -1) {
@@ -567,7 +567,7 @@ function process_tome_mechanics(_unit, _unit_id) {
         perils_chance: 0,
         perils_strength: 0,
         using_tome: false,
-        cast_flavour_text: ""
+        cast_flavour_text: "",
     };
 
     var _unit_weapon_one_data = _unit.get_weapon_one_data();
@@ -617,7 +617,7 @@ function process_tome_mechanics(_unit, _unit_id) {
 function find_valid_target(_power_data) {
     var _result = {
         column: noone,
-        index: undefined
+        index: undefined,
     };
     var _target_vehicles = _power_data.target_type == "enemy_vehicle";
 
@@ -625,7 +625,7 @@ function find_valid_target(_power_data) {
     var _targets_queue = ds_priority_create();
 
     if (_power_data.type == "attack") {
-        with(obj_enunit) {
+        with (obj_enunit) {
             var _distance = point_distance(other.x, other.y, x, y) / 10;
             if (_distance <= _power_data.range) {
                 ds_priority_add(_targets_queue, id, _distance);
@@ -645,7 +645,7 @@ function find_valid_target(_power_data) {
             }
         }
     } else {
-        with(obj_pnunit) {
+        with (obj_pnunit) {
             var _distance = point_distance(other.x, other.y, x, y) / 10;
             if (_distance <= _power_data.range) {
                 ds_priority_add(_targets_queue, id, _distance);

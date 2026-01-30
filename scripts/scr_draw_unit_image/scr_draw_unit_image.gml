@@ -60,7 +60,7 @@ function UnitImage(_unit_sprite) constructor {
     x2 = 0;
     y2 = 0;
 
-    static draw = function(xx, yy, _background = false,xscale = 1, yscale=1, rot=0, col=c_white, alpha=1) {
+    static draw = function(xx, yy, _background = false, xscale = 1, yscale = 1, rot = 0, col = c_white, alpha = 1) {
         if (_background) {
             draw_rectangle_color_simple(xx - 1, yy - 1, xx + 1 + 166, yy + 271 + 1, 0, c_black);
             draw_rectangle_color_simple(xx - 1, yy - 1, xx + 166 + 1, yy + 271 + 1, 1, c_gray);
@@ -68,10 +68,11 @@ function UnitImage(_unit_sprite) constructor {
             draw_rectangle_color_simple(xx - 3, yy - 3, xx + 166 + 3, yy + 3 + 271, 1, c_gray);
         }
         if (sprite_exists(unit_sprite)) {
-            draw_sprite_ext(unit_sprite, 0, xx - 200, yy - 90, xscale, yscale, rot, col, alpha)
+            draw_sprite_ext(unit_sprite, 0, xx - 200, yy - 90, xscale, yscale, rot, col, alpha);
         }
     };
-    static draw_part = function(xx, yy, left, top, width, height, _background = false,xscale = 1, yscale=1, rot=0, col=c_white, alpha=1) {
+
+    static draw_part = function(xx, yy, left, top, width, height, _background = false, xscale = 1, yscale = 1, rot = 0, col = c_white, alpha = 1) {
         if (_background) {
             draw_rectangle_color_simple(xx - 1 + left, yy - 1 + top, xx + 1 + width, yy + height + 1, 0, c_black);
             draw_rectangle_color_simple(xx - 1 + left, yy - 1 + top, xx + width + 1, yy + height + 1, 1, c_gray);
@@ -84,16 +85,17 @@ function UnitImage(_unit_sprite) constructor {
         x1 = xx;
         y1 = yy;
         x2 = xx + width;
-        y2 = yy + height;       
+        y2 = yy + height;
     };
 
-
-    static hit = function(){
+    static hit = function() {
         return scr_hit(x1, y1, x2, y2);
-    }
-    static box = function(){
+    };
+
+    static box = function() {
         return [x1, y1, x2, y2];
-    }
+    };
+
     static destroy_image = function() {
         if (sprite_exists(unit_sprite)) {
             sprite_delete(unit_sprite);
@@ -111,7 +113,7 @@ function BaseColor(R, G, B) constructor {
 function set_shader_color(shaderType, colorIndex) {
     var findShader, setShader;
     if (instance_exists(obj_controller)) {
-        with(obj_controller) {
+        with (obj_controller) {
             switch (shaderType) {
                 case ShaderType.Body:
                     setShader = colour_to_set1;
@@ -138,7 +140,7 @@ function set_shader_color(shaderType, colorIndex) {
             shader_set_uniform_f(setShader, col_r[colorIndex] / 255, col_g[colorIndex] / 255, col_b[colorIndex] / 255);
         }
     } else if (instance_exists(obj_creation)) {
-        with(obj_controller) {
+        with (obj_controller) {
             switch (shaderType) {
                 case ShaderType.Body:
                     setShader = colour_to_set1;
@@ -181,7 +183,7 @@ function make_colour_from_array(col_array) {
 }
 
 function set_shader_to_base_values() {
-    with(obj_controller) {
+    with (obj_controller) {
         shader_set_uniform_f_array(colour_to_find1, body_colour_find);
         shader_set_uniform_f_array(colour_to_set1, body_colour_replace);
         shader_set_uniform_f_array(colour_to_find2, secondary_colour_find);
@@ -210,16 +212,12 @@ function set_shader_array(shader_array) {
 
 /// @mixin
 function scr_draw_unit_image(_background = false) {
-
     var _role = active_roles();
     var complex_set = {};
     var x_surface_offset = 200;
     var y_surface_offset = 110;
 
-    var xx = __view_get(e__VW.XView, 0) + 0,
-        yy = __view_get(e__VW.YView, 0) + 0,
-        bb = "",
-        img = 0;
+    var xx = __view_get(e__VW.XView, 0) + 0, yy = __view_get(e__VW.YView, 0) + 0, bb = "", img = 0;
     var _controller = instance_exists(obj_controller);
     var _creation = instance_exists(obj_creation);
 
@@ -274,36 +272,36 @@ function scr_draw_unit_image(_background = false) {
                 } else {
                     unit_specialization = UnitSpecialization.Chaplain;
                 }
-            } else // Techmarine
-                if (is_specialist(unit_role, SPECIALISTS_TECHS, true)) {
-                    if (unit_chapter == "Iron Hands") {
-                        unit_specialization = UnitSpecialization.IronFather;
-                    } else {
-                        unit_specialization = UnitSpecialization.Techmarine;
-                    }
-                } else // Apothecary
-                    if (is_specialist(unit_role, SPECIALISTS_APOTHECARIES, true)) {
-                        if (unit_chapter == "Space Wolves") {
-                            unit_specialization = UnitSpecialization.WolfPriest;
-                        } else {
-                            unit_specialization = UnitSpecialization.Apothecary;
-                        }
-                    } else // Librarian
-                        if (is_specialist(unit_role, SPECIALISTS_LIBRARIANS, true)) {
-                            unit_specialization = UnitSpecialization.Librarian;
-                        } else // Death Company
-                            if (unit_role == "Death Company") {
-                                unit_specialization = UnitSpecialization.DeathCompany;
-                            }
+            } else if (is_specialist(unit_role, SPECIALISTS_TECHS, true)) {
+                // Techmarine
+                if (unit_chapter == "Iron Hands") {
+                    unit_specialization = UnitSpecialization.IronFather;
+                } else {
+                    unit_specialization = UnitSpecialization.Techmarine;
+                }
+            } else if (is_specialist(unit_role, SPECIALISTS_APOTHECARIES, true)) {
+                // Apothecary
+                if (unit_chapter == "Space Wolves") {
+                    unit_specialization = UnitSpecialization.WolfPriest;
+                } else {
+                    unit_specialization = UnitSpecialization.Apothecary;
+                }
+            } else if (is_specialist(unit_role, SPECIALISTS_LIBRARIANS, true)) {
+                // Librarian
+                unit_specialization = UnitSpecialization.Librarian;
+            } else if (unit_role == "Death Company") {
+                // Death Company
+                unit_specialization = UnitSpecialization.DeathCompany;
+            }
             // Dark Angels
             if (unit_chapter == "Dark Angels") {
                 // Deathwing
                 if (company == 1) {
                     unit_special_colours = UnitSpecialColours.Deathwing;
-                } else // Ravenwing
-                    if (company == 2) {
-                        unit_special_colours = UnitSpecialColours.Ravenwing;
-                    }
+                } else if (company == 2) {
+                    // Ravenwing
+                    unit_special_colours = UnitSpecialColours.Ravenwing;
+                }
             }
             // Blood Angels gold
             if ((unit_role == _role[eROLE.HonourGuard] || unit_role == _role[eROLE.ChapterMaster]) && (unit_chapter == "Blood Angels")) {
@@ -327,7 +325,7 @@ function scr_draw_unit_image(_background = false) {
                 halo = 1;
             }
 
-            if (is_dreadnought()){
+            if (is_dreadnought()) {
                 armour_type = ArmourType.Dreadnought;
             } else {
                 switch (unit_armour) {
@@ -348,7 +346,6 @@ function scr_draw_unit_image(_background = false) {
             }
 
             draw_backpack = armour_type == ArmourType.Normal;
-
 
             //if(shader_is_compiled(sReplaceColor)){
             //shader_set(sReplaceColor);
@@ -377,7 +374,6 @@ function scr_draw_unit_image(_background = false) {
             //Rejoice!
             // draw_sprite(spr_marine_base,img,x_surface_offset,y_surface_offset);
 
-
             armour_sprite = spr_weapon_blank;
 
             // Draw Techmarine gear
@@ -399,20 +395,29 @@ function scr_draw_unit_image(_background = false) {
 
                 // if (skin_color!=6) then draw_sprite(spr_clothing_colors,clothing_style,x_surface_offset,y_surface_offset);
             } else {
-                var _complex_armours = ["MK3 Iron Armour", "Terminator Armour", "Tartaros", "MK7 Aquila", "Power Armour", "MK8 Errant", "Artificer Armour", "MK4 Maximus", "MK5 Heresy", "MK6 Corvus", "Dreadnought", "Scout Armour","Cataphractii", "Contemptor Dreadnought"];
+                var _complex_armours = [
+                    "MK3 Iron Armour",
+                    "Terminator Armour",
+                    "Tartaros",
+                    "MK7 Aquila",
+                    "Power Armour",
+                    "MK8 Errant",
+                    "Artificer Armour",
+                    "MK4 Maximus",
+                    "MK5 Heresy",
+                    "MK6 Corvus",
+                    "Dreadnought",
+                    "Scout Armour",
+                    "Cataphractii",
+                    "Contemptor Dreadnought"
+                ];
                 if (array_contains(_complex_armours, unit_armour)) {
                     complex_set = new ComplexSet(self);
                     complex_livery = true;
                 }
 
                 if (armour_type == ArmourType.Normal && complex_livery && unit_role == _role[2]) {
-                    complex_set.add_group({
-                        right_leg: spr_artificer_right_leg,
-                        left_leg: spr_artificer_left_leg,
-                        chest_variants: spr_artificer_chest,
-                        thorax_variants: spr_artificer_thorax,
-                        mouth_variants: spr_artificer_mouth
-                    });
+                    complex_set.add_group({right_leg: spr_artificer_right_leg, left_leg: spr_artificer_left_leg, chest_variants: spr_artificer_chest, thorax_variants: spr_artificer_thorax, mouth_variants: spr_artificer_mouth});
                 }
 
                 // Draw the Iron Halo
@@ -550,14 +555,18 @@ function scr_draw_unit_image(_background = false) {
             }
         }
     }
-    
+
     surface_clear_and_free(global.base_component_surface);
     global.base_component_surface = -1;
-    var _keep_alive = ["unit", "_texture_draws", "texture_draws"]
+    var _keep_alive = [
+        "unit",
+        "_texture_draws",
+        "texture_draws"
+    ];
 
-    for (var i=0;i<array_length(_keep_alive);i++){
+    for (var i = 0; i < array_length(_keep_alive); i++) {
         var _live = _keep_alive[i];
-        if (struct_exists(complex_set, _live)){
+        if (struct_exists(complex_set, _live)) {
             struct_remove(complex_set, _live);
         }
     }
@@ -573,5 +582,3 @@ function scr_draw_unit_image(_background = false) {
 
     return new UnitImage(_complete_sprite);
 }
-
-

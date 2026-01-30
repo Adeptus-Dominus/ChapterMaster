@@ -1,5 +1,4 @@
-
-scr_image("loading",-50,0,0,0,0);
+scr_image("loading", -50, 0, 0, 0, 0);
 GameSave = {};
 GameSave.Stars = [];
 GameSave.PlayerFleet = [];
@@ -8,29 +7,29 @@ GameSave.Ini = {};
 GameSave.Controller = {};
 GameSave.EventLog = [];
 
-menu=0;// 1 : save, 2: load
-save_part=0;
-load_part=0;
-save_number=0;
+menu = 0; // 1 : save, 2: load
+save_part = 0;
+load_part = 0;
+save_number = 0;
 /// set to true before calling alarm[0] to run autosave behaviour
-autosaving=false;
+autosaving = false;
 /// number of frames between load sections to draw the progress bar
-trickle=0;
-txt="";
-hide=0;
-bar=0;
-slow=0;
-saves=0;
-highlighting=0;
-spr_screen=0;
-first_open=0;
-max_ini=0;
-reset=0;
-splash=choose(0,1,2,3,4);
+trickle = 0;
+txt = "";
+hide = 0;
+bar = 0;
+slow = 0;
+saves = 0;
+highlighting = 0;
+spr_screen = 0;
+first_open = 0;
+max_ini = 0;
+reset = 0;
+splash = choose(0, 1, 2, 3, 4);
 
-debug="";
+debug = "";
 
-top=0;
+top = 0;
 
 if (instance_exists(obj_controller)) {
     if (obj_controller.zoomed == 1) {
@@ -70,34 +69,32 @@ repeat (100) {
     i += 1;
 }
 
+first_open = saves;
 
-first_open=saves;
-
-
-if (file_exists("saves.ini")){
+if (file_exists("saves.ini")) {
     ini_open("saves.ini");
 
-    for(var i = 0; i <= 200; i++){
-        if (save[i]>=0){
-            if (ini_section_exists(string(save[i]))){
-                save_turn[save[i]]=ini_read_real(string(save[i]),"turn",0);
-                save_chapter[save[i]]=ini_read_string(string(save[i]),"chapter_name","Error");
-                save_master[save[i]]=ini_read_string(string(save[i]),"master_name","Error");
-                save_marines[save[i]]=ini_read_real(string(save[i]),"marines",0);
-                save_date[save[i]]=ini_read_string(string(save[i]),"date","Error");
-                save_time[save[i]]=ini_read_real(string(save[i]),"time",0);
-                save_seed[save[i]]=ini_read_real(string(save[i]),"seed",0);
-                save_icon[save[i]]=ini_read_string(string(save[i]), "icon_name", "unknown");
+    for (var i = 0; i <= 200; i++) {
+        if (save[i] >= 0) {
+            if (ini_section_exists(string(save[i]))) {
+                save_turn[save[i]] = ini_read_real(string(save[i]), "turn", 0);
+                save_chapter[save[i]] = ini_read_string(string(save[i]), "chapter_name", "Error");
+                save_master[save[i]] = ini_read_string(string(save[i]), "master_name", "Error");
+                save_marines[save[i]] = ini_read_real(string(save[i]), "marines", 0);
+                save_date[save[i]] = ini_read_string(string(save[i]), "date", "Error");
+                save_time[save[i]] = ini_read_real(string(save[i]), "time", 0);
+                save_seed[save[i]] = ini_read_real(string(save[i]), "seed", 0);
+                save_icon[save[i]] = ini_read_string(string(save[i]), "icon_name", "unknown");
             }
 
-            if (!ini_section_exists(string(i))){
-                save_turn[i]=-50;
-                save_chapter[i]="Unknown Save Data";
-                save_master[i]="Unknown";
-                save_marines[i]=-50;
-                save_date[i]="";
-                save_time[i]=0;
-                save_icon[i]="unknown";
+            if (!ini_section_exists(string(i))) {
+                save_turn[i] = -50;
+                save_chapter[i] = "Unknown Save Data";
+                save_master[i] = "Unknown";
+                save_marines[i] = -50;
+                save_date[i] = "";
+                save_time[i] = 0;
+                save_icon[i] = "unknown";
             }
         }
     }
@@ -105,10 +102,4 @@ if (file_exists("saves.ini")){
     ini_close();
 }
 var view = new DebugView("Save Debug", self);
-view.add_section("Save Vars")
-.add_watch("menu")
-.add_watch("first_open")
-.add_watch("top")
-.add_watch("debug")
-.dump_props()
-.hide();
+view.add_section("Save Vars").add_watch("menu").add_watch("first_open").add_watch("top").add_watch("debug").dump_props().hide();

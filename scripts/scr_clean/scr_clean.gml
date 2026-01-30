@@ -7,30 +7,38 @@ function compress_enemy_array(_target_column) {
         return;
     }
 
-    with(_target_column) {
+    with (_target_column) {
         // Define all data arrays to be processed with their default values
-        var _data_arrays = [{
-            arr: dudes,
-            def: ""
-        }, {
-            arr: dudes_special,
-            def: ""
-        }, {
-            arr: dudes_num,
-            def: 0
-        }, {
-            arr: dudes_ac,
-            def: 0
-        }, {
-            arr: dudes_hp,
-            def: 0
-        }, {
-            arr: dudes_vehicle,
-            def: 0
-        }, {
-            arr: dudes_damage,
-            def: 0
-        }];
+        var _data_arrays = [
+            {
+                arr: dudes,
+                def: "",
+            },
+            {
+                arr: dudes_special,
+                def: "",
+            },
+            {
+                arr: dudes_num,
+                def: 0,
+            },
+            {
+                arr: dudes_ac,
+                def: 0,
+            },
+            {
+                arr: dudes_hp,
+                def: 0,
+            },
+            {
+                arr: dudes_vehicle,
+                def: 0,
+            },
+            {
+                arr: dudes_damage,
+                def: 0,
+            }
+        ];
 
         // Track which slots are empty
         var _empty_slots = array_create(20, false);
@@ -68,7 +76,7 @@ function compress_enemy_array(_target_column) {
 /// @param {id.Instance} _target_column - The column instance to clean up
 function destroy_empty_column(_target_column) {
     // Destroy empty non-player columns to conserve memory and processing
-    with(_target_column) {
+    with (_target_column) {
         if ((men + veh + medi == 0) && (owner != 1)) {
             instance_destroy();
         }
@@ -123,7 +131,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
     // hostile_splash: The splash damage modifier. Indicates if the weapon affects multiple targets or has an area-of-effect component.
 
     try {
-        with(target_object) {
+        with (target_object) {
             if (obj_ncombat.wall_destroyed == 1) {
                 exit;
             }
@@ -131,7 +139,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
             var damage_data = {
                 "units_lost": 0,
                 "unit_type": "",
-                "hits": 0
+                "hits": 0,
             };
 
             // ### Vehicle Damage Processing ###
@@ -177,19 +185,19 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
     switch (_armour_pierce) {
         case 4:
             _armour_mod = 0;
-        break;
+            break;
         case 3:
             _armour_mod = 1.5;
-        break;
+            break;
         case 2:
             _armour_mod = 2;
-        break;
+            break;
         case 1:
             _armour_mod = 3;
-        break;
+            break;
         default:
             _armour_mod = 3;
-        break;
+            break;
     }
 
     // Find valid infantry targets
@@ -280,19 +288,19 @@ function damage_vehicles(_damage_data, _shots, _damage, _weapon_index) {
     switch (_armour_pierce) {
         case 4:
             _armour_mod = 0;
-        break;
+            break;
         case 3:
             _armour_mod = 2;
-        break;
+            break;
         case 2:
             _armour_mod = 4;
-        break;
+            break;
         case 1:
             _armour_mod = 6;
-        break;
+            break;
         default:
             _armour_mod = 6;
-        break;
+            break;
     }
 
     var veh_index = -1;

@@ -71,7 +71,7 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
     max_width = -1;
     h = 0;
     w = 0;
-    scale_text=false;
+    scale_text = false;
 
     move_data_to_current_scope(data);
 
@@ -83,14 +83,14 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
         draw_set_valign(valign);
 
         if (max_width > -1) {
-            if (!scale_text){
+            if (!scale_text) {
                 w = string_width_ext(text, -1, max_width);
                 h = string_height_ext(text, -1, max_width);
                 x2 = x1 + w;
                 y2 = y1 + h;
-            } else{
+            } else {
                 w = max_width;
-                scale = calc_text_scale_confines(text,max_width);
+                scale = calc_text_scale_confines(text, max_width);
                 h = string_height(text) * scale;
             }
         } else {
@@ -114,10 +114,10 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
         draw_set_color(colour);
 
         if (max_width > -1) {
-            if (!scale_text){
+            if (!scale_text) {
                 draw_text_ext_outline(x1, y1, text, -1, max_width, c_black, colour);
-            }else{
-                draw_text_transformed(x1, y1, text, scale, scale, 0)
+            } else {
+                draw_text_transformed(x1, y1, text, scale, scale, 0);
             }
         } else {
             draw_text_outline(x1, y1, text, c_black, colour);
@@ -206,7 +206,12 @@ function LabeledIcon(icon, text, x1 = 0, y1 = 0, data = false) constructor {
 /// @param {sprite} [hover_sprite=-1] Optional hover sprite.
 /// @returns {array} [x1, y1, x2, y2] bounding box.
 function draw_sprite_as_button(position, choice_sprite, scale = [1, 1], hover_sprite = -1) {
-    var _pos = [position[0], position[1], position[0] + (sprite_get_width(choice_sprite) * scale[0]), position[1] + (sprite_get_height(choice_sprite) * scale[1])];
+    var _pos = [
+        position[0],
+        position[1],
+        position[0] + (sprite_get_width(choice_sprite) * scale[0]),
+        position[1] + (sprite_get_height(choice_sprite) * scale[1])
+    ];
     draw_sprite_ext(choice_sprite, 0, position[0], position[1], scale[0], scale[1], 0, c_white, scr_hit(_pos) ? 1 : 0.9);
     return _pos;
 }
@@ -266,7 +271,7 @@ function draw_unit_buttons(position, text, size_mod = [1.5, 1.5], colour = c_gra
     return [position[0], position[1], x2, y2];
 }
 
-function standard_loc_data(){
+function standard_loc_data() {
     x1 = 0;
     y1 = 0;
     y2 = 0;
@@ -362,7 +367,7 @@ function UnitButtonObject(data = false) constructor {
 
     static draw = function(allow_click = true) {
         add_draw_return_values();
-		var _button_click_area;
+        var _button_click_area;
         if (style == "standard") {
             var _temp_alpha = alpha;
             if (disabled) {
@@ -371,7 +376,11 @@ function UnitButtonObject(data = false) constructor {
             }
             _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1], label, [text_scale, text_scale], active ? color : inactive_col,, font, _temp_alpha);
         } else if (style == "pixel") {
-            var _widths = [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)];
+            var _widths = [
+                sprite_get_width(spr_pixel_button_left),
+                sprite_get_width(spr_pixel_button_middle),
+                sprite_get_width(spr_pixel_button_right)
+            ];
 
             var height_scale = h / sprite_get_height(spr_pixel_button_left);
             _widths[0] *= height_scale;
@@ -392,7 +401,12 @@ function UnitButtonObject(data = false) constructor {
 
             x2 = x1 + array_sum(_widths);
             y2 = y1 + h;
-            _button_click_area = [x1, y1, x2, y2];
+            _button_click_area = [
+                x1,
+                y1,
+                x2,
+                y2
+            ];
         }
 
         if (scr_hit(x1, y1, x2, y2) && tooltip != "") {
@@ -476,7 +490,7 @@ function SliderBar(_x = 0, _y = 0, _w = 100, _h = 16, _limits = [0, 100], _inc =
     value_limits = _limits;
     value_increments = _inc;
     value = _limits[0];
-    
+
     dragging = false;
 
     /// @param {struct} _data Struct containing keys to override.
@@ -495,12 +509,17 @@ function SliderBar(_x = 0, _y = 0, _w = 100, _h = 16, _limits = [0, 100], _inc =
     /// @returns {real}
     static draw = function() {
         add_draw_return_values();
-        
+
         var _mouse_vars = return_mouse_consts();
         var _mx = _mouse_vars[0];
         var _my = _mouse_vars[1];
-        var _rect = [xx, yy, xx + width, yy + height];
-        
+        var _rect = [
+            xx,
+            yy,
+            xx + width,
+            yy + height
+        ];
+
         if (point_and_click([_rect[0], _rect[1], _rect[2], _rect[3]])) {
             dragging = true;
         }
@@ -512,7 +531,7 @@ function SliderBar(_x = 0, _y = 0, _w = 100, _h = 16, _limits = [0, 100], _inc =
                 var _rel_x = clamp(_mx - xx, 0, width);
                 var _percentage = _rel_x / width;
                 var _total_range = value_limits[1] - value_limits[0];
-                
+
                 var _raw_val = value_limits[0] + (_percentage * _total_range);
                 value = round(_raw_val / value_increments) * value_increments;
             }
@@ -523,11 +542,11 @@ function SliderBar(_x = 0, _y = 0, _w = 100, _h = 16, _limits = [0, 100], _inc =
         draw_set_alpha(1.0);
         draw_set_color(c_dkgray);
         draw_rectangle_array(_rect, true);
-        
+
         var _knob_pos = ((value - value_limits[0]) / (value_limits[1] - value_limits[0])) * width;
         draw_set_color(dragging ? c_white : c_gray);
         draw_rectangle(xx, yy, xx + _knob_pos, yy + height, false);
-        
+
         pop_draw_return_values();
         return value;
     };
@@ -894,10 +913,7 @@ function RadioSet(options_array, title = "", data = {}) constructor {
             var row_full = (max_width > 0) && (row_width > max_width);
             var last_item = i == array_length(toggles) - 1;
 
-            array_push(row_items, {
-                btn: _cur_opt,
-                idx: i,
-            });
+            array_push(row_items, {btn: _cur_opt, idx: i});
 
             if (row_full || last_item) {
                 // Calculate final row width and optional centering offset
@@ -1215,7 +1231,6 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords) {
     return _new_val;
 }
 
-
 /// @function MainMenuButton
 /// @description A UI button component featuring hover animations, oscillation effects, and Alt-key shortcut support.
 /// @param {Asset.GMSprite} _sprite The base sprite index for the button.
@@ -1308,4 +1323,3 @@ function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x
         return is_clicked;
     };
 }
-

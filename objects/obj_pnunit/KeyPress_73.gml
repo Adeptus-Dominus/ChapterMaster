@@ -1,5 +1,3 @@
-
-
 /*show_message("X: "+string(x)+", Y: "+string(y)+"
 "+string(dudes_num[1])+"x "+string(dudes[1])+" "+string(dudes_vehicle[1])+"
 "+string(dudes_num[2])+"x "+string(dudes[2])+" "+string(dudes_vehicle[2])+"
@@ -11,7 +9,6 @@
 "+string(dudes_num[8])+"x "+string(dudes[8])+" "+string(dudes_vehicle[8])+"
 "+string(dudes_num[9])+"x "+string(dudes[9])+" "+string(dudes_vehicle[9])+"
 "+string(dudes_num[10])+"x "+string(dudes[10])+" "+string(dudes_vehicle[10]));*/
-
 
 /*
 
@@ -32,7 +29,6 @@ show_message("Engaged "+string(engaged)+"
 "+string(wep_num[14])+"x "+string(wep[14])+": ATT"+string(att[14])+" ARP"+string(apa[14])+" splash:"+string(splash[14])+"
 "+string(wep_num[15])+"x "+string(wep[15])+": ATT"+string(att[15])+" ARP"+string(apa[15])+" splash:"+string(splash[15]));
 */
-
 
 /* */
 /*  */

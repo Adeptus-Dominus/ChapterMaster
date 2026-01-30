@@ -53,7 +53,7 @@ function scr_destroy_planet(destruction_method) {
                     }
                 }
 
-                if (obj_ini.race[cah, ed] == 1) {
+                if (obj_ini.race[cah][ed] == 1) {
                     var comm = unit.IsSpecialist(, true);
 
                     // if (obj_ini.race[cah,ed]=1) then obj_controller.marines-=1;
@@ -68,7 +68,7 @@ function scr_destroy_planet(destruction_method) {
                 scr_kill_unit(cah, ed);
             }
             if (ed < 200) {
-                if ((obj_ini.veh_loc[cah, ed] == you.name) && (obj_ini.veh_wid[cah, ed] == baid)) {
+                if ((obj_ini.veh_loc[cah][ed] == you.name) && (obj_ini.veh_wid[cah][ed] == baid)) {
                     reset_vehicle_variable_arrays(cah, ed);
                 }
             }
@@ -106,8 +106,6 @@ function scr_destroy_planet(destruction_method) {
 
         obj_controller.disposition[3] -= 80;
 
-
-
         obj_controller.faction_status[eFACTION.Mechanicus] = "War";
 
         scr_audience(eFACTION.Ecclesiarchy, "declare_war", -30, "War", 9999, 0);
@@ -116,13 +114,12 @@ function scr_destroy_planet(destruction_method) {
             scr_audience(eFACTION.Inquisition, "declare_war", -40, "War", 9999, 0);
         }
         scr_audience(eFACTION.Imperium, "declare_war", -50, "War", 9999, 2);
-
     } else if (obj_controller.faction_status[eFACTION.Imperium] != "War" && planet_feature_bool(you.p_feature[baid], P_features.Daemonic_Incursion) == 0 && you.p_tyranids[baid] < 5) {
         if (you.p_first[baid] == eFACTION.Imperium && you.p_type[baid] == "Hive") {
             obj_controller.loyalty -= 50;
             obj_controller.loyalty_hidden -= 50;
-            
-            decare_war_on_imperium_audiences()
+
+            decare_war_on_imperium_audiences();
 
             if (planet_feature_bool(you.p_feature[baid], P_features.Sororitas_Cathedral) == 1) {
                 obj_controller.disposition[5] -= 30;

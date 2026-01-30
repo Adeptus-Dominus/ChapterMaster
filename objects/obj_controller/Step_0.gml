@@ -1,7 +1,7 @@
 try {
     // Handles most logic for main menus, audio and checks if cheats are enabled
     // TODO refactor will wait untill squads PR (#76) is merged
-    if (menu == 0 && zoomed == 0 && !instances_exist_any([obj_ingame_menu,obj_ncombat])){
+    if (menu == 0 && zoomed == 0 && !instances_exist_any([obj_ingame_menu, obj_ncombat])) {
         scr_zoom_keys();
     }
     if (double_click >= 0) {
@@ -47,10 +47,10 @@ try {
     }
 
     if (instance_exists(obj_formation_bar) && ((menu != 24) || (formating <= 0))) {
-        with(obj_formation_bar) {
+        with (obj_formation_bar) {
             instance_destroy();
         }
-        with(obj_temp8) {
+        with (obj_temp8) {
             instance_destroy();
         }
         formating = 0;
@@ -161,19 +161,19 @@ try {
         if (obj_temp_build.isnew == 1) {
             menu = 60;
         }
-        with(obj_shop) {
+        with (obj_shop) {
             instance_destroy();
         }
-        with(obj_managment_panel) {
+        with (obj_managment_panel) {
             instance_destroy();
         }
-        with(obj_drop_select) {
+        with (obj_drop_select) {
             instance_destroy();
         }
-        with(obj_star_select) {
+        with (obj_star_select) {
             instance_destroy();
         }
-        with(obj_fleet_select) {
+        with (obj_fleet_select) {
             instance_destroy();
         }
     }
@@ -184,13 +184,13 @@ try {
         instance_create(obj_temp_build.x, obj_temp_build.y, obj_star_select);
         obj_star_select.loading_name = obj_controller.selected.name;
         popup = 3;
-        with(obj_temp_build) {
+        with (obj_temp_build) {
             instance_destroy();
         }
     }
     // REMOVE
     if ((menu != 60) && instance_exists(obj_temp_build)) {
-        with(obj_temp_build) {
+        with (obj_temp_build) {
             instance_destroy();
         }
     }
@@ -213,7 +213,7 @@ try {
 
     // For testing purposes
     if (is_test_map == true) {
-        with(obj_en_fleet) {
+        with (obj_en_fleet) {
             if (owner == eFACTION.Imperium) {
                 capital_number = 0;
                 frigate_number = 1;
@@ -402,7 +402,7 @@ try {
         instance_create(0, 0, obj_shop);
     }
     if ((menu != 14) && instance_exists(obj_shop)) {
-        with(obj_shop) {
+        with (obj_shop) {
             instance_destroy();
         }
     }
@@ -413,8 +413,7 @@ try {
     // Default view
     if (menu == 1 && (managing > 0 || managing < 0)) {
         if (!view_squad) {
-            var c = 0,
-                fx = "";
+            var c = 0, fx = "";
             var xx, yy, bb = "";
             xx = __view_get(e__VW.XView, 0) + 0;
             yy = __view_get(e__VW.YView, 0) + 0;
@@ -426,22 +425,19 @@ try {
                 c = managing - 10;
             }
 
-            var top, sel, temp1 = "",
-                temp2 = "",
-                temp3 = "",
-                temp4 = "",
-                temp5 = "",
-                force_tool = 0;
+            var top, sel, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "", force_tool = 0;
             top = man_current;
             sel = top;
             yy += 77;
         }
         if (is_struct(unit_focus)) {
-
             // Checks if the marine is not hidden
             var _unit = unit_focus;
             if (!is_array(last_unit)) {
-                last_unit = [-1, -1];
+                last_unit = [
+                    -1,
+                    -1
+                ];
             }
             if ((_unit.base_group != "none") && (last_unit[1] != _unit.marine_number || last_unit[0] != _unit.company)) {
                 reset_manage_unit_constants(_unit);
@@ -511,7 +507,7 @@ try {
         pip.image = "shipyard";
         pip.cooldown = 15;
 
-        with(obj_p_fleet) {
+        with (obj_p_fleet) {
             if ((capital_health < 100) && (capital_number > 0)) {
                 acted = 2;
             }
@@ -585,7 +581,7 @@ try {
         sel_loading = -1;
         man_size = 0;
         unload = 0;
-        with(obj_star_select) {
+        with (obj_star_select) {
             instance_destroy();
         }
     }
@@ -594,8 +590,8 @@ try {
         reset_manage_selections();
     }
 
-    if (menu == 0  && !instances_exist_any([obj_ncombat,obj_fleet_controller])){
-        if (!array_contains(obj_ini.role[0],obj_ini.role[100][eROLE.ChapterMaster])  && (alarm[7] == -1)){
+    if (menu == 0 && !instances_exist_any([obj_ncombat, obj_fleet_controller])) {
+        if (!array_contains(obj_ini.role[0], obj_ini.role[100][eROLE.ChapterMaster]) && (alarm[7] == -1)) {
             alarm[7] = 15;
         }
     }

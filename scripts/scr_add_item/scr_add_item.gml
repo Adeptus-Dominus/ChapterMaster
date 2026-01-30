@@ -15,14 +15,14 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
 
     // Create the item if it doesn't exist
     if (!struct_exists(obj_ini.equipment, _item_name)) {
-		if (_quantity > 0) {
-			obj_ini.equipment[$ _item_name] = {
-				name: _item_name,
-				quantity: {}
-			};
-		} else {
-			return "no_item";
-		}
+        if (_quantity > 0) {
+            obj_ini.equipment[$ _item_name] = {
+                name: _item_name,
+                quantity: {},
+            };
+        } else {
+            return "no_item";
+        }
     }
 
     var _item_entry = obj_ini.equipment[$ _item_name];
@@ -40,112 +40,115 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
         if (instance_exists(obj_controller)) {
             obj_controller.specialist_point_handler.add_to_armoury_repair(_item_name, _quantity);
         }
+    } else if (_quantity < 0) {
+        // Removing items
+        // Get list of existing qualities
+        var _available_qualities = variable_struct_get_names(_quantities);
+        if (array_length(_available_qualities) == 0) {
+            return "no_item";
+        }
+
+        // Handle special quality keywords
+        var _priority_list = [
+            "standard",
+            "exemplary",
+            "master_crafted",
+            "artificer",
+            "artifact"
+        ];
+        switch (_quality) {
+            case "any":
+                _quality = array_random_element(_available_qualities); // random pick
+                break;
+
+            case "worst":
+                for (var i = 0; i < array_length(_priority_list); i++) {
+                    if (array_contains(_available_qualities, _priority_list[i])) {
+                        _quality = _priority_list[i];
+                        break;
+                    }
+                }
+                if (_quality == "worst") {
+                    return "no_item"; // fallback, unchanged
+                }
+                break;
+
+            case "best":
+                for (var i = array_length(_priority_list) - 1; i >= 0; i--) {
+                    if (array_contains(_available_qualities, _priority_list[i])) {
+                        _quality = _priority_list[i];
+                        break;
+                    }
+                }
+                if (_quality == "best") {
+                    return "no_item"; // fallback, unchanged
+                }
+                break;
+        }
+
+        // Now actually remove
+        if (!struct_exists(_quantities, _quality) || _quantities[$ _quality] <= 0) {
+            return "no_item";
+        }
+
+        _quantities[$ _quality] += _quantity;
+
+        if (_quantities[$ _quality] <= 0) {
+            struct_remove(_quantities, _quality);
+        }
+
+        // If no more qualities, remove item
+        if (array_length(variable_struct_get_names(_quantities)) == 0) {
+            struct_remove(obj_ini.equipment, _item_name);
+        }
+
+        return _quality;
     }
-
-    // Removing items
-	else if (_quantity < 0) {
-		// Get list of existing qualities
-		var _available_qualities = variable_struct_get_names(_quantities);
-		if (array_length(_available_qualities) == 0) {
-			return "no_item";
-		}
-
-		// Handle special quality keywords
-		var _priority_list = ["standard", "exemplary", "master_crafted", "artificer", "artifact"];
-		switch (_quality) {
-			case "any":
-				_quality = array_random_element(_available_qualities); // random pick
-				break;
-
-			case "worst":
-				for (var i = 0; i < array_length(_priority_list); i++) {
-					if (array_contains(_available_qualities, _priority_list[i])) {
-						_quality = _priority_list[i];
-						break;
-					}
-				}
-				if (_quality == "worst"){
-					return "no_item"; // fallback, unchanged
-				}
-				break;
-		
-			case "best":
-				for (var i = array_length(_priority_list) - 1; i >= 0; i--) {
-					if (array_contains(_available_qualities, _priority_list[i])) {
-						_quality = _priority_list[i];
-						break;
-					}
-				}
-				if (_quality == "best"){
-					return "no_item"; // fallback, unchanged
-				}
-				break;
-		}
-
-		// Now actually remove
-		if (!struct_exists(_quantities, _quality) || _quantities[$ _quality] <= 0) {
-			return "no_item";
-		}
-
-		_quantities[$ _quality] += _quantity;
-
-		if (_quantities[$ _quality] <= 0) {
-			struct_remove(_quantities, _quality);
-		}
-
-		// If no more qualities, remove item
-		if (array_length(variable_struct_get_names(_quantities)) == 0) {
-			struct_remove(obj_ini.equipment, _item_name);
-		}
-
-		return _quality;
-	}
 }
 
-
 function EquipmentTracker() constructor {
-	static add_item = function(item, quality = "standard", owner = -1){
-		array_push(items,{item,quality,owner});
-		if (!struct_exists(item_types, item)){
-			item_types[$ item] = 0;
-		}
+    static add_item = function(item, quality = "standard", owner = -1) {
+        array_push(items, {item, quality, owner});
+        if (!struct_exists(item_types, item)) {
+            item_types[$ item] = 0;
+        }
 
-		item_types[$ item]++;
-	}
+        item_types[$ item]++;
+    };
 
-	static collate_types = function(){
-		item_types = {};
-		for (var i=0;i<array_length(items);i++){
-			var _item = items[i].item;
-			if (!struct_exists(item_types, _item)){
-				item_types[$ _item] = 0;
-			}
+    static collate_types = function() {
+        item_types = {};
+        for (var i = 0; i < array_length(items); i++) {
+            var _item = items[i].item;
+            if (!struct_exists(item_types, _item)) {
+                item_types[$ _item] = 0;
+            }
 
-			item_types[$ _item]++;			
-		}
-	}
+            item_types[$ _item]++;
+        }
+    };
 
-	static item_count = function(){
-		return array_length(items)
-	}
+    static item_count = function() {
+        return array_length(items);
+    };
 
-	static item_description_string = function(){
-		var _item_names = struct_get_names(item_types);
-		var _string = ""
-		for (var i=0;i<array_length(_item_names);i++){
-			_string += $"{item_types[$ _item_names[i]]}" + string_plural(_item_names[i], item_types[$ _item_names[i]]) + ", ";
-		}
-    // Trim trailing comma and space
-    if (string_length(_string) >= 2) {
-        _string = string_copy(_string, 1, string_length(_string) - 2);
-    }
-		return _string;
-	}
+    static item_description_string = function() {
+        var _item_names = struct_get_names(item_types);
+        var _string = "";
+        for (var i = 0; i < array_length(_item_names); i++) {
+            _string += $"{item_types[$ _item_names[i]]}" + string_plural(_item_names[i], item_types[$ _item_names[i]]) + ", ";
+        }
+        // Trim trailing comma and space
+        if (string_length(_string) >= 2) {
+            _string = string_copy(_string, 1, string_length(_string) - 2);
+        }
+        return _string;
+    };
 
-	static has_item = function(item){
-		return struct_exists(item_types, item) ? item_types[$item] : 0;
-	}
+    static has_item = function(item) {
+        return struct_exists(item_types, item) ? item_types[$ item] : 0;
+    };
 
-	items = [];
-	item_types = {};
+    items = [];
+    item_types = {};
 }
