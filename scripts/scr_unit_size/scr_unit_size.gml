@@ -33,7 +33,7 @@ function scr_unit_size(armour, role, other_factors, mobility=false) {
     } else if (struct_exists(vehicle_size_map, role)) {
         _size = vehicle_size_map[$ role];
     } else if (armour=="") {
-        show_debug_message_adv($"Could not find size for vehicle '{role}'");
+        global.logger.debug($"Could not find size for vehicle '{role}'");
     }
 
     delete(vehicle_size_map);

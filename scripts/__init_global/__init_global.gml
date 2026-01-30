@@ -10,6 +10,9 @@ function __init_global() {
 
     initialize_dialogue();
 
+    global.logger = new Logger();
+    global.logger.active_level = (code_is_compiled()) ? eLOG_LEVEL.Warning : eLOG_LEVEL.Debug;
+
     global.culture_styles = [
         "Greek",
         "Roman",

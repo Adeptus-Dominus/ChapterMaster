@@ -1,6 +1,6 @@
 // // Global singletons
 // global.NameGenerator = new NameGenerator();
-show_debug_message_adv("Creating obj_ini");
+global.logger.debug("Creating obj_ini");
 
 // // normal stuff
 specials=0;firsts=0;seconds=0;thirds=0;fourths=0;fifths=0;
@@ -175,11 +175,11 @@ deserialize = function(save_data){
         }
         
         var loaded_value = struct_get(save_data, var_name);
-        // show_debug_message_adv($"obj_ini var: {var_name}  -  val: {loaded_value}");
+        // global.logger.debug($"obj_ini var: {var_name}  -  val: {loaded_value}");
         try {
             variable_struct_set(obj_ini, var_name, loaded_value);	
         } catch (e){
-            show_debug_message_adv(e);
+            global.logger.debug(e);
         }
     }
 

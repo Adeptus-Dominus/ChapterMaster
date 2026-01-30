@@ -355,7 +355,7 @@ function draw_chapter_select(){
 		}
 		if (highlight <= array_length(all_chapters)) {
 			var splash_chapter = all_chapters[highlight];
-			//show_debug_message_adv($"highlight {highlight} splash chapter {splash_chapter.id} splash icon {splash_chapter.splash}");
+			//global.logger.debug($"highlight {highlight} splash chapter {splash_chapter.id} splash icon {splash_chapter.splash}");
 			scr_image("creation/chapters/splash", splash_chapter.splash, 0, 68, 374, 713);
 		}
 

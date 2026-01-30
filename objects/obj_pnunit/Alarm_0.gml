@@ -226,11 +226,11 @@ try {
         }
     }
 } catch (_exception) {
-    // show_debug_message_adv($"known_powers: {known_powers}");
-    // show_debug_message_adv($"buff_powers: {buff_powers}");
-    // show_debug_message_adv($"buff_cast: {buff_cast}");
-    // show_debug_message_adv($"power_index: {power_index}");
-    // show_debug_message_adv($"known_attack_powers: {known_attack_powers}");
-    // show_debug_message_adv($"known_buff_powers: {known_buff_powers}");
+    // global.logger.debug($"known_powers: {known_powers}");
+    // global.logger.debug($"buff_powers: {buff_powers}");
+    // global.logger.debug($"buff_cast: {buff_cast}");
+    // global.logger.debug($"power_index: {power_index}");
+    // global.logger.debug($"known_attack_powers: {known_attack_powers}");
+    // global.logger.debug($"known_buff_powers: {known_buff_powers}");
     handle_exception(_exception);
 }

@@ -345,11 +345,11 @@ function string_starts_with_any(_str, _prefixes) {
 function string_interpolate_from_struct(interpolate_string,data){
     var _names=struct_get_names(data);
     var _name_length = array_length(_names);
-    show_debug_message_adv(_names);
+    global.logger.debug(_names);
     for (var i=0;i<_name_length;i++){
         var _name=_names[i];
         var _replace_string = "{" + $"{_name}" + "}";
-        show_debug_message_adv(_replace_string);
+        global.logger.debug(_replace_string);
         interpolate_string = string_replace_all(interpolate_string, _replace_string, data[$_name]);
     }
 

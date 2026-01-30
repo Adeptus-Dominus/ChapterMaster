@@ -320,7 +320,7 @@ function UINodeDebugComponent(owner, name ="") : UIComponent(owner, name) constr
 			}
 			str += string("  UIWARNING: {0} caused by node: {1} against node: {2} in function: {3}\n", code, ref1, ref2, func)
 		}
-		show_debug_message_adv(str + "}")
+		global.logger.debug(str + "}")
 	}
 	
 	static toString = function() {
