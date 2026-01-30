@@ -700,7 +700,8 @@ function scr_initialize_custom() {
 	global.chapter_name = obj_creation.chapter_name;
 	global.founding = obj_creation.founding;
 	global.founding_secret = "";
-	global.game_seed = floor(random(99999999)) + string_to_integer(global.chapter_name) + string_to_integer(obj_creation.chapter_master_name);
+	randomise();
+	global.game_seed = random_get_seed();
 
 
     if (progenitor == ePROGENITOR.RANDOM) {
