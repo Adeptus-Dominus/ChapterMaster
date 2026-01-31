@@ -1,0 +1,45 @@
+name: Gobo Lint Check
+
+on:
+  pull_request:
+    types: [opened, edited, ready_for_review, synchronize]
+    paths:
+      - '**.gml'
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: '**.gml'
+
+      - name: Setup Gobo
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          curl -LO https://github.com/EttyKitty/Gobo/releases/download/v1.0.0/gobo-ubuntu.zip
+          unzip gobo-ubuntu.zip
+          chmod +x ./gobo
+
+      - name: Run Formatter
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "Formatting $file..."
+            ./gobo "$file"
+          done
+
+      - name: Verify Formatting
+        run: |
+          if ! git diff --quiet; then
+            echo "::error::Some files are not properly formatted."
+            git diff --name-only
+            exit 1
+          fi
