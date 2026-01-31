@@ -1,5 +1,5 @@
 instance_activate_object(obj_controller);
-log_message("Fleet Combat Started");
+global.logger.info("Fleet Combat Started");
 
 beg = 0;
 fallen = 0;

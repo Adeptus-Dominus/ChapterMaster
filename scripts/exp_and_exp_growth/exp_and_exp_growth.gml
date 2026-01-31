@@ -273,7 +273,7 @@ function unit_stat_growth(grow_stat = false) {
             return instace_stat_point_gains;
         } else {
             var _name = name();
-            log_error($"{_role} {_name} No stat gains!");
+            global.logger.error($"{_role} {_name} No stat gains!");
             scr_event_log("yellow", $"{_role} {_name} No stat gains!");
             scr_alert("yellow", "DEBUG", $"{_role} {_name} No stat gains!");
             return undefined;

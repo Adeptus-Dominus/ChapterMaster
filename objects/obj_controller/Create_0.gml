@@ -72,7 +72,7 @@
     The Machine God watches over you.
 */
 global.logger.debug("Creating Controller");
-log_message("Creating Controller");
+global.logger.info("Creating Controller");
 scr_colors_initialize();
 is_test_map = false;
 target_navy_number = 5;
@@ -272,7 +272,7 @@ if (window_get_fullscreen() == 1) {
 cheatcode = 0;
 cheatyface = 0;
 // ** Debugging file created **
-log_message("Controller Created");
+global.logger.info("Controller Created");
 // ** Creates saves.ini with default settings **
 ini_open("saves.ini");
 master_volume = ini_read_real("Settings", "master_volume", 1);
@@ -1243,7 +1243,7 @@ if (instance_exists(obj_ini)) {
         scr_colors_initialize();
         scr_shader_initialize();
         instance_create(-100, -100, obj_event_log);
-        log_message("New Game");
+        global.logger.info("New Game");
     }
 }
 //Set player colour
@@ -1317,10 +1317,10 @@ if (global.load >= 0) {
     obj_cursor.image_alpha = 0;
     scr_colors_initialize();
     if (global.restart == 0) {
-        log_message("Loading Game");
+        global.logger.info("Loading Game");
     }
     if (global.restart > 0) {
-        log_message("Restarting Game");
+        global.logger.info("Restarting Game");
     }
     exit;
 }

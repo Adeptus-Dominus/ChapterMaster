@@ -1,7 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function scr_save_controller(save_id) {
-    log_message($"Saving to slot {save_id} - Part 1");
+    global.logger.info($"Saving to slot {save_id} - Part 1");
     ini_open($"save{save_id}.ini");
 
     // Global variables

@@ -1,5 +1,5 @@
 function scr_event_log(event_colour, event_text, target = "none") {
-    log_message($"Adding event to log: {event_text}");
+    global.logger.info($"Adding event to log: {event_text}");
     if (instance_exists(obj_event_log)) {
         var yf;
         yf = "";

@@ -802,7 +802,7 @@ function scr_initialize_custom() {
     }
 
     var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}";
-    // log_message(ship_summary_str);
+    // global.logger.info(ship_summary_str);
     // global.logger.debug(ship_summary_str);
 
     if (battle_barges >= 1) {
@@ -1513,7 +1513,7 @@ function scr_initialize_custom() {
                     if (struct_exists(c_roles[$ c_rolename], attribute)) {
                         var value = c_roles[$ c_rolename][$ attribute];
                         // var dbg_m = $"role {c_roleid} {c_rolename} updated {attribute} to {typeof(value)} {value}";
-                        // log_message(dbg_m);
+                        // global.logger.info(dbg_m);
                         // global.logger.debug(dbg_m);
                         switch (attribute) {
                             case "name":
@@ -1563,7 +1563,7 @@ function scr_initialize_custom() {
         sergeant: role[defaults_slot][eROLE.Sergeant],
         veteran_sergeant: role[defaults_slot][eROLE.VeteranSergeant],
     };
-    // log_message($"roles: {json_stringify(roles, true)}")
+    // global.logger.info($"roles: {json_stringify(roles, true)}")
 
     #endregion
 
@@ -2804,7 +2804,7 @@ function scr_initialize_custom() {
         },
     };
 
-    log_message($"Pre balancing company totals: {json_stringify(companies, true)}");
+    global.logger.info($"Pre balancing company totals: {json_stringify(companies, true)}");
     // Extra vehicles loaded from json files all get dumped into the 10th company for the player to sort out
 
     var vehicle_keys = [
@@ -2903,8 +2903,8 @@ function scr_initialize_custom() {
         /// comp 9: dev 100
         /// comp 10: tac 40: scout 50;
         if (equal_specialists) {
-            // log_message("balancing for equal specialists")
-            // log_message($"equal_scouts? {equal_scouts}")
+            // global.logger.info("balancing for equal specialists")
+            // global.logger.info($"equal_scouts? {equal_scouts}")
 
             if (_coy.coy >= 2 && _coy.coy <= 9) {
                 if (equal_scouts) {
@@ -2929,7 +2929,7 @@ function scr_initialize_custom() {
                 _coy.tacticals = _moved_scouts;
             }
         } else {
-            // log_message("balancing for non-equal specialists")
+            // global.logger.info("balancing for non-equal specialists")
             /// Default specialist behaviour, battle companies 2-7 have 90 tacticals each
             /// and the assaults go into the 8th and devastators into the 9th
             if (_coy.coy >= 2 && _coy.coy <= 5) {
@@ -2983,12 +2983,12 @@ function scr_initialize_custom() {
             }
         }
 
-        log_message($"New Company Totals: eq specialists: {equal_specialists}: scout coy {scout_company_behaviour} equal_scouts: {equal_scouts}");
-        log_message($"Company {_coy.coy}: {json_stringify(_coy, true)}");
+        global.logger.info($"New Company Totals: eq specialists: {equal_specialists}: scout coy {scout_company_behaviour} equal_scouts: {equal_scouts}");
+        global.logger.info($"Company {_coy.coy}: {json_stringify(_coy, true)}");
 
         var attrs = struct_get_names(_coy);
 
-        // log_message($"attrs {attrs}");
+        // global.logger.info($"attrs {attrs}");
 
         for (var _a = 0, _alen = array_length(attrs); _a < _alen; _a++) {
             var _is_vehicle = false;
@@ -3010,7 +3010,7 @@ function scr_initialize_custom() {
                 continue;
             }
 
-            // log_message($"processing: coy {_coy.coy} role {_role} count {_count}");
+            // global.logger.info($"processing: coy {_coy.coy} role {_role} count {_count}");
             switch (_role) {
                 // MAINLINE
                 case "tacticals":
@@ -3504,7 +3504,7 @@ function scr_initialize_custom() {
 /// @description helper function to streamline code inside of scr_initialize_custom, should only be used as part of
 /// game setup and not during normal gameplay
 function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, accessory) {
-    // log_message($"adding vehicle name {name} company {company} slot {slot} ")
+    // global.logger.info($"adding vehicle name {name} company {company} slot {slot} ")
     obj_ini.veh_race[company][slot] = 1;
     obj_ini.veh_loc[company][slot] = obj_ini.home_name;
     obj_ini.veh_role[company][slot] = name;
@@ -3526,7 +3526,7 @@ function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, acce
 /// Use "" if you want to set weapons and gear via squad layouts.
 /// "default" will set it to the value in the default slot for the given role, see `load_default_gear`
 function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1 = "default", wep2 = "default", gear = "default", mobi = "default", armour = "default") {
-    // log_message($"adding unit to company ttrpg_name {ttrpg_name}, company {company}, slot {slot}, role_name {role_name}, role_id {role_id}")
+    // global.logger.info($"adding unit to company ttrpg_name {ttrpg_name}, company {company}, slot {slot}, role_name {role_name}, role_id {role_id}")
     obj_ini.TTRPG[company][slot] = new TTRPG_stats("chapter", company, slot, ttrpg_name);
     var spawn_unit = fetch_unit([company, slot]);
     obj_ini.race[company][slot] = 1;

@@ -32,7 +32,7 @@ if (!engaged) {
         }
 
         if (range[i] == 0) {
-            log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
+            global.logger.error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
             // global.logger.debug($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
             continue;
         }
@@ -210,7 +210,7 @@ if (!engaged) {
             // global.logger.debug($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
             continue;
         }
-        log_error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
+        global.logger.error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
         // global.logger.debug($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
     }
 } else if ((engaged || enemy.engaged) && target_block_is_valid(enemy, obj_pnunit)) {

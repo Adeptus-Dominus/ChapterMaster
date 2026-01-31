@@ -1,7 +1,7 @@
 # Visual Studio cache directory
 .vs/
 
-# Visual Studio Code cache directory
+# VSCode cache directory
 .vscode/
 
 # Mac folder info
@@ -10,10 +10,11 @@
 # Gamemaker stuff
 ChapterMaster.resource_order
 
+# VSCode Code Stitch Igor cache
 tmp/
-stitch.config.json
 
-objects/obj_garbage_collector/
+# VSCode Stitch config
+stitch.config.json
 
 # If all of your sprite sources are in this repo you can stick a "!" in front of this to track this file. Otherwise this file is machine-specific and should be ignored.
 sprites.import.json
