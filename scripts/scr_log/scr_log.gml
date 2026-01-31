@@ -228,6 +228,22 @@ function os_type_format(_os_type) {
 /// @description A Python-inspired logger that traces the callsite and timestamp for every message.
 function Logger() constructor {
     static active_level = eLOG_LEVEL.Debug;
+    static file_logging = true;
+    static file_logging_level = eLOG_LEVEL.Info;
+    static log_filename = PATH_last_messages;
+
+    /// @description Physically writes the queue to the file.
+    /// @param {Any} _message
+    static log_to_file = function(_message) {
+        var _f = file_text_open_append(log_filename);
+        if (_f == -1) {
+            return;
+        }
+
+        file_text_write_string(_f, string(_message) + "\n");
+
+        file_text_close(_f);
+    };
 
     /// @description Extracts the calling script and line number.
     /// @returns {string}
@@ -259,34 +275,38 @@ function Logger() constructor {
         }
 
         show_debug_message(_out);
+
+        if (file_logging && _level >= file_logging_level) {
+            log_to_file(_out);
+        }
     };
 
-    /// @param {Any} message
+    /// @param {Any} _message
     static debug = function(_message) {
         _write(eLOG_LEVEL.Debug, "DEBUG", _message);
     };
 
-    /// @param {Any} message
+    /// @param {Any} _message
     static info = function(_message) {
         _write(eLOG_LEVEL.Info, "INFO", _message);
     };
 
-    /// @param {Any} message
-    static warn = function(_message) {
-        _write(eLOG_LEVEL.Warning, "WARN", _message);
+    /// @param {Any} _message
+    static warning = function(_message) {
+        _write(eLOG_LEVEL.Warning, "WARNING", _message);
     };
 
-    /// @param {Any} message
+    /// @param {Any} _message
     static error = function(_message) {
         _write(eLOG_LEVEL.Error, "ERROR", _message);
     };
 
-    /// @param {Any} message
+    /// @param {Any} _message
     static critical = function(_message) {
         _write(eLOG_LEVEL.Critical, "CRITICAL", _message);
     };
 
-    /// @param {Any} message
+    /// @param {Any} _message
     static exception = function(_message, _exception) {
         _write(eLOG_LEVEL.Error, "ERROR", _message, _exception);
     };

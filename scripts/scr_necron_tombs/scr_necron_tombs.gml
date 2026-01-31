@@ -1,5 +1,5 @@
 function awaken_tomb_event() {
-    log_message("RE: Necron Tomb Awakens");
+    global.logger.info("RE: Necron Tomb Awakens");
     var stars = scr_get_stars();
 
     var valid_stars = array_filter_ext(stars, function(star, index) {
@@ -13,7 +13,7 @@ function awaken_tomb_event() {
     });
 
     if (valid_stars == 0) {
-        log_message("RE: Necron Tomb Awakens, couldn't find a sleeping necron tomb");
+        global.logger.info("RE: Necron Tomb Awakens, couldn't find a sleeping necron tomb");
         return false;
     }
 
@@ -29,7 +29,7 @@ function awaken_tomb_event() {
     }
 
     if (planet == -1) {
-        log_message("RE: Necron Tomb Awakens, couldn't find a sleeping necron tomb planet");
+        global.logger.info("RE: Necron Tomb Awakens, couldn't find a sleeping necron tomb planet");
         return false;
     }
 

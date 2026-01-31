@@ -1,5 +1,5 @@
 // Player defeat screen
-log_message("Player Defeated; Exited to Defeat Screen");
+global.logger.info("Player Defeated; Exited to Defeat Screen");
 
 audio_stop_sound(snd_royal);
 audio_play_sound(snd_defeat, 0, true);

@@ -16,7 +16,7 @@ function default_bat_formation() {
 
 function scr_load_controller(save_id) {
     var rang = 0, i = 0, g = 0, stars = 0, pfleets = 0, efleets = 0;
-    log_message("Loading slot " + string(save_id));
+    global.logger.info("Loading slot " + string(save_id));
     var save_file_name = $"save{save_id}.ini";
 
     if (file_exists("tsave.ini")) {
@@ -27,7 +27,7 @@ function scr_load_controller(save_id) {
     if (file_exists(save_file_name)) {
         file_copy(save_file_name, "tsave.ini");
     } else {
-        log_error("Could not load save game " + save_file_name + ", file does not exist.");
+        global.logger.error("Could not load save game " + save_file_name + ", file does not exist.");
         game_restart();
     }
 

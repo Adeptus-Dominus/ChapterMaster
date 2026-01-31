@@ -28,6 +28,8 @@ if (gc_timer > 0) {
         for (var i = 0; i < array_length(_gc_lines); i++) {
             _gc_message += $"{_gc_lines[i]}. ";
         }
-        log_message(_gc_message);
+
+        //! Uncomment if debugging Garbage Collection!
+        // global.logger.debug(_gc_message);
     });
 }

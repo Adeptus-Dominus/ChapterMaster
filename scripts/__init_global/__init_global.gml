@@ -10,6 +10,12 @@ function __init_global() {
 
     initialize_dialogue();
 
+    var _log_file = file_text_open_write(PATH_last_messages);
+    if (_log_file != -1) {
+        file_text_write_string(_log_file, $"--- Log Started: {date_datetime_string(date_current_datetime())} ---\n");
+        file_text_close(_log_file);
+    }
+
     global.logger = new Logger();
     global.logger.active_level = (code_is_compiled()) ? eLOG_LEVEL.Warning : eLOG_LEVEL.Debug;
 

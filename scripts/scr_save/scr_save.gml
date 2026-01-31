@@ -20,9 +20,9 @@ function scr_save(save_part, save_id, autosaving = false) {
     }
     var t1 = get_timer();
     try {
-        log_message($"Saving to slot {save_id} - started! Autosave? {autosaving}");
+        global.logger.info($"Saving to slot {save_id} - started! Autosave? {autosaving}");
         if (save_part == 1 || autosaving) {
-            log_message($"Saving to slot {save_id} - part {save_part} started!");
+            global.logger.info($"Saving to slot {save_id} - part {save_part} started!");
             var t = date_current_datetime();
             var month = date_get_month(t);
             var day = date_get_day(t);
@@ -37,7 +37,7 @@ function scr_save(save_part, save_id, autosaving = false) {
             if (mahg < 10) {
                 minute = $"0{mahg}";
             }
-            log_message($"Saving to slot {save_id} - vars are assigned!");
+            global.logger.info($"Saving to slot {save_id} - vars are assigned!");
 
             obj_saveload.GameSave.Save = {
                 chapter_name: global.chapter_name,
@@ -55,7 +55,7 @@ function scr_save(save_part, save_id, autosaving = false) {
                 sod: random_get_seed(),
             };
 
-            log_message($"Saving to slot {save_id} - GameSave struct created!");
+            global.logger.info($"Saving to slot {save_id} - GameSave struct created!");
 
             /// STARS
             var num = instance_number(obj_star);
@@ -64,11 +64,11 @@ function scr_save(save_part, save_id, autosaving = false) {
                 var star_json = star_obj.serialize();
                 array_push(obj_saveload.GameSave.Stars, star_json);
             }
-            log_message($"Saving to slot {save_id} - stars are serialized and stored!");
+            global.logger.info($"Saving to slot {save_id} - stars are serialized and stored!");
         }
 
         if (save_part == 2 || autosaving) {
-            log_message($"Saving to slot {save_id} - part {save_part} started!");
+            global.logger.info($"Saving to slot {save_id} - part {save_part} started!");
             // PLAYER FLEET OBJECTS
             var num = instance_number(obj_p_fleet);
             for (var i = 0; i < num; i += 1) {
@@ -76,7 +76,7 @@ function scr_save(save_part, save_id, autosaving = false) {
                 var obj_p_fleet_json = fleet_obj.serialize();
                 array_push(obj_saveload.GameSave.PlayerFleet, obj_p_fleet_json);
             }
-            log_message($"Saving to slot {save_id} - player fleets are serialized and stored!");
+            global.logger.info($"Saving to slot {save_id} - player fleets are serialized and stored!");
 
             // ENEMY FLEET OBJECTS
             obj_saveload.GameSave.EnemyFleet = [];
@@ -86,25 +86,25 @@ function scr_save(save_part, save_id, autosaving = false) {
                 var obj_en_fleet_json = fleet_obj.serialize();
                 array_push(obj_saveload.GameSave.EnemyFleet, obj_en_fleet_json);
             }
-            log_message($"Saving to slot {save_id} - enemy fleets are serialized and stored!");
+            global.logger.info($"Saving to slot {save_id} - enemy fleets are serialized and stored!");
         }
 
         if (save_part == 3 || autosaving) {
-            log_message($"Saving to slot {save_id} - part {save_part} started!");
+            global.logger.info($"Saving to slot {save_id} - part {save_part} started!");
             var obj_controller_json = obj_controller.serialize();
             obj_saveload.GameSave.Controller = obj_controller_json;
-            log_message($"Saving to slot {save_id} - obj_controller is serialized and stored!");
+            global.logger.info($"Saving to slot {save_id} - obj_controller is serialized and stored!");
         }
 
         if (save_part == 4 || autosaving) {
-            log_message($"Saving to slot {save_id} - part {save_part} started!");
+            global.logger.info($"Saving to slot {save_id} - part {save_part} started!");
             var obj_ini_json = obj_ini.serialize();
             obj_saveload.GameSave.Ini = obj_ini_json;
-            log_message($"Saving to slot {save_id} - obj_ini is serialized and stored!");
+            global.logger.info($"Saving to slot {save_id} - obj_ini is serialized and stored!");
         }
 
         if (save_part == 5 || autosaving) {
-            log_message($"Saving to slot {save_id} - part {save_part} started!");
+            global.logger.info($"Saving to slot {save_id} - part {save_part} started!");
             instance_activate_object(obj_event_log);
             obj_saveload.GameSave.EventLog = obj_event_log.event;
             if (!autosaving) {
@@ -130,7 +130,7 @@ function scr_save(save_part, save_id, autosaving = false) {
             ini_write_real(string(save_id), "seed", global.game_seed);
             ini_write_string(string(save_id), "icon_name", global.chapter_icon.name);
             ini_close();
-            log_message($"Saving to slot {save_id} - saves.ini saving complete!");
+            global.logger.info($"Saving to slot {save_id} - saves.ini saving complete!");
 
             obj_saveload.save[save_id] = 1;
 
@@ -148,9 +148,9 @@ function scr_save(save_part, save_id, autosaving = false) {
             buffer_save(_gamesave_buffer, filename);
             buffer_delete(_gamesave_buffer);
             if (!autosaving) {
-                log_message($"Saving to slot {save_id} - GameSave struct conversion complete!");
+                global.logger.info($"Saving to slot {save_id} - GameSave struct conversion complete!");
             } else {
-                log_message($"Saving to autosave slot - GameSave struct conversion complete!");
+                global.logger.info($"Saving to autosave slot - GameSave struct conversion complete!");
             }
         }
     } catch (_exception) {
@@ -160,8 +160,8 @@ function scr_save(save_part, save_id, autosaving = false) {
     var t2 = get_timer();
     var diff = (t2 - t1) / 1000000;
     if (!autosaving) {
-        log_message($"Saving part {save_part} took {diff} seconds!");
+        global.logger.info($"Saving part {save_part} took {diff} seconds!");
     } else {
-        log_message($"Autosaving took {diff} seconds!");
+        global.logger.info($"Autosaving took {diff} seconds!");
     }
 }

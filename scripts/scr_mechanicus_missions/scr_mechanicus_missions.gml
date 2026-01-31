@@ -138,7 +138,7 @@ function mechanicus_missions_end_turn(planet) {
 }
 
 function spawn_mechanicus_mission(chosen_mission = "random") {
-    log_message("RE: Mechanicus Mission");
+    global.logger.info("RE: Mechanicus Mission");
     var mechanicus_missions = [];
     var _evented;
 
@@ -167,7 +167,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
 
     var mission_count = array_length(mechanicus_missions);
     if (mission_count == 0 && chosen_mission == "random") {
-        log_error("RE: Mechanicus Mission, couldn't pick mission");
+        global.logger.error("RE: Mechanicus Mission, couldn't pick mission");
         exit;
     }
 
@@ -177,7 +177,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
 
     if (chosen_mission == "mech_bionics" || chosen_mission == "mech_raider" || chosen_mission == "mech_mars") {
         if (array_length(_forge_stars) == 0) {
-            log_error("RE: Mechanicus Mission, couldn't find a mechanicus forge world");
+            global.logger.error("RE: Mechanicus Mission, couldn't find a mechanicus forge world");
             exit;
         }
 
@@ -232,7 +232,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
         }
         //global.logger.debug(_mission_data);
     } else if (chosen_mission == "mech_tomb") {
-        log_message("RE: Necron Tomb Study");
+        global.logger.info("RE: Necron Tomb Study");
         stars = scr_get_stars();
         var valid_stars = array_filter_ext(stars, function(star, index) {
             if (scr_star_has_planet_with_feature(star, P_features.Necron_Tomb) && (awake_necron_star(star) != 0)) {
@@ -245,7 +245,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
         });
 
         if (array_length(valid_stars) == 0) {
-            log_error("RE: Necron Tomb Study, coudln't find a tomb world under imperium control");
+            global.logger.error("RE: Necron Tomb Study, coudln't find a tomb world under imperium control");
             exit;
         }
         var star = array_random_element(valid_stars);

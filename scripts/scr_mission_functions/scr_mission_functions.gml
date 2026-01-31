@@ -115,10 +115,10 @@ function scr_new_governor_mission(planet, problem = "") {
 }
 
 function init_marine_acting_strange() {
-    log_message("RE: Strange Behavior");
+    global.logger.info("RE: Strange Behavior");
     var marine_and_company = scr_random_marine("", 0);
     if (marine_and_company == "none") {
-        log_error("RE: Strange Behavior, couldn't pick a space marine");
+        global.logger.error("RE: Strange Behavior, couldn't pick a space marine");
         exit;
     }
 
@@ -759,7 +759,7 @@ function increment_mission_completion(mission_data) {
     }
     mission_data.completion++;
     if (!struct_exists(mission_data, "required_months") || mission_data.required_months <= 0) {
-        log_error("Invalid required_months in mission_data");
+        global.logger.error("Invalid required_months in mission_data");
         return 0;
     }
     return (mission_data.completion / mission_data.required_months) * 100;

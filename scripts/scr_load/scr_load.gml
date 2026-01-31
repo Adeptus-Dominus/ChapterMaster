@@ -8,7 +8,7 @@ function scr_load(save_part, save_id) {
     var filename = string(PATH_save_files, save_id);
     if (save_id == 0) {
         filename = string(PATH_autosave_file);
-        log_message("Loading from Autosave");
+        global.logger.info("Loading from Autosave");
     }
     if (file_exists(filename)) {
         var _gamesave_buffer = buffer_load(filename);
@@ -22,7 +22,7 @@ function scr_load(save_part, save_id) {
     }
 
     if ((save_part == 1) || (save_part == 0)) {
-        log_message("Loading GLOBALS");
+        global.logger.info("Loading GLOBALS");
         // Globals
         var globals = obj_saveload.GameSave.Save;
         scr_load_chapter_icon(globals.icon_name, true);
@@ -31,7 +31,7 @@ function scr_load(save_part, save_id) {
     }
 
     if ((save_part == 2) || (save_part == 0)) {
-        log_message("Loading STARS");
+        global.logger.info("Loading STARS");
 
         // Stars
         var star_array = obj_saveload.GameSave.Stars;
@@ -45,14 +45,14 @@ function scr_load(save_part, save_id) {
     }
 
     if ((save_part == 3) || (save_part == 0)) {
-        log_message("Loading INI");
+        global.logger.info("Loading INI");
         // Ini
         var ini_save_data = obj_saveload.GameSave.Ini;
         obj_ini.deserialize(ini_save_data);
-        log_message("INI loaded");
+        global.logger.info("INI loaded");
 
         // Controller
-        log_message("Loading CONTROLLER");
+        global.logger.info("Loading CONTROLLER");
         var save_data = obj_saveload.GameSave.Controller;
         /// for some reason, obj_controller having it's deserialize as part of
         /// the object doesnt want to work
@@ -110,11 +110,11 @@ function scr_load(save_part, save_id) {
 
             global.star_name_colors[1] = make_color_rgb(body_colour_replace[0], body_colour_replace[1], body_colour_replace[2]);
         }
-        log_message("CONTROLLER loaded");
+        global.logger.info("CONTROLLER loaded");
     }
 
     if ((save_part == 4) || (save_part == 0)) {
-        log_message("Loading PLAYER FLEET OBJECTS"); // PLAYER FLEET OBJECTS
+        global.logger.info("Loading PLAYER FLEET OBJECTS"); // PLAYER FLEET OBJECTS
         var p_fleet = obj_saveload.GameSave.PlayerFleet;
         for (var i = 0; i < array_length(p_fleet); i++) {
             var deserialized = p_fleet[i];
@@ -123,11 +123,11 @@ function scr_load(save_part, save_id) {
                 deserialize(deserialized);
             }
         }
-        log_message("PLAYER FLEET OBJECTS loaded");
+        global.logger.info("PLAYER FLEET OBJECTS loaded");
     }
 
     if ((save_part == 5) || (save_part == 0)) {
-        log_message("Loading ENEMY FLEET OBJECTS");
+        global.logger.info("Loading ENEMY FLEET OBJECTS");
 
         var en_fleet = obj_saveload.GameSave.EnemyFleet;
         for (var i = 0; i < array_length(en_fleet); i++) {
@@ -137,25 +137,25 @@ function scr_load(save_part, save_id) {
                 deserialize(deserialized);
             }
         }
-        log_message("ENEMY FLEET OBJECTS loaded");
+        global.logger.info("ENEMY FLEET OBJECTS loaded");
 
-        log_message("Loading EVENT LOG");
+        global.logger.info("Loading EVENT LOG");
         if (!instance_exists(obj_event_log)) {
             instance_create(0, 0, obj_event_log);
         }
         instance_activate_object(obj_event_log);
         obj_event_log.event = obj_saveload.GameSave.EventLog;
-        log_message("EVENT LOG Loaded");
+        global.logger.info("EVENT LOG Loaded");
 
         obj_saveload.alarm[1] = 5;
         obj_controller.invis = false;
         global.load = -1;
         scr_image("force", -50, 0, 0, 0, 0);
-        log_message("Loading completed");
+        global.logger.info("Loading completed");
         // room_goto(Game);
     }
 
     var t2 = get_timer();
     var diff = (t2 - t1) / 1000000;
-    log_message($"Loading part {save_part} took {diff} seconds!");
+    global.logger.info($"Loading part {save_part} took {diff} seconds!");
 }

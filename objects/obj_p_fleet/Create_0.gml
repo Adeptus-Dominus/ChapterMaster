@@ -75,8 +75,6 @@ serialize = function() {
 
     return save_data;
 };
-// debugl("obj_p_fleet save data serialized:");
-// debugl(json_stringify(serialize(), true));
 
 deserialize = function(save_data) {
     var exclusions = ["orbiting"]; // skip automatic setting of certain vars, handle explicitly later

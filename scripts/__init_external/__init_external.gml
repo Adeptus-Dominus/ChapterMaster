@@ -54,7 +54,7 @@ function __init_external() {
             var _icon_name = string_delete(_file, string_length(_file) - 3, 4);
             if (ds_map_exists(global.chapter_icons_map, _icon_name)) {
                 sprite_delete(global.chapter_icons_map[? _icon_name]);
-                log_message($"A duplicate {_icon_name} icon replaced another existing one with the same name!");
+                global.logger.info($"A duplicate {_icon_name} icon replaced another existing one with the same name!");
             }
             ds_map_replace(global.chapter_icons_map, _icon_name, _sprite);
             _file = file_find_next();
@@ -64,9 +64,6 @@ function __init_external() {
 
     global.chapter_icons_array = ds_map_keys_to_array(global.chapter_icons_map);
     array_sort(global.chapter_icons_array, true);
-
-    var _log_file = file_text_open_write(PATH_last_messages);
-    file_text_close(_log_file);
 
     global.build_date = "unknown build";
     global.game_version = "unknown version";

@@ -221,7 +221,7 @@ function scr_crusade() {
 function launch_crusade() {
     var star_id = scr_random_find(2, true, "", "");
     if (star_id == undefined) {
-        log_error("RE: Crusade, couldn't find a star for the crusade");
+        global.logger.error("RE: Crusade, couldn't find a star for the crusade");
         return false;
     } else {
         //TODO decide the target/purpose of the crusade to create more variety and to help with post crusade rewards

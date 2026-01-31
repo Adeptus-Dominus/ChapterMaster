@@ -724,7 +724,6 @@
     {"id":{"name":"action_set_relative","path":"scripts/action_set_relative/action_set_relative.yy",},},
     {"id":{"name":"clean_tags","path":"scripts/clean_tags/clean_tags.yy",},},
     {"id":{"name":"d3d_set_fog","path":"scripts/d3d_set_fog/d3d_set_fog.yy",},},
-    {"id":{"name":"debugl","path":"scripts/debugl/debugl.yy",},},
     {"id":{"name":"DebugView","path":"scripts/DebugView/DebugView.yy",},},
     {"id":{"name":"DiploBasicNodes","path":"scripts/DiploBasicNodes/DiploBasicNodes.yy",},},
     {"id":{"name":"DiploCommonComponents","path":"scripts/DiploCommonComponents/DiploCommonComponents.yy",},},
