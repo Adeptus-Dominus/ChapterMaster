@@ -629,10 +629,10 @@ function draw_chapter_trait_select() {
                     tooltip = $"{cur_adv.name} ({cur_adv.points} Points)";
                     tooltip2 = cur_adv.description;
                 }
-                if (advantage_click_allow && scr_click_left()) {
-                    if ((points < maxpoints) && (adv_num[i] == 0) && (popup == "")) {
+                if (advantage_click_allow && popup == "" && scr_click_left()) {
+                    if ((points < maxpoints) && (adv_num[i] == 0)) {
                         popup = "advantages";
-
+                
                         temp = i;
                     }
                     var removable = false;
@@ -671,10 +671,10 @@ function draw_chapter_trait_select() {
                     tooltip = obj_creation.all_disadvantages[dis_num[slot]].name;
                     tooltip2 = obj_creation.all_disadvantages[dis_num[slot]].description;
                 }
-                if (advantage_click_allow && scr_click_left()) {
-                    if ((dis_num[slot] == 0) && (popup == "")) {
+                if (advantage_click_allow && popup == "" && scr_click_left()) {
+                    if (dis_num[slot] == 0) {
                         popup = "disadvantages";
-
+                
                         temp = slot;
                     }
                     var removable = false;
@@ -916,9 +916,9 @@ function draw_chapter_trait_select() {
     }
 
     if (popup != "") {
-        if (popup != "icons" && point_and_click([445, 1125, 200, 552])) {
+        if (popup != "icons" && point_outside_and_click([445, 200, 1125, 550])) {
             popup = "";
-        } else if (popup == "icons" && point_and_click([445, 1125, 200, 719])) {
+        } else if (popup == "icons" && point_outside_and_click([445, 200, 1125, 550])) {
             popup = "";
         }
     }
