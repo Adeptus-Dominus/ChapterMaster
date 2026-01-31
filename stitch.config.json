@@ -3,19 +3,11 @@
       "base": "color:#808080;",
       "lines": [
         {
-          "pattern" : "^Warning : reference to extension macro",
-          "base" : "color:#808080;"
-        },
-        {
-          "pattern" : "^WARNING: Could not find any events",
-          "base" : "color:#808080;"
-        },
-        {
-          "pattern" : "^WARNING: Could not find animation",
-          "base" : "color:#808080;"
-        },
-        {
           "pattern" : "^Pause event has been",
+          "base" : "color:#4A4A4A;"
+        },
+        {
+          "pattern" : "^Not recreating swapchain",
           "base" : "color:#4A4A4A;"
         },
         {
@@ -23,12 +15,49 @@
           "base" : "color:#808080;"
         },
         {
-          "pattern": "\\berror\\b",
-          "base": "color: #FF0000; font-weight: bold;"
+          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>DEBUG)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
+          "styles": {
+            "time": "color: #66b3ff",
+            "level": "color: #e6e6e6",
+            "caller": "color: #66b3ff",
+            "msg": "color: #e6e6e6"
+          }
         },
         {
-          "pattern": "\\bwarn(ing)?\\b",
-          "base": "color: #FFD900"
+          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>bINFO)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
+          "styles": {
+            "time": "color: #66b3ff",
+            "level": "color: #66ff66",
+            "caller": "color: #66b3ff",
+            "msg": "color: #66ff66"
+          }
+        },
+        {
+          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>bWARN)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
+          "styles": {
+            "time": "color: #66b3ff",
+            "level": "color: #FFD900",
+            "caller": "color: #66b3ff",
+            "msg": "color: #FFD900"
+          }
+        },
+        {
+          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>bERROR)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
+          "styles": {
+            "time": "color: #66b3ff",
+            "level": "color: #FF0000",
+            "caller": "color: #66b3ff",
+            "msg": "color: #FF0000"
+          }
+        },
+        {
+          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>bCRITICAL)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
+          "styles": {
+            "time": "color: #66b3ff",
+            "level": "color: #FF0000; font-weight: bold",
+            "caller": "color: #66b3ff",
+            "msg": "color: #FF0000; font-weight: bold"
+          }
         },
         {
           "base": "color: [#808080](https://github.com/bscotch/stitch/issues/808080);",
