@@ -71,7 +71,6 @@
     
     The Machine God watches over you.
 */
-global.logger.debug("Creating Controller");
 global.logger.info("Creating Controller");
 scr_colors_initialize();
 is_test_map = false;

@@ -18,7 +18,7 @@ try {
 
     obj_controller.cooldown = 10;
 
-    global.logger.info($"Ground Combat - {defeat ? "Defeat" : "Victory"}Victory - Enemy:{enemy} ({battle_special})");
+    global.logger.info($"Ground Combat - {(defeat ? "Defeat" : "Victory")} - Enemy:{enemy} ({battle_special})");
 
     // If battling own dudes, then remove the loyalists after the fact
 
