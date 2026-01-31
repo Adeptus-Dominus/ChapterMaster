@@ -126,7 +126,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
             amm = 6;
             break;
         default:
-            global.logger.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
             break;
     }
 
