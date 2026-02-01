@@ -2,7 +2,7 @@
     "Bike": {
         "abbreviation": "Bike",
         "second_profiles": ["Twin Linked Bolters"],
-        "description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and and respectable Twin-Linked Bolters for offensive action.",
+        "description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and respectable Twin-Linked Bolters for offensive action.",
         "hp_mod": {
             "standard": 25,
             "master_crafted": 25,
@@ -93,7 +93,7 @@
     "Conversion Beamer Pack": {
         "abbreviation": "CnvBmr",
         "second_profiles": ["Conversion Beam Projector"],
-        "description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comproises it is transformed into pure energy.",
+		"description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comprises it is transformed into pure energy.",
         "melee_hands": -0.5,
         "ranged_hands": -0.5,
         "tags": ["terminator"]
