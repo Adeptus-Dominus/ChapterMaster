@@ -315,15 +315,15 @@ function scr_chapter_new(chapter_identifier) {
             obj_creation.livery_picker.role_set = 0;
         }
 
-        obj_creation.color_to_main = chapter_object.eCOLORS.MAIN;
-        obj_creation.color_to_secondary = chapter_object.eCOLORS.SECONDARY;
-        obj_creation.color_to_pauldron = chapter_object.eCOLORS.PAULDRON_L;
-        obj_creation.color_to_pauldron2 = chapter_object.eCOLORS.PAULDRON_R;
-        obj_creation.color_to_trim = chapter_object.eCOLORS.TRIM;
-        obj_creation.color_to_lens = chapter_object.eCOLORS.LENS;
-        obj_creation.color_to_weapon = chapter_object.eCOLORS.WEAPON;
-        obj_creation.col_special = chapter_object.eCOLORS.SPECIAL;
-        //obj_creation.trim = chapter_object.eCOLORS.TRIM_ON;
+        obj_creation.color_to_main = chapter_object.colors.main;
+        obj_creation.color_to_secondary = chapter_object.colors.secondary;
+        obj_creation.color_to_pauldron = chapter_object.colors.pauldron_l;
+        obj_creation.color_to_pauldron2 = chapter_object.colors.pauldron_r;
+        obj_creation.color_to_trim = chapter_object.colors.trim;
+        obj_creation.color_to_lens = chapter_object.colors.lens;
+        obj_creation.color_to_weapon = chapter_object.colors.weapon;
+        obj_creation.col_special = chapter_object.colors.special;
+        //obj_creation.trim = chapter_object.colors.trim_on;
         with (obj_creation) {
             if (array_length(col) > 0) {
                 if (color_to_main != "") {
