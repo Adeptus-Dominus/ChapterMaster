@@ -20,7 +20,7 @@ function scr_manage_task_selector() {
             exit;
         }
     }
-    if (selection_data.select_type == MissionSelectType.Units) {
+    if (selection_data.select_type == eMISSION_SELECT_TYPE.UNITS) {
         man_count = array_sum(man_sel);
     } else {
         man_count = array_length(company_data.selected_squads);
@@ -29,7 +29,7 @@ function scr_manage_task_selector() {
         if (man_count == 0 || man_count > selection_data.number) {
             proceed_button.draw_shutter(1110, 70, "Proceed", 0.5, false);
         } else if (proceed_button.draw_shutter(1110, 70, "Proceed", 0.5, true)) {
-            if (selection_data.select_type == MissionSelectType.Units) {
+            if (selection_data.select_type == eMISSION_SELECT_TYPE.UNITS) {
                 task_selector_man_manage();
             } else {
                 task_selector_squad_manage();
@@ -72,7 +72,7 @@ function task_selector_man_manage() {
                     };
                     break;
                 case "captain_promote":
-                    _unit.update_role(obj_ini.role[100][eROLE.Captain]);
+                    _unit.update_role(obj_ini.role[100][eROLE.CAPTAIN]);
                     _unit.squad = "none";
                     var _start_company = _unit.company;
                     var _end_company = selection_data.target_company;
@@ -86,7 +86,7 @@ function task_selector_man_manage() {
                     update_general_manage_view();
                     exit;
                 case "champion_promote":
-                    _unit.update_role(obj_ini.role[100][eROLE.Champion]);
+                    _unit.update_role(obj_ini.role[100][eROLE.CHAMPION]);
                     _unit.squad = "none";
 
                     with (obj_ini) {
@@ -97,7 +97,7 @@ function task_selector_man_manage() {
                     update_general_manage_view();
                     exit;
                 case "ancient_promote":
-                    _unit.update_role(obj_ini.role[100][eROLE.Ancient]);
+                    _unit.update_role(obj_ini.role[100][eROLE.ANCIENT]);
                     _unit.squad = "none";
 
                     with (obj_ini) {

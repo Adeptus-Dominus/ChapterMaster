@@ -24,7 +24,7 @@ function ork_ship_production(planet) {
             }
         }
         if (contin == 2) {
-            fleet = scr_orbiting_fleet(eFACTION.Ork);
+            fleet = scr_orbiting_fleet(eFACTION.ORK);
             if (fleet == "none") {
                 contin = 3;
             }
@@ -53,17 +53,17 @@ function ork_ship_production(planet) {
                     for (var j = 0; j < 10; j++) {
                         if (!locationOk) {
                             targetStar = instance_nearest(fleet.x + choose(random(400), random(400) * -1), fleet.y + choose(random(100), random(100) * -1), obj_star);
-                            if (targetStar.owner != eFACTION.Ork) {
+                            if (targetStar.owner != eFACTION.ORK) {
                                 locationOk = true;
                             }
                             // New code testing
-                            if ((nearestStar.owner == eFACTION.Ork) && instance_exists(nearestStar)) {
+                            if ((nearestStar.owner == eFACTION.ORK) && instance_exists(nearestStar)) {
                                 if (nearestStar.present_fleet[7] > 0) {
                                     var fli = instance_nearest(nearestStar.x, nearestStar.y, obj_en_fleet);
-                                    if ((fli.action == "") && (owner != eFACTION.Ork) && (point_distance(nearestStar.x, nearestStar.y, fli.x, fli.y) < 60)) {
+                                    if ((fli.action == "") && (owner != eFACTION.ORK) && (point_distance(nearestStar.x, nearestStar.y, fli.x, fli.y) < 60)) {
                                         locationOk = true;
                                     }
-                                    if ((fli.action == "") && (owner != eFACTION.Ork) && (point_distance(nearestStar.x, nearestStar.y, fli.x, fli.y) < 60)) {
+                                    if ((fli.action == "") && (owner != eFACTION.ORK) && (point_distance(nearestStar.x, nearestStar.y, fli.x, fli.y) < 60)) {
                                         locationOk = true;
                                     }
                                 }
@@ -88,7 +88,7 @@ function ork_ship_production(planet) {
             // Create a fleet
             // fleet=instance_create
             fleet = instance_create(x, y, obj_en_fleet);
-            fleet.owner = eFACTION.Ork;
+            fleet.owner = eFACTION.ORK;
             fleet.sprite_index = spr_fleet_ork;
             fleet.image_index = 1;
             fleet.capital_number = 2;
@@ -98,8 +98,8 @@ function ork_ship_production(planet) {
 }
 
 function kill_warboss() {
-    f_type = P_features.Victory_Shrine;
-    planet_display = $"{obj_controller.faction_leader[eFACTION.Ork]} Death Place";
+    f_type = eP_FEATURES.VICTORY_SHRINE;
+    planet_display = $"{obj_controller.faction_leader[eFACTION.ORK]} Death Place";
     Warboss = "dead";
     parade = false;
 }

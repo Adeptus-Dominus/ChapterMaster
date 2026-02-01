@@ -244,7 +244,7 @@ function scr_add_artifact(artifact_type = "random", artifact_tags = "", is_ident
     // show_message(string(t3));
 
     if (artifact_location == "") {
-        if (obj_ini.fleet_type == ePlayerBase.home_world) {
+        if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
             artifact_location = obj_ini.home_name;
             ship_id = 2;
         } else {
@@ -585,7 +585,7 @@ function ArtifactStruct(Index) constructor {
         var _dwarn = false;
         if (has_tag("daemonic") || has_tag("chaos")) {
             unit.corruption += irandom(10 + 2);
-            if (unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
+            if (unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                 _dwarn = true;
             }
         }
@@ -667,7 +667,7 @@ function delete_artifact(index) {
 function equip_artifact_popup_setup() {
     instance_destroy(obj_popup);
     var pop = instance_create(0, 0, obj_popup);
-    pop.type = POPUP_TYPE.ARTIFACT_EQUIP;
+    pop.type = ePOPUP_TYPE.ARTIFACT_EQUIP;
     cooldown = 8;
     with (pop) {
         target_company_radio(10000);

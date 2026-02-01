@@ -53,7 +53,7 @@ function UnitQuickFindPanel() constructor {
             return;
         }
         unit_location = unit.marine_location();
-        if (unit_location[0] == location_types.planet && unit_location[2] != "") {
+        if (unit_location[0] == eLOCATION_TYPES.PLANET && unit_location[2] != "") {
             add_unit_to_garrison_log(unit, unit_location);
             group = garrison_log[$ unit_location[2]];
             if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES)) {
@@ -61,7 +61,7 @@ function UnitQuickFindPanel() constructor {
             } else if (unit.IsSpecialist(SPECIALISTS_TECHS)) {
                 group.techies++;
             }
-        } else if (unit_location[0] == location_types.ship) {
+        } else if (unit_location[0] == eLOCATION_TYPES.SHIP) {
             if (unit.ship_location < ship_count && unit.ship_location > -1) {
                 obj_ini.ship_carrying[unit.ship_location] += unit.get_unit_size();
             }
@@ -761,7 +761,7 @@ function HelpfulPlaces() constructor {
     var _navy_fleets = [];
 
     with (obj_en_fleet) {
-        if (owner != eFACTION.Imperium || !navy) {
+        if (owner != eFACTION.IMPERIUM || !navy) {
             continue;
         }
         var _guard_percentage = fleet_remaining_guard_ratio() * 100;

@@ -97,7 +97,7 @@ function scr_change_menu(wanted_menu, specific_area_function = false) {
 
 function main_map_defaults() {
     with (obj_controller) {
-        menu = MENU.Default;
+        menu = eMENU.DEFAULT;
         hide_banner = 0;
         location_viewer.update_garrison_log();
         managing = 0;
@@ -114,7 +114,7 @@ function main_map_defaults() {
 }
 
 function scr_in_game_help() {
-    scr_change_menu(MENU.GameHelp, function() {
+    scr_change_menu(eMENU.GAME_HELP, function() {
         with (obj_controller) {
             if ((zoomed == 0) && (!instance_exists(obj_ingame_menu)) && (!instance_exists(obj_popup))) {
                 set_zoom_to_default();
@@ -144,7 +144,7 @@ function scr_in_game_menu() {
 
 function basic_manage_settings() {
     with (obj_controller) {
-        menu = MENU.Manage;
+        menu = eMENU.MANAGE;
         popup = 0;
         selected = 0;
         diplomacy = 0;
@@ -165,9 +165,9 @@ function init_manage_buttons() {
 }
 
 function scr_toggle_manage() {
-    scr_change_menu(MENU.Manage, function() {
+    scr_change_menu(eMENU.MANAGE, function() {
         with (obj_controller) {
-            if (menu != MENU.Manage) {
+            if (menu != eMENU.MANAGE) {
                 hide_banner = 1;
                 basic_manage_settings();
                 scr_management(1);
@@ -177,15 +177,15 @@ function scr_toggle_manage() {
 }
 
 function scr_toggle_setting() {
-    scr_change_menu(MENU.Settings, function() {
+    scr_change_menu(eMENU.SETTINGS, function() {
         with (obj_controller) {
-            if (menu != MENU.Settings) {
-                menu = MENU.Settings;
+            if (menu != eMENU.SETTINGS) {
+                menu = eMENU.SETTINGS;
                 popup = 0;
                 selected = 0;
                 hide_banner = 1;
             } else if (settings) {
-                menu = MENU.Settings;
+                menu = eMENU.SETTINGS;
                 cooldown = 8000;
                 click = 1;
                 settings = 0;
@@ -195,15 +195,15 @@ function scr_toggle_setting() {
 }
 
 function scr_toggle_apothecarion() {
-    scr_change_menu(MENU.Apothecarion, function() {
+    scr_change_menu(eMENU.APOTHECARION, function() {
         with (obj_controller) {
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Master of the Apothecarion", "0") == 0) {
                 menu_adept = 1;
             }
-            if (menu != MENU.Apothecarion) {
-                menu = MENU.Apothecarion;
+            if (menu != eMENU.APOTHECARION) {
+                menu = eMENU.APOTHECARION;
 
                 temp[36] = scr_role_count(obj_ini.role[100][15], "");
             }
@@ -212,15 +212,15 @@ function scr_toggle_apothecarion() {
 }
 
 function scr_toggle_reclu() {
-    scr_change_menu(MENU.Reclusiam, function() {
+    scr_change_menu(eMENU.RECLUSIAM, function() {
         with (obj_controller) {
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Master of Sanctity", "0") == 0) {
                 menu_adept = 1;
             }
-            if (menu != MENU.Reclusiam) {
-                menu = MENU.Reclusiam;
+            if (menu != eMENU.RECLUSIAM) {
+                menu = eMENU.RECLUSIAM;
 
                 temp[36] = string(scr_role_count(obj_ini.role[100][14], "field"));
                 temp[37] = string(scr_role_count(obj_ini.role[100][14], "home"));
@@ -244,15 +244,15 @@ function scr_toggle_reclu() {
 }
 
 function scr_toggle_lib() {
-    scr_change_menu(MENU.Librarium, function() {
+    scr_change_menu(eMENU.LIBRARIUM, function() {
         with (obj_controller) {
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Chief " + string(obj_ini.role[100][17]), "0") == 0) {
                 menu_adept = 1;
             }
-            if (menu != MENU.Librarium) {
-                menu = MENU.Librarium;
+            if (menu != eMENU.LIBRARIUM) {
+                menu = eMENU.LIBRARIUM;
 
                 if ((artifacts > 0) && (menu_artifact == 0)) {
                     menu_artifact = 1;
@@ -272,9 +272,9 @@ function scr_toggle_lib() {
 }
 
 function scr_toggle_armamentarium() {
-    scr_change_menu(MENU.Armamentarium, function() {
+    scr_change_menu(eMENU.ARMAMENTARIUM, function() {
         with (obj_controller) {
-            if (menu != MENU.Armamentarium) {
+            if (menu != eMENU.ARMAMENTARIUM) {
                 if (scr_role_count("Forge Master", "0") == 0) {
                     menu_adept = 1;
                 }
@@ -286,7 +286,7 @@ function scr_toggle_armamentarium() {
 }
 
 function scr_toggle_recruiting() {
-    scr_change_menu(MENU.Recruiting, function() {
+    scr_change_menu(eMENU.RECRUITING, function() {
         with (obj_controller) {
             var geh = 0, good = 0;
             for (geh = 1; geh <= 50; geh++) {
@@ -298,7 +298,7 @@ function scr_toggle_recruiting() {
                 }
             }
 
-            if (menu != MENU.Recruiting) {
+            if (menu != eMENU.RECRUITING) {
                 set_up_recruitment_view();
                 hide_banner = 1;
             }
@@ -307,7 +307,7 @@ function scr_toggle_recruiting() {
 }
 
 function scr_toggle_fleet_area() {
-    scr_change_menu(MENU.Fleet, function() {
+    scr_change_menu(eMENU.FLEET, function() {
         with (obj_controller) {
             menu_adept = 0;
             var geh = 0, good = 0;
@@ -318,10 +318,10 @@ function scr_toggle_fleet_area() {
                     }
                 }
             }
-            if (menu != MENU.Fleet) {
+            if (menu != eMENU.FLEET) {
                 hide_banner = 1;
                 //TODO rewrite all this shit when fleets finally become OOP
-                menu = MENU.Fleet;
+                menu = eMENU.FLEET;
 
                 cooldown = 8000;
                 click = 1;
@@ -384,11 +384,11 @@ function scr_toggle_fleet_area() {
 }
 
 function scr_toggle_diplomacy() {
-    scr_change_menu(MENU.Diplomacy, function() {
+    scr_change_menu(eMENU.DIPLOMACY, function() {
         with (obj_controller) {
-            if (menu != MENU.Diplomacy) {
+            if (menu != eMENU.DIPLOMACY) {
                 set_up_diplomacy_buttons();
-                menu = MENU.Diplomacy;
+                menu = eMENU.DIPLOMACY;
                 audience = 0;
                 diplomacy = 0;
                 hide_banner = 1;
@@ -400,10 +400,10 @@ function scr_toggle_diplomacy() {
 }
 
 function scr_toggle_event_log() {
-    scr_change_menu(MENU.EventLog, function() {
+    scr_change_menu(eMENU.EVENT_LOG, function() {
         with (obj_controller) {
-            if (menu != MENU.EventLog) {
-                menu = MENU.EventLog;
+            if (menu != eMENU.EVENT_LOG) {
+                menu = eMENU.EVENT_LOG;
 
                 hide_banner = 1;
                 instance_activate_object(obj_event_log);
@@ -419,7 +419,7 @@ function scr_end_turn() {
     }
     scr_change_menu(-1, function() {
         with (obj_controller) {
-            if ((menu == MENU.Default) && (cooldown <= 0)) {
+            if ((menu == eMENU.DEFAULT) && (cooldown <= 0)) {
                 if (location_viewer.hide_sequence == 0) {
                     location_viewer.hide_sequence++;
                 }
@@ -470,7 +470,7 @@ function scr_end_turn() {
                         }
                     }
                     with (obj_p_fleet) {
-                        if ((action == "move") && (obj_controller.faction_status[eFACTION.Imperium] == "War")) {
+                        if ((action == "move") && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
                             var him = instance_nearest(action_x, action_y, obj_star);
                             if (point_distance(action_x, action_y, him.x, him.y) < 10) {
                                 him.present_fleet[20] = 1;

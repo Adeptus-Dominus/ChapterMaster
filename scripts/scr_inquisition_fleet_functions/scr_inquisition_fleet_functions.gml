@@ -1,5 +1,5 @@
 function base_inquis_fleet() {
-    owner = eFACTION.Inquisition;
+    owner = eFACTION.INQUISITION;
     frigate_number = 1;
     sprite_index = spr_fleet_inquisition;
     image_index = 0;
@@ -33,7 +33,7 @@ function radical_inquisitor_mission_ship_arrival() {
         action = "";
         set_fleet_movement();
         instance_destroy();
-        alter_disposition(eFACTION.Inquisition, -15);
+        alter_disposition(eFACTION.INQUISITION, -15);
         scr_popup("Inquisitor Mission Failed", "The radical Inquisitor has departed from the planned intercept coordinates.  They will now be nearly impossible to track- the mission is a failure.", "inquisition", "");
         scr_event_log("red", "Inquisition Mission Failed: The radical Inquisitor has departed from the planned intercept coordinates.");
     } else {
@@ -143,15 +143,15 @@ function inquisition_fleet_inspection_chase() {
 function new_inquisitor_inspection() {
     var target_system = "none";
     var new_inquis_fleet;
-    if (obj_ini.fleet_type == ePlayerBase.home_world) {
+    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         var monestary_system = "none";
         // If player does not own their homeworld than do a fleet inspection instead
         var player_stars = [];
         with (obj_star) {
-            if (owner == eFACTION.Player) {
+            if (owner == eFACTION.PLAYER) {
                 array_push(player_stars, id);
             }
-            if (system_feature_bool(p_feature, P_features.Monastery)) {
+            if (system_feature_bool(p_feature, eP_FEATURES.MONASTERY)) {
                 monestary_system = self;
             }
         }
@@ -232,9 +232,9 @@ function inquisitor_ship_approaches() {
                 }
             }
         }
-    } else if (approach_system.owner == eFACTION.Player || system_feature_bool(approach_system.p_feature, P_features.Monastery)) {
+    } else if (approach_system.owner == eFACTION.PLAYER || system_feature_bool(approach_system.p_feature, eP_FEATURES.MONASTERY)) {
         do_alert = true;
-        if (system_feature_bool(approach_system.p_feature, P_features.Monastery)) {
+        if (system_feature_bool(approach_system.p_feature, eP_FEATURES.MONASTERY)) {
             inquis_string = $"Our astropaths report that an inquisitor's ship is currently warping towards our Fortress Monastery. It is likely that theInquisitor {obj_controller.inquisitor[inquisitor]}  will attempt to perform inspection on our Fortress Monastery.";
         } else {
             inquis_string = $"Our astropaths report that an inquisitor's ship is currently warping towards our systems under chapter control. It is likely that Inquisitor {obj_controller.inquisitor[inquisitor]}  will want to make inspections of any chapter assets and fleets in the system.";
@@ -271,7 +271,7 @@ function inquisitor_inspect_base() {
                 p_owner[cur_planet] = 1;
             }
             if ((p_type[cur_planet] == "Dead") && (array_length(p_upgrades[cur_planet]) > 0)) {
-                if (planet_feature_bool(p_feature[cur_planet], [P_features.Secret_Base, P_features.Arsenal, P_features.Gene_Vault]) == 0) /*and (string_count(".0|",p_upgrades[cur_planet])>0)*/ {
+                if (planet_feature_bool(p_feature[cur_planet], [eP_FEATURES.SECRET_BASE, eP_FEATURES.ARSENAL, eP_FEATURES.GENE_VAULT]) == 0) /*and (string_count(".0|",p_upgrades[cur_planet])>0)*/ {
                     yep = cur_planet;
                 }
             }
@@ -297,7 +297,7 @@ function inquisitor_inspect_base() {
             var plap = 0, old_x = x, old_y = y, flee = 0;
             var _current_planet_name = name;
             var launch_planet, launch_point_found = false;
-            launch_planet = nearest_star_with_ownership(x, y, [eFACTION.Imperium, eFACTION.Mechanicus], self.id);
+            launch_planet = nearest_star_with_ownership(x, y, [eFACTION.IMPERIUM, eFACTION.MECHANICUS], self.id);
             if (launch_planet != "none") {
                 if (instance_exists(launch_planet)) {
                     flee = instance_create(launch_planet.x, launch_planet.y, obj_en_fleet);

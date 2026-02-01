@@ -50,11 +50,11 @@ function scr_event_gossip(argument0) {
         instance_destroy();
     }
     with (obj_star) {
-        if (owner == eFACTION.Ork) {
+        if (owner == eFACTION.ORK) {
             instance_create(x, y, obj_ground_mission);
         }
     }
-    if ((instance_number(obj_ground_mission) > 4) && (obj_controller.known[eFACTION.Ork] > 0) && (obj_controller.faction_defeated[7] == 0)) {
+    if ((instance_number(obj_ground_mission) > 4) && (obj_controller.known[eFACTION.ORK] > 0) && (obj_controller.faction_defeated[7] == 0)) {
         p += 1;
         gossip[p] = "ork_waaagh";
     }
@@ -73,7 +73,7 @@ function scr_event_gossip(argument0) {
         instance_destroy();
     }
     with (obj_star) {
-        if (owner == eFACTION.Ork) {
+        if (owner == eFACTION.ORK) {
             instance_create(x, y, obj_ground_mission);
         }
     }
@@ -89,7 +89,7 @@ function scr_event_gossip(argument0) {
         instance_destroy();
     }
     with (obj_star) {
-        if (owner == eFACTION.Tau) {
+        if (owner == eFACTION.TAU) {
             instance_create(x, y, obj_ground_mission);
         }
     }
@@ -105,7 +105,7 @@ function scr_event_gossip(argument0) {
         instance_destroy();
     }
     with (obj_star) {
-        if (owner == eFACTION.Chaos) {
+        if (owner == eFACTION.CHAOS) {
             instance_create(x, y, obj_ground_mission);
         }
     }
@@ -117,36 +117,36 @@ function scr_event_gossip(argument0) {
         instance_destroy();
     }
 
-    if ((obj_controller.faction_status[eFACTION.Inquisition] != "War") && (obj_controller.disposition[4] <= 25)) {
+    if ((obj_controller.faction_status[eFACTION.INQUISITION] != "War") && (obj_controller.disposition[4] <= 25)) {
         p += 1;
         gossip[p] = "low_dispo_inqi";
     }
-    if ((obj_controller.faction_status[eFACTION.Imperium] != "War") && (obj_controller.disposition[2] <= 25)) {
+    if ((obj_controller.faction_status[eFACTION.IMPERIUM] != "War") && (obj_controller.disposition[2] <= 25)) {
         p += 1;
         gossip[p] = "low_dispo_impe";
     }
-    if ((obj_controller.faction_status[eFACTION.Mechanicus] != "War") && (obj_controller.disposition[3] <= 25)) {
+    if ((obj_controller.faction_status[eFACTION.MECHANICUS] != "War") && (obj_controller.disposition[3] <= 25)) {
         p += 1;
         gossip[p] = "low_dispo_mech";
     }
 
-    if ((obj_controller.known[eFACTION.Eldar] > 0) && (obj_controller.faction_defeated[6] == 0) && (obj_controller.faction_status[eFACTION.Eldar] != "Allied")) {
+    if ((obj_controller.known[eFACTION.ELDAR] > 0) && (obj_controller.faction_defeated[6] == 0) && (obj_controller.faction_status[eFACTION.ELDAR] != "Allied")) {
         p += 1;
         gossip[p] = "smack_talk_eldar";
     }
-    if ((obj_controller.known[eFACTION.Ork] > 0) && (obj_controller.faction_defeated[7] == 0) && (obj_controller.faction_status[eFACTION.Ork] != "Allied")) {
+    if ((obj_controller.known[eFACTION.ORK] > 0) && (obj_controller.faction_defeated[7] == 0) && (obj_controller.faction_status[eFACTION.ORK] != "Allied")) {
         p += 1;
         gossip[p] = "smack_talk_orks";
     }
-    if ((obj_controller.known[eFACTION.Tau] > 0) && (obj_controller.faction_defeated[8] == 0) && (obj_controller.faction_status[eFACTION.Tau] != "Allied")) {
+    if ((obj_controller.known[eFACTION.TAU] > 0) && (obj_controller.faction_defeated[8] == 0) && (obj_controller.faction_status[eFACTION.TAU] != "Allied")) {
         p += 1;
         gossip[p] = "smack_talk_tau";
     }
-    if ((obj_controller.known[eFACTION.Tyranids] > 0) && (obj_controller.faction_defeated[9] == 0) && (obj_controller.faction_status[eFACTION.Tyranids] != "Allied")) {
+    if ((obj_controller.known[eFACTION.TYRANIDS] > 0) && (obj_controller.faction_defeated[9] == 0) && (obj_controller.faction_status[eFACTION.TYRANIDS] != "Allied")) {
         p += 1;
         gossip[p] = "smack_talk_tyranids";
     }
-    if ((obj_controller.known[eFACTION.Chaos] > 0) && (obj_controller.faction_defeated[10] == 0) && (obj_controller.faction_status[eFACTION.Chaos] != "Allied")) {
+    if ((obj_controller.known[eFACTION.CHAOS] > 0) && (obj_controller.faction_defeated[10] == 0) && (obj_controller.faction_status[eFACTION.CHAOS] != "Allied")) {
         p += 1;
         gossip[p] = "smack_talk_chaos";
     }

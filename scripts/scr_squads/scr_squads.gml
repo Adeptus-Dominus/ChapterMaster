@@ -21,8 +21,8 @@ function create_squad(squad_type, company, squad_loadout = true, squad_index = f
     var roles = obj_ini.role[100];
     var sergeant_found = false;
     var sgt_types = [
-        roles[eROLE.Sergeant],
-        roles[eROLE.VeteranSergeant]
+        roles[eROLE.SERGEANT],
+        roles[eROLE.VETERANSERGEANT]
     ];
 
     //if squad has sergeants in find out if there are any available sergeants
@@ -542,9 +542,9 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor {
                     exact_loc = true;
                 } else {
                     exact_loc = false;
-                    if (loc_type == location_types.ship) {
+                    if (loc_type == eLOCATION_TYPES.SHIP) {
                         in_orbit = true;
-                    } else if (loc_type == location_types.planet) {
+                    } else if (loc_type == eLOCATION_TYPES.PLANET) {
                         planet_side = true;
                     }
                 }
@@ -554,13 +554,13 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor {
         if (!same_system) {
             final_loc_status = "Scattered";
         } else if (same_loc_type) {
-            if (loc_type == location_types.ship) {
+            if (loc_type == eLOCATION_TYPES.SHIP) {
                 if (exact_loc) {
                     final_loc_status = $"aboard {obj_ini.ship[loc_id]}";
                 } else if (in_orbit) {
                     final_loc_status = $"various ships orbiting {system}";
                 }
-            } else if (loc_type == location_types.planet) {
+            } else if (loc_type == eLOCATION_TYPES.PLANET) {
                 if (exact_loc) {
                     final_loc_status = $"{system} {scr_roman_numerals()[loc_id - 1]}";
                 } else if (planet_side) {
@@ -789,9 +789,9 @@ function set_member_loc(loc_data) {
     var system = loc_data.system;
     var member_location = marine_location();
     if (wid > 0 && loc == member_location[2]) {
-        if (member_location[0] == location_types.ship) {
+        if (member_location[0] == eLOCATION_TYPES.SHIP) {
             unload(wid, system);
-        } else if (member_location[0] == location_types.planet && member_location[1] != wid && member_location[2] == loc) {
+        } else if (member_location[0] == eLOCATION_TYPES.PLANET && member_location[1] != wid && member_location[2] == loc) {
             get_unit_size();
             system.p_player[member_location[1]] -= size;
             system.p_player[wid] += size;

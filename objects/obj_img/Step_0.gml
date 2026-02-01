@@ -3,7 +3,7 @@
 
 if ((!instance_exists(obj_fleet)) && (!instance_exists(obj_ncombat))) {
     if (instance_exists(obj_controller)) {
-        if ((obj_controller.diplomacy == 0) && (obj_controller.menu == MENU.Diplomacy) && (diplomacy_icon_good == false)) {
+        if ((obj_controller.diplomacy == 0) && (obj_controller.menu == eMENU.DIPLOMACY) && (diplomacy_icon_good == false)) {
             scr_image("diplomacy_icon", -50, 0, 0, 0, 0);
             scr_image("symbol", -50, 0, 0, 0, 0);
         }

@@ -5,7 +5,7 @@ function imperial_navy_fleet_construction() {
 
     var new_navy_fleets = [];
     with (obj_en_fleet) {
-        if ((owner == eFACTION.Imperium) && (navy == 1)) {
+        if ((owner == eFACTION.IMPERIUM) && (navy == 1)) {
             array_push(new_navy_fleets, id);
         }
     }
@@ -34,13 +34,13 @@ function imperial_navy_fleet_construction() {
         with (obj_star) {
             var good = false;
             for (var o = 1; o <= planets; o++) {
-                if ((p_type[o] == "Forge") && (p_owner[o] == eFACTION.Mechanicus) && (p_orks[o] + p_tau[o] + p_tyranids[o] + p_chaos[o] + p_traitors[o] + p_necrons[o] == 0)) {
+                if ((p_type[o] == "Forge") && (p_owner[o] == eFACTION.MECHANICUS) && (p_orks[o] + p_tau[o] + p_tyranids[o] + p_chaos[o] + p_traitors[o] + p_necrons[o] == 0)) {
                     var enemy_fleets = [
-                        eFACTION.Ork,
-                        eFACTION.Tau,
-                        eFACTION.Tyranids,
-                        eFACTION.Chaos,
-                        eFACTION.Necrons
+                        eFACTION.ORK,
+                        eFACTION.TAU,
+                        eFACTION.TYRANIDS,
+                        eFACTION.CHAOS,
+                        eFACTION.NECRONS
                     ];
 
                     var enemy_fleet_count = array_reduce(enemy_fleets, function(prev, curr) {
@@ -74,7 +74,7 @@ function build_planet_defence_fleets() {
     imp_ships = 0;
     var _defence_fleet_log = {};
     with (obj_en_fleet) {
-        if (owner == eFACTION.Imperium) {
+        if (owner == eFACTION.IMPERIUM) {
             var _imperial_fleet_defence_score = capital_number + (frigate_number / 2) + (escort_number / 4);
             obj_controller.imp_ships += _imperial_fleet_defence_score;
             //log this to prevent double work later figuring out if a planet has an orbiting defence fleet
@@ -89,9 +89,9 @@ function build_planet_defence_fleets() {
     var _value_hierarchy = [];
     with (obj_star) {
         //empty object simply acts as a counter for the number of imperial systems
-        if (owner == eFACTION.Imperium) {
+        if (owner == eFACTION.IMPERIUM) {
             array_push(_imperial_systems, id);
-        } else if (owner == eFACTION.Mechanicus) {
+        } else if (owner == eFACTION.MECHANICUS) {
             array_push(_mechanicus_worlds, id);
         }
         var _system_value = 0;
@@ -158,7 +158,7 @@ function build_planet_defence_fleets() {
             return "no new imperial defence ships built this month";
         }
         var forge = array_random_element(_mechanicus_worlds);
-        var _current_imperial_fleet = scr_orbiting_fleet(eFACTION.Imperium, forge);
+        var _current_imperial_fleet = scr_orbiting_fleet(eFACTION.IMPERIUM, forge);
         var _defence_fleet = false;
         if (_current_imperial_fleet != "none") {
             if (!_current_imperial_fleet.navy) {
@@ -169,7 +169,7 @@ function build_planet_defence_fleets() {
             _defence_fleet = true;
             with (_current_imperial_fleet) {
                 navy = false;
-                owner = eFACTION.Imperium;
+                owner = eFACTION.IMPERIUM;
                 choose_fleet_sprite_image();
             }
         }

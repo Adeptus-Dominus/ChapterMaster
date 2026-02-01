@@ -1,4 +1,4 @@
-if ((owner == eFACTION.Imperium) || (owner == eFACTION.Eldar)) {
+if ((owner == eFACTION.IMPERIUM) || (owner == eFACTION.ELDAR)) {
     // This is an orderly Imperial ship formation
     var xx, yy, i, temp1, x2, man;
     xx = 0;
@@ -118,7 +118,7 @@ if (en_capital>0){en_column[1]="Void Stalker";en_num[1]=en_capital;en_size[1]=3;
 */
 
 /*
-if (owner = eFACTION.Eldar){// This is an orderly Eldar ship formation
+if (owner = eFACTION.ELDAR){// This is an orderly Eldar ship formation
     var xx,yy,i, temp1, x2, man;
     xx=0;yy=0;i=0;temp1=0;x2=1200;man=0;
     
@@ -165,7 +165,7 @@ if (owner = eFACTION.Eldar){// This is an orderly Eldar ship formation
     }
 }*/
 
-if ((owner == eFACTION.Ork) || (owner == eFACTION.Chaos)) {
+if ((owner == eFACTION.ORK) || (owner == eFACTION.CHAOS)) {
     // This is spew out random ships without regard for formations
     var xx, yy, dist, targ, numb, man;
     xx = 0;
@@ -197,7 +197,7 @@ if ((owner == eFACTION.Ork) || (owner == eFACTION.Chaos)) {
     }
 }
 
-if (owner == eFACTION.Tau) {
+if (owner == eFACTION.TAU) {
     // This is an orderly Tau ship formation
     var xx, yy, i, temp1, x2, man;
     xx = 0;
@@ -259,7 +259,7 @@ if (owner == eFACTION.Tau) {
     }
 }
 
-if (owner == eFACTION.Tyranids) {
+if (owner == eFACTION.TYRANIDS) {
     // This is an orderly Tyranid ship formation
     var xx, yy, i, temp1, x2, man;
     xx = 0;
@@ -313,7 +313,7 @@ if (owner == eFACTION.Tyranids) {
     }
 }
 
-if (owner == eFACTION.Necrons) {
+if (owner == eFACTION.NECRONS) {
     // This is an orderly Necron ship formation
     var xx, yy, i, temp1, x2, man;
     xx = 0;

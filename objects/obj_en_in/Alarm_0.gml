@@ -1,15 +1,15 @@
-if (owner == eFACTION.Eldar) {
+if (owner == eFACTION.ELDAR) {
     hp = 15;
 }
-if (owner == eFACTION.Ork) {
+if (owner == eFACTION.ORK) {
     hp = 8;
 }
-if (owner == eFACTION.Tau) {
+if (owner == eFACTION.TAU) {
     hp = 25;
 }
-if (owner == eFACTION.Tyranids) {
+if (owner == eFACTION.TYRANIDS) {
     hp = 15;
 }
-if (owner == eFACTION.Chaos) {
+if (owner == eFACTION.CHAOS) {
     hp = 10;
 }

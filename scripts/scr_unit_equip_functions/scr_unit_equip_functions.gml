@@ -118,7 +118,7 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
         if (new_arm_data.has_tag("dreadnought")) {
             is_boarder = false;
             remove_from_squad();
-            update_role(obj_ini.role[100][eROLE.Dreadnought]);
+            update_role(obj_ini.role[100][eROLE.DREADNOUGHT]);
             update_gear("");
             update_mobility_item("");
         }

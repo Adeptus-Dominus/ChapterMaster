@@ -18,8 +18,8 @@
 		the string (usually max) is guidance so in the instance of max it will pick the larger value of the mean and the gauss function return
 */
 // will swap these out for enums or some better method as i develop where this is going
-#macro ARR_body_parts ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw", "head"]
-#macro ARR_body_parts_display ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw", "Head"]
+#macro UNIT_BODY_PARTS ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw", "head"]
+#macro UNIT_BODY_PARTS_DISPLAY ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw", "Head"]
 global.religions = {
     "imperial_cult": {
         "name": "Imperial Cult",
@@ -32,18 +32,18 @@ global.religions = {
     },
 };
 
-enum location_types {
-    planet,
-    ship,
-    space_hulk,
-    ancient_ruins,
-    warp,
+enum eLOCATION_TYPES {
+    PLANET,
+    SHIP,
+    SPACE_HULK,
+    ANCIENT_RUINS,
+    WARP,
 }
 
 #macro ARR_psy_levels ["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta", "Gamma Plus"]
 #macro ARR_negative_psy_levels ["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]
 
-enum EquipmentSlot {
+enum eEQUIPMENT_SLOT {
     WEAPON_ONE,
     WEAPON_TWO,
     ARMOUR,
@@ -1143,7 +1143,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         /*if (mobi == "Jump Pack"){
 			sz++;
 		}*/
-        if (unit_role == obj_ini.role[100][eROLE.ChapterMaster]) {
+        if (unit_role == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
             sz++;
         }
         size = sz;
@@ -1194,7 +1194,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     allegiance = faction; //faction alligience defaults to the chapter
 
     static stat_boosts = function(stat_boosters) {
-        var stats = ARR_stat_list;
+        var stats = UNIT_STAT_LIST;
         var edits = struct_get_names(stat_boosters);
         var edit_stat, random_stat, stat_mod;
         for (var stat_iter = 0; stat_iter < array_length(stats); stat_iter++) {
@@ -1524,7 +1524,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
 
             var _cloak_chance = 5;
-            if (role() == obj_ini.role[100][eROLE.Chaplain]) {
+            if (role() == obj_ini.role[100][eROLE.CHAPLAIN]) {
                 _cloak_chance += 25;
             } else if (IsSpecialist(SPECIALISTS_LIBRARIANS)) {
                 _cloak_chance += 75;
@@ -1543,7 +1543,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
             break;
         case "tech_priest":
-            loyalty = obj_controller.disposition[eFACTION.Mechanicus] - 10;
+            loyalty = obj_controller.disposition[eFACTION.MECHANICUS] - 10;
             religeon = "cult_mechanicus";
             bionics = irandom(5) + 4;
             add_trait("flesh_is_weak");
@@ -1596,7 +1596,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 add_or_sub_health(30);
             }
             var bionic_possible = [];
-            var _body_parts = ARR_body_parts;
+            var _body_parts = UNIT_BODY_PARTS;
             for (var body_part = 0; body_part < array_length(_body_parts); body_part++) {
                 part = _body_parts[body_part];
                 if (!get_body_data("bionic", part)) {
@@ -1874,7 +1874,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (role() == "Lexicanum" && psionic >= 5 && experience > 50) {
             update_role("Codiciery");
         } else if (role() == "Codiciery" && psionic >= 8 && experience > 100) {
-            update_role(obj_ini.role[100][eROLE.Librarian]);
+            update_role(obj_ini.role[100][eROLE.LIBRARIAN]);
         }
     };
 
@@ -2461,13 +2461,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (location_type > 0) {
             //if marine is on planet
             location_id = location_type; //planet_number marine is on
-            location_type = location_types.planet; //state marine is on planet
+            location_type = eLOCATION_TYPES.PLANET; //state marine is on planet
             if (location_string == "home") {
                 location_string = obj_ini.home_name;
             }
             location_name = location_string; //system marine is in
         } else {
-            location_type = location_types.ship; //marine is on ship
+            location_type = eLOCATION_TYPES.SHIP; //marine is on ship
             location_id = ship_location > -1 ? ship_location : 0; //ship array position
             if (location_id < array_length(obj_ini.ship_location)) {
                 location_name = obj_ini.ship_location[location_id]; //location of ship
@@ -2517,7 +2517,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             target_ship_location = obj_ini.home_name;
         }
 
-        if (current_location[0] == location_types.planet) {
+        if (current_location[0] == eLOCATION_TYPES.PLANET) {
             //if marine is on a planet
             if (current_location[2] == "home") {
                 system = obj_ini.home_name;
@@ -2537,7 +2537,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                     }
                 }
             }
-        } else if (current_location[0] == location_types.ship) {
+        } else if (current_location[0] == eLOCATION_TYPES.SHIP) {
             //with this addition marines can now be moved between ships freely as long as they are in the same system
             var off_loading_ship = current_location[1];
             if ((obj_ini.ship_location[ship] == obj_ini.ship_location[off_loading_ship]) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
@@ -2566,7 +2566,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (!controllable()) {
             return;
         }
-        if (current_location[0] == location_types.ship) {
+        if (current_location[0] == eLOCATION_TYPES.SHIP) {
             if (current_location[2] != "Warp" && current_location[2] == system.name) {
                 location_string = obj_ini.ship_location[current_location[1]];
                 planet_location = planet_number;
@@ -2586,7 +2586,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static allocate_unit_to_fresh_spawn = function(type = "default") {
         var homestar = "none";
         var spawn_location_chosen = false;
-        if (((type == "home") || (type == "default")) && (obj_ini.fleet_type == ePlayerBase.home_world)) {
+        if (((type == "home") || (type == "default")) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
             var homestar = star_by_name(obj_ini.home_name);
         } else if (type != "ship") {
             var homestar = star_by_name(type);
@@ -2596,7 +2596,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 	    }*/
         if (homestar != "none") {
             for (var i = 1; i <= homestar.planets; i++) {
-                if (homestar.p_owner[i] == eFACTION.Player || (obj_controller.faction_status[eFACTION.Imperium] != "War" && array_contains(obj_controller.imperial_factions, homestar.p_owner[i]))) {
+                if (homestar.p_owner[i] == eFACTION.PLAYER || (obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && array_contains(obj_controller.imperial_factions, homestar.p_owner[i]))) {
                     planet_location = i;
                     location_string = obj_ini.home_name;
                     spawn_location_chosen = true;
@@ -2889,32 +2889,32 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     /// @param {Enum.EquipmentSlot} _slot
-    static add_equipment_repairs = function(_slot = EquipmentSlot.ALL) {
+    static add_equipment_repairs = function(_slot = eEQUIPMENT_SLOT.ALL) {
         var _slots = array_create(0);
 
         switch (_slot) {
-            case EquipmentSlot.ARMOUR:
-                _slots = [EquipmentSlot.ARMOUR];
+            case eEQUIPMENT_SLOT.ARMOUR:
+                _slots = [eEQUIPMENT_SLOT.ARMOUR];
                 break;
-            case EquipmentSlot.WEAPON_ONE:
-                _slots = [EquipmentSlot.WEAPON_ONE];
+            case eEQUIPMENT_SLOT.WEAPON_ONE:
+                _slots = [eEQUIPMENT_SLOT.WEAPON_ONE];
                 break;
-            case EquipmentSlot.WEAPON_TWO:
-                _slots = [EquipmentSlot.WEAPON_TWO];
+            case eEQUIPMENT_SLOT.WEAPON_TWO:
+                _slots = [eEQUIPMENT_SLOT.WEAPON_TWO];
                 break;
-            case EquipmentSlot.GEAR:
-                _slots = [EquipmentSlot.GEAR];
+            case eEQUIPMENT_SLOT.GEAR:
+                _slots = [eEQUIPMENT_SLOT.GEAR];
                 break;
-            case EquipmentSlot.MOBILITY:
-                _slots = [EquipmentSlot.MOBILITY];
+            case eEQUIPMENT_SLOT.MOBILITY:
+                _slots = [eEQUIPMENT_SLOT.MOBILITY];
                 break;
-            case EquipmentSlot.ALL:
+            case eEQUIPMENT_SLOT.ALL:
                 _slots = [
-                    EquipmentSlot.ARMOUR,
-                    EquipmentSlot.WEAPON_ONE,
-                    EquipmentSlot.WEAPON_TWO,
-                    EquipmentSlot.GEAR,
-                    EquipmentSlot.MOBILITY
+                    eEQUIPMENT_SLOT.ARMOUR,
+                    eEQUIPMENT_SLOT.WEAPON_ONE,
+                    eEQUIPMENT_SLOT.WEAPON_TWO,
+                    eEQUIPMENT_SLOT.GEAR,
+                    eEQUIPMENT_SLOT.MOBILITY
                 ];
                 break;
         }
@@ -2922,35 +2922,35 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         for (var i = 0; i < array_length(_slots); i++) {
             var _cur_slot = _slots[i];
             switch (_cur_slot) {
-                case EquipmentSlot.ARMOUR:
+                case eEQUIPMENT_SLOT.ARMOUR:
                     obj_controller.specialist_point_handler.add_to_armoury_repair(armour());
                     if (instance_exists(obj_ncombat)) {
                         obj_ncombat.slime += get_armour_data("maintenance");
                     }
                     break;
 
-                case EquipmentSlot.WEAPON_ONE:
+                case eEQUIPMENT_SLOT.WEAPON_ONE:
                     obj_controller.specialist_point_handler.add_to_armoury_repair(weapon_one());
                     if (instance_exists(obj_ncombat)) {
                         obj_ncombat.slime += get_weapon_one_data("maintenance");
                     }
                     break;
 
-                case EquipmentSlot.WEAPON_TWO:
+                case eEQUIPMENT_SLOT.WEAPON_TWO:
                     obj_controller.specialist_point_handler.add_to_armoury_repair(weapon_two());
                     if (instance_exists(obj_ncombat)) {
                         obj_ncombat.slime += get_weapon_two_data("maintenance");
                     }
                     break;
 
-                case EquipmentSlot.GEAR:
+                case eEQUIPMENT_SLOT.GEAR:
                     obj_controller.specialist_point_handler.add_to_armoury_repair(gear());
                     if (instance_exists(obj_ncombat)) {
                         obj_ncombat.slime += get_gear_data("maintenance");
                     }
                     break;
 
-                case EquipmentSlot.MOBILITY:
+                case eEQUIPMENT_SLOT.MOBILITY:
                     obj_controller.specialist_point_handler.add_to_armoury_repair(mobility_item());
                     if (instance_exists(obj_ncombat)) {
                         obj_ncombat.slime += get_mobility_data("maintenance");

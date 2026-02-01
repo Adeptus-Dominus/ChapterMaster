@@ -53,7 +53,7 @@ function split_selected_into_new_fleet(start_fleet = "none") {
     var new_fleet;
     if (start_fleet == "none") {
         new_fleet = instance_create(x, y, obj_p_fleet);
-        new_fleet.owner = eFACTION.Player;
+        new_fleet.owner = eFACTION.PLAYER;
         // Pass over ships to the new fleet, if they are selected
         var cap_number = array_length(capital);
 
@@ -407,7 +407,7 @@ function player_retreat_from_fleet_combat() {
             }
         }
 
-        type = POPUP_TYPE.BATTLE_OPTIONS;
+        type = ePOPUP_TYPE.BATTLE_OPTIONS;
         title = "Fleet Retreating";
         cooldown = 15;
         obj_controller.menu = 0;

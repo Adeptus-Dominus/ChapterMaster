@@ -1,15 +1,15 @@
-enum DropType {
-    RaidAttack = 0,
-    PurgeSelect,
-    PurgeBombard,
-    PurgeFire,
-    PurgeSelective,
-    PurgeAssassinate,
+enum eDROP_TYPE {
+    RAIDATTACK = 0,
+    PURGESELECT,
+    PURGEBOMBARD,
+    PURGEFIRE,
+    PURGESELECTIVE,
+    PURGEASSASSINATE,
 }
 
 function drop_select_draw() {
     with (obj_drop_select) {
-        if (purge != DropType.PurgeSelect) {
+        if (purge != eDROP_TYPE.PURGESELECT) {
             w = 660;
             h = 520;
             // Center of the screen
@@ -22,7 +22,7 @@ function drop_select_draw() {
             var x3 = (x1 + x2) / 2;
             var y3 = (y1 + y2) / 2;
 
-            if (purge == DropType.RaidAttack) {
+            if (purge == eDROP_TYPE.RAIDATTACK) {
                 draw_set_font(fnt_40k_30b);
 
                 // var xx,yy;
@@ -80,7 +80,7 @@ function drop_select_draw() {
             // Local force button;
 
             // Ship buttons;
-            if (purge != DropType.PurgeBombard) {
+            if (purge != eDROP_TYPE.PURGEBOMBARD) {
                 var _local_button = roster.local_button;
                 _local_button.x1 = x8;
                 _local_button.y1 = y8;
@@ -171,7 +171,7 @@ function drop_select_draw() {
 
             // Target
             var race_quantity = 0;
-            if (purge == DropType.RaidAttack) {
+            if (purge == eDROP_TYPE.RAIDATTACK) {
                 var target_race = "", target_threat = "", race_quantity = 0;
                 var races = [
                     "",
@@ -254,7 +254,7 @@ function drop_select_draw() {
             // Attack / Raid buttons
             btn_attack.x1 = btn_back.x1 + btn_attack.width + 10;
             btn_attack.y1 = btn_back.y1;
-            if (purge == DropType.RaidAttack) {
+            if (purge == eDROP_TYPE.RAIDATTACK) {
                 btn_attack.str1 = (attack) ? "ATTACK!" : "RAID!";
                 btn_attack.active = array_length(roster.selected_units) > 0 && race_quantity > 0;
             } else if (purge > 1) {
@@ -304,13 +304,13 @@ function drop_select_draw() {
                     if (obj_ncombat.battle_object.space_hulk == 1) {
                         obj_ncombat.battle_special = "space_hulk";
                     }
-                    if ((planet_feature_bool(_planet, P_features.Warlord6) == 1) && (obj_ncombat.enemy == 6) && (obj_controller.faction_defeated[6] == 0)) {
+                    if ((planet_feature_bool(_planet, eP_FEATURES.WARLORD6) == 1) && (obj_ncombat.enemy == 6) && (obj_controller.faction_defeated[6] == 0)) {
                         obj_ncombat.leader = 1;
                     }
                     if ((obj_ncombat.enemy == 7) && (obj_controller.faction_defeated[7] <= 0)) {
-                        if (planet_feature_bool(_planet, P_features.OrkWarboss)) {
+                        if (planet_feature_bool(_planet, eP_FEATURES.ORKWARBOSS)) {
                             obj_ncombat.leader = 1;
-                            obj_ncombat.Warlord = _planet[search_planet_features(_planet, P_features.OrkWarboss)[0]];
+                            obj_ncombat.Warlord = _planet[search_planet_features(_planet, eP_FEATURES.ORKWARBOSS)[0]];
                         }
                     }
 
@@ -321,7 +321,7 @@ function drop_select_draw() {
                     }
 
                     if (obj_ncombat.enemy == 11) {
-                        if (planet_feature_bool(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id], P_features.ChaosWarband) == 1) {
+                        if (planet_feature_bool(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id], eP_FEATURES.CHAOSWARBAND) == 1) {
                             obj_ncombat.battle_special = "ChaosWarband";
                             obj_ncombat.leader = 1;
                         }
@@ -386,11 +386,11 @@ function drop_select_draw() {
                     var _chaos_lord_jump_possible = attacking == 0 || attacking == 10 || attacking == 11;
                     var _no_know_chaos = _battle_place.p_traitors[_battle_sub_loc] == 0 && _battle_place.p_chaos[_battle_sub_loc] == 0;
 
-                    var _chaos_warlord_present = planet_feature_bool(_battle_place.p_feature[obj_ncombat.battle_id], P_features.Warlord10);
+                    var _chaos_warlord_present = planet_feature_bool(_battle_place.p_feature[obj_ncombat.battle_id], eP_FEATURES.WARLORD10);
 
                     var _chaos_popup_turn_reached = obj_controller.turn >= obj_controller.chaos_turn;
 
-                    var _chaos_unknown = (obj_controller.known[eFACTION.Chaos] == 0) && (obj_controller.faction_gender[10] == 1);
+                    var _chaos_unknown = (obj_controller.known[eFACTION.CHAOS] == 0) && (obj_controller.faction_gender[10] == 1);
 
                     if (_chaos_lord_jump_possible && _no_know_chaos) {
                         if (_chaos_popup_turn_reached && _chaos_warlord_present) {
@@ -405,7 +405,7 @@ function drop_select_draw() {
                                 instance_activate_all();
                                 exit;
                             }
-                            if (obj_controller.known[eFACTION.Chaos] >= 2 && obj_controller.faction_gender[10] == 1) {
+                            if (obj_controller.known[eFACTION.CHAOS] >= 2 && obj_controller.faction_gender[10] == 1) {
                                 with (obj_drop_select) {
                                     obj_ncombat.enemy = 11;
                                     obj_ncombat.threat = 0;
@@ -617,7 +617,7 @@ function collect_local_units() {
             purge_d = 0;
         }
 
-        if ((planet_feature_bool(p_target.p_feature[pp], P_features.Monastery) == 1) && (obj_controller.homeworld_rule != 1)) {
+        if ((planet_feature_bool(p_target.p_feature[pp], eP_FEATURES.MONASTERY) == 1) && (obj_controller.homeworld_rule != 1)) {
             purge_d = 0;
         }
 

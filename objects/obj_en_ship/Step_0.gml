@@ -65,7 +65,7 @@ if (!__b__) {
 
         image_alpha = 0.5;
 
-        if (owner != eFACTION.Tyranids) {
+        if (owner != eFACTION.TYRANIDS) {
             // ex=instance_create(x,y,obj_explosion);
             // ex.image_xscale=2;ex.image_yscale=2;ex.image_speed=0.75;
             var husk;
@@ -84,7 +84,7 @@ if (!__b__) {
                 explo.y += random_range(sprite_width * 0.25, sprite_width * -0.25);
             }
         }
-        if (owner == eFACTION.Tyranids) {
+        if (owner == eFACTION.TYRANIDS) {
             effect_create_above(ef_firework, x, y, 1, c_purple);
         }
         instance_destroy();
@@ -315,7 +315,7 @@ if (!__b__) {
             if ((dist > 64) && (dist < 300)) {
                 bull = instance_create(x, y, obj_en_round);
                 bull.direction = point_direction(x, y, targe.x, targe.y);
-                if (owner == eFACTION.Tyranids) {
+                if (owner == eFACTION.TYRANIDS) {
                     bull.sprite_index = spr_glob;
                 }
                 bull.speed = 20;
@@ -323,7 +323,7 @@ if (!__b__) {
                 bull.image_xscale = 0.5;
                 bull.image_yscale = 0.5;
                 turret_cool = floor(60 / turrets);
-                if (owner == eFACTION.Necrons) {
+                if (owner == eFACTION.NECRONS) {
                     bull.sprite_index = spr_green_las;
                     bull.image_yscale = 1;
                 }
@@ -437,7 +437,7 @@ if (!__b__) {
                 }
                 ok = 3;
 
-                if ((string_count("orpedo", wep) == 0) && (string_count("Interceptor", wep) == 0) && (string_count("ommerz", wep) == 0) && (string_count("Claws", wep) == 0) && (string_count("endrils", wep) == 0) && (ok == 3) && (owner != eFACTION.Necrons)) {
+                if ((string_count("orpedo", wep) == 0) && (string_count("Interceptor", wep) == 0) && (string_count("ommerz", wep) == 0) && (string_count("Claws", wep) == 0) && (string_count("endrils", wep) == 0) && (ok == 3) && (owner != eFACTION.NECRONS)) {
                     bull = instance_create(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), obj_en_round);
                     bull.speed = 20;
                     bull.dam = dam;
@@ -486,18 +486,18 @@ if (!__b__) {
                         bullimage_yscale = 2;
                     }
 
-                    if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.Eldar)) {
+                    if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.ELDAR)) {
                         bull.sprite_index = spr_ground_las;
                         bull.image_xscale = 2;
                         bull.image_yscale = 2;
                     }
-                    if ((string_count("Pulse", wep) == 1) && (owner == eFACTION.Eldar)) {
+                    if ((string_count("Pulse", wep) == 1) && (owner == eFACTION.ELDAR)) {
                         bull.sprite_index = spr_pulse;
                         bull.image_xscale = 1.5;
                         bull.image_yscale = 1.5;
                     }
                 }
-                if ((string_count("orpedo", wep) == 1) && (ok == 3) && (owner != eFACTION.Necrons)) {
+                if ((string_count("orpedo", wep) == 1) && (ok == 3) && (owner != eFACTION.NECRONS)) {
                     if (class != "Ravager") {
                         bull = instance_create(x, y + lengthdir_y(-30, direction + 90), obj_en_round);
                         bull.speed = 10;
@@ -734,10 +734,10 @@ if (__b__) {
             if ((dist > 64) && (dist < 300)) {
                 bull = instance_create(x, y, obj_en_round);
                 bull.direction = point_direction(x, y, targe.x, targe.y);
-                if (owner == eFACTION.Tyranids) {
+                if (owner == eFACTION.TYRANIDS) {
                     bull.sprite_index = spr_glob;
                 }
-                if ((owner == eFACTION.Tau) || (owner == eFACTION.Eldar)) {
+                if ((owner == eFACTION.TAU) || (owner == eFACTION.ELDAR)) {
                     bull.sprite_index = spr_pulse;
                 }
                 bull.speed = 20;
@@ -902,12 +902,12 @@ if (__b__) {
                         bullimage_yscale = 2;
                     }
 
-                    if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.Eldar)) {
+                    if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.ELDAR)) {
                         bull.sprite_index = spr_ground_las;
                         bull.image_xscale = 2;
                         bull.image_yscale = 2;
                     }
-                    if ((string_count("Pulse", wep) == 1) && (owner == eFACTION.Eldar)) {
+                    if ((string_count("Pulse", wep) == 1) && (owner == eFACTION.ELDAR)) {
                         bull.sprite_index = spr_pulse;
                         bull.image_xscale = 1.5;
                         bull.image_yscale = 1.5;

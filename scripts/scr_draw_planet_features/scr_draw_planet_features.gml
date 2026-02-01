@@ -12,7 +12,7 @@ function FeatureSelected(Feature, system, planet) constructor {
     enter_count = 18;
     planet_data = new PlanetData(planet, system);
 
-    if (feature.f_type == P_features.Forge) {
+    if (feature.f_type == eP_FEATURES.FORGE) {
         var _worker_caps = [
             2,
             4,
@@ -69,7 +69,7 @@ function FeatureSelected(Feature, system, planet) constructor {
         }
         draw_set_halign(fa_center);
         switch (feature.f_type) {
-            case P_features.Forge:
+            case eP_FEATURES.FORGE:
                 draw_text_transformed(xx + (area_width / 2), yy + 10, "Chapter Forge", 2, 2, 0);
                 draw_set_halign(fa_left);
                 draw_set_color(c_gray);
@@ -115,7 +115,7 @@ function FeatureSelected(Feature, system, planet) constructor {
                     //TODO somthing if the forge has a hanger
                 }
                 break;
-            case P_features.Necron_Tomb:
+            case eP_FEATURES.NECRON_TOMB:
                 generic = true;
                 if (feature.awake == 0 && feature.sealed == 0) {
                     title = "Dormant Necron Tomb";
@@ -128,24 +128,24 @@ function FeatureSelected(Feature, system, planet) constructor {
                     body = "The Cursed ranks of living metal spew forth from the Necron tomb below";
                 }
                 break;
-            case P_features.Artifact:
+            case eP_FEATURES.ARTIFACT:
                 generic = true;
                 title = "Unknown Artifact";
                 body = "Unload Marines onto the planet to search for the artifact";
                 break;
-            case P_features.Ancient_Ruins:
+            case eP_FEATURES.ANCIENT_RUINS:
                 generic = true;
                 title = "Ancinet Ruins";
                 body = "Unload Marines onto the planet to explore the ruins";
                 break;
-            case P_features.STC_Fragment:
+            case eP_FEATURES.STC_FRAGMENT:
                 generic = true;
                 title = "STC Fragment";
                 body = $"Unload a {obj_ini.role[100][16]} and whatever entourage you deem necessary to recover the STC Fragment";
                 break;
-            case P_features.Gene_Stealer_Cult:
+            case eP_FEATURES.GENE_STEALER_CULT:
                 generic = true;
-                var cult_control = planet_data.population_influences[eFACTION.Tyranids];
+                var cult_control = planet_data.population_influences[eFACTION.TYRANIDS];
                 title = $"Cult of {feature.name}";
                 var control_string = "";
                 if (cult_control < 25) {
@@ -159,7 +159,7 @@ function FeatureSelected(Feature, system, planet) constructor {
                 }
                 body = $"The Cult of {feature.name} {control_string}";
                 break;
-            case P_features.Victory_Shrine:
+            case eP_FEATURES.VICTORY_SHRINE:
                 draw_text_transformed(xx + (area_width / 2), yy + 10, "Victory Shrine", 2, 2, 0);
                 draw_set_halign(fa_left);
                 draw_set_color(c_gray);
@@ -171,7 +171,7 @@ function FeatureSelected(Feature, system, planet) constructor {
 					}
 				}*/
                 break;
-            case P_features.Monastery:
+            case eP_FEATURES.MONASTERY:
                 draw_text_transformed(xx + (area_width / 2), yy + 10, feature.name, 2, 2, 0);
                 if (feature.forge == 0) {
                     draw_text_transformed(xx + 80, yy + 50, "Forge", 1, 1, 0);
@@ -182,21 +182,21 @@ function FeatureSelected(Feature, system, planet) constructor {
                     }
                 }
                 break;
-            case P_features.OrkStronghold:
+            case eP_FEATURES.ORKSTRONGHOLD:
                 title = "Ork Stronghold";
                 generic = true;
-                if (planet_data.planet_forces[eFACTION.Ork]) {
+                if (planet_data.planet_forces[eFACTION.ORK]) {
                     body = $"For as long as this Stronghold stands the orks here will continue to fortify it. The larger it gets the greater the capacity of this planet to produce orkish machines of war and ships and the better protected the ork forces will be from bombardment";
                 } else {
                     body = "Without a force of orks to hold it together the fortress is slowly pulled apart from within by the inhabitants, It's capabilities will constantly decrease until soon there will be nothing left";
                 }
                 break;
-            case P_features.Recruiting_World:
+            case eP_FEATURES.RECRUITING_WORLD:
                 generic = true;
                 var _planet = planet_data.planet;
                 var _star = obj_star_select.target;
                 var p_data = new PlanetData(_planet, _star);
-                var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+                var _recruit_world = p_data.get_features(eP_FEATURES.RECRUITING_WORLD)[0];
                 var _spare_apoth_points = p_data.get_local_apothecary_points();
                 title = "Marine Recruitment";
                 body = $"There are {_spare_apoth_points} apothecary rescource points available for recruit screening,\n\n";
@@ -229,7 +229,7 @@ function FeatureSelected(Feature, system, planet) constructor {
                     body += "To increase recruit success chance more apothecaries will be required on the planet surface.";
                 }
                 break;
-            case P_features.Mission:
+            case eP_FEATURES.MISSION:
                 var mission_description = $"";
                 var planet_name = planet_numeral_name(planet_data.planet, obj_star_select.target);
                 var button_text = "none";
@@ -262,7 +262,7 @@ function FeatureSelected(Feature, system, planet) constructor {
                         _button_tooltip = "milage may vary on playability of this mission progress at your own risk";
                         button_function = function() {
                             var dudes = collect_role_group("all", obj_star_select.target.name);
-                            group_selection(dudes, {purpose: "Select Squad for Ambush", purpose_code: feature.problem, number: 1, system: planet_data.system, feature: obj_star_select.feature, planet: planet_data.planet, array_slot: feature.array_position, select_type: MissionSelectType.Squads, selections: []});
+                            group_selection(dudes, {purpose: "Select Squad for Ambush", purpose_code: feature.problem, number: 1, system: planet_data.system, feature: obj_star_select.feature, planet: planet_data.planet, array_slot: feature.array_position, select_type: eMISSION_SELECT_TYPE.SQUADS, selections: []});
                             destroy = true;
                         };
                         break;

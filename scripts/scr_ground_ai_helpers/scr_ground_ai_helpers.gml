@@ -21,7 +21,7 @@ function planet_imperial_base_enemies(planet, star = "none") {
 function has_imperial_enemies(planet, system) {
     var _enemies = system.p_orks[planet] + system.p_chaos[planet] + system.p_tyranids[planet] + system.p_necrons[planet] + system.p_tau[planet] + system.p_traitors[planet];
 
-    if (obj_controller.faction_status[eFACTION.Imperium] == "War") {
+    if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
         _enemies += system.p_player[planet];
     }
 

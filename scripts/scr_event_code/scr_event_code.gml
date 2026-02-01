@@ -51,7 +51,7 @@ function event_end_turn_action() {
                 if (_event_star != "none") {
                     _event_star.dispo[_planet] = -10; // Resets
                     var twix = $"Inquisition executes Chapter Serf in control of {pllanet_numera_name(planet, _event_star)} and installs a new Planetary Governor.";
-                    if (_event_star.p_owner[_planet] == eFACTION.Player) {
+                    if (_event_star.p_owner[_planet] == eFACTION.PLAYER) {
                         _event_star.p_owner[_planet] = _event_star.p_first[_planet];
                     }
                     scr_alert("", "", twix, 0, 0);
@@ -60,25 +60,25 @@ function event_end_turn_action() {
             } else if (_event.e_id == "enemy_imperium") {
                 // Changes relation to good
                 scr_alert("green", "enemy", "You have made amends with your enemy in the Imperium.", 0, 0);
-                disposition[eFACTION.Imperium] += 20;
+                disposition[eFACTION.IMPERIUM] += 20;
                 scr_event_log("", "Amends made with Imperium.");
             } else if (_event.e_id == "enemy_mechanicus") {
                 scr_alert("green", "enemy", "You have made amends with your Mechanicus enemy.", 0, 0);
-                disposition[eFACTION.Mechanicus] += 20;
+                disposition[eFACTION.MECHANICUS] += 20;
                 scr_event_log("", "Amends made with Mechanicus enemy.");
             } else if (_event.e_id == "enemy_inquisition") {
                 scr_alert("green", "enemy", "You have made amends with your enemy in the Inquisition.", 0, 0);
-                disposition[eFACTION.Inquisition] += 20;
+                disposition[eFACTION.INQUISITION] += 20;
                 scr_event_log("", "Amends made with Inquisition enemy.");
             } else if (_event.e_id == "enemy_ecclesiarchy") {
                 scr_alert("green", "enemy", "You have made amends with your enemy in the Ecclesiarchy.", 0, 0);
-                disposition[eFACTION.Ecclesiarchy] += 20;
+                disposition[eFACTION.ECCLESIARCHY] += 20;
                 scr_event_log("", "Amends made with Ecclesiarchy enemy.");
             } else if (_event.e_id == "imperium_daemon") {
                 // Sector commander losses its mind
-                var alert_string = $"Sector Commander {faction_leader[eFACTION.Imperium]} has gone insane.";
+                var alert_string = $"Sector Commander {faction_leader[eFACTION.IMPERIUM]} has gone insane.";
                 scr_alert("red", "lol", alert_string, 0, 0);
-                faction_defeated[eFACTION.Imperium] = 1;
+                faction_defeated[eFACTION.IMPERIUM] = 1;
                 scr_event_log("red", alert_string);
             }
             // Starts chaos invasion
@@ -92,7 +92,7 @@ function event_end_turn_action() {
                         xx = star_id.x + lengthdir_x(72, dirr);
                         yy = star_id.y + lengthdir_y(72, dirr);
                         flee = instance_create(xx, yy, obj_en_fleet);
-                        flee.owner = eFACTION.Chaos;
+                        flee.owner = eFACTION.CHAOS;
                         flee.sprite_index = spr_fleet_chaos;
                         flee.image_index = 4;
                         flee.capital_number = choose(0, 1);
@@ -114,9 +114,9 @@ function event_end_turn_action() {
                 var active_forges = [];
                 var chosen_star = false;
                 with (obj_star) {
-                    if (owner == eFACTION.Mechanicus) {
+                    if (owner == eFACTION.MECHANICUS) {
                         for (f = 1; f <= planets; f++) {
-                            if ((p_type[f] == "Forge") && (p_owner[f] == eFACTION.Mechanicus)) {
+                            if ((p_type[f] == "Forge") && (p_owner[f] == eFACTION.MECHANICUS)) {
                                 array_push(active_forges, new PlanetData(f, self));
                             }
                         }
@@ -258,11 +258,11 @@ function handle_discovered_governor_assasinations() {
         if (_event.e_id != "governor_assassination") {
             continue;
         }
-        if (_event.duration == 1 && obj_controller.faction_status[eFACTION.Imperium] != "War") {
+        if (_event.duration == 1 && obj_controller.faction_status[eFACTION.IMPERIUM] != "War") {
             var _disp_hit = _event.variant == 1 ? 2 : 4;
             with (obj_star) {
                 for (var o = 1; o <= planets; o++) {
-                    if (p_owner == eFACTION.Imperium) {
+                    if (p_owner == eFACTION.IMPERIUM) {
                         if ((dispo[o] > 0) && (dispo[o] < 90)) {
                             dispo[o] = max(dispo[o] - _disp_hit, 0);
                         }
@@ -270,13 +270,13 @@ function handle_discovered_governor_assasinations() {
                 }
             }
             if (_event.variant == 1) {
-                alter_dispositions([[eFACTION.Imperium, -7], [eFACTION.Inquisition, -10], [eFACTION.Ecclesiarchy, -5]]);
+                alter_dispositions([[eFACTION.IMPERIUM, -7], [eFACTION.INQUISITION, -10], [eFACTION.ECCLESIARCHY, -5]]);
 
                 if (obj_controller.disposition[4] > 0 && obj_controller.disposition[2] > 0) {
                     _event.e_id = "assassination_angryish";
                 }
             } else if (_event.variant == 2) {
-                alter_disposition(eFACTION.Inquisition, -3);
+                alter_disposition(eFACTION.INQUISITION, -3);
                 if (obj_controller.disposition[4] > 0 && obj_controller.disposition[2] > 0) {
                     _event.e_id = "assassination_angry";
                 }
@@ -374,16 +374,16 @@ function make_faction_enemy_event() {
     global.logger.info("RE: Enemy");
 
     var factions = [];
-    if (obj_controller.known[eFACTION.Imperium] == 1) {
+    if (obj_controller.known[eFACTION.IMPERIUM] == 1) {
         array_push(factions, 2);
     }
-    if (obj_controller.known[eFACTION.Mechanicus] == 1) {
+    if (obj_controller.known[eFACTION.MECHANICUS] == 1) {
         array_push(factions, 3);
     }
-    if (obj_controller.known[eFACTION.Inquisition] == 1) {
+    if (obj_controller.known[eFACTION.INQUISITION] == 1) {
         array_push(factions, 4);
     }
-    if (obj_controller.known[eFACTION.Ecclesiarchy] == 1) {
+    if (obj_controller.known[eFACTION.ECCLESIARCHY] == 1) {
         array_push(factions, 5);
     }
 

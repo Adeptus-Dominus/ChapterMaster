@@ -1,6 +1,6 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-#macro ARR_stat_list ["constitution", "strength", "luck", "dexterity", "wisdom", "piety", "charisma", "technology","intelligence", "weapon_skill", "ballistic_skill"]
+#macro UNIT_STAT_LIST ["constitution", "strength", "luck", "dexterity", "wisdom", "piety", "charisma", "technology","intelligence", "weapon_skill", "ballistic_skill"]
 
 global.stat_shorts = {
     "constitution": "CON",
@@ -139,7 +139,7 @@ function unit_stat_growth(grow_stat = false) {
 
     var _role = role();
     var _trait_data = global.trait_list;
-    var _stat_list = ARR_stat_list;
+    var _stat_list = UNIT_STAT_LIST;
     var _stat_count = array_length(_stat_list);
     var _trait_stat_growth = {};
     var total_traited = 0;

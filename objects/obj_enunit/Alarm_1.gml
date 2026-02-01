@@ -310,7 +310,7 @@ if (__b__) {
 
             if ((dudes_wep1[g] != "") && (marine_casting[g] == false)) {
                 // Do not add weapons to the roster while casting
-                if (dudes[g] != obj_ini.role[100][eROLE.ChapterMaster]) {
+                if (dudes[g] != obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                     scr_en_weapon(string(dudes_wep1[g]), false, 1, dudes[g], g);
                 }
 
@@ -325,7 +325,7 @@ if (__b__) {
                 }
             }
             if ((dudes_wep2[g] != "") && (marine_casting[g] == false)) {
-                if (dudes[g] != obj_ini.role[100][eROLE.ChapterMaster]) {
+                if (dudes[g] != obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                     scr_en_weapon(string(dudes_wep2[g]), false, 1, dudes[g], g);
                 }
 

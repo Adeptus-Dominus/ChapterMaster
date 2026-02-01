@@ -56,14 +56,14 @@ saves = 0;
 var i = 0;
 
 repeat (100) {
-    if (file_exists(string(PATH_save_files, i))) {
+    if (file_exists(string(PATH_SAVE_FILES, i))) {
         save[saves] = i;
         saves += 1;
     }
-    if ((!file_exists(string(PATH_save_files, i))) && (i > 0) && (max_ini == 0)) {
+    if ((!file_exists(string(PATH_SAVE_FILES, i))) && (i > 0) && (max_ini == 0)) {
         max_ini = i;
     }
-    if (file_exists(string(PATH_save_files, i + 1)) && (max_ini > 0)) {
+    if (file_exists(string(PATH_SAVE_FILES, i + 1)) && (max_ini > 0)) {
         max_ini = 0;
     }
     i += 1;

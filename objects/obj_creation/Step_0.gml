@@ -118,7 +118,7 @@ if ((change_slide == 35) || (change_slide == 36) || (chapter_name == "Doom Benef
         recruiting_exists = 1;
         homeworld_exists = 1;
         homeworld_rule = 1;
-        aspirant_trial = eTrials.BLOODDUEL;
+        aspirant_trial = eTRIALS.BLOODDUEL;
         discipline = "librarius";
         battle_cry = "For the Emperor";
         main_color = 1;
@@ -296,13 +296,13 @@ if (full_liveries == "") {
     livery_picker.scr_unit_draw_data();
     livery_picker.set_default_armour(struct_cols, col_special);
     full_liveries = array_create(21, variable_clone(livery_picker.map_colour));
-    full_liveries[eROLE.Librarian] = livery_picker.set_default_librarian(struct_cols);
+    full_liveries[eROLE.LIBRARIAN] = livery_picker.set_default_librarian(struct_cols);
 
-    full_liveries[eROLE.Chaplain] = livery_picker.set_default_chaplain(struct_cols);
+    full_liveries[eROLE.CHAPLAIN] = livery_picker.set_default_chaplain(struct_cols);
 
-    full_liveries[eROLE.Apothecary] = livery_picker.set_default_apothecary(struct_cols);
+    full_liveries[eROLE.APOTHECARY] = livery_picker.set_default_apothecary(struct_cols);
 
-    full_liveries[eROLE.Techmarine] = livery_picker.set_default_techmarines(struct_cols);
+    full_liveries[eROLE.TECHMARINE] = livery_picker.set_default_techmarines(struct_cols);
     livery_picker.scr_unit_draw_data();
     livery_picker.set_default_armour(struct_cols, col_special);
 }

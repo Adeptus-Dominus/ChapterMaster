@@ -89,7 +89,7 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
             if (trading == 0) {
                 quick_trade = 6;
             }
-            obj_controller.known[eFACTION.Eldar] += 1;
+            obj_controller.known[eFACTION.ELDAR] += 1;
             obj_controller.disposition[6] += 10;
         }
 
@@ -119,14 +119,14 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
     }
 
     if (quick_trade != 0) {
-        if (obj_ini.fleet_type == ePlayerBase.home_world) {
+        if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
             with (obj_star) {
-                if ((owner == eFACTION.Player) && ((p_owner[1] == 1) || (p_owner[2] == 1))) {
+                if ((owner == eFACTION.PLAYER) && ((p_owner[1] == 1) || (p_owner[2] == 1))) {
                     instance_create(x, y, obj_temp2);
                 }
             }
         }
-        if (obj_ini.fleet_type != ePlayerBase.home_world) {
+        if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
             with (obj_p_fleet) {
                 // Get fleet star system
                 if ((capital_number > 0) && (action == "")) {

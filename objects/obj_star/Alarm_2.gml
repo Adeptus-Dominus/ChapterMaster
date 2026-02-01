@@ -18,7 +18,7 @@ if (instance_exists(obj_temp1)) {
     }
     biggy = instance_nearest(obj_temp1.x, obj_temp1.y, obj_star);
     var connected = determine_warp_join(biggy, self.id);
-    if ((biggy.owner == eFACTION.Player) && (tempy_d > 180) && connected) {
+    if ((biggy.owner == eFACTION.PLAYER) && (tempy_d > 180) && connected) {
         for (var i = 1; i <= planets; i++) {
             if ((p_type[i] == "Forge") && (p_owner[i] == 3)) {
                 obj_controller.income_forge += 6;

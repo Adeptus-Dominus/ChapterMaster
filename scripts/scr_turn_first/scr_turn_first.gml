@@ -61,8 +61,8 @@ function scr_turn_first() {
             }
 
             if (_total <= 3) {
-                if ((obj_controller.turn >= 150) && (obj_controller.faction_defeated[eFACTION.Chaos] == 0) && (obj_controller.known[eFACTION.Chaos] == 0) && (obj_controller.faction_gender[eFACTION.Chaos] == 2)) {
-                    // if (turn>=100000) and (faction_defeated[10]=0) and (known[eFACTION.Chaos]=0){faction_gender[10]=2;
+                if ((obj_controller.turn >= 150) && (obj_controller.faction_defeated[eFACTION.CHAOS] == 0) && (obj_controller.known[eFACTION.CHAOS] == 0) && (obj_controller.faction_gender[eFACTION.CHAOS] == 2)) {
+                    // if (turn>=100000) and (faction_defeated[10]=0) and (known[eFACTION.CHAOS]=0){faction_gender[10]=2;
                     spawn_chaos_warlord();
                 } else {
                     out_of_system_warboss();

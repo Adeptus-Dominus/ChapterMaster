@@ -5,12 +5,12 @@ if (cooldown > 0) {
 
 var dist;
 if (instance_exists(target)) {
-    if ((target.owner == eFACTION.Tyranids) || (target.owner == eFACTION.Necrons)) {
+    if ((target.owner == eFACTION.TYRANIDS) || (target.owner == eFACTION.NECRONS)) {
         damage = true;
         plasma_bomb = true;
         steal = false;
     }
-    if ((target.owner != eFACTION.Tyranids) && (target.owner != eFACTION.Necrons)) {
+    if ((target.owner != eFACTION.TYRANIDS) && (target.owner != eFACTION.NECRONS)) {
         if (obj_controller.command_set[20] == 1) {
             damage = true;
         }
@@ -177,16 +177,16 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                         boarding_disadvantage -= 5;
                     }
                 }
-                if ((target.owner == eFACTION.Imperium) || ((target.owner == eFACTION.Chaos) && (obj_fleet.csm_exp == 0))) {
+                if ((target.owner == eFACTION.IMPERIUM) || ((target.owner == eFACTION.CHAOS) && (obj_fleet.csm_exp == 0))) {
                     boarding_disadvantage -= 0;
                 } // Cultists/Pirates/Humans
-                if ((target.owner == eFACTION.Player) || (target.owner == eFACTION.Ecclesiarchy) || (target.owner == eFACTION.Ork) || (target.owner == eFACTION.Eldar) || (target.owner == eFACTION.Necrons)) {
+                if ((target.owner == eFACTION.PLAYER) || (target.owner == eFACTION.ECCLESIARCHY) || (target.owner == eFACTION.ORK) || (target.owner == eFACTION.ELDAR) || (target.owner == eFACTION.NECRONS)) {
                     boarding_disadvantage -= 10;
                 }
-                if ((target.owner == eFACTION.Chaos) && (obj_fleet.csm_exp == 1)) {
+                if ((target.owner == eFACTION.CHAOS) && (obj_fleet.csm_exp == 1)) {
                     boarding_disadvantage -= 20;
                 } //       Veteran marines
-                if (((target.owner == eFACTION.Chaos) && (obj_fleet.csm_exp == 2)) || (target.owner == eFACTION.Tyranids)) {
+                if (((target.owner == eFACTION.CHAOS) && (obj_fleet.csm_exp == 2)) || (target.owner == eFACTION.TYRANIDS)) {
                     boarding_disadvantage -= 30;
                 } // Daemons, veteran CSM, tyranids
 
@@ -227,16 +227,16 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
 
                         if (experience == 0) {
                             experience = 2;
-                            if ((target.owner == eFACTION.Ecclesiarchy) || (target.owner == eFACTION.Ork) || (target.owner == eFACTION.Eldar) || (target.owner == eFACTION.Necrons)) {
+                            if ((target.owner == eFACTION.ECCLESIARCHY) || (target.owner == eFACTION.ORK) || (target.owner == eFACTION.ELDAR) || (target.owner == eFACTION.NECRONS)) {
                                 experience += 1;
                             }
-                            if ((target.owner == eFACTION.Chaos) && (obj_fleet.csm_exp == 1)) {
+                            if ((target.owner == eFACTION.CHAOS) && (obj_fleet.csm_exp == 1)) {
                                 experience += 2;
                             }
-                            if ((target.owner == eFACTION.Chaos) && (obj_fleet.csm_exp == 2)) {
+                            if ((target.owner == eFACTION.CHAOS) && (obj_fleet.csm_exp == 2)) {
                                 experience += 3;
                             }
-                            if (target.owner == eFACTION.Tyranids) {
+                            if (target.owner == eFACTION.TYRANIDS) {
                                 experience += 3;
                             }
                             if (target.bridge <= 0) {
@@ -300,7 +300,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                     damage_roll = floor(random(100)) + 1;
 
                     //TODO streamline enemy weapons
-                    if ((target.owner == eFACTION.Imperium) || (target.owner == eFACTION.Chaos) || (target.owner == eFACTION.Ecclesiarchy)) {
+                    if ((target.owner == eFACTION.IMPERIUM) || (target.owner == eFACTION.CHAOS) || (target.owner == eFACTION.ECCLESIARCHY)) {
                         // Make worse for CSM
                         wep = "Lasgun";
                         hits = 1;
@@ -335,7 +335,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                             hits = 1;
                         }
                     }
-                    if (target.owner == eFACTION.Eldar) {
+                    if (target.owner == eFACTION.ELDAR) {
                         wep = "Shuriken Pistol";
                         hits = 1;
                         if (damage_roll <= 90) {
@@ -369,7 +369,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                             hits = 1;
                         }
                     }
-                    if (target.owner == eFACTION.Ork) {
+                    if (target.owner == eFACTION.ORK) {
                         wep = "Shoota";
                         hits = 1;
                         if (damage_roll <= 90) {
@@ -398,7 +398,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                             hits = 1;
                         }
                     }
-                    if (target.owner == eFACTION.Tau) {
+                    if (target.owner == eFACTION.TAU) {
                         wep = "Pulse Rifle";
                         hits = 1;
                         if (damage_roll <= 80) {
@@ -423,7 +423,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                             hits = 1;
                         }
                     }
-                    if (target.owner == eFACTION.Tyranids) {
+                    if (target.owner == eFACTION.TYRANIDS) {
                         wep = "Flesh Hooks";
                         hits = 1;
                         if (damage_roll <= 90) {

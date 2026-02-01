@@ -43,11 +43,11 @@ function population_larger(large_pop1, pop1, large_pop2, pop2) {
 //TODO make an adaptive allies system
 function NSystemSearchHelpers() constructor {
     static default_allies = [
-        eFACTION.Player,
-        eFACTION.Imperium,
-        eFACTION.Mechanicus,
-        eFACTION.Inquisition,
-        eFACTION.Ecclesiarchy
+        eFACTION.PLAYER,
+        eFACTION.IMPERIUM,
+        eFACTION.MECHANICUS,
+        eFACTION.INQUISITION,
+        eFACTION.ECCLESIARCHY
     ];
 }
 
@@ -57,13 +57,13 @@ function fetch_faction_group(group = "imperium_default") {
     switch (group) {
         case "imperium_default":
             var imperium = [
-                eFACTION.Imperium,
-                eFACTION.Mechanicus,
-                eFACTION.Inquisition,
-                eFACTION.Ecclesiarchy
+                eFACTION.IMPERIUM,
+                eFACTION.MECHANICUS,
+                eFACTION.INQUISITION,
+                eFACTION.ECCLESIARCHY
             ];
-            if (obj_controller.faction_status[eFACTION.Imperium] != "War") {
-                array_push(imperium, eFACTION.Player);
+            if (obj_controller.faction_status[eFACTION.IMPERIUM] != "War") {
+                array_push(imperium, eFACTION.PLAYER);
             }
             break;
     }
@@ -257,7 +257,7 @@ function shuffled_planet_array() {
 /// Placeholder flag to potentially exclude hulk-type stars (not yet used).
 ///
 /// @param {Boolean} [disclude_elder=true]
-/// If `true`, excludes stars owned by the `eFACTION.Eldar` faction.
+/// If `true`, excludes stars owned by the `eFACTION.ELDAR` faction.
 ///
 /// @param {Boolean} [disclude_deads=true]
 /// If `true`, excludes any stars detected as dead via `is_dead_star()`.
@@ -279,7 +279,7 @@ function distance_removed_star(origional_x, origional_y, star_offset = choose(2,
         }
         from = instance_nearest(origional_x, origional_y, obj_star);
         if (instance_exists(from)) {
-            if (disclude_elder && from.owner == eFACTION.Eldar) {
+            if (disclude_elder && from.owner == eFACTION.ELDAR) {
                 i--;
                 array_push(_deactivated, id);
                 instance_deactivate_object(from);
@@ -361,7 +361,7 @@ function find_population_doners(doner_to = 0) {
             continue;
         }
         for (var r = 1; r <= planets; r++) {
-            if ((p_owner[r] == eFACTION.Imperium) && (p_type[r] == "Hive") && (p_population[r] > 0) && p_large[r]) {
+            if ((p_owner[r] == eFACTION.IMPERIUM) && (p_type[r] == "Hive") && (p_population[r] > 0) && p_large[r]) {
                 array_push(pop_doner_options, [id, r]);
             }
         }
@@ -428,22 +428,22 @@ function scr_create_space_hulk(xx, yy) {
 function scr_faction_string_name(faction) {
     name = "";
     switch (faction) {
-        case eFACTION.Imperium:
+        case eFACTION.IMPERIUM:
             name = "Imperium";
             break;
-        case eFACTION.Mechanicus:
+        case eFACTION.MECHANICUS:
             name = "Mechanicus";
             break;
-        case eFACTION.Inquisition:
+        case eFACTION.INQUISITION:
             name = "Inquisition";
             break;
-        case eFACTION.Ecclesiarchy:
+        case eFACTION.ECCLESIARCHY:
             name = "Ecclesiarchy";
             break;
-        case eFACTION.Eldar:
+        case eFACTION.ELDAR:
             name = "Eldar";
             break;
-        case eFACTION.Tau:
+        case eFACTION.TAU:
             name = "Tau";
             break;
     }
@@ -522,28 +522,28 @@ function star_has_planet_with_forces(star, faction, minimum_strength = 1) {
 function planet_has_forces(star, planet_id, faction, minimum_strength = 1) {
     var found = false;
     switch (faction) {
-        case eFACTION.Tau:
+        case eFACTION.TAU:
             found = star.p_tau[planet_id] >= minimum_strength;
             break;
-        case eFACTION.Tyranids:
+        case eFACTION.TYRANIDS:
             found = star.p_tyranids[planet_id] >= minimum_strength;
             break;
-        case eFACTION.Ork:
+        case eFACTION.ORK:
             found = star.p_orks[planet_id] >= minimum_strength;
             break;
-        case eFACTION.Chaos:
+        case eFACTION.CHAOS:
             found = star.p_chaos[planet_id] >= minimum_strength;
             break;
-        case eFACTION.Eldar:
+        case eFACTION.ELDAR:
             found = star.p_eldar[planet_id] >= minimum_strength;
             break;
-        case eFACTION.Genestealer:
+        case eFACTION.GENESTEALER:
             found = star.p_tyranids[planet_id] >= minimum_strength;
             break;
-        case eFACTION.Heretics:
+        case eFACTION.HERETICS:
             found = star.p_traitors[planet_id] >= minimum_strength;
             break;
-        case eFACTION.Necrons:
+        case eFACTION.NECRONS:
             found = star.p_necrons[planet_id] >= minimum_strength;
             break;
         case "Demons": //special case for demon world mission

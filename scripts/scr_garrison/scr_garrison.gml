@@ -167,11 +167,11 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
         }
 
         report_string += $" with a total man count of {total_garrison}.#";
-        if (system.p_owner[planet] != eFACTION.Player && system.dispo[planet] >= -100) {
+        if (system.p_owner[planet] != eFACTION.PLAYER && system.dispo[planet] >= -100) {
             var disposition = disposition_description_chart(system.dispo[planet]);
             report_string += $"Our Relationship with the Rulers of the planet is {disposition}#";
         } else if (system.dispo[planet] < -1000) {
-            if (system.p_owner[planet] == eFACTION.Player) {
+            if (system.p_owner[planet] == eFACTION.PLAYER) {
                 report_string += $"Rule of the planet is going well";
             } else {
                 report_string += $"Your rule of the the planet is being undermined by hostile forces";
@@ -253,7 +253,7 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
             var unit;
             var effort = "failed";
             switch (enemy) {
-                case eFACTION.Ork: //trying to come up with how we might auto evaluate a squads fate in a battle
+                case eFACTION.ORK: //trying to come up with how we might auto evaluate a squads fate in a battle
                     for (var s = 0; s < array_length(garrison_squads); s++) {
                         //loop squads in the garrison
                         _squad = garrison_squads[s];

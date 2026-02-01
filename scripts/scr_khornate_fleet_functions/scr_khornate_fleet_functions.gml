@@ -15,7 +15,7 @@ function khorne_fleet_cargo() {
             with (_orb) {
                 repeat (planets) {
                     ii += 1;
-                    if (planet_feature_bool(p_feature[ii], P_features.ChaosWarband) == 1) {
+                    if (planet_feature_bool(p_feature[ii], eP_FEATURES.CHAOSWARBAND) == 1) {
                         good -= 1;
 
                         if (planet_imperium_ground_total(ii) <= 0) {
@@ -36,10 +36,10 @@ function khorne_fleet_cargo() {
                     find_new_planet = false;
                     repeat (planets) {
                         ii += 1;
-                        if (planet_feature_bool(p_feature[ii], P_features.ChaosWarband) == 1) {
+                        if (planet_feature_bool(p_feature[ii], eP_FEATURES.CHAOSWARBAND) == 1) {
                             p_chaos[ii] = 0;
                             p_traitors[ii] = max(4, p_traitors[ii] + 1);
-                            delete_features(p_feature[ii], P_features.ChaosWarband);
+                            delete_features(p_feature[ii], eP_FEATURES.CHAOSWARBAND);
                             find_new_planet = true;
                         }
                     }
@@ -55,7 +55,7 @@ function khorne_fleet_cargo() {
                         ii += 1;
                         if (landing_planet == 0) {
                             if ((planet_imperium_ground_total(ii) > 0) && (p_population[ii] > p_max_population[ii] / 20)) {
-                                array_push(p_feature[ii], new NewPlanetFeature(P_features.ChaosWarband));
+                                array_push(p_feature[ii], new NewPlanetFeature(eP_FEATURES.CHAOSWARBAND));
                                 landing_planet = ii;
                                 p_chaos[ii] = 6;
                                 break;
@@ -65,7 +65,7 @@ function khorne_fleet_cargo() {
                             if ((p_player[ii] > 0) && (p_population[ii] > p_max_population[ii] / 20)) {
                                 landing_planet = ii;
                                 p_chaos[ii] = 6;
-                                array_push(p_feature[ii], new NewPlanetFeature(P_features.ChaosWarband));
+                                array_push(p_feature[ii], new NewPlanetFeature(eP_FEATURES.CHAOSWARBAND));
                                 break;
                             } // Forces landed
                         }
@@ -81,7 +81,7 @@ function khorne_fleet_cargo() {
                     }
 
                     with (obj_star) {
-                        if ((owner == eFACTION.Chaos) || (owner == eFACTION.Ork) || (owner == eFACTION.Necrons) || (owner == eFACTION.Eldar)) {
+                        if ((owner == eFACTION.CHAOS) || (owner == eFACTION.ORK) || (owner == eFACTION.NECRONS) || (owner == eFACTION.ELDAR)) {
                             instance_deactivate_object(id);
                         } else {
                             for (var p = 1; p <= planets; p++) {
@@ -138,10 +138,10 @@ function khorne_fleet_cargo() {
                     // Go after the player now
                     var yarr = false;
 
-                    if (obj_ini.fleet_type == ePlayerBase.home_world) {
+                    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                         var player_stars = 0;
                         with (obj_star) {
-                            if (!array_contains(p_owner, eFACTION.Player)) {
+                            if (!array_contains(p_owner, eFACTION.PLAYER)) {
                                 instance_deactivate_object(id);
                             } else {
                                 player_stars++;
@@ -159,7 +159,7 @@ function khorne_fleet_cargo() {
                             yarr = true;
                         }
                         instance_activate_object(obj_star);
-                    } else if (obj_ini.fleet_type != ePlayerBase.home_world) {
+                    } else if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                         // Chase player fleets
                         var target_chosen = false;
                         if (instance_exists(orbiting)) {
@@ -186,7 +186,7 @@ function khorne_fleet_cargo() {
                         if ((action == "") && (target_chosen == false)) {
                             var player_stars = 0;
                             with (obj_star) {
-                                if (!array_contains(p_owner, eFACTION.Player)) {
+                                if (!array_contains(p_owner, eFACTION.PLAYER)) {
                                     instance_deactivate_object(id);
                                 } else {
                                     player_stars++;
@@ -226,7 +226,7 @@ function khorne_fleet_cargo() {
 function spawn_chaos_fleet_at_system(system) {
     var _new_fleet = instance_create(system.x, system.y, obj_en_fleet);
     with (_new_fleet) {
-        owner = eFACTION.Chaos;
+        owner = eFACTION.CHAOS;
         sprite_index = spr_fleet_chaos;
         image_index = 9;
     }
@@ -235,7 +235,7 @@ function spawn_chaos_fleet_at_system(system) {
 
 function spawn_chaos_warlord() {
     with (obj_controller) {
-        scr_audience(eFACTION.Chaos, "intro", 0, "", 0, 2);
+        scr_audience(eFACTION.CHAOS, "intro", 0, "", 0, 2);
         fdir = terra_direction + choose(-90, 90);
         fdir += floor(random_range(-35, 35));
         var len, width, height, t, c, s;
@@ -254,7 +254,7 @@ function spawn_chaos_warlord() {
 
         var nfleet = instance_create(ox, oy, obj_en_fleet);
         with (nfleet) {
-            owner = eFACTION.Chaos;
+            owner = eFACTION.CHAOS;
             sprite_index = spr_fleet_chaos;
             image_index = 9;
             home_x = x + lengthdir_x(5000, point_direction(x, y, room_width / 2, room_height / 2));
@@ -294,10 +294,10 @@ function spawn_chaos_warlord() {
             set_fleet_movement();
         }
 
-        var tix = $"Chaos Lord {faction_leader[eFACTION.Chaos]} continues his Black Crusade into Sector {obj_ini.sector_name}.";
+        var tix = $"Chaos Lord {faction_leader[eFACTION.CHAOS]} continues his Black Crusade into Sector {obj_ini.sector_name}.";
         scr_alert("purple", "lol", tix, nfleet.x, nfleet.y);
         scr_event_log("purple", tix, fleet_target.name);
-        scr_popup("Black Crusade", "A Black Crusade led by the Chaos Lord {faction_leader[eFACTION.Chaos]} has arrived in {obj_ini.sector_name}.  His forces have already carved a bloody path through many sectors and yours is next.  {faction_leader[eFACTION.Chaos]} also seems to be set on killing you.  The Black Crusade's current target is system {fleet_target.name}.", "", "");
+        scr_popup("Black Crusade", "A Black Crusade led by the Chaos Lord {faction_leader[eFACTION.CHAOS]} has arrived in {obj_ini.sector_name}.  His forces have already carved a bloody path through many sectors and yours is next.  {faction_leader[eFACTION.CHAOS]} also seems to be set on killing you.  The Black Crusade's current target is system {fleet_target.name}.", "", "");
         // title / text / image / speshul
     }
 }
@@ -306,7 +306,7 @@ function spawn_chaos_warlord() {
 function destroy_khorne_fleet() {
     var chaos_lord_killed = false;
     with (instance_nearest(x, y, obj_star)) {
-        if (system_feature_bool(p_feature, P_features.ChaosWarband == 1)) {
+        if (system_feature_bool(p_feature, eP_FEATURES.CHAOSWARBAND == 1)) {
             chaos_lord_killed = true;
         }
     }
@@ -315,8 +315,8 @@ function destroy_khorne_fleet() {
         show_message("WL10 defeated");
         if (instance_exists(obj_turn_end)) {
             scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
-            scr_alert("", "ass", $"Chaos Lord {obj_controller.faction_leader[eFACTION.Chaos]} has been killed.", 0, 0);
-            scr_popup("Black Crusade Ended", $"The Chaos Lord {obj_controller.faction_leader[eFACTION.Chaos]}'s flagship has been destroyed with him at the helm.  Without his leadership the Black Crusade is destined to crumble apart and disintegrate from infighting.  Sector {obj_ini.sector_name} is no longer at threat by the forces of Chaos.", "", "");
+            scr_alert("", "ass", $"Chaos Lord {obj_controller.faction_leader[eFACTION.CHAOS]} has been killed.", 0, 0);
+            scr_popup("Black Crusade Ended", $"The Chaos Lord {obj_controller.faction_leader[eFACTION.CHAOS]}'s flagship has been destroyed with him at the helm.  Without his leadership the Black Crusade is destined to crumble apart and disintegrate from infighting.  Sector {obj_ini.sector_name} is no longer at threat by the forces of Chaos.", "", "");
         }
     }
 }

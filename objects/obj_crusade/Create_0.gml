@@ -1,6 +1,6 @@
 placing = false;
 show = true;
-owner = eFACTION.Imperium;
+owner = eFACTION.IMPERIUM;
 radius = 128;
 cooldown = 20;
 duration = 24;

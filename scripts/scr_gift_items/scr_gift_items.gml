@@ -20,7 +20,7 @@ function draw_gift_items_popup() {
         var _button = fac_buttons[i];
         var _fac = _button.faction;
         if (_button.draw(obj_controller.known[_fac] >= 1)) {
-            if (_fac == eFACTION.Inquisition) {
+            if (_fac == eFACTION.INQUISITION) {
                 if (inq_hide == 1) {
                     continue;
                 }
@@ -106,7 +106,7 @@ function gift_artifact(give_to, known = true) {
     } else {
         var daemon_arts = function(faction, is_chaos, is_daemon) {
             switch (faction) {
-                case eFACTION.Imperium:
+                case eFACTION.IMPERIUM:
                     if (is_daemon) {
                         var v = 0, ev = 0;
                         add_event({e_id: "imperium_daemon", duration: 1});
@@ -128,7 +128,7 @@ function gift_artifact(give_to, known = true) {
                         }
                     }
                     break;
-                case eFACTION.Tau:
+                case eFACTION.TAU:
                     if (is_daemon) {
                         with (obj_star) {
                             for (var i = 1; i <= planets; i++) {
@@ -144,11 +144,11 @@ function gift_artifact(give_to, known = true) {
 
         var specialmod = 0;
         switch (give_to) {
-            case eFACTION.Imperium:
+            case eFACTION.IMPERIUM:
                 break;
-            case eFACTION.Mechanicus:
+            case eFACTION.MECHANICUS:
                 break;
-            case eFACTION.Inquisition:
+            case eFACTION.INQUISITION:
                 if (inq_hide == 2) {
                     specialmod -= 1;
                 }
@@ -161,7 +161,7 @@ function gift_artifact(give_to, known = true) {
                     specialmod += 4;
                 }
                 break;
-            case eFACTION.Ecclesiarchy:
+            case eFACTION.ECCLESIARCHY:
                 if (!is_daemon) {
                     if (scr_has_adv("Reverent Guardians")) {
                         specialmod += 2;
@@ -189,12 +189,12 @@ function are_giftable_factions() {
     var chick = false;
     //list of all giftable factions enum numbers
     var giftable_factions = [
-        eFACTION.Imperium,
-        eFACTION.Mechanicus,
-        eFACTION.Inquisition,
-        eFACTION.Ecclesiarchy,
-        eFACTION.Eldar,
-        eFACTION.Tau
+        eFACTION.IMPERIUM,
+        eFACTION.MECHANICUS,
+        eFACTION.INQUISITION,
+        eFACTION.ECCLESIARCHY,
+        eFACTION.ELDAR,
+        eFACTION.TAU
     ];
     for (var i = 0; i < array_length(giftable_factions); i++) {
         var gift_faction = giftable_factions[i];
@@ -280,20 +280,20 @@ function gift_stc_fragment() {
     }
 
     // Modify disposition here
-    if (giveto == eFACTION.Imperium) {
+    if (giveto == eFACTION.IMPERIUM) {
         obj_controller.disposition[giveto] += 3;
-    } else if (giveto == eFACTION.Mechanicus) {
+    } else if (giveto == eFACTION.MECHANICUS) {
         obj_controller.disposition[giveto] += choose(5, 6, 7, 8);
-    } else if (giveto == eFACTION.Inquisition) {
+    } else if (giveto == eFACTION.INQUISITION) {
         obj_controller.disposition[giveto] += 3;
-    } else if (giveto == eFACTION.Ecclesiarchy) {
+    } else if (giveto == eFACTION.ECCLESIARCHY) {
         obj_controller.disposition[giveto] += 3;
     }
 
-    if (giveto == eFACTION.Eldar) {
+    if (giveto == eFACTION.ELDAR) {
         obj_controller.disposition[giveto] += 2;
     }
-    if (giveto == eFACTION.Tau) {
+    if (giveto == eFACTION.TAU) {
         obj_controller.disposition[giveto] += 15;
     } // 137 ; chance for mechanicus to get very pissed
     // End disposition
@@ -303,7 +303,7 @@ function gift_stc_fragment() {
     obj_controller.force_goodbye = -1;
     var the;
     the = "";
-    if ((giveto != eFACTION.Ork) && (giveto != eFACTION.Chaos)) {
+    if ((giveto != eFACTION.ORK) && (giveto != eFACTION.CHAOS)) {
         the = "the ";
     }
 

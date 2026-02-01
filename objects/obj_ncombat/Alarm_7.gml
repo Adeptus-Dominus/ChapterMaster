@@ -72,7 +72,7 @@ try {
                 var i = 0, ii = 0, otm, good = 0, master_present = 0;
                 var run = 0, s = 0, chaos_meeting = 0;
 
-                var master_index = array_get_index(obj_ini.role[0], obj_ini.role[100][eROLE.ChapterMaster]);
+                var master_index = array_get_index(obj_ini.role[0], obj_ini.role[100][eROLE.CHAPTERMASTER]);
                 chaos_meeting = fetch_unit([0, master_index]).planet_location;
 
                 // show_message("meeting planet:"+string(chaos_meeting));
@@ -89,7 +89,7 @@ try {
                         if ((obj_ini.role[co][i] != obj_ini.role[100][6]) && (obj_ini.role[co][i] != "Venerable " + string(obj_ini.role[100][6]))) {
                             good += 1;
                         }
-                        if ((string_count("Dread", obj_ini.armour[co][i]) == 0) || (obj_ini.role[co][i] == obj_ini.role[100][eROLE.ChapterMaster])) {
+                        if ((string_count("Dread", obj_ini.armour[co][i]) == 0) || (obj_ini.role[co][i] == obj_ini.role[100][eROLE.CHAPTERMASTER])) {
                             good += 1;
                         }
 
@@ -101,7 +101,7 @@ try {
                             obj_temp_meeting.present[otm] = 1;
                             obj_temp_meeting.co[otm] = co;
                             obj_temp_meeting.ide[otm] = i;
-                            if (obj_ini.role[co][i] == obj_ini.role[100][eROLE.ChapterMaster]) {
+                            if (obj_ini.role[co][i] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                                 master_present = 1;
                             }
                         }
@@ -137,7 +137,7 @@ try {
         if (battle_special == "WL10_reveal") {
             instance_create(battle_object.x, battle_object.y, obj_temp8);
             ox = battle_object.x;
-            oy = battle_object.y; // battle_object.owner = eFACTION.Chaos;
+            oy = battle_object.y; // battle_object.owner = eFACTION.CHAOS;
             battle_object.p_traitors[battle_id] = 6;
             battle_object.p_chaos[battle_id] = 4;
             battle_object.p_pdf[battle_id] = 0;
@@ -172,8 +172,8 @@ try {
 
             if (battle_object.present_fleet[2] > 0) {
                 with (obj_en_fleet) {
-                    if ((navy == 0) && (owner == eFACTION.Imperium) && (point_distance(x, y, obj_temp8.x, obj_temp8.y) < 40)) {
-                        owner = eFACTION.Chaos;
+                    if ((navy == 0) && (owner == eFACTION.IMPERIUM) && (point_distance(x, y, obj_temp8.x, obj_temp8.y) < 40)) {
+                        owner = eFACTION.CHAOS;
                         sprite_index = spr_fleet_chaos;
                         if (image_index <= 2) {
                             escort_number += 3;
@@ -196,26 +196,26 @@ try {
             obj_controller.audience = 10;
             scr_toggle_diplomacy();
             obj_controller.diplomacy = 10;
-            obj_controller.known[eFACTION.Chaos] = 2;
+            obj_controller.known[eFACTION.CHAOS] = 2;
             with (obj_controller) {
                 scr_dialogue("intro2");
             }
         }
         if (defeat == 0) {
-            obj_controller.known[eFACTION.Chaos] = 2;
+            obj_controller.known[eFACTION.CHAOS] = 2;
             obj_controller.faction_defeated[10] = 1;
 
             if (instance_exists(obj_turn_end)) {
                 scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
-                scr_alert("", "ass", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + " has been killed.", 0, 0);
-                scr_popup("Chaos Lord Killed", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + " has been slain in combat.  Without his leadership the various forces of Chaos in the sector will crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer as threatened by the forces of Chaos.", "", "");
+                scr_alert("", "ass", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " has been killed.", 0, 0);
+                scr_popup("Chaos Lord Killed", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " has been slain in combat.  Without his leadership the various forces of Chaos in the sector will crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer as threatened by the forces of Chaos.", "", "");
             }
             if (!instance_exists(obj_turn_end)) {
                 scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
                 var _pop = instance_create(0, 0, obj_popup);
                 _pop.image = "";
                 _pop.title = "Chaos Lord Killed";
-                _pop.text = "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + " has been slain in combat.  Without his leadership the various forces of Chaos in the sector will crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer as threatened by the forces of Chaos.";
+                _pop.text = "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " has been slain in combat.  Without his leadership the various forces of Chaos in the sector will crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer as threatened by the forces of Chaos.";
             }
         }
     }
@@ -233,7 +233,7 @@ try {
                 if (battle_special == "study2b") {
                     battle_object.p_necrons[battle_id] = 5;
                     awaken_tomb_world(battle_object.p_feature[battle_id]);
-                    alter_dispositions([[eFACTION.Mechanicus, -15], [eFACTION.Inquisition, -5]]);
+                    alter_dispositions([[eFACTION.MECHANICUS, -15], [eFACTION.INQUISITION, -5]]);
                     scr_popup("Mechanicus Mission Failed", "All of your Astartes and the Mechanicus Research party have been killed down to the last man.  The research is a bust.  To make matters worse the Necron Tomb has fully awakened- countless numbers of the souless machines are now pouring out of the tomb.  The Adeptus Mechanicus are furious with your chapter.", "necron_army", "");
                     scr_alert("", "inqi", "The Inquisition is displeased with your Chapter for tampering with and awakening a Necron Tomb", 0, 0);
                     scr_event_log("", "The Inquisition is displeased with your Chapter for tampering with and awakening a Necron Tomb");
@@ -244,7 +244,7 @@ try {
         }
     }
 
-    if ((enemy == 5) && (obj_controller.faction_status[eFACTION.Ecclesiarchy] != "War")) {
+    if ((enemy == 5) && (obj_controller.faction_status[eFACTION.ECCLESIARCHY] != "War")) {
         obj_controller.loyalty -= 50;
         obj_controller.loyalty_hidden -= 50;
         decare_war_on_imperium_audiences();
@@ -432,7 +432,7 @@ try {
             var pip;
             pip = instance_create(0, 0, obj_popup);
             pip.title = "Enemies Vanquished";
-            pip.text = "Not only have you killed the Chaos Lord, " + string(obj_controller.faction_leader[eFACTION.Chaos]) + ", but also all of your battle brothers that questioned your rule.  As you stand, alone, among the broken corpses of your enemies you begin to question what exactly it is that you accomplished.  No matter the results, you feel as though your actions have been noticed.";
+            pip.text = "Not only have you killed the Chaos Lord, " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + ", but also all of your battle brothers that questioned your rule.  As you stand, alone, among the broken corpses of your enemies you begin to question what exactly it is that you accomplished.  No matter the results, you feel as though your actions have been noticed.";
         }
     }
 
@@ -455,7 +455,7 @@ try {
             }
             var pip = instance_create(0, 0, obj_popup);
             pip.title = "Survived";
-            pip.text = "You and the rest of your battle brothers fight your way out of the catacombs, back through the tunnel where you first entered.  By the time you manage it your forces are battered and bloodied and in desperate need of pickup.  The whole meeting was a bust- Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + " clearly intended to kill you and simply be done with it.";
+            pip.text = "You and the rest of your battle brothers fight your way out of the catacombs, back through the tunnel where you first entered.  By the time you manage it your forces are battered and bloodied and in desperate need of pickup.  The whole meeting was a bust- Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " clearly intended to kill you and simply be done with it.";
         }
 
         if (((battle_special == "cs_meeting_battle5") || (battle_special == "cs_meeting_battle6")) && (defeat == 0)) {
@@ -556,15 +556,15 @@ try {
                 obj_controller.faction_defeated[10] = 1; // show_message("WL10 defeated");
                 if (instance_exists(obj_turn_end)) {
                     scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
-                    scr_alert("", "ass", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + " has been killed.", 0, 0);
-                    scr_popup("Black Crusade Ended", "The Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + " has been slain in combat.  Without his leadership the Black Crusade is destined to crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer at threat by the forces of Chaos.", "", "");
+                    scr_alert("", "ass", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " has been killed.", 0, 0);
+                    scr_popup("Black Crusade Ended", "The Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " has been slain in combat.  Without his leadership the Black Crusade is destined to crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer at threat by the forces of Chaos.", "", "");
                 }
                 if (!instance_exists(obj_turn_end)) {
                     scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
                     var _pop = instance_create(0, 0, obj_popup);
                     _pop.image = "";
                     _pop.title = "Black Crusade Ended";
-                    _pop.text = $"The Chaos Lord {obj_controller.faction_leader[eFACTION.Chaos]} has been slain in combat.  Without his leadership the Black Crusade is destined to crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer at threat by the forces of Chaos.";
+                    _pop.text = $"The Chaos Lord {obj_controller.faction_leader[eFACTION.CHAOS]} has been slain in combat.  Without his leadership the Black Crusade is destined to crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer at threat by the forces of Chaos.";
                 }
             }
         }

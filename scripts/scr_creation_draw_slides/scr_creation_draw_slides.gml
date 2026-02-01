@@ -1,7 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-enum eCREATIONSLIDES {
+enum eCREATION_SLIDES {
     CHAPTERSELECT = 1,
     CHAPTERTRAITS = 2,
     CHAPTERHOME = 3,
@@ -632,7 +632,7 @@ function draw_chapter_trait_select() {
                 if (advantage_click_allow && popup == "" && scr_click_left()) {
                     if ((points < maxpoints) && (adv_num[i] == 0)) {
                         popup = "advantages";
-                
+
                         temp = i;
                     }
                     var removable = false;
@@ -674,7 +674,7 @@ function draw_chapter_trait_select() {
                 if (advantage_click_allow && popup == "" && scr_click_left()) {
                     if (dis_num[slot] == 0) {
                         popup = "disadvantages";
-                
+
                         temp = slot;
                     }
                     var removable = false;

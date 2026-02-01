@@ -81,7 +81,7 @@ function scr_enemy_ai_c() {
                         }
 
                         if (contin == 2) {
-                            fleet = scr_orbiting_fleet(eFACTION.Chaos);
+                            fleet = scr_orbiting_fleet(eFACTION.CHAOS);
                             if (fleet == "none") {
                                 contin = 3;
                             } else if ((fleet.action == "") && (contin != 3)) {
@@ -123,7 +123,7 @@ function scr_enemy_ai_c() {
                                     repeat (10) {
                                         if (goood == 0) {
                                             stue2 = instance_nearest(fleet.x + choose(random(400), random(400) * -1), fleet.y + choose(random(100), random(100) * -1), obj_star);
-                                            if (stue2.owner != eFACTION.Chaos) {
+                                            if (stue2.owner != eFACTION.CHAOS) {
                                                 goood = 1;
                                             }
                                             if (stue2.planets == 0) {
@@ -150,7 +150,7 @@ function scr_enemy_ai_c() {
                             // Create a fleet
                             // fleet=instance_create
                             fleet = instance_create(x, y, obj_en_fleet);
-                            fleet.owner = eFACTION.Chaos;
+                            fleet.owner = eFACTION.CHAOS;
                             fleet.sprite_index = spr_fleet_chaos;
                             fleet.image_index = 1;
                             fleet.frigate_number = 1;
@@ -178,9 +178,9 @@ function scr_enemy_ai_c() {
     temp6 = 0;
     temp7 = 0;
 
-    boat = scr_orbiting_fleet(eFACTION.Chaos);
+    boat = scr_orbiting_fleet(eFACTION.CHAOS);
 
-    if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != "none") && (owner != eFACTION.Chaos) && (planets > 0)) {
+    if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != "none") && (owner != eFACTION.CHAOS) && (planets > 0)) {
         var i = 0;
         repeat (5) {
             if ((p_type[1] != "Dead") && (p_owner[1] != 10)) {
@@ -266,7 +266,7 @@ function scr_enemy_ai_c() {
     temp6 = 0;
     temp7 = 0;
 
-    boat = scr_orbiting_fleet(eFACTION.Chaos);
+    boat = scr_orbiting_fleet(eFACTION.CHAOS);
 
     var aler = 0;
     if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != "none") && (planets > 0)) {
@@ -382,7 +382,7 @@ function scr_enemy_ai_c() {
                 rando = floor(random(100)) + 1;
                 // Check for industrial facilities
                 if ((p_type[i] != "Dead") && (p_type[i] != "Lava")) {
-                    if ((p_tau[i] >= 2) && (p_influence[i][eFACTION.Tau] >= 70)) {
+                    if ((p_tau[i] >= 2) && (p_influence[i][eFACTION.TAU] >= 70)) {
                         // Have the proppa facilities and size
                         var fleet;
                         fleet = 0;
@@ -402,7 +402,7 @@ function scr_enemy_ai_c() {
                         }
 
                         if (contin == 2) {
-                            fleet = scr_orbiting_fleet(eFACTION.Tau);
+                            fleet = scr_orbiting_fleet(eFACTION.TAU);
 
                             if (fleet == "none") {
                                 contin = 3;
@@ -434,10 +434,10 @@ function scr_enemy_ai_c() {
                                             xx = x + floor(choose(random(300), random(300) * -1));
                                             yy = y + floor(choose(random(300), random(300) * -1));
                                             think = instance_nearest(xx, yy, obj_star);
-                                            if ((think.owner != eFACTION.Tau) && (think.owner != eFACTION.Eldar) && (think.present_fleet[8] + think.present_fleet[1] + think.present_fleet[2] == 0) && (think.planets > 0)) {
+                                            if ((think.owner != eFACTION.TAU) && (think.owner != eFACTION.ELDAR) && (think.present_fleet[8] + think.present_fleet[1] + think.present_fleet[2] == 0) && (think.planets > 0)) {
                                                 kawaii = 1;
                                             }
-                                            if ((think.owner == eFACTION.Tau) || (think.present_fleet[8] + think.present_fleet[1] + think.present_fleet[2] > 0) || (think.planets == 0)) {
+                                            if ((think.owner == eFACTION.TAU) || (think.present_fleet[8] + think.present_fleet[1] + think.present_fleet[2] > 0) || (think.planets == 0)) {
                                                 kawaii = 0;
                                             }
                                             if ((think.planets == 1) && (think.p_type[1] == "Dead")) {
@@ -477,7 +477,7 @@ function scr_enemy_ai_c() {
                         if ((contin == 3) && (rando <= 25) && (obj_controller.tau_fleets < (obj_controller.tau_stars + 1))) {
                             // Create a fleet
                             fleet = instance_create(x, y, obj_en_fleet);
-                            fleet.owner = eFACTION.Tau;
+                            fleet.owner = eFACTION.TAU;
                             fleet.sprite_index = spr_fleet_tau;
                             fleet.image_index = 1;
                             fleet.capital_number = 1;
@@ -501,10 +501,10 @@ function scr_enemy_ai_c() {
     repeat (planets) {
         i += 1;
         if ((p_tyranids[i] >= 5) && (planets >= i) && (p_player[i] + p_orks[i] + p_guardsmen[i] + p_pdf[i] + p_chaos[i] == 0)) {
-            var ship = scr_orbiting_fleet(eFACTION.Tyranids);
+            var ship = scr_orbiting_fleet(eFACTION.TYRANIDS);
             if ((ship != "none") && (p_type[i] != "Dead") && (array_length(p_feature[i]) != 0)) {
                 if (ship.capital_number > 0) {
-                    if (planet_feature_bool(p_feature[i], P_features.Reclamation_pools) == 1) {
+                    if (planet_feature_bool(p_feature[i], eP_FEATURES.RECLAMATION_POOLS) == 1) {
                         p_tyranids[i] = 0;
                         if ((p_type[i] == "Death") || (p_type[i] == "Hive")) {
                             ship.capital_number += choose(0, 1, 1);
@@ -513,7 +513,7 @@ function scr_enemy_ai_c() {
                         ship.escort_number += 3;
                         ship.image_index = floor(ship.capital_number + (ship.frigate_number / 2) + (ship.escort_number / 4));
                         p_type[i] = "Dead";
-                        delete_features(p_feature[i], P_features.Reclamation_pools); // show_message("D");
+                        delete_features(p_feature[i], eP_FEATURES.RECLAMATION_POOLS); // show_message("D");
                         if ((planets == 1) && (p_type[1] == "Dead")) {
                             image_alpha = 0.33;
                         }
@@ -529,16 +529,16 @@ function scr_enemy_ai_c() {
 
                         // if image_alpha = 0.33 then send the ship somewhere new
                     }
-                    if ((planet_feature_bool(p_feature[i], P_features.Capillary_Towers) == 1) && (p_type[i] != "Dead")) {
+                    if ((planet_feature_bool(p_feature[i], eP_FEATURES.CAPILLARY_TOWERS) == 1) && (p_type[i] != "Dead")) {
                         p_population[i] = floor(p_population[i] * 0.3);
                     }
-                    if ((planet_feature_bool(p_feature[i], P_features.Capillary_Towers) == 1) && (p_type[i] != "Dead")) {
+                    if ((planet_feature_bool(p_feature[i], eP_FEATURES.CAPILLARY_TOWERS) == 1) && (p_type[i] != "Dead")) {
                         p_feature[i] = [];
-                        array_push(p_feature[i], new NewPlanetFeature(P_features.Capillary_Towers), new NewPlanetFeature(P_features.Reclamation_pools));
+                        array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.CAPILLARY_TOWERS), new NewPlanetFeature(eP_FEATURES.RECLAMATION_POOLS));
                         p_population[i] = 0; // show_message("C");
                     }
-                    if ((planet_feature_bool(p_feature[i], P_features.Capillary_Towers) == 0) && (planet_feature_bool(p_feature[i], P_features.Reclamation_pools) == 0) && (p_type[i] != "Dead")) {
-                        array_push(p_feature[i], new NewPlanetFeature(P_features.Capillary_Towers)); // show_message("B");
+                    if ((planet_feature_bool(p_feature[i], eP_FEATURES.CAPILLARY_TOWERS) == 0) && (planet_feature_bool(p_feature[i], eP_FEATURES.RECLAMATION_POOLS) == 0) && (p_type[i] != "Dead")) {
+                        array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.CAPILLARY_TOWERS)); // show_message("B");
                     }
                 }
             }

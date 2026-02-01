@@ -96,17 +96,17 @@ function scr_management(argument0) {
             num[i] = 0;
             nam[i] = "";
         }
-        nam[2] = role_names[eROLE.HonourGuard];
+        nam[2] = role_names[eROLE.HONOURGUARD];
 
         for (var i = 0; i < array_length(obj_ini.name[0]); i++) {
             unit = fetch_unit([0, i]);
-            if (unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
+            if (unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                 num[1] += 1;
                 if (nam[1] == "") {
                     nam[1] = unit.name();
                 }
             }
-            if (unit.role() == role_names[eROLE.HonourGuard]) {
+            if (unit.role() == role_names[eROLE.HONOURGUARD]) {
                 num[2] += 1;
             }
         }
@@ -114,7 +114,7 @@ function scr_management(argument0) {
         // if (num[2]=0) then nam[2]="Strategic Staff";// reserved for co-master alien or something
 
         // if (num[2]>0) {
-        // 	nam[2]=string(num)+"x "+string(role_names[eROLE.HonourGuard]);
+        // 	nam[2]=string(num)+"x "+string(role_names[eROLE.HONOURGUARD]);
         // 	nam[3]="Strategic Staff";
         // 	num[3]=1;
         // }
@@ -140,8 +140,8 @@ function scr_management(argument0) {
         obj_managment_panel.bold[q] = 1;
         instance_activate_object(obj_managment_panel);
 
-        // ll=0;ll2=0;repeat(200){ll2++;if (obj_ini.role[company,ll2]=role_names[eROLE.HonourGuard]) then ll++;}
-        // if (ll>0) then temp[3]=string(ll)+"x "+string(role_names[eROLE.HonourGuard]);
+        // ll=0;ll2=0;repeat(200){ll2++;if (obj_ini.role[company,ll2]=role_names[eROLE.HONOURGUARD]) then ll++;}
+        // if (ll>0) then temp[3]=string(ll)+"x "+string(role_names[eROLE.HONOURGUARD]);
 
         // ** Apothecarium **
         q = 0;
@@ -151,10 +151,10 @@ function scr_management(argument0) {
             num[i] = 0;
             nam[i] = "";
         }
-        nam[2] = role_names[eROLE.Apothecary];
+        nam[2] = role_names[eROLE.APOTHECARY];
 
         // Ranks
-        nam[3] = string(role_names[eROLE.Apothecary]) + " Aspirant"; // nam[4]="Sister Hospitaler";
+        nam[3] = string(role_names[eROLE.APOTHECARY]) + " Aspirant"; // nam[4]="Sister Hospitaler";
 
         for (var i = 1; i <= 200; i++) {
             unit = fetch_unit([0, i]);
@@ -165,11 +165,11 @@ function scr_management(argument0) {
                 }
             }
 
-            if (unit.role() == role_names[eROLE.Apothecary]) {
+            if (unit.role() == role_names[eROLE.APOTHECARY]) {
                 num[2] += 1;
             }
 
-            if (unit.role() == string(role_names[eROLE.Apothecary]) + " Aspirant") {
+            if (unit.role() == string(role_names[eROLE.APOTHECARY]) + " Aspirant") {
                 num[3] += 1;
             }
             // if (unit.role() == "Sister Hospitaler") then num[4] += 1;
@@ -208,10 +208,10 @@ function scr_management(argument0) {
             nam[i] = "";
         }
 
-        nam[2] = role_names[eROLE.Chaplain];
+        nam[2] = role_names[eROLE.CHAPLAIN];
 
         // Ranks
-        nam[3] = string(role_names[eROLE.Chaplain]) + " Aspirant";
+        nam[3] = string(role_names[eROLE.CHAPLAIN]) + " Aspirant";
 
         for (var i = 1; i <= 200; i++) {
             unit = fetch_unit([0, i]);
@@ -222,11 +222,11 @@ function scr_management(argument0) {
                 }
             }
 
-            if (unit.role() == role_names[eROLE.Chaplain]) {
+            if (unit.role() == role_names[eROLE.CHAPLAIN]) {
                 num[2] += 1;
             }
 
-            if (unit.role() == string(role_names[eROLE.Chaplain]) + " Aspirant") {
+            if (unit.role() == string(role_names[eROLE.CHAPLAIN]) + " Aspirant") {
                 num[3] += 1;
             }
         }
@@ -270,10 +270,10 @@ function scr_management(argument0) {
             nam[i] = "";
         }
 
-        nam[2] = role_names[eROLE.Techmarine];
+        nam[2] = role_names[eROLE.TECHMARINE];
 
         // Ranks
-        nam[3] = string(role_names[eROLE.Techmarine]) + " Aspirant";
+        nam[3] = string(role_names[eROLE.TECHMARINE]) + " Aspirant";
         nam[4] = "Techpriest";
 
         for (var i = 1; i <= 200; i++) {
@@ -285,11 +285,11 @@ function scr_management(argument0) {
                 }
             }
 
-            if (unit.role() == role_names[eROLE.Techmarine]) {
+            if (unit.role() == role_names[eROLE.TECHMARINE]) {
                 num[2] += 1;
             }
 
-            if (unit.role() == string(role_names[eROLE.Techmarine]) + " Aspirant") {
+            if (unit.role() == string(role_names[eROLE.TECHMARINE]) + " Aspirant") {
                 num[3] += 1;
             }
 
@@ -337,23 +337,23 @@ function scr_management(argument0) {
             nam[i] = "";
         }
 
-        nam[2] = role_names[eROLE.Librarian];
+        nam[2] = role_names[eROLE.LIBRARIAN];
 
         // Ranks
         nam[3] = "Codiciery";
         nam[4] = "Lexicanum";
-        nam[5] = string(role_names[eROLE.Librarian]) + " Aspirant";
+        nam[5] = string(role_names[eROLE.LIBRARIAN]) + " Aspirant";
 
         for (var i = 1; i <= 200; i++) {
             unit = fetch_unit([0, i]);
-            if (unit.role() == "Chief " + string(role_names[eROLE.Librarian])) {
+            if (unit.role() == "Chief " + string(role_names[eROLE.LIBRARIAN])) {
                 num[1] += 1;
                 if (nam[1] == "") {
                     nam[1] = unit.name();
                 }
             }
 
-            if (unit.role() == role_names[eROLE.Librarian]) {
+            if (unit.role() == role_names[eROLE.LIBRARIAN]) {
                 num[2] += 1;
             }
 
@@ -365,7 +365,7 @@ function scr_management(argument0) {
                 num[4] += 1;
             }
 
-            if (unit.role() == string(role_names[eROLE.Librarian]) + " Aspirant") {
+            if (unit.role() == string(role_names[eROLE.LIBRARIAN]) + " Aspirant") {
                 num[5] += 1;
             }
         }
@@ -415,25 +415,25 @@ function scr_management(argument0) {
                 nam[i] = "";
             }
             // Indexing the names to nam array
-            // nam[1] = role_names[eROLE.Captain];
-            nam[2] = role_names[eROLE.Chaplain];
-            nam[3] = role_names[eROLE.Apothecary];
-            nam[4] = role_names[eROLE.Techmarine];
-            nam[5] = role_names[eROLE.Librarian];
+            // nam[1] = role_names[eROLE.CAPTAIN];
+            nam[2] = role_names[eROLE.CHAPLAIN];
+            nam[3] = role_names[eROLE.APOTHECARY];
+            nam[4] = role_names[eROLE.TECHMARINE];
+            nam[5] = role_names[eROLE.LIBRARIAN];
             nam[6] = "Codiciery";
             nam[7] = "Lexicanum";
-            nam[8] = "Company" + role_names[eROLE.Ancient];
-            nam[9] = (role_names[eROLE.Champion] == "Champion") ? "Champion" : role_names[eROLE.Champion];
-            nam[10] = role_names[eROLE.Terminator];
-            nam[11] = role_names[eROLE.Sergeant];
-            nam[12] = (role_names[eROLE.VeteranSergeant] == "Veteran Sergeant") ? "Sergeant" : role_names[eROLE.VeteranSergeant];
-            nam[13] = role_names[eROLE.Veteran];
-            nam[14] = role_names[eROLE.Tactical];
-            nam[15] = role_names[eROLE.Assault];
-            nam[16] = role_names[eROLE.Devastator];
-            nam[17] = role_names[eROLE.Scout];
-            nam[18] = role_names[eROLE.Dreadnought]; // Venerable Dreadnought, just the role name is too long for the company box
-            nam[19] = role_names[eROLE.Dreadnought];
+            nam[8] = "Company" + role_names[eROLE.ANCIENT];
+            nam[9] = (role_names[eROLE.CHAMPION] == "Champion") ? "Champion" : role_names[eROLE.CHAMPION];
+            nam[10] = role_names[eROLE.TERMINATOR];
+            nam[11] = role_names[eROLE.SERGEANT];
+            nam[12] = (role_names[eROLE.VETERANSERGEANT] == "Veteran Sergeant") ? "Sergeant" : role_names[eROLE.VETERANSERGEANT];
+            nam[13] = role_names[eROLE.VETERAN];
+            nam[14] = role_names[eROLE.TACTICAL];
+            nam[15] = role_names[eROLE.ASSAULT];
+            nam[16] = role_names[eROLE.DEVASTATOR];
+            nam[17] = role_names[eROLE.SCOUT];
+            nam[18] = role_names[eROLE.DREADNOUGHT]; // Venerable Dreadnought, just the role name is too long for the company box
+            nam[19] = role_names[eROLE.DREADNOUGHT];
             nam[20] = "Land Raider";
             nam[21] = "Predator";
             nam[22] = "Rhino";
@@ -444,21 +444,21 @@ function scr_management(argument0) {
                 if (unit.name() == "") {
                     continue;
                 }
-                if (unit.role() == role_names[eROLE.Captain]) {
+                if (unit.role() == role_names[eROLE.CAPTAIN]) {
                     num[1]++;
                     nam[1] = unit.name();
                 }
                 // Space Wolves exception
-                if (chapter_name != "Iron Hands" && unit.role() == role_names[eROLE.Chaplain]) {
+                if (chapter_name != "Iron Hands" && unit.role() == role_names[eROLE.CHAPLAIN]) {
                     num[2]++;
                 }
-                if (chapter_name != "Space Wolves" && unit.role() == role_names[eROLE.Apothecary]) {
+                if (chapter_name != "Space Wolves" && unit.role() == role_names[eROLE.APOTHECARY]) {
                     num[3]++;
                 }
-                if (unit.role() == role_names[eROLE.Techmarine]) {
+                if (unit.role() == role_names[eROLE.TECHMARINE]) {
                     num[4]++;
                 }
-                if (unit.role() == role_names[eROLE.Librarian]) {
+                if (unit.role() == role_names[eROLE.LIBRARIAN]) {
                     num[5]++;
                 }
                 if (unit.role() == "Codiciery") {
@@ -467,40 +467,40 @@ function scr_management(argument0) {
                 if (unit.role() == "Lexicanum") {
                     num[7]++;
                 }
-                if (unit.role() == role_names[eROLE.Ancient]) {
+                if (unit.role() == role_names[eROLE.ANCIENT]) {
                     num[8]++;
                 }
-                if (unit.role() == role_names[eROLE.Champion]) {
+                if (unit.role() == role_names[eROLE.CHAMPION]) {
                     num[9]++;
                 }
-                if (unit.role() == role_names[eROLE.Terminator]) {
+                if (unit.role() == role_names[eROLE.TERMINATOR]) {
                     num[10]++;
                 }
-                if (unit.role() == role_names[eROLE.Sergeant]) {
+                if (unit.role() == role_names[eROLE.SERGEANT]) {
                     num[11]++;
                 }
-                if (unit.role() == role_names[eROLE.VeteranSergeant]) {
+                if (unit.role() == role_names[eROLE.VETERANSERGEANT]) {
                     num[12]++;
                 }
-                if (unit.role() == role_names[eROLE.Veteran]) {
+                if (unit.role() == role_names[eROLE.VETERAN]) {
                     num[13]++;
                 }
-                if (unit.role() == role_names[eROLE.Tactical]) {
+                if (unit.role() == role_names[eROLE.TACTICAL]) {
                     num[14]++;
                 }
-                if (unit.role() == role_names[eROLE.Assault]) {
+                if (unit.role() == role_names[eROLE.ASSAULT]) {
                     num[15]++;
                 }
-                if (unit.role() == role_names[eROLE.Devastator]) {
+                if (unit.role() == role_names[eROLE.DEVASTATOR]) {
                     num[16]++;
                 }
-                if (unit.role() == role_names[eROLE.Scout]) {
+                if (unit.role() == role_names[eROLE.SCOUT]) {
                     num[17]++;
                 }
-                if (unit.role() == "Venerable " + string(role_names[eROLE.Dreadnought])) {
+                if (unit.role() == "Venerable " + string(role_names[eROLE.DREADNOUGHT])) {
                     num[18]++;
                 }
-                if (unit.role() == role_names[eROLE.Dreadnought]) {
+                if (unit.role() == role_names[eROLE.DREADNOUGHT]) {
                     num[19]++;
                 }
             }

@@ -23,7 +23,7 @@ if (array_length(forge_master) > 0) {
 } else {
     forge_master = "none";
 }
-mechanicus_modifier = (((obj_controller.disposition[eFACTION.Mechanicus] - 50) / 200) * -1) + 1;
+mechanicus_modifier = (((obj_controller.disposition[eFACTION.MECHANICUS] - 50) / 200) * -1) + 1;
 var research = obj_controller.production_research;
 shop = "equipment";
 /*if (obj_controller.menu=55) then shop="equipment";
@@ -57,7 +57,7 @@ repeat (80) {
     forge_cost[i] = 0;
     tooltip_overide[i] = 0;
 }
-if (obj_controller.faction_status[eFACTION.Imperium] == "War") {
+if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
     rene = 1;
     with (obj_temp6) {
         instance_destroy();

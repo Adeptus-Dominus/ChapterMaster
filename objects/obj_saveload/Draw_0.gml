@@ -203,7 +203,7 @@ if (__b__) {
             if (scr_hit(x2+977,y2+113,x2+1121,y2+146)){
                 draw_set_alpha(0.1);draw_set_color(c_white);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,0);draw_set_alpha(1);
                 if (scr_click_left(,true) and !instance_exists(obj_popup)){
-                    if (file_exists(string(PATH_save_files, save[o]))) { // Resets the data
+                    if (file_exists(string(PATH_SAVE_FILES, save[o]))) { // Resets the data
                         global.restart=1;global.load=save[o];
                         menu=0;load_part=1;obj_cursor.image_alpha=0;splash=choose(0,1,2,3,4);
                         
@@ -303,7 +303,7 @@ if (__b__) {
                         }
 
                         // If open slot then set the save.ini to the maximum
-                        if (!file_exists(string(PATH_save_files, save[o])) || (save[o] == 0)) {
+                        if (!file_exists(string(PATH_SAVE_FILES, save[o])) || (save[o] == 0)) {
                             save_part = 1;
                             menu = 0;
                             save_number = max_ini;
@@ -319,8 +319,8 @@ if (__b__) {
                             alarm[0] = 1;
                         }
                         // If file exists then overright
-                        if (file_exists(string(PATH_save_files, save[o]))) {
-                            file_delete(string(PATH_save_files, save[o]));
+                        if (file_exists(string(PATH_SAVE_FILES, save[o]))) {
+                            file_delete(string(PATH_SAVE_FILES, save[o]));
                             save_part = 1;
                             menu = 0;
                             save_number = o;

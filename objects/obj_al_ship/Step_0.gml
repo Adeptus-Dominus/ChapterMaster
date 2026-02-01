@@ -61,7 +61,7 @@ if (!__b__) {
 
         image_alpha = 0.5;
 
-        if (owner != eFACTION.Tyranids) {
+        if (owner != eFACTION.TYRANIDS) {
             husk = instance_create(x, y, obj_en_husk);
             husk.sprite_index = sprite_index;
             husk.direction = direction;
@@ -76,7 +76,7 @@ if (!__b__) {
                 explo.y += random_range(sprite_width * 0.25, sprite_width * -0.25);
             }
         }
-        if (owner == eFACTION.Tyranids) {
+        if (owner == eFACTION.TYRANIDS) {
             effect_create_above(ef_firework, x, y, 1, c_purple);
         }
         instance_destroy();
@@ -264,7 +264,7 @@ if (!__b__) {
             if ((dist > 64) && (dist < 300)) {
                 bull = instance_create(x, y, obj_al_round);
                 bull.direction = point_direction(x, y, targe.x, targe.y);
-                if (owner == eFACTION.Tyranids) {
+                if (owner == eFACTION.TYRANIDS) {
                     bull.sprite_index = spr_glob;
                 }
                 bull.speed = 20;
@@ -414,12 +414,12 @@ if (!__b__) {
                         bull.image_xscale = 2;
                         bullimage_yscale = 2;
                     }
-                    if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.Eldar)) {
+                    if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.ELDAR)) {
                         bull.sprite_index = spr_ground_las;
                         bull.image_xscale = 2;
                         bull.image_yscale = 2;
                     }
-                    if ((string_count("Pulse", wep) == 1) && (owner == eFACTION.Eldar)) {
+                    if ((string_count("Pulse", wep) == 1) && (owner == eFACTION.ELDAR)) {
                         bull.sprite_index = spr_pulse;
                         bull.image_xscale = 1.5;
                         bull.image_yscale = 1.5;
@@ -599,10 +599,10 @@ if (__b__) {
             if ((dist > 64) && (dist < 300)) {
                 bull = instance_create(x, y, obj_al_round);
                 bull.direction = point_direction(x, y, targe.x, targe.y);
-                if (owner == eFACTION.Tyranids) {
+                if (owner == eFACTION.TYRANIDS) {
                     bull.sprite_index = spr_glob;
                 }
-                if ((owner == eFACTION.Tau) || (owner == eFACTION.Eldar)) {
+                if ((owner == eFACTION.TAU) || (owner == eFACTION.ELDAR)) {
                     bull.sprite_index = spr_pulse;
                 }
                 bull.speed = 20;
@@ -755,12 +755,12 @@ if (__b__) {
                         bull.image_xscale = 2;
                         bullimage_yscale = 2;
                     }
-                    if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.Eldar)) {
+                    if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.ELDAR)) {
                         bull.sprite_index = spr_ground_las;
                         bull.image_xscale = 2;
                         bull.image_yscale = 2;
                     }
-                    if ((string_count("Pulse", wep) == 1) && (owner == eFACTION.Eldar)) {
+                    if ((string_count("Pulse", wep) == 1) && (owner == eFACTION.ELDAR)) {
                         bull.sprite_index = spr_pulse;
                         bull.image_xscale = 1.5;
                         bull.image_yscale = 1.5;

@@ -33,19 +33,19 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             doom = 0;
             if ((shots_fired != 1) && (melee_or_ranged != "melee")) {
                 switch (obj_ncombat.enemy) {
-                    case eFACTION.Ecclesiarchy:
+                    case eFACTION.ECCLESIARCHY:
                         doom = 0.3;
                         break;
-                    case eFACTION.Eldar:
+                    case eFACTION.ELDAR:
                         doom = 0.4;
                         break;
-                    case eFACTION.Ork:
+                    case eFACTION.ORK:
                         doom = 0.2;
                         break;
-                    case eFACTION.Tau:
+                    case eFACTION.TAU:
                         doom = 0.4;
                         break;
-                    case eFACTION.Tyranids:
+                    case eFACTION.TYRANIDS:
                         doom = 0.4;
                         break;
                 }
@@ -189,7 +189,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             }
         }
 
-        if (instance_exists(target_object) && (owner == eFACTION.Player)) {
+        if (instance_exists(target_object) && (owner == eFACTION.PLAYER)) {
             // global.logger.debug("{0}, {1}, {2}, {3}, {4}", wep_num[weapon_index_position], wep[weapon_index_position], splash[weapon_index_position], range[weapon_index_position], att[weapon_index_position])
             var shots_fired = 0;
             var stop = 0;

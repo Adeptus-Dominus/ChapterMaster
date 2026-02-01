@@ -69,7 +69,7 @@ if (total_allies > 0) {
             spawner = instance_create(200, y1, obj_fleet_spawner);
 
             if (fug == 1) {
-                spawner.owner = eFACTION.Player;
+                spawner.owner = eFACTION.PLAYER;
             }
             if (fug > 1) {
                 spawner.owner = enemy[fug];

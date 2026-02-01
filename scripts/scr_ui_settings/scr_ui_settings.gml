@@ -399,7 +399,7 @@ function scr_ui_settings() {
                                 obj_mass_equip.item_name,
                                 obj_controller.settings, // eROLE
                                 gg, // slot
-                                is_hand_slot ? (obj_mass_equip.tab == 0 ? eENGAGEMENT.Ranged : eENGAGEMENT.Melee) : eENGAGEMENT.None,
+                                is_hand_slot ? (obj_mass_equip.tab == 0 ? eENGAGEMENT.RANGED : eENGAGEMENT.MELEE) : eENGAGEMENT.NONE,
                                 true, // include company standard
                                 false, // show all regardless of inventory
 

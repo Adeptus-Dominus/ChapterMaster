@@ -44,7 +44,7 @@ function necron_tomb_raid_post_battle_sequence() {
 
         pip.pop_data = battle_data;
 
-        alter_disposition(eFACTION.Inquisition, -5);
+        alter_disposition(eFACTION.INQUISITION, -5);
         obj_controller.combat = 0;
 
         with (pip) {

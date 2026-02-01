@@ -13,7 +13,7 @@ if (_is_audience) {
 
     global.logger.debug(current_audience);
 
-    if (obj_controller.menu != MENU.Diplomacy) {
+    if (obj_controller.menu != eMENU.DIPLOMACY) {
         scr_toggle_diplomacy();
     }
     obj_controller.audience = current_audience.faction;

@@ -1,16 +1,16 @@
-if (owner == eFACTION.Eldar) {
+if (owner == eFACTION.ELDAR) {
     sprite_index = spr_darkstar;
 }
-if (owner == eFACTION.Ork) {
+if (owner == eFACTION.ORK) {
     sprite_index = spr_fighta;
 }
-if (owner == eFACTION.Tau) {
+if (owner == eFACTION.TAU) {
     sprite_index = spr_manta;
 }
-if (owner == eFACTION.Tyranids) {
+if (owner == eFACTION.TYRANIDS) {
     sprite_index = spr_bio_fighter;
 }
-if (owner == eFACTION.Chaos) {
+if (owner == eFACTION.CHAOS) {
     sprite_index = spr_ship_dreadclaw;
 }
 
@@ -47,22 +47,22 @@ if (instance_exists(target)) {
     if ((action == "shoot") && (cooldown1 <= 0)) {
         var bull;
         cooldown1 = 30;
-        if (owner == eFACTION.Tau) {
+        if (owner == eFACTION.TAU) {
             cooldown1 = 20;
         }
         bull = instance_create(x, y, obj_en_round);
         bull.direction = self.direction;
-        if ((owner == eFACTION.Tau) || (owner == eFACTION.Eldar)) {
+        if ((owner == eFACTION.TAU) || (owner == eFACTION.ELDAR)) {
             bull.sprite_index = spr_pulse;
         }
-        if (owner == eFACTION.Tyranids) {
+        if (owner == eFACTION.TYRANIDS) {
             bull.sprite_index = spr_glob;
         }
         bull.speed = 20;
         bull.image_xscale = 0.5;
         bull.image_yscale = 0.5;
         bull.dam = 3;
-        if (owner == eFACTION.Ork) {
+        if (owner == eFACTION.ORK) {
             bull.dam = 2;
         }
     }

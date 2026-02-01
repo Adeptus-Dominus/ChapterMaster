@@ -1,48 +1,37 @@
-enum ShaderType {
-    Body,
-    Helmet,
-    LeftPauldron,
-    Lens,
-    Trim,
-    RightPauldron,
-    Weapon,
+enum eSHADER_TYPE {
+    BODY,
+    HELMET,
+    LEFTPAULDRON,
+    LENS,
+    TRIM,
+    RIGHTPAULDRON,
+    WEAPON,
 }
 
-enum UnitSpecialization {
-    None,
-    Chaplain,
-    Apothecary,
-    Techmarine,
-    Librarian,
-    DeathCompany,
-    IronFather,
-    WolfPriest,
+enum eUNIT_SPECIALIZATION {
+    NONE,
+    CHAPLAIN,
+    APOTHECARY,
+    TECHMARINE,
+    LIBRARIAN,
+    DEATHCOMPANY,
+    IRONFATHER,
+    WOLFPRIEST,
 }
 
-enum UnitSpecialColours {
-    None,
-    Deathwing,
-    Ravenwing,
-    Gold,
+enum eUNIT_SPECIAL_COLOURS {
+    NONE,
+    DEATHWING,
+    RAVENWING,
+    GOLD,
 }
 
-enum eARMOUR_SET {
-    None,
-    MK3,
-    MK4,
-    MK5,
-    MK6,
-    MK7,
-    MK8,
-    Indomitus,
-    Tartaros,
-}
-enum ArmourType {
-    Normal,
-    Scout,
-    Terminator,
-    Dreadnought,
-    None,
+enum eARMOUR_TYPE {
+    NORMAL,
+    SCOUT,
+    TERMINATOR,
+    DREADNOUGHT,
+    NONE,
 }
 
 function surface_clear_and_free(_surface) {
@@ -115,25 +104,25 @@ function set_shader_color(shaderType, colorIndex) {
     if (instance_exists(obj_controller)) {
         with (obj_controller) {
             switch (shaderType) {
-                case ShaderType.Body:
+                case eSHADER_TYPE.BODY:
                     setShader = colour_to_set1;
                     break;
-                case ShaderType.Helmet:
+                case eSHADER_TYPE.HELMET:
                     setShader = colour_to_set2;
                     break;
-                case ShaderType.LeftPauldron:
+                case eSHADER_TYPE.LEFTPAULDRON:
                     setShader = colour_to_set3;
                     break;
-                case ShaderType.Lens:
+                case eSHADER_TYPE.LENS:
                     setShader = colour_to_set4;
                     break;
-                case ShaderType.Trim:
+                case eSHADER_TYPE.TRIM:
                     setShader = colour_to_set5;
                     break;
-                case ShaderType.RightPauldron:
+                case eSHADER_TYPE.RIGHTPAULDRON:
                     setShader = colour_to_set6;
                     break;
-                case ShaderType.Weapon:
+                case eSHADER_TYPE.WEAPON:
                     setShader = colour_to_set7;
                     break;
             }
@@ -142,40 +131,31 @@ function set_shader_color(shaderType, colorIndex) {
     } else if (instance_exists(obj_creation)) {
         with (obj_controller) {
             switch (shaderType) {
-                case ShaderType.Body:
+                case eSHADER_TYPE.BODY:
                     setShader = colour_to_set1;
                     break;
-                case ShaderType.Helmet:
+                case eSHADER_TYPE.HELMET:
                     setShader = colour_to_set2;
                     break;
-                case ShaderType.LeftPauldron:
+                case eSHADER_TYPE.LEFTPAULDRON:
                     setShader = colour_to_set3;
                     break;
-                case ShaderType.Lens:
+                case eSHADER_TYPE.LENS:
                     setShader = colour_to_set4;
                     break;
-                case ShaderType.Trim:
+                case eSHADER_TYPE.TRIM:
                     setShader = colour_to_set5;
                     break;
-                case ShaderType.RightPauldron:
+                case eSHADER_TYPE.RIGHTPAULDRON:
                     setShader = colour_to_set6;
                     break;
-                case ShaderType.Weapon:
+                case eSHADER_TYPE.WEAPON:
                     setShader = colour_to_set7;
                     break;
             }
             shader_set_uniform_f(setShader, col_r[colorIndex] / 255, col_g[colorIndex] / 255, col_b[colorIndex] / 255);
         }
     }
-}
-
-// Define armour typesj
-
-// Define backpack types
-enum BackType {
-    None,
-    Dev,
-    Jump,
 }
 
 function make_colour_from_array(col_array) {
@@ -249,68 +229,67 @@ function scr_draw_unit_image(_background = false) {
             var unit_armour = armour();
             var unit_gear = gear();
             var unit_back = mobility_item();
-            var unit_specialization = UnitSpecialization.None;
+            var unit_specialization = eUNIT_SPECIALIZATION.NONE;
             var unit_special_colours = 0;
             var skin_color = obj_creation ? 0 : obj_ini.skin_color;
-            var armour_type = ArmourType.Normal;
+            var armour_type = eARMOUR_TYPE.NORMAL;
             var armour_sprite = spr_weapon_blank;
             var complex_livery = false;
-            var back_equipment = BackType.None;
             var servo_arm = 0;
             var servo_harness = 0;
             var halo = 0;
             var reverent_guardians = false;
             var body_part;
-            static _body_parts = ARR_body_parts;
+            static _body_parts = UNIT_BODY_PARTS;
 
             // Chaplain
             if (is_specialist(unit_role, SPECIALISTS_CHAPLAINS, true)) {
                 if (unit_chapter == "Iron Hands") {
-                    unit_specialization = UnitSpecialization.IronFather;
+                    unit_specialization = eUNIT_SPECIALIZATION.IRONFATHER;
                 } else if (unit_chapter == "Space Wolves") {
-                    unit_specialization = UnitSpecialization.WolfPriest;
+                    unit_specialization = eUNIT_SPECIALIZATION.WOLFPRIEST;
                 } else {
-                    unit_specialization = UnitSpecialization.Chaplain;
+                    unit_specialization = eUNIT_SPECIALIZATION.CHAPLAIN;
                 }
             } else if (is_specialist(unit_role, SPECIALISTS_TECHS, true)) {
                 // Techmarine
                 if (unit_chapter == "Iron Hands") {
-                    unit_specialization = UnitSpecialization.IronFather;
+                    unit_specialization = eUNIT_SPECIALIZATION.IRONFATHER;
                 } else {
-                    unit_specialization = UnitSpecialization.Techmarine;
+                    unit_specialization = eUNIT_SPECIALIZATION.TECHMARINE;
                 }
             } else if (is_specialist(unit_role, SPECIALISTS_APOTHECARIES, true)) {
                 // Apothecary
                 if (unit_chapter == "Space Wolves") {
-                    unit_specialization = UnitSpecialization.WolfPriest;
+                    unit_specialization = eUNIT_SPECIALIZATION.WOLFPRIEST;
                 } else {
-                    unit_specialization = UnitSpecialization.Apothecary;
+                    unit_specialization = eUNIT_SPECIALIZATION.APOTHECARY;
                 }
             } else if (is_specialist(unit_role, SPECIALISTS_LIBRARIANS, true)) {
                 // Librarian
-                unit_specialization = UnitSpecialization.Librarian;
+                unit_specialization = eUNIT_SPECIALIZATION.LIBRARIAN;
             } else if (unit_role == "Death Company") {
                 // Death Company
-                unit_specialization = UnitSpecialization.DeathCompany;
+                unit_specialization = eUNIT_SPECIALIZATION.DEATHCOMPANY;
             }
             // Dark Angels
             if (unit_chapter == "Dark Angels") {
                 // Deathwing
                 if (company == 1) {
-                    unit_special_colours = UnitSpecialColours.Deathwing;
+                    unit_special_colours = eUNIT_SPECIAL_COLOURS.DEATHWING;
                 } else if (company == 2) {
                     // Ravenwing
-                    unit_special_colours = UnitSpecialColours.Ravenwing;
+                    unit_special_colours = eUNIT_SPECIAL_COLOURS.RAVENWING;
                 }
             }
             // Blood Angels gold
-            if ((unit_role == _role[eROLE.HonourGuard] || unit_role == _role[eROLE.ChapterMaster]) && (unit_chapter == "Blood Angels")) {
-                unit_special_colours = UnitSpecialColours.Gold;
+            if ((unit_role == _role[eROLE.HONOURGUARD] || unit_role == _role[eROLE.CHAPTERMASTER]) && (unit_chapter == "Blood Angels")) {
+                unit_special_colours = eUNIT_SPECIAL_COLOURS.GOLD;
             }
             // Sets up the description for the equipement of current marine
 
             if (scr_has_adv("Reverent Guardians")) {
-                if (array_contains([UnitSpecialization.Chaplain, UnitSpecialization.WolfPriest, UnitSpecialization.Librarian], unit_specialization) || unit_role == _role[eROLE.ChapterMaster]) {
+                if (array_contains([eUNIT_SPECIALIZATION.CHAPLAIN, eUNIT_SPECIALIZATION.WOLFPRIEST, eUNIT_SPECIALIZATION.LIBRARIAN], unit_specialization) || unit_role == _role[eROLE.CHAPTERMASTER]) {
                     reverent_guardians = true;
                 }
             }
@@ -326,26 +305,26 @@ function scr_draw_unit_image(_background = false) {
             }
 
             if (is_dreadnought()) {
-                armour_type = ArmourType.Dreadnought;
+                armour_type = eARMOUR_TYPE.DREADNOUGHT;
             } else {
                 switch (unit_armour) {
                     case "Scout Armour":
-                        armour_type = ArmourType.Scout;
+                        armour_type = eARMOUR_TYPE.SCOUT;
                         break;
                     case "Terminator Armour":
                     case "Tartaros":
                     case "Cataphractii":
-                        armour_type = ArmourType.Terminator;
+                        armour_type = eARMOUR_TYPE.TERMINATOR;
                         break;
                     case ITEM_NAME_NONE:
                     case "":
                     case "None":
-                        armour_type = ArmourType.None;
+                        armour_type = eARMOUR_TYPE.NONE;
                         break;
                 }
             }
 
-            draw_backpack = armour_type == ArmourType.Normal;
+            draw_backpack = armour_type == eARMOUR_TYPE.NORMAL;
 
             //if(shader_is_compiled(sReplaceColor)){
             //shader_set(sReplaceColor);
@@ -386,8 +365,8 @@ function scr_draw_unit_image(_background = false) {
                 draw_sprite(servo_arm > 0 ? spr_servo_arm : spr_servo_harness, 0, x_surface_offset, y_surface_offset + arm_offset_y);
             }
 
-            if (armour_type == ArmourType.None) {
-                if (unit_role == _role[eROLE.ChapterMaster] && unit_chapter == "Doom Benefactors") {
+            if (armour_type == eARMOUR_TYPE.NONE) {
+                if (unit_role == _role[eROLE.CHAPTERMASTER] && unit_chapter == "Doom Benefactors") {
                     skin_color = 6;
                 }
 
@@ -416,7 +395,7 @@ function scr_draw_unit_image(_background = false) {
                     complex_livery = true;
                 }
 
-                if (armour_type == ArmourType.Normal && complex_livery && unit_role == _role[2]) {
+                if (armour_type == eARMOUR_TYPE.NORMAL && complex_livery && unit_role == _role[2]) {
                     complex_set.add_group({right_leg: spr_artificer_right_leg, left_leg: spr_artificer_left_leg, chest_variants: spr_artificer_chest, thorax_variants: spr_artificer_thorax, mouth_variants: spr_artificer_mouth});
                 }
 
@@ -437,12 +416,12 @@ function scr_draw_unit_image(_background = false) {
                     }
                     draw_sprite(spr_gear_halo, halo_type + halo_color, x_surface_offset, y_surface_offset + halo_offset_y);
                 }
-                if (armour_type == ArmourType.Normal && (!robes_bypass || !robes_hood_bypass)) {
+                if (armour_type == eARMOUR_TYPE.NORMAL && (!robes_bypass || !robes_hood_bypass)) {
                     var robe_offset_x = 0;
                     var robe_offset_y = 0;
                     var hood_offset_x = 0;
                     var hood_offset_y = 0;
-                    if (armour_type == ArmourType.Scout) {
+                    if (armour_type == eARMOUR_TYPE.SCOUT) {
                         robe_offset_x = 1;
                         robe_offset_y = 10;
                         hood_offset_x = 1;
@@ -484,17 +463,17 @@ function scr_draw_unit_image(_background = false) {
                 }
 
                 // Apothecary Details
-                if (unit_specialization == UnitSpecialization.Apothecary) {
+                if (unit_specialization == eUNIT_SPECIALIZATION.APOTHECARY) {
                     if (gear() == "Narthecium") {
-                        if (armour_type == ArmourType.Normal) {
+                        if (armour_type == eARMOUR_TYPE.NORMAL) {
                             draw_sprite(spr_narthecium_2, 0, x_surface_offset + 66, y_surface_offset + 5);
-                        } else if (armour_type != ArmourType.Normal && armour_type != ArmourType.Dreadnought) {
+                        } else if (armour_type != eARMOUR_TYPE.NORMAL && armour_type != eARMOUR_TYPE.DREADNOUGHT) {
                             draw_sprite(spr_narthecium_2, 0, x_surface_offset + 92, y_surface_offset + 5);
                         }
                     }
                 }
             }
-            /*if (armour_type == ArmourType.Dreadnought) {
+            /*if (armour_type == eARMOUR_TYPE.DREADNOUGHT) {
                 var left_arm = dreadnought_sprite_components(weapon_two());
                 var colour_scheme = specialist_colours <= 1 ? 0 : 1;
                 draw_sprite(left_arm, colour_scheme, x_surface_offset, y_surface_offset);

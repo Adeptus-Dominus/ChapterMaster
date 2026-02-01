@@ -1,13 +1,13 @@
 function threat_plausibility() {
     var _threat = 20;
-    var _good_imperium_position = disposition[eFACTION.Imperium] > 50 ? 1 : -1;
+    var _good_imperium_position = disposition[eFACTION.IMPERIUM] > 50 ? 1 : -1;
     var _relative_strength = floor(obj_controller / 20);
     var _nature = "";
 }
 
 function clear_inspections() {
     with (obj_en_fleet) {
-        if ((owner == eFACTION.Inquisition) && (string_count("Inqis", trade_goods) > 0)) {
+        if ((owner == eFACTION.INQUISITION) && (string_count("Inqis", trade_goods) > 0)) {
             trade_goods = "cancel_inspection";
             target = 0;
         }
@@ -40,7 +40,7 @@ function inquis_demand_inspection_pass() {
             diplo_text = "Very well Chapter Master I Your service to the imperium is well known i have no doubt that you would not ask such of me without good reasoon. I shall forgoe my normal duties just this onece. \n do not becomne complacent Chapter Master i may not always be so generous";
         } else {
             var _diff = resistance - rull;
-            alter_disposition(eFACTION.Inquisition, -1);
+            alter_disposition(eFACTION.INQUISITION, -1);
             diplo_text = "Consider your request denied. If there is heresy or any wrong doing i shal see that is rooted out and made plain for all to see";
         }
     }
@@ -71,7 +71,7 @@ function scr_demand(demand_type) {
     if (trading_demand == 2) {
         // Imperium
         with (obj_star) {
-            if (owner == eFACTION.Imperium) {
+            if (owner == eFACTION.IMPERIUM) {
                 instance_create(x, y, obj_temp2);
             }
         }
@@ -88,10 +88,10 @@ function scr_demand(demand_type) {
         if (obj_controller.disposition[2] <= -60) {
             resistance += 100;
         }
-        if ((rela == "hostile") || (faction_status[eFACTION.Imperium] == "Antagonism")) {
+        if ((rela == "hostile") || (faction_status[eFACTION.IMPERIUM] == "Antagonism")) {
             resistance += 2;
         }
-        if (faction_status[eFACTION.Imperium] == "War") {
+        if (faction_status[eFACTION.IMPERIUM] == "War") {
             resistance += 3;
         }
 
@@ -183,9 +183,9 @@ function scr_demand(demand_type) {
             resistance -= 2;
         }
 
-        if ((obj_controller.faction_status[eFACTION.Eldar] == "War") || (obj_controller.faction_status[eFACTION.Eldar] == "Antagonism")) {
+        if ((obj_controller.faction_status[eFACTION.ELDAR] == "War") || (obj_controller.faction_status[eFACTION.ELDAR] == "Antagonism")) {
             with (obj_star) {
-                if ((owner == eFACTION.Eldar) && (craftworld == 1)) {
+                if ((owner == eFACTION.ELDAR) && (craftworld == 1)) {
                     instance_create(x, y, obj_temp5);
                 }
             }
@@ -195,7 +195,7 @@ function scr_demand(demand_type) {
                 }
             }
             with (obj_en_fleet) {
-                if ((point_distance(x, y, obj_temp5.x, obj_temp5.y) < 37) && (action == "") && (owner == eFACTION.Eldar)) {
+                if ((point_distance(x, y, obj_temp5.x, obj_temp5.y) < 37) && (action == "") && (owner == eFACTION.ELDAR)) {
                     instance_create(x, y, obj_temp3);
                 }
             }
@@ -280,7 +280,7 @@ function scr_demand(demand_type) {
 
     if (trading_demand == 8) {
         with (obj_star) {
-            if (owner == eFACTION.Tau) {
+            if (owner == eFACTION.TAU) {
                 instance_create(x, y, obj_temp2);
             }
         }
@@ -294,7 +294,7 @@ function scr_demand(demand_type) {
         if (rela == "neutral") {
             resistance -= 1;
         }
-        if (faction_status[eFACTION.Tau] == "War") {
+        if (faction_status[eFACTION.TAU] == "War") {
             resistance += 3;
         }
 
@@ -315,7 +315,7 @@ function scr_demand(demand_type) {
             rull = floor(random(10)) + 1;
 
             with (obj_en_fleet) {
-                if (owner != eFACTION.Tau) {
+                if (owner != eFACTION.TAU) {
                     instance_deactivate_object(id);
                 }
             }
@@ -331,7 +331,7 @@ function scr_demand(demand_type) {
             }
 
             with (obj_star) {
-                if ((owner == eFACTION.Tau) && instance_exists(obj_p_fleet)) {
+                if ((owner == eFACTION.TAU) && instance_exists(obj_p_fleet)) {
                     var mahr;
                     mahr = instance_nearest(x, y, obj_p_fleet);
                     if ((point_distance(x, y, mahr.x, mahr.y) < 50) && (mahr.action == "")) {
@@ -351,17 +351,17 @@ function scr_demand(demand_type) {
             if (rull > resistance) {
                 worked = true;
                 with (obj_en_fleet) {
-                    if ((owner == eFACTION.Tau) && (instance_nearest(x, y, obj_star).owner == eFACTION.Tau) && (action == "")) {
+                    if ((owner == eFACTION.TAU) && (instance_nearest(x, y, obj_star).owner == eFACTION.TAU) && (action == "")) {
                         instance_deactivate_object(id);
                     }
                 }
                 with (obj_star) {
-                    if (owner != eFACTION.Tau) {
+                    if (owner != eFACTION.TAU) {
                         instance_deactivate_object(id);
                     }
                 }
                 with (obj_en_fleet) {
-                    if (owner == eFACTION.Tau) {
+                    if (owner == eFACTION.TAU) {
                         action_x = instance_nearest(x, y, obj_star).x;
                         action_y = instance_nearest(x, y, obj_star).y;
                         alarm[4] = 1;

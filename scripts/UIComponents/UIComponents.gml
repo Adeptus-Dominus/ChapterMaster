@@ -375,7 +375,7 @@ function star_ui_name_node() {
         .add_component(UISpriteRendererComponent)
         .set_sprite(spr_p_name_bg)
         .set_callback(function(context) {
-            if (owner != eFACTION.Player) {
+            if (owner != eFACTION.PLAYER) {
                 context.set_color_solid(global.star_name_colors[owner]);
             } else {
                 scr_shader_initialize();
@@ -394,7 +394,7 @@ function star_ui_name_node() {
             context.set_halign(fa_center);
             context.set_valign(fa_middle);
             context.owner.resize(new_w, 32);
-            if (owner == eFACTION.Player) {
+            if (owner == eFACTION.PLAYER) {
                 var main_trim = make_colour_from_array(obj_controller.trim_colour_replace);
                 context.set_color_solid(main_trim);
             }
@@ -413,7 +413,7 @@ function star_ui_name_node() {
         .add_element(right_align_element, 0, 0, 0, 0)
         .add_component(UISpriteRendererComponent)
         .set_callback(function(context) {
-            if (owner == eFACTION.Player) {
+            if (owner == eFACTION.PLAYER) {
                 context.set_sprite(obj_img.creation[1]);
                 context.set_image_index(0); // I have no idea what kind of schizo code this is, so I'll just set it to 0;
             } else {

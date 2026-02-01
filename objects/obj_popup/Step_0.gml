@@ -23,7 +23,7 @@ try {
     if ((image == "fuklaw") && (save > 0)) {
         if (press == 0) {
             var del = obj_saveload.save[save];
-            var _save_file = string(PATH_save_files, del);
+            var _save_file = string(PATH_SAVE_FILES, del);
             if (file_exists(_save_file)) {
                 file_delete(_save_file);
                 if (file_exists($"save{del}log.ini")) {
@@ -104,7 +104,7 @@ try {
                 } else if ((press == 1) && (mission == "meeting_1")) {
                     obj_controller.complex_event = true;
                     obj_controller.current_eventing = "chaos_meeting_1";
-                    text = $"{global.chapter_name} signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before {global.chapter_name} all enter an ordinary-looking structure.  Down, within the basement, {global.chapter_name} then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until {global.chapter_name} find yourself within a hall.  Within this hall, waiting for {global.chapter_name}, are several dozen Chaos Terminators, a Greater Daemon of Tzeentch and Slaanesh, and Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + ".";
+                    text = $"{global.chapter_name} signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before {global.chapter_name} all enter an ordinary-looking structure.  Down, within the basement, {global.chapter_name} then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until {global.chapter_name} find yourself within a hall.  Within this hall, waiting for {global.chapter_name}, are several dozen Chaos Terminators, a Greater Daemon of Tzeentch and Slaanesh, and Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + ".";
                     reset_popup_options();
                     mission = "cslord1";
                     image = "";
@@ -325,7 +325,7 @@ try {
                 if (mission == "artifact") {
                     var last_artifact;
                     scr_quest(0, "artifact_loan", 4, estimate);
-                    if (obj_ini.fleet_type == ePlayerBase.home_world) {
+                    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                         image = "fortress";
                         if (obj_ini.home_type == "Hive") {
                             image = "fortress_hive";
@@ -340,7 +340,7 @@ try {
                             image = "fortress_lava";
                         }
                         last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.home_name, 2);
-                    } else if (obj_ini.fleet_type != ePlayerBase.home_world) {
+                    } else if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                         image = "artifact_given";
                         last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship[0], 501);
                     }
@@ -349,10 +349,10 @@ try {
                     fancy_title = 0;
                     text_center = 0;
                     text = "The Inquisition has left an Artifact in your care, until it may be retrieved.  It has been stored ";
-                    if (obj_ini.fleet_type == ePlayerBase.home_world) {
+                    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                         text += "within your Fortress Monastery.";
                     }
-                    if (obj_ini.fleet_type != ePlayerBase.home_world) {
+                    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                         text += $"upon your ship '{obj_ini.ship[0]}'.";
                     }
                     scr_event_log("", "Inquisition Mission Accepted: The Inquisition has left an Artifact in your care.");

@@ -4,16 +4,16 @@ function scr_random_event(execute_now) {
 		var rando4=floor(random(200))+1;
 	if (obj_controller.turns_ignored[6]<=0) and (obj_controller.faction_gender[6]=2) then rando4-=2;
 	if (obj_controller.turns_ignored[6]<=0) and (rando4<=3) and execute_now and (faction_defeated[6]=0){
-	    if (obj_controller.known[eFACTION.Eldar]=2) and (obj_controller.disposition[6]>=-10) and (string_count("Eldar",obj_ini.strin)=0){
+	    if (obj_controller.known[eFACTION.ELDAR]=2) and (obj_controller.disposition[6]>=-10) and (string_count("Eldar",obj_ini.strin)=0){
 			global.logger.info("RE: Eldar Mission 1");
 	        // Need something else here that prevents them from asking missions when they are pissed
         
 	        obj_turn_end.audiences+=1;// obj_turn_end.audiences+=1;
 	        obj_turn_end.audience_stack[obj_turn_end.audiences]=6;
         
-	        // if (obj_controller.known[eFACTION.Eldar]>2) then obj_turn_end.audien_topic[obj_turn_end.audiences]="mission";// Random mission?
-	        if (obj_controller.known[eFACTION.Eldar]=2){
-					scr_audience(eFACTION.Eldar, "mission1", 0, "", 0, 2.2);
+	        // if (obj_controller.known[eFACTION.ELDAR]>2) then obj_turn_end.audien_topic[obj_turn_end.audiences]="mission";// Random mission?
+	        if (obj_controller.known[eFACTION.ELDAR]=2){
+					scr_audience(eFACTION.ELDAR, "mission1", 0, "", 0, 2.2);
 	            scr_quest(0,"fund_elder",6,24);
 	        }
         
@@ -24,12 +24,12 @@ function scr_random_event(execute_now) {
 
     var inquisition_mission_roll = irandom(100);
     var force_inquisition_mission = false;
-    if (((last_mission + 50) <= turn) && (inquisition_mission_roll <= 5) && (known[eFACTION.Inquisition] != 0) && (obj_controller.faction_status[eFACTION.Inquisition] != "War")) {
+    if (((last_mission + 50) <= turn) && (inquisition_mission_roll <= 5) && (known[eFACTION.INQUISITION] != 0) && (obj_controller.faction_status[eFACTION.INQUISITION] != "War")) {
         force_inquisition_mission = true;
     }
 
-    if (force_inquisition_mission && random_event_next == EVENT.none) {
-        chosen_event = EVENT.inquisition_mission;
+    if (force_inquisition_mission && random_event_next == eEVENT.NONE) {
+        chosen_event = eEVENT.INQUISITION_MISSION;
     } else {
         if (execute_now) {
             var random_event_roll = irandom(100);
@@ -44,53 +44,53 @@ function scr_random_event(execute_now) {
             } // Minimum interval between
         }
 
-        if (random_event_next != EVENT.none) {
+        if (random_event_next != eEVENT.NONE) {
             chosen_event = random_event_next;
         } else {
             var player_luck;
             var luck_roll = roll_dice_chapter(1, 100, "low");
 
             if (luck_roll <= 45) {
-                player_luck = luck.good;
+                player_luck = eLUCK.GOOD;
             }
             if ((luck_roll > 45) && (luck_roll < 55)) {
-                player_luck = luck.neutral;
+                player_luck = eLUCK.NEUTRAL;
             }
             if (luck_roll >= 55) {
-                player_luck = luck.bad;
+                player_luck = eLUCK.BAD;
             }
 
             var events;
-            if (player_luck == luck.good) {
+            if (player_luck == eLUCK.GOOD) {
                 events = [
-                    EVENT.space_hulk,
-                    EVENT.promotion,
-                    EVENT.strange_building,
-                    EVENT.sororitas,
-                    EVENT.rogue_trader,
-                    EVENT.inquisition_mission,
-                    EVENT.inquisition_planet,
+                    eEVENT.SPACE_HULK,
+                    eEVENT.PROMOTION,
+                    eEVENT.STRANGE_BUILDING,
+                    eEVENT.SORORITAS,
+                    eEVENT.ROGUE_TRADER,
+                    eEVENT.INQUISITION_MISSION,
+                    eEVENT.MECHANICUS_MISSION,
                     EVENT.mechanicus_mission
                 ];
-            } else if (player_luck == luck.neutral) {
+            } else if (player_luck == eLUCK.NEUTRAL) {
                 events = [
-                    EVENT.strange_behavior,
-                    EVENT.fleet_delay,
-                    EVENT.harlequins,
-                    EVENT.succession_war,
-                    EVENT.random_fun
+                    eEVENT.STRANGE_BEHAVIOR,
+                    eEVENT.FLEET_DELAY,
+                    eEVENT.HARLEQUINS,
+                    eEVENT.SUCCESSION_WAR,
+                    eEVENT.RANDOM_FUN
                 ];
-            } else if (player_luck == luck.bad) {
+            } else if (player_luck == eLUCK.BAD) {
                 events = [
-                    EVENT.warp_storms,
-                    EVENT.enemy_forces,
-                    EVENT.crusade, // Reportly breaks often because of lack of imperial fleets and eats player ships // TODO LOW CRUSADE_EVENT // fix
-                    EVENT.enemy, // Save-scumming event, Should probably base this on something else than tech-scavs
-                    EVENT.mutation,
-                    EVENT.ship_lost, // Another save-scumming event, mainly due to rarity of player ships
-                    //EVENT.chaos_invasion, // Spawns Chaos fleets way too close to player owned worlds with no warning and usually lots of big ships, save-scum galore and encourages fleet-based chapters // TODO LOW INVASION_EVENT // Make them spawn way farther with more warning, make them have a different goal or remove this event entirely
-                    EVENT.necron_awaken, // Inquisitor check for this is inverted
-                    EVENT.fallen // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
+                    eEVENT.WARP_STORMS,
+                    eEVENT.ENEMY_FORCES,
+                    eEVENT.CRUSADE, // Reportly breaks often because of lack of imperial fleets and eats player ships // TODO LOW CRUSADE_EVENT // fix
+                    eEVENT.ENEMY, // Save-scumming event, Should probably base this on something else than tech-scavs
+                    eEVENT.MUTATION,
+                    eEVENT.SHIP_LOST, // Another save-scumming event, mainly due to rarity of player ships
+                    //eEVENT.CHAOS_INVASION, // Spawns Chaos fleets way too close to player owned worlds with no warning and usually lots of big ships, save-scum galore and encourages fleet-based chapters // TODO LOW INVASION_EVENT // Make them spawn way farther with more warning, make them have a different goal or remove this event entirely
+                    eEVENT.NECRON_AWAKEN, // Inquisitor check for this is inverted
+                    eEVENT.FALLEN // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
                 ];
             }
 
@@ -104,27 +104,27 @@ function scr_random_event(execute_now) {
                 //DEBUG-INI (EVENTS DEBUG CODE - 1)
                 //Comment/delete this when not debugging events
                 //List of possible events above
-                /*curr_event =  EVENT.necron_awaken
+                /*curr_event =  eEVENT.NECRON_AWAKEN
 					events_count = 1
 					events_total = events_count;
 					events_share = array_create(events_count, 1);*/
                 //DEBUG-FIN (EVENTS DEBUG CODE - 1)
 
                 switch (curr_event) {
-                    case EVENT.inquisition_planet:
-                        if (known[eFACTION.Inquisition] == 0 || obj_controller.faction_status[eFACTION.Inquisition] == "War") {
+                    case eEVENT.MECHANICUS_MISSION:
+                        if (known[eFACTION.INQUISITION] == 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") {
                             events_share[i] -= 1;
                             events_total -= 1;
                         }
                         break;
-                    case EVENT.inquisition_mission:
-                        if (known[eFACTION.Inquisition] == 0 || obj_controller.disposition[4] < 0 || obj_controller.faction_status[eFACTION.Inquisition] == "War") {
+                    case eEVENT.INQUISITION_MISSION:
+                        if (known[eFACTION.INQUISITION] == 0 || obj_controller.disposition[4] < 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") {
                             events_share[i] -= 1;
                             events_total -= 1;
                         }
                         break;
                     case EVENT.mechanicus_mission:
-                        if (known[eFACTION.Mechanicus] == 0 || obj_controller.disposition[3] < 50 || obj_controller.faction_status[eFACTION.Mechanicus] == "War") {
+                        if (known[eFACTION.MECHANICUS] == 0 || obj_controller.disposition[3] < 50 || obj_controller.faction_status[eFACTION.MECHANICUS] == "War") {
                             events_share[i] -= 1;
                             events_total -= 1;
                         } else if (scr_has_adv("Tech-Brothers")) {
@@ -132,31 +132,31 @@ function scr_random_event(execute_now) {
                             events_total += 2;
                         }
                         break;
-                    case EVENT.enemy:
+                    case eEVENT.ENEMY:
                         if (scr_has_adv("Scavangers")) {
                             events_share[i] += 2;
                             events_total += 2;
                         }
                         break;
-                    case EVENT.mutation:
+                    case eEVENT.MUTATION:
                         if (gene_seed < 5) {
                             events_share[i] -= 1;
                             events_total -= 1;
                         }
                         break;
-                    case EVENT.necron_awaken:
-                        if (known[eFACTION.Inquisition] == 0) {
+                    case eEVENT.NECRON_AWAKEN:
+                        if (known[eFACTION.INQUISITION] == 0) {
                             events_share[i] -= 1;
                             events_total -= 1;
                         }
                         break;
-                    case EVENT.crusade:
-                        if (obj_controller.faction_status[eFACTION.Imperium] == "War") {
+                    case eEVENT.CRUSADE:
+                        if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
                             events_share[i] -= 1;
                             events_total -= 1;
                         }
                         break;
-                    case EVENT.fleet_delay:
+                    case eEVENT.FLEET_DELAY:
                         var has_moving_fleet = false;
                         with (obj_p_fleet) {
                             if (action == "move") {
@@ -169,7 +169,7 @@ function scr_random_event(execute_now) {
                             events_total -= 1;
                         }
                         break;
-                    case EVENT.ship_lost:
+                    case eEVENT.SHIP_LOST:
                         var has_moving_fleet = false;
                         with (obj_p_fleet) {
                             if (action == "move") {
@@ -182,7 +182,7 @@ function scr_random_event(execute_now) {
                             events_total -= 1;
                         }
                         break;
-                    case EVENT.fallen:
+                    case eEVENT.FALLEN:
                         if (!scr_has_disadv("Never Forgive")) {
                             events_share[i] -= 1;
                             events_total -= 1;
@@ -201,7 +201,7 @@ function scr_random_event(execute_now) {
             //DEBUG-INI (EVENTS DEBUG CODE - 2)
             //Comment/delete this when not debugging events
             //If event on the switch above, (EVENTS DEBUG CODE - 1) var should be set to event too.
-            /*chosen_event =  EVENT.necron_awaken*/
+            /*chosen_event =  eEVENT.NECRON_AWAKEN*/
             //DEBUG-FIN (EVENTS DEBUG CODE - 2)
         }
     }
@@ -211,11 +211,11 @@ function scr_random_event(execute_now) {
         exit;
     }
 
-    if (chosen_event == EVENT.strange_behavior) {
+    if (chosen_event == eEVENT.STRANGE_BEHAVIOR) {
         //TODO this event currenlty dose'nt do anything but now we have marine structs there is lots of potential here
         init_marine_acting_strange();
         _evented = true;
-    } else if (chosen_event == EVENT.space_hulk) {
+    } else if (chosen_event == eEVENT.SPACE_HULK) {
         global.logger.info("RE: Space Hulk");
         var own = choose(1, 1, 2);
 
@@ -263,7 +263,7 @@ function scr_random_event(execute_now) {
                 handle_exception(_exception);
             }
         }
-    } else if (chosen_event == EVENT.promotion) {
+    } else if (chosen_event == eEVENT.PROMOTION) {
         global.logger.info("RE: Promotion");
         var marine_and_company = scr_random_marine([obj_ini.role[100][8], obj_ini.role[100][12], obj_ini.role[100][9], obj_ini.role[100][10]], 0);
         if (marine_and_company == "none") {
@@ -292,9 +292,9 @@ function scr_random_event(execute_now) {
         scr_popup("Promotions!", text, "distinguished", "");
         scr_event_log("green", text);
         _evented = true;
-    } else if (chosen_event == EVENT.strange_building) {
+    } else if (chosen_event == eEVENT.STRANGE_BUILDING) {
         _evented = strange_build_event();
-    } else if (chosen_event == EVENT.sororitas) {
+    } else if (chosen_event == eEVENT.SORORITAS) {
         global.logger.info("RE: Sororitas Company");
         var own;
         own = choose(1, 2);
@@ -328,23 +328,23 @@ function scr_random_event(execute_now) {
                 scr_alert("green", "sororitas", "Sororitas place a company of sisters on " + string(star_id.name) + " " + string(planet) + ".", star_id.x, star_id.y);
             } else {
                 scr_popup("Sororitas", "The Ecclesiarchy have placed a company of sisters on " + string(star_id.name) + " " + string(planet) + ".", "sororitas", "");
-                if (known[eFACTION.Ecclesiarchy] == 0) {
-                    known[eFACTION.Ecclesiarchy] = 1; // this seesms like a thing another part of code already does, not sure tho
+                if (known[eFACTION.ECCLESIARCHY] == 0) {
+                    known[eFACTION.ECCLESIARCHY] = 1; // this seesms like a thing another part of code already does, not sure tho
                 }
             }
         }
     } else if (chosen_event == EVENT.mechanicus_mission) {
         evented = spawn_mechanicus_mission();
-    } else if (chosen_event == EVENT.inquisition_planet || chosen_event == EVENT.inquisition_mission) {
+    } else if (chosen_event == eEVENT.MECHANICUS_MISSION || chosen_event == eEVENT.INQUISITION_MISSION) {
         scr_inquisition_mission(chosen_event);
         _evented = true;
-    } else if (chosen_event == EVENT.rogue_trader) {
+    } else if (chosen_event == eEVENT.ROGUE_TRADER) {
         global.logger.info("RE: Rogue Trader");
         var eligible_stars = [];
         with (obj_star) {
             for (var i = 0; i <= 4; i++) {
                 //feather sometimes thinks the Player part is an object..silly feather
-                if (p_owner[i] == eFACTION.Player) {
+                if (p_owner[i] == eFACTION.PLAYER) {
                     array_push(eligible_stars, self);
                     break;
                 }
@@ -369,7 +369,7 @@ function scr_random_event(execute_now) {
         text += " system to trade.  ";
         var owns_planet_on_star = false;
         for (var i = 0; i <= 4; i++) {
-            if (star.p_owner[i] == eFACTION.Player) {
+            if (star.p_owner[i] == eFACTION.PLAYER) {
                 owns_planet_on_star = true;
                 break;
             }
@@ -386,7 +386,7 @@ function scr_random_event(execute_now) {
         star_alert.image_alpha = 1;
         star_alert.image_speed = 1;
         _evented = true;
-    } else if (chosen_event == EVENT.fleet_delay) {
+    } else if (chosen_event == eEVENT.FLEET_DELAY) {
         global.logger.info("RE: Fleet Delay");
         var eligible_fleets = [];
         with (obj_p_fleet) {
@@ -427,7 +427,7 @@ function scr_random_event(execute_now) {
                 star_alert.col = "red";
             }
         }
-    } else if (chosen_event == EVENT.harlequins) {
+    } else if (chosen_event == eEVENT.HARLEQUINS) {
         global.logger.info("RE: Harlequins");
         var owner = choose(1, 2, 2, 2, 3);
         var star = scr_random_find(owner, true, "", "");
@@ -449,12 +449,12 @@ function scr_random_event(execute_now) {
             star_alert.image_speed = 1;
             star_alert.col = "green";
         }
-    } else if (chosen_event == EVENT.succession_war) {
+    } else if (chosen_event == eEVENT.SUCCESSION_WAR) {
         global.logger.info("RE: Succession War");
         var eligible_stars = [];
         with (obj_star) {
             for (var planet = 1; planet <= planets; planet++) {
-                if (p_owner[planet] == eFACTION.Imperium && p_type[planet] != "Dead" && p_type[planet] != "Ice" && p_type[planet] != "Lava") {
+                if (p_owner[planet] == eFACTION.IMPERIUM && p_type[planet] != "Dead" && p_type[planet] != "Ice" && p_type[planet] != "Lava") {
                     array_push(eligible_stars, id);
                     break;
                 }
@@ -469,13 +469,13 @@ function scr_random_event(execute_now) {
         var star = eligible_stars[irandom(star_count - 1)];
         var planet;
         for (var i = 1; i <= star.planets; i++) {
-            if (star.p_owner[i] == eFACTION.Imperium && star.p_type[i] != "Dead" && star.p_type[i] != "Ice" && star.p_type[i] != "Lava") {
+            if (star.p_owner[i] == eFACTION.IMPERIUM && star.p_type[i] != "Dead" && star.p_type[i] != "Ice" && star.p_type[i] != "Lava") {
                 planet = i;
                 break;
             }
         }
 
-        array_push(star.p_feature[planet], new NewPlanetFeature(P_features.Succession_War));
+        array_push(star.p_feature[planet], new NewPlanetFeature(eP_FEATURES.SUCCESSION_WAR));
         add_new_problem(planet, "succession", irandom(6) + 4, star);
         star.dispo[planet] = -5000;
 
@@ -487,7 +487,7 @@ function scr_random_event(execute_now) {
         star_alert.col = "red";
         scr_event_log("red", "War of Succession on " + string(text));
         _evented = true;
-    } else if (chosen_event == EVENT.random_fun) {
+    } else if (chosen_event == eEVENT.RANDOM_FUN) {
         // Flavor text/events
         global.logger.info("RE: Random");
         var text;
@@ -547,7 +547,7 @@ function scr_random_event(execute_now) {
         scr_alert("color", "lol", text, 0, 0);
         scr_event_log("red", text);
         _evented = true;
-    } else if (chosen_event == EVENT.warp_storms) {
+    } else if (chosen_event == eEVENT.WARP_STORMS) {
         global.logger.info("RE: Warp Storm");
         var own, time, him;
 
@@ -580,7 +580,7 @@ function scr_random_event(execute_now) {
             scr_alert(_col, "Warp", $"Warp Storms rage across the {star_id.name} system.", star_id.x, star_id.y);
             scr_event_log(_col, $"Warp Storms rage across the {star_id.name} system.");
         }
-    } else if (chosen_event == EVENT.enemy_forces) {
+    } else if (chosen_event == eEVENT.ENEMY_FORCES) {
         global.logger.info("RE: Enemy Forces");
         var own;
         if (scr_has_disadv("Shitty Luck")) {
@@ -654,12 +654,12 @@ function scr_random_event(execute_now) {
             scr_event_log("red", $"{text} forces suddenly appear at {star_id.name} {planet}!");
             _evented = true;
         }
-    } else if (chosen_event == EVENT.crusade) {
+    } else if (chosen_event == eEVENT.CRUSADE) {
         //i think all events should be hanlded like this then we have far more options on when to call them and how they work
         _evented = launch_crusade();
-    } else if (chosen_event == EVENT.enemy) {
+    } else if (chosen_event == eEVENT.ENEMY) {
         _evented = make_faction_enemy_event();
-    } else if (chosen_event == EVENT.mutation) {
+    } else if (chosen_event == eEVENT.MUTATION) {
         //TODO make reprocussions to ignoring this
         global.logger.info("RE: Gene-Seed Mutation");
         var text = "The Chapter's gene-seed has mutated!  Apothecaries are scrambling to control the damage and prevent further contamination.  What is thy will?";
@@ -700,9 +700,9 @@ function scr_random_event(execute_now) {
         scr_popup("Gene-Seed Mutated!", text, "gene_bad", _pop_data);
         _evented = true;
         scr_event_log("red", "The Chapter Gene-Seed has mutated.");
-    } else if (chosen_event == EVENT.ship_lost) {
+    } else if (chosen_event == eEVENT.SHIP_LOST) {
         loose_ship_to_warp_event();
-    } else if (chosen_event == EVENT.chaos_invasion) {
+    } else if (chosen_event == eEVENT.CHAOS_INVASION) {
         global.logger.info("RE: Chaos Invasion");
 
         add_event({e_id: "chaos_invasion", duration: 1});
@@ -711,7 +711,7 @@ function scr_random_event(execute_now) {
         var has_chief_psyker = scr_role_count("Chief " + string(obj_ini.role[100][17]), "") >= 1;
         var cm_is_psyker = false;
         for (var i = 1; i < 100; i++) {
-            if (obj_ini.role[0][i] == obj_ini.role[100][eROLE.ChapterMaster] && string_count("0", obj_ini.spe[0][i]) > 0) {
+            if (obj_ini.role[0][i] == obj_ini.role[100][eROLE.CHAPTERMASTER] && string_count("0", obj_ini.spe[0][i]) > 0) {
                 cm_is_psyker = true;
                 break;
             }
@@ -722,20 +722,20 @@ function scr_random_event(execute_now) {
         } else if ((psyker_intolerant || !has_chief_psyker) && cm_is_psyker) {
             scr_popup("The Maw of the Warp Yawns Wide", "The barrier between the realm of man and the Immaterium feels thin and tested to you.  Dark forces are afoot.", "Warp", "");
         }
-    } else if (chosen_event == EVENT.necron_awaken) {
+    } else if (chosen_event == eEVENT.NECRON_AWAKEN) {
         _evented = awaken_tomb_event();
-    } else if (chosen_event == EVENT.fallen) {
+    } else if (chosen_event == eEVENT.FALLEN) {
         event_fallen();
         _evented = true;
     }
 
     if (_evented) {
-        if (force_inquisition_mission && chosen_event == EVENT.inquisition_mission) {
+        if (force_inquisition_mission && chosen_event == eEVENT.INQUISITION_MISSION) {
             last_mission = turn;
         } else {
             last_event = turn;
-            if (random_event_next != EVENT.none) {
-                random_event_next = EVENT.none;
+            if (random_event_next != eEVENT.NONE) {
+                random_event_next = eEVENT.NONE;
             }
         }
     }
@@ -750,7 +750,7 @@ function scr_random_event(execute_now) {
 function event_fallen() {
     global.logger.info("RE: Hunt the Fallen");
     var stars = scr_get_stars();
-    var valid_stars = scr_get_stars(false, [eFACTION.Imperium]);
+    var valid_stars = scr_get_stars(false, [eFACTION.IMPERIUM]);
 
     if (array_length(valid_stars) == 0) {
         global.logger.error("RE: Hunt the Fallen, coulnd't find a star");
@@ -759,7 +759,7 @@ function event_fallen() {
     global.logger.info($"Fallen: valid_stars {valid_stars}");
 
     var star = choose_array(stars);
-    var planet = scr_get_planet_with_owner(star, eFACTION.Imperium);
+    var planet = scr_get_planet_with_owner(star, eFACTION.IMPERIUM);
     var eta = scr_mission_eta(star.x, star.y, 1);
 
     if (planet > 0) {

@@ -1,9 +1,9 @@
-enum eSystemLoc {
-    orbit,
-    planet1,
-    planet2,
-    planet3,
-    planet4,
+enum eSYSTEM_LOC {
+    ORBIT,
+    PLANET1,
+    PLANET2,
+    PLANET3,
+    PLANET4,
 }
 
 function calculate_full_chapter_spread() {
@@ -41,18 +41,18 @@ function calculate_full_chapter_spread() {
                         add_apoth_points_to_stack(_unit);
                     }
                     if (_mar_loc[2] != "Warp" && _mar_loc[2] != "Lost") {
-                        if (_mar_loc[0] == location_types.planet) {
+                        if (_mar_loc[0] == eLOCATION_TYPES.PLANET) {
                             array_slot = _mar_loc[1];
-                        } else if (_mar_loc[0] == location_types.ship) {
-                            array_slot = eSystemLoc.orbit;
+                        } else if (_mar_loc[0] == eLOCATION_TYPES.SHIP) {
+                            array_slot = eSYSTEM_LOC.ORBIT;
                         }
                         key_val = _mar_loc[2];
-                    } else if (_mar_loc[0] == location_types.ship) {
+                    } else if (_mar_loc[0] == eLOCATION_TYPES.SHIP) {
                         if (instance_exists(obj_p_fleet)) {
                             with (obj_p_fleet) {
                                 if (array_contains(capital_num, _mar_loc[1]) || array_contains(frigate_num, _mar_loc[1]) || array_contains(escort_num, _mar_loc[1])) {
                                     key_val = $"{id}";
-                                    array_slot = eSystemLoc.orbit;
+                                    array_slot = eSYSTEM_LOC.ORBIT;
                                     break;
                                 }
                             }
@@ -104,13 +104,13 @@ function calculate_full_chapter_spread() {
                                 with (obj_p_fleet) {
                                     if (array_contains(capital_num, veh_location) || array_contains(frigate_num, veh_location) || array_contains(escort_num, veh_location)) {
                                         key_val = string(id);
-                                        array_slot = eSystemLoc.orbit;
+                                        array_slot = eSYSTEM_LOC.ORBIT;
                                         break;
                                     }
                                 }
                             }
                         } else if (obj_ini.ship_location[veh_location] != "") {
-                            array_slot = eSystemLoc.orbit;
+                            array_slot = eSYSTEM_LOC.ORBIT;
                             key_val = obj_ini.ship_location[veh_location];
                         }
                     }
@@ -184,7 +184,7 @@ function apothecary_simple() {
         }
         if (!marines_present) {
             if ((obj_controller.gene_seed == 0) && (obj_controller.recruiting > 0)) {
-                var _training_ground = system_feature_bool(self.p_feature, P_features.Recruiting_World);
+                var _training_ground = system_feature_bool(self.p_feature, eP_FEATURES.RECRUITING_WORLD);
                 if (_training_ground) {
                     obj_controller.recruiting = 0;
                     scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);

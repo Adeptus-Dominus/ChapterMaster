@@ -461,8 +461,8 @@ global.modular_drawing_items = [
             "Tartaros"
         ],
         roles: [
-            eROLE.Captain,
-            eROLE.Champion
+            eROLE.CAPTAIN,
+            eROLE.CHAMPION
         ],
         position: "crown",
         body_types: [2],
@@ -475,8 +475,8 @@ global.modular_drawing_items = [
             "Tartaros"
         ],
         roles: [
-            eROLE.Captain,
-            eROLE.Champion
+            eROLE.CAPTAIN,
+            eROLE.CHAMPION
         ],
         position: "crown",
     },
@@ -485,8 +485,8 @@ global.modular_drawing_items = [
         body_types: [0],
         armours_exclude: ["MK3 Iron Armour"],
         roles: [
-            eROLE.Captain,
-            eROLE.Champion
+            eROLE.CAPTAIN,
+            eROLE.CHAMPION
         ],
         assign_by_rank: 2,
         position: "mouth_variants",
@@ -1478,9 +1478,9 @@ global.modular_drawing_items = [
         ],
         max_saturation: 50,
         roles: [
-            eROLE.Sergeant,
-            eROLE.Champion,
-            eROLE.VeteranSergeant
+            eROLE.SERGEANT,
+            eROLE.CHAMPION,
+            eROLE.VETERANSERGEANT
         ],
         offsets: {
             "Terminator Armour": {
@@ -1940,16 +1940,16 @@ function DummyMarine() constructor {
     static role = function() {
         with (obj_creation) {
             if (obj_creation.livery_selection_options.current_selection == 2) {
-                return role[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.Tactical];
+                return role[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.TACTICAL];
             } else {
-                return role[100][eROLE.Tactical];
+                return role[100][eROLE.TACTICAL];
             }
         }
     };
 
     static weapon_one = function() {
         with (obj_creation) {
-            return wep1[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.Tactical];
+            return wep1[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.TACTICAL];
         }
     };
 
@@ -1959,7 +1959,7 @@ function DummyMarine() constructor {
 
     static weapon_two = function() {
         with (obj_creation) {
-            return wep2[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.Tactical];
+            return wep2[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.TACTICAL];
         }
     };
 
@@ -1970,7 +1970,7 @@ function DummyMarine() constructor {
         var _last_armour = last_armour;
         with (obj_creation) {
             if (!livery_picker.freeze_armour) {
-                var _armour = armour[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.Tactical];
+                var _armour = armour[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.TACTICAL];
                 if (array_contains(armours, _armour) || _armour == STR_ANY_POWER_ARMOUR) {
                     _armour = array_random_element(armours);
                 } else if (array_contains(LIST_TERMINATOR_ARMOUR, _armour) || _armour == STR_ANY_POWER_ARMOUR) {
@@ -1994,13 +1994,13 @@ function DummyMarine() constructor {
 
     static gear = function() {
         with (obj_creation) {
-            return gear[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.Tactical];
+            return gear[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.TACTICAL];
         }
     };
 
     static mobility_item = function() {
         with (obj_creation) {
-            return mobi[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.Tactical];
+            return mobi[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.TACTICAL];
         }
     };
 
@@ -2084,7 +2084,7 @@ function scr_get_body_data(body_item_key, body_slot = "none") {
     } else {
         var item_key_map = {};
         var body_part_area_keys;
-        var _body_parts = ARR_body_parts;
+        var _body_parts = UNIT_BODY_PARTS;
         for (var i = 0; i < array_length(_body_parts); i++) {
             //search all body parts
             body_area = body[$ _body_parts[i]];

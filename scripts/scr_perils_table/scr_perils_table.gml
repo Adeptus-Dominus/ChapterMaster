@@ -170,7 +170,7 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
                         }
                     }
                 }
-                unit.add_equipment_repairs(EquipmentSlot.ALL);
+                unit.add_equipment_repairs(eEQUIPMENT_SLOT.ALL);
                 var flavour_text2 = "A massive shockwave eminates from the marine, who is knocked out cold!  All of his equipment is damaged!";
                 return flavour_text2;
             }
@@ -229,7 +229,7 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
             function(perils_strength, unit, psy_discipline, power_name, unit_id) {
                 var flavour_text2 = "";
 
-                if (unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
+                if (unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                     var flavour_text2 = "There is a snap, and pop, and he disappears entirely. Reappearing minutes later, barely alive and stunned.";
                     unit.update_health(10);
                     marine_casting_cooldown[unit_id] = 999;

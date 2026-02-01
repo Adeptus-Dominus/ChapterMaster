@@ -6,7 +6,7 @@ function scr_draw_rainbow(x1, y1, x2, y2, colour_ratio) {
         wid = x2 - x1;
         rat = colour_ratio;
 
-        if ((menu != MENU.Diplomacy) || (diplomacy != 0)) {
+        if ((menu != eMENU.DIPLOMACY) || (diplomacy != 0)) {
             if (colour_ratio <= 0.15) {
                 draw_set_color(c_red);
             }
@@ -20,7 +20,7 @@ function scr_draw_rainbow(x1, y1, x2, y2, colour_ratio) {
                 draw_set_color(c_green);
             }
         }
-        if ((menu == MENU.Diplomacy) && (diplomacy == 0)) {
+        if ((menu == eMENU.DIPLOMACY) && (diplomacy == 0)) {
             if (colour_ratio <= 0.5) {
                 draw_set_color(c_red);
             }

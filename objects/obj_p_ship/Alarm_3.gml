@@ -6,7 +6,7 @@ if ((hp < maxhp) && (ship_id != 0)) {
         obj_fleet.ship_lost[ship_id] = 1;
     }
 
-    if ((ship_id == 1) && (obj_ini.fleet_type == ePlayerBase.home_world) && (obj_ini.ship_class[1] == "Battle Barge")) {
+    if ((ship_id == 1) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) && (obj_ini.ship_class[1] == "Battle Barge")) {
         if (obj_controller.und_gene_vaults == 0) {
             obj_controller.gene_seed = 0;
             destroy_all_gene_slaves(false);

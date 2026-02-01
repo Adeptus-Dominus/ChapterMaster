@@ -25,12 +25,12 @@ function __init_external() {
         directory_create("Save Files");
     }
 
-    #macro PATH_save_files "Save Files\\save{0}.json"
-    #macro PATH_autosave_file "Save Files\\save0.json"
-    #macro PATH_custom_icons "Custom Files\\Custom Icons\\"
-    #macro PATH_chapter_icons working_directory + "\\images\\creation\\chapters\\icons\\"
-    #macro PATH_included_icons working_directory + "\\images\\creation\\customicons\\"
-    #macro PATH_last_messages "Logs/last_messages.log"
+    #macro PATH_SAVE_FILES "Save Files\\save{0}.json"
+    #macro PATH_AUTOSAVE_FILE "Save Files\\save0.json"
+    #macro PATH_CUSTOM_ICONS "Custom Files\\Custom Icons\\"
+    #macro PATH_CHAPTER_ICONS working_directory + "\\images\\creation\\chapters\\icons\\"
+    #macro PATH_INCLUDED_ICONS working_directory + "\\images\\creation\\customicons\\"
+    #macro PATH_LAST_MESSAGES "Logs/last_messages.log"
 
     global.chapter_icon = {
         // sprite filename, without the extension
@@ -41,9 +41,9 @@ function __init_external() {
     global.chapter_icons_map = ds_map_create();
 
     var _icon_paths = [
-        PATH_chapter_icons,
-        PATH_included_icons,
-        PATH_custom_icons
+        PATH_CHAPTER_ICONS,
+        PATH_INCLUDED_ICONS,
+        PATH_CUSTOM_ICONS
     ];
     for (var i = 0; i < array_length(_icon_paths); i++) {
         var _file_wildcard = _icon_paths[i] + "*.png";

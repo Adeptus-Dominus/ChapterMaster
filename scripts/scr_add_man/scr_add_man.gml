@@ -146,12 +146,12 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
                 // Faction 7 - Orks
                 case "Ork Sniper":
                     spawn_exp = 20;
-                    obj_ini.race[target_company][good] = eFACTION.Ork;
+                    obj_ini.race[target_company][good] = eFACTION.ORK;
                     unit = new TTRPG_stats("ork", target_company, good, "ork_Sniper");
                     break;
                 case "Flash Git":
                     spawn_exp = 40;
-                    obj_ini.race[target_company][good] = eFACTION.Ork;
+                    obj_ini.race[target_company][good] = eFACTION.ORK;
                     unit = new TTRPG_stats("ork", target_company, good, "flash_git");
                     break;
                 /* TODO - up for consideration of recruiting faction leaders
@@ -224,7 +224,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 
         if (!array_contains(non_marine_roles, man_role)) {
             // Weapons
-            obj_ini.race[target_company][good] = eFACTION.Player;
+            obj_ini.race[target_company][good] = eFACTION.PLAYER;
             if (man_role == obj_ini.role[100][12]) {
                 _gear = {
                     wep2: obj_ini.wep2[100][12],

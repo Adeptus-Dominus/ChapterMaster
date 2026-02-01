@@ -653,7 +653,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
         }
     }
 
-    if (_unit_role == obj_ini.role[100][eROLE.ChapterMaster]) {
+    if (_unit_role == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
         col = obj_controller.bat_command_column;
         new_combat.important_dudes++;
         new_combat.big_mofo = 1;

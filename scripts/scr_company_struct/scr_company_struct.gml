@@ -120,7 +120,7 @@ function CompanyStruct(comp) constructor {
     mass_equip_toggle.update();
 
     static squad_selection_mode = function() {
-        return obj_controller.managing < 0 && obj_controller.selection_data.select_type == MissionSelectType.Squads;
+        return obj_controller.managing < 0 && obj_controller.selection_data.select_type == eMISSION_SELECT_TYPE.SQUADS;
     };
 
     select_squad_button = new UnitButtonObject({
@@ -361,11 +361,11 @@ function CompanyStruct(comp) constructor {
         for (var i = 0; i < array_length(company_units); i++) {
             if (is_struct(company_units[i])) {
                 _unit = company_units[i];
-                if (_unit.role() == role_set[eROLE.Captain]) {
+                if (_unit.role() == role_set[eROLE.CAPTAIN]) {
                     captain = _unit;
-                } else if (_unit.role() == role_set[eROLE.Ancient]) {
+                } else if (_unit.role() == role_set[eROLE.ANCIENT]) {
                     ancient = _unit;
-                } else if (_unit.role() == role_set[eROLE.Champion]) {
+                } else if (_unit.role() == role_set[eROLE.CHAMPION]) {
                     champion = _unit;
                 } else {
                     if (_unit.IsSpecialist(SPECIALISTS_CHAPLAINS)) {

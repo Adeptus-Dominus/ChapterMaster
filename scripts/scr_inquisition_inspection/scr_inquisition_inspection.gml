@@ -20,7 +20,7 @@ function inquisitor_inspection_structure() constructor {
     finds.trigger_war = false;
     finds.cha = 0;
 
-    inquisitor_disp = obj_controller.disposition[eFACTION.Inquisition];
+    inquisitor_disp = obj_controller.disposition[eFACTION.INQUISITION];
 
     // ----- Static methods -----
 
@@ -165,7 +165,7 @@ function inquisitor_inspection_structure() constructor {
                 continue;
             }
 
-            var base_search = search_planet_features(star.p_upgrades[pidx], P_features.Secret_Base);
+            var base_search = search_planet_features(star.p_upgrades[pidx], eP_FEATURES.SECRET_BASE);
             if (array_length(base_search) > 0) {
                 any_found = true;
                 var player_base = star.p_upgrades[pidx][base_search[0]];
@@ -181,7 +181,7 @@ function inquisitor_inspection_structure() constructor {
                     _poor_base_practice += 3;
                 }
 
-                alter_dispositions([[eFACTION.Imperium, -_poor_base_practice * 2], [eFACTION.Inquisition, -_poor_base_practice * 3], [eFACTION.Ecclesiarchy, -_poor_base_practice * 3]]);
+                alter_dispositions([[eFACTION.IMPERIUM, -_poor_base_practice * 2], [eFACTION.INQUISITION, -_poor_base_practice * 3], [eFACTION.ECCLESIARCHY, -_poor_base_practice * 3]]);
 
                 finds.heresy += _poor_base_practice;
                 finds.secret_lair_flag = true;
@@ -191,7 +191,7 @@ function inquisitor_inspection_structure() constructor {
                     obj_controller.loyalty -= 10;
                     obj_controller.loyalty_hidden -= 10;
 
-                    if ((obj_controller.inqis_flag_lair == 2 || obj_controller.disposition[eFACTION.Inquisition] < 0 || obj_controller.loyalty <= 0) && obj_controller.faction_status[eFACTION.Inquisition] != "War") {
+                    if ((obj_controller.inqis_flag_lair == 2 || obj_controller.disposition[eFACTION.INQUISITION] < 0 || obj_controller.loyalty <= 0) && obj_controller.faction_status[eFACTION.INQUISITION] != "War") {
                         finds.trigger_war = true;
                     }
                 }
@@ -223,7 +223,7 @@ function inquisitor_inspection_structure() constructor {
                 continue;
             }
 
-            var arsenal_search = search_planet_features(star.p_upgrades[pidx], P_features.Arsenal);
+            var arsenal_search = search_planet_features(star.p_upgrades[pidx], eP_FEATURES.ARSENAL);
             if (array_length(arsenal_search) > 0) {
                 var arsenal = star.p_upgrades[pidx][arsenal_search[0]];
                 arsenal.inquis_hidden = 0;
@@ -246,7 +246,7 @@ function inquisitor_inspection_structure() constructor {
                 }
 
                 var perc = ((dem_local * 10) + (cha_local * 3)) / 100;
-                alter_dispositions([[eFACTION.Imperium, -max(round(obj_controller.disposition[eFACTION.Imperium] / 6 * perc), round(8 * perc))], [eFACTION.Inquisition, -max(round(obj_controller.disposition[eFACTION.Inquisition] / 4 * perc), round(10 * perc))], [eFACTION.Ecclesiarchy, -max(round(obj_controller.disposition[eFACTION.Ecclesiarchy] / 4 * perc), round(10 * perc))]]);
+                alter_dispositions([[eFACTION.IMPERIUM, -max(round(obj_controller.disposition[eFACTION.IMPERIUM] / 6 * perc), round(8 * perc))], [eFACTION.INQUISITION, -max(round(obj_controller.disposition[eFACTION.INQUISITION] / 4 * perc), round(10 * perc))], [eFACTION.ECCLESIARCHY, -max(round(obj_controller.disposition[eFACTION.ECCLESIARCHY] / 4 * perc), round(10 * perc))]]);
 
                 finds.heresy += cha_local + dem_local;
                 finds.cha += cha_local;
@@ -257,7 +257,7 @@ function inquisitor_inspection_structure() constructor {
                     finds.contraband_demand = true;
                 }
 
-                var start_inquisition_war = (obj_controller.disposition[eFACTION.Inquisition] < 0 || obj_controller.loyalty <= 0) && obj_controller.faction_status[eFACTION.Inquisition] != "War";
+                var start_inquisition_war = (obj_controller.disposition[eFACTION.INQUISITION] < 0 || obj_controller.loyalty <= 0) && obj_controller.faction_status[eFACTION.INQUISITION] != "War";
                 if (start_inquisition_war) {
                     if (obj_controller.penitent == 1) {
                         obj_controller.alarm[8] = 1;
@@ -288,7 +288,7 @@ function inquisitor_inspection_structure() constructor {
                 continue;
             }
 
-            var vault_search = search_planet_features(star.p_upgrades[pidx], P_features.Gene_Vault);
+            var vault_search = search_planet_features(star.p_upgrades[pidx], eP_FEATURES.GENE_VAULT);
             if (array_length(vault_search) > 0) {
                 var gene_vault = star.p_upgrades[pidx][vault_search[0]];
                 gene_vault.inquis_hidden = 0;
@@ -297,11 +297,11 @@ function inquisitor_inspection_structure() constructor {
                 obj_controller.loyalty -= 10;
                 obj_controller.loyalty_hidden -= 10;
 
-                alter_disposition(eFACTION.Inquisition, -tem1_base * 3);
+                alter_disposition(eFACTION.INQUISITION, -tem1_base * 3);
 
                 finds.secret_gene_flag = true;
 
-                if ((obj_controller.inqis_flag_gene >= 3 || obj_controller.loyalty <= 0 || obj_controller.disposition[eFACTION.Inquisition] < 0) && obj_controller.faction_status[eFACTION.Inquisition] != "War") {
+                if ((obj_controller.inqis_flag_gene >= 3 || obj_controller.loyalty <= 0 || obj_controller.disposition[eFACTION.INQUISITION] < 0) && obj_controller.faction_status[eFACTION.INQUISITION] != "War") {
                     obj_controller.alarm[8] = 1;
                     finds.trigger_war = true;
                 }
@@ -476,7 +476,7 @@ function inquisition_inspection_loyalty(inspection_type) {
         that = instance_nearest(x, y, obj_star);
 
         if (inspection_type == "inspect_world") {
-            var _monestary_planet = scr_get_planet_with_feature(that, P_features.Monastery);
+            var _monestary_planet = scr_get_planet_with_feature(that, eP_FEATURES.MONASTERY);
             if (_monestary_planet != -1) {
                 _inspect_results.planets = _monestary_planet;
             } else {
@@ -498,7 +498,7 @@ function inquisition_inspection_loyalty(inspection_type) {
             _inspect_results.inquisitor_inspect_units();
         } else if (inspection_type == "inspect_fleet") {
             with (obj_en_fleet) {
-                if ((string_count("Inqis", trade_goods) == 0) || (owner != eFACTION.Inquisition)) {
+                if ((string_count("Inqis", trade_goods) == 0) || (owner != eFACTION.INQUISITION)) {
                     instance_deactivate_object(id);
                 }
             }
@@ -742,7 +742,7 @@ function inquisition_inspection_logic() {
                 }
             }
             if (obj_controller.inqis_flag_gene == 3) {
-                if (obj_controller.faction_status[eFACTION.Inquisition] != "War") {
+                if (obj_controller.faction_status[eFACTION.INQUISITION] != "War") {
                     obj_controller.alarm[8] = 1;
                 }
             }

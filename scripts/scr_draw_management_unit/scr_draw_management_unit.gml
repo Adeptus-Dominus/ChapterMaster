@@ -43,11 +43,11 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             //TODO make static to handle
             unit_location_string = string(ma_loc[selected]);
             if (_unit.controllable()) {
-                if (unit_location[0] == location_types.planet) {
+                if (unit_location[0] == eLOCATION_TYPES.PLANET) {
                     unit_location_string = unit_location[2];
                     //get roman numeral for system planet
                     unit_location_string += scr_roman(unit_location[1]);
-                } else if (unit_location[0] == location_types.ship) {
+                } else if (unit_location[0] == eLOCATION_TYPES.SHIP) {
                     unit_location_string = obj_ini.ship[unit_location[1]];
                 }
             } else {
@@ -439,7 +439,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                 }
                 if (point_and_click(_tag_button)) {
                     manage_tags = _unit.manage_tags;
-                    if (instance_exists(obj_popup) && obj_popup.type == POPUP_TYPE.ADD_TAGS) {
+                    if (instance_exists(obj_popup) && obj_popup.type == ePOPUP_TYPE.ADD_TAGS) {
                         obj_popup.tag_selects.set(manage_tags);
                     }
                 }

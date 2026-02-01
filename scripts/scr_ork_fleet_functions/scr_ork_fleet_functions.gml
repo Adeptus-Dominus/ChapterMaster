@@ -3,7 +3,7 @@
 
 function new_ork_fleet(xx, yy) {
     fleet = instance_create(xx, yy, obj_en_fleet);
-    fleet.owner = eFACTION.Ork;
+    fleet.owner = eFACTION.ORK;
     fleet.sprite_index = spr_fleet_ork;
     fleet.image_index = 1;
     fleet.capital_number = 1;
@@ -20,12 +20,12 @@ function orks_end_turn_growth() {
     for (i = 1; i <= planets; i++) {
         var _pdata = new PlanetData(i, self);
         if (!p_orks[i]) {
-            var _strongholds = _pdata.get_features(P_features.OrkStronghold);
+            var _strongholds = _pdata.get_features(eP_FEATURES.ORKSTRONGHOLD);
             for (var s = 0; s < array_length(_strongholds); s++) {
                 var _hold = _strongholds[s];
                 _hold.tier -= 0.01;
                 if (_hold.tier <= 0) {
-                    _pdata.delete_feature(P_features.OrkStronghold);
+                    _pdata.delete_feature(eP_FEATURES.ORKSTRONGHOLD);
                 }
             }
         }
@@ -41,7 +41,7 @@ function ork_fleet_move() {
     }
 
     with (obj_star) {
-        if (is_dead_star() || owner == eFACTION.Ork || scr_orbiting_fleet(eFACTION.Ork) != "none") {
+        if (is_dead_star() || owner == eFACTION.ORK || scr_orbiting_fleet(eFACTION.ORK) != "none") {
             instance_deactivate_object(id);
         }
     }
@@ -57,13 +57,13 @@ function ork_fleet_move() {
 
 function ork_fleet_arrive_target() {
     instance_activate_object(obj_en_fleet);
-    var _ork_fleet = scr_orbiting_fleet(eFACTION.Ork);
+    var _ork_fleet = scr_orbiting_fleet(eFACTION.ORK);
     if (_ork_fleet == "none") {
         return;
     }
     var aler = 0;
 
-    var _imperial_ship = scr_orbiting_fleet([eFACTION.Imperium, eFACTION.Mechanicus]);
+    var _imperial_ship = scr_orbiting_fleet([eFACTION.IMPERIUM, eFACTION.MECHANICUS]);
     if (_imperial_ship == "none" && planets > 0 && !has_orbiting_player_fleet()) {
         var _allow_landing = true, ork_attack_planet = 0, l = 0;
         var _planets = shuffled_planet_array();
@@ -81,12 +81,12 @@ function ork_fleet_arrive_target() {
 
             //generate refugee ships to spread tyranids
             if (p_tyranids[ork_attack_planet] <= 0) {
-                if (planet_feature_bool(p_feature[ork_attack_planet], P_features.Gene_Stealer_Cult)) {
-                    _pdata.delete_feature(P_features.Gene_Stealer_Cult);
-                    adjust_influence(eFACTION.Tyranids, -25, ork_attack_planet);
-                    var nearest_imperial = nearest_star_with_ownership(x, y, eFACTION.Imperium, self.id);
+                if (planet_feature_bool(p_feature[ork_attack_planet], eP_FEATURES.GENE_STEALER_CULT)) {
+                    _pdata.delete_feature(eP_FEATURES.GENE_STEALER_CULT);
+                    adjust_influence(eFACTION.TYRANIDS, -25, ork_attack_planet);
+                    var nearest_imperial = nearest_star_with_ownership(x, y, eFACTION.IMPERIUM, self.id);
                     if (nearest_imperial != "none") {
-                        var targ_planet = scr_get_planet_with_owner(nearest_imperial, eFACTION.Imperium);
+                        var targ_planet = scr_get_planet_with_owner(nearest_imperial, eFACTION.IMPERIUM);
                         if (targ_planet == -1) {
                             targ_planet = irandom_range(1, nearest_imperial.planets);
                         }
@@ -150,7 +150,7 @@ function ork_fleet_arrive_target() {
 
 //TOSO provide logic for fleets to attack each other
 function merge_ork_fleets() {
-    var _stars_with_ork_fleets = stars_with_faction_fleets(eFACTION.Ork);
+    var _stars_with_ork_fleets = stars_with_faction_fleets(eFACTION.ORK);
 
     var _star_names = struct_get_names(_stars_with_ork_fleets);
     for (var i = 0; i < array_length(_star_names); i++) {
@@ -168,21 +168,21 @@ function merge_ork_fleets() {
 function init_ork_waagh(override = false) {
     var waaagh = irandom(300);
     var waaagh_1 = irandom(3);
-    var _ork_stars = scr_get_stars(false, [eFACTION.Ork]);
+    var _ork_stars = scr_get_stars(false, [eFACTION.ORK]);
     var _ork_stars_count = array_length(_ork_stars);
 
-    if ((_ork_stars_count > 45) && (waaagh_1 == 3 || override) && obj_controller.known[eFACTION.Ork] == 0) {
+    if ((_ork_stars_count > 45) && (waaagh_1 == 3 || override) && obj_controller.known[eFACTION.ORK] == 0) {
         scr_popup("WAAAAGH!", "The greenskins have gone unchallenged for far too long. A towering Warboss has rallied the ork hordes and halted their infighting. Now unified, the greenskins pose a dire threat to the entire sector!", "waaagh", "");
         scr_event_log("red", "Ork WAAAAGH! begins");
-        obj_controller.known[eFACTION.Ork] = 0.5;
-    } else if ((_ork_stars_count > 0 && _ork_stars_count <= 5) && (waaagh_1 == 3 || override) && obj_controller.known[eFACTION.Ork] == 0) {
+        obj_controller.known[eFACTION.ORK] = 0.5;
+    } else if ((_ork_stars_count > 0 && _ork_stars_count <= 5) && (waaagh_1 == 3 || override) && obj_controller.known[eFACTION.ORK] == 0) {
         scr_popup("WAAAAGH!", "The orks are nearly defeated, but in a final desperate push, a new Warboss has mustered a fresh WAAAGH! and begun reclaiming their lost worlds.", "waaagh", "");
         scr_event_log("red", "Ork WAAAAGH! begins.");
-        obj_controller.known[eFACTION.Ork] = 0.5;
-    } else if ((_ork_stars_count >= 5 && _ork_stars_count <= 45) && (waaagh == 33 || override) && obj_controller.known[eFACTION.Ork] == 0) {
+        obj_controller.known[eFACTION.ORK] = 0.5;
+    } else if ((_ork_stars_count >= 5 && _ork_stars_count <= 45) && (waaagh == 33 || override) && obj_controller.known[eFACTION.ORK] == 0) {
         scr_popup("WAAAAGH!", "The greenskins have swelled in activity, their numbers increasing seemingly without relent.  A massive Warboss has risen to take control, leading most of the sector's Orks on a massive WAAAGH!", "waaagh", "");
         scr_event_log("red", "Ork WAAAAGH! begins.");
-        obj_controller.known[eFACTION.Ork] = 0.5;
+        obj_controller.known[eFACTION.ORK] = 0.5;
     } else {
         //if no waaagh is triggered
         return;
@@ -196,7 +196,7 @@ function init_ork_waagh(override = false) {
             for (var i = 1; i <= planets; i++) {
                 ork_ship_production(i);
                 if (i == _rand_planet) {
-                    if ((p_owner[i] == eFACTION.Ork) && (p_pdf[i] == 0) && (p_guardsmen[i] == 0) && (p_orks[i] >= 2)) {
+                    if ((p_owner[i] == eFACTION.ORK) && (p_pdf[i] == 0) && (p_guardsmen[i] == 0) && (p_orks[i] >= 2)) {
                         array_push(ork_waagh_activity, [id, _rand_planet]);
                     }
                 }
@@ -219,14 +219,14 @@ function init_ork_waagh(override = false) {
     if (_waaagh_star_found) {
         var _pdata = new PlanetData(_waaagh_star[1], _waaagh_star[0]);
 
-        var _boss = _pdata.add_feature(P_features.OrkWarboss);
+        var _boss = _pdata.add_feature(eP_FEATURES.ORKWARBOSS);
         if (override) {
             _boss.player_hidden = false;
             scr_event_log("red", $"boss on {_pdata.name()}", _pdata.system.name);
         }
 
-        if (_pdata.planet_forces[eFACTION.Ork] < 4) {
-            _pdata.add_forces(eFACTION.Ork, 2);
+        if (_pdata.planet_forces[eFACTION.ORK] < 4) {
+            _pdata.add_forces(eFACTION.ORK, 2);
         }
     } else {
         out_of_system_warboss(true);
@@ -245,17 +245,17 @@ function out_of_system_warboss(overide = false) {
 
         var did_so = false;
 
-        if ((did_so == false) && (faction_defeated[7] == 1 || known[eFACTION.Ork] == 0 || overide)) {
-            known[eFACTION.Ork] = 0;
-            var _warboss = new NewPlanetFeature(P_features.OrkWarboss);
+        if ((did_so == false) && (faction_defeated[7] == 1 || known[eFACTION.ORK] == 0 || overide)) {
+            known[eFACTION.ORK] = 0;
+            var _warboss = new NewPlanetFeature(eP_FEATURES.ORKWARBOSS);
             if (faction_defeated[7] == 1) {
                 faction_defeated[7] = -1;
-                faction_leader[eFACTION.Ork] = _warboss.name;
+                faction_leader[eFACTION.ORK] = _warboss.name;
                 faction_title[7] = "Warboss";
-                faction_status[eFACTION.Ork] = "War";
-                scr_audience(eFACTION.Ork, "new_warboss", -40, "War", 0, 2);
+                faction_status[eFACTION.ORK] = "War";
+                scr_audience(eFACTION.ORK, "new_warboss", -40, "War", 0, 2);
             } else {
-                known[eFACTION.Ork] = 0.5;
+                known[eFACTION.ORK] = 0.5;
             }
 
             var gold = faction_gender[7];
@@ -291,7 +291,7 @@ function out_of_system_warboss(overide = false) {
 
             //lots of this can be wrapped into a single with
             with (obj_star) {
-                if (owner == eFACTION.Eldar) {
+                if (owner == eFACTION.ELDAR) {
                     instance_deactivate_object(id);
                     continue;
                 }
@@ -337,7 +337,7 @@ function out_of_system_warboss(overide = false) {
             instance_activate_object(obj_star);
             instance_activate_object(obj_en_fleet);
 
-            var _ork_leader = obj_controller.faction_leader[eFACTION.Ork];
+            var _ork_leader = obj_controller.faction_leader[eFACTION.ORK];
             var tix = $"Warboss {_ork_leader} leads a WAAAGH! into Sector {obj_ini.sector_name}.";
             scr_alert("red", "lol", string(tix), starf.x, starf.y);
             scr_event_log("red", tix);

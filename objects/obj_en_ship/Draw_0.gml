@@ -34,7 +34,7 @@ if (!__b__) {
             draw_sprite_ext(sprite_index, 0, x, y, 0.75, 0.75, direction, c_white, 1);
         }
 
-        if (owner != eFACTION.Tau) {
+        if (owner != eFACTION.TAU) {
             if (shields <= 0) {
                 if (obj_controller.zoomed == 0) {
                     if (maxhp != 0) {
@@ -63,7 +63,7 @@ if (!__b__) {
             }
         }
 
-        if (owner == eFACTION.Tau) {
+        if (owner == eFACTION.TAU) {
             if (shields <= 0) {
                 if (obj_controller.zoomed == 0) {
                     if (maxhp != 0) {

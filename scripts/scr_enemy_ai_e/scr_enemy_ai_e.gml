@@ -26,8 +26,8 @@ function scr_enemy_ai_e() {
         // Battle1 is reserved for player battles
         var battle_if_war = [
             8,
-            eFACTION.Mechanicus,
-            eFACTION.Imperium
+            eFACTION.MECHANICUS,
+            eFACTION.IMPERIUM
         ];
 
         var always_battle = [
@@ -727,7 +727,7 @@ function scr_enemy_ai_e() {
 
             //fortress monestary
             if (p_owner[run] == 1) {
-                var monestary = search_planet_features(p_feature[run], P_features.Monastery);
+                var monestary = search_planet_features(p_feature[run], eP_FEATURES.MONASTERY);
                 if (array_length(monestary) > 0) {
                     monestary = p_feature[run][monestary[0]];
                     var md, ms, ml, build_rate, build_rate2;
@@ -784,13 +784,13 @@ function scr_enemy_ai_e() {
                 if (struct_exists(upgrade, "built")) {
                     upgrade_type = upgrade.f_type;
                     if (upgrade.built == obj_controller.turn) {
-                        if (upgrade_type == P_features.Arsenal) {
+                        if (upgrade_type == eP_FEATURES.ARSENAL) {
                             display_type = "Arsenal";
                             obj_controller.und_armouries++;
-                        } else if (upgrade_type == P_features.Secret_Base) {
+                        } else if (upgrade_type == eP_FEATURES.SECRET_BASE) {
                             display_type = "Lair";
                             obj_controller.und_lairs++;
-                        } else if (upgrade_type == P_features.Gene_Vault) {
+                        } else if (upgrade_type == eP_FEATURES.GENE_VAULT) {
                             display_type = "Gene Vault";
                             obj_controller.und_gene_vaults++;
                         }
@@ -798,7 +798,7 @@ function scr_enemy_ai_e() {
                         scr_alert("green", "owner", string(tx), x, y);
                         scr_event_log("", string(tx));
                     }
-                    if (upgrade.built <= obj_controller.turn && upgrade_type == P_features.Secret_Base) {
+                    if (upgrade.built <= obj_controller.turn && upgrade_type == eP_FEATURES.SECRET_BASE) {
                         if (upgrade.forge > 0) {
                             obj_controller.player_forge_data.player_forges += sqr(upgrade.forge_data.size);
                             if (upgrade.forge_data.vehicle_hanger) {
@@ -839,7 +839,7 @@ function scr_enemy_ai_e() {
                 if ((_unit.role() != obj_ini.role[100][6]) && (_unit.role() != "Venerable " + string(obj_ini.role[100][6]))) {
                     good += 1;
                 }
-                if ((string_count("Dread", obj_ini.armour[co][i]) == 0) || (_unit.role() == obj_ini.role[100][eROLE.ChapterMaster])) {
+                if ((string_count("Dread", obj_ini.armour[co][i]) == 0) || (_unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER])) {
                     good += 1;
                 }
 
@@ -849,7 +849,7 @@ function scr_enemy_ai_e() {
                     obj_temp_meeting.present[otm] = 1;
                     obj_temp_meeting.co[otm] = co;
                     obj_temp_meeting.ide[otm] = i;
-                    if (_unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
+                    if (_unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                         master_present = 1;
                     }
                 }
@@ -883,8 +883,8 @@ function scr_enemy_ai_e() {
     for (var i = 1; i <= planets; i++) {
         var existing_problem = has_any_problem_planet(i);
         if (!existing_problem) {
-            if (!irandom(50) && p_owner[i] == eFACTION.Imperium) {
-                if (p_owner[i] == eFACTION.Imperium) {
+            if (!irandom(50) && p_owner[i] == eFACTION.IMPERIUM) {
+                if (p_owner[i] == eFACTION.IMPERIUM) {
                     scr_new_governor_mission(i);
                 }
             }

@@ -1,43 +1,43 @@
-enum P_features {
-    Sororitas_Cathedral,
-    Necron_Tomb,
-    Artifact,
-    STC_Fragment,
-    Ancient_Ruins,
-    Cave_Network,
-    Recruiting_World,
-    Monastery,
-    Warlord6,
-    OrkWarboss,
-    Warlord10,
-    Special_Force,
-    ChaosWarband,
-    Webway,
-    Secret_Base,
-    Starship,
-    Succession_War,
-    Mechanicus_Forge,
-    Reclamation_pools,
-    Capillary_Towers,
-    Daemonic_Incursion,
-    Victory_Shrine,
-    Arsenal,
-    Gene_Vault,
-    Forge,
-    Gene_Stealer_Cult,
-    Mission,
-    OrkStronghold,
+enum eP_FEATURES {
+    SORORITAS_CATHEDRAL,
+    NECRON_TOMB,
+    ARTIFACT,
+    STC_FRAGMENT,
+    ANCIENT_RUINS,
+    CAVE_NETWORK,
+    RECRUITING_WORLD,
+    MONASTERY,
+    WARLORD6,
+    ORKWARBOSS,
+    WARLORD10,
+    SPECIAL_FORCE,
+    CHAOSWARBAND,
+    WEBWAY,
+    SECRET_BASE,
+    STARSHIP,
+    SUCCESSION_WAR,
+    MECHANICUS_FORGE,
+    RECLAMATION_POOLS,
+    CAPILLARY_TOWERS,
+    DAEMONIC_INCURSION,
+    VICTORY_SHRINE,
+    ARSENAL,
+    GENE_VAULT,
+    FORGE,
+    GENE_STEALER_CULT,
+    MISSION,
+    ORKSTRONGHOLD,
 }
 
-enum base_types {
-    Lair,
+enum eBASE_TYPES {
+    LAIR,
 }
 
 function PlayerForge() constructor {
     constructions = [];
     size = 1;
     techs_working = 0;
-    f_type = P_features.Forge;
+    f_type = eP_FEATURES.FORGE;
     vehicle_hanger = 0;
 }
 
@@ -52,7 +52,7 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
     };
 
     switch (f_type) {
-        case P_features.Gene_Stealer_Cult:
+        case eP_FEATURES.GENE_STEALER_CULT:
             PDF_control = 0;
             sealed = 0;
             player_hidden = 1;
@@ -61,15 +61,15 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             hiding = true;
             name = global.name_generator.generate_genestealer_cult_name();
             break;
-        case P_features.Necron_Tomb:
+        case eP_FEATURES.NECRON_TOMB:
             awake = 0;
             sealed = 0;
             player_hidden = 1;
             planet_display = "Dormant Necron Tomb";
             break;
 
-        case P_features.Secret_Base:
-            base_type = base_types.Lair;
+        case eP_FEATURES.SECRET_BASE:
+            base_type = eBASE_TYPES.LAIR;
             inquis_hidden = 1;
             planet_display = "Hidden Secret Base";
             player_hidden = 0;
@@ -92,26 +92,26 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             swimming = 0;
             stock = 0;
             break;
-        case P_features.Arsenal:
+        case eP_FEATURES.ARSENAL:
             inquis_hidden = 1;
             planet_display = "Arsenal";
             player_hidden = 0;
             built = obj_controller.turn + 3;
             break;
-        case P_features.Gene_Vault:
+        case eP_FEATURES.GENE_VAULT:
             inquis_hidden = 1;
             planet_display = "Arsenal";
             player_hidden = 0;
             built = obj_controller.turn + 3;
             break;
-        case P_features.Starship:
-            f_type = P_features.Starship;
+        case eP_FEATURES.STARSHIP:
+            f_type = eP_FEATURES.STARSHIP;
             planet_display = "Ancient Starship";
             funds_spent = 0;
             player_hidden = 0;
             engineer_score = 0;
             break;
-        case P_features.Ancient_Ruins:
+        case eP_FEATURES.ANCIENT_RUINS:
             static ruins_explored = scr_ruins_explored;
             static explore = scr_explore_ruins;
             static determine_race = scr_ruins_determine_race;
@@ -122,49 +122,49 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             static ruins_combat_end = scr_ruins_combat_end;
             scr_ancient_ruins_setup();
             break;
-        case P_features.STC_Fragment:
+        case eP_FEATURES.STC_FRAGMENT:
             player_hidden = 1;
             Fragment_type = 0;
             planet_display = "STC Fragment";
             break;
-        case P_features.Cave_Network:
+        case eP_FEATURES.CAVE_NETWORK:
             player_hidden = 1;
             cave_depth = irandom(3); //allow_multiple levels of caves, option to go deeper
             planet_display = "Unexplored Cave Network";
             break;
-        case P_features.Sororitas_Cathedral:
+        case eP_FEATURES.SORORITAS_CATHEDRAL:
             player_hidden = 1;
             planet_display = "Sororitas Cathedral";
             break;
-        case P_features.Artifact:
+        case eP_FEATURES.ARTIFACT:
             player_hidden = 1;
             planet_display = "Artifact";
             break;
-        case P_features.OrkWarboss:
+        case eP_FEATURES.ORKWARBOSS:
             player_hidden = 1;
             planet_display = "Ork Warboss";
             Warboss = "alive";
             name = global.name_generator.generate_ork_name();
             turns_static = 0;
             break;
-        case P_features.OrkStronghold:
+        case eP_FEATURES.ORKSTRONGHOLD:
             player_hidden = 1;
             planet_display = "Ork Stronghold";
             tier = 1;
             break;
-        case P_features.Monastery:
+        case eP_FEATURES.MONASTERY:
             planet_display = "Fortress Monastary";
             player_hidden = 0;
             forge = 0;
             name = global.name_generator.generate_imperial_ship_name();
             break;
-        case P_features.Recruiting_World:
+        case eP_FEATURES.RECRUITING_WORLD:
             planet_display = "Recruitment";
             player_hidden = 0;
             recruit_type = 0;
             recruit_cost = 0;
             break;
-        case P_features.ChaosWarband:
+        case eP_FEATURES.CHAOSWARBAND:
             if (!struct_exists(other_data, "patron")) {
                 patron = choose("slaanesh", "tzeentch", "khorne", "nurgle", "undivided");
             } else {
@@ -278,7 +278,7 @@ function awake_necron_star(star) {
 //returns 1 if awake tomb world on planet 0 if tombs on planet but not awake and 2 if no tombs on planet
 function awake_tomb_world(planet) {
     var awake_tomb = 0;
-    var tombs = search_planet_features(planet, P_features.Necron_Tomb);
+    var tombs = search_planet_features(planet, eP_FEATURES.NECRON_TOMB);
     if (array_length(tombs) > 0) {
         for (var tomb = 0; tomb < array_length(tombs); tomb++) {
             if (planet[tombs[tomb]].awake == 1) {
@@ -296,7 +296,7 @@ function awake_tomb_world(planet) {
 //selas a tomb world and switche off awake so will no longer spawn necrons or necron fleets
 function seal_tomb_world(planet) {
     var awake_tomb = 0;
-    var tombs = search_planet_features(planet, P_features.Necron_Tomb);
+    var tombs = search_planet_features(planet, eP_FEATURES.NECRON_TOMB);
     if (array_length(tombs) > 0) {
         for (var tomb = 0; tomb < array_length(tombs); tomb++) {
             awake_tomb = 1;
@@ -313,7 +313,7 @@ function seal_tomb_world(planet) {
 //awakens a tomb world so necrons and necron fleets will spawn
 function awaken_tomb_world(planet) {
     var awake_tomb = 0;
-    var tombs = search_planet_features(planet, P_features.Necron_Tomb);
+    var tombs = search_planet_features(planet, eP_FEATURES.NECRON_TOMB);
     if (array_length(tombs) > 0) {
         for (var tomb = 0; tomb < array_length(tombs); tomb++) {
             if (planet[tombs[tomb]].awake == 0) {
@@ -338,9 +338,9 @@ function scr_planetary_feature(planet_num) {
             feat.player_hidden = 0;
             var numeral_n = planet_numeral_name(planet_num);
             switch (feat.f_type) {
-                case P_features.Sororitas_Cathedral:
-                    if (obj_controller.known[eFACTION.Ecclesiarchy] == 0) {
-                        obj_controller.known[eFACTION.Ecclesiarchy] = 1;
+                case eP_FEATURES.SORORITAS_CATHEDRAL:
+                    if (obj_controller.known[eFACTION.ECCLESIARCHY] == 0) {
+                        obj_controller.known[eFACTION.ECCLESIARCHY] = 1;
                     }
                     var lop = $"Sororitas Cathedral discovered on {numeral_n}.";
                     scr_alert("green", "feature", lop, x, y);
@@ -351,32 +351,32 @@ function scr_planetary_feature(planet_num) {
                     p_sisters[planet_num] = choose(2, 2, 3);
                     goo = 1;
                     break;
-                case P_features.Necron_Tomb:
+                case eP_FEATURES.NECRON_TOMB:
                     var lop = $"Necron Tomb discovered on {numeral_n}.";
                     scr_alert("red", "feature", lop, x, y);
                     scr_event_log("red", lop);
                     break;
-                case P_features.Artifact:
+                case eP_FEATURES.ARTIFACT:
                     var lop = $"Artifact discovered on {numeral_n}.";
                     scr_alert("green", "feature", lop, x, y);
                     scr_event_log("", lop);
                     break;
-                case P_features.STC_Fragment:
+                case eP_FEATURES.STC_FRAGMENT:
                     var lop = $"STC Fragment located on {numeral_n}.";
                     scr_alert("green", "feature", lop, x, y);
                     scr_event_log("", lop);
                     break;
-                case P_features.Ancient_Ruins:
+                case eP_FEATURES.ANCIENT_RUINS:
                     var lop = $"A {feat.ruins_size} Ancient Ruins discovered on {string(name)} {scr_roman(planet_num)}.";
                     scr_alert("green", "feature", lop, x, y);
                     scr_event_log("", lop);
                     break;
-                case P_features.Cave_Network:
+                case eP_FEATURES.CAVE_NETWORK:
                     var lop = $"Extensive Cave Network discovered on {numeral_n}.";
                     scr_alert("green", "feature", lop, x, y);
                     scr_event_log("", lop);
                     break;
-                case P_features.OrkWarboss:
+                case eP_FEATURES.ORKWARBOSS:
                     var lop = $"Ork Warboss discovered on {numeral_n}.";
                     scr_alert("red", "feature", lop, x, y);
                     scr_event_log("red", lop);
@@ -393,7 +393,7 @@ function create_starship_event() {
         return false;
     } else {
         var planet = irandom(star.planets - 1) + 1;
-        array_push(star.p_feature[planet], new NewPlanetFeature(P_features.Starship));
+        array_push(star.p_feature[planet], new NewPlanetFeature(eP_FEATURES.STARSHIP));
         scr_event_log("", "Ancient Starship discovered on " + string(star.name) + " " + scr_roman(planet) + ".", star.name);
     }
 }
@@ -411,8 +411,8 @@ function ground_mission_leave_it_function() {
 
 /// @mixin PlanetData
 function discover_artifact_popup(feature) {
-    obj_controller.menu = MENU.Default;
-    /*if ((planet_type == "Dead" || current_owner == eFACTION.Player)) {
+    obj_controller.menu = eMENU.DEFAULT;
+    /*if ((planet_type == "Dead" || current_owner == eFACTION.PLAYER)) {
         alarm[4] = 1;
         exit;
     }*/
@@ -425,7 +425,7 @@ function discover_artifact_popup(feature) {
 
     if ((origional_owner == 3) && (current_owner > 5)) {
         if (pdf > 0) {
-            current_owner = eFACTION.Mechanicus;
+            current_owner = eFACTION.MECHANICUS;
         }
     }
 
@@ -433,56 +433,56 @@ function discover_artifact_popup(feature) {
         str1: "Swiftly take the Artifact",
         choice_func: ground_forces_collect_artifact,
     };
-    if ((current_owner >= eFACTION.Tyranids) || ((current_owner == eFACTION.Ork) && (pdf <= 0))) {
+    if ((current_owner >= eFACTION.TYRANIDS) || ((current_owner == eFACTION.ORK) && (pdf <= 0))) {
         pop.add_option([{str1: "Let it be", choice_func: ground_mission_leave_it_function}, _take_arti]);
     } else {
         var _opt1 = "Request audience with the ";
         switch (current_owner) {
-            case eFACTION.Player:
-            case eFACTION.Imperium:
+            case eFACTION.PLAYER:
+            case eFACTION.IMPERIUM:
                 _opt1 += "Planetary Governor";
                 pop.add_option({
                     str1: "Gift the Artifact to the Sector Commander.",
                     choice_func: function() {
-                        gift_artifact(eFACTION.Imperium, false);
+                        gift_artifact(eFACTION.IMPERIUM, false);
                         instance_destroy();
                     },
                 });
                 break;
-            case eFACTION.Mechanicus:
+            case eFACTION.MECHANICUS:
                 _opt1 += "Mechanicus";
                 pop.add_option({str1: "Let it be.  The Mechanicus' wrath is not lightly provoked.", choice_func: ground_mission_leave_it_function});
                 break;
-            case eFACTION.Inquisition:
+            case eFACTION.INQUISITION:
                 _opt1 += "Inquisition";
                 pop.add_option({choice_func: ground_mission_leave_it_function, str1: "Let it be.  The Inquisition's wrath is not lightly provoked."});
                 break;
-            case eFACTION.Ecclesiarchy:
+            case eFACTION.ECCLESIARCHY:
                 _opt1 += "Ecclesiarchy";
                 pop.add_option({
                     str1: "Gift the Artifact to the Ecclesiarchy.",
                     choice_func: function() {
-                        gift_artifact(eFACTION.Ecclesiarchy, false);
+                        gift_artifact(eFACTION.ECCLESIARCHY, false);
                         instance_destroy();
                     },
                 });
                 break;
-            case eFACTION.Eldar:
+            case eFACTION.ELDAR:
                 _opt1 += "Eldar";
                 pop.add_option({
                     str1: "Gift the Artifact to the Eldar.",
                     choice_func: function() {
-                        gift_artifact(eFACTION.Eldar, false);
+                        gift_artifact(eFACTION.ELDAR, false);
                         instance_destroy();
                     },
                 });
                 break;
-            case eFACTION.Tau:
+            case eFACTION.TAU:
                 _opt1 += "Tau";
                 pop.add_option({
                     str1: "Gift the Artifact to the Tau Empire.",
                     choice_func: function() {
-                        gift_artifact(eFACTION.Tau, false);
+                        gift_artifact(eFACTION.TAU, false);
                         instance_destroy();
                     },
                 });
@@ -543,7 +543,7 @@ function planet_selection_action() {
 /// @mixin PlanetData
 function check_for_stc_grab_mission() {
     // STC Grab
-    if (has_feature(P_features.STC_Fragment)) {
+    if (has_feature(eP_FEATURES.STC_FRAGMENT)) {
         var _techs = 0, _mech_techs = 0;
         var _units = obj_controller.display_unit;
         for (var frag = 0; frag < array_length(_units); frag++) {
@@ -574,14 +574,14 @@ function check_for_stc_grab_mission() {
 /// @mixin PlanetData
 function discover_stc_fragment_popup(techies, mechanicus_reps) {
     var _owner = current_owner;
-    obj_controller.menu = MENU.Default;
+    obj_controller.menu = eMENU.DEFAULT;
     var pop = instance_create(0, 0, obj_popup);
     pop.image = "stc";
     pop.title = "STC Fragment Located";
 
     var options = [];
 
-    if (_owner == eFACTION.Mechanicus) {
+    if (_owner == eFACTION.MECHANICUS) {
         var _text = $"An STC Fragment upon {name()} appears to be located deep within a Mechanicus Vault";
         if (mechanicus_reps > 0) {
             pop.text = $"{_text}. The present Tech Priests stress they will not condone a mission to steal the STC Fragment.";
@@ -615,7 +615,7 @@ function discover_stc_fragment_popup(techies, mechanicus_reps) {
 
 /// @mixin PlanetData
 function check_for_artifact_grab_mission() {
-    if (has_feature(P_features.Artifact)) {
+    if (has_feature(eP_FEATURES.ARTIFACT)) {
         var artifact = instance_create(system.x, system.y, obj_ground_mission); // Unloading / artifact crap
         artifact.num = planet;
         artifact.loc = obj_controller.selecting_location;
@@ -624,7 +624,7 @@ function check_for_artifact_grab_mission() {
         with (artifact) {
             setup_planet_mission_group();
         }
-        discover_artifact_popup(get_features(P_features.Artifact)[0]);
+        discover_artifact_popup(get_features(eP_FEATURES.ARTIFACT)[0]);
     }
 }
 
@@ -671,7 +671,7 @@ function ground_forces_collect_artifact() {
                 if (pdata.current_owner == 2) {
                     obj_controller.disposition[2] -= 1;
                 }
-                if (pdata.current_owner == eFACTION.Mechanicus) {
+                if (pdata.current_owner == eFACTION.MECHANICUS) {
                     obj_controller.disposition[3] -= 10;
                 } // max(obj_controller.disposition/4,10)
                 if (pdata.current_owner == 4) {
@@ -693,7 +693,7 @@ function ground_forces_collect_artifact() {
             if (pdata.current_owner == 2) {
                 obj_controller.disposition[2] -= 2;
             }
-            if (pdata.current_owner == eFACTION.Mechanicus) {
+            if (pdata.current_owner == eFACTION.MECHANICUS) {
                 obj_controller.disposition[3] -= max(obj_controller.disposition[3] / 3, 20);
             }
             if (pdata.current_owner == 4) {
@@ -768,7 +768,7 @@ function ground_forces_collect_artifact() {
         with (obj_fleet_select) {
             instance_destroy();
         }
-        pdata.delete_feature(P_features.Artifact);
+        pdata.delete_feature(eP_FEATURES.ARTIFACT);
 
         corrupt_artifact_collectors(last_artifact);
 
@@ -800,7 +800,7 @@ function governor_negotiate_artifact() {
             with (obj_fleet_select) {
                 instance_destroy();
             }
-            pdata.delete_feature(P_features.Artifact);
+            pdata.delete_feature(eP_FEATURES.ARTIFACT);
             with (obj_popup) {
                 reset_popup_options();
             }
@@ -840,7 +840,7 @@ function remove_stc_from_planet() {
         if (scr_has_adv("Ambushers")) {
             mission_roll -= 15;
         }
-        if (pdata.current_owner == eFACTION.Mechanicus) {
+        if (pdata.current_owner == eFACTION.MECHANICUS) {
             mission_roll += 20;
         }
         if (mission_roll <= 60) {
@@ -868,14 +868,14 @@ function remove_stc_from_planet() {
 
             /*if (pdata.planet_type!="Dead"){
 	        if (pdata.current_owner=2) then obj_controller.disposition[2]-=1;
-	        if (pdata.current_owner=eFACTION.Mechanicus) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
+	        if (pdata.current_owner=eFACTION.MECHANICUS) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
 	        if (pdata.current_owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/4,10);
 	        if (pdata.current_owner=5) then obj_controller.disposition[5]-=3;
 	        if (pdata.current_owner=8) then obj_controller.disposition[8]-=3;
 	    }*/
             scr_return_ship(pdata.system.name, self, pdata.planet);
         }
-        if (mission == "bad" && pdata.origional_owner == eFACTION.Mechanicus && pdata.planet_type == "Forge") {
+        if (mission == "bad" && pdata.origional_owner == eFACTION.MECHANICUS && pdata.planet_type == "Forge") {
             /*pop.text="Your marines converge upon the STC Fragment; resistance is light and easily dealt with.  After a brief firefight it is retrieved.##";
 	    pop.text+="The fragment been safely stowed away, and is ready to be decrypted or gifted at your convenience.";
 
@@ -886,7 +886,7 @@ function remove_stc_from_planet() {
             pop.text += "Half-way through the mission a small army of Praetorian Servitors and Skitarii bear down upon your men.  The Mechanicus guards seem to be upset.";
 
             /*if (pdata.current_owner=2) then obj_controller.disposition[2]-=2;*/
-            if (pdata.current_owner == eFACTION.Mechanicus) {
+            if (pdata.current_owner == eFACTION.MECHANICUS) {
                 obj_controller.disposition[3] -= 40;
             }
             /*if (pdata.current_owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/3,20);
@@ -897,7 +897,7 @@ function remove_stc_from_planet() {
             if (pdata.current_owner > 3 && pdata.current_owner <= 6) {
                 scr_audience(pdata.current_owner, "artifact_angry",);
             }
-            if (pdata.current_owner == eFACTION.Mechanicus && obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+            if (pdata.current_owner == eFACTION.MECHANICUS && obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
                 scr_audience(pdata.current_owner, "declare_war", -20);
             }
 
@@ -933,7 +933,7 @@ function remove_stc_from_planet() {
                 ex3 = choose("Power Fist", "Chainsword", "Bolt Pistol");
                 ex3_num = choose(2, 3, 4, 5);
             }
-            if (pdata.origional_owner == eFACTION.Mechanicus) {
+            if (pdata.origional_owner == eFACTION.MECHANICUS) {
                 ex1 = "Plasma Pistol";
                 ex1_num = choose(1, 2);
                 ex2 = "Power Armour";
@@ -974,7 +974,7 @@ function remove_stc_from_planet() {
         with (obj_fleet_select) {
             instance_destroy();
         }
-        pdata.delete_feature(P_features.STC_Fragment);
+        pdata.delete_feature(eP_FEATURES.STC_FRAGMENT);
         scr_add_stc_fragment(); // STC here
 
         obj_controller.trading_artifact = 0;
@@ -1010,7 +1010,7 @@ function recieve_artifact_in_discussion() {
     with (obj_fleet_select) {
         instance_destroy();
     }
-    delete_features(plan.p_feature[num], P_features.Artifact);
+    delete_features(plan.p_feature[num], eP_FEATURES.ARTIFACT);
     scr_event_log("", "Artifact recovered.");
 
     corrupt_artifact_collectors(last_artifact);
@@ -1024,7 +1024,7 @@ function send_stc_to_adeptus_mech() {
     with (obj_ground_mission) {
         var _target_planet;
         _target_planet = instance_nearest(x, y, obj_star);
-        pdata.delete_feature(P_features.STC_Fragment);
+        pdata.delete_feature(eP_FEATURES.STC_FRAGMENT);
 
         scr_return_ship(pdata.system.name, self, pdata.planet);
 
@@ -1063,14 +1063,14 @@ function send_stc_to_adeptus_mech() {
             instance_destroy();
         }
 
-        if (obj_ini.fleet_type == ePlayerBase.home_world) {
+        if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
             with (obj_star) {
-                if ((owner == eFACTION.Player) && ((p_owner[1] == 1) || (p_owner[2] == eFACTION.Player))) {
+                if ((owner == eFACTION.PLAYER) && ((p_owner[1] == 1) || (p_owner[2] == eFACTION.PLAYER))) {
                     instance_create(x, y, obj_temp2);
                 }
             }
         }
-        if (obj_ini.fleet_type != ePlayerBase.home_world) {
+        if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
             with (obj_p_fleet) {
                 // Get fleet star system
                 if ((capital_number > 0) && (action == "")) {
@@ -1082,7 +1082,7 @@ function send_stc_to_adeptus_mech() {
             }
         }
 
-        if (obj_ini.fleet_type != ePlayerBase.home_world) {
+        if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
             with (obj_p_fleet) {
                 if (action == "") {
                     instance_deactivate_object(instance_nearest(x, y, obj_star));
@@ -1097,7 +1097,7 @@ function send_stc_to_adeptus_mech() {
             _target = nearest_star_with_ownership(obj_temp2.x, obj_temp2.y, obj_controller.diplomacy);
         } else if (instance_exists(obj_temp7)) {
             _target = nearest_star_with_ownership(obj_temp7.x, obj_temp7.y, obj_controller.diplomacy);
-        } else if ((!instance_exists(obj_temp2)) && (!instance_exists(obj_temp7)) && instance_exists(obj_p_fleet) && (obj_ini.fleet_type == ePlayerBase.home_world)) {
+        } else if ((!instance_exists(obj_temp2)) && (!instance_exists(obj_temp7)) && instance_exists(obj_p_fleet) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
             // If player fleet is flying about then get their target for new target
             with (obj_p_fleet) {
                 var pop;
@@ -1124,7 +1124,7 @@ function send_stc_to_adeptus_mech() {
             _enemy_fleet.capital_number = 1;
             _enemy_fleet.trade_goods = "Requisition!500!|";
 
-            if (obj_ini.fleet_type != ePlayerBase.home_world) {
+            if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                 if (instance_exists(obj_temp2)) {
                     _enemy_fleet.action_x = obj_temp2.x;
                     _enemy_fleet.action_y = obj_temp2.y;
@@ -1136,7 +1136,7 @@ function send_stc_to_adeptus_mech() {
                     _enemy_fleet.target = instance_nearest(_enemy_fleet.action_x, _enemy_fleet.action_y, obj_p_fleet);
                 }
             }
-            if (obj_ini.fleet_type == ePlayerBase.home_world) {
+            if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                 _target = instance_nearest(_enemy_fleet.x, _enemy_fleet.y, obj_temp2);
                 _enemy_fleet.action_x = _target.x;
                 _enemy_fleet.action_y = _target.y;

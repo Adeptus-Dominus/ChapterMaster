@@ -18,7 +18,7 @@ try_and_report_loop("final end turn alarm 5", function() {
 
     try_and_report_loop("chaos_spread", function() {
         var times = max(1, round(turn / 150));
-        if ((known[eFACTION.Chaos] == 2) && (faction_defeated[eFACTION.Chaos] == 0)) {
+        if ((known[eFACTION.CHAOS] == 2) && (faction_defeated[eFACTION.CHAOS] == 0)) {
             times += 1;
         }
         var xx3, yy3, plani, _star;
@@ -28,11 +28,11 @@ try_and_report_loop("final end turn alarm 5", function() {
         plani = floor(random(_star.planets)) + 1;
 
         // ** Chaos influence / corruption **
-        if ((faction_gender[eFACTION.Chaos] == 1) && (faction_defeated[eFACTION.Chaos] == 0) && (turn >= chaos_turn)) {
+        if ((faction_gender[eFACTION.CHAOS] == 1) && (faction_defeated[eFACTION.CHAOS] == 0) && (turn >= chaos_turn)) {
             repeat (times) {
                 if ((_star.p_type[plani] != "Dead") && (_star.planets > 0) && (turn >= 20)) {
                     var cathedral = 0;
-                    if (planet_feature_bool(_star.p_feature[plani], P_features.Sororitas_Cathedral) == 1) {
+                    if (planet_feature_bool(_star.p_feature[plani], eP_FEATURES.SORORITAS_CATHEDRAL) == 1) {
                         cathedral = choose(0, 1, 1);
                     }
 
@@ -165,13 +165,13 @@ if (turn=240) and (global.chapter_name="Lamenters"){
     imperial_navy_fleet_construction();
 
     // ** Adeptus Mechanicus Geneseed Tithe **
-    if ((gene_tithe == 0) && (faction_status[eFACTION.Imperium] != "War")) {
+    if ((gene_tithe == 0) && (faction_status[eFACTION.IMPERIUM] != "War")) {
         gene_tithe = 24;
 
         var expected, txt = "", mech_mad = false;
         var onceh = 0;
         expected = max(1, round(obj_controller.gene_seed / 20));
-        if (obj_controller.faction_status[eFACTION.Mechanicus] == "War") {
+        if (obj_controller.faction_status[eFACTION.MECHANICUS] == "War") {
             mech_mad = true;
         }
 
@@ -266,7 +266,7 @@ if (turn=240) and (global.chapter_name="Lamenters"){
             droll = floor(random(100)) + 1;
 
             // Inquisition takes notice
-            if ((droll <= disc) && (obj_controller.known[eFACTION.Inquisition] != 0)) {
+            if ((droll <= disc) && (obj_controller.known[eFACTION.INQUISITION] != 0)) {
                 var disp_change = -3;
                 if (gene_sold >= 100) {
                     disp_change = -5;
@@ -295,7 +295,7 @@ if (turn=240) and (global.chapter_name="Lamenters"){
             droll = floor(random(100)) + 1;
 
             // Inquisition takes notice
-            if ((droll <= disc) && (obj_controller.known[eFACTION.Inquisition] != 0)) {
+            if ((droll <= disc) && (obj_controller.known[eFACTION.INQUISITION] != 0)) {
                 gene_xeno = 99999;
                 alarm[8] = 1;
             }
@@ -335,7 +335,7 @@ if (turn=240) and (global.chapter_name="Lamenters"){
     }
 
     try_and_report_loop("Secret Chaos Warlord spawn", function() {
-        if ((turn == 5) && (faction_gender[eFACTION.Chaos] == 1)) {
+        if ((turn == 5) && (faction_gender[eFACTION.CHAOS] == 1)) {
             // show_message("Turn 100");
 
             var _star_found = false;
@@ -346,8 +346,8 @@ if (turn=240) and (global.chapter_name="Lamenters"){
                     continue;
                 }
                 with (_stars[i]) {
-                    if (owner == eFACTION.Imperium && planets) {
-                        if (scr_orbiting_fleet(eFACTION.Imperium) != "none") {
+                    if (owner == eFACTION.IMPERIUM && planets) {
+                        if (scr_orbiting_fleet(eFACTION.IMPERIUM) != "none") {
                             _star_found = true;
                             _choice_star = self.id;
                             break;
@@ -361,7 +361,7 @@ if (turn=240) and (global.chapter_name="Lamenters"){
             if (_star_found) {
                 var _planet = array_random_element(planets_without_type("Dead", _choice_star));
                 _choice_star.warlord[_planet] = 1;
-                array_push(_choice_star.p_feature[_planet], new NewPlanetFeature(P_features.Warlord10));
+                array_push(_choice_star.p_feature[_planet], new NewPlanetFeature(eP_FEATURES.WARLORD10));
 
                 var _heresy_inc = _choice_star.p_type[_planet] == "Hive" ? 25 : 10;
 
@@ -391,22 +391,22 @@ if (turn=240) and (global.chapter_name="Lamenters"){
         }
         if ((penitent_current >= penitent_max) || (((obj_controller.millenium * 1000) + obj_controller.year) >= penitent_end)) {
             penitent = 0;
-            if ((known[eFACTION.Inquisition] == 2) || (known[eFACTION.Inquisition] >= 4)) {
+            if ((known[eFACTION.INQUISITION] == 2) || (known[eFACTION.INQUISITION] >= 4)) {
                 scr_audience(4, "penitent_end", 0, "", 0, 0);
             }
-            if (known[eFACTION.Ecclesiarchy] >= 2) {
+            if (known[eFACTION.ECCLESIARCHY] >= 2) {
                 scr_audience(5, "penitent_end", 0, "", 0, 0);
             }
-            disposition[eFACTION.Imperium] += 20;
-            disposition[eFACTION.Mechanicus] += 15;
-            disposition[eFACTION.Inquisition] += 20;
-            disposition[eFACTION.Ecclesiarchy] += 20;
+            disposition[eFACTION.IMPERIUM] += 20;
+            disposition[eFACTION.MECHANICUS] += 15;
+            disposition[eFACTION.INQUISITION] += 20;
+            disposition[eFACTION.ECCLESIARCHY] += 20;
             var o = 0;
             if (scr_has_adv("Reverent Guardians")) {
                 o = 500;
             }
             if (o > 100) {
-                obj_controller.disposition[eFACTION.Ecclesiarchy] += 10;
+                obj_controller.disposition[eFACTION.ECCLESIARCHY] += 10;
             }
             scr_event_log("", "Blood Debt payed off.  You may once more recruit Astartes.");
         }
@@ -423,49 +423,49 @@ if (turn=240) and (global.chapter_name="Lamenters"){
         }
         if (penitent_current >= penitent_max) {
             penitent = 0;
-            if ((known[eFACTION.Inquisition] == 2) || (known[eFACTION.Inquisition] >= 4)) {
+            if ((known[eFACTION.INQUISITION] == 2) || (known[eFACTION.INQUISITION] >= 4)) {
                 scr_audience(4, "penitent_end", 0, "", 0, 0);
             }
-            if (known[eFACTION.Ecclesiarchy] >= 2) {
+            if (known[eFACTION.ECCLESIARCHY] >= 2) {
                 scr_audience(5, "penitent_end", 0, "", 0, 0);
             }
-            disposition[eFACTION.Imperium] += 20;
-            disposition[eFACTION.Mechanicus] += 15;
-            disposition[eFACTION.Imperium] += 20;
-            disposition[eFACTION.Ecclesiarchy] += 20;
+            disposition[eFACTION.IMPERIUM] += 20;
+            disposition[eFACTION.MECHANICUS] += 15;
+            disposition[eFACTION.IMPERIUM] += 20;
+            disposition[eFACTION.ECCLESIARCHY] += 20;
             var o = 0;
             if (scr_has_adv("Reverent Guardians")) {
                 o = 500;
             }
             if (o > 100) {
-                obj_controller.disposition[eFACTION.Ecclesiarchy] += 10;
+                obj_controller.disposition[eFACTION.ECCLESIARCHY] += 10;
             }
             scr_event_log("", "Penitent Crusade ends.  You may once more recruit Astartes.");
         }
     }
     // ** Ork WAAAAGH **
-    if (((turn >= irandom(200) + 100) || (obj_ini.fleet_type == eFACTION.Mechanicus)) && (faction_defeated[eFACTION.Ork] == 0)) {}
+    if (((turn >= irandom(200) + 100) || (obj_ini.fleet_type == eFACTION.MECHANICUS)) && (faction_defeated[eFACTION.ORK] == 0)) {}
 
-    if (known[eFACTION.Ecclesiarchy] == 1) {
+    if (known[eFACTION.ECCLESIARCHY] == 1) {
         spikky = choose(0, 1, 1);
         if (spikky) {
-            var _topic = faction_status[eFACTION.Ecclesiarchy] == "War" ? "declare_war" : "intro";
-            scr_audience(eFACTION.Ecclesiarchy, _topic);
+            var _topic = faction_status[eFACTION.ECCLESIARCHY] == "War" ? "declare_war" : "intro";
+            scr_audience(eFACTION.ECCLESIARCHY, _topic);
         }
     }
-    if ((known[eFACTION.Eldar] == 1) && (faction_defeated[eFACTION.Eldar] == 0)) {
+    if ((known[eFACTION.ELDAR] == 1) && (faction_defeated[eFACTION.ELDAR] == 0)) {
         spikky = choose(0, 1);
         if (spikky == 1) {
-            scr_audience(eFACTION.Eldar, "intro1");
+            scr_audience(eFACTION.ELDAR, "intro1");
         }
     }
-    if ((known[eFACTION.Ork] == 0.5) && (faction_defeated[eFACTION.Ork] == 0)) {
+    if ((known[eFACTION.ORK] == 0.5) && (faction_defeated[eFACTION.ORK] == 0)) {
         if (1 == irandom(7)) {
-            scr_audience(eFACTION.Ork, "intro");
+            scr_audience(eFACTION.ORK, "intro");
         }
     }
-    if ((known[eFACTION.Tau] == 1) && (faction_defeated[eFACTION.Tau] == 0)) {
-        scr_audience(eFACTION.Tau, "intro");
+    if ((known[eFACTION.TAU] == 1) && (faction_defeated[eFACTION.TAU] == 0)) {
+        scr_audience(eFACTION.TAU, "intro");
     }
     // ** Quests here **
     // 135 ; quests
@@ -484,13 +484,13 @@ if (turn=240) and (global.chapter_name="Lamenters"){
         }
     }
     // ** Inquisition stuff here **
-    if (disposition[eFACTION.Eldar] >= 60) {
+    if (disposition[eFACTION.ELDAR] >= 60) {
         scr_loyalty("Xeno Associate", "+");
     }
-    if (disposition[eFACTION.Ork] >= 60) {
+    if (disposition[eFACTION.ORK] >= 60) {
         scr_loyalty("Xeno Associate", "+");
     }
-    if (disposition[eFACTION.Tau] >= 60) {
+    if (disposition[eFACTION.TAU] >= 60) {
         scr_loyalty("Xeno Associate", "+");
     }
 
@@ -511,10 +511,10 @@ if (turn=240) and (global.chapter_name="Lamenters"){
     }
 
     var last_inquisitor_inspection = 0;
-    if (obj_ini.fleet_type == ePlayerBase.home_world) {
+    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         last_inquisitor_inspection = last_world_inspection;
     }
-    if (obj_ini.fleet_type != ePlayerBase.home_world) {
+    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
         last_inquisitor_inspection = last_fleet_inspection;
     }
 
@@ -532,8 +532,8 @@ if (turn=240) and (global.chapter_name="Lamenters"){
         inspec = true;
     }
 
-    if (obj_ini.fleet_type != ePlayerBase.home_world) {
-        if ((instance_number(obj_p_fleet) == 1) && (obj_ini.fleet_type == ePlayerBase.home_world)) {
+    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
+        if ((instance_number(obj_p_fleet) == 1) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
             // Might be crusading, right?
             if ((obj_p_fleet.x < 0) || (obj_p_fleet.x > room_width) || (obj_p_fleet.y < 0) || (obj_p_fleet.y > room_height)) {
                 inspec = false;
@@ -548,12 +548,12 @@ if (turn=240) and (global.chapter_name="Lamenters"){
     //setup inquisitor inspections
     var inquisitor_fleet_count = 0;
     with (obj_fleet) {
-        if (owner == eFACTION.Inquisition) {
+        if (owner == eFACTION.INQUISITION) {
             inquisitor_fleet_count++;
         }
     }
 
-    inspec = inspec && faction_status[eFACTION.Inquisition] != "War" && inquisitor_fleet_count == 0;
+    inspec = inspec && faction_status[eFACTION.INQUISITION] != "War" && inquisitor_fleet_count == 0;
     if (inspec) {
         new_inquisitor_inspection();
     }
@@ -584,7 +584,7 @@ if (turn=240) and (global.chapter_name="Lamenters"){
             turns_ignored[i] -= 1;
         }
     }
-    if ((known[eFACTION.Eldar] >= 2) && (faction_gender[6] == 2) && (turn % 10 == 0)) {
+    if ((known[eFACTION.ELDAR] >= 2) && (faction_gender[6] == 2) && (turn % 10 == 0)) {
         turns_ignored[6] += floor(random_range(0, 6));
     }
 
@@ -642,7 +642,7 @@ if (turn=240) and (global.chapter_name="Lamenters"){
     }
 
     if (turn == 2) {
-        if ((obj_ini.master_name == "Zakis Randi") || (global.chapter_name == "Knights Inductor") && (obj_controller.faction_status[eFACTION.Imperium] != "War")) {
+        if ((obj_ini.master_name == "Zakis Randi") || (global.chapter_name == "Knights Inductor") && (obj_controller.faction_status[eFACTION.IMPERIUM] != "War")) {
             alarm[8] = 1;
         }
     }

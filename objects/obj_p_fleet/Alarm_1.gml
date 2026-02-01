@@ -100,15 +100,15 @@ try_and_report_loop("player alarm 1", function() {
             meet_system_governors(steh);
 
             if ((steh.p_owner[1] == 5) || (steh.p_owner[2] == 5) || (steh.p_owner[3] == 5) || (steh.p_owner[4] == 5)) {
-                if ((obj_controller.faction_defeated[5] == 0) && (obj_controller.known[eFACTION.Ecclesiarchy] == 0)) {
-                    obj_controller.known[eFACTION.Ecclesiarchy] = 1;
+                if ((obj_controller.faction_defeated[5] == 0) && (obj_controller.known[eFACTION.ECCLESIARCHY] == 0)) {
+                    obj_controller.known[eFACTION.ECCLESIARCHY] = 1;
                 }
             }
-            if ((steh.owner == eFACTION.Eldar) && (obj_controller.faction_defeated[6] == 0) && (obj_controller.known[eFACTION.Eldar] == 0)) {
-                obj_controller.known[eFACTION.Eldar] = 1;
+            if ((steh.owner == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0) && (obj_controller.known[eFACTION.ELDAR] == 0)) {
+                obj_controller.known[eFACTION.ELDAR] = 1;
             }
-            if ((steh.owner == eFACTION.Tau) && (obj_controller.faction_defeated[8] == 0) && (obj_controller.known[eFACTION.Tau] == 0)) {
-                obj_controller.known[eFACTION.Tau] = 1;
+            if ((steh.owner == eFACTION.TAU) && (obj_controller.faction_defeated[8] == 0) && (obj_controller.known[eFACTION.TAU] == 0)) {
+                obj_controller.known[eFACTION.TAU] = 1;
             }
 
             action = "";
@@ -135,7 +135,7 @@ try_and_report_loop("player alarm 1", function() {
         }
     }
 
-    if ((action == "") && (obj_controller.known[eFACTION.Eldar] == 0)) {
+    if ((action == "") && (obj_controller.known[eFACTION.ELDAR] == 0)) {
         instance_activate_object(obj_star); // Kind of half-ass band-aiding that bug, might need to remove this later; this might cause problems later
 
         with (obj_star) {
@@ -156,10 +156,10 @@ try_and_report_loop("player alarm 1", function() {
                 // show_message("Dist: "+string(dist)+", Rando: "+string(rando));
 
                 if ((rando >= 95) && (dist <= 300)) {
-                    obj_controller.known[eFACTION.Eldar] = 1;
+                    obj_controller.known[eFACTION.ELDAR] = 1;
                     scr_alert("green", "elfs", "Eldar Craftworld discovered.", steh.old_x, steh.old_y);
                     with (obj_en_fleet) {
-                        if (owner == eFACTION.Eldar) {
+                        if (owner == eFACTION.ELDAR) {
                             image_alpha = 1;
                         }
                     }

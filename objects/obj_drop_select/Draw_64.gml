@@ -10,7 +10,7 @@ try {
     var _x_center = (display_get_gui_width() / 2) - (w / 2);
     var _y_center = (display_get_gui_height() / 2) - (h / 2);
     //draw main_slate
-    if (purge != DropType.PurgeSelect && (local_content_slate.XX <= _x_center - local_content_slate.width)) {
+    if (purge != eDROP_TYPE.PURGESELECT && (local_content_slate.XX <= _x_center - local_content_slate.width)) {
         main_slate.inside_method = drop_select_draw;
         main_slate.draw(_x_center, _y_center, (660 / 860), (520 / 850));
     }
@@ -26,8 +26,8 @@ try {
             draw_text_ext(_xx + 15, _yy, roster.roster_local_string, -1, local_content_slate.width - 30);
             draw_text_ext(_xx + 15.1, _yy + 0.1, roster.roster_local_string, -1, local_content_slate.width - 30);
         }
-        if (purge != DropType.RaidAttack) {
-            if (purge == DropType.PurgeSelect) {
+        if (purge != eDROP_TYPE.RAIDATTACK) {
+            if (purge == eDROP_TYPE.PURGESELECT) {
                 draw_set_halign(fa_center);
                 draw_set_font(fnt_40k_30b);
 
@@ -59,7 +59,7 @@ try {
     };
 
     draw_set_halign(fa_center);
-    if (purge == DropType.RaidAttack) {
+    if (purge == eDROP_TYPE.RAIDATTACK) {
         local_content_slate.draw(_x_center - local_content_slate.width, _y_center, (300 / 860), (520 / 850));
     } else if (purge == 1) {
         local_content_slate.draw((camera_width / 2) - (local_content_slate.width / 2), _y_center, (300 / 860), (520 / 850));
@@ -81,7 +81,7 @@ try {
             _yy += 30;
             draw_text_ext(_xx, _yy, roster.roster_string, -1, roster_slate.width - 30);
             draw_text_ext(_xx + 0.1, _yy + 0.1, roster.roster_string, -1, roster_slate.width - 30);
-        } else if (purge > DropType.PurgeSelect) {
+        } else if (purge > eDROP_TYPE.PURGESELECT) {
             draw_text_transformed(_xx, _yy, "Purge Insight", 2, 2, 0);
             _yy += 30;
             var hers, influ, poppy;
@@ -93,9 +93,9 @@ try {
             if (p_target.p_large[planet_number] == 0) {
                 poppy = string(scr_display_number(p_target.p_population[planet_number]));
             }
-            draw_text(_xx + 14, _yy + 10, $"Heresy: {max(hers, influ[eFACTION.Tau])}%");
+            draw_text(_xx + 14, _yy + 10, $"Heresy: {max(hers, influ[eFACTION.TAU])}%");
             draw_text(_xx + 14, _yy + 20, $"Population: {poppy}");
-        } else if (purge == DropType.PurgeSelect) {
+        } else if (purge == eDROP_TYPE.PURGESELECT) {
             draw_text_transformed(_xx, _yy, "Purge", 2, 2, 0);
             _yy += 30;
             for (var i = 0; i < array_length(purge_options); i++) {
@@ -107,13 +107,13 @@ try {
     };
     var _draw_x = _x_center + main_slate.width;
     var _draw_y = _y_center;
-    if (purge > DropType.PurgeSelect) {
+    if (purge > eDROP_TYPE.PURGESELECT) {
         if (roster_slate.XX < _x_center + 660) {
             var _draw_x = min(roster_slate.XX + 15, _x_center + 660);
         } else {
             _draw_x = roster_slate.XX;
         }
-    } else if (purge == DropType.PurgeSelect) {
+    } else if (purge == eDROP_TYPE.PURGESELECT) {
         _draw_x = local_content_slate.XX + local_content_slate.width;
     }
 

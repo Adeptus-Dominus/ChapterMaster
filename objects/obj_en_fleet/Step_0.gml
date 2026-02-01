@@ -26,11 +26,11 @@ if (escort_number < 0) {
     escort_number = 0;
 }
 
-if ((owner != eFACTION.Inquisition) && (capital_number + frigate_number + escort_number <= 0) && !fleet_has_cargo("colonize")) {
+if ((owner != eFACTION.INQUISITION) && (capital_number + frigate_number + escort_number <= 0) && !fleet_has_cargo("colonize")) {
     instance_destroy();
 }
 
-if ((owner == eFACTION.Tau) && (x < 0) || (y < 0)) {
+if ((owner == eFACTION.TAU) && (x < 0) || (y < 0)) {
     instance_destroy();
 }
 
@@ -44,7 +44,7 @@ ii_check -= 1;
 if (ii_check == 0) {
     ii_check = 10;
 
-    if ((owner != eFACTION.Eldar) && (owner != eFACTION.Inquisition)) {
+    if ((owner != eFACTION.ELDAR) && (owner != eFACTION.INQUISITION)) {
         var ii = 0;
         ii += capital_number;
         ii += round((frigate_number / 2));
@@ -55,7 +55,7 @@ if (ii_check == 0) {
         image_index = ii;
         image_index = min(image_index, 9);
     }
-    if (owner == eFACTION.Eldar) {
+    if (owner == eFACTION.ELDAR) {
         var ii;
         ii = 0;
         ii += capital_number;
@@ -67,12 +67,12 @@ if (ii_check == 0) {
         image_index = ii;
         image_index = min(image_index, 5);
     }
-    if (owner == eFACTION.Inquisition) {
+    if (owner == eFACTION.INQUISITION) {
         image_index = 1;
     }
 }
 
-if (owner == eFACTION.Tyranids) {
+if (owner == eFACTION.TYRANIDS) {
     image_alpha = 0;
     if (instance_exists(obj_p_fleet)) {
         var bundy;
@@ -86,21 +86,21 @@ if (owner == eFACTION.Tyranids) {
     }
 }
 
-if ((owner == eFACTION.Tau) && (action_spd != 32)) {
+if ((owner == eFACTION.TAU) && (action_spd != 32)) {
     action_spd = 32;
 }
-// if (owner = eFACTION.Tau) and (image_index>1)
-if (owner == eFACTION.Mechanicus) {
+// if (owner = eFACTION.TAU) and (image_index>1)
+if (owner == eFACTION.MECHANICUS) {
     if (action != "") {
         direction = point_direction(x, y, action_x, action_y);
     }
     image_angle = direction;
 }
-if ((owner == eFACTION.Eldar) && (trade_goods != "") && (action == "move")) {
+if ((owner == eFACTION.ELDAR) && (trade_goods != "") && (action == "move")) {
     action_eta = 1;
 }
 
-if ((owner == eFACTION.Tau) && (action == "") && (obj_controller.tau_messenger >= 30) && (frigate_number > 0) && (escort_number + capital_number > 0)) {
+if ((owner == eFACTION.TAU) && (action == "") && (obj_controller.tau_messenger >= 30) && (frigate_number > 0) && (escort_number + capital_number > 0)) {
     obj_controller.tau_messenger = 0;
 
     var fleet, good, stir, xx, yy;
@@ -115,7 +115,7 @@ if ((owner == eFACTION.Tau) && (action == "") && (obj_controller.tau_messenger >
     instance_deactivate_object(fleet);
 
     fleet = instance_create(x, y, obj_en_fleet);
-    fleet.owner = eFACTION.Tau;
+    fleet.owner = eFACTION.TAU;
     fleet.action_spd = 32;
     fleet.frigate_number = 1;
     fleet.sprite_index = spr_fleet_tau;
@@ -128,7 +128,7 @@ if ((owner == eFACTION.Tau) && (action == "") && (obj_controller.tau_messenger >
             yy = y + round(choose(random(500), random(500) * -1));
 
             stir = instance_nearest(xx, yy, obj_star);
-            if ((stir.planets != 0) && (stir.owner == eFACTION.Imperium)) {
+            if ((stir.planets != 0) && (stir.owner == eFACTION.IMPERIUM)) {
                 good = 1;
             }
             if ((stir.planets == 1) && (stir.p_type[1] == "Dead")) {
@@ -148,7 +148,7 @@ if ((owner == eFACTION.Tau) && (action == "") && (obj_controller.tau_messenger >
     instance_activate_object(obj_star);
 }
 
-if ((owner == eFACTION.Tyranids) && (trade_goods == "")) {
+if ((owner == eFACTION.TYRANIDS) && (trade_goods == "")) {
     trade_goods = choose("Spore Clouds", "Health", "Armour", "Speed", "Turn", "Turret");
     trade_goods += "|";
     trade_goods += choose("Spore Clouds", "Health", "Armour", "Speed", "Turn", "Turret");
@@ -156,28 +156,28 @@ if ((owner == eFACTION.Tyranids) && (trade_goods == "")) {
 }
 
 if (global.load >= 0) {
-    if (owner == eFACTION.Imperium) {
+    if (owner == eFACTION.IMPERIUM) {
         sprite_index = spr_fleet_imperial;
     }
-    if (owner == eFACTION.Mechanicus) {
+    if (owner == eFACTION.MECHANICUS) {
         sprite_index = spr_fleet_mechanicus;
     }
-    if (owner == eFACTION.Inquisition) {
+    if (owner == eFACTION.INQUISITION) {
         sprite_index = spr_fleet_inquisition;
     }
-    if (owner == eFACTION.Eldar) {
+    if (owner == eFACTION.ELDAR) {
         sprite_index = spr_fleet_eldar;
     }
-    if (owner == eFACTION.Ork) {
+    if (owner == eFACTION.ORK) {
         sprite_index = spr_fleet_ork;
     }
-    if (owner == eFACTION.Tau) {
+    if (owner == eFACTION.TAU) {
         sprite_index = spr_fleet_tau;
     }
-    if (owner == eFACTION.Tyranids) {
+    if (owner == eFACTION.TYRANIDS) {
         sprite_index = spr_fleet_tyranid;
     }
-    if (owner == eFACTION.Chaos) {
+    if (owner == eFACTION.CHAOS) {
         sprite_index = spr_fleet_chaos;
     }
 }

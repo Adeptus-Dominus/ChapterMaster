@@ -11,7 +11,7 @@ if (owner == 8) {
 if (owner == 9) {
     sprite_index = spr_bio_fighter;
 }
-if (owner == eFACTION.Chaos) {
+if (owner == eFACTION.CHAOS) {
     sprite_index = spr_ship_dreadclaw;
 }
 

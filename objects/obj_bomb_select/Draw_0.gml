@@ -97,7 +97,7 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
         if (target == 2.5) {
             str = determine_pdf_defence(p_data.pdf,, p_data.fortification_level)[0];
         }
-        var _s_strings = ARR_strength_descriptions;
+        var _s_strings = FORCE_STRENGTH_DESCRIPTIONS;
         if (str < array_length(_s_strings)) {
             str_string = _s_strings[str];
         }

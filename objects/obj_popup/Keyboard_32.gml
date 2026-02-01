@@ -25,7 +25,7 @@ if (!__b__) {
         instance_destroy();
     }
 
-    if (type == POPUP_TYPE.BATTLE_OPTIONS) {
+    if (type == ePOPUP_TYPE.BATTLE_OPTIONS) {
         obj_controller.cooldown = 10;
         obj_turn_end.current_battle += 1;
         obj_turn_end.alarm[0] = 1;

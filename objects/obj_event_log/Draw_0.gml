@@ -3,7 +3,7 @@ __b__ = action_if_variable(help, 0, 0);
 if (__b__) {
     var bad = 1;
     if (instance_exists(obj_controller)) {
-        if (obj_controller.menu == MENU.EventLog) {
+        if (obj_controller.menu == eMENU.EVENT_LOG) {
             bad = 0;
         }
     }

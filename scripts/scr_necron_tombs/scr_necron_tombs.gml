@@ -3,7 +3,7 @@ function awaken_tomb_event() {
     var stars = scr_get_stars();
 
     var valid_stars = array_filter_ext(stars, function(star, index) {
-        var tomb_world = scr_get_planet_with_feature(star, P_features.Necron_Tomb);
+        var tomb_world = scr_get_planet_with_feature(star, eP_FEATURES.NECRON_TOMB);
 
         if (tomb_world == -1) {
             return false;

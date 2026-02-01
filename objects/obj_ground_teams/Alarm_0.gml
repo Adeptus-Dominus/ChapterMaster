@@ -1,4 +1,4 @@
-if (feature.f_type == P_features.Ancient_Ruins) {
+if (feature.f_type == eP_FEATURES.ANCIENT_RUINS) {
     newline = "Your marines warily stalk through into the entrance of the ruins";
     newline_color = "red";
     scr_newtext();

@@ -33,7 +33,7 @@ if (obj_controller.craftworld && (space_hulk == 0)) {
     heresy = -999;
     p_owner[1] = 6;
     p_first[1] = 6;
-    owner = eFACTION.Eldar;
+    owner = eFACTION.ELDAR;
     p_population[1] = floor(random_range(150000, 300000));
     p_fortified[1] = 6;
     p_eldar[1] = 6;
@@ -55,13 +55,13 @@ if (space_hulk == 1) {
     p_fortified[1] = 5;
 
     var faction = choose(7, 9, 9, 9, 9, 9, 10);
-    if (faction == eFACTION.Ork) {
+    if (faction == eFACTION.ORK) {
         p_orks[1] = choose(3, 4, 5);
     }
-    if (faction == eFACTION.Tyranids) {
+    if (faction == eFACTION.TYRANIDS) {
         p_tyranids[1] = choose(3, 4, 5);
     }
-    if (faction == eFACTION.Chaos) {
+    if (faction == eFACTION.CHAOS) {
         p_traitors[1] = choose(2, 3, 4);
     }
 
@@ -188,7 +188,7 @@ switch (name) {
         planets = 3;
         p_type[1] = "Feudal";
         planet[1] = 1;
-        array_push(p_feature[1], new NewPlanetFeature(P_features.Necron_Tomb));
+        array_push(p_feature[1], new NewPlanetFeature(eP_FEATURES.NECRON_TOMB));
         p_type[2] = "Dead";
         planet[2] = 1;
         p_type[3] = "Dead";

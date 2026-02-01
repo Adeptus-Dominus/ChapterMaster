@@ -127,7 +127,7 @@ if (_total_injured > 0) {
             _units_saved_string += smart_delimeter_sign(_unit_roles, i, false);
         }
 
-        newline = $"{units_saved_count}x {smart_verb("was", units_saved_count)} saved by the {string_plural(roles[eROLE.Apothecary], apothecaries_alive)}. ({_units_saved_string})";
+        newline = $"{units_saved_count}x {smart_verb("was", units_saved_count)} saved by the {string_plural(roles[eROLE.APOTHECARY], apothecaries_alive)}. ({_units_saved_string})";
         scr_newtext();
     }
 
@@ -166,7 +166,7 @@ if (seed_lost > 0) {
         newline = $"Chapter mutation prevents retrieving gene-seed. {seed_lost} gene-seed lost.";
         scr_newtext();
     } else if (!apothecaries_alive) {
-        newline = $"No able-bodied {roles[eROLE.Apothecary]}. {seed_lost} gene-seed lost.";
+        newline = $"No able-bodied {roles[eROLE.APOTHECARY]}. {seed_lost} gene-seed lost.";
         scr_newtext();
     } else {
         seed_saved = min(seed_harvestable, apothecaries_alive * 40);
@@ -218,7 +218,7 @@ if (_total_damaged_count > 0) {
             _vehicles_saved_string += smart_delimeter_sign(_vehicle_types, i, false);
         }
 
-        newline = $"{string_plural(roles[eROLE.Techmarine], techmarines_alive)} {smart_verb("was", techmarines_alive)} able to restore {vehicles_saved_count}. ({_vehicles_saved_string})";
+        newline = $"{string_plural(roles[eROLE.TECHMARINE], techmarines_alive)} {smart_verb("was", techmarines_alive)} able to restore {vehicles_saved_count}. ({_vehicles_saved_string})";
         scr_newtext();
     }
 
@@ -345,7 +345,7 @@ if ((fortified > 0) && (!instance_exists(obj_nfort)) && (reduce_fortification ==
 }
 
 /*if (enemy=5){
-    if (obj_controller.faction_status[eFACTION.Ecclesiarchy]!="War"){
+    if (obj_controller.faction_status[eFACTION.ECCLESIARCHY]!="War"){
         
     }
 }*/
@@ -354,7 +354,7 @@ if ((!defeat) && (battle_special == "space_hulk")) {
     var enemy_power = 0, loot = 0, dicey = roll_dice_chapter(1, 100, "low");
     ex = 0;
 
-    if (enemy == eFACTION.Ork || enemy == eFACTION.Tyranids || enemy == eFACTION.Heretics) {
+    if (enemy == eFACTION.ORK || enemy == eFACTION.TYRANIDS || enemy == eFACTION.HERETICS) {
         enemy_power = p_data.add_forces(enemy, -1);
     }
 
@@ -490,26 +490,26 @@ if (defeat == 0 && _reduce_power) {
                 var who_return = "";
                 var make_alert = true;
                 var planet_string = $"{name} {scr_roman(battle_planet)}";
-                if (planet_feature_bool(p_feature[battle_planet], P_features.Gene_Stealer_Cult) == 1) {
+                if (planet_feature_bool(p_feature[battle_planet], eP_FEATURES.GENE_STEALER_CULT) == 1) {
                     who_cleansed = "Gene Stealer Cult";
                     make_alert = true;
-                    delete_features(p_feature[battle_planet], P_features.Gene_Stealer_Cult);
-                    adjust_influence(eFACTION.Tyranids, -25, battle_planet);
+                    delete_features(p_feature[battle_planet], eP_FEATURES.GENE_STEALER_CULT);
+                    adjust_influence(eFACTION.TYRANIDS, -25, battle_planet);
                 }
                 if (make_alert) {
                     if (p_first[battle_planet] == 1) {
                         who_return = "your";
-                        p_owner[battle_planet] = eFACTION.Player;
+                        p_owner[battle_planet] = eFACTION.PLAYER;
                     } else if (p_first[battle_planet] == 3 || p_type[battle_planet] == "Forge") {
                         who_return = "mechanicus";
                         obj_controller.disposition[3] += 10;
-                        p_owner[battle_planet] = eFACTION.Mechanicus;
+                        p_owner[battle_planet] = eFACTION.MECHANICUS;
                     } else if (p_type[battle_planet] != "Dead") {
                         who_return = "the governor";
                         if (who_cleansed == "tau") {
                             who_return = "a more suitable governer";
                         }
-                        p_owner[battle_planet] = eFACTION.Imperium;
+                        p_owner[battle_planet] = eFACTION.IMPERIUM;
                     }
                     dispo[battle_planet] += 10;
                     scr_event_log("", $"{who_cleansed} cleansed from {planet_string}", name);
@@ -592,7 +592,7 @@ if (defeat == 0 && _reduce_power) {
         scr_newtext();
     }
 
-    if (enemy == eFACTION.Necrons && p_data.forces[eFACTION.Necrons] < 3 && awake_tomb_world(p_data.features) == 1) {
+    if (enemy == eFACTION.NECRONS && p_data.forces[eFACTION.NECRONS] < 3 && awake_tomb_world(p_data.features) == 1) {
         // var bombs;bombs=scr_check_equip("Plasma Bomb",battle_loc,battle_id,0);
         // var bombs;bombs=scr_check_equip("Plasma Bomb","","",0);
 
@@ -640,7 +640,7 @@ if (defeat == 0 && _reduce_power) {
     }*/
 }
 
-if ((defeat == 0) && (enemy == eFACTION.Tyranids) && (battle_special == "tyranid_org")) {
+if ((defeat == 0) && (enemy == eFACTION.TYRANIDS) && (battle_special == "tyranid_org")) {
     // show_message(string(captured_gaunt));
 
     newline = $"{string_plural_count("Gaunt organism", captured_gaunt)} have been captured.";
@@ -736,10 +736,10 @@ if (obj_ini.omophagea) {
     }
 
     if (allies > 0) {
-        alter_dispositions([[eFACTION.Imperium, -choose(1, 0, 0)], [eFACTION.Inquisition, -choose(0, 0, 1)], [eFACTION.Ecclesiarchy, -choose(0, 0, 1)]]);
+        alter_dispositions([[eFACTION.IMPERIUM, -choose(1, 0, 0)], [eFACTION.INQUISITION, -choose(0, 0, 1)], [eFACTION.ECCLESIARCHY, -choose(0, 0, 1)]]);
     }
     if (present_inquisitor > 0) {
-        alter_disposition(eFACTION.Inquisition, -4);
+        alter_disposition(eFACTION.INQUISITION, -4);
     }
 
     if (eatme <= 25) {
@@ -835,7 +835,7 @@ if (obj_ini.omophagea) {
                 }
 
                 instance_activate_object(obj_turn_end);
-                if (obj_controller.known[eFACTION.Inquisition] < 3) {
+                if (obj_controller.known[eFACTION.INQUISITION] < 3) {
                     scr_event_log("red", "EXCOMMUNICATUS TRAITORUS");
                     obj_controller.alarm[8] = 1;
                     if (!instance_exists(obj_turn_end)) {
@@ -884,8 +884,8 @@ instance_activate_object(obj_star);
 instance_activate_object(obj_turn_end);
 
 //If not fleet based and...
-if ((obj_ini.fleet_type != ePlayerBase.home_world) && (defeat == 1) && (dropping == 0)) {
-    var monastery_list = search_planet_features(battle_object.p_feature[obj_ncombat.battle_id], P_features.Monastery);
+if ((obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) && (defeat == 1) && (dropping == 0)) {
+    var monastery_list = search_planet_features(battle_object.p_feature[obj_ncombat.battle_id], eP_FEATURES.MONASTERY);
     var monastery_count = array_length(monastery_list);
     if (monastery_count > 0) {
         for (var mon = 0; mon < monastery_count; mon++) {

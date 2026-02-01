@@ -271,7 +271,7 @@ try {
                 item_name,
                 obj_controller.settings, // eROLE
                 tab, // slot
-                is_hand_slot ? eENGAGEMENT.Any : eENGAGEMENT.None,
+                is_hand_slot ? eENGAGEMENT.ANY : eENGAGEMENT.NONE,
                 true, // include company standard
                 false, // show all regardless of inventory
 

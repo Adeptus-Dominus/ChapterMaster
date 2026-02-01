@@ -128,8 +128,8 @@ function scr_draw_armentarium_gui() {
 }
 
 function scr_draw_armentarium() {
-    var _recruit_pace = ARR_recruitment_pace;
-    var _train_tiers = ARR_techmarine_training_tiers;
+    var _recruit_pace = RECRUITMENT_PACE_DESCRIPTIONS;
+    var _train_tiers = TECHMARINE_TRAINING_TIERS;
     var xx = __view_get(e__VW.XView, 0) + 0;
     var yy = __view_get(e__VW.YView, 0) + 0;
     draw_sprite(spr_rock_bg, 0, xx, yy);
@@ -215,15 +215,15 @@ function scr_draw_armentarium() {
         }
 
         blurp = "Subject ID confirmed.  Rank Identified: Chapter Master.  Salutations Chapter Master.  We have assembled the following Data: ##" + string(obj_ini.role[100][16]) + "s: " + string(temp[36]) + ".##Summation: ";
-        if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+        if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
             if (max_techs > temp[37]) {
-                blurp += $"Our Mechanicus Requisitionary powers are sufficient to train {max_techs - temp[37]} additional {obj_ini.role[100][eROLE.Techmarine]}.";
+                blurp += $"Our Mechanicus Requisitionary powers are sufficient to train {max_techs - temp[37]} additional {obj_ini.role[100][eROLE.TECHMARINE]}.";
             }
             if (max_techs <= temp[37]) {
-                blurp += $"We require {yyy} additional Mechanicus Disposition to train one additional {obj_ini.role[100][eROLE.Techmarine]}.";
+                blurp += $"We require {yyy} additional Mechanicus Disposition to train one additional {obj_ini.role[100][eROLE.TECHMARINE]}.";
             }
         } else {
-            blurp += $"Since we are at war with the Mechanicus we'll have to train our own {obj_ini.role[100][eROLE.Techmarine]}s.";
+            blurp += $"Since we are at war with the Mechanicus we'll have to train our own {obj_ini.role[100][eROLE.TECHMARINE]}s.";
         }
         blurp += "  The training of new " + string(obj_ini.role[100][16]) + "s";
 
@@ -259,15 +259,15 @@ function scr_draw_armentarium() {
         }
 
         if (menu_adept == 1) {
-            if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+            if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
                 if (max_techs > temp[37]) {
-                    blurp += $"Our Mechanicus Requisitionary powers are sufficient to train {max_techs - temp[37]} additional {obj_ini.role[100][eROLE.Techmarine]}.";
+                    blurp += $"Our Mechanicus Requisitionary powers are sufficient to train {max_techs - temp[37]} additional {obj_ini.role[100][eROLE.TECHMARINE]}.";
                 }
                 if (max_techs <= temp[37]) {
-                    blurp += $"We require {yyy} additional Mechanicus Disposition to train one additional {obj_ini.role[100][eROLE.Techmarine]}.";
+                    blurp += $"We require {yyy} additional Mechanicus Disposition to train one additional {obj_ini.role[100][eROLE.TECHMARINE]}.";
                 }
             } else {
-                blurp += $"Since we are at war with the Mechanicus we'll have to train our own {obj_ini.role[100][eROLE.Techmarine]}s.";
+                blurp += $"Since we are at war with the Mechanicus we'll have to train our own {obj_ini.role[100][eROLE.TECHMARINE]}s.";
             }
 
             blurp += "##Data compilation complete.  You currently possess the technology to produce the following:";

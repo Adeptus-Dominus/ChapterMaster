@@ -14,16 +14,16 @@ if (__b__) {
 
         var ppp = "";
         switch (owner) {
-            case eFACTION.Player:
+            case eFACTION.PLAYER:
                 ppp = global.chapter_name;
                 break;
-            case eFACTION.Imperium:
+            case eFACTION.IMPERIUM:
                 ppp = "Imperial Navy";
                 break;
-            case eFACTION.Mechanicus:
+            case eFACTION.MECHANICUS:
                 pppp = "Mechanicus Fleet";
                 break;
-            case eFACTION.Tau:
+            case eFACTION.TAU:
                 ppp = "Tau Fleet";
                 break;
         }
@@ -52,7 +52,7 @@ if (__b__) {
             }
         }
 
-        if (owner == eFACTION.Player && player_fleet.action == "") {
+        if (owner == eFACTION.PLAYER && player_fleet.action == "") {
             var xx = __view_get(e__VW.XView, 0);
             var yy = __view_get(e__VW.YView, 0);
             var free = !currently_entered;
@@ -61,7 +61,7 @@ if (__b__) {
                 var sys_dist = 9999, connected = 0;
 
                 with (obj_star) {
-                    if (p_type[1] == "Craftworld" && obj_controller.known[eFACTION.Eldar] == 0) {
+                    if (p_type[1] == "Craftworld" && obj_controller.known[eFACTION.ELDAR] == 0) {
                         instance_deactivate_object(id);
                     }
                 }
@@ -76,7 +76,7 @@ if (__b__) {
                 var web = 0;
 
                 if (sys_dist < 32) {
-                    web = system_feature_bool(mine.p_feature, P_features.Webway) && system_feature_bool(sys.p_feature, P_features.Webway);
+                    web = system_feature_bool(mine.p_feature, eP_FEATURES.WEBWAY) && system_feature_bool(sys.p_feature, eP_FEATURES.WEBWAY);
                     if (mine.id == sys.id) {
                         web = 0;
                     }

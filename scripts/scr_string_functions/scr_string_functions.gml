@@ -21,10 +21,10 @@ function string_upper_first(_string) {
 function string_gender_third_person(gender) {
     var _string = "they";
     switch (gender) {
-        case GENDER.Female:
+        case eGENDER.FEMALE:
             _string = "she";
             break;
-        case GENDER.Male:
+        case eGENDER.MALE:
             _string = "he";
             break;
     }
@@ -35,13 +35,13 @@ function string_gender_third_person(gender) {
 function string_gender_pronouns(gender) {
     var _string = "their";
     switch (gender) {
-        case GENDER.Female:
+        case eGENDER.FEMALE:
             _string = "her";
             break;
-        case GENDER.Male:
+        case eGENDER.MALE:
             _string = "his";
             break;
-        case GENDER.Neutral:
+        case eGENDER.NEUTRAL:
             _string = "their";
             break;
     }

@@ -42,7 +42,7 @@ try {
     draw_set_alpha(slate4 / 30);
     if (slate4 > 0) {
         /* Chapter Selection grid */
-        if (slide == eCREATIONSLIDES.CHAPTERSELECT) {
+        if (slide == eCREATION_SLIDES.CHAPTERSELECT) {
             draw_chapter_select();
         }
     }
@@ -83,7 +83,7 @@ try {
             tooltip2 = "Your Chapter's icon.  Click to edit.";
         }
 
-        if (slide == eCREATIONSLIDES.CHAPTERTRAITS) {
+        if (slide == eCREATION_SLIDES.CHAPTERTRAITS) {
             var _chapter_icon;
             if (founding == ePROGENITOR.NONE) {
                 _chapter_icon = global.chapter_icons_map[? "unknown"];
@@ -130,17 +130,17 @@ try {
     }
 
     /* Chapter Naming, Points assignment, advantages/disadvantages */
-    if (slide == eCREATIONSLIDES.CHAPTERTRAITS) {
+    if (slide == eCREATION_SLIDES.CHAPTERTRAITS) {
         draw_chapter_trait_select();
-    } else if (slide == eCREATIONSLIDES.CHAPTERHOME) {
+    } else if (slide == eCREATION_SLIDES.CHAPTERHOME) {
         /* Homeworld, Flagship, Psychic discipline, Aspirant Trial */
         draw_chapter_homeworld_select();
-    } else if (slide == eCREATIONSLIDES.CHAPTERLIVERY) {
+    } else if (slide == eCREATION_SLIDES.CHAPTERLIVERY) {
         /* Livery, Roles */
         scr_livery_setup();
-    } else if (slide == eCREATIONSLIDES.CHAPTERROLES) {
+    } else if (slide == eCREATION_SLIDES.CHAPTERROLES) {
         scr_role_setup();
-    } else if (slide == eCREATIONSLIDES.CHAPTERGENE) {
+    } else if (slide == eCREATION_SLIDES.CHAPTERGENE) {
         /* Gene Seed Mutations, Disposition */
         draw_set_color(CM_GREEN_COLOR);
         draw_set_font(fnt_40k_30b);
@@ -194,7 +194,7 @@ try {
                 mutation_points: 1,
                 disposition: [
                     [
-                        eFACTION.Imperium,
+                        eFACTION.IMPERIUM,
                         -8
                     ]
                 ],
@@ -206,7 +206,7 @@ try {
                 mutation_points: 4,
                 disposition: [
                     [
-                        eFACTION.Imperium,
+                        eFACTION.IMPERIUM,
                         -8
                     ],
                     [
@@ -264,7 +264,7 @@ try {
                 mutation_points: 1,
                 disposition: [
                     [
-                        eFACTION.Imperium,
+                        eFACTION.IMPERIUM,
                         -8
                     ]
                 ],
@@ -276,7 +276,7 @@ try {
                 mutation_points: 1,
                 disposition: [
                     [
-                        eFACTION.Imperium,
+                        eFACTION.IMPERIUM,
                         -8
                     ]
                 ],
@@ -292,7 +292,7 @@ try {
                         -4
                     ],
                     [
-                        eFACTION.Imperium,
+                        eFACTION.IMPERIUM,
                         -8
                     ],
                     [
@@ -415,7 +415,7 @@ try {
     }
 
     /* Chapter Master */
-    if (slide == eCREATIONSLIDES.CHAPTERMASTER) {
+    if (slide == eCREATION_SLIDES.CHAPTERMASTER) {
         draw_set_color(CM_GREEN_COLOR);
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
@@ -768,16 +768,16 @@ try {
         }
     }
 
-    if ((slide >= eCREATIONSLIDES.CHAPTERTRAITS) || (goto_slide >= eCREATIONSLIDES.CHAPTERTRAITS)) {
+    if ((slide >= eCREATION_SLIDES.CHAPTERTRAITS) || (goto_slide >= eCREATION_SLIDES.CHAPTERTRAITS)) {
         draw_set_alpha(1);
         draw_sprite(spr_creation_arrow, 0, 607, 761);
         draw_sprite(spr_creation_arrow, 1, 927, 761);
-        if (slide == eCREATIONSLIDES.CHAPTERSELECT) {
+        if (slide == eCREATION_SLIDES.CHAPTERSELECT) {
             draw_sprite(spr_creation_arrow, 2, 607, 761);
         }
 
         // skip to end >> button
-        if ((slide >= eCREATIONSLIDES.CHAPTERTRAITS) && (slide < eCREATIONSLIDES.CHAPTERMASTER) && (custom != eCHAPTER_TYPE.CUSTOM)) {
+        if ((slide >= eCREATION_SLIDES.CHAPTERTRAITS) && (slide < eCREATION_SLIDES.CHAPTERMASTER) && (custom != eCHAPTER_TYPE.CUSTOM)) {
             draw_set_alpha(0.8);
             if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && scr_hit(927 + 64 + 12, 761 + 12, 927 + 128 - 12, 761 + 64 - 12)) {
                 draw_set_alpha(1);
@@ -815,7 +815,7 @@ try {
         if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && (!instance_exists(obj_creation_popup))) {
             if (point_and_click([925, 756, 997, 824])) {
                 // Next slide
-                if (slide >= eCREATIONSLIDES.CHAPTERTRAITS && slide <= eCREATIONSLIDES.CHAPTERMASTER) {
+                if (slide >= eCREATION_SLIDES.CHAPTERTRAITS && slide <= eCREATION_SLIDES.CHAPTERMASTER) {
                     scr_creation(slide);
                 }
             }
@@ -825,7 +825,7 @@ try {
                 change_slide = 1;
                 goto_slide = slide - 1;
                 popup = "";
-                if (goto_slide == eCREATIONSLIDES.CHAPTERSELECT) {
+                if (goto_slide == eCREATION_SLIDES.CHAPTERSELECT) {
                     highlight = 0;
                     highlighting = 0;
                     old_highlight = 0;

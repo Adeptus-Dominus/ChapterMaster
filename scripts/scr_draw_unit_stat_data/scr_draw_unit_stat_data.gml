@@ -270,7 +270,7 @@ function scr_draw_unit_stat_data(manage = false, data_block = {x1: 1008, y1: 520
             var y2 = y1 + string_height(trait_name);
 
             var _trait_growth_effect = "";
-            var _stat_list = ARR_stat_list;
+            var _stat_list = UNIT_STAT_LIST;
             for (var j = 0; j < array_length(_stat_list); j++) {
                 var _stat = _stat_list[j];
                 var _stat_name = global.stat_display_strings[$ _stat];

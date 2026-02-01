@@ -46,7 +46,7 @@ function scr_destroy_planet(destruction_method) {
         for (var ed = 0; ed < array_length(obj_ini.role[cah]); ed++) {
             unit = fetch_unit([cah, ed]);
             if ((unit.location_string == you.name) && (unit.planet_location == baid)) {
-                if (unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
+                if (unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                     obj_controller.alarm[7] = 15;
                     if (global.defeat <= 1) {
                         global.defeat = 1;
@@ -78,8 +78,8 @@ function scr_destroy_planet(destruction_method) {
     // Increase disposition for all Imperial factions when destroying daemon worlds
     // Relation penalties here, if applicable
     if (you.p_type[baid] == "Daemon") {
-        obj_controller.disposition[eFACTION.Imperium] += 5;
-        obj_controller.disposition[eFACTION.Mechanicus] += 5;
+        obj_controller.disposition[eFACTION.IMPERIUM] += 5;
+        obj_controller.disposition[eFACTION.MECHANICUS] += 5;
         obj_controller.disposition[4] += 5;
         obj_controller.disposition[5] += 5;
         var o = 0;
@@ -96,41 +96,41 @@ function scr_destroy_planet(destruction_method) {
             obj_controller.penitent_turnly = 0;
         }
         //TODO a shitload of helper functions to make this sort of stuff easier
-    } else if ((you.p_owner[baid] == eFACTION.Mechanicus || you.p_first[baid] == eFACTION.Mechanicus) && obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+    } else if ((you.p_owner[baid] == eFACTION.MECHANICUS || you.p_first[baid] == eFACTION.MECHANICUS) && obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
         obj_controller.loyalty -= 50;
         obj_controller.loyalty_hidden -= 50;
         decare_war_on_imperium_audiences();
-    } else if (enemy9 == eFACTION.Ecclesiarchy && obj_controller.faction_status[eFACTION.Ecclesiarchy] != "War") {
+    } else if (enemy9 == eFACTION.ECCLESIARCHY && obj_controller.faction_status[eFACTION.ECCLESIARCHY] != "War") {
         obj_controller.loyalty -= 50;
         obj_controller.loyalty_hidden -= 50;
 
         obj_controller.disposition[3] -= 80;
 
-        obj_controller.faction_status[eFACTION.Mechanicus] = "War";
+        obj_controller.faction_status[eFACTION.MECHANICUS] = "War";
 
-        scr_audience(eFACTION.Ecclesiarchy, "declare_war", -30, "War", 9999, 0);
+        scr_audience(eFACTION.ECCLESIARCHY, "declare_war", -30, "War", 9999, 0);
 
-        if (obj_controller.known[eFACTION.Inquisition] > 1) {
-            scr_audience(eFACTION.Inquisition, "declare_war", -40, "War", 9999, 0);
+        if (obj_controller.known[eFACTION.INQUISITION] > 1) {
+            scr_audience(eFACTION.INQUISITION, "declare_war", -40, "War", 9999, 0);
         }
-        scr_audience(eFACTION.Imperium, "declare_war", -50, "War", 9999, 2);
-    } else if (obj_controller.faction_status[eFACTION.Imperium] != "War" && planet_feature_bool(you.p_feature[baid], P_features.Daemonic_Incursion) == 0 && you.p_tyranids[baid] < 5) {
-        if (you.p_first[baid] == eFACTION.Imperium && you.p_type[baid] == "Hive") {
+        scr_audience(eFACTION.IMPERIUM, "declare_war", -50, "War", 9999, 2);
+    } else if (obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && planet_feature_bool(you.p_feature[baid], eP_FEATURES.DAEMONIC_INCURSION) == 0 && you.p_tyranids[baid] < 5) {
+        if (you.p_first[baid] == eFACTION.IMPERIUM && you.p_type[baid] == "Hive") {
             obj_controller.loyalty -= 50;
             obj_controller.loyalty_hidden -= 50;
 
             decare_war_on_imperium_audiences();
 
-            if (planet_feature_bool(you.p_feature[baid], P_features.Sororitas_Cathedral) == 1) {
+            if (planet_feature_bool(you.p_feature[baid], eP_FEATURES.SORORITAS_CATHEDRAL) == 1) {
                 obj_controller.disposition[5] -= 30;
             }
-        } else if (you.p_owner[baid] == eFACTION.Imperium && (you.p_type[baid] == "Temperate" || you.p_type[baid] == "Desert")) {
+        } else if (you.p_owner[baid] == eFACTION.IMPERIUM && (you.p_type[baid] == "Temperate" || you.p_type[baid] == "Desert")) {
             obj_controller.loyalty -= 30;
             obj_controller.loyalty_hidden -= 30;
-            obj_controller.disposition[eFACTION.Imperium] -= 30;
-            obj_controller.disposition[eFACTION.Mechanicus] -= 15;
-            obj_controller.disposition[eFACTION.Inquisition] -= 30;
-            obj_controller.disposition[eFACTION.Ecclesiarchy] -= 30;
+            obj_controller.disposition[eFACTION.IMPERIUM] -= 30;
+            obj_controller.disposition[eFACTION.MECHANICUS] -= 15;
+            obj_controller.disposition[eFACTION.INQUISITION] -= 30;
+            obj_controller.disposition[eFACTION.ECCLESIARCHY] -= 30;
         }
     }
 

@@ -1,5 +1,5 @@
 // Checks which systems you can see the planets
-if (obj_controller.menu != MENU.Default) {
+if (obj_controller.menu != eMENU.DEFAULT) {
     exit;
 }
 if (instances_exist_any([obj_drop_select, obj_saveload, obj_bomb_select])) {
@@ -14,7 +14,7 @@ if (!global.ui_click_lock) {
     }
     // if ((obj_controller.zoomed==0) and (mouse_y <__view_get( e__VW.YView, 0 )+62)) or (obj_controller.menu!=0) then exit;
     // if ((obj_controller.zoomed==0) and (mouse_y>__view_get( e__VW.YView, 0 )+830)) or (obj_controller.menu!=0) then exit;
-    if ((p_type[1] == "Craftworld") && (obj_controller.known[eFACTION.Eldar] == 0)) {
+    if ((p_type[1] == "Craftworld") && (obj_controller.known[eFACTION.ELDAR] == 0)) {
         exit;
     }
     if (vision == 0) {

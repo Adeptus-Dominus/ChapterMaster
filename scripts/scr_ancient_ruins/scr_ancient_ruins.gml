@@ -8,7 +8,7 @@ function scr_ancient_ruins_setup() {
     recoverables = [];
     failed_exploration = 0;
     unrecovered_items = false;
-    f_type = P_features.Ancient_Ruins;
+    f_type = eP_FEATURES.ANCIENT_RUINS;
     exploration_complete = false;
     planet_display = $"{ruins_size} Unexplored Ancient Ruins";
     completion_level = 0;
@@ -77,7 +77,7 @@ function scr_ruins_suprise_attack_player() {
 
 //spawn point for starship
 function scr_ruins_find_starship() {
-    f_type = P_features.Starship;
+    f_type = eP_FEATURES.STARSHIP;
     planet_display = "Ancient Starship";
     funds_spent = 0;
     player_hidden = 0;
@@ -293,15 +293,15 @@ function ruins_exploration_main_sequence() {
         }
 
         switch (_ruins.ruins_race) {
-            case eFACTION.Player:
-            case eFACTION.Imperium:
-            case eFACTION.Chaos:
+            case eFACTION.PLAYER:
+            case eFACTION.IMPERIUM:
+            case eFACTION.CHAOS:
                 ruins_battle = choose(10, 10, 10, 10, 11, 11, 12);
                 break;
-            case eFACTION.Ecclesiarchy:
+            case eFACTION.ECCLESIARCHY:
                 ruins_battle = 10;
                 break;
-            case eFACTION.Eldar:
+            case eFACTION.ELDAR:
                 ruins_battle = choose(6, 6, 10, 10, 10, 12);
                 break;
             default:
@@ -316,19 +316,19 @@ function ruins_exploration_main_sequence() {
         reset_popup_options();
         text = "Your marines descended into the ancient ruins, mapping them out as they go.  They quickly determine the ruins were once ";
         switch (_ruins.ruins_race) {
-            case eFACTION.Player:
+            case eFACTION.PLAYER:
                 text += "a Space Marine fortification from earlier times.";
                 break;
-            case eFACTION.Imperium:
+            case eFACTION.IMPERIUM:
                 text += "golden-age Imperial ruins, lost to time.";
                 break;
-            case eFACTION.Ecclesiarchy:
+            case eFACTION.ECCLESIARCHY:
                 text += "a magnificent temple of the Imperial Cult.";
                 break;
-            case eFACTION.Eldar:
+            case eFACTION.ELDAR:
                 text += "Eldar colonization structures from an unknown time.";
                 break;
-            case eFACTION.Chaos:
+            case eFACTION.CHAOS:
                 text += "golden-age Imperial ruins, since decorated with spikes and bones.";
                 break;
         }
@@ -363,7 +363,7 @@ function ruins_exploration_main_sequence() {
 
 /// @mixin PlanetData
 function scr_check_for_ruins_exploration() {
-    var _ruins_list = get_features(P_features.Ancient_Ruins);
+    var _ruins_list = get_features(eP_FEATURES.ANCIENT_RUINS);
     var _explore_ruins = 0;
     if (array_length(_ruins_list) > 0) {
         for (var _ruin = 0; _ruin < array_length(_ruins_list); _ruin++) {
@@ -396,7 +396,7 @@ function scr_ruins_combat_end() {
         var dice = roll_dice_chapter(1, 100, "low");
 
         if (dice < (_battle_threat * 10)) {
-            if (ruins_race == eFACTION.Ecclesiarchy) {
+            if (ruins_race == eFACTION.ECCLESIARCHY) {
                 obj_controller.disposition[5] += 2;
 
                 if (scr_has_adv("Reverent Guardians")) {
@@ -405,25 +405,25 @@ function scr_ruins_combat_end() {
             }
 
             if (ruins_race < 5) {
-                var di = choose(eFACTION.Imperium, eFACTION.Inquisition);
+                var di = choose(eFACTION.IMPERIUM, eFACTION.INQUISITION);
                 switch (di) {
-                    case eFACTION.Imperium:
-                        obj_controller.disposition[eFACTION.Imperium] += 2;
+                    case eFACTION.IMPERIUM:
+                        obj_controller.disposition[eFACTION.IMPERIUM] += 2;
                         break;
-                    case eFACTION.Inquisition:
-                        obj_controller.disposition[eFACTION.Inquisition] += 1;
+                    case eFACTION.INQUISITION:
+                        obj_controller.disposition[eFACTION.INQUISITION] += 1;
                         break;
                 }
-            } else if (ruins_race == eFACTION.Eldar) {
+            } else if (ruins_race == eFACTION.ELDAR) {
                 switch (ruins_battle) {
                     case 6:
-                        obj_controller.disposition[eFACTION.Eldar] -= 5;
+                        obj_controller.disposition[eFACTION.ELDAR] -= 5;
                         break;
                     case 11:
-                        obj_controller.disposition[eFACTION.Eldar] += 2;
+                        obj_controller.disposition[eFACTION.ELDAR] += 2;
                         break;
                     case 12:
-                        obj_controller.disposition[eFACTION.Eldar] += 4;
+                        obj_controller.disposition[eFACTION.ELDAR] += 4;
                         break;
                 }
             }
@@ -434,16 +434,16 @@ function scr_ruins_combat_end() {
         var dice = roll_dice_chapter(1, 100, "low");
 
         if (dice < (_battle_threat * 10)) {
-            if (ruins_race == eFACTION.Ecclesiarchy) {
+            if (ruins_race == eFACTION.ECCLESIARCHY) {
                 obj_controller.disposition[5] -= 2;
             } else if (ruins_race < 5) {
-                var di = choose(eFACTION.Imperium, eFACTION.Inquisition);
+                var di = choose(eFACTION.IMPERIUM, eFACTION.INQUISITION);
                 switch (di) {
-                    case eFACTION.Imperium:
-                        obj_controller.disposition[eFACTION.Imperium] -= 2;
+                    case eFACTION.IMPERIUM:
+                        obj_controller.disposition[eFACTION.IMPERIUM] -= 2;
                         break;
-                    case eFACTION.Inquisition:
-                        obj_controller.disposition[eFACTION.Inquisition] -= 1;
+                    case eFACTION.INQUISITION:
+                        obj_controller.disposition[eFACTION.INQUISITION] -= 1;
                         break;
                 }
             }

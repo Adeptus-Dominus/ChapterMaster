@@ -145,7 +145,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 
             // Meeting20
             if (diplo_keyphrase == "cs_meeting20") {
-                diplo_text = "[[A low rumbling growl issues from " + string(obj_controller.faction_leader[eFACTION.Chaos]) + "’s power armour before he speaks.]]\nI ask you for the last time Astartes. Why did you seek me out?";
+                diplo_text = "[[A low rumbling growl issues from " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + "’s power armour before he speaks.]]\nI ask you for the last time Astartes. Why did you seek me out?";
             }
 
             if ((mos == true) && (diplo_keyphrase != "cs_meeting20")) {
@@ -160,7 +160,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 add_diplomacy_option({option_text: "The Imperium and Inquisition's ignorance and hypocrisy will be the death of my Chapter.", goto: _goto});
 
                 var testy = true;
-                if (obj_controller.faction_status[eFACTION.Imperium] == "War" || obj_controller.marines <= 600) {
+                if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War" || obj_controller.marines <= 600) {
                     testy = false;
                 }
                 if (testy == false) {
@@ -176,7 +176,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
         }
         if (diplo_keyphrase == "cs_meeting21") {
-            event_log = string(obj_ini.master_name) + $" kills the {global.chapter_name} Master of Sanctity for " + string(obj_controller.faction_leader[eFACTION.Chaos]) + ".";
+            event_log = string(obj_ini.master_name) + $" kills the {global.chapter_name} Master of Sanctity for " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + ".";
             scr_event_log("purple", event_log);
             // scr_alert("purple","lol",string(tix),0,0);
 
@@ -197,7 +197,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             // Option4 here if all the right conditions are met
             var born = false;
             for (var ii = 1; i <= 200; i++) {
-                if ((obj_ini.role[0][ii] == obj_ini.role[100][eROLE.ChapterMaster]) && (string_count("$", obj_ini.spe[0][ii]) > 0)) {
+                if ((obj_ini.role[0][ii] == obj_ini.role[100][eROLE.CHAPTERMASTER]) && (string_count("$", obj_ini.spe[0][ii]) > 0)) {
                     born = true;
                 }
             }
@@ -232,7 +232,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         if (diplo_keyphrase == "cs_meeting9") {
             diplomacy = 10;
 
-            diplo_text = $"[[{obj_controller.faction_leader[eFACTION.Chaos]} turns to you, his voice even and calm]]\n\nHere is the first step you must take, to prove you’ve truly left the Imperium behind. Kill him. Kill your loyal brothers.\n[[His Chaos Terminators raise their weapons as one and point them at you. Somewhere behind them a daemon cackles.]]\nChoose now or be obliterated.";
+            diplo_text = $"[[{obj_controller.faction_leader[eFACTION.CHAOS]} turns to you, his voice even and calm]]\n\nHere is the first step you must take, to prove you’ve truly left the Imperium behind. Kill him. Kill your loyal brothers.\n[[His Chaos Terminators raise their weapons as one and point them at you. Somewhere behind them a daemon cackles.]]\nChoose now or be obliterated.";
 
             var _master_of_sanct = fetch_unit([0, 3]);
 
@@ -242,7 +242,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             var _string = $"{global.chapter_name}, I order you to hold your fire! {_master_of_sanct.name()}, if you doubt my leadership then let it be decided by single combat! [Duel your Master of Sanctity]";
             add_diplomacy_option({option_text: _string, goto: "cs_meeting_battle2"});
 
-            var _string = $"I deny you {obj_controller.faction_leader[eFACTION.Chaos]}.  And now I shall destroy you.  For the Emperor! [Attack Chaos forces]";
+            var _string = $"I deny you {obj_controller.faction_leader[eFACTION.CHAOS]}.  And now I shall destroy you.  For the Emperor! [Attack Chaos forces]";
             add_diplomacy_option({option_text: _string, goto: "cs_meeting_battle5"});
         }
 
@@ -266,7 +266,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             add_diplomacy_option({option_text: "Appeasing the Inquisition is no hard choice when your options are obey, or eventually be branded a heretic and be destroyed.", goto: choose("cs_meeting46", "cs_meeting47")});
             add_diplomacy_option({option_text: "Given enough time, everyone becomes a heretic in the eyes of the Inquisition. I will not wait for them to make their move against us.", goto: choose("cs_meeting46", "cs_meeting47")});
 
-            var _string = "You have one thing right, {obj_controller.faction_leader[eFACTION.Chaos]}. I am here to kill you. Open fire brothers, NOW!  [Battle Chaos forces]";
+            var _string = "You have one thing right, {obj_controller.faction_leader[eFACTION.CHAOS]}. I am here to kill you. Open fire brothers, NOW!  [Battle Chaos forces]";
             add_diplomacy_option({option_text: _string, goto: "cs_meeting_battle5", goto: "cs_meeting_battle5"});
         }
         // Sorry brah, you're not their homie
@@ -295,7 +295,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         }
         // Actually here to kill you
         if (diplo_keyphrase == "cs_meeting60") {
-            var chaos_leader = obj_controller.faction_leader[eFACTION.Chaos];
+            var chaos_leader = obj_controller.faction_leader[eFACTION.CHAOS];
             disposition[10] += 10;
             diplo_text = $"[[{chaos_leader} is silent for a moment, then a slow chuckle rises from deep within his ancient power armour. The chuckle erupts into hideous laughter that chills your blood with its otherworldly tenor.]]\nI thank you, I have not truly laughed in three hundred years. I shall take your skull as a memento of this day and your fine jest. But before I do, indulge my curiosity. Let us say you did kill me, /then/ what would you do? Claim the price on my head? Go crawling back on your belly to your Imperial masters like a whipped cur, dragging your kill behind you? Become master of this sector yourself now that you’ve bested your greatest foe? Or perhaps you’d offer up my soul to the Dark Gods, ignorantly fumbling about in the darkness for their favor? Tell me.";
 
@@ -334,15 +334,15 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 
         if (diplo_keyphrase == "cs_meeting135") {
             disposition[10] = max(disposition[10] + 10, 10);
-            diplo_text = $"[[{obj_controller.faction_leader[eFACTION.Chaos]}’s power armour grinds as he leans forward, his posture predatory.]]\nThen we have an accord. We will assist you as you take your first steps on the path toward Chaos. And my payment for all this?\n[[He chuckles.]]\nEnlisting an entire chapter in the service of the Dark Gods is all the reward I require.";
+            diplo_text = $"[[{obj_controller.faction_leader[eFACTION.CHAOS]}’s power armour grinds as he leans forward, his posture predatory.]]\nThen we have an accord. We will assist you as you take your first steps on the path toward Chaos. And my payment for all this?\n[[He chuckles.]]\nEnlisting an entire chapter in the service of the Dark Gods is all the reward I require.";
             diplo_text += "\nBut you cannot simply paint the eight-pointed star on your wargear and begin slaughtering in the name of the Dark Gods. No, some within your chapter will resist the choice you’ve made, either out of loyalty to the Corpse Emperor or out of fear of Chaos. Just think, it will be like your own little heresy. The ''" + string(obj_ini.master_name) + " Heresy!''";
             add_diplomacy_option({option_text: "[Continue]", goto: "cs_meeting136"});
         }
         if (diplo_keyphrase == "cs_meeting136") {
-            event_log = string(obj_controller.faction_leader[eFACTION.Chaos]) + " gives you an Artifact, meant to help corrupt your marines to the path of Chaos.";
+            event_log = string(obj_controller.faction_leader[eFACTION.CHAOS]) + " gives you an Artifact, meant to help corrupt your marines to the path of Chaos.";
             scr_event_log("purple", event_log); // scr_alert("purple","lol",string(tix),0,0);
             diplo_text = "[The tones of his humorless laughter are filled with the bitterness of ancient, poisoned memories. He continues.]\nYou must emerge victorious from this... \\Civil War\\, and not decimate your ranks in the process, if you are to be of any use to the Gods or to me.  ";
-            diplo_text += $"And to that end, I give you this.\n[[{obj_controller.faction_leader[eFACTION.Chaos]} gestures to one of his Terminators, who presents you with an Artifact. In your mind, something sinister seems to cling to the lines of its form.]]\nThe more of your warriors that come to accept Chaos, the fewer holdouts there will be to overcome when the time comes. This object will speed their introduction to its ways. You must also encourage your warriors to...broaden their horizons wherever possible, so they come to their own understanding of the Primordial Truth. But you must tread carefully at the same time, lest you alert the Inquisition. They must not have even a hint of what’s taking place in your Chapter, or they will obliterate you.";
+            diplo_text += $"And to that end, I give you this.\n[[{obj_controller.faction_leader[eFACTION.CHAOS]} gestures to one of his Terminators, who presents you with an Artifact. In your mind, something sinister seems to cling to the lines of its form.]]\nThe more of your warriors that come to accept Chaos, the fewer holdouts there will be to overcome when the time comes. This object will speed their introduction to its ways. You must also encourage your warriors to...broaden their horizons wherever possible, so they come to their own understanding of the Primordial Truth. But you must tread carefully at the same time, lest you alert the Inquisition. They must not have even a hint of what’s taking place in your Chapter, or they will obliterate you.";
             add_diplomacy_option({option_text: "[Continue]", goto: "cs_meeting137"});
         }
 
@@ -351,7 +351,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             complex_event = true;
             current_eventing = "";
             force_goodbye = 1;
-            faction_status[eFACTION.Chaos] = "Antagonism";
+            faction_status[eFACTION.CHAOS] = "Antagonism";
 
             with (obj_star) {
                 remove_star_problem("meeting");
@@ -360,17 +360,17 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 
             var born = false;
             for (var ii = 1; ii < 200; ii++) {
-                if (obj_ini.role[0][ii] == obj_ini.role[100][eROLE.ChapterMaster]) {
+                if (obj_ini.role[0][ii] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                     fetch_unit([0, ii]).corruption += floor(random_range(30, 50));
                 }
             }
             obj_controller.chaos_rating += 1;
 
             // Casket, Chalice, Tome
-            if (obj_ini.fleet_type == ePlayerBase.home_world) {
+            if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                 scr_add_artifact("chaos_gift", "", 0, obj_ini.home_name, 2);
             }
-            if (obj_ini.fleet_type != ePlayerBase.home_world) {
+            if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                 scr_add_artifact("chaos_gift", "", 0, obj_ini.ship[0], 501);
             }
         }
@@ -564,10 +564,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 
             if ((diplo_keyphrase == "intro") || (diplo_keyphrase == "intro2")) {
                 if (faction_gender[10] == 1) {
-                    tempd = "[[An ancient and veteran Chaos Lord, " + string(faction_leader[eFACTION.Chaos]) + " has been a massive threat to " + string(obj_ini.sector_name) + " and the surround region since time remembered.  He has fought against loyal Astartes and the forces of man for many millennia, if not since the Horus Heresy, and is personally responsible for several rebellions.  Were " + string(faction_leader[eFACTION.Chaos]) + " to be silenced, his poisonous lies and false promises would no longer taint the sector.]]";
+                    tempd = "[[An ancient and veteran Chaos Lord, " + string(faction_leader[eFACTION.CHAOS]) + " has been a massive threat to " + string(obj_ini.sector_name) + " and the surround region since time remembered.  He has fought against loyal Astartes and the forces of man for many millennia, if not since the Horus Heresy, and is personally responsible for several rebellions.  Were " + string(faction_leader[eFACTION.CHAOS]) + " to be silenced, his poisonous lies and false promises would no longer taint the sector.]]";
                 }
                 if (faction_gender[10] == 2) {
-                    tempd = "[An ancient World Eaters Chaos Lord, " + string(faction_leader[eFACTION.Chaos]) + " is a powerful warrior, blessed by Khorne.  He has personally vanquished dozens of Astartes Champions and countless more Imperial Servants.  It is by his warband's hands that a massive, bloody path of destruction has been carved through the stars.  His forces are just now arriving within " + string(obj_ini.sector_name) + "- a direct confrontation is ill-advised.]]";
+                    tempd = "[An ancient World Eaters Chaos Lord, " + string(faction_leader[eFACTION.CHAOS]) + " is a powerful warrior, blessed by Khorne.  He has personally vanquished dozens of Astartes Champions and countless more Imperial Servants.  It is by his warband's hands that a massive, bloody path of destruction has been carved through the stars.  His forces are just now arriving within " + string(obj_ini.sector_name) + "- a direct confrontation is ill-advised.]]";
                 }
                 tempd += "\n#";
 
@@ -580,7 +580,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                         tempd += "It is a fine day, is it not?  Yet again the Imperium displays its tyrannical, bureaucratic nature by declaring your chapter traitor.  To unmake your forces, alone, is beyond my reach.  It is fortunate I may simply sit back and watch as it is ground to dust by your former allies.  When we meet again, " + string(obj_ini.master_name) + "- if we meet again- I will enjoy killing you.";
                     }
                     if (rando == 2) {
-                        tempd += "We have not met before, " + string(obj_ini.master_name) + ", but until now this would have been troublesome.  I am " + string(faction_leader[eFACTION.Chaos]) + "- no doubt you know of me, or have at least seen my hand at play.  I am here, now, to laugh at you.  Though it's been long since I could feel joy, or amusement, my hearts are warmed at seeing the Imperium destroying their own.  If we meet again I would very much like to kill you.";
+                        tempd += "We have not met before, " + string(obj_ini.master_name) + ", but until now this would have been troublesome.  I am " + string(faction_leader[eFACTION.CHAOS]) + "- no doubt you know of me, or have at least seen my hand at play.  I am here, now, to laugh at you.  Though it's been long since I could feel joy, or amusement, my hearts are warmed at seeing the Imperium destroying their own.  If we meet again I would very much like to kill you.";
                     }
                 }
                 if ((faction_gender[10] == 1) && (diplo_keyphrase == "intro2")) {
@@ -826,7 +826,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                         "I grow weary of your ineptitude.",
                         "Judgement comes for all.",
                         "Your kind will be destroyed, in time.",
-                        $"[{faction_leader[eFACTION.Inquisition]} lets out an amused, extremely confident chuckle.]",
+                        $"[{faction_leader[eFACTION.INQUISITION]} lets out an amused, extremely confident chuckle.]",
                         "Your soul will be mine.",
                         "Do not trifle with me, worm.",
                         "I have travelled the stars for millennia.  Worlds have burned at my command, countless souls damned.  The ground trembles with every step.  Now I sit here and listen to you.  Where did it all go so wrong?"
@@ -1015,10 +1015,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             if (diplo_keyphrase == "intro") {
                 rando = choose(1, 2);
                 if (rando == 1) {
-                    tempd = $"[[To see Sector Commander {faction_leader[eFACTION.Imperium]} is to see what happens to heroes when their glory days have passed and the rot of ages sets in. Now a huge mass of fat and flab, he was once a mighty and respected general and the commander of a score of successful campaigns. As his reward for a glorious career, he was given commander of the sector and, as has happened to so many others, the bureaucracy crushed his warrior spirit and turned him into the man he is.]]";
+                    tempd = $"[[To see Sector Commander {faction_leader[eFACTION.IMPERIUM]} is to see what happens to heroes when their glory days have passed and the rot of ages sets in. Now a huge mass of fat and flab, he was once a mighty and respected general and the commander of a score of successful campaigns. As his reward for a glorious career, he was given commander of the sector and, as has happened to so many others, the bureaucracy crushed his warrior spirit and turned him into the man he is.]]";
                 }
                 if (rando == 2) {
-                    tempd = $"[[Loyal to allies and venomous to enemies, few figures command such opposing reputations as {faction_leader[eFACTION.Imperium]}. Enemies of the Imperium speak in hushed tones of his incredible cruelty and harsh actions against them, whereas the citizens and organizations that lay claim to the protection of the Emperor loudly toast his generosity and stalwart courage. A friend to keep and an enemy to lose.]]";
+                    tempd = $"[[Loyal to allies and venomous to enemies, few figures command such opposing reputations as {faction_leader[eFACTION.IMPERIUM]}. Enemies of the Imperium speak in hushed tones of his incredible cruelty and harsh actions against them, whereas the citizens and organizations that lay claim to the protection of the Emperor loudly toast his generosity and stalwart courage. A friend to keep and an enemy to lose.]]";
                 }
                 tempd += "\n#";
                 rando = choose(1, 2);
@@ -1198,11 +1198,11 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 with (obj_star) {
                     for (var p = 1; p <= 4; p++) {
                         if (planets >= p) {
-                            if ((p_owner[p] == eFACTION.Player) && (dispo[p] < 100) && (planet_feature_bool(p_feature[p], P_features.Monastery) == 0)) {
-                                if (p_first[p] != eFACTION.Player) {
+                            if ((p_owner[p] == eFACTION.PLAYER) && (dispo[p] < 100) && (planet_feature_bool(p_feature[p], eP_FEATURES.MONASTERY) == 0)) {
+                                if (p_first[p] != eFACTION.PLAYER) {
                                     p_owner[p] = p_first[p];
                                 } else {
-                                    p_owner[p] = eFACTION.Imperium;
+                                    p_owner[p] = eFACTION.IMPERIUM;
                                 }
                                 scr_alert("red", "blarg", "Control of " + string(name) + " " + scr_roman(p) + " lost!", x, y);
                                 scr_event_log("red", "Control of " + string(name) + " " + scr_roman(p) + " lost!");
@@ -1384,7 +1384,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     diplo_text = $"I have received word that you have killed the Planetary Governor of {_assasin_place} and placed a fool in power.  Your attempts to control this sector, and seemingly emulate the Ultramarines, have not gone unnoticed.  Do not think this will go unpunished.";
                 }
                 if (rando == 3) {
-                    diplo_text = $"What do you think you are doing, Chapter Master?  Killing a Planetary Governor?  Replacing them with one of your tools?  Inquisitor Lord {faction_leader[eFACTION.Inquisition]} will hear of this madness.";
+                    diplo_text = $"What do you think you are doing, Chapter Master?  Killing a Planetary Governor?  Replacing them with one of your tools?  Inquisitor Lord {faction_leader[eFACTION.INQUISITION]} will hear of this madness.";
                 }
                 array_delete(obj_controller.event, _event_index, 1);
             }
@@ -1394,10 +1394,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             if (diplo_keyphrase == "intro") {
                 rando = choose(1, 2);
                 if (rando == 1) {
-                    diplo_text = "[[" + string(faction_leader[eFACTION.Mechanicus]) + " is a name often spoken of on the factory floor of " + string(obj_ini.sector_name) + "'s forgeworlds, though it cursed as often as it's praised. Sometimes referred to as “The Iron Whip”, " + string(faction_leader[eFACTION.Mechanicus]) + " is famed for the high level of efficiency he extracts from those working under him, if not particularly for the quality of their works.]]";
+                    diplo_text = "[[" + string(faction_leader[eFACTION.MECHANICUS]) + " is a name often spoken of on the factory floor of " + string(obj_ini.sector_name) + "'s forgeworlds, though it cursed as often as it's praised. Sometimes referred to as “The Iron Whip”, " + string(faction_leader[eFACTION.MECHANICUS]) + " is famed for the high level of efficiency he extracts from those working under him, if not particularly for the quality of their works.]]";
                 }
                 if (rando == 2) {
-                    diplo_text = "[[The flesh is weak. " + string(faction_leader[eFACTION.Mechanicus]) + " believes in this part of the iron creed above all others, forcing all those under him to mirror his dedication. All meaty parts of his body have been removed, leaving only the most vital parts of his brain. His retinue display their rank by showing how little of their body remains.]]";
+                    diplo_text = "[[The flesh is weak. " + string(faction_leader[eFACTION.MECHANICUS]) + " believes in this part of the iron creed above all others, forcing all those under him to mirror his dedication. All meaty parts of his body have been removed, leaving only the most vital parts of his brain. His retinue display their rank by showing how little of their body remains.]]";
                 }
                 diplo_text += "\n#";
                 if ((disposition[3] > 30) && (disposition[3] < 60)) {
@@ -1743,10 +1743,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             if (diplo_keyphrase == "intro") {
                 rando = choose(1, 1, 2);
                 if (rando == 1) {
-                    tempd = "[[An ancient and well respected Inquistor Lord, " + string(faction_leader[eFACTION.Inquisition]) + " has purged heresy and exterminated mutants for well over four centuries. His steely gaze and iron will have broken as many heretics as have the tools of persuasion wielded by his retinue. Were he to die, the Ordo " + choose("Malleus", "Xenos", "Hereticus") + " would dearly miss his services.]]";
+                    tempd = "[[An ancient and well respected Inquistor Lord, " + string(faction_leader[eFACTION.INQUISITION]) + " has purged heresy and exterminated mutants for well over four centuries. His steely gaze and iron will have broken as many heretics as have the tools of persuasion wielded by his retinue. Were he to die, the Ordo " + choose("Malleus", "Xenos", "Hereticus") + " would dearly miss his services.]]";
                 }
                 if (rando == 2) {
-                    tempd = "[[A thousand heretics have cursed the name of " + string(faction_leader[eFACTION.Inquisition]) + " with their last breath but he is still not satisfied. Remorse is as alien to him as pity and he will stop at nothing to destroy the enemies of purity.]]";
+                    tempd = "[[A thousand heretics have cursed the name of " + string(faction_leader[eFACTION.INQUISITION]) + " with their last breath but he is still not satisfied. Remorse is as alien to him as pity and he will stop at nothing to destroy the enemies of purity.]]";
                 }
                 tempd += "\n#";
                 if (rela == "friendly") {
@@ -1917,7 +1917,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 }
             }
             if (diplo_keyphrase == "attacked") {
-                diplo_text = "You shall pay dearly for this, as shall your entire chapter. So swears " + string(faction_leader[eFACTION.Inquisition]) + "!";
+                diplo_text = "You shall pay dearly for this, as shall your entire chapter. So swears " + string(faction_leader[eFACTION.INQUISITION]) + "!";
             }
             if ((diplo_keyphrase == "declare_war") && (sorc == false)) {
                 force_goodbye = 1;
@@ -2161,7 +2161,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     diplo_text = "Remember whom you speak to, Chapter Master.";
                 }
                 if (rela == "neutral") {
-                    diplo_text = $"I, Inquisitor Lord {faction_leader[eFACTION.Inquisition]}, on behalf of the Inquisition, am awaiting your words.";
+                    diplo_text = $"I, Inquisitor Lord {faction_leader[eFACTION.INQUISITION]}, on behalf of the Inquisition, am awaiting your words.";
                 }
                 if (rela == "hostile") {
                     diplo_text = "Speak your next words very carefully, Astartes, for they may be your last.";
@@ -2200,7 +2200,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                         scr_dialogue("you_better");
                         force_goodbye = 1;
                         hunt_player_serfs(audience_data.planet, audience_data.system);
-                        alter_dispositions([[eFACTION.Imperium, -15], [eFACTION.Inquisition, -30], [eFACTION.Ecclesiarchy, -10]]);
+                        alter_dispositions([[eFACTION.IMPERIUM, -15], [eFACTION.INQUISITION, -30], [eFACTION.ECCLESIARCHY, -10]]);
                         exit;
                     },
                 });
@@ -2212,12 +2212,12 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 
                         hunt_player_serfs(audience_data.planet, audience_data.system);
 
-                        alter_dispositions([[eFACTION.Imperium, -15], [eFACTION.Inquisition, -30], [eFACTION.Ecclesiarchy, -10]]);
+                        alter_dispositions([[eFACTION.IMPERIUM, -15], [eFACTION.INQUISITION, -30], [eFACTION.ECCLESIARCHY, -10]]);
                         exit;
                     },
                 });
 
-                if (obj_controller.disposition[eFACTION.Inquisition] >= 70) {
+                if (obj_controller.disposition[eFACTION.INQUISITION] >= 70) {
                     add_diplomacy_option({option_text: "Perhaps We can come to an arrangement", tooltip: "This action will trigger a Charisma test", choice_func: function() {}});
                 }
                 add_diplomacy_option({
@@ -2225,7 +2225,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     key: "serf_removal_defy",
                     force_goodbye: 1,
                     choice_func: function() {
-                        alter_dispositions([[eFACTION.Imperium, -30], [eFACTION.Inquisition, -60], [eFACTION.Ecclesiarchy, -30]]);
+                        alter_dispositions([[eFACTION.IMPERIUM, -30], [eFACTION.INQUISITION, -60], [eFACTION.ECCLESIARCHY, -30]]);
                     },
                     goto: "die_heretic",
                 });
@@ -2245,10 +2245,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     diplo_text = "Very well, Chapter Master.  I will bury you and your Chapter so thoroughly even I will forget your existence.";
                 }
                 if (rando == 2) {
-                    if (obj_ini.fleet_type == ePlayerBase.home_world) {
+                    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                         diplo_text = "I understand.  I am authorizing the deployment of cyclonic torpedoes.  Make peace with your homeworld, Chapter Master.";
                     }
-                    if (obj_ini.fleet_type != ePlayerBase.home_world) {
+                    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                         diplo_text = "I am mobilizing the Segmentum battlefleet.  You may run, heretic, but it will do you no good.";
                     }
                 }
@@ -2259,7 +2259,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             if (diplo_keyphrase == "chaos_audience1") {
                 force_goodbye = 1;
                 if (rando == 1) {
-                    diplo_text = "I have been notified of your corrospondences with " + string(faction_leader[eFACTION.Chaos]) + ".  There is no reason for you to talk to such a villain, your only interactions should be both short lived and extremely violent.";
+                    diplo_text = "I have been notified of your corrospondences with " + string(faction_leader[eFACTION.CHAOS]) + ".  There is no reason for you to talk to such a villain, your only interactions should be both short lived and extremely violent.";
                 }
                 if (rando == 2) {
                     diplo_text = "Whatever your reasons for seeking an audience with traitors, they can not be sufficient and I trust you will not repeat your mistake.";
@@ -2343,14 +2343,14 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         // ** Ecclesiarchy **
         if (diplomacy == 5) {
             var _diag_data = {
-                faction_leader: faction_leader[eFACTION.Ecclesiarchy],
+                faction_leader: faction_leader[eFACTION.ECCLESIARCHY],
                 sector: obj_ini.sector_name,
                 relationship: rela,
                 annoyed: annoyed[diplomacy],
                 turns_ignored: turns_ignored[diplomacy],
                 chapter_name: global.chapter_name,
                 master_name: obj_ini.master_name,
-                faction_status: obj_controller.faction_status[eFACTION.Ecclesiarchy],
+                faction_status: obj_controller.faction_status[eFACTION.ECCLESIARCHY],
             };
             var _diag_set = global.dialogue.sisters;
             diplo_text = create_dialogue_string(global.dialogue.sisters, diplo_keyphrase, _diag_data);
@@ -2419,7 +2419,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     obj_controller.disposition[5] -= 10;
                 }
                 if (_diag_data.faction_status == "Allied") {
-                    obj_controller.faction_status[eFACTION.Ecclesiarchy] = "Antagonism";
+                    obj_controller.faction_status[eFACTION.ECCLESIARCHY] = "Antagonism";
                 }
             }
 
@@ -2921,13 +2921,13 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     if ((rando == 5) && (string_count("CM|", obj_controller.useful_info) > 0)) {
                         rando -= 1;
                     }
-                    if ((rando == 4) && (random_event_next != EVENT.none)) {
+                    if ((rando == 4) && (random_event_next != eEVENT.NONE)) {
                         rando -= 1;
                     }
-                    if ((rando == 3) && ((turn < chaos_turn) || (known[eFACTION.Chaos] > 3))) {
+                    if ((rando == 3) && ((turn < chaos_turn) || (known[eFACTION.CHAOS] > 3))) {
                         rando -= 1;
                     }
-                    if ((rando == 2) && ((known[eFACTION.Ork] < 0) || (known[eFACTION.Ork] >= 3) || (string_count("WL7|", obj_controller.useful_info) == 1))) {
+                    if ((rando == 2) && ((known[eFACTION.ORK] < 0) || (known[eFACTION.ORK] >= 3) || (string_count("WL7|", obj_controller.useful_info) == 1))) {
                         rando -= 1;
                     }
                     if ((rando == 1) && (string_count("WG|", obj_controller.useful_info) > 1)) {
@@ -2958,47 +2958,47 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 // * Next random event *
                 if (rando == 4) {
                     scr_random_event(false);
-                    if ((random_event_next == EVENT.strange_behavior) && (obj_controller.disposition[6] < 15)) {
+                    if ((random_event_next == eEVENT.STRANGE_BEHAVIOR) && (obj_controller.disposition[6] < 15)) {
                         diplo_text = "One of your Mon'keigh soldiers will no longer act as you expect him to. Be wary, when one Mon'keigh is influenced the rest of the herd will be.";
-                    } else if ((random_event_next == EVENT.strange_behavior) && (obj_controller.disposition[6] >= 15)) {
+                    } else if ((random_event_next == eEVENT.STRANGE_BEHAVIOR) && (obj_controller.disposition[6] >= 15)) {
                         diplo_text = "One of your soldiers will no longer act as you expect him to. Be wary, when one is influenced the rest of the herd will be.";
-                    } else if (random_event_next == EVENT.space_hulk) {
+                    } else if (random_event_next == eEVENT.SPACE_HULK) {
                         diplo_text = "It comes from the warp, a relic from the past. It is steeped in the energies of the ethereal tides. Beware.";
-                    } else if (random_event_next == EVENT.promotion) {
+                    } else if (random_event_next == eEVENT.PROMOTION) {
                         diplo_text = "One of your soldiers will cover himself in glory. As his “Chapter Master”, a title I find inherently foolish, you may wish to reward him.";
-                    } else if (random_event_next == EVENT.strange_building) {
+                    } else if (random_event_next == eEVENT.STRANGE_BUILDING) {
                         diplo_text = "The Red robed ones, their “Machine God”, calls to them. Soon, one shall lose their tenuos grip on the here and now and follow the pictures in his head.";
-                    } else if (random_event_next == EVENT.sororitas) {
+                    } else if (random_event_next == eEVENT.SORORITAS) {
                         diplo_text = "Your priestesses of war, who worship He Who Fell, will gather their forces soon, to stay.";
-                    } else if (random_event_next == EVENT.inquisition_mission) {
+                    } else if (random_event_next == eEVENT.INQUISITION_MISSION) {
                         diplo_text = "They will come very soon, the bearers of hellfire and hate. They will scour the sector for so-called ''Heresy''.";
-                    } else if (random_event_next == EVENT.inquisition_planet) {
+                    } else if (random_event_next == eEVENT.MECHANICUS_MISSION) {
                         diplo_text = "Your questions askers seek to learn more of a planet.  Warp meddlers and free thinkers would be well-served with caution. Beware, Chapter Master.";
-                    } else if (random_event_next == EVENT.rogue_trader) {
+                    } else if (random_event_next == eEVENT.ROGUE_TRADER) {
                         diplo_text = "Free thinkers, traders in the vast expanse. They are coming, perhaps you aught to set out your wares?";
-                    } else if (random_event_next == EVENT.fleet_delay) {
+                    } else if (random_event_next == eEVENT.FLEET_DELAY) {
                         diplo_text = "Mon'keigh, your fleets may be delayed by my kin. Eldar Pirates, your kind would call them.";
-                    } else if (random_event_next == EVENT.harlequins) {
+                    } else if (random_event_next == eEVENT.HARLEQUINS) {
                         diplo_text = "Rillietann. They have come. They are on some world, hidden, or soon will be.";
-                    } else if (random_event_next == EVENT.succession_war) {
+                    } else if (random_event_next == eEVENT.SUCCESSION_WAR) {
                         diplo_text = "Your underlings fight for power, Mon'keigh.  Someone will die who believes he is important. His children and ''friends'' will vie for the rite to call himself or herself governor. Or king. Or whatever self aggrandising title your people name yourselves.";
-                    } else if (random_event_next == EVENT.random_fun) {
+                    } else if (random_event_next == eEVENT.RANDOM_FUN) {
                         diplo_text = "Something will happen soon. The runes do not show me exactly what will happen, only that it concerns you. Watch the horizon, Mon'keigh.";
-                    } else if (random_event_next == EVENT.warp_storms) {
+                    } else if (random_event_next == eEVENT.WARP_STORMS) {
                         diplo_text = "The tides of the Immaterium are unsettled. Of course, it's hard to calculate where the Immaterium will affect the Materium, but I predict it will come soon.";
-                    } else if (random_event_next == EVENT.enemy_forces) {
+                    } else if (random_event_next == eEVENT.ENEMY_FORCES) {
                         diplo_text = "From beyond your circle of firelight, they are coming. Rest not Mon'keigh, for they will come soon and are bent on destruction.";
-                    } else if (random_event_next == EVENT.crusade) {
+                    } else if (random_event_next == eEVENT.CRUSADE) {
                         diplo_text = "Soon, your masters will call you to heel like a dog to attack the foes of man. One of your ''Crusades'' of hate, ignorance and bigotry will be called.";
-                    } else if (random_event_next == EVENT.enemy) {
+                    } else if (random_event_next == eEVENT.ENEMY) {
                         diplo_text = "You will make an enemy among your fellow man. Soon they shall whisper into their lord's ear, telling that you are a threat, a beetle to be crushed beneath their boot.  You would do well to speak carefully, for some time.";
-                    } else if (random_event_next == EVENT.mutation) {
+                    } else if (random_event_next == eEVENT.MUTATION) {
                         diplo_text = "Your 'battle brothers' are twisting like snakes beneath your feet. Watch yourself, Chapter Master.";
-                    } else if (random_event_next == EVENT.ship_lost) {
+                    } else if (random_event_next == eEVENT.SHIP_LOST) {
                         diplo_text = "The Immaterium will swallow one of your ships.  Do not look for it to return.";
-                    } else if (random_event_next == EVENT.chaos_invasion) {
+                    } else if (random_event_next == eEVENT.CHAOS_INVASION) {
                         diplo_text = "Your twisted brethren, who fell to the lure of the Immaterium, will soon arrive with their wrath and demons. Beware.";
-                    } else if (random_event_next == EVENT.necron_awaken) {
+                    } else if (random_event_next == eEVENT.NECRON_AWAKEN) {
                         diplo_text = "Our old enemies, the men of metal, are close. You call them “Necrons”, and you will need to fight them soon. Or flee, it matters not to me.";
                     } else {
                         diplo_text = "[Missing Dialogue: " + string(random_event_next) + " forcast.]"; // this will print a number rather that a string which is less than ideal, but we can just add new flavour text whem we get the bug reports
@@ -3016,7 +3016,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                 }
                                 with (obj_star) {
                                     for (var i = 1; i <= 4; i++) {
-                                        if (planet_feature_bool(p_feature[1], P_features.Warlord10) == 1) {
+                                        if (planet_feature_bool(p_feature[1], eP_FEATURES.WARLORD10) == 1) {
                                             instance_create(x, y, obj_temp5);
                                         }
                                     }
@@ -3026,7 +3026,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                     you = instance_nearest(obj_temp5.x, obj_temp5.y, obj_star);
                                     nuum = you.name;
                                     for (var i = 1; i <= you.planets; i++) {
-                                        if (planet_feature_bool(you.p_feature[1], P_features.Warlord10) == 1) {
+                                        if (planet_feature_bool(you.p_feature[1], eP_FEATURES.WARLORD10) == 1) {
                                             plan = i;
                                         }
                                     }
@@ -3051,7 +3051,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                             }
                             with (obj_star) {
                                 for (var i = 1; i <= 4; i++) {
-                                    if (planet_feature_bool(p_feature[1], P_features.OrkWarboss) == 1) {
+                                    if (planet_feature_bool(p_feature[1], eP_FEATURES.ORKWARBOSS) == 1) {
                                         instance_create(x, y, obj_temp5);
                                     }
                                 }
@@ -3061,14 +3061,14 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                 you = instance_nearest(obj_temp5.x, obj_temp5.y, obj_star);
                                 nuum = you.name;
                                 for (var i = 1; i <= you.planets; i++) {
-                                    if (planet_feature_bool(you.p_feature[1], P_features.OrkWarboss) == 1) {
+                                    if (planet_feature_bool(you.p_feature[1], eP_FEATURES.ORKWARBOSS) == 1) {
                                         plan = i;
                                     }
                                 }
                                 if (you.p_orks[plan] < 6) {
                                     you.p_orks[plan] = 6;
                                 }
-                                diplo_text = "The greenskin horde is led by a massive Ork, one who calls himself " + string(faction_leader[eFACTION.Ork]) + ".  If this warboss were to perish the rest might be dealt with in a more languorous fashion.  He is located on " + string(nuum);
+                                diplo_text = "The greenskin horde is led by a massive Ork, one who calls himself " + string(faction_leader[eFACTION.ORK]) + ".  If this warboss were to perish the rest might be dealt with in a more languorous fashion.  He is located on " + string(nuum);
                                 if (plan == 1) {
                                     diplo_text += " I.";
                                 }
@@ -3100,14 +3100,14 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                 with (obj_temp5) {
                                     instance_destroy();
                                 }
-                                if (obj_ini.fleet_type == ePlayerBase.home_world) {
+                                if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                                     with (obj_star) {
                                         if (owner == 1) {
                                             instance_create(x, y, obj_temp6);
                                         }
                                     }
                                 }
-                                if (obj_ini.fleet_type != ePlayerBase.home_world) {
+                                if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                                     with (obj_p_fleet) {
                                         if (capital_number > 0) {
                                             instance_create(x, y, obj_temp6);
@@ -3116,13 +3116,13 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                 }
 
                                 with (obj_star) {
-                                    if (owner != eFACTION.Imperium) {
+                                    if (owner != eFACTION.IMPERIUM) {
                                         instance_deactivate_object(id);
                                     }
-                                    if ((owner == eFACTION.Imperium) && (point_distance(x, y, obj_temp6.x, obj_temp6.y) > 250)) {
+                                    if ((owner == eFACTION.IMPERIUM) && (point_distance(x, y, obj_temp6.x, obj_temp6.y) > 250)) {
                                         instance_deactivate_object(id);
                                     }
-                                    if ((owner == eFACTION.Imperium) && (planets < 1)) {
+                                    if ((owner == eFACTION.IMPERIUM) && (planets < 1)) {
                                         instance_deactivate_object(id);
                                     }
                                 }
@@ -3139,7 +3139,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                                 }
                                             }
                                             if (onceh != 0) {
-                                                array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
+                                                array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
                                                 obj_controller.temp[90] = planet_numeral_name(onceh);
                                             }
                                         }
@@ -3162,14 +3162,14 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                 with (obj_temp5) {
                                     instance_destroy();
                                 }
-                                if (obj_ini.fleet_type == ePlayerBase.home_world) {
+                                if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                                     with (obj_star) {
                                         if (owner == 1) {
                                             instance_create(x, y, obj_temp6);
                                         }
                                     }
                                 }
-                                if (obj_ini.fleet_type != ePlayerBase.home_world) {
+                                if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                                     with (obj_p_fleet) {
                                         if (capital_number > 0) {
                                             instance_create(x, y, obj_temp6);
@@ -3177,13 +3177,13 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                     }
                                 }
                                 with (obj_star) {
-                                    if (owner != eFACTION.Imperium) {
+                                    if (owner != eFACTION.IMPERIUM) {
                                         instance_deactivate_object(id);
                                     }
-                                    if ((owner == eFACTION.Imperium) && (point_distance(x, y, obj_temp6.x, obj_temp6.y) < 800)) {
+                                    if ((owner == eFACTION.IMPERIUM) && (point_distance(x, y, obj_temp6.x, obj_temp6.y) < 800)) {
                                         instance_deactivate_object(id);
                                     }
-                                    if ((owner == eFACTION.Imperium) && (planets < 1)) {
+                                    if ((owner == eFACTION.IMPERIUM) && (planets < 1)) {
                                         instance_deactivate_object(id);
                                     }
                                 }
@@ -3200,7 +3200,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                                 }
                                             }
                                             if (onceh != 0) {
-                                                array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
+                                                array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
                                                 obj_controller.temp[90] = planet_numeral_name(onceh);
                                             }
                                         }
@@ -3270,7 +3270,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 if (rela == "friendly") {
                     rando = choose(1, 2);
                     if (rando == 1) {
-                        diplo_text += "Hey, if it isn't me favorite ‘umie! What can I do for ya? Want some help with some skumgrods, a quick trade or just come to chat with old " + string(faction_leader[eFACTION.Ork]) + "?";
+                        diplo_text += "Hey, if it isn't me favorite ‘umie! What can I do for ya? Want some help with some skumgrods, a quick trade or just come to chat with old " + string(faction_leader[eFACTION.ORK]) + "?";
                     }
                     if (rando == 2) {
                         diplo_text += "Pull up a chair, Chapta masta! Want some fungus ale? It's good stuff! There's even a squig fight on in da pits today! Oh, but you're always buisness, ain't ya?";
@@ -3626,10 +3626,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             if (diplo_keyphrase == "intro") {
                 rando = choose(1, 2);
                 if (rando == 1) {
-                    tempd = "[[Tall and slender, its skin is blue and clammy-looking.  Disgusting.  Its face contains two large, expressionless eyes, a slit-like mouth, and a bizarre I-shaped gash between its eyes that must function as a nose.  So this is " + string(faction_title[8]) + " " + string(faction_leader[eFACTION.Tau]) + ".  This particular xenos is said to " + choose("have quite the silver tongue", "have negotiated the surrender of many Imperial worlds", "have a great deal of military backing.") + ".]]";
+                    tempd = "[[Tall and slender, its skin is blue and clammy-looking.  Disgusting.  Its face contains two large, expressionless eyes, a slit-like mouth, and a bizarre I-shaped gash between its eyes that must function as a nose.  So this is " + string(faction_title[8]) + " " + string(faction_leader[eFACTION.TAU]) + ".  This particular xenos is said to " + choose("have quite the silver tongue", "have negotiated the surrender of many Imperial worlds", "have a great deal of military backing.") + ".]]";
                 }
                 if (rando == 2) {
-                    tempd = "[[Tall and slender, its skin is a light blue and looks almost reptilian.  A Y-shaped slit nestles between its eyes, and a mouth like a slit sits below that.  This must be " + string(faction_title[8]) + " " + string(faction_leader[eFACTION.Tau]) + ".  The Ordo Xenos tells us that this particular xeno " + choose("can sense weakness in a rock", "knows more than it will let on", "uses its words like a scalpel") + ".]]";
+                    tempd = "[[Tall and slender, its skin is a light blue and looks almost reptilian.  A Y-shaped slit nestles between its eyes, and a mouth like a slit sits below that.  This must be " + string(faction_title[8]) + " " + string(faction_leader[eFACTION.TAU]) + ".  The Ordo Xenos tells us that this particular xeno " + choose("can sense weakness in a rock", "knows more than it will let on", "uses its words like a scalpel") + ".]]";
                 }
                 tempd += "\n#";
                 rando = choose(1, 2);
@@ -3903,10 +3903,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         }
 
         // ** Trading Error Handling **
-        if ((diplo_keyphrase == "trade_error_1") && (obj_ini.fleet_type == ePlayerBase.home_world)) {
+        if ((diplo_keyphrase == "trade_error_1") && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
             diplo_text = "[Error 1: No valid planet to trade with.]";
         }
-        if ((diplo_keyphrase == "trade_error_1") && (obj_ini.fleet_type != ePlayerBase.home_world)) {
+        if ((diplo_keyphrase == "trade_error_1") && (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD)) {
             diplo_text = "[Error 1: No valid fleet to trade with.]";
         }
         if (diplo_keyphrase == "trade_error_2") {

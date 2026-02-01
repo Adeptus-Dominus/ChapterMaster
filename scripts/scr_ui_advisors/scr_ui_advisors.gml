@@ -12,15 +12,15 @@ function scr_ui_advisors() {
     // This script draws all of the ADVISOR screens
 
     // ** Fleet **
-    if (menu == MENU.Fleet) {
+    if (menu == eMENU.FLEET) {
         scr_fleet_advisor();
-    } else if (menu == MENU.Apothecarion) {
+    } else if (menu == eMENU.APOTHECARION) {
         // ** Apothecarium **
         scr_apothecarium();
     }
 
     // ** Reclusium **
-    if (floor(menu) == MENU.Reclusiam) {
+    if (floor(menu) == eMENU.RECLUSIAM) {
         draw_sprite(spr_rock_bg, 0, xx, yy);
 
         draw_set_alpha(0.75);
@@ -75,10 +75,10 @@ function scr_ui_advisors() {
         //
         if ((global.chapter_name != "Space Wolves") && (global.chapter_name != "Iron Hands")) {
             blurp += "##Currently, we are training additional " + string(obj_ini.role[100][14]) + " at a ";
-            var _recruit_rates = ARR_recruitment_rates;
+            var _recruit_rates = RECRUITMENT_RATES;
             blurp += _recruit_rates[training_chaplain];
             if (training_chaplain > 0 && training_chaplain <= 6) {
-                var training_points_values = ARR_chaplain_training_tiers;
+                var training_points_values = CHAPLAIN_TRAINING_TIERS;
                 eta = floor((47 - chaplain_points) / training_points_values[training_chaplain]) + 1;
             }
             //
@@ -95,7 +95,7 @@ function scr_ui_advisors() {
 
             draw_set_font(fnt_40k_30b);
             draw_set_halign(fa_center);
-            if (menu == MENU.Reclusiam) {
+            if (menu == eMENU.RECLUSIAM) {
                 draw_text_transformed(xx + 1262, yy + 70, "Penitorium", 0.6, 0.6, 0);
             }
             if (menu == 12.1) {
@@ -137,7 +137,7 @@ function scr_ui_advisors() {
             if ((global.chapter_name != "Space Wolves") && (global.chapter_name != "Iron Hands")) {
                 blurp += "Training of further " + string(obj_ini.role[100][14]) + "s";
                 if (training_chaplain >= 0 && training_chaplain <= 6) {
-                    var _recruit_pace = ARR_recruitment_pace;
+                    var _recruit_pace = RECRUITMENT_PACE_DESCRIPTIONS;
                     blurp += _recruit_pace[training_chaplain];
                 }
                 if (training_chaplain > 0) {
@@ -367,7 +367,7 @@ function scr_ui_advisors() {
                 fest_sid = 0;
                 fest_wid = 0;
 
-                fest_planet = (obj_ini.fleet_type == ePlayerBase.home_world) ? 1 : -1;
+                fest_planet = (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) ? 1 : -1;
 
                 fest_lav = 0;
                 fest_locals = 0;
@@ -815,7 +815,7 @@ function scr_ui_advisors() {
         draw_rectangle(xx + 217, yy + 380, xx + 617, yy + 411, 1);
 
         draw_set_font(fnt_large);
-        draw_text_transformed(xx + 410, yy + 29, obj_ini.role[100][eROLE.ChapterMaster], 0.5, 0.5, 0);
+        draw_text_transformed(xx + 410, yy + 29, obj_ini.role[100][eROLE.CHAPTERMASTER], 0.5, 0.5, 0);
 
         draw_set_font(fnt_fancy);
         draw_text_transformed(xx + 410, yy + 40, string_hash_to_newline(string(obj_ini.master_name)), 1.5, 1.5, 0);
@@ -873,7 +873,7 @@ function scr_ui_advisors() {
         draw_set_halign(fa_left);
     }
 
-    if ((menu == MENU.Manage) && (managing == 0)) {
+    if ((menu == eMENU.MANAGE) && (managing == 0)) {
         draw_set_alpha(1);
         draw_sprite(spr_rock_bg, 0, xx, yy);
         draw_set_font(fnt_40k_30b);

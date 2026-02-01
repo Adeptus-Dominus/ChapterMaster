@@ -161,19 +161,19 @@ if (col_shift) {
             var equipment_slot;
             switch (slot_count) {
                 // slots
-                case EquipmentSlot.WEAPON_ONE:
+                case eEQUIPMENT_SLOT.WEAPON_ONE:
                     equipment_slot = obj_creation.wep1[co][ide];
                     break;
-                case EquipmentSlot.WEAPON_TWO:
+                case eEQUIPMENT_SLOT.WEAPON_TWO:
                     equipment_slot = obj_creation.wep2[co][ide];
                     break;
-                case EquipmentSlot.ARMOUR:
+                case eEQUIPMENT_SLOT.ARMOUR:
                     equipment_slot = obj_creation.armour[co][ide];
                     break;
-                case EquipmentSlot.GEAR:
+                case eEQUIPMENT_SLOT.GEAR:
                     equipment_slot = obj_creation.gear[co][ide];
                     break;
-                case EquipmentSlot.MOBILITY:
+                case eEQUIPMENT_SLOT.MOBILITY:
                     equipment_slot = obj_creation.mobi[co][ide];
                     break;
             }
@@ -190,7 +190,7 @@ if (col_shift) {
 
                 if (scr_click_left()) {
                     var unit_type = type - 100;
-                    var is_invalid = unit_type == eROLE.Dreadnought && slot_count > EquipmentSlot.WEAPON_TWO;
+                    var is_invalid = unit_type == eROLE.DREADNOUGHT && slot_count > eEQUIPMENT_SLOT.WEAPON_TWO;
 
                     if (!is_invalid) {
                         tab = 1;
@@ -200,7 +200,7 @@ if (col_shift) {
                             item_name,
                             unit_type, // eROLE
                             slot_count, // slot
-                            eENGAGEMENT.Ranged,
+                            eENGAGEMENT.RANGED,
                             false, // no company standard
                             false // don't limit to available items
                         );
@@ -223,75 +223,75 @@ if (col_shift) {
             var possible_custom_roles = [
                 [
                     "chapter_master",
-                    eROLE.ChapterMaster
+                    eROLE.CHAPTERMASTER
                 ],
                 [
                     "honour_guard",
-                    eROLE.HonourGuard
+                    eROLE.HONOURGUARD
                 ],
                 [
                     "veteran",
-                    eROLE.Veteran
+                    eROLE.VETERAN
                 ],
                 [
                     "terminator",
-                    eROLE.Terminator
+                    eROLE.TERMINATOR
                 ],
                 [
                     "captain",
-                    eROLE.Captain
+                    eROLE.CAPTAIN
                 ],
                 [
                     "dreadnought",
-                    eROLE.Dreadnought
+                    eROLE.DREADNOUGHT
                 ],
                 [
                     "champion",
-                    eROLE.Champion
+                    eROLE.CHAMPION
                 ],
                 [
                     "tactical",
-                    eROLE.Tactical
+                    eROLE.TACTICAL
                 ],
                 [
                     "devastator",
-                    eROLE.Devastator
+                    eROLE.DEVASTATOR
                 ],
                 [
                     "assault",
-                    eROLE.Assault
+                    eROLE.ASSAULT
                 ],
                 [
                     "ancient",
-                    eROLE.Ancient
+                    eROLE.ANCIENT
                 ],
                 [
                     "scout",
-                    eROLE.Scout
+                    eROLE.SCOUT
                 ],
                 [
                     "chaplain",
-                    eROLE.Chaplain
+                    eROLE.CHAPLAIN
                 ],
                 [
                     "apothecary",
-                    eROLE.Apothecary
+                    eROLE.APOTHECARY
                 ],
                 [
                     "techmarine",
-                    eROLE.Techmarine
+                    eROLE.TECHMARINE
                 ],
                 [
                     "librarian",
-                    eROLE.Librarian
+                    eROLE.LIBRARIAN
                 ],
                 [
                     "sergeant",
-                    eROLE.Sergeant
+                    eROLE.SERGEANT
                 ],
                 [
                     "veteran_sergeant",
-                    eROLE.VeteranSergeant
+                    eROLE.VETERANSERGEANT
                 ]
             ];
 
@@ -390,7 +390,7 @@ if (target_gear > -1) {
         }
     }
 
-    if (target_gear == EquipmentSlot.WEAPON_ONE || target_gear == EquipmentSlot.WEAPON_TWO) {
+    if (target_gear == eEQUIPMENT_SLOT.WEAPON_ONE || target_gear == eEQUIPMENT_SLOT.WEAPON_TWO) {
         tab = 2;
         item_name = [];
         scr_get_item_names(

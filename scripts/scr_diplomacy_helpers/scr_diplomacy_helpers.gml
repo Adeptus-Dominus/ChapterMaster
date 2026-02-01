@@ -44,14 +44,14 @@ function relationship_hostility_matrix(faction) {
 
 function alter_disposition(faction, alter_value) {
     switch (faction) {
-        case eFACTION.Eldar:
-        case eFACTION.Tau:
-        case eFACTION.Ork:
+        case eFACTION.ELDAR:
+        case eFACTION.TAU:
+        case eFACTION.ORK:
             if (scr_has_disadv("Tolerant")) {
                 alter_value++;
             }
             break;
-        case eFACTION.Ecclesiarchy:
+        case eFACTION.ECCLESIARCHY:
             if (scr_has_adv("Reverent Guardians")) {
                 alter_value += 2;
             }
@@ -136,7 +136,7 @@ function basic_diplomacy_screen() {
             }
             yy = __view_get(e__VW.YView, 0);
         }
-        if ((menu == MENU.Diplomacy) && (diplomacy == 10.1)) {
+        if ((menu == eMENU.DIPLOMACY) && (diplomacy == 10.1)) {
             scr_emmisary_diplomacy_routes();
         }
         /*if (force_goodbye=1){

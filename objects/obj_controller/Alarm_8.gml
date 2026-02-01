@@ -8,7 +8,7 @@ if (instance_exists(obj_turn_end)) {
 
 decare_war_on_imperium_audiences();
 
-if ((obj_controller.faction_gender[10] == 1) && (obj_controller.known[eFACTION.Chaos] == 0) && (obj_controller.faction_defeated[10] == 0)) {
+if ((obj_controller.faction_gender[10] == 1) && (obj_controller.known[eFACTION.CHAOS] == 0) && (obj_controller.faction_defeated[10] == 0)) {
     scr_audience(10, "intro");
 }
 

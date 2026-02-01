@@ -1,11 +1,11 @@
 enum eSTART_FACTION {
-    Progenitor = 1,
-    Imperium,
-    Mechanicus,
-    Inquisition,
-    Ecclesiarchy,
-    Astartes,
-    Reserved,
+    PROGENITOR = 1,
+    IMPERIUM,
+    MECHANICUS,
+    INQUISITION,
+    ECCLESIARCHY,
+    ASTARTES,
+    RESERVED,
 }
 
 function set_complex_livery_buttons() {
@@ -135,12 +135,12 @@ function scr_creation(slide_num) {
     // 4 = Livery, Roles
     // 5 = Gene Seed Mutations, Disposition
     // 6 = Chapter Master
-    if (slide_num == eCREATIONSLIDES.CHAPTERSELECT) {
+    if (slide_num == eCREATION_SLIDES.CHAPTERSELECT) {
         setup_chapter_trait_select();
     }
 
     global.logger.debug($"calling scr_creation with input {slide_num}");
-    if (slide_num == eCREATIONSLIDES.CHAPTERTRAITS && custom != eCHAPTER_TYPE.PREMADE) {
+    if (slide_num == eCREATION_SLIDES.CHAPTERTRAITS && custom != eCHAPTER_TYPE.PREMADE) {
         if (name_bad == 1) {
             /*(sound_play(bad);*/
         }
@@ -154,26 +154,26 @@ function scr_creation(slide_num) {
         }
     }
 
-    if (slide_num == eCREATIONSLIDES.CHAPTERTRAITS && custom == eCHAPTER_TYPE.PREMADE) {
+    if (slide_num == eCREATION_SLIDES.CHAPTERTRAITS && custom == eCHAPTER_TYPE.PREMADE) {
         change_slide = true;
         goto_slide = 3;
-        race[100][eROLE.Chaplain] = 1;
-        race[100][eROLE.Librarian] = 1;
+        race[100][eROLE.CHAPLAIN] = 1;
+        race[100][eROLE.LIBRARIAN] = 1;
         if (scr_has_disadv("Psyker Intolerant")) {
-            race[100][eROLE.Librarian] = 0;
+            race[100][eROLE.LIBRARIAN] = 0;
         }
         if (chapter_name == "Iron Hands" || chapter_name == "Space Wolves") {
-            race[100][eROLE.Chaplain] = 0;
+            race[100][eROLE.CHAPLAIN] = 0;
         }
     }
 
-    if (slide_num == eCREATIONSLIDES.CHAPTERHOME) {
+    if (slide_num == eCREATION_SLIDES.CHAPTERHOME) {
         change_slide = true;
-        goto_slide = eCREATIONSLIDES.CHAPTERLIVERY;
+        goto_slide = eCREATION_SLIDES.CHAPTERLIVERY;
         alarm[0] = 1;
         update_creation_roles_radio();
 
-        if (slide_num == eCREATIONSLIDES.CHAPTERHOME) {
+        if (slide_num == eCREATION_SLIDES.CHAPTERHOME) {
             draw_set_font(fnt_40k_12);
             complex_livery_radio = new RadioSet([{str1: "Sergeant Markers", font: fnt_40k_12, value: "sgt", display_name: "Sergeant"}, {str1: "Veteran Sergeant Markers", font: fnt_40k_12, value: "vet_sgt", display_name: "Veteran Sergeant"}, {str1: "Captain Markers", font: fnt_40k_12, value: "captain", display_name: "Captain"}, {str1: "Veteran Markers", font: fnt_40k_12, value: "veteran", display_name: "Veteran"}], "", {max_width: 50, x1: 862, y1: 225});
 
@@ -200,32 +200,32 @@ function scr_creation(slide_num) {
                 livery_picker.scr_unit_draw_data();
                 livery_picker.set_default_armour(struct_cols, col_special);
                 full_liveries = array_create(21, variable_clone(livery_picker.map_colour));
-                full_liveries[eROLE.Librarian] = livery_picker.set_default_librarian(struct_cols);
+                full_liveries[eROLE.LIBRARIAN] = livery_picker.set_default_librarian(struct_cols);
 
-                full_liveries[eROLE.Chaplain] = livery_picker.set_default_chaplain(struct_cols);
+                full_liveries[eROLE.CHAPLAIN] = livery_picker.set_default_chaplain(struct_cols);
 
-                full_liveries[eROLE.Apothecary] = livery_picker.set_default_apothecary(struct_cols);
+                full_liveries[eROLE.APOTHECARY] = livery_picker.set_default_apothecary(struct_cols);
 
-                full_liveries[eROLE.Techmarine] = livery_picker.set_default_techmarines(struct_cols);
+                full_liveries[eROLE.TECHMARINE] = livery_picker.set_default_techmarines(struct_cols);
                 livery_picker.scr_unit_draw_data();
                 livery_picker.set_default_armour(struct_cols, col_special);
             }
         }
     }
 
-    if (slide_num == eCREATIONSLIDES.CHAPTERLIVERY) {
+    if (slide_num == eCREATION_SLIDES.CHAPTERLIVERY) {
         if (custom == eCHAPTER_TYPE.PREMADE || (hapothecary != "" && hchaplain != "" && clibrarian != "" && fmaster != "" && recruiter != "" && admiral != "" && battle_cry != "")) {
             change_slide = true;
-            goto_slide = eCREATIONSLIDES.CHAPTERROLES;
+            goto_slide = eCREATION_SLIDES.CHAPTERROLES;
             update_creation_roles_radio(2);
             role_setup_objects();
         }
     }
 
-    if (slide_num == eCREATIONSLIDES.CHAPTERROLES) {
+    if (slide_num == eCREATION_SLIDES.CHAPTERROLES) {
         if (custom == eCHAPTER_TYPE.PREMADE || (hapothecary != "" && hchaplain != "" && clibrarian != "" && fmaster != "" && recruiter != "" && admiral != "" && battle_cry != "")) {
             change_slide = true;
-            goto_slide = eCREATIONSLIDES.CHAPTERGENE;
+            goto_slide = eCREATION_SLIDES.CHAPTERGENE;
             if (custom == eCHAPTER_TYPE.CUSTOM) {
                 mutations_selected = 0;
                 preomnor = 0;
@@ -246,86 +246,86 @@ function scr_creation(slide_num) {
 
             if (custom != eCHAPTER_TYPE.PREMADE) {
                 disposition[0] = 0;
-                disposition[eSTART_FACTION.Progenitor] = 60 + ((cooperation - 5) * 4); // Prog
-                disposition[eSTART_FACTION.Imperium] = 50 + ((cooperation - 5) * 4); // Imp
-                disposition[eSTART_FACTION.Mechanicus] = 40 + ((cooperation - 5) * 2); // Mech
-                disposition[eSTART_FACTION.Inquisition] = 30 + ((cooperation - 5) * 2) - (2 * (10 - purity)) - ((99 - stability) / 5); // Inq
-                disposition[eSTART_FACTION.Ecclesiarchy] = 40 + ((cooperation - 5) * 4) - (10 - purity) - ((99 - stability) / 5); // Ecclesiarchy
+                disposition[eSTART_FACTION.PROGENITOR] = 60 + ((cooperation - 5) * 4); // Prog
+                disposition[eSTART_FACTION.IMPERIUM] = 50 + ((cooperation - 5) * 4); // Imp
+                disposition[eSTART_FACTION.MECHANICUS] = 40 + ((cooperation - 5) * 2); // Mech
+                disposition[eSTART_FACTION.INQUISITION] = 30 + ((cooperation - 5) * 2) - (2 * (10 - purity)) - ((99 - stability) / 5); // Inq
+                disposition[eSTART_FACTION.ECCLESIARCHY] = 40 + ((cooperation - 5) * 4) - (10 - purity) - ((99 - stability) / 5); // Ecclesiarchy
 
                 switch (founding) {
                     case eCHAPTERS.SPACE_WOLVES:
                     case eCHAPTERS.SALAMANDERS:
-                        disposition[eSTART_FACTION.Progenitor] = 70;
+                        disposition[eSTART_FACTION.PROGENITOR] = 70;
                         break;
                     case eCHAPTERS.IMPERIAL_FISTS:
-                        disposition[eSTART_FACTION.Progenitor] = 50;
+                        disposition[eSTART_FACTION.PROGENITOR] = 50;
                         break;
                     case eCHAPTERS.UNKNOWN:
-                        disposition[eSTART_FACTION.Inquisition] -= 5;
+                        disposition[eSTART_FACTION.INQUISITION] -= 5;
                         break;
                     default:
                         break;
                 }
 
                 if (strength > 5) {
-                    disposition[eSTART_FACTION.Inquisition] -= (strength - 5) * 2;
+                    disposition[eSTART_FACTION.INQUISITION] -= (strength - 5) * 2;
                 } else if (strength < 5) {
-                    disposition[eSTART_FACTION.Imperium] += (5 - strength) * 2;
+                    disposition[eSTART_FACTION.IMPERIUM] += (5 - strength) * 2;
                 }
 
                 if (scr_has_adv("Crafters")) {
-                    disposition[eSTART_FACTION.Mechanicus] += 2;
+                    disposition[eSTART_FACTION.MECHANICUS] += 2;
                 }
                 if (scr_has_adv("Tech-Brothers")) {
-                    disposition[eSTART_FACTION.Mechanicus] += 10;
+                    disposition[eSTART_FACTION.MECHANICUS] += 10;
                 }
                 if (scr_has_disadv("Psyker Intolerant")) {
-                    disposition[eSTART_FACTION.Inquisition] += 5;
-                    disposition[eSTART_FACTION.Ecclesiarchy] += 5;
+                    disposition[eSTART_FACTION.INQUISITION] += 5;
+                    disposition[eSTART_FACTION.ECCLESIARCHY] += 5;
                 }
                 if (scr_has_disadv("Warp Tainted")) {
-                    disposition[eSTART_FACTION.Progenitor] -= 10;
-                    disposition[eSTART_FACTION.Imperium] -= 10;
-                    disposition[eSTART_FACTION.Mechanicus] -= 10;
-                    disposition[eSTART_FACTION.Inquisition] -= 10;
-                    disposition[eSTART_FACTION.Ecclesiarchy] -= 10;
-                    disposition[eSTART_FACTION.Astartes] -= 10;
+                    disposition[eSTART_FACTION.PROGENITOR] -= 10;
+                    disposition[eSTART_FACTION.IMPERIUM] -= 10;
+                    disposition[eSTART_FACTION.MECHANICUS] -= 10;
+                    disposition[eSTART_FACTION.INQUISITION] -= 10;
+                    disposition[eSTART_FACTION.ECCLESIARCHY] -= 10;
+                    disposition[eSTART_FACTION.ASTARTES] -= 10;
                 }
                 if (scr_has_disadv("Sieged")) {
-                    disposition[eSTART_FACTION.Imperium] += 5;
+                    disposition[eSTART_FACTION.IMPERIUM] += 5;
                 }
                 if (scr_has_disadv("Suspicious")) {
-                    disposition[eSTART_FACTION.Inquisition] -= 15;
+                    disposition[eSTART_FACTION.INQUISITION] -= 15;
                 }
                 if (scr_has_disadv("Tech-Heresy")) {
-                    disposition[eSTART_FACTION.Mechanicus] -= 8;
+                    disposition[eSTART_FACTION.MECHANICUS] -= 8;
                 }
                 if (scr_has_adv("Warp Touched")) {
-                    disposition[eSTART_FACTION.Inquisition] -= 4;
-                    disposition[eSTART_FACTION.Ecclesiarchy] -= 4;
+                    disposition[eSTART_FACTION.INQUISITION] -= 4;
+                    disposition[eSTART_FACTION.ECCLESIARCHY] -= 4;
                 }
                 if (scr_has_disadv("Tolerant")) {
-                    disposition[eSTART_FACTION.Progenitor] -= 5;
-                    disposition[eSTART_FACTION.Imperium] -= 5;
-                    disposition[eSTART_FACTION.Mechanicus] -= 5;
-                    disposition[eSTART_FACTION.Inquisition] -= 5;
-                    disposition[eSTART_FACTION.Ecclesiarchy] -= 5;
-                    disposition[eSTART_FACTION.Astartes] -= 5;
+                    disposition[eSTART_FACTION.PROGENITOR] -= 5;
+                    disposition[eSTART_FACTION.IMPERIUM] -= 5;
+                    disposition[eSTART_FACTION.MECHANICUS] -= 5;
+                    disposition[eSTART_FACTION.INQUISITION] -= 5;
+                    disposition[eSTART_FACTION.ECCLESIARCHY] -= 5;
+                    disposition[eSTART_FACTION.ASTARTES] -= 5;
                 }
             }
         }
     }
 
     // 5 to 6
-    if (slide_num == eCREATIONSLIDES.CHAPTERGENE) {
+    if (slide_num == eCREATION_SLIDES.CHAPTERGENE) {
         if (custom == eCHAPTER_TYPE.PREMADE || mutations <= mutations_selected) {
             change_slide = true;
-            goto_slide = eCREATIONSLIDES.CHAPTERMASTER;
+            goto_slide = eCREATION_SLIDES.CHAPTERMASTER;
         }
     }
 
     // 6 to finish
-    if (slide_num == eCREATIONSLIDES.CHAPTERMASTER) {
+    if (slide_num == eCREATION_SLIDES.CHAPTERMASTER) {
         if (chapter_master_name != "" && chapter_master_melee != 0 && chapter_master_ranged != 0 && chapter_master_specialty != 0) {
             cooldown = 9999;
             instance_create(0, 0, obj_ini);
