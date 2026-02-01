@@ -14,7 +14,7 @@ if ((effect == 11) && (!instance_exists(obj_saveload))) {
     }
 
     // Force an autosave if none exists the first time someone clicks into the save menu
-    if (!file_exists(PATH_autosave_file)) {
+    if (!file_exists(PATH_AUTOSAVE_FILE)) {
         if (!instance_exists(obj_saveload)) {
             instance_create(0, 0, obj_saveload);
         }

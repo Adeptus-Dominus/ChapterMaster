@@ -205,7 +205,7 @@ function scr_librarium() {
 
     // Set pace of recruitment based on training psyker value
     if (training_psyker >= 0 && training_psyker <= 6) {
-        var _recruit_pace = ARR_recruitment_pace;
+        var _recruit_pace = RECRUITMENT_PACE_DESCRIPTIONS;
         blurp += _recruit_pace[training_psyker];
     }
 

@@ -10,7 +10,7 @@ function __init_global() {
 
     initialize_dialogue();
 
-    var _log_file = file_text_open_write(PATH_last_messages);
+    var _log_file = file_text_open_write(PATH_LAST_MESSAGES);
     if (_log_file != -1) {
         file_text_write_string(_log_file, $"--- Log Started: {date_datetime_string(date_current_datetime())} ---\n");
         file_text_close(_log_file);

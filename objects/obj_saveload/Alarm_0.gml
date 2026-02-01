@@ -48,8 +48,8 @@ if (save_part == 2) {
 }
 
 if (save_part == 1) {
-    if (file_exists(string(PATH_save_files, save_number))) {
-        file_delete(string(PATH_save_files, save_number));
+    if (file_exists(string(PATH_SAVE_FILES, save_number))) {
+        file_delete(string(PATH_SAVE_FILES, save_number));
     }
     obj_saveload.save[save_number] = 0;
     save_part += 1;
@@ -126,7 +126,7 @@ if (load_part == 2) {
 }
 
 if (load_part == 1) {
-    if (file_exists(string(PATH_save_files, global.load))) {
+    if (file_exists(string(PATH_SAVE_FILES, global.load))) {
         load_part += 1;
         trickle = 2;
         txt = "Preparing";

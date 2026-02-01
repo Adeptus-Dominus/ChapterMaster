@@ -2084,7 +2084,7 @@ function scr_get_body_data(body_item_key, body_slot = "none") {
     } else {
         var item_key_map = {};
         var body_part_area_keys;
-        var _body_parts = ARR_body_parts;
+        var _body_parts = UNIT_BODY_PARTS;
         for (var i = 0; i < array_length(_body_parts); i++) {
             //search all body parts
             body_area = body[$ _body_parts[i]];

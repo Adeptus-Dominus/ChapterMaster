@@ -23,7 +23,7 @@ try {
     if ((image == "fuklaw") && (save > 0)) {
         if (press == 0) {
             var del = obj_saveload.save[save];
-            var _save_file = string(PATH_save_files, del);
+            var _save_file = string(PATH_SAVE_FILES, del);
             if (file_exists(_save_file)) {
                 file_delete(_save_file);
                 if (file_exists($"save{del}log.ini")) {

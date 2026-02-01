@@ -71,7 +71,7 @@ if (nope != 1) {
 }
 
 global.load = -1;
-planet_types = ARR_planet_types;
+planet_types = PLANET_TYPES;
 skip = false;
 premades = true;
 

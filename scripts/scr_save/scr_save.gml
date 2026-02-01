@@ -139,7 +139,7 @@ function scr_save(save_part, save_id, autosaving = false) {
 
             var filename;
             if (!autosaving) {
-                filename = string(PATH_save_files, save_id);
+                filename = string(PATH_SAVE_FILES, save_id);
             } else {
                 filename = string(PATH_autosave_file);
             }

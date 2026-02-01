@@ -13,7 +13,7 @@ function location_out_of_player_control(unit_loc) {
     return array_contains(_locs, unit_loc);
 }
 
-#macro planet_problem_keys ["meeting_trap","meeting","succession","mech_raider","mech_bionics","mech_mars","mech_tomb1","fallen","great_crusade","harlequins","fund_elder","provide_garrison","hunt_beast","protect_raiders","join_communion","join_parade","recover_artifacts","train_forces","spyrer","inquisitor","recon","cleanse","purge","tyranid_org","artifact_loan","necron","ethereal","demon_world"]
+#macro PLANET_PROBLEM_KEYS ["meeting_trap","meeting","succession","mech_raider","mech_bionics","mech_mars","mech_tomb1","fallen","great_crusade","harlequins","fund_elder","provide_garrison","hunt_beast","protect_raiders","join_communion","join_parade","recover_artifacts","train_forces","spyrer","inquisitor","recon","cleanse","purge","tyranid_org","artifact_loan","necron","ethereal","demon_world"]
 
 function mission_name_key(mission) {
     var mission_key = {

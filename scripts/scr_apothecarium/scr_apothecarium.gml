@@ -95,12 +95,12 @@ function scr_apothecarium() {
         blurp += "Our Brothers assigned to the training of future " + string(obj_ini.role[100][15]) + "s have taken up a ";
     }
     if (training_apothecary >= 1 && training_apothecary <= 6) {
-        var _recruit_rates = ARR_recruitment_rates;
+        var _recruit_rates = RECRUITMENT_RATES;
         blurp += _recruit_rates[training_apothecary];
     }
     if (training_apothecary > 0) {
         blurp += " pace and expect to graduate an additional " + string(obj_ini.role[100][15]) + " in ";
-        var training_points_values = ARR_apothecary_training_tiers;
+        var training_points_values = APOTHECARY_TRAINING_TIERS;
         eta = floor((47 - apothecary_recruit_points) / training_points_values[training_apothecary]) + 1;
         blurp += string(eta) + " months.";
     }
@@ -122,7 +122,7 @@ function scr_apothecarium() {
     }
 
     if (menu_adept == 1) {
-        var _recruit_pace = ARR_recruitment_pace;
+        var _recruit_pace = RECRUITMENT_PACE_DESCRIPTIONS;
         blurp = "Your Chapter contains " + string(temp[36]) + " " + string(obj_ini.role[100][15]) + ".##";
         blurp += "Training of further " + string(obj_ini.role[100][15]) + "s";
         if (training_apothecary >= 0 && training_apothecary <= 6) {

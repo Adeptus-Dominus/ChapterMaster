@@ -128,8 +128,8 @@ function scr_draw_armentarium_gui() {
 }
 
 function scr_draw_armentarium() {
-    var _recruit_pace = ARR_recruitment_pace;
-    var _train_tiers = ARR_techmarine_training_tiers;
+    var _recruit_pace = RECRUITMENT_PACE_DESCRIPTIONS;
+    var _train_tiers = TECHMARINE_TRAINING_TIERS;
     var xx = __view_get(e__VW.XView, 0) + 0;
     var yy = __view_get(e__VW.YView, 0) + 0;
     draw_sprite(spr_rock_bg, 0, xx, yy);

@@ -5,7 +5,7 @@ function load_marine_struct(company, marine, struct) {
 
 function scr_load(save_part, save_id) {
     var t1 = get_timer();
-    var filename = string(PATH_save_files, save_id);
+    var filename = string(PATH_SAVE_FILES, save_id);
     if (save_id == 0) {
         filename = string(PATH_autosave_file);
         global.logger.info("Loading from Autosave");

@@ -18,8 +18,8 @@
 		the string (usually max) is guidance so in the instance of max it will pick the larger value of the mean and the gauss function return
 */
 // will swap these out for enums or some better method as i develop where this is going
-#macro ARR_body_parts ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw", "head"]
-#macro ARR_body_parts_display ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw", "Head"]
+#macro UNIT_BODY_PARTS ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw", "head"]
+#macro UNIT_BODY_PARTS_DISPLAY ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw", "Head"]
 global.religions = {
     "imperial_cult": {
         "name": "Imperial Cult",
@@ -1194,7 +1194,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     allegiance = faction; //faction alligience defaults to the chapter
 
     static stat_boosts = function(stat_boosters) {
-        var stats = ARR_stat_list;
+        var stats = UNIT_STAT_LIST;
         var edits = struct_get_names(stat_boosters);
         var edit_stat, random_stat, stat_mod;
         for (var stat_iter = 0; stat_iter < array_length(stats); stat_iter++) {
@@ -1596,7 +1596,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 add_or_sub_health(30);
             }
             var bionic_possible = [];
-            var _body_parts = ARR_body_parts;
+            var _body_parts = UNIT_BODY_PARTS;
             for (var body_part = 0; body_part < array_length(_body_parts); body_part++) {
                 part = _body_parts[body_part];
                 if (!get_body_data("bionic", part)) {

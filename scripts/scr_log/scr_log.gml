@@ -1,8 +1,8 @@
-#macro STR_error_message_head $"Your game just encountered and caught an error!"
-#macro STR_error_message_head2 $"Your game just encountered a critical error! :("
-#macro STR_error_message_head3 "Your game just encountered and caught an error! ({0})"
-#macro STR_error_message $"The error log is automatically copied into your clipboard and a copy is created at: \nC:>Users>(UserName)>AppData>Local>ChapterMaster>Logs\n\nPlease, follow these steps:\n1) Create a bug report on our 'Chapter Master Discord' server.\n2) Press CTRL+V to paste the error log.\n3) Title the report with the error log's first line.\n4) If the log isn't pasted, locate and attach the latest error log file.\n\nThank you!"
-#macro STR_error_message_ps $"P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum."
+#macro STR_ERROR_MESSAGE_HEAD $"Your game just encountered and caught an error!"
+#macro STR_ERROR_MESSAGE_HEAD2 $"Your game just encountered a critical error! :("
+#macro STR_ERROR_MESSAGE_HEAD3 "Your game just encountered and caught an error! ({0})"
+#macro STR_ERROR_MESSAGE $"The error log is automatically copied into your clipboard and a copy is created at: \nC:>Users>(UserName)>AppData>Local>ChapterMaster>Logs\n\nPlease, follow these steps:\n1) Create a bug report on our 'Chapter Master Discord' server.\n2) Press CTRL+V to paste the error log.\n3) Title the report with the error log's first line.\n4) If the log isn't pasted, locate and attach the latest error log file.\n\nThank you!"
+#macro STR_ERROR_MESSAGE_PS $"P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum."
 
 enum eLOG_LEVEL {
     DEBUG,
@@ -25,8 +25,8 @@ function create_error_file(_message) {
 
 /// @description Creates a copy of the last_messages.log file, with the current date in the name, in the same folder.
 function copy_last_messages_file() {
-    if (file_exists(PATH_last_messages)) {
-        file_copy(PATH_last_messages, $"Logs/{DATE_TIME_1}_messages.log");
+    if (file_exists(PATH_LAST_MESSAGES)) {
+        file_copy(PATH_LAST_MESSAGES, $"Logs/{DATE_TIME_1}_messages.log");
     }
 }
 
@@ -102,8 +102,8 @@ function handle_error(_header, _message, _stacktrace = "", _critical = false, _r
 
     var _player_message = "";
     _player_message += $"{_header}\n\n";
-    _player_message += $"{STR_error_message}";
-    _player_message += _critical ? "" : $"\n\n{STR_error_message_ps}";
+    _player_message += $"{STR_ERROR_MESSAGE}";
+    _player_message += _critical ? "" : $"\n\n{STR_ERROR_MESSAGE_PS}";
     show_message(_player_message);
 }
 
@@ -113,8 +113,8 @@ function handle_error(_header, _message, _stacktrace = "", _critical = false, _r
 /// @param {string} custom_title - Optional custom title for the error popup.
 /// @param {bool} critical - Whether the error is critical (default: false).
 /// @param {string} error_marker - Optional marker for the error.
-function handle_exception(_exception, custom_title = STR_error_message_head, critical = false, error_marker = "") {
-    var _header = critical ? STR_error_message_head2 : custom_title;
+function handle_exception(_exception, custom_title = STR_ERROR_MESSAGE_HEAD, critical = false, error_marker = "") {
+    var _header = critical ? STR_ERROR_MESSAGE_HEAD2 : custom_title;
     var _message = _exception.longMessage;
     var _stacktrace = array_to_string_list(_exception.stacktrace);
     var _critical = critical ? "CRASH! " : "";
@@ -136,7 +136,7 @@ function try_and_report_loop(dev_marker = "Generic Error", func, turn_end = true
     try {
         method_call(func, args);
     } catch (_exception) {
-        handle_exception(_exception, string(STR_error_message_head3, dev_marker), false, dev_marker);
+        handle_exception(_exception, string(STR_ERROR_MESSAGE_HEAD3, dev_marker), false, dev_marker);
         if (is_method(catch_custom)) {
             method_call(catch_custom, catch_args);
         }
@@ -230,7 +230,7 @@ function Logger() constructor {
     static active_level = eLOG_LEVEL.DEBUG;
     static file_logging = true;
     static file_logging_level = eLOG_LEVEL.INFO;
-    static log_filename = PATH_last_messages;
+    static log_filename = PATH_LAST_MESSAGES;
 
     /// @description Physically writes the queue to the file.
     /// @param {Any} _message

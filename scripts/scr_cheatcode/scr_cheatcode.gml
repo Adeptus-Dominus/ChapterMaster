@@ -481,7 +481,7 @@ function draw_planet_debug_features() {
 
 function draw_planet_debug_problems() {
     var base_y = 220;
-    var _keys = planet_problem_keys;
+    var _keys = PLANET_PROBLEM_KEYS;
     base_y += 2;
     for (var i = 0; i < array_length(_keys); i++) {
         var _y = base_y + i * 20;
