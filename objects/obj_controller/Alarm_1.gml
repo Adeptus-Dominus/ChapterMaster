@@ -30,27 +30,27 @@ var _player_star;
 did = instance_exists(_current_system);
 if (did) {
     _player_star = _current_system.id;
-    if (obj_ini.fleet_type == ePlayerBase.home_world) {
+    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         set_player_homeworld_star(_current_system);
     }
     // Crusade and fleet based
-    if (obj_ini.fleet_type != ePlayerBase.home_world) {
+    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
         with (_current_system) {
             set_player_recruit_planet(irandom_range(1, _current_system.planets));
         }
     }
     with (_current_system) {
         for (var f = 1; f <= 4; f++) {
-            if ((array_length(search_planet_features(p_feature[f], P_features.Monastery)) > 0) && (array_length(search_planet_features(p_feature[f], P_features.Recruiting_World)) > 0)) {
-                if (p_owner[f] == eFACTION.Player) {
-                    p_owner[f] = eFACTION.Imperium;
+            if ((array_length(search_planet_features(p_feature[f], eP_FEATURES.MONASTERY)) > 0) && (array_length(search_planet_features(p_feature[f], eP_FEATURES.RECRUITING_WORLD)) > 0)) {
+                if (p_owner[f] == eFACTION.PLAYER) {
+                    p_owner[f] = eFACTION.IMPERIUM;
                 }
             }
-            if (array_length(search_planet_features(p_feature[f], P_features.Monastery)) > 0) {
-                if (p_owner[f] != eFACTION.Player) {
-                    p_owner[f] = eFACTION.Player;
+            if (array_length(search_planet_features(p_feature[f], eP_FEATURES.MONASTERY)) > 0) {
+                if (p_owner[f] != eFACTION.PLAYER) {
+                    p_owner[f] = eFACTION.PLAYER;
                 }
-                owner = eFACTION.Player;
+                owner = eFACTION.PLAYER;
             }
         }
     }
@@ -64,7 +64,7 @@ if (did) {
     }
 
     var fleet = instance_create(_current_system.x, _current_system.y, obj_p_fleet);
-    fleet.owner = eFACTION.Player;
+    fleet.owner = eFACTION.PLAYER;
 
     for (var f = 0; f < array_length(obj_ini.ship); f++) {
         add_ship_to_fleet(f, fleet);
@@ -89,7 +89,7 @@ if (did) {
     instance_activate_object(obj_star);
     instance_deactivate_object(_current_system);
     with (obj_star) {
-        if (system_feature_bool(p_feature, P_features.Recruiting_World)) {
+        if (system_feature_bool(p_feature, eP_FEATURES.RECRUITING_WORLD)) {
             instance_deactivate_object(id);
             break;
         }
@@ -112,7 +112,7 @@ if (did) {
     _current_system.p_first[3]=3;
     _current_system.p_first[4]=3;
 	*/
-    _current_system.owner = eFACTION.Mechanicus;
+    _current_system.owner = eFACTION.MECHANICUS;
     _current_system.p_owner = array_create(5, _current_system.owner);
     _current_system.p_first = array_create(5, _current_system.owner);
 
@@ -274,7 +274,7 @@ if (did) {
         // important later on for having other chapters homeworlds or civil war imperiums
         for (var p = 1; p <= planets; p++) {
             if ((p_type[p] != "Forge") && (p_type[p] != "Ice")) {
-                p_owner[p] = eFACTION.Imperium;
+                p_owner[p] = eFACTION.IMPERIUM;
                 p_first[p] = p_owner[p];
             }
         }
@@ -315,12 +315,12 @@ if (did) {
 
         with (_current_system) {
             planet[1] = 1;
-            p_owner[1] = eFACTION.Tau;
+            p_owner[1] = eFACTION.TAU;
             p_type[1] = "Desert";
             xx = x;
             yy = y;
             tau[1] = choose(3, 4);
-            p_influence[1][eFACTION.Tau] = 70;
+            p_influence[1][eFACTION.TAU] = 70;
         }
         instance_deactivate_object(_current_system);
 
@@ -329,10 +329,10 @@ if (did) {
             rando = 1;
             _current_system = instance_nearest(xx, yy, obj_star);
             with (_current_system) {
-                if ((planets > 0) && (_current_system.p_type[1] != "Dead") && (_current_system.owner == eFACTION.Imperium)) {
-                    p_owner[1] = eFACTION.Tau;
-                    owner = eFACTION.Tau;
-                    p_influence[1][eFACTION.Tau] = 70;
+                if ((planets > 0) && (_current_system.p_type[1] != "Dead") && (_current_system.owner == eFACTION.IMPERIUM)) {
+                    p_owner[1] = eFACTION.TAU;
+                    owner = eFACTION.TAU;
+                    p_influence[1][eFACTION.TAU] = 70;
                 }
             }
             instance_deactivate_object(_current_system);
@@ -346,10 +346,10 @@ if (did) {
         yy = floor(random(748)) + 64;
         _current_system = instance_nearest(xx, yy, obj_star);
         with (_current_system) {
-            if ((planets > 0) && (owner == eFACTION.Imperium)) {
+            if ((planets > 0) && (owner == eFACTION.IMPERIUM)) {
                 planet[1] = 1;
                 p_owner[1] = 10;
-                owner = eFACTION.Chaos;
+                owner = eFACTION.CHAOS;
             }
         }
         instance_deactivate_object(_current_system);
@@ -370,7 +370,7 @@ if (did) {
         if (array_contains(hell_holes, name)) {
             rando = choose(1, 1); // make 1's 0's if you want less chaos
             if (rando == 1) {
-                owner = eFACTION.Chaos;
+                owner = eFACTION.CHAOS;
                 p_owner = array_create(5, owner);
                 for (var i = 1; i <= planets; i++) {
                     p_heresy[i] = floor(random_range(75, 100));
@@ -398,7 +398,7 @@ if (did) {
         if (is_dead_star() || planets == 0) {
             continue;
         }
-        if (owner == eFACTION.Imperium) {
+        if (owner == eFACTION.IMPERIUM) {
             //this object simply acts as a counter of imperium owned planets
             array_push(_imperial_planets, id);
         }
@@ -411,7 +411,7 @@ if (did) {
     if (field == "both") {
         orkz += 15;
     }
-    /*if (obj_ini.fleet_type==ePlayerBase.penitent) then orkz+=2;*/
+    /*if (obj_ini.fleet_type==ePLAYER_BASE.PENITENT) then orkz+=2;*/
     if (is_test_map == true) {
         orkz = 4;
     }
@@ -422,14 +422,14 @@ if (did) {
         _current_system = _imperial_planets[i];
 
         _current_system.planet[1] = 1;
-        _current_system.owner = eFACTION.Ork;
+        _current_system.owner = eFACTION.ORK;
         _current_system.p_owner = array_create(5, _current_system.owner);
         array_delete(_imperial_planets, i, 1);
     }
 
     if (field == "tyranids") {
         orkz = choose(3, 4, 6) + 7;
-        if (obj_ini.fleet_type == ePlayerBase.penitent) {
+        if (obj_ini.fleet_type == ePLAYER_BASE.PENITENT) {
             orkz += 2;
         }
 
@@ -440,7 +440,7 @@ if (did) {
 
             _current_system.planet[1] = 1;
             _current_system.p_owner[1] = 9;
-            _current_system.owner = eFACTION.Tyranids;
+            _current_system.owner = eFACTION.TYRANIDS;
 
             array_delete(_imperial_planets, i, 1);
         }
@@ -457,7 +457,7 @@ if (did) {
 
     instance_activate_object(obj_ini);
     if (field == "both") {
-        if (obj_ini.fleet_type == ePlayerBase.penitent) {
+        if (obj_ini.fleet_type == ePLAYER_BASE.PENITENT) {
             orkz += 3;
         }
         orkz += 3;
@@ -477,11 +477,11 @@ if (did) {
         xx = floor(random(1152 + 640)) + 64;
         yy = floor(random(748 + 480)) + 64;
         _current_system = instance_nearest(xx, yy, obj_star);
-        if ((_current_system.planets > 0) && (_current_system.owner == eFACTION.Imperium)) {
+        if ((_current_system.planets > 0) && (_current_system.owner == eFACTION.IMPERIUM)) {
             var forge_planet = irandom(_current_system.planets - 1) + 1;
             _current_system.plant[forge_planet] = 1;
             _current_system.p_type[forge_planet] = "Forge";
-            _current_system.owner = eFACTION.Mechanicus;
+            _current_system.owner = eFACTION.MECHANICUS;
             _current_system.p_owner[forge_planet] = _current_system.owner;
             _current_system.p_first[forge_planet] = _current_system.owner;
         }
@@ -529,11 +529,11 @@ for (var i = 0; i < 100; i++) {
         var craft = instance_create(xx, yy, obj_star);
         craft.craftworld = 1;
         go = 999;
-        array_push(craft.p_feature[1], new NewPlanetFeature(P_features.Warlord6));
+        array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.WARLORD6));
 
         var elforce = instance_create(xx, yy, obj_en_fleet);
         elforce.sprite_index = spr_fleet_eldar;
-        elforce.owner = eFACTION.Eldar;
+        elforce.owner = eFACTION.ELDAR;
         elforce.capital_number = choose(2, 3);
         elforce.frigate_number = choose(4, 5, 6);
         elforce.escort_number = floor(random_range(7, 11)) + 1;
@@ -622,7 +622,7 @@ with (obj_temp7) {
 }
 //for tau fleets, if it is stationed on a system it owns, make a temp7 obj
 with (obj_en_fleet) {
-    if ((owner == eFACTION.Tau) && (instance_nearest(x, y, obj_star).owner == eFACTION.Tau)) {
+    if ((owner == eFACTION.TAU) && (instance_nearest(x, y, obj_star).owner == eFACTION.TAU)) {
         instance_create(x, y, obj_temp7);
     }
 }

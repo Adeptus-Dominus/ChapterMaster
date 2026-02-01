@@ -64,7 +64,7 @@ function scr_drop_fiddle(argument0, argument1, argument2, argument3) {
                     ship_use[argument2]++;
                     fighting[comp][i] = 1;
 
-                    if (obj_ini.role[comp][i] == obj_ini.role[100][eROLE.ChapterMaster]) {
+                    if (obj_ini.role[comp][i] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                         master = 1;
                         ship_use[argument2]++;
                     }
@@ -175,7 +175,7 @@ function scr_drop_fiddle(argument0, argument1, argument2, argument3) {
                     ship_use[argument2]--;
                     fighting[comp][i] = 0;
 
-                    if (obj_ini.role[comp][i] == obj_ini.role[100][eROLE.ChapterMaster]) {
+                    if (obj_ini.role[comp][i] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                         master = 0;
                         ship_use[argument2]--;
                     }

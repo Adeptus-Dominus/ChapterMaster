@@ -71,7 +71,7 @@ if ((menu == 1) && (managing > 0)) {
                     codi += 1;
                 } else if (unit.role() == "Lexicanum") {
                     lexi += 1;
-                } else if (unit.role() == obj_ini.role[100][eROLE.Ancient]) {
+                } else if (unit.role() == obj_ini.role[100][eROLE.ANCIENT]) {
                     champ += 1;
                 }
             }
@@ -115,7 +115,7 @@ if ((menu == 1) && (managing > 0)) {
         selecting_dudes += ", ";
     }
     if (champ > 0) {
-        selecting_dudes += $"{champ} {obj_ini.role[100][eROLE.Ancient]}";
+        selecting_dudes += $"{champ} {obj_ini.role[100][eROLE.ANCIENT]}";
         if (chap > 1) {
             selecting_dudes += "s";
         }
@@ -199,7 +199,7 @@ if ((menu == 1) && (managing > 0)) {
         selecting_dudes += ", ";
     }
     if (assa > 0) {
-        selecting_dudes += string(assa) + " " + string(obj_ini.role[100][eROLE.Assault]);
+        selecting_dudes += string(assa) + " " + string(obj_ini.role[100][eROLE.ASSAULT]);
         if (sgt > 1) {
             selecting_dudes += "s";
         }

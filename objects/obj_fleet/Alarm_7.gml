@@ -204,7 +204,7 @@ try {
         if (instance_exists(obj_turn_end)) {
             scr_alert("red", "inqis", string(msg), ii.x + 16, ii.y - 24);
         }
-        if ((!instance_exists(obj_turn_end)) && (obj_controller.faction_status[eFACTION.Inquisition] != "War")) {
+        if ((!instance_exists(obj_turn_end)) && (obj_controller.faction_status[eFACTION.INQUISITION] != "War")) {
             var pip;
             pip = instance_create(0, 0, obj_popup);
             pip.title = "Inquisitor Killed";
@@ -212,14 +212,14 @@ try {
             pip.image = "inquisition";
             pip.cooldown = 20;
 
-            if (obj_controller.known[eFACTION.Inquisition] < 3) {
+            if (obj_controller.known[eFACTION.INQUISITION] < 3) {
                 pip.title = "EXCOMMUNICATUS TRAITORUS";
                 pip.text = $"The Inquisition has noticed your uncalled murder of {msg2} and declared your chapter Excommunicatus Traitorus.";
                 obj_controller.alarm[8] = 1;
             }
         }
 
-        // if (obj_controller.known[eFACTION.Inquisition]<3) then with(obj_popup){instance_destroy();}
+        // if (obj_controller.known[eFACTION.INQUISITION]<3) then with(obj_popup){instance_destroy();}
 
         // excommunicatus traitorus
     }

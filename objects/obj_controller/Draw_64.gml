@@ -34,7 +34,7 @@ draw_set_valign(fa_top);
 draw_set_halign(fa_left);
 var xx = 0;
 var yy = 0;
-if (menu == MENU.Diplomacy) {
+if (menu == eMENU.DIPLOMACY) {
     add_draw_return_values();
     if (diplomacy > 0) {
         draw_diplomacy_diplo_text();
@@ -61,7 +61,7 @@ if (menu == MENU.Diplomacy) {
 // Main UI
 if (!zoomed && !zui) {
     add_draw_return_values();
-    if (menu == MENU.Default) {
+    if (menu == eMENU.DEFAULT) {
         location_viewer.draw();
         helpful_places_button.update({x1: 1451, y1: 62 + sprite_get_height(spr_new_banner)});
 
@@ -121,7 +121,7 @@ if (!zoomed && !zui) {
     draw_text(775.5, 17.5, _sector_string);
 
     // Checks if you are penitent
-    if (obj_controller.faction_status[eFACTION.Imperium] != "War") {
+    if (obj_controller.faction_status[eFACTION.IMPERIUM] != "War") {
         if (penitent_max == 0) {
             draw_text(998, 17, string_hash_to_newline("Loyal"));
             draw_text(998, 17.5, string_hash_to_newline("Loyal"));
@@ -140,7 +140,7 @@ if (!zoomed && !zui) {
         }
     }
     // Sets you to renegade
-    if (obj_controller.faction_status[eFACTION.Imperium] == "War") {
+    if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
         draw_set_color(255);
         draw_text(998, 17, string_hash_to_newline("Renegade"));
         draw_text(998, 17.5, string_hash_to_newline("Renegade"));
@@ -241,7 +241,7 @@ function draw_line(x1, y1, y_slide, variable) {
 }
 
 try {
-    if (menu == MENU.Manage) {
+    if (menu == eMENU.MANAGE) {
         if (managing != 0) {
             draw_sprite_and_unit_equip_data();
         }
@@ -251,14 +251,14 @@ try {
         if (managing > 0) {
             company_specific_management();
         }
-    } else if (menu == MENU.Armamentarium) {
+    } else if (menu == eMENU.ARMAMENTARIUM) {
         scr_draw_armentarium_gui();
-    } else if (menu == MENU.Librarium) {
+    } else if (menu == eMENU.LIBRARIUM) {
         scr_librarium_gui();
     }
 } catch (_exception) {
     handle_exception(_exception);
-    menu = MENU.Default;
+    menu = eMENU.DEFAULT;
 }
 
 pop_draw_return_values();

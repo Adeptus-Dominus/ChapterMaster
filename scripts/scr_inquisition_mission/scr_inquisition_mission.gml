@@ -19,21 +19,21 @@
 /// @param {Enum.INQUISITION_MISSION} forced_mission optional
 function scr_inquisition_mission(event, forced_mission = -1) {
     global.logger.info($"RE: Inquisition Mission, event {event}, forced_mission {forced_mission}");
-    if ((obj_controller.known[eFACTION.Inquisition] == 0 || obj_controller.faction_status[eFACTION.Inquisition] == "War") && !global.cheat_debug) {
+    if ((obj_controller.known[eFACTION.INQUISITION] == 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") && !global.cheat_debug) {
         global.logger.info("Player is either hasn't met or is at war with Inquisition, not proceeding with inquisition mission");
         return;
     }
     if (global.cheat_debug) {
         global.logger.debug("find mission");
     }
-    if (event == EVENT.inquisition_planet) {
+    if (event == eEVENT.MECHANICUS_MISSION) {
         mission_investigate_planet();
-    } else if (event == EVENT.inquisition_mission) {
+    } else if (event == eEVENT.INQUISITION_MISSION) {
         var inquisition_missions = [
-            INQUISITION_MISSION.purge,
-            INQUISITION_MISSION.inquisitor,
-            INQUISITION_MISSION.spyrer,
-            INQUISITION_MISSION.artifact
+            eINQUISITION_MISSION.PURGE,
+            eINQUISITION_MISSION.INQUISITOR,
+            eINQUISITION_MISSION.SPYRER,
+            eINQUISITION_MISSION.ARTIFACT
         ];
 
         var found_sleeping_necrons = false;
@@ -48,7 +48,7 @@ function scr_inquisition_mission(event, forced_mission = -1) {
         for (var s = 0, _len = array_length(all_stars); s < _len; s++) {
             var _star = all_stars[s];
 
-            if (scr_star_has_planet_with_feature(_star, P_features.Necron_Tomb) && !awake_necron_star(_star.id)) {
+            if (scr_star_has_planet_with_feature(_star, eP_FEATURES.NECRON_TOMB) && !awake_necron_star(_star.id)) {
                 array_push(necron_tomb_worlds, _star);
                 found_sleeping_necrons = true;
             }
@@ -58,26 +58,26 @@ function scr_inquisition_mission(event, forced_mission = -1) {
                 found_demon_world = true;
             }
 
-            if (star_has_planet_with_forces(_star, eFACTION.Tyranids, 4)) {
+            if (star_has_planet_with_forces(_star, eFACTION.TYRANIDS, 4)) {
                 array_push(tyranid_org_worlds, _star);
                 found_tyranid_org = true;
             }
         }
 
         if (found_sleeping_necrons) {
-            array_push(inquisition_missions, INQUISITION_MISSION.tomb_world);
+            array_push(inquisition_missions, eINQUISITION_MISSION.TOMB_WORLD);
             global.logger.info($"Was able to find a _star with dormant necron tomb for inquisition mission");
         } else {
             global.logger.info($"Couldn't find any planets with a dormant necron tomb for inquisition mission");
         }
         if (found_tyranid_org) {
             global.logger.info($"Was able to find a _star with lvl 4 tyranids for inquisition mission");
-            array_push(inquisition_missions, INQUISITION_MISSION.tyranid_organism);
+            array_push(inquisition_missions, eINQUISITION_MISSION.TYRANID_ORGANISM);
         } else {
             global.logger.info($"Couldn't find any planets with lvl 4 tyranids for inquisition mission");
         }
         if (found_demon_world) {
-            array_push(inquisition_missions, INQUISITION_MISSION.demon_world);
+            array_push(inquisition_missions, eINQUISITION_MISSION.DEMON_WORLD);
             global.logger.info($"Was able to find a _star with demons on it for inquisition mission");
         } else {
             global.logger.info($"Couldn't find any planets with demons for inquisition mission");
@@ -92,7 +92,7 @@ function scr_inquisition_mission(event, forced_mission = -1) {
         //		for(var i = 1; i <= planets; i++)
         //		{
         //			if (p_tau[i]>4) {
-        //				array_push(inquisition_missions, INQUISITION_MISSION.ethereal);
+        //				array_push(inquisition_missions, eINQUISITION_MISSION.ETHEREAL);
         //				found_tau = true
         //				break;
         //			}
@@ -105,28 +105,28 @@ function scr_inquisition_mission(event, forced_mission = -1) {
             chosen_mission = forced_mission;
         }
         switch (chosen_mission) {
-            case INQUISITION_MISSION.purge:
+            case eINQUISITION_MISSION.PURGE:
                 mission_inquistion_purge();
                 break;
-            case INQUISITION_MISSION.inquisitor:
+            case eINQUISITION_MISSION.INQUISITOR:
                 mission_inquistion_hunt_inquisitor();
                 break;
-            case INQUISITION_MISSION.spyrer:
+            case eINQUISITION_MISSION.SPYRER:
                 mission_inquistion_spyrer();
                 break;
-            case INQUISITION_MISSION.artifact:
+            case eINQUISITION_MISSION.ARTIFACT:
                 mission_inquisition_artifact();
                 break;
-            case INQUISITION_MISSION.tomb_world:
+            case eINQUISITION_MISSION.TOMB_WORLD:
                 mission_inquisition_tomb_world(necron_tomb_worlds);
                 break;
-            case INQUISITION_MISSION.tyranid_organism:
+            case eINQUISITION_MISSION.TYRANID_ORGANISM:
                 mission_inquisition_tyranid_organism(tyranid_org_worlds);
                 break;
-            case INQUISITION_MISSION.ethereal:
+            case eINQUISITION_MISSION.ETHEREAL:
                 mission_inquisition_ethereal();
                 break;
-            case INQUISITION_MISSION.demon_world:
+            case eINQUISITION_MISSION.DEMON_WORLD:
                 mission_inquisition_demon_world(demon_worlds);
                 break;
         }
@@ -153,7 +153,7 @@ function mission_inquisition_ethereal() {
     var stars = scr_get_stars();
     var _valid_stars = array_filter_ext(stars, function(_star, index) {
         for (var i = 1; i <= _star.planets; i++) {
-            if (_star.p_owner[i] == eFACTION.Tau && _star.p_tau[i] >= 4) {
+            if (_star.p_owner[i] == eFACTION.TAU && _star.p_tau[i] >= 4) {
                 return true;
             }
         }
@@ -166,7 +166,7 @@ function mission_inquisition_ethereal() {
 
     var planet = -1;
     for (var i = 1; i <= _star.planets; i++) {
-        if (_star.p_owner[i] == eFACTION.Tau && _star.p_tau[i] >= 4) {
+        if (_star.p_owner[i] == eFACTION.TAU && _star.p_tau[i] >= 4) {
             planet = i;
             break;
         }
@@ -205,11 +205,11 @@ function mission_inquisition_tomb_world(tomb_worlds) {
         _star = tomb_worlds;
     }
 
-    var planet = scr_get_planet_with_feature(_star, P_features.Necron_Tomb);
+    var planet = scr_get_planet_with_feature(_star, eP_FEATURES.NECRON_TOMB);
 
     if (planet == -1) {
         planet = irandom_range(1, _star.planets);
-        array_push(_star.p_feature[planet], new NewPlanetFeature(P_features.Necron_Tomb));
+        array_push(_star.p_feature[planet], new NewPlanetFeature(eP_FEATURES.NECRON_TOMB));
     }
 
     var eta = scr_mission_eta(_star.x, _star.y, 1);
@@ -500,7 +500,7 @@ function mission_hunt_inquisitor_destroy_inquisitor_ship() {
         _final_disp_mod -= choose(0, 1);
     }
 
-    alter_disposition(eFACTION.Inquisition, _final_disp_mod);
+    alter_disposition(eFACTION.INQUISITION, _final_disp_mod);
 
     title = "Inquisition Mission Completed";
     image = "exploding_ship";
@@ -643,7 +643,7 @@ function mission_inquistion_purge() {
 function mission_investigate_planet() {
     var stars = scr_get_stars();
     var _valid_stars = array_filter_ext(stars, function(_star, index) {
-        if (scr_star_has_planet_with_feature(_star, P_features.Ancient_Ruins)) {
+        if (scr_star_has_planet_with_feature(_star, eP_FEATURES.ANCIENT_RUINS)) {
             var fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);
             if (fleet == undefined || point_distance(_star.x, _star.y, fleet.x, fleet.y) >= 160) {
                 return true;
@@ -659,7 +659,7 @@ function mission_investigate_planet() {
     }
 
     var _star = array_random_element(_valid_stars);
-    var planet = scr_get_planet_with_feature(_star, P_features.Ancient_Ruins);
+    var planet = scr_get_planet_with_feature(_star, eP_FEATURES.ANCIENT_RUINS);
     if (planet == -1) {
         global.logger.error("RE: Investigate Planet, couldn't pick a planet");
         exit;
@@ -770,12 +770,12 @@ function necron_tomb_mission_sequence() {
             text = "Your marines finally enter the deepest catacombs of the Necron Tomb.  There they place the Plasma Bomb and arm it.  All around are signs of increasing Necron activity.  With half an hour set, your men escape back to the surface.  There is a brief rumble as the charge goes off, your mission a success.";
             reset_popup_options();
 
-            alter_disposition(eFACTION.Inquisition, obj_controller.demanding ? choose(0, 0, 1) : 1);
+            alter_disposition(eFACTION.INQUISITION, obj_controller.demanding ? choose(0, 0, 1) : 1);
 
             mission_star = star_by_name(pop_data.loc);
             remove_planet_problem(planet, "necron", mission_star);
             seal_tomb_world(mission_star.p_feature[planet]);
-            // mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.Necron_Tomb)[0]].sealed = 1;
+            // mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], eP_FEATURES.NECRON_TOMB)[0]].sealed = 1;
 
             scr_event_log("", $"Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
             scr_gov_disp(mission_star.name, planet, irandom_range(3, 7));

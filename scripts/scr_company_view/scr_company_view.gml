@@ -160,7 +160,7 @@ function scr_company_view(company) {
             unit_loc = unit.marine_location();
 
             // Check if unit is on a lost ship
-            if (unit_loc[0] == location_types.ship && obj_ini.ship_location[unit_loc[1]] == "Lost") {
+            if (unit_loc[0] == eLOCATION_TYPES.SHIP && obj_ini.ship_location[unit_loc[1]] == "Lost") {
                 continue;
             }
 
@@ -236,7 +236,7 @@ function other_manage_data() {
 
         _unit = display_unit[v];
         _unit_loc = _unit.marine_location();
-        if (_unit_loc[0] == location_types.ship) {
+        if (_unit_loc[0] == eLOCATION_TYPES.SHIP) {
             if (_unit_loc[2] == "Lost") {
                 ma_loc[v] = "Lost";
             }
@@ -264,7 +264,7 @@ function other_manage_data() {
                 if ((_squad_type == "Venerable " + string(obj_ini.role[100][6])) && (ma_role[v] == obj_ini.role[100][6])) {
                     n = 0;
                 }
-                if (_squad_loc[0] == location_types.ship) {
+                if (_squad_loc[0] == eLOCATION_TYPES.SHIP) {
                     if ((_unit_loc[0] == _squad_loc[0]) && (_unit_loc[2] == _squad_loc[2])) {
                         n = 0;
                     } else {
@@ -294,7 +294,7 @@ function other_manage_data() {
                         break;
                 }
             } else {
-                if ((_squad_type == _unit.squad) && (_unit_loc[0] == _squad_loc[0]) && (_unit_loc[2] == _squad_loc[2]) && ((_squad_loc[0] == location_types.ship) || (_unit_loc[1] == _squad_loc[1]))) {
+                if ((_squad_type == _unit.squad) && (_unit_loc[0] == _squad_loc[0]) && (_unit_loc[2] == _squad_loc[2]) && ((_squad_loc[0] == eLOCATION_TYPES.SHIP) || (_unit_loc[1] == _squad_loc[1]))) {
                     _squad_members += 1;
                     squad[v] = _squads;
                 } else {

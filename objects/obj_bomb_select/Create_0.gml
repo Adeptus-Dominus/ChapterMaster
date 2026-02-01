@@ -38,7 +38,7 @@ mechanicus = 0;
 necrons = 0;
 
 with (obj_en_fleet) {
-    if ((owner == eFACTION.Imperium) || (owner == eFACTION.Mechanicus) || (owner == eFACTION.Inquisition) || (action != "")) {
+    if ((owner == eFACTION.IMPERIUM) || (owner == eFACTION.MECHANICUS) || (owner == eFACTION.INQUISITION) || (action != "")) {
         instance_deactivate_object(id);
     }
 }

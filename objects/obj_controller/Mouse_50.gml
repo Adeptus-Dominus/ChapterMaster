@@ -16,7 +16,7 @@ if ((menu == 12) && (cooldown <= 0) && (penitorium > 0)) {
                 cooldown = 20;
                 var c = penit_co[qp], e = penit_id[qp];
 
-                if (obj_ini.role[c][e] == obj_ini.role[100][eROLE.ChapterMaster]) {
+                if (obj_ini.role[c][e] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                     tek = "c";
                     alarm[7] = 5;
                     global.defeat = 3;
@@ -81,7 +81,7 @@ if ((menu == 12) && (cooldown <= 0) && (penitorium > 0)) {
         }
         if ((mouse_y >= yy + 455) && (mouse_y < yy + 473) && (training_techmarine < 6)) {
             cooldown = 8000;
-            if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+            if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
                 var _chapter_tech_count = scr_role_count("Techmarine", "");
                 if (_chapter_tech_count >= ((disposition[3] / 2) + 5)) {
                     training_techmarine = 0;
@@ -130,7 +130,7 @@ if ((menu == 12) && (cooldown <= 0) && (penitorium > 0)) {
         if ((mouse_x >= xx + 713) && (mouse_x <= xx + 752)) {
             cooldown = 8000;
             recruit_trial++;
-            if (recruit_trial == eTrials.num) {
+            if (recruit_trial == eTRIALS.NUM) {
                 recruit_trial = 0;
             }
         }
@@ -138,7 +138,7 @@ if ((menu == 12) && (cooldown <= 0) && (penitorium > 0)) {
             cooldown = 8000;
             recruit_trial--;
             if (recruit_trial < 0) {
-                recruit_trial = eTrials.num - 1;
+                recruit_trial = eTRIALS.NUM - 1;
             }
         }
     }
@@ -172,7 +172,7 @@ if ((menu == 12) && (cooldown <= 0) && (penitorium > 0)) {
 } */
 
 // ** Diplomacy **
-if ((menu == MENU.Diplomacy) && (diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)) && (cooldown <= 0) && (diplomacy < 10)) {
+if ((menu == eMENU.DIPLOMACY) && (diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)) && (cooldown <= 0) && (diplomacy < 10)) {
     if ((trading == 0) && valid_diplomacy_options()) {
         if ((force_goodbye == 0) && (cooldown <= 0)) {}
         if ((force_goodbye != 0) && (cooldown <= 0)) {
@@ -200,7 +200,7 @@ if ((menu == MENU.Diplomacy) && (diplomacy > 0) || ((diplomacy < -5) && (diploma
     }
 }
 // Diplomacy
-if ((zoomed == 0) && (cooldown <= 0) && (menu == MENU.Diplomacy) && (diplomacy == 0)) {
+if ((zoomed == 0) && (cooldown <= 0) && (menu == eMENU.DIPLOMACY) && (diplomacy == 0)) {
     xx += 55;
     yy -= 20;
     var onceh = 0;
@@ -236,12 +236,12 @@ scr_menu_clear_up(function() {
         yy = yy + 0;
 
         if ((mouse_x >= xx + 22) && (mouse_y >= yy + 84) && (mouse_x < xx + 98) && (mouse_y < yy + 126)) {
-            menu = MENU.Manage;
+            menu = eMENU.MANAGE;
             cooldown = 8000;
         }
     }
     // Selecting individual marines
-    if ((menu == MENU.Manage) && (managing > 0) || (managing < 0) && (!view_squad || !company_report)) {
+    if ((menu == eMENU.MANAGE) && (managing > 0) || (managing < 0) && (!view_squad || !company_report)) {
         var unit;
         var eventing = false, bb = "";
         xx = __view_get(e__VW.XView, 0) + 0;
@@ -270,7 +270,7 @@ scr_menu_clear_up(function() {
     if ((menu == 50) && (managing > 0) && (cooldown <= 0)) {
         if ((mouse_x >= xx + 217) && (mouse_y >= yy + 28) && (mouse_x < xx + 250) && (mouse_y < yy + 59)) {
             cooldown = 8;
-            menu = MENU.Manage;
+            menu = eMENU.MANAGE;
             click = 1;
         }
     }

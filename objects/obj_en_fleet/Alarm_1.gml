@@ -1,7 +1,7 @@
 try_and_report_loop("enemy fleet main end turn action", function() {
     var orb = orbiting;
 
-    if ((round(owner) != eFACTION.Imperium) && (navy == 1)) {
+    if ((round(owner) != eFACTION.IMPERIUM) && (navy == 1)) {
         owner = noone;
     }
 
@@ -20,13 +20,13 @@ try_and_report_loop("enemy fleet main end turn action", function() {
         }
     }
     var _khorne_cargo = fleet_has_cargo("warband");
-    if (_khorne_cargo && owner == eFACTION.Chaos) {
+    if (_khorne_cargo && owner == eFACTION.CHAOS) {
         khorne_fleet_cargo();
     }
 
     if (_is_orbiting) {
         turns_static++;
-        if (turns_static > 5 && owner == eFACTION.Ork) {
+        if (turns_static > 5 && owner == eFACTION.ORK) {
             if (!irandom(7)) {
                 ork_fleet_move();
                 _is_orbiting = false;
@@ -51,7 +51,7 @@ try_and_report_loop("enemy fleet main end turn action", function() {
     } else if (action == "" && _is_orbiting) {
         var max_dis = 400;
 
-        if ((orbiting.owner == eFACTION.Player) && (obj_controller.faction_status[eFACTION.Imperium] == "War") && (owner == eFACTION.Imperium)) {
+        if ((orbiting.owner == eFACTION.PLAYER) && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") && (owner == eFACTION.IMPERIUM)) {
             for (var i = 1; i <= orbiting.planets; i++) {
                 if (orbiting.p_owner[i] == 1) {
                     orbiting.p_pdf[i] -= capital_number * 50000;
@@ -67,7 +67,7 @@ try_and_report_loop("enemy fleet main end turn action", function() {
 
         // 1355;
 
-        if (instance_exists(obj_crusade) && (owner == eFACTION.Ork) && (orbiting.owner == eFACTION.Ork)) {
+        if (instance_exists(obj_crusade) && (owner == eFACTION.ORK) && (orbiting.owner == eFACTION.ORK)) {
             // Ork crusade AI
             var max_dis;
             max_dis = 400;
@@ -90,7 +90,7 @@ try_and_report_loop("enemy fleet main end turn action", function() {
             }
 
             var ns = instance_nearest(x, y, obj_star);
-            if ((ns.owner != eFACTION.Ork) && (point_distance(x, y, ns.x, ns.y) <= max_dis) && (point_distance(x, y, ns.x, ns.y) > 40) && instance_exists(obj_crusade) && (image_index > 3)) {
+            if ((ns.owner != eFACTION.ORK) && (point_distance(x, y, ns.x, ns.y) <= max_dis) && (point_distance(x, y, ns.x, ns.y) > 40) && instance_exists(obj_crusade) && (image_index > 3)) {
                 action_x = ns.x;
                 action_y = ns.y;
                 set_fleet_movement();
@@ -127,7 +127,7 @@ try_and_report_loop("enemy fleet main end turn action", function() {
         instance_activate_object(obj_crusade);
         instance_activate_object(obj_en_fleet);
 
-        /*if (action="") and (owner = eFACTION.Imperium){// Defend nearby systems and return when done
+        /*if (action="") and (owner = eFACTION.IMPERIUM){// Defend nearby systems and return when done
         
         with(obj_star){
             // 137 ; might want for it to defend under other circumstances
@@ -166,14 +166,14 @@ try_and_report_loop("enemy fleet main end turn action", function() {
         with(obj_temp3){instance_destroy();}
     }*/
 
-        if (owner == eFACTION.Inquisition) {
+        if (owner == eFACTION.INQUISITION) {
             var valid = true;
             if (instance_exists(target)) {
                 if (instance_nearest(target.x, target.y, obj_star).id != instance_nearest(x, y, obj_star).id) {
                     valid = false;
                 }
             }
-            if (((orbiting.owner == eFACTION.Player || system_feature_bool(orbiting.p_feature, P_features.Monastery)) || (obj_ini.fleet_type != ePlayerBase.home_world)) && (trade_goods != "cancel_inspection") && valid) {
+            if (((orbiting.owner == eFACTION.PLAYER || system_feature_bool(orbiting.p_feature, eP_FEATURES.MONASTERY)) || (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD)) && (trade_goods != "cancel_inspection") && valid) {
                 if (obj_controller.disposition[6] >= 60) {
                     scr_loyalty("Xeno Associate", "+");
                 }
@@ -250,11 +250,11 @@ try_and_report_loop("enemy fleet main end turn action", function() {
                 }
                 // End Test-Slave Incubator Crap
 
-                if (obj_controller.known[eFACTION.Inquisition] == 1) {
-                    obj_controller.known[eFACTION.Inquisition] = 3;
+                if (obj_controller.known[eFACTION.INQUISITION] == 1) {
+                    obj_controller.known[eFACTION.INQUISITION] = 3;
                 }
-                if (obj_controller.known[eFACTION.Inquisition] == 2) {
-                    obj_controller.known[eFACTION.Inquisition] = 4;
+                if (obj_controller.known[eFACTION.INQUISITION] == 2) {
+                    obj_controller.known[eFACTION.INQUISITION] = 4;
                 }
 
                 orbiting = instance_nearest(x, y, obj_star);
@@ -282,17 +282,17 @@ try_and_report_loop("enemy fleet main end turn action", function() {
             }
         }
 
-        if (owner == eFACTION.Tau) {
-            if (instance_exists(obj_p_fleet) && (obj_controller.known[eFACTION.Tau] == 0)) {
+        if (owner == eFACTION.TAU) {
+            if (instance_exists(obj_p_fleet) && (obj_controller.known[eFACTION.TAU] == 0)) {
                 var p_ship = instance_nearest(x, y, obj_p_fleet);
                 if ((p_ship.action == "") && (point_distance(x, y, p_ship.x, p_ship.y) <= 80)) {
-                    obj_controller.known[eFACTION.Tau] = 1;
+                    obj_controller.known[eFACTION.TAU] = 1;
                 }
             }
 
             /*if (image_index>=4){
             with(obj_star){
-                if (owner = eFACTION.Tau) and (present_fleets>0) and (tau_fleets=0){
+                if (owner = eFACTION.TAU) and (present_fleets>0) and (tau_fleets=0){
                     instance_create(x,y,obj_temp5);
                 }
             }
@@ -308,7 +308,7 @@ try_and_report_loop("enemy fleet main end turn action", function() {
         }*/
         }
 
-        if (owner == eFACTION.Tyranids) {
+        if (owner == eFACTION.TYRANIDS) {
             // Juggle bio-resources
             if (capital_number * 2 > frigate_number) {
                 capital_number -= 1;
@@ -388,7 +388,7 @@ try_and_report_loop("enemy fleet main end turn action", function() {
                             frigate_number -= new_fleet.frigate_number;
                             escort_number -= new_fleet.escort_number;
 
-                            new_fleet.owner = eFACTION.Tyranids;
+                            new_fleet.owner = eFACTION.TYRANIDS;
                             new_fleet.sprite_index = spr_fleet_tyranid;
                             new_fleet.image_index = 1;
 
@@ -451,7 +451,7 @@ try_and_report_loop("enemy fleet main end turn action", function() {
         
     }*/
 
-        if ((action_eta == 2) && (owner == eFACTION.Inquisition) && (inquisitor > -1)) {
+        if ((action_eta == 2) && (owner == eFACTION.INQUISITION) && (inquisitor > -1)) {
             inquisitor_ship_approaches();
         } else if (action_eta == 0) {
             action = "";

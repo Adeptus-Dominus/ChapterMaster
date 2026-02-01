@@ -102,7 +102,7 @@ function scr_enemy_ai_d() {
             if (dice1 <= (p_heresy[i] * 2)) {
                 result = "chaos";
             }
-            if ((dice2 <= (p_influence[i][eFACTION.Tau] * 2)) && (result == "")) {
+            if ((dice2 <= (p_influence[i][eFACTION.TAU] * 2)) && (result == "")) {
                 result = "tau";
             }
             if (result == "") {
@@ -135,7 +135,7 @@ function scr_enemy_ai_d() {
                 alert_text += ".";
                 scr_alert("green", "succession", alert_text, x, y);
             }
-            delete_features(p_feature[i], P_features.Succession_War);
+            delete_features(p_feature[i], eP_FEATURES.SUCCESSION_WAR);
             if (result == "chaos") {
                 scr_event_log("purple", alert_text);
             }
@@ -231,7 +231,7 @@ function scr_enemy_ai_d() {
             flit.action_x = x;
             flit.action_y = y;
             with (flit) {
-                owner = eFACTION.Inquisition;
+                owner = eFACTION.INQUISITION;
                 sprite_index = spr_fleet_inquisition;
                 image_index = 0;
                 action_spd = 128;
@@ -247,7 +247,7 @@ function scr_enemy_ai_d() {
             alert_text = $"The Spyrer on {planet_name} has been left unchecked.  In the ensuing carnage some high-ranking officials have been killed, along with several Nobles.  Panic is running amock in several parts of the hives and the Inquisition is less than pleased.";
             text = "Inquisition Mission Failed: The Spyrer on {planet_name} was not removed.";
             scr_popup("Inquisition Mission Failed", alert_text, "spyrer", "");
-            obj_controller.disposition[eFACTION.Inquisition] -= 3;
+            obj_controller.disposition[eFACTION.INQUISITION] -= 3;
             scr_event_log("red", text);
             remove_planet_problem(i, "spyrer");
         }
@@ -327,7 +327,7 @@ function scr_enemy_ai_d() {
                     yy = choose(yy * -1, yy);
                     yy = y + yy;
                     fleet = instance_create(xx, yy, obj_en_fleet);
-                    fleet.owner = eFACTION.Tyranids;
+                    fleet.owner = eFACTION.TYRANIDS;
                     fleet.sprite_index = spr_fleet_tyranid;
                     fleet.image_speed = 0;
 
@@ -362,16 +362,16 @@ function scr_enemy_ai_d() {
                 yep = false;
             }
 
-            if ((obj_controller.known[eFACTION.Tyranids] == 0) && (woop != 0) && (yep != false)) {
+            if ((obj_controller.known[eFACTION.TYRANIDS] == 0) && (woop != 0) && (yep != false)) {
                 scr_popup("Shadow in the Warp", $"Chief {obj_ini.role[100][17]} " + string(obj_ini.name[0][5]) + " reports a disturbance in the warp.  He claims it is like a shadow.", "shadow", "");
                 scr_event_log("red", $"Chief {obj_ini.role[100][17]} reports a disturbance in the warp.  He claims it is like a shadow.");
             }
-            if ((obj_controller.known[eFACTION.Tyranids] == 0) && (woop == 0) && (yep != false)) {
+            if ((obj_controller.known[eFACTION.TYRANIDS] == 0) && (woop == 0) && (yep != false)) {
                 var q = 0, q2 = 0;
                 repeat (90) {
                     if (q2 == 0) {
                         q += 1;
-                        if (obj_ini.role[0][q] == obj_ini.role[100][eROLE.ChapterMaster]) {
+                        if (obj_ini.role[0][q] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                             q2 = q;
                             if (string_count("0", obj_ini.spe[0][q2]) > 0) {
                                 yep2 = true;
@@ -387,7 +387,7 @@ function scr_enemy_ai_d() {
 
             g = 50;
             i = 50;
-            obj_controller.known[eFACTION.Tyranids] = 1;
+            obj_controller.known[eFACTION.TYRANIDS] = 1;
         }
     }
 
@@ -426,7 +426,7 @@ function scr_enemy_ai_d() {
     var already_enroute = false;
     var cur_star = id;
     with (obj_en_fleet) {
-        if ((owner == eFACTION.Imperium) && fleet_has_cargo("colonize")) {
+        if ((owner == eFACTION.IMPERIUM) && fleet_has_cargo("colonize")) {
             already_enroute = action_x == cur_star.x && action_y == cur_star.y;
         }
     }
@@ -469,22 +469,22 @@ function scr_enemy_ai_d() {
                     "Temperate",
                     "Shrine"
                 ];
-                if ((p_owner[r] == eFACTION.Imperium) && array_contains(priority_imperium, p_type[r])) {
+                if ((p_owner[r] == eFACTION.IMPERIUM) && array_contains(priority_imperium, p_type[r])) {
                     array_push(priority_requests, r);
                     break;
                 }
 
-                if ((p_owner[r] == eFACTION.Mechanicus) && (p_type[r] == "Forge")) {
+                if ((p_owner[r] == eFACTION.MECHANICUS) && (p_type[r] == "Forge")) {
                     array_push(priority_requests, r);
                     break;
                 }
                 // Count player planets as HIVE PLANETS so that they are prioritized
-                if (p_owner[r] == eFACTION.Player) {
+                if (p_owner[r] == eFACTION.PLAYER) {
                     array_push(priority_requests, r);
                     break;
                 }
 
-                if ((p_owner[r] == eFACTION.Imperium) || (p_owner[r] == eFACTION.Ecclesiarchy)) {
+                if ((p_owner[r] == eFACTION.IMPERIUM) || (p_owner[r] == eFACTION.ECCLESIARCHY)) {
                     array_push(non_priority_requests, r);
                 }
             }

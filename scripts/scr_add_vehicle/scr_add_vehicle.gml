@@ -24,13 +24,13 @@ function scr_add_vehicle(vehicle_type, target_company, otherdata = {}, weapon1 =
             obj_ini.veh_race[target_company][good] = 1;
 
             if (!struct_exists(otherdata, "loc")) {
-                if (obj_ini.fleet_type == ePlayerBase.home_world) {
+                if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                     obj_ini.veh_loc[target_company][good] = obj_ini.home_name;
                     obj_ini.veh_wid[target_company][good] = obj_ini.home_planet;
                     obj_ini.veh_lid[target_company][good] = -1;
                 }
 
-                if (obj_ini.fleet_type != ePlayerBase.home_world) {
+                if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                     // Need a more elaborate ship_carrying += here for the different types of units
                     var first = -1, backup = -1, i = 0;
                     for (var i = 0; i < array_length(obj_ini.ship_class); i++) {

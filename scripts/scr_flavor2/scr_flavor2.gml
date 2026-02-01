@@ -291,7 +291,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
                 m1 = string(_hostile_shots) + " " + string(_hostile_weapon) + "z are flung into " + string(target_type) + ".  ";
             }
         }
-        if ((_hostile_weapon == "Melee1") && (enemy == eFACTION.Ork)) {
+        if ((_hostile_weapon == "Melee1") && (enemy == eFACTION.ORK)) {
             flavor = 1;
             var ranz = choose(1, 2, 3);
             if (ranz == 1) {
@@ -436,7 +436,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         unit_role = lost[role_index];
         units_lost = lost_num[role_index];
         if (unit_role != "" && units_lost > 0) {
-            special = is_specialist(unit_role, SPECIALISTS_HEADS) || unit_role == obj_ini.role[100][eROLE.ChapterMaster] || unit_role == "Venerable " + string(obj_ini.role[100][eROLE.Dreadnought]) || unit_role == obj_ini.role[100][eROLE.Captain] || obj_ncombat.player_max <= 6;
+            special = is_specialist(unit_role, SPECIALISTS_HEADS) || unit_role == obj_ini.role[100][eROLE.CHAPTERMASTER] || unit_role == "Venerable " + string(obj_ini.role[100][eROLE.DREADNOUGHT]) || unit_role == obj_ini.role[100][eROLE.CAPTAIN] || obj_ncombat.player_max <= 6;
 
             if (!special) {
                 plural = units_lost > 1 ? "s" : "";

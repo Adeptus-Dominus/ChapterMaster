@@ -66,7 +66,7 @@ function scr_chaos_alliance_test() {
             repeat (4) {
                 ii += 1;
                 if (array_length(p_feature[ii]) > 0) {
-                    if (planet_feature_bool(p_feature[ii], P_features.Warlord10) > 0) {
+                    if (planet_feature_bool(p_feature[ii], eP_FEATURES.WARLORD10) > 0) {
                         yeah = ii;
                     }
                 }
@@ -108,7 +108,7 @@ function scr_chaos_alliance_test() {
                 if (rando == 2) {
                     diplo_text += "Interesting. I shall be at " + string(that_title) + " and, if you are sincere, you will come to me and we can take this proposal to its logical conclusion.";
                 }
-                scr_event_log("", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + " agrees to meet with you on " + string(that_title) + " to discuss an alliance.");
+                scr_event_log("", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " agrees to meet with you on " + string(that_title) + " to discuss an alliance.");
                 new_star_event_marker("purple");
             }
         }

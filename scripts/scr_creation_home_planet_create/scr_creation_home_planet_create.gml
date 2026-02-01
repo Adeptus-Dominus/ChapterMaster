@@ -94,7 +94,7 @@ function player_recruit_planet_selection() {
 
 function scr_creation_home_planet_create() {
     add_draw_return_values();
-    var fleet_type_text = fleet_type == ePlayerBase.home_world ? "Homeworld" : "Flagship";
+    var fleet_type_text = fleet_type == ePLAYER_BASE.HOME_WORLD ? "Homeworld" : "Flagship";
     draw_text_transformed(644, 218, fleet_type_text, 0.6, 0.6, 0);
 
     var _cur_planet_index = 0, _cur_planet_index2 = 0, name_bad = 0;
@@ -104,7 +104,7 @@ function scr_creation_home_planet_create() {
         _cur_planet_index = 16;
     }
 
-    if (fleet_type == ePlayerBase.home_world) {
+    if (fleet_type == ePLAYER_BASE.HOME_WORLD) {
         scr_image("ui/planet", _cur_planet_index, 580, 244, 128, 128);
         // draw_sprite(spr_planet_splash,_cur_planet_index,580,244);
 
@@ -157,7 +157,7 @@ function scr_creation_home_planet_create() {
         _system_complex.clicked();
         draw_set_font(fnt_40k_30b);
     }
-    if (fleet_type != ePlayerBase.home_world) {
+    if (fleet_type != ePLAYER_BASE.HOME_WORLD) {
         // draw_sprite(spr_planet_splash,_cur_planet_index,580,244);
         scr_image("ui/planet", _cur_planet_index, 580, 244, 128, 128);
 
@@ -203,7 +203,7 @@ function scr_creation_home_planet_create() {
         }
     }
 
-    if (fleet_type != ePlayerBase.penitent) {
+    if (fleet_type != ePLAYER_BASE.PENITENT) {
         right_data_slate.inside_method = player_recruit_planet_selection;
     } else {
         right_data_slate.inside_method = "";
@@ -222,10 +222,10 @@ function scr_creation_home_planet_create() {
     }
 
     if (scr_hit(575, 216, 710, 242)) {
-        if (fleet_type != ePlayerBase.home_world) {
+        if (fleet_type != ePLAYER_BASE.HOME_WORLD) {
             tooltip = "Battle Barge";
             tooltip2 = "The name of your Flagship Battle Barge.";
-        } else if (fleet_type == ePlayerBase.home_world) {
+        } else if (fleet_type == ePLAYER_BASE.HOME_WORLD) {
             tooltip = "Homeworld";
             tooltip2 = "The world that your Chapter's Fortress Monastery is located upon.  More civilized worlds are more easily defensible but the citizens may pose a risk or be a nuisance.";
         }
@@ -240,12 +240,12 @@ function scr_creation_home_planet_create() {
     draw_line(445, 457, 1125, 457);
 
     // homeworld_rule=0;
-    // aspirant_trial=eTrials.BLOODDUEL;
+    // aspirant_trial=eTRIALS.BLOODDUEL;
 
     draw_set_halign(fa_left);
 
     //TODO move to OOP checkboxes
-    if (fleet_type == ePlayerBase.home_world) {
+    if (fleet_type == ePLAYER_BASE.HOME_WORLD) {
         if (custom != eCHAPTER_TYPE.CUSTOM) {
             draw_set_alpha(0.5);
         }

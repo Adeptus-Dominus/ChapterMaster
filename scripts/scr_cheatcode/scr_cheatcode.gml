@@ -129,7 +129,7 @@ function scr_cheatcode(argument0) {
                         for (var i = 1; i <= planets; i++) {
                             var existing_problem = false; //has_any_problem_planet(i);
                             if (!existing_problem) {
-                                if (p_owner[i] == eFACTION.Imperium) {
+                                if (p_owner[i] == eFACTION.IMPERIUM) {
                                     global.logger.debug("mission");
                                     scr_new_governor_mission(i, problem);
                                 }
@@ -153,34 +153,34 @@ function scr_cheatcode(argument0) {
                     global.logger.debug($"{mission},");
                     switch (mission) {
                         case "1": //default
-                            scr_inquisition_mission(EVENT.inquisition_mission);
+                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION);
                             break;
                         case "planet":
-                            scr_inquisition_mission(EVENT.inquisition_planet);
+                            scr_inquisition_mission(eEVENT.MECHANICUS_MISSION);
                             break;
                         case "spyrer":
-                            scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.spyrer);
+                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.SPYRER);
                             break;
                         case "artifact":
-                            scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.artifact);
+                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.ARTIFACT);
                             break;
                         case "inquisitor":
-                            scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.inquisitor);
+                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.INQUISITOR);
                             break;
                         case "purge":
-                            scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.purge);
+                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.PURGE);
                             break;
                         case "tomb_world":
-                            scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.tomb_world);
+                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.TOMB_WORLD);
                             break;
                         case "tyranid_organism":
-                            scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.tyranid_organism);
+                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.TYRANID_ORGANISM);
                             break;
                         case "demon":
-                            scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.demon_world);
+                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.DEMON_WORLD);
                             break;
                         default:
-                            scr_inquisition_mission(EVENT.inquisition_mission);
+                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION);
                             break;
                     }
                     global.logger.debug("inquisitor mission initiated");
@@ -189,21 +189,21 @@ function scr_cheatcode(argument0) {
                 case "artifactpopulate":
                     with (obj_star) {
                         for (var i = 1; i <= planets; i++) {
-                            array_push(p_feature[i], new NewPlanetFeature(P_features.Artifact));
+                            array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.ARTIFACT));
                         }
                     }
                     break;
                 case "ruinspopulate":
                     with (obj_star) {
                         for (var i = 1; i <= planets; i++) {
-                            array_push(p_feature[i], new NewPlanetFeature(P_features.Ancient_Ruins));
+                            array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.ANCIENT_RUINS));
                         }
                     }
                     break;
                 case "stcpopulate":
                     with (obj_star) {
                         for (var i = 1; i <= planets; i++) {
-                            array_push(p_feature[i], new NewPlanetFeature(P_features.STC_Fragment));
+                            array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.STC_FRAGMENT));
                         }
                     }
                     break;
@@ -428,39 +428,39 @@ function draw_planet_debug_options() {
 function draw_planet_debug_features() {
     static _addable_features = [
         {
-            e_num: P_features.Gene_Stealer_Cult,
+            e_num: eP_FEATURES.GENE_STEALER_CULT,
             name: "GeneStealer Cult",
         },
         {
-            e_num: P_features.Ancient_Ruins,
+            e_num: eP_FEATURES.ANCIENT_RUINS,
             name: "Ancient Ruins",
         },
         {
-            e_num: P_features.Artifact,
+            e_num: eP_FEATURES.ARTIFACT,
             name: "Artefact",
         },
         {
-            e_num: P_features.STC_Fragment,
+            e_num: eP_FEATURES.STC_FRAGMENT,
             name: "STC Fragment",
         },
         {
-            e_num: P_features.Sororitas_Cathedral,
+            e_num: eP_FEATURES.SORORITAS_CATHEDRAL,
             name: "Sororitas Cathedral",
         },
         {
-            e_num: P_features.OrkWarboss,
+            e_num: eP_FEATURES.ORKWARBOSS,
             name: "Ork Warboss",
         },
         {
-            e_num: P_features.OrkStronghold,
+            e_num: eP_FEATURES.ORKSTRONGHOLD,
             name: "Ork stronghold",
         },
         {
-            e_num: P_features.Monastery,
+            e_num: eP_FEATURES.MONASTERY,
             name: "Fortress Monastery",
         },
         {
-            e_num: P_features.Starship,
+            e_num: eP_FEATURES.STARSHIP,
             name: "Ancient Starship",
         }
     ];
@@ -588,7 +588,7 @@ function system_debug_enemy_invasion() {
             {
                 str1: "Orks",
                 choice_func: function() {
-                    invasion_faction = eFACTION.Ork;
+                    invasion_faction = eFACTION.ORK;
                     system_debug_enemy_invasion_spawn();
                 },
             },
@@ -602,7 +602,7 @@ function system_debug_enemy_invasion() {
             {
                 str1: "Tyranids",
                 choice_func: function() {
-                    invasion_faction = eFACTION.Tyranids;
+                    invasion_faction = eFACTION.TYRANIDS;
                     system_debug_enemy_invasion_spawn();
                 },
             }
@@ -620,7 +620,7 @@ function system_debug_enemy_invasion_spawn() {
             amount = 9;
         }
         with (obj_star) {
-            if ((choose(0, 1, 1) == 1) && (owner != eFACTION.Eldar) && (owner != 1)) {
+            if ((choose(0, 1, 1) == 1) && (owner != eFACTION.ELDAR) && (owner != 1)) {
                 var fleet;
                 fleet = instance_create(x, y, obj_en_fleet);
                 fleet.owner = obj_popup.invasion_faction;
@@ -647,7 +647,7 @@ function system_debug_enemy_invasion_spawn() {
     }
     if (invasion_faction == 9) {
         with (obj_star) {
-            if ((choose(0, 1, 1) == 1) && (owner != eFACTION.Eldar) && (owner != 1)) {
+            if ((choose(0, 1, 1) == 1) && (owner != eFACTION.ELDAR) && (owner != 1)) {
                 var h;
                 h = 0;
                 repeat (4) {
@@ -670,7 +670,7 @@ function system_debug_spawn_fleet() {
 
 function debug_spawn_imperium_fleet() {
     var fleet = instance_create(star.x, star.y, obj_en_fleet);
-    fleet.owner = eFACTION.Imperium;
+    fleet.owner = eFACTION.IMPERIUM;
     fleet.sprite_index = spr_fleet_imperial;
     fleet.capital_number = 2;
     fleet.frigate_number = 5;
@@ -682,7 +682,7 @@ function debug_spawn_imperium_fleet() {
 
 function debug_spawn_heretic_fleet() {
     var fleet = instance_create(star.x, star.y, obj_en_fleet);
-    fleet.owner = eFACTION.Chaos;
+    fleet.owner = eFACTION.CHAOS;
     fleet.sprite_index = spr_fleet_chaos;
     fleet.capital_number = 2;
     fleet.frigate_number = 5;
@@ -699,7 +699,7 @@ function debug_add_xenos_fleet_options() {
 
 function debug_spawn_ork_fleet() {
     var fleet = instance_create(star.x, star.y, obj_en_fleet);
-    fleet.owner = eFACTION.Ork;
+    fleet.owner = eFACTION.ORK;
     fleet.sprite_index = spr_fleet_ork;
     fleet.capital_number = 2;
     fleet.frigate_number = 5;
@@ -711,7 +711,7 @@ function debug_spawn_ork_fleet() {
 
 function debug_spawn_tau_fleet() {
     var fleet = instance_create(star.x, star.y, obj_en_fleet);
-    fleet.owner = eFACTION.Tau;
+    fleet.owner = eFACTION.TAU;
     fleet.sprite_index = spr_fleet_tau;
     fleet.capital_number = 2;
     fleet.frigate_number = 5;

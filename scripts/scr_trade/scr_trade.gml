@@ -189,7 +189,7 @@ function TradeAttempt(diplomacy) constructor {
 
         var player_fleet_targets = [];
 
-        if (obj_ini.fleet_type != ePlayerBase.home_world || !array_length(_stars_with_player_control)) {
+        if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD || !array_length(_stars_with_player_control)) {
             // with(obj_star){if (present_fleet[1]>0){x-=10000;y-=10000;}}
             with (obj_p_fleet) {
                 // Get the nearest star system that is viable for creating the trading fleet
@@ -220,7 +220,7 @@ function TradeAttempt(diplomacy) constructor {
                     if (p_owner[q] == 5) {
                         ahuh = 1;
                     }
-                    if ((p_owner[q] < 6) && (planet_feature_bool(p_feature[q], P_features.Sororitas_Cathedral) == 1)) {
+                    if ((p_owner[q] < 6) && (planet_feature_bool(p_feature[q], eP_FEATURES.SORORITAS_CATHEDRAL) == 1)) {
                         ahuh = 1;
                     }
                 }
@@ -247,7 +247,7 @@ function TradeAttempt(diplomacy) constructor {
 
         trade_from_star = array_random_element(viable_faction_trade_stars);
 
-        if (!array_length(_stars_with_player_control) || (obj_ini.fleet_type != ePlayerBase.home_world && array_length(player_fleet_targets))) {
+        if (!array_length(_stars_with_player_control) || (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD && array_length(player_fleet_targets))) {
             trade_to_obj = array_random_element(player_fleet_targets);
         } else if (!array_length(player_fleet_targets)) {
             trade_to_obj = array_random_element(_stars_with_player_control);
@@ -546,7 +546,7 @@ function TradeAttempt(diplomacy) constructor {
 
     var _info_val = 0;
     with (obj_controller) {
-        if ((random_event_next != EVENT.none) && ((string_count("WL10|", useful_info) > 0) || (turn < chaos_turn)) && ((string_count("WL7|", useful_info) > 0) || (known[eFACTION.Ork] < 1)) && (string_count("WG|", useful_info) > 1) && (string_count("CM|", useful_info) > 0)) {
+        if ((random_event_next != eEVENT.NONE) && ((string_count("WL10|", useful_info) > 0) || (turn < chaos_turn)) && ((string_count("WL7|", useful_info) > 0) || (known[eFACTION.ORK] < 1)) && (string_count("WG|", useful_info) > 1) && (string_count("CM|", useful_info) > 0)) {
             _info_val = 1000;
         }
     }
@@ -605,7 +605,7 @@ function TradeAttempt(diplomacy) constructor {
                     my_worth += _opt.number * 50;
                 }
             } else if (_opt.label == "Info Chip") {
-                if (diplomacy_faction == eFACTION.Mechanicus) {
+                if (diplomacy_faction == eFACTION.MECHANICUS) {
                     my_worth += _opt.number * 100; // 20% bonus
                 } else {
                     my_worth += _opt.number * 80;

@@ -41,7 +41,7 @@ function scr_chapter_random(custom_or_random) {
     recruiting_exists = 1;
     homeworld_exists = 1;
     homeworld_rule = 1;
-    aspirant_trial = eTrials.BLOODDUEL;
+    aspirant_trial = eTRIALS.BLOODDUEL;
     discipline = "librarius";
     battle_cry = "For the Emperor";
 
@@ -957,7 +957,7 @@ function scr_chapter_random(custom_or_random) {
     if (ran2 == 93) {
         phrase2 = "Wizards";
         col_second = "Purple";
-        name[100][eROLE.Librarian] = "Wizard";
+        name[100][eROLE.LIBRARIAN] = "Wizard";
         chapter_master_specialty = 3;
     }
     if (ran2 == 94) {
@@ -1024,13 +1024,13 @@ function scr_chapter_random(custom_or_random) {
     obj_creation.livery_picker.scr_unit_draw_data();
     obj_creation.livery_picker.set_default_armour(struct_cols, col_special);
     obj_creation.full_liveries = array_create(21, variable_clone(obj_creation.livery_picker.map_colour));
-    obj_creation.full_liveries[eROLE.Librarian] = obj_creation.livery_picker.set_default_librarian(struct_cols);
+    obj_creation.full_liveries[eROLE.LIBRARIAN] = obj_creation.livery_picker.set_default_librarian(struct_cols);
 
-    obj_creation.full_liveries[eROLE.Chaplain] = obj_creation.livery_picker.set_default_chaplain(struct_cols);
+    obj_creation.full_liveries[eROLE.CHAPLAIN] = obj_creation.livery_picker.set_default_chaplain(struct_cols);
 
-    obj_creation.full_liveries[eROLE.Apothecary] = obj_creation.livery_picker.set_default_apothecary(struct_cols);
+    obj_creation.full_liveries[eROLE.APOTHECARY] = obj_creation.livery_picker.set_default_apothecary(struct_cols);
 
-    obj_creation.full_liveries[eROLE.Techmarine] = obj_creation.livery_picker.set_default_techmarines(struct_cols);
+    obj_creation.full_liveries[eROLE.TECHMARINE] = obj_creation.livery_picker.set_default_techmarines(struct_cols);
     obj_creation.livery_picker.scr_unit_draw_data();
     obj_creation.livery_picker.set_default_armour(struct_cols, col_special);
 

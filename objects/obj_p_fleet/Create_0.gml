@@ -1,4 +1,4 @@
-owner = eFACTION.Player;
+owner = eFACTION.PLAYER;
 capital_number = 0;
 frigate_number = 0;
 escort_number = 0;

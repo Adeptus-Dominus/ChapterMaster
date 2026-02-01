@@ -214,7 +214,7 @@ try {
     // For testing purposes
     if (is_test_map == true) {
         with (obj_en_fleet) {
-            if (owner == eFACTION.Imperium) {
+            if (owner == eFACTION.IMPERIUM) {
                 capital_number = 0;
                 frigate_number = 1;
                 escort_number = 2;
@@ -481,7 +481,7 @@ try {
 
     income = income_base + income_home + income_forge + income_agri + income_training + income_fleet + income_trade + income_tribute;
 
-    if ((menu == MENU.Diplomacy) && ((diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)))) {
+    if ((menu == eMENU.DIPLOMACY) && ((diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)))) {
         if (string_length(diplo_txt) < string_length(diplo_text)) {
             diplo_char += 2;
             diplo_txt = string_copy(diplo_text, 0, diplo_char);
@@ -591,7 +591,7 @@ try {
     }
 
     if (menu == 0 && !instances_exist_any([obj_ncombat, obj_fleet_controller])) {
-        if (!array_contains(obj_ini.role[0], obj_ini.role[100][eROLE.ChapterMaster]) && (alarm[7] == -1)) {
+        if (!array_contains(obj_ini.role[0], obj_ini.role[100][eROLE.CHAPTERMASTER]) && (alarm[7] == -1)) {
             alarm[7] = 15;
         }
     }

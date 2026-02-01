@@ -186,7 +186,7 @@ function apothecary_training() {
                 }
             } else {
                 training_apothecary = 0;
-                scr_alert("red", "recruitment", $"No marines available for {obj_ini.role[100][eROLE.Apothecary]} traning", 0, 0);
+                scr_alert("red", "recruitment", $"No marines available for {obj_ini.role[100][eROLE.APOTHECARY]} traning", 0, 0);
             }
         }
     }
@@ -263,7 +263,7 @@ function chaplain_training() {
                     }
                 } else {
                     training_chaplain = 0;
-                    scr_alert("red", "recruitment", $"No remaining {obj_ini.role[100][eROLE.Chaplain]} applicant marines for training", 0, 0);
+                    scr_alert("red", "recruitment", $"No remaining {obj_ini.role[100][eROLE.CHAPLAIN]} applicant marines for training", 0, 0);
                 }
             }
         }
@@ -350,7 +350,7 @@ function techmarine_training() {
     if (training_techmarine > 0) {
         recruit_count = scr_role_count(novice_type, "");
 
-        if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+        if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
             var _threshold = 360;
         } else {
             var _threshold = 252;
@@ -375,7 +375,7 @@ function techmarine_training() {
                     t = 0;
                     r = 0;
                     unit.religion = "cult_mechanicus";
-                    if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+                    if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
                         unit.add_trait("mars_trained");
                         scr_alert("green", "recruitment", $"{unit.name()} returns from Mars, a {unit.role()}.", 0, 0);
                     } else {
@@ -433,7 +433,7 @@ function techmarine_training() {
                     unit.update_role(novice_type);
 
                     // Remove from ship
-                    if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+                    if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
                         if (unit.ship_location > -1) {
                             var man_size = unit.get_unit_size();
                             obj_ini.ship_carrying[unit.ship_location] -= man_size;
@@ -446,7 +446,7 @@ function techmarine_training() {
                     unit.update_weapon_two("");
                     unit.update_gear("");
                     unit.update_mobility_item("");
-                    if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+                    if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
                         scr_alert("green", "recruitment", $"{unit.name_role()} journeys to Mars.", 0, 0);
                     } else {
                         scr_alert("green", "recruitment", $"{unit.name_role()} begins training.", 0, 0);
@@ -458,7 +458,7 @@ function techmarine_training() {
                 }
             } else {
                 training_techmarine = 0;
-                scr_alert("red", "recruitment", $"No marines with sufficient technology aptitude for {obj_ini.role[100][eROLE.Techmarine]} training", 0, 0);
+                scr_alert("red", "recruitment", $"No marines with sufficient technology aptitude for {obj_ini.role[100][eROLE.TECHMARINE]} training", 0, 0);
             }
         }
     }

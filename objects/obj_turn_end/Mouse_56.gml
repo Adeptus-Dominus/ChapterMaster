@@ -93,7 +93,7 @@ if (__b__) {
 
                         for (var p_num = 1; p_num < stahr.planets; p_num++) {
                             //TODO fix this because this sounds rad
-                            //if(planet_feature_bool(stahr.p_feature[p_num], P_features.Monastery)==1)thenobj_fleet.player_lasers=stahr.p_lasers[p_num];
+                            //if(planet_feature_bool(stahr.p_feature[p_num], eP_FEATURES.MONASTERY)==1)thenobj_fleet.player_lasers=stahr.p_lasers[p_num];
                         }
                         add_fleet_ships_to_combat(battle_pobject[current_battle], obj_fleet);
 
@@ -151,9 +151,9 @@ if (__b__) {
 
                         var _allow_fortifications = false;
                         var _fort_factions = [
-                            eFACTION.Player,
-                            eFACTION.Tyranids,
-                            eFACTION.Ork
+                            eFACTION.PLAYER,
+                            eFACTION.TYRANIDS,
+                            eFACTION.ORK
                         ];
                         _allow_fortifications = array_contains(_fort_factions, _planet_data.current_owner);
 
@@ -174,14 +174,14 @@ if (__b__) {
                         obj_ncombat.battle_climate = _planet_data.planet_type;
 
                         // show_message(string(battle_object[current_battle].p_feature[battle_world[current_battle]]));
-                        /*if (scr_planetary_feature.plant_feature_bool(battle_object[current_battle].p_feature[battle_world[current_battle]], P_features.Monastery)==1){
+                        /*if (scr_planetary_feature.plant_feature_bool(battle_object[current_battle].p_feature[battle_world[current_battle]], eP_FEATURES.MONASTERY)==1){
 				            // show_message(string(battle_object[current_battle].p_defenses[battle_world[current_battle]]));
 				            // show_message(string(battle_object[current_battle].p_silo[battle_world[current_battle]]));
 				            obj_ncombat.player_defenses+=battle_object[current_battle].p_defenses[battle_world[current_battle]];
 				            obj_ncombat.player_silos+=battle_object[current_battle].p_silo[battle_world[current_battle]];
 				        }*/
 
-                        if (_enemy == eFACTION.Imperium) {
+                        if (_enemy == eFACTION.IMPERIUM) {
                             obj_ncombat.threat = min(1000000, _planet_data.guardsmen);
                         } else if (obj_ncombat.enemy < 14 && _enemy > 5) {
                             obj_ncombat.threat = _planet_data.planet_forces[_enemy];

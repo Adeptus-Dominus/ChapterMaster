@@ -24,14 +24,14 @@ try_and_report_loop("fleet alarm 4", function() {
             connected = 1;
         }
 
-        if ((owner == eFACTION.Inquisition) && (action_eta < 2)) {
+        if ((owner == eFACTION.INQUISITION) && (action_eta < 2)) {
             action_eta = 2;
         }
         // action_x=sys.x;
         // action_y=sys.y;
         action = "move";
 
-        if ((owner != eFACTION.Eldar) && (mine.storm > 0)) {
+        if ((owner != eFACTION.ELDAR) && (mine.storm > 0)) {
             action_eta += 10000;
         }
 
@@ -58,8 +58,8 @@ try_and_report_loop("fleet alarm 4", function() {
         act_dist = point_distance(x, y, sys.x, sys.y);
         mine = instance_nearest(x, y, obj_star);
 
-        // if (owner = eFACTION.Tau) then mine.tau_fleets-=1;
-        // if (owner = eFACTION.Tau) and (image_index!=1) then mine.tau_fleets-=1;
+        // if (owner = eFACTION.TAU) then mine.tau_fleets-=1;
+        // if (owner = eFACTION.TAU) and (image_index!=1) then mine.tau_fleets-=1;
         // mine.present_fleets-=1;
 
         connected = determine_warp_join(mine, sys);
@@ -74,7 +74,7 @@ try_and_report_loop("fleet alarm 4", function() {
             turns_static = 0;
             var eta = 0;
 
-            if ((trade_goods != "") && (owner != eFACTION.Tyranids) && (owner != eFACTION.Chaos) && (string_count("Inqis", trade_goods) == 0) && (string_count("merge", trade_goods) == 0) && (string_count("_her", trade_goods) == 0) && (trade_goods != "cancel_inspection") && (trade_goods != "return")) {
+            if ((trade_goods != "") && (owner != eFACTION.TYRANIDS) && (owner != eFACTION.CHAOS) && (string_count("Inqis", trade_goods) == 0) && (string_count("merge", trade_goods) == 0) && (string_count("_her", trade_goods) == 0) && (trade_goods != "cancel_inspection") && (trade_goods != "return")) {
                 if (scr_valid_fleet_target(target)) {
                     if (target.action != "") {
                         if (target_dist > sys_dist) {
@@ -96,14 +96,14 @@ try_and_report_loop("fleet alarm 4", function() {
                 connected = 1;
             }
 
-            if ((action_eta <= 0) || (owner != eFACTION.Inquisition)) {
+            if ((action_eta <= 0) || (owner != eFACTION.INQUISITION)) {
                 action_eta = eta;
-                if ((owner == eFACTION.Inquisition) && (action_eta < 2) && (string_count("_her", trade_goods) == 0)) {
+                if ((owner == eFACTION.INQUISITION) && (action_eta < 2) && (string_count("_her", trade_goods) == 0)) {
                     action_eta = 2;
                 }
             }
 
-            if ((owner != eFACTION.Eldar) && (mine.storm > 0)) {
+            if ((owner != eFACTION.ELDAR) && (mine.storm > 0)) {
                 action_eta += 10000;
             }
 

@@ -213,7 +213,7 @@ if (__b__) {
                         }
 
                         for (var i = 0; i < target.planets; i++) {
-                            if (planet_feature_bool(target.p_feature[i], P_features.Monastery) == 1) {
+                            if (planet_feature_bool(target.p_feature[i], eP_FEATURES.MONASTERY) == 1) {
                                 obj_fleet.player_lasers = target.p_lasers[i];
                             }
                         }

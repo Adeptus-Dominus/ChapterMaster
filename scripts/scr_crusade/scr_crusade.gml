@@ -106,7 +106,7 @@ function scr_crusade() {
                                 array_push(heroics_strings, heroic_death);
                             }
                         }
-                    } else if (unit.role() == obj_ini.role[100][11] || unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
+                    } else if (unit.role() == obj_ini.role[100][11] || unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                         dead = false;
                     }
                 }
@@ -164,10 +164,10 @@ function scr_crusade() {
     }
     if (artifacts > 0) {
         repeat (artifacts) {
-            if (obj_ini.fleet_type == ePlayerBase.home_world) {
+            if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                 scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
             }
-            if (obj_ini.fleet_type != ePlayerBase.home_world) {
+            if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                 scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
             }
         }

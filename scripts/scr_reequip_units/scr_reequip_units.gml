@@ -135,7 +135,7 @@ function set_up_equip_popup() {
 
         if (vih > 0 && man_size > 0 && allow) {
             var pip = instance_create(0, 0, obj_popup);
-            pip.type = POPUP_TYPE.EQUIP;
+            pip.type = ePOPUP_TYPE.EQUIP;
             pip.o_wep1 = o_wep1;
             pip.o_wep2 = o_wep2;
             pip.o_armour = o_armour;
@@ -177,7 +177,7 @@ function set_up_equip_popup() {
                 ];
                 quality_radio = new RadioSet(_quality_options, "", {max_width: 500, x1: 1040, y1: 318});
 
-                range_melee_radio = new RadioSet([{str1: "Ranged", font: fnt_40k_14b, val: eENGAGEMENT.Ranged}, {str1: "Melee", font: fnt_40k_14b, val: eENGAGEMENT.Melee}], "", {max_width: 500, x1: 1040, y1: 343});
+                range_melee_radio = new RadioSet([{str1: "Ranged", font: fnt_40k_14b, val: eENGAGEMENT.RANGED}, {str1: "Melee", font: fnt_40k_14b, val: eENGAGEMENT.MELEE}], "", {max_width: 500, x1: 1040, y1: 343});
 
                 weapon1_select = new UnitButtonObject({x1: 1300, y1: 215, label: "", font: fnt_40k_12});
                 weapon2_select = new UnitButtonObject({x1: 1300, y1: 235, label: "", font: fnt_40k_12});
@@ -419,19 +419,19 @@ function draw_popup_equip() {
             }
         }
 
-        if (equipmet_area == EquipmentSlot.WEAPON_ONE && (n_wep1 == ITEM_NAME_NONE || n_wep1 == "")) {
+        if (equipmet_area == eEQUIPMENT_SLOT.WEAPON_ONE && (n_wep1 == ITEM_NAME_NONE || n_wep1 == "")) {
             n_good1 = 1;
         }
-        if (equipmet_area == EquipmentSlot.WEAPON_TWO && (n_wep2 == ITEM_NAME_NONE || n_wep2 == "")) {
+        if (equipmet_area == eEQUIPMENT_SLOT.WEAPON_TWO && (n_wep2 == ITEM_NAME_NONE || n_wep2 == "")) {
             n_good2 = 1;
         }
-        if (equipmet_area == EquipmentSlot.ARMOUR && (n_armour == ITEM_NAME_NONE || n_armour == "")) {
+        if (equipmet_area == eEQUIPMENT_SLOT.ARMOUR && (n_armour == ITEM_NAME_NONE || n_armour == "")) {
             n_good3 = 1;
         }
-        if (equipmet_area == EquipmentSlot.GEAR && (n_gear == ITEM_NAME_NONE || n_gear == "")) {
+        if (equipmet_area == eEQUIPMENT_SLOT.GEAR && (n_gear == ITEM_NAME_NONE || n_gear == "")) {
             n_good4 = 1;
         }
-        if (equipmet_area == EquipmentSlot.MOBILITY && (n_mobi == ITEM_NAME_NONE || n_mobi == "")) {
+        if (equipmet_area == eEQUIPMENT_SLOT.MOBILITY && (n_mobi == ITEM_NAME_NONE || n_mobi == "")) {
             n_good5 = 1;
         }
 
@@ -441,7 +441,7 @@ function draw_popup_equip() {
         var gear_data = gear_weapon_data("gear", n_gear);
         var mobility_data = gear_weapon_data("mobility", n_mobi);
 
-        if ((equipmet_area == EquipmentSlot.WEAPON_ONE) && is_struct(weapon_one_data)) {
+        if ((equipmet_area == eEQUIPMENT_SLOT.WEAPON_ONE) && is_struct(weapon_one_data)) {
             // Check numbers
             req_wep1_num = units;
             have_wep1_num = 0;
@@ -486,7 +486,7 @@ function draw_popup_equip() {
                 }
             }
         }
-        if ((equipmet_area == EquipmentSlot.WEAPON_TWO) && is_struct(weapon_two_data)) {
+        if ((equipmet_area == eEQUIPMENT_SLOT.WEAPON_TWO) && is_struct(weapon_two_data)) {
             // Check numbers
             req_wep2_num = units;
             have_wep2_num = 0;
@@ -541,7 +541,7 @@ function draw_popup_equip() {
                 }
             }
         }
-        if ((equipmet_area == EquipmentSlot.ARMOUR) && is_struct(armour_data)) {
+        if ((equipmet_area == eEQUIPMENT_SLOT.ARMOUR) && is_struct(armour_data)) {
             // Check numbers
             req_armour_num = units;
             have_armour_num = 0;
@@ -587,7 +587,7 @@ function draw_popup_equip() {
                 warning = "Marines may not exit Dreadnoughts.";
             }
         }
-        if ((equipmet_area == EquipmentSlot.GEAR) && (n_gear != "Assortment") && (n_gear != ITEM_NAME_NONE)) {
+        if ((equipmet_area == eEQUIPMENT_SLOT.GEAR) && (n_gear != "Assortment") && (n_gear != ITEM_NAME_NONE)) {
             // Check numbers
             req_gear_num = units;
             have_gear_num = 0;
@@ -614,7 +614,7 @@ function draw_popup_equip() {
                 warning = "Dreadnoughts may not use infantry equipment.";
             }
         }
-        if ((equipmet_area == EquipmentSlot.MOBILITY) && (n_mobi != "Assortment") && (n_mobi != ITEM_NAME_NONE) && n_mobi != ITEM_NAME_ANY) {
+        if ((equipmet_area == eEQUIPMENT_SLOT.MOBILITY) && (n_mobi != "Assortment") && (n_mobi != ITEM_NAME_NONE) && n_mobi != ITEM_NAME_ANY) {
             // Check numbers
             req_mobi_num = units;
             have_mobi_num = 0;
@@ -655,7 +655,7 @@ function draw_popup_equip() {
     }
 
     //draw_set_halign(fa_center);
-    if ((equipmet_area == EquipmentSlot.WEAPON_ONE) || (equipmet_area == EquipmentSlot.WEAPON_TWO)) {
+    if ((equipmet_area == eEQUIPMENT_SLOT.WEAPON_ONE) || (equipmet_area == eEQUIPMENT_SLOT.WEAPON_TWO)) {
         range_melee_radio.draw();
     }
 

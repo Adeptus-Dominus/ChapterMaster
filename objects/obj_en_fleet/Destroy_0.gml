@@ -1,4 +1,4 @@
-/*if (owner = eFACTION.Chaos){
+/*if (owner = eFACTION.CHAOS){
     show_message("Trade Goods: "+string(trade_goods)+"#Alarms: "+string(alarm[0])+"|"+string(alarm[1])+"|"+string(alarm[2])+"|"+string(alarm[4]));
 }*/
 
@@ -17,7 +17,7 @@ if (instance_exists(obj_controller)) {
         obj_controller.faction_defeated[7] = 1;
         scr_event_log("", "Enemy Leader Assassinated: Ork Warboss");
         if (instance_exists(obj_turn_end)) {
-            scr_alert("", "ass", "Warboss " + string(obj_controller.faction_leader[eFACTION.Ork]) + " has been killed.", 0, 0);
+            scr_alert("", "ass", "Warboss " + string(obj_controller.faction_leader[eFACTION.ORK]) + " has been killed.", 0, 0);
         }
     }
 }

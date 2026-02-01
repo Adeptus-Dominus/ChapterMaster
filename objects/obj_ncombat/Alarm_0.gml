@@ -101,7 +101,7 @@ try {
         u.dudes_special[4] = "farseer_powers";
         u.dudes[5] = "Night Spinner";
         u.dudes_num[5] = 1;
-        u.enemy = eFACTION.Eldar;
+        u.enemy = eFACTION.ELDAR;
     }
     // * Small Fallen Group *
     if (battle_special == "fallen1") {

@@ -846,7 +846,7 @@ if (class == "Leviathan") {
     weapon_cooldown[1] = 30;
 }
 
-if (owner == eFACTION.Tyranids) {
+if (owner == eFACTION.TYRANIDS) {
     for (var i = 1; i <= 2; i++) {
         if (obj_fleet.en_mutation[i] == "Spore Clouds") {
             shields = shields + 100;
@@ -870,7 +870,7 @@ if (owner == eFACTION.Tyranids) {
     }
 }
 
-if (owner != eFACTION.Eldar) {
+if (owner != eFACTION.ELDAR) {
     hp /= 2;
     maxhp = hp;
     shields = shields / 2;

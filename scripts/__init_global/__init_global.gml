@@ -17,7 +17,7 @@ function __init_global() {
     }
 
     global.logger = new Logger();
-    global.logger.active_level = (code_is_compiled()) ? eLOG_LEVEL.Warning : eLOG_LEVEL.Debug;
+    global.logger.active_level = (code_is_compiled()) ? eLOG_LEVEL.WARNING : eLOG_LEVEL.DEBUG;
 
     global.culture_styles = [
         "Greek",

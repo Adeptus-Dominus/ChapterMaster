@@ -1,6 +1,6 @@
 function new_colony_fleet(doner_star, doner_planet, target, target_planet, mission = "new_colony") {
     var new_colonise_fleet = instance_create(doner_star.x, doner_star.y, obj_en_fleet);
-    new_colonise_fleet.owner = eFACTION.Imperium;
+    new_colonise_fleet.owner = eFACTION.IMPERIUM;
     new_colonise_fleet.sprite_index = spr_fleet_civilian;
     new_colonise_fleet.image_index = 3;
     new_colonise_fleet.warp_able = false;
@@ -82,14 +82,14 @@ function deploy_colonisers(star) {
         } else {
             star.p_population[targ_planet] += data.colonists / power(10, 8);
         }
-        var start_influ = star.p_influence[targ_planet][eFACTION.Tyranids];
+        var start_influ = star.p_influence[targ_planet][eFACTION.TYRANIDS];
         with (star) {
             merge_influences(data.colonist_influence, targ_planet);
         }
         var colony_purpose = data.mission == "new_colony" ? "recolonise" : "bolster population";
         var alert_string = $"Imperial citizens {colony_purpose} {planet_numeral_name(targ_planet, star)} I.";
-        var player_vision = star.p_player[targ_planet] > 0 || star.p_owner[targ_planet] == eFACTION.Player;
-        if (star.p_influence[targ_planet][eFACTION.Tyranids] > start_influ && player_vision) {
+        var player_vision = star.p_player[targ_planet] > 0 || star.p_owner[targ_planet] == eFACTION.PLAYER;
+        if (star.p_influence[targ_planet][eFACTION.TYRANIDS] > start_influ && player_vision) {
             alert_string += " They bring with them traces of a Genestelar Cult";
         }
         scr_alert("green", "duhuhuhu", alert_string, star.x, star.y);

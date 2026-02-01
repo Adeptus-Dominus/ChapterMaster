@@ -6,9 +6,9 @@ function add_marines_to_recovery() {
         if (is_struct(_unit) && ally[i] == false) {
             if (marine_dead[i] == 1 && marine_type[i] != "") {
                 var _role_priority_bonus = 0;
-                var _chief_librarian = $"Chief {_roles[eROLE.Librarian]}";
+                var _chief_librarian = $"Chief {_roles[eROLE.LIBRARIAN]}";
                 switch (_unit.role()) {
-                    case obj_ini.role[100][eROLE.ChapterMaster]:
+                    case obj_ini.role[100][eROLE.CHAPTERMASTER]:
                         _role_priority_bonus = 720;
                         break;
                     case "Forge Master":
@@ -17,32 +17,32 @@ function add_marines_to_recovery() {
                     case _chief_librarian:
                         _role_priority_bonus = 360;
                         break;
-                    case _roles[eROLE.Captain]:
-                    case _roles[eROLE.HonourGuard]:
-                    case _roles[eROLE.Ancient]:
+                    case _roles[eROLE.CAPTAIN]:
+                    case _roles[eROLE.HONOURGUARD]:
+                    case _roles[eROLE.ANCIENT]:
                         _role_priority_bonus = 160;
                         break;
-                    case _roles[eROLE.VeteranSergeant]:
-                    case _roles[eROLE.Terminator]:
+                    case _roles[eROLE.VETERANSERGEANT]:
+                    case _roles[eROLE.TERMINATOR]:
                         _role_priority_bonus = 80;
                         break;
-                    case _roles[eROLE.Veteran]:
-                    case _roles[eROLE.Sergeant]:
-                    case _roles[eROLE.Champion]:
-                    case _roles[eROLE.Chaplain]:
-                    case _roles[eROLE.Apothecary]:
-                    case _roles[eROLE.Techmarine]:
-                    case _roles[eROLE.Librarian]:
+                    case _roles[eROLE.VETERAN]:
+                    case _roles[eROLE.SERGEANT]:
+                    case _roles[eROLE.CHAMPION]:
+                    case _roles[eROLE.CHAPLAIN]:
+                    case _roles[eROLE.APOTHECARY]:
+                    case _roles[eROLE.TECHMARINE]:
+                    case _roles[eROLE.LIBRARIAN]:
                     case "Codiciery":
                     case "Lexicanum":
                         _role_priority_bonus = 40;
                         break;
-                    case _roles[eROLE.Tactical]:
-                    case _roles[eROLE.Assault]:
-                    case _roles[eROLE.Devastator]:
+                    case _roles[eROLE.TACTICAL]:
+                    case _roles[eROLE.ASSAULT]:
+                    case _roles[eROLE.DEVASTATOR]:
                         _role_priority_bonus = 20;
                         break;
-                    case _roles[eROLE.Scout]:
+                    case _roles[eROLE.SCOUT]:
                     default:
                         _role_priority_bonus = 0;
                         break;
@@ -153,7 +153,7 @@ function check_for_plasma_bomb_and_tomb(unit) {
     var _planet = obj_ncombat.battle_id;
     var _necron_strength = _star.p_necrons[_planet];
     if (unit.gear() == "Plasma Bomb" && !string_count("mech_tomb2", obj_ncombat.battle_special)) {
-        if (obj_ncombat.enemy == eFACTION.Necrons && awake_tomb_world(_star.p_feature[_planet])) {
+        if (obj_ncombat.enemy == eFACTION.NECRONS && awake_tomb_world(_star.p_feature[_planet])) {
             if (((_necron_strength - 2) < 3 && dropping) || (_necron_strength - 1) < 3) {
                 obj_ncombat.plasma_bomb += 1;
                 unit.update_gear("", false, false);
@@ -291,7 +291,7 @@ function after_combat_recover_marine_gene_seed(unit) {
     // show_message("ded; increase final deaths");
 
     if (obj_controller.blood_debt == 1) {
-        if (unit.role() == obj_ini.role[100][eROLE.Scout]) {
+        if (unit.role() == obj_ini.role[100][eROLE.SCOUT]) {
             obj_controller.penitent_current += 2;
         } else {
             obj_controller.penitent_current += 4;

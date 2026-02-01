@@ -106,24 +106,24 @@ if (total_role_number > 0) {
 if (total_role_number > 0 && tab > -1) {
     item_name = [];
     var infanty_roles = [
-        eROLE.ChapterMaster,
-        eROLE.HonourGuard,
-        eROLE.Veteran,
-        eROLE.Terminator,
-        eROLE.Captain,
-        eROLE.Champion,
-        eROLE.Tactical,
-        eROLE.Devastator,
-        eROLE.Assault,
-        eROLE.Ancient,
-        eROLE.Scout,
-        eROLE.Chaplain,
-        eROLE.Apothecary,
-        eROLE.Techmarine,
-        eROLE.Librarian,
-        eROLE.Sergeant,
-        eROLE.VeteranSergeant,
-        eROLE.Dreadnought
+        eROLE.CHAPTERMASTER,
+        eROLE.HONOURGUARD,
+        eROLE.VETERAN,
+        eROLE.TERMINATOR,
+        eROLE.CAPTAIN,
+        eROLE.CHAMPION,
+        eROLE.TACTICAL,
+        eROLE.DEVASTATOR,
+        eROLE.ASSAULT,
+        eROLE.ANCIENT,
+        eROLE.SCOUT,
+        eROLE.CHAPLAIN,
+        eROLE.APOTHECARY,
+        eROLE.TECHMARINE,
+        eROLE.LIBRARIAN,
+        eROLE.SERGEANT,
+        eROLE.VETERANSERGEANT,
+        eROLE.DREADNOUGHT
     ];
     // hand slots
     if ((tab == 0 || tab == 1) && array_get_index(infanty_roles, obj_controller.settings) >= 0) {
@@ -132,7 +132,7 @@ if (total_role_number > 0 && tab > -1) {
             item_name,
             obj_controller.settings, // eROLE
             0, // slot
-            eENGAGEMENT.Any,
+            eENGAGEMENT.ANY,
             true, // include the company standard
             false, // do not limit to available items
 
@@ -141,7 +141,7 @@ if (total_role_number > 0 && tab > -1) {
             item_name,
             obj_controller.settings, // eROLE
             1, // slot
-            eENGAGEMENT.Any,
+            eENGAGEMENT.ANY,
             false, // include the company standard
             false, // do not limit to available items
             false, // not only mastercrafted
@@ -153,7 +153,7 @@ if (total_role_number > 0 && tab > -1) {
             item_name,
             obj_controller.settings, // eROLE
             tab, // slot
-            eENGAGEMENT.None, // doesn't matter to non infantry/non hand slots
+            eENGAGEMENT.NONE, // doesn't matter to non infantry/non hand slots
             true, // include the company standard
             false, // do not limit to available items
 

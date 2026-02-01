@@ -34,11 +34,11 @@ function intro_to_diplomacy(faction_enum) {
                 _new_diag = "hello";
             }
         } else {
-            if (known[eFACTION.Inquisition] == 1) {
+            if (known[eFACTION.INQUISITION] == 1) {
                 known[diplomacy] = 2;
                 faction_justmet = 1;
                 obj_controller.last_mission = turn + 1;
-            } else if (known[eFACTION.Inquisition] == 3) {
+            } else if (known[eFACTION.INQUISITION] == 3) {
                 known[faction_enum] = 4;
                 faction_justmet = 1;
                 obj_controller.last_mission = turn + 1;
@@ -250,57 +250,57 @@ function set_up_diplomacy_persons() {
     diplo_persons = {};
     diplo_persons.imperium = new ShutterButton();
     var _imp = diplo_persons.imperium;
-    _imp.image = known[eFACTION.Imperium] || global.cheat_debug ? 3 : 4;
-    _imp._faction_enum = eFACTION.Imperium;
+    _imp.image = known[eFACTION.IMPERIUM] || global.cheat_debug ? 3 : 4;
+    _imp._faction_enum = eFACTION.IMPERIUM;
 
     diplo_persons.mechanicus = new ShutterButton();
     var _mechs = diplo_persons.mechanicus;
-    _mechs.image = known[eFACTION.Mechanicus] || global.cheat_debug ? 5 : 6;
-    _mechs._faction_enum = eFACTION.Mechanicus;
+    _mechs.image = known[eFACTION.MECHANICUS] || global.cheat_debug ? 5 : 6;
+    _mechs._faction_enum = eFACTION.MECHANICUS;
 
     diplo_persons.inquisition = new ShutterButton();
     var _inquis = diplo_persons.inquisition;
-    _inquis.image = known[eFACTION.Inquisition] || global.cheat_debug ? 7 : 8;
-    _inquis._faction_enum = eFACTION.Inquisition;
+    _inquis.image = known[eFACTION.INQUISITION] || global.cheat_debug ? 7 : 8;
+    _inquis._faction_enum = eFACTION.INQUISITION;
 
     diplo_persons.sisters = new ShutterButton();
     var _sisters = diplo_persons.sisters;
-    _sisters.image = known[eFACTION.Ecclesiarchy] || global.cheat_debug ? 9 : 10;
-    _sisters._faction_enum = eFACTION.Ecclesiarchy;
+    _sisters.image = known[eFACTION.ECCLESIARCHY] || global.cheat_debug ? 9 : 10;
+    _sisters._faction_enum = eFACTION.ECCLESIARCHY;
 
     diplo_persons.eldar = new ShutterButton();
     var _eldar = diplo_persons.eldar;
-    if (faction_gender[eFACTION.Eldar] == 1) {
-        _eldar.image = known[eFACTION.Eldar] || global.cheat_debug ? 9 : 10;
+    if (faction_gender[eFACTION.ELDAR] == 1) {
+        _eldar.image = known[eFACTION.ELDAR] || global.cheat_debug ? 9 : 10;
     } else {
-        _eldar.image = known[eFACTION.Eldar] || global.cheat_debug ? 21 : 22;
+        _eldar.image = known[eFACTION.ELDAR] || global.cheat_debug ? 21 : 22;
     }
-    _eldar._faction_enum = eFACTION.Eldar;
+    _eldar._faction_enum = eFACTION.ELDAR;
 
     diplo_persons.ork = new ShutterButton();
     var _orks = diplo_persons.ork;
-    _orks.image = known[eFACTION.Ork] || global.cheat_debug ? 13 : 14;
-    _orks._faction_enum = eFACTION.Ork;
+    _orks.image = known[eFACTION.ORK] || global.cheat_debug ? 13 : 14;
+    _orks._faction_enum = eFACTION.ORK;
 
     diplo_persons.tau = new ShutterButton();
     var _tau = diplo_persons.tau;
-    _tau.image = known[eFACTION.Tau] || global.cheat_debug ? 15 : 16;
-    _tau._faction_enum = eFACTION.Tau;
+    _tau.image = known[eFACTION.TAU] || global.cheat_debug ? 15 : 16;
+    _tau._faction_enum = eFACTION.TAU;
 
     diplo_persons.chaos = new ShutterButton();
     var imm = 19;
-    if (known[eFACTION.Chaos] > 0 && faction_gender[eFACTION.Chaos] == 2) {
+    if (known[eFACTION.CHAOS] > 0 && faction_gender[eFACTION.CHAOS] == 2) {
         imm = 27;
     }
-    if (known[eFACTION.Chaos] < 1 && faction_gender[eFACTION.Chaos] == 1) {
+    if (known[eFACTION.CHAOS] < 1 && faction_gender[eFACTION.CHAOS] == 1) {
         imm = 20;
     }
-    if (known[eFACTION.Chaos] < 1 && faction_gender[eFACTION.Chaos] == 2) {
+    if (known[eFACTION.CHAOS] < 1 && faction_gender[eFACTION.CHAOS] == 2) {
         imm = 28;
     }
     var _chaos = diplo_persons.chaos;
     _chaos.image = imm;
-    _chaos._faction_enum = eFACTION.Chaos;
+    _chaos._faction_enum = eFACTION.CHAOS;
 
     var _shutters = [
         _imp,
@@ -376,8 +376,8 @@ function set_up_diplomacy_persons() {
 
                     /*var fis;fis="[Request Audience]";
 			        if (turns_ignored[2]>0) then fis="                  ";
-			        if (ignore[eFACTION.Imperium]<1) then draw_text_transformed(xx+189,yy+354,string(fis)+"  [Ignore]",0.7,0.7,0);
-			        if (ignore[eFACTION.Imperium]>=1) then draw_text_transformed(xx+189,yy+354,string(fis)+"[Unignore]",0.7,0.7,0);*/
+			        if (ignore[eFACTION.IMPERIUM]<1) then draw_text_transformed(xx+189,yy+354,string(fis)+"  [Ignore]",0.7,0.7,0);
+			        if (ignore[eFACTION.IMPERIUM]>=1) then draw_text_transformed(xx+189,yy+354,string(fis)+"[Unignore]",0.7,0.7,0);*/
                 }
             };
         }
@@ -398,7 +398,7 @@ function faction_disposition_rating_string(diplomacy) {
 }
 
 function scr_ui_diplomacy() {
-    if (menu != MENU.Diplomacy) {
+    if (menu != eMENU.DIPLOMACY) {
         return;
     }
 
@@ -438,21 +438,21 @@ function scr_ui_diplomacy() {
         xx += 55;
         yy -= 20;
 
-        diplo_persons.imperium.draw_shutter(xx + 31, yy + 281, false, 1.5, known[eFACTION.Imperium] > 0.7 || global.cheat_debug);
+        diplo_persons.imperium.draw_shutter(xx + 31, yy + 281, false, 1.5, known[eFACTION.IMPERIUM] > 0.7 || global.cheat_debug);
 
-        diplo_persons.mechanicus.draw_shutter(xx + 31, yy + 417, false, 1.5, known[eFACTION.Mechanicus] > 0.7 || global.cheat_debug);
+        diplo_persons.mechanicus.draw_shutter(xx + 31, yy + 417, false, 1.5, known[eFACTION.MECHANICUS] > 0.7 || global.cheat_debug);
 
-        diplo_persons.inquisition.draw_shutter(xx + 31, yy + 553, false, 1.5, known[eFACTION.Inquisition] > 0.7 || global.cheat_debug);
+        diplo_persons.inquisition.draw_shutter(xx + 31, yy + 553, false, 1.5, known[eFACTION.INQUISITION] > 0.7 || global.cheat_debug);
 
-        diplo_persons.sisters.draw_shutter(xx + 31, yy + 689, false, 1.5, known[eFACTION.Ecclesiarchy] > 0.7 || global.cheat_debug);
+        diplo_persons.sisters.draw_shutter(xx + 31, yy + 689, false, 1.5, known[eFACTION.ECCLESIARCHY] > 0.7 || global.cheat_debug);
 
-        diplo_persons.eldar.draw_shutter(xx + 1041, yy + 281, false, 1.5, known[eFACTION.Eldar] > 0.7 || global.cheat_debug);
+        diplo_persons.eldar.draw_shutter(xx + 1041, yy + 281, false, 1.5, known[eFACTION.ELDAR] > 0.7 || global.cheat_debug);
 
-        diplo_persons.ork.draw_shutter(xx + 1041, yy + 417, false, 1.5, known[eFACTION.Ork] > 0.7 || global.cheat_debug);
+        diplo_persons.ork.draw_shutter(xx + 1041, yy + 417, false, 1.5, known[eFACTION.ORK] > 0.7 || global.cheat_debug);
 
-        diplo_persons.tau.draw_shutter(xx + 1041, yy + 553, false, 1.5, known[eFACTION.Tau] > 0.7 || global.cheat_debug);
+        diplo_persons.tau.draw_shutter(xx + 1041, yy + 553, false, 1.5, known[eFACTION.TAU] > 0.7 || global.cheat_debug);
 
-        diplo_persons.chaos.draw_shutter(xx + 1041, yy + 689, false, 1.5, known[eFACTION.Chaos] > 0.7 || global.cheat_debug);
+        diplo_persons.chaos.draw_shutter(xx + 1041, yy + 689, false, 1.5, known[eFACTION.CHAOS] > 0.7 || global.cheat_debug);
 
         scr_image("symbol", 0, xx + 138, yy + 174, 217, 107);
         scr_image("symbol", 1, xx + 525, yy + 174, 109, 54);
@@ -548,16 +548,16 @@ function scr_ui_diplomacy() {
         }
 
         if (daemon == false) {
-            if (diplomacy != eFACTION.Eldar) {
+            if (diplomacy != eFACTION.ELDAR) {
                 scr_image("diplomacy/splash", diplomacy, xx + 16, yy + 43, 310, 828);
             }
-            if ((diplomacy != eFACTION.Eldar) || ((diplomacy == eFACTION.Eldar) && (faction_gender[eFACTION.Eldar] == 1))) {
+            if ((diplomacy != eFACTION.ELDAR) || ((diplomacy == eFACTION.ELDAR) && (faction_gender[eFACTION.ELDAR] == 1))) {
                 scr_image("diplomacy/splash", diplomacy, xx + 16, yy + 16, 310, 828);
             }
-            if ((diplomacy == eFACTION.Eldar) && (faction_gender[eFACTION.Eldar] == 2)) {
+            if ((diplomacy == eFACTION.ELDAR) && (faction_gender[eFACTION.ELDAR] == 2)) {
                 scr_image("diplomacy/splash", 11, xx + 16, yy + 16, 310, 828);
             }
-            if ((diplomacy == eFACTION.Chaos) && (faction_gender[eFACTION.Chaos] == 2)) {
+            if ((diplomacy == eFACTION.CHAOS) && (faction_gender[eFACTION.CHAOS] == 2)) {
                 scr_image("diplomacy/splash", 12, xx + 16, yy + 43, 310, 828);
             }
         }

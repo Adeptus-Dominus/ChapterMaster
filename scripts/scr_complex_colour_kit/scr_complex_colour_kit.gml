@@ -2,13 +2,6 @@ function coord_relevative_positions(coords, xx, yy) {
     return [coords[0] + xx, coords[1] + yy, coords[2] + xx, coords[3] + yy];
 }
 
-enum eMarkings {
-    RIGHTPAD,
-    LEFTPAD,
-    LEFTKNEE,
-    RIGHTKNEE,
-}
-
 function ColourItem(xx, yy) constructor {
     fetch_marine_components_to_memory();
     self.xx = xx;
@@ -395,36 +388,36 @@ function ColourItem(xx, yy) constructor {
     };
 
     static set_default_techmarines = function(struct_cols) {
-        set_pattern(Colors.Red, full_body);
-        map_colour.eye_lense = Colors.Green;
-        map_colour.right_pauldron = Colors.Red;
+        set_pattern(eCOLORS.RED, full_body);
+        map_colour.eye_lense = eCOLORS.GREEN;
+        map_colour.right_pauldron = eCOLORS.RED;
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed = true;
         return variable_clone(map_colour);
     };
 
     static set_default_apothecary = function(struct_cols) {
-        set_pattern(Colors.White, full_body);
-        map_colour.eye_lense = Colors.Red;
-        map_colour.right_pauldron = Colors.White;
+        set_pattern(eCOLORS.WHITE, full_body);
+        map_colour.eye_lense = eCOLORS.RED;
+        map_colour.right_pauldron = eCOLORS.WHITE;
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed = true;
         return variable_clone(map_colour);
     };
 
     static set_default_chaplain = function(struct_cols) {
-        set_pattern(Colors.Black, full_body);
-        map_colour.eye_lense = Colors.Red;
-        map_colour.right_pauldron = Colors.Black;
+        set_pattern(eCOLORS.BLACK, full_body);
+        map_colour.eye_lense = eCOLORS.RED;
+        map_colour.right_pauldron = eCOLORS.BLACK;
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed = true;
         return variable_clone(map_colour);
     };
 
     static set_default_librarian = function(struct_cols) {
-        set_pattern(Colors.Dark_Ultramarine, full_body);
-        map_colour.eye_lense = Colors.Cyan;
-        map_colour.right_pauldron = Colors.Dark_Ultramarine;
+        set_pattern(eCOLORS.DARK_ULTRAMARINE, full_body);
+        map_colour.eye_lense = eCOLORS.CYAN;
+        map_colour.right_pauldron = eCOLORS.DARK_ULTRAMARINE;
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed = true;
         return variable_clone(map_colour);
@@ -589,23 +582,23 @@ function ColourItem(xx, yy) constructor {
     };
 }
 
-enum eMarineIcons {
-    None,
-    Company,
-    Chapter,
-    Squad,
-    Role,
+enum eMARINE_ICONS {
+    NONE,
+    COMPANY,
+    CHAPTER,
+    SQUAD,
+    ROLE,
 }
 
 function get_marine_icon_set(key) {
     var sprite_set = false;
-    if (key == eMarineIcons.Chapter) {
+    if (key == eMARINE_ICONS.CHAPTER) {
         sprite_set = global.chapter_symbols;
-    } else if (key == eMarineIcons.Role) {
+    } else if (key == eMARINE_ICONS.ROLE) {
         sprite_set = global.role_markings;
-    } else if (key == eMarineIcons.Squad) {
+    } else if (key == eMARINE_ICONS.SQUAD) {
         sprite_set = global.squad_markings;
-    } else if (key == eMarineIcons.Company) {
+    } else if (key == eMARINE_ICONS.COMPANY) {
         sprite_set = global.company_markings;
     }
     return variable_clone(sprite_set);
@@ -638,14 +631,14 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
         var _roles = obj_ini.role[100];
         var data_set = obj_ini.full_liveries[0];
         if (is_specialist(setup_role, SPECIALISTS_LIBRARIANS)) {
-            data_set = _full_liveries[eROLE.Librarian];
+            data_set = _full_liveries[eROLE.LIBRARIAN];
         } else if (is_specialist(setup_role, SPECIALISTS_HEADS)) {
             if (is_specialist(setup_role, SPECIALISTS_APOTHECARIES)) {
-                data_set = _full_liveries[eROLE.Apothecary];
+                data_set = _full_liveries[eROLE.APOTHECARY];
             } else if (is_specialist(setup_role, SPECIALISTS_TECHS)) {
-                data_set = _full_liveries[eROLE.Techmarine];
+                data_set = _full_liveries[eROLE.TECHMARINE];
             } else if (is_specialist(setup_role, SPECIALISTS_CHAPLAINS)) {
-                data_set = _full_liveries[eROLE.Chaplain];
+                data_set = _full_liveries[eROLE.CHAPLAIN];
             }
         } else {
             for (var i = 0; i <= 20; i++) {

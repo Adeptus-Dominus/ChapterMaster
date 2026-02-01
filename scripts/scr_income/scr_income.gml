@@ -4,12 +4,12 @@ function scr_income() {
     income_base = 32;
     income_tribute = 0;
     income_controlled_planets = 0;
-    if (obj_ini.fleet_type != ePlayerBase.home_world) {
+    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
         income_base = 40;
     }
 
     income_home = 0;
-    if (obj_ini.fleet_type == ePlayerBase.home_world) {
+    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         income_home = 8;
     } // Homeworld-based income
 
@@ -19,7 +19,7 @@ function scr_income() {
         obj_controller.income_fleet -= frigate_number / 2;
         obj_controller.income_fleet -= escort_number / 10;
     }
-    if (obj_ini.fleet_type == ePlayerBase.home_world) {
+    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         obj_controller.income_fleet = round(obj_controller.income_fleet / 2);
     }
 
@@ -27,8 +27,8 @@ function scr_income() {
     income_agri = 0;
     income_training = 0;
 
-    if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
-        var _chapter_tech_count = scr_role_count(obj_ini.role[100][eROLE.Techmarine], "");
+    if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
+        var _chapter_tech_count = scr_role_count(obj_ini.role[100][eROLE.TECHMARINE], "");
         if (_chapter_tech_count >= ((disposition[3] / 2) + 5)) {
             training_techmarine = 0;
         }
@@ -115,24 +115,24 @@ function scr_income() {
         tau_messenger += 1;
     }
 
-    if (obj_ini.fleet_type == ePlayerBase.home_world) {
+    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         with (obj_star) {
-            if (planet_feature_bool(p_feature[1], P_features.Monastery) == 1) {
+            if (planet_feature_bool(p_feature[1], eP_FEATURES.MONASTERY) == 1) {
                 obj_controller.income += 10;
                 instance_create(x, y, obj_temp1);
             }
-            if (planet_feature_bool(p_feature[2], P_features.Monastery) == 1) {
+            if (planet_feature_bool(p_feature[2], eP_FEATURES.MONASTERY) == 1) {
                 obj_controller.income += 10;
                 instance_create(x, y, obj_temp1);
             }
-            if (owner == eFACTION.Tau) {
+            if (owner == eFACTION.TAU) {
                 obj_controller.tau_stars += 1;
             }
             alarm[2] = 1;
         }
     }
 
-    if (obj_ini.fleet_type != ePlayerBase.home_world) {
+    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
         with (obj_p_fleet) {
             if ((action == "") && (capital_number > 0)) {
                 var mine;
@@ -141,7 +141,7 @@ function scr_income() {
                 i = 0;
                 repeat (4) {
                     i += 1;
-                    if ((mine.p_owner[i] == eFACTION.Imperium) || (mine.p_owner[i] == eFACTION.Mechanicus)) {
+                    if ((mine.p_owner[i] == eFACTION.IMPERIUM) || (mine.p_owner[i] == eFACTION.MECHANICUS)) {
                         if ((mine.p_type[i] == "Desert") || (mine.p_type[i] == "Temperate")) {
                             obj_controller.income_home += 2 * capital_number;
                         }
@@ -160,7 +160,7 @@ function scr_income() {
         repeat (4) {
             o += 1;
             if (dispo[o] >= 100) {
-                if (planet_feature_bool(p_feature[1], P_features.Monastery) == 0) {
+                if (planet_feature_bool(p_feature[1], eP_FEATURES.MONASTERY) == 0) {
                     obj_controller.income_controlled_planets += 1;
                     obj_controller.income_tribute += 1;
                     if (p_type[o] == "Feudal") {

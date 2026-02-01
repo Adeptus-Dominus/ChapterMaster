@@ -10,8 +10,8 @@ function ChapterData() constructor {
     successors = 0;
     splash = 0;
     icon_name = "unknown";
-    aspirant_trial = eTrials.BLOODDUEL;
-    fleet_type = ePlayerBase.none;
+    aspirant_trial = eTRIALS.BLOODDUEL;
+    fleet_type = ePLAYER_BASE.NONE;
     strength = 0;
     purity = 0;
     stability = 0;
@@ -222,23 +222,23 @@ function scr_chapter_new(chapter_identifier) {
             obj_creation.race[i][_role_id] = 1;
         }
     }
-    load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
-    load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
-    load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
-    load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Iron Halo");
-    load_default_gear(eROLE.Dreadnought, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
-    load_default_gear(eROLE.Champion, "Champion", "Power Sword", STR_ANY_POWER_ARMOUR, STR_ANY_POWER_ARMOUR, "", "Combat Shield");
-    load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
-    load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
-    load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Jump Pack", "");
-    load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
-    load_default_gear(eROLE.Scout, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
-    load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
-    load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
-    load_default_gear(eROLE.Techmarine, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
-    load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
-    load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
-    load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.HONOURGUARD, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
+    load_default_gear(eROLE.VETERAN, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.TERMINATOR, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
+    load_default_gear(eROLE.CAPTAIN, "Captain", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Iron Halo");
+    load_default_gear(eROLE.DREADNOUGHT, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
+    load_default_gear(eROLE.CHAMPION, "Champion", "Power Sword", STR_ANY_POWER_ARMOUR, STR_ANY_POWER_ARMOUR, "", "Combat Shield");
+    load_default_gear(eROLE.TACTICAL, "Tactical", "Bolter", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.DEVASTATOR, "Devastator", "", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.ASSAULT, "Assault", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Jump Pack", "");
+    load_default_gear(eROLE.ANCIENT, "Ancient", "Company Standard", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.SCOUT, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
+    load_default_gear(eROLE.CHAPLAIN, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
+    load_default_gear(eROLE.APOTHECARY, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
+    load_default_gear(eROLE.TECHMARINE, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
+    load_default_gear(eROLE.LIBRARIAN, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
+    load_default_gear(eROLE.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.VETERANSERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
 
     for (var c = 0; c < array_length(obj_creation.all_chapters); c++) {
         if (chapter_identifier == obj_creation.all_chapters[c].name && obj_creation.all_chapters[c].json == true) {
@@ -315,15 +315,15 @@ function scr_chapter_new(chapter_identifier) {
             obj_creation.livery_picker.role_set = 0;
         }
 
-        obj_creation.color_to_main = chapter_object.colors.main;
-        obj_creation.color_to_secondary = chapter_object.colors.secondary;
-        obj_creation.color_to_pauldron = chapter_object.colors.pauldron_l;
-        obj_creation.color_to_pauldron2 = chapter_object.colors.pauldron_r;
-        obj_creation.color_to_trim = chapter_object.colors.trim;
-        obj_creation.color_to_lens = chapter_object.colors.lens;
-        obj_creation.color_to_weapon = chapter_object.colors.weapon;
-        obj_creation.col_special = chapter_object.colors.special;
-        //obj_creation.trim = chapter_object.colors.trim_on;
+        obj_creation.color_to_main = chapter_object.eCOLORS.MAIN;
+        obj_creation.color_to_secondary = chapter_object.eCOLORS.SECONDARY;
+        obj_creation.color_to_pauldron = chapter_object.eCOLORS.PAULDRON_L;
+        obj_creation.color_to_pauldron2 = chapter_object.eCOLORS.PAULDRON_R;
+        obj_creation.color_to_trim = chapter_object.eCOLORS.TRIM;
+        obj_creation.color_to_lens = chapter_object.eCOLORS.LENS;
+        obj_creation.color_to_weapon = chapter_object.eCOLORS.WEAPON;
+        obj_creation.col_special = chapter_object.eCOLORS.SPECIAL;
+        //obj_creation.trim = chapter_object.eCOLORS.TRIM_ON;
         with (obj_creation) {
             if (array_length(col) > 0) {
                 if (color_to_main != "") {
@@ -386,26 +386,26 @@ function scr_chapter_new(chapter_identifier) {
                 livery_picker.scr_unit_draw_data();
                 livery_picker.set_default_armour(struct_cols, col_special);
                 full_liveries = array_create(21, variable_clone(livery_picker.map_colour));
-                full_liveries[eROLE.Librarian] = livery_picker.set_default_librarian(struct_cols);
+                full_liveries[eROLE.LIBRARIAN] = livery_picker.set_default_librarian(struct_cols);
 
-                full_liveries[eROLE.Chaplain] = livery_picker.set_default_chaplain(struct_cols);
+                full_liveries[eROLE.CHAPLAIN] = livery_picker.set_default_chaplain(struct_cols);
 
-                full_liveries[eROLE.Apothecary] = livery_picker.set_default_apothecary(struct_cols);
+                full_liveries[eROLE.APOTHECARY] = livery_picker.set_default_apothecary(struct_cols);
 
-                full_liveries[eROLE.Techmarine] = livery_picker.set_default_techmarines(struct_cols);
+                full_liveries[eROLE.TECHMARINE] = livery_picker.set_default_techmarines(struct_cols);
                 livery_picker.scr_unit_draw_data();
                 livery_picker.set_default_armour(struct_cols, col_special);
             } else {
                 if (array_length(full_liveries) != 21) {
                     full_liveries = array_create(21, variable_clone(full_liveries[0]));
                     struct_cols.left_pauldron = full_liveries[0].left_pauldron;
-                    full_liveries[eROLE.Librarian] = livery_picker.set_default_librarian(struct_cols);
+                    full_liveries[eROLE.LIBRARIAN] = livery_picker.set_default_librarian(struct_cols);
 
-                    full_liveries[eROLE.Chaplain] = livery_picker.set_default_chaplain(struct_cols);
+                    full_liveries[eROLE.CHAPLAIN] = livery_picker.set_default_chaplain(struct_cols);
 
-                    full_liveries[eROLE.Apothecary] = livery_picker.set_default_apothecary(struct_cols);
+                    full_liveries[eROLE.APOTHECARY] = livery_picker.set_default_apothecary(struct_cols);
 
-                    full_liveries[eROLE.Techmarine] = livery_picker.set_default_techmarines(struct_cols);
+                    full_liveries[eROLE.TECHMARINE] = livery_picker.set_default_techmarines(struct_cols);
                 }
             }
             livery_picker.map_colour = full_liveries[0];
@@ -532,9 +532,4 @@ enum eCM_SPECIALTY {
     LEADER = 1,
     CHAMPION,
     PSYKER,
-}
-enum eRecruitHomeRelationship {
-    SAMEPLANET,
-    SAMESYSTEM,
-    DIFFERENTSYSTEM,
 }

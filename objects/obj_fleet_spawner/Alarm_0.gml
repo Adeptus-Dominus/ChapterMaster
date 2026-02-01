@@ -15,7 +15,7 @@ if ((number > 0) && (owner != 1)) {
     en_frigate = obj_fleet.en_frigate[number];
     en_capital = obj_fleet.en_capital[number];
 
-    if (owner == eFACTION.Imperium) {
+    if (owner == eFACTION.IMPERIUM) {
         if (en_escort > 0) {
             en_column[4] = "Sword Class Frigate";
             en_num[4] = en_escort;
@@ -49,7 +49,7 @@ if ((number > 0) && (owner != 1)) {
         }
     }
 
-    if (owner == eFACTION.Eldar) {
+    if (owner == eFACTION.ELDAR) {
         if (en_escort > 0) {
             en_column[4] = "Aconite";
             en_num[4] = max(1, floor(en_escort / 2));
@@ -72,7 +72,7 @@ if ((number > 0) && (owner != 1)) {
         }
     }
 
-    if (owner == eFACTION.Ork) {
+    if (owner == eFACTION.ORK) {
         var i;
         i = 0;
         i = en_capital;
@@ -111,7 +111,7 @@ if ((number > 0) && (owner != 1)) {
         } // en_num[5]+=en_num[4]+1;
     }
 
-    if (owner == eFACTION.Tau) {
+    if (owner == eFACTION.TAU) {
         var i;
         i = 0;
         i = en_frigate;
@@ -149,7 +149,7 @@ if ((number > 0) && (owner != 1)) {
         }
     }
 
-    if (owner == eFACTION.Tyranids) {
+    if (owner == eFACTION.TYRANIDS) {
         var i;
         i = 0;
         i = en_escort;
@@ -180,7 +180,7 @@ if ((number > 0) && (owner != 1)) {
         } // en_num[5]+=en_num[4]+1;
     }
 
-    if (owner == eFACTION.Chaos) {
+    if (owner == eFACTION.CHAOS) {
         var i;
         i = 0;
         i = en_frigate;
@@ -219,7 +219,7 @@ if ((number > 0) && (owner != 1)) {
         } // en_num[5]+=en_num[4]+1;
     }
 
-    if (owner == eFACTION.Necrons) {
+    if (owner == eFACTION.NECRONS) {
         var i;
         i = 0;
         i = en_escort;

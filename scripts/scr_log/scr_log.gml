@@ -5,11 +5,11 @@
 #macro STR_error_message_ps $"P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum."
 
 enum eLOG_LEVEL {
-    Debug,
-    Info,
-    Warning,
-    Error,
-    Critical,
+    DEBUG,
+    INFO,
+    WARNING,
+    ERROR,
+    CRITICAL,
 }
 
 /// @description Logs the _message into a file in the Logs folder.
@@ -227,9 +227,9 @@ function os_type_format(_os_type) {
 /// @function Logger() constructor
 /// @description A Python-inspired logger that traces the callsite and timestamp for every message.
 function Logger() constructor {
-    static active_level = eLOG_LEVEL.Debug;
+    static active_level = eLOG_LEVEL.DEBUG;
     static file_logging = true;
-    static file_logging_level = eLOG_LEVEL.Info;
+    static file_logging_level = eLOG_LEVEL.INFO;
     static log_filename = PATH_last_messages;
 
     /// @description Physically writes the queue to the file.
@@ -283,31 +283,31 @@ function Logger() constructor {
 
     /// @param {Any} _message
     static debug = function(_message) {
-        _write(eLOG_LEVEL.Debug, "DEBUG", _message);
+        _write(eLOG_LEVEL.DEBUG, "DEBUG", _message);
     };
 
     /// @param {Any} _message
     static info = function(_message) {
-        _write(eLOG_LEVEL.Info, "INFO", _message);
+        _write(eLOG_LEVEL.INFO, "INFO", _message);
     };
 
     /// @param {Any} _message
     static warning = function(_message) {
-        _write(eLOG_LEVEL.Warning, "WARNING", _message);
+        _write(eLOG_LEVEL.WARNING, "WARNING", _message);
     };
 
     /// @param {Any} _message
     static error = function(_message) {
-        _write(eLOG_LEVEL.Error, "ERROR", _message);
+        _write(eLOG_LEVEL.ERROR, "ERROR", _message);
     };
 
     /// @param {Any} _message
     static critical = function(_message) {
-        _write(eLOG_LEVEL.Critical, "CRITICAL", _message);
+        _write(eLOG_LEVEL.CRITICAL, "CRITICAL", _message);
     };
 
     /// @param {Any} _message
     static exception = function(_message, _exception) {
-        _write(eLOG_LEVEL.Error, "ERROR", _message, _exception);
+        _write(eLOG_LEVEL.ERROR, "ERROR", _message, _exception);
     };
 }

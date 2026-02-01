@@ -119,7 +119,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
     // New weapon draw method
 
     // Adjust weapon sprites meant for normal power armour but used on terminators
-    if (current_armor_type == ArmourType.Terminator && !array_contains(["terminator_ranged", "terminator_melee", "terminator_fist"], display_type)) {
+    if (current_armor_type == eARMOUR_TYPE.TERMINATOR && !array_contains(["terminator_ranged", "terminator_melee", "terminator_fist"], display_type)) {
         ui_ymod[left_or_right] -= 20;
         if (display_type == "normal_ranged") {
             ui_xmod[left_or_right] -= 24;
@@ -152,7 +152,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             hand_variant[left_or_right] = 3;
             arm_variant[left_or_right] = 3;
         }
-    } else if (current_armor_type == ArmourType.Scout) {
+    } else if (current_armor_type == eARMOUR_TYPE.SCOUT) {
         ui_xmod[left_or_right] += 4;
         ui_ymod[left_or_right] += 11;
     }

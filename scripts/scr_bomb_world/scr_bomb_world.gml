@@ -27,7 +27,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
 
     // Code bits copied from scr_purge_world
     if (population > 0) {
-        heres_before = max(corruption + secret_corruption, population_influences[eFACTION.Tau]);
+        heres_before = max(corruption + secret_corruption, population_influences[eFACTION.TAU]);
         sci1 = 0;
         sci1 = (pop_after / pop_before) * irandom_range(1, 3); // Make bombard corruption reduction random to encourage other forms of purging // TODO MEDIUM BOMBARD_CORRUPTION // Tweak numbers
         heres_after = heres_before - sci1;
@@ -72,8 +72,8 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
             case 7:
                 txt2 = "##The Ork forces, for brutal savages, are well dug in; "; // TODO spice up descriptions with variable levels of protection
                 bombard_protection = 2;
-                if (has_feature(P_features.OrkStronghold)) {
-                    var _stronghold = get_features(P_features.OrkStronghold)[0];
+                if (has_feature(eP_FEATURES.ORKSTRONGHOLD)) {
+                    var _stronghold = get_features(eP_FEATURES.ORKSTRONGHOLD)[0];
                     var _protection = floor(_stronghold.tier);
                     bombard_protection += _protection;
                     if (_protection) {
@@ -287,12 +287,12 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
         if (pop_before > 0) {
             system.p_population[planet] = pop_before - kill;
             system.p_heresy[planet] -= sci1;
-            system.p_influence[planet][eFACTION.Tau] -= sci1; // TODO LOW PURGE_INFLUENCE // Make this affect all influences
+            system.p_influence[planet][eFACTION.TAU] -= sci1; // TODO LOW PURGE_INFLUENCE // Make this affect all influences
             if (system.p_heresy[planet] < 0) {
                 system.p_heresy[planet] = 0;
             }
-            if (system.p_influence[planet][eFACTION.Tau] < 0) {
-                system.p_influence[planet][eFACTION.Tau] = 0;
+            if (system.p_influence[planet][eFACTION.TAU] < 0) {
+                system.p_influence[planet][eFACTION.TAU] = 0;
             }
         }
 
@@ -302,7 +302,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
         //pip.text=txt1+txt2+txt3+" "+string(sci1)+" "+string(heres_before)+" "+string(heres_after); // TODO LOW DEBUG_INFLUENCE // Put in debug code path and make it clearer
 
         if (pop_after == 0 && pop_before > 0) {
-            if ((current_owner == 2) && (obj_controller.faction_status[eFACTION.Imperium] != "War")) {
+            if ((current_owner == 2) && (obj_controller.faction_status[eFACTION.IMPERIUM] != "War")) {
                 if (planet_type == "Temperate" || planet_type == "Hive" || planet_type == "Desert") {
                     var _disp_neg = 0;
                     if (planet_type == "Temperate") {
@@ -312,27 +312,27 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                     } else if (planet_type == "Hive") {
                         _disp_neg -= 10;
                     }
-                    scr_audience(eFACTION.Imperium, "bombard_angry", _disp_neg,);
+                    scr_audience(eFACTION.IMPERIUM, "bombard_angry", _disp_neg,);
                 }
-            } else if ((current_owner == 3) && (obj_controller.faction_status[eFACTION.Mechanicus] != "War")) {
+            } else if ((current_owner == 3) && (obj_controller.faction_status[eFACTION.MECHANICUS] != "War")) {
                 var _disp_neg = 0;
                 if (planet_type == "Forge") {
                     _disp_neg -= 15;
                 } else if (planet_type == "Ice") {
                     _disp_neg -= 7;
                 }
-                scr_audience(eFACTION.Mechanicus, "bombard_angry", _disp_neg,);
+                scr_audience(eFACTION.MECHANICUS, "bombard_angry", _disp_neg,);
             }
-            if (planet_feature_bool(system.p_feature[planet], P_features.Gene_Stealer_Cult)) {
-                delete_features(system.p_feature[planet], P_features.Gene_Stealer_Cult);
-                adjust_influence(eFACTION.Tyranids, -100, planet, system);
+            if (planet_feature_bool(system.p_feature[planet], eP_FEATURES.GENE_STEALER_CULT)) {
+                delete_features(system.p_feature[planet], eP_FEATURES.GENE_STEALER_CULT);
+                adjust_influence(eFACTION.TYRANIDS, -100, planet, system);
                 pip.text += " The xeno taint of the tyranids that was infesting the population has been completely eradicated with the planets cleansing";
             } else {
                 pip.text += " Any xeno taint that was infesting the population has been completely eradicated with the planets cleansing";
             }
         }
-        if ((bombard_target_faction == 8) && (obj_controller.faction_status[eFACTION.Tau] != "War")) {
-            scr_audience(eFACTION.Tau, choose("declare_war", "bombard_angry"), -15,);
+        if ((bombard_target_faction == 8) && (obj_controller.faction_status[eFACTION.TAU] != "War")) {
+            scr_audience(eFACTION.TAU, choose("declare_war", "bombard_angry"), -15,);
         }
     }
 

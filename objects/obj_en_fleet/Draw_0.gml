@@ -2,7 +2,7 @@ if ((obj_controller.menu != 0) || !instance_exists(obj_star)) {
     exit;
 }
 var scale = obj_controller.scale_mod;
-if ((owner == eFACTION.Eldar) && instance_exists(orbiting) && (obj_controller.is_test_map == true)) {
+if ((owner == eFACTION.ELDAR) && instance_exists(orbiting) && (obj_controller.is_test_map == true)) {
     draw_set_color(c_red);
     draw_line_width(x, y, orbiting.x, orbiting.y, 1);
 }
@@ -38,7 +38,7 @@ if (obj_controller.zoomed == 1) {
     var faction_colour = global.star_name_colors[owner];
     draw_set_color(faction_colour);
 
-    if ((owner == eFACTION.Imperium) && (navy == 0)) {
+    if ((owner == eFACTION.IMPERIUM) && (navy == 0)) {
         draw_set_alpha(0.5);
     }
     draw_circle(x, y, 12, 0);
@@ -89,7 +89,7 @@ if (action != "") {
     } // was 1.4
 }
 switch (owner) {
-    case eFACTION.Ork:
+    case eFACTION.ORK:
         var _has_warboss = false;
         if (fleet_has_cargo("ork_warboss")) {
             draw_icon = true;
@@ -104,10 +104,10 @@ if ((within == 1) || (selected > 0)) {
     draw_set_halign(fa_center);
 
     var fleet_descript = "";
-    if (owner == eFACTION.Player) {
+    if (owner == eFACTION.PLAYER) {
         fleet_descript = "Renegade Fleet";
     }
-    if (owner == eFACTION.Imperium) {
+    if (owner == eFACTION.IMPERIUM) {
         if (navy == 1) {
             fleet_descript = "Imperial Navy";
         } else {
@@ -115,7 +115,7 @@ if ((within == 1) || (selected > 0)) {
         }
     }
     if (navy == 0) {
-        if (owner == eFACTION.Imperium) {
+        if (owner == eFACTION.IMPERIUM) {
             if (fleet_has_cargo("colonize")) {
                 fleet_descript = "Imperial Colonists";
             } else if ((trade_goods != "") && (trade_goods != "merge")) {
@@ -125,43 +125,43 @@ if ((within == 1) || (selected > 0)) {
     }
     // if (navy=1) then fleet_descript=string(trade_goods)+" ("+string(guardsmen_unloaded)+"/"+string(guardsmen_ratio)+")";
     switch (owner) {
-        case eFACTION.Mechanicus:
+        case eFACTION.MECHANICUS:
             fleet_descript = "Mechanicus Fleet";
             break;
-        case eFACTION.Inquisition:
+        case eFACTION.INQUISITION:
             fleet_descript = "Inquisitor Ship";
             break;
-        case eFACTION.Eldar:
+        case eFACTION.ELDAR:
             fleet_descript = "Eldar Fleet";
             break;
-        case eFACTION.Ork:
+        case eFACTION.ORK:
             fleet_descript = "Ork Fleet";
             if (_has_warboss) {
                 var _warboss = cargo_data.ork_warboss;
                 fleet_descript += $"\nWarboss {_warboss.name}";
             }
             break;
-        case eFACTION.Tau:
+        case eFACTION.TAU:
             fleet_descript = "Tau Fleet";
             break;
-        case eFACTION.Tyranids:
+        case eFACTION.TYRANIDS:
             fleet_descript = "Hive Fleet";
             break;
-        case eFACTION.Chaos:
+        case eFACTION.CHAOS:
             fleet_descript = "Heretic Fleet";
             if (fleet_has_cargo("warband") || fleet_has_cargo("csm")) {
-                fleet_descript = string(obj_controller.faction_leader[eFACTION.Chaos]) + "'s Fleet";
+                fleet_descript = string(obj_controller.faction_leader[eFACTION.CHAOS]) + "'s Fleet";
                 if (string_count("s's Fleet", fleet_descript) > 0) {
                     fleet_descript = string_replace(fleet_descript, "s's Fleet", "s' Fleet");
                 }
             }
             break;
-        case eFACTION.Necrons:
+        case eFACTION.NECRONS:
             fleet_descript = "Necron Fleet";
             break;
     }
 
-    // if (owner = eFACTION.Imperium) and (navy=1){fleet_descript=string(capital_max_imp[1]+frigate_max_imp[1]+escort_max_imp[1]);}
+    // if (owner = eFACTION.IMPERIUM) and (navy=1){fleet_descript=string(capital_max_imp[1]+frigate_max_imp[1]+escort_max_imp[1]);}
 
     if (global.cheat_debug == true) {
         fleet_descript += "C" + string(capital_number) + "|F" + string(frigate_number) + "|E" + string(escort_number);
@@ -182,8 +182,8 @@ if (fleet_descript != "" && within) {
     draw_set_alpha(0.5);
     draw_circle(x + (coords[0] * scale), y + coords[1] * scale, 12 * scale, 0);
     draw_set_alpha(1);
-    if (navy && owner == eFACTION.Imperium) {
-        draw_set_color(global.star_name_colors[eFACTION.Mechanicus]);
+    if (navy && owner == eFACTION.IMPERIUM) {
+        draw_set_color(global.star_name_colors[eFACTION.MECHANICUS]);
         draw_circle(x + (coords[0] * scale), y + coords[1] * scale, 12 * scale, 1);
         draw_circle(x + (coords[0] * scale), y + coords[1] * scale, 12.1 * scale, 1);
         draw_circle(x + (coords[0] * scale), y + coords[1] * scale, 12.2 * scale, 1);
@@ -194,7 +194,7 @@ if (draw_icon) {
 }
 draw_sprite_ext(sprite_index, image_index, x + (coords[0] * scale), y + (coords[1] * scale), 1 * scale, 1 * scale, 0, c_white, 1);
 
-/*if (owner = eFACTION.Ork){
+/*if (owner = eFACTION.ORK){
     draw_set_font(fnt_small);
     draw_set_halign(fa_center);
     draw_set_color(c_white);

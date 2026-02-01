@@ -257,7 +257,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
         }
     }
     if (_splintered) {
-        var _imperial_stars = scr_get_stars(true, [eFACTION.Imperium]);
+        var _imperial_stars = scr_get_stars(true, [eFACTION.IMPERIUM]);
         var _empty_ships = [];
         var _fleets = [];
         with (obj_p_fleet) {
@@ -270,7 +270,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
                 } else {
                     var _star = array_pop(_imperial_stars);
                     _new_fleet = instance_create(_star.x, _star.y, obj_p_fleet);
-                    _new_fleet.owner = eFACTION.Player;
+                    _new_fleet.owner = eFACTION.PLAYER;
                     add_ship_to_fleet(i, _new_fleet);
                     array_push(_fleets, _new_fleet);
                 }

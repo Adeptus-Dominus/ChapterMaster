@@ -58,7 +58,7 @@ function mechanicus_missions_end_turn(planet) {
                 }
 
                 if (obj_turn_end.battle_opponent[obj_turn_end.battles] == 11) {
-                    if (planet_feature_bool(p_feature[planet], P_features.ChaosWarband) == 1) {
+                    if (planet_feature_bool(p_feature[planet], eP_FEATURES.CHAOSWARBAND) == 1) {
                         obj_turn_end.battle_special[obj_turn_end.battles] = "ChaosWarband";
                     }
                 }
@@ -112,7 +112,7 @@ function mechanicus_missions_end_turn(planet) {
         var alert_text = "Mechanicus Mission Failed: Necron Tomb Study at " + string(name) + " " + scr_roman(planet) + ".";
         scr_alert("red", "mission_failed", alert_text, 0, 0);
         scr_event_log("red", alert_text, name);
-        alter_disposition(eFACTION.Mechanicus, -15);
+        alter_disposition(eFACTION.MECHANICUS, -15);
         remove_planet_problem(planet, "mech_tomb1");
     }
 
@@ -125,14 +125,14 @@ function mechanicus_missions_end_turn(planet) {
         var alert_text = "Mechanicus Mission Failed: Land Raider testing at " + string(name) + " " + scr_roman(planet) + ".";
         scr_alert("red", "mission_failed", alert_text, 0, 0);
         scr_event_log("red", alert_text);
-        alter_disposition(eFACTION.Mechanicus, -6);
+        alter_disposition(eFACTION.MECHANICUS, -6);
         remove_planet_problem(planet, "mech_raider");
     }
     if (has_problem_planet_and_time(planet, "mech_bionics", 0) > -1) {
         var alert_text = "Mechanicus Mission Failed: bionics testing at " + string(name) + " " + scr_roman(planet) + ".";
         scr_alert("red", "mission_failed", alert_text, 0, 0);
         scr_event_log("red", alert_text);
-        alter_disposition(eFACTION.Mechanicus, -6);
+        alter_disposition(eFACTION.MECHANICUS, -6);
         remove_planet_problem(planet, "mech_bionics");
     }
 }
@@ -142,7 +142,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
     var mechanicus_missions = [];
     var _evented;
 
-    var _forge_stars = scr_get_stars(false, [eFACTION.Mechanicus], ["Forge"]);
+    var _forge_stars = scr_get_stars(false, [eFACTION.MECHANICUS], ["Forge"]);
 
     if (array_length(_forge_stars)) {
         array_push(mechanicus_missions, "mech_bionics");
@@ -152,8 +152,8 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
     }
 
     with (obj_star) {
-        if (scr_star_has_planet_with_feature(id, P_features.Necron_Tomb) && (awake_necron_star(id) != 0)) {
-            var planet = scr_get_planet_with_feature(id, P_features.Necron_Tomb);
+        if (scr_star_has_planet_with_feature(id, eP_FEATURES.NECRON_TOMB) && (awake_necron_star(id) != 0)) {
+            var planet = scr_get_planet_with_feature(id, eP_FEATURES.NECRON_TOMB);
             if (scr_is_planet_owned_by_allies(self, planet)) {
                 array_push(mechanicus_missions, "mech_tomb");
                 break;
@@ -161,7 +161,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
         }
     }
 
-    if (obj_controller.disposition[eFACTION.Mechanicus] >= 70) {
+    if (obj_controller.disposition[eFACTION.MECHANICUS] >= 70) {
         array_push(mechanicus_missions, "mech_mars");
     }
 
@@ -235,8 +235,8 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
         global.logger.info("RE: Necron Tomb Study");
         stars = scr_get_stars();
         var valid_stars = array_filter_ext(stars, function(star, index) {
-            if (scr_star_has_planet_with_feature(star, P_features.Necron_Tomb) && (awake_necron_star(star) != 0)) {
-                var planet = scr_get_planet_with_feature(star, P_features.Necron_Tomb);
+            if (scr_star_has_planet_with_feature(star, eP_FEATURES.NECRON_TOMB) && (awake_necron_star(star) != 0)) {
+                var planet = scr_get_planet_with_feature(star, eP_FEATURES.NECRON_TOMB);
                 if (scr_is_planet_owned_by_allies(star, planet)) {
                     return true;
                 }
@@ -383,7 +383,7 @@ function mechanicus_mars_mission_target_time_elapsed(planet) {
             if (_unit.name() == "") {
                 continue;
             }
-            if (_unit.role() == obj_ini.role[100][eROLE.Techmarine]) {
+            if (_unit.role() == obj_ini.role[100][eROLE.TECHMARINE]) {
                 // Case 1: on planet
                 if ((_unit.location_string == name) && (_unit.planet_location == planet)) {
                     p_player[planet] -= _unit.get_unit_size();
@@ -427,7 +427,7 @@ function mechanicus_mars_mission_target_time_elapsed(planet) {
         var flit = instance_create(x, y, obj_en_fleet);
 
         with (flit) {
-            owner = eFACTION.Mechanicus;
+            owner = eFACTION.MECHANICUS;
             sprite_index = spr_fleet_mechanicus;
             capital_number = 1;
             image_index = 0;

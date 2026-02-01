@@ -38,7 +38,7 @@ try {
                     r_roll -= 350;
                 }
 
-                if ((marine_dead[raar] == 0) && (marine_type[raar] != "Death Company") && (marine_type[raar] != obj_ini.role[100][eROLE.ChapterMaster]) && (r_roll <= 4)) {
+                if ((marine_dead[raar] == 0) && (marine_type[raar] != "Death Company") && (marine_type[raar] != obj_ini.role[100][eROLE.CHAPTERMASTER]) && (r_roll <= 4)) {
                     r_lost += 1;
                     marine_type[raar] = "Death Company";
                     //marine_attack[raar]+=1;

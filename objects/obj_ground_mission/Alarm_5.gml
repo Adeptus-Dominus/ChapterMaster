@@ -67,7 +67,7 @@ if ((mission == "bad") && (plan.p_first[num] == 3) && (plan.p_type[num] == "Forg
     if ((plan.p_owner[num] > 3) && (plan.p_owner[num] <= 6)) {
         scr_audience(plan.p_owner[num], "artifact_angry",);
     }
-    if ((plan.p_owner[num] == 3) && (obj_controller.faction_status[eFACTION.Mechanicus] != "War")) {
+    if ((plan.p_owner[num] == 3) && (obj_controller.faction_status[eFACTION.MECHANICUS] != "War")) {
         scr_audience(plan.p_owner[num], "declare_war", -20);
     }
 
@@ -144,7 +144,7 @@ with (obj_star_select) {
 with (obj_fleet_select) {
     instance_destroy();
 }
-delete_features(plan.p_feature[num], P_features.STC_Fragment);
+delete_features(plan.p_feature[num], eP_FEATURES.STC_FRAGMENT);
 
 scr_add_stc_fragment(); // STC here
 

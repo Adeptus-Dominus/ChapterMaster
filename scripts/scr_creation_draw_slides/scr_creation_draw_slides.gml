@@ -1,7 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-enum eCREATIONSLIDES {
+enum eCREATION_SLIDES {
     CHAPTERSELECT = 1,
     CHAPTERTRAITS = 2,
     CHAPTERHOME = 3,

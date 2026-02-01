@@ -27,91 +27,89 @@
 #macro ALLIANCE_GRADES ["Hated", "Hostile","Suspicious","Uneasy","Neutral","Allies","Close Allies","Battle Brothers"]
 
 enum eFACTION {
-    Player = 1,
-    Imperium,
-    Mechanicus,
-    Inquisition,
-    Ecclesiarchy,
-    Eldar,
-    Ork,
-    Tau,
-    Tyranids,
-    Chaos,
-    Heretics,
-    Genestealer,
-    Necrons = 13
+    PLAYER = 1,
+    IMPERIUM,
+    MECHANICUS,
+    INQUISITION,
+    ECCLESIARCHY,
+    ELDAR,
+    ORK,
+    TAU,
+    TYRANIDS,
+    CHAOS,
+    HERETICS,
+    GENESTEALER,
+    NECRONS = 13
 }
 
-enum GENDER {
-    Female,
-    Male,
-    Neutral
+enum eGENDER {
+    FEMALE,
+    MALE,
+    NEUTRAL
 }
 
 function set_gender(){
-    return choose(GENDER.Female, GENDER.Male);
+    return choose(eGENDER.FEMALE, eGENDER.MALE);
 }
 
-enum MENU {
-    Default = 0,
-    Manage = 1,
-    Apothecarion = 11,
-    Reclusiam = 12,
-    Librarium = 13,
-    Armamentarium = 14,
-    Recruiting = 15,
-    Fleet = 16,
-    EventLog = 17,
-    Diplomacy = 20,
-    Settings = 21,
-    GameHelp = 30,
+enum eMENU {
+    DEFAULT = 0,
+    MANAGE = 1,
+    APOTHECARION = 11,
+    RECLUSIAM = 12,
+    LIBRARIUM = 13,
+    ARMAMENTARIUM = 14,
+    RECRUITING = 15,
+    FLEET = 16,
+    EVENT_LOG = 17,
+    DIPLOMACY = 20,
+    SETTINGS = 21,
+    GAME_HELP = 30,
 }
 
-enum luck {
-    bad = -1,
-    neutral = 0,
-    good = 1
-}
-enum GOD_MISSION {
-    artifact
-}
-enum INQUISITION_MISSION {
-    purge,
-    inquisitor,
-    spyrer,
-    artifact,
-    tomb_world,
-    tyranid_organism,
-    ethereal,
-    demon_world
+enum eLUCK {
+    BAD = -1,
+    NEUTRAL = 0,
+    GOOD = 1
 }
 
-enum EVENT {
-    //good
-    space_hulk,
-    promotion,
-    strange_building,
-    sororitas,
-    rogue_trader,
-    inquisition_mission,
-    inquisition_planet,
-    mechanicus_mission,
-    //neutral
-    strange_behavior,
-    fleet_delay,
-    harlequins,
-    succession_war,
-    random_fun,
-    //bad
-    warp_storms,
-    enemy_forces,
-    crusade,
-    enemy,
-    mutation,
-    ship_lost,
-    chaos_invasion,
-    necron_awaken,
-    fallen,
-    //end
-    none
+enum eINQUISITION_MISSION {
+    PURGE,
+    INQUISITOR,
+    SPYRER,
+    ARTIFACT,
+    TOMB_WORLD,
+    TYRANID_ORGANISM,
+    ETHEREAL,
+    DEMON_WORLD
+}
+
+enum eEVENT {
+    //GOOD
+    SPACE_HULK,
+    PROMOTION,
+    STRANGE_BUILDING,
+    SORORITAS,
+    ROGUE_TRADER,
+    INQUISITION_MISSION,
+    INQUISITION_PLANET,
+    MECHANICUS_MISSION,
+    //NEUTRAL
+    STRANGE_BEHAVIOR,
+    FLEET_DELAY,
+    HARLEQUINS,
+    SUCCESSION_WAR,
+    RANDOM_FUN,
+    //BAD
+    WARP_STORMS,
+    ENEMY_FORCES,
+    CRUSADE,
+    ENEMY,
+    MUTATION,
+    SHIP_LOST,
+    CHAOS_INVASION,
+    NECRON_AWAKEN,
+    FALLEN,
+    //END
+    NONE
 }

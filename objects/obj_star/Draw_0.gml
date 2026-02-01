@@ -1,5 +1,5 @@
 // Draws the system name and color codes it based on ownership
-if ((p_type[1] == "Craftworld") && (obj_controller.known[eFACTION.Eldar] == 0)) {
+if ((p_type[1] == "Craftworld") && (obj_controller.known[eFACTION.ELDAR] == 0)) {
     draw_set_alpha(0);
     draw_set_color(255);
     draw_circle(old_x, old_y, 5, 0);
@@ -72,7 +72,7 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
         var yy = 0;
         surface_set_target(star_tag_surface);
         var panel_width = string_width(name) + 60;
-        if (owner != eFACTION.Player) {
+        if (owner != eFACTION.PLAYER) {
             var _faction_index = owner;
             var faction_colour = global.star_name_colors[_faction_index];
             draw_sprite_general(spr_p_name_bg, 0, 0, 0, string_width(name) + 60, 32, xx - (panel_width / 2), yy + 30, 1, 1, 0, faction_colour, faction_colour, faction_colour, faction_colour, 1);

@@ -52,8 +52,8 @@ function setup_ai_trade_fleet(start_place, faction) {
         home_y = start_place.y;
 
         choose_fleet_sprite_image();
-        // if (diplomacy=4){sprite_index=spr_fleet_imperial;owner = eFACTION.Imperium;}
-        if (faction == eFACTION.Eldar) {
+        // if (diplomacy=4){sprite_index=spr_fleet_imperial;owner = eFACTION.IMPERIUM;}
+        if (faction == eFACTION.ELDAR) {
             action_spd = 6400;
             action_eta = 1;
         }

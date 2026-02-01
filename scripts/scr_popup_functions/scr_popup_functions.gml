@@ -1,7 +1,7 @@
 /// @function reset_popup_options()
 /// @description Resets all popup option variables to empty strings
 
-enum POPUP_TYPE {
+enum ePOPUP_TYPE {
     PROMOTION = 5,
     EQUIP = 6,
     ARTIFACT_EQUIP = 8,
@@ -38,7 +38,7 @@ function popup_defualt_click_action() {
         exit;
     }
 
-    if (type == POPUP_TYPE.BATTLE_OPTIONS) {
+    if (type == ePOPUP_TYPE.BATTLE_OPTIONS) {
         obj_controller.cooldown = 10;
         if (instance_exists(obj_turn_end)) {
             obj_turn_end.current_battle += 1;

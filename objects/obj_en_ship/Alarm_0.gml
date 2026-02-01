@@ -1049,7 +1049,7 @@ if (class == "Prowler") {
     weapon_cooldown[1] = 30;
 }
 
-if (owner == eFACTION.Tyranids) {
+if (owner == eFACTION.TYRANIDS) {
     var i;
     i = 0;
 
@@ -1237,7 +1237,7 @@ if (class == "Dirge Class") {
     weapon_cooldown[1] = 15;
 }
 
-if ((owner != eFACTION.Eldar) && (owner != eFACTION.Necrons)) {
+if ((owner != eFACTION.ELDAR) && (owner != eFACTION.NECRONS)) {
     hp = hp / 2;
     maxhp = hp;
     shields = shields / 2;

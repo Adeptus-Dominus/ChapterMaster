@@ -2,11 +2,11 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
 #macro ARR_planet_types ["Dead","Ice", "Temperate","Feudal","Shrine","Agri","Death","Hive","Forge","Desert","Lava"]
-enum ePlayerBase {
-    none = 0,
-    home_world = 1,
-    fleet_based = 2,
-    penitent = 3,
+enum ePLAYER_BASE {
+    NONE = 0,
+    HOME_WORLD = 1,
+    FLEET_BASED = 2,
+    PENITENT = 3,
 }
 
 function find_player_spawn_star() {
@@ -73,8 +73,8 @@ function player_home_star(home_planet) {
         }
         name = obj_ini.home_name;
     }
-    array_push(p_feature[home_planet], new NewPlanetFeature(P_features.Monastery));
-    p_owner[home_planet] = eFACTION.Player;
+    array_push(p_feature[home_planet], new NewPlanetFeature(eP_FEATURES.MONASTERY));
+    p_owner[home_planet] = eFACTION.PLAYER;
 
     p_first[home_planet] = 1; //monestary
     if (obj_ini.homeworld_rule != 1) {
@@ -82,10 +82,10 @@ function player_home_star(home_planet) {
     }
 
     if (obj_ini.home_type == "Shrine") {
-        known[eFACTION.Ecclesiarchy] = 1;
+        known[eFACTION.ECCLESIARCHY] = 1;
     }
     if (obj_ini.recruiting_type == "Shrine") {
-        known[eFACTION.Ecclesiarchy] = 1;
+        known[eFACTION.ECCLESIARCHY] = 1;
     }
 
     p_lasers[home_planet] = 8;
@@ -120,7 +120,7 @@ function player_home_star(home_planet) {
 
 function set_player_recruit_planet(recruit_planet) {
     p_type[recruit_planet] = obj_ini.recruiting_type;
-    if (obj_ini.fleet_type == ePlayerBase.home_world && obj_ini.recruit_relative_loc == 2) {
+    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD && obj_ini.recruit_relative_loc == 2) {
         // Possibly a temporary fix, Fleet-based Chapters use Homeworld names for the Recruiting stars for some reason
         var recruit_name = obj_ini.recruiting_name;
         if (recruit_name != "random") {
@@ -139,7 +139,7 @@ function set_player_recruit_planet(recruit_planet) {
             name = obj_ini.home_name;
         }
     }
-    array_push(p_feature[recruit_planet], new NewPlanetFeature(P_features.Recruiting_World)); //recruiting world
+    array_push(p_feature[recruit_planet], new NewPlanetFeature(eP_FEATURES.RECRUITING_WORLD)); //recruiting world
     if (p_type[recruit_planet] == "random") {
         p_type[recruit_planet] = choose("Death", "Temperate", "Desert", "Ice", "Hive", "Fuedal");
     }
@@ -170,7 +170,7 @@ function set_player_homeworld_star(chosen_star) {
             var _recruit_star = array_random_element(_possible_planets);
             set_player_recruit_planet(_recruit_star);
         } else if (obj_ini.recruit_relative_loc == 0) {
-            array_push(p_feature[_home_star], new NewPlanetFeature(P_features.Recruiting_World)); //recruiting world
+            array_push(p_feature[_home_star], new NewPlanetFeature(eP_FEATURES.RECRUITING_WORLD)); //recruiting world
             for (var i = 1; i <= planets; i++) {
                 if (i != _home_star) {
                     p_type[i] = array_random_element(_planet_types);

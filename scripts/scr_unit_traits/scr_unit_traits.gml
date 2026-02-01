@@ -39,19 +39,19 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.EXPOSURE,
+                    eTRIALS.EXPOSURE,
                     -1
                 ],
                 [
-                    eTrials.HUNTING,
+                    eTRIALS.HUNTING,
                     -3
                 ],
                 [
-                    eTrials.APPRENTICESHIP,
+                    eTRIALS.APPRENTICESHIP,
                     1
                 ],
                 [
-                    eTrials.KNOWLEDGE,
+                    eTRIALS.KNOWLEDGE,
                     1
                 ]
             ],
@@ -80,15 +80,15 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.EXPOSURE,
+                    eTRIALS.EXPOSURE,
                     -3
                 ],
                 [
-                    eTrials.SURVIVAL,
+                    eTRIALS.SURVIVAL,
                     -2
                 ],
                 [
-                    eTrials.APPRENTICESHIP,
+                    eTRIALS.APPRENTICESHIP,
                     1
                 ]
             ],
@@ -125,7 +125,7 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.EXPOSURE,
+                    eTRIALS.EXPOSURE,
                     -1
                 ]
             ],
@@ -150,15 +150,15 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.KNOWLEDGE,
+                    eTRIALS.KNOWLEDGE,
                     -2
                 ],
                 [
-                    eTrials.APPRENTICESHIP,
+                    eTRIALS.APPRENTICESHIP,
                     -1
                 ],
                 [
-                    eTrials.BLOODDUEL,
+                    eTRIALS.BLOODDUEL,
                     1
                 ]
             ],
@@ -195,19 +195,19 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.KNOWLEDGE,
+                    eTRIALS.KNOWLEDGE,
                     3
                 ],
                 [
-                    eTrials.APPRENTICESHIP,
+                    eTRIALS.APPRENTICESHIP,
                     10
                 ],
                 [
-                    eTrials.BLOODDUEL,
+                    eTRIALS.BLOODDUEL,
                     -1
                 ],
                 [
-                    eTrials.SURVIVAL,
+                    eTRIALS.SURVIVAL,
                     -1
                 ]
             ],
@@ -229,7 +229,7 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.BLOODDUEL,
+                    eTRIALS.BLOODDUEL,
                     -2
                 ]
             ],
@@ -258,11 +258,11 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.BLOODDUEL,
+                    eTRIALS.BLOODDUEL,
                     -1
                 ],
                 [
-                    eTrials.APPRENTICESHIP,
+                    eTRIALS.APPRENTICESHIP,
                     1
                 ]
             ],
@@ -291,7 +291,7 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.KNOWLEDGE,
+                    eTRIALS.KNOWLEDGE,
                     -1
                 ]
             ],
@@ -320,7 +320,7 @@ global.astartes_trait_dist = [
         {
             recruit_trial: [
                 [
-                    eTrials.HUNTING,
+                    eTRIALS.HUNTING,
                     -1
                 ]
             ],
@@ -335,11 +335,11 @@ global.astartes_trait_dist = [
         {
             recruit_trial: [
                 [
-                    eTrials.HUNTING,
+                    eTRIALS.HUNTING,
                     -1
                 ],
                 [
-                    eTrials.EXPOSURE,
+                    eTRIALS.EXPOSURE,
                     -1
                 ]
             ],
@@ -354,11 +354,11 @@ global.astartes_trait_dist = [
         {
             recruit_trial: [
                 [
-                    eTrials.KNOWLEDGE,
+                    eTRIALS.KNOWLEDGE,
                     -3
                 ],
                 [
-                    eTrials.HUNTING,
+                    eTRIALS.HUNTING,
                     -1
                 ]
             ],
@@ -373,11 +373,11 @@ global.astartes_trait_dist = [
         {
             recruit_trial: [
                 [
-                    eTrials.KNOWLEDGE,
+                    eTRIALS.KNOWLEDGE,
                     -1
                 ],
                 [
-                    eTrials.HUNTING,
+                    eTRIALS.HUNTING,
                     -1
                 ]
             ],
@@ -398,7 +398,7 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.HUNTING,
+                    eTRIALS.HUNTING,
                     -3
                 ]
             ],
@@ -420,7 +420,7 @@ global.astartes_trait_dist = [
         {
             recruit_trial: [
                 [
-                    eTrials.HUNTING,
+                    eTRIALS.HUNTING,
                     -1
                 ]
             ],
@@ -472,7 +472,7 @@ global.astartes_trait_dist = [
         {
             recruit_trial: [
                 [
-                    eTrials.CHALLENGE,
+                    eTRIALS.CHALLENGE,
                     -1
                 ]
             ],
@@ -623,11 +623,11 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.BLOODDUEL,
+                    eTRIALS.BLOODDUEL,
                     -1
                 ],
                 [
-                    eTrials.CHALLENGE,
+                    eTRIALS.CHALLENGE,
                     -1
                 ]
             ],
@@ -671,7 +671,7 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.KNOWLEDGE,
+                    eTRIALS.KNOWLEDGE,
                     -2
                 ]
             ],
@@ -781,7 +781,7 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.APPRENTICESHIP,
+                    eTRIALS.APPRENTICESHIP,
                     -1
                 ]
             ],
@@ -810,13 +810,13 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.BLOODDUEL,
+                    eTRIALS.BLOODDUEL,
                     1
                 ]
             ],
             recruit_trial: [
                 [
-                    eTrials.CHALLENGE,
+                    eTRIALS.CHALLENGE,
                     -1
                 ]
             ],
@@ -844,7 +844,7 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.CHALLENGE,
+                    eTRIALS.CHALLENGE,
                     -2
                 ]
             ],
@@ -873,7 +873,7 @@ global.astartes_trait_dist = [
             ],
             recruit_trial: [
                 [
-                    eTrials.APPRENTICESHIP,
+                    eTRIALS.APPRENTICESHIP,
                     -2
                 ]
             ],

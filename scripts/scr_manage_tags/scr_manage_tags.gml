@@ -1,8 +1,8 @@
 function set_up_tag_manager() {
     instance_destroy(obj_popup);
     var pip = instance_create(0, 0, obj_popup);
-    pip.type = POPUP_TYPE.ADD_TAGS;
-    pip.subtype = TAGMANAGER.SELECTION;
+    pip.type = ePOPUP_TYPE.ADD_TAGS;
+    pip.subtype = eTAG_MANAGER.SELECTION;
 
     with (pip) {
         var _tag_options = [];
@@ -31,7 +31,7 @@ function set_up_tag_manager() {
     }
 }
 
-enum TAGMANAGER {
+enum eTAG_MANAGER {
     SELECTION,
     CREATE,
     DELETE,
@@ -47,14 +47,14 @@ function draw_tag_manager() {
         instance_destroy();
     }
 
-    if (subtype == TAGMANAGER.SELECTION) {
+    if (subtype == eTAG_MANAGER.SELECTION) {
         obj_controller.manage_tags = tag_selects.selections();
         if (create_tag_button.draw()) {
-            subtype = TAGMANAGER.CREATE;
+            subtype = eTAG_MANAGER.CREATE;
             new_tag = "";
         }
         if (delete_tag_button.draw()) {
-            subtype = TAGMANAGER.DELETE;
+            subtype = eTAG_MANAGER.DELETE;
             tag_selects.deselect_all();
             //new_tag = "";
         }
@@ -75,7 +75,7 @@ function draw_tag_manager() {
             add_tag_button.disabled = true;
         }
         if (add_tag_button.draw(_addable)) {
-            subtype = TAGMANAGER.ADD;
+            subtype = eTAG_MANAGER.ADD;
             var _selecs = [];
             var _selec_keys = [];
             for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
@@ -109,7 +109,7 @@ function draw_tag_manager() {
             remove_tag_button.disabled = true;
         }
         if (remove_tag_button.draw(_addable)) {
-            subtype = TAGMANAGER.REMOVE;
+            subtype = eTAG_MANAGER.REMOVE;
             tag_selects.deselect_all();
             var _selecs = [];
             var _selec_keys = [];
@@ -132,14 +132,14 @@ function draw_tag_manager() {
         }
     }
 
-    if (subtype > TAGMANAGER.SELECTION) {
+    if (subtype > eTAG_MANAGER.SELECTION) {
         if (cancel_button.draw()) {
             instance_destroy();
             set_up_tag_manager();
         }
     }
 
-    if (subtype == TAGMANAGER.CREATE) {
+    if (subtype == eTAG_MANAGER.CREATE) {
         new_tag = new_tag_name.draw(new_tag);
 
         if (new_tag != "") {
@@ -149,14 +149,14 @@ function draw_tag_manager() {
                 set_up_tag_manager();
             }
         }
-    } else if (subtype == TAGMANAGER.DELETE) {
+    } else if (subtype == eTAG_MANAGER.DELETE) {
         if (delete_tags.draw()) {
             var _deletes = tag_selects.selections();
             obj_controller.management_tags = array_delete_values(obj_controller.management_tags, _deletes);
             instance_destroy();
             set_up_tag_manager();
         }
-    } else if (subtype == TAGMANAGER.ADD) {
+    } else if (subtype == eTAG_MANAGER.ADD) {
         if (add_tags.draw()) {
             var _tags = tag_selects.selections();
             for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
@@ -176,7 +176,7 @@ function draw_tag_manager() {
             instance_destroy();
             set_up_tag_manager();
         }
-    } else if (subtype == TAGMANAGER.REMOVE) {
+    } else if (subtype == eTAG_MANAGER.REMOVE) {
         var _removals = tag_selects.selections();
         if (array_length(_removals)) {
             if (remove_tags.draw) {

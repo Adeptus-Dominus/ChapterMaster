@@ -1,28 +1,28 @@
 enum eROLE {
-    None = 0,
-    ChapterMaster = 1,
-    HonourGuard = 2,
-    Veteran = 3,
-    Terminator = 4,
-    Captain = 5,
-    Dreadnought = 6,
-    Champion = 7,
-    Tactical = 8,
-    Devastator = 9,
-    Assault = 10,
-    Ancient = 11,
-    Scout = 12,
-    Chaplain = 14,
-    Apothecary = 15,
-    Techmarine = 16,
-    Librarian = 17,
-    Sergeant = 18,
-    VeteranSergeant = 19,
-    LandRaider = 50,
-    Rhino = 51,
-    Predator = 52,
-    LandSpeeder = 53,
-    Whirlwind = 54,
+    NONE = 0,
+    CHAPTERMASTER = 1,
+    HONOURGUARD = 2,
+    VETERAN = 3,
+    TERMINATOR = 4,
+    CAPTAIN = 5,
+    DREADNOUGHT = 6,
+    CHAMPION = 7,
+    TACTICAL = 8,
+    DEVASTATOR = 9,
+    ASSAULT = 10,
+    ANCIENT = 11,
+    SCOUT = 12,
+    CHAPLAIN = 14,
+    APOTHECARY = 15,
+    TECHMARINE = 16,
+    LIBRARIAN = 17,
+    SERGEANT = 18,
+    VETERANSERGEANT = 19,
+    LANDRAIDER = 50,
+    RHINO = 51,
+    PREDATOR = 52,
+    LANDSPEEDER = 53,
+    WHIRLWIND = 54,
 }
 
 enum ePROGENITOR {
@@ -122,31 +122,31 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.Black,
-                    helm_detail: Colors.Black,
-                    helm_lens: Colors.Lime,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.BLACK,
+                    helm_detail: eCOLORS.BLACK,
+                    helm_lens: eCOLORS.LIME,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.White,
-                    helm_detail: Colors.Black,
-                    helm_lens: Colors.Lime,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.WHITE,
+                    helm_detail: eCOLORS.BLACK,
+                    helm_lens: eCOLORS.LIME,
                 },
                 captain: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Copper,
-                    helm_secondary: Colors.Copper,
-                    helm_detail: Colors.Copper,
-                    helm_lens: Colors.Lime,
+                    helm_primary: eCOLORS.COPPER,
+                    helm_secondary: eCOLORS.COPPER,
+                    helm_detail: eCOLORS.COPPER,
+                    helm_lens: eCOLORS.LIME,
                 },
                 veteran: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
-                    helm_detail: Colors.White,
-                    helm_lens: Colors.Lime,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
+                    helm_detail: eCOLORS.WHITE,
+                    helm_lens: eCOLORS.LIME,
                 },
             };
             break;
@@ -155,31 +155,31 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.Black,
-                    helm_detail: Colors.Black,
-                    helm_lens: Colors.Red,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.BLACK,
+                    helm_detail: eCOLORS.BLACK,
+                    helm_lens: eCOLORS.RED,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
                     helm_primary: obj_creation.main_color,
-                    helm_secondary: Colors.Black,
+                    helm_secondary: eCOLORS.BLACK,
                     helm_detail: obj_creation.main_color,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 captain: {
                     helm_pattern: 2,
                     helm_primary: obj_creation.main_color,
-                    helm_secondary: Colors.Dark_Red,
+                    helm_secondary: eCOLORS.DARK_RED,
                     helm_detail: obj_creation.main_color,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 veteran: {
                     helm_pattern: 0,
                     helm_primary: obj_creation.main_color,
                     helm_secondary: obj_creation.main_color,
                     helm_detail: obj_creation.main_color,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
             };
             break;
@@ -188,28 +188,28 @@ function helmet_livery(progenitor, specific = "none") {
                 sgt: {
                     helm_pattern: 1,
                     helm_primary: obj_creation.main_color,
-                    helm_secondary: Colors.Black,
+                    helm_secondary: eCOLORS.BLACK,
                     helm_detail: obj_creation.main_trim,
                     helm_lens: obj_creation.lens_color,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
                     helm_primary: obj_creation.main_color,
-                    helm_secondary: Colors.Black,
+                    helm_secondary: eCOLORS.BLACK,
                     helm_detail: obj_creation.main_trim,
                     helm_lens: obj_creation.lens_color,
                 },
                 captain: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
                     helm_detail: obj_creation.main_trim,
                     helm_lens: obj_creation.lens_color,
                 },
                 veteran: {
                     helm_pattern: 2,
                     helm_primary: obj_creation.main_color,
-                    helm_secondary: Colors.Black,
+                    helm_secondary: eCOLORS.BLACK,
                     helm_detail: obj_creation.main_trim,
                     helm_lens: obj_creation.lens_color,
                 },
@@ -219,17 +219,17 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Sanguine_Red,
+                    helm_primary: eCOLORS.SANGUINE_RED,
                     helm_secondary: obj_creation.secondary_color,
                     helm_detail: obj_creation.main_trim,
-                    helm_lens: Colors.Lime,
+                    helm_lens: eCOLORS.LIME,
                 },
                 vet_sgt: {
                     helm_pattern: 2,
-                    helm_primary: Colors.Sanguine_Red,
-                    helm_secondary: Colors.Lighter_Black,
+                    helm_primary: eCOLORS.SANGUINE_RED,
+                    helm_secondary: eCOLORS.LIGHTER_BLACK,
                     helm_detail: obj_creation.main_trim,
-                    helm_lens: Colors.Lime,
+                    helm_lens: eCOLORS.LIME,
                 },
                 captain: {
                     helm_pattern: 0,
@@ -241,7 +241,7 @@ function helmet_livery(progenitor, specific = "none") {
                 veteran: {
                     helm_pattern: 2,
                     helm_primary: obj_creation.main_color,
-                    helm_secondary: Colors.Lighter_Black,
+                    helm_secondary: eCOLORS.LIGHTER_BLACK,
                     helm_detail: obj_creation.main_trim,
                     helm_lens: obj_creation.lens_color,
                 },
@@ -261,31 +261,31 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 3,
-                    helm_primary: Colors.Fenrisian_Grey,
-                    helm_secondary: Colors.Red,
+                    helm_primary: eCOLORS.FENRISIAN_GREY,
+                    helm_secondary: eCOLORS.RED,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 vet_sgt: {
                     helm_pattern: 3,
-                    helm_primary: Colors.Fenrisian_Grey,
-                    helm_secondary: Colors.Black,
+                    helm_primary: eCOLORS.FENRISIAN_GREY,
+                    helm_secondary: eCOLORS.BLACK,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 captain: {
                     helm_pattern: 3,
-                    helm_primary: Colors.Fenrisian_Grey,
-                    helm_secondary: Colors.Black,
+                    helm_primary: eCOLORS.FENRISIAN_GREY,
+                    helm_secondary: eCOLORS.BLACK,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 veteran: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
-                    helm_detail: Colors.White,
-                    helm_lens: Colors.Red,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
+                    helm_detail: eCOLORS.WHITE,
+                    helm_lens: eCOLORS.RED,
                 },
             };
             break;
@@ -327,31 +327,31 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.White,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.WHITE,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 captain: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 veteran: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.Black,
-                    helm_detail: Colors.Black,
-                    helm_lens: Colors.Green,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.BLACK,
+                    helm_detail: eCOLORS.BLACK,
+                    helm_lens: eCOLORS.GREEN,
                 },
             };
             break;
@@ -360,31 +360,31 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.Black,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.BLACK,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.Red,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.RED,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 captain: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Firedrake_Green,
-                    helm_secondary: Colors.Firedrake_Green,
+                    helm_primary: eCOLORS.FIREDRAKE_GREEN,
+                    helm_secondary: eCOLORS.FIREDRAKE_GREEN,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 veteran: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.Black,
-                    helm_detail: Colors.Black,
-                    helm_lens: Colors.Green,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.BLACK,
+                    helm_detail: eCOLORS.BLACK,
+                    helm_lens: eCOLORS.GREEN,
                 },
             };
             break;
@@ -393,31 +393,31 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.Red,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.RED,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 captain: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 veteran: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
-                    helm_detail: Colors.White,
-                    helm_lens: Colors.Green,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
+                    helm_detail: eCOLORS.WHITE,
+                    helm_lens: eCOLORS.GREEN,
                 },
             };
             break;
@@ -426,31 +426,31 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.White,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.WHITE,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 captain: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
                     helm_detail: 0,
-                    helm_lens: Colors.Red,
+                    helm_lens: eCOLORS.RED,
                 },
                 veteran: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.Black,
-                    helm_detail: Colors.Black,
-                    helm_lens: Colors.Green,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.BLACK,
+                    helm_detail: eCOLORS.BLACK,
+                    helm_lens: eCOLORS.GREEN,
                 },
             };
             break;
@@ -459,17 +459,17 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Red,
-                    helm_secondary: Colors.Red,
-                    helm_detail: Colors.Red,
-                    helm_lens: Colors.Lime,
+                    helm_primary: eCOLORS.RED,
+                    helm_secondary: eCOLORS.RED,
+                    helm_detail: eCOLORS.RED,
+                    helm_lens: eCOLORS.LIME,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
-                    helm_primary: Colors.Red,
-                    helm_secondary: Colors.White,
-                    helm_detail: Colors.Red,
-                    helm_lens: Colors.Lime,
+                    helm_primary: eCOLORS.RED,
+                    helm_secondary: eCOLORS.WHITE,
+                    helm_detail: eCOLORS.RED,
+                    helm_lens: eCOLORS.LIME,
                 },
                 captain: {
                     helm_pattern: 0,
@@ -480,10 +480,10 @@ function helmet_livery(progenitor, specific = "none") {
                 },
                 veteran: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
-                    helm_detail: Colors.White,
-                    helm_lens: Colors.Red,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
+                    helm_detail: eCOLORS.WHITE,
+                    helm_lens: eCOLORS.RED,
                 },
             };
             break;
@@ -492,31 +492,31 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.Black,
-                    helm_detail: Colors.Red,
-                    helm_lens: Colors.Green,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.BLACK,
+                    helm_detail: eCOLORS.RED,
+                    helm_lens: eCOLORS.GREEN,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
-                    helm_primary: Colors.Black,
-                    helm_secondary: Colors.White,
-                    helm_detail: Colors.Red,
-                    helm_lens: Colors.Green,
+                    helm_primary: eCOLORS.BLACK,
+                    helm_secondary: eCOLORS.WHITE,
+                    helm_detail: eCOLORS.RED,
+                    helm_lens: eCOLORS.GREEN,
                 },
                 captain: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Dark_Gold,
-                    helm_secondary: Colors.Dark_Gold,
-                    helm_detail: Colors.Dark_Gold,
-                    helm_lens: Colors.Red,
+                    helm_primary: eCOLORS.DARK_GOLD,
+                    helm_secondary: eCOLORS.DARK_GOLD,
+                    helm_detail: eCOLORS.DARK_GOLD,
+                    helm_lens: eCOLORS.RED,
                 },
                 veteran: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Red,
-                    helm_secondary: Colors.Red,
-                    helm_detail: Colors.Red,
-                    helm_lens: Colors.Green,
+                    helm_primary: eCOLORS.RED,
+                    helm_secondary: eCOLORS.RED,
+                    helm_detail: eCOLORS.RED,
+                    helm_lens: eCOLORS.GREEN,
                 },
             };
             break;
@@ -527,12 +527,12 @@ function helmet_livery(progenitor, specific = "none") {
                     helm_pattern: 0,
                     helm_primary: obj_creation.main_color,
                     helm_secondary: obj_creation.secondary_color,
-                    helm_detail: Colors.Gold,
+                    helm_detail: eCOLORS.GOLD,
                     helm_lens: obj_creation.lens_color,
                 },
                 vet_sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Gold,
+                    helm_primary: eCOLORS.GOLD,
                     helm_secondary: obj_creation.secondary_color,
                     helm_detail: obj_creation.main_trim,
                     helm_lens: obj_creation.lens_color,
@@ -541,12 +541,12 @@ function helmet_livery(progenitor, specific = "none") {
                     helm_pattern: 0,
                     helm_primary: obj_creation.main_color,
                     helm_secondary: obj_creation.secondary_color,
-                    helm_detail: Colors.Gold,
+                    helm_detail: eCOLORS.GOLD,
                     helm_lens: obj_creation.lens_color,
                 },
                 veteran: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Gold,
+                    helm_primary: eCOLORS.GOLD,
                     helm_secondary: obj_creation.secondary_color,
                     helm_detail: obj_creation.main_trim,
                     helm_lens: obj_creation.lens_color,
@@ -560,17 +560,17 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Sanguine_Red,
-                    helm_secondary: Colors.Sanguine_Red,
-                    helm_detail: Colors.Sanguine_Red,
-                    helm_lens: Colors.Lime,
+                    helm_primary: eCOLORS.SANGUINE_RED,
+                    helm_secondary: eCOLORS.SANGUINE_RED,
+                    helm_detail: eCOLORS.SANGUINE_RED,
+                    helm_lens: eCOLORS.LIME,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
-                    helm_primary: Colors.Sanguine_Red,
-                    helm_secondary: Colors.White,
-                    helm_detail: Colors.Sanguine_Red,
-                    helm_lens: Colors.Lime,
+                    helm_primary: eCOLORS.SANGUINE_RED,
+                    helm_secondary: eCOLORS.WHITE,
+                    helm_detail: eCOLORS.SANGUINE_RED,
+                    helm_lens: eCOLORS.LIME,
                 },
                 captain: {
                     helm_pattern: 0,
@@ -581,10 +581,10 @@ function helmet_livery(progenitor, specific = "none") {
                 },
                 veteran: {
                     helm_pattern: 0,
-                    helm_primary: Colors.White,
-                    helm_secondary: Colors.White,
-                    helm_detail: Colors.White,
-                    helm_lens: Colors.Red,
+                    helm_primary: eCOLORS.WHITE,
+                    helm_secondary: eCOLORS.WHITE,
+                    helm_detail: eCOLORS.WHITE,
+                    helm_lens: eCOLORS.RED,
                 },
             };
             break;
@@ -599,21 +599,21 @@ function trial_map(trial_name) {
     switch (trial_name) {
         case "BLOOD_DUEL":
         case "BLOODDUEL":
-            return eTrials.BLOODDUEL;
+            return eTRIALS.BLOODDUEL;
         case "SURVIVAL":
-            return eTrials.SURVIVAL;
+            return eTRIALS.SURVIVAL;
         case "APPRENTICESHIP":
-            return eTrials.APPRENTICESHIP;
+            return eTRIALS.APPRENTICESHIP;
         case "CHALLENGE":
-            return eTrials.CHALLENGE;
+            return eTRIALS.CHALLENGE;
         case "EXPOSURE":
-            return eTrials.EXPOSURE;
+            return eTRIALS.EXPOSURE;
         case "HUNTING":
-            return eTrials.HUNTING;
+            return eTRIALS.HUNTING;
         case "KNOWLEDGE":
-            return eTrials.KNOWLEDGE;
+            return eTRIALS.KNOWLEDGE;
         default:
-            return eTrials.BLOODDUEL;
+            return eTRIALS.BLOODDUEL;
     }
 }
 
@@ -742,7 +742,7 @@ function scr_initialize_custom() {
     gladius = 0;
     hunters = 0;
 
-    if (obj_creation.fleet_type == ePlayerBase.home_world) {
+    if (obj_creation.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         strike_cruisers = 8;
         gladius = 7;
         hunters = 3;
@@ -762,7 +762,7 @@ function scr_initialize_custom() {
 	*/
     if (obj_creation.custom == eCHAPTER_TYPE.PREMADE) {
         flagship_name = obj_creation.flagship_name;
-        if (obj_creation.fleet_type == ePlayerBase.home_world) {
+        if (obj_creation.fleet_type == ePLAYER_BASE.HOME_WORLD) {
             battle_barges = 2;
             strike_cruisers = 8;
             gladius = 7;
@@ -776,7 +776,7 @@ function scr_initialize_custom() {
     }
 
     if (scr_has_disadv("Obliterated")) {
-        if (obj_creation.fleet_type == ePlayerBase.home_world) {
+        if (obj_creation.fleet_type == ePLAYER_BASE.HOME_WORLD) {
             battle_barges = 0;
             strike_cruisers = 2;
             gladius = 1;
@@ -1396,99 +1396,99 @@ function scr_initialize_custom() {
         _hi_qual_armour = STR_ANY_POWER_ARMOUR;
     }
 
-    load_default_gear(eROLE.ChapterMaster, "Chapter Master", "Power Sword", "Bolt Pistol", _hi_qual_armour, "", "Iron Halo");
-    load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", _hi_qual_armour, "", "");
-    load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
-    load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
-    load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Iron Halo");
-    load_default_gear(eROLE.Dreadnought, "Dreadnought", "Close Combat Weapon", "Lascannon", "Dreadnought", "", "");
-    load_default_gear(eROLE.Champion, "Champion", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Combat Shield");
-    load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
-    load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
-    load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Jump Pack", "");
-    load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
-    load_default_gear(eROLE.Scout, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
-    load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
-    load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
-    load_default_gear(eROLE.Techmarine, "Techmarine", "Omnissian Axe", "Bolt Pistol", _hi_qual_armour, "Servo-arm", "");
-    load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
-    load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
-    load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.CHAPTERMASTER, "Chapter Master", "Power Sword", "Bolt Pistol", _hi_qual_armour, "", "Iron Halo");
+    load_default_gear(eROLE.HONOURGUARD, "Honour Guard", "Power Sword", "Bolter", _hi_qual_armour, "", "");
+    load_default_gear(eROLE.VETERAN, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.TERMINATOR, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
+    load_default_gear(eROLE.CAPTAIN, "Captain", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Iron Halo");
+    load_default_gear(eROLE.DREADNOUGHT, "Dreadnought", "Close Combat Weapon", "Lascannon", "Dreadnought", "", "");
+    load_default_gear(eROLE.CHAMPION, "Champion", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Combat Shield");
+    load_default_gear(eROLE.TACTICAL, "Tactical", "Bolter", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.DEVASTATOR, "Devastator", "", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.ASSAULT, "Assault", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Jump Pack", "");
+    load_default_gear(eROLE.ANCIENT, "Ancient", "Company Standard", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.SCOUT, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
+    load_default_gear(eROLE.CHAPLAIN, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
+    load_default_gear(eROLE.APOTHECARY, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
+    load_default_gear(eROLE.TECHMARINE, "Techmarine", "Omnissian Axe", "Bolt Pistol", _hi_qual_armour, "Servo-arm", "");
+    load_default_gear(eROLE.LIBRARIAN, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
+    load_default_gear(eROLE.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.VETERANSERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
 
     if (struct_exists(obj_creation, "custom_roles")) {
         var c_roles = obj_creation.custom_roles;
         var possible_custom_roles = [
             [
                 "chapter_master",
-                eROLE.ChapterMaster
+                eROLE.CHAPTERMASTER
             ],
             [
                 "honour_guard",
-                eROLE.HonourGuard
+                eROLE.HONOURGUARD
             ],
             [
                 "veteran",
-                eROLE.Veteran
+                eROLE.VETERAN
             ],
             [
                 "terminator",
-                eROLE.Terminator
+                eROLE.TERMINATOR
             ],
             [
                 "captain",
-                eROLE.Captain
+                eROLE.CAPTAIN
             ],
             [
                 "dreadnought",
-                eROLE.Dreadnought
+                eROLE.DREADNOUGHT
             ],
             [
                 "champion",
-                eROLE.Champion
+                eROLE.CHAMPION
             ],
             [
                 "tactical",
-                eROLE.Tactical
+                eROLE.TACTICAL
             ],
             [
                 "devastator",
-                eROLE.Devastator
+                eROLE.DEVASTATOR
             ],
             [
                 "assault",
-                eROLE.Assault
+                eROLE.ASSAULT
             ],
             [
                 "ancient",
-                eROLE.Ancient
+                eROLE.ANCIENT
             ],
             [
                 "scout",
-                eROLE.Scout
+                eROLE.SCOUT
             ],
             [
                 "chaplain",
-                eROLE.Chaplain
+                eROLE.CHAPLAIN
             ],
             [
                 "apothecary",
-                eROLE.Apothecary
+                eROLE.APOTHECARY
             ],
             [
                 "techmarine",
-                eROLE.Techmarine
+                eROLE.TECHMARINE
             ],
             [
                 "librarian",
-                eROLE.Librarian
+                eROLE.LIBRARIAN
             ],
             [
                 "sergeant",
-                eROLE.Sergeant
+                eROLE.SERGEANT
             ],
             [
                 "veteran_sergeant",
-                eROLE.VeteranSergeant
+                eROLE.VETERANSERGEANT
             ]
         ];
         var possible_custom_attributes = [
@@ -1544,24 +1544,24 @@ function scr_initialize_custom() {
     }
 
     var roles = {
-        chapter_master: role[defaults_slot][eROLE.ChapterMaster],
-        honour_guard: role[defaults_slot][eROLE.HonourGuard],
-        veteran: role[defaults_slot][eROLE.Veteran],
-        terminator: role[defaults_slot][eROLE.Terminator],
-        captain: role[defaults_slot][eROLE.Captain],
-        dreadnought: role[defaults_slot][eROLE.Dreadnought],
-        champion: role[defaults_slot][eROLE.Champion],
-        tactical: role[defaults_slot][eROLE.Tactical],
-        devastator: role[defaults_slot][eROLE.Devastator],
-        assault: role[defaults_slot][eROLE.Assault],
-        ancient: role[defaults_slot][eROLE.Ancient],
-        scout: role[defaults_slot][eROLE.Scout],
-        chaplain: role[defaults_slot][eROLE.Chaplain],
-        apothecary: role[defaults_slot][eROLE.Apothecary],
-        techmarine: role[defaults_slot][eROLE.Techmarine],
-        librarian: role[defaults_slot][eROLE.Librarian],
-        sergeant: role[defaults_slot][eROLE.Sergeant],
-        veteran_sergeant: role[defaults_slot][eROLE.VeteranSergeant],
+        chapter_master: role[defaults_slot][eROLE.CHAPTERMASTER],
+        honour_guard: role[defaults_slot][eROLE.HONOURGUARD],
+        veteran: role[defaults_slot][eROLE.VETERAN],
+        terminator: role[defaults_slot][eROLE.TERMINATOR],
+        captain: role[defaults_slot][eROLE.CAPTAIN],
+        dreadnought: role[defaults_slot][eROLE.DREADNOUGHT],
+        champion: role[defaults_slot][eROLE.CHAMPION],
+        tactical: role[defaults_slot][eROLE.TACTICAL],
+        devastator: role[defaults_slot][eROLE.DEVASTATOR],
+        assault: role[defaults_slot][eROLE.ASSAULT],
+        ancient: role[defaults_slot][eROLE.ANCIENT],
+        scout: role[defaults_slot][eROLE.SCOUT],
+        chaplain: role[defaults_slot][eROLE.CHAPLAIN],
+        apothecary: role[defaults_slot][eROLE.APOTHECARY],
+        techmarine: role[defaults_slot][eROLE.TECHMARINE],
+        librarian: role[defaults_slot][eROLE.LIBRARIAN],
+        sergeant: role[defaults_slot][eROLE.SERGEANT],
+        veteran_sergeant: role[defaults_slot][eROLE.VETERANSERGEANT],
     };
     // global.logger.info($"roles: {json_stringify(roles, true)}")
 
@@ -2547,7 +2547,7 @@ function scr_initialize_custom() {
     name[company][0] = obj_creation.chapter_master_name;
     var cm_equip = load_chapter_master_equipment();
 
-    var chapter_master = add_unit_to_company("chapter_master", 0, 0, roles.chapter_master, eROLE.ChapterMaster, cm_equip.wep1, cm_equip.wep2, cm_equip.gear, cm_equip.mobi, cm_equip.armour);
+    var chapter_master = add_unit_to_company("chapter_master", 0, 0, roles.chapter_master, eROLE.CHAPTERMASTER, cm_equip.wep1, cm_equip.wep2, cm_equip.gear, cm_equip.mobi, cm_equip.armour);
     repeat (cm_equip.bionics) {
         chapter_master.add_bionics("none", "standard", false);
     }
@@ -2591,7 +2591,7 @@ function scr_initialize_custom() {
 
     // Forge Master
     name[company][1] = obj_creation.fmaster;
-    var _forge_master = add_unit_to_company("marine", company, 1, "Forge Master", eROLE.Techmarine, "Infernus Pistol", "Omnissian Axe", "default", "Servo-harness", _hq_armour);
+    var _forge_master = add_unit_to_company("marine", company, 1, "Forge Master", eROLE.TECHMARINE, "Infernus Pistol", "Omnissian Axe", "default", "Servo-harness", _hq_armour);
     if (_forge_master.technology < 40) {
         _forge_master.technology = 40;
     }
@@ -2613,7 +2613,7 @@ function scr_initialize_custom() {
     // Master of Sanctity (Chaplain)
     if (chaplains > 0) {
         name[company][2] = high_chaplain_name;
-        var _hchap = add_unit_to_company("marine", company, 2, "Master of Sanctity", eROLE.Chaplain, "default", "Plasma Pistol", "default", "default", _hq_armour);
+        var _hchap = add_unit_to_company("marine", company, 2, "Master of Sanctity", eROLE.CHAPLAIN, "default", "Plasma Pistol", "default", "default", _hq_armour);
         _hchap.edit_corruption(-100);
         if (_hchap.piety < 45) {
             _hchap.piety = 45;
@@ -2625,7 +2625,7 @@ function scr_initialize_custom() {
 
     // Maser of the Apothecarion (Apothecary)
     name[company][3] = obj_creation.hapothecary;
-    var _hapoth = add_unit_to_company("marine", company, 3, "Master of the Apothecarion", eROLE.Apothecary, "default", "Plasma Pistol", "default", "default", _hq_armour);
+    var _hapoth = add_unit_to_company("marine", company, 3, "Master of the Apothecarion", eROLE.APOTHECARY, "default", "Plasma Pistol", "default", "default", _hq_armour);
     _hapoth.edit_corruption(0);
     k += 1;
     commands += 1;
@@ -2633,7 +2633,7 @@ function scr_initialize_custom() {
     // Chief Librarian
     if (!scr_has_disadv("Psyker Intolerant")) {
         name[company][4] = obj_creation.clibrarian;
-        var _clibrarian = add_unit_to_company("marine", company, 4, string("Chief {0}", roles.librarian), eROLE.Librarian, "default", "Plasma Pistol", "default", "default", _hq_armour);
+        var _clibrarian = add_unit_to_company("marine", company, 4, string("Chief {0}", roles.librarian), eROLE.LIBRARIAN, "default", "Plasma Pistol", "default", "default", _hq_armour);
         _clibrarian.edit_corruption(0);
         _clibrarian.psionic = choose(11, 12);
         _clibrarian.update_powers();
@@ -2648,7 +2648,7 @@ function scr_initialize_custom() {
         k += 1;
         commands += 1;
         man_size += 1;
-        add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        add_unit_to_company("marine", company, k, roles.techmarine, eROLE.TECHMARINE, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
     }
 
     // Librarians in the librarium
@@ -2656,14 +2656,14 @@ function scr_initialize_custom() {
         k += 1;
         commands += 1;
         man_size += 1;
-        var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.LIBRARIAN, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
     }
     // Codiciery
     repeat (codiciery) {
         k += 1;
         commands += 1;
         man_size += 1;
-        var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.Librarian, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.LIBRARIAN, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
     }
 
     // Lexicanum
@@ -2671,7 +2671,7 @@ function scr_initialize_custom() {
         k += 1;
         commands += 1;
         man_size += 1;
-        var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.Librarian, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.LIBRARIAN, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
     }
 
     // Apothecaries in Apothecarion
@@ -2679,7 +2679,7 @@ function scr_initialize_custom() {
         k += 1;
         commands += 1;
         man_size += 1;
-        add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary, "Chainsword", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        add_unit_to_company("marine", company, k, roles.apothecary, eROLE.APOTHECARY, "Chainsword", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
     }
 
     // Chaplains in Reclusium
@@ -2687,7 +2687,7 @@ function scr_initialize_custom() {
         k += 1;
         commands += 1;
         man_size += 1;
-        add_unit_to_company("marine", company, k, roles.chaplain, eROLE.Chaplain, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        add_unit_to_company("marine", company, k, roles.chaplain, eROLE.CHAPLAIN, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
     }
 
     // Honour Guard
@@ -2705,7 +2705,7 @@ function scr_initialize_custom() {
         k += 1;
         commands += 1;
         man_size += 1;
-        add_unit_to_company("marine", company, k, roles.honour_guard, eROLE.HonourGuard);
+        add_unit_to_company("marine", company, k, roles.honour_guard, eROLE.HONOURGUARD);
     }
 
     specials = k;
@@ -2847,7 +2847,7 @@ function scr_initialize_custom() {
         var scout_company_behaviour = obj_creation.scout_company_behaviour;
     }
     if (scout_company_behaviour == 1) {
-        load_default_gear(eROLE.Scout, "Neophyte", "Bolter", "", "Scout Armour", "", "");
+        load_default_gear(eROLE.SCOUT, "Neophyte", "Bolter", "", "Scout Armour", "", "");
     }
 
     var equal_scouts = 0;
@@ -3016,28 +3016,28 @@ function scr_initialize_custom() {
                 case "tacticals":
                     if (scr_has_adv("Elite Guard")) {
                         _rolename = roles.veteran;
-                        _erole = eROLE.Veteran;
+                        _erole = eROLE.VETERAN;
                     } else {
                         _rolename = roles.tactical;
-                        _erole = eROLE.Tactical;
+                        _erole = eROLE.TACTICAL;
                     }
                     break;
                 case "assaults":
                     _rolename = roles.assault;
-                    _erole = eROLE.Assault;
+                    _erole = eROLE.ASSAULT;
                     _mobi = "Jump Pack";
                     break;
                 case "devastators":
                     _rolename = roles.devastator;
-                    _erole = eROLE.Devastator;
-                    if (wep1[defaults_slot][eROLE.Devastator] == "Heavy Ranged") {
+                    _erole = eROLE.DEVASTATOR;
+                    if (wep1[defaults_slot][eROLE.DEVASTATOR] == "Heavy Ranged") {
                         _wep1 = choose("Multi-Melta", "Lascannon", "Missile Launcher", "Heavy Bolter");
                     }
                     break;
                 case "scouts":
                     _unit_type = "scout";
                     _rolename = roles.scout;
-                    _erole = eROLE.Scout;
+                    _erole = eROLE.SCOUT;
                     break;
                 case "dreadnoughts":
                     _rolename = roles.dreadnought;
@@ -3045,7 +3045,7 @@ function scr_initialize_custom() {
                     if (scr_has_adv("Venerable Ancients")) {
                         _rolename = "Venerable " + roles.dreadnought;
                     }
-                    _erole = eROLE.Dreadnought;
+                    _erole = eROLE.DREADNOUGHT;
 
                     if (_coy.coy == 9) {
                         _wep1 = "Missile Launcher";
@@ -3059,12 +3059,12 @@ function scr_initialize_custom() {
                 // VETERANS
                 case "veterans":
                     _rolename = roles.veteran;
-                    _erole = eROLE.Veteran;
+                    _erole = eROLE.VETERAN;
                     break;
 
                 case "terminators":
                     _rolename = roles.terminator;
-                    _erole = eROLE.Terminator;
+                    _erole = eROLE.TERMINATOR;
                     break;
 
                 // SPECIALISTS
@@ -3103,7 +3103,7 @@ function scr_initialize_custom() {
                     }
                     commands++;
                     _rolename = roles.captain;
-                    _erole = eROLE.Captain;
+                    _erole = eROLE.CAPTAIN;
                     _wep2 = choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS);
                     if (equal_specialists == false && _coy.coy == 8) {
                         _mobi = "Jump Pack";
@@ -3117,37 +3117,37 @@ function scr_initialize_custom() {
                 case "chaplains":
                     commands++;
                     _rolename = roles.chaplain;
-                    _erole = eROLE.Chaplain;
+                    _erole = eROLE.CHAPLAIN;
                     _wep2 = choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS);
                     if (equal_specialists == false && _coy.coy == 8) {
                         _mobi = "Jump Pack";
                     }
                     if (_coy.coy == 1 && _coy.terminators > 0) {
                         _armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
-                        _wep2 = wep2[defaults_slot][eROLE.Terminator];
+                        _wep2 = wep2[defaults_slot][eROLE.TERMINATOR];
                     }
                     break;
                 case "apothecaries":
                     commands++;
                     _rolename = roles.apothecary;
-                    _erole = eROLE.Apothecary;
+                    _erole = eROLE.APOTHECARY;
                     if (equal_specialists == false && _coy.coy == 8) {
                         _mobi = "Jump Pack";
                     }
                     if (_coy.coy == 1 && _coy.terminators > 0) {
                         _armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
-                        _wep1 = wep1[defaults_slot][eROLE.Terminator];
-                        _wep2 = wep2[defaults_slot][eROLE.Terminator];
+                        _wep1 = wep1[defaults_slot][eROLE.TERMINATOR];
+                        _wep2 = wep2[defaults_slot][eROLE.TERMINATOR];
                     }
                     break;
                 case "techmarines":
                     commands++;
                     _rolename = roles.techmarine;
-                    _erole = eROLE.Techmarine;
+                    _erole = eROLE.TECHMARINE;
                     if (_coy.coy == 1) {
                         if (_coy.terminators > 0) {
                             _armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
-                            _wep2 = wep2[defaults_slot][eROLE.Terminator];
+                            _wep2 = wep2[defaults_slot][eROLE.TERMINATOR];
                         }
                         if (!_is_terminator(_armour)) {
                             if (scr_has_disadv("Poor Equipment")) {
@@ -3161,22 +3161,22 @@ function scr_initialize_custom() {
                 case "librarians":
                     commands++;
                     _rolename = roles.librarian;
-                    _erole = eROLE.Librarian;
+                    _erole = eROLE.LIBRARIAN;
                     if (equal_specialists == false && _coy.coy == 8) {
                         _mobi = "Jump Pack";
                     }
                     if (_coy.coy == 1 && _coy.terminators > 0) {
                         _armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
-                        _wep2 = wep2[defaults_slot][eROLE.Terminator];
+                        _wep2 = wep2[defaults_slot][eROLE.TERMINATOR];
                     }
                     break;
                 case "champions":
                     _rolename = roles.champion;
-                    _erole = eROLE.Champion;
+                    _erole = eROLE.CHAMPION;
                     if (_coy.coy == 1 && _coy.terminators > 0) {
                         _armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
                         _wep1 = "Thunder Hammer";
-                        _wep2 = wep2[defaults_slot][eROLE.Terminator];
+                        _wep2 = wep2[defaults_slot][eROLE.TERMINATOR];
                         if (global.chapter_name == "Dark Angels") {
                             _wep1 = "Heavy Thunder Hammer";
                             _wep2 = "";
@@ -3185,10 +3185,10 @@ function scr_initialize_custom() {
                     break;
                 case "ancients":
                     _rolename = roles.ancient;
-                    _erole = eROLE.Ancient;
+                    _erole = eROLE.ANCIENT;
                     if (_coy.coy == 1 && _coy.terminators > 0) {
                         _armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
-                        _wep2 = wep2[defaults_slot][eROLE.Terminator];
+                        _wep2 = wep2[defaults_slot][eROLE.TERMINATOR];
                     }
                     break;
 
@@ -3196,7 +3196,7 @@ function scr_initialize_custom() {
                 case "rhinos":
                     _is_vehicle = true;
                     _rolename = "Rhino";
-                    _erole = eROLE.Rhino;
+                    _erole = eROLE.RHINO;
                     _wep1 = "Storm Bolter";
                     _wep2 = "HK Missile";
                     _accessory = "Dozer Blades";
@@ -3207,20 +3207,20 @@ function scr_initialize_custom() {
                 case "landspeeders":
                     _is_vehicle = true;
                     _rolename = "Land Speeder";
-                    _erole = eROLE.LandSpeeder;
+                    _erole = eROLE.LANDSPEEDER;
                     _wep1 = "Heavy Bolter";
                     break;
                 case "whirlwinds":
                     _is_vehicle = true;
                     _rolename = "Whirlwind";
-                    _erole = eROLE.Whirlwind;
+                    _erole = eROLE.WHIRLWIND;
                     _wep1 = "Whirlwind Missiles";
                     _wep2 = "HK Missile";
                     break;
                 case "landraiders":
                     _is_vehicle = true;
                     _rolename = "Land Raider";
-                    _erole = eROLE.LandRaider;
+                    _erole = eROLE.LANDRAIDER;
                     _upgrade = "Heavy Armour";
                     var variant = choose(1, 1, 2, 3);
                     // 50%
@@ -3248,7 +3248,7 @@ function scr_initialize_custom() {
                 case "predators":
                     _is_vehicle = true;
                     _rolename = "Predator";
-                    _erole = eROLE.Predator;
+                    _erole = eROLE.PREDATOR;
                     var variant = choose(1, 1, 2, 3);
                     // 1st company relic predators
                     if (_coy.coy == 1) {
@@ -3368,8 +3368,8 @@ function scr_initialize_custom() {
     scr_add_item("Chainsword", 20);
     scr_add_item("Bolt Pistol", 5);
     scr_add_item("Heavy Weapons Pack", 10);
-    scr_add_item(wep1[defaults_slot][eROLE.Scout], 20);
-    scr_add_item(wep2[defaults_slot][eROLE.Scout], 20);
+    scr_add_item(wep1[defaults_slot][eROLE.SCOUT], 20);
+    scr_add_item(wep2[defaults_slot][eROLE.SCOUT], 20);
 
     scr_add_item("Scout Armour", 20);
     scr_add_item("MK8 Errant", 1);
@@ -3392,8 +3392,8 @@ function scr_initialize_custom() {
 
     if (scr_has_disadv("Sieged")) {
         scr_add_item("Narthecium", 4);
-        scr_add_item(wep1[defaults_slot][eROLE.Apothecary], 4);
-        scr_add_item(wep2[defaults_slot][eROLE.Apothecary], 4);
+        scr_add_item(wep1[defaults_slot][eROLE.APOTHECARY], 4);
+        scr_add_item(wep2[defaults_slot][eROLE.APOTHECARY], 4);
         scr_add_item("Psychic Hood", 4);
         scr_add_item("Crozius Arcanum", 4);
         scr_add_item("Servo-arm", 4);
@@ -3486,7 +3486,7 @@ function scr_initialize_custom() {
             penitent_end = obj_creation.strength * 48;
         }
     } else {
-        if (fleet_type == ePlayerBase.penitent) {
+        if (fleet_type == ePLAYER_BASE.PENITENT) {
             penitent = 1;
             penitent_max = obj_creation.strength * 60;
             penitent_current = 1;
@@ -3580,28 +3580,28 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
         spawn_unit.roll_age();
         spawn_unit.roll_experience();
     }
-    if (role_id == eROLE.HonourGuard) {
+    if (role_id == eROLE.HONOURGUARD) {
         spawn_unit.add_trait(choose("guardian", "champion", "observant", "perfectionist", "natural_leader"));
     }
-    if (role_id == eROLE.Champion) {
+    if (role_id == eROLE.CHAMPION) {
         spawn_unit.add_trait("champion");
     }
-    if (role_id == eROLE.Apothecary) {
+    if (role_id == eROLE.APOTHECARY) {
         spawn_unit.add_trait("soft_target");
     }
-    if (role_id == eROLE.Librarian) {
+    if (role_id == eROLE.LIBRARIAN) {
         if (scr_has_adv("Favoured By The Warp") && (roll_dice_unit(1, 6, "high", spawn_unit) >= 4)) {
             spawn_unit.add_trait("favoured_by_the_warp");
         } else if (roll_dice_unit(1, 10, "high", spawn_unit) == 10) {
             spawn_unit.add_trait("favoured_by_the_warp");
         }
 
-        if (role_name == obj_ini.role[100][eROLE.Librarian]) {
+        if (role_name == obj_ini.role[100][eROLE.LIBRARIAN]) {
             spawn_unit.psionic = irandom_range(8, 10);
         } else if (role_name == "Codiciery") {
             spawn_unit.psionic = irandom_range(5, 7);
             if (roll_dice_unit(1, 6, "high", spawn_unit) < 4) {
-                spawn_unit.update_gear(obj_ini.gear[obj_ini.defaults_slot][eROLE.Tactical], false, false);
+                spawn_unit.update_gear(obj_ini.gear[obj_ini.defaults_slot][eROLE.TACTICAL], false, false);
             }
             if (roll_dice_unit(1, 6, "high", spawn_unit) < 4) {
                 spawn_unit.update_weapon_one(choose("Force Axe", "Force Sword"), false, false);
@@ -3609,7 +3609,7 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
         } else if (role_name == "Lexicanum") {
             spawn_unit.psionic = irandom_range(2, 4);
             spawn_unit.update_weapon_one(choose("Force Axe", "Force Sword"), false, false);
-            spawn_unit.update_gear(obj_ini.gear[obj_ini.defaults_slot][eROLE.Tactical], false, false);
+            spawn_unit.update_gear(obj_ini.gear[obj_ini.defaults_slot][eROLE.TACTICAL], false, false);
         }
         spawn_unit.update_powers();
     }

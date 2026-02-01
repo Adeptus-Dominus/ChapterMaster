@@ -802,7 +802,7 @@ audiences = 0;
 // ** Sets default recruiting vars **
 recruits = 0;
 recruiting_worlds = "";
-recruit_trial = eTrials.BLOODDUEL;
+recruit_trial = eTRIALS.BLOODDUEL;
 recruit_last = 0;
 
 recruit_name[0] = "";
@@ -843,7 +843,7 @@ diplo_option = [];
 diplo_alpha = 0;
 // ** Sets combat to not true **
 combat = 0;
-random_event_next = EVENT.none;
+random_event_next = eEVENT.NONE;
 useful_info = "";
 
 // ** Sets the reason for loss of loyalty **
@@ -966,16 +966,16 @@ bat_scout_column = 1;
 // ** Sets up disposition per faction **
 
 imperial_factions = [
-    eFACTION.Imperium,
-    eFACTION.Mechanicus,
-    eFACTION.Inquisition,
-    eFACTION.Ecclesiarchy
+    eFACTION.IMPERIUM,
+    eFACTION.MECHANICUS,
+    eFACTION.INQUISITION,
+    eFACTION.ECCLESIARCHY
 ];
 faction[0] = "";
 disposition[0] = 0;
-faction[eFACTION.Player] = "Player";
+faction[eFACTION.PLAYER] = "Player";
 disposition[1] = 0;
-faction[eFACTION.Imperium] = "Imperium";
+faction[eFACTION.IMPERIUM] = "Imperium";
 disposition[3] = 0;
 faction[3] = "Mechanicus";
 disposition[4] = 0;
@@ -1040,78 +1040,78 @@ faction_leader = array_create(14, "");
 faction_title = array_create(14, "");
 faction_status = array_create(14, "");
 // Sector Command faction
-faction_leader[eFACTION.Imperium] = global.name_generator.generate_imperial_name();
-faction_title[eFACTION.Imperium] = "Sector Commander";
-faction_status[eFACTION.Imperium] = "Allied";
+faction_leader[eFACTION.IMPERIUM] = global.name_generator.generate_imperial_name();
+faction_title[eFACTION.IMPERIUM] = "Sector Commander";
+faction_status[eFACTION.IMPERIUM] = "Allied";
 // Mechanicus faction
-faction_leader[eFACTION.Mechanicus] = global.name_generator.generate_imperial_name();
-faction_title[eFACTION.Mechanicus] = "Magos";
-faction_status[eFACTION.Mechanicus] = "Allied";
-if (faction_leader[eFACTION.Mechanicus] == faction_leader[eFACTION.Imperium]) {
-    faction_leader[eFACTION.Mechanicus] = global.name_generator.generate_space_marine_name();
+faction_leader[eFACTION.MECHANICUS] = global.name_generator.generate_imperial_name();
+faction_title[eFACTION.MECHANICUS] = "Magos";
+faction_status[eFACTION.MECHANICUS] = "Allied";
+if (faction_leader[eFACTION.MECHANICUS] == faction_leader[eFACTION.IMPERIUM]) {
+    faction_leader[eFACTION.MECHANICUS] = global.name_generator.generate_space_marine_name();
 }
 // Inquisition faction
-faction_leader[eFACTION.Inquisition] = global.name_generator.generate_imperial_name();
-if (faction_leader[eFACTION.Inquisition] == faction_leader[eFACTION.Mechanicus]) {
-    faction_leader[eFACTION.Inquisition] = global.name_generator.generate_imperial_name();
+faction_leader[eFACTION.INQUISITION] = global.name_generator.generate_imperial_name();
+if (faction_leader[eFACTION.INQUISITION] == faction_leader[eFACTION.MECHANICUS]) {
+    faction_leader[eFACTION.INQUISITION] = global.name_generator.generate_imperial_name();
 }
-faction_title[eFACTION.Inquisition] = "Inquisitor Lord";
-faction_status[eFACTION.Inquisition] = "Allied";
+faction_title[eFACTION.INQUISITION] = "Inquisitor Lord";
+faction_status[eFACTION.INQUISITION] = "Allied";
 // Sisters faction
-faction_leader[eFACTION.Ecclesiarchy] = global.name_generator.generate_imperial_name(false);
-faction_title[eFACTION.Ecclesiarchy] = "Prioress";
-faction_status[eFACTION.Ecclesiarchy] = "Allied";
+faction_leader[eFACTION.ECCLESIARCHY] = global.name_generator.generate_imperial_name(false);
+faction_title[eFACTION.ECCLESIARCHY] = "Prioress";
+faction_status[eFACTION.ECCLESIARCHY] = "Allied";
 // Eldar faction
-faction_leader[eFACTION.Eldar] = global.name_generator.generate_eldar_name(2);
-faction_title[eFACTION.Eldar] = "Farseer";
-faction_status[eFACTION.Eldar] = "Antagonism"; // If disposition = 0 then instead set it to "Antagonism"
+faction_leader[eFACTION.ELDAR] = global.name_generator.generate_eldar_name(2);
+faction_title[eFACTION.ELDAR] = "Farseer";
+faction_status[eFACTION.ELDAR] = "Antagonism"; // If disposition = 0 then instead set it to "Antagonism"
 // Orkz faction
-faction_leader[eFACTION.Ork] = global.name_generator.generate_ork_name();
-faction_title[eFACTION.Ork] = "Warboss";
-faction_status[eFACTION.Ork] = "War";
+faction_leader[eFACTION.ORK] = global.name_generator.generate_ork_name();
+faction_title[eFACTION.ORK] = "Warboss";
+faction_status[eFACTION.ORK] = "War";
 // Tau faction
-faction_leader[eFACTION.Tau] = global.name_generator.generate_tau_leader_name();
-faction_title[eFACTION.Tau] = "Diplomat";
-faction_status[eFACTION.Tau] = "Antagonism";
+faction_leader[eFACTION.TAU] = global.name_generator.generate_tau_leader_name();
+faction_title[eFACTION.TAU] = "Diplomat";
+faction_status[eFACTION.TAU] = "Antagonism";
 // Other factions unkown to player
-faction_status[eFACTION.Tyranids] = "War";
-faction_title[eFACTION.Chaos] = "Chaos Lord";
-faction_status[eFACTION.Chaos] = "War";
-faction_status[eFACTION.Heretics] = "War";
-faction_status[eFACTION.Genestealer] = "War";
-faction_status[eFACTION.Necrons] = "War";
+faction_status[eFACTION.TYRANIDS] = "War";
+faction_title[eFACTION.CHAOS] = "Chaos Lord";
+faction_status[eFACTION.CHAOS] = "War";
+faction_status[eFACTION.HERETICS] = "War";
+faction_status[eFACTION.GENESTEALER] = "War";
+faction_status[eFACTION.NECRONS] = "War";
 // ** Sets faction gender for names **
 faction_gender = array_create(14, 1);
 faction_gender[6] = choose(1, 2);
 faction_gender[8] = choose(1, 1, 2);
 if (faction_gender[4] == 2) {
-    faction_leader[eFACTION.Inquisition] = global.name_generator.generate_imperial_name(false);
+    faction_leader[eFACTION.INQUISITION] = global.name_generator.generate_imperial_name(false);
 }
 faction_gender[10] = choose(1, 1, 1, 2, 2);
 if (faction_gender[10] == 1) {
-    faction_leader[eFACTION.Chaos] = choose("1", "1", "1", "2");
+    faction_leader[eFACTION.CHAOS] = choose("1", "1", "1", "2");
 }
 if (faction_gender[10] == 2) {
-    faction_leader[eFACTION.Chaos] = choose("1", "2", "2", "2");
+    faction_leader[eFACTION.CHAOS] = choose("1", "2", "2", "2");
 }
-if (faction_leader[eFACTION.Chaos] == "1") {
-    faction_leader[eFACTION.Chaos] = global.name_generator.generate_space_marine_name();
+if (faction_leader[eFACTION.CHAOS] == "1") {
+    faction_leader[eFACTION.CHAOS] = global.name_generator.generate_space_marine_name();
 }
-if (faction_leader[eFACTION.Chaos] == "2") {
-    faction_leader[eFACTION.Chaos] = global.name_generator.generate_chaos_name();
+if (faction_leader[eFACTION.CHAOS] == "2") {
+    faction_leader[eFACTION.CHAOS] = global.name_generator.generate_chaos_name();
 }
 
 known = array_create(14, 0);
 known[0] = 2;
-known[eFACTION.Player] = 999;
-known[eFACTION.Imperium] = 1;
-known[eFACTION.Mechanicus] = 1;
+known[eFACTION.PLAYER] = 999;
+known[eFACTION.IMPERIUM] = 1;
+known[eFACTION.MECHANICUS] = 1;
 
 // UI testing
-// known[eFACTION.Inquisition]=1;known[eFACTION.Ecclesiarchy]=1;known[eFACTION.Eldar]=1;known[eFACTION.Ork]=1;known[eFACTION.Tau]=1;known[eFACTION.Tyranids]=1;known[eFACTION.Chaos]=1;
+// known[eFACTION.INQUISITION]=1;known[eFACTION.ECCLESIARCHY]=1;known[eFACTION.ELDAR]=1;known[eFACTION.ORK]=1;known[eFACTION.TAU]=1;known[eFACTION.TYRANIDS]=1;known[eFACTION.CHAOS]=1;
 
 // eldar mission testing
-// known[eFACTION.Eldar]=2;
+// known[eFACTION.ELDAR]=2;
 // disposition[4]=90;
 // disposition[3]=60;
 // ** Sets diplomacy annoyed status **
@@ -1202,7 +1202,7 @@ if (instance_exists(obj_ini)) {
             obj_controller.disposition[8] += 10;
         }
         if (scr_has_adv("Enemy: Eldar")) {
-            faction_status[eFACTION.Eldar] = "War";
+            faction_status[eFACTION.ELDAR] = "War";
         }
         // Founding Chapter STC Bonuses here
         if (global.chapter_name == "Salamanders") {
@@ -1467,13 +1467,13 @@ while (instance_number(obj_star) < planet) {
 mask_index = -1;
 
 fleet_type = "";
-if (obj_ini.fleet_type == ePlayerBase.home_world) {
+if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
     fleet_type = "Homeworld";
 }
-if (obj_ini.fleet_type == ePlayerBase.fleet_based) {
+if (obj_ini.fleet_type == ePLAYER_BASE.FLEET_BASED) {
     fleet_type = "Fleet";
 }
-if (obj_ini.fleet_type == ePlayerBase.penitent) {
+if (obj_ini.fleet_type == ePLAYER_BASE.PENITENT) {
     fleet_type = "Crusade";
 }
 star_names = "";
@@ -1549,7 +1549,7 @@ var njm = 34, com = 0, vih = 0, word = "", masta = 0, forga = 0, chapla = 0, apa
 
 var honoh = 0, termi = 0, veter = 0, capt = 0, chap = 0, apoth = 0, stand = 0, dread = 0, champ = 0, tact = 0, assa = 0, deva = 0, rhino = 0, speeder = 0, raider = 0, standard = 0, bike = 0, scou = 0, whirl = 0, pred = 0, lib = 0, serg = 0, vet_serg = 0;
 for (var mm = 0; mm <= 100; mm++) {
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.ChapterMaster]) {
+    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
         masta = 1;
     }
     if (obj_ini.role[com][mm] == "Forge Master") {
@@ -1561,13 +1561,13 @@ for (var mm = 0; mm <= 100; mm++) {
     if (obj_ini.role[com][mm] == "Master of the Apothecarion") {
         apa = 1;
     }
-    if (obj_ini.role[com][mm] == "Chief " + string(obj_ini.role[100][eROLE.Librarian])) {
+    if (obj_ini.role[com][mm] == "Chief " + string(obj_ini.role[100][eROLE.LIBRARIAN])) {
         liba = 1;
     }
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.Techmarine]) {
+    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.TECHMARINE]) {
         techa += 1;
     }
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.Librarian]) {
+    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.LIBRARIAN]) {
         libra += 1;
     }
     if (obj_ini.role[com][mm] == "Codiciery") {
@@ -1576,13 +1576,13 @@ for (var mm = 0; mm <= 100; mm++) {
     if (obj_ini.role[com][mm] == "Lexicanum") {
         lexa += 1;
     }
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.Chaplain]) {
+    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.CHAPLAIN]) {
         old_dudes += 1;
     }
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.Apothecary]) {
+    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.APOTHECARY]) {
         apotha += 1;
     }
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.HonourGuard]) {
+    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.HONOURGUARD]) {
         honoh += 1;
     }
 }
@@ -1865,7 +1865,7 @@ for (var mm = 0; mm < array_length(obj_ini.ship); mm++) {
 
 temp[62] += $" {string_plural_count("warship", ships)}-\n";
 
-if (obj_ini.fleet_type != ePlayerBase.home_world || bb == 1) {
+if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD || bb == 1) {
     temp[62] += $"Your flagship, Battle Barge {obj_ini.ship[0]}.";
     temp[62] += "\n";
     bb--;

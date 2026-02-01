@@ -79,7 +79,7 @@ function load_marines_into_ship(system, ship, units, reload = false) {
     man_size = 0;
     man_current = 0;
     if (reload == false) {
-        menu = MENU.Manage;
+        menu = eMENU.MANAGE;
     }
     selecting_ship = -1;
     if (managing == -1 && obj_controller.selection_data.purpose != "Ship Management") {
@@ -781,7 +781,7 @@ function scr_ui_manage() {
             if (struct_exists(selection_data, "purpose")) {
                 draw_text(xx + 800, yy + 74, $"{selection_data.purpose}");
             }
-            if (selection_data.select_type == MissionSelectType.Squads) {
+            if (selection_data.select_type == eMISSION_SELECT_TYPE.SQUADS) {
                 view_squad = true;
             }
         }
@@ -1066,7 +1066,7 @@ function scr_ui_manage() {
             yy += 8;
             var _draw_selec_buttons = !obj_controller.unit_profile && !stats_displayed;
             if (_draw_selec_buttons && instance_exists(obj_popup)) {
-                _draw_selec_buttons = obj_popup.type != POPUP_TYPE.EQUIP;
+                _draw_selec_buttons = obj_popup.type != ePOPUP_TYPE.EQUIP;
             }
             if (_draw_selec_buttons) {
                 draw_manage_selection_buttons(xx, yy);
@@ -1171,7 +1171,7 @@ function scr_ui_manage() {
         if (point_and_click([xx + 25, yy + 70, xx + 70, yy + 140])) {
             man_size = 0;
             man_current = 0;
-            menu = MENU.Manage;
+            menu = eMENU.MANAGE;
         }
 
         var top, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "";
@@ -1432,7 +1432,7 @@ function draw_manage_selection_buttons(xx, yy) {
     if (button.draw()) {
         if (!instance_exists(obj_popup)) {
             set_up_tag_manager();
-        } else if (obj_popup.type == POPUP_TYPE.ADD_TAGS) {
+        } else if (obj_popup.type == ePOPUP_TYPE.ADD_TAGS) {
             instance_destroy(obj_popup);
         }
     }

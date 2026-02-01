@@ -11,7 +11,7 @@ if (duration == 0) {
         }
     }
     if (instance_exists(obj_turn_end)) {
-        if (owner == eFACTION.Imperium) {
+        if (owner == eFACTION.IMPERIUM) {
             scr_alert("green", "crusade", "Imperial Crusade ends.", 0, 0);
         }
     }

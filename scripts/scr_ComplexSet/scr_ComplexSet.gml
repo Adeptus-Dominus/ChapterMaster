@@ -420,34 +420,34 @@ function ComplexSet(_unit) constructor {
                     "Forge Master",
                     "Master of Sanctity",
                     "Master of the Apothecarion",
-                    $"Chief {_roles[eROLE.Librarian]}"
+                    $"Chief {_roles[eROLE.LIBRARIAN]}"
                 ],
                 [
-                    _roles[eROLE.Captain],
-                    _roles[eROLE.HonourGuard]
+                    _roles[eROLE.CAPTAIN],
+                    _roles[eROLE.HONOURGUARD]
                 ],
-                [_roles[eROLE.Champion]],
+                [_roles[eROLE.CHAMPION]],
                 [
-                    _roles[eROLE.Ancient],
-                    _roles[eROLE.VeteranSergeant]
+                    _roles[eROLE.ANCIENT],
+                    _roles[eROLE.VETERANSERGEANT]
                 ],
-                [_roles[eROLE.Terminator]],
+                [_roles[eROLE.TERMINATOR]],
                 [
-                    _roles[eROLE.Veteran],
-                    _roles[eROLE.Sergeant],
-                    _roles[eROLE.Chaplain],
-                    _roles[eROLE.Apothecary],
-                    _roles[eROLE.Techmarine],
-                    _roles[eROLE.Librarian]
+                    _roles[eROLE.VETERAN],
+                    _roles[eROLE.SERGEANT],
+                    _roles[eROLE.CHAPLAIN],
+                    _roles[eROLE.APOTHECARY],
+                    _roles[eROLE.TECHMARINE],
+                    _roles[eROLE.LIBRARIAN]
                 ],
                 [
                     "Codiciery",
                     "Lexicanum",
-                    _roles[eROLE.Tactical],
-                    _roles[eROLE.Assault],
-                    _roles[eROLE.Devastator]
+                    _roles[eROLE.TACTICAL],
+                    _roles[eROLE.ASSAULT],
+                    _roles[eROLE.DEVASTATOR]
                 ],
-                [_roles[eROLE.Scout]]
+                [_roles[eROLE.SCOUT]]
             ];
 
             var _unit_tier = 8;
@@ -798,7 +798,7 @@ function ComplexSet(_unit) constructor {
 
     static draw_unit_arms = function() {
         var _bionic_options = [];
-        if (array_contains([ArmourType.Normal, ArmourType.Terminator, ArmourType.Scout], armour_type)) {
+        if (array_contains([eARMOUR_TYPE.NORMAL, eARMOUR_TYPE.TERMINATOR, eARMOUR_TYPE.SCOUT], armour_type)) {
             for (var _right_left = 0; _right_left <= 1; _right_left++) {
                 var _arm_data = arms_data[_right_left];
                 var _variant = _arm_data.arm_type;
@@ -809,7 +809,7 @@ function ComplexSet(_unit) constructor {
                 var _arm_string = _right_left == 0 ? "right_arm" : "left_arm";
                 var _bionic_arm = unit.get_body_data("bionic", _arm_string);
                 _bio = [];
-                if (ArmourType.Terminator == armour_type) {
+                if (eARMOUR_TYPE.TERMINATOR == armour_type) {
                     if (_variant == 2) {
                         _bio = [
                             spr_terminator_complex_arms_upper_right,
@@ -827,12 +827,12 @@ function ComplexSet(_unit) constructor {
                     }
                 }
                 if (_bionic_arm && !array_length(_bio)) {
-                    if (armour_type == ArmourType.Normal) {
+                    if (armour_type == eARMOUR_TYPE.NORMAL) {
                         var _bio = [
                             spr_bionic_right_arm,
                             spr_bionic_left_arm
                         ];
-                    } else if (armour_type == ArmourType.Terminator) {
+                    } else if (armour_type == eARMOUR_TYPE.TERMINATOR) {
                         _bio = [
                             spr_indomitus_right_arm_bionic,
                             spr_indomitus_left_arm_bionic
@@ -854,20 +854,20 @@ function ComplexSet(_unit) constructor {
         }
         var _hand = _arm_data.hand_type;
 
-        if (armour_type != ArmourType.None) {
+        if (armour_type != eARMOUR_TYPE.NONE) {
             var offset_x = x_surface_offset;
             var offset_y = y_surface_offset;
             switch (armour_type) {
-                case ArmourType.Terminator:
+                case eARMOUR_TYPE.TERMINATOR:
                     var _hand_spr = spr_terminator_hands;
                     break;
-                case ArmourType.Scout:
+                case eARMOUR_TYPE.SCOUT:
                     var _hand_spr = spr_pa_hands;
                     offset_y += 11;
                     offset_x += _arm_data.ui_xmod;
                     break;
                 default:
-                case ArmourType.Normal:
+                case eARMOUR_TYPE.NORMAL:
                     var _hand_spr = spr_pa_hands;
                     break;
             }
@@ -881,7 +881,7 @@ function ComplexSet(_unit) constructor {
             }
             // Draw bionic hands
             if (_hand == 1) {
-                if (armour_type == ArmourType.Normal && !hide_bionics && struct_exists(body[$ (right_left == 0 ? "right_arm" : "left_arm")], "bionic")) {
+                if (armour_type == eARMOUR_TYPE.NORMAL && !hide_bionics && struct_exists(body[$ (right_left == 0 ? "right_arm" : "left_arm")], "bionic")) {
                     var bionic_hand = body[$ (right_left == 0 ? "right_arm" : "left_arm")][$ "bionic"];
                     var bionic_spr_index = bionic_hand.variant * 2;
                     if (right_left == 1) {
@@ -895,7 +895,7 @@ function ComplexSet(_unit) constructor {
     };
 
     static draw_weapon_and_hands = function() {
-        if (armour_type == ArmourType.Dreadnought) {
+        if (armour_type == eARMOUR_TYPE.DREADNOUGHT) {
             if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
                 draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
             }
@@ -1065,7 +1065,7 @@ function ComplexSet(_unit) constructor {
                     _arm[$ _defaults[s]] = 0;
                 }
             }
-            if (armour_type == ArmourType.Terminator && !array_contains(["terminator_ranged", "terminator_melee", "terminator_fist"], _arm.display_type)) {
+            if (armour_type == eARMOUR_TYPE.TERMINATOR && !array_contains(["terminator_ranged", "terminator_melee", "terminator_fist"], _arm.display_type)) {
                 _arm.ui_ymod -= 20;
                 if (_arm.display_type == "normal_ranged") {
                     if (_arm.new_weapon_draw) {
@@ -1099,7 +1099,7 @@ function ComplexSet(_unit) constructor {
                     weapon_left.hand_type = 0;
                     _arm.ui_ymod += 15;
                 }
-            } else if (armour_type == ArmourType.Scout) {
+            } else if (armour_type == eARMOUR_TYPE.SCOUT) {
                 _arm.ui_xmod += 4;
                 _arm.ui_ymod += 11;
             }
@@ -1109,13 +1109,13 @@ function ComplexSet(_unit) constructor {
         var unit_role = unit.role();
         var _role = active_roles();
         var _comp_helms = instance_exists(obj_creation) ? obj_creation.complex_livery_data : obj_ini.complex_livery_data;
-        if (unit_role == _role[eROLE.Sergeant]) {
+        if (unit_role == _role[eROLE.SERGEANT]) {
             _complex_helm = _comp_helms.sgt;
-        } else if (unit_role == _role[eROLE.VeteranSergeant]) {
+        } else if (unit_role == _role[eROLE.VETERANSERGEANT]) {
             _complex_helm = _comp_helms.vet_sgt;
-        } else if (unit_role == _role[eROLE.Captain]) {
+        } else if (unit_role == _role[eROLE.CAPTAIN]) {
             _complex_helm = _comp_helms.captain;
-        } else if (unit_role == _role[eROLE.Veteran] || (unit_role == _role[eROLE.Terminator] && unit.company == 1)) {
+        } else if (unit_role == _role[eROLE.VETERAN] || (unit_role == _role[eROLE.TERMINATOR] && unit.company == 1)) {
             _complex_helm = _comp_helms.veteran;
         } else if (struct_exists(_comp_helms, "all_others")) {
             // there's probably room to improve this but consecrators demand the stripe
@@ -1226,15 +1226,15 @@ function ComplexSet(_unit) constructor {
         //purity seals/decorations
         //TODO imprvoe this logic to be more extendable
 
-        if (armour_type == ArmourType.Normal || armour_type == ArmourType.Terminator) {
+        if (armour_type == eARMOUR_TYPE.NORMAL || armour_type == eARMOUR_TYPE.TERMINATOR) {
             var _body = unit.body;
             var _torso_data = _body[$ "torso"];
             var _exp = unit.experience;
-            var _x_offset = x_surface_offset + (armour_type == ArmourType.Normal ? 0 : -7);
-            var _y_offset = y_surface_offset + (armour_type == ArmourType.Normal ? 0 : -38);
+            var _x_offset = x_surface_offset + (armour_type == eARMOUR_TYPE.NORMAL ? 0 : -7);
+            var _y_offset = y_surface_offset + (armour_type == eARMOUR_TYPE.NORMAL ? 0 : -38);
             if (struct_exists(_torso_data, "purity_seal")) {
                 var _torso_purity_seals = _torso_data[$ "purity_seal"];
-                if (armour_type == ArmourType.Normal) {
+                if (armour_type == eARMOUR_TYPE.NORMAL) {
                     var positions = [
                         [
                             60,
@@ -1276,7 +1276,7 @@ function ComplexSet(_unit) constructor {
             }
             if (struct_exists(_body[$ "left_arm"], "purity_seal")) {
                 var _arm_seals = _body[$ "left_arm"][$ "purity_seal"];
-                if (armour_type == ArmourType.Normal) {
+                if (armour_type == eARMOUR_TYPE.NORMAL) {
                     var positions = [
                         [
                             135,
@@ -1314,7 +1314,7 @@ function ComplexSet(_unit) constructor {
             }
             if (struct_exists(_body[$ "right_arm"], "purity_seal")) {
                 var _arm_seals = _body[$ "right_arm"][$ "purity_seal"];
-                if (armour_type == ArmourType.Normal) {
+                if (armour_type == eARMOUR_TYPE.NORMAL) {
                     var positions = [
                         [
                             44,
@@ -1358,66 +1358,66 @@ function ComplexSet(_unit) constructor {
     };
 
     static base_armour = function() {
-        armour_type = ArmourType.Normal;
+        armour_type = eARMOUR_TYPE.NORMAL;
         switch (unit_armour) {
             case "MK7 Aquila":
             case "Artificer Armour":
                 add_group(mk7_bits);
-                armour_type = ArmourType.Normal;
+                armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK6 Corvus":
                 add_group({armour: spr_mk6_complex, backpack: spr_mk6_complex_backpack, left_trim: spr_mk7_left_trim, right_trim: spr_mk7_right_trim, mouth_variants: spr_mk6_mouth_variants, head: spr_mk6_head_variants});
-                armour_type = ArmourType.Normal;
+                armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK5 Heresy":
                 add_group({armour: spr_mk5_complex, backpack: spr_mk5_complex_backpack, left_trim: spr_mk7_left_trim, right_trim: spr_mk7_right_trim, head: spr_mk5_head_variants, chest_variants: spr_mk5_chest_variants, knees: spr_mk7_complex_knees});
-                armour_type = ArmourType.Normal;
+                armour_type = eARMOUR_TYPE.NORMAL;
                 /*if (scr_has_style("Prussian")){
 				    add_to_area("chest_variants", spr_mk7_prussia_chest);
 				}*/
                 break;
             case "MK4 Maximus":
                 add_group({chest_variants: spr_mk4_chest_variants, armour: spr_mk4_complex, backpack: spr_mk4_complex_backpack, leg_variants: spr_mk4_leg_variants, left_trim: spr_mk4_left_trim, right_trim: spr_mk4_right_trim, mouth_variants: spr_mk4_mouth_variants, head: spr_mk4_head_variants});
-                armour_type = ArmourType.Normal;
+                armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK3 Iron Armour":
                 add_group({armour: spr_mk3_complex, backpack: spr_mk3_complex_backpack, head: spr_mk3_head_variants, left_knee: spr_mk3_left_knee, right_knee: spr_mk3_right_knee, mouth_variants: spr_mk3_mouth, forehead: spr_mk3_forehead_variants, belt: spr_mk3_belt});
-                armour_type = ArmourType.Normal;
+                armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK8 Errant":
                 add_group(mk7_bits);
-                armour_type = ArmourType.Normal;
+                armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "Terminator Armour":
                 add_group({backpack: spr_indomitus_backpack_variants, chest_variants: spr_indomitus_chest_variants, belt: spr_indomitus_belt});
-                armour_type = ArmourType.Terminator;
+                armour_type = eARMOUR_TYPE.TERMINATOR;
                 break;
             case "Tartaros":
                 add_group({mouth_variants: spr_tartaros_faceplate});
-                armour_type = ArmourType.Terminator;
+                armour_type = eARMOUR_TYPE.TERMINATOR;
                 break;
             case "Cataphractii":
                 add_group({head: spr_cata_head, belt: spr_cata_belt, gorget: spr_cata_gorget});
-                armour_type = ArmourType.Terminator;
+                armour_type = eARMOUR_TYPE.TERMINATOR;
                 break;
             case "Dreadnought":
                 add_group({armour: spr_dreadnought_complex});
-                armour_type = ArmourType.Dreadnought;
+                armour_type = eARMOUR_TYPE.DREADNOUGHT;
                 break;
             case "Contemptor Dreadnought":
                 add_group({armour: spr_contemptor_chasis_colors, head: spr_contemptor_head_colors});
-                armour_type = ArmourType.Dreadnought;
+                armour_type = eARMOUR_TYPE.DREADNOUGHT;
                 break;
             case "Scout Armour":
                 add_group({armour: spr_scout_complex, left_arm: spr_scout_left, right_arm: spr_scout_right});
-                armour_type = ArmourType.Scout;
+                armour_type = eARMOUR_TYPE.SCOUT;
                 break;
             default:
                 add_group(mk7_bits);
                 break;
         }
         var type = unit.get_body_data("type", "cloak");
-        if (type != "none" && armour_type != ArmourType.Scout) {
+        if (type != "none" && armour_type != eARMOUR_TYPE.SCOUT) {
             static _cloaks = {
                 "scale": spr_cloak_scale,
                 "pelt": spr_cloak_fur,

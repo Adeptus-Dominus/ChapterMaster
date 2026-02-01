@@ -1,4 +1,4 @@
-enum eTrials {
+enum eTRIALS {
     BLOODDUEL,
     HUNTING,
     SURVIVAL,
@@ -6,7 +6,7 @@ enum eTrials {
     KNOWLEDGE,
     CHALLENGE,
     APPRENTICESHIP,
-    num,
+    NUM,
 }
 #macro ARR_recruitment_pace [" is currently halted."," is advancing sluggishly."," is advancing slowly."," is advancing moderately fast."," is advancing fast."," is advancing frenetically."," is advancing as fast as possible."]
 
@@ -21,7 +21,7 @@ enum eTrials {
 
 function find_recruit_success_chance(local_apothecary_points, system, planet, ui = 0) {
     var p_data = new PlanetData(planet, system);
-    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+    var _recruit_world = p_data.get_features(eP_FEATURES.RECRUITING_WORLD)[0];
     var _recruit_cost = _recruit_world.recruit_cost;
 
     var recruit_type = scr_trial_data(obj_controller.recruit_trial);
@@ -51,7 +51,7 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
             recruit_chance = 3000;
         } else if (p_data.at_war(0, 0, 0) && p_data.player_disposition < 0) {
             recruit_chance = 2000;
-        } else if (p_data.player_disposition < -1000 && p_data.current_owner == eFACTION.Player) {
+        } else if (p_data.player_disposition < -1000 && p_data.current_owner == eFACTION.PLAYER) {
             var recruit_chance = 1500 - _recruit_cost * 100;
         } else {
             var _frictious = p_data.at_war(0, 1, 1) && p_data.player_disposition <= 50;
@@ -79,7 +79,7 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
                     scr_alert(#FF9900, "DIPLOMATIC DISASTER", $"Apothecaries at {_planet_name} has been spotted doing suspicious activities!", system.x, system.y);
                     scr_event_log(#FF9900, $"Apothecaries at {_planet_name} has been spotted doing suspicious activities!", system.name);
                     p_data.add_disposition(-25);
-                    if (p_data.current_owner != eFACTION.Player) {
+                    if (p_data.current_owner != eFACTION.PLAYER) {
                         obj_controller.disposition[p_data.current_owner] -= 5;
                     }
                 }
@@ -206,7 +206,7 @@ function planet_training_sequence(local_apothecary_points) {
     var thirdpop = max_population / 3;
     var halfpop = max_population / 2;
 
-    if ((obj_controller.faction_status[eFACTION.Imperium] != "War" && current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War")) {
+    if ((obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && current_owner <= 5) || (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
         var _planet_population = population;
         if (large_population) {
             _planet_population *= 1000000000;
@@ -334,7 +334,7 @@ function scr_trial_data(wanted = -1) {
                 10,
                 2
             ],
-            long_description: $"THE BLOOD DUEL?  HA DO I EVEN NEED TO EXPLAIN, CHAPTER MASTER?  ASPIRANTS ENTER.  NEOPHYTES LEAVE.  Those worthy of serving the Emperor are rewarded justly and those merely pretending at glory are lost in the BLOOD AND THUNDER of the dome.  Do not be alarmed at the carnage.  The Apothecarium has become quite adept at rebuilding those fit to serve.  The others are given to the {role_data[eROLE.Techmarine]}s.  The mind is a terrible thing to waste and the Emperor does hate waste.  Not every man is useful as an Astartes but every man is useful.",
+            long_description: $"THE BLOOD DUEL?  HA DO I EVEN NEED TO EXPLAIN, CHAPTER MASTER?  ASPIRANTS ENTER.  NEOPHYTES LEAVE.  Those worthy of serving the Emperor are rewarded justly and those merely pretending at glory are lost in the BLOOD AND THUNDER of the dome.  Do not be alarmed at the carnage.  The Apothecarium has become quite adept at rebuilding those fit to serve.  The others are given to the {role_data[eROLE.TECHMARINE]}s.  The mind is a terrible thing to waste and the Emperor does hate waste.  Not every man is useful as an Astartes but every man is useful.",
         },
         {
             name: "Hunting the Hunter",
@@ -457,7 +457,7 @@ function scr_trial_data(wanted = -1) {
             recruit_count_modifier: {
                 base: 1.0,
             },
-            long_description: $"Few worlds of the Imperium are free from the adversity of pollution or toxic waste.  Still others are bequeathed with flows of lava and choking atmosphere.  The glory of rising to astartes is only granted to those that can tackle and overcome these dangerous environments.  Aspirants are placed upon the most hellish of planet in the sector, and then expected to traverse the continent with only himself to rely upon.  Those who face the impossible without faltering and survive past the point they should have perished are recovered by {role_data[eROLE.Apothecary]}s, judged worthy of becoming a Neophyte.",
+            long_description: $"Few worlds of the Imperium are free from the adversity of pollution or toxic waste.  Still others are bequeathed with flows of lava and choking atmosphere.  The glory of rising to astartes is only granted to those that can tackle and overcome these dangerous environments.  Aspirants are placed upon the most hellish of planet in the sector, and then expected to traverse the continent with only himself to rely upon.  Those who face the impossible without faltering and survive past the point they should have perished are recovered by {role_data[eROLE.APOTHECARY]}s, judged worthy of becoming a Neophyte.",
         },
         {
             name: "Knowledge of self",
@@ -519,7 +519,7 @@ function scr_trial_data(wanted = -1) {
                 5,
                 1
             ],
-            long_description: $"What better gauge of an Aspirant than in a duel with our astartes?  Our brother, unarmed and unarmoured, will face against the armed challenger until one cannot continue.  It is impossible for the Aspirant to actually succeed these trials, but demonstrates how far they can possibly go, and allow us to judge him accordingly.  As with most trials the Aspirant’s life is in their own hands.  He who has failed the duel- yet proven himself worthy- is rescued from the jaws of death by {role_data[eROLE.Apothecary]} and allowed to progress to the rank of Neophyte.",
+            long_description: $"What better gauge of an Aspirant than in a duel with our astartes?  Our brother, unarmed and unarmoured, will face against the armed challenger until one cannot continue.  It is impossible for the Aspirant to actually succeed these trials, but demonstrates how far they can possibly go, and allow us to judge him accordingly.  As with most trials the Aspirant’s life is in their own hands.  He who has failed the duel- yet proven himself worthy- is rescued from the jaws of death by {role_data[eROLE.APOTHECARY]} and allowed to progress to the rank of Neophyte.",
         },
         {
             name: "Apprenticeship",
@@ -551,7 +551,7 @@ function scr_trial_data(wanted = -1) {
                 -10,
                 1
             ],
-            long_description: $"What better way to cultivate astartes than to raise them from youth?  The capable children of our recruitment targets are apprenticed to our battle brothers.  Beneath their steady guidance the Aspirants spend several years learning the art of the smith.  The most able are judged by our Chapter’s {role_data[eROLE.Apothecary]}s and {role_data[eROLE.Chaplain]} to deem if they are compatible with gene-seed implantation.  If so, the Aspirant’s trial culminates in hunting and slaying a massive beast.  Only the brightest and bravest are added to our ranks.",
+            long_description: $"What better way to cultivate astartes than to raise them from youth?  The capable children of our recruitment targets are apprenticed to our battle brothers.  Beneath their steady guidance the Aspirants spend several years learning the art of the smith.  The most able are judged by our Chapter’s {role_data[eROLE.APOTHECARY]}s and {role_data[eROLE.CHAPLAIN]} to deem if they are compatible with gene-seed implantation.  If so, the Aspirant’s trial culminates in hunting and slaying a massive beast.  Only the brightest and bravest are added to our ranks.",
         }
     ];
     if (wanted > -1) {

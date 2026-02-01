@@ -9,8 +9,8 @@ function scr_purge_world(star, planet, action_type, action_score) {
     txt2 = "";
     overkill = 0;
 
-    if (((action_type == DropType.PurgeFire) || (action_type == DropType.PurgeSelective)) && (star.p_traitors[planet] == 0) && (star.p_chaos[planet] == 0) && (obj_controller.turn >= obj_controller.chaos_turn)) {
-        if ((planet_feature_bool(star.p_feature[planet], P_features.Warlord10) == 1) && (obj_controller.known[10] == 0) && (obj_controller.faction_gender[10] == 1)) {
+    if (((action_type == eDROP_TYPE.PURGEFIRE) || (action_type == eDROP_TYPE.PURGESELECTIVE)) && (star.p_traitors[planet] == 0) && (star.p_chaos[planet] == 0) && (obj_controller.turn >= obj_controller.chaos_turn)) {
+        if ((planet_feature_bool(star.p_feature[planet], eP_FEATURES.WARLORD10) == 1) && (obj_controller.known[10] == 0) && (obj_controller.faction_gender[10] == 1)) {
             with (obj_drop_select) {
                 var pop = instance_create(0, 0, obj_popup);
                 pop.image = "chaos_symbol";
@@ -19,7 +19,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
                 exit;
             }
         }
-        if ((planet_feature_bool(star.p_feature[planet], P_features.Warlord10) == 1) && (obj_controller.known[10] >= 2) && (obj_controller.faction_gender[10] == 1)) {
+        if ((planet_feature_bool(star.p_feature[planet], eP_FEATURES.WARLORD10) == 1) && (obj_controller.known[10] >= 2) && (obj_controller.faction_gender[10] == 1)) {
             with (obj_drop_select) {
                 attacking = 10;
                 obj_controller.cooldown = 30;
@@ -61,7 +61,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 
     // TODO - while I don't expect Surface to Orbit weapons retaliating against player's purge bombardment, it might still be worthwhile to consider possible situations
 
-    if (action_type == DropType.PurgeBombard) {
+    if (action_type == eDROP_TYPE.PURGEBOMBARD) {
         // Bombardment
         txt1 = choose("Your cruiser and larger ship", "The heavens rumble and thunder as your ship");
         if (ships_selected > 1) {
@@ -82,7 +82,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 
         pop_before = star.p_population[planet];
 
-        heres_before = max(star.p_heresy[planet] + star.p_heresy_secret[planet], star.p_influence[planet][eFACTION.Tau]); // Starting heresy
+        heres_before = max(star.p_heresy[planet] + star.p_heresy_secret[planet], star.p_influence[planet][eFACTION.TAU]); // Starting heresy
 
         // Minimum kills
         if (pop_before > 0) {
@@ -131,7 +131,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
                         _disp_hit = -3;
                     }
 
-                    scr_audience(eFACTION.Imperium, "bombard_angry", _disp_hit, "", 0, 0);
+                    scr_audience(eFACTION.IMPERIUM, "bombard_angry", _disp_hit, "", 0, 0);
                 }
             }
         }
@@ -142,11 +142,11 @@ function scr_purge_world(star, planet, action_type, action_score) {
             if (star.p_type[planet] == "Ice") {
                 _disp_hit = -7;
             }
-            scr_audience(eFACTION.Inquisition, "bombard_angry", _disp_hit, "", 0, 0);
+            scr_audience(eFACTION.INQUISITION, "bombard_angry", _disp_hit, "", 0, 0);
         }
     }
 
-    if (action_type == DropType.PurgeFire) {
+    if (action_type == eDROP_TYPE.PURGEFIRE) {
         // Burn baby burn
         var i = 0;
         if (has_problem_planet(planet, "cleanse", star)) {
@@ -183,7 +183,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 
             pop_before = star.p_population[planet];
 
-            heres_before = max(star.p_heresy[planet] + star.p_heresy_secret[planet], star.p_influence[planet][eFACTION.Tau]); // Starting heresy
+            heres_before = max(star.p_heresy[planet] + star.p_heresy_secret[planet], star.p_influence[planet][eFACTION.TAU]); // Starting heresy
 
             // Minimum kills
             if (pop_before > 0) {
@@ -215,14 +215,14 @@ function scr_purge_world(star, planet, action_type, action_score) {
                 heres_after = 0;
             }
 
-            var nid_influence = star.p_influence[planet][eFACTION.Tyranids];
-            if (planet_feature_bool(star.p_feature[planet], P_features.Gene_Stealer_Cult)) {
-                var cult = return_planet_features(star.p_feature[planet], P_features.Gene_Stealer_Cult)[0];
+            var nid_influence = star.p_influence[planet][eFACTION.TYRANIDS];
+            if (planet_feature_bool(star.p_feature[planet], eP_FEATURES.GENE_STEALER_CULT)) {
+                var cult = return_planet_features(star.p_feature[planet], eP_FEATURES.GENE_STEALER_CULT)[0];
                 if (cult.hiding) {}
             } else {
                 if (nid_influence > 25) {
                     txt1 += " Scores of mutant offspring from a genestealer infestation are burnt, while we have damaged their influence over this world, the mutants appear to lack the organisation of a true cult";
-                    adjust_influence(eFACTION.Tyranids, -10, planet, star);
+                    adjust_influence(eFACTION.TYRANIDS, -10, planet, star);
                 } else if (nid_influence > 0) {
                     txt1 += " There are signs of a genestealer infestation but the cultists are too unorganized to do any real damage to their influence on this world";
                 }
@@ -242,7 +242,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
         }
     }
 
-    if (action_type == DropType.PurgeSelective) {
+    if (action_type == eDROP_TYPE.PURGESELECTIVE) {
         // Blam!
         var i = 0;
         if (has_problem_planet(planet, "purge", star)) {
@@ -279,7 +279,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 
             pop_before = star.p_population[planet];
 
-            heres_before = max(star.p_heresy[planet] + star.p_heresy_secret[planet], star.p_influence[planet][eFACTION.Tau]); // Starting heresy
+            heres_before = max(star.p_heresy[planet] + star.p_heresy_secret[planet], star.p_influence[planet][eFACTION.TAU]); // Starting heresy
 
             // Minimum kills
             kill = min(action_score * 30, pop_before); // How many people ARE going to be killed
@@ -308,7 +308,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
         }
     }
 
-    if (action_type == DropType.PurgeAssassinate) {
+    if (action_type == eDROP_TYPE.PURGEASSASSINATE) {
         var aroll = roll_dice_chapter(1, 100, "high");
         var chance = 100;
         // var siz_penalty=0;
@@ -428,24 +428,24 @@ function scr_purge_world(star, planet, action_type, action_score) {
         }
     }
 
-    if (action_type != DropType.PurgeAssassinate) {
+    if (action_type != eDROP_TYPE.PURGEASSASSINATE) {
         if (isquest == 0) {
             // DO EET
             txt2 = txt1;
             star.p_heresy[planet] -= sci2;
-            star.p_influence[planet][eFACTION.Tau] -= sci2;
-            if (action_type < DropType.PurgeSelective) {
+            star.p_influence[planet][eFACTION.TAU] -= sci2;
+            if (action_type < eDROP_TYPE.PURGESELECTIVE) {
                 star.p_population[planet] = pop_after;
             }
-            if ((action_type == DropType.PurgeSelective) && (star.p_large[planet] == 0)) {
+            if ((action_type == eDROP_TYPE.PURGESELECTIVE) && (star.p_large[planet] == 0)) {
                 star.p_population[planet] = pop_after;
             }
 
             if (star.p_heresy[planet] < 0) {
                 star.p_heresy[planet] = 0;
             }
-            if (star.p_influence[planet][eFACTION.Tau] < 0) {
-                star.p_influence[planet][eFACTION.Tau] = 0;
+            if (star.p_influence[planet][eFACTION.TAU] < 0) {
+                star.p_influence[planet][eFACTION.TAU] = 0;
             }
 
             var pip = instance_create(0, 0, obj_popup);

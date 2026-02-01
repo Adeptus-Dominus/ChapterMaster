@@ -282,7 +282,7 @@ function SpecialistPointHandler() constructor {
                         }
                     }
                     //add check to see if tech heretic is anywhere near mechanicus forge if so maybe do stuff??
-                    /*if (_heretic_location==location_types.planet){
+                    /*if (_heretic_location==eLOCATION_TYPES.PLANET){
                     if 
                 }*/
                 }

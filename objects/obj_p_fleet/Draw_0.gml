@@ -122,7 +122,7 @@ if (action != "") {
 
 if ((within == 1) || (selected > 0)) {
     var ppp;
-    if (owner == eFACTION.Player) {
+    if (owner == eFACTION.PLAYER) {
         ppp = global.chapter_name;
     }
     if ((capital_number == 1) && (frigate_number == 0) && (escort_number == 0)) {
@@ -146,7 +146,7 @@ if ((within == 1) || (selected > 0)) {
 
     draw_circle(x + (coords[0] * scale), y + (coords[1] * scale), 12 * scale, 0);
 } else {
-    draw_set_color(global.star_name_colors[eFACTION.Player]);
+    draw_set_color(global.star_name_colors[eFACTION.PLAYER]);
     draw_set_alpha(0.5);
     draw_circle(x + (coords[0] * scale), y + (coords[1] * scale), 12 * scale, 0);
     draw_set_alpha(1);
