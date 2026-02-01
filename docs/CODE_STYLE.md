@@ -2,10 +2,9 @@
 
 ## Required
 
-- Struct constructors (functions that return a struct) should always use `PascalCase`.\
-  This prevents possible overlaps with variable names, which can cause errors with the YYC compiler.
-- Variable names, function names, etc., should never use `PascalCase`.\
-  The exception is for enum names.
+- Struct constructors (functions that return a struct) should always use `PascalCase`.
+  - This prevents possible overlaps with variable names, which can cause errors with the YYC compiler.
+- Variable names, function names, etc., should never use `PascalCase`.
 
 ## Recommended
 
