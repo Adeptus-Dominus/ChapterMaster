@@ -632,7 +632,7 @@ function draw_chapter_trait_select() {
                 if (advantage_click_allow && popup == "" && scr_click_left()) {
                     if ((points < maxpoints) && (adv_num[i] == 0)) {
                         popup = "advantages";
-                
+
                         temp = i;
                     }
                     var removable = false;
@@ -674,7 +674,7 @@ function draw_chapter_trait_select() {
                 if (advantage_click_allow && popup == "" && scr_click_left()) {
                     if (dis_num[slot] == 0) {
                         popup = "disadvantages";
-                
+
                         temp = slot;
                     }
                     var removable = false;
