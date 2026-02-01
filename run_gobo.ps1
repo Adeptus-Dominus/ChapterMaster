@@ -1,4 +1,5 @@
 # --- CONFIGURATION ---
+$Repo = "EttyKitty/Gobo"
 $FormatterName = "Gobo"
 $Formatter = "gobo.exe"
 $ZipFile = "gobo-windows.zip"
@@ -19,11 +20,31 @@ Write-Host ""
 
 # --- AUTO-UPDATE ---
 if (!(Test-Path $Formatter)) {
-    Write-Host "[INFO] $Formatter not found. Downloading..." -ForegroundColor Yellow
-    Invoke-WebRequest -Uri $DownloadUrl -OutFile $ZipFile
-    Expand-Archive -Path $ZipFile -DestinationPath "." -Force
-    Remove-Item $ZipFile
-    Write-Host "[INFO] Downloaded $Formatter" -ForegroundColor Green
+    Write-Host "[INFO] $Formatter not found. Fetching latest release info..." -ForegroundColor Yellow
+    
+    try {
+        $ApiUrl = "https://api.github.com/repos/$Repo/releases/latest"
+        $ReleaseInfo = Invoke-RestMethod -Uri $ApiUrl -ErrorAction Stop
+        
+        $Asset = $ReleaseInfo.assets | Where-Object { $_.name -like "*windows*.zip" } | Select-Object -First 1
+        
+        if ($null -eq $Asset) { throw "Could not find a Windows zip in the latest release." }
+        
+        $DownloadUrl = $Asset.browser_download_url
+        Write-Host "[INFO] Found version $($ReleaseInfo.tag_name). Downloading..." -ForegroundColor Gray
+
+        Invoke-WebRequest -Uri $DownloadUrl -OutFile $ZipFile -ErrorAction Stop
+        
+        Write-Host "[INFO] Extracting..." -ForegroundColor Gray
+        Expand-Archive -Path $ZipFile -DestinationPath "." -Force
+        Remove-Item $ZipFile
+        
+        Write-Host "[SUCCESS] Installed $Formatter (Version: $($ReleaseInfo.tag_name))`n" -ForegroundColor Green
+    } catch {
+        Write-Host "`n[FATAL ERROR] Could not setup formatter!" -ForegroundColor Red
+        Write-Host "Reason: $($_.Exception.Message)" -ForegroundColor White
+        exit 1
+    }
 }
 
 # --- FILE GATHERING ---
