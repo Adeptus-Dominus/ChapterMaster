@@ -2,7 +2,7 @@ name: Gobo Lint Check
 
 on:
   pull_request:
-    types: [opened, edited, ready_for_review, synchronize]
+    types: [opened, synchronize]
     paths:
       - '**.gml'
 
