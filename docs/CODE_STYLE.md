@@ -5,7 +5,7 @@
 - Struct constructors (functions that return a struct) should always use `PascalCase`.\
   This prevents possible overlaps with variable names, which can cause errors with the YYC compiler.
 - Variable names, function names, etc., should never use `PascalCase`.\
-  The exception is for enum entries.
+  The exception is for enum names.
 
 ## Recommended
 
@@ -51,10 +51,9 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 - Example: `#macro COL_DARK_RED`.
 
 **Enums**:
- - Enum names should start with an `e` prefix.
  - Written in all caps `SNAKE_CASE`.
- - Enum entries should use `PascalCase`.
- - Example: `enum eCOLORS` with entries `DarkRed`, `Blue`, etc.
+ - The name should start with an `e` prefix.
+ - Example: `enum eCOLORS` with entries `DARK_RED`, `BLUE`, etc.
 
 ### General Styling
 
