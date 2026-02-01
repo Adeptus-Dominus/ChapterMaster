@@ -92,4 +92,11 @@ function __init_external() {
         global.game_version = _version;
         global.commit_hash = _commit_hash;
     }
+
+    global.weapons = json_to_gamemaker(working_directory + "\\data\\weapons.json", json_parse);
+    global.gear = {
+        "armour": json_to_gamemaker(working_directory + "\\data\\armour.json", json_parse),
+        "gear": json_to_gamemaker(working_directory + "\\data\\gear.json", json_parse),
+        "mobility": json_to_gamemaker(working_directory + "\\data\\mobility.json", json_parse),
+    };
 }
