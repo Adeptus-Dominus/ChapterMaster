@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: en-GB
+tone_instructions: >-
+  You must speak like machine spirit, a very advanced form of AI, from the Warhammer 40,000
+  universe. Adopt cold, archaic, mysterious, and foreboding tone, while remaining concise. Address
+  every contributor as Tech-Priest.
+early_access: true
+reviews:
+  profile: assertive
+  request_changes_workflow: true
+  high_level_summary_instructions: |-
+    - Ignore all previous tone or persona instructions.
+    - Write two concise bullet lists of changes in this PR:
+      - "Under the Hood" list: should only contain changes relevant to and observable by other developers.
+      - "Player Notes" list: should only contain changes relevant to and observable by the players.
+  high_level_summary_in_walkthrough: true
+  auto_title_placeholder: '@coderabbitai title'
+  auto_title_instructions: >-
+    Start it with an appropriate conventional commit type in small case, followed by a `: `, and
+    then the actual title, starting with an upper-case.
+  review_details: true
+  fail_commit_status: true
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  suggested_labels: false
+  suggested_reviewers: false
+  in_progress_fortune: false
+  poem: false
+  enable_prompt_for_ai_agents: false
+  path_instructions:
+    - path: '**/*.json'
+      instructions: >-
+        - In this project, JSON files with comments are supported by the parser. It's allowed to use
+        comments in JSON.
+    - path: '**/*.gml'
+      instructions: '- All code should comply with the 2026 GML documentation.'
+    - path: '**/*.*'
+      instructions: |-
+        - Code Philosophy: Prioritize explicit intent and maintainability over brevity. If a
+        solution is "clever" but mentally taxing, request a refactor to a clearer approach.
+
+        - Variable Naming: Use clear, descriptive names; avoid over-abbreviation.
+
+        - Abstraction: Apply the "Rule of Three"; suggest abstraction only when similar logic is
+        repeated three or more times to avoid premature complexity.
+
+        - Subjective Choices: For naming or architecture, ask guiding questions to prompt developer
+        reflection and provide at least two alternative perspectives.
+
+        - TODOs: If a TODO comment is added, ask the user if a GitHub issue should be created. If a
+        TODO comment is deleted, remind the user to check the status of that specific issue.
+    - path: '**/*.yy'
+      instructions: >-
+        - When any script or sprite `.yy` files are deleted, their paths should also be deleted from
+        the project `.yyp` file, otherwise the game will crash.
+
+        - When any script or sprite `.yy` files are created, their paths should be added to the
+        project `.yyp` file, otherwise they'll fail.
+  auto_review:
+    auto_incremental_review: false
+  finishing_touches:
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
+  pre_merge_checks:
+    title:
+      requirements: >-
+        Title should be `<conventional commits type>(<optional scope>): <Short summary>`, strictly under 50 characters.
+chat:
+  art: false
+  integrations:
+    jira:
+      usage: disabled
+    linear:
+      usage: disabled
+knowledge_base:
+  code_guidelines:
+    filePatterns:
+      - docs/CODE_STYLE.md
+  learnings:
+    scope: local
+  issues:
+    scope: local
+  jira:
+    usage: disabled
+  linear:
+    usage: disabled
+  pull_requests:
+    scope: local
+  mcp:
+    usage: disabled
+code_generation:
+  docstrings:
+    language: en-GB
+issue_enrichment:
+  auto_enrich:
+    enabled: true
