@@ -24,7 +24,7 @@
           }
         },
         {
-          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>bINFO)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
+          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>INFO)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
           "styles": {
             "time": "color: #66b3ff",
             "level": "color: #66ff66",
@@ -33,7 +33,7 @@
           }
         },
         {
-          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>bWARN)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
+          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>WARNING)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
           "styles": {
             "time": "color: #66b3ff",
             "level": "color: #FFD900",
@@ -42,7 +42,7 @@
           }
         },
         {
-          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>bERROR)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
+          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>ERROR)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
           "styles": {
             "time": "color: #66b3ff",
             "level": "color: #FF0000",
@@ -51,7 +51,7 @@
           }
         },
         {
-          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>bCRITICAL)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
+          "pattern": "^(?<time>[^|]+)\\|\\s(?<level>CRITICAL)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
           "styles": {
             "time": "color: #66b3ff",
             "level": "color: #FF0000; font-weight: bold",
