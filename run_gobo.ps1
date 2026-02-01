@@ -3,7 +3,6 @@ $Repo = "EttyKitty/Gobo"
 $FormatterName = "Gobo"
 $Formatter = "gobo.exe"
 $ZipFile = "gobo-windows.zip"
-$DownloadUrl = "https://github.com/EttyKitty/Gobo/releases/download/latest/$ZipFile"
 $Exclusions = "extensions|.git|.svn|prefabs"
 $Extension = "*.gml"
 
@@ -53,10 +52,11 @@ Write-Host "[INFO] Gathering files..." -ForegroundColor Cyan
 $Files = Get-ChildItem -Recurse -Filter $Extension | Where-Object { $_.FullName -notmatch $Exclusions }
 $Total = $Files.Count
 $Count = 0
+$Errors = 0
 
 if ($Total -eq 0) {
     Write-Host "[WARN] No $Extension files found!" -ForegroundColor Yellow
-    pause; exit
+    pause; exit 0
 }
 
 Write-Host "[INFO] Found $Total files" -ForegroundColor Cyan
@@ -75,6 +75,7 @@ foreach ($File in $Files) {
     
     if ($LASTEXITCODE -ne 0) {
         Write-Host "[ERROR] Failed on $($File.FullName)" -ForegroundColor Red
+        $Errors++
     }
 }
 
@@ -86,6 +87,7 @@ Write-Host ""
 Write-Host "[INFO] Formatting Complete!" -ForegroundColor Green
 Write-Host "[INFO] Total Processed: $Total" -ForegroundColor Cyan
 Write-Host "[INFO] Time Elapsed:    $Time" -ForegroundColor Cyan
+Write-Host "[INFO] Errors:          $Errors" -ForegroundColor $(if ($Errors -gt 0) { "Red" } else { "Cyan" })
 Write-Host ""
 
 pause
