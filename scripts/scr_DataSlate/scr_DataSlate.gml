@@ -531,12 +531,14 @@ function ShutterButton() constructor {
             draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);
         }
         draw_set_color(c_grey);
+
+        pop_draw_return_values();
+
         if (click_timer > 7) {
             click_timer = 0;
             return true;
         } else {
             return false;
         }
-        pop_draw_return_values();
     };
 }
