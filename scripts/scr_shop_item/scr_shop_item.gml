@@ -30,6 +30,7 @@ function Armamentarium() constructor {
     };
     
     forge_button = new ShutterButton();
+    forge_button.cover_text = "FORGE";
     stc_flashes = new GlowDot();
     gift_stc_button = new UnitButtonObject({ x1: 650, y1: 467, style: "pixel", label: "Gift", set_width: true, w: 90 });
     identify_stc_button = new UnitButtonObject({ x1: 670, y1: 467, style: "pixel", label: "Identify", set_width: true, w: 90 });
@@ -111,6 +112,7 @@ function Armamentarium() constructor {
                 break; 
             }
             
+            /// @type {Asset.GMObject.obj_p_fleet}
             var _fleet = instance_place(x, y, obj_p_fleet);
             if (_fleet != noone) {
                 if (_fleet.capital_number > 0 && _fleet.action == "") {
@@ -234,6 +236,16 @@ function Armamentarium() constructor {
                 }
             }
             return;
+        } else {
+            var forge_buttons = [
+                450 + 16,
+                40,
+                0,
+                0
+            ];
+            if (forge_button.draw_shutter(forge_buttons[0] + 60, forge_buttons[1], "Enter Forge", 0.5)) {
+                is_in_forge = true;
+            }
         }
     
         // --- SHOP MODE: BUYING ---
