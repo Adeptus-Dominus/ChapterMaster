@@ -7,7 +7,7 @@ function scr_load(save_part, save_id) {
     var t1 = get_timer();
     var filename = string(PATH_SAVE_FILES, save_id);
     if (save_id == 0) {
-        filename = string(PATH_autosave_file);
+        filename = string(PATH_AUTOSAVE_FILE);
         global.logger.info("Loading from Autosave");
     }
     if (file_exists(filename)) {
