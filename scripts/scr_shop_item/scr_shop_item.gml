@@ -7,33 +7,33 @@ function Armamentarium() constructor {
     construction_started = 0;
     eta = 0;
     target_comp = obj_controller.new_vehicles;
-    
+
     // --- Calculation State ---
     forge_cost_mod = 1.0;
     discount_stc = 0;
     discount_rogue_trader = 1.0;
     cost_tooltip = "";
-    
+
     // --- Components ---
     slate_panel = new DataSlate();
     tab_buttons = {
-        weapons:  new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
-        armour:   new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
+        weapons: new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
+        armour: new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
         vehicles: new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
-        ships:    new MainMenuButton(spr_ui_but_3, spr_ui_hov_3)
+        ships: new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
     };
 
     speeding_bits = {
-        wargear:  new SpeedingDot(0, 0, (210 / 6) * obj_controller.stc_wargear),
+        wargear: new SpeedingDot(0, 0, (210 / 6) * obj_controller.stc_wargear),
         vehicles: new SpeedingDot(0, 0, (210 / 6) * obj_controller.stc_vehicles),
-        ships:    new SpeedingDot(0, 0, (210 / 6) * obj_controller.stc_ships)
+        ships: new SpeedingDot(0, 0, (210 / 6) * obj_controller.stc_ships),
     };
-    
+
     forge_button = new ShutterButton();
     forge_button.cover_text = "FORGE";
     stc_flashes = new GlowDot();
-    gift_stc_button = new UnitButtonObject({ x1: 650, y1: 467, style: "pixel", label: "Gift", set_width: true, w: 90 });
-    identify_stc_button = new UnitButtonObject({ x1: 670, y1: 467, style: "pixel", label: "Identify", set_width: true, w: 90 });
+    gift_stc_button = new UnitButtonObject({x1: 650, y1: 467, style: "pixel", label: "Gift", set_width: true, w: 90});
+    identify_stc_button = new UnitButtonObject({x1: 670, y1: 467, style: "pixel", label: "Identify", set_width: true, w: 90});
 
     // --- Data Storage ---
     shop_items = {
@@ -43,7 +43,7 @@ function Armamentarium() constructor {
         mobility: [],
         vehicles: [],
         warships: [],
-        production: []
+        production: [],
     };
 
     master_catalog = [];
@@ -51,49 +51,59 @@ function Armamentarium() constructor {
 
     // Mapping for data lookups
     static shop_data_lookup = {
-        weapons:  global.weapons,
-        armour:   global.gear[$ "armour"],
-        gear:     global.gear[$ "gear"],
+        weapons: global.weapons,
+        armour: global.gear[$ "armour"],
+        gear: global.gear[$ "gear"],
         mobility: global.gear[$ "mobility"],
-        vehicles:  global.vehicles,
-        vehicle_gear:  global.vehicle_gear,
+        vehicles: global.vehicles,
+        vehicle_gear: global.vehicle_gear,
     };
 
     // -------------------------------------------------------------------------
     // LOGIC METHODS
     // -------------------------------------------------------------------------
 
-    /// @description One-time setup to build every ShopItem. 
+    /// @description One-time setup to build every ShopItem.
     static initialize_master_catalog = function() {
         var _t_start_1 = get_timer();
 
-        if (is_initialized) return;
-        
-        var _categories = ["weapons", "armour", "gear", "mobility", "vehicles"];
+        if (is_initialized) {
+            return;
+        }
+
+        var _categories = [
+            "weapons",
+            "armour",
+            "gear",
+            "mobility",
+            "vehicles"
+        ];
         for (var c = 0; c < array_length(_categories); c++) {
             var _cat = _categories[c];
             var _data_source = shop_data_lookup[$ _cat];
-            if (!is_struct(_data_source)) continue;
-            
+            if (!is_struct(_data_source)) {
+                continue;
+            }
+
             var _names = variable_struct_get_names(_data_source);
             for (var i = 0; i < array_length(_names); i++) {
                 var _name = _names[i];
                 var _raw = _data_source[$ _name];
-                
+
                 var _item = new ShopItem(_name);
                 _item.area = _cat;
                 _item.value = _raw[$ "value"] ?? 0;
                 _item.no_buying = _raw[$ "no_buying"] ?? false;
-                
+
                 // PRE-CALCULATE expensive tooltips once
                 var _equip_info = gear_weapon_data("any", _name);
                 _item.tooltip = is_struct(_equip_info) ? _equip_info.item_tooltip_desc_gen() : "";
-                
+
                 array_push(master_catalog, _item);
             }
         }
         is_initialized = true;
-        
+
         var _t_end_1 = get_timer();
         var _elapsed_ms_1 = (_t_end_1 - _t_start_1) / 1000;
         show_debug_message($"⏱️ Execution Time of initialize_master_catalog: {_elapsed_ms_1}ms");
@@ -102,16 +112,18 @@ function Armamentarium() constructor {
     /// @description Calculates active discounts based on fleet and star positions.
     static _calculate_discounts = function() {
         discount_rogue_trader = 1.0;
-        
+
         with (obj_star) {
-            if (trader <= 0) continue;
-            
+            if (trader <= 0) {
+                continue;
+            }
+
             // If we own the star and there's a trader
             if (array_contains(p_owner, 1)) {
                 other.discount_rogue_trader = 0.8;
-                break; 
+                break;
             }
-            
+
             /// @type {Asset.GMObject.obj_p_fleet}
             var _fleet = instance_place(x, y, obj_p_fleet);
             if (_fleet != noone) {
@@ -127,26 +139,30 @@ function Armamentarium() constructor {
     static refresh_catalog = function() {
         var _t_start_1 = get_timer();
 
-        if (!is_initialized) initialize_master_catalog();
-        
+        if (!is_initialized) {
+            initialize_master_catalog();
+        }
+
         // 1. Optimized Discount Check (Check only stars with traders)
         _calculate_discounts();
-        
+
         // 2. Filter the master catalog into the active shop list
         shop_items[$ shop_type] = [];
         var _active_list = shop_items[$ shop_type];
-        
-        // 3. Batch Update: Instead of calling scr_item_count 500 times, 
+
+        // 3. Batch Update: Instead of calling scr_item_count 500 times,
         // we update the 'stocked' status of the items we are about to show.
         for (var i = 0; i < array_length(master_catalog); i++) {
             var _item = master_catalog[i];
-            
+
             // Only process items for the current tab
-            if (_item.area != shop_type) continue;
+            if (_item.area != shop_type) {
+                continue;
+            }
 
             // Update volatile data (Stock and Costs change, Tooltips don't)
             _item.stocked = scr_item_count(_item.name);
-            
+
             if (is_in_forge) {
                 // Forge costs only change based on STC progress
                 var _disc = obj_controller.stc_wargear * 5;
@@ -203,11 +219,13 @@ function Armamentarium() constructor {
 
     /// @description Sells an item back to the market.
     static sell_item = function(_shop_item, _count, _modifier) {
-        if (_shop_item.stocked < _count) return false;
+        if (_shop_item.stocked < _count) {
+            return false;
+        }
 
         var _sell_price = (_shop_item.buy_cost * _modifier) * _count;
         scr_add_item(_shop_item.name, -_count, "standard");
-        
+
         _shop_item.stocked -= _count;
         obj_controller.requisition += _sell_price;
         return true;
@@ -226,13 +244,7 @@ function Armamentarium() constructor {
             if (point_and_click([1520, _y_pos + 2, 1570, _y_pos + 14])) {
                 var _queue = obj_controller.specialist_point_handler.forge_queue;
                 if (array_length(_queue) < 20) {
-                    array_push(_queue, {
-                        name: _item.name,
-                        count: _count,
-                        forge_points: _cost,
-                        ordered: obj_controller.turn,
-                        type: _item.forge_type
-                    });
+                    array_push(_queue, {name: _item.name, count: _count, forge_points: _cost, ordered: obj_controller.turn, type: _item.forge_type});
                 }
             }
             return;
@@ -247,16 +259,16 @@ function Armamentarium() constructor {
                 is_in_forge = true;
             }
         }
-    
+
         // --- SHOP MODE: BUYING ---
-        var _can_afford = (obj_controller.requisition >= _cost);
+        var _can_afford = obj_controller.requisition >= _cost;
         draw_set_alpha(_can_afford ? 1.0 : 0.25);
         draw_sprite(spr_buy_tiny, 0, 1530, _y_pos + 2);
-        
+
         if (_can_afford && point_and_click([1520, _y_pos + 2, 1570, _y_pos + 14])) {
             _execute_purchase(_item, _cost, _count);
         }
-    
+
         // --- SHOP MODE: SELLING ---
         if (shop_type != "warships" && shop_type != "vehicles" && _item.stocked > 0) {
             draw_set_alpha(1.0);
@@ -270,33 +282,40 @@ function Armamentarium() constructor {
         }
         draw_set_alpha(1.0);
     };
-    
+
     /// @private Internal logic for various purchase types.
     static _execute_purchase = function(_item, _cost, _count) {
         obj_controller.requisition -= _cost;
-    
+
         // 1. Warships
         if (shop_type == "warships") {
             var _duration = (_item.name == "Battle Barge") ? 30 : 10;
             eta = _duration;
             construction_started = 120;
-            add_event({ e_id: "ship_construction", ship_class: _item.name, duration: _duration });
+            add_event({e_id: "ship_construction", ship_class: _item.name, duration: _duration});
             return;
         }
-    
+
         // 2. Vehicles
-        var _vehicle_list = ["Rhino", "Predator", "Land Raider", "Whirlwind", "Land Speeder"];
+        var _vehicle_list = [
+            "Rhino",
+            "Predator",
+            "Land Raider",
+            "Whirlwind",
+            "Land Speeder"
+        ];
         if (array_contains(_vehicle_list, _item.name)) {
             repeat (_count) {
                 scr_add_vehicle(_item.name, target_comp, {});
             }
-            with (obj_ini) { scr_vehicle_order(other.target_comp); }
-        } 
-        // 3. Standard Gear
-        else {
+            with (obj_ini) {
+                scr_vehicle_order(other.target_comp);
+            }
+        } else {
+            // 3. Standard Gear
             scr_add_item(_item.name, _count);
         }
-    
+
         _item.stocked += _count;
         audio_play_sound(snd_click, 10, false);
     };
@@ -323,11 +342,11 @@ function Armamentarium() constructor {
     /// @private
     static _draw_background = function() {
         draw_sprite(spr_rock_bg, 0, 0, 0);
-        
+
         draw_set_alpha(0.75);
         draw_set_color(c_black);
         draw_rectangle(342, 66, 903, 818, false);
-        
+
         draw_set_alpha(1.0);
         draw_set_color(c_gray);
         draw_rectangle(342, 66, 903, 818, true);
@@ -336,18 +355,18 @@ function Armamentarium() constructor {
 
     /// @private
     static _draw_header = function() {
-        var _is_adept = (obj_controller.menu_adept == 1);
+        var _is_adept = obj_controller.menu_adept == 1;
         var _splash_idx = _is_adept ? 1 : (obj_ini.custom_advisors[$ "forge_master"] ?? 5);
-        
+
         scr_image("advisor/splash", _splash_idx, 16, 43, 310, 828);
-        
+
         draw_set_halign(fa_left);
         draw_set_font(fnt_40k_30b);
         draw_set_color(c_gray);
-        
+
         var _title = is_in_forge ? "Forge" : "Armamentarium";
         draw_text(352, 66, _title);
-        
+
         draw_set_font(fnt_40k_14b);
         var _sub = _is_adept ? $"Adept {obj_controller.adept_name}" : $"Forge Master {obj_ini.name[0][1]}";
         draw_text(352, 100, _sub);
@@ -361,9 +380,11 @@ function Armamentarium() constructor {
         var _total_un = obj_controller.stc_wargear_un + obj_controller.stc_vehicles_un + obj_controller.stc_ships_un;
         draw_text(384, 468, $"{_total_un} Unidentified Fragments");
 
-        if (gift_stc_button.draw(_total_un > 0)) setup_gift_stc_popup();
-        
-        identify_stc_button.update({ x1: gift_stc_button.x2 });
+        if (gift_stc_button.draw(_total_un > 0)) {
+            setup_gift_stc_popup();
+        }
+
+        identify_stc_button.update({x1: gift_stc_button.x2});
         if (identify_stc_button.draw(_total_un > 0)) {
             // Logic for identifying (simplified)
             audio_play_sound(snd_stc, -500, false);
@@ -397,12 +418,12 @@ function Armamentarium() constructor {
                 "Enhanced Armour", // Placeholder
                 "25% discount",
                 "Warp Speed is increased and ships self-repair."
-            ]
+            ],
         };
-    
+
         var _bonuses = _bonus_data[$ _category];
         draw_set_font(fnt_40k_12);
-    
+
         for (var s = 0; s < array_length(_bonuses); s++) {
             // Dim text if level is not reached yet
             draw_set_alpha(_current_level > s ? 1.0 : 0.5);
@@ -413,16 +434,29 @@ function Armamentarium() constructor {
 
     /// @private Draws the research progress bars and bonuses.
     static _draw_stc_bars = function() {
-        static _categories = ["wargear", "vehicles", "ships"];
-        static _display_names = ["Wargear", "Vehicles", "Ships"];
-        
+        static _categories = [
+            "wargear",
+            "vehicles",
+            "ships"
+        ];
+        static _display_names = [
+            "Wargear",
+            "Vehicles",
+            "Ships"
+        ];
+
         var _yy = 535;
-        
+
         for (var i = 0; i < 3; i++) {
             var _cat = _categories[i];
             var _x_off = 350 + (i * 180);
-            var _rect = [_x_off, _yy, _x_off + 170, _yy + 265];
-            var _is_focus = (obj_controller.stc_research.research_focus == _cat);
+            var _rect = [
+                _x_off,
+                _yy,
+                _x_off + 170,
+                _yy + 265
+            ];
+            var _is_focus = obj_controller.stc_research.research_focus == _cat;
             var _stc_cat = $"stc_{_cat}";
             var _level = struct_get(obj_controller, _stc_cat);
 
@@ -431,26 +465,32 @@ function Armamentarium() constructor {
                 draw_set_color(c_white);
                 draw_rectangle_array(_rect, true);
                 tooltip_draw($"Click to focus research on {_display_names[i]}");
-                if (scr_click_left()) obj_controller.stc_research.research_focus = _cat;
+                if (scr_click_left()) {
+                    obj_controller.stc_research.research_focus = _cat;
+                }
             }
 
             // Bar Rendering
             draw_sprite_ext(spr_research_bar, 0, _x_off + 9, _yy + 19, 1, 0.7, 0, c_white, 1);
-            if (_level > 0) speeding_bits[$ _cat].draw(_x_off, _yy + 20);
-            
+            if (_level > 0) {
+                speeding_bits[$ _cat].draw(_x_off, _yy + 20);
+            }
+
             for (var f = 0; f < 6; f++) {
                 if (f >= _level) {
                     draw_sprite_ext(spr_research_bar, 1, _x_off + 9, _yy + 19 + (35 * f), 1, 0.6, 0, c_white, 1);
                 }
             }
 
-            if (_is_focus) stc_flashes.draw(_x_off + 9, _yy + 19 + (35 * _level));
+            if (_is_focus) {
+                stc_flashes.draw(_x_off + 9, _yy + 19 + (35 * _level));
+            }
 
             // Text & Bonuses
             draw_set_font(fnt_40k_14);
             draw_set_color(_is_focus ? c_white : c_gray);
             draw_text(_x_off + 36, _yy - 18, _display_names[i]);
-            
+
             _draw_stc_bonus_text(_cat, _x_off, _level);
         }
     };
@@ -463,52 +503,58 @@ function Armamentarium() constructor {
             var _count = array_length(_list);
             var _start_index = 27 * _self.page_mod;
             var _draw_y_local = 157;
-    
+
             draw_set_font(fnt_40k_14b);
             draw_set_halign(fa_left);
             draw_text(962, 159, "Name");
-            if (_self.shop_type != "production") draw_text(1280, 159, "Stocked");
+            if (_self.shop_type != "production") {
+                draw_text(1280, 159, "Stocked");
+            }
             draw_text(1410, 159, "Cost");
-    
+
             for (var i = _start_index; i < min(_start_index + 27, _count); i++) {
                 var _item = _list[i];
                 _draw_y_local += 20;
                 var _screen_y = _draw_y_local;
-    
+
                 // 1. Interaction & Hover
                 var _is_hovered = scr_hit(962, _screen_y + 2, 1580, _screen_y + 18);
                 var _can_act = (_self.is_in_forge) ? !_item.no_forging : !_item.no_buying;
                 var _is_shift = keyboard_check(vk_shift) && (_self.shop_type != "warships" && _self.shop_type != "production");
                 var _mult = _is_shift ? 5 : 1;
-    
+
                 if (_is_hovered) {
                     draw_set_alpha(0.2);
                     draw_rectangle(960, _draw_y_local + 1, 1582, _draw_y_local + 18, false);
                     draw_set_alpha(1.0);
-                    if (_item.tooltip != "") tooltip_draw(_item.tooltip, 400);
+                    if (_item.tooltip != "") {
+                        tooltip_draw(_item.tooltip, 400);
+                    }
                 }
-    
+
                 // 2. Draw Name & Stock
                 draw_set_color(_can_act ? c_gray : #881503);
                 var _display_name = _is_shift ? $"{_item.name} x5" : _item.name;
                 draw_text(962 + _item.x_mod, _draw_y_local, _display_name);
-    
+
                 if (_self.shop_type != "production") {
                     var _stock_text = string(_item.stocked);
-                    if (_item.mc_stocked > 0) _stock_text += $"  mc: {_item.mc_stocked}";
+                    if (_item.mc_stocked > 0) {
+                        _stock_text += $"  mc: {_item.mc_stocked}";
+                    }
                     draw_set_alpha((_item.stocked == 0 && _item.mc_stocked == 0) ? 0.5 : 1.0);
                     draw_text(1300, _draw_y_local, _stock_text);
                     draw_set_alpha(1.0);
                 }
-    
+
                 // 3. Draw Cost
                 var _cost = (_self.is_in_forge ? _item.forge_cost : _item.buy_cost) * _mult;
                 var _afford = (_self.is_in_forge) ? true : (obj_controller.requisition >= _cost); // Forge uses queue, check happens later
-                
+
                 draw_sprite_ext(_self.is_in_forge ? spr_forge_points_icon : spr_requisition, 0, 1410, _draw_y_local + 5, 0.3, 0.3, 0, c_white, 1);
                 draw_set_color(_afford ? (_self.is_in_forge ? #af5a00 : #f8a01b) : c_red);
                 draw_text(1427, _draw_y_local, _cost);
-    
+
                 // 4. Action Buttons (Buy/Sell/Build)
                 if (_can_act) {
                     _render_action_buttons(_item, _draw_y_local, _cost, _mult, _is_shift);
@@ -520,22 +566,30 @@ function Armamentarium() constructor {
         var _slate_y = __view_get(e__VW.YView, 0) + 95;
         slate_panel.draw(_slate_x, _slate_y, 0.81, 0.85);
     };
-    
+
     /// @private
     static _draw_tabs = function() {
-        if (tab_buttons.weapons.draw(960, 64, "Equipment"))  _switch_tab("weapons");
-        if (tab_buttons.armour.draw(1075, 64, "Armour"))    _switch_tab("armour");
-        if (tab_buttons.vehicles.draw(1190, 64, "Vehicles")) _switch_tab("vehicles");
-        
+        if (tab_buttons.weapons.draw(960, 64, "Equipment")) {
+            _switch_tab("weapons");
+        }
+        if (tab_buttons.armour.draw(1075, 64, "Armour")) {
+            _switch_tab("armour");
+        }
+        if (tab_buttons.vehicles.draw(1190, 64, "Vehicles")) {
+            _switch_tab("vehicles");
+        }
+
         var _last_tab_label = is_in_forge ? "Manufacturing" : "Ships";
-        var _last_tab_type  = is_in_forge ? "production" : "warships";
-        if (tab_buttons.ships.draw(1460, 64, _last_tab_label)) _switch_tab(_last_tab_type);
+        var _last_tab_type = is_in_forge ? "production" : "warships";
+        if (tab_buttons.ships.draw(1460, 64, _last_tab_label)) {
+            _switch_tab(_last_tab_type);
+        }
     };
 
     /// @private Handles the consumption of fragments and leveling up STC categories.
     static _perform_identification = function() {
         var _target = "";
-        
+
         if (obj_controller.stc_wargear_un > 0 && obj_controller.stc_wargear < 6) {
             obj_controller.stc_wargear_un--;
             _target = "wargear";
@@ -546,38 +600,52 @@ function Armamentarium() constructor {
             obj_controller.stc_ships_un--;
             _target = "ships";
         }
-    
-        if (_target == "") return;
-    
+
+        if (_target == "") {
+            return;
+        }
+
         // Logic from the original identify_stc function
         switch (_target) {
             case "wargear":
                 obj_controller.stc_wargear++;
-                if (obj_controller.stc_wargear == 2) obj_controller.stc_bonus[1] = irandom_range(1, 5);
-                if (obj_controller.stc_wargear == 4) obj_controller.stc_bonus[2] = irandom_range(1, 3);
+                if (obj_controller.stc_wargear == 2) {
+                    obj_controller.stc_bonus[1] = irandom_range(1, 5);
+                }
+                if (obj_controller.stc_wargear == 4) {
+                    obj_controller.stc_bonus[2] = irandom_range(1, 3);
+                }
                 obj_controller.stc_research.wargear = 0;
                 break;
             case "vehicles":
                 obj_controller.stc_vehicles++;
-                if (obj_controller.stc_vehicles == 2) obj_controller.stc_bonus[3] = irandom_range(1, 5);
-                if (obj_controller.stc_vehicles == 4) obj_controller.stc_bonus[4] = irandom_range(1, 3);
+                if (obj_controller.stc_vehicles == 2) {
+                    obj_controller.stc_bonus[3] = irandom_range(1, 5);
+                }
+                if (obj_controller.stc_vehicles == 4) {
+                    obj_controller.stc_bonus[4] = irandom_range(1, 3);
+                }
                 obj_controller.stc_research.vehicles = 0;
                 break;
             case "ships":
                 obj_controller.stc_ships++;
-                if (obj_controller.stc_ships == 2) obj_controller.stc_bonus[5] = irandom_range(1, 5);
-                if (obj_controller.stc_ships == 4) obj_controller.stc_bonus[6] = irandom_range(1, 3);
+                if (obj_controller.stc_ships == 2) {
+                    obj_controller.stc_bonus[5] = irandom_range(1, 5);
+                }
+                if (obj_controller.stc_ships == 4) {
+                    obj_controller.stc_bonus[6] = irandom_range(1, 3);
+                }
                 obj_controller.stc_research.ships = 0;
                 break;
         }
-        
+
         refresh_catalog();
     };
 
     /// @private Draws the forge-specific statistics and the production queue.
     static _draw_forge_interface = function() {
         var _draw_y = 25;
-        
+
         // Back to Overview Button
         var _back_btn = draw_unit_buttons([359, _draw_y + 77], "<-- Overview", [1, 1], c_red);
         if (point_and_click(_back_btn)) {
@@ -591,23 +659,25 @@ function Armamentarium() constructor {
         // Forge Stats
         draw_set_color(#af5a00);
         draw_set_font(fnt_40k_14b);
-        
+
         var _role_name = obj_ini.role[100][16];
         var _master_craft = obj_controller.master_craft_chance;
         var _forge_count = obj_controller.player_forge_data.player_forges;
-        
-        var _stats_text =  $"Forge point production per turn: {obj_controller.forge_points}\n";
-            _stats_text += $"Chapter total {_role_name}s: {obj_controller.temp[36]}\n";
-            _stats_text += $"Planetary Forges in operation: {_forge_count}\n";
-            _stats_text += $"Master Craft Forge Chance: {_master_craft}%\n";
-            _stats_text += "    Assign techmarines to forges to increase Master Craft Chance";
-        
+
+        var _stats_text = $"Forge point production per turn: {obj_controller.forge_points}\n";
+        _stats_text += $"Chapter total {_role_name}s: {obj_controller.temp[36]}\n";
+        _stats_text += $"Planetary Forges in operation: {_forge_count}\n";
+        _stats_text += $"Master Craft Forge Chance: {_master_craft}%\n";
+        _stats_text += "    Assign techmarines to forges to increase Master Craft Chance";
+
         draw_text_ext(359, _draw_y + 410, _stats_text, -1, 670);
     };
 
     /// @private
     static _switch_tab = function(_new_type) {
-        if (shop_type == _new_type) return;
+        if (shop_type == _new_type) {
+            return;
+        }
         shop_type = _new_type;
         page_mod = 0;
         refresh_catalog();

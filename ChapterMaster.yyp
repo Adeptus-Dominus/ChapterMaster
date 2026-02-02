@@ -686,7 +686,6 @@
     {"id":{"name":"obj_restart_game","path":"objects/obj_restart_game/obj_restart_game.yy",},},
     {"id":{"name":"obj_restart_vars","path":"objects/obj_restart_vars/obj_restart_vars.yy",},},
     {"id":{"name":"obj_saveload","path":"objects/obj_saveload/obj_saveload.yy",},},
-    {"id":{"name":"obj_shop","path":"objects/obj_shop/obj_shop.yy",},},
     {"id":{"name":"obj_star_event","path":"objects/obj_star_event/obj_star_event.yy",},},
     {"id":{"name":"obj_star_select","path":"objects/obj_star_select/obj_star_select.yy",},},
     {"id":{"name":"obj_star","path":"objects/obj_star/obj_star.yy",},},
