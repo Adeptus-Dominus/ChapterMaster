@@ -95,7 +95,6 @@ function Armamentarium() constructor {
                 _item.value = _raw[$ "value"] ?? 0;
                 _item.no_buying = _raw[$ "no_buying"] ?? false;
 
-                // PRE-CALCULATE expensive tooltips once
                 var _equip_info = gear_weapon_data("any", _name);
                 _item.tooltip = is_struct(_equip_info) ? _equip_info.item_tooltip_desc_gen() : "";
 
@@ -143,35 +142,27 @@ function Armamentarium() constructor {
             initialize_master_catalog();
         }
 
-        // 1. Optimized Discount Check (Check only stars with traders)
         _calculate_discounts();
 
-        // 2. Filter the master catalog into the active shop list
         shop_items[$ shop_type] = [];
         var _active_list = shop_items[$ shop_type];
 
-        // 3. Batch Update: Instead of calling scr_item_count 500 times,
-        // we update the 'stocked' status of the items we are about to show.
         for (var i = 0; i < array_length(master_catalog); i++) {
             var _item = master_catalog[i];
 
-            // Only process items for the current tab
             if (_item.area != shop_type) {
                 continue;
             }
 
-            // Update volatile data (Stock and Costs change, Tooltips don't)
             _item.stocked = scr_item_count(_item.name);
 
             if (is_in_forge) {
-                // Forge costs only change based on STC progress
                 var _disc = obj_controller.stc_wargear * 5;
                 _item.forge_cost = (_item.value * 10) * (1 - (_disc / 100));
             } else {
                 _item.buy_cost = round(_item.value * min(_item.buy_cost_mod, discount_rogue_trader));
             }
 
-            // Guard Clause: Only show if buyable or currently owned
             if (!_item.no_buying || _item.stocked > 0 || is_in_forge) {
                 array_push(_active_list, _item);
             }
@@ -182,7 +173,6 @@ function Armamentarium() constructor {
         show_debug_message($"⏱️ Execution Time of refresh_catalog: {_elapsed_ms_1}ms");
     };
 
-    /// @private Logic for forging calculations
     static _process_forge_item = function(_item, _data) {
         if (global.cheat_debug) {
             _item.forge_cost = 0;
@@ -207,7 +197,6 @@ function Armamentarium() constructor {
         }
     };
 
-    /// @private Logic for buying calculations
     static _process_buy_item = function(_item) {
         if (global.cheat_debug) {
             _item.buy_cost = 0;
@@ -231,7 +220,7 @@ function Armamentarium() constructor {
         return true;
     };
 
-    /// @private Handles the logic for clicking Buy, Sell, or Build icons.
+    /// @desc Handles the logic for clicking Buy, Sell, or Build icons.
     /// @param {Struct.ShopItem} _item
     /// @param {Real} _y_pos Local Y coordinate within the slate.
     /// @param {Real} _cost Calculated cost (including multipliers).
@@ -283,7 +272,7 @@ function Armamentarium() constructor {
         draw_set_alpha(1.0);
     };
 
-    /// @private Internal logic for various purchase types.
+    /// @desc Internal logic for various purchase types.
     static _execute_purchase = function(_item, _cost, _count) {
         obj_controller.requisition -= _cost;
 
@@ -324,7 +313,7 @@ function Armamentarium() constructor {
     // DRAW METHODS
     // -------------------------------------------------------------------------
 
-    /// @description Main Draw entry point.
+    /// @desc Main Draw entry point.
     static draw = function() {
         _draw_background();
         _draw_header();
@@ -339,7 +328,6 @@ function Armamentarium() constructor {
         _draw_item_list();
     };
 
-    /// @private
     static _draw_background = function() {
         draw_sprite(spr_rock_bg, 0, 0, 0);
 
@@ -353,7 +341,6 @@ function Armamentarium() constructor {
         draw_line(342, 426, 903, 426);
     };
 
-    /// @private
     static _draw_header = function() {
         var _is_adept = obj_controller.menu_adept == 1;
         var _splash_idx = _is_adept ? 1 : (obj_ini.custom_advisors[$ "forge_master"] ?? 5);
@@ -372,10 +359,7 @@ function Armamentarium() constructor {
         draw_text(352, 100, _sub);
     };
 
-    /// @private
     static _draw_stc_panel = function() {
-        // Logic for drawing the 3-column STC research bars and fragments
-        // Includes the 'Gift' and 'Identify' buttons.
         draw_set_font(fnt_40k_14);
         var _total_un = obj_controller.stc_wargear_un + obj_controller.stc_vehicles_un + obj_controller.stc_ships_un;
         draw_text(384, 468, $"{_total_un} Unidentified Fragments");
@@ -386,36 +370,35 @@ function Armamentarium() constructor {
 
         identify_stc_button.update({x1: gift_stc_button.x2});
         if (identify_stc_button.draw(_total_un > 0)) {
-            // Logic for identifying (simplified)
             audio_play_sound(snd_stc, -500, false);
             _perform_identification();
         }
     };
 
-    /// @private Draws the text descriptions for STC levels.
+    /// @desc Draws the text descriptions for STC levels.
     static _draw_stc_bonus_text = function(_category, _x_off, _current_level) {
         static _bonus_data = {
             wargear: [
                 "8% discount",
-                "Enhanced Bolts", // Placeholder, dynamically chosen in original
+                "Enhanced Bolts",
                 "16% discount",
-                "Enhanced Fist Weapons", // Placeholder
+                "Enhanced Fist Weapons",
                 "25% discount",
                 "Can produce Terminator Armour and Dreadnoughts."
             ],
             vehicles: [
                 "8% discount",
-                "Enhanced Hull", // Placeholder
+                "Enhanced Hull",
                 "16% discount",
-                "Enhanced Armour", // Placeholder
+                "Enhanced Armour",
                 "25% discount",
                 "Can produce Land Speeders and Land Raiders."
             ],
             ships: [
                 "8% discount",
-                "Enhanced Hull", // Placeholder
+                "Enhanced Hull",
                 "16% discount",
-                "Enhanced Armour", // Placeholder
+                "Enhanced Armour",
                 "25% discount",
                 "Warp Speed is increased and ships self-repair."
             ],
@@ -425,14 +408,13 @@ function Armamentarium() constructor {
         draw_set_font(fnt_40k_12);
 
         for (var s = 0; s < array_length(_bonuses); s++) {
-            // Dim text if level is not reached yet
             draw_set_alpha(_current_level > s ? 1.0 : 0.5);
             draw_text_ext(_x_off + 22, 549 + (s * 35), $"{s + 1}) {_bonuses[s]}", -1, 140);
         }
         draw_set_alpha(1.0);
     };
 
-    /// @private Draws the research progress bars and bonuses.
+    /// @desc Draws the research progress bars and bonuses.
     static _draw_stc_bars = function() {
         static _categories = [
             "wargear",
@@ -495,10 +477,9 @@ function Armamentarium() constructor {
         }
     };
 
-    /// @private
     static _draw_item_list = function() {
         slate_panel.inside_method = function() {
-            var _self = obj_controller.armamentarium; // Reference parent struct
+            var _self = obj_controller.armamentarium;
             var _list = _self.shop_items[$ _self.shop_type];
             var _count = array_length(_list);
             var _start_index = 27 * _self.page_mod;
@@ -567,7 +548,6 @@ function Armamentarium() constructor {
         slate_panel.draw(_slate_x, _slate_y, 0.81, 0.85);
     };
 
-    /// @private
     static _draw_tabs = function() {
         if (tab_buttons.weapons.draw(960, 64, "Equipment")) {
             _switch_tab("weapons");
@@ -586,7 +566,7 @@ function Armamentarium() constructor {
         }
     };
 
-    /// @private Handles the consumption of fragments and leveling up STC categories.
+    /// @desc Handles the consumption of fragments and leveling up STC categories.
     static _perform_identification = function() {
         var _target = "";
 
@@ -605,7 +585,6 @@ function Armamentarium() constructor {
             return;
         }
 
-        // Logic from the original identify_stc function
         switch (_target) {
             case "wargear":
                 obj_controller.stc_wargear++;
@@ -642,7 +621,7 @@ function Armamentarium() constructor {
         refresh_catalog();
     };
 
-    /// @private Draws the forge-specific statistics and the production queue.
+    /// @desc Draws the forge-specific statistics and the production queue.
     static _draw_forge_interface = function() {
         var _draw_y = 25;
 
@@ -673,7 +652,6 @@ function Armamentarium() constructor {
         draw_text_ext(359, _draw_y + 410, _stats_text, -1, 670);
     };
 
-    /// @private
     static _switch_tab = function(_new_type) {
         if (shop_type == _new_type) {
             return;
@@ -695,7 +673,7 @@ function ShopItem(_name) constructor {
     buy_cost = 0;
     no_buying = true;
     forge_cost = 0;
-    no_forging = true;
+    no_forging = false;
     sellers = ["mechanicus"];
     tooltip = "";
     cost_tooltip = "";
