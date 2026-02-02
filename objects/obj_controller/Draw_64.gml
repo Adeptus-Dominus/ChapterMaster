@@ -252,7 +252,7 @@ try {
             company_specific_management();
         }
     } else if (menu == eMENU.ARMAMENTARIUM) {
-        scr_draw_armentarium_gui();
+        armamentarium.draw();
     } else if (menu == eMENU.LIBRARIUM) {
         scr_librarium_gui();
     }

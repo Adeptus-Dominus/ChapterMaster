@@ -18,7 +18,7 @@ function Table(data) constructor {
 
     move_data_to_current_scope(data);
 
-    update();
+    self.update(data);
 
     static update = function(data) {
         move_data_to_current_scope(data);

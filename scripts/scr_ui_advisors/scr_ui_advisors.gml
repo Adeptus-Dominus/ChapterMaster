@@ -783,7 +783,7 @@ function scr_ui_advisors() {
         scr_librarium();
     } else if (menu == 14) {
         // ** Armamentarium **
-        scr_draw_armentarium();
+
     } else if (menu == 15) {
         // **recruiting**
         scr_draw_recruit_advisor();

@@ -1858,4 +1858,6 @@ instance_create(0, 0, obj_tooltip);
 
 action_set_alarm(2, 0);
 
+armamentarium = new Armamentarium();
+
 //**! DO NOT PUT THINGS AT THE BOTTOM OF THIS FILE IF YOU NEED THEM TO WORK AFTER LOADING FROM A SAVE, SEE LINE 1550 -ish   */ 
