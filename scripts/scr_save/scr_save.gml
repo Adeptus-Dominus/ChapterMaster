@@ -141,7 +141,7 @@ function scr_save(save_part, save_id, autosaving = false) {
             if (!autosaving) {
                 filename = string(PATH_SAVE_FILES, save_id);
             } else {
-                filename = string(PATH_autosave_file);
+                filename = string(PATH_AUTOSAVE_FILE);
             }
 
             buffer_write(_gamesave_buffer, buffer_string, _gamesave_string);
