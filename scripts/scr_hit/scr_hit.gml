@@ -41,7 +41,9 @@ function _point_and_click_logic(_rect, _cooldown = 60, _lock_bypass = false, _in
     }
 
     if (_active_controller != noone && _active_controller.cooldown > 0) {
-        global.logger.warning($"Ignored click for cooldown, {_active_controller.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+        if (is_debug_overlay_open()) {
+            global.logger.warning($"Ignored click for cooldown, {_active_controller.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+        }
         return false;
     }
 

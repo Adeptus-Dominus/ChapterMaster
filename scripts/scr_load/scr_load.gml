@@ -107,6 +107,7 @@ function scr_load(save_part, save_id) {
             location_viewer = new UnitQuickFindPanel();
             scr_colors_initialize();
             scr_shader_initialize();
+            armamentarium = new Armamentarium();
 
             global.star_name_colors[1] = make_color_rgb(body_colour_replace[0], body_colour_replace[1], body_colour_replace[2]);
         }
