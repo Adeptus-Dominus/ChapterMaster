@@ -45,6 +45,9 @@ function Armamentarium() constructor {
         production: []
     };
 
+    master_catalog = [];
+    is_initialized = false;
+
     // Mapping for data lookups
     static shop_data_lookup = {
         weapons:  global.weapons,
@@ -59,109 +62,106 @@ function Armamentarium() constructor {
     // LOGIC METHODS
     // -------------------------------------------------------------------------
 
+    /// @description One-time setup to build every ShopItem. 
+    static initialize_master_catalog = function() {
+        var _t_start_1 = get_timer();
+
+        if (is_initialized) return;
+        
+        var _categories = ["weapons", "armour", "gear", "mobility", "vehicles"];
+        for (var c = 0; c < array_length(_categories); c++) {
+            var _cat = _categories[c];
+            var _data_source = shop_data_lookup[$ _cat];
+            if (!is_struct(_data_source)) continue;
+            
+            var _names = variable_struct_get_names(_data_source);
+            for (var i = 0; i < array_length(_names); i++) {
+                var _name = _names[i];
+                var _raw = _data_source[$ _name];
+                
+                var _item = new ShopItem(_name);
+                _item.area = _cat;
+                _item.value = _raw[$ "value"] ?? 0;
+                _item.no_buying = _raw[$ "no_buying"] ?? false;
+                
+                // PRE-CALCULATE expensive tooltips once
+                var _equip_info = gear_weapon_data("any", _name);
+                _item.tooltip = is_struct(_equip_info) ? _equip_info.item_tooltip_desc_gen() : "";
+                
+                array_push(master_catalog, _item);
+            }
+        }
+        is_initialized = true;
+        
+        var _t_end_1 = get_timer();
+        var _elapsed_ms_1 = (_t_end_1 - _t_start_1) / 1000;
+        show_debug_message($"⏱️ Execution Time of initialize_master_catalog: {_elapsed_ms_1}ms");
+    };
+
     /// @description Calculates active discounts based on fleet and star positions.
     static _calculate_discounts = function() {
         discount_rogue_trader = 1.0;
-        cost_tooltip = "";
-
-        // Check fleets
-        with (obj_p_fleet) {
-            if (capital_number <= 0 || action != "") continue;
-            /// @type {Asset.GMObject.obj_star}
-            var _nearest_star = instance_nearest(x, y, obj_star);
-            if (_nearest_star.trader > 0) other.discount_rogue_trader = 0.8;
-        }
-
-        // Check owned stars
+        
         with (obj_star) {
-            if (array_contains(p_owner, 1) && trader > 0) {
+            if (trader <= 0) continue;
+            
+            // If we own the star and there's a trader
+            if (array_contains(p_owner, 1)) {
                 other.discount_rogue_trader = 0.8;
+                break; 
             }
-        }
-
-        if (discount_rogue_trader != 1) {
-            cost_tooltip += $"Near a Rogue Trader: x{discount_rogue_trader}\n";
+            
+            var _fleet = instance_place(x, y, obj_p_fleet);
+            if (_fleet != noone) {
+                if (_fleet.capital_number > 0 && _fleet.action == "") {
+                    other.discount_rogue_trader = 0.8;
+                    break;
+                }
+            }
         }
     };
 
-    /// @description Populates the shop_items struct based on current state.
+    /// @description High-speed refresh.
     static refresh_catalog = function() {
         var _t_start_1 = get_timer();
 
+        if (!is_initialized) initialize_master_catalog();
+        
+        // 1. Optimized Discount Check (Check only stars with traders)
         _calculate_discounts();
+        
+        // 2. Filter the master catalog into the active shop list
         shop_items[$ shop_type] = [];
-        var _list = shop_items[$ shop_type];
-    
-        // 1. Handle Weapons/Armour/Gear (Standard Struct-based data)
-        if (struct_exists(shop_data_lookup, shop_type)) {
-            var _data_source = shop_data_lookup[$ shop_type];
-            var _names = variable_struct_get_names(_data_source);
-            array_sort(_names, true);
+        var _active_list = shop_items[$ shop_type];
+        
+        // 3. Batch Update: Instead of calling scr_item_count 500 times, 
+        // we update the 'stocked' status of the items we are about to show.
+        for (var i = 0; i < array_length(master_catalog); i++) {
+            var _item = master_catalog[i];
+            
+            // Only process items for the current tab
+            if (_item.area != shop_type) continue;
 
-            for (var i = 0; i < array_length(_names); ++i) {
-                var _name = _names[i];
-                var _raw_data = _data_source[$ _name];
-                
-                // Filter Tags
-                if (shop_type == "weapons" && array_contains_ext(_raw_data.tags, ["turret", "Sponson", "sponson"])) continue;
+            // Update volatile data (Stock and Costs change, Tooltips don't)
+            _item.stocked = scr_item_count(_item.name);
+            
+            if (is_in_forge) {
+                // Forge costs only change based on STC progress
+                var _disc = obj_controller.stc_wargear * 5;
+                _item.forge_cost = (_item.value * 10) * (1 - (_disc / 100));
+            } else {
+                _item.buy_cost = round(_item.value * min(_item.buy_cost_mod, discount_rogue_trader));
+            }
 
-                var _item = new ShopItem(_name);
-                _item.area = shop_type;
-                _item.stocked = scr_item_count(_name);
-                _item.mc_stocked = scr_item_count(_name, "master_crafted");
-                _item.value = _raw_data[$ "value"] ?? 0;
-                _item.no_buying = _raw_data[$ "no_buying"] ?? false;
-
-                // Tooltip construction
-                var _equip_info = gear_weapon_data("any", _name);
-                _item.tooltip = is_struct(_equip_info) ? _equip_info.item_tooltip_desc_gen() : "";
-
-                _item.update_best_seller(_item.sellers);
-
-                if (is_in_forge) {
-                    _process_forge_item(_item, _raw_data);
-                } else {
-                    _process_buy_item(_item);
-                }
-
-                if (!_item.no_buying || _item.stocked > 0 || is_in_forge) {
-                    array_push(_list, _item);
-                }
+            // Guard Clause: Only show if buyable or currently owned
+            if (!_item.no_buying || _item.stocked > 0 || is_in_forge) {
+                array_push(_active_list, _item);
             }
         }
 
         var _t_end_1 = get_timer();
         var _elapsed_ms_1 = (_t_end_1 - _t_start_1) / 1000;
-        global.logger.debug($"⏱️ Execution Time of refresh_catalog: {_elapsed_ms_1}ms");
-        
-        if (shop_type == "production") {
-            var _tech_names = variable_struct_get_names(global.technology_shop_data);
-            array_sort(_tech_names, true);
-    
-            for (var i = 0; i < array_length(_tech_names); ++i) {
-                var _name = _tech_names[i];
-                var _data = global.technology_shop_data[$ _name];
-                if (!struct_exists(_data, "cost")) continue;
-    
-                var _item = new ShopItem(_data[$ "name"] ?? _name);
-                _item.area = "production";
-                _item.forge_type = "research";
-                _item.forge_cost = _data.cost;
-                _item.tooltip = _data[$ "description"] ?? "";
-                
-                // Check tech requirements
-                if (struct_exists(_data, "requires_to_build")) {
-                    var _reqs = _data.requires_to_build;
-                    for (var r = 0; r < array_length(_reqs); r++) {
-                        if (!array_contains(obj_controller.technologies_known, _reqs[r])) {
-                            _item.no_forging = true;
-                            break;
-                        }
-                    }
-                }
-                array_push(_list, _item);
-            }
-        }
+        show_debug_message($"⏱️ Execution Time of refresh_catalog: {_elapsed_ms_1}ms");
     };
 
     /// @private Logic for forging calculations
@@ -600,6 +600,8 @@ function Armamentarium() constructor {
         page_mod = 0;
         refresh_catalog();
     };
+
+    initialize_master_catalog();
 }
 
 function ShopItem(_name) constructor {
