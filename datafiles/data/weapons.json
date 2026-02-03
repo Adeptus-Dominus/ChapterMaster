@@ -1516,7 +1516,8 @@
             "heavy_ranged",
             "flame",
             "dreadnought"
-        ]
+        ],
+        "value": 115
     },
     "Integrated-Melta": {
         "abbreviation": "IntMlt",
@@ -1766,6 +1767,10 @@
             "heavy_ranged",
             "terminator",
             "dreadnought"
+        ],
+        "value": 75,
+        "requires_to_forge": [
+            "advanced_weapon_integration_and_targeting"
         ]
     },
     "Kheres Assault Cannon": {
@@ -1947,7 +1952,11 @@
             "heavy_ranged",
             "vehicle",
             "dreadnought"
-        ]
+        ],
+        "requires_to_forge": [
+            "advanced_weapon_integration_and_targeting"
+        ],
+        "value": 110
     },
     "Twin Linked Lascannon": {
         "abbreviation": "TwnLascnn",
@@ -1969,7 +1978,11 @@
             "heavy_ranged",
             "vehicle",
             "dreadnought"
-        ]
+        ],
+        "requires_to_forge": [
+            "light_condensement_chamber"
+        ],
+        "value": 110
     },
     "Heavy Bolter": {
         "abbreviation": "HvyBltr",
@@ -2033,7 +2046,8 @@
             "vehicle",
             "heavy_ranged",
             "indirect"
-        ]
+        ],
+        "value": 90
     },
     "HK Missile": {
         "abbreviation": "HKMssl",
@@ -2049,7 +2063,8 @@
         "spli": 1,
         "tags": [
             "vehicle"
-        ]
+        ],
+        "value": 10
     },
     "Twin Linked Heavy Bolter Mount": {
         "attack": {
@@ -2070,7 +2085,11 @@
             "dreadnought",
             "heavy_ranged",
             "bolt"
-        ]
+        ],
+        "requires_to_forge": [
+            "advanced_weapon_integration_and_targeting"
+        ],
+        "value": 28
     },
     "Twin Linked Lascannon Mount": {
         "attack": {
@@ -2113,7 +2132,11 @@
             "heavy_ranged",
             "pintle",
             "dreadnought"
-        ]
+        ],
+        "requires_to_forge": [
+            "integrated_weapon_stabilization_and_rate_of_fire_enhancements"
+        ],
+        "value": 60
     },
     "Reaper Autocannon Mount": {
         "attack": {
@@ -2154,7 +2177,11 @@
             "heavy_ranged",
             "vehicle",
             "sponson"
-        ]
+        ],
+        "requires_to_forge": [
+            "integrated_weapon_stabilization_and_rate_of_fire_enhancements"
+        ],
+        "value": 60
     },
     "Twin Linked Lascannon Sponsons": {
         "attack": {
@@ -2177,7 +2204,11 @@
             "heavy_ranged",
             "sponson",
             "twin_linked"
-        ]
+        ],
+        "requires_to_forge": [
+            "light_condensement_chamber"
+        ],
+        "value": 120
     },
     "Lascannon Sponsons": {
         "attack": {
@@ -2199,7 +2230,11 @@
             "heavy_ranged",
             "vehicle",
             "sponson"
-        ]
+        ],
+        "requires_to_forge": [
+            "light_condensement_chamber"
+        ],
+        "value": 60
     },
     "Hurricane Bolter Sponsons": {
         "attack": {
@@ -2220,7 +2255,11 @@
             "heavy_ranged",
             "vehicle",
             "sponson"
-        ]
+        ],
+        "requires_to_forge": [
+            "integrated_weapon_stabilization_and_rate_of_fire_enhancements"
+        ],
+        "value": 70
     },
     "Flamestorm Cannon Sponsons": {
         "attack": {
@@ -2241,6 +2280,9 @@
             "heavy_ranged",
             "vehicle",
             "sponson"
+        ],
+        "requires_to_forge": [
+            "promethium_tank_brazing"
         ]
     },
     "Twin Linked Heavy Flamer Sponsons": {
@@ -2263,7 +2305,8 @@
             "vehicle",
             "dreadnought",
             "sponson"
-        ]
+        ],
+        "value": 150
     },
     "Twin Linked Bolters": {
         "attack": {
@@ -2282,7 +2325,11 @@
         "tags": [
             "bolt",
             "vehicle"
-        ]
+        ],
+        "requires_to_forge": [
+            "projectile_propellant_purification"
+        ],
+        "value": 8
     },
     "Twin Linked Multi-Melta Sponsons": {
         "abbreviation": "TwnMltMelts",
@@ -2301,10 +2348,11 @@
         "tags": [
             "vehicle",
             "heavy_ranged",
-            "Sponson",
+            "sponson",
             "melta"
         ],
-        "maintenance": 0.05
+        "maintenance": 0.05,
+        "value": 200
     },
     "Twin Linked Volkite Culverin Sponsons": {
         "abbreviation": "TwnVlkCulvs",
@@ -2323,7 +2371,7 @@
         "tags": [
             "vehicle",
             "heavy_ranged",
-            "Sponson",
+            "sponson",
             "volkite",
             "ancient"
         ]
@@ -2347,7 +2395,11 @@
             "vehicle",
             "sponson",
             "bolt"
-        ]
+        ],
+        "requires_to_forge": [
+            "advanced_weapon_integration_and_targeting"
+        ],
+        "value": 38
     },
     "Heavy Flamer Sponsons": {
         "abbreviation": "HvyFlmrs",
@@ -2369,7 +2421,11 @@
             "vehicle",
             "sponson"
         ],
-        "maintenance": 0.05
+        "maintenance": 0.05,
+        "requires_to_forge": [
+            "promethium_tank_brazing"
+        ],
+        "value": 50
     },
     "Volkite Culverin Sponsons": {
         "abbreviation": "VlkClvs",
@@ -2388,7 +2444,7 @@
         "tags": [
             "vehicle",
             "heavy_ranged",
-            "Sponson",
+            "sponson",
             "volkite",
             "ancient"
         ]
@@ -2407,6 +2463,10 @@
         "range": 18,
         "spli": 15,
         "arp": 2,
+        "requires_to_forge": [
+            "advanced_weapon_integration_and_targeting"
+        ],
+        "value": 30,
         "tags": [
             "vehicle",
             "heavy_ranged",
@@ -2731,7 +2791,11 @@
             "heavy_ranged",
             "vehicle",
             "turret"
-        ]
+        ],
+        "requires_to_forge": [
+            "light_condensement_chamber"
+        ],
+        "value": 60
     },
     "Twin Linked Assault Cannon Turret": {
         "abbreviation": "TwnAssCnn",

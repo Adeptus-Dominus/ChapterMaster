@@ -1,154 +1,154 @@
 {
     "Bike": {
         "abbreviation": "Bike",
-        "second_profiles": [
-            "Twin Linked Bolters"
-        ],
+        "damage_resistance_mod": {
+            "artifact": 10,
+            "master_crafted": 10,
+            "standard": 5
+        },
         "description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and respectable Twin-Linked Bolters for offensive action.",
         "hp_mod": {
-            "standard": 25,
+            "artifact": 35,
             "master_crafted": 25,
-            "artifact": 35
+            "standard": 25
         },
-        "damage_resistance_mod": {
-            "standard": 5,
-            "master_crafted": 10,
-            "artifact": 10
-        }
-    },
-    "Jump Pack": {
-        "abbreviation": "JmpPck",
-        "special_properties": [
-            "Hammer of Wrath"
-        ],
-        "description": "A back-mounted device containing jets powerful enough to lift an Astartes in Power Armor over great distances. Utilizing these, Assault Marines bring devastation to the foe.",
-        "damage_resistance_mod": {
-            "standard": 25,
-            "master_crafted": 30,
-            "artifact": 35
-        },
-        "tags": [
-            "power_only",
-            "jump"
-        ],
-        "value": 20,
-        "requires_to_forge": [],
-        "renegade_buy": false
-    },
-    "Serpha Jump Pack": {
-        "abbreviation": "SphJmpPck",
-        "special_properties": [
-            "Hammer of Wrath"
-        ],
-        "description": "Once the mainstay of the Legiones Astartes, now the Serpha Pattern Jump Pack is nothing but a sad reminder of these better times and of the terrible atrocities that followed. Mainly used by the Traitors in the modern Imperium, it is nonetheless seen in the Loyalist armouries in which it is prized for its superior energy cells and power cabling, but doesn't provide as reliable of a thruster as, for instance, the most common in the 41st millennium Mark VII Mars Pattern.",
-        "damage_resistance_mod": {
-            "standard": 30,
-            "master_crafted": 35,
-            "artifact": 40
-        },
-        "tags": [
-            "power_only",
-            "jump",
-            "ancient"
+        "second_profiles": [
+            "Twin Linked Bolters"
         ]
-    },
-    "Heavy Weapons Pack": {
-        "abbreviation": "HvyWpPck",
-        "description": "A heavy ammunition backpack commonly used by devastators in conjunction with a heavy support weapon.",
-        "ranged_mod": {
-            "standard": 5,
-            "master_crafted": 10,
-            "artifact": 15
-        },
-        "tags": [
-            "bonus_ammo"
-        ],
-        "value": 25,
-        "requires_to_forge": [],
-        "renegade_buy": false
-    },
-    "Servo-arm": {
-        "abbreviation": "SrvArm",
-        "second_profiles": [
-            "Servo-arm(M)"
-        ],
-        "description": "A manipulator mechandendrite, also known as a Servo-arm. This artificial limb is a great aid to help trained Techmarines repair damaged vehicles on the battlefield, yet may be used in melee combat, thanks to its considerable crushing power and weight.",
-        "damage_resistance_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "melee_hands": -0.25,
-        "ranged_hands": -0.25,
-        "specials": {
-            "combi_tool": 1
-        },
-        "tags": [
-            "terminator"
-        ],
-        "value": 30,
-        "requires_to_forge": [],
-        "renegade_buy": false
-    },
-    "Servo-harness": {
-        "abbreviation": "SrvHrns",
-        "second_profiles": [
-            "Servo-arm(M)",
-            "Servo-arm(M)",
-            "Flamer",
-            "Plasma Cutter"
-        ],
-        "description": "A Servo-Harness is a special type of augmetic aid, often used by Chapter's Master of the Forge or his senior Techmarines. It consists of many blessed tools, two Servo-arms and a couple of deadly weapons. With it, one can make battlefield repairs on any vehicle, shore up defences, or even assist his battle-brothers in combat.",
-        "damage_resistance_mod": {
-            "standard": 5,
-            "master_crafted": 10,
-            "artifact": 15
-        },
-        "melee_hands": -0.5,
-        "ranged_hands": -0.5,
-        "specials": {
-            "combi_tool": 2
-        },
-        "tags": [
-            "terminator"
-        ],
-        "value": 150,
-        "requires_to_forge": [],
-        "renegade_buy": false
     },
     "Conversion Beamer Pack": {
         "abbreviation": "CnvBmr",
-        "second_profiles": [
-            "Conversion Beam Projector"
-        ],
         "description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comprises it is transformed into pure energy.",
         "melee_hands": -0.5,
         "ranged_hands": -0.5,
-        "tags": [
-            "terminator"
-        ],
-        "value": 180,
+        "renegade_buy": false,
         "requires_to_forge": [
             "plasma_coil_magnetization",
             "promethium_tank_brazing",
             "atomic_chamber_construction",
             "gravitic_reaction_principle"
         ],
-        "renegade_buy": false
+        "second_profiles": [
+            "Conversion Beam Projector"
+        ],
+        "tags": [
+            "terminator"
+        ],
+        "value": 180
     },
     "Cyclone Missile System": {
         "abbreviation": "CyclLnch",
-        "second_profiles": [
-            "Cyclone Missile Launcher"
-        ],
         "description": "Designed for use with Terminator armour. Valuable for their ability to launch missiles rapidly from the twin racks, this back-mounted missile system also makes up for some of Terminator armour's inflexibility by providing more options in combat.",
         "melee_hands": -0.5,
         "ranged_hands": -0.5,
+        "renegade_buy": false,
+        "requires_to_forge": [],
+        "second_profiles": [
+            "Cyclone Missile Launcher"
+        ],
         "tags": [
             "terminator_only"
         ],
-        "value": 150,
+        "value": 150
+    },
+    "Heavy Weapons Pack": {
+        "abbreviation": "HvyWpPck",
+        "description": "A heavy ammunition backpack commonly used by devastators in conjunction with a heavy support weapon.",
+        "ranged_mod": {
+            "artifact": 15,
+            "master_crafted": 10,
+            "standard": 5
+        },
+        "renegade_buy": false,
         "requires_to_forge": [],
-        "renegade_buy": false
+        "tags": [
+            "bonus_ammo"
+        ],
+        "value": 25
+    },
+    "Jump Pack": {
+        "abbreviation": "JmpPck",
+        "damage_resistance_mod": {
+            "artifact": 35,
+            "master_crafted": 30,
+            "standard": 25
+        },
+        "description": "A back-mounted device containing jets powerful enough to lift an Astartes in Power Armor over great distances. Utilizing these, Assault Marines bring devastation to the foe.",
+        "renegade_buy": false,
+        "requires_to_forge": [],
+        "special_properties": [
+            "Hammer of Wrath"
+        ],
+        "tags": [
+            "power_only",
+            "jump"
+        ],
+        "value": 20
+    },
+    "Serpha Jump Pack": {
+        "abbreviation": "SphJmpPck",
+        "damage_resistance_mod": {
+            "artifact": 40,
+            "master_crafted": 35,
+            "standard": 30
+        },
+        "description": "Once the mainstay of the Legiones Astartes, now the Serpha Pattern Jump Pack is nothing but a sad reminder of these better times and of the terrible atrocities that followed. Mainly used by the Traitors in the modern Imperium, it is nonetheless seen in the Loyalist armouries in which it is prized for its superior energy cells and power cabling, but doesn't provide as reliable of a thruster as, for instance, the most common in the 41st millennium Mark VII Mars Pattern.",
+        "special_properties": [
+            "Hammer of Wrath"
+        ],
+        "tags": [
+            "power_only",
+            "jump",
+            "ancient"
+        ]
+    },
+    "Servo-arm": {
+        "abbreviation": "SrvArm",
+        "damage_resistance_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "description": "A manipulator mechandendrite, also known as a Servo-arm. This artificial limb is a great aid to help trained Techmarines repair damaged vehicles on the battlefield, yet may be used in melee combat, thanks to its considerable crushing power and weight.",
+        "melee_hands": -0.25,
+        "ranged_hands": -0.25,
+        "renegade_buy": false,
+        "requires_to_forge": [],
+        "second_profiles": [
+            "Servo-arm(M)"
+        ],
+        "specials": {
+            "combi_tool": 1
+        },
+        "tags": [
+            "terminator"
+        ],
+        "value": 30
+    },
+    "Servo-harness": {
+        "abbreviation": "SrvHrns",
+        "damage_resistance_mod": {
+            "artifact": 15,
+            "master_crafted": 10,
+            "standard": 5
+        },
+        "description": "A Servo-Harness is a special type of augmetic aid, often used by Chapter's Master of the Forge or his senior Techmarines. It consists of many blessed tools, two Servo-arms and a couple of deadly weapons. With it, one can make battlefield repairs on any vehicle, shore up defences, or even assist his battle-brothers in combat.",
+        "melee_hands": -0.5,
+        "ranged_hands": -0.5,
+        "renegade_buy": false,
+        "requires_to_forge": [],
+        "second_profiles": [
+            "Servo-arm(M)",
+            "Servo-arm(M)",
+            "Flamer",
+            "Plasma Cutter"
+        ],
+        "specials": {
+            "combi_tool": 2
+        },
+        "tags": [
+            "terminator"
+        ],
+        "value": 150
     }
 }

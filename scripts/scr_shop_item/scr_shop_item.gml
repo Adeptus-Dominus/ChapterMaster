@@ -20,12 +20,6 @@ function Armamentarium() constructor {
 
     // --- Components ---
     slate_panel = new DataSlate();
-    tab_buttons = {
-        weapons: new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
-        armour: new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
-        vehicles: new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
-        ships: new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
-    };
 
     speeding_bits = {
         wargear: new SpeedingDot(0, 0, (210 / 6) * obj_controller.stc_wargear),
@@ -40,7 +34,18 @@ function Armamentarium() constructor {
     gift_stc_button = new UnitButtonObject({x1: 650, y1: 467, style: "pixel", label: "Gift", set_width: true, w: 90});
     identify_stc_button = new UnitButtonObject({x1: 670, y1: 467, style: "pixel", label: "Identify", set_width: true, w: 90});
 
-    slate_panel.inside_method = _draw_slate_contents;
+    slate_panel.inside_method = method(self, _draw_slate_contents);
+
+    var _cat_options = [
+        {label: "Weapons", value: "weapons"},
+        {label: "Armour", value: "armour"},
+        {label: "Equipment", value: "mobility"},
+        {label: "Gear", value: "gear"},
+        {label: "Vehicles", value: "vehicles"},
+        {label: "Vehicle Gear", value: "vehicle_gear"},
+    ];
+
+    category_dropdown = new UIDropdown(_cat_options, 200);
 
     // --- Data Storage ---
     shop_items = {
@@ -49,6 +54,7 @@ function Armamentarium() constructor {
         gear: [],
         mobility: [],
         vehicles: [],
+        vehicle_gear: [],
         ships: [],
         technologies: [],
     };
@@ -74,10 +80,10 @@ function Armamentarium() constructor {
 
     /// @desc Comparator for alphabetical sorting of shop items.
     static _sort_alphabetical = function(_a, _b) {
-        if (_a.name < _b.name) {
+        if (_a.display_name < _b.display_name) {
             return -1;
         }
-        if (_a.name > _b.name) {
+        if (_a.display_name > _b.display_name) {
             return 1;
         }
         return 0;
@@ -103,6 +109,7 @@ function Armamentarium() constructor {
             "gear",
             "mobility",
             "vehicles",
+            "vehicle_gear",
             "ships",
             "technologies"
         ];
@@ -121,12 +128,14 @@ function Armamentarium() constructor {
                 var _raw = _data_source[$ _name];
                 var _item = new ShopItem(_name);
 
-                if (_cat == "gear" || _cat == "mobility") {
-                    _item.area = "armour";
+                var _item_tags = _raw[$ "tags"] ?? [];
+                if (array_contains_ext(_item_tags, ["sponson", "turret"])) {
+                    _item.area = "vehicle_gear";
                 } else {
                     _item.area = _cat;
                 }
 
+                _item.display_name = _raw[$ "display_name"] ?? _name;
                 _item.value = _raw[$ "value"] ?? _item.value;
                 _item.buyable = (_item.value == 0) ? false : (_raw[$ "buyable"] ?? _item.buyable);
                 _item.forgable = (_item.value == 0) ? false : (_raw[$ "forgable"] ?? _item.forgable);
@@ -227,6 +236,7 @@ function Armamentarium() constructor {
             }
 
             _item.stocked = scr_item_count(_item.name);
+            _item.stocked_mc = scr_item_count(_item.name, "master_crafted");
 
             _item.calculate_costs(is_in_forge, forge_cost_mod, discount_rogue_trader);
 
@@ -353,6 +363,14 @@ function Armamentarium() constructor {
         }
         shop_type = _new_type;
         page_mod = 0;
+        
+        for (var i = 0; i < array_length(category_dropdown.options); i++) {
+            if (category_dropdown.options[i].value == _new_type) {
+                category_dropdown.selected_index = i;
+                break;
+            }
+        }
+        
         refresh_catalog();
     };
 
@@ -374,9 +392,9 @@ function Armamentarium() constructor {
             _draw_stc_panel();
         }
 
-        _draw_tabs();
         _draw_company_selector();
         _draw_item_list();
+        _draw_tabs();
 
         pop_draw_return_values();
     };
@@ -538,20 +556,19 @@ function Armamentarium() constructor {
     };
 
     static _draw_slate_contents = function() {
-        var _manager = obj_controller.armamentarium;
-        var _list = _manager.shop_items[$ _manager.shop_type];
+        var _list = shop_items[$ shop_type];
         var _items_count = array_length(_list);
         var _items_per_page = 27;
-        var _start_index = _items_per_page * _manager.page_mod;
+        var _start_index = _items_per_page * page_mod;
         var _draw_y_local = 157;
 
         draw_set_font(fnt_40k_14b);
         draw_set_color(c_white);
         draw_text(962, 159, "Name");
-        if (_manager.shop_type != "technologies") {
+        if (shop_type != "technologies") {
             draw_text(1280, 159, "Stocked");
         }
-        draw_text(1410, 159, $"{_manager.is_in_forge ? "FP" : "RP"} Cost");
+        draw_text(1410, 159, $"{is_in_forge ? "FP" : "RP"} Cost");
 
         for (var _i = _start_index; _i < min(_start_index + _items_per_page, _items_count); _i++) {
             /// @type {Struct.ShopItem}
@@ -559,10 +576,10 @@ function Armamentarium() constructor {
             _draw_y_local += 20;
 
             var _is_hovered = scr_hit(962, _draw_y_local + 2, 1580, _draw_y_local + 18);
-            var _can_buy_or_forge = _manager.is_in_forge ? _item.forgable : _item.buyable;
-            var _has_stock = _item.stocked > 0 || _item.mc_stocked > 0;
+            var _can_buy_or_forge = is_in_forge ? _item.forgable : _item.buyable;
+            var _has_stock = _item.stocked > 0 || _item.stocked_mc > 0;
 
-            var _shift_pressed = keyboard_check(vk_shift) && !array_contains(["ships", "technologies"], _manager.shop_type);
+            var _shift_pressed = keyboard_check(vk_shift) && !array_contains(["ships", "technologies"], shop_type);
             var _mult = _shift_pressed ? 5 : 1;
 
             if (_is_hovered) {
@@ -575,26 +592,27 @@ function Armamentarium() constructor {
             }
 
             var _display_color = (_can_buy_or_forge || _has_stock) ? c_gray : CM_RED_COLOR;
-            draw_text_color_simple(962, _draw_y_local, _shift_pressed ? $"{_item.name} x5" : _item.name, _display_color, 1);
+            draw_text_color_simple(962, _draw_y_local, _shift_pressed ? $"{_item.display_name} x5" : _item.display_name, _display_color, 1);
 
-            if (_manager.shop_type != "technologies") {
-                var _stocked_text = $"{_item.stocked}" + (_item.mc_stocked > 0 ? $" mc: {_item.mc_stocked}" : "");
+            if (shop_type != "technologies") {
+                var _stocked_text = $"{_item.stocked}" + (_item.stocked_mc > 0 ? $" mc: {_item.stocked_mc}" : "");
                 draw_text_alpha(1300, _draw_y_local, _stocked_text, !_has_stock ? 0.5 : 1);
             }
 
-            var _cost = (_manager.is_in_forge ? _item.forge_cost : _item.buy_cost) * _mult;
+            var _cost = (is_in_forge ? _item.forge_cost : _item.buy_cost) * _mult;
 
             if (_cost > 0 && (_can_buy_or_forge || _has_stock)) {
-                var _afford = _manager.is_in_forge || (obj_controller.requisition >= _cost);
-                var _currency_color = _manager.is_in_forge ? COL_FORGE_POINTS : COL_REQUISITION;
+                var _afford = is_in_forge || (obj_controller.requisition >= _cost);
+                var _currency_color = is_in_forge ? COL_FORGE_POINTS : COL_REQUISITION;
 
                 var _final_cost_color = _can_buy_or_forge ? (_afford ? _currency_color : CM_RED_COLOR) : c_dkgray;
                 draw_text_color_simple(1427, _draw_y_local, _cost, _final_cost_color, 1);
             }
 
-            _manager._draw_action_buttons(_item, _draw_y_local, _cost, _mult);
+            _draw_action_buttons(_item, _draw_y_local, _cost, _mult);
         }
-        _manager._draw_pagination(_items_count, _items_per_page);
+
+        _draw_pagination(_items_count, _items_per_page);
     };
 
     /// @desc Handles the logic for clicking Buy, Sell, or Build icons.
@@ -612,7 +630,7 @@ function Armamentarium() constructor {
             if (point_and_click([1520, _y + 2, 1570, _y + 14])) {
                 var _queue = obj_controller.specialist_point_handler.forge_queue;
                 if (array_length(_queue) < 20) {
-                    array_push(_queue, {name: _item.name, count: _count, forge_points: _cost, ordered: obj_controller.turn, type: _item.forge_type});
+                    array_push(_queue, {item: _item, count: _count, forge_points: _cost, ordered: obj_controller.turn});
                 }
             }
             return;
@@ -671,21 +689,31 @@ function Armamentarium() constructor {
 
     /// @desc Draws the category navigation tabs.
     static _draw_tabs = function() {
-        if (tab_buttons.weapons.draw(960, 64, "Weapons")) {
-            _switch_tab("weapons");
-        }
-        if (tab_buttons.armour.draw(1075, 64, "Equipment")) {
-            _switch_tab("armour");
-        }
-        if (tab_buttons.vehicles.draw(1190, 64, "Vehicles")) {
-            _switch_tab("vehicles");
+        var _draw_x = 960;
+        var _draw_y = 64;
+
+        // Update dropdown options if mode changed (Forge vs Armamentarium)
+        var _special_label = is_in_forge ? "Technologies" : "Ships";
+        var _special_value = is_in_forge ? "technologies" : "ships";
+        
+        // Ensure the 4th option always matches current mode
+        if (array_length(category_dropdown.options) < 4) {
+            array_push(category_dropdown.options, {label: _special_label, value: _special_value});
+        } else {
+            category_dropdown.options[3].label = _special_label;
+            category_dropdown.options[3].value = _special_value;
         }
 
-        var _label = is_in_forge ? "Technologies" : "Ships";
-        var _type = is_in_forge ? "technologies" : "ships";
-        if (tab_buttons.ships.draw(1460, 64, _label)) {
-            _switch_tab(_type);
+        // Draw and process selection
+        var _selection = category_dropdown.draw(_draw_x, _draw_y);
+        if (_selection != undefined) {
+            _switch_tab(_selection);
         }
+        
+        // Visual Label for the dropdown
+        draw_set_font(fnt_40k_12);
+        draw_set_color(c_gray);
+        draw_text(_draw_x, _draw_y - 18, "Select Category:");
     };
 
     /// @desc Draws the status report from the Forge Master.
@@ -844,8 +872,9 @@ function Armamentarium() constructor {
 /// @returns {Struct.ShopItem}
 function ShopItem(_name) constructor {
     name = _name;
+    display_name = _name;
     stocked = 0;
-    mc_stocked = 0;
+    stocked_mc = 0;
     value = 0;
     buy_cost = 0;
     buyable = true;
@@ -942,5 +971,94 @@ function ShopItem(_name) constructor {
         } else {
             buy_cost = round(value * min(buy_cost_mod, _trader_mod));
         }
+    };
+}
+
+/// @desc A modular UI dropdown component for selecting options from a list.
+/// @param {Array<Struct>} _options Array of {label, value} structs.
+/// @param {real} _width Width of the dropdown.
+/// @returns {Struct.UIDropdown}
+function UIDropdown(_options, _width = 180) constructor {
+    options = _options;
+    width = _width;
+    height = 28;
+    is_open = false;
+    selected_index = 0;
+    hover_index = -1;
+
+    /// @desc Draws the dropdown and handles interactions.
+    /// @param {real} _x X position.
+    /// @param {real} _y Y position.
+    /// @returns {any} The value of the selected option if changed, otherwise undefined.
+    static draw = function(_x, _y) {
+        var _result = undefined;
+        var _main_rect = [_x, _y, _x + width, _y + height];
+        var _is_hovering_main = scr_hit(_main_rect[0], _main_rect[1], _main_rect[2], _main_rect[3]);
+
+        // Draw Main Box
+        draw_set_color(c_black);
+        draw_rectangle_array(_main_rect, false);
+        draw_set_color(_is_hovering_main ? c_white : c_gray);
+        draw_rectangle_array(_main_rect, true);
+
+        // Draw Current Selection
+        draw_set_font(fnt_40k_14b);
+        draw_set_halign(fa_left);
+        draw_text(_x + 8, _y + 6, options[selected_index].label);
+        
+        // Draw Arrow
+        var _arrow_char = is_open ? "▲" : "▼";
+        draw_text(_x + width - 20, _y + 6, _arrow_char);
+
+        if (_is_hovering_main && scr_click_left()) {
+            is_open = !is_open;
+            audio_play_sound(snd_click, 10, false);
+        }
+
+        if (!is_open) {
+            return _result;
+        }
+
+        // Draw Options List
+        var _opt_height = 24;
+        var _total_opt_height = array_length(options) * _opt_height;
+        var _list_rect = [_x, _y + height, _x + width, _y + height + _total_opt_height];
+
+        // Background for list
+        draw_set_alpha(0.95);
+        draw_set_color(c_black);
+        draw_rectangle_array(_list_rect, false);
+        draw_set_alpha(1.0);
+        draw_set_color(c_white);
+        draw_rectangle_array(_list_rect, true);
+
+        for (var i = 0; i < array_length(options); i++) {
+            var _oy = _y + height + (i * _opt_height);
+            var _is_hovering_opt = scr_hit(_x, _oy, _x + width, _oy + _opt_height);
+
+            if (_is_hovering_opt) {
+                draw_set_alpha(0.2);
+                draw_rectangle(_x + 1, _oy, _x + width - 1, _oy + _opt_height, false);
+                draw_set_alpha(1.0);
+                
+                if (scr_click_left()) {
+                    selected_index = i;
+                    is_open = false;
+                    _result = options[i].value;
+                    audio_play_sound(snd_click, 10, false);
+                }
+            }
+
+            draw_set_color(_is_hovering_opt ? c_white : c_gray);
+            draw_set_font(fnt_40k_12);
+            draw_text(_x + 10, _oy + 4, options[i].label);
+        }
+
+        // Close if clicking outside
+        if (scr_click_left() && !_is_hovering_main && !scr_hit(_list_rect[0], _list_rect[1], _list_rect[2], _list_rect[3])) {
+            is_open = false;
+        }
+
+        return _result;
     };
 }

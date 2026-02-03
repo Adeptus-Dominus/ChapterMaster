@@ -7,182 +7,78 @@
         "requires_to_forge": [],
         "value": 200
     },
-    "Assault Cannon": {
-        "requires_to_forge": [
-            "advanced_weapon_integration_and_targeting"
-        ],
-        "value": 75
-    },
-    "Autocannon": {
-        "requires_to_forge": [
-            "advanced_weapon_integration_and_targeting"
-        ],
-        "value": 80
-    },
-    "Autocannon Turret": {
-        "requires_to_forge": [
-            "advanced_weapon_integration_and_targeting"
-        ],
-        "value": 30
-    },
-    "Bike": {
-        "value": 35
-    },
     "Close Combat Weapon": {
         "value": 45
     },
     "Dozer Blades": {
-        "requires_to_forge": [],
-        "value": 200
-    },
-    "Dreadnought Lightning Claw": {
-        "value": 185
-    },
-    "Dreadnought Power Claw": {
-        "value": 150
-    },
-    "Flamestorm Cannon Sponsons": {
-        "requires_to_forge": [
-            "promethium_tank_brazing"
+        "abbreviation": "DzrBlds",
+        "ammo": 0,
+        "arp": 1,
+        "attack": {
+            "artifact": 50,
+            "master_crafted": 35,
+            "standard": 30
+        },
+        "description": "An attachment for the front of vehicles, useful for clearing difficult terrain and can be used as an improvised weapon. ",
+        "range": 1,
+        "spli": 1,
+        "tags": [
+            "vehicle"
         ],
-        "value": 100
-    },
-    "Flamestorm Cannon Turret": {
         "value": 0
     },
     "Frag Assault Launchers": {
-        "requires_to_forge": [],
-        "value": 200
+        "abbreviation": "FrgAssLnchrs",
+        "damage_resistance_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "description": "These launchers enable a vehicle to clear an area for its loaded troops, or prevent boarding by an enemy at close range.",
+        "tags": [
+            "vehicle"
+        ],
+        "value": 0
     },
     "Heavy Armour": {
         "requires_to_forge": [],
         "value": 200
     },
-    "Heavy Bolter Sponsons": {
-        "requires_to_forge": [
-            "advanced_weapon_integration_and_targeting"
-        ],
-        "value": 38
-    },
-    "Heavy Conversion Beam Projector": {
-        "value": 0
-    },
-    "Heavy Flamer Sponsons": {
-        "requires_to_forge": [
-            "promethium_tank_brazing"
-        ],
-        "value": 50
-    },
-    "HK Missile": {
-        "value": 10
-    },
-    "Hurricane Bolter Sponsons": {
-        "requires_to_forge": [
-            "integrated_weapon_stabilization_and_rate_of_fire_enhancements"
-        ],
-        "value": 70
-    },
-    "Inferno Cannon": {
-        "value": 115
-    },
-    "Lascannon Sponsons": {
-        "requires_to_forge": [
-            "light_condensement_chamber"
-        ],
-        "value": 60
-    },
     "Lucifer Pattern Engine": {
         "requires_to_forge": [],
         "value": 90
     },
-    "Magna-Melta Turret": {
-        "value": 0
-    },
-    "Neutron Blaster Turret": {
-        "value": 0
-    },
-    "Plasma Destroyer Turret": {
-        "value": 0
-    },
-    "Quad Linked Heavy Bolter Sponsons": {
-        "requires_to_forge": [
-            "integrated_weapon_stabilization_and_rate_of_fire_enhancements"
-        ],
-        "value": 60
-    },
-    "Reaper Autocannon Mount": {
-        "value": 0
-    },
     "Searchlight": {
-        "requires_to_forge": [],
-        "value": 200
+        "abbreviation": "SrchLght",
+        "description": "A simple solution for fighting in dark environments, searchlights serve to illuminate enemies for ease of targeting.",
+        "ranged_mod": {
+            "artifact": 15,
+            "master_crafted": 10,
+            "standard": 5
+        },
+        "tags": [
+            "vehicle",
+            "dreadnought"
+        ],
+        "value": 0
     },
     "Smoke Launchers": {
-        "requires_to_forge": [],
-        "value": 200
-    },
-    "Twin Linked Assault Cannon Mount": {
-        "requires_to_forge": [
-            "integrated_weapon_stabilization_and_rate_of_fire_enhancements"
-        ],
-        "value": 60
-    },
-    "Twin Linked Bolters": {
-        "requires_to_forge": [
-            "projectile_propellant_purification"
-        ],
-        "value": 8
-    },
-    "Twin Linked Heavy Bolter": {
-        "requires_to_forge": [
-            "advanced_weapon_integration_and_targeting"
-        ],
-        "value": 110
-    },
-    "Twin Linked Heavy Bolter Mount": {
-        "requires_to_forge": [
-            "advanced_weapon_integration_and_targeting"
-        ],
-        "value": 28
-    },
-    "Twin Linked Heavy Flamer Sponsons": {
-        "value": 150
-    },
-    "Twin Linked Lascannon": {
-        "requires_to_forge": [
-            "light_condensement_chamber"
-        ],
-        "value": 110
-    },
-    "Twin Linked Lascannon Sponsons": {
-        "requires_to_forge": [
-            "light_condensement_chamber"
-        ],
-        "value": 120
-    },
-    "Twin Linked Lascannon Turret": {
-        "requires_to_forge": [
-            "light_condensement_chamber"
-        ],
-        "value": 60
-    },
-    "Twin Linked Multi-Melta Sponsons": {
-        "value": 200
-    },
-    "Twin Linked Volkite Culverin Sponsons": {
-        "value": 0
+        "abbreviation": "SmkLnchrs",
+        "damage_resistance_mod": {
+            "artifact": 15,
+            "master_crafted": 10,
+            "standard": 5
+        },
+        "description": "Useful for providing concealment in open terrain, these launchers project wide-spectrum concealing smoke to prevent accurate targeting of the vehicle.",
+        "tags": [
+            "smoke",
+            "conceal",
+            "vehicle",
+            "dreadnought"
+        ]
     },
     "Void Shield": {
         "requires_to_forge": [],
         "value": 500
-    },
-    "Volkite Culverin Sponsons": {
-        "value": 0
-    },
-    "Volkite Saker Turret": {
-        "value": 0
-    },
-    "Whirlwind Missiles": {
-        "value": 90
     }
 }

@@ -1,665 +1,718 @@
 {
-    "Power Armour": {
-        "abbreviation": "PwrArm",
+    "Armoured Ceramite": {
+        "abbreviation": "ArmCrmt",
         "armour_value": {
-            "standard": 19,
-            "master_crafted": 25,
-            "artifact": 30
+            "artifact": 28,
+            "master_crafted": 24,
+            "standard": 20
         },
-        "ranged_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "melee_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "description": "A suit of Adeptus Astartes power armour. The Mark can no longer be determined- it appears to be a combination of several types.",
-        "tags": ["power_armour"]
+        "description": "Supplemental ceramite armour packages provide protection far beyond stock configurations while also adding significant weight to the chassis.",
+        "tags": [
+            "vehicle",
+            "armour"
+        ]
     },
     "Artificer Armour": {
         "abbreviation": "Artfcr",
         "armour_value": {
-            "standard": 30,
+            "artifact": 30,
             "master_crafted": 30, // This is already a custom suit of armor shouldnt Master crafted be its base state?
-            "artifact": 30
-        },
-        "ranged_mod": {
-            "standard": 15,
-            "master_crafted": 20,
-            "artifact": 25
-        },
-        "melee_mod": {
-            "standard": 15,
-            "master_crafted": 20,
-            "artifact": 25
-        },
-        "hp_mod": {
-            "standard": 15,
-            "master_crafted": 20,
-            "artifact": 25
+            "standard": 30
         },
         "damage_resistance_mod": {
-            "standard": 15,
+            "artifact": 25,
             "master_crafted": 20,
-            "artifact": 25
+            "standard": 15
         },
         "description": "A custom suit of power armored created by master artificiers and decorated without compare, this ancient Power Armour is beyond priceless. This suit's history is ancient and its users many.",
-        "tags": ["power_armour"],
-        "value": 150,
-        "requires_to_forge": ["lightened_ceramite_compound", "ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
-        "renegade_buy": false
-    },
-    "Terminator Armour": {
-        "abbreviation": "Indmts",
-        "armour_value": {
-            "standard": 30,
-            "master_crafted": 36,
-            "artifact": 40
-        },
-        "ranged_mod": {
-            "standard": -10,
-            "master_crafted": -5,
-            "artifact": 0
-        },
-        "melee_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 20
-        },
         "hp_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 20
-        },
-        "damage_resistance_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "melee_hands": 2,
-        "ranged_hands": 2,
-        "description": "Terminator Armour is the strongest and most powerful armour designed by humanity, available only to the veterans of the Adeptus Astartes. The Indomitus Pattern is the most widespread and versatile pattern as of M41.",
-        "tags": ["terminator"],
-        "req_exp": 100,
-        "maintenance": 1,
-        "value": 200,
-        "requires_to_forge": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
-        "renegade_buy": false
-    },
-    "Dreadnought": {
-        "abbreviation": "Drdnght",
-        "armour_value": {
-            "standard": 40,
-            "master_crafted": 45,
-            "artifact": 50
-        },
-        "ranged_mod": {
-            "standard": -10,
-            "master_crafted": 0,
-            "artifact": 10
-        },
-        "melee_mod": {
-            "standard": -10,
-            "master_crafted": 0,
-            "artifact": 10
-        },
-        "hp_mod": {
-            "standard": 30,
-            "master_crafted": 35,
-            "artifact": 50
-        },
-        "damage_resistance_mod": {
-            "standard": 20,
-            "master_crafted": 25,
-            "artifact": 40
-        },
-        "melee_hands": 8,
-        "ranged_hands": 8,
-        "description": "A massive war-machine that can be piloted by an honored Astarte, who otherwise would have fallen in combat. Some of the Astartes consider this a fate worse than death",
-        "tags": ["dreadnought"],
-        "maintenance": 1
-    },
-    "Contemptor Dreadnought": {
-        "abbreviation": "Cntmptr",
-        "armour_value": {
-            "standard": 40,
-            "master_crafted": 45,
-            "artifact": 50
-        },
-        "ranged_mod": {
-            "standard": -10,
-            "master_crafted": 0,
-            "artifact": 10
-        },
-        "melee_mod": {
-            "standard": -10,
-            "master_crafted": 0,
-            "artifact": 10
-        },
-        "hp_mod": {
-            "standard": 30,
-            "master_crafted": 35,
-            "artifact": 50
-        },
-        "damage_resistance_mod": {
-            "standard": 20,
-            "master_crafted": 25,
-            "artifact": 40
-        },
-        "melee_hands": 8,
-        "ranged_hands": 8,
-        "description": "PLACEHOLDER",
-        "tags": [
-            "dreadnought",
-            "ancient"
-        ],
-        "maintenance": 1
-    },
-    "Tartaros": {
-        "abbreviation": "Tartrs",
-        "armour_value": {
-            "standard": 30,
-            "master_crafted": 36,
-            "artifact": 40
-        },
-        "ranged_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 20
-        },
-        "melee_mod": {
-            "standard": 10,
+            "artifact": 25,
             "master_crafted": 20,
-            "artifact": 25
+            "standard": 15
         },
-        "hp_mod": {
-            "standard": 5,
-            "master_crafted": 10,
-            "artifact": 15
+        "melee_mod": {
+            "artifact": 25,
+            "master_crafted": 20,
+            "standard": 15
         },
-        "melee_hands": 2,
-        "ranged_hands": 2,
-        "description": "This pattern is possibly considered the most advanced form of Terminator Armour, providing greater mobility for the wearer compared to the Indomitus with no loss in durability. In the M41 considered to be incredibly rare with wars being fought to secure more suits.",
-        "tags": ["terminator"],
-        "req_exp": 100,
-        "maintenance": 3,
-        "value": 250,
-        "requires_to_forge": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
-        "renegade_buy": false
+        "ranged_mod": {
+            "artifact": 25,
+            "master_crafted": 20,
+            "standard": 15
+        },
+        "renegade_buy": false,
+        "requires_to_forge": [
+            "lightened_ceramite_compound",
+            "ceramite_void_hardening",
+            "enhanced_nerve_interfacing",
+            "advanced_servo_motors"
+        ],
+        "tags": [
+            "power_armour"
+        ],
+        "value": 150
+    },
+    "Artificer Hull": {
+        "abbreviation": "ArtHll",
+        "armour_value": {
+            "artifact": 14,
+            "master_crafted": 12,
+            "standard": 10
+        },
+        "damage_resistance_mod": {
+            "artifact": 25,
+            "master_crafted": 20,
+            "standard": 15
+        },
+        "description": "Replacing numerous structural components and armour plates with thrice-blessed replacements, the vehicle’s hull is upgraded to be a rare work of mechanical art by master artificers.",
+        "tags": [
+            "vehicle",
+            "Upgrade"
+        ]
     },
     "Cataphractii": {
         "abbreviation": "Catphr",
         "armour_value": {
-            "standard": 32,
+            "artifact": 42,
             "master_crafted": 38,
-            "artifact": 42
-        },
-        "ranged_mod": {
-            "standard": -5,
-            "master_crafted": 0,
-            "artifact": 5
-        },
-        "melee_mod": {
-            "standard": -5,
-            "master_crafted": 0,
-            "artifact": 5
-        },
-        "hp_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 20
+            "standard": 32
         },
         "damage_resistance_mod": {
-            "standard": 10,
+            "artifact": 20,
             "master_crafted": 15,
-            "artifact": 20
+            "standard": 10
         },
-        "melee_hands": 2,
-        "ranged_hands": 2,
         "description": "Among the first issued to the Space Marine Legions. Having additional plating and shield generators installed within the shoulder pads resulted in severe straining of the suit's exoskeleton and reduced the wearer's maneuverability, leading to its decline among some legions.",
-        "tags": ["terminator"],
+        "hp_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "maintenance": 2.5,
+        "melee_hands": 2,
+        "melee_mod": {
+            "artifact": 5,
+            "master_crafted": 0,
+            "standard": -5
+        },
+        "ranged_hands": 2,
+        "ranged_mod": {
+            "artifact": 5,
+            "master_crafted": 0,
+            "standard": -5
+        },
         "req_exp": 100,
-        "maintenance": 2.5
+        "tags": [
+            "terminator"
+        ]
     },
-    "Scout Armour": {
-        "abbreviation": "SctArm",
+    "Contemptor Dreadnought": {
+        "abbreviation": "Cntmptr",
         "armour_value": {
-            "standard": 11,
-            "master_crafted": 12,
-            "artifact": 14
-        },
-        "ranged_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 20
-        },
-        "melee_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "hp_mod": {
-            "standard": 0,
-            "master_crafted": 10,
-            "artifact": 0
+            "artifact": 50,
+            "master_crafted": 45,
+            "standard": 40
         },
         "damage_resistance_mod": {
-            "standard": 0,
-            "master_crafted": 10,
-            "artifact": 0
-        },
-        "description": "A non-powered suit made up of carapace armour and ballistic nylon. Includes biohazard shielding, nutrient feed, and camouflage.",
-        "value": 5,
-        "requires_to_forge": [],
-        "renegade_buy": true
-    },
-    "MK3 Iron Armour": {
-        "abbreviation": "MK3",
-        "armour_value": {
-            "standard": 22,
-            "master_crafted": 24,
-            "artifact": 28
-        },
-        "ranged_mod": {
-            "standard": -10,
-            "master_crafted": -5,
-            "artifact": 0
-        },
-        "melee_mod": {
-            "standard": 10,
-            "master_crafted": 10,
-            "artifact": 15
-        },
-        "hp_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 20
-        },
-        "damage_resistance_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "description": "An ancient set of Power Armor dating back to the early Great Crusade. The Mark III has heavier armor plating but is far heavier then its contemporaries.",
-        "tags": ["power_armour"],
-        "maintenance": 0.3,
-        "value": 125,
-        "requires_to_forge": ["ceramite_casting_chambers"],
-        "renegade_buy": false
-    },
-    "MK4 Maximus": {
-        "abbreviation": "MK4",
-        "armour_value": {
-            "standard": 15,
-            "master_crafted": 17,
-            "artifact": 21
-        },
-        "ranged_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 20
-        },
-        "melee_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 20
-        },
-        "hp_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "description": "Power Armor dating back to the end of the Great Crusade. It is considered the pinnacle of Power Armor by some Astartes. However, the components are no longer reproducible, the knowledge having been lost to time.",
-        "tags": ["power_armour"],
-        "maintenance": 0.4,
-        "value": 125,
-        "requires_to_forge": ["advanced_ceramite_bonding", "armour_stealth"],
-        "renegade_buy": false
-    },
-    "MK5 Heresy": {
-        "abbreviation": "MK5",
-        "armour_value": {
-            "standard": 15,
-            "master_crafted": 17,
-            "artifact": 21
-        },
-        "ranged_mod": {
-            "standard": -5,
-            "master_crafted": 0,
-            "artifact": 0
-        },
-        "melee_mod": {
-            "standard": 20,
+            "artifact": 40,
             "master_crafted": 25,
-            "artifact": 30
+            "standard": 20
         },
+        "description": "PLACEHOLDER",
         "hp_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "damage_resistance_mod": {
-            "standard": -5,
-            "master_crafted": 0,
-            "artifact": 5
-        },
-        "description": "A hastily assembled Power Armor that first started appearing during the Horus Heresy to act as a stopgap while new suits were produced and sent to loyalist legions. It excels in close combat but it has limited sensors for ranged combat.",
-        "tags": ["power_armour"],
-        "maintenance": 0.05,
-        "value": 45,
-        "requires_to_forge": ["ceramite_casting_chambers"],
-        "renegade_buy": true
-    },
-    "MK6 Corvus": {
-        "abbreviation": "MK6",
-        "armour_value": {
-            "standard": 15,
-            "master_crafted": 17,
-            "artifact": 21
-        },
-        "ranged_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 30
-        },
-        "melee_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "hp_mod": {
-            "standard": -5,
-            "master_crafted": 0,
-            "artifact": 5
-        },
-        "damage_resistance_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 5
-        },
-        "description": "A suit dating back to the Horus Heresy, first tested by the Raven Guard. It contains boosted olfactory and auditory sensors that increase the ranged accuracy of the wearer. This however makes it more fragile to an extent.",
-        "tags": ["power_armour"],
-        "maintenance": 0.05,
-        "value": 35,
-        "requires_to_forge": ["ceramite_casting_chambers", "advanced_servo_motors"],
-        "renegade_buy": false
-    },
-    "MK7 Aquila": {
-        "abbreviation": "MK7",
-        "armour_value": {
-            "standard": 18,
-            "master_crafted": 20,
-            "artifact": 24
-        },
-        "ranged_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "melee_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "hp_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "damage_resistance_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "description": "The most common power armour of the Adeptus Astartes and the only power armour still widely manufactured by the Imperium.",
-        "tags": ["power_armour"],
-        "maintenance": 0.01,
-        "value": 20,
-        "requires_to_forge": ["ceramite_casting_chambers"],
-        "renegade_buy": false
-    },
-    "MK8 Errant": {
-        "abbreviation": "MK8",
-        "armour_value": {
-            "standard": 20,
-            "master_crafted": 22,
-            "artifact": 26
-        },
-        "ranged_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "melee_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "hp_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "damage_resistance_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "description": "The newest and most advanced of the standard mark power armours as such production has not yet reached maximum capacity creating a supply shortage while chapters rush to get access to them.",
-        "tags": ["power_armour"],
-        "maintenance": 0.02,
-        "value": 100,
-        "requires_to_forge": ["advanced_ceramite_bonding"],
-        "renegade_buy": false
-    },
-    "MK10 Tacticus": {
-        "abbreviation": "MK10",
-        "armour_value": {
-            "standard": 24,
-            "master_crafted": 26,
-            "artifact": 28
-        },
-        "ranged_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "melee_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "description": "The MKX Tacticus is the most advanced pattern of power armour available to the Adeptus Astartes, featuring advanced armor composites and systems. It was developed by Belisarius Cawl during the development of the Primaris Astartes program.",
-        "tags": ["power_armour"]
-    },
-    "Armoured Ceramite": {
-        "abbreviation": "ArmCrmt",
-        "description": "Supplemental ceramite armour packages provide protection far beyond stock configurations while also adding significant weight to the chassis.",
-        "armour_value": {
-            "standard": 20,
-            "master_crafted": 24,
-            "artifact": 28
-        },
-        "tags": [
-            "vehicle",
-            "armour"
-        ]
-    },
-    "Heavy Armour": {
-        "abbreviation": "HvyArm",
-        "description": "Simple but effective, extra armour plates can be attached to most vehicles to provide extra protection.",
-        "armour_value": {
-            "standard": 10,
-            "master_crafted": 12,
-            "artifact": 14
-        },
-        "tags": [
-            "vehicle",
-            "armour"
-        ]
-    },
-    "Void Shield": {
-        "abbreviation": "V Shld",
-        "description": "An advanced shield capable of providing extreme protection to heavy vehicles.",
-        "armour_value": {
-            "standard": 40,
-            "master_crafted": 52,
-            "artifact": 64
-        },
-        "damage_resistance_mod": {
-            "standard": 30,
+            "artifact": 50,
             "master_crafted": 35,
-            "artifact": 40
+            "standard": 30
         },
-        "tags": [
-            "vehicle",
-            "armour",
-            "voidshield"
-        ]
-    },
-    "Lucifer Pattern Engine": {
-        "abbreviation": "Luc Eng",
-        "description": "An advanced engine that increases tactical flexibility by enabling more options for movement and faster repositioning.",
-        "damage_resistance_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 20
+        "maintenance": 1,
+        "melee_hands": 8,
+        "melee_mod": {
+            "artifact": 10,
+            "master_crafted": 0,
+            "standard": -10
         },
+        "ranged_hands": 8,
         "ranged_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 20
+            "artifact": 10,
+            "master_crafted": 0,
+            "standard": -10
         },
         "tags": [
-            "vehicle",
-            "armour",
-            "Upgrade"
+            "dreadnought",
+            "ancient"
         ]
-    },
-    "Artificer Hull": {
-        "abbreviation": "ArtHll",
-        "description": "Replacing numerous structural components and armour plates with thrice-blessed replacements, the vehicle’s hull is upgraded to be a rare work of mechanical art by master artificers.",
-        "armour_value": {
-            "standard": 10,
-            "master_crafted": 12,
-            "artifact": 14
-        },
-        "damage_resistance_mod": {
-            "standard": 15,
-            "master_crafted": 20,
-            "artifact": 25
-        },
-        "tags": [
-            "vehicle",
-            "Upgrade"
-        ]
-    },
-    // Hireling Armour
-    // Admech
-    "Skitarii Armour": {
-        "abbreviation": "SkitArm",
-        "description": "Skitarii Armour is something of a misnomer as most Skitarii are in fact bonded more or less permenantly to their advanced mars armour",
-        "armour_value": {
-            "standard": 10, // Might as well buff this
-            "master_crafted": 12,
-            "artifact": 15
-        }
     },
     "Dragon Scales": {
         "abbreviation": "DrgnScl",
-        "description": "Dragon Scales are an advanced armour utilized by tech priests, it is remarkably lightweight for the protection it affords and is often greatly modified by it's wearer while also being designed to directly interface with the user's cybernetic body.",
         "armour_value": {
-            "standard": 16,
+            "artifact": 20,
             "master_crafted": 18,
-            "artifact": 20
+            "standard": 16
         },
+        "description": "Dragon Scales are an advanced armour utilized by tech priests, it is remarkably lightweight for the protection it affords and is often greatly modified by it's wearer while also being designed to directly interface with the user's cybernetic body.",
         "melee_mod": {
-            "standard": 0,
+            "artifact": 10,
             "master_crafted": 5,
-            "artifact": 10
+            "standard": 0
         }
+    },
+    "Dreadnought": {
+        "abbreviation": "Drdnght",
+        "armour_value": {
+            "artifact": 50,
+            "master_crafted": 45,
+            "standard": 40
+        },
+        "damage_resistance_mod": {
+            "artifact": 40,
+            "master_crafted": 25,
+            "standard": 20
+        },
+        "description": "A massive war-machine that can be piloted by an honored Astarte, who otherwise would have fallen in combat. Some of the Astartes consider this a fate worse than death",
+        "hp_mod": {
+            "artifact": 50,
+            "master_crafted": 35,
+            "standard": 30
+        },
+        "maintenance": 1,
+        "melee_hands": 8,
+        "melee_mod": {
+            "artifact": 10,
+            "master_crafted": 0,
+            "standard": -10
+        },
+        "ranged_hands": 8,
+        "ranged_mod": {
+            "artifact": 10,
+            "master_crafted": 0,
+            "standard": -10
+        },
+        "tags": [
+            "dreadnought"
+        ]
+    },
+    // T'au
+    "Fire Warrior Armour": {
+        "abbreviation": "FWarArm",
+        "armour_value": {
+            "artifact": 25,
+            "master_crafted": 22,
+            // TODO - needs rebalancing
+            "standard": 20
+        },
+        "description": "This armour is used by T'au fire warriors."
+    },
+    "Heavy Armour": {
+        "abbreviation": "HvyArm",
+        "armour_value": {
+            "artifact": 14,
+            "master_crafted": 12,
+            "standard": 10
+        },
+        "description": "Simple but effective, extra armour plates can be attached to most vehicles to provide extra protection.",
+        "tags": [
+            "vehicle",
+            "armour"
+        ]
     },
     // Sororitas and other imperials
     "Light Power Armour": {
         "abbreviation": "LPwrArm",
         "armour_value": {
-            "standard": 13,
+            "artifact": 17,
             "master_crafted": 15,
-            "artifact": 17
+            "standard": 13
+        },
+        "description": "A suit of light power armour, intended to be useable by the regular humans.",
+        "melee_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
         },
         "ranged_mod": {
-            "standard": 0,
+            "artifact": 10,
             "master_crafted": 5,
-            "artifact": 10
-        },
-        "melee_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "description": "A suit of light power armour, intended to be useable by the regular humans."
-    },
-    "Sororitas Power Armour": {
-        "abbreviation": "SrPwrArm",
-        "armour_value": {
-            "standard": 14,
-            "master_crafted": 16,
-            "artifact": 18
-        },
-        "ranged_mod": {
-            "standard": 5,
-            "master_crafted": 10,
-            "artifact": 15
-        },
-        "melee_mod": {
-            "standard": 0,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "description": "Lighter than most suits, thanks to plug ports that link the Sister's musculature directly to the enhanced fibre bundle network, while providing excellent protection. Helmet has an integrated targeter."
-    },
-    // Eldar
-    "Ranger Armour": {
-        "abbreviation": "RngrArm",
-        "description": "This armour is used by eldar rangers.",
-        "armour_value": {
-            "standard": 25,
-            "master_crafted": 27,
-            "artifact": 30
+            "standard": 0
         }
+    },
+    "Lucifer Pattern Engine": {
+        "abbreviation": "Luc Eng",
+        "damage_resistance_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "description": "An advanced engine that increases tactical flexibility by enabling more options for movement and faster repositioning.",
+        "ranged_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "tags": [
+            "vehicle",
+            "armour",
+            "Upgrade"
+        ]
+    },
+    "MK10 Tacticus": {
+        "abbreviation": "MK10",
+        "armour_value": {
+            "artifact": 28,
+            "master_crafted": 26,
+            "standard": 24
+        },
+        "description": "The MKX Tacticus is the most advanced pattern of power armour available to the Adeptus Astartes, featuring advanced armor composites and systems. It was developed by Belisarius Cawl during the development of the Primaris Astartes program.",
+        "melee_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "ranged_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "tags": [
+            "power_armour"
+        ]
+    },
+    "MK3 Iron Armour": {
+        "abbreviation": "MK3",
+        "armour_value": {
+            "artifact": 28,
+            "master_crafted": 24,
+            "standard": 22
+        },
+        "damage_resistance_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "description": "An ancient set of Power Armor dating back to the early Great Crusade. The Mark III has heavier armor plating but is far heavier then its contemporaries.",
+        "hp_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "maintenance": 0.3,
+        "melee_mod": {
+            "artifact": 15,
+            "master_crafted": 10,
+            "standard": 10
+        },
+        "ranged_mod": {
+            "artifact": 0,
+            "master_crafted": -5,
+            "standard": -10
+        },
+        "renegade_buy": false,
+        "requires_to_forge": [
+            "ceramite_casting_chambers"
+        ],
+        "tags": [
+            "power_armour"
+        ],
+        "value": 125
+    },
+    "MK4 Maximus": {
+        "abbreviation": "MK4",
+        "armour_value": {
+            "artifact": 21,
+            "master_crafted": 17,
+            "standard": 15
+        },
+        "description": "Power Armor dating back to the end of the Great Crusade. It is considered the pinnacle of Power Armor by some Astartes. However, the components are no longer reproducible, the knowledge having been lost to time.",
+        "hp_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "maintenance": 0.4,
+        "melee_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "ranged_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "renegade_buy": false,
+        "requires_to_forge": [
+            "advanced_ceramite_bonding",
+            "armour_stealth"
+        ],
+        "tags": [
+            "power_armour"
+        ],
+        "value": 125
+    },
+    "MK5 Heresy": {
+        "abbreviation": "MK5",
+        "armour_value": {
+            "artifact": 21,
+            "master_crafted": 17,
+            "standard": 15
+        },
+        "damage_resistance_mod": {
+            "artifact": 5,
+            "master_crafted": 0,
+            "standard": -5
+        },
+        "description": "A hastily assembled Power Armor that first started appearing during the Horus Heresy to act as a stopgap while new suits were produced and sent to loyalist legions. It excels in close combat but it has limited sensors for ranged combat.",
+        "hp_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "maintenance": 0.05,
+        "melee_mod": {
+            "artifact": 30,
+            "master_crafted": 25,
+            "standard": 20
+        },
+        "ranged_mod": {
+            "artifact": 0,
+            "master_crafted": 0,
+            "standard": -5
+        },
+        "renegade_buy": true,
+        "requires_to_forge": [
+            "ceramite_casting_chambers"
+        ],
+        "tags": [
+            "power_armour"
+        ],
+        "value": 45
+    },
+    "MK6 Corvus": {
+        "abbreviation": "MK6",
+        "armour_value": {
+            "artifact": 21,
+            "master_crafted": 17,
+            "standard": 15
+        },
+        "damage_resistance_mod": {
+            "artifact": 5,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "description": "A suit dating back to the Horus Heresy, first tested by the Raven Guard. It contains boosted olfactory and auditory sensors that increase the ranged accuracy of the wearer. This however makes it more fragile to an extent.",
+        "hp_mod": {
+            "artifact": 5,
+            "master_crafted": 0,
+            "standard": -5
+        },
+        "maintenance": 0.05,
+        "melee_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "ranged_mod": {
+            "artifact": 30,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "renegade_buy": false,
+        "requires_to_forge": [
+            "ceramite_casting_chambers",
+            "advanced_servo_motors"
+        ],
+        "tags": [
+            "power_armour"
+        ],
+        "value": 35
+    },
+    "MK7 Aquila": {
+        "abbreviation": "MK7",
+        "armour_value": {
+            "artifact": 24,
+            "master_crafted": 20,
+            "standard": 18
+        },
+        "damage_resistance_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "description": "The most common power armour of the Adeptus Astartes and the only power armour still widely manufactured by the Imperium.",
+        "hp_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "maintenance": 0.01,
+        "melee_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "ranged_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "renegade_buy": false,
+        "requires_to_forge": [
+            "ceramite_casting_chambers"
+        ],
+        "tags": [
+            "power_armour"
+        ],
+        "value": 20
+    },
+    "MK8 Errant": {
+        "abbreviation": "MK8",
+        "armour_value": {
+            "artifact": 26,
+            "master_crafted": 22,
+            "standard": 20
+        },
+        "damage_resistance_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "description": "The newest and most advanced of the standard mark power armours as such production has not yet reached maximum capacity creating a supply shortage while chapters rush to get access to them.",
+        "hp_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "maintenance": 0.02,
+        "melee_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "ranged_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "renegade_buy": false,
+        "requires_to_forge": [
+            "advanced_ceramite_bonding"
+        ],
+        "tags": [
+            "power_armour"
+        ],
+        "value": 100
     },
     // Orks
     "Ork Armour": {
         "abbreviation": "OrkArm",
         "armour_value": {
-            "standard": 7,
+            "artifact": 9,
             "master_crafted": 8,
-            "artifact": 9
+            "standard": 7
+        },
+        "description": "Mismatched basic armour used by ork forces",
+        "melee_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
         },
         "ranged_mod": {
-            "standard": 0,
+            "artifact": 10,
             "master_crafted": 5,
-            "artifact": 10
+            "standard": 0
+        }
+    },
+    "Power Armour": {
+        "abbreviation": "PwrArm",
+        "armour_value": {
+            "artifact": 30,
+            "master_crafted": 25,
+            "standard": 19
+        },
+        "description": "A suit of Adeptus Astartes power armour. The Mark can no longer be determined- it appears to be a combination of several types.",
+        "melee_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "ranged_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "tags": [
+            "power_armour"
+        ]
+    },
+    // Eldar
+    "Ranger Armour": {
+        "abbreviation": "RngrArm",
+        "armour_value": {
+            "artifact": 30,
+            "master_crafted": 27,
+            "standard": 25
+        },
+        "description": "This armour is used by eldar rangers."
+    },
+    "Scout Armour": {
+        "abbreviation": "SctArm",
+        "armour_value": {
+            "artifact": 14,
+            "master_crafted": 12,
+            "standard": 11
+        },
+        "damage_resistance_mod": {
+            "artifact": 0,
+            "master_crafted": 10,
+            "standard": 0
+        },
+        "description": "A non-powered suit made up of carapace armour and ballistic nylon. Includes biohazard shielding, nutrient feed, and camouflage.",
+        "hp_mod": {
+            "artifact": 0,
+            "master_crafted": 10,
+            "standard": 0
         },
         "melee_mod": {
-            "standard": 0,
+            "artifact": 10,
             "master_crafted": 5,
-            "artifact": 10
+            "standard": 0
         },
-        "description": "Mismatched basic armour used by ork forces"
+        "ranged_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "renegade_buy": true,
+        "requires_to_forge": [],
+        "value": 5
     },
-    // T'au
-    "Fire Warrior Armour": {
-        "abbreviation": "FWarArm",
-        "description": "This armour is used by T'au fire warriors.",
+    // Hireling Armour
+    // Admech
+    "Skitarii Armour": {
+        "abbreviation": "SkitArm",
         "armour_value": {
-            // TODO - needs rebalancing
-            "standard": 20,
-            "master_crafted": 22,
-            "artifact": 25
+            "artifact": 15,
+            "master_crafted": 12,
+            "standard": 10 // Might as well buff this
+        },
+        "description": "Skitarii Armour is something of a misnomer as most Skitarii are in fact bonded more or less permenantly to their advanced mars armour"
+    },
+    "Sororitas Power Armour": {
+        "abbreviation": "SrPwrArm",
+        "armour_value": {
+            "artifact": 18,
+            "master_crafted": 16,
+            "standard": 14
+        },
+        "description": "Lighter than most suits, thanks to plug ports that link the Sister's musculature directly to the enhanced fibre bundle network, while providing excellent protection. Helmet has an integrated targeter.",
+        "melee_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "ranged_mod": {
+            "artifact": 15,
+            "master_crafted": 10,
+            "standard": 5
         }
+    },
+    "Tartaros": {
+        "abbreviation": "Tartrs",
+        "armour_value": {
+            "artifact": 40,
+            "master_crafted": 36,
+            "standard": 30
+        },
+        "description": "This pattern is possibly considered the most advanced form of Terminator Armour, providing greater mobility for the wearer compared to the Indomitus with no loss in durability. In the M41 considered to be incredibly rare with wars being fought to secure more suits.",
+        "hp_mod": {
+            "artifact": 15,
+            "master_crafted": 10,
+            "standard": 5
+        },
+        "maintenance": 3,
+        "melee_hands": 2,
+        "melee_mod": {
+            "artifact": 25,
+            "master_crafted": 20,
+            "standard": 10
+        },
+        "ranged_hands": 2,
+        "ranged_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "renegade_buy": false,
+        "req_exp": 100,
+        "requires_to_forge": [
+            "ceramite_void_hardening",
+            "enhanced_nerve_interfacing",
+            "advanced_servo_motors"
+        ],
+        "tags": [
+            "terminator"
+        ],
+        "value": 250
+    },
+    "Terminator Armour": {
+        "abbreviation": "Indmts",
+        "armour_value": {
+            "artifact": 40,
+            "master_crafted": 36,
+            "standard": 30
+        },
+        "damage_resistance_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "description": "Terminator Armour is the strongest and most powerful armour designed by humanity, available only to the veterans of the Adeptus Astartes. The Indomitus Pattern is the most widespread and versatile pattern as of M41.",
+        "hp_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "maintenance": 1,
+        "melee_hands": 2,
+        "melee_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "ranged_hands": 2,
+        "ranged_mod": {
+            "artifact": 0,
+            "master_crafted": -5,
+            "standard": -10
+        },
+        "renegade_buy": false,
+        "req_exp": 100,
+        "requires_to_forge": [
+            "ceramite_void_hardening",
+            "enhanced_nerve_interfacing",
+            "advanced_servo_motors"
+        ],
+        "tags": [
+            "terminator"
+        ],
+        "value": 200
+    },
+    "Void Shield": {
+        "abbreviation": "V Shld",
+        "armour_value": {
+            "artifact": 64,
+            "master_crafted": 52,
+            "standard": 40
+        },
+        "damage_resistance_mod": {
+            "artifact": 40,
+            "master_crafted": 35,
+            "standard": 30
+        },
+        "description": "An advanced shield capable of providing extreme protection to heavy vehicles.",
+        "tags": [
+            "vehicle",
+            "armour",
+            "voidshield"
+        ]
     }
 }
