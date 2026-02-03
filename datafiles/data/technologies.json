@@ -131,6 +131,6 @@
         "value": 3000,
         "size": 0,
         "requires_to_forge": ["advanced_ceramite_bonding"],
-        "description": ""
+        "description": "This research unlocks the secrets of creation of a compound that maintains protective qualities while reducing weight, for increased mobility without sacrificing protection."
     }
 }

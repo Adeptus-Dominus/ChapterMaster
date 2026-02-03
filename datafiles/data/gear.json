@@ -13,11 +13,13 @@
         },
         "value": 5,
         "requires_to_forge": [],
-        "renegade": false
+        "renegade_buy": false
     },
     "Narthecium": {
         "abbreviation": "Nrthcm",
-        "special_properties": ["Medkit"],
+        "special_properties": [
+            "Medkit"
+        ],
         "description": "An advanced medical field kit these allow Apothecaries to heal wounds or recover Gene-Seed from fallen Astartes.",
         "melee_hands": -0.5,
         "ranged_hands": -0.5,
@@ -28,7 +30,7 @@
         },
         "value": 10,
         "requires_to_forge": [],
-        "renegade": false
+        "renegade_buy": false
     },
     "Psychic Hood": {
         "abbreviation": "PsyHd",
@@ -38,7 +40,7 @@
         },
         "value": 100,
         "requires_to_forge": [],
-        "renegade": false
+        "renegade_buy": false
     },
     "Rosarius": {
         "abbreviation": "Rsrius",
@@ -55,7 +57,7 @@
         },
         "value": 100,
         "requires_to_forge": [],
-        "renegade": false
+        "renegade_buy": false
     },
     "Iron Halo": {
         "abbreviation": "IrnHalo",
@@ -67,7 +69,7 @@
         },
         "value": 300,
         "requires_to_forge": [],
-        "renegade": false
+        "renegade_buy": false
     },
     "Combat Shield": {
         "description": "A lighter, more maneuverable version of a Storm Shield. Due to its flexibility, Combat Shields leave other hand of a Space Marine free to use other hand-to-hand weaponry.",
@@ -78,7 +80,9 @@
             "artifact": 8
         },
         "weight": 3,
-        "tags": ["shield"],
+        "tags": [
+            "shield"
+        ],
         "hp_mod": {
             "standard": 10,
             "master_crafted": 15,
@@ -86,23 +90,27 @@
         },
         "value": 15,
         "requires_to_forge": [],
-        "renegade": false
+        "renegade_buy": false
     },
     "Plasma Bomb": {
         "abbreviation": "PlBomb",
-        "special_properties": ["Structure Destroyer"],
+        "special_properties": [
+            "Structure Destroyer"
+        ],
         "description": "A special plasma charge, this bomb can be used to seal underground caves or destroy enemy structures.",
         "value": 175,
         "requires_to_forge": [],
-        "renegade": false
+        "renegade_buy": false
     },
     "Exterminatus": {
         "abbreviation": "Extrmnts",
-        "special_properties": ["Planet Destroyer"],
+        "special_properties": [
+            "Planet Destroyer"
+        ],
         "description": "A weapon of the Emperor, and His divine judgment, this weapon can be placed upon a planet to obliterate it entirely.",
         "value": 2500,
         "requires_to_forge": [],
-        "renegade": false
+        "renegade_buy": false
     },
     "Smoke Launchers": {
         "description": "Useful for providing concealment in open terrain, these launchers project wide-spectrum concealing smoke to prevent accurate targeting of the vehicle.",
@@ -131,7 +139,9 @@
         "range": 1,
         "spli": 1,
         "arp": 1,
-        "tags": ["vehicle"]
+        "tags": [
+            "vehicle"
+        ]
     },
     "Searchlight": {
         "description": "A simple solution for fighting in dark environments, searchlights serve to illuminate enemies for ease of targeting.",
@@ -154,13 +164,15 @@
             "master_crafted": 15,
             "artifact": 20
         },
-        "tags": ["vehicle"]
+        "tags": [
+            "vehicle"
+        ]
     },
     "Gene Pod Incubator": {
         "abbreviation": "GenePod",
         "description": "Required to house gene slaves in order to generate new gene seed for the chapter.",
         "value": 8,
         "requires_to_forge": [],
-        "renegade": false
+        "renegade_buy": false
     }
 }

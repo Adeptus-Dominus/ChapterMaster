@@ -272,14 +272,7 @@ function Armamentarium() constructor {
         }
 
         // 2. Vehicles
-        var _vehicle_list = [
-            "Rhino",
-            "Predator",
-            "Land Raider",
-            "Whirlwind",
-            "Land Speeder"
-        ];
-        if (array_contains(_vehicle_list, _item.name)) {
+        if (variable_struct_exists(global.vehicles, _item.name)) {  
             repeat (_count) {
                 scr_add_vehicle(_item.name, target_comp, {});
             }

@@ -452,14 +452,7 @@ function SpecialistPointHandler() constructor {
 
     static scr_evaluate_forge_item_completion = function(item) {
         if (item.type == "normal") {
-            var _vehicles = [
-                "Rhino",
-                "Predator",
-                "Land Raider",
-                "Whirlwind",
-                "Land Speeder"
-            ];
-            var is_vehicle = array_contains(_vehicles, item.name);
+            var is_vehicle = variable_struct_exists(global.vehicles, item.name)
             if (!is_vehicle) {
                 scr_forge_item(item);
             } else {
@@ -473,7 +466,7 @@ function SpecialistPointHandler() constructor {
                 scr_popup("Forge Completed", $"{item.name} X{item.count} construction finished Vehicles Waiting at hanger on {build_loc[0]} {build_loc[1]}", "", "");
             }
         } else if (item.type == "research") {
-            scr_advance_research(item);
+            scr_advance_research(item.name);
         }
     };
     /*static apothecary_points_calc(){

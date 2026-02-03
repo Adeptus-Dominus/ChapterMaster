@@ -1,6 +1,5 @@
 {
     "Dreadnought": {
-        "is_vehicle": true,
         "requires_to_forge": [
             "advanced_servo_motors",
             "ceramite_void_hardening"
@@ -8,25 +7,20 @@
         "value": 0
     },
     "Land Raider": {
-        "is_vehicle": true,
         "requires_to_forge": [],
         "value": 500
     },
     "Land Speeder": {
-        "is_vehicle": true,
         "requires_to_forge": [],
         "value": 120
     },
     "Predator": {
-        "is_vehicle": true,
         "value": 240
     },
     "Rhino": {
-        "is_vehicle": true,
         "value": 120
     },
     "Whirlwind": {
-        "is_vehicle": true,
         "value": 180
     }
 }

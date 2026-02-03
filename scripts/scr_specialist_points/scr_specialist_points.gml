@@ -54,9 +54,10 @@ function unit_forge_point_generation(turn_end = false) {
     return [points, reasons];
 }
 
-function scr_advance_research(research) {
-    array_push(obj_controller.technologies_known, research);
-    scr_popup("Research Completed", $"Research of {research} complete", "", "");
+/// @param {string} _research_name
+function scr_advance_research(_research_name) {
+    array_push(obj_controller.technologies_known, _research_name);
+    scr_popup("Research Completed", $"Research of {_research_name} complete", "", "");
 }
 
 function research_end() {

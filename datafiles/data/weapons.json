@@ -885,10 +885,7 @@
             "boarding 2"
         ],
         "value": 90,
-        "requires_to_forge": {
-            "power_fields": 2,
-            "bolt": 2
-        }
+        "requires_to_forge": ["projectile_propellant_purification", "mono_molecular_edge_sheathing"]
     },
     "Assault Chainfist": {
         "abbreviation": "AssltChFst",
