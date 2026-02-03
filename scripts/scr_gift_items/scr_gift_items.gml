@@ -198,7 +198,7 @@ function are_giftable_factions() {
     ];
     for (var i = 0; i < array_length(giftable_factions); i++) {
         var gift_faction = giftable_factions[i];
-        if (known[gift_faction] && !faction_defeated[gift_faction]) {
+        if (obj_controller.known[gift_faction] && !obj_controller.faction_defeated[gift_faction]) {
             chick = true;
         }
     }

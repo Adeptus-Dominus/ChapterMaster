@@ -8,7 +8,7 @@ enum eTRIALS {
     APPRENTICESHIP,
     NUM,
 }
-#macro RECRUITMENT_PACE_DESCRIPTIONS [" is currently halted."," is advancing sluggishly."," is advancing slowly."," is advancing moderately fast."," is advancing fast."," is advancing frenetically."," is advancing as fast as possible."]
+#macro RECRUITMENT_PACE_DESCRIPTIONS [" is currently halted"," is advancing sluggishly"," is advancing slowly"," is advancing moderately fast"," is advancing fast"," is advancing frenetically"," is advancing as fast as possible"]
 
 #macro RECRUITEMENT_RATES_CAPS ["HALTED","SLUGGISH","SLOW","MODERATE","FAST","FRENETIC","MAXIMUM",]
 #macro RECRUITMENT_RATES ["halted","sluggish","slow","moderate","fast","frenetic","hereticly fast"]
