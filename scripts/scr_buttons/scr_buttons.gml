@@ -204,16 +204,25 @@ function LabeledIcon(icon, text, x1 = 0, y1 = 0, data = false) constructor {
 /// @param {sprite} choice_sprite Sprite to draw.
 /// @param {array} [scale=[1,1]] Scale factors [x,y].
 /// @param {sprite} [hover_sprite=-1] Optional hover sprite.
-/// @returns {array} [x1, y1, x2, y2] bounding box.
-function draw_sprite_as_button(position, choice_sprite, scale = [1, 1], hover_sprite = -1) {
+/// @returns {struct} [x1, y1, x2, y2] bounding box.
+function draw_sprite_as_button(position, choice_sprite, scale = [1, 1], hover_sprite = -1, alpha = 1, inactive_alpha = 0.9) {
     var _pos = [
         position[0],
         position[1],
         position[0] + (sprite_get_width(choice_sprite) * scale[0]),
         position[1] + (sprite_get_height(choice_sprite) * scale[1])
     ];
-    draw_sprite_ext(choice_sprite, 0, position[0], position[1], scale[0], scale[1], 0, c_white, scr_hit(_pos) ? 1 : 0.9);
-    return _pos;
+
+    var _hovered = scr_hit(_pos);
+    var _clicked = false;
+
+    if (_hovered) {
+        _clicked = scr_click_left();
+    }
+
+    draw_sprite_ext(choice_sprite, 0, position[0], position[1], scale[0], scale[1], 0, c_white, _hovered ? alpha : min(alpha, inactive_alpha));
+
+    return {position: _pos, hovered: _hovered, clicked: _clicked};
 }
 
 /// @function draw_unit_buttons(position, text, size_mod, colour, halign, font, alpha_mult, bg, bg_color)
