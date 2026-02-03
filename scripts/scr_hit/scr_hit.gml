@@ -71,7 +71,6 @@ function _point_and_click_logic(_rect, _cooldown = 60, _lock_bypass = false, _in
     }
 
     return true;
-    return true;
 }
 
 /// @description Returns true if left mouse button was clicked on the desired rectangle area.
@@ -203,9 +202,4 @@ function return_mouse_consts() {
 function mouse_distance_less(xx, yy, distance) {
     var _mouse_consts = return_mouse_consts();
     return point_distance(xx, yy, _mouse_consts[0], _mouse_consts[1]) <= distance;
-}
-
-function return_mouse_consts_tooltip() {
-    var consts = return_mouse_consts();
-    return [consts[0], consts[1]];
 }

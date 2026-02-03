@@ -1,4 +1,4 @@
-function tooltip_draw(_tooltip = "", _width = 350, _coords = return_mouse_consts_tooltip(), _text_color = #50a076, _font = fnt_40k_14, _header = "", _header_font = fnt_40k_14b, _force_width = false) {
+function tooltip_draw(_tooltip = "", _width = 350, _coords = return_mouse_consts(), _text_color = #50a076, _font = fnt_40k_14, _header = "", _header_font = fnt_40k_14b, _force_width = false) {
     if (!instance_exists(obj_tooltip)) {
         instance_create(0, 0, obj_tooltip);
     }

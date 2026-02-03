@@ -65,6 +65,7 @@ function Armamentarium() constructor {
         vehicles: global.vehicles,
         vehicle_gear: global.vehicle_gear,
         ships: global.ships,
+        technologies: global.technologies
     };
 
     // -------------------------------------------------------------------------
@@ -102,7 +103,8 @@ function Armamentarium() constructor {
             "gear",
             "mobility",
             "vehicles",
-            "ships"
+            "ships",
+            "technologies"
         ];
 
         for (var c = 0; c < array_length(_categories); c++) {
@@ -917,9 +919,9 @@ function ShopItem(_name) constructor {
 
     /// @desc Centralized calculation for current costs.
     /// @param {bool} _is_forge Whether we are in forge mode.
-    /// @param {real} _global_forge_mod The STC/Hangar modifier.
+    /// @param {real} _forge_mod The STC/Hangar modifier.
     /// @param {real} _trader_mod The Rogue Trader modifier.
-    static calculate_costs = function(_is_forge, _global_forge_mod, _trader_mod) {
+    static calculate_costs = function(_is_forge, _forge_mod, _trader_mod) {
         if (global.cheat_debug) {
             buy_cost = 0;
             forge_cost = 0;
@@ -929,14 +931,14 @@ function ShopItem(_name) constructor {
         }
 
         if (_is_forge) {
-            forgable = value != 0;
             for (var _j = 0; _j < array_length(requires_to_forge); _j++) {
                 if (!array_contains(obj_controller.technologies_known, requires_to_forge[_j])) {
                     forgable = false;
-                    break;
+                    return;
                 }
             }
-            forge_cost = (value * 10) * _global_forge_mod;
+            forgable = value != 0;
+            forge_cost = round(value * 10 * _forge_mod);
         } else {
             buy_cost = round(value * min(buy_cost_mod, _trader_mod));
         }

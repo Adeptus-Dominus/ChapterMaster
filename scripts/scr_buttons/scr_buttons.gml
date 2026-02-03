@@ -198,13 +198,14 @@ function LabeledIcon(icon, text, x1 = 0, y1 = 0, data = false) constructor {
     };
 }
 
-/// @function draw_sprite_as_button(position, choice_sprite, scale, hover_sprite)
-/// @description Draws a sprite as a clickable button, returning its bounding box.
-/// @param {array} position [x, y] top-left corner.
-/// @param {sprite} choice_sprite Sprite to draw.
-/// @param {array} [scale=[1,1]] Scale factors [x,y].
-/// @param {sprite} [hover_sprite=-1] Optional hover sprite.
-/// @returns {struct} [x1, y1, x2, y2] bounding box.
+/// @description Draws a sprite as a clickable button and returns interaction state.
+/// @param {array[real]} position [x, y] top-left corner.
+/// @param {Asset.GMSprite} choice_sprite Sprite to draw.
+/// @param {array[real]} scale Scale factors [x,y].
+/// @param {Asset.GMSprite} hover_sprite Optional hover sprite.
+/// @param {real} alpha Alpha when hovered.
+/// @param {real} inactive_alpha Alpha when not hovered.
+/// @returns {struct}
 function draw_sprite_as_button(position, choice_sprite, scale = [1, 1], hover_sprite = -1, alpha = 1, inactive_alpha = 0.9) {
     var _pos = [
         position[0],
