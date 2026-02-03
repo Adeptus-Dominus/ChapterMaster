@@ -64,7 +64,7 @@ function Armamentarium() constructor {
         mobility: global.gear[$ "mobility"],
         vehicles: global.vehicles,
         vehicle_gear: global.vehicle_gear,
-        ships: global.ships
+        ships: global.ships,
     };
 
     // -------------------------------------------------------------------------

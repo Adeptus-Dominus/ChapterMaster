@@ -19,20 +19,20 @@ function draw_centered_sprite_stretched(sprite_index, subimage, width, height) {
 function draw_sprite_fit(_sprite, _subimg, _x1, _y1, _x2, _y2) {
     var _target_w = _x2 - _x1;
     var _target_h = _y2 - _y1;
-    
+
     var _sw = sprite_get_width(_sprite);
     var _sh = sprite_get_height(_sprite);
-    
+
     var _scale = min(_target_w / _sw, _target_h / _sh);
-    
+
     var _final_w = _sw * _scale;
     var _final_h = _sh * _scale;
-    
+
     var _draw_x = _x1 + (_target_w - _final_w) * 0.5;
     var _draw_y = _y1 + (_target_h - _final_h) * 0.5;
-    
+
     var _ox = sprite_get_xoffset(_sprite);
     var _oy = sprite_get_yoffset(_sprite);
-    
+
     draw_sprite_ext(_sprite, _subimg, _draw_x + (_ox * _scale), _draw_y + (_oy * _scale), _scale, _scale, 0, c_white, 1);
 }
