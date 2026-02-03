@@ -221,7 +221,7 @@ function Armamentarium() constructor {
     /// @desc Processes forging costs and requirements for an item.
     /// @param {Struct.ShopItem} _item The item to process.
     /// @param {struct} _data The raw data source for requirements.
-    static _process_forge_item = function(_item, _data) {
+    static _process_forge_item = function(_item) {
         if (global.cheat_debug) {
             _item.forge_cost = 0;
             _item.no_forging = false;
@@ -233,13 +233,11 @@ function Armamentarium() constructor {
             return;
         }
 
-        if (struct_exists(_data, "requires_to_build")) {
-            var _reqs = _data.requires_to_build;
-            for (var j = 0; j < array_length(_reqs); ++j) {
-                if (!array_contains(obj_controller.technologies_known, _reqs[j])) {
-                    _item.no_forging = true;
-                    break;
-                }
+        var _reqs = _item.requires_to_build;
+        for (var j = 0; j < array_length(_reqs); ++j) {
+            if (!array_contains(obj_controller.technologies_known, _reqs[j])) {
+                _item.no_forging = true;
+                break;
             }
         }
 
@@ -875,6 +873,7 @@ function ShopItem(_name) constructor {
     no_buying = true;
     forge_cost = 0;
     no_forging = false;
+    requires_to_build = [];
     sellers = ["mechanicus"];
     tooltip = "";
     cost_tooltip = "";
