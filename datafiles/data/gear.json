@@ -12,7 +12,7 @@
             "artifact": 50
         },
         "value": 5,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Narthecium": {
@@ -27,7 +27,7 @@
             "artifact": 10
         },
         "value": 10,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Psychic Hood": {
@@ -37,7 +37,7 @@
             "psychic_focus": 15
         },
         "value": 100,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Rosarius": {
@@ -54,7 +54,7 @@
             "artifact": 10
         },
         "value": 100,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Iron Halo": {
@@ -66,7 +66,7 @@
             "artifact": 45
         },
         "value": 300,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Combat Shield": {
@@ -85,7 +85,7 @@
             "artifact": 20
         },
         "value": 15,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Plasma Bomb": {
@@ -93,7 +93,7 @@
         "special_properties": ["Structure Destroyer"],
         "description": "A special plasma charge, this bomb can be used to seal underground caves or destroy enemy structures.",
         "value": 175,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Exterminatus": {
@@ -101,7 +101,7 @@
         "special_properties": ["Planet Destroyer"],
         "description": "A weapon of the Emperor, and His divine judgment, this weapon can be placed upon a planet to obliterate it entirely.",
         "value": 2500,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Smoke Launchers": {
@@ -160,7 +160,7 @@
         "abbreviation": "GenePod",
         "description": "Required to house gene slaves in order to generate new gene seed for the chapter.",
         "value": 8,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     }
 }

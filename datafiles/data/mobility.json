@@ -28,7 +28,7 @@
             "jump"
         ],
         "value": 20,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Serpha Jump Pack": {
@@ -56,7 +56,7 @@
         },
         "tags": ["bonus_ammo"],
         "value": 25,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Servo-arm": {
@@ -75,7 +75,7 @@
         },
         "tags": ["terminator"],
         "value": 30,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Servo-harness": {
@@ -99,7 +99,7 @@
         },
         "tags": ["terminator"],
         "value": 150,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     },
     "Conversion Beamer Pack": {
@@ -110,7 +110,7 @@
         "ranged_hands": -0.5,
         "tags": ["terminator"],
         "value": 180,
-        "requires_to_build": ["plasma_coil_magnetization", "promethium_tank_brazing", "atomic_chamber_construction", "gravitic_reaction_principle"],
+        "requires_to_forge": ["plasma_coil_magnetization", "promethium_tank_brazing", "atomic_chamber_construction", "gravitic_reaction_principle"],
         "renegade": false
     },
     "Cyclone Missile System": {
@@ -121,7 +121,7 @@
         "ranged_hands": -0.5,
         "tags": ["terminator_only"],
         "value": 150,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade": false
     }
 }

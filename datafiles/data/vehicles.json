@@ -1,7 +1,7 @@
 {
     "Dreadnought": {
         "is_vehicle": true,
-        "requires_to_build": [
+        "requires_to_forge": [
             "advanced_servo_motors",
             "ceramite_void_hardening"
         ],
@@ -9,12 +9,12 @@
     },
     "Land Raider": {
         "is_vehicle": true,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "value": 500
     },
     "Land Speeder": {
         "is_vehicle": true,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "value": 120
     },
     "Predator": {

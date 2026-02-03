@@ -49,7 +49,7 @@
         "description": "A custom suit of power armored created by master artificiers and decorated without compare, this ancient Power Armour is beyond priceless. This suit's history is ancient and its users many.",
         "tags": ["power_armour"],
         "value": 150,
-        "requires_to_build": ["lightened_ceramite_compound", "ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
+        "requires_to_forge": ["lightened_ceramite_compound", "ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
         "renegade_buy": false
     },
     "Terminator Armour": {
@@ -86,7 +86,7 @@
         "req_exp": 100,
         "maintenance": 1,
         "value": 200,
-        "requires_to_build": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
+        "requires_to_forge": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
         "renegade_buy": false
     },
     "Dreadnought": {
@@ -187,7 +187,7 @@
         "req_exp": 100,
         "maintenance": 3,
         "value": 250,
-        "requires_to_build": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
+        "requires_to_forge": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
         "renegade_buy": false
     },
     "Cataphractii": {
@@ -253,7 +253,7 @@
         },
         "description": "A non-powered suit made up of carapace armour and ballistic nylon. Includes biohazard shielding, nutrient feed, and camouflage.",
         "value": 5,
-        "requires_to_build": [],
+        "requires_to_forge": [],
         "renegade_buy": true
     },
     "MK3 Iron Armour": {
@@ -287,7 +287,7 @@
         "tags": ["power_armour"],
         "maintenance": 0.3,
         "value": 125,
-        "requires_to_build": ["ceramite_casting_chambers"],
+        "requires_to_forge": ["ceramite_casting_chambers"],
         "renegade_buy": false
     },
     "MK4 Maximus": {
@@ -316,7 +316,7 @@
         "tags": ["power_armour"],
         "maintenance": 0.4,
         "value": 125,
-        "requires_to_build": ["advanced_ceramite_bonding", "armour_stealth"],
+        "requires_to_forge": ["advanced_ceramite_bonding", "armour_stealth"],
         "renegade_buy": false
     },
     "MK5 Heresy": {
@@ -350,7 +350,7 @@
         "tags": ["power_armour"],
         "maintenance": 0.05,
         "value": 45,
-        "requires_to_build": ["ceramite_casting_chambers"],
+        "requires_to_forge": ["ceramite_casting_chambers"],
         "renegade_buy": true
     },
     "MK6 Corvus": {
@@ -384,7 +384,7 @@
         "tags": ["power_armour"],
         "maintenance": 0.05,
         "value": 35,
-        "requires_to_build": ["ceramite_casting_chambers", "advanced_servo_motors"],
+        "requires_to_forge": ["ceramite_casting_chambers", "advanced_servo_motors"],
         "renegade_buy": false
     },
     "MK7 Aquila": {
@@ -418,7 +418,7 @@
         "tags": ["power_armour"],
         "maintenance": 0.01,
         "value": 20,
-        "requires_to_build": ["ceramite_casting_chambers"],
+        "requires_to_forge": ["ceramite_casting_chambers"],
         "renegade_buy": false
     },
     "MK8 Errant": {
@@ -452,7 +452,7 @@
         "tags": ["power_armour"],
         "maintenance": 0.02,
         "value": 100,
-        "requires_to_build": ["advanced_ceramite_bonding"],
+        "requires_to_forge": ["advanced_ceramite_bonding"],
         "renegade_buy": false
     },
     "MK10 Tacticus": {
