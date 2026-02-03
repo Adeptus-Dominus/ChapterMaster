@@ -1,4 +1,5 @@
-/// @description Primary controller for the Chapter's armory and production.
+/// @desc Primary controller for the Chapter's armory and production.
+/// @returns {Struct.Armamentarium}
 function Armamentarium() constructor {
     // --- UI State ---
     shop_type = "weapons";
@@ -75,7 +76,7 @@ function Armamentarium() constructor {
         count_total = count_techmarines + count_aspirants;
     };
 
-    /// @desc One-time setup to build every ShopItem.
+    /// @desc One-time setup to build every ShopItem from global data sources.
     static initialize_master_catalog = function() {
         if (is_initialized) {
             return;
@@ -143,7 +144,7 @@ function Armamentarium() constructor {
         }
     };
 
-    /// @desc Refresh of the current shop view.
+    /// @desc Refreshes the current shop view, updating prices, discounts, and item availability.
     static refresh_catalog = function() {
         if (!is_initialized) {
             initialize_master_catalog();
@@ -217,7 +218,9 @@ function Armamentarium() constructor {
         array_sort(shop_items[$ shop_type], true);
     };
 
-    /// @param {Struct.ShopItem} _item
+    /// @desc Processes forging costs and requirements for an item.
+    /// @param {Struct.ShopItem} _item The item to process.
+    /// @param {struct} _data The raw data source for requirements.
     static _process_forge_item = function(_item, _data) {
         if (global.cheat_debug) {
             _item.forge_cost = 0;
@@ -247,7 +250,8 @@ function Armamentarium() constructor {
         }
     };
 
-    /// @param {Struct.ShopItem} _item
+    /// @desc Calculates purchase cost for an item based on modifiers.
+    /// @param {Struct.ShopItem} _item The item to process.
     static _process_buy_item = function(_item) {
         if (global.cheat_debug) {
             _item.buy_cost = 0;
@@ -257,8 +261,11 @@ function Armamentarium() constructor {
         _item.buy_cost = round(_item.value * min(_item.buy_cost_mod, discount_rogue_trader));
     };
 
-    /// @description Sells an item back to the market.
-    /// @param {Struct.ShopItem} _item
+    /// @desc Sells an item back to the market.
+    /// @param {Struct.ShopItem} _item The item to sell.
+    /// @param {real} _count Quantity to sell.
+    /// @param {real} _modifier Price multiplier for selling.
+    /// @returns {bool} Success of the transaction.
     static sell_item = function(_item, _count, _modifier) {
         if (_item.stocked < _count) {
             return false;
@@ -273,7 +280,9 @@ function Armamentarium() constructor {
     };
 
     /// @desc Internal logic for various purchase types.
-    /// @param {Struct.ShopItem} _item
+    /// @param {Struct.ShopItem} _item The item being purchased.
+    /// @param {real} _cost The total cost of the purchase.
+    /// @param {real} _count The quantity being purchased.
     static _execute_purchase = function(_item, _cost, _count) {
         obj_controller.requisition -= _cost;
 
@@ -365,6 +374,8 @@ function Armamentarium() constructor {
         refresh_catalog();
     };
 
+    /// @desc Switches the current shop category.
+    /// @param {string} _new_type The category to switch to.
     static _switch_tab = function(_new_type) {
         if (shop_type == _new_type) {
             return;
@@ -378,6 +389,7 @@ function Armamentarium() constructor {
     // DRAW METHODS
     // -------------------------------------------------------------------------
 
+    /// @desc Main draw loop for the Armamentarium interface.
     static draw = function() {
         add_draw_return_values();
 
@@ -398,6 +410,7 @@ function Armamentarium() constructor {
         pop_draw_return_values();
     };
 
+    /// @desc Draws the background elements.
     static _draw_background = function() {
         draw_sprite(spr_rock_bg, 0, 0, 0);
 
@@ -411,6 +424,7 @@ function Armamentarium() constructor {
         draw_line(342, 426, 903, 426);
     };
 
+    /// @desc Draws the interface header and advisor splash.
     static _draw_header = function() {
         var _is_adept = obj_controller.menu_adept == 1;
         var _splash_idx = _is_adept ? 1 : (obj_ini.custom_advisors[$ "forge_master"] ?? 5);
@@ -427,6 +441,7 @@ function Armamentarium() constructor {
         draw_text(352, 100, _sub);
     };
 
+    /// @desc Draws the STC fragment and identification panel.
     static _draw_stc_panel = function() {
         draw_set_font(fnt_40k_14);
         var _total_un = obj_controller.stc_wargear_un + obj_controller.stc_vehicles_un + obj_controller.stc_ships_un;
@@ -446,6 +461,9 @@ function Armamentarium() constructor {
     };
 
     /// @desc Draws the text descriptions for STC levels.
+    /// @param {string} _category The STC category name.
+    /// @param {real} _x_off X offset for drawing.
+    /// @param {real} _current_level The current level of research.
     static _draw_stc_bonus_text = function(_category, _x_off, _current_level) {
         static _bonus_data = {
             wargear: [
@@ -484,6 +502,7 @@ function Armamentarium() constructor {
         draw_set_alpha(1.0);
     };
 
+    /// @desc Draws the STC research progress bars.
     static _draw_stc_bars = function() {
         static _categories = [
             "wargear",
@@ -542,6 +561,7 @@ function Armamentarium() constructor {
         }
     };
 
+    /// @desc Draws the scrollable list of shop items.
     static _draw_item_list = function() {
         slate_panel.inside_method = function() {
             var _self = obj_controller.armamentarium;
@@ -613,6 +633,9 @@ function Armamentarium() constructor {
         slate_panel.draw(920, 95, 0.81, 0.85);
     };
 
+    /// @desc Draws page navigation for the item list.
+    /// @param {real} _total Total number of items.
+    /// @param {real} _per_page Items per page.
     static _draw_pagination = function(_total, _per_page) {
         var _pages = ceil(_total / _per_page);
         if (_pages <= 1) {
@@ -633,6 +656,10 @@ function Armamentarium() constructor {
     };
 
     /// @desc Handles the logic for clicking Buy, Sell, or Build icons.
+    /// @param {Struct.ShopItem} _item The item to act upon.
+    /// @param {real} _y Y position for drawing.
+    /// @param {real} _cost Cost of the action.
+    /// @param {real} _count Quantity for the action.
     static _draw_action_buttons = function(_item, _y, _cost, _count) {
         if (is_in_forge) {
             draw_sprite(spr_build_tiny, 0, 1530, _y + 2);
@@ -665,6 +692,7 @@ function Armamentarium() constructor {
         draw_set_alpha(1.0);
     };
 
+    /// @desc Draws the category navigation tabs.
     static _draw_tabs = function() {
         if (tab_buttons.weapons.draw(960, 64, "Equipment")) {
             _switch_tab("weapons");
@@ -683,6 +711,7 @@ function Armamentarium() constructor {
         }
     };
 
+    /// @desc Draws the status report from the Forge Master.
     static _draw_advisor_text = function() {
         var _role_tech = obj_ini.role[100][16];
         var _dispo_mech = obj_controller.disposition[3];
@@ -726,6 +755,8 @@ function Armamentarium() constructor {
         _draw_research_eta(_btn_y + 70);
     };
 
+    /// @desc Draws the projected time until the next STC breakthrough.
+    /// @param {real} _y Y position for drawing.
     static _draw_research_eta = function(_y) {
         var _focus = obj_controller.stc_research.research_focus;
         var _points_per_turn = obj_controller.specialist_point_handler.research_points;
@@ -740,6 +771,7 @@ function Armamentarium() constructor {
         draw_text_ext(352, _y, _text, -1, 536);
     };
 
+    /// @desc Draws the production and queue management UI.
     static _draw_forge_interface = function() {
         var _btn = draw_unit_buttons([659, 82], "BACK", [1, 1], CM_GREEN_COLOR,,,,, c_black);
         if (point_and_click(_btn)) {
@@ -830,7 +862,9 @@ function Armamentarium() constructor {
     initialize_master_catalog();
 }
 
-/// @param {string} _name
+/// @desc Represents a single item within the Armamentarium catalog.
+/// @param {string} _name Name of the item.
+/// @returns {Struct.ShopItem}
 function ShopItem(_name) constructor {
     name = _name;
     x_mod = 0;
@@ -851,12 +885,15 @@ function ShopItem(_name) constructor {
     area = "";
 
     /// @desc Calculates and returns price modifiers based on faction disposition.
+    /// @param {string} _faction The faction key to check.
+    /// @returns {real} The calculated price multiplier.
     static get_shop_mod = function(_faction) {
         var _tech_mod = 1.5;
         var _char_mod = 1.5;
 
         var _masters = scr_role_count("Forge Master", "", "units");
         if (array_length(_masters) > 0) {
+            /// @type {Struct.TTRPG_stats}
             var _m = _masters[0];
             _char_mod = (_m.charisma - 30) / 200;
             _tech_mod = _m.has_trait("flesh_is_weak") ? 0.1 : (_m.technology - 50) / 200;
@@ -871,14 +908,14 @@ function ShopItem(_name) constructor {
         };
 
         if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
-            modifiers.imperium -= 0.5;
-            modifiers.mechanicus -= 0.5;
-            modifiers.inquisition -= 0.5;
-            modifiers.ecclesiarchy -= 0.5;
+            _modifiers.imperium -= 0.5;
+            _modifiers.mechanicus -= 0.5;
+            _modifiers.inquisition -= 0.5;
+            _modifiers.ecclesiarchy -= 0.5;
         }
 
         if (obj_controller.tech_status == "heretics") {
-            modifiers.mechanicus -= 0.5;
+            _modifiers.mechanicus -= 0.5;
         }
 
         var _val = _modifiers[$ _faction] ?? 0;
@@ -887,6 +924,8 @@ function ShopItem(_name) constructor {
         return _val;
     };
 
+    /// @desc Iterates through potential sellers to find the best price for the item.
+    /// @param {array<string>} _sellers Array of faction strings.
     static update_best_seller = function(_sellers) {
         var _current_modifier = 1;
         var _current_seller = "unknown";
