@@ -1,4 +1,4 @@
-/// @desc Primary controller for the Chapter's armory and production.
+/// @desc Primary controller for the Chapter's armory and technologies.
 /// @returns {Struct.Armamentarium}
 function Armamentarium() constructor {
     // --- UI State ---
@@ -49,8 +49,8 @@ function Armamentarium() constructor {
         gear: [],
         mobility: [],
         vehicles: [],
-        warships: [],
-        production: [],
+        ships: [],
+        technologies: [],
     };
 
     master_catalog = [];
@@ -64,6 +64,7 @@ function Armamentarium() constructor {
         mobility: global.gear[$ "mobility"],
         vehicles: global.vehicles,
         vehicle_gear: global.vehicle_gear,
+        ships: global.ships
     };
 
     // -------------------------------------------------------------------------
@@ -100,7 +101,8 @@ function Armamentarium() constructor {
             "armour",
             "gear",
             "mobility",
-            "vehicles"
+            "vehicles",
+            "ships"
         ];
 
         for (var c = 0; c < array_length(_categories); c++) {
@@ -117,7 +119,12 @@ function Armamentarium() constructor {
                 var _raw = _data_source[$ _name];
                 var _item = new ShopItem(_name);
 
-                _item.area = _cat;
+                if (_cat == "gear" || _cat == "mobility") {
+                    _item.area = "armour";
+                } else {
+                    _item.area = _cat;
+                }
+
                 _item.value = _raw[$ "value"] ?? _item.value;
                 _item.buyable = (_item.value == 0) ? false : (_raw[$ "buyable"] ?? _item.buyable);
                 _item.forgable = (_item.value == 0) ? false : (_raw[$ "forgable"] ?? _item.forgable);
@@ -197,7 +204,7 @@ function Armamentarium() constructor {
                 discount_stc += _discount_hangar;
                 break;
 
-            case "warships":
+            case "ships":
                 discount_stc = obj_controller.stc_ships * 5;
                 if (discount_stc > 0) {
                     global_cost_tooltip += $"Ship STC: -{discount_stc}%\n";
@@ -256,7 +263,7 @@ function Armamentarium() constructor {
         obj_controller.requisition -= _cost;
 
         // 1. Warships
-        if (shop_type == "warships") {
+        if (shop_type == "ships") {
             var _duration = (_item.name == "Battle Barge") ? 30 : 10;
             eta = _duration;
             construction_started = 120;
@@ -546,7 +553,7 @@ function Armamentarium() constructor {
         draw_set_font(fnt_40k_14b);
         draw_set_color(c_white);
         draw_text(962, 159, "Name");
-        if (_manager.shop_type != "production") {
+        if (_manager.shop_type != "technologies") {
             draw_text(1280, 159, "Stocked");
         }
         draw_text(1410, 159, $"{_manager.is_in_forge ? "FP" : "RP"} Cost");
@@ -560,7 +567,7 @@ function Armamentarium() constructor {
             var _can_buy_or_forge = _manager.is_in_forge ? _item.forgable : _item.buyable;
             var _has_stock = _item.stocked > 0 || _item.mc_stocked > 0;
 
-            var _shift_pressed = keyboard_check(vk_shift) && !array_contains(["warships", "production"], _manager.shop_type);
+            var _shift_pressed = keyboard_check(vk_shift) && !array_contains(["ships", "technologies"], _manager.shop_type);
             var _mult = _shift_pressed ? 5 : 1;
 
             if (_is_hovered) {
@@ -575,7 +582,7 @@ function Armamentarium() constructor {
             var _display_color = (_can_buy_or_forge || _has_stock) ? c_gray : CM_RED_COLOR;
             draw_text_color_simple(962, _draw_y_local, _shift_pressed ? $"{_item.name} x5" : _item.name, _display_color, 1);
 
-            if (_manager.shop_type != "production") {
+            if (_manager.shop_type != "technologies") {
                 var _stocked_text = $"{_item.stocked}" + (_item.mc_stocked > 0 ? $" mc: {_item.mc_stocked}" : "");
                 draw_text_alpha(1300, _draw_y_local, _stocked_text, !_has_stock ? 0.5 : 1);
             }
@@ -630,7 +637,7 @@ function Armamentarium() constructor {
             }
         }
 
-        var _is_sellable_cat = !array_contains(["warships", "vehicles"], shop_type);
+        var _is_sellable_cat = !array_contains(["ships", "vehicles"], shop_type);
         if (_is_sellable_cat && _item.stocked > 0) {
             var _sell_btn = draw_sprite_as_button([1480, _y + 2], spr_sell_tiny,,, 1.0, 0.8);
 
@@ -679,8 +686,8 @@ function Armamentarium() constructor {
             _switch_tab("vehicles");
         }
 
-        var _label = is_in_forge ? "Manufacturing" : "Ships";
-        var _type = is_in_forge ? "production" : "warships";
+        var _label = is_in_forge ? "Technologies" : "Ships";
+        var _type = is_in_forge ? "technologies" : "ships";
         if (tab_buttons.ships.draw(1460, 64, _label)) {
             _switch_tab(_type);
         }
@@ -746,7 +753,7 @@ function Armamentarium() constructor {
         draw_text_ext(352, _y, _text, -1, 536);
     };
 
-    /// @desc Draws the production and queue management UI.
+    /// @desc Draws the technologies and queue management UI.
     static _draw_forge_interface = function() {
         var _btn = draw_unit_buttons([659, 82], "BACK", [1, 1], CM_GREEN_COLOR,,,,, c_black);
         if (point_and_click(_btn)) {
@@ -762,7 +769,7 @@ function Armamentarium() constructor {
         var _master_craft = obj_controller.master_craft_chance;
         var _forge_count = obj_controller.player_forge_data.player_forges;
 
-        var _text = $"Forge point production per turn: {obj_controller.forge_points}\n";
+        var _text = $"Forge point technologies per turn: {obj_controller.forge_points}\n";
         _text += $"Chapter total {_role_name}s: {count_total}\n";
         _text += $"Planetary Forges in operation: {_forge_count}\n";
         _text += $"Master Craft Forge Chance: {_master_craft}%\n";

@@ -128,7 +128,7 @@
     {"$GMIncludedFile":"","%Name":"mobility.json","CopyToMask":-1,"filePath":"datafiles/data","name":"mobility.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"psychic_disciplines.json","CopyToMask":-1,"filePath":"datafiles/data","name":"psychic_disciplines.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"psychic_powers.json","CopyToMask":-1,"filePath":"datafiles/data","name":"psychic_powers.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
-    {"$GMIncludedFile":"","%Name":"ships_shop_data.json","CopyToMask":-1,"filePath":"datafiles/data","name":"ships_shop_data.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"ships.json","CopyToMask":-1,"filePath":"datafiles/data","name":"ships.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"technologies.json","CopyToMask":-1,"filePath":"datafiles/data","name":"technologies.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"traits.json","CopyToMask":-1,"filePath":"datafiles/data","name":"traits.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"vehicle_gear.json","CopyToMask":-1,"filePath":"datafiles/data","name":"vehicle_gear.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
