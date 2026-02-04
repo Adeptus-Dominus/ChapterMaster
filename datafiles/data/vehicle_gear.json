@@ -1,10 +1,37 @@
 {
     "Armoured Ceramite": {
+        "abbreviation": "ArmCrmt",
+        "armour_value": {
+            "artifact": 28,
+            "master_crafted": 24,
+            "standard": 20
+        },
+        "description": "Supplemental ceramite armour packages provide protection far beyond stock configurations while also adding significant weight to the chassis.",
         "requires_to_forge": [],
+        "tags": [
+            "vehicle",
+            "armour"
+        ],
         "value": 200
     },
     "Artificer Hull": {
+        "abbreviation": "ArtHll",
+        "armour_value": {
+            "artifact": 14,
+            "master_crafted": 12,
+            "standard": 10
+        },
+        "damage_resistance_mod": {
+            "artifact": 25,
+            "master_crafted": 20,
+            "standard": 15
+        },
+        "description": "Replacing numerous structural components and armour plates with thrice-blessed replacements, the vehicle’s hull is upgraded to be a rare work of mechanical art by master artificers.",
         "requires_to_forge": [],
+        "tags": [
+            "vehicle",
+            "Upgrade"
+        ],
         "value": 200
     },
     "Close Combat Weapon": {
@@ -41,11 +68,39 @@
         "value": 0
     },
     "Heavy Armour": {
+        "abbreviation": "HvyArm",
+        "armour_value": {
+            "artifact": 14,
+            "master_crafted": 12,
+            "standard": 10
+        },
+        "description": "Simple but effective, extra armour plates can be attached to most vehicles to provide extra protection.",
         "requires_to_forge": [],
+        "tags": [
+            "vehicle",
+            "armour"
+        ],
         "value": 200
     },
     "Lucifer Pattern Engine": {
+        "abbreviation": "Luc Eng",
+        "damage_resistance_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "description": "An advanced engine that increases tactical flexibility by enabling more options for movement and faster repositioning.",
+        "ranged_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
         "requires_to_forge": [],
+        "tags": [
+            "vehicle",
+            "armour",
+            "Upgrade"
+        ],
         "value": 90
     },
     "Searchlight": {
@@ -78,7 +133,24 @@
         ]
     },
     "Void Shield": {
+        "abbreviation": "V Shld",
+        "armour_value": {
+            "artifact": 64,
+            "master_crafted": 52,
+            "standard": 40
+        },
+        "damage_resistance_mod": {
+            "artifact": 40,
+            "master_crafted": 35,
+            "standard": 30
+        },
+        "description": "An advanced shield capable of providing extreme protection to heavy vehicles.",
         "requires_to_forge": [],
+        "tags": [
+            "vehicle",
+            "armour",
+            "voidshield"
+        ],
         "value": 500
     }
 }

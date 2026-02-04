@@ -452,7 +452,7 @@ function SpecialistPointHandler() constructor {
 
     static scr_evaluate_forge_item_completion = function(_forge_order) {
         if (_forge_order.item.forge_type == "normal") {
-            var is_vehicle = variable_struct_exists(global.vehicles, _forge_order.item.name)
+            var is_vehicle = variable_struct_exists(global.vehicles, _forge_order.item.name);
             if (!is_vehicle) {
                 scr_forge_item(_forge_order);
             } else {

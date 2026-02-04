@@ -37,12 +37,38 @@ function Armamentarium() constructor {
     slate_panel.inside_method = method(self, _draw_slate_contents);
 
     var _cat_options = [
-        {label: "Weapons", value: "weapons"},
-        {label: "Armour", value: "armour"},
-        {label: "Equipment", value: "mobility"},
-        {label: "Gear", value: "gear"},
-        {label: "Vehicles", value: "vehicles"},
-        {label: "Vehicle Gear", value: "vehicle_gear"},
+        {
+            label: "Weapons",
+            value: "weapons",
+        },
+        {
+            label: "Armour",
+            value: "armour",
+        },
+        {
+            label: "Equipment",
+            value: "mobility",
+        },
+        {
+            label: "Gear",
+            value: "gear",
+        },
+        {
+            label: "Vehicles",
+            value: "vehicles",
+        },
+        {
+            label: "Vehicle Gear",
+            value: "vehicle_gear",
+        },
+        {
+            label: "Ships",
+            value: "ships",
+        },
+        {
+            label: "Technologies",
+            value: "technologies",
+        }
     ];
 
     category_dropdown = new UIDropdown(_cat_options, 200);
@@ -71,7 +97,7 @@ function Armamentarium() constructor {
         vehicles: global.vehicles,
         vehicle_gear: global.vehicle_gear,
         ships: global.ships,
-        technologies: global.technologies
+        technologies: global.technologies,
     };
 
     // -------------------------------------------------------------------------
@@ -129,7 +155,7 @@ function Armamentarium() constructor {
                 var _item = new ShopItem(_name);
 
                 var _item_tags = _raw[$ "tags"] ?? [];
-                if (array_contains_ext(_item_tags, ["sponson", "turret"])) {
+                if (array_contains_ext(_item_tags, ["sponson", "turret", "vehicle"])) {
                     _item.area = "vehicle_gear";
                 } else {
                     _item.area = _cat;
@@ -284,7 +310,7 @@ function Armamentarium() constructor {
         }
 
         // 2. Vehicles
-        if (variable_struct_exists(global.vehicles, _item.name)) {  
+        if (variable_struct_exists(global.vehicles, _item.name)) {
             repeat (_count) {
                 scr_add_vehicle(_item.name, target_comp, {});
             }
@@ -361,16 +387,23 @@ function Armamentarium() constructor {
         if (shop_type == _new_type) {
             return;
         }
+
+        if (!is_in_forge) {
+            is_in_forge = _new_type == "technologies";
+        } else {
+            is_in_forge = _new_type == "ships";
+        }
+
         shop_type = _new_type;
         page_mod = 0;
-        
-        for (var i = 0; i < array_length(category_dropdown.options); i++) {
-            if (category_dropdown.options[i].value == _new_type) {
-                category_dropdown.selected_index = i;
+
+        for (var _i = 0; _i < array_length(category_dropdown.options); _i++) {
+            if (category_dropdown.options[_i].value == _new_type) {
+                category_dropdown.selected_index = _i;
                 break;
             }
         }
-        
+
         refresh_catalog();
     };
 
@@ -692,25 +725,11 @@ function Armamentarium() constructor {
         var _draw_x = 960;
         var _draw_y = 64;
 
-        // Update dropdown options if mode changed (Forge vs Armamentarium)
-        var _special_label = is_in_forge ? "Technologies" : "Ships";
-        var _special_value = is_in_forge ? "technologies" : "ships";
-        
-        // Ensure the 4th option always matches current mode
-        if (array_length(category_dropdown.options) < 4) {
-            array_push(category_dropdown.options, {label: _special_label, value: _special_value});
-        } else {
-            category_dropdown.options[3].label = _special_label;
-            category_dropdown.options[3].value = _special_value;
-        }
-
-        // Draw and process selection
         var _selection = category_dropdown.draw(_draw_x, _draw_y);
         if (_selection != undefined) {
             _switch_tab(_selection);
         }
-        
-        // Visual Label for the dropdown
+
         draw_set_font(fnt_40k_12);
         draw_set_color(c_gray);
         draw_text(_draw_x, _draw_y - 18, "Select Category:");
@@ -757,7 +776,7 @@ function Armamentarium() constructor {
             refresh_catalog();
         }
 
-        _draw_research_eta(_btn_y + 70);
+        _draw_research_eta(_btn_y + 170);
     };
 
     /// @desc Draws the projected time until the next STC breakthrough.
@@ -781,6 +800,11 @@ function Armamentarium() constructor {
         var _btn = draw_unit_buttons([659, 82], "BACK", [1, 1], CM_GREEN_COLOR,,,,, c_black);
         if (point_and_click(_btn)) {
             is_in_forge = false;
+
+            if (shop_type == "technologies") {
+                _switch_tab("weapons");
+            }
+
             refresh_catalog();
         }
 
@@ -992,7 +1016,12 @@ function UIDropdown(_options, _width = 180) constructor {
     /// @returns {any} The value of the selected option if changed, otherwise undefined.
     static draw = function(_x, _y) {
         var _result = undefined;
-        var _main_rect = [_x, _y, _x + width, _y + height];
+        var _main_rect = [
+            _x,
+            _y,
+            _x + width,
+            _y + height
+        ];
         var _is_hovering_main = scr_hit(_main_rect[0], _main_rect[1], _main_rect[2], _main_rect[3]);
 
         // Draw Main Box
@@ -1005,7 +1034,7 @@ function UIDropdown(_options, _width = 180) constructor {
         draw_set_font(fnt_40k_14b);
         draw_set_halign(fa_left);
         draw_text(_x + 8, _y + 6, options[selected_index].label);
-        
+
         // Draw Arrow
         var _arrow_char = is_open ? "▲" : "▼";
         draw_text(_x + width - 20, _y + 6, _arrow_char);
@@ -1022,7 +1051,12 @@ function UIDropdown(_options, _width = 180) constructor {
         // Draw Options List
         var _opt_height = 24;
         var _total_opt_height = array_length(options) * _opt_height;
-        var _list_rect = [_x, _y + height, _x + width, _y + height + _total_opt_height];
+        var _list_rect = [
+            _x,
+            _y + height,
+            _x + width,
+            _y + height + _total_opt_height
+        ];
 
         // Background for list
         draw_set_alpha(0.95);
@@ -1040,7 +1074,7 @@ function UIDropdown(_options, _width = 180) constructor {
                 draw_set_alpha(0.2);
                 draw_rectangle(_x + 1, _oy, _x + width - 1, _oy + _opt_height, false);
                 draw_set_alpha(1.0);
-                
+
                 if (scr_click_left()) {
                     selected_index = i;
                     is_open = false;

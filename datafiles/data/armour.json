@@ -1,17 +1,4 @@
 {
-    "Armoured Ceramite": {
-        "abbreviation": "ArmCrmt",
-        "armour_value": {
-            "artifact": 28,
-            "master_crafted": 24,
-            "standard": 20
-        },
-        "description": "Supplemental ceramite armour packages provide protection far beyond stock configurations while also adding significant weight to the chassis.",
-        "tags": [
-            "vehicle",
-            "armour"
-        ]
-    },
     "Artificer Armour": {
         "abbreviation": "Artfcr",
         "armour_value": {
@@ -51,24 +38,6 @@
             "power_armour"
         ],
         "value": 150
-    },
-    "Artificer Hull": {
-        "abbreviation": "ArtHll",
-        "armour_value": {
-            "artifact": 14,
-            "master_crafted": 12,
-            "standard": 10
-        },
-        "damage_resistance_mod": {
-            "artifact": 25,
-            "master_crafted": 20,
-            "standard": 15
-        },
-        "description": "Replacing numerous structural components and armour plates with thrice-blessed replacements, the vehicle’s hull is upgraded to be a rare work of mechanical art by master artificers.",
-        "tags": [
-            "vehicle",
-            "Upgrade"
-        ]
     },
     "Cataphractii": {
         "abbreviation": "Catphr",
@@ -202,19 +171,7 @@
         },
         "description": "This armour is used by T'au fire warriors."
     },
-    "Heavy Armour": {
-        "abbreviation": "HvyArm",
-        "armour_value": {
-            "artifact": 14,
-            "master_crafted": 12,
-            "standard": 10
-        },
-        "description": "Simple but effective, extra armour plates can be attached to most vehicles to provide extra protection.",
-        "tags": [
-            "vehicle",
-            "armour"
-        ]
-    },
+
     // Sororitas and other imperials
     "Light Power Armour": {
         "abbreviation": "LPwrArm",
@@ -234,25 +191,6 @@
             "master_crafted": 5,
             "standard": 0
         }
-    },
-    "Lucifer Pattern Engine": {
-        "abbreviation": "Luc Eng",
-        "damage_resistance_mod": {
-            "artifact": 20,
-            "master_crafted": 15,
-            "standard": 10
-        },
-        "description": "An advanced engine that increases tactical flexibility by enabling more options for movement and faster repositioning.",
-        "ranged_mod": {
-            "artifact": 20,
-            "master_crafted": 15,
-            "standard": 10
-        },
-        "tags": [
-            "vehicle",
-            "armour",
-            "Upgrade"
-        ]
     },
     "MK10 Tacticus": {
         "abbreviation": "MK10",
@@ -695,24 +633,5 @@
             "terminator"
         ],
         "value": 200
-    },
-    "Void Shield": {
-        "abbreviation": "V Shld",
-        "armour_value": {
-            "artifact": 64,
-            "master_crafted": 52,
-            "standard": 40
-        },
-        "damage_resistance_mod": {
-            "artifact": 40,
-            "master_crafted": 35,
-            "standard": 30
-        },
-        "description": "An advanced shield capable of providing extreme protection to heavy vehicles.",
-        "tags": [
-            "vehicle",
-            "armour",
-            "voidshield"
-        ]
     }
 }
