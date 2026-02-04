@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_shop_item",
+  "%Name":"Armamentarium",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_shop_item",
+  "name":"Armamentarium",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",
