@@ -756,7 +756,6 @@
     {"id":{"name":"scr_apothecary_ground","path":"scripts/scr_apothecary_ground/scr_apothecary_ground.yy",},},
     {"id":{"name":"scr_apothecary_ship","path":"scripts/scr_apothecary_ship/scr_apothecary_ship.yy",},},
     {"id":{"name":"scr_array_functions","path":"scripts/scr_array_functions/scr_array_functions.yy",},},
-    {"id":{"name":"scr_arti_descr","path":"scripts/scr_arti_descr/scr_arti_descr.yy",},},
     {"id":{"name":"scr_audience","path":"scripts/scr_audience/scr_audience.yy",},},
     {"id":{"name":"scr_battle_allies","path":"scripts/scr_battle_allies/scr_battle_allies.yy",},},
     {"id":{"name":"scr_battle_sort","path":"scripts/scr_battle_sort/scr_battle_sort.yy",},},
