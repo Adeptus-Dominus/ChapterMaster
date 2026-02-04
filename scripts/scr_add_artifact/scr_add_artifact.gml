@@ -608,7 +608,7 @@ function ArtifactStruct(Index) constructor {
         var _return_text = "";
         var _tag_names = struct_get_names(text_set);
         var _len = array_length(_tag_names);
-        
+
         for (var i = 0; i < _len; i++) {
             if (has_tag(_tag_names[i])) {
                 _return_text = text_set[$ _tag_names[i]];
@@ -616,13 +616,13 @@ function ArtifactStruct(Index) constructor {
             }
         }
         return _return_text;
-    }
+    };
 
     /// @desc Generates a formatted description for an artifact based on its tags and type.
     /// @returns {string} The full descriptive text.
     static get_description = function() {
         var _custom_desc = string(custom_description);
-        
+
         if (_custom_desc != "") {
             return _custom_desc;
         }
@@ -631,7 +631,7 @@ function ArtifactStruct(Index) constructor {
         var _mission_text = "";
         var _aesthetic_text = "";
         var _extra_text = "";
-        
+
         var _type_category = determine_base_type();
         var _specific_type = type();
         var _is_inquisition = has_tag("inq");
@@ -661,11 +661,11 @@ function ArtifactStruct(Index) constructor {
                 "ADAMANTINE": "All ceremite on the weapon has been substituted for polished adamantium.",
                 "VOI": "The weapon is black as night, with green, pulsing veins of an unknown energy.",
                 "CHB": "The striking surface has been replaced with a very powerful chainblade.",
-                "UFL": "A promethium flamethrower has been built in to the bottom of the weapon."
+                "UFL": "A promethium flamethrower has been built in to the bottom of the weapon.",
             };
-            
+
             _aesthetic_text = string(assign_text_from_tag_match(_weapon_primary));
-            
+
             if (_specific_type == "Power Fist" && has_tag("CHB")) {
                 _aesthetic_text = "The addition of a small chainblade has turned it into a chainfist.";
             }
@@ -673,31 +673,29 @@ function ArtifactStruct(Index) constructor {
             static _weapon_secondary = {
                 "GOLD": "It is decorated with gold filigree.",
                 "GLOW": "It glows with an eery, soft blue color.",
-                "UBOLT": "A bolter has been integrated."
+                "UBOLT": "A bolter has been integrated.",
             };
             _extra_text = string(assign_text_from_tag_match(_weapon_secondary));
-
         } else if (_type_category == "armour") {
             static _armour_primary = {
                 "ART": "Much of the armour is made up of finely articulated plates, neatly interlocking.",
                 "SPIKES": "A multitude of spikes, of varying sizes, adorn the armour.",
                 "RUNE": "Several glowing runes have been carved along its surfaces.",
-                "DRA": "Several areas of the armour have been patched over with Drake scales."
+                "DRA": "Several areas of the armour have been patched over with Drake scales.",
             };
             _aesthetic_text = string(assign_text_from_tag_match(_armour_primary));
 
             static _armour_secondary = {
                 "GOLD": "It is decorated with gold filigree.",
                 "GLOW": "The optics glow dark red.",
-                "PUR": "It has many crude purity seals."
+                "PUR": "It has many crude purity seals.",
             };
             _extra_text = string(assign_text_from_tag_match(_armour_secondary));
-
         } else if (_type_category == "gear") {
             static _gear_primary = {
                 "SUP": "It has been carved with such intricate detail that the facets are uncountable.",
                 "ADAMANTINE": "All ceremite on the item has been substituted for polished adamantium.",
-                "GOLD": "All ceremite on the item has been replaced with shining, polished gold."
+                "GOLD": "All ceremite on the item has been replaced with shining, polished gold.",
             };
             _aesthetic_text = string(assign_text_from_tag_match(_gear_primary));
 
@@ -715,17 +713,16 @@ function ArtifactStruct(Index) constructor {
                 "SKRE": "While on it lets out a tormented scream.",
                 "SILENT": "Somehow it is completely silent in operation.",
                 "GOR": "The arms are especially lengthy and massively strong.",
-                "TENTACLES": "Instead of a single arm it is made up of many smaller tentacles."
+                "TENTACLES": "Instead of a single arm it is made up of many smaller tentacles.",
             };
             _extra_text = string(assign_text_from_tag_match(_gear_secondary));
-
         } else if (_type_category == "device") {
             if (_specific_type != "Robot") {
                 static _dev_primary = {
                     "GLOW": "It emits a sickly, red glow that unnerves those that look upon it.",
-                    "ADAMANTINE": "The devise is seemingly built of near-pure adamantium, impressively heavy.",
-                    "GOLD": "The devise is covered in a thin layer of gold, which glitters and shines.",
-                    "CRU": "Many parts of the device are crumbling apart and cracking from old age."
+                    "ADAMANTINE": "The device is seemingly built of near-pure adamantium, impressively heavy.",
+                    "GOLD": "The device is covered in a thin layer of gold, which glitters and shines.",
+                    "CRU": "Many parts of the device are crumbling apart and cracking from old age.",
                 };
                 _aesthetic_text = string(assign_text_from_tag_match(_dev_primary));
 
@@ -739,15 +736,15 @@ function ArtifactStruct(Index) constructor {
                     "SPE": "The statue is of a man with no eyes, ears, or nose.  The teeth are rotted and mishappen.",
                     "DYI": "The statue is of an angel, sagging against a spear which has pierced its heart.",
                     "JUM": "It resembles a scene of small children with large heads happily jumping into a pit of magma.",
-                    "CHE": "The statue resembles a fat grinx which smiles and looks outward with a malicious gaze."
+                    "CHE": "The statue resembles a fat grinx which smiles and looks outward with a malicious gaze.",
                 };
                 _extra_text = string(assign_text_from_tag_match(_dev_secondary));
             } else {
                 static _bot_primary = {
                     "HU": "It is built in the likeness of an attractive human female.",
                     "RO": "It is squat and fat, though tall, and has simple utilitarian limbs.",
-                    "SHI": "The devise is covered in a thin layer of gold, which glitters and shines.",
-                    "CRU": "It resembles a roaring, four-armed woman with abundant curves."
+                    "SHI": "The device is covered in a thin layer of gold, which glitters and shines.",
+                    "CRU": "It resembles a roaring, four-armed woman with abundant curves.",
                 };
                 _aesthetic_text = string(assign_text_from_tag_match(_bot_primary));
 
@@ -755,7 +752,7 @@ function ArtifactStruct(Index) constructor {
                     "ADAMANTINE": "The machine is seemingly built of near-pure adamantium, impressively heavy.",
                     "JAD": "The machine is built out of a type of jade, pure black, with many veins of green.",
                     "BRO": "The machine is made out of a strange bronze material that seems impossibly durable.",
-                    "RUNE": "Several glowing runes have been carved along its surfaces."
+                    "RUNE": "Several glowing runes have been carved along its surfaces.",
                 };
                 _extra_text = string(assign_text_from_tag_match(_bot_secondary));
             }
@@ -765,15 +762,25 @@ function ArtifactStruct(Index) constructor {
         if (has_tag("MINOR")) {
             _extra_text += " It is more crude and utilitarian than one might expect from an artifact.";
         }
-        
+
         var _taint_text = "";
-        if (has_tag("chaos")) { _taint_text = "It bears the taint of Chaos."; }
-        if (has_tag("daemonic")) { _taint_text = "It is infested with a Daemonic entity. Destroying it, may cause the entity to materialize."; }
+        if (has_tag("chaos")) {
+            _taint_text = "It bears the taint of Chaos.";
+        }
+        if (has_tag("daemonic")) {
+            _taint_text = "It is infested with a Daemonic entity. Destroying it, may cause the entity to materialize.";
+        }
 
         _final_description = _mission_text;
-        if (_aesthetic_text != "") { _final_description += $"  {_aesthetic_text}"; }
-        if (_extra_text != "") { _final_description += $"  {_extra_text}"; }
-        if (_taint_text != "") { _final_description += $"  {_taint_text}"; }
+        if (_aesthetic_text != "") {
+            _final_description += $"  {_aesthetic_text}";
+        }
+        if (_extra_text != "") {
+            _final_description += $"  {_extra_text}";
+        }
+        if (_taint_text != "") {
+            _final_description += $"  {_taint_text}";
+        }
 
         if (equipped() && is_array(bearer)) {
             var _unit = fetch_unit(bearer);
