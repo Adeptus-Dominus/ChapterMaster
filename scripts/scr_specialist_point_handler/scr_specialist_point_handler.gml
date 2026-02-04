@@ -349,34 +349,43 @@ function SpecialistPointHandler() constructor {
             if (i + 1 > array_length(forge_queue)) {
                 break;
             }
+
             draw_set_color(c_gray);
             if (scr_hit(xx, yy + item_gap, xx + _box_width, yy + item_gap + 20)) {
                 draw_set_color(c_white);
             }
-            if (is_string(forge_queue[i].item.display_name)) {
-                draw_text(xx, yy + item_gap, string_hash_to_newline(forge_queue[i].item.display_name));
-                draw_text(xx + 166, yy + item_gap, forge_queue[i].count);
-                if (forge_queue[i].ordered == obj_controller.turn) {
-                    if (forge_queue[i].count > 1) {
-                        if (point_and_click(draw_unit_buttons([xx + 141, yy + item_gap], "-", [0.75, 0.75], c_red))) {
-                            var unit_cost = forge_queue[i].forge_points / forge_queue[i].count;
-                            forge_queue[i].count--;
-                            forge_queue[i].forge_points -= unit_cost;
-                        }
-                    }
-                    if (forge_queue[i].count < 100) {
-                        if (point_and_click(draw_unit_buttons([xx + 180, yy + item_gap], "+", [0.75, 0.75], c_green))) {
-                            var unit_cost = forge_queue[i].forge_points / forge_queue[i].count;
-                            forge_queue[i].count++;
-                            forge_queue[i].forge_points += unit_cost;
-                        }
+
+            var _forge_order = forge_queue[i];
+            var _display_name = "ERROR";
+
+            if (struct_exists(_forge_order, "item")) {
+                /// @type {Struct.ShopItem}
+                var _shop_item = forge_queue[i].item;
+                _display_name = _shop_item.display_name ?? "ERROR";
+            }
+
+            _display_name = (is_string(_display_name)) ? _display_name : "ERROR";
+
+            draw_text(xx, yy + item_gap, _display_name);
+            draw_text(xx + 166, yy + item_gap, forge_queue[i].count);
+
+            if (forge_queue[i].ordered == obj_controller.turn) {
+                if (forge_queue[i].count > 1) {
+                    if (point_and_click(draw_unit_buttons([xx + 141, yy + item_gap], "-", [0.75, 0.75], c_red))) {
+                        var unit_cost = forge_queue[i].forge_points / forge_queue[i].count;
+                        forge_queue[i].count--;
+                        forge_queue[i].forge_points -= unit_cost;
                     }
                 }
-            } else if (is_array(forge_queue[i].item.display_name)) {
-                if (forge_queue[i].item.forge_type[0] == "research") {
-                    draw_text(xx, yy + item_gap, forge_queue[i].item.display_name[1]);
+                if (forge_queue[i].count < 100) {
+                    if (point_and_click(draw_unit_buttons([xx + 180, yy + item_gap], "+", [0.75, 0.75], c_green))) {
+                        var unit_cost = forge_queue[i].forge_points / forge_queue[i].count;
+                        forge_queue[i].count++;
+                        forge_queue[i].forge_points += unit_cost;
+                    }
                 }
             }
+
             draw_text(xx + 271, yy + item_gap, string_hash_to_newline(forge_queue[i].forge_points));
             total_eta += ceil(forge_queue[i].forge_points / forge_points);
             draw_text(xx + 376, yy + item_gap, $"{total_eta} turns");
