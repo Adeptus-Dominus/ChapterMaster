@@ -28,6 +28,7 @@ function scr_librarium_gui() {
         pop_draw_return_values();
         exit;
     }
+    /// @type {Struct.ArtifactStruct}
     var cur_arti = obj_ini.artifact_struct[menu_artifact];
     identifiable = cur_arti.is_identifiable();
 
@@ -55,11 +56,13 @@ function scr_librarium_gui() {
         } else if (cur_arti.identified() < 1) {
             draw_set_color(881503);
             artif_descr = "";
+
             try {
-                artif_descr = cur_arti.description();
+                artif_descr = cur_arti.get_description();
             } catch (_exception) {
                 handle_exception(_exception);
             }
+
             tooltip = "";
             tooltip_other = "";
             var arti_data = gear_weapon_data("any", cur_arti.type(), "all", false, cur_arti.quality());
