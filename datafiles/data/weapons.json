@@ -1,6 +1,4 @@
 {
-    //30k Weapons
-    //Volkite Pack
     "Volkite Culverin": {
         "abbreviation": "VolkCul",
         "attack": {
@@ -100,7 +98,6 @@
             "dreadnought"
         ]
     },
-    //Bolt Pack
     "Phobos Bolt Pistol": {
         "abbreviation": "PhBltPis",
         "attack": {
@@ -175,7 +172,6 @@
             "bolt"
         ]
     },
-    //Plasma Pack
     "Ryza Plasma Gun": {
         "abbreviation": "RyzPlsmGn",
         "attack": {
@@ -220,7 +216,6 @@
         "attack": {
             "standard": 650,
             "master_crafted": 700,
-            //I think that usual 25% increase will be too much for that weapon so applied +150.
             "artifact": 750
         },
         "description": "An ancient Plasma Cannon variant born in the bowels of Mother Mars. Once a staple of heavy weapons squads in the time of Legiones Astartes, now a revered relic with power beyond compare with any modern weapons, even those made in the forges of Mars and Ryza in this dark age. Sharing some design and components with Ryzan patterns, it features the same purple glow that makes them so easily distinguishable.",
@@ -236,7 +231,6 @@
             "energy"
         ]
     },
-    //Melta Pack
     "Primus Melta Gun": {
         "abbreviation": "PrimMltGn",
         "attack": {
@@ -278,7 +272,6 @@
             "boarding"
         ]
     },
-    //Flamer Pack
     "Phaestos Flamer": {
         "abbreviation": "PhFlmr",
         "attack": {
@@ -293,12 +286,10 @@
         "range": 2.5,
         "spli": 6,
         "arp": -1,
-        //Shouldn't it also feature "boarding"?
         "tags": [
             "flame"
         ]
     },
-    //Melee Pack
     "Power Scythe": {
         "abbreviation": "PwrSct",
         "attack": {
@@ -322,7 +313,6 @@
             "power"
         ]
     },
-    //Laser Pack
     "Ryza Lascannon": {
         "abbreviation": "RyzLascnn",
         "attack": {
@@ -343,7 +333,6 @@
             "energy"
         ]
     },
-    //misc pack
     "Cthon Autocannon": {
         "abbreviation": "CthAutocnn",
         "attack": {
@@ -363,7 +352,6 @@
             "dreadnought"
         ]
     },
-    //40k weapons
     "Storm Shield": {
         "description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",
         "abbreviation": "StrmShld",
@@ -389,7 +377,9 @@
             "artifact": 40
         },
         "value": 50,
-        "requires_to_forge": ["power_field_cooling"]
+        "requires_to_forge": [
+            "power_tier_1"
+        ]
     },
     "Boarding Shield": {
         "description": "Protects twice as well when boarding. Used in siege or boarding operations, this shield offers additional protection.  It may be used with a 2-handed ranged weapon.",
@@ -431,7 +421,6 @@
             "las",
             "energy"
         ],
-        "value": 0,
         "buyable": false
     },
     "Combat Knife": {
@@ -585,7 +574,9 @@
             "boarding 1"
         ],
         "value": 25,
-        "requires_to_forge": ["power_field_cooling"]
+        "requires_to_forge": [
+            "power_tier_1"
+        ]
     },
     "Power Spear": {
         "abbreviation": "PwrSpear",
@@ -615,7 +606,9 @@
             "martial"
         ],
         "value": 40,
-        "requires_to_forge": ["power_field_cooling"]
+        "requires_to_forge": [
+            "power_tier_1"
+        ]
     },
     "Xenophase Blade": {
         "abbreviation": "XenoPhs",
@@ -667,7 +660,10 @@
         ],
         "arp": 3,
         "value": 75,
-        "requires_to_forge": ["power_field_cooling", "adamantine_links"]
+        "requires_to_forge": [
+            "power_tier_1",
+            "chain_tier_1"
+        ]
     },
     "Lascutter": {
         "abbreviation": "Lasct",
@@ -736,7 +732,9 @@
             "boarding 2"
         ],
         "value": 40,
-        "requires_to_forge": ["power_field_cooling"]
+        "requires_to_forge": [
+            "power_tier_1"
+        ]
     },
     "Omnissian Axe": {
         "abbreviation": "OmnAxe",
@@ -819,7 +817,9 @@
         ],
         "arp": 3,
         "value": 60,
-        "requires_to_forge": ["power_field_cooling"]
+        "requires_to_forge": [
+            "power_tier_1"
+        ]
     },
     "Power Fists": {
         "abbreviation": "PwrFsts",
@@ -885,7 +885,10 @@
             "boarding 2"
         ],
         "value": 90,
-        "requires_to_forge": ["projectile_propellant_purification", "mono_molecular_edge_sheathing"]
+        "requires_to_forge": [
+            "bolt_tier_2",
+            "power_tier_2"
+        ]
     },
     "Assault Chainfist": {
         "abbreviation": "AssltChFst",
@@ -934,7 +937,9 @@
         ],
         "arp": 2,
         "value": 90,
-        "requires_to_forge": ["power_field_cooling"]
+        "requires_to_forge": [
+            "power_tier_1"
+        ]
     },
     "Dreadnought Lightning Claw": {
         "abbreviation": "LghtClw",
@@ -1019,7 +1024,9 @@
             "boarding 2"
         ],
         "value": 90,
-        "requires_to_forge": ["power_field_cooling"]
+        "requires_to_forge": [
+            "power_tier_1"
+        ]
     },
     "Heavy Thunder Hammer": {
         "abbreviation": "HvyThndHmr",
@@ -1050,7 +1057,9 @@
             "savage"
         ],
         "value": 135,
-        "requires_to_forge": ["power_field_cooling"]
+        "requires_to_forge": [
+            "power_tier_1"
+        ]
     },
     "Power Mace": {
         "abbreviation": "PwrMace",
@@ -1079,7 +1088,9 @@
         ],
         "req_exp": 100,
         "value": 50,
-        "requires_to_forge": ["power_field_cooling"]
+        "requires_to_forge": [
+            "power_tier_1"
+        ]
     },
     "Mace of Absolution": {
         "abbreviation": "AbsltMace",
@@ -1110,7 +1121,9 @@
         ],
         "req_exp": 100,
         "value": 70,
-        "requires_to_forge": ["power_field_cooling"],
+        "requires_to_forge": [
+            "power_tier_1"
+        ],
         "buyable": false
     },
     "Tome": {
@@ -1164,8 +1177,12 @@
             "boarding 2"
         ],
         "value": 75,
-        "requires_to_forge": ["power_field_cooling"],
-        "sellers": ["ecclesiarchy"]
+        "requires_to_forge": [
+            "power_tier_1"
+        ],
+        "sellers": [
+            "ecclesiarchy"
+        ]
     },
     "Relic Blade": {
         "abbreviation": "RlcBld",
@@ -1294,7 +1311,9 @@
             "pistol"
         ],
         "value": 60,
-        "requires_to_forge": ["gravitic_reaction_principle"]
+        "requires_to_forge": [
+            "grav_tier_1"
+        ]
     },
     "Integrated-Grav": {
         "abbreviation": "IntGrv",
@@ -1333,7 +1352,9 @@
         ],
         "maintenance": 0.5,
         "value": 100,
-        "requires_to_forge": ["gravitic_reaction_principle"]
+        "requires_to_forge": [
+            "grav_tier_1"
+        ]
     },
     "Grav-Cannon": {
         "abbreviation": "GrvCan",
@@ -1355,7 +1376,9 @@
         ],
         "maintenance": 0.8,
         "value": 300,
-        "requires_to_forge": ["gravitic_reaction_principle"]
+        "requires_to_forge": [
+            "grav_tier_1"
+        ]
     },
     "Underslung Bolter": {
         "abbreviation": "UndBltr",
@@ -1436,7 +1459,9 @@
             "boarding 3"
         ],
         "value": 40,
-        "requires_to_forge": ["promethium_tank_brazing"]
+        "requires_to_forge": [
+            "flame_tier_1"
+        ]
     },
     "CCW Heavy Flamer": {
         "abbreviation": "CCWHvyFlmr",
@@ -1556,7 +1581,9 @@
             "boarding 3"
         ],
         "value": 30,
-        "requires_to_forge": ["atomic_chamber_construction"]
+        "requires_to_forge": [
+            "melta_tier_1"
+        ]
     },
     "Multi-Melta": {
         "abbreviation": "MltMelt",
@@ -1579,7 +1606,9 @@
             "boarding 1"
         ],
         "value": 60,
-        "requires_to_forge": ["atomic_chamber_construction"]
+        "requires_to_forge": [
+            "melta_tier_1"
+        ]
     },
     "Plasma Pistol": {
         "abbreviation": "PlsmPstl",
@@ -1602,7 +1631,9 @@
             "boarding 1"
         ],
         "value": 60,
-        "requires_to_forge": ["plasma_coil_magnetization"]
+        "requires_to_forge": [
+            "plasma_tier_1"
+        ]
     },
     "Plasma Cutter": {
         "abbreviation": "PlsmCt",
@@ -1644,7 +1675,9 @@
             "boarding 2"
         ],
         "value": 12,
-        "requires_to_forge": ["promethium_tank_brazing"]
+        "requires_to_forge": [
+            "flame_tier_1"
+        ]
     },
     "Integrated-Plasma": {
         "abbreviation": "IntPls",
@@ -1685,7 +1718,9 @@
             "boarding 1"
         ],
         "value": 100,
-        "requires_to_forge": ["plasma_coil_magnetization"]
+        "requires_to_forge": [
+            "plasma_tier_1"
+        ]
     },
     "Plasma Cannon": {
         "abbreviation": "PlsmCan",
@@ -1708,7 +1743,9 @@
             "dreadnought"
         ],
         "value": 300,
-        "requires_to_forge": ["plasma_coil_magnetization"]
+        "requires_to_forge": [
+            "plasma_tier_1"
+        ]
     },
     "Sniper Rifle": {
         "abbreviation": "SnpRfl",
@@ -1770,7 +1807,7 @@
         ],
         "value": 75,
         "requires_to_forge": [
-            "advanced_weapon_integration_and_targeting"
+            "bolt_tier_3"
         ]
     },
     "Kheres Assault Cannon": {
@@ -1874,7 +1911,9 @@
             "energy"
         ],
         "value": 70,
-        "requires_to_forge": ["light_condensement_chamber"]
+        "requires_to_forge": [
+            "laser_tier_1"
+        ]
     },
     "Conversion Beam Projector": {
         "abbreviation": "CnvBmPrj",
@@ -1954,7 +1993,7 @@
             "dreadnought"
         ],
         "requires_to_forge": [
-            "advanced_weapon_integration_and_targeting"
+            "bolt_tier_3"
         ],
         "value": 110
     },
@@ -1980,7 +2019,7 @@
             "dreadnought"
         ],
         "requires_to_forge": [
-            "light_condensement_chamber"
+            "laser_tier_1"
         ],
         "value": 110
     },
@@ -2003,7 +2042,9 @@
             "bolt"
         ],
         "value": 50,
-        "requires_to_forge": ["projectile_propellant_purification"]
+        "requires_to_forge": [
+            "bolt_tier_2"
+        ]
     },
     "Infernus Heavy Bolter": {
         "abbreviation": "InfrHvyBltr",
@@ -2087,7 +2128,7 @@
             "bolt"
         ],
         "requires_to_forge": [
-            "advanced_weapon_integration_and_targeting"
+            "bolt_tier_3"
         ],
         "value": 28
     },
@@ -2134,7 +2175,7 @@
             "dreadnought"
         ],
         "requires_to_forge": [
-            "integrated_weapon_stabilization_and_rate_of_fire_enhancements"
+            "bolt_tier_4"
         ],
         "value": 60
     },
@@ -2179,7 +2220,7 @@
             "sponson"
         ],
         "requires_to_forge": [
-            "integrated_weapon_stabilization_and_rate_of_fire_enhancements"
+            "bolt_tier_4"
         ],
         "value": 60
     },
@@ -2206,7 +2247,7 @@
             "twin_linked"
         ],
         "requires_to_forge": [
-            "light_condensement_chamber"
+            "laser_tier_1"
         ],
         "value": 120
     },
@@ -2232,7 +2273,7 @@
             "sponson"
         ],
         "requires_to_forge": [
-            "light_condensement_chamber"
+            "laser_tier_1"
         ],
         "value": 60
     },
@@ -2257,7 +2298,7 @@
             "sponson"
         ],
         "requires_to_forge": [
-            "integrated_weapon_stabilization_and_rate_of_fire_enhancements"
+            "bolt_tier_4"
         ],
         "value": 70
     },
@@ -2282,7 +2323,7 @@
             "sponson"
         ],
         "requires_to_forge": [
-            "promethium_tank_brazing"
+            "flame_tier_1"
         ]
     },
     "Twin Linked Heavy Flamer Sponsons": {
@@ -2327,7 +2368,7 @@
             "vehicle"
         ],
         "requires_to_forge": [
-            "projectile_propellant_purification"
+            "bolt_tier_2"
         ],
         "value": 8
     },
@@ -2397,7 +2438,7 @@
             "bolt"
         ],
         "requires_to_forge": [
-            "advanced_weapon_integration_and_targeting"
+            "bolt_tier_3"
         ],
         "value": 38
     },
@@ -2423,7 +2464,7 @@
         ],
         "maintenance": 0.05,
         "requires_to_forge": [
-            "promethium_tank_brazing"
+            "flame_tier_1"
         ],
         "value": 50
     },
@@ -2464,7 +2505,7 @@
         "spli": 15,
         "arp": 2,
         "requires_to_forge": [
-            "advanced_weapon_integration_and_targeting"
+            "bolt_tier_3"
         ],
         "value": 30,
         "tags": [
@@ -2494,7 +2535,9 @@
             "boarding 2"
         ],
         "value": 50,
-        "requires_to_forge": ["projectile_propellant_purification"]
+        "requires_to_forge": [
+            "bolt_tier_2"
+        ]
     },
     "Hand Flamer": {
         "abbreviation": "HndFlmr",
@@ -2516,7 +2559,9 @@
             "boarding 2"
         ],
         "value": 12,
-        "requires_to_forge": ["promethium_tank_brazing"]
+        "requires_to_forge": [
+            "flame_tier_1"
+        ]
     },
     "Flamer": {
         "abbreviation": "Flmr",
@@ -2542,7 +2587,9 @@
             "flame",
             "boarding 2"
         ],
-        "requires_to_forge": ["promethium_tank_brazing"]
+        "requires_to_forge": [
+            "flame_tier_1"
+        ]
     },
     "Integrated-Flamer": {
         "attack": {
@@ -2586,7 +2633,10 @@
             "boarding 2"
         ],
         "value": 35,
-        "requires_to_forge": ["promethium_tank_brazing", "hardened_barrel_boring"]
+        "requires_to_forge": [
+            "flame_tier_1",
+            "bolt_tier_1"
+        ]
     },
     "Combiplasma": {
         "abbreviation": "CmbPlsm",
@@ -2610,7 +2660,10 @@
             "bolt"
         ],
         "value": 110,
-        "requires_to_forge": ["plasma_coil_magnetization", "hardened_barrel_boring"]
+        "requires_to_forge": [
+            "plasma_tier_1",
+            "bolt_tier_1"
+        ]
     },
     "Combigrav": {
         "abbreviation": "CmbGrv",
@@ -2634,7 +2687,10 @@
             "bolt"
         ],
         "value": 110,
-        "requires_to_forge": ["gravitic_reaction_principle", "hardened_barrel_boring"]
+        "requires_to_forge": [
+            "grav_tier_1",
+            "bolt_tier_1"
+        ]
     },
     "Combimelta": {
         "abbreviation": "CmbMlt",
@@ -2659,7 +2715,10 @@
             "boarding 3"
         ],
         "value": 40,
-        "requires_to_forge": ["atomic_chamber_construction", "hardened_barrel_boring"]
+        "requires_to_forge": [
+            "melta_tier_1",
+            "bolt_tier_1"
+        ]
     },
     "Incinerator": {
         "attack": {
@@ -2680,7 +2739,9 @@
             "boarding 3"
         ],
         "value": 35,
-        "requires_to_forge": ["promethium_tank_brazing"]
+        "requires_to_forge": [
+            "flame_tier_1"
+        ]
     },
     "Force Staff": {
         "attack": {
@@ -2708,7 +2769,9 @@
             "force"
         ],
         "value": 70,
-        "requires_to_forge": ["psionic_resonance_valves"]
+        "requires_to_forge": [
+            "force_tier_1"
+        ]
     },
     "Force Sword": {
         "abbreviation": "FrcSwrd",
@@ -2740,7 +2803,9 @@
             "boarding 1"
         ],
         "value": 55,
-        "requires_to_forge": ["psionic_resonance_valves"]
+        "requires_to_forge": [
+            "force_tier_1"
+        ]
     },
     "Force Axe": {
         "abbreviation": "FrcAxe",
@@ -2770,7 +2835,9 @@
             "boarding 2"
         ],
         "value": 60,
-        "requires_to_forge": ["psionic_resonance_valves"]
+        "requires_to_forge": [
+            "force_tier_1"
+        ]
     },
     "Twin Linked Lascannon Turret": {
         "attack": {
@@ -2793,7 +2860,7 @@
             "turret"
         ],
         "requires_to_forge": [
-            "light_condensement_chamber"
+            "laser_tier_1"
         ],
         "value": 60
     },
@@ -2943,8 +3010,6 @@
             "ancient"
         ]
     },
-    // Hireling weapons
-    // Admech
     "Hellgun": {
         "abbreviation": "HllGun",
         "attack": {
@@ -2982,7 +3047,6 @@
             "las"
         ]
     },
-    // Other imperials
     "Light Bolter": {
         "abbreviation": "LghtBltr",
         "attack": {
@@ -3039,10 +3103,8 @@
             "arcane"
         ],
         "ranged_hands": 1,
-        "value": 0,
         "buyable": false
     },
-    // Eldar weapons
     "Ranger Long Rifle": {
         "abbreviation": "RangeLoRife",
         "description": "Advanced and accurate rifles from mars given to skitarii sharpshooters",
@@ -3105,7 +3167,6 @@
             "xenos"
         ]
     },
-    // Ork weapons
     "Choppa": {
         "abbreviation": "Chop",
         "attack": {

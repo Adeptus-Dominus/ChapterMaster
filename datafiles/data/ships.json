@@ -1,27 +1,22 @@
 {
     "Battle Barge": {
         "renegade_buy": false,
-        "requires_to_forge": [],
         "value": 20000
     },
     "Cyclonic Torpedo": {
         "renegade_buy": true,
-        "requires_to_forge": [],
         "value": 0
     },
     "Gladius": {
         "renegade_buy": false,
-        "requires_to_forge": [],
         "value": 2250
     },
     "Hunter": {
         "renegade_buy": false,
-        "requires_to_forge": [],
         "value": 3000
     },
     "Strike Cruiser": {
         "renegade_buy": false,
-        "requires_to_forge": [],
         "value": 8000
     }
 }

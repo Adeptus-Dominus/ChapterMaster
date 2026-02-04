@@ -7,8 +7,6 @@
             "master_crafted": 50,
             "standard": 30
         },
-        "renegade_buy": false,
-        "requires_to_forge": [],
         "value": 5
     },
     "Combat Shield": {
@@ -24,8 +22,6 @@
             "master_crafted": 15,
             "standard": 10
         },
-        "renegade_buy": false,
-        "requires_to_forge": [],
         "tags": [
             "shield"
         ],
@@ -35,8 +31,6 @@
     "Exterminatus": {
         "abbreviation": "Extrmnts",
         "description": "A weapon of the Emperor, and His divine judgment, this weapon can be placed upon a planet to obliterate it entirely.",
-        "renegade_buy": false,
-        "requires_to_forge": [],
         "special_properties": [
             "Planet Destroyer"
         ],
@@ -45,8 +39,6 @@
     "Gene Pod Incubator": {
         "abbreviation": "GenePod",
         "description": "Required to house gene slaves in order to generate new gene seed for the chapter.",
-        "renegade_buy": false,
-        "requires_to_forge": [],
         "value": 8
     },
     "Iron Halo": {
@@ -57,8 +49,6 @@
             "standard": 35
         },
         "description": "An ancient artifact, these powerful conversion field generators are granted to high ranking battle brothers or heroes of the chapter. Bearers are often looked to for guidance by their fellow Astartes.",
-        "renegade_buy": false,
-        "requires_to_forge": [],
         "value": 300
     },
     "Narthecium": {
@@ -71,8 +61,6 @@
         "description": "An advanced medical field kit these allow Apothecaries to heal wounds or recover Gene-Seed from fallen Astartes.",
         "melee_hands": -0.5,
         "ranged_hands": -0.5,
-        "renegade_buy": false,
-        "requires_to_forge": [],
         "special_properties": [
             "Medkit"
         ],
@@ -81,8 +69,6 @@
     "Plasma Bomb": {
         "abbreviation": "PlBomb",
         "description": "A special plasma charge, this bomb can be used to seal underground caves or destroy enemy structures.",
-        "renegade_buy": false,
-        "requires_to_forge": [],
         "special_properties": [
             "Structure Destroyer"
         ],
@@ -91,8 +77,6 @@
     "Psychic Hood": {
         "abbreviation": "PsyHd",
         "description": "An arcane hood that protects Psykers from enemy psychic powers and enhances control of their psychic abilities.",
-        "renegade_buy": false,
-        "requires_to_forge": [],
         "specials": {
             "psychic_focus": 15
         },
@@ -111,8 +95,6 @@
             "master_crafted": 10,
             "standard": 5
         },
-        "renegade_buy": false,
-        "requires_to_forge": [],
         "value": 100
     },
     "Sororitas Medkit": {

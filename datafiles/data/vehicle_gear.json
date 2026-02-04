@@ -7,7 +7,6 @@
             "standard": 20
         },
         "description": "Supplemental ceramite armour packages provide protection far beyond stock configurations while also adding significant weight to the chassis.",
-        "requires_to_forge": [],
         "tags": [
             "vehicle",
             "armour"
@@ -27,7 +26,6 @@
             "standard": 15
         },
         "description": "Replacing numerous structural components and armour plates with thrice-blessed replacements, the vehicle’s hull is upgraded to be a rare work of mechanical art by master artificers.",
-        "requires_to_forge": [],
         "tags": [
             "vehicle",
             "Upgrade"
@@ -52,7 +50,6 @@
         "tags": [
             "vehicle"
         ],
-        "value": 0
     },
     "Frag Assault Launchers": {
         "abbreviation": "FrgAssLnchrs",
@@ -65,7 +62,6 @@
         "tags": [
             "vehicle"
         ],
-        "value": 0
     },
     "Heavy Armour": {
         "abbreviation": "HvyArm",
@@ -75,7 +71,6 @@
             "standard": 10
         },
         "description": "Simple but effective, extra armour plates can be attached to most vehicles to provide extra protection.",
-        "requires_to_forge": [],
         "tags": [
             "vehicle",
             "armour"
@@ -95,7 +90,6 @@
             "master_crafted": 15,
             "standard": 10
         },
-        "requires_to_forge": [],
         "tags": [
             "vehicle",
             "armour",
@@ -115,7 +109,6 @@
             "vehicle",
             "dreadnought"
         ],
-        "value": 0
     },
     "Smoke Launchers": {
         "abbreviation": "SmkLnchrs",
@@ -145,7 +138,6 @@
             "standard": 30
         },
         "description": "An advanced shield capable of providing extreme protection to heavy vehicles.",
-        "requires_to_forge": [],
         "tags": [
             "vehicle",
             "armour",

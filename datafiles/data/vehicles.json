@@ -1,17 +1,14 @@
 {
     "Dreadnought": {
         "requires_to_forge": [
-            "advanced_servo_motors",
-            "ceramite_void_hardening"
+            "armour_tier_2_path_2",
+            "armour_tier_3_path_1"
         ],
-        "value": 0
     },
     "Land Raider": {
-        "requires_to_forge": [],
         "value": 500
     },
     "Land Speeder": {
-        "requires_to_forge": [],
         "value": 120
     },
     "Predator": {

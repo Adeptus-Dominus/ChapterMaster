@@ -23,10 +23,10 @@
         "ranged_hands": -0.5,
         "renegade_buy": false,
         "requires_to_forge": [
-            "plasma_coil_magnetization",
-            "promethium_tank_brazing",
-            "atomic_chamber_construction",
-            "gravitic_reaction_principle"
+            "plasma_tier_1",
+            "flame_tier_1",
+            "melta_tier_1",
+            "grav_tier_1"
         ],
         "second_profiles": [
             "Conversion Beam Projector"
@@ -42,7 +42,6 @@
         "melee_hands": -0.5,
         "ranged_hands": -0.5,
         "renegade_buy": false,
-        "requires_to_forge": [],
         "second_profiles": [
             "Cyclone Missile Launcher"
         ],
@@ -60,7 +59,6 @@
             "standard": 5
         },
         "renegade_buy": false,
-        "requires_to_forge": [],
         "tags": [
             "bonus_ammo"
         ],
@@ -75,7 +73,6 @@
         },
         "description": "A back-mounted device containing jets powerful enough to lift an Astartes in Power Armor over great distances. Utilizing these, Assault Marines bring devastation to the foe.",
         "renegade_buy": false,
-        "requires_to_forge": [],
         "special_properties": [
             "Hammer of Wrath"
         ],
@@ -113,7 +110,6 @@
         "melee_hands": -0.25,
         "ranged_hands": -0.25,
         "renegade_buy": false,
-        "requires_to_forge": [],
         "second_profiles": [
             "Servo-arm(M)"
         ],
@@ -136,7 +132,6 @@
         "melee_hands": -0.5,
         "ranged_hands": -0.5,
         "renegade_buy": false,
-        "requires_to_forge": [],
         "second_profiles": [
             "Servo-arm(M)",
             "Servo-arm(M)",

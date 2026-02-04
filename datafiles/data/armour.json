@@ -29,10 +29,10 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "lightened_ceramite_compound",
-            "ceramite_void_hardening",
-            "enhanced_nerve_interfacing",
-            "advanced_servo_motors"
+            "armour_tier_3_path_2",
+            "armour_tier_3_path_1",
+            "armour_tier_2_path_3",
+            "armour_tier_2_path_2"
         ],
         "tags": [
             "power_armour"
@@ -171,7 +171,6 @@
         },
         "description": "This armour is used by T'au fire warriors."
     },
-
     // Sororitas and other imperials
     "Light Power Armour": {
         "abbreviation": "LPwrArm",
@@ -245,7 +244,7 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "ceramite_casting_chambers"
+            "armour_tier_1"
         ],
         "tags": [
             "power_armour"
@@ -278,8 +277,7 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "advanced_ceramite_bonding",
-            "armour_stealth"
+            "armour_tier_2_path_1",
         ],
         "tags": [
             "power_armour"
@@ -317,7 +315,7 @@
         },
         "renegade_buy": true,
         "requires_to_forge": [
-            "ceramite_casting_chambers"
+            "armour_tier_1"
         ],
         "tags": [
             "power_armour"
@@ -355,8 +353,8 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "ceramite_casting_chambers",
-            "advanced_servo_motors"
+            "armour_tier_1",
+            "armour_tier_2_path_2"
         ],
         "tags": [
             "power_armour"
@@ -394,7 +392,7 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "ceramite_casting_chambers"
+            "armour_tier_1"
         ],
         "tags": [
             "power_armour"
@@ -432,7 +430,7 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "advanced_ceramite_bonding"
+            "armour_tier_2_path_1"
         ],
         "tags": [
             "power_armour"
@@ -582,9 +580,9 @@
         "renegade_buy": false,
         "req_exp": 100,
         "requires_to_forge": [
-            "ceramite_void_hardening",
-            "enhanced_nerve_interfacing",
-            "advanced_servo_motors"
+            "armour_tier_3_path_1",
+            "armour_tier_2_path_3",
+            "armour_tier_2_path_2"
         ],
         "tags": [
             "terminator"
@@ -625,9 +623,9 @@
         "renegade_buy": false,
         "req_exp": 100,
         "requires_to_forge": [
-            "ceramite_void_hardening",
-            "enhanced_nerve_interfacing",
-            "advanced_servo_motors"
+            "armour_tier_3_path_1",
+            "armour_tier_2_path_3",
+            "armour_tier_2_path_2"
         ],
         "tags": [
             "terminator"
