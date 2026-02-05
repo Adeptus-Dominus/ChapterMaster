@@ -486,15 +486,15 @@ function scr_chapter_new(chapter_identifier) {
         }
 
         // Validate and clamp trait values to sane ranges (defaulting if missing/invalid)
-        obj_creation.strength = clamp(is_real(chapter_object.strength) ? chapter_object.strength : 5, 0, 10);
-        obj_creation.purity = clamp(is_real(chapter_object.purity) ? chapter_object.purity : 5, 0, 10);
-        obj_creation.stability = clamp(is_real(chapter_object.stability) ? chapter_object.stability : 50, 0, 100);
-        obj_creation.cooperation = clamp(is_real(chapter_object.cooperation) ? chapter_object.cooperation : 5, 0, 10);
+        obj_creation.strength = clamp(is_real(chapter_object.strength) ? chapter_object.strength : 5, 1, 10);
+        obj_creation.purity = clamp(is_real(chapter_object.purity) ? chapter_object.purity : 5, 1, 10);
+        obj_creation.stability = clamp(is_real(chapter_object.stability) ? chapter_object.stability : 90, 1, 99);
+        obj_creation.cooperation = clamp(is_real(chapter_object.cooperation) ? chapter_object.cooperation : 5, 1, 10);
         points = 0;
 
         points += (obj_creation.strength - 5) * 10;
         points += (obj_creation.purity - 5) * 10;
-        points += obj_creation.stability - 50;
+        points += obj_creation.stability - 90;
         points += (obj_creation.cooperation - 5) * 10;
 
         var _open_adv = 0;
