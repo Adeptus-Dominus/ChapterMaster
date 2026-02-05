@@ -516,9 +516,7 @@
         "tags": [
             "banner"
         ],
-        "recovery_chance": 99,
-        "value": 1000,
-        "buyable": false
+        "recovery_chance": 99
     },
     "Eviscerator": {
         "abbreviation": "Evisc",

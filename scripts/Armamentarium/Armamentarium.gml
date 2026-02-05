@@ -1,5 +1,7 @@
 #macro SHOP_SELL_MOD 0.8
+#macro ROGUE_TRADER_DISCOUNT 0.8
 #macro SHOP_FORGE_MOD 6
+#macro WAR_PENALTY 0.5
 
 /// @desc Primary controller for the Chapter's armory and technologies.
 /// @returns {Struct.Armamentarium}
@@ -36,8 +38,12 @@ function Armamentarium() constructor {
 
     stc_panel = new STCResearchPanel(obj_controller, method(self, refresh_catalog));
 
-    forge_button = new ShutterButton();
-    forge_button.cover_text = "FORGE";
+    enter_forge_button = new ShutterButton();
+    enter_forge_button.cover_text = "FORGE";
+
+    forge_button = new SpriteButton(spr_build_tiny);
+    buy_button = new SpriteButton(spr_buy_tiny);
+    sell_button = new SpriteButton(spr_sell_tiny);
 
     var _cat_options = [
         {
@@ -147,14 +153,20 @@ function Armamentarium() constructor {
 
                 _item.display_name = _raw[$ "display_name"] ?? _name;
                 _item.value = _raw[$ "value"] ?? _item.value;
+                _item.sellers = _raw[$ "sellers"] ?? _item.sellers;
 
-                _item.buyable = (_item.value == 0) ? false : (_raw[$ "buyable"] ?? _item.buyable);
+                _item.buyable = (_item.value == 0 && !array_length(_item.sellers)) ? false : (_raw[$ "buyable"] ?? _item.buyable);
                 _item.forgable = (_item.value == 0) ? false : (_raw[$ "forgable"] ?? _item.forgable);
 
                 _item.requires_to_forge = _raw[$ "requires_to_forge"] ?? _item.requires_to_forge;
 
                 var _equip_info = gear_weapon_data("any", _name);
                 _item.item_tooltip = is_struct(_equip_info) ? _equip_info.item_tooltip_desc_gen() : "";
+
+                if (_cat == "technologies") {
+                    _item.forge_type = "research";
+                    _item.item_tooltip = _raw[$ "description"] ?? "";
+                }
 
                 array_push(master_catalog, _item);
             }
@@ -195,8 +207,8 @@ function Armamentarium() constructor {
             _item.stocked = scr_item_count(_item.name);
             _item.stocked_mc = scr_item_count(_item.name, "master_crafted");
 
-            _item.update_best_seller(_item.sellers, faction_modifiers);
-            _item.calculate_costs(is_in_forge, forge_cost_mod, discount_rogue_trader);
+            _item.update_best_seller(_item.sellers, faction_modifiers, discount_rogue_trader);
+            _item.calculate_costs(is_in_forge, forge_cost_mod);
 
             var _is_visible = (_item.stocked > 0 || (!is_in_forge && _item.buyable)) || (is_in_forge && _item.forgable);
             if (_is_visible) {
@@ -261,13 +273,14 @@ function Armamentarium() constructor {
             }
 
             if (array_contains(p_owner, 1)) {
-                other.discount_rogue_trader = 0.8;
+                other.discount_rogue_trader = ROGUE_TRADER_DISCOUNT;
                 break;
             }
 
+            /// @type {Asset.GMObject.obj_p_fleet}
             var _fleet = instance_place(x, y, obj_p_fleet);
             if (_fleet != noone && _fleet.capital_number > 0 && _fleet.action == "") {
-                other.discount_rogue_trader = 0.8;
+                other.discount_rogue_trader = ROGUE_TRADER_DISCOUNT;
                 break;
             }
         }
@@ -288,7 +301,7 @@ function Armamentarium() constructor {
 
         var _dispo = obj_controller.disposition;
         var _is_at_war = obj_controller.faction_status[eFACTION.IMPERIUM] == "War";
-        var _war_pen = _is_at_war ? 0.5 : 0;
+        var _war_pen = _is_at_war ? WAR_PENALTY : 0;
 
         faction_modifiers.imperium = clamp(1.0 - (((_dispo[eFACTION.IMPERIUM] - 50) / 200) + _cha_mod - _war_pen), 0.1, 10.0);
         faction_modifiers.mechanicus = clamp(1.0 - (((_dispo[eFACTION.MECHANICUS] - 50) / 200) + _tech_mod - _war_pen), 0.1, 10.0);
@@ -543,23 +556,16 @@ function Armamentarium() constructor {
     static _draw_action_buttons = function(_item, _y, _cost, _count) {
         if (is_in_forge) {
             var _can_forge = _item.meets_requirements;
-            var _forge_btn = draw_sprite_as_button([1530, _y + 2], spr_build_tiny,,, _can_forge ? 1.0 : 0.5, 0.8);
 
-            if (_forge_btn.hovered) {
-                if (!_can_forge) {
-                    tooltip_draw(_item.get_missing_technologies_tooltip());
+            forge_button.tooltip_text = _can_forge ? "Add to Forge Queue" : _item.get_missing_technologies_tooltip();
+            forge_button.draw(1530, _y + 2, _can_forge);
+
+            if (forge_button.is_clicked) {
+                var _queue = obj_controller.specialist_point_handler.forge_queue;
+                if (array_length(_queue) < 20) {
+                    array_push(_queue, {item: _item, count: _count, forge_points: _cost, ordered: obj_controller.turn});
                 } else {
-                    tooltip_draw("Add to Forge Queue");
-                }
-
-                if (_can_forge && _forge_btn.clicked) {
-                    var _queue = obj_controller.specialist_point_handler.forge_queue;
-                    if (array_length(_queue) < 20) {
-                        array_push(_queue, {item: _item, count: _count, forge_points: _cost, ordered: obj_controller.turn});
-                        audio_play_sound(snd_click, 10, false);
-                    } else {
-                        audio_play_sound(snd_error, 10, false);
-                    }
+                    audio_play_sound(snd_error, 10, false);
                 }
             }
 
@@ -568,31 +574,24 @@ function Armamentarium() constructor {
 
         var _can_afford = obj_controller.requisition >= _cost;
         var _can_buy = _item.buyable;
-        var _buy_btn = draw_sprite_as_button([1530, _y + 2], spr_buy_tiny,,, (_can_buy && _can_afford) ? 1.0 : 0.5, 0.8);
 
-        if (_buy_btn.hovered) {
-            if (!_can_buy) {
-                tooltip_draw("Unavailable for purchase");
-            } else if (!_can_afford) {
-                tooltip_draw("Insufficient Requisition");
-            }
+        buy_button.tooltip_text = !_can_buy ? "Unavailable for purchase" : (_can_afford ? "Buy" : "Insufficient Requisition");
+        buy_button.draw(1530, _y + 2, _can_buy && _can_afford);
 
-            if (_can_buy && _can_afford && _buy_btn.clicked) {
-                _buy_item(_item, _cost, _count);
-            }
+        if (buy_button.is_clicked) {
+            _buy_item(_item, _cost, _count);
         }
 
         var _can_sell = !array_contains(["ships", "vehicles"], shop_type) && _item.stocked > 0;
-        var _sell_btn = draw_sprite_as_button([1480, _y + 2], spr_sell_tiny,,, _can_sell ? 1.0 : 0.5, 0.8);
 
-        if (_sell_btn.hovered && _can_sell) {
-            tooltip_draw($"Sell for {_item.value * SHOP_SELL_MOD} (x{SHOP_SELL_MOD} of value)");
-            if (_sell_btn.clicked) {
-                _sell_item(_item, _count, SHOP_SELL_MOD);
-            }
+        sell_button.tooltip_text = $"Sell for {_item.value * SHOP_SELL_MOD} (x{SHOP_SELL_MOD} of value)";
+        sell_button.draw(1480, _y + 2, _can_sell);
+
+        if (sell_button.is_clicked) {
+            _sell_item(_item, _count, SHOP_SELL_MOD);
         }
 
-        draw_set_alpha(1.0);
+        draw_set_alpha(1);
     };
 
     /// @desc Draws page navigation for the item list.
@@ -635,7 +634,7 @@ function Armamentarium() constructor {
         draw_text_ext(352, 130, advisor_report_text, -1, 500);
 
         var _btn_y = 255 + string_height_ext(advisor_report_text, -1, 536);
-        if (forge_button.draw_shutter(526, _btn_y, "Enter Forge", 0.5)) {
+        if (enter_forge_button.draw_shutter(526, _btn_y, "Enter Forge", 0.5)) {
             is_in_forge = true;
             refresh_catalog();
         }
@@ -769,8 +768,6 @@ function ShopItem(_name) constructor {
     requires_to_forge = [];
     sellers = ["mechanicus"];
     item_tooltip = "";
-    buy_cost_tooltip = "";
-    technologies_tooltip = "";
     forge_type = "normal";
     renegade_buy = false;
     buy_cost_mod = 1;
@@ -817,7 +814,7 @@ function ShopItem(_name) constructor {
     /// @desc Iterates through potential sellers to find the best price.
     /// @param {array<string>} _sellers Array of faction strings.
     /// @param {struct} _cached_mods Pre-calculated modifiers.
-    static update_best_seller = function(_sellers, _cached_mods) {
+    static update_best_seller = function(_sellers, _cached_mods, _trader_mod) {
         var _best_modifier = 10.0;
         var _best_seller = "unknown";
 
@@ -829,6 +826,12 @@ function ShopItem(_name) constructor {
             }
         }
 
+        if (_trader_mod < 1.0 && _trader_mod < _best_modifier) {
+            _best_modifier = _trader_mod;
+            _best_seller = "rogue_trader";
+        }
+    
+
         buy_cost_mod = _best_modifier;
         best_seller = _best_seller;
     };
@@ -836,8 +839,7 @@ function ShopItem(_name) constructor {
     /// @desc Centralized calculation for current costs.
     /// @param {bool} _is_forge Whether we are in forge mode.
     /// @param {real} _forge_mod The STC/Hangar modifier.
-    /// @param {real} _trader_mod The Rogue Trader modifier.
-    static calculate_costs = function(_is_forge, _forge_mod, _trader_mod) {
+    static calculate_costs = function(_is_forge, _forge_mod) {
         if (global.cheat_debug) {
             buy_cost = 0;
             forge_cost = 0;
@@ -847,12 +849,12 @@ function ShopItem(_name) constructor {
 
         if (_is_forge) {
             var _missing_techs = [];
-            var _req_count = array_length(requires_to_forge);
 
-            for (var _j = 0; _j < _req_count; _j++) {
-                var _tech = requires_to_forge[_j];
+            for (var j = 0, l = array_length(requires_to_forge); j < l; j++) {
+                var _tech = requires_to_forge[j];
+
                 if (!array_contains(obj_controller.technologies_known, _tech)) {
-                    array_push(_missing_techs, _tech);
+                    array_push(_missing_techs, _get_tech_display_name(_tech));
                 }
             }
 
@@ -860,16 +862,44 @@ function ShopItem(_name) constructor {
             missing_technologies = meets_requirements ? [] : _missing_techs;
             forge_cost = round(value * SHOP_FORGE_MOD * _forge_mod);
         } else {
-            buy_cost = round(value * min(buy_cost_mod, _trader_mod));
+            buy_cost = round(value * buy_cost_mod);
         }
     };
 
     static get_missing_technologies_tooltip = function() {
-        return $"Missing Technologies: {string_join_ext(", ", missing_technologies)}";
+        if (array_length(missing_technologies) == 0) {
+            return "";
+        }
+        
+        return $"Missing Technologies:\n{string_join_ext("\n", missing_technologies)}";
     };
 
     static get_buy_cost_tooltip = function() {
-        return $"Base: {value}\n\n{string_upper_first(best_seller)} Disposition Modifier: {round(buy_cost_mod * 100)}%";
+        var _text = $"Base Value: {value}\n\n";
+        var _seller = (best_seller == "rogue_trader") ? "Rogue Trader" : string_upper_first(best_seller);
+        
+        _text += $"Best Seller: {_seller}\n";
+        _text += $"Disposition Modifier: x{buy_cost_mod}";
+
+        return _text;
+    };
+
+    /// @desc Retrieves the display name for a technology key, caching results for performance.
+    /// @param {string} _tech_key The internal key (e.g., "plasma_foundry").
+    /// @returns {string} The display name.
+    static _get_tech_display_name = function(_tech_key) {
+        static _name_cache = {};
+
+        if (variable_struct_exists(_name_cache, _tech_key)) {
+            return _name_cache[$ _tech_key];
+        }
+
+        var _tech_data = global.technologies[$ _tech_key];
+        var _display_name = _tech_data[$ "display_name"] ?? string_upper_first(string_replace_all(_tech_key, "_", " "));
+
+        _name_cache[$ _tech_key] = _display_name;
+
+        return _display_name;
     };
 }
 

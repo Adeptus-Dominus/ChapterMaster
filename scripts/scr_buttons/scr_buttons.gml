@@ -198,32 +198,55 @@ function LabeledIcon(icon, text, x1 = 0, y1 = 0, data = false) constructor {
     };
 }
 
-/// @description Draws a sprite as a clickable button and returns interaction state.
-/// @param {array[real]} position [x, y] top-left corner.
-/// @param {Asset.GMSprite} choice_sprite Sprite to draw.
-/// @param {array[real]} scale Scale factors [x,y].
-/// @param {Asset.GMSprite} hover_sprite Optional hover sprite.
-/// @param {real} alpha Alpha when hovered.
-/// @param {real} inactive_alpha Alpha when not hovered.
-/// @returns {struct}
-function draw_sprite_as_button(position, choice_sprite, scale = [1, 1], hover_sprite = -1, alpha = 1, inactive_alpha = 0.9) {
-    var _pos = [
-        position[0],
-        position[1],
-        position[0] + (sprite_get_width(choice_sprite) * scale[0]),
-        position[1] + (sprite_get_height(choice_sprite) * scale[1])
-    ];
+/// @desc A clickable sprite-based button component that manages its own state and hover logic.
+/// @param {Asset.GMSprite} _sprite The default sprite to display.
+/// @param {Asset.GMSprite} _hover_sprite Optional sprite to show when hovered.
+/// @returns {Struct.SpriteButton}
+function SpriteButton(_sprite, _hover_sprite = -1) constructor {
+    sprite = _sprite;
+    hover_sprite = _hover_sprite;
 
-    var _hovered = scr_hit(_pos);
-    var _clicked = false;
+    scale_x = 1.0;
+    scale_y = 1.0;
+    alpha_hover = 1.0;
+    alpha_idle = 0.8;
+    alpha_disabled = 0.5;
+    width = sprite_get_width(_sprite);
+    height = sprite_get_height(_sprite);
 
-    if (_hovered) {
-        _clicked = scr_click_left();
-    }
+    sound_click = snd_click;
+    tooltip_text = "";
+    tooltip_w = 300;
 
-    draw_sprite_ext(choice_sprite, 0, position[0], position[1], scale[0], scale[1], 0, c_white, _hovered ? alpha : min(alpha, inactive_alpha));
+    is_hovered = false;
+    is_clicked = false;
 
-    return {position: _pos, hovered: _hovered, clicked: _clicked};
+    /// @desc Updates interaction state and draws the button.
+    /// @param {real} _x The X position to draw at.
+    /// @param {real} _y The Y position to draw at.
+    /// @param {bool} _enabled If false, interaction is disabled and the button appears faded.
+    static draw = function(_x, _y, _enabled = true) {
+        var _x2 = _x + (width * scale_x);
+        var _y2 = _y + (height * scale_y);
+
+        is_hovered = scr_hit(_x, _y, _x2, _y2);
+        is_clicked = _enabled && is_hovered && scr_click_left();
+
+        if (is_hovered) {
+            if (tooltip_text != "") {
+                tooltip_draw(tooltip_text, tooltip_w);
+            }
+            
+            if (_enabled && is_clicked && sound_click != -1) {
+                audio_play_sound(sound_click, 10, false);
+            }
+        }
+
+        var _draw_sprite = (_enabled && is_hovered && hover_sprite != -1) ? hover_sprite : sprite;
+        var _draw_alpha = _enabled ? (is_hovered ? alpha_hover : alpha_idle) : alpha_disabled;
+
+        draw_sprite_ext(_draw_sprite, 0, _x, _y, scale_x, scale_y, 0, c_white, _draw_alpha);
+    };
 }
 
 /// @function draw_unit_buttons(position, text, size_mod, colour, halign, font, alpha_mult, bg, bg_color)
