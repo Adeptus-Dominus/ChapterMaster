@@ -18,16 +18,12 @@
     },
     "Conversion Beamer Pack": {
         "abbreviation": "CnvBmr",
+        "buyable": false,
         "description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comprises it is transformed into pure energy.",
+        "forgable": false,
         "melee_hands": -0.5,
         "ranged_hands": -0.5,
         "renegade_buy": false,
-        "requires_to_forge": [
-            "plasma_tier_1",
-            "flame_tier_1",
-            "melta_tier_1",
-            "grav_tier_1"
-        ],
         "second_profiles": [
             "Conversion Beam Projector"
         ],
@@ -42,6 +38,9 @@
         "melee_hands": -0.5,
         "ranged_hands": -0.5,
         "renegade_buy": false,
+        "requires_to_forge": [
+            "terminator_1"
+        ],
         "second_profiles": [
             "Cyclone Missile Launcher"
         ],

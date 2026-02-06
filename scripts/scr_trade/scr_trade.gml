@@ -6,21 +6,14 @@ function TradeAttempt(diplomacy) constructor {
         "Recruiting Planet": obj_controller.disposition[2] < 70 ? 4000 : 2000,
         "License: Repair": 750,
         "License: Crusade": 1500,
-        "Terminator Armour": 400,
-        "Tartaros": 900,
-        "Land Raider": 800,
         "Castellax Battle Automata": 1200,
         "Minor Artifact": 250,
         "Skitarii": 15,
         "Techpriest": 450,
         //"Condemnor Boltgun" : 20,
-        "Hellrifle": 20,
-        "Incinerator": 20,
         "Crusader": 20,
         "Exterminatus": 1500,
         "Cyclonic Torpedo": 3000,
-        "Eviscerator": 20,
-        "Heavy Flamer": 12,
         "Inferno Bolts": 5,
         "Sister of Battle": 40,
         "Sister Hospitaler": 75,
@@ -385,22 +378,16 @@ function TradeAttempt(diplomacy) constructor {
             new_demand_buttons(0, "License: Crusade", "license", 1);
             break;
         case 3:
-            new_demand_buttons(35, "Terminator Armour", "equip", 5);
-            new_demand_buttons(20, "Land Raider", "vehic", 1);
             new_demand_buttons(40, "Minor Artifact", "arti", 1);
             new_demand_buttons(25, "Skitarii", "merc", 200);
             new_demand_buttons(55, "Techpriest", "merc", 3);
             break;
         case 4:
-            new_demand_buttons(30, "Hellrifle", "equip", 3);
-            new_demand_buttons(20, "Incinerator", "equip", 10);
             new_demand_buttons(25, "Crusader", "merc", 5);
             new_demand_buttons(40, "Exterminatus", "equip", 1);
             new_demand_buttons(60, "Cyclonic Torpedo", "equip", 1);
             break;
         case 5:
-            new_demand_buttons(20, "Eviscerator", "equip", 10);
-            new_demand_buttons(30, "Heavy", "equip", 10);
             //new_demand_buttons(30, "Inferno Bolts", "equip");
             new_demand_buttons(40, "Sister of Battle", "merc", 5);
             new_demand_buttons(45, "Sister Hospitaler", "merc", 3);

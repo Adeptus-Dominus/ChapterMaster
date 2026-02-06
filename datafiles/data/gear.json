@@ -22,6 +22,9 @@
             "master_crafted": 15,
             "standard": 10
         },
+        "requires_to_forge": [
+            "power_1"
+        ],
         "tags": [
             "shield"
         ],
@@ -33,13 +36,12 @@
         "description": "A weapon of the Emperor, and His divine judgment, this weapon can be placed upon a planet to obliterate it entirely.",
         "special_properties": [
             "Planet Destroyer"
-        ],
-        "value": 2500
+        ]
     },
     "Gene Pod Incubator": {
         "abbreviation": "GenePod",
         "description": "Required to house gene slaves in order to generate new gene seed for the chapter.",
-        "value": 8
+        "value": 20
     },
     "Iron Halo": {
         "abbreviation": "IrnHalo",
@@ -49,6 +51,9 @@
             "standard": 35
         },
         "description": "An ancient artifact, these powerful conversion field generators are granted to high ranking battle brothers or heroes of the chapter. Bearers are often looked to for guidance by their fellow Astartes.",
+        "requires_to_forge": [
+            "power_1"
+        ],
         "value": 300
     },
     "Narthecium": {
@@ -77,6 +82,9 @@
     "Psychic Hood": {
         "abbreviation": "PsyHd",
         "description": "An arcane hood that protects Psykers from enemy psychic powers and enhances control of their psychic abilities.",
+        "requires_to_forge": [
+            "force_1"
+        ],
         "specials": {
             "psychic_focus": 15
         },
@@ -95,7 +103,11 @@
             "master_crafted": 10,
             "standard": 5
         },
-        "value": 100
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "value": 100,
+        "sellers": ["ecclesiarchy"]
     },
     "Sororitas Medkit": {
         "abbreviation": "SorMed",

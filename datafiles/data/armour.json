@@ -3,9 +3,10 @@
         "abbreviation": "Artfcr",
         "armour_value": {
             "artifact": 30,
-            "master_crafted": 30, // This is already a custom suit of armor shouldnt Master crafted be its base state?
+            "master_crafted": 30,
             "standard": 30
         },
+        "buyable": false,
         "damage_resistance_mod": {
             "artifact": 25,
             "master_crafted": 20,
@@ -29,10 +30,8 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "armour_tier_3_path_2",
-            "armour_tier_3_path_1",
-            "armour_tier_2_path_3",
-            "armour_tier_2_path_2"
+            "artificer_1",
+            "armour_2"
         ],
         "tags": [
             "power_armour"
@@ -156,22 +155,23 @@
             "master_crafted": 0,
             "standard": -10
         },
+        "requires_to_forge": [
+            "dreadnought_1"
+        ],
         "tags": [
             "dreadnought"
-        ]
+        ],
+        "value": 800
     },
-    // T'au
     "Fire Warrior Armour": {
         "abbreviation": "FWarArm",
         "armour_value": {
             "artifact": 25,
             "master_crafted": 22,
-            // TODO - needs rebalancing
             "standard": 20
         },
         "description": "This armour is used by T'au fire warriors."
     },
-    // Sororitas and other imperials
     "Light Power Armour": {
         "abbreviation": "LPwrArm",
         "armour_value": {
@@ -220,6 +220,7 @@
             "master_crafted": 24,
             "standard": 22
         },
+        "buyable": false,
         "damage_resistance_mod": {
             "artifact": 10,
             "master_crafted": 5,
@@ -244,7 +245,7 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "armour_tier_1"
+            "relic_2"
         ],
         "tags": [
             "power_armour"
@@ -258,6 +259,7 @@
             "master_crafted": 17,
             "standard": 15
         },
+        "buyable": false,
         "description": "Power Armor dating back to the end of the Great Crusade. It is considered the pinnacle of Power Armor by some Astartes. However, the components are no longer reproducible, the knowledge having been lost to time.",
         "hp_mod": {
             "artifact": 10,
@@ -277,7 +279,7 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "armour_tier_2_path_1",
+            "relic_2"
         ],
         "tags": [
             "power_armour"
@@ -291,6 +293,7 @@
             "master_crafted": 17,
             "standard": 15
         },
+        "buyable": false,
         "damage_resistance_mod": {
             "artifact": 5,
             "master_crafted": 0,
@@ -315,7 +318,7 @@
         },
         "renegade_buy": true,
         "requires_to_forge": [
-            "armour_tier_1"
+            "relic_1"
         ],
         "tags": [
             "power_armour"
@@ -329,6 +332,7 @@
             "master_crafted": 17,
             "standard": 15
         },
+        "buyable": false,
         "damage_resistance_mod": {
             "artifact": 5,
             "master_crafted": 5,
@@ -353,8 +357,7 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "armour_tier_1",
-            "armour_tier_2_path_2"
+            "relic_1"
         ],
         "tags": [
             "power_armour"
@@ -392,7 +395,7 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "armour_tier_1"
+            "armour_1"
         ],
         "tags": [
             "power_armour"
@@ -406,6 +409,7 @@
             "master_crafted": 22,
             "standard": 20
         },
+        "buyable": false,
         "damage_resistance_mod": {
             "artifact": 10,
             "master_crafted": 5,
@@ -430,14 +434,13 @@
         },
         "renegade_buy": false,
         "requires_to_forge": [
-            "armour_tier_2_path_1"
+            "armour_2"
         ],
         "tags": [
             "power_armour"
         ],
         "value": 100
     },
-    // Orks
     "Ork Armour": {
         "abbreviation": "OrkArm",
         "armour_value": {
@@ -479,7 +482,6 @@
             "power_armour"
         ]
     },
-    // Eldar
     "Ranger Armour": {
         "abbreviation": "RngrArm",
         "armour_value": {
@@ -518,17 +520,14 @@
             "standard": 10
         },
         "renegade_buy": true,
-        "requires_to_forge": [],
         "value": 5
     },
-    // Hireling Armour
-    // Admech
     "Skitarii Armour": {
         "abbreviation": "SkitArm",
         "armour_value": {
             "artifact": 15,
             "master_crafted": 12,
-            "standard": 10 // Might as well buff this
+            "standard": 10
         },
         "description": "Skitarii Armour is something of a misnomer as most Skitarii are in fact bonded more or less permenantly to their advanced mars armour"
     },
@@ -558,7 +557,9 @@
             "master_crafted": 36,
             "standard": 30
         },
+        "buyable": false,
         "description": "This pattern is possibly considered the most advanced form of Terminator Armour, providing greater mobility for the wearer compared to the Indomitus with no loss in durability. In the M41 considered to be incredibly rare with wars being fought to secure more suits.",
+        "forgable": false,
         "hp_mod": {
             "artifact": 15,
             "master_crafted": 10,
@@ -579,15 +580,10 @@
         },
         "renegade_buy": false,
         "req_exp": 100,
-        "requires_to_forge": [
-            "armour_tier_3_path_1",
-            "armour_tier_2_path_3",
-            "armour_tier_2_path_2"
-        ],
         "tags": [
             "terminator"
         ],
-        "value": 250
+        "value": 600
     },
     "Terminator Armour": {
         "abbreviation": "Indmts",
@@ -623,13 +619,11 @@
         "renegade_buy": false,
         "req_exp": 100,
         "requires_to_forge": [
-            "armour_tier_3_path_1",
-            "armour_tier_2_path_3",
-            "armour_tier_2_path_2"
+            "terminator_1"
         ],
         "tags": [
             "terminator"
         ],
-        "value": 200
+        "value": 400
     }
 }

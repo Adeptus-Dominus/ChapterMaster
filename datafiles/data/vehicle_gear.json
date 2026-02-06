@@ -10,8 +10,7 @@
         "tags": [
             "vehicle",
             "armour"
-        ],
-        "value": 200
+        ]
     },
     "Artificer Hull": {
         "abbreviation": "ArtHll",
@@ -29,11 +28,7 @@
         "tags": [
             "vehicle",
             "Upgrade"
-        ],
-        "value": 200
-    },
-    "Close Combat Weapon": {
-        "value": 45
+        ]
     },
     "Dozer Blades": {
         "abbreviation": "DzrBlds",
@@ -49,7 +44,7 @@
         "spli": 1,
         "tags": [
             "vehicle"
-        ],
+        ]
     },
     "Frag Assault Launchers": {
         "abbreviation": "FrgAssLnchrs",
@@ -61,7 +56,7 @@
         "description": "These launchers enable a vehicle to clear an area for its loaded troops, or prevent boarding by an enemy at close range.",
         "tags": [
             "vehicle"
-        ],
+        ]
     },
     "Heavy Armour": {
         "abbreviation": "HvyArm",
@@ -74,8 +69,7 @@
         "tags": [
             "vehicle",
             "armour"
-        ],
-        "value": 200
+        ]
     },
     "Lucifer Pattern Engine": {
         "abbreviation": "Luc Eng",
@@ -94,8 +88,7 @@
             "vehicle",
             "armour",
             "Upgrade"
-        ],
-        "value": 90
+        ]
     },
     "Searchlight": {
         "abbreviation": "SrchLght",
@@ -108,7 +101,7 @@
         "tags": [
             "vehicle",
             "dreadnought"
-        ],
+        ]
     },
     "Smoke Launchers": {
         "abbreviation": "SmkLnchrs",
@@ -142,7 +135,6 @@
             "vehicle",
             "armour",
             "voidshield"
-        ],
-        "value": 500
+        ]
     }
 }

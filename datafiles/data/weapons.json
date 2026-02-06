@@ -378,7 +378,7 @@
         },
         "value": 50,
         "requires_to_forge": [
-            "power_tier_1"
+            "power_1"
         ]
     },
     "Boarding Shield": {
@@ -420,8 +420,7 @@
             "ancient",
             "las",
             "energy"
-        ],
-        "buyable": false
+        ]
     },
     "Combat Knife": {
         "abbreviation": "CbKnf",
@@ -516,7 +515,8 @@
         "tags": [
             "banner"
         ],
-        "recovery_chance": 99
+        "recovery_chance": 99,
+        "value": 330
     },
     "Eviscerator": {
         "abbreviation": "Evisc",
@@ -541,6 +541,11 @@
             "chain",
             "sword",
             "savage"
+        ],
+        "value": 20,
+        "sellers": [
+            "ecclesiarchy",
+            "mechanicus"
         ]
     },
     "Power Sword": {
@@ -573,7 +578,7 @@
         ],
         "value": 25,
         "requires_to_forge": [
-            "power_tier_1"
+            "power_1"
         ]
     },
     "Power Spear": {
@@ -605,7 +610,7 @@
         ],
         "value": 40,
         "requires_to_forge": [
-            "power_tier_1"
+            "power_1"
         ]
     },
     "Xenophase Blade": {
@@ -659,8 +664,8 @@
         "arp": 3,
         "value": 75,
         "requires_to_forge": [
-            "power_tier_1",
-            "chain_tier_1"
+            "power_1",
+            "combi_1"
         ]
     },
     "Lascutter": {
@@ -679,7 +684,10 @@
             "boarding 3",
             "siege"
         ],
-        "value": 15
+        "value": 15,
+        "requires_to_forge": [
+            "laser_1"
+        ]
     },
     "Power Weapon": {
         "abbreviation": "PwrWpn",
@@ -731,7 +739,7 @@
         ],
         "value": 40,
         "requires_to_forge": [
-            "power_tier_1"
+            "power_1"
         ]
     },
     "Omnissian Axe": {
@@ -816,7 +824,7 @@
         "arp": 3,
         "value": 60,
         "requires_to_forge": [
-            "power_tier_1"
+            "power_1"
         ]
     },
     "Power Fists": {
@@ -884,8 +892,8 @@
         ],
         "value": 90,
         "requires_to_forge": [
-            "bolt_tier_2",
-            "power_tier_2"
+            "power_1",
+            "combi_1"
         ]
     },
     "Assault Chainfist": {
@@ -936,7 +944,7 @@
         "arp": 2,
         "value": 90,
         "requires_to_forge": [
-            "power_tier_1"
+            "power_1"
         ]
     },
     "Dreadnought Lightning Claw": {
@@ -1023,7 +1031,7 @@
         ],
         "value": 90,
         "requires_to_forge": [
-            "power_tier_1"
+            "power_1"
         ]
     },
     "Heavy Thunder Hammer": {
@@ -1056,7 +1064,7 @@
         ],
         "value": 135,
         "requires_to_forge": [
-            "power_tier_1"
+            "power_1"
         ]
     },
     "Power Mace": {
@@ -1087,7 +1095,7 @@
         "req_exp": 100,
         "value": 50,
         "requires_to_forge": [
-            "power_tier_1"
+            "power_1"
         ]
     },
     "Mace of Absolution": {
@@ -1120,7 +1128,7 @@
         "req_exp": 100,
         "value": 70,
         "requires_to_forge": [
-            "power_tier_1"
+            "power_1"
         ],
         "buyable": false
     },
@@ -1176,7 +1184,7 @@
         ],
         "value": 75,
         "requires_to_forge": [
-            "power_tier_1"
+            "power_1"
         ],
         "sellers": [
             "ecclesiarchy"
@@ -1209,7 +1217,10 @@
             "power",
             "sword",
             "martial"
-        ]
+        ],
+        "requires_to_forge": ["artificer_1"],
+        "buyable": false,
+        "value": 300
     },
     "Bolt Pistol": {
         "abbreviation": "BltPstl",
@@ -1310,7 +1321,7 @@
         ],
         "value": 60,
         "requires_to_forge": [
-            "grav_tier_1"
+            "grav_1"
         ]
     },
     "Integrated-Grav": {
@@ -1351,7 +1362,7 @@
         "maintenance": 0.5,
         "value": 100,
         "requires_to_forge": [
-            "grav_tier_1"
+            "grav_1"
         ]
     },
     "Grav-Cannon": {
@@ -1375,7 +1386,8 @@
         "maintenance": 0.8,
         "value": 300,
         "requires_to_forge": [
-            "grav_tier_1"
+            "grav_1",
+            "heavy_1"
         ]
     },
     "Underslung Bolter": {
@@ -1458,7 +1470,12 @@
         ],
         "value": 40,
         "requires_to_forge": [
-            "flame_tier_1"
+            "flame_1",
+            "heavy_1"
+        ],
+        "sellers": [
+            "ecclesiarchy",
+            "mechanicus"
         ]
     },
     "CCW Heavy Flamer": {
@@ -1519,7 +1536,8 @@
             "dreadnought",
             "fist"
         ],
-        "maintenance": 0.1
+        "maintenance": 0.1,
+        "value": 45
     },
     "Inferno Cannon": {
         "abbreviation": "InfCann",
@@ -1540,7 +1558,11 @@
             "flame",
             "dreadnought"
         ],
-        "value": 115
+        "value": 115,
+        "requires_to_forge": [
+            "flame_1",
+            "vehicle_armaments_1"
+        ]
     },
     "Integrated-Melta": {
         "abbreviation": "IntMlt",
@@ -1580,7 +1602,7 @@
         ],
         "value": 30,
         "requires_to_forge": [
-            "melta_tier_1"
+            "melta_1"
         ]
     },
     "Multi-Melta": {
@@ -1605,7 +1627,8 @@
         ],
         "value": 60,
         "requires_to_forge": [
-            "melta_tier_1"
+            "melta_1",
+            "heavy_1"
         ]
     },
     "Plasma Pistol": {
@@ -1630,7 +1653,7 @@
         ],
         "value": 60,
         "requires_to_forge": [
-            "plasma_tier_1"
+            "plasma_1"
         ]
     },
     "Plasma Cutter": {
@@ -1674,7 +1697,7 @@
         ],
         "value": 12,
         "requires_to_forge": [
-            "flame_tier_1"
+            "melta_1"
         ]
     },
     "Integrated-Plasma": {
@@ -1717,7 +1740,7 @@
         ],
         "value": 100,
         "requires_to_forge": [
-            "plasma_tier_1"
+            "plasma_1"
         ]
     },
     "Plasma Cannon": {
@@ -1742,7 +1765,8 @@
         ],
         "value": 300,
         "requires_to_forge": [
-            "plasma_tier_1"
+            "plasma_1",
+            "heavy_1"
         ]
     },
     "Sniper Rifle": {
@@ -1782,6 +1806,9 @@
         "tags": [
             "precision",
             "rifle"
+        ],
+        "requires_to_forge": [
+            "solid_projectile_1"
         ]
     },
     "Assault Cannon": {
@@ -1805,7 +1832,8 @@
         ],
         "value": 75,
         "requires_to_forge": [
-            "bolt_tier_3"
+            "solid_projectile_1",
+            "heavy_1"
         ]
     },
     "Kheres Assault Cannon": {
@@ -1910,7 +1938,8 @@
         ],
         "value": 70,
         "requires_to_forge": [
-            "laser_tier_1"
+            "laser_1",
+            "heavy_1"
         ]
     },
     "Conversion Beam Projector": {
@@ -1991,7 +2020,8 @@
             "dreadnought"
         ],
         "requires_to_forge": [
-            "bolt_tier_3"
+            "vehicle_armaments_1",
+            "combi_1"
         ],
         "value": 110
     },
@@ -2017,7 +2047,7 @@
             "dreadnought"
         ],
         "requires_to_forge": [
-            "laser_tier_1"
+            "laser_1"
         ],
         "value": 110
     },
@@ -2041,7 +2071,7 @@
         ],
         "value": 50,
         "requires_to_forge": [
-            "bolt_tier_2"
+            "heavy_1"
         ]
     },
     "Infernus Heavy Bolter": {
@@ -2126,7 +2156,8 @@
             "bolt"
         ],
         "requires_to_forge": [
-            "bolt_tier_3"
+            "combi_1",
+            "vehicle_armaments_1"
         ],
         "value": 28
     },
@@ -2173,7 +2204,9 @@
             "dreadnought"
         ],
         "requires_to_forge": [
-            "bolt_tier_4"
+            "solid_projectile_1",
+            "combi_1",
+            "vehicle_armaments_1"
         ],
         "value": 60
     },
@@ -2218,7 +2251,8 @@
             "sponson"
         ],
         "requires_to_forge": [
-            "bolt_tier_4"
+            "combi_1",
+            "vehicle_armaments_1"
         ],
         "value": 60
     },
@@ -2245,7 +2279,9 @@
             "twin_linked"
         ],
         "requires_to_forge": [
-            "laser_tier_1"
+            "laser_1",
+            "vehicle_armaments_1",
+            "combi_1"
         ],
         "value": 120
     },
@@ -2271,7 +2307,8 @@
             "sponson"
         ],
         "requires_to_forge": [
-            "laser_tier_1"
+            "laser_1",
+            "vehicle_armaments_1"
         ],
         "value": 60
     },
@@ -2296,7 +2333,8 @@
             "sponson"
         ],
         "requires_to_forge": [
-            "bolt_tier_4"
+            "combi_1",
+            "vehicle_armaments_1"
         ],
         "value": 70
     },
@@ -2321,7 +2359,8 @@
             "sponson"
         ],
         "requires_to_forge": [
-            "flame_tier_1"
+            "flame_1",
+            "vehicle_armaments_1"
         ]
     },
     "Twin Linked Heavy Flamer Sponsons": {
@@ -2345,7 +2384,12 @@
             "dreadnought",
             "sponson"
         ],
-        "value": 150
+        "value": 150,
+        "requires_to_forge": [
+            "flame_1",
+            "vehicle_armaments_1",
+            "combi_1"
+        ]
     },
     "Twin Linked Bolters": {
         "attack": {
@@ -2366,7 +2410,8 @@
             "vehicle"
         ],
         "requires_to_forge": [
-            "bolt_tier_2"
+            "combi_1",
+            "vehicle_armaments_1"
         ],
         "value": 8
     },
@@ -2391,7 +2436,12 @@
             "melta"
         ],
         "maintenance": 0.05,
-        "value": 200
+        "value": 200,
+        "requires_to_forge": [
+            "melta_1",
+            "vehicle_armaments_1",
+            "combi_1"
+        ]
     },
     "Twin Linked Volkite Culverin Sponsons": {
         "abbreviation": "TwnVlkCulvs",
@@ -2436,7 +2486,7 @@
             "bolt"
         ],
         "requires_to_forge": [
-            "bolt_tier_3"
+            "vehicle_armaments_1"
         ],
         "value": 38
     },
@@ -2462,7 +2512,8 @@
         ],
         "maintenance": 0.05,
         "requires_to_forge": [
-            "flame_tier_1"
+            "flame_1",
+            "vehicle_armaments_1"
         ],
         "value": 50
     },
@@ -2503,7 +2554,8 @@
         "spli": 15,
         "arp": 2,
         "requires_to_forge": [
-            "bolt_tier_3"
+            "vehicle_armaments_1",
+            "solid_projectile_1"
         ],
         "value": 30,
         "tags": [
@@ -2534,7 +2586,7 @@
         ],
         "value": 50,
         "requires_to_forge": [
-            "bolt_tier_2"
+            "combi_1"
         ]
     },
     "Hand Flamer": {
@@ -2558,7 +2610,7 @@
         ],
         "value": 12,
         "requires_to_forge": [
-            "flame_tier_1"
+            "flame_1"
         ]
     },
     "Flamer": {
@@ -2586,8 +2638,9 @@
             "boarding 2"
         ],
         "requires_to_forge": [
-            "flame_tier_1"
-        ]
+            "flame_1"
+        ],
+        "value": 25
     },
     "Integrated-Flamer": {
         "attack": {
@@ -2632,8 +2685,8 @@
         ],
         "value": 35,
         "requires_to_forge": [
-            "flame_tier_1",
-            "bolt_tier_1"
+            "flame_1",
+            "combi_1"
         ]
     },
     "Combiplasma": {
@@ -2659,8 +2712,8 @@
         ],
         "value": 110,
         "requires_to_forge": [
-            "plasma_tier_1",
-            "bolt_tier_1"
+            "plasma_1",
+            "combi_1"
         ]
     },
     "Combigrav": {
@@ -2686,8 +2739,8 @@
         ],
         "value": 110,
         "requires_to_forge": [
-            "grav_tier_1",
-            "bolt_tier_1"
+            "grav_1",
+            "combi_1"
         ]
     },
     "Combimelta": {
@@ -2714,8 +2767,8 @@
         ],
         "value": 40,
         "requires_to_forge": [
-            "melta_tier_1",
-            "bolt_tier_1"
+            "melta_1",
+            "combi_1"
         ]
     },
     "Incinerator": {
@@ -2736,9 +2789,14 @@
             "flame",
             "boarding 3"
         ],
-        "value": 35,
+        "value": 40,
         "requires_to_forge": [
-            "flame_tier_1"
+            "flame_1",
+            "heavy_1",
+            "force_1"
+        ],
+        "sellers": [
+            "inquisition"
         ]
     },
     "Force Staff": {
@@ -2768,7 +2826,7 @@
         ],
         "value": 70,
         "requires_to_forge": [
-            "force_tier_1"
+            "force_1"
         ]
     },
     "Force Sword": {
@@ -2802,7 +2860,7 @@
         ],
         "value": 55,
         "requires_to_forge": [
-            "force_tier_1"
+            "force_1"
         ]
     },
     "Force Axe": {
@@ -2834,7 +2892,7 @@
         ],
         "value": 60,
         "requires_to_forge": [
-            "force_tier_1"
+            "force_1"
         ]
     },
     "Twin Linked Lascannon Turret": {
@@ -2858,7 +2916,9 @@
             "turret"
         ],
         "requires_to_forge": [
-            "laser_tier_1"
+            "laser_1",
+            "combi_1",
+            "vehicle_armaments_1"
         ],
         "value": 60
     },
@@ -3101,7 +3161,11 @@
             "arcane"
         ],
         "ranged_hands": 1,
-        "buyable": false
+        "value": 20,
+        "sellers": [
+            "inquisition"
+        ],
+        "forgable": false
     },
     "Ranger Long Rifle": {
         "abbreviation": "RangeLoRife",

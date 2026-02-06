@@ -155,7 +155,7 @@ function Armamentarium() constructor {
                 _item.value = _raw[$ "value"] ?? _item.value;
                 _item.sellers = _raw[$ "sellers"] ?? _item.sellers;
 
-                _item.buyable = (_item.value == 0 && !array_length(_item.sellers)) ? false : (_raw[$ "buyable"] ?? _item.buyable);
+                _item.buyable = (_item.value == 0 || array_length(_item.sellers) == 0) ? false : (_raw[$ "buyable"] ?? _item.buyable);
                 _item.forgable = (_item.value == 0) ? false : (_raw[$ "forgable"] ?? _item.forgable);
 
                 _item.requires_to_forge = _raw[$ "requires_to_forge"] ?? _item.requires_to_forge;
@@ -629,11 +629,11 @@ function Armamentarium() constructor {
 
     /// @desc Draws the status report from the Forge Master.
     static _draw_advisor_text = function() {
-        draw_set_font(fnt_40k_12);
+        draw_set_font(fnt_40k_14b);
         draw_set_color(c_gray);
         draw_text_ext(352, 130, advisor_report_text, -1, 500);
 
-        var _btn_y = 255 + string_height_ext(advisor_report_text, -1, 536);
+        var _btn_y = 225 + string_height_ext(advisor_report_text, -1, 536);
         if (enter_forge_button.draw_shutter(526, _btn_y, "Enter Forge", 0.5)) {
             is_in_forge = true;
             refresh_catalog();
@@ -671,17 +671,20 @@ function Armamentarium() constructor {
 
         obj_controller.specialist_point_handler.draw_forge_queue(359, 132);
 
-        draw_set_color(COL_FORGE_POINTS);
-        draw_set_font(fnt_40k_14b);
         var _role_name = obj_ini.role[100][16];
         var _master_craft = obj_controller.master_craft_chance;
         var _forge_count = obj_controller.player_forge_data.player_forges;
 
-        var _text = $"Forge point technologies per turn: {obj_controller.forge_points}\n";
-        _text += $"Chapter total {_role_name}s: {count_total}\n";
-        _text += $"Planetary Forges in operation: {_forge_count}\n";
+        var _text = $"Status Report:\n\n";
+        _text += $"Forge Point production per turn: {obj_controller.forge_points}\n";
+        _text += $"Chapter Total {_role_name}s: {count_total}\n\n";
+        _text += $"Planetary Forges in operation: {_forge_count}\n\n";
         _text += $"Master Craft Forge Chance: {_master_craft}%\n";
-        _text += "    Assign techmarines to forges to increase Master Craft Chance";
+        _text += "Assign techmarines to forges to increase Master Craft Chance";
+
+        draw_set_color(c_gray);
+        draw_set_font(fnt_40k_14b);
+
         draw_text_ext(359, 435, _text, -1, 640);
     };
 
@@ -892,6 +895,11 @@ function ShopItem(_name) constructor {
 
         if (variable_struct_exists(_name_cache, _tech_key)) {
             return _name_cache[$ _tech_key];
+        }
+
+        if (!struct_exists(global.technologies, _tech_key)) {
+            global.logger.error($"Technology {_tech_key} not found in the list!");
+            return "";
         }
 
         var _tech_data = global.technologies[$ _tech_key];
