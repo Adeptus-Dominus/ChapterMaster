@@ -106,8 +106,10 @@
         "requires_to_forge": [
             "power_1"
         ],
-        "value": 100,
-        "sellers": ["ecclesiarchy"]
+        "sellers": [
+            "ecclesiarchy"
+        ],
+        "value": 100
     },
     "Sororitas Medkit": {
         "abbreviation": "SorMed",

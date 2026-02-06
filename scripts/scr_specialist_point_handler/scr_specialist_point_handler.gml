@@ -360,34 +360,34 @@ function SpecialistPointHandler() constructor {
 
             if (struct_exists(_forge_order, "item")) {
                 /// @type {Struct.ShopItem}
-                var _shop_item = forge_queue[i].item;
+                var _shop_item = _forge_order.item;
                 _display_name = _shop_item.display_name ?? "ERROR";
             }
 
             _display_name = (is_string(_display_name)) ? _display_name : "ERROR";
 
             draw_text(xx, yy + item_gap, _display_name);
-            draw_text(xx + 166, yy + item_gap, forge_queue[i].count);
+            draw_text(xx + 166, yy + item_gap, _forge_order.count);
 
-            if (forge_queue[i].ordered == obj_controller.turn) {
-                if (forge_queue[i].count > 1) {
+            if (_forge_order.ordered == obj_controller.turn) {
+                if (_forge_order.count > 1) {
                     if (point_and_click(draw_unit_buttons([xx + 141, yy + item_gap], "-", [0.75, 0.75], c_red))) {
-                        var unit_cost = forge_queue[i].forge_points / forge_queue[i].count;
-                        forge_queue[i].count--;
-                        forge_queue[i].forge_points -= unit_cost;
+                        var _unit_cost = _forge_order.forge_points / _forge_order.count;
+                        _forge_order.count--;
+                        _forge_order.forge_points -= _unit_cost;
                     }
                 }
-                if (forge_queue[i].count < 100) {
+                if (_forge_order.count < 100) {
                     if (point_and_click(draw_unit_buttons([xx + 180, yy + item_gap], "+", [0.75, 0.75], c_green))) {
-                        var unit_cost = forge_queue[i].forge_points / forge_queue[i].count;
-                        forge_queue[i].count++;
-                        forge_queue[i].forge_points += unit_cost;
+                        var _unit_cost = _forge_order.forge_points / _forge_order.count;
+                        _forge_order.count++;
+                        _forge_order.forge_points += _unit_cost;
                     }
                 }
             }
 
-            draw_text(xx + 271, yy + item_gap, string_hash_to_newline(forge_queue[i].forge_points));
-            total_eta += ceil(forge_queue[i].forge_points / forge_points);
+            draw_text(xx + 271, yy + item_gap, string_hash_to_newline(_forge_order.forge_points));
+            total_eta += ceil(_forge_order.forge_points / forge_points);
             draw_text(xx + 376, yy + item_gap, $"{total_eta} turns");
             if (point_and_click(draw_unit_buttons([xx + 491, yy + item_gap], "X", [0.75, 0.75], c_red))) {
                 array_delete(forge_queue, i, 1);
