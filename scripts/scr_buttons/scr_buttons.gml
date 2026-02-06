@@ -236,7 +236,7 @@ function SpriteButton(_sprite, _hover_sprite = -1) constructor {
             if (tooltip_text != "") {
                 tooltip_draw(tooltip_text, tooltip_w);
             }
-            
+
             if (_enabled && is_clicked && sound_click != -1) {
                 audio_play_sound(sound_click, 10, false);
             }

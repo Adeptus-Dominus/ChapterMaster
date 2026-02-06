@@ -10,8 +10,6 @@ function Armamentarium() constructor {
     shop_type = "weapons";
     is_in_forge = false;
     page_mod = 0;
-    construction_started = 0;
-    eta = 0;
     target_comp = obj_controller.new_vehicles;
 
     // --- Calculation State ---
@@ -394,8 +392,6 @@ function Armamentarium() constructor {
         // 1. Warships
         if (shop_type == "ships") {
             var _duration = (_item.name == "Battle Barge") ? 30 : 10;
-            eta = _duration;
-            construction_started = 120;
             add_event({e_id: "ship_construction", ship_class: _item.name, duration: _duration});
             return;
         }
@@ -518,7 +514,7 @@ function Armamentarium() constructor {
             var _can_forge = !is_in_forge || _item.meets_requirements;
             var _cost = (is_in_forge ? _item.forge_cost : _item.buy_cost) * _mult;
             var _afford = is_in_forge || (obj_controller.requisition >= _cost);
-            var _active = (_can_forge && _afford);
+            var _active = _can_forge && _afford;
 
             var _display_color = _active ? CM_GREEN_COLOR : CM_RED_COLOR;
             var _alpha = _active ? 1 : 0.5;
@@ -833,7 +829,6 @@ function ShopItem(_name) constructor {
             _best_modifier = _trader_mod;
             _best_seller = "rogue_trader";
         }
-    
 
         buy_cost_mod = _best_modifier;
         best_seller = _best_seller;
@@ -873,14 +868,14 @@ function ShopItem(_name) constructor {
         if (array_length(missing_technologies) == 0) {
             return "";
         }
-        
+
         return $"Missing Technologies:\n{string_join_ext("\n", missing_technologies)}";
     };
 
     static get_buy_cost_tooltip = function() {
         var _text = $"Base Value: {value}\n\n";
         var _seller = (best_seller == "rogue_trader") ? "Rogue Trader" : string_upper_first(best_seller);
-        
+
         _text += $"Best Seller: {_seller}\n";
         _text += $"Disposition Modifier: x{buy_cost_mod}";
 
@@ -1142,11 +1137,11 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
         if (controller.stc_ships_un > 0 && controller.stc_ships < 6) {
             array_push(_available, "ships");
         }
-        
+
         if (array_length(_available) == 0) {
             return;
         }
-        
+
         var _target = array_random_element(_available);
 
         switch (_target) {
