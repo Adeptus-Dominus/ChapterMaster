@@ -469,7 +469,7 @@ function Armamentarium() constructor {
         draw_set_color(c_gray);
         draw_text(352, 66, is_in_forge ? "Forge" : "Armamentarium");
 
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(fnt_aldrich_12);
         var _sub = _is_adept ? $"Adept {obj_controller.adept_name}" : $"Forge Master {obj_ini.name[0][1]}";
         draw_text(352, 100, _sub);
     };
@@ -486,7 +486,7 @@ function Armamentarium() constructor {
         var _start_index = _items_per_page * page_mod;
         var _draw_y_local = 157;
 
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(fnt_aldrich_12);
         draw_set_color(CM_GREEN_COLOR);
         draw_text(962, 159, "Name");
         if (shop_type != "technologies") {
@@ -629,7 +629,7 @@ function Armamentarium() constructor {
 
     /// @desc Draws the status report from the Forge Master.
     static _draw_advisor_text = function() {
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(fnt_aldrich_12);
         draw_set_color(c_gray);
         draw_text_ext(352, 130, advisor_report_text, -1, 500);
 
@@ -683,7 +683,7 @@ function Armamentarium() constructor {
         _text += "Assign techmarines to forges to increase Master Craft Chance";
 
         draw_set_color(c_gray);
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(fnt_aldrich_12);
 
         draw_text_ext(359, 435, _text, -1, 640);
     };
@@ -719,7 +719,7 @@ function Armamentarium() constructor {
 
         // Interaction area (matching the original coordinates roughly)
 
-        draw_set_font(fnt_40k_14);
+        draw_set_font(fnt_aldrich_12);
         draw_set_halign(fa_left);
 
         var _hit_box = [
@@ -967,7 +967,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
     static draw = function(_x, _y) {
         _draw_fragment_header(_x, _y);
 
-        draw_set_font(fnt_40k_12);
+        draw_set_font(fnt_aldrich_12);
         draw_set_color(c_gray);
         draw_text(_x + LAYOUT.ETA_X_OFFSET, _y + LAYOUT.ETA_Y_OFFSET, advisor_eta_text);
 
@@ -1031,7 +1031,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
             }
         }
 
-        draw_set_font(fnt_40k_14);
+        draw_set_font(fnt_aldrich_12);
         draw_set_color(_is_focus ? c_white : c_gray);
         draw_text(_cx + 36, _cy + LAYOUT.HEADER_Y_OFFSET, _label);
 
@@ -1056,7 +1056,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
     /// @desc Draws the list of bonuses for a category.
     static _draw_bonus_list = function(_cat, _tx, _ty, _current_level) {
         var _bonuses = _get_descriptions(_cat);
-        draw_set_font(fnt_40k_12);
+        draw_set_font(fnt_aldrich_12);
 
         for (var s = 0; s < array_length(_bonuses); s++) {
             var _unlocked = _current_level >= s;
@@ -1073,7 +1073,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
     static _draw_fragment_header = function(_x, _y) {
         var _total_un = controller.stc_wargear_un + controller.stc_vehicles_un + controller.stc_ships_un;
 
-        draw_set_font(fnt_40k_14);
+        draw_set_font(fnt_aldrich_12);
         draw_set_color(c_gray);
         draw_text(_x + 34, _y, $"{_total_un} Unidentified Fragments");
 
