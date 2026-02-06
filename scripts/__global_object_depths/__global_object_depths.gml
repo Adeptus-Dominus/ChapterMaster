@@ -179,7 +179,7 @@ function __global_object_depths() {
     global.__objectNames[79] = "obj_popup_dialogue";
     global.__objectNames[80] = "obj_event";
     global.__objectNames[81] = "obj_event_log";
-    global.__objectNames[82] = "";  // [REMOVED] obj_shop
+    global.__objectNames[82] = ""; // [REMOVED] obj_shop
     global.__objectNames[83] = "obj_crusade";
     global.__objectNames[84] = "obj_star";
     global.__objectNames[85] = "obj_star_event";
