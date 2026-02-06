@@ -1155,6 +1155,7 @@ serialize = function() {
         spec_train_data,
         forge_queue: specialist_point_handler.forge_queue,
         chapter_master_data: chapter_master,
+        event
     };
     var excluded_from_save = [
         "temp",

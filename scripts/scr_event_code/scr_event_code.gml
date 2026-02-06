@@ -1,8 +1,10 @@
 function add_event(event_data) {
     var _inserted = false;
+
     if (!struct_exists(event_data, "duration")) {
         event_data.duration = 1;
     }
+
     for (var i = 0; i < array_length(obj_controller.event); i++) {
         var _event = obj_controller.event[i];
         if (_event.duration >= event_data.duration) {
@@ -11,6 +13,7 @@ function add_event(event_data) {
             break;
         }
     }
+
     if (!_inserted) {
         array_push(obj_controller.event, event_data);
     }
