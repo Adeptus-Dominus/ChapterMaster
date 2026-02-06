@@ -1,420 +1,18 @@
 {
-    "Volkite Culverin": {
-        "abbreviation": "VolkCul",
-        "attack": {
-            "standard": 700,
-            "master_crafted": 720,
-            "artifact": 740
-        },
-        "description": "The only man-portable heavy support Volkite, the Culverin has been a dreaded presence on the battlefields of the 31st millennium, where it would rend Contemptors apart and combust Marines by the dozen. Featuring the greatest range out of the family amongst the other heavier variants, its beam potency is outmatched by all heavier Volkites.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 4,
-        "range": 22,
-        "spli": 12,
-        "arp": 0,
-        "tags": [
-            "heavy_ranged",
-            "volkite",
-            "energy"
-        ]
-    },
-    "Volkite Caliver": {
-        "abbreviation": "VolkCal",
-        "attack": {
-            "standard": 550,
-            "master_crafted": 570,
-            "artifact": 590
-        },
-        "description": "Featuring grater range, more precise fire and more stopping fire than the Charger, this is the rifle of the Volkite family, whereas its smaller brother is the assault rifle. A weapon most prominent in Tactical squads of the Great Crusade Legions, its potency is spoken of even those many thousands of years past their height.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 6,
-        "range": 16,
-        "spli": 10,
-        "arp": 0,
-        "tags": [
-            "volkite",
-            "energy"
-        ]
-    },
-    "Volkite Charger": {
-        "abbreviation": "VolkCharg",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 420,
-            "artifact": 440
-        },
-        "description": "One of the deadliest of the mainstay weapons in the Imperial arsenal during the Great Crusade. The humble Charger is a thermal ray weapon that deflagrates organic matter, combusting the target in extreme cases. Some variants even arc over multiple targets.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 10,
-        "range": 10,
-        "spli": 6,
-        "arp": 0,
-        "tags": [
-            "volkite",
-            "energy"
-        ]
-    },
-    "Volkite Serpenta": {
-        "abbreviation": "VolkSerp",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 270,
-            "artifact": 290
-        },
-        "description": "The pistol variant of the long-lost Volkite weapon type, the Serpenta was a mainstay of Moritats and often wielded by Centurions of the Legiones Astartes. Now a symbol of status to match its fearsome potency, a sighting of this ancient weapon would send many foes running.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 10,
-        "range": 3,
-        "spli": 4,
-        "arp": 0,
-        "tags": [
-            "volkite",
-            "energy",
-            "pistol"
-        ]
-    },
-    "Twin-linked Volkite Culverins": {
-        "abbreviation": "T-LVolkCulv",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 270,
-            "artifact": 290
-        },
-        "description": "Ancient volkite type weaponry usually mounted on vehicles. It features two volkite culverins and is meant for long forgotten contemptor pattern dreadnaught.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 10,
-        "range": 3,
-        "spli": 4,
-        "arp": 0,
-        "tags": [
-            "volkite",
-            "energy",
-            "vehicle",
-            "dreadnought"
-        ]
-    },
-    "Phobos Bolt Pistol": {
-        "abbreviation": "PhBltPis",
-        "attack": {
-            "standard": 38,
-            "master_crafted": 43,
-            "artifact": 48
-        },
-        "description": "The shortened version of the Phobos Bolgun, this pistol like its brother features a .70 bolt and less bulk than its successors. Despite its most venerable origin it features better quality basic components than its modern counterparts but lacks anything more advanced than its simple firing mechanism and basic optics.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 20,
-        "range": 3.5,
-        "spli": 2,
-        "arp": 0,
-        "tags": [
-            "bolt",
-            "pistol"
-        ]
-    },
-    "Phobos Bolter": {
-        "abbreviation": "PhBltr",
-        "attack": {
-            "standard": 75,
-            "master_crafted": 80,
-            "artifact": 85
-        },
-        "description": "Created at the conception of the Imperium, this very first bolter pattern features a .70 caliber bolt as opposed to the 41st millennium's standard .75. Its form is far less bulky than the Godwyn, most prevalent in the modern Astartes armouries. Simpler in design in theory but required higher-tech components than what is currently available, so when the Heresy ended and the weaponry was streamlined for less logistical effort, the older patterns, such as the venerable Phobos, were phased out.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 20,
-        "range": 13,
-        "spli": 3,
-        "arp": 0,
-        "tags": [
-            "bolt"
-        ]
-    },
-    "Mars Heavy Bolter": {
-        "abbreviation": "MarsHvyBltr",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 430,
-            "artifact": 460
-        },
-        "description": "This is the prototype that turned into the staple of all Heavy Bolter designs. Introduced in early Great Crusade, it was one of the very first heavy support weapons churned out by the forges of Mechanicum.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 12,
-        "range": 17,
-        "spli": 9,
-        "arp": 1,
-        "tags": [
-            "heavy_ranged",
-            "bolt"
-        ]
-    },
-    "Tigris Combi Bolter": {
-        "abbreviation": "TigComBltr",
-        "attack": {
-            "standard": 100,
-            "master_crafted": 120,
-            "artifact": 140
-        },
-        "description": "During the Great Crusade, there came a need for a hand-held weapon of high rate of fire and respectable firepower that's easy to manufacture. Some Techpriest, or perhaps a Techmarine, put two bolters together and thus the Combi-Bolter was born. Phased out by the Storm Bolter, it is nevertheless a respectable weapon and a relic of more civilised times.",
-        "melee_hands": 1.1,
-        "ranged_hands": 1.1,
-        "ammo": 14,
-        "range": 19,
-        "spli": 11,
-        "arp": 0,
-        "tags": [
-            "bolt"
-        ]
-    },
-    "Ryza Plasma Gun": {
-        "abbreviation": "RyzPlsmGn",
-        "attack": {
-            "standard": 325,
-            "master_crafted": 350,
-            "artifact": 375
-        },
-        "description": "One of many Plasma weapon patterns that came from the famed Forge World of Ryza. With its characteristic purple glow, alongside slight curvatures of the design, the mark of its forgeworld is impossible to miss. Featuring greater range and accuracy as well as pure stopping power, this is a weapon that even Terminators should fear to face.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 18,
-        "range": 14,
-        "spli": 5,
-        "arp": 1,
-        "tags": [
-            "plasma",
-            "energy"
-        ]
-    },
-    "Ryza Plasma Pistol": {
-        "abbreviation": "RyzPlsmPis",
-        "attack": {
-            "standard": 145,
-            "master_crafted": 160,
-            "artifact": 175
-        },
-        "description": "The smaller brother of the Ryzan Plasma Gun, it shares its characteristics as well as sleek design and purple glow. Once a regular weapon for Sergeants and some Moritats in the Legiones Astartes, with even some Consuls or Centurions favouring them over Volkites or Disintegrators, the humble Ryzan Plasma Pistol has earned its place as a vaunted relic of any armoury lucky enough to have it.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 6,
-        "range": 4,
-        "spli": 3,
-        "arp": 1,
-        "tags": [
-            "plasma",
-            "energy",
-            "pistol"
-        ]
-    },
-    "Mars Plasma Cannon": {
-        "abbreviation": "MarsPlsmCnn",
-        "attack": {
-            "standard": 650,
-            "master_crafted": 700,
-            "artifact": 750
-        },
-        "description": "An ancient Plasma Cannon variant born in the bowels of Mother Mars. Once a staple of heavy weapons squads in the time of Legiones Astartes, now a revered relic with power beyond compare with any modern weapons, even those made in the forges of Mars and Ryza in this dark age. Sharing some design and components with Ryzan patterns, it features the same purple glow that makes them so easily distinguishable.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 18,
-        "range": 16,
-        "spli": 8,
-        "arp": 1,
-        "tags": [
-            "heavy_ranged",
-            "plasma",
-            "energy"
-        ]
-    },
-    "Primus Melta Gun": {
-        "abbreviation": "PrimMltGn",
-        "attack": {
-            "standard": 560,
-            "master_crafted": 585,
-            "artifact": 610
-        },
-        "description": "The Primus MK II Meltagun's origins have been lost to history, but the knowledge of its power and their bearers who served in the Legiones Astartes remains. Some theories have been made to its Ryzan origins due to the curvature of the body, but the famous Forge World denies those claims.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 6,
-        "range": 2.5,
-        "spli": 2,
-        "arp": 1,
-        "tags": [
-            "melta",
-            "energy",
-            "boarding"
-        ]
-    },
-    "Proteus Multi-Melta": {
-        "abbreviation": "ProtMltMelt",
-        "attack": {
-            "standard": 1000,
-            "master_crafted": 1100,
-            "artifact": 1200
-        },
-        "description": "This Multi-Melta design originates, like many others used by Legiones Astartes, in the Dark Age of Technology. Deadlier than the current designs fielded by the Space Marine Chapters, it is a relic of both of the zenith of mankind's science and the last moments of the Emperor's true vision.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 6,
-        "range": 4.5,
-        "spli": 2,
-        "arp": 1,
-        "tags": [
-            "heavy_ranged",
-            "melta",
-            "energy",
-            "boarding"
-        ]
-    },
-    "Phaestos Flamer": {
-        "abbreviation": "PhFlmr",
-        "attack": {
-            "standard": 430,
-            "master_crafted": 585,
-            "artifact": 610
-        },
-        "description": "The Phaestos-pattern Flamer is a stark reminder of the time where Mankind's future was yet unmolested by the decaying stench of the Horus Heresy. Oddly shaped for the modern users, it is nonetheless not to be underestimated and its potent promethium-fueled flame has burned through armours of unnumbered heroes.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 6,
-        "range": 2.5,
-        "spli": 6,
-        "arp": -1,
-        "tags": [
-            "flame"
-        ]
-    },
-    "Power Scythe": {
-        "abbreviation": "PwrSct",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 300,
-            "artifact": 350
-        },
-        "melee_mod": {
-            "standard": 1,
-            "master_crafted": 1.1,
-            "artifact": 1.2
-        },
-        "description": "One of many Power Weapon types made in the nascent Imperium, the Power Scythes never truly became a staple of any large force outside of specialist elements, and when even those faded into obscurity or went traitor, the production of the Power Scythes was halted. Since then few remain in Imperial use, and most can be found in hands of foul traitors.",
-        "melee_hands": 2,
-        "ranged_hands": 1,
-        "ammo": 0,
-        "range": 1,
-        "spli": 6,
-        "arp": 1,
-        "tags": [
-            "power"
-        ]
-    },
-    "Ryza Lascannon": {
-        "abbreviation": "RyzLascnn",
-        "attack": {
-            "standard": 750,
-            "master_crafted": 800,
-            "artifact": 850
-        },
-        "description": "The Forge World of Ryza is known not only for its mastery of Plasma weaponry, but also for its genius in Las weapon designs. This revered Ryzan Lascannon pattern can be dated to the Great Crusade, and as such it is the pinnacle of its kind as the Imperium was then. A common sight across the Legiones Astartes heavy support squads as well as Solar Auxilia, any Chapter blessed with one should count themselves lucky.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 10,
-        "range": 24,
-        "spli": 1,
-        "arp": 1,
-        "tags": [
-            "heavy_ranged",
-            "las",
-            "energy"
-        ]
-    },
-    "Cthon Autocannon": {
-        "abbreviation": "CthAutocnn",
-        "attack": {
-            "standard": 480,
-            "master_crafted": 520,
-            "artifact": 560
-        },
-        "description": "Originating from the Warmaster's homeworld [allegedly untrue] of Cthonia, this Autocannon pattern was the chosen type of this weapon for Terminator Squads throughout the Great Crusade and subsequent Horus Heresy. While later designs may have outshined it in fire rate or range, this remains the hardest hitting autocannon to date, perhaps with the Kalibrax as a strong competitor.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 30,
-        "range": 20,
-        "spli": 15,
-        "arp": 1,
-        "tags": [
-            "heavy_ranged",
-            "dreadnought"
-        ]
-    },
-    "Storm Shield": {
-        "description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",
-        "abbreviation": "StrmShld",
-        "attack": {
-            "standard": 5,
-            "master_crafted": 5,
-            "artifact": 10
-        },
-        "armour_value": {
-            "standard": 8,
-            "master_crafted": 10,
-            "artifact": 12
-        },
-        "melee_hands": 0.75,
-        "ranged_hands": 1,
-        "tags": [
-            "shield",
-            "boarding 2"
-        ],
-        "hp_mod": {
-            "standard": 30,
-            "master_crafted": 35,
-            "artifact": 40
-        },
-        "value": 50,
-        "requires_to_forge": [
-            "power_1"
-        ]
-    },
-    "Boarding Shield": {
-        "description": "Protects twice as well when boarding. Used in siege or boarding operations, this shield offers additional protection.  It may be used with a 2-handed ranged weapon.",
-        "abbreviation": "BrdShld",
-        "armour_value": {
-            "standard": 4,
-            "master_crafted": 5,
-            "artifact": 6
-        },
-        "melee_hands": 0.75,
-        "tags": [
-            "shield",
-            "boarding 3"
-        ],
-        "hp_mod": {
-            "standard": 15,
-            "master_crafted": 17.5,
-            "artifact": 20
-        },
-        "value": 20
-    },
     "Archeotech Laspistol": {
+        "abbreviation": "ArchLpstl",
+        "ammo": 30,
+        "arp": 1,
         "attack": {
-            "standard": 40,
+            "artifact": 80,
             "master_crafted": 60,
-            "artifact": 80
+            "standard": 40
         },
         "description": "Known as a Lasrod or Gelt Gun, this pistol is an ancient design of Laspistol with much greater power.",
-        "abbreviation": "ArchLpstl",
         "melee_hands": 0,
-        "ranged_hands": 0.5,
-        "ammo": 30,
         "range": 4.1,
+        "ranged_hands": 0.5,
         "spli": 0,
-        "arp": 1,
         "tags": [
             "pistol",
             "ancient",
@@ -422,39 +20,281 @@
             "energy"
         ]
     },
-    "Combat Knife": {
-        "abbreviation": "CbKnf",
+    "Assault Cannon": {
+        "abbreviation": "AssCann",
+        "ammo": 5,
+        "arp": 2,
         "attack": {
-            "standard": 100,
-            "master_crafted": 125,
-            "artifact": 150
+            "artifact": 500,
+            "master_crafted": 440,
+            "standard": 400
         },
-        "description": "More of a sword than a knife, this tough and thick blade becomes a deadly weapon in the hand of an Astartes.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 2,
-        "arp": 1,
-        "tags": [
-            "knife"
+        "description": "A heavy rotary autocannon with a devastating fire rate that can be counted in the hundreds per minute. It is incredibly effective against infantry and light armored targets.",
+        "melee_hands": 2.1,
+        "range": 12,
+        "ranged_hands": 3,
+        "requires_to_forge": [
+            "solid_projectile_1",
+            "heavy_1"
         ],
-        "value": 1
+        "spli": 20,
+        "tags": [
+            "heavy_ranged",
+            "terminator",
+            "dreadnought"
+        ],
+        "value": 75
+    },
+    "Assault Chainfist": {
+        "abbreviation": "AssltChFst",
+        "arp": 3,
+        "attack": {
+            "artifact": 700,
+            "master_crafted": 550,
+            "standard": 400
+        },
+        "description": "Created by mounting a chainsword to a power fist, this weapon is easily able to carve through armoured bulkheads. Contains an integrated Assault Cannon",
+        "melee_hands": 1.25,
+        "range": 1,
+        "ranged_hands": 1,
+        "second_profiles": [
+            "Assault Cannon"
+        ],
+        "spli": 2,
+        "tags": [
+            "power",
+            "boarding 3",
+            "chain",
+            "fist",
+            "dual",
+            "siege"
+        ]
+    },
+    "Autocannon": {
+        "abbreviation": "Autocnn",
+        "ammo": 25,
+        "arp": 2,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 500,
+            "standard": 450
+        },
+        "description": "A rapid-firing weapon able to use a wide variety of ammunition, from mass-reactive explosive to solid shells. It has been found to be incredibly effective against large groups of targets and even Traitor Astartes to an extent.",
+        "melee_hands": 0,
+        "range": 14,
+        "ranged_hands": 2,
+        "spli": 12,
+        "tags": [
+            "heavy_ranged",
+            "explosive",
+            "dreadnought"
+        ]
+    },
+    "Autocannon Turret": {
+        "abbreviation": "Autocnn",
+        "ammo": 18,
+        "arp": 2,
+        "attack": {
+            "artifact": 850,
+            "master_crafted": 700,
+            "standard": 600
+        },
+        "description": "A Predator-compatible turret mounting a reliable all-purpose autocannon capable of doing effective damage to infantry and lightly armored targets.",
+        "melee_hands": 0,
+        "range": 18,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "vehicle_armaments_1",
+            "solid_projectile_1"
+        ],
+        "spli": 15,
+        "tags": [
+            "vehicle",
+            "heavy_ranged",
+            "explosive",
+            "turret"
+        ],
+        "value": 30
+    },
+    "Boarding Shield": {
+        "abbreviation": "BrdShld",
+        "armour_value": {
+            "artifact": 6,
+            "master_crafted": 5,
+            "standard": 4
+        },
+        "description": "Protects twice as well when boarding. Used in siege or boarding operations, this shield offers additional protection.  It may be used with a 2-handed ranged weapon.",
+        "hp_mod": {
+            "artifact": 20,
+            "master_crafted": 17.5,
+            "standard": 15
+        },
+        "melee_hands": 0.75,
+        "tags": [
+            "shield",
+            "boarding 3"
+        ],
+        "value": 20
+    },
+    "Bolt Pistol": {
+        "abbreviation": "BltPstl",
+        "ammo": 18,
+        "arp": 1,
+        "attack": {
+            "artifact": 200,
+            "master_crafted": 175,
+            "standard": 150
+        },
+        "description": "A smaller, more compact version of the venerable Boltgun. This model is produced in the standard Godwyn pattern.",
+        "melee_hands": 0,
+        "range": 4.1,
+        "ranged_hands": 1,
+        "spli": 2,
+        "tags": [
+            "bolt",
+            "pistol",
+            "boarding 1"
+        ],
+        "value": 5
+    },
+    "Bolter": {
+        "abbreviation": "Bltr",
+        "ammo": 16,
+        "arp": 1,
+        "attack": {
+            "artifact": 200,
+            "master_crafted": 175,
+            "standard": 150
+        },
+        "description": "A standard Bolter, a two-handed firearm that launches rocket propelled projectiles that detonate after penetrating the target. It is a versatile and iconic weapon of Adeptus Astartes, their resounding detonations carry the Emperor's Wrath.",
+        "melee_hands": 1,
+        "range": 10,
+        "ranged_hands": 2,
+        "spli": 5,
+        "tags": [
+            "bolt",
+            "boarding 1"
+        ],
+        "value": 10
+    },
+    "Boltstorm Gauntlet": {
+        "abbreviation": "BlstGnt",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 450,
+            "standard": 400
+        },
+        "description": "The Boltstorm Gauntlet is a Power Fists with an Integrated Bolter, so aside from being reinforced with a crackling power field and able to crush armour, bone and even thick vehicle plating, it is also capable of firing bolts at an astonishing rate",
+        "melee_hands": 2,
+        "range": 1,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "power_1",
+            "combi_1"
+        ],
+        "second_profiles": [
+            "Integrated-Bolter"
+        ],
+        "spli": 2,
+        "tags": [
+            "power",
+            "fist",
+            "savage",
+            "boarding 2"
+        ],
+        "value": 90
+    },
+    "CCW Heavy Flamer": {
+        "abbreviation": "CCWHvyFlmr",
+        "ammo": 6,
+        "arp": 2,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 550,
+            "standard": 500
+        },
+        "description": "A powerful close combat weapon integrated with a flamer. Enemeies rarely expect a dreadnough claw to spew promethium.",
+        "melee_hands": 1,
+        "range": 2.1,
+        "ranged_hands": 0,
+        "spli": 20,
+        "tags": [
+            "dreadnought",
+            "heavy_ranged",
+            "flame"
+        ]
+    },
+    "Chainaxe": {
+        "abbreviation": "ChAxe",
+        "ammo": 0,
+        "arp": 1,
+        "attack": {
+            "artifact": 275,
+            "master_crafted": 225,
+            "standard": 175
+        },
+        "description": "A weapon most frequently seen in the hands of Traitor Astartes, the Chainaxe uses motorized chainsaw teeth to maim and tear. Astartes often duel-wield them to increase frequency of attacks.",
+        "melee_hands": 1,
+        "melee_mod": {
+            "artifact": 15,
+            "master_crafted": 10,
+            "standard": 5
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "spli": 3,
+        "tags": [
+            "chain",
+            "axe",
+            "dual",
+            "savage",
+            "boarding 2"
+        ],
+        "value": 10
+    },
+    "Chainfist": {
+        "abbreviation": "ChFst",
+        "arp": 3,
+        "attack": {
+            "artifact": 700,
+            "master_crafted": 550,
+            "standard": 400
+        },
+        "description": "Created by mounting a chainsword to a power fist, this weapon is easily able to carve through armoured bulkheads.",
+        "melee_hands": 3,
+        "range": 1,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "power_1",
+            "combi_1"
+        ],
+        "spli": 4,
+        "tags": [
+            "power",
+            "boarding 3",
+            "chain",
+            "fist",
+            "siege",
+            "savage"
+        ],
+        "value": 75
     },
     "Chainsword": {
         "abbreviation": "ChSwrd",
+        "ammo": 0,
+        "arp": 1,
         "attack": {
-            "standard": 150,
+            "artifact": 250,
             "master_crafted": 180,
-            "artifact": 250
+            "standard": 150
         },
         "description": "A standard Chainsword. It is popular among Assault Marines due to their raw power while maintaining speed.",
         "melee_hands": 1,
-        "ranged_hands": 0,
-        "ammo": 0,
         "range": 1,
+        "ranged_hands": 0,
         "spli": 4,
-        "arp": 1,
         "tags": [
             "chain",
             "sword",
@@ -463,476 +303,1340 @@
         ],
         "value": 4
     },
-    "Chainaxe": {
-        "abbreviation": "ChAxe",
+    "Choppa": {
+        "abbreviation": "Chop",
         "attack": {
-            "standard": 175,
-            "master_crafted": 225,
-            "artifact": 275
+            "artifact": 200,
+            "master_crafted": 125,
+            "standard": 100
         },
-        "melee_mod": {
-            "standard": 5,
-            "master_crafted": 10,
-            "artifact": 15
-        },
-        "description": "A weapon most frequently seen in the hands of Traitor Astartes, the Chainaxe uses motorized chainsaw teeth to maim and tear. Astartes often duel-wield them to increase frequency of attacks.",
         "melee_hands": 1,
-        "ranged_hands": 0,
-        "ammo": 0,
         "range": 1,
         "spli": 3,
+        "tags": [
+            "axe"
+        ]
+    },
+    "Close Combat Weapon": {
+        "abbreviation": "CCW",
+        "arp": 4,
+        "attack": {
+            "artifact": 550,
+            "master_crafted": 450,
+            "standard": 350
+        },
+        "description": "While a variety of melee weapons are used by dreadnoughts, this power fist with an integrated flamer is the most common.",
+        "maintenance": 0.1,
+        "melee_hands": 5,
+        "range": 1,
+        "spli": 10,
+        "tags": [
+            "vehicle",
+            "dreadnought",
+            "fist"
+        ],
+        "value": 45
+    },
+    "Combat Knife": {
+        "abbreviation": "CbKnf",
+        "ammo": 0,
         "arp": 1,
+        "attack": {
+            "artifact": 150,
+            "master_crafted": 125,
+            "standard": 100
+        },
+        "description": "More of a sword than a knife, this tough and thick blade becomes a deadly weapon in the hand of an Astartes.",
+        "melee_hands": 0,
+        "range": 1,
+        "ranged_hands": 0,
+        "spli": 2,
+        "tags": [
+            "knife"
+        ],
+        "value": 1
+    },
+    "Combiflamer": {
+        "abbreviation": "CmbFlmr",
+        "ammo": 15,
+        "arp": 1,
+        "attack": {
+            "artifact": 200,
+            "master_crafted": 175,
+            "standard": 150
+        },
+        "description": "A standard Bolter with an underbarrel Flamer for expanded tactical utility.",
+        "melee_hands": 1,
+        "range": 10,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "flame_1",
+            "combi_1"
+        ],
+        "second_profiles": [
+            "Integrated-Flamer"
+        ],
+        "spli": 5,
+        "tags": [
+            "combi",
+            "bolt",
+            "boarding 2"
+        ],
+        "value": 35
+    },
+    "Combigrav": {
+        "abbreviation": "CmbGrv",
+        "ammo": 8,
+        "arp": 1,
+        "attack": {
+            "artifact": 200,
+            "master_crafted": 175,
+            "standard": 150
+        },
+        "description": "A standard Bolter with an underbarrel Grav-Gun for expanded tactical utility.",
+        "melee_hands": 1,
+        "range": 10,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "grav_1",
+            "combi_1"
+        ],
+        "second_profiles": [
+            "Integrated-Grav"
+        ],
+        "spli": 5,
+        "tags": [
+            "combi",
+            "bolt"
+        ],
+        "value": 110
+    },
+    "Combimelta": {
+        "abbreviation": "CmbMlt",
+        "ammo": 8,
+        "arp": 1,
+        "attack": {
+            "artifact": 200,
+            "master_crafted": 175,
+            "standard": 150
+        },
+        "description": "A standard Bolter with an underbarrel Meltagun for expanded tactical utility.",
+        "melee_hands": 1,
+        "range": 10,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "melta_1",
+            "combi_1"
+        ],
+        "second_profiles": [
+            "Integrated-Melta"
+        ],
+        "spli": 5,
+        "tags": [
+            "combi",
+            "bolt",
+            "boarding 3"
+        ],
+        "value": 40
+    },
+    "Combiplasma": {
+        "abbreviation": "CmbPlsm",
+        "ammo": 8,
+        "arp": 1,
+        "attack": {
+            "artifact": 200,
+            "master_crafted": 175,
+            "standard": 150
+        },
+        "description": "A standard Bolter with an underbarrel Plasma Gun for expanded tactical utility.",
+        "melee_hands": 1,
+        "range": 10,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "plasma_1",
+            "combi_1"
+        ],
+        "second_profiles": [
+            "Integrated-Plasma"
+        ],
+        "spli": 5,
+        "tags": [
+            "combi",
+            "bolt"
+        ],
+        "value": 110
+    },
+    "Company Standard": {
+        "abbreviation": "CmpStnd",
+        "arp": 1,
+        "attack": {
+            "artifact": 100,
+            "master_crafted": 60,
+            "standard": 45
+        },
+        "description": "A banner that represents the honor of a particular company and will bolster the morale of nearby Astartes.",
+        "hp_mod": {
+            "artifact": 20,
+            "master_crafted": 20,
+            "standard": 20
+        },
+        "melee_hands": 1,
+        "range": 1,
+        "ranged_hands": 1,
+        "recovery_chance": 99,
+        "special_properties": [
+            "Morale Boost"
+        ],
+        "spli": 1,
+        "tags": [
+            "banner"
+        ],
+        "value": 330
+    },
+    "Contemptor CCW": {
+        "abbreviation": "ConCCW",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 850,
+            "master_crafted": 700,
+            "standard": 600
+        },
+        "description": "A specialized Lightning Claw variant designed for Dreadnoughts, these claws are capable of ripping through enemy vehicles and infantry with ease.",
+        "maintenance": 0.1,
+        "melee_hands": 5,
+        "melee_mod": {
+            "artifact": 1.2,
+            "master_crafted": 1.2,
+            "standard": 1.2
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "spli": 15,
+        "tags": [
+            "power",
+            "dual",
+            "dreadnought",
+            "fist"
+        ]
+    },
+    "Conversion Beam Projector": {
+        "abbreviation": "CnvBmPrj",
+        "ammo": 1,
+        "arp": 4,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 550,
+            "standard": 500
+        },
+        "description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comproises it is transformed into pure energy.",
+        "melee_hands": 0,
+        "range": 20,
+        "ranged_hands": 1,
+        "spli": 3,
+        "tags": [
+            "heavy_ranged",
+            "ancient"
+        ]
+    },
+    "Crozius Arcanum": {
+        "abbreviation": "Crzus",
+        "ammo": 0,
+        "arp": 2,
+        "attack": {
+            "artifact": 400,
+            "master_crafted": 300,
+            "standard": 250
+        },
+        "description": "The Crozius Arcanum serves as both a sacred staff of office and a close combat weapon for Astartes Chaplains.",
+        "melee_hands": 1,
+        "melee_mod": {
+            "artifact": 1,
+            "master_crafted": 1,
+            "standard": 1
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "sellers": [
+            "ecclesiarchy"
+        ],
+        "spli": 4,
+        "tags": [
+            "power",
+            "mace",
+            "pious",
+            "savage",
+            "boarding 2"
+        ],
+        "value": 75
+    },
+    "Cthon Autocannon": {
+        "abbreviation": "CthAutocnn",
+        "ammo": 30,
+        "arp": 1,
+        "attack": {
+            "artifact": 560,
+            "master_crafted": 520,
+            "standard": 480
+        },
+        "description": "Originating from the Warmaster's homeworld [allegedly untrue] of Cthonia, this Autocannon pattern was the chosen type of this weapon for Terminator Squads throughout the Great Crusade and subsequent Horus Heresy. While later designs may have outshined it in fire rate or range, this remains the hardest hitting autocannon to date, perhaps with the Kalibrax as a strong competitor.",
+        "melee_hands": 1,
+        "range": 20,
+        "ranged_hands": 2,
+        "spli": 15,
+        "tags": [
+            "heavy_ranged",
+            "dreadnought"
+        ]
+    },
+    "Cyclone Missile Launcher": {
+        "abbreviation": "CycLnch",
+        "ammo": 6,
+        "arp": 2,
+        "attack": {
+            "artifact": 950,
+            "master_crafted": 700,
+            "standard": 600
+        },
+        "description": "This power pack mounted weapon is capable of unleashing a hail of either armor-piercing or fragmentation rockets. It's ammunition is limited by what the bearer has carried with them.",
+        "melee_hands": 1,
+        "range": 8,
+        "ranged_hands": 2,
+        "spli": 20,
+        "tags": [
+            "heavy_ranged",
+            "explosive"
+        ]
+    },
+    "Deathwatch Sniper Rifle": {
+        "abbreviation": "DwSnpRfl",
+        "ammo": 20,
+        "arp": 2,
+        "attack": {
+            "artifact": 350,
+            "master_crafted": 300,
+            "standard": 250
+        },
+        "description": "A heavy Needler sniper rifle used by the Deathwatch for long-range anti-personnel and anti-materiel work. A highly-respected and revered weapon, it is often selected as the weapon of choice for snipers in many Deathwatch Kill-teams.",
+        "melee_hands": 1,
+        "range": 14,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "solid_projectile_1"
+        ],
+        "spli": 1,
+        "tags": [
+            "precision",
+            "rifle"
+        ]
+    },
+    "Dreadnought Lightning Claw": {
+        "abbreviation": "LghtClw",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 850,
+            "master_crafted": 700,
+            "standard": 600
+        },
+        "description": "A specialized Lightning Claw variant designed for Dreadnoughts, these claws are capable of ripping through enemy vehicles and infantry with ease.",
+        "maintenance": 0.1,
+        "melee_hands": 5,
+        "melee_mod": {
+            "artifact": 1.2,
+            "master_crafted": 1.2,
+            "standard": 1.2
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "spli": 15,
+        "tags": [
+            "power",
+            "dual",
+            "dreadnought",
+            "fist"
+        ]
+    },
+    "Dreadnought Power Claw": {
+        "abbreviation": "PwrClw",
+        "arp": 4,
+        "attack": {
+            "artifact": 800,
+            "master_crafted": 600,
+            "standard": 400
+        },
+        "description": "A brutal crushing claw capable of tearing open armor and flesh with ease utilizing disruptor fields.",
+        "maintenance": 0.1,
+        "melee_hands": 5,
+        "range": 1,
+        "spli": 10,
+        "tags": [
+            "power",
+            "vehicle",
+            "dual",
+            "dreadnought",
+            "fist"
+        ]
+    },
+    "Eldar Power Sword": {
+        "abbreviation": "EldPwrSwrd",
+        "ammo": 0,
+        "arp": 2,
+        "attack": {
+            "artifact": 190,
+            "master_crafted": 180,
+            "standard": 170
+        },
+        "description": "Power weapons, infused with arcane energy, are used by Howling Banshees and Dire Avenger Exarchs. Swords such as these are as much an artistic statement as a weapon and are effective against even heavily armored troops.",
+        "melee_hands": 1.1,
+        "melee_mod": {
+            "artifact": 1.1,
+            "master_crafted": 1.1,
+            "standard": 1.1
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "special_properties": [
+            "Parry"
+        ],
+        "spli": 3,
+        "tags": [
+            "power",
+            "sword",
+            "elder",
+            "xenos"
+        ]
+    },
+    "Eviscerator": {
+        "abbreviation": "Evisc",
+        "ammo": 0,
+        "arp": 2,
+        "attack": {
+            "artifact": 350,
+            "master_crafted": 300,
+            "standard": 250
+        },
+        "description": "An obscenely large Chainsword, this two-handed weapon can carve through flesh and plasteel with equal ease.",
+        "melee_hands": 2,
+        "melee_mod": {
+            "artifact": 2,
+            "master_crafted": 2,
+            "standard": 2
+        },
+        "range": 1,
+        "ranged_hands": 1,
+        "sellers": [
+            "ecclesiarchy",
+            "mechanicus"
+        ],
+        "spli": 6,
         "tags": [
             "chain",
+            "sword",
+            "savage"
+        ],
+        "value": 20
+    },
+    "Executioner Power Axe": {
+        "abbreviation": "ExPwrAxe",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 925,
+            "master_crafted": 850,
+            "standard": 800
+        },
+        "description": "A heavy two-handed power axe used to rend armor and tear through multiple infantry at once.",
+        "melee_hands": 2.5,
+        "melee_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "range": 1,
+        "ranged_hands": 2,
+        "spli": 5,
+        "tags": [
+            "power",
+            "axe",
+            "martial"
+        ]
+    },
+    "Flamer": {
+        "abbreviation": "Flmr",
+        "ammo": 8,
+        "arp": 1,
+        "attack": {
+            "artifact": 420,
+            "master_crafted": 385,
+            "standard": 350
+        },
+        "description": "Blackened at the tip, this weapon unleashes a torrent of burning promethium - all the better to cleanse sin and impurity with.",
+        "maintenance": 0.01,
+        "melee_hands": 1,
+        "melee_mod": {
+            "artifact": 0,
+            "master_crafted": 0,
+            "standard": 0
+        },
+        "range": 4.1,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "flame_1"
+        ],
+        "spli": 14,
+        "tags": [
+            "flame",
+            "boarding 2"
+        ],
+        "value": 25
+    },
+    "Flamestorm Cannon Sponsons": {
+        "abbreviation": "FlmstCnns",
+        "ammo": 6,
+        "arp": 3,
+        "attack": {
+            "artifact": 900,
+            "master_crafted": 850,
+            "standard": 750
+        },
+        "description": "A huge vehicle-mounted flamethrower cannon, the heat produced by this terrifying weapon can melt armoured ceramite.",
+        "melee_hands": 0,
+        "range": 4.1,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "flame_1",
+            "vehicle_armaments_1"
+        ],
+        "spli": 30,
+        "tags": [
+            "flame",
+            "heavy_ranged",
+            "vehicle",
+            "sponson"
+        ]
+    },
+    "Flamestorm Cannon Turret": {
+        "abbreviation": "FlmstCnn",
+        "ammo": 12,
+        "arp": 3,
+        "attack": {
+            "artifact": 900,
+            "master_crafted": 850,
+            "standard": 700
+        },
+        "description": "A huge vehicle-mounted flamethrower cannon, the heat produced by this terrifying weapon can melt armoured ceramite.",
+        "melee_hands": 0,
+        "range": 4.1,
+        "ranged_hands": 0,
+        "spli": 25,
+        "tags": [
+            "flame",
+            "heavy_ranged",
+            "vehicle",
+            "turret"
+        ]
+    },
+    "Force Axe": {
+        "abbreviation": "FrcAxe",
+        "ammo": 0,
+        "arp": 2,
+        "attack": {
+            "artifact": 375,
+            "master_crafted": 300,
+            "standard": 250
+        },
+        "description": "The Force Axe is a psychically-attuned close combat weapon that is only fully effective in the hands of a psyker.",
+        "melee_hands": 1,
+        "melee_mod": {
+            "artifact": 1.2,
+            "master_crafted": 1.1,
+            "standard": 1
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "force_1"
+        ],
+        "special_description": "Able to be dual-wielded",
+        "spli": 3,
+        "tags": [
+            "force",
             "axe",
             "dual",
             "savage",
             "boarding 2"
         ],
-        "value": 10
+        "value": 60
     },
-    "Company Standard": {
-        "abbreviation": "CmpStnd",
-        "special_properties": [
-            "Morale Boost"
-        ],
-        "description": "A banner that represents the honor of a particular company and will bolster the morale of nearby Astartes.",
-        "attack": {
-            "standard": 45,
-            "master_crafted": 60,
-            "artifact": 100
-        },
-        "hp_mod": {
-            "standard": 20,
-            "master_crafted": 20,
-            "artifact": 20
-        },
-        "melee_hands": 1,
-        "ranged_hands": 1,
-        "range": 1,
-        "spli": 1,
-        "arp": 1,
-        "tags": [
-            "banner"
-        ],
-        "recovery_chance": 99,
-        "value": 330
-    },
-    "Eviscerator": {
-        "abbreviation": "Evisc",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 300,
-            "artifact": 350
-        },
-        "melee_mod": {
-            "standard": 2,
-            "master_crafted": 2,
-            "artifact": 2
-        },
-        "description": "An obscenely large Chainsword, this two-handed weapon can carve through flesh and plasteel with equal ease.",
-        "melee_hands": 2,
-        "ranged_hands": 1,
-        "ammo": 0,
-        "range": 1,
-        "spli": 6,
+    "Force Staff": {
+        "abbreviation": "FrcStff",
         "arp": 2,
-        "tags": [
-            "chain",
-            "sword",
-            "savage"
-        ],
-        "value": 20,
-        "sellers": [
-            "ecclesiarchy",
-            "mechanicus"
-        ]
-    },
-    "Power Sword": {
-        "abbreviation": "PwrSwrd",
         "attack": {
-            "standard": 225,
-            "master_crafted": 275,
-            "artifact": 325
+            "artifact": 350,
+            "master_crafted": 270,
+            "standard": 225
         },
+        "description": "An advanced, psychically-attuned close combat weapon that is only fully effective in the hands of a psyker.",
+        "maintenance": 0.1,
+        "melee_hands": 1,
         "melee_mod": {
-            "standard": 1,
+            "artifact": 1.2,
             "master_crafted": 1.1,
-            "artifact": 1.2
+            "standard": 1
         },
-        "description": "The most common kind of Power Weapon. When active, the blade becomes sheathed in a lethal haze of disruptive energy that seamlessly cuts through ceramite and flesh.",
-        "melee_hands": 1,
-        "ranged_hands": 0,
-        "ammo": 0,
         "range": 1,
-        "spli": 4,
+        "ranged_hands": 1,
+        "requires_to_forge": [
+            "force_1"
+        ],
+        "specials": {
+            "psychic_amplification": 25
+        },
+        "spli": 5,
+        "tags": [
+            "force"
+        ],
+        "value": 70
+    },
+    "Force Sword": {
+        "abbreviation": "FrcSwrd",
+        "ammo": 0,
         "arp": 2,
+        "attack": {
+            "artifact": 350,
+            "master_crafted": 270,
+            "standard": 225
+        },
+        "description": "The Force Sword is a psychically-attuned close combat weapon that is only fully effective in the hands of a psyker.",
+        "maintenance": 0.1,
+        "melee_hands": 1,
+        "melee_mod": {
+            "artifact": 1.2,
+            "master_crafted": 1.1,
+            "standard": 1
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "force_1"
+        ],
         "special_properties": [
             "Parry"
         ],
+        "spli": 4,
         "tags": [
-            "power",
+            "force",
             "sword",
             "martial",
             "boarding 1"
         ],
-        "value": 25,
-        "requires_to_forge": [
-            "power_1"
-        ]
+        "value": 55
     },
-    "Power Spear": {
-        "abbreviation": "PwrSpear",
+    "Grav-Cannon": {
+        "abbreviation": "GrvCan",
+        "ammo": 8,
+        "arp": 4,
         "attack": {
-            "standard": 300,
-            "master_crafted": 375,
-            "artifact": 450
+            "artifact": 850,
+            "master_crafted": 700,
+            "standard": 600
         },
-        "melee_mod": {
-            "standard": 1,
-            "master_crafted": 1.1,
-            "artifact": 1.2
-        },
-        "description": "A rare kind of Power Weapon, a power blade mounted on the end of a long shaft, requires great skill to wield. When active, the blade becomes sheathed in a lethal haze of disruptive energy and can tear through all manners of material with ease.",
+        "description": "A bigger version of the Grav-Gun which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
+        "maintenance": 0.8,
         "melee_hands": 1,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 3,
-        "arp": 2,
-        "special_properties": [
-            "Parry"
+        "range": 6,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "grav_1",
+            "heavy_1"
         ],
+        "spli": 6,
         "tags": [
-            "power",
-            "spear",
-            "martial"
+            "grav",
+            "heavy_ranged"
         ],
-        "value": 40,
+        "value": 300
+    },
+    "Grav-Gun": {
+        "abbreviation": "GrvGn",
+        "ammo": 6,
+        "arp": 4,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 450,
+            "standard": 400
+        },
+        "description": "A medium-sized weapon which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
+        "maintenance": 0.5,
+        "melee_hands": 1,
+        "range": 5,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "grav_1"
+        ],
+        "spli": 3,
+        "tags": [
+            "grav"
+        ],
+        "value": 100
+    },
+    "Grav-Pistol": {
+        "abbreviation": "GrvPstl",
+        "ammo": 4,
+        "arp": 4,
+        "attack": {
+            "artifact": 425,
+            "master_crafted": 300,
+            "standard": 250
+        },
+        "description": "A smaller version of the Grav-Gun which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
+        "maintenance": 0.2,
+        "melee_hands": 0,
+        "range": 4.1,
+        "ranged_hands": 1,
+        "requires_to_forge": [
+            "grav_1"
+        ],
+        "spli": 1,
+        "tags": [
+            "grav",
+            "pistol"
+        ],
+        "value": 60
+    },
+    "Hand Flamer": {
+        "abbreviation": "HndFlmr",
+        "ammo": 4,
+        "arp": 1,
+        "attack": {
+            "artifact": 450,
+            "master_crafted": 300,
+            "standard": 250
+        },
+        "description": "Along with using a lower-capacity fuel tank it has much reduced range, which makes it suited for assault and close-combat purposes, incinerating foes at short range. The weapon is often used by assault squads.",
+        "melee_hands": 0,
+        "range": 3.1,
+        "ranged_hands": 1,
+        "requires_to_forge": [
+            "flame_1"
+        ],
+        "spli": 8,
+        "tags": [
+            "pistol",
+            "flame",
+            "boarding 2"
+        ],
+        "value": 12
+    },
+    "Heavy Bolter": {
+        "abbreviation": "HvyBltr",
+        "ammo": 10,
+        "arp": 2,
+        "attack": {
+            "artifact": 450,
+            "master_crafted": 300,
+            "standard": 250
+        },
+        "description": "The Heavy Bolter is a heavy weapon that fires larger and more powerful bolt shells compared to the standard Bolter.",
+        "melee_hands": 1,
+        "range": 14,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "heavy_1"
+        ],
+        "spli": 12,
+        "tags": [
+            "heavy_ranged",
+            "bolt"
+        ],
+        "value": 50
+    },
+    "Heavy Bolter Sponsons": {
+        "abbreviation": "HvyBltrs",
+        "ammo": 20,
+        "arp": 2,
+        "attack": {
+            "artifact": 750,
+            "master_crafted": 550,
+            "standard": 450
+        },
+        "description": "Heavy Bolters are mounted in sponsons. They are known for high rates of fire and effectiveness against infantry and light vehicles.",
+        "melee_hands": 0,
+        "range": 14,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "vehicle_armaments_1"
+        ],
+        "spli": 28,
+        "tags": [
+            "heavy_ranged",
+            "vehicle",
+            "sponson",
+            "bolt"
+        ],
+        "value": 38
+    },
+    "Heavy Conversion Beam Projector": {
+        "abbreviation": "HvyCnvBmr",
+        "ammo": 6,
+        "arp": 4,
+        "attack": {
+            "artifact": 1000,
+            "master_crafted": 900,
+            "standard": 800
+        },
+        "description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comproises it is transformed into pure energy. This is the heavy version for mounting in vehicles.",
+        "melee_hands": 0,
+        "range": 20,
+        "ranged_hands": 0,
+        "spli": 1,
+        "tags": [
+            "vehicle",
+            "heavy_ranged",
+            "dreadnought",
+            "turret",
+            "ancient"
+        ]
+    },
+    "Heavy Conversion Beamer": {
+        "abbreviation": "HvyCnvBm",
+        "ammo": 1,
+        "arp": 1,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 550,
+            "standard": 500
+        },
+        "description": "An ancient relic of the Dark Age of Technology, the Heavy Conversion Beamer is a marvel of destructive science rarely entrusted to Imperial commanders. This esoteric weapon channels vast reserves of energy into a focused beam of coruscating light, tearing matter apart at the molecular level and converting it into raw energy in a cataclysmic chain reaction. The weapon’s lethality grows with distance — the further its target, the more apocalyptic the discharge. To stand at the far end of a Heavy Conversion Beamer’s wrath is to be annihilated in a searing blaze that leaves nothing but scorched ruin in its wake. Few battlefields have witnessed its fury and remained unchanged, for the weapon is as much a terror to its enemies as a reminder of the Imperium’s dwindling grasp on its most potent technologies.",
+        "melee_hands": 0,
+        "range": 20,
+        "ranged_hands": 1,
+        "spli": 3,
+        "tags": [
+            "heavy_ranged",
+            "ancient",
+            "dreadnought"
+        ]
+    },
+    "Heavy Flamer": {
+        "abbreviation": "HvyFlmr",
+        "ammo": 8,
+        "arp": 2,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 550,
+            "standard": 500
+        },
+        "description": "A significantly heavier flamer typically utilized on vehicle mounts. To carry them on foot requires Power Armor.",
+        "melee_hands": 1,
+        "range": 4,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "flame_1",
+            "heavy_1"
+        ],
+        "sellers": [
+            "ecclesiarchy",
+            "mechanicus"
+        ],
+        "spli": 20,
+        "tags": [
+            "flame",
+            "heavy_ranged",
+            "boarding 3"
+        ],
+        "value": 40
+    },
+    "Heavy Flamer Sponsons": {
+        "abbreviation": "HvyFlmrs",
+        "ammo": 8,
+        "arp": 2,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 550,
+            "standard": 500
+        },
+        "description": "A significantly heavier flamer attached to the sponsons on a vehicle.",
+        "maintenance": 0.05,
+        "melee_hands": 0,
+        "range": 4.1,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "flame_1",
+            "vehicle_armaments_1"
+        ],
+        "spli": 40,
+        "tags": [
+            "flame",
+            "heavy_ranged",
+            "vehicle",
+            "sponson"
+        ],
+        "value": 50
+    },
+    "Heavy Thunder Hammer": {
+        "abbreviation": "HvyThndHmr",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 1000,
+            "master_crafted": 850,
+            "standard": 700
+        },
+        "description": "The Heavy Thunder Hammer is the largest man-portable Thunder Hammer that is used by the Adeptus Astartes - a giant, crushing tool of destruction so heavy even a Space Marine cannot use it one-handed.",
+        "maintenance": 0.1,
+        "melee_hands": 2,
+        "melee_mod": {
+            "artifact": 1.3,
+            "master_crafted": 1.3,
+            "standard": 1.3
+        },
+        "range": 1,
+        "ranged_hands": 2,
+        "req_exp": 100,
         "requires_to_forge": [
             "power_1"
-        ]
-    },
-    "Xenophase Blade": {
-        "abbreviation": "XenoPhs",
-        "attack": {
-            "standard": 190,
-            "master_crafted": 210,
-            "artifact": 250
-        },
-        "melee_mod": {
-            "standard": 1,
-            "master_crafted": 1.1,
-            "artifact": 1.2
-        },
-        "description": "A Xenophase Blade is a potent, Power Sword-like melee weapon derived from xenos technology used by select warriors of the Deathwatch Chapter who have earned by their deeds and time of service in the Long Vigil the special trust of their watch fortress' watch commander.",
-        "melee_hands": 1.1,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 4,
-        "arp": 1,
-        "special_properties": [
-            "Parry"
         ],
-        "tags": [
-            "power",
-            "sword",
-            "xenos"
-        ]
-    },
-    "Chainfist": {
-        "abbreviation": "ChFst",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 550,
-            "artifact": 700
-        },
-        "description": "Created by mounting a chainsword to a power fist, this weapon is easily able to carve through armoured bulkheads.",
-        "melee_hands": 3,
-        "ranged_hands": 0,
-        "range": 1,
         "spli": 4,
         "tags": [
+            "heavy_melee",
             "power",
-            "boarding 3",
-            "chain",
-            "fist",
+            "hammer",
             "siege",
             "savage"
         ],
-        "arp": 3,
-        "value": 75,
-        "requires_to_forge": [
-            "power_1",
-            "combi_1"
+        "value": 135
+    },
+    "Hellgun": {
+        "abbreviation": "HllGun",
+        "ammo": 20,
+        "arp": 1,
+        "attack": {
+            "artifact": 40,
+            "master_crafted": 35,
+            "standard": 30
+        },
+        "description": "Known as a Hellgun or Hot-shot Lasgun, these high-energy weapons are more potent and destructive than common Lasguns, drawing more power for a more penetrative shot, but also more complex, requiring reinforced barrels, thermal-cooling cells and gyro-stabilized power packs.",
+        "melee_hands": 0,
+        "range": 12,
+        "ranged_hands": 1,
+        "spli": 3,
+        "tags": [
+            "las"
         ]
+    },
+    "Hellrifle": {
+        "abbreviation": "HllRifle",
+        "ammo": 10,
+        "arp": 1,
+        "attack": {
+            "artifact": 300,
+            "master_crafted": 250,
+            "standard": 200
+        },
+        "description": "Extremely effective and intricate weapons frowned upon by more Puritanical Inquisitors. Fire shards of an unknown material. Speculated to be daemonic in origin.",
+        "forgable": false,
+        "range": 20,
+        "ranged_hands": 1,
+        "sellers": [
+            "inquisition"
+        ],
+        "spli": 1,
+        "tags": [
+            "rifle",
+            "arcane"
+        ],
+        "value": 20
+    },
+    "HK Missile": {
+        "abbreviation": "HKMssl",
+        "ammo": 1,
+        "arp": 1,
+        "attack": {
+            "artifact": 450,
+            "master_crafted": 400,
+            "standard": 350
+        },
+        "description": "A single shot hunter killer missile that serves as a powerful anti armour/aircraft deterent.",
+        "range": 50,
+        "spli": 1,
+        "tags": [
+            "vehicle"
+        ],
+        "value": 10
+    },
+    "Hurricane Bolter Sponsons": {
+        "abbreviation": "HrcBltrs",
+        "ammo": 10,
+        "arp": 1,
+        "attack": {
+            "artifact": 800,
+            "master_crafted": 700,
+            "standard": 600
+        },
+        "description": "Hurricane Bolters are large hex-mount bolter arrays that are able to deliver a withering hail of anti-infantry fire at short ranges. This version is mounted onto the sides of vehicles.",
+        "melee_hands": 0,
+        "range": 10,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "combi_1",
+            "vehicle_armaments_1"
+        ],
+        "spli": 60,
+        "tags": [
+            "bolt",
+            "heavy_ranged",
+            "vehicle",
+            "sponson"
+        ],
+        "value": 70
+    },
+    "Incinerator": {
+        "abbreviation": "Incnrtr",
+        "ammo": 4,
+        "arp": 2,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 550,
+            "standard": 500
+        },
+        "description": "This flamer weapon utilizes psychically-charged promethium and blessed oils concoction to create an azure flame that bypasses psychich protections. It is particularly effective against Daemons and their ilk.",
+        "melee_hands": 1,
+        "range": 4.1,
+        "ranged_hands": 1,
+        "requires_to_forge": [
+            "flame_1",
+            "heavy_1",
+            "force_1"
+        ],
+        "sellers": [
+            "inquisition"
+        ],
+        "spli": 20,
+        "tags": [
+            "flame",
+            "boarding 3"
+        ],
+        "value": 40
+    },
+    "Inferno Cannon": {
+        "abbreviation": "InfCann",
+        "ammo": 0,
+        "arp": 2,
+        "attack": {
+            "artifact": 1000,
+            "master_crafted": 875,
+            "standard": 750
+        },
+        "description": "A huge vehicle-mounted flame weapon that fires with explosive force. The reservoir is liable to explode.",
+        "range": 4.1,
+        "ranged_hands": 5,
+        "requires_to_forge": [
+            "flame_1",
+            "vehicle_armaments_1"
+        ],
+        "spli": 20,
+        "tags": [
+            "vehicle",
+            "heavy_ranged",
+            "flame",
+            "dreadnought"
+        ],
+        "value": 115
+    },
+    "Infernus Heavy Bolter": {
+        "abbreviation": "InfrHvyBltr",
+        "ammo": 10,
+        "arp": 2,
+        "attack": {
+            "artifact": 450,
+            "master_crafted": 300,
+            "standard": 250
+        },
+        "description": "The Deathwatch mag-clamp rare suspensor discs onto their infernus heavy bolters that reduce the weapon’s effective weight considerably. Such weapons are further bolstered by underslung heavy flamers that can incinerate those enemies that make it through the hail of explosive bolts.",
+        "melee_hands": 1,
+        "range": 14,
+        "ranged_hands": 2,
+        "second_profiles": [
+            "Flamer"
+        ],
+        "spli": 12,
+        "tags": [
+            "heavy_ranged",
+            "combi",
+            "bolt"
+        ]
+    },
+    "Infernus Pistol": {
+        "abbreviation": "InfPstl",
+        "ammo": 4,
+        "arp": 3,
+        "attack": {
+            "artifact": 325,
+            "master_crafted": 280,
+            "standard": 250
+        },
+        "description": "The Infernus Pistol is a compact pistol varient of the melta gun. A brutal blast of heat to burn away the The Emperor's foes.",
+        "melee_hands": 0,
+        "range": 2.1,
+        "ranged_hands": 1,
+        "requires_to_forge": [
+            "melta_1"
+        ],
+        "spli": 3,
+        "tags": [
+            "melta",
+            "pistol",
+            "boarding 2"
+        ],
+        "value": 12
+    },
+    "Integrated-Bolter": {
+        "abbreviation": "IntgBltr",
+        "ammo": 8,
+        "arp": 1,
+        "attack": {
+            "artifact": 300,
+            "master_crafted": 200,
+            "standard": 150
+        },
+        "description": "A Bolter that can be built directly into the structure of the vehicle, armor, another weapon or Dreadnought. When used as a weapon, it leaves both hands free, allowing to use any, even a twohanded weapon, efficiently.",
+        "melee_hands": 0,
+        "range": 10,
+        "ranged_hands": 0,
+        "spli": 5,
+        "tags": [
+            "bolt"
+        ]
+    },
+    "Integrated-Flamer": {
+        "abbreviation": "IntFlmr",
+        "ammo": 4,
+        "arp": 1,
+        "attack": {
+            "artifact": 420,
+            "master_crafted": 385,
+            "standard": 350
+        },
+        "description": "",
+        "melee_hands": 0,
+        "range": 4.1,
+        "ranged_hands": 0,
+        "spli": 10,
+        "tags": [
+            "flame",
+            "attached"
+        ]
+    },
+    "Integrated-Grav": {
+        "abbreviation": "IntGrv",
+        "ammo": 3,
+        "arp": 4,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 450,
+            "standard": 400
+        },
+        "description": "",
+        "melee_hands": 0,
+        "range": 5.1,
+        "ranged_hands": 0,
+        "spli": 1,
+        "tags": [
+            "grav"
+        ]
+    },
+    "Integrated-Melta": {
+        "abbreviation": "IntMlt",
+        "ammo": 5,
+        "arp": 4,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 475,
+            "standard": 400
+        },
+        "description": "",
+        "melee_hands": 0,
+        "range": 3.1,
+        "ranged_hands": 0,
+        "spli": 1,
+        "tags": [
+            "melta"
+        ]
+    },
+    "Integrated-Plasma": {
+        "abbreviation": "IntPls",
+        "ammo": 6,
+        "arp": 3,
+        "attack": {
+            "artifact": 450,
+            "master_crafted": 350,
+            "standard": 300
+        },
+        "description": "",
+        "melee_hands": 0,
+        "range": 10,
+        "ranged_hands": 0,
+        "spli": 4,
+        "tags": [
+            "plasma",
+            "energy"
+        ]
+    },
+    "Kheres Assault Cannon": {
+        "abbreviation": "KhrAssCnn",
+        "ammo": 5,
+        "arp": 2,
+        "attack": {
+            "artifact": 480,
+            "master_crafted": 460,
+            "standard": 440
+        },
+        "description": "Forged in the forges of Mars and carried into battle by the mightiest of the Emperor's warriors, the Kheres Assault Cannon is a weapon of devastating reputation. Its rotary barrels roar with unceasing fury, unleashing a deluge of mass-reactive shells that tear through flesh, ceramite, and adamantium alike.",
+        "melee_hands": 2.1,
+        "range": 14,
+        "ranged_hands": 3,
+        "spli": 20,
+        "tags": [
+            "heavy_ranged",
+            "terminator",
+            "dreadnought",
+            "ancient"
+        ]
+    },
+    "Lascannon": {
+        "abbreviation": "Lascnn",
+        "ammo": 8,
+        "arp": 4,
+        "attack": {
+            "artifact": 900,
+            "master_crafted": 600,
+            "standard": 450
+        },
+        "description": "A formidable laser weapon, the lascannon can pierce most vehicles or power armored targets from a tremendous range. The weapon is known for its reliability in combat.",
+        "melee_hands": 1,
+        "range": 20,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "laser_1",
+            "heavy_1"
+        ],
+        "spli": 1,
+        "tags": [
+            "heavy_ranged",
+            "las",
+            "energy"
+        ],
+        "value": 70
+    },
+    "Lascannon Sponsons": {
+        "abbreviation": "Lscnns",
+        "ammo": 8,
+        "arp": 4,
+        "attack": {
+            "artifact": 1000,
+            "master_crafted": 850,
+            "standard": 700
+        },
+        "description": "Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour. This version is mounted onto the sides of vehicles.",
+        "melee_hands": 0,
+        "range": 20,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "laser_1",
+            "vehicle_armaments_1"
+        ],
+        "spli": 2,
+        "tags": [
+            "las",
+            "energy",
+            "heavy_ranged",
+            "vehicle",
+            "sponson"
+        ],
+        "value": 60
     },
     "Lascutter": {
         "abbreviation": "Lasct",
+        "arp": 4,
         "attack": {
-            "standard": 250,
+            "artifact": 425,
             "master_crafted": 300,
-            "artifact": 425
+            "standard": 250
         },
         "description": "Originally industrial tools used for breaking through bulkheads, this laser weapon is devastating in close combat.",
         "melee_hands": 1,
         "range": 1,
-        "arp": 4,
+        "requires_to_forge": [
+            "laser_1"
+        ],
         "tags": [
             "las",
             "boarding 3",
             "siege"
         ],
-        "value": 15,
-        "requires_to_forge": [
-            "laser_1"
-        ]
+        "value": 15
     },
-    "Power Weapon": {
-        "abbreviation": "PwrWpn",
+    "Laspistol": {
+        "abbreviation": "Lpstl",
+        "ammo": 30,
+        "arp": 1,
         "attack": {
-            "standard": 135,
-            "master_crafted": 145,
-            "artifact": 155
+            "artifact": 40,
+            "master_crafted": 30,
+            "standard": 20
         },
-        "melee_mod": {
-            "standard": 1.1,
-            "master_crafted": 1.1,
-            "artifact": 1.1
-        },
-        "melee_hands": 1.1,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 3,
-        "arp": 2,
-        "tags": [
-            "power"
-        ]
-    },
-    "Power Axe": {
-        "abbreviation": "PwrAxe",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 300,
-            "artifact": 350
-        },
-        "melee_mod": {
-            "standard": 1,
-            "master_crafted": 1.1,
-            "artifact": 1.2
-        },
-        "description": "This weapon's power systems can be activated with the press of a button to sheathe the axe-head in a lethal haze of disruptive energy. Those fortunate enough to get their hands on two tend to duel-wield them.",
-        "melee_hands": 1,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 3,
-        "arp": 2,
-        "tags": [
-            "power",
-            "axe",
-            "dual",
-            "savage",
-            "boarding 2"
-        ],
-        "value": 40,
-        "requires_to_forge": [
-            "power_1"
-        ]
-    },
-    "Omnissian Axe": {
-        "abbreviation": "OmnAxe",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 450,
-            "artifact": 550
-        },
-        "melee_mod": {
-            "standard": 1,
-            "master_crafted": 1.1,
-            "artifact": 1.2
-        },
-        "description": "A symbol that is equally weapon and holy icon given only to those trained by the Adeptus Mechanicus and have shown their devotion to the Omnissiah in battle.",
-        "melee_hands": 1.5,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 5,
-        "arp": 3,
-        "tags": [
-            "power",
-            "axe",
-            "savage",
-            "boarding 3"
-        ],
-        "specials": {
-            "combi_tool": 1
-        }
-    },
-    "Executioner Power Axe": {
-        "abbreviation": "ExPwrAxe",
-        "attack": {
-            "standard": 800,
-            "master_crafted": 850,
-            "artifact": 925
-        },
-        "melee_mod": {
-            "standard": 10,
-            "master_crafted": 15,
-            "artifact": 20
-        },
-        "description": "A heavy two-handed power axe used to rend armor and tear through multiple infantry at once.",
-        "melee_hands": 2.5,
-        "ranged_hands": 2,
-        "ammo": 0,
-        "range": 1,
-        "spli": 5,
-        "arp": 3,
-        "tags": [
-            "power",
-            "axe",
-            "martial"
-        ]
-    },
-    "Power Fist": {
-        "abbreviation": "PwrFst",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 450,
-            "artifact": 600
-        },
-        "melee_mod": {
-            "standard": 1,
-            "master_crafted": 1,
-            "artifact": 1
-        },
-        "description": "A large, ceramite clad gauntlet surrounded by an power energy field. Though cumbersome to use, it dishes out tremendous damage to enemies, leaving very little behind.",
-        "melee_hands": 1,
-        "ranged_hands": 1,
-        "ammo": 0,
-        "range": 1,
-        "spli": 2,
-        "tags": [
-            "power",
-            "dual",
-            "fist",
-            "savage",
-            "boarding 2"
-        ],
-        "arp": 3,
-        "value": 60,
-        "requires_to_forge": [
-            "power_1"
-        ]
-    },
-    "Power Fists": {
-        "abbreviation": "PwrFsts",
-        "attack": {
-            "standard": 800,
-            "master_crafted": 900,
-            "artifact": 1200
-        },
-        "description": "A large, ceramite clad gauntlets surrounded by power energy fields. Though cumbersome to use, they dish out tremendous damage to enemies, leaving very little behind.",
-        "melee_hands": 2,
-        "ranged_hands": 2,
-        "ammo": 0,
-        "range": 1,
-        "spli": 4,
-        "tags": [
-            "power",
-            "fist",
-            "pair",
-            "savage",
-            "boarding 2"
-        ],
-        "arp": 3
-    },
-    "Servo-arm(M)": {
-        "abbreviation": "MchArm",
-        "attack": {
-            "standard": 220,
-            "master_crafted": 330,
-            "artifact": 500
-        },
-        "description": "",
+        "description": "The Laspistol is the pistol version of the Lasgun and like that weapon fires a coherent beam of energetic photons that can burn through most materials. The Laspistol is powered by a miniature power pack that is usually placed within the grip.",
         "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 2,
-        "arp": 3,
+        "range": 3.1,
+        "ranged_hands": 0.25,
+        "spli": 1,
         "tags": [
-            "siege"
+            "pistol",
+            "las"
         ]
     },
-    "Boltstorm Gauntlet": {
-        "abbreviation": "BlstGnt",
+    "Light Bolter": {
+        "abbreviation": "LghtBltr",
+        "ammo": 16,
+        "arp": 1,
         "attack": {
-            "standard": 400,
-            "master_crafted": 450,
-            "artifact": 600
+            "artifact": 45,
+            "master_crafted": 40,
+            "standard": 35
         },
-        "description": "The Boltstorm Gauntlet is a Power Fists with an Integrated Bolter, so aside from being reinforced with a crackling power field and able to crush armour, bone and even thick vehicle plating, it is also capable of firing bolts at an astonishing rate",
-        "melee_hands": 2,
-        "ranged_hands": 2,
-        "ammo": 0,
-        "range": 1,
-        "spli": 2,
-        "arp": 3,
-        "second_profiles": [
-            "Integrated-Bolter"
-        ],
-        "tags": [
-            "power",
-            "fist",
-            "savage",
-            "boarding 2"
-        ],
-        "value": 90,
-        "requires_to_forge": [
-            "power_1",
-            "combi_1"
-        ]
-    },
-    "Assault Chainfist": {
-        "abbreviation": "AssltChFst",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 550,
-            "artifact": 700
-        },
-        "description": "Created by mounting a chainsword to a power fist, this weapon is easily able to carve through armoured bulkheads. Contains an integrated Assault Cannon",
-        "melee_hands": 1.25,
+        "description": "A smaller variant of Bolter, intended to be useable by unaugmented humans.",
+        "melee_hands": 1,
+        "range": 10,
         "ranged_hands": 1,
-        "range": 1,
-        "spli": 2,
-        "arp": 3,
         "second_profiles": [
-            "Assault Cannon"
+            "Sarissa"
         ],
+        "spli": 2,
         "tags": [
-            "power",
-            "boarding 3",
-            "chain",
-            "fist",
-            "dual",
-            "siege"
+            "bolt"
         ]
     },
     "Lightning Claw": {
         "abbreviation": "LghtClw",
+        "ammo": 0,
+        "arp": 2,
         "attack": {
-            "standard": 375,
+            "artifact": 575,
             "master_crafted": 425,
-            "artifact": 575
+            "standard": 375
         },
         "description": "Lightning claws are specialized close combat weapons with built-in disruptor fields. These lethal claws rip into infantry like butter, bringing terror to the foe.",
         "melee_hands": 1.1,
-        "ranged_hands": 1,
-        "ammo": 0,
         "range": 1,
+        "ranged_hands": 1,
+        "requires_to_forge": [
+            "power_1"
+        ],
         "spli": 5,
         "tags": [
             "power",
@@ -941,183 +1645,33 @@
             "boarding 2",
             "martial"
         ],
-        "arp": 2,
-        "value": 90,
-        "requires_to_forge": [
-            "power_1"
-        ]
-    },
-    "Dreadnought Lightning Claw": {
-        "abbreviation": "LghtClw",
-        "attack": {
-            "standard": 600,
-            "master_crafted": 700,
-            "artifact": 850
-        },
-        "melee_mod": {
-            "standard": 1.2,
-            "master_crafted": 1.2,
-            "artifact": 1.2
-        },
-        "description": "A specialized Lightning Claw variant designed for Dreadnoughts, these claws are capable of ripping through enemy vehicles and infantry with ease.",
-        "melee_hands": 5,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 15,
-        "arp": 3,
-        "maintenance": 0.1,
-        "tags": [
-            "power",
-            "dual",
-            "dreadnought",
-            "fist"
-        ]
-    },
-    "Contemptor CCW": {
-        "abbreviation": "ConCCW",
-        "attack": {
-            "standard": 600,
-            "master_crafted": 700,
-            "artifact": 850
-        },
-        "melee_mod": {
-            "standard": 1.2,
-            "master_crafted": 1.2,
-            "artifact": 1.2
-        },
-        "description": "A specialized Lightning Claw variant designed for Dreadnoughts, these claws are capable of ripping through enemy vehicles and infantry with ease.",
-        "melee_hands": 5,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 15,
-        "arp": 3,
-        "maintenance": 0.1,
-        "tags": [
-            "power",
-            "dual",
-            "dreadnought",
-            "fist"
-        ]
-    },
-    "Thunder Hammer": {
-        "abbreviation": "ThndHmr",
-        "attack": {
-            "standard": 500,
-            "master_crafted": 600,
-            "artifact": 750
-        },
-        "melee_mod": {
-            "standard": 1.3,
-            "master_crafted": 1.3,
-            "artifact": 1.3
-        },
-        "description": "A Thunder hammer is a weapon with a long pole and a double headed hammer on the top. This weapon unleashes a massive, devastating disruption field on impact. Only experienced Astartes can use Thunder Hammers, typically Terminators.",
-        "melee_hands": 1.1,
-        "ranged_hands": 1,
-        "ammo": 0,
-        "range": 1,
-        "spli": 3,
-        "arp": 3,
-        "maintenance": 0.1,
-        "req_exp": 100,
-        "tags": [
-            "power",
-            "hammer",
-            "siege",
-            "savage",
-            "boarding 2"
-        ],
-        "value": 90,
-        "requires_to_forge": [
-            "power_1"
-        ]
-    },
-    "Heavy Thunder Hammer": {
-        "abbreviation": "HvyThndHmr",
-        "attack": {
-            "standard": 700,
-            "master_crafted": 850,
-            "artifact": 1000
-        },
-        "melee_mod": {
-            "standard": 1.3,
-            "master_crafted": 1.3,
-            "artifact": 1.3
-        },
-        "description": "The Heavy Thunder Hammer is the largest man-portable Thunder Hammer that is used by the Adeptus Astartes - a giant, crushing tool of destruction so heavy even a Space Marine cannot use it one-handed.",
-        "melee_hands": 2,
-        "ranged_hands": 2,
-        "ammo": 0,
-        "range": 1,
-        "arp": 3,
-        "spli": 4,
-        "maintenance": 0.1,
-        "req_exp": 100,
-        "tags": [
-            "heavy_melee",
-            "power",
-            "hammer",
-            "siege",
-            "savage"
-        ],
-        "value": 135,
-        "requires_to_forge": [
-            "power_1"
-        ]
-    },
-    "Power Mace": {
-        "abbreviation": "PwrMace",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 450,
-            "artifact": 600
-        },
-        "melee_mod": {
-            "standard": 1.3,
-            "master_crafted": 1.3,
-            "artifact": 1.3
-        },
-        "description": "Commonly referred to as Power Maul, is a blunt weapon surrounded by a power field. It's quite different from the less lethal Shock Maul, which is a similar type of close combat weapon. In the hands of a skilled warrior, the Power Mace is not just a weapon, it's a statement of power and authority in the grim darkness of far future.",
-        "melee_hands": 2.25,
-        "ranged_hands": 2,
-        "ammo": 0,
-        "range": 1,
-        "arp": 3,
-        "spli": 6,
-        "tags": [
-            "power",
-            "mace",
-            "siege",
-            "savage"
-        ],
-        "req_exp": 100,
-        "value": 50,
-        "requires_to_forge": [
-            "power_1"
-        ]
+        "value": 90
     },
     "Mace of Absolution": {
         "abbreviation": "AbsltMace",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 450,
-            "artifact": 600
-        },
-        "melee_mod": {
-            "standard": 1.3,
-            "master_crafted": 1.3,
-            "artifact": 1.3
-        },
-        "description": "Wreathed in glowing smoke, these massive weapons are as sinister in aspect as they are lethal in application, and are capable of obliterating even the mightiest heretics in a blaze of killing light.",
-        "special_description": "Dark Angels exclusive",
-        "melee_hands": 2.25,
-        "ranged_hands": 2,
         "ammo": 0,
-        "range": 1,
-        "spli": 6,
         "arp": 3,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 450,
+            "standard": 400
+        },
+        "buyable": false,
+        "description": "Wreathed in glowing smoke, these massive weapons are as sinister in aspect as they are lethal in application, and are capable of obliterating even the mightiest heretics in a blaze of killing light.",
+        "melee_hands": 2.25,
+        "melee_mod": {
+            "artifact": 1.3,
+            "master_crafted": 1.3,
+            "standard": 1.3
+        },
+        "range": 1,
+        "ranged_hands": 2,
+        "req_exp": 100,
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "special_description": "Dark Angels exclusive",
+        "spli": 6,
         "tags": [
             "power",
             "mace",
@@ -1125,772 +1679,105 @@
             "pious",
             "savage"
         ],
-        "req_exp": 100,
-        "value": 70,
-        "requires_to_forge": [
-            "power_1"
-        ],
-        "buyable": false
+        "value": 70
     },
-    "Tome": {
-        "abbreviation": "Tome",
-        "attack": {
-            "standard": 0,
-            "master_crafted": 0,
-            "artifact": 0
-        },
-        "melee_mod": {
-            "standard": 1.0,
-            "master_crafted": 1.0,
-            "artifact": 1.0
-        },
-        "description": "Ancient Blades of various origins smited through arcane forging or lost techniques, these blades are deadly beyond belief. These peerless blades slice through ceramite and flesh with ease.",
-        "melee_hands": 1,
-        "ranged_hands": 1,
-        "ammo": 0,
-        "range": 1,
-        "spli": 1,
-        "arp": 1,
-        "tags": [
-            "arcane",
-            "savage"
-        ]
-    },
-    "Crozius Arcanum": {
-        "abbreviation": "Crzus",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 300,
-            "artifact": 400
-        },
-        "melee_mod": {
-            "standard": 1,
-            "master_crafted": 1,
-            "artifact": 1
-        },
-        "description": "The Crozius Arcanum serves as both a sacred staff of office and a close combat weapon for Astartes Chaplains.",
-        "melee_hands": 1,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 4,
-        "arp": 2,
-        "tags": [
-            "power",
-            "mace",
-            "pious",
-            "savage",
-            "boarding 2"
-        ],
-        "value": 75,
-        "requires_to_forge": [
-            "power_1"
-        ],
-        "sellers": [
-            "ecclesiarchy"
-        ]
-    },
-    "Relic Blade": {
-        "abbreviation": "RlcBld",
-        "attack": {
-            "standard": 600,
-            "master_crafted": 750,
-            "artifact": 900
-        },
-        "melee_mod": {
-            "standard": 1,
-            "master_crafted": 1.1,
-            "artifact": 1.2
-        },
-        "description": "Ancient Blades of various origins smithed through arcane forging or lost techniques, these blades are deadly beyond belief. These peerless blades slice through ceramite and flesh with ease.",
-        "melee_hands": 2,
-        "ranged_hands": 1,
-        "ammo": 0,
-        "range": 1,
-        "spli": 8,
-        "arp": 2,
-        "special_properties": [
-            "Parry"
-        ],
-        "maintenance": 0.1,
-        "tags": [
-            "power",
-            "sword",
-            "martial"
-        ],
-        "requires_to_forge": ["artificer_1"],
-        "buyable": false,
-        "value": 300
-    },
-    "Bolt Pistol": {
-        "abbreviation": "BltPstl",
-        "attack": {
-            "standard": 150,
-            "master_crafted": 175,
-            "artifact": 200
-        },
-        "description": "A smaller, more compact version of the venerable Boltgun. This model is produced in the standard Godwyn pattern.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 18,
-        "range": 4.1,
-        "spli": 2,
-        "arp": 1,
-        "tags": [
-            "bolt",
-            "pistol",
-            "boarding 1"
-        ],
-        "value": 5
-    },
-    "Wrist-Mounted Storm Bolter": {
-        "abbreviation": "WrstBlt",
-        "attack": {
-            "standard": 275,
-            "master_crafted": 300,
-            "artifact": 350
-        },
-        "description": "A smaller, more compact version of the venerable Boltgun. This model is produced in the standard Godwyn pattern.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 10,
-        "range": 4.1,
-        "spli": 8,
-        "arp": 1,
-        "maintenance": 0.1,
-        "tags": [
-            "bolt",
-            "pistol",
-            "boarding 2"
-        ]
-    },
-    "Shotgun": {
-        "abbreviation": "Shtgn",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 300,
-            "artifact": 350
-        },
-        "description": "An Astartes Shotgun capable of firing slug and other specialist munitions deadly up close but loses effectiveness at range.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 10,
-        "range": 4.1,
-        "spli": 8,
-        "arp": 1,
-        "tags": [
-            "boarding 2"
-        ]
-    },
-    "Webber": {
-        "abbreviation": "Webbr",
-        "attack": {
-            "standard": 35,
-            "master_crafted": 40,
-            "artifact": 45
-        },
-        "description": "The Webber is a close-range weapon that fires strands of sticky web-like substance. It is designed to ensnare and immobilize enemies, restricting their movement and rendering them vulnerable to further attacks.",
-        "melee_hands": 0,
-        "ranged_hands": 2,
-        "ammo": 5,
-        "range": 4.1,
-        "spli": 1,
-        "arp": 1,
-        "tags": [
-            "immobolise"
-        ]
-    },
-    "Grav-Pistol": {
-        "abbreviation": "GrvPstl",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 300,
-            "artifact": 425
-        },
-        "description": "A smaller version of the Grav-Gun which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 4,
-        "range": 4.1,
-        "spli": 1,
-        "arp": 4,
-        "maintenance": 0.2,
-        "tags": [
-            "grav",
-            "pistol"
-        ],
-        "value": 60,
-        "requires_to_forge": [
-            "grav_1"
-        ]
-    },
-    "Integrated-Grav": {
-        "abbreviation": "IntGrv",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 450,
-            "artifact": 600
-        },
-        "description": "",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 3,
-        "range": 5.1,
-        "spli": 1,
-        "arp": 4,
-        "tags": [
-            "grav"
-        ]
-    },
-    "Grav-Gun": {
-        "abbreviation": "GrvGn",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 450,
-            "artifact": 600
-        },
-        "description": "A medium-sized weapon which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
+    "Magna-Melta Turret": {
+        "abbreviation": "MgnMlt",
         "ammo": 6,
-        "range": 5,
-        "spli": 3,
         "arp": 4,
-        "tags": [
-            "grav"
-        ],
-        "maintenance": 0.5,
-        "value": 100,
-        "requires_to_forge": [
-            "grav_1"
-        ]
-    },
-    "Grav-Cannon": {
-        "abbreviation": "GrvCan",
         "attack": {
-            "standard": 600,
-            "master_crafted": 700,
-            "artifact": 850
+            "artifact": 1000,
+            "master_crafted": 900,
+            "standard": 800
         },
-        "description": "A bigger version of the Grav-Gun which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 8,
-        "range": 6,
-        "spli": 6,
-        "arp": 4,
-        "tags": [
-            "grav",
-            "heavy_ranged"
-        ],
-        "maintenance": 0.8,
-        "value": 300,
-        "requires_to_forge": [
-            "grav_1",
-            "heavy_1"
-        ]
-    },
-    "Underslung Bolter": {
-        "abbreviation": "UndBltr",
-        "attack": {
-            "standard": 150,
-            "master_crafted": 200,
-            "artifact": 300
-        },
-        "description": "A compact, secondary Bolter weapon often attached under the barrel of a larger firearm. It allows for rapid fire in close quarters combat.",
+        "description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles. In this case it is mounted to the turret on a vehicle.",
         "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 0,
-        "range": 10,
-        "spli": 3,
-        "arp": 1,
-        "tags": [
-            "bolt",
-            "attached"
-        ]
-    },
-    "Stalker Pattern Bolter": {
-        "abbreviation": "StlkBltr",
-        "attack": {
-            "standard": 180,
-            "master_crafted": 250,
-            "artifact": 380
-        },
-        "description": "The Stalker Bolter is a scoped long-range variant of the standard Bolter. Depending on the specific modifications made by the wielder, the Stalker Bolter can serve as a precision battle rifle or a high-powered sniper weapon.",
-        "melee_hands": 0,
-        "ranged_hands": 2,
-        "ammo": 20,
-        "range": 16,
-        "spli": 3,
-        "arp": 1,
-        "tags": [
-            "bolt",
-            "precision"
-        ],
-        "value": 80
-    },
-    "Bolter": {
-        "abbreviation": "Bltr",
-        "attack": {
-            "standard": 150,
-            "master_crafted": 175,
-            "artifact": 200
-        },
-        "description": "A standard Bolter, a two-handed firearm that launches rocket propelled projectiles that detonate after penetrating the target. It is a versatile and iconic weapon of Adeptus Astartes, their resounding detonations carry the Emperor's Wrath.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 16,
-        "range": 10,
-        "spli": 5,
-        "arp": 1,
-        "tags": [
-            "bolt",
-            "boarding 1"
-        ],
-        "value": 10
-    },
-    "Heavy Flamer": {
-        "abbreviation": "HvyFlmr",
-        "attack": {
-            "standard": 500,
-            "master_crafted": 550,
-            "artifact": 600
-        },
-        "description": "A significantly heavier flamer typically utilized on vehicle mounts. To carry them on foot requires Power Armor.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 8,
-        "range": 4,
-        "spli": 20,
-        "arp": 2,
-        "tags": [
-            "flame",
-            "heavy_ranged",
-            "boarding 3"
-        ],
-        "value": 40,
-        "requires_to_forge": [
-            "flame_1",
-            "heavy_1"
-        ],
-        "sellers": [
-            "ecclesiarchy",
-            "mechanicus"
-        ]
-    },
-    "CCW Heavy Flamer": {
-        "abbreviation": "CCWHvyFlmr",
-        "attack": {
-            "standard": 500,
-            "master_crafted": 550,
-            "artifact": 600
-        },
-        "description": "A powerful close combat weapon integrated with a flamer. Enemeies rarely expect a dreadnough claw to spew promethium.",
-        "melee_hands": 1,
-        "ranged_hands": 0,
-        "ammo": 6,
-        "range": 2.1,
-        "spli": 20,
-        "arp": 2,
-        "tags": [
-            "dreadnought",
-            "heavy_ranged",
-            "flame"
-        ]
-    },
-    "Dreadnought Power Claw": {
-        "abbreviation": "PwrClw",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 600,
-            "artifact": 800
-        },
-        "description": "A brutal crushing claw capable of tearing open armor and flesh with ease utilizing disruptor fields.",
-        "melee_hands": 5,
-        "range": 1,
-        "spli": 10,
-        "arp": 4,
-        "tags": [
-            "power",
-            "vehicle",
-            "dual",
-            "dreadnought",
-            "fist"
-        ],
-        "maintenance": 0.1
-    },
-    "Close Combat Weapon": {
-        "abbreviation": "CCW",
-        "attack": {
-            "standard": 350,
-            "master_crafted": 450,
-            "artifact": 550
-        },
-        "description": "While a variety of melee weapons are used by dreadnoughts, this power fist with an integrated flamer is the most common.",
-        "melee_hands": 5,
-        "range": 1,
-        "spli": 10,
-        "arp": 4,
-        "tags": [
-            "vehicle",
-            "dreadnought",
-            "fist"
-        ],
-        "maintenance": 0.1,
-        "value": 45
-    },
-    "Inferno Cannon": {
-        "abbreviation": "InfCann",
-        "attack": {
-            "standard": 750,
-            "master_crafted": 875,
-            "artifact": 1000
-        },
-        "description": "A huge vehicle-mounted flame weapon that fires with explosive force. The reservoir is liable to explode.",
-        "ranged_hands": 5,
-        "ammo": 0,
         "range": 4.1,
+        "ranged_hands": 0,
         "spli": 20,
-        "arp": 2,
         "tags": [
             "vehicle",
             "heavy_ranged",
-            "flame",
-            "dreadnought"
-        ],
-        "value": 115,
-        "requires_to_forge": [
-            "flame_1",
-            "vehicle_armaments_1"
-        ]
-    },
-    "Integrated-Melta": {
-        "abbreviation": "IntMlt",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 475,
-            "artifact": 600
-        },
-        "description": "",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 5,
-        "range": 3.1,
-        "spli": 1,
-        "arp": 4,
-        "tags": [
+            "turret",
             "melta"
         ]
     },
-    "Meltagun": {
-        "abbreviation": "Mltgn",
+    "Mars Heavy Bolter": {
+        "abbreviation": "MarsHvyBltr",
+        "ammo": 12,
+        "arp": 1,
         "attack": {
-            "standard": 350,
-            "master_crafted": 425,
-            "artifact": 550
+            "artifact": 460,
+            "master_crafted": 430,
+            "standard": 400
         },
-        "description": "A loud weapon that roars with fury, this gun vaporizes flesh and armor alike. Due to heat dissipation, it has only a short range.",
+        "description": "This is the prototype that turned into the staple of all Heavy Bolter designs. Introduced in early Great Crusade, it was one of the very first heavy support weapons churned out by the forges of Mechanicum.",
         "melee_hands": 1,
+        "range": 17,
         "ranged_hands": 2,
-        "ammo": 6,
-        "range": 2.1,
-        "spli": 6,
-        "arp": 3,
+        "spli": 9,
         "tags": [
-            "melta",
-            "boarding 3"
-        ],
-        "value": 30,
-        "requires_to_forge": [
-            "melta_1"
-        ]
-    },
-    "Multi-Melta": {
-        "abbreviation": "MltMelt",
-        "attack": {
-            "standard": 500,
-            "master_crafted": 600,
-            "artifact": 700
-        },
-        "description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles though those with Power Armor can carry this cumbersome weapon into battle.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 8,
-        "range": 4.1,
-        "spli": 10,
-        "arp": 3,
-        "tags": [
-            "melta",
             "heavy_ranged",
-            "dreadnought",
-            "boarding 1"
-        ],
-        "value": 60,
-        "requires_to_forge": [
-            "melta_1",
-            "heavy_1"
+            "bolt"
         ]
     },
-    "Plasma Pistol": {
-        "abbreviation": "PlsmPstl",
+    "Mars Plasma Cannon": {
+        "abbreviation": "MarsPlsmCnn",
+        "ammo": 18,
+        "arp": 1,
         "attack": {
-            "standard": 220,
-            "master_crafted": 270,
-            "artifact": 320
+            "artifact": 750,
+            "master_crafted": 700,
+            "standard": 650
         },
-        "description": "A pistol variant of the plasma gun, this dangerous-to-use weapon has exceptional armor-piercing capabilities.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 4,
-        "range": 5.1,
-        "spli": 2,
-        "arp": 3,
+        "description": "An ancient Plasma Cannon variant born in the bowels of Mother Mars. Once a staple of heavy weapons squads in the time of Legiones Astartes, now a revered relic with power beyond compare with any modern weapons, even those made in the forges of Mars and Ryza in this dark age. Sharing some design and components with Ryzan patterns, it features the same purple glow that makes them so easily distinguishable.",
+        "melee_hands": 1,
+        "range": 16,
+        "ranged_hands": 2,
+        "spli": 8,
         "tags": [
-            "plasma",
-            "energy",
-            "pistol",
-            "boarding 1"
-        ],
-        "value": 60,
-        "requires_to_forge": [
-            "plasma_1"
-        ]
-    },
-    "Plasma Cutter": {
-        "abbreviation": "PlsmCt",
-        "attack": {
-            "standard": 220,
-            "master_crafted": 270,
-            "artifact": 320
-        },
-        "description": "While actually intended to be used on the battlefield as a tool to repair damaged war machines, the Plasma Cutter is equally adept at slicing through even terminator armour with its intense, constant beam of superheated plasma.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 4.1,
-        "spli": 1,
-        "arp": 3,
-        "tags": [
-            "plasma",
-            "energy",
-            "pistol"
-        ]
-    },
-    "Infernus Pistol": {
-        "abbreviation": "InfPstl",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 280,
-            "artifact": 325
-        },
-        "description": "The Infernus Pistol is a compact pistol varient of the melta gun. A brutal blast of heat to burn away the The Emperor's foes.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 4,
-        "range": 2.1,
-        "spli": 3,
-        "arp": 3,
-        "tags": [
-            "melta",
-            "pistol",
-            "boarding 2"
-        ],
-        "value": 12,
-        "requires_to_forge": [
-            "melta_1"
-        ]
-    },
-    "Integrated-Plasma": {
-        "abbreviation": "IntPls",
-        "attack": {
-            "standard": 300,
-            "master_crafted": 350,
-            "artifact": 450
-        },
-        "description": "",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 6,
-        "range": 10,
-        "spli": 4,
-        "arp": 3,
-        "tags": [
+            "heavy_ranged",
             "plasma",
             "energy"
         ]
     },
-    "Plasma Gun": {
-        "abbreviation": "PlsmGn",
-        "attack": {
-            "standard": 300,
-            "master_crafted": 350,
-            "artifact": 450
-        },
-        "description": "A two-handed weapon that launches blobs of plasma at the target. They are considered both sacred and dangerous, overheating through rapid firing of the weapon. Overheating can result in detonation of the weapon, killing the wielder.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 16,
-        "range": 10,
-        "spli": 4,
+    "Meltagun": {
+        "abbreviation": "Mltgn",
+        "ammo": 6,
         "arp": 3,
-        "tags": [
-            "plasma",
-            "energy",
-            "boarding 1"
-        ],
-        "value": 100,
-        "requires_to_forge": [
-            "plasma_1"
-        ]
-    },
-    "Plasma Cannon": {
-        "abbreviation": "PlsmCan",
         "attack": {
-            "standard": 450,
-            "master_crafted": 550,
-            "artifact": 750
+            "artifact": 550,
+            "master_crafted": 425,
+            "standard": 350
         },
-        "description": "A heavy variant of the plasma gun, its power output is significantly higher and its damage capability shows. However, it maintains the overheating risk of the Plasma Gun",
+        "description": "A loud weapon that roars with fury, this gun vaporizes flesh and armor alike. Due to heat dissipation, it has only a short range.",
         "melee_hands": 1,
+        "range": 2.1,
         "ranged_hands": 2,
-        "ammo": 16,
-        "range": 10,
-        "spli": 8,
-        "arp": 3,
-        "tags": [
-            "plasma",
-            "energy",
-            "heavy_ranged",
-            "dreadnought"
-        ],
-        "value": 300,
         "requires_to_forge": [
-            "plasma_1",
-            "heavy_1"
-        ]
-    },
-    "Sniper Rifle": {
-        "abbreviation": "SnpRfl",
-        "attack": {
-            "standard": 180,
-            "master_crafted": 220,
-            "artifact": 320
-        },
-        "description": "A form of Needle sniper rifle. Boasts a powerful telescopic sight that allows the wielder to target enemy weak points and distant foes with extreme accuracy, firing slivers of crystallized toxins.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 20,
-        "range": 14,
-        "spli": 1,
-        "arp": 1,
-        "tags": [
-            "precision",
-            "rifle"
+            "melta_1"
         ],
-        "value": 10
-    },
-    "Deathwatch Sniper Rifle": {
-        "abbreviation": "DwSnpRfl",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 300,
-            "artifact": 350
-        },
-        "description": "A heavy Needler sniper rifle used by the Deathwatch for long-range anti-personnel and anti-materiel work. A highly-respected and revered weapon, it is often selected as the weapon of choice for snipers in many Deathwatch Kill-teams.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 20,
-        "range": 14,
-        "spli": 1,
-        "arp": 2,
+        "spli": 6,
         "tags": [
-            "precision",
-            "rifle"
+            "melta",
+            "boarding 3"
         ],
-        "requires_to_forge": [
-            "solid_projectile_1"
-        ]
-    },
-    "Assault Cannon": {
-        "abbreviation": "AssCann",
-        "attack": {
-            "standard": 400,
-            "master_crafted": 440,
-            "artifact": 500
-        },
-        "description": "A heavy rotary autocannon with a devastating fire rate that can be counted in the hundreds per minute. It is incredibly effective against infantry and light armored targets.",
-        "melee_hands": 2.1,
-        "ranged_hands": 3,
-        "ammo": 5,
-        "range": 12,
-        "spli": 20,
-        "arp": 2,
-        "tags": [
-            "heavy_ranged",
-            "terminator",
-            "dreadnought"
-        ],
-        "value": 75,
-        "requires_to_forge": [
-            "solid_projectile_1",
-            "heavy_1"
-        ]
-    },
-    "Kheres Assault Cannon": {
-        "abbreviation": "KhrAssCnn",
-        "attack": {
-            "standard": 440,
-            "master_crafted": 460,
-            "artifact": 480
-        },
-        "description": "Forged in the forges of Mars and carried into battle by the mightiest of the Emperor's warriors, the Kheres Assault Cannon is a weapon of devastating reputation. Its rotary barrels roar with unceasing fury, unleashing a deluge of mass-reactive shells that tear through flesh, ceramite, and adamantium alike.",
-        "melee_hands": 2.1,
-        "ranged_hands": 3,
-        "ammo": 5,
-        "range": 14,
-        "spli": 20,
-        "arp": 2,
-        "tags": [
-            "heavy_ranged",
-            "terminator",
-            "dreadnought",
-            "ancient"
-        ]
-    },
-    "Autocannon": {
-        "abbreviation": "Autocnn",
-        "attack": {
-            "standard": 450,
-            "master_crafted": 500,
-            "artifact": 600
-        },
-        "description": "A rapid-firing weapon able to use a wide variety of ammunition, from mass-reactive explosive to solid shells. It has been found to be incredibly effective against large groups of targets and even Traitor Astartes to an extent.",
-        "melee_hands": 0,
-        "ranged_hands": 2,
-        "ammo": 25,
-        "range": 14,
-        "spli": 12,
-        "arp": 2,
-        "tags": [
-            "heavy_ranged",
-            "explosive",
-            "dreadnought"
-        ]
+        "value": 30
     },
     "Missile Launcher": {
         "abbreviation": "MsslLnch",
+        "ammo": 6,
+        "arp": 2,
         "attack": {
-            "standard": 300,
+            "artifact": 425,
             "master_crafted": 350,
-            "artifact": 425
+            "standard": 300
         },
         "description": "This shoulder fired weapon is capable of firing either armor-piercing or fragmentation rockets. It's ammunition is limited by what the bearer has carried with them.",
         "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 6,
         "range": 12,
+        "ranged_hands": 2,
         "spli": 10,
-        "arp": 2,
         "tags": [
             "heavy_ranged",
             "explosive",
@@ -1898,378 +1785,1145 @@
         ],
         "value": 70
     },
-    "Cyclone Missile Launcher": {
-        "abbreviation": "CycLnch",
+    "Multi-Melta": {
+        "abbreviation": "MltMelt",
+        "ammo": 8,
+        "arp": 3,
         "attack": {
-            "standard": 600,
-            "master_crafted": 700,
-            "artifact": 950
-        },
-        "description": "This power pack mounted weapon is capable of unleashing a hail of either armor-piercing or fragmentation rockets. It's ammunition is limited by what the bearer has carried with them.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 6,
-        "range": 8,
-        "spli": 20,
-        "arp": 2,
-        "tags": [
-            "heavy_ranged",
-            "explosive"
-        ]
-    },
-    "Lascannon": {
-        "abbreviation": "Lascnn",
-        "attack": {
-            "standard": 450,
+            "artifact": 700,
             "master_crafted": 600,
-            "artifact": 900
+            "standard": 500
         },
-        "description": "A formidable laser weapon, the lascannon can pierce most vehicles or power armored targets from a tremendous range. The weapon is known for its reliability in combat.",
+        "description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles though those with Power Armor can carry this cumbersome weapon into battle.",
         "melee_hands": 1,
+        "range": 4.1,
         "ranged_hands": 2,
-        "ammo": 8,
-        "range": 20,
-        "spli": 1,
-        "arp": 4,
-        "tags": [
-            "heavy_ranged",
-            "las",
-            "energy"
-        ],
-        "value": 70,
         "requires_to_forge": [
-            "laser_1",
+            "melta_1",
             "heavy_1"
-        ]
-    },
-    "Conversion Beam Projector": {
-        "abbreviation": "CnvBmPrj",
-        "attack": {
-            "standard": 500,
-            "master_crafted": 550,
-            "artifact": 600
-        },
-        "description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comproises it is transformed into pure energy.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 1,
-        "range": 20,
-        "spli": 3,
-        "arp": 4,
+        ],
+        "spli": 10,
         "tags": [
+            "melta",
             "heavy_ranged",
-            "ancient"
-        ]
-    },
-    "Heavy Conversion Beamer": {
-        "abbreviation": "HvyCnvBm",
-        "attack": {
-            "standard": 500,
-            "master_crafted": 550,
-            "artifact": 600
-        },
-        "description": "An ancient relic of the Dark Age of Technology, the Heavy Conversion Beamer is a marvel of destructive science rarely entrusted to Imperial commanders. This esoteric weapon channels vast reserves of energy into a focused beam of coruscating light, tearing matter apart at the molecular level and converting it into raw energy in a cataclysmic chain reaction. The weapon’s lethality grows with distance — the further its target, the more apocalyptic the discharge. To stand at the far end of a Heavy Conversion Beamer’s wrath is to be annihilated in a searing blaze that leaves nothing but scorched ruin in its wake. Few battlefields have witnessed its fury and remained unchanged, for the weapon is as much a terror to its enemies as a reminder of the Imperium’s dwindling grasp on its most potent technologies.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 1,
-        "range": 20,
-        "spli": 3,
-        "arp": 1,
-        "tags": [
-            "heavy_ranged",
-            "ancient",
-            "dreadnought"
-        ]
-    },
-    "Integrated-Bolter": {
-        "abbreviation": "IntgBltr",
-        "attack": {
-            "standard": 150,
-            "master_crafted": 200,
-            "artifact": 300
-        },
-        "description": "A Bolter that can be built directly into the structure of the vehicle, armor, another weapon or Dreadnought. When used as a weapon, it leaves both hands free, allowing to use any, even a twohanded weapon, efficiently.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 8,
-        "range": 10,
-        "spli": 5,
-        "arp": 1,
-        "tags": [
-            "bolt"
-        ]
-    },
-    "Twin Linked Heavy Bolter": {
-        "abbreviation": "TwnHvyBltr",
-        "attack": {
-            "standard": 450,
-            "master_crafted": 500,
-            "artifact": 650
-        },
-        "description": "Twin-linked Heavy Bolters are an upgraded version of the standard Heavy Bolter weapon, which is known for its high rate of fire and effectiveness against infantry and light vehicles.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 20,
-        "range": 16,
-        "spli": 28,
-        "arp": 2,
-        "tags": [
-            "bolt",
-            "heavy_ranged",
-            "vehicle",
-            "dreadnought"
-        ],
-        "requires_to_forge": [
-            "vehicle_armaments_1",
-            "combi_1"
-        ],
-        "value": 110
-    },
-    "Twin Linked Lascannon": {
-        "abbreviation": "TwnLascnn",
-        "attack": {
-            "standard": 800,
-            "master_crafted": 900,
-            "artifact": 1000
-        },
-        "description": "The Twin-Linked Lascannons is a powerful anti-armour weapons that fire highly focused and devastating duel energy beams capable of penetrating even the toughest armor.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 8,
-        "range": 24,
-        "spli": 2,
-        "arp": 4,
-        "tags": [
-            "las",
-            "energy",
-            "heavy_ranged",
-            "vehicle",
-            "dreadnought"
-        ],
-        "requires_to_forge": [
-            "laser_1"
-        ],
-        "value": 110
-    },
-    "Heavy Bolter": {
-        "abbreviation": "HvyBltr",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 300,
-            "artifact": 450
-        },
-        "description": "The Heavy Bolter is a heavy weapon that fires larger and more powerful bolt shells compared to the standard Bolter.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 10,
-        "range": 14,
-        "spli": 12,
-        "arp": 2,
-        "tags": [
-            "heavy_ranged",
-            "bolt"
-        ],
-        "value": 50,
-        "requires_to_forge": [
-            "heavy_1"
-        ]
-    },
-    "Infernus Heavy Bolter": {
-        "abbreviation": "InfrHvyBltr",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 300,
-            "artifact": 450
-        },
-        "description": "The Deathwatch mag-clamp rare suspensor discs onto their infernus heavy bolters that reduce the weapon’s effective weight considerably. Such weapons are further bolstered by underslung heavy flamers that can incinerate those enemies that make it through the hail of explosive bolts.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 10,
-        "range": 14,
-        "spli": 12,
-        "arp": 2,
-        "second_profiles": [
-            "Flamer"
-        ],
-        "tags": [
-            "heavy_ranged",
-            "combi",
-            "bolt"
-        ]
-    },
-    "Whirlwind Missiles": {
-        "attack": {
-            "standard": 600,
-            "master_crafted": 650,
-            "artifact": 800
-        },
-        "description": "The Whirlwind Missile Launcher is a vehicle-mounted artillery weapon that launches a barrage of powerful missiles at the enemy.",
-        "abbreviation": "WhrlMssl",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 6,
-        "range": 20,
-        "spli": 40,
-        "arp": 2,
-        "tags": [
-            "vehicle",
-            "heavy_ranged",
-            "indirect"
-        ],
-        "value": 90
-    },
-    "HK Missile": {
-        "abbreviation": "HKMssl",
-        "description": "A single shot hunter killer missile that serves as a powerful anti armour/aircraft deterent.",
-        "attack": {
-            "standard": 350,
-            "master_crafted": 400,
-            "artifact": 450
-        },
-        "arp": 1,
-        "range": 50,
-        "ammo": 1,
-        "spli": 1,
-        "tags": [
-            "vehicle"
-        ],
-        "value": 10
-    },
-    "Twin Linked Heavy Bolter Mount": {
-        "attack": {
-            "standard": 450,
-            "master_crafted": 550,
-            "artifact": 700
-        },
-        "description": "The Twin-linked Heavy Bolters are an upgraded version of the standard Heavy Bolter weapon. They are mounted onto vehicles to create effective fire support platforms.",
-        "abbreviation": "TwnHvyBltr",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 20,
-        "range": 16,
-        "spli": 21,
-        "arp": 2,
-        "tags": [
-            "vehicle",
             "dreadnought",
-            "heavy_ranged",
-            "bolt"
-        ],
-        "requires_to_forge": [
-            "combi_1",
-            "vehicle_armaments_1"
-        ],
-        "value": 28
-    },
-    "Twin Linked Lascannon Mount": {
-        "attack": {
-            "standard": 800,
-            "master_crafted": 900,
-            "artifact": 1000
-        },
-        "description": "The Twin-Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour. This version is mounted onto vehicles to incease anti-armor capabilities.",
-        "abbreviation": "TwnLascnn",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 10,
-        "range": 20,
-        "spli": 2,
-        "arp": 4,
-        "tags": [
-            "las",
-            "energy",
-            "vehicle",
-            "heavy_ranged",
-            "dreadnought"
-        ]
-    },
-    "Twin Linked Assault Cannon Mount": {
-        "attack": {
-            "standard": 800,
-            "master_crafted": 900,
-            "artifact": 1100
-        },
-        "description": "A twin mount of rotary autocannons, boasting an incredible rate of fire numbering in the hundreds of shots fired per second.",
-        "abbreviation": "TwnAssCnn",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 6,
-        "range": 12,
-        "spli": 40,
-        "arp": 2,
-        "tags": [
-            "vehicle",
-            "heavy_ranged",
-            "pintle",
-            "dreadnought"
-        ],
-        "requires_to_forge": [
-            "solid_projectile_1",
-            "combi_1",
-            "vehicle_armaments_1"
+            "boarding 1"
         ],
         "value": 60
     },
-    "Reaper Autocannon Mount": {
+    "Neutron Blaster Turret": {
+        "abbreviation": "NtrnBlstr",
+        "ammo": 6,
+        "arp": 4,
         "attack": {
-            "standard": 700,
-            "master_crafted": 850,
-            "artifact": 1000
+            "artifact": 1000,
+            "master_crafted": 900,
+            "standard": 800
         },
-        "description": "An archaic twin-linked autocannon design dating back to the Great Crusade. The Reaper Autocannon is effective against infantry and armored targets. This version is mounted onto vehicles.",
-        "abbreviation": "RprAtcnn",
+        "description": "This is a Neutron blaster, typically found in Sabre Strike Tanks, this one has been mounted for use in a space marine tank.",
         "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 25,
-        "range": 15,
-        "spli": 24,
-        "arp": 2,
+        "range": 20,
+        "ranged_hands": 1,
+        "spli": 2,
         "tags": [
             "vehicle",
             "heavy_ranged",
-            "pintle"
+            "turret"
+        ]
+    },
+    "Omnissian Axe": {
+        "abbreviation": "OmnAxe",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 550,
+            "master_crafted": 450,
+            "standard": 400
+        },
+        "description": "A symbol that is equally weapon and holy icon given only to those trained by the Adeptus Mechanicus and have shown their devotion to the Omnissiah in battle.",
+        "melee_hands": 1.5,
+        "melee_mod": {
+            "artifact": 1.2,
+            "master_crafted": 1.1,
+            "standard": 1
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "specials": {
+            "combi_tool": 1
+        },
+        "spli": 5,
+        "tags": [
+            "power",
+            "axe",
+            "savage",
+            "boarding 3"
+        ]
+    },
+    "Phaestos Flamer": {
+        "abbreviation": "PhFlmr",
+        "ammo": 6,
+        "arp": -1,
+        "attack": {
+            "artifact": 610,
+            "master_crafted": 585,
+            "standard": 430
+        },
+        "description": "The Phaestos-pattern Flamer is a stark reminder of the time where Mankind's future was yet unmolested by the decaying stench of the Horus Heresy. Oddly shaped for the modern users, it is nonetheless not to be underestimated and its potent promethium-fueled flame has burned through armours of unnumbered heroes.",
+        "melee_hands": 1,
+        "range": 2.5,
+        "ranged_hands": 2,
+        "spli": 6,
+        "tags": [
+            "flame"
+        ]
+    },
+    "Phobos Bolt Pistol": {
+        "abbreviation": "PhBltPis",
+        "ammo": 20,
+        "arp": 0,
+        "attack": {
+            "artifact": 48,
+            "master_crafted": 43,
+            "standard": 38
+        },
+        "description": "The shortened version of the Phobos Bolgun, this pistol like its brother features a .70 bolt and less bulk than its successors. Despite its most venerable origin it features better quality basic components than its modern counterparts but lacks anything more advanced than its simple firing mechanism and basic optics.",
+        "melee_hands": 0,
+        "range": 3.5,
+        "ranged_hands": 1,
+        "spli": 2,
+        "tags": [
+            "bolt",
+            "pistol"
+        ]
+    },
+    "Phobos Bolter": {
+        "abbreviation": "PhBltr",
+        "ammo": 20,
+        "arp": 0,
+        "attack": {
+            "artifact": 85,
+            "master_crafted": 80,
+            "standard": 75
+        },
+        "description": "Created at the conception of the Imperium, this very first bolter pattern features a .70 caliber bolt as opposed to the 41st millennium's standard .75. Its form is far less bulky than the Godwyn, most prevalent in the modern Astartes armouries. Simpler in design in theory but required higher-tech components than what is currently available, so when the Heresy ended and the weaponry was streamlined for less logistical effort, the older patterns, such as the venerable Phobos, were phased out.",
+        "melee_hands": 1,
+        "range": 13,
+        "ranged_hands": 2,
+        "spli": 3,
+        "tags": [
+            "bolt"
+        ]
+    },
+    "Plasma Cannon": {
+        "abbreviation": "PlsmCan",
+        "ammo": 16,
+        "arp": 3,
+        "attack": {
+            "artifact": 750,
+            "master_crafted": 550,
+            "standard": 450
+        },
+        "description": "A heavy variant of the plasma gun, its power output is significantly higher and its damage capability shows. However, it maintains the overheating risk of the Plasma Gun",
+        "melee_hands": 1,
+        "range": 10,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "plasma_1",
+            "heavy_1"
+        ],
+        "spli": 8,
+        "tags": [
+            "plasma",
+            "energy",
+            "heavy_ranged",
+            "dreadnought"
+        ],
+        "value": 300
+    },
+    "Plasma Cutter": {
+        "abbreviation": "PlsmCt",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 320,
+            "master_crafted": 270,
+            "standard": 220
+        },
+        "description": "While actually intended to be used on the battlefield as a tool to repair damaged war machines, the Plasma Cutter is equally adept at slicing through even terminator armour with its intense, constant beam of superheated plasma.",
+        "melee_hands": 0,
+        "range": 4.1,
+        "ranged_hands": 0,
+        "spli": 1,
+        "tags": [
+            "plasma",
+            "energy",
+            "pistol"
+        ]
+    },
+    "Plasma Destroyer Turret": {
+        "abbreviation": "PlsmDestr",
+        "ammo": 16,
+        "arp": 4,
+        "attack": {
+            "artifact": 1000,
+            "master_crafted": 900,
+            "standard": 800
+        },
+        "description": "A heavy variant of the plasma gun, its power output is significantly higher and its damage capability shows. However, it is mounted in a tank turret.",
+        "melee_hands": 1,
+        "range": 14,
+        "spli": 12,
+        "tags": [
+            "plasma",
+            "energy",
+            "heavy_ranged",
+            "vehicle",
+            "turret"
+        ]
+    },
+    "Plasma Gun": {
+        "abbreviation": "PlsmGn",
+        "ammo": 16,
+        "arp": 3,
+        "attack": {
+            "artifact": 450,
+            "master_crafted": 350,
+            "standard": 300
+        },
+        "description": "A two-handed weapon that launches blobs of plasma at the target. They are considered both sacred and dangerous, overheating through rapid firing of the weapon. Overheating can result in detonation of the weapon, killing the wielder.",
+        "melee_hands": 1,
+        "range": 10,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "plasma_1"
+        ],
+        "spli": 4,
+        "tags": [
+            "plasma",
+            "energy",
+            "boarding 1"
+        ],
+        "value": 100
+    },
+    "Plasma Pistol": {
+        "abbreviation": "PlsmPstl",
+        "ammo": 4,
+        "arp": 3,
+        "attack": {
+            "artifact": 320,
+            "master_crafted": 270,
+            "standard": 220
+        },
+        "description": "A pistol variant of the plasma gun, this dangerous-to-use weapon has exceptional armor-piercing capabilities.",
+        "melee_hands": 0,
+        "range": 5.1,
+        "ranged_hands": 1,
+        "requires_to_forge": [
+            "plasma_1"
+        ],
+        "spli": 2,
+        "tags": [
+            "plasma",
+            "energy",
+            "pistol",
+            "boarding 1"
+        ],
+        "value": 60
+    },
+    "Power Axe": {
+        "abbreviation": "PwrAxe",
+        "ammo": 0,
+        "arp": 2,
+        "attack": {
+            "artifact": 350,
+            "master_crafted": 300,
+            "standard": 250
+        },
+        "description": "This weapon's power systems can be activated with the press of a button to sheathe the axe-head in a lethal haze of disruptive energy. Those fortunate enough to get their hands on two tend to duel-wield them.",
+        "melee_hands": 1,
+        "melee_mod": {
+            "artifact": 1.2,
+            "master_crafted": 1.1,
+            "standard": 1
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "spli": 3,
+        "tags": [
+            "power",
+            "axe",
+            "dual",
+            "savage",
+            "boarding 2"
+        ],
+        "value": 40
+    },
+    "Power Fist": {
+        "abbreviation": "PwrFst",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 450,
+            "standard": 400
+        },
+        "description": "A large, ceramite clad gauntlet surrounded by an power energy field. Though cumbersome to use, it dishes out tremendous damage to enemies, leaving very little behind.",
+        "melee_hands": 1,
+        "melee_mod": {
+            "artifact": 1,
+            "master_crafted": 1,
+            "standard": 1
+        },
+        "range": 1,
+        "ranged_hands": 1,
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "spli": 2,
+        "tags": [
+            "power",
+            "dual",
+            "fist",
+            "savage",
+            "boarding 2"
+        ],
+        "value": 60
+    },
+    "Power Fists": {
+        "abbreviation": "PwrFsts",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 1200,
+            "master_crafted": 900,
+            "standard": 800
+        },
+        "description": "A large, ceramite clad gauntlets surrounded by power energy fields. Though cumbersome to use, they dish out tremendous damage to enemies, leaving very little behind.",
+        "melee_hands": 2,
+        "range": 1,
+        "ranged_hands": 2,
+        "spli": 4,
+        "tags": [
+            "power",
+            "fist",
+            "pair",
+            "savage",
+            "boarding 2"
+        ]
+    },
+    "Power Mace": {
+        "abbreviation": "PwrMace",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 600,
+            "master_crafted": 450,
+            "standard": 400
+        },
+        "description": "Commonly referred to as Power Maul, is a blunt weapon surrounded by a power field. It's quite different from the less lethal Shock Maul, which is a similar type of close combat weapon. In the hands of a skilled warrior, the Power Mace is not just a weapon, it's a statement of power and authority in the grim darkness of far future.",
+        "melee_hands": 2.25,
+        "melee_mod": {
+            "artifact": 1.3,
+            "master_crafted": 1.3,
+            "standard": 1.3
+        },
+        "range": 1,
+        "ranged_hands": 2,
+        "req_exp": 100,
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "spli": 6,
+        "tags": [
+            "power",
+            "mace",
+            "siege",
+            "savage"
+        ],
+        "value": 50
+    },
+    "Power Scythe": {
+        "abbreviation": "PwrSct",
+        "ammo": 0,
+        "arp": 1,
+        "attack": {
+            "artifact": 350,
+            "master_crafted": 300,
+            "standard": 250
+        },
+        "description": "One of many Power Weapon types made in the nascent Imperium, the Power Scythes never truly became a staple of any large force outside of specialist elements, and when even those faded into obscurity or went traitor, the production of the Power Scythes was halted. Since then few remain in Imperial use, and most can be found in hands of foul traitors.",
+        "melee_hands": 2,
+        "melee_mod": {
+            "artifact": 1.2,
+            "master_crafted": 1.1,
+            "standard": 1
+        },
+        "range": 1,
+        "ranged_hands": 1,
+        "spli": 6,
+        "tags": [
+            "power"
+        ]
+    },
+    "Power Spear": {
+        "abbreviation": "PwrSpear",
+        "ammo": 0,
+        "arp": 2,
+        "attack": {
+            "artifact": 450,
+            "master_crafted": 375,
+            "standard": 300
+        },
+        "description": "A rare kind of Power Weapon, a power blade mounted on the end of a long shaft, requires great skill to wield. When active, the blade becomes sheathed in a lethal haze of disruptive energy and can tear through all manners of material with ease.",
+        "melee_hands": 1,
+        "melee_mod": {
+            "artifact": 1.2,
+            "master_crafted": 1.1,
+            "standard": 1
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "special_properties": [
+            "Parry"
+        ],
+        "spli": 3,
+        "tags": [
+            "power",
+            "spear",
+            "martial"
+        ],
+        "value": 40
+    },
+    "Power Sword": {
+        "abbreviation": "PwrSwrd",
+        "ammo": 0,
+        "arp": 2,
+        "attack": {
+            "artifact": 325,
+            "master_crafted": 275,
+            "standard": 225
+        },
+        "description": "The most common kind of Power Weapon. When active, the blade becomes sheathed in a lethal haze of disruptive energy that seamlessly cuts through ceramite and flesh.",
+        "melee_hands": 1,
+        "melee_mod": {
+            "artifact": 1.2,
+            "master_crafted": 1.1,
+            "standard": 1
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "special_properties": [
+            "Parry"
+        ],
+        "spli": 4,
+        "tags": [
+            "power",
+            "sword",
+            "martial",
+            "boarding 1"
+        ],
+        "value": 25
+    },
+    "Power Weapon": {
+        "abbreviation": "PwrWpn",
+        "ammo": 0,
+        "arp": 2,
+        "attack": {
+            "artifact": 155,
+            "master_crafted": 145,
+            "standard": 135
+        },
+        "melee_hands": 1.1,
+        "melee_mod": {
+            "artifact": 1.1,
+            "master_crafted": 1.1,
+            "standard": 1.1
+        },
+        "range": 1,
+        "ranged_hands": 0,
+        "spli": 3,
+        "tags": [
+            "power"
+        ]
+    },
+    "Primus Melta Gun": {
+        "abbreviation": "PrimMltGn",
+        "ammo": 6,
+        "arp": 1,
+        "attack": {
+            "artifact": 610,
+            "master_crafted": 585,
+            "standard": 560
+        },
+        "description": "The Primus MK II Meltagun's origins have been lost to history, but the knowledge of its power and their bearers who served in the Legiones Astartes remains. Some theories have been made to its Ryzan origins due to the curvature of the body, but the famous Forge World denies those claims.",
+        "melee_hands": 1,
+        "range": 2.5,
+        "ranged_hands": 2,
+        "spli": 2,
+        "tags": [
+            "melta",
+            "energy",
+            "boarding"
+        ]
+    },
+    "Proteus Multi-Melta": {
+        "abbreviation": "ProtMltMelt",
+        "ammo": 6,
+        "arp": 1,
+        "attack": {
+            "artifact": 1200,
+            "master_crafted": 1100,
+            "standard": 1000
+        },
+        "description": "This Multi-Melta design originates, like many others used by Legiones Astartes, in the Dark Age of Technology. Deadlier than the current designs fielded by the Space Marine Chapters, it is a relic of both of the zenith of mankind's science and the last moments of the Emperor's true vision.",
+        "melee_hands": 1,
+        "range": 4.5,
+        "ranged_hands": 2,
+        "spli": 2,
+        "tags": [
+            "heavy_ranged",
+            "melta",
+            "energy",
+            "boarding"
         ]
     },
     "Quad Linked Heavy Bolter Sponsons": {
+        "abbreviation": "QdHvyBltrs",
+        "ammo": 15,
+        "arp": 2,
         "attack": {
-            "standard": 800,
+            "artifact": 1100,
             "master_crafted": 900,
-            "artifact": 1100
+            "standard": 800
         },
         "description": "Quad-linked Heavy Bolters are a significantly upgraded version of the standard Heavy Bolter mount; already punishing in a single mount, this quad mount is devastating against a variety of targets.",
-        "abbreviation": "QdHvyBltrs",
         "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 15,
         "range": 16,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "combi_1",
+            "vehicle_armaments_1"
+        ],
         "spli": 50,
-        "arp": 2,
         "tags": [
             "bolt",
             "heavy_ranged",
             "vehicle",
             "sponson"
         ],
+        "value": 60
+    },
+    "Ranger Long Rifle": {
+        "abbreviation": "RangeLoRife",
+        "attack": {
+            "artifact": 90,
+            "master_crafted": 70,
+            "standard": 60
+        },
+        "description": "Advanced and accurate rifles from mars given to skitarii sharpshooters",
+        "range": 25,
+        "ranged_hands": 1,
+        "tags": [
+            "las",
+            "rifle",
+            "precision"
+        ]
+    },
+    "Reaper Autocannon Mount": {
+        "abbreviation": "RprAtcnn",
+        "ammo": 25,
+        "arp": 2,
+        "attack": {
+            "artifact": 1000,
+            "master_crafted": 850,
+            "standard": 700
+        },
+        "description": "An archaic twin-linked autocannon design dating back to the Great Crusade. The Reaper Autocannon is effective against infantry and armored targets. This version is mounted onto vehicles.",
+        "melee_hands": 0,
+        "range": 15,
+        "ranged_hands": 0,
+        "spli": 24,
+        "tags": [
+            "vehicle",
+            "heavy_ranged",
+            "pintle"
+        ]
+    },
+    "Relic Blade": {
+        "abbreviation": "RlcBld",
+        "ammo": 0,
+        "arp": 2,
+        "attack": {
+            "artifact": 900,
+            "master_crafted": 750,
+            "standard": 600
+        },
+        "buyable": false,
+        "description": "Ancient Blades of various origins smithed through arcane forging or lost techniques, these blades are deadly beyond belief. These peerless blades slice through ceramite and flesh with ease.",
+        "maintenance": 0.1,
+        "melee_hands": 2,
+        "melee_mod": {
+            "artifact": 1.2,
+            "master_crafted": 1.1,
+            "standard": 1
+        },
+        "range": 1,
+        "ranged_hands": 1,
+        "requires_to_forge": [
+            "artificer_1"
+        ],
+        "special_properties": [
+            "Parry"
+        ],
+        "spli": 8,
+        "tags": [
+            "power",
+            "sword",
+            "martial"
+        ],
+        "value": 300
+    },
+    "Ryza Lascannon": {
+        "abbreviation": "RyzLascnn",
+        "ammo": 10,
+        "arp": 1,
+        "attack": {
+            "artifact": 850,
+            "master_crafted": 800,
+            "standard": 750
+        },
+        "description": "The Forge World of Ryza is known not only for its mastery of Plasma weaponry, but also for its genius in Las weapon designs. This revered Ryzan Lascannon pattern can be dated to the Great Crusade, and as such it is the pinnacle of its kind as the Imperium was then. A common sight across the Legiones Astartes heavy support squads as well as Solar Auxilia, any Chapter blessed with one should count themselves lucky.",
+        "melee_hands": 1,
+        "range": 24,
+        "ranged_hands": 2,
+        "spli": 1,
+        "tags": [
+            "heavy_ranged",
+            "las",
+            "energy"
+        ]
+    },
+    "Ryza Plasma Gun": {
+        "abbreviation": "RyzPlsmGn",
+        "ammo": 18,
+        "arp": 1,
+        "attack": {
+            "artifact": 375,
+            "master_crafted": 350,
+            "standard": 325
+        },
+        "description": "One of many Plasma weapon patterns that came from the famed Forge World of Ryza. With its characteristic purple glow, alongside slight curvatures of the design, the mark of its forgeworld is impossible to miss. Featuring greater range and accuracy as well as pure stopping power, this is a weapon that even Terminators should fear to face.",
+        "melee_hands": 1,
+        "range": 14,
+        "ranged_hands": 2,
+        "spli": 5,
+        "tags": [
+            "plasma",
+            "energy"
+        ]
+    },
+    "Ryza Plasma Pistol": {
+        "abbreviation": "RyzPlsmPis",
+        "ammo": 6,
+        "arp": 1,
+        "attack": {
+            "artifact": 175,
+            "master_crafted": 160,
+            "standard": 145
+        },
+        "description": "The smaller brother of the Ryzan Plasma Gun, it shares its characteristics as well as sleek design and purple glow. Once a regular weapon for Sergeants and some Moritats in the Legiones Astartes, with even some Consuls or Centurions favouring them over Volkites or Disintegrators, the humble Ryzan Plasma Pistol has earned its place as a vaunted relic of any armoury lucky enough to have it.",
+        "melee_hands": 0,
+        "range": 4,
+        "ranged_hands": 1,
+        "spli": 3,
+        "tags": [
+            "plasma",
+            "energy",
+            "pistol"
+        ]
+    },
+    "Sarissa": {
+        "abbreviation": "Saris",
+        "ammo": 0,
+        "arp": 1,
+        "attack": {
+            "artifact": 35,
+            "master_crafted": 30,
+            "standard": 25
+        },
+        "description": "A vicious combat attachment that is attached to Bolters, in order to allow them to be used in melee combat.",
+        "melee_hands": 0,
+        "range": 1,
+        "ranged_hands": 0,
+        "spli": 1,
+        "tags": [
+            "axe"
+        ]
+    },
+    "Servo-arm(M)": {
+        "abbreviation": "MchArm",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 500,
+            "master_crafted": 330,
+            "standard": 220
+        },
+        "description": "",
+        "melee_hands": 0,
+        "range": 1,
+        "ranged_hands": 0,
+        "spli": 2,
+        "tags": [
+            "siege"
+        ]
+    },
+    "Shotgun": {
+        "abbreviation": "Shtgn",
+        "ammo": 10,
+        "arp": 1,
+        "attack": {
+            "artifact": 350,
+            "master_crafted": 300,
+            "standard": 250
+        },
+        "description": "An Astartes Shotgun capable of firing slug and other specialist munitions deadly up close but loses effectiveness at range.",
+        "melee_hands": 0,
+        "range": 4.1,
+        "ranged_hands": 1,
+        "spli": 8,
+        "tags": [
+            "boarding 2"
+        ]
+    },
+    "Shuriken Pistol": {
+        "abbreviation": "ShurikP",
+        "ammo": 6,
+        "arp": 1,
+        "attack": {
+            "artifact": 31,
+            "master_crafted": 28,
+            "standard": 25
+        },
+        "melee_hands": 1,
+        "range": 2.1,
+        "ranged_hands": 0,
+        "spli": 3,
+        "tags": [
+            "pistol"
+        ]
+    },
+    "Snazzgun": {
+        "abbreviation": "Snazz",
+        "ammo": 20,
+        "arp": 1,
+        "attack": {
+            "artifact": 280,
+            "master_crafted": 230,
+            "standard": 200
+        },
+        "range": 3.1,
+        "ranged_hands": 1,
+        "spli": 3,
+        "tags": [
+            "rifle"
+        ]
+    },
+    "Sniper Rifle": {
+        "abbreviation": "SnpRfl",
+        "ammo": 20,
+        "arp": 1,
+        "attack": {
+            "artifact": 320,
+            "master_crafted": 220,
+            "standard": 180
+        },
+        "description": "A form of Needle sniper rifle. Boasts a powerful telescopic sight that allows the wielder to target enemy weak points and distant foes with extreme accuracy, firing slivers of crystallized toxins.",
+        "melee_hands": 1,
+        "range": 14,
+        "ranged_hands": 2,
+        "spli": 1,
+        "tags": [
+            "precision",
+            "rifle"
+        ],
+        "value": 10
+    },
+    "Stalker Pattern Bolter": {
+        "abbreviation": "StlkBltr",
+        "ammo": 20,
+        "arp": 1,
+        "attack": {
+            "artifact": 380,
+            "master_crafted": 250,
+            "standard": 180
+        },
+        "description": "The Stalker Bolter is a scoped long-range variant of the standard Bolter. Depending on the specific modifications made by the wielder, the Stalker Bolter can serve as a precision battle rifle or a high-powered sniper weapon.",
+        "melee_hands": 0,
+        "range": 16,
+        "ranged_hands": 2,
+        "spli": 3,
+        "tags": [
+            "bolt",
+            "precision"
+        ],
+        "value": 80
+    },
+    "Storm Bolter": {
+        "abbreviation": "StrmBltr",
+        "ammo": 10,
+        "arp": 1,
+        "attack": {
+            "artifact": 350,
+            "master_crafted": 300,
+            "standard": 275
+        },
+        "description": "Compact and double-barreled, this bolt weapon is inaccurate but grants an enormous amount of firepower. Its psychological effect on the enemy should not be understated.",
+        "maintenance": 0.03,
+        "melee_hands": 1,
+        "range": 8,
+        "ranged_hands": 2,
+        "requires_to_forge": [
+            "combi_1"
+        ],
+        "spli": 8,
+        "tags": [
+            "bolt",
+            "boarding 2"
+        ],
+        "value": 50
+    },
+    "Storm Shield": {
+        "abbreviation": "StrmShld",
+        "armour_value": {
+            "artifact": 12,
+            "master_crafted": 10,
+            "standard": 8
+        },
+        "attack": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 5
+        },
+        "description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",
+        "hp_mod": {
+            "artifact": 40,
+            "master_crafted": 35,
+            "standard": 30
+        },
+        "melee_hands": 0.75,
+        "ranged_hands": 1,
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "tags": [
+            "shield",
+            "boarding 2"
+        ],
+        "value": 50
+    },
+    "Thunder Hammer": {
+        "abbreviation": "ThndHmr",
+        "ammo": 0,
+        "arp": 3,
+        "attack": {
+            "artifact": 750,
+            "master_crafted": 600,
+            "standard": 500
+        },
+        "description": "A Thunder hammer is a weapon with a long pole and a double headed hammer on the top. This weapon unleashes a massive, devastating disruption field on impact. Only experienced Astartes can use Thunder Hammers, typically Terminators.",
+        "maintenance": 0.1,
+        "melee_hands": 1.1,
+        "melee_mod": {
+            "artifact": 1.3,
+            "master_crafted": 1.3,
+            "standard": 1.3
+        },
+        "range": 1,
+        "ranged_hands": 1,
+        "req_exp": 100,
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "spli": 3,
+        "tags": [
+            "power",
+            "hammer",
+            "siege",
+            "savage",
+            "boarding 2"
+        ],
+        "value": 90
+    },
+    "Tigris Combi Bolter": {
+        "abbreviation": "TigComBltr",
+        "ammo": 14,
+        "arp": 0,
+        "attack": {
+            "artifact": 140,
+            "master_crafted": 120,
+            "standard": 100
+        },
+        "description": "During the Great Crusade, there came a need for a hand-held weapon of high rate of fire and respectable firepower that's easy to manufacture. Some Techpriest, or perhaps a Techmarine, put two bolters together and thus the Combi-Bolter was born. Phased out by the Storm Bolter, it is nevertheless a respectable weapon and a relic of more civilised times.",
+        "melee_hands": 1.1,
+        "range": 19,
+        "ranged_hands": 1.1,
+        "spli": 11,
+        "tags": [
+            "bolt"
+        ]
+    },
+    "Tome": {
+        "abbreviation": "Tome",
+        "ammo": 0,
+        "arp": 1,
+        "attack": {
+            "artifact": 0,
+            "master_crafted": 0,
+            "standard": 0
+        },
+        "description": "Ancient Blades of various origins smited through arcane forging or lost techniques, these blades are deadly beyond belief. These peerless blades slice through ceramite and flesh with ease.",
+        "melee_hands": 1,
+        "melee_mod": {
+            "artifact": 1.0,
+            "master_crafted": 1.0,
+            "standard": 1.0
+        },
+        "range": 1,
+        "ranged_hands": 1,
+        "spli": 1,
+        "tags": [
+            "arcane",
+            "savage"
+        ]
+    },
+    "Twin Linked Assault Cannon Mount": {
+        "abbreviation": "TwnAssCnn",
+        "ammo": 6,
+        "arp": 2,
+        "attack": {
+            "artifact": 1100,
+            "master_crafted": 900,
+            "standard": 800
+        },
+        "description": "A twin mount of rotary autocannons, boasting an incredible rate of fire numbering in the hundreds of shots fired per second.",
+        "melee_hands": 0,
+        "range": 12,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "solid_projectile_1",
+            "combi_1",
+            "vehicle_armaments_1"
+        ],
+        "spli": 40,
+        "tags": [
+            "vehicle",
+            "heavy_ranged",
+            "pintle",
+            "dreadnought"
+        ],
+        "value": 60
+    },
+    "Twin Linked Assault Cannon Turret": {
+        "abbreviation": "TwnAssCnn",
+        "ammo": 5,
+        "arp": 2,
+        "attack": {
+            "artifact": 1100,
+            "master_crafted": 900,
+            "standard": 800
+        },
+        "description": "A heavy rotary autocannon with a devastating fire rate that can be counted in the hundreds per minute, in a twin mount. It is incredibly effective against infantry and lightly armored targets.",
+        "range": 12,
+        "spli": 40,
+        "tags": [
+            "heavy_ranged",
+            "twin_linked",
+            "vehicle",
+            "turret"
+        ]
+    },
+    "Twin Linked Bolters": {
+        "abbreviation": "TwnBltrs",
+        "ammo": 30,
+        "arp": 1,
+        "attack": {
+            "artifact": 450,
+            "master_crafted": 350,
+            "standard": 275
+        },
+        "description": "A Twin-linked Bolter consists of two Bolter weapons mounted side by side, typically on a vehicle or a dedicated weapons platform.",
+        "melee_hands": 1,
+        "range": 10,
+        "ranged_hands": 2,
         "requires_to_forge": [
             "combi_1",
             "vehicle_armaments_1"
         ],
-        "value": 60
+        "spli": 10,
+        "tags": [
+            "bolt",
+            "vehicle"
+        ],
+        "value": 8
+    },
+    "Twin Linked Heavy Bolter": {
+        "abbreviation": "TwnHvyBltr",
+        "ammo": 20,
+        "arp": 2,
+        "attack": {
+            "artifact": 650,
+            "master_crafted": 500,
+            "standard": 450
+        },
+        "description": "Twin-linked Heavy Bolters are an upgraded version of the standard Heavy Bolter weapon, which is known for its high rate of fire and effectiveness against infantry and light vehicles.",
+        "melee_hands": 0,
+        "range": 16,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "vehicle_armaments_1",
+            "combi_1"
+        ],
+        "spli": 28,
+        "tags": [
+            "bolt",
+            "heavy_ranged",
+            "vehicle",
+            "dreadnought"
+        ],
+        "value": 110
+    },
+    "Twin Linked Heavy Bolter Mount": {
+        "abbreviation": "TwnHvyBltr",
+        "ammo": 20,
+        "arp": 2,
+        "attack": {
+            "artifact": 700,
+            "master_crafted": 550,
+            "standard": 450
+        },
+        "description": "The Twin-linked Heavy Bolters are an upgraded version of the standard Heavy Bolter weapon. They are mounted onto vehicles to create effective fire support platforms.",
+        "melee_hands": 0,
+        "range": 16,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "combi_1",
+            "vehicle_armaments_1"
+        ],
+        "spli": 21,
+        "tags": [
+            "vehicle",
+            "dreadnought",
+            "heavy_ranged",
+            "bolt"
+        ],
+        "value": 28
+    },
+    "Twin Linked Heavy Flamer Sponsons": {
+        "abbreviation": "TwnHvyFlmrs",
+        "ammo": 8,
+        "arp": 2,
+        "attack": {
+            "artifact": 900,
+            "master_crafted": 750,
+            "standard": 600
+        },
+        "description": "A twin-linked significantly heavier flamer attached to the sponsons on a vehicle.",
+        "melee_hands": 0,
+        "range": 4.1,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "flame_1",
+            "vehicle_armaments_1",
+            "combi_1"
+        ],
+        "spli": 40,
+        "tags": [
+            "flame",
+            "heavy_ranged",
+            "vehicle",
+            "dreadnought",
+            "sponson"
+        ],
+        "value": 150
+    },
+    "Twin Linked Lascannon": {
+        "abbreviation": "TwnLascnn",
+        "ammo": 8,
+        "arp": 4,
+        "attack": {
+            "artifact": 1000,
+            "master_crafted": 900,
+            "standard": 800
+        },
+        "description": "The Twin-Linked Lascannons is a powerful anti-armour weapons that fire highly focused and devastating duel energy beams capable of penetrating even the toughest armor.",
+        "melee_hands": 0,
+        "range": 24,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "laser_1"
+        ],
+        "spli": 2,
+        "tags": [
+            "las",
+            "energy",
+            "heavy_ranged",
+            "vehicle",
+            "dreadnought"
+        ],
+        "value": 110
+    },
+    "Twin Linked Lascannon Mount": {
+        "abbreviation": "TwnLascnn",
+        "ammo": 10,
+        "arp": 4,
+        "attack": {
+            "artifact": 1000,
+            "master_crafted": 900,
+            "standard": 800
+        },
+        "description": "The Twin-Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour. This version is mounted onto vehicles to incease anti-armor capabilities.",
+        "melee_hands": 0,
+        "range": 20,
+        "ranged_hands": 0,
+        "spli": 2,
+        "tags": [
+            "las",
+            "energy",
+            "vehicle",
+            "heavy_ranged",
+            "dreadnought"
+        ]
     },
     "Twin Linked Lascannon Sponsons": {
+        "abbreviation": "TwnLascnns",
+        "ammo": 5,
+        "arp": 4,
         "attack": {
-            "standard": 800,
+            "artifact": 1200,
             "master_crafted": 1000,
-            "artifact": 1200
+            "standard": 800
         },
         "description": "The Twin-Linked Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour. This version is mounted onto the sides of vehicles.",
-        "abbreviation": "TwnLascnns",
         "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 5,
         "range": 20,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "laser_1",
+            "vehicle_armaments_1",
+            "combi_1"
+        ],
         "spli": 4,
-        "arp": 4,
         "tags": [
             "las",
             "energy",
@@ -2278,185 +2932,77 @@
             "sponson",
             "twin_linked"
         ],
-        "requires_to_forge": [
-            "laser_1",
-            "vehicle_armaments_1",
-            "combi_1"
-        ],
         "value": 120
     },
-    "Lascannon Sponsons": {
-        "attack": {
-            "standard": 700,
-            "master_crafted": 850,
-            "artifact": 1000
-        },
-        "description": "Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour. This version is mounted onto the sides of vehicles.",
-        "abbreviation": "Lscnns",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 8,
-        "range": 20,
-        "spli": 2,
+    "Twin Linked Lascannon Turret": {
+        "abbreviation": "TwnLscnn",
+        "ammo": 5,
         "arp": 4,
+        "attack": {
+            "artifact": 1300,
+            "master_crafted": 1100,
+            "standard": 1000
+        },
+        "description": "A Predator-compatible turret mounting a twin-linked lascannon.",
+        "range": 24,
+        "requires_to_forge": [
+            "laser_1",
+            "combi_1",
+            "vehicle_armaments_1"
+        ],
+        "spli": 1,
         "tags": [
             "las",
             "energy",
+            "twin_linked",
             "heavy_ranged",
             "vehicle",
-            "sponson"
-        ],
-        "requires_to_forge": [
-            "laser_1",
-            "vehicle_armaments_1"
+            "turret"
         ],
         "value": 60
-    },
-    "Hurricane Bolter Sponsons": {
-        "attack": {
-            "standard": 600,
-            "master_crafted": 700,
-            "artifact": 800
-        },
-        "description": "Hurricane Bolters are large hex-mount bolter arrays that are able to deliver a withering hail of anti-infantry fire at short ranges. This version is mounted onto the sides of vehicles.",
-        "abbreviation": "HrcBltrs",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 10,
-        "range": 10,
-        "spli": 60,
-        "arp": 1,
-        "tags": [
-            "bolt",
-            "heavy_ranged",
-            "vehicle",
-            "sponson"
-        ],
-        "requires_to_forge": [
-            "combi_1",
-            "vehicle_armaments_1"
-        ],
-        "value": 70
-    },
-    "Flamestorm Cannon Sponsons": {
-        "attack": {
-            "standard": 750,
-            "master_crafted": 850,
-            "artifact": 900
-        },
-        "description": "A huge vehicle-mounted flamethrower cannon, the heat produced by this terrifying weapon can melt armoured ceramite.",
-        "abbreviation": "FlmstCnns",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 6,
-        "range": 4.1,
-        "spli": 30,
-        "arp": 3,
-        "tags": [
-            "flame",
-            "heavy_ranged",
-            "vehicle",
-            "sponson"
-        ],
-        "requires_to_forge": [
-            "flame_1",
-            "vehicle_armaments_1"
-        ]
-    },
-    "Twin Linked Heavy Flamer Sponsons": {
-        "attack": {
-            "standard": 600,
-            "master_crafted": 750,
-            "artifact": 900
-        },
-        "description": "A twin-linked significantly heavier flamer attached to the sponsons on a vehicle.",
-        "abbreviation": "TwnHvyFlmrs",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 8,
-        "range": 4.1,
-        "spli": 40,
-        "arp": 2,
-        "tags": [
-            "flame",
-            "heavy_ranged",
-            "vehicle",
-            "dreadnought",
-            "sponson"
-        ],
-        "value": 150,
-        "requires_to_forge": [
-            "flame_1",
-            "vehicle_armaments_1",
-            "combi_1"
-        ]
-    },
-    "Twin Linked Bolters": {
-        "attack": {
-            "standard": 275,
-            "master_crafted": 350,
-            "artifact": 450
-        },
-        "description": "A Twin-linked Bolter consists of two Bolter weapons mounted side by side, typically on a vehicle or a dedicated weapons platform.",
-        "abbreviation": "TwnBltrs",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 30,
-        "range": 10,
-        "spli": 10,
-        "arp": 1,
-        "tags": [
-            "bolt",
-            "vehicle"
-        ],
-        "requires_to_forge": [
-            "combi_1",
-            "vehicle_armaments_1"
-        ],
-        "value": 8
     },
     "Twin Linked Multi-Melta Sponsons": {
         "abbreviation": "TwnMltMelts",
+        "ammo": 8,
+        "arp": 4,
         "attack": {
-            "standard": 1200,
+            "artifact": 1650,
             "master_crafted": 1400,
-            "artifact": 1650
+            "standard": 1200
         },
         "description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles. In this case it is mounted to the sponsons on a vehicle.",
+        "maintenance": 0.05,
         "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 8,
         "range": 4.1,
+        "ranged_hands": 0,
+        "requires_to_forge": [
+            "melta_1",
+            "vehicle_armaments_1",
+            "combi_1"
+        ],
         "spli": 20,
-        "arp": 4,
         "tags": [
             "vehicle",
             "heavy_ranged",
             "sponson",
             "melta"
         ],
-        "maintenance": 0.05,
-        "value": 200,
-        "requires_to_forge": [
-            "melta_1",
-            "vehicle_armaments_1",
-            "combi_1"
-        ]
+        "value": 200
     },
     "Twin Linked Volkite Culverin Sponsons": {
         "abbreviation": "TwnVlkCulvs",
+        "ammo": 25,
+        "arp": 3,
         "attack": {
-            "standard": 950,
+            "artifact": 1300,
             "master_crafted": 1150,
-            "artifact": 1300
+            "standard": 950
         },
         "description": "An advanced thermal weapon from a bygone era, Volkite Culverins are able to ignite entire formations of enemy forces. In this case it is mounted to the sponsons on a vehicle.",
         "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 25,
         "range": 18,
+        "ranged_hands": 0,
         "spli": 12,
-        "arp": 3,
         "tags": [
             "vehicle",
             "heavy_ranged",
@@ -2465,601 +3011,140 @@
             "ancient"
         ]
     },
-    "Heavy Bolter Sponsons": {
-        "abbreviation": "HvyBltrs",
-        "attack": {
-            "standard": 450,
-            "master_crafted": 550,
-            "artifact": 750
-        },
-        "description": "Heavy Bolters are mounted in sponsons. They are known for high rates of fire and effectiveness against infantry and light vehicles.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 20,
-        "range": 14,
-        "spli": 28,
-        "arp": 2,
-        "tags": [
-            "heavy_ranged",
-            "vehicle",
-            "sponson",
-            "bolt"
-        ],
-        "requires_to_forge": [
-            "vehicle_armaments_1"
-        ],
-        "value": 38
-    },
-    "Heavy Flamer Sponsons": {
-        "abbreviation": "HvyFlmrs",
-        "attack": {
-            "standard": 500,
-            "master_crafted": 550,
-            "artifact": 600
-        },
-        "description": "A significantly heavier flamer attached to the sponsons on a vehicle.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 8,
-        "range": 4.1,
-        "spli": 40,
-        "arp": 2,
-        "tags": [
-            "flame",
-            "heavy_ranged",
-            "vehicle",
-            "sponson"
-        ],
-        "maintenance": 0.05,
-        "requires_to_forge": [
-            "flame_1",
-            "vehicle_armaments_1"
-        ],
-        "value": 50
-    },
-    "Volkite Culverin Sponsons": {
-        "abbreviation": "VlkClvs",
-        "attack": {
-            "standard": 480,
-            "master_crafted": 600,
-            "artifact": 750
-        },
-        "description": "An advanced thermal weapon from a bygone era, Volkite Culverins are able to ignite entire formations of enemy forces. In this case it is mounted to the sponsons on a vehicle.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 25,
-        "range": 18,
-        "spli": 6,
-        "arp": 3,
-        "tags": [
-            "vehicle",
-            "heavy_ranged",
-            "sponson",
-            "volkite",
-            "ancient"
-        ]
-    },
-    "Autocannon Turret": {
-        "abbreviation": "Autocnn",
-        "attack": {
-            "standard": 600,
-            "master_crafted": 700,
-            "artifact": 850
-        },
-        "description": "A Predator-compatible turret mounting a reliable all-purpose autocannon capable of doing effective damage to infantry and lightly armored targets.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 18,
-        "range": 18,
-        "spli": 15,
-        "arp": 2,
-        "requires_to_forge": [
-            "vehicle_armaments_1",
-            "solid_projectile_1"
-        ],
-        "value": 30,
-        "tags": [
-            "vehicle",
-            "heavy_ranged",
-            "explosive",
-            "turret"
-        ]
-    },
-    "Storm Bolter": {
-        "abbreviation": "StrmBltr",
-        "attack": {
-            "standard": 275,
-            "master_crafted": 300,
-            "artifact": 350
-        },
-        "description": "Compact and double-barreled, this bolt weapon is inaccurate but grants an enormous amount of firepower. Its psychological effect on the enemy should not be understated.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
+    "Twin-linked Volkite Culverins": {
+        "abbreviation": "T-LVolkCulv",
         "ammo": 10,
-        "range": 8,
-        "spli": 8,
+        "arp": 0,
+        "attack": {
+            "artifact": 290,
+            "master_crafted": 270,
+            "standard": 250
+        },
+        "description": "Ancient volkite type weaponry usually mounted on vehicles. It features two volkite culverins and is meant for long forgotten contemptor pattern dreadnaught.",
+        "melee_hands": 0,
+        "range": 3,
+        "ranged_hands": 1,
+        "spli": 4,
+        "tags": [
+            "volkite",
+            "energy",
+            "vehicle",
+            "dreadnought"
+        ]
+    },
+    "Underslung Bolter": {
+        "abbreviation": "UndBltr",
+        "ammo": 0,
         "arp": 1,
-        "maintenance": 0.03,
+        "attack": {
+            "artifact": 300,
+            "master_crafted": 200,
+            "standard": 150
+        },
+        "description": "A compact, secondary Bolter weapon often attached under the barrel of a larger firearm. It allows for rapid fire in close quarters combat.",
+        "melee_hands": 0,
+        "range": 10,
+        "ranged_hands": 1,
+        "spli": 3,
         "tags": [
             "bolt",
-            "boarding 2"
-        ],
-        "value": 50,
-        "requires_to_forge": [
-            "combi_1"
-        ]
-    },
-    "Hand Flamer": {
-        "abbreviation": "HndFlmr",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 300,
-            "artifact": 450
-        },
-        "description": "Along with using a lower-capacity fuel tank it has much reduced range, which makes it suited for assault and close-combat purposes, incinerating foes at short range. The weapon is often used by assault squads.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 4,
-        "range": 3.1,
-        "spli": 8,
-        "arp": 1,
-        "tags": [
-            "pistol",
-            "flame",
-            "boarding 2"
-        ],
-        "value": 12,
-        "requires_to_forge": [
-            "flame_1"
-        ]
-    },
-    "Flamer": {
-        "abbreviation": "Flmr",
-        "attack": {
-            "standard": 350,
-            "master_crafted": 385,
-            "artifact": 420
-        },
-        "melee_mod": {
-            "standard": 0,
-            "master_crafted": 0,
-            "artifact": 0
-        },
-        "description": "Blackened at the tip, this weapon unleashes a torrent of burning promethium - all the better to cleanse sin and impurity with.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 8,
-        "range": 4.1,
-        "spli": 14,
-        "arp": 1,
-        "maintenance": 0.01,
-        "tags": [
-            "flame",
-            "boarding 2"
-        ],
-        "requires_to_forge": [
-            "flame_1"
-        ],
-        "value": 25
-    },
-    "Integrated-Flamer": {
-        "attack": {
-            "standard": 350,
-            "master_crafted": 385,
-            "artifact": 420
-        },
-        "description": "",
-        "abbreviation": "IntFlmr",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 4,
-        "range": 4.1,
-        "spli": 10,
-        "arp": 1,
-        "tags": [
-            "flame",
             "attached"
         ]
     },
-    "Combiflamer": {
-        "abbreviation": "CmbFlmr",
+    "Volkite Caliver": {
+        "abbreviation": "VolkCal",
+        "ammo": 6,
+        "arp": 0,
         "attack": {
-            "standard": 150,
-            "master_crafted": 175,
-            "artifact": 200
+            "artifact": 590,
+            "master_crafted": 570,
+            "standard": 550
         },
-        "description": "A standard Bolter with an underbarrel Flamer for expanded tactical utility.",
+        "description": "Featuring grater range, more precise fire and more stopping fire than the Charger, this is the rifle of the Volkite family, whereas its smaller brother is the assault rifle. A weapon most prominent in Tactical squads of the Great Crusade Legions, its potency is spoken of even those many thousands of years past their height.",
         "melee_hands": 1,
+        "range": 16,
         "ranged_hands": 2,
-        "ammo": 15,
-        "range": 10,
-        "spli": 5,
-        "arp": 1,
-        "second_profiles": [
-            "Integrated-Flamer"
-        ],
+        "spli": 10,
         "tags": [
-            "combi",
-            "bolt",
-            "boarding 2"
-        ],
-        "value": 35,
-        "requires_to_forge": [
-            "flame_1",
-            "combi_1"
+            "volkite",
+            "energy"
         ]
     },
-    "Combiplasma": {
-        "abbreviation": "CmbPlsm",
+    "Volkite Charger": {
+        "abbreviation": "VolkCharg",
+        "ammo": 10,
+        "arp": 0,
         "attack": {
-            "standard": 150,
-            "master_crafted": 175,
-            "artifact": 200
+            "artifact": 440,
+            "master_crafted": 420,
+            "standard": 400
         },
-        "description": "A standard Bolter with an underbarrel Plasma Gun for expanded tactical utility.",
+        "description": "One of the deadliest of the mainstay weapons in the Imperial arsenal during the Great Crusade. The humble Charger is a thermal ray weapon that deflagrates organic matter, combusting the target in extreme cases. Some variants even arc over multiple targets.",
         "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 8,
         "range": 10,
-        "spli": 5,
-        "arp": 1,
-        "second_profiles": [
-            "Integrated-Plasma"
-        ],
+        "ranged_hands": 2,
+        "spli": 6,
         "tags": [
-            "combi",
-            "bolt"
-        ],
-        "value": 110,
-        "requires_to_forge": [
-            "plasma_1",
-            "combi_1"
+            "volkite",
+            "energy"
         ]
     },
-    "Combigrav": {
-        "abbreviation": "CmbGrv",
-        "attack": {
-            "standard": 150,
-            "master_crafted": 175,
-            "artifact": 200
-        },
-        "description": "A standard Bolter with an underbarrel Grav-Gun for expanded tactical utility.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 8,
-        "range": 10,
-        "spli": 5,
-        "arp": 1,
-        "second_profiles": [
-            "Integrated-Grav"
-        ],
-        "tags": [
-            "combi",
-            "bolt"
-        ],
-        "value": 110,
-        "requires_to_forge": [
-            "grav_1",
-            "combi_1"
-        ]
-    },
-    "Combimelta": {
-        "abbreviation": "CmbMlt",
-        "attack": {
-            "standard": 150,
-            "master_crafted": 175,
-            "artifact": 200
-        },
-        "description": "A standard Bolter with an underbarrel Meltagun for expanded tactical utility.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
-        "ammo": 8,
-        "range": 10,
-        "spli": 5,
-        "arp": 1,
-        "second_profiles": [
-            "Integrated-Melta"
-        ],
-        "tags": [
-            "combi",
-            "bolt",
-            "boarding 3"
-        ],
-        "value": 40,
-        "requires_to_forge": [
-            "melta_1",
-            "combi_1"
-        ]
-    },
-    "Incinerator": {
-        "attack": {
-            "standard": 500,
-            "master_crafted": 550,
-            "artifact": 600
-        },
-        "description": "This flamer weapon utilizes psychically-charged promethium and blessed oils concoction to create an azure flame that bypasses psychich protections. It is particularly effective against Daemons and their ilk.",
-        "abbreviation": "Incnrtr",
-        "melee_hands": 1,
-        "ranged_hands": 1,
+    "Volkite Culverin": {
+        "abbreviation": "VolkCul",
         "ammo": 4,
-        "range": 4.1,
-        "spli": 20,
-        "arp": 2,
-        "tags": [
-            "flame",
-            "boarding 3"
-        ],
-        "value": 40,
-        "requires_to_forge": [
-            "flame_1",
-            "heavy_1",
-            "force_1"
-        ],
-        "sellers": [
-            "inquisition"
-        ]
-    },
-    "Force Staff": {
+        "arp": 0,
         "attack": {
-            "standard": 225,
-            "master_crafted": 270,
-            "artifact": 350
+            "artifact": 740,
+            "master_crafted": 720,
+            "standard": 700
         },
-        "melee_mod": {
-            "standard": 1,
-            "master_crafted": 1.1,
-            "artifact": 1.2
-        },
-        "abbreviation": "FrcStff",
-        "description": "An advanced, psychically-attuned close combat weapon that is only fully effective in the hands of a psyker.",
+        "description": "The only man-portable heavy support Volkite, the Culverin has been a dreaded presence on the battlefields of the 31st millennium, where it would rend Contemptors apart and combust Marines by the dozen. Featuring the greatest range out of the family amongst the other heavier variants, its beam potency is outmatched by all heavier Volkites.",
         "melee_hands": 1,
-        "ranged_hands": 1,
-        "range": 1,
-        "spli": 5,
-        "arp": 2,
-        "specials": {
-            "psychic_amplification": 25
-        },
-        "maintenance": 0.1,
-        "tags": [
-            "force"
-        ],
-        "value": 70,
-        "requires_to_forge": [
-            "force_1"
-        ]
-    },
-    "Force Sword": {
-        "abbreviation": "FrcSwrd",
-        "attack": {
-            "standard": 225,
-            "master_crafted": 270,
-            "artifact": 350
-        },
-        "melee_mod": {
-            "standard": 1,
-            "master_crafted": 1.1,
-            "artifact": 1.2
-        },
-        "description": "The Force Sword is a psychically-attuned close combat weapon that is only fully effective in the hands of a psyker.",
-        "melee_hands": 1,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 4,
-        "arp": 2,
-        "special_properties": [
-            "Parry"
-        ],
-        "maintenance": 0.1,
-        "tags": [
-            "force",
-            "sword",
-            "martial",
-            "boarding 1"
-        ],
-        "value": 55,
-        "requires_to_forge": [
-            "force_1"
-        ]
-    },
-    "Force Axe": {
-        "abbreviation": "FrcAxe",
-        "attack": {
-            "standard": 250,
-            "master_crafted": 300,
-            "artifact": 375
-        },
-        "melee_mod": {
-            "standard": 1,
-            "master_crafted": 1.1,
-            "artifact": 1.2
-        },
-        "description": "The Force Axe is a psychically-attuned close combat weapon that is only fully effective in the hands of a psyker.",
-        "melee_hands": 1,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 3,
-        "arp": 2,
-        "special_description": "Able to be dual-wielded",
-        "tags": [
-            "force",
-            "axe",
-            "dual",
-            "savage",
-            "boarding 2"
-        ],
-        "value": 60,
-        "requires_to_forge": [
-            "force_1"
-        ]
-    },
-    "Twin Linked Lascannon Turret": {
-        "attack": {
-            "standard": 1000,
-            "master_crafted": 1100,
-            "artifact": 1300
-        },
-        "abbreviation": "TwnLscnn",
-        "description": "A Predator-compatible turret mounting a twin-linked lascannon.",
-        "arp": 4,
-        "range": 24,
-        "ammo": 5,
-        "spli": 1,
-        "tags": [
-            "las",
-            "energy",
-            "twin_linked",
-            "heavy_ranged",
-            "vehicle",
-            "turret"
-        ],
-        "requires_to_forge": [
-            "laser_1",
-            "combi_1",
-            "vehicle_armaments_1"
-        ],
-        "value": 60
-    },
-    "Twin Linked Assault Cannon Turret": {
-        "abbreviation": "TwnAssCnn",
-        "attack": {
-            "standard": 800,
-            "master_crafted": 900,
-            "artifact": 1100
-        },
-        "description": "A heavy rotary autocannon with a devastating fire rate that can be counted in the hundreds per minute, in a twin mount. It is incredibly effective against infantry and lightly armored targets.",
-        "ammo": 5,
-        "range": 12,
-        "spli": 40,
-        "arp": 2,
-        "tags": [
-            "heavy_ranged",
-            "twin_linked",
-            "vehicle",
-            "turret"
-        ]
-    },
-    "Flamestorm Cannon Turret": {
-        "abbreviation": "FlmstCnn",
-        "attack": {
-            "standard": 700,
-            "master_crafted": 850,
-            "artifact": 900
-        },
-        "description": "A huge vehicle-mounted flamethrower cannon, the heat produced by this terrifying weapon can melt armoured ceramite.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 12,
-        "range": 4.1,
-        "spli": 25,
-        "arp": 3,
-        "tags": [
-            "flame",
-            "heavy_ranged",
-            "vehicle",
-            "turret"
-        ]
-    },
-    "Magna-Melta Turret": {
-        "abbreviation": "MgnMlt",
-        "attack": {
-            "standard": 800,
-            "master_crafted": 900,
-            "artifact": 1000
-        },
-        "description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles. In this case it is mounted to the turret on a vehicle.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 6,
-        "range": 4.1,
-        "spli": 20,
-        "arp": 4,
-        "tags": [
-            "vehicle",
-            "heavy_ranged",
-            "turret",
-            "melta"
-        ]
-    },
-    "Plasma Destroyer Turret": {
-        "abbreviation": "PlsmDestr",
-        "attack": {
-            "standard": 800,
-            "master_crafted": 900,
-            "artifact": 1000
-        },
-        "description": "A heavy variant of the plasma gun, its power output is significantly higher and its damage capability shows. However, it is mounted in a tank turret.",
-        "melee_hands": 1,
-        "ammo": 16,
-        "range": 14,
+        "range": 22,
+        "ranged_hands": 2,
         "spli": 12,
-        "arp": 4,
         "tags": [
-            "plasma",
-            "energy",
             "heavy_ranged",
-            "vehicle",
-            "turret"
+            "volkite",
+            "energy"
         ]
     },
-    "Heavy Conversion Beam Projector": {
-        "abbreviation": "HvyCnvBmr",
+    "Volkite Culverin Sponsons": {
+        "abbreviation": "VlkClvs",
+        "ammo": 25,
+        "arp": 3,
         "attack": {
-            "standard": 800,
-            "master_crafted": 900,
-            "artifact": 1000
+            "artifact": 750,
+            "master_crafted": 600,
+            "standard": 480
         },
-        "description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comproises it is transformed into pure energy. This is the heavy version for mounting in vehicles.",
+        "description": "An advanced thermal weapon from a bygone era, Volkite Culverins are able to ignite entire formations of enemy forces. In this case it is mounted to the sponsons on a vehicle.",
         "melee_hands": 0,
+        "range": 18,
         "ranged_hands": 0,
-        "ammo": 6,
-        "range": 20,
-        "spli": 1,
-        "arp": 4,
+        "spli": 6,
         "tags": [
             "vehicle",
             "heavy_ranged",
-            "dreadnought",
-            "turret",
+            "sponson",
+            "volkite",
             "ancient"
-        ]
-    },
-    "Neutron Blaster Turret": {
-        "abbreviation": "NtrnBlstr",
-        "attack": {
-            "standard": 800,
-            "master_crafted": 900,
-            "artifact": 1000
-        },
-        "description": "This is a Neutron blaster, typically found in Sabre Strike Tanks, this one has been mounted for use in a space marine tank.",
-        "melee_hands": 0,
-        "ranged_hands": 1,
-        "ammo": 6,
-        "range": 20,
-        "spli": 2,
-        "arp": 4,
-        "tags": [
-            "vehicle",
-            "heavy_ranged",
-            "turret"
         ]
     },
     "Volkite Saker Turret": {
         "abbreviation": "VlkSkr",
+        "ammo": 25,
+        "arp": 3,
         "attack": {
-            "standard": 1000,
+            "artifact": 1400,
             "master_crafted": 1150,
-            "artifact": 1400
+            "standard": 1000
         },
         "description": "An advanced thermal weapon from a bygone era, Volkite sakers are optimized for spreading damage across swaths of enemy troops.",
         "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 25,
         "range": 18,
+        "ranged_hands": 0,
         "spli": 30,
-        "arp": 3,
         "tags": [
             "vehicle",
             "heavy_ranged",
@@ -3068,195 +3153,112 @@
             "ancient"
         ]
     },
-    "Hellgun": {
-        "abbreviation": "HllGun",
-        "attack": {
-            "standard": 30,
-            "master_crafted": 35,
-            "artifact": 40
-        },
-        "description": "Known as a Hellgun or Hot-shot Lasgun, these high-energy weapons are more potent and destructive than common Lasguns, drawing more power for a more penetrative shot, but also more complex, requiring reinforced barrels, thermal-cooling cells and gyro-stabilized power packs.",
-        "ammo": 20,
-        "range": 12,
-        "spli": 3,
-        "arp": 1,
-        "tags": [
-            "las"
-        ],
-        "melee_hands": 0,
-        "ranged_hands": 1
-    },
-    "Laspistol": {
-        "attack": {
-            "standard": 20,
-            "master_crafted": 30,
-            "artifact": 40
-        },
-        "description": "The Laspistol is the pistol version of the Lasgun and like that weapon fires a coherent beam of energetic photons that can burn through most materials. The Laspistol is powered by a miniature power pack that is usually placed within the grip.",
-        "abbreviation": "Lpstl",
-        "melee_hands": 0,
-        "ranged_hands": 0.25,
-        "ammo": 30,
-        "range": 3.1,
-        "spli": 1,
-        "arp": 1,
-        "tags": [
-            "pistol",
-            "las"
-        ]
-    },
-    "Light Bolter": {
-        "abbreviation": "LghtBltr",
-        "attack": {
-            "standard": 35,
-            "master_crafted": 40,
-            "artifact": 45
-        },
-        "description": "A smaller variant of Bolter, intended to be useable by unaugmented humans.",
-        "melee_hands": 1,
-        "ranged_hands": 1,
-        "ammo": 16,
-        "range": 10,
-        "spli": 2,
-        "arp": 1,
-        "tags": [
-            "bolt"
-        ],
-        "second_profiles": [
-            "Sarissa"
-        ]
-    },
-    "Sarissa": {
-        "abbreviation": "Saris",
-        "attack": {
-            "standard": 25,
-            "master_crafted": 30,
-            "artifact": 35
-        },
-        "description": "A vicious combat attachment that is attached to Bolters, in order to allow them to be used in melee combat.",
-        "melee_hands": 0,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 1,
-        "arp": 1,
-        "tags": [
-            "axe"
-        ]
-    },
-    "Hellrifle": {
-        "description": "Extremely effective and intricate weapons frowned upon by more Puritanical Inquisitors. Fire shards of an unknown material. Speculated to be daemonic in origin.",
-        "abbreviation": "HllRifle",
-        "attack": {
-            "standard": 200,
-            "master_crafted": 250,
-            "artifact": 300
-        },
+    "Volkite Serpenta": {
+        "abbreviation": "VolkSerp",
         "ammo": 10,
-        "range": 20,
-        "spli": 1,
-        "arp": 1,
-        "tags": [
-            "rifle",
-            "arcane"
-        ],
-        "ranged_hands": 1,
-        "value": 20,
-        "sellers": [
-            "inquisition"
-        ],
-        "forgable": false
-    },
-    "Ranger Long Rifle": {
-        "abbreviation": "RangeLoRife",
-        "description": "Advanced and accurate rifles from mars given to skitarii sharpshooters",
+        "arp": 0,
         "attack": {
-            "standard": 60,
-            "master_crafted": 70,
-            "artifact": 90
+            "artifact": 290,
+            "master_crafted": 270,
+            "standard": 250
         },
+        "description": "The pistol variant of the long-lost Volkite weapon type, the Serpenta was a mainstay of Moritats and often wielded by Centurions of the Legiones Astartes. Now a symbol of status to match its fearsome potency, a sighting of this ancient weapon would send many foes running.",
+        "melee_hands": 0,
+        "range": 3,
         "ranged_hands": 1,
-        "range": 25,
+        "spli": 4,
         "tags": [
-            "las",
-            "rifle",
-            "precision"
-        ]
-    },
-    "Shuriken Pistol": {
-        "abbreviation": "ShurikP",
-        "attack": {
-            "standard": 25,
-            "master_crafted": 28,
-            "artifact": 31
-        },
-        "melee_hands": 1,
-        "ranged_hands": 0,
-        "ammo": 6,
-        "range": 2.1,
-        "spli": 3,
-        "arp": 1,
-        "tags": [
+            "volkite",
+            "energy",
             "pistol"
         ]
     },
-    "Eldar Power Sword": {
-        "abbreviation": "EldPwrSwrd",
+    "Webber": {
+        "abbreviation": "Webbr",
+        "ammo": 5,
+        "arp": 1,
         "attack": {
-            "standard": 170,
-            "master_crafted": 180,
-            "artifact": 190
+            "artifact": 45,
+            "master_crafted": 40,
+            "standard": 35
         },
-        "melee_mod": {
-            "standard": 1.1,
-            "master_crafted": 1.1,
-            "artifact": 1.1
-        },
-        "description": "Power weapons, infused with arcane energy, are used by Howling Banshees and Dire Avenger Exarchs. Swords such as these are as much an artistic statement as a weapon and are effective against even heavily armored troops.",
-        "melee_hands": 1.1,
-        "ranged_hands": 0,
-        "ammo": 0,
-        "range": 1,
-        "spli": 3,
+        "description": "The Webber is a close-range weapon that fires strands of sticky web-like substance. It is designed to ensnare and immobilize enemies, restricting their movement and rendering them vulnerable to further attacks.",
+        "melee_hands": 0,
+        "range": 4.1,
+        "ranged_hands": 2,
+        "spli": 1,
+        "tags": [
+            "immobolise"
+        ]
+    },
+    "Whirlwind Missiles": {
+        "abbreviation": "WhrlMssl",
+        "ammo": 6,
         "arp": 2,
+        "attack": {
+            "artifact": 800,
+            "master_crafted": 650,
+            "standard": 600
+        },
+        "description": "The Whirlwind Missile Launcher is a vehicle-mounted artillery weapon that launches a barrage of powerful missiles at the enemy.",
+        "melee_hands": 0,
+        "range": 20,
+        "ranged_hands": 0,
+        "spli": 40,
+        "tags": [
+            "vehicle",
+            "heavy_ranged",
+            "indirect"
+        ],
+        "value": 90
+    },
+    "Wrist-Mounted Storm Bolter": {
+        "abbreviation": "WrstBlt",
+        "ammo": 10,
+        "arp": 1,
+        "attack": {
+            "artifact": 350,
+            "master_crafted": 300,
+            "standard": 275
+        },
+        "description": "A smaller, more compact version of the venerable Boltgun. This model is produced in the standard Godwyn pattern.",
+        "maintenance": 0.1,
+        "melee_hands": 0,
+        "range": 4.1,
+        "ranged_hands": 1,
+        "spli": 8,
+        "tags": [
+            "bolt",
+            "pistol",
+            "boarding 2"
+        ]
+    },
+    "Xenophase Blade": {
+        "abbreviation": "XenoPhs",
+        "ammo": 0,
+        "arp": 1,
+        "attack": {
+            "artifact": 250,
+            "master_crafted": 210,
+            "standard": 190
+        },
+        "description": "A Xenophase Blade is a potent, Power Sword-like melee weapon derived from xenos technology used by select warriors of the Deathwatch Chapter who have earned by their deeds and time of service in the Long Vigil the special trust of their watch fortress' watch commander.",
+        "melee_hands": 1.1,
+        "melee_mod": {
+            "artifact": 1.2,
+            "master_crafted": 1.1,
+            "standard": 1
+        },
+        "range": 1,
+        "ranged_hands": 0,
         "special_properties": [
             "Parry"
         ],
+        "spli": 4,
         "tags": [
             "power",
             "sword",
-            "elder",
             "xenos"
-        ]
-    },
-    "Choppa": {
-        "abbreviation": "Chop",
-        "attack": {
-            "standard": 100,
-            "master_crafted": 125,
-            "artifact": 200
-        },
-        "melee_hands": 1,
-        "range": 1,
-        "spli": 3,
-        "tags": [
-            "axe"
-        ]
-    },
-    "Snazzgun": {
-        "abbreviation": "Snazz",
-        "attack": {
-            "standard": 200,
-            "master_crafted": 230,
-            "artifact": 280
-        },
-        "ranged_hands": 1,
-        "ammo": 20,
-        "range": 3.1,
-        "spli": 3,
-        "arp": 1,
-        "tags": [
-            "rifle"
         ]
     }
 }
