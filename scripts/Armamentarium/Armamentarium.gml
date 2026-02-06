@@ -170,6 +170,8 @@ function Armamentarium() constructor {
             }
         }
 
+        _initialize_unlock_tooltips();
+    
         array_sort(master_catalog, _sort_alphabetical);
         is_initialized = true;
     };
@@ -500,21 +502,20 @@ function Armamentarium() constructor {
             var _item = _list[i];
             _draw_y_local += 20;
 
-            var _is_hovered = scr_hit(962, _draw_y_local, 962 + 250, _draw_y_local + string_height(_item.display_name));
-            var _has_stock = _item.stocked > 0 || _item.stocked_mc > 0;
-
-            var _shift_pressed = keyboard_check(vk_shift) && !array_contains(["ships", "technologies"], shop_type);
-            var _mult = _shift_pressed ? 5 : 1;
+            var _is_hovered = scr_hit(962, _draw_y_local, 962 + 280, _draw_y_local + string_height(_item.display_name));
 
             if (_is_hovered) {
                 draw_set_alpha(0.2);
-                draw_rectangle(960, _draw_y_local + 1, 1582, _draw_y_local + 18, false);
+                draw_rectangle(960, _draw_y_local, 1582, _draw_y_local + 18, false);
                 draw_set_alpha(1.0);
 
                 if (_item.item_tooltip != "") {
                     tooltip_draw(_item.item_tooltip, 400);
                 }
             }
+
+            var _shift_pressed = keyboard_check(vk_shift) && !array_contains(["ships", "technologies"], shop_type);
+            var _mult = _shift_pressed ? 5 : 1;
 
             var _can_forge = !is_in_forge || _item.meets_requirements;
             var _cost = (is_in_forge ? _item.forge_cost : _item.buy_cost) * _mult;
@@ -523,13 +524,19 @@ function Armamentarium() constructor {
 
             var _display_color = _active ? CM_GREEN_COLOR : CM_RED_COLOR;
             var _alpha = _active ? 1 : 0.5;
-            draw_text_color_simple(962, _draw_y_local, _shift_pressed ? $"{_item.display_name} x5" : _item.display_name, _display_color, _alpha);
+
+            var _display_name = _shift_pressed ? $"{_item.display_name} x5" : _item.display_name;
+
+            draw_text_color_simple(962, _draw_y_local + 2, _display_name, _display_color, _alpha);
 
             if (shop_type != "technologies") {
+                var _has_stock = _item.stocked > 0 || _item.stocked_mc > 0;
                 var _stock_hit = scr_hit(1280, _draw_y_local, 1380, _draw_y_local + 18);
+
                 if (_stock_hit) {
                     tooltip_draw($"Total: {_item.stocked}\nMaster Crafted: {_item.stocked_mc}");
                 }
+
                 draw_text_alpha(1300, _draw_y_local, string(_item.stocked), !_has_stock ? 0.5 : 1);
             }
 
@@ -538,7 +545,7 @@ function Armamentarium() constructor {
 
             var _cost_hit = scr_hit(1410, _draw_y_local, 1475, _draw_y_local + 18);
             if (_cost_hit) {
-                tooltip_draw(is_in_forge ? global_cost_tooltip : _item.get_buy_cost_tooltip());
+                tooltip_draw(is_in_forge ? _item.get_forge_cost_tooltip(global_cost_tooltip) : _item.get_buy_cost_tooltip());
             }
 
             draw_text_color_simple(1427, _draw_y_local, string(_cost), _final_cost_color, _alpha);
@@ -752,6 +759,47 @@ function Armamentarium() constructor {
         draw_set_alpha(1.0);
     };
 
+    static _initialize_unlock_tooltips = function() {
+        var _unlock_map = {};
+        var _catalog_size = array_length(master_catalog);
+    
+        for (var i = 0; i < _catalog_size; i++) {
+            /// @type {Struct.ShopItem}
+            var _item = master_catalog[i];
+            var _reqs = _item.requires_to_forge;
+    
+            for (var j = 0, _rlen = array_length(_reqs); j < _rlen; j++) {
+                var _tech_key = _reqs[j];
+                if (!variable_struct_exists(_unlock_map, _tech_key)) {
+                    _unlock_map[$ _tech_key] = [];
+                }
+                array_push(_unlock_map[$ _tech_key], _item.display_name);
+            }
+        }
+    
+        for (var i = 0; i < _catalog_size; i++) {
+            var _item = master_catalog[i];
+    
+            if (_item.area != "technologies") {
+                continue;
+            }
+    
+            var _unlocks = _unlock_map[$ _item.name] ?? [];
+    
+            if (array_length(_unlocks) == 0) {
+                return;
+            }
+    
+            if (array_length(_unlocks) > 0) {
+                array_sort(_unlocks, true);
+    
+                var _unlock_text = "\n\nRequired for:\n- " + string_join_ext("\n- ", _unlocks);
+                _item.item_tooltip += _unlock_text;
+            }
+        }
+    };
+    
+
     // Initialize on creation
     initialize_master_catalog();
 }
@@ -762,23 +810,31 @@ function Armamentarium() constructor {
 function ShopItem(_name) constructor {
     name = _name;
     display_name = _name;
+    area = "";
+    forge_type = "normal";
+    item_tooltip = "";
+
     stocked = 0;
     stocked_mc = 0;
     value = 0;
+
     buy_cost = 0;
     buyable = true;
-    forge_cost = 0;
-    forgable = true;
-    requires_to_forge = [];
-    sellers = ["mechanicus"];
-    item_tooltip = "";
-    forge_type = "normal";
     renegade_buy = false;
     buy_cost_mod = 1;
     best_seller = "unknown";
-    area = "";
+    sellers = ["mechanicus"];
+
+    forge_cost = 0;
+    forgable = true;
+    forge_cost_mod = 1;
+    requires_to_forge = [];
     meets_requirements = true;
     missing_technologies = [];
+
+    // -------------------------------------------------------------------------
+    // PUBLIC METHODS
+    // -------------------------------------------------------------------------
 
     /// @desc Iterates through potential sellers to find the best price.
     /// @param {array<string>} _sellers Array of faction strings.
@@ -828,7 +884,8 @@ function ShopItem(_name) constructor {
 
             meets_requirements = array_length(_missing_techs) == 0;
             missing_technologies = meets_requirements ? [] : _missing_techs;
-            forge_cost = round(value * SHOP_FORGE_MOD * _forge_mod);
+            forge_cost_mod = _forge_mod;
+            forge_cost = round(value * SHOP_FORGE_MOD * forge_cost_mod);
         } else {
             buy_cost = round(value * buy_cost_mod);
         }
@@ -851,6 +908,25 @@ function ShopItem(_name) constructor {
 
         return _text;
     };
+
+    /// @desc Generates a tooltip explaining the forge cost calculation.
+    /// @param {string} _stc_details Detailed breakdown of STC bonuses from the controller.
+    /// @returns {string}
+    static get_forge_cost_tooltip = function(_stc_details = "") {
+        var _base_forge = value * SHOP_FORGE_MOD;
+        var _text = $"Base Forging Cost: {_base_forge}\n";
+
+        if (_stc_details != "") {
+            _text += $"\n{_stc_details}";
+            _text += $"\nTotal Modifier: x{string_format(forge_cost_mod, 1, 2)}";
+        }
+
+        return _text;
+    };
+
+    // -------------------------------------------------------------------------
+    // PRIVATE METHODS
+    // -------------------------------------------------------------------------
 
     /// @desc Retrieves the display name for a technology key, caching results for performance.
     /// @param {string} _tech_key The internal key (e.g., "plasma_foundry").
