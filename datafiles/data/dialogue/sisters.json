@@ -1,189 +1,165 @@
 {
-    "intro":{
-        "multi_part" : true,
-        "parts":[
-            [
-                "[[Old and experienced, this Prioress of the Sisters of Battle is not a woman to be trifled with.  Clad in an elaborate set of full power armour and with her face sporting several scars, {faction_leader} exudes battlefield experience.]]",
-                "[[The Ecclesiarchy have assigned one of their militant arm to their dealings with you- Prioress {faction_leader}   The woman wears a set of well-used powered armour that has seen many battles, if its charred exterior is to be believed.  Incense burners hang from chains on her belt and waft smoke around her body.]]"
-            ],
-            "\n\n"
-            ,
-            [
-                "Hail, Chapter Master!  As a son of the Emperor, you will no doubt take great joy in bringing his light to this benighted sector.  I look forward to watching heretics fall before your armies.",
-                "And the Emperor spoke; “You shall know my servants by the eagle they bear, so the people of old Terra did know the eagle as the symbol of enlightenment and freedom.”  Fitting that we, the instruments of His will, still bear the eagle?  May the Emperor's gaze be upon you, Space Marine."
-
-            ]
-        ]
-    },
-
-    "hello" : {
-        "relationship" : {
-            "friendly" : "Hail, hero of {sector}, how may I assist you this day?",
-            "neutral" : "Praise be to the Emperor. What is your business here?",
-            "hostile":"State your business, for many heretics pray the Emperor's mercy.",
-        } 
-    },
-
-    "trade_close" : {
-        "relationship" : {
-            "friendly" : "Ave Imperator, Chapter Master. No doubt an unslain Xenos calls for your blade.",
-            "neutral" : "I hope there is a good reason for this affront, Chapter Master, for it is never wise to slight the Emperor's truest servants.",
-            "hostile":"While it is immaterial whether the Ecclesiarchy needed those supplies, it is a sign of disrespect for you to act thus. When you slight us, you slight the Emperor, Chapter Master.",
-        }         
-    },
-
-    "demand_refused" : {
-        "friendly" : [
-            "Ave Imperator, Chapter Master. No doubt an unslain Xenos calls for your blade.",
-            "I do not believe we can fulfil your request. Ask the Emperor for guidance and perhaps he will see fit to deliver."
-        ],
-        "neutral" : [
-            "Unless we receive a sign from the Lords of Terra to the contrary, we cannot comply with your request.",
-            "It is not something that we can condone or agree with."
-        ],
-        "hostile":[
-            "Flee back to the darkness, heretic. You will have nothing from us.",
-            "While we will not fulfill your request, perhaps your warp spawned allies will, heretic scum?"
-        ],
-    },
-
+    "accept_peace": "It leaves a bitter taste in my mouth, but you may go in peace.  I will be watching you from now on, however.",
     "agree": {
         "friendly": [
             "Let it be so.",
             "You need but ask, Chapter Master, and your commands will be fulfilled.",
             "As you command, son of the Emperor."
         ],
-        "neutral": [
-            "It shall be done.",
-            "I agree, and may the Emperor look favorably upon this venture.",
-            "Doubt is anathema to a true servant of the Emperor, but still... I have little choice but to agree."
-        ],
         "hostile": [
             "It will take some time in penitence to erase the crime of this action, but I agree.",
             "Circumstances force me to agree.",
             "Had I any other option, you would be burning in purifying flame at this moment... but I do not. I am with you."
+        ],
+        "neutral": [
+            "It shall be done.",
+            "I agree, and may the Emperor look favorably upon this venture.",
+            "Doubt is anathema to a true servant of the Emperor, but still... I have little choice but to agree."
         ]
     },
-    "attacked" :"You pile infamy on sin, traitorous dog.  I will be happy to wipe the stain of your existence from the galaxy.",
-
-    "declare_war" :"There is a price for all things and the accounting is now.  Know that you reap only what you have sown.",
-
-    "accept_peace" :"It leaves a bitter taste in my mouth, but you may go in peace.  I will be watching you from now on, however.",
-
-    "ignored":"Human we may be, but the Adepta Sororitas are second in loyalty only to the astartes themselves.  Why do you ignore us so?",
-
+    "artifact": "You have done a service to us by making us aware of this artifact. It is a little amusing that is was under our noses this whole time, though now I am sure it can be retrieved.",
+    "artifact_angry": [
+        "How dare you strike at us, the truest and most devoted servants of the Emperor!? That artifact was on our territory! You had no right and you shall pay in blood for your actions!"
+    ],
+    "artifact_daemon": {
+        "friendly": [
+            "I am sure it was not your intention, Chapter Master, but to give a daemonic artifact to the Ecclesiarchy is a great insult. Only the Inquisition has been given leave to wield such things, and few among our number agree with the practice. You will be forgiven this time, but do not let it happen again."
+        ],
+        "hostile": [
+            "Heretic! You dare to hand us, the Emperor's most devout followers, a artifact tainted by the presence of a monstrous daemon!? Beneath the facade of an Astartes, you are the very embodiment of servant of chaos! We will not forget this."
+        ],
+        "neutral": [
+            "It is possible that you did not know of the presence of the daemon within this artifact, but ignorance is no excuse. Maybe you are simply too corrupt to notice the heretical whispers and temptations that the item exudes. I will pray for your soul, or cleanse it with holy fire."
+        ]
+    },
+    "artifact_thanks": "You are a true servant of the Emperor! This artifact, while it might be of great value to others, shall forever be a symbol of our friendship.",
+    "attacked": "You pile infamy on sin, traitorous dog.  I will be happy to wipe the stain of your existence from the galaxy.",
+    "declare_war": "There is a price for all things and the accounting is now.  Know that you reap only what you have sown.",
+    "demand_refused": {
+        "friendly": [
+            "Ave Imperator, Chapter Master. No doubt an unslain Xenos calls for your blade.",
+            "I do not believe we can fulfil your request. Ask the Emperor for guidance and perhaps he will see fit to deliver."
+        ],
+        "hostile": [
+            "Flee back to the darkness, heretic. You will have nothing from us.",
+            "While we will not fulfill your request, perhaps your warp spawned allies will, heretic scum?"
+        ],
+        "neutral": [
+            "Unless we receive a sign from the Lords of Terra to the contrary, we cannot comply with your request.",
+            "It is not something that we can condone or agree with."
+        ]
+    },
     "denounced": {
         "friendly": [
             "I'm sure you have your reasons for saying such things, my lord.",
             "Ha, your words would wound me if I thought you were any less loyal to the Emperor.",
             "Lucky for you I don't take offense easily."
         ],
-        "neutral": [
-            "You are wrong and I will show you this.",
-            "I couldn't give less of a damn for your words.",
-            "I don't care what you think, only what you do."
-        ],
         "hostile": [
             "Send your poison elsewhere; it is actions and not words that make a man.",
             "So men act well but speak lies, some speak beautiful truths but act like common criminals.  But you manage to get the worst of both worlds.  It is almost impressive.",
             "When my flame sends you to your dark gods, it will be too late for such words."
+        ],
+        "neutral": [
+            "You are wrong and I will show you this.",
+            "I couldn't give less of a damn for your words.",
+            "I don't care what you think, only what you do."
         ]
     },
-
     "disagree": {
         "friendly": [
             "I am sorry Chapter Master but I cannot help you.",
             "Perhaps another Imperial faction can assist you, but I am unable to.",
             "My hands are tied in this matter, my Lord, else I would rush to your aide."
         ],
-        "neutral": [
-            "I cannot agree.",
-            "My sisters and I are unwilling to join you in this course of action.",
-            "It would not be fitting for my order to join you."
-        ],
         "hostile": [
             "I would rather die, heretic.  You have turned from His light and will pay the price!",
             "When I made my vows to the Emperor, I made them for life, unlike you.  Take your deal and burn with it.",
             "Your attempt to draw me away from the light are as clumsy as an ork's handwriting!  I say thee nay!"
         ],
+        "neutral": [
+            "I cannot agree.",
+            "My sisters and I are unwilling to join you in this course of action.",
+            "It would not be fitting for my order to join you."
+        ],
         "override": [
             {
-                "relationship": "neutral",
+                "line": "I cannot agree to this, Chapter Master, no matter how stubborn you may be.",
                 "min_annoyed": 8,
-                "line": "I cannot agree to this, Chapter Master, no matter how stubborn you may be."
+                "relationship": "neutral"
             }
         ]
     },
+    "hello": {
+        "relationship": {
+            "friendly": "Hail, hero of {sector}, how may I assist you this day?",
+            "hostile": "State your business, for many heretics pray the Emperor's mercy.",
+            "neutral": "Praise be to the Emperor. What is your business here?"
+        }
+    },
+    "ignored": "Human we may be, but the Adepta Sororitas are second in loyalty only to the astartes themselves.  Why do you ignore us so?",
+    "intro": {
+        "multi_part": true,
+        "parts": [
+            [
+                "[[Old and experienced, this Prioress of the Sisters of Battle is not a woman to be trifled with.  Clad in an elaborate set of full power armour and with her face sporting several scars, {faction_leader} exudes battlefield experience.]]",
+                "[[The Ecclesiarchy have assigned one of their militant arm to their dealings with you- Prioress {faction_leader}   The woman wears a set of well-used powered armour that has seen many battles, if its charred exterior is to be believed.  Incense burners hang from chains on her belt and waft smoke around her body.]]"
+            ],
+            "\n\n",
+            [
+                "Hail, Chapter Master!  As a son of the Emperor, you will no doubt take great joy in bringing his light to this benighted sector.  I look forward to watching heretics fall before your armies.",
+                "And the Emperor spoke; “You shall know my servants by the eagle they bear, so the people of old Terra did know the eagle as the symbol of enlightenment and freedom.”  Fitting that we, the instruments of His will, still bear the eagle?  May the Emperor's gaze be upon you, Space Marine."
+            ]
+        ]
+    },
+    "leave_it": "Leave it be; Exit.",
+    "offer": [
+        "Is this trade acceptable to you?",
+        "The Emperor, hallowed be His name, would doubtless endorse this trade.",
+        "Ask yourself; would a true son of the Emperor turn down this trade?"
+    ],
+    "open_trade": "Make me an offer, Space Marine, and I will pray for the guidance to respond.",
+    "penitent_end": [
+        "Yours is the glory, Chapter Master. I admit that I did not expect you to survive this ordeal, having wronged the name of the Emperor as you have. It seems, in his wisdom, that he has chosen to spare you for greater things. That you marched through the fires of war and return practically unscathed... it is all the proof I need of your favour with the God Emperor. Take his word to the heretic, the mutant and the Xenos, Astartes. You have once more earned that right.",
+        "Penitent crusades are a cathartic experience, are they not? To bathe oneself in the blood of The Imperium's foes, until one's faults are washed away. To let oneself forget restraint and self control, to simply revel in the joy of spilling heretical, Xenos blood. Make no mistake, I envy you. It is a long time since I had not thought but of the next kill to fall under my blade. Congratulations on not losing yourself, however. Few return from penitent crusades with as much of their minds in tact as you seem to have."
+    ],
     "praised": {
         "friendly": [
             "Thank you, Chapter Master.  That means a lot from a warrior such as you.",
             "Your words raise my spirits, comrade. I hope to see you on the battlefield soon..",
             "Apply your mind to defeating the Emperor's enemies, not thinking up clever compliments to pile at my feet.  Unless you feel you can do both?"
         ],
-        "neutral": [
-            "We thank you, but will not let words alter our disposition.",
-            "The only praise that matters is the praise we give to the Emperor.",
-            "Venerate the Emperor with the same enthusiasm and He may look kindly upon you."
-        ],
         "hostile": [
             "Your words will not stall my forces.",
             "Compliments will not put out the cleansing flame I will bathe you in.",
             "Save your breath for prayers of forgiveness, for I will destroy you."
-        ]
-    },
-
-    "open_trade" : "Make me an offer, Space Marine, and I will pray for the guidance to respond.",
-
-    "propose_arti_trade" : "Propose a trade for the Artifact",
-
-    "leave_it":"Leave it be; Exit.",
-
-    "artifact": "You have done a service to us by making us aware of this artifact. It is a little amusing that is was under our noses this whole time, though now I am sure it can be retrieved.",
-
-    "artifact_thanks":"You are a true servant of the Emperor! This artifact, while it might be of great value to others, shall forever be a symbol of our friendship.",
-
-    "penitent_end": [
-        "Yours is the glory, Chapter Master. I admit that I did not expect you to survive this ordeal, having wronged the name of the Emperor as you have. It seems, in his wisdom, that he has chosen to spare you for greater things. That you marched through the fires of war and return practically unscathed... it is all the proof I need of your favour with the God Emperor. Take his word to the heretic, the mutant and the Xenos, Astartes. You have once more earned that right.",
-        "Penitent crusades are a cathartic experience, are they not? To bathe oneself in the blood of The Imperium's foes, until one's faults are washed away. To let oneself forget restraint and self control, to simply revel in the joy of spilling heretical, Xenos blood. Make no mistake, I envy you. It is a long time since I had not thought but of the next kill to fall under my blade. Congratulations on not losing yourself, however. Few return from penitent crusades with as much of their minds in tact as you seem to have."
-    ],
-
-    "artifact_daemon": {
-        "friendly": [
-            "I am sure it was not your intention, Chapter Master, but to give a daemonic artifact to the Ecclesiarchy is a great insult. Only the Inquisition has been given leave to wield such things, and few among our number agree with the practice. You will be forgiven this time, but do not let it happen again."
         ],
         "neutral": [
-            "It is possible that you did not know of the presence of the daemon within this artifact, but ignorance is no excuse. Maybe you are simply too corrupt to notice the heretical whispers and temptations that the item exudes. I will pray for your soul, or cleanse it with holy fire."
-        ],
-        "hostile": [
-            "Heretic! You dare to hand us, the Emperor's most devout followers, a artifact tainted by the presence of a monstrous daemon!? Beneath the facade of an Astartes, you are the very embodiment of servant of chaos! We will not forget this."
+            "We thank you, but will not let words alter our disposition.",
+            "The only praise that matters is the praise we give to the Emperor.",
+            "Venerate the Emperor with the same enthusiasm and He may look kindly upon you."
         ]
     },
-
-    "artifact_angry": [
-        "How dare you strike at us, the truest and most devoted servants of the Emperor!? That artifact was on our territory! You had no right and you shall pay in blood for your actions!"
-    ],
-
+    "propose_arti_trade": "Propose a trade for the Artifact",
     "stc_thanks": [
         "On behalf of Imperium, I extend our deepest gratitude to {chapter_name} for the invaluable gift given to us."
     ],
-
-    "offer": [
-        "Is this trade acceptable to you?",
-        "The Emperor, hallowed be His name, would doubtless endorse this trade.",
-        "Ask yourself; would a true son of the Emperor turn down this trade?"
-    ],
-
+    "trade_close": {
+        "relationship": {
+            "friendly": "Ave Imperator, Chapter Master. No doubt an unslain Xenos calls for your blade.",
+            "hostile": "While it is immaterial whether the Ecclesiarchy needed those supplies, it is a sign of disrespect for you to act thus. When you slight us, you slight the Emperor, Chapter Master.",
+            "neutral": "I hope there is a good reason for this affront, Chapter Master, for it is never wise to slight the Emperor's truest servants."
+        }
+    },
     "trading_demand": {
         "friendly": [
             "{master_name}?"
         ],
-        "neutral": [
-            "What is the meaning of this?"
-        ],
         "hostile": [
             "The Heretic and Blasphemer can offer no excuse for their crimes. Those who are pardoned merely live to further shroud Humanity from the Light of the Emperor with the Darkness of their souls."
+        ],
+        "neutral": [
+            "What is the meaning of this?"
         ]
     }
-
-
 }
