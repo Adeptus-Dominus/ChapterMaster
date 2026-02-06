@@ -147,8 +147,8 @@ function event_end_turn_action() {
                     bob.image_speed = 1;
                 }
                 if (array_length(active_forges) == 0) {
-                    _event.duration = 2;
-                    scr_popup("Ship Construction halted", $"A lack of suitable forge worlds in the system has halted construction of your requested ship", "shipyard", "");
+                    _event.duration = 1;
+                    scr_popup("Ship Construction Halted", $"A lack of suitable forge worlds in the system has halted construction of your requested ship", "shipyard", "");
                 }
             }
             // Spare the inquisitor
@@ -265,7 +265,7 @@ function handle_discovered_governor_assasinations() {
             var _disp_hit = _event.variant == 1 ? 2 : 4;
             with (obj_star) {
                 for (var o = 1; o <= planets; o++) {
-                    if (p_owner == eFACTION.IMPERIUM) {
+                    if (p_owner[o] == eFACTION.IMPERIUM) {
                         if ((dispo[o] > 0) && (dispo[o] < 90)) {
                             dispo[o] = max(dispo[o] - _disp_hit, 0);
                         }
