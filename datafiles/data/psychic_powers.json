@@ -841,7 +841,7 @@ I see no reason to have these named structs, as their names are not used for any
                 "conditions": [
                     {
                         "type": "enemy_type",
-                        "value": 3
+                        "value": 9
                     }
                 ],
                 "text": [
