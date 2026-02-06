@@ -112,6 +112,7 @@ function Armamentarium() constructor {
     // -------------------------------------------------------------------------
 
     /// @desc One-time setup to build every ShopItem from global data sources.
+    /// @returns {undefined}
     static initialize_master_catalog = function() {
         if (is_initialized) {
             return;
@@ -128,7 +129,7 @@ function Armamentarium() constructor {
             "technologies"
         ];
 
-        for (var c = 0; c < array_length(_categories); c++) {
+        for (var c = 0, clen = array_length(_categories); c < clen; c++) {
             var _cat = _categories[c];
             var _data_source = shop_data_lookup[$ _cat];
 
@@ -137,7 +138,7 @@ function Armamentarium() constructor {
             }
 
             var _display_names = variable_struct_get_names(_data_source);
-            for (var i = 0; i < array_length(_display_names); i++) {
+            for (var i = 0, dlen = array_length(_display_names); i < dlen; i++) {
                 var _name = _display_names[i];
                 var _raw = _data_source[$ _name];
                 var _item = new ShopItem(_name);
@@ -171,7 +172,6 @@ function Armamentarium() constructor {
         }
 
         _initialize_unlock_tooltips();
-    
         array_sort(master_catalog, _sort_alphabetical);
         is_initialized = true;
     };
@@ -497,7 +497,8 @@ function Armamentarium() constructor {
         }
         draw_text(1410, 159, $"{is_in_forge ? "FP" : "RP"} Cost");
 
-        for (var i = _start_index; i < min(_start_index + _items_per_page, _items_count); i++) {
+        var _end_index = min(_start_index + _items_per_page, _items_count);
+        for (var i = _start_index; i < _end_index; i++) {
             /// @type {Struct.ShopItem}
             var _item = _list[i];
             _draw_y_local += 20;
@@ -787,7 +788,7 @@ function Armamentarium() constructor {
             var _unlocks = _unlock_map[$ _item.name] ?? [];
     
             if (array_length(_unlocks) == 0) {
-                return;
+                continue;
             }
     
             if (array_length(_unlocks) > 0) {
@@ -843,7 +844,7 @@ function ShopItem(_name) constructor {
         var _best_modifier = 10.0;
         var _best_seller = "unknown";
 
-        for (var i = 0; i < array_length(_sellers); i++) {
+        for (var i = 0, len = array_length(_sellers); i < len; i++) {
             var _current_modifier = _cached_mods[$ _sellers[i]] ?? 1.0;
             if (_current_modifier < _best_modifier) {
                 _best_modifier = _current_modifier;
@@ -874,7 +875,7 @@ function ShopItem(_name) constructor {
         if (_is_forge) {
             var _missing_techs = [];
 
-            for (var j = 0, l = array_length(requires_to_forge); j < l; j++) {
+            for (var j = 0, len = array_length(requires_to_forge); j < len; j++) {
                 var _tech = requires_to_forge[j];
 
                 if (!array_contains(obj_controller.technologies_known, _tech)) {
