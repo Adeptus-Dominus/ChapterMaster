@@ -148,7 +148,7 @@ function event_end_turn_action() {
                 }
                 if (array_length(active_forges) == 0) {
                     _event.duration = 1;
-                    scr_popup("Ship Construction Halted", $"A lack of suitable forge worlds in the system has halted construction of your requested ship", "shipyard", "");
+                    scr_popup("Ship Construction Halted", $"A lack of suitable forge worlds in the system has halted construction of your requested ship.", "shipyard", "");
                 }
             }
             // Spare the inquisitor
