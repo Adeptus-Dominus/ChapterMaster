@@ -27,7 +27,7 @@
         "description": "Replacing numerous structural components and armour plates with thrice-blessed replacements, the vehicle’s hull is upgraded to be a rare work of mechanical art by master artificers.",
         "tags": [
             "vehicle",
-            "Upgrade"
+            "upgrade"
         ]
     },
     "Dozer Blades": {
@@ -87,7 +87,7 @@
         "tags": [
             "vehicle",
             "armour",
-            "Upgrade"
+            "upgrade"
         ]
     },
     "Searchlight": {

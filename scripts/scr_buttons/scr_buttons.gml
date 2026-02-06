@@ -237,7 +237,7 @@ function SpriteButton(_sprite, _hover_sprite = -1) constructor {
                 tooltip_draw(tooltip_text, tooltip_w);
             }
 
-            if (_enabled && is_clicked && sound_click != -1) {
+            if (_is_clicked && sound_click != -1) {
                 audio_play_sound(sound_click, 10, false);
             }
         }
@@ -712,7 +712,6 @@ function UIDropdown(_options, _width = 180) constructor {
     height = 28;
     is_open = false;
     selected_index = 0;
-    hover_index = -1;
 
     /// @desc Draws the dropdown and handles interactions.
     /// @param {real} _x X position.
@@ -750,6 +749,7 @@ function UIDropdown(_options, _width = 180) constructor {
         }
 
         if (!is_open) {
+            pop_draw_return_values();
             return _result;
         }
 
@@ -798,7 +798,7 @@ function UIDropdown(_options, _width = 180) constructor {
             is_open = false;
         }
 
-        add_draw_return_values();
+        pop_draw_return_values();
 
         return _result;
     };

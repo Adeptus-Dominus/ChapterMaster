@@ -32,7 +32,7 @@
         "value": 300
     },
     "force_1": {
-        "description": "Force weapons and gear necessitate the inclusion of rare psycho-conductive materials and warp-attuned crystalline circuits within the blade or haft to channel psychic energy. This allows the forge to forge specialized armaments for the Librarium.",
+        "description": "Force weapons and gear necessitate the inclusion of rare psycho-conductive materials and warp-attuned crystalline circuits within the blade or haft to channel psychic energy. This allows the forge to produce specialized armaments for the Librarium.",
         "display_name": "Psionic Resonance Valves",
         "value": 300
     },
@@ -65,7 +65,7 @@
         "value": 300
     },
     "power_1": {
-        "description": "Integrating miniaturized disruption-field generators that project matter-disrupting energy around a strike surface enables the production of power-field-enhanced melee weaponary and defensive shielding.",
+        "description": "Integrating miniaturized disruption-field generators that project matter-disrupting energy around a strike surface enables the production of power-field-enhanced melee weaponry and defensive shielding.",
         "display_name": "Disruption Field Generation",
         "value": 300
     },

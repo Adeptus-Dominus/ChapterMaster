@@ -285,26 +285,30 @@ function Armamentarium() constructor {
     };
 
     static _refresh_faction_modifiers = function() {
-        var _tech_mod = 1.5;
-        var _cha_mod = 1.5;
+        var _tech_bonus = 0;
+        var _cha_bonus = 0;
         var _masters = scr_role_count("Forge Master", "", "units");
 
         if (array_length(_masters) > 0) {
-            /// @type {Struct.TTRPG_stats}
-            var _forge_master = _masters[0];
-
-            _cha_mod = (_forge_master.charisma - 30) / 200;
-            _tech_mod = _forge_master.has_trait("flesh_is_weak") ? 0.1 : (_forge_master.technology - 50) / 200;
+            var _fm = _masters[0];
+            _cha_bonus = (_fm.charisma - 30) / 200;
+            _tech_bonus = _fm.has_trait("flesh_is_weak") ? 0.1 : (_fm.technology - 50) / 200;
         }
 
-        var _dispo = obj_controller.disposition;
         var _is_at_war = obj_controller.faction_status[eFACTION.IMPERIUM] == "War";
-        var _war_pen = _is_at_war ? WAR_PENALTY : 0;
+        var _war_tax = _is_at_war ? WAR_PENALTY : 0;
 
-        faction_modifiers.imperium = clamp(1.0 - (((_dispo[eFACTION.IMPERIUM] - 50) / 200) + _cha_mod - _war_pen), 0.1, 10.0);
-        faction_modifiers.mechanicus = clamp(1.0 - (((_dispo[eFACTION.MECHANICUS] - 50) / 200) + _tech_mod - _war_pen), 0.1, 10.0);
-        faction_modifiers.inquisition = clamp(1.0 - (((_dispo[eFACTION.INQUISITION] - 50) / 200) + _cha_mod - _war_pen), 0.1, 10.0);
-        faction_modifiers.ecclesiarchy = clamp(1.0 - (((_dispo[eFACTION.ECCLESIARCHY] - 50) / 200) + _cha_mod - _war_pen), 0.1, 10.0);
+        static _get_mod = function(_faction_id, _staff_bonus, _war_tax) {
+            var _dispo = obj_controller.disposition[_faction_id];
+            var _dispo_bonus = (_dispo - 50) / 200;
+
+            return clamp(1.0 - _dispo_bonus - _staff_bonus + _war_tax, 0.1, 10.0);
+        };
+
+        faction_modifiers.imperium = _get_mod(eFACTION.IMPERIUM, _cha_bonus, _war_tax);
+        faction_modifiers.mechanicus = _get_mod(eFACTION.MECHANICUS, _tech_bonus, _war_tax);
+        faction_modifiers.inquisition = _get_mod(eFACTION.INQUISITION, _cha_bonus, _war_tax);
+        faction_modifiers.ecclesiarchy = _get_mod(eFACTION.ECCLESIARCHY, _cha_bonus, _war_tax);
     };
 
     static _refresh_stc_modifiers = function() {
@@ -367,14 +371,15 @@ function Armamentarium() constructor {
     /// @param {real} _modifier Price multiplier for selling.
     /// @returns {bool} Success of the transaction.
     static _sell_item = function(_item, _count, _modifier) {
-        if (_item.stocked < _count) {
+        if (_item.stocked < 1) {
             return false;
         }
 
-        var _sell_price = (_item.buy_cost * _modifier) * _count;
-        scr_add_item(_item.name, -_count, "standard");
+        var _sold_count = min(_item.stocked, _count);
+        var _sell_price = (_item.value * _modifier) * _sold_count;
 
-        _item.stocked -= _count;
+        scr_add_item(_item.name, -_sold_count, "standard");
+        _item.stocked -= _sold_count;
         obj_controller.requisition += _sell_price;
 
         audio_play_sound(snd_click, 10, false);
@@ -775,41 +780,6 @@ function ShopItem(_name) constructor {
     meets_requirements = true;
     missing_technologies = [];
 
-    /// @desc Calculates and returns price modifiers based on faction disposition.
-    /// @param {string} _faction The faction key to check.
-    /// @returns {struct} Struct containing {modifier, item_tooltip}.
-    static get_shop_mod = function(_faction) {
-        var _tech_mod = 1.5;
-        var _cha_mod = 1.5;
-
-        var _masters = scr_role_count("Forge Master", "", "units");
-        if (array_length(_masters) > 0) {
-            /// @type {Struct.TTRPG_stats}
-            var _m = _masters[0];
-            _cha_mod = (_m.charisma - 30) / 200;
-            _tech_mod = _m.has_trait("flesh_is_weak") ? 0.1 : (_m.technology - 50) / 200;
-        }
-
-        var _dispo = obj_controller.disposition;
-        var _modifiers = {
-            imperium: ((_dispo[eFACTION.IMPERIUM] - 50) / 200) + _cha_mod,
-            mechanicus: ((_dispo[eFACTION.MECHANICUS] - 50) / 200) + _tech_mod,
-            inquisition: ((_dispo[eFACTION.INQUISITION] - 50) / 200) + _cha_mod,
-            ecclesiarchy: ((_dispo[eFACTION.ECCLESIARCHY] - 50) / 200) + _cha_mod,
-        };
-
-        // Logic for hostilities
-        if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
-            _modifiers.imperium -= 0.5;
-            _modifiers.mechanicus -= 0.5;
-            _modifiers.inquisition -= 0.5;
-            _modifiers.ecclesiarchy -= 0.5;
-        }
-
-        var _val = _modifiers[$ _faction] ?? 0;
-        return clamp(1.0 - _val, 0.1, 10.0);
-    };
-
     /// @desc Iterates through potential sellers to find the best price.
     /// @param {array<string>} _sellers Array of faction strings.
     /// @param {struct} _cached_mods Pre-calculated modifiers.
@@ -908,7 +878,7 @@ function ShopItem(_name) constructor {
 
 /// @desc Handles the display and interaction for STC fragment research and bonuses.
 /// @param {Id.Instance} _controller_ref Reference to the object holding STC data (usually obj_controller).
-/// @param {Function} _on_change_callback Callback after indentification.
+/// @param {Function} _on_change_callback Callback after identification.
 /// @return {Struct.STCResearchPanel}
 function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
     /// @type {Asset.GMObject.obj_controller}
