@@ -232,7 +232,7 @@
             "max"
         ],
         "display_name": "Feral",
-        "flavour_text": "Plain Feral, viewed as more akin to an animal than a human, with this comes a savage ferocity most often asscociated with those from Deathworlds",
+        "flavour_text": "Plain Feral, viewed as more akin to an animal than a human, with this comes a savage ferocity most often associated with those from Deathworlds",
         "strength": [
             5,
             1,
@@ -723,7 +723,7 @@
             "max"
         ],
         "display_name": "Shadow Born",
-        "flavour_text": "The progeny of the Raven lord are exceptionally nimble stealth operatives this Marine is one such example ",
+        "flavour_text": "The progeny of the Raven lord are exceptionally nimble stealth operatives this Marine is one such example",
         "wisdom": [
             1,
             1
@@ -741,7 +741,7 @@
         ],
         "display_name": "Siege Master",
         "effect": "Bonus when commanding defences and extra boosts when leading a garrison",
-        "flavour_text": "Understands the ins and outs of defences both in building them and in taking them appart",
+        "flavour_text": "Understands the ins and outs of defences both in building them and in taking them apart",
         "wisdom": [
             2,
             2,
@@ -764,7 +764,7 @@
             3,
             "min"
         ],
-        "display_name": "slow",
+        "display_name": "Slow",
         "flavour_text": "Have many talents but being fast ain't one of them"
     },
     "slow_and_purposeful": {
@@ -810,7 +810,7 @@
         "wisdom": [
             3,
             3,
-            1
+            "max"
         ]
     },
     "strong": {
@@ -878,7 +878,7 @@
         "dexterity": 1,
         "display_name": "Tyrannic War Veteran",
         "effect": "Increased lethality against tyranids",
-        "flavour_text": "A veteran of the many wars against the the Tyranid swarms",
+        "flavour_text": "A veteran of the many wars against the Tyranid swarms",
         "weapon_skill": 1,
         "wisdom": [
             2,
@@ -889,7 +889,7 @@
     "very_hard_to_kill": {
         "constitution": 15,
         "display_name": "Very Hard To Kill",
-        "flavour_text": "Posses toughness and luck unsurpassed by most",
+        "flavour_text": "Possess toughness and luck unsurpassed by most",
         "luck": 2
     },
     "warp_tainted": {
@@ -897,7 +897,7 @@
         "flavour_text": "Interacted with the warp in a way that has forever marked them",
         "luck": -2
     },
-    "warriors_of_the_Wind": {
+    "warriors_of_the_wind": {
         "dexterity": [
             3,
             2,
