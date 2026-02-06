@@ -40,7 +40,6 @@ enum eTAG_MANAGER {
 }
 
 function draw_tag_manager() {
-    add_draw_return_values();
     main_slate.draw();
     tag_selects.draw();
     if (exit_button.draw()) {
@@ -197,5 +196,4 @@ function draw_tag_manager() {
             }
         }
     }
-    pop_draw_return_values();
 }

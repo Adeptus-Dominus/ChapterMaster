@@ -1,0 +1,140 @@
+{
+    "Armoured Ceramite": {
+        "abbreviation": "ArmCrmt",
+        "armour_value": {
+            "artifact": 28,
+            "master_crafted": 24,
+            "standard": 20
+        },
+        "description": "Supplemental ceramite armour packages provide protection far beyond stock configurations while also adding significant weight to the chassis.",
+        "tags": [
+            "vehicle",
+            "armour"
+        ]
+    },
+    "Artificer Hull": {
+        "abbreviation": "ArtHll",
+        "armour_value": {
+            "artifact": 14,
+            "master_crafted": 12,
+            "standard": 10
+        },
+        "damage_resistance_mod": {
+            "artifact": 25,
+            "master_crafted": 20,
+            "standard": 15
+        },
+        "description": "Replacing numerous structural components and armour plates with thrice-blessed replacements, the vehicle’s hull is upgraded to be a rare work of mechanical art by master artificers.",
+        "tags": [
+            "vehicle",
+            "upgrade"
+        ]
+    },
+    "Dozer Blades": {
+        "abbreviation": "DzrBlds",
+        "ammo": 0,
+        "arp": 1,
+        "attack": {
+            "artifact": 50,
+            "master_crafted": 35,
+            "standard": 30
+        },
+        "description": "An attachment for the front of vehicles, useful for clearing difficult terrain and can be used as an improvised weapon. ",
+        "range": 1,
+        "spli": 1,
+        "tags": [
+            "vehicle"
+        ]
+    },
+    "Frag Assault Launchers": {
+        "abbreviation": "FrgAssLnchrs",
+        "damage_resistance_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "description": "These launchers enable a vehicle to clear an area for its loaded troops, or prevent boarding by an enemy at close range.",
+        "tags": [
+            "vehicle"
+        ]
+    },
+    "Heavy Armour": {
+        "abbreviation": "HvyArm",
+        "armour_value": {
+            "artifact": 14,
+            "master_crafted": 12,
+            "standard": 10
+        },
+        "description": "Simple but effective, extra armour plates can be attached to most vehicles to provide extra protection.",
+        "tags": [
+            "vehicle",
+            "armour"
+        ]
+    },
+    "Lucifer Pattern Engine": {
+        "abbreviation": "Luc Eng",
+        "damage_resistance_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "description": "An advanced engine that increases tactical flexibility by enabling more options for movement and faster repositioning.",
+        "ranged_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "tags": [
+            "vehicle",
+            "armour",
+            "upgrade"
+        ]
+    },
+    "Searchlight": {
+        "abbreviation": "SrchLght",
+        "description": "A simple solution for fighting in dark environments, searchlights serve to illuminate enemies for ease of targeting.",
+        "ranged_mod": {
+            "artifact": 15,
+            "master_crafted": 10,
+            "standard": 5
+        },
+        "tags": [
+            "vehicle",
+            "dreadnought"
+        ]
+    },
+    "Smoke Launchers": {
+        "abbreviation": "SmkLnchrs",
+        "damage_resistance_mod": {
+            "artifact": 15,
+            "master_crafted": 10,
+            "standard": 5
+        },
+        "description": "Useful for providing concealment in open terrain, these launchers project wide-spectrum concealing smoke to prevent accurate targeting of the vehicle.",
+        "tags": [
+            "smoke",
+            "conceal",
+            "vehicle",
+            "dreadnought"
+        ]
+    },
+    "Void Shield": {
+        "abbreviation": "V Shld",
+        "armour_value": {
+            "artifact": 64,
+            "master_crafted": 52,
+            "standard": 40
+        },
+        "damage_resistance_mod": {
+            "artifact": 40,
+            "master_crafted": 35,
+            "standard": 30
+        },
+        "description": "An advanced shield capable of providing extreme protection to heavy vehicles.",
+        "tags": [
+            "vehicle",
+            "armour",
+            "voidshield"
+        ]
+    }
+}

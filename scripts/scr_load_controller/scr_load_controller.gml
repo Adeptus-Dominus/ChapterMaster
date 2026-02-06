@@ -228,9 +228,9 @@ function scr_load_controller(save_id) {
     obj_controller.recruits = ini_read_real("Controller", "recruits", 0);
     obj_controller.recruit_last = ini_read_real("Controller", "recruit_last", 0);
 
-    var Production_research = ini_read_string("Controller", "production_research", 0);
-    if (Production_research != 0) {
-        obj_controller.production_research = json_parse(base64_decode(Production_research));
+    var _technologies_known = ini_read_string("Controller", "technologies_known", 0);
+    if (_technologies_known != 0) {
+        obj_controller.technologies_known = json_parse(base64_decode(_technologies_known));
     }
     specialist_point_handler = new SpecialistPointHandler();
     var forge_queue = ini_read_string("Controller", "forge_queue", 0);

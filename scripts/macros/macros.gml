@@ -8,9 +8,11 @@
 #macro TIME_1 $"{format_time(current_hour)}:{format_time(current_minute)}:{format_time(current_second)}"
 #macro CM_GREEN_COLOR #34bc75
 #macro CM_RED_COLOR #bf4040
+#macro COL_REQUISITION #2398F8
+#macro COL_FORGE_POINTS #af5a00
+
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
-#macro SHOP_SELL_MOD 0.8
 #macro LARGE_PLANET_MOD 1000000000 // Population threshold for large planet classification
 
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"

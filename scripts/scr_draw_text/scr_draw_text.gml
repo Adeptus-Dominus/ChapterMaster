@@ -144,3 +144,11 @@ function draw_text_ext_shadow(_x, _y, _text, _sep = -1, _w = 9999) {
     draw_set_color(_cur_color);
     draw_text_ext(_x, _y, _text, _sep, _w);
 }
+
+/// @desc This function will draw text like draw_text(), but with a custom alpha.
+function draw_text_alpha(_x, _y, _text, _alpha) {
+    var _cur_alpha = draw_get_alpha();
+    draw_set_alpha(_alpha);
+    draw_text(_x, _y, _text);
+    draw_set_alpha(_cur_alpha);
+}

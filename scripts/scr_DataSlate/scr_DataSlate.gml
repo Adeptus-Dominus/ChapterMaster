@@ -84,6 +84,8 @@ function DataSlate(data = {}) constructor {
     };
 
     static draw = function(xx = -1, yy = -1, scale_x = 1, scale_y = 1) {
+        add_draw_return_values();
+
         if (xx != -1) {
             XX = xx;
         }
@@ -178,6 +180,8 @@ function DataSlate(data = {}) constructor {
         }
         x2 = XX + width;
         y2 = YY + height;
+
+        pop_draw_return_values();
     };
 
     static draw_cut = function(xx, yy, scale_x = 1, scale_y = 1, middle_percent = percent_cut) {
@@ -399,6 +403,7 @@ function ShutterButton() constructor {
     height = 0;
     cover_text = "";
     tooltip = "";
+    text_color = c_red;
 
     /*cover_sprite = spr_shutter_button_cover;
 	static make_custom_cover(){
@@ -420,7 +425,7 @@ function ShutterButton() constructor {
             draw_rectangle_color_simple(xx, yy, xx + width, yy + height, false, CM_GREEN_COLOR, 0.35);
         }
         draw_set_halign(fa_left);
-        draw_set_color(c_red);
+        draw_set_color(text_color);
         if (click_timer > 0) {
             draw_text_transformed(text_draw, yy + (24 * scale), text, 3 * scale, 3 * scale, 0);
         } else {
@@ -446,7 +451,7 @@ function ShutterButton() constructor {
         }
         draw_sprite_ext(spr_shutter_button, shutter_backdrop, XX, YY, scale, scale, 0, c_white, 1);
         draw_set_halign(fa_left);
-        draw_set_color(c_red);
+        draw_set_color(text_color);
         if (click_timer > 0) {
             draw_text_transformed(text_draw, yy + (24 * scale), text, 3 * scale, 3 * scale, 0);
         } else {
@@ -527,12 +532,14 @@ function ShutterButton() constructor {
             draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);
         }
         draw_set_color(c_grey);
+
+        pop_draw_return_values();
+
         if (click_timer > 7) {
             click_timer = 0;
             return true;
         } else {
             return false;
         }
-        pop_draw_return_values();
     };
 }

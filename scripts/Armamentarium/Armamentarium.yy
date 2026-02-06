@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Armamentarium",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Armamentarium",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

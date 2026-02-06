@@ -530,130 +530,9 @@ player_forge_data = {
 };
 selection_data = false;
 selections = [];
-production_research = {
-    flame: [
-        0,
-        {}
-    ],
-    bolt: [
-        1,
-        {}
-    ],
-    plasma: [
-        0,
-        {}
-    ],
-    psi: [
-        0,
-        {}
-    ],
-    melta: [
-        0,
-        {}
-    ],
-    grav: [
-        0,
-        {}
-    ],
-    chasis: [
-        0,
-        {}
-    ],
-    chain: [
-        0,
-        {}
-    ],
-    power_fields: [
-        1,
-        {}
-    ],
-    las: [
-        0,
-        {}
-    ],
-    armour: [
-        0,
-        {
-            stealth: [
-                0,
-                {}
-            ],
-            armour: [
-                0,
-                {}
-            ],
-        }
-    ],
-};
 
-production_research_pathways = {
-    flame: [
-        ["Promethium Tank Brazing"],
-        {}
-    ],
-    bolt: [
-        [
-            "Hardened Barrel Boring",
-            "Projectile Propellant Purification"
-        ],
-        {}
-    ],
-    plasma: [
-        ["Plasma Coil Magnetization"],
-        {}
-    ],
-    psi: [
-        ["Psionic Resonance Valves"],
-        {}
-    ],
-    melta: [
-        ["Atomic Chamber Construction"],
-        {}
-    ],
-    grav: [
-        ["Gravitic Reaction Principle"],
-        {}
-    ],
-    chasis: [
-        [],
-        {}
-    ],
-    chain: [
-        ["Adamantine Links"],
-        {}
-    ],
-    power_fields: [
-        [
-            "Power Field Cooling",
-            "Mono-molecular Edge Sheathing"
-        ],
-        {}
-    ],
-    las: [
-        ["Light Condensement Chamber"],
-        {}
-    ],
-    armour: [
-        [
-            "Ceramite Casting Chambers",
-            "Enhanced Nerve Interfacing"
-        ],
-        {
-            stealth: [
-                ["Advanced Servo Motors"],
-                {}
-            ],
-            armour: [
-                [
-                    "Advanced Ceramite Bonding",
-                    "Lightened Ceramite Compound",
-                    "Ceremite Void Hardening"
-                ],
-                {}
-            ],
-        }
-    ],
-};
+technologies_known = [];
+
 // ** STC values **,
 stc_wargear = 0;
 stc_vehicles = 0;
@@ -971,6 +850,8 @@ imperial_factions = [
     eFACTION.INQUISITION,
     eFACTION.ECCLESIARCHY
 ];
+faction = array_create(14, "");
+disposition = array_create(14, 0);
 faction[0] = "";
 disposition[0] = 0;
 faction[eFACTION.PLAYER] = "Player";
@@ -1265,7 +1146,7 @@ serialize = function() {
         chaos_gods,
         master_of_forge,
         stc_research,
-        production_research,
+        technologies_known,
         player_forge_data,
         end_turn_insights,
         recruit_data,
@@ -1976,5 +1857,7 @@ remov = string_length(string(temp[65]) + string(temp[66]) + string(temp[67]) + s
 instance_create(0, 0, obj_tooltip);
 
 action_set_alarm(2, 0);
+
+armamentarium = new Armamentarium();
 
 //**! DO NOT PUT THINGS AT THE BOTTOM OF THIS FILE IF YOU NEED THEM TO WORK AFTER LOADING FROM A SAVE, SEE LINE 1550 -ish   */ 

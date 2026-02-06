@@ -93,3 +93,13 @@ function CountingMap() constructor {
         return struct_exists(map, _key) ? map[$ _key] : 0;
     };
 }
+
+/// @description Copies a key from source to target if it exists in the source
+/// @param {struct} source - The struct to read from
+/// @param {struct} target - The struct to write to
+/// @param {string} key - The key to check and copy
+function struct_copy_if_exists(source, target, key) {
+    if (struct_exists(source, key)) {
+        target[$ key] = source[$ key];
+    }
+}

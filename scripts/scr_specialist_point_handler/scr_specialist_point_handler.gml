@@ -349,36 +349,45 @@ function SpecialistPointHandler() constructor {
             if (i + 1 > array_length(forge_queue)) {
                 break;
             }
+
             draw_set_color(c_gray);
             if (scr_hit(xx, yy + item_gap, xx + _box_width, yy + item_gap + 20)) {
                 draw_set_color(c_white);
             }
-            if (is_string(forge_queue[i].name)) {
-                draw_text(xx, yy + item_gap, string_hash_to_newline(forge_queue[i].name));
-                draw_text(xx + 166, yy + item_gap, forge_queue[i].count);
-                if (forge_queue[i].ordered == obj_controller.turn) {
-                    if (forge_queue[i].count > 1) {
-                        if (point_and_click(draw_unit_buttons([xx + 141, yy + item_gap], "-", [0.75, 0.75], c_red))) {
-                            var unit_cost = forge_queue[i].forge_points / forge_queue[i].count;
-                            forge_queue[i].count--;
-                            forge_queue[i].forge_points -= unit_cost;
-                        }
-                    }
-                    if (forge_queue[i].count < 100) {
-                        if (point_and_click(draw_unit_buttons([xx + 180, yy + item_gap], "+", [0.75, 0.75], c_green))) {
-                            var unit_cost = forge_queue[i].forge_points / forge_queue[i].count;
-                            forge_queue[i].count++;
-                            forge_queue[i].forge_points += unit_cost;
-                        }
+
+            var _forge_order = forge_queue[i];
+            var _display_name = "ERROR";
+
+            if (struct_exists(_forge_order, "item")) {
+                /// @type {Struct.ShopItem}
+                var _shop_item = _forge_order.item;
+                _display_name = _shop_item.display_name ?? "ERROR";
+            }
+
+            _display_name = (is_string(_display_name)) ? _display_name : "ERROR";
+
+            draw_text(xx, yy + item_gap, _display_name);
+            draw_text(xx + 166, yy + item_gap, _forge_order.count);
+
+            if (_forge_order.ordered == obj_controller.turn) {
+                if (_forge_order.count > 1) {
+                    if (point_and_click(draw_unit_buttons([xx + 141, yy + item_gap], "-", [0.75, 0.75], c_red))) {
+                        var _unit_cost = _forge_order.forge_points / _forge_order.count;
+                        _forge_order.count--;
+                        _forge_order.forge_points -= _unit_cost;
                     }
                 }
-            } else if (is_array(forge_queue[i].name)) {
-                if (forge_queue[i].name[0] == "research") {
-                    draw_text(xx, yy + item_gap, forge_queue[i].name[1]);
+                if (_forge_order.count < 100) {
+                    if (point_and_click(draw_unit_buttons([xx + 180, yy + item_gap], "+", [0.75, 0.75], c_green))) {
+                        var _unit_cost = _forge_order.forge_points / _forge_order.count;
+                        _forge_order.count++;
+                        _forge_order.forge_points += _unit_cost;
+                    }
                 }
             }
-            draw_text(xx + 271, yy + item_gap, string_hash_to_newline(forge_queue[i].forge_points));
-            total_eta += ceil(forge_queue[i].forge_points / forge_points);
+
+            draw_text(xx + 271, yy + item_gap, string_hash_to_newline(_forge_order.forge_points));
+            total_eta += ceil(_forge_order.forge_points / forge_points);
             draw_text(xx + 376, yy + item_gap, $"{total_eta} turns");
             if (point_and_click(draw_unit_buttons([xx + 491, yy + item_gap], "X", [0.75, 0.75], c_red))) {
                 array_delete(forge_queue, i, 1);
@@ -428,52 +437,49 @@ function SpecialistPointHandler() constructor {
         }
     };
 
-    static scr_forge_item = function(item) {
+    static scr_forge_item = function(_forge_order) {
         var master_craft_count = 0;
         var quality_string = "";
         var normal_count = 0;
-        for (var s = 0; s < item.count; s++) {
+        for (var s = 0; s < _forge_order.count; s++) {
             if (master_craft_chance && (irandom(100) < master_craft_chance)) {
                 master_craft_count++;
             } else {
                 normal_count++;
             }
         }
-        scr_add_item(item.name, normal_count);
+        scr_add_item(_forge_order.item.name, normal_count);
         if (master_craft_count > 0) {
-            scr_add_item(item.name, master_craft_count, "master_crafted");
+            scr_add_item(_forge_order.item.name, master_craft_count, "master_crafted");
             var numerical_string = master_craft_count == 1 ? "was" : "were";
             quality_string = $"X{master_craft_count} {numerical_string} Completed to a Master Crafted standard";
         } else {
             quality_string = $"all were completed to a standard STC compliant quality";
         }
-        scr_popup("Forge Completed", $"{item.name} X{item.count} construction finished {quality_string}", "", "");
+        scr_popup("Forge Completed", $"{_forge_order.item.display_name} X{_forge_order.count} construction finished {quality_string}", "", "");
     };
 
-    static scr_evaluate_forge_item_completion = function(item) {
-        if (is_string(item.name)) {
-            var _vehicles = [
-                "Rhino",
-                "Predator",
-                "Land Raider",
-                "Whirlwind",
-                "Land Speeder"
-            ];
-            var is_vehicle = array_contains(_vehicles, item.name);
+    static scr_evaluate_forge_item_completion = function(_forge_order) {
+        if (_forge_order.item.forge_type == "normal") {
+            var is_vehicle = variable_struct_exists(global.vehicles, _forge_order.item.name);
             if (!is_vehicle) {
-                scr_forge_item(item);
+                scr_forge_item(_forge_order);
             } else {
-                repeat (item.count) {
-                    var vehicle = scr_add_vehicle(item.name, obj_controller.new_vehicles);
+                var _build_locs = [];
+
+                repeat (_forge_order.count) {
+                    var vehicle = scr_add_vehicle(_forge_order.item.name, obj_controller.new_vehicles);
                     var build_loc = array_random_element(obj_controller.player_forge_data.vehicle_hanger);
                     obj_ini.veh_loc[vehicle[0]][vehicle[1]] = build_loc[0];
                     obj_ini.veh_wid[vehicle[0]][vehicle[1]] = build_loc[1];
                     obj_ini.veh_lid[vehicle[0]][vehicle[1]] = -1;
+                    array_push(_build_locs, $"{build_loc[0]} {build_loc[1]}");
                 }
-                scr_popup("Forge Completed", $"{item.name} X{item.count} construction finished Vehicles Waiting at hanger on {build_loc[0]} {build_loc[1]}", "", "");
+
+                scr_popup("Forge Completed", $"{_forge_order.item.display_name} x{_forge_order.count} construction finished! Vehicles waiting at hanger(s) on {string_join_ext(", ", _build_locs)}", "", "");
             }
-        } else if (is_array(item.name)) {
-            scr_advance_research(item);
+        } else if (_forge_order.item.forge_type == "research") {
+            scr_advance_research(_forge_order.item.name);
         }
     };
     /*static apothecary_points_calc(){

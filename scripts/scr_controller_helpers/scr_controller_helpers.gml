@@ -278,8 +278,9 @@ function scr_toggle_armamentarium() {
                 if (scr_role_count("Forge Master", "0") == 0) {
                     menu_adept = 1;
                 }
+                menu = eMENU.ARMAMENTARIUM;
                 hide_banner = 1;
-                set_up_armentarium();
+                armamentarium.refresh_catalog();
             }
         }
     });

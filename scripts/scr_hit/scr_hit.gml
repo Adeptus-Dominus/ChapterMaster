@@ -41,7 +41,9 @@ function _point_and_click_logic(_rect, _cooldown = 60, _lock_bypass = false, _in
     }
 
     if (_active_controller != noone && _active_controller.cooldown > 0) {
-        global.logger.warning($"Ignored click for cooldown, {_active_controller.cooldown} steps remaining!");
+        if (is_debug_overlay_open()) {
+            global.logger.warning($"Ignored click for cooldown, {_active_controller.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+        }
         return false;
     }
 
@@ -60,7 +62,7 @@ function _point_and_click_logic(_rect, _cooldown = 60, _lock_bypass = false, _in
         _active_controller.cooldown = _cooldown * (delta_time / 1000000);
 
         if (is_debug_overlay_open()) {
-            global.logger.debug($"Cooldown Set via {_mode} Click! {array_to_string_list(debug_get_callstack(), true)}");
+            global.logger.debug($"Cooldown Set via {_mode} Click!\n{array_to_string_list(debug_get_callstack(), true)}");
         }
     }
 
@@ -68,7 +70,6 @@ function _point_and_click_logic(_rect, _cooldown = 60, _lock_bypass = false, _in
         global.logger.debug($"{_mode} Click Detected at: x: {_mouse_coords[0]} y: {_mouse_coords[1]}");
     }
 
-    return true;
     return true;
 }
 
@@ -108,46 +109,43 @@ function scr_click_left(cooldown = 60, lock_bypass = false) {
 
     var controller_exist = instance_exists(obj_controller);
     if (controller_exist && obj_controller.cooldown > 0) {
-        global.logger.warning($"Ignored click for cooldown, {obj_controller.cooldown} steps remaining!");
-        global.logger.warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+        if (is_debug_overlay_open()) {
+            global.logger.warning($"Ignored click for cooldown, {obj_controller.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+        }
         return false;
     } else if (controller_exist && cooldown > 0) {
-        // global.logger.info("scr_click_left: clicked and set cooldown!");
-        // global.logger.debug($"{array_to_string_list(debug_get_callstack())}");
         obj_controller.cooldown = cooldown * delta_time / 1000000;
         if (is_debug_overlay_open()) {
-            global.logger.debug($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+            global.logger.debug($"Cooldown Set!\n{array_to_string_list(debug_get_callstack(), true)}");
         }
     } else if (!controller_exist) {
         var main_menu_exists = instance_exists(obj_main_menu);
         var creation_screen_exists = instance_exists(obj_creation);
         if (main_menu_exists) {
             if (obj_main_menu.cooldown > 0) {
-                global.logger.warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!");
-                global.logger.warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+                if (is_debug_overlay_open()) {
+                    global.logger.warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+                }
                 return false;
             } else if (cooldown > 0) {
                 obj_main_menu.cooldown = cooldown * delta_time / 1000000;
                 if (is_debug_overlay_open()) {
-                    global.logger.debug($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+                    global.logger.debug($"Cooldown Set!\n{array_to_string_list(debug_get_callstack(), true)}");
                 }
             }
         } else if (creation_screen_exists) {
             if (obj_creation.cooldown > 0) {
-                global.logger.warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!");
-                global.logger.warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+                if (is_debug_overlay_open()) {
+                    global.logger.warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+                }
                 return false;
             } else if (cooldown > 0) {
                 obj_creation.cooldown = cooldown * delta_time / 1000000;
                 if (is_debug_overlay_open()) {
-                    global.logger.debug($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+                    global.logger.debug($"Cooldown Set!\n{array_to_string_list(debug_get_callstack(), true)}");
                 }
             }
         }
-    }
-
-    if (is_debug_overlay_open()) {
-        global.logger.debug($"Mouse Clicked! {array_to_string_list(debug_get_callstack(), true)}");
     }
 
     return mouse_clicked;
@@ -161,22 +159,25 @@ function mouse_button_held(_button = mb_left) {
 
     var controller_exist = instance_exists(obj_controller);
     if (controller_exist && obj_controller.cooldown > 0) {
-        global.logger.warning($"Ignored click for cooldown, {obj_controller.cooldown} steps remaining!");
-        global.logger.warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+        if (is_debug_overlay_open()) {
+            global.logger.warning($"Ignored click for cooldown, {obj_controller.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+        }
         return false;
     } else if (!controller_exist) {
         var main_menu_exists = instance_exists(obj_main_menu);
         var creation_screen_exists = instance_exists(obj_creation);
         if (main_menu_exists) {
             if (obj_main_menu.cooldown > 0) {
-                global.logger.warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!");
-                global.logger.warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+                if (is_debug_overlay_open()) {
+                    global.logger.warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+                }
                 return false;
             }
         } else if (creation_screen_exists) {
             if (obj_creation.cooldown > 0) {
-                global.logger.warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!");
-                global.logger.warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+                if (is_debug_overlay_open()) {
+                    global.logger.warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+                }
                 return false;
             }
         }
@@ -201,9 +202,4 @@ function return_mouse_consts() {
 function mouse_distance_less(xx, yy, distance) {
     var _mouse_consts = return_mouse_consts();
     return point_distance(xx, yy, _mouse_consts[0], _mouse_consts[1]) <= distance;
-}
-
-function return_mouse_consts_tooltip() {
-    var consts = return_mouse_consts();
-    return [consts[0], consts[1]];
 }

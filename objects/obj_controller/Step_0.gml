@@ -161,9 +161,6 @@ try {
         if (obj_temp_build.isnew == 1) {
             menu = 60;
         }
-        with (obj_shop) {
-            instance_destroy();
-        }
         with (obj_managment_panel) {
             instance_destroy();
         }
@@ -397,15 +394,6 @@ try {
     var high = "";
     var stop = 0;
     // Which menu is highlighted
-
-    if ((menu == 14) && (!instance_exists(obj_shop))) {
-        instance_create(0, 0, obj_shop);
-    }
-    if ((menu != 14) && instance_exists(obj_shop)) {
-        with (obj_shop) {
-            instance_destroy();
-        }
-    }
 
     if (instance_exists(obj_ingame_menu) || instance_exists(obj_saveload)) {
         exit;

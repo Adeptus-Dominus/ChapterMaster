@@ -198,22 +198,55 @@ function LabeledIcon(icon, text, x1 = 0, y1 = 0, data = false) constructor {
     };
 }
 
-/// @function draw_sprite_as_button(position, choice_sprite, scale, hover_sprite)
-/// @description Draws a sprite as a clickable button, returning its bounding box.
-/// @param {array} position [x, y] top-left corner.
-/// @param {sprite} choice_sprite Sprite to draw.
-/// @param {array} [scale=[1,1]] Scale factors [x,y].
-/// @param {sprite} [hover_sprite=-1] Optional hover sprite.
-/// @returns {array} [x1, y1, x2, y2] bounding box.
-function draw_sprite_as_button(position, choice_sprite, scale = [1, 1], hover_sprite = -1) {
-    var _pos = [
-        position[0],
-        position[1],
-        position[0] + (sprite_get_width(choice_sprite) * scale[0]),
-        position[1] + (sprite_get_height(choice_sprite) * scale[1])
-    ];
-    draw_sprite_ext(choice_sprite, 0, position[0], position[1], scale[0], scale[1], 0, c_white, scr_hit(_pos) ? 1 : 0.9);
-    return _pos;
+/// @desc A clickable sprite-based button component that manages its own state and hover logic.
+/// @param {Asset.GMSprite} _sprite The default sprite to display.
+/// @param {Asset.GMSprite} _hover_sprite Optional sprite to show when hovered.
+/// @returns {Struct.SpriteButton}
+function SpriteButton(_sprite, _hover_sprite = -1) constructor {
+    sprite = _sprite;
+    hover_sprite = _hover_sprite;
+
+    scale_x = 1.0;
+    scale_y = 1.0;
+    alpha_hover = 1.0;
+    alpha_idle = 0.8;
+    alpha_disabled = 0.5;
+    width = sprite_get_width(_sprite);
+    height = sprite_get_height(_sprite);
+
+    sound_click = snd_click;
+    tooltip_text = "";
+    tooltip_w = 300;
+
+    is_hovered = false;
+    is_clicked = false;
+
+    /// @desc Updates interaction state and draws the button.
+    /// @param {real} _x The X position to draw at.
+    /// @param {real} _y The Y position to draw at.
+    /// @param {bool} _enabled If false, interaction is disabled and the button appears faded.
+    static draw = function(_x, _y, _enabled = true) {
+        var _x2 = _x + (width * scale_x);
+        var _y2 = _y + (height * scale_y);
+
+        is_hovered = scr_hit(_x, _y, _x2, _y2);
+        is_clicked = _enabled && is_hovered && scr_click_left();
+
+        if (is_hovered) {
+            if (tooltip_text != "") {
+                tooltip_draw(tooltip_text, tooltip_w);
+            }
+
+            if (is_clicked && sound_click != -1) {
+                audio_play_sound(sound_click, 10, false);
+            }
+        }
+
+        var _draw_sprite = (_enabled && is_hovered && hover_sprite != -1) ? hover_sprite : sprite;
+        var _draw_alpha = _enabled ? (is_hovered ? alpha_hover : alpha_idle) : alpha_disabled;
+
+        draw_sprite_ext(_draw_sprite, 0, _x, _y, scale_x, scale_y, 0, c_white, _draw_alpha);
+    };
 }
 
 /// @function draw_unit_buttons(position, text, size_mod, colour, halign, font, alpha_mult, bg, bg_color)
@@ -669,49 +702,106 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
     };
 }
 
-/// @function drop_down(selection, draw_x, draw_y, options, open_marker)
-/// @description Renders a drop-down selection list and updates choice.
-/// @param {string} selection Current selected option.
-/// @param {real} draw_x X position.
-/// @param {real} draw_y Y position.
-/// @param {array} options List of string options.
-/// @param {bool} open_marker Whether dropdown is currently open.
-/// @returns {array} [new_selection, open_marker]
-function drop_down(selection, draw_x, draw_y, options, open_marker) {
-    add_draw_return_values();
-    if (selection != "") {
-        var drop_down_area = draw_unit_buttons([draw_x, draw_y], selection, [1, 1], c_green);
-        draw_set_color(c_red);
-        if (array_length(options) > 1) {
-            if (scr_hit(drop_down_area)) {
-                obj_controller.current_target = true;
-                var roll_down_offset = 4 + string_height(selection);
-                for (var col = 0; col < array_length(options); col++) {
-                    if (options[col] == selection) {
-                        continue;
-                    }
-                    var cur_option = draw_unit_buttons([draw_x, draw_y + roll_down_offset], options[col], [1, 1], c_red,,,, true);
-                    if (point_and_click(cur_option)) {
-                        selection = options[col];
-                        open_marker = false;
-                    }
-                    roll_down_offset += string_height(options[col]) + 4;
-                }
-                if (!scr_hit(draw_x, draw_y, draw_x + 5 + string_width(selection), draw_y + roll_down_offset)) {
-                    open_marker = false;
-                    if (obj_controller.current_target) {
-                        obj_controller.current_target = false;
-                    }
-                }
-            } else {
-                obj_controller.current_target = false;
-            }
+/// @desc A modular UI dropdown component for selecting options from a list.
+/// @param {Array<Struct>} _options Array of {label, value} structs.
+/// @param {real} _width Width of the dropdown.
+/// @returns {Struct.UIDropdown}
+function UIDropdown(_options, _width = 180) constructor {
+    options = _options;
+    width = _width;
+    height = 28;
+    is_open = false;
+    selected_index = 0;
+
+    /// @desc Draws the dropdown and handles interactions.
+    /// @param {real} _x X position.
+    /// @param {real} _y Y position.
+    /// @returns {any} The value of the selected option if changed, otherwise undefined.
+    static draw = function(_x, _y) {
+        var _result = undefined;
+        var _main_rect = [
+            _x,
+            _y,
+            _x + width,
+            _y + height
+        ];
+        var _is_hovering_main = scr_hit(_main_rect[0], _main_rect[1], _main_rect[2], _main_rect[3]);
+
+        // Draw Main Box
+        add_draw_return_values();
+        draw_set_color(c_black);
+        draw_rectangle_array(_main_rect, false);
+        draw_set_color(_is_hovering_main ? c_white : c_gray);
+        draw_rectangle_array(_main_rect, true);
+
+        // Draw Current Selection
+        draw_set_font(fnt_40k_14b);
+        draw_set_halign(fa_left);
+        draw_text(_x + 8, _y + 6, options[selected_index].label);
+
+        // Draw Arrow
+        var _arrow_char = is_open ? "▲" : "▼";
+        draw_text(_x + width - 20, _y + 6, _arrow_char);
+
+        if (_is_hovering_main && scr_click_left()) {
+            is_open = !is_open;
+            audio_play_sound(snd_click, 10, false);
         }
-    }
 
-    pop_draw_return_values();
+        if (!is_open) {
+            pop_draw_return_values();
+            return _result;
+        }
 
-    return [selection, open_marker];
+        // Draw Options List
+        var _opt_height = 24;
+        var _total_opt_height = array_length(options) * _opt_height;
+        var _list_rect = [
+            _x,
+            _y + height,
+            _x + width,
+            _y + height + _total_opt_height
+        ];
+
+        // Background for list
+        draw_set_alpha(0.95);
+        draw_set_color(c_black);
+        draw_rectangle_array(_list_rect, false);
+        draw_set_alpha(1.0);
+        draw_set_color(c_white);
+        draw_rectangle_array(_list_rect, true);
+
+        for (var i = 0; i < array_length(options); i++) {
+            var _oy = _y + height + (i * _opt_height);
+            var _is_hovering_opt = scr_hit(_x, _oy, _x + width, _oy + _opt_height);
+
+            if (_is_hovering_opt) {
+                draw_set_alpha(0.2);
+                draw_rectangle(_x + 1, _oy, _x + width - 1, _oy + _opt_height, false);
+                draw_set_alpha(1.0);
+
+                if (scr_click_left()) {
+                    selected_index = i;
+                    is_open = false;
+                    _result = options[i].value;
+                    audio_play_sound(snd_click, 10, false);
+                }
+            }
+
+            draw_set_color(_is_hovering_opt ? c_white : c_gray);
+            draw_set_font(fnt_40k_12);
+            draw_text(_x + 10, _oy + 4, options[i].label);
+        }
+
+        // Close if clicking outside
+        if (scr_click_left() && !_is_hovering_main && !scr_hit(_list_rect[0], _list_rect[1], _list_rect[2], _list_rect[3])) {
+            is_open = false;
+        }
+
+        pop_draw_return_values();
+
+        return _result;
+    };
 }
 
 /// @function MultiSelect(options_array, title, data)
@@ -1239,7 +1329,7 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords) {
 /// @param {real} _y The default Y coordinate for the button.
 /// @param {Constant.VirtualKey} _hot_key The keyboard constant used for Alt + Key activation.
 /// @param {function} _on_click The callback function to execute upon activation.
-function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x = 0, _y = 0, _hot_key = -1, _on_click) constructor {
+function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x = 0, _y = 0, _hot_key = -1, _on_click = undefined) constructor {
     base_sprite = _sprite;
     hover_sprite = _sprite_hover;
     xx = _x;

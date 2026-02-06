@@ -1,0 +1,22 @@
+{
+    "Battle Barge": {
+        "renegade_buy": false,
+        "value": 20000
+    },
+    "Cyclonic Torpedo": {
+        "renegade_buy": true,
+        "value": 0
+    },
+    "Gladius": {
+        "renegade_buy": false,
+        "value": 2250
+    },
+    "Hunter": {
+        "renegade_buy": false,
+        "value": 3000
+    },
+    "Strike Cruiser": {
+        "renegade_buy": false,
+        "value": 8000
+    }
+}
