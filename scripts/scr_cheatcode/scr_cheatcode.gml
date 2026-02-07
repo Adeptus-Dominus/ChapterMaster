@@ -42,8 +42,8 @@ function scr_cheatcode(argument0) {
             switch (cheat_code) {
                 case "finishforge":
                     with (obj_controller) {
-                        forge_points = 1000000;
-                        forge_queue_logic();
+                        specialist_point_handler.forge_points = 1000000;
+                        specialist_point_handler.forge_queue_logic();
                     }
                     break;
                 case "newapoth":
