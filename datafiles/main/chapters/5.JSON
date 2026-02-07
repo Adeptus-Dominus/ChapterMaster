@@ -1,4 +1,5 @@
 {
+    "$schema": "./chapter_schema.json",
     "chapter": {
         "id": 5,
         "name": "Blood Angels",
@@ -53,7 +54,7 @@
             "trim": "Lighter Black",
             "lens": "Lime",
             "weapon": "Black",
-            "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
+            "special": 0 // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours // todo update ref for new name
         },
     "full_liveries":[
@@ -817,11 +818,13 @@
             "mobi": "Jump Pack",
             "armour": ""
         },
-        "artifact": {
-            "name": "Axe Mortalis",
-            "description": "An immensely powerful Power Axe, the Axe Mortalis, forged in the days immediately after the end of the Horus Heresy.",
-            "base_weapon_type": "Power Axe"
-        },
+        "artifact": [
+            {
+                "name": "Axe Mortalis",
+                "description": "An immensely powerful Power Axe, the Axe Mortalis, forged in the days immediately after the end of the Horus Heresy.",
+                "base_weapon_type": "Power Axe"
+            }
+        ],
         "company_titles": [
             "",
             "Archangels",
