@@ -14,7 +14,9 @@
         },
         "second_profiles": [
             "Twin Linked Bolters"
-        ]
+        ],
+        "value": 35,
+        "requires_to_forge": ["combi_1"]
     },
     "Conversion Beamer Pack": {
         "abbreviation": "CnvBmr",
