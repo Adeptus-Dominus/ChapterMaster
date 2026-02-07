@@ -196,10 +196,10 @@ function Armamentarium() constructor {
 
         forge_cost_mod = max(0.1, 1.0 - (discount_stc / 100));
 
-        var _catalog_size = array_length(master_catalog);
-        for (var i = 0; i < _catalog_size; i++) {
+        for (var i = 0, len = array_length(master_catalog); i < len; i++) {
             /// @type {Struct.ShopItem}
             var _item = master_catalog[i];
+
             if (_item.area != shop_type) {
                 continue;
             }
@@ -210,7 +210,18 @@ function Armamentarium() constructor {
             _item.update_best_seller(_item.sellers, faction_modifiers, discount_rogue_trader);
             _item.calculate_costs(is_in_forge, forge_cost_mod);
 
-            var _is_visible = (_item.stocked > 0 || (!is_in_forge && _item.buyable)) || (is_in_forge && _item.forgable);
+            var _is_visible = (_item.stocked > 0);
+            
+            if (is_in_forge) {
+                _is_visible = (_item.forgable || global.cheat_debug);
+            } else {
+                _is_visible = (_item.buyable || global.cheat_debug);
+            }
+
+            if (shop_type == "technologies" && array_contains(obj_controller.technologies_known, _item.name)) {
+                _is_visible = false;
+            }
+
             if (_is_visible) {
                 array_push(shop_items[$ shop_type], _item);
             }
@@ -436,7 +447,7 @@ function Armamentarium() constructor {
         shop_type = _new_type;
         page_mod = 0;
 
-        for (var i = 0; i < array_length(category_dropdown.options); i++) {
+        for (var i = 0, len = array_length(category_dropdown.options); i < len; i++) {
             if (category_dropdown.options[i].value == _new_type) {
                 category_dropdown.selected_index = i;
                 break;
@@ -483,12 +494,6 @@ function Armamentarium() constructor {
     };
 
     static _draw_slate_contents = function() {
-        var _list = shop_items[$ shop_type];
-        var _items_count = array_length(_list);
-        var _items_per_page = 27;
-        var _start_index = _items_per_page * page_mod;
-        var _draw_y_local = 157;
-
         draw_set_font(fnt_aldrich_12);
         draw_set_color(CM_GREEN_COLOR);
         draw_text(962, 159, "Name");
@@ -497,7 +502,14 @@ function Armamentarium() constructor {
         }
         draw_text(1410, 159, $"{is_in_forge ? "FP" : "RP"} Cost");
 
+        var _list = shop_items[$ shop_type];
+        var _draw_y_local = 157;
+
+        var _items_per_page = 27;
+        var _start_index = _items_per_page * page_mod;
+        var _items_count = array_length(_list);
         var _end_index = min(_start_index + _items_per_page, _items_count);
+
         for (var i = _start_index; i < _end_index; i++) {
             /// @type {Struct.ShopItem}
             var _item = _list[i];
@@ -564,7 +576,7 @@ function Armamentarium() constructor {
     /// @param {real} _count Quantity for the action.
     static _draw_action_buttons = function(_item, _y, _cost, _count) {
         if (is_in_forge) {
-            var _can_forge = _item.meets_requirements;
+            var _can_forge = _item.meets_requirements || global.cheat_debug;
 
             forge_button.tooltip_text = _can_forge ? "Add to Forge Queue" : _item.get_missing_technologies_tooltip();
             forge_button.draw(1530, _y + 2, _can_forge);
@@ -581,8 +593,8 @@ function Armamentarium() constructor {
             return;
         }
 
-        var _can_afford = obj_controller.requisition >= _cost;
-        var _can_buy = _item.buyable;
+        var _can_afford = (obj_controller.requisition >= _cost) || global.cheat_debug;
+        var _can_buy = _item.buyable || global.cheat_debug;
 
         buy_button.tooltip_text = !_can_buy ? "Unavailable for purchase" : (_can_afford ? "Buy" : "Insufficient Requisition");
         buy_button.draw(1530, _y + 2, _can_buy && _can_afford);
