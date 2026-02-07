@@ -330,12 +330,15 @@ function Armamentarium() constructor {
         switch (shop_type) {
             case "weapons":
             case "armour":
+            case "gear":
+            case "mobility":
                 discount_stc = obj_controller.stc_wargear * 5;
                 if (discount_stc > 0) {
                     global_cost_tooltip += $"Wargear STC: -{discount_stc}%\n";
                 }
                 break;
             case "vehicles":
+            case "vehicle_gear":
                 discount_stc = (obj_controller.stc_vehicles * 3) + (array_length(obj_controller.player_forge_data.vehicle_hanger) * 3);
                 if (discount_stc > 0) {
                     global_cost_tooltip += $"Vehicle STC & Hangars: -{discount_stc}%\n";
