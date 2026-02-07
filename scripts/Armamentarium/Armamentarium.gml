@@ -210,13 +210,13 @@ function Armamentarium() constructor {
             _item.update_best_seller(_item.sellers, faction_modifiers, discount_rogue_trader);
             _item.calculate_costs(is_in_forge, forge_cost_mod);
 
-            var _is_visible = (_item.stocked > 0);
-            
+            var _is_visible = _item.stocked > 0;
+
             if (is_in_forge) {
-                _is_visible = (_item.forgable || global.cheat_debug);
+                _is_visible = _item.forgable || global.cheat_debug;
             } else {
-                _is_visible = (_item.buyable || global.cheat_debug);
-            }
+                _is_visible = (_item.buyable || _item.stocked > 0) || global.cheat_debug;
+            }            
 
             if (shop_type == "technologies" && array_contains(obj_controller.technologies_known, _item.name)) {
                 _is_visible = false;
@@ -775,12 +775,12 @@ function Armamentarium() constructor {
     static _initialize_unlock_tooltips = function() {
         var _unlock_map = {};
         var _catalog_size = array_length(master_catalog);
-    
+
         for (var i = 0; i < _catalog_size; i++) {
             /// @type {Struct.ShopItem}
             var _item = master_catalog[i];
             var _reqs = _item.requires_to_forge;
-    
+
             for (var j = 0, _rlen = array_length(_reqs); j < _rlen; j++) {
                 var _tech_key = _reqs[j];
                 if (!variable_struct_exists(_unlock_map, _tech_key)) {
@@ -789,29 +789,28 @@ function Armamentarium() constructor {
                 array_push(_unlock_map[$ _tech_key], _item.display_name);
             }
         }
-    
+
         for (var i = 0; i < _catalog_size; i++) {
             var _item = master_catalog[i];
-    
+
             if (_item.area != "technologies") {
                 continue;
             }
-    
+
             var _unlocks = _unlock_map[$ _item.name] ?? [];
-    
+
             if (array_length(_unlocks) == 0) {
                 continue;
             }
-    
+
             if (array_length(_unlocks) > 0) {
                 array_sort(_unlocks, true);
-    
+
                 var _unlock_text = "\n\nRequired for:\n- " + string_join_ext("\n- ", _unlocks);
                 _item.item_tooltip += _unlock_text;
             }
         }
     };
-    
 
     // Initialize on creation
     initialize_master_catalog();

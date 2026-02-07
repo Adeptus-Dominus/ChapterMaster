@@ -276,24 +276,24 @@ for (var k = 0, _kl = array_length(_role_keys); k < _kl; k++) {
 for (var i = 101; i < 103; i++) {
     var _target_size = _max_id + 1;
 
-    r_role[i]   = array_create(_target_size, "");
-    r_wep1[i]   = array_create(_target_size, "");
-    r_wep2[i]   = array_create(_target_size, "");
+    r_role[i] = array_create(_target_size, "");
+    r_wep1[i] = array_create(_target_size, "");
+    r_wep2[i] = array_create(_target_size, "");
     r_armour[i] = array_create(_target_size, "");
-    r_mobi[i]   = array_create(_target_size, "");
-    r_gear[i]   = array_create(_target_size, "");
+    r_mobi[i] = array_create(_target_size, "");
+    r_gear[i] = array_create(_target_size, "");
 
     for (var j = 0, jl = array_length(_role_keys); j < jl; j++) {
         var _key = _role_keys[j];
         var _id = real(_key);
         var _data = _roles_data[$ _key];
 
-        r_role[i][_id]   = _data.name;
-        r_wep1[i][_id]   = _data.w1;
-        r_wep2[i][_id]   = _data.w2;
+        r_role[i][_id] = _data.name;
+        r_wep1[i][_id] = _data.w1;
+        r_wep2[i][_id] = _data.w2;
         r_armour[i][_id] = _data.arm;
-        r_mobi[i][_id]   = _data.mob;
-        r_gear[i][_id]   = _data.gear;
+        r_mobi[i][_id] = _data.mob;
+        r_gear[i][_id] = _data.gear;
     }
 }
 
@@ -903,7 +903,7 @@ faction[eFACTION.NECRONS] = "Necrons";
 disposition[eFACTION.ELDAR] = -10;
 disposition[eFACTION.ORK] = -40;
 disposition[eFACTION.TAU] = 0;
-disposition[eFACTION.TYRANIDS] = irandom_range(40, 100) == 1;
+disposition[eFACTION.TYRANIDS] = -irandom_range(40, 100);
 disposition[eFACTION.CHAOS] = -70;
 disposition[eFACTION.HERETICS] = -70;
 disposition[eFACTION.GENESTEALER] = 0;

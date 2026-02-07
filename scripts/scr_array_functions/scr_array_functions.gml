@@ -325,7 +325,7 @@ function array_create_2d(_rows, _cols, _default) {
 
     for (var i = 0; i < _rows; i++) {
         var _inner_array = array_create(_cols);
-    
+
         if (is_struct(_default) || is_array(_default)) {
             for (var j = 0; j < _cols; j++) {
                 _inner_array[j] = variable_clone(_default);
@@ -340,4 +340,4 @@ function array_create_2d(_rows, _cols, _default) {
     }
 
     return _outer_array;
-};
+}
