@@ -441,6 +441,9 @@ function SpecialistPointHandler() constructor {
         var master_craft_count = 0;
         var quality_string = "";
         var normal_count = 0;
+        /// @type {Struct.ShopItem}
+        var _item = _forge_order.item;
+
         for (var s = 0; s < _forge_order.count; s++) {
             if (master_craft_chance && (irandom(100) < master_craft_chance)) {
                 master_craft_count++;
@@ -448,27 +451,33 @@ function SpecialistPointHandler() constructor {
                 normal_count++;
             }
         }
-        scr_add_item(_forge_order.item.name, normal_count);
+
+        scr_add_item(_item.name, normal_count);
+
         if (master_craft_count > 0) {
-            scr_add_item(_forge_order.item.name, master_craft_count, "master_crafted");
+            scr_add_item(_item.name, master_craft_count, "master_crafted");
             var numerical_string = master_craft_count == 1 ? "was" : "were";
             quality_string = $"X{master_craft_count} {numerical_string} Completed to a Master Crafted standard";
         } else {
             quality_string = $"all were completed to a standard STC compliant quality";
         }
-        scr_popup("Forge Completed", $"{_forge_order.item.display_name} X{_forge_order.count} construction finished {quality_string}", "", "");
+
+        scr_popup("Forge Completed", $"{_item.display_name} X{_forge_order.count} construction finished {quality_string}", "", "");
     };
 
     static scr_evaluate_forge_item_completion = function(_forge_order) {
-        if (_forge_order.item.forge_type == "normal") {
-            var is_vehicle = variable_struct_exists(global.vehicles, _forge_order.item.name);
+        /// @type {Struct.ShopItem}
+        var _item = _forge_order.item;
+
+        if (_item.forge_type == "normal") {
+            var is_vehicle = variable_struct_exists(global.vehicles, _item.name);
             if (!is_vehicle) {
                 scr_forge_item(_forge_order);
             } else {
                 var _build_locs = [];
 
                 repeat (_forge_order.count) {
-                    var vehicle = scr_add_vehicle(_forge_order.item.name, obj_controller.new_vehicles);
+                    var vehicle = scr_add_vehicle(_item.name, obj_controller.new_vehicles);
                     var build_loc = array_random_element(obj_controller.player_forge_data.vehicle_hanger);
                     obj_ini.veh_loc[vehicle[0]][vehicle[1]] = build_loc[0];
                     obj_ini.veh_wid[vehicle[0]][vehicle[1]] = build_loc[1];
@@ -476,10 +485,11 @@ function SpecialistPointHandler() constructor {
                     array_push(_build_locs, $"{build_loc[0]} {build_loc[1]}");
                 }
 
-                scr_popup("Forge Completed", $"{_forge_order.item.display_name} x{_forge_order.count} construction finished! Vehicles waiting at hanger(s) on {string_join_ext(", ", _build_locs)}", "", "");
+                scr_popup("Forge Completed", $"{_item.display_name} x{_forge_order.count} construction finished! Vehicles waiting at hanger(s) on {string_join_ext(", ", _build_locs)}", "", "");
             }
-        } else if (_forge_order.item.forge_type == "research") {
-            scr_advance_research(_forge_order.item.name);
+        } else if (_item.forge_type == "research") {
+            scr_advance_research(_item.name);
+            scr_popup("Research Completed", $"Research of {_item.display_name} complete", "", "");
         }
     };
     /*static apothecary_points_calc(){
