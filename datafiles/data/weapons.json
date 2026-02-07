@@ -83,12 +83,17 @@
         "melee_hands": 0,
         "range": 14,
         "ranged_hands": 2,
+        "requires_to_forge": [
+            "heavy_1",
+            "solid_projectile_1"
+        ],
         "spli": 12,
         "tags": [
             "heavy_ranged",
             "explosive",
             "dreadnought"
-        ]
+        ],
+        "value": 80
     },
     "Autocannon Turret": {
         "abbreviation": "Autocnn",
@@ -219,12 +224,17 @@
         "melee_hands": 1,
         "range": 2.1,
         "ranged_hands": 0,
+        "requires_to_forge": [
+            "vehicle_armaments_1",
+            "flame_1"
+        ],
         "spli": 20,
         "tags": [
             "dreadnought",
             "heavy_ranged",
             "flame"
-        ]
+        ],
+        "value": 55
     },
     "Chainaxe": {
         "abbreviation": "ChAxe",
@@ -329,6 +339,10 @@
         "maintenance": 0.1,
         "melee_hands": 5,
         "range": 1,
+        "requires_to_forge": [
+            "vehicle_armaments_1",
+            "flame_1"
+        ],
         "spli": 10,
         "tags": [
             "vehicle",
@@ -631,7 +645,8 @@
         "tags": [
             "precision",
             "rifle"
-        ]
+        ],
+        "value": 200
     },
     "Dreadnought Lightning Claw": {
         "abbreviation": "LghtClw",
@@ -652,13 +667,18 @@
         },
         "range": 1,
         "ranged_hands": 0,
+        "requires_to_forge": [
+            "vehicle_armaments_1",
+            "power_1"
+        ],
         "spli": 15,
         "tags": [
             "power",
             "dual",
             "dreadnought",
             "fist"
-        ]
+        ],
+        "value": 55
     },
     "Dreadnought Power Claw": {
         "abbreviation": "PwrClw",
@@ -672,6 +692,10 @@
         "maintenance": 0.1,
         "melee_hands": 5,
         "range": 1,
+        "requires_to_forge": [
+            "vehicle_armaments_1",
+            "power_1"
+        ],
         "spli": 10,
         "tags": [
             "power",
@@ -679,7 +703,8 @@
             "dual",
             "dreadnought",
             "fist"
-        ]
+        ],
+        "value": 55
     },
     "Eldar Power Sword": {
         "abbreviation": "EldPwrSwrd",
@@ -832,13 +857,18 @@
         "melee_hands": 0,
         "range": 4.1,
         "ranged_hands": 0,
+        "requires_to_forge": [
+            "vehicle_armaments_1",
+            "flame_1"
+        ],
         "spli": 25,
         "tags": [
             "flame",
             "heavy_ranged",
             "vehicle",
             "turret"
-        ]
+        ],
+        "value": 55
     },
     "Force Axe": {
         "abbreviation": "FrcAxe",
@@ -1305,14 +1335,10 @@
             "standard": 500
         },
         "description": "This flamer weapon utilizes psychically-charged promethium and blessed oils concoction to create an azure flame that bypasses psychich protections. It is particularly effective against Daemons and their ilk.",
+        "forgable": false,
         "melee_hands": 1,
         "range": 4.1,
         "ranged_hands": 1,
-        "requires_to_forge": [
-            "flame_1",
-            "heavy_1",
-            "force_1"
-        ],
         "sellers": [
             "inquisition"
         ],
@@ -2504,7 +2530,8 @@
         "spli": 8,
         "tags": [
             "boarding 2"
-        ]
+        ],
+        "value": 10
     },
     "Shuriken Pistol": {
         "abbreviation": "ShurikP",
@@ -3226,12 +3253,16 @@
         "melee_hands": 0,
         "range": 4.1,
         "ranged_hands": 1,
+        "requires_to_forge": [
+            "combi_1"
+        ],
         "spli": 8,
         "tags": [
             "bolt",
             "pistol",
             "boarding 2"
-        ]
+        ],
+        "value": 80
     },
     "Xenophase Blade": {
         "abbreviation": "XenoPhs",
