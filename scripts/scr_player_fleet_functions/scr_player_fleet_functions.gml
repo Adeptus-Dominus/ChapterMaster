@@ -1,37 +1,6 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more informationype
 
-function init_player_fleet_arrays() {
-    ship = [];
-    ship_uid = [];
-    ship_owner = [];
-    ship_class = [];
-    ship_size = [];
-    ship_leadership = [];
-    ship_hp = [];
-    ship_maxhp = [];
-
-    ship_location = [];
-    ship_shields = [];
-    ship_conditions = [];
-    ship_speed = [];
-    ship_turning = [];
-
-    ship_front_armour = [];
-    ship_other_armour = [];
-    ship_weapons = [];
-
-    ship_wep = array_create(6, "");
-    ship_wep_facing = array_create(6, "");
-    ship_wep_condition = array_create(6, "");
-
-    ship_capacity = [];
-    ship_carrying = [];
-    ship_contents = [];
-    ship_turrets = [];
-    ship_lost = [];
-}
-
 function fleet_has_roles(fleet = "none", roles) {
     var all_ships = fleet_full_ship_array(fleet);
     var unit;
