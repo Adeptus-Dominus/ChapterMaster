@@ -1332,53 +1332,33 @@ function scr_initialize_custom() {
     master_melee = obj_creation.chapter_master_melee;
     master_ranged = obj_creation.chapter_master_ranged;
 
-    #region Initialize Loadouts and 2d array garbage
-    company = 0;
-    // Initialize default marines for loadouts
-    for (var i = 0; i <= 100; i++) {
-        race[100][i] = 1;
-        name[100][i] = "";
-        role[100][i] = "";
-        wep1[100][i] = "";
-        spe[100][i] = "";
-        wep2[100][i] = "";
-        armour[100][i] = "";
-        gear[100][i] = "";
-        mobi[100][i] = "";
-        age[100][i] = ((millenium * 1000) + year) - 10;
-        god[100][i] = 0;
-    }
-    initialized = 500;
-    // Initialize special marines
+    var _current_age = ((millenium * 1000) + year) - 10;
+
+    var _init_marine_row = function(_idx, _count, _age_val) {
+        var _len = _count + 1;
+        race[_idx] = array_create(_len, 1);
+        name[_idx] = array_create(_len, "");
+        role[_idx] = array_create(_len, "");
+        wep1[_idx] = array_create(_len, "");
+        spe[_idx] = array_create(_len, "");
+        wep2[_idx] = array_create(_len, "");
+        armour[_idx] = array_create(_len, "");
+        gear[_idx] = array_create(_len, "");
+        mobi[_idx] = array_create(_len, "");
+        age[_idx] = array_create(_len, _age_val);
+        god[_idx] = array_create(_len, 0);
+    };
+
+    _init_marine_row(0, 500, _current_age);
+    _init_marine_row(100, 100, _current_age);
+    _init_marine_row(102, 100, _current_age);
+
+    TTRPG[0] = array_create(501);
     for (var i = 0; i <= 500; i++) {
-        race[0][i] = 1;
-        name[0][i] = "";
-        role[0][i] = "";
-        wep1[0][i] = "";
-        spe[0][i] = "";
-        wep2[0][i] = "";
-        armour[0][i] = "";
-        gear[0][i] = "";
-        mobi[0][i] = "";
-        age[0][i] = ((millenium * 1000) + year) - 10;
-        god[0][i] = 0;
-        /// @type {Array<Array<Struct.TTRPG_stats>>}
         TTRPG[0][i] = new TTRPG_stats("chapter", 0, i, "blank");
     }
-    for (var i = 0; i <= 100; i++) {
-        role[100][i] = "";
-        wep1[100][i] = "";
-        wep2[100][i] = "";
-        armour[100][i] = "";
-        gear[100][i] = "";
-        mobi[100][i] = ""; //hirelings??
-        role[102][i] = "";
-        wep1[102][i] = "";
-        wep2[102][i] = "";
-        armour[102][i] = "";
-        gear[102][i] = "";
-        mobi[102][i] = ""; //hirelings??
-    }
+
+    initialized = 500;
 
     defaults_slot = 100;
 
@@ -2984,7 +2964,7 @@ function scr_initialize_custom() {
         }
 
         global.logger.info($"New Company Totals: eq specialists: {equal_specialists}: scout coy {scout_company_behaviour} equal_scouts: {equal_scouts}");
-        global.logger.info($"Company {_coy.coy}: {json_stringify(_coy, true)}");
+        // global.logger.info($"Company {_coy.coy}: {json_stringify(_coy, true)}");
 
         var attrs = struct_get_names(_coy);
 

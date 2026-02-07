@@ -106,160 +106,197 @@ diplomacy_pathway = "";
 option_selections = [];
 ready = false;
 
-// ** Create Chaos Gods **
-chaos_gods = {};
+// Role Init
+var _arrays_count = 103;
+var _empty_array = [];
 
-function build_chaos_gods() {
-    var _god_names = [
-        "Khorne",
-        "Slaanesh",
-        "Nurgle",
-        "Tzeentch"
-    ];
-    for (var _i = 0; _i < 4; _i++) {
-        chaos_gods[$ _god_names[_i]] = {};
-        chaos_gods[$ _god_names[_i]].favour = 0;
-        chaos_gods[$ _god_names[_i]].god_name = _god_names[_i];
-        chaos_gods[$ _god_names[_i]].emmissary = "";
-        chaos_gods[$ _god_names[_i]].power = 0;
-        chaos_gods[$ _god_names[_i]].interfaced = 0;
+r_race = array_create_advanced(_arrays_count, _empty_array);
+r_role = array_create_advanced(_arrays_count, _empty_array);
+r_wep1 = array_create_advanced(_arrays_count, _empty_array);
+r_wep2 = array_create_advanced(_arrays_count, _empty_array);
+r_armour = array_create_advanced(_arrays_count, _empty_array);
+r_gear = array_create_advanced(_arrays_count, _empty_array);
+r_mobi = array_create_advanced(_arrays_count, _empty_array);
+
+var _empty_size = 21;
+r_race[100] = array_create(_empty_size, 0);
+r_role[100] = array_create(_empty_size, "");
+r_wep1[100] = array_create(_empty_size, "");
+r_wep2[100] = array_create(_empty_size, "");
+r_armour[100] = array_create(_empty_size, "");
+r_gear[100] = array_create(_empty_size, "");
+r_mobi[100] = array_create(_empty_size, "");
+
+var _roles_data = {};
+
+_roles_data[$ eROLE.HONOURGUARD] = {
+    name: "Honour Guard",
+    w1: "Power Sword",
+    w2: "Bolter",
+    arm: "Artificer Armour",
+    mob: "",
+    gear: "",
+};
+_roles_data[$ eROLE.VETERAN] = {
+    name: "Veteran",
+    w1: "Chainsword",
+    w2: "Bolter",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "",
+    gear: "",
+};
+_roles_data[$ eROLE.TERMINATOR] = {
+    name: "Terminator",
+    w1: "Power Fist",
+    w2: "Storm Bolter",
+    arm: "Terminator Armour",
+    mob: "",
+    gear: "",
+};
+_roles_data[$ eROLE.CAPTAIN] = {
+    name: "Captain",
+    w1: "Power Sword",
+    w2: "Bolt Pistol",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "",
+    gear: "Iron Halo",
+};
+_roles_data[$ eROLE.DREADNOUGHT] = {
+    name: "Dreadnought",
+    w1: "Close Combat Weapon",
+    w2: "Twin Linked Lascannon",
+    arm: "Dreadnought",
+    mob: "",
+    gear: "",
+};
+_roles_data[$ eROLE.CHAMPION] = {
+    name: "Champion",
+    w1: "Power Sword",
+    w2: "Bolt Pistol",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "",
+    gear: "Combat Shield",
+};
+_roles_data[$ eROLE.TACTICAL] = {
+    name: "Tactical Marine",
+    w1: "Bolter",
+    w2: "Combat Knife",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "",
+    gear: "",
+};
+_roles_data[$ eROLE.DEVASTATOR] = {
+    name: "Devastator Marine",
+    w1: "",
+    w2: "Combat Knife",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "",
+    gear: "",
+};
+_roles_data[$ eROLE.ASSAULT] = {
+    name: "Assault Marine",
+    w1: "Chainsword",
+    w2: "Bolt Pistol",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "Jump Pack",
+    gear: "",
+};
+_roles_data[$ eROLE.ANCIENT] = {
+    name: "Ancient",
+    w1: "Company Standard",
+    w2: "Power Sword",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "",
+    gear: "",
+};
+_roles_data[$ eROLE.SCOUT] = {
+    name: "Scout",
+    w1: "Sniper Rifle",
+    w2: "Combat Knife",
+    arm: "Scout Armour",
+    mob: "",
+    gear: "",
+};
+_roles_data[$ eROLE.CHAPLAIN] = {
+    name: "Chaplain",
+    w1: "Power Sword",
+    w2: "Bolt Pistol",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "",
+    gear: "Rosarius",
+};
+_roles_data[$ eROLE.APOTHECARY] = {
+    name: "Apothecary",
+    w1: "Chainsword",
+    w2: "Bolt Pistol",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "",
+    gear: "Narthecium",
+};
+_roles_data[$ eROLE.TECHMARINE] = {
+    name: "Techmarine",
+    w1: "Power Axe",
+    w2: "Storm Bolter",
+    arm: "Artificer Armour",
+    mob: "Servo-arm",
+    gear: "",
+};
+_roles_data[$ eROLE.LIBRARIAN] = {
+    name: "Librarian",
+    w1: "Force Staff",
+    w2: "Storm Bolter",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "",
+    gear: "Psychic Hood",
+};
+_roles_data[$ eROLE.SERGEANT] = {
+    name: "Sergeant",
+    w1: "Chainsword",
+    w2: "Storm Bolter",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "",
+    gear: "",
+};
+_roles_data[$ eROLE.VETERANSERGEANT] = {
+    name: "Veteran Sergeant",
+    w1: "Chainsword",
+    w2: "Storm Bolter",
+    arm: STR_ANY_POWER_ARMOUR,
+    mob: "",
+    gear: "",
+};
+
+var _role_keys = struct_get_names(_roles_data);
+var _max_id = 0;
+
+for (var k = 0, _kl = array_length(_role_keys); k < _kl; k++) {
+    _max_id = max(_max_id, real(_role_keys[k]));
+}
+
+for (var i = 101; i < 103; i++) {
+    var _target_size = _max_id + 1;
+
+    r_role[i]   = array_create(_target_size, "");
+    r_wep1[i]   = array_create(_target_size, "");
+    r_wep2[i]   = array_create(_target_size, "");
+    r_armour[i] = array_create(_target_size, "");
+    r_mobi[i]   = array_create(_target_size, "");
+    r_gear[i]   = array_create(_target_size, "");
+
+    for (var j = 0, jl = array_length(_role_keys); j < jl; j++) {
+        var _key = _role_keys[j];
+        var _id = real(_key);
+        var _data = _roles_data[$ _key];
+
+        r_role[i][_id]   = _data.name;
+        r_wep1[i][_id]   = _data.w1;
+        r_wep2[i][_id]   = _data.w2;
+        r_armour[i][_id] = _data.arm;
+        r_mobi[i][_id]   = _data.mob;
+        r_gear[i][_id]   = _data.gear;
     }
 }
 
-build_chaos_gods();
-
-// ** Sets default equipement for roles **
-// 100 is defaults, 101 is the allowable starting equipment
-for (var i = 100; i < 103; i++) {
-    obj_controller.r_role[i][2] = "Honour Guard";
-    obj_controller.r_wep1[i][2] = "Power Sword";
-    obj_controller.r_wep2[i][2] = "Bolter";
-    obj_controller.r_armour[i][2] = "Artificer Armour";
-    obj_controller.r_mobi[i][2] = "";
-    obj_controller.r_gear[i][2] = "";
-
-    obj_controller.r_role[i][3] = "Veteran";
-    obj_controller.r_wep1[i][3] = "Chainsword";
-    obj_controller.r_wep2[i][3] = "Bolter";
-    obj_controller.r_armour[i][3] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_mobi[i][3] = "";
-    obj_controller.r_gear[i][3] = "";
-
-    obj_controller.r_role[i][4] = "Terminator";
-    obj_controller.r_wep1[i][4] = "Power Fist";
-    obj_controller.r_wep2[i][4] = "Storm Bolter";
-    obj_controller.r_armour[i][4] = "Terminator Armour";
-    obj_controller.r_mobi[i][4] = "";
-    obj_controller.r_gear[i][4] = "";
-
-    obj_controller.r_role[i][5] = "Captain";
-    obj_controller.r_wep1[i][5] = "Power Sword";
-    obj_controller.r_wep2[i][5] = "Bolt Pistol";
-    obj_controller.r_armour[i][5] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_mobi[i][5] = "";
-    obj_controller.r_gear[i][5] = "Iron Halo";
-
-    obj_controller.r_role[i][6] = "Dreadnought";
-    obj_controller.r_wep1[i][6] = "Close Combat Weapon";
-    obj_controller.r_wep2[i][6] = "Twin Linked Lascannon";
-    obj_controller.r_armour[i][6] = "Dreadnought";
-    obj_controller.r_mobi[i][6] = "";
-    obj_controller.r_gear[i][6] = "";
-
-    obj_controller.r_role[i][7] = "Champion";
-    obj_controller.r_wep1[i][7] = "Power Sword";
-    obj_controller.r_wep2[i][7] = "Bolt Pistol";
-    obj_controller.r_armour[i][7] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_mobi[i][7] = "";
-    obj_controller.r_gear[i][7] = "Combat Shield";
-
-    obj_controller.r_role[i][8] = "Tactical Marine";
-    obj_controller.r_wep1[i][8] = "Bolter";
-    obj_controller.r_wep2[i][8] = "Combat Knife";
-    obj_controller.r_armour[i][8] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_mobi[i][8] = "";
-    obj_controller.r_gear[i][8] = "";
-
-    obj_controller.r_role[i][9] = "Devastator Marine";
-    obj_controller.r_wep1[i][9] = "";
-    obj_controller.r_wep2[i][9] = "Combat Knife";
-    obj_controller.r_armour[i][9] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_mobi[i][9] = "";
-    obj_controller.r_gear[i][9] = "";
-
-    obj_controller.r_role[i][10] = "Assault Marine";
-    obj_controller.r_wep1[i][10] = "Chainsword";
-    obj_controller.r_wep2[i][10] = "Bolt Pistol";
-    obj_controller.r_armour[i][10] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_mobi[i][10] = "Jump Pack";
-    obj_controller.r_gear[i][10] = "";
-
-    obj_controller.r_role[i][11] = "Ancient";
-    obj_controller.r_wep1[i][11] = "Company Standard";
-    obj_controller.r_wep2[i][11] = "Power Sword";
-    obj_controller.r_armour[i][11] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_mobi[i][11] = "";
-    obj_controller.r_gear[i][11] = "";
-
-    obj_controller.r_role[i][12] = "Scout";
-    obj_controller.r_wep1[i][12] = "Sniper Rifle";
-    obj_controller.r_wep2[i][12] = "Combat Knife";
-    obj_controller.r_armour[i][12] = "Scout Armour";
-    obj_controller.r_mobi[i][12] = "";
-    obj_controller.r_gear[i][12] = "";
-
-    obj_controller.r_role[i][14] = "Chaplain";
-    obj_controller.r_wep1[i][14] = "Power Sword";
-    obj_controller.r_wep2[i][14] = "Bolt Pistol";
-    obj_controller.r_armour[i][14] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_gear[i][14] = "Rosarius";
-    obj_controller.r_mobi[i][14] = "";
-
-    obj_controller.r_role[i][15] = "Apothecary";
-    obj_controller.r_wep1[i][15] = "Chainsword";
-    obj_controller.r_wep2[i][15] = "Bolt Pistol";
-    obj_controller.r_armour[i][15] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_gear[i][15] = "Narthecium";
-    obj_controller.r_mobi[i][15] = "";
-
-    obj_controller.r_role[i][16] = "Techmarine";
-    obj_controller.r_wep1[i][16] = "Power Axe";
-    obj_controller.r_wep2[i][16] = "Storm Bolter";
-    obj_controller.r_armour[i][16] = "Artificer Armour";
-    obj_controller.r_gear[i][16] = "";
-    obj_controller.r_mobi[i][16] = "Servo-arm";
-
-    obj_controller.r_role[i][17] = "Librarian";
-    obj_controller.r_wep1[i][17] = "Force Staff";
-    obj_controller.r_wep2[i][17] = "Storm Bolter";
-    obj_controller.r_armour[i][17] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_gear[i][17] = "Psychic Hood";
-    obj_controller.r_mobi[i][17] = "";
-
-    obj_controller.r_role[i][18] = "Sergeant";
-    obj_controller.r_wep1[i][18] = "Chainsword";
-    obj_controller.r_wep2[i][18] = "Storm Bolter";
-    obj_controller.r_armour[i][18] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_gear[i][18] = "";
-    obj_controller.r_mobi[i][18] = "";
-
-    obj_controller.r_role[i][19] = "Veteran Sergeant";
-    obj_controller.r_wep1[i][19] = "Chainsword";
-    obj_controller.r_wep2[i][19] = "Storm Bolter";
-    obj_controller.r_armour[i][19] = STR_ANY_POWER_ARMOUR;
-    obj_controller.r_gear[i][19] = "";
-    obj_controller.r_mobi[i][19] = "";
-} // 100 is defaults, 101 is the allowable starting equipment
-// ** Resets all races and equipement for 100 **
-for (var i = 0; i < 21; i++) {
-    obj_controller.r_race[100][i] = 0;
-    obj_controller.r_role[100][i] = "";
-    obj_controller.r_wep1[100][i] = "";
-    obj_controller.r_wep2[100][i] = "";
-    obj_controller.r_armour[100][i] = "";
-    obj_controller.r_gear[100][i] = "";
-    obj_controller.r_mobi[100][i] = "";
-}
 // ** Sets to full screen/ checks for resolution **
 window_data = string(window_get_x()) + "|" + string(window_get_y()) + "|" + string(window_get_width()) + "|" + string(window_get_height()) + "|";
 window_old = window_data;
@@ -270,8 +307,6 @@ if (window_get_fullscreen() == 1) {
 // ** Sets cheatcode values **
 cheatcode = 0;
 cheatyface = 0;
-// ** Debugging file created **
-global.logger.info("Controller Created");
 // ** Creates saves.ini with default settings **
 ini_open("saves.ini");
 master_volume = ini_read_real("Settings", "master_volume", 1);
@@ -479,23 +514,18 @@ recent_number = [];
 recent_happenings = 0;
 
 // Sets up items to be default
-for (var i = 0; i < 40; i++) {
-    sel_uni[i] = "";
-    sel_veh[i] = "";
-    command_set[i] = 0;
-}
 // TODO command_set is used for equipement. We should re do this and have an array for all available equipement
-command_set[1] = 0;
-command_set[2] = 1;
-command_set[3] = 1;
-command_set[4] = 1;
-command_set[5] = 1;
-command_set[6] = 1;
-command_set[7] = 1;
-command_set[8] = 1;
-command_set[9] = 1;
+var _size = 40;
+sel_uni = array_create(_size, "");
+sel_veh = array_create(_size, "");
+command_set = array_create(_size, 0);
+for (var i = 2; i <= 9; i++) {
+    command_set[i] = 1;
+}
 command_set[20] = 1;
 command_set[24] = 1;
+
+// Outlier indices
 modest_livery = 0;
 progenitor_visuals = 0;
 tagged_training = 0;
@@ -541,13 +571,7 @@ stc_un_total = 0;
 stc_wargear_un = 0;
 stc_vehicles_un = 0;
 stc_ships_un = 0;
-stc_bonus[0] = 0;
-stc_bonus[1] = 0;
-stc_bonus[2] = 0;
-stc_bonus[3] = 0;
-stc_bonus[4] = 0;
-stc_bonus[5] = 0;
-stc_bonus[6] = 0;
+stc_bonus = array_create(7, 0);
 stc_research = {
     wargear: 0,
     vehicles: 0,
@@ -684,6 +708,13 @@ recruiting_worlds = "";
 recruit_trial = eTRIALS.BLOODDUEL;
 recruit_last = 0;
 
+recruit_name = [];
+recruit_corruption = [];
+recruit_distance = [];
+recruit_training = [];
+recruit_exp = [];
+recruit_data = [];
+
 recruit_name[0] = "";
 recruit_corruption[0] = 0;
 recruit_distance[0] = 0;
@@ -796,27 +827,26 @@ inspection_passes = 0;
 recruiting_worlds_bought = 0;
 
 // ** BATTLE FORMATIONS **
-for (var i = 0; i < 16; i++) {
-    bat_formation[i] = "";
-    bat_formation_type[i] = 0;
-    bat_deva_for[i] = 1;
-    bat_assa_for[i] = 4;
-    bat_tact_for[i] = 2;
-    bat_vete_for[i] = 2;
-    bat_hire_for[i] = 3;
-    bat_libr_for[i] = 3;
-    bat_comm_for[i] = 3;
-    bat_tech_for[i] = 3;
-    bat_term_for[i] = 3;
-    bat_hono_for[i] = 3;
-    bat_drea_for[i] = 5;
-    bat_rhin_for[i] = 6;
-    bat_pred_for[i] = 7;
-    bat_landraid_for[i] = 7;
-    bat_landspee_for[i] = 4;
-    bat_whirl_for[i] = 1;
-    bat_scou_for[i] = 1;
-}
+var _count = 16;
+bat_formation = array_create(_count, "");
+bat_formation_type = array_create(_count, 0);
+bat_deva_for = array_create(_count, 1);
+bat_assa_for = array_create(_count, 4);
+bat_tact_for = array_create(_count, 2);
+bat_vete_for = array_create(_count, 2);
+bat_hire_for = array_create(_count, 3);
+bat_libr_for = array_create(_count, 3);
+bat_comm_for = array_create(_count, 3);
+bat_tech_for = array_create(_count, 3);
+bat_term_for = array_create(_count, 3);
+bat_hono_for = array_create(_count, 3);
+bat_drea_for = array_create(_count, 5);
+bat_rhin_for = array_create(_count, 6);
+bat_pred_for = array_create(_count, 7);
+bat_landraid_for = array_create(_count, 7);
+bat_landspee_for = array_create(_count, 4);
+bat_whirl_for = array_create(_count, 1);
+bat_scou_for = array_create(_count, 1);
 // ground=1    raid=2
 // 1: Attack        type=1
 // 2: Defend        type=1
@@ -850,48 +880,43 @@ imperial_factions = [
     eFACTION.INQUISITION,
     eFACTION.ECCLESIARCHY
 ];
+
 faction = array_create(14, "");
 disposition = array_create(14, 0);
-faction[0] = "";
-disposition[0] = 0;
+
+// Faction Names
 faction[eFACTION.PLAYER] = "Player";
-disposition[1] = 0;
 faction[eFACTION.IMPERIUM] = "Imperium";
-disposition[3] = 0;
-faction[3] = "Mechanicus";
-disposition[4] = 0;
-faction[4] = "Inquisition";
-disposition[4] = 0;
-faction[5] = "Ecclesiarchy";
-disposition[5] = 0;
-// ** Initial disposition for Imperial factions **
+faction[eFACTION.MECHANICUS] = "Mechanicus";
+faction[eFACTION.INQUISITION] = "Inquisition";
+faction[eFACTION.ECCLESIARCHY] = "Ecclesiarchy";
+faction[eFACTION.ELDAR] = "Eldar";
+faction[eFACTION.ORK] = "Ork";
+faction[eFACTION.TAU] = "Tau";
+faction[eFACTION.TYRANIDS] = "Tyranids";
+faction[eFACTION.CHAOS] = "Chaos";
+faction[eFACTION.HERETICS] = "Heretics";
+faction[eFACTION.GENESTEALER] = "Genestealers";
+faction[eFACTION.NECRONS] = "Necrons";
+
+// Static Dispositions
+disposition[eFACTION.ELDAR] = -10;
+disposition[eFACTION.ORK] = -40;
+disposition[eFACTION.TAU] = 0;
+disposition[eFACTION.TYRANIDS] = irandom_range(40, 100) == 1;
+disposition[eFACTION.CHAOS] = -70;
+disposition[eFACTION.HERETICS] = -70;
+disposition[eFACTION.GENESTEALER] = 0;
+disposition[eFACTION.NECRONS] = -20;
+
+// Dynamic Dispositions (Imperial)
 if (instance_exists(obj_ini)) {
-    faction[2] = "Imperium";
-    disposition[2] = obj_ini.imperium_disposition;
-    faction[3] = "Mechanicus";
-    disposition[3] = obj_ini.mechanicus_disposition;
-    faction[4] = "Inquisition";
-    disposition[4] = obj_ini.inquisition_disposition;
-    faction[5] = "Ecclesiarchy";
-    disposition[5] = obj_ini.ecclesiarchy_disposition;
+    disposition[eFACTION.IMPERIUM] = obj_ini.imperium_disposition;
+    disposition[eFACTION.MECHANICUS] = obj_ini.mechanicus_disposition;
+    disposition[eFACTION.INQUISITION] = obj_ini.inquisition_disposition;
+    disposition[eFACTION.ECCLESIARCHY] = obj_ini.ecclesiarchy_disposition;
 }
-// ** Initial disposition for non Imperials **
-faction[6] = "Eldar";
-disposition[6] = -10;
-faction[7] = "Ork";
-disposition[7] = -40;
-faction[8] = "Tau";
-disposition[8] = 0;
-faction[9] = "Tyranids";
-disposition[9] = irandom_range(40, 100) == 1; // use this to countdown genestealer cults, create one at the end
-faction[10] = "Chaos";
-disposition[10] = -70;
-faction[11] = "Heretics";
-disposition[10] = -70;
-faction[12] = "";
-disposition[12] = 0;
-faction[13] = "Necrons";
-disposition[13] = -20;
+
 // ** Max disposition **
 disposition_max = array_create(14, 0);
 disposition_max[2] = 40;
@@ -1000,35 +1025,9 @@ annoyed = array_create(14, 0);
 // ** Sets diplomacy ignore status **
 ignore = array_create(14, 0);
 // ** Sets diplomacy turns to be ignored **
-turns_ignored[0] = 0;
-turns_ignored[1] = 0;
-turns_ignored[2] = 0;
-turns_ignored[3] = 0;
-turns_ignored[4] = 0;
-turns_ignored[5] = 0;
-turns_ignored[6] = 0;
-turns_ignored[7] = 0;
-turns_ignored[8] = 0;
-turns_ignored[9] = 0;
-turns_ignored[10] = 0;
-turns_ignored[11] = 0;
-turns_ignored[12] = 0;
-turns_ignored[13] = 0;
+turns_ignored = array_create(14, 0);
 // ** Sets faction defeated **
-faction_defeated[0] = 0;
-faction_defeated[1] = 0;
-faction_defeated[2] = 0;
-faction_defeated[3] = 0;
-faction_defeated[4] = 0;
-faction_defeated[5] = 0;
-faction_defeated[6] = 0;
-faction_defeated[7] = 0;
-faction_defeated[8] = 0;
-faction_defeated[9] = 0;
-faction_defeated[10] = 0;
-faction_defeated[11] = 0;
-faction_defeated[12] = 0;
-faction_defeated[13] = 0;
+faction_defeated = array_create(14, 0);
 
 // **** CHAPTER CREATION VARS ****
 // ** Sets up Chapter configuration variables **
@@ -1078,9 +1077,9 @@ if (instance_exists(obj_ini)) {
     if (global.load == -1) {
         // Tolerant trait
         if (scr_has_disadv("Tolerant")) {
-            obj_controller.disposition[6] += 5;
-            obj_controller.disposition[7] += 5;
-            obj_controller.disposition[8] += 10;
+            disposition[eFACTION.ELDAR] += 5;
+            disposition[eFACTION.ORK] += 5;
+            disposition[eFACTION.TAU] += 10;
         }
         if (scr_has_adv("Enemy: Eldar")) {
             faction_status[eFACTION.ELDAR] = "War";
@@ -1133,6 +1132,8 @@ try {
     global.star_name_colors[1] = make_color_rgb(col_r[1], col_g[1], col_b[1]);
 }
 
+global.logger.info("Controller Created");
+
 #region save/load serialization
 
 /// Called from save function to take all object variables and convert them to a json savable format and return it
@@ -1143,7 +1144,6 @@ serialize = function() {
         obj: object_get_name(object_index),
         x,
         y,
-        chaos_gods,
         master_of_forge,
         stc_research,
         technologies_known,
@@ -1155,13 +1155,12 @@ serialize = function() {
         spec_train_data,
         forge_queue: specialist_point_handler.forge_queue,
         chapter_master_data: chapter_master,
-        event
+        event,
     };
     var excluded_from_save = [
         "temp",
         "serialize",
         "deserialize",
-        "build_chaos_gods",
         "company_data",
         "menu_buttons",
         "location_viewer",
@@ -1719,30 +1718,35 @@ temp[62] = "##Your fleet contains ";
 
 var bb = 0, sk = 0, glad = 0, hunt = 0, ships = 0, bb_names = [], sk_names = [], glad_names = [], hunt_names = [];
 
-codex[0] = "";
-codex_discovered[0] = 0;
-for (var mm = 0; mm < array_length(obj_ini.ship); mm++) {
-    if (obj_ini.ship[mm] != "") {
+var _ship_count = array_length(obj_ini.ship);
+codex = array_create(_ship_count, "");
+codex_discovered = array_create(_ship_count, 0);
+for (var i = 0; i < _ship_count; i++) {
+    var _name = obj_ini.ship[i];
+
+    if (_name != "") {
         ships++;
-        if (obj_ini.ship_class[mm] == "Battle Barge") {
-            bb++;
-            array_push(bb_names, string(obj_ini.ship[mm]));
-        }
-        if (obj_ini.ship_class[mm] == "Strike Cruiser") {
-            sk++;
-            array_push(sk_names, string(obj_ini.ship[mm]));
-        }
-        if (obj_ini.ship_class[mm] == "Gladius") {
-            glad++;
-            array_push(glad_names, string(obj_ini.ship[mm]));
-        }
-        if (obj_ini.ship_class[mm] == "Hunter") {
-            hunt++;
-            array_push(hunt_names, string(obj_ini.ship[mm]));
+        var _class = obj_ini.ship_class[i];
+
+        switch (_class) {
+            case "Battle Barge":
+                bb++;
+                array_push(bb_names, string(_name));
+                break;
+            case "Strike Cruiser":
+                sk++;
+                array_push(sk_names, string(_name));
+                break;
+            case "Gladius":
+                glad++;
+                array_push(glad_names, string(_name));
+                break;
+            case "Hunter":
+                hunt++;
+                array_push(hunt_names, string(_name));
+                break;
         }
     }
-    codex[mm] = "";
-    codex_discovered[mm] = 0;
 }
 
 temp[62] += $" {string_plural_count("warship", ships)}-\n";

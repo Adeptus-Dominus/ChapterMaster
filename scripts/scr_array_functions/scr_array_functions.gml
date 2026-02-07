@@ -319,3 +319,25 @@ function max_array_length(arrays = []) {
     }
     return _max;
 }
+
+function array_create_2d(_rows, _cols, _default) {
+    var _outer_array = array_create(_rows);
+
+    for (var i = 0; i < _rows; i++) {
+        var _inner_array = array_create(_cols);
+    
+        if (is_struct(_default) || is_array(_default)) {
+            for (var j = 0; j < _cols; j++) {
+                _inner_array[j] = variable_clone(_default);
+            }
+        } else {
+            for (var j = 0; j < _cols; j++) {
+                _inner_array[j] = _default;
+            }
+        }
+
+        _outer_array[i] = _inner_array;
+    }
+
+    return _outer_array;
+};

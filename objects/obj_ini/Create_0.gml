@@ -1,8 +1,8 @@
-// // Global singletons
+// Global singletons
 // global.NameGenerator = new NameGenerator();
 global.logger.debug("Creating obj_ini");
 
-// // normal stuff
+// normal stuff
 specials = 0;
 firsts = 0;
 seconds = 0;
@@ -63,37 +63,88 @@ for (var i = 0; i < _artifact_array_size; i++) {
     artifact_struct[i] = new ArtifactStruct(i);
 }
 
-init_player_fleet_arrays();
-ship_id = [];
+// Ship Init
 
-var v;
-var company = -1;
-repeat (11) {
-    company += 1;
-    v = -1; // show_message("v company: "+string(company));
-    repeat (205) {
-        v += 1; // show_message(string(company)+"."+string(v));
-        last_ship[company][v] = {
-            uid: "",
-            name: "",
-        };
-        veh_race[company][v] = 0;
-        veh_loc[company][v] = "";
-        veh_name[company][v] = "";
-        veh_role[company][v] = "";
-        veh_wep1[company][v] = "";
-        veh_wep2[company][v] = "";
-        veh_wep3[company][v] = "";
-        veh_upgrade[company][v] = "";
-        veh_acc[company][v] = "";
-        veh_hp[company][v] = 100;
-        veh_chaos[company][v] = 0;
-        veh_pilots[company][v] = 0;
-        veh_lid[company][v] = -1;
-        veh_wid[company][v] = 2;
-        veh_uid[company][v] = 0;
-    }
-}
+ship_id = [];
+ship = [];
+ship_uid = [];
+ship_owner = [];
+ship_class = [];
+ship_size = [];
+ship_leadership = [];
+ship_hp = [];
+ship_maxhp = [];
+
+ship_location = [];
+ship_shields = [];
+ship_conditions = [];
+ship_speed = [];
+ship_turning = [];
+
+ship_front_armour = [];
+ship_other_armour = [];
+ship_weapons = [];
+
+ship_wep = array_create(6, "");
+ship_wep_facing = array_create(6, "");
+ship_wep_condition = array_create(6, "");
+
+ship_capacity = [];
+ship_carrying = [];
+ship_contents = [];
+ship_turrets = [];
+ship_lost = [];
+
+// Vehicle Init
+
+var _max_companies = 11;
+var _max_vehicles = 205;
+
+last_ship = array_create_2d(_max_companies, _max_vehicles, {uid: "", name: ""});
+
+veh_race = array_create_2d(_max_companies, _max_vehicles, 0);
+veh_hp = array_create_2d(_max_companies, _max_vehicles, 100);
+veh_chaos = array_create_2d(_max_companies, _max_vehicles, 0);
+veh_pilots = array_create_2d(_max_companies, _max_vehicles, 0);
+veh_lid = array_create_2d(_max_companies, _max_vehicles, -1);
+veh_wid = array_create_2d(_max_companies, _max_vehicles, 2);
+veh_uid = array_create_2d(_max_companies, _max_vehicles, 0);
+
+veh_loc = array_create_2d(_max_companies, _max_vehicles, "");
+veh_name = array_create_2d(_max_companies, _max_vehicles, "");
+veh_role = array_create_2d(_max_companies, _max_vehicles, "");
+veh_wep1 = array_create_2d(_max_companies, _max_vehicles, "");
+veh_wep2 = array_create_2d(_max_companies, _max_vehicles, "");
+veh_wep3 = array_create_2d(_max_companies, _max_vehicles, "");
+veh_upgrade = array_create_2d(_max_companies, _max_vehicles, "");
+veh_acc = array_create_2d(_max_companies, _max_vehicles, "");
+
+// Unit Init
+
+/// @type {Array<Array>}
+race = [[]];
+/// @type {Array<Array<String>>}
+name = [[]];
+/// @type {Array<Array<String>>}
+role = [[]];
+/// @type {Array<Array<String>>}
+wep1 = [[]];
+/// @type {Array<Array<String>>}
+spe = [[]];
+/// @type {Array<Array<String>>}
+wep2 = [[]];
+/// @type {Array<Array<String>>}
+armour = [[]];
+/// @type {Array<Array<String>>}
+gear = [[]];
+/// @type {Array<Array<String>>}
+mobi = [[]];
+/// @type {Array<Array<Real>>}
+age = [[]];
+/// @type {Array<Array<Real>>}
+god = [[]];
+/// @type {Array<Array<Struct.TTRPG_stats>>}
+TTRPG = [[]];
 
 /*if (obj_creation.fleet_type=3){
     obj_controller.penitent=1;
