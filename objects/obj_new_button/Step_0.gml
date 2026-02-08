@@ -135,7 +135,7 @@ if ((line == 0) && (floor(random(freq)) == 3)) {
 /* */
 /*  */
 
-if (highlighted == true && target > 10 && scr_click_left(, true)) {
+if (highlighted == true && target > 10 && mouse_button_clicked(,, true)) {
     // Tip of the day: no idea why, but if you split this into two lines, the check will never pass;
     obj_ingame_menu.effect = self.target;
 }

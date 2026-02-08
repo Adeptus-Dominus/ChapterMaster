@@ -93,7 +93,7 @@ function Table(data) constructor {
                     _row.hover();
                 }
                 if (_row_entered && struct_exists(_row, "click_left")) {
-                    if (scr_click_left()) {
+                    if (mouse_button_clicked()) {
                         _row.click_left();
                     }
                 }

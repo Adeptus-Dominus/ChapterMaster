@@ -77,7 +77,7 @@ if (settings == 1) {
     bar = settings_autosave;
     draw_sprite(spr_creation_check, bar, xx + 680, yy + 485);
 
-    if (scr_click_left(, true)) {
+    if (mouse_button_clicked(,, true)) {
         if ((scr_hit(xx + 671, yy + 223, xx + 671 + 32, yy + 223 + 32) == true) && (master_volume > 0)) {
             change_volume = 1;
             master_volume -= 0.1;

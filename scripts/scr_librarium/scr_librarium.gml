@@ -256,7 +256,7 @@ function scr_librarium() {
             ];
             if (scr_hit(arrow[0], arrow[1], arrow[2], arrow[3])) {
                 arrow_hovered = true;
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     scroll_engaged = true;
                 }
             }
@@ -302,7 +302,7 @@ function scr_librarium() {
             ];
             if (scr_hit(arrow[0], arrow[1], arrow[2], arrow[3])) {
                 arrow_hovered = true;
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     scroll_engaged = true;
                 }
             }

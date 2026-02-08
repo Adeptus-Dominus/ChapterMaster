@@ -1005,7 +1005,7 @@ function PlanetData(planet, system) constructor {
                     draw_set_color(0);
                     draw_set_alpha(0.2);
                     draw_rectangle(xx + 481, yy + 280, xx + 716, yy + 298, 0);
-                    if (scr_click_left() && (obj_controller.requisition >= improve_cost)) {
+                    if (mouse_button_clicked() && (obj_controller.requisition >= improve_cost)) {
                         obj_controller.requisition -= improve_cost;
                         alter_fortification(1);
 

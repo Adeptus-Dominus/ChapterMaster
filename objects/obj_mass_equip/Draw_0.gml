@@ -30,7 +30,7 @@ if (total_role_number > 0) {
         }
         draw_rectangle(xx + 114, yy + 626, xx + 560, yy + 665, 0);
         draw_set_alpha(1);
-        if (scr_click_left() && (good1 + good2 + good3 + good4 + good5 == 5)) {
+        if (mouse_button_clicked() && (good1 + good2 + good3 + good4 + good5 == 5)) {
             engage = true;
             refresh = true;
             effect_create_above(ef_firework, xx + 800, yy + 400, 5, c_yellow);
@@ -200,7 +200,7 @@ if (total_role_number > 0 && tab > -1) {
             draw_text_transformed(x3, y3, string_hash_to_newline(item_name[h]), scale, 1, 0);
             draw_set_alpha(1);
 
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
 
                 switch (tab) {
@@ -243,7 +243,7 @@ if (total_role_number > 0 && tab > -1) {
         draw_set_alpha(0.2);
         draw_rectangle(xx + 1347 - (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 720, xx + 1347 + (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 741, 0);
         draw_set_alpha(1);
-        if (scr_click_left()) {
+        if (mouse_button_clicked()) {
             tab = -1;
         }
     }

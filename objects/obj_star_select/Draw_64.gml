@@ -46,7 +46,7 @@ if (obj_controller.selecting_planet > target.planets) {
 }
 var click_accepted = (!obj_controller.menu) && (!obj_controller.zoomed) && (!instance_exists(obj_bomb_select)) && (!instance_exists(obj_drop_select));
 if (click_accepted && (!debug || !debug_slate.entered())) {
-    if (scr_click_left(0)) {
+    if (mouse_button_clicked(, 0)) {
         var closes = 0, sta1 = 0, sta2 = 0;
         var mouse_consts = return_mouse_consts();
         sta1 = instance_nearest(mouse_consts[0], mouse_consts[1], obj_star);

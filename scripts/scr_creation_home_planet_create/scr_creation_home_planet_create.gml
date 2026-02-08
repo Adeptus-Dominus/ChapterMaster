@@ -61,7 +61,7 @@ function player_recruit_planet_selection() {
             }
             if (scr_text_hit(1044 + 333, 398, true, recruiting_name)) {
                 obj_cursor.image_index = 2;
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     text_selected = "recruiting_name";
                     keyboard_string = recruiting_name;
                 }
@@ -121,7 +121,7 @@ function scr_creation_home_planet_create() {
 
             if (scr_text_hit(644, 398, true, homeworld_name)) {
                 obj_cursor.image_index = 2;
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     text_selected = "home_name";
                     keyboard_string = homeworld_name;
                 }
@@ -177,7 +177,7 @@ function scr_creation_home_planet_create() {
             }
             if (scr_text_hit(644, 398, true, flagship_name)) {
                 obj_cursor.image_index = 2;
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     text_selected = "flagship_name";
                     keyboard_string = flagship_name;
                 }
@@ -282,7 +282,7 @@ function scr_creation_home_planet_create() {
             if (scr_hit(_draw_x, _draw_y, _draw_x + 32, _draw_y + 32)) {
                 tooltip = _home_rule_type.tooltip;
                 tooltip2 = _home_rule_type.tooltip2;
-                if (scr_click_left() && custom == eCHAPTER_TYPE.CUSTOM) {
+                if (mouse_button_clicked() && custom == eCHAPTER_TYPE.CUSTOM) {
                     homeworld_rule = i + 1;
                 }
             }

@@ -19,7 +19,7 @@ if ((scr_hit(x, y, x + width, y + height) == true) && (obj_controller.dropdown_o
         draw_rectangle(x, y, x + width, y + height, 0);
     }
 
-    if (scr_click_left() && (opened == 0) && (options > 1)) {
+    if (mouse_button_clicked() && (opened == 0) && (options > 1)) {
         opened = 1;
         obj_controller.dropdown_open = 1;
     }
@@ -77,7 +77,7 @@ if (opened == 1) {
                     tooltip2 = "There is no Artifact set to be displayed at the event.";
                 }
 
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     obj_controller.dropdown_open = 0;
                     opened = 0;
 
@@ -189,7 +189,7 @@ if (opened == 1) {
         }
     }
 
-    if (scr_click_left() && (scr_hit(x, y, x + width, y5 + yyy) == false)) {
+    if (mouse_button_clicked() && (scr_hit(x, y, x + width, y5 + yyy) == false)) {
         opened = 0;
         obj_controller.dropdown_open = 0;
     }

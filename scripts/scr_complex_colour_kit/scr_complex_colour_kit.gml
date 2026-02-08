@@ -1075,7 +1075,7 @@ function ColourPicker(xx, yy, max_width = 400) constructor {
                         draw_rectangle_array(box_coords, 0);
                         draw_set_alpha(1);
                         chosen = i;
-                        if (scr_click_left()) {
+                        if (mouse_button_clicked()) {
                             if (markings_options.current_selection == 0) {
                                 count_destroy = true;
                             } else {
@@ -1117,7 +1117,7 @@ function ColourPicker(xx, yy, max_width = 400) constructor {
                             type: markings_options.current_selection,
                         }
                     ];
-                    if (scr_click_left()) {
+                    if (mouse_button_clicked()) {
                         count_destroy = true;
                     }
                 });
@@ -1128,7 +1128,7 @@ function ColourPicker(xx, yy, max_width = 400) constructor {
                     "texture",
                     tex_data[1]
                 ];
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     count_destroy = true;
                 }
             });
