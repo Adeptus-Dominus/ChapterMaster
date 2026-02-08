@@ -71,6 +71,55 @@ function research_end() {
         research_area_limit = stc_ships;
     }
     if (stc_research[$ stc_research.research_focus] > 5000 * (research_area_limit + 1)) {
-        identify_stc(stc_research.research_focus);
+        advance_stc_research(stc_research.research_focus, true);
+    }
+}
+
+function advance_stc_research(_target, _free = false) {
+    with (obj_controller) {
+        switch (_target) {
+            case "wargear":
+                if (!_free) {
+                    stc_wargear_un--;
+                }
+                stc_wargear++;
+                if (stc_wargear == 2) {
+                    stc_bonus[1] = irandom_range(1, 5);
+                }
+                if (stc_wargear == 4) {
+                    stc_bonus[2] = irandom_range(1, 3);
+                }
+                stc_research.wargear = 0;
+                break;
+            case "vehicles":
+                if (!_free) {
+                    stc_vehicles_un--;
+                }
+                stc_vehicles++;
+                if (stc_vehicles == 2) {
+                    stc_bonus[3] = irandom_range(1, 5);
+                }
+                if (stc_vehicles == 4) {
+                    stc_bonus[4] = irandom_range(1, 3);
+                }
+                stc_research.vehicles = 0;
+                break;
+            case "ships":
+                if (!_free) {
+                    stc_ships_un--;
+                }
+                stc_ships++;
+                if (stc_ships == 2) {
+                    stc_bonus[5] = irandom_range(1, 5);
+                }
+                if (stc_ships == 4) {
+                    stc_bonus[6] = irandom_range(1, 3);
+                }
+                stc_research.ships = 0;
+                break;
+            default:
+                global.logger.error($"Unknown target: {_target}");
+                break;
+        }
     }
 }
