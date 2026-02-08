@@ -230,6 +230,7 @@
         ],
         "spli": 20,
         "tags": [
+            "vehicle",
             "dreadnought",
             "heavy_ranged",
             "flame"
@@ -528,6 +529,7 @@
         "ranged_hands": 0,
         "spli": 15,
         "tags": [
+            "vehicle",
             "power",
             "dual",
             "dreadnought",
@@ -673,6 +675,7 @@
         ],
         "spli": 15,
         "tags": [
+            "vehicle",
             "power",
             "dual",
             "dreadnought",
