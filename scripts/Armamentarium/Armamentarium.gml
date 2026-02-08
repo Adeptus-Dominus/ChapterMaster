@@ -216,7 +216,7 @@ function Armamentarium() constructor {
                 _is_visible = _item.forgable || global.cheat_debug;
             } else {
                 _is_visible = (_item.buyable || _item.stocked > 0) || global.cheat_debug;
-            }            
+            }
 
             if (shop_type == "technologies" && array_contains(obj_controller.technologies_known, _item.name)) {
                 _is_visible = false;
@@ -1205,41 +1205,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
 
         var _target = array_random_element(_available);
 
-        switch (_target) {
-            case "wargear":
-                controller.stc_wargear_un--;
-                controller.stc_wargear++;
-                if (controller.stc_wargear == 2) {
-                    controller.stc_bonus[1] = irandom_range(1, 5);
-                }
-                if (controller.stc_wargear == 4) {
-                    controller.stc_bonus[2] = irandom_range(1, 3);
-                }
-                controller.stc_research.wargear = 0;
-                break;
-            case "vehicles":
-                controller.stc_vehicles_un--;
-                controller.stc_vehicles++;
-                if (controller.stc_vehicles == 2) {
-                    controller.stc_bonus[3] = irandom_range(1, 5);
-                }
-                if (controller.stc_vehicles == 4) {
-                    controller.stc_bonus[4] = irandom_range(1, 3);
-                }
-                controller.stc_research.vehicles = 0;
-                break;
-            case "ships":
-                controller.stc_ships_un--;
-                controller.stc_ships++;
-                if (controller.stc_ships == 2) {
-                    controller.stc_bonus[5] = irandom_range(1, 5);
-                }
-                if (controller.stc_ships == 4) {
-                    controller.stc_bonus[6] = irandom_range(1, 3);
-                }
-                controller.stc_research.ships = 0;
-                break;
-        }
+        advance_stc_research(_target);
 
         audio_play_sound(snd_stc, -500, false);
 
