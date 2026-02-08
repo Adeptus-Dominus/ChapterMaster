@@ -82,9 +82,10 @@ function chase_fleet_target_set(target) {
     }
 }
 
+/// @mixin
 function fleet_intercept_time_calculate(target_intercept) {
     var intercept_time = -1;
-    targ_location = fleets_next_location(target_intercept);
+    var targ_location = fleets_next_location(target_intercept);
     if (instance_exists(targ_location)) {
         intercept_time = floor(point_distance(x, y, action_x, action_y) / action_spd) + 1;
     }
@@ -142,6 +143,7 @@ function is_orbiting(fleet = "none") {
     }
 }
 
+/// @mixin
 function set_fleet_movement(fastest_route = true, new_action = "move", minimum_eta = 1, maximum_eta = 1000) {
     action = "";
 
@@ -220,7 +222,7 @@ function load_unit_to_fleet(fleet, unit) {
 
 function calculate_fleet_eta(xx, yy, xxx, yyy, fleet_speed, star1 = true, star2 = true, warp_able = false) {
     var warp_lane = false;
-    eta = 0;
+    var eta = 0;
     //Some duke unfinished webway stuff copied here for reference
     /*for (var w = 1;w<5;w++){
 			if (planet_feature_bool(mine.p_feature[w], eP_FEATURES.WEBWAY)==1) then web1=1;
@@ -255,6 +257,7 @@ function calculate_fleet_eta(xx, yy, xxx, yyy, fleet_speed, star1 = true, star2 
     return eta;
 }
 
+/// @mixin
 function calculate_action_speed(fleet = "none", selected = false) {
     try {
         if (fleet == "none") {
@@ -299,6 +302,7 @@ function calculate_action_speed(fleet = "none", selected = false) {
     }
 }
 
+/// @mixin
 function scr_efleet_arrive_at_trade_loc() {
     //if player fleet at star or player forces trade
     var chase_fleet = false;
@@ -640,6 +644,7 @@ function fleet_star_draw_offsets() {
 }
 
 //TODO further split this shite up
+/// @mixin
 function fleet_arrival_logic() {
     var cur_star, sta, steh_dist, old_x, old_y;
     cur_star = instance_nearest(action_x, action_y, obj_star);

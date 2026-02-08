@@ -156,10 +156,8 @@ try {
                 instance_destroy();
             }
             with (obj_en_fleet) {
-                {
-                    x += 10000;
-                    y += 10000;
-                }
+                x += 10000;
+                y += 10000;
             }
         }
     }

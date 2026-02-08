@@ -520,6 +520,7 @@ function drop_select_draw() {
     }
 }
 
+/// @mixin
 function collect_local_units() {
     //
     // I think this script is used to count local forces. l_ meaning local.

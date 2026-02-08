@@ -301,7 +301,7 @@ function collect_role_group(group = SPECIALISTS_STANDARD, location = "", opposit
 }
 
 function stat_valuator(search_params, unit) {
-    match = true;
+    var match = true;
     for (var stat = 0; stat < array_length(search_params); stat++) {
         var _stat_val = search_params[stat];
         if (!struct_exists(unit, _stat_val[0])) {

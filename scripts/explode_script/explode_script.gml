@@ -1,3 +1,4 @@
+/// @mixin
 function explode_script(argument0, argument1) {
     // argument0: string
     // argument1: character that splits the string

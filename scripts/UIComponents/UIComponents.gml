@@ -362,6 +362,7 @@ function UINodeDebugComponent(owner, name = "") : UIComponent(owner, name) const
     };
 }
 
+/// @mixin
 function star_ui_name_node() {
     var star_base_ui_elem = new UIElement(sprite_width, sprite_height + 32, eUI_ALIGN_X.x_left, eUI_ALIGN_Y.y_top);
     ui_node = new UINode(star_base_ui_elem, x - sprite_xoffset, y - sprite_yoffset);

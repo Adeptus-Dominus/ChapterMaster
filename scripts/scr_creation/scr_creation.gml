@@ -8,6 +8,7 @@ enum eSTART_FACTION {
     RESERVED,
 }
 
+/// @mixin
 function set_complex_livery_buttons() {
     try {
         var _type = complex_livery_radio.selection_val("value");
@@ -34,6 +35,7 @@ function set_complex_livery_buttons() {
     }
 }
 
+/// @mixin
 function update_creation_roles_radio(start_role = 1) {
     var _role_data = [];
 
@@ -53,6 +55,7 @@ function update_creation_roles_radio(start_role = 1) {
     roles_radio.current_selection = -1;
 }
 
+/// @mixin
 function bulk_selection_buttons_setup() {
     var _button_data = [
         {

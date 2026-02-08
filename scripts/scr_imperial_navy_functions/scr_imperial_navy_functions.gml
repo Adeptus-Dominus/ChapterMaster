@@ -1,3 +1,4 @@
+/// @mixin
 function navy_orbiting_planet_end_turn_action() {
     end_sequence_finished = false;
     orbiting = instance_nearest(x, y, obj_star);
@@ -135,6 +136,7 @@ function build_new_navy_fleet(construction_forge) {
     }
 }
 
+/// @mixin
 function new_navy_ships_forge() {
     if (trade_goods == "building_ships") {
         var onceh = 0, advance = false, p = 0;
@@ -242,6 +244,7 @@ function send_navy_to_forge() {
     }
 }
 
+/// @mixin
 function imperial_navy_bombard() {
     if (turns_static < 12) {
         exit;
@@ -288,6 +291,7 @@ function imperial_navy_bombard() {
     } else {}
 }
 
+/// @mixin
 function navy_hunt_player_assets() {
     var hold = false;
 
@@ -456,6 +460,7 @@ function navy_finish_destroying_player_world() {
     }
 }
 
+/// @mixin
 function navy_attack_player_world() {
     if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War" && trade_goods == "invade_player" && guardsmen_unloaded == 0) {
         if (instance_exists(orbiting)) {
@@ -499,6 +504,7 @@ function navy_attack_player_world() {
     }
 }
 
+/// @mixin
 function navy_bombard_player_world() {
     var bombard = false;
     if (orbiting != noone) {
@@ -649,6 +655,8 @@ function fleet_remaining_guard_ratio() {
 }
 
 //TODO allow for splitting forces
+
+/// @mixin
 function scr_navy_unload_guard(planet) {
     var total_guard = fleet_guard_current();
 
@@ -662,6 +670,7 @@ function scr_navy_unload_guard(planet) {
     end_sequence_finished = true;
 }
 
+/// @mixin
 function scr_navy_planet_action() {
     if (action == "" && is_orbiting() && !guardsmen_unloaded) {
         // Unload if problem sector, otherwise patrol
@@ -804,6 +813,7 @@ function scr_navy_planet_action() {
     }
 }
 
+/// @mixin
 function navy_load_up_guardsmen_or_move_planet(planet, valid_next_planet) {
     var _player_war = false;
     var _pdata = new PlanetData(planet, orbiting);
@@ -828,6 +838,7 @@ function navy_load_up_guardsmen_or_move_planet(planet, valid_next_planet) {
     }
 }
 
+/// @mixin
 function navy_load_guardsmen() {
     var _new_capacity;
     var _maxi = fleet_max_guard();
@@ -869,6 +880,7 @@ function scr_navy_has_unloaded_guardsmen_turn_end() {
     }
 }
 
+/// @mixin
 function scr_navy_recruit_new_guard() {
     var o = 0, that = 0, te = 0, te_large = 0;
     for (var o = 1; o <= orbiting.planets; o++) {

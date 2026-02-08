@@ -1,3 +1,4 @@
+/// @mixin
 function scr_enemy_ai_a() {
     system_garrison = [];
     system_sabatours = [];

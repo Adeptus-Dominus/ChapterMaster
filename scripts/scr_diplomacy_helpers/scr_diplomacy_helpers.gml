@@ -160,19 +160,18 @@ function draw_character_diplomacy() {
         var _specific_splash = 0;
         _diplomacy_faction_name = _diplo_unit.name_role();
         _diplo_unit.IsSpecialist(SPECIALISTS_HEADS);
-        {
-            var _customs = obj_ini.custom_advisors;
-            if (_diplo_unit.IsSpecialist(SPECIALISTS_APOTHECARIES)) {
-                _specific_splash = struct_exists(_customs, "apothecary") ? _customs.apothecary : 2;
-            } else if (_diplo_unit.IsSpecialist(SPECIALISTS_CHAPLAINS)) {
-                _specific_splash = struct_exists(_customs, "chaplain") ? _customs.chaplain : 3;
-            } else if (_diplo_unit.IsSpecialist(SPECIALISTS_LIBRARIANS)) {
-                _specific_splash = struct_exists(_customs, "librarian") ? _customs.librarian : 4;
-            } else if (_diplo_unit.IsSpecialist(SPECIALISTS_TECHS)) {
-                _specific_splash = struct_exists(_customs, "forge_master") ? _customs.forge : 5;
-            }
-            scr_image("advisor/splash", _specific_splash, 16, 43, 310, 828);
+
+        var _customs = obj_ini.custom_advisors;
+        if (_diplo_unit.IsSpecialist(SPECIALISTS_APOTHECARIES)) {
+            _specific_splash = struct_exists(_customs, "apothecary") ? _customs.apothecary : 2;
+        } else if (_diplo_unit.IsSpecialist(SPECIALISTS_CHAPLAINS)) {
+            _specific_splash = struct_exists(_customs, "chaplain") ? _customs.chaplain : 3;
+        } else if (_diplo_unit.IsSpecialist(SPECIALISTS_LIBRARIANS)) {
+            _specific_splash = struct_exists(_customs, "librarian") ? _customs.librarian : 4;
+        } else if (_diplo_unit.IsSpecialist(SPECIALISTS_TECHS)) {
+            _specific_splash = struct_exists(_customs, "forge_master") ? _customs.forge : 5;
         }
+        scr_image("advisor/splash", _specific_splash, 16, 43, 310, 828);
         /* else if (advi="") {
             _diplomacy_faction_name="First Sergeant "+string(recruiter_name); 
         }*/
@@ -244,7 +243,7 @@ function evaluate_chosen_diplomacy_option(diplo_pressed) {
     }
 }
 
-function scr_diplomacy_hit(selection, new_path, complex_path = "none") {
+function scr_diplomacy_hit(selection, new_path = undefined, complex_path = "none") {
     if (array_length(option_selections) > selection) {
         if (point_and_click(option_selections[selection])) {
             if (!is_method(complex_path)) {

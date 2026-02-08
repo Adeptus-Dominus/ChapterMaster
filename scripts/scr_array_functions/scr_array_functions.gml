@@ -91,7 +91,7 @@ function array_random_index(choice_array) {
     return irandom(array_length(choice_array) - 1);
 }
 
-function delete_random_index(choice_array) {
+function array_delete_random_index(choice_array) {
     array_delete(choice_array, irandom(array_length(choice_array) - 1), 1);
     return choice_array;
 }

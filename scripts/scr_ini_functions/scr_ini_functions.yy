@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"relative_direction",
+  "%Name":"scr_ini_functions",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"relative_direction",
+  "name":"scr_ini_functions",
   "parent":{
-    "name":"Sys",
-    "path":"folders/Scripts/Sys.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

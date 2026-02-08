@@ -59,7 +59,7 @@ global.stat_icons = {
 };
 
 function eval_trait_stat_data(trait_stat_data) {
-    trait_stat_value = 0;
+    var trait_stat_value = 0;
     var complex_data = is_array(trait_stat_data);
     if (!complex_data) {
         trait_stat_value += trait_stat_data;
@@ -77,6 +77,7 @@ function eval_trait_stat_data(trait_stat_data) {
     return trait_stat_value;
 }
 
+/// @mixin
 function unit_stat_growth(grow_stat = false) {
     var base_group_growth_sets = {
         astartes: [
@@ -148,15 +149,17 @@ function unit_stat_growth(grow_stat = false) {
     for (var i = 0; i < _stat_count; i++) {
         _trait_stat_growth[$ _stat_list[i]] = 0;
     }
-    gains_set = false;
+
+    var gains_set = false;
+
     if (job != "none") {
         if (job.type == "forge") {
-            stat_gains_opts = ["technology"];
+            var stat_gains_opts = ["technology"];
             gains_set = true;
-            turn_stat_gains = {
+            var turn_stat_gains = {
                 technology: 100,
             };
-            instace_stat_point_gains = {
+            var instace_stat_point_gains = {
                 technology: 100,
             };
             if (grow_stat) {
@@ -170,11 +173,12 @@ function unit_stat_growth(grow_stat = false) {
             return instace_stat_point_gains;
         }
     }
+
     if (!gains_set) {
         for (var i = 0; i < array_length(traits); i++) {
             var _trait = traits[i];
             if (struct_exists(_trait_data, traits[i])) {
-                cur_trait = _trait_data[$ traits[i]];
+                var cur_trait = _trait_data[$ traits[i]];
                 for (var t = 0; t < _stat_count; t++) {
                     if (struct_exists(cur_trait, _stat_list[t])) {
                         var _cur_stat = _stat_list[t];
@@ -194,7 +198,7 @@ function unit_stat_growth(grow_stat = false) {
             var _stat = _stat_list[i];
             total_traited += _trait_stat_growth[$ _stat];
             _trait_stat_growth[$ _stat] = _trait_stat_growth[$ _stat] / 4;
-            growth_share = _trait_stat_growth[$ _stat];
+            var growth_share = _trait_stat_growth[$ _stat];
             if (growth_share > 0) {
                 repeat (growth_share) {
                     array_push(stat_gains_opts, _stat);
@@ -241,12 +245,12 @@ function unit_stat_growth(grow_stat = false) {
         }
     }
     if (grow_stat) {
-        stat_gains = undefined;
+        var stat_gains = undefined;
         var instace_stat_point_gains = {};
         var _levels = int64(stat_point_exp_marker / 15);
         for (var _lvl = 0; _lvl < _levels; _lvl++) {
             //var extra_stats_earned = d100_roll(false);
-            stat_gain_choice = random(100);
+            var stat_gain_choice = random(100);
             for (var i = 0; i < array_length(chance_list) - 1; i++) {
                 if (stat_gain_choice >= chance_list[i] && stat_gain_choice < chance_list[i + 1]) {
                     stat_gains = stat_items[i]; // bro ignored the bot
@@ -282,21 +286,4 @@ function unit_stat_growth(grow_stat = false) {
         // global.logger.debug($"{total_traited}")
         return stat_gain_chances;
     }
-}
-
-function add_unit_exp(add_val) {
-    var instace_stat_point_gains = {};
-    var _powers_learned = 0;
-    stat_point_exp_marker += add_val;
-    experience += add_val;
-    if (stat_point_exp_marker >= 15) {
-        instace_stat_point_gains = handle_stat_growth(true);
-    }
-
-    if (IsSpecialist(SPECIALISTS_LIBRARIANS)) {
-        _powers_learned = update_powers();
-    }
-    role_refresh();
-
-    return [instace_stat_point_gains, _powers_learned];
 }

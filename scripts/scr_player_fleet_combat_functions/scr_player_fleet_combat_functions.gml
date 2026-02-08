@@ -108,6 +108,7 @@ function sort_ships_into_columns(combat) {
     }
 }
 
+/// @mixin
 function player_fleet_ship_spawner() {
     var x2 = 224;
     var hei = 0, sizz = 0;
@@ -177,6 +178,7 @@ function player_fleet_ship_spawner() {
     } // End repeat
 }
 
+/// @mixin
 function setup_player_combat_ship() {
     action = "";
     direction = 0;

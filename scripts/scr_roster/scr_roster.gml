@@ -451,6 +451,7 @@ function PurgeButton(purge_image, xx, yy, purge_type) constructor {
     bright_shader = 0.8;
     self.purge_type = purge_type;
     self.purge_image = purge_image;
+    description = "";
 
     static hover = function() {
         return scr_hit(x1, y1, x1 + width, y1 + height);
@@ -502,6 +503,7 @@ function setup_battle_formations() {
     obj_controller.bat_scout_column = obj_controller.bat_scou_for[new_combat.formation_set];
 }
 
+/// @mixin
 function add_unit_to_battle(unit, meeting, is_local) {
     var new_combat = obj_ncombat;
     var man_size = 1;
@@ -526,7 +528,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
     var _wearing_armour = is_struct(_armour_data);
 
     var col = 0, targ = 0, moov = 0;
-    _unit_role = unit.role();
+    var _unit_role = unit.role();
 
     if (new_combat.battle_special == "space_hulk") {
         new_combat.player_starting_dudes++;
@@ -674,7 +676,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
         new_combat.big_mofo = 3;
     }
     if (unit.squad != "none") {
-        squad = obj_ini.squads[unit.squad];
+        var squad = obj_ini.squads[unit.squad];
         switch (squad.formation_place) {
             case "assault":
                 col = obj_controller.bat_assault_column;
@@ -756,6 +758,7 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
             break;
     }
 
+    /// @type {Asset.GMObject.obj_pnunit}
     targ = instance_nearest(col * 10, 240 / 2, obj_pnunit);
     targ.veh++;
     targ.veh_co[targ.veh] = company;
