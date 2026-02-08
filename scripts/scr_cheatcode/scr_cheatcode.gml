@@ -488,7 +488,7 @@ function draw_planet_debug_problems() {
         draw_text(38, _y, _keys[i]);
         if (scr_hit(38, _y, 337, _y + 20)) {
             tooltip_draw(mission_name_key(_keys[i]));
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 switch (_keys[i]) {
                     case "inquisitor":
                         mission_inquistion_hunt_inquisitor(target.id);
@@ -520,7 +520,7 @@ function draw_planet_debug_forces() {
     var current_planet = obj_controller.selecting_planet;
     var base_y = 220;
     // Close window if clicked outside
-    if (!scr_hit([36, base_y, 337, base_y + 281]) && scr_click_left()) {
+    if (!scr_hit([36, base_y, 337, base_y + 281]) && mouse_button_clicked()) {
         debug = 0;
         exit;
     }

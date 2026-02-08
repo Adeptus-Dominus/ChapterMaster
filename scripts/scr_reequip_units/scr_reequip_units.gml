@@ -382,7 +382,7 @@ function draw_popup_equip() {
             draw_text_transformed(box_x, box_y, item_string, mct, 1, 0);
             if (scr_hit(box)) {
                 tooltip_draw(gen_item_tooltip(item_name[o]));
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     top = o;
                 }
             }

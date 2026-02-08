@@ -23,7 +23,7 @@ function scr_ui_settings() {
         // Back arrow
         draw_sprite_ext(spr_arrow, 0, xx + 25, yy + 70, 2, 2, 0, c_white, 1);
 
-        if ((scr_hit(xx + 25, yy + 70, xx + 25 + 64, yy + 70 + 64) == true) && scr_click_left()) {
+        if ((scr_hit(xx + 25, yy + 70, xx + 25 + 64, yy + 70 + 64) == true) && mouse_button_clicked()) {
             with (obj_formation_bar) {
                 instance_destroy();
             }
@@ -59,7 +59,7 @@ function scr_ui_settings() {
         if ((formating > 3) && (obj_cursor.dragging == 0)) {
             if (scr_hit([xx + 800 - (bar_wid / 2), yy + 66, xx + 800 + (bar_wid / 2), yy + 66 + string_height("LOL")])) {
                 obj_cursor.image_index = 2;
-                if (scr_click_left() && (text_bar == 0)) {
+                if (mouse_button_clicked() && (text_bar == 0)) {
                     text_bar = 1;
                     keyboard_string = bat_formation[formating];
                 }
@@ -111,7 +111,7 @@ function scr_ui_settings() {
         if (scr_hit(cx, cy, cx + string_width(_formation_name), cy + sprite_get_height(spr_creation_check))) {
             tool1 = _formation_name;
             tool2 = "Can't be used in Raids. Can use any vehicles.";
-            if (scr_click_left() && formating > 3 && bat_formation_type[formating] != 1) {
+            if (mouse_button_clicked() && formating > 3 && bat_formation_type[formating] != 1) {
                 bat_formation_type[formating] = 1;
                 scr_ui_formation_bars();
             }
@@ -141,7 +141,7 @@ function scr_ui_settings() {
         if (scr_hit(cx, cy, cx + string_width(_formation_name), cy + sprite_get_height(spr_creation_check))) {
             tool1 = _formation_name;
             tool2 = "Can only be used in Raids. Prevents the use of all vehicles aside from Dreadnoughts and Land Speeders. Starts in melee.";
-            if (scr_click_left() && formating > 3 && bat_formation_type[formating] != 2) {
+            if (mouse_button_clicked() && formating > 3 && bat_formation_type[formating] != 2) {
                 bat_formation_type[formating] = 2;
                 scr_ui_formation_bars();
             }
@@ -310,7 +310,7 @@ function scr_ui_settings() {
             ide = settings;
 
             draw_sprite_ext(spr_arrow, 0, xx + 25, yy + 70, 2, 2, 0, c_white, 1); // Back
-            if ((scr_hit(xx + 25, yy + 70, xx + 25 + 64, yy + 70 + 64) == true) && scr_click_left()) {
+            if ((scr_hit(xx + 25, yy + 70, xx + 25 + 64, yy + 70 + 64) == true) && mouse_button_clicked()) {
                 with (obj_mass_equip) {
                     instance_destroy();
                 }
@@ -388,7 +388,7 @@ function scr_ui_settings() {
                         nep = true;
                     }
 
-                    if (scr_click_left() && !nep) {
+                    if (mouse_button_clicked() && !nep) {
                         if (obj_mass_equip.tab != -1) {
                             obj_mass_equip.refresh = true;
                         } else if (obj_mass_equip.tab == -1) {
@@ -440,7 +440,7 @@ function scr_ui_settings() {
         if (scr_hit(cx, cy, cx + string_width(_option_name) + 35, cy + sprite_get_height(spr_creation_check))) {
             tool1 = _option_name;
             tool2 = "Turned off by default. \nWhen turned on, various unit visuals may change depending on your progenitor chapter.";
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 progenitor_visuals = !progenitor_visuals;
             }
         }
@@ -455,7 +455,7 @@ function scr_ui_settings() {
             tool1 = "Allow Astartes Transfer";
             tool2 = "Turned off by default. Allows you to transfer Astartes in the same way as vehicles.";
         }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh;
             onceh = 0;
             if ((onceh == 0) && (command_set[1] == 0)) {
@@ -478,7 +478,7 @@ function scr_ui_settings() {
             tool1 = "Codex Compliant Organization";
             tool2 = "When enabled, marine promotions are limited based on their current company and EXP, overall following the Codex Astartes promotion sequence." + "\n\n" + "When disabled, you can promote marines to any company, from any company, disregarding any EXP requirements." + "\n" + "Terminators, Dreadnoughts and Company Command roles retain EXP requirements however.";
         }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[2] == 1)) {
@@ -501,7 +501,7 @@ function scr_ui_settings() {
             tool1 = "Modest Livery";
             tool2 = "Turned off by default.  Prevents Advantages and Disadvantages from changing the appearances of your marines, effectively disabling any special ornamentation or possible battle wear.";
         }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (modest_livery == 0)) {
@@ -550,7 +550,7 @@ function scr_ui_settings() {
         cy = yy + 355;
 
         draw_sprite(spr_creation_check, che + 2, cx, cy);
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[3] == 0)) {
@@ -568,7 +568,7 @@ function scr_ui_settings() {
         cy = yy + 382;
         draw_sprite(spr_creation_check, che + 2, cx, cy);
 
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[4] == 0)) {
@@ -586,7 +586,7 @@ function scr_ui_settings() {
         cy = yy + 409;
         draw_sprite(spr_creation_check, che + 2, cx, cy);
 
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[5] == 0)) {
@@ -604,7 +604,7 @@ function scr_ui_settings() {
         cy = yy + 436;
         draw_sprite(spr_creation_check, che + 2, cx, cy);
 
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[6] == 0)) {
@@ -622,7 +622,7 @@ function scr_ui_settings() {
         cy = yy + 463;
         draw_sprite(spr_creation_check, che + 2, cx, cy);
 
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[7] == 0)) {
@@ -640,7 +640,7 @@ function scr_ui_settings() {
         cy = yy + 490;
         draw_sprite(spr_creation_check, che + 2, cx, cy);
 
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[8] == 0)) {
@@ -658,7 +658,7 @@ function scr_ui_settings() {
         cy = yy + 517;
         draw_sprite(spr_creation_check, che + 2, cx, cy);
 
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[9] == 0)) {
@@ -692,7 +692,7 @@ function scr_ui_settings() {
             tool1 = "Damage Systems";
             tool2 = "Your Astartes will attempt to disable the ship by attacking the ship bridge and systems.";
         }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[20] == 0)) {
@@ -711,7 +711,7 @@ function scr_ui_settings() {
             tool1 = "Use Plasma Bombs";
             tool2 = "Your Astartes will use equipped Plasma Bombs to massively damage the boarded ship.";
         }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[21] == 0) && (command_set[22] == 0)) {
@@ -734,7 +734,7 @@ function scr_ui_settings() {
             tool1 = "Commandeer Ship";
             tool2 = "Your Astartes will attempt to commandeer the vessel, to be permenantely used or salvaged.";
         }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[22] == 0)) {
@@ -771,7 +771,7 @@ function scr_ui_settings() {
             tool1 = "Board Next Nearest";
             tool2 = "After disabling an enemy vessel your Astartes will launch a new boarding mission at the nearest enemy.";
         }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[23] == 0) && (command_set[22] == 0)) {
@@ -792,7 +792,7 @@ function scr_ui_settings() {
             tool1 = "Return and Recuperate";
             tool2 = "After disabling an enemy vessel your Astartes will return to their mother vessel and heal.";
         }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[24] == 0) && (command_set[22] == 0)) {
@@ -818,7 +818,7 @@ function scr_ui_settings() {
         cy = yy + 747 + 23;
 
         draw_sprite(spr_creation_check, che + 2, cx, cy);
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
 
             if ((onceh == 0) && (command_set[25] == 0)) {
@@ -836,7 +836,7 @@ function scr_ui_settings() {
         cy = yy + 747 + 50;
         draw_sprite(spr_creation_check, che + 2, cx, cy);
 
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left()) {
+        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
             if ((onceh == 0) && (command_set[26] == 0)) {
                 onceh = 1;
@@ -921,7 +921,7 @@ function scr_ui_settings() {
                     draw_set_alpha(1);
                     tool1 = string(obj_ini.role[100][ide]) + " Settings";
                     tool2 = "Click to open the settings for this unit.";
-                    if (scr_click_left()) {
+                    if (mouse_button_clicked()) {
                         settings = ide;
                         menu = 23;
                         with (obj_mass_equip) {
@@ -1027,7 +1027,7 @@ function scr_ui_settings() {
                         }
                     }
 
-                    if (scr_click_left()) {
+                    if (mouse_button_clicked()) {
                         formating = i;
                         menu = 24;
 

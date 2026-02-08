@@ -82,7 +82,7 @@ if (__b__) {
     }
     if (scr_hit(xx + 1104, yy + 72, xx + 1137, yy + 105) == true) {
         draw_sprite(spr_help_exit, 1, xx + 1104, yy + 72);
-        if (scr_click_left()) {
+        if (mouse_button_clicked()) {
             with (obj_controller) {
                 main_map_defaults();
                 onceh = 1;
@@ -119,7 +119,7 @@ if (__b__) {
                 draw_set_alpha(0.2);
                 draw_rectangle(x1, y1, x1 + 198, y1 + 22, 0);
                 draw_set_alpha(1);
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     topic = topics[t];
                     ini_open("main\\help.ini");
                     info = ini_read_string(string(t), "info", "");

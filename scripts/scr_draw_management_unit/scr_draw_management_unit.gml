@@ -204,7 +204,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
 
                         if (scr_hit(_draw_coords_mouse)) {
                             draw_set_alpha(0.8);
-                            if (scr_click_left()) {
+                            if (mouse_button_clicked()) {
                                 switch (_data.name) {
                                     case "Techmarine":
                                         _unit.role_tag[eROLE_TAG.Techmarine] = !_unit.role_tag[eROLE_TAG.Techmarine];

@@ -106,7 +106,7 @@ function scr_ui_popup() {
                     draw_rectangle(base_x1, base_y1 + y_offset, base_x2, base_y2 + y_offset, 0);
                     draw_set_alpha(1);
 
-                    if (scr_click_left()) {
+                    if (mouse_button_clicked()) {
                         var base_options = {
                             style: style.tag,
                         };
@@ -280,7 +280,7 @@ function scr_ui_popup() {
                             tooltip3 = tooltip;
                             tooltip4 = tooltip2;
                             tcost = cost;
-                            if (scr_click_left() && (obj_controller.requisition >= tcost) && (alp != 0.33)) {
+                            if (mouse_button_clicked() && (obj_controller.requisition >= tcost) && (alp != 0.33)) {
                                 obj_controller.requisition -= tcost;
                                 switch (r) {
                                     case 1:
@@ -584,7 +584,7 @@ function scr_ui_popup() {
                 draw_rectangle(xx + 300, yy + 45, xx + 400, yy + 65, 0);
                 draw_set_alpha(1);
 
-                if (scr_click_left() && (obj_controller.requisition >= 1000)) {
+                if (mouse_button_clicked() && (obj_controller.requisition >= 1000)) {
                     obj_temp_build.isnew = 1;
                     obj_controller.requisition -= 1000;
                 }
@@ -609,7 +609,7 @@ function scr_ui_popup() {
                 draw_rectangle(xx + 300, yy + 110, xx + 400, yy + 130, 0);
                 draw_set_alpha(1);
 
-                if (scr_click_left() && (obj_controller.requisition >= 1500)) {
+                if (mouse_button_clicked() && (obj_controller.requisition >= 1500)) {
                     array_push(planet_upgrades, new NewPlanetFeature(eP_FEATURES.ARSENAL));
                     obj_controller.requisition -= 1500;
                 }
@@ -634,7 +634,7 @@ function scr_ui_popup() {
                 draw_rectangle(xx + 300, yy + 175, xx + 400, yy + 195, 0);
                 draw_set_alpha(1);
 
-                if (scr_click_left() && (obj_controller.requisition >= 4000)) {
+                if (mouse_button_clicked() && (obj_controller.requisition >= 4000)) {
                     array_push(planet_upgrades, new NewPlanetFeature(eP_FEATURES.GENE_VAULT));
                     obj_controller.requisition -= 4000;
                 }
@@ -653,7 +653,7 @@ function scr_ui_popup() {
             draw_rectangle(xx + 312 - 60, yy + 388, xx + 312 + 60, yy + 420, 0);
             draw_set_alpha(1);
 
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 obj_controller.menu = 0;
             }
         }

@@ -761,7 +761,7 @@ function Armamentarium() constructor {
 
         draw_text(_draw_x, _draw_y, _text);
 
-        if (_is_hover && scr_click_left()) {
+        if (_is_hover && mouse_button_clicked()) {
             target_comp++;
             if (target_comp > _max_coys) {
                 target_comp = 1;
@@ -1080,7 +1080,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
             draw_rectangle_array(_rect, true);
             tooltip_draw($"Click to focus research on {_label}");
 
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 controller.stc_research.research_focus = _cat;
                 audio_play_sound(snd_click, 10, false);
                 refresh_eta();

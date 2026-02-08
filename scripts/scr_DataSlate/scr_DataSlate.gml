@@ -214,7 +214,7 @@ function draw_building_builder(xx, yy, req_require, building_sprite) {
     if (obj_controller.requisition >= req_require) {
         if (scr_hit(image_middle + 30, image_bottom + 28, image_middle + 78, image_bottom + 44)) {
             draw_sprite_ext(spr_slate_2, 5, image_middle - 10, image_bottom, 1, 1, 0, c_white, 1);
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 clicked = true;
             }
         } else {

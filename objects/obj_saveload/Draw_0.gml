@@ -178,7 +178,7 @@ if (__b__) {
                     draw_set_color(c_white);
                     draw_rectangle(x2 + 807, y2 + 113, x2 + 951, y2 + 146, 0);
                     draw_set_alpha(1);
-                    if (scr_click_left(, true) && !instance_exists(obj_popup)) {
+                    if (mouse_button_clicked(,, true) && !instance_exists(obj_popup)) {
                         // Clear
                         var com;
                         com = instance_create(0, 0, obj_popup);
@@ -202,7 +202,7 @@ if (__b__) {
             draw_text_transformed(x2+1050,y2+117,string_hash_to_newline("Restart Game"),0.7,0.7,0);
             if (scr_hit(x2+977,y2+113,x2+1121,y2+146)){
                 draw_set_alpha(0.1);draw_set_color(c_white);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,0);draw_set_alpha(1);
-                if (scr_click_left(,true) and !instance_exists(obj_popup)){
+                if (mouse_button_clicked(,, true) and !instance_exists(obj_popup)){
                     if (file_exists(string(PATH_SAVE_FILES, save[o]))) { // Resets the data
                         global.restart=1;global.load=save[o];
                         menu=0;load_part=1;obj_cursor.image_alpha=0;splash=choose(0,1,2,3,4);
@@ -239,7 +239,7 @@ if (__b__) {
                     draw_set_color(c_white);
                     draw_rectangle(x2 + 1317, y2 + 113, x2 + 1461, y2 + 146, 0);
                     draw_set_alpha(1);
-                    if (scr_click_left(, true) && !instance_exists(obj_popup)) {
+                    if (mouse_button_clicked(,, true) && !instance_exists(obj_popup)) {
                         // Load
                         global.load = save[o];
                         menu = 0;
@@ -295,7 +295,7 @@ if (__b__) {
                     draw_set_color(c_white);
                     draw_rectangle(x2 + 1317, y2 + 113, x2 + 1461, y2 + 146, 0);
                     draw_set_alpha(1);
-                    if (scr_click_left(, true)) {
+                    if (mouse_button_clicked(,, true)) {
                         if (instance_exists(obj_main_menu)) {
                             with (obj_main_menu) {
                                 part_particles_clear(p_system);

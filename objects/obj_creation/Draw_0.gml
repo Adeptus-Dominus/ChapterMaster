@@ -109,7 +109,7 @@ try {
 
                 if (scr_hit(1164 - 194, 149, 1164 - 162, 193)) {
                     obj_cursor.image_index = 1;
-                    if (scr_click_left()) {
+                    if (mouse_button_clicked()) {
                         founding--;
                         if (founding == -1) {
                             founding = ePROGENITOR.RANDOM;
@@ -118,7 +118,7 @@ try {
                 }
                 if (scr_hit(1164 - 144, 149, 1164 - 112, 193)) {
                     obj_cursor.image_index = 1;
-                    if (scr_click_left()) {
+                    if (mouse_button_clicked()) {
                         founding++;
                         if (founding == 11) {
                             founding = ePROGENITOR.NONE;
@@ -447,7 +447,7 @@ try {
             hei = string_height(string_hash_to_newline(chapter_master_name));
             if (scr_hit(580 - 2, 144 - 2, 582 + str_width, 146 + hei)) {
                 obj_cursor.image_index = 2;
-                if (scr_click_left() && !instance_exists(obj_creation_popup)) {
+                if (mouse_button_clicked() && !instance_exists(obj_creation_popup)) {
                     text_selected = "cm";
                     keyboard_string = chapter_master_name;
                 }
@@ -669,7 +669,7 @@ try {
             if (scr_hit(_sc_box.x1, _sc_box.y1, _sc_box.x2, _sc_box.y2)) {
                 tooltip = "Do you want to save your chapter?";
                 tooltip2 = "Click to save your chapter";
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     scr_save_chapter(global.chapter_id);
 
                     tooltip = "Do you want to save your chapter?";

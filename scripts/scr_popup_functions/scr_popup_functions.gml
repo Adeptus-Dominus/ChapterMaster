@@ -209,7 +209,7 @@ function draw_popup_options() {
                         script_execute(_opt.hover);
                     }
                 }
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     press = i;
                     if (_is_struct && struct_exists(_opt, "choice_func")) {
                         if (is_callable(_opt.choice_func)) {
@@ -234,7 +234,7 @@ function draw_popup_options() {
             y_scale = t8 / (oy + sprite_height);
         }
     } else {
-        if (scr_click_left()) {
+        if (mouse_button_clicked()) {
             popup_defualt_click_action();
         }
     }

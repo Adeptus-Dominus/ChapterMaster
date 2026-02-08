@@ -424,7 +424,7 @@ function draw_chapter_trait_select() {
         }
         if (scr_text_hit(800, 80, true, chapter_name)) {
             obj_cursor.image_index = 2;
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 text_selected = "chapter";
                 keyboard_string = chapter_name;
             }
@@ -444,7 +444,7 @@ function draw_chapter_trait_select() {
     if ((custom != eCHAPTER_TYPE.PREMADE) && (restarted == 0)) {
         if (scr_hit(436, 74, 436 + 128, 74 + 128) && (popup == "")) {
             obj_cursor.image_index = 1;
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 popup = "icons";
             }
         }
@@ -551,7 +551,7 @@ function draw_chapter_trait_select() {
                     obj_cursor.image_index = 1;
                     tooltip = "Decrease";
                     tooltip2 = "(Hold Ctrl to decrease by 10)";
-                    if (scr_click_left() && (arrow_buttons_controls[i] - click_change) >= scores_min[i]) {
+                    if (mouse_button_clicked() && (arrow_buttons_controls[i] - click_change) >= scores_min[i]) {
                         arrow_buttons_controls[i] -= click_change;
                         points -= score_costs[i] * click_change;
                     }
@@ -561,7 +561,7 @@ function draw_chapter_trait_select() {
                     obj_cursor.image_index = 1;
                     tooltip = "Increase";
                     tooltip2 = "(Hold Ctrl to increase by 10)";
-                    if (scr_click_left() && (arrow_buttons_controls[i] + click_change) <= scores_max[i] && (points + (score_costs[i] * click_change) <= maxpoints)) {
+                    if (mouse_button_clicked() && (arrow_buttons_controls[i] + click_change) <= scores_max[i] && (points + (score_costs[i] * click_change) <= maxpoints)) {
                         arrow_buttons_controls[i] += click_change;
                         points += score_costs[i] * click_change;
                     }
@@ -629,7 +629,7 @@ function draw_chapter_trait_select() {
                     tooltip = $"{cur_adv.name} ({cur_adv.points} Points)";
                     tooltip2 = cur_adv.description;
                 }
-                if (advantage_click_allow && popup == "" && scr_click_left()) {
+                if (advantage_click_allow && popup == "" && mouse_button_clicked()) {
                     if ((points < maxpoints) && (adv_num[i] == 0)) {
                         popup = "advantages";
 
@@ -671,7 +671,7 @@ function draw_chapter_trait_select() {
                     tooltip = obj_creation.all_disadvantages[dis_num[slot]].name;
                     tooltip2 = obj_creation.all_disadvantages[dis_num[slot]].description;
                 }
-                if (advantage_click_allow && popup == "" && scr_click_left()) {
+                if (advantage_click_allow && popup == "" && mouse_button_clicked()) {
                     if (dis_num[slot] == 0) {
                         popup = "disadvantages";
 
@@ -726,7 +726,7 @@ function draw_chapter_trait_select() {
             draw_set_color(CM_GREEN_COLOR);
             draw_set_alpha(1);
 
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 popup = "";
             }
         }
@@ -768,7 +768,7 @@ function draw_chapter_trait_select() {
                 draw_set_alpha(1);
                 draw_set_color(CM_GREEN_COLOR);
 
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     popup = "";
                     scr_load_chapter_icon(_icon_name, true);
                     chapter_icons_container.reset_scroll_offset();
@@ -839,7 +839,7 @@ function draw_chapter_trait_select() {
                     draw_text(column.x1, column.y1 + gap, adv_name);
 
                     //Click on advantage
-                    if (!disable && !array_contains(adv, adv_name) && scr_click_left()) {
+                    if (!disable && !array_contains(adv, adv_name) && mouse_button_clicked()) {
                         advantage_local_var.add(temp);
                         popup = "";
                     }
@@ -906,7 +906,7 @@ function draw_chapter_trait_select() {
                     draw_text(column.x1, column.y1 + gap, dis_name);
 
                     //Click on disadvantage
-                    if (!disable && !array_contains(dis, dis_name) && scr_click_left()) {
+                    if (!disable && !array_contains(dis, dis_name) && mouse_button_clicked()) {
                         popup = "";
                         disadvantage_local_var.add(temp);
                     }

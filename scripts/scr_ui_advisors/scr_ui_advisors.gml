@@ -342,7 +342,7 @@ function scr_ui_advisors() {
             draw_set_color(c_gray);
             draw_rectangle(xx + 560, yy + 780, xx + 682, yy + 805, 0);
 
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 menu = 12.1;
                 var dro = 0;
                 dro = instance_create(xx + 1064, yy + 124, obj_dropdown_sel);
@@ -424,7 +424,7 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left() && (dropdown_open == 0)) {
+            if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked() && (dropdown_open == 0)) {
                 var onceh = 0;
                 if ((onceh == 0) && (fest_planet == 0)) {
                     onceh = 1;
@@ -461,7 +461,7 @@ function scr_ui_advisors() {
             draw_set_alpha(1);
 
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left() && (dropdown_open == 0)) {
+            if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked() && (dropdown_open == 0)) {
                 var onceh = 0;
                 if ((onceh == 0) && (fest_planet == 1) && (fest_type != "Triumphal March")) {
                     onceh = 1;
@@ -523,7 +523,7 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left() && (dropdown_open == 0)) {
+            if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked() && (dropdown_open == 0)) {
                 var onceh = 0;
                 if ((fest_type == "Tournament") || (fest_type == "Deathmatch")) {
                     onceh = 1;
@@ -589,7 +589,7 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left() && (dropdown_open == 0)) {
+            if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked() && (dropdown_open == 0)) {
                 var onceh = 0;
                 if ((fest_type == "Imperial Mass") && (known[5] == 0)) {
                     onceh = 1;
@@ -653,7 +653,7 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left() && (dropdown_open == 0)) {
+            if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked() && (dropdown_open == 0)) {
                 var onceh = 0;
                 if ((fest_type == "Imperial Mass") && (known[5] == 0)) {
                     onceh = 1;
@@ -722,7 +722,7 @@ function scr_ui_advisors() {
                 draw_set_alpha(0.2);
                 draw_rectangle(xx + 1302, yy + 780, xx + 1433, yy + 805, 0);
 
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     requisition -= fest_cost;
                     fest_scheduled = 1;
                     menu = 12;
@@ -752,7 +752,7 @@ function scr_ui_advisors() {
                 draw_set_color(c_white);
                 draw_set_alpha(0.2);
                 draw_rectangle(xx + 1132, yy + 780, xx + 1253, yy + 805, 0);
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     fest_type = "";
                     fest_sid = 0;
                     fest_wid = 0;

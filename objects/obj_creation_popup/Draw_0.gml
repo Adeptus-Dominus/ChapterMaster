@@ -137,7 +137,7 @@ if (col_shift) {
             obj_cursor.image_index = 2;
             tooltip = "Astartes Role Name";
             tooltip2 = $"The name of this Astartes Role.  The plural form will be ''{obj_creation.role[co][ide]}s''.";
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 obj_creation.text_selected = $"unit_name{ide}";
                 keyboard_string = obj_creation.role[co][ide];
             }
@@ -188,7 +188,7 @@ if (col_shift) {
                 draw_set_alpha(0.2);
                 draw_rectangle(x5, y5, x5 - string_width(string_hash_to_newline(title)), y5 + string_height(string_hash_to_newline(title)) - 2, 0);
 
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     var unit_type = type - 100;
                     var is_invalid = unit_type == eROLE.DREADNOUGHT && slot_count > eEQUIPMENT_SLOT.WEAPON_TWO;
 
@@ -366,7 +366,7 @@ if (target_gear > -1) {
             draw_text_transformed(x3, y3 - space, string_hash_to_newline(item_name[h]), scale, 1, 0);
             draw_set_alpha(1);
 
-            if (scr_click_left()) {
+            if (mouse_button_clicked()) {
                 var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                 switch (target_gear) {
                     case 0:

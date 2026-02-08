@@ -230,7 +230,7 @@ function SpriteButton(_sprite, _hover_sprite = -1) constructor {
         var _y2 = _y + (height * scale_y);
 
         is_hovered = scr_hit(_x, _y, _x2, _y2);
-        is_clicked = _enabled && is_hovered && scr_click_left();
+        is_clicked = _enabled && is_hovered && mouse_button_clicked();
 
         if (is_hovered) {
             if (tooltip_text != "") {
@@ -666,7 +666,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
         var _y2 = yy + _string_h;
 
         var _mouse_hover = scr_hit(_x1, _y1, _x2, _y2);
-        var _mouse_click = scr_click_left(0, true);
+        var _mouse_click = mouse_button_clicked(, 0, true);
         var _enter_pressed = press_exclusive(vk_enter);
 
         if (cooloff == 0) {
@@ -743,7 +743,7 @@ function UIDropdown(_options, _width = 180) constructor {
         var _arrow_char = is_open ? "▲" : "▼";
         draw_text(_x + width - 20, _y + 6, _arrow_char);
 
-        if (_is_hovering_main && scr_click_left()) {
+        if (_is_hovering_main && mouse_button_clicked()) {
             is_open = !is_open;
             audio_play_sound(snd_click, 10, false);
         }
@@ -780,7 +780,7 @@ function UIDropdown(_options, _width = 180) constructor {
                 draw_rectangle(_x + 1, _oy, _x + width - 1, _oy + _opt_height, false);
                 draw_set_alpha(1.0);
 
-                if (scr_click_left()) {
+                if (mouse_button_clicked()) {
                     selected_index = i;
                     is_open = false;
                     _result = options[i].value;
@@ -794,7 +794,7 @@ function UIDropdown(_options, _width = 180) constructor {
         }
 
         // Close if clicking outside
-        if (scr_click_left() && !_is_hovering_main && !scr_hit(_list_rect[0], _list_rect[1], _list_rect[2], _list_rect[3])) {
+        if (mouse_button_clicked() && !_is_hovering_main && !scr_hit(_list_rect[0], _list_rect[1], _list_rect[2], _list_rect[3])) {
             is_open = false;
         }
 
@@ -1109,7 +1109,7 @@ function ToggleButton(data = {}) constructor {
     };
 
     clicked = function() {
-        if (hover() && scr_click_left()) {
+        if (hover() && mouse_button_clicked()) {
             active = !active;
             audio_play_sound(snd_click_small, 10, false, 1);
             return true;
@@ -1227,7 +1227,7 @@ function InteractiveButton(data = {}) constructor {
     };
 
     clicked = function() {
-        if (hover() && scr_click_left()) {
+        if (hover() && mouse_button_clicked()) {
             if (!active) {
                 audio_play_sound(snd_error, 10, false, 1);
                 return false;
@@ -1361,7 +1361,7 @@ function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x
             draw_set_blend_mode(bm_normal);
 
             oscillate_down = true;
-            is_clicked = scr_click_left(0, true);
+            is_clicked = mouse_button_clicked(, 0, true);
         } else {
             if (oscillate_down) {
                 oscillate += 0.2;

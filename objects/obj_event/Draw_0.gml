@@ -83,7 +83,7 @@ if (exit_fade >= 0) {
         }
         if (scr_hit(__view_get(e__VW.XView, 0) + 1238, __view_get(e__VW.YView, 0) + 200, __view_get(e__VW.XView, 0) + 1271, __view_get(e__VW.YView, 0) + 233) == true) {
             draw_sprite(spr_help_exit, 1, __view_get(e__VW.XView, 0) + 1238, __view_get(e__VW.YView, 0) + 200);
-            if (scr_click_left() && (closing == false)) {
+            if (mouse_button_clicked() && (closing == false)) {
                 closing = true;
                 fading = -1;
             }

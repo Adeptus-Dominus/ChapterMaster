@@ -98,7 +98,7 @@ function scr_role_setup() {
                 hei = string_height_ext(string_hash_to_newline(hapothecary), -2, 580);
                 if (scr_hit(600, 575, 785, 575 + hei)) {
                     obj_cursor.image_index = 2;
-                    if (scr_click_left() && (!instance_exists(obj_creation_popup))) {
+                    if (mouse_button_clicked() && (!instance_exists(obj_creation_popup))) {
                         text_selected = "capoth";
                         keyboard_string = hapothecary;
                     }
@@ -143,7 +143,7 @@ function scr_role_setup() {
                 hei = string_height_ext(string_hash_to_newline(hchaplain), -2, 580);
                 if (scr_hit(600, 597, 785, 597 + hei)) {
                     obj_cursor.image_index = 2;
-                    if (scr_click_left() && (!instance_exists(obj_creation_popup))) {
+                    if (mouse_button_clicked() && (!instance_exists(obj_creation_popup))) {
                         text_selected = "chap";
                         keyboard_string = hchaplain;
                     }
@@ -188,7 +188,7 @@ function scr_role_setup() {
                 hei = string_height_ext(string_hash_to_newline(clibrarian), -2, 580);
                 if (scr_hit(600, 619, 785, 619 + hei)) {
                     obj_cursor.image_index = 2;
-                    if (scr_click_left() && (!instance_exists(obj_creation_popup))) {
+                    if (mouse_button_clicked() && (!instance_exists(obj_creation_popup))) {
                         text_selected = "libra";
                         keyboard_string = clibrarian;
                     }
@@ -233,7 +233,7 @@ function scr_role_setup() {
                 hei = string_height_ext(string_hash_to_newline(fmaster), -2, 580);
                 if (scr_hit(600, 641, 785, 641 + hei)) {
                     obj_cursor.image_index = 2;
-                    if (scr_click_left() && (!instance_exists(obj_creation_popup))) {
+                    if (mouse_button_clicked() && (!instance_exists(obj_creation_popup))) {
                         text_selected = "forge";
                         keyboard_string = fmaster;
                     }
@@ -277,7 +277,7 @@ function scr_role_setup() {
             hei = string_height_ext(string_hash_to_newline(recruiter), -2, 580);
             if (scr_hit(600, 663, 785, 663 + hei)) {
                 obj_cursor.image_index = 2;
-                if (scr_click_left() && (!instance_exists(obj_creation_popup))) {
+                if (mouse_button_clicked() && (!instance_exists(obj_creation_popup))) {
                     text_selected = "recr";
                     keyboard_string = recruiter;
                 }
@@ -320,7 +320,7 @@ function scr_role_setup() {
             hei = string_height_ext(string_hash_to_newline(admiral), -2, 580);
             if (scr_hit(600, 685, 785, 685 + hei)) {
                 obj_cursor.image_index = 2;
-                if (scr_click_left() && (!instance_exists(obj_creation_popup))) {
+                if (mouse_button_clicked() && (!instance_exists(obj_creation_popup))) {
                     text_selected = "admi";
                     keyboard_string = admiral;
                 }

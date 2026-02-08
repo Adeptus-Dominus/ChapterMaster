@@ -97,12 +97,12 @@ function point_and_click_sprite(x1, y1, sprite, x_scale = 1, y_scale = 1) {
     return point_and_click([x1, y1, x1 + _width, y1 + _height]);
 }
 
-function scr_click_left(cooldown = 60, lock_bypass = false) {
+function mouse_button_clicked(button = mb_left, cooldown = 60, lock_bypass = false) {
     if (lock_bypass == false && global.ui_click_lock == true) {
         return false;
     }
 
-    var mouse_clicked = event_number == ev_gui ? device_mouse_check_button_pressed(0, mb_left) : mouse_check_button_pressed(mb_left);
+    var mouse_clicked = event_number == ev_gui ? device_mouse_check_button_pressed(0, button) : mouse_check_button_pressed(button);
     if (!mouse_clicked) {
         return false;
     }
