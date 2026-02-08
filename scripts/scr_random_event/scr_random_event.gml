@@ -69,8 +69,8 @@ function scr_random_event(execute_now) {
                     eEVENT.SORORITAS,
                     eEVENT.ROGUE_TRADER,
                     eEVENT.INQUISITION_MISSION,
-                    eEVENT.MECHANICUS_MISSION,
-                    EVENT.mechanicus_mission
+                    eEVENT.INQUISITION_PLANET,
+                    eEVENT.MECHANICUS_MISSION
                 ];
             } else if (player_luck == eLUCK.NEUTRAL) {
                 events = [
@@ -111,7 +111,7 @@ function scr_random_event(execute_now) {
                 //DEBUG-FIN (EVENTS DEBUG CODE - 1)
 
                 switch (curr_event) {
-                    case eEVENT.MECHANICUS_MISSION:
+                    case eEVENT.INQUISITION_PLANET:
                         if (known[eFACTION.INQUISITION] == 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") {
                             events_share[i] -= 1;
                             events_total -= 1;
@@ -123,7 +123,7 @@ function scr_random_event(execute_now) {
                             events_total -= 1;
                         }
                         break;
-                    case EVENT.mechanicus_mission:
+                    case eEVENT.MECHANICUS_MISSION:
                         if (known[eFACTION.MECHANICUS] == 0 || obj_controller.disposition[3] < 50 || obj_controller.faction_status[eFACTION.MECHANICUS] == "War") {
                             events_share[i] -= 1;
                             events_total -= 1;
@@ -333,9 +333,9 @@ function scr_random_event(execute_now) {
                 }
             }
         }
-    } else if (chosen_event == EVENT.mechanicus_mission) {
-        evented = spawn_mechanicus_mission();
-    } else if (chosen_event == eEVENT.MECHANICUS_MISSION || chosen_event == eEVENT.INQUISITION_MISSION) {
+    } else if (chosen_event == eEVENT.MECHANICUS_MISSION) {
+        _evented = spawn_mechanicus_mission();
+    } else if (chosen_event == eEVENT.INQUISITION_PLANET || chosen_event == eEVENT.INQUISITION_MISSION) {
         scr_inquisition_mission(chosen_event);
         _evented = true;
     } else if (chosen_event == eEVENT.ROGUE_TRADER) {

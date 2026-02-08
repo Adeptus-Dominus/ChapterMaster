@@ -2972,7 +2972,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                         diplo_text = "Your priestesses of war, who worship He Who Fell, will gather their forces soon, to stay.";
                     } else if (random_event_next == eEVENT.INQUISITION_MISSION) {
                         diplo_text = "They will come very soon, the bearers of hellfire and hate. They will scour the sector for so-called ''Heresy''.";
-                    } else if (random_event_next == eEVENT.MECHANICUS_MISSION) {
+                    } else if (random_event_next == eEVENT.INQUISITION_PLANET) {
                         diplo_text = "Your questions askers seek to learn more of a planet.  Warp meddlers and free thinkers would be well-served with caution. Beware, Chapter Master.";
                     } else if (random_event_next == eEVENT.ROGUE_TRADER) {
                         diplo_text = "Free thinkers, traders in the vast expanse. They are coming, perhaps you aught to set out your wares?";
