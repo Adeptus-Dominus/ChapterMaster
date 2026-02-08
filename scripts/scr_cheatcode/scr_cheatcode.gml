@@ -60,7 +60,7 @@ function scr_cheatcode(argument0) {
                     break;
                 case "additem":
                     var quantity = (array_length(cheat_arguments) > 0) ? real(cheat_arguments[0]) : 1;
-                    var quality = (array_length(cheat_arguments) > 1) ? string_lower(cheat_arguments[1]) : "normal";
+                    var quality = (array_length(cheat_arguments) > 1) ? string_lower(cheat_arguments[1]) : "any";
                     scr_add_item(name, quantity, quality);
                     break;
                 case "artifact":

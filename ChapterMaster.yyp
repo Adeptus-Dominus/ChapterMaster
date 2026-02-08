@@ -813,6 +813,7 @@
     {"id":{"name":"scr_draw_unit_stat_data","path":"scripts/scr_draw_unit_stat_data/scr_draw_unit_stat_data.yy",},},
     {"id":{"name":"scr_drop_fiddle","path":"scripts/scr_drop_fiddle/scr_drop_fiddle.yy",},},
     {"id":{"name":"scr_drop_select_function","path":"scripts/scr_drop_select_function/scr_drop_select_function.yy",},},
+    {"id":{"name":"scr_ds_functions","path":"scripts/scr_ds_functions/scr_ds_functions.yy",},},
     {"id":{"name":"scr_en_weapon","path":"scripts/scr_en_weapon/scr_en_weapon.yy",},},
     {"id":{"name":"scr_enemy_ai_a","path":"scripts/scr_enemy_ai_a/scr_enemy_ai_a.yy",},},
     {"id":{"name":"scr_enemy_ai_b","path":"scripts/scr_enemy_ai_b/scr_enemy_ai_b.yy",},},
