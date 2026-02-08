@@ -1,3 +1,4 @@
+/// @mixin
 function load_marines_into_ship(system, ship, units, reload = false) {
     static _load_into_ship = function(system, ship, units, size, loop, reload) {
         var load_from_star = star_by_name(system);
@@ -118,6 +119,8 @@ function command_slot_draw(xx, yy, slot_text) {
     }
 }
 
+/// @mixin
+/// @param {Struct.TTRPG_stats} unit
 function reset_manage_unit_constants(unit) {
     try {
         if (is_struct(unit_manage_constants)) {
@@ -405,6 +408,7 @@ function reset_manage_unit_constants(unit) {
     } catch (_exception) {} //not sure handling with normal method exception could just be a pain here
 }
 
+/// @mixin
 function company_specific_management() {
     add_draw_return_values();
     draw_set_font(fnt_40k_30b);
@@ -452,6 +456,7 @@ function company_specific_management() {
     pop_draw_return_values();
 }
 
+/// @mixin
 function alternative_manage_views(x1, y1) {
     //for some reason management_buttons keeps dying so hopefully this will solve the issue until something better can be found
     if (!is_struct(management_buttons)) {
@@ -542,6 +547,7 @@ function alternative_manage_views(x1, y1) {
     }
 }
 
+/// @mixin
 function draw_sprite_and_unit_equip_data() {
     draw_set_font(fnt_40k_14);
     draw_set_halign(fa_left);
@@ -1225,6 +1231,7 @@ function scr_ui_manage() {
     }
 }
 
+/// @mixin
 function draw_manage_selection_buttons(xx, yy) {
     var sel_loading = obj_controller.selecting_ship;
     var _non_control_loc = location_out_of_player_control(selecting_location);

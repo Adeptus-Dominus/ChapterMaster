@@ -1,3 +1,4 @@
+/// @mixin
 function specialistfunct(specialist, req_exp) {
     var spec_tips = [
         string("{0} Potential", obj_ini.role[100][16]),
@@ -111,6 +112,7 @@ function spec_data_set(specialist) {
     return random_marine;
 }
 
+/// @mixin
 function apothecary_training() {
     // ** Training **
     // * Apothecary *
@@ -192,6 +194,7 @@ function apothecary_training() {
     }
 }
 
+/// @mixin
 function chaplain_training() {
     // * Chaplain training *
     // TODO add functionality for Space Wolves and Iron Hands
@@ -270,6 +273,7 @@ function chaplain_training() {
     }
 }
 
+/// @mixin
 function librarian_training() {
     var recruit_count = 0;
     // * Psycher Training *
@@ -333,6 +337,7 @@ function librarian_training() {
     }
 }
 
+/// @mixin
 function techmarine_training() {
     var recruit_count = 0;
 

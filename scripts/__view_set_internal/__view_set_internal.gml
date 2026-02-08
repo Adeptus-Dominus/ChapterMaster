@@ -1,3 +1,4 @@
+/// @mixin
 function __view_set_internal(argument0, argument1, argument2) {
     var __prop = argument0;
     var __index = argument1;

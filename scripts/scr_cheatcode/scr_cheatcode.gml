@@ -1,3 +1,4 @@
+/// @mixin
 function scr_cheatcode(argument0) {
     try {
         if (argument0 == "") {
@@ -425,6 +426,7 @@ function draw_planet_debug_options() {
     }
 }
 
+/// @mixin
 function draw_planet_debug_features() {
     static _addable_features = [
         {
@@ -479,6 +481,7 @@ function draw_planet_debug_features() {
     }
 }
 
+/// @mixin
 function draw_planet_debug_problems() {
     var base_y = 220;
     var _keys = PLANET_PROBLEM_KEYS;
@@ -515,6 +518,7 @@ function draw_planet_debug_problems() {
     }
 }
 
+/// @mixin
 function draw_planet_debug_forces() {
     add_draw_return_values();
     var current_planet = obj_controller.selecting_planet;
@@ -571,6 +575,7 @@ function draw_planet_debug_forces() {
 }
 
 function new_system_debug_popup() {
+    /// @type {Asset.GMObject.obj_popup}
     var pop = instance_create(0, 0, obj_popup);
     pop.image = "debug_banshee";
     pop.title = "DEBUG";
@@ -611,6 +616,7 @@ function system_debug_enemy_invasion() {
 }
 
 //TODO refactor and allow for greater range of factions
+/// @mixin
 function system_debug_enemy_invasion_spawn() {
     if (invasion_faction != 9) {
         if (invasion_faction == 0) {
@@ -621,8 +627,8 @@ function system_debug_enemy_invasion_spawn() {
         }
         with (obj_star) {
             if ((choose(0, 1, 1) == 1) && (owner != eFACTION.ELDAR) && (owner != 1)) {
-                var fleet;
-                fleet = instance_create(x, y, obj_en_fleet);
+                /// @type {Asset.GMObject.obj_en_fleet}
+                var fleet = instance_create(x, y, obj_en_fleet);
                 fleet.owner = obj_popup.invasion_faction;
                 if (obj_popup.invasion_faction == 7) {
                     fleet.sprite_index = spr_fleet_ork;
@@ -663,12 +669,15 @@ function system_debug_enemy_invasion_spawn() {
     }
 }
 
+/// @mixin
 function system_debug_spawn_fleet() {
     text = "Imperium, Heretic, or Xeno?";
     replace_options([{str1: "Imperium", choice_func: debug_spawn_imperium_fleet}, {str1: "Heretic", choice_func: debug_spawn_heretic_fleet}, {str1: "Xeno", choice_func: debug_add_xenos_fleet_options}]);
 }
 
+/// @mixin
 function debug_spawn_imperium_fleet() {
+    /// @type {Asset.GMObject.obj_en_fleet}
     var fleet = instance_create(star.x, star.y, obj_en_fleet);
     fleet.owner = eFACTION.IMPERIUM;
     fleet.sprite_index = spr_fleet_imperial;
@@ -680,7 +689,9 @@ function debug_spawn_imperium_fleet() {
     instance_destroy();
 }
 
+/// @mixin
 function debug_spawn_heretic_fleet() {
+    /// @type {Asset.GMObject.obj_en_fleet}
     var fleet = instance_create(star.x, star.y, obj_en_fleet);
     fleet.owner = eFACTION.CHAOS;
     fleet.sprite_index = spr_fleet_chaos;
@@ -692,11 +703,13 @@ function debug_spawn_heretic_fleet() {
     instance_destroy();
 }
 
+/// @mixin
 function debug_add_xenos_fleet_options() {
     text = "Select Xeno faction to spawn:";
     replace_options([{str1: "Ork", choice_func: debug_spawn_ork_fleet}, {str1: "Tau", choice_func: debug_spawn_tau_fleet}, {str1: "Cancel", choice_func: popup_default_close}]);
 }
 
+/// @mixin
 function debug_spawn_ork_fleet() {
     var fleet = instance_create(star.x, star.y, obj_en_fleet);
     fleet.owner = eFACTION.ORK;

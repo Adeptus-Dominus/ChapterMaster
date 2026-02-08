@@ -55,18 +55,16 @@ if (!keyboard_check(vk_shift)) {
     } else {
         mouse_check_button_pressed(mb_left);
     }
-    {
-        if (selected) {
-            if (select_instance) {
-                if (instance_exists(obj_fleet_select.player_fleet)) {
-                    if (!(obj_fleet_select.player_fleet.id == self.id && !obj_fleet_select.currently_entered)) {
-                        selected = 0;
-                    }
+    if (selected) {
+        if (select_instance) {
+            if (instance_exists(obj_fleet_select.player_fleet)) {
+                if (!(obj_fleet_select.player_fleet.id == self.id && !obj_fleet_select.currently_entered)) {
+                    selected = 0;
                 }
             }
-        } else {
-            selected = 0;
         }
+    } else {
+        selected = 0;
     }
 }
 // if (obj_controller.selected!=0) and (selected=1) then within=1;

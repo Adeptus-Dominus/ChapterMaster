@@ -1,5 +1,6 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+/// @mixin
 function scr_ancient_ruins_setup() {
     var ruin_data = choose(["tiny", 5], ["small", 15], ["medium", 55], ["large", 110], ["sprawling", 0]);
     ruins_size = ruin_data[0];
@@ -95,6 +96,7 @@ function scr_ruins_player_forces_defeated() {
 }
 
 //revcover equipment of fallen marines from ruins
+/// @mixin
 function scr_ruins_recover_from_dead() {
     var pop = instance_create(0, 0, obj_popup);
     var route = random(5);
@@ -155,6 +157,7 @@ function scr_ruins_explored() {
 }
 
 //determine what race the ruins once belonged to effect enemies that can be found
+/// @mixin
 function scr_ruins_determine_race() {
     var dice = floor(random(100)) + 1;
     if (dice <= 9) {
@@ -174,6 +177,7 @@ function scr_ruins_determine_race() {
     }
 }
 
+/// @mixin
 function scr_explore_ruins() {
     try {
         obj_controller.current_planet_feature = self;

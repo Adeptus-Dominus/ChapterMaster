@@ -241,6 +241,7 @@ function mission_inquisition_tomb_world(tomb_worlds) {
     scr_popup("Inquisition Mission", text, "inquisition", _pop_data);
 }
 
+/// @mixin
 function init_mission_inquisition_tomb_world() {
     mission_star = star_by_name(pop_data.system);
     if (mission_star == "none") {

@@ -3,6 +3,401 @@
 #macro SHOP_FORGE_MOD 6
 #macro WAR_PENALTY 0.5
 
+/// @desc Represents a single item within the Armamentarium catalog.
+/// @param {string} _name Name of the item.
+/// @returns {Struct.ShopItem}
+function ShopItem(_name) constructor {
+    name = _name;
+    display_name = _name;
+    area = "";
+    forge_type = "normal";
+    item_tooltip = "";
+
+    stocked = 0;
+    stocked_mc = 0;
+    value = 0;
+
+    buy_cost = 0;
+    buyable = true;
+    buy_cost_mod = 1;
+    best_seller = "unknown";
+    sellers = ["mechanicus"];
+
+    forge_cost = 0;
+    forgable = true;
+    forge_cost_mod = 1;
+    requires_to_forge = [];
+    meets_requirements = true;
+    missing_technologies = [];
+
+    // -------------------------------------------------------------------------
+    // PUBLIC METHODS
+    // -------------------------------------------------------------------------
+
+    /// @desc Iterates through potential sellers to find the best price.
+    /// @param {array<string>} _sellers Array of faction strings.
+    /// @param {struct} _cached_mods Pre-calculated modifiers.
+    static update_best_seller = function(_sellers, _cached_mods, _trader_mod) {
+        var _best_modifier = 10.0;
+        var _best_seller = "unknown";
+
+        for (var i = 0, len = array_length(_sellers); i < len; i++) {
+            var _current_modifier = _cached_mods[$ _sellers[i]] ?? 1.0;
+            if (_current_modifier < _best_modifier) {
+                _best_modifier = _current_modifier;
+                _best_seller = _sellers[i];
+            }
+        }
+
+        if (_trader_mod < 1.0 && _trader_mod < _best_modifier) {
+            _best_modifier = _trader_mod;
+            _best_seller = "rogue_trader";
+        }
+
+        buy_cost_mod = _best_modifier;
+        best_seller = _best_seller;
+    };
+
+    /// @desc Centralized calculation for current costs.
+    /// @param {bool} _is_forge Whether we are in forge mode.
+    /// @param {real} _forge_mod The STC/Hangar modifier.
+    static calculate_costs = function(_is_forge, _forge_mod) {
+        if (global.cheat_debug) {
+            buy_cost = 0;
+            forge_cost = 0;
+            meets_requirements = true;
+            return;
+        }
+
+        if (_is_forge) {
+            var _missing_techs = [];
+
+            for (var j = 0, len = array_length(requires_to_forge); j < len; j++) {
+                var _tech = requires_to_forge[j];
+
+                if (!array_contains(obj_controller.technologies_known, _tech)) {
+                    array_push(_missing_techs, _get_tech_display_name(_tech));
+                }
+            }
+
+            meets_requirements = array_length(_missing_techs) == 0;
+            missing_technologies = meets_requirements ? [] : _missing_techs;
+            forge_cost_mod = _forge_mod;
+            forge_cost = round(value * SHOP_FORGE_MOD * forge_cost_mod);
+        } else {
+            buy_cost = round(value * buy_cost_mod);
+        }
+    };
+
+    static get_missing_technologies_tooltip = function() {
+        if (array_length(missing_technologies) == 0) {
+            return "";
+        }
+
+        return $"Missing Technologies:\n{string_join_ext("\n", missing_technologies)}";
+    };
+
+    static get_buy_cost_tooltip = function() {
+        var _text = $"Base Value: {value}\n\n";
+        var _seller = (best_seller == "rogue_trader") ? "Rogue Trader" : string_upper_first(best_seller);
+
+        _text += $"Best Seller: {_seller}\n";
+        _text += $"Disposition Modifier: x{buy_cost_mod}";
+
+        return _text;
+    };
+
+    /// @desc Generates a tooltip explaining the forge cost calculation.
+    /// @param {string} _stc_details Detailed breakdown of STC bonuses from the controller.
+    /// @returns {string}
+    static get_forge_cost_tooltip = function(_stc_details = "") {
+        var _base_forge = value * SHOP_FORGE_MOD;
+        var _text = $"Base Forging Cost: {_base_forge}\n";
+
+        if (_stc_details != "") {
+            _text += $"\n{_stc_details}";
+            _text += $"\nTotal Modifier: x{string_format(forge_cost_mod, 1, 2)}";
+        }
+
+        return _text;
+    };
+
+    // -------------------------------------------------------------------------
+    // PRIVATE METHODS
+    // -------------------------------------------------------------------------
+
+    /// @desc Retrieves the display name for a technology key, caching results for performance.
+    /// @param {string} _tech_key The internal key (e.g., "plasma_foundry").
+    /// @returns {string} The display name.
+    static _get_tech_display_name = function(_tech_key) {
+        static _name_cache = {};
+
+        if (variable_struct_exists(_name_cache, _tech_key)) {
+            return _name_cache[$ _tech_key];
+        }
+
+        if (!struct_exists(global.technologies, _tech_key)) {
+            global.logger.error($"Technology {_tech_key} not found in the list!");
+            return "";
+        }
+
+        var _tech_data = global.technologies[$ _tech_key];
+        var _display_name = _tech_data[$ "display_name"] ?? string_upper_first(string_replace_all(_tech_key, "_", " "));
+
+        _name_cache[$ _tech_key] = _display_name;
+
+        return _display_name;
+    };
+}
+
+/// @desc Handles the display and interaction for STC fragment research and bonuses.
+/// @param {Id.Instance} _controller_ref Reference to the object holding STC data (usually obj_controller).
+/// @param {Function} _on_change_callback Callback after identification.
+/// @return {Struct.STCResearchPanel}
+function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
+    /// @type {Asset.GMObject.obj_controller}
+    controller = _controller_ref;
+    on_change = _on_change_callback;
+
+    glow_effect = new GlowDot();
+    speeding_bits = {
+        wargear: new SpeedingDot(0, 0, 0),
+        vehicles: new SpeedingDot(0, 0, 0),
+        ships: new SpeedingDot(0, 0, 0),
+    };
+
+    gift_button = new UnitButtonObject({x1: 0, y1: 0, style: "pixel", label: "Gift", set_width: true, w: 90, color: c_red});
+    identify_button = new UnitButtonObject({x1: 0, y1: 0, style: "pixel", label: "Identify", set_width: true, w: 90, color: c_red});
+
+    static LAYOUT = {
+        COLUMN_WIDTH: 180,
+        COLUMN_HEIGHT: 285,
+        BAR_X_OFFSET: 9,
+        BAR_Y_OFFSET: 19,
+        ETA_X_OFFSET: 34,
+        ETA_Y_OFFSET: 25,
+        ROW_SPACING: 35,
+        TEXT_X_OFFSET: 22,
+        TEXT_Y_START: -4,
+        HEADER_Y_OFFSET: -18,
+        HEADER_HEIGHT: 70,
+    };
+
+    static CATEGORIES = [
+        "wargear",
+        "vehicles",
+        "ships"
+    ];
+    static DISPLAY_NAMES = [
+        "Wargear",
+        "Vehicles",
+        "Ships"
+    ];
+
+    advisor_eta_text = "";
+
+    // -------------------------------------------------------------------------
+    // PUBLIC METHODS
+    // -------------------------------------------------------------------------
+
+    /// @desc Main draw call for the panel.
+    /// @param {real} _x Root X position.
+    /// @param {real} _y Root Y position.
+    static draw = function(_x, _y) {
+        _draw_fragment_header(_x, _y);
+
+        draw_set_font(fnt_aldrich_12);
+        draw_set_color(c_gray);
+        draw_text(_x + LAYOUT.ETA_X_OFFSET, _y + LAYOUT.ETA_Y_OFFSET, advisor_eta_text);
+
+        var _column_y = _y + LAYOUT.HEADER_HEIGHT;
+        for (var i = 0; i < array_length(CATEGORIES); i++) {
+            var _cat_name = CATEGORIES[i];
+            var _draw_x = _x + (i * LAYOUT.COLUMN_WIDTH);
+
+            _draw_research_column(_cat_name, DISPLAY_NAMES[i], _draw_x, _column_y);
+        }
+    };
+
+    /// @desc Refreshes the ETA string.
+    static refresh_eta = function() {
+        var _focus = controller.stc_research.research_focus;
+        var _points_per_turn = controller.specialist_point_handler.research_points;
+
+        if (_points_per_turn <= 0) {
+            advisor_eta_text = "Research: Stalled (No Research Points)";
+            return;
+        }
+
+        var _level = variable_instance_get(controller, $"stc_{_focus}");
+        var _remaining = (5000 * (_level + 1)) - controller.stc_research[$ _focus];
+        var _months = ceil(_remaining / _points_per_turn);
+
+        advisor_eta_text = $"Research: Next {_focus} breakthrough in {_months} months.";
+    };
+
+    refresh_eta();
+
+    // -------------------------------------------------------------------------
+    // PRIVATE METHODS
+    // -------------------------------------------------------------------------
+
+    /// @desc Draws an individual category column including bars and text.
+    /// @param {string} _cat Internal key.
+    /// @param {string} _label Display name.
+    /// @param {real} _cx Column X.
+    /// @param {real} _cy Column Y.
+    static _draw_research_column = function(_cat, _label, _cx, _cy) {
+        var _level = variable_instance_get(controller, $"stc_{_cat}");
+        var _is_focus = controller.stc_research.research_focus == _cat;
+
+        var _rect = [
+            _cx,
+            _cy,
+            _cx + (LAYOUT.COLUMN_WIDTH - 10),
+            _cy + LAYOUT.COLUMN_HEIGHT
+        ];
+
+        if (scr_hit(_rect)) {
+            draw_set_color(c_white);
+            draw_rectangle_array(_rect, true);
+            tooltip_draw($"Click to focus research on {_label}");
+
+            if (mouse_button_clicked()) {
+                controller.stc_research.research_focus = _cat;
+                audio_play_sound(snd_click, 10, false);
+                refresh_eta();
+            }
+        }
+
+        draw_set_font(fnt_aldrich_12);
+        draw_set_color(_is_focus ? c_white : c_gray);
+        draw_text(_cx + 36, _cy + LAYOUT.HEADER_Y_OFFSET, _label);
+
+        var _bx = _cx + LAYOUT.BAR_X_OFFSET;
+        var _by = _cy + LAYOUT.BAR_Y_OFFSET;
+
+        draw_sprite_ext(spr_research_bar, 0, _bx, _by, 1, 0.7, 0, c_white, 1);
+
+        for (var f = _level; f < 6; f++) {
+            draw_sprite_ext(spr_research_bar, 1, _bx, _by + (f * LAYOUT.ROW_SPACING), 1, 0.6, 0, c_white, 1);
+        }
+
+        glow_effect.draw(_bx, _by + (_level * LAYOUT.ROW_SPACING));
+
+        if (_is_focus) {
+            speeding_bits[$ _cat].draw(_cx, _by);
+        }
+
+        _draw_bonus_list(_cat, _cx + LAYOUT.TEXT_X_OFFSET, _cy + LAYOUT.TEXT_Y_START + LAYOUT.BAR_Y_OFFSET, _level);
+    };
+
+    /// @desc Draws the list of bonuses for a category.
+    static _draw_bonus_list = function(_cat, _tx, _ty, _current_level) {
+        var _bonuses = _get_descriptions(_cat);
+        draw_set_font(fnt_aldrich_12);
+
+        for (var s = 0; s < array_length(_bonuses); s++) {
+            var _unlocked = _current_level >= s;
+
+            draw_set_alpha(_unlocked ? 1.0 : 0.5);
+            draw_set_color(_unlocked ? c_white : c_gray);
+
+            draw_text_ext(_tx, _ty + (s * LAYOUT.ROW_SPACING), $"{s}) {_bonuses[s]}", -1, 140);
+        }
+        draw_set_alpha(1.0);
+    };
+
+    /// @desc Draws the fragment count and the Gift/Identify buttons.
+    static _draw_fragment_header = function(_x, _y) {
+        var _total_un = controller.stc_wargear_un + controller.stc_vehicles_un + controller.stc_ships_un;
+
+        draw_set_font(fnt_aldrich_12);
+        draw_set_color(c_gray);
+        draw_text(_x + 34, _y, $"{_total_un} Unidentified Fragments");
+
+        var _has_fragments = _total_un > 0;
+        draw_set_alpha(_has_fragments ? 1 : 0.25);
+
+        gift_button.update({x1: _x + 300, y1: _y - 5});
+        if (gift_button.draw(_has_fragments)) {
+            setup_gift_stc_popup();
+        }
+
+        identify_button.update({x1: gift_button.x2 + 10, y1: _y - 5});
+        if (identify_button.draw(_has_fragments)) {
+            _identify_fragment();
+        }
+
+        draw_set_alpha(1);
+    };
+
+    /// @desc Returns the bonus descriptions for a specific category.
+    /// @param {string} _cat Category key.
+    /// @returns {Array<string>}
+    static _get_descriptions = function(_cat) {
+        static _data = {
+            wargear: [
+                "None",
+                "8% discount",
+                "Enhanced Bolts",
+                "16% discount",
+                "Enhanced Fist Weapons",
+                "25% discount",
+                "Can produce Terminator Armour and Dreadnoughts."
+            ],
+            vehicles: [
+                "None",
+                "8% discount",
+                "Enhanced Hull",
+                "16% discount",
+                "Enhanced Armour",
+                "25% discount",
+                "Can produce Land Speeders and Land Raiders."
+            ],
+            ships: [
+                "None",
+                "8% discount",
+                "Enhanced Hull",
+                "16% discount",
+                "Enhanced Armour",
+                "25% discount",
+                "Warp Speed is increased and ships self-repair."
+            ],
+        };
+        return _data[$ _cat] ?? [];
+    };
+
+    /// @desc Handles the consumption of fragments and leveling up STC categories.
+    static _identify_fragment = function() {
+        var _available = [];
+
+        if (controller.stc_wargear_un > 0 && controller.stc_wargear < 6) {
+            array_push(_available, "wargear");
+        }
+        if (controller.stc_vehicles_un > 0 && controller.stc_vehicles < 6) {
+            array_push(_available, "vehicles");
+        }
+        if (controller.stc_ships_un > 0 && controller.stc_ships < 6) {
+            array_push(_available, "ships");
+        }
+
+        if (array_length(_available) == 0) {
+            return;
+        }
+
+        var _target = array_random_element(_available);
+
+        advance_stc_research(_target);
+
+        audio_play_sound(snd_stc, -500, false);
+
+        if (is_method(on_change)) {
+            on_change();
+        }
+    };
+}
+
 /// @desc Primary controller for the Chapter's armory and technologies.
 /// @returns {Struct.Armamentarium}
 function Armamentarium() constructor {
@@ -817,400 +1212,4 @@ function Armamentarium() constructor {
 
     // Initialize on creation
     initialize_master_catalog();
-}
-
-/// @desc Represents a single item within the Armamentarium catalog.
-/// @param {string} _name Name of the item.
-/// @returns {Struct.ShopItem}
-function ShopItem(_name) constructor {
-    name = _name;
-    display_name = _name;
-    area = "";
-    forge_type = "normal";
-    item_tooltip = "";
-
-    stocked = 0;
-    stocked_mc = 0;
-    value = 0;
-
-    buy_cost = 0;
-    buyable = true;
-    renegade_buy = false;
-    buy_cost_mod = 1;
-    best_seller = "unknown";
-    sellers = ["mechanicus"];
-
-    forge_cost = 0;
-    forgable = true;
-    forge_cost_mod = 1;
-    requires_to_forge = [];
-    meets_requirements = true;
-    missing_technologies = [];
-
-    // -------------------------------------------------------------------------
-    // PUBLIC METHODS
-    // -------------------------------------------------------------------------
-
-    /// @desc Iterates through potential sellers to find the best price.
-    /// @param {array<string>} _sellers Array of faction strings.
-    /// @param {struct} _cached_mods Pre-calculated modifiers.
-    static update_best_seller = function(_sellers, _cached_mods, _trader_mod) {
-        var _best_modifier = 10.0;
-        var _best_seller = "unknown";
-
-        for (var i = 0, len = array_length(_sellers); i < len; i++) {
-            var _current_modifier = _cached_mods[$ _sellers[i]] ?? 1.0;
-            if (_current_modifier < _best_modifier) {
-                _best_modifier = _current_modifier;
-                _best_seller = _sellers[i];
-            }
-        }
-
-        if (_trader_mod < 1.0 && _trader_mod < _best_modifier) {
-            _best_modifier = _trader_mod;
-            _best_seller = "rogue_trader";
-        }
-
-        buy_cost_mod = _best_modifier;
-        best_seller = _best_seller;
-    };
-
-    /// @desc Centralized calculation for current costs.
-    /// @param {bool} _is_forge Whether we are in forge mode.
-    /// @param {real} _forge_mod The STC/Hangar modifier.
-    static calculate_costs = function(_is_forge, _forge_mod) {
-        if (global.cheat_debug) {
-            buy_cost = 0;
-            forge_cost = 0;
-            meets_requirements = true;
-            return;
-        }
-
-        if (_is_forge) {
-            var _missing_techs = [];
-
-            for (var j = 0, len = array_length(requires_to_forge); j < len; j++) {
-                var _tech = requires_to_forge[j];
-
-                if (!array_contains(obj_controller.technologies_known, _tech)) {
-                    array_push(_missing_techs, _get_tech_display_name(_tech));
-                }
-            }
-
-            meets_requirements = array_length(_missing_techs) == 0;
-            missing_technologies = meets_requirements ? [] : _missing_techs;
-            forge_cost_mod = _forge_mod;
-            forge_cost = round(value * SHOP_FORGE_MOD * forge_cost_mod);
-        } else {
-            buy_cost = round(value * buy_cost_mod);
-        }
-    };
-
-    static get_missing_technologies_tooltip = function() {
-        if (array_length(missing_technologies) == 0) {
-            return "";
-        }
-
-        return $"Missing Technologies:\n{string_join_ext("\n", missing_technologies)}";
-    };
-
-    static get_buy_cost_tooltip = function() {
-        var _text = $"Base Value: {value}\n\n";
-        var _seller = (best_seller == "rogue_trader") ? "Rogue Trader" : string_upper_first(best_seller);
-
-        _text += $"Best Seller: {_seller}\n";
-        _text += $"Disposition Modifier: x{buy_cost_mod}";
-
-        return _text;
-    };
-
-    /// @desc Generates a tooltip explaining the forge cost calculation.
-    /// @param {string} _stc_details Detailed breakdown of STC bonuses from the controller.
-    /// @returns {string}
-    static get_forge_cost_tooltip = function(_stc_details = "") {
-        var _base_forge = value * SHOP_FORGE_MOD;
-        var _text = $"Base Forging Cost: {_base_forge}\n";
-
-        if (_stc_details != "") {
-            _text += $"\n{_stc_details}";
-            _text += $"\nTotal Modifier: x{string_format(forge_cost_mod, 1, 2)}";
-        }
-
-        return _text;
-    };
-
-    // -------------------------------------------------------------------------
-    // PRIVATE METHODS
-    // -------------------------------------------------------------------------
-
-    /// @desc Retrieves the display name for a technology key, caching results for performance.
-    /// @param {string} _tech_key The internal key (e.g., "plasma_foundry").
-    /// @returns {string} The display name.
-    static _get_tech_display_name = function(_tech_key) {
-        static _name_cache = {};
-
-        if (variable_struct_exists(_name_cache, _tech_key)) {
-            return _name_cache[$ _tech_key];
-        }
-
-        if (!struct_exists(global.technologies, _tech_key)) {
-            global.logger.error($"Technology {_tech_key} not found in the list!");
-            return "";
-        }
-
-        var _tech_data = global.technologies[$ _tech_key];
-        var _display_name = _tech_data[$ "display_name"] ?? string_upper_first(string_replace_all(_tech_key, "_", " "));
-
-        _name_cache[$ _tech_key] = _display_name;
-
-        return _display_name;
-    };
-}
-
-/// @desc Handles the display and interaction for STC fragment research and bonuses.
-/// @param {Id.Instance} _controller_ref Reference to the object holding STC data (usually obj_controller).
-/// @param {Function} _on_change_callback Callback after identification.
-/// @return {Struct.STCResearchPanel}
-function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
-    /// @type {Asset.GMObject.obj_controller}
-    controller = _controller_ref;
-    on_change = _on_change_callback;
-
-    glow_effect = new GlowDot();
-    speeding_bits = {
-        wargear: new SpeedingDot(0, 0, 0),
-        vehicles: new SpeedingDot(0, 0, 0),
-        ships: new SpeedingDot(0, 0, 0),
-    };
-
-    gift_button = new UnitButtonObject({x1: 0, y1: 0, style: "pixel", label: "Gift", set_width: true, w: 90, color: c_red});
-    identify_button = new UnitButtonObject({x1: 0, y1: 0, style: "pixel", label: "Identify", set_width: true, w: 90, color: c_red});
-
-    static LAYOUT = {
-        COLUMN_WIDTH: 180,
-        COLUMN_HEIGHT: 285,
-        BAR_X_OFFSET: 9,
-        BAR_Y_OFFSET: 19,
-        ETA_X_OFFSET: 34,
-        ETA_Y_OFFSET: 25,
-        ROW_SPACING: 35,
-        TEXT_X_OFFSET: 22,
-        TEXT_Y_START: -4,
-        HEADER_Y_OFFSET: -18,
-        HEADER_HEIGHT: 70,
-    };
-
-    static CATEGORIES = [
-        "wargear",
-        "vehicles",
-        "ships"
-    ];
-    static DISPLAY_NAMES = [
-        "Wargear",
-        "Vehicles",
-        "Ships"
-    ];
-
-    advisor_eta_text = "";
-
-    // -------------------------------------------------------------------------
-    // PUBLIC METHODS
-    // -------------------------------------------------------------------------
-
-    /// @desc Main draw call for the panel.
-    /// @param {real} _x Root X position.
-    /// @param {real} _y Root Y position.
-    static draw = function(_x, _y) {
-        _draw_fragment_header(_x, _y);
-
-        draw_set_font(fnt_aldrich_12);
-        draw_set_color(c_gray);
-        draw_text(_x + LAYOUT.ETA_X_OFFSET, _y + LAYOUT.ETA_Y_OFFSET, advisor_eta_text);
-
-        var _column_y = _y + LAYOUT.HEADER_HEIGHT;
-        for (var i = 0; i < array_length(CATEGORIES); i++) {
-            var _cat_name = CATEGORIES[i];
-            var _draw_x = _x + (i * LAYOUT.COLUMN_WIDTH);
-
-            _draw_research_column(_cat_name, DISPLAY_NAMES[i], _draw_x, _column_y);
-        }
-    };
-
-    /// @desc Refreshes the ETA string.
-    static refresh_eta = function() {
-        var _focus = controller.stc_research.research_focus;
-        var _points_per_turn = controller.specialist_point_handler.research_points;
-
-        if (_points_per_turn <= 0) {
-            advisor_eta_text = "Research: Stalled (No Research Points)";
-            return;
-        }
-
-        var _level = variable_instance_get(controller, $"stc_{_focus}");
-        var _remaining = (5000 * (_level + 1)) - controller.stc_research[$ _focus];
-        var _months = ceil(_remaining / _points_per_turn);
-
-        advisor_eta_text = $"Research: Next {_focus} breakthrough in {_months} months.";
-    };
-
-    refresh_eta();
-
-    // -------------------------------------------------------------------------
-    // PRIVATE METHODS
-    // -------------------------------------------------------------------------
-
-    /// @desc Draws an individual category column including bars and text.
-    /// @param {string} _cat Internal key.
-    /// @param {string} _label Display name.
-    /// @param {real} _cx Column X.
-    /// @param {real} _cy Column Y.
-    static _draw_research_column = function(_cat, _label, _cx, _cy) {
-        var _level = variable_instance_get(controller, $"stc_{_cat}");
-        var _is_focus = controller.stc_research.research_focus == _cat;
-
-        var _rect = [
-            _cx,
-            _cy,
-            _cx + (LAYOUT.COLUMN_WIDTH - 10),
-            _cy + LAYOUT.COLUMN_HEIGHT
-        ];
-
-        if (scr_hit(_rect)) {
-            draw_set_color(c_white);
-            draw_rectangle_array(_rect, true);
-            tooltip_draw($"Click to focus research on {_label}");
-
-            if (mouse_button_clicked()) {
-                controller.stc_research.research_focus = _cat;
-                audio_play_sound(snd_click, 10, false);
-                refresh_eta();
-            }
-        }
-
-        draw_set_font(fnt_aldrich_12);
-        draw_set_color(_is_focus ? c_white : c_gray);
-        draw_text(_cx + 36, _cy + LAYOUT.HEADER_Y_OFFSET, _label);
-
-        var _bx = _cx + LAYOUT.BAR_X_OFFSET;
-        var _by = _cy + LAYOUT.BAR_Y_OFFSET;
-
-        draw_sprite_ext(spr_research_bar, 0, _bx, _by, 1, 0.7, 0, c_white, 1);
-
-        for (var f = _level; f < 6; f++) {
-            draw_sprite_ext(spr_research_bar, 1, _bx, _by + (f * LAYOUT.ROW_SPACING), 1, 0.6, 0, c_white, 1);
-        }
-
-        glow_effect.draw(_bx, _by + (_level * LAYOUT.ROW_SPACING));
-
-        if (_is_focus) {
-            speeding_bits[$ _cat].draw(_cx, _by);
-        }
-
-        _draw_bonus_list(_cat, _cx + LAYOUT.TEXT_X_OFFSET, _cy + LAYOUT.TEXT_Y_START + LAYOUT.BAR_Y_OFFSET, _level);
-    };
-
-    /// @desc Draws the list of bonuses for a category.
-    static _draw_bonus_list = function(_cat, _tx, _ty, _current_level) {
-        var _bonuses = _get_descriptions(_cat);
-        draw_set_font(fnt_aldrich_12);
-
-        for (var s = 0; s < array_length(_bonuses); s++) {
-            var _unlocked = _current_level >= s;
-
-            draw_set_alpha(_unlocked ? 1.0 : 0.5);
-            draw_set_color(_unlocked ? c_white : c_gray);
-
-            draw_text_ext(_tx, _ty + (s * LAYOUT.ROW_SPACING), $"{s}) {_bonuses[s]}", -1, 140);
-        }
-        draw_set_alpha(1.0);
-    };
-
-    /// @desc Draws the fragment count and the Gift/Identify buttons.
-    static _draw_fragment_header = function(_x, _y) {
-        var _total_un = controller.stc_wargear_un + controller.stc_vehicles_un + controller.stc_ships_un;
-
-        draw_set_font(fnt_aldrich_12);
-        draw_set_color(c_gray);
-        draw_text(_x + 34, _y, $"{_total_un} Unidentified Fragments");
-
-        var _has_fragments = _total_un > 0;
-        draw_set_alpha(_has_fragments ? 1 : 0.25);
-
-        gift_button.update({x1: _x + 300, y1: _y - 5});
-        if (gift_button.draw(_has_fragments)) {
-            setup_gift_stc_popup();
-        }
-
-        identify_button.update({x1: gift_button.x2 + 10, y1: _y - 5});
-        if (identify_button.draw(_has_fragments)) {
-            _identify_fragment();
-        }
-
-        draw_set_alpha(1);
-    };
-
-    /// @desc Returns the bonus descriptions for a specific category.
-    /// @param {string} _cat Category key.
-    /// @returns {Array<string>}
-    static _get_descriptions = function(_cat) {
-        static _data = {
-            wargear: [
-                "None",
-                "8% discount",
-                "Enhanced Bolts",
-                "16% discount",
-                "Enhanced Fist Weapons",
-                "25% discount",
-                "Can produce Terminator Armour and Dreadnoughts."
-            ],
-            vehicles: [
-                "None",
-                "8% discount",
-                "Enhanced Hull",
-                "16% discount",
-                "Enhanced Armour",
-                "25% discount",
-                "Can produce Land Speeders and Land Raiders."
-            ],
-            ships: [
-                "None",
-                "8% discount",
-                "Enhanced Hull",
-                "16% discount",
-                "Enhanced Armour",
-                "25% discount",
-                "Warp Speed is increased and ships self-repair."
-            ],
-        };
-        return _data[$ _cat] ?? [];
-    };
-
-    /// @desc Handles the consumption of fragments and leveling up STC categories.
-    static _identify_fragment = function() {
-        var _available = [];
-
-        if (controller.stc_wargear_un > 0 && controller.stc_wargear < 6) {
-            array_push(_available, "wargear");
-        }
-        if (controller.stc_vehicles_un > 0 && controller.stc_vehicles < 6) {
-            array_push(_available, "vehicles");
-        }
-        if (controller.stc_ships_un > 0 && controller.stc_ships < 6) {
-            array_push(_available, "ships");
-        }
-
-        if (array_length(_available) == 0) {
-            return;
-        }
-
-        var _target = array_random_element(_available);
-
-        advance_stc_research(_target);
-
-        audio_play_sound(snd_stc, -500, false);
-
-        if (is_method(on_change)) {
-            on_change();
-        }
-    };
 }

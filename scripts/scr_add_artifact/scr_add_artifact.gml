@@ -12,7 +12,7 @@ function find_open_artifact_slot() {
 }
 
 function scr_add_artifact(artifact_type = "random", artifact_tags = "", is_identified = 4, artifact_location = "", ship_id) {
-    last_artifact = find_open_artifact_slot();
+    var last_artifact = find_open_artifact_slot();
     if (last_artifact == -1) {
         exit;
     }
@@ -443,6 +443,7 @@ function ArtifactStruct(Index) constructor {
                 var demonSummonChance = roll_dice_chapter(1, 100, "high");
 
                 if ((demonSummonChance <= 60) && (obj_ini.ship_carrying[_ship_id] > 0)) {
+                    /// @type {Asset.GMObject.obj_ncombat}
                     var _combat = instance_create_depth(0, 0, 0, obj_ncombat);
                     _combat.battle_special = "ship_demon";
                     _combat.formation_set = 1;
@@ -590,6 +591,7 @@ function ArtifactStruct(Index) constructor {
             }
         }
         if (_dwarn == true) {
+            /// @type {Asset.GMObject.obj_popup}
             var pip = instance_create(0, 0, obj_popup);
             pip.title = "Daemon Artifacts";
             pip.text = "Some artifacts, like the one you now wield, are a blasphemous union of the Materium's matter and the Immaterium's spirit, containing the essence of a bound daemon.  While they may offer great power, and enhanced perception, they are known to whisper poisonous lies to the wielder.  The path to damnation begins with good intentions, and many times artifacts such as these have been the cause.";
@@ -852,9 +854,10 @@ function delete_artifact(index) {
 
 function equip_artifact_popup_setup() {
     instance_destroy(obj_popup);
+    /// @type {Asset.GMObject.obj_popup}
     var pop = instance_create(0, 0, obj_popup);
     pop.type = ePOPUP_TYPE.ARTIFACT_EQUIP;
-    cooldown = 8;
+    pop.cooldown = 8;
     with (pop) {
         target_company_radio(10000);
         main_slate = new DataSlate({style: "decorated", XX: 945, YY: 66, set_width: true, width: 635, height: 400});
@@ -878,8 +881,9 @@ function equip_artifact_popup_setup() {
     }
 }
 
+/// @mixin
 function equip_artifact_popup_draw() {
-    arti = obj_ini.artifact_struct[obj_controller.menu_artifact];
+    var arti = obj_ini.artifact_struct[obj_controller.menu_artifact];
     main_slate.draw_with_dimensions();
     draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_40k_14b);

@@ -1,3 +1,4 @@
+/// @mixin
 function role_setup_objects() {
     specialist_distribution_box = new ToggleButton({str1: "Equal Specialist Distribution", font: fnt_40k_12, style: "box", x1: 560, y1: 250, tooltip: $"Specialist Distribution\nCheck if you wish for your Companies to be uniform and each contain {role[100][10]}s and {role[100][9]}s.", active: equal_specialists, clicked_check_default: true});
 
@@ -7,6 +8,7 @@ function role_setup_objects() {
     distribute_vets_box = new ToggleButton({str1: "Distribute Veterans", font: fnt_40k_12, style: "box", x1: 690, y1: 370, tooltip: $"Distribute Veterans\nCheck to have your Veterans split across the fleet.", active: load_to_ships[2], clicked_check_default: true});
 }
 
+/// @mixin
 function scr_role_setup() {
     add_draw_return_values();
 

@@ -959,8 +959,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static handle_stat_growth = unit_stat_growth;
 
-    static add_exp = add_unit_exp;
-
     static armour = function(raw = false) {
         var wep = obj_ini.armour[company][marine_number];
         if (is_string(wep) || raw) {
@@ -1877,6 +1875,26 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             update_role(obj_ini.role[100][eROLE.LIBRARIAN]);
         }
     };
+
+    static add_exp = function(add_val) {
+        var instace_stat_point_gains = {};
+        var _powers_learned = 0;
+
+        stat_point_exp_marker += add_val;
+        experience += add_val;
+
+        if (stat_point_exp_marker >= 15) {
+            instace_stat_point_gains = handle_stat_growth(true);
+        }
+    
+        if (IsSpecialist(SPECIALISTS_LIBRARIANS)) {
+            _powers_learned = update_powers();
+        }
+
+        role_refresh();
+    
+        return [instace_stat_point_gains, _powers_learned];
+    }
 
     static race = function() {
         return obj_ini.race[company][marine_number];

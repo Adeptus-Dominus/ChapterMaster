@@ -1,5 +1,6 @@
 // This sorts and crunches the vehicle variables into order for that company
 
+/// @mixin
 function reset_vehicle_variable_arrays(company_number, i) {
     veh_race[company_number][i] = 0;
     veh_loc[company_number][i] = "";
@@ -17,6 +18,7 @@ function reset_vehicle_variable_arrays(company_number, i) {
     veh_uid[company_number][i] = -1;
 }
 
+/// @mixin
 function scr_vehicle_order(company_number) {
     // Once it's actually fucking working it should probably join the scr_company_order script in the Interface folder
     var vehicle_count = 0;

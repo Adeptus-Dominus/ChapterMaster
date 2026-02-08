@@ -1,3 +1,4 @@
+/// @mixin
 function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption, other_gear, home_spot, other_data = {}) {
     //all of this will in time be irrelevant as calling new TTRPG_stats() and then calling the correct methods within the new itme will replace this but for
     //now its easy enough to use this as the structs continue to be built.
@@ -25,7 +26,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 
     if (good != -1) {
         scr_wipe_unit(target_company, good);
-        unit = fetch_unit([target_company, good]);
+        var unit = fetch_unit([target_company, good]);
         if (other_gear == true) {
             // Factions 1-5 are part of Imperial family
             // Faction 1 - Space Marine

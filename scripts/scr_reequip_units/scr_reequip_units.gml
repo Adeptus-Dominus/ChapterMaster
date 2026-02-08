@@ -1,3 +1,4 @@
+/// @mixin
 function set_up_equip_popup() {
     if (instance_number(obj_popup) == 0) {
         var f = 0, god = 0, nuuum = 0;
@@ -194,6 +195,7 @@ function set_up_equip_popup() {
     }
 }
 
+/// @mixin
 function reload_items() {
     item_name = [];
     scr_get_item_names(
@@ -208,6 +210,7 @@ function reload_items() {
     );
 }
 
+/// @mixin
 function draw_popup_equip() {
     main_slate.draw_with_dimensions();
     draw_set_color(CM_GREEN_COLOR);
@@ -682,6 +685,7 @@ function draw_popup_equip() {
     }
 }
 
+/// @mixin
 function reequip_selection() {
     if (n_wep1 == ITEM_NAME_NONE) {
         n_wep1 = "";

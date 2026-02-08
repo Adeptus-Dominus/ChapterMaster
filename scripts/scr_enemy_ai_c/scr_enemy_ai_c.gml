@@ -1,3 +1,4 @@
+/// @mixin
 function scr_enemy_ai_c() {
     var rando, contin, i;
     rando = 0;

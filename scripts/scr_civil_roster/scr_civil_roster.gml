@@ -1,3 +1,4 @@
+/// @mixin
 function scr_civil_roster(_unit_location, _target_location, _is_planet) {
     // Determines who all will be present for the battle
     // Only used on the Chaos Space Marines(?) meeting battle (not sure if its implemented)
@@ -341,6 +342,7 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 
                     // show_message("enemy marine being placed in column "+string(col));
 
+                    /// @type {Asset.GMObject.obj_enunit}
                     targ = instance_nearest(col * 10, 240, obj_enunit);
 
                     var t, first_openz;

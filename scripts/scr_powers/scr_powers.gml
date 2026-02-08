@@ -17,6 +17,7 @@
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
 global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
 
+/// @param {Struct.TTRPG_stats} unit
 function generate_marine_powers_description_string(unit) {
     var _psy_powers_known = unit.powers_known;
     var _psy_powers_count = array_length(_psy_powers_known);
@@ -54,6 +55,7 @@ function generate_marine_powers_description_string(unit) {
 /// @mixin
 function scr_powers(caster_id) {
     // Gather unit data
+    /// @type {Struct.TTRPG_stats}
     var _unit = unit_struct[caster_id];
     if (!is_struct(_unit)) {
         exit;
