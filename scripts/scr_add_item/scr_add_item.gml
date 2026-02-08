@@ -8,6 +8,28 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
         return "no_item";
     }
 
+    static qualities = [
+        "standard",
+        "exemplary",
+        "master_crafted",
+        "artificer",
+        "artifact"
+    ];
+
+    static selections = [
+        "any",
+        "worst",
+        "best"
+    ];
+
+    static allowed_qualities = new Set(qualities);
+
+    static allowed_selection = new Set(selections);
+
+    if (!allowed_qualities.has(_quality) && !allowed_selection.has(_quality)) {
+        _quality = "any";
+    }
+
     // Normalize quality if adding
     if (_quantity > 0 && _quality == "any") {
         _quality = "standard";
@@ -48,23 +70,15 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
             return "no_item";
         }
 
-        // Handle special quality keywords
-        var _priority_list = [
-            "standard",
-            "exemplary",
-            "master_crafted",
-            "artificer",
-            "artifact"
-        ];
         switch (_quality) {
             case "any":
                 _quality = array_random_element(_available_qualities); // random pick
                 break;
 
             case "worst":
-                for (var i = 0; i < array_length(_priority_list); i++) {
-                    if (array_contains(_available_qualities, _priority_list[i])) {
-                        _quality = _priority_list[i];
+                for (var i = 0; i < array_length(qualities); i++) {
+                    if (array_contains(_available_qualities, qualities[i])) {
+                        _quality = qualities[i];
                         break;
                     }
                 }
@@ -74,9 +88,9 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
                 break;
 
             case "best":
-                for (var i = array_length(_priority_list) - 1; i >= 0; i--) {
-                    if (array_contains(_available_qualities, _priority_list[i])) {
-                        _quality = _priority_list[i];
+                for (var i = array_length(qualities) - 1; i >= 0; i--) {
+                    if (array_contains(_available_qualities, qualities[i])) {
+                        _quality = qualities[i];
                         break;
                     }
                 }
