@@ -156,7 +156,7 @@ function scr_cheatcode(argument0) {
                             scr_inquisition_mission(eEVENT.INQUISITION_MISSION);
                             break;
                         case "planet":
-                            scr_inquisition_mission(eEVENT.MECHANICUS_MISSION);
+                            scr_inquisition_mission(eEVENT.INQUISITION_PLANET);
                             break;
                         case "spyrer":
                             scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.SPYRER);

@@ -15,8 +15,8 @@
     star_has_planet_with_forces -> given the id of a _star, and a faction, returns whether or not there are forces present there and in sufficient number
 */
 
-/// @param {Enum.EVENT} event
-/// @param {Enum.INQUISITION_MISSION} forced_mission optional
+/// @param {Enum.eEVENT} event
+/// @param {Enum.eINQUISITION_MISSION} forced_mission optional
 function scr_inquisition_mission(event, forced_mission = -1) {
     global.logger.info($"RE: Inquisition Mission, event {event}, forced_mission {forced_mission}");
     if ((obj_controller.known[eFACTION.INQUISITION] == 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") && !global.cheat_debug) {
@@ -26,7 +26,7 @@ function scr_inquisition_mission(event, forced_mission = -1) {
     if (global.cheat_debug) {
         global.logger.debug("find mission");
     }
-    if (event == eEVENT.MECHANICUS_MISSION) {
+    if (event == eEVENT.INQUISITION_PLANET) {
         mission_investigate_planet();
     } else if (event == eEVENT.INQUISITION_MISSION) {
         var inquisition_missions = [
