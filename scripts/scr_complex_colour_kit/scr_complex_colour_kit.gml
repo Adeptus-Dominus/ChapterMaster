@@ -698,7 +698,6 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
             if (array_length(_distinct_colours)) {
                 var _choice = cloth_variation % array_length(_distinct_colours);
             }
-            //global.logger.debug($"{_choice}")
             set_complex_shader_area(["robes_colour_replace"], _distinct_colours[_choice]);
         } else {
             shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
@@ -706,7 +705,6 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
     } else {
         shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
     }
-    //global.logger.debug(data_set);
     var _textures = {};
 
     static complex_colour_swaps = {
@@ -860,7 +858,6 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
             if (_colour[0] == "texture") {
                 if (struct_exists(global.textures, _colour[1])) {
                     var _name = _colour[1];
-                    global.logger.debug(_name);
                     if (!struct_exists(_textures, _name)) {
                         _textures[$ _name] = {
                             texture: global.textures[$ _colour[1]],
@@ -873,7 +870,6 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
                 }
             } else if (_colour[0] == "icon") {
                 var _data = _colour[1];
-                global.logger.debug($"data : {_data}");
                 var sub_key = "";
                 var main_key = "";
                 var _tex_set = false;
@@ -883,15 +879,12 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
                     sub_key = "knees";
                 }
                 main_key = get_marine_icon_set(_data.type);
-                global.logger.debug($"{sub_key}, {main_key}");
                 if (sub_key != "" && is_struct(main_key)) {
                     var _tex_set = variable_clone(main_key[$ sub_key]);
                 }
-                global.logger.debug($"{_tex_set}");
                 if (is_struct(_tex_set)) {
                     if (struct_exists(_tex_set, _data.icon)) {
                         var _name = _data.icon;
-                        global.logger.debug(_name);
                         if (!struct_exists(_textures, _name)) {
                             _textures[$ _name] = {
                                 texture: _tex_set[$ _name],
@@ -1005,7 +998,6 @@ function ColourPicker(xx, yy, max_width = 400) constructor {
             array_push(texture_coords, [[draw_x, draw_y, draw_x + _frame_width, draw_y + _frame_height], texture_names[i]]);
             draw_x += sprite_draw_args.frame_width;
         }
-        // global.logger.debug("call create_texture_surface");
         surface_reset_target();
     };
 
