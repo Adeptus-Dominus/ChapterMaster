@@ -1,24 +1,45 @@
-function array_iter_length(choice_array, offset, length) {
-    if (length == 0) {
-        if (offset == 0) {
-            length = array_length(choice_array) - 1;
-        } else if (offset) {
-            length = array_length(choice_array) - offset - 1;
-        } else {
-            length = offset * -1;
-        }
+/// @desc Calculates the remaining iteration length for an array based on an offset.
+/// @param {Array} _array The target array.
+/// @param {Real} _offset The starting index.
+/// @param {Real} _length The requested length (0 for auto-calculation).
+/// @returns {Real}
+function array_get_iteration_length(_array, _offset, _length) {
+    var _array_size = array_length(_array);
+    
+    if (_offset >= _array_size || _offset < 0) {
+        return 0;
     }
-    return length;
+
+    if (_length <= 0) {
+        return _array_size - _offset;
+    }
+
+    // Ensure we don't exceed the array bounds
+    return min(_length, _array_size - _offset);
 }
 
-function array_sum(choice_array, start_value = 0, offset = 0, length = 0) {
-    function arraysum(_prev, _curr, _index) {
+/// @desc Calculates the sum of numeric values within an array.
+/// @param {Array<Real>} _array The array to sum.
+/// @param {Real} _start_value The initial value to start the sum from.
+/// @param {Real} _offset The index to start summing from.
+/// @param {Real} _length The number of elements to sum (0 for all).
+/// @returns {Real}
+function array_sum(_array, _start_value = 0, _offset = 0, _length = 0) {
+    static _reducer = function(_prev, _curr) {
         return _prev + _curr;
+    };
+
+    if (array_length(_array) == 0) {
+        return _start_value;
     }
 
-    length = array_iter_length(choice_array, offset, length);
+    var _actual_length = array_get_iteration_length(_array, _offset, _length);
+    
+    if (_actual_length <= 0) {
+        return _start_value;
+    }
 
-    return array_reduce(choice_array, arraysum, start_value, offset, length);
+    return array_reduce(_array, _reducer, _start_value, _offset, _actual_length);
 }
 
 function array_join() {
