@@ -65,34 +65,21 @@ column[5] = "";
 column_width[5] = 0; // Furthest right
 
 threat = 4;
-var k, j;
-k = -1;
-j = -1;
 
-repeat (6) {
-    k += 1;
-    j = -1;
-    repeat (11) {
-        j += 1;
-        enemy[j] = 0;
-        enemy_status[j] = 0;
+var _size = 11;
 
-        /*en_column[j,k]="";
-        en_width[j,k]=0;en_height[j,k]=0;
-        en_num[j,k]=0;en_size[j,k]=0;*/
-
-        en_capital[j] = 0;
-        en_capital_max[j] = 0;
-        en_capital_lost[j] = 0;
-        en_frigate[j] = 0;
-        en_frigate_max[j] = 0;
-        en_frigate_lost[j] = 0;
-        en_escort[j] = 0;
-        en_escort_max[j] = 0;
-        en_escort_lost[j] = 0;
-        en_ships_max[j] = 0;
-    }
-}
+enemy = array_create(_size, 0);
+enemy_status = array_create(_size, 0);
+en_capital = array_create(_size, 0);
+en_capital_max = array_create(_size, 0);
+en_capital_lost = array_create(_size, 0);
+en_frigate = array_create(_size, 0);
+en_frigate_max = array_create(_size, 0);
+en_frigate_lost = array_create(_size, 0);
+en_escort = array_create(_size, 0);
+en_escort_max = array_create(_size, 0);
+en_escort_lost = array_create(_size, 0);
+en_ships_max = array_create(_size, 0);
 // Should be 0-5 for each of the factions
 
 capital = 0;
@@ -167,8 +154,35 @@ if (scr_has_adv("Kings of Space")) {
 master = 0;
 time = 0;
 
-init_player_fleet_arrays();
 ship_id = [];
+ship = [];
+ship_uid = [];
+ship_owner = [];
+ship_class = [];
+ship_size = [];
+ship_leadership = [];
+ship_hp = [];
+ship_maxhp = [];
+
+ship_location = [];
+ship_shields = [];
+ship_conditions = [];
+ship_speed = [];
+ship_turning = [];
+
+ship_front_armour = [];
+ship_other_armour = [];
+ship_weapons = [];
+
+ship_wep = array_create(6, "");
+ship_wep_facing = array_create(6, "");
+ship_wep_condition = array_create(6, "");
+
+ship_capacity = [];
+ship_carrying = [];
+ship_contents = [];
+ship_turrets = [];
+ship_lost = [];
 
 // screwing around below here
 alarm[6] = 2;
@@ -176,24 +190,17 @@ alarm[6] = 2;
 // waiting at this point- show loading screen
 // in this time the obj_controller passes over which units will be fighting, similar to the below code
 
-column[0] = "";
-column_width[0] = 0;
-column_num[0] = 0; // This is determined at the pre-battle screen
-column[1] = "";
-column_width[1] = 0;
-column_num[1] = 0;
-column[2] = "";
-column_width[2] = 0;
-column_num[3] = 0;
+var _length = 6;
+column = array_create(_length, "");
+column_width = array_create(_length, 0);
+column_num = array_create(_length, 0);
+
 column[3] = "capital";
 column_width[3] = 270;
-column_num[3] = 0;
 column[4] = "frigate";
 column_width[4] = 140;
-column_num[4] = 0;
 column[5] = "escort";
 column_width[5] = 76;
-column_num[5] = 0; // Furthest right
 
 color_index = 0;
 
