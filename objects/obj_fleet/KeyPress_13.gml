@@ -1,4 +1,3 @@
-
 start = 5;
 // show_message(string(ships_max));
 

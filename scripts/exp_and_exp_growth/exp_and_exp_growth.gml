@@ -156,7 +156,7 @@ function unit_stat_growth(grow_stat = false) {
         if (job.type == "forge") {
             var stat_gains_opts = ["technology"];
             gains_set = true;
-            var turn_stat_gains = {
+            turn_stat_gains = {
                 technology: 100,
             };
             var instace_stat_point_gains = {

@@ -836,9 +836,9 @@ function Armamentarium() constructor {
         }
 
         if (!is_in_forge) {
-            is_in_forge = (_new_type == "technologies");
+            is_in_forge = _new_type == "technologies";
         } else {
-            is_in_forge = (_new_type != "ships");
+            is_in_forge = _new_type != "ships";
         }
 
         shop_type = _new_type;

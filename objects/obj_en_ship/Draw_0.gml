@@ -1,4 +1,3 @@
-
 draw_set_font(fnt_info);
 draw_set_halign(fa_center);
 

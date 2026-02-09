@@ -1,4 +1,3 @@
-
 /// @mixin
 function scr_enemy_ai_d() {
     if (x < -15000) {

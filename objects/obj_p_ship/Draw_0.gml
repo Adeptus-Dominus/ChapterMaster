@@ -1,4 +1,3 @@
-
 if (selected == 1) {
     draw_set_color(CM_GREEN_COLOR);
     draw_circle(x, y, (sprite_width / 2), 1);

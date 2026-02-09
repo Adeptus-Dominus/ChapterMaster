@@ -1,4 +1,3 @@
-
 function scr_save(save_part, save_id, autosaving = false) {
     if (autosaving) {
         obj_saveload.hide = true;
