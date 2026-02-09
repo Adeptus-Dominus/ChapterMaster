@@ -423,7 +423,6 @@ function Armamentarium() constructor {
         ecclesiarchy: 1.0,
     };
     advisor_report_text = "";
-    advisor_eta_text = "";
 
     // --- Components ---
     slate_panel = new DataSlate();
@@ -837,20 +836,15 @@ function Armamentarium() constructor {
         }
 
         if (!is_in_forge) {
-            is_in_forge = _new_type == "technologies";
+            is_in_forge = (_new_type == "technologies");
         } else {
-            is_in_forge = _new_type != "ships";
+            is_in_forge = (_new_type != "ships");
         }
 
         shop_type = _new_type;
         page_mod = 0;
 
-        for (var i = 0, len = array_length(category_dropdown.options); i < len; i++) {
-            if (category_dropdown.options[i].value == _new_type) {
-                category_dropdown.selected_index = i;
-                break;
-            }
-        }
+        category_dropdown.set_value(_new_type);
 
         refresh_catalog();
     };
@@ -1057,22 +1051,6 @@ function Armamentarium() constructor {
             is_in_forge = true;
             refresh_catalog();
         }
-    };
-
-    /// @desc Draws the projected time until the next STC breakthrough.
-    /// @param {real} _y Y position for drawing.
-    static _draw_research_eta = function(_y) {
-        var _focus = obj_controller.stc_research.research_focus;
-        var _points_per_turn = obj_controller.specialist_point_handler.research_points;
-        if (_points_per_turn <= 0) {
-            return;
-        }
-
-        var _level = variable_instance_get(obj_controller, $"stc_{_focus}");
-        var _remaining = (5000 * (_level + 1)) - obj_controller.stc_research[$ _focus];
-        var _months = ceil(_remaining / _points_per_turn);
-        var _text = $"Research: Next {_focus} breakthrough in {_months} months.";
-        draw_text_ext(352, _y, _text, -1, 536);
     };
 
     /// @desc Draws the technologies and queue management UI.

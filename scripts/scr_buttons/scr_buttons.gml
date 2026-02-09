@@ -706,12 +706,35 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
 /// @param {Array<Struct>} _options Array of {label, value} structs.
 /// @param {real} _width Width of the dropdown.
 /// @returns {Struct.UIDropdown}
-function UIDropdown(_options, _width = 180) constructor {
+function UIDropdown(_options, _width = 180, _on_change = undefined) constructor {
     options = _options;
     width = _width;
     height = 28;
     is_open = false;
     selected_index = 0;
+    on_change = _on_change;
+
+    /// @desc Sets the dropdown to a specific value.
+    /// @param {any} _value The value to search for.
+    /// @returns {bool}
+    static set_value = function(_value) {
+        for (var i = 0, l = array_length(options); i < l; i++) {
+            if (options[i].value != _value) {
+                continue;
+            }
+            
+            selected_index = i;
+            return true;
+        }
+        
+        return false;
+    };
+
+    /// @desc Gets the currently selected value.
+    /// @returns {any}
+    static get_value = function() {
+        return options[selected_index].value;
+    };
 
     /// @desc Draws the dropdown and handles interactions.
     /// @param {real} _x X position.
@@ -727,8 +750,9 @@ function UIDropdown(_options, _width = 180) constructor {
         ];
         var _is_hovering_main = scr_hit(_main_rect[0], _main_rect[1], _main_rect[2], _main_rect[3]);
 
-        // Draw Main Box
         add_draw_return_values();
+
+        // Draw Main Box
         draw_set_color(c_black);
         draw_rectangle_array(_main_rect, false);
         draw_set_color(_is_hovering_main ? c_white : c_gray);
@@ -753,17 +777,27 @@ function UIDropdown(_options, _width = 180) constructor {
             return _result;
         }
 
-        // Draw Options List
-        var _opt_height = 24;
-        var _total_opt_height = array_length(options) * _opt_height;
-        var _list_rect = [
-            _x,
-            _y + height,
-            _x + width,
-            _y + height + _total_opt_height
-        ];
+        _result = _draw_options_list(_x, _y);
 
-        // Background for list
+        // Close if clicking outside
+        if (mouse_button_clicked() && !_is_hovering_main) {
+            is_open = false;
+        }
+
+        pop_draw_return_values();
+        return _result;
+    };
+
+    /// @desc Internal method to draw the expanded list.
+    /// @param {real} _x
+    /// @param {real} _y
+    /// @returns {any}
+    static _draw_options_list = function(_x, _y) {
+        var _selection = undefined;
+        var _opt_height = 24;
+        var _total_h = array_length(options) * _opt_height;
+        var _list_rect = [_x, _y + height, _x + width, _y + height + _total_h];
+
         draw_set_alpha(0.95);
         draw_set_color(c_black);
         draw_rectangle_array(_list_rect, false);
@@ -771,11 +805,11 @@ function UIDropdown(_options, _width = 180) constructor {
         draw_set_color(c_white);
         draw_rectangle_array(_list_rect, true);
 
-        for (var i = 0; i < array_length(options); i++) {
+        for (var i = 0, l = array_length(options); i < l; i++) {
             var _oy = _y + height + (i * _opt_height);
-            var _is_hovering_opt = scr_hit(_x, _oy, _x + width, _oy + _opt_height);
+            var _is_hovering = scr_hit(_x, _oy, _x + width, _oy + _opt_height);
 
-            if (_is_hovering_opt) {
+            if (_is_hovering) {
                 draw_set_alpha(0.2);
                 draw_rectangle(_x + 1, _oy, _x + width - 1, _oy + _opt_height, false);
                 draw_set_alpha(1.0);
@@ -783,24 +817,21 @@ function UIDropdown(_options, _width = 180) constructor {
                 if (mouse_button_clicked()) {
                     selected_index = i;
                     is_open = false;
-                    _result = options[i].value;
+                    _selection = options[i].value;
                     audio_play_sound(snd_click, 10, false);
+                    
+                    if (on_change != undefined) {
+                        on_change(_selection);
+                    }
                 }
             }
 
-            draw_set_color(_is_hovering_opt ? c_white : c_gray);
+            draw_set_color(_is_hovering ? c_white : c_gray);
             draw_set_font(fnt_40k_12);
             draw_text(_x + 10, _oy + 4, options[i].label);
         }
-
-        // Close if clicking outside
-        if (mouse_button_clicked() && !_is_hovering_main && !scr_hit(_list_rect[0], _list_rect[1], _list_rect[2], _list_rect[3])) {
-            is_open = false;
-        }
-
-        pop_draw_return_values();
-
-        return _result;
+        
+        return _selection;
     };
 }
 
