@@ -471,13 +471,6 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         }
         // ** Chaos Gods **
         if (diplomacy == 10.1) {
-            diplo_option = [
-                "",
-                "",
-                "",
-                "",
-                ""
-            ];
             switch (diplo_keyphrase) {
                 case "intro":
                     diplo_text = "[[The Emmissary to Chaos is writhing snake like creature, a vile creature even by the standards of it's foul bretheren it has no specific master instead preffering to work undividely. It's savage toungue flicks from between it's teeth with glazed aged ayes staring into your soul]]";
