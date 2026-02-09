@@ -722,11 +722,11 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
             if (options[i].value != _value) {
                 continue;
             }
-            
+
             selected_index = i;
             return true;
         }
-        
+
         return false;
     };
 
@@ -796,7 +796,12 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
         var _selection = undefined;
         var _opt_height = 24;
         var _total_h = array_length(options) * _opt_height;
-        var _list_rect = [_x, _y + height, _x + width, _y + height + _total_h];
+        var _list_rect = [
+            _x,
+            _y + height,
+            _x + width,
+            _y + height + _total_h
+        ];
 
         draw_set_alpha(0.95);
         draw_set_color(c_black);
@@ -819,7 +824,7 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
                     is_open = false;
                     _selection = options[i].value;
                     audio_play_sound(snd_click, 10, false);
-                    
+
                     if (on_change != undefined) {
                         on_change(_selection);
                     }
@@ -830,7 +835,7 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
             draw_set_font(fnt_40k_12);
             draw_text(_x + 10, _oy + 4, options[i].label);
         }
-        
+
         return _selection;
     };
 }

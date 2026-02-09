@@ -1886,15 +1886,15 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (stat_point_exp_marker >= 15) {
             instace_stat_point_gains = handle_stat_growth(true);
         }
-    
+
         if (IsSpecialist(SPECIALISTS_LIBRARIANS)) {
             _powers_learned = update_powers();
         }
 
         role_refresh();
-    
+
         return [instace_stat_point_gains, _powers_learned];
-    }
+    };
 
     static race = function() {
         return obj_ini.race[company][marine_number];
