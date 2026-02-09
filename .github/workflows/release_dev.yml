@@ -151,7 +151,7 @@ jobs:
           # --- The rest of the logic (count, keep, delete) remains the same ---
           # Count the filtered tags
           NUM_MATCHING=$(echo "$TAGS_TO_PROCESS" | wc -l)
-          RELEASES_TO_KEEP=10 # How many releases per branch prefix to keep
+          RELEASES_TO_KEEP=20 # How many releases per branch prefix to keep
           echo "Found ${NUM_MATCHING} releases matching prefix '${BRANCH_PREFIX}'. Will keep the latest $RELEASES_TO_KEEP."
 
           COUNT=0
@@ -183,7 +183,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    needs: [prepare_release, gamemaker_build]
+    needs: [prepare_release, build_needed, gamemaker_build]
     if: needs.build_needed.outputs.needed == 'true'
     permissions:
       contents: write # Needed for softprops/action-gh-release
