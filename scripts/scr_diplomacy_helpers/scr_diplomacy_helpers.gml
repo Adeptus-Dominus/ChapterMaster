@@ -70,20 +70,24 @@ function clear_diplo_choices() {
 }
 
 function valid_diplomacy_options() {
-    var valid = false;
-    if (array_length(obj_controller.diplo_option)) {
-        for (var i = array_length(obj_controller.diplo_option) - 1; i >= 0; i--) {
-            var _opt = obj_controller.diplo_option[i];
-            if (struct_exists(_opt, "option_text") && _opt.option_text != "") {
-                valid = true;
-            } else {
-                array_delete(obj_controller.diplo_option, i, 1);
-            }
-        }
-    } else {
-        return false;
+    var _valid = false;
+    var _options_count = array_length(obj_controller.diplo_option);
+
+    if (_options_count == 0) {
+        return _valid;
     }
-    return valid;
+
+    for (var i = _options_count - 1; i >= 0; i--) {
+        var _opt = obj_controller.diplo_option[i];
+        global.logger.debug(_opt);
+        if (struct_exists(_opt, "option_text") && _opt.option_text != "") {
+            _valid = true;
+        } else {
+            array_delete(obj_controller.diplo_option, i, 1);
+        }
+    }
+
+    return _valid;
 }
 
 function add_diplomacy_option(option = {}) {
