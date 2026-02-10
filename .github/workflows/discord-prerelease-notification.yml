@@ -18,5 +18,5 @@ jobs:
           username: "GitHub Releases"
           content: |-
             <@&1318332223232938014>
-            -# :warning: These builds are auto-generated. They may be **heavily unstable**, in which case try using an older build (10 exist at the same time), or divert to <#1283955919566143561>. :warning:
+            -# :warning: These builds are auto-generated. They may be **heavily unstable**, in which case try using an older build (20 exist at the same time). :warning:
           reduce_headings: true
