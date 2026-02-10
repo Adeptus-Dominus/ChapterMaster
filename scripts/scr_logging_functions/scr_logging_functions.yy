@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_log",
+  "%Name":"scr_logging_functions",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_log",
+  "name":"scr_logging_functions",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",
