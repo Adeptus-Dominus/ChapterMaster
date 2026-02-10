@@ -3,6 +3,7 @@ ship_id = 0;
 
 action = "";
 direction = 0;
+/// @type {Asset.GMObject.obj_en_ship}
 target = -50;
 if (instance_exists(obj_en_ship)) {
     target = instance_nearest(x, y, obj_en_ship);

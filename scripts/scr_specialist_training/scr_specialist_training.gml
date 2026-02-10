@@ -280,7 +280,7 @@ function librarian_training() {
     var training_points_values = CHAPLAIN_TRAINING_TIERS;
     psyker_points += training_points_values[training_psyker];
 
-    var goal = 48, yep = 0;
+    var goal = 48;
     novice_type = string("{0} Aspirant", obj_ini.role[100][17]);
 
     if (training_psyker > 0) {

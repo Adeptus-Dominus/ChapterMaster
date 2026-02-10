@@ -20,7 +20,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         "Flash Git"
     ]; // if adding new hirelings, don't forget to update this list
     var _gear = {};
-    var i = 0, e = 0, good = 0;
+    var good = 0;
 
     good = find_company_open_slot(target_company);
 

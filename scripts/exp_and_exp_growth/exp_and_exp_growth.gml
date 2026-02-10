@@ -250,6 +250,7 @@ function unit_stat_growth(grow_stat = false) {
         var instance_stat_point_gains = {};
         var _levels = int64(stat_point_exp_marker / 15);
         for (var _lvl = 0; _lvl < _levels; _lvl++) {
+            stat_gains = undefined;
             //var extra_stats_earned = d100_roll(false);
             var stat_gain_choice = random(100);
             for (var i = 0; i < array_length(chance_list) - 1; i++) {
