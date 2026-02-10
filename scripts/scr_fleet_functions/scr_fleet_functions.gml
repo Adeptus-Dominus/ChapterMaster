@@ -87,7 +87,7 @@ function fleet_intercept_time_calculate(target_intercept) {
     var intercept_time = -1;
     var targ_location = fleets_next_location(target_intercept);
     if (instance_exists(targ_location)) {
-        intercept_time = floor(point_distance(x, y, action_x, action_y) / action_spd) + 1;
+        intercept_time = floor(point_distance(targ_location.x, targ_location.y, action_x, action_y) / action_spd) + 1;
     }
     return intercept_time;
 }

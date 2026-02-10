@@ -31,14 +31,13 @@ turrets = 0;
 turn_bonus = 1;
 speed_bonus = 1;
 
-var _size = 8;
-weapon = array_create(_size, "");
-weapon_facing = array_create(_size, "");
-weapon_cooldown = array_create(_size, 0);
-weapon_hp = array_create(_size, 0);
-weapon_dam = array_create(_size, 0);
-weapon_ammo = array_create(_size, 999);
-weapon_range = array_create(_size, 0);
-weapon_minrange = array_create(_size, 0);
+weapon = array_create(SHIP_WEAPON_SLOTS, "");
+weapon_facing = array_create(SHIP_WEAPON_SLOTS, "");
+weapon_cooldown = array_create(SHIP_WEAPON_SLOTS, 0);
+weapon_hp = array_create(SHIP_WEAPON_SLOTS, 0);
+weapon_dam = array_create(SHIP_WEAPON_SLOTS, 0);
+weapon_ammo = array_create(SHIP_WEAPON_SLOTS, 999);
+weapon_range = array_create(SHIP_WEAPON_SLOTS, 0);
+weapon_minrange = array_create(SHIP_WEAPON_SLOTS, 0);
 
 action_set_alarm(1, 0);

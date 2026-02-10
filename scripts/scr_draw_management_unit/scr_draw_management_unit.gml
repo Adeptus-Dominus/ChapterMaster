@@ -101,7 +101,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             }
             if (ma_wep2[selected] != "") {
                 ma_we2 = gear_weapon_data("weapon", _unit.weapon_two(), "abbreviation");
-                ma_we2 = is_string(ma_we1) ? ma_we2 : "";
+                ma_we2 = is_string(ma_we2) ? ma_we2 : "";
             }
         }
     } else if (man[selected] == "vehicle" && is_array(display_unit[selected]) && draw) {

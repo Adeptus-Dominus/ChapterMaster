@@ -20,7 +20,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         "Flash Git"
     ]; // if adding new hirelings, don't forget to update this list
     var _gear = {};
-    var i = 0, e = 0, good = 0, wep1 = "", wep2 = "", gear = "", mobi = "", arm = "", missing = 0;
+    var i = 0, e = 0, good = 0;
 
     good = find_company_open_slot(target_company);
 
@@ -241,32 +241,6 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
             unit.roll_age(); // Age here
             unit.alter_equipment(_gear);
             marines += 1;
-
-            if (!other_gear) {
-                if ((obj_ini.wep1[target_company][good] != _gear.wep1) && (wep1 != "")) {
-                    missing = 1;
-                }
-                if ((obj_ini.wep2[target_company][good] != _gear.wep2) && (wep2 != "")) {
-                    missing = 1;
-                }
-                if ((obj_ini.armour[target_company][good] != _gear.armour) && (arm != "")) {
-                    missing = 1;
-                }
-                if ((obj_ini.gear[target_company][good] != _gear.gear) && (choice_gear != "")) {
-                    missing = 1;
-                }
-                if ((obj_ini.mobi[target_company][good] != _gear.mobi) && (mobility_items != "")) {
-                    missing = 1;
-                }
-
-                //if (man_role=obj_ini.role[100][12]) and (corruption>=13) then obj_ini.god[target_company][good]=2;// Khorne!!!1 XDDDDDDD
-
-                if ((missing == 1) && (man_role == obj_ini.role[100][12])) {
-                    if (string_count("has joined the X Company", obj_turn_end.alert_text[obj_turn_end.alerts])) {
-                        scr_alert("red", $"recruiting", "Not enough {obj_ini.role[100][12]} equipment in the armoury!", 0, 0);
-                    }
-                }
-            }
         }
         obj_ini.TTRPG[target_company][good] = unit;
         unit.add_exp(spawn_exp);

@@ -63,8 +63,6 @@ if (!keyboard_check(vk_shift)) {
                 }
             }
         }
-    } else {
-        selected = 0;
     }
 }
 // if (obj_controller.selected!=0) and (selected=1) then within=1;

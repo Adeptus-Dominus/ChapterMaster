@@ -28,6 +28,10 @@
 
 #macro ALLIANCE_GRADES ["Hated", "Hostile","Suspicious","Uneasy","Neutral","Allies","Close Allies","Battle Brothers"]
 
+#macro SHIP_WEAPON_SLOTS 8
+
+
+
 enum eFACTION {
     PLAYER = 1,
     IMPERIUM,

@@ -50,14 +50,14 @@ thunderhawks = 0;
 boarders = 0;
 board_cooldown = 0;
 
-weapon = array_create(8, "");
-weapon_facing = array_create(8, "");
-weapon_cooldown = array_create(8, 0);
-weapon_hp = array_create(8, 0);
-weapon_dam = array_create(8, 0);
-weapon_ammo = array_create(8, 0);
-weapon_range = array_create(8, 0);
-weapon_minrange = array_create(8, 0);
+weapon = array_create(SHIP_WEAPON_SLOTS, "");
+weapon_facing = array_create(SHIP_WEAPON_SLOTS, "");
+weapon_cooldown = array_create(SHIP_WEAPON_SLOTS, 0);
+weapon_hp = array_create(SHIP_WEAPON_SLOTS, 0);
+weapon_dam = array_create(SHIP_WEAPON_SLOTS, 0);
+weapon_ammo = array_create(SHIP_WEAPON_SLOTS, 0);
+weapon_range = array_create(SHIP_WEAPON_SLOTS, 0);
+weapon_minrange = array_create(SHIP_WEAPON_SLOTS, 0);
 
 board_co = [];
 board_id = [];

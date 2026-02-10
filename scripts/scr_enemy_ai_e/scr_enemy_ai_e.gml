@@ -94,7 +94,7 @@ function scr_enemy_ai_e() {
             if (standard_xenos_enemies - present_fleet[10] > 0) {
                 battle2 = 10;
             }
-        } else if (present_fleet[13] - present_fleet[13] > 0) {
+        } else if (present_fleet[13] > 0) {
             if (standard_xenos_enemies > 0) {
                 battle2 = 13;
             }
@@ -558,17 +558,10 @@ function scr_enemy_ai_e() {
     instance_activate_object(obj_p_fleet);
     instance_activate_object(obj_en_fleet);
 
-    var run, force, beetle, chaos_meeting;
     var run = 0;
     var force = 1;
     var beetle = 0;
     var chaos_meeting = 0;
-
-    var run, force, beetle, chaos_meeting;
-    run = 0;
-    force = 1;
-    beetle = 0;
-    chaos_meeting = 0;
 
     repeat (planets) {
         run += 1;

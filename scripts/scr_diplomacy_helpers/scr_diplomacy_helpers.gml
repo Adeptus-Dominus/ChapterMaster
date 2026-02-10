@@ -173,7 +173,7 @@ function draw_character_diplomacy() {
         } else if (_diplo_unit.IsSpecialist(SPECIALISTS_LIBRARIANS)) {
             _specific_splash = struct_exists(_customs, "librarian") ? _customs.librarian : 4;
         } else if (_diplo_unit.IsSpecialist(SPECIALISTS_TECHS)) {
-            _specific_splash = struct_exists(_customs, "forge_master") ? _customs.forge : 5;
+            _specific_splash = struct_exists(_customs, "forge_master") ? _customs.forge_master : 5;
         }
         scr_image("advisor/splash", _specific_splash, 16, 43, 310, 828);
         /* else if (advi="") {

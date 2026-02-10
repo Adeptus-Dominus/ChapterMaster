@@ -563,7 +563,7 @@ function draw_popup_equip() {
             }
             if (have_armour_num < req_armour_num && (n_armour != ITEM_NAME_ANY && n_armour != ITEM_NAME_NONE)) {
                 n_good3 = 0;
-                warning = $"Not enough {n_armour} : {units - have_armour_num} more are required.";
+                warning = $"Not enough {n_armour} : {req_armour_num - have_armour_num} more are required.";
             }
 
             var g = -1, exp_check = 0;
@@ -609,12 +609,23 @@ function draw_popup_equip() {
             }
             if (have_gear_num < req_gear_num && (n_gear != ITEM_NAME_ANY && n_gear != ITEM_NAME_NONE)) {
                 n_good4 = 0;
-                warning = "Not enough " + string(n_gear) + "; " + string(units - req_gear_num) + " more are required.";
+                warning = "Not enough " + string(n_gear) + "; " + string(req_gear_num - have_gear_num) + " more are required.";
             }
 
-            if ((n_gear != ITEM_NAME_NONE) && (n_gear != "") && (string_count("Dreadnought", n_armour) > 0) && (string_count("Contemptor Dreadnought", n_armour) > 0)) {
-                n_good4 = 0;
-                warning = "Dreadnoughts may not use infantry equipment.";
+            if (is_struct(armour_data) && is_struct(gear_data)) {
+                if (armour_data.has_tag("terminator") && !gear_data.has_tag("terminator")) {
+                    n_good5 = 0;
+                    warning = "Cannot use this with Terminator Armour.";
+                } else if (!armour_data.has_tag("terminator") && gear_data.has_tag("terminator_only")) {
+                    n_good5 = 0;
+                    warning = "Cannot use this without Terminator Armour.";
+                } else if (armour_data.has_tag("dreadnought") && !gear_data.has_tag("dreadnought")) {
+                    n_good5 = 0;
+                    warning = "Cannot use this with Dreadnought Armour.";
+                } else if (!armour_data.has_tag("dreadnought") && gear_data.has_tag("dreadnought_only")) {
+                    n_good5 = 0;
+                    warning = "Cannot use this without Dreadnought Armour.";
+                }
             }
         }
         if ((equipmet_area == eEQUIPMENT_SLOT.MOBILITY) && (n_mobi != "Assortment") && (n_mobi != ITEM_NAME_NONE) && n_mobi != ITEM_NAME_ANY) {
@@ -636,7 +647,7 @@ function draw_popup_equip() {
             }
             if (have_mobi_num < req_mobi_num && (n_mobi != ITEM_NAME_ANY && n_mobi != ITEM_NAME_NONE)) {
                 n_good5 = 0;
-                warning = "Not enough " + string(n_mobi) + "; " + string(units - req_mobi_num) + " more are required.";
+                warning = "Not enough " + string(n_mobi) + "; " + string(req_mobi_num - have_mobi_num) + " more are required.";
             }
 
             if (is_struct(armour_data) && is_struct(mobility_data)) {
@@ -708,7 +719,7 @@ function reequip_selection() {
 
         if ((obj_controller.man[i] != "") && obj_controller.man_sel[i] && (vehicle_equipment != -1)) {
             var check = 0, scout_check = 0;
-            unit = obj_controller.display_unit[i];
+            var unit = obj_controller.display_unit[i];
             var standard = master_crafted == 1 ? "master_crafted" : "any";
             if (is_struct(unit)) {
                 unit.update_armour(n_armour, true, true, standard);

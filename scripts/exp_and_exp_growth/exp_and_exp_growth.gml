@@ -151,15 +151,16 @@ function unit_stat_growth(grow_stat = false) {
     }
 
     var gains_set = false;
+    var stat_gains_opts = [];
 
     if (job != "none") {
         if (job.type == "forge") {
-            var stat_gains_opts = ["technology"];
+            stat_gains_opts = ["technology"];
             gains_set = true;
             turn_stat_gains = {
                 technology: 100,
             };
-            var instace_stat_point_gains = {
+            var instance_stat_point_gains = {
                 technology: 100,
             };
             if (grow_stat) {
@@ -170,7 +171,7 @@ function unit_stat_growth(grow_stat = false) {
                     assign_reactionary_traits();
                 }
             }
-            return instace_stat_point_gains;
+            return instance_stat_point_gains;
         }
     }
 
@@ -246,7 +247,7 @@ function unit_stat_growth(grow_stat = false) {
     }
     if (grow_stat) {
         var stat_gains = undefined;
-        var instace_stat_point_gains = {};
+        var instance_stat_point_gains = {};
         var _levels = int64(stat_point_exp_marker / 15);
         for (var _lvl = 0; _lvl < _levels; _lvl++) {
             //var extra_stats_earned = d100_roll(false);
@@ -259,10 +260,10 @@ function unit_stat_growth(grow_stat = false) {
             if (stat_gains != undefined) {
                 self[$ stat_gains]++;
                 stat_point_exp_marker -= 15;
-                if (struct_exists(instace_stat_point_gains, stat_gains)) {
-                    instace_stat_point_gains[$ stat_gains]++;
+                if (struct_exists(instance_stat_point_gains, stat_gains)) {
+                    instance_stat_point_gains[$ stat_gains]++;
                 } else {
-                    instace_stat_point_gains[$ stat_gains] = 1;
+                    instance_stat_point_gains[$ stat_gains] = 1;
                 }
                 if (struct_exists(turn_stat_gains, stat_gains)) {
                     turn_stat_gains[$ stat_gains]++;
@@ -274,7 +275,7 @@ function unit_stat_growth(grow_stat = false) {
 
         if (stat_gains != undefined) {
             assign_reactionary_traits();
-            return instace_stat_point_gains;
+            return instance_stat_point_gains;
         } else {
             var _name = name();
             global.logger.error($"{_role} {_name} No stat gains!");

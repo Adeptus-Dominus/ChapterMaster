@@ -39,7 +39,7 @@ function scr_vehicle_order(company_number) {
         temp_acc[company_number][i] = "";
         temp_hp[company_number][i] = 100;
         temp_chaos[company_number][i] = 0;
-        temp_uid[company_number][i] = 0;
+        temp_uid[company_number][i] = -1;
     }
 
     // Check for vehicles

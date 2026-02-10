@@ -24,7 +24,7 @@ function scr_add_corruption(is_fleet, modifier_type) {
         }
         for (var i = 0; i < escort_number; i++) {
             if (obj_ini.ship_carrying[escort_num[i]] > 0) {
-                array_push(ships, escort_num[c]);
+                array_push(ships, escort_num[i]);
             }
         }
         for (var co = 0; co <= 10; co++) {
