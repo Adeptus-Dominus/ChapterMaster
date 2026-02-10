@@ -1138,24 +1138,29 @@ function PlanetData(planet, system) constructor {
         ];
         if (feat_count > 0) {
             for (i = 0; i < feat_count; i++) {
-                cur_feature = features[i];
-                if (cur_feature.planet_display != 0) {
-                    if (cur_feature.f_type == eP_FEATURES.GENE_STEALER_CULT) {
-                        if (!cur_feature.hiding) {
+                var cur_feature = features[i];
+                try {
+                    if (cur_feature.planet_display != 0) {
+                        if (cur_feature.f_type == eP_FEATURES.GENE_STEALER_CULT) {
+                            if (!cur_feature.hiding) {
+                                array_push(planet_displays, [cur_feature.planet_display, cur_feature]);
+                            }
+                        } else if (cur_feature.player_hidden == 1) {
+                            array_push(planet_displays, ["????", ""]);
+                        } else {
                             array_push(planet_displays, [cur_feature.planet_display, cur_feature]);
                         }
-                    } else if (cur_feature.player_hidden == 1) {
-                        array_push(planet_displays, ["????", ""]);
-                    } else {
-                        array_push(planet_displays, [cur_feature.planet_display, cur_feature]);
-                    }
-                    if (cur_feature.f_type == eP_FEATURES.MONASTERY) {
-                        if (cur_feature.forge > 0) {
-                            var forge = cur_feature.forge_data;
-                            var size_string = $"{size[forge.size]} Chapter Forge";
-                            array_push(planet_displays, [size_string, forge]);
+                        if (cur_feature.f_type == eP_FEATURES.MONASTERY) {
+                            if (cur_feature.forge > 0) {
+                                var forge = cur_feature.forge_data;
+                                var size_string = $"{size[forge.size]} Chapter Forge";
+                                array_push(planet_displays, [size_string, forge]);
+                            }
                         }
                     }
+                } catch (_exception) {
+                    global.logger.error(cur_feature);
+                    handle_exception(_exception);
                 }
             }
         }
@@ -1176,7 +1181,7 @@ function PlanetData(planet, system) constructor {
             if (problems[i] == "") {
                 continue;
             }
-            problem_data = problems_data[i];
+            var problem_data = problems_data[i];
             if (struct_exists(problem_data, "stage")) {
                 if (problem_data.stage == "preliminary") {
                     var mission_string = $"{problem_data.applicant} Audience";

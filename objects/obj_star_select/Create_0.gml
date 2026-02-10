@@ -26,6 +26,7 @@ debug_slate = new DataSlate({style: "plain", XX: 36, YY: 100, set_width: true, w
 
 torpedo = scr_item_count("Cyclonic Torpedo");
 
+/// @type {Struct.FeatureSelected}
 feature = "";
 garrison = "";
 population = false;
