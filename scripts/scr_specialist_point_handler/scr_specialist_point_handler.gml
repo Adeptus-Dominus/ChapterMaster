@@ -466,30 +466,35 @@ function SpecialistPointHandler() constructor {
     };
 
     static scr_evaluate_forge_item_completion = function(_forge_order) {
-        /// @type {Struct.ShopItem}
-        var _item = _forge_order.item;
-
-        if (_item.forge_type == "normal") {
-            var is_vehicle = variable_struct_exists(global.vehicles, _item.name);
-            if (!is_vehicle) {
-                scr_forge_item(_forge_order);
-            } else {
-                var _build_locs = [];
-
-                repeat (_forge_order.count) {
-                    var vehicle = scr_add_vehicle(_item.name, obj_controller.new_vehicles);
-                    var build_loc = array_random_element(obj_controller.player_forge_data.vehicle_hanger);
-                    obj_ini.veh_loc[vehicle[0]][vehicle[1]] = build_loc[0];
-                    obj_ini.veh_wid[vehicle[0]][vehicle[1]] = build_loc[1];
-                    obj_ini.veh_lid[vehicle[0]][vehicle[1]] = -1;
-                    array_push(_build_locs, $"{build_loc[0]} {build_loc[1]}");
+        try {
+            /// @type {Struct.ShopItem}
+            var _item = _forge_order.item;
+    
+            if (_item.forge_type == "normal") {
+                var is_vehicle = variable_struct_exists(global.vehicles, _item.name);
+                if (!is_vehicle) {
+                    scr_forge_item(_forge_order);
+                } else {
+                    var _build_locs = [];
+    
+                    repeat (_forge_order.count) {
+                        var vehicle = scr_add_vehicle(_item.name, obj_controller.new_vehicles);
+                        var build_loc = array_random_element(obj_controller.player_forge_data.vehicle_hanger);
+                        obj_ini.veh_loc[vehicle[0]][vehicle[1]] = build_loc[0];
+                        obj_ini.veh_wid[vehicle[0]][vehicle[1]] = build_loc[1];
+                        obj_ini.veh_lid[vehicle[0]][vehicle[1]] = -1;
+                        array_push(_build_locs, $"{build_loc[0]} {build_loc[1]}");
+                    }
+    
+                    scr_popup("Forge Completed", $"{_item.display_name} x{_forge_order.count} construction finished! Vehicles waiting at hanger(s) on {string_join_ext(", ", _build_locs)}", "", "");
                 }
-
-                scr_popup("Forge Completed", $"{_item.display_name} x{_forge_order.count} construction finished! Vehicles waiting at hanger(s) on {string_join_ext(", ", _build_locs)}", "", "");
+            } else if (_item.forge_type == "research") {
+                scr_advance_research(_item.name);
+                scr_popup("Research Completed", $"Research of {_item.display_name} complete", "", "");
             }
-        } else if (_item.forge_type == "research") {
-            scr_advance_research(_item.name);
-            scr_popup("Research Completed", $"Research of {_item.display_name} complete", "", "");
+        } catch (_exception) {
+            global.logger.critical(_forge_order);
+            handle_exception(_exception);
         }
     };
     /*static apothecary_points_calc(){
