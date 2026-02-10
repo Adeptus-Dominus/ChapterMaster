@@ -307,12 +307,14 @@ if (!__b__) {
         yy = y;
 
         if ((turrets > 0) && instance_exists(obj_p_small) && (turret_cool == 0)) {
+            /// @type {Asset.GMObject.obj_p_small}
             targe = instance_nearest(x, y, obj_p_small);
             if (instance_exists(targe)) {
                 dist = point_distance(x, y, targe.x, targe.y);
             }
 
             if ((dist > 64) && (dist < 300)) {
+                /// @type {Asset.GMObject.obj_en_round}
                 bull = instance_create(x, y, obj_en_round);
                 bull.direction = point_direction(x, y, targe.x, targe.y);
                 if (owner == eFACTION.TYRANIDS) {
@@ -552,6 +554,7 @@ if (!__b__) {
                     }
                 }
                 if ((wep == "Star Pulse Generator") && (ok == 3) && instance_exists(target)) {
+                    /// @type {Asset.GMObject.obj_en_pulse}
                     bull = instance_create(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), obj_en_pulse);
                     bull.speed = 20;
                     if (targe == target) {
@@ -573,6 +576,7 @@ if (!__b__) {
                     }
                 }
                 if (((string_count("Interceptor", wep) == 1) || (string_count("ommerz", wep) == 1) || (string_count("Manta", wep) == 1) || (string_count("Glands", wep) == 1) || (string_count("Eldar Launch", wep) == 1)) && (ok == 3)) {
+                    /// @type {Asset.GMObject.obj_en_in}
                     bull = instance_create(x, y + lengthdir_y(-30, direction + 90), obj_en_in);
                     bull.direction = self.direction;
                     bull.owner = self.owner;
@@ -732,6 +736,7 @@ if (__b__) {
             }
 
             if ((dist > 64) && (dist < 300)) {
+                /// @type {Asset.GMObject.obj_en_round}
                 bull = instance_create(x, y, obj_en_round);
                 bull.direction = point_direction(x, y, targe.x, targe.y);
                 if (owner == eFACTION.TYRANIDS) {
@@ -949,6 +954,7 @@ if (__b__) {
                     }
                 }
                 if (((string_count("Interceptor", wep) == 1) || (string_count("ommerz", wep) == 1) || (string_count("Manta", wep) == 1) || (string_count("Glands", wep) == 1) || (string_count("Eldar Launch", wep) == 1)) && (ok == 3)) {
+                    /// @type {Asset.GMObject.obj_en_in}
                     bull = instance_create(x, y + lengthdir_y(-30, direction + 90), obj_en_in);
                     bull.direction = self.direction;
                     bull.owner = self.owner;
