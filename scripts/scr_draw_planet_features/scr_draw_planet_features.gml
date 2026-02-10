@@ -1,8 +1,9 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-function FeatureSelected(Feature, system, planet) constructor {
-    feature = Feature;
+/// @param {Struct.NewPlanetFeature|Struct.PlayerForge} _feature
+function FeatureSelected(_feature, _system, _planet) constructor {
+    feature = _feature;
     main_slate = new DataSlateMKTwo();
     exit_sequence = false;
     entrance_sequence = true;
@@ -10,7 +11,7 @@ function FeatureSelected(Feature, system, planet) constructor {
     destroy = false;
     exit_count = 0;
     enter_count = 18;
-    planet_data = new PlanetData(planet, system);
+    planet_data = new PlanetData(_planet, _system);
 
     if (feature.f_type == eP_FEATURES.FORGE) {
         var _worker_caps = [
