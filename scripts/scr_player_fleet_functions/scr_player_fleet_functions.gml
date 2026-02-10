@@ -439,11 +439,6 @@ function player_retreat_from_fleet_combat() {
         with (obj_fleet_select) {
             instance_destroy();
         }
-
-        /*
-    with(obj_ini){scr_dead_marines(1);}
-    with(obj_ini){scr_ini_ship_cleanup();}
-    */
     } catch (_exception) {
         handle_exception(_exception);
     }
