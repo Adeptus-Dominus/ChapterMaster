@@ -4,8 +4,12 @@ owner = 0;
 action = "";
 direction = 180;
 // if (instance_exists(obj_p_ship)){target=instance_nearest(x,y,obj_p_ship);}
+
+/// @type {Asset.GMObject.obj_p_ship}
 target_l = 0;
+/// @type {Asset.GMObject.obj_p_ship}
 target_r = 0;
+/// @type {Asset.GMObject.obj_al_ship|Asset.GMObject.obj_p_ship}
 target = 0;
 hostile = 1;
 lightning = 0;
