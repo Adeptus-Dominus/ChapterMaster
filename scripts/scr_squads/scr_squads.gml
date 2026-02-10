@@ -742,11 +742,7 @@ function game_start_squads() {
             while (last_squad_count == array_length(obj_ini.squads)) {
                 ///keep making tact squads for as long as there are enough tact marines
                 last_squad_count = array_length(obj_ini.squads) + 1;
-                if (last_squad_count % 2 == 0) {
-                    create_squad("scout_squad", company);
-                } else {
-                    create_squad("scout_sniper_squad", company);
-                }
+                create_squad("scout_squad", company);
             }
         }
     }
