@@ -18,6 +18,9 @@ if (selected == 1) {
                 obj_cursor.board = 0;
                 obj_cursor.image_alpha = 1;
             }
+        } else {
+            obj_cursor.board = 0;
+            obj_cursor.image_alpha = 1;
         }
     }
 
@@ -49,18 +52,12 @@ if (boarders > 0) {
 draw_set_color(CM_GREEN_COLOR);
 
 if (maxhp != 0) {
-    var zoom_modifier = obj_controller.zoomed ? 2 : 1;
-    if (shields <= 0) {
-        var hp_percent = $"{(hp / maxhp) * 100}%";
+    var _value = shields <= 0 ? hp / maxhp : shields / maxshields;
 
-        draw_text_transformed(x, y - sprite_height, hp_percent, zoom_modifier, zoom_modifier, 0);
-    }
-
-    if (shields > 0) {
-        draw_set_color(c_white);
-        var shield_percent = $"{(shields / maxshields) * 100}%";
-
-        draw_text_transformed(x, y - sprite_height, shield_percent, zoom_modifier, zoom_modifier, 0);
+    if (obj_controller.zoomed == 0) {
+        draw_text(x, y - sprite_height, string_hash_to_newline(string(floor(_value * 100)) + "%"));
+    } else {
+        draw_text_transformed(x, y - sprite_height, string_hash_to_newline(string(floor(_value * 100)) + "%"), 2, 2, 0);
     }
 }
 

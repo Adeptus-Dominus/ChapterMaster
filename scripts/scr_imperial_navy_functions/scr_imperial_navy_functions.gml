@@ -854,7 +854,7 @@ function navy_load_guardsmen() {
             _new_capacity -= frigate_imp[i];
         }
 
-        if (_new_capacity > 0 && capital_number >= i) {
+        if (_new_capacity > 0 && escort_imp >= i) {
             escort_imp[i] = min(escort_max_imp[i], _new_capacity);
             _new_capacity -= escort_imp[i];
         }

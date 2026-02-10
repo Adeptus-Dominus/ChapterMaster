@@ -106,7 +106,7 @@ function bulk_selection_buttons_setup() {
         {
             text: $"Lens: {col[lens_color]}",
             tooltip: "Lens",
-            tooltip2: "The color of your Astartes' lenss.  Most of the time this will be the visor color.",
+            tooltip2: "The color of your Astartes' lenses.  Most of the time this will be the visor color.",
             cords: [
                 500,
                 462

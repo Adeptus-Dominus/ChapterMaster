@@ -188,7 +188,7 @@ function apothecary_training() {
                 }
             } else {
                 training_apothecary = 0;
-                scr_alert("red", "recruitment", $"No marines available for {obj_ini.role[100][eROLE.APOTHECARY]} traning", 0, 0);
+                scr_alert("red", "recruitment", $"No marines available for {obj_ini.role[100][eROLE.APOTHECARY]} training", 0, 0);
             }
         }
     }
@@ -280,7 +280,7 @@ function librarian_training() {
     var training_points_values = CHAPLAIN_TRAINING_TIERS;
     psyker_points += training_points_values[training_psyker];
 
-    var goal = 60, yep = 0;
+    var goal = 48, yep = 0;
     novice_type = string("{0} Aspirant", obj_ini.role[100][17]);
 
     if (training_psyker > 0) {
@@ -291,7 +291,7 @@ function librarian_training() {
                 random_marine = scr_random_marine(novice_type, 0, {"stat": [["psionic", 2, "more"]]});
                 if (random_marine != "none") {
                     unit = fetch_unit(random_marine);
-                    psyker_points -= 48;
+                    psyker_points -= goal;
                     psyker_aspirant = 0;
 
                     scr_alert("green", "recruitment", unit.name_role() + " has finished training.", 0, 0);
@@ -319,18 +319,20 @@ function librarian_training() {
                 var marine_position = random_marine[1];
                 var marine_company = random_marine[0];
                 var open_slot = find_company_open_slot(0);
-                scr_move_unit_info(marine_company, 0, marine_position, open_slot);
-                unit = fetch_unit([0, open_slot]);
-                unit.update_role(novice_type);
-                unit.update_powers();
-                psyker_aspirant = 1;
+                if (open_slot != -1) {
+                    scr_move_unit_info(marine_company, 0, marine_position, open_slot);
+                    unit = fetch_unit([0, open_slot]);
+                    unit.update_role(novice_type);
+                    unit.update_powers();
+                    psyker_aspirant = 1;
 
-                unit.update_gear("");
-                unit.update_mobility_item("");
-                scr_alert("green", "recruitment", unit.name_role() + " begins training.", 0, 0);
-                with (obj_ini) {
-                    scr_company_order(marine_company);
-                    scr_company_order(0);
+                    unit.update_gear("");
+                    unit.update_mobility_item("");
+                    scr_alert("green", "recruitment", unit.name_role() + " begins training.", 0, 0);
+                    with (obj_ini) {
+                        scr_company_order(marine_company);
+                        scr_company_order(0);
+                    }
                 }
             }
         }
@@ -366,7 +368,7 @@ function techmarine_training() {
                 random_marine = scr_random_marine(novice_type, 0);
                 if (random_marine != "none") {
                     unit = fetch_unit(random_marine);
-                    tech_points -= 360;
+                    tech_points -= _threshold;
 
                     unit.update_role(obj_ini.role[100][16]);
                     unit.role_tag = [
@@ -377,8 +379,6 @@ function techmarine_training() {
                     ];
                     unit.add_exp(30);
 
-                    t = 0;
-                    r = 0;
                     unit.religion = "cult_mechanicus";
                     if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
                         unit.add_trait("mars_trained");

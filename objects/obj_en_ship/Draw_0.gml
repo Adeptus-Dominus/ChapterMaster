@@ -23,67 +23,18 @@ if ((whip > 0) && instance_exists(target)) {
 
 draw_set_color(CM_GREEN_COLOR);
 
-if (class != "Battlekroozer") {
-    draw_self();
-}
 if (class == "Battlekroozer") {
     draw_sprite_ext(sprite_index, 0, x, y, 0.75, 0.75, direction, c_white, 1);
+} else {
+    draw_self();
 }
 
-if (owner != eFACTION.TAU) {
-    if (shields <= 0) {
-        if (obj_controller.zoomed == 0) {
-            if (maxhp != 0) {
-                draw_text(x, y - (sprite_height / 2), string_hash_to_newline(string(floor((hp / maxhp) * 100)) + "%"));
-            }
-        }
-        if (obj_controller.zoomed == 1) {
-            if (maxhp != 0) {
-                draw_text_transformed(x, y - sprite_height, string_hash_to_newline(string(floor((hp / maxhp) * 100)) + "%"), 2, 2, 0);
-            }
-        }
-    }
+if (maxhp != 0) {
+    var _value = shields <= 0 ? hp / maxhp : shields / maxshields;
 
-    if (shields > 0) {
-        draw_set_color(c_white);
-        if (obj_controller.zoomed == 0) {
-            if (maxhp != 0) {
-                draw_text(x, y - (sprite_height / 2), string_hash_to_newline(string(floor((shields / maxshields) * 100)) + "%"));
-            }
-        }
-        if (obj_controller.zoomed == 1) {
-            if (maxhp != 0) {
-                draw_text_transformed(x, y - sprite_height, string_hash_to_newline(string(floor((shields / maxshields) * 100)) + "%"), 2, 2, 0);
-            }
-        }
-    }
-}
-
-if (owner == eFACTION.TAU) {
-    if (shields <= 0) {
-        if (obj_controller.zoomed == 0) {
-            if (maxhp != 0) {
-                draw_text(x, y - (sprite_width / 2), string_hash_to_newline(string(floor((hp / maxhp) * 100)) + "%"));
-            }
-        }
-        if (obj_controller.zoomed == 1) {
-            if (maxhp != 0) {
-                draw_text_transformed(x, y - sprite_width, string_hash_to_newline(string(floor((hp / maxhp) * 100)) + "%"), 2, 2, 0);
-            }
-        }
-    }
-
-    if (shields > 0) {
-        draw_set_color(c_white);
-        if (obj_controller.zoomed == 0) {
-            if (maxhp != 0) {
-                draw_text(x, y - (sprite_width / 2), string_hash_to_newline(string(floor((shields / maxshields) * 100)) + "%"));
-            }
-        }
-        if (obj_controller.zoomed == 1) {
-            if (maxhp != 0) {
-                draw_text_transformed(x, y - sprite_width, string_hash_to_newline(string(floor((shields / maxshields) * 100)) + "%"), 2, 2, 0);
-            }
-        }
+    if (obj_controller.zoomed == 0) {
+        draw_text(x, y - sprite_height, string_hash_to_newline(string(floor(_value * 100)) + "%"));
+    } else {
+        draw_text_transformed(x, y - sprite_height, string_hash_to_newline(string(floor(_value * 100)) + "%"), 2, 2, 0);
     }
 }

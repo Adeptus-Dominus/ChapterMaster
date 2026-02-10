@@ -426,7 +426,7 @@ function Roster() constructor {
         for (var i = 0; i < array_length(ships); i++) {
             if (ships[i].active) {
                 var _id = ships[i].ship_id;
-                var _class = player_ships_class(ship_id);
+                var _class = player_ships_class(_id);
                 if (obj_ini.ship_class[_id] == "Gloriana") {
                     _purge_score += 4;
                 } else if (_class == "capital") {
@@ -443,7 +443,7 @@ function Roster() constructor {
 function PurgeButton(purge_image, xx, yy, purge_type) constructor {
     x1 = xx;
     y1 = yy;
-    x1 = 0;
+    x2 = 0;
     y2 = 0;
     width = 351;
     height = 63;

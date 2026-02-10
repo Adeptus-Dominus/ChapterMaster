@@ -825,7 +825,7 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
                     _selection = options[i].value;
                     audio_play_sound(snd_click, 10, false);
 
-                    if (on_change != undefined) {
+                    if (is_callable(on_change)) {
                         on_change(_selection);
                     }
                 }

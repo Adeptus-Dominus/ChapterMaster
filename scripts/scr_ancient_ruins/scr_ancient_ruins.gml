@@ -141,7 +141,7 @@ function scr_ruins_recover_from_dead() {
             pop.text += $"The strike team returns with remains, but apothecaries report the gene-seed is too contaminated to use; no gene-seed is harvested from the chapter’s fallen. Their legacy lives on through their armaments, we will hold onto their memory.";
         }
     } else {
-        pop.text = "Your strike team locates the site where the previous expedition made their last stand. They find nothing. Your equipment is gone and bodies nowhere to be found, the entire expedition appears to have vanished without a trace; they return empty handed. Something insidious happened. You must find whoever defiled your brothers, and eliminate them, forever.”";
+        pop.text = "Your strike team locates the site where the previous expedition made their last stand. They find nothing. Your equipment is gone and bodies nowhere to be found, the entire expedition appears to have vanished without a trace; they return empty handed. Something insidious happened. You must find whoever defiled your brothers, and eliminate them, forever.";
     }
     unrecovered_items = false;
     recoverable_gene_seed = 0;

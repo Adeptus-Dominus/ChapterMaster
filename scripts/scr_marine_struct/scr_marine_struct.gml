@@ -1551,7 +1551,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static race = function() {
         return obj_ini.race[company][marine_number];
-    }; //get race
+    };
 
     static update_loyalty = function(change_value) {
         loyalty = clamp(loyalty + change_value, 0, 100);
@@ -1877,14 +1877,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static add_exp = function(add_val) {
-        var instace_stat_point_gains = {};
+        var instance_stat_point_gains = {};
         var _powers_learned = 0;
 
         stat_point_exp_marker += add_val;
         experience += add_val;
 
         if (stat_point_exp_marker >= 15) {
-            instace_stat_point_gains = handle_stat_growth(true);
+            instance_stat_point_gains = handle_stat_growth(true);
         }
 
         if (IsSpecialist(SPECIALISTS_LIBRARIANS)) {
@@ -1893,11 +1893,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
         role_refresh();
 
-        return [instace_stat_point_gains, _powers_learned];
-    };
-
-    static race = function() {
-        return obj_ini.race[company][marine_number];
+        return [instance_stat_point_gains, _powers_learned];
     };
 
     //get equipment data methods by deafult they garb all equipment data and return an equipment struct e.g new EquipmentStruct(item_data, core_type,quality="none")

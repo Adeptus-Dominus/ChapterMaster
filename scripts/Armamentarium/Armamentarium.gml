@@ -2,6 +2,9 @@
 #macro ROGUE_TRADER_DISCOUNT 0.8
 #macro SHOP_FORGE_MOD 6
 #macro WAR_PENALTY 0.5
+#macro STC_MAX_LEVEL 6
+#macro STC_POINTS_PER_LEVEL 5000
+#macro FORGE_QUEUE_MAX 20
 
 /// @desc Represents a single item within the Armamentarium catalog.
 /// @param {string} _name Name of the item.
@@ -61,7 +64,7 @@ function ShopItem(_name) constructor {
     /// @desc Centralized calculation for current costs.
     /// @param {bool} _is_forge Whether we are in forge mode.
     /// @param {real} _forge_mod The STC/Hangar modifier.
-    static calculate_costs = function(_is_forge, _forge_mod) {
+    static calculate_costs = function(_is_forge, _forge_mod, _known_techs) {
         if (global.cheat_debug) {
             buy_cost = 0;
             forge_cost = 0;
@@ -71,7 +74,6 @@ function ShopItem(_name) constructor {
 
         if (_is_forge) {
             var _missing_techs = [];
-            var _known_techs = obj_controller.technologies_known;
 
             for (var j = 0, l = array_length(requires_to_forge); j < l; j++) {
                 var _tech = requires_to_forge[j];
@@ -188,14 +190,18 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
     };
 
     static CATEGORIES = [
-        "wargear",
-        "vehicles",
-        "ships"
-    ];
-    static DISPLAY_NAMES = [
-        "Wargear",
-        "Vehicles",
-        "Ships"
+        {
+            key: "wargear",
+            label: "Wargear",
+        },
+        {
+            key: "vehicles",
+            label: "Vehicles",
+        },
+        {
+            key: "ships",
+            label: "Ships",
+        }
     ];
 
     advisor_eta_text = "";
@@ -216,10 +222,10 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
 
         var _column_y = _y + LAYOUT.HEADER_HEIGHT;
         for (var i = 0; i < array_length(CATEGORIES); i++) {
-            var _cat_name = CATEGORIES[i];
+            var _cat_name = CATEGORIES[i].key;
             var _draw_x = _x + (i * LAYOUT.COLUMN_WIDTH);
 
-            _draw_research_column(_cat_name, DISPLAY_NAMES[i], _draw_x, _column_y);
+            _draw_research_column(_cat_name, CATEGORIES[i].label, _draw_x, _column_y);
         }
     };
 
@@ -234,7 +240,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
         }
 
         var _level = variable_instance_get(controller, $"stc_{_focus}");
-        var _remaining = (5000 * (_level + 1)) - controller.stc_research[$ _focus];
+        var _remaining = (STC_POINTS_PER_LEVEL * (_level + 1)) - controller.stc_research[$ _focus];
         var _months = ceil(_remaining / _points_per_turn);
 
         advisor_eta_text = $"Research: Next {_focus} breakthrough in {_months} months.";
@@ -283,7 +289,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
 
         draw_sprite_ext(spr_research_bar, 0, _bx, _by, 1, LAYOUT.BAR_SPRITE_SCALE, 0, c_white, 1);
 
-        for (var f = _level; f < 6; f++) {
+        for (var f = _level; f < STC_MAX_LEVEL; f++) {
             draw_sprite_ext(spr_research_bar, 1, _bx, _by + (f * LAYOUT.ROW_SPACING), 1, LAYOUT.BAR_EMPTY_SCALE, 0, c_white, 1);
         }
 
@@ -376,13 +382,13 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
     static _identify_fragment = function() {
         var _available = [];
 
-        if (controller.stc_wargear_un > 0 && controller.stc_wargear < 6) {
+        if (controller.stc_wargear_un > 0 && controller.stc_wargear < STC_MAX_LEVEL) {
             array_push(_available, "wargear");
         }
-        if (controller.stc_vehicles_un > 0 && controller.stc_vehicles < 6) {
+        if (controller.stc_vehicles_un > 0 && controller.stc_vehicles < STC_MAX_LEVEL) {
             array_push(_available, "vehicles");
         }
-        if (controller.stc_ships_un > 0 && controller.stc_ships < 6) {
+        if (controller.stc_ships_un > 0 && controller.stc_ships < STC_MAX_LEVEL) {
             array_push(_available, "ships");
         }
 
@@ -407,7 +413,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
 /// @returns {Struct.Armamentarium}
 function Armamentarium(_controller) constructor {
     controller = _controller;
-    
+
     // --- UI State ---
     shop_type = "weapons";
     is_in_forge = false;
@@ -482,15 +488,23 @@ function Armamentarium(_controller) constructor {
     category_dropdown = new UIDropdown(_cat_options, 200);
 
     _cat_options = [];
-    var _roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
-    
+    var _roman = [
+        "I",
+        "II",
+        "III",
+        "IV",
+        "V",
+        "VI",
+        "VII",
+        "VIII",
+        "IX",
+        "X"
+    ];
+
     for (var i = 0; i < obj_ini.companies; i++) {
-        array_push(_cat_options, {
-            label: $"{_roman[i]} Company",
-            value: i + 1
-        });
+        array_push(_cat_options, {label: $"{_roman[i]} Company", value: i + 1});
     }
-    
+
     company_dropdown = new UIDropdown(_cat_options, 180);
 
     // --- Data Storage ---
@@ -621,14 +635,12 @@ function Armamentarium(_controller) constructor {
             _item.stocked_mc = scr_item_count(_item.name, "master_crafted");
 
             _item.update_best_seller(_item.sellers, faction_modifiers, discount_rogue_trader);
-            _item.calculate_costs(is_in_forge, forge_cost_mod);
+            _item.calculate_costs(is_in_forge, forge_cost_mod, controller.technologies_known);
 
-            var _is_visible = _item.stocked > 0;
+            var _is_visible = (_item.buyable || _item.stocked > 0) || global.cheat_debug;
 
             if (is_in_forge) {
                 _is_visible = _item.forgable || global.cheat_debug;
-            } else {
-                _is_visible = (_item.buyable || _item.stocked > 0) || global.cheat_debug;
             }
 
             if (shop_type == "technologies" && array_contains(controller.technologies_known, _item.name)) {
@@ -804,7 +816,7 @@ function Armamentarium(_controller) constructor {
         }
 
         var _sold_count = min(_item.stocked, _count);
-        var _sell_price = (_item.value * _modifier) * _sold_count;
+        var _sell_price = round((_item.value * _modifier) * _sold_count);
 
         scr_add_item(_item.name, -_sold_count, "standard");
         _item.stocked -= _sold_count;
@@ -990,7 +1002,7 @@ function Armamentarium(_controller) constructor {
 
             if (forge_button.is_clicked) {
                 var _queue = controller.specialist_point_handler.forge_queue;
-                if (array_length(_queue) < 20) {
+                if (array_length(_queue) < FORGE_QUEUE_MAX) {
                     array_push(_queue, {item: _item, count: _count, forge_points: _cost, ordered: controller.turn});
                 } else {
                     audio_play_sound(snd_error, 10, false);
@@ -1139,12 +1151,10 @@ function Armamentarium(_controller) constructor {
                 continue;
             }
 
-            if (array_length(_unlocks) > 0) {
-                array_sort(_unlocks, true);
+            array_sort(_unlocks, true);
 
-                var _unlock_text = "\n\nRequired for:\n- " + string_join_ext("\n- ", _unlocks);
-                _item.item_tooltip += _unlock_text;
-            }
+            var _unlock_text = "\n\nRequired for:\n- " + string_join_ext("\n- ", _unlocks);
+            _item.item_tooltip += _unlock_text;
         }
     };
 
