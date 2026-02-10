@@ -4,7 +4,6 @@
 function scr_lines(_breakpoint, _str) {
     var _indexed = _breakpoint + 1;
     var _index = _indexed;
-    var _loop = 1;
     var _string = _str;
 
     var i;
@@ -13,9 +12,8 @@ function scr_lines(_breakpoint, _str) {
         return "Error: breakpoint must be larger than 0";
     }
 
-    while (_loop == 1) {
+    while (true) {
         if (_index > string_length(_string)) {
-            _loop = 0;
             break;
         }
         for (i = _index; string_char_at(_string, i) != " "; i -= 1) {

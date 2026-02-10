@@ -34,7 +34,7 @@ function navy_orbiting_planet_end_turn_action() {
 
         if (trade_goods == "building_ships") {
             var _forge = scr_get_planet_with_type(orbiting, "Forge");
-            if (_forge == -1 || orbiting.p_owner[i] != eFACTION.MECHANICUS) {
+            if (_forge == -1 || orbiting.p_owner[_forge] != eFACTION.MECHANICUS) {
                 trade_goods = "";
             } else {
                 end_sequence_finished = true;
@@ -387,7 +387,7 @@ function navy_hunt_player_assets() {
                         with (orbiting) {
                             y -= 20000;
                         }
-                        goto = instance_nearest(x + lengthdir_x(diss, dirr), y + lengthdir_x(diss, dirr), obj_star);
+                        goto = instance_nearest(x + lengthdir_x(diss, dirr), y + lengthdir_y(diss, dirr), obj_star);
                         with (orbiting) {
                             y += 20000;
                         }
@@ -854,7 +854,7 @@ function navy_load_guardsmen() {
             _new_capacity -= frigate_imp[i];
         }
 
-        if (_new_capacity > 0 && escort_imp >= i) {
+        if (_new_capacity > 0 && escort_number >= i) {
             escort_imp[i] = min(escort_max_imp[i], _new_capacity);
             _new_capacity -= escort_imp[i];
         }

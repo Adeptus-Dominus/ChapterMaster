@@ -705,6 +705,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
 /// @desc A modular UI dropdown component for selecting options from a list.
 /// @param {Array<Struct>} _options Array of {label, value} structs.
 /// @param {real} _width Width of the dropdown.
+/// @param {Function} _on_change Optional callback invoked with the new value on selection change.
 /// @returns {Struct.UIDropdown}
 function UIDropdown(_options, _width = 180, _on_change = undefined) constructor {
     options = _options;

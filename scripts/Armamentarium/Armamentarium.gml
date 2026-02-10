@@ -501,7 +501,9 @@ function Armamentarium(_controller) constructor {
         "X"
     ];
 
-    for (var i = 0; i < obj_ini.companies; i++) {
+    var _roman_length = array_length(_roman);
+
+    for (var i = 0; i < min(obj_ini.companies, _roman_length); i++) {
         array_push(_cat_options, {label: $"{_roman[i]} Company", value: i + 1});
     }
 
@@ -1024,7 +1026,7 @@ function Armamentarium(_controller) constructor {
 
         var _can_sell = !array_contains(["ships", "vehicles"], shop_type) && _item.stocked > 0;
 
-        sell_button.tooltip_text = $"Sell for {_item.value * SHOP_SELL_MOD} (x{SHOP_SELL_MOD} of value)";
+        sell_button.tooltip_text = $"Sell for {round(_item.value * SHOP_SELL_MOD)} (x{SHOP_SELL_MOD} of value)";
         sell_button.draw(1480, _y + 2, _can_sell);
 
         if (sell_button.is_clicked) {

@@ -312,8 +312,6 @@ function scr_purge_world(star, planet, action_type, action_score) {
         var aroll = roll_dice_chapter(1, 100, "high");
         var chance = 100;
         // var siz_penalty=0;
-        var o = 0;
-        var yep = 0;
 
         // Disposition
         aroll += floor(star.dispo[planet] / 10);
