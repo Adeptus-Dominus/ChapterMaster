@@ -406,13 +406,13 @@ if (!__b__) {
                     if (string_count("Plasma", wep) == 1) {
                         bull.sprite_index = spr_ground_plasma;
                         bull.image_xscale = 2;
-                        bullimage_yscale = 2;
+                        bull.image_yscale = 2;
                         bull.speed = 15;
                     }
                     if (string_count("Pyro-Acid", wep) == 1) {
                         bull.sprite_index = spr_glob;
                         bull.image_xscale = 2;
-                        bullimage_yscale = 2;
+                        bull.image_yscale = 2;
                     }
                     if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.ELDAR)) {
                         bull.sprite_index = spr_ground_las;
@@ -747,13 +747,13 @@ if (__b__) {
                     if (string_count("Plasma", wep) == 1) {
                         bull.sprite_index = spr_ground_plasma;
                         bull.image_xscale = 2;
-                        bullimage_yscale = 2;
+                        bull.image_yscale = 2;
                         bull.speed = 15;
                     }
                     if (string_count("Pyro-Acid", wep) == 1) {
                         bull.sprite_index = spr_glob;
                         bull.image_xscale = 2;
-                        bullimage_yscale = 2;
+                        bull.image_yscale = 2;
                     }
                     if ((string_count("Weapons", wep) == 1) && (owner == eFACTION.ELDAR)) {
                         bull.sprite_index = spr_ground_las;
