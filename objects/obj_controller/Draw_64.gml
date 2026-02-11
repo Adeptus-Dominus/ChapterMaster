@@ -119,6 +119,8 @@ if (!zoomed && !zui) {
 
     if (sprite_exists(global.chapter_icon.sprite)) {
         draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
+    } else {
+        global.logger.error($"{global.chapter_icon.name} chapter icon not found in any icon directory. Chapter icon will not render.");
     }
 
     draw_set_color(CM_GREEN_COLOR);
