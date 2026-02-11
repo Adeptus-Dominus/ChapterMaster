@@ -9,7 +9,9 @@ cus = false;
 
 var sprx = 728, spry = 83, sprw = 135, sprh = 135;
 
-draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
+if (sprite_exists(global.chapter_icon.sprite)) {
+    draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
+}
 
 draw_set_color(c_black);
 draw_set_alpha(fade / faded);
