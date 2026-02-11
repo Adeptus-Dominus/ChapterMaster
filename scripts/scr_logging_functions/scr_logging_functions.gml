@@ -210,7 +210,7 @@ function clean_stacktrace_line(_line_string) {
         _code_snippet = string_delete(_str, 1, _code_pos + 3);
         _code_snippet = string_trim(_code_snippet);
         // Remove the code from our working string
-        _str = string_copy(_str, 1, _code_pos); 
+        _str = string_copy(_str, 1, _code_pos);
     }
 
     // 2. Extract Line Number

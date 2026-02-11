@@ -153,7 +153,7 @@ function destroy_vehicle(co, num) {
         obj_ini.veh_lid[co][num] = -1;
         obj_ini.veh_wid[co][num] = 0;
     } catch (_exception) {
-        global.logger.critical($"Company: {co}, Index: {num}")
+        global.logger.critical($"Company: {co}, Index: {num}");
         handle_exception(_exception);
     }
 }

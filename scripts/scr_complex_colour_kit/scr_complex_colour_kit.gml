@@ -2,15 +2,15 @@ function coord_relevative_positions(coords, xx, yy) {
     return [coords[0] + xx, coords[1] + yy, coords[2] + xx, coords[3] + yy];
 }
 
-function move_location_relative(coords, relative_move_x, relative_move_y){
-	for (var i=0;i<array_length(coords);i++){
-		if (i%2 == 0 ){
-			coords[i] += relative_move_x;
-		} else {
-			coords[i] += relative_move_y;
-		}
-	}
-	return coords;
+function move_location_relative(coords, relative_move_x, relative_move_y) {
+    for (var i = 0; i < array_length(coords); i++) {
+        if (i % 2 == 0) {
+            coords[i] += relative_move_x;
+        } else {
+            coords[i] += relative_move_y;
+        }
+    }
+    return coords;
 }
 
 function ColourItem(_xx, _yy) constructor {
