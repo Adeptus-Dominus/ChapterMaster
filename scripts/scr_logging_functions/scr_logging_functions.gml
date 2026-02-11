@@ -116,7 +116,14 @@ function handle_error(_header, _message, _stacktrace = "", _critical = false, _r
 function handle_exception(_exception, custom_title = STR_ERROR_MESSAGE_HEAD, critical = false, error_marker = "") {
     var _header = critical ? STR_ERROR_MESSAGE_HEAD2 : custom_title;
     var _message = _exception.longMessage;
-    var _stacktrace = array_to_string_list(_exception.stacktrace);
+    var _stacktrace = _exception.stacktrace;
+
+    for (var i = 0; i < array_length(_stacktrace); i++) {
+        _stacktrace[i] = clean_stacktrace_line(_stacktrace[i]);
+    }
+
+    _stacktrace = array_to_string_list(_stacktrace);
+
     var _critical = critical ? "CRASH! " : "";
     var _build_date = global.build_date == "unknown build" ? "" : $"/{global.build_date}";
     var _problem_line = clean_stacktrace_line(_exception.stacktrace[0]);
@@ -182,19 +189,58 @@ function format_time(_time) {
     return string(_time);
 }
 
-/// @description Cleans up a stack trace line string by removing the "anon@number@", "gml_Object_" and "gml_Script_".
-/// @param {string} _stacktrace_line - The stack trace line string to be cleaned.
-/// @returns {string}
-function clean_stacktrace_line(_stacktrace_line) {
-    _stacktrace_line = string_replace(_stacktrace_line, "gml_Object_", "");
-    _stacktrace_line = string_replace(_stacktrace_line, "gml_Script_", "");
+function clean_callstack_prefixes(_string) {
+    _string = string_replace(_string, "gml_Object_", "");
+    _string = string_replace(_string, "gml_Script_", "");
 
-    if (string_count("@", _stacktrace_line) == 2) {
-        var split_parts = string_split(_stacktrace_line, "@");
-        _stacktrace_line = split_parts[0] + split_parts[2];
+    return _string;
+}
+
+/// @desc Reformats: "Location > L[Num] > Method > Code Snippet"
+/// @param {string} _line_string The raw string from debug_get_callstack()
+/// @returns {string}
+function clean_stacktrace_line(_line_string) {
+    var _str = _line_string;
+    var _code_snippet = "";
+
+    // 1. Extract the Source Code suffix (the part after " - ")
+    var _code_pos = string_pos(") - ", _str);
+    if (_code_pos > 0) {
+        // Grab everything after the " - "
+        _code_snippet = string_delete(_str, 1, _code_pos + 3);
+        _code_snippet = string_trim(_code_snippet);
+        // Remove the code from our working string
+        _str = string_copy(_str, 1, _code_pos); 
     }
 
-    return _stacktrace_line;
+    // 2. Extract Line Number
+    var _line_num = "";
+    var _open_paren = string_last_pos("(line ", _str);
+    if (_open_paren > 0) {
+        _line_num = string_digits(string_copy(_str, _open_paren, string_length(_str)));
+        _str = string_trim(string_copy(_str, 1, _open_paren - 1));
+    }
+
+    // 3. Cleanup GML Prefixes
+    _str = clean_callstack_prefixes(_str);
+
+    // 4. Build the core string
+    var _final_out = "";
+    if (string_contains("@", _str)) {
+        var _parts = string_split(_str, "@");
+        var _method_name = _parts[0];
+        var _location = _parts[array_length(_parts) - 1];
+        _final_out = $"{_location} >> L{_line_num} > {_method_name}";
+    } else {
+        _final_out = $"{_str} >> L{_line_num}";
+    }
+
+    // 5. Append the Code Snippet if we found one
+    if (_code_snippet != "") {
+        _final_out += $" >> {_code_snippet}";
+    }
+
+    return _final_out;
 }
 
 /// @description Formats the GM constant to a readable OS name.
@@ -254,7 +300,7 @@ function Logger() constructor {
         }
 
         var _raw = _stack[3];
-        var _clean = clean_stacktrace_line(_raw);
+        var _clean = clean_callstack_prefixes(_raw);
 
         return _clean;
     };
