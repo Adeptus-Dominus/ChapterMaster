@@ -66,6 +66,10 @@ function __init_external() {
         sprite: global.chapter_icons_map[? "unknown"],
     };
 
+    if (!sprite_exists(global.chapter_icon.sprite)) {
+        global.logger.error("'unknown' chapter icon not found in any icon directory. Chapter icon will not render.");
+    }
+
     global.build_date = "unknown build";
     global.game_version = "unknown version";
     global.commit_hash = "unknown hash";

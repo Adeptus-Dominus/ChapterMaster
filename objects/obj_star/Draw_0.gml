@@ -85,6 +85,8 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
             var faction_sprite = global.chapter_icon.sprite;
             if (sprite_exists(faction_sprite)) {
                 draw_sprite_ext(faction_sprite, 0, xx + (panel_width / 2) - 30, yy + 30, 0.2, 0.2, 0, c_white, 1);
+            } else {
+                global.logger.error($"{global.chapter_icon.name} chapter icon not found in any icon directory. Chapter icon will not render.");
             }
             //context.set_vertical_gradient(main_color, right_pauldron);
             //draw_text_ext_transformed_color(gx + xoffset,gy + yoffset,text,sep,owner.width,xscale,yscale,angle ,col1, col2, col3, col4, alpha);

@@ -71,6 +71,8 @@ try {
         var sprx = 436, spry = 74, sprw = 128, sprh = 128;
         if (sprite_exists(global.chapter_icon.sprite)) {
             draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
+        } else {
+            global.logger.error($"{global.chapter_icon.name} chapter icon not found in any icon directory. Chapter icon will not render.");
         }
 
         obj_cursor.image_index = 0;
