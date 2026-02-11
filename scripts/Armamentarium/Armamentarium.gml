@@ -25,6 +25,7 @@ function ShopItem(_name) constructor {
     buy_cost_mod = 1;
     best_seller = "unknown";
     sellers = ["mechanicus"];
+    request_duration = 0;
 
     forge_cost = 0;
     forgable = true;
@@ -582,6 +583,7 @@ function Armamentarium(_controller) constructor {
                 _item.display_name = _raw[$ "display_name"] ?? _name;
                 _item.value = _raw[$ "value"] ?? _item.value;
                 _item.sellers = _raw[$ "sellers"] ?? _item.sellers;
+                _item.request_duration = _raw[$ "request_duration"] ?? _item.request_duration;
 
                 _item.buyable = (_item.value == 0 || array_length(_item.sellers) == 0) ? false : (_raw[$ "buyable"] ?? _item.buyable);
                 _item.forgable = (_item.value == 0) ? false : (_raw[$ "forgable"] ?? _item.forgable);
@@ -838,8 +840,7 @@ function Armamentarium(_controller) constructor {
 
         // 1. Warships
         if (shop_type == "ships") {
-            var _duration = (_item.name == "Battle Barge") ? 30 : 10;
-            add_event({e_id: "ship_construction", ship_class: _item.name, duration: _duration});
+            add_event({e_id: "ship_construction", ship_class: _item.name, duration: _item.request_duration});
             return;
         }
 
