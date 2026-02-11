@@ -133,9 +133,7 @@ deserialize = function(save_data) {
     }
     if (struct_exists(save_data, "cargo_data")) {
         variable_struct_set(self, "cargo_data", save_data.cargo_data);
-        global.logger.debug("cargo_data");
         if (fleet_has_cargo("ork_warboss")) {
-            global.logger.debug("warboss_fleet");
             var _boss = new NewPlanetFeature(eP_FEATURES.ORKWARBOSS);
             _boss.load_json_data(cargo_data.ork_warboss);
             cargo_data.ork_warboss = _boss;
