@@ -21,6 +21,7 @@ jobs:
       COMPILER: ${{ github.event.inputs.compiler || 'YYC' }}
     outputs:
       needed: ${{ steps.commit_check.outputs.needed }}  # Output for skipping
+      last_tag: ${{ steps.commit_check.outputs.last_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,6 +34,9 @@ jobs:
         run: |
           # default to no build
           echo "needed=false" >> $GITHUB_OUTPUT
+
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          echo "last_tag=$LAST_TAG" >> $GITHUB_OUTPUT # Export it
 
           # manual override
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -95,6 +99,7 @@ jobs:
     outputs:
       tag_name: ${{ steps.tag_info.outputs.tag_name }}
       build_date: ${{ steps.tag_info.outputs.build_date }}
+      from_tag: ${{ needs.build_needed.outputs.last_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -214,6 +219,8 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v6.1.0
         with:
           mode: "HYBRID"
+          fromTag: ${{ needs.prepare_release.outputs.from_tag }}
+          toTag: ${{ needs.prepare_release.outputs.tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
