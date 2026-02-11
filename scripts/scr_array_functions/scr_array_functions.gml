@@ -133,7 +133,7 @@ function array_to_string_list(_array, _pop_last = false) {
     }
 
     for (var i = 0; i < array_length(_array); i++) {
-        _string_list += string(_array[i]);
+        _string_list += $"- {_array[i]}";
         if (i < array_length(_array) - 1) {
             _string_list += "\n";
         }
