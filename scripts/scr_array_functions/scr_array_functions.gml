@@ -5,7 +5,7 @@
 /// @returns {Real}
 function array_get_iteration_length(_array, _offset, _length) {
     var _array_size = array_length(_array);
-    
+
     if (_offset >= _array_size || _offset < 0) {
         return 0;
     }
@@ -34,7 +34,7 @@ function array_sum(_array, _start_value = 0, _offset = 0, _length = 0) {
     }
 
     var _actual_length = array_get_iteration_length(_array, _offset, _length);
-    
+
     if (_actual_length <= 0) {
         return _start_value;
     }

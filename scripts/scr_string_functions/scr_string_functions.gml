@@ -446,5 +446,5 @@ function string_interpolate_from_struct(interpolate_string, data) {
 }
 
 function string_contains(_substring, _string) {
-    return string_count(_substring, _string) > 0
+    return string_count(_substring, _string) > 0;
 }
