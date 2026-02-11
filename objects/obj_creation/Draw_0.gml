@@ -69,11 +69,8 @@ try {
         draw_set_color(0);
 
         var sprx = 436, spry = 74, sprw = 128, sprh = 128;
-        if (global.chapter_icon.sprite != -1) {
+        if (sprite_exists(global.chapter_icon.sprite)) {
             draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
-        } else {
-            // red (?)
-            draw_sprite_stretched(global.chapter_icons_map[? "unknown"], 0, sprx, spry, sprw, sprh);
         }
 
         obj_cursor.image_index = 0;

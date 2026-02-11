@@ -32,12 +32,6 @@ function __init_external() {
     #macro PATH_INCLUDED_ICONS working_directory + "\\images\\creation\\customicons\\"
     #macro PATH_LAST_MESSAGES "Logs/last_messages.log"
 
-    global.chapter_icon = {
-        // sprite filename, without the extension
-        name: "",
-        /// the sprite id once loaded from file
-        sprite: -1,
-    };
     global.chapter_icons_map = ds_map_create();
 
     var _icon_paths = [
@@ -64,6 +58,13 @@ function __init_external() {
 
     global.chapter_icons_array = ds_map_keys_to_array(global.chapter_icons_map);
     array_sort(global.chapter_icons_array, true);
+
+    global.chapter_icon = {
+        // sprite filename, without the extension
+        name: "unknown",
+        /// the sprite id once loaded from file
+        sprite: global.chapter_icons_map[? "unknown"],
+    };
 
     global.build_date = "unknown build";
     global.game_version = "unknown version";
