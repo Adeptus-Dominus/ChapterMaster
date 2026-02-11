@@ -35,6 +35,7 @@ jobs:
           # default to no build
           echo "needed=false" >> $GITHUB_OUTPUT
 
+          # Use 2>/dev/null to suppress error if no tags exist
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
           echo "last_tag=$LAST_TAG" >> $GITHUB_OUTPUT # Export it
 
@@ -46,8 +47,6 @@ jobs:
           fi
 
           # determine commit range since last tag
-          # Use 2>/dev/null to suppress error if no tags exist
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
           if [ -n "$LAST_TAG" ]; then
             RANGE="$LAST_TAG..HEAD"
             echo "Checking commits in range: $RANGE (since last tag '$LAST_TAG')"
@@ -220,7 +219,6 @@ jobs:
         with:
           mode: "HYBRID"
           fromTag: ${{ needs.prepare_release.outputs.from_tag }}
-          toTag: ${{ needs.prepare_release.outputs.tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
