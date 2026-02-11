@@ -79,8 +79,6 @@ cooldown = 20;
 all_good = 0;
 prev_selected = 0;
 
-new_target = 0;
-
 if (instance_exists(obj_controller)) {
     obj_controller.cooldown = 8000;
 }

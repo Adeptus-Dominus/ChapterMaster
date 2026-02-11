@@ -575,7 +575,7 @@ function allow_governor_successor() {
         _text_last = "Fortunately you already have good relations with the new governor";
     }
 
-    scr_event_log("", "Planetary Governor of {p_data.name()} assassinated.  The next in line takes over.", new_target.name);
+    scr_event_log("", $"Planetary Governor of {p_data.name()} assassinated.  The next in line takes over.");
     text = $"The next in line for rule of {p_data.name()} has taken over their rightful position of Planetary Governor. {_text_last}";
     reset_popup_options();
     with (obj_ground_mission) {
