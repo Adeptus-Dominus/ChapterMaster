@@ -12,13 +12,15 @@ function json_to_gamemaker(_json_path, _func) {
             file_buffer = buffer_load(_json_path);
 
             if (file_buffer == -1) {
-                throw "Could not open file";
+                throw $"Could not open {_json_path} file";
             }
 
             var _json_string = buffer_read(file_buffer, buffer_string);
             var _parsed_json = _func(_json_string);
 
             return _parsed_json;
+        } else {
+            throw $"File {_json_path} not found!";
         }
     } catch (_exception) {
         handle_exception(_exception);
