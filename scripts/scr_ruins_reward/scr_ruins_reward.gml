@@ -1,265 +1,236 @@
-function scr_ruins_reward(star_system, planet, _ruins) {
-    var ruins_type = _ruins.ruins_race;
+enum eLOOT_TYPE {
+    REQUISITION,
+    GEAR,
+    ARTIFACT,
+    STC,
+    WILD_CARD,
+    BUNKER,
+    FORTRESS,
+    STARSHIP,
+    GENE_SEED,
+}
 
-    //if there is gear from previoulsy killed marines retrieve instead of a standard reward
-    if (_ruins.unrecovered_items != false) {
-        _ruins.recover_from_dead();
-    } else {
-        // star_system: world object
-        // planet: planet
-        // ruins_type: ruins_type
-        var dice = roll_dice_chapter(1, 100, "high");
-        var loot = "";
+/// @desc Represents a single loot pool from JSON.
+/// @param {Struct} _data Raw struct from json_parse.
+function LootPool(_data) constructor {
+    options = [];
+    min_val = 0;
+    max_val = 0;
 
-        if ((dice > 0) && (dice <= 35)) {
-            loot = "req";
-        } //
-        if ((dice > 35) && (dice <= 50)) {
-            loot = "gear";
-        } //
-        if ((dice > 50) && (dice <= 60)) {
-            loot = "artifact";
-        } //
-        if ((dice > 60) && (dice <= 70)) {
-            loot = "stc";
-        } //
-        if ((dice > 70) && (dice <= 85)) {
-            loot = "wild_card";
-        } //
-        if ((dice > 85) && (dice <= 97)) {
-            loot = "bunker";
-        } //
-        if ((dice > 97) && (dice <= 99)) {
-            loot = "fortress";
-        } //
-        if ((dice > 99) && (dice <= 150)) {
-            loot = "starship";
-        } //
+    if (is_struct(_data)) {
+        options = _data[$ "options"] ?? options;
+        min_val = _data[$ "min"] ?? min_val;
+        max_val = _data[$ "max"] ?? max_val;
+    }
 
-        if (loot == "wild_card") {
-            if (ruins_type == 1) {
-                loot = "gene_seed";
-            } //
-            if (ruins_type == 2) {
-                loot = "req";
-            } //
-            if (ruins_type == 6) {
-                loot = "gear";
-            } //
-            if (ruins_type >= 10) {
-                loot = "req";
-            } //
+    /// @desc Rolls for an item and quantity.
+    static roll = function() {
+        var _count = irandom_range(min_val, max_val);
+        if (_count <= 0 || array_length(options) == 0) {
+            return undefined;
         }
 
-        var _chosen_ship = -1;
+        return {name: options[irandom(array_length(options) - 1)], count: _count};
+    };
+}
 
-        var _fleet = scr_orbiting_player_fleet(star_system);
+/// @desc Processes rewards for exploring ancient ruins.
+/// @param {Asset.GMObject.obj_star} _star_system The star system object.
+/// @param {Real} _pid_idx Planet index within the system.
+/// @param {Struct.NewPlanetFeature} _ruins The ruins feature struct.
+function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
+    // 1. Guard Clause: Logic exit if items need recovery
+    if (_ruins.unrecovered_items) {
+        _ruins.recover_from_dead();
+        return;
+    }
+
+    /// @desc Internal logic for handling Gear distribution via JSON data.
+    /// @param {Real} _race The ID of the ruins race.
+    /// @param {Asset.GMObject.obj_popup} _popup The popup instance to populate.
+    static _process_gear_reward = function(_race, _popup) {
+        static _loot_registry = undefined;
+
+        // Lazy-load JSON from disk once
+        if (_loot_registry == undefined) {
+            _loot_registry = {};
+            var _path = working_directory + "\\data\\ruins_loot.json";
+            var _raw_json = json_to_gamemaker(_path, json_parse);
+
+            var _keys = struct_get_names(_raw_json);
+            for (var i = 0, l = array_length(_keys); i < l; i++) {
+                var _key = _keys[i];
+                var _raw_pools = _raw_json[$ _key];
+                var _pools = [];
+
+                if (is_array(_raw_pools)) {
+                    for (var i2 = 0, l2 = array_length(_raw_pools); i2 < l2; i2++) {
+                        array_push(_pools, new LootPool(_raw_pools[i2]));
+                    }
+                }
+
+                _loot_registry[$ _key] = _pools;
+            }
+        }
+
+        // Handle the "Race 10 or higher" legacy logic
+        var _key = (_race >= 10) ? "10" : string(_race);
+        var _pools = _loot_registry[$ _key];
+
+        if (_pools == undefined || array_length(_pools) == 0) {
+            _popup.title = "Ancient Ruins: Empty";
+            _popup.text = "The chambers within these ruins were empty, or perhaps scavenged eons ago.";
+            return;
+        }
+
+        var _display_parts = [];
+        var _pool_count = array_length(_pools);
+
+        for (var i = 0; i < _pool_count; i++) {
+            /// @type {Struct.LootPool}
+            var _pool = _pools[i];
+            var _result = _pool.roll();
+
+            if (_result != undefined) {
+                scr_add_item(_result.name, _result.count);
+                array_push(_display_parts, $"{_result.count}x {_result.name}");
+            }
+        }
+
+        _popup.title = "Ancient Ruins: Gear";
+        var _loot_str = (array_length(_display_parts) > 0) ? string_join_ext(", ", _display_parts) : "nothing of immediate value";
+
+        _popup.text = $"My lord, your brothers have found sealed chamber in these ruins. It bears symbols of one of the ancient legions. After your tech-marines managed to open the chamber, we've found a number of relics that can be brought back to service. We recovered: {_loot_str}. These relics have been added to the Armamentarium.";
+    };
+
+    /// @desc Internal logic for handling Artifact retrieval.
+    /// @param {Asset.GMObject.obj_popup} _popup
+    static _process_artifact_reward = function(_star, _pidx, _popup) {
+        var _chosen_ship = -1;
+        var _fleet = scr_orbiting_player_fleet(_star);
+
         if (instance_exists(_fleet)) {
             var _ships = fleet_full_ship_array(_fleet);
-            if (array_length(_ships)) {
+            if (array_length(_ships) > 0) {
                 _chosen_ship = _ships[0];
             }
         }
-        scr_event_log("", $"The Ancient Ruins on {planet_numeral_name(planet, star_system)} has been explored.", star_system.name);
 
-        // loot="artifact";
-
-        if (loot == "req") {
-            // Requisition
-            var reqi = round(random_range(30, 60) + 1) * 10;
-            obj_controller.requisition += reqi;
-
-            var pop = instance_create(0, 0, obj_popup);
-            pop.image = "ancient_ruins";
-            pop.title = "Ancient Ruins: Resources";
-            pop.text = "My lord, your battle brothers have located several precious minerals and supplies within the ancient ruins.  Everything was taken and returned to the ship, granting " + string(reqi) + " Requisition.";
-        } else if (loot == "artifact") {
-            if (_chosen_ship > -1) {
-                var last_artifact = scr_add_artifact("random", "random", 4, planet, _chosen_ship + 500);
-
-                scr_event_log("", "Artifact recovered from Ancient Ruins.");
-                var pop = instance_create(0, 0, obj_popup);
-                pop.image = "ancient_ruins";
-                pop.title = "Ancient Ruins: Artifact";
-                pop.text = $"An Artifact has been found within the ancient ruins.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought to the Lexicanum and identified posthaste.";
-            } else {
-                var pop = instance_create(0, 0, obj_popup);
-                pop.image = "ancient_ruins";
-                pop.title = "Ancient Ruins: Artifact Lost";
-                pop.text = "An Artifact was discovered within the ancient ruins, but no suitable ship was available for its retrieval. The sacred object remains unclaimed.";
-            }
-            with (obj_star_select) {
-                instance_destroy();
-            }
-            with (obj_fleet_select) {
-                instance_destroy();
-            }
-        } else if (loot == "stc") {
-            scr_add_stc_fragment(); // STC here
-            var pop = instance_create(0, 0, obj_popup);
-            pop.image = "ancient_ruins";
-            pop.title = "Ancient Ruins: STC Fragment";
-            pop.text = "Praise the Omnissiah, an STC Fragment has been retrieved from the ancient ruins and safely stowed away.  It is ready to be decrypted or gifted at your convenience.";
-            scr_event_log("", "STC Fragment recovered from Ancient Ruins.");
-        } else if (loot == "gear") {
-            var wep1 = "", wen1 = 0, wep2 = "", wen2 = 0, wep3 = "", wen3 = 0, wep4 = "", wen4 = 0, wep5 = "", wen5 = 0, wep6 = "", wen6 = 0, wep7 = "", wen7 = 0, wep8 = "", wen8 = 0;
-
-            //Fallen Terminator Squad
-            if ((ruins_type <= 2) || (ruins_type >= 10)) {
-                wep1 = choose("Tartaros", "Terminator Armour", "Cataphractii");
-                wen1 = choose(1, 2, 3);
-                wep2 = choose("Tigris Combi Bolter", "Volkite Charger");
-                wen2 = choose(1, 2,);
-                wep3 = choose("Power Fist", "Chainfist", "Power Mace", "Relic Blade", "Power Spear", "Lightning Claw", "Power Scythe");
-                wen3 = choose(1, 2, 3);
-                wep4 = choose("Assault Cannon", "Plasma Cannon",);
-                wen4 = choose(0, 1);
-                wep5 = choose("Company Standard", "Narthecium", "Psychic Hood", "Rosarius");
-                wen5 = choose(0, 1);
-                wep6 = "Storm Shield";
-                wen6 = choose(1, 2, 3);
-            } else if (ruins_type == 3) {
-                //Fallen Tactical Squad
-                wep1 = choose("MK3 Iron Armour", "MK4 Maximus", "MK5 Heresy");
-                wen1 = choose(3, 4, 5, 6);
-                wep2 = "Phobos Bolter";
-                wen2 = choose(2, 3);
-                wep3 = choose("Ryza Plasma Gun", "Volkite Charger", "Volkite Caliver");
-                wen3 = choose(1, 2);
-                wep4 = choose("Primus Melta Gun", "Phaestos Flamer");
-                wen4 = choose(1, 2);
-                wep5 = choose("Ryza Plasma Pistol", "Phobos Bolt Pistol", "Volkite Serpenta");
-                wen5 = choose(0, 1);
-                wep6 = choose("Power Sword", "Chain Axe", "Power Axe", "Power Fist");
-                wen6 = choose(0, 1);
-                wep7 = choose("Company Standard", "Narthecium", "Psychic Hood", "Rosarius");
-                wen7 = choose(0, 1);
-                wep8 = "Bionics";
-                wen8 = choose(1, 2, 3);
-            } else if (ruins_type == 4) {
-                //Fallen Devastator Squad
-                wep1 = choose("MK3 Iron", "MK4 Maximus", "MK6 Corvus");
-                wen1 = choose(3, 4, 5);
-                wep2 = "Mars Heavy Bolter";
-                wen2 = choose(2, 3);
-                wep3 = choose("Mars Plasma Cannon", "Volkite Culverin",);
-                wen3 = choose(1, 2);
-                wep4 = choose("Ryza Las Cannon", "Cthon Auto Cannon");
-                wen4 = choose(1, 2);
-                wep5 = choose("Ryza Plasma Pistol", "Phobos Bolt Pistol", "Volkite Serpenta");
-                wen5 = choose(0, 1);
-                wep6 = choose("Power Sword", "Chain Axe", "Power Axe", "Power Fist");
-                wen6 = choose(0, 1);
-                wep7 = choose("Company Standard", "Narthecium", "Psychic Hood", "Rosarius");
-                wen7 = choose(0, 1);
-                wep8 = "Heavy Weapons Pack";
-                wen8 = choose(1, 2, 3);
-            } else if (ruins_type == 5) {
-                //Fallen Assault Squad
-                wep1 = choose("MK4 Maximus", "MK6 Corvus", "MK5 Heresy");
-                wen1 = choose(3, 4, 5);
-                wep2 = choose("Chainsword", "Chain Axe");
-                wen2 = choose(2, 3);
-                wep3 = choose("Power Sword", "Power Axe", "Power Fist");
-                wen3 = choose(1, 2);
-                wep4 = choose("Lightning Claws ", "Power Scythe");
-                wen4 = choose(1, 2);
-                wep5 = choose("Ryza Plasma Pistol", "Phobos Bolt Pistol", "Volkite Serpenta");
-                wen5 = choose(0, 1);
-                wep6 = choose("Primus Melta Gun", "Phaestos Flamer");
-                wen6 = choose(0, 1);
-                wep7 = choose("Company Standard", "Narthecium", "Psychic Hood", "Rosarius");
-                wen7 = choose(0, 1);
-                wep8 = "Serpha Jump Pack";
-                wen8 = choose(1, 2, 3);
-            } else if (ruins_type == 6) {
-                //Fallen Breacher Squad
-                wep1 = choose("MK3 Iron Armour", "MK4 Maximus", "MK5 Heresy");
-                wen1 = choose(3, 4, 5, 6);
-                wep2 = "Primus Melta Gun";
-                wen2 = choose(2, 3);
-                wep3 = choose("Ryza Plasma Gun", "Volkite Charger", "Volkite Caliver");
-                wen3 = choose(1, 2);
-                wep4 = choose("Phobos Bolter", "Phaestos Flamer");
-                wen4 = choose(1, 2);
-                wep5 = choose("Ryza Plasma Pistol", "Phobos Bolt Pistol", "Volkite Serpenta");
-                wen5 = choose(0, 1);
-                wep6 = choose("Power Sword", "Chain Axe", "Power Axe", "Power Fist");
-                wen6 = choose(0, 1);
-                wep7 = choose("Company Standard", "Narthecium", "Psychic Hood", "Rosarius");
-                wen7 = choose(0, 1);
-                wep8 = "Boarding Shield";
-                wen8 = choose(1, 2, 3);
-            } else if (ruins_type == 7) {
-                //Damaged Dreadnought
-                wep1 = "Contemptor Dreadnought";
-                wen1 = 1;
-                wep2 = choose("Twin-linked Volkite Culverins", "Heavy Conversion Beamer", "Kheres Assault Cannon");
-                wen2 = 1;
-                wep3 = "Contemptor CCW";
-                wen3 = 3;
-            }
-
-            scr_add_item(wep1, wen1);
-            scr_add_item(wep2, wen2);
-            scr_add_item(wep3, wen3);
-            scr_add_item(wep4, wen4);
-            scr_add_item(wep5, wen5);
-            scr_add_item(wep6, wen6);
-            scr_add_item(wep7, wen7);
-            scr_add_item(wep8, wen8);
-
-            var pop;
-            pop = instance_create(0, 0, obj_popup);
-            pop.image = "ancient_ruins";
-            pop.title = "Ancient Ruins: Gear";
-            pop.text = "My lord, your brothers have found sealed chamber in these ruins. It bears symbols of one of the ancient legions. After your tech-marines managed to open this chamber, they've found a number of relics that can be brought back to service. They've found:  " + string(wen1) + "x " + string(wep1) + ", " + string(wen2) + "x " + string(wep2) + "," + string(wen3) + "x " + string(wep3) + "," + string(wen4) + "x " + string(wep4) + "," + string(wen5) + "x " + string(wep5) + "," + string(wen6) + "x " + string(wep6) + "," + string(wen7) + "x " + string(wep7) + ", and " + string(wen8) + "x " + string(wep8) + " have been added to the Armamentarium.";
-        } else if (loot == "gene_seed") {
-            // Requisition
-            ancient_gene_lab_ruins_loot();
-        } else if (loot == "bunker") {
-            // Bunker
-            pop.image = "ruins_bunker";
-            pop.title = "Ancient Ruins: Bunker Network";
-            pop.text = "Your battle brothers have found several entrances into an ancient bunker network.  Its location has been handed over to the PDF.  The planet's defense rating has increased to ";
-            pop.text += string(min(star_system.p_fortified[planet] + 1, 5)) + ".  ";
-            if (star_system.p_fortified[planet] < 5) {
-                pop.text += "(" + string(star_system.p_fortified[planet]) + "+1)";
-            }
-            if (star_system.p_fortified[planet] >= 5) {
-                pop.text += "(" + string(star_system.p_fortified[planet]) + "+0)";
-            }
-            star_system.p_fortified[planet] = min(star_system.p_fortified[planet] + 1, 5);
-        } else if (loot == "fortress") {
-            // Fortress
-            ancient_fortress_ruins_loot(star_system, planet, _ruins);
-        } else if (loot == "starship") {
-            // Starship
-            var pop = instance_create(0, 0, obj_popup);
-            pop.image = "ruins_ship";
-            pop.title = "Ancient Ruins: Starship";
-            pop.text = "The ground beneath one of your battle brothers crumbles, and he falls a great height.  The other marines go down in pursuit- within a great chamber they find the remains of an ancient starship.  Though derelict, it is possible to land " + string(obj_ini.role[100][16]) + "s onto the planet to repair the ship.  10,000 Requisition will be needed to make it operational.";
-            _ruins.find_starship();
-            scr_event_log("", $"Ancient Starship discovered on {planet_numeral_name(planet, star_system)}.", star_system.name);
+        if (_chosen_ship > -1) {
+            var _art_idx = scr_add_artifact("random", "random", 4, _pidx, _chosen_ship + 500);
+            _popup.title = "Ancient Ruins: Artifact";
+            _popup.text = $"An Artifact has been found within the ancient ruins. It appears to be a {obj_ini.artifact[_art_idx]} but should be brought to the Lexicanum and identified posthaste.";
+            scr_event_log("", "Artifact recovered from Ancient Ruins.");
+        } else {
+            _popup.title = "Ancient Ruins: Artifact Lost";
+            _popup.text = "An Artifact was discovered within the ancient ruins, but no suitable ship was available for its retrieval. The sacred object remains unclaimed.";
         }
 
-        _ruins.ruins_explored();
-        // star_system.p_feature[planet]="Ancient Ruins|";
+        instance_destroy(obj_star_select);
+        instance_destroy(obj_fleet_select);
+    };
+
+    // 2. State & Data Initialization
+    var _ruins_race = _ruins.ruins_race;
+    var _dice = roll_dice_chapter(1, 100, "high");
+    var _loot_type = eLOOT_TYPE.REQUISITION;
+
+    // 3. Loot Category Mapping
+    if (_dice > 35 && _dice <= 50) {
+        _loot_type = eLOOT_TYPE.GEAR;
+    } else if (_dice > 50 && _dice <= 60) {
+        _loot_type = eLOOT_TYPE.ARTIFACT;
+    } else if (_dice > 60 && _dice <= 70) {
+        _loot_type = eLOOT_TYPE.STC;
+    } else if (_dice > 70 && _dice <= 85) {
+        _loot_type = eLOOT_TYPE.WILD_CARD;
+    } else if (_dice > 85 && _dice <= 97) {
+        _loot_type = eLOOT_TYPE.BUNKER;
+    } else if (_dice > 97 && _dice <= 99) {
+        _loot_type = eLOOT_TYPE.FORTRESS;
+    } else if (_dice > 99) {
+        _loot_type = eLOOT_TYPE.STARSHIP;
     }
+
+    // Wild Card logic
+    if (_loot_type == eLOOT_TYPE.WILD_CARD) {
+        _loot_type = _ruins_race == 1 ? eLOOT_TYPE.GENE_SEED : (_ruins_race == 6 ? eLOOT_TYPE.GEAR : eLOOT_TYPE.REQUISITION);
+    }
+
+    // 4. Execution Context
+    var _planet_name = planet_numeral_name(_pid_idx, _star_system);
+    /// @type {Asset.GMObject.obj_popup}
+    var _popup = instance_create(0, 0, obj_popup);
+    _popup.image = "ancient_ruins";
+
+    scr_event_log("", $"The Ancient Ruins on {_planet_name} has been explored.", _star_system.name);
+
+    // 5. Reward Processing Dispatcher
+    switch (_loot_type) {
+        case eLOOT_TYPE.REQUISITION:
+            var _amount = (round(random_range(30, 60)) + 1) * 10;
+            obj_controller.requisition += _amount;
+            _popup.title = "Ancient Ruins: Resources";
+            _popup.text = $"My lord, your battle brothers have located several precious minerals and supplies. Everything was returned to the ship, granting {_amount} Requisition.";
+            break;
+
+        case eLOOT_TYPE.GEAR:
+            _process_gear_reward(_ruins_race, _popup);
+            break;
+
+        case eLOOT_TYPE.ARTIFACT:
+            _process_artifact_reward(_star_system, _pid_idx, _popup);
+            break;
+
+        case eLOOT_TYPE.STC:
+            scr_add_stc_fragment();
+            _popup.title = "Ancient Ruins: STC Fragment";
+            _popup.text = "Praise the Omnissiah, an STC Fragment has been retrieved from the ancient ruins and safely stowed away. It is ready to be decrypted or gifted at your convenience.";
+            scr_event_log("", "STC Fragment recovered from Ancient Ruins.");
+            break;
+
+        case eLOOT_TYPE.BUNKER:
+            var _current_fort = _star_system.p_fortified[_pid_idx];
+            var _new_fort = min(_current_fort + 1, 5);
+            _star_system.p_fortified[_pid_idx] = _new_fort;
+            _popup.image = "ruins_bunker";
+            _popup.title = "Ancient Ruins: Bunker Network";
+            _popup.text = $"Your battle brothers have found several entrances into an ancient bunker network.  Its location has been handed over to the PDF. The planet's defense rating has increased to {_new_fort}. (+{_new_fort - _current_fort})";
+            break;
+
+        case eLOOT_TYPE.STARSHIP:
+            _popup.image = "ruins_ship";
+            _popup.title = "Ancient Ruins: Starship";
+            _popup.text = $"The ground beneath one of your battle brothers crumbles, and he falls a great height. The other marines go down in pursuit. Within a great chamber they find the remains of an ancient starship. Though derelict, it is possible to land {obj_ini.role[100][16]}s to repair the ship. 10,000 Requisition will be needed to make it operational.";
+            _ruins.find_starship();
+            scr_event_log("", $"Ancient Starship discovered on {_planet_name}.", _star_system.name);
+            break;
+
+        case eLOOT_TYPE.FORTRESS:
+            ancient_fortress_ruins_loot(_star_system, _pid_idx, _ruins, _popup);
+            break;
+
+        case eLOOT_TYPE.GENE_SEED:
+            ancient_gene_lab_ruins_loot(_popup);
+            break;
+    }
+
+    _ruins.ruins_explored();
 }
 
-function ancient_gene_lab_ruins_loot() {
-    var _text = $"My lord, your battle brothers have located a hidden, fortified laboratory within the ruins.  Contained are a number of bio-vaults with astartes gene-seed; {gene} in number.  Your marines are not able to determine the integrity or origin.";
+/// @param {Asset.GMObject.obj_popup} _popup The popup instance to populate.
+function ancient_gene_lab_ruins_loot(_popup) {
+    _popup.image = "geneseed_lab";
+    _popup.title = "Ancient Ruins: Gene-seed";
+    _popup.text = $"My lord, your battle brothers have located a hidden, fortified laboratory within the ruins. Contained are a number of bio-vaults with astartes gene-seed. Your marines are not able to determine the integrity or origin.";
 
-    var _pop_data = {
-        gene_found: gene,
+    _popup.pop_data = {
         options: [
             {
                 str1: "Add the gene-seed to chapter vaults.",
                 choice_func: function() {
-                    image = "";
                     var _estimate = irandom_range(3, 15);
-                    text = string(_estimate) + " gene-seed has been added to the chapter vaults.";
+                    text = $"{_estimate} gene-seed has been added to the chapter vaults.";
                     reset_popup_options();
                     obj_controller.gene_seed += _estimate;
                     //scr_play_sound(snd_success);
@@ -271,11 +242,10 @@ function ancient_gene_lab_ruins_loot() {
             {
                 str1: "Salvage the laboratory for requisition.",
                 choice_func: function() {
-                    var _req = floor(random_range(200, 500)) + 1;
-                    image = "";
-                    text = "Technological components have been salvaged, granting " + string(_req) + " requisition.";
+                    var _requisition_gain = floor(random_range(200, 500));
+                    text = $"Technological components salvaged for {_requisition_gain} requisition.";
                     reset_popup_options();
-                    obj_controller.requisition += _req;
+                    obj_controller.requisition += _requisition_gain;
                     //scr_play_sound(snd_salvage);
                     with (obj_ground_mission) {
                         instance_destroy();
@@ -294,45 +264,50 @@ function ancient_gene_lab_ruins_loot() {
             }
         ],
     };
-    scr_popup("Ancient Ruins: Gene-seed", _text, "geneseed_lab", _pop_data);
 }
 
-function ancient_fortress_ruins_loot(star_system, planet, _ruins) {
-    var _pop_data = {};
-    _pop_data.planet = planet;
-    _pop_data.feature = _ruins;
-    _pop_data.star = star_system;
-    _pop_data.options = [
-        {
-            str1: "Repair the fortress to boost defenses.  (1000 Req)",
-            choice_func: function() {
-                var _star = pop_data.star;
-                var _planet = pop_data.planet;
-                obj_controller.requisition -= 1000;
-                text = "Resources have been spent on the planet to restore the fortress.  The planet's defense rating has increased to 5 (";
-                reset_popup_options();
-                text += string(_star.p_fortified[_planet]) + "+";
-                text += string(5 - _star.p_fortified[_planet]) + ")";
-                _star.p_fortified[_planet] = max(_star.p_fortified[_planet], 5);
-                cooldown = 15;
-                exit;
+/// @param {Asset.GMObject.obj_star} _star
+/// @param {Real} _planet
+/// @param {Struct} _ruins
+/// @param {Asset.GMObject.obj_popup} _popup
+function ancient_fortress_ruins_loot(_star, _planet, _ruins, _popup) {
+    _popup.image = "ruins_fort";
+    _popup.title = "Ancient Ruins: Fortress";
+    _popup.text = $"Praise the Emperor! We have found a massive, ancient fortress in needs of repairs. The gun batteries are rusted, and the walls are covered in moss with huge hole in it. Such a pity that such a majestic building is now a pale shadow of its former glory. It is possible to repair the structure. What is thy will?";
+
+    _popup.pop_data = {
+        feature: _ruins,
+        planet: _planet,
+        star: _star,
+        options: [
+            {
+                str1: "Repair the fortress (1000 Req)",
+                requires: {
+                    req: 1000,
+                },
+                choice_func: function() {
+                    /// @type {Asset.GMObject.obj_star}
+                    var _star = pop_data.star;
+                    var _pidx = pop_data.planet;
+                    obj_controller.requisition -= 1000;
+
+                    var _current_fort = _star.p_fortified[_pidx];
+                    var _new_fort = max(_current_fort, 5);
+                    _star.p_fortified[_pidx] = _new_fort;
+
+                    text = $"Fortress restored. Defense rating increased to {_new_fort}. (+{_new_fort - _current_fort})";
+                    reset_popup_options();
+                },
             },
-            requires: {
-                req: 1000,
-            },
-        },
-        {
-            str1: "Salvage raw materials from the fortress.",
-            choice_func: function() {
-                var req = irandom_range(200, 500);
-                image = "";
-                text = $"Much of the fortress is demolished in order to salvage adamantium and raw materials.  The opration has yielded {req} requisition.";
-                reset_popup_options();
-                obj_controller.requisition += req;
-                cooldown = 15;
-                exit;
-            },
-        }
-    ];
-    scr_popup("Ancient Ruins: Fortress", "Praise the Emperor! We have found a massive, ancient fortress in needs of repairs. The gun batteries are rusted, and the walls are covered in moss with huge hole in it. Such a pity that such a majestic building is now a pale shadow of its former glory.  It is possible to repair the structure.  What is thy will?", "ruins_fort", _pop_data);
+            {
+                str1: "Salvage raw materials.",
+                choice_func: function() {
+                    var _requisition_gain = irandom_range(200, 500);
+                    text = $"The fortress was demolished for parts, yielding {_requisition_gain} requisition.";
+                    obj_controller.requisition += _requisition_gain;
+                    reset_popup_options();
+                },
+            }
+        ],
+    };
 }
