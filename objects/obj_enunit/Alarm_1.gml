@@ -583,7 +583,7 @@ if (__b__) {
         if (dudes[j] == "Follower") {
             //Frateris Militia
             scr_en_weapon("Laspistol", true, dudes_num[j], dudes[j], j);
-            scr_en_weapon("melee0.5", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Sarissa", true, dudes_num[j], dudes[j], j);
             dudes_ac[j] = 5;
             dudes_hp[j] = 30;
             men += dudes_num[j];
@@ -1260,7 +1260,7 @@ if (__b__) {
 
         if (dudes[j] == "Cultist") {
             scr_en_weapon("Autogun", true, dudes_num[j], dudes[j], j);
-            scr_en_weapon("melee0.5", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Melee Weapon", true, dudes_num[j], dudes[j], j);
             dudes_ac[j] = 10;
             dudes_hp[j] = 35;
             men += dudes_num[j];
@@ -1505,7 +1505,7 @@ if (__b__) {
             }
             if (dudes[j] == "Cultist") {
                 scr_en_weapon("Autogun", true, dudes_num[j], dudes[j], j);
-                scr_en_weapon("melee0.5", true, dudes_num[j], dudes[j], j);
+                scr_en_weapon("Melee Weapon", true, dudes_num[j], dudes[j], j);
                 dudes_ac[j] = 5;
                 dudes_hp[j] = 35;
                 men += dudes_num[j];
