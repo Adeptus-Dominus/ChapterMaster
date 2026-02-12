@@ -57,7 +57,7 @@ reviews:
         - When any script or sprite `.yy` files are created, their paths should be added to the
         project `.yyp` file, otherwise they'll fail.
   auto_review:
-    auto_incremental_review: false
+    auto_incremental_review: true
   finishing_touches:
     docstrings:
       enabled: false
