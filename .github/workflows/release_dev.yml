@@ -219,6 +219,7 @@ jobs:
         with:
           mode: "HYBRID"
           fromTag: ${{ needs.prepare_release.outputs.from_tag }}
+          toTag: ${{ github.sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
