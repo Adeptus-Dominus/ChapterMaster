@@ -11,23 +11,15 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 
     // Determines combined damage for enemy battle blocks for a single weapon
 
-    var atta, arp, acr, rang, amm, spli, faith_bonus, i;
-    i = 0;
+    var atta, arp, rang, amm, spli, faith_bonus;
     rang = 0;
     atta = 0;
     spli = 0;
     arp = 1;
-    acr = 0;
     amm = -1;
     faith_bonus = 0;
     // var struct = gear_weapon_data("weapon",name);
-    if (string_count("elee", name) > 0) {
-        var to = string_delete(name, 0, 5);
-        atta = 10;
-        arp = 1;
-        rang = 1;
-        spli = 3;
-    }
+
 
     //if (obj_ncombat.enemy=5) then faith_bonus=faith[man_type];
 
@@ -125,6 +117,11 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
             spli = 0;
             amm = 6;
             break;
+        case "Melee Weapon":
+            atta = 60;
+            arp = 1;
+            rang = 1;
+            break;
         default:
             break;
     }
@@ -156,7 +153,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     }
 
     if (obj_ncombat.enemy == 6) {
-        switch (argument0) {
+        switch (name) {
             case "Fusion Gun":
                 atta = 180;
                 arp = 4;
@@ -391,7 +388,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     }
 
     if (obj_ncombat.enemy == 7) {
-        switch (argument0) {
+        switch (name) {
             case "Choppa":
                 atta = 100;
                 arp = 1;
@@ -570,7 +567,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     }
 
     if (obj_ncombat.enemy == 9) {
-        switch (argument0) {
+        switch (name) {
             case "Bonesword":
                 atta = 120;
                 arp = 3;
