@@ -1,6 +1,6 @@
 // Global singletons
 // global.NameGenerator = new NameGenerator();
-global.logger.debug("Creating obj_ini");
+LOGGER.debug("Creating obj_ini");
 
 // normal stuff
 specials = 0;
@@ -266,11 +266,11 @@ deserialize = function(save_data) {
         }
 
         var loaded_value = struct_get(save_data, var_name);
-        // global.logger.debug($"obj_ini var: {var_name}  -  val: {loaded_value}");
+        // LOGGER.debug($"obj_ini var: {var_name}  -  val: {loaded_value}");
         try {
             variable_struct_set(obj_ini, var_name, loaded_value);
         } catch (e) {
-            global.logger.exception("Deserialization failed", e);
+            LOGGER.exception("Deserialization failed", e);
         }
     }
 

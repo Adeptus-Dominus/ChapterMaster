@@ -119,7 +119,7 @@ function exit_diplomacy_dialogue() {
     if ((audience > 0) && instance_exists(obj_turn_end)) {
         if (complex_event == false) {
             obj_turn_end.alarm[1] = 1;
-            global.logger.debug("next_audience");
+            LOGGER.debug("next_audience");
         }
         if (complex_event == true) {
             // TODO
@@ -522,7 +522,7 @@ function scr_ui_diplomacy() {
 
     if (diplomacy == -1) {
         if (!is_struct(character_diplomacy)) {
-            global.logger.debug("no valid diplomacy target");
+            LOGGER.debug("no valid diplomacy target");
             diplomacy = 0;
         } else {
             // draw_sprite(spr_diplo_splash,diplomacy,xx+916,yy+33);

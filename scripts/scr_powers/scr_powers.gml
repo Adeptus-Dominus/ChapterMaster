@@ -452,7 +452,7 @@ function power_conditions_check(conditions_array) {
                     _conditions_satisfied = obj_ncombat.player_forces > _condition_value;
                     break;
                 default:
-                    global.logger.error("Condition type was not found!");
+                    LOGGER.error("Condition type was not found!");
                     _conditions_satisfied = false;
                     break;
             }

@@ -623,7 +623,7 @@ function ComplexSet(_unit) constructor {
                 if (_spec_shadow[0] <= choice && _spec_shadow[1] > choice) {
                     var _shadow_item = _spec_shadow[2];
                     var _final_shadow_index = choice - _spec_shadow[0];
-                    //global.logger.debug($"final_index {_final_shadow_index}, {_spec_shadow[0]}, {_spec_shadow[1]}, {choice},{_shadow_item}");
+                    //LOGGER.debug($"final_index {_final_shadow_index}, {_spec_shadow[0]}, {_spec_shadow[1]}, {choice},{_shadow_item}");
 
                     var _sprite = self[$ component_name];
                     // Compute UV transform for this shadow texture
@@ -964,7 +964,7 @@ function ComplexSet(_unit) constructor {
 
         var _shadows = struct_exists(weapon, "shadows") ? weapon.shadows : "none";
 
-        //global.logger.debug($" shadows {_shadows}");
+        //LOGGER.debug($" shadows {_shadows}");
 
         add_to_area(position, weapon.sprite, "none", _subs, _shadows);
 
@@ -1013,7 +1013,7 @@ function ComplexSet(_unit) constructor {
 
         var _texture_draws = setup_complex_livery_shader(unit.role(), unit);
 
-        // global.logger.debug(_texture_draws);
+        // LOGGER.debug(_texture_draws);
         draw_cloaks();
         //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
 

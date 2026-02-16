@@ -5,7 +5,7 @@ function scr_random_event(execute_now) {
 	if (obj_controller.turns_ignored[6]<=0) and (obj_controller.faction_gender[6]=2) then rando4-=2;
 	if (obj_controller.turns_ignored[6]<=0) and (rando4<=3) and execute_now and (faction_defeated[6]=0){
 	    if (obj_controller.known[eFACTION.ELDAR]=2) and (obj_controller.disposition[6]>=-10) and (string_count("Eldar",obj_ini.strin)=0){
-			global.logger.info("RE: Eldar Mission 1");
+			LOGGER.info("RE: Eldar Mission 1");
 	        // Need something else here that prevents them from asking missions when they are pissed
         
 	        obj_turn_end.audiences+=1;// obj_turn_end.audiences+=1;
@@ -216,7 +216,7 @@ function scr_random_event(execute_now) {
         init_marine_acting_strange();
         _evented = true;
     } else if (chosen_event == eEVENT.SPACE_HULK) {
-        global.logger.info("RE: Space Hulk");
+        LOGGER.info("RE: Space Hulk");
         var own = choose(1, 1, 2);
 
         var star_id = scr_random_find(own, true, "", "");
@@ -231,7 +231,7 @@ function scr_random_event(execute_now) {
         }
 
         if (star_id == undefined) {
-            global.logger.error("RE: Space Hulk, couldn't find a star for the spacehulk");
+            LOGGER.error("RE: Space Hulk, couldn't find a star for the spacehulk");
             exit;
         } else {
             var positionFound = false;
@@ -249,7 +249,7 @@ function scr_random_event(execute_now) {
             }
             if (tries_to_place_space_hulk >= 50) {
                 // its possible for there to be no good spot for the space hulk at a star, if there are too many stars in close proximity
-                global.logger.error($"RE: Space Hulk, couldn't find a spot for the spacehulk at the {star_id.name} system");
+                LOGGER.error($"RE: Space Hulk, couldn't find a spot for the spacehulk at the {star_id.name} system");
                 exit;
             }
             try {
@@ -264,10 +264,10 @@ function scr_random_event(execute_now) {
             }
         }
     } else if (chosen_event == eEVENT.PROMOTION) {
-        global.logger.info("RE: Promotion");
+        LOGGER.info("RE: Promotion");
         var marine_and_company = scr_random_marine([obj_ini.role[100][8], obj_ini.role[100][12], obj_ini.role[100][9], obj_ini.role[100][10]], 0);
         if (marine_and_company == "none") {
-            global.logger.error("RE: Promotion, couldn't pick a space marine");
+            LOGGER.error("RE: Promotion, couldn't pick a space marine");
             exit;
         }
         var marine = marine_and_company[1];
@@ -295,7 +295,7 @@ function scr_random_event(execute_now) {
     } else if (chosen_event == eEVENT.STRANGE_BUILDING) {
         _evented = strange_build_event();
     } else if (chosen_event == eEVENT.SORORITAS) {
-        global.logger.info("RE: Sororitas Company");
+        LOGGER.info("RE: Sororitas Company");
         var own;
         own = choose(1, 2);
         var star_id = scr_random_find(own, true, "", "");
@@ -306,7 +306,7 @@ function scr_random_event(execute_now) {
         }
 
         if (star_id == undefined) {
-            global.logger.error("RE: Sororitas Company, couldn't find a star for the company");
+            LOGGER.error("RE: Sororitas Company, couldn't find a star for the company");
             exit;
         } else {
             var eligible_planets = [];
@@ -316,7 +316,7 @@ function scr_random_event(execute_now) {
                 }
             }
             if (array_length(eligible_planets) == 0) {
-                global.logger.error("RE: Sororitas Company, couldn't find a planet on the " + star_id.name + " system for the company");
+                LOGGER.error("RE: Sororitas Company, couldn't find a planet on the " + star_id.name + " system for the company");
                 exit;
             }
 
@@ -339,7 +339,7 @@ function scr_random_event(execute_now) {
         scr_inquisition_mission(chosen_event);
         _evented = true;
     } else if (chosen_event == eEVENT.ROGUE_TRADER) {
-        global.logger.info("RE: Rogue Trader");
+        LOGGER.info("RE: Rogue Trader");
         var eligible_stars = [];
         with (obj_star) {
             for (var i = 0; i <= 4; i++) {
@@ -359,7 +359,7 @@ function scr_random_event(execute_now) {
 
         var stars_count = array_length(eligible_stars);
         if (stars_count == 0) {
-            global.logger.error("RE: Rogue Trader, couldn't find a star");
+            LOGGER.error("RE: Rogue Trader, couldn't find a star");
             exit;
         }
 
@@ -387,7 +387,7 @@ function scr_random_event(execute_now) {
         star_alert.image_speed = 1;
         _evented = true;
     } else if (chosen_event == eEVENT.FLEET_DELAY) {
-        global.logger.info("RE: Fleet Delay");
+        LOGGER.info("RE: Fleet Delay");
         var eligible_fleets = [];
         with (obj_p_fleet) {
             if (action == "move") {
@@ -397,7 +397,7 @@ function scr_random_event(execute_now) {
 
         var fleet_count = array_length(eligible_fleets);
         if (fleet_count == 0) {
-            global.logger.error("RE: Fleet Delay, couldn't pick a fleet");
+            LOGGER.error("RE: Fleet Delay, couldn't pick a fleet");
             exit;
         }
 
@@ -428,7 +428,7 @@ function scr_random_event(execute_now) {
             }
         }
     } else if (chosen_event == eEVENT.HARLEQUINS) {
-        global.logger.info("RE: Harlequins");
+        LOGGER.info("RE: Harlequins");
         var owner = choose(1, 2, 2, 2, 3);
         var star = scr_random_find(owner, true, "", "");
         if (!instance_exists(star) && owner != 2) {
@@ -436,7 +436,7 @@ function scr_random_event(execute_now) {
             star = scr_random_find(owner, true, "", "");
         }
         if (!instance_exists(star)) {
-            global.logger.error("RE: Harlequins, couldn't find star");
+            LOGGER.error("RE: Harlequins, couldn't find star");
             exit;
         }
 
@@ -450,7 +450,7 @@ function scr_random_event(execute_now) {
             star_alert.col = "green";
         }
     } else if (chosen_event == eEVENT.SUCCESSION_WAR) {
-        global.logger.info("RE: Succession War");
+        LOGGER.info("RE: Succession War");
         var eligible_stars = [];
         with (obj_star) {
             for (var planet = 1; planet <= planets; planet++) {
@@ -462,7 +462,7 @@ function scr_random_event(execute_now) {
         }
         var star_count = array_length(eligible_stars);
         if (star_count == 0) {
-            global.logger.error("RE: Succession War, couldn't find a star");
+            LOGGER.error("RE: Succession War, couldn't find a star");
             exit;
         }
 
@@ -489,7 +489,7 @@ function scr_random_event(execute_now) {
         _evented = true;
     } else if (chosen_event == eEVENT.RANDOM_FUN) {
         // Flavor text/events
-        global.logger.info("RE: Random");
+        LOGGER.info("RE: Random");
         var text;
         var situation = irandom(4);
         var place = irandom(9);
@@ -548,7 +548,7 @@ function scr_random_event(execute_now) {
         scr_event_log("red", text);
         _evented = true;
     } else if (chosen_event == eEVENT.WARP_STORMS) {
-        global.logger.info("RE: Warp Storm");
+        LOGGER.info("RE: Warp Storm");
         var own, time, him;
 
         time = irandom_range(6, 24);
@@ -571,7 +571,7 @@ function scr_random_event(execute_now) {
         }
 
         if (star_id == undefined) {
-            global.logger.error("RE: Warp Storm, couldn't pick a star for the warp storm");
+            LOGGER.error("RE: Warp Storm, couldn't pick a star for the warp storm");
             exit;
         } else {
             star_id.storm += time;
@@ -581,7 +581,7 @@ function scr_random_event(execute_now) {
             scr_event_log(_col, $"Warp Storms rage across the {star_id.name} system.");
         }
     } else if (chosen_event == eEVENT.ENEMY_FORCES) {
-        global.logger.info("RE: Enemy Forces");
+        LOGGER.info("RE: Enemy Forces");
         var own;
         if (scr_has_disadv("Shitty Luck")) {
             own = choose(1, 1, 1, 1, 1, 1, 2, 2, 3);
@@ -602,7 +602,7 @@ function scr_random_event(execute_now) {
         }
 
         if (star_id == undefined) {
-            global.logger.error("RE: Enemy Forces, couldn't find a star for the enemy");
+            LOGGER.error("RE: Enemy Forces, couldn't find a star for the enemy");
             exit;
         } else {
             var eligible_planets = [];
@@ -612,7 +612,7 @@ function scr_random_event(execute_now) {
                 }
             }
             if (array_length(eligible_planets) == 0) {
-                global.logger.error("RE: Enemy Forces, couldn't find a planet in the " + star_id.name + " system for the enemy");
+                LOGGER.error("RE: Enemy Forces, couldn't find a planet in the " + star_id.name + " system for the enemy");
                 exit;
             }
             var planet = eligible_planets[irandom(array_length(eligible_planets) - 1)];
@@ -647,7 +647,7 @@ function scr_random_event(execute_now) {
                 //	star_id.p_necron[planet] = min(star_id.p_necron[planet], max_enemies_on_planet);
                 //	break;
                 default:
-                    global.logger.error("RE: Enemy Forces, couldn't pick an enemy faction");
+                    LOGGER.error("RE: Enemy Forces, couldn't pick an enemy faction");
                     exit;
             }
             scr_alert("red", "enemy", $"{text} forces suddenly appear at {star_id.name} {planet}!", star_id.x, star_id.y);
@@ -661,7 +661,7 @@ function scr_random_event(execute_now) {
         _evented = make_faction_enemy_event();
     } else if (chosen_event == eEVENT.MUTATION) {
         //TODO make reprocussions to ignoring this
-        global.logger.info("RE: Gene-Seed Mutation");
+        LOGGER.info("RE: Gene-Seed Mutation");
         var text = "The Chapter's gene-seed has mutated!  Apothecaries are scrambling to control the damage and prevent further contamination.  What is thy will?";
         var _opt1 = "Dispose of ";
         var _percent_remove = 0;
@@ -703,7 +703,7 @@ function scr_random_event(execute_now) {
     } else if (chosen_event == eEVENT.SHIP_LOST) {
         loose_ship_to_warp_event();
     } else if (chosen_event == eEVENT.CHAOS_INVASION) {
-        global.logger.info("RE: Chaos Invasion");
+        LOGGER.info("RE: Chaos Invasion");
 
         add_event({e_id: "chaos_invasion", duration: 1});
 
@@ -748,28 +748,28 @@ function scr_random_event(execute_now) {
 }
 
 function event_fallen() {
-    global.logger.info("RE: Hunt the Fallen");
+    LOGGER.info("RE: Hunt the Fallen");
     var stars = scr_get_stars();
     var valid_stars = scr_get_stars(false, [eFACTION.IMPERIUM]);
 
     if (array_length(valid_stars) == 0) {
-        global.logger.error("RE: Hunt the Fallen, coulnd't find a star");
+        LOGGER.error("RE: Hunt the Fallen, coulnd't find a star");
         exit;
     }
-    global.logger.info($"Fallen: valid_stars {valid_stars}");
+    LOGGER.info($"Fallen: valid_stars {valid_stars}");
 
     var star = choose_array(stars);
     var planet = scr_get_planet_with_owner(star, eFACTION.IMPERIUM);
     var eta = scr_mission_eta(star.x, star.y, 1);
 
     if (planet > 0) {
-        global.logger.info($"Fallen: found star {star.name} planet {planet} as candidate");
+        LOGGER.info($"Fallen: found star {star.name} planet {planet} as candidate");
 
         var assigned_problem = add_new_problem(planet, "fallen", eta, star);
-        global.logger.info($"assigned_problem {assigned_problem}");
+        LOGGER.info($"assigned_problem {assigned_problem}");
 
         if (!assigned_problem) {
-            global.logger.error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
+            LOGGER.error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
             return;
         }
 

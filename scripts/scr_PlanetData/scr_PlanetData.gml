@@ -1159,7 +1159,7 @@ function PlanetData(planet, system) constructor {
                         }
                     }
                 } catch (_exception) {
-                    global.logger.error(cur_feature);
+                    LOGGER.error(cur_feature);
                     handle_exception(_exception);
                 }
             }

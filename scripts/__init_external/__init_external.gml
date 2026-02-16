@@ -48,7 +48,7 @@ function __init_external() {
             var _icon_name = string_delete(_file, string_length(_file) - 3, 4);
             if (ds_map_exists(global.chapter_icons_map, _icon_name)) {
                 sprite_delete(global.chapter_icons_map[? _icon_name]);
-                global.logger.info($"A duplicate {_icon_name} icon replaced another existing one with the same name!");
+                LOGGER.info($"A duplicate {_icon_name} icon replaced another existing one with the same name!");
             }
             ds_map_replace(global.chapter_icons_map, _icon_name, _sprite);
             _file = file_find_next();
@@ -67,7 +67,7 @@ function __init_external() {
     };
 
     if (!sprite_exists(global.chapter_icon.sprite)) {
-        global.logger.error("'unknown' chapter icon not found in any icon directory. Chapter icon will not render.");
+        LOGGER.error("'unknown' chapter icon not found in any icon directory. Chapter icon will not render.");
     }
 
     global.build_date = "unknown build";

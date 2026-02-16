@@ -180,7 +180,7 @@ function loose_ship_to_warp_event() {
     }
 
     if (array_length(eligible_fleets) == 0) {
-        //global.logger.debug("RE: Ship Lost, couldn't find a player fleet");
+        //LOGGER.debug("RE: Ship Lost, couldn't find a player fleet");
         exit;
     }
 

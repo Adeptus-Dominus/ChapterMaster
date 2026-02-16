@@ -394,7 +394,7 @@ function scr_efleet_arrive_at_trade_loc() {
         } else {
             bleh = $"Inquisitor Ship finalizes trade at {cur_star.name}.";
         }
-        global.logger.info(bleh);
+        LOGGER.info(bleh);
         scr_alert("green", "trade", bleh, cur_star.x, cur_star.y);
         scr_event_log("", bleh, cur_star.name);
 
@@ -440,7 +440,7 @@ function scr_efleet_arrive_at_trade_loc() {
 /// // Find a fleet orbiting this star that belongs to faction 3
 /// var fleet_id = scr_orbiting_fleet(3);
 /// if (fleet_id != "none") {
-///     global.logger.debug("Faction fleet found: " + string(fleet_id));
+///     LOGGER.debug("Faction fleet found: " + string(fleet_id));
 /// }
 ///
 /// // Find fleets from multiple factions
@@ -483,7 +483,7 @@ function scr_orbiting_fleet(faction, system = "none") {
 /// ```gml
 /// var dist = object_distance(player, enemy);
 /// if (dist < 100) {
-///     global.logger.debug("Enemy is within range!");
+///     LOGGER.debug("Enemy is within range!");
 /// }
 /// ```
 ///
@@ -502,7 +502,7 @@ function object_distance(obj_1, obj_2) {
 /// ```gml
 /// var fleet_id = scr_orbiting_player_fleet();
 /// if (fleet_id != -1) {
-///     global.logger.debug("Fleet orbiting star: " + string(fleet_id));
+///     LOGGER.debug("Fleet orbiting star: " + string(fleet_id));
 /// }
 /// ```
 ///

@@ -428,10 +428,10 @@ custom_chapters = array_filter(all_chapters, function(item) {
 other_chapters = array_filter(all_chapters, function(item) {
     return item.origin == eCHAPTER_ORIGINS.NON_CANON;
 });
-// global.logger.debug($"founding: {founding_chapters}");
-// global.logger.debug($"successor: {successor_chapters}");
-// global.logger.debug($"custom: {custom_chapters}");
-// global.logger.debug($"other: {other_chapters}");
+// LOGGER.debug($"founding: {founding_chapters}");
+// LOGGER.debug($"successor: {successor_chapters}");
+// LOGGER.debug($"custom: {custom_chapters}");
+// LOGGER.debug($"other: {other_chapters}");
 
 // TODO refactor into struct constructors stored in which are struct arrays
 

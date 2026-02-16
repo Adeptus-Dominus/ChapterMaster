@@ -30,6 +30,8 @@
 
 #macro SHIP_WEAPON_SLOTS 8
 
+#macro LOGGER global.logger
+
 
 
 enum eFACTION {

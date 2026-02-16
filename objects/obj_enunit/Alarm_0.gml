@@ -27,13 +27,13 @@ if (!engaged) {
         }
 
         if ((range[i] == 1) || (ammo[i] == 0)) {
-            // global.logger.debug($"A melee or no ammo weapon was found! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
+            // LOGGER.debug($"A melee or no ammo weapon was found! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
             continue;
         }
 
         if (range[i] == 0) {
-            global.logger.error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
-            // global.logger.debug($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
+            LOGGER.error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
+            // LOGGER.debug($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
             continue;
         }
 
@@ -92,7 +92,7 @@ if (!engaged) {
                 if ((!instance_exists(obj_nfort)) || flank) {
                     if (block_has_armour(enemy) || (enemy.veh_type[1] == "Defenses")) {
                         scr_shoot(i, enemy, target_unit_index, "arp", "ranged");
-                        // global.logger.debug($"I'm shooting at a vehicle! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+                        // LOGGER.debug($"I'm shooting at a vehicle! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                         continue;
                     } else if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != 7)) {
                         var x2 = enemy.x;
@@ -107,7 +107,7 @@ if (!engaged) {
                             }
                             if (block_has_armour(enemy2)) {
                                 scr_shoot(i, enemy2, target_unit_index, "arp", "ranged");
-                                // global.logger.debug($"I'm shooting at a vehicle in another row! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+                                // LOGGER.debug($"I'm shooting at a vehicle in another row! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                                 _shot = true;
                                 break;
                             }
@@ -120,7 +120,7 @@ if (!engaged) {
                 } else {
                     enemy = instance_nearest(x, y, obj_nfort);
                     scr_shoot(i, enemy, 1, "arp", "wall");
-                    // global.logger.debug($"I'm shooting at the fort! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+                    // LOGGER.debug($"I'm shooting at the fort! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                     continue;
                 }
             }
@@ -131,7 +131,7 @@ if (!engaged) {
                 if (enemy.men > 0) {
                     // There are marines in the first column;
                     scr_shoot(i, enemy, target_unit_index, "att", "ranged");
-                    // global.logger.debug($"I'm shooting at a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+                    // LOGGER.debug($"I'm shooting at a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                     continue;
                 } else if (instance_number(obj_pnunit) > 1) {
                     // There were no marines in the first column, looking behind;
@@ -142,18 +142,18 @@ if (!engaged) {
                         x2 += !flank ? 10 : -10;
                         var enemy2 = instance_nearest(x2, y, obj_pnunit);
                         if (!target_block_is_valid(enemy2, obj_pnunit)) {
-                            // global.logger.debug($"The block is invalid!");
+                            // LOGGER.debug($"The block is invalid!");
                             continue;
                         }
 
                         if (range[i] < get_block_distance(enemy2)) {
-                            // global.logger.debug($"The range is bad!");
+                            // LOGGER.debug($"The range is bad!");
                             break;
                         }
 
                         var _back_column_size_value = enemy2.column_size;
                         if (_back_column_size_value < _column_size_value) {
-                            // global.logger.debug($"Protection value is too big!");
+                            // LOGGER.debug($"Protection value is too big!");
                             continue;
                         } else {
                             // Calculate chance of shots passing through to back row
@@ -161,12 +161,12 @@ if (!engaged) {
                             // Maximum chance capped at 40% to ensure some protection remains
                             var _pass_chance = ((_back_column_size_value / _column_size_value) - 1) * 100;
                             if (irandom_range(1, 100) < min(_pass_chance, 80)) {
-                                // global.logger.debug($"I failed the protection check!");
+                                // LOGGER.debug($"I failed the protection check!");
                                 continue;
                             }
                         }
                         scr_shoot(i, enemy2, target_unit_index, "att", "ranged");
-                        // global.logger.debug($"I'm shooting at a normal unit in another row! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+                        // LOGGER.debug($"I'm shooting at a normal unit in another row! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                         _shot = true;
                         break;
                     }
@@ -178,7 +178,7 @@ if (!engaged) {
                     if ((!instance_exists(obj_nfort)) || flank) {
                         if (block_has_armour(enemy) || (enemy.veh_type[1] == "Defenses")) {
                             scr_shoot(i, enemy, target_unit_index, "att", "ranged");
-                            // global.logger.debug($"I'm shooting at a vehicle, because I can't find a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+                            // LOGGER.debug($"I'm shooting at a vehicle, because I can't find a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                             continue;
                         } else if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != 7)) {
                             var x2 = enemy.x;
@@ -193,7 +193,7 @@ if (!engaged) {
                                 }
                                 if (block_has_armour(enemy2)) {
                                     scr_shoot(i, enemy2, target_unit_index, "att", "ranged");
-                                    // global.logger.debug($"I'm shooting at a vehicle in another row, because I can't find a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+                                    // LOGGER.debug($"I'm shooting at a vehicle in another row, because I can't find a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                                     break;
                                 }
                             }
@@ -201,17 +201,17 @@ if (!engaged) {
                     } else {
                         enemy = instance_nearest(x, y, obj_nfort);
                         scr_shoot(i, enemy, 1, "att", "wall");
-                        // global.logger.debug($"I'm shooting at a fort, because I can't find a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+                        // LOGGER.debug($"I'm shooting at a fort, because I can't find a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                         continue;
                     }
                 }
             }
         } else {
-            // global.logger.debug($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
+            // LOGGER.debug($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
             continue;
         }
-        global.logger.error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
-        // global.logger.debug($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+        LOGGER.error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
+        // LOGGER.debug($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
     }
 } else if ((engaged || enemy.engaged) && target_block_is_valid(enemy, obj_pnunit)) {
     //TODO: The melee code was not refactored;
@@ -249,7 +249,7 @@ if (!engaged) {
         if ((apa[i] == 0) || (apa[i] < att[i])) {
             no_ap += 1;
         }
-        //global.logger.debug($"{range[i]},{att[i]},{apa[i]},{wep[i]},{enemy}")
+        //LOGGER.debug($"{range[i]},{att[i]},{apa[i]},{wep[i]},{enemy}")
         if ((range[i] <= 2) || (floor(range[i]) != range[i])) {
             // Weapon meets preliminary checks
             if (apa[i] > 0) {

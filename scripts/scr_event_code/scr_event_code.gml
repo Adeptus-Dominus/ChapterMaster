@@ -295,7 +295,7 @@ function handle_discovered_governor_assasinations() {
 }
 
 function strange_build_event() {
-    global.logger.info("RE: Fey Mood");
+    LOGGER.info("RE: Fey Mood");
     var _search_params = {
         trait: [
             "crafter",
@@ -374,7 +374,7 @@ function strange_build_event() {
 }
 
 function make_faction_enemy_event() {
-    global.logger.info("RE: Enemy");
+    LOGGER.info("RE: Enemy");
 
     var factions = [];
     if (obj_controller.known[eFACTION.IMPERIUM] == 1) {
@@ -391,7 +391,7 @@ function make_faction_enemy_event() {
     }
 
     if (array_length(factions) == 0) {
-        global.logger.error("RE: Enemy, no faction could be chosen");
+        LOGGER.error("RE: Enemy, no faction could be chosen");
         exit;
     }
     var chosen_faction = array_random_element(factions);
@@ -421,7 +421,7 @@ function make_faction_enemy_event() {
             log += "Ecclesiarchy";
             break;
         default:
-            global.logger.error("RE: Enemy, no faction could be chosen");
+            LOGGER.error("RE: Enemy, no faction could be chosen");
             exit;
     }
     if (_e_name != "") {

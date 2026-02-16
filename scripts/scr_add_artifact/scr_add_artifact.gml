@@ -422,7 +422,7 @@ function ArtifactStruct(Index) constructor {
         ];
         if (faction < 0 || faction >= array_length(faction_preferences)) {
             // Logging or fallback
-            global.logger.warning("Warning: Faction index out of range. Defaulting to empty preferences.");
+            LOGGER.warning("Warning: Faction index out of range. Defaulting to empty preferences.");
             return 0;
         }
 

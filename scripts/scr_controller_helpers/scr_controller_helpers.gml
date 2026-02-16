@@ -394,7 +394,7 @@ function scr_toggle_diplomacy() {
                 diplomacy = 0;
                 hide_banner = 1;
                 character_diplomacy = false;
-                global.logger.debug("set_diplo");
+                LOGGER.debug("set_diplo");
             }
         }
     });

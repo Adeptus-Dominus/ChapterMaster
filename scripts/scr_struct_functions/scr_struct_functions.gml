@@ -4,7 +4,7 @@ function struct_empty(_struct) {
 
 function move_data_to_current_scope(move_struct, overide = true) {
     if (!is_struct(move_struct)) {
-        global.logger.debug(move_struct);
+        LOGGER.debug(move_struct);
     } else {
         try {
             var _data_names = struct_get_names(move_struct);

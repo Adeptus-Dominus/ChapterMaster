@@ -71,7 +71,7 @@
     
     The Machine God watches over you.
 */
-global.logger.info("Creating Controller");
+LOGGER.info("Creating Controller");
 scr_colors_initialize();
 is_test_map = false;
 target_navy_number = 5;
@@ -1122,7 +1122,7 @@ if (instance_exists(obj_ini)) {
         scr_colors_initialize();
         scr_shader_initialize();
         instance_create(-100, -100, obj_event_log);
-        global.logger.info("New Game");
+        LOGGER.info("New Game");
     }
 }
 //Set player colour
@@ -1132,7 +1132,7 @@ try {
     global.star_name_colors[1] = make_color_rgb(col_r[1], col_g[1], col_b[1]);
 }
 
-global.logger.info("Controller Created");
+LOGGER.info("Controller Created");
 
 #region save/load serialization
 
@@ -1197,10 +1197,10 @@ if (global.load >= 0) {
     obj_cursor.image_alpha = 0;
     scr_colors_initialize();
     if (global.restart == 0) {
-        global.logger.info("Loading Game");
+        LOGGER.info("Loading Game");
     }
     if (global.restart > 0) {
-        global.logger.info("Restarting Game");
+        LOGGER.info("Restarting Game");
     }
     exit;
 }

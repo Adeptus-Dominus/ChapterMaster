@@ -79,7 +79,7 @@ function valid_diplomacy_options() {
 
     for (var i = _options_count - 1; i >= 0; i--) {
         var _opt = obj_controller.diplo_option[i];
-        global.logger.debug(_opt);
+        LOGGER.debug(_opt);
         if (struct_exists(_opt, "option_text") && _opt.option_text != "") {
             _valid = true;
         } else {

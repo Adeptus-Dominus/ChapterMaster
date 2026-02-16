@@ -5,9 +5,9 @@ end_function_args = [];
 
 execute_end_function = function() {
     if (is_method(end_function)) {
-        // global.logger.debug("Executing Method!");
+        // LOGGER.debug("Executing Method!");
         method_call(end_function, end_function_args);
     }
-    // global.logger.debug("Killing Myself!");
+    // LOGGER.debug("Killing Myself!");
     instance_destroy(self);
 };

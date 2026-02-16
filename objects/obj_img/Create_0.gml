@@ -5,7 +5,7 @@ img_cache: {
     "creation/chapters": [somesprite1, somesprite2, ...];
 }
  */
-global.logger.debug("obj_img spawned");
+LOGGER.debug("obj_img spawned");
 
 image_cache = {};
 

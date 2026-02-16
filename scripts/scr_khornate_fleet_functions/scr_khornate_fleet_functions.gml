@@ -133,7 +133,7 @@ function khorne_fleet_cargo() {
                 }
 
                 if (landing_planet == 0 && trade_goods == "khorne_warband_landing_force") {
-                    global.logger.info("BLOOD: A");
+                    LOGGER.info("BLOOD: A");
 
                     // Go after the player now
                     var yarr = false;

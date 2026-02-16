@@ -18,13 +18,13 @@
 /// @param {Enum.eEVENT} event
 /// @param {Enum.eINQUISITION_MISSION} forced_mission optional
 function scr_inquisition_mission(event, forced_mission = -1) {
-    global.logger.info($"RE: Inquisition Mission, event {event}, forced_mission {forced_mission}");
+    LOGGER.info($"RE: Inquisition Mission, event {event}, forced_mission {forced_mission}");
     if ((obj_controller.known[eFACTION.INQUISITION] == 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") && !global.cheat_debug) {
-        global.logger.info("Player is either hasn't met or is at war with Inquisition, not proceeding with inquisition mission");
+        LOGGER.info("Player is either hasn't met or is at war with Inquisition, not proceeding with inquisition mission");
         return;
     }
     if (global.cheat_debug) {
-        global.logger.debug("find mission");
+        LOGGER.debug("find mission");
     }
     if (event == eEVENT.INQUISITION_PLANET) {
         mission_investigate_planet();
@@ -66,21 +66,21 @@ function scr_inquisition_mission(event, forced_mission = -1) {
 
         if (found_sleeping_necrons) {
             array_push(inquisition_missions, eINQUISITION_MISSION.TOMB_WORLD);
-            global.logger.info($"Was able to find a _star with dormant necron tomb for inquisition mission");
+            LOGGER.info($"Was able to find a _star with dormant necron tomb for inquisition mission");
         } else {
-            global.logger.info($"Couldn't find any planets with a dormant necron tomb for inquisition mission");
+            LOGGER.info($"Couldn't find any planets with a dormant necron tomb for inquisition mission");
         }
         if (found_tyranid_org) {
-            global.logger.info($"Was able to find a _star with lvl 4 tyranids for inquisition mission");
+            LOGGER.info($"Was able to find a _star with lvl 4 tyranids for inquisition mission");
             array_push(inquisition_missions, eINQUISITION_MISSION.TYRANID_ORGANISM);
         } else {
-            global.logger.info($"Couldn't find any planets with lvl 4 tyranids for inquisition mission");
+            LOGGER.info($"Couldn't find any planets with lvl 4 tyranids for inquisition mission");
         }
         if (found_demon_world) {
             array_push(inquisition_missions, eINQUISITION_MISSION.DEMON_WORLD);
-            global.logger.info($"Was able to find a _star with demons on it for inquisition mission");
+            LOGGER.info($"Was able to find a _star with demons on it for inquisition mission");
         } else {
-            global.logger.info($"Couldn't find any planets with demons for inquisition mission");
+            LOGGER.info($"Couldn't find any planets with demons for inquisition mission");
         }
 
         //if (string_count("Tau",obj_controller.useful_info)=0){
@@ -149,7 +149,7 @@ function mission_inquisition_demon_world(demon_worlds) {
 }
 
 function mission_inquisition_ethereal() {
-    global.logger.info("RE: Ethereal Capture");
+    LOGGER.info("RE: Ethereal Capture");
     var stars = scr_get_stars();
     var _valid_stars = array_filter_ext(stars, function(_star, index) {
         for (var i = 1; i <= _star.planets; i++) {
@@ -179,7 +179,7 @@ function mission_inquisition_ethereal() {
 }
 
 function mission_inquisition_tyranid_organism(worlds) {
-    global.logger.info("RE: Gaunt Capture");
+    LOGGER.info("RE: Gaunt Capture");
     var _star = choose_array(worlds);
     var planet = -1;
     for (var i = 1; i <= _star.planets; i++) {
@@ -198,7 +198,7 @@ function mission_inquisition_tyranid_organism(worlds) {
 }
 
 function mission_inquisition_tomb_world(tomb_worlds) {
-    global.logger.info("RE: Necron Tomb Bombing");
+    LOGGER.info("RE: Necron Tomb Bombing");
     if (is_array(tomb_worlds)) {
         var _star = array_random_element(tomb_worlds);
     } else {
@@ -214,7 +214,7 @@ function mission_inquisition_tomb_world(tomb_worlds) {
 
     var eta = scr_mission_eta(_star.x, _star.y, 1);
     if (global.cheat_debug) {
-        global.logger.debug("mission popup");
+        LOGGER.debug("mission popup");
     }
     var _options = [
         {
@@ -271,13 +271,13 @@ function init_mission_inquisition_tomb_world() {
 
 function mission_inquisition_artifact() {
     var text;
-    global.logger.info("RE: Artifact Hold");
+    LOGGER.info("RE: Artifact Hold");
     text = "The Inquisition is trusting you with a special mission.  A local Inquisitor has a powerful artifact.  You are to keep it safe, and NOT use it, until the artifact may be safely retrieved.  Can your chapter handle this mission?";
     scr_popup("Inquisition Mission", text, "inquisition", $"artifact|bop|0|{string(irandom_range(6, 26))}|");
 }
 
 function mission_inquistion_hunt_inquisitor(star_id = -1) {
-    global.logger.info("RE: Inquisitor Hunt");
+    LOGGER.info("RE: Inquisitor Hunt");
 
     var stars = scr_get_stars();
     /*var _valid_stars = array_filter_ext(stars,
@@ -296,7 +296,7 @@ function mission_inquistion_hunt_inquisitor(star_id = -1) {
         var _valid_stars = stars;
 
         if (array_length(_valid_stars) == 0) {
-            global.logger.error("RE: Inquisitor Hunt,couldn't find a _star");
+            LOGGER.error("RE: Inquisitor Hunt,couldn't find a _star");
             exit;
         }
 
@@ -488,7 +488,7 @@ function mission_hunt_inquisitor_show_mercy() {
 }
 
 function mission_hunt_inquisitor_destroy_inquisitor_ship() {
-    global.logger.debug("mission_hunt_inquisitor_destroy_inquisitor_ship");
+    LOGGER.debug("mission_hunt_inquisitor_destroy_inquisitor_ship");
     var _final_disp_mod = 0;
 
     if (obj_controller.demanding == 0) {
@@ -541,14 +541,14 @@ function hunt_inquisition_spared_inquisitor_consequence(event) {
 }
 
 function mission_inquistion_spyrer() {
-    global.logger.info("RE: Spyrer");
+    LOGGER.info("RE: Spyrer");
     var stars = scr_get_stars();
     var _valid_stars = array_filter_ext(stars, function(_star, index) {
         return scr_star_has_planet_with_type(_star, "Hive");
     });
 
     if (array_length(_valid_stars) == 0) {
-        global.logger.error("RE: Spyrer, couldn't find _star");
+        LOGGER.error("RE: Spyrer, couldn't find _star");
         exit;
     }
     var _star = array_random_element(_valid_stars);
@@ -559,12 +559,12 @@ function mission_inquistion_spyrer() {
     var text = $"The Inquisition is trusting you with a special mission.  An experienced Spyrer on hive world {string(_star.name)} {scr_roman(planet)}";
     text += $" has began to hunt indiscriminately, and proven impossible to take down by conventional means.  If they are not put down within {string(eta)} month's time panic is likely.  Can your chapter handle this mission?";
     var mission_params = $"spyrer|{string(_star.name)}|{string(planet)}|{string(eta + 1)}|";
-    global.logger.info($"Starting spyrer mission with params {mission_params}");
+    LOGGER.info($"Starting spyrer mission with params {mission_params}");
     scr_popup("Inquisition Mission", text, "inquisition", mission_params);
 }
 
 function mission_inquistion_purge() {
-    global.logger.info("RE: Purge");
+    LOGGER.info("RE: Purge");
     var mission_flavour = choose(1, 1, 1, 2, 2, 3);
 
     var stars = scr_get_stars();
@@ -589,7 +589,7 @@ function mission_inquistion_purge() {
     }
 
     if (array_length(_valid_stars) == 0) {
-        global.logger.error("RE: Purge, couldn't find _star");
+        LOGGER.error("RE: Purge, couldn't find _star");
         exit;
     }
 
@@ -612,7 +612,7 @@ function mission_inquistion_purge() {
     }
 
     if (planet == -1) {
-        global.logger.error("RE: Purge, couldn't find planet");
+        LOGGER.error("RE: Purge, couldn't find planet");
         exit;
     }
 
@@ -655,14 +655,14 @@ function mission_investigate_planet() {
     });
 
     if (array_length(_valid_stars) == 0) {
-        global.logger.error("RE: Investigate Planet, couldn't find a _star");
+        LOGGER.error("RE: Investigate Planet, couldn't find a _star");
         exit;
     }
 
     var _star = array_random_element(_valid_stars);
     var planet = scr_get_planet_with_feature(_star, eP_FEATURES.ANCIENT_RUINS);
     if (planet == -1) {
-        global.logger.error("RE: Investigate Planet, couldn't pick a planet");
+        LOGGER.error("RE: Investigate Planet, couldn't pick a planet");
         exit;
     }
 
@@ -683,10 +683,10 @@ function mission_investigate_planet() {
 
 /// @mixin obj_star
 function setup_necron_tomb_raid(planet) {
-    global.logger.info($"player on planet with necron mission {name} planet: {planet}");
+    LOGGER.info($"player on planet with necron mission {name} planet: {planet}");
     var have_bomb;
     have_bomb = scr_check_equip("Plasma Bomb", name, planet, 0);
-    global.logger.info($"have bomb? {have_bomb} ");
+    LOGGER.info($"have bomb? {have_bomb} ");
     if (have_bomb > 0) {
         var tixt;
         tixt = $"Your marines on {planet_numeral_name(planet)}";

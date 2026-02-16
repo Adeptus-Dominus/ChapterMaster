@@ -10,7 +10,7 @@ function scr_enemy_ai_a() {
     // guardsmen hop from planet to planet
     //not sure we really need this as it's handled with tht navy fleet functions but fuck it updated it and leaving it fot the sec
     if (system_guard_total() > 0 && present_fleet[eFACTION.IMPERIUM]) {
-        global.logger.debug($"system_has_guard {p_guardsmen}");
+        LOGGER.debug($"system_has_guard {p_guardsmen}");
         var cur_planet = 0, most_enemies_found = 0, current_guard_planet = 0, most_enemies_planet = 0;
 
         var _guard_planets = guard_find_planet_with_most_enemy_forces(self);
@@ -21,7 +21,7 @@ function scr_enemy_ai_a() {
             p_guardsmen[_next] = p_guardsmen[_current];
             p_guardsmen[_current] = 0;
         }
-        global.logger.debug($"system_has_guard {p_guardsmen}");
+        LOGGER.debug($"system_has_guard {p_guardsmen}");
     }
 
     if ((obj_controller.faction_defeated[10] > 0) && (obj_controller.faction_gender[10] == 2)) {
@@ -427,7 +427,7 @@ function scr_enemy_ai_a() {
             var _active_garrison = pdf_with_player && garrison.viable_garrison > 0;
             // Guard attack
             if ((guard_score > 0) && (guard_attack != "") && (guard_score > 0.5)) {
-                global.logger.debug($"{name}:{guard_attack}");
+                LOGGER.debug($"{name}:{guard_attack}");
                 if (guard_attack == "ork") {
                     tempor = choose(1, 2, 3, 4, 5, 6) * planet_forces[eFACTION.ORK];
                 }
@@ -470,7 +470,7 @@ function scr_enemy_ai_a() {
                     }
                     rand1 = (choose(3, 4, 5, 6) * guard_score) * choose(1, 1.25, 1.25);
                     rand2 = (pdf_mod * pdf_score) * choose(1, 1.25);
-                    global.logger.debug($"{name} guard attack guard_Win:{rand1 > rand2}");
+                    LOGGER.debug($"{name} guard attack guard_Win:{rand1 > rand2}");
                     if (rand1 > rand2) {
                         var _pdf_before = p_pdf[_run];
                         if (guard_score <= 3) {
@@ -597,7 +597,7 @@ function scr_enemy_ai_a() {
 
                 if (pdf_attack == "guard") {
                     rand2 = (choose(1, 2, 3, 4, 5, 6) * guard_score) * choose(1, 1.25, 2);
-                    global.logger.debug($"{name} : pdf attack ,pdf win {rand1 > rand2}");
+                    LOGGER.debug($"{name} : pdf attack ,pdf win {rand1 > rand2}");
                     if (rand1 > rand2) {
                         if (pdf_score <= 3) {
                             p_guardsmen[_run] = floor(p_guardsmen[_run] * 0.7);

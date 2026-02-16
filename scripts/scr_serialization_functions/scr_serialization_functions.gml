@@ -40,7 +40,7 @@ function copy_serializable_fields(_source, _destination, _exclude = [], _exclude
         if (is_array(_field_value)) {
             if (!is_basic_array(_field_value, 2)) {
                 var _source_obj_name = struct_exists(_source, "object_index") ? object_get_name(_source.object_index) : "<non-instance>";
-                global.logger.warning($"Bad array save: '{_field_name}' internal type found was not a simple type and should probably have it's own serialize function - {_source_obj_name}!");
+                LOGGER.warning($"Bad array save: '{_field_name}' internal type found was not a simple type and should probably have it's own serialize function - {_source_obj_name}!");
             } else {
                 variable_struct_set(_destination, _field_name, _field_value);
             }
@@ -48,6 +48,6 @@ function copy_serializable_fields(_source, _destination, _exclude = [], _exclude
         }
 
         var _source_obj_name = struct_exists(_source, "object_index") ? object_get_name(_source.object_index) : "<non-instance>";
-        global.logger.warning($"{_source_obj_name} - '{_field_name}' key contains a {typeof(_field_value)} variable which has not been serialized. \n\tEnsure that serialization is written into the serialize and deserialization function if it is needed for this value, or that the variable is added to the ignore list to suppress this warning!");
+        LOGGER.warning($"{_source_obj_name} - '{_field_name}' key contains a {typeof(_field_value)} variable which has not been serialized. \n\tEnsure that serialization is written into the serialize and deserialization function if it is needed for this value, or that the variable is added to the ignore list to suppress this warning!");
     }
 }

@@ -91,7 +91,7 @@ deserialize = function(save_data) {
         try {
             variable_struct_set(self, var_name, loaded_value);
         } catch (e) {
-            global.logger.exception("Deserialization failed", e);
+            LOGGER.exception("Deserialization failed", e);
         }
     }
 

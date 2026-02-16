@@ -1,7 +1,7 @@
 function scr_trade_dep() {
     var _goods = cargo_data.player_goods;
 
-    //global.logger.debug($"trade goods : {_goods}");
+    //LOGGER.debug($"trade goods : {_goods}");
     if (struct_exists(_goods, "mercenaries")) {
         var _mercs = struct_get_names(_goods.mercenaries);
         for (var m = 0; m < array_length(_mercs); m++) {

@@ -389,7 +389,7 @@ function scr_planetary_feature(planet_num) {
 function create_starship_event() {
     var star = scr_random_find(2, true, "", "");
     if (star == undefined) {
-        global.logger.error("RE: couldn't find starship target");
+        LOGGER.error("RE: couldn't find starship target");
         return false;
     } else {
         var planet = irandom(star.planets - 1) + 1;
