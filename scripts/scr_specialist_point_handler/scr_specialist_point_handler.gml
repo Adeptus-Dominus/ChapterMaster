@@ -231,7 +231,7 @@ function SpecialistPointHandler() constructor {
                         _current_tech = techs[_new_pursuasion];
 
                         // find out if heretic is in same location as techmarine
-                        if (same_locations(_heretic_location, tech_locations[_new_pursuasion])) {
+                        if (locations_are_equal(_heretic_location, tech_locations[_new_pursuasion])) {
                             _met_non_heretic = true;
                             //if so do a an opposed technology test of techmarine vs tech  heretic techmarine
                             tech_test = _tester.oppposed_test(_current_heretic, _current_tech, "technology");

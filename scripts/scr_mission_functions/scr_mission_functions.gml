@@ -785,3 +785,24 @@ function problem_has_key_and_value(planet, problem, key, value = "", star = "non
     }
     return has_data;
 }
+
+/// @desc Compares two location arrays to determine if they represent the same place.
+/// @param {array} _first_loc
+/// @param {array} _second_loc
+/// @returns {bool}
+function locations_are_equal(_first_loc, _second_loc) {
+    if (!is_array(_first_loc) || !is_array(_second_loc)) {
+        LOGGER.error("Attempted to compare non-array location data.");
+        return false;
+    }
+
+    var _first_type = _first_loc[2];
+    var _second_type = _second_loc[2];
+
+    if ((_first_type != "Warp" && _first_type != "Lost") && (_second_type != "Warp" && _second_type != "Lost") && (_first_type == _second_type)) {
+        return true;
+    }
+
+    return (_first_loc[1] == _second_loc[1]) && (_first_loc[0] == _second_loc[0]);
+}
+

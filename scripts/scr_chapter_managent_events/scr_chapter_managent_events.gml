@@ -32,7 +32,7 @@ function tech_uprising_event_aftermath() {
         //loop techs to fins out which techs are in the same  location
         for (t = i + 1; t < tech_count; t++) {
             check_tech = techs[t].marine_location();
-            if (same_locations(tech.marine_location(), check_tech)) {
+            if (locations_are_equal(tech.marine_location(), check_tech)) {
                 if (techs[t].has_trait("tech_heretic")) {
                     array_push(location_heretics, techs[t]);
                     heretic_data[0] += techs[t].weapon_skill;
