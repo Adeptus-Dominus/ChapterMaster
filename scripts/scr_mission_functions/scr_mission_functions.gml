@@ -791,15 +791,16 @@ function problem_has_key_and_value(planet, problem, key, value = "", star = "non
 /// @param {array} _second_loc
 /// @returns {bool}
 function locations_are_equal(_first_loc, _second_loc) {
-    if (!is_array(_first_loc) || !is_array(_second_loc)) {
-        LOGGER.error("Attempted to compare non-array location data.");
+    if (!is_array(_first_loc) || !is_array(_second_loc) || array_length(_first_loc) < 3 || array_length(_second_loc) < 3) {
+        LOGGER.error("Attempted to compare non-array or broken location data.");
         return false;
     }
 
     var _first_type = _first_loc[2];
     var _second_type = _second_loc[2];
+    var _not_lost = (_first_type != "Warp" && _first_type != "Lost") && (_second_type != "Warp" && _second_type != "Lost");
 
-    if ((_first_type != "Warp" && _first_type != "Lost") && (_second_type != "Warp" && _second_type != "Lost") && (_first_type == _second_type)) {
+    if (_not_lost && (_first_type == _second_type)) {
         return true;
     }
 

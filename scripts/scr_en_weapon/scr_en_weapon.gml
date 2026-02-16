@@ -20,7 +20,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     faith_bonus = 0;
     // var struct = gear_weapon_data("weapon",name);
 
-
     //if (obj_ncombat.enemy=5) then faith_bonus=faith[man_type];
 
     switch (name) {

@@ -306,7 +306,7 @@ function spawn_chaos_warlord() {
 function destroy_khorne_fleet() {
     var chaos_lord_killed = false;
     with (instance_nearest(x, y, obj_star)) {
-        if (system_feature_bool(p_feature, eP_FEATURES.CHAOSWARBAND == 1)) {
+        if (system_feature_bool(p_feature, eP_FEATURES.CHAOSWARBAND) == 1) {
             chaos_lord_killed = true;
         }
     }
