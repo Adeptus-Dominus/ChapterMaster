@@ -65,7 +65,7 @@ function ShopItem(_name) constructor {
     /// @desc Centralized calculation for current costs.
     /// @param {bool} _is_forge Whether we are in forge mode.
     /// @param {real} _forge_mod The STC/Hangar modifier.
-    static calculate_costs = function(_is_forge, _forge_mod, _known_techs) {
+    static update_costs = function(_is_forge, _forge_mod, _known_techs, _has_hangars) {
         if (global.cheat_debug) {
             buy_cost = 0;
             forge_cost = 0;
@@ -74,18 +74,23 @@ function ShopItem(_name) constructor {
         }
 
         if (_is_forge) {
-            var _missing_techs = [];
+            var _missing_reqs = [];
 
             for (var j = 0, l = array_length(requires_to_forge); j < l; j++) {
                 var _tech = requires_to_forge[j];
 
                 if (!array_contains(_known_techs, _tech)) {
-                    array_push(_missing_techs, _get_tech_display_name(_tech));
+                    array_push(_missing_reqs, _get_tech_display_name(_tech));
                 }
             }
 
-            meets_requirements = array_length(_missing_techs) == 0;
-            missing_technologies = meets_requirements ? [] : _missing_techs;
+            var _is_vehicle_item = (area == "vehicles" || area == "vehicle_gear");
+            if (_is_vehicle_item && !_has_hangars) {
+                array_push(_missing_reqs, "Vehicle Hangar");
+            }
+
+            meets_requirements = array_length(_missing_reqs) == 0;
+            missing_technologies = meets_requirements ? [] : _missing_reqs;
             forge_cost_mod = _forge_mod;
             forge_cost = round(value * SHOP_FORGE_MOD * forge_cost_mod);
         } else {
@@ -98,7 +103,7 @@ function ShopItem(_name) constructor {
             return "";
         }
 
-        return $"Missing Technologies:\n{string_join_ext("\n", missing_technologies)}";
+        return $"Missing Requirements:\n{string_join_ext("\n", missing_technologies)}";
     };
 
     static get_buy_cost_tooltip = function() {
@@ -627,6 +632,8 @@ function Armamentarium(_controller) constructor {
 
         forge_cost_mod = max(0.1, 1.0 - (discount_stc / 100));
 
+        var _has_hangars = array_length(controller.player_forge_data.vehicle_hanger) > 0;
+
         for (var i = 0, len = array_length(master_catalog); i < len; i++) {
             /// @type {Struct.ShopItem}
             var _item = master_catalog[i];
@@ -639,7 +646,7 @@ function Armamentarium(_controller) constructor {
             _item.stocked_mc = scr_item_count(_item.name, "master_crafted");
 
             _item.update_best_seller(_item.sellers, faction_modifiers, discount_rogue_trader);
-            _item.calculate_costs(is_in_forge, forge_cost_mod, controller.technologies_known);
+            _item.update_costs(is_in_forge, forge_cost_mod, controller.technologies_known, _has_hangars);
 
             var _is_visible = (_item.buyable || _item.stocked > 0) || global.cheat_debug;
 
@@ -731,6 +738,7 @@ function Armamentarium(_controller) constructor {
         var _masters = scr_role_count("Forge Master", "", "units");
 
         if (array_length(_masters) > 0) {
+            /// @type {Struct.TTRPG_stats}
             var _fm = _masters[0];
             _cha_bonus = (_fm.charisma - 30) / 200;
             _tech_bonus = _fm.has_trait("flesh_is_weak") ? 0.1 : (_fm.technology - 50) / 200;
@@ -767,7 +775,8 @@ function Armamentarium(_controller) constructor {
                 break;
             case "vehicles":
             case "vehicle_gear":
-                discount_stc = (controller.stc_vehicles * 3) + (array_length(controller.player_forge_data.vehicle_hanger) * 3);
+                var _hanger_bonus = max(array_length(controller.player_forge_data.vehicle_hanger) - 1, 0);
+                discount_stc = (controller.stc_vehicles + _hanger_bonus) * 3;
                 if (discount_stc > 0) {
                     global_cost_tooltip += $"Vehicle STC & Hangars: -{discount_stc}%\n";
                 }
