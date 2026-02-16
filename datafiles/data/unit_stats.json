@@ -1,0 +1,735 @@
+{
+    "chapter_master": {
+        "ballistic_skill": [
+            50,
+            5
+        ],
+        "base_group": "astartes",
+        "charisma": [
+            40,
+            3
+        ],
+        "constitution": [
+            43,
+            3
+        ],
+        "dexterity": [
+            43,
+            3
+        ],
+        "intelligence": [
+            44,
+            3
+        ],
+        "luck": 10,
+        "piety": [
+            30,
+            3
+        ],
+        "religion": "imperial_cult",
+        "strength": [
+            42,
+            5
+        ],
+        "technology": [
+            30,
+            3
+        ],
+        "title": "Adeptus Astartes",
+        "weapon_skill": [
+            50,
+            5
+        ],
+        "wisdom": [
+            43,
+            3
+        ]
+    },
+    "dreadnought": {
+        "ballistic_skill": [
+            55,
+            5
+        ],
+        "base_group": "astartes",
+        "charisma": [
+            35,
+            3
+        ],
+        "constitution": [
+            75,
+            3
+        ],
+        "dexterity": [
+            30,
+            3
+        ],
+        "intelligence": [
+            45,
+            3
+        ],
+        "luck": 10,
+        "piety": [
+            32,
+            3
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Any Power Armour",
+            "wep1": "Bolter",
+            "wep2": "Chainsword"
+        },
+        "strength": [
+            70,
+            4
+        ],
+        "technology": [
+            30,
+            3
+        ],
+        "title": "Adeptus Astartes",
+        "traits": [
+            "ancient",
+            "slow_and_purposeful",
+            "lead_example",
+            "zealous_faith",
+            "still_standing"
+        ],
+        "weapon_skill": [
+            55,
+            5
+        ],
+        "wisdom": [
+            50,
+            3
+        ]
+    },
+    "eldar_ranger": {
+        "ballistic_skill": [
+            45,
+            4
+        ],
+        "base_group": "skitarii",
+        "charisma": [
+            20,
+            2
+        ],
+        "constitution": [
+            30,
+            2
+        ],
+        "dexterity": [
+            50,
+            5
+        ],
+        "intelligence": [
+            35,
+            3
+        ],
+        "luck": 10,
+        "piety": [
+            30,
+            5
+        ],
+        "religion": "cult_mechanicus",
+        "start_gear": {
+            "armour": "Ranger Armour",
+            "wep1": "Ranger Long Rifle",
+            "wep2": "Eldar Power Sword"
+        },
+        "strength": [
+            25,
+            1
+        ],
+        "technology": [
+            20,
+            1
+        ],
+        "title": "Eldar Ranger",
+        "weapon_skill": [
+            45,
+            4
+        ],
+        "wisdom": [
+            50,
+            3
+        ]
+    },
+    "flash_git": {
+        "ballistic_skill": [
+            40,
+            3
+        ],
+        "base_group": "ork",
+        "charisma": [
+            14,
+            1
+        ],
+        "constitution": [
+            40,
+            3
+        ],
+        "dexterity": [
+            8,
+            1
+        ],
+        "intelligence": [
+            20,
+            2
+        ],
+        "luck": 10,
+        "piety": [
+            20,
+            2
+        ],
+        "religion": "gorkamorka",
+        "start_gear": {
+            "armour": "Ork Armour",
+            "wep1": "Snazzgun",
+            "wep2": "Choppa"
+        },
+        "strength": [
+            40,
+            3
+        ],
+        "technology": [
+            30,
+            3
+        ],
+        "title": "Flash Git",
+        "weapon_skill": [
+            25,
+            2
+        ],
+        "wisdom": [
+            20,
+            2
+        ]
+    },
+    "inquisition_crusader": {
+        "ballistic_skill": [
+            10,
+            1
+        ],
+        "base_group": "human",
+        "charisma": [
+            10,
+            1
+        ],
+        "constitution": [
+            10,
+            1
+        ],
+        "dexterity": [
+            10,
+            1
+        ],
+        "intelligence": [
+            10,
+            1
+        ],
+        "luck": 10,
+        "piety": [
+            30,
+            5
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Light Power Armour",
+            "wep1": "Power Sword",
+            "wep2": "Combat Shield"
+        },
+        "strength": [
+            10,
+            1
+        ],
+        "technology": [
+            8,
+            1
+        ],
+        "title": "Inquisition Crusader",
+        "weapon_skill": [
+            10,
+            1
+        ],
+        "wisdom": [
+            12,
+            1
+        ]
+    },
+    "marine": {
+        "ballistic_skill": [
+            40,
+            5
+        ],
+        "base_group": "astartes",
+        "charisma": [
+            32,
+            6
+        ],
+        "constitution": [
+            40,
+            3
+        ],
+        "dexterity": [
+            40,
+            3
+        ],
+        "intelligence": [
+            40,
+            3
+        ],
+        "luck": 10,
+        "piety": [
+            30,
+            3
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Any Power Armour",
+            "wep1": "Chainsword",
+            "wep2": "Chainsword"
+        },
+        "strength": [
+            40,
+            4
+        ],
+        "technology": [
+            30,
+            3
+        ],
+        "title": "Adeptus Astartes",
+        "weapon_skill": [
+            40,
+            5
+        ],
+        "wisdom": [
+            40,
+            3
+        ]
+    },
+    "ork_sniper": {
+        "ballistic_skill": [
+            20,
+            2
+        ],
+        "base_group": "ork",
+        "charisma": [
+            10,
+            1
+        ],
+        "constitution": [
+            20,
+            2
+        ],
+        "dexterity": [
+            6,
+            1
+        ],
+        "intelligence": [
+            10,
+            1
+        ],
+        "luck": 10,
+        "piety": [
+            20,
+            2
+        ],
+        "religion": "gorkamorka",
+        "start_gear": {
+            "armour": "Ork Armour",
+            "wep1": "Sniper Rifle",
+            "wep2": "Choppa"
+        },
+        "strength": [
+            20,
+            2
+        ],
+        "technology": [
+            20,
+            2
+        ],
+        "title": "Ork Sniper",
+        "weapon_skill": [
+            9,
+            1
+        ],
+        "wisdom": [
+            10,
+            1
+        ]
+    },
+    "scout": {
+        "ballistic_skill": [
+            30,
+            2,
+            "max"
+        ],
+        "base_group": "astartes",
+        "charisma": [
+            30,
+            5
+        ],
+        "constitution": [
+            36,
+            3
+        ],
+        "dexterity": [
+            36,
+            3
+        ],
+        "intelligence": [
+            38,
+            3
+        ],
+        "luck": 10,
+        "piety": [
+            28,
+            3
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Any Power Armour",
+            "wep1": "Bolter",
+            "wep2": "Chainsword"
+        },
+        "strength": [
+            36,
+            4
+        ],
+        "technology": [
+            28,
+            3
+        ],
+        "title": "Adeptus Astartes",
+        "weapon_skill": [
+            30,
+            2,
+            "max"
+        ],
+        "wisdom": [
+            35,
+            3
+        ]
+    },
+    /* TODO - check and tweak if necessary
+	"chapter_servitor":{
+			"title" : "Chapter Servitor",
+			"strength":[36,4],
+			"constitution":[36,3],
+			"weapon_skill" : [30,2,"max"],
+			"ballistic_skill" : [30,2,"max"],
+			"dexterity":[36,3],
+			"intelligence":0,
+			"wisdom":0,
+			"charisma" :[10,1],
+			"religion" : "imperial_cult",
+			"piety" : [28,3],
+			"luck" : 10,
+			"technology" :[30,3],
+			"start_gear":{"armour":"power_armour", "wep1":"Combat Knife", "gear":"Servo-arm"}, TODO - tweak and check if correct
+			"base_group" : "astartes",
+			traits:["lobotomized"],
+	},*/
+    "sector_commander": {
+        "ballistic_skill": [
+            20,
+            5
+        ],
+        "base_group": "astartes",
+        "charisma": [
+            40,
+            3
+        ],
+        "constitution": [
+            13,
+            3
+        ],
+        "dexterity": [
+            15,
+            3
+        ],
+        "intelligence": [
+            20,
+            10,
+            "max"
+        ],
+        "luck": 10,
+        "piety": [
+            30,
+            3
+        ],
+        "religion": "imperial_cult",
+        "strength": [
+            12,
+            2
+        ],
+        "technology": [
+            25,
+            3
+        ],
+        "title": "Adeptus Astartes",
+        "weapon_skill": [
+            20,
+            5
+        ],
+        "wisdom": [
+            20,
+            10,
+            "max"
+        ]
+    },
+    "sister_hospitaler": {
+        "ballistic_skill": [
+            13,
+            1
+        ],
+        "base_group": "human",
+        "charisma": [
+            10,
+            1
+        ],
+        "constitution": [
+            12,
+            1
+        ],
+        "dexterity": [
+            11,
+            1
+        ],
+        "intelligence": [
+            12,
+            1
+        ],
+        "luck": 10,
+        "piety": [
+            50,
+            2
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Sororitas Power Armour",
+            "gear": "Sororitas Medkit",
+            "wep1": "Light Bolter",
+            "wep2": ""
+        },
+        "strength": [
+            11,
+            1
+        ],
+        "technology": [
+            12,
+            1
+        ],
+        "title": "Sister Hospitaler",
+        "weapon_skill": [
+            13,
+            1
+        ],
+        "wisdom": [
+            11,
+            1
+        ]
+    },
+    "sister_of_battle": {
+        "ballistic_skill": [
+            15,
+            1
+        ],
+        "base_group": "human",
+        "charisma": [
+            10,
+            1
+        ],
+        "constitution": [
+            12,
+            1
+        ],
+        "dexterity": [
+            22,
+            1
+        ],
+        "intelligence": [
+            10,
+            1
+        ],
+        "luck": 10,
+        "piety": [
+            50,
+            2
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Sororitas Power Armour",
+            "wep1": "Light Bolter",
+            "wep2": ""
+        },
+        "strength": [
+            12,
+            1
+        ],
+        "technology": [
+            8,
+            1
+        ],
+        "title": "Sister of Battle",
+        "weapon_skill": [
+            15,
+            1
+        ],
+        "wisdom": [
+            10,
+            1
+        ]
+    },
+    "skitarii": {
+        "ballistic_skill": [
+            20,
+            1
+        ],
+        "base_group": "skitarii",
+        "charisma": [
+            5,
+            1
+        ],
+        "constitution": [
+            15,
+            1
+        ],
+        "dexterity": [
+            25,
+            1
+        ],
+        "intelligence": [
+            25,
+            1
+        ],
+        "luck": 10,
+        "piety": [
+            20,
+            1
+        ],
+        "religion": "cult_mechanicus",
+        "start_gear": {
+            "armour": "Skitarii Armour",
+            "gear": "",
+            "mobi": "",
+            "wep1": "Hellgun",
+            "wep2": ""
+        },
+        "strength": [
+            12,
+            1
+        ],
+        "technology": [
+            30,
+            1
+        ],
+        "title": "Skitarii",
+        "weapon_skill": [
+            12,
+            1
+        ],
+        "wisdom": [
+            10,
+            1
+        ]
+    },
+    "space_marine_captain": {
+        "ballistic_skill": [
+            48,
+            3
+        ],
+        "base_group": "astartes",
+        "charisma": [
+            40,
+            3
+        ],
+        "constitution": [
+            44,
+            3
+        ],
+        "dexterity": [
+            44,
+            3
+        ],
+        "intelligence": [
+            40,
+            3
+        ],
+        "luck": 10,
+        "piety": [
+            30,
+            3
+        ],
+        "religion": "imperial_cult",
+        "strength": [
+            40,
+            5
+        ],
+        "technology": [
+            30,
+            3
+        ],
+        "title": "Adeptus Astartes",
+        "weapon_skill": [
+            48,
+            3
+        ],
+        "wisdom": [
+            43,
+            3
+        ]
+    },
+    "tech_priest": {
+        "ballistic_skill": [
+            25,
+            3
+        ],
+        "base_group": "tech_priest",
+        "charisma": [
+            30,
+            2
+        ],
+        "constitution": [
+            30,
+            1
+        ],
+        "dexterity": [
+            25,
+            3
+        ],
+        "intelligence": [
+            30,
+            3
+        ],
+        "luck": 10,
+        "piety": [
+            45,
+            3
+        ],
+        "religion": "cult_mechanicus",
+        "start_gear": {
+            "armour": "Dragon Scales",
+            "mobi": "Servo-arm",
+            "wep1": "Power Axe",
+            "wep2": "Laspistol"
+        },
+        "strength": [
+            15,
+            1
+        ],
+        "technology": [
+            55,
+            3
+        ],
+        "title": "Tech Priest",
+        "weapon_skill": [
+            15,
+            1
+        ],
+        "wisdom": [
+            20,
+            2
+        ]
+    }
+}
