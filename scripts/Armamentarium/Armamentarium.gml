@@ -84,7 +84,7 @@ function ShopItem(_name) constructor {
                 }
             }
 
-            var _is_vehicle_item = (area == "vehicles" || area == "vehicle_gear");
+            var _is_vehicle_item = area == "vehicles" || area == "vehicle_gear";
             if (_is_vehicle_item && !_has_hangars) {
                 array_push(_missing_reqs, "Vehicle Hangar");
             }

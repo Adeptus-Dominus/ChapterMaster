@@ -132,6 +132,7 @@
     {"$GMIncludedFile":"","%Name":"ships.json","CopyToMask":-1,"filePath":"datafiles/data","name":"ships.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"technologies.json","CopyToMask":-1,"filePath":"datafiles/data","name":"technologies.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"traits.json","CopyToMask":-1,"filePath":"datafiles/data","name":"traits.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"unit_stats.json","CopyToMask":-1,"filePath":"datafiles/data","name":"unit_stats.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"vehicle_gear.json","CopyToMask":-1,"filePath":"datafiles/data","name":"vehicle_gear.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"vehicles.json","CopyToMask":-1,"filePath":"datafiles/data","name":"vehicles.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"weapons.json","CopyToMask":-1,"filePath":"datafiles/data","name":"weapons.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},

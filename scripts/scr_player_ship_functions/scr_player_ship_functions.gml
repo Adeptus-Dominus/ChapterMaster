@@ -50,7 +50,7 @@ function return_lost_ship() {
                 if (array_length(_units)) {
                     _text += $"While in the warp the geller fields temporarily went down leaving the ships crew to face the horror of the warp";
                     for (var i = 0; i < array_length(_units); i++) {
-                        _units[i].edit_corruption(max(0, irandom_range(20, 120) - _unit.piety));
+                        _units[i].edit_corruption(max(0, irandom_range(20, 120) - _units[i].piety));
                     }
                 }
             } else if (_return_defect > 50) {
