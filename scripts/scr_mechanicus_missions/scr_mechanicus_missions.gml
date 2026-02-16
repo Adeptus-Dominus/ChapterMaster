@@ -138,7 +138,7 @@ function mechanicus_missions_end_turn(planet) {
 }
 
 function spawn_mechanicus_mission(chosen_mission = "random") {
-    global.logger.info("RE: Mechanicus Mission");
+    LOGGER.info("RE: Mechanicus Mission");
     var mechanicus_missions = [];
     var _evented;
 
@@ -167,7 +167,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
 
     var mission_count = array_length(mechanicus_missions);
     if (mission_count == 0 && chosen_mission == "random") {
-        global.logger.error("RE: Mechanicus Mission, couldn't pick mission");
+        LOGGER.error("RE: Mechanicus Mission, couldn't pick mission");
         exit;
     }
 
@@ -177,7 +177,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
 
     if (chosen_mission == "mech_bionics" || chosen_mission == "mech_raider" || chosen_mission == "mech_mars") {
         if (array_length(_forge_stars) == 0) {
-            global.logger.error("RE: Mechanicus Mission, couldn't find a mechanicus forge world");
+            LOGGER.error("RE: Mechanicus Mission, couldn't find a mechanicus forge world");
             exit;
         }
 
@@ -230,9 +230,9 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
         if (_evented) {
             scr_popup("Mechanicus Mission", text, "mechanicus", _mission_data);
         }
-        //global.logger.debug(_mission_data);
+        //LOGGER.debug(_mission_data);
     } else if (chosen_mission == "mech_tomb") {
-        global.logger.info("RE: Necron Tomb Study");
+        LOGGER.info("RE: Necron Tomb Study");
         stars = scr_get_stars();
         var valid_stars = array_filter_ext(stars, function(star, index) {
             if (scr_star_has_planet_with_feature(star, eP_FEATURES.NECRON_TOMB) && (awake_necron_star(star) != 0)) {
@@ -245,7 +245,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
         });
 
         if (array_length(valid_stars) == 0) {
-            global.logger.error("RE: Necron Tomb Study, coudln't find a tomb world under imperium control");
+            LOGGER.error("RE: Necron Tomb Study, coudln't find a tomb world under imperium control");
             exit;
         }
         var star = array_random_element(valid_stars);

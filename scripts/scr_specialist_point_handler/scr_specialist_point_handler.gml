@@ -493,7 +493,7 @@ function SpecialistPointHandler() constructor {
                 scr_popup("Research Completed", $"Research of {_item.display_name} complete", "", "");
             }
         } catch (_exception) {
-            global.logger.critical(_forge_order);
+            LOGGER.critical(_forge_order);
             handle_exception(_exception);
         }
     };

@@ -992,6 +992,6 @@ gene_slaves = [];
 instance_deactivate_object(obj_star);
 instance_deactivate_object(obj_ground_mission);
 
-global.logger.debug($"{started}");
+LOGGER.debug($"{started}");
 /* */
 /*  */

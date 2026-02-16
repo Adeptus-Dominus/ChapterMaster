@@ -256,7 +256,7 @@ function TradeAttempt(diplomacy) constructor {
         var _success = attempt_rand <= deal_chance;
         if (_success) {
             _success = find_trade_locations();
-            global.logger.debug("trade_success");
+            LOGGER.debug("trade_success");
             if (_success) {
                 successful_trade_attempt();
                 scr_dialogue("agree", {prepend: "[[Trade Accepted.  Shipment initialized.]]"});
@@ -266,7 +266,7 @@ function TradeAttempt(diplomacy) constructor {
                     scr_loyalty("Xeno Trade", "+");
                 }
             } else {
-                global.logger.debug("no trade locations");
+                LOGGER.debug("no trade locations");
             }
         } else {
             var _dip = diplomacy_faction;
@@ -311,7 +311,7 @@ function TradeAttempt(diplomacy) constructor {
                     exit;
                 }
             }
-            global.logger.debug("trade_fail");
+            LOGGER.debug("trade_fail");
             clear_options();
         }
     };
@@ -674,7 +674,7 @@ function TradeAttempt(diplomacy) constructor {
         }
 
         deal_chance = (100 - penalty) - (their_worth - (my_worth * dif_penalty));
-        //global.logger.debug($"{their_worth},{my_worth},{deal_chance}");
+        //LOGGER.debug($"{their_worth},{my_worth},{deal_chance}");
         var _chance = clamp(floor((deal_chance / 20)), 0, 6);
 
         trade_likely = chance_chart[_chance];

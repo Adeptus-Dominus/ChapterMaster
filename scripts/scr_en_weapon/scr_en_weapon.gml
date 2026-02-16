@@ -147,7 +147,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = 3;
                 break;
             default:
-                global.logger.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
+                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -382,7 +382,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = 3;
                 break;
             default:
-                global.logger.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
+                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -487,7 +487,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = 3;
                 break;
             default:
-                global.logger.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
+                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -561,7 +561,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 rang = 20;
                 break;
             default:
-                global.logger.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
+                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -672,7 +672,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 amm = 1;
                 break;
             default:
-                global.logger.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
+                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -969,7 +969,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = choose(0, 1);
                 break;
             default:
-                global.logger.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
+                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -1062,7 +1062,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = 3;
                 break;
             default:
-                global.logger.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
+                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }

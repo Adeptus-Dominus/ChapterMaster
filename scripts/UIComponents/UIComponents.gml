@@ -354,7 +354,7 @@ function UINodeDebugComponent(owner, name = "") : UIComponent(owner, name) const
             }
             str += string("  UIWARNING: {0} caused by node: {1} against node: {2} in function: {3}\n", code, ref1, ref2, func);
         }
-        global.logger.debug(str + "}");
+        LOGGER.debug(str + "}");
     };
 
     static toString = function() {

@@ -142,7 +142,7 @@ function scr_creation(slide_num) {
         setup_chapter_trait_select();
     }
 
-    global.logger.debug($"calling scr_creation with input {slide_num}");
+    LOGGER.debug($"calling scr_creation with input {slide_num}");
     if (slide_num == eCREATION_SLIDES.CHAPTERTRAITS && custom != eCHAPTER_TYPE.PREMADE) {
         if (name_bad == 1) {
             /*(sound_play(bad);*/

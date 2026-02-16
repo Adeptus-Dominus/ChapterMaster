@@ -131,7 +131,7 @@ function scr_cheatcode(argument0) {
                             var existing_problem = false; //has_any_problem_planet(i);
                             if (!existing_problem) {
                                 if (p_owner[i] == eFACTION.IMPERIUM) {
-                                    global.logger.debug("mission");
+                                    LOGGER.debug("mission");
                                     scr_new_governor_mission(i, problem);
                                 }
                             }
@@ -140,7 +140,7 @@ function scr_cheatcode(argument0) {
                     break;
 
                 case "mechmission":
-                    global.logger.debug("mech_mission");
+                    LOGGER.debug("mech_mission");
 
                     if (array_length(cheat_arguments)) {
                         spawn_mechanicus_mission(cheat_arguments[0]);
@@ -151,7 +151,7 @@ function scr_cheatcode(argument0) {
 
                 case "inquismission":
                     var mission = cheat_arguments[0];
-                    global.logger.debug($"{mission},");
+                    LOGGER.debug($"{mission},");
                     switch (mission) {
                         case "1": //default
                             scr_inquisition_mission(eEVENT.INQUISITION_MISSION);
@@ -184,7 +184,7 @@ function scr_cheatcode(argument0) {
                             scr_inquisition_mission(eEVENT.INQUISITION_MISSION);
                             break;
                     }
-                    global.logger.debug("inquisitor mission initiated");
+                    LOGGER.debug("inquisitor mission initiated");
                     obj_controller.location_viewer.update_mission_log();
                     break;
                 case "artifactpopulate":
@@ -210,12 +210,12 @@ function scr_cheatcode(argument0) {
                     break;
                 case "event":
                     if (cheat_arguments[0] == "crusade") {
-                        global.logger.debug("crusading");
+                        LOGGER.debug("crusading");
                         with (obj_controller) {
                             launch_crusade();
                         }
                     } else if (cheat_arguments[0] == "tomb") {
-                        global.logger.debug("necron_tomb_awaken");
+                        LOGGER.debug("necron_tomb_awaken");
                         with (obj_controller) {
                             awaken_tomb_event();
                         }
@@ -231,16 +231,16 @@ function scr_cheatcode(argument0) {
                         var _star_id = scr_random_find(0, true, "", "");
                         add_event({duration: 2, e_id: "governor_assassination", variant: 2, system: _star_id.name, planet: irandom_range(1, _star_id.planets)});
                     } else if (cheat_arguments[0] == "strangebuild") {
-                        global.logger.debug("strange build");
+                        LOGGER.debug("strange build");
                         strange_build_event();
                     } else if (cheat_arguments[0] == "factionenemy") {
                         make_faction_enemy_event();
                     } else if (cheat_arguments[0] == "stopall") {
                         obj_controller.last_event = 1000000;
-                        global.logger.debug($"last event : {obj_controller.last_event}");
+                        LOGGER.debug($"last event : {obj_controller.last_event}");
                     } else if (cheat_arguments[0] == "startevents") {
                         obj_controller.last_event = 0;
-                        global.logger.debug($"last event : {obj_controller.last_event}");
+                        LOGGER.debug($"last event : {obj_controller.last_event}");
                     } else {
                         with (obj_controller) {
                             scr_random_event(false);
@@ -378,7 +378,7 @@ function scr_cheatcode(argument0) {
                 case "forgemastermeet":
                     var _forge_master = scr_role_count("Forge Master", "", "units");
                     if (array_length(_forge_master) > 0) {
-                        global.logger.debug("meet forge master");
+                        LOGGER.debug("meet forge master");
                         obj_controller.menu_lock = false;
                         instance_destroy(obj_popup_dialogue);
                         scr_toggle_diplomacy();
@@ -386,13 +386,13 @@ function scr_cheatcode(argument0) {
                         obj_controller.character_diplomacy = _forge_master[0];
                         diplo_txt = "Greetings chapter master";
                     } else {
-                        global.logger.debug("no forge master");
+                        LOGGER.debug("no forge master");
                     }
                     break;
             }
         }
     } catch (_exception) {
-        global.logger.debug(_exception.longMessage);
+        LOGGER.debug(_exception.longMessage);
     }
 }
 
@@ -749,7 +749,7 @@ function system_debug_remove_fleet() {
         self.fleet_id = fleet_id;
 
         static choice_func = function() {
-            global.logger.debug($"destroy {current_option.fleet_id}");
+            LOGGER.debug($"destroy {current_option.fleet_id}");
             instance_destroy(current_option.fleet_id);
             popup_default_close();
         };

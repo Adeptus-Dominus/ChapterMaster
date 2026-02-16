@@ -72,7 +72,7 @@ try {
         if (sprite_exists(global.chapter_icon.sprite)) {
             draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
         } else {
-            global.logger.error($"{global.chapter_icon.name} chapter icon not found in any icon directory. Chapter icon will not render.");
+            LOGGER.error($"{global.chapter_icon.name} chapter icon not found in any icon directory. Chapter icon will not render.");
         }
 
         obj_cursor.image_index = 0;
@@ -465,7 +465,7 @@ try {
             draw_unit_buttons(_refresh_cm_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
             if (point_and_click(_refresh_cm_name_btn)) {
                 var _new_cm_name = global.name_generator.generate_space_marine_name();
-                global.logger.debug($"regen name of chapter_master_name from {chapter_master_name} to {_new_cm_name}");
+                LOGGER.debug($"regen name of chapter_master_name from {chapter_master_name} to {_new_cm_name}");
                 chapter_master_name = _new_cm_name;
             }
         }

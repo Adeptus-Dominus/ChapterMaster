@@ -89,7 +89,7 @@ function Table(data) constructor {
                     _col_draw_x += column_widths[d] + col_spacing;
                 }
                 if (_row_entered && struct_exists(_row, "hover")) {
-                    //global.logger.debug($"click : {struct_exists(_row,"click_left")}");
+                    //LOGGER.debug($"click : {struct_exists(_row,"click_left")}");
                     _row.hover();
                 }
                 if (_row_entered && struct_exists(_row, "click_left")) {

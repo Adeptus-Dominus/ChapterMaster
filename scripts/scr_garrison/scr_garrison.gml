@@ -208,7 +208,7 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
             } else {
                 scr_alert("yellow", "DEBUG", $"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!", 0, 0);
                 scr_event_log("yellow", $"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!");
-                global.logger.error($"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!");
+                LOGGER.error($"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!");
             }
             var _garrison_size_mod = total_garrison / 10;
 

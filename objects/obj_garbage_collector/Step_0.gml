@@ -30,6 +30,6 @@ if (gc_timer > 0) {
         }
 
         //! Uncomment if debugging Garbage Collection!
-        // global.logger.debug(_gc_message);
+        // LOGGER.debug(_gc_message);
     });
 }

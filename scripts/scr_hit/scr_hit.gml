@@ -42,7 +42,7 @@ function _point_and_click_logic(_rect, _cooldown = 60, _lock_bypass = false, _in
 
     if (_active_controller != noone && _active_controller.cooldown > 0) {
         if (is_debug_overlay_open()) {
-            global.logger.warning($"Ignored click for cooldown, {_active_controller.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+            LOGGER.warning($"Ignored click for cooldown, {_active_controller.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
         }
         return false;
     }
@@ -62,12 +62,12 @@ function _point_and_click_logic(_rect, _cooldown = 60, _lock_bypass = false, _in
         _active_controller.cooldown = _cooldown * (delta_time / 1000000);
 
         if (is_debug_overlay_open()) {
-            global.logger.debug($"Cooldown Set via {_mode} Click!\n{array_to_string_list(debug_get_callstack(), true)}");
+            LOGGER.debug($"Cooldown Set via {_mode} Click!\n{array_to_string_list(debug_get_callstack(), true)}");
         }
     }
 
     if (is_debug_overlay_open()) {
-        global.logger.debug($"{_mode} Click Detected at: x: {_mouse_coords[0]} y: {_mouse_coords[1]}");
+        LOGGER.debug($"{_mode} Click Detected at: x: {_mouse_coords[0]} y: {_mouse_coords[1]}");
     }
 
     return true;
@@ -110,13 +110,13 @@ function mouse_button_clicked(button = mb_left, cooldown = 60, lock_bypass = fal
     var controller_exist = instance_exists(obj_controller);
     if (controller_exist && obj_controller.cooldown > 0) {
         if (is_debug_overlay_open()) {
-            global.logger.warning($"Ignored click for cooldown, {obj_controller.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+            LOGGER.warning($"Ignored click for cooldown, {obj_controller.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
         }
         return false;
     } else if (controller_exist && cooldown > 0) {
         obj_controller.cooldown = cooldown * delta_time / 1000000;
         if (is_debug_overlay_open()) {
-            global.logger.debug($"Cooldown Set!\n{array_to_string_list(debug_get_callstack(), true)}");
+            LOGGER.debug($"Cooldown Set!\n{array_to_string_list(debug_get_callstack(), true)}");
         }
     } else if (!controller_exist) {
         var main_menu_exists = instance_exists(obj_main_menu);
@@ -124,25 +124,25 @@ function mouse_button_clicked(button = mb_left, cooldown = 60, lock_bypass = fal
         if (main_menu_exists) {
             if (obj_main_menu.cooldown > 0) {
                 if (is_debug_overlay_open()) {
-                    global.logger.warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+                    LOGGER.warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
                 }
                 return false;
             } else if (cooldown > 0) {
                 obj_main_menu.cooldown = cooldown * delta_time / 1000000;
                 if (is_debug_overlay_open()) {
-                    global.logger.debug($"Cooldown Set!\n{array_to_string_list(debug_get_callstack(), true)}");
+                    LOGGER.debug($"Cooldown Set!\n{array_to_string_list(debug_get_callstack(), true)}");
                 }
             }
         } else if (creation_screen_exists) {
             if (obj_creation.cooldown > 0) {
                 if (is_debug_overlay_open()) {
-                    global.logger.warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+                    LOGGER.warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
                 }
                 return false;
             } else if (cooldown > 0) {
                 obj_creation.cooldown = cooldown * delta_time / 1000000;
                 if (is_debug_overlay_open()) {
-                    global.logger.debug($"Cooldown Set!\n{array_to_string_list(debug_get_callstack(), true)}");
+                    LOGGER.debug($"Cooldown Set!\n{array_to_string_list(debug_get_callstack(), true)}");
                 }
             }
         }
@@ -160,7 +160,7 @@ function mouse_button_held(_button = mb_left) {
     var controller_exist = instance_exists(obj_controller);
     if (controller_exist && obj_controller.cooldown > 0) {
         if (is_debug_overlay_open()) {
-            global.logger.warning($"Ignored click for cooldown, {obj_controller.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+            LOGGER.warning($"Ignored click for cooldown, {obj_controller.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
         }
         return false;
     } else if (!controller_exist) {
@@ -169,14 +169,14 @@ function mouse_button_held(_button = mb_left) {
         if (main_menu_exists) {
             if (obj_main_menu.cooldown > 0) {
                 if (is_debug_overlay_open()) {
-                    global.logger.warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+                    LOGGER.warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
                 }
                 return false;
             }
         } else if (creation_screen_exists) {
             if (obj_creation.cooldown > 0) {
                 if (is_debug_overlay_open()) {
-                    global.logger.warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
+                    LOGGER.warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!\n{array_to_string_list(debug_get_callstack(), true)}");
                 }
                 return false;
             }

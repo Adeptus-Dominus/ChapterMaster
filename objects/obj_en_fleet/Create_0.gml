@@ -124,11 +124,11 @@ deserialize = function(save_data) {
             continue;
         }
         var loaded_value = struct_get(save_data, var_name);
-        // global.logger.debug($"en_fleet {en_fleet_instance.id}  - var: {var_name}  -  val: {loaded_value}");
+        // LOGGER.debug($"en_fleet {en_fleet_instance.id}  - var: {var_name}  -  val: {loaded_value}");
         try {
             variable_struct_set(self, var_name, loaded_value);
         } catch (e) {
-            global.logger.exception("Deserialization failed", e);
+            LOGGER.exception("Deserialization failed", e);
         }
     }
     if (struct_exists(save_data, "cargo_data")) {
@@ -143,7 +143,7 @@ deserialize = function(save_data) {
     if (save_data.orbiting != 0 && action == "") {
         var nearest_star = instance_nearest(x, y, obj_star);
         orbiting = nearest_star;
-        // global.logger.debug($"p_fleet id {id} deserialized: {self}");
+        // LOGGER.debug($"p_fleet id {id} deserialized: {self}");
     }
 };
 

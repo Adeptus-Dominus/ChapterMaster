@@ -1,7 +1,7 @@
 try {
     if (obj_ncombat.started == 0) {
         if (men + dreads + veh <= 0) {
-            //global.logger.debug($"column destroyed {x}")
+            //LOGGER.debug($"column destroyed {x}")
             instance_destroy();
         }
         // if (veh+dreads>0) then instance_destroy();

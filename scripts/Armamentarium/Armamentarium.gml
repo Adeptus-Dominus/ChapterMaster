@@ -141,7 +141,7 @@ function ShopItem(_name) constructor {
         }
 
         if (!struct_exists(global.technologies, _tech_key)) {
-            global.logger.error($"Technology {_tech_key} not found in the list!");
+            LOGGER.error($"Technology {_tech_key} not found in the list!");
             return "";
         }
 

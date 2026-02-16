@@ -444,7 +444,7 @@ function group_selection(group, selection_data = {}) {
                 managing = -1;
             }
         }
-        global.logger.debug($"manage_success {obj_controller.menu}");
+        LOGGER.debug($"manage_success {obj_controller.menu}");
     }
     catch (_exception) {
         //handle and send player back to map

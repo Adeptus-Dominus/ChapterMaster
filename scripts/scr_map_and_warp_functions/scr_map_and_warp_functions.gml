@@ -126,7 +126,7 @@ function draw_warp_lanes() {
             var x_ratio = direction_x * forward / sum;
             var y_ratio = direction_y * downward / sum;
             /*if (debug_c<100){
-				global.logger.debug($"{x_ratio},{forward},{y_ratio},{downward}");
+				LOGGER.debug($"{x_ratio},{forward},{y_ratio},{downward}");
 			}*/
             var dist_x = sqrt(pythag_dist * x_ratio) * forward;
             var dist_y = sqrt(pythag_dist * y_ratio) * downward;

@@ -267,12 +267,12 @@ try {
         }
     }
 }
-// global.logger.debug($"known_powers: {known_powers}");
-// global.logger.debug($"buff_powers: {buff_powers}");
-// global.logger.debug($"buff_cast: {buff_cast}");
-// global.logger.debug($"power_index: {power_index}");
-// global.logger.debug($"known_attack_powers: {known_attack_powers}");
+// LOGGER.debug($"known_powers: {known_powers}");
+// LOGGER.debug($"buff_powers: {buff_powers}");
+// LOGGER.debug($"buff_cast: {buff_cast}");
+// LOGGER.debug($"power_index: {power_index}");
+// LOGGER.debug($"known_attack_powers: {known_attack_powers}");
 catch (_exception) {
-    // global.logger.debug($"known_buff_powers: {known_buff_powers}");
+    // LOGGER.debug($"known_buff_powers: {known_buff_powers}");
     handle_exception(_exception);
 }

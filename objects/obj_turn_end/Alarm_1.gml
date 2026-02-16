@@ -11,7 +11,7 @@ if (_is_audience) {
         }
     }
 
-    global.logger.debug(current_audience);
+    LOGGER.debug(current_audience);
 
     if (obj_controller.menu != eMENU.DIPLOMACY) {
         scr_toggle_diplomacy();
@@ -31,7 +31,7 @@ if (_is_audience) {
             scr_dialogue("intro1");
         }
         if (obj_controller.diplomacy != 6) {
-            //global.logger.debug("new_intro");
+            //LOGGER.debug("new_intro");
             scr_dialogue("intro");
         }
     } else {

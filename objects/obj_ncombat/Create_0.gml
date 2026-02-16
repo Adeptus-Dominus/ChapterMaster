@@ -10,7 +10,7 @@ i = 0;
 hue = 0;
 
 turn_count = 0;
-global.logger.info("Ground Combat Started");
+LOGGER.info("Ground Combat Started");
 
 audio_stop_sound(snd_royal);
 audio_play_sound(snd_battle, 0, true);

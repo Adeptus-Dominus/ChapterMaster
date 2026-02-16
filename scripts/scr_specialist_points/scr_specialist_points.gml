@@ -118,7 +118,7 @@ function advance_stc_research(_target, _free = false) {
                 stc_research.ships = 0;
                 break;
             default:
-                global.logger.error($"Unknown target: {_target}");
+                LOGGER.error($"Unknown target: {_target}");
                 break;
         }
     }

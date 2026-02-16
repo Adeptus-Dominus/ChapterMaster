@@ -352,37 +352,37 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
     if (!unequipping) {
         var _mobility_data = gear_weapon_data("mobility", new_mobility_item);
         if (!is_struct(_mobility_data)) {
-            global.logger.error($"Failed to equip {new_mobility_item} for {name()} - can't find the item in the item database!");
+            LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - can't find the item in the item database!");
             return false;
         }
 
         var exp_require = _mobility_data.req_exp;
         if (exp_require > experience) {
-            global.logger.error($"Failed to equip {new_mobility_item} for {name()} - not enough EXP! ({experience}<{exp_require})");
+            LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - not enough EXP! ({experience}<{exp_require})");
             return false;
         }
 
         var _armour_data = get_armour_data();
         if (is_struct(_armour_data)) {
             if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator")) {
-                global.logger.error($"Failed to equip {new_mobility_item} for {name()} - can't use with terminator armour! (Current: {armour()})");
+                LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - can't use with terminator armour! (Current: {armour()})");
                 return false;
             } else if (!_armour_data.has_tag("terminator") && _mobility_data.has_tag("terminator_only")) {
-                global.logger.error($"Failed to equip {new_mobility_item} for {name()} - requires terminator armour! (Current: {armour()})");
+                LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires terminator armour! (Current: {armour()})");
                 return false;
             }
 
             if (_mobility_data.has_tag("power_only") && !_armour_data.has_tag("power_armour")) {
-                global.logger.error($"Failed to equip {new_mobility_item} for {name()} - requires power armour! (Current: {armour()})");
+                LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires power armour! (Current: {armour()})");
                 return false;
             }
         } else {
             if (new_mobility_item == "Jump Pack") {
-                global.logger.error($"Failed to equip {new_mobility_item} for {name()} - requires armour!");
+                LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires armour!");
                 return false;
             }
             if (_mobility_data.has_tag("terminator")) {
-                global.logger.error($"Failed to equip {new_mobility_item} for {name()} - requires terminator armour!");
+                LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires terminator armour!");
                 return false;
             }
         }
@@ -399,7 +399,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
             quality = scr_add_item(new_mobility_item, -1, quality);
             quality = quality != undefined ? quality : "standard";
         } else {
-            global.logger.error($"Failed to equip {new_mobility_item} for {name()} - not enough items of {quality} quality!");
+            LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - not enough items of {quality} quality!");
             return false;
         }
     } else {
