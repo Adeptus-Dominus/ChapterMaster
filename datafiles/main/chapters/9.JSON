@@ -1,4 +1,5 @@
 {
+    "$schema": "./chapter_schema.json",
     "chapter": {
         "id": 9,
         "name": "Raven Guard",
@@ -52,7 +53,7 @@
             "trim": "Silver",
             "lens": "Dark Red",
             "weapon": "Black",
-            "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
+            "special": 0 // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours 
         },
         "names": {
