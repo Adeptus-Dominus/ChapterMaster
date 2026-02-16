@@ -38,7 +38,6 @@ function scr_inquisition_mission(event, forced_mission = -1) {
 
         var found_sleeping_necrons = false;
         var found_tyranid_org = false;
-        var found_demon_world = false;
 
         var necron_tomb_worlds = [];
         var tyranid_org_worlds = [];
@@ -55,7 +54,6 @@ function scr_inquisition_mission(event, forced_mission = -1) {
 
             if (star_has_planet_with_forces(_star, "Demons", 1)) {
                 // array_push(demon_worlds, _star); // turning this off til i have a way to finish the mission
-                found_demon_world = true;
             }
 
             if (star_has_planet_with_forces(_star, eFACTION.TYRANIDS, 4)) {
@@ -76,7 +74,7 @@ function scr_inquisition_mission(event, forced_mission = -1) {
         } else {
             LOGGER.info($"Couldn't find any planets with lvl 4 tyranids for inquisition mission");
         }
-        if (found_demon_world) {
+        if (array_length(demon_worlds) > 0) {
             array_push(inquisition_missions, eINQUISITION_MISSION.DEMON_WORLD);
             LOGGER.info($"Was able to find a _star with demons on it for inquisition mission");
         } else {
