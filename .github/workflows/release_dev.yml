@@ -217,9 +217,18 @@ jobs:
         name: Build Changelog
         uses: mikepenz/release-changelog-builder-action@v6.1.0
         with:
-          mode: "HYBRID"
+          mode: "COMMIT"
           fromTag: ${{ needs.prepare_release.outputs.from_tag }}
           toTag: ${{ github.sha }}
+          configurationJson: |
+            {
+              "template": "<details>\n<summary>Commits</summary>\n\n#{{UNCATEGORIZED}}\n</details>\n\nChanged Lines: #{{CHANGES}}",
+              "commit_template": "- #{{TITLE}} ([#{{MERGE_SHA}}](https://github.com/Adeptus-Dominus/ChapterMaster/commit/#{{MERGE_SHA}})) (by #{{AUTHOR}})",
+              "sort": {
+                "order": "ASC",
+                "on_property": "title"
+              },
+            }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
