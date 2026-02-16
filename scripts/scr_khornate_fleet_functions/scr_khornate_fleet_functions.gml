@@ -208,7 +208,7 @@ function khorne_fleet_cargo() {
                                     } else {
                                         action_x = nearest_star.x;
                                         action_y = nearest_star.y;
-                                        acyion = "";
+                                        action = "";
                                         set_fleet_movement();
                                         target_chosen = true;
                                     }
