@@ -230,9 +230,9 @@ function clean_stacktrace_line(_line_string) {
         var _parts = string_split(_str, "@");
         var _method_name = _parts[0];
         var _location = _parts[array_length(_parts) - 1];
-        _final_out = $"{_location} >> L{_line_num} > {_method_name}";
+        _final_out = $"{_location}:{_line_num} >> {_method_name}";
     } else {
-        _final_out = $"{_str} >> L{_line_num}";
+        _final_out = $"{_str}:{_line_num}";
     }
 
     // 5. Append the Code Snippet if we found one
