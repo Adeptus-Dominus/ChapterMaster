@@ -35,6 +35,8 @@ garrison_data_slate = new DataSlate();
 garrison_data_slate.title = "Garrison Report";
 main_data_slate = new DataSlate();
 
+potential_doners = [];
+
 colonist_button = new PurchaseButton(1000);
 colonist_button.update({tooltip: "Planets with higher populations can provide more recruits both for your chapter and to keep a planets PDF bolstered, however colonists from other planets bring with them their home planets influences and evils /n REQ : 1000", label: "Request Colonists", target: target});
 colonist_button.bind_method = function() {

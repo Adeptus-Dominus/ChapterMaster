@@ -311,11 +311,11 @@ if (obj_controller.selecting_planet != 0) {
             draw_set_halign(fa_left);
             if (!target.space_hulk) {
                 if ((obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && p_data.current_owner <= 5) || (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
-                    colonist_button.update({x1: xx + 35, y1: half_way, allow_click: array_length(potential_doners)});
-                    colonist_button.draw();
+                    colonist_button.update({x1: xx + 35, y1: half_way});
+                    colonist_button.draw(array_length(potential_doners));
 
-                    recruiting_button.update({x1: xx + (spacing_x * 2) + 15, y1: half_way, allow_click: true});
-                    recruiting_button.draw();
+                    recruiting_button.update({x1: xx + (spacing_x * 2) + 15, y1: half_way});
+                    recruiting_button.draw(true);
                     if (p_data.has_feature(eP_FEATURES.RECRUITING_WORLD)) {
                         var _recruit_world = p_data.get_features(eP_FEATURES.RECRUITING_WORLD)[0];
                         if ((_recruit_world.recruit_type == 0) && (obj_controller.faction_status[p_data.current_owner] != "War" && obj_controller.faction_status[p_data.current_owner] != "Antagonism" || p_data.player_disposition >= 50)) {
@@ -325,17 +325,17 @@ if (obj_controller.selecting_planet != 0) {
                         } else {
                             draw_text(xx + (spacing_x * 3) + 35, half_way - 20, "Abduct");
                         }
-                        recruitment_type_button.update({x1: xx + (spacing_x * 3) + 35, y1: half_way, allow_click: true});
-                        recruitment_type_button.draw();
+                        recruitment_type_button.update({x1: xx + (spacing_x * 3) + 35, y1: half_way});
+                        recruitment_type_button.draw(true);
 
                         draw_text(xx + (spacing_x * 3) - 15, half_way + spacing_y - 20, $"Req:{_recruit_world.recruit_cost * 2}");
                         if (_recruit_world.recruit_cost > 0) {
-                            recruitment_costdown_button.update({x1: xx + (spacing_x * 2) + 35, y1: half_way + spacing_y, allow_click: true});
-                            recruitment_costdown_button.draw();
+                            recruitment_costdown_button.update({x1: xx + (spacing_x * 2) + 35, y1: half_way + spacing_y});
+                            recruitment_costdown_button.draw(true);
                         }
                         if (_recruit_world.recruit_cost < 5) {
-                            recruitment_costup_button.update({x1: xx + (spacing_x * 3) + 35, y1: half_way + spacing_y, allow_click: true});
-                            recruitment_costup_button.draw();
+                            recruitment_costup_button.update({x1: xx + (spacing_x * 3) + 35, y1: half_way + spacing_y});
+                            recruitment_costup_button.draw(true);
                         }
                     }
                 }
