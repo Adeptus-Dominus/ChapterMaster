@@ -1,4 +1,5 @@
 {
+    "$schema": "./chapter_schema.json",
     "chapter": {
         "id": 3,
         "name": "Space Wolves",
@@ -53,7 +54,7 @@
             "trim": "Dark Gold",
             "lens": "Red",
             "weapon": "Dark Gold",
-            "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
+            "special": 0 // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours // todo update ref for new name
         },
         "names": {
@@ -128,11 +129,13 @@
             "mobi": "",
             "armour": "Terminator Armour"
         },
-        "artifact": {
-            "name": "Axe of Morkai",
-            "description": "Once a Khornate axe of great power it was reforged in the image of the death wolf Morkai",
-            "base_weapon_type": "Executioner Power Axe"
-        },
+        "artifact": [
+            {
+                "name": "Axe of Morkai",
+                "description": "Once a Khornate axe of great power it was reforged in the image of the death wolf Morkai",
+                "base_weapon_type": "Executioner Power Axe"
+            }
+        ],
         "company_titles": [
             "",
             "The Bloodmaws",
