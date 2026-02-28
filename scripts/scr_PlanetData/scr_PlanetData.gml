@@ -3,6 +3,8 @@
 
 #macro FORCE_STRENGTH_DESCRIPTIONS ["none", "Minimal", "Sparse", "Moderate", "Numerous", "Very Numerous", "Overwhelming"];
 
+/// @param {real} planet
+/// @param {Asset.GMObject.obj_star} system
 function PlanetData(planet, system) constructor {
     //safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
     //disposition

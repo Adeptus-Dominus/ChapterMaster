@@ -42,7 +42,7 @@ function scr_random_marine(role, exp_req, search_params = "none") {
                 marine_list[i] = i;
             }
             while (comp_size > 0) {
-                list_place = irandom(comp_size - 1);
+                var list_place = irandom(comp_size - 1);
                 i = marine_list[list_place];
                 match = true;
                 unit = obj_ini.TTRPG[company][i];

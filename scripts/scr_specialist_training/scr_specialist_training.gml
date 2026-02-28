@@ -93,7 +93,7 @@ function specialistfunct(specialist, req_exp) {
 //   specialist - Integer index (0: Techmarine, 1: Librarian, 2: Chaplain, 3: Apothecary)
 // Returns: Array containing company and position of selected marine, or "none" if no suitable marine found
 function spec_data_set(specialist) {
-    var _data = spec_train_data[specialist];
+    var _data = obj_controller.spec_train_data[specialist];
     var _search = {
         "stat": _data.req,
         "job": "none",

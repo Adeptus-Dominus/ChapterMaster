@@ -615,29 +615,7 @@ if (defeat == 0 && _reduce_power) {
             }
             scr_newtext();
         }
-
-        // popup here
-        /*
-        var pip;
-        pip=instance_create(0,0,obj_popup);
-        pip.title="Necron Tombs";
-        pip.text="The Necrons have been defeated on the surface, but remain able to replenish their numbers and recuperate.  Do you wish to advance your army into the tunnels?";
-        pip.image="necron_tunnels_1";
-        pip.cooldown=15;
-        cooldown=15;
-
-        pip.add_option="Advance!";
-        pip.add_option="Cancel the attack";*/
     }
-
-    /*if (enemy=13) and (new_power<=0) and (dropping=0){
-        var bombs;bombs=scr_check_equip("Plasma Bomb",battle_loc,battle_id,0);
-        if (bombs>0){
-            scr_check_equip("Plasma Bomb",battle_loc,battle_id,1);
-            newline="Plasma Bomb used to seal the Necron Tomb.";newline_color="yellow";scr_newtext();
-            if (battle_object.p_feature[battle_id]="Awakened Necron Tomb") then battle_object.p_feature[battle_id]="Necron Tomb";
-        }
-    }*/
 }
 
 if ((defeat == 0) && (enemy == eFACTION.TYRANIDS) && (battle_special == "tyranid_org")) {
@@ -649,9 +627,6 @@ if ((defeat == 0) && (enemy == eFACTION.TYRANIDS) && (battle_special == "tyranid
     if (captured_gaunt > 0) {
         var why = 0, thatta = 0;
         instance_activate_object(obj_star);
-        // with(obj_star){if (name!=obj_ncombat.battle_loc) then instance_deactivate_object(id);}
-        // thatta=obj_star;
-
         with (obj_star) {
             remove_star_problem("tyranid_org");
         }
