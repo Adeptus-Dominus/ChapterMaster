@@ -968,7 +968,7 @@ function PlanetData(planet, system) constructor {
         if (_button_manager.draw()) {
             obj_star_select.population = !obj_star_select.population;
             if (obj_star_select.population) {
-                obj_star_select.potential_doners = find_population_doners(system.id);
+                obj_star_select.potential_donors = find_population_doners(system.id);
             }
         }
 

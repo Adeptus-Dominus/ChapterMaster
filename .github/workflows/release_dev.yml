@@ -227,7 +227,7 @@ jobs:
               "sort": {
                 "order": "ASC",
                 "on_property": "title"
-              },
+              }
             }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
