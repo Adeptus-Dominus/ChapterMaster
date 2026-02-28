@@ -222,7 +222,7 @@ jobs:
           toTag: ${{ github.sha }}
           configurationJson: |
             {
-              "template": "### Commits\n\n#{{CHANGELOG}}\n\n#{{UNCATEGORIZED}}\n\nChanged Lines: #{{CHANGES}}\nFull Diff: #{{RELEASE_DIFF}}",
+              "template": "### Commits\n\n#{{CHANGELOG}}\n\n#{{UNCATEGORIZED}}\n\n**Changed Lines:** #{{CHANGES}}\n**Full Changelog:** #{{RELEASE_DIFF}}",
               "commit_template": "- [#{{TITLE}}](https://github.com/Adeptus-Dominus/ChapterMaster/commit/#{{MERGE_SHA}}) by #{{AUTHOR}}",
               "sort": {
                 "order": "ASC",
