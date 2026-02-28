@@ -312,7 +312,7 @@ if (obj_controller.selecting_planet != 0) {
             if (!target.space_hulk) {
                 if ((obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && p_data.current_owner <= 5) || (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
                     colonist_button.update({x1: xx + 35, y1: half_way});
-                    colonist_button.draw(array_length(potential_doners));
+                    colonist_button.draw(array_length(potential_donors));
 
                     recruiting_button.update({x1: xx + (spacing_x * 2) + 15, y1: half_way});
                     recruiting_button.draw(true);

@@ -163,7 +163,7 @@ function event_end_turn_action() {
                 var _unit = fetch_unit([marine_num, comp]);
                 var item = _event.crafted;
 
-                LOGGER.warning($"comp: {comp}, marie_num: {marine_num}");
+                LOGGER.warning($"comp: {comp}, marine_num: {marine_num}");
 
                 var killy = 0, tixt = $"{obj_ini.role[100][16]} {marine_name} has finished his work- ";
 
