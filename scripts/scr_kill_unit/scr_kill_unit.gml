@@ -1,21 +1,27 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function scr_kill_unit(company, unit_slot) {
-    if (obj_ini.role[company][unit_slot] == "Forge Master") {
-        array_push(obj_ini.previous_forge_masters, obj_ini.name[company][unit_slot]);
-    }
+    try {
+        if (obj_ini.role[company][unit_slot] == "Forge Master") {
+            array_push(obj_ini.previous_forge_masters, obj_ini.name[company][unit_slot]);
+        }
 
-    if (obj_ini.role[company][unit_slot] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
-        tek = "c";
-        alarm[7] = 5;
-        global.defeat = 1;
+        if (obj_ini.role[company][unit_slot] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
+            tek = "c";
+            alarm[7] = 5;
+            global.defeat = 1;
+        }
+        _unit = fetch_unit([company, unit_slot]);
+        if (_unit.weapon_one() == "Company Standard" || _unit.weapon_two() == "Company Standard") {
+            scr_loyalty("Lost Standard", "+");
+        }
+        _unit.remove_from_squad();
+        scr_wipe_unit(company, unit_slot);
+        }
+    catch (ex) {
+        LOGGER.error($"company: {company}, unit_slot: {unit_slot}");
+        handle_exception(ex);
     }
-    _unit = fetch_unit([company, unit_slot]);
-    if (_unit.weapon_one() == "Company Standard" || _unit.weapon_two() == "Company Standard") {
-        scr_loyalty("Lost Standard", "+");
-    }
-    _unit.remove_from_squad();
-    scr_wipe_unit(company, unit_slot);
 }
 
 function scr_wipe_unit(company, unit_slot) {
