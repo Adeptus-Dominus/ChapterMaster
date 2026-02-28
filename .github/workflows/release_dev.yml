@@ -222,12 +222,33 @@ jobs:
           toTag: ${{ github.sha }}
           configurationJson: |
             {
-              "template": "<details>\n<summary>Commits</summary>\n\n#{{UNCATEGORIZED}}\n</details>\n\nChanged Lines: #{{CHANGES}}",
-              "commit_template": "- #{{TITLE}} ([#{{MERGE_SHA}}](https://github.com/Adeptus-Dominus/ChapterMaster/commit/#{{MERGE_SHA}})) (by #{{AUTHOR}})",
+              "template": "### Commits\n\n#{{CHANGELOG}}\n\n#{{UNCATEGORIZED}}\n\nChanged Lines: #{{CHANGES}}\nFull Diff: #{{RELEASE_DIFF}}",
+              "commit_template": "- [#{{TITLE}}](https://github.com/Adeptus-Dominus/ChapterMaster/commit/#{{MERGE_SHA}}) by #{{AUTHOR}}",
               "sort": {
                 "order": "ASC",
                 "on_property": "title"
-              }
+              },
+              "categories": [
+                {
+                    "title": "## Features",
+                    "labels": ["feat", "feature"]
+                },
+                {
+                    "title": "## Fixes",
+                    "labels": ["fix"]
+                },
+                {
+                    "title": "## Other",
+                    "labels": []
+                }
+              ],
+              "label_extractor": [
+                {
+                  "pattern": "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test|merge){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
+                  "on_property": "title",
+                  "target": "$1"
+                }
+              ]
             }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
