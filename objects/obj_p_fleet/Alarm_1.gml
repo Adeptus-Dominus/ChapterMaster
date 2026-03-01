@@ -19,7 +19,7 @@ try {
 
         if ((orbiting != 0) && instance_exists(orbiting)) {
             if (orbiting.visited == 0) {
-                for (var planet_num = 1; planet_num < orbiting.planets; planet_num += 1) {
+                for (var planet_num = 1; planet_num <= orbiting.planets; planet_num += 1) {
                     if (array_length(orbiting.p_feature[planet_num]) != 0) {
                         with (orbiting) {
                             scr_planetary_feature(planet_num);
@@ -120,7 +120,7 @@ try {
             var i;
             set_fleet_location(steh.name);
             if (steh.visited == 0) {
-                for (var plan_num = 1; plan_num < 5; plan_num++) {
+                for (var plan_num = 1; plan_num <= steh.planets; plan_num++) {
                     if (array_length(steh.p_feature[plan_num]) != 0) {
                         with (steh) {
                             scr_planetary_feature(plan_num);
