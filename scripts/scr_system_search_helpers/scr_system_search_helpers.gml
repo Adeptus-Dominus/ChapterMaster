@@ -221,8 +221,6 @@ function find_star_by_name(search_name) {
         }
     }
 
-    assert_error_popup($"Star {search_name} wasn't found!");
-
     return "none";
 }
 
