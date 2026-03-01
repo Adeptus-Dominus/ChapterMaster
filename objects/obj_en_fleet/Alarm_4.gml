@@ -1,11 +1,10 @@
 try {
     if (action != "") {
-        var sys, sys_dist, mine, connected, fleet, cont;
+        var sys, sys_dist, mine, connected, cont;
         sys_dist = 9999;
         connected = 0;
         cont = 0;
 
-        fleet = instance_id_get(0);
         sys = instance_nearest(action_x, action_y, obj_star);
         sys_dist = point_distance(action_x, action_y, sys.x, sys.y);
         act_dist = point_distance(x, y, sys.x, sys.y);
@@ -19,9 +18,6 @@ try {
         eta = floor(point_distance(x, y, action_x, action_y) / action_spd) + 1;
         if (connected == 0) {
             eta = eta * 2;
-        }
-        if (connected == 1) {
-            connected = 1;
         }
 
         if ((owner == eFACTION.INQUISITION) && (action_eta < 2)) {
@@ -40,13 +36,12 @@ try {
     }
 
     if (action == "") {
-        var sys, sys_dist, mine, connected, fleet, cont, target_dist;
+        var sys, sys_dist, mine, connected, cont, target_dist;
         sys_dist = 9999;
         connected = 0;
         cont = 0;
         target_dist = 0;
 
-        fleet = id;
         sys = instance_nearest(action_x, action_y, obj_star);
         sys_dist = point_distance(action_x, action_y, sys.x, sys.y);
         if (scr_valid_fleet_target(target)) {
@@ -91,9 +86,6 @@ try {
             eta = floor(point_distance(x, y, action_x, action_y) / action_spd) + 1;
             if (connected == 0) {
                 eta = eta * 2;
-            }
-            if (connected == 1) {
-                connected = 1;
             }
 
             if ((action_eta <= 0) || (owner != eFACTION.INQUISITION)) {
