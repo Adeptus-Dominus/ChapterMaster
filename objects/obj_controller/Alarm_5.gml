@@ -428,7 +428,7 @@ try {
             }
             disposition[eFACTION.IMPERIUM] += 20;
             disposition[eFACTION.MECHANICUS] += 15;
-            disposition[eFACTION.IMPERIUM] += 20;
+            disposition[eFACTION.INQUISITION] += 20;
             disposition[eFACTION.ECCLESIARCHY] += 20;
             var o = 0;
             if (scr_has_adv("Reverent Guardians")) {
