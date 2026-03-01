@@ -428,13 +428,13 @@ try {
     if ((action == "move") && (action_eta > 5000)) {
         var woop = instance_nearest(x, y, obj_star);
         if (woop.storm == 0) {
-            action_eta -= 10000;
+            action_eta = max(1, action_eta - 10000);
         } else {
             if (!instance_nearest(target_x, target_y, obj_star).storm) {
-                action_eta -= 10000;
+                action_eta = max(1, action_eta - 10000);
             }
         }
-    } else if ((action == "move") && (action_eta < 5000)) {
+    } else if ((action == "move") && (action_eta <= 5000)) {
         if (instance_nearest(action_x, action_y, obj_star).storm > 0) {
             exit;
         }
