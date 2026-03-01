@@ -326,7 +326,7 @@ try {
             if (capital_number > 0) {
                 var capitals_engaged = 0;
                 with (orbiting) {
-                    for (var i = 1; i < planets; i++) {
+                    for (var i = 1; i <= planets; i++) {
                         if (capitals_engaged == capital_number) {
                             break;
                         }
