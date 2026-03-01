@@ -811,6 +811,7 @@ function necron_tomb_mission_sequence() {
         instance_deactivate_all(true);
         instance_activate_object(obj_controller);
         instance_activate_object(obj_ini);
+        instance_activate_object(obj_star);
 
         instance_create(0, 0, obj_ncombat);
         _roster = new Roster();
