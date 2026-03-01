@@ -806,4 +806,3 @@ function locations_are_equal(_first_loc, _second_loc) {
 
     return (_first_loc[1] == _second_loc[1]) && (_first_loc[0] == _second_loc[0]);
 }
-

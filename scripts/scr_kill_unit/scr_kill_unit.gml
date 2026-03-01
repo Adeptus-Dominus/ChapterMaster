@@ -17,8 +17,7 @@ function scr_kill_unit(company, unit_slot) {
         }
         _unit.remove_from_squad();
         scr_wipe_unit(company, unit_slot);
-        }
-    catch (ex) {
+    } catch (ex) {
         LOGGER.error($"company: {company}, unit_slot: {unit_slot}");
         handle_exception(ex);
     }

@@ -33,12 +33,14 @@ function create_error_file(_message) {
 
 /// @description Creates a copy of the last_messages.log file, with the current date in the name, in the same folder.
 function copy_last_messages_file() {
-    if (!file_exists(ERR_PATH_LAST_MESSAGES)) return;
-    
+    if (!file_exists(ERR_PATH_LAST_MESSAGES)) {
+        return;
+    }
+
     if (!directory_exists(ERR_LOG_DIRECTORY)) {
         directory_create(ERR_LOG_DIRECTORY);
     }
-    
+
     file_copy(ERR_PATH_LAST_MESSAGES, $"{ERR_LOG_DIRECTORY}{DATE_TIME_1}_messages.log");
 }
 
@@ -48,13 +50,13 @@ function error_get_context() {
     var _context = {
         chapter: global.chapter_name ?? "???",
         seed: global.game_seed ?? "???",
-        turn: "???"
+        turn: "???",
     };
 
     if (instance_exists(obj_controller)) {
         _context.turn = obj_controller.turn;
     }
-    
+
     return _context;
 }
 
@@ -96,7 +98,7 @@ function handle_error(_header, _message, _stacktrace = "", _critical = false, _r
 
     var _error_file_text = (_report_title != "") ? $"{_report_title}\n{_full_log}" : _full_log;
     create_error_file(_error_file_text);
-    
+
     var _clipboard = (_report_title != "") ? $"{_report_title}\n" : "";
     _clipboard += markdown_codeblock(_full_log, "log");
     clipboard_set_text(_clipboard);
@@ -105,7 +107,7 @@ function handle_error(_header, _message, _stacktrace = "", _critical = false, _r
     var _player_msg = $"{_header}\n\n{_message}\n\n";
     _player_msg += $"The error log is in your clipboard and saved at:\n{_path_hint}Logs\\\n\n";
     _player_msg += "1) Create a bug report on Discord.\n2) Press CTRL+V to paste the log.\n\nThank you!";
-    
+
     if (!_critical) {
         _player_msg += $"\n\n{STR_ERROR_MESSAGE_PS}";
     }
