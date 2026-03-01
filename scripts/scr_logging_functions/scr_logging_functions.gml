@@ -128,12 +128,12 @@ function handle_exception(_exception, custom_title = STR_ERROR_MESSAGE_HEAD, cri
     var _stacktrace = _exception.stacktrace;
     clean_stacktrace(_stacktrace);
 
-    _stacktrace = array_to_string_list(_stacktrace);
-
     var _critical = critical ? "CRASH! " : "";
     var _build_date = global.build_date == "unknown build" ? "" : $"/{global.build_date}";
-    var _problem_line = clean_stacktrace_line(_exception.stacktrace[0]);
+    var _problem_line = (array_length(_stacktrace) > 0) ? _stacktrace[0] : "unknown";
     var _report_title = $"{_critical}[{global.game_version}{_build_date}] {_problem_line}";
+
+    _stacktrace = array_to_string_list(_stacktrace);
 
     handle_error(_header, _message, _stacktrace, critical, _report_title);
 }
