@@ -1685,7 +1685,7 @@ if (__b__) {
         }
 
         if (dudes[j] == "Flayed One") {
-            scr_en_weapon("Melee5", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Melee Weapon", true, dudes_num[j], dudes[j], j);
             dudes_ac[j] = 10;
             dudes_hp[j] = 75;
             dudes_dr[j] = 0.9;
@@ -1693,7 +1693,7 @@ if (__b__) {
         }
         if (dudes[j] == "Necron Warrior") {
             scr_en_weapon("Gauss Flayer", true, dudes_num[j], dudes[j], j);
-            scr_en_weapon("Melee3", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Melee Weapon", true, dudes_num[j], dudes[j], j);
             dudes_ac[j] = 10;
             dudes_hp[j] = 75;
             dudes_dr[j] = 0.9;
@@ -1701,7 +1701,7 @@ if (__b__) {
         }
         if (dudes[j] == "Necron Immortal") {
             scr_en_weapon("Gauss Blaster", true, dudes_num[j], dudes[j], j);
-            scr_en_weapon("Melee3", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Melee Weapon", true, dudes_num[j], dudes[j], j);
             dudes_ac[j] = 15;
             dudes_hp[j] = 90;
             dudes_dr[j] = 0.85;
@@ -1719,7 +1719,7 @@ if (__b__) {
         }
         if (dudes[j] == "Necron Destroyer") {
             scr_en_weapon("Gauss Cannon", true, dudes_num[j], dudes[j], j);
-            scr_en_weapon("Melee3", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Melee Weapon", true, dudes_num[j], dudes[j], j);
             dudes_ac[j] = 25;
             dudes_hp[j] = 250;
             dudes_dr[j] = 0.75;
@@ -1749,7 +1749,7 @@ if (__b__) {
             dudes_vehicle[j] = 1;
         }
         if (dudes[j] == "Canoptek Scarab") {
-            scr_en_weapon("Melee3", false, dudes_num[j] * 2, dudes[j], j);
+            scr_en_weapon("Melee Weapon", false, dudes_num[j] * 2, dudes[j], j);
             dudes_ac[j] = 5;
             dudes_hp[j] = 30;
             dudes_dr[j] = 0.75;

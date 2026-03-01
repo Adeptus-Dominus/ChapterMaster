@@ -146,7 +146,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = 3;
                 break;
             default:
-                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -381,7 +380,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = 3;
                 break;
             default:
-                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -486,7 +484,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = 3;
                 break;
             default:
-                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -560,7 +557,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 rang = 20;
                 break;
             default:
-                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -671,12 +667,11 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 amm = 1;
                 break;
             default:
-                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
 
-    if (obj_ncombat.enemy >= 10 || obj_ncombat.enemy == 2 || obj_ncombat.enemy == 5 || obj_ncombat.enemy == 1) {
+    if (obj_ncombat.enemy == eFACTION.CHAOS || obj_ncombat.enemy == eFACTION.HERETICS || obj_ncombat.enemy == eFACTION.IMPERIUM || obj_ncombat.enemy == eFACTION.ECCLESIARCHY || obj_ncombat.enemy == eFACTION.PLAYER) {
         switch (name) {
             case "Plasma Pistol":
                 atta = 70;
@@ -968,7 +963,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = choose(0, 1);
                 break;
             default:
-                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -1061,7 +1055,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = 3;
                 break;
             default:
-                LOGGER.debug($"Unknown weapon name: {name}; script: scr_en_weapon.gml");
                 break;
         }
     }
@@ -1090,6 +1083,10 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 
     if (!is_man) {
         amm = -1;
+    }
+
+    if (atta == 0) {
+        LOGGER.debug($"Weapon {name} has 0 attack!");
     }
 
     var goody = 0;
