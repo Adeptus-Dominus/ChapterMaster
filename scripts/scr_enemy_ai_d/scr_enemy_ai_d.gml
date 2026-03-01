@@ -281,7 +281,7 @@ function scr_enemy_ai_d() {
         var garrison_mission = has_problem_planet_and_time(i, "provide_garrison", 0);
         if (garrison_mission > -1) {
             try {
-                complete_garrison_mission(i, garrison_mission)
+                complete_garrison_mission(i, garrison_mission);
             } catch (_exception) {
                 handle_exception(_exception);
             }
