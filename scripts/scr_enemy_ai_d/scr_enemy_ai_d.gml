@@ -280,7 +280,11 @@ function scr_enemy_ai_d() {
         }
         var garrison_mission = has_problem_planet_and_time(i, "provide_garrison", 0);
         if (garrison_mission > -1) {
-            try_and_report_loop("complete garrison mission", complete_garrison_mission, true, [i, garrison_mission]);
+            try {
+                complete_garrison_mission(i, garrison_mission)
+            } catch (_exception) {
+                handle_exception(_exception);
+            }
         }
         var _beast_hunt = has_problem_planet_and_time(i, "hunt_beast", 0);
         if (_beast_hunt > -1) {

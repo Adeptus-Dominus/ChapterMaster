@@ -136,24 +136,6 @@ function handle_exception(_exception, custom_title = STR_ERROR_MESSAGE_HEAD, cri
     handle_error(_header, _message, _stacktrace, critical, _report_title);
 }
 
-/// @description Attempts to run a function and reports any errors caught.
-/// @param {string} dev_marker - Developer marker for the error.
-/// @param {function} func - The function to run.
-/// @param {bool} turn_end - Whether to end the turn after an error.
-/// @param {array} args - Arguments to pass to the function.
-/// @param {function} catch_custom - Custom function to run on error.
-/// @param {array} catch_args - Arguments to pass to the custom function.
-function try_and_report_loop(dev_marker = "Generic Error", func, turn_end = true, args = [], catch_custom = 0, catch_args = []) {
-    try {
-        method_call(func, args);
-    } catch (_exception) {
-        handle_exception(_exception, string(STR_ERROR_MESSAGE_HEAD3, dev_marker), false, dev_marker);
-        if (is_method(catch_custom)) {
-            method_call(catch_custom, catch_args);
-        }
-    }
-}
-
 /// @description Shows a popup for errors triggered by an unexpected condition(s).
 /// @param {string} _message - The message to display to the user.
 /// @param {string} _header - Optional header for the popup (default: "Your game just encountered an error!").

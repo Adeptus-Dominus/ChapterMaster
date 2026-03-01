@@ -141,7 +141,11 @@ function SpecialistPointHandler() constructor {
 
     static calculate_research_points = function(turn_end) {
         self.turn_end = turn_end;
-        try_and_report_loop("Specialist points logic", pre_error_wrapped_research_points);
+        try {
+            pre_error_wrapped_research_points();
+        } catch (ex) {
+            handle_exception(ex);
+        }
     };
 
     static new_tech_heretic_spawn = function() {
