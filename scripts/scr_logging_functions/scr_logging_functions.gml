@@ -152,8 +152,8 @@ function try_and_report_loop(dev_marker = "Generic Error", func, turn_end = true
 
 /// @description Shows a popup for errors triggered by an unexpected condition(s).
 /// @param {string} _message - The message to display to the user.
-/// @param {string} _header - Optional header for the popup (default: "Assertion Error").
-function assert_error_popup(_message, _header = "Assertion Error") {
+/// @param {string} _header - Optional header for the popup (default: "Your game just encountered an error!").
+function assert_error_popup(_message, _header = "Your game just encountered an error!") {
     var _stacktrace_array = debug_get_callstack();
 
     array_shift(_stacktrace_array); // throw away the first line, it's this function
