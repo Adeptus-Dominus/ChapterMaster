@@ -356,6 +356,7 @@ try {
                 }
 
                 instance_deactivate_object(orbiting);
+                var _abort_migration = false;
 
                 repeat (100) {
                     if (good != 5) {
@@ -372,7 +373,8 @@ try {
 
                         if ((good == 1) && (n == 5)) {
                             if (!instance_exists(plin2)) {
-                                exit;
+                                _abort_migration = true;
+                                break;
                             }
                             if (!array_contains(plin.p_type, "dead")) {
                                 good++;
@@ -416,6 +418,9 @@ try {
                     }
                 }
                 instance_activate_object(obj_star);
+                if (_abort_migration) {
+                    exit;
+                }
             }
         }
     }
