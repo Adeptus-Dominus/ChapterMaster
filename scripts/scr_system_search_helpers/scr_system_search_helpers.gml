@@ -217,8 +217,8 @@ function planet_imperium_ground_total(planet_check) {
 /// or the string `"none"` if no matching star is found.
 function star_by_name(search_name) {
     if (!instance_exists(obj_star)) {
-        LOGGER.error("Not a single instance of obj_star exists!");
-        return;
+        assert_error_popup("Not a single instance of obj_star exists!");
+        return "none";
     }
 
     with (obj_star) {
@@ -227,7 +227,8 @@ function star_by_name(search_name) {
         }
     }
 
-    LOGGER.error($"Star {search_name} wasn't found!")
+    assert_error_popup($"Star {search_name} wasn't found!");
+
     return "none";
 }
 
