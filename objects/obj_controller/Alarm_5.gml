@@ -356,16 +356,16 @@ try {
             }
         }
         if (_star_found) {
-            var _planet = array_random_element(planets_without_type("Dead", _choice_star));
-            _choice_star.warlord[_planet] = 1;
-            array_push(_choice_star.p_feature[_planet], new NewPlanetFeature(eP_FEATURES.WARLORD10));
-
-            var _heresy_inc = _choice_star.p_type[_planet] == "Hive" ? 25 : 10;
-
-            _choice_star.p_heresy[_planet] += _heresy_inc;
-
-            if (_choice_star.p_heresy[_planet] < 50) {
-                _choice_star.p_heresy_secret[_planet] = 10;
+            var _candidate_planets = planets_without_type("Dead", _choice_star);
+            if (array_length(_candidate_planets) > 0) {
+                var _planet = array_random_element(_candidate_planets);
+                _choice_star.warlord[_planet] = 1;
+                array_push(_choice_star.p_feature[_planet], new NewPlanetFeature(eP_FEATURES.WARLORD10));
+                var _heresy_inc = _choice_star.p_type[_planet] == "Hive" ? 25 : 10;
+                _choice_star.p_heresy[_planet] += _heresy_inc;
+                if (_choice_star.p_heresy[_planet] < 50) {
+                    _choice_star.p_heresy_secret[_planet] = 10;
+                }
             }
         }
     }
