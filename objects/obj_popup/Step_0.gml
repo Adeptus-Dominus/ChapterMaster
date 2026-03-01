@@ -227,7 +227,7 @@ try {
             var mission_star, onceh;
             onceh = 0;
             obj_controller.temp[200] = string(loc);
-            var mission_star = star_by_name(obj_controller.temp[200]);
+            var mission_star = find_star_by_name(obj_controller.temp[200]);
             if (add_new_problem(planet, "recon", estimate, mission_star)) {
                 title = "Inquisition Mission Demand";
                 text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to land Astartes on {mission_star.name} {scr_roman(planet)} to investigate the planet within {estimate} months.";
@@ -243,7 +243,7 @@ try {
             var mission_star, onceh;
             mission_star = 0;
             onceh = 0;
-            var mission_star = star_by_name(obj_controller.temp[200]);
+            var mission_star = find_star_by_name(obj_controller.temp[200]);
             var mission_is_go = false;
             if (mission_star != "none" && planet > 0) {
                 var _estimate = estimate;

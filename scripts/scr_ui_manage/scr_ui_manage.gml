@@ -1,7 +1,7 @@
 /// @mixin
 function load_marines_into_ship(system, ship, units, reload = false) {
     static _load_into_ship = function(system, ship, units, size, loop, reload) {
-        var load_from_star = star_by_name(system);
+        var load_from_star = find_star_by_name(system);
         if (is_struct(units[loop])) {
             units[loop].load_marine(sh_ide[ship], load_from_star);
             ma_loc[loop] = sh_loc[ship];

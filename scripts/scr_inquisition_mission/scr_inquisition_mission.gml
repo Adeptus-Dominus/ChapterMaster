@@ -241,7 +241,7 @@ function mission_inquisition_tomb_world(tomb_worlds) {
 
 /// @mixin
 function init_mission_inquisition_tomb_world() {
-    mission_star = star_by_name(pop_data.system);
+    mission_star = find_star_by_name(pop_data.system);
     if (mission_star == "none") {
         popup_default_close();
         exit;
@@ -349,7 +349,7 @@ function add_new_inquis_mission() {
 }
 
 function init_mission_hunt_inquisitor() {
-    mission_star = star_by_name(pop_data.system);
+    mission_star = find_star_by_name(pop_data.system);
     if (mission_star == "none") {
         popup_default_close();
         exit;
@@ -714,7 +714,7 @@ function setup_necron_tomb_raid(planet) {
 
 /// @mixin obj_popup
 function necron_tomb_mission_start() {
-    mission_star = star_by_name(pop_data.loc);
+    mission_star = find_star_by_name(pop_data.loc);
     planet = pop_data.planet;
 
     title = $"Necron Tunnels : {pop_data.mission_stage}";
@@ -771,7 +771,7 @@ function necron_tomb_mission_sequence() {
 
             alter_disposition(eFACTION.INQUISITION, obj_controller.demanding ? choose(0, 0, 1) : 1);
 
-            mission_star = star_by_name(pop_data.loc);
+            mission_star = find_star_by_name(pop_data.loc);
             remove_planet_problem(planet, "necron", mission_star);
             seal_tomb_world(mission_star.p_feature[planet]);
             // mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], eP_FEATURES.NECRON_TOMB)[0]].sealed = 1;
@@ -829,7 +829,7 @@ function necron_tomb_mission_sequence() {
         }
         delete _roster;
 
-        mission_star = star_by_name(pop_data.loc);
+        mission_star = find_star_by_name(pop_data.loc);
 
         obj_ncombat.battle_object = mission_star;
         instance_deactivate_object(obj_star);

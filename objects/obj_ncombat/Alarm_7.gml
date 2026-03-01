@@ -321,7 +321,7 @@ try {
     }
     if ((string_count("ruins", battle_special) > 0) && (defeat == 1)) {
         //TODO this logic is wrong assumes all player units died in ruins
-        var _combat_star = star_by_name(obj_ncombat.battle_loc);
+        var _combat_star = find_star_by_name(obj_ncombat.battle_loc);
         if (_combat_star != "none") {
             _combat_star.p_player[obj_ncombat.battle_id] -= obj_ncombat.world_size;
         }

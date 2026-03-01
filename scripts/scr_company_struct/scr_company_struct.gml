@@ -253,7 +253,7 @@ function CompanyStruct(comp) constructor {
                 }
             }
             if (send_on_mission) {
-                send_squad_on_mission(mission_type, star_by_name(_squad_sys));
+                send_squad_on_mission(mission_type, find_star_by_name(_squad_sys));
             }
             bound_height[0] += 180;
         } else {
@@ -285,7 +285,7 @@ function CompanyStruct(comp) constructor {
                 if (cur_assignment.type == "garrison") {
                     var garrison_but = draw_unit_buttons([cancel_but[2] + 10, cancel_but[1]], "View Garrison", [1, 1], c_red,,,, true);
                     if (point_and_click(garrison_but)) {
-                        var garrrison_star = star_by_name(cur_assignment.location);
+                        var garrrison_star = find_star_by_name(cur_assignment.location);
                         obj_controller.view_squad = false;
                         if (garrrison_star != "none") {
                             scr_toggle_manage();

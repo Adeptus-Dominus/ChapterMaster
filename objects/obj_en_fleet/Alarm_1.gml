@@ -461,7 +461,7 @@ try {
         } else if (action_eta == 0) {
             action = "";
             if (array_length(complex_route) > 0) {
-                var target_loc = star_by_name(complex_route[0]);
+                var target_loc = find_star_by_name(complex_route[0]);
                 if (target_loc != "none") {
                     array_delete(complex_route, 0, 1);
                     action_x = target_loc.x;

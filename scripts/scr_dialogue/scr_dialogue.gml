@@ -398,7 +398,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             if (!_found) {
                 var _master = fetch_unit([0, 0]);
                 if (_master.planet_location > 0) {
-                    var _master_star = star_by_name(_master.location_string);
+                    var _master_star = find_star_by_name(_master.location_string);
                     if (_master_star != "none") {
                         _found = true;
                         _planet = _master.planet_location;
@@ -2183,7 +2183,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 var _event = audience_data;
                 var _system = _event.system;
                 var _planet = _event.planet;
-                var _star_name = planet_numeral_name(_planet, star_by_name(_system));
+                var _star_name = planet_numeral_name(_planet, find_star_by_name(_system));
                 diplo_text = $"My patience is wearing thin, Chapter Master.  I have many more problems more urgent and, yet, you continue to force me away from the work assigned to me by He on Terra.  Your serf on {_star_name} will be executed along with all the other puppets I ferret out.  You are close to treason, Chapter Master.  Choose your next words with exceptional care for they may be your last.";
 
                 add_diplomacy_option({

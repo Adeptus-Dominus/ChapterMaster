@@ -107,11 +107,11 @@ if (action != "") {
     if (array_length(complex_route) > 0) {
         var next_loc = instance_nearest(action_x, action_y, obj_star);
         for (var i = 0; i < array_length(complex_route); i++) {
-            var target_loc = star_by_name(complex_route[i]);
+            var target_loc = find_star_by_name(complex_route[i]);
             draw_set_color(c_blue);
             draw_set_alpha(1);
             draw_line_dashed(next_loc.x, next_loc.y, target_loc.x, target_loc.y, 16, line_width);
-            next_loc = star_by_name(complex_route[i]);
+            next_loc = find_star_by_name(complex_route[i]);
         }
     }
 }

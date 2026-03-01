@@ -25,7 +25,7 @@ function scr_ruins_suprise_attack_player() {
         instance_activate_object(obj_star_select);
         instance_activate_object(obj_star);
         instance_activate_object(obj_ground_mission);
-        var _star = star_by_name(obj_ground_mission.loc);
+        var _star = find_star_by_name(obj_ground_mission.loc);
         var _planet = obj_ground_mission.num;
         var _units = obj_ground_mission.display_unit;
 
@@ -360,7 +360,7 @@ function ruins_exploration_main_sequence() {
     } else {
         var obj = obj_ground_mission.obj;
         instance_activate_object(obj_star);
-        scr_ruins_reward(star_by_name(obj_ground_mission.battle_loc), obj_ground_mission.num, obj_ground_mission.explore_feature);
+        scr_ruins_reward(find_star_by_name(obj_ground_mission.battle_loc), obj_ground_mission.num, obj_ground_mission.explore_feature);
         instance_destroy();
         exit;
     }
@@ -394,7 +394,7 @@ function scr_ruins_combat_end() {
     var _star = 0;
     ruins_battle = choose(6, 7, 9, 10, 11, 12);
 
-    _star = star_by_name(obj_ground_mission.battle_loc);
+    _star = find_star_by_name(obj_ground_mission.battle_loc);
     var planet = obj_ground_mission.num;
     var _battle_threat = obj_ground_mission.battle_threat;
     if (obj_ground_mission.defeat == 0) {
