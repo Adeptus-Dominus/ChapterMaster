@@ -16,48 +16,46 @@ try {
         var novice_type = "";
         var unit;
     
-        try_and_report_loop("chaos_spread", function() {
-            var times = max(1, round(turn / 150));
-            if ((known[eFACTION.CHAOS] == 2) && (faction_defeated[eFACTION.CHAOS] == 0)) {
-                times += 1;
-            }
-            var xx3, yy3, plani, _star;
-            xx3 = irandom(room_width) + 1;
-            yy3 = irandom(room_height) + 1;
-            _star = instance_nearest(xx3, yy3, obj_star);
-            plani = floor(random(_star.planets)) + 1;
-    
-            // ** Chaos influence / corruption **
-            if ((faction_gender[eFACTION.CHAOS] == 1) && (faction_defeated[eFACTION.CHAOS] == 0) && (turn >= chaos_turn)) {
-                repeat (times) {
-                    if ((_star.p_type[plani] != "Dead") && (_star.planets > 0) && (turn >= 20)) {
-                        var cathedral = 0;
-                        if (planet_feature_bool(_star.p_feature[plani], eP_FEATURES.SORORITAS_CATHEDRAL) == 1) {
-                            cathedral = choose(0, 1, 1);
+        var times = max(1, round(turn / 150));
+        if ((known[eFACTION.CHAOS] == 2) && (faction_defeated[eFACTION.CHAOS] == 0)) {
+            times += 1;
+        }
+        var xx3, yy3, plani, _star;
+        xx3 = irandom(room_width) + 1;
+        yy3 = irandom(room_height) + 1;
+        _star = instance_nearest(xx3, yy3, obj_star);
+        plani = floor(random(_star.planets)) + 1;
+
+        // ** Chaos influence / corruption **
+        if ((faction_gender[eFACTION.CHAOS] == 1) && (faction_defeated[eFACTION.CHAOS] == 0) && (turn >= chaos_turn)) {
+            repeat (times) {
+                if ((_star.p_type[plani] != "Dead") && (_star.planets > 0) && (turn >= 20)) {
+                    var cathedral = 0;
+                    if (planet_feature_bool(_star.p_feature[plani], eP_FEATURES.SORORITAS_CATHEDRAL) == 1) {
+                        cathedral = choose(0, 1, 1);
+                    }
+
+                    if (cathedral == 0) {
+                        if ((_star.p_heresy[plani] >= 0) && (_star.p_heresy[plani] < 10)) {
+                            _star.p_heresy[plani] += choose(0, 0, 0, 0, 0, 0, 0, 0, 5);
+                        } else if ((_star.p_heresy[plani] >= 10) && (_star.p_heresy[plani] < 20)) {
+                            _star.p_heresy[plani] += choose(-2, -2, -2, 5, 10, 15);
+                        } else if ((_star.p_heresy[plani] >= 20) && (_star.p_heresy[plani] < 40)) {
+                            _star.p_heresy[plani] += choose(-2, -1, 0, 0, 0, 0, 0, 0, 5, 10);
+                        } else if ((_star.p_heresy[plani] >= 40) && (_star.p_heresy[plani] < 60)) {
+                            _star.p_heresy[plani] += choose(-2, -1, 0, 0, 0, 0, 0, 0, 5, 10, 15);
+                        } else if ((_star.p_heresy[plani] >= 60) && (_star.p_heresy[plani] < 100)) {
+                            _star.p_heresy[plani] += choose(-1, 0, 0, 0, 0, 5, 10, 15);
                         }
-    
-                        if (cathedral == 0) {
-                            if ((_star.p_heresy[plani] >= 0) && (_star.p_heresy[plani] < 10)) {
-                                _star.p_heresy[plani] += choose(0, 0, 0, 0, 0, 0, 0, 0, 5);
-                            } else if ((_star.p_heresy[plani] >= 10) && (_star.p_heresy[plani] < 20)) {
-                                _star.p_heresy[plani] += choose(-2, -2, -2, 5, 10, 15);
-                            } else if ((_star.p_heresy[plani] >= 20) && (_star.p_heresy[plani] < 40)) {
-                                _star.p_heresy[plani] += choose(-2, -1, 0, 0, 0, 0, 0, 0, 5, 10);
-                            } else if ((_star.p_heresy[plani] >= 40) && (_star.p_heresy[plani] < 60)) {
-                                _star.p_heresy[plani] += choose(-2, -1, 0, 0, 0, 0, 0, 0, 5, 10, 15);
-                            } else if ((_star.p_heresy[plani] >= 60) && (_star.p_heresy[plani] < 100)) {
-                                _star.p_heresy[plani] += choose(-1, 0, 0, 0, 0, 5, 10, 15);
-                            }
-                        }
-                        if (_star.p_heresy[plani] < 0) {
-                            _star.p_heresy[plani] = 0;
-                        }
+                    }
+                    if (_star.p_heresy[plani] < 0) {
+                        _star.p_heresy[plani] = 0;
                     }
                 }
             }
-    
-            instance_activate_object(obj_star);
-        });
+        }
+
+        instance_activate_object(obj_star);
     
         // ** Build new Imperial Ships **
         build_planet_defence_fleets();
@@ -334,45 +332,44 @@ try {
             }
         }
     
-        try_and_report_loop("Secret Chaos Warlord spawn", function() {
-            if ((turn == 5) && (faction_gender[eFACTION.CHAOS] == 1)) {
-                // show_message("Turn 100");
-    
-                var _star_found = false;
-                var _choice_star = noone;
-                var _stars = scr_get_stars(true);
-                for (var i = 0; i < array_length(_stars); i++) {
-                    if (is_dead_star(_stars[i])) {
-                        continue;
-                    }
-                    with (_stars[i]) {
-                        if (owner == eFACTION.IMPERIUM && planets) {
-                            if (scr_orbiting_fleet(eFACTION.IMPERIUM) != "none") {
-                                _star_found = true;
-                                _choice_star = self.id;
-                                break;
-                            }
+        if ((turn == 5) && (faction_gender[eFACTION.CHAOS] == 1)) {
+            // show_message("Turn 100");
+
+            var _star_found = false;
+            var _choice_star = noone;
+            var _stars = scr_get_stars(true);
+            for (var i = 0; i < array_length(_stars); i++) {
+                if (is_dead_star(_stars[i])) {
+                    continue;
+                }
+                with (_stars[i]) {
+                    if (owner == eFACTION.IMPERIUM && planets) {
+                        if (scr_orbiting_fleet(eFACTION.IMPERIUM) != "none") {
+                            _star_found = true;
+                            _choice_star = self.id;
+                            break;
                         }
-                    }
-                    if (_star_found) {
-                        break;
                     }
                 }
                 if (_star_found) {
-                    var _planet = array_random_element(planets_without_type("Dead", _choice_star));
-                    _choice_star.warlord[_planet] = 1;
-                    array_push(_choice_star.p_feature[_planet], new NewPlanetFeature(eP_FEATURES.WARLORD10));
-    
-                    var _heresy_inc = _choice_star.p_type[_planet] == "Hive" ? 25 : 10;
-    
-                    _choice_star.p_heresy[_planet] += _heresy_inc;
-    
-                    if (_choice_star.p_heresy[_planet] < 50) {
-                        _choice_star.p_heresy_secret[_planet] = 10;
-                    }
+                    break;
                 }
             }
-        });
+            if (_star_found) {
+                var _planet = array_random_element(planets_without_type("Dead", _choice_star));
+                _choice_star.warlord[_planet] = 1;
+                array_push(_choice_star.p_feature[_planet], new NewPlanetFeature(eP_FEATURES.WARLORD10));
+
+                var _heresy_inc = _choice_star.p_type[_planet] == "Hive" ? 25 : 10;
+
+                _choice_star.p_heresy[_planet] += _heresy_inc;
+
+                if (_choice_star.p_heresy[_planet] < 50) {
+                    _choice_star.p_heresy_secret[_planet] = 10;
+                }
+            }
+        }
+
         // * Blood debt end *
         if ((blood_debt == 1) && (penitent == 1)) {
             penitent_turn += 1;
