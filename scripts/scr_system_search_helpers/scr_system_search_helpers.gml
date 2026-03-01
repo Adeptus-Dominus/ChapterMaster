@@ -216,11 +216,18 @@ function planet_imperium_ground_total(planet_check) {
 /// Returns the `obj_star` instance that matches `search_name`,
 /// or the string `"none"` if no matching star is found.
 function star_by_name(search_name) {
+    if (!instance_exists(obj_star)) {
+        LOGGER.error("Not a single instance of obj_star exists!");
+        return;
+    }
+
     with (obj_star) {
         if (name == search_name) {
             return self;
         }
     }
+
+    LOGGER.error($"Star {search_name} wasn't found!")
     return "none";
 }
 
