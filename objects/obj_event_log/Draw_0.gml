@@ -40,7 +40,7 @@ if (__b__) {
                     draw_text_ext(xx + 25, yy + 120 + (p * 26), $"{cur_event.date}  (Turn {cur_event.turn}) - {cur_event.text}", -1, 1554);
                     if (cur_event.event_target != "none") {
                         if (point_and_click(draw_unit_buttons([xx + 1400, yy + 120 + (p * 26)], "View", [1, 1], c_green,, fnt_40k_14b, 1, true))) {
-                            var view_star = star_by_name(cur_event.event_target);
+                            var view_star = find_star_by_name(cur_event.event_target);
                             if (view_star != "none") {
                                 main_map_defaults();
                                 obj_controller.x = view_star.x;

@@ -1721,7 +1721,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 obj_ini.ship_carrying[ship] += size; //update ship capacity
 
                 if (star == "none") {
-                    star = star_by_name(system);
+                    star = find_star_by_name(system);
                 }
                 if (star != "none") {
                     if (star.p_player[current_location[1]] > 0) {
@@ -1779,9 +1779,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var homestar = "none";
         var spawn_location_chosen = false;
         if (((type == "home") || (type == "default")) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
-            var homestar = star_by_name(obj_ini.home_name);
+            var homestar = find_star_by_name(obj_ini.home_name);
         } else if (type != "ship") {
-            var homestar = star_by_name(type);
+            var homestar = find_star_by_name(type);
         }
         /* if (!spawn_location_chosen){
 

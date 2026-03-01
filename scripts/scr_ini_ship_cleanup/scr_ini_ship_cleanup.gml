@@ -32,7 +32,7 @@ function scr_kill_ship(index) {
             var _available_ships = [];
             var _ship_fleet = find_ships_fleet(index);
             if (!in_warp) {
-                var _nearest_star = star_by_name(ship_location[index]);
+                var _nearest_star = find_star_by_name(ship_location[index]);
             }
             if (_ship_fleet != "none") {
                 delete_ship_from_fleet(index, _ship_fleet);

@@ -205,17 +205,11 @@ function planet_imperium_ground_total(planet_check) {
     return p_guardsmen[planet_check] + p_pdf[planet_check] + p_sisters[planet_check] + p_player[planet_check];
 }
 
-/// @function star_by_name(search_name)
-/// @description
-/// Searches all `obj_star` instances and returns the one with a matching name.
-///
-/// @param {String} search_name
-/// The name of the star to find.
-///
-/// @returns {Instance | String}
-/// Returns the `obj_star` instance that matches `search_name`,
-/// or the string `"none"` if no matching star is found.
-function star_by_name(search_name) {
+/// @function find_star_by_name(search_name)
+/// @description Searches all `obj_star` instances and returns the one with a matching name.
+/// @param {String} search_name The name of the star to find.
+/// @returns {Id.Instance.obj_star | String} Returns the `obj_star` instance that matches `search_name`, or the string `"none"` if no matching star is found.
+function find_star_by_name(search_name) {
     if (!instance_exists(obj_star)) {
         assert_error_popup("Not a single instance of obj_star exists!");
         return "none";
@@ -226,8 +220,6 @@ function star_by_name(search_name) {
             return self;
         }
     }
-
-    assert_error_popup($"Star {search_name} wasn't found!");
 
     return "none";
 }

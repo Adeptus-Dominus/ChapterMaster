@@ -7,7 +7,7 @@ instance_activate_object(obj_star);
 
 if ((battles > 0) && (current_battle <= battles)) {
     var ii = 0, good = 0;
-    var battle_star = star_by_name(battle_location[current_battle]);
+    var battle_star = find_star_by_name(battle_location[current_battle]);
     obj_controller.temp[1060] = battle_location[current_battle];
 
     if (battle_star != "none") {

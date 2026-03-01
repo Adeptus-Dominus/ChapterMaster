@@ -23,7 +23,7 @@ function UnitQuickFindPanel() constructor {
         var _names = struct_get_names(garrison_log);
         var _stars = [];
         for (var i = 0; i < array_length(_names); i++) {
-            var _star = star_by_name(_names[i]);
+            var _star = find_star_by_name(_names[i]);
             if (_star != "none") {
                 array_push(_stars, _star);
             }
@@ -326,7 +326,7 @@ function UnitQuickFindPanel() constructor {
 
                 if (!hover_entered) {
                     if (point_and_click([xx + 10, yy + 90 + (20 * i) - 2, xx + main_panel.width, yy + 90 + (20 * i) + 18])) {
-                        var star = star_by_name(system_names[i]);
+                        var star = find_star_by_name(system_names[i]);
                         if (star != "none") {
                             travel_target = [
                                 star.x,
@@ -358,7 +358,7 @@ function UnitQuickFindPanel() constructor {
                 hover_item = "none";
             } else if (hover_item != "none") {
                 if (point_and_click(hover_item.draw(xx + 10, yy + 90 + (20 * hover_item.root_item), "Manage"))) {
-                    group_selection(garrison_log[$ system_names[hover_item.root_item]].units, {purpose: $"{system_names[hover_item.root_item]} Management", purpose_code: "manage", number: 0, system: star_by_name(system_names[hover_item.root_item]).id, feature: "none", planet: 0, selections: []});
+                    group_selection(garrison_log[$ system_names[hover_item.root_item]].units, {purpose: $"{system_names[hover_item.root_item]} Management", purpose_code: "manage", number: 0, system: find_star_by_name(system_names[hover_item.root_item]).id, feature: "none", planet: 0, selections: []});
                 }
             }
         } else if (view_area == "missions") {
@@ -391,7 +391,7 @@ function UnitQuickFindPanel() constructor {
                     draw_text(xx + 310, yy + 90 + (20 * i), mission.time);
                 }
                 if (point_and_click([xx + 10, yy + 90 + (20 * i) - 2, xx + main_panel.width, yy + 90 + (20 * i) + 18])) {
-                    var star = star_by_name(mission.system);
+                    var star = find_star_by_name(mission.system);
                     if (star != "none") {
                         travel_target = [
                             star.x,
@@ -620,7 +620,7 @@ function unload_selection() {
     if (man_size > 0 && obj_controller.selecting_ship >= 0 && !instance_exists(obj_star_select) && !location_out_of_player_control(selecting_location) && selecting_location != "Warp") {
         cooldown = 8000;
         var boba = 0;
-        var unload_star = star_by_name(selecting_location);
+        var unload_star = find_star_by_name(selecting_location);
         if (unload_star != "none") {
             if (unload_star.space_hulk != 1) {
                 for (var t = 0; t < array_length(display_unit); t++) {

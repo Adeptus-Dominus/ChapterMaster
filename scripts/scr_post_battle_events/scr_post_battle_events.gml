@@ -29,7 +29,7 @@ function necron_tomb_raid_post_battle_sequence() {
             }
         }
 
-        var _star_obj = star_by_name(battle_loc);
+        var _star_obj = find_star_by_name(battle_loc);
         if (_star_obj != "none") {
             with (_star_obj) {
                 var planet = obj_ncombat.battle_id;

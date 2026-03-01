@@ -49,7 +49,7 @@ function event_end_turn_action() {
             // Removes planetary governor installed by the chapter
             if (_event.e_id == "remove_surf") {
                 var _star_name = _event.system;
-                var _event_star = star_by_name(_event.system);
+                var _event_star = find_star_by_name(_event.system);
                 var _planet = _event.planet;
                 if (_event_star != "none") {
                     _event_star.dispo[_planet] = -10; // Resets
@@ -356,7 +356,7 @@ function strange_build_event() {
 
         var marine_is_planetside = _unit.planet_location > 0;
         if (marine_is_planetside && heritical_item) {
-            var _system = star_by_name(_unit.location_string);
+            var _system = find_star_by_name(_unit.location_string);
             var _planet = _unit.planet_location;
             if (_system != "none") {
                 with (_system) {

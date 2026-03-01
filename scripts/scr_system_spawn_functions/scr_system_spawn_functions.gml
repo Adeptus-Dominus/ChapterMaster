@@ -55,8 +55,8 @@ function find_player_spawn_star() {
 
 /*if (obj_ini.recruiting_name!="random"){
     array_push(global.name_generator.star_used_names, obj_ini.recruiting_name);
-    if (star_by_name(obj_ini.recruiting_name) != "none" ){
-        star_by_name(obj_ini.recruiting_name).name = global.name_generator.generate_star_name();
+    if (find_star_by_name(obj_ini.recruiting_name) != "none" ){
+        find_star_by_name(obj_ini.recruiting_name).name = global.name_generator.generate_star_name();
     }
     name=obj_ini.recruiting_name;
 }*/
@@ -68,8 +68,8 @@ function player_home_star(home_planet) {
 
     if (obj_ini.home_name != "random") {
         array_push(global.name_generator.star_used_names, obj_ini.home_name);
-        if (star_by_name(obj_ini.home_name) != "none") {
-            star_by_name(obj_ini.home_name).name = global.name_generator.generate_star_name();
+        if (find_star_by_name(obj_ini.home_name) != "none") {
+            find_star_by_name(obj_ini.home_name).name = global.name_generator.generate_star_name();
         }
         name = obj_ini.home_name;
     }
@@ -125,16 +125,16 @@ function set_player_recruit_planet(recruit_planet) {
         var recruit_name = obj_ini.recruiting_name;
         if (recruit_name != "random") {
             array_push(global.name_generator.star_used_names, recruit_name);
-            if (star_by_name(recruit_name) != "none") {
-                star_by_name(recruit_name).name = global.name_generator.generate_star_name();
+            if (find_star_by_name(recruit_name) != "none") {
+                find_star_by_name(recruit_name).name = global.name_generator.generate_star_name();
             }
             name = recruit_name;
         }
     } else {
         if (obj_ini.home_name != "random") {
             array_push(global.name_generator.star_used_names, obj_ini.home_name);
-            if (star_by_name(obj_ini.home_name) != "none") {
-                star_by_name(obj_ini.home_name).name = global.name_generator.generate_star_name();
+            if (find_star_by_name(obj_ini.home_name) != "none") {
+                find_star_by_name(obj_ini.home_name).name = global.name_generator.generate_star_name();
             }
             name = obj_ini.home_name;
         }

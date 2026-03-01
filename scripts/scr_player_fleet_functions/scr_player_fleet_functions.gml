@@ -71,7 +71,7 @@ function cancel_fleet_movement() {
 
 function set_new_player_fleet_course(target_array) {
     if (array_length(target_array) > 0) {
-        var target_planet = star_by_name(target_array[0]);
+        var target_planet = find_star_by_name(target_array[0]);
         var nearest_planet = instance_nearest(x, y, obj_star);
         var from_star = point_distance(nearest_planet.x, nearest_planet.y, x, y) < 75;
         var valid = target_planet != "none";
@@ -80,7 +80,7 @@ function set_new_player_fleet_course(target_array) {
         }
         if (!valid) {
             if (array_length(target_array) > 1) {
-                target_planet = star_by_name(target_array[1]);
+                target_planet = find_star_by_name(target_array[1]);
                 array_delete(target_array, 0, 2);
             } else {
                 return "complex_route_finish";
@@ -282,7 +282,7 @@ function player_retreat_from_fleet_combat() {
 
         _roll_100 = roll_dice_chapter(1, 100, "low");
 
-        var _loc_star = star_by_name(obj_turn_end.battle_location[obj_turn_end.current_battle]);
+        var _loc_star = find_star_by_name(obj_turn_end.battle_location[obj_turn_end.current_battle]);
 
         obj_controller.temp[2001] = real(_loc_star.id);
         obj_controller.temp[2002] = real(obj_turn_end.battle_opponent[obj_turn_end.current_battle]);

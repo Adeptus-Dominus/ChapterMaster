@@ -156,7 +156,7 @@ function set_fleet_movement(fastest_route = true, new_action = "move", minimum_e
             var star_travel = new FastestRouteAlgorithm(x, y, action_x, action_y, self.id, is_orbiting());
             var path = star_travel.final_array_path();
             if (array_length(path) > 1) {
-                var targ = star_by_name(path[1]);
+                var targ = find_star_by_name(path[1]);
                 if (targ != "none") {
                     array_delete(path, 0, 2);
                     complex_route = path;
