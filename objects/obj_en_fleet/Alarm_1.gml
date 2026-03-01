@@ -243,7 +243,7 @@ try {
                     }
                     repeat (cur_star.planets) {
                         t += 1;
-                        inquisitor_contraband_take_popup(_cur_star, planet);
+                        inquisitor_contraband_take_popup(cur_star, t);
                     }
                 } else if (string_count("investigate", trade_goods) == 0) {
                     inquisition_inspection_logic();
