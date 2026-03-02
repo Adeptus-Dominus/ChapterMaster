@@ -66,22 +66,22 @@ try {
             global.sound_playing = audio_play_sound(snd_blood, 0, true);
             audio_sound_gain(global.sound_playing, 0, 0);
             nope = false;
-            if ((obj_controller.master_volume == 0) || (obj_controller.music_volume == 0)) {
+            if ((global.settings.master_volume == 0) || (global.settings.music_volume == 0)) {
                 nope = true;
             }
             if (!nope) {
-                audio_sound_gain(global.sound_playing, 0.2 * obj_controller.master_volume * obj_controller.music_volume, 2000);
+                audio_sound_gain(global.sound_playing, 0.2 * global.settings.master_volume * global.settings.music_volume, 2000);
             }
         }
         if (sound_to == "royal") {
             global.sound_playing = audio_play_sound(snd_royal, 0, true);
             audio_sound_gain(global.sound_playing, 0, 0);
             nope = false;
-            if ((obj_controller.master_volume == 0) || (obj_controller.music_volume == 0)) {
+            if ((global.settings.master_volume == 0) || (global.settings.music_volume == 0)) {
                 nope = true;
             }
             if (!nope) {
-                audio_sound_gain(global.sound_playing, 0.25 * obj_controller.master_volume * obj_controller.music_volume, 2000);
+                audio_sound_gain(global.sound_playing, 0.25 * global.settings.master_volume * global.settings.music_volume, 2000);
             }
         }
     }
@@ -141,19 +141,6 @@ try {
         if (play_second >= 30) {
             play_second = 0;
             play_time += 1;
-            window_old = window_data;
-            window_data = ((((((string(window_get_x()) + "|") + string(window_get_y())) + "|") + string(window_get_width())) + "|") + string(window_get_height())) + "|";
-            if (window_get_fullscreen() == 1) {
-                window_old = "fullscreen";
-                window_data = "fullscreen";
-            }
-            if (window_data != "fullscreen" && window_get_fullscreen() == 0) {
-                if (window_data != window_old) {
-                    ini_open("saves.ini");
-                    ini_write_string("Settings", "window_data", (((((((string(window_get_x()) + "|") + string(window_get_y())) + "|") + string(window_get_width())) + "|") + string(window_get_height())) + "|"));
-                    ini_close();
-                }
-            }
         }
     }
     // Nope // Cleans up menu
@@ -446,12 +433,12 @@ try {
     if (click > 0) {
         click = -1;
         audio_play_sound(snd_click, -80, 0);
-        audio_sound_gain(snd_click, 0.25 * master_volume * effect_volume, 0);
+        audio_sound_gain(snd_click, 0.25 * global.settings.master_volume * global.settings.sfx_volume, 0);
     }
     if (click2 > 0) {
         click2 = -1;
         audio_play_sound(snd_click_small, -80, 0);
-        audio_sound_gain(snd_click_small, 0.25 * master_volume * effect_volume, 0);
+        audio_sound_gain(snd_click_small, 0.25 * global.settings.master_volume * global.settings.sfx_volume, 0);
     }
     // Return artifact
     if (qsfx == 1) {

@@ -6,10 +6,10 @@ if ((!audio_is_playing(snd_royal)) && instance_exists(obj_controller)) {
 
     var nope;
     nope = 0;
-    if ((obj_controller.master_volume == 0) || (obj_controller.music_volume == 0)) {
+    if ((global.settings.master_volume == 0) || (global.settings.music_volume == 0)) {
         nope = 1;
     }
     if (nope != 1) {
-        audio_sound_gain(snd_royal, 0.25 * obj_controller.master_volume * obj_controller.music_volume, 2000);
+        audio_sound_gain(snd_royal, 0.25 * global.settings.master_volume * global.settings.music_volume, 2000);
     }
 }

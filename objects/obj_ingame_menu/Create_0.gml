@@ -1,79 +1,30 @@
 fading = 0;
 effect = 0;
-settings = 0;
+settings = (room == Main_Menu);
 cooldown = 0;
 
-ini_open("saves.ini");
-master_volume = ini_read_real("Settings", "master_volume", 1);
-effect_volume = ini_read_real("Settings", "effect_volume", 1);
-music_volume = ini_read_real("Settings", "music_volume", 1);
-large_text = ini_read_real("Settings", "large_text", 0);
-settings_heresy = ini_read_real("Settings", "settings_heresy", 0);
-settings_autosave = ini_read_real("Settings", "settings_autosave", 1);
-settings_fullscreen = ini_read_real("Settings", "fullscreen", 1);
-settings_window_data = ini_read_string("Settings", "window_data", "fullscreen");
-ini_close();
+var _vx = camera_get_view_x(view_camera[0]);
+var _vy = camera_get_view_y(view_camera[0]);
 
-// create the buttons
-var butt, xx, yy;
-xx = __view_get(e__VW.XView, 0);
-yy = __view_get(e__VW.YView, 0);
+var _spawn_button = function(_x, _y, _text, _target) {
+    var _butt = instance_create(_x, _y, obj_new_button);
+    _butt.button_id = 1;
+    _butt.button_text = _text;
+    _butt.target = _target;
+    _butt.scaling = 1.5;
+    _butt.depth = -20010;
+    return _butt;
+};
 
-if (room_get_name(room) != "Main_Menu") {
-    butt = instance_create(xx + 821, yy + 256, obj_new_button);
-    butt.sprite_index = spr_ui_but_1;
-    butt.depth = -20010;
-    butt.button_text = "Save";
-    butt.button_id = 1;
-    butt.scaling = 1.5;
-    butt.target = 11;
-
-    butt = instance_create(xx + 821, yy + 336, obj_new_button);
-    butt.sprite_index = spr_ui_but_1;
-    butt.depth = -20010;
-    butt.button_text = "Load";
-    butt.button_id = 1;
-    butt.scaling = 1.5;
-    butt.target = 12;
-
-    butt = instance_create(xx + 821, yy + 416, obj_new_button);
-    butt.sprite_index = spr_ui_but_1;
-    butt.depth = -20010;
-    butt.button_text = "Options";
-    butt.button_id = 1;
-    butt.scaling = 1.5;
-    butt.target = 13;
-
-    butt = instance_create(xx + 821, yy + 496, obj_new_button);
-    butt.sprite_index = spr_ui_but_1;
-    butt.depth = -20010;
-    butt.button_text = "Exit";
-    butt.button_id = 1;
-    butt.scaling = 1.5;
-    butt.target = 14;
-
-    butt = instance_create(xx + 821, yy + 666, obj_new_button);
-    butt.sprite_index = spr_ui_but_1;
-    butt.depth = -20010;
-    butt.button_text = "Return";
-    butt.button_id = 1;
-    butt.scaling = 1.5;
-    butt.target = 15;
-}
-
-if (room_get_name(room) == "Main_Menu") {
-    with (obj_new_button) {
-        instance_destroy();
-    }
-    settings = 1;
-
-    butt = instance_create(xx + 653, yy + 664, obj_new_button);
-    butt.sprite_index = spr_ui_but_1;
-    butt.depth = -20010;
-    butt.button_text = "Exit";
-    butt.button_id = 1;
-    butt.scaling = 1.5;
-    butt.target = 25;
+if (room != Main_Menu) {
+    _spawn_button(_vx + 821, _vy + 256, "Save", 11);
+    _spawn_button(_vx + 821, _vy + 336, "Load", 12);
+    _spawn_button(_vx + 821, _vy + 416, "Options", 13);
+    _spawn_button(_vx + 821, _vy + 496, "Exit", 14);
+    _spawn_button(_vx + 821, _vy + 666, "Return", 15);
+} else {
+    with (obj_new_button) instance_destroy();
+    _spawn_button(_vx + 653, _vy + 664, "Exit", 25);
 }
 
 global.ui_click_lock = true;

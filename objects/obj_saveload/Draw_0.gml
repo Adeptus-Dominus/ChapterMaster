@@ -1,6 +1,4 @@
-var __b__;
-__b__ = action_if_variable(hide, 0, 0);
-if (__b__) {
+if (!hide) {
     var xx, yy;
     xx = __view_get(e__VW.XView, 0) + 0;
     yy = __view_get(e__VW.YView, 0) + 0;
@@ -194,39 +192,6 @@ if (__b__) {
             }
 
             if ((menu == 2) && (save[o] >= 0)) {
-                // Restart
-                //! Doesn't work properly, commented out until repaired;
-                /* draw_set_alpha(1);
-            draw_set_color(c_gray);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,0);
-            draw_set_color(c_black);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,1);
-            draw_text_transformed(x2+1050,y2+117,string_hash_to_newline("Restart Game"),0.7,0.7,0);
-            if (scr_hit(x2+977,y2+113,x2+1121,y2+146)){
-                draw_set_alpha(0.1);draw_set_color(c_white);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,0);draw_set_alpha(1);
-                if (mouse_button_clicked(,, true) and !instance_exists(obj_popup)){
-                    if (file_exists(string(PATH_SAVE_FILES, save[o]))) { // Resets the data
-                        global.restart=1;global.load=save[o];
-                        menu=0;load_part=1;obj_cursor.image_alpha=0;splash=choose(0,1,2,3,4);
-                        
-                        if (instance_exists(obj_main_menu)){
-                            with(obj_main_menu){
-                                part_particles_clear(p_system);
-                                instance_destroy();
-                            }
-                        }
-                        
-                        with(obj_controller){instance_destroy();}
-                        with(obj_creation){instance_destroy();}
-                        with(obj_ini){instance_destroy();}
-                        with(obj_star){instance_destroy();}
-                        with(obj_all_fleet){instance_destroy();}
-                        with(obj_popup){instance_destroy();}
-                        audio_stop_all();
-                        
-                        room_goto(Game);
-                    }
-                }
-            } */
-
                 // Load
                 draw_set_alpha(1);
                 draw_set_color(c_gray);
@@ -251,7 +216,6 @@ if (__b__) {
 
                         if (instance_exists(obj_main_menu)) {
                             with (obj_main_menu) {
-                                part_particles_clear(p_system);
                                 instance_destroy();
                             }
                         }
@@ -344,32 +308,5 @@ if (__b__) {
         }
 
         // 32,166
-
-        if (instance_exists(obj_main_menu_buttons)) {
-            if (obj_main_menu_buttons.fade > 0) {
-                draw_set_color(0);
-                draw_set_alpha(obj_main_menu_buttons.fade / 40);
-                draw_rectangle(0, 0, room_width, room_height, 0);
-            }
-            draw_set_alpha(1);
-        }
     }
-
-    /*draw_set_color(c_red);draw_set_font(fnt_menu);
-draw_set_alpha(1);draw_text(xx+30,yy+30,"First Open: "+string(first_open));
-draw_set_alpha(1);draw_text(xx+30,yy+50,"save1: "+string(save[1]));
-draw_set_alpha(1);draw_text(xx+30,yy+70,"save2: "+string(save[2]));
-draw_set_alpha(1);draw_text(xx+30,yy+90,"save3: "+string(save[3]));
-draw_set_alpha(1);draw_text(xx+30,yy+110,"save4: "+string(save[4]));
-draw_set_alpha(1);draw_text(xx+30,yy+130,"save5: "+string(save[5]));
-draw_set_alpha(1);draw_text(xx+30,yy+150,"save6: "+string(save[6]));
-draw_set_alpha(1);draw_text(xx+30,yy+170,"save7: "+string(save[7]));
-draw_set_alpha(1);draw_text(xx+30,yy+190,"save8: "+string(save[8]));
-draw_set_alpha(1);draw_text(xx+30,yy+210,"save9: "+string(save[9]));
-draw_set_alpha(1);draw_text(xx+30,yy+230,"save10: "+string(save[10]));
-draw_set_alpha(1);draw_text(xx+30,yy+250,"save11: "+string(save[11]));
-draw_set_alpha(1);draw_text(xx+30,yy+270,"save12: "+string(save[12]));*/
-
-    /* */
 }
-/*  */

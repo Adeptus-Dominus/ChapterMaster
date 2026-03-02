@@ -4,18 +4,6 @@
  */
 keyboard_string = "";
 
-#region Global Settings: volume, fullscreen etc
-ini_open("saves.ini");
-master_volume = ini_read_real("Settings", "master_volume", 1);
-effect_volume = ini_read_real("Settings", "effect_volume", 1);
-music_volume = ini_read_real("Settings", "music_volume", 1);
-large_text = ini_read_real("Settings", "large_text", 0);
-settings_heresy = ini_read_real("Settings", "settings_heresy", 0);
-settings_fullscreen = ini_read_real("Settings", "fullscreen", 1);
-settings_window_data = ini_read_string("Settings", "window_data", "fullscreen");
-ini_close();
-#endregion
-
 #region Icon Grid settings for chapter selection
 icon_width = 48;
 icon_height = 48;
@@ -47,12 +35,6 @@ view.add_section("Icon Grid").add_slider_int("max_cols", 1, 15).add_slider_int("
 
 #endregion
 
-window_data = string(window_get_x()) + "|" + string(window_get_y()) + "|" + string(window_get_width()) + "|" + string(window_get_height()) + "|";
-window_old = window_data;
-if (window_get_fullscreen() == 1) {
-    window_old = "fullscreen";
-    window_data = "fullscreen";
-}
 restarted = 0;
 custom_icon = 0;
 
@@ -63,11 +45,11 @@ audio_stop_all();
 audio_play_sound(snd_diboz, 0, true);
 audio_sound_gain(snd_diboz, 0, 0);
 var nope = 0;
-if ((master_volume == 0) || (music_volume == 0)) {
+if ((global.settings.master_volume == 0) || (global.settings.music_volume == 0)) {
     nope = 1;
 }
 if (nope != 1) {
-    audio_sound_gain(snd_diboz, 0.25 * master_volume * music_volume, 2000);
+    audio_sound_gain(snd_diboz, 0.25 * global.settings.master_volume * global.settings.music_volume, 2000);
 }
 
 global.load = -1;

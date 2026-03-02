@@ -20,9 +20,9 @@ if (slide == 1) {
 }
 // Play audio
 if ((slate5 == 1) || (slate6 == 1)) {
-    if ((master_volume > 0) && (effect_volume > 0)) {
+    if ((global.settings.master_volume > 0) && (global.settings.sfx_volume > 0)) {
         audio_play_sound(snd_buzz, 0, 0);
-        audio_sound_gain(snd_buzz, 1 * master_volume * effect_volume, 0);
+        audio_sound_gain(snd_buzz, 1 * global.settings.master_volume * global.settings.sfx_volume, 0);
     }
 }
 
