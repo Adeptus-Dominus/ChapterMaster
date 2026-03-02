@@ -17,14 +17,14 @@ var _spawn_button = function(_x, _y, _text, _target) {
 };
 
 if (room != Main_Menu) {
-    _spawn_button(_vx + 821, _vy + 256, "Save", 11);
-    _spawn_button(_vx + 821, _vy + 336, "Load", 12);
-    _spawn_button(_vx + 821, _vy + 416, "Options", 13);
-    _spawn_button(_vx + 821, _vy + 496, "Exit", 14);
-    _spawn_button(_vx + 821, _vy + 666, "Return", 15);
+    _spawn_button(_vx + 821, _vy + 256, "Save", eIN_GAME_MENU_EFFECT.SAVE);
+    _spawn_button(_vx + 821, _vy + 336, "Load", eIN_GAME_MENU_EFFECT.LOAD);
+    _spawn_button(_vx + 821, _vy + 416, "Options", eIN_GAME_MENU_EFFECT.OPTIONS);
+    _spawn_button(_vx + 821, _vy + 496, "Exit", eIN_GAME_MENU_EFFECT.EXIT);
+    _spawn_button(_vx + 821, _vy + 666, "Return", eIN_GAME_MENU_EFFECT.BACK_FROM_SAVELOAD);
 } else {
     with (obj_new_button) instance_destroy();
-    _spawn_button(_vx + 653, _vy + 664, "Exit", 25);
+    _spawn_button(_vx + 653, _vy + 664, "Exit", eIN_GAME_MENU_EFFECT.BACK_FROM_SETTINGS);
 }
 
 global.ui_click_lock = true;

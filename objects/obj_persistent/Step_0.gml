@@ -15,10 +15,6 @@ if (_w != global.settings.last_window_w || _h != global.settings.last_window_h) 
 
 if (window_get_fullscreen() != global.settings.fullscreen) {
     global.settings.fullscreen = window_get_fullscreen();
-    
-    ini_open("saves.ini");
-    ini_write_real("Settings", "fullscreen", global.settings.fullscreen);
-    ini_close();
-    
+    global.settings.save();
     global.settings.sync_ui();
 }

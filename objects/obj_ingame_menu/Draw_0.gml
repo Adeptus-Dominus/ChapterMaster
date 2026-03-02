@@ -1,3 +1,5 @@
+add_draw_return_values();
+
 var _vx = camera_get_view_x(view_camera[0]);
 var _vy = camera_get_view_y(view_camera[0]);
 
@@ -54,3 +56,5 @@ if (settings == 1) {
     draw_set_font(fnt_cul_14);
     draw_text_transformed(_vx + 929, _vy + 149, "Menu", 1.5, 1.5, 0);
 }
+
+pop_draw_return_values();

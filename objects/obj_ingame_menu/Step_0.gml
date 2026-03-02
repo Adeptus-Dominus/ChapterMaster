@@ -6,8 +6,8 @@ var _vx = camera_get_view_x(view_camera[0]);
 var _vy = camera_get_view_y(view_camera[0]);
 
 switch (effect) {
-    case 11:
-    case 12:
+    case eIN_GAME_MENU_EFFECT.SAVE:
+    case eIN_GAME_MENU_EFFECT.LOAD:
         with (obj_new_button) {
             x -= 2000;
             y -= 2000;
@@ -32,7 +32,7 @@ switch (effect) {
         _b.button_id = 1;
         break;
 
-    case 13:
+    case eIN_GAME_MENU_EFFECT.OPTIONS:
         with (obj_new_button) {
             x -= 2000;
             y -= 2000;
@@ -48,12 +48,12 @@ switch (effect) {
         cooldown = 8;
         break;
 
-    case 14:
+    case eIN_GAME_MENU_EFFECT.EXIT:
         instance_create(0, 0, obj_fade);
         fading = 0.1;
         break;
 
-    case 15:
+    case eIN_GAME_MENU_EFFECT.RETURN:
         if (instance_exists(obj_controller)) {
             obj_controller.cooldown = 8000;
         }
@@ -65,7 +65,7 @@ switch (effect) {
         instance_destroy();
         break;
 
-    case 18:
+    case eIN_GAME_MENU_EFFECT.BACK_FROM_SAVELOAD:
         with (obj_saveload) {
             instance_destroy();
         }
@@ -79,7 +79,7 @@ switch (effect) {
         }
         break;
 
-    case 25:
+    case eIN_GAME_MENU_EFFECT.BACK_FROM_SETTINGS:
         settings = 0;
         cooldown = 2;
 
@@ -116,7 +116,7 @@ if (settings == 1 && mouse_button_clicked(mb_left, 0, true)) {
     var _vol_y = [
         _vy + 223,
         _vy + 281,
-        _vy + 339
+        _vy + 337
     ];
     var _keys = [
         "master_volume",

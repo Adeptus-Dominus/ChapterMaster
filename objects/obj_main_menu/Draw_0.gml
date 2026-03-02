@@ -1,3 +1,5 @@
+add_draw_return_values();
+
 draw_set_alpha(title_alpha);
 scr_image("title_splash", 0, 0, 0, room_width, room_height);
 draw_set_alpha(1);
@@ -34,3 +36,4 @@ if (fade_alpha > 0) {
     draw_rectangle(0, 0, room_width, room_height, false);
     draw_set_alpha(1);
 }
+pop_draw_return_values();

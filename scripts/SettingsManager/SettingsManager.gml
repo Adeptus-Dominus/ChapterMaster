@@ -39,6 +39,8 @@ function SettingsManager() constructor {
         ini_write_real("Settings", "music_volume", music_volume);
         ini_write_real("Settings", "fullscreen", fullscreen);
         ini_write_real("Settings", "settings_autosave", settings_autosave);
+        var _window_data = $"{window_rect.x}|{window_rect.y}|{window_rect.w}|{window_rect.h}|";
+        ini_write_string("Settings", "window_data", _window_data);
         ini_close();
     };
 

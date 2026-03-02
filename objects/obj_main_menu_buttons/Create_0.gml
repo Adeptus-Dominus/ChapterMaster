@@ -52,7 +52,7 @@ if (room_get_name(room) == "Creation") {
 
         var _b = instance_create_depth(_vx + 707, _vy + 830, -20010, obj_new_button);
         _b.button_text = "Back";
-        _b.target = 30;
+        _b.target = eIN_GAME_MENU_EFFECT.CLOSE_SAVELOAD;
         _b.scaling = 1.5;
         _b.button_id = 1;
     };

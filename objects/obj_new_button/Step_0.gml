@@ -137,7 +137,7 @@ if ((line == 0) && (floor(random(freq)) == 3)) {
 
 if (highlighted == true && target > 10 && mouse_button_clicked(,, true)) {
     // Tip of the day: no idea why, but if you split this into two lines, the check will never pass;
-    if (target == 30) {
+    if (target == eIN_GAME_MENU_EFFECT.CLOSE_SAVELOAD) {
         with (obj_saveload) {
             instance_destroy();
         }

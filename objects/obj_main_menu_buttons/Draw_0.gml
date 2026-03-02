@@ -1,3 +1,5 @@
+add_draw_return_values();
+
 shader_set(light_dark_shader);
 var u_highlight = shader_get_uniform(light_dark_shader, "highlight");
 
@@ -20,5 +22,5 @@ if (fade_val > 0) {
     draw_set_alpha(fade_val);
     draw_set_color(c_black);
     draw_rectangle(0, 0, room_width, room_height, false);
-    draw_set_alpha(1);
 }
+pop_draw_return_values();
