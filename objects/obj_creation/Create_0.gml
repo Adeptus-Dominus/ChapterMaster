@@ -42,15 +42,8 @@ custom_icon = 0;
 global.chapter_id = 0;
 
 audio_stop_all();
-audio_play_sound(snd_diboz, 0, true);
-audio_sound_gain(snd_diboz, 0, 0);
-var nope = 0;
-if ((global.settings.master_volume == 0) || (global.settings.music_volume == 0)) {
-    nope = 1;
-}
-if (nope != 1) {
-    audio_sound_gain(snd_diboz, 0.25 * global.settings.master_volume * global.settings.music_volume, 2000);
-}
+audio_play_sound(snd_diboz, 0, true, 0.1);
+audio_sound_gain(snd_diboz, 1, 5000);
 
 global.load = -1;
 planet_types = PLANET_TYPES;

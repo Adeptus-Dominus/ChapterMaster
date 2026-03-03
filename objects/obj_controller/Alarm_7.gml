@@ -2,16 +2,8 @@
 LOGGER.info("Player Defeated; Exited to Defeat Screen");
 
 audio_stop_sound(snd_royal);
-audio_play_sound(snd_defeat, 0, true);
-audio_sound_gain(snd_defeat, 0, 0);
-
-var nope = false;
-if ((global.settings.master_volume == 0) || (global.settings.music_volume == 0)) {
-    nope = true;
-}
-if (!nope) {
-    audio_sound_gain(snd_defeat, 1 * global.settings.master_volume * global.settings.music_volume, 2000);
-}
+audio_play_sound(snd_defeat, 0, true, 0.1);
+audio_sound_gain(snd_defeat, 1, 5000);
 
 if ((obj_controller.marines + obj_controller.command <= 50) && (global.defeat != 2)) {
     global.defeat = 0;

@@ -111,7 +111,6 @@ if (effect > 0) {
 
 if (settings == 1 && mouse_button_clicked(mb_left, 0, true)) {
     var _changed = false;
-    var _video_changed = false;
 
     var _vol_y = [
         _vy + 223,
@@ -127,11 +126,13 @@ if (settings == 1 && mouse_button_clicked(mb_left, 0, true)) {
     for (var i = 0; i < 3; i++) {
         if (scr_hit(_vx + 671, _vol_y[i], _vx + 671 + 32, _vol_y[i] + 32)) {
             global.settings[$ _keys[i]] = clamp(global.settings[$ _keys[i]] - 0.1, 0, 1);
+            global.settings.apply_audio();
             _changed = true;
         }
 
         if (scr_hit(_vx + 981, _vol_y[i], _vx + 981 + 32, _vol_y[i] + 32)) {
             global.settings[$ _keys[i]] = clamp(global.settings[$ _keys[i]] + 0.1, 0, 1);
+            global.settings.apply_audio();
             _changed = true;
         }
     }
@@ -139,20 +140,15 @@ if (settings == 1 && mouse_button_clicked(mb_left, 0, true)) {
     if (scr_hit(_vx + 626, _vy + 426, _vx + 658, _vy + 458)) {
         global.settings.fullscreen = !global.settings.fullscreen;
         global.settings.apply_video();
-        _video_changed = true;
+        _changed = true;
     }
 
     if (scr_hit(_vx + 680, _vy + 485, _vx + 712, _vy + 517)) {
         global.settings.autosave = !global.settings.autosave;
-        global.settings.save();
+        _changed = true;
     }
 
-    if (_changed || _video_changed) {
-        var _m = global.settings.master_volume;
-        if (audio_is_playing(snd_royal)) {
-            audio_sound_gain(snd_royal, 0.25 * _m * global.settings.music_volume, 0);
-        }
-
+    if (_changed) {
         global.settings.save();
     }
 }

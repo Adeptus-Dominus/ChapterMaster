@@ -64,25 +64,12 @@ try {
         var nope = false;
         if (sound_to == "blood") {
             global.sound_playing = audio_play_sound(snd_blood, 0, true);
-            audio_sound_gain(global.sound_playing, 0, 0);
-            nope = false;
-            if ((global.settings.master_volume == 0) || (global.settings.music_volume == 0)) {
-                nope = true;
-            }
-            if (!nope) {
-                audio_sound_gain(global.sound_playing, 0.2 * global.settings.master_volume * global.settings.music_volume, 2000);
-            }
+            audio_sound_gain(global.sound_playing, 1, 5000);
         }
         if (sound_to == "royal") {
             global.sound_playing = audio_play_sound(snd_royal, 0, true);
-            audio_sound_gain(global.sound_playing, 0, 0);
-            nope = false;
-            if ((global.settings.master_volume == 0) || (global.settings.music_volume == 0)) {
-                nope = true;
-            }
-            if (!nope) {
-                audio_sound_gain(global.sound_playing, 0.25 * global.settings.master_volume * global.settings.music_volume, 2000);
-            }
+            audio_sound_gain(global.sound_playing, 1, 5000);
+
         }
     }
     // Cheat codes
@@ -432,13 +419,11 @@ try {
     }
     if (click > 0) {
         click = -1;
-        audio_play_sound(snd_click, -80, 0);
-        audio_sound_gain(snd_click, 0.25 * global.settings.master_volume * global.settings.sfx_volume, 0);
+        audio_play_sound(snd_click, -80, false);
     }
     if (click2 > 0) {
         click2 = -1;
         audio_play_sound(snd_click_small, -80, 0);
-        audio_sound_gain(snd_click_small, 0.25 * global.settings.master_volume * global.settings.sfx_volume, 0);
     }
     // Return artifact
     if (qsfx == 1) {

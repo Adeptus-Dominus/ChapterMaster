@@ -461,8 +461,8 @@ function scr_end_turn() {
                     with (obj_star_event) {
                         instance_destroy();
                     }
-                    audio_play_sound(snd_end_turn, -50, 0);
-                    audio_sound_gain(snd_end_turn, global.settings.master_volume * global.settings.sfx_volume, 0);
+                    audio_play_sound(snd_end_turn, -50, false);
+
 
                     turn += 1;
                     with (obj_star) {
