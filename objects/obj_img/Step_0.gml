@@ -58,7 +58,7 @@ if ((!instance_exists(obj_fleet)) && (!instance_exists(obj_ncombat))) {
     if (instance_exists(obj_creation)) {
         crea_goo += 1;
     }
-    if (room_get_name(room) == "Defeat") {
+    if (room_get_name(room) == "rm_defeat") {
         crea_goo += 1;
     }
     if ((crea_goo > 0) && (creation_good == false)) {
@@ -130,17 +130,17 @@ if ((!instance_exists(obj_fleet)) && (!instance_exists(obj_ncombat))) {
         scr_image("event", -666, 0, 0, 0, 0);
     }
 
-    if ((room_get_name(room) == "Main_Menu") && (title_splash_good == false)) {
+    if ((room_get_name(room) == "rm_main_menu") && (title_splash_good == false)) {
         scr_image("title_splash", -50, 0, 0, 0, 0);
     }
-    if ((room_get_name(room) != "Main_Menu") && (title_splash_good == true)) {
+    if ((room_get_name(room) != "rm_main_menu") && (title_splash_good == true)) {
         scr_image("title_splash", -666, 0, 0, 0, 0);
     }
 
-    if ((room_get_name(room) == "Defeat") && (defeat_good == false)) {
+    if ((room_get_name(room) == "rm_defeat") && (defeat_good == false)) {
         scr_image("defeat", -50, 0, 0, 0, 0);
     }
-    if ((room_get_name(room) != "Defeat") && (defeat_good == true)) {
+    if ((room_get_name(room) != "rm_defeat") && (defeat_good == true)) {
         scr_image("defeat", -666, 0, 0, 0, 0);
     }
 }

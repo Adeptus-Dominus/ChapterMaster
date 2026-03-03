@@ -38,10 +38,10 @@ if (!hide) {
         // This is the other one
         draw_set_color(0);
         draw_set_alpha(0.75);
-        if (room_get_name(room) != "Main_Menu") {
+        if (room_get_name(room) != "rm_main_menu") {
             draw_rectangle(0, 0, room_width, room_height, 0);
         }
-        if (room_get_name(room) == "Main_Menu") {
+        if (room_get_name(room) == "rm_main_menu") {
             draw_rectangle(0, 0, room_width, 707, 0);
         }
         draw_set_alpha(1);
@@ -240,7 +240,7 @@ if (!hide) {
                         }
                         audio_stop_all();
 
-                        room_goto(Game);
+                        room_goto(rm_game);
                     }
                 }
             }

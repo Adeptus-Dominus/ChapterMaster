@@ -83,7 +83,7 @@ switch (effect) {
         settings = 0;
         cooldown = 2;
 
-        if (room == Main_Menu) {
+        if (room == rm_main_menu) {
             with (obj_new_button) {
                 instance_destroy();
             }
@@ -164,6 +164,6 @@ if (fading > 0) {
         with (obj_ini) {
             instance_destroy();
         }
-        room_goto(Main_Menu);
+        room_goto(rm_main_menu);
     }
 }

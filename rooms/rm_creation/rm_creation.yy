@@ -1,14 +1,14 @@
 {
   "$GMRoom":"v1",
-  "%Name":"Creation",
+  "%Name":"rm_creation",
   "creationCodeFile":"",
   "inheritCode":false,
   "inheritCreationOrder":false,
   "inheritLayers":false,
   "instanceCreationOrder":[
-    {"name":"inst_9E6CD6FB","path":"rooms/Creation/Creation.yy",},
-    {"name":"inst_4A5D2999","path":"rooms/Creation/Creation.yy",},
-    {"name":"inst_6B7174EB","path":"rooms/Creation/Creation.yy",},
+    {"name":"inst_9E6CD6FB","path":"rooms/rm_creation/rm_creation.yy",},
+    {"name":"inst_4A5D2999","path":"rooms/rm_creation/rm_creation.yy",},
+    {"name":"inst_6B7174EB","path":"rooms/rm_creation/rm_creation.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -23,7 +23,7 @@
       ],"layers":[],"name":"Compatibility_Instances_Depth_-49","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":true,"visible":true,},
     {"$GMRBackgroundLayer":"","%Name":"Compatibility_Colour","animationFPS":15.0,"animationSpeedType":0,"colour":4278190080,"depth":2147483600,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"hspeed":0.0,"htiled":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Compatibility_Colour","properties":[],"resourceType":"GMRBackgroundLayer","resourceVersion":"2.0","spriteId":null,"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":true,"visible":true,"vspeed":0.0,"vtiled":false,"x":0,"y":0,},
   ],
-  "name":"Creation",
+  "name":"rm_creation",
   "parent":{
     "name":"Rooms",
     "path":"folders/Rooms.yy",

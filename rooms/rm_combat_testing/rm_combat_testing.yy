@@ -1,13 +1,13 @@
 {
   "$GMRoom":"v1",
-  "%Name":"combat_testing",
+  "%Name":"rm_combat_testing",
   "creationCodeFile":"",
   "inheritCode":false,
   "inheritCreationOrder":false,
   "inheritLayers":false,
   "instanceCreationOrder":[
-    {"name":"inst_F0CE7FB4","path":"rooms/combat_testing/combat_testing.yy",},
-    {"name":"inst_8D38B641","path":"rooms/combat_testing/combat_testing.yy",},
+    {"name":"inst_F0CE7FB4","path":"rooms/rm_combat_testing/rm_combat_testing.yy",},
+    {"name":"inst_8D38B641","path":"rooms/rm_combat_testing/rm_combat_testing.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -19,10 +19,10 @@
       ],"layers":[],"name":"Compatibility_Instances_Depth_0","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":true,"visible":true,},
     {"$GMRBackgroundLayer":"","%Name":"Compatibility_Colour","animationFPS":15.0,"animationSpeedType":0,"colour":4278190080,"depth":2147483600,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"hspeed":0.0,"htiled":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Compatibility_Colour","properties":[],"resourceType":"GMRBackgroundLayer","resourceVersion":"2.0","spriteId":null,"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":true,"visible":true,"vspeed":0.0,"vtiled":false,"x":0,"y":0,},
   ],
-  "name":"combat_testing",
+  "name":"rm_combat_testing",
   "parent":{
-    "name":"Rooms",
-    "path":"folders/Rooms.yy",
+    "name":"unused",
+    "path":"folders/Rooms/unused.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

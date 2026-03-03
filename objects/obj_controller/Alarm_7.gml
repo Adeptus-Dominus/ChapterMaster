@@ -9,4 +9,4 @@ if ((obj_controller.marines + obj_controller.command <= 50) && (global.defeat !=
     global.defeat = 0;
 }
 
-room_goto(Defeat);
+room_goto(rm_defeat);

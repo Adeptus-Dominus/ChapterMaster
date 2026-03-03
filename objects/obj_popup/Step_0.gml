@@ -46,7 +46,8 @@ try {
         exit;
     }
 
-    if ((room_get_name(room) == "Main_Menu") && (title == "Tutorial")) {
+    //! I don't think this is even used?
+    if ((room_get_name(room) == "rm_main_menu") && (title == "Tutorial")) {
         if (press == 1) {
             // 1: yes, 2: no (without disabling)
             obj_main_menu_buttons.fading = 1;
