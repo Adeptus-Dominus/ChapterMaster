@@ -6,10 +6,10 @@ if (keyboard_check_pressed(192)) {
 var _w = window_get_width();
 var _h = window_get_height();
 
-if (_w != global.settings.last_window_w || _h != global.settings.last_window_h) {
-    global.settings.last_window_w = _w;
-    global.settings.last_window_h = _h;
-
+if (!window_get_fullscreen() && (_w != global.settings.window_rect.w || _h != global.settings.window_rect.h)) {
+    global.settings.window_rect.w = _w;
+    global.settings.window_rect.h = _h;
+    global.settings.save();
     global.settings.sync_ui();
 }
 

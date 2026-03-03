@@ -47,7 +47,7 @@ if (settings == 1) {
 
     // Checkboxes
     draw_sprite(spr_creation_check, global.settings.fullscreen, _vx + 626, _vy + 426);
-    draw_sprite(spr_creation_check, global.settings.settings_autosave, _vx + 680, _vy + 485);
+    draw_sprite(spr_creation_check, global.settings.autosave, _vx + 680, _vy + 485);
 
 } else if (!instance_exists(obj_saveload)) {
     scr_image("menu", 0, _vx + 476, _vy + 114, 562, 631);

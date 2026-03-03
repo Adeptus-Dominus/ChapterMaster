@@ -9,9 +9,7 @@ function SettingsManager() constructor {
         w: 1600,
         h: 900,
     };
-    last_window_w = window_rect.w;
-    last_window_h = window_rect.h;
-    settings_autosave = true;
+    autosave = true;
 
     static load = function() {
         ini_open("saves.ini");
@@ -19,7 +17,7 @@ function SettingsManager() constructor {
         music_volume = ini_read_real("Settings", "music_volume", 1);
         sfx_volume = ini_read_real("Settings", "effect_volume", 1);
         fullscreen = ini_read_real("Settings", "fullscreen", 1);
-        settings_autosave = ini_read_real("Settings", "settings_autosave", true);
+        autosave = ini_read_real("Settings", "autosave", true);
 
         var rect_str = ini_read_string("Settings", "window_data", "0|0|1600|900|");
         var parts = string_split(rect_str, "|");
@@ -38,7 +36,7 @@ function SettingsManager() constructor {
         ini_write_real("Settings", "effect_volume", sfx_volume);
         ini_write_real("Settings", "music_volume", music_volume);
         ini_write_real("Settings", "fullscreen", fullscreen);
-        ini_write_real("Settings", "settings_autosave", settings_autosave);
+        ini_write_real("Settings", "autosave", autosave);
         var _window_data = $"{window_rect.x}|{window_rect.y}|{window_rect.w}|{window_rect.h}|";
         ini_write_string("Settings", "window_data", _window_data);
         ini_close();
@@ -52,8 +50,6 @@ function SettingsManager() constructor {
             window_set_size(window_rect.w, window_rect.h);
             window_set_position(window_rect.x, window_rect.y);
         }
-        last_window_w = window_rect.w;
-        last_window_h = window_rect.h;
         display_set_gui_size(1600, 900);
         surface_resize(application_surface, 1600, 900);
     };

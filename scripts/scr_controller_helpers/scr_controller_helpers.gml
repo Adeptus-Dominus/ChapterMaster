@@ -437,7 +437,7 @@ function scr_end_turn() {
                 }*/
 
                 if (ok == 1) {
-                    if (global.settings.settings_autosave == true) {
+                    if (global.settings.autosave == true) {
                         // Autosave
                         if (obj_controller.turn % 10 == 0) {
                             // save every 10 turns

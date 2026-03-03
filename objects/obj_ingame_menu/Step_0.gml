@@ -13,7 +13,7 @@ switch (effect) {
             y -= 2000;
         }
 
-        if (effect == 11 && !file_exists(PATH_AUTOSAVE_FILE)) {
+        if (effect == eIN_GAME_MENU_EFFECT.SAVE && !file_exists(PATH_AUTOSAVE_FILE)) {
             var _sl = instance_create_depth(0, 0, -20005, obj_saveload);
             _sl.autosaving = true;
             with (obj_controller) {
@@ -23,11 +23,11 @@ switch (effect) {
         }
 
         var _sav = instance_create_depth(0, 0, -20005, obj_saveload);
-        _sav.menu = (effect == 11) ? 1 : 2;
+        _sav.menu = (effect == eIN_GAME_MENU_EFFECT.SAVE) ? 1 : 2;
 
         var _b = instance_create_depth(_vx + 707, _vy + 830, -20010, obj_new_button);
         _b.button_text = "Back";
-        _b.target = 18;
+        _b.target = eIN_GAME_MENU_EFFECT.BACK_FROM_SAVELOAD;
         _b.scaling = 1.5;
         _b.button_id = 1;
         break;
@@ -40,7 +40,7 @@ switch (effect) {
         var _b = instance_create_depth(_vx + 653, _vy + 664, -20010, obj_new_button);
         _b.sprite_index = spr_ui_but_1;
         _b.button_text = "Back";
-        _b.target = 25;
+        _b.target = eIN_GAME_MENU_EFFECT.BACK_FROM_SETTINGS;
         _b.scaling = 1.5;
         _b.button_id = 1;
 
@@ -70,7 +70,7 @@ switch (effect) {
             instance_destroy();
         }
         with (obj_new_button) {
-            if (target == 18) {
+            if (target == eIN_GAME_MENU_EFFECT.BACK_FROM_SAVELOAD) {
                 instance_destroy();
             } else {
                 x += 2000;
@@ -90,7 +90,7 @@ switch (effect) {
             instance_destroy();
         } else {
             with (obj_new_button) {
-                if (target == 25) {
+                if (target == eIN_GAME_MENU_EFFECT.BACK_FROM_SETTINGS) {
                     instance_destroy();
                 } else {
                     if (x < _vx) {
@@ -143,7 +143,7 @@ if (settings == 1 && mouse_button_clicked(mb_left, 0, true)) {
     }
 
     if (scr_hit(_vx + 680, _vy + 485, _vx + 712, _vy + 517)) {
-        global.settings.settings_autosave = !global.settings.settings_autosave;
+        global.settings.autosave = !global.settings.autosave;
         global.settings.save();
     }
 

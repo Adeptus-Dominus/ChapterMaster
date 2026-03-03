@@ -44,6 +44,10 @@ if (room_get_name(room) == "Creation") {
         start_room_transition(Creation);
     };
     buttons[1].action = function() {
+        if (instance_exists(obj_saveload)) {
+                return;
+        }
+
         var _pop = instance_create_depth(0, 0, -100, obj_saveload);
         _pop.menu = 2;
 
