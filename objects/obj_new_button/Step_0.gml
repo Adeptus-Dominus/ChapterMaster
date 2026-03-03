@@ -144,6 +144,5 @@ if (highlighted == true && target > 10 && mouse_button_clicked(,, true)) {
         instance_destroy();
     } else {
         obj_ingame_menu.effect = self.target;
-
     }
 }

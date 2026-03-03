@@ -69,7 +69,6 @@ try {
         if (sound_to == "royal") {
             global.sound_playing = audio_play_sound(snd_royal, 0, true);
             audio_sound_gain(global.sound_playing, 1, 5000);
-
         }
     }
     // Cheat codes

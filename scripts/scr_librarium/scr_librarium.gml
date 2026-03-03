@@ -50,7 +50,6 @@ function scr_librarium_gui() {
                     cooldown = 8000;
                     identifiable = 0;
                     audio_play_sound(snd_identify, -500, false);
-
                 }
             }
         } else if (cur_arti.identified() < 1) {

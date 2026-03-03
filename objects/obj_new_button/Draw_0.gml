@@ -1,7 +1,7 @@
 add_draw_return_values();
 
 var _sprite_index = asset_get_index("spr_ui_but_" + string(button_id));
-var _hover_index  = asset_get_index("spr_ui_hov_" + string(button_id));
+var _hover_index = asset_get_index("spr_ui_hov_" + string(button_id));
 
 var _base_w = sprite_get_width(_sprite_index);
 var _base_h = sprite_get_height(_sprite_index);
@@ -33,8 +33,8 @@ if (line > 0) {
     var _line_x = x + line;
     var _y_top = y + 1;
     var _y_bottom = y + (37 * scaling);
-    
-    switch(button_id) {
+
+    switch (button_id) {
         case 1:
         case 2:
             if (line > 131 * scaling) {
@@ -42,14 +42,14 @@ if (line > 0) {
             }
             draw_line(_line_x, _y_top + _l_why, _line_x, _y_bottom);
             break;
-            
+
         case 3:
             if (line > 101 * scaling) {
                 _l_why = min(line - (103 * scaling), 11 * scaling);
             }
             draw_line(_line_x, _y_top + _l_why, _line_x, _y_bottom);
             break;
-            
+
         case 4:
             _y_top = y + (10 * scaling) + 1;
             _y_bottom = y + (47 * scaling);

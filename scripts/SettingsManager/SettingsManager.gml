@@ -62,12 +62,12 @@ function SettingsManager() constructor {
     static sync_ui = function() {
         var _w = window_get_width();
         var _h = window_get_height();
-        
+
         if (_w > 0 && _h > 0) {
             display_set_gui_size(1600, 900);
             surface_resize(application_surface, 1600, 900);
         }
-    }
+    };
 }
 
 function approach(current, target, amount) {

@@ -463,7 +463,6 @@ function scr_end_turn() {
                     }
                     audio_play_sound(snd_end_turn, -50, false);
 
-
                     turn += 1;
                     with (obj_star) {
                         for (var i = 0; i <= 21; i++) {

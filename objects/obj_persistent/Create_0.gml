@@ -22,4 +22,3 @@ instance_create_depth(0, 0, 0, obj_img);
 
 audio_group_load(audiogroup_sfx);
 audio_group_load(audiogroup_music);
-
