@@ -94,7 +94,7 @@ function scr_save(save_part, save_id, autosaving = false) {
             if (!autosaving) {
                 obj_saveload.hide = true;
                 obj_controller.invis = true;
-                obj_saveload.alarm[2] = 2; //handles screenshot and reactivting the main UI
+                obj_saveload.alarm[3] = 2; //handles screenshot and reactivting the main UI
             }
 
             var svt = 0, svc = "", svm = "", smr = 0, svd = "";

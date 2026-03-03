@@ -297,30 +297,12 @@ for (var i = 101; i < 103; i++) {
     }
 }
 
-// ** Sets to full screen/ checks for resolution **
-window_data = string(window_get_x()) + "|" + string(window_get_y()) + "|" + string(window_get_width()) + "|" + string(window_get_height()) + "|";
-window_old = window_data;
-if (window_get_fullscreen() == 1) {
-    window_old = "fullscreen";
-    window_data = "fullscreen";
-}
 // ** Sets cheatcode values **
 cheatcode = 0;
 cheatyface = 0;
-// ** Creates saves.ini with default settings **
-ini_open("saves.ini");
-master_volume = ini_read_real("Settings", "master_volume", 1);
-effect_volume = ini_read_real("Settings", "effect_volume", 1);
-music_volume = ini_read_real("Settings", "music_volume", 1);
-large_text = ini_read_real("Settings", "large_text", 0);
-settings_heresy = ini_read_real("Settings", "settings_heresy", 0);
-settings_fullscreen = ini_read_real("Settings", "fullscreen", 1);
-settings_autosave = ini_read_real("Settings", "settings_autosave", 1);
-settings_window_data = ini_read_string("Settings", "window_data", "fullscreen");
 if (is_test_map) {
     global.cheat_debug = true;
 }
-ini_close();
 
 // ** Sets play variables **
 info_fragments = 0;

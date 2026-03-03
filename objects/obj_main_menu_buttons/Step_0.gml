@@ -1,104 +1,36 @@
-var xx, yy;
-yy = 784;
-if (instance_exists(obj_saveload) || instance_exists(obj_credits)) {
-    yy = 830;
-}
-if (oth < 40) {
-    oth += 1;
-}
+fade_val = approach(fade_val, fade_target, 0.1);
 
-if (room_get_name(room) == "Creation") {
-    xx = x;
-    yy = y;
-    var _spr_height = sprite_get_height(spr_mm_butts_small) * 2;
-    var _spr_width = sprite_get_width(spr_mm_butts_small) * 2;
-    if (scr_hit(xx, yy, xx + _spr_width, yy + _spr_height) && fading == 0) {
-        hover[1] = 1; //hovering on exit
-    } else {
-        hover[1] = 0; //not hovering on exit
+if (fade_val >= 1) {
+    if (is_quitting) {
+        game_end();
     }
-    if (cooldown > 0) {
-        cooldown -= 1;
-    }
-    if ((fading == 0) && (fade > 0)) {
-        fade -= 1;
-    }
-    if ((fading == 1) && ((fade < 40) || (crap > 0) || (button == 1))) {
-        fade += 1;
-    }
-
-    if (fade == 60) {
-        room_goto(Main_Menu);
-    }
-    exit;
-}
-
-if ((!instance_exists(obj_popup)) && (!instance_exists(obj_credits)) && (!instance_exists(obj_saveload)) && (fading == 0)) {
-    xx = 126;
-    if ((mouse_x >= xx) && (mouse_y > yy) && (mouse_x < xx + 265) && (mouse_y < yy + 48)) {
-        hover[1] = 1;
-    }
-    xx = 550;
-    if ((mouse_x >= xx) && (mouse_y > yy) && (mouse_x < xx + 265) && (mouse_y < yy + 48)) {
-        hover[2] = 1;
-    }
-    xx = 968;
-    if ((mouse_x >= xx) && (mouse_y > yy) && (mouse_x < xx + 265) && (mouse_y < yy + 48)) {
-        hover[3] = 1;
-    }
-    xx = 1280;
-    if ((mouse_x >= xx) && (mouse_y > yy) && (mouse_x < xx + 265) && (mouse_y < yy + 48)) {
-        hover[4] = 1;
-    }
-}
-if ((instance_exists(obj_saveload) || instance_exists(obj_credits)) && (fading == 0)) {
-    xx = 687;
-    if (scr_hit(xx, yy, xx + 265, yy + 48) == true) {
-        hover[6] = 1;
+    if (target_room != -1) {
+        if (instance_exists(obj_main_menu)) {
+            instance_destroy(obj_main_menu);
+        }
+        room_goto(target_room);
     }
 }
 
-if (cooldown > 0) {
-    cooldown -= 1;
-}
-if ((fading == 0) && (fade > 0)) {
-    fade -= 1;
-}
-if ((fading == 1) && ((fade < 40) || (button == 4) || (crap > 0))) {
-    fade += 1;
+var can_interact = (fade_target == 0) && !instance_exists(obj_saveload) && !instance_exists(obj_ingame_menu);
+
+if (instance_exists(obj_main_menu)) {
+    if (obj_main_menu.title_alpha < 0.5) {
+        can_interact = false;
+    }
 }
 
-if ((crap > 0) && (fade == 60)) {
-    with (obj_main_menu) {
-        part_particles_clear(p_system);
-        instance_destroy();
-    }
-}
-if ((crap == 1) && (fade == 60)) {
-    room_goto(Tutorial);
-}
-if ((crap > 1) && (fade == 60)) {
-    audio_stop_all();
-    room_goto(Creation);
-}
+if (can_interact) {
+    var mouse_clicked = mouse_check_button_pressed(mb_left);
 
-if ((button == 4) && (fade == 40)) {
-    with (obj_cursor) {
-        instance_destroy();
-    }
-}
-if ((button == 4) && (fade >= 60)) {
-    game_end();
-}
+    for (var i = 0; i < array_length(buttons); i++) {
+        var b = buttons[i];
+        var is_hovering = point_in_rectangle(mouse_x, mouse_y, b.x, b.y, b.x + b.w, b.y + b.h);
 
-if ((button == 6) && (fade == 40)) {
-    with (obj_saveload) {
-        instance_destroy();
+        b.hover = approach(b.hover, is_hovering ? 20 : 0, 2);
+
+        if (is_hovering && mouse_clicked && b.action != undefined) {
+            b.action();
+        }
     }
-    with (obj_credits) {
-        instance_destroy();
-    }
-    fading = 0;
-    button = 0;
-    obj_main_menu.menu = 0;
 }

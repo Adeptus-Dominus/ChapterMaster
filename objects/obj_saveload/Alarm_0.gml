@@ -67,9 +67,6 @@ if (load_part == 6) {
         scr_load(5, global.load);
     }
     trickle = 2;
-    // if (instance_exists(obj_cuicons)){
-    //     obj_cuicons.alarm[1]=30;
-    // }
 }
 
 if (load_part == 5) {

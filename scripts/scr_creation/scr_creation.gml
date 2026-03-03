@@ -335,8 +335,8 @@ function scr_creation(slide_num) {
             audio_stop_all();
             audio_play_sound(snd_royal, 0, true);
             audio_sound_gain(snd_royal, 0, 0);
-            if (master_volume == 0 || music_volume == 0) {
-                audio_sound_gain(snd_royal, 0.25 * master_volume * music_volume, 2000);
+            if (global.settings.master_volume == 0 || global.settings.music_volume == 0) {
+                audio_sound_gain(snd_royal, 0.25 * global.settings.master_volume * global.settings.music_volume, 2000);
             }
 
             if (founding == ePROGENITOR.RANDOM) {

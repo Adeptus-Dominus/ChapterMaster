@@ -121,3 +121,14 @@ enum eEVENT {
     //END
     NONE
 }
+
+enum eIN_GAME_MENU_EFFECT {
+    SAVE = 11,
+    LOAD = 12,
+    OPTIONS = 13,
+    EXIT = 14,
+    RETURN = 15,
+    BACK_FROM_SAVELOAD = 18,
+    BACK_FROM_SETTINGS = 25,
+    CLOSE_SAVELOAD = 30
+}

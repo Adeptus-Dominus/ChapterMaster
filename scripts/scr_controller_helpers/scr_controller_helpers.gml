@@ -437,7 +437,7 @@ function scr_end_turn() {
                 }*/
 
                 if (ok == 1) {
-                    if (settings_autosave == true) {
+                    if (global.settings.autosave == true) {
                         // Autosave
                         if (obj_controller.turn % 10 == 0) {
                             // save every 10 turns
@@ -462,7 +462,7 @@ function scr_end_turn() {
                         instance_destroy();
                     }
                     audio_play_sound(snd_end_turn, -50, 0);
-                    audio_sound_gain(snd_end_turn, master_volume * effect_volume, 0);
+                    audio_sound_gain(snd_end_turn, global.settings.master_volume * global.settings.sfx_volume, 0);
 
                     turn += 1;
                     with (obj_star) {

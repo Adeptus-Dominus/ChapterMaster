@@ -69,7 +69,7 @@ function __global_object_depths() {
     global.__objectDepths[58] = 0; // obj_main_menu
     global.__objectDepths[59] = -9999999; // obj_cuicons
     global.__objectDepths[60] = -9999999; // obj_img
-    global.__objectDepths[61] = -999999; // obj_lol_version
+    global.__objectDepths[61] = 0; // [REMOVED] obj_lol_version
     global.__objectDepths[62] = -20000; // obj_ingame_menu
     global.__objectDepths[63] = -7273799; // obj_fade
     global.__objectDepths[64] = -5; // obj_defeat
@@ -158,7 +158,7 @@ function __global_object_depths() {
     global.__objectNames[58] = "obj_main_menu";
     global.__objectNames[59] = "obj_cuicons";
     global.__objectNames[60] = "obj_img";
-    global.__objectNames[61] = "obj_lol_version";
+    global.__objectNames[61] = ""; // [REMOVED] obj_lol_version
     global.__objectNames[62] = "obj_ingame_menu";
     global.__objectNames[63] = "obj_fade";
     global.__objectNames[64] = "obj_defeat";

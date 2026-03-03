@@ -50,7 +50,7 @@ function scr_librarium_gui() {
                     cooldown = 8000;
                     identifiable = 0;
                     audio_play_sound(snd_identify, -500, 0);
-                    audio_sound_gain(snd_identify, master_volume * effect_volume, 0);
+                    audio_sound_gain(snd_identify, global.settings.master_volume * global.settings.sfx_volume, 0);
                 }
             }
         } else if (cur_arti.identified() < 1) {

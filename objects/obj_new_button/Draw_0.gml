@@ -1,91 +1,64 @@
+add_draw_return_values();
+
+var _sprite_index = asset_get_index("spr_ui_but_" + string(button_id));
+var _hover_index  = asset_get_index("spr_ui_hov_" + string(button_id));
+
+var _base_w = sprite_get_width(_sprite_index);
+var _base_h = sprite_get_height(_sprite_index);
+
 draw_set_alpha(1);
-
-var xx, yy;
-xx = x;
-yy = y;
-if ((follow_control == true) && instance_exists(obj_controller)) {
-    xx += __view_get(e__VW.XView, 0);
-    yy += __view_get(e__VW.YView, 0);
+if (sprite_exists(_sprite_index)) {
+    draw_sprite_ext(_sprite_index, 0, x, y, scaling, scaling, 0, c_white, 1);
 }
 
-if (button_id == 1) {
-    draw_sprite_ext(spr_ui_but_1, 0, x, y, scaling, scaling, 0, c_white, 1);
+if (highlight > 0 && sprite_exists(_hover_index)) {
+    draw_set_blend_mode(bm_add);
+    draw_sprite_ext(_hover_index, 0, x, y, scaling, scaling, 0, c_white, highlight * 2);
+    draw_set_blend_mode(bm_normal);
 }
-if (button_id == 2) {
-    draw_sprite_ext(spr_ui_but_2, 0, x, y, scaling, scaling, 0, c_white, 1);
-}
-if (button_id == 3) {
-    draw_sprite_ext(spr_ui_but_3, 0, x, y, scaling, scaling, 0, c_white, 1);
-}
-if (button_id == 4) {
-    draw_sprite_ext(spr_ui_but_4, 0, x, y, scaling, scaling, 0, c_white, 1);
-}
-
-draw_set_blend_mode(bm_add);
-// draw_set_alpha(highlight*2);
-if ((button_id == 1) && (highlight > 0)) {
-    draw_sprite_ext(spr_ui_hov_1, 0, x, y, scaling, scaling, 0, c_white, highlight * 2);
-}
-if ((button_id == 2) && (highlight > 0)) {
-    draw_sprite_ext(spr_ui_hov_2, 0, x, y, scaling, scaling, 0, c_white, highlight * 2);
-}
-if ((button_id == 3) && (highlight > 0)) {
-    draw_sprite_ext(spr_ui_hov_3, 0, x, y, scaling, scaling, 0, c_white, highlight * 2);
-}
-if ((button_id == 4) && (highlight > 0)) {
-    draw_sprite_ext(spr_ui_hov_4, 0, x, y, scaling, scaling, 0, c_white, highlight * 2);
-}
-draw_set_blend_mode(bm_normal);
-// draw_set_alpha(1);
 
 draw_set_color(c_white);
-draw_set_halign(fa_center);
 draw_set_font(fnt_cul_14);
-draw_text_transformed(xx + ((sprite_width / 2) * scaling), yy + ((sprite_height / 5) * scaling), string_hash_to_newline(button_text), scaling, scaling, 0);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
 
-draw_set_alpha(0.15);
-if ((line > 0) && (button_id <= 2)) {
-    var l_hei, l_why;
-    l_hei = 37 * scaling;
-    l_why = 0;
-    if (line > 131 * scaling) {
-        l_hei = (171 * scaling) - line;
-        l_why = min(line - (133 * scaling), 11 * scaling);
-    }
-    // draw_line(line+xx,yy+1+l_why,xx+line+(34*scaling),yy+(37*scaling));
-    draw_line(line + xx, yy + 1 + l_why, xx + line, yy + (37 * scaling));
-    // draw_line(line+xx+(34*scaling),yy+1+l_why,xx+line+(34*scaling),yy+(37*scaling));
-}
-/*
-if (line>0) and (button_id<=2){
-    var l_hei,l_why;l_hei=37*scaling;l_why=0;if (line>131*scaling){l_hei=(171-line)*scaling;l_why=min(line-133,11)*scaling;}
-    // draw_line(line+xx,yy+1+l_why,xx+line+(34*scaling),yy+(37*scaling));
-    draw_line(line+xx+(34*scaling),yy+1+l_why,xx+line+(34*scaling),yy+(37*scaling));
-}*/
-if ((line > 0) && (button_id == 3)) {
-    var l_hei, l_why;
-    l_hei = 37 * scaling;
-    l_why = 0;
-    if (line > 101 * scaling) {
-        l_hei = (141 - line) * scaling;
-        l_why = min(line - 103, 11) * scaling;
-    }
-    draw_line(xx + line, yy + 1 + l_why, xx + line, yy + 37 * scaling);
-}
-if ((line > 0) && (button_id == 4)) {
-    var l_hei, l_why;
-    l_hei = 37 * scaling;
-    l_why = 0;
-    if (line > 94 * scaling) {
-        l_hei = (134 - line) * scaling;
-        l_why = min(line - 96, 11) * scaling;
-    }
-    draw_line(xx + line, yy + (10 * scaling) + 1, xx + line, yy + ((10 + 37) * scaling) - l_why);
-}
-draw_set_alpha(1);
+var _tx = x + (_base_w * scaling * 0.5);
+var _ty = y + (_base_h * scaling * 0.4);
 
-// draw_set_color(c_red);
-// draw_text(x+300,y,highlight);
+draw_text_transformed(_tx, _ty, string(button_text), scaling, scaling, 0);
 
-/* */
-/*  */
+if (line > 0) {
+    draw_set_alpha(0.15);
+    var _l_why = 0;
+    var _line_x = x + line;
+    var _y_top = y + 1;
+    var _y_bottom = y + (37 * scaling);
+    
+    switch(button_id) {
+        case 1:
+        case 2:
+            if (line > 131 * scaling) {
+                _l_why = min(line - (133 * scaling), 11 * scaling);
+            }
+            draw_line(_line_x, _y_top + _l_why, _line_x, _y_bottom);
+            break;
+            
+        case 3:
+            if (line > 101 * scaling) {
+                _l_why = min(line - (103 * scaling), 11 * scaling);
+            }
+            draw_line(_line_x, _y_top + _l_why, _line_x, _y_bottom);
+            break;
+            
+        case 4:
+            _y_top = y + (10 * scaling) + 1;
+            _y_bottom = y + (47 * scaling);
+            if (line > 94 * scaling) {
+                _l_why = min(line - (96 * scaling), 11 * scaling);
+            }
+            draw_line(_line_x, _y_top, _line_x, _y_bottom - _l_why);
+            break;
+    }
+}
+
+pop_draw_return_values();
