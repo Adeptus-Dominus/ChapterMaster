@@ -153,7 +153,7 @@ function scr_load(save_part, save_id) {
         global.load = -1;
         scr_image("force", -50, 0, 0, 0, 0);
         LOGGER.info("Loading completed");
-        // room_goto(Game);
+        // room_goto(rm_game);
     }
 
     var t2 = get_timer();

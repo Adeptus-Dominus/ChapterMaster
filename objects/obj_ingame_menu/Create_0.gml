@@ -1,6 +1,6 @@
 fading = 0;
 effect = 0;
-settings = room == Main_Menu;
+settings = room == rm_main_menu;
 cooldown = 0;
 
 var _vx = camera_get_view_x(view_camera[0]);
@@ -16,7 +16,7 @@ var _spawn_button = function(_x, _y, _text, _target) {
     return _butt;
 };
 
-if (room != Main_Menu) {
+if (room != rm_main_menu) {
     _spawn_button(_vx + 821, _vy + 256, "Save", eIN_GAME_MENU_EFFECT.SAVE);
     _spawn_button(_vx + 821, _vy + 336, "Load", eIN_GAME_MENU_EFFECT.LOAD);
     _spawn_button(_vx + 821, _vy + 416, "Options", eIN_GAME_MENU_EFFECT.OPTIONS);

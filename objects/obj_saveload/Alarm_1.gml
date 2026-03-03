@@ -7,7 +7,7 @@ if (global.restart > 0) {
     with (obj_ini) {
         instance_destroy();
     }
-    room_goto(Creation);
+    room_goto(rm_creation);
 }
 
 instance_destroy();

@@ -853,7 +853,7 @@ try {
     }
 } catch (_exception) {
     handle_exception(_exception);
-    room_goto(Main_Menu);
+    room_goto(rm_main_menu);
 }
 
 pop_draw_return_values();

@@ -1,4 +1,4 @@
-if (room_get_name(room) == "Creation") {
+if (room_get_name(room) == "rm_creation") {
     if ((creation_good == false) && (splash_good == false)) {
         scr_image("creation", -666, 0, 0, 0, 0);
         scr_image("main_splash", -666, 0, 0, 0, 0);
@@ -7,6 +7,6 @@ if (room_get_name(room) == "Creation") {
     }
 }
 
-if (room_get_name(room) == "Game") {
+if (room_get_name(room) == "rm_game") {
     scr_image("all", -666, 0, 0, 0, 0);
 }

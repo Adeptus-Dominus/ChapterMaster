@@ -347,7 +347,7 @@ function scr_creation(slide_num) {
                 obj_ini.skin_color = choose(2, 3, 4);
             }
 
-            room_goto(Game);
+            room_goto(rm_game);
         }
     }
 }

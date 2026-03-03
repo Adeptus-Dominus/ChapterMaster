@@ -5,7 +5,7 @@ is_quitting = false;
 
 buttons = [];
 
-if (room_get_name(room) == "Creation") {
+if (room_get_name(room) == "rm_creation") {
     array_push(buttons, {
         label: "BACK",
         sprite: spr_mm_butts_small,
@@ -16,7 +16,7 @@ if (room_get_name(room) == "Creation") {
         h: sprite_get_height(spr_mm_butts_small) * 2,
         hover: 0,
         action: function() {
-            start_room_transition(Main_Menu);
+            start_room_transition(rm_main_menu);
         },
     });
 } else {
@@ -43,7 +43,7 @@ if (room_get_name(room) == "Creation") {
     
 
     buttons[0].action = function() {
-        start_room_transition(Creation);
+        start_room_transition(rm_creation);
     };
     buttons[1].action = function() {
         if (instance_exists(obj_saveload)) {
