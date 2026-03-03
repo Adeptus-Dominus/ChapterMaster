@@ -27,7 +27,7 @@ if (room_get_name(room) == "Creation") {
         "EXIT"
     ];
     for (var i = 0; i < 4; i++) {
-        array_push(buttons, {
+        var _button_data = {
             label: _labels[i],
             sprite: spr_mm_butts,
             subimg: i,
@@ -37,15 +37,17 @@ if (room_get_name(room) == "Creation") {
             h: 20 * 2.2,
             hover: 0,
             action: undefined,
-        });
+        };
+        array_push(buttons, _button_data);
     }
+    
 
     buttons[0].action = function() {
         start_room_transition(Creation);
     };
     buttons[1].action = function() {
         if (instance_exists(obj_saveload)) {
-                return;
+            return;
         }
 
         var _pop = instance_create_depth(0, 0, -100, obj_saveload);
