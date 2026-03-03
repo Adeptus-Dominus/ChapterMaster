@@ -14,14 +14,7 @@ LOGGER.info("Ground Combat Started");
 
 audio_stop_sound(snd_royal);
 audio_play_sound(snd_battle, 0, true);
-audio_sound_gain(snd_battle, 0, 0);
-var nope = 0;
-if ((global.settings.master_volume == 0) || (global.settings.music_volume == 0)) {
-    nope = 1;
-}
-if (nope != 1) {
-    audio_sound_gain(snd_battle, 0.25 * global.settings.master_volume * global.settings.music_volume, 2000);
-}
+audio_sound_gain(snd_battle, 1, 5000);
 
 //limit on the size of the players forces allowed
 enter_pressed = 0;

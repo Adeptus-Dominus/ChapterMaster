@@ -1148,7 +1148,7 @@ function ToggleButton(data = {}) constructor {
     clicked = function() {
         if (hover() && mouse_button_clicked()) {
             active = !active;
-            audio_play_sound(snd_click_small, 10, false, 1);
+            audio_play_sound(snd_click_small, 10, false);
             return true;
         } else {
             return false;
@@ -1266,10 +1266,10 @@ function InteractiveButton(data = {}) constructor {
     clicked = function() {
         if (hover() && mouse_button_clicked()) {
             if (!active) {
-                audio_play_sound(snd_error, 10, false, 1);
+                audio_play_sound(snd_error, 10, false);
                 return false;
             } else {
-                audio_play_sound(snd_click_small, 10, false, 1);
+                audio_play_sound(snd_click_small, 10, false);
                 return true;
             }
         } else {

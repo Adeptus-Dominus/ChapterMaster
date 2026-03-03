@@ -2,14 +2,7 @@ try {
     // LOGGER.debug("alarm 7 start");
     audio_stop_sound(snd_battle);
     audio_play_sound(snd_royal, 0, true);
-    audio_sound_gain(snd_royal, 0, 0);
-    var nope = 0;
-    if ((global.settings.master_volume == 0) || (global.settings.music_volume == 0)) {
-        nope = 1;
-    }
-    if (nope != 1) {
-        audio_sound_gain(snd_royal, 0.25 * global.settings.master_volume * global.settings.music_volume, 2000);
-    }
+    audio_sound_gain(snd_royal, 1, 5000);
 
     // Execute the cleaning scripts
     // Check for any more battles

@@ -50,8 +50,13 @@ function SettingsManager() constructor {
             window_set_size(window_rect.w, window_rect.h);
             window_set_position(window_rect.x, window_rect.y);
         }
-        display_set_gui_size(1600, 900);
-        surface_resize(application_surface, 1600, 900);
+        sync_ui();
+    };
+
+    static apply_audio = function() {
+        audio_master_gain(master_volume);
+        audio_group_set_gain(audiogroup_music, music_volume);
+        audio_group_set_gain(audiogroup_sfx, sfx_volume);
     };
 
     static sync_ui = function() {

@@ -3,6 +3,7 @@ randomize();
 global.settings = new SettingsManager();
 global.settings.load();
 global.settings.apply_video();
+global.settings.apply_audio();
 
 global.save_version = 0;
 global.returned = 0;
@@ -19,4 +20,6 @@ global.language = "en";
 instance_create_depth(0, 0, 0, obj_garbage_collector);
 instance_create_depth(0, 0, 0, obj_img);
 
-room_goto_next();
+audio_group_load(audiogroup_sfx);
+audio_group_load(audiogroup_music);
+

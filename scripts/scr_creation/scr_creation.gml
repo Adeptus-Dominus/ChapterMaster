@@ -334,10 +334,7 @@ function scr_creation(slide_num) {
             instance_create(0, 0, obj_ini);
             audio_stop_all();
             audio_play_sound(snd_royal, 0, true);
-            audio_sound_gain(snd_royal, 0, 0);
-            if (global.settings.master_volume == 0 || global.settings.music_volume == 0) {
-                audio_sound_gain(snd_royal, 0.25 * global.settings.master_volume * global.settings.music_volume, 2000);
-            }
+            audio_sound_gain(snd_royal, 1, 5000);
 
             if (founding == ePROGENITOR.RANDOM) {
                 founding = irandom_range(ePROGENITOR.NONE, ePROGENITOR.RAVEN_GUARD);
