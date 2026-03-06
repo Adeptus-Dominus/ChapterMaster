@@ -7,10 +7,10 @@
   },
   "bitDepth":1,
   "channelFormat":1,
-  "compression":0,
-  "compressionQuality":8,
+  "compression":1,
+  "compressionQuality":6,
   "conversionMode":0,
-  "duration":179.22612,
+  "duration":0.0,
   "exportDir":"sounds",
   "name":"snd_royal",
   "parent":{

@@ -6,8 +6,8 @@
     "path":"audiogroups/audiogroup_sfx",
   },
   "bitDepth":1,
-  "channelFormat":0,
-  "compression":0,
+  "channelFormat":1,
+  "compression":1,
   "compressionQuality":6,
   "conversionMode":0,
   "duration":1.5426531,
@@ -22,5 +22,5 @@
   "resourceVersion":"2.0",
   "sampleRate":44100,
   "soundFile":"snd_buzz",
-  "volume":0.44,
+  "volume":1.0,
 }
