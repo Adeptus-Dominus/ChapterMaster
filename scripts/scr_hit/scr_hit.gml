@@ -1,8 +1,8 @@
 /// @function scr_hit
 /// @description Returns true if mouse is hovering on the specified rectangle area.
 /// @returns {bool}
-function scr_hit(x1 = 0, y1 = 0, x2 = 0, y2 = 0) {
-    var _mouse_consts = return_mouse_consts();
+function scr_hit(x1 = 0, y1 = 0, x2 = 0, y2 = 0, force_gui = false) {
+    var _mouse_consts = force_gui ? [device_mouse_x_to_gui(0), device_mouse_y_to_gui(0)] : return_mouse_consts();
     if (is_array(x1)) {
         return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], x1[0], x1[1], x1[2], x1[3]);
     } else {
