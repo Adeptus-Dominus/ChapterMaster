@@ -1,10 +1,7 @@
-var _data = btn_map[$ string(button_id)];
-if (_data == undefined) {
-    return;
-}
+var _data = btn_map[button_id];
 
-var _w = _data[0] * scaling;
-var _h = _data[1] * scaling;
+var _w = _data.width * scaling;
+var _h = _data.height * scaling;
 
 var _mx = device_mouse_x_to_gui(0);
 var _my = device_mouse_y_to_gui(0);
