@@ -2,9 +2,6 @@ if (cooldown > 0) {
     cooldown--;
 }
 
-var _vx = camera_get_view_x(view_camera[0]);
-var _vy = camera_get_view_y(view_camera[0]);
-
 switch (effect) {
     case eIN_GAME_MENU_EFFECT.SAVE:
     case eIN_GAME_MENU_EFFECT.LOAD:
@@ -25,7 +22,7 @@ switch (effect) {
         var _sav = instance_create_depth(0, 0, -20005, obj_saveload);
         _sav.menu = (effect == eIN_GAME_MENU_EFFECT.SAVE) ? 1 : 2;
 
-        var _b = instance_create_depth(_vx + 707, _vy + 830, -20010, obj_new_button);
+        var _b = instance_create_depth(707, 830, -20010, obj_new_button);
         _b.button_text = "Back";
         _b.target = eIN_GAME_MENU_EFFECT.BACK_FROM_SAVELOAD;
         _b.scaling = 1.5;
@@ -37,7 +34,7 @@ switch (effect) {
             x -= 2000;
             y -= 2000;
         }
-        var _b = instance_create_depth(_vx + 653, _vy + 664, -20010, obj_new_button);
+        var _b = instance_create_depth(653, 664, -20010, obj_new_button);
         _b.sprite_index = spr_ui_but_1;
         _b.button_text = "Back";
         _b.target = eIN_GAME_MENU_EFFECT.BACK_FROM_SETTINGS;
@@ -93,10 +90,10 @@ switch (effect) {
                 if (target == eIN_GAME_MENU_EFFECT.BACK_FROM_SETTINGS) {
                     instance_destroy();
                 } else {
-                    if (x < _vx) {
+                    if (x < 0) {
                         x += 2000;
                     }
-                    if (y < _vy) {
+                    if (y < 0) {
                         y += 2000;
                     }
                 }
@@ -113,9 +110,9 @@ if (settings == 1 && mouse_button_clicked(mb_left, 0, true)) {
     var _changed = false;
 
     var _vol_y = [
-        _vy + 223,
-        _vy + 281,
-        _vy + 337
+        223,
+        281,
+        337
     ];
     var _keys = [
         "master_volume",
@@ -124,26 +121,26 @@ if (settings == 1 && mouse_button_clicked(mb_left, 0, true)) {
     ];
 
     for (var i = 0; i < 3; i++) {
-        if (scr_hit(_vx + 671, _vol_y[i], _vx + 671 + 32, _vol_y[i] + 32)) {
+        if (scr_hit(671, _vol_y[i], 671 + 32, _vol_y[i] + 32)) {
             global.settings[$ _keys[i]] = clamp(global.settings[$ _keys[i]] - 0.1, 0, 1);
             global.settings.apply_audio();
             _changed = true;
         }
 
-        if (scr_hit(_vx + 981, _vol_y[i], _vx + 981 + 32, _vol_y[i] + 32)) {
+        if (scr_hit(981, _vol_y[i], 981 + 32, _vol_y[i] + 32)) {
             global.settings[$ _keys[i]] = clamp(global.settings[$ _keys[i]] + 0.1, 0, 1);
             global.settings.apply_audio();
             _changed = true;
         }
     }
 
-    if (scr_hit(_vx + 626, _vy + 426, _vx + 658, _vy + 458)) {
+    if (scr_hit(626, 426, 658, 458)) {
         global.settings.fullscreen = !global.settings.fullscreen;
         global.settings.apply_video();
         _changed = true;
     }
 
-    if (scr_hit(_vx + 680, _vy + 485, _vx + 712, _vy + 517)) {
+    if (scr_hit(680, 485, 712, 517)) {
         global.settings.autosave = !global.settings.autosave;
         _changed = true;
     }
