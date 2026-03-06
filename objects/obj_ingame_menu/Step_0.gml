@@ -121,26 +121,26 @@ if (settings == 1 && mouse_button_clicked(mb_left, 0, true)) {
     ];
 
     for (var i = 0; i < 3; i++) {
-        if (scr_hit(671, _vol_y[i], 671 + 32, _vol_y[i] + 32)) {
+        if (scr_hit(671, _vol_y[i], 671 + 32, _vol_y[i] + 32, true)) {
             global.settings[$ _keys[i]] = clamp(global.settings[$ _keys[i]] - 0.1, 0, 1);
             global.settings.apply_audio();
             _changed = true;
         }
 
-        if (scr_hit(981, _vol_y[i], 981 + 32, _vol_y[i] + 32)) {
+        if (scr_hit(981, _vol_y[i], 981 + 32, _vol_y[i] + 32, true)) {
             global.settings[$ _keys[i]] = clamp(global.settings[$ _keys[i]] + 0.1, 0, 1);
             global.settings.apply_audio();
             _changed = true;
         }
     }
 
-    if (scr_hit(626, 426, 658, 458)) {
+    if (scr_hit(626, 426, 658, 458, true)) {
         global.settings.fullscreen = !global.settings.fullscreen;
         global.settings.apply_video();
         _changed = true;
     }
 
-    if (scr_hit(680, 485, 712, 517)) {
+    if (scr_hit(680, 485, 712, 517, true)) {
         global.settings.autosave = !global.settings.autosave;
         _changed = true;
     }
