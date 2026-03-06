@@ -125,7 +125,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
             break;
     }
 
-    if (obj_ncombat.enemy == 3) {
+    if (obj_ncombat.enemy == eFACTION.MECHANICUS) {
         switch (name) {
             case "Phased Plasma-fusil":
                 atta = 80;
@@ -150,7 +150,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
         }
     }
 
-    if (obj_ncombat.enemy == 6) {
+    if (obj_ncombat.enemy == eFACTION.ELDAR) {
         switch (name) {
             case "Fusion Gun":
                 atta = 180;
@@ -384,7 +384,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
         }
     }
 
-    if (obj_ncombat.enemy == 7) {
+    if (obj_ncombat.enemy == eFACTION.ORK) {
         switch (name) {
             case "Choppa":
                 atta = 100;
@@ -488,7 +488,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
         }
     }
 
-    if (obj_ncombat.enemy == 8) {
+    if (obj_ncombat.enemy == eFACTION.TAU) {
         switch (name) {
             case "Fusion Blaster":
                 atta = 150;
@@ -561,7 +561,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
         }
     }
 
-    if (obj_ncombat.enemy == 9) {
+    if (obj_ncombat.enemy == eFACTION.TYRANIDS) {
         switch (name) {
             case "Bonesword":
                 atta = 120;
@@ -731,7 +731,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 arp = 1;
                 rang = 12;
                 amm = 15;
-                if (obj_ncombat.enemy == 5) {
+                if (obj_ncombat.enemy == eFACTION.ECCLESIARCHY) {
                     atta = 80;
                 }
                 break; // Bursts
@@ -967,7 +967,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
         }
     }
 
-    if (obj_ncombat.enemy == 13) {
+    if (obj_ncombat.enemy == eFACTION.NECRONS) {
         // Some of these, like the Gauss Particle Cannon and Particle Whip, used to be more than twice as strong.
         switch (name) {
             case "Staff of Light":
@@ -1071,7 +1071,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     atta = round(atta * obj_ncombat.global_defense);
     arp = round(arp * obj_ncombat.global_defense);
 
-    if (obj_ncombat.enemy == 1) {
+    if (obj_ncombat.enemy == eFACTION.PLAYER) {
         // more attack crap here
         if ((rang <= 1) || (floor(rang) != rang)) {
             atta = round(atta * dudes_attack[group]);
