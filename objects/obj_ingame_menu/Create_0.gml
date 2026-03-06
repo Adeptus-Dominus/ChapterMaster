@@ -21,7 +21,7 @@ if (room != rm_main_menu) {
     _spawn_button(_vx + 821, _vy + 336, "Load", eIN_GAME_MENU_EFFECT.LOAD);
     _spawn_button(_vx + 821, _vy + 416, "Options", eIN_GAME_MENU_EFFECT.OPTIONS);
     _spawn_button(_vx + 821, _vy + 496, "Exit", eIN_GAME_MENU_EFFECT.EXIT);
-    _spawn_button(_vx + 821, _vy + 666, "Return", eIN_GAME_MENU_EFFECT.BACK_FROM_SAVELOAD);
+    _spawn_button(_vx + 821, _vy + 666, "Return", eIN_GAME_MENU_EFFECT.RETURN);
 } else {
     with (obj_new_button) {
         instance_destroy();
