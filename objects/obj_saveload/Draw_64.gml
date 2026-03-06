@@ -1,12 +1,4 @@
 if (!hide) {
-    var xx, yy;
-    xx = __view_get(e__VW.XView, 0) + 0;
-    yy = __view_get(e__VW.YView, 0) + 0;
-    if (instance_exists(obj_main_menu)) {
-        xx = 0;
-        yy = 0;
-    }
-
     if (autosaving) {
         exit;
     }
@@ -15,22 +7,22 @@ if (!hide) {
         draw_set_color(0);
 
         //
-        // draw_sprite(spr_load_splash,splash,xx+0,yy+0);
-        scr_image("loading", splash, xx + 0, yy + 0, 1600, 900);
+        // draw_sprite(spr_load_splash,splash,0+0,0+0);
+        scr_image("loading", splash, 0, 0, 1600, 900);
         //
 
-        draw_sprite(spr_loadbar_empty, 0, xx + 1047, yy + 875);
-        draw_sprite(spr_loadbar, 0, xx + 1047, yy + 875);
-        draw_sprite(spr_loadbar_cover, bar, xx + 1047, yy + 875);
+        draw_sprite(spr_loadbar_empty, 0, 1047, 875);
+        draw_sprite(spr_loadbar, 0, 1047, 875);
+        draw_sprite(spr_loadbar_cover, bar, 1047, 875);
 
         if (save_part > 0) {
-            draw_sprite(spr_load_text, 1, xx + 1068, yy + 821);
+            draw_sprite(spr_load_text, 1, 1068, 821);
         }
         if ((load_part > 0) && (global.restart == 0)) {
-            draw_sprite(spr_load_text, 0, xx + 1068, yy + 821);
+            draw_sprite(spr_load_text, 0, 1068, 821);
         }
         if ((load_part > 0) && (global.restart > 0)) {
-            draw_sprite(spr_load_text, 2, xx + 1068, yy + 821);
+            draw_sprite(spr_load_text, 2, 1068, 821);
         }
     }
 
@@ -49,20 +41,19 @@ if (!hide) {
         draw_set_halign(fa_center);
         draw_set_color(0);
 
-        draw_sprite(spr_save_header, 0, xx + 0, yy + 27);
+        draw_sprite(spr_save_header, 0, 0, 27);
         if (menu == 1) {
-            draw_sprite(spr_save_headers, 1, xx + 800, yy + 60);
+            draw_sprite(spr_save_headers, 1, 800, 60);
         }
         if (menu == 2) {
-            draw_sprite(spr_save_headers, 0, xx + 800, yy + 60);
+            draw_sprite(spr_save_headers, 0, 800, 60);
         }
-        draw_sprite(spr_save_footer, 0, xx + 0, yy + 797);
+        draw_sprite(spr_save_footer, 0, 0, 797);
 
-        var o, x2, y2, s;
-        o = top;
-        x2 = __view_get(e__VW.XView, 0) + 32;
-        y2 = __view_get(e__VW.YView, 0) + 166;
-        s = 0;
+        var o = top;
+        var x2 = 32;
+        var y2 = 166;
+        var s = 0;
         repeat (4) {
             if (((save[o] >= 0) || ((first_open == o) && (menu == 1)) || (global.load == o) || (save_number == o)) && (save_number == 0)) {
                 s = save[o];
@@ -73,10 +64,7 @@ if (!hide) {
                 draw_rectangle(x2 + 56, y2 + 5, x2 + 238, y2 + 123, 0);
                 draw_rectangle(x2 + 258, y2 + 25, x2 + 1480, y2 + 80, 0);
 
-                var high;
-                high = 0;
                 if (scr_hit(x2, y2, x2 + 1526, y2 + 149)) {
-                    // high=1;
                     debug = "Save:" + string(save[o]) + ", array position:" + string(o) + ", turn:" + string(save_turn[o]);
                 }
                 draw_sprite(spr_save_data, 0, x2, y2);
@@ -179,7 +167,7 @@ if (!hide) {
                     if (mouse_button_clicked(,, true) && !instance_exists(obj_popup)) {
                         // Clear
                         var com;
-                        com = instance_create(0, 0, obj_popup);
+                        com = instance_create_depth(0, 0, -200010, obj_popup);
                         com.image = "fuklaw";
                         com.title = "Delete Save Game?";
                         com.text = "Are you sure you wish to delete Save " + string(save[o]) + "- " + string(save_chapter[save[o]]) + "?";

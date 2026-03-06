@@ -18,6 +18,7 @@ function reset_popup_options() {
     }
 }
 
+/// @mixin
 function popup_defualt_click_action() {
     if (hide) {
         exit;
@@ -50,24 +51,30 @@ function popup_defualt_click_action() {
     }
 
     if (!array_length(options) && type < 5) {
+        LOGGER.debug("Closed popup with no options")
         popup_default_close();
     }
 }
 
+/// @mixin
 function popup_default_close() {
-    obj_controller.cooldown = 10;
-    if (instance_exists(obj_turn_end) && obj_controller.complex_event == false) {
-        if (number != 0) {
-            obj_turn_end.alarm[1] = 4;
+    if (instance_exists(obj_controller)) {
+        obj_controller.cooldown = 10;
+        if (instance_exists(obj_turn_end) && obj_controller.complex_event == false) {
+            if (number != 0) {
+                obj_turn_end.alarm[1] = 4;
+            }
+        }
+        if (struct_exists(pop_data, "marine_display_image")) {
+            pop_data.marine_display_image.destroy_image();
         }
     }
-    if (struct_exists(pop_data, "marine_display_image")) {
-        pop_data.marine_display_image.destroy_image();
-    }
+
     instance_destroy();
     exit;
 }
 
+/// @mixin
 function popup_window_draw() {
     if ((size == 0) || (size == 2)) {
         sprite_index = spr_popup_medium;
@@ -111,6 +118,7 @@ function PopupOption(data) constructor {
     }
 }
 
+/// @mixin
 function add_option(option, if_empty = false, use_default_option = true) {
     if (if_empty) {
         if (array_length(options)) {
@@ -135,6 +143,7 @@ function add_option(option, if_empty = false, use_default_option = true) {
     }
 }
 
+/// @mixin
 function replace_options(option, if_empty = false, use_default_option = true) {
     options = [];
     add_option(option, if_empty, use_default_option);
@@ -157,6 +166,7 @@ function evaluate_popup_option(opt) {
     return _allow;
 }
 
+/// @mixin
 function draw_popup_options() {
     if (struct_exists(pop_data, "marine_display_triggered")) {
         pop_data.marine_display_triggered = false;
@@ -209,7 +219,7 @@ function draw_popup_options() {
                         script_execute(_opt.hover);
                     }
                 }
-                if (mouse_button_clicked()) {
+                if (mouse_button_clicked(,,true)) {
                     press = i;
                     if (_is_struct && struct_exists(_opt, "choice_func")) {
                         if (is_callable(_opt.choice_func)) {
@@ -245,6 +255,7 @@ function draw_popup_options() {
     }
 }
 
+/// @mixin
 function calculate_equipment_needs() {
     var i = 0, rall = "", all_good = 0;
 
@@ -426,6 +437,7 @@ function calculate_equipment_needs() {
     return floor(all_good);
 }
 
+/// @mixin
 function default_popup_image_index() {
     var _img = -1;
     if (image == "") {
@@ -558,6 +570,7 @@ function default_popup_image_index() {
     return _img;
 }
 
+/// @mixin
 function allow_governor_successor() {
     var randa = roll_dice_chapter(1, 100, "high");
     var randa2 = roll_dice(1, 100);
