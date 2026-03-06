@@ -65,9 +65,10 @@ function popup_default_close() {
                 obj_turn_end.alarm[1] = 4;
             }
         }
-        if (struct_exists(pop_data, "marine_display_image")) {
-            pop_data.marine_display_image.destroy_image();
-        }
+    }
+
+    if (struct_exists(pop_data, "marine_display_image")) {
+        pop_data.marine_display_image.destroy_image();
     }
 
     instance_destroy();

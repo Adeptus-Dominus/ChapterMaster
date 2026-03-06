@@ -10,7 +10,7 @@
   "compression":1,
   "compressionQuality":6,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":179.22612,
   "exportDir":"sounds",
   "name":"snd_royal",
   "parent":{
