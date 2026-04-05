@@ -41,7 +41,7 @@ function calculate_full_chapter_spread() {
                             obj_controller.marines++;
                         }
                     }
-                    tech_points_used += _unit.equipment_maintenance_burden();
+                    forge_equipment_maintenance += _unit.equipment_maintenance_burden();
                     _is_tech = _unit.IsSpecialist(SPECIALISTS_TECHS);
                     if (_is_tech) {
                         add_forge_points_to_stack(_unit);
@@ -188,14 +188,16 @@ function process_specialist_points() {
     with (obj_star) {
         var _in_spread = variable_struct_exists(_unit_spread, name);
 
-        if (!_in_spread) {
-            if (_gene_seed_empty && system_feature_bool(self.p_feature, eP_FEATURES.RECRUITING_WORLD)) {
+        if (_gene_seed_empty && system_feature_bool(self.p_feature, eP_FEATURES.RECRUITING_WORLD)) {
                 obj_controller.recruiting = 0;
                 scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);
                 _gene_seed_empty = false;
-            }
+        }
+        
+        if (!_in_spread) {
             continue;
         }
+
         array_push(_unit_spread[$ name], self);
     }
 
@@ -268,8 +270,6 @@ function process_specialist_points() {
         }
     }
 
-    forge_string += $"Equipment Maintenance : -{tech_points_used}#";
-
     /// @param {Array} _unit
     /// @param {Struct} _pool
     static _process_vehicle_maintenance = function(_unit, _pool) {
@@ -290,10 +290,13 @@ function process_specialist_points() {
         }
 
         var _repairs_done = 0;
-        while (_repairs_done < VEHICLE_REPAIR_LIMIT && obj_ini.veh_hp[_co][_idx] < 100 && _pool.forge >= VEHICLE_REPAIR_SMALL) {
+        var _simulated_hp = obj_ini.veh_hp[_co][_idx];
+        while (_repairs_done < VEHICLE_REPAIR_LIMIT && _simulated_hp < 100 && _pool.forge >= VEHICLE_REPAIR_SMALL) {
             if (turn_end) {
+                LOGGER.debug(_pool.forge);
                 obj_ini.veh_hp[_co][_idx]++;
             }
+            _simulated_hp++;
 
             forge_veh_maintenance.repairs += VEHICLE_REPAIR_SMALL;
             _pool.forge -= VEHICLE_REPAIR_SMALL;
@@ -338,7 +341,7 @@ function process_specialist_points() {
             _pool.heal -= UNIT_HEAL_SMALL;
             _pool.forge -= VEHICLE_REPAIR_BIG;
             apothecary_points_used += UNIT_HEAL_SMALL;
-            tech_points_used += VEHICLE_REPAIR_BIG;
+            forge_veh_maintenance.repairs += VEHICLE_REPAIR_BIG;
         }
     };
 

@@ -39,7 +39,7 @@ function SpecialistPointHandler() constructor {
 
         apothecary_training_points = 0;
         apothecary_points_used = 0;
-        tech_points_used = 0;
+        forge_equipment_maintenance = 0;
         crafters = 0;
         at_forge = 0;
 
@@ -57,7 +57,6 @@ function SpecialistPointHandler() constructor {
             systems: {},
         };
 
-        forge_string = $"Forge Production Rate#";
         forge_master = -1;
         forge_veh_maintenance = {
             repairs: 0,
@@ -80,34 +79,50 @@ function SpecialistPointHandler() constructor {
         apothecary_points -= apothecary_points_used;
         apothecary_string = "Recruit screening : -{apothecary_training_points}";
         apothecary_points -= apothecary_training_points;
+
         //TODO extract to the apothecary simple script
-        forge_string += $"Techmarines: +{floor(forge_points)}#";
-        forge_points -= tech_points_used;
-        forge_string += $"Vehicle Repairs:#";
-        forge_string += $"   Combat Repairs : {forge_veh_maintenance.repairs}#";
-        if (struct_exists(forge_veh_maintenance, "land_raider")) {
-            forge_string += $"   Land Raider Maintenance: -{forge_veh_maintenance.land_raider}#";
-            forge_points -= forge_veh_maintenance.land_raider;
-        }
-        if (struct_exists(forge_veh_maintenance, "small_vehicles")) {
-            if (floor(forge_veh_maintenance.small_vehicles) > 0) {
-                forge_string += $"   Small Vehicle Maintenance: -{floor(forge_veh_maintenance.small_vehicles)}#";
-                forge_points -= floor(forge_veh_maintenance.small_vehicles);
-            }
-        }
+        forge_string = $"FP Production#";
+        forge_string += $"Techmarines: {floor(forge_points)}#";
+
         var _forge_data = obj_controller.player_forge_data;
         if (_forge_data.player_forges > 0) {
             forge_points += 5 * _forge_data.player_forges;
-            forge_string += $"Forges: +{5 * _forge_data.player_forges}#";
+            forge_string += $"Forges: {5 * _forge_data.player_forges}#";
         }
+
+        forge_string += $"#FP Consumption#";
+        forge_points -= forge_equipment_maintenance;
+        forge_string += $"Equipment Maintenance: {forge_equipment_maintenance}#";
+
         var _armoury_maintenance_names = struct_get_names(armoury_repairs);
         var _name_length = array_length(_armoury_maintenance_names);
-
         for (var i = 0; i < _name_length; i++) {
             var _maintain_item = _armoury_maintenance_names[i];
-            forge_points -= gear_weapon_data("any", _maintain_item, "maintenance") * armoury_repairs[$ _maintain_item];
+            var _repair_forge_points = gear_weapon_data("any", _maintain_item, "maintenance") * armoury_repairs[$ _maintain_item];
+            forge_points -= _repair_forge_points;
+            forge_string += $"Equipment Repairs: {_repair_forge_points}#";
         }
+
+        if (struct_exists(forge_veh_maintenance, "land_raider")) {
+            if (forge_veh_maintenance.land_raider > 0) {
+                forge_string += $"Land Raider Maintenance: {forge_veh_maintenance.land_raider}#";
+                forge_points -= forge_veh_maintenance.land_raider;
+            }
+        }
+
+        if (struct_exists(forge_veh_maintenance, "small_vehicles")) {
+            if (forge_veh_maintenance.small_vehicles > 0) {
+                forge_string += $"Small Vehicle Maintenance: {forge_veh_maintenance.small_vehicles}#";
+                forge_points -= forge_veh_maintenance.small_vehicles;
+            }
+        }
+
+        if (forge_veh_maintenance.repairs > 0) {
+            forge_string += $"Vehicle Repairs: {forge_veh_maintenance.repairs}#";
+        }
+
         forge_points = floor(forge_points);
+
         //in this instance tech  are techmarines with the "tech_heretic" trait
         if (turn_end) {
             if (array_length(techs) == 0) {
@@ -129,10 +144,12 @@ function SpecialistPointHandler() constructor {
 
             gene_slave_logic();
         }
+
         obj_controller.research_points = research_points;
         obj_controller.forge_points = forge_points;
         obj_controller.master_craft_chance = master_craft_chance;
         obj_controller.forge_string = forge_string;
+
         if (turn_end) {
             armoury_repairs = {};
         }
