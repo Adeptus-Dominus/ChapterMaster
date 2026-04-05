@@ -324,8 +324,9 @@ function process_specialist_points() {
                     apothecary_points_used += UNIT_HEAL_SMALL;
                 }
             } else if (turn_end) {
-                while (_unit.hp() <= 0 && _unit.bionics < 10) {
-                    _unit.add_bionics();
+                var _application_success = true;
+                while (_application_success && _unit.hp() <= 0 && _unit.bionics < 10) {
+                    _application_success = _unit.add_bionics();
                 }
             }
         } else if (_pool.heal >= UNIT_HEAL_SMALL && _pool.forge >= VEHICLE_REPAIR_BIG && _unit.hp() > 0) {
