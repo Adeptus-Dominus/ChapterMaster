@@ -1361,7 +1361,9 @@ function draw_manage_selection_buttons(xx, yy) {
     if (button.draw()) {
         if (bionics_possible) {
             add_bionics_selection();
-            reset_manage_unit_constants(_unit_focus);
+            if (is_struct(_unit_focus)) {
+                reset_manage_unit_constants(_unit_focus);
+            }
         }
     }
 
@@ -1391,7 +1393,9 @@ function draw_manage_selection_buttons(xx, yy) {
         button.alpha = 1;
         if (button.draw()) {
             reset_selection_equipment();
-            reset_manage_unit_constants(_unit_focus);
+            if (is_struct(_unit_focus)) {
+                reset_manage_unit_constants(_unit_focus);
+            }
         }
     } else {
         button.alpha = 0.5;

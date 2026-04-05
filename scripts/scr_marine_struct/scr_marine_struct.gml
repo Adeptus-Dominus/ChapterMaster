@@ -756,13 +756,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             return false;
         }
 
-        if (_from_armoury) {
-            if (scr_item_count("Bionics", _quality) < 1) {
-                return false;
-            }
-            scr_add_item("Bionics", -1, _quality);
-        }
-
         // Identify eligible parts
         var _eligible_parts = [];
         var _body_parts = UNIT_BODY_PARTS;
@@ -783,6 +776,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             _target_part = _eligible_parts[irandom(array_length(_eligible_parts) - 1)];
         } else if (!array_contains(_eligible_parts, _target_part)) {
             return false;
+        }
+
+        // Consume from armoury
+        if (_from_armoury) {
+            if (scr_item_count("Bionics", _quality) < 1) {
+                return false;
+            }
+            scr_add_item("Bionics", -1, _quality);
         }
 
         // Apply Health Bonus
