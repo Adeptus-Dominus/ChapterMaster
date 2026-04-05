@@ -763,7 +763,7 @@ function scr_ui_popup() {
         // Stored Gene-Seed tooltip
         if (scr_hit(xx + 373, yy + 10, xx + 443, yy + 38)) {
             var tx = 0, ty = 0, tool1 = "", tool2 = "", plu = "";
-            tool1 = "Gene-Seed";
+            tool1 = "Gene-Seed##" + obj_controller.apothecary_string;
             if (tool1 != "") {
                 tooltip_draw(tool1);
             }

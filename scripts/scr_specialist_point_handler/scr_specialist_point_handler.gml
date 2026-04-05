@@ -1,19 +1,13 @@
 function SpecialistPointHandler() constructor {
     static chapter_spread = calculate_full_chapter_spread;
-    static healing_and_point_use = apothecary_simple;
     forge_queue = [];
     techs = [];
     apoths = [];
     forge_master = -1;
     master_craft_chance = 0;
-
-    forge_reasons = {};
-
-    forge_string = "";
     at_forge = 0;
     apothecary_points = 0;
     armoury_repairs = {};
-    apothecary_string = "";
     apothecary_training_points = 0;
     forge_points = 0;
     point_breakdown = {};
@@ -34,84 +28,105 @@ function SpecialistPointHandler() constructor {
     static pre_error_wrapped_research_points = function() {
         research_points = 0;
         forge_points = 0;
-        master_craft_chance = 0;
+        master_craft_chance = (obj_controller.tech_status == "heretics") ? 5 : 0;
 
-        apoth_points_used = 0;
         apothecary_points = 0;
-
         apothecary_training_points = 0;
         apothecary_points_used = 0;
-        tech_points_used = 0;
+
+        forge_equipment_maintenance = 0;
         crafters = 0;
         at_forge = 0;
 
-        if (obj_controller.tech_status == "heretics") {
-            master_craft_chance += 5;
-        }
-
         apoths = [];
-
         techs = [];
         heretics = [];
-        delete point_breakdown;
+
         point_breakdown = {
             fleets: {},
             systems: {},
         };
 
-        forge_string = $"Forge Production Rate#";
         forge_master = -1;
         forge_veh_maintenance = {
             repairs: 0,
         };
-        healing_and_point_use();
 
-        var at_forge = 0;
-        tech_locations = [];
-        var _cur_tech;
+        process_specialist_points();
+
         total_techs = array_length(techs);
-        for (var i = 0; i < array_length(techs); i++) {
+        tech_locations = array_create(total_techs);
+        for (var i = 0; i < total_techs; i++) {
             tech_locations[i] = techs[i].marine_location();
         }
-        if (forge_master > -1) {
+
+        if (forge_master > -1 && forge_master < total_techs) {
             obj_controller.master_of_forge = techs[forge_master];
         }
-        apothecary_string = "Apothecaries : +{apothecaries}";
-        apothecary_string = "Apothecary Healing : {apothecary_points_used}";
+
+        var apothecary_string = "AP Production#";
+        apothecary_string += $"Apothecaries: {apothecary_points}#";
+
+        apothecary_string += "#AP Consumption#";
+        apothecary_string += $"Healing: {apothecary_points_used}#";
         apothecary_points -= apothecary_points_used;
-        apothecary_string = "Recruit screening : -{apothecary_training_points}";
+        apothecary_string += $"Recruit Screening: {apothecary_training_points}#";
         apothecary_points -= apothecary_training_points;
-        //TODO extract to the apothecary simple script
-        forge_string += $"Techmarines: +{floor(forge_points)}#";
-        forge_points -= tech_points_used;
-        forge_string += $"Vehicle Repairs:#";
-        forge_string += $"   Combat Repairs : {forge_veh_maintenance.repairs}#";
-        if (struct_exists(forge_veh_maintenance, "land_raider")) {
-            forge_string += $"   Land Raider Maintenance: -{forge_veh_maintenance.land_raider}#";
-            forge_points -= forge_veh_maintenance.land_raider;
-        }
-        if (struct_exists(forge_veh_maintenance, "small_vehicles")) {
-            if (floor(forge_veh_maintenance.small_vehicles) > 0) {
-                forge_string += $"   Small Vehicle Maintenance: -{floor(forge_veh_maintenance.small_vehicles)}#";
-                forge_points -= floor(forge_veh_maintenance.small_vehicles);
-            }
-        }
+
+        apothecary_string += $"#Total AP: {apothecary_points}";
+
+        var forge_string = "FP Production#";
+        forge_string += $"Techmarines: {floor(forge_points)}#";
+
         var _forge_data = obj_controller.player_forge_data;
         if (_forge_data.player_forges > 0) {
-            forge_points += 5 * _forge_data.player_forges;
-            forge_string += $"Forges: +{5 * _forge_data.player_forges}#";
+            var _forge_gain = 5 * _forge_data.player_forges;
+            forge_points += _forge_gain;
+            forge_string += $"Forges: {_forge_gain}#";
         }
-        var _armoury_maintenance_names = struct_get_names(armoury_repairs);
-        var _name_length = array_length(_armoury_maintenance_names);
 
-        for (var i = 0; i < _name_length; i++) {
-            var _maintain_item = _armoury_maintenance_names[i];
-            forge_points -= gear_weapon_data("any", _maintain_item, "maintenance") * armoury_repairs[$ _maintain_item];
+        forge_string += "#FP Consumption#";
+        forge_points -= forge_equipment_maintenance;
+        forge_string += $"Equipment Maintenance: {forge_equipment_maintenance}#";
+
+        var _armoury_names = struct_get_names(armoury_repairs);
+        for (var i = 0, _count = array_length(_armoury_names); i < _count; i++) {
+            var _item = _armoury_names[i];
+            var _repair_cost = gear_weapon_data("any", _item, "maintenance") * armoury_repairs[$ _item];
+            forge_points -= _repair_cost;
+            forge_string += $"Equipment Repairs ({_item}): {_repair_cost}#";
         }
+
+        var _v_maintenance = [
+            {
+                key: "land_raider",
+                label: "Land Raider",
+            },
+            {
+                key: "small_vehicles",
+                label: "Small Vehicle",
+            }
+        ];
+
+        for (var i = 0; i < array_length(_v_maintenance); i++) {
+            var _item = _v_maintenance[i];
+            var _maint = forge_veh_maintenance[$ _item.key] ?? 0;
+            if (_maint > 0) {
+                forge_string += $"{_item.label} Maintenance: {_maint}#";
+                forge_points -= _maint;
+            }
+        }
+
+        if (forge_veh_maintenance.repairs > 0) {
+            forge_string += $"Vehicle Repairs: {forge_veh_maintenance.repairs}#";
+        }
+
+        forge_string += $"#Total FP: {forge_points}";
+
         forge_points = floor(forge_points);
-        //in this instance tech  are techmarines with the "tech_heretic" trait
+
         if (turn_end) {
-            if (array_length(techs) == 0) {
+            if (total_techs == 0) {
                 scr_loyalty("Upset Machine Spirits", "+");
             }
 
@@ -119,24 +134,25 @@ function SpecialistPointHandler() constructor {
             new_tech_heretic_spawn();
 
             if (forge_master == -1) {
-                var tech_count = scr_role_count(obj_ini.role[100][16]);
-                if (tech_count > 1) {
+                var _tech_units = scr_role_count(obj_ini.role[100][16], "", "units");
+                var _count = array_length(_tech_units);
+                if (_count > 1) {
                     setup_new_forge_master_popup(techs);
-                } else if (tech_count == 1) {
-                    scr_role_count(obj_ini.role[100][16], "", "units")[0].update_role("Forge Master");
+                } else if (_count == 1) {
+                    _tech_units[0].update_role("Forge Master");
                 }
             }
-            forge_queue_logic();
 
+            forge_queue_logic();
             gene_slave_logic();
+            armoury_repairs = {};
         }
+
         obj_controller.research_points = research_points;
         obj_controller.forge_points = forge_points;
         obj_controller.master_craft_chance = master_craft_chance;
         obj_controller.forge_string = forge_string;
-        if (turn_end) {
-            armoury_repairs = {};
-        }
+        obj_controller.apothecary_string = apothecary_string;
     };
 
     static calculate_research_points = function(turn_end) {
@@ -287,7 +303,7 @@ function SpecialistPointHandler() constructor {
                     }
                     //add check to see if tech heretic is anywhere near mechanicus forge if so maybe do stuff??
                     /*if (_heretic_location==eLOCATION_TYPES.PLANET){
-                    if 
+                    if
                 }*/
                 }
                 if (array_length(techs) > array_length(heretics) && !_heritecs) {

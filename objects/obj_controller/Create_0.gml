@@ -536,6 +536,7 @@ forge_points = 0;
 master_craft_chance = 0;
 tech_status = "cult_mechanicus";
 forge_string = "";
+apothecary_string = "";
 player_forge_data = {
     player_forges: 0,
     vehicle_hanger: [],

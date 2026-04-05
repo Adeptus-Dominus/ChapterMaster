@@ -209,9 +209,9 @@ if (!zoomed && !zui) {
     draw_text(180, 16, string(forge_points));
     draw_text(180.5, 16.5, string(forge_points));
     // Draws apothecary points
-    var _apoth_string = $"apothecary points : {specialist_point_handler.apothecary_points}";
-    draw_text(180, 32, _apoth_string);
-    draw_text(180.5, 32.5, _apoth_string);
+    // var _apoth_string = $"apothecary points : {specialist_point_handler.apothecary_points}";
+    // draw_text(180, 32, _apoth_string);
+    // draw_text(180.5, 32.5, _apoth_string);
     // Draws the current loyalty
     draw_sprite(spr_new_resource, 1, 267, 17);
     draw_set_color(1164001);
