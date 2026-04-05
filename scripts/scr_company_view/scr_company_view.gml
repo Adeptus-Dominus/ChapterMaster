@@ -319,9 +319,6 @@ function other_manage_data() {
             if ((_unit.company == 1) && (ma_exp[v] >= 140)) {
                 ma_promote[v] = 1;
             }
-            if (ma_health[v] <= 10) {
-                ma_promote[v] = 10;
-            }
         } else if ((_unit.role() == obj_ini.role[100][6]) && (ma_exp[v] >= 400)) {
             ma_promote[v] = 1;
         } else if ((_unit.role() == obj_ini.role[100][15]) || (ma_role[v] == obj_ini.role[100][14])) {
@@ -356,9 +353,6 @@ function other_manage_data() {
             var _promotion_limit = _company_promotion_limits[_target_company];
             if (_unit.experience >= _promotion_limit && _promotion_limit > 0) {
                 ma_promote[v] = 1;
-            }
-            if (ma_health[v] <= 10) {
-                ma_promote[v] = 10;
             }
         }
 
