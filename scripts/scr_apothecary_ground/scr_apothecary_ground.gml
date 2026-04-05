@@ -15,6 +15,7 @@ enum eSYSTEM_LOC {
     PLANET4,
 }
 
+/// @mixin
 function calculate_full_chapter_spread() {
     obj_controller.command = 0;
     obj_controller.marines = 0;
@@ -283,11 +284,9 @@ function process_specialist_points() {
         if (_role == "Land Raider") {
             forge_veh_maintenance.land_raider = (forge_veh_maintenance[$ "land_raider"] ?? 0) + VEHICLE_MAINTENANCE_BIG;
             _pool.forge -= VEHICLE_MAINTENANCE_BIG;
-            tech_points_used += VEHICLE_MAINTENANCE_BIG;
         } else if (array_contains(["Rhino", "Predator", "Whirlwind"], _role)) {
             forge_veh_maintenance.small_vehicles = (forge_veh_maintenance[$ "small_vehicles"] ?? 0) + VEHICLE_MAINTENANCE_SMALL;
             _pool.forge -= VEHICLE_MAINTENANCE_SMALL;
-            tech_points_used += VEHICLE_MAINTENANCE_SMALL;
         }
 
         var _repairs_done = 0;
@@ -298,7 +297,6 @@ function process_specialist_points() {
 
             forge_veh_maintenance.repairs += VEHICLE_REPAIR_SMALL;
             _pool.forge -= VEHICLE_REPAIR_SMALL;
-            tech_points_used += VEHICLE_REPAIR_SMALL;
             _repairs_done++;
         }
     };
@@ -309,7 +307,6 @@ function process_specialist_points() {
         // Equipment burden is always deducted if possible
         var _burden = _unit.equipment_maintenance_burden();
         _pool.forge -= _burden;
-        tech_points_used += _burden;
 
         if (_unit.hp() >= _unit.max_health()) {
             return;
@@ -326,8 +323,10 @@ function process_specialist_points() {
                     _pool.heal -= UNIT_HEAL_SMALL;
                     apothecary_points_used += UNIT_HEAL_SMALL;
                 }
-            } else if (_unit.bionics < 10) {
-                _unit.add_bionics();
+            } else if (turn_end) {
+                while (_unit.hp() <= 0 && _unit.bionics < 10) {
+                    _unit.add_bionics();
+                }
             }
         } else if (_pool.heal >= UNIT_HEAL_SMALL && _pool.forge >= VEHICLE_REPAIR_BIG && _unit.hp() > 0) {
             // Dreadnoughts require both specialists
