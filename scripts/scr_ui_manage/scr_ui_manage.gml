@@ -1234,6 +1234,7 @@ function scr_ui_manage() {
 /// @mixin
 function draw_manage_selection_buttons(xx, yy) {
     var sel_loading = obj_controller.selecting_ship;
+    var _unit_focus = obj_controller.unit_focus;
     var _non_control_loc = location_out_of_player_control(selecting_location);
     //draws hover over tooltips
     function gen_tooltip(tooltip_array) {
@@ -1286,9 +1287,8 @@ function draw_manage_selection_buttons(xx, yy) {
 
     button.label = "Reload";
     //button.keystroke = (keyboard_check(vk_shift) && (keyboard_check_pressed(ord("F"))));
-    if (instance_exists(obj_controller) && is_struct(obj_controller.unit_focus)) {
-        var selected_unit = obj_controller.unit_focus;
-        button.tooltip = $"{selected_unit.last_ship.name}"; //Press Shift F";
+    if (instance_exists(obj_controller) && is_struct(_unit_focus)) {
+        button.tooltip = $"{_unit_focus.last_ship.name}"; //Press Shift F";
     }
     reload_possible = man_size > 0 && sel_loading == -1;
     if (reload_possible) {
@@ -1361,6 +1361,7 @@ function draw_manage_selection_buttons(xx, yy) {
     if (button.draw()) {
         if (bionics_possible) {
             add_bionics_selection();
+            reset_manage_unit_constants(_unit_focus);
         }
     }
 
@@ -1390,6 +1391,7 @@ function draw_manage_selection_buttons(xx, yy) {
         button.alpha = 1;
         if (button.draw()) {
             reset_selection_equipment();
+            reset_manage_unit_constants(_unit_focus);
         }
     } else {
         button.alpha = 0.5;

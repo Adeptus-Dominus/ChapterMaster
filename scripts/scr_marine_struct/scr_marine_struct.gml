@@ -78,7 +78,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         name: "",
     };
     religion = "none";
-    master_loyalty = 0;
     job = "none";
     psionic = 0;
     corruption = 0;
@@ -99,13 +98,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     ]; // [Techmarine, Librarian, Chaplain, Apothecary] // maybe add to list instead?
     encumbered_ranged = false;
     encumbered_melee = false;
-    home_world = "";
     company = comp; //marine company
     marine_number = mar; //marine number in company
     squad = "none";
     stat_point_exp_marker = 0;
     bionics = 0;
-    favorite = false;
     spawn_data = other_spawn_data;
     unit_health = 0;
     if (faction == "chapter" && !struct_exists(spawn_data, "recruit_data")) {
@@ -119,7 +116,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     powers_known = [];
 
     personal_livery = {};
-    personal_culture = [];
 
     manage_tags = [];
 
@@ -752,77 +748,98 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return false;
     };
 
-    static add_bionics = function(area = "none", bionic_quality = "any", from_armoury = true) {
-        if (from_armoury && scr_item_count("Bionics", bionic_quality) < 1) {
-            return "no bionics";
-        } else if (from_armoury) {
-            remove_quality = scr_add_item("Bionics", -1, bionic_quality);
-        } else {
-            remove_quality = choose("standard", "standard", "standard", "standard", "standard", "master_crafted", "artifact");
+    /// @param {string} area
+    /// @param {string} bionic_quality
+    /// @param {bool} from_armoury
+    static add_bionics = function(_area = "none", _quality = "any", _from_armoury = true) {
+        if (bionics >= 10) {
+            return false;
         }
-        var new_bionic_pos,
-            part,
-            new_bionic = {
-                quality: scr_add_item,
-            };
-        if (bionics < 10) {
-            if (has_trait("flesh_is_weak")) {
-                add_or_sub_health(40);
-            } else {
-                add_or_sub_health(30);
+
+        if (_from_armoury) {
+            if (scr_item_count("Bionics", _quality) < 1) {
+                return false;
             }
-            var bionic_possible = [];
-            var _body_parts = UNIT_BODY_PARTS;
-            for (var body_part = 0; body_part < array_length(_body_parts); body_part++) {
-                part = _body_parts[body_part];
-                if (!get_body_data("bionic", part)) {
-                    array_push(bionic_possible, part);
-                }
-            }
-            if (array_length(bionic_possible) > 0) {
-                if (area != "none") {
-                    if (array_contains(bionic_possible, area)) {
-                        new_bionic_pos = area;
-                    } else {
-                        return 0;
-                    }
-                } else {
-                    new_bionic_pos = bionic_possible[irandom(array_length(bionic_possible) - 1)];
-                }
-                bionics++;
-                alter_body(new_bionic_pos, "bionic", new_bionic);
-                if (array_contains(["left_leg", "right_leg"], new_bionic_pos)) {
-                    constitution += 2;
-                    strength++;
-                    dexterity -= 2;
-                    body[$ new_bionic_pos][$ "bionic"].variant = irandom(100);
-                } else if (array_contains(["left_eye", "right_eye"], new_bionic_pos)) {
-                    body[$ new_bionic_pos][$ "bionic"].variant = irandom(100);
-                    constitution += 1;
-                    wisdom += 1;
-                    dexterity++;
-                } else if (array_contains(["left_arm", "right_arm"], new_bionic_pos)) {
-                    body[$ new_bionic_pos][$ "bionic"].variant = irandom(100);
-                    constitution += 2;
-                    strength += 2;
-                    weapon_skill--;
-                } else if (new_bionic_pos == "torso") {
-                    constitution += 4;
-                    strength++;
-                    dexterity--;
-                } else if (new_bionic_pos == "throat") {
-                    charisma--;
-                } else {
-                    constitution++;
-                }
-                if (has_trait("flesh_is_weak")) {
-                    piety++;
-                }
-            }
-            if (hp() > max_health()) {
-                update_health(max_health());
+            scr_add_item("Bionics", -1, _quality);
+        }
+
+        // Identify eligible parts
+        var _eligible_parts = [];
+        var _body_parts = UNIT_BODY_PARTS;
+        for (var i = 0, _len = array_length(_body_parts); i < _len; i++) {
+            var _part_name = _body_parts[i];
+            if (!get_body_data("bionic", _part_name)) {
+                array_push(_eligible_parts, _part_name);
             }
         }
+
+        if (array_length(_eligible_parts) == 0) {
+            return false;
+        }
+
+        // Determine target part
+        var _target_part = _area;
+        if (_target_part == "none") {
+            _target_part = _eligible_parts[irandom(array_length(_eligible_parts) - 1)];
+        } else if (!array_contains(_eligible_parts, _target_part)) {
+            return false;
+        }
+
+        // Apply Health Bonus
+        var _hp_gain = has_trait("flesh_is_weak") ? 40 : 30;
+        add_or_sub_health(_hp_gain);
+
+        // Apply Bionic
+        var _bionic_data = {
+            quality: _quality,
+            variant: irandom(100),
+        };
+
+        alter_body(_target_part, "bionic", _bionic_data);
+        bionics++;
+
+        // Stat Modifications
+        switch (_target_part) {
+            case "left_leg":
+            case "right_leg":
+                constitution += 2;
+                strength += 1;
+                dexterity -= 2;
+                break;
+            case "left_eye":
+            case "right_eye":
+                constitution += 1;
+                wisdom += 1;
+                dexterity += 1;
+                break;
+            case "left_arm":
+            case "right_arm":
+                constitution += 2;
+                strength += 2;
+                weapon_skill -= 1;
+                break;
+            case "torso":
+                constitution += 4;
+                strength += 1;
+                dexterity -= 1;
+                break;
+            case "throat":
+                charisma -= 1;
+                break;
+            default:
+                constitution += 1;
+                break;
+        }
+
+        if (has_trait("flesh_is_weak")) {
+            piety++;
+        }
+
+        if (hp() > max_health()) {
+            update_health(max_health());
+        }
+
+        return true;
     };
 
     static age = function() {
