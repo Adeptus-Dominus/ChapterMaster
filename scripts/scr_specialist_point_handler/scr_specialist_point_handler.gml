@@ -29,41 +29,41 @@ function SpecialistPointHandler() constructor {
         research_points = 0;
         forge_points = 0;
         master_craft_chance = (obj_controller.tech_status == "heretics") ? 5 : 0;
-    
+
         apothecary_points = 0;
         apothecary_training_points = 0;
         apothecary_points_used = 0;
-    
+
         forge_equipment_maintenance = 0;
         crafters = 0;
         at_forge = 0;
-    
+
         apoths = [];
         techs = [];
         heretics = [];
-    
+
         point_breakdown = {
             fleets: {},
             systems: {},
         };
-    
+
         forge_master = -1;
         forge_veh_maintenance = {
             repairs: 0,
         };
-    
+
         process_specialist_points();
-    
+
         total_techs = array_length(techs);
         tech_locations = array_create(total_techs);
         for (var i = 0; i < total_techs; i++) {
             tech_locations[i] = techs[i].marine_location();
         }
-    
+
         if (forge_master > -1 && forge_master < total_techs) {
             obj_controller.master_of_forge = techs[forge_master];
         }
-    
+
         var apothecary_string = "AP Production#";
         apothecary_string += $"Apothecaries: {apothecary_points}#";
 
@@ -74,21 +74,21 @@ function SpecialistPointHandler() constructor {
         apothecary_points -= apothecary_training_points;
 
         apothecary_string += $"#Total AP: {apothecary_points}";
-    
+
         var forge_string = "FP Production#";
         forge_string += $"Techmarines: {floor(forge_points)}#";
-    
+
         var _forge_data = obj_controller.player_forge_data;
         if (_forge_data.player_forges > 0) {
             var _forge_gain = 5 * _forge_data.player_forges;
             forge_points += _forge_gain;
             forge_string += $"Forges: {_forge_gain}#";
         }
-    
+
         forge_string += "#FP Consumption#";
         forge_points -= forge_equipment_maintenance;
         forge_string += $"Equipment Maintenance: {forge_equipment_maintenance}#";
-    
+
         var _armoury_names = struct_get_names(armoury_repairs);
         for (var i = 0, _count = array_length(_armoury_names); i < _count; i++) {
             var _item = _armoury_names[i];
@@ -96,41 +96,43 @@ function SpecialistPointHandler() constructor {
             forge_points -= _repair_cost;
             forge_string += $"Equipment Repairs ({_item}): {_repair_cost}#";
         }
-    
-        var _v_types = [
-            "land_raider",
-            "small_vehicles"
+
+        var _v_maintenance = [
+            {
+                key: "land_raider",
+                label: "Land Raider",
+            },
+            {
+                key: "small_vehicles",
+                label: "Small Vehicle",
+            }
         ];
 
-        var _v_labels = [
-            "Land Raider",
-            "Small Vehicle"
-        ];
-
-        for (var i = 0; i < 2; i++) {
-            var _maint = forge_veh_maintenance[$ _v_types[i]] ?? 0;
+        for (var i = 0; i < array_length(_v_maintenance); i++) {
+            var _item = _v_maintenance[i];
+            var _maint = forge_veh_maintenance[$ _item.key] ?? 0;
             if (_maint > 0) {
-                forge_string += $"{_v_labels[i]} Maintenance: {_maint}#";
+                forge_string += $"{_item.label} Maintenance: {_maint}#";
                 forge_points -= _maint;
             }
         }
-    
+
         if (forge_veh_maintenance.repairs > 0) {
             forge_string += $"Vehicle Repairs: {forge_veh_maintenance.repairs}#";
         }
 
         forge_string += $"#Total FP: {forge_points}";
-    
+
         forge_points = floor(forge_points);
-    
+
         if (turn_end) {
             if (total_techs == 0) {
                 scr_loyalty("Upset Machine Spirits", "+");
             }
-    
+
             tech_ideology_spread();
             new_tech_heretic_spawn();
-    
+
             if (forge_master == -1) {
                 var _tech_units = scr_role_count(obj_ini.role[100][16], "", "units");
                 var _count = array_length(_tech_units);
@@ -145,7 +147,7 @@ function SpecialistPointHandler() constructor {
             gene_slave_logic();
             armoury_repairs = {};
         }
-    
+
         obj_controller.research_points = research_points;
         obj_controller.forge_points = forge_points;
         obj_controller.master_craft_chance = master_craft_chance;
@@ -301,7 +303,7 @@ function SpecialistPointHandler() constructor {
                     }
                     //add check to see if tech heretic is anywhere near mechanicus forge if so maybe do stuff??
                     /*if (_heretic_location==eLOCATION_TYPES.PLANET){
-                    if 
+                    if
                 }*/
                 }
                 if (array_length(techs) > array_length(heretics) && !_heritecs) {
