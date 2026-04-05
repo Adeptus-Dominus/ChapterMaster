@@ -561,24 +561,32 @@ function toggle_selection_borders() {
     }
 }
 
+/// @mixin
 function add_bionics_selection() {
-    var bionics_before = scr_item_count("Bionics");
-    if (bionics_before > 0) {
-        for (var p = 0; p < array_length(display_unit); p++) {
-            if (man_sel[p] != 0 && is_struct(display_unit[p])) {
-                var _unit = display_unit[p];
-                var comp = _unit.company;
-                var mar_id = _unit.marine_number;
-                if (_unit.controllable()) {
-                    //TODO swap for tag method
-                    if (string_count("Dread", ma_armour[p]) == 0) {
-                        _unit.add_bionics();
-                        if (ma_promote[p] == 10) {
-                            ma_promote[p] = 0;
-                        }
-                    }
-                }
-            }
+    if (scr_item_count("Bionics") <= 0) {
+        return;
+    }
+
+    for (var i = 0, _len = array_length(display_unit); i < _len; i++) {
+        /// @type {Struct.TTRPG_stats}
+        var _unit = display_unit[i];
+
+        if (man_sel[i] == 0 || !is_struct(_unit)) {
+            continue;
+        }
+
+        if (!_unit.controllable()) {
+            continue;
+        }
+
+        if (string_pos("Dread", ma_armour[i]) > 0) {
+            continue;
+        }
+
+        _unit.add_bionics();
+
+        if (ma_promote[i] == 10) {
+            ma_promote[i] = 0;
         }
     }
 }
