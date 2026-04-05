@@ -38,7 +38,6 @@ function scr_special_view(command_group) {
             unit = apothecaries[i];
             array_push(_already_used, unit.marine_number);
             add_man_to_manage_arrays(apothecaries[i]);
-            //if (unit.role()== obj_ini.role[0][v]=obj_ini.role[100][15]) then ma_promote[b]=1;
         }
     }
 

@@ -584,10 +584,6 @@ function add_bionics_selection() {
         }
 
         _unit.add_bionics();
-
-        if (ma_promote[i] == 10) {
-            ma_promote[i] = 0;
-        }
     }
 }
 
