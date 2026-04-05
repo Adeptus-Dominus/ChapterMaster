@@ -1,13 +1,11 @@
 function SpecialistPointHandler() constructor {
     static chapter_spread = calculate_full_chapter_spread;
-    static healing_and_point_use = apothecary_simple;
     forge_queue = [];
     techs = [];
     apoths = [];
     forge_master = -1;
     master_craft_chance = 0;
 
-    forge_reasons = {};
 
     forge_string = "";
     at_forge = 0;
@@ -64,7 +62,8 @@ function SpecialistPointHandler() constructor {
         forge_veh_maintenance = {
             repairs: 0,
         };
-        healing_and_point_use();
+
+        process_specialist_points();
 
         var at_forge = 0;
         tech_locations = [];

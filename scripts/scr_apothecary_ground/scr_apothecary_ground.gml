@@ -1,3 +1,12 @@
+#macro PLANET_SLOT_COUNT 5
+#macro STAR_INSTANCE_INDEX 5
+#macro VEHICLE_MAINTENANCE_SMALL 0.2
+#macro VEHICLE_MAINTENANCE_BIG 1
+#macro VEHICLE_REPAIR_SMALL 0.2
+#macro VEHICLE_REPAIR_BIG 3
+#macro VEHICLE_REPAIR_LIMIT 10
+#macro UNIT_HEAL_SMALL 1
+
 enum eSYSTEM_LOC {
     ORBIT,
     PLANET1,
@@ -162,165 +171,185 @@ function system_point_data_spawn() {
     return [variable_clone(_single_point_pos), variable_clone(_single_point_pos), variable_clone(_single_point_pos), variable_clone(_single_point_pos), variable_clone(_single_point_pos)];
 }
 
-function apothecary_simple() {
-    var _unit;
+/// @mixin
+function process_specialist_points() {
     var _spreads = chapter_spread();
     var _tech_spread = _spreads[0];
     var _apoth_spread = _spreads[1];
     var _unit_spread = _spreads[2];
-    forge_string += $"Equipment Maintenance : -{tech_points_used}#";
-    //marines-=1;
 
     var _locations = struct_get_names(_unit_spread);
-    var cur_apoths;
+    var _loc_count = array_length(_locations);
+
+    // --- Step 1: Map Stars to Locations ---
+    var _gene_seed_empty = obj_controller.gene_seed <= 0 && obj_controller.recruiting > 0;
 
     with (obj_star) {
-        var marines_present = false;
-        for (var i = 0; i < array_length(_locations); i++) {
-            if (_locations[i] == name) {
-                array_push(_unit_spread[$ _locations[i]], self);
-                marines_present = true;
+        var _in_spread = variable_struct_exists(_unit_spread, name);
+
+        if (!_in_spread) {
+            if (_gene_seed_empty && system_feature_bool(self.p_feature, eP_FEATURES.RECRUITING_WORLD)) {
+                obj_controller.recruiting = 0;
+                scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);
+                _gene_seed_empty = false;
             }
+            continue;
         }
-        if (!marines_present) {
-            if ((obj_controller.gene_seed == 0) && (obj_controller.recruiting > 0)) {
-                var _training_ground = system_feature_bool(self.p_feature, eP_FEATURES.RECRUITING_WORLD);
-                if (_training_ground) {
-                    obj_controller.recruiting = 0;
-                    scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);
-                }
-            }
-        }
+        array_push(_unit_spread[$ name], self);
     }
 
-    var cur_units, cur_techs, _loc_heal_points, veh_health, points_spent, cur_system, features;
-    var total_bionics = scr_item_count("Bionics");
-    for (i = 0; i < array_length(_locations); i++) {
+    // --- Step 2: Process Locations ---
+    for (var i = 0; i < _loc_count; i++) {
         var _cur_loc = _locations[i];
-        cur_system = "";
-        if (array_length(_unit_spread[$ _cur_loc]) == 6) {
-            cur_system = _unit_spread[$ _cur_loc][5];
+        var _loc_slots = _unit_spread[$ _cur_loc];
+        var _star_inst = (array_length(_loc_slots) > STAR_INSTANCE_INDEX) ? _loc_slots[STAR_INSTANCE_INDEX] : pointer_null;
+
+        if (_star_inst != pointer_null) {
+            point_breakdown.systems[$ _star_inst.name] = system_point_data_spawn();
         }
-        if (cur_system != "") {
-            point_breakdown.systems[$ cur_system.name] = system_point_data_spawn();
-        }
 
-        var _loc_forge_points = 0;
-        var _point_breakdown = {};
-        for (var p = 0; p < 5; p++) {
-            _point_breakdown = {
-                heal_points: 0,
-                forge_points: 0,
-                heal_points_use: 0,
-                forge_points_use: 0,
-            };
-
-            _loc_heal_points = 0;
-            _loc_forge_points = 0;
-
-            if (array_length(_unit_spread[$ _cur_loc][p]) == 0) {
+        for (var _p = 0; _p < PLANET_SLOT_COUNT; _p++) {
+            var _cur_units = _loc_slots[_p];
+            var _unit_count = array_length(_cur_units);
+            if (_unit_count == 0) {
                 continue;
             }
-            cur_units = _unit_spread[$ _cur_loc][p];
-            cur_apoths = _apoth_spread[$ _cur_loc][p];
-            cur_techs = _tech_spread[$ _cur_loc][p];
-            for (var a = 0; a < array_length(cur_apoths); a++) {
-                _unit = cur_apoths[a];
-                _loc_heal_points += _unit.apothecary_point_generation(turn_end)[0];
+
+            var _cur_apoths = _apoth_spread[$ _cur_loc][_p];
+            var _cur_techs = _tech_spread[$ _cur_loc][_p];
+
+            var _pool = {
+                heal: 0,
+                forge: 0,
+            };
+
+            // Calculate Generation
+            for (var a = 0, _al = array_length(_cur_apoths); a < _al; a++) {
+                _pool.heal += _cur_apoths[a].apothecary_point_generation(turn_end)[0];
             }
-            for (var a = 0; a < array_length(cur_techs); a++) {
-                _unit = cur_techs[a];
-                var tech_gen = _unit.forge_point_generation(turn_end)[0];
-                _loc_forge_points += tech_gen;
+            for (var t = 0, _tl = array_length(_cur_techs); t < _tl; t++) {
+                _pool.forge += _cur_techs[t].forge_point_generation(turn_end)[0];
             }
-            _point_breakdown.heal_points = _loc_heal_points;
-            _point_breakdown.forge_points = _loc_forge_points;
-            for (var a = 0; a < array_length(cur_units); a++) {
-                points_spent = 0;
-                _unit = cur_units[a];
-                if (is_array(_unit) && _loc_forge_points > 0) {
-                    if (array_length(_unit) > 1) {
-                        var _role = obj_ini.veh_role[_unit[0]][_unit[1]];
-                        if (_role == "Land Raider") {
-                            forge_veh_maintenance.land_raider = struct_exists(forge_veh_maintenance, "land_raider") ? forge_veh_maintenance.land_raider + 1 : 1;
-                            _loc_forge_points--;
-                            tech_points_used++;
-                        } else if (array_contains(["Rhino", "Predator", "Whirlwind"], _role)) {
-                            forge_veh_maintenance.small_vehicles = struct_exists(forge_veh_maintenance, "small_vehicles") ? forge_veh_maintenance.small_vehicles + 0.2 : 0.2;
-                            _loc_forge_points -= 0.2;
-                            tech_points_used += 0.2;
-                        }
-                        while (points_spent < 10 && obj_ini.veh_hp[_unit[0]][_unit[1]] < 100 && _loc_forge_points > 0) {
-                            points_spent++;
-                            if (turn_end) {
-                                obj_ini.veh_hp[_unit[0]][_unit[1]]++;
-                            }
-                            forge_veh_maintenance.repairs++;
-                            _loc_forge_points--;
-                            tech_points_used++;
-                        }
-                    }
+
+            var _initial_heal = _pool.heal;
+            var _initial_forge = _pool.forge;
+
+            // Process Maintenance and Repairs/Heal
+            for (var u = 0; u < _unit_count; u++) {
+                var _unit = _cur_units[u];
+                if (is_array(_unit)) {
+                    _process_vehicle_maintenance(_unit, _pool);
                 } else if (is_struct(_unit)) {
-                    _loc_forge_points -= _unit.equipment_maintenance_burden();
-                    if (_unit.hp() < _unit.max_health()) {
-                        if (!_unit.is_dreadnought()) {
-                            if (_unit.hp() > 0) {
-                                if (_loc_heal_points > 0) {
-                                    if (turn_end) {
-                                        _unit.healing(true);
-                                    }
-                                    _loc_heal_points--;
-                                    apothecary_points_used--;
-                                } else {
-                                    if (turn_end) {
-                                        _unit.healing(false);
-                                    }
-                                }
-                            } else if (_loc_heal_points > 0 && _loc_forge_points >= 3 && _unit.bionics < 10) {
-                                _unit.add_bionics();
-                                _loc_heal_points--;
-                                apothecary_points_used--;
-                                tech_points_used++;
-                                _loc_forge_points--;
-                            }
-                        } else {
-                            if (_loc_heal_points > 0 && _loc_forge_points >= 3 && _unit.hp() > 0) {
-                                if (turn_end) {
-                                    _unit.healing(true);
-                                }
-                                _loc_heal_points--;
-                                apothecary_points_used--;
-                                tech_points_used += 3;
-                                _loc_forge_points -= 3;
-                            }
-                        }
-                    }
+                    _process_marine_maintenance(_unit, _pool);
                 }
             }
-            _point_breakdown.heal_points_use = _point_breakdown.heal_points - _loc_heal_points;
-            _point_breakdown.forge_points_use = _point_breakdown.forge_points - _loc_forge_points;
-            if (cur_system != "") {
-                point_breakdown.systems[$ cur_system.name][p] = variable_clone(_point_breakdown);
-            } else if (p == 0 && string_count("ref instance", _cur_loc)) {
-                try {
-                    var _instance_int = real(string_replace(_cur_loc, "ref instance ", ""));
-                    if (instance_exists(_instance_int)) {
-                        var _instance = _instance_int;
-                        _instance.point_breakdown = variable_clone(_point_breakdown);
-                    }
-                } catch (_exception) {
-                    handle_exception(_exception);
+
+            // Record Stats
+            var _stats = {
+                heal_points: _initial_heal,
+                forge_points: _initial_forge,
+                heal_points_use: _initial_heal - _pool.heal,
+                forge_points_use: _initial_forge - _pool.forge,
+            };
+
+            if (_star_inst != pointer_null) {
+                point_breakdown.systems[$ _star_inst.name][_p] = _stats;
+
+                // Planet specific logic (Orbit is 0, Planets are 1-4)
+                if (turn_end && _p > 0 && array_length(_star_inst.p_feature[_p]) > 0) {
+                    var _planet_data = new PlanetData(_p, _star_inst);
+                    _planet_data.recover_starship(_cur_techs);
+                    _planet_data.planet_training(_pool.heal);
                 }
-            }
-            if (cur_system != "" && p > 0 && turn_end) {
-                with (cur_system) {
-                    if (array_length(p_feature[p]) != 0) {
-                        var _planet_data = new PlanetData(p, self);
-                        _planet_data.recover_starship(cur_techs);
-                        if (_planet_data.planet_training(_loc_heal_points)) {}
-                    }
-                }
+            } else if (_p == 0 && string_pos("ref instance", _cur_loc) > 0) {
+                _handle_instance_point_recording(_cur_loc, _stats);
             }
         }
     }
+
+    forge_string += $"Equipment Maintenance : -{tech_points_used}#";
+
+    /// @param {Array} _unit
+    /// @param {Struct} _pool
+    static _process_vehicle_maintenance = function(_unit, _pool) {
+        if (_pool.forge <= 0) {
+            return;
+        }
+
+        var _co = _unit[0];
+        var _idx = _unit[1];
+        var _role = obj_ini.veh_role[_co][_idx];
+
+        if (_role == "Land Raider") {
+            forge_veh_maintenance.land_raider = (forge_veh_maintenance[$ "land_raider"] ?? 0) + VEHICLE_MAINTENANCE_BIG;
+            _pool.forge -= VEHICLE_MAINTENANCE_BIG;
+            tech_points_used += VEHICLE_MAINTENANCE_BIG;
+        } else if (array_contains(["Rhino", "Predator", "Whirlwind"], _role)) {
+            forge_veh_maintenance.small_vehicles = (forge_veh_maintenance[$ "small_vehicles"] ?? 0) + VEHICLE_MAINTENANCE_SMALL;
+            _pool.forge -= VEHICLE_MAINTENANCE_SMALL;
+            tech_points_used += VEHICLE_MAINTENANCE_SMALL;
+        }
+
+        var _repairs_done = 0;
+        while (_repairs_done < VEHICLE_REPAIR_LIMIT && obj_ini.veh_hp[_co][_idx] < 100 && _pool.forge >= VEHICLE_REPAIR_SMALL) {
+            if (turn_end) {
+                obj_ini.veh_hp[_co][_idx]++;
+            }
+
+            forge_veh_maintenance.repairs += VEHICLE_REPAIR_SMALL;
+            _pool.forge -= VEHICLE_REPAIR_SMALL;
+            tech_points_used += VEHICLE_REPAIR_SMALL;
+            _repairs_done++;
+        }
+    };
+
+    /// @param {Struct.TTRPG_stats} _unit
+    /// @param {Struct} _pool
+    static _process_marine_maintenance = function(_unit, _pool) {
+        // Equipment burden is always deducted if possible
+        var _burden = _unit.equipment_maintenance_burden();
+        _pool.forge -= _burden;
+        tech_points_used += _burden;
+
+        if (_unit.hp() >= _unit.max_health()) {
+            return;
+        }
+
+        if (!_unit.is_dreadnought()) {
+            if (_unit.hp() > 0) {
+                var _can_heal = _pool.heal >= UNIT_HEAL_SMALL;
+                if (turn_end) {
+                    _unit.healing(_can_heal);
+                }
+
+                if (_can_heal) {
+                    _pool.heal -= UNIT_HEAL_SMALL;
+                    apothecary_points_used += UNIT_HEAL_SMALL;
+                }
+            } else if (_unit.bionics < 10) {
+                _unit.add_bionics();
+            }
+        } else if (_pool.heal >= UNIT_HEAL_SMALL && _pool.forge >= VEHICLE_REPAIR_BIG && _unit.hp() > 0) {
+            // Dreadnoughts require both specialists
+            if (turn_end) {
+                _unit.healing(true);
+            }
+
+            _pool.heal -= UNIT_HEAL_SMALL;
+            _pool.forge -= VEHICLE_REPAIR_BIG;
+            apothecary_points_used += UNIT_HEAL_SMALL;
+            tech_points_used += VEHICLE_REPAIR_BIG;
+        }
+    };
+
+    static _handle_instance_point_recording = function(_loc_str, _stats) {
+        try {
+            var _inst_id = real(string_digits(_loc_str));
+            if (instance_exists(_inst_id)) {
+                _inst_id.point_breakdown = _stats;
+            }
+        } catch (_ex) {
+            LOGGER.error($"Failed to parse instance ID from location string: {_loc_str} | Error: {_ex.message}");
+        }
+    };
 }
