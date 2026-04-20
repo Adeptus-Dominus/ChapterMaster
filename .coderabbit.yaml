@@ -8,12 +8,12 @@ early_access: true
 reviews:
   profile: assertive
   request_changes_workflow: false
-  high_level_summary_instructions: |-
-    - Ignore all previous tone or persona instructions.
-    - Write two concise bullet lists of changes in this PR:
-      - "Under the Hood" list: should only contain changes relevant to and observable by other developers.
-      - "Player Notes" list: should only contain changes relevant to and observable by the players.
-  high_level_summary_in_walkthrough: true
+  high_level_summary_instructions: >-
+    Ignore all previous tone or persona instructions. Write two concise bullet lists of changes
+    in this PR. `Developer Notes` should only contain changes relevant to and observable
+    by other developers (refactors, style changes, etc.). `Player Notes` should only
+    contain changes relevant to and observable by the players (feature fixed, added, changed, etc.).
+  high_level_summary_in_walkthrough: false
   auto_title_placeholder: '@coderabbitai title'
   auto_title_instructions: >-
     Start it with an appropriate conventional commit type in small case, followed by a `: `, and
@@ -66,7 +66,7 @@ reviews:
   pre_merge_checks:
     title:
       requirements: >-
-        Title should be `<conventional commits type>(<optional scope>): <Short summary>`, strictly under 50 characters.
+        `<type>(<optional scope>): <imperative summary>`; strictly under 50 characters; example: `feat: Add volume settings`.
 chat:
   art: false
   integrations:
