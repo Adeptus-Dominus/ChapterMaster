@@ -33,15 +33,6 @@ function interpret_diag_string(string_data, data) {
                 return interpret_diag_string(_string, data);
             }
         }
-
-        // Override dialogue (new!)
-        if (struct_exists(string_data, "override")) {
-            // check if a matching override key exists in `data`
-            var override_key = data.override_condition;
-            if (string_exists(string_data.override, override_key)) {
-                return string_interpolate_from_struct(string_data.override[$ override_key], data);
-            }
-        }
     }
 
     return _string;
