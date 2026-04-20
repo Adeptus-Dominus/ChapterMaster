@@ -55,16 +55,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         // diplo_keyphrase = keyphrase
 
         clear_diplo_choices();
-        if (diplomacy == -1) {
-            if (is_struct(character_diplomacy)) {
-                if (_unit.role == "Forge Master") {
-                    if (diplo_keyphrase == "intro") {
-                        diplo_text = "Chapter Master. What may ";
-                        iplomacy_option({option_text: "The Imperium and Inquisition's ignorance and hypocrisy will be the death of my Chapter.", goto: _goto});
-                    }
-                }
-            }
-        }
+
         var event_log = "";
         var rando = 0, tempd = "", sorc = false;
         var rela, trade_msg;
