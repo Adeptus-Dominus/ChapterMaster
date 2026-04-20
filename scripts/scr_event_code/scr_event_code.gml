@@ -439,7 +439,8 @@ function make_faction_enemy_event() {
 
 function event_dispose_of_mutated_gene() {
     if (pop_data.percent_remove > 0) {
-        obj_controller.gene_seed -= round(obj_controller.gene_seed * (pop_data.percent_remove / 100));
+        var _removal_amount = ceil(obj_controller.gene_seed * (pop_data.percent_remove / 100));
+        obj_controller.gene_seed -= _removal_amount;
     }
     popup_default_close();
 }
