@@ -124,7 +124,7 @@ draw_sprite_ext(spr_servo_skull_head, 0,27+_screen_width/2,165, 2, 2, 0, c_white
 
 var system_string = $"{target.name} System";
 
-draw_set_color(target.owner == eFACTION.Player ? c_blue : 0);
+draw_set_color(target.owner == eFACTION.PLAYER ? c_blue : 0);
 
 if (_standard_star){
     draw_text_transformed(184,180,system_string,1,1,0);
@@ -325,9 +325,9 @@ if (obj_controller.selecting_planet!=0){
             var building=instance_create(x,y,obj_temp_build);
             building.target=target;
             building.planet=obj_controller.selecting_planet;
-            building.lair = p_data.has_upgrade(eP_FEATURES.Secret_Base);
-            if (p_data.has_upgrade(eP_FEATURES.Arsenal)) then building.arsenal=1;
-            if (p_data.has_upgrade(eP_FEATURES.Gene_Vault)) then building.gene_vault=1;
+            building.lair = p_data.has_upgrade(eP_FEATURES.SECRET_BASE);
+            if (p_data.has_upgrade(eP_FEATURES.ARSENAL)) then building.arsenal=1;
+            if (p_data.has_upgrade(eP_FEATURES.GENE_VAULT)) then building.gene_vault=1;
             obj_controller.temp[104]=string(scr_master_loc());
             obj_controller.menu=60;
             with(obj_star_select){

@@ -29,7 +29,7 @@ function mech_fleet_explore_battle_grounds(){
 		return;
 	}
 
-	var _has_battle = system_feature_bool(orbiting.p_feature,eP_FEATURES.OldBattleGround);
+	var _has_battle = system_feature_bool(orbiting.p_feature,eP_FEATURES.OLDBATTLEGROUND);
 	if (_has_battle){
 		var _p_data = orbiting.system_datas[_has_battle];
 		_p_data.refresh_data();
@@ -37,7 +37,7 @@ function mech_fleet_explore_battle_grounds(){
 		return;
 	}
 
-	var _battle_ground = _p_data.get_features(eP_FEATURES.OldBattleGround)[0];
+	var _battle_ground = _p_data.get_features(eP_FEATURES.OLDBATTLEGROUND)[0];
 
 	if (_battle_ground.explored == 0){
 		var _text = $"The Mechanicus have arrived on {_p_data.name()} It will now be impossible to access the site without Mechanicus surveillance any potential rescources will now be fully put towards their aimsin service of the Ommnissiah";

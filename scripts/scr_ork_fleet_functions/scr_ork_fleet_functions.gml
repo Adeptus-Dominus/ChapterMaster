@@ -21,7 +21,7 @@ function orks_end_turn_growth(){
         var _pdata = system_datas[i];
         _pdata.refresh_data();
         if (!p_orks[i]){
-            var _strongholds = _pdata.get_features(eP_FEATURES.OrkStronghold);
+            var _strongholds = _pdata.get_features(eP_FEATURES.ORKSTRONGHOLD);
             for (var s=0;s<array_length(_strongholds);s++){
                 var _hold = _strongholds[s];
                 _hold.tier -= 0.01;

@@ -25,28 +25,12 @@ function get_player_fleet_intercept_time(star,time_abundance){
 		_travel = get_viable_travel_time(time_abundance, _nearest_player_fleet.x, _nearest_player_fleet.y, star.x, star.y, _nearest_player_fleet, false);
 	}
 }
-function fleet_has_roles(fleet="none", roles){
-	var all_ships = fleet_full_ship_array(fleet);
-	var unit;
-	for (var i=0;i<=10;i++){
-		for (var s=0;s<array_length(obj_ini.TTRPG[i]);s++){
-			unit=fetch_unit([i,s]);
-			if (unit.planet_location<1){
-				if (array_contains(all_ships,unit.ship_location)){
-					if (array_contains(roles, unit.role())){
-						return true;
-					}
-				}
-			}
-		}
-	}
-}
 
 function split_selected_into_new_fleet(start_fleet="none"){
 	var new_fleet;
 	if (start_fleet=="none"){
 		new_fleet = instance_create(x,y,obj_p_fleet);
-		new_fleet.owner  = eFACTION.Player;
+		new_fleet.owner  = eFACTION.PLAYER;
         // Pass over ships to the new fleet, if they are selected
         var cap_number = array_length(capital);
 

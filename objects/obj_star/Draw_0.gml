@@ -82,7 +82,7 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
 
         var _panel_y = yy + 30;
 
-        if (owner != eFACTION.Player ){
+        if (owner != eFACTION.PLAYER ){
             var _faction_index = owner;
             var faction_colour = global.star_name_colors[_faction_index];
             draw_sprite_general(spr_p_name_bg, 0, 0, 0, _panel_width, 32, _panel_center, _panel_y, 1, 1, 0, faction_colour, faction_colour, faction_colour, faction_colour, 1);

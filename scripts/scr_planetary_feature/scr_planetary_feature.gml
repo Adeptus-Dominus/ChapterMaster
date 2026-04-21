@@ -1,33 +1,34 @@
 enum eP_FEATURES {
 			SORORITAS_CATHEDRAL,
-			Necron_Tomb,
-			Artifact, 
-			STC_Fragment,
-			Ancient_Ruins,
-			Cave_Network,
-			Recruiting_World, 
-			Monastery,
-			Warlord6,
-			OrkWarboss,
-			Warlord10,
-			Special_Force,
-			ChaosWarband,
-			Webway,
-			Secret_Base,
-			Starship,
-			Succession_War,
-			Mechanicus_Forge,
-			Reclamation_pools,
-			Capillary_Towers,
-			Daemonic_Incursion,
-			Victory_Shrine,
-			Arsenal,
-			Gene_Vault,
-			Forge,
-			Gene_Stealer_Cult,
-			Mission,
-			OrkStronghold,
-			OldBattleGround
+			NECRON_TOMB,
+			ARTIFACT, 
+			STC_FRAGMENT,
+			ANCIENT_RUINS,
+			CAVE_NETWORK,
+			RECRUITING_WORLD, 
+			MONASTERY,
+			WARLORD6,
+			ORKWARBOSS,
+			WARLORD10,
+			SPECIAL_FORCE,
+			CHAOSWARBAND,
+			WEBWAY,
+			SECRET_BASE,
+			STARSHIP,
+			SUCCESSION_WAR,
+			MECHANICUS_FORGE,
+			RECLAMATION_POOLS,
+			CAPILLARY_TOWERS,
+			DAEMONIC_INCURSION,
+			VICTORY_SHRINE,
+			ARSENAL,
+			GENE_VAULT,
+			FORGE,
+			GENE_STEALER_CULT,
+			MISSION,
+			ORKSTRONGHOLD,
+			OLDBATTLEGROUND
+}
 
 enum eBASE_TYPES {
     LAIR,
@@ -50,7 +51,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		}
 	}
 	switch(f_type){
-	case eP_FEATURES.Gene_Stealer_Cult:
+	case eP_FEATURES.GENE_STEALER_CULT:
 		PDF_control = 0;
 		sealed = 0;
 		player_hidden = 1;
@@ -59,13 +60,13 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		hiding=true;
 		name = global.name_generator.generate_genestealer_cult_name();		
 		break;
-	case eP_FEATURES.Necron_Tomb:
+	case eP_FEATURES.NECRON_TOMB:
 		awake = 0;
 		sealed = 0;
 		player_hidden = 1;
 		planet_display = "Dormant Necron Tomb";
 		break;
-	case eP_FEATURES.OldBattleGround:
+	case eP_FEATURES.OLDBATTLEGROUND:
 		player_hidden = true;
 		imperium_known = false;
 		//This is janky but we have no way of defining non player astartes 
@@ -75,7 +76,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		explored = 0;
 		planet_display = "Old Battle Ground";
 		break;
-	case eP_FEATURES.Secret_Base:
+	case eP_FEATURES.SECRET_BASE:
 		base_type = base_types.Lair;
 		inquis_hidden = 1;
 		planet_display = "Hidden Secret Base";
@@ -99,26 +100,26 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		swimming=0;
 		stock=0;
 		break;
-	case eP_FEATURES.Arsenal:
+	case eP_FEATURES.ARSENAL:
 		inquis_hidden = 1;
 		planet_display = "Arsenal";
 		player_hidden = 0;
 		built = obj_controller.turn+3;
 		break;
-	case eP_FEATURES.Gene_Vault:
+	case eP_FEATURES.GENE_VAULT:
 		inquis_hidden=1;
 		planet_display = "Arsenal";
 		player_hidden = 0;
 		built = obj_controller.turn+3;
 		break;
-	case eP_FEATURES.Starship:
-		f_type = eP_FEATURES.Starship;
+	case eP_FEATURES.STARSHIP:
+		f_type = eP_FEATURES.STARSHIP;
 		planet_display = "Ancient Starship";
 		funds_spent = 0;
 		player_hidden = 0;
 		engineer_score = 0;
 	break;	
-	case eP_FEATURES.Ancient_Ruins:
+	case eP_FEATURES.ANCIENT_RUINS:
 		static ruins_explored = scr_ruins_explored;
 		static explore = scr_explore_ruins;
 		static determine_race = scr_ruins_determine_race;
@@ -134,7 +135,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		Fragment_type =0;
 		planet_display = "STC Fragment";
 		break;
-	case eP_FEATURES.Cave_Network:
+	case eP_FEATURES.CAVE_NETWORK:
 		player_hidden = 1;
 		cave_depth =irandom(3);//allow_multiple levels of caves, option to go deeper
 		planet_display = "Unexplored Cave Network";
@@ -143,35 +144,35 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		player_hidden = 1;
 		planet_display = "Sororitas Cathedral";
 		break;
-	case eP_FEATURES.Artifact:
+	case eP_FEATURES.ARTIFACT:
 		player_hidden = 1;
 		planet_display = "Artifact";
 		break;
-	case eP_FEATURES.OrkWarboss:
+	case eP_FEATURES.ORKWARBOSS:
 		player_hidden = 1;
 		planet_display = "Ork Warboss";
 		Warboss = "alive";
 		name = global.name_generator.generate_ork_name();
 		turns_static = 0;
 		break;
-	case eP_FEATURES.OrkStronghold:
+	case eP_FEATURES.ORKSTRONGHOLD:
 		player_hidden = 1;
 		planet_display= "Ork Stronghold";
 		tier = 1;
 		break;
-	case eP_FEATURES.Monastery:
+	case eP_FEATURES.MONASTERY:
 		planet_display="Fortress Monastary";
 		player_hidden = 0;
 		forge=0;
 		name=global.name_generator.generate_imperial_ship_name();
 		break;
-	case eP_FEATURES.Recruiting_World:
+	case eP_FEATURES.RECRUITING_WORLD:
 		planet_display="Recruitment";
 		player_hidden = 0;
         recruit_type = 0;
         recruit_cost = 0;
 		break;
-	case eP_FEATURES.ChaosWarband:
+	case eP_FEATURES.CHAOSWARBAND:
 		if !(struct_exists(other_data, "patron")){
 			patron = choose("slaanesh", "tzeentch", "khorne", "nurgle", "undivided");
 		} else {
@@ -487,12 +488,12 @@ function scr_planetary_feature(planet_num) {
 				    if (p_heresy[planet_num]>10) then p_heresy[planet_num]-=10;
 				    p_sisters[planet_num]=choose(2,2,3);goo=1;
 					break;
-				case eP_FEATURES.Necron_Tomb:
+				case eP_FEATURES.NECRON_TOMB:
 				    var lop=$"Necron Tomb discovered on {numeral_n}.";
 				    scr_alert("red","feature",lop,x,y);
 				    scr_event_log("red",lop);
 					break;
-				case eP_FEATURES.Artifact:
+				case eP_FEATURES.ARTIFACT:
 					var lop=$"Artifact discovered on {numeral_n}.";
 					scr_alert("green","feature",lop,x,y);
 					scr_event_log("",lop);
@@ -502,22 +503,22 @@ function scr_planetary_feature(planet_num) {
 					 scr_alert("green","feature",lop,x,y);
 					 scr_event_log("",lop);
 					 break;
-				case eP_FEATURES.Ancient_Ruins:
+				case eP_FEATURES.ANCIENT_RUINS:
 					var lop=$"A {feat.ruins_size} Ancient Ruins discovered on {string(name)} {scr_roman(planet_num)}.";
 					scr_alert("green","feature",lop,x,y);
 					scr_event_log("",lop);
 					break;
-				case eP_FEATURES.Cave_Network:
+				case eP_FEATURES.CAVE_NETWORK:
 					var lop=$"Extensive Cave Network discovered on {numeral_n}.";
 			        scr_alert("green","feature",lop,x,y);
 			        scr_event_log("",lop);
 					break;
-				case eP_FEATURES.OrkWarboss:
+				case eP_FEATURES.ORKWARBOSS:
 				    var lop=$"Ork Warboss discovered on {numeral_n}.";
 				    scr_alert("red","feature",lop,x,y);
 				    scr_event_log("red",lop);
 					break;	
-				case eP_FEATURES.OldBattleGround:
+				case eP_FEATURES.OLDBATTLEGROUND:
 					var lop=$"Old Battle Ground discovered on {numeral_n}.";
 				    scr_alert("green","feature",lop,x,y);
 				    scr_event_log("red",lop);

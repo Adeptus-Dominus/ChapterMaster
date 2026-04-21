@@ -553,14 +553,14 @@ function scr_enemy_ai_c() {
 	        var ship=scr_orbiting_fleet(eFACTION.Tyranids);
 	        if (ship!="none") and (p_type[i]!="Dead") and (array_length(p_feature[i])!=0){
 	        	if (ship.capital_number>0){
-		            if (planet_feature_bool(p_feature[i], eP_FEATURES.Reclamation_pools) ==1){
+		            if (planet_feature_bool(p_feature[i], eP_FEATURES.RECLAMATION_POOLS) ==1){
 		                p_tyranids[i]=0;
 		                if (p_type[i]="Death") or (p_type[i]="Hive") then ship.capital_number+=choose(0,1,1);
 		                ship.capital_number+=1;
 		                ship.escort_number+=3;
 		                ship.image_index=round(standard_fleet_strength_calc());
 		                p_type[i]="Dead";
-						delete_features(p_feature[i], eP_FEATURES.Reclamation_pools);// show_message("D");
+						delete_features(p_feature[i], eP_FEATURES.RECLAMATION_POOLS);// show_message("D");
 		                if (planets=1) and (p_type[1]="Dead") then image_alpha=0.33;
 		                if (planets=2) and (p_type[1]="Dead") and (p_type[2]="Dead") then image_alpha=0.33;
 		                if (planets=3) and (p_type[1]="Dead") and (p_type[2]="Dead") and (p_type[3]="Dead") then image_alpha=0.33;
@@ -570,16 +570,16 @@ function scr_enemy_ai_c() {
 		                // if image_alpha = 0.33 then send the ship somewhere new
 	                
 		            }
-		            if (planet_feature_bool(p_feature[i], eP_FEATURES.Capillary_Towers)==1) and (p_type[i]!="Dead"){
+		            if (planet_feature_bool(p_feature[i], eP_FEATURES.CAPILLARY_TOWERS)==1) and (p_type[i]!="Dead"){
 		            	p_population[i]=floor(p_population[i]*0.3);
 		            }
-		            if (planet_feature_bool(p_feature[i], eP_FEATURES.Capillary_Towers)==1) and (p_type[i]!="Dead"){
+		            if (planet_feature_bool(p_feature[i], eP_FEATURES.CAPILLARY_TOWERS)==1) and (p_type[i]!="Dead"){
 		                p_feature[i]=[];
-						array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.Capillary_Towers), new NewPlanetFeature(eP_FEATURES.Reclamation_pools));
+						array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.CAPILLARY_TOWERS), new NewPlanetFeature(eP_FEATURES.RECLAMATION_POOLS));
 		                p_population[i]=0;// show_message("C");
 		            }
-		            if (planet_feature_bool(p_feature[i], eP_FEATURES.Capillary_Towers)==0) and (planet_feature_bool(p_feature[i], eP_FEATURES.Reclamation_pools)==0) and (p_type[i]!="Dead"){
-						array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.Capillary_Towers));// show_message("B");
+		            if (planet_feature_bool(p_feature[i], eP_FEATURES.CAPILLARY_TOWERS)==0) and (planet_feature_bool(p_feature[i], eP_FEATURES.RECLAMATION_POOLS)==0) and (p_type[i]!="Dead"){
+						array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.CAPILLARY_TOWERS));// show_message("B");
 		            }
 		        }
 	        }

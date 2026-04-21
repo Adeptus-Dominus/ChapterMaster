@@ -86,7 +86,7 @@ function scr_random_event(execute_now) {
 						EVENT.strange_behavior,
 						EVENT.fleet_delay,
 						EVENT.harlequins,
-						EVENT.succession_war,
+						EVENT.SUCCESSION_WAR,
 						EVENT.random_fun,
 					];
 				}

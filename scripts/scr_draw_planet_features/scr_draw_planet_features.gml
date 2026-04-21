@@ -46,7 +46,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 	enter_count = 18;
 	planet_data = new PlanetData(planet,system);
 
-	if (feature.f_type == eP_FEATURES.Forge){
+	if (feature.f_type == eP_FEATURES.FORGE){
 		var _worker_caps = [2,4,8];
 		worker_capacity = _worker_caps[feature.size-1];	
 		techs = collect_role_group(SPECIALISTS_TECHS, obj_star_select.target.name);
@@ -128,7 +128,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 	    };
 	    draw_set_halign(fa_center);
 		switch (feature.f_type){
-			case eP_FEATURES.Forge:
+			case eP_FEATURES.FORGE:
 				draw_text_transformed(xx+(w/2), yy +10, "Chapter Forge", 2, 2, 0);
 				draw_set_halign(fa_left);
 				draw_set_color(c_gray);
@@ -166,7 +166,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 					//TODO somthing if the forge has a hanger
 				}		
 				break;
-			case eP_FEATURES.Necron_Tomb:
+			case eP_FEATURES.NECRON_TOMB:
 
 				generic=true;
 				if (feature.awake==0 && feature.sealed==0){
@@ -180,17 +180,17 @@ function FeatureSelected(Feature, system, planet) constructor{
 					body = "The Cursed ranks of living metal spew forth from the Necron tomb below"
 				}
 				break;
-			case eP_FEATURES.Artifact:
+			case eP_FEATURES.ARTIFACT:
 				generic=true;
 				title = "Unknown Artifact";
 				body = "Unload Marines onto the planet to search for the artifact";
 				break;	
-			case eP_FEATURES.Ancient_Ruins:
+			case eP_FEATURES.ANCIENT_RUINS:
 				generic=true;
 				title = "Ancinet Ruins";
 				body = "Unload Marines onto the planet to explore the ruins";
 				break;
-			case eP_FEATURES.OldBattleGround:
+			case eP_FEATURES.OLDBATTLEGROUND:
 				generic=true;
 				title = "Old Battlefield";
 				body = $"The site of a previously unrecorded battle between {feature.faction1} and {feature.faction2} forces long forgotten\nUnload Marines to search Techmarines are advisable to help, it would be best any tech priests not be aware of such an operation it may create a conflict of interest";
@@ -200,7 +200,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				title = "STC Fragment";
 				body = $"Unload a {obj_ini.role[100][16]} and whatever entourage you deem necessary to recover the STC Fragment";
 				break;
-			case eP_FEATURES.Gene_Stealer_Cult:
+			case eP_FEATURES.GENE_STEALER_CULT:
 				generic=true;
 				var cult_control = planet_data.population_influences[eFACTION.Tyranids];
 				title = $"Cult of {feature.name}";
@@ -216,7 +216,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				}
 				body = $"The Cult of {feature.name} {control_string}";
 				break;				
-			case eP_FEATURES.Victory_Shrine:
+			case eP_FEATURES.VICTORY_SHRINE:
 				draw_text_transformed(xx+(w/2), yy +10, "Victory Shrine", 2, 2, 0);
 				draw_set_halign(fa_left);
 				draw_set_color(c_gray);				
@@ -228,7 +228,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 					}
 				}*/
 				break;																	
-			case eP_FEATURES.Monastery:
+			case eP_FEATURES.MONASTERY:
 				draw_text_transformed(xx+(w/2), yy +10, feature.name, 2, 2, 0);
 				if (feature.forge==0){
 					draw_text_transformed(xx+80, yy +50, "Forge", 1, 1, 0);
@@ -239,7 +239,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 					};
 				}
 				break;
-			case eP_FEATURES.OrkStronghold:
+			case eP_FEATURES.ORKSTRONGHOLD:
 				title = "Ork Stronghold";
 				generic = true;
 				if (planet_data.planet_forces[eFACTION.Ork]){
@@ -248,7 +248,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 					body = "Without a force of orks to hold it together the fortress is slowly pulled apart from within by the inhabitants, It's capabilities will constantly decrease until soon there will be nothing left";
 				}
 				break
-            case eP_FEATURES.Recruiting_World:
+            case eP_FEATURES.RECRUITING_WORLD:
                 generic = true;
                 if (planet_data.planet_forces[eFACTION.ORK]) {
                     body = $"For as long as this Stronghold stands the orks here will continue to fortify it. The larger it gets the greater the capacity of this planet to produce orkish machines of war and ships and the better protected the ork forces will be from bombardment";

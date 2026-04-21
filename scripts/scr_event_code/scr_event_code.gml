@@ -135,7 +135,7 @@ function event_end_turn_action() {
 	            if (_event_star!="none"){
 	                _event_star.dispo[_planet]=-10;// Resets
 	                var twix=$"Inquisition executes Chapter Serf in control of {pllanet_numera_name(planet, _event_star)} and installs a new Planetary Governor.";
-	                if (_event_star.p_owner[_planet]=eFACTION.Player){
+	                if (_event_star.p_owner[_planet]=eFACTION.PLAYER){
 	                    _event_star.p_owner[_planet]=_event_star.p_first[_planet];
 	                }
 	                scr_alert("","",twix,0,0);
@@ -381,70 +381,7 @@ function handle_discovered_governor_assasinations() {
     }
 }
 
-function make_faction_enemy_event(){
-	log_message("RE: Enemy");
-		
-	var factions = [];
-	if(obj_controller.known[eFACTION.Imperium] == 1){
-		array_push(factions,2);
-	}
-	if(obj_controller.known[eFACTION.Mechanicus] == 1){
-		array_push(factions,3);
-	}
-	if(obj_controller.known[eFACTION.Inquisition] == 1){
-		array_push(factions,4);
-	}
-	if(obj_controller.known[eFACTION.Ecclesiarchy] == 1){
-		array_push(factions,5);		
-	}
-	
-	if(array_length(factions) == 0){
-		log_error("RE: Enemy, no faction could be chosen");
-		return false;
-	}
-	var chosen_faction = array_random_element(factions);
-	
-	var text = "You have made an enemy within the ";
-	var log = "An enemy has been made within the ";
-	var _e_name = "";
-	switch(chosen_faction) {
-		case 2:
-			_e_name="enemy_imperium";
-			text += "Imperium";
-			log += "Imperium";
-			break;
-		case 3:
-			_e_name="enemy_mechanicus";
-			text += "Mechanicus";
-			log += "Mechanicus";
-			break;
-		case 4:
-			_e_name="enemy_inquisition";
-			text += "Inquisition";
-			log += "Inquisition";
-			break;
-		case 5:
-			_e_name="enemy_ecclesiarchy";
-			text += "Ecclesiarchy";
-			log += "Ecclesiarchy";
-			break;
-		default:
-			log_error("RE: Enemy, no faction could be chosen");
-			exit;
-	}
-	if (_e_name != ""){
-		add_event({
-			duration : irandom_range(12,96),
-			e_id : _e_name,
-		})
-	    alter_disposition(chosen_faction, -20)
-	    text +="; relations with them will be soured for the forseable future.";
-	    scr_popup("Diplomatic Incident",text,"angry","");
-	    scr_event_log("red",string(log));
-	    return true;
-	}
-	return false;
-}
+
 function strange_build_event() {
     LOGGER.info("RE: Fey Mood");
     var _search_params = {
