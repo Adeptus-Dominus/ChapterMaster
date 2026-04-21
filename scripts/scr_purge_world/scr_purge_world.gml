@@ -11,7 +11,7 @@ function scr_purge_world(action_type, action_score) {
 	var _pop_before = population;
 	var _no_chaos = (planet_forces[eFACTION.Heretics] + planet_forces[eFACTION.Chaos])==0
 	if ((action_type==DropType.PurgeFire || action_type==DropType.PurgeSelective) && _no_chaos && obj_controller.turn>=obj_controller.chaos_turn){
-	    if (has_feature(P_features.Warlord10) && obj_controller.known[10]=0 && obj_controller.faction_gender[10]=1){
+	    if (has_feature(eP_FEATURES.Warlord10) && obj_controller.known[10]=0 && obj_controller.faction_gender[10]=1){
 	    	with(obj_drop_select){
 		        var pop=instance_create(0,0,obj_popup);
 		        pop.image="chaos_symbol";
@@ -20,7 +20,7 @@ function scr_purge_world(action_type, action_score) {
 		        exit;   
 		    }
 		}
-	    if (has_feature(P_features.Warlord10) && obj_controller.known[10]>=2 && obj_controller.faction_gender[10]=1){
+	    if (has_feature(eP_FEATURES.Warlord10) && obj_controller.known[10]>=2 && obj_controller.faction_gender[10]=1){
 	    	with(obj_drop_select){
 
 				attacking=10;
@@ -205,8 +205,8 @@ function scr_purge_world(action_type, action_score) {
 	     	}
 
 	        var nid_influence = population_influences[eFACTION.Tyranids];
-            if (has_feature( P_features.Gene_Stealer_Cult)) {
-                var cult = get_features(P_features.Gene_Stealer_Cult)[0];
+            if (has_feature( eP_FEATURES.Gene_Stealer_Cult)) {
+                var cult = get_features(eP_FEATURES.Gene_Stealer_Cult)[0];
                 if (cult.hiding) {
 
                 }

@@ -180,21 +180,21 @@ function scr_cheatcode(argument0) {
 				case "artifactpopulate":
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
-							array_push(p_feature[i], new NewPlanetFeature(P_features.Artifact));
+							array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.Artifact));
 						}
 					}
 					break;
 				case "ruinspopulate":
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
-							array_push(p_feature[i], new NewPlanetFeature(P_features.Ancient_Ruins));
+							array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.Ancient_Ruins));
 						}
 					}
 					break;		
 				case "stcpopulate":
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
-							array_push(p_feature[i], new NewPlanetFeature(P_features.STC_Fragment));
+							array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.STC_Fragment));
 						}
 					}
 					break;	
@@ -677,43 +677,43 @@ function draw_planet_debug_options() {
 function draw_planet_debug_features(){
 	static _addable_features = [
 		{
-			e_num : P_features.Gene_Stealer_Cult,
+			e_num : eP_FEATURES.Gene_Stealer_Cult,
 			name : "GeneStealer Cult"
 		},
 		{
-			e_num : P_features.Ancient_Ruins,
+			e_num : eP_FEATURES.Ancient_Ruins,
 			name : "Ancient Ruins"
 		},
 		{
-			e_num : P_features.Artifact,
+			e_num : eP_FEATURES.Artifact,
 			name : "Artefact"
 		},
 		{
-			e_num : P_features.STC_Fragment,
+			e_num : eP_FEATURES.STC_Fragment,
 			name : "STC Fragment"
 		},
 		{
-			e_num : P_features.Sororitas_Cathedral,
+			e_num : eP_FEATURES.SORORITAS_CATHEDRAL,
 			name : "Sororitas Cathedral"
 		},
 		{
-			e_num : P_features.OrkWarboss,
+			e_num : eP_FEATURES.OrkWarboss,
 			name : "Ork Warboss"
 		},
 		{
-			e_num : P_features.OrkStronghold,
+			e_num : eP_FEATURES.OrkStronghold,
 			name : "Ork stronghold"
 		},
 		{
-			e_num : P_features.Monastery,
+			e_num : eP_FEATURES.Monastery,
 			name : "Fortress Monastery"
 		},
 		{
-			e_num : P_features.Starship,
+			e_num : eP_FEATURES.Starship,
 			name : "Ancient Starship"
 		},
 		{
-			e_num : P_features.OldBattleGround,
+			e_num : eP_FEATURES.OldBattleGround,
 			name : "Old Battle Ground"
 		},
 

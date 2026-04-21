@@ -325,9 +325,9 @@ if (obj_controller.selecting_planet!=0){
             var building=instance_create(x,y,obj_temp_build);
             building.target=target;
             building.planet=obj_controller.selecting_planet;
-            building.lair = p_data.has_upgrade(P_features.Secret_Base);
-            if (p_data.has_upgrade(P_features.Arsenal)) then building.arsenal=1;
-            if (p_data.has_upgrade(P_features.Gene_Vault)) then building.gene_vault=1;
+            building.lair = p_data.has_upgrade(eP_FEATURES.Secret_Base);
+            if (p_data.has_upgrade(eP_FEATURES.Arsenal)) then building.arsenal=1;
+            if (p_data.has_upgrade(eP_FEATURES.Gene_Vault)) then building.gene_vault=1;
             obj_controller.temp[104]=string(scr_master_loc());
             obj_controller.menu=60;
             with(obj_star_select){

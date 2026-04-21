@@ -411,7 +411,7 @@ function PlanetData(planet, system) constructor{
         if (_has_warboss && !_has_stronghold){
             _rando=roll_dice_chapter(1,100, "low");
             if (_rando<30){
-                add_feature(P_features.OrkStronghold);
+                add_feature(eP_FEATURES.OrkStronghold);
             }
         }
 
@@ -667,7 +667,7 @@ function PlanetData(planet, system) constructor{
     };
 
     static search_old_battle_grounds = function(units = []){
-        if (!has_feature(P_features.OldBattleGround) || !array_length(units)){
+        if (!has_feature(eP_FEATURES.OldBattleGround) || !array_length(units)){
             exit;
         }
 
@@ -680,7 +680,7 @@ function PlanetData(planet, system) constructor{
             }
         }
         var _units = UnitGroup(_marines);
-        var _battle = get_features(P_features.OldBattleGround)[0];
+        var _battle = get_features(eP_FEATURES.OldBattleGround)[0];
 
         var _techmarines = _units.get_from({
             group : SPECIALISTS_TECHS
@@ -713,9 +713,9 @@ function PlanetData(planet, system) constructor{
     static recover_starship = function(techs){
     	try {
 			var engineer_count = array_length(techs);
-			if (has_feature(P_features.Starship) && engineer_count>0){
+			if (has_feature(eP_FEATURES.Starship) && engineer_count>0){
 				//TODO allow total tech point usage here
-		        var _starship = get_features(P_features.Starship)[0];
+		        var _starship = get_features(eP_FEATURES.Starship)[0];
 
                 var _engineer_score_start = _starship.engineer_score;
                 if (_starship.engineer_score < 2000) {
@@ -737,7 +737,7 @@ function PlanetData(planet, system) constructor{
 		        }
 		        if (_starship.funds_spent>=_target_spend && _starship.engineer_score>=2000){// u2=tar;
 		        	//TODO refactor into general new ship logic
-		            delete_feature(P_features.Starship);
+		            delete_feature(eP_FEATURES.Starship);
 		        
 		            var locy=$"{name()}";
 		        
@@ -1051,8 +1051,8 @@ function PlanetData(planet, system) constructor{
         var bar_percent_length = bar_width / 100;
         var current_bar_percent = 0;
         var _hidden_cult = false;
-        if (has_feature(P_features.Gene_Stealer_Cult)){
-            _hidden_cult = get_features(P_features.Gene_Stealer_Cult)[0].hiding;
+        if (has_feature(eP_FEATURES.Gene_Stealer_Cult)){
+            _hidden_cult = get_features(eP_FEATURES.Gene_Stealer_Cult)[0].hiding;
         }          
         
         for (var i=1;i<13;i++){
@@ -1267,7 +1267,7 @@ function PlanetData(planet, system) constructor{
             for (i =0; i <  feat_count ;i++){
                 cur_feature = features[i]
                 if (cur_feature.planet_display != 0){
-                    if (cur_feature.f_type == P_features.Gene_Stealer_Cult){
+                    if (cur_feature.f_type == eP_FEATURES.Gene_Stealer_Cult){
                         if (!cur_feature.hiding){
                             array_push(planet_displays, [cur_feature.planet_display, cur_feature]);
                         }
@@ -1384,8 +1384,8 @@ function PlanetData(planet, system) constructor{
                     allow_click : true,
                 });
                 recruiting_button.draw();
-                if (has_feature(P_features.Recruiting_World)) {
-                    var _recruit_world = get_features(P_features.Recruiting_World)[0];
+                if (has_feature(eP_FEATURES.Recruiting_World)) {
+                    var _recruit_world = get_features(eP_FEATURES.Recruiting_World)[0];
                     if (_recruit_world.recruit_type == 0) && (obj_controller.faction_status[current_owner] != "War" && obj_controller.faction_status[p_data.current_owner] != "Antagonism" || p_data.player_disposition >= 50) {
                         draw_text(xx+(spacing_x*3)+35, _half_way-20, "Open: Voluntery");
                     } else if (_recruit_world.recruit_type == 0 && player_disposition <= 50) {
@@ -1472,15 +1472,15 @@ function PlanetData(planet, system) constructor{
         if (population_influences[eFACTION.Tyranids] > 3){
             var _max_influence_reduction = min(_pop_percentage_kill,population_influences[eFACTION.Tyranids]-3);
             alter_influence(eFACTION.Tyranids,-_max_influence_reduction);
-            if (has_feature(P_features.Gene_Stealer_Cult)){
+            if (has_feature(eP_FEATURES.Gene_Stealer_Cult)){
                 if (population_influences[eFACTION.Tyranids]<20){
-                    delete_feature(P_features.Gene_Stealer_Cult);
+                    delete_feature(eP_FEATURES.Gene_Stealer_Cult);
                 }
             }
         }
     
         if (population + pdf<=0) and (current_owner=1) and (obj_controller.faction_status[eFACTION.Imperium]="War"){
-            if (!has_feature(P_features.Monastery)){
+            if (!has_feature(eP_FEATURES.Monastery)){
                 set_new_owner(eFACTION.Imperium);
             	add_disposition(-50);
             }
@@ -1734,8 +1734,8 @@ function PlanetData(planet, system) constructor{
 
 	static end_turn_genestealer_cults = function(){
         // Genestealer cults grow in number
-        if (has_feature(P_features.Gene_Stealer_Cult)) {
-            var cult = get_features(P_features.Gene_Stealer_Cult)[0];
+        if (has_feature(eP_FEATURES.Gene_Stealer_Cult)) {
+            var cult = get_features(eP_FEATURES.Gene_Stealer_Cult)[0];
             cult.cult_age++;
             alter_influence(eFACTION.Tyranids, cult.cult_age / 100);
             var planet_garrison = garrisons;
@@ -1783,7 +1783,7 @@ function PlanetData(planet, system) constructor{
         } else if (population_influences[eFACTION.Tyranids] > 5) {
             alter_influence(eFACTION.Tyranids, -1);
             if ((irandom(200) + (population_influences[eFACTION.Tyranids] / 10)) > 195) {
-                add_feature(P_features.Gene_Stealer_Cult);
+                add_feature(eP_FEATURES.Gene_Stealer_Cult);
             }
         }
     }
@@ -1827,7 +1827,7 @@ function PlanetData(planet, system) constructor{
                         add_disposition(-10);
                          // 10 disposition decreases for the respective planet
                         obj_controller.disposition[3] -= 3; // 10 disposition decrease for the toaster Fetishest since they aren't that numerous
-                    } else if (has_feature(P_features.Sororitas_Cathedral) || (planet_type == "Shrine")) {
+                    } else if (has_feature(eP_FEATURES.SORORITAS_CATHEDRAL) || (planet_type == "Shrine")) {
                         add_disposition(-4); // similarly 10 disposition decrease, note those nurses are a bit pissy and
                         // and you can't easily gain their favor because you cannot ask them to "step down" from office.
                         obj_controller.disposition[5] -= 5;
@@ -1922,7 +1922,7 @@ function PlanetData(planet, system) constructor{
                 if ((_rando >= 100) && (planet_forces[eFACTION.Heretics] < 5)) {
                     edit_forces(eFACTION.Heretics,6);
                     set_new_owner(eFACTION.Heretics)
-                    add_feature(P_features.Daemonic_Incursion);
+                    add_feature(eP_FEATURES.Daemonic_Incursion);
 
                     set_corruption(corruption < 80 ? 80 : 95)
 
@@ -1940,8 +1940,8 @@ function PlanetData(planet, system) constructor{
     }
 
     static check_old_battles_feature = function(){
-        if (has_feature(P_features.OldBattleGround)){
-            var _feats = get_features(P_features.OldBattleGround);
+        if (has_feature(eP_FEATURES.OldBattleGround)){
+            var _feats = get_features(eP_FEATURES.OldBattleGround);
 
             for (var i=0;i<array_length(_feats);i++){
                 var _battle = _feats[i];

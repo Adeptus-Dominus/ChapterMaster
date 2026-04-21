@@ -1,5 +1,5 @@
-enum P_features {
-			Sororitas_Cathedral,
+enum eP_FEATURES {
+			SORORITAS_CATHEDRAL,
 			Necron_Tomb,
 			Artifact, 
 			STC_Fragment,
@@ -50,7 +50,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		}
 	}
 	switch(f_type){
-	case P_features.Gene_Stealer_Cult:
+	case eP_FEATURES.Gene_Stealer_Cult:
 		PDF_control = 0;
 		sealed = 0;
 		player_hidden = 1;
@@ -59,13 +59,13 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		hiding=true;
 		name = global.name_generator.generate_genestealer_cult_name();		
 		break;
-	case P_features.Necron_Tomb:
+	case eP_FEATURES.Necron_Tomb:
 		awake = 0;
 		sealed = 0;
 		player_hidden = 1;
 		planet_display = "Dormant Necron Tomb";
 		break;
-	case P_features.OldBattleGround:
+	case eP_FEATURES.OldBattleGround:
 		player_hidden = true;
 		imperium_known = false;
 		//This is janky but we have no way of defining non player astartes 
@@ -75,7 +75,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		explored = 0;
 		planet_display = "Old Battle Ground";
 		break;
-	case P_features.Secret_Base:
+	case eP_FEATURES.Secret_Base:
 		base_type = base_types.Lair;
 		inquis_hidden = 1;
 		planet_display = "Hidden Secret Base";
@@ -99,26 +99,26 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		swimming=0;
 		stock=0;
 		break;
-	case P_features.Arsenal:
+	case eP_FEATURES.Arsenal:
 		inquis_hidden = 1;
 		planet_display = "Arsenal";
 		player_hidden = 0;
 		built = obj_controller.turn+3;
 		break;
-	case P_features.Gene_Vault:
+	case eP_FEATURES.Gene_Vault:
 		inquis_hidden=1;
 		planet_display = "Arsenal";
 		player_hidden = 0;
 		built = obj_controller.turn+3;
 		break;
-	case P_features.Starship:
-		f_type = P_features.Starship;
+	case eP_FEATURES.Starship:
+		f_type = eP_FEATURES.Starship;
 		planet_display = "Ancient Starship";
 		funds_spent = 0;
 		player_hidden = 0;
 		engineer_score = 0;
 	break;	
-	case P_features.Ancient_Ruins:
+	case eP_FEATURES.Ancient_Ruins:
 		static ruins_explored = scr_ruins_explored;
 		static explore = scr_explore_ruins;
 		static determine_race = scr_ruins_determine_race;
@@ -129,49 +129,49 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		static ruins_combat_end=scr_ruins_combat_end;
 		scr_ancient_ruins_setup();
 		break;
-	case P_features.STC_Fragment:
+	case eP_FEATURES.STC_Fragment:
 		player_hidden = 1;
 		Fragment_type =0;
 		planet_display = "STC Fragment";
 		break;
-	case P_features.Cave_Network:
+	case eP_FEATURES.Cave_Network:
 		player_hidden = 1;
 		cave_depth =irandom(3);//allow_multiple levels of caves, option to go deeper
 		planet_display = "Unexplored Cave Network";
 		break;
-	case P_features.Sororitas_Cathedral:
+	case eP_FEATURES.SORORITAS_CATHEDRAL:
 		player_hidden = 1;
 		planet_display = "Sororitas Cathedral";
 		break;
-	case P_features.Artifact:
+	case eP_FEATURES.Artifact:
 		player_hidden = 1;
 		planet_display = "Artifact";
 		break;
-	case P_features.OrkWarboss:
+	case eP_FEATURES.OrkWarboss:
 		player_hidden = 1;
 		planet_display = "Ork Warboss";
 		Warboss = "alive";
 		name = global.name_generator.generate_ork_name();
 		turns_static = 0;
 		break;
-	case P_features.OrkStronghold:
+	case eP_FEATURES.OrkStronghold:
 		player_hidden = 1;
 		planet_display= "Ork Stronghold";
 		tier = 1;
 		break;
-	case P_features.Monastery:
+	case eP_FEATURES.Monastery:
 		planet_display="Fortress Monastary";
 		player_hidden = 0;
 		forge=0;
 		name=global.name_generator.generate_imperial_ship_name();
 		break;
-	case P_features.Recruiting_World:
+	case eP_FEATURES.Recruiting_World:
 		planet_display="Recruitment";
 		player_hidden = 0;
         recruit_type = 0;
         recruit_cost = 0;
 		break;
-	case P_features.ChaosWarband:
+	case eP_FEATURES.ChaosWarband:
 		if !(struct_exists(other_data, "patron")){
 			patron = choose("slaanesh", "tzeentch", "khorne", "nurgle", "undivided");
 		} else {
@@ -479,7 +479,7 @@ function scr_planetary_feature(planet_num) {
 			feat.player_hidden =0;
 			var numeral_n = planet_numeral_name(planet_num);
 			switch (feat.f_type){
-				case P_features.Sororitas_Cathedral:
+				case eP_FEATURES.SORORITAS_CATHEDRAL:
 					if (obj_controller.known[eFACTION.Ecclesiarchy]=0) then obj_controller.known[eFACTION.Ecclesiarchy]=1;
 				    var lop=$"Sororitas Cathedral discovered on {numeral_n}.";
 				    scr_alert("green","feature",lop,x,y);
@@ -487,37 +487,37 @@ function scr_planetary_feature(planet_num) {
 				    if (p_heresy[planet_num]>10) then p_heresy[planet_num]-=10;
 				    p_sisters[planet_num]=choose(2,2,3);goo=1;
 					break;
-				case P_features.Necron_Tomb:
+				case eP_FEATURES.Necron_Tomb:
 				    var lop=$"Necron Tomb discovered on {numeral_n}.";
 				    scr_alert("red","feature",lop,x,y);
 				    scr_event_log("red",lop);
 					break;
-				case P_features.Artifact:
+				case eP_FEATURES.Artifact:
 					var lop=$"Artifact discovered on {numeral_n}.";
 					scr_alert("green","feature",lop,x,y);
 					scr_event_log("",lop);
 					break;
-				case P_features.STC_Fragment:
+				case eP_FEATURES.STC_Fragment:
 					var lop=$"STC Fragment located on {numeral_n}.";
 					 scr_alert("green","feature",lop,x,y);
 					 scr_event_log("",lop);
 					 break;
-				case P_features.Ancient_Ruins:
+				case eP_FEATURES.Ancient_Ruins:
 					var lop=$"A {feat.ruins_size} Ancient Ruins discovered on {string(name)} {scr_roman(planet_num)}.";
 					scr_alert("green","feature",lop,x,y);
 					scr_event_log("",lop);
 					break;
-				case P_features.Cave_Network:
+				case eP_FEATURES.Cave_Network:
 					var lop=$"Extensive Cave Network discovered on {numeral_n}.";
 			        scr_alert("green","feature",lop,x,y);
 			        scr_event_log("",lop);
 					break;
-				case P_features.OrkWarboss:
+				case eP_FEATURES.OrkWarboss:
 				    var lop=$"Ork Warboss discovered on {numeral_n}.";
 				    scr_alert("red","feature",lop,x,y);
 				    scr_event_log("red",lop);
 					break;	
-				case P_features.OldBattleGround:
+				case eP_FEATURES.OldBattleGround:
 					var lop=$"Old Battle Ground discovered on {numeral_n}.";
 				    scr_alert("green","feature",lop,x,y);
 				    scr_event_log("red",lop);
