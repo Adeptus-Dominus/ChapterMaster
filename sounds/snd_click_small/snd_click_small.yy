@@ -2,12 +2,12 @@
   "$GMSound":"v2",
   "%Name":"snd_click_small",
   "audioGroupId":{
-    "name":"audiogroup_default",
-    "path":"audiogroups/audiogroup_default",
+    "name":"audiogroup_sfx",
+    "path":"audiogroups/audiogroup_sfx",
   },
   "bitDepth":1,
-  "channelFormat":0,
-  "compression":0,
+  "channelFormat":1,
+  "compression":1,
   "compressionQuality":6,
   "conversionMode":0,
   "duration":0.18285714,
@@ -22,5 +22,5 @@
   "resourceVersion":"2.0",
   "sampleRate":44100,
   "soundFile":"snd_click_small",
-  "volume":0.06,
+  "volume":1.0,
 }

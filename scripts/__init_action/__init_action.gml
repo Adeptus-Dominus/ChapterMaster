@@ -3,12 +3,12 @@ gml_pragma("global", "__init_action()");
 
 // @stitch-ignore-next-line: unused-function
 function __init_action() {
-    global.__part_syst=-1;
-    global.__part_emit=[];
-    global.__argument_relative=false;
-    global.__part_type=[];
+    global.__part_syst = -1;
+    global.__part_emit = [];
+    global.__argument_relative = false;
+    global.__part_type = [];
 
-    for (var i=0; i < 16; i++) {
+    for (var i = 0; i < 16; i++) {
         global.__part_type[i] = -1;
         global.__part_emit[i] = -1;
     }

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<files>
+	<file md5="1909591B514CFB0A18CE2CC5484997CC">io.gamemaker.sdfshaders-1.0.0.resource_order</file>
+	<file md5="EE2C1AE618B2E79196E52D281FF6056C">io.gamemaker.sdfshaders-1.0.0.yyp</file>
+	<file md5="E21332C33E40C815A522886D2701F991">prefab.json</file>
+	<file md5="20BB19A3A5964DAF0D8FF274E689B01E">shaders\__yy_sdf_blur_shader\__yy_sdf_blur_shader.fsh</file>
+	<file md5="CE1012F3DFC281F4D72E5886ADC99D51">shaders\__yy_sdf_blur_shader\__yy_sdf_blur_shader.vsh</file>
+	<file md5="58BE6A95EA8B1BC2CCE3ADB99502F830">shaders\__yy_sdf_blur_shader\__yy_sdf_blur_shader.yy</file>
+	<file md5="D3653F4CFED100736D4E6E761A86EA86">shaders\__yy_sdf_effect_shader\__yy_sdf_effect_shader.fsh</file>
+	<file md5="CE1012F3DFC281F4D72E5886ADC99D51">shaders\__yy_sdf_effect_shader\__yy_sdf_effect_shader.vsh</file>
+	<file md5="B79416BE22954D2E085A41756D9134DC">shaders\__yy_sdf_effect_shader\__yy_sdf_effect_shader.yy</file>
+	<file md5="D0FB4CCBC3263E7A37ECB44BD6D10AB7">shaders\__yy_sdf_shader\__yy_sdf_shader.fsh</file>
+	<file md5="CA11AD2BB64722DE8E93C39CEC8C9ABC">shaders\__yy_sdf_shader\__yy_sdf_shader.vsh</file>
+	<file md5="0D210640B4F5CFDE32178821B9ECC0D6">shaders\__yy_sdf_shader\__yy_sdf_shader.yy</file>
+</files>

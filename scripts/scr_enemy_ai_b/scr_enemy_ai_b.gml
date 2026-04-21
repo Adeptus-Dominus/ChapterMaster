@@ -1,13 +1,9 @@
+/// @mixin
 function scr_enemy_ai_b() {
     // Imperial Repleneshes numbers
     // If no enemies and guard < pop /470 then increase guardsman
     // If no enemies and population < max_pop then increase by like 1%
-    var rando = 0,
-        success = false,
-        i = 0,
-        is_garrison_force = false,
-        total_garrison = 0,
-        sabotage_force = false;
+    var rando = 0, success = false, i = 0, is_garrison_force = false, total_garrison = 0, sabotage_force = false;
 
     i = 0;
     for (i = 1; i <= planets; i++) {
@@ -16,30 +12,30 @@ function scr_enemy_ai_b() {
         // if (p_heresy[i]>0) and (owner != eFACTION.Chaos) then p_heresy[i]-=2;
     }
     // Tau rebellions
-    if ((present_fleet[8] >= 1) && (owner != eFACTION.Tau)) {
+    if ((present_fleet[8] >= 1) && (owner != eFACTION.TAU)) {
         var flit, ran1, ran2, tau_chance;
-        flit = scr_orbiting_fleet(eFACTION.Tau);
+        flit = scr_orbiting_fleet(eFACTION.TAU);
         ran1 = 0;
         ran2 = floor(random(planets)) + 1;
 
         if (flit != "none") {
             ran1 = floor(random(100)) + 1;
-            var tau_influence = p_influence[ran2][eFACTION.Tau];
+            var tau_influence = p_influence[ran2][eFACTION.TAU];
             if (tau_influence < 90 && (p_type[ran2] != "Dead")) {
                 if ((flit.image_index == 1) && (ran1 <= 90)) {
-                    adjust_influence(eFACTION.Tau, choose(2, 3), ran2);
+                    adjust_influence(eFACTION.TAU, choose(2, 3), ran2);
                     if ((p_type[ran2] == "Forge") && (tau_influence >= 3)) {
-                        adjust_influence(eFACTION.Tau, -3, ran2);
+                        adjust_influence(eFACTION.TAU, -3, ran2);
                     }
                 } else if ((flit.image_index > 1) && (flit.image_index < 4) && (ran1 <= 90)) {
-                    adjust_influence(eFACTION.Tau, choose(7, 9, 11, 13), ran2);
+                    adjust_influence(eFACTION.TAU, choose(7, 9, 11, 13), ran2);
                     if ((p_type[ran2] == "Forge") && (tau_influence >= 10)) {
-                        adjust_influence(eFACTION.Tau, -10, ran2);
+                        adjust_influence(eFACTION.TAU, -10, ran2);
                     }
                 } else if (flit.image_index >= 4) {
-                    adjust_influence(eFACTION.Tau, choose(9, 11, 13, 15, 17), ran2);
+                    adjust_influence(eFACTION.TAU, choose(9, 11, 13, 15, 17), ran2);
                     if ((p_type[ran2] == "Forge") && (tau_influence >= 13)) {
-                        adjust_influence(eFACTION.Tau, -13, ran2);
+                        adjust_influence(eFACTION.TAU, -13, ran2);
                     }
                 }
             }
@@ -49,7 +45,7 @@ function scr_enemy_ai_b() {
         }
 
         for (i = 1; i <= planets; i++) {
-            var tau_influence = p_influence[i][eFACTION.Tau];
+            var tau_influence = p_influence[i][eFACTION.TAU];
             tau_chance = floor(random(100)) + 1;
 
             if ((i <= planets) && (tau_influence >= 70) && (p_owner[i] != 8) && (p_owner[i] != 10) && (p_owner[i] != 7) && (p_owner[i] != 9) && (p_type[i] != "Space Hulk")) {
@@ -59,7 +55,7 @@ function scr_enemy_ai_b() {
                     }
                 }
 
-                if (flit != "none" && flit.owner == eFACTION.Tau) {
+                if (flit != "none" && flit.owner == eFACTION.TAU) {
                     tau_chance += (flit.image_index * 5) - 5;
                 }
 
@@ -74,9 +70,7 @@ function scr_enemy_ai_b() {
                         p_guardsmen[i] = 0;
                     }
 
-                    var targ = 0,
-                        have = 0,
-                        badd = 1;
+                    var targ = 0, have = 0, badd = 1;
 
                     targ = planets;
                     for (var s = 1; s <= planets; s++) {
@@ -98,8 +92,8 @@ function scr_enemy_ai_b() {
                             //visited variable checks whether the star has been visited by the chapter or not 1 for true 0 for false
                             if (p_type[i] == "Forge") {
                                 dispo[i] -= 10; // 10 disposition decreases for the respective planet
-                                obj_controller.disposition[eFACTION.Mechanicus] -= 10; // 10 disposition decrease for the toaster Fetishest since they aren't that many toasters in 41 millennia
-                            } else if (planet_feature_bool(p_feature[i], P_features.Sororitas_Cathedral) || (p_type[i] == "Shrine")) {
+                                obj_controller.disposition[eFACTION.MECHANICUS] -= 10; // 10 disposition decrease for the toaster Fetishest since they aren't that many toasters in 41 millennia
+                            } else if (planet_feature_bool(p_feature[i], eP_FEATURES.SORORITAS_CATHEDRAL) || (p_type[i] == "Shrine")) {
                                 dispo[i] -= 10; // 10 disposition decreases for the respective planet
                                 obj_controller.disposition[5] -= 5;
                             } else {
@@ -110,7 +104,7 @@ function scr_enemy_ai_b() {
 
                     if (badd == 2) {
                         scr_popup("System Lost", $"The {name} system has been taken by the Tau Empire!", "tau", "");
-                        owner = eFACTION.Tau;
+                        owner = eFACTION.TAU;
                         scr_event_log("red", $"System {name} has been taken by the Tau Empire.", name);
                     }
 

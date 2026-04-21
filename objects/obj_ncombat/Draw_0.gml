@@ -1,83 +1,107 @@
+draw_sprite(spr_rock_bg, 0, 0, 0);
 
-draw_sprite(spr_rock_bg,0,0,0);
-
-draw_set_color(c_black);draw_set_alpha(1);
-draw_rectangle(0,0,800,900,0);
-draw_rectangle(818,235,1578,666,0);
+draw_set_color(c_black);
+draw_set_alpha(1);
+draw_rectangle(0, 0, 800, 900, 0);
+draw_rectangle(818, 235, 1578, 666, 0);
 
 draw_set_color(CM_GREEN_COLOR);
 
-var l;l=0;
-draw_set_alpha(1);draw_rectangle(0+l,0+l,800-l,900-l,1);l+=1;
-draw_set_alpha(0.75);draw_rectangle(0+l,0+l,800-l,900-l,1);l+=1;
-draw_set_alpha(0.5);draw_rectangle(0+l,0+l,800-l,900-l,1);l+=1;
-draw_set_alpha(0.25);draw_rectangle(0+l,0+l,6800-l,900-l,1);
+var l;
+l = 0;
+draw_set_alpha(1);
+draw_rectangle(0 + l, 0 + l, 800 - l, 900 - l, 1);
+l += 1;
+draw_set_alpha(0.75);
+draw_rectangle(0 + l, 0 + l, 800 - l, 900 - l, 1);
+l += 1;
+draw_set_alpha(0.5);
+draw_rectangle(0 + l, 0 + l, 800 - l, 900 - l, 1);
+l += 1;
+draw_set_alpha(0.25);
+draw_rectangle(0 + l, 0 + l, 6800 - l, 900 - l, 1);
 
-l=0;
-draw_set_alpha(1);draw_rectangle(818+l,235+l,1578-l,666-l,1);l+=1;
-draw_set_alpha(0.75);draw_rectangle(818+l,235+l,1578-l,666-l,1);l+=1;
-draw_set_alpha(0.5);draw_rectangle(818+l,235+l,1578-l,666-l,1);l+=1;
-draw_set_alpha(0.25);draw_rectangle(818+l,235+l,1578-l,666-l,1);
+l = 0;
+draw_set_alpha(1);
+draw_rectangle(818 + l, 235 + l, 1578 - l, 666 - l, 1);
+l += 1;
+draw_set_alpha(0.75);
+draw_rectangle(818 + l, 235 + l, 1578 - l, 666 - l, 1);
+l += 1;
+draw_set_alpha(0.5);
+draw_rectangle(818 + l, 235 + l, 1578 - l, 666 - l, 1);
+l += 1;
+draw_set_alpha(0.25);
+draw_rectangle(818 + l, 235 + l, 1578 - l, 666 - l, 1);
 
-
-l=0;draw_set_alpha(1);
+l = 0;
+draw_set_alpha(1);
 draw_set_font(fnt_40k_14);
 
-if (display_p1>0) and (player_forces>0){
-    draw_set_color(c_yellow);draw_set_halign(fa_left);
-    draw_text(64,880,string_hash_to_newline(string(display_p1n)+": "+string(display_p1)+"HP"));
+if ((display_p1 > 0) && (player_forces > 0)) {
+    draw_set_color(c_yellow);
+    draw_set_halign(fa_left);
+    draw_text(64, 880, string_hash_to_newline(string(display_p1n) + ": " + string(display_p1) + "HP"));
 }
-if (display_p2>0) and (enemy_forces>0){
-    draw_set_color(c_yellow);draw_set_halign(fa_right);
-    draw_text(800-64,880,string_hash_to_newline(string(display_p2n)+": "+string(display_p2)+"HP"));
+if ((display_p2 > 0) && (enemy_forces > 0)) {
+    draw_set_color(c_yellow);
+    draw_set_halign(fa_right);
+    draw_text(800 - 64, 880, string_hash_to_newline(string(display_p2n) + ": " + string(display_p2) + "HP"));
 }
 
 draw_set_halign(fa_left);
 
-
-
-repeat(45){l+=1;
+repeat (45) {
+    l += 1;
     // draw_text(x+6,y-10+(l*14),"."+string(lines[31-l]));
     draw_set_color(CM_GREEN_COLOR);
-    if (lines_color[l]="red") then draw_set_color(c_red);
-    if (lines_color[l]="yellow") then draw_set_color(3055825);
-    if (lines_color[l]="purple") then draw_set_color(16646566);
-    if (lines_color[l]="bright") then draw_set_color(65280);
-    if (lines_color[l]="white") then draw_set_color(c_silver);
-    if (lines_color[l]="blue") then draw_set_color(c_aqua);
-    draw_text(x+6,y-10+(l*18),string_hash_to_newline(string(lines[l])));
+    if (lines_color[l] == "red") {
+        draw_set_color(c_red);
+    }
+    if (lines_color[l] == "yellow") {
+        draw_set_color(3055825);
+    }
+    if (lines_color[l] == "purple") {
+        draw_set_color(16646566);
+    }
+    if (lines_color[l] == "bright") {
+        draw_set_color(65280);
+    }
+    if (lines_color[l] == "white") {
+        draw_set_color(c_silver);
+    }
+    if (lines_color[l] == "blue") {
+        draw_set_color(c_aqua);
+    }
+    draw_text(x + 6, y - 10 + (l * 18), string_hash_to_newline(string(lines[l])));
 }
 
 draw_set_color(CM_GREEN_COLOR);
-if (click_stall_timer<=0){
-    if (fadein<0) and (fadein>-100) and (started=0){
-        draw_set_alpha((fadein*-1)/30);
+if (click_stall_timer <= 0) {
+    if ((fadein < 0) && (fadein > -100) && (started == 0)) {
+        draw_set_alpha((fadein * -1) / 30);
         draw_set_halign(fa_center);
-        draw_text(400,860,string_hash_to_newline("[Press Enter to Begin]"));
+        draw_text(400, 860, string_hash_to_newline("[Press Enter to Begin]"));
     }
-    if (started=2) or ((started=1) and ((timer_stage=3) or (timer_stage=5) or (timer_stage=0))) or (started=4){
+    if ((started == 2) || ((started == 1) && ((timer_stage == 3) || (timer_stage == 5) || (timer_stage == 0))) || (started == 4)) {
         draw_set_halign(fa_center);
-        draw_text(400,860,string_hash_to_newline("[Press Enter to Continue]"));
+        draw_text(400, 860, string_hash_to_newline("[Press Enter to Continue]"));
     }
-    if (started=3) or (started=5){
+    if ((started == 3) || (started == 5)) {
         draw_set_halign(fa_center);
-        draw_text(400,860,string_hash_to_newline("[Press Enter to Exit]"));
+        draw_text(400, 860, string_hash_to_newline("[Press Enter to Exit]"));
     }
 }
 
-
-
-draw_set_halign(fa_left);draw_set_alpha(1);
+draw_set_halign(fa_left);
+draw_set_alpha(1);
 
 // Timer
 // draw_rectangle(16,464,min(16+(timer*2.026),624),472,0);
 
-
 // draw_text(320,300,"Turn: "+string(turns));
 
-
 draw_set_color(c_black);
-draw_set_alpha(fadein/30);
-draw_rectangle(0,0,1600,900,0);
+draw_set_alpha(fadein / 30);
+draw_rectangle(0, 0, 1600, 900, 0);
 draw_set_alpha(1);
-

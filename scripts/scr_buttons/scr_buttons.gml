@@ -3,6 +3,7 @@
 // --------------------
 
 global.draw_return_stack = [];
+#macro UI_CURSOR_BLINK_RATE 500
 
 /// @function add_draw_return_values()
 /// @description Saves the current draw state (alpha, font, color, halign, valign) to a global stack.
@@ -68,6 +69,8 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor{
     colour = CM_GREEN_COLOR;
     tooltip = "";
     max_width = -1;
+    h = 0;
+    w = 0;
     scale_text=false;
     scale = 1;
 
@@ -81,14 +84,14 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor{
         draw_set_valign(valign);
 
         if (max_width > -1) {
-            if (!scale_text){
+            if (!scale_text) {
                 w = string_width_ext(text, -1, max_width);
                 h = string_height_ext(text, -1, max_width);
                 x2 = x1 + w;
                 y2 = y1 + h;
-            } else{
+            } else {
                 w = max_width;
-                scale = calc_text_scale_confines(text,max_width);
+                scale = calc_text_scale_confines(text, max_width);
                 h = string_height(text) * scale;
             }
         } else {
@@ -113,10 +116,10 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor{
         draw_set_color(colour);
 
         if (max_width > -1) {
-            if (!scale_text){
+            if (!scale_text) {
                 draw_text_ext_outline(x1, y1, text, -1, max_width, c_black, colour);
-            }else{
-                draw_text_transformed(x1, y1, text, scale, scale, 0)
+            } else {
+                draw_text_transformed(x1, y1, text, scale, scale, 0);
             }
         } else {
             draw_text_outline(x1, y1, text, c_black, colour);
@@ -195,17 +198,55 @@ function LabeledIcon(icon, text, x1 = 0, y1 = 0, data = false) constructor {
     };
 }
 
-/// @function draw_sprite_as_button(position, choice_sprite, scale, hover_sprite)
-/// @description Draws a sprite as a clickable button, returning its bounding box.
-/// @param {array} position [x, y] top-left corner.
-/// @param {sprite} choice_sprite Sprite to draw.
-/// @param {array} [scale=[1,1]] Scale factors [x,y].
-/// @param {sprite} [hover_sprite=-1] Optional hover sprite.
-/// @returns {array} [x1, y1, x2, y2] bounding box.
-function draw_sprite_as_button(position, choice_sprite, scale = [1, 1], hover_sprite = -1) {
-    var _pos = [position[0], position[1], position[0] + (sprite_get_width(choice_sprite) * scale[0]), position[1] + (sprite_get_height(choice_sprite) * scale[1])];
-    draw_sprite_ext(choice_sprite, 0, position[0], position[1], scale[0], scale[1], 0, c_white, scr_hit(_pos) ? 1 : 0.9);
-    return _pos;
+/// @desc A clickable sprite-based button component that manages its own state and hover logic.
+/// @param {Asset.GMSprite} _sprite The default sprite to display.
+/// @param {Asset.GMSprite} _hover_sprite Optional sprite to show when hovered.
+/// @returns {Struct.SpriteButton}
+function SpriteButton(_sprite, _hover_sprite = -1) constructor {
+    sprite = _sprite;
+    hover_sprite = _hover_sprite;
+
+    scale_x = 1.0;
+    scale_y = 1.0;
+    alpha_hover = 1.0;
+    alpha_idle = 0.8;
+    alpha_disabled = 0.5;
+    width = sprite_get_width(_sprite);
+    height = sprite_get_height(_sprite);
+
+    sound_click = snd_click;
+    tooltip_text = "";
+    tooltip_w = 300;
+
+    is_hovered = false;
+    is_clicked = false;
+
+    /// @desc Updates interaction state and draws the button.
+    /// @param {real} _x The X position to draw at.
+    /// @param {real} _y The Y position to draw at.
+    /// @param {bool} _enabled If false, interaction is disabled and the button appears faded.
+    static draw = function(_x, _y, _enabled = true) {
+        var _x2 = _x + (width * scale_x);
+        var _y2 = _y + (height * scale_y);
+
+        is_hovered = scr_hit(_x, _y, _x2, _y2);
+        is_clicked = _enabled && is_hovered && mouse_button_clicked();
+
+        if (is_hovered) {
+            if (tooltip_text != "") {
+                tooltip_draw(tooltip_text, tooltip_w);
+            }
+
+            if (is_clicked && sound_click != -1) {
+                audio_play_sound(sound_click, 10, false);
+            }
+        }
+
+        var _draw_sprite = (_enabled && is_hovered && hover_sprite != -1) ? hover_sprite : sprite;
+        var _draw_alpha = _enabled ? (is_hovered ? alpha_hover : alpha_idle) : alpha_disabled;
+
+        draw_sprite_ext(_draw_sprite, 0, _x, _y, scale_x, scale_y, 0, c_white, _draw_alpha);
+    };
 }
 
 /// @function draw_unit_buttons(position, text, size_mod, colour, halign, font, alpha_mult, bg, bg_color)
@@ -263,7 +304,7 @@ function draw_unit_buttons(position, text, size_mod = [1.5, 1.5], colour = c_gra
     return [position[0], position[1], x2, y2];
 }
 
-function standard_loc_data(){
+function standard_loc_data() {
     x1 = 0;
     y1 = 0;
     y2 = 0;
@@ -358,7 +399,7 @@ function UnitButtonObject(data = false) constructor {
 
     static draw = function(allow_click = true) {
         add_draw_return_values();
-		var _button_click_area;
+        var _button_click_area;
         if (style == "standard") {
             var _temp_alpha = alpha;
             if (disabled) {
@@ -367,7 +408,11 @@ function UnitButtonObject(data = false) constructor {
             }
             _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1], label, [text_scale, text_scale], active ? color : inactive_col,, font, _temp_alpha);
         } else if (style == "pixel") {
-            var _widths = [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)];
+            var _widths = [
+                sprite_get_width(spr_pixel_button_left),
+                sprite_get_width(spr_pixel_button_middle),
+                sprite_get_width(spr_pixel_button_right)
+            ];
 
             var height_scale = h / sprite_get_height(spr_pixel_button_left);
             _widths[0] *= height_scale;
@@ -388,7 +433,12 @@ function UnitButtonObject(data = false) constructor {
 
             x2 = x1 + array_sum(_widths);
             y2 = y1 + h;
-            _button_click_area = [x1, y1, x2, y2];
+            _button_click_area = [
+                x1,
+                y1,
+                x2,
+                y2
+            ];
         }
 
         if (scr_hit(x1, y1, x2, y2) && tooltip != "") {
@@ -457,189 +507,338 @@ function PurchaseButton(req) : UnitButtonObject() constructor {
     };
 }
 
-function slider_bar() constructor {
-    standard_loc_data();
-    w = 102;
-    h = 15;
-    value_limits = [0, 0];
-    value_increments = 1;
-    value = 0;
-    dragging = false;
-    slider_pos = 0;
+/// @function SliderBar(_x, _y, _w, _h, _limits, _inc)
+/// @description A functional slider bar for numerical input.
+/// @param {real} _x Starting X position.
+/// @param {real} _y Starting Y position.
+/// @param {real} _w Width of the bar.
+/// @param {real} _h Height of the bar.
+/// @param {array<real>} _limits Array [min, max].
+/// @param {real} _inc Increment step value.
+function SliderBar(_x = 0, _y = 0, _w = 100, _h = 16, _limits = [0, 100], _inc = 1) constructor {
+    xx = _x;
+    yy = _y;
+    width = _w;
+    height = _h;
+    value_limits = _limits;
+    value_increments = _inc;
+    value = _limits[0];
 
-    static update = function(data) {
-        var _data_presets = struct_get_names(data);
-        for (var i = 0; i < array_length(_data_presets); i++) {
-            self[$ _data_presets[i]] = data[$ _data_presets[i]];
+    dragging = false;
+
+    /// @param {struct} _data Struct containing keys to override.
+    static update_data = function(_data) {
+        var _names = struct_get_names(_data);
+        var _count = array_length(_names);
+        var _i = 0;
+        repeat (_count) {
+            var _key = _names[_i];
+            self[$ _key] = _data[$ _key];
+            _i++;
         }
     };
 
-    function draw() {
+    /// @description Returns the current value of the slider.
+    /// @returns {real}
+    static draw = function() {
         add_draw_return_values();
-        if (value < value_limits[0]) {
-            value = value_limits[0];
+
+        var _mouse_vars = return_mouse_consts();
+        var _mx = _mouse_vars[0];
+        var _my = _mouse_vars[1];
+        var _rect = [
+            xx,
+            yy,
+            xx + width,
+            yy + height
+        ];
+
+        if (point_and_click([_rect[0], _rect[1], _rect[2], _rect[3]])) {
+            dragging = true;
         }
+
         if (dragging) {
-            dragging = mouse_check_button(mb_left);
-        }
-        var _rect = [x1, y1, x1 + w, y1 + h];
-        draw_rectangle_array(_rect, 1);
-        width_increments = w / ((value_limits[1] - value_limits[0]) / value_increments);
-        var __rel_cur_pos = increments * (value - value_limits[0]);
-        var _mouse_pos = return_mouse_consts();
-        var _lit_cur_pos = _rel_cur_pos + x1;
-        if (scr_hit(_rect) && !dragging) {
-            if (point_distance(_lit_cur_pos, 0, _mouse_pos[0], 0) > increments) {
-                if (mouse_check_button(mb_left)) {
-                    dragging = true;
-                }
-            }
-        }
-        if (dragging) {
-            if (_mouse_pos[0] > _rect[2]) {
-                value = value_limits[1];
-            } else if (_mouse_pos[0] < _rect[0]) {
-                value = value_limits[0];
+            if (!mouse_button_held(mb_left)) {
+                dragging = false;
             } else {
-                var mouse_rel = _mouse_pos[0] - x1;
-                var increment_count = mouse_rel / width_increments;
-                value = value_limits[0] + (increment_count * value_increments);
+                var _rel_x = clamp(_mx - xx, 0, width);
+                var _percentage = _rel_x / width;
+                var _total_range = value_limits[1] - value_limits[0];
+
+                var _raw_val = value_limits[0] + (_percentage * _total_range);
+                value = round(_raw_val / value_increments) * value_increments;
             }
         }
+
+        value = clamp(value, value_limits[0], value_limits[1]);
+
+        draw_set_alpha(1.0);
+        draw_set_color(c_dkgray);
+        draw_rectangle_array(_rect, true);
+
+        var _knob_pos = ((value - value_limits[0]) / (value_limits[1] - value_limits[0])) * width;
+        draw_set_color(dragging ? c_white : c_gray);
+        draw_rectangle(xx, yy, xx + _knob_pos, yy + height, false);
+
         pop_draw_return_values();
-    }
+        return value;
+    };
 }
 
-/// @function TextBarArea(XX, YY, Max_width, requires_input)
+/// @function TextBarArea(_x, _y, _max_width, _requires_input)
 /// @constructor
 /// @category UI
 /// @description Input text area with background and cursor handling.
-/// @param {real} XX X position.
-/// @param {real} YY Y position.
-/// @param {real} [Max_width=400] Max width of text bar.
-/// @param {bool} [requires_input=false] If true, input is required.
+/// @param {real} _x X position.
+/// @param {real} _y Y position.
+/// @param {real} [_max_width=400] Max width of text bar.
+/// @param {bool} [_requires_input=false] If true, input is required.
 /// @returns {TextBarArea}
-function TextBarArea(XX, YY, Max_width = 400, requires_input = false) constructor {
+function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) constructor {
+    xx = _x;
+    yy = _y;
+    max_width = _max_width;
+    requires_input = _requires_input;
+
     allow_input = false;
-    self.requires_input = requires_input;
-    xx = XX;
-    yy = YY;
-    max_width = Max_width;
     draw_col = c_gray;
     cooloff = 0;
+    current_text = "";
+
     background = new DataSlate();
     background.draw_top_piece = false;
 
-    // Draw BG
-    current_text = "";
+    static render_logic = function() {
+        draw_set_valign(fa_middle);
+        draw_set_halign(fa_center);
+        draw_set_alpha(1);
+        draw_set_font(fnt_fancy);
 
-    static draw = function(string_area) {
+        var _display_string = $"{current_text}";
+        var _text_w = string_width(_display_string);
+        var _center_y = background.YY + (background.height / 2);
+
+        draw_text(xx, _center_y, _display_string);
+
+        if (allow_input) {
+            obj_cursor.image_index = 2;
+
+            var _is_blink_on = (current_time div UI_CURSOR_BLINK_RATE) % 2 == 0;
+            if (_is_blink_on) {
+                var _cursor_x = xx + (_text_w / 2);
+
+                draw_text(_cursor_x, _center_y, "|");
+            }
+        }
+    };
+
+    render_content = method(self, render_logic);
+
+    static draw = function(_string_area) {
         add_draw_return_values();
+
+        draw_set_font(fnt_fancy);
+
+        current_text = _string_area;
 
         if (cooloff > 0) {
             cooloff--;
         }
-        if (allow_input) {
-            string_area = keyboard_string;
-        }
-        draw_set_alpha(1);
-        //draw_sprite(spr_rock_bg,0,xx,yy);
-        draw_set_font(fnt_40k_30b);
-        draw_set_halign(fa_center);
-        draw_set_color(draw_col); // CM_GREEN_COLOR
-        var bar_wid = max_width, click_check, string_h;
-        draw_set_alpha(0.25);
-        if (string_area != "") {
-            bar_wid = max(max_width, string_width(string_area));
-        } else {
-            if (requires_input) {
-                draw_set_color(CM_RED_COLOR);
-            } else {
-                draw_set_color(CM_GREEN_COLOR);
-            }
-        }
-        string_h = string_height("LOL");
-        var rect = [xx - (bar_wid / 2), yy, xx + (bar_wid / 2), yy - 8 + string_h];
-        background.XX = rect[0];
-        background.YY = rect[1];
-        background.width = rect[2] - rect[0];
-        background.height = rect[3] - rect[1];
 
-        click_check = point_and_click(rect);
-        obj_cursor.image_index = 0;
+        if (allow_input) {
+            current_text = keyboard_string;
+        }
+
+        var _cursor_padding = string_width("|");
+        var _bar_wid = max_width;
+        var _string_h = string_height("M");
+
+        if (current_text != "") {
+            _bar_wid = max(max_width, string_width($"' {current_text} '") + _cursor_padding + 20);
+            draw_set_color(draw_col);
+        } else {
+            draw_set_color(requires_input ? CM_RED_COLOR : CM_GREEN_COLOR);
+        }
+
+        var _x1 = xx - (_bar_wid / 2);
+        var _y1 = yy;
+        var _x2 = xx + (_bar_wid / 2);
+        var _y2 = yy + _string_h;
+
+        var _mouse_hover = scr_hit(_x1, _y1, _x2, _y2);
+        var _mouse_click = mouse_button_clicked(, 0, true);
+        var _enter_pressed = press_exclusive(vk_enter);
+
         if (cooloff == 0) {
-            if (allow_input && mouse_check_button(mb_left) && !click_check) {
+            // Deactivate on Enter or Clicking Away
+            if (allow_input && (_enter_pressed || (_mouse_click && !_mouse_hover))) {
                 allow_input = false;
                 cooloff = 5;
-            } else if (!allow_input && click_check) {
-                obj_cursor.image_index = 2;
+            } else if (!allow_input && _mouse_click && _mouse_hover) {
+                // Activate on Clicking Inside
                 allow_input = true;
-                keyboard_string = string_area;
+                keyboard_string = current_text;
                 cooloff = 5;
             }
         }
 
-        draw_set_alpha(1);
+        if (_mouse_hover || allow_input) {
+            obj_cursor.image_index = 2;
+        } else {
+            obj_cursor.image_index = 0;
+        }
 
-        draw_set_font(fnt_fancy);
-        current_text = string_area;
-        background.inside_method = function() {
-            draw_set_valign(fa_top);
-            if (!allow_input) {
-                draw_text(xx, yy + 2, $"''{current_text}'' ");
-            }
-            if (allow_input) {
-                obj_cursor.image_index = 2;
-                draw_text(xx, yy + 2, $"''{current_text}|''");
-            }
-        };
+        background.XX = _x1;
+        background.YY = _y1;
+        background.width = _x2 - _x1;
+        background.height = _y2 - _y1;
+        background.inside_method = render_content;
+
         background.draw_with_dimensions();
+
         pop_draw_return_values();
-        return string_area;
+
+        return current_text;
     };
 }
 
-/// @function drop_down(selection, draw_x, draw_y, options, open_marker)
-/// @description Renders a drop-down selection list and updates choice.
-/// @param {string} selection Current selected option.
-/// @param {real} draw_x X position.
-/// @param {real} draw_y Y position.
-/// @param {array} options List of string options.
-/// @param {bool} open_marker Whether dropdown is currently open.
-/// @returns {array} [new_selection, open_marker]
-function drop_down(selection, draw_x, draw_y, options, open_marker) {
-    add_draw_return_values();
-    if (selection != "") {
-        var drop_down_area = draw_unit_buttons([draw_x, draw_y], selection, [1, 1], c_green);
-        draw_set_color(c_red);
-        if (array_length(options) > 1) {
-            if (scr_hit(drop_down_area)) {
-                current_target = true;
-                var roll_down_offset = 4 + string_height(selection);
-                for (var col = 0; col < array_length(options); col++) {
-                    if (options[col] == selection) {
-                        continue;
-                    }
-                    var cur_option = draw_unit_buttons([draw_x, draw_y + roll_down_offset], options[col], [1, 1], c_red,,,, true);
-                    if (point_and_click(cur_option)) {
-                        selection = options[col];
-                        open_marker = false;
-                    }
-                    roll_down_offset += string_height(options[col]) + 4;
-                }
-                if (!scr_hit(draw_x, draw_y, draw_x + 5 + string_width(selection), draw_y + roll_down_offset)) {
-                    open_marker = false;
-                    if (current_target) {
-                        current_target = false;
-                    }
-                }
-            } else {
-                current_target = false;
+/// @desc A modular UI dropdown component for selecting options from a list.
+/// @param {Array<Struct>} _options Array of {label, value} structs.
+/// @param {real} _width Width of the dropdown.
+/// @param {Function} _on_change Optional callback invoked with the new value on selection change.
+/// @returns {Struct.UIDropdown}
+function UIDropdown(_options, _width = 180, _on_change = undefined) constructor {
+    options = _options;
+    width = _width;
+    height = 28;
+    is_open = false;
+    selected_index = 0;
+    on_change = _on_change;
+
+    /// @desc Sets the dropdown to a specific value.
+    /// @param {any} _value The value to search for.
+    /// @returns {bool}
+    static set_value = function(_value) {
+        for (var i = 0, l = array_length(options); i < l; i++) {
+            if (options[i].value != _value) {
+                continue;
             }
+
+            selected_index = i;
+            return true;
         }
-    }
-    return [selection, open_marker];
-    pop_draw_return_values();
+
+        return false;
+    };
+
+    /// @desc Gets the currently selected value.
+    /// @returns {any}
+    static get_value = function() {
+        return options[selected_index].value;
+    };
+
+    /// @desc Draws the dropdown and handles interactions.
+    /// @param {real} _x X position.
+    /// @param {real} _y Y position.
+    /// @returns {any} The value of the selected option if changed, otherwise undefined.
+    static draw = function(_x, _y) {
+        var _result = undefined;
+        var _main_rect = [
+            _x,
+            _y,
+            _x + width,
+            _y + height
+        ];
+        var _is_hovering_main = scr_hit(_main_rect[0], _main_rect[1], _main_rect[2], _main_rect[3]);
+
+        add_draw_return_values();
+
+        // Draw Main Box
+        draw_set_color(c_black);
+        draw_rectangle_array(_main_rect, false);
+        draw_set_color(_is_hovering_main ? c_white : c_gray);
+        draw_rectangle_array(_main_rect, true);
+
+        // Draw Current Selection
+        draw_set_font(fnt_40k_14b);
+        draw_set_halign(fa_left);
+        draw_text(_x + 8, _y + 6, options[selected_index].label);
+
+        // Draw Arrow
+        var _arrow_char = is_open ? "▲" : "▼";
+        draw_text(_x + width - 20, _y + 6, _arrow_char);
+
+        if (_is_hovering_main && mouse_button_clicked()) {
+            is_open = !is_open;
+            audio_play_sound(snd_click, 10, false);
+        }
+
+        if (!is_open) {
+            pop_draw_return_values();
+            return _result;
+        }
+
+        _result = _draw_options_list(_x, _y);
+
+        // Close if clicking outside
+        if (mouse_button_clicked() && !_is_hovering_main) {
+            is_open = false;
+        }
+
+        pop_draw_return_values();
+        return _result;
+    };
+
+    /// @desc Internal method to draw the expanded list.
+    /// @param {real} _x
+    /// @param {real} _y
+    /// @returns {any}
+    static _draw_options_list = function(_x, _y) {
+        var _selection = undefined;
+        var _opt_height = 24;
+        var _total_h = array_length(options) * _opt_height;
+        var _list_rect = [
+            _x,
+            _y + height,
+            _x + width,
+            _y + height + _total_h
+        ];
+
+        draw_set_alpha(0.95);
+        draw_set_color(c_black);
+        draw_rectangle_array(_list_rect, false);
+        draw_set_alpha(1.0);
+        draw_set_color(c_white);
+        draw_rectangle_array(_list_rect, true);
+
+        for (var i = 0, l = array_length(options); i < l; i++) {
+            var _oy = _y + height + (i * _opt_height);
+            var _is_hovering = scr_hit(_x, _oy, _x + width, _oy + _opt_height);
+
+            if (_is_hovering) {
+                draw_set_alpha(0.2);
+                draw_rectangle(_x + 1, _oy, _x + width - 1, _oy + _opt_height, false);
+                draw_set_alpha(1.0);
+
+                if (mouse_button_clicked()) {
+                    selected_index = i;
+                    is_open = false;
+                    _selection = options[i].value;
+                    audio_play_sound(snd_click, 10, false);
+
+                    if (is_callable(on_change)) {
+                        on_change(_selection);
+                    }
+                }
+            }
+
+            draw_set_color(_is_hovering ? c_white : c_gray);
+            draw_set_font(fnt_40k_12);
+            draw_text(_x + 10, _oy + 4, options[i].label);
+        }
+
+        return _selection;
+    };
 }
 
 /// @function MultiSelect(options_array, title, data)
@@ -838,10 +1037,7 @@ function RadioSet(options_array, title = "", data = {}) constructor {
             var row_full = (max_width > 0) && (row_width > max_width);
             var last_item = i == array_length(toggles) - 1;
 
-            array_push(row_items, {
-                btn: _cur_opt,
-                idx: i,
-            });
+            array_push(row_items, {btn: _cur_opt, idx: i});
 
             if (row_full || last_item) {
                 // Calculate final row width and optional centering offset
@@ -944,9 +1140,9 @@ function ToggleButton(data = {}) constructor {
     };
 
     clicked = function() {
-        if (hover() && scr_click_left()) {
+        if (hover() && mouse_button_clicked()) {
             active = !active;
-            audio_play_sound(snd_click_small, 10, false, 1);
+            audio_play_sound(snd_click_small, 10, false);
             return true;
         } else {
             return false;
@@ -1059,12 +1255,12 @@ function InteractiveButton(data = {}) constructor {
     };
 
     clicked = function() {
-        if (hover() && scr_click_left()) {
+        if (hover() && mouse_button_clicked()) {
             if (!active) {
-                audio_play_sound(snd_error, 10, false, 1);
+                audio_play_sound(snd_error, 10, false);
                 return false;
             } else {
-                audio_play_sound(snd_click_small, 10, false, 1);
+                audio_play_sound(snd_click_small, 10, false);
                 return true;
             }
         } else {
@@ -1153,78 +1349,95 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords) {
     return _new_val;
 }
 
+/// @function MainMenuButton
+/// @description A UI button component featuring hover animations, oscillation effects, and Alt-key shortcut support.
+/// @param {Asset.GMSprite} _sprite The base sprite index for the button.
+/// @param {Asset.GMSprite} _sprite_hover The additive blend sprite used for hover effects.
+/// @param {real} _x The default X coordinate for the button.
+/// @param {real} _y The default Y coordinate for the button.
+/// @param {Constant.VirtualKey} _hot_key The keyboard constant used for Alt + Key activation.
+/// @param {function} _on_click The callback function to execute upon activation.
+function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x = 0, _y = 0, _hot_key = -1, _on_click = undefined) constructor {
+    base_sprite = _sprite;
+    hover_sprite = _sprite_hover;
+    xx = _x;
+    yy = _y;
+    hot_key = _hot_key;
+    on_click = _on_click;
 
-function MainMenuButton(sprite=spr_ui_but_1, sprite_hover=spr_ui_hov_1, xx=0, yy=0, Hot_key=-1, Click_function=false) constructor{
-    mouse_enter=0;
-    base_sprite = sprite;
-    hover_sprite = sprite_hover;
-    ossilate = 24;
-    ossilate_down = true;
-    hover_alpha=0;
-    XX=xx;
-    YY=yy;
-    hot_key = Hot_key;
-    clicked=false;
-    click_function = Click_function;
-    static draw = function(xx=XX,yy=YY,text="", x_scale=1, y_scale=1, width=108, height=42){
-        draw_set_valign(fa_top);
-        draw_set_halign(fa_left);
+    oscillate = 24.0;
+    oscillate_down = true;
+    hover_alpha = 0.0;
+    is_clicked = false;
+
+    static draw = function(_x = xx, _y = yy, _text = "", _x_scale = 1.0, _y_scale = 1.0, _w = 108, _h = 42) {
         add_draw_return_values();
-        clicked=false;
-        height *=y_scale
-        width *=x_scale;
-        if (scr_hit(xx, yy, xx+width, yy+height)){
-            if (ossilate>0){
-                ossilate-=1;
-            }
-            if (ossilate<0){
-                ossilate=0;
-            }
-            if (hover_alpha<1){
-                hover_alpha+=0.42
-            }
+
+        var _final_w = _w * _x_scale;
+        var _final_h = _h * _y_scale;
+        var _is_hovering = scr_hit(_x, _y, _x + _final_w, _y + _final_h);
+
+        is_clicked = false;
+
+        if (_is_hovering) {
+            oscillate = max(0, oscillate - 1.0);
+            hover_alpha = min(1.0, hover_alpha + 0.42);
+
             draw_set_blend_mode(bm_add);
             draw_set_alpha(hover_alpha);
-            draw_sprite(hover_sprite,0,xx,yy);
+            draw_sprite_ext(hover_sprite, 0, _x, _y, _x_scale, _y_scale, 0, c_white, hover_alpha);
             draw_set_blend_mode(bm_normal);
-            ossilate_down = true;
-            clicked = device_mouse_check_button_pressed(0,mb_left);
+
+            oscillate_down = true;
+            is_clicked = mouse_button_clicked(, 0, true);
         } else {
-            if (ossilate_down){
-                if (ossilate<24)then ossilate+=0.2;
-                if (ossilate==24) then ossilate_down=false;
-            } else {
-                if (ossilate>8){
-                    ossilate-=0.2;
+            if (oscillate_down) {
+                oscillate += 0.2;
+                if (oscillate >= 24) {
+                    oscillate_down = false;
                 }
-                if (ossilate==8){
-                    ossilate_down=true;
+            } else {
+                oscillate -= 0.2;
+                if (oscillate <= 8) {
+                    oscillate_down = true;
                 }
             }
-            if (hover_alpha>0){
-                hover_alpha-=0.04
+
+            if (hover_alpha > 0) {
+                hover_alpha -= 0.04;
                 draw_set_blend_mode(bm_add);
                 draw_set_alpha(hover_alpha);
-                draw_sprite(hover_sprite,0,xx,yy);
+                draw_sprite_ext(hover_sprite, 0, _x, _y, _x_scale, _y_scale, 0, c_white, hover_alpha);
                 draw_set_blend_mode(bm_normal);
             }
         }
-        if (hot_key!=-1 && !clicked){
-            clicked = press_with_held(hot_key,vk_alt);
-            //show_debug_message($"{clicked}");
-        }
-        draw_set_alpha(1);
-        draw_sprite(base_sprite,floor(ossilate),xx,yy);
-        draw_set_color(c_white);
-        draw_set_halign(fa_center);
-        draw_set_font(fnt_cul_14);
-        draw_text_ext(xx+(width/2),yy+4, text, 18*y_scale, width-(15*x_scale));
-        if (clicked){
-            if (click_function){
-                click_function();
+
+        if (hot_key != -1 && !is_clicked) {
+            if (press_with_held(hot_key, vk_alt)) {
+                is_clicked = true;
             }
         }
+
+        draw_set_alpha(1.0);
+        draw_sprite_ext(base_sprite, floor(oscillate), _x, _y, _x_scale, _y_scale, 0, c_white, 1.0);
+
+        draw_set_color(c_white);
+        draw_set_halign(fa_center);
+        draw_set_valign(fa_top);
+        draw_set_font(fnt_cul_14);
+
+        var _text_x = _x + (_final_w / 2);
+        var _text_y = _y + (4 * _y_scale);
+        var _sep = 18 * _y_scale;
+        var _line_w = _final_w - (15 * _x_scale);
+
+        draw_text_ext(_text_x, _text_y, _text, _sep, _line_w);
+
+        if (is_clicked && is_callable(on_click)) {
+            on_click();
+        }
+
         pop_draw_return_values();
-        return clicked;
-    }
+        return is_clicked;
+    };
 }

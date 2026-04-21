@@ -2,7 +2,7 @@
   "$GMMainOptions":"v5",
   "%Name":"Main",
   "name":"Main",
-  "option_allow_instance_change":true,
+  "option_allow_instance_change":false,
   "option_audio_error_behaviour":false,
   "option_author":"",
   "option_collision_compatibility":false,

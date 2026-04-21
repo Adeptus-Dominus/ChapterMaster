@@ -5,7 +5,7 @@
 /// @param {array} _item_names - The list of item names to append to.
 /// @param {bool} _with_none - Whether to include ITEM_NAME_NONE in the list.
 /// @param {bool} _with_any - Whether to include ITEM_NAME_ANY in the list.
-function get_none_or_any_item_names(_item_names, _with_none=false, _with_any=false) {
+function get_none_or_any_item_names(_item_names, _with_none = false, _with_any = false) {
     var expandCount = (_with_any != 0) + (_with_none != 0);
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + expandCount);
@@ -88,7 +88,6 @@ function push_marine_melee_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Bolter"; // 19
 }
 
-
 /// @description This function appends the list of marine armour items to the given list.
 /// @param {array} _item_names - The list to append to.
 /// @returns {void}
@@ -145,7 +144,6 @@ function push_marine_mobility_item_names(_item_names) {
     _item_names[@ index++] = "Servo-harness"; // 5
 }
 
-
 /// @description This function appends the list of dreadnought ranged weapons to the given list.
 /// @param {array} _item_names - The list to append to.
 /// @returns {void}
@@ -165,7 +163,7 @@ function push_dreadnought_ranged_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Twin Linked Assault Cannon Mount";
     _item_names[@ index++] = "Twin Linked Heavy Bolter";
     _item_names[@ index++] = "Heavy Conversion Beam Projector";
-	_item_names[@ index++] = "Twin-linked Volkite Culverins";// 10
+    _item_names[@ index++] = "Twin-linked Volkite Culverins"; // 10
 }
 
 /// @description This function appends the list of dreadnought melee weapons to the given list.
@@ -388,7 +386,7 @@ function push_whirlwind_pintle_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @param {bool} _is_land_raider - Whether the tank is a land raider.
 /// @returns {void}
-function push_tank_upgrade_item_names(_item_names, _is_land_raider=false) {
+function push_tank_upgrade_item_names(_item_names, _is_land_raider = false) {
     var item_count = 3 + (_is_land_raider != 0);
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
@@ -413,7 +411,7 @@ function push_tank_upgrade_item_names(_item_names, _is_land_raider=false) {
 /// @param {bool} _is_land_raider - Whether the tank is a land raider.
 /// @param {bool} _is_dreadnought - Whether the 'tank' is a dreadnought.
 /// @returns {void}
-function push_tank_accessory_item_names(_item_names, _is_land_raider=false, _is_dreadnought=false) {
+function push_tank_accessory_item_names(_item_names, _is_land_raider = false, _is_dreadnought = false) {
     var item_count = 3 + (!_is_dreadnought) + (!_is_land_raider && !_is_dreadnought);
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
@@ -515,10 +513,10 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
 }
 
 enum eENGAGEMENT {
-    None = 0,
-    Ranged = 1, // Regular land raider weapons
-    Melee = 2, // Relic land raider weapons
-    Any = 3
+    NONE = 0,
+    RANGED = 1, // REGULAR LAND RAIDER WEAPONS
+    MELEE = 2, // RELIC LAND RAIDER WEAPONS
+    ANY = 3,
 }
 
 /// @description This function returns the name of the slot for a given role and slot number.
@@ -527,77 +525,112 @@ enum eENGAGEMENT {
 /// @returns {string} The name of the slot.
 function get_slot_name(_role, _slot) {
     switch (_role) {
-        case eROLE.ChapterMaster:
-        case eROLE.HonourGuard:
-        case eROLE.Veteran:
-        case eROLE.Terminator:
-        case eROLE.Captain:
-        case eROLE.Champion:
-        case eROLE.Tactical:
-        case eROLE.Devastator:
-        case eROLE.Assault:
-        case eROLE.Ancient:
-        case eROLE.Scout:
-        case eROLE.Chaplain:
-        case eROLE.Apothecary:
-        case eROLE.Techmarine:
-        case eROLE.Librarian:
-        case eROLE.Sergeant:
-        case eROLE.VeteranSergeant:
+        case eROLE.CHAPTERMASTER:
+        case eROLE.HONOURGUARD:
+        case eROLE.VETERAN:
+        case eROLE.TERMINATOR:
+        case eROLE.CAPTAIN:
+        case eROLE.CHAMPION:
+        case eROLE.TACTICAL:
+        case eROLE.DEVASTATOR:
+        case eROLE.ASSAULT:
+        case eROLE.ANCIENT:
+        case eROLE.SCOUT:
+        case eROLE.CHAPLAIN:
+        case eROLE.APOTHECARY:
+        case eROLE.TECHMARINE:
+        case eROLE.LIBRARIAN:
+        case eROLE.SERGEANT:
+        case eROLE.VETERANSERGEANT:
             switch (_slot) {
-                case 0: return "First Weapon";
-                case 1: return "Second Weapon";
-                case 2: return "Armour";
-                case 3: return "Gear";
-                case 4: return "Mobility";
-                default: return "Unknown";
+                case 0:
+                    return "First Weapon";
+                case 1:
+                    return "Second Weapon";
+                case 2:
+                    return "Armour";
+                case 3:
+                    return "Gear";
+                case 4:
+                    return "Mobility";
+                default:
+                    return "Unknown";
             }
-        case eROLE.Dreadnought:
+        case eROLE.DREADNOUGHT:
             switch (_slot) {
-                case 0: return "First Weapon";
-                case 1: return "Second Weapon";
-                case 4: return "Accessory";
-                default: return "Unknown";
+                case 0:
+                    return "First Weapon";
+                case 1:
+                    return "Second Weapon";
+                case 4:
+                    return "Accessory";
+                default:
+                    return "Unknown";
             }
-        case eROLE.LandRaider:
+        case eROLE.LANDRAIDER:
             switch (_slot) {
-                case 0: return "Front";
-                case 1: return "Sponson";
-                case 2: return "Pintle";
-                case 3: return "Upgrade";
-                case 4: return "Accessory";
-                default: return "Unknown";
+                case 0:
+                    return "Front";
+                case 1:
+                    return "Sponson";
+                case 2:
+                    return "Pintle";
+                case 3:
+                    return "Upgrade";
+                case 4:
+                    return "Accessory";
+                default:
+                    return "Unknown";
             }
-        case eROLE.Rhino:
+        case eROLE.RHINO:
             switch (_slot) {
-                case 0: return "Weapon";
-                case 1: return "Side";
-                case 3: return "Upgrade";
-                case 4: return "Accessory";
-                default: return "Unknown";
+                case 0:
+                    return "Weapon";
+                case 1:
+                    return "Side";
+                case 3:
+                    return "Upgrade";
+                case 4:
+                    return "Accessory";
+                default:
+                    return "Unknown";
             }
-        case eROLE.Predator:
+        case eROLE.PREDATOR:
             switch (_slot) {
-                case 0: return "Turret";
-                case 1: return "Sponsons";
-                case 2: return "Pintle";
-                case 3: return "Upgrade";
-                case 4: return "Accessory";
-                default: return "Unknown";
+                case 0:
+                    return "Turret";
+                case 1:
+                    return "Sponsons";
+                case 2:
+                    return "Pintle";
+                case 3:
+                    return "Upgrade";
+                case 4:
+                    return "Accessory";
+                default:
+                    return "Unknown";
             }
-        case eROLE.LandSpeeder:
+        case eROLE.LANDSPEEDER:
             switch (_slot) {
-                case 0: return "First Weapon";
-                case 1: return "Second Weapon";
-                default: return "Unknown";
+                case 0:
+                    return "First Weapon";
+                case 1:
+                    return "Second Weapon";
+                default:
+                    return "Unknown";
             }
-        case eROLE.Whirlwind:
+        case eROLE.WHIRLWIND:
             switch (_slot) {
-                case 0: return "Missiles";
-                case 1: return "Pintle";
-                case 3: return "Upgrade";
-                case 4: return "Accessory";
-                default: return "Unknown";
+                case 0:
+                    return "Missiles";
+                case 1:
+                    return "Pintle";
+                case 3:
+                    return "Upgrade";
+                case 4:
+                    return "Accessory";
+                default:
+                    return "Unknown";
             }
         default:
             return "Unknown";
@@ -614,7 +647,7 @@ function get_slot_name(_role, _slot) {
 /// @param {bool} _master_crafted_only - Whether to show only master crafted items, or hide them.
 /// @param {bool} _skip_none - Omit the "(None)" option from the list. This help us avoid duplicates when combining range & melee hand weapons.
 /// @returns {array} The list of items to populate the selection list with.
-function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_company_standard=false, _show_available_only=false, _master_crafted_only=false, _skip_none=false) {
+function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_company_standard = false, _show_available_only = false, _master_crafted_only = false, _skip_none = false) {
     if (_item_names == undefined) {
         assert_error_popup("_item_names is undefined");
         return;
@@ -626,28 +659,28 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
 
     var _with_none_if_not_skip = _skip_none ? false : true;
 
-    switch(_role) {
-        case eROLE.ChapterMaster:
-        case eROLE.HonourGuard:
-        case eROLE.Veteran:
-        case eROLE.Terminator:
-        case eROLE.Captain:
-        case eROLE.Champion:
-        case eROLE.Tactical:
-        case eROLE.Devastator:
-        case eROLE.Assault:
-        case eROLE.Ancient:
-        case eROLE.Scout:
-        case eROLE.Chaplain:
-        case eROLE.Apothecary:
-        case eROLE.Techmarine:
-        case eROLE.Librarian:
-        case eROLE.Sergeant:
-        case eROLE.VeteranSergeant:
+    switch (_role) {
+        case eROLE.CHAPTERMASTER:
+        case eROLE.HONOURGUARD:
+        case eROLE.VETERAN:
+        case eROLE.TERMINATOR:
+        case eROLE.CAPTAIN:
+        case eROLE.CHAMPION:
+        case eROLE.TACTICAL:
+        case eROLE.DEVASTATOR:
+        case eROLE.ASSAULT:
+        case eROLE.ANCIENT:
+        case eROLE.SCOUT:
+        case eROLE.CHAPLAIN:
+        case eROLE.APOTHECARY:
+        case eROLE.TECHMARINE:
+        case eROLE.LIBRARIAN:
+        case eROLE.SERGEANT:
+        case eROLE.VETERANSERGEANT:
             switch (_slot) {
                 case 0:
                 case 1:
-                    if (_engagement == eENGAGEMENT.Ranged) {
+                    if (_engagement == eENGAGEMENT.RANGED) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -657,13 +690,13 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                                 undefined, // no required tags
                                 ["vehicle"], // exclude vehicle weapons
                                 _with_none_if_not_skip,
-                                true  // with_any
+                                true // with_any
                             );
                         } else {
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_marine_ranged_weapons_item_names(_item_names);
                         }
-                    } else if (_engagement == eENGAGEMENT.Melee) {
+                    } else if (_engagement == eENGAGEMENT.MELEE) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -682,7 +715,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_marine_melee_weapons_item_names(_item_names);
                         }
-                    } else if (_engagement == eENGAGEMENT.Any) {
+                    } else if (_engagement == eENGAGEMENT.ANY) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -758,13 +791,13 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                 default:
                     assert_error_popup($"Invalid slot for infantry: {_slot}");
                     return;
-            }        
+            }
             break;
-        case eROLE.Dreadnought:
+        case eROLE.DREADNOUGHT:
             switch (_slot) {
-                case EquipmentSlot.WEAPON_ONE:
-                case EquipmentSlot.WEAPON_TWO:
-                    if (_engagement == eENGAGEMENT.Ranged) {
+                case eEQUIPMENT_SLOT.WEAPON_ONE:
+                case eEQUIPMENT_SLOT.WEAPON_TWO:
+                    if (_engagement == eENGAGEMENT.RANGED) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -780,7 +813,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_dreadnought_ranged_weapons_item_names(_item_names);
                         }
-                    } else if (_engagement == eENGAGEMENT.Melee) {
+                    } else if (_engagement == eENGAGEMENT.MELEE) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -796,7 +829,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_dreadnought_melee_weapons_item_names(_item_names);
                         }
-                    } else if (_engagement == eENGAGEMENT.Any) {
+                    } else if (_engagement == eENGAGEMENT.ANY) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -818,12 +851,12 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                         return;
                     }
                     break;
-                case EquipmentSlot.MOBILITY:
+                case eEQUIPMENT_SLOT.MOBILITY:
                     get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                     push_tank_accessory_item_names(_item_names, false, true);
                     break;
-                case EquipmentSlot.GEAR:
-                case EquipmentSlot.ARMOUR:
+                case eEQUIPMENT_SLOT.GEAR:
+                case eEQUIPMENT_SLOT.ARMOUR:
                     // Dreadnought doesn't have these slots, but empty lists are shown in the UI
                     break;
                 default:
@@ -831,15 +864,17 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     return;
             }
             break;
-        case eROLE.LandRaider:
+        case eROLE.LANDRAIDER:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_slot) {
-                case EquipmentSlot.WEAPON_ONE:
-                    if (_engagement == eENGAGEMENT.Ranged) { // Regular land raider weapons
+                case eEQUIPMENT_SLOT.WEAPON_ONE:
+                    if (_engagement == eENGAGEMENT.RANGED) {
+                        // Regular land raider weapons
                         push_land_raider_front_weapons_item_names(_item_names);
-                    } else if (_engagement == eENGAGEMENT.Melee) { // Relic land raider weapons
+                    } else if (_engagement == eENGAGEMENT.MELEE) {
+                        // Relic land raider weapons
                         push_land_raider_relic_front_weapons_item_names(_item_names);
-                    } else if (_engagement == eENGAGEMENT.Any) {
+                    } else if (_engagement == eENGAGEMENT.ANY) {
                         push_land_raider_front_weapons_item_names(_item_names);
                         push_land_raider_relic_front_weapons_item_names(_item_names);
                     } else {
@@ -847,12 +882,14 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                         return;
                     }
                     break;
-                case EquipmentSlot.WEAPON_TWO:
-                    if (_engagement == eENGAGEMENT.Ranged) { // Regular land raider weapons
+                case eEQUIPMENT_SLOT.WEAPON_TWO:
+                    if (_engagement == eENGAGEMENT.RANGED) {
+                        // Regular land raider weapons
                         push_land_raider_regular_sponsons_item_names(_item_names);
-                    } else if (_engagement == eENGAGEMENT.Melee) { // Relic land raider weapons
+                    } else if (_engagement == eENGAGEMENT.MELEE) {
+                        // Relic land raider weapons
                         push_land_raider_relic_sponsons_item_names(_item_names);
-                    } else if (_engagement == eENGAGEMENT.Any) {
+                    } else if (_engagement == eENGAGEMENT.ANY) {
                         push_land_raider_regular_sponsons_item_names(_item_names);
                         push_land_raider_relic_sponsons_item_names(_item_names);
                     } else {
@@ -860,22 +897,36 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                         return;
                     }
                     break;
-                case EquipmentSlot.ARMOUR: push_land_raider_pintle_item_names(_item_names); break;
-                case EquipmentSlot.GEAR: push_tank_upgrade_item_names(_item_names, _with_none_if_not_skip); break;
-                case EquipmentSlot.MOBILITY: push_tank_accessory_item_names(_item_names, _with_none_if_not_skip, false); break;
+                case eEQUIPMENT_SLOT.ARMOUR:
+                    push_land_raider_pintle_item_names(_item_names);
+                    break;
+                case eEQUIPMENT_SLOT.GEAR:
+                    push_tank_upgrade_item_names(_item_names, _with_none_if_not_skip);
+                    break;
+                case eEQUIPMENT_SLOT.MOBILITY:
+                    push_tank_accessory_item_names(_item_names, _with_none_if_not_skip, false);
+                    break;
                 default:
                     assert_error_popup($"Invalid slot for land raider: {_slot}");
                     return;
             }
             break;
-        case eROLE.Rhino:
+        case eROLE.RHINO:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_slot) {
-                case 0: push_rhino_weapons_item_names(_item_names); break;
-                case 1: push_rhino_side_item_names(_item_names); break;
-                case EquipmentSlot.GEAR: push_tank_upgrade_item_names(_item_names, false); break;
-                case EquipmentSlot.MOBILITY: push_tank_accessory_item_names(_item_names, false, false); break;
-                case EquipmentSlot.ARMOUR:
+                case 0:
+                    push_rhino_weapons_item_names(_item_names);
+                    break;
+                case 1:
+                    push_rhino_side_item_names(_item_names);
+                    break;
+                case eEQUIPMENT_SLOT.GEAR:
+                    push_tank_upgrade_item_names(_item_names, false);
+                    break;
+                case eEQUIPMENT_SLOT.MOBILITY:
+                    push_tank_accessory_item_names(_item_names, false, false);
+                    break;
+                case eEQUIPMENT_SLOT.ARMOUR:
                     // Rhino doesn't have these slots, but empty lists are shown in the UI
                     break;
                 default:
@@ -883,24 +934,38 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     return;
             }
             break;
-        case eROLE.Predator:
+        case eROLE.PREDATOR:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_slot) {
-                case 0: push_predator_turret_item_names(_item_names); break;
-                case 1: push_predator_sponsons_item_names(_item_names); break;
-                case 2: push_predator_pintle_item_names(_item_names); break;
-                case 3: push_tank_upgrade_item_names(_item_names, false); break;
-                case 4: push_tank_accessory_item_names(_item_names, false, false); break;
+                case 0:
+                    push_predator_turret_item_names(_item_names);
+                    break;
+                case 1:
+                    push_predator_sponsons_item_names(_item_names);
+                    break;
+                case 2:
+                    push_predator_pintle_item_names(_item_names);
+                    break;
+                case 3:
+                    push_tank_upgrade_item_names(_item_names, false);
+                    break;
+                case 4:
+                    push_tank_accessory_item_names(_item_names, false, false);
+                    break;
                 default:
                     assert_error_popup($"Invalid slot for predator: {_slot}");
                     return;
             }
             break;
-        case eROLE.LandSpeeder:
+        case eROLE.LANDSPEEDER:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_slot) {
-                case 0: push_land_speeder_primary_item_names(_item_names); break;
-                case 1: push_land_speeder_secondary_item_names(_item_names); break;
+                case 0:
+                    push_land_speeder_primary_item_names(_item_names);
+                    break;
+                case 1:
+                    push_land_speeder_secondary_item_names(_item_names);
+                    break;
                 case 3:
                 case 2:
                 case 4:
@@ -911,13 +976,21 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     return;
             }
             break;
-        case eROLE.Whirlwind:
+        case eROLE.WHIRLWIND:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_slot) {
-                case 0: push_whirlwind_missiles_item_names(_item_names); break;
-                case 1: push_whirlwind_pintle_item_names(_item_names); break;
-                case 3: push_tank_upgrade_item_names(_item_names, false); break;
-                case 4: push_tank_accessory_item_names(_item_names, false, false); break;
+                case 0:
+                    push_whirlwind_missiles_item_names(_item_names);
+                    break;
+                case 1:
+                    push_whirlwind_pintle_item_names(_item_names);
+                    break;
+                case 3:
+                    push_tank_upgrade_item_names(_item_names, false);
+                    break;
+                case 4:
+                    push_tank_accessory_item_names(_item_names, false, false);
+                    break;
                 case 2:
                     // Whirlwind doesn't have this slot, but an empty list is shown in the UI
                     break;

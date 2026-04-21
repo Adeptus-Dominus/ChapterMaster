@@ -1,0 +1,113 @@
+{
+    "armour_1": {
+        "display_name": "Ceramite Bonding",
+        "value": 300
+    },
+    "armour_2": {
+        "display_name": "Advanced Ceramite Bonding",
+        "requires_to_forge": [
+            "armour_1"
+        ],
+        "value": 300
+    },
+    "artificer_1": {
+        "display_name": "Artificer Workshop",
+        "value": 300
+    },
+    "combi_1": {
+        "description": "Adapting primary weapon frames with secondary firing units and synchronized ammunition-feed routing. This expansion allows for the assembly of multi-purpose combi-weapons and dual-linked systems.",
+        "display_name": "Weapon Combination",
+        "value": 300
+    },
+    "dreadnought_1": {
+        "display_name": "Sarcophagus Assembly",
+        "requires_to_forge": [
+            "armour_2"
+        ],
+        "value": 300
+    },
+    "flame_1": {
+        "description": "The safe handling of volatile Promethium fuel requires pressurized fuel-lines and triple-redundant chemical igniters. This expansion enables the manufacturing of flame-based weaponry and pressurized fuel canisters.",
+        "display_name": "Promethium Tank Brazing",
+        "value": 300
+    },
+    "force_1": {
+        "description": "Force weapons and gear necessitate the inclusion of rare psycho-conductive materials and warp-attuned crystalline circuits within the blade or haft to channel psychic energy. This allows the forge to produce specialized armaments for the Librarium.",
+        "display_name": "Psionic Resonance Valves",
+        "value": 300
+    },
+    "grav_1": {
+        "description": "Graviton technology relies on the manipulation of local gravity fields to crush targets under their own mass. This expansion allows for the production of complex weaponized gravitic induction systems.",
+        "display_name": "Gravitic Reaction Principle",
+        "value": 300
+    },
+    "heavy_1": {
+        "description": "The construction of heavy armaments requires specialized power-interface linkages and reinforced alloys to handle high-thermal output and significant kinetic recoil. This expansion allows for the production of man-portable heavy armaments.",
+        "display_name": "Heavy Weaponry Calibrations",
+        "value": 300
+    },
+    "laser_1": {
+        "description": "The production of laser-based weaponry requires the casting of flawless focusing crystals and the installation of high-capacity thermal dissipation vanes. This enables the manufacture of concentrated beam weaponry.",
+        "display_name": "Light Focusing Chamber",
+        "value": 300
+    },
+    "melta_1": {
+        "description": "Assembly of heat-shielded combustion chambers and concentrated microwave emitters for molecular thermal induction. Necessary for producing anti-armor melta weaponry.",
+        "display_name": "Atomic Chamber Construction",
+        "requires_to_forge": [
+            "flame_1"
+        ],
+        "value": 300
+    },
+    "plasma_1": {
+        "description": "Forging high-strength magnetic containment coils and hydrogen-fuel canisters to safely harness superheated matter. This expansion allows for the production of plasma-based weapons and their critical safety-venting systems.",
+        "display_name": "Plasma Coil Magnetization",
+        "value": 300
+    },
+    "power_1": {
+        "description": "Integrating miniaturized disruption-field generators that project matter-disrupting energy around a strike surface enables the production of power-field-enhanced melee weaponry and defensive shielding.",
+        "display_name": "Disruption Field Generation",
+        "value": 300
+    },
+    "relic_1": {
+        "display_name": "Install Relictory Assembly Lines",
+        "requires_to_forge": [
+            "armour_1"
+        ],
+        "value": 300
+    },
+    "relic_2": {
+        "display_name": "Expand Relictory Production",
+        "requires_to_forge": [
+            "relic_1"
+        ],
+        "value": 300
+    },
+    "solid_projectile_1": {
+        "description": "Manufacturing rapid-fire kinetic weaponry focuses on high-tensile alloys for barrels and the assembly of complex gas-operated cycling mechanisms.",
+        "display_name": "Solid Projectile Assembly",
+        "value": 300
+    },
+    "terminator_1": {
+        "display_name": "Tactical Dreadnought Compartment",
+        "requires_to_forge": [
+            "armour_2"
+        ],
+        "value": 300
+    },
+    "vehicle_armaments_1": {
+        "description": "Adapting infantry-grade armaments for hull-mounting necessitates the manufacture of reinforced recoil-dampening cradles and high-capacity automated ammunition feeds. Enables the assembly of pintle, sponson, and turret-mounted weapon systems for the Chapter's vehicle pool.",
+        "display_name": "Vehicle Ordnance Integration",
+        "requires_to_forge": [
+            "heavy_1"
+        ],
+        "value": 300
+    },
+    "vehicle_forging_1": {
+        "display_name": "Heavy Vehicle Bays",
+        "requires_to_forge": [
+            "armour_2"
+        ],
+        "value": 300
+    }
+}

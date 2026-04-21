@@ -1,6 +1,16 @@
 // Sets up the HP based on owner
-if (owner == eFACTION.Eldar) then hp = 15;
-if (owner == eFACTION.Ork) then hp = 8;
-if (owner == eFACTION.Tau) then hp = 25;
-if (owner == eFACTION.Tyranids) then hp = 15;
-if (owner == eFACTION.Chaos) then hp = 10;
+if (owner == eFACTION.ELDAR) {
+    hp = 15;
+}
+if (owner == eFACTION.ORK) {
+    hp = 8;
+}
+if (owner == eFACTION.TAU) {
+    hp = 25;
+}
+if (owner == eFACTION.TYRANIDS) {
+    hp = 15;
+}
+if (owner == eFACTION.CHAOS) {
+    hp = 10;
+}

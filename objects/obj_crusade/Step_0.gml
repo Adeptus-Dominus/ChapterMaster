@@ -1,6 +1,10 @@
+if (cooldown >= 0) {
+    cooldown -= 1;
+}
 
-if (cooldown>=0) then cooldown-=1;
-
-if (placing=true){x=mouse_x;y=mouse_y;obj_controller.cooldown=9999;obj_controller.menu=9999;}
-
-
+if (placing == true) {
+    x = mouse_x;
+    y = mouse_y;
+    obj_controller.cooldown = 9999;
+    obj_controller.menu = 9999;
+}

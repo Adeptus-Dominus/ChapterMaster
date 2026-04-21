@@ -40,6 +40,8 @@ Everything else **must** be covered by [paid **GameMaker** subscriptions](https:
 ## Contributing
 
 Best bet is to ask about everything in our Discord, because things bellow are probably not very helpful at the moment.
+- [Working with GameMaker projects](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Working-with-GameMaker-projects)
+- [Useful Tools/Resources](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Useful-resources)
 - [Contributing](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Contributing) wiki page (not filled properly)
 - [Code Style](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CODE_STYLE.md) (may be a bit dated)
 - [Code Guidance](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/code_guidance.md) (probably dated as well)

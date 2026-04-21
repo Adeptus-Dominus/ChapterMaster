@@ -7,30 +7,38 @@ function compress_enemy_array(_target_column) {
         return;
     }
 
-    with(_target_column) {
+    with (_target_column) {
         // Define all data arrays to be processed with their default values
-        var _data_arrays = [{
-            arr: dudes,
-            def: ""
-        }, {
-            arr: dudes_special,
-            def: ""
-        }, {
-            arr: dudes_num,
-            def: 0
-        }, {
-            arr: dudes_ac,
-            def: 0
-        }, {
-            arr: dudes_hp,
-            def: 0
-        }, {
-            arr: dudes_vehicle,
-            def: 0
-        }, {
-            arr: dudes_damage,
-            def: 0
-        }];
+        var _data_arrays = [
+            {
+                arr: dudes,
+                def: "",
+            },
+            {
+                arr: dudes_special,
+                def: "",
+            },
+            {
+                arr: dudes_num,
+                def: 0,
+            },
+            {
+                arr: dudes_ac,
+                def: 0,
+            },
+            {
+                arr: dudes_hp,
+                def: 0,
+            },
+            {
+                arr: dudes_vehicle,
+                def: 0,
+            },
+            {
+                arr: dudes_damage,
+                def: 0,
+            }
+        ];
 
         // Track which slots are empty
         var _empty_slots = array_create(20, false);
@@ -68,7 +76,7 @@ function compress_enemy_array(_target_column) {
 /// @param {id.Instance} _target_column - The column instance to clean up
 function destroy_empty_column(_target_column) {
     // Destroy empty non-player columns to conserve memory and processing
-    with(_target_column) {
+    with (_target_column) {
         if ((men + veh + medi == 0) && (owner != 1)) {
             instance_destroy();
         }
@@ -110,7 +118,7 @@ function check_dead_marines(unit_struct, unit_index) {
     return unit_lost;
 }
 
-function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash) {
+function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position) {
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //
     // Parameters:
@@ -123,7 +131,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
     // hostile_splash: The splash damage modifier. Indicates if the weapon affects multiple targets or has an area-of-effect component.
 
     try {
-        with(target_object) {
+        with (target_object) {
             if (obj_ncombat.wall_destroyed == 1) {
                 exit;
             }
@@ -131,28 +139,28 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
             var damage_data = {
                 "units_lost": 0,
                 "unit_type": "",
-                "hits": 0
+                "hits": 0,
             };
 
             // ### Vehicle Damage Processing ###
             if (!target_is_infantry && veh > 0) {
-                damage_vehicles(damage_data, hostile_shots, hostile_damage);
+                damage_vehicles(damage_data, hostile_shots, hostile_damage, weapon_index_position);
             }
 
             // ### Marine + Dreadnought Processing ###
             if (target_is_infantry && (men + dreads > 0)) {
-                damage_infantry(damage_data, hostile_shots, hostile_damage);
+                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position);
             }
 
             if (damage_data.hits < hostile_shots) {
                 // ### Vehicle Damage Processing ###
                 if (target_is_infantry && veh > 0) {
-                    damage_vehicles(damage_data, hostile_shots, hostile_damage);
+                    damage_vehicles(damage_data, hostile_shots, hostile_damage, weapon_index_position);
                 }
 
                 // ### Marine + Dreadnought Processing ###
                 if (!target_is_infantry && (men + dreads > 0)) {
-                    damage_infantry(damage_data, hostile_shots, hostile_damage);
+                    damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position);
                 }
             }
 
@@ -170,7 +178,28 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
     }
 }
 
-function damage_infantry(_damage_data, _shots, _damage) {
+/// @mixin
+function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
+    var _armour_pierce = apa[_weapon_index];
+    var _armour_mod = 0;
+    switch (_armour_pierce) {
+        case 4:
+            _armour_mod = 0;
+            break;
+        case 3:
+            _armour_mod = 1.5;
+            break;
+        case 2:
+            _armour_mod = 2;
+            break;
+        case 1:
+            _armour_mod = 3;
+            break;
+        default:
+            _armour_mod = 3;
+            break;
+    }
+
     // Find valid infantry targets
     var valid_marines = [];
     for (var m = 0, l = array_length(unit_struct); m < l; m++) {
@@ -196,12 +225,13 @@ function damage_infantry(_damage_data, _shots, _damage) {
         // Apply damage
         var _shot_luck = roll_dice_chapter(1, 100, "low");
         var _modified_damage = 0;
-        if (_shot_luck <= 5) {
-            _modified_damage = _damage - (2 * marine_ac[marine_index]);
-        } else if (_shot_luck > 95) {
+        var _marine_armour = marine_ac[marine_index] * _armour_mod;
+        if (_shot_luck == 1) {
+            _modified_damage = _damage - (2 * _marine_armour);
+        } else if (_shot_luck == 100) {
             _modified_damage = _damage;
         } else {
-            _modified_damage = _damage - marine_ac[marine_index];
+            _modified_damage = _damage - _marine_armour;
         }
 
         if (_modified_damage > 0) {
@@ -251,7 +281,28 @@ function damage_infantry(_damage_data, _shots, _damage) {
     return;
 }
 
-function damage_vehicles(_damage_data, _shots, _damage) {
+/// @mixin
+function damage_vehicles(_damage_data, _shots, _damage, _weapon_index) {
+    var _armour_pierce = apa[_weapon_index];
+    var _armour_mod = 0;
+    switch (_armour_pierce) {
+        case 4:
+            _armour_mod = 0;
+            break;
+        case 3:
+            _armour_mod = 2;
+            break;
+        case 2:
+            _armour_mod = 4;
+            break;
+        case 1:
+            _armour_mod = 6;
+            break;
+        default:
+            _armour_mod = 6;
+            break;
+    }
+
     var veh_index = -1;
 
     // Find valid vehicle targets
@@ -274,7 +325,7 @@ function damage_vehicles(_damage_data, _shots, _damage) {
         veh_index = array_random_element(valid_vehicles);
 
         // Apply damage
-        var _modified_damage = _damage - veh_ac[veh_index];
+        var _modified_damage = _damage - (veh_ac[veh_index] * _armour_mod);
         if (_modified_damage < 0) {
             _modified_damage = 0.25;
         }

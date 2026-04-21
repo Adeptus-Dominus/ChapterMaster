@@ -1,6 +1,5 @@
 function find_open_artifact_slot() {
-    var i = 0,
-        last_artifact = -1;
+    var i = 0, last_artifact = -1;
     for (var i = 0; i < array_length(obj_ini.artifact); i++) {
         if (last_artifact == -1) {
             if (obj_ini.artifact[i] == "") {
@@ -12,22 +11,18 @@ function find_open_artifact_slot() {
     return last_artifact;
 }
 
-function scr_add_artifact(artifact_type="random", artifact_tags="", is_identified=4, artifact_location = "", ship_id) {
-    last_artifact = find_open_artifact_slot();
+function scr_add_artifact(artifact_type = "random", artifact_tags = "", is_identified = 4, artifact_location = "", ship_id) {
+    var last_artifact = find_open_artifact_slot();
     if (last_artifact == -1) {
         exit;
     }
     var tags = [];
-    var good = true,
-        new_tags;
+    var good = true, new_tags;
     var rand1 = floor(random(100)) + 1;
     var rand2 = floor(random(100)) + 1;
 
     var base_type = "";
-	var base_type_detail = "",
-        t3 = "",
-        t4 = "",
-        t5 = "";
+    var base_type_detail = "", t3 = "", t4 = "", t5 = "";
 
     if ((artifact_type == "random") || (artifact_type == "random_nodemon")) {
         if (good) {
@@ -249,7 +244,7 @@ function scr_add_artifact(artifact_type="random", artifact_tags="", is_identifie
     // show_message(string(t3));
 
     if (artifact_location == "") {
-        if (obj_ini.fleet_type == ePlayerBase.home_world) {
+        if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
             artifact_location = obj_ini.home_name;
             ship_id = 2;
         } else {
@@ -304,7 +299,12 @@ function ArtifactStruct(Index) constructor {
 
     static can_equip = function() {
         _can_equip = true;
-        var none_equips = ["Statue", "Casket", "Chalice", "Robot"];
+        var none_equips = [
+            "Statue",
+            "Casket",
+            "Chalice",
+            "Robot"
+        ];
         if (array_contains(none_equips, type())) {
             _can_equip = false;
         }
@@ -313,8 +313,8 @@ function ArtifactStruct(Index) constructor {
 
     static ship_id = function() {
         var _index = obj_ini.artifact_sid[index] - 500;
-        if (_index >= array_length(obj_ini.ship_location)){
-            obj_ini.artifact_sid[index] = 500 + array_length(obj_ini.ship_location) -1;
+        if (_index >= array_length(obj_ini.ship_location)) {
+            obj_ini.artifact_sid[index] = 500 + array_length(obj_ini.ship_location) - 1;
         }
         return obj_ini.artifact_sid[index] - 500;
     };
@@ -379,7 +379,11 @@ function ArtifactStruct(Index) constructor {
     };
 
     static inquisition_disaprove = function() {
-        var inquis_tags = ["daemonic", "chaos_gift", "chaos"];
+        var inquis_tags = [
+            "daemonic",
+            "chaos_gift",
+            "chaos"
+        ];
         if (has_tag("inq")) {
             return false;
         } else {
@@ -401,11 +405,24 @@ function ArtifactStruct(Index) constructor {
         #macro ART_NECRONS []
 
         var faction_preferences = [
-            [], ART_PLAYER, ART_IMPERIUM, ART_MECHANICUS, ART_INQUISITION, ART_ECCLESIARCHY, ART_ELDAR, ART_ORK, ART_TAU, ART_TYRANIDS, ART_CHAOS, ART_CHAOS, ART_TYRANIDS, ART_NECRONS
+            [],
+            ART_PLAYER,
+            ART_IMPERIUM,
+            ART_MECHANICUS,
+            ART_INQUISITION,
+            ART_ECCLESIARCHY,
+            ART_ELDAR,
+            ART_ORK,
+            ART_TAU,
+            ART_TYRANIDS,
+            ART_CHAOS,
+            ART_CHAOS,
+            ART_TYRANIDS,
+            ART_NECRONS
         ];
         if (faction < 0 || faction >= array_length(faction_preferences)) {
             // Logging or fallback
-            log_warning("Warning: Faction index out of range. Defaulting to empty preferences.");
+            LOGGER.warning("Warning: Faction index out of range. Defaulting to empty preferences.");
             return 0;
         }
 
@@ -421,16 +438,17 @@ function ArtifactStruct(Index) constructor {
 
     static destroy_arti = function() {
         if (has_tag("daemonic")) {
-			var _ship_id = ship_id();
+            var _ship_id = ship_id();
             if (_ship_id > 0) {
                 var demonSummonChance = roll_dice_chapter(1, 100, "high");
 
                 if ((demonSummonChance <= 60) && (obj_ini.ship_carrying[_ship_id] > 0)) {
-                    instance_create(0, 0, obj_ncombat);
-                    obj_ncombat.battle_special = "ship_demon";
-                    obj_ncombat.formation_set = 1;
-                    obj_ncombat.enemy = 10;
-                    obj_ncombat.battle_id = _ship_id;
+                    /// @type {Asset.GMObject.obj_ncombat}
+                    var _combat = instance_create_depth(0, 0, 0, obj_ncombat);
+                    _combat.battle_special = "ship_demon";
+                    _combat.formation_set = 1;
+                    _combat.enemy = 10;
+                    _combat.battle_id = _ship_id;
                     scr_ship_battle(_ship_id, 999);
                 }
             }
@@ -550,16 +568,16 @@ function ArtifactStruct(Index) constructor {
         obj_ini.artifact_equipped[index] = false;
     };
 
-    static equip_on_unit = function(unit, slot=-1){
-        var _item  = determine_base_type();
-        if (_item == "mobility"){
+    static equip_on_unit = function(unit, slot = -1) {
+        var _item = determine_base_type();
+        if (_item == "mobility") {
             unit.update_mobility_item(index);
-        } else if (_item == "gear"){
+        } else if (_item == "gear") {
             unit.update_gear(index);
-        } else if (_item == "armour"){
+        } else if (_item == "armour") {
             unit.update_armour(index);
-        } else if (_item == "weapon"){
-            if (slot == -1 || slot == 0){
+        } else if (_item == "weapon") {
+            if (slot == -1 || slot == 0) {
                 unit.update_weapon_one(index);
             } else {
                 unit.update_weapon_two(index);
@@ -568,11 +586,12 @@ function ArtifactStruct(Index) constructor {
         var _dwarn = false;
         if (has_tag("daemonic") || has_tag("chaos")) {
             unit.corruption += irandom(10 + 2);
-            if (unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
+            if (unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                 _dwarn = true;
             }
         }
         if (_dwarn == true) {
+            /// @type {Asset.GMObject.obj_popup}
             var pip = instance_create(0, 0, obj_popup);
             pip.title = "Daemon Artifacts";
             pip.text = "Some artifacts, like the one you now wield, are a blasphemous union of the Materium's matter and the Immaterium's spirit, containing the essence of a bound daemon.  While they may offer great power, and enhanced perception, they are known to whisper poisonous lies to the wielder.  The path to damnation begins with good intentions, and many times artifacts such as these have been the cause.";
@@ -580,14 +599,200 @@ function ArtifactStruct(Index) constructor {
             pip.cooldown = 8;
             obj_controller.cooldown = 8;
         }
-    }
+    };
 
     custom_data = {};
     name = "";
     custom_description = "";
     bearer = false;
 
-    static description = scr_arti_descr;
+    static assign_text_from_tag_match = function(text_set) {
+        var _return_text = "";
+        var _tag_names = struct_get_names(text_set);
+        var _len = array_length(_tag_names);
+
+        for (var i = 0; i < _len; i++) {
+            if (has_tag(_tag_names[i])) {
+                _return_text = text_set[$ _tag_names[i]];
+                break;
+            }
+        }
+        return _return_text;
+    };
+
+    /// @desc Generates a formatted description for an artifact based on its tags and type.
+    /// @returns {string} The full descriptive text.
+    static get_description = function() {
+        var _custom_desc = string(custom_description);
+
+        if (_custom_desc != "") {
+            return _custom_desc;
+        }
+
+        var _final_description = "";
+        var _mission_text = "";
+        var _aesthetic_text = "";
+        var _extra_text = "";
+
+        var _type_category = determine_base_type();
+        var _specific_type = type();
+        var _is_inquisition = has_tag("inq");
+        var _is_chaos_gift = has_tag("chaos_gift");
+
+        // 1. Mission Data
+        if (_type_category != "armour") {
+            _mission_text = $"This artifact is a {_specific_type}";
+        } else {
+            _mission_text = $"This artifact is {_specific_type}";
+        }
+
+        if (_is_inquisition) {
+            _mission_text += ", entrusted by the Inquisition.#";
+        } else if (_is_chaos_gift) {
+            _mission_text = $"This artifact is a {_specific_type} gifted by the Chaos Lord.";
+        } else {
+            _mission_text += ".#";
+        }
+
+        // 2. Aesthetic Logic
+        if (_type_category == "weapon") {
+            static _weapon_primary = {
+                "RUNE": "Several glowing runes have been carved along its surfaces.",
+                "SCOPE": "An extremely finely crafted scope, with several lenses, sits on top.",
+                "DUB": "Rather than a single power fist there is a matching pair of two.",
+                "ADAMANTINE": "All ceremite on the weapon has been substituted for polished adamantium.",
+                "VOI": "The weapon is black as night, with green, pulsing veins of an unknown energy.",
+                "CHB": "The striking surface has been replaced with a very powerful chainblade.",
+                "UFL": "A promethium flamethrower has been built in to the bottom of the weapon.",
+            };
+
+            _aesthetic_text = string(assign_text_from_tag_match(_weapon_primary));
+
+            if (_specific_type == "Power Fist" && has_tag("CHB")) {
+                _aesthetic_text = "The addition of a small chainblade has turned it into a chainfist.";
+            }
+
+            static _weapon_secondary = {
+                "GOLD": "It is decorated with gold filigree.",
+                "GLOW": "It glows with an eery, soft blue color.",
+                "UBOLT": "A bolter has been integrated.",
+            };
+            _extra_text = string(assign_text_from_tag_match(_weapon_secondary));
+        } else if (_type_category == "armour") {
+            static _armour_primary = {
+                "ART": "Much of the armour is made up of finely articulated plates, neatly interlocking.",
+                "SPIKES": "A multitude of spikes, of varying sizes, adorn the armour.",
+                "RUNE": "Several glowing runes have been carved along its surfaces.",
+                "DRA": "Several areas of the armour have been patched over with Drake scales.",
+            };
+            _aesthetic_text = string(assign_text_from_tag_match(_armour_primary));
+
+            static _armour_secondary = {
+                "GOLD": "It is decorated with gold filigree.",
+                "GLOW": "The optics glow dark red.",
+                "PUR": "It has many crude purity seals.",
+            };
+            _extra_text = string(assign_text_from_tag_match(_armour_secondary));
+        } else if (_type_category == "gear") {
+            static _gear_primary = {
+                "SUP": "It has been carved with such intricate detail that the facets are uncountable.",
+                "ADAMANTINE": "All ceremite on the item has been substituted for polished adamantium.",
+                "GOLD": "All ceremite on the item has been replaced with shining, polished gold.",
+            };
+            _aesthetic_text = string(assign_text_from_tag_match(_gear_primary));
+
+            static _gear_secondary = {
+                "SAL": "An emblem of a Fire Drake is embossed on the cover.",
+                "ADAMANTINE": "All ceremite on the item has been substituted for polished adamantium.",
+                "GOLD": "All ceremite on the item has been replaced with shining, polished gold.",
+                "GLOW": "It glows a soft green color.",
+                "BUR": "Small, non-burning flames lick across the surface.",
+                "BIG": "It is of unusually large size.",
+                "SOO": "It has a soothing appearance.",
+                "RUNE": "Several glowing runes have been carved along its surfaces.",
+                "MASK": "It is shaped and contorted into a Fearsome Mask.",
+                "SPIKES": "A multitude of spikes, of varying sizes, adorn it.",
+                "SKRE": "While on it lets out a tormented scream.",
+                "SILENT": "Somehow it is completely silent in operation.",
+                "GOR": "The arms are especially lengthy and massively strong.",
+                "TENTACLES": "Instead of a single arm it is made up of many smaller tentacles.",
+            };
+            _extra_text = string(assign_text_from_tag_match(_gear_secondary));
+        } else if (_type_category == "device") {
+            if (_specific_type != "Robot") {
+                static _dev_primary = {
+                    "GLOW": "It emits a sickly, red glow that unnerves those that look upon it.",
+                    "ADAMANTINE": "The device is seemingly built of near-pure adamantium, impressively heavy.",
+                    "GOLD": "The device is covered in a thin layer of gold, which glitters and shines.",
+                    "CRU": "Many parts of the device are crumbling apart and cracking from old age.",
+                };
+                _aesthetic_text = string(assign_text_from_tag_match(_dev_primary));
+
+                static _dev_secondary = {
+                    "SKU": "It is fashioned to resemble a massive pile of skulls of all races and ages.",
+                    "FAL": "It resembles an angel, fallen with broken wings, a sad look on its face.",
+                    "TENTACLES": "Carved on top is a ball of wriggling tentacles, eyes, and fangs.",
+                    "MIN": "The top panel seemingly writhes with motion, the geometric shapes blinding to behold.",
+                    "GOAT": "It resembles a bipedal goat with odd skin blemishes and four small horns.",
+                    "THI": "Carved on top is a strange creature with elongated limbs and small head.",
+                    "SPE": "The statue is of a man with no eyes, ears, or nose.  The teeth are rotted and mishappen.",
+                    "DYI": "The statue is of an angel, sagging against a spear which has pierced its heart.",
+                    "JUM": "It resembles a scene of small children with large heads happily jumping into a pit of magma.",
+                    "CHE": "The statue resembles a fat grinx which smiles and looks outward with a malicious gaze.",
+                };
+                _extra_text = string(assign_text_from_tag_match(_dev_secondary));
+            } else {
+                static _bot_primary = {
+                    "HU": "It is built in the likeness of an attractive human female.",
+                    "RO": "It is squat and fat, though tall, and has simple utilitarian limbs.",
+                    "SHI": "The device is covered in a thin layer of gold, which glitters and shines.",
+                    "CRU": "It resembles a roaring, four-armed woman with abundant curves.",
+                };
+                _aesthetic_text = string(assign_text_from_tag_match(_bot_primary));
+
+                static _bot_secondary = {
+                    "ADAMANTINE": "The machine is seemingly built of near-pure adamantium, impressively heavy.",
+                    "JAD": "The machine is built out of a type of jade, pure black, with many veins of green.",
+                    "BRO": "The machine is made out of a strange bronze material that seems impossibly durable.",
+                    "RUNE": "Several glowing runes have been carved along its surfaces.",
+                };
+                _extra_text = string(assign_text_from_tag_match(_bot_secondary));
+            }
+        }
+
+        // 3. Final Assembly
+        if (has_tag("MINOR")) {
+            _extra_text += " It is more crude and utilitarian than one might expect from an artifact.";
+        }
+
+        var _taint_text = "";
+        if (has_tag("chaos")) {
+            _taint_text = "It bears the taint of Chaos.";
+        }
+        if (has_tag("daemonic")) {
+            _taint_text = "It is infested with a Daemonic entity. Destroying it, may cause the entity to materialize.";
+        }
+
+        _final_description = _mission_text;
+        if (_aesthetic_text != "") {
+            _final_description += $"  {_aesthetic_text}";
+        }
+        if (_extra_text != "") {
+            _final_description += $"  {_extra_text}";
+        }
+        if (_taint_text != "") {
+            _final_description += $"  {_taint_text}";
+        }
+
+        if (equipped() && is_array(bearer)) {
+            var _unit = fetch_unit(bearer);
+            if (is_struct(_unit)) {
+                _final_description += $"#It is currently in the possession of {_unit.name_role()}.";
+            }
+        }
+
+        return string(_final_description);
+    };
 }
 
 function corrupt_artifact_collectors(last_artifact) {
@@ -602,9 +807,9 @@ function corrupt_artifact_collectors(last_artifact) {
                             _unit.edit_corruption(choose(0, 2, 4, 6, 8));
                         }
                     } else if (obj_controller.man[i] == "vehicle" && is_array(_unit)) {
-                        var _val = get_deep_array(obj_ini.veh_chaos,_unit)
+                        var _val = get_deep_array(obj_ini.veh_chaos, _unit);
                         _val += choose(0, 2, 4, 6, 8);
-                        alter_deep_array(obj_ini.veh_chaos,_unit, _val) 
+                        alter_deep_array(obj_ini.veh_chaos, _unit, _val);
                     }
                 }
             }
@@ -614,15 +819,16 @@ function corrupt_artifact_collectors(last_artifact) {
     }
 }
 
-function fetch_artifact(index){
+function fetch_artifact(index) {
     if (index < 0 || index >= array_length(obj_ini.artifact_struct)) {
-       return undefined;
+        return undefined;
     }
     return obj_ini.artifact_struct[index];
 }
+
 function delete_artifact(index) {
     if (index < array_length(obj_ini.artifact)) {
-        with(obj_ini) {
+        with (obj_ini) {
             artifact_struct[index].unequip_from_unit();
             artifact[index] = "";
             artifact_tags[index] = [];
@@ -640,57 +846,44 @@ function delete_artifact(index) {
             }
         }*/
         obj_controller.artifacts -= 1;
-        with(obj_controller) {
+        with (obj_controller) {
             set_chapter_arti_data();
         }
     }
 }
 
-
-function equip_artifact_popup_setup(){
+function equip_artifact_popup_setup() {
     instance_destroy(obj_popup);
-    var pop=instance_create(0,0,obj_popup);
-    pop.type=POPUP_TYPE.ARTIFACT_EQUIP;
-    cooldown=8; 
-    with (pop){
+    /// @type {Asset.GMObject.obj_popup}
+    var pop = instance_create(0, 0, obj_popup);
+    pop.type = ePOPUP_TYPE.ARTIFACT_EQUIP;
+    pop.cooldown = 8;
+    with (pop) {
         target_company_radio(10000);
-        main_slate = new DataSlate({
-            style : "decorated",
-            XX : 945,
-            YY : 66,
-            set_width : true,
-            width : 635,
-            height : 400,
-        });
+        main_slate = new DataSlate({style: "decorated", XX: 945, YY: 66, set_width: true, width: 635, height: 400});
         companies_select.current_selection = -1;
         companies_select.YY = 110;
-        cancel_button = new UnitButtonObject(
+        cancel_button = new UnitButtonObject({x1: 945, y1: main_slate.YY + main_slate.height, style: "pixel", label: "Cancel"});
+        var _weapon_slot_options = [
             {
-                x1: 945, 
-                y1: main_slate.YY+main_slate.height, 
-                style : "pixel",
-                label : "Cancel"
-            }
-        );
-        var _weapon_slot_options = [ 
-            {
-                str1 : "Weapon One",
-                font : fnt_40k_14b,
-                val : 0
+                str1: "Weapon One",
+                font: fnt_40k_14b,
+                val: 0,
             },
             {
-                str1 : "Weapon Two",
-                font : fnt_40k_14b,
-                val : 0
+                str1: "Weapon Two",
+                font: fnt_40k_14b,
+                val: 0,
             }
-        ]
-        weapon_slot_select = new RadioSet(_weapon_slot_options, "Weapon slot", {max_width : 580, x1:1200, y1:130});
+        ];
+        weapon_slot_select = new RadioSet(_weapon_slot_options, "Weapon slot", {max_width: 580, x1: 1200, y1: 130});
         weapon_slot_select.current_selection = 0;
-    } 
+    }
 }
 
-function equip_artifact_popup_draw(){
-    arti = obj_ini.artifact_struct[obj_controller.menu_artifact];
+/// @mixin
+function equip_artifact_popup_draw() {
+    var arti = obj_ini.artifact_struct[obj_controller.menu_artifact];
     main_slate.draw_with_dimensions();
     draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_40k_14b);
@@ -698,25 +891,24 @@ function equip_artifact_popup_draw(){
     draw_text(951 + 312, 48 + 26, $"Equip Artifact ({arti.name})");
     draw_set_font(fnt_40k_12);
     draw_set_halign(fa_left);
-    if (arti.determine_base_type() == "weapon"){
+    if (arti.determine_base_type() == "weapon") {
         weapon_slot_select.draw();
     }
     companies_select.draw();
-    if (companies_select.changed){
-        var _company_marines = collect_role_group("all", "", false, {companies:companies_select.current_selection});
+    if (companies_select.changed) {
+        var _company_marines = collect_role_group("all", "", false, {companies: companies_select.current_selection});
         var _selec_data = {
-            purpose_code : "artifact_equip",
-            number : 1,
-            purpose :$"Equip Artifact ({obj_ini.artifact[obj_controller.menu_artifact]})",
-            artifact : obj_controller.menu_artifact,
-            slot : weapon_slot_select.current_selection,
-        }
+            purpose_code: "artifact_equip",
+            number: 1,
+            purpose: $"Equip Artifact ({obj_ini.artifact[obj_controller.menu_artifact]})",
+            artifact: obj_controller.menu_artifact,
+            slot: weapon_slot_select.current_selection,
+        };
         group_selection(_company_marines, _selec_data);
         instance_destroy();
     }
 
-    if (cancel_button.draw()){
+    if (cancel_button.draw()) {
         instance_destroy();
     }
-
 }

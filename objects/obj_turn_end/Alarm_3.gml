@@ -1,2 +1,1 @@
-fadeout=1;
-
+fadeout = 1;

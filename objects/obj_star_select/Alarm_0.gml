@@ -1,6 +1,3 @@
-
-
-
 /*if (instance_exists(target)){
     if (target.craftworld=1) or (target.space_hulk=1){
         // 135 ;
@@ -22,22 +19,30 @@
     }
 }*/
 
-
-if (loading=0) then exit;
-
+if (loading == 0) {
+    exit;
+}
 
 // check for the right star
 
 var xb, yb, good, tiber;
-xb=0;yb=0;good=0;tiber=0;
+xb = 0;
+yb = 0;
+good = 0;
+tiber = 0;
 
-with(obj_star){
-    if (name=obj_star_select.loading_name) then instance_create(x,y,obj_temp2);
+with (obj_star) {
+    if (name == obj_star_select.loading_name) {
+        instance_create(x, y, obj_temp2);
+    }
 }
-if (instance_exists(obj_temp2)){
-    tiber=instance_nearest(obj_temp2.x,obj_temp2.y,obj_star);target=tiber;
+if (instance_exists(obj_temp2)) {
+    tiber = instance_nearest(obj_temp2.x, obj_temp2.y, obj_star);
+    target = tiber;
 }
-with(obj_temp2){instance_destroy();}
+with (obj_temp2) {
+    instance_destroy();
+}
 
 instance_activate_object(obj_star);
 

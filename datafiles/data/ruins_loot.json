@@ -1,0 +1,480 @@
+{
+    "1": [
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Tartaros",
+                "Terminator Armour",
+                "Cataphractii"
+            ]
+        },
+        {
+            "max": 2,
+            "min": 1,
+            "options": [
+                "Tigris Combi Bolter",
+                "Volkite Charger"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Power Fist",
+                "Chainfist",
+                "Power Mace",
+                "Relic Blade",
+                "Power Spear",
+                "Lightning Claw",
+                "Power Scythe"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Assault Cannon",
+                "Plasma Cannon"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Company Standard",
+                "Narthecium",
+                "Psychic Hood",
+                "Rosarius"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Storm Shield"
+            ]
+        }
+    ],
+    "10": [
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Tartaros",
+                "Terminator Armour",
+                "Cataphractii"
+            ]
+        },
+        {
+            "max": 2,
+            "min": 1,
+            "options": [
+                "Tigris Combi Bolter",
+                "Volkite Charger"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Power Fist",
+                "Chainfist",
+                "Power Mace",
+                "Relic Blade",
+                "Power Spear",
+                "Lightning Claw",
+                "Power Scythe"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Assault Cannon",
+                "Plasma Cannon"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Company Standard",
+                "Narthecium",
+                "Psychic Hood",
+                "Rosarius"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Storm Shield"
+            ]
+        }
+    ],
+    "2": [
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Tartaros",
+                "Terminator Armour",
+                "Cataphractii"
+            ]
+        },
+        {
+            "max": 2,
+            "min": 1,
+            "options": [
+                "Tigris Combi Bolter",
+                "Volkite Charger"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Power Fist",
+                "Chainfist",
+                "Power Mace",
+                "Relic Blade",
+                "Power Spear",
+                "Lightning Claw",
+                "Power Scythe"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Assault Cannon",
+                "Plasma Cannon"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Company Standard",
+                "Narthecium",
+                "Psychic Hood",
+                "Rosarius"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Storm Shield"
+            ]
+        }
+    ],
+    "3": [
+        {
+            "max": 6,
+            "min": 3,
+            "options": [
+                "MK3 Iron Armour",
+                "MK4 Maximus",
+                "MK5 Heresy"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 2,
+            "options": [
+                "Phobos Bolter"
+            ]
+        },
+        {
+            "max": 2,
+            "min": 1,
+            "options": [
+                "Ryza Plasma Gun",
+                "Volkite Charger",
+                "Volkite Caliver"
+            ]
+        },
+        {
+            "max": 2,
+            "min": 1,
+            "options": [
+                "Primus Melta Gun",
+                "Phaestos Flamer"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Ryza Plasma Pistol",
+                "Phobos Bolt Pistol",
+                "Volkite Serpenta"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Power Sword",
+                "Chain Axe",
+                "Power Axe",
+                "Power Fist"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Company Standard",
+                "Narthecium",
+                "Psychic Hood",
+                "Rosarius"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Bionics"
+            ]
+        }
+    ],
+    "4": [
+        {
+            "max": 5,
+            "min": 3,
+            "options": [
+                "MK3 Iron Armour",
+                "MK4 Maximus",
+                "MK6 Corvus"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 2,
+            "options": [
+                "Mars Heavy Bolter"
+            ]
+        },
+        {
+            "max": 2,
+            "min": 1,
+            "options": [
+                "Mars Plasma Cannon",
+                "Volkite Culverin"
+            ]
+        },
+        {
+            "max": 2,
+            "min": 1,
+            "options": [
+                "Ryza Las Cannon",
+                "Cthon Auto Cannon"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Ryza Plasma Pistol",
+                "Phobos Bolt Pistol",
+                "Volkite Serpenta"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Power Sword",
+                "Chain Axe",
+                "Power Axe",
+                "Power Fist"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Company Standard",
+                "Narthecium",
+                "Psychic Hood",
+                "Rosarius"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Heavy Weapons Pack"
+            ]
+        }
+    ],
+    "5": [
+        {
+            "max": 5,
+            "min": 3,
+            "options": [
+                "MK4 Maximus",
+                "MK6 Corvus",
+                "MK5 Heresy"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 2,
+            "options": [
+                "Chainsword",
+                "Chain Axe"
+            ]
+        },
+        {
+            "max": 2,
+            "min": 1,
+            "options": [
+                "Power Sword",
+                "Power Axe",
+                "Power Fist"
+            ]
+        },
+        {
+            "max": 2,
+            "min": 1,
+            "options": [
+                "Lightning Claws",
+                "Power Scythe"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Ryza Plasma Pistol",
+                "Phobos Bolt Pistol",
+                "Volkite Serpenta"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Primus Melta Gun",
+                "Phaestos Flamer"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Company Standard",
+                "Narthecium",
+                "Psychic Hood",
+                "Rosarius"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Serpha Jump Pack"
+            ]
+        }
+    ],
+    "6": [
+        {
+            "max": 6,
+            "min": 3,
+            "options": [
+                "MK3 Iron Armour",
+                "MK4 Maximus",
+                "MK5 Heresy"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 2,
+            "options": [
+                "Primus Melta Gun"
+            ]
+        },
+        {
+            "max": 2,
+            "min": 1,
+            "options": [
+                "Ryza Plasma Gun",
+                "Volkite Charger",
+                "Volkite Caliver"
+            ]
+        },
+        {
+            "max": 2,
+            "min": 1,
+            "options": [
+                "Phobos Bolter",
+                "Phaestos Flamer"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Ryza Plasma Pistol",
+                "Phobos Bolt Pistol",
+                "Volkite Serpenta"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Power Sword",
+                "Chain Axe",
+                "Power Axe",
+                "Power Fist"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 0,
+            "options": [
+                "Company Standard",
+                "Narthecium",
+                "Psychic Hood",
+                "Rosarius"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 1,
+            "options": [
+                "Boarding Shield"
+            ]
+        }
+    ],
+    "7": [
+        {
+            "max": 1,
+            "min": 1,
+            "options": [
+                "Contemptor Dreadnought"
+            ]
+        },
+        {
+            "max": 1,
+            "min": 1,
+            "options": [
+                "Twin-linked Volkite Culverins",
+                "Heavy Conversion Beamer",
+                "Kheres Assault Cannon"
+            ]
+        },
+        {
+            "max": 3,
+            "min": 3,
+            "options": [
+                "Contemptor CCW"
+            ]
+        }
+    ]
+}

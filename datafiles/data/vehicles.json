@@ -1,0 +1,29 @@
+{
+    "Land Raider": {
+        "requires_to_forge": [
+            "vehicle_forging_1"
+        ],
+        "value": 500
+    },
+    "Land Speeder": {
+        "value": 120
+    },
+    "Predator": {
+        "requires_to_forge": [
+            "armour_1"
+        ],
+        "value": 240
+    },
+    "Rhino": {
+        "requires_to_forge": [
+            "armour_1"
+        ],
+        "value": 120
+    },
+    "Whirlwind": {
+        "requires_to_forge": [
+            "armour_1"
+        ],
+        "value": 180
+    }
+}

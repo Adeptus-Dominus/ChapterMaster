@@ -1,4 +1,3 @@
-
 /*if (navy=1){
     var fid,tot,i;i=-1;
     fid=self.id;tot=0;
@@ -8,7 +7,6 @@
     
     show_message("Fleet: "+string(fid)+"#Action: "+string(trade_goods)+"#E"+string(escort_number)+"|F"+string(frigate_number)+"|C:"+string(capital_number)+"#Total Guardsmen: "+string(scr_display_number(tot)));
 }*/
-
 
 /* */
 /*  */

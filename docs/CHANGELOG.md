@@ -147,7 +147,7 @@ Crashes:
 	- `obj_popup` cooldown on creation is reduced to 8k to fix the UI lock caused by the above change, may have unintended consequences.
 	- `obj_managment_panel` is now drawn in GUI layer, mouse event merged into draw.
 	- Minor refactors to Artifact preview screen. Use `draw_unit_button()`.
-	- Added cooldown check to `scr_click_left()`, to be able to use it nested in scr_hit, when point_and_click is unneeded.
+	- Added cooldown check to `mouse_button_clicked()`, to be able to use it nested in scr_hit, when point_and_click is unneeded.
 - Combat code:
 	- Generally a gvadzillion of combat related code overhauls and refactors.
 	- Many repeats and bad array practices are removed from the combat related code.

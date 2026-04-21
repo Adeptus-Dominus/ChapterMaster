@@ -13,12 +13,12 @@ if (press_with_held(ord("V"), vk_control)) {
 }
 
 if (blink > 0) {
-    blink -= delta_time/1000000;
+    blink -= delta_time / 1000000;
 } else if (blink <= 0) {
-    blink = 2
+    blink = 2;
 }
 
-if (input_type = 1) {
+if (input_type == 1) {
     inputting = keyboard_string;
     if (execute) {
         if (inputting == "") {
@@ -29,8 +29,8 @@ if (input_type = 1) {
     }
 }
 
-if (input_type = 2) {
-    if (string_length(string_letters(keyboard_string)) > 0){
+if (input_type == 2) {
+    if (string_length(string_letters(keyboard_string)) > 0) {
         keyboard_string = string_digits(keyboard_string);
     }
 
@@ -49,8 +49,5 @@ if (input_type = 2) {
         keyboard_string = $"{maximum}";
     }
 
-    if (execute = true) {
-        
-    }
+    if (execute == true) {}
 }
-

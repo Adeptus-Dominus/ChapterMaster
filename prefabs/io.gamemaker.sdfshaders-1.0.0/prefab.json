@@ -1,0 +1,13 @@
+{
+  "$PrefabMetadata":"v2",
+  "Author":"GameMaker",
+  "Description":"Signed Distance Field (SDF) Shaders",
+  "DisplayName":"SDF Shaders",
+  "Exports":[
+    {"$PrefabExportMetadata":"v3","AssetName":"__yy_sdf_blur_shader","Description":"SDF Shader with Blur","DisplayName":"SDF Blur Shader","FolderPath":"","ResourceType":"GMShader","ResourceVersion":0,},
+    {"$PrefabExportMetadata":"v3","AssetName":"__yy_sdf_effect_shader","Description":"SDF Shader with Effects","DisplayName":"SDF Effect Shader","FolderPath":"","ResourceType":"GMShader","ResourceVersion":0,},
+    {"$PrefabExportMetadata":"v3","AssetName":"__yy_sdf_shader","Description":"SDF Shader","DisplayName":"SDF Shader","FolderPath":"","ResourceType":"GMShader","ResourceVersion":0,},
+  ],
+  "PackageId":"io.gamemaker.sdfshaders",
+  "Version":"1.0.0",
+}

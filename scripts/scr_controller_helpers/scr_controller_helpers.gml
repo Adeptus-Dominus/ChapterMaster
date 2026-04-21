@@ -1,7 +1,7 @@
 //TODO make enum to store menu area codes
 function scr_menu_clear_up(specific_area_function) {
     var spec_func = specific_area_function;
-    with(obj_controller) {
+    with (obj_controller) {
         var menu_action_allowed = action_if_number(obj_saveload, 0, 0) && action_if_number(obj_drop_select, 0, 0) && action_if_number(obj_popup_dialogue, 0, 0) && action_if_number(obj_ncombat, 0, 0);
 
         if (menu_action_allowed) {
@@ -17,7 +17,7 @@ function scr_menu_clear_up(specific_area_function) {
 
             if (instance_exists(obj_turn_end) && (obj_controller.complex_event != true) && (!instance_exists(obj_temp_meeting)) && array_length(obj_turn_end.audience_stack) == 0) {
                 if ((obj_turn_end.popups_end == 1) && (audience == 0) && (cooldown <= 0)) {
-                    with(obj_turn_end) {
+                    with (obj_turn_end) {
                         instance_destroy();
                     }
                 }
@@ -61,46 +61,46 @@ function scr_menu_clear_up(specific_area_function) {
     return false;
 }
 
-function scr_change_menu(wanted_menu, specific_area_function=false) {
+function scr_change_menu(wanted_menu, specific_area_function = false) {
     var continue_sequence = false;
-    if (obj_controller.menu_lock){
+    if (obj_controller.menu_lock) {
         return false;
     }
-    if (wanted_menu == obj_controller.menu){
+    if (wanted_menu == obj_controller.menu) {
         main_map_defaults();
         return true;
     }
-    with(obj_controller) {
+    with (obj_controller) {
         main_map_defaults();
         set_zoom_to_default();
         continue_sequence = scr_menu_clear_up(function() {
             //if ((zoomed == 0) && (diplomacy == 0)) {
-                return true;
+            return true;
             //}
         });
         if (continue_sequence) {
-            with(obj_fleet_select) {
+            with (obj_fleet_select) {
                 instance_destroy();
             }
-            if (close_popups){
-                with(obj_popup) {
+            if (close_popups) {
+                with (obj_popup) {
                     instance_destroy();
                 }
             }
             close_popups = true;
-            if (is_callable(specific_area_function)){
+            if (is_callable(specific_area_function)) {
                 specific_area_function();
             }
         }
     }
 }
 
-function main_map_defaults(){
-    with (obj_controller){
-        menu = MENU.Default;
+function main_map_defaults() {
+    with (obj_controller) {
+        menu = eMENU.DEFAULT;
         hide_banner = 0;
         location_viewer.update_garrison_log();
-        managing = 0; 
+        managing = 0;
         managing = 0;
         menu_adept = 0;
         view_squad = false;
@@ -114,8 +114,8 @@ function main_map_defaults(){
 }
 
 function scr_in_game_help() {
-    scr_change_menu(MENU.GameHelp,function() {
-        with(obj_controller) {
+    scr_change_menu(eMENU.GAME_HELP, function() {
+        with (obj_controller) {
             if ((zoomed == 0) && (!instance_exists(obj_ingame_menu)) && (!instance_exists(obj_popup))) {
                 set_zoom_to_default();
                 if (menu != 30) {
@@ -126,14 +126,14 @@ function scr_in_game_help() {
                     instance_activate_object(obj_event_log);
                     obj_event_log.top = 1;
                     obj_event_log.help = 1;
-                } 
+                }
             }
         }
     });
 }
 
 function scr_in_game_menu() {
-    scr_change_menu(-1,function() {
+    scr_change_menu(-1, function() {
         if ((!instance_exists(obj_ingame_menu)) && (!instance_exists(obj_popup)) && (!obj_controller.zoomed)) {
             // Main MENU
             set_zoom_to_default();
@@ -143,8 +143,8 @@ function scr_in_game_menu() {
 }
 
 function basic_manage_settings() {
-    with (obj_controller){
-        menu = MENU.Manage;
+    with (obj_controller) {
+        menu = eMENU.MANAGE;
         popup = 0;
         selected = 0;
         diplomacy = 0;
@@ -154,37 +154,20 @@ function basic_manage_settings() {
     }
 }
 
-function init_manage_buttons(){
+function init_manage_buttons() {
     management_buttons = {
-        squad_toggle: new UnitButtonObject({
-            style: "pixel",
-            label: "Squad View",
-            tooltip: "Click here or press S to toggle Squad View."
-        }),
-        profile_toggle: new UnitButtonObject({
-            style: "pixel",
-            label: "Show Profile",
-            tooltip: "Click here or press P to show unit profile."
-        }),
-        bio_toggle: new UnitButtonObject({
-            style: "pixel",
-            label: "Show Bio",
-            tooltip: "Click here or press B to Toggle Unit Biography."
-        }),
-        capture_image: new UnitButtonObject({
-            style: "pixel",
-            label: "Capture Image",
-            tooltip: "Click to create a local png of the given marine in the game folder."
-        }),
-
-        company_namer : new TextBarArea(800, 108, 600, false),
+        squad_toggle: new UnitButtonObject({style: "pixel", label: "Squad View", tooltip: "Click here or press S to toggle Squad View."}),
+        profile_toggle: new UnitButtonObject({style: "pixel", label: "Show Profile", tooltip: "Click here or press P to show unit profile."}),
+        bio_toggle: new UnitButtonObject({style: "pixel", label: "Show Bio", tooltip: "Click here or press B to Toggle Unit Biography."}),
+        capture_image: new UnitButtonObject({style: "pixel", label: "Capture Image", tooltip: "Click to create a local png of the given marine in the game folder."}),
+        company_namer: new TextBarArea(800, 98, 600, false),
     };
 }
 
 function scr_toggle_manage() {
-    scr_change_menu(MENU.Manage,function() {
-        with(obj_controller) {
-            if (menu != MENU.Manage) {
+    scr_change_menu(eMENU.MANAGE, function() {
+        with (obj_controller) {
+            if (menu != eMENU.MANAGE) {
                 hide_banner = 1;
                 basic_manage_settings();
                 scr_management(1);
@@ -194,15 +177,15 @@ function scr_toggle_manage() {
 }
 
 function scr_toggle_setting() {
-    scr_change_menu(MENU.Settings,function() {
-        with(obj_controller) {
-            if (menu != MENU.Settings) {
-                menu = MENU.Settings;
+    scr_change_menu(eMENU.SETTINGS, function() {
+        with (obj_controller) {
+            if (menu != eMENU.SETTINGS) {
+                menu = eMENU.SETTINGS;
                 popup = 0;
                 selected = 0;
                 hide_banner = 1;
-            }  else if (settings) {
-                menu = MENU.Settings;
+            } else if (settings) {
+                menu = eMENU.SETTINGS;
                 cooldown = 8000;
                 click = 1;
                 settings = 0;
@@ -212,15 +195,15 @@ function scr_toggle_setting() {
 }
 
 function scr_toggle_apothecarion() {
-    scr_change_menu(MENU.Apothecarion,function() {
-        with(obj_controller) {
+    scr_change_menu(eMENU.APOTHECARION, function() {
+        with (obj_controller) {
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Master of the Apothecarion", "0") == 0) {
                 menu_adept = 1;
             }
-            if (menu != MENU.Apothecarion) {
-                menu = MENU.Apothecarion;
+            if (menu != eMENU.APOTHECARION) {
+                menu = eMENU.APOTHECARION;
 
                 temp[36] = scr_role_count(obj_ini.role[100][15], "");
             }
@@ -229,15 +212,15 @@ function scr_toggle_apothecarion() {
 }
 
 function scr_toggle_reclu() {
-    scr_change_menu(MENU.Reclusiam,function() {
-        with(obj_controller) {
+    scr_change_menu(eMENU.RECLUSIAM, function() {
+        with (obj_controller) {
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Master of Sanctity", "0") == 0) {
                 menu_adept = 1;
             }
-            if (menu != MENU.Reclusiam) {
-                menu = MENU.Reclusiam;
+            if (menu != eMENU.RECLUSIAM) {
+                menu = eMENU.RECLUSIAM;
 
                 temp[36] = string(scr_role_count(obj_ini.role[100][14], "field"));
                 temp[37] = string(scr_role_count(obj_ini.role[100][14], "home"));
@@ -255,21 +238,21 @@ function scr_toggle_reclu() {
                         }
                     }
                 }
-            } 
+            }
         }
     });
 }
 
 function scr_toggle_lib() {
-    scr_change_menu(MENU.Librarium,function() {
-        with(obj_controller) {
+    scr_change_menu(eMENU.LIBRARIUM, function() {
+        with (obj_controller) {
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Chief " + string(obj_ini.role[100][17]), "0") == 0) {
                 menu_adept = 1;
             }
-            if (menu != MENU.Librarium) {
-                menu = MENU.Librarium;
+            if (menu != eMENU.LIBRARIUM) {
+                menu = eMENU.LIBRARIUM;
 
                 if ((artifacts > 0) && (menu_artifact == 0)) {
                     menu_artifact = 1;
@@ -282,71 +265,64 @@ function scr_toggle_lib() {
                 artifact_destroy = new ShutterButton();
                 artifact_namer = new TextBarArea(xx + 622, yy + 460, 350);
                 set_chapter_arti_data();
-                artifact_slate = new DataSlate({
-                    set_width : true,
-                    XX : 392,
-                    YY : 500,
-                    width : 460,
-                    height : 240,
-                })
-            } 
+                artifact_slate = new DataSlate({set_width: true, XX: 392, YY: 500, width: 460, height: 240});
+            }
         }
     });
 }
 
 function scr_toggle_armamentarium() {
-    scr_change_menu(MENU.Armamentarium,function() {
-        with(obj_controller) {
-            if (menu != MENU.Armamentarium) {
+    scr_change_menu(eMENU.ARMAMENTARIUM, function() {
+        with (obj_controller) {
+            if (menu != eMENU.ARMAMENTARIUM) {
                 if (scr_role_count("Forge Master", "0") == 0) {
                     menu_adept = 1;
                 }
+                menu = eMENU.ARMAMENTARIUM;
                 hide_banner = 1;
-                set_up_armentarium();
+                armamentarium.refresh_catalog();
             }
         }
     });
 }
 
 function scr_toggle_recruiting() {
-    scr_change_menu(MENU.Recruiting,function() {
-        with(obj_controller) {
-            var geh = 0,
-                good = 0;
+    scr_change_menu(eMENU.RECRUITING, function() {
+        with (obj_controller) {
+            var geh = 0, good = 0;
             for (geh = 1; geh <= 50; geh++) {
                 geh += 1;
                 if (good == 0) {
-                    if ((obj_ini.role[10, geh] == obj_ini.role[100][5]) && (obj_ini.name[10, geh] == obj_ini.recruiter_name)) {
+                    if ((obj_ini.role[10][geh] == obj_ini.role[100][5]) && (obj_ini.name[10][geh] == obj_ini.recruiter_name)) {
                         good = geh;
                     }
                 }
             }
 
-            if (menu != MENU.Recruiting) {
+            if (menu != eMENU.RECRUITING) {
                 set_up_recruitment_view();
                 hide_banner = 1;
-            } 
+            }
         }
     });
 }
 
 function scr_toggle_fleet_area() {
-    scr_change_menu(MENU.Fleet,function() {
-        with(obj_controller) {
+    scr_change_menu(eMENU.FLEET, function() {
+        with (obj_controller) {
             menu_adept = 0;
-            var geh = 0,
-                good = 0;
+            var geh = 0, good = 0;
             for (geh = 1; geh <= 50; geh++) {
                 if (good == 0) {
-                    if ((obj_ini.role[4, geh] == obj_ini.role[100][5]) && (obj_ini.name[10, geh] == obj_ini.lord_admiral_name)) {
+                    if ((obj_ini.role[4][geh] == obj_ini.role[100][5]) && (obj_ini.name[10][geh] == obj_ini.lord_admiral_name)) {
                         good = geh;
                     }
                 }
             }
-            if (menu != MENU.Fleet) {
+            if (menu != eMENU.FLEET) {
                 hide_banner = 1;
                 //TODO rewrite all this shit when fleets finally become OOP
-                menu = MENU.Fleet;
+                menu = eMENU.FLEET;
 
                 cooldown = 8000;
                 click = 1;
@@ -358,10 +334,7 @@ function scr_toggle_fleet_area() {
                     temp[i] = "";
                 }
 
-                var g = 0,
-                    u = 0,
-                    m = 0,
-                    d = 0;
+                var g = 0, u = 0, m = 0, d = 0;
                 temp[37] = 0;
                 temp[38] = 0;
                 temp[39] = 0;
@@ -412,26 +385,26 @@ function scr_toggle_fleet_area() {
 }
 
 function scr_toggle_diplomacy() {
-    scr_change_menu(MENU.Diplomacy, function() {
-        with(obj_controller) {
-            if (menu != MENU.Diplomacy) {
+    scr_change_menu(eMENU.DIPLOMACY, function() {
+        with (obj_controller) {
+            if (menu != eMENU.DIPLOMACY) {
                 set_up_diplomacy_buttons();
-                menu = MENU.Diplomacy;
+                menu = eMENU.DIPLOMACY;
                 audience = 0;
                 diplomacy = 0;
                 hide_banner = 1;
                 character_diplomacy = false;
-                show_debug_message("set_diplo")
+                LOGGER.debug("set_diplo");
             }
         }
     });
 }
 
 function scr_toggle_event_log() {
-    scr_change_menu(MENU.EventLog,function() {
-        with(obj_controller) {
-            if (menu != MENU.EventLog) {
-                menu = MENU.EventLog;
+    scr_change_menu(eMENU.EVENT_LOG, function() {
+        with (obj_controller) {
+            if (menu != eMENU.EVENT_LOG) {
+                menu = eMENU.EVENT_LOG;
 
                 hide_banner = 1;
                 instance_activate_object(obj_event_log);
@@ -442,12 +415,12 @@ function scr_toggle_event_log() {
 }
 
 function scr_end_turn() {
-    if (instance_exists(obj_turn_end)){
+    if (instance_exists(obj_turn_end)) {
         return false;
     }
-    scr_change_menu(-1,function() {
-        with(obj_controller) {
-            if ((menu == MENU.Default) && (cooldown <= 0)) {
+    scr_change_menu(-1, function() {
+        with (obj_controller) {
+            if ((menu == eMENU.DEFAULT) && (cooldown <= 0)) {
                 if (location_viewer.hide_sequence == 0) {
                     location_viewer.hide_sequence++;
                 }
@@ -464,48 +437,47 @@ function scr_end_turn() {
                 }*/
 
                 if (ok == 1) {
-                    if(settings_autosave == true){
+                    if (global.settings.autosave == true) {
                         // Autosave
-                        if(obj_controller.turn % 10 == 0){// save every 10 turns
-                            if(!instance_exists(obj_saveload)){
-                                instance_create(0,0,obj_saveload);
+                        if (obj_controller.turn % 10 == 0) {
+                            // save every 10 turns
+                            if (!instance_exists(obj_saveload)) {
+                                instance_create(0, 0, obj_saveload);
                             }
                             obj_saveload.autosaving = true;
-                            scr_save(0,0,true);
-                            obj_controller.menu=0;
-                            obj_controller.zui=0;
-                            obj_controller.invis=false;
-                            with(obj_saveload){
+                            scr_save(0, 0, true);
+                            obj_controller.menu = 0;
+                            obj_controller.zui = 0;
+                            obj_controller.invis = false;
+                            with (obj_saveload) {
                                 instance_destroy();
                             }
                         }
-                        
                     }
                     obj_controller.end_turn_insights = {};
-                    with(obj_turn_end) {
+                    with (obj_turn_end) {
                         instance_destroy();
                     }
-                    with(obj_star_event) {
+                    with (obj_star_event) {
                         instance_destroy();
                     }
-                    audio_play_sound(snd_end_turn, -50, 0);
-                    audio_sound_gain(snd_end_turn, master_volume * effect_volume, 0);
+                    audio_play_sound(snd_end_turn, -50, false);
 
                     turn += 1;
-                    with(obj_star) {
+                    with (obj_star) {
                         for (var i = 0; i <= 21; i++) {
                             present_fleet[i] = 0;
                         }
                     }
-                    with(obj_p_fleet) {
-                        if ((action == "move") && (obj_controller.faction_status[eFACTION.Imperium] == "War")) {
+                    with (obj_p_fleet) {
+                        if ((action == "move") && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
                             var him = instance_nearest(action_x, action_y, obj_star);
                             if (point_distance(action_x, action_y, him.x, him.y) < 10) {
                                 him.present_fleet[20] = 1;
                             }
                         }
                     }
-                    with(obj_en_fleet) {
+                    with (obj_en_fleet) {
                         if ((action == "move") && (owner > 5)) {
                             var him = instance_nearest(action_x, action_y, obj_star);
                             if (point_distance(action_x, action_y, him.x, him.y) < 10) {
@@ -530,7 +502,7 @@ function scr_end_turn() {
                     gene_tithe -= 1;
 
                     // Do that after the combats and all of that crap
-                    with(obj_star) {
+                    with (obj_star) {
                         ai_a = 2;
                         ai_b = 3;
                         ai_c = 4;

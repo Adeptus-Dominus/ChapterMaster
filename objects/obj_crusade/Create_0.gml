@@ -1,10 +1,8 @@
+placing = false;
+show = true;
+owner = eFACTION.IMPERIUM;
+radius = 128;
+cooldown = 20;
+duration = 24;
 
-placing=false;
-show=true;
-owner = eFACTION.Imperium;
-radius=128;
-cooldown=20;
-duration=24;
-
-alarm[1]=3;
-
+alarm[1] = 3;

@@ -1,0 +1,118 @@
+{
+    "Bionics": {
+        "abbreviation": "Bncs",
+        "description": "Bionics may be given to wounded Astartes to quickly get them back into a combat-ready state, replacing damaged flesh. This is utilized when a Astarte enters a critical state.",
+        "hp_mod": {
+            "artifact": 50,
+            "master_crafted": 50,
+            "standard": 30
+        },
+        "value": 5
+    },
+    "Combat Shield": {
+        "abbreviation": "CmbtShld",
+        "armour_value": {
+            "artifact": 8,
+            "master_crafted": 6,
+            "standard": 4
+        },
+        "description": "A lighter, more maneuverable version of a Storm Shield. Due to its flexibility, Combat Shields leave other hand of a Space Marine free to use other hand-to-hand weaponry.",
+        "hp_mod": {
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "tags": [
+            "shield"
+        ],
+        "value": 15,
+        "weight": 3
+    },
+    "Exterminatus": {
+        "abbreviation": "Extrmnts",
+        "description": "A weapon of the Emperor, and His divine judgment, this weapon can be placed upon a planet to obliterate it entirely.",
+        "special_properties": [
+            "Planet Destroyer"
+        ]
+    },
+    "Gene Pod Incubator": {
+        "abbreviation": "GenePod",
+        "description": "Required to house gene slaves in order to generate new gene seed for the chapter.",
+        "value": 20
+    },
+    "Iron Halo": {
+        "abbreviation": "IrnHalo",
+        "damage_resistance_mod": {
+            "artifact": 45,
+            "master_crafted": 40,
+            "standard": 35
+        },
+        "description": "An ancient artifact, these powerful conversion field generators are granted to high ranking battle brothers or heroes of the chapter. Bearers are often looked to for guidance by their fellow Astartes.",
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "value": 300
+    },
+    "Narthecium": {
+        "abbreviation": "Nrthcm",
+        "damage_resistance_mod": {
+            "artifact": 10,
+            "master_crafted": 5,
+            "standard": 0
+        },
+        "description": "An advanced medical field kit these allow Apothecaries to heal wounds or recover Gene-Seed from fallen Astartes.",
+        "melee_hands": -0.5,
+        "ranged_hands": -0.5,
+        "special_properties": [
+            "Medkit"
+        ],
+        "value": 10
+    },
+    "Plasma Bomb": {
+        "abbreviation": "PlBomb",
+        "description": "A special plasma charge, this bomb can be used to seal underground caves or destroy enemy structures.",
+        "special_properties": [
+            "Structure Destroyer"
+        ],
+        "value": 175
+    },
+    "Psychic Hood": {
+        "abbreviation": "PsyHd",
+        "description": "An arcane hood that protects Psykers from enemy psychic powers and enhances control of their psychic abilities.",
+        "requires_to_forge": [
+            "force_1"
+        ],
+        "specials": {
+            "psychic_focus": 15
+        },
+        "value": 100
+    },
+    "Rosarius": {
+        "abbreviation": "Rsrius",
+        "damage_resistance_mod": {
+            "artifact": 25,
+            "master_crafted": 20,
+            "standard": 15
+        },
+        "description": "Also called the 'Soul's Armour', this amulet has a powerful built-in shield generator. They are an icon of the Imperial Creed and the Emperor's Protection.",
+        "hp_mod": {
+            "artifact": 10,
+            "master_crafted": 10,
+            "standard": 5
+        },
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "sellers": [
+            "ecclesiarchy"
+        ],
+        "value": 100
+    },
+    "Sororitas Medkit": {
+        "abbreviation": "SorMed",
+        "description": "A multi-purpose medkit designed to deal with basic battlefield ailments until further medical assistance can be sought."
+    }
+}

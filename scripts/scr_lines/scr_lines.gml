@@ -1,46 +1,36 @@
-function scr_lines(argument0, argument1) {
-	//Arg 0 is the breakpoint
-	//Arg 1 is your string
-	{
-	var str,indexed,index,loop,i;
-	indexed = argument0+1;
-	str = argument1;
-	index = indexed;
-	loop = 1;
+/// @desc Inserts "@" line-break markers into a string at the given breakpoint interval.
+/// @param {real} _breakpoint Maximum characters per line before a break is inserted.
+/// @param {string} _str The source string to process.
+function scr_lines(_breakpoint, _str) {
+    var _indexed = _breakpoint + 1;
+    var _index = _indexed;
+    var _string = _str;
 
+    var i;
 
-	if ( indexed <= 1 )
-	{
-	loop = 0;
-	return "Error: breakpoint must be larger than 0";
-	}
+    if (_indexed <= 1) {
+        return "Error: breakpoint must be larger than 0";
+    }
 
-	while ( loop == 1 )
-	{
-	if ( index > string_length( str ) )
-	{
-	loop = 0;
-	break;
-	}
-	for( i = index; string_char_at( str, i ) != " "; i -= 1 )
-	{
-	if ( i mod indexed == 1)
-	break;
-	}
-	if ( i mod indexed != 1)
-	{
-	str = string_delete( str, i, 1 );
-	str = string_insert( "@", str, i );
-	index = i;
-	}
-	else
-	str = string_insert( "@", str, index );
-	index += indexed;
-
-	}   
-	str+="@";
-	return str;
-	}
-
-
+    while (true) {
+        if (_index > string_length(_string)) {
+            break;
+        }
+        for (i = _index; string_char_at(_string, i) != " "; i -= 1) {
+            if (i % _indexed == 1) {
+                break;
+            }
+        }
+        if (i % _indexed != 1) {
+            _string = string_delete(_string, i, 1);
+            _string = string_insert("@", _string, i);
+            _index = i;
+        } else {
+            _string = string_insert("@", _string, _index);
+            _index += 1;
+        }
+        _index += _indexed;
+    }
+    _string += "@";
+    return _string;
 }

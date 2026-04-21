@@ -1,4 +1,3 @@
-
-if (scroll_cool>=0) then scroll_cool-=1;
-
-
+if (scroll_cool >= 0) {
+    scroll_cool -= 1;
+}

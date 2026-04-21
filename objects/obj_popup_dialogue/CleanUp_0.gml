@@ -1,1 +1,1 @@
-global.ui_click_lock =  false;
+global.ui_click_lock = false;

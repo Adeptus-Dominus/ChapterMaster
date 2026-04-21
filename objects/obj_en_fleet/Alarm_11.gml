@@ -1,6 +1,5 @@
-
-if (is_orbiting()){
-    if (owner!=1) then orbiting.present_fleet[owner]+=1;
+if (is_orbiting()) {
+    if (owner != 1) {
+        orbiting.present_fleet[owner] += 1;
+    }
 }
-
-

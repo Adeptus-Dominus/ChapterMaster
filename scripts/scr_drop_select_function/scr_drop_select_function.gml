@@ -1,15 +1,15 @@
-enum DropType {
-    RaidAttack = 0,
-        PurgeSelect,
-        PurgeBombard,
-        PurgeFire,
-        PurgeSelective,
-        PurgeAssassinate,
+enum eDROP_TYPE {
+    RAIDATTACK = 0,
+    PURGESELECT,
+    PURGEBOMBARD,
+    PURGEFIRE,
+    PURGESELECTIVE,
+    PURGEASSASSINATE,
 }
 
 function drop_select_draw() {
-    with(obj_drop_select) {
-        if (purge != DropType.PurgeSelect) {
+    with (obj_drop_select) {
+        if (purge != eDROP_TYPE.PURGESELECT) {
             w = 660;
             h = 520;
             // Center of the screen
@@ -22,7 +22,7 @@ function drop_select_draw() {
             var x3 = (x1 + x2) / 2;
             var y3 = (y1 + y2) / 2;
 
-            if (purge == DropType.RaidAttack) {
+            if (purge == eDROP_TYPE.RAIDATTACK) {
                 draw_set_font(fnt_40k_30b);
 
                 // var xx,yy;
@@ -80,7 +80,7 @@ function drop_select_draw() {
             // Local force button;
 
             // Ship buttons;
-            if (purge != DropType.PurgeBombard) {
+            if (purge != eDROP_TYPE.PURGEBOMBARD) {
                 var _local_button = roster.local_button;
                 _local_button.x1 = x8;
                 _local_button.y1 = y8;
@@ -133,7 +133,7 @@ function drop_select_draw() {
             var _squads_box = {
                 header: "Selected Squads:",
                 x1: x1 + 40,
-                y1: y2 - 180
+                y1: y2 - 180,
             };
             draw_text(_squads_box.x1, _squads_box.y1, _squads_box.header);
             var _x_offset = 0;
@@ -171,13 +171,41 @@ function drop_select_draw() {
 
             // Target
             var race_quantity = 0;
-            if (purge == DropType.RaidAttack) {
-                var target_race = "",
-                    target_threat = "",
-                    race_quantity = 0;
-                var races = ["", "Ecclesiarchy", "Eldar", "Orks", "Tau", "Tyranids", "Heretics", "CSMs", "Daemons", "Necrons"];
-                var threat_levels = ["", "Minima (1)", "Parvus (2)", "Moderatus (3)", "Significus (4)", "Enormicus (5)", "Extremis (6)"];
-                var race_quantities = [0, sisters, eldar, ork, tau, tyranids, traitors, csm, demons, necrons];
+            if (purge == eDROP_TYPE.RAIDATTACK) {
+                var target_race = "", target_threat = "", race_quantity = 0;
+                var races = [
+                    "",
+                    "Ecclesiarchy",
+                    "Eldar",
+                    "Orks",
+                    "Tau",
+                    "Tyranids",
+                    "Heretics",
+                    "CSMs",
+                    "Daemons",
+                    "Necrons"
+                ];
+                var threat_levels = [
+                    "",
+                    "Minima (1)",
+                    "Parvus (2)",
+                    "Moderatus (3)",
+                    "Significus (4)",
+                    "Enormicus (5)",
+                    "Extremis (6)"
+                ];
+                var race_quantities = [
+                    0,
+                    sisters,
+                    eldar,
+                    ork,
+                    tau,
+                    tyranids,
+                    traitors,
+                    csm,
+                    demons,
+                    necrons
+                ];
 
                 if (attacking >= 5 && attacking <= 13) {
                     race_quantity = race_quantities[attacking - 4];
@@ -201,7 +229,7 @@ function drop_select_draw() {
                 target.draw();
                 draw_sprite(spr_faction_icons, attacking, x2 - 100, y1 + 40);
                 var q = 0;
-                repeat(20) {
+                repeat (20) {
                     q += 1;
                     if (target.clicked() && force_present[q] != 0) {
                         if (attacking != force_present[q] && force_present[q] > 0) {
@@ -226,7 +254,7 @@ function drop_select_draw() {
             // Attack / Raid buttons
             btn_attack.x1 = btn_back.x1 + btn_attack.width + 10;
             btn_attack.y1 = btn_back.y1;
-            if (purge == DropType.RaidAttack) {
+            if (purge == eDROP_TYPE.RAIDATTACK) {
                 btn_attack.str1 = (attack) ? "ATTACK!" : "RAID!";
                 btn_attack.active = array_length(roster.selected_units) > 0 && race_quantity > 0;
             } else if (purge > 1) {
@@ -276,13 +304,13 @@ function drop_select_draw() {
                     if (obj_ncombat.battle_object.space_hulk == 1) {
                         obj_ncombat.battle_special = "space_hulk";
                     }
-                    if ((planet_feature_bool(_planet, P_features.Warlord6) == 1) && (obj_ncombat.enemy == 6) && (obj_controller.faction_defeated[6] == 0)) {
+                    if ((planet_feature_bool(_planet, eP_FEATURES.WARLORD6) == 1) && (obj_ncombat.enemy == 6) && (obj_controller.faction_defeated[6] == 0)) {
                         obj_ncombat.leader = 1;
                     }
                     if ((obj_ncombat.enemy == 7) && (obj_controller.faction_defeated[7] <= 0)) {
-                        if (planet_feature_bool(_planet, P_features.OrkWarboss)) {
+                        if (planet_feature_bool(_planet, eP_FEATURES.ORKWARBOSS)) {
                             obj_ncombat.leader = 1;
-                            obj_ncombat.Warlord = _planet[search_planet_features(_planet, P_features.OrkWarboss)[0]];
+                            obj_ncombat.Warlord = _planet[search_planet_features(_planet, eP_FEATURES.ORKWARBOSS)[0]];
                         }
                     }
 
@@ -293,13 +321,28 @@ function drop_select_draw() {
                     }
 
                     if (obj_ncombat.enemy == 11) {
-                        if (planet_feature_bool(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id], P_features.ChaosWarband) == 1) {
+                        if (planet_feature_bool(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id], eP_FEATURES.CHAOSWARBAND) == 1) {
                             obj_ncombat.battle_special = "ChaosWarband";
                             obj_ncombat.leader = 1;
                         }
                     }
 
-                    var _threats = [0, 0, 0, 0, 0, sisters, eldar, ork, tau, tyranids, traitors, csm, demons, necrons];
+                    var _threats = [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        sisters,
+                        eldar,
+                        ork,
+                        tau,
+                        tyranids,
+                        traitors,
+                        csm,
+                        demons,
+                        necrons
+                    ];
                     if (obj_ncombat.enemy >= 5 && obj_ncombat.enemy <= 13) {
                         obj_ncombat.threat = _threats[obj_ncombat.enemy];
                     }
@@ -343,11 +386,11 @@ function drop_select_draw() {
                     var _chaos_lord_jump_possible = attacking == 0 || attacking == 10 || attacking == 11;
                     var _no_know_chaos = _battle_place.p_traitors[_battle_sub_loc] == 0 && _battle_place.p_chaos[_battle_sub_loc] == 0;
 
-                    var _chaos_warlord_present = planet_feature_bool(_battle_place.p_feature[obj_ncombat.battle_id], P_features.Warlord10);
+                    var _chaos_warlord_present = planet_feature_bool(_battle_place.p_feature[obj_ncombat.battle_id], eP_FEATURES.WARLORD10);
 
                     var _chaos_popup_turn_reached = obj_controller.turn >= obj_controller.chaos_turn;
 
-                    var _chaos_unknown = (obj_controller.known[eFACTION.Chaos] == 0) && (obj_controller.faction_gender[10] == 1);
+                    var _chaos_unknown = (obj_controller.known[eFACTION.CHAOS] == 0) && (obj_controller.faction_gender[10] == 1);
 
                     if (_chaos_lord_jump_possible && _no_know_chaos) {
                         if (_chaos_popup_turn_reached && _chaos_warlord_present) {
@@ -362,8 +405,8 @@ function drop_select_draw() {
                                 instance_activate_all();
                                 exit;
                             }
-                            if (obj_controller.known[eFACTION.Chaos] >= 2 && obj_controller.faction_gender[10] == 1) {
-                                with(obj_drop_select) {
+                            if (obj_controller.known[eFACTION.CHAOS] >= 2 && obj_controller.faction_gender[10] == 1) {
+                                with (obj_drop_select) {
                                     obj_ncombat.enemy = 11;
                                     obj_ncombat.threat = 0;
                                     cancel_combat();
@@ -415,13 +458,17 @@ function drop_select_draw() {
 
                 draw_set_halign(fa_left);
                 draw_set_color(c_gray);
-                var _purge_strings = ["Bombard Purging {0}", "Fire Cleansing {0}", "Selective Purging {0}", "Assassinate Governor ({0})"];
+                var _purge_strings = [
+                    "Bombard Purging {0}",
+                    "Fire Cleansing {0}",
+                    "Selective Purging {0}",
+                    "Assassinate Governor ({0})"
+                ];
                 var _planet_string = planet_numeral_name(planet_number, p_target);
                 draw_text_transformed(x2 + 14, y2 + 12, string(_purge_strings[purge - 2], _planet_string), 0.6, 0.6, 0);
 
                 // Disposition here
-                var succession = 0,
-                    pp = planet_number;
+                var succession = 0, pp = planet_number;
 
                 var succession = has_problem_planet(pp, "succession", p_target);
 
@@ -477,6 +524,7 @@ function drop_select_draw() {
     }
 }
 
+/// @mixin
 function collect_local_units() {
     //
     // I think this script is used to count local forces. l_ meaning local.
@@ -500,7 +548,7 @@ function collect_local_units() {
             i = -1;
             q = -1;
             b = -1;
-            repeat(sh_target.capital_number) {
+            repeat (sh_target.capital_number) {
                 b += 1;
                 if (sh_target.capital[b] != "") {
                     i += 1;
@@ -520,7 +568,7 @@ function collect_local_units() {
                 }
             }
             q = -1;
-            repeat(sh_target.frigate_number) {
+            repeat (sh_target.frigate_number) {
                 q += 1;
                 if (sh_target.frigate[q] != "") {
                     i += 1;
@@ -540,7 +588,7 @@ function collect_local_units() {
                 }
             }
             q = -1;
-            repeat(sh_target.escort_number) {
+            repeat (sh_target.escort_number) {
                 q += 1;
                 if ((sh_target.escort[q] != "") && (obj_ini.ship_carrying[sh_target.escort_num[q]] > 0)) {
                     i += 1;
@@ -574,7 +622,7 @@ function collect_local_units() {
             purge_d = 0;
         }
 
-        if ((planet_feature_bool(p_target.p_feature[pp], P_features.Monastery) == 1) && (obj_controller.homeworld_rule != 1)) {
+        if ((planet_feature_bool(p_target.p_feature[pp], eP_FEATURES.MONASTERY) == 1) && (obj_controller.homeworld_rule != 1)) {
             purge_d = 0;
         }
 

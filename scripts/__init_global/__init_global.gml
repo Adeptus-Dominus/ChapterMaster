@@ -10,6 +10,15 @@ function __init_global() {
 
     initialize_dialogue();
 
+    var _log_file = file_text_open_write(PATH_LAST_MESSAGES);
+    if (_log_file != -1) {
+        file_text_write_string(_log_file, $"--- Log Started: {date_datetime_string(date_current_datetime())} ---\n");
+        file_text_close(_log_file);
+    }
+
+    global.logger = new Logger();
+    LOGGER.active_level = (code_is_compiled()) ? eLOG_LEVEL.WARNING : eLOG_LEVEL.DEBUG;
+
     global.culture_styles = [
         "Greek",
         "Roman",
@@ -30,11 +39,11 @@ function __init_global() {
         "Gothic",
         "Wolf Cult",
         "Runic"
-    ];    
-    
-    try{
+    ];
+
+    try {
         load_visual_sets();
-    } catch(_exception){
+    } catch (_exception) {
         handle_exception(_exception);
     }
     global.chapter_name = "None";

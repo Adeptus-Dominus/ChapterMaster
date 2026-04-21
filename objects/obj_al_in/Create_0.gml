@@ -8,8 +8,8 @@ owner = 0;
 hostile = 0;
 
 var object_number = instance_exists(obj_en_in) ? obj_en_in : obj_en_ship;
-var n = floor(random(instance_number(object_number))) // get a random whole number based on obj amount
-var ins = instance_find(object_number, n) // find that n'th instance of that type
+var n = floor(random(instance_number(object_number))); // get a random whole number based on obj amount
+var ins = instance_find(object_number, n); // find that n'th instance of that type
 target = ins;
 
 hp = 15;

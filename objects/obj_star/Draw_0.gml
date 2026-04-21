@@ -3,13 +3,13 @@ add_draw_return_values();
 if (p_type[1]="Craftworld") and (obj_controller.known[eFACTION.Eldar]=0){
     draw_set_alpha(0);
     draw_set_color(255);
-    draw_circle(old_x,old_y,5,0);
+    draw_circle(old_x, old_y, 5, 0);
     draw_set_alpha(1);
     pop_draw_return_values();
     exit;
 }
 
-var show=name;
+var show = name;
 
 if (global.cheat_debug){
     show = $"{name}";
@@ -45,20 +45,18 @@ draw_set_halign(fa_center);
 draw_set_font(fnt_cul_14);
 draw_set_alpha(1);
 
-
 if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape()))) {
-    
-    if (garrison){
-        draw_sprite(spr_new_resource,3,x-30,y+15);
-        if (scr_hit(x-40,y+10,x-10,y+35)){
+    if (garrison) {
+        draw_sprite(spr_new_resource, 3, x - 30, y + 15);
+        if (scr_hit(x - 40, y + 10, x - 10, y + 35)) {
             tooltip_draw("Marine Garrison in system");
         }
     }
-    if (point_in_rectangle(mouse_x, mouse_y,x-128,y, x+128, y+80) && obj_controller.zoomed){
+    if (point_in_rectangle(mouse_x, mouse_y, x - 128, y, x + 128, y + 80) && obj_controller.zoomed) {
         scale *= 1.5;
     }
     var _reset = false;
-    if (stored_owner != owner){
+    if (stored_owner != owner) {
         _reset = true;
     }
 
@@ -95,20 +93,24 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
             var right_pauldron = make_colour_from_array(obj_controller.pauldron_colour_replace);
             draw_sprite_general(spr_p_name_bg, 0, 0, 0, _panel_width, 32, _panel_center, _panel_y, 1, 1, 0, main_color, main_color, right_pauldron, right_pauldron, 1);
             var faction_sprite = global.chapter_icon.sprite;
-            draw_sprite_ext(faction_sprite,0,_panel_center-30,_panel_y, 0.2, 0.2, 0, c_white, 1);
+            if (sprite_exists(faction_sprite)) {
+                draw_sprite_ext(faction_sprite, 0, xx + (panel_width / 2) - 30, yy + 30, 0.2, 0.2, 0, c_white, 1);
+            } else {
+                LOGGER.error($"{global.chapter_icon.name} chapter icon not found in any icon directory. Chapter icon will not render.");
+            }
             //context.set_vertical_gradient(main_color, right_pauldron);
             //draw_text_ext_transformed_color(gx + xoffset,gy + yoffset,text,sep,owner.width,xscale,yscale,angle ,col1, col2, col3, col4, alpha);
         }
         draw_set_color(c_white);
-        draw_text(xx, yy+33, name)
+        draw_text(xx, yy + 33, name);
         surface_reset_target();
         stored_owner = owner;
         var _new_sprite = sprite_create_from_surface(star_tag_surface, 0, 0, surface_get_width(star_tag_surface), surface_get_height(star_tag_surface), false, false, 0, 0);
         ds_map_set(global.star_sprites, name, _new_sprite);
-        surface_clear_and_free(star_tag_surface)
-    } 
-    var _sprite = ds_map_find_value(global.star_sprites, name)
-    draw_sprite_ext(_sprite, 0,  x-(64*scale), y, scale, scale, 1, c_white, 1);
+        surface_clear_and_free(star_tag_surface);
+    }
+    var _sprite = ds_map_find_value(global.star_sprites, name);
+    draw_sprite_ext(_sprite, 0, x - (64 * scale), y, scale, scale, 1, c_white, 1);
 }
 draw_set_valign(fa_top);
 

@@ -1,10 +1,8 @@
 image_angle = direction;
 
-if (x < -1000) 
-    or(x > room_width + 1000) 
-    or(y < -1000) 
-    or(y > room_height + 1000) 
-    then instance_destroy();
+if ((x < -1000) || (x > room_width + 1000) || (y < -1000) || (y > room_height + 1000)) {
+    instance_destroy();
+}
 
 var th, thd;
 if (dam <= 4) {
@@ -12,7 +10,7 @@ if (dam <= 4) {
         th = instance_nearest(x, y, obj_p_th);
         thd = point_distance(x, y, th.x, th.y);
         if (thd < 6) {
-            th.hp -= (self.dam - 1);
+            th.hp -= self.dam - 1;
             instance_destroy();
         }
     }
