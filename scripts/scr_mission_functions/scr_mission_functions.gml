@@ -248,21 +248,6 @@ function protect_raiders_hold_memorial() {
     text = $"You prepare to have a large public memorial for your fallen marines on the planet surface as a show of defiance. The chapter are pleased by such an act and the population of the planet are mesmerized by the spectacle. The governor is furious not only has his incompetence to deal with the planets xenos issue been made public in such a way that the sector commander has now heard about it but he perceives his failures are being paraded in font of him\n nGovernor Disposition : -30";
 }
 
-function init_train_forces_mission(planet, star, mission_slot, marine) {
-    var _pdata = new PlanetData(planet, star);
-    var mission_data = _pdata.problems_data[mission_slot];
-    if (mission_data.stage == "preliminary") {
-        var numeral_name = _pdata.name();
-        mission_data.stage = "active";
-        var _mission_length = irandom_range(3, 12);
-        star.p_timer[planet][mission_slot] = _mission_length;
-        //pop.image="ancient_ruins";
-        var gar_pop = instance_create(0, 0, obj_popup);
-        //TODO some new universal methods for popups
-        gar_pop.title = $"Training forces on {numeral_name} begins";
-        gar_pop.text = $"{marine.name_role()} Has taken leave of his current post in order to aid the governor of {numeral_name} and his pdf commanders with training local forces and bolstering defences.";
-        var _is_cap = role_compare(marine, eROLE.CAPTAIN);
-
 function init_garrison_mission(planet, star, mission_slot){
 	var problems_data = star.p_problem_other_data[planet]
 	var mission_data = problems_data[mission_slot];
