@@ -53,7 +53,7 @@ function PlanetData(planet, system) constructor{
             planet_forces[eFACTION.Eldar] =  system.p_eldar[planet];
             planet_forces[eFACTION.Ork] =  system.p_orks[planet];
             planet_forces[eFACTION.TAU] =  system.p_tau[planet];
-            planet_forces[eFACTION.Tyranids] =  system.p_tyranids[planet];
+            planet_forces[eFACTION.TYRANIDS] =  system.p_tyranids[planet];
             planet_forces[eFACTION.Chaos] = system.p_chaos[planet]+ system.p_demons[planet];
             planet_forces[eFACTION.Heretics] = system.p_traitors[planet];     
 
@@ -156,7 +156,7 @@ function PlanetData(planet, system) constructor{
     };
 
     static end_turn_population_growth = function(){
-        if ((population < max_population) && (planet_type != "Dead") && (planet_type != "Craftworld") && (current_owner <= 5) && (planet_forces[eFACTION.Heretics] == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.Ork] == 0) && (planet_forces[eFACTION.Necrons] == 0) && (planet_forces[eFACTION.Tyranids] == 0)) {
+        if ((population < max_population) && (planet_type != "Dead") && (planet_type != "Craftworld") && (current_owner <= 5) && (planet_forces[eFACTION.Heretics] == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.Ork] == 0) && (planet_forces[eFACTION.Necrons] == 0) && (planet_forces[eFACTION.TYRANIDS] == 0)) {
             if (!large_population) {
                 set_population(round(population * 1.0008));
             } else if (large_population == 1) {
@@ -166,7 +166,7 @@ function PlanetData(planet, system) constructor{
     }
 
     static alter_influence = function(faction,value){
-        adjust_influence(eFACTION.Tyranids, -1, planet,system);
+        adjust_influence(eFACTION.TYRANIDS, -1, planet,system);
         population_influences = system.p_influence[planet];
     }
 
@@ -1058,7 +1058,7 @@ function PlanetData(planet, system) constructor{
         for (var i=1;i<13;i++){
             if (population_influences[i]>0){
                 draw_set_color(global.star_name_colors[i]);
-                if (_hidden_cult && i == eFACTION.Tyranids){
+                if (_hidden_cult && i == eFACTION.TYRANIDS){
                     draw_set_color(global.star_name_colors[eFACTION.Imperium]);
                 }
                 var current_start = bar_start_point + (current_bar_percent * bar_percent_length);
@@ -1427,7 +1427,7 @@ function PlanetData(planet, system) constructor{
                 
     	var kill = 0;
         // Eh heh heh
-        if  (planet_forces[eFACTION.Tyranids]>0){
+        if  (planet_forces[eFACTION.TYRANIDS]>0){
             strength = strength>2 ? 2 : 0;
             system.p_tyranids[planet]-=2;
         }
@@ -1469,11 +1469,11 @@ function PlanetData(planet, system) constructor{
 
     	edit_population(kill*-1);
 
-        if (population_influences[eFACTION.Tyranids] > 3){
-            var _max_influence_reduction = min(_pop_percentage_kill,population_influences[eFACTION.Tyranids]-3);
-            alter_influence(eFACTION.Tyranids,-_max_influence_reduction);
+        if (population_influences[eFACTION.TYRANIDS] > 3){
+            var _max_influence_reduction = min(_pop_percentage_kill,population_influences[eFACTION.TYRANIDS]-3);
+            alter_influence(eFACTION.TYRANIDS,-_max_influence_reduction);
             if (has_feature(eP_FEATURES.GENE_STEALER_CULT)){
-                if (population_influences[eFACTION.Tyranids]<20){
+                if (population_influences[eFACTION.TYRANIDS]<20){
                     delete_feature(eP_FEATURES.GENE_STEALER_CULT);
                 }
             }
@@ -1600,7 +1600,7 @@ function PlanetData(planet, system) constructor{
             if (has_awake_tomb) {
                 // Necron fleets, woooo
                 //necrons kill populatin
-                if ((population > 0) && (player_forces + pdf  + guardsmen + planet_forces[eFACTION.Tyranids] == 0)) {
+                if ((population > 0) && (player_forces + pdf  + guardsmen + planet_forces[eFACTION.TYRANIDS] == 0)) {
                     population = population * 0.75;
                     if ((large_population == 0) && (population <= 5000)) {
                         population = 0;
@@ -1711,9 +1711,9 @@ function PlanetData(planet, system) constructor{
                 }
                 
             }
-            if (current_owner == eFACTION.TAU && population_influences[eFACTION.Tyranids]<70){
+            if (current_owner == eFACTION.TAU && population_influences[eFACTION.TYRANIDS]<70){
                 var _influ_chance = roll_dice(1,100);
-                if (_influ_chance <= 5 && population_influences[eFACTION.Tyranids]>=20){
+                if (_influ_chance <= 5 && population_influences[eFACTION.TYRANIDS]>=20){
                     alter_influence(eFACTION.TAU, 1);
                 }
             }
@@ -1737,11 +1737,11 @@ function PlanetData(planet, system) constructor{
         if (has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
             var cult = get_features(eP_FEATURES.GENE_STEALER_CULT)[0];
             cult.cult_age++;
-            alter_influence(eFACTION.Tyranids, cult.cult_age / 100);
+            alter_influence(eFACTION.TYRANIDS, cult.cult_age / 100);
             var planet_garrison = garrisons;
             if (cult.hiding) {
                 var find_nid_chance = 50 - planet_garrison.total_garrison;
-                if (population_influences[eFACTION.Tyranids] > 50) {
+                if (population_influences[eFACTION.TYRANIDS] > 50) {
                     var find_cult_chance = irandom(50);
                     var alert_text = $"A hidden Genestealer Cult on {name()} Has suddenly burst forth from hiding!";
                     if (planet_garrison.garrison_force) {
@@ -1751,17 +1751,17 @@ function PlanetData(planet, system) constructor{
                     if (find_cult_chance < 1) {
                         cult.hiding = false;
                         scr_popup("System Lost", alert_text, "Genestealer Cult", "");
-                        set_new_owner(eFACTION.Tyranids);
+                        set_new_owner(eFACTION.TYRANIDS);
                         scr_event_log("red", $"A hidden Genestealer Cult on {name()} has Started a revolt.", system.name);
-                        edit_forces(eFACTION.Tyranids,1);
+                        edit_forces(eFACTION.TYRANIDS,1);
                     }
                 }
             }
-            var _nids = planet_forces[eFACTION.Tyranids];
-            if ((!cult.hiding) && (_nids <= 3) && (planet_type != "Space Hulk") && (population_influences[eFACTION.Tyranids] > 10)) {
+            var _nids = planet_forces[eFACTION.TYRANIDS];
+            if ((!cult.hiding) && (_nids <= 3) && (planet_type != "Space Hulk") && (population_influences[eFACTION.TYRANIDS] > 10)) {
                 var spread = 0;
                 var _rando = irandom(150);
-                _rando -= population_influences[eFACTION.Tyranids];
+                _rando -= population_influences[eFACTION.TYRANIDS];
                 if (_rando <= 15) {
                     spread = 1;
                 }
@@ -1774,15 +1774,15 @@ function PlanetData(planet, system) constructor{
                 }
 
                 if (spread == 1) {
-                    add_forces(eFACTION.Tyranids, 1);
+                    add_forces(eFACTION.TYRANIDS, 1);
                 }
             }
-            if (population_influences[eFACTION.Tyranids] > 55) {
-                set_new_owner(eFACTION.Tyranids);
+            if (population_influences[eFACTION.TYRANIDS] > 55) {
+                set_new_owner(eFACTION.TYRANIDS);
             }
-        } else if (population_influences[eFACTION.Tyranids] > 5) {
-            alter_influence(eFACTION.Tyranids, -1);
-            if ((irandom(200) + (population_influences[eFACTION.Tyranids] / 10)) > 195) {
+        } else if (population_influences[eFACTION.TYRANIDS] > 5) {
+            alter_influence(eFACTION.TYRANIDS, -1);
+            if ((irandom(200) + (population_influences[eFACTION.TYRANIDS] / 10)) > 195) {
                 add_feature(eP_FEATURES.GENE_STEALER_CULT);
             }
         }
@@ -2075,7 +2075,7 @@ function PlanetData(planet, system) constructor{
         }
         // If there are enemy non-chaos forces then they may be used as a cover
         // Does not work with chaos because if the governor dies, with chaos present, the new governor would possibly be investigated
-        if (planet_forces[eFACTION.Ork]>=4) or (planet_forces[eFACTION.Necrons]>=3) or (planet_forces[eFACTION.Tyranids]>=5){
+        if (planet_forces[eFACTION.Ork]>=4) or (planet_forces[eFACTION.Necrons]>=3) or (planet_forces[eFACTION.TYRANIDS]>=5){
             pip.estimate=pip.estimate*0.5;
         }
     }

@@ -195,14 +195,14 @@ function FeatureSelected(Feature, system, planet) constructor{
 				title = "Old Battlefield";
 				body = $"The site of a previously unrecorded battle between {feature.faction1} and {feature.faction2} forces long forgotten\nUnload Marines to search Techmarines are advisable to help, it would be best any tech priests not be aware of such an operation it may create a conflict of interest";
 				break;
-			case eP_FEATURES.STC_Fragment:
+			case DROP_TYPE.STC_FRAGMENT:
 				generic=true;
 				title = "STC Fragment";
 				body = $"Unload a {obj_ini.role[100][16]} and whatever entourage you deem necessary to recover the STC Fragment";
 				break;
 			case eP_FEATURES.GENE_STEALER_CULT:
 				generic=true;
-				var cult_control = planet_data.population_influences[eFACTION.Tyranids];
+				var cult_control = planet_data.population_influences[eFACTION.TYRANIDS];
 				title = $"Cult of {feature.name}";
 				var control_string = "";
 				if (cult_control<25){

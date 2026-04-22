@@ -550,7 +550,7 @@ function scr_enemy_ai_c() {
 	var i=0;
 	repeat(planets){i+=1;
 	    if (p_tyranids[i]>=5) and (planets>=i) and (p_player[i]+p_orks[i]+p_guardsmen[i]+p_pdf[i]+p_chaos[i]=0){
-	        var ship=scr_orbiting_fleet(eFACTION.Tyranids);
+	        var ship=scr_orbiting_fleet(eFACTION.TYRANIDS);
 	        if (ship!="none") and (p_type[i]!="Dead") and (array_length(p_feature[i])!=0){
 	        	if (ship.capital_number>0){
 		            if (planet_feature_bool(p_feature[i], eP_FEATURES.RECLAMATION_POOLS) ==1){

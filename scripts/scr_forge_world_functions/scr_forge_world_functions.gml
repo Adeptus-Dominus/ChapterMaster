@@ -71,7 +71,7 @@ function get_imperium_forge_systems(){
 					var enemy_fleets = [
 						eFACTION.Ork,
 						eFACTION.TAU,
-						eFACTION.Tyranids,
+						eFACTION.TYRANIDS,
 						eFACTION.Chaos,
 						eFACTION.Necrons
 					]

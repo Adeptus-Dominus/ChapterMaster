@@ -376,11 +376,11 @@ function scr_enemy_ai_a() {
 	                if (guard_score>=3) and (p_pdf[_run]<10000) then p_pdf[_run]*=(min(0.95, 0+pdf_loss_reduction));
 	                if (guard_score>=2) and (p_pdf[_run]<2000) then p_pdf[_run]=0;
 	                if (guard_score>=1) and (p_pdf[_run]<200) then p_pdf[_run]=0;
-		            if (_planet_data.population_influences[eFACTION.Tyranids] > 50 && _planet_data.has_feature(eP_FEATURES.GENE_STEALER_CULT)){
-		            	var _cur_influ = p_influence[_run][eFACTION.Tyranids];
+		            if (_planet_data.population_influences[eFACTION.TYRANIDS] > 50 && _planet_data.has_feature(eP_FEATURES.GENE_STEALER_CULT)){
+		            	var _cur_influ = p_influence[_run][eFACTION.TYRANIDS];
 		            	var _influence_reduction = _cur_influ *  (p_pdf[_run]/_pdf_before);
-		            	adjust_influence(eFACTION.Tyranids,-min(_influence_reduction,_cur_influ-3) , _run);
-		            	if (p_influence[_run][eFACTION.Tyranids] < 20){
+		            	adjust_influence(eFACTION.TYRANIDS,-min(_influence_reduction,_cur_influ-3) , _run);
+		            	if (p_influence[_run][eFACTION.TYRANIDS] < 20){
 		            		_planet_data.delete_feature(eP_FEATURES.GENE_STEALER_CULT);
 		            	}
 		            }	                

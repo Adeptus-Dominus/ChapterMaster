@@ -381,7 +381,7 @@ if (_is_orbiting) {
                         frigate_number-=new_fleet.frigate_number;
                         escort_number-=new_fleet.escort_number;
                         
-                        new_fleet.owner=eFACTION.Tyranids;
+                        new_fleet.owner=eFACTION.TYRANIDS;
                         new_fleet.sprite_index=spr_fleet_tyranid;
                         new_fleet.image_index=1;
                         

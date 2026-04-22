@@ -47,12 +47,12 @@ function scr_purge_world(action_type, action_score) {
 	    }
 	}
 
-	var heres_before = max(total_corruption(),population_influences[eFACTION.Tau],population_influences[eFACTION.Tyranids]);// Starting heresy
+	var heres_before = max(total_corruption(),population_influences[eFACTION.Tau],population_influences[eFACTION.TYRANIDS]);// Starting heresy
 
 	var heres_target = "corruption";
 
-	if (max(population_influences[eFACTION.Tau],population_influences[eFACTION.Tyranids])  > total_corruption()){
-		if  (population_influences[eFACTION.Tau]>population_influences[eFACTION.Tyranids]){
+	if (max(population_influences[eFACTION.Tau],population_influences[eFACTION.TYRANIDS])  > total_corruption()){
+		if  (population_influences[eFACTION.Tau]>population_influences[eFACTION.TYRANIDS]){
 			heres_target = "tau";
 		} else{
 			heres_target = "genestealers";
@@ -181,7 +181,7 @@ function scr_purge_world(action_type, action_score) {
 	         heres_after=0;
 	     	}
 
-	        var nid_influence = population_influences[eFACTION.Tyranids];
+	        var nid_influence = population_influences[eFACTION.TYRANIDS];
             if (has_feature( P_features.Gene_Stealer_Cult)) {
                 var cult = get_features(P_features.Gene_Stealer_Cult)[0];
                 if (cult.hiding) {
@@ -190,7 +190,7 @@ function scr_purge_world(action_type, action_score) {
             } else {
                 if (nid_influence > 25) {
                     txt1 += " Scores of mutant offspring from a genestealer infestation are burnt, while we have damaged their influence over this world, the mutants appear to lack the organisation of a true cult";
-                    adjust_influence(eFACTION.Tyranids, -10, planet, star);
+                    adjust_influence(eFACTION.TYRANIDS, -10, planet, star);
                 } else if (nid_influence > 0) {
                     txt1 += " There are signs of a genestealer infestation but the cultists are too unorganized to do any real damage to their influence on this world";
                 }
@@ -281,7 +281,7 @@ function scr_purge_world(action_type, action_score) {
 	        }else if (heres_target == "tau"){
 	        	alter_influence(eFACTION.Tau , -influence_reduction);
 	        }else if (heres_target == "genestealers"){
-				alter_influence(eFACTION.Tyranids , -influence_reduction);
+				alter_influence(eFACTION.TYRANIDS , -influence_reduction);
 	        }
 
 	        if (action_type<eDROPTYPE.PURGESELECTIVE){

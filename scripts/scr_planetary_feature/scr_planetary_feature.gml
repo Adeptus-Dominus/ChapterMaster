@@ -130,7 +130,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		static ruins_combat_end=scr_ruins_combat_end;
 		scr_ancient_ruins_setup();
 		break;
-	case eP_FEATURES.STC_Fragment:
+	case DROP_TYPE.STC_FRAGMENT:
 		player_hidden = 1;
 		Fragment_type =0;
 		planet_display = "STC Fragment";
@@ -498,7 +498,7 @@ function scr_planetary_feature(planet_num) {
 					scr_alert("green","feature",lop,x,y);
 					scr_event_log("",lop);
 					break;
-				case eP_FEATURES.STC_Fragment:
+				case DROP_TYPE.STC_FRAGMENT:
 					var lop=$"STC Fragment located on {numeral_n}.";
 					 scr_alert("green","feature",lop,x,y);
 					 scr_event_log("",lop);
