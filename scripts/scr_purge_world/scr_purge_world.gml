@@ -6,13 +6,13 @@ function scr_purge_world(action_type, action_score) {
 
 	var _pop_before = population;
 	var _no_chaos = (planet_forces[eFACTION.Heretics] + planet_forces[eFACTION.Chaos])==0
-	if ((action_type==DropType.PurgeFire || action_type==DropType.PurgeSelective) && _no_chaos && obj_controller.turn>=obj_controller.chaos_turn){
+	if ((action_type==eDROPTYPE.PURGEFIRE || action_type==eDROPTYPE.PURGESELECTIVE) && _no_chaos && obj_controller.turn>=obj_controller.chaos_turn){
 	    if (has_feature(P_features.Warlord10) && obj_controller.known[10]=0 && obj_controller.faction_gender[10]=1){
 	    	with(obj_drop_select){
 		        var pop=instance_create(0,0,obj_popup);
 		        pop.image="chaos_symbol";
 		        pop.title="Concealed Heresy";
-		        pop.text=$"Your astartes set out and begin to cleanse {planet_numeral_name(planet, star)} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";        
+		        pop.text=$"Your astartes set out and begin to cleanse {name()} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";        
 		        exit;   
 		    }
 		}
@@ -63,7 +63,7 @@ function scr_purge_world(action_type, action_score) {
 
 	// TODO - while I don't expect Surface to Orbit weapons retaliating against player's purge bombardment, it might still be worthwhile to consider possible situations
 
-	if (action_type=DropType.PurgeBombard){// Bombardment
+	if (action_type=eDROPTYPE.PURGEBOMBARD){// Bombardment
 		var _ship = string_plural("ship",ships_selected);
 	    txt1=choose($"Your cruiser and larger {_ship}", $"The heavens rumble and thunder as your {_ship}");
 	    txt1+=choose(" position themselves over the target in close orbit, and unleash", " unload");
@@ -130,7 +130,7 @@ function scr_purge_world(action_type, action_score) {
 	}
 
 
-	if (action_type=DropType.PurgeFire){// Burn baby burn
+	if (action_type=eDROPTYPE.PURGEFIRE){// Burn baby burn
 	    var i=0;
 	    if (has_problem("cleanse")){
         	isquest=1;
@@ -208,7 +208,7 @@ function scr_purge_world(action_type, action_score) {
 	}
 
 
-	if (action_type=DropType.PurgeSelective){// Blam!
+	if (action_type=eDROPTYPE.PURGESELECTIVE){// Blam!
 	    var i=0;
 	    if (has_problem_planet(planet, "purge", star)){
         	isquest=1;
@@ -269,11 +269,11 @@ function scr_purge_world(action_type, action_score) {
 
 
 
-	if (action_type=DropType.PurgeAssassinate){
+	if (action_type=eDROPTYPE.PURGEASSASSINATE){
 		assasinate_governor_setup();
 	}
 
-	if (action_type!=DropType.PurgeAssassinate){
+	if (action_type!=eDROPTYPE.PURGEASSASSINATE){
 	    if (isquest=0){// DO EET
 	        txt2=txt1;
 	        if (heres_target == "corruption"){
@@ -284,10 +284,10 @@ function scr_purge_world(action_type, action_score) {
 				alter_influence(eFACTION.Tyranids , -influence_reduction);
 	        }
 
-	        if (action_type<DropType.PurgeSelective){
+	        if (action_type<eDROPTYPE.PURGESELECTIVE){
 	        	set_population(pop_after);
 	        }
-	        if (action_type==DropType.PurgeSelective && !population_large){
+	        if (action_type==eDROPTYPE.PURGESELECTIVE && !population_large){
 	        	set_population(pop_after);
 	        }
         
