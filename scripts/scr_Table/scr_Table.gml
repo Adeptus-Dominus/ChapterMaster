@@ -72,6 +72,8 @@ function Table(data) constructor {
 	update();
 	static draw = function(){
 		add_draw_return_values();
+
+		
     static draw = function() {
         add_draw_return_values();
 
@@ -148,12 +150,12 @@ function Table(data) constructor {
 						_row.hover();
 					}					
 					if (struct_exists(_row,"click_left")){
-						if (scr_click_left()){
+						if (mouse_button_clicked()){
 							_row.click_left();
 						}
 					}
 					if (struct_exists(_row,"click_right")){
-						if (scr_click_right()){
+						if (mouse_button_clicked(mb_right)){
 							_row.click_right();
 						}
 					}

@@ -485,7 +485,7 @@ function draw_planet_debug_problems(){
 		draw_text(38, _y, _keys[i]);
 		if (scr_hit(38, _y, 337,_y+20)){
 			tooltip_draw(mission_name_key(_keys[i]));
-			if (scr_click_left()){
+			if (mouse_button_clicked()){
 				switch(_keys[i]){
 					case "inquisitor":
 						mission_inquistion_hunt_inquisitor(target.id);
