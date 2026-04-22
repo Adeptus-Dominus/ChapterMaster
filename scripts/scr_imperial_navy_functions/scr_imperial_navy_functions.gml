@@ -105,34 +105,34 @@ function check_navy_guard_still_live() {
 
 
 function build_new_navy_fleet(construction_forge){
-	    new_navy_fleet=instance_create(construction_forge.x,construction_forge.y,obj_en_fleet);
+    new_navy_fleet=instance_create(construction_forge.x,construction_forge.y,obj_en_fleet);
 
-	    with(new_navy_fleet){
-    	    owner=eFACTION.Imperium;
-    	    
-    	    capital_number=0;
-    	    frigate_number=0;
-    	    escort_number=1;
-    	    home_x=x;
-    	    home_y=y;
-    	    warp_able = true;
-    	    with (construction_forge){
-                present_fleet[2]+=1;
-            }
-    	    orbiting=construction_forge;
-    	    navy=1;
-    	    
-    	    var total_ships=0;
-    	    total_ships+=round(standard_fleet_strength_calc());
-    	    if (total_ships<=1 && capital_number+frigate_number+escort_number>0){
-                total_ships=1;
-            }
-    	    choose_fleet_sprite_image()
-    	    image_index=total_ships;
-    	    image_speed=0;
-    	    
-    	    trade_goods="building_ships";
-    	}
+    with(new_navy_fleet){
+	    owner=eFACTION.Imperium;
+	    
+	    capital_number=0;
+	    frigate_number=0;
+	    escort_number=1;
+	    home_x=x;
+	    home_y=y;
+	    warp_able = true;
+	    with (construction_forge){
+            present_fleet[2]+=1;
+        }
+	    orbiting=construction_forge;
+	    navy=1;
+	    
+	    var total_ships=0;
+	    total_ships+=round(standard_fleet_strength_calc());
+	    if (total_ships<=1 && capital_number+frigate_number+escort_number>0){
+            total_ships=1;
+        }
+	    choose_fleet_sprite_image()
+	    image_index=total_ships;
+	    image_speed=0;
+	    
+	    trade_goods="building_ships";
+	}
 }
 
 /// @mixin
