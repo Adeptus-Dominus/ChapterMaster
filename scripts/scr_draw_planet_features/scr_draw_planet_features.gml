@@ -242,20 +242,12 @@ function FeatureSelected(Feature, system, planet) constructor{
 			case eP_FEATURES.ORKSTRONGHOLD:
 				title = "Ork Stronghold";
 				generic = true;
-				if (planet_data.planet_forces[eFACTION.Ork]){
+				if (planet_data.planet_forces[eFACTION.ORK]){
 					body = $"For as long as this Stronghold stands the orks here will continue to fortify it. The larger it gets the greater the capacity of this planet to produce orkish machines of war and ships and the better protected the ork forces will be from bombardment";
 				} else {
 					body = "Without a force of orks to hold it together the fortress is slowly pulled apart from within by the inhabitants, It's capabilities will constantly decrease until soon there will be nothing left";
 				}
 				break
-            case eP_FEATURES.RECRUITING_WORLD:
-                generic = true;
-                if (planet_data.planet_forces[eFACTION.ORK]) {
-                    body = $"For as long as this Stronghold stands the orks here will continue to fortify it. The larger it gets the greater the capacity of this planet to produce orkish machines of war and ships and the better protected the ork forces will be from bombardment";
-                } else {
-                    body = "Without a force of orks to hold it together the fortress is slowly pulled apart from within by the inhabitants, It's capabilities will constantly decrease until soon there will be nothing left";
-                }
-                break;
             case eP_FEATURES.RECRUITING_WORLD:
                 generic = true;
                 var _planet = planet_data.planet;

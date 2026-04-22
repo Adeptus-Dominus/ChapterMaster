@@ -5,7 +5,7 @@ function scr_purge_world(action_type, action_score) {
 
 
 	var _pop_before = population;
-	var _no_chaos = (planet_forces[eFACTION.Heretics] + planet_forces[eFACTION.Chaos])==0
+	var _no_chaos = (planet_forces[eFACTION.HERETICS] + planet_forces[eFACTION.CHAOS])==0
 	if ((action_type==eDROPTYPE.PURGEFIRE || action_type==eDROPTYPE.PURGESELECTIVE) && _no_chaos && obj_controller.turn>=obj_controller.chaos_turn){
 	    if (has_feature(P_features.Warlord10) && obj_controller.known[10]=0 && obj_controller.faction_gender[10]=1){
 	    	with(obj_drop_select){

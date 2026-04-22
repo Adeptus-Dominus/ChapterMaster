@@ -72,8 +72,8 @@ function get_imperium_forge_systems(){
 						eFACTION.ORK,
 						eFACTION.TAU,
 						eFACTION.TYRANIDS,
-						eFACTION.Chaos,
-						eFACTION.Necrons
+						eFACTION.CHAOS,
+						eFACTION.NECRONS
 					]
 				
 					var enemy_fleet_count = array_reduce(enemy_fleets, function(prev, curr) {

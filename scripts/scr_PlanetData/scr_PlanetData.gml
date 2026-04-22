@@ -51,13 +51,13 @@ function PlanetData(planet, system) constructor {
 
             planet_forces[eFACTION.Ecclesiarchy] =  system.p_sisters[planet];
             planet_forces[eFACTION.Eldar] =  system.p_eldar[planet];
-            planet_forces[eFACTION.Ork] =  system.p_orks[planet];
+            planet_forces[eFACTION.ORK] =  system.p_orks[planet];
             planet_forces[eFACTION.TAU] =  system.p_tau[planet];
             planet_forces[eFACTION.TYRANIDS] =  system.p_tyranids[planet];
-            planet_forces[eFACTION.Chaos] = system.p_chaos[planet]+ system.p_demons[planet];
-            planet_forces[eFACTION.Heretics] = system.p_traitors[planet];     
+            planet_forces[eFACTION.CHAOS] = system.p_chaos[planet]+ system.p_demons[planet];
+            planet_forces[eFACTION.HERETICS] = system.p_traitors[planet];     
 
-            planet_forces[eFACTION.Necrons] = system.p_necrons[planet];
+            planet_forces[eFACTION.NECRONS] = system.p_necrons[planet];
         }catch(_exception){
             handle_exception(_exception);
         }
@@ -98,6 +98,15 @@ function PlanetData(planet, system) constructor {
         garrisons = system.system_garrison[planet];
         sabatours = system.system_sabatours[planet];
         system.system_datas[planet] = self;
+
+        // current planet heresy
+        if (population == 0) {
+            system.p_heresy[planet] = 0;
+            system.p_heresy_secret[planet] = 0;
+            for (var i = 0; i < array_length(system.p_influence[planet]); ++i) {
+                system.p_influence[planet][i] = 0;
+            }
+        }
     }
 
     refresh_data();
@@ -156,7 +165,7 @@ function PlanetData(planet, system) constructor {
     };
 
     static end_turn_population_growth = function(){
-        if ((population < max_population) && (planet_type != "Dead") && (planet_type != "Craftworld") && (current_owner <= 5) && (planet_forces[eFACTION.Heretics] == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.Ork] == 0) && (planet_forces[eFACTION.Necrons] == 0) && (planet_forces[eFACTION.TYRANIDS] == 0)) {
+        if ((population < max_population) && (planet_type != "Dead") && (planet_type != "Craftworld") && (current_owner <= 5) && (planet_forces[eFACTION.HERETICS] == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.ORK] == 0) && (planet_forces[eFACTION.NECRONS] == 0) && (planet_forces[eFACTION.TYRANIDS] == 0)) {
             if (!large_population) {
                 set_population(round(population * 1.0008));
             } else if (large_population == 1) {
@@ -320,7 +329,8 @@ function PlanetData(planet, system) constructor {
             add_event({duration: _duration, e_id: "governor_assassination", variant: assaination_type, system: system.name, planet: planet});
         }
         return _text;
-    }
+    };
+
     static grow_ork_forces = function(){
         var contin = 0;
         var _rando = roll_dice(1,100);// This part handles the spreading
@@ -351,17 +361,17 @@ function PlanetData(planet, system) constructor {
             _ork_growth_threshold *= 2;
         }
 
-        var _orks = planet_forces[eFACTION.Ork];
-        if ((current_owner == eFACTION.Ork) && (_orks < 5) && (planet_forces[eFACTION.Heretics] == 0) && (player_forces <= 0 || !is_garrison_force)) {
+        var _orks = planet_forces[eFACTION.ORK];
+        if ((current_owner == eFACTION.ORK) && (_orks < 5) && (planet_forces[eFACTION.HERETICS] == 0) && (player_forces <= 0 || !is_garrison_force)) {
             if ((_orks> 0) && (_ork_growth <= _ork_growth_threshold)) {
                 if (sabotage_force) {
                     if (irandom(3) < 2) {
                         scr_event_log("green", $"sabotage force on {name()} disrupts ork forces", name);
                     } else {
-                        add_forces(eFACTION.Ork,1);
+                        add_forces(eFACTION.ORK,1);
                     }
                 } else {
-                    add_forces(eFACTION.Ork,1);
+                    add_forces(eFACTION.ORK,1);
                 }
             }
         }
@@ -440,7 +450,7 @@ function PlanetData(planet, system) constructor {
             if (_has_stronghold){
                 _rando -= _stronghold.tier*5;
             }
-            if (obj_controller.known[eFACTION.Ork]>0) then _rando-=10;// Empire bonus, was 15 before
+            if (obj_controller.known[eFACTION.ORK]>0) then _rando-=10;// Empire bonus, was 15 before
         
             // Check for industrial facilities
             var fleet_buildable = (planet_type != "Dead" && planet_type != "Lava") || _has_warboss || _has_stronghold;
@@ -460,7 +470,7 @@ function PlanetData(planet, system) constructor {
                 }else if (planet_type == "Agri"){
                 	_rando-=10;
                 }
-                var _ork_fleet = scr_orbiting_fleet(eFACTION.Ork, system); 
+                var _ork_fleet = scr_orbiting_fleet(eFACTION.ORK, system); 
                 if (_ork_fleet=="none"){
                 	if (_rando<=20){
                 		new_ork_fleet(x,y);
@@ -475,7 +485,7 @@ function PlanetData(planet, system) constructor {
             with (_ork_fleet){
             // Increase ship number for this object?
                 var _rando=irandom(101);
-                if (obj_controller.known[eFACTION.Ork]>0) then _rando-=10;
+                if (obj_controller.known[eFACTION.ORK]>0) then _rando-=10;
                 var _planet_type = _pdata.planet_type;
                 if (_planet_type=="Forge"){
                     _rando-=20;
@@ -544,7 +554,7 @@ function PlanetData(planet, system) constructor {
         }
         if (_has_warboss){
             _rando=roll_dice(1,100)+10;
-            var _ork_fleet = scr_orbiting_fleet(eFACTION.Ork, system);
+            var _ork_fleet = scr_orbiting_fleet(eFACTION.ORK, system);
             if (_ork_fleet!="none" && _rando <  _warboss.turns_static){
                 _warboss.turns_static = 0;
                 _ork_fleet.cargo_data.ork_warboss = _warboss;
@@ -555,15 +565,6 @@ function PlanetData(planet, system) constructor {
             }
         }
     };
-
-    // current planet heresy
-    if (population == 0) {
-        system.p_heresy[planet] = 0;
-        system.p_heresy_secret[planet] = 0;
-        for (var i = 0; i < array_length(system.p_influence[planet]); ++i) {
-            system.p_influence[planet][i] = 0;
-        }
-    }
 
     static alter_corruption = function(value){
     	alter_planet_corruption(value, planet, system);
@@ -705,10 +706,7 @@ function PlanetData(planet, system) constructor {
                 }
             }
         }
-
-
-    }
-
+    };
 
     static recover_starship = function(techs) {
         try {
@@ -950,10 +948,10 @@ function PlanetData(planet, system) constructor {
 
 	static pdf_defence_loss_to_orks = function(){
 		var active_garrison = pdf_will_support_player() && garrisons.viable_garrison>0;
-        if (planet_forces[eFACTION.Ork]>=4) and (pdf>=30000){
+        if (planet_forces[eFACTION.ORK]>=4) and (pdf>=30000){
         	pdf=floor(pdf*(min(0.95, 0.55+pdf_loss_reduction)));
     	}
-        else if (planet_forces[eFACTION.Ork]>=4 && pdf<30000 && pdf>=10000){
+        else if (planet_forces[eFACTION.ORK]>=4 && pdf<30000 && pdf>=10000){
         	pdf=active_garrison?pdf*0.4:0;
         }
         if ((planet_forces[eFACTION.ORK] >= 2) && (pdf < 2000)) {
@@ -1408,7 +1406,7 @@ function PlanetData(planet, system) constructor {
             strength = strength>2 ? 2 : 0;
             system.p_tyranids[planet]-=2;
         }
-        else if  (planet_forces[eFACTION.Ork]>0){
+        else if  (planet_forces[eFACTION.ORK]>0){
             if (strength>2) then strength=2;
 			if (strength<1) then strength=0;
             system.p_orks[planet]-=2;
@@ -1543,7 +1541,7 @@ function PlanetData(planet, system) constructor {
             }                       
             
         }        
-    }
+    };
 
     static end_of_turn_population_influence_and_enemy_growth = function(){
 
@@ -1563,14 +1561,14 @@ function PlanetData(planet, system) constructor {
                 has_awake_tomb = true;
             }
             if (has_awake_tomb) {
-                if (planet_forces[eFACTION.Necrons] < 3) {
-                    planet_forces[eFACTION.Necrons] += 2;
-                } else if (planet_forces[eFACTION.Necrons] < 6) {
-                    planet_forces[eFACTION.Necrons] += 1;
+                if (planet_forces[eFACTION.NECRONS] < 3) {
+                    planet_forces[eFACTION.NECRONS] += 2;
+                } else if (planet_forces[eFACTION.NECRONS] < 6) {
+                    planet_forces[eFACTION.NECRONS] += 1;
                 }
             }
             if (sabotage_force && irandom(2) < 2) {
-                planet_forces[eFACTION.Necrons]--;
+                planet_forces[eFACTION.NECRONS]--;
                 scr_event_log("green", $"sabotage force on {name()} disrupts necron forces", name);
             }
 
@@ -1588,11 +1586,11 @@ function PlanetData(planet, system) constructor {
                 onceh = 0;
 
                 if (fleet_spawn_chance <= 15) {
-                    if (system.present_fleet[eFACTION.Necrons] > 0) {
+                    if (system.present_fleet[eFACTION.NECRONS] > 0) {
                         //if necron fleet
                         necron_fleet = instance_nearest(x, y, obj_en_fleet);
 
-                        if (necron_fleet.owner == eFACTION.Necrons) {
+                        if (necron_fleet.owner == eFACTION.NECRONS) {
                             if (necron_fleet.escort_number < necron_fleet.capital_number * 1.5) {
                                 necron_fleet.escort_number += 2;
                             } else if (necron_fleet.frigate_number < necron_fleet.capital_number * 3) {
@@ -1601,18 +1599,18 @@ function PlanetData(planet, system) constructor {
                                 necron_fleet.capital_number += 1;
                             }
                         }
-                    } else if (system.present_fleet[eFACTION.Necrons] == 0) {
+                    } else if (system.present_fleet[eFACTION.NECRONS] == 0) {
                         necron_fleet = instance_create(x, y, obj_en_fleet);
-                        necron_fleet.owner = eFACTION.Necrons;
+                        necron_fleet.owner = eFACTION.NECRONS;
                         necron_fleet.capital_number = 1;
                         necron_fleet.sprite_index = spr_fleet_necron;
                         necron_fleet.image_speed = 0;
                         necron_fleet.image_index = 1;
-                        system.present_fleet[eFACTION.Necrons] += 1;
+                        system.present_fleet[eFACTION.NECRONS] += 1;
                     }
                     var enemy_fleets = 0;
                     with(necron_fleet) {
-                        if (owner == eFACTION.Necrons) {
+                        if (owner == eFACTION.NECRONS) {
                             var ii = 0;
                             ii += capital_number;
                             ii += round((frigate_number / 2));
@@ -1633,14 +1631,14 @@ function PlanetData(planet, system) constructor {
                     if (enemy_fleets > 0) {
                         var necron_fleet2;
                         necron_fleet2 = instance_create(x, y, obj_en_fleet);
-                        necron_fleet2.owner = eFACTION.Necrons;
+                        necron_fleet2.owner = eFACTION.NECRONS;
                         necron_fleet2.sprite_index = spr_fleet_necron;
                         // necron_fleet2.image_index=0;
                         necron_fleet.image_speed = 0;
                         necron_fleet2.capital_number = 1;
                         necron_fleet2.frigate_number = round(necron_fleet.frigate_number / 2);
                         necron_fleet2.escort_number = round(necron_fleet.escort_number / 2);
-                        system.present_fleet[eFACTION.Necrons] += 1;
+                        system.present_fleet[eFACTION.NECRONS] += 1;
 
                         necron_fleet.capital_number -= 1;
                         necron_fleet.frigate_number -= necron_fleet2.frigate_number;
@@ -1648,7 +1646,7 @@ function PlanetData(planet, system) constructor {
                         var nearest_planet_coords = [0, 0];
                         var found_near_planet = false;
                         with(obj_star) {
-                            if (present_fleet[eFACTION.Necrons] == 0) {
+                            if (present_fleet[eFACTION.NECRONS] == 0) {
                                 if (!array_contains(p_type, "Dead")) {
                                     for (var plan = 1; plan <= planets; plan++) {
                                         if (p_owner[plan] <= 5) {
@@ -1706,7 +1704,7 @@ function PlanetData(planet, system) constructor {
 
         }
        
-    }
+    };
 
 
 	static end_turn_genestealer_cults = function(){
@@ -1763,7 +1761,7 @@ function PlanetData(planet, system) constructor {
                 add_feature(eP_FEATURES.GENE_STEALER_CULT);
             }
         }
-    }
+    };
 
     static end_turn_heretics_and_corruption_growth = function(){
         // traitors cults
@@ -1773,13 +1771,13 @@ function PlanetData(planet, system) constructor {
 
         var _rando = roll_dice(1,100);
 
-        if ((current_owner == eFACTION.Chaos) && (corruption < 80)) {
+        if ((current_owner == eFACTION.CHAOS) && (corruption < 80)) {
             alter_corruption(1);
         }
 
-        if ((current_owner != eFACTION.Chaos) && (current_owner != eFACTION.Heretics) && (current_owner != eFACTION.Eldar) && (planet_type != "Dead") && (planet_type != "Craftworld")) {
+        if ((current_owner != eFACTION.CHAOS) && (current_owner != eFACTION.HERETICS) && (current_owner != eFACTION.Eldar) && (planet_type != "Dead") && (planet_type != "Craftworld")) {
             success = false;
-            is_ork = current_owner == eFACTION.Ork;
+            is_ork = current_owner == eFACTION.ORK;
 
             if (!is_ork) {
                 //made a linear function for this while here...now the minimum for the roll is a bit higher, but
@@ -1794,7 +1792,7 @@ function PlanetData(planet, system) constructor {
                 }
             }
 
-            if (success && (pdf  == 0) && (guardsmen == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.Ork] == 0)) {
+            if (success && (pdf  == 0) && (guardsmen == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.ORK] == 0)) {
                 current_owner = 10;
                 scr_alert("red", "owner", $"{name()} has fallen to heretics!", x, y);
 
@@ -1839,12 +1837,12 @@ function PlanetData(planet, system) constructor {
 
                         if (pdf  <= 500) {
                             lost = pdf ;
-                            edit_forces(eFACTION.Heretics, 1);
+                            edit_forces(eFACTION.HERETICS, 1);
                         }
 
                         edit_pdf(-lost);
 
-                        if (planet_forces[eFACTION.Heretics] == 0) {
+                        if (planet_forces[eFACTION.HERETICS] == 0) {
                             if (pdf  > 0) {
                                 tixt = $"{scr_display_number(lost)} PDF killed in a rebellion on {name()}.";
                             } else if (pdf  == 0) {
@@ -1861,33 +1859,33 @@ function PlanetData(planet, system) constructor {
                         corruption -= irandom(5);
                     }
                     // Cult crushed; don't bother showing if there's already fighting going on over there
-                } else if ((_rando >= 41) && (_rando < 81) && (planet_forces[eFACTION.Heretics] < 2)) {
+                } else if ((_rando >= 41) && (_rando < 81) && (planet_forces[eFACTION.HERETICS] < 2)) {
                     if (is_garrison_force) {
                         traitor_mod = choose(1, 2);
                     } else {
                         traitor_mod = 2;
                     }
 
-                    planet_forces[eFACTION.Heretics] = traitor_mod;
+                    planet_forces[eFACTION.HERETICS] = traitor_mod;
                     tixt = $"Heretic cults have appeared in {name()}.";
-                } else if ((_rando >= 81) && (_rando < 91) && (planet_forces[eFACTION.Heretics] < 3)) {
+                } else if ((_rando >= 81) && (_rando < 91) && (planet_forces[eFACTION.HERETICS] < 3)) {
                     // Minor uprising
                     if (is_garrison_force) {
                         traitor_mod = choose(2, 3);
                     } else {
                         traitor_mod = 3;
                     }
-                    edit_forces(eFACTION.Heretics,traitor_mod);
+                    edit_forces(eFACTION.HERETICS,traitor_mod);
                     tixt = $"Heretic cults have spread around {name()}.";
                 } // Major uprising
 
                 // major and huge uprisings are impossible as long as a garrisons of at least 10 marines is present
-                if ((_rando >= 91) && (_rando < 100) && (planet_forces[eFACTION.Heretics] < 4)) {
+                if ((_rando >= 91) && (_rando < 100) && (planet_forces[eFACTION.HERETICS] < 4)) {
                     notixt = true;
-                    edit_forces(eFACTION.Heretics,4);
+                    edit_forces(eFACTION.HERETICS,4);
 
                     if ((obj_controller.faction_defeated[10] == 0) && (obj_controller.faction_gender[10] == 1)) {
-                        edit_forces(eFACTION.Heretics,5);
+                        edit_forces(eFACTION.HERETICS,5);
                     }
 
                     var n_name = name();
@@ -1896,9 +1894,9 @@ function PlanetData(planet, system) constructor {
                     scr_event_log("purple", $"Massive heretic uprising on {n_name}.", system.name);
                 } // Huge uprising
 
-                if ((_rando >= 100) && (planet_forces[eFACTION.Heretics] < 5)) {
-                    edit_forces(eFACTION.Heretics,6);
-                    set_new_owner(eFACTION.Heretics)
+                if ((_rando >= 100) && (planet_forces[eFACTION.HERETICS] < 5)) {
+                    edit_forces(eFACTION.HERETICS,6);
+                    set_new_owner(eFACTION.HERETICS)
                     add_feature(eP_FEATURES.DAEMONIC_INCURSION);
 
                     set_corruption(corruption < 80 ? 80 : 95)
@@ -1910,11 +1908,11 @@ function PlanetData(planet, system) constructor {
                     scr_alert("red", "owner", tixt, x, y);
                     scr_event_log("purple", tixt, system.name);
                 }
-                // if (planet_forces[eFACTION.Heretics]>2){obj_controller.x=self.x;obj_controller.y=self.y;}
+                // if (planet_forces[eFACTION.HERETICS]>2){obj_controller.x=self.x;obj_controller.y=self.y;}
             } // End traitors cult
         }
 
-    }
+    };
 
     static check_old_battles_feature = function(){
         if (has_feature(eP_FEATURES.OLDBATTLEGROUND)){
@@ -1950,13 +1948,13 @@ function PlanetData(planet, system) constructor {
                             set_movement(true,"move",);
                         }
 
-                        scr_popup("Mechanicus Exploration", $"A Mechanicus Exploration fleet has set off from {_star.name} to explore the battle grounds of {name()}. It will arrive in aproximatly {_time} months time");
+                        scr_popup("Mechanicus Exploration", $"A Mechanicus Exploration fleet has set off from {_star.name} to explore the battle grounds of {name()}. It will arrive in aproximatly {_time} months time","mechanicus");
                     }
                 }
             }
  
         }
-    }
+    };
 
     static purge = scr_purge_world;
 
@@ -2052,13 +2050,9 @@ function PlanetData(planet, system) constructor {
         }
         // If there are enemy non-chaos forces then they may be used as a cover
         // Does not work with chaos because if the governor dies, with chaos present, the new governor would possibly be investigated
-        if (planet_forces[eFACTION.Ork]>=4) or (planet_forces[eFACTION.Necrons]>=3) or (planet_forces[eFACTION.TYRANIDS]>=5){
+        if (planet_forces[eFACTION.ORK]>=4) or (planet_forces[eFACTION.NECRONS]>=3) or (planet_forces[eFACTION.TYRANIDS]>=5){
             pip.estimate=pip.estimate*0.5;
         }
-    }
+    };
+
 }
-
-
-
-
-

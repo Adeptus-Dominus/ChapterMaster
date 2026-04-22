@@ -905,7 +905,7 @@ function fleet_arrival_logic() {
 	    	_attempt_merge = false;
 	    }
 
-	    if (owner=eFACTION.Chaos) and (fleet_has_cargo("csm")) or ( fleet_has_cargo("warband")){
+	    if (owner=eFACTION.CHAOS) and (fleet_has_cargo("csm")) or ( fleet_has_cargo("warband")){
 	    	var _csm = fleet_has_cargo("warband");
 	    	_attempt_merge = false;
 	    }
@@ -923,7 +923,7 @@ function fleet_arrival_logic() {
 	    
 
 	    //if fleet is damaged but existing fleet is too large to merge feck off elsewhere preferably somewhere friendly
-	    else if (_same_owner && (owner == eFACTION.TAU || (owner = eFACTION.Chaos && !csm))){// Move somewhere new
+	    else if (_same_owner && (owner == eFACTION.TAU || (owner = eFACTION.CHAOS && !csm))){// Move somewhere new
 
 	    	if (standard_fleet_strength_calc()<3){
 
@@ -1163,7 +1163,7 @@ function merge_fleets(main_fleet, merge_fleet){
 				merge_fleet.orbiting.tau_fleets--;
 			}
 			break;
-		case eFACTION.Chaos:
+		case eFACTION.CHAOS:
 			obj_controller.chaos_fleets--;
 			break;
 
