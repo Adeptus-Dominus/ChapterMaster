@@ -51,7 +51,7 @@ function PlanetData(planet, system) constructor{
 
             planet_forces[eFACTION.Ecclesiarchy] =  system.p_sisters[planet];
             planet_forces[eFACTION.Eldar] =  system.p_eldar[planet];
-            planet_forces[eFACTION.ORK] =  system.p_orks[planet];
+            planet_forces[eFACTION.Ork] =  system.p_orks[planet];
             planet_forces[eFACTION.TAU] =  system.p_tau[planet];
             planet_forces[eFACTION.TYRANIDS] =  system.p_tyranids[planet];
             planet_forces[eFACTION.Chaos] = system.p_chaos[planet]+ system.p_demons[planet];
@@ -156,7 +156,7 @@ function PlanetData(planet, system) constructor{
     };
 
     static end_turn_population_growth = function(){
-        if ((population < max_population) && (planet_type != "Dead") && (planet_type != "Craftworld") && (current_owner <= 5) && (planet_forces[eFACTION.Heretics] == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.ORK] == 0) && (planet_forces[eFACTION.Necrons] == 0) && (planet_forces[eFACTION.TYRANIDS] == 0)) {
+        if ((population < max_population) && (planet_type != "Dead") && (planet_type != "Craftworld") && (current_owner <= 5) && (planet_forces[eFACTION.Heretics] == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.Ork] == 0) && (planet_forces[eFACTION.Necrons] == 0) && (planet_forces[eFACTION.TYRANIDS] == 0)) {
             if (!large_population) {
                 set_population(round(population * 1.0008));
             } else if (large_population == 1) {
@@ -321,21 +321,21 @@ function PlanetData(planet, system) constructor{
         }
         return _text;
     }
-        static grow_ork_forces = function(){
+    static grow_ork_forces = function(){
         var contin = 0;
         var _rando = roll_dice(1,100);// This part handles the spreading
         // if (_rando<30){
         var _non_deads = planets_without_type("dead", system);
 
-        var _has_warboss = has_feature(eP_features.ORKWARBOSS);
-        var _has_stronghold = has_feature(eP_features.ORKSTRONGHOLD);
+        var _has_warboss = has_feature(eP_FEATURES.ORKWARBOSS);
+        var _has_stronghold = has_feature(eP_FEATURES.ORKSTRONGHOLD);
         var _build_ships = false;
-        if (_has_stronghold){
-            var _stronghold = get_features(eP_features.ORKSTRONGHOLD)[0];
+        if (_has_stronghold) {
+            var _stronghold = get_features(eP_FEATURES.ORKSTRONGHOLD)[0];
         }
 
-        if (_has_warboss){
-            var _warboss = get_features(eP_features.ORKWARBOSS)[0];
+        if (_has_warboss) {
+            var _warboss = get_features(eP_FEATURES.ORKWARBOSS)[0];
             _warboss.turns_static++;
         }
         var _roll_num = 100;
@@ -351,75 +351,82 @@ function PlanetData(planet, system) constructor{
             _ork_growth_threshold *= 2;
         }
 
-        var _orks = planet_forces[eFACTION.ORK];
-        if ((current_owner == eFACTION.ORK) && (_orks < 5) && (planet_forces[eFACTION.Heretics] == 0) && (player_forces <= 0 || !is_garrison_force)) {
+        var _orks = planet_forces[eFACTION.Ork];
+        if ((current_owner == eFACTION.Ork) && (_orks < 5) && (planet_forces[eFACTION.Heretics] == 0) && (player_forces <= 0 || !is_garrison_force)) {
             if ((_orks> 0) && (_ork_growth <= _ork_growth_threshold)) {
                 if (sabotage_force) {
                     if (irandom(3) < 2) {
                         scr_event_log("green", $"sabotage force on {name()} disrupts ork forces", name);
                     } else {
-                        add_forces(eFACTION.ORK,1);
+                        add_forces(eFACTION.Ork,1);
                     }
                 } else {
-                    add_forces(eFACTION.ORK,1);
+                    add_forces(eFACTION.Ork,1);
                 }
             }
         }
 
         if (array_length(_non_deads)>0 && _rando>40){
             var _ork_spread_planet = array_random_element(_non_deads);
-            var _orks = planet_forces[eFACTION.ORK]
+            var _orks = planet_forces[eFACTION.ORK];
             var _ork_target = system.p_orks[_ork_spread_planet];
-            var _spread_orks = (current_owner==eFACTION.ORK &&  ((pdf + guardsmen + planet_forces[8] + planet_forces[10]+planet_forces[1]) == 0 ));
-            if (_spread_orks){
+            var _spread_orks = current_owner == eFACTION.ORK && ((pdf + guardsmen + planet_forces[8] + planet_forces[10] + planet_forces[1]) == 0);
+            if (_spread_orks) {
                 // determine maximum Ork presence on the source planet
                 var _ork_max = planet_forces[eFACTION.ORK];
 
-                if (_ork_max<5 && _ork_target<2) then  system.p_orks[_ork_spread_planet]++;
-                if (_orks>4 && _ork_target<3){
+                if (_ork_max < 5 && _ork_target < 2) {
                     system.p_orks[_ork_spread_planet]++;
-                    if (_ork_target<3){
+                }
+                if (_orks > 4 && _ork_target < 3) {
+                    system.p_orks[_ork_spread_planet]++;
+                    if (_ork_target < 3) {
                         system.p_orks[_ork_spread_planet]++;
                         add_forces(eFACTION.ORK, -1);
                     }
                 }
-
             }
         }
         contin=0;
         _rando=roll_dice(1,100);// This part handles the ship building
-        if (population>0 && pdf==0 && guardsmen==0 && planet_forces[10]==0) and (planet_forces[eFACTION.Tau]==0){
-            if (!large_population){
-                set_population(population*0.97);
-            }else {
-                edit_population(-0.01);
-            }
-            
+        if (population>0 && pdf==0 && guardsmen==0 && planet_forces[10]==0) and (planet_forces[eFACTION.TAU]==0){
+        	if (!large_population){
+				set_population(population*0.97);
+			}else {
+				edit_population(-0.01);
+			}
+        	
         };
     
         var enemies_present=false;
         with (system){
-            for (var n=0;n<array_length(_non_deads);n++){
-                var plan = _non_deads[n];
+	        for (var n=0;n<array_length(_non_deads);n++){
+	        	var plan = _non_deads[n];
 
-                if (planets>=1) and ((p_pdf[plan]>0) or (p_guardsmen[plan]>0) or (p_traitors[plan]>0) or (p_tau[plan]>0)){
-                    enemies_present=true;
-                }
-            }
-        }
+        var enemies_present = false;
+        with (system) {
+            for (var n = 0; n < array_length(_non_deads); n++) {
+                var plan = _non_deads[n];
 
         if (_has_warboss && !_has_stronghold){
             _rando=roll_dice_chapter(1,100, "low");
             if (_rando<30){
-                add_feature(eP_features.ORKSTRONGHOLD);
+                add_feature(eP_FEATURES.ORKSTRONGHOLD);
+            }
+        }
+
+        if (_has_warboss && !_has_stronghold) {
+            rando = roll_dice_chapter(1, 100, "low");
+            if (rando < 30) {
+                add_feature(eP_FEATURES.ORKSTRONGHOLD);
             }
         } else {
-            if (_has_stronghold){
+            if (_has_stronghold) {
                 growth = 0.01;
-                if (_has_warboss){
+                if (_has_warboss) {
                     growth *= 2;
                 }
-                if (_stronghold.tier<planet_forces[eFACTION.ORK]){
+                if (_stronghold.tier < planet_forces[eFACTION.ORK]) {
                     _stronghold.tier += growth;
                 }
             }
@@ -433,43 +440,42 @@ function PlanetData(planet, system) constructor{
             if (_has_stronghold){
                 _rando -= _stronghold.tier*5;
             }
-            if (obj_controller.known[eFACTION.ORK]>0) then _rando-=10;// Empire bonus, was 15 before
+            if (obj_controller.known[eFACTION.Ork]>0) then _rando-=10;// Empire bonus, was 15 before
         
             // Check for industrial facilities
-            var fleet_buildable = ((planet_type!="Dead" && planet_type!="Lava") || _has_warboss || _has_stronghold);
-            if (fleet_buildable && planet_forces[eFACTION.ORK]>=4){// Used to not have Ice either
+            var fleet_buildable = (planet_type != "Dead" && planet_type != "Lava") || _has_warboss || _has_stronghold;
+            if (fleet_buildable && planet_forces[eFACTION.ORK] >= 4) {
+                // Used to not have Ice either
 
-                if (instance_exists(obj_p_fleet)){
-                    var ppp=instance_nearest(x,y,obj_p_fleet);
-                    if (point_distance(x,y,ppp.x,ppp.y)<50) and (ppp.action=""){
+                if (instance_exists(obj_p_fleet)) {
+                    var ppp = instance_nearest(x, y, obj_p_fleet);
+                    if ((point_distance(x, y, ppp.x, ppp.y) < 50) && (ppp.action == "")) {
                         exit;
-                    };
+                    }
                 }
                 if (planet_type == "Forge"){
                     _rando-=80;
                 } else if (planet_type == "Hive" || planet_type == "Temperate"){
-                    _rando-=30;
+                	_rando-=30;
                 }else if (planet_type == "Agri"){
-                    _rando-=10;
+                	_rando-=10;
                 }
-                var _ork_fleet = scr_orbiting_fleet(eFACTION.ORK, system); 
+                var _ork_fleet = scr_orbiting_fleet(eFACTION.Ork, system); 
                 if (_ork_fleet=="none"){
-                    if (_rando<=20){
-                        new_ork_fleet(x,y);
-                    }
+                	if (_rando<=20){
+                		new_ork_fleet(x,y);
+                	}
                 } else {
-
                     _build_ships = true;
-
-                }              
-            } 
+                }
+            }
         }
-        if (_build_ships){
+        if (_build_ships) {
             var _pdata = self;
             with (_ork_fleet){
             // Increase ship number for this object?
                 var _rando=irandom(101);
-                if (obj_controller.known[eFACTION.ORK]>0) then _rando-=10;
+                if (obj_controller.known[eFACTION.Ork]>0) then _rando-=10;
                 var _planet_type = _pdata.planet_type;
                 if (_planet_type=="Forge"){
                     _rando-=20;
@@ -500,58 +506,55 @@ function PlanetData(planet, system) constructor{
                     }
                     switch(_rando){
                         case 3:
-                            capital_number+=1;
+                            capital_number += 1;
                             break;
                         case 2:
-                            frigate_number+=1;
+                            frigate_number += 1;
                             break;
                         case 1:
-                            escort_number+=1;
+                            escort_number += 1;
                             break;
-
                     }
                 }
                 var ii=round(standard_fleet_strength_calc());
                 if (ii<=1) then ii=1;
                 image_index=ii; 
                 //if big enough flee bugger off to new star
-                if (image_index>=5){
+                if (image_index >= 5) {
                     instance_deactivate_object(_pdata.system);
-                    with(obj_star){
-                        if (is_dead_star()){
+                    with (obj_star) {
+                        if (is_dead_star()) {
                             instance_deactivate_object(id);
                         } else {
-                            if (owner == eFACTION.ORK || array_contains(p_owner, eFACTION.ORK)){
+                            if (owner == eFACTION.ORK || array_contains(p_owner, eFACTION.ORK)) {
                                 instance_deactivate_object(id);
-                            }                   
+                            }
                         }
                     }
-                    var new_wagh_star = instance_nearest(x,y,obj_star);
-                    if (instance_exists(new_wagh_star)){
-                        action_x=new_wagh_star.x;
-                        action_y=new_wagh_star.y;
+                    var new_wagh_star = instance_nearest(x, y, obj_star);
+                    if (instance_exists(new_wagh_star)) {
+                        action_x = new_wagh_star.x;
+                        action_y = new_wagh_star.y;
                         action = "";
                         set_fleet_movement();
                     }
-                
                 }
                 instance_activate_object(obj_star);
             }
         }
         if (_has_warboss){
             _rando=roll_dice(1,100)+10;
-            var _ork_fleet = scr_orbiting_fleet(eFACTION.ORK, system);
+            var _ork_fleet = scr_orbiting_fleet(eFACTION.Ork, system);
             if (_ork_fleet!="none" && _rando <  _warboss.turns_static){
                 _warboss.turns_static = 0;
                 _ork_fleet.cargo_data.ork_warboss = _warboss;
-                delete_feature(eP_features.ORKWARBOSS);
-                if (!_warboss.player_hidden || !irandom(5)){
-                     scr_alert("red","ork",$"{_warboss.name} departs {name()} as his waaagh gains momentum",0,0);
+                delete_feature(eP_FEATURES.ORKWARBOSS);
+                if (!_warboss.player_hidden || !irandom(5)) {
+                    scr_alert("red", "ork", $"{_warboss.name} departs {name()} as his waaagh gains momentum", 0, 0);
                 }
             }
         }
-    
-    }
+    };
 
     // current planet heresy
     if (population == 0) {
@@ -970,10 +973,10 @@ function PlanetData(planet, system) constructor{
 
 	static pdf_defence_loss_to_orks = function(){
 		var active_garrison = pdf_will_support_player() && garrisons.viable_garrison>0;
-        if (planet_forces[eFACTION.ORK]>=4) and (pdf>=30000){
+        if (planet_forces[eFACTION.Ork]>=4) and (pdf>=30000){
         	pdf=floor(pdf*(min(0.95, 0.55+pdf_loss_reduction)));
     	}
-        else if (planet_forces[eFACTION.ORK]>=4 && pdf<30000 && pdf>=10000){
+        else if (planet_forces[eFACTION.Ork]>=4 && pdf<30000 && pdf>=10000){
         	pdf=active_garrison?pdf*0.4:0;
         }
         if ((planet_forces[eFACTION.ORK] >= 2) && (pdf < 2000)) {
@@ -1428,7 +1431,7 @@ function PlanetData(planet, system) constructor{
             strength = strength>2 ? 2 : 0;
             system.p_tyranids[planet]-=2;
         }
-        else if  (planet_forces[eFACTION.ORK]>0){
+        else if  (planet_forces[eFACTION.Ork]>0){
             if (strength>2) then strength=2;
 			if (strength<1) then strength=0;
             system.p_orks[planet]-=2;
@@ -1799,7 +1802,7 @@ function PlanetData(planet, system) constructor{
 
         if ((current_owner != eFACTION.Chaos) && (current_owner != eFACTION.Heretics) && (current_owner != eFACTION.Eldar) && (planet_type != "Dead") && (planet_type != "Craftworld")) {
             success = false;
-            is_ork = current_owner == eFACTION.ORK;
+            is_ork = current_owner == eFACTION.Ork;
 
             if (!is_ork) {
                 //made a linear function for this while here...now the minimum for the roll is a bit higher, but
@@ -1814,7 +1817,7 @@ function PlanetData(planet, system) constructor{
                 }
             }
 
-            if (success && (pdf  == 0) && (guardsmen == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.ORK] == 0)) {
+            if (success && (pdf  == 0) && (guardsmen == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.Ork] == 0)) {
                 current_owner = 10;
                 scr_alert("red", "owner", $"{name()} has fallen to heretics!", x, y);
 
@@ -2072,7 +2075,7 @@ function PlanetData(planet, system) constructor{
         }
         // If there are enemy non-chaos forces then they may be used as a cover
         // Does not work with chaos because if the governor dies, with chaos present, the new governor would possibly be investigated
-        if (planet_forces[eFACTION.ORK]>=4) or (planet_forces[eFACTION.Necrons]>=3) or (planet_forces[eFACTION.TYRANIDS]>=5){
+        if (planet_forces[eFACTION.Ork]>=4) or (planet_forces[eFACTION.Necrons]>=3) or (planet_forces[eFACTION.TYRANIDS]>=5){
             pip.estimate=pip.estimate*0.5;
         }
     }

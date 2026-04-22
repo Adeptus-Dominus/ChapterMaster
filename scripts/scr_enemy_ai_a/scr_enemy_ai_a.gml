@@ -333,7 +333,7 @@ function scr_enemy_ai_a() {
 	    var after_combat_guard=guard_score;
 	    var after_combat_guard_count=p_guardsmen[_run];
 	    var after_combat_pdf=pdf_score;
-	    var after_combat_ork_force=planet_forces[eFACTION.ORK];
+	    var after_combat_ork_force=planet_forces[eFACTION.Ork];
 	    var after_combat_tau=planet_forces[eFACTION.TAU];
 	    var after_combat_traitor=traitors_score;
 	    var after_combat_csm=csm_score;
@@ -346,7 +346,7 @@ function scr_enemy_ai_a() {
     	var _active_garrison = pdf_with_player && garrison.viable_garrison>0;
 	    // Guard attack
 	    if (guard_score>0) and (guard_attack!="") and (guard_score>0.5){
-	        if (guard_attack="ork") then tempor=choose(1,2,3,4,5,6)*planet_forces[eFACTION.ORK];
+	        if (guard_attack="ork") then tempor=choose(1,2,3,4,5,6)*planet_forces[eFACTION.Ork];
 	        if (guard_attack="tau") then tempor=choose(1,2,3,4,5,6)*planet_forces[eFACTION.TAU];
 	        if (guard_attack="traitors") then tempor=choose(1,2,3,4,5,6)*traitors_score;
 	        if (guard_attack="csm") then tempor=choose(2,3,4,5,6,7)*csm_score;
@@ -354,7 +354,7 @@ function scr_enemy_ai_a() {
         
 	        rand1=choose(1,2,3,4,5)*guard_score;
         
-	        if (guard_attack="ork") and (planet_forces[eFACTION.ORK]>guard_score) then rand1=0;
+	        if (guard_attack="ork") and (planet_forces[eFACTION.Ork]>guard_score) then rand1=0;
 	        if (guard_attack="tau") and (planet_forces[eFACTION.TAU]>guard_score) then rand1=0;
 	        if (guard_attack="traitors") and (traitors_score>guard_score) then rand1=0;
 	        if (guard_attack="csm") and (csm_score>guard_score) then rand1=0;
@@ -405,7 +405,7 @@ function scr_enemy_ai_a() {
     
 	    // PDF attack
 	    if ((pdf_score>0) and (pdf_attack!="")) or ((pdf_score>1) and (guard_score<0.5)){
-	        if (pdf_attack="ork") then tempor=planet_forces[eFACTION.ORK];
+	        if (pdf_attack="ork") then tempor=planet_forces[eFACTION.Ork];
 	        if (pdf_attack="tau") then tempor=planet_forces[eFACTION.TAU];
 	        if (pdf_attack="traitors") then tempor=traitors_score;
 	        if (pdf_attack="csm") then tempor=csm_score;
@@ -453,7 +453,7 @@ function scr_enemy_ai_a() {
 	            rand2=(choose(2,3,4,5)*planet_forces[eFACTION.TAU])*choose(1,1.25);
 	            if (rand1>rand2) then after_combat_tau-=1;
 	        }else  if(sisters_attack="ork"){
-	            rand2=(choose(2,3,4,5)*planet_forces[eFACTION.ORK])*choose(1,1.25);
+	            rand2=(choose(2,3,4,5)*planet_forces[eFACTION.Ork])*choose(1,1.25);
 	            if (rand1>rand2) then after_combat_ork_force-=1;
 	        }else  if(sisters_attack="traitors"){
 	            rand2=(choose(1,2,3,4,5)*traitors_score)*choose(1,1.25);
@@ -488,7 +488,7 @@ function scr_enemy_ai_a() {
 	        rand1=choose(1,2,3,4,5,6)*planet_forces[eFACTION.TAU];
         
 	        if (tau_attack="ork"){
-	            rand2=(choose(1,2,3,4,5,6)*planet_forces[eFACTION.ORK])*choose(1,1.25);
+	            rand2=(choose(1,2,3,4,5,6)*planet_forces[eFACTION.Ork])*choose(1,1.25);
 	            if (rand1>rand2) then after_combat_ork_force-=1;
 	        }else if (tau_attack="traitors"){
 	            rand2=(choose(1,2,3,4,5,6)*traitors_score)*choose(1,1.25);
@@ -516,8 +516,8 @@ function scr_enemy_ai_a() {
 	    }
     
 	    // ork attack
-	    if (planet_forces[eFACTION.ORK]>0) and (ork_attack!="") and (ork_attack!="player"){
-	        rand1=choose(1,2,3,4,5,6)*planet_forces[eFACTION.ORK];
+	    if (planet_forces[eFACTION.Ork]>0) and (ork_attack!="") and (ork_attack!="player"){
+	        rand1=choose(1,2,3,4,5,6)*planet_forces[eFACTION.Ork];
 
         if (!stop) {
             // Start stop
