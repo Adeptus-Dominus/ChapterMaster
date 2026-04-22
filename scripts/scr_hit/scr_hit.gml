@@ -96,6 +96,7 @@ function click_controller(cooldown = 60, lock_bypass = false, mouse_button_lr=mb
 	if (lock_bypass == false && global.ui_click_lock == true) {
 		return false;
 	}
+}
 /// @description Returns true if left mouse button was clicked outside the desired rectangle area.
 /// @param {Array<Real>} _rect The [x1, y1, x2, y2] array defining the exclusion zone.
 /// @param {Real} _cooldown The cooldown duration in frames.
@@ -105,10 +106,6 @@ function point_outside_and_click(_rect, _cooldown = 60, _lock_bypass = false) {
     return _point_and_click_logic(_rect, _cooldown, _lock_bypass, true);
 }
 
-	var mouse_clicked = event_number==ev_gui ? device_mouse_check_button_pressed(0,mouse_button_lr) : mouse_check_button_pressed(mouse_button_lr);
-	if (!mouse_clicked) {
-		return false;
-	}
 function point_and_click_sprite(x1, y1, sprite, x_scale = 1, y_scale = 1) {
     var _width = sprite_get_width(sprite) * x_scale;
     var _height = sprite_get_height(sprite) * y_scale;

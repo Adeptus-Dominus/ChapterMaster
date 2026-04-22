@@ -280,9 +280,8 @@ function new_forge_master_chosen(pick) {
 }
 
 
-
 function strange_build_event(){
-	log_message("RE: Fey Mood");
+    LOGGER.info("RE: Fey Mood");
 	var _search_params = {trait : ["crafter","tinkerer"], trait_any : true}
 	var marine_and_company = scr_random_marine("",0, _search_params);
 	if (marine_and_company == "none"){
@@ -413,11 +412,12 @@ function init_mutated_gene_random_event(){
 }
 
 
-function event_dispose_of_mutated_gene(){
-	if (pop_data.percent_remove > 0){
-		obj_controller.gene_seed -= (obj_controller.gene_seed * (pop_data.percent_remove/100))
-	}
-	popup_default_close();
+function event_dispose_of_mutated_gene() {
+    if (pop_data.percent_remove > 0) {
+        var _removal_amount = ceil(obj_controller.gene_seed * (pop_data.percent_remove / 100));
+        obj_controller.gene_seed -= _removal_amount;
+    }
+    popup_default_close();
 }
 
 

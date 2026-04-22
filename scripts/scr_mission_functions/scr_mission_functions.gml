@@ -55,48 +55,6 @@ function mission_name_key(mission) {
     }
 }
 
-#macro planet_problem_keys ["meeting_trap","meeting","succession","mech_raider","mech_bionics","mech_mars","mech_tomb1","fallen","great_crusade","harlequins","fund_elder","provide_garrison","hunt_beast","protect_raiders","join_communion","join_parade","recover_artifacts","train_forces","spyrer","inquisitor","recon","cleanse","purge","tyranid_org","artifact_loan","necron","ethereal","demon_world","deliver_trophy"]
-
-function mission_name_key(mission){
-	var mission_key = {
-		"meeting_trap" : "Chaos Lord Meeting",
-		"meeting" : "Chaos Lord Meeting",
-		"succession" : "War of succession",
-		"mech_raider" : "Provide Land Raider to Mechanicus",
-		"mech_bionics" : "Provide Bionic Augmented marines to study",
-		"mech_mars" : "Send Techmarines to mars",
-		"mech_tomb1": "Explore Mechanicus Tomb",
-		"fallen" : "Find Chapter Fallen",
-		"great_crusade": "Answer Crusade Muster Call",
-		"harlequins" : "Harlequin presence Report",
-		"fund_elder" : "provide assistance to Eldar",
-		"provide_garrison" : "Provision Garrison",
-		"hunt_beast" : "Hunt Beasts",
-		"protect_raiders" : "Protect From Raiders",
-		"join_communion" : "Join Planetary Religious Celebration",
-		"join_parade" : "Join Parade on Planet Surface",
-		"recover_artifacts" : "Recover Artifacts",
-		"train_forces" : "Train Planet Forces",
-		// Inquisition missions
-		"spyrer" : "Kill Spyrer for Inquisitor",
-		"inquisitor": "Radical Inquisitor Arriving",
-		"recon" : "Recon Mission for Inquisitor",
-		"cleanse" : "Cleanse Planet for Inquisitor",
-		"purge": "Purge Leadership for Inquisitor",
-		"tyranid_org" : "Capture Tyranid for Inquisitor",
-		// "bomb" : "Bombard World for Inquisitor",
-		"artifact_loan" : "Safeguard Artifact for the Inquisition",
-		"necron": "Bomb Necron Tomb for Inquisitor",
-		"ethereal": "Capture Ethereal for Inquisitor",
-		"demon_world": "Clear Demon World for Inquisitor"
-		
-	}
-	if (struct_exists(mission_key, mission)){
-		return mission_key[$ mission];
-	} else{
-		return "none"
-	}  
-}
 
 	if p_owner[planet] != eFACTION.Imperium then exit;
 	var planet_type= p_type[planet];

@@ -415,7 +415,7 @@ function draw_planet_debug_options() {
     }
 }
 
-@mixin
+//@mixin
 function draw_planet_debug_features(){
 	static _addable_features = [
 		{
