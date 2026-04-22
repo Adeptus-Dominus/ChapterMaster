@@ -334,7 +334,7 @@ function scr_enemy_ai_a() {
 	    var after_combat_guard_count=p_guardsmen[_run];
 	    var after_combat_pdf=pdf_score;
 	    var after_combat_ork_force=planet_forces[eFACTION.Ork];
-	    var after_combat_tau=planet_forces[eFACTION.Tau];
+	    var after_combat_tau=planet_forces[eFACTION.TAU];
 	    var after_combat_traitor=traitors_score;
 	    var after_combat_csm=csm_score;
 	    if (csm_score=6.1) then csm_score=8;
@@ -347,7 +347,7 @@ function scr_enemy_ai_a() {
 	    // Guard attack
 	    if (guard_score>0) and (guard_attack!="") and (guard_score>0.5){
 	        if (guard_attack="ork") then tempor=choose(1,2,3,4,5,6)*planet_forces[eFACTION.Ork];
-	        if (guard_attack="tau") then tempor=choose(1,2,3,4,5,6)*planet_forces[eFACTION.Tau];
+	        if (guard_attack="tau") then tempor=choose(1,2,3,4,5,6)*planet_forces[eFACTION.TAU];
 	        if (guard_attack="traitors") then tempor=choose(1,2,3,4,5,6)*traitors_score;
 	        if (guard_attack="csm") then tempor=choose(2,3,4,5,6,7)*csm_score;
 	        if (guard_attack="tyranids") then tempor=choose(2,3,4,5,6,7)*tyranids_score;
@@ -355,7 +355,7 @@ function scr_enemy_ai_a() {
 	        rand1=choose(1,2,3,4,5)*guard_score;
         
 	        if (guard_attack="ork") and (planet_forces[eFACTION.Ork]>guard_score) then rand1=0;
-	        if (guard_attack="tau") and (planet_forces[eFACTION.Tau]>guard_score) then rand1=0;
+	        if (guard_attack="tau") and (planet_forces[eFACTION.TAU]>guard_score) then rand1=0;
 	        if (guard_attack="traitors") and (traitors_score>guard_score) then rand1=0;
 	        if (guard_attack="csm") and (csm_score>guard_score) then rand1=0;
 	        if (guard_attack="tyranids") and (tyranids_score>guard_score) then rand1=0;
@@ -406,7 +406,7 @@ function scr_enemy_ai_a() {
 	    // PDF attack
 	    if ((pdf_score>0) and (pdf_attack!="")) or ((pdf_score>1) and (guard_score<0.5)){
 	        if (pdf_attack="ork") then tempor=planet_forces[eFACTION.Ork];
-	        if (pdf_attack="tau") then tempor=planet_forces[eFACTION.Tau];
+	        if (pdf_attack="tau") then tempor=planet_forces[eFACTION.TAU];
 	        if (pdf_attack="traitors") then tempor=traitors_score;
 	        if (pdf_attack="csm") then tempor=csm_score;
 	        if (pdf_attack="guard") then tempor=guard_score;
@@ -450,7 +450,7 @@ function scr_enemy_ai_a() {
 	        rand1=choose(2,3,4,5,6)*sisters_score;
         
 	        if (sisters_attack="tau"){
-	            rand2=(choose(2,3,4,5)*planet_forces[eFACTION.Tau])*choose(1,1.25);
+	            rand2=(choose(2,3,4,5)*planet_forces[eFACTION.TAU])*choose(1,1.25);
 	            if (rand1>rand2) then after_combat_tau-=1;
 	        }else  if(sisters_attack="ork"){
 	            rand2=(choose(2,3,4,5)*planet_forces[eFACTION.Ork])*choose(1,1.25);
@@ -484,8 +484,8 @@ function scr_enemy_ai_a() {
 	    }
     
 	    // Tau attack
-	    if (planet_forces[eFACTION.Tau]>0) and (tau_attack!="") and (tau_attack!="player"){
-	        rand1=choose(1,2,3,4,5,6)*planet_forces[eFACTION.Tau];
+	    if (planet_forces[eFACTION.TAU]>0) and (tau_attack!="") and (tau_attack!="player"){
+	        rand1=choose(1,2,3,4,5,6)*planet_forces[eFACTION.TAU];
         
 	        if (tau_attack="ork"){
 	            rand2=(choose(1,2,3,4,5,6)*planet_forces[eFACTION.Ork])*choose(1,1.25);
@@ -500,14 +500,14 @@ function scr_enemy_ai_a() {
 	        }else if (tau_attack="guard"){
 	            rand2=(choose(1,2,3,4,5,6)*guard_score)*choose(1,1.25);
 	            if (rand1>rand2){
-	                if (planet_forces[eFACTION.Tau]<=3) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.7);
-	                if (planet_forces[eFACTION.Tau]>=4) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.6);
+	                if (planet_forces[eFACTION.TAU]<=3) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.7);
+	                if (planet_forces[eFACTION.TAU]>=4) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.6);
 	            }
 	        }else if (tau_attack="pdf"){
 	            rand2=(choose(1,2,3,4,5,6)*pdf_score)*choose(1,1.25);
 	            if (rand1>rand2){
-	                if (planet_forces[eFACTION.Tau]<=3) then p_pdf[_run]=floor(p_pdf[_run]*(min(0.95, 0.7+pdf_loss_reduction)));
-	                if (planet_forces[eFACTION.Tau]>=4) then p_pdf[_run]=floor(p_pdf[_run]*(min(0.95, 0.55+pdf_loss_reduction)));
+	                if (planet_forces[eFACTION.TAU]<=3) then p_pdf[_run]=floor(p_pdf[_run]*(min(0.95, 0.7+pdf_loss_reduction)));
+	                if (planet_forces[eFACTION.TAU]>=4) then p_pdf[_run]=floor(p_pdf[_run]*(min(0.95, 0.55+pdf_loss_reduction)));
 	            }
 	        }else if (tau_attack="sisters"){
 	            rand2=(choose(1,2,3,4,5,6)*sisters_score)*choose(1,1.25);

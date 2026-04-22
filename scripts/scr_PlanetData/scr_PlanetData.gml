@@ -52,7 +52,7 @@ function PlanetData(planet, system) constructor{
             planet_forces[eFACTION.Ecclesiarchy] =  system.p_sisters[planet];
             planet_forces[eFACTION.Eldar] =  system.p_eldar[planet];
             planet_forces[eFACTION.Ork] =  system.p_orks[planet];
-            planet_forces[eFACTION.Tau] =  system.p_tau[planet];
+            planet_forces[eFACTION.TAU] =  system.p_tau[planet];
             planet_forces[eFACTION.Tyranids] =  system.p_tyranids[planet];
             planet_forces[eFACTION.Chaos] = system.p_chaos[planet]+ system.p_demons[planet];
             planet_forces[eFACTION.Heretics] = system.p_traitors[planet];     
@@ -156,7 +156,7 @@ function PlanetData(planet, system) constructor{
     };
 
     static end_turn_population_growth = function(){
-        if ((population < max_population) && (planet_type != "Dead") && (planet_type != "Craftworld") && (current_owner <= 5) && (planet_forces[eFACTION.Heretics] == 0) && (planet_forces[eFACTION.Tau] == 0) && (planet_forces[eFACTION.Ork] == 0) && (planet_forces[eFACTION.Necrons] == 0) && (planet_forces[eFACTION.Tyranids] == 0)) {
+        if ((population < max_population) && (planet_type != "Dead") && (planet_type != "Craftworld") && (current_owner <= 5) && (planet_forces[eFACTION.Heretics] == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.Ork] == 0) && (planet_forces[eFACTION.Necrons] == 0) && (planet_forces[eFACTION.Tyranids] == 0)) {
             if (!large_population) {
                 set_population(round(population * 1.0008));
             } else if (large_population == 1) {
@@ -389,7 +389,7 @@ function PlanetData(planet, system) constructor{
         }
         contin=0;
         _rando=roll_dice(1,100);// This part handles the ship building
-        if (population>0 && pdf==0 && guardsmen==0 && planet_forces[10]==0) and (planet_forces[eFACTION.Tau]==0){
+        if (population>0 && pdf==0 && guardsmen==0 && planet_forces[10]==0) and (planet_forces[eFACTION.TAU]==0){
         	if (!large_population){
 				set_population(population*0.97);
 			}else {
@@ -1436,7 +1436,7 @@ function PlanetData(planet, system) constructor{
 			if (strength<1) then strength=0;
             system.p_orks[planet]-=2;
         }
-        else if  (current_owner=eFACTION.Tau) and (planet_forces[eFACTION.Tau]>0){
+        else if  (current_owner=eFACTION.TAU) and (planet_forces[eFACTION.TAU]>0){
             strength = strength>2 ? 2 : 0;
             system.p_tau[planet]-=2;
         	
@@ -1711,10 +1711,10 @@ function PlanetData(planet, system) constructor{
                 }
                 
             }
-            if (current_owner == eFACTION.Tau && population_influences[eFACTION.Tyranids]<70){
+            if (current_owner == eFACTION.TAU && population_influences[eFACTION.Tyranids]<70){
                 var _influ_chance = roll_dice(1,100);
                 if (_influ_chance <= 5 && population_influences[eFACTION.Tyranids]>=20){
-                    alter_influence(eFACTION.Tau, 1);
+                    alter_influence(eFACTION.TAU, 1);
                 }
             }
 
@@ -1817,7 +1817,7 @@ function PlanetData(planet, system) constructor{
                 }
             }
 
-            if (success && (pdf  == 0) && (guardsmen == 0) && (planet_forces[eFACTION.Tau] == 0) && (planet_forces[eFACTION.Ork] == 0)) {
+            if (success && (pdf  == 0) && (guardsmen == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.Ork] == 0)) {
                 current_owner = 10;
                 scr_alert("red", "owner", $"{name()} has fallen to heretics!", x, y);
 

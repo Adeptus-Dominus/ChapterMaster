@@ -681,7 +681,7 @@ function fleet_arrival_logic() {
 
     arrival_logic_finished = false;
     
-    // cur_star.present_fleets+=1;if (owner = eFACTION.Tau) then cur_star.tau_fleets+=1;
+    // cur_star.present_fleets+=1;if (owner = eFACTION.TAU) then cur_star.tau_fleets+=1;
     
     
     if (owner == eFACTION.Mechanicus){
@@ -831,7 +831,7 @@ function fleet_arrival_logic() {
         if (obj_controller.known[eFACTION.Inquisition]=0) then obj_controller.known[eFACTION.Inquisition]=1;
     }
 
-    else if (owner=eFACTION.Tau) {
+    else if (owner=eFACTION.TAU) {
 
         if (instance_exists(obj_p_ship)){
             var p_ship=instance_nearest(x,y,obj_p_ship);
@@ -892,8 +892,8 @@ function fleet_arrival_logic() {
 
 	    var _attempt_merge = _same_owner && _other_fleet_strength + _fleet_strength <= 9;
 
-	    if (_same_owner && !_attempt_merge && owner==eFACTION.Tau){
-	    	var _faction_check = obj_controller.faction_status[eFACTION.Tau]=="War" ? 1 : 2;
+	    if (_same_owner && !_attempt_merge && owner==eFACTION.TAU){
+	    	var _faction_check = obj_controller.faction_status[eFACTION.TAU]=="War" ? 1 : 2;
 	    	var _len = _faction_check == 1 ? 3 : 4;
 	    	if (array_sum(orbiting.present_fleet,0,_faction_check,_len)>0){
 	    		_attempt_merge=true;
@@ -923,7 +923,7 @@ function fleet_arrival_logic() {
 	    
 
 	    //if fleet is damaged but existing fleet is too large to merge feck off elsewhere preferably somewhere friendly
-	    else if (_same_owner && (owner == eFACTION.Tau || (owner = eFACTION.Chaos && !csm))){// Move somewhere new
+	    else if (_same_owner && (owner == eFACTION.TAU || (owner = eFACTION.Chaos && !csm))){// Move somewhere new
 
 	    	if (standard_fleet_strength_calc()<3){
 
@@ -953,7 +953,7 @@ function fleet_arrival_logic() {
 	    }
     }
 
-	if (owner=eFACTION.Tau && !arrival_logic_finished) {                                    
+	if (owner=eFACTION.TAU && !arrival_logic_finished) {                                    
         
        
         //so i'mjust sort of crudely interpreting things how i think duke meant to make it
@@ -1157,7 +1157,7 @@ function merge_fleets(main_fleet, merge_fleet){
 	//This bit allseems a bit superfluouse but keepingjust in case it breaks something]
 	var _is_orbiting = is_orbiting(merge_fleet);
 	switch(merge_fleet.owner){
-		case eFACTION.Tau:
+		case eFACTION.TAU:
 			obj_controller.tau_fleets--;
 			if (_is_orbiting){
 				merge_fleet.orbiting.tau_fleets--;

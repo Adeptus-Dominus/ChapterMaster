@@ -51,12 +51,12 @@ function scr_purge_world(action_type, action_score) {
 	    }
 	}
 
-	var heres_before = max(total_corruption(),population_influences[eFACTION.Tau],population_influences[eFACTION.Tyranids]);// Starting heresy
+	var heres_before = max(total_corruption(),population_influences[eFACTION.TAU],population_influences[eFACTION.Tyranids]);// Starting heresy
 
 	var heres_target = "corruption";
 
-	if (max(population_influences[eFACTION.Tau],population_influences[eFACTION.Tyranids])  > total_corruption()){
-		if  (population_influences[eFACTION.Tau]>population_influences[eFACTION.Tyranids]){
+	if (max(population_influences[eFACTION.TAU],population_influences[eFACTION.Tyranids])  > total_corruption()){
+		if  (population_influences[eFACTION.TAU]>population_influences[eFACTION.Tyranids]){
 			heres_target = "tau";
 		} else{
 			heres_target = "genestealers";
@@ -319,7 +319,7 @@ function scr_purge_world(action_type, action_score) {
 	        if (heres_target == "corruption"){
 	        	alter_corruption(-influence_reduction);
 	        }else if (heres_target == "tau"){
-	        	alter_influence(eFACTION.Tau , -influence_reduction);
+	        	alter_influence(eFACTION.TAU , -influence_reduction);
 	        }else if (heres_target == "genestealers"){
 				alter_influence(eFACTION.Tyranids , -influence_reduction);
 	        }

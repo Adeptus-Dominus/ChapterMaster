@@ -53,7 +53,7 @@ if ((menu == 1) && (managing > 0)) {
                 else if (unit.role()==_roles[19]) { vet_sgt++;}
                 else if (unit.role()=="Codiciery") { codi+=1;}
                 else if (unit.role()=="Lexicanum") { lexi+=1;}
-                 else if (unit.role()==_roles[eROLE.Ancient]) { champ+=1;}
+                 else if (unit.role()==_roles[eROLE.ANCIENT]) { champ+=1;}
             }
             // sets up count for the vehicles
             // TODO This needs to be extended to accomodate the selection text like the man ones
@@ -91,7 +91,7 @@ if ((menu == 1) && (managing > 0)) {
         selecting_dudes+=", ";
     }
     if (champ>0){
-        selecting_dudes+=$"{champ} {_roles[eROLE.Ancient]}";
+        selecting_dudes+=$"{champ} {_roles[eROLE.ANCIENT]}";
         if (chap>1) then selecting_dudes+="s";
         selecting_dudes+=", ";
     }    
