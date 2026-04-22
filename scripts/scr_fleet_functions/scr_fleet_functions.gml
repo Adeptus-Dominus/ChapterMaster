@@ -999,7 +999,7 @@ function fleet_arrival_logic() {
     // If the connected planet is owned by orks then choose a random one within 400 not owned by orks
     
     
-    else if (owner == eFACTION.Ork){
+    else if (owner == eFACTION.ORK){
     	if (is_orbiting()){
     		with (orbiting){
     			ork_fleet_arrive_target();

@@ -69,7 +69,7 @@ function get_imperium_forge_systems(){
 				and (p_orks[o]+p_tau[o]+p_tyranids[o]+p_chaos[o]+p_traitors[o]+p_necrons[o]==0) {
 					
 					var enemy_fleets = [
-						eFACTION.Ork,
+						eFACTION.ORK,
 						eFACTION.TAU,
 						eFACTION.TYRANIDS,
 						eFACTION.Chaos,
