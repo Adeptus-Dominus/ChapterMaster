@@ -5,11 +5,11 @@
 
     //safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
     //disposition
-function PlanetData(planet, system) constructor{
-//
+function PlanetData(planet, system) constructor {
+
 	static large_pop_conversion = 1000000000;
     self.planet = planet;
-    self.system = system;
+    self.system = system; 
 
 
     static refresh_data = function(){
@@ -87,7 +87,7 @@ function PlanetData(planet, system) constructor{
 
         requests_help = system.p_halp[planet];
 
-    //safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
+        //safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
         //disposition
         if (system.dispo[planet] < -100 && system.dispo[planet] > -1000 && system.p_owner[planet] != eFACTION.PLAYER ) { // Personal Rule code be doing some interesting things
             system.dispo[planet] = -100; // TODO LOW DISPOSITION_REVAMP // Consider revamping the disposition system
@@ -2056,8 +2056,6 @@ function PlanetData(planet, system) constructor{
             pip.estimate=pip.estimate*0.5;
         }
     }
-
-
 }
 
 
