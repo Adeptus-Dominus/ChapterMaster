@@ -359,17 +359,6 @@ function scr_enemy_ai_d() {
     
 	    }
 
-                    fleet.image_index = floor(fleet.capital_number + (fleet.frigate_number / 2) + (fleet.escort_number / 4));
-                    fleet.image_alpha = 0;
-
-                    fleet.action_x = x;
-                    fleet.action_y = y;
-
-                    fleet.action_eta = p_timer[i][firstest];
-                    fleet.action = "move";
-                }
-            }
-        }
 
         if (has_problem_planet_and_time(i, "Hive Fleet", 3) > -1) {
             var woop = scr_role_count("Chief " + string(obj_ini.role[100][17]), "");

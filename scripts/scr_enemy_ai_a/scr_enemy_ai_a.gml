@@ -27,9 +27,6 @@ function scr_enemy_ai_a() {
         LOGGER.debug($"system_has_guard {p_guardsmen}");
     }
 
-	    }
-	}
-
     // checking for inquisition dead world inspections here
     if (present_fleet[eFACTION.PLAYER] >= 0 && !present_fleet[eFACTION.INQUISITION]) {
         inquisitor_inspect_base();
