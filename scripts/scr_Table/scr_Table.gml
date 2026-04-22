@@ -18,19 +18,6 @@ function Table(data) constructor {
 
     move_data_to_current_scope(data);
 
-	static update = function(data={}){
-		move_data_to_current_scope(data);
-		w = 0;
-		column_widths = [];
-		header_h = 0;
-		for (var i=0; i<array_length(headings);i++){
-			var _col_width = 0;
-			var _heading = headings[i];
-			if (is_string(_heading)){
-				headings[i] = new ReactiveString(_heading,0,0,{scale_text:true});
-			}
-    update();
-
     static update = function(data) {
         move_data_to_current_scope(data);
         w = 0;
@@ -66,13 +53,7 @@ function Table(data) constructor {
         }
     };
 
-			w += column_widths[i] + col_spacing;
-		}
-	}
-	update();
-	static draw = function(){
-		add_draw_return_values();
-
+	update(data);
 		
     static draw = function() {
         add_draw_return_values();
@@ -116,54 +97,14 @@ function Table(data) constructor {
                         _row.click_left();
                     }
                 }
+				if (struct_exists(_row,"click_right")){
+					if (mouse_button_clicked(mb_right)){
+						_row.click_right();
+					}
+				}                
             }
-
-		var _row_level = y1 + header_h + 5;
-		var _cols = array_length(column_widths);
-		for (var i=0;i<array_length(row_data);i++){
-			//TODO add built in support for scrolling tables
-			if (_row_level > y2 - row_h){
-				break;
-			}
-			_col_draw_x = x1;
-			var _row = row_data[i];
-			var _row_entered = scr_hit_dimensions(_col_draw_x,_row_level,w,row_h);
-			if (is_array(row_data[i])){
-				for (var d=0;d<array_length(_row) && d < _cols;d++){
-					draw_text(_col_draw_x+(column_widths[d]/2),_row_level,_row[d]);
-					_col_draw_x += column_widths[d] + col_spacing;
-				}
-			} else if (is_struct(_row)){
-				for (var d=0; d<array_length(row_key_draw) && d < _cols;d++){
-
-					var _key = row_key_draw[d];
-					draw_text(_col_draw_x+(column_widths[d]/2),_row_level,_row[$_key]);
-					_col_draw_x += column_widths[d] + col_spacing;
-				}
-				if (_row_entered && struct_exists(_row,"hover")){
-					//show_debug_message($"click : {struct_exists(_row,"click_left")}");
-					_row.hover();
-				}
-				if (_row_entered){
-					if (struct_exists(_row,"hover")){
-						//show_debug_message($"click : {struct_exists(_row,"click_left")}");
-						_row.hover();
-					}					
-					if (struct_exists(_row,"click_left")){
-						if (mouse_button_clicked()){
-							_row.click_left();
-						}
-					}
-					if (struct_exists(_row,"click_right")){
-						if (mouse_button_clicked(mb_right)){
-							_row.click_right();
-						}
-					}
-				}
-			}
-
 			_row_level += row_h;
 		}
 		pop_draw_return_values();
-	}
+	};
 }
