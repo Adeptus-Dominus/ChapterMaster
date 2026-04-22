@@ -55,58 +55,72 @@ function mission_name_key(mission) {
     }
 }
 
-
-	if p_owner[planet] != eFACTION.Imperium then exit;
-	var planet_type= p_type[planet];
-	if (problem == ""){
-		if (planet_type=="Death"){
-			problem = choose("hunt_beast", "provide_garrison");
-			accept_time = 6+irandom(30);
-		} else if (planet_type == "Hive"){
-			problem = choose("show_of_power", "provide_garrison", "purge_enemies", "raid_black_market");
-		} else if (planet_type == "Temperate"){
-			problem = choose("provide_garrison", "train_forces", "join_parade");
-		}else if (planet_type == "Shrine"){
-			problem = choose("provide_garrison", "join_communion");
-		}else if (planet_type == "Ice"){
-			problem = choose("provide_garrison", "hunt_beast");
-		}else if (planet_type == "Lava"){
-			problem = choose("provide_garrison", "protect_raiders");
-		}else if (planet_type == "Agri"){
-			problem = choose("provide_garrison", "protect_raiders", "recover_artifacts");
-		}else if (planet_type == "Desert"){
-			problem = choose("provide_garrison", "protect_raiders", "recover_artifacts");
-		}else if (planet_type == "Feudal"){
-			problem = choose("hunt_beast", "protect_raiders");
-		}
-	}
-	var mission_data = {
-		stage : "preliminary",
-		applicant : "Governor"
-	};
-	if (problem != ""){
-		if (problem == "provide_garrison"){
-			if (system_garrison[planet].garrison_force){
-				exit;
-			}
-			mission_data.reason = choose("stability", "importance");
-		} else if (problem=="purge_enemies"){
-			var enemy = 0;
-			if (planets>1){
-				for (var i=1;i<=planets;i++){
-					if (i=planet) then continue;
-					if (p_owner[i]==eFACTION.Imperium){
-						enemy=i;
-						break;
-					}
-				}
-			}
-			mission_data.target=enemy;
-			if (!enemy) then exit;
-		}
-		add_new_problem(planet,problem, 20+irandom(20), ,mission_data);
-	}
+function scr_new_governor_mission(planet, problem = "") {
+    if (p_owner[planet] != eFACTION.IMPERIUM) {
+        exit;
+    }
+    var planet_type = p_type[planet];
+    if (problem == "") {
+        if (planet_type == "Death") {
+            problem = choose("hunt_beast", "provide_garrison");
+            accept_time = 6 + irandom(30);
+        } else if (planet_type == "Hive") {
+            problem = choose("show_of_power", "provide_garrison", "purge_enemies", "raid_black_market");
+        } else if (planet_type == "Temperate") {
+            problem = choose("provide_garrison", "train_forces", "join_parade");
+        } else if (planet_type == "Shrine") {
+            problem = choose("provide_garrison", "join_communion");
+        } else if (planet_type == "Ice") {
+            problem = choose("provide_garrison", "hunt_beast");
+        } else if (planet_type == "Lava") {
+            problem = choose("provide_garrison", "protect_raiders");
+        } else if (planet_type == "Agri") {
+            problem = choose("provide_garrison", "protect_raiders", "recover_artifacts");
+        } else if (planet_type == "Desert") {
+            problem = choose("provide_garrison", "protect_raiders", "recover_artifacts");
+        } else if (planet_type == "Feudal") {
+            problem = choose("hunt_beast", "protect_raiders");
+        }
+    }
+    var mission_data = {
+        stage: "preliminary",
+        applicant: "Governor",
+    };
+    if (problem != "") {
+        if (problem == "provide_garrison") {
+            if (system_garrison[planet - 1].garrison_force) {
+                exit;
+            }
+            mission_data.reason = choose("stability", "importance");
+        } else if (problem == "purge_enemies") {
+            var enemy = 0;
+            if (planets > 1) {
+                for (var i = 1; i <= planets; i++) {
+                    if (i == planet) {
+                        continue;
+                    }
+                    if (p_owner[i] == eFACTION.IMPERIUM) {
+                        enemy = i;
+                        break;
+                    }
+                }
+            }
+            mission_data.target = enemy;
+            if (!enemy) {
+                exit;
+            }
+        }
+        add_new_problem(planet, problem, 20 + irandom(20),, mission_data);
+    }
 }
+
+function init_marine_acting_strange() {
+    LOGGER.info("RE: Strange Behavior");
+    var marine_and_company = scr_random_marine("", 0);
+    if (marine_and_company == "none") {
+        LOGGER.error("RE: Strange Behavior, couldn't pick a space marine");
+        exit;
+    }
 
     var unit = fetch_unit(marine_and_company);
     var role = unit.role();
