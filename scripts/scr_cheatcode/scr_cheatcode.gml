@@ -415,6 +415,7 @@ function draw_planet_debug_options() {
     }
 }
 
+@mixin
 function draw_planet_debug_features(){
 	static _addable_features = [
 		{
@@ -473,47 +474,8 @@ function draw_planet_debug_features(){
     }
 }
 
+
 /// @mixin
-function draw_planet_debug_problems() {
-    var base_y = 220;
-    var _keys = PLANET_PROBLEM_KEYS;
-    base_y += 2;
-    for (var i = 0; i < array_length(_keys); i++) {
-        var _y = base_y + i * 20;
-        draw_text(38, _y, _keys[i]);
-        if (scr_hit(38, _y, 337, _y + 20)) {
-            tooltip_draw(mission_name_key(_keys[i]));
-            if (mouse_button_clicked()) {
-                switch (_keys[i]) {
-                    case "inquisitor":
-                        mission_inquistion_hunt_inquisitor(target.id);
-                        break;
-                    case "necron":
-                        mission_inquisition_tomb_world(target.id);
-                        break;
-                    case "mech_raider":
-                        spawn_mechanicus_mission("mech_raider");
-                        break;
-                    case "mech_mars":
-                        spawn_mechanicus_mission("mech_mars");
-                        break;
-                    case "mech_bionics":
-                        spawn_mechanicus_mission("mech_bionics");
-                        break;
-
-	for (var i=0;i<array_length(_addable_features);i++){
-		var _y = base_y + i * 20;
-		var _feat = _addable_features[i];
-		draw_text(38, _y, _feat.name);
-		if (point_and_click([38, _y, 337,_y+20])){
-			var _new_feat = new NewPlanetFeature(_feat.e_num);
-			_new_feat.imperium_known = true;
-			_new_feat.player_hidden = false;
-			target.add_feature(obj_controller.selecting_planet,_new_feat)
-		}
-	}
-}
-
 function draw_planet_debug_problems(){
 	var base_y = 220;
 	var _keys = planet_problem_keys;
@@ -575,6 +537,8 @@ function draw_planet_debug_problems(){
 	}
 }
 
+
+/// @mixin
 function draw_planet_debug_forces(){
 	add_draw_return_values();
     var current_planet = obj_controller.selecting_planet;

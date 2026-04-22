@@ -591,7 +591,7 @@ function HoverBox() constructor {
 
 			    if (!hover_entered){
     			    if (point_and_click([xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18])){
-    			    	var star = star_by_name(system_names[i]);
+    			    	var star = find_star_by_name(system_names[i]);
     			    	if (star!="none"){
 	    			    	travel_target = [star.x, star.y];
 	    			    	travel_increments = [(travel_target[0]-obj_controller.x)/15,(travel_target[1]-obj_controller.y)/15];
@@ -621,7 +621,7 @@ function HoverBox() constructor {
 						purpose : $"{system_names[hover_item.root_item]} Management",
 						purpose_code  :  "manage",
 						number : 0,
-						system : star_by_name(system_names[hover_item.root_item]).id,
+						system : find_star_by_name(system_names[hover_item.root_item]).id,
 						feature : "none",
 						planet  :  0,
 						selections  :  []
