@@ -710,12 +710,12 @@ function PlanetData(planet, system) constructor{
     }
 
 
-    static recover_starship = function(techs){
-    	try {
-			var engineer_count = array_length(techs);
-			if (has_feature(eP_FEATURES.STARSHIP) && engineer_count>0){
-				//TODO allow total tech point usage here
-		        var _starship = get_features(eP_FEATURES.STARSHIP)[0];
+    static recover_starship = function(techs) {
+        try {
+            var engineer_count = array_length(techs);
+            if (has_feature(eP_FEATURES.STARSHIP) && engineer_count > 0) {
+                //TODO allow total tech point usage here
+                var _starship = get_features(eP_FEATURES.STARSHIP)[0];
 
                 var _engineer_score_start = _starship.engineer_score;
                 if (_starship.engineer_score < 2000) {
@@ -727,33 +727,10 @@ function PlanetData(planet, system) constructor{
 
                 var _target_spend = 10000;
 
-		        var _maxr=floor(obj_controller.requisition/50);
-		        var _requisition_spend=min(_maxr*50,array_length(techs)*50,_target_spend-_starship.funds_spent);
-		        obj_controller.requisition-=_requisition_spend;
-		        _starship.funds_spent+=_requisition_spend;
-		    
-		        if (_requisition_spend>0 && _starship.funds_spent<_target_spend){
-		            scr_alert("green","owner",$"{_requisition_spend} Requisition spent on Ancient Ship repairs in materials and outfitting (outfitting {(_starship.funds_spent/_target_spend)*100}%)",system.x,system.y);
-		        }
-		        if (_starship.funds_spent>=_target_spend && _starship.engineer_score>=2000){// u2=tar;
-		        	//TODO refactor into general new ship logic
-		            delete_feature(eP_FEATURES.STARSHIP);
-		        
-		            var locy=$"{name()}";
-		        
-		            var flit=instance_create(system.x,system.y,obj_p_fleet);
-		      
-		        	var _slaughter = new_player_ship("Gloriana", system.name, "Slaughtersong");
-		        	add_ship_to_fleet(_slaughter, flit);
-		            flit.oribiting = system.id;
-		        
-		            scr_popup($"Ancient Ship Restored",$"The ancient ship within the ruins of {locy} has been fully repaired.  It is determined to be a Gloriana Class vessel and is bristling with golden age weaponry and armour.  Your {string(obj_ini.role[100][16])}s are excited; the Slaughtersong is ready for it's maiden voyage, at your command.","","");                
-		        }
-		    }    	
-	    }catch (_exception){
-			handle_exception(_exception);
-		}
-	} 
+                var _maxr = floor(obj_controller.requisition / 50);
+                var _requisition_spend = min(_maxr * 50, array_length(techs) * 50, _target_spend - _starship.funds_spent);
+                obj_controller.requisition -= _requisition_spend;
+                _starship.funds_spent += _requisition_spend;
 
                 if (_requisition_spend > 0 && _starship.funds_spent < _target_spend) {
                     scr_alert("green", "owner", $"{_requisition_spend} Requision spent on Ancient Ship repairs in materials and outfitting (outfitting {(_starship.funds_spent / _target_spend) * 100}%)", system.x, system.y);
