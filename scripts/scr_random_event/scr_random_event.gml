@@ -218,149 +218,6 @@ function scr_random_event(execute_now) {
 				//DEBUG-FIN (EVENTS DEBUG CODE - 2)
 		}
 	}
-	
-	if (!execute_now){
-		random_event_next = chosen_event;
-		exit;
-	}
-
-                switch (curr_event) {
-                    case eEVENT.INQUISITION_PLANET:
-                        if (known[eFACTION.INQUISITION] == 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") {
-                            events_share[i] -= 1;
-                            events_total -= 1;
-                        }
-                        break;
-                    case eEVENT.INQUISITION_MISSION:
-                        if (known[eFACTION.INQUISITION] == 0 || obj_controller.disposition[4] < 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") {
-                            events_share[i] -= 1;
-                            events_total -= 1;
-                        }
-                        break;
-                    case eEVENT.MECHANICUS_MISSION:
-                        if (known[eFACTION.MECHANICUS] == 0 || obj_controller.disposition[3] < 50 || obj_controller.faction_status[eFACTION.MECHANICUS] == "War") {
-                            events_share[i] -= 1;
-                            events_total -= 1;
-                        } else if (scr_has_adv("Tech-Brothers")) {
-                            events_share[i] += 2;
-                            events_total += 2;
-                        }
-                        break;
-                    case eEVENT.ENEMY:
-                        if (scr_has_adv("Scavangers")) {
-                            events_share[i] += 2;
-                            events_total += 2;
-                        }
-                        break;
-                    case eEVENT.MUTATION:
-                        if (gene_seed < 5) {
-                            events_share[i] -= 1;
-                            events_total -= 1;
-                        }
-                        break;
-                    case eEVENT.NECRON_AWAKEN:
-                        if (known[eFACTION.INQUISITION] == 0) {
-                            events_share[i] -= 1;
-                            events_total -= 1;
-                        }
-                        break;
-                    case eEVENT.CRUSADE:
-                        if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
-                            events_share[i] -= 1;
-                            events_total -= 1;
-                        }
-                        break;
-                    case eEVENT.FLEET_DELAY:
-                        var has_moving_fleet = false;
-                        with (obj_p_fleet) {
-                            if (action == "move") {
-                                has_moving_fleet = true;
-                                break;
-                            }
-                        }
-                        if (!has_moving_fleet) {
-                            events_share[i] -= 1;
-                            events_total -= 1;
-                        }
-                        break;
-                    case eEVENT.SHIP_LOST:
-                        var has_moving_fleet = false;
-                        with (obj_p_fleet) {
-                            if (action == "move") {
-                                has_moving_fleet = true;
-                                break;
-                            }
-                        }
-                        if (!has_moving_fleet) {
-                            events_share[i] -= 1;
-                            events_total -= 1;
-                        }
-                        break;
-                    case eEVENT.FALLEN:
-                        if (!scr_has_disadv("Never Forgive")) {
-                            events_share[i] -= 1;
-                            events_total -= 1;
-                        }
-                }
-            }
-			catch(_exception){
-				handle_exception(_exception);
-			}
-		}
-	}
-	
-	else if (chosen_event == EVENT.promotion){
-		_evented = init_marine_distinguishment_event()
-	}
-    
-	else if (chosen_event == EVENT.strange_building){
-		_evented = strange_build_event();
-	}
-    
-	else if (chosen_event == EVENT.sororitas){
-		log_message("RE: Sororitas Company");
-	    var own;
-	    own=choose(1,2);
-		var star_id = scr_random_find(own,true,"","");
-		
-		if(star_id == undefined && own == 1){
-			own = 2;
-			star_id = scr_random_find(own,true,"","");
-		}
-		
-		if(star_id == undefined){
-			log_error("RE: Sororitas Company, couldn't find a star for the company");
-			exit;
-		}
-		else{
-			var eligible_planets = [];
-			for(var i = 1; i <= star_id.planets;i++){
-				if(star_id.p_type[i] != "Dead"){
-					array_push(eligible_planets,i);
-				}	
-			}
-			if(array_length(eligible_planets) == 0){
-				log_error("RE: Sororitas Company, couldn't find a planet on the " + star_id.name + " system for the company");
-				exit;
-			}
-			
-			var planet = eligible_planets[irandom(array_length(eligible_planets)-1)];
-			++(star_id.p_sisters[planet]);
-			_evented = true;
-			
-			if ((own!=1) && (star_id.p_player[planet]<=0) && (star_id.present_fleet[1]==0)){
-				scr_alert("green","sororitas","Sororitas place a company of sisters on "+string(star_id.name)+" "+string(planet)+".",star_id.x,star_id.y);
-			}
-			else{
-	            scr_popup("Sororitas","The Ecclesiarchy have placed a company of sisters on "+string(star_id.name)+" "+string(planet)+".","sororitas","");
-	            if (known[eFACTION.Ecclesiarchy]==0){
-					known[eFACTION.Ecclesiarchy]=1; // this seesms like a thing another part of code already does, not sure tho
-				}
-			}
-		}
-    
-	} else if (chosen_event == EVENT.mechanicus_mission) {
-		evented = spawn_mechanicus_mission();
 
     if (!execute_now) {
         random_event_next = chosen_event;
@@ -954,21 +811,23 @@ function event_fallen() {
     var planet = scr_get_planet_with_owner(star, eFACTION.IMPERIUM);
     var eta = scr_mission_eta(star.x, star.y, 1);
 
-    var assigned_problem = add_new_problem(planet, "fallen", eta, star);
-    LOGGER.info($"assigned_problem {assigned_problem}");
-	if (!assigned_problem) {
-		log_error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
-		return;
-	}
+    if (planet>0){
+	    var assigned_problem = add_new_problem(planet, "fallen", eta, star);
+	    LOGGER.info($"assigned_problem {assigned_problem}");
+		if (!assigned_problem) {
+			log_error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
+			return;
+		}
 
-	var _planet = system_datas[planet];
-	_planet.refresh_data();
-	
-	var text = $"Sources indicate one of the Fallen may be upon {_planet.name()} .  We have {eta} months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
-	scr_popup("Hunt the Fallen",text,"fallen","");
-	scr_event_log("",$"Sources indicate one of the Fallen may be upon {_planet.name()}.  We have {eta} months to investigate.");
-	var star_alert = instance_create(star.x+16,star.y-24,obj_star_event);
-	star_alert.image_alpha=1;
-	star_alert.image_speed=1;
-	star_alert.col="purple";
+		var _planet = system_datas[planet];
+		_planet.refresh_data();
+		
+		var text = $"Sources indicate one of the Fallen may be upon {_planet.name()} .  We have {eta} months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
+		scr_popup("Hunt the Fallen",text,"fallen","");
+		scr_event_log("",$"Sources indicate one of the Fallen may be upon {_planet.name()}.  We have {eta} months to investigate.");
+		var star_alert = instance_create(star.x+16,star.y-24,obj_star_event);
+		star_alert.image_alpha=1;
+		star_alert.image_speed=1;
+		star_alert.col="purple";
+	}
 }
