@@ -99,11 +99,20 @@ function PlanetData(planet, system) constructor{
         garrisons = system.system_garrison[planet];
         sabatours = system.system_sabatours[planet];
         system.system_datas[planet] = self;
+
+        // current planet heresy
+        if (population == 0) {
+            system.p_heresy[planet] = 0;
+            system.p_heresy_secret[planet] = 0;
+            for (var i = 0; i < array_length(system.p_influence[planet]); ++i) {
+                system.p_influence[planet][i] = 0;
+            }
+        }
     }
 
     refresh_data();
 
-    static total_corruption(){
+    static total_corruption = function(){
         return secret_corruption + corruption;
     }
 
@@ -554,15 +563,6 @@ function PlanetData(planet, system) constructor{
             }
         }
     
-    }
-
-    // current planet heresy
-    if (population == 0) {
-        system.p_heresy[planet] = 0;
-        system.p_heresy_secret[planet] = 0;
-        for (var i = 0; i < array_length(system.p_influence[planet]); ++i) {
-            system.p_influence[planet][i] = 0;
-        }
     }
 
     static alter_corruption = function(value){
@@ -1956,7 +1956,7 @@ function PlanetData(planet, system) constructor{
         var spec1=0,spec2=0,txt=""; // TODO consider making it a battle with Planetary governor's guards
         txt="Your Astartes descend upon the surface of {name()} and plot the movements and schedule of the governor.  ";    
         txt+="Once the time is right their target is ambushed "
-        txt+="choose("in their home","in the streets","while driving","taking a piss")+" and tranquilized.  ";
+        txt+=choose("in their home","in the streets","while driving","taking a piss")+" and tranquilized.  ";
     
         if(scr_has_disadv("Never Forgive")) then spec1=1;
         if (global.chapter_name="Space Wolves" || obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
