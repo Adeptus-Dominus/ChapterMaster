@@ -1316,9 +1316,8 @@ function PlanetData(planet, system) constructor{
                 colonist_button.update({
                     x1:xx+35,
                     y1:_half_way,
-                    allow_click : array_length(potential_donors),
                 });
-                colonist_button.draw();
+                colonist_button.draw(array_length(potential_donors));
 
                 recruiting_button.update({
                     x1:xx+(spacing_x*2)+15,
@@ -1340,7 +1339,7 @@ function PlanetData(planet, system) constructor{
                         y1:_half_way,
                         allow_click : true,
                     });
-                    recruitment_type_button.draw();
+                    recruitment_type_button.draw(true);
 
                     draw_text(xx+(spacing_x*3)-15, _half_way+(spacing_y)-20, $"Req:{_recruit_world.recruit_cost * 2}");
                     if (_recruit_world.recruit_cost > 0) {
@@ -1349,7 +1348,7 @@ function PlanetData(planet, system) constructor{
                             y1:_half_way+(spacing_y),
                             allow_click : true,
                         });
-                        recruitment_costdown_button.draw();
+                        recruitment_costdown_button.draw(true);
                     }
                     if (_recruit_world.recruit_cost < 5) {
                         recruitment_costup_button.update({
@@ -1357,7 +1356,7 @@ function PlanetData(planet, system) constructor{
                             y1:_half_way+(spacing_y),
                             allow_click : true,
                         });
-                        recruitment_costup_button.draw();
+                        recruitment_costup_button.draw(true);
                     }
                 }
             }
