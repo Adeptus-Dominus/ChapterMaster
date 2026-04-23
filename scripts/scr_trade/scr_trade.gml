@@ -326,94 +326,10 @@ function TradeAttempt(diplomacy) constructor {
 
     exit_button = new UnitButtonObject({x1: 818, y1: 796, label: "Exit"});
 
-		trade_from_star = array_random_element(viable_faction_trade_stars);
-
-
-		if (!array_length(_stars_with_player_control) ||  (obj_ini.fleet_type!=ePlayerBase.home_world && array_length(player_fleet_targets))){
-			trade_to_obj = array_random_element(player_fleet_targets);
-		} else if (!array_length(player_fleet_targets)){
-			trade_to_obj = array_random_element(_stars_with_player_control);
-		} else {
-			trade_to_obj = choose(array_random_element(_stars_with_player_control), array_random_element(player_fleet_targets));
-		}
-		return true;
-	}
-	static attempt_trade = function(){
-		calculate_deal_chance();
-		var attempt_rand = roll_dice_chapter(1, 100, "high");
-		var _success = attempt_rand <= deal_chance;
-		if (_success){
-			_success = find_trade_locations();
-			if (_success){
-				successful_trade_attempt();
-				scr_dialogue("agree",{prepend:"[[Trade Accepted.  Shipment initialized.]]"});
-				//force_goodbye=1;
-				obj_controller.trading=0;
-				 if (diplomacy_faction=6) or (diplomacy_faction=7) or (diplomacy_faction=8){
-				 	scr_loyalty("Xeno Trade","+");
-				 }
-			} else {
-				//show_debug_message("no trade locations");
-			}
-		} else {
-			var _dip = diplomacy_faction;
-			with (obj_controller){
-				var _rela=relationship_hostility_matrix(diplomacy);
-				if (trading_artifact==0){
-					diplo_text="[[Trade Refused]]##";
-				} else {
-					diplo_text="";
-				}
-		        annoyed[_dip] += 1;				
-				scr_dialogue("disagree",{prepend:"[[Trade Refused]]"});
-		        rando=choose(1,2,3);
-		        if (_rela=="hostile"){
-					force_goodbye=1;
-		            if (rando==1) then diplo_text+="You would offer me scraps for the keys to a kingdom? You are foolish and, worse, you are unaware of your own incompetence.";
-		            if (rando==2) then diplo_text+="Do not attempt exchanges with those so far above you, lapdog of the Corpse Emperor, it makes you look even more idiotic than you already do.";
-		            if (rando==3) then diplo_text+="I would spit upon this ‘offer' you bring before me but I find myself too amused by it.";
-		        }
-		        else if (_rela!="hostile"){
-		            if (rando==1) then diplo_text+="You may consider my response to be a ‘no' and assume my attitude to be whatever you like, Chapter Master.";
-		            if (rando==2) then diplo_text+="Have a care that you do not overstep the mark, Chapter Master, I see no reason to accept such a trade.";
-		            if (rando==3) then diplo_text+="An unreasonable trade, whatever our working relationship might be. I refuse.";
-		        }
-		        if (annoyed[_dip]>=10){
-					force_goodbye=1;
-		            turns_ignored[_dip]=max(turns_ignored[_dip],1);
-					diplo_last="disagree";
-					diplo_char=0;
-					diplo_alpha=0;
-					exit;
-		        }
-			}
-			clear_options();			
-		}
-
-	}
-
-	offer_button = new UnitButtonObject({
-		x1 : 630,
-		y1 : 649,
-		label : "Offer",
-	});
-	offer_button.bind_method = function(){
-		if (obj_controller.diplo_last !=" offer"){
-			attempt_trade();
-		}		
-	}
-	offer_button.bind_scope = self;
-
-	exit_button = new UnitButtonObject({
-		x1 : 818,
-		y1 : 796,
-		label : "Exit",
-	});
-
-	exit_button.bind_method = function(){
-		with (obj_controller){
-            cooldown=8;
-            trading=0;
+    exit_button.bind_method = function() {
+        with (obj_controller) {
+            cooldown = 8;
+            trading = 0;
             scr_dialogue("trade_close");
             click2 = 1;
             if (trading_artifact != 0) {
@@ -701,8 +617,18 @@ function TradeAttempt(diplomacy) constructor {
                     my_worth += _opt.number * 900;
                 }
 
-		deal_chance=(100-penalty)-(((their_worth-(my_worth*dif_penalty))));
-		var _chance = clamp(floor((deal_chance/20)), 0, 6);
+                if (diplomacy_faction == 6) {
+                    my_worth += _opt.number * 500;
+                }
+                if (diplomacy_faction == 7) {
+                    my_worth += _opt.number * 500;
+                }
+                if (diplomacy_faction == 8) {
+                    my_worth += _opt.number * 1000;
+                }
+            }
+        }
+    };
 
     trade_likely = "";
     static chance_chart = [
