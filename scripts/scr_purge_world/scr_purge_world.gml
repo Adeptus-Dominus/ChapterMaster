@@ -47,12 +47,12 @@ function scr_purge_world(action_type, action_score) {
 	    }
 	}
 
-	var heres_before = max(total_corruption(),population_influences[eFACTION.Tau],population_influences[eFACTION.TYRANIDS]);// Starting heresy
+	var heres_before = max(total_corruption(),population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS]);// Starting heresy
 
 	var heres_target = "corruption";
 
-	if (max(population_influences[eFACTION.Tau],population_influences[eFACTION.TYRANIDS])  > total_corruption()){
-		if  (population_influences[eFACTION.Tau]>population_influences[eFACTION.TYRANIDS]){
+	if (max(population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS])  > total_corruption()){
+		if  (population_influences[eFACTION.TAU]>population_influences[eFACTION.TYRANIDS]){
 			heres_target = "tau";
 		} else{
 			heres_target = "genestealers";
@@ -110,7 +110,7 @@ function scr_purge_world(action_type, action_score) {
 		            	_disp_hit = -3;
 		            }         	
 
-	                scr_audience(eFACTION.Imperium, "bombard_angry", _disp_hit, "", 0, 0);
+	                scr_audience(eFACTION.IMPERIUM, "bombard_angry", _disp_hit, "", 0, 0);
 	            }
 	        }
 	    }
@@ -122,7 +122,7 @@ function scr_purge_world(action_type, action_score) {
 	        if (planet_type="Ice"){
 	        	_disp_hit =-7;
 	        }
-	    	scr_audience(eFACTION.Inquisition, "bombard_angry", _disp_hit, "", 0, 0);
+	    	scr_audience(eFACTION.INQUISITION, "bombard_angry", _disp_hit, "", 0, 0);
 
 	    }
 
@@ -142,7 +142,7 @@ function scr_purge_world(action_type, action_score) {
 	        if (thequest="cleanse" && action_score>=20){
 	        	remove_planet_problem(planet,thequest,star);
             	
-            	alter_disposition(eFACTION.Inquisition,obj_controller.demanding ? choose(0,0,1) :1);
+            	alter_disposition(eFACTION.INQUISITION,obj_controller.demanding ? choose(0,0,1) :1);
             
 	            txt1="Your marines scour the underhive of {name()}, spraying mutants down with promethium as they go.  It takes several days but a sizeable dent is put in their numbers.";        
 	            scr_event_log("","Inquisition Mission Completed: The mutants of {name()} have been cleansed by promethium.");
@@ -220,7 +220,7 @@ function scr_purge_world(action_type, action_score) {
 	        if (thequest="purge" && action_score>=10){
 	        	remove_planet_problem(planet, "purge", star);
             
-	            alter_disposition(eFACTION.Inquisition,obj_controller.demanding ? choose(0,0,1) :1);
+	            alter_disposition(eFACTION.INQUISITION,obj_controller.demanding ? choose(0,0,1) :1);
             
 	            txt1="Your marines drop fast and hard, blowing through guards and mercenaries with minimal resistance.  Before ten minutes have passed all your targets are executed.";        
 	            scr_event_log("","Inquisition Mission Completed: The unruly Nobles of {name()} have been purged.");
@@ -279,7 +279,7 @@ function scr_purge_world(action_type, action_score) {
 	        if (heres_target == "corruption"){
 	        	alter_corruption(-influence_reduction);
 	        }else if (heres_target == "tau"){
-	        	alter_influence(eFACTION.Tau , -influence_reduction);
+	        	alter_influence(eFACTION.TAU , -influence_reduction);
 	        }else if (heres_target == "genestealers"){
 				alter_influence(eFACTION.TYRANIDS , -influence_reduction);
 	        }

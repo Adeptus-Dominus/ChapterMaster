@@ -9,7 +9,7 @@ function spawn_mechanicus_explore_fleet(){
 	var _fleet = instance_create(_forge.x, _forge.y, obj_en_fleet);
 
 	with (_fleet){
-		owner = eFACTION.Mechanicus;
+		owner = eFACTION.MECHANICUS;
 		warp_able = true;
 		capital_number = 2;
 		frigate_number = 5;

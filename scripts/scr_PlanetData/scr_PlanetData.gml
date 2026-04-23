@@ -47,10 +47,10 @@ function PlanetData(planet, system) constructor {
         try{
             planet_forces[eFACTION.PLAYER] = player_forces;
 
-            planet_forces[eFACTION.Imperium] =  guardsmen;
+            planet_forces[eFACTION.IMPERIUM] =  guardsmen;
 
-            planet_forces[eFACTION.Ecclesiarchy] =  system.p_sisters[planet];
-            planet_forces[eFACTION.Eldar] =  system.p_eldar[planet];
+            planet_forces[eFACTION.ECCLESIARCHY] =  system.p_sisters[planet];
+            planet_forces[eFACTION.ELDAR] =  system.p_eldar[planet];
             planet_forces[eFACTION.ORK] =  system.p_orks[planet];
             planet_forces[eFACTION.TAU] =  system.p_tau[planet];
             planet_forces[eFACTION.TYRANIDS] =  system.p_tyranids[planet];
@@ -1034,7 +1034,7 @@ function PlanetData(planet, system) constructor {
             if (population_influences[i]>0){
                 draw_set_color(global.star_name_colors[i]);
                 if (_hidden_cult && i == eFACTION.TYRANIDS){
-                    draw_set_color(global.star_name_colors[eFACTION.Imperium]);
+                    draw_set_color(global.star_name_colors[eFACTION.IMPERIUM]);
                 }
                 var current_start = bar_start_point + (current_bar_percent * bar_percent_length);
                 draw_rectangle(current_start, yy + 193, current_start + (bar_percent_length * population_influences[i]), yy + 210, 0);
@@ -1345,7 +1345,7 @@ function PlanetData(planet, system) constructor {
         var spacing_y = 65
         draw_set_halign(fa_left);
         if (!target.space_hulk) {
-            if (obj_controller.faction_status[eFACTION.Imperium] != "War" && current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War") {
+            if (obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && current_owner <= 5) || (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
                 colonist_button.update({
                     x1:xx+35,
                     y1:_half_way,
@@ -1454,9 +1454,9 @@ function PlanetData(planet, system) constructor {
             }
         }
     
-        if (population + pdf<=0) and (current_owner=1) and (obj_controller.faction_status[eFACTION.Imperium]="War"){
+        if (population + pdf<=0) and (current_owner=1) and (obj_controller.faction_status[eFACTION.IMPERIUM]="War"){
             if (!has_feature(eP_FEATURES.MONASTERY)){
-                set_new_owner(eFACTION.Imperium);
+                set_new_owner(eFACTION.IMPERIUM);
             	add_disposition(-50);
             }
         }
@@ -1775,7 +1775,7 @@ function PlanetData(planet, system) constructor {
             alter_corruption(1);
         }
 
-        if ((current_owner != eFACTION.CHAOS) && (current_owner != eFACTION.HERETICS) && (current_owner != eFACTION.Eldar) && (planet_type != "Dead") && (planet_type != "Craftworld")) {
+        if ((current_owner != eFACTION.CHAOS) && (current_owner != eFACTION.HERETICS) && (current_owner != eFACTION.ELDAR) && (planet_type != "Dead") && (planet_type != "Craftworld")) {
             success = false;
             is_ork = current_owner == eFACTION.ORK;
 
@@ -1925,7 +1925,7 @@ function PlanetData(planet, system) constructor {
                 var _sys = system
                 if (_battle.imperium_known){
                     with (obj_en_fleet){
-                        if (owner != eFACTION.Mechanicus){
+                        if (owner != eFACTION.MECHANICUS){
                             continue;
                         }
                         if (instance_exists(target) && target.id == _sys.id){

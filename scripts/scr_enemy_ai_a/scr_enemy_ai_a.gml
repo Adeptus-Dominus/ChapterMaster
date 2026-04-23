@@ -13,7 +13,7 @@ function scr_enemy_ai_a() {
 	}
 	// guardsmen hop from planet to planet
 	//not sure we really need this as it's handled with tht navy fleet functions but fuck it updated it and leaving it fot the sec
-	if (system_guard_total()>0 && present_fleet[eFACTION.Imperium]){
+	if (system_guard_total()>0 && present_fleet[eFACTION.IMPERIUM]){
 	    var cur_planet=0,most_enemies_found=0,current_guard_planet=0,most_enemies_planet=0;
 
         var _guard_planets = guard_find_planet_with_most_enemy_forces(self);

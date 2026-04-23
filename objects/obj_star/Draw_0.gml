@@ -1,6 +1,6 @@
 // Draws the system name and color codes it based on ownership
 add_draw_return_values();
-if (p_type[1]="Craftworld") and (obj_controller.known[eFACTION.Eldar]=0){
+if (p_type[1]="Craftworld") and (obj_controller.known[eFACTION.ELDAR]=0){
     draw_set_alpha(0);
     draw_set_color(255);
     draw_circle(old_x, old_y, 5, 0);

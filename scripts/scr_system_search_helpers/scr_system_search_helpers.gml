@@ -287,7 +287,7 @@ function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3
         };
         from=instance_nearest(origional_x,origional_y,obj_star);
         if (instance_exists(from)){
-	        if (disclude_elder && from.owner==eFACTION.Eldar){
+	        if (disclude_elder && from.owner==eFACTION.ELDAR){
 	        	i--;
 	        	array_push(deactivated, id);
 	        	instance_deactivate_object(from);

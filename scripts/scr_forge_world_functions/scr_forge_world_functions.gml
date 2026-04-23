@@ -28,7 +28,7 @@ function imperial_navy_fleet_construction() {
 		//TODO make standadised system for collating active forge worlds as we  do this a lot		
 		var _forge_systems = get_imperium_forge_systems();
 
-		if (array_length(_forge_systems) == 0 && obj_controller.faction_status[eFACTION.Imperium] != "War"){
+		if (array_length(_forge_systems) == 0 && obj_controller.faction_status[eFACTION.IMPERIUM] != "War"){
 			scr_alert("red", "forge_world", "No active uncontested forge worlds imperial navy unable to rebuild at speed");
 		}
 
@@ -65,7 +65,7 @@ function get_imperium_forge_systems(){
         var good=false;
         for(var o=1; o<=planets; o++) {
             if (p_type[o]=="Forge") 
-				and (p_owner[o]==eFACTION.Mechanicus) 
+				and (p_owner[o]==eFACTION.MECHANICUS) 
 				and (p_orks[o]+p_tau[o]+p_tyranids[o]+p_chaos[o]+p_traitors[o]+p_necrons[o]==0) {
 					
 					var enemy_fleets = [
@@ -100,7 +100,7 @@ function build_planet_defence_fleets(){
 	imp_ships=0;
 	var _defence_fleet_log = {};
     with(obj_en_fleet){
-        if (owner==eFACTION.Imperium){
+        if (owner==eFACTION.IMPERIUM){
         	var _imperial_fleet_defence_score = round(standard_fleet_strength_calc());
             obj_controller.imp_ships += _imperial_fleet_defence_score;
             //log this to prevent double work later figuring out if a planet has an orbiting defence fleet

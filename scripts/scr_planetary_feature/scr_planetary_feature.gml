@@ -481,7 +481,7 @@ function scr_planetary_feature(planet_num) {
 			var numeral_n = planet_numeral_name(planet_num);
 			switch (feat.f_type){
 				case eP_FEATURES.SORORITAS_CATHEDRAL:
-					if (obj_controller.known[eFACTION.Ecclesiarchy]=0) then obj_controller.known[eFACTION.Ecclesiarchy]=1;
+					if (obj_controller.known[eFACTION.ECCLESIARCHY]=0) then obj_controller.known[eFACTION.ECCLESIARCHY]=1;
 				    var lop=$"Sororitas Cathedral discovered on {numeral_n}.";
 				    scr_alert("green","feature",lop,x,y);
 				    scr_event_log("",lop);

@@ -123,19 +123,19 @@ function scr_random_event(execute_now) {
 					
 					switch (curr_event){
 						case EVENT.inquisition_planet:
-							if (known[eFACTION.Inquisition]==0 || obj_controller.faction_status[eFACTION.Inquisition]=="War") {
+							if (known[eFACTION.INQUISITION]==0 || obj_controller.faction_status[eFACTION.INQUISITION]=="War") {
 								events_share[i] -= 1;
 								events_total -= 1;
 							}
 							break;
 						case EVENT.inquisition_mission:
-							if (known[eFACTION.Inquisition]==0 || obj_controller.disposition[4] < 0 || obj_controller.faction_status[eFACTION.Inquisition] == "War") {
+							if (known[eFACTION.INQUISITION]==0 || obj_controller.disposition[4] < 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") {
 								events_share[i] -= 1;
 								events_total -= 1;
 							}
 							break;
 						case EVENT.mechanicus_mission:
-							if (known[eFACTION.Mechanicus] == 0 || obj_controller.disposition[3] < 40 || obj_controller.faction_status[eFACTION.Mechanicus] == "War") {
+							if (known[eFACTION.MECHANICUS] == 0 || obj_controller.disposition[3] < 40 || obj_controller.faction_status[eFACTION.MECHANICUS] == "War") {
 								events_share[i] -= 1;
 								events_total -= 1;
 							}
@@ -154,13 +154,13 @@ function scr_random_event(execute_now) {
 							}
 							break;
 						case EVENT.necron_awaken:
-							if((known[eFACTION.Inquisition] == 0)){
+							if((known[eFACTION.INQUISITION] == 0)){
 								events_share[i] -= 1;
 								events_total -= 1;
 							}
 							break;
 						case EVENT.crusade:
-							if (obj_controller.faction_status[eFACTION.Imperium] == "War"){
+							if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War"){
 								events_share[i] -= 1;
 								events_total -= 1;
 							}

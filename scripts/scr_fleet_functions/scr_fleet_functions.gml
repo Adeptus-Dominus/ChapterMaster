@@ -684,7 +684,7 @@ function fleet_arrival_logic() {
     // cur_star.present_fleets+=1;if (owner = eFACTION.TAU) then cur_star.tau_fleets+=1;
     
     
-    if (owner == eFACTION.Mechanicus){
+    if (owner == eFACTION.MECHANICUS){
         if (trade_goods == "mars_spelunk1"){
             trade_goods="mars_spelunk2";
             action_x=home_x;
@@ -828,7 +828,7 @@ function fleet_arrival_logic() {
         var mess = 1, plap = instance_nearest(action_x, action_y, obj_p_fleet);
 
         if (string_count("DELETE",trade_goods)>0) then instance_destroy();
-        if (obj_controller.known[eFACTION.Inquisition]=0) then obj_controller.known[eFACTION.Inquisition]=1;
+        if (obj_controller.known[eFACTION.INQUISITION]=0) then obj_controller.known[eFACTION.INQUISITION]=1;
     }
 
     else if (owner=eFACTION.TAU) {
@@ -930,7 +930,7 @@ function fleet_arrival_logic() {
 		        var _chosen =false;
 		        var _chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
 		        while (_chosen_id != "none"){
-		        	if (scr_orbiting_fleet(eFACTION.Imperium) != "none"){
+		        	if (scr_orbiting_fleet(eFACTION.IMPERIUM) != "none"){
 		        		_chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
 		        	} else {
 		        		break;
@@ -969,7 +969,7 @@ function fleet_arrival_logic() {
 	        var _chosen =false;
 	        var _chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
 	        while (_chosen_id != "none"){
-	        	if (scr_orbiting_fleet(eFACTION.Imperium) != "none"){
+	        	if (scr_orbiting_fleet(eFACTION.IMPERIUM) != "none"){
 	        		_chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
 	        	} else {
 	        		break;

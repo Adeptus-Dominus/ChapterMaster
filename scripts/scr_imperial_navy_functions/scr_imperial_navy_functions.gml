@@ -108,7 +108,7 @@ function build_new_navy_fleet(construction_forge){
     new_navy_fleet=instance_create(construction_forge.x,construction_forge.y,obj_en_fleet);
 
     with(new_navy_fleet){
-	    owner=eFACTION.Imperium;
+	    owner=eFACTION.IMPERIUM;
 	    
 	    capital_number=0;
 	    frigate_number=0;
@@ -1083,7 +1083,7 @@ function setup_start_imperial_navy_fleet(system) {
     with (nav) {
         orbiting = system;
 
-	    owner=eFACTION.Imperium;
+	    owner=eFACTION.IMPERIUM;
 	    navy=1;
 	    
 	    capital_number = choose(1,2,3);
@@ -1131,9 +1131,9 @@ function get_imperial_navy_fleets(){
 	var _fleets = [];
 
 	with (obj_en_fleet){
-		if (owner != eFACTION.Imperium || !navy){
+		if (owner != eFACTION.IMPERIUM || !navy){
 			continue;
-		} else if (owner == eFACTION.Imperium && navy){
+		} else if (owner == eFACTION.IMPERIUM && navy){
 			array_push(_fleets, id);
 		}
 	}
