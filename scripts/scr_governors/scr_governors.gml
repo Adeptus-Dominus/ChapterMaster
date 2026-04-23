@@ -25,7 +25,7 @@ function GovernorProfile() constructor{
 
 	gender = set_gender();
 
-	name = global.name_generator.generate_imperial_name();
+	name = global.name_generator.generate_imperial_name(gender);
 
 	astartes_view  = irandom(4);//0 hates astartes 4 likes astartes
 

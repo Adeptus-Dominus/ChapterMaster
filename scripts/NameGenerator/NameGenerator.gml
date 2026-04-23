@@ -95,8 +95,8 @@ function NameGenerator() constructor {
                 if (reset_on_using_up_all_names) {
                     LOGGER.info($"Used up all {entity_name} names, resetting name lists");
                     // TODO the 2 lines below could be simplified by swapping references, instead of copying and deleting
-                    array_copy(names, 0, used_names, 0, used_names_length);
-                    array_delete(used_names, 0, used_names_length);
+                    names = variable_clone(used_names);
+                    used_names = [];
                 } else {
                     LOGGER.error($"Used up all {entity_name} names. Generating a generic name. used_names_length = {used_names_length}; star_names_generic_counter = {star_names_generic_counter}.");
                     star_names_generic_counter++;
@@ -191,11 +191,13 @@ function NameGenerator() constructor {
     };
 
     static generate_space_marine_name = function() {
+        LOGGER.info(array_length(space_marines_names));
         return SimpleNameGeneration(space_marines_names, space_marines_used_names, "Space Marine");
     };
 
     static generate_imperial_name = function(is_male = true) {
         if (is_male) {
+            LOGGER.info(array_length(space_marines_names));
             return SimpleNameGeneration(space_marines_names, space_marines_used_names, "Space Marine");
         } else {
             return SimpleNameGeneration(imperial_names, imperial_used_names, "Imperial");

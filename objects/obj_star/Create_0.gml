@@ -72,7 +72,6 @@ p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
 p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
 p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
-p_governor = array_create(_planet_array_size, 0);
 
 for (var i=1;i<array_length(p_governor);i++){
     array_push(p_governor, new GovernorProfile());
