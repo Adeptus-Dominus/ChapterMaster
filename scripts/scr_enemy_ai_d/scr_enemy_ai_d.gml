@@ -443,11 +443,11 @@ function scr_enemy_ai_d() {
     if (!already_enroute) {
         var pop_doner_options = [];
         //this stops needless repeats of searches
-        if (!struct_exists(obj_controller.end_turn_insights, "population_doners")) {
-            pop_doner_options = find_population_doners();
+        if (!struct_exists(obj_controller.end_turn_insights, "population_donors")) {
+            pop_doner_options = find_population_donors();
         }
-        obj_controller.end_turn_insights.population_doners = pop_doner_options;
-        pop_doner_options = obj_controller.end_turn_insights.population_doners;
+        obj_controller.end_turn_insights.population_donors = pop_doner_options;
+        pop_doner_options = obj_controller.end_turn_insights.population_donors;
 
         var deletion = -1;
         for (var i = 0; i < array_length(pop_doner_options); i++) {
