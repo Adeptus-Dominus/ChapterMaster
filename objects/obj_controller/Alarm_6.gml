@@ -159,7 +159,7 @@ if ((menu == 1) && (managing > 0)) {
         selecting_dudes+=", ";
     }
     if (assa>0){
-        selecting_dudes+=string(assa)+" "+string(_roles[eROLE.Assault]);
+        selecting_dudes+=string(assa)+" "+string(_roles[eROLE.ASSAULT]);
         if (sgt>1) then selecting_dudes+="s";
         selecting_dudes+=", ";
     }    

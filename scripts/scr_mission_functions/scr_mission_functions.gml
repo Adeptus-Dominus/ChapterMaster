@@ -335,7 +335,7 @@ function init_train_forces_mission(planet, star, mission_slot, marine){
 	    //TODO some new universal methods for popups
 	    gar_pop.title=$"Training forces on {numeral_name} begins";
 	    gar_pop.text=$"{marine.name_role()} Has taken leave of his current post in order to aid the governor of {numeral_name} and his pdf commanders with training local forces and bolstering defences.";
-	    var _is_cap = role_compare(marine, eROLE.Captain);
+	    var _is_cap = role_compare(marine, eROLE.CAPTAIN);
 
 	    if (_is_cap){
 	    	gar_pop.text += "the governor seems to be impressed that such a high ranking officer has been assigned to his request (disp +3)";
