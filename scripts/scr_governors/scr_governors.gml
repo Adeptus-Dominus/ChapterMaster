@@ -1,12 +1,21 @@
-function GovernorProfile(){
-	born = obj_controlller.turn - irandom_range(240,4800);
+
+enum ePREFERENCE{
+	HATES = 0,
+	DISLIKES,
+	NEUTRAL,
+	LIKES,
+	LOVES
+}
+
+function GovernorProfile() constructor{
+	born = obj_controller.turn - irandom_range(240,4800);
 
 	uid = scr_uuid_generate();
 
 	static age = function(){
-		var _age = born - obj_controlller.turn;
+		var _age = born - obj_controller.turn;
 		if (_age < 0){
-			_age =  (born * -1) + obj_controlller.turn;
+			_age =  (born * -1) + obj_controller.turn;
 		}
 
 		_age/=12;
@@ -20,7 +29,7 @@ function GovernorProfile(){
 
 	astartes_view  = irandom(4);//0 hates astartes 4 likes astartes
 
-	sector_commander_view = irandom(4);
+	sector_commander_view = irandom(4);//likes commmander hates commander
 
 	personal_security = irandom(4);
 
