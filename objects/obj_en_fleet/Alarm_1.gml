@@ -43,24 +43,8 @@ try {
         turns_static = 0;
     }
 
-if (_is_orbiting) {
-	turns_static++;
-	if (turns_static>5 && owner == eFACTION.ORK){
-		if (!irandom(7)){
-			ork_fleet_move();
-			_is_orbiting=false;
-		}
-	}
-	if (instance_exists(obj_crusade)){
-		try{
-			fleet_respond_crusade();
-		} catch(_exception) {
-			 handle_exception(_exception);
-		}
-	}
-} else {
-	turns_static = 0;
-}
+    var dir = 0;
+    var ret = 0;
 
     if (navy && action == "" && _is_orbiting) {
         navy_orbiting_planet_end_turn_action();
@@ -367,33 +351,19 @@ if (_is_orbiting) {
                 plin = 0;
                 plin2 = 0;
 
-                    if (good=1) and (n=5){
-                        if (!instance_exists(plin2)) then exit;
-                        if (!array_contains(plin.p_type, "dead")) then good++
-                        
-                        var new_fleet;
-                        new_fleet=instance_create(x,y,obj_en_fleet);
-                        new_fleet.capital_number=floor(capital_number*0.4);
-                        new_fleet.frigate_number=floor(frigate_number*0.4);
-                        new_fleet.escort_number=floor(escort_number*0.4);
-                        
-                        capital_number-=new_fleet.capital_number;
-                        frigate_number-=new_fleet.frigate_number;
-                        escort_number-=new_fleet.escort_number;
-                        
-                        new_fleet.owner=eFACTION.TYRANIDS;
-                        new_fleet.sprite_index=spr_fleet_tyranid;
-                        new_fleet.image_index=1;
-                        
-                        /*with(new_fleet){
-                            var ii=floor(standard_fleet_strength_calc());
-                            if (ii<=1) then ii=1;image_index=ii;
-                        }*/
-                        
-                        new_fleet.action_x=plin2.x;
-                        new_fleet.action_y=plin2.y;
-                        with(new_fleet){
-                        	set_fleet_movement();
+                if (capital_number > 5) {
+                    n = 5;
+                }
+
+                instance_deactivate_object(orbiting);
+                var _abort_migration = false;
+
+                repeat (100) {
+                    if (good != 5) {
+                        xx = self.x + random_range(-300, 300);
+                        yy = self.y + random_range(-300, 300);
+                        if (good == 0) {
+                            plin = instance_nearest(xx, yy, obj_star);
                         }
                         if ((good == 1) && (n == 5)) {
                             plin2 = instance_nearest(xx, yy, obj_star);
@@ -444,16 +414,6 @@ if (_is_orbiting) {
                             if (n != 5) {
                                 good = 5;
                             }
-                        }
-                    }
-                    
-                    
-                    if (good=1) and (instance_exists(plin)){
-                    	action_x=plin.x;
-                    	action_y=plin.y;
-                    	set_fleet_movement();
-                    	if (n!=5){
-                            good=5;
                         }
                     }
                 }
