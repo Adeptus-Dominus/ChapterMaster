@@ -13,7 +13,7 @@ function FeatureSelected(_feature, _system, _planet) constructor{
 	enter_count = 18;
 	planet_data = new PlanetData(_planet,_system);
 
-	if (feature.f_type == eP_FEATURES.Forge){
+	if (feature.f_type == eP_FEATURES.FORGE){
 		var _worker_caps = [2,4,8];
 		worker_capacity = _worker_caps[feature.size-1];	
 		techs = collect_role_group(SPECIALISTS_TECHS, obj_star_select.target.name);
@@ -169,7 +169,7 @@ function FeatureSelected(_feature, _system, _planet) constructor{
 				break;
 			case eP_FEATURES.GENE_STEALER_CULT:
 				generic=true;
-				var cult_control = planet_data.population_influences[eFACTION.Tyranids];
+				var cult_control = planet_data.population_influences[eFACTION.TYRANIDS];
 				title = $"Cult of {feature.name}";
 				var control_string = "";
 				if (cult_control<25){
@@ -209,7 +209,7 @@ function FeatureSelected(_feature, _system, _planet) constructor{
 			case eP_FEATURES.ORKSTRONGHOLD:
 				title = "Ork Stronghold";
 				generic = true;
-				if (planet_data.planet_forces[eFACTION.Ork]){
+				if (planet_data.planet_forces[eFACTION.ORK]){
 					body = $"For as long as this Stronghold stands the orks here will continue to fortify it. The larger it gets the greater the capacity of this planet to produce orkish machines of war and ships and the better protected the ork forces will be from bombardment";
 				} else {
 					body = "Without a force of orks to hold it together the fortress is slowly pulled apart from within by the inhabitants, It's capabilities will constantly decrease until soon there will be nothing left";
@@ -220,7 +220,7 @@ function FeatureSelected(_feature, _system, _planet) constructor{
                 var _planet = planet_data.planet;
                 var _star = obj_star_select.target;
                 var p_data = new PlanetData(_planet, _star);
-                var _recruit_world = p_data.get_features(eP_FEATURES.Recruiting_World)[0];
+                var _recruit_world = p_data.get_features(eP_FEATURES.RECRUITING_WORLD)[0];
                 var _spare_apoth_points = p_data.get_local_apothecary_points();
                 title = "Marine Recruitment";
                 body = $"There are {_spare_apoth_points} apothecary rescource points available for recruit screening,\n\n";
