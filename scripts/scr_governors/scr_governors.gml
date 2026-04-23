@@ -31,7 +31,11 @@ function GovernorProfile() constructor{
 
 	sector_commander_view = irandom(4);//likes commmander hates commander
 
-	personal_security = irandom(4);
+	personal_security = irandom(4); // 0 no security , 4 high secirity
+
+    known_to_cm = false;
+
+    known_to_chapter = false;
 
 	constitution = 10;
     strength = 10;
@@ -44,4 +48,5 @@ function GovernorProfile() constructor{
     intelligence = irandom_range(25, 50);
     weapon_skill = 5;
     ballistic_skill = 5;
+
 }

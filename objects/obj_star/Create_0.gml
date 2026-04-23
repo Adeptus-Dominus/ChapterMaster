@@ -72,9 +72,9 @@ p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
 p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
 p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
-p_governor = [];
+p_governor = array_create(_planet_array_size, 0);
 
-for (var i=1;i<8;i++){
+for (var i=1;i<array_length(p_governor);i++){
     array_push(p_governor, new GovernorProfile());
 }
 
@@ -158,6 +158,10 @@ serialize = function() {
         save_data.system_sabatours = object_star.system_sabatours;
     }
 
+    if (struct_exists(object_star, "p_governor")) {
+        save_data.p_governor = object_star.p_governor;
+    }
+
     var excluded_from_save = [
         "temp",
         "serialize",
@@ -220,6 +224,12 @@ function deserialize(save_data) {
     if (struct_exists(save_data, "system_garrison")) {
         variable_struct_set(self, "system_garrison", save_data.system_garrison);
     }
+
+    if (struct_exists(save_data, "p_governor")) {
+        variable_struct_set(self, "p_governor", save_data.p_governor);
+    }
+
+
 }
 
 #endregion
