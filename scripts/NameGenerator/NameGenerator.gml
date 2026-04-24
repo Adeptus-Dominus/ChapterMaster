@@ -1,5 +1,9 @@
-function NameGenerator() constructor {
-    // TODO after save rework is finished, check if these static can be converted to instance versions
+function NameTracker() constructor {
+    names = [];
+    used_names = [];
+
+    generic_counter = 0;
+
     static LoadSimpleNames = function(file_name, fallback_value, json_names_property_name = "names") {
         if (json_names_property_name == noone) {
             json_names_property_name = "names";
@@ -10,11 +14,41 @@ function NameGenerator() constructor {
         var load_result = file_loader.load_list_from_json_file($"main\\names\\{file_name}.json", [json_names_property_name]);
 
         if (load_result.is_success) {
-            return load_result.values[$ json_names_property_name];
+            names = load_result.values[$ json_names_property_name];
         }
 
-        return [fallback_value];
+        names = fallback_value;
     };
+
+    static SimpleNameGeneration = function(entity_name, reset_on_using_up_all_names = true) {
+        try {
+            if (array_length(names) == 0) {
+                var used_names_length = array_length(used_names);
+                if (reset_on_using_up_all_names) {
+                    LOGGER.info($"Used up all {entity_name} names, resetting name lists");
+                    // TODO the 2 lines below could be simplified by swapping references, instead of copying and deleting
+                    names = variable_clone(used_names);
+                    used_names = []
+                } else {
+                    LOGGER.error($"Used up all {entity_name} names. Generating a generic name. used_names_length = {used_names_length}; star_names_generic_counter = {star_names_generic_counter}.");
+                    generic_counter++;
+                    return $"{entity_name} {used_names_length + generic_counter}";
+                }
+            }
+
+            var name = array_pop(names);
+            array_push(used_names, name);
+            return name;
+        } catch (_exception) {
+            handle_exception(_exception);
+            return "name_error";
+        }
+    };
+
+}
+
+function NameGenerator() constructor {
+    // TODO after save rework is finished, check if these static can be converted to instance version
 
     static LoadCompositeNames = function(
         file_name,
@@ -53,32 +87,90 @@ function NameGenerator() constructor {
         return result;
     };
 
-    // vars // TODO put these into a struct or dict or something
-    sector_names = LoadSimpleNames("sector", "Sector 1");
-    sector_used_names = [];
+    var _simple_names = [
+        "sector",
+        "star",
+        {
+            load_as: "imperial_male",
+            load_set: "space_marine"
+        },
+        {
+            load_as: "imperial_female",
+            load_set: "imperial"
+        },
+        "space_marine",
+        "chaos",
+        "imperial_ship",
+        "ork_ship"
+    ]
 
-    star_names = LoadSimpleNames("star", "Star 1");
-    star_used_names = [];
-    star_names_generic_counter = 0; // TODO once we migrate Star data to proper structs and jsons, this can probably be removed
+    name_sets = {}
 
-    space_marines_names = LoadSimpleNames("space_marine", "Space Marine 1");
-    space_marines_used_names = [];
+    for (var i=0;i<array_length(_simple_names);i++){
+        var _name = _simple_names[i];
+        var _load_name = _name;
 
-    imperial_names = LoadSimpleNames("imperial", "Imperial 1");
-    imperial_used_names = [];
+        if (is_struct(_name)){
+            var _struc = _name;
+            _name = _struc.load_as;
+            _load_name = _struc.load_set;
+        }
 
-    chaos_names = LoadSimpleNames("chaos", "Chaos 1");
-    chaos_used_names = [];
+        name_sets[$ _name] = new NameTracker();
+        var _fallback_name = string_replace_all(_name, "_", " ") + " 1";
 
+        name_sets[$ _name].LoadSimpleNames(_load_name, _fallback_name);
+    }
+
+    static GenerateFromSet = function(set_name){
+        if (!struct_exists(name_sets,set_name)){
+             LOGGER.info("Set name does not exist");
+             return "No Set Name"
+        }
+
+        return name_sets[$ set_name].SimpleNameGeneration();
+    }
+
+
+    static LoadCompositeNames = function(
+        file_name,
+        json_names_property_names = [
+            "prefixes",
+            "suffixes",
+            "special"
+        ]
+    ) {
+        if (json_names_property_names == noone) {
+            json_names_property_names = [
+                "prefixes",
+                "suffixes",
+                "special"
+            ];
+        }
+
+        var file_loader = new JsonFileListLoader();
+
+        var load_result = file_loader.load_list_from_json_file($"main\\names\\{file_name}.json", json_names_property_names);
+
+        var result = {};
+
+        for (var i = 0; i < array_length(json_names_property_names); i++) {
+            var _property_name = json_names_property_names[i];
+            if (!is_string(_property_name)) {
+                continue;
+            }
+            if (load_result.is_success && struct_exists(load_result.values, _property_name)) {
+                result[$ _property_name] = load_result.values[$ _property_name];
+            } else {
+                result[$ _property_name] = array_create(1, $"{_property_name} 1");
+            }
+        }
+
+        return result;
+    };
     eldar_syllables = LoadCompositeNames("eldar", ["first_syllables", "second_syllables", "third_syllables"]);
 
     ork_name_composites = LoadCompositeNames("ork", ["prefixes", "suffixes", "special"]);
-
-    imperial_ship_names = LoadSimpleNames("imperial_ship", "Imperial Ship 1");
-    imperial_ship_used_names = [];
-
-    ork_ship_names = LoadSimpleNames("ork_ship", "Ork Ship 1");
-    ork_ship_used_names = [];
 
     hulk_name_composites = LoadCompositeNames("hulk", ["prefixes", "suffixes"]);
 
@@ -182,33 +274,11 @@ function NameGenerator() constructor {
 
     // Functions
     // TODO rework these functions to be more generic, parameterized, e.g. generate_character_name(eFACTION.Imperial) etc.
-    static generate_sector_name = function() {
-        return SimpleNameGeneration(sector_names, sector_used_names, "Sector");
-    };
-
-    static generate_star_name = function() {
-        return SimpleNameGeneration(star_names, star_used_names, "Star", false);
-    };
-
-    static generate_space_marine_name = function() {
-        return SimpleNameGeneration(space_marines_names, space_marines_used_names, "Space Marine");
-    };
-
-    static generate_imperial_name = function(is_male = true) {
-        if (is_male) {
-            return SimpleNameGeneration(space_marines_names, space_marines_used_names, "Space Marine");
-        } else {
-            return SimpleNameGeneration(imperial_names, imperial_used_names, "Imperial");
-        }
-    };
 
     static generate_genestealer_cult_name = function() {
         return ComplexTitledName(genestealer_cult_names.main, genestealer_cult_names.embelishment, genestealer_cult_names.title);
     };
 
-    static generate_chaos_name = function() {
-        return SimpleNameGeneration(chaos_names, chaos_used_names, "Chaos");
-    };
 
     static generate_eldar_name = function(syllable_amount = 2) {
         return MultiSyllableNameGeneration(eldar_syllables, syllable_amount);
@@ -216,10 +286,6 @@ function NameGenerator() constructor {
 
     static generate_ork_name = function() {
         return CompositeNameGeneration(ork_name_composites, false);
-    };
-
-    static generate_imperial_ship_name = function() {
-        return SimpleNameGeneration(imperial_ship_names, imperial_ship_used_names, "Imperial Ship");
     };
 
     static generate_ork_ship_name = function() {

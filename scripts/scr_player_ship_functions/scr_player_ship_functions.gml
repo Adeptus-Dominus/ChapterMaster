@@ -250,7 +250,7 @@ function new_player_ship(type, start_loc = "home", new_name = "") {
 
     for (var k = 0; k <= 200; k++) {
         if (new_name == "") {
-            new_name = global.name_generator.generate_imperial_ship_name();
+            new_name = global.name_generator.GenerateFromSet("imperial_ship")
             if (array_contains(obj_ini.ship, new_name)) {
                 new_name = "";
             }

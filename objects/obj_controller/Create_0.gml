@@ -723,7 +723,8 @@ inquisitor = array_create(11, "");
 for (var i = 0, l = array_length(inquisitor_gender); i < l; i++) {
     inquisitor_gender[i] = choose(0, 0, 0, 1, 1, 1, 1);
     inquisitor_type[i] = choose("Ordo Malleus", "Ordo Xenos", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus");
-    inquisitor[i] = global.name_generator.generate_imperial_name(inquisitor_gender[i]);
+    var _gender = inquisitor_gender[i];
+    inquisitor[i] = global.name_generator.GenerateFromSet($"imperial_{string_gender(_gender)}");
 }
 
 // ** Sets diplomacy variables **
@@ -929,25 +930,25 @@ faction_leader = array_create(14, "");
 faction_title = array_create(14, "");
 faction_status = array_create(14, "");
 // Sector Command faction
-faction_leader[eFACTION.IMPERIUM] = global.name_generator.generate_imperial_name();
+faction_leader[eFACTION.IMPERIUM] = global.name_generator.GenerateFromSet($"imperial_male")
 faction_title[eFACTION.IMPERIUM] = "Sector Commander";
 faction_status[eFACTION.IMPERIUM] = "Allied";
 // Mechanicus faction
-faction_leader[eFACTION.MECHANICUS] = global.name_generator.generate_imperial_name();
+faction_leader[eFACTION.MECHANICUS] = global.name_generator.GenerateFromSet($"imperial_male")
 faction_title[eFACTION.MECHANICUS] = "Magos";
 faction_status[eFACTION.MECHANICUS] = "Allied";
 if (faction_leader[eFACTION.MECHANICUS] == faction_leader[eFACTION.IMPERIUM]) {
-    faction_leader[eFACTION.MECHANICUS] = global.name_generator.generate_space_marine_name();
+    faction_leader[eFACTION.MECHANICUS] = global.name_generator.GenerateFromSet("space_marine");
 }
 // Inquisition faction
-faction_leader[eFACTION.INQUISITION] = global.name_generator.generate_imperial_name();
+faction_leader[eFACTION.INQUISITION] = global.name_generator.GenerateFromSet($"imperial_male")
 if (faction_leader[eFACTION.INQUISITION] == faction_leader[eFACTION.MECHANICUS]) {
-    faction_leader[eFACTION.INQUISITION] = global.name_generator.generate_imperial_name();
+    faction_leader[eFACTION.INQUISITION] = global.name_generator.GenerateFromSet($"imperial_male")
 }
 faction_title[eFACTION.INQUISITION] = "Inquisitor Lord";
 faction_status[eFACTION.INQUISITION] = "Allied";
 // Sisters faction
-faction_leader[eFACTION.ECCLESIARCHY] = global.name_generator.generate_imperial_name(false);
+faction_leader[eFACTION.ECCLESIARCHY] = global.name_generator.GenerateFromSet($"imperial_female")
 faction_title[eFACTION.ECCLESIARCHY] = "Prioress";
 faction_status[eFACTION.ECCLESIARCHY] = "Allied";
 // Eldar faction
@@ -971,23 +972,24 @@ faction_status[eFACTION.GENESTEALER] = "War";
 faction_status[eFACTION.NECRONS] = "War";
 // ** Sets faction gender for names **
 faction_gender = array_create(14, 1);
-faction_gender[6] = choose(1, 2);
-faction_gender[8] = choose(1, 1, 2);
-if (faction_gender[4] == 2) {
-    faction_leader[eFACTION.INQUISITION] = global.name_generator.generate_imperial_name(false);
-}
-faction_gender[10] = choose(1, 1, 1, 2, 2);
-if (faction_gender[10] == 1) {
+faction_gender[6] = set_gender();
+faction_gender[8] = set_gender();
+
+//TODO this syntax for choosing gendered naes is kinda ass to read
+faction_leader[eFACTION.INQUISITION] = global.name_generator.GenerateFromSet($"imperial_{string_gender(faction_gender[eFACTION.INQUISITION]}");
+
+faction_gender[10] = set_gender();
+if (faction_gender[10] == eGENDER.FEMALE) {
     faction_leader[eFACTION.CHAOS] = choose("1", "1", "1", "2");
 }
-if (faction_gender[10] == 2) {
+if (faction_gender[10] == eGENDER.MALE) {
     faction_leader[eFACTION.CHAOS] = choose("1", "2", "2", "2");
 }
 if (faction_leader[eFACTION.CHAOS] == "1") {
-    faction_leader[eFACTION.CHAOS] = global.name_generator.generate_space_marine_name();
+    faction_leader[eFACTION.CHAOS] = global.name_generator.GenerateFromSet("space_marine");
 }
 if (faction_leader[eFACTION.CHAOS] == "2") {
-    faction_leader[eFACTION.CHAOS] = global.name_generator.generate_chaos_name();
+    faction_leader[eFACTION.CHAOS] = global.name_generator.GenerateFromSet("chaos");
 }
 
 known = array_create(14, 0);
@@ -1085,7 +1087,7 @@ if (instance_exists(obj_ini)) {
             }
         }
         // TODO should add special bonus to different chapters based on lore
-        adept_name = global.name_generator.generate_space_marine_name();
+        adept_name = global.name_generator.GenerateFromSet("space_marine");
         recruiter_name = obj_ini.recruiter_name;
         progenitor = obj_ini.progenitor;
         successor_chapters = obj_ini.successors;

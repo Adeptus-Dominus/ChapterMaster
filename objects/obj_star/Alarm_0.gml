@@ -14,7 +14,7 @@ if ((obj_controller.craftworld == 0) && (space_hulk == 0)) {
 // Generate star name
 for (var i = 0; i < 80; i++) {
     if (((name == "random") || (name == "")) && (craftworld == 0) && (space_hulk == 0)) {
-        var new_star_name = global.name_generator.generate_star_name();
+        var new_star_name = global.name_generator.GenerateFromSet("star", false);
         name = new_star_name;
         obj_controller.star_names += new_star_name; // TODO make sure it's always unique. Although star_names should just be removed, frankly.
     }

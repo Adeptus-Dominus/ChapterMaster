@@ -156,7 +156,7 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             planet_display = "Fortress Monastary";
             player_hidden = 0;
             forge = 0;
-            name = global.name_generator.generate_imperial_ship_name();
+            name = global.name_generator.GenerateFromSet("imperial_ship")
             break;
         case eP_FEATURES.RECRUITING_WORLD:
             planet_display = "Recruitment";

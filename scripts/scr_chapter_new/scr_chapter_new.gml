@@ -17,11 +17,11 @@ function ChapterData() constructor {
     stability = 0;
     cooperation = 0;
     homeworld = "Hive"; //e.g. "Death"
-    homeworld_name = global.name_generator.generate_star_name(); // e.g. "The Rock"
+    homeworld_name = global.name_generator.GenerateFromSet("star", false); // e.g. "The Rock"
     homeworld_exists = 0;
     recruiting_exists = 0;
     recruiting = "Death";
-    recruiting_name = global.name_generator.generate_star_name();
+    recruiting_name = global.name_generator.GenerateFromSet("star", false);
     homeworld_rule = eHOMEWORLD_RULE.NONE;
     home_spawn_loc = 1;
     recruit_home_relationship = 1;
@@ -29,7 +29,7 @@ function ChapterData() constructor {
     culture_styles = [];
     home_planets = 1;
 
-    flagship_name = global.name_generator.generate_imperial_ship_name();
+    flagship_name = global.name_generator.GenerateFromSet("imperial_ship")
     monastary_name = "";
     advantages = array_create(9);
     disadvantages = array_create(9);
@@ -51,20 +51,20 @@ function ChapterData() constructor {
         special: 0, //trim_on: 0, /// 0 no, 1 yes for special trim colours
     };
     names = {
-        hchaplain: global.name_generator.generate_space_marine_name(),
-        clibrarian: global.name_generator.generate_space_marine_name(),
-        fmaster: global.name_generator.generate_space_marine_name(),
-        hapothecary: global.name_generator.generate_space_marine_name(),
-        recruiter: global.name_generator.generate_space_marine_name(),
-        admiral: global.name_generator.generate_space_marine_name(),
-        honorcapt: global.name_generator.generate_space_marine_name(),
-        watchmaster: global.name_generator.generate_space_marine_name(),
-        arsenalmaster: global.name_generator.generate_space_marine_name(),
-        marchmaster: global.name_generator.generate_space_marine_name(),
-        ritesmaster: global.name_generator.generate_space_marine_name(),
-        victualler: global.name_generator.generate_space_marine_name(),
-        lordexec: global.name_generator.generate_space_marine_name(),
-        relmaster: global.name_generator.generate_space_marine_name(),
+        hchaplain: global.name_generator.GenerateFromSet("space_marine"),
+        clibrarian: global.name_generator.GenerateFromSet("space_marine"),
+        fmaster: global.name_generator.GenerateFromSet("space_marine"),
+        hapothecary: global.name_generator.GenerateFromSet("space_marine"),
+        recruiter: global.name_generator.GenerateFromSet("space_marine"),
+        admiral: global.name_generator.GenerateFromSet("space_marine"),
+        honorcapt: global.name_generator.GenerateFromSet("space_marine"),
+        watchmaster: global.name_generator.GenerateFromSet("space_marine"),
+        arsenalmaster: global.name_generator.GenerateFromSet("space_marine"),
+        marchmaster: global.name_generator.GenerateFromSet("space_marine"),
+        ritesmaster: global.name_generator.GenerateFromSet("space_marine"),
+        victualler: global.name_generator.GenerateFromSet("space_marine"),
+        lordexec: global.name_generator.GenerateFromSet("space_marine"),
+        relmaster: global.name_generator.GenerateFromSet("space_marine"),
     };
     mutations = {
         preomnor: 0,
@@ -93,7 +93,7 @@ function ChapterData() constructor {
     /// @type {Array<String>}
     company_titles = array_create(11, "");
     chapter_master = {
-        name: global.name_generator.generate_space_marine_name(),
+        name: global.name_generator.GenerateFromSet("space_marine"),
         melee: 0,
         ranged: 0,
         specialty: eCM_SPECIALTY.NONE,

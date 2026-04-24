@@ -304,7 +304,7 @@ function mission_inquistion_hunt_inquisitor(star_id = -1) {
     }
 
     var _gender = set_gender();
-    var _name = global.name_generator.generate_imperial_name(_gender);
+    var _name = global.name_generator.GenerateFromSet($"imperial_{string_gender()}");
     var planet = irandom_range(1, _star.planets);
 
     var eta = scr_mission_eta(_star.x, _star.y, 1);

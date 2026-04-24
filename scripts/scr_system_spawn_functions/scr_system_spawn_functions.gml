@@ -56,7 +56,7 @@ function find_player_spawn_star() {
 /*if (obj_ini.recruiting_name!="random"){
     array_push(global.name_generator.star_used_names, obj_ini.recruiting_name);
     if (find_star_by_name(obj_ini.recruiting_name) != "none" ){
-        find_star_by_name(obj_ini.recruiting_name).name = global.name_generator.generate_star_name();
+        find_star_by_name(obj_ini.recruiting_name).name = global.name_generator.GenerateFromSet("star", false);
     }
     name=obj_ini.recruiting_name;
 }*/
@@ -69,7 +69,7 @@ function player_home_star(home_planet) {
     if (obj_ini.home_name != "random") {
         array_push(global.name_generator.star_used_names, obj_ini.home_name);
         if (find_star_by_name(obj_ini.home_name) != "none") {
-            find_star_by_name(obj_ini.home_name).name = global.name_generator.generate_star_name();
+            find_star_by_name(obj_ini.home_name).name = global.name_generator.GenerateFromSet("star", false);
         }
         name = obj_ini.home_name;
     }
@@ -126,7 +126,7 @@ function set_player_recruit_planet(recruit_planet) {
         if (recruit_name != "random") {
             array_push(global.name_generator.star_used_names, recruit_name);
             if (find_star_by_name(recruit_name) != "none") {
-                find_star_by_name(recruit_name).name = global.name_generator.generate_star_name();
+                find_star_by_name(recruit_name).name = global.name_generator.GenerateFromSet("star", false);
             }
             name = recruit_name;
         }
@@ -134,7 +134,7 @@ function set_player_recruit_planet(recruit_planet) {
         if (obj_ini.home_name != "random") {
             array_push(global.name_generator.star_used_names, obj_ini.home_name);
             if (find_star_by_name(obj_ini.home_name) != "none") {
-                find_star_by_name(obj_ini.home_name).name = global.name_generator.generate_star_name();
+                find_star_by_name(obj_ini.home_name).name = global.name_generator.GenerateFromSet("star", false);
             }
             name = obj_ini.home_name;
         }

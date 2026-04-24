@@ -2420,7 +2420,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     }
                     if (rando == 3) {
                         diplo_text += "rumors of her involvement at the massacre of ";
-                        diplo_text += global.name_generator.generate_star_name();
+                        diplo_text += global.name_generator.GenerateFromSet("star", false);
                         diplo_text += " " + choose("I.", "II.", "III.", "IV.");
                     }
                     diplo_text += "  Do not expect futher contact.]]";
