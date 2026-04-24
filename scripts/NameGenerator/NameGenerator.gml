@@ -76,10 +76,10 @@ function NameTracker() constructor {
                 if (reset_on_using_up_all_names) {
                     LOGGER.info($"Used up all {entity_name} names, resetting name lists");
                     // TODO the 2 lines below could be simplified by swapping references, instead of copying and deleting
-                    names = variable_clone(used_names);
+                    names = array_shuffle(variable_clone(used_names));
                     used_names = []
                 } else {
-                    LOGGER.error($"Used up all {entity_name} names. Generating a generic name. used_names_length = {used_names_length}; star_names_generic_counter = {star_names_generic_counter}.");
+                    LOGGER.error($"Used up all {entity_name} names. Generating a generic name. used_names_length = {used_names_length}; generic_counter = {generic_counter}.");
                     generic_counter++;
                     return $"{entity_name} {used_names_length + generic_counter}";
                 }
@@ -120,7 +120,7 @@ function NameTracker() constructor {
     };
 
     static MultiSyllableNameGeneration = function(syllable_amount) {
-        syllables = composite_components;
+        var syllables = composite_components;
         try {
             var name = array_random_element(syllables.first_syllables, true);
 
@@ -158,7 +158,7 @@ function NameTracker() constructor {
                 }
                 if (struct_exists(composite_components,title_elements[i])){
                     var _elem_set = composite_components[$title_elements[i]];
-                    _name += array_random_element(_elem_set, true) + i > 0 && i < _name_elem_length-1 ? " " : "";
+                    _name += array_random_element(_elem_set, true) + (i > 0 && i < _name_elem_length-1 ? " " : "");
                 }
             }
             return _name;
@@ -266,13 +266,13 @@ function NameGenerator() constructor {
         }
     }
 
-    static GenerateFromSet = function(set_name){
+    static GenerateFromSet = function(set_name,reset_on_using_up_all_names = true){
         if (!struct_exists(name_sets,set_name)){
              LOGGER.info("Set name does not exist");
              return "No Set Name"
         }
 
-        return name_sets[$ set_name].SimpleNameGeneration();
+        return name_sets[$ set_name].SimpleNameGeneration(reset_on_using_up_all_names);
     }
 
     static GenerateComposite = function(set_name,separate_components = true){
@@ -285,6 +285,7 @@ function NameGenerator() constructor {
             return _set.CompositeNameGeneration(separate_components);
 		} catch(_exception){
             LOGGER.error(_exception);
+            return "name gen error!";
         }
     }
 
@@ -298,6 +299,7 @@ function NameGenerator() constructor {
             return _set.MultiSyllableNameGeneration(syllable_amount);
 		} catch(_exception){
             LOGGER.error(_exception);
+            return "name gen error!";
         }        
     }
 
@@ -315,8 +317,9 @@ function NameGenerator() constructor {
             }
 
             return _set.ComplexTitledName(title_elements);
-		}catch (_exception){
+		} catch (_exception){
             LOGGER.error(_exception);
+            return "name gen error!";
         }        
     }
 

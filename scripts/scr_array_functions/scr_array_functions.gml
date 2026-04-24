@@ -109,7 +109,7 @@ function array_random_element(choice_array, recursive = false) {
     if (!recursive){
         return _elem;
     } else {
-        if (is_array(_elem)){
+        if (is_array(_elem) && array_length(_elem)){
             _elem = array_random_element(_elem,true);
         }
     }

@@ -37,7 +37,7 @@ function scr_chapter_random(custom_or_random) {
     homeworld_name = global.name_generator.GenerateFromSet("star", false);
     recruiting = "Death";
     recruiting_name = global.name_generator.GenerateFromSet("star", false);
-    flagship_name = global.name_generator.GenerateFromSet("imperial_ship")
+    flagship_name = global.name_generator.GenerateFromSet("imperial_ship");
     recruiting_exists = 1;
     homeworld_exists = 1;
     homeworld_rule = 1;
