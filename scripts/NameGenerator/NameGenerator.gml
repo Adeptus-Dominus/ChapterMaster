@@ -1,6 +1,8 @@
-function NameTracker() constructor {
+function NameTracker(set_name) constructor {
     names = [];
     used_names = [];
+
+    entity_name = set_name;
 
     composite_names = [];
 
@@ -69,7 +71,7 @@ function NameTracker() constructor {
         array_push(used_names, name);
     }
 
-    static SimpleNameGeneration = function(entity_name, reset_on_using_up_all_names = true) {
+    static SimpleNameGeneration = function(reset_on_using_up_all_names = true) {
         try {
             if (array_length(names) == 0) {
                 var used_names_length = array_length(used_names);
@@ -255,7 +257,7 @@ function NameGenerator() constructor {
             }
         }
 
-        name_sets[$ _name] = new NameTracker();
+        name_sets[$ _name] = new NameTracker(_name);
         var _fallback_name = string_replace_all(_name, "_", " ") + " 1";
 
         var _set = name_sets[$ _name];
@@ -266,7 +268,7 @@ function NameGenerator() constructor {
         }
     }
 
-    static GenerateFromSet = function(set_name,reset_on_using_up_all_names = true){
+    static GenerateFromSet = function(set_name, reset_on_using_up_all_names = true){
         if (!struct_exists(name_sets,set_name)){
              LOGGER.info("Set name does not exist");
              return "No Set Name"
