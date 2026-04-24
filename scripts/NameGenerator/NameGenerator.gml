@@ -174,65 +174,70 @@ function NameGenerator() constructor {
     // TODO after save rework is finished, check if these static can be converted to instance version
 
     //TODO make this data set moddable t allow for greater name variations
-    var _simple_names = [
-        "sector",
-        "star",
-        {
-            load_as: "imperial_male",
-            load_set: "space_marine"
-        },
-        {
-            load_as: "imperial_female",
-            load_set: "imperial"
-        },
-        "space_marine",
-        "chaos",
-        "imperial_ship",
-        "ork_ship",
-        {
-            load_as : "eldar",
-            load_set: "eldar",
-            composites : [
-                "first_syllables", 
-                "second_syllables", 
-                "third_syllables"
-            ]
-        },
-        {
-            load_as : "ork",
-            load_set: "ork",
-            composites : [
-                "prefixes", 
-                "suffixes", 
-                "special"
-            ]
-        },
-        {
-            load_as : "hulk",
-            load_set: "hulk",
-            composites : [
-                "prefixes", 
-                "suffixes", 
-            ]
-        },
-        {
-            load_as : "tau",
-            load_set: "tau",
-            composites : [
-                "prefixes", 
-                "suffixes", 
-            ]
-        },
-        {
-            load_as : "genestealercult",
-            load_set: "genestealercult",
-            composites : [
-                "main", 
-                "embelishment", 
-                "title"
-            ]
-        }
-    ]
+
+    var _simple_names = json_to_gamemaker(working_directory + $"main\\name_loader.json", json_parse);
+
+    if (_simple_names == ""){
+        var _simple_names = [
+            "sector",
+            "star",
+            {
+                load_as: "imperial_male",
+                load_set: "space_marine"
+            },
+            {
+                load_as: "imperial_female",
+                load_set: "imperial"
+            },
+            "space_marine",
+            "chaos",
+            "imperial_ship",
+            "ork_ship",
+            {
+                load_as : "eldar",
+                load_set: "eldar",
+                composites : [
+                    "first_syllables", 
+                    "second_syllables", 
+                    "third_syllables"
+                ]
+            },
+            {
+                load_as : "ork",
+                load_set: "ork",
+                composites : [
+                    "prefixes", 
+                    "suffixes", 
+                    "special"
+                ]
+            },
+            {
+                load_as : "hulk",
+                load_set: "hulk",
+                composites : [
+                    "prefixes", 
+                    "suffixes", 
+                ]
+            },
+            {
+                load_as : "tau",
+                load_set: "tau",
+                composites : [
+                    "prefixes", 
+                    "suffixes", 
+                ]
+            },
+            {
+                load_as : "genestealercult",
+                load_set: "genestealercult",
+                composites : [
+                    "main", 
+                    "embelishment", 
+                    "title"
+                ]
+            }
+        ]
+    }
 
     name_sets = {}
 

@@ -29,6 +29,7 @@ function json_to_gamemaker(_json_path, _func) {
             buffer_delete(file_buffer);
         }
     }
+    return "";
 }
 
 /// @description This function converts a single struct or a hierarchy of nested structs and arrays into a valid JSON string and then into a base64 format encoded string, using an intermediate buffer, to prevent stack overflow due to big input strings.
