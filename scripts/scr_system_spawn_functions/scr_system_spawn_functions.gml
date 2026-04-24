@@ -61,8 +61,9 @@ function player_home_star(home_planet) {
 
     if (obj_ini.home_name != "random") {
         _star_names.AddUsedName(obj_ini.home_name);
-        if (find_star_by_name(obj_ini.home_name) != "none") {
-            find_star_by_name(obj_ini.home_name).name = global.name_generator.GenerateFromSet("star", false);
+        var _old_name_star = find_star_by_name(obj_ini.home_name);
+        if (_old_name_star != "none") {
+            _old_name_star.name = global.name_generator.GenerateFromSet("star", false);
         }
         name = obj_ini.home_name;
     }

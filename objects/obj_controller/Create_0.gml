@@ -71,6 +71,8 @@
     
     The Machine God watches over you.
 */
+
+var _name_gen = global.name_generator;
 LOGGER.info("Creating Controller");
 scr_colors_initialize();
 is_test_map = false;
@@ -110,6 +112,8 @@ ready = false;
 var _arrays_count = 103;
 var _empty_array = [];
 
+
+LOGGER.info("Set Game Arrays and Statics");
 r_race = array_create_advanced(_arrays_count, _empty_array);
 r_role = array_create_advanced(_arrays_count, _empty_array);
 r_wep1 = array_create_advanced(_arrays_count, _empty_array);
@@ -724,7 +728,7 @@ for (var i = 0, l = array_length(inquisitor_gender); i < l; i++) {
     inquisitor_gender[i] = choose(0, 0, 0, 1, 1, 1, 1);
     inquisitor_type[i] = choose("Ordo Malleus", "Ordo Xenos", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus");
     var _gender = inquisitor_gender[i];
-    inquisitor[i] = global.name_generator.GenerateFromSet($"imperial_{string_gender(_gender)}");
+    inquisitor[i] = _name_gen.GenerateFromSet($"imperial_{string_gender(_gender)}");
 }
 
 // ** Sets diplomacy variables **
@@ -810,6 +814,8 @@ info_chips = 0;
 inspection_passes = 0;
 recruiting_worlds_bought = 0;
 
+
+LOGGER.info("Set Battle Formations");
 // ** BATTLE FORMATIONS **
 var _count = 16;
 bat_formation = array_create(_count, "");
@@ -858,6 +864,8 @@ bat_landspeeder_column = 4;
 bat_scout_column = 1;
 // ** Sets up disposition per faction **
 
+
+LOGGER.info("Set Ai Faction data");
 imperial_factions = [
     eFACTION.IMPERIUM,
     eFACTION.MECHANICUS,
@@ -930,37 +938,38 @@ faction_leader = array_create(14, "");
 faction_title = array_create(14, "");
 faction_status = array_create(14, "");
 // Sector Command faction
-faction_leader[eFACTION.IMPERIUM] = global.name_generator.GenerateFromSet($"imperial_male")
+faction_leader[eFACTION.IMPERIUM] = _name_gen.GenerateFromSet($"imperial_male")
 faction_title[eFACTION.IMPERIUM] = "Sector Commander";
 faction_status[eFACTION.IMPERIUM] = "Allied";
 // Mechanicus faction
-faction_leader[eFACTION.MECHANICUS] = global.name_generator.GenerateFromSet($"imperial_male")
+//TODO make a dedicateed set of mechanicus names base imperial names are jarring af
+faction_leader[eFACTION.MECHANICUS] = _name_gen.GenerateFromSet($"imperial_male")
 faction_title[eFACTION.MECHANICUS] = "Magos";
 faction_status[eFACTION.MECHANICUS] = "Allied";
 if (faction_leader[eFACTION.MECHANICUS] == faction_leader[eFACTION.IMPERIUM]) {
-    faction_leader[eFACTION.MECHANICUS] = global.name_generator.GenerateFromSet("space_marine");
+    faction_leader[eFACTION.MECHANICUS] = _name_gen.GenerateFromSet("space_marine");
 }
 // Inquisition faction
-faction_leader[eFACTION.INQUISITION] = global.name_generator.GenerateFromSet($"imperial_male")
+faction_leader[eFACTION.INQUISITION] = _name_gen.GenerateFromSet($"imperial_male")
 if (faction_leader[eFACTION.INQUISITION] == faction_leader[eFACTION.MECHANICUS]) {
-    faction_leader[eFACTION.INQUISITION] = global.name_generator.GenerateFromSet($"imperial_male")
+    faction_leader[eFACTION.INQUISITION] = _name_gen.GenerateFromSet($"imperial_male")
 }
 faction_title[eFACTION.INQUISITION] = "Inquisitor Lord";
 faction_status[eFACTION.INQUISITION] = "Allied";
 // Sisters faction
-faction_leader[eFACTION.ECCLESIARCHY] = global.name_generator.GenerateFromSet($"imperial_female")
+faction_leader[eFACTION.ECCLESIARCHY] = _name_gen.GenerateFromSet($"imperial_female")
 faction_title[eFACTION.ECCLESIARCHY] = "Prioress";
 faction_status[eFACTION.ECCLESIARCHY] = "Allied";
 // Eldar faction
-faction_leader[eFACTION.ELDAR] = global.name_generator.generate_eldar_name(2);
+faction_leader[eFACTION.ELDAR] = _name_gen.GenerateMultiSyllable("eldar", 2);
 faction_title[eFACTION.ELDAR] = "Farseer";
 faction_status[eFACTION.ELDAR] = "Antagonism"; // If disposition = 0 then instead set it to "Antagonism"
 // Orkz faction
-faction_leader[eFACTION.ORK] = global.name_generator.generate_ork_name();
+faction_leader[eFACTION.ORK] = _name_gen.GenerateComposite("ork", false);
 faction_title[eFACTION.ORK] = "Warboss";
 faction_status[eFACTION.ORK] = "War";
 // Tau faction
-faction_leader[eFACTION.TAU] = global.name_generator.generate_tau_leader_name();
+faction_leader[eFACTION.TAU] = _name_gen.GenerateComposite("tau", true);
 faction_title[eFACTION.TAU] = "Diplomat";
 faction_status[eFACTION.TAU] = "Antagonism";
 // Other factions unkown to player
@@ -976,7 +985,7 @@ faction_gender[6] = set_gender();
 faction_gender[8] = set_gender();
 
 //TODO this syntax for choosing gendered naes is kinda ass to read
-faction_leader[eFACTION.INQUISITION] = global.name_generator.GenerateFromSet($"imperial_{string_gender(faction_gender[eFACTION.INQUISITION])}");
+faction_leader[eFACTION.INQUISITION] = _name_gen.GenerateFromSet($"imperial_{string_gender(faction_gender[eFACTION.INQUISITION])}");
 
 faction_gender[10] = set_gender();
 if (faction_gender[10] == eGENDER.FEMALE) {
@@ -986,10 +995,10 @@ if (faction_gender[10] == eGENDER.MALE) {
     faction_leader[eFACTION.CHAOS] = choose("1", "2", "2", "2");
 }
 if (faction_leader[eFACTION.CHAOS] == "1") {
-    faction_leader[eFACTION.CHAOS] = global.name_generator.GenerateFromSet("space_marine");
+    faction_leader[eFACTION.CHAOS] = _name_gen.GenerateFromSet("space_marine");
 }
 if (faction_leader[eFACTION.CHAOS] == "2") {
-    faction_leader[eFACTION.CHAOS] = global.name_generator.GenerateFromSet("chaos");
+    faction_leader[eFACTION.CHAOS] = _name_gen.GenerateFromSet("chaos");
 }
 
 known = array_create(14, 0);
@@ -1087,7 +1096,7 @@ if (instance_exists(obj_ini)) {
             }
         }
         // TODO should add special bonus to different chapters based on lore
-        adept_name = global.name_generator.GenerateFromSet("space_marine");
+        adept_name = _name_gen.GenerateFromSet("space_marine");
         recruiter_name = obj_ini.recruiter_name;
         progenitor = obj_ini.progenitor;
         successor_chapters = obj_ini.successors;
@@ -1121,6 +1130,8 @@ LOGGER.info("Controller Created");
 
 #region save/load serialization
 
+
+LOGGER.info("Set Save and Load functionality");
 /// Called from save function to take all object variables and convert them to a json savable format and return it
 serialize = function() {
     var object_controller = self;

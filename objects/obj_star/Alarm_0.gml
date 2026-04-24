@@ -19,7 +19,7 @@ for (var i = 0; i < 80; i++) {
         obj_controller.star_names += new_star_name; // TODO make sure it's always unique. Although star_names should just be removed, frankly.
     }
     if ((name == "") && craftworld) {
-        global.name_generator.generate_eldar_name(3);
+        global.name_generator.GenerateMultiSyllable("eldar", 3);
     }
 }
 // Sets up an eldar craftworld
