@@ -128,8 +128,6 @@ function NameGenerator() constructor {
         name_sets[$ _name].LoadSimpleNames(_load_name, _fallback_name);
     }
 
-    LOGGER.info(name_sets.space_marine.names);
-
     static GenerateFromSet = function(set_name){
         if (!struct_exists(name_sets,set_name)){
              LOGGER.info("Set name does not exist");
