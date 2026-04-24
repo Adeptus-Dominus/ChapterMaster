@@ -200,7 +200,7 @@ try {
         var _name_set = "imperial_" + string_gender(_gender);
 
         array_push(obj_controller.inquisitor_type, choose("Ordo Malleus", "Ordo Xenos", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus"));
-        array_push(obj_controller.inquisitor, global.name_generator.GenerateFrommSet(_name_set));
+        array_push(obj_controller.inquisitor, global.name_generator.GenerateFromSet(_name_set));
 
         instance_activate_object(obj_turn_end);
 

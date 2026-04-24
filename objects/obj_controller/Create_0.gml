@@ -976,7 +976,7 @@ faction_gender[6] = set_gender();
 faction_gender[8] = set_gender();
 
 //TODO this syntax for choosing gendered naes is kinda ass to read
-faction_leader[eFACTION.INQUISITION] = global.name_generator.GenerateFromSet($"imperial_{string_gender(faction_gender[eFACTION.INQUISITION]}");
+faction_leader[eFACTION.INQUISITION] = global.name_generator.GenerateFromSet($"imperial_{string_gender(faction_gender[eFACTION.INQUISITION])}");
 
 faction_gender[10] = set_gender();
 if (faction_gender[10] == eGENDER.FEMALE) {

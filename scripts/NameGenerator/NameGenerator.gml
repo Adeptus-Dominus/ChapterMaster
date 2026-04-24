@@ -15,10 +15,16 @@ function NameTracker() constructor {
 
         if (load_result.is_success) {
             names = load_result.values[$ json_names_property_name];
-        }
 
-        names = fallback_value;
+            LOGGER.info($"{file_name} names loaded correctly");
+        } else {
+            names = [fallback_value];
+        }
     };
+
+    static AddUsedName = function (name){
+        array_push(used_names, name);
+    }
 
     static SimpleNameGeneration = function(entity_name, reset_on_using_up_all_names = true) {
         try {
@@ -121,6 +127,8 @@ function NameGenerator() constructor {
 
         name_sets[$ _name].LoadSimpleNames(_load_name, _fallback_name);
     }
+
+    LOGGER.info(name_sets.space_marine.names);
 
     static GenerateFromSet = function(set_name){
         if (!struct_exists(name_sets,set_name)){
