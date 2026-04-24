@@ -151,6 +151,11 @@ function NameTracker() constructor {
             var _name = ""
             var _name_elem_length = array_length(title_elements)
             for (var i=0 ; i<_name_elem_length; i++){
+                if (i > 0 && !require_all){
+                    if (choose(0,1)){
+                        continue;
+                    }
+                }
                 if (struct_exists(composite_components,title_elements[i])){
                     var _elem_set = composite_components[$title_elements[i]];
                     _name += array_random_element(_elem_set, true) + i > 0 && i < _name_elem_length-1 ? " " : "";
