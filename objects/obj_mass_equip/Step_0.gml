@@ -3,13 +3,15 @@ try {
         instance_destroy();
     }
 
+    var _list_basic_armour = LIST_BASIC_POWER_ARMOUR;
+    var _list_term_armour = LIST_TERMINATOR_ARMOUR;
+
     if (engage == true) {
         for (var co = 0; co <= obj_ini.companies; co++) {
             if (role_number[co] > 0) {
                 for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
                     if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
-                        var _unit_i = [co, i];
-                        var unit = fetch_unit(_unit_i);
+                        var unit = fetch_unit([co, i]);
                         if (unit.squad != "none") {
                             var _squad = fetch_squad(unit.squad);
                             if (!_squad.allow_bulk_swap) {
@@ -25,10 +27,10 @@ try {
                         if (has_valid_armour) {
                             switch (req_armour) {
                                 case STR_ANY_POWER_ARMOUR:
-                                    has_valid_armour = array_contains(LIST_BASIC_POWER_ARMOUR, unit_armour.name);
+                                    has_valid_armour = array_contains(_list_basic_armour, unit_armour.name);
                                     break;
                                 case STR_ANY_TERMINATOR_ARMOUR:
-                                    has_valid_armour = array_contains(LIST_TERMINATOR_ARMOUR, unit_armour.name);
+                                    has_valid_armour = array_contains(_list_term_armour, unit_armour.name);
                                     break;
                                 default:
                                     has_valid_armour = req_armour == unit_armour.name;
@@ -166,11 +168,11 @@ try {
                         var yes = false;
 
                         if (req_armour == STR_ANY_POWER_ARMOUR) {
-                            if (array_contains(LIST_BASIC_POWER_ARMOUR, obj_ini.armour[co][i])) {
+                            if (array_contains(_list_basic_armour, obj_ini.armour[co][i])) {
                                 yes = true;
                             }
                         } else if (req_armour == STR_ANY_TERMINATOR_ARMOUR) {
-                            if (array_contains(LIST_TERMINATOR_ARMOUR, obj_ini.armour[co][i])) {
+                            if (array_contains(_list_term_armour, obj_ini.armour[co][i])) {
                                 yes = true;
                             }
                         }
@@ -217,12 +219,12 @@ try {
         have_wep2_num += scr_item_count(req_wep2);
 
         if (req_armour == STR_ANY_POWER_ARMOUR) {
-            for (var g = 0; g < array_length(LIST_BASIC_POWER_ARMOUR); g++) {
-                have_armour_num += scr_item_count(LIST_BASIC_POWER_ARMOUR[g]);
+            for (var g = 0; g < array_length(_list_basic_armour); g++) {
+                have_armour_num += scr_item_count(_list_basic_armour[g]);
             }
         } else if (req_armour == STR_ANY_TERMINATOR_ARMOUR) {
-            for (var g = 0; g < array_length(LIST_TERMINATOR_ARMOUR); g++) {
-                have_armour_num += scr_item_count(LIST_TERMINATOR_ARMOUR[g]);
+            for (var g = 0; g < array_length(_list_term_armour); g++) {
+                have_armour_num += scr_item_count(_list_term_armour[g]);
             }
         } else {
             have_armour_num += scr_item_count(req_armour);
