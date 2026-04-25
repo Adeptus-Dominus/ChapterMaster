@@ -260,7 +260,7 @@ function process_specialist_points() {
 
                 // Planet specific logic (Orbit is 0, Planets are 1-4)
                 if (turn_end && _p > 0 && array_length(_star_inst.p_feature[_p]) > 0) {
-                    if (array_length(p_feature[p])!=0){
+                    if (array_length(p_feature[_p])!=0){
                         var _planet_data = new PlanetData(_p, _star_inst);
                         _planet_data.recover_starship(_cur_techs);
                         _planet_data.planet_training(_pool.heal);
