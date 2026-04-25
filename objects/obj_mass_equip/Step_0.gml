@@ -5,7 +5,7 @@ try {
 
     var romanNumerals = scr_roman_numerals();
     var unit;
-    var unit_armour, complete;
+    var unit_armour;
 
     if (engage == true) {
         for (var co = 0; co <= obj_ini.companies; co++) {
@@ -13,7 +13,8 @@ try {
             if (role_number[co] > 0) {
                 for (i = 0; i < array_length(obj_ini.role[co]); i++) {
                     if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
-                        unit = fetch_unit([co, i]);
+                        var _unit_i = [co][i];
+                        unit = fetch_unit(_unit_i);
                         if (unit.squad != "none") {
                             var _squad = fetch_squad(unit.squad);
                             if (!_squad.allow_bulk_swap) {
@@ -75,7 +76,6 @@ try {
 
                         // ** Start Mobility Items **
                         if (unit.mobility_item() != req_mobi) {
-                            var stop_mobi = false;
                             if (is_struct(unit_armour) && unit_armour.has_tags(["terminator", "dreadnought"])) {
                                 unit.update_mobility_item("");
                             } else {
