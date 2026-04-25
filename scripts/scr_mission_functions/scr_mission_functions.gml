@@ -678,20 +678,23 @@ function init_deliver_trophy_mission(){
         {
             str1 : "Refuse and place the trophy into the Librarium",
             choice_func : function(){
-                var _arti = scr_add_artifact("trophy", [], 0, "");
                 reset_popup_options();
-                _arti.name = pop_data.trophy_name;
+                var _tag = "";
                 var _daemonic = roll_dice_chapter(1, 10, "low");
                 if (_daemonic == 10){
-                    _arti.add_tag("daemonic")
-                }
+                    _tag = "daemonic";
+                }                
+                var _arti = scr_add_artifact("trophy", _tag, 0, "");
+                _arti = fetch_artifact(_arti);
+                _arti.name = pop_data.trophy_name;
                 _arti.set_loc(_pop_data.system);
                 //base_type == choose("gear", "weapon", "trophy");
                 var _base_type = choose("weapon", "trophy");
                 if (_base_type == "weapon"){
                     _arti.update_type("Company Standard");
                 }
-                text = "Your Marines elect to keep the {pop_data.trophy_name} as for the chapter in it's honour";
+
+                text = "Your Marines elect to keep the {pop_data.trophy_name} for the chapter in it's honour!";
 
                 if (_base_type == "weapon"){
                     text += "The grisly remains have been fashioned into a make shift standard that is crude but fearsome to behold"; 
@@ -806,19 +809,7 @@ function deliver_trophy_end_turn_check(){
                     _text += "In return for your labour and in honour of your chapter the commander of the guard division has a brand new Rhino destined for the army diverted to your chapter";
                     scr_add_vehicle("Rhino");
                 } else if (_roll>=70 ){
-                    var _wanted_types = ["Ice","Desert","Agri","Lava","Death"];
-                    var _star = scr_get_stars(true,[],_wanted_types)[0];
-                    _text += "During the concourse that follows with the fleet command your marines learn of a old battle ground discovered on {_star.name}.";
-                    _text += "According too intel it appeared to be an old astartes battle ground from an unknown age, communications have been passed onto the adeptus mechanicus who will no doubt pick the site clean should they reach it before you do";
-
-                    var _planet = scr_get_planet_with_type(_wanted_types);
-                    var _battle_ground = new NewPlanetFeature(P_features.OldBattleGround);
-
-                    _battle_ground.player_hidden = false;
-
-                    _battle_ground.imperium_known = true;
-
-                    _star.add_feature(_planet,_battle_ground);
+                    init_newly_revealed_battle_ground();
                 }
                 scr_popup(
                     "Trophy Delivered ", 
@@ -827,6 +818,25 @@ function deliver_trophy_end_turn_check(){
             }
         }
     }
+}
+
+function init_newly_revealed_battle_ground(){
+    var _wanted_types = ["Ice","Desert","Agri","Lava","Death"];
+    var _star = scr_get_stars(true,[],_wanted_types)[0];
+    if (array_length(_star)){
+        _star = _star[0]
+    }
+    _text += "During the concourse that follows with the fleet command your marines learn of a old battle ground discovered on {_star.name}.";
+    _text += "According too intel it appeared to be an old astartes battle ground from an unknown age, communications have been passed onto the adeptus mechanicus who will no doubt pick the site clean should they reach it before you do";
+
+    var _planet = scr_get_planet_with_type(_wanted_types);
+    var _battle_ground = new NewPlanetFeature(P_features.OLDBATTLEGROUND);
+
+    _battle_ground.player_hidden = false;
+
+    _battle_ground.imperium_known = true;
+
+    _star.add_feature(_planet,_battle_ground);
 }
 
 

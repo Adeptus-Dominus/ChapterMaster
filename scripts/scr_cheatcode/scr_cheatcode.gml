@@ -469,6 +469,7 @@ function draw_planet_debug_features(){
         draw_text(38, _y, _feat.name);
         if (point_and_click([38, _y, 337, _y + 20])) {
             var _new_feat = new NewPlanetFeature(_feat.e_num);
+            _new_feat.player_hidden = false;
             array_push(target.p_feature[obj_controller.selecting_planet], _new_feat);
         }
     }
