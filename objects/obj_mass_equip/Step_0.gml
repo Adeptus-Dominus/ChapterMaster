@@ -267,14 +267,7 @@ try {
         if (tab > -1) {
             item_name = [];
             var is_hand_slot = tab == 0 || tab == 1;
-            scr_get_item_names(
-                item_name,
-                obj_controller.settings,
-                tab,
-                is_hand_slot ? eENGAGEMENT.ANY : eENGAGEMENT.NONE,
-                true,
-                false
-            );
+            scr_get_item_names(item_name, obj_controller.settings, tab, is_hand_slot ? eENGAGEMENT.ANY : eENGAGEMENT.NONE, true, false);
         }
 
         good1 = 0;
