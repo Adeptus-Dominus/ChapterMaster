@@ -53,8 +53,8 @@ try {
             }
             if (struct_exists(_data, "planet")) {
                 obj_controller.selecting_planet = _data.planet;
-                if (obj_controller.selecting_planet > 0 && obj_controller.selecting_planet < 5) {
-                    obj_star_select.garrison = new GarrisonForce(p_operatives[obj_controller.selecting_planet]);
+                if (obj_controller.selecting_planet > 0 && _data.planet < 5) {
+                    obj_star_select.garrison = system_garrison.update(p_operatives[_data.planet]);
                 }
             }
             obj_controller.selection_data = false;

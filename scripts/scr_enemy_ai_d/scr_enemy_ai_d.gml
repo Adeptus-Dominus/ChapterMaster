@@ -536,12 +536,11 @@ function scr_enemy_ai_d() {
     // Local problems will go here
     var planet;
     for (var planet=1;planet<=planets;planet++){
-        planet = planet + 1;
         if (planet < array_length(system_garrison)) {
-            var garrison = system_garrison[planet];
-            if (garrison.garrison_force) {
-                if (garrison.garrison_disposition_change(self, planet) != "none") {
-                    dispo[planet] += garrison.dispo_change;
+            var _garrison = system_garrison[planet];
+            if (_garrison.garrison_force) {
+                if (_garrison.garrison_disposition_change(self, planet) != "none") {
+                    dispo[planet] += _garrison.dispo_change;
                 }
             }
         }

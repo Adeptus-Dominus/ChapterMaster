@@ -1471,7 +1471,7 @@ function PlanetData(planet, system) constructor{
                     exit;
                 }
             } else if (!_loading){
-                garrisons = new GarrisonForce(operatives);
+                garrisons.update(operatives);
                 system.garrisons = garrisons.garrison_force;
                 feature="";
                 buttons_selected=false;                 

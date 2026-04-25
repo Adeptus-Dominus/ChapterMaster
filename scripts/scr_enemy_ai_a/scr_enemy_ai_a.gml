@@ -1,15 +1,22 @@
 /// @mixin
 function scr_enemy_ai_a() {
-    system_garrison = [];
-    system__sabatours = [];
-    system_datas = [0];
-
     for (var i = 1; i <= planets; i++) {
-        var _garrison = new GarrisonForce(p_operatives[i], true);
-        var _sabatours = new GarrisonForce(p_operatives[i], true, "sabotage");
-        array_push(system_garrison, _garrison);
-        array_push(system__sabatours, _sabatours);
-        array_push(system_datas, new PlanetData(i, self));
+        var _ops = p_operatives[i];
+        if (system_garrison[i] == false){
+            system_garrison[i] = new GarrisonForce(_ops, true);
+        } else {
+            system_garrison[i].update(_ops, true)
+        }
+        if (system_sabatours[i] == false){
+            system_sabatours[i] = new GarrisonForce(_ops, true, "sabotage");
+        } else {
+            system_sabatours[i].update(_ops, true)
+        }
+        if (system_datas[i] == false){
+            system_datas[i] = new PlanetData(i, self)
+        } else {
+            system_datas[i].refresh_data();
+        }
     }
     // guardsmen hop from planet to planet
     //not sure we really need this as it's handled with tht navy fleet functions but fuck it updated it and leaving it fot the sec
@@ -54,7 +61,7 @@ function scr_enemy_ai_a() {
         _planet_data = system_datas[_run];
         _garrison = _planet_data.garrisons;
         _sabatours = _planet_data.sabatours;
-        _garrison_force = garrison_garrison_force;
+        _garrison_force = _garrison.garrison_force;
 
         stop = 0;
         ensure_no_planet_negatives(_run);
