@@ -43,8 +43,8 @@ good5 = 0;
 
 item_name = [];
 
-/// `@param` {Struct.TTRPG_stats} unit
-/// `@param` {string} weapon_name
+/// @param {Struct.TTRPG_stats} unit
+/// @param {string} weapon_name
 can_assign_weapon = function(unit, weapon_name) {
     switch (weapon_name) {
         case "Assault Cannon":
