@@ -96,6 +96,8 @@ function NameTracker(set_name) constructor {
         }
     };
 
+    preffered_method = "simple";
+
     static CompositeNameGeneration = function(separate_components = true) {
         try {
             if (struct_exists(composite_components, "special") && is_array(composite_components.special) && array_length(composite_components.special) > 0) {
@@ -160,7 +162,7 @@ function NameTracker(set_name) constructor {
                 }
                 if (struct_exists(composite_components,title_elements[i])){
                     var _elem_set = composite_components[$title_elements[i]];
-                    _name += array_random_element(_elem_set, true) + (i > 0 && i < _name_elem_length-1 ? " " : "");
+                    _name += array_random_element(_elem_set, true) + (i < _name_elem_length-1 ? " " : "");
                 }
             }
             return _name;
@@ -170,13 +172,23 @@ function NameTracker(set_name) constructor {
         }
     };
 
+    static UsePreffered = function(){
+        switch(preffered_method){
+            case "composite":
+                return CompositeNameGeneration();
+                break;
+            case "complex":
+                return ComplexTitledName(composite_names);
+                break;
+            default:
+                return SimpleNameGeneration();
+        } 
+    }
+
 }
 
 function NameGenerator() constructor {
     // TODO after save rework is finished, check if these static can be converted to instance version
-
-    //TODO make this data set moddable t allow for greater name variations
-
     var _simple_names = json_to_gamemaker(working_directory + $"main\\name_loader.json", json_parse);
 
     if (_simple_names == ""){
@@ -247,6 +259,7 @@ function NameGenerator() constructor {
         var _name = _simple_names[i];
         var _load_name = _name;
         var _load_as_composite = false;
+        var _preffered = "simple";
         if (is_struct(_name)){
             var _struc = _name;
             _name = _struc.load_as;
@@ -255,12 +268,20 @@ function NameGenerator() constructor {
                 _load_as_composite = true;
                 var _composites = _struc.composites
             }
+            if (struct_exists(_struc, "preffered_method")){
+                _preffered = _struc.preffered_method
+            } else {
+                if (_load_as_composite){
+                    _preffered = "composite";
+                }
+            }
         }
 
         name_sets[$ _name] = new NameTracker(_name);
         var _fallback_name = string_replace_all(_name, "_", " ") + " 1";
 
         var _set = name_sets[$ _name];
+        _set.preffered_method = _preffered;
         if (!_load_as_composite){
             _set.LoadSimpleNames(_load_name, _fallback_name);
         } else {
@@ -275,6 +296,38 @@ function NameGenerator() constructor {
         }
 
         return name_sets[$ set_name].SimpleNameGeneration(reset_on_using_up_all_names);
+    }
+
+    static ChapterMemberNameGeneration = function(){
+        try {
+            var _name = "";
+            var _styles = ["space_marine"];
+            if (instance_exists(obj_creation)) {
+                _styles = array_join(_styles,obj_creation.buttons.culture_styles.selections());
+            } else {
+                _styles = array_join(obj_ini.culture_styles,_styles);
+            }
+
+            _styles=array_shuffle(_styles);
+
+            while (array_length(_styles)){
+                var _style = array_pop(_styles);
+                var _set = get_name_set(_style);
+                if (is_struct(_set)){
+                    var _name = _set.UsePreffered();
+                    break;
+                }
+            }
+
+            if (_name == ""){
+                GenerateFromSet("imperial");
+            }
+            return _name;
+        } catch(_exception){
+            LOGGER.error(_exception);
+            return "name gen error!";
+        }
+
     }
 
     static GenerateComposite = function(set_name,separate_components = true){

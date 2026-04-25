@@ -563,6 +563,7 @@
     {"$GMIncludedFile":"","%Name":"knightly.json","CopyToMask":-1,"filePath":"datafiles/main/names","name":"knightly.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"ork_ship.json","CopyToMask":-1,"filePath":"datafiles/main/names","name":"ork_ship.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"ork.json","CopyToMask":-1,"filePath":"datafiles/main/names","name":"ork.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"roman.json","CopyToMask":-1,"filePath":"datafiles/main/names","name":"roman.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"sector.json","CopyToMask":-1,"filePath":"datafiles/main/names","name":"sector.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"space_marine.json","CopyToMask":-1,"filePath":"datafiles/main/names","name":"space_marine.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"star.json","CopyToMask":-1,"filePath":"datafiles/main/names","name":"star.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},

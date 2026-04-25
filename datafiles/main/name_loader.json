@@ -56,5 +56,23 @@
             "title"
         ]
     },
-    "knightly"
+    {
+        "load_as" : "Knightly",
+        "load_set": "knightly",
+        "composites" : [
+            "names", 
+            "surnames", 
+        ],
+        "preffered_method" : "complex"
+    },
+    {
+        "load_as" : "Roman",
+        "load_set": "roman",
+        "composites" : [
+            "praenomen", 
+            "nomen", 
+            "cognomen"
+        ],
+        "preffered_method" : "complex"
+    }
 ]
