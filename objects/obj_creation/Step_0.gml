@@ -113,7 +113,7 @@ if ((change_slide == 35) || (change_slide == 36) || (chapter_name == "Doom Benef
         homeworld_name = global.name_generator.GenerateFromSet("star", false);
         recruiting = "Death";
         recruiting_name = global.name_generator.GenerateFromSet("star", false);
-        flagship_name = global.name_generator.GenerateFromSet("imperial_ship")
+        flagship_name = global.name_generator.GenerateFromSet("imperial_ship");
         recruiting_exists = 1;
         homeworld_exists = 1;
         homeworld_rule = 1;
@@ -137,12 +137,12 @@ if ((change_slide == 35) || (change_slide == 36) || (chapter_name == "Doom Benef
         color_to_lens = "";
         color_to_weapon = "";
         trim = 1;
-        hapothecary = global.name_generator.ChapterMemberNameGeneration()
-        hchaplain = global.name_generator.ChapterMemberNameGeneration()
-        clibrarian = global.name_generator.ChapterMemberNameGeneration()
-        fmaster = global.name_generator.ChapterMemberNameGeneration()
-        recruiter = global.name_generator.ChapterMemberNameGeneration()
-        admiral = global.name_generator.ChapterMemberNameGeneration()
+        hapothecary = global.name_generator.ChapterMemberNameGeneration();
+        hchaplain = global.name_generator.ChapterMemberNameGeneration();
+        clibrarian = global.name_generator.ChapterMemberNameGeneration();
+        fmaster = global.name_generator.ChapterMemberNameGeneration();
+        recruiter = global.name_generator.ChapterMemberNameGeneration();
+        admiral = global.name_generator.ChapterMemberNameGeneration();
         equal_specialists = 0;
         load_to_ships = [
             2,
@@ -175,7 +175,7 @@ if ((change_slide == 35) || (change_slide == 36) || (chapter_name == "Doom Benef
         disposition[6] = 0; // Astartes
         disposition[7] = 0; // Reserved
 
-        chapter_master_name = global.name_generator.ChapterMemberNameGeneration()
+        chapter_master_name = global.name_generator.ChapterMemberNameGeneration();
         chapter_master_melee = 1;
         chapter_master_ranged = 1;
         chapter_master_specialty = 2;

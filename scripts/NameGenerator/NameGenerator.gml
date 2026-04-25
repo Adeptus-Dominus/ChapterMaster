@@ -67,9 +67,9 @@ function NameTracker(set_name) constructor {
         composite_components = result;
     };
 
-    static AddUsedName = function (name){
+    static AddUsedName = function(name) {
         array_push(used_names, name);
-    }
+    };
 
     static SimpleNameGeneration = function(reset_on_using_up_all_names = true) {
         try {
@@ -79,7 +79,7 @@ function NameTracker(set_name) constructor {
                     LOGGER.info($"Used up all {entity_name} names, resetting name lists");
                     // TODO the 2 lines below could be simplified by swapping references, instead of copying and deleting
                     names = array_shuffle(variable_clone(used_names));
-                    used_names = []
+                    used_names = [];
                 } else {
                     LOGGER.error($"Used up all {entity_name} names. Generating a generic name. used_names_length = {used_names_length}; generic_counter = {generic_counter}.");
                     generic_counter++;
@@ -144,25 +144,25 @@ function NameTracker(set_name) constructor {
     };
 
     static ComplexTitledName = function(
-            title_elements = [
-                "mains", 
-                "embelishments", 
-                "titles"
-            ], 
-            require_all = false) 
-    {
+        title_elements = [
+            "mains",
+            "embelishments",
+            "titles"
+        ],
+        require_all = false
+    ) {
         try {
-            var _name = ""
-            var _name_elem_length = array_length(title_elements)
-            for (var i=0 ; i<_name_elem_length; i++){
-                if (i > 0 && !require_all){
-                    if (choose(0,1)){
+            var _name = "";
+            var _name_elem_length = array_length(title_elements);
+            for (var i = 0; i < _name_elem_length; i++) {
+                if (i > 0 && !require_all) {
+                    if (choose(0, 1)) {
                         continue;
                     }
                 }
-                if (struct_exists(composite_components,title_elements[i])){
-                    var _elem_set = composite_components[$title_elements[i]];
-                    _name += array_random_element(_elem_set, true) + (i < _name_elem_length-1 ? " " : "");
+                if (struct_exists(composite_components, title_elements[i])) {
+                    var _elem_set = composite_components[$ title_elements[i]];
+                    _name += array_random_element(_elem_set, true) + (i < _name_elem_length - 1 ? " " : "");
                 }
             }
             return _name;
@@ -172,8 +172,8 @@ function NameTracker(set_name) constructor {
         }
     };
 
-    static UsePreffered = function(){
-        switch(preffered_method){
+    static UsePreffered = function() {
+        switch (preffered_method) {
             case "composite":
                 return CompositeNameGeneration();
                 break;
@@ -182,96 +182,95 @@ function NameTracker(set_name) constructor {
                 break;
             default:
                 return SimpleNameGeneration();
-        } 
-    }
-
+        }
+    };
 }
 
 function NameGenerator() constructor {
     // TODO after save rework is finished, check if these static can be converted to instance version
     var _simple_names = json_to_gamemaker(working_directory + $"main\\name_loader.json", json_parse);
 
-    if (_simple_names == ""){
+    if (_simple_names == "") {
         var _simple_names = [
             "sector",
             "star",
             {
                 load_as: "imperial_male",
-                load_set: "space_marine"
+                load_set: "space_marine",
             },
             {
                 load_as: "imperial_female",
-                load_set: "imperial"
+                load_set: "imperial",
             },
             "space_marine",
             "chaos",
             "imperial_ship",
             "ork_ship",
             {
-                load_as : "eldar",
+                load_as: "eldar",
                 load_set: "eldar",
-                composites : [
-                    "first_syllables", 
-                    "second_syllables", 
+                composites: [
+                    "first_syllables",
+                    "second_syllables",
                     "third_syllables"
-                ]
+                ],
             },
             {
-                load_as : "ork",
+                load_as: "ork",
                 load_set: "ork",
-                composites : [
-                    "prefixes", 
-                    "suffixes", 
+                composites: [
+                    "prefixes",
+                    "suffixes",
                     "special"
-                ]
+                ],
             },
             {
-                load_as : "hulk",
+                load_as: "hulk",
                 load_set: "hulk",
-                composites : [
-                    "prefixes", 
-                    "suffixes", 
-                ]
+                composites: [
+                    "prefixes",
+                    "suffixes"
+                ],
             },
             {
-                load_as : "tau",
+                load_as: "tau",
                 load_set: "tau",
-                composites : [
-                    "prefixes", 
-                    "suffixes", 
-                ]
+                composites: [
+                    "prefixes",
+                    "suffixes"
+                ],
             },
             {
-                load_as : "genestealercult",
+                load_as: "genestealercult",
                 load_set: "genestealercult",
-                composites : [
-                    "main", 
-                    "embelishment", 
+                composites: [
+                    "main",
+                    "embelishment",
                     "title"
-                ]
+                ],
             }
-        ]
+        ];
     }
 
-    name_sets = {}
+    name_sets = {};
 
-    for (var i=0;i<array_length(_simple_names);i++){
+    for (var i = 0; i < array_length(_simple_names); i++) {
         var _name = _simple_names[i];
         var _load_name = _name;
         var _load_as_composite = false;
         var _preffered = "simple";
-        if (is_struct(_name)){
+        if (is_struct(_name)) {
             var _struc = _name;
             _name = _struc.load_as;
             _load_name = _struc.load_set;
-            if (struct_exists(_struc, "composites")){
+            if (struct_exists(_struc, "composites")) {
                 _load_as_composite = true;
-                var _composites = _struc.composites
+                var _composites = _struc.composites;
             }
-            if (struct_exists(_struc, "preffered_method")){
-                _preffered = _struc.preffered_method
+            if (struct_exists(_struc, "preffered_method")) {
+                _preffered = _struc.preffered_method;
             } else {
-                if (_load_as_composite){
+                if (_load_as_composite) {
                     _preffered = "composite";
                 }
             }
@@ -282,108 +281,108 @@ function NameGenerator() constructor {
 
         var _set = name_sets[$ _name];
         _set.preffered_method = _preffered;
-        if (!_load_as_composite){
+        if (!_load_as_composite) {
             _set.LoadSimpleNames(_load_name, _fallback_name);
         } else {
             _set.LoadCompositeNames(_load_name, _composites);
         }
     }
 
-    static GenerateFromSet = function(set_name, reset_on_using_up_all_names = true){
-        if (!struct_exists(name_sets,set_name)){
-             LOGGER.info("Set name does not exist");
-             return "No Set Name"
+    static GenerateFromSet = function(set_name, reset_on_using_up_all_names = true) {
+        if (!struct_exists(name_sets, set_name)) {
+            LOGGER.info("Set name does not exist");
+            return "No Set Name";
         }
 
         return name_sets[$ set_name].SimpleNameGeneration(reset_on_using_up_all_names);
-    }
+    };
 
-    static ChapterMemberNameGeneration = function(){
+    static ChapterMemberNameGeneration = function() {
         try {
             var _name = "";
             var _styles = ["space_marine"];
             if (instance_exists(obj_creation)) {
-                _styles = array_join(_styles,obj_creation.buttons.culture_styles.selections());
+                _styles = array_join(_styles, obj_creation.buttons.culture_styles.selections());
             } else {
-                _styles = array_join(obj_ini.culture_styles,_styles);
+                _styles = array_join(obj_ini.culture_styles, _styles);
             }
 
-            _styles=array_shuffle(_styles);
+            _styles = array_shuffle(_styles);
 
-            while (array_length(_styles)){
+            while (array_length(_styles)) {
                 var _style = array_pop(_styles);
                 var _set = get_name_set(_style);
-                if (is_struct(_set)){
+                if (is_struct(_set)) {
                     var _name = _set.UsePreffered();
                     break;
                 }
             }
 
-            if (_name == ""){
+            if (_name == "") {
                 GenerateFromSet("imperial_male");
             }
             return _name;
-        } catch(_exception){
+        } catch (_exception) {
             LOGGER.error(_exception);
             return "name gen error!";
         }
+    };
 
-    }
-
-    static GenerateComposite = function(set_name,separate_components = true){
+    static GenerateComposite = function(set_name, separate_components = true) {
         try {
             var _set = get_name_set(set_name);
-            if (!is_struct(_set)){
-                return _set
+            if (!is_struct(_set)) {
+                return _set;
             }
 
             return _set.CompositeNameGeneration(separate_components);
-		} catch(_exception){
+        } catch (_exception) {
             LOGGER.error(_exception);
             return "name gen error!";
         }
-    }
+    };
 
-    static GenerateMultiSyllable = function(set_name,syllable_amount){
+    static GenerateMultiSyllable = function(set_name, syllable_amount) {
         try {
             var _set = get_name_set(set_name);
-            if (!is_struct(_set)){
-                return _set
+            if (!is_struct(_set)) {
+                return _set;
             }
 
             return _set.MultiSyllableNameGeneration(syllable_amount);
-		} catch(_exception){
+        } catch (_exception) {
             LOGGER.error(_exception);
             return "name gen error!";
-        }        
-    }
+        }
+    };
 
-    static GenerateComplexTitledName = function(set_name,
+    static GenerateComplexTitledName = function(
+        set_name,
         title_elements = [
-            "mains", 
-            "embelishments", 
+            "mains",
+            "embelishments",
             "titles"
-        ], 
-    ){
+        ]
+    ) {
         try {
             var _set = get_name_set(set_name);
-            if (!is_struct(_set)){
-                return _set
+            if (!is_struct(_set)) {
+                return _set;
             }
 
             return _set.ComplexTitledName(title_elements);
-		} catch (_exception){
+        } catch (_exception) {
             LOGGER.error(_exception);
             return "name gen error!";
-        }        
-    }
+        }
+    };
 
-    static get_name_set = function(set_name){
-        if (!struct_exists(name_sets,set_name)){
-             LOGGER.info("Set name does not exist");
-             return "No Set Name"
+    static get_name_set = function(set_name) {
+        if (!struct_exists(name_sets, set_name)) {
+            LOGGER.info("Set name does not exist");
+            return "No Set Name";
         }
 
         return name_sets[$ set_name];
-    } 
+    };
 }

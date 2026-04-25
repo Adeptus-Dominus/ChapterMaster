@@ -59,7 +59,7 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             planet_display = "Genestealer Cult";
             cult_age = 0;
             hiding = true;
-            name = global.name_generator.GenerateComplexTitledName("genestealercult")
+            name = global.name_generator.GenerateComplexTitledName("genestealercult");
             break;
         case eP_FEATURES.NECRON_TOMB:
             awake = 0;
@@ -156,7 +156,7 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             planet_display = "Fortress Monastary";
             player_hidden = 0;
             forge = 0;
-            name = global.name_generator.GenerateFromSet("imperial_ship")
+            name = global.name_generator.GenerateFromSet("imperial_ship");
             break;
         case eP_FEATURES.RECRUITING_WORLD:
             planet_display = "Recruitment";

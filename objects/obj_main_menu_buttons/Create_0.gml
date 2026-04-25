@@ -40,7 +40,6 @@ if (room_get_name(room) == "rm_creation") {
         };
         array_push(buttons, _button_data);
     }
-    
 
     buttons[0].action = function() {
         start_room_transition(rm_creation);
