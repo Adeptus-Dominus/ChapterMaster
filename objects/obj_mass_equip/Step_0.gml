@@ -245,7 +245,8 @@ try {
         }
         total_roles = "";
         if (total_role_number > 0) {
-            total_roles = $"You currently have {total_role_number}x {obj_ini.role[100][role]} across all companies.";
+            var _role_name = obj_ini.role[100][role];
+            total_roles = $"You currently have {total_role_number}x {_role_name} across all companies.";
             for (var i = 0; i < 11; i++) {
                 var romanNumerals = scr_roman_numerals();
                 var _company_name = i == 0 ? "HQ" : $"{romanNumerals[i - 1]} Company";
