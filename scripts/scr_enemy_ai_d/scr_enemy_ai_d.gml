@@ -341,24 +341,20 @@ function scr_enemy_ai_d() {
                     fleet.escort_number = round(random_range(12, 27));
 
                     /*fleet.capital_number=choose(5,6);
-	                fleet.frigate_number=round(random_range(4,8));
-	                fleet.escort_number=round(random_range(8,18));*/
-                
-	                fleet.image_index=round(standard_fleet_strength_calc());
-	                fleet.image_alpha=0;
-                
-	                fleet.action_x=x;
-	                fleet.action_y=y;
-                
-	                fleet.action_eta=p_timer[i][firstest];
-	                fleet.action="move";
-	            }
-            
-    
-	        }
-    
-	    }
+                    fleet.frigate_number=round(random_range(4,8));
+                    fleet.escort_number=round(random_range(8,18));*/
 
+                    fleet.image_index = round(standard_fleet_strength_calc());
+                    fleet.image_alpha = 0;
+
+                    fleet.action_x = x;
+                    fleet.action_y = y;
+
+                    fleet.action_eta = p_timer[i][firstest];
+                    fleet.action = "move";
+                }
+            }
+        }
 
         if (has_problem_planet_and_time(i, "Hive Fleet", 3) > -1) {
             var woop = scr_role_count("Chief " + string(obj_ini.role[100][17]), "");
@@ -539,10 +535,10 @@ function scr_enemy_ai_d() {
 
     // Local problems will go here
     var planet;
-    for (var i = 0; i <= planets; i++) {
-        planet = i + 1;
-        if (i < array_length(system_garrison)) {
-            var garrison = system_garrison[i];
+    for (var planet=1;planet<=planets;planet++){
+        planet = planet + 1;
+        if (planet < array_length(system_garrison)) {
+            var garrison = system_garrison[planet];
             if (garrison.garrison_force) {
                 if (garrison.garrison_disposition_change(self, planet) != "none") {
                     dispo[planet] += garrison.dispo_change;
