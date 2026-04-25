@@ -8,7 +8,7 @@ try {
             if (role_number[co] > 0) {
                 for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
                     if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
-                        var _unit_i = [co][i];
+                        var _unit_i = [co, i];
                         var unit = fetch_unit(_unit_i);
                         if (unit.squad != "none") {
                             var _squad = fetch_squad(unit.squad);
