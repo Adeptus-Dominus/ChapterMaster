@@ -1,5 +1,5 @@
 function JsonFileListLoader() constructor {
-    load_list_from_json_file = function(relative_file_path, properties_to_read, app_data_dir = false) {
+    static load_list_from_json_file = function(relative_file_path, properties_to_read, app_data_dir = false) {
         var file_buffer = undefined;
         var result = {
             is_success: false,
@@ -69,7 +69,7 @@ function JsonFileListLoader() constructor {
     /// @param {String} relative_file_path the file path and file name e.g. "main/data/file.json"
     /// @param {String} property_to_read the key which is the struct to pull out
     /// @param {Bool} app_data_dir if set to true, will read from %AppData%/Local/ChapterMaster instead of %GameInstallDir%/datafiles
-    load_struct_from_json_file = function(relative_file_path, property_to_read, app_data_dir = false) {
+    static load_struct_from_json_file = function(relative_file_path, property_to_read, app_data_dir = false) {
         var file_buffer = undefined;
         var result = {
             is_success: false,

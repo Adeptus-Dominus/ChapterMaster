@@ -601,12 +601,12 @@ function reset_creation_variables() {
     maxpoints = 100;
     custom = eCHAPTER_TYPE.PREMADE;
 
-    hapothecary = global.name_generator.generate_space_marine_name();
-    hchaplain = global.name_generator.generate_space_marine_name();
-    clibrarian = global.name_generator.generate_space_marine_name();
-    fmaster = global.name_generator.generate_space_marine_name();
-    recruiter = global.name_generator.generate_space_marine_name();
-    admiral = global.name_generator.generate_space_marine_name();
+    hapothecary = global.name_generator.GenerateFromSet("space_marine");
+    hchaplain = global.name_generator.GenerateFromSet("space_marine");
+    clibrarian = global.name_generator.GenerateFromSet("space_marine");
+    fmaster = global.name_generator.GenerateFromSet("space_marine");
+    recruiter = global.name_generator.GenerateFromSet("space_marine");
+    admiral = global.name_generator.GenerateFromSet("space_marine");
 
     // First is for the correct slot, second is for default info
     for (var i = 100; i < 103; i++) {

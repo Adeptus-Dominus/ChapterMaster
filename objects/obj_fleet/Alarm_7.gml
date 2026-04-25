@@ -193,9 +193,14 @@ try {
         array_delete(obj_controller.inquisitor_type, killer_tg, 1);
         array_delete(obj_controller.inquisitor, killer_tg, 1);
 
-        array_push(obj_controller.inquisitor_gender, choose(0, 0, 0, 1, 1, 1, 1));
+        //TODO add weighting characteristics to set_gender
+        var _gender = set_gender();
+        array_push(obj_controller.inquisitor_gender, _gender);
+
+        var _name_set = "imperial_" + string_gender(_gender);
+
         array_push(obj_controller.inquisitor_type, choose("Ordo Malleus", "Ordo Xenos", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus"));
-        array_push(obj_controller.inquisitor, global.name_generator.generate_imperial_name(obj_controller.inquisitor_gender[i]));
+        array_push(obj_controller.inquisitor, global.name_generator.GenerateFromSet(_name_set));
 
         instance_activate_object(obj_turn_end);
 

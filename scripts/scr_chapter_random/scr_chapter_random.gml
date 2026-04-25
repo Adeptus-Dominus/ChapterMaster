@@ -34,10 +34,10 @@ function scr_chapter_random(custom_or_random) {
     purity = 5;
     stability = 90;
     homeworld = "Temperate";
-    homeworld_name = global.name_generator.generate_star_name();
+    homeworld_name = global.name_generator.GenerateFromSet("star", false);
     recruiting = "Death";
-    recruiting_name = global.name_generator.generate_star_name();
-    flagship_name = global.name_generator.generate_imperial_ship_name();
+    recruiting_name = global.name_generator.GenerateFromSet("star", false);
+    flagship_name = global.name_generator.GenerateFromSet("imperial_ship");
     recruiting_exists = 1;
     homeworld_exists = 1;
     homeworld_rule = 1;
@@ -62,12 +62,12 @@ function scr_chapter_random(custom_or_random) {
     color_to_lens = "";
     color_to_weapon = "";
 
-    hapothecary = global.name_generator.generate_space_marine_name();
-    hchaplain = global.name_generator.generate_space_marine_name();
-    clibrarian = global.name_generator.generate_space_marine_name();
-    fmaster = global.name_generator.generate_space_marine_name();
-    recruiter = global.name_generator.generate_space_marine_name();
-    admiral = global.name_generator.generate_space_marine_name();
+    hapothecary = global.name_generator.GenerateFromSet("space_marine");
+    hchaplain = global.name_generator.GenerateFromSet("space_marine");
+    clibrarian = global.name_generator.GenerateFromSet("space_marine");
+    fmaster = global.name_generator.GenerateFromSet("space_marine");
+    recruiter = global.name_generator.GenerateFromSet("space_marine");
+    admiral = global.name_generator.GenerateFromSet("space_marine");
 
     equal_specialists = 0;
     load_to_ships = [
@@ -101,7 +101,7 @@ function scr_chapter_random(custom_or_random) {
     // disposition[5]=0;// Ecclesiarchy
     // disposition[6]=0;// Astartes
     // disposition[7]=0;// Reserved
-    chapter_master_name = global.name_generator.generate_space_marine_name();
+    chapter_master_name = global.name_generator.GenerateFromSet("space_marine");
     chapter_master_melee = 1;
     chapter_master_ranged = 1;
     chapter_master_specialty = choose(1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3);

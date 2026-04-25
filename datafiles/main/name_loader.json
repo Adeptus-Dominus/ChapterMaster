@@ -1,0 +1,87 @@
+[
+    "sector",
+    "star",
+    {
+        "load_as": "imperial_male",
+        "load_set": "space_marine"
+    },
+    {
+        "load_as": "imperial_female",
+        "load_set": "imperial"
+    },
+        "space_marine",
+        "chaos",
+        "imperial_ship",
+        "ork_ship",
+    {
+        "load_as" : "eldar",
+        "load_set": "eldar",
+        "composites" : [
+            "first_syllables", 
+            "second_syllables", 
+            "third_syllables"
+        ]
+    },
+    {
+        "load_as" : "ork",
+        "load_set": "ork",
+        "composites" : [
+            "prefixes", 
+            "suffixes", 
+            "special"
+        ]
+    },
+    {
+        "load_as" : "hulk",
+        "load_set": "hulk",
+        "composites" : [
+            "prefixes", 
+            "suffixes", 
+        ]
+    },
+    {
+        "load_as" : "tau",
+        "load_set": "tau",
+        "composites" : [
+            "prefixes", 
+            "suffixes", 
+        ]
+    },
+    {
+        "load_as" : "genestealercult",
+        "load_set": "genestealercult",
+        "composites" : [
+            "main", 
+            "embelishment", 
+            "title"
+        ]
+    },
+    {
+        "load_as" : "Knightly",
+        "load_set": "knightly",
+        "composites" : [
+            "names", 
+            "surnames", 
+        ],
+        "preffered_method" : "complex"
+    },
+    {
+        "load_as" : "Roman",
+        "load_set": "roman",
+        "composites" : [
+            "praenomen", 
+            "nomen", 
+            "cognomen"
+        ],
+        "preffered_method" : "complex"
+    },
+    {
+        "load_as" : "Mongol",
+        "load_set": "mongol",
+        "composites" : [
+            "given_name", 
+            "tribal_or_house", 
+        ],
+        "preffered_method" : "complex"
+    }
+]

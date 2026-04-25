@@ -38,7 +38,7 @@ repeat (21) {
     marine_co[i] = 2;
     marine_id[i] = 0;
     marine_role[i] = "Tactical";
-    marine_name[i] = global.name_generator.generate_space_marine_name();
+    marine_name[i] = global.name_generator.GenerateFromSet("space_marine");
 
     marine_hp[i] = 100;
     marine_maxhp[i] = 100;

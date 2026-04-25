@@ -39,7 +39,7 @@ function player_recruit_planet_selection() {
             recruiting_name = homeworld_name;
         } else if (_recruit_world_type == 2) {
             if (recruiting_name == homeworld_name) {
-                recruiting_name = global.name_generator.generate_star_name();
+                recruiting_name = global.name_generator.GenerateFromSet("star", false);
             }
         }
         if ((fleet_type == 1 && _recruit_world_type < 2) && (homeworld_name == recruiting_name)) {
@@ -82,7 +82,7 @@ function player_recruit_planet_selection() {
                 ];
                 draw_unit_buttons(_refresh_rec_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
                 if (point_and_click(_refresh_rec_name_btn)) {
-                    var _new_rec_name = global.name_generator.generate_star_name();
+                    var _new_rec_name = global.name_generator.GenerateFromSet("star", false);
                     //LOGGER.debug($"regen name of recruiting_name from {recruiting_name} to {_new_rec_name}");
                     recruiting_name = _new_rec_name;
                 }
@@ -140,7 +140,7 @@ function scr_creation_home_planet_create() {
             ];
             draw_unit_buttons(_refresh_hw_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
             if (point_and_click(_refresh_hw_name_btn)) {
-                var _new_hw_name = global.name_generator.generate_star_name();
+                var _new_hw_name = global.name_generator.GenerateFromSet("star", false);
                 //LOGGER.debug($"regen name of homeworld from {homeworld_name} to {_new_hw_name}");
                 homeworld_name = _new_hw_name;
             }
@@ -196,7 +196,7 @@ function scr_creation_home_planet_create() {
             ];
             draw_unit_buttons(_refresh_fs_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
             if (point_and_click(_refresh_fs_name_btn)) {
-                var _new_fs_name = global.name_generator.generate_imperial_ship_name();
+                var _new_fs_name = global.name_generator.GenerateFromSet("imperial_ship")
                 LOGGER.debug($"regen name of flagship_name from {flagship_name} to {_new_fs_name}");
                 flagship_name = _new_fs_name;
             }
