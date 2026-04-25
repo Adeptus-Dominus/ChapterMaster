@@ -320,7 +320,7 @@ function NameGenerator() constructor {
             }
 
             if (_name == ""){
-                GenerateFromSet("imperial");
+                GenerateFromSet("imperial_male");
             }
             return _name;
         } catch(_exception){
