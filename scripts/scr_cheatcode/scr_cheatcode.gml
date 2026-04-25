@@ -431,7 +431,7 @@ function draw_planet_debug_features(){
 			name : "Artefact"
 		},
 		{
-			e_num : DROP_TYPE.STC_FRAGMENT,
+			e_num : eP_FEATURES.STC_FRAGMENT,
 			name : "STC Fragment"
 		},
 		{

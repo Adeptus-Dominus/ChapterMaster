@@ -63,8 +63,8 @@ p_heresy = array_create(_planet_array_size, 0);
 p_hurssy = array_create(_planet_array_size, 0);
 p_hurssy_time = array_create(_planet_array_size, 0);
 p_heresy_secret = array_create(_planet_array_size, 0);
-p_raided = array_create(_planet_array_size, 0);
-p_governor = array_create(_planet_array_size, "");
+p_raided = array_create(_planet_array_size, false);
+p_governor = array_create(_planet_array_size, false);
 p_operatives = array_create_advanced(_planet_array_size, []);
 p_feature = array_create_advanced(_planet_array_size, []);
 p_upgrades = array_create_advanced(_planet_array_size, []);
@@ -72,10 +72,6 @@ p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
 p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
 p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
-
-for (var i=1;i<array_length(p_governor);i++){
-    array_push(p_governor, new GovernorProfile());
-}
 
 
 system_datas = array_create(8, 0);

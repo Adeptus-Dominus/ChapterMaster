@@ -94,7 +94,7 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
             draw_sprite_general(spr_p_name_bg, 0, 0, 0, _panel_width, 32, _panel_center, _panel_y, 1, 1, 0, main_color, main_color, right_pauldron, right_pauldron, 1);
             var faction_sprite = global.chapter_icon.sprite;
             if (sprite_exists(faction_sprite)) {
-                draw_sprite_ext(faction_sprite, 0, xx + (panel_width / 2) - 30, yy + 30, 0.2, 0.2, 0, c_white, 1);
+                draw_sprite_ext(faction_sprite, 0, xx + (_panel_width / 2) - 30, yy + 30, 0.2, 0.2, 0, c_white, 1);
             } else {
                 LOGGER.error($"{global.chapter_icon.name} chapter icon not found in any icon directory. Chapter icon will not render.");
             }

@@ -187,18 +187,10 @@ function NameTracker(set_name) constructor {
 
 }
 
-    static generate_space_marine_name = function() {
-        LOGGER.info(array_length(space_marines_names));
-        return SimpleNameGeneration(space_marines_names, space_marines_used_names, "Space Marine");
-    };
 function NameGenerator() constructor {
     // TODO after save rework is finished, check if these static can be converted to instance version
     var _simple_names = json_to_gamemaker(working_directory + $"main\\name_loader.json", json_parse);
 
-    static generate_imperial_name = function(is_male = true) {
-        if (is_male) {
-            LOGGER.info(array_length(space_marines_names));
-            return SimpleNameGeneration(space_marines_names, space_marines_used_names, "Space Marine");
     if (_simple_names == ""){
         var _simple_names = [
             "sector",

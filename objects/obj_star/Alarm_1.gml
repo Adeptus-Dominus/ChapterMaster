@@ -3,7 +3,10 @@
 // If getting to max pop is very rare, it will be awful to recruit from
 // some planets may be better or worse than others depending on their max pop.
 // TODO refactor and improve logic
-for (var i = 1; i <= 4; i++) {
+for (var i = 1; i <= planets; i++) {
+    p_governor[i] = new GovernorProfile();
+}
+for (var i = 1; i <= planets; i++) {
     p_population[i] = 0; // 10B
     switch (p_type[i]) {
         case "Lava":

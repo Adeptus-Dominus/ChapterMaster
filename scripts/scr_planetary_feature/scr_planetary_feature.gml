@@ -58,7 +58,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		planet_display = "Genestealer Cult";
 		cult_age = 0;
 		hiding=true;
-		name = global.name_generator.generate_genestealer_cult_name();		
+		name = global.name_generator.GenerateFromSet("genestealercult")
 		break;
 	case eP_FEATURES.NECRON_TOMB:
 		awake = 0;
@@ -130,7 +130,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		static ruins_combat_end=scr_ruins_combat_end;
 		scr_ancient_ruins_setup();
 		break;
-	case DROP_TYPE.STC_FRAGMENT:
+	case eP_FEATURES.STC_FRAGMENT:
 		player_hidden = 1;
 		Fragment_type =0;
 		planet_display = "STC Fragment";
@@ -164,7 +164,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		planet_display="Fortress Monastary";
 		player_hidden = 0;
 		forge=0;
-		name=global.name_generator.generate_imperial_ship_name();
+		name=global.name_generator.GenerateFromSet("imperial_ship");
 		break;
 	case eP_FEATURES.RECRUITING_WORLD:
 		planet_display="Recruitment";
@@ -498,7 +498,7 @@ function scr_planetary_feature(planet_num) {
 					scr_alert("green","feature",lop,x,y);
 					scr_event_log("",lop);
 					break;
-				case DROP_TYPE.STC_FRAGMENT:
+				case eP_FEATURES.STC_FRAGMENT:
 					var lop=$"STC Fragment located on {numeral_n}.";
 					 scr_alert("green","feature",lop,x,y);
 					 scr_event_log("",lop);
