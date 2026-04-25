@@ -53,23 +53,17 @@ function find_player_spawn_star() {
     return _chosen_star.id;
 }
 
-/*if (obj_ini.recruiting_name!="random"){
-    array_push(global.name_generator.star_used_names, obj_ini.recruiting_name);
-    if (find_star_by_name(obj_ini.recruiting_name) != "none" ){
-        find_star_by_name(obj_ini.recruiting_name).name = global.name_generator.generate_star_name();
-    }
-    name=obj_ini.recruiting_name;
-}*/
-
 function player_home_star(home_planet) {
+    var _star_names = global.name_generator.name_sets.star;
     p_type[home_planet] = obj_ini.home_type;
     planet[home_planet] = 1;
     obj_ini.home_planet = home_planet;
 
     if (obj_ini.home_name != "random") {
-        array_push(global.name_generator.star_used_names, obj_ini.home_name);
-        if (find_star_by_name(obj_ini.home_name) != "none") {
-            find_star_by_name(obj_ini.home_name).name = global.name_generator.generate_star_name();
+        _star_names.AddUsedName(obj_ini.home_name);
+        var _old_name_star = find_star_by_name(obj_ini.home_name);
+        if (_old_name_star != "none") {
+            _old_name_star.name = global.name_generator.GenerateFromSet("star", false);
         }
         name = obj_ini.home_name;
     }
@@ -119,22 +113,23 @@ function player_home_star(home_planet) {
 }
 
 function set_player_recruit_planet(recruit_planet) {
+    var _star_names = global.name_generator.name_sets.star;
     p_type[recruit_planet] = obj_ini.recruiting_type;
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD && obj_ini.recruit_relative_loc == 2) {
         // Possibly a temporary fix, Fleet-based Chapters use Homeworld names for the Recruiting stars for some reason
         var recruit_name = obj_ini.recruiting_name;
         if (recruit_name != "random") {
-            array_push(global.name_generator.star_used_names, recruit_name);
+            _star_names.AddUsedName(recruit_name);
             if (find_star_by_name(recruit_name) != "none") {
-                find_star_by_name(recruit_name).name = global.name_generator.generate_star_name();
+                find_star_by_name(recruit_name).name = global.name_generator.GenerateFromSet("star", false);
             }
             name = recruit_name;
         }
     } else {
         if (obj_ini.home_name != "random") {
-            array_push(global.name_generator.star_used_names, obj_ini.home_name);
+            _star_names.AddUsedName(obj_ini.home_name);
             if (find_star_by_name(obj_ini.home_name) != "none") {
-                find_star_by_name(obj_ini.home_name).name = global.name_generator.generate_star_name();
+                find_star_by_name(obj_ini.home_name).name = global.name_generator.GenerateFromSet("star", false);
             }
             name = obj_ini.home_name;
         }

@@ -344,7 +344,7 @@ function scr_cheatcode(argument0) {
                         array_insert(obj_controller.recruit_training, i, 1);
                         array_insert(obj_controller.recruit_exp, i, 20);
                         array_insert(obj_controller.recruit_data, i, {});
-                        array_insert(obj_controller.recruit_name, i, global.name_generator.generate_space_marine_name());
+                        array_insert(obj_controller.recruit_name, i, global.name_generator.GenerateFromSet("space_marine"));
                         scr_alert("green", "recruitment", (string(obj_controller.recruit_name[i]) + "has started training."), 0, 0);
                     }
                     break;

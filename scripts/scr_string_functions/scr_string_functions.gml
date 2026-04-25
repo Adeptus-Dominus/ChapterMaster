@@ -18,6 +18,22 @@ function string_upper_first(_string) {
     }
 }
 
+function string_gender(gender = -1){
+    if (gender == -1){
+        gender = set_gender();
+    }
+    switch (gender) {
+        case eGENDER.FEMALE:
+            _string = "female";
+            break;
+        case eGENDER.MALE:
+            _string = "male";
+            break;
+    }
+
+    return _string;
+}
+
 function string_gender_third_person(gender) {
     var _string = "they";
     switch (gender) {

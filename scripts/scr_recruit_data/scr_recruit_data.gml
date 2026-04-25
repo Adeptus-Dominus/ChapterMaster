@@ -304,7 +304,7 @@ function planet_training_sequence(local_apothecary_points) {
                         array_insert(obj_controller.recruit_distance, i, 0);
                         array_insert(obj_controller.recruit_training, i, months_to_neo);
                         array_insert(obj_controller.recruit_exp, i, new_recruit_exp);
-                        array_insert(obj_controller.recruit_name, i, global.name_generator.generate_space_marine_name());
+                        array_insert(obj_controller.recruit_name, i, global.name_generator.GenerateFromSet("space_marine"));
                         array_insert(obj_controller.recruit_data, i, {"recruit_data": {recruit_world: planet_type, aspirant_trial: obj_controller.recruit_trial}});
                         break;
                     }

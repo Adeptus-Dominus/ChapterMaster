@@ -79,19 +79,19 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         obj_ini.age[target_company][good] = (obj_controller.millenium * 1000) + obj_controller.year; 
 
         if ((spawn_name == "") || (spawn_name == "imperial")) {
-            obj_ini.name[target_company][good] = global.name_generator.generate_space_marine_name();
+            obj_ini.name[target_company][good] = global.name_generator.ChapterMemberNameGeneration();
         }
         if ((spawn_name != "") && (spawn_name != "imperial")) {
             obj_ini.name[target_company][good] = spawn_name;
         }
         if (man_role == "Ranger") {
-            obj_ini.name[target_company][good] = global.name_generator.generate_eldar_name(2);
+            obj_ini.name[target_company][good] = global.name_generator.GenerateMultiSyllable("eldar", 2);
         }
         if ((man_role == "Ork Sniper") || (man_role == "Flash Git")) {
-            obj_ini.name[target_company][good] = global.name_generator.generate_ork_name();
+            obj_ini.name[target_company][good] = global.name_generator.GenerateComposite("ork", false);
         }
         if ((man_role == "Sister of Battle") || (man_role == "Sister Hospitaler")) {
-            obj_ini.name[target_company][good] = global.name_generator.generate_imperial_name(false);
+            obj_ini.name[target_company][good] = global.name_generator.GenerateFromSet($"imperial_female");
         }
 
         if (!array_contains(non_marine_roles, man_role)) {

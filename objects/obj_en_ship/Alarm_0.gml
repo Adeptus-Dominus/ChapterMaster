@@ -1257,7 +1257,7 @@ if (obj_fleet.enemy == 2) {
 // hp=1;
 shields = 1;
 
-// if (obj_fleet.enemy="orks") then name=global.name_generator.generate_ork_ship_name();
+// if (obj_fleet.enemy="orks") then name=global.name_generator.GenerateFromSet("ork_ship");
 
 name = "sdagdsagdasg";
 

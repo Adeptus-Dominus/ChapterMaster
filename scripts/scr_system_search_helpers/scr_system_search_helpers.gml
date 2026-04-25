@@ -438,7 +438,7 @@ function scr_create_space_hulk(xx, yy) {
     var hulk = instance_create(xx, yy, obj_star);
     hulk.space_hulk = 1;
     hulk.p_type[1] = "Space Hulk";
-    hulk.name = global.name_generator.generate_hulk_name();
+    hulk.name = global.name_generator.GenerateComposite("hulk", true);
     return hulk;
 }
 

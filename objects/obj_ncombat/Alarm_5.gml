@@ -804,7 +804,8 @@ if (obj_ini.omophagea) {
                     if (i == 10) {
                         obj_controller.inquisitor_gender[i] = choose(0, 0, 0, 1, 1, 1, 1); // 4:3 chance of male Inquisitor
                         obj_controller.inquisitor_type[i] = choose("Ordo Malleus", "Ordo Xenos", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus");
-                        obj_controller.inquisitor[i] = global.name_generator.generate_imperial_name(obj_controller.inquisitor_gender[i]); // For 'random inquisitor wishes to inspect your fleet
+                        //TODO swap out for correctly gendered name gen
+                        obj_controller.inquisitor[i] = global.name_generator.GenerateFromSet($"imperial_male"); // For 'random inquisitor wishes to inspect your fleet
                     }
                     i += 1;
                 }
