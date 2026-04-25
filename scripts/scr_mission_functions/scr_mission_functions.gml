@@ -678,7 +678,24 @@ function init_deliver_trophy_mission(){
         {
             str1 : "Refuse and place the trophy into the Librarium",
             choice_func : function(){
-                scr_add_artifact();
+                var _arti = scr_add_artifact("trophy", [], 0, "");
+                reset_popup_options();
+                _arti.name = pop_data.trophy_name;
+                var _daemonic = roll_dice_chapter(1, 10, "low");
+                if (_daemonic == 10){
+                    _arti.add_tag("daemonic")
+                }
+                _arti.set_loc(_pop_data.system);
+                //base_type == choose("gear", "weapon", "trophy");
+                var _base_type = choose("weapon", "trophy");
+                if (_base_type == "weapon"){
+                    _arti.update_type("Company Standard");
+                }
+                text = "Your Marines elect to keep the {pop_data.trophy_name} as for the chapter in it's honour";
+
+                if (_base_type == "weapon"){
+                    text += "The grisly remains have been fashioned into a make shift standard that is crude but fearsome to behold"; 
+                }
             }
 
         },
