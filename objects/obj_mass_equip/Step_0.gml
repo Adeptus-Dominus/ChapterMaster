@@ -267,15 +267,7 @@ try {
         if (tab > -1) {
             item_name = [];
             var is_hand_slot = tab == 0 || tab == 1;
-            scr_get_item_names(
-                item_name,
-                obj_controller.settings, // eROLE
-                tab, // slot
-                is_hand_slot ? eENGAGEMENT.ANY : eENGAGEMENT.NONE,
-                true, // include company standard
-                false, // show all regardless of inventory
-
-            );
+            scr_get_item_names(item_name, obj_controller.settings, tab, is_hand_slot ? eENGAGEMENT.ANY : eENGAGEMENT.NONE, true, false);
         }
 
         good1 = 0;
@@ -305,13 +297,4 @@ try {
     obj_controller.menu = 21;
     obj_controller.settings = 0;
     instance_destroy();
-}
-
-function can_assign_weapon(unit, weapon_name) {
-    switch (weapon_name) {
-        case "Assault Cannon":
-            return unit.get_armour_data().has_tag("terminator");
-        default:
-            return true;
-    }
 }
