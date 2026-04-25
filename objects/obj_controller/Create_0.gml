@@ -112,7 +112,6 @@ ready = false;
 var _arrays_count = 103;
 var _empty_array = [];
 
-
 LOGGER.info("Set Game Arrays and Statics");
 r_race = array_create_advanced(_arrays_count, _empty_array);
 r_role = array_create_advanced(_arrays_count, _empty_array);
@@ -814,7 +813,6 @@ info_chips = 0;
 inspection_passes = 0;
 recruiting_worlds_bought = 0;
 
-
 LOGGER.info("Set Battle Formations");
 // ** BATTLE FORMATIONS **
 var _count = 16;
@@ -863,7 +861,6 @@ bat_whirlwind_column = 1;
 bat_landspeeder_column = 4;
 bat_scout_column = 1;
 // ** Sets up disposition per faction **
-
 
 LOGGER.info("Set Ai Faction data");
 imperial_factions = [
@@ -938,26 +935,26 @@ faction_leader = array_create(14, "");
 faction_title = array_create(14, "");
 faction_status = array_create(14, "");
 // Sector Command faction
-faction_leader[eFACTION.IMPERIUM] = _name_gen.GenerateFromSet($"imperial_male")
+faction_leader[eFACTION.IMPERIUM] = _name_gen.GenerateFromSet($"imperial_male");
 faction_title[eFACTION.IMPERIUM] = "Sector Commander";
 faction_status[eFACTION.IMPERIUM] = "Allied";
 // Mechanicus faction
 //TODO make a dedicateed set of mechanicus names base imperial names are jarring af
-faction_leader[eFACTION.MECHANICUS] = _name_gen.GenerateFromSet($"imperial_male")
+faction_leader[eFACTION.MECHANICUS] = _name_gen.GenerateFromSet($"imperial_male");
 faction_title[eFACTION.MECHANICUS] = "Magos";
 faction_status[eFACTION.MECHANICUS] = "Allied";
 if (faction_leader[eFACTION.MECHANICUS] == faction_leader[eFACTION.IMPERIUM]) {
     faction_leader[eFACTION.MECHANICUS] = _name_gen.GenerateFromSet("space_marine");
 }
 // Inquisition faction
-faction_leader[eFACTION.INQUISITION] = _name_gen.GenerateFromSet($"imperial_male")
+faction_leader[eFACTION.INQUISITION] = _name_gen.GenerateFromSet($"imperial_male");
 if (faction_leader[eFACTION.INQUISITION] == faction_leader[eFACTION.MECHANICUS]) {
-    faction_leader[eFACTION.INQUISITION] = _name_gen.GenerateFromSet($"imperial_male")
+    faction_leader[eFACTION.INQUISITION] = _name_gen.GenerateFromSet($"imperial_male");
 }
 faction_title[eFACTION.INQUISITION] = "Inquisitor Lord";
 faction_status[eFACTION.INQUISITION] = "Allied";
 // Sisters faction
-faction_leader[eFACTION.ECCLESIARCHY] = _name_gen.GenerateFromSet($"imperial_female")
+faction_leader[eFACTION.ECCLESIARCHY] = _name_gen.GenerateFromSet($"imperial_female");
 faction_title[eFACTION.ECCLESIARCHY] = "Prioress";
 faction_status[eFACTION.ECCLESIARCHY] = "Allied";
 // Eldar faction
@@ -1129,7 +1126,6 @@ try {
 LOGGER.info("Controller Created");
 
 #region save/load serialization
-
 
 LOGGER.info("Set Save and Load functionality");
 /// Called from save function to take all object variables and convert them to a json savable format and return it

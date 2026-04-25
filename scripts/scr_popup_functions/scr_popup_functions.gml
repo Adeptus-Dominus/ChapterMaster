@@ -51,7 +51,7 @@ function popup_defualt_click_action() {
     }
 
     if (!array_length(options) && type < 5) {
-        LOGGER.debug("Closed popup with no options")
+        LOGGER.debug("Closed popup with no options");
         popup_default_close();
     }
 }
@@ -220,7 +220,7 @@ function draw_popup_options() {
                         script_execute(_opt.hover);
                     }
                 }
-                if (mouse_button_clicked(,,true)) {
+                if (mouse_button_clicked(,, true)) {
                     press = i;
                     if (_is_struct && struct_exists(_opt, "choice_func")) {
                         if (is_callable(_opt.choice_func)) {

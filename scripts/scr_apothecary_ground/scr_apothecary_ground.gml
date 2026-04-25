@@ -189,11 +189,11 @@ function process_specialist_points() {
         var _in_spread = variable_struct_exists(_unit_spread, name);
 
         if (_gene_seed_empty && system_feature_bool(self.p_feature, eP_FEATURES.RECRUITING_WORLD)) {
-                obj_controller.recruiting = 0;
-                scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);
-                _gene_seed_empty = false;
+            obj_controller.recruiting = 0;
+            scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);
+            _gene_seed_empty = false;
         }
-        
+
         if (!_in_spread) {
             continue;
         }

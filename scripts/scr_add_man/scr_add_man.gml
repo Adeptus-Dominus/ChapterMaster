@@ -11,7 +11,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         "Ranger",
         "Ork Sniper",
         "Flash Git"
-    ]; 
+    ];
     var _gear = {};
     var good = 0;
 
@@ -54,9 +54,9 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
                     break;
                 // TODO: Implement Prioress (Race 5, Sororitas leader gear/stats)
                 case "Ranger":
-                    spawn_exp = 180; 
+                    spawn_exp = 180;
                     obj_ini.race[target_company][good] = 6;
-                    unit = new TTRPG_stats("Eldari", target_company, good, "eldar_ranger"); 
+                    unit = new TTRPG_stats("Eldari", target_company, good, "eldar_ranger");
                     break;
                 case "Ork Sniper":
                     spawn_exp = 20;
@@ -76,7 +76,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
             }
         }
 
-        obj_ini.age[target_company][good] = (obj_controller.millenium * 1000) + obj_controller.year; 
+        obj_ini.age[target_company][good] = (obj_controller.millenium * 1000) + obj_controller.year;
 
         if ((spawn_name == "") || (spawn_name == "imperial")) {
             obj_ini.name[target_company][good] = global.name_generator.ChapterMemberNameGeneration();
@@ -108,7 +108,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 
             unit = new TTRPG_stats("chapter", target_company, good, "scout", other_data);
             unit.corruption = corruption;
-            unit.roll_age(); 
+            unit.roll_age();
             unit.alter_equipment(_gear);
             marines += 1;
         }

@@ -29,7 +29,7 @@ function ChapterData() constructor {
     culture_styles = [];
     home_planets = 1;
 
-    flagship_name = global.name_generator.GenerateFromSet("imperial_ship")
+    flagship_name = global.name_generator.GenerateFromSet("imperial_ship");
     monastary_name = "";
     advantages = array_create(9);
     disadvantages = array_create(9);
