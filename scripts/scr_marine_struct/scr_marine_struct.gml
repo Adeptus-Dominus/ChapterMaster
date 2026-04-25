@@ -431,6 +431,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return "";
     };
 
+
+    //TODO build epithets in to marine profile
     static add_epithet = function(epithet){
         if (is_string(epithet)){
             epithet = {

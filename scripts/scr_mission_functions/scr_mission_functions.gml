@@ -802,6 +802,11 @@ function deliver_trophy_end_turn_check(){
                 var _text = "{_marine.role(name)} is able to rendevous with the imperial navy at {_meet_point.name}."
                 _text += $" The guard regiments of {fleetevent_data.system} are overjoyed at the delivery of the trophy and find the beast that the head came from adorns many of the regiments banners.";
                 var _marine_epithet = get_beast_epithet(fleetevent_data.planet_type);
+
+                _marine.add_epithet({
+                    title : _marine_epithet,
+                    story : $"Slew a mighty beast in {fleetevent_data.system} after harvesting the {pop_data.trophy_name} their exploits became legendary within the sector largly due the aderation of the {fleetevent_data.system} regiments";
+                })
                 _text += $" While The task is for the most part thankless your chapters esteem has risen greatly with the exploits of {_marine.name_role()} spreading far and wide amoung guard regiments and has garnered the epithet {_marine_epithet}.";
                 var _roll = roll_dice_chapter(1, 100, "high");
                 if (_roll>30 && _roll<70){
