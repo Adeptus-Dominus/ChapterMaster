@@ -674,8 +674,6 @@ function PlanetData(planet, system) constructor{
             exit;
         }
 
-        
-
         var _marines = [];
         for (var i=0;i<array_length(_units);i++){
             if (is_struct(_units[i])){
@@ -698,13 +696,14 @@ function PlanetData(planet, system) constructor{
 
             if (_priests.number > 0){
                 if (_priests.number == _techmarines.number){
-                    text = "Without any technical staff wholly loyal to the chapter the TechPriests Quickly set too Work sequestering any valuable resources for the Omnissiah";
-                    text +=
-                    scr_popup("Mars Control");
+                    text = "Without any technical staff wholly loyal to the chapter the Tech Priests Quickly set too Work sequestering any valuable resources for the Omnissiah.";
+                    text += "By the time you have begun working in earnest your forces become aware that the Tech Priests have already catalogued any and all items of interest and begun transmitting their findings to the mechanicus.";
+                    text += "\n\nThere is nothing that can easily be done";
+                    scr_popup("Mars Control", text, "mechanicus");
                 } else {
                     text = "After Unloading Marines too site it becomes clear there is discontent among the group.\n";
-                    text = "A contingent of the force comprised of  Techpriests are unhappy with the decision.\n";
-                    scr_popup("Conflict of Interest",)
+                    text = "A contingent of the force comprised of  Techpriests are unhappy with the decision too take all of the items aboard the chapter ships without cataloguing the information for their Forge Worlds.\n";
+                    scr_popup("Conflict of Interest", text, )
                 }
             }
         }
