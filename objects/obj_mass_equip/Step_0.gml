@@ -3,18 +3,13 @@ try {
         instance_destroy();
     }
 
-    var romanNumerals = scr_roman_numerals();
-    var unit;
-    var unit_armour;
-
     if (engage == true) {
         for (var co = 0; co <= obj_ini.companies; co++) {
-            var i = 0;
             if (role_number[co] > 0) {
-                for (i = 0; i < array_length(obj_ini.role[co]); i++) {
+                for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
                     if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
                         var _unit_i = [co][i];
-                        unit = fetch_unit(_unit_i);
+                        var unit = fetch_unit(_unit_i);
                         if (unit.squad != "none") {
                             var _squad = fetch_squad(unit.squad);
                             if (!_squad.allow_bulk_swap) {
@@ -76,7 +71,8 @@ try {
 
                         // ** Start Mobility Items **
                         if (unit.mobility_item() != req_mobi) {
-                            if (is_struct(unit_armour) && unit_armour.has_tags(["terminator", "dreadnought"])) {
+                            var _forbidden_tags = ["terminator", "dreadnought"];
+                            if (is_struct(unit_armour) && unit_armour.has_tags(_forbidden_tags)) {
                                 unit.update_mobility_item("");
                             } else {
                                 unit.update_mobility_item(req_mobi);
@@ -251,6 +247,7 @@ try {
         if (total_role_number > 0) {
             total_roles = $"You currently have {total_role_number}x {obj_ini.role[100][role]} across all companies.";
             for (var i = 0; i < 11; i++) {
+                var romanNumerals = scr_roman_numerals();
                 var _company_name = i == 0 ? "HQ" : $"{romanNumerals[i - 1]} Company";
 
                 if (role_number[i] > 0) {
