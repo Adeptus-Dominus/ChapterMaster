@@ -74,5 +74,14 @@
             "cognomen"
         ],
         "preffered_method" : "complex"
+    },
+    {
+        "load_as" : "Mongol",
+        "load_set": "mongol",
+        "composites" : [
+            "given_name", 
+            "tribal_or_house", 
+        ],
+        "preffered_method" : "complex"
     }
 ]
