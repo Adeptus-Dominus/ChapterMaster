@@ -28,8 +28,8 @@ function scr_random_event(execute_now) {
         force_inquisition_mission = true;
     }
 
-	if (force_inquisition_mission && random_event_next == EVENT.none) {
-		chosen_event = EVENT.inquisition_mission;
+	if (force_inquisition_mission && random_event_next == eEVENT.NONE) {
+		chosen_event = eEVENT.INQUISITION_MISSION;
 	}
 	else {
 		if(execute_now)
@@ -42,7 +42,7 @@ function scr_random_event(execute_now) {
 			if ((turn-15)<last_event) then exit;// Minimum interval between
 		}
 		
-		if(random_event_next != EVENT.none) {
+		if(random_event_next != eEVENT.NONE) {
 			chosen_event = random_event_next;
 		}
 		else {
@@ -70,38 +70,38 @@ function scr_random_event(execute_now) {
 				if(player_luck == luck.good){
 					events = 
 					[
-						EVENT.space_hulk,
-						EVENT.promotion,
-						EVENT.strange_building,
-						EVENT.sororitas,
-						EVENT.rogue_trader,
-						EVENT.inquisition_mission,
-						EVENT.inquisition_planet,
-						EVENT.mechanicus_mission
+						eEVENT.SPACE_HULK,
+						eEVENT.PROMOTION,
+						eEVENT.STRANGE_BUILDING,
+						eEVENT.SORORITAS,
+						eEVENT.ROGUE_TRADER,
+						eEVENT.INQUISITION_MISSION,
+						eEVENT.INQUISITION_PLANET,
+						eEVENT.MECHANICUS_MISSION
 					];
 				}
 				else if(player_luck == luck.neutral){
 					events = 
 					[
-						EVENT.strange_behavior,
-						EVENT.fleet_delay,
-						EVENT.harlequins,
-						EVENT.SUCCESSION_WAR,
-						EVENT.random_fun,
+						eEVENT.STRANGE_BEHAVIOR,
+						eEVENT.FLEET_DELAY,
+						eEVENT.HARLEQUINS,
+						eEVENT.SUCCESSION_WAR,
+						eEVENT.RANDOM_FUN,
 					];
 				}
 				else if(player_luck == luck.bad){
 					events = 
 					[
-						EVENT.warp_storms,
-						EVENT.enemy_forces,
-						EVENT.crusade,
-						EVENT.enemy, // Save-scumming event, Should probably base this on something else than tech-scavs
-						EVENT.mutation,
-						EVENT.ship_lost, // Another save-scumming event, mainly due to rarity of player ships
-						EVENT.chaos_invasion, 
-						EVENT.necron_awaken, // Inquisitor check for this is inverted
-						EVENT.fallen, // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
+						eEVENT.WARP_STORMS,
+						eEVENT.ENEMY_FORCES,
+						eEVENT.CRUSADE,
+						eEVENT.ENEMY, // Save-scumming event, Should probably base this on something else than tech-scavs
+						eEVENT.MUTATION,
+						eEVENT.SHIP_LOST, // Another save-scumming event, mainly due to rarity of player ships
+						eEVENT.CHAOS_INVASION, 
+						eEVENT.NECRON_AWAKEN, // Inquisitor check for this is inverted
+						eEVENT.FALLEN, // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
 					];
 				}
 	
@@ -115,26 +115,26 @@ function scr_random_event(execute_now) {
 					//DEBUG-INI (EVENTS DEBUG CODE - 1)
 					//Comment/delete this when not debugging events
 					//List of possible events above
-					/*curr_event =  EVENT.necron_awaken
+					/*curr_event =  eEVENT.NECRON_AWAKEN
 					events_count = 1
 					events_total = events_count;
 					events_share = array_create(events_count, 1);*/
 					//DEBUG-FIN (EVENTS DEBUG CODE - 1)
 					
 					switch (curr_event){
-						case EVENT.inquisition_planet:
+						case eEVENT.INQUISITION_PLANET:
 							if (known[eFACTION.INQUISITION]==0 || obj_controller.faction_status[eFACTION.INQUISITION]=="War") {
 								events_share[i] -= 1;
 								events_total -= 1;
 							}
 							break;
-						case EVENT.inquisition_mission:
+						case eEVENT.INQUISITION_MISSION:
 							if (known[eFACTION.INQUISITION]==0 || obj_controller.disposition[4] < 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") {
 								events_share[i] -= 1;
 								events_total -= 1;
 							}
 							break;
-						case EVENT.mechanicus_mission:
+						case eEVENT.MECHANICUS_MISSION:
 							if (known[eFACTION.MECHANICUS] == 0 || obj_controller.disposition[3] < 40 || obj_controller.faction_status[eFACTION.MECHANICUS] == "War") {
 								events_share[i] -= 1;
 								events_total -= 1;
@@ -144,28 +144,28 @@ function scr_random_event(execute_now) {
 								events_total += 2;
 							}
 							break;
-						case EVENT.enemy:
+						case eEVENT.ENEMY:
 
 							break;
-						case EVENT.mutation:
+						case eEVENT.MUTATION:
 							if(gene_seed < 5){
 								events_share[i] -= 1;
 								events_total -= 1;
 							}
 							break;
-						case EVENT.necron_awaken:
+						case eEVENT.NECRON_AWAKEN:
 							if((known[eFACTION.INQUISITION] == 0)){
 								events_share[i] -= 1;
 								events_total -= 1;
 							}
 							break;
-						case EVENT.crusade:
+						case eEVENT.CRUSADE:
 							if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War"){
 								events_share[i] -= 1;
 								events_total -= 1;
 							}
 							break;
-						case EVENT.fleet_delay:
+						case eEVENT.FLEET_DELAY:
 							var has_moving_fleet = false;
 							with(obj_p_fleet){
 								if(action=="move")
@@ -179,7 +179,7 @@ function scr_random_event(execute_now) {
 								events_total -= 1;
 							}
 							break;
-						case EVENT.ship_lost:
+						case eEVENT.SHIP_LOST:
 							var has_moving_fleet = false;
 							with(obj_p_fleet){
 								if(action=="move")
@@ -193,7 +193,7 @@ function scr_random_event(execute_now) {
 								events_total -= 1;
 							}
 							break;
-						case EVENT.fallen:
+						case eEVENT.FALLEN:
 							if(!scr_has_disadv("Never Forgive"))
 							{
 								events_share[i] -= 1;
@@ -214,7 +214,7 @@ function scr_random_event(execute_now) {
 				//DEBUG-INI (EVENTS DEBUG CODE - 2)
 				//Comment/delete this when not debugging events
 				//If event on the switch above, (EVENTS DEBUG CODE - 1) var should be set to event too.
-				/*chosen_event =  EVENT.necron_awaken*/
+				/*chosen_event =  eEVENT.NECRON_AWAKEN*/
 				//DEBUG-FIN (EVENTS DEBUG CODE - 2)
 		}
 	}
@@ -414,7 +414,7 @@ function scr_random_event(execute_now) {
             exit;
         }
 
-	else if (chosen_event == EVENT.warp_storms){
+	else if (chosen_event == eEVENT.WARP_STORMS){
 		log_message("RE: Warp Storm");
 	    var own,time,him;
 		
@@ -450,7 +450,7 @@ function scr_random_event(execute_now) {
 		}
 	}
     
-	else if (chosen_event == EVENT.enemy_forces){
+	else if (chosen_event == eEVENT.ENEMY_FORCES){
 		log_message("RE: Enemy Forces");
 		var own;
 	    if (scr_has_disadv("Shitty Luck")){
@@ -530,16 +530,16 @@ function scr_random_event(execute_now) {
 		}
 	}
 
-	else if ((chosen_event == EVENT.crusade)){
+	else if ((chosen_event == eEVENT.CRUSADE)){
 		//i think all events should be hanlded like this then we have far more options on when to call them and how they work
 		_evented = launch_crusade();
 	}
     
-	else if (chosen_event == EVENT.enemy) {
+	else if (chosen_event == eEVENT.ENEMY) {
 		_evented = make_faction_enemy_event();
 	}
     
-	else if ((chosen_event == EVENT.mutation)) {
+	else if ((chosen_event == eEVENT.MUTATION)) {
 		init_mutated_gene_random_event();
 	}
 
