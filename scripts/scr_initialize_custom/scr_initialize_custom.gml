@@ -3051,34 +3051,34 @@ function scr_initialize_custom() {
                 case "captains":
                     switch (_coy.coy) {
                         case 1:
-                            name[_coy.coy][k] = honor_captain_name != "" ? honor_captain_name : global.name_generator.ChapterMemberNameGeneration()
+                            name[_coy.coy][k] = honor_captain_name != "" ? honor_captain_name : global.name_generator.ChapterMemberNameGeneration();
                             break;
                         case 2:
-                            name[_coy.coy][k] = watch_master_name != "" ? watch_master_name : global.name_generator.ChapterMemberNameGeneration()
+                            name[_coy.coy][k] = watch_master_name != "" ? watch_master_name : global.name_generator.ChapterMemberNameGeneration();
                             break;
                         case 3:
-                            name[_coy.coy][k] = arsenal_master_name != "" ? arsenal_master_name : global.name_generator.ChapterMemberNameGeneration()
+                            name[_coy.coy][k] = arsenal_master_name != "" ? arsenal_master_name : global.name_generator.ChapterMemberNameGeneration();
                             break;
                         case 4:
-                            name[_coy.coy][k] = lord_admiral_name != "" ? lord_admiral_name : global.name_generator.ChapterMemberNameGeneration()
+                            name[_coy.coy][k] = lord_admiral_name != "" ? lord_admiral_name : global.name_generator.ChapterMemberNameGeneration();
                             break;
                         case 5:
-                            name[_coy.coy][k] = march_master_name != "" ? march_master_name : global.name_generator.ChapterMemberNameGeneration()
+                            name[_coy.coy][k] = march_master_name != "" ? march_master_name : global.name_generator.ChapterMemberNameGeneration();
                             break;
                         case 6:
-                            name[_coy.coy][k] = rites_master_name != "" ? rites_master_name : global.name_generator.ChapterMemberNameGeneration()
+                            name[_coy.coy][k] = rites_master_name != "" ? rites_master_name : global.name_generator.ChapterMemberNameGeneration();
                             break;
                         case 7:
-                            name[_coy.coy][k] = chief_victualler_name != "" ? chief_victualler_name : global.name_generator.ChapterMemberNameGeneration()
+                            name[_coy.coy][k] = chief_victualler_name != "" ? chief_victualler_name : global.name_generator.ChapterMemberNameGeneration();
                             break;
                         case 8:
-                            name[_coy.coy][k] = lord_executioner_name != "" ? lord_executioner_name : global.name_generator.ChapterMemberNameGeneration()
+                            name[_coy.coy][k] = lord_executioner_name != "" ? lord_executioner_name : global.name_generator.ChapterMemberNameGeneration();
                             break;
                         case 9:
-                            name[_coy.coy][k] = relic_master_name != "" ? relic_master_name : global.name_generator.ChapterMemberNameGeneration()
+                            name[_coy.coy][k] = relic_master_name != "" ? relic_master_name : global.name_generator.ChapterMemberNameGeneration();
                             break;
                         case 10:
-                            name[_coy.coy][k] = recruiter_name != "" ? recruiter_name : global.name_generator.ChapterMemberNameGeneration()
+                            name[_coy.coy][k] = recruiter_name != "" ? recruiter_name : global.name_generator.ChapterMemberNameGeneration();
                             break;
                     }
                     commands++;
@@ -3514,7 +3514,7 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
     obj_ini.role[company][slot] = role_name;
 
     if (obj_ini.name[company][slot] == "") {
-        obj_ini.name[company][slot] = global.name_generator.ChapterMemberNameGeneration()
+        obj_ini.name[company][slot] = global.name_generator.ChapterMemberNameGeneration();
     }
 
     if (wep1 != "") {

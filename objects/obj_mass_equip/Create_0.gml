@@ -42,3 +42,15 @@ good4 = 0;
 good5 = 0;
 
 item_name = [];
+
+/// @param {Struct.TTRPG_stats} unit
+/// @param {string} weapon_name
+can_assign_weapon = function(unit, weapon_name) {
+    switch (weapon_name) {
+        case "Assault Cannon":
+            var _armour = unit.get_armour_data();
+            return is_struct(_armour) && _armour.has_tag("terminator");
+        default:
+            return true;
+    }
+}

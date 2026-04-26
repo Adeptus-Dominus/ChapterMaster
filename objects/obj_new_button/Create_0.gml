@@ -29,5 +29,5 @@ btn_map = [
     {
         width: 108,
         height: 42,
-    },
+    }
 ];

@@ -196,7 +196,7 @@ function scr_creation_home_planet_create() {
             ];
             draw_unit_buttons(_refresh_fs_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
             if (point_and_click(_refresh_fs_name_btn)) {
-                var _new_fs_name = global.name_generator.GenerateFromSet("imperial_ship")
+                var _new_fs_name = global.name_generator.GenerateFromSet("imperial_ship");
                 LOGGER.debug($"regen name of flagship_name from {flagship_name} to {_new_fs_name}");
                 flagship_name = _new_fs_name;
             }
