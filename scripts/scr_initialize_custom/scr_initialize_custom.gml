@@ -729,6 +729,30 @@ function scr_initialize_custom() {
     adv = obj_creation.adv;
     dis = obj_creation.dis;
 
+    chapter_data = new ChapterGameData();
+
+    var _ad_length = array_length(obj_creation.adv_num);
+    var _dis_length = array_length(obj_creation.dis_num);
+
+    LOGGER.info("Load Trait Data");
+
+    for (var i=0;i<max(_ad_length, _dis_length); i++){
+        if (i < _ad_length) {
+            var _adv = obj_creation.adv_num[i];
+            LOGGER.info($"{_adv}");
+            if (_adv != 0){
+                chapter_data.add_trait_data(obj_creation.all_advantages[_adv]);
+            }
+        }
+        if (i < _dis_length) {
+            var _dis_adv = obj_creation.dis_num[i];
+            LOGGER.info($"{_dis_adv}");
+            if (_dis_adv != 0){
+                chapter_data.add_trait_data(obj_creation.all_disadvantages[_dis_adv]);
+            }
+        }
+    }
+
     recruiting_type = obj_creation.recruiting;
     recruit_trial = obj_creation.aspirant_trial;
     recruiting_name = obj_creation.recruiting_name;

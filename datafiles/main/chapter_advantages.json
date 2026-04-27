@@ -1,0 +1,252 @@
+[
+  {
+    "name": "Ambushers",
+    "description": "Your chapter is especially trained with ambushing foes; they have a bonus to attack during the start of a battle.",
+    "points": 30
+  },
+  {
+    "name": "Boarders",
+    "description": "Boarding other ships is the specialty of your chapter. Your chapter is more lethal when boarding ships, have dedicated boarding squads, and two extra strike cruisers.",
+    "points": 30
+  },
+  {
+    "name": "Bolter Drilling",
+    "description": "Bolter drills are sacred to your chapter; all marines have increased attack with Bolter weaponry.",
+    "points": 40,
+    "meta": ["Weapon Specialty"],
+    "equip_tag": {
+      "bolt": {
+        "attack": {
+          "mult": 1.15
+        }
+      }
+    }
+  },
+  {
+    "name": "Retinue of Renown",
+    "description": "Your chapter master is guarded by renown heroes of the chapter. You start with a larger well-equipped Honour Guard.",
+    "points": 20
+  },
+  {
+    "name": "Crafters",
+    "description": "Your chapter views artifacts as sacred; you start with better gear and maintain all equipment with more ease.",
+    "points": 40,
+    "meta": ["Gear Quality"],
+    "faction_disp_mods": [
+      {
+        "faction": 3,
+        "int_mod": 1,
+        "start_disp": 2
+      }
+    ]
+  },
+  {
+    "name": "Ancient Armoury",
+    "description": "Your chapter is dedicated to preserving ancient wargear and as such have substantially higher amounts of rare Heresy-era armour and weapons than normal.",
+    "points": 20,
+    "meta": ["Gear Quality"],
+    "faction_disp_mods": [
+      {
+        "faction": 3,
+        "mult": 1.25
+      }
+    ]
+  },
+  {
+    "name": "Enemy: Eldar",
+    "description": "Eldar are particularly hated by your chapter. When fighting Eldar damage is increased.",
+    "points": 20,
+    "meta": ["Main Enemy"]
+  },
+  {
+    "name": "Enemy: Fallen",
+    "description": "Chaos Marines are particularly hated by your chapter. When fighting the traitors damage is increased.",
+    "points": 20,
+    "meta": ["Main Enemy"]
+  },
+  {
+    "name": "Enemy: Necrons",
+    "description": "Necrons are particularly hated by your chapter. When fighting Necrons damage is increased.",
+    "points": 20,
+    "meta": ["Main Enemy"]
+  },
+  {
+    "name": "Enemy: Orks",
+    "description": "Orks are particularly hated by your chapter. When fighting Orks damage is increased.",
+    "points": 20,
+    "meta": ["Main Enemy"]
+  },
+  {
+    "name": "Enemy: Tau",
+    "description": "Tau are particularly hated by your chapter. When fighting Tau damage is increased.",
+    "points": 20,
+    "meta": ["Main Enemy"]
+  },
+  {
+    "name": "Enemy: Tyranids",
+    "description": "Tyranids are particularly hated by your chapter. A large number of your veterans and marines are tyrannic war veterans and when fighting Tyranids damage is increased.",
+    "points": 20,
+    "meta": ["Main Enemy"]
+  },
+  {
+    "name": "Kings of Space",
+    "description": "Veterans of naval combat, your chapter fleet has bonuses to offense, defence, an additional battle barge, and may always be controlled regardless of whether or not the Chapter Master is present.",
+    "points": 40,
+    "meta": ["Naval"]
+  },
+  {
+    "name": "Lightning Warriors",
+    "description": "Your chapter's style of warfare is built around the speedy execution of battle. Infantry have boosted attack at the cost of defense as well as two additional Land speeders and Biker squads.",
+    "effects": [
+      "Reduced Chances of loosing equipment during raids by 15%",
+      "Marines more likely spawn with lightning warrior trait",
+      "3% increase to base boarding capabilities"
+    ],
+    "points": 30,
+    "meta": ["Doctrine"]
+  },
+  {
+    "name": "Paragon",
+    "description": "You are a pale shadow of the primarchs. Larger, stronger, faster, your Chapter Master is on a higher level than most, gaining additional health and combat effectiveness.",
+    "points": 10,
+    "meta": ["Chapter Master"]
+  },
+  {
+    "name": "Warp Touched",
+    "description": "Psychic mutations run rampant in your chapter. You have more marines with high psychic rating and aspirants are also more likely to be capable of harnessing powers of the warp.",
+    "points": 20,
+    "meta": ["Psyker Views", "Librarians"],
+    "faction_disp_mods": [
+      {
+        "faction": 4,
+        "start_disp": -4
+      },
+      {
+        "faction": 5,
+        "start_disp": -4
+      }
+    ]
+  },
+  {
+    "name": "Favoured By The Warp",
+    "description": "Many marines in your chapter are favoured by the powers of the warp, making perils of the warp happen less frequently for them.",
+    "points": 20,
+    "faction_disp_mods": [
+      {
+        "faction": 4,
+        "mult": 0.5
+      }
+    ]
+  },
+  {
+    "name": "Reverent Guardians",
+    "description": "Your chapter places great faith in the Imperial Cult; you start with more Chaplains and any Ecclesiarchy disposition increases are enhanced.",
+    "points": 20,
+    "meta": ["Faith", "Imperium Trust"],
+    "faction_disp_mods": [
+      {
+        "faction": 5,
+        "int_mod": 2
+      }
+    ]
+  },
+  {
+    "name": "Tech-Brothers",
+    "description": "Your chapter has better ties to the mechanicus; you have more techmarines and higher mechanicus disposition.",
+    "points": 20,
+    "meta": ["Mechanicus Faith"],
+    "faction_disp_mods": [
+      {
+        "faction": 3,
+        "mult": 1.5,
+        "start_disp": 10
+      }
+    ]
+  },
+  {
+    "name": "Tech-Scavengers",
+    "description": "Your Astartes have a knack for finding what has been lost. Items and wargear are periodically found and added to the Armamentarium.",
+    "points": 30,
+    "faction_disp_mods": [
+      {
+        "faction": 3,
+        "int_mod": 1
+      }
+    ]
+  },
+  {
+    "name": "Siege Masters",
+    "description": "Your chapter is familiar with the ins-and-outs of fortresses. They are better at defending and attacking fortifications. And better at garrisoning",
+    "points": 20
+  },
+  {
+    "name": "Devastator Doctrine",
+    "description": "The steady advance of overwhelming firepower is your chapters combat doctrine each company has an additional Devastator squad, all infantry have boosted defence, and heavy weapons have increased attack.",
+    "points": 40,
+    "meta": ["Doctrine"],
+    "equip_tag": {
+      "heavy_ranged": {
+        "attack": {
+          "mult": 1.15
+        }
+      }
+    }
+  },
+  {
+    "name": "Assault Doctrine",
+    "description": "Your chapter prefers quick close quarter assaults on the enemy each Company has an additional Assault Squad and your marines are more skilled in melee.",
+    "points": 20,
+    "meta": ["Doctrine"]
+  },
+  {
+    "name": "Venerable Ancients",
+    "description": "Even in death they still serve. Your chapter places a staunch reverence for its forebears and has a number of additional venerable dreadnoughts in service.",
+    "points": 40,
+    "meta": ["Doctrine"]
+  },
+  {
+    "name": "Medicae Primacy",
+    "description": "Your chapter reveres its Apothecarion above all of it's specialist; You start with more Apothecaries.",
+    "points": 20,
+    "meta": ["Apothecaries"]
+  },
+  {
+    "name": "Ryzan Patronage",
+    "description": "Your chapter has strong ties to the Forgeworld of Ryza as a result your Techmarines are privy to the secrets of their Techpriests enhancing your Plasma and Las weaponry.",
+    "points": 40,
+    "meta": ["Weapon Specialty"],
+    "equip_tag": {
+      "energy": {
+        "attack": {
+          "mult": 1.15
+        }
+      }
+    }
+  },
+  {
+    "name": "Elite Guard",
+    "description": "Your chapter is an elite fighting force comprised almost exclusively of Veterans. All Tactical Marines are replaced by Veterans.",
+    "points": 150,
+    "meta": ["Specialists"]
+  },
+  {
+    "name": "Great Luck",
+    "description": "This is actually really helpful and beneficial for your chapter. Trust me.",
+    "points": 20,
+    "meta": ["Luck"]
+  },
+  {
+    "name": "Inquisitorial Mandate",
+    "description": "Your Chapter performs some service to the inquisition that is of some specific value or mandate of the inquisition",
+    "effects": "You will recieve less frequent inspections from the inquisition and actions that may not align with the inquisition will cause less aggressive losses of disposition with the Inquisition",
+    "meta": ["Imperium Trust"],
+    "points": 50,
+    "faction_disp_mods": [
+      {
+        "faction": 4,
+        "int_mod": 3,
+        "start_disp": 20
+      }
+    ]
+  }
+]

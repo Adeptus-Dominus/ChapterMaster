@@ -33,7 +33,6 @@
 #macro LOGGER global.logger
 
 
-
 enum eFACTION {
     PLAYER = 1,
     IMPERIUM,
@@ -49,6 +48,7 @@ enum eFACTION {
     GENESTEALER,
     NECRONS = 13
 }
+
 
 enum eGENDER {
     FEMALE,

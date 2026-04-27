@@ -1007,18 +1007,22 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return _powers_learned;
     };
 
+    static roll_dice = function(dices = 1, faces = 6, player_benefit_at="none"){
+        return roll_dice_unit(dices , faces , player_benefit_at, self);
+    }
+
     static roll_psionics = function() {
         var _dice_count = marine_ascension == "pre_game" ? 1 : 2;
         var _psionics_roll = roll_dice_chapter(_dice_count, 100);
 
         if (scr_has_adv("Warp Touched")) {
             if (_psionics_roll < 170) {
-                var _second_roll = roll_dice_unit(_dice_count, 100, "high", self);
+                var _second_roll = roll_dice(_dice_count, 100, "high");
                 _psionics_roll = _second_roll > _psionics_roll ? _second_roll : _psionics_roll;
             }
         } else if (scr_has_disadv("Psyker Intolerant")) {
             if (_psionics_roll >= 170) {
-                var _second_roll = roll_dice_unit(_dice_count, 100, "low", self);
+                var _second_roll = roll_dice(_dice_count, 100, "low");
                 _psionics_roll = _second_roll < _psionics_roll ? _second_roll : _psionics_roll;
             }
         }
@@ -1274,25 +1278,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         //calculate chapter specific bonus
         if (allegiance == global.chapter_name) {
             //calculate player specific bonuses
-            if (primary_weapon.has_tag("bolt")) {
-                if (scr_has_adv("Bolter Drilling") && base_group == "astartes") {
-                    range_multiplyer += 0.15;
-                    explanation_string += $"Bolter Drilling:X1.15#";
-                }
-            }
-            if (primary_weapon.has_tag("energy")) {
-                if (scr_has_adv("Ryzan Patronage") && base_group == "astartes") {
-                    range_multiplyer += 0.15;
-                    explanation_string += $"Ryzan Craftsmanship:X1.15#";
-                }
-            }
-            if (primary_weapon.has_tag("heavy_ranged")) {
-                if (scr_has_adv("Devastator Doctrine") && base_group == "astartes") {
-                    range_multiplyer += 0.15;
-                    explanation_string += $"Devastator Doctrine:X1.15#";
-                }
+            if (base_group == "astartes" && array_length(primary_weapon.tags)) {
+                var _chap_effects = obj_ini.chapter_data.calc_equipment_tag_mods(primary_weapon.tags, "attack");
+                range_multiplyer += _chap_effects.mult;
+                primary_weapon.attack += _chap_effects.int_mod;
+                explanation_string += _chap_effects.descriptions;
             }
         }
+
         if (!encumbered_ranged) {
             var total_gear_mod = 0;
             total_gear_mod += get_armour_data("ranged_mod");

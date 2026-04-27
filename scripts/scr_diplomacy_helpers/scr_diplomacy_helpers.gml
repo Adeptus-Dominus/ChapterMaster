@@ -43,19 +43,10 @@ function relationship_hostility_matrix(faction) {
 }
 
 function alter_disposition(faction, alter_value) {
-    switch (faction) {
-        case eFACTION.ELDAR:
-        case eFACTION.TAU:
-        case eFACTION.ORK:
-            if (scr_has_disadv("Tolerant")) {
-                alter_value++;
-            }
-            break;
-        case eFACTION.ECCLESIARCHY:
-            if (scr_has_adv("Reverent Guardians")) {
-                alter_value += 2;
-            }
-    }
+    chap_data = obj_ini.chapter_data;
+
+    alter_value = chap_data.calc_final_disp_value(faction, alter_value);
+
     obj_controller.disposition[faction] = clamp(obj_controller.disposition[faction] + alter_value, -100, 100);
 }
 

@@ -1,0 +1,202 @@
+[
+  {
+    "name": "Black Rage",
+    "description": "Your marines are susceptible to Black Rage, having a chance each battle to become Death Company. These units are locked as Assault Marines and are fairly suicidal.",
+    "points": 30
+  },
+  {
+    "name": "Blood Debt",
+    "description": "Prevents your Chapter from recruiting new Astartes until enough of your marines, or enemies, have been killed. Incompatible with Penitent chapter types.",
+    "points": 50
+  },
+  {
+    "name": "Depleted Gene-seed Stocks",
+    "description": "Your chapter has lost its gene-seed stocks in recent engagement. You start with no gene-seed.",
+    "points": 20
+  },
+  {
+    "name": "Fresh Blood",
+    "description": "Due to being newly created your chapter has little special wargear or psykers.",
+    "points": 20,
+    "meta": ["Status"]
+  },
+  {
+    "name": "Never Forgive",
+    "description": "In the past traitors broke off from your chapter. They harbor incriminating secrets or heritical beliefs, and as thus, must be hunted down whenever possible.",
+    "points": 20
+  },
+  {
+    "name": "Shitty Luck",
+    "description": "This is actually really bad for your chapter. Trust me.",
+    "points": 20,
+    "meta": ["Luck"]
+  },
+  {
+    "name": "Sieged",
+    "description": "A recent siege has reduced the number of your marines greatly. You retain a normal amount of equipment but some is damaged.",
+    "points": 40,
+    "meta": ["Status"],
+    "faction_disp_mods": [
+      {
+        "faction": 2,
+        "start_disp": 5
+      }
+    ]
+  },
+  {
+    "name": "Splintered",
+    "description": "Your marines are unorganized and splintered. You require greater time to respond to threats en masse.",
+    "points": 10,
+    "meta": ["Location"]
+  },
+  {
+    "name": "Suspicious",
+    "description": "Some of your chapter's past actions or current practices make the inquisition suspicious. Their disposition is lowered.",
+    "points": 10,
+    "meta": ["Imperium Trust"],
+    "faction_disp_mods": [
+      {
+        "faction": 4,
+        "start_disp": -15,
+        "int_mod": -2
+      }
+    ]
+  },
+  {
+    "name": "Tech-Heresy",
+    "description": "Your chapter does things that makes the Mechanicus upset. Mechanicus disposition is lowered and you have less Tech Marines. You start as a tech heretic tolerant chapter",
+    "points": 20,
+    "meta": ["Mechanicus Faith"],
+    "faction_disp_mods": [
+      {
+        "faction": 4,
+        "int_mod": -1
+      },
+      {
+        "faction": 3,
+        "mult": 0.5,
+        "start_disp": -8
+      }
+    ]
+  },
+  {
+    "name": "Tolerant",
+    "description": "Your chapter is more lenient with xenos. All xeno disposition is slightly increased and all Imperial disposition is lowered.",
+    "points": 10,
+    "faction_disp_mods": [
+      {
+        "faction": 7,
+        "int_mod": 1
+      },
+      {
+        "faction": 8,
+        "int_mod": 1
+      },
+      {
+        "faction": 6,
+        "int_mod": 1
+      },
+      {
+        "faction": 4,
+        "int_mod": -2,
+        "start_disp": -5
+      },
+      {
+        "faction": 2,
+        "start_disp": -5
+      },
+      {
+        "faction": 5,
+        "start_disp": -5
+      }
+    ]
+  },
+  {
+    "name": "Warp Tainted",
+    "description": "Your chapter is tainted by the warp. Many of your marines are afflicted with it, making getting caught in perils of the warp less likely, but when caught - the results are devastating.",
+    "points": 20,
+    "faction_disp_mods": [
+      {
+        "faction": 2,
+        "start_disp": -10
+      },
+      {
+        "faction": 3,
+        "start_disp": -10
+      },
+      {
+        "faction": 4,
+        "start_disp": -10
+      },
+      {
+        "faction": 5,
+        "start_disp": -10
+      }
+    ]
+  },
+  {
+    "name": "Psyker Intolerant",
+    "description": "Witches are hated by your chapter. You cannot create Librarians but gain a little bonus attack against psykers.",
+    "points": 30,
+    "meta": ["Psyker Views"],
+    "faction_disp_mods": [
+      {
+        "faction": 4,
+        "int_mod": 1,
+        "start_disp": 5
+      },
+      {
+        "faction": 5,
+        "start_disp": 5
+      }
+    ]
+  },
+  {
+    "name": "Obliterated",
+    "description": "A recent string of unfortunate events has left your chapter decimated. You have very little left, will your story continue?",
+    "points": 80,
+    "meta": ["Status"]
+  },
+  {
+    "name": "Poor Equipment",
+    "description": "Whether due to being cut off from forge worlds or bad luck, your chapter no longer has enough high quality gear to go around. Your elite troops will have to make do with standard armour.",
+    "points": 10,
+    "meta": ["Gear Quality"]
+  },
+  {
+    "name": "Enduring Angels",
+    "description": "The Chapter's journey thus far has been arduous & unforgiving leaving them severely understrength yet not out of the fight. You begin with 5 fewer company's",
+    "points": 30,
+    "meta": ["Status"]
+  },
+  {
+    "name": "Serpents Delight",
+    "description": "Sleeper cells infiltrated your chapter. When they rose up for the decapitation strike, they slew the 5 most experienced company's and many of the HQ staff before being defeated",
+    "points": 50,
+    "meta": ["Status"]
+  },
+  {
+    "name": "Weakened Apothecarion",
+    "description": "Many of your chapter's Apothecaries have fallen in recent battles whether due to their incompetence or deliberate targetting.",
+    "points": 20,
+    "meta": ["Apothecaries"]
+  },
+  {
+    "name": "Small Reclusiam",
+    "description": "Your chapter cares little for its reclusiam compared to other chapters fewer marines have shown the desire to be chaplains.",
+    "points": 20,
+    "meta": ["Faith"],
+    "faction_disp_mods": [
+      {
+        "faction": 5,
+        "int_mod": -2
+      }
+    ]
+  },
+  {
+    "name": "Barren Librarius",
+    "description": "Your chapter has a smaller Librarius compared to other chapters due to having fewer potent psykers.",
+    "points": 20,
+    "meta": ["Psyker Views", "Librarians"]
+  }
+]

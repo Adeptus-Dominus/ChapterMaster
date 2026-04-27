@@ -2,9 +2,9 @@
   "$GMProject":"v1",
   "%Name":"ChapterMaster",
   "AudioGroups":[
-    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
-    {"$GMAudioGroup":"","%Name":"audiogroup_sfx","name":"audiogroup_sfx","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
-    {"$GMAudioGroup":"","%Name":"audiogroup_music","name":"audiogroup_music","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_sfx","exportDir":"","name":"audiogroup_sfx","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_music","exportDir":"","name":"audiogroup_music","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
     "children":[],
@@ -523,6 +523,8 @@
     {"$GMIncludedFile":"","%Name":"purge8.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"purge8.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"raid1.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"raid1.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"resources.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"resources.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"chapter_advantages.json","CopyToMask":-1,"filePath":"datafiles/main","name":"chapter_advantages.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"chapter_disadvantages.json","CopyToMask":-1,"filePath":"datafiles/main","name":"chapter_disadvantages.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"pauldron.png","CopyToMask":-1,"filePath":"datafiles/main/chapter_symbols/darkangels","name":"pauldron.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"load_sets.json","CopyToMask":-1,"filePath":"datafiles/main/chapter_symbols","name":"load_sets.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"pauldron.png","CopyToMask":-1,"filePath":"datafiles/main/chapter_symbols/scythesofthemperor","name":"pauldron.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},

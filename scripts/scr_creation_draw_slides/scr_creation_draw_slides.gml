@@ -617,6 +617,9 @@ function draw_chapter_trait_select() {
         adv_txt.y2 = adv_txt.y1 + adv_txt.h;
         var max_advantage_count = 8;
         for (i = 1; i <= max_advantage_count; i++) {
+            if (adv_num[i] > array_length(obj_creation.all_advantages)){
+                adv_num[i] = 0;
+            }
             var draw_string = adv_num[i] == 0 ? "[+]" : "[-] " + adv[i];
             draw_text(adv_txt.x1, adv_txt.y1 + (i * adv_txt.h), draw_string);
             if (scr_hit(adv_txt.x1, adv_txt.y1 + (i * adv_txt.h), adv_txt.x2, adv_txt.y2 + (i * adv_txt.h))) {
@@ -833,8 +836,8 @@ function draw_chapter_trait_select() {
 
                 // Tooltips
                 if (scr_hit(coords)) {
-                    tooltip = $"{adv_name} ({advantage_local_var.points})";
-                    tooltip2 = $"{advantage_local_var.description} \nCategories: {advantage_local_var.print_meta()}";
+                    tooltip = advantage_local_var.main_tool_tip();
+                    tooltip2 = advantage_local_var.data_tool_tip();
                     draw_set_color(c_white);
                     draw_set_alpha(0.2);
                     draw_text(column.x1, column.y1 + gap, adv_name);
@@ -900,8 +903,8 @@ function draw_chapter_trait_select() {
 
                 //Tooltip
                 if (scr_hit(coords)) {
-                    tooltip = $"{dis_name} ({disadvantage_local_var.points})";
-                    tooltip2 = $"{disadvantage_local_var.description} \nCategories: {disadvantage_local_var.print_meta()}";
+                    tooltip = disadvantage_local_var.main_tool_tip();
+                    tooltip2 = disadvantage_local_var.data_tool_tip();                 
                     draw_set_color(c_white);
                     draw_set_alpha(0.2);
                     draw_text(column.x1, column.y1 + gap, dis_name);

@@ -1339,6 +1339,8 @@ while (instance_number(obj_star) < planet) {
 }
 mask_index = -1;
 
+LOGGER.info("Set Fleet Type");
+
 fleet_type = "";
 if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
     fleet_type = "Homeworld";
@@ -1388,15 +1390,18 @@ if (global.chapter_name == "Soul Drinkers") {
 }
 
 //   ** sets up the starting squads**
+LOGGER.info("set up the starting squads");
 squads = true;
 game_start_squads();
 squads = false;
 system_fleet_strength = 0;
 // **sets up starting forge_points
+LOGGER.info("set up the specialist points");
 specialist_point_handler = new SpecialistPointHandler();
 specialist_point_handler.calculate_research_points(true);
 
 //** sets up marine_by_location views
+LOGGER.info("set up the UnitQuickFindPanel");
 location_viewer = new UnitQuickFindPanel();
 
 // ** Sets up the number of marines per company **
@@ -1418,6 +1423,7 @@ temp[33] = string_upper(scr_thought()); // Thought of the day
 //
 // Game start welcoming message
 //
+LOGGER.info("Game start welcoming message");
 var njm = 34, com = 0, vih = 0, word = "", masta = 0, forga = 0, chapla = 0, apa = 0, liba = 0, techa = 0, libra = 0, coda = 0, lexa = 0, apotha = 0, old_dudes = 0;
 
 var honoh = 0, termi = 0, veter = 0, capt = 0, chap = 0, apoth = 0, stand = 0, dread = 0, champ = 0, tact = 0, assa = 0, deva = 0, rhino = 0, speeder = 0, raider = 0, standard = 0, bike = 0, scou = 0, whirl = 0, pred = 0, lib = 0, serg = 0, vet_serg = 0;
@@ -1698,6 +1704,9 @@ for (var company = 0; company < 10; company++) {
         temp[njm] = string_delete(temp[njm], vih, 1);
     }
 }
+
+
+LOGGER.info("create Ships");
 
 temp[59] = $"CLASSIFICATION: SECTOR LOGISTICAE#++++++++++DATE: {temp[30]}#++++++++AUTHOR: MASTER ADEPT {temp[31]}#++++++++++++RE: INTRODUCTORY MISSIVE#+++++RECIPIENT: CHAPTER MASTER {temp[32]}##++THOUGHT: {temp[33]}++##I see you have made it unscathed, your grace. Death comes with you as it should! The enemy is on the horizon. Thy chapter is mighty and only waits for your word to wreak havoc upon our enemies.##Your chapter contains-";
 
