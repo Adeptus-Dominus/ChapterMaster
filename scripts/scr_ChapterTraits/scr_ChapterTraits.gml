@@ -1,8 +1,90 @@
 function ChapterTrait(trait) constructor {
     effects = "";
     meta = [];
+    faction_disp_mods = [];
     move_data_to_current_scope(trait);
     disabled = false;
+
+    static effects_string = function(){
+
+        var _str = "";
+
+        var _fac_names = FACTION_NAMES;
+
+        // --- Faction disposition mods ---
+        if (is_array(faction_disp_mods) && array_length(faction_disp_mods) > 0){
+
+            for (var i = 0; i < array_length(faction_disp_mods); i++){
+                var _mod = faction_disp_mods[i];
+
+                if (!struct_exists(_mod, "faction")) continue;
+
+                var _line = "";
+
+                if (struct_exists(_mod, "int_mod") && _mod.int_mod != 0){
+                    _line += $"{string_plus_minus(_mod.int_mod)}{_mod.int_mod}";
+                }
+
+                if (struct_exists(_mod, "mult") && _mod.mult != 1){
+                    if (_line != "") _line += " ";
+                    _line += $"x{_mod.mult}";
+                }
+
+                if (struct_exists(_mod, "start_disp") && _mod.start_disp != 0){
+                    if (_line != "") _line += " ";
+                    _line += $"start {string_plus_minus(_mod.start_disp)}{_mod.start_disp}";
+                }
+
+                if (_line != ""){
+                    _str += $"Faction {_fac_names[_mod.faction]}: {_line}\n";
+                }
+            }
+        }
+
+        // --- Equipment tag mods ---
+        if (struct_exists(self, "equip_tag")){
+
+            var _tags = struct_get_names(equip_tag);
+
+            for (var t = 0; t < array_length(_tags); t++){
+                var _tag_name = _tags[t];
+                var _tag_data = equip_tag[$ _tag_name];
+
+                var _chars = struct_get_names(_tag_data);
+
+                for (var c = 0; c < array_length(_chars); c++){
+                    var _char = _chars[c];
+                    var _char_data = _tag_data[$ _char];
+
+                    var _line = "";
+
+                    if (struct_exists(_char_data, "mult")){
+                        _line += $"x{_char_data.mult}";
+                    }
+
+                    if (struct_exists(_char_data, "int_mod")){
+                        if (_line != "") _line += " ";
+                        _line += $"{string_plus_minus(_char_data.int_mod)}{_char_data.int_mod}";
+                    }
+
+                    if (_line != ""){
+                        _str += $"{_tag_name}:{_char} {_line}\n";
+                    }
+                }
+            }
+        }
+
+        return _str;
+    }
+
+    static alter_starting_dispositions = function(){
+        for (var i = 0; i < array_length(faction_disp_mods) ; i++){
+            var _mod = faction_disp_mods[i];
+            if (struct_exists(_mod, "start_disp")){
+                obj_creation.disposition[_mod.faction] += _mod.start_disp;
+            }
+        }
+    }
 
 
     static add_meta = function() {
@@ -96,311 +178,14 @@ function Disadvantage(trait) : ChapterTrait(trait) constructor {
     };
 }
 
+// TODO all the chapter start data should be ramed in here as well rather than being hardcoded
+
 function generate_disadvantages(){
-    return [
-        {
-            name: "Black Rage",
-            description: "Your marines are susceptible to Black Rage, having a chance each battle to become Death Company.  These units are locked as Assault Marines and are fairly suicidal.",
-            points: 30,
-        },
-        {
-            name: "Blood Debt",
-            description: "Prevents your Chapter from recruiting new Astartes until enough of your marines, or enemies, have been killed.  Incompatible with Penitent chapter types.",
-            points: 50,
-        },
-        {
-            name: "Depleted Gene-seed Stocks",
-            description: "Your chapter has lost its gene-seed stocks in recent engagement. You start with no gene-seed.",
-            points: 20,
-        },
-        {
-            name: "Fresh Blood",
-            description: "Due to being newly created your chapter has little special wargear or psykers.",
-            points: 20,
-            meta: ["Status"],
-        },
-        {
-            name: "Never Forgive",
-            description: "In the past traitors broke off from your chapter.  They harbor incriminating secrets or heritical beliefs, and as thus, must be hunted down whenever possible.",
-            points: 20,
-        },
-        {
-            name: "Shitty Luck",
-            description: "This is actually really bad for your chapter. Trust me.",
-            points: 20,
-            meta: ["Luck"],
-        },
-        {
-            name: "Sieged",
-            description: "A recent siege has reduced the number of your marines greatly.  You retain a normal amount of equipment but some is damaged.",
-            points: 40,
-            meta: ["Status"],
-        },
-        {
-            name: "Splintered",
-            description: "Your marines are unorganized and splintered.  You require greater time to respond to threats en masse.",
-            points: 10,
-            meta: ["Location"],
-        },
-        {
-            name: "Suspicious",
-            description: "Some of your chapter's past actions or current practices make the inquisition suspicious.  Their disposition is lowered.",
-            points: 10,
-            meta: ["Imperium Trust"],
-        },
-        {
-            name: "Tech-Heresy",
-            description: "Your chapter does things that makes the Mechanicus upset.  Mechanicus disposition is lowered and you have less Tech Marines. You start as a tech heretic tolerant chapter",
-            points: 20,
-            meta: ["Mechanicus Faith"],
-        },
-        {
-            name: "Tolerant",
-            description: "Your chapter is more lenient with xenos.  All xeno disposition is slightly increased and all Imperial disposition is lowered.",
-            points: 10,
-        },
-        {
-            name: "Warp Tainted",
-            description: "Your chapter is tainted by the warp. Many of your marines are afflicted with it, making getting caught in perils of the warp less likely, but when caught - the results are devastating.",
-            points: 20,
-        },
-        {
-            name: "Psyker Intolerant",
-            description: "Witches are hated by your chapter.  You cannot create Librarians but gain a little bonus attack against psykers.",
-            points: 30,
-            meta: ["Psyker Views"],
-        },
-        {
-            name: "Obliterated",
-            description: "A recent string of unfortunate events has left your chapter decimated. You have very little left, will your story continue?",
-            points: 80,
-            meta: ["Status"],
-        },
-        {
-            name: "Poor Equipment",
-            description: "Whether due to being cut off from forge worlds or bad luck, your chapter no longer has enough high quality gear to go around. Your elite troops will have to make do with standard armour.",
-            points: 10,
-            meta: ["Gear Quality"],
-        },
-        {
-            name: "Enduring Angels",
-            description: "The Chapter's journey thus far has been arduous & unforgiving leaving them severely understrength yet not out of the fight. You begin with 5 fewer company's",
-            points: 30,
-            meta: ["Status"],
-        },
-        {
-            name: "Serpents Delight",
-            description: "Sleeper cells infiltrated your chapter. When they rose up for the decapitation strike,they slew the 5 most experienced company's and many of the HQ staff before being defeated",
-            points: 50,
-            meta: ["Status"],
-        },
-        {
-            name: "Weakened Apothecarion",
-            description: "Many of your chapter's Apothecaries have fallen in recent battles whether due to their incompetence or deliberate targetting.",
-            points: 20,
-            meta: ["Apothecaries"],
-        },
-        {
-            name: "Small Reclusiam",
-            description: "Your chapter cares little for its reclusiam compared to other chapters fewer marines have shown the desire to be chaplains.",
-            points: 20,
-            meta: ["Faith"],
-        },
-        {
-            name: "Barren Librarius",
-            description: "Your chapter has a smaller Librarius compared to other chapters due to having fewer potent psykers.",
-            points: 20,
-            meta: [
-                "Psyker Views",
-                "Librarians"
-            ],
-        }
-    ];
+    return json_to_gamemaker(working_directory + $"main\\chapter_disadvantages.json", json_parse);
 }
 
 function generate_advantages(){
-    return [
-        {
-            name: "Ambushers",
-            description: "Your chapter is especially trained with ambushing foes; they have a bonus to attack during the start of a battle.",
-            points: 30,
-        },
-        {
-            name: "Boarders",
-            description: "Boarding other ships is the specialty of your chapter.  Your chapter is more lethal when boarding ships, have dedicated boarding squads, and two extra strike cruisers.",
-            points: 30,
-        },
-        {
-            name: "Bolter Drilling",
-            description: "Bolter drills are sacred to your chapter; all marines have increased attack with Bolter weaponry.",
-            points: 40,
-            meta: ["Weapon Specialty"],
-        },
-        {
-            name: "Retinue of Renown",
-            description: "Your chapter master is guarded by renown heroes of the chapter.  You start with a larger well-equipped Honour Guard.",
-            points: 20,
-        },
-        {
-            name: "Crafters",
-            description: "Your chapter views artifacts as sacred; you start with better gear and maintain all equipment with more ease.",
-            points: 40,
-            meta: ["Gear Quality"],
-        },
-        {
-            name: "Ancient Armoury",
-            description: "Your chapter is dedicated to preserving ancient wargear and as such have substantially higher amounts of rare Heresy-era armour and weapons than normal.",
-            points: 20, //I'm not sure, but it could be higher since now this trait will bring much more benefits.
-            meta: ["Gear Quality"],
-        },
-        {
-            name: "Enemy: Eldar",
-            description: "Eldar are particularly hated by your chapter.  When fighting Eldar damage is increased.",
-            points: 20,
-            meta: ["Main Enemy"],
-        },
-        {
-            name: "Enemy: Fallen",
-            description: "Chaos Marines are particularly hated by your chapter.  When fighting the traitors damage is increased.",
-            points: 20,
-            meta: ["Main Enemy"],
-        },
-        {
-            name: "Enemy: Necrons",
-            description: "Necrons are particularly hated by your chapter.  When fighting Necrons damage is increased.",
-            points: 20,
-            meta: ["Main Enemy"],
-        },
-        {
-            name: "Enemy: Orks",
-            description: "Orks are particularly hated by your chapter.  When fighting Orks damage is increased.",
-            points: 20,
-            meta: ["Main Enemy"],
-        },
-        {
-            name: "Enemy: Tau",
-            description: "Tau are particularly hated by your chapter.  When fighting Tau damage is increased.",
-            points: 20,
-            meta: ["Main Enemy"],
-        },
-        {
-            name: "Enemy: Tyranids",
-            description: "Tyranids are particularly hated by your chapter. A large number of your veterans and marines are tyrannic war veterans and when fighting Tyranids damage is increased.",
-            points: 20,
-            meta: ["Main Enemy"],
-        },
-        {
-            name: "Kings of Space",
-            description: "Veterans of naval combat, your chapter fleet has bonuses to offense, defence, an additional battle barge, and may always be controlled regardless of whether or not the Chapter Master is present.",
-            points: 40,
-            meta: ["Naval"],
-        },
-        {
-            name: "Lightning Warriors",
-            description: "Your chapter's style of warfare is built around the speedy execution of battle. Infantry have boosted attack at the cost of defense as well as two additional Land speeders and Biker squads.",
-            perks: [
-                "Reduced Chances of loosing equipment during raids by 15%",
-                "Marines mmore likely spawn with lightning warrior trait",
-                "3% increase to base boarding capabilities"
-            ],
-            points: 30,
-            meta: ["Doctrine"],
-        },
-        {
-            name: "Paragon",
-            description: "You are a pale shadow of the primarchs.  Larger, stronger, faster, your Chapter Master is on a higher level than most, gaining additional health and combat effectiveness.",
-            points: 10,
-            meta: ["Chapter Master"],
-        },
-        {
-            name: "Warp Touched", //TODO: This is probably can be better handled as a positive seed mutation;
-            description: "Psychic mutations run rampant in your chapter. You have more marines with high psychic rating and aspirants are also more likely to be capable of harnessing powers of the warp.",
-            points: 20,
-            meta: [
-                "Psyker Views",
-                "Librarians"
-            ],
-        },
-        {
-            name: "Favoured By The Warp",
-            description: "Many marines in your chapter are favoured by the powers of the warp, making perils of the warp happen less frequently for them.",
-            points: 20,
-        },
-        {
-            name: "Reverent Guardians",
-            description: "Your chapter places great faith in the Imperial Cult; you start with more Chaplains and any Ecclesiarchy disposition increases are enhanced.",
-            points: 20,
-            meta: [
-                "Faith",
-                "Imperium Trust"
-            ],
-        },
-        {
-            name: "Tech-Brothers",
-            description: "Your chapter has better ties to the mechanicus; you have more techmarines and higher mechanicus disposition.",
-            points: 20,
-            meta: ["Mechanicus Faith"],
-        },
-        {
-            name: "Tech-Scavengers",
-            description: "Your Astartes have a knack for finding what has been lost.  Items and wargear are periodically found and added to the Armamentarium.",
-            points: 30,
-        },
-        {
-            name: "Siege Masters",
-            description: "Your chapter is familiar with the ins-and-outs of fortresses.  They are better at defending and attacking fortifications. And better at garrisoning",
-            points: 20,
-        },
-        {
-            name: "Devastator Doctrine",
-            description: "The steady advance of overwhelming firepower is your chapters combat doctrine each company has an additional Devastator squad, all infantry have boosted defence, and heavy weapons have increased attack.",
-            points: 40,
-            meta: ["Doctrine"],
-        },
-        {
-            name: "Assault Doctrine",
-            description: "Your chapter prefers quick close quarter assaults on the enemy each Company has an additional Assault Squad and your marines are more skilled in melee.",
-            points: 20,
-            meta: ["Doctrine"],
-        },
-        {
-            name: "Venerable Ancients",
-            description: "Even in death they still serve. Your chapter places a staunch reverence for its forebears and has a number of additional venerable dreadnoughts in service.",
-            points: 40,
-            meta: ["Doctrine"],
-        },
-        {
-            name: "Medicae Primacy",
-            description: "Your chapter reveres its Apothecarion above all of it's specialist; You start with more Apothecaries.",
-            points: 20,
-            meta: ["Apothecaries"],
-        },
-        {
-            name: "Ryzan Patronage",
-            description: "Your chapter has strong ties to the Forgeworld of Ryza as a result your Techmarines are privy to the secrets of their Techpriests enhancing your Plasma and Las weaponry.",
-            points: 40,
-            meta: ["Weapon Specialty"],
-        },
-        {
-            name: "Elite Guard",
-            description: "Your chapter is an elite fighting force comprised almost exclusively of Veterans. All Tactical Marines are replaced by Veterans.",
-            points: 150,
-            meta: ["Specialists"],
-        },
-        {
-            name: "Great Luck",
-            description: "This is actually really helpful and beneficial for your chapter. Trust me.",
-            points: 20,
-            meta: ["Luck"],
-        },
-        {
-            name: "Inquisitorial Mandate",
-            description: "Your Chapter performs some service to the inquisition that is of some specific value or mandate of the inquisition",
-            effects: "You will recieve less frequent inspections from the inquisition and actions that may not align with the inquisition will cause less aggressive losses of disposition with the Inquisition",
-            meta: ["Imperium Trust"],
-            points: 50
-        }
-    ];
+    return json_to_gamemaker(working_directory + $"main\\chapter_advantages.json", json_parse);
 }
 
 
@@ -439,7 +224,147 @@ function setup_chapter_traits(){
 }
 
 
-function ChapterData(){
-    faction_disp_mods = array_create(14, {});
-}
 
+// with a mult mod both losses and gains are limited or amlplified with a faction
+// with  mult_mod changes are modified in both directions
+// ergo mult mods are usefull where you might wish to show your chapter is polarising or
+// that factions are apathetic to you lleading to reductions in chages all around
+// also consider the factin involved with a mult mod for example a positive ult with the mechanicus
+// might be appropriate for a tech chapter as their jealousy ay cause themm to have bigger negative
+// as well as positive swings for a chapter they deem an ally but alsso competition
+// comparativly int changes show a general negative or general positive perception towards you're chapter
+// they are therefor comparativly more simple too apply 
+// a positive mod will never taake a negative disp gain above zero
+// a negative mod will never take a possitive disp gain below 0
+// please also take into account 
+function ChapterGameData (data = {}) constructor{
+    move_data_to_current_scope(data);
+
+    faction_disp_mods = array_create(14, {
+        "int_mod" : 0,
+        "mult" : 1
+    });
+
+    equipment_tag_mods = {};
+
+    static merge_mods = function(mod_1, mod_2){
+        if (struct_exists(mod_2, "int_mod")){
+            if (struct_exists(mod_1, "int_mod")){
+                mod_1.int_mod += mod_2.int_mod;
+            } else {
+                mod_1.int_mod = mod_2.int_mod;
+            }
+        } 
+
+        if (struct_exists(mod_2, "mult")){
+            if (struct_exists(mod_1, "mult")){
+                mod_1.mult *= mod_2.mult;
+            } else {
+                mod_1.mult = mod_2.mult;
+            }
+        }        
+    }
+
+    static add_trait_data = function(trait){
+
+        if (struct_exists(trait, "faction_disp_mods")) {
+            for (var i = 0; i < array_length(trait.faction_disp_mods); i++){
+                var _mods = trait.faction_disp_mods[i];
+                var _faction_mod = faction_disp_mods[_mods.faction];
+                merge_mods(_faction_mod, _mods);
+            }
+        }
+
+        if (struct_exists(trait, "equip_tag")){ 
+            var _all_tags = trait.equip_tag;
+            var _items = struct_get_names(_all_tags);
+
+            for (var i=0; i < array_length(_items); i++){
+                var _item = _all_tags[_items[i]];
+                var _item_name = _items[i];
+
+                if (!struct_exists(equipment_tag_mods, _item_name)){
+                    equipment_tag_mods[$ _item_name] = _item;
+                }
+
+                var _tags = struct_get_names(_item);
+                var _current_tag_data = equipment_tag_mods[$ _item_name];
+
+                for (var s = 0; s < array_length(_tags); s++){
+                    var _char = _tags[s];
+
+                    var _entry = variable_clone(_item[$ _char]);
+                    _entry.name = trait.name;
+
+                    if (!struct_exists(_current_tag_data, _char)){
+                        _current_tag_data[$ _char] = [_entry];
+                        continue;
+                    }
+
+                    array_push(_current_tag_data[$ _char], _entry); // fixed
+                }
+            }
+        }
+    }
+
+    static calc_final_disp_value = function(faction, alter_value){
+        var _mods = faction_disp_mods[faction];
+
+        if (_mods.int_mod != 0){
+            if (alter_value > 0){
+                alter_value = max(0, alter_value + _mods.int_mod); 
+            } else {
+                alter_value = min(0, alter_value + _mods.int_mod); 
+            }
+        }
+
+        if (_mods.mult > 1){
+            alter_value = ceil(alter_value * _mods.mult);
+        } else if (_mods.mult < 1){
+            alter_value = floor(alter_value * _mods.mult);
+        }
+
+        return alter_value;
+    }
+
+    static calc_equipment_tag_mods = function(tags, characteristic){
+
+        var _final_result = {
+            mult : 0,
+            int_mod : 0,
+            descriptions : ""
+        };
+
+        for (var t = 0; t < array_length(tags); t++){
+
+            var _tag = tags[t];
+            if (!struct_exists(equipment_tag_mods, _tag)){
+                continue; 
+            }
+
+            var _tag_data = equipment_tag_mods[$ _tag];
+
+            if (!struct_exists(_tag_data, characteristic)){
+                continue; 
+            }
+
+            var _characteristic_data = _tag_data[$ characteristic];
+
+            for (var i = 0; i < array_length(_characteristic_data); i++){
+                var _c = _characteristic_data[i];
+
+                if (struct_exists(_c, "mult")){
+                    _final_result.mult += (_c.mult - 1);
+                    _final_result.descriptions += $"{_c.name}:X{_c.mult}\n"; // fixed
+                }
+
+                if (struct_exists(_c, "int_mod")){
+                    _final_result.int_mod += _c.int_mod; // fixed
+                    _final_result.descriptions += $"{_c.name}:{string_plus_minus(_c.int_mod)}{_c.int_mod}\n"; // fixed
+                }
+            }
+        }
+
+        return _final_result;
+    }
+}

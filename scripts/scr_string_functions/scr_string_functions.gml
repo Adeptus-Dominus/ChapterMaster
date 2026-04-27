@@ -65,6 +65,10 @@ function string_gender_pronouns(gender) {
     return _string;
 }
 
+function string_plus_minus(value){
+    return value < 0 ? "-" : "+";
+}
+
 /// @function string_plural
 /// @description This function formats a string into a plural form by adding affixes following common rules.
 /// @param {string} _string
