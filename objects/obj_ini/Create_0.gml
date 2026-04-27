@@ -168,6 +168,8 @@ gene_slaves = [];
 adv = [];
 dis = [];
 
+chapter_data = new ChapterData();
+
 if (instance_exists(obj_creation)) {
     custom = obj_creation.custom;
 }
@@ -253,7 +255,8 @@ deserialize = function(save_data) {
         "company_liveries",
         "squad_types",
         "marine_structs",
-        "squad_structs"
+        "squad_structs",
+        "chapter_data"
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
@@ -350,6 +353,10 @@ deserialize = function(save_data) {
 
     if (struct_exists(save_data, "gene_slaves")) {
         variable_struct_set(obj_ini, "gene_slaves", save_data.gene_slaves);
+    }
+
+    if (struct_exists(save_data, "chapter_data")){
+        obj_ini.chapter_data = new ChapterGameData(save_data.chapter_data);
     }
 };
 

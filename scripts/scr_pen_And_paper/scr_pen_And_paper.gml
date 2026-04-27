@@ -195,7 +195,7 @@ function roll_dice_chapter(dices = 1, faces = 6, player_benefit_at) {
 /// @param {real} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
 /// @param {struct} unit - unit struct.
 /// @returns {real}
-function roll_dice_unit(dices = 1, faces = 6, player_benefit_at, unit) {
+function roll_dice_unit(dices = 1, faces = 6, player_benefit_at = "none", unit) {
     var _total_roll = 0;
     var _roll = 0;
 

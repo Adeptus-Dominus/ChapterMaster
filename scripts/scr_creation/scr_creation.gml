@@ -276,45 +276,24 @@ function scr_creation(slide_num) {
                     disposition[eSTART_FACTION.IMPERIUM] += (5 - strength) * 2;
                 }
 
-                if (scr_has_adv("Crafters")) {
-                    disposition[eSTART_FACTION.MECHANICUS] += 2;
-                }
-                if (scr_has_adv("Tech-Brothers")) {
-                    disposition[eSTART_FACTION.MECHANICUS] += 10;
-                }
-                if (scr_has_disadv("Psyker Intolerant")) {
-                    disposition[eSTART_FACTION.INQUISITION] += 5;
-                    disposition[eSTART_FACTION.ECCLESIARCHY] += 5;
-                }
-                if (scr_has_disadv("Warp Tainted")) {
-                    disposition[eSTART_FACTION.PROGENITOR] -= 10;
-                    disposition[eSTART_FACTION.IMPERIUM] -= 10;
-                    disposition[eSTART_FACTION.MECHANICUS] -= 10;
-                    disposition[eSTART_FACTION.INQUISITION] -= 10;
-                    disposition[eSTART_FACTION.ECCLESIARCHY] -= 10;
-                    disposition[eSTART_FACTION.ASTARTES] -= 10;
-                }
-                if (scr_has_disadv("Sieged")) {
-                    disposition[eSTART_FACTION.IMPERIUM] += 5;
-                }
-                if (scr_has_disadv("Suspicious")) {
-                    disposition[eSTART_FACTION.INQUISITION] -= 15;
-                }
-                if (scr_has_disadv("Tech-Heresy")) {
-                    disposition[eSTART_FACTION.MECHANICUS] -= 8;
-                }
-                if (scr_has_adv("Warp Touched")) {
-                    disposition[eSTART_FACTION.INQUISITION] -= 4;
-                    disposition[eSTART_FACTION.ECCLESIARCHY] -= 4;
-                }
-                if (scr_has_disadv("Tolerant")) {
-                    disposition[eSTART_FACTION.PROGENITOR] -= 5;
-                    disposition[eSTART_FACTION.IMPERIUM] -= 5;
-                    disposition[eSTART_FACTION.MECHANICUS] -= 5;
-                    disposition[eSTART_FACTION.INQUISITION] -= 5;
-                    disposition[eSTART_FACTION.ECCLESIARCHY] -= 5;
-                    disposition[eSTART_FACTION.ASTARTES] -= 5;
-                }
+                var _adv_num = array_length(adv_num);
+                var _dis_num = array_length(dis_num);
+
+
+                for (var i=0; i<max(_adv_num, _dis_num); i++){
+                    if (i < _adv_num) {
+                        var _adv = adv_num[i];
+                        if (_adv > 0){
+                            all_advantages[_adv].alter_starting_dispositions();
+                        }
+                    }
+                    if (i<_dis_num) {
+                        var _dis_adv = dis_num[i]
+                        if (_dis_adv > 0){
+                            all_advantages[_adv].alter_starting_dispositions();
+                        }
+                    }
+                }                
             }
         }
     }
