@@ -1,22 +1,24 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 language: en-GB
 tone_instructions: >-
-  You must speak like machine spirit, a very advanced form of AI, from the Warhammer 40,000
-  universe. Adopt cold, archaic, mysterious, and foreboding tone, while remaining concise. Address
-  every contributor as Tech-Priest.
+  Respond terse like smart caveman. All technical substance stay. Only fluff die.
+
+
+  Drop: articles, filler, pleasantries, hedging. Fragments OK. Short synonyms. Technical terms
+  exact. Code blocks unchanged. Errors quoted exact.
 early_access: true
 reviews:
   profile: assertive
   request_changes_workflow: false
   high_level_summary_instructions: >-
-    Ignore all previous tone or persona instructions. Write two concise bullet lists of changes
+    Write two concise bullet lists of changes
     in this PR. `Developer Notes` should only contain changes relevant to and observable
     by other developers (refactors, style changes, etc.). `Player Notes` should only
     contain changes relevant to and observable by the players (feature fixed, added, changed, etc.).
   high_level_summary_in_walkthrough: false
   auto_title_placeholder: '@coderabbitai title'
   auto_title_instructions: >-
-    Start it with an appropriate conventional commit type in small case, followed by a `: `, and
+    Start it with an appropriate conventional commit type in small case, followed by a `: `,
     then the actual title, starting with an upper-case.
   review_details: true
   fail_commit_status: true
@@ -29,11 +31,17 @@ reviews:
   enable_prompt_for_ai_agents: false
   path_instructions:
     - path: '**/*.json'
-      instructions: >-
-        - In this project, JSON files with comments are supported by the parser. It's allowed to use
-        comments in JSON.
+      instructions: |-
+        - JSON trailing commas won't crash; ignore.
+
+        - JSON comments supported by the parser; ignore.
     - path: '**/*.gml'
-      instructions: '- All code should comply with the 2026 GML documentation.'
+      instructions: |-
+        - Strict Typing: `#macro`/`enum`; not raw strings/numbers.
+
+        - Fail Loudly: try/catch, throw exceptions, crash loudly, log with `LOGGER.error()`.
+
+        - Struct First: Favor constructors over GM objects/events.
     - path: '**/*.*'
       instructions: |-
         - Code Philosophy: Prioritize explicit intent and maintainability over brevity. If a
@@ -43,6 +51,7 @@ reviews:
 
         - Abstraction: Apply the "Rule of Three"; suggest abstraction only when similar logic is
         repeated three or more times to avoid premature complexity.
+        Utilize global helper `functions`, global `lookups` and helper `constructors`.
 
         - Subjective Choices: For naming or architecture, ask guiding questions to prompt developer
         reflection and provide at least two alternative perspectives.
