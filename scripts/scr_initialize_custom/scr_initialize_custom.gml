@@ -734,16 +734,20 @@ function scr_initialize_custom() {
     var _ad_length = array_length(obj_creation.adv_num);
     var _dis_length = array_length(obj_creation.dis_num);
 
-    for (var i=0;i<array_length(max(_ad_length, _dis_length)); i++){
+    LOGGER.info("Load Trait Data");
+
+    for (var i=0;i<max(_ad_length, _dis_length); i++){
         if (i < _ad_length) {
             var _adv = obj_creation.adv_num[i];
-            if (_adv > 0){
+            LOGGER.info($"{_adv}");
+            if (_adv != 0){
                 chapter_data.add_trait_data(obj_creation.all_advantages[_adv]);
             }
         }
         if (i < _dis_length) {
-            var _dis_adv = obj_creation.adv_num[i];
-             if (_dis_adv > 0){
+            var _dis_adv = obj_creation.dis_num[i];
+            LOGGER.info($"{_dis_adv}");
+            if (_dis_adv != 0){
                 chapter_data.add_trait_data(obj_creation.all_disadvantages[_dis_adv]);
             }
         }

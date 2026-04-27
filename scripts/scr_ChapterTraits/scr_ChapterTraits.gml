@@ -59,7 +59,7 @@ function ChapterTrait(trait) constructor {
                     var _line = "";
 
                     if (struct_exists(_char_data, "mult")){
-                        _line += $"X{_char_data.mult}";
+                        _line += $"   X{_char_data.mult}";
                     }
 
                     if (struct_exists(_char_data, "int_mod")){
@@ -68,7 +68,7 @@ function ChapterTrait(trait) constructor {
                     }
 
                     if (_line != ""){
-                        _str += $"{_tag_name}:{_char}\n{_line}\n";
+                        _str += $"{_tag_name}:{_char}{_line}\n";
                     }
                 }
             }
@@ -287,11 +287,13 @@ function ChapterGameData (data = {}) constructor{
             var _items = struct_get_names(_all_tags);
 
             for (var i=0; i < array_length(_items); i++){
-                var _item = _all_tags[_items[i]];
                 var _item_name = _items[i];
 
+                var _item = _all_tags[$ _item_name];
+                
+
                 if (!struct_exists(equipment_tag_mods, _item_name)){
-                    equipment_tag_mods[$ _item_name] = _item;
+                    equipment_tag_mods[$ _item_name] = {};
                 }
 
                 var _tags = struct_get_names(_item);
@@ -304,14 +306,14 @@ function ChapterGameData (data = {}) constructor{
                     _entry.name = trait.name;
 
                     if (!struct_exists(_current_tag_data, _char)){
-                        _current_tag_data[$ _char] = [_entry];
-                        continue;
+                        _current_tag_data[$ _char] = [];
                     }
 
-                    array_push(_current_tag_data[$ _char], _entry); // fixed
+                    array_push(_current_tag_data[$ _char], _entry);
                 }
             }
         }
+
     }
 
     static calc_final_disp_value = function(faction, alter_value){
@@ -345,9 +347,14 @@ function ChapterGameData (data = {}) constructor{
         for (var t = 0; t < array_length(tags); t++){
 
             var _tag = tags[t];
+
+            LOGGER.info($"{_tag} : {equipment_tag_mods}");
+
+            
             if (!struct_exists(equipment_tag_mods, _tag)){
                 continue; 
             }
+
 
             var _tag_data = equipment_tag_mods[$ _tag];
 

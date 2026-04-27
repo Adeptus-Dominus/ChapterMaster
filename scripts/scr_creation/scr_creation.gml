@@ -280,7 +280,7 @@ function scr_creation(slide_num) {
                 var _dis_num = array_length(dis_num);
 
 
-                for (var i=0;i<array_length(max(_adv_num, _dis_num)); i++){
+                for (var i=0; i<max(_adv_num, _dis_num); i++){
                     if (i < _adv_num) {
                         var _adv = adv_num[i];
                         if (_adv > 0){

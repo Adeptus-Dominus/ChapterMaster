@@ -1278,7 +1278,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         //calculate chapter specific bonus
         if (allegiance == global.chapter_name) {
             //calculate player specific bonuses
-
             if (base_group == "astartes" && array_length(primary_weapon.tags)) {
                 var _chap_effects = obj_ini.chapter_data.calc_equipment_tag_mods(primary_weapon.tags, "attack");
                 range_multiplyer += _chap_effects.mult;
@@ -1286,6 +1285,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 explanation_string += _chap_effects.descriptions;
             }
         }
+
         if (!encumbered_ranged) {
             var total_gear_mod = 0;
             total_gear_mod += get_armour_data("ranged_mod");
