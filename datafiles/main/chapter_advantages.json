@@ -158,7 +158,7 @@
     "faction_disp_mods": [
       {
         "faction": 3,
-        "mult_mod": 1.5,
+        "mult": 1.5,
         "start_disp": 10
       }
     ]

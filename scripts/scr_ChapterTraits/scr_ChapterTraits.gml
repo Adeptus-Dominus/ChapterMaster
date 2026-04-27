@@ -74,6 +74,10 @@ function ChapterTrait(trait) constructor {
             }
         }
 
+        for (var i=0 ; i<array_length(effects);i++){
+            _str += effects[i] + "\n";
+        }
+
         return _str;
     }
 
@@ -197,6 +201,9 @@ function generate_advantages(){
 
 
 function setup_chapter_traits(){
+    Advantage.id_start = 1;
+    Disadvantage.id_start = 1;
+    
     obj_creation.all_advantages = [];
     var all_advantages = generate_advantages();
 
@@ -245,7 +252,6 @@ function setup_chapter_traits(){
 // a negative mod will never take a possitive disp gain below 0
 // please also take into account 
 function ChapterGameData (data = {}) constructor{
-    move_data_to_current_scope(data);
 
     faction_disp_mods = array_create(14, {
         "int_mod" : 0,
@@ -253,6 +259,8 @@ function ChapterGameData (data = {}) constructor{
     });
 
     equipment_tag_mods = {};
+
+    move_data_to_current_scope(data);
 
     static merge_mods = function(mod_1, mod_2){
         if (struct_exists(mod_2, "int_mod")){
@@ -269,7 +277,7 @@ function ChapterGameData (data = {}) constructor{
             } else {
                 mod_1.mult = mod_2.mult;
             }
-        }        
+        }      
     }
 
     static add_trait_data = function(trait){
