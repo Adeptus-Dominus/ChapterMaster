@@ -66,7 +66,7 @@ function string_gender_pronouns(gender) {
 }
 
 function string_plus_minus(value){
-    return value < 0 ? "-" : "+";
+    return value < 0 ? "" : "+";
 }
 
 /// @function string_plural

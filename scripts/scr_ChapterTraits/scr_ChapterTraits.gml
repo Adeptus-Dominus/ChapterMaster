@@ -22,21 +22,21 @@ function ChapterTrait(trait) constructor {
                 var _line = "";
 
                 if (struct_exists(_mod, "int_mod") && _mod.int_mod != 0){
-                    _line += $"{string_plus_minus(_mod.int_mod)}{_mod.int_mod}";
+                    _line += $"  Disposition Gains : {string_plus_minus(_mod.int_mod)}{_mod.int_mod}\n";
                 }
 
                 if (struct_exists(_mod, "mult") && _mod.mult != 1){
                     if (_line != "") _line += " ";
-                    _line += $"x{_mod.mult}";
+                    _line += $"  Disposition Multiplyers x{_mod.mult}\n";
                 }
 
                 if (struct_exists(_mod, "start_disp") && _mod.start_disp != 0){
                     if (_line != "") _line += " ";
-                    _line += $"start {string_plus_minus(_mod.start_disp)}{_mod.start_disp}";
+                    _line += $"  Disposition Start {string_plus_minus(_mod.start_disp)}{_mod.start_disp}\n";
                 }
 
                 if (_line != ""){
-                    _str += $"Faction {_fac_names[_mod.faction]}: {_line}\n";
+                    _str += $"Faction {_fac_names[_mod.faction]}:\n{_line}\n";
                 }
             }
         }
@@ -59,22 +59,29 @@ function ChapterTrait(trait) constructor {
                     var _line = "";
 
                     if (struct_exists(_char_data, "mult")){
-                        _line += $"x{_char_data.mult}";
+                        _line += $"X{_char_data.mult}";
                     }
 
                     if (struct_exists(_char_data, "int_mod")){
                         if (_line != "") _line += " ";
-                        _line += $"{string_plus_minus(_char_data.int_mod)}{_char_data.int_mod}";
+                        _line += $"  {string_plus_minus(_char_data.int_mod)}{_char_data.int_mod}";
                     }
 
                     if (_line != ""){
-                        _str += $"{_tag_name}:{_char} {_line}\n";
+                        _str += $"{_tag_name}:{_char}\n{_line}\n";
                     }
                 }
             }
         }
 
         return _str;
+    }
+
+    static main_tool_tip = function(){
+        return $"{name} ({points})";
+    }
+    static data_tool_tip = function(){
+        return $"{description} \nCategories: {print_meta()}\n\nEffects: {effects_string()}";
     }
 
     static alter_starting_dispositions = function(){

@@ -276,14 +276,18 @@ function scr_creation(slide_num) {
                     disposition[eSTART_FACTION.IMPERIUM] += (5 - strength) * 2;
                 }
 
-                for (var i=0;i<array_length(max(adv_num, dis_num)); i++){
-                    if (i < array_length(adv_num)) {
+                var _adv_num = array_length(adv_num);
+                var _dis_num = array_length(dis_num);
+
+
+                for (var i=0;i<array_length(max(_adv_num, _dis_num)); i++){
+                    if (i < _adv_num) {
                         var _adv = adv_num[i];
                         if (_adv > 0){
                             all_advantages[_adv].alter_starting_dispositions();
                         }
                     }
-                    if (i<array_length(dis_num)) {
+                    if (i<_dis_num) {
                         var _dis_adv = dis_num[i]
                         if (_dis_adv > 0){
                             all_advantages[_adv].alter_starting_dispositions();
