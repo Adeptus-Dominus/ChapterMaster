@@ -45,7 +45,7 @@ function relationship_hostility_matrix(faction) {
 function alter_disposition(faction, alter_value) {
     chap_data = obj_ini.chapter_data;
 
-    alter_value = chap_data.calc_final_disp_value(alter_value);
+    alter_value = chap_data.calc_final_disp_value(faction, alter_value);
 
     obj_controller.disposition[faction] = clamp(obj_controller.disposition[faction] + alter_value, -100, 100);
 }
