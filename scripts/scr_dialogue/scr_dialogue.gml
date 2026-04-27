@@ -102,7 +102,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             diplomacy = 10;
             diplo_text = $"So you have brought yourself before me {obj_ini.master_name}. This pleases me. You are not the first among the Astartes to come to me. Do not look so shocked. Many have gazed upon the decay and decrepitude of the Imperium with open eyes, and heard the empty slogans of the Corpse Emperor with fresh ears and come to the realization I had so many long millennia ago. There is only one truth in the universe, one path worthy of an Astartes to walk. The path of true power. The path of true insight into the nature of reality and what lies beyond. The path of Chaos. Only when free of the pointless bondage of the Imperium can we ascend to our rightful place in the universe.";
             add_diplomacy_option({option_text: "[Continue]", goto: "cs_meeting2"});
-            disposition[10] += 10;
+            alter_disposition(10, 10);
         }
         // First branch of choices
         if ((diplo_keyphrase == "cs_meeting2") || (diplo_keyphrase == "cs_meeting20")) {
@@ -119,7 +119,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
 
             if (diplo_keyphrase == "cs_meeting2") {
-                disposition[10] += 10;
+                alter_disposition(10, 10);
             }
 
             // Meeting2
@@ -232,13 +232,13 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         if (diplo_keyphrase == "cs_meeting30") {
             diplo_text = "Then you have awakened to the truth the Imperium so hypocritically denies, that there is only one real power in the universe, and it goes to those with the will to seize it.";
             add_diplomacy_option({option_text: "[Continue]", goto: "cs_meeting135"});
-            disposition[10] += 30;
+            alter_disposition(10, 30);
         }
         // Fucking inquisition
         if (diplo_keyphrase == "cs_meeting40") {
             diplo_text = "Yes...you do not fit the precious mold the Codex Astartes carves out for you, do you? And the Imperium destroys that which it cannot understand.";
             add_diplomacy_option({option_text: "[Continue]", goto: "cs_meeting135"});
-            disposition[10] += 30;
+            alter_disposition(10, 30);
         }
         // Nah dawg
         if (diplo_keyphrase == "cs_meeting45") {
@@ -261,13 +261,13 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         if (diplo_keyphrase == "cs_meeting47") {
             diplo_text = "You may yet be of use to me.  Very well, we will assist you. It will be no trouble at all to exterminate you, should you displease me at a future time.";
             add_diplomacy_option({option_text: "[Continue]", goto: "cs_meeting135"});
-            disposition[10] += 30;
+            alter_disposition(10, 30);
         }
         // mah numbers
         if (diplo_keyphrase == "cs_meeting50") {
             diplo_text = "Yes we have seen you struggle alone, scurrying from shadow to shadow like a hunted rat. I won’t lie to you though, I’ve seen the potential in you and your….brothers. Alright, we will assist you. It will be no trouble at all to exterminate you, should you displease me.";
             add_diplomacy_option({option_text: "[Continue]", goto: "cs_meeting135"});
-            disposition[10] += 30;
+            alter_disposition(10, 30);
         }
         // such numbers, wow
         if (diplo_keyphrase == "cs_meeting55") {
@@ -278,7 +278,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         // Actually here to kill you
         if (diplo_keyphrase == "cs_meeting60") {
             var chaos_leader = obj_controller.faction_leader[eFACTION.CHAOS];
-            disposition[10] += 10;
+            alter_disposition(10, 10);
             diplo_text = $"[[{chaos_leader} is silent for a moment, then a slow chuckle rises from deep within his ancient power armour. The chuckle erupts into hideous laughter that chills your blood with its otherworldly tenor.]]\nI thank you, I have not truly laughed in three hundred years. I shall take your skull as a memento of this day and your fine jest. But before I do, indulge my curiosity. Let us say you did kill me, /then/ what would you do? Claim the price on my head? Go crawling back on your belly to your Imperial masters like a whipped cur, dragging your kill behind you? Become master of this sector yourself now that you’ve bested your greatest foe? Or perhaps you’d offer up my soul to the Dark Gods, ignorantly fumbling about in the darkness for their favor? Tell me.";
 
             add_diplomacy_option({option_text: "The reward for one such as you will be great, and I /will/ claim it.", goto: "cs_meeting61"});
@@ -304,7 +304,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         }
         // stahp talking
         if (diplo_keyphrase == "cs_meeting67") {
-            disposition[10] += 10;
+            alter_disposition(10, 10);
             diplo_text = "And I thought we were becoming such fast friends, you and I. Very well, don’t bore me.";
             add_diplomacy_option({option_text: "[Battle Chaos forces]", goto: "cs_meeting_battle5"});
         }
@@ -793,7 +793,8 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if (diplo_keyphrase == "denounced") {
                 if (faction_gender[10] == 1) {
-                    disposition[10] -= 1;
+
+                    alter_disposition(10, -1);
 
                     var _diag_opts = [
                         "You are nothing.",
@@ -819,10 +820,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if ((diplo_keyphrase == "praised") && (faction_gender[10] == 1)) {
                 if ((faction_justmet == 0) && (disposition[10] < -75)) {
-                    disposition[diplomacy] += choose(0, 0, 1);
+                    alter_disposition(diplomacy, choose(0, 0, 1));
                 }
                 if (faction_justmet == 1) {
-                    disposition[diplomacy] += 2;
+                    alter_disposition(diplomacy, 2);
                     faction_justmet = 0;
                 }
                 rando = choose(1, 2, 3);
@@ -1194,7 +1195,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if (diplo_keyphrase == "denounced") {
                 if (faction_justmet == 1) {
-                    disposition[diplomacy] -= 5;
+                    alter_dispositions(diplomacy, -5);
                     faction_justmet = 0;
                 }
                 rando = choose(1, 2, 3);
@@ -1234,7 +1235,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if (diplo_keyphrase == "praised") {
                 if (faction_justmet == 1) {
-                    disposition[diplomacy] += 2;
+                    alter_disposition(eFACTION.IMPERIUM, 2);
                     faction_justmet = 0;
                 }
                 rando = choose(1, 2, 3);
@@ -1846,7 +1847,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 if ((rela == "neutral") && (annoyed[diplomacy] >= 6)) {
                     diplo_text += "You are testing my patience, astartes.";
                     force_goodbye = 1;
-                    disposition[diplomacy] -= 2;
+                    alter_disposition(diplomacy, -2);
                     turns_ignored[diplomacy] = max(turns_ignored[diplomacy], 1);
                     diplo_last = string(diplo_keyphrase);
                     diplo_char = 0;
@@ -1877,7 +1878,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     }
                 }
                 if (rela == "hostile") {
-                    disposition[diplomacy] -= 2;
+                    alter_disposition(diplomacy, -2);
                     force_goodbye = 1;
                     turns_ignored[diplomacy] = max(turns_ignored[diplomacy], 3);
                     if (rando == 1) {
@@ -1907,12 +1908,12 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if (diplo_keyphrase == "denounced") {
                 if (faction_justmet == 1) {
-                    disposition[diplomacy] -= 15;
+                    alter_disposition(diplomacy, -15);
                     faction_justmet = 0;
                 }
                 rando = choose(1, 2, 3);
                 if (rela == "friendly") {
-                    disposition[diplomacy] -= choose(0, 1);
+                    alter_disposition(diplomacy, choose(2,1));
                     if (rando == 1) {
                         diplo_text = "Words are wind and mean nothing between two servants of the Emperor's eternal glory.";
                     }
@@ -1924,7 +1925,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     }
                 }
                 if (rela == "neutral") {
-                    disposition[diplomacy] -= 2;
+                    alter_disposition(diplomacy, -2);
                     force_goodbye = 1;
                     if (rando == 1) {
                         diplo_text = "I cannot agree with what you have said, but perhaps you have your reasons. I hope they are good ones.";
@@ -1937,7 +1938,8 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     }
                 }
                 if (rela == "hostile") {
-                    disposition[diplomacy] -= 4;
+                    alter_disposition(diplomacy, -4);
+
                     force_goodbye = 1;
                     if (rando == 1) {
                         diplo_text = "You dare besmirch the honour of the Inquisition!? You have crossed a line this day!";
@@ -1952,7 +1954,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if (diplo_keyphrase == "praised") {
                 if (faction_justmet == 1) {
-                    disposition[diplomacy] += 2;
+                    alter_disposition(diplomacy, 2);
                     faction_justmet = 0;
                 }
                 rando = choose(1, 2, 3);
@@ -1979,7 +1981,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     }
                 }
                 if (rela == "hostile") {
-                    disposition[diplomacy] -= 1;
+                    alter_disposition(diplomacy, -1);
                     force_goodbye = 1;
                     if (rando == 1) {
                         diplo_text = "If you think kissing my boots will make me overlook your crimes you are sorely mistaken.";
@@ -2282,10 +2284,12 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 }
             }
             if (diplo_keyphrase == "loyalty_zero") {
-                disposition[2] -= 20;
-                disposition[3] -= 15;
-                disposition[4] -= 20;
-                disposition[5] -= 20;
+                alter_dispositions([
+                    [eFACTION.IMPERIUM, -20],
+                    [eFACTION.MECHANICUS, -15],
+                    [eFACTION.ECCLESIARCHY, -20],
+                    [eFACTION.INQUISITION, -20]
+                ]);
                 diplo_text = "Your arrogant, blatant disregard for proper Imperial conduct can no longer go unanswered, Astartes.  Time and time again you have ignored the Imperium's call to arms, refusing to strike out at the enemies of man when it was most needed, and callously ignored the Inquisition's wants.  It has become clear that you are not in line with the High Lords of Terra and His will.  This heresy must be cut from your Chapter like the festering blight it is.  You may either atone for your Chapter's crimes, in penitence, or see it ground to dust around you.";
                 // Speak your next words carefully, Chapter Master, for they may damn all the souls of your men to oblivion.
 
