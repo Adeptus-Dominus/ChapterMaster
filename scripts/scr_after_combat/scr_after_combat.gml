@@ -154,7 +154,7 @@ function check_for_plasma_bomb_and_tomb(unit) {
     var _necron_strength = _star.p_necrons[_planet];
     if (unit.gear() == "Plasma Bomb" && !string_count("mech_tomb2", obj_ncombat.battle_special)) {
         if (obj_ncombat.enemy == eFACTION.NECRONS && awake_tomb_world(_star.p_feature[_planet])) {
-            if (((_necron_strength - 2) < 3 && dropping) || (_necron_strength - 1) < 3) {
+            if (((_necron_strength - 2) < 3 && obj_ncombat.dropping) || (_necron_strength - 1) < 3) {
                 obj_ncombat.plasma_bomb += 1;
                 unit.update_gear("", false, false);
             }
