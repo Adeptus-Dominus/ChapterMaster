@@ -53,7 +53,7 @@ function event_end_turn_action() {
                 var _planet = _event.planet;
                 if (_event_star != "none") {
                     _event_star.dispo[_planet] = -10; // Resets
-                    var twix = $"Inquisition executes Chapter Serf in control of {pllanet_numera_name(planet, _event_star)} and installs a new Planetary Governor.";
+                    var twix = $"Inquisition executes Chapter Serf in control of {planet_numeral_name(_planet, _event_star)} and installs a new Planetary Governor.";
                     if (_event_star.p_owner[_planet] == eFACTION.PLAYER) {
                         _event_star.p_owner[_planet] = _event_star.p_first[_planet];
                     }
