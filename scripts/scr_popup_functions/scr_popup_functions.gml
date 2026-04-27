@@ -437,7 +437,7 @@ function calculate_equipment_needs() {
     }
     return floor(all_good);
 }
-
+//TODO ensure all popups have an appropriate image assigned for flavour
 /// @mixin
 function default_popup_image_index() {
     var _img = -1;
@@ -573,20 +573,27 @@ function default_popup_image_index() {
 
 /// @mixin
 function allow_governor_successor() {
-    var randa = roll_dice_chapter(1, 100, "high");
-    var randa2 = roll_dice(1, 100);
-    p_data.set_player_disposition(obj_controller.disposition[2] + choose(-1, -2, -3, -4, 0, 1, 2, 3, 4));
+
+    var _randa = roll_dice_chapter(1, 100, "high");
+    var _randa2 = roll_dice(1, 100);
+
+    var _old_governor = p_data.governor;
+
+    var _new_governor = p_data.new_governor();
+	 var _newdisp = 0;
 
     var _text_last = "";
-    if (randa <= 3) {
-        var _newdisp = min(p_data.player_disposition, choose(1, 2, 3, 4, 5, 6) * 3);
+    if (_randa <= 3) {
+        _newdisp = min(p_data.player_disposition, irandom_range(3, 18));
         p_data.set_player_disposition(_newdisp);
         _text_last = "Regrettably he has a dim view of your chapter";
     }
-    if (randa >= 95) {
-        _newdisp = max(p_data.player_disposition, 60 + choose(1, 2, 3, 4, 5, 6) * 3);
+    else if (_randa >= 95) {
+        _newdisp = max(p_data.player_disposition, irandom_range(63, 78));
         p_data.set_player_disposition(_newdisp);
         _text_last = "Fortunately you already have good relations with the new governor";
+    } else {
+        p_data.set_player_disposition(obj_controller.disposition[2] + irandom_range(-8,8));
     }
 
     scr_event_log("", $"Planetary Governor of {p_data.name()} assassinated.  The next in line takes over.");

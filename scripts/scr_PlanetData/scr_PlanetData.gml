@@ -112,6 +112,13 @@ function PlanetData(planet, system) constructor{
 
     refresh_data();
 
+    static new_governor = function(){
+
+        p_governor[planet] = new GovernorProfile();
+        governor = p_governor[planet];
+        return governor;
+    }
+
     static total_corruption = function(){
         return secret_corruption + corruption;
     }
@@ -121,7 +128,7 @@ function PlanetData(planet, system) constructor{
         player_forces = system.p_player[planet];
     }
 
-    function add_operatives(new_ops){
+    static add_operatives = function(new_ops){
         array_push(system.p_operatives[planet], new_ops);
         operatives = system.p_operatives[planet];
     }
@@ -304,7 +311,7 @@ function PlanetData(planet, system) constructor{
         //type 1 is install a sympathectic else it's a straight serf installation
         if (assaination_type == 1){
             var _discovery_rate = 10;
-            set_player_disposition(70 + floor(random_range(5, 15)) + 1);
+            set_player_disposition(70 + irandom_range(75, 90));
             var _text = $"Many of the successors for {name()} are removed or otherwise made indisposed.  Your chapter ensures that the new Planetary Governor is sympathetic to your plight and more than willing to heed your advice.  A powerful new ally may be in the making."; 
             scr_event_log("", $"Planetary Governor of {name()} assassinated.  A more suitable Governor is installed.");       
         } else {
@@ -696,7 +703,7 @@ function PlanetData(planet, system) constructor{
 
             if (_priests.number > 0){
                 if (_priests.number == _techmarines.number){
-                    text = "Without any technical staff wholly loyal to the chapter the Tech Priests Quickly set too Work sequestering any valuable resources for the Omnissiah.";
+                    text = "Without any technical staff wholly loyal to the chapter the Tech Priests Quickly set to Work sequestering any valuable resources for the Omnissiah.";
                     text += "By the time you have begun working in earnest your forces become aware that the Tech Priests have already catalogued any and all items of interest and begun transmitting their findings to the mechanicus.";
                     text += "\n\nThere is nothing that can easily be done";
                     scr_popup("Mars Control", text, "mechanicus");

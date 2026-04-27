@@ -41,11 +41,11 @@ function GovernorProfile() constructor{
     strength = 10;
     luck = 10;
     dexterity = 10;
-    wisdom = irandom_range(25, 50);
-    piety = irandom_range(25, 60);
-    charisma = irandom_range(25, 60);
+    wisdom = irandom_range(20, 50);
+    piety = irandom_range(20, 60);
+    charisma = irandom_range(20, 60);
     technology = irandom_range(10, 40);
-    intelligence = irandom_range(25, 50);
+    intelligence = irandom_range(20, 50);
     weapon_skill = 5;
     ballistic_skill = 5;
 

@@ -1,10 +1,9 @@
-function ChapterTrait(_id, _name, _description, _points_cost, _meta = []) constructor {
-    id = _id;
-    name = _name;
-    description = _description;
-    points = _points_cost;
+function ChapterTrait(trait) constructor {
+    effects = "";
+    meta = [];
+    move_data_to_current_scope(trait);
     disabled = false;
-    meta = _meta;
+
 
     static add_meta = function() {
         for (var i = 0; i < array_length(meta); i++) {
@@ -34,7 +33,11 @@ function ChapterTrait(_id, _name, _description, _points_cost, _meta = []) constr
     };
 }
 
-function Advantage(_id, _name, _description, _points_cost) : ChapterTrait(_id, _name, _description, _points_cost) constructor {
+function Advantage(trait) : ChapterTrait(trait) constructor {
+    static id_start = 1
+    LOGGER.info(id_start);
+    id = id_start;
+    id_start++;
     static add = function(slot) {
         obj_creation.adv[slot] = name;
         obj_creation.adv_num[slot] = id;
@@ -63,7 +66,11 @@ function Advantage(_id, _name, _description, _points_cost) : ChapterTrait(_id, _
     };
 }
 
-function Disadvantage(_id, _name, _description, _points_cost) : ChapterTrait(_id, _name, _description, _points_cost) constructor {
+function Disadvantage(trait) : ChapterTrait(trait) constructor {
+    static id_start = 1
+    LOGGER.info(id_start);
+    id = id_start;
+    id_start++;
     static add = function(slot) {
         obj_creation.dis[slot] = name;
         obj_creation.dis_num[slot] = id;

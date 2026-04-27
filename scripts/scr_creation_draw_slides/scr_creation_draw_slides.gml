@@ -629,6 +629,9 @@ function draw_chapter_trait_select() {
                     var cur_adv = obj_creation.all_advantages[adv_num[i]];
                     tooltip = $"{cur_adv.name} ({cur_adv.points} Points)";
                     tooltip2 = cur_adv.description;
+                    if (cur_adv.effects != ""){
+                        tooltip2 += "\n\n" + cur_adv.effects;
+                    }
                 }
                 if (advantage_click_allow && popup == "" && mouse_button_clicked()) {
                     if ((points < maxpoints) && (adv_num[i] == 0)) {
