@@ -506,58 +506,7 @@ try {
     if (marines >= 1050) {
         scr_loyalty("Non-Codex Size", "+");
     }
-
-    var last_inquisitor_inspection = 0;
-    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
-        last_inquisitor_inspection = last_world_inspection;
-    }
-    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
-        last_inquisitor_inspection = last_fleet_inspection;
-    }
-
-    var inspec = false;
-    if ((loyalty >= 85) && ((last_inquisitor_inspection + 59) < turn)) {
-        inspec = true;
-    }
-    if ((loyalty >= 70) && (loyalty < 85) && ((last_inquisitor_inspection + 47) < turn)) {
-        inspec = true;
-    }
-    if ((loyalty >= 50) && (loyalty < 70) && ((last_inquisitor_inspection + 35) < turn)) {
-        inspec = true;
-    }
-    if ((loyalty < 50) && ((last_inquisitor_inspection + 11 + choose(1, 2, 3, 4)) < turn)) {
-        inspec = true;
-    }
-
-    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
-        if ((instance_number(obj_p_fleet) == 1) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
-            // Might be crusading, right?
-            if ((obj_p_fleet.x < 0) || (obj_p_fleet.x > room_width) || (obj_p_fleet.y < 0) || (obj_p_fleet.y > room_height)) {
-                inspec = false;
-            }
-        }
-        if (instance_number(obj_p_fleet) == 0) {
-            inspec = false;
-        }
-    }
-    instance_activate_object(obj_p_fleet);
-
-    //setup inquisitor inspections
-    var inquisitor_fleet_count = 0;
-    with (obj_fleet) {
-        if (owner == eFACTION.INQUISITION) {
-            inquisitor_fleet_count++;
-        }
-    }
-
-    inspec = inspec && faction_status[eFACTION.INQUISITION] != "War" && inquisitor_fleet_count == 0;
-    if (inspec) {
-        new_inquisitor_inspection();
-    }
-
-    with (obj_temp6) {
-        instance_destroy();
-    }
+    check_for_next_inquisitor_inspection();
 
     for (var i = 1; i <= 10; i++) {
         if ((turns_ignored[i] == 0) && (annoyed[i] > 0)) {

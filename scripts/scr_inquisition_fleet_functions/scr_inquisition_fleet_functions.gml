@@ -8,7 +8,7 @@ function base_inquis_fleet() {
     inquisitor = 0;
     trade_goods = "Inqis";
     if (roll > 60) {
-        var inquis_choice = choose(2, 3, 4, 5);
+        var inquis_choice = irandom_range(2, 5);
         inquisitor = inquis_choice;
     }
 }
@@ -27,8 +27,7 @@ function radical_inquisitor_mission_ship_arrival() {
 
     var _radical_inquisitor = cargo_data.radical_inquisitor;
     if (!instance_exists(_intercept_fleet)) {
-        action_x = choose(room_width * -1, room_width * 2);
-        action_y = choose(room_height * -1, room_height * 2);
+        random_sector_exit_point();
         action_spd = 256;
         action = "";
         set_fleet_movement();
@@ -178,7 +177,7 @@ function new_inquisitor_inspection() {
                 set_fleet_movement();
             }
             var mess = $"Inquisitor {obj_controller.inquisitor[new_inquis_fleet.inquisitor]}";
-            mess += " wishes to inspect your chapter base at " + string(target_star.name);
+            mess += " wishes to inspect your chapter base at {target_star.name}";
             scr_alert("green", "inspect", mess, target_star.x, target_star.y);
             obj_controller.last_world_inspection = obj_controller.turn;
             // we sent an inspection, we are done

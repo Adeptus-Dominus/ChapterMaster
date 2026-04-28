@@ -253,6 +253,8 @@ function setup_chapter_traits(){
 // please also take into account 
 function ChapterGameData (data = {}) constructor{
 
+    chapter_suspicion = 0;
+
     faction_disp_mods = array_create(14, {
         "int_mod" : 0,
         "mult" : 1
@@ -320,6 +322,10 @@ function ChapterGameData (data = {}) constructor{
                     array_push(_current_tag_data[$ _char], _entry);
                 }
             }
+        }
+
+        if (struct_exists(trait, suspicion)){
+            chapter_suspicion = clamp(chapter_suspicion + trait.suspicion, -5, 5);
         }
 
     }

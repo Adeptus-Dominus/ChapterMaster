@@ -429,8 +429,7 @@ function mission_hunt_inquisitor_hear_out_radical_inquisitor() {
 
 function mission_hunt_inquisitor_take_artifact_bribe() {
     with (pop_data.inquisitor_ship) {
-        action_x = choose(room_width * -1, room_width * 2);
-        action_y = choose(room_height * -1, room_height * 2);
+        random_sector_exit_point();
         trade_goods = "|DELETE|";
         action_spd = 256;
         set_fleet_movement(false);
@@ -467,10 +466,9 @@ function mission_hunt_inquisitor_take_artifact_double_cross() {
 
 function mission_hunt_inquisitor_show_mercy() {
     with (pop_data.inquisitor_ship) {
-        action_x = choose(room_width * -1, room_width * 2);
-        action_y = choose(room_height * -1, room_height * 2);
+        random_sector_exit_point();
         trade_goods = "|DELETE|";
-        alarm[4] = 1;
+        set_fleet_movement();
         action_spd = 256;
         action = "";
     }
