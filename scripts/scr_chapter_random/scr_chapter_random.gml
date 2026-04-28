@@ -15,8 +15,6 @@ function scr_chapter_random(custom_or_random) {
     company_title = array_create(11, "");
     adv = array_create(9, "");
     dis = array_create(9, "");
-    adv_num = array_create(9, 0);
-    dis_num = array_create(9, 0);
 
     var ran1, ran2, phrase1, phrase2, main, secondary, lens, weapon, found_secret;
     phrase1 = "";

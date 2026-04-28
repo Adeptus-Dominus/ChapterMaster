@@ -587,7 +587,7 @@ try {
         // draw_text_transformed(444,505,"Select Speciality",0.6,0.6,0);
         draw_set_halign(fa_center);
 
-        var psy_intolerance = array_contains(dis, "Psyker Intolerant");
+        var psy_intolerance = scr_has_disadv("Psyker Intolerant");
         if ((chapter_master_specialty == 3) && ((race[100][17] == 0) || psy_intolerance)) {
             chapter_master_speciality = choose(1, 2);
         }

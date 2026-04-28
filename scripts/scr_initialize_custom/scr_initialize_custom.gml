@@ -726,30 +726,24 @@ function scr_initialize_custom() {
     occulobe = obj_creation.occulobe;
     mucranoid = obj_creation.mucranoid;
 
-    adv = obj_creation.adv;
-    dis = obj_creation.dis;
-
     chapter_data = new ChapterGameData();
 
-    var _ad_length = array_length(obj_creation.adv_num);
-    var _dis_length = array_length(obj_creation.dis_num);
-
-    LOGGER.info("Load Trait Data");
-
-    for (var i=0;i<max(_ad_length, _dis_length); i++){
-        if (i < _ad_length) {
-            var _adv = obj_creation.adv_num[i];
+    adv = [];
+    for (var i = 0;i<array_length(obj_creation.all_advantages);i++){
+        var _adv = obj_creation.all_advantages[i];
+        if (_adv.activated){
             LOGGER.info($"{_adv}");
-            if (_adv != 0){
-                chapter_data.add_trait_data(obj_creation.all_advantages[_adv]);
-            }
+            array_push(adv, _adv.name);
+            chapter_data.add_trait_data(_adv);
         }
-        if (i < _dis_length) {
-            var _dis_adv = obj_creation.dis_num[i];
-            LOGGER.info($"{_dis_adv}");
-            if (_dis_adv != 0){
-                chapter_data.add_trait_data(obj_creation.all_disadvantages[_dis_adv]);
-            }
+    }
+    dis = [];
+    for (var i = 0;i<array_length(obj_creation.all_disadvantages);i++){
+        var _disadv = obj_creation.all_disadvantages[i];
+        if (_disadv.activated){
+            LOGGER.info($"{_disadv}");
+            array_push(dis, _disadv.name);
+            chapter_data.add_trait_data(_disadv);
         }
     }
 
@@ -1418,7 +1412,9 @@ function scr_initialize_custom() {
     load_default_gear(eROLE.LIBRARIAN, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
     load_default_gear(eROLE.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.VETERANSERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
-
+    if (scr_has_disadv("Psyker Intolerant")) {
+        race[100][17] = 0;
+    }
     if (struct_exists(obj_creation, "custom_roles")) {
         var c_roles = obj_creation.custom_roles;
         var possible_custom_roles = [

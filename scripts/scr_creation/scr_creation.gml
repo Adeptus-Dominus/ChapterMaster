@@ -151,9 +151,6 @@ function scr_creation(slide_num) {
             change_slide = true;
             goto_slide = 3;
             race[100][17] = 1;
-            if (scr_has_disadv("Psyker Intolerant")) {
-                race[100][17] = 0;
-            }
         }
     }
 
@@ -162,9 +159,6 @@ function scr_creation(slide_num) {
         goto_slide = 3;
         race[100][eROLE.CHAPLAIN] = 1;
         race[100][eROLE.LIBRARIAN] = 1;
-        if (scr_has_disadv("Psyker Intolerant")) {
-            race[100][eROLE.LIBRARIAN] = 0;
-        }
         if (chapter_name == "Iron Hands" || chapter_name == "Space Wolves") {
             race[100][eROLE.CHAPLAIN] = 0;
         }
@@ -276,24 +270,19 @@ function scr_creation(slide_num) {
                     disposition[eSTART_FACTION.IMPERIUM] += (5 - strength) * 2;
                 }
 
-                var _adv_num = array_length(adv_num);
-                var _dis_num = array_length(dis_num);
-
-
-                for (var i=0; i<max(_adv_num, _dis_num); i++){
-                    if (i < _adv_num) {
-                        var _adv = adv_num[i];
-                        if (_adv > 0){
-                            all_advantages[_adv].alter_starting_dispositions();
-                        }
+                for (var i = 0;i<array_length(obj_creation.all_advantages);i++){
+                    var _adv = obj_creation.all_advantages[i];
+                    if (_adv.activated){
+                        _adv.alter_starting_dispositions();
                     }
-                    if (i<_dis_num) {
-                        var _dis_adv = dis_num[i]
-                        if (_dis_adv > 0){
-                            all_advantages[_adv].alter_starting_dispositions();
-                        }
+                }
+
+                for (var i = 0;i<array_length(obj_creation.all_disadvantages);i++){
+                    var _dis_adv = obj_creation.all_disadvantages[i];
+                    if (_dis_adv.activated){
+                        _dis_adv.alter_starting_dispositions();
                     }
-                }                
+                }               
             }
         }
     }
