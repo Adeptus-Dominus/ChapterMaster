@@ -767,13 +767,13 @@ if (obj_ini.omophagea) {
                     scr_loyalty("Inquisitor Killer", "+");
                 }
                 if (obj_controller.loyalty >= 85) {
-                    obj_controller.last_world_inspection -= 44;
+                    obj_controller.last_inquisitor_inspection -= 44;
                 }
                 if ((obj_controller.loyalty >= 70) && (obj_controller.loyalty < 85)) {
-                    obj_controller.last_world_inspection -= 32;
+                    obj_controller.last_inquisitor_inspection -= 32;
                 }
                 if ((obj_controller.loyalty >= 50) && (obj_controller.loyalty < 70)) {
-                    obj_controller.last_world_inspection -= 20;
+                    obj_controller.last_inquisitor_inspection -= 20;
                 }
                 if (obj_controller.loyalty < 50) {
                     scr_loyalty("Inquisitor Killer", "+");

@@ -468,8 +468,8 @@ function mission_hunt_inquisitor_show_mercy() {
     with (pop_data.inquisitor_ship) {
         random_sector_exit_point();
         trade_goods = "|DELETE|";
-        set_fleet_movement(false, 8);
         action_spd = 256;
+        set_fleet_movement(false, 8);
     }
 
     title = "Inquisition Mission Completed";
