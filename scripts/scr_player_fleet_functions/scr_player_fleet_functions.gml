@@ -18,6 +18,21 @@ function fleet_has_roles(fleet = "none", roles) {
     }
 }
 
+function fleet_engaged(fleet = undefined){
+    var _engaged = false;
+    if (fleet == undefined){
+        fleet = self;
+    }
+    var _fleet_action = fleet.action;
+    if (_fleet_action != "" && _fleet_action !="move"){
+        //don't inspect if engaged in non negotiable actions
+        if (array_contains(FLEET_MOVE_OPTIONS, _fleet_action)){
+            _engaged = true;
+        }
+    }
+
+    return _engaged;
+}
 function split_selected_into_new_fleet(start_fleet = "none") {
     var new_fleet;
     if (start_fleet == "none") {

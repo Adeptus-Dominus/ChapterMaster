@@ -23,13 +23,15 @@
   {
     "name": "Never Forgive",
     "description": "In the past traitors broke off from your chapter. They harbor incriminating secrets or heritical beliefs, and as thus, must be hunted down whenever possible.",
-    "points": 20
+    "points": 20,
+    "suspicion" : 1,
   },
   {
     "name": "Shitty Luck",
     "description": "This is actually really bad for your chapter. Trust me.",
     "points": 20,
-    "meta": ["Luck"]
+    "meta": ["Luck"],
+    "suspicion" : 1,
   },
   {
     "name": "Sieged",
@@ -60,7 +62,8 @@
         "start_disp": -15,
         "int_mod": -2
       }
-    ]
+    ],
+    "suspicion" : 4,
   },
   {
     "name": "Tech-Heresy",
@@ -77,7 +80,8 @@
         "mult": 0.5,
         "start_disp": -8
       }
-    ]
+    ],
+    "suspicion" : 1,
   },
   {
     "name": "Tolerant",
@@ -109,7 +113,8 @@
         "faction": 5,
         "start_disp": -5
       }
-    ]
+    ],
+    "suspicion" : 2,
   },
   {
     "name": "Warp Tainted",
@@ -132,7 +137,8 @@
         "faction": 5,
         "start_disp": -10
       }
-    ]
+    ],
+    "suspicion" : 2,
   },
   {
     "name": "Psyker Intolerant",
@@ -149,7 +155,8 @@
         "faction": 5,
         "start_disp": 5
       }
-    ]
+    ],
+    "suspicion" : -2,
   },
   {
     "name": "Obliterated",
@@ -173,7 +180,8 @@
     "name": "Serpents Delight",
     "description": "Sleeper cells infiltrated your chapter. When they rose up for the decapitation strike, they slew the 5 most experienced company's and many of the HQ staff before being defeated",
     "points": 50,
-    "meta": ["Status"]
+    "meta": ["Status"],
+    "suspicion" : 1,
   },
   {
     "name": "Weakened Apothecarion",
@@ -191,12 +199,14 @@
         "faction": 5,
         "int_mod": -2
       }
-    ]
+    ],
+    "suspicion" : 1,
   },
   {
     "name": "Barren Librarius",
     "description": "Your chapter has a smaller Librarius compared to other chapters due to having fewer potent psykers.",
     "points": 20,
-    "meta": ["Psyker Views", "Librarians"]
+    "meta": ["Psyker Views", "Librarians"],
+    "suspicion" : -1,
   }
 ]

@@ -648,8 +648,7 @@ turn = 1;
 last_event = 0;
 last_mission = 0;
 // ** Inquisition inspection **
-last_world_inspection = 0; // Duhuhu
-last_fleet_inspection = 0;
+last_inquisitor_inspection = 0; // Duhuhu
 
 // chaos_turn=100+((floor(random(10))+1)*choose(-1,1));
 // ** Sets when chaos will arrive **

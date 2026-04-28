@@ -19,8 +19,7 @@ function clear_inspections() {
 function inquis_use_inspection_pass() {
     if (inspection_passes > 0) {
         inspection_passes -= 1;
-        last_world_inspection = turn + 25;
-        last_fleet_inspection = turn + 25;
+        last_inquisitor_inspection = turn + 25;
         //obj_controller.liscensing=5;
         clear_inspections();
         diplo_text = "Very well i shall honour our previous agreements. (24 months leave of inspections)";
@@ -36,8 +35,7 @@ function inquis_demand_inspection_pass() {
         rull = floor(random(10)) + 1;
         if (rull > resistance) {
             _worked = true;
-            last_world_inspection = turn + 24;
-            last_fleet_inspection = turn + 24;
+            last_inquisitor_inspection = turn + 24;
             //obj_controller.liscensing=5;
             clear_inspections();
             diplo_text = "Very well Chapter Master I Your service to the imperium is well known i have no doubt that you would not ask such of me without good reasoon. I shall forgoe my normal duties just this onece. \n do not becomne complacent Chapter Master i may not always be so generous";
