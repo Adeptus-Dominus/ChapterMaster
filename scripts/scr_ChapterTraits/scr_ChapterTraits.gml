@@ -591,9 +591,6 @@ function draw_selected_chapter_traits(type){
     var _max_advantage_count = 8;
     var _advantages = 0
     for (var i = 0;i < array_length(_advarray); i++){
-        if (_advantages == _max_advantage_count){
-            break;
-        }
         var _adv = _advarray[i];
         if (_adv.activated){
             if (_advantages < _max_advantage_count){
