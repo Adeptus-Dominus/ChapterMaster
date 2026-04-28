@@ -331,7 +331,7 @@ function ChapterGameData (data = {}) constructor{
             }
         }
 
-        if (struct_exists(trait, suspicion)){
+        if (struct_exists(trait, "suspicion")){
             chapter_suspicion = clamp(chapter_suspicion + trait.suspicion, -5, 5);
         }
 
