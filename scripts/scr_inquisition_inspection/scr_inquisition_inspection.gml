@@ -14,9 +14,7 @@ function check_for_next_inquisitor_inspection(){
 
     // innspectionos take place between 1 and 10 years depending on relationship with inquisitor
     // chapters percieved suspiciousness and loyalty
-    if ((_last_inquisitor_inspection + lerp(120, 12, loyalty/100)) < turn){
-        _inspec = true;
-    }
+    _inspec = (_last_inquisitor_inspection + lerp(120, 12, _loyalty / 100)) < turn;
 
     if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
         var _player_fleets = instance_number(obj_p_fleet);
