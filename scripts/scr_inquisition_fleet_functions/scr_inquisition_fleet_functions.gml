@@ -179,7 +179,7 @@ function new_inquisitor_inspection() {
             var mess = $"Inquisitor {obj_controller.inquisitor[new_inquis_fleet.inquisitor]}";
             mess += " wishes to inspect your chapter base at {target_star.name}";
             scr_alert("green", "inspect", mess, target_star.x, target_star.y);
-            obj_controller.last_world_inspection = obj_controller.turn;
+            obj_controller.last_inquisitor_inspection = obj_controller.turn;
             // we sent an inspection, we are done
             return;
         }
@@ -206,7 +206,7 @@ function new_inquisitor_inspection() {
         mess += " wishes to inspect your fleet at " + string(obj.name);
         scr_alert("green", "inspect", mess, obj.x, obj.y);
 
-        obj_controller.last_fleet_inspection = obj_controller.turn;
+        obj_controller.last_inquisitor_inspection = obj_controller.turn;
 
         instance_activate_object(obj_star);
     }

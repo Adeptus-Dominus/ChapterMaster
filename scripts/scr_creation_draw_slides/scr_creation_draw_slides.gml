@@ -617,7 +617,7 @@ function draw_chapter_trait_select() {
         adv_txt.y2 = adv_txt.y1 + adv_txt.h;
         var max_advantage_count = 8;
         for (i = 1; i <= max_advantage_count; i++) {
-            if (adv_num[i] > array_length(obj_creation.all_advantages)){
+            if (adv_num[i] >= array_length(obj_creation.all_advantages)){
                 adv_num[i] = 0;
             }
             var draw_string = adv_num[i] == 0 ? "[+]" : "[-] " + adv[i];
@@ -668,6 +668,9 @@ function draw_chapter_trait_select() {
 
         var max_disadvantage_count = 8;
         for (var slot = 1; slot <= max_disadvantage_count; slot++) {
+            if (dis_num[i] >= array_length(obj_creation.all_disadvantages)){
+                dis_num[i] = 0;
+            }
             var draw_string = dis_num[slot] == 0 ? "[+]" : "[-] " + dis[slot];
             draw_text(dis_txt.x1, dis_txt.y1 + (slot * dis_txt.h), draw_string);
             if (scr_hit(dis_txt.x1, dis_txt.y1 + (slot * dis_txt.h), dis_txt.x2, dis_txt.y2 + (slot * dis_txt.h))) {

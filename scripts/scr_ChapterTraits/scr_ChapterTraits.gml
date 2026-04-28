@@ -2,8 +2,11 @@ function ChapterTrait(trait) constructor {
     effects = "";
     meta = [];
     faction_disp_mods = [];
-    move_data_to_current_scope(trait);
+    suspicion = 0;
+
     disabled = false;
+
+    move_data_to_current_scope(trait);
 
     static effects_string = function(){
 
@@ -78,6 +81,10 @@ function ChapterTrait(trait) constructor {
             _str += effects[i] + "\n";
         }
 
+        if (suspicion != 0){
+            _str += $"Suspicion: { string_plus_minus(suspicion) }\n";
+        }
+
         return _str;
     }
 
@@ -85,7 +92,7 @@ function ChapterTrait(trait) constructor {
         return $"{name} ({points})";
     }
     static data_tool_tip = function(){
-        return $"{description} \nCategories: {print_meta()}\n\nEffects: {effects_string()}";
+        return $"{description} \nCategories: {print_meta()}\n\nEffects:\n{effects_string()}";
     }
 
     static alter_starting_dispositions = function(){
