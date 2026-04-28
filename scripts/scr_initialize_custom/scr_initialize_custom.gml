@@ -1413,7 +1413,7 @@ function scr_initialize_custom() {
     load_default_gear(eROLE.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.VETERANSERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
     if (scr_has_disadv("Psyker Intolerant")) {
-        race[100][17] = 0;
+        race[defaults_slot][eROLE.LIBRARIAN] = 0;
     }
     if (struct_exists(obj_creation, "custom_roles")) {
         var c_roles = obj_creation.custom_roles;
