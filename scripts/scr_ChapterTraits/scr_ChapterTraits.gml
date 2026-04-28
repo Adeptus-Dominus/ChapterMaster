@@ -626,7 +626,7 @@ function draw_selected_chapter_traits(type){
             continue;
         }
         if (scr_hit(_array)){
-            if (points >= maxpoints) {
+            if (bool(type) && points >= maxpoints) {
                 tooltip = "Insufficient Points";
                 tooltip2 = "Add disadvantages or decrease Chapter Stats";
             }
@@ -635,7 +635,7 @@ function draw_selected_chapter_traits(type){
         }
 
         if (mouse_button_clicked()){
-            if (type){
+            if (bool(type)){
                 if (points < maxpoints) {
                     popup = "advantages";
 
