@@ -103,12 +103,7 @@ if ((change_slide == 35) || (change_slide == 36) || (chapter_name == "Doom Benef
         cooperation = 5;
         purity = 5;
         stability = 90;
-        for (var i = 0; i < 16; i++) {
-            adv[i] = "";
-            adv_num[i] = 0;
-            dis[i] = "";
-            dis_num[i] = 0;
-        }
+
         homeworld = "Temperate";
         homeworld_name = global.name_generator.GenerateFromSet("star", false);
         recruiting = "Death";

@@ -1,3 +1,21 @@
+enum eCHAPTER_TRAIT_TYPE{
+    DISADV,
+    ADV
+}
+
+function selected_chapter_trait(trait){
+    var _array = array_join(obj_creation.all_advantages,obj_creation.all_disadvantages);
+    for (var i=0;i<array_length(_array);i++){
+        if (_array[i].name == trait){
+            if (_array[i].activated){
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 function ChapterTrait(trait) constructor {
     effects = "";
     meta = [];
@@ -6,7 +24,56 @@ function ChapterTrait(trait) constructor {
 
     disabled = false;
 
+    activated = false;
+
+    character_spawn_increase = [];
+    character_spawn_decrease = [];
+
     move_data_to_current_scope(trait);
+
+    static evaluate_unit_trait = function(initial_rate, data, trait_name){
+
+        if (data[0] != name){
+            return;
+        }
+
+        var _edited_rate = data[1][0]/data[1][1];
+        if (_edited_rate > initial_rate){
+            array_push(character_spawn_increase, trait_name);
+        } else{
+            array_push(character_spawn_decrease, trait_name);
+        }
+
+    }
+    var _unit_traits = global.astartes_trait_dist;
+
+    for (var i=0;i<array_length(global.astartes_trait_dist);i++){
+        var _trait_data = _unit_traits[i];
+        var _trait_id = _trait_data[0];
+
+        if (!struct_exists(global.trait_list, _trait_id)){
+            continue;
+        }
+
+        var _display_name =  global.trait_list[$ _trait_id].display_name;
+
+        if (array_length(_trait_data) < 3) {
+            continue;
+        }
+        var _trait_spawn_mods = _trait_data[2];
+        if (!is_struct(_trait_spawn_mods)) {
+            continue;
+        }
+
+        var _initial_rate = _trait_data[1][0]/_trait_data[1][1]
+
+        if (struct_exists(_trait_spawn_mods, "disadvantage")) {
+            evaluate_unit_trait(_initial_rate, _trait_spawn_mods.disadvantage, _display_name)
+        }
+        if (struct_exists(_trait_spawn_mods, "advantage")) {
+            evaluate_unit_trait(_initial_rate, _trait_spawn_mods.advantage, _display_name)
+        }
+    }
 
     static effects_string = function(){
 
@@ -85,6 +152,13 @@ function ChapterTrait(trait) constructor {
             _str += $"Suspicion: { string_plus_minus(suspicion) }{suspicion}\n";
         }
 
+        if (array_length(character_spawn_increase)){
+            _str += $"Increases Character trait spawns : {character_spawn_increase}\n"
+        }
+
+        if (array_length(character_spawn_decrease)){
+            _str += $"Decrease Character trait spawns : {character_spawn_decrease}\n"
+        }
         return _str;
     }
 
@@ -138,17 +212,15 @@ function Advantage(trait) : ChapterTrait(trait) constructor {
     LOGGER.info(id_start);
     id = id_start;
     id_start++;
-    static add = function(slot) {
-        obj_creation.adv[slot] = name;
-        obj_creation.adv_num[slot] = id;
+    static add = function() {
         obj_creation.points += points;
+        activated = true;
         add_meta();
     };
 
-    static remove = function(slot) {
-        obj_creation.adv[slot] = "";
+    static remove = function() {
         obj_creation.points -= points;
-        obj_creation.adv_num[slot] = 0;
+        activated = false;
         remove_meta();
     };
 
@@ -171,17 +243,15 @@ function Disadvantage(trait) : ChapterTrait(trait) constructor {
     LOGGER.info(id_start);
     id = id_start;
     id_start++;
-    static add = function(slot) {
-        obj_creation.dis[slot] = name;
-        obj_creation.dis_num[slot] = id;
+    static add = function() {
         obj_creation.points -= points;
+        activated = true;
         add_meta();
     };
 
-    static remove = function(slot) {
-        obj_creation.dis[slot] = "";
+    static remove = function() {
         obj_creation.points += points;
-        obj_creation.dis_num[slot] = 0;
+        activated = false;
         remove_meta();
     };
 
@@ -402,4 +472,180 @@ function ChapterGameData (data = {}) constructor{
 
         return _final_result;
     }
+}
+
+function draw_chapter_trait_list(type){
+
+    add_draw_return_values();
+
+
+    if (type){
+        var _list = obj_creation.all_advantages;
+    } else {
+        var _list = obj_creation.all_disadvantages;
+    }
+
+    var _title = type ? "Advantages" : "Disadvantage";
+	
+    draw_set_font(fnt_40k_30b);
+    draw_set_halign(fa_center);
+    draw_text_transformed(800, 211, $"Select a {_title}", 0.6, 0.6, 0);
+    draw_set_font(fnt_40k_14b);
+    draw_set_halign(fa_left);
+    for (var slot = 0; slot < array_length(_list); slot++) {
+        var _trait = _list[slot];
+        var column = {
+            x1: 436,
+            y1: 250,
+            w: 100,
+            h: 20,
+        };
+        column.x2 = column.x1 + column.w;
+        column.y2 = column.y1 + column.h;
+        var disable = 0;
+        if (_trait.name == "") {
+            continue;
+        }
+        var _trait_name = _trait.name;
+        //columns of 14, shift the left boarder across and leave a gap at the top on cols 2 & 3
+        if (slot >= 15 && slot < 29) {
+            column.x1 = 670;
+            column.x2 = column.x1 + column.w;
+        }
+        if (slot >= 29 && slot < 42) {
+            column.x1 = 904;
+            column.x2 = column.x1 + column.w;
+        }
+        draw_set_color(CM_GREEN_COLOR);
+
+        disable = _trait.disable() || _trait.activated;
+
+        if (!disable) {
+            disable = _trait_name == "Blood Debt" && fleet_type == 3;
+        }
+
+        draw_set_alpha(disable ? 0.5 : 1);
+
+        var gap = ((slot - 1) % 14) * column.h;
+
+        draw_text(column.x1, column.y1 + gap, _trait_name);
+
+        var dis_width = string_width(_trait_name);
+
+        var coords = [
+            column.x1,
+            column.y1 + gap,
+            column.x1 + dis_width,
+            column.y1 + column.h + gap
+        ];
+
+        //Tooltip
+        if (scr_hit(coords)) {
+            tooltip = _trait.main_tool_tip();
+            tooltip2 = _trait.data_tool_tip();                 
+            draw_set_color(c_white);
+            draw_set_alpha(0.2);
+            draw_text(column.x1, column.y1 + gap, _trait_name);
+
+            //Click on disadvantage
+            if (!disable &&  mouse_button_clicked()) {
+                popup = "";
+                _trait.add();
+            }
+        }
+    }
+    pop_draw_return_values();
+}
+
+
+function draw_selected_chapter_traits(type){
+
+    //advatages positive disssadvatages negative type
+    var _title = type ? "Advantages" : "Disadvantages";
+
+    add_draw_return_values();
+
+    if (bool(type)){
+        var _title_x = 436;
+        var _advarray = obj_creation.all_advantages;
+    } else {
+        var _title_x = 810;
+        var _advarray = obj_creation.all_disadvantages;       
+    }
+
+    var _adv_txt = {
+        x1: _title_x,
+        y1: 590,
+        w: 204,
+        h: 20,
+    }; 
+
+    var _advantage_click_allow = custom == eCHAPTER_TYPE.CUSTOM;
+    draw_set_halign(fa_left);
+    draw_set_font(fnt_40k_30b);
+    draw_text_transformed(_title_x, 564, $"Chapter {_title}", 0.5, 0.5, 0);
+    draw_set_font(fnt_40k_14);
+
+    _adv_txt.x2 = _adv_txt.x1 + _adv_txt.w;
+    _adv_txt.y2 = _adv_txt.y1 + _adv_txt.h;
+    var _max_advantage_count = 8;
+    var _advantages = 0
+    for (var i = 0;i < array_length(_advarray); i++){
+        var _adv = _advarray[i];
+        if (_adv.activated){
+            if (_advantages < _max_advantage_count){
+                var _array = draw_unit_buttons([_adv_txt.x1, _adv_txt.y1+ (_advantages * _adv_txt.h)],$"[-] {_adv.name}" ,[0.75, 0.75], CM_GREEN_COLOR);
+                _advantages++;
+            } else {
+                _adv.remove();
+                continue;
+            }
+        } else {
+            continue;
+        }
+        if (!scr_hit(_array)) {
+            continue;
+        }
+
+        tooltip = $"{_adv.name} ({_adv.points} Points)";
+        tooltip2 = _adv.description;
+
+        if (!_advantage_click_allow || popup != ""){
+            continue;
+        }
+        if (mouse_button_clicked()){
+            _adv.remove();
+        }
+
+    }
+
+    for (var i=_advantages ; i<_max_advantage_count;i++){
+        var _array = draw_unit_buttons([_adv_txt.x1, _adv_txt.y1+ (i * _adv_txt.h)],"[+]" ,[0.75, 0.75], CM_GREEN_COLOR);
+
+        if (!_advantage_click_allow || popup != ""){
+            continue;
+        }
+        if (scr_hit(_array)){
+            if (bool(type) && points >= maxpoints) {
+                tooltip = "Insufficient Points";
+                tooltip2 = "Add disadvantages or decrease Chapter Stats";
+            }
+        } else {
+            continue;
+        }
+
+        if (mouse_button_clicked()){
+            if (bool(type)){
+                if (points < maxpoints) {
+                    popup = "advantages";
+
+                    temp = 1;
+                }
+            } else {
+                popup = "disadvantages";
+            }
+        }
+    }
+
+    pop_draw_return_values();
 }
