@@ -598,10 +598,11 @@ function find_favoured_training_traits(training_enum) {
         }
         var _trial_spawn_mods = _trait_spawn_mods.recruit_trial;
         for (var s = 0; s < array_length(_trial_spawn_mods); s++) {
-            if (_trial_spawn_mods[s][0] == training_enum) {
-                var _trait_spawn_chance = _trial_spawn_mods[s][1];
+            var _spawn_mod = _trial_spawn_mods[s];
+            if (_spawn_mod[0] == training_enum) {
+                var _trait_spawn_chance = _spawn_mod[1];
                 var _spawn_percent = (_trait_spawn_chance / _trait_data[1][0]) * -1;
-                if (_trial_spawn_mods[s][1]) {
+                if (bool(_trait_spawn_chance)) {
                     array_push(disfavoured_traits, _trait_id);
                 } else {
                     array_push(favoured_traits, _trait_id);

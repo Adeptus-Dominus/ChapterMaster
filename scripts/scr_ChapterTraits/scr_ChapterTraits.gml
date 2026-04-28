@@ -565,7 +565,7 @@ function draw_selected_chapter_traits(type){
 
     add_draw_return_values();
 
-    if (type){
+    if (bool(type)){
         var _title_x = 436;
         var _advarray = obj_creation.all_advantages;
     } else {

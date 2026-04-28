@@ -504,7 +504,7 @@ function scr_chapter_new(chapter_identifier) {
                 _adv.add();
                 _open_adv++;
             } else if (_adv.activated) {
-                _adv.remove();
+                _adv.activated = false;
             }
         }
 
@@ -515,7 +515,7 @@ function scr_chapter_new(chapter_identifier) {
                 _disadv.add();
                 _open_disadv++;
             } else if (_disadv.activated) {
-                _disadv.remove();
+                _disadv.activated = false;
             }
         }
     }
