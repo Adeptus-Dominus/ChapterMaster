@@ -82,7 +82,7 @@ function ChapterTrait(trait) constructor {
         }
 
         if (suspicion != 0){
-            _str += $"Suspicion: { string_plus_minus(suspicion) }\n";
+            _str += $"Suspicion: { string_plus_minus(suspicion) }{suspicion}\n";
         }
 
         return _str;
