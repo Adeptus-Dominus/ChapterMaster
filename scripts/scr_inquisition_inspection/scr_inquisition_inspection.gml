@@ -1,6 +1,6 @@
 function check_for_next_inquisitor_inspection(){
     var _last_inquisitor_inspection = last_inquisitor_inspection;
-    var _inspec = true;
+    var _inspec = false;
 
     var _suspicion = obj_ini.chapter_data.chapter_suspicion;
 
@@ -20,7 +20,7 @@ function check_for_next_inquisitor_inspection(){
 
     if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
         var _player_fleets = instance_number(obj_p_fleet);
-        if ((_player_fleets == 1) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
+        if (_player_fleets == 1) {
             //can't inspect if fleet not in room 
             //can't innspect if on other non negotiable action e.g crusading
             _inspec = in_room(obj_p_fleet) && !fleet_engaged(obj_p_fleet);

@@ -177,7 +177,7 @@ function new_inquisitor_inspection() {
                 set_fleet_movement();
             }
             var mess = $"Inquisitor {obj_controller.inquisitor[new_inquis_fleet.inquisitor]}";
-            mess += " wishes to inspect your chapter base at {target_star.name}";
+            mess += $" wishes to inspect your chapter base at {target_star.name}";
             scr_alert("green", "inspect", mess, target_star.x, target_star.y);
             obj_controller.last_inquisitor_inspection = obj_controller.turn;
             // we sent an inspection, we are done
