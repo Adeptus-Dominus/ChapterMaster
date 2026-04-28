@@ -6,7 +6,54 @@ function ChapterTrait(trait) constructor {
 
     disabled = false;
 
+    character_spawn_increase = [];
+    character_spawn_decrease = [];
+
     move_data_to_current_scope(trait);
+
+    static evaluate_unit_trait = function(initial_rate, data, trait_name){
+
+        if (data[0] != name){
+            return;
+        }
+
+        var _edited_rate = data[1][0]/data[1][1];
+        if (_edited_rate > initial_rate){
+            array_push(character_spawn_increase, trait_name);
+        } else{
+            array_push(character_spawn_decrease, trait_name);
+        }
+
+    }
+    var _unit_traits = global.astartes_trait_dist;
+
+    for (var i=0;i<array_length(global.astartes_trait_dist);i++){
+        var _trait_data = _unit_traits[i];
+        var _trait_id = _trait_data[0];
+
+        if (!struct_exists(global.trait_list, _trait_id)){
+            continue;
+        }
+
+        var _display_name =  global.trait_list[$ _trait_id].display_name;
+
+        if (array_length(_trait_data) < 3) {
+            continue;
+        }
+        var _trait_spawn_mods = _trait_data[2];
+        if (!is_struct(_trait_spawn_mods)) {
+            continue;
+        }
+
+        var _initial_rate = _trait_data[1][0]/_trait_data[1][1]
+
+        if (struct_exists(_trait_spawn_mods, "disadvantage")) {
+            evaluate_unit_trait(_initial_rate, _trait_spawn_mods.disadvantage, _display_name)
+        }
+        if (struct_exists(_trait_spawn_mods, "advantage")) {
+            evaluate_unit_trait(_initial_rate, _trait_spawn_mods.advantage, _display_name)
+        }
+    }
 
     static effects_string = function(){
 
@@ -85,6 +132,13 @@ function ChapterTrait(trait) constructor {
             _str += $"Suspicion: { string_plus_minus(suspicion) }{suspicion}\n";
         }
 
+        if (array_length(character_spawn_increase)){
+            _str += $"Increases Character trait spawns : {character_spawn_increase}\n"
+        }
+
+        if (array_length(character_spawn_decrease)){
+            _str += $"Decrease Character trait spawns : {character_spawn_decrease}\n"
+        }
         return _str;
     }
 

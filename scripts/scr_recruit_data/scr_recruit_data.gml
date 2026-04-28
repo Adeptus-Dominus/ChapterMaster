@@ -575,7 +575,7 @@ function find_favoured_training_traits(training_enum) {
     var _trait_data;
     var disfavoured_traits = [];
     var favoured_traits = [];
-    var trait_id = "";
+    var _trait_id = "";
     var stat_diffs = {};
     var _stat_names = UNIT_STAT_LIST;
     for (var i = 0; i < array_length(_stat_names); i++) {
@@ -584,38 +584,42 @@ function find_favoured_training_traits(training_enum) {
 
     for (var i = 0; i < array_length(_traits); i++) {
         _trait_data = _traits[i];
-        trait_id = _trait_data[0];
-        if (array_length(_trait_data) >= 3) {
-            var _trait_spawn_mods = _trait_data[2];
-            if (is_struct(_trait_spawn_mods)) {
-                if (struct_exists(_trait_spawn_mods, "recruit_trial")) {
-                    var _trial_spawn_mods = _trait_spawn_mods.recruit_trial;
-                    for (var s = 0; s < array_length(_trial_spawn_mods); s++) {
-                        if (_trial_spawn_mods[s][0] == training_enum) {
-                            var _trait_spawn_chance = _trial_spawn_mods[s][1];
-                            var _spawn_percent = (_trait_spawn_chance / _trait_data[1][0]) * -1;
-                            if (_trial_spawn_mods[s][1]) {
-                                array_push(disfavoured_traits, trait_id);
-                            } else {
-                                array_push(favoured_traits, trait_id);
+        _trait_id = _trait_data[0];
+        if (array_length(_trait_data) < 3) {
+            continue;
+        }
+        var _trait_spawn_mods = _trait_data[2];
+        if (!is_struct(_trait_spawn_mods)) {
+            continue;
+        }
+
+        if (!struct_exists(_trait_spawn_mods, "recruit_trial")) {
+            continue;
+        }
+        var _trial_spawn_mods = _trait_spawn_mods.recruit_trial;
+        for (var s = 0; s < array_length(_trial_spawn_mods); s++) {
+            if (_trial_spawn_mods[s][0] == training_enum) {
+                var _trait_spawn_chance = _trial_spawn_mods[s][1];
+                var _spawn_percent = (_trait_spawn_chance / _trait_data[1][0]) * -1;
+                if (_trial_spawn_mods[s][1]) {
+                    array_push(disfavoured_traits, _trait_id);
+                } else {
+                    array_push(favoured_traits, _trait_id);
+                }
+                if (_spawn_percent != 0) {
+                    var _trait_stats = global.trait_list[$ _trait_id];
+                    for (var stat_i = 0; stat_i < array_length(_stat_names); stat_i++) {
+                        var stat = _stat_names[stat_i];
+                        if (struct_exists(_trait_stats, stat)) {
+                            var _stat_value = _trait_stats[$ stat];
+                            if (is_array(_stat_value)) {
+                                _stat_value = _stat_value[0];
                             }
-                            if (_spawn_percent != 0) {
-                                var _trait_stats = global.trait_list[$ trait_id];
-                                for (var stat_i = 0; stat_i < array_length(_stat_names); stat_i++) {
-                                    var stat = _stat_names[stat_i];
-                                    if (struct_exists(_trait_stats, stat)) {
-                                        var _stat_value = _trait_stats[$ stat];
-                                        if (is_array(_stat_value)) {
-                                            _stat_value = _stat_value[0];
-                                        }
-                                        stat_diffs[$ stat] += _stat_value * _spawn_percent;
-                                    }
-                                }
-                            }
-                            break;
+                            stat_diffs[$ stat] += _stat_value * _spawn_percent;
                         }
                     }
                 }
+                break;
             }
         }
     }
