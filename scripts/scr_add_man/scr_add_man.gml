@@ -128,7 +128,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         with (obj_ini) {
             scr_company_order(target_company);
         }
-        _unit.update_health(10000);
+        _unit.update_health(_unit.max_health());
         return _unit;
     }
 }
