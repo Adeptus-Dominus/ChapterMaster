@@ -1,11 +1,11 @@
 {
   "$GMSprite":"v2",
-  "%Name":"spr_weapon_storm_tall",
+  "%Name":"spr_weapon_storm_primary_decoration",
   "bboxMode":0,
-  "bbox_bottom":221,
-  "bbox_left":0,
-  "bbox_right":186,
-  "bbox_top":60,
+  "bbox_bottom":210,
+  "bbox_left":5,
+  "bbox_right":93,
+  "bbox_top":62,
   "collisionKind":1,
   "collisionTolerance":0,
   "DynamicTexturePage":false,
@@ -13,7 +13,7 @@
   "For3D":false,
   "frames":[
     {"$GMSpriteFrame":"v1","%Name":"f6262674-c261-4da7-aa0e-506e3196aa81","name":"f6262674-c261-4da7-aa0e-506e3196aa81","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"v1","%Name":"c0e369b0-ce8e-42eb-8a69-e7058b47bcff","name":"c0e369b0-ce8e-42eb-8a69-e7058b47bcff","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"5b5c1623-f3d9-454f-b7dd-b5829627bcb9","name":"5b5c1623-f3d9-454f-b7dd-b5829627bcb9","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -22,7 +22,7 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"de5767ae-6d22-475e-9c6e-ff70653933ba","blendMode":0,"displayName":"default","isLocked":false,"name":"de5767ae-6d22-475e-9c6e-ff70653933ba","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_weapon_storm_tall",
+  "name":"spr_weapon_storm_primary_decoration",
   "nineSlice":null,
   "origin":9,
   "parent":{
@@ -34,7 +34,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"spr_weapon_storm_tall",
+    "%Name":"spr_weapon_storm_primary_decoration",
     "autoRecord":true,
     "backdropHeight":1080,
     "backdropImageOpacity":0.5,
@@ -58,7 +58,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_weapon_storm_tall",
+    "name":"spr_weapon_storm_primary_decoration",
     "playback":1,
     "playbackSpeed":1.0,
     "playbackSpeedType":1,
@@ -71,8 +71,12 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"f6262674-c261-4da7-aa0e-506e3196aa81","path":"sprites/spr_weapon_storm_tall/spr_weapon_storm_tall.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"2995137d-6005-4690-8d87-3db7ccdd4a8f","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"c0e369b0-ce8e-42eb-8a69-e7058b47bcff","path":"sprites/spr_weapon_storm_tall/spr_weapon_storm_tall.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"d37d0b5a-f4ff-4e58-a47e-444660a0acf0","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f6262674-c261-4da7-aa0e-506e3196aa81","path":"sprites/spr_weapon_storm_primary_decoration/spr_weapon_storm_primary_decoration.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"2995137d-6005-4690-8d87-3db7ccdd4a8f","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"5b5c1623-f3d9-454f-b7dd-b5829627bcb9","path":"sprites/spr_weapon_storm_primary_decoration/spr_weapon_storm_primary_decoration.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"2674ee0b-05d2-4bcf-a475-1eeaa96bfcec","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

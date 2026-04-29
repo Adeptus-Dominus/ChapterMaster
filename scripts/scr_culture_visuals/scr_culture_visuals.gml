@@ -2259,7 +2259,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2272,7 +2272,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2285,7 +2285,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "ranged_twohand",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
             body_types: [
                 0,
@@ -2326,7 +2326,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2339,7 +2339,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2353,7 +2353,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2366,7 +2366,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "ranged_twohand",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
             body_types: [
                 0,
@@ -2383,7 +2383,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2397,7 +2397,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2410,7 +2410,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2423,7 +2423,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "ranged_twohand",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
             body_types: [
                 0,
@@ -2441,7 +2441,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "ranged_twohand",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
             body_types: [
                 0,
@@ -2458,7 +2458,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2472,7 +2472,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2487,7 +2487,7 @@ global.weapon_visual_data = {
             weapon_data: {
                 display_type: "melee_onehand",
                 hand_type: 2,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2501,7 +2501,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "ranged_twohand",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
             body_types: [
                 0,
@@ -2519,7 +2519,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "ranged_twohand",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
             body_types: [
                 0,
@@ -2550,7 +2550,7 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_assca,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             }
         ],
     },
@@ -2596,7 +2596,7 @@ global.weapon_visual_data = {
                 sprite: spr_dread_lascannon,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             }
         ],
     },
@@ -2607,7 +2607,7 @@ global.weapon_visual_data = {
                 display_type: "dreadnought",
             },
             armours: ["Dreadnought"],
-            new_weapon_draw: true,
+            single_left_right_profile: true,
         },
         variants: [
             {
@@ -2702,7 +2702,7 @@ global.weapon_visual_data = {
                 sprite: spr_dread_plasma_cannon,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             }
         ],
     },
@@ -2775,7 +2775,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2788,7 +2788,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2801,7 +2801,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2814,7 +2814,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2827,7 +2827,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2840,7 +2840,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2853,7 +2853,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2866,7 +2866,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2879,7 +2879,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2892,7 +2892,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2905,7 +2905,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2918,7 +2918,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2931,7 +2931,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2944,7 +2944,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2957,7 +2957,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2970,7 +2970,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2983,7 +2983,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -2994,7 +2994,7 @@ global.weapon_visual_data = {
                 sprite: spr_dread_missile,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             }
         ],
     },
@@ -3023,7 +3023,7 @@ global.weapon_visual_data = {
                 sprite: spr_dread_plasma_cannon,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             }
         ],
     },
@@ -3128,7 +3128,7 @@ global.weapon_visual_data = {
             weapon_data: {
                 display_type: "melee_onehand",
                 hand_type: 2,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3197,7 +3197,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "melee_twohand",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3210,7 +3210,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "melee_twohand",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3221,7 +3221,7 @@ global.weapon_visual_data = {
                 sprite: spr_dread_autocannon,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             }
         ],
     },
@@ -3233,14 +3233,28 @@ global.weapon_visual_data = {
         },
         variants: [
             {
-                cultures: ["Knightly"],
                 sprite: spr_weapon_storm,
+                single_left_right_profile: true,
+                 subcomponents: [
+                    [
+                        spr_blank,
+                        spr_weapon_storm_boss
+                    ],
+                 ]
             },
             {
-                sprite: spr_weapon_storm_tall,
-            },
-            {
-                sprite: spr_weapon_storm_tall_2,
+                sprite: spr_weapon_storm_complex,
+                single_left_right_profile: true,
+                subcomponents: [
+                    [
+                        spr_blank,
+                        spr_weapon_storm_primary_decoration
+                    ],
+                    [
+                        spr_blank,
+                        spr_weapon_storm_boss
+                    ],
+                ],
             },
             {
                 sprite: spr_weapon_storm2,
@@ -3305,7 +3319,7 @@ global.weapon_visual_data = {
             weapon_data: {
                 display_type: "melee_onehand",
                 hand_type: 2,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3319,7 +3333,7 @@ global.weapon_visual_data = {
             weapon_data: {
                 display_type: "melee_onehand",
                 hand_type: 2,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3333,7 +3347,7 @@ global.weapon_visual_data = {
             weapon_data: {
                 display_type: "melee_onehand",
                 hand_type: 2,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3369,7 +3383,7 @@ global.weapon_visual_data = {
             weapon_data: {
                 display_type: "melee_onehand",
                 hand_type: 0,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3396,7 +3410,7 @@ global.weapon_visual_data = {
             weapon_data: {
                 display_type: "melee_onehand",
                 hand_type: 2,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3424,7 +3438,7 @@ global.weapon_visual_data = {
                 display_type: "melee_onehand",
                 hand_type: 3,
                 arm_type: 3,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3439,7 +3453,7 @@ global.weapon_visual_data = {
                 display_type: "melee_onehand",
                 hand_type: 3,
                 arm_type: 3,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3454,7 +3468,7 @@ global.weapon_visual_data = {
                 display_type: "melee_onehand",
                 hand_type: 3,
                 arm_type: 3,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3484,7 +3498,7 @@ global.weapon_visual_data = {
                 display_type: "melee_onehand",
                 hand_type: 3,
                 arm_type: 3,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3498,7 +3512,7 @@ global.weapon_visual_data = {
             weapon_data: {
                 display_type: "melee_onehand",
                 hand_type: 2,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3512,7 +3526,7 @@ global.weapon_visual_data = {
             weapon_data: {
                 display_type: "melee_onehand",
                 hand_type: 2,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3527,7 +3541,7 @@ global.weapon_visual_data = {
                 display_type: "melee_onehand",
                 hand_type: 3,
                 arm_type: 3,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3555,7 +3569,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3568,7 +3582,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "normal_ranged",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3583,7 +3597,7 @@ global.weapon_visual_data = {
                 display_type: "melee_onehand",
                 hand_type: 3,
                 arm_type: 3,
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [
@@ -3596,7 +3610,7 @@ global.weapon_visual_data = {
         base: {
             weapon_data: {
                 display_type: "melee_twohand",
-                new_weapon_draw: true,
+                single_left_right_profile: true,
             },
         },
         variants: [

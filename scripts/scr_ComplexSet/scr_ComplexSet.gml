@@ -909,7 +909,7 @@ function ComplexSet(_unit) constructor {
 
         // // Draw weapons
 
-        if (!weapon_right.new_weapon_draw) {
+        if (!weapon_right.single_left_right_profile) {
             if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
                 if ((weapon_right.ui_twoh == false && weapon_left.ui_twoh == false) || weapon_right.ui_twoh == true) {
                     draw_weapon(weapon_right, "right_weapon", 0);
@@ -921,7 +921,7 @@ function ComplexSet(_unit) constructor {
             }
         }
 
-        if (!weapon_left.new_weapon_draw) {
+        if (!weapon_left.single_left_right_profile) {
             if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite) && (weapon_right.ui_twoh == false)) {
                 draw_weapon(weapon_left, "left_weapon", 1);
             }
@@ -992,7 +992,7 @@ function ComplexSet(_unit) constructor {
         },
         "melee_twohand": {
             ui_spec: true,
-            new_weapon_draw: true,
+            single_left_right_profile: true,
             hand_type: 2,
             hand_on_top: true,
         },
@@ -1047,7 +1047,7 @@ function ComplexSet(_unit) constructor {
                 "hand_type",
                 "arm_type",
                 "ui_weapon",
-                "new_weapon_draw",
+                "single_left_right_profile",
                 "ui_twoh",
                 "ui_spec",
                 "sprite",
@@ -1061,7 +1061,7 @@ function ComplexSet(_unit) constructor {
             if (armour_type == eARMOUR_TYPE.TERMINATOR && !array_contains(["terminator_ranged", "terminator_melee", "terminator_fist"], _arm.display_type)) {
                 _arm.ui_ymod -= 20;
                 if (_arm.display_type == "normal_ranged") {
-                    if (_arm.new_weapon_draw) {
+                    if (_arm.single_left_right_profile) {
                         _arm.ui_xmod += 24;
                     } else {
                         _arm.ui_xmod -= 24;
