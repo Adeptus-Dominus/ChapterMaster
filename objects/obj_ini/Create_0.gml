@@ -168,7 +168,7 @@ gene_slaves = [];
 adv = [];
 dis = [];
 
-chapter_data = new ChapterData();
+chapter_data = new ChapterGameData();
 
 if (instance_exists(obj_creation)) {
     custom = obj_creation.custom;
