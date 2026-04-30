@@ -195,7 +195,7 @@ function deserialize(save_data) {
                     var _planet_features = planet[$ var_name];
                     for (var f = 0; f < array_length(_planet_features); f++) {
                         var _feat = _planet_features[f];
-                        if (!struct_exists(_feat,"f_type")){
+                        if (!is_struct(_feat) || !struct_exists(_feat, "f_type")) {
                             continue;
                         }
 
