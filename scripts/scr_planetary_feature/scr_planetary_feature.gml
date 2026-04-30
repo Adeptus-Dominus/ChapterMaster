@@ -105,7 +105,6 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             built = obj_controller.turn + 3;
             break;
         case eP_FEATURES.STARSHIP:
-            f_type = eP_FEATURES.STARSHIP;
             planet_display = "Ancient Starship";
             funds_spent = 0;
             player_hidden = 0;
@@ -179,10 +178,7 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
     }
 
     static load_json_data = function(data) {
-        var names = variable_struct_get_names(data);
-        for (var i = 0; i < array_length(names); i++) {
-            variable_struct_set(self, names[i], variable_struct_get(data, names[i]));
-        }
+        move_data_to_current_scope(data);
     };
 }
 
