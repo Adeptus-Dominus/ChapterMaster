@@ -12,9 +12,15 @@ function check_for_next_inquisitor_inspection(){
 
     _loyalty = clamp(_loyalty , 0, 100);
 
+
     // innspectionos take place between 1 and 10 years depending on relationship with inquisitor
     // chapters percieved suspiciousness and loyalty
-    _inspec = (_last_inquisitor_inspection + lerp(120, 12, _loyalty / 100)) < turn;
+    _inspec = (_last_inquisitor_inspection + lerp(120, 12, _loyalty / 100)) < obj_controller.turn;
+
+
+    if (!_inspec){
+        return;
+    }
 
     if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
         var _player_fleets = instance_number(obj_p_fleet);
@@ -28,15 +34,20 @@ function check_for_next_inquisitor_inspection(){
         }
     }
 
+    if (!_inspec){
+        return;
+    }
+
     //setup inquisitor inspections
     var _inquisitor_fleet_count = 0;
-    with (obj_fleet) {
+    with (obj_en_fleet) {
         if (owner == eFACTION.INQUISITION) {
             _inquisitor_fleet_count++;
         }
     }
 
     _inspec = _inspec && faction_status[eFACTION.INQUISITION] != "War" && _inquisitor_fleet_count == 0;
+
     if (_inspec) {
         new_inquisitor_inspection();
     }
