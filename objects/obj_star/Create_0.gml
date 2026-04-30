@@ -160,7 +160,8 @@ function deserialize(save_data) {
     var exclusions = [
         "id",
         "present_fleet",
-        "planet_data"
+        "planet_data",
+        "feature",
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
@@ -180,6 +181,7 @@ function deserialize(save_data) {
         variable_struct_set(self, "present_fleet", save_data.present_fleet);
     }
 
+    var _temp_features = false;
     if (struct_exists(save_data, "planet_data")) {
         var planet_arr = save_data.planet_data;
         var _len = array_length(planet_arr);
@@ -188,6 +190,23 @@ function deserialize(save_data) {
             var var_names = struct_get_names(planet);
             for (var v = 0; v < array_length(var_names); v++) {
                 var var_name = var_names[v];
+
+                if (var_name == "p_feature"){
+                    var _planet_features = planet[$ var_name];
+                    for (var f = 0; f < array_length(_planet_features); f++) {
+                        var _feat = _planet_features[f];
+                        if (!is_struct(_feat) || !struct_exists(_feat, "f_type")) {
+                            continue;
+                        }
+
+                        var _new_feat = new NewPlanetFeature(_feat.f_type);
+
+                        _new_feat.load_json_data(_feat);
+
+                        array_push(self.p_feature[p], _new_feat);
+                    }
+                     continue;
+                }
                 var val = planet[$ var_name];
                 // var_name = "p_type"
                 // planet = {"p_type":"hive"};
