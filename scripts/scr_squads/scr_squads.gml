@@ -25,6 +25,8 @@ function create_squad(squad_type, company, squad_loadout = true, squad_index = f
         roles[eROLE.VETERANSERGEANT]
     ];
 
+    var _company_marines = obj_ini.TTRPG[company];
+
     //if squad has sergeants in find out if there are any available sergeants
     for (var s = 0; s < 2; s++) {
         if (struct_exists(squad_fulfilment, sgt_types[s])) {
@@ -697,6 +699,70 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor {
 
 // creates the origional distribution of squads accross the chapter
 // lots of room for customisation of different chapters here
+
+global.chapter_squad_arrangement(){
+	companies  : [
+		{
+			"company" : 1
+			"squads" : [
+				{
+					"squad" : "command_squad",
+					"max_count" : 1,
+					"min_count" : 1,
+					"require" : true
+				},
+				{
+					"squad" : "terminator_squad"
+					"proportion" : 1,
+				},
+				{
+					"squad" : "terminator_assault_squad"
+					"proportion" : 1,
+				}
+			],
+		},
+				
+	]
+}
+
+function game_start_squads() constructor{
+	profiled_companies = [];
+
+	if (struct_exists(global.chapter_squad_arrangement, "companies")){
+		var _comp_datas = global.chapter_squad_arrangement.companies;
+		for (var i=0;i<array_length(_comp_datas);i++){
+			build_company_from_data(_comp_datas[i]);
+		}
+	}
+
+	static build_company_from_data = function(comp_data){
+		array_push(profiled_companies, comp_data.company);
+		var _required = [];
+		var _proportional = [];
+		for (var i=0;i<array_length(comp_data.squads);i++){
+			var _squad = comp_data.squads[i];
+			if (struct_exists(_squad ,"require") && _squad.require){
+				array_push(_required, _squad);
+				continue
+			}
+			if (struct_exists(_squad ,"proportion") && bool(_squad.proportion)){
+				array_push(_required, _proportional);
+				continue				
+			}
+		}
+
+		for (var i=0;i<array_length(_required);i++){
+			var _squad = _required[i];
+			var _created_count = 0;
+			while (
+				last_squad_count == array_length(obj_ini.squads) &&
+
+			) {
+			comp_data.company
+		}
+	}
+}
+
 function game_start_squads() {
     obj_ini.squads = [];
     var last_squad_count;
@@ -740,7 +806,6 @@ function game_start_squads() {
         if (obj_ini.equal_scouts) {
             last_squad_count = array_length(obj_ini.squads);
             while (last_squad_count == array_length(obj_ini.squads)) {
-                ///keep making tact squads for as long as there are enough tact marines
                 last_squad_count = array_length(obj_ini.squads) + 1;
                 create_squad("scout_squad", company);
             }
