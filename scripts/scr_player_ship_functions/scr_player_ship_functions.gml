@@ -35,44 +35,46 @@ function return_lost_ship() {
 
         static unit_effects = {
             "geller_fail" : function(unit){
-                unit.edit_corruption(max(0, irandom_range(20, 120) - _units[i].piety));
+                unit.edit_corruption(max(0, irandom_range(20, 120) - unit.piety));
             },
 
         }
         if (_return_defect < 90) {
             var _units = collect_role_group("all", [_star.name, 0, _return_id], false, {}, true);
             _units.shuffle();
+            var _bool_units = bool(_units.number());
 
             if (_return_defect > 80) {
                 obj_ini.ship_hp[_return_id] *= random_range(0.2, 0.8);
                 _text += $"Reports indicate it has suffered damage as a result of it's time in the warp";
             } else if (_return_defect > 70) {
                 var _techs = _units.get_from({group:SPECIALISTS_TECHS});
-                if (bool(_techs.number)) {
+                if (bool(_techs.number())) {
                     _techs.kill_percent(100);
                 }
             } else if (_return_defect > 60) {
-                if (bool(_units.number())) {
+                if (_bool_units) {
                     _text += $"While in the warp the geller fields temporarily went down leaving the ships crew to face the horror of the warp";
                     _units.for_each(unit_effects.geller_fail);
                 }
             } else if (_return_defect > 50) {
-                if (array_length(_units) > 1) {
+                if (_units.number() > 1) {
                     _text += $"The ship was stuck in the warp for many years so many that even the resolve of the marines began to breakdown, there was a mutiney as many marines thought they would be best to try their luck as renegades in the warp. Those who remained loyal to you prevailed but their geneseed was burnt for fear of corruption";
                     _units.kill_percent(50, true, false);
                 }
             } else if (_return_defect > 40) {
-                if (array_length(_units) > 0) {
+                if (_bool_units) {
                     _text += $"The ship is empty, what happened to the origional crew is a mystery";
                     _units.kill_percent(100, false, false);
                 }
             } else if (_return_defect > 20) {
                 //This would be an awsome oppertunity and ideal kick off place to allow a redemtion arc either liberating the ship or some of your captured marines  gene seed other bits
                 _text += $"The fate of your ship {obj_ini.ship[_return_id]} has now become clear\n A Chaos fleet has warped into the {_star.name} system with your once prized ship now a part of it";
-                if (array_length(_units) > 0) {
+                if (_bool_units) {
                     _text += $"You must assume the worst for your crew";
                     _units.kill_percent(100, false, false);
                 }
+
                 scr_kill_ship(_return_id);
                 var _chaos_fleet = spawn_chaos_fleet_at_system(_star);
                 var fleet_strength = floor(((100 - roll_dice_chapter(1, 100, "low")) / 10) + 3);

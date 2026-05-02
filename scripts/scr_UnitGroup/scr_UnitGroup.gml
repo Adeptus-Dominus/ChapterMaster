@@ -55,9 +55,9 @@ function UnitGroup(units) constructor{
 	}
 
 	static kill_percent = function(kill_percent, equipment = true, gene_seed_collect = true){
-		var _kill_numb = floor((kill_decimal/100) * number());
+		var _kill_numb = floor((kill_percent/100) * number());
 		var _killed = 0;
-		i = 0;
+		var i = 0;
 		while(_killed <  _kill_numb && i < number()){
 			var _unit = units[i];
 			if (kill_percent < 100 && _unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]){

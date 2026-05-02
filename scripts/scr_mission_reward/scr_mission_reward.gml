@@ -246,8 +246,8 @@ function scr_mission_reward(mission, star, planet) {
                 obj_controller.requisition += req_gain;
             }
             var _limit = 0;
-            for (var i = 0; i < array_length(_marines); i++) {
-                var _unit = _marines[i];
+            for (var i = 0; i < array_length(_marines.units); i++) {
+                var _unit = _marines.units[i];
                 if (_unit.bionics > 0) {
                     _unit.update_health(irandom_range(2, 80));
 
