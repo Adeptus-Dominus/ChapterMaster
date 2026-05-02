@@ -60,7 +60,7 @@ function UnitGroup(units) constructor{
 		i = 0;
 		while(_killed <  _kill_numb && i < number()){
 			var _unit = units[i];
-			if (kill_decimal < 100 && _unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]){
+			if (kill_percent < 100 && _unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]){
 				i++;
 				continue;
 			}
