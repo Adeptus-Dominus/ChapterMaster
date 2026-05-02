@@ -149,7 +149,7 @@ function ChapterTrait(trait) constructor {
         }
 
         if (suspicion != 0){
-            _str += $"Suspicion: { string_plus_minus(suspicion)}{suspicion}\n";
+            _str += $"Suspicion: { string_plus_minus(suspicion) }{suspicion}\n";
         }
 
         if (array_length(character_spawn_increase)){
