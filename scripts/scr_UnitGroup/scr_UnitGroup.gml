@@ -65,6 +65,7 @@ function UnitGroup(units) constructor{
 				continue;
 			}
 			kill_and_recover(_unit.company, _unit.marine_number, equipment, gene_seed_collect);
+			_killed++;
 			i++;
 		}
 	}
