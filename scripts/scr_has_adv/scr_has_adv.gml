@@ -6,7 +6,7 @@ function scr_has_adv(advantage) {
     try {
         var result;
         if (instance_exists(obj_creation)) {
-            result = array_contains(obj_creation.adv, advantage);
+            result = selected_chapter_trait(advantage);
         } else {
             result = array_contains(obj_ini.adv, advantage);
         }

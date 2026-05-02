@@ -125,7 +125,8 @@
         "faction": 5,
         "start_disp": -4
       }
-    ]
+    ],
+    "suspicion" : 1,
   },
   {
     "name": "Favoured By The Warp",
@@ -136,7 +137,8 @@
         "faction": 4,
         "mult": 0.5
       }
-    ]
+    ],
+    "suspicion" : -1,
   },
   {
     "name": "Reverent Guardians",
@@ -148,7 +150,8 @@
         "faction": 5,
         "int_mod": 2
       }
-    ]
+    ],
+    "suspicion" : -1,
   },
   {
     "name": "Tech-Brothers",
@@ -227,26 +230,29 @@
     "name": "Elite Guard",
     "description": "Your chapter is an elite fighting force comprised almost exclusively of Veterans. All Tactical Marines are replaced by Veterans.",
     "points": 150,
-    "meta": ["Specialists"]
+    "meta": ["Specialists"],
+    "suspicion" : -1,
   },
   {
     "name": "Great Luck",
     "description": "This is actually really helpful and beneficial for your chapter. Trust me.",
     "points": 20,
-    "meta": ["Luck"]
+    "meta": ["Luck"],
+    "suspicion" : -2,
   },
   {
     "name": "Inquisitorial Mandate",
     "description": "Your Chapter performs some service to the inquisition that is of some specific value or mandate of the inquisition",
     "effects": "You will recieve less frequent inspections from the inquisition and actions that may not align with the inquisition will cause less aggressive losses of disposition with the Inquisition",
     "meta": ["Imperium Trust"],
-    "points": 50,
+    "points": 30,
     "faction_disp_mods": [
       {
         "faction": 4,
         "int_mod": 3,
         "start_disp": 20
-      }
-    ]
+      },
+    ],
+    "suspicion" : -2,
   }
 ]

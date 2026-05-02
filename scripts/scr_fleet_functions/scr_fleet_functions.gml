@@ -23,6 +23,21 @@ function standard_fleet_strength_calc(fleet = "none"){
 	}
 }
 
+/// @mixin obj_en_fleet
+function random_sector_exit_point(){
+    action_x = choose(room_width * -1, room_width * 2);
+    action_y = choose(room_height * -1, room_height * 2);
+}
+
+
+/// @mixin obj_en_fleet
+function in_room(object = undefined){
+    if (object == undefined){
+        object = self;
+    }
+    return !(object.x < 0 || object.x > room_width || object.y < 0 || object.y > room_height)
+}
+
 //to be run within with scope
 //@mixin obj_en_fleet
 function set_fleet_target(targ_x, targ_y, final_target){

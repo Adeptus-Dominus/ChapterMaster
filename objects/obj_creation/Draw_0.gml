@@ -587,7 +587,7 @@ try {
         // draw_text_transformed(444,505,"Select Speciality",0.6,0.6,0);
         draw_set_halign(fa_center);
 
-        var psy_intolerance = array_contains(dis, "Psyker Intolerant");
+        var psy_intolerance = scr_has_disadv("Psyker Intolerant");
         if ((chapter_master_specialty == 3) && ((race[100][17] == 0) || psy_intolerance)) {
             chapter_master_speciality = choose(1, 2);
         }
@@ -812,7 +812,14 @@ try {
 
         //TODO refactor to make arrow buttoon objects
         if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && (!instance_exists(obj_creation_popup))) {
-            if (point_and_click([925, 756, 997, 824])) {
+            var _lock = false;
+            if (scr_hit([925, 756, 997, 824])){
+                if (slide == eCREATION_SLIDES.CHAPTERTRAITS && points > maxpoints){ 
+                    tooltip_draw("Points Too High!!");
+                    _lock = true;
+                }
+            }
+            if (point_and_click([925, 756, 997, 824]) && !_lock) {
                 // Next slide
                 if (slide >= eCREATION_SLIDES.CHAPTERTRAITS && slide <= eCREATION_SLIDES.CHAPTERMASTER) {
                     scr_creation(slide);

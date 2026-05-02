@@ -590,13 +590,6 @@ function reset_creation_variables() {
         world_feature[i] = "";
     }
 
-    for (var i = 0; i < 6; i++) {
-        adv[i] = "";
-        adv_num[i] = 0;
-        dis[i] = "";
-        dis_num[i] = 0;
-    }
-
     points = 100;
     maxpoints = 100;
     custom = eCHAPTER_TYPE.PREMADE;
@@ -731,16 +724,6 @@ function reset_creation_variables() {
     global.chapter_icon.name = obj_restart_vars.restart_icon;
     discipline = obj_restart_vars.restart_powers;
 
-    for (var ad = 0; ad < 5; ad++) {
-        if (ad == 0) {
-            adv[ad] = "";
-            dis[ad] = "";
-        }
-        if (ad > 0) {
-            adv[ad] = obj_restart_vars.restart_adv[ad];
-            dis[ad] = obj_restart_vars.restart_dis[ad];
-        }
-    }
     // show_message("D: "+string(dis[1]));
 
     // Need disposition here
@@ -820,24 +803,4 @@ function reset_creation_variables() {
     custom = eCHAPTER_TYPE.RANDOM;
     restarted = 1;
     mutations_selected = mutations;
-
-    for (var i = 1; i <= 4; i++) {
-        if ((adv[i] != "") && (adv_num[i] == 0)) {
-            for (var n = 1; n <= 40; n++) {
-                if (obj_creation.all_advantages[n].name == adv[i]) {
-                    adv_num[i] = n;
-                }
-            }
-        }
-    }
-
-    for (var i = 1; i <= 4; i++) {
-        if ((dis[i] != "") && (dis_num[i] == 0)) {
-            for (var n = 1; n <= 40; n++) {
-                if (obj_creation.all_disadvantages[n].name[n] == dis[i]) {
-                    dis_num[i] = n;
-                }
-            }
-        }
-    }
 }

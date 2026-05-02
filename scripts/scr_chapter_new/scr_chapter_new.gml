@@ -501,8 +501,10 @@ function scr_chapter_new(chapter_identifier) {
         for (var i = 0; i < array_length(obj_creation.all_advantages); i++) {
             var _adv = obj_creation.all_advantages[i];
             if (array_contains(chapter_object.advantages, _adv.name)) {
-                _adv.add(_open_adv);
+                _adv.add();
                 _open_adv++;
+            } else if (_adv.activated) {
+                _adv.activated = false;
             }
         }
 
@@ -510,8 +512,10 @@ function scr_chapter_new(chapter_identifier) {
         for (var i = 0; i < array_length(obj_creation.all_disadvantages); i++) {
             var _disadv = obj_creation.all_disadvantages[i];
             if (array_contains(chapter_object.disadvantages, _disadv.name)) {
-                _disadv.add(_open_disadv);
+                _disadv.add();
                 _open_disadv++;
+            } else if (_disadv.activated) {
+                _disadv.activated = false;
             }
         }
     }

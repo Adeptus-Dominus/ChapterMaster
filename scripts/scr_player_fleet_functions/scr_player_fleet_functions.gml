@@ -26,11 +26,26 @@ function get_player_fleet_intercept_time(star,time_abundance){
 	}
 }
 
-function split_selected_into_new_fleet(start_fleet="none"){
-	var new_fleet;
-	if (start_fleet=="none"){
-		new_fleet = instance_create(x,y,obj_p_fleet);
-		new_fleet.owner  = eFACTION.PLAYER;
+function fleet_engaged(fleet = undefined){
+    var _engaged = false;
+    if (fleet == undefined){
+        fleet = self;
+    }
+    var _fleet_action = fleet.action;
+    if (_fleet_action != "" && _fleet_action !="move"){
+        //don't inspect if engaged in non negotiable actions
+        if (array_contains(FLEET_MOVE_OPTIONS, _fleet_action)){
+            _engaged = true;
+        }
+    }
+
+    return _engaged;
+}
+function split_selected_into_new_fleet(start_fleet = "none") {
+    var new_fleet;
+    if (start_fleet == "none") {
+        new_fleet = instance_create(x, y, obj_p_fleet);
+        new_fleet.owner = eFACTION.PLAYER;
         // Pass over ships to the new fleet, if they are selected
         var cap_number = array_length(capital);
 

@@ -6,7 +6,7 @@ function scr_has_disadv(disadvantage) {
     try {
         var result;
         if (instance_exists(obj_creation)) {
-            result = array_contains(obj_creation.dis, disadvantage);
+            result = selected_chapter_trait(disadvantage);
         } else {
             result = array_contains(obj_ini.dis, disadvantage);
         }
