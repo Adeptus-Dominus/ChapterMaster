@@ -1,7 +1,7 @@
-#macro STR_ERROR_MESSAGE_HEAD $"Your game just encountered and caught an error!"
-#macro STR_ERROR_MESSAGE_HEAD2 $"Your game just encountered a critical error! :("
+#macro STR_ERROR_MESSAGE_HEAD Your game just encountered and caught an error!
+#macro STR_ERROR_MESSAGE_HEAD2 Your game just encountered a critical error! :(
 #macro STR_ERROR_MESSAGE_HEAD3 "Your game just encountered and caught an error! ({0})"
-#macro STR_ERROR_MESSAGE_PS $"P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum."
+#macro STR_ERROR_MESSAGE_PS P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum.
 #macro ERR_LOG_DIRECTORY "Logs/"
 #macro ERR_PATH_LAST_MESSAGES "last_messages.log"
 
