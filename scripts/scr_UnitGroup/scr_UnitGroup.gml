@@ -6,9 +6,13 @@ function UnitGroup(units) constructor{
 		return array_length(units);
 	}
 
+	static shuffle = function(){
+		units = array_shuffle(units);
+	}
+
 	static has_role = function(role){
 		for (var i=0;i<array_length(units);i++){
-			if (units.role() == role){
+			if (units[i].role() == role){
 				return true;
 			}
 		}
@@ -18,7 +22,7 @@ function UnitGroup(units) constructor{
 
 	static has_base_group = function(group){
 		for (var i=0;i<array_length(units);i++){
-			if (units.base_group == group){
+			if (units[i].base_group == group){
 				return true;
 			}
 		}
@@ -28,7 +32,7 @@ function UnitGroup(units) constructor{
 
 	static has_allegiance = function(allegiance){
 		for (var i=0;i<array_length(units);i++){
-			if (units.allegiance == allegiance){
+			if (units[i].allegiance == allegiance){
 				return true;
 			}
 		}
@@ -49,6 +53,27 @@ function UnitGroup(units) constructor{
 
 		return new UnitGroup(_wanted);
 	}
+
+	static kill_percent = function(kill_percent, equipment = true, gene_seed_collect = true){
+		var _kill_numb = floor((kill_decimal/100) * number());
+		var _killed = 0;
+		i = 0;
+		while(_killed <  _kill_numb && i < number()){
+			var _unit = units[i];
+			if (kill_decimal < 100 && _unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]){
+				i++;
+				continue;
+			}
+			kill_and_recover(_unit.company, _unit.marine_number, equipment, gene_seed_collect);
+			i++;
+		}
+	}
+
+	static for_each = function(unit_func){
+		for (var i=0; i<array_length(self.units); i++){
+			unit_func(units[i]);
+		}
+	}
 }
 
 
@@ -65,7 +90,7 @@ function UnitGroup(units) constructor{
 	// any stat allowed by the stat_valuator basically allows you to look for marines whith certain stat lines
 	// job allows you to find marines forfuling certain tasks like garrison or forge etc
 
-function collect_role_group(group=SPECIALISTS_STANDARD, location="", opposite=false, search_conditions = {companies:"all"}){
+function collect_role_group(group=SPECIALISTS_STANDARD, location="", opposite=false, search_conditions = {}, return_as_UnitGroup = false){
 	var _units = [], unit, count=0, _add=false, _is_special_group;
 	var _max_count = 0;
 	var _total_count = 0;
@@ -73,12 +98,15 @@ function collect_role_group(group=SPECIALISTS_STANDARD, location="", opposite=fa
 		_max_count =  search_conditions.max;
 		search_conditions.max_wanted = search_conditions.max;
 	}
+	if (!struct_exists(search_conditions , "companies")){
+		search_conditions.companies = "all";
+	}
 	search_conditions.group = group;
 	search_conditions.location = location;
 	search_conditions.opposite = opposite;
 
 	var _conditions = new SearchConditions(search_conditions);
-	for (var com=0;com<=10;com++){
+	for (var com=0;com<=obj_ini.companies;com++){
     	if (_max_count>0){
     		if (array_length(_units)>=_max_count){
     			break;
@@ -107,6 +135,9 @@ function collect_role_group(group=SPECIALISTS_STANDARD, location="", opposite=fa
 	        }
 	    }    
 	}
+	if (return_as_UnitGroup){
+		return new UnitGroup(_units);
+	}
 	return _units;
 }
 
@@ -133,7 +164,7 @@ function SearchConditions(data) constructor{
 
 		search_companies = !is_string(companies);
 		if (search_companies){
-			search_multiple_companies = is_array(search_companies);
+			search_multiple_companies = is_array(companies);
 		}
 
 		if (max_wanted > 0){
@@ -151,18 +182,21 @@ function SearchConditions(data) constructor{
 
 	static company_evaluate = function(){
 		var _add = true;
-		if (search_companies){
-			if (search_multiple_companies){
-				if (!array_contains(_wanted_companies, unit.company)){
-					_add = false;
-				}
-			} else {
-				if (_wanted_companies != unit.company){
-					_add = false;
-				}
-			}
-			_add = oposite_switch(_add);
+		if (!search_companies){
+			return true;
 		}
+
+		if (search_multiple_companies){
+			if (!array_contains(companies, unit.company)){
+				_add = false;
+			}
+		} else {
+			if (companies != unit.company){
+				_add = false;
+			}
+		}
+
+		_add = oposite_switch(_add);
 
 		return _add;
 	}
@@ -172,7 +206,7 @@ function SearchConditions(data) constructor{
 		var _add = true;
 		if (group!="all"){
 			var _group = group;
-			if (group_is_array){
+			if (group_is_complex){
 				if (group_search_heads) {
 					_add = unit.IsSpecialist(_group[0], _group[1], _group[2]);
 				} else {
@@ -296,9 +330,11 @@ function stat_valuator(search_params, unit) {
     return match;
 }
 
+
+//TOODO probably just roll this into other checks
 function collect_by_religeon(religion, sub_cult = "", location = "") {
     var _units = [], unit, count = 0, _add = false;
-    for (var com = 0; com <= 10; com++) {
+    for (var com = 0; com <= obj_ini.companies; com++) {
         for (var i = 1; i < array_length(obj_ini.TTRPG[com]); i++) {
             _add = false;
             unit = obj_ini.TTRPG[com][i];
