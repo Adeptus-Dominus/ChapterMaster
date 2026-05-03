@@ -125,9 +125,10 @@ function collect_role_group(group=SPECIALISTS_STANDARD, location="", opposite=fa
 				}
 			}
 		}
-	    for (var i=0;i<array_length(obj_ini.TTRPG[com]);i++){
+		var _company = obj_ini.TTRPG[com]
+	    for (var i = 0;i < array_length(_company); i++){
 	    	if (_conditions.end_loop){
-	    			break;
+	    		break;
 	    	}
 			_unit=fetch_unit([com,i]);
 

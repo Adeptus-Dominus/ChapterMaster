@@ -746,19 +746,23 @@ function game_start_squads() constructor{
 				continue
 			}
 			if (struct_exists(_squad ,"proportion") && bool(_squad.proportion)){
-				array_push(_required, _proportional);
+				array_push(_proportional, _squad);
 				continue				
 			}
 		}
+
+        var _company_marines = collect_role_group("all", "", false, {companies : comp_data}, true);
 
 		for (var i=0;i<array_length(_required);i++){
 			var _squad = _required[i];
 			var _created_count = 0;
 			while (
 				last_squad_count == array_length(obj_ini.squads) &&
+                _squad.min_count > _created_count
 
 			) {
-			comp_data.company
+	           comp_data.company
+            }
 		}
 	}
 }
