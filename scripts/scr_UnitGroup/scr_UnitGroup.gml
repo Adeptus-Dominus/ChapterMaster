@@ -60,7 +60,7 @@ function UnitGroup(units) constructor{
 		var i = 0;
 		while(_killed <  _kill_numb && i < number()){
 			var _unit = units[i];
-			if (kill_percent < 100 && _unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]){
+			if (kill_percent < 100 && _unit.role() == active_roles()[eROLE.CHAPTERMASTER]){
 				i++;
 				continue;
 			}
@@ -355,7 +355,7 @@ function collect_by_religeon(religion, sub_cult = "", location = "") {
                 }
             }
             if (_add) {
-                array_push(_units, obj_ini.TTRPG[com][i]);
+                array_push(_units, unit);
             }
         }
     }
