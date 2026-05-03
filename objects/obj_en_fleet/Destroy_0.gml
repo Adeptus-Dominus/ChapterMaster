@@ -21,6 +21,7 @@ if (instance_exists(obj_controller)) {
         }
     }
 }
+check_events_destructions();
 
 /* */
 /*  */

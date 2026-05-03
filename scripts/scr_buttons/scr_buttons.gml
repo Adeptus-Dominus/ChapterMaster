@@ -55,15 +55,15 @@ function pop_draw_return_values() {
 /// @example
 /// var rs = new ReactiveString("Hello", 100, 200);
 /// rs.draw();
-function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
+function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor{
+    standard_loc_data();
+
     self.x1 = x1;
     self.y1 = y1;
-    x2 = 0;
-    y2 = 0;
+    self.text = text;
+
     halign = fa_left;
     valign = fa_top;
-
-    self.text = text;
     text_max_width = -1;
     font = fnt_40k_14;
     colour = CM_GREEN_COLOR;
@@ -71,7 +71,8 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
     max_width = -1;
     h = 0;
     w = 0;
-    scale_text = false;
+    scale_text=false;
+    scale = 1;
 
     move_data_to_current_scope(data);
 
@@ -94,7 +95,8 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
                 h = string_height(text) * scale;
             }
         } else {
-            w = string_width(text);
+            w = string_width(text) * scale;
+            h = string_height(text) * scale;
         }
 
         pop_draw_return_values();
@@ -140,11 +142,9 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
 /// @param {struct|bool} [data=false] Optional struct of properties to apply.
 /// @returns {LabeledIcon}
 function LabeledIcon(icon, text, x1 = 0, y1 = 0, data = false) constructor {
+    standard_loc_data();
     self.x1 = x1;
     self.y1 = y1;
-    x2 = 0;
-    y2 = 0;
-
     self.text = text;
     text_max_width = -1;
     font = fnt_40k_14;
@@ -320,8 +320,7 @@ function standard_loc_data() {
 /// @param {struct|bool} [data=false] Initial property overrides.
 /// @returns {UnitButtonObject}
 function UnitButtonObject(data = false) constructor {
-    x1 = 0;
-    y1 = 0;
+    standard_loc_data();
     w = 102;
     h = 30;
     h_gap = 4;
@@ -481,10 +480,11 @@ function PurchaseButton(req) : UnitButtonObject() constructor {
     static draw = function(allow_click = true) {
         add_draw_return_values();
 
-        var _but = draw_unit_buttons([x1, y1, x2, y2], label, [1, 1], color,,, alpha);
+        draw_sprite_ext(spr_requisition, 0, x1, y1, scale, scale, 0, c_white, 1);
+        var _but = draw_unit_buttons([x1 + (get_sprite_width(spr_requisition) * scale), y1, x2, y2], label, [1, 1], color,,, alpha);
         var _sh = sprite_get_height(spr_requisition);
         var _scale = (y2 - y1) / _sh;
-        draw_sprite_ext(spr_requisition, 0, x1, y2, _scale, _scale, 0, c_white, 1);
+        
         var _allow_click = obj_controller.requisition >= req_value;
         if (scr_hit(x1, y1, x2, y2) && tooltip != "") {
             tooltip_draw(tooltip);
@@ -853,10 +853,7 @@ function MultiSelect(options_array, title, data = {}) constructor {
     self.title = title;
     x_gap = 10;
     y_gap = 5;
-    x1 = 0;
-    y1 = 0;
-    x2 = 0;
-    y2 = 0;
+    standard_loc_data();
     on_change = false;
     active_col = CM_GREEN_COLOR;
     inactive_col = c_gray;
@@ -868,6 +865,7 @@ function MultiSelect(options_array, title, data = {}) constructor {
         _next_tog.active = false;
         array_push(toggles, _next_tog);
     }
+    
     static update = item_data_updater;
 
     update(data);
@@ -967,8 +965,7 @@ function RadioSet(options_array, title = "", data = {}) constructor {
     allow_changes = true;
     x_gap = 10;
     y_gap = 5;
-    x1 = 0;
-    y1 = 0;
+    standard_loc_data();
     title_font = fnt_40k_14b;
     draw_title = true;
     space_evenly = false;
@@ -1098,10 +1095,7 @@ function RadioSet(options_array, title = "", data = {}) constructor {
 /// @param {struct} [data={}] Initial properties.
 /// @returns {ToggleButton}
 function ToggleButton(data = {}) constructor {
-    x1 = 0;
-    y1 = 0;
-    x2 = 0;
-    y2 = 0;
+    standard_loc_data();
     tooltip = "";
     str1 = "";
     width = 0;
@@ -1229,10 +1223,7 @@ function ToggleButton(data = {}) constructor {
 /// @param {struct} [data={}] Initial properties.
 /// @returns {InteractiveButton}
 function InteractiveButton(data = {}) constructor {
-    x1 = 0;
-    y1 = 0;
-    x2 = 0;
-    y2 = 0;
+    standard_loc_data();
     str1 = "";
     inactive_tooltip = "";
     tooltip = "";

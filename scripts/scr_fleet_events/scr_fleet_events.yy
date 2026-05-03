@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_fleet_events",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_fleet_events",
+  "parent":{
+    "name":"fleet",
+    "path":"folders/Scripts/fleet.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

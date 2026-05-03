@@ -341,10 +341,10 @@ function scr_enemy_ai_d() {
                     fleet.escort_number = round(random_range(12, 27));
 
                     /*fleet.capital_number=choose(5,6);
-	                fleet.frigate_number=round(random_range(4,8));
-	                fleet.escort_number=round(random_range(8,18));*/
+                    fleet.frigate_number=round(random_range(4,8));
+                    fleet.escort_number=round(random_range(8,18));*/
 
-                    fleet.image_index = floor(fleet.capital_number + (fleet.frigate_number / 2) + (fleet.escort_number / 4));
+                    fleet.image_index = round(standard_fleet_strength_calc());
                     fleet.image_alpha = 0;
 
                     fleet.action_x = x;
@@ -439,11 +439,11 @@ function scr_enemy_ai_d() {
     if (!already_enroute) {
         var pop_doner_options = [];
         //this stops needless repeats of searches
-        if (!struct_exists(obj_controller.end_turn_insights, "population_doners")) {
-            pop_doner_options = find_population_doners();
+        if (!struct_exists(obj_controller.end_turn_insights, "population_donors")) {
+            pop_doner_options = find_population_donors();
         }
-        obj_controller.end_turn_insights.population_doners = pop_doner_options;
-        pop_doner_options = obj_controller.end_turn_insights.population_doners;
+        obj_controller.end_turn_insights.population_donors = pop_doner_options;
+        pop_doner_options = obj_controller.end_turn_insights.population_donors;
 
         var deletion = -1;
         for (var i = 0; i < array_length(pop_doner_options); i++) {
@@ -535,13 +535,12 @@ function scr_enemy_ai_d() {
 
     // Local problems will go here
     var planet;
-    for (var i = 0; i <= planets; i++) {
-        planet = i + 1;
-        if (i < array_length(system_garrison)) {
-            var garrison = system_garrison[i];
-            if (garrison.garrison_force) {
-                if (garrison.garrison_disposition_change(self, planet) != "none") {
-                    dispo[planet] += garrison.dispo_change;
+    for (var planet=1;planet<=planets;planet++){
+        if (planet < array_length(system_garrison)) {
+            var _garrison = system_garrison[planet];
+            if (_garrison.garrison_force) {
+                if (_garrison.garrison_disposition_change(self, planet) != "none") {
+                    dispo[planet] += _garrison.dispo_change;
                 }
             }
         }

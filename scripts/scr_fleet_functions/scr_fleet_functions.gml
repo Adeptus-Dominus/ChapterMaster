@@ -12,6 +12,17 @@ function distribute_strength_to_fleet(strength, fleet) {
     }
 }
 
+
+function standard_fleet_strength_calc(fleet = "none"){
+	if (fleet == "none"){
+		return capital_number + (frigate_number/2) + (escort_number/4);
+	} else { 
+		with (fleet){
+			return standard_fleet_strength_calc();
+		}
+	}
+}
+
 /// @mixin obj_en_fleet
 function random_sector_exit_point(){
     action_x = choose(room_width * -1, room_width * 2);
@@ -28,11 +39,12 @@ function in_room(object = undefined){
 }
 
 //to be run within with scope
-function set_fleet_target(targ_x, targ_y, final_target) {
-    action_x = targ_x;
-    action_y = targ_y;
-    target = final_target;
-    action_eta = floor(point_distance(x, y, targ_x, targ_y) / 128) + 1;
+//@mixin obj_en_fleet
+function set_fleet_target(targ_x, targ_y, final_target){
+	action_x = targ_x;
+	action_y = targ_y;
+	target = final_target;
+	action_eta = floor(point_distance(x,y,targ_x,targ_y)/128)+1;
 }
 
 function scr_valid_fleet_target(target) {
@@ -50,6 +62,18 @@ function scr_valid_fleet_target(target) {
     return valid;
 }
 
+function get_fleet_uid(search_uid){
+	var _fleet = -1;
+	with (obj_en_fleet){
+		if (uid == search_uid){
+			_fleet = id;
+			break;
+		}
+	}
+
+	return _fleet;
+}
+
 function fleets_next_location(fleet = "none", visited = []) {
     var targ_location = "none";
 
@@ -62,11 +86,11 @@ function fleets_next_location(fleet = "none", visited = []) {
         array_push(visited, fleet.id);
 
         // Check if the fleet has a 'target' variable
-        if (variable_instance_exists(fleet, "target")) {
+        if (fleet.action != "" && variable_instance_exists(fleet, "target")) {
             // If the target is valid and not already in the visited list, proceed recursively
             var fleet_target_valid = scr_valid_fleet_target(fleet.target);
             if (!fleet_target_valid) {
-                fleet.target = 0;
+                fleet.target = noone;
             }
             if (fleet_target_valid && !array_contains(visited, fleet.target.id)) {
                 // Recursive call with the target and the updated visited list
@@ -665,17 +689,22 @@ function fleet_arrival_logic() {
     cur_star = instance_nearest(action_x, action_y, obj_star);
     x = cur_star.x;
     y = cur_star.y;
-    sta = instance_nearest(action_x, action_y, obj_star);
+    sta=instance_nearest(action_x,action_y,obj_star);
+    action_x=0;
+    action_y=0;
     is_orbiting();
 
+    arrival_logic_finished = false;
+    
     // cur_star.present_fleets+=1;if (owner = eFACTION.TAU) then cur_star.tau_fleets+=1;
-
-    if (owner == eFACTION.MECHANICUS) {
-        if (trade_goods == "mars_spelunk1") {
-            trade_goods = "mars_spelunk2";
-            action_x = home_x;
-            action_y = home_y;
-            action_eta = 52;
+    
+    
+    if (owner == eFACTION.MECHANICUS){
+        if (trade_goods == "mars_spelunk1"){
+            trade_goods="mars_spelunk2";
+            action_x=home_x;
+            action_y=home_y;
+            action_eta=52;
             action = "move";
             exit;
         } else if (trade_goods == "mars_spelunk2") {
@@ -792,42 +821,7 @@ function fleet_arrival_logic() {
             exit;
         }
     }
-
-    /*if (owner = eFACTION.IMPERIUM) and (guardsmen>0){// 135 ; guardsmen onto planet
-        var en_p,en_planets,land,i;
-        i=0;en_planets=0;land=0;
-        
-        if (sta.x=home_x) and (sta.y=home_y){
-            repeat(4){i+=1;
-                en_p[i]=0;
-                if (sta.p_owner[i]<=5){en_p[i]=1;en_planets+=1;}
-            }
-            
-            if (guardsmen>0) and (en_planets>0){
-                land=floor(guardsmen/en_planets);
-                i=0;
-                repeat(4){i+=1;
-                    if (en_p[i]=1){guardsmen-=land;sta.p_guardsmen[i]+=land;}
-                }
-                if (guardsmen<5) then guardsmen=0;
-            }
-        }
-        if (sta.owner>5) or ((sta.owner  = eFACTION.PLAYER) and (obj_controller.faction_status[eFACTION.IMPERIUM]="War")){
-            repeat(4){i+=1;
-                en_p[i]=0;
-                if (sta.p_player[i]>0) and (obj_controller.faction_status[eFACTION.IMPERIUM]="War"){en_p[i]=1;en_planets+=1;}
-            }
-            
-            if (guardsmen>0) and (en_planets>0){
-                land=floor(guardsmen/en_planets);
-                i=0;
-                repeat(4){i+=1;
-                    if (en_p[i]=1){guardsmen-=land;sta.p_guardsmen[i]+=land;}
-                }
-                if (guardsmen<5) then guardsmen=0;
-            }
-        }
-    }*/
+    
 
     if (owner == eFACTION.INQUISITION) {
         if (string_count("DELETE", trade_goods) > 0) {
@@ -848,9 +842,18 @@ function fleet_arrival_logic() {
     } else if (owner == eFACTION.TYRANIDS) {
         var mess = 1, plap = instance_nearest(action_x, action_y, obj_p_fleet);
 
-        if (instance_exists(plap)) {
-            if (point_distance(plap.x, plap.y, action_x, action_y) < 80) {
-                mess = 0;
+        if (string_count("DELETE",trade_goods)>0) then instance_destroy();
+        if (obj_controller.known[eFACTION.INQUISITION]=0) then obj_controller.known[eFACTION.INQUISITION]=1;
+    }
+
+    else if (owner=eFACTION.TAU) {
+
+        if (instance_exists(obj_p_ship)){
+            var p_ship=instance_nearest(x,y,obj_p_ship);
+            if (p_ship.action="") and (point_distance(x,y,p_ship.x,p_ship.y)<80){
+                if (obj_controller.p_known[8]=0){
+                	obj_controller.p_known[8]=1;
+                }
             }
         }
 
@@ -859,10 +862,13 @@ function fleet_arrival_logic() {
             scr_event_log("red", $"Contact has been lost with {sta.name}.");
             sta.vision = 0;
         }
+        
+        if (mess=1) and (orbiting.vision!=0){
+            scr_alert("red","owner",$"Contact has been lost with {orbiting.name}!",orbiting.x,orbiting.y);
+            scr_event_log("red",$"Contact has been lost with {orbiting.name}.");orbiting.vision=0;}
     }
-    action_x = 0;
-    action_y = 0;
-
+    
+    
     // 135 ; fleet chase
     if ((string_count("Inqis", trade_goods) > 0) && (string_count("fleet", trade_goods) > 0) && (!string_count("_her", trade_goods))) {
         inquisition_fleet_inspection_chase();
@@ -873,189 +879,147 @@ function fleet_arrival_logic() {
     x = -100;
     y = -100;
 
-    cur_star = instance_nearest(old_x, old_y, obj_en_fleet);
-    var mergus = false;
+    //interactions and merging with other already present fleets
 
-    mergus = cur_star.image_index;
-    if (mergus < 3) {
-        mergus = 0;
-    }
-    if (mergus >= 3) {
-        mergus = 10;
-    }
-    if ((owner == eFACTION.TAU) && (mergus >= 3)) {
-        mergus = 0;
-    }
-    if (string_count("_her", trade_goods) == 0) {
-        mergus = 99;
-    } // was 999
+    var old_x=x,old_y=y;
+    var _other_orbiting = [];
+    var _id = id;
+    with (obj_en_fleet){
+    	if (x!=old_x || y!=old_y){
+    		continue;
+    	}
+    	if (_id==id ){
+    		continue;
+    	}
 
-    // Think this might be causing the crash
-    if ((owner == eFACTION.TAU) && (sta.present_fleet[eFACTION.IMPERIUM] + sta.present_fleet[eFACTION.PLAYER] >= 1) && (sta.present_fleet[eFACTION.TAU] == 1) && (image_index == 1) && (ret == 0)) {
-        mergus = 15;
-    }
-    if ((cur_star.owner == eFACTION.TAU) && (owner == eFACTION.TAU) && (ret == 1)) {
-        mergus = 0;
+    	array_push(_other_orbiting,id);
+
     }
 
-    if ((owner == eFACTION.TAU) && (image_index == 1)) {
-        // show_message("Tau|||  Other Owner: "+string(cur_star.owner)+"   ret: "+string(ret)+"    mergus: "+string(mergus));
+    var _fleet_strength = standard_fleet_strength_calc();
+    for (var i=0;i<array_length(_other_orbiting) && is_orbiting();i++){
+    	var _other_fleet = _other_orbiting[i];
+
+	    var _other_fleet_strength = standard_fleet_strength_calc(_other_fleet);
+
+	    
+	    var _same_owner = owner == _other_fleet.owner;
+
+	    var _attempt_merge = _same_owner && _other_fleet_strength + _fleet_strength <= 9;
+
+	    if (_same_owner && !_attempt_merge && owner==eFACTION.TAU){
+	    	var _faction_check = obj_controller.faction_status[eFACTION.TAU]=="War" ? 1 : 2;
+	    	var _len = _faction_check == 1 ? 3 : 4;
+	    	if (array_sum(orbiting.present_fleet,0,_faction_check,_len)>0){
+	    		_attempt_merge=true;
+	    	}
+
+	    }
+
+	    if (!string_count("_her",trade_goods)){
+	    	_attempt_merge = false;
+	    }
+
+	    if (owner=eFACTION.CHAOS) and (fleet_has_cargo("csm")) or ( fleet_has_cargo("warband")){
+	    	var _csm = fleet_has_cargo("warband");
+	    	_attempt_merge = false;
+	    }
+	   
+	    // if (cur_star.owner!=owner) then _other_fleet_strength=0;
+	    
+	    
+	    
+	    
+	    //This will never trigger at the moment
+	    if (_attempt_merge){// Merge the fleets
+	    	merge_fleets(id,_other_fleet)
+	        
+	    }// End merge fleets
+	    
+
+	    //if fleet is damaged but existing fleet is too large to merge feck off elsewhere preferably somewhere friendly
+	    else if (_same_owner && (owner == eFACTION.TAU || (owner = eFACTION.CHAOS && !csm))){// Move somewhere new
+
+	    	if (standard_fleet_strength_calc()<3){
+
+		        var _chosen =false;
+		        var _chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
+		        while (_chosen_id != "none"){
+		        	if (scr_orbiting_fleet(eFACTION.IMPERIUM) != "none"){
+		        		_chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
+		        	} else {
+		        		break;
+		        	}
+		        }
+
+		        instance_activate_object(obj_star);   
+		        if (_chosen_id !="none"){
+		        	action_x=_chosen_id.x;
+		        	action_y=_chosen_id.y;
+		        	set_fleet_movement();
+		        	arrival_logic_finished = true;
+		        }
+
+		        //TODO somelogc to go find somewhere else if there are no avialable rebuild planets
+		    } else {
+
+	        	_chosen_id = nearest_star_with_ownership(x,y,[2,3,4,5,7],orbiting);
+	        }
+	    }
     }
 
-    if ((owner == eFACTION.CHAOS) && fleet_has_cargo("csm") || fleet_has_cargo("warband")) {
-        mergus = 0;
-    }
-    // if (cur_star.owner!=owner) then mergus=0;
-
-    if ((cur_star.x == old_x) && (cur_star.y == old_y) && (cur_star.owner == self.owner) && (cur_star.action == "") && (mergus == 1999)) {
-        // Merge the fleets
-        cur_star.escort_number += self.escort_number;
-        cur_star.frigate_number += self.frigate_number; // show_message("Tau fleet merging");
-        cur_star.capital_number += self.capital_number;
-        cur_star.guardsmen += self.guardsmen;
-
-        cur_star = instance_nearest(old_x, old_y, obj_star);
-        // if (cur_star.present_fleets>=1) then cur_star.present_fleets-=1;
-        if (owner == eFACTION.TAU) {
-            obj_controller.tau_fleets -= 1;
-            cur_star.tau_fleets -= 1;
-        }
-        if (owner == eFACTION.CHAOS) {
-            obj_controller.chaos_fleets -= 1;
-        }
-
-        instance_destroy();
-    } // End merge fleets
-
-    if ((owner == eFACTION.TAU) && (mergus == 15)) {
-        // Get the fuck out
-        var new_star, stue;
-        new_star = 0;
-        stue = 0;
-        ret = 1;
-
-        instance_activate_object(obj_star); // new_star
-        stue = instance_nearest(x, y, obj_star);
-
-        if (image_index == 1) {
-            // Start influence thing
-            var tau_influence;
-            var tau_influence_chance = irandom(100) + 1;
-            var tau_influence_planet = irandom(stue.planets) + 1;
-
-            with (stue) {
-                if (p_type[tau_influence_planet] != "Dead") {
-                    scr_alert("green", "owner", $"Tau ship broadcasts subversive messages to {planet_numeral_name(tau_influence_planet)}.", sta.x, sta.y);
-                    tau_influence = p_influence[tau_influence_planet][eFACTION.TAU];
-
-                    if ((tau_influence_chance <= 70) && (tau_influence < 70)) {
-                        adjust_influence[tau_influence_planet](eFACTION.TAU, 10, tau_influence_planet);
-                        if (p_type[tau_influence_planet] == "Forge") {
-                            adjust_influence(eFACTION.TAU, -5, tau_influence_planet);
-                        }
-                    }
-
-                    if ((tau_influence_chance <= 3) && (tau_influence < 70)) {
-                        adjust_influence(eFACTION.TAU, 30, tau_influence_planet);
-                        if (p_type[tau_influence_planet] == "Forge") {
-                            adjust_influence(eFACTION.TAU, -25, tau_influence_planet);
-                        }
-                    }
-                }
+	if (owner=eFACTION.TAU && !arrival_logic_finished) {                                    
+        
+       
+        //so i'mjust sort of crudely interpreting things how i think duke meant to make it
+        //basically if the tau fleet is weakened or small instead of trying a hostile takeover
+        //they instrsd instigste a tau propaganda campaign and get the fuck out the system
+        
+        //if tau fleet is too weak then flee  
+        if (standard_fleet_strength_calc()<3){// Start influence thing
+            
+            with (orbiting){
+            	tau_broadcast_propaganda_to_planet();
             }
+	        var _chosen =false;
+	        var _chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
+	        while (_chosen_id != "none"){
+	        	if (scr_orbiting_fleet(eFACTION.IMPERIUM) != "none"){
+	        		_chosen_id = nearest_star_with_ownership(x,y,owner,orbiting,true,true);
+	        	} else {
+	        		break;
+	        	}
+	        }
+
+	        instance_activate_object(obj_star);   
+	        if (_chosen_id !="none"){
+	        	action_x=_chosen_id.x;
+	        	action_y=_chosen_id.y;
+	        	set_fleet_movement();
+	        	arrival_logic_finished = true;
+	        }
         }
-
-        instance_deactivate_object(stue);
-
-        with (obj_star) {
-            if (owner != eFACTION.TAU) {
-                instance_deactivate_object(instance_id);
-            }
-        }
-
-        var good;
-        good = 0;
-
-        repeat (100) {
-            var xx, yy;
-            if (good == 0) {
-                xx = x + choose(random(300), random(300) * -1);
-                yy = y + choose(random(300), random(300) * -1);
-                new_star = instance_nearest(xx, yy, obj_star);
-                if (new_star.owner != eFACTION.TAU) {
-                    with (new_star) {
-                        instance_deactivate_object(id);
-                    }
-                }
-                if (new_star.owner == eFACTION.TAU) {
-                    good = 1;
-                }
-            }
-        }
-
-        // show_message("Get the fuck out working?: "+string(good));
-
-        if (new_star.owner == eFACTION.TAU) {
-            // show_message("Tau fleet actually fleeing");
-            action_x = new_star.x;
-            action_y = new_star.y;
-            set_fleet_movement();
-        }
-
-        instance_activate_object(obj_star);
-        // This appears bugged
+        
+     
     }
 
-    x = old_x;
-    y = old_y;
 
-    var _csm = fleet_has_cargo("warband");
-
-    if ((cur_star.x == old_x) && (cur_star.y == old_y) && (cur_star.owner == self.owner) && (cur_star.action == "") && ((owner == eFACTION.TAU) || (owner == eFACTION.CHAOS)) && (mergus == 10) && (!_csm)) {
-        // Move somewhere new
-        var stue, stue2;
-        stue = 0;
-        stue2 = 0;
-        var goood = 0;
-
-        with (obj_star) {
-            if (is_dead_star()) {
-                instance_deactivate_object(id);
-            }
-        }
-        stue = instance_nearest(x, y, obj_star);
-        instance_deactivate_object(stue);
-        repeat (10) {
-            if (goood == 0) {
-                stue2 = instance_nearest(x + choose(random(400), random(400) * -1), y + choose(random(400), random(400) * -1), obj_star);
-                if ((owner == eFACTION.TAU) && (stue2.owner == eFACTION.TAU)) {
-                    goood = 1;
-                }
-                if ((owner == eFACTION.CHAOS) && (stue2.owner != eFACTION.CHAOS)) {
-                    goood = 1;
-                }
-                if (stue2.planets == 0) {
-                    goood = 0;
-                }
-                if ((stue.present_fleet[eFACTION.IMPERIUM] > 0) || (stue.present_fleet[eFACTION.PLAYER] > 0)) {
-                    goood = 0;
-                }
-                if ((stue2.planets == 1) && (stue2.p_type[1] == "Dead")) {
-                    goood = 0;
-                }
-            }
-        }
-        action_x = stue2.x;
-        action_y = stue2.y;
-        set_fleet_movement(); // stue.present_fleets-=1;
-        instance_activate_object(obj_star);
-    }
-
+    
+    
+    
     // ORKS
     // Right here check to see if the fleet is being useless
     // If yes check for connected planet, see if not owned by orks
     // If not owned by orks then start heading that way
     // If the connected planet is owned by orks then choose a random one within 400 not owned by orks
+    
+    
+    else if (owner == eFACTION.ORK){
+    	if (is_orbiting()){
+    		with (orbiting){
+    			ork_fleet_arrive_target();
+    		}
+    	}
 
     if (owner == eFACTION.ORK) {
         if (is_orbiting()) {
@@ -1123,7 +1087,6 @@ function fleet_arrival_logic() {
         instance_activate_object(obj_star);
     }
 
-    exit; // end of eta=0
 }
 
 function choose_fleet_sprite_image() {
@@ -1193,10 +1156,35 @@ function fleet_respond_crusade() {
         }
     }
 
-    var enemu;
-    //var cs
-    with (obj_star) {
-        var cs = instance_nearest(x, y, obj_crusade);
+function merge_fleets(main_fleet, merge_fleet){
+	main_fleet.capital_number += merge_fleet.capital_number;
+	main_fleet.frigate_number += merge_fleet.frigate_number;
+	main_fleet.escort_number += merge_fleet.escort_number;
+	var _merge_cargo = struct_get_names(merge_fleet.cargo_data);
+	//TODO custom merge stuff
+	for (var i=0;i<array_length(_merge_cargo);i++){
+		if (!struct_exists(main_fleet.cargo_data, _merge_cargo[i])){
+			main_fleet.cargo_data[$ _merge_cargo[i]] = merge_fleet.cargo_data[$ _merge_cargo[i]];
+		}
+	}
+	main_fleet.guardsmen += merge_fleet.guardsmen;
+
+	//This bit allseems a bit superfluouse but keepingjust in case it breaks something]
+	var _is_orbiting = is_orbiting(merge_fleet);
+	switch(merge_fleet.owner){
+		case eFACTION.TAU:
+			obj_controller.tau_fleets--;
+			if (_is_orbiting){
+				merge_fleet.orbiting.tau_fleets--;
+			}
+			break;
+		case eFACTION.CHAOS:
+			obj_controller.chaos_fleets--;
+			break;
+
+	}
+	instance_destroy(merge_fleet.id);
+}
 
         if (point_distance(x, y, cs.x, cs.y) > cs.radius) {
             y -= 20000;

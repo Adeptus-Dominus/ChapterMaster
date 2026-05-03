@@ -1,28 +1,64 @@
-owner = 0;
-capital_number = 0;
-frigate_number = 0;
-escort_number = 0;
-guardsmen = 0;
-home_x = 0;
-home_y = 0;
-selected = 0;
-ret = 0;
-hurt = 0;
-orbiting = 0;
-rep = 3;
-minimum_eta = 2;
+
+owner=0;
+capital_number=0;
+frigate_number=0;
+escort_number=0;
+guardsmen=0;
+home_x=x;
+home_y=y;
+selected=0;
+ret=0;
+hurt=0;
+orbiting=0;
+rep=3;
+minimum_eta=2;
 turns_static = 0;
 navy = 0;
 guardsmen_ratio = 0;
 guardsmen_unloaded = 0;
 complex_route = [];
 warp_able = false;
-ii_check = floor(random(5)) + 1;
-etah = 0;
-safe = 0;
+ii_check = floor(random(5))+1;
+etah=0;
+safe=0;
 last_turn_check = 0;
+uid = scr_uuid_generate();
+
+events = [];
+
+add_event = function(event){
+    event.fleet_uid = uid;
+    array_push(events, event);
+}
+
+check_events = function(){
+    for (var i=array_length(events)-1;i>=0;i--){
+        var _event = events[i];
+
+        _event.turn_sequence();
+
+        if (_event.state == "destroy"){
+            array_delete(events,i,1);
+        }
+
+    }
+}
+
+check_events_destructions = function(){
+    for (var i=array_length(events)-1;i>=0;i--){
+        var _event = events[i];
+
+        _event.destroy_sequence();
+
+        array_delete(events,i,1);
+    }
+}
+last_turn_check = 0
+last_turn_image_check = -1;
 //TODO set up special save method for faction specific fleet variables
 inquisitor = -1;
+
+set_movement = method(self,set_fleet_movement);
 
 cargo_data = {};
 
@@ -108,12 +144,9 @@ serialize = function() {
     copy_serializable_fields(object_fleet, save_data, excluded_from_save);
 
     return save_data;
-};
-deserialize = function(save_data) {
-    var exclusions = [
-        "id",
-        "cargo_data"
-    ]; // skip automatic setting of certain vars, handle explicitly later
+}
+deserialize = function(save_data){
+    var exclusions = ["id","cargo_data","events"]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);
@@ -140,7 +173,18 @@ deserialize = function(save_data) {
         }
     }
 
-    if (save_data.orbiting != 0 && action == "") {
+    if (struct_exists(save_data, "events")){
+        for (var i=0;i<array_length(save_data.events);i++){
+            var _saved_event = save_data.events[i];
+            var _event = new FleetEvent();
+            with (_event){
+                move_data_to_current_scope(_saved_event);
+            }
+            array_push(events, _event);
+        }
+
+    }
+    if(save_data.orbiting != 0 && action == ""){
         var nearest_star = instance_nearest(x, y, obj_star);
         orbiting = nearest_star;
         // LOGGER.debug($"p_fleet id {id} deserialized: {self}");

@@ -63,8 +63,8 @@ p_heresy = array_create(_planet_array_size, 0);
 p_hurssy = array_create(_planet_array_size, 0);
 p_hurssy_time = array_create(_planet_array_size, 0);
 p_heresy_secret = array_create(_planet_array_size, 0);
-p_raided = array_create(_planet_array_size, 0);
-p_governor = array_create(_planet_array_size, "");
+p_raided = array_create(_planet_array_size, false);
+p_governor = array_create(_planet_array_size, false);
 p_operatives = array_create_advanced(_planet_array_size, []);
 p_feature = array_create_advanced(_planet_array_size, []);
 p_upgrades = array_create_advanced(_planet_array_size, []);
@@ -72,6 +72,15 @@ p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
 p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
 p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
+
+
+system_datas = array_create(8, 0);
+system_garrison = array_create(8, 0);
+system_sabatours = array_create(8, 0)
+
+add_feature = function(planet, feature){
+    array_push(p_feature[planet], feature);
+}
 
 system_player_ground_forces = 0;
 garrison = false;
@@ -141,6 +150,10 @@ serialize = function() {
     }
     if (struct_exists(object_star, "system_sabatours")) {
         save_data.system_sabatours = object_star.system_sabatours;
+    }
+
+    if (struct_exists(object_star, "p_governor")) {
+        save_data.p_governor = object_star.p_governor;
     }
 
     var excluded_from_save = [
@@ -224,6 +237,12 @@ function deserialize(save_data) {
     if (struct_exists(save_data, "system_garrison")) {
         variable_struct_set(self, "system_garrison", save_data.system_garrison);
     }
+
+    if (struct_exists(save_data, "p_governor")) {
+        variable_struct_set(self, "p_governor", save_data.p_governor);
+    }
+
+
 }
 
 #endregion

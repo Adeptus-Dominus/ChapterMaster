@@ -260,9 +260,13 @@ function process_specialist_points() {
 
                 // Planet specific logic (Orbit is 0, Planets are 1-4)
                 if (turn_end && _p > 0 && array_length(_star_inst.p_feature[_p]) > 0) {
-                    var _planet_data = new PlanetData(_p, _star_inst);
-                    _planet_data.recover_starship(_cur_techs);
-                    _planet_data.planet_training(_pool.heal);
+                    if (array_length(_star_inst.p_feature[_p])!=0){
+                        var _planet_data = _star_inst.system_datas[_p];
+                        _planet_data.refresh_data();
+                        _planet_data.recover_starship(_cur_techs);
+                        _planet_data.planet_training(_pool.heal);
+                        _planet_data.search_old_battle_grounds(_cur_units);
+                    }
                 }
             } else if (_p == 0 && string_pos("ref instance", _cur_loc) > 0) {
                 _handle_instance_point_recording(_cur_loc, _stats);

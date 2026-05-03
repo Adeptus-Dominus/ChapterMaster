@@ -1,11 +1,22 @@
 /// @mixin
 function scr_enemy_ai_a() {
-    system_garrison = [];
-    system_sabatours = [];
-    system_datas = [0];
-
     for (var i = 1; i <= planets; i++) {
-        array_push(system_datas, new PlanetData(i, self));
+        var _ops = p_operatives[i];
+        if (system_garrison[i] == false){
+            system_garrison[i] = new GarrisonForce(_ops, true);
+        } else {
+            system_garrison[i].update(_ops, true)
+        }
+        if (system_sabatours[i] == false){
+            system_sabatours[i] = new GarrisonForce(_ops, true, "sabotage");
+        } else {
+            system_sabatours[i].update(_ops, true)
+        }
+        if (system_datas[i] == false){
+            system_datas[i] = new PlanetData(i, self)
+        } else {
+            system_datas[i].refresh_data();
+        }
     }
     // guardsmen hop from planet to planet
     //not sure we really need this as it's handled with tht navy fleet functions but fuck it updated it and leaving it fot the sec
@@ -43,19 +54,14 @@ function scr_enemy_ai_a() {
 
     var stop;
     var rand = 0;
-    var garrison_force = false, total_garrison = 0;
+    var _garrison_force = false, total_garrison = 0;
     var _planet_data;
     for (var _run = 1; _run <= planets; _run++) {
-        _planet_data = system_datas[_run];
-        garrison_force = false;
-        var garrison = new GarrisonForce(p_operatives[_run], true);
-        var sabatours = new GarrisonForce(p_operatives[_run], true, "sabotage");
-        _planet_data.garrison = garrison;
-        _planet_data.sabatours = sabatours;
 
-        garrison_force = garrison.garrison_force;
-        array_push(system_garrison, garrison);
-        array_push(system_sabatours, sabatours);
+        _planet_data = system_datas[_run];
+        _garrison = _planet_data.garrisons;
+        _sabatours = _planet_data.sabatours;
+        _garrison_force = _garrison.garrison_force;
 
         stop = 0;
         ensure_no_planet_negatives(_run);
@@ -104,11 +110,11 @@ function scr_enemy_ai_a() {
         if ((p_tyranids[_run] > 0) && (stop != 1) && (p_owner[_run] != 9)) {
             // This might have been causing the problem
             /*if (p_tyranids[_run]<5) and (p_guardsmen[_run]>0){
-	            if (p_tyranids[_run]=4) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-100000);
-	            if (p_tyranids[_run]=3) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-20000);
-	            if (p_tyranids[_run]=2) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-5000);
-	            if (p_tyranids[_run]=1) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-500);
-	        }*/
+                if (p_tyranids[_run]=4) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-100000);
+                if (p_tyranids[_run]=3) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-20000);
+                if (p_tyranids[_run]=2) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-5000);
+                if (p_tyranids[_run]=1) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-500);
+            }*/
             if (p_tyranids[_run] >= 5) {
                 tyranids_score = 7;
             }
@@ -134,9 +140,9 @@ function scr_enemy_ai_a() {
             var defence_mult = _planet_data.fortification_level * 0.1;
 
             try {
-                if (pdf_with_player && garrison_force) {
-                    //if player supports give garrison bonus
-                    pdf_score = determine_pdf_defence(_planet_data.pdf, garrison, _planet_data.fortification_level)[0];
+                if (pdf_with_player && _garrison_force) {
+                    //if player supports give _garrison bonus
+                    pdf_score = determine_pdf_defence(_planet_data.pdf, _garrison, _planet_data.fortification_level)[0];
                 } else {
                     pdf_score = determine_pdf_defence(_planet_data.pdf,, _planet_data.fortification_level)[0];
                 }
@@ -424,7 +430,7 @@ function scr_enemy_ai_a() {
             var after_combat_sisters = sisters_score;
             var tempor = 0, rand1 = 0, rand2 = 0;
 
-            var _active_garrison = pdf_with_player && garrison.viable_garrison > 0;
+            var _active_garrison = pdf_with_player && _garrison.viable_garrison > 0;
             // Guard attack
             if ((guard_score > 0) && (guard_attack != "") && (guard_score > 0.5)) {
                 LOGGER.debug($"{name}:{guard_attack}");
@@ -464,7 +470,7 @@ function scr_enemy_ai_a() {
 
                 if (guard_attack == "pdf") {
                     if (pdf_with_player) {
-                        pdf_mod = irandom_range(1, 6 + garrison.total_garrison * 0.1);
+                        pdf_mod = irandom_range(1, 6 + _garrison.total_garrison * 0.1);
                     } else {
                         pdf_mod = irandom(5) + 1;
                     }
@@ -777,18 +783,18 @@ function scr_enemy_ai_a() {
                         _planet_data.pdf_defence_loss_to_orks();
 
                         if (_active_garrison) {
-                            var tixt = $"Chapter Forces led by {garrison.garrison_leader.name_role()} on {name} {scr_roman_numerals()[_run - 1]} were unable to secure PDF victory chapter support requested";
-                            if (garrison.garrison_sustain_damages("loose") > 0) {
-                                tixt += $". {garrison.garrison_sustain_damages("loose")} Marines Lost";
+                            var tixt = $"Chapter Forces led by {_garrison.garrison_leader.name_role()} on {name} {scr_roman_numerals()[_run - 1]} were unable to secure PDF victory chapter support requested";
+                            if (_garrison.garrison_sustain_damages("loose") > 0) {
+                                tixt += $". {_garrison.garrison_sustain_damages("loose")} Marines Lost";
                             }
                             scr_alert("red", "owner", tixt, x, y);
-                            //garrison.determine_battle(false,rand2-rand1, eFACTION.ORK);
+                            //_garrison.determine_battle(false,rand2-rand1, eFACTION.ORK);
                         }
                     } else {
                         if (_active_garrison) {
-                            var tixt = $"Chapter Forces led by {garrison.garrison_leader.name_role()} on {name} {scr_roman_numerals()[_run - 1]} secure PDF victory";
-                            if (garrison.garrison_sustain_damages("win") > 0) {
-                                tixt += $". {garrison.garrison_sustain_damages("win")} Marines Lost";
+                            var tixt = $"Chapter Forces led by {_garrison.garrison_leader.name_role()} on {name} {scr_roman_numerals()[_run - 1]} secure PDF victory";
+                            if (_garrison.garrison_sustain_damages("win") > 0) {
+                                tixt += $". {_garrison.garrison_sustain_damages("win")} Marines Lost";
                             }
                             scr_alert("green", "owner", tixt, x, y);
                         }
@@ -853,9 +859,9 @@ function scr_enemy_ai_a() {
                     }
                 } else if (traitors_attack == "guard") {
                     /*if (traitors_attack="eldar"){
-	            rand2=(choose(1,2,3,4,5)*eldar_score)*choose(1,1.25);
-	            if (rand1>rand2) then after_combat_csm-=1;
-	        }*/
+                rand2=(choose(1,2,3,4,5)*eldar_score)*choose(1,1.25);
+                if (rand1>rand2) then after_combat_csm-=1;
+            }*/
                     rand2 = (choose(1, 2, 3, 4, 5) * guard_score) * choose(1, 1.25);
                     if (rand1 > rand2) {
                         if (traitors_score <= 3) {
@@ -1028,7 +1034,7 @@ function scr_enemy_ai_a() {
                     rand2 = (choose(1, 2, 3, 4, 5) * guard_score) * choose(1, 1.25);
                     if (rand1 > rand2) {
                         /*if (tyranids_score<=3) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.6);
-	                if (tyranids_score>=4) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.5);*/
+                    if (tyranids_score>=4) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.5);*/
                         var onh = 0;
                         if ((tyranids_score == 1) && (onh == 0)) {
                             p_guardsmen[_run] -= 2000;

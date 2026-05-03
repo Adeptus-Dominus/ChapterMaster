@@ -1,33 +1,42 @@
 // Draws the system name and color codes it based on ownership
-if ((p_type[1] == "Craftworld") && (obj_controller.known[eFACTION.ELDAR] == 0)) {
+add_draw_return_values();
+if (p_type[1]="Craftworld") and (obj_controller.known[eFACTION.ELDAR]=0){
     draw_set_alpha(0);
     draw_set_color(255);
     draw_circle(old_x, old_y, 5, 0);
     draw_set_alpha(1);
+    pop_draw_return_values();
     exit;
 }
 
 var show = name;
 
-if (global.cheat_debug == true) {
-    show = string(name) + "#" + string(p_problem[1][1]) + ":" + string(p_timer[1][1]) + "#" + string(p_problem[1][2]) + ":" + string(p_timer[1][2]) + "#" + string(p_problem[1][3]) + ":" + string(p_timer[1][3]);
+if (global.cheat_debug){
+    show = $"{name}";
+    for (var i=1;i<=planets;i++){
+        for (p=0;p<array_length(p_problem[i]);p++){
+            show  += $"\n{p_problem[i][p]} : {p_problem[i][p]}";
+        }
+    }
 }
-scale = min(camera_get_view_width(view_camera[0]) / global.default_view_width, 2.4);
+
+scale = min(camera_get_view_width(view_camera[0])/global.default_view_width, 2.4);
 draw_set_color(c_white);
 draw_set_alpha(0.25);
 
-if ((!craftworld) && (vision == 1)) {
-    draw_sprite_ext(sprite_index, image_index, x, y, 1 * scale, 1 * scale, 0, c_white, 1);
+if (!craftworld) and (vision==1){
+    draw_sprite_ext(sprite_index,image_index,x,y,scale,scale,0,c_white,1)
 }
-if (craftworld) {
-    draw_sprite_ext(spr_craftworld, 0, x, y, 1 * scale, 1 * scale, point_direction(x, y, room_width / 2, room_height / 2) + 90, c_white, 1);
-}
-if (space_hulk) {
-    draw_sprite_ext(spr_star_hulk, 0, x, y, 1 * scale, 1 * scale, 0, c_white, 1);
+else if (craftworld){
+    draw_sprite_ext(spr_craftworld,0,x,y,scale,scale,point_direction(x,y,room_width/2,room_height/2)+90,c_white,1);
 }
 
-if (storm > 0) {
-    draw_sprite_ext(spr_warp_storm, storm_image, x, y, 0.75 * scale, 0.75 * scale, 0, c_white, 1);
+if (space_hulk){
+    draw_sprite_ext(spr_star_hulk,0,x,y,scale,scale,0,c_white,1);
+}
+
+if (storm>0){
+    draw_sprite_ext(spr_warp_storm,storm_image,x,y,0.75*scale,0.75*scale,0,c_white,1);
 }
 
 //ad hoc way of determining whether stuff is in view or not...needs work
@@ -51,40 +60,41 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
         _reset = true;
     }
 
-    if (ds_map_exists(global.star_sprites, name)) {
-        var _old_sprite = ds_map_find_value(global.star_sprites, name);
-        if (sprite_exists(_old_sprite)) {
-            if (_reset) {
-                sprite_delete(_old_sprite);
-            }
-        } else {
-            _reset = true;
-        }
-        if (_reset) {
-            ds_map_delete(global.star_sprites, name);
+    if (ds_map_exists(global.star_sprites, name)){
+        if (_reset){
+            ds_map_delete_sprite(global.star_sprites, name);
         }
     } else {
         _reset = true;
     }
-    if (_reset) {
-        star_tag_surface = surface_create(256, 128);
-        var xx = 64;
-        var yy = 0;
+
+    if (_reset){
+        var star_tag_surface = surface_create(256, 128);
+        var xx=64;
+        var yy=0;
         surface_set_target(star_tag_surface);
-        var panel_width = string_width(name) + 60;
-        if (owner != eFACTION.PLAYER) {
+        
+        var _name_width = string_width(name);
+
+        var _panel_width = _name_width + 60;
+
+        var _panel_center = xx-(_panel_width/2);
+
+        var _panel_y = yy + 30;
+
+        if (owner != eFACTION.PLAYER ){
             var _faction_index = owner;
             var faction_colour = global.star_name_colors[_faction_index];
-            draw_sprite_general(spr_p_name_bg, 0, 0, 0, string_width(name) + 60, 32, xx - (panel_width / 2), yy + 30, 1, 1, 0, faction_colour, faction_colour, faction_colour, faction_colour, 1);
-            draw_sprite_ext(spr_faction_icons, _faction_index, xx + (panel_width / 2) - 30, yy + 25, 0.60, 0.60, 0, c_white, 1);
+            draw_sprite_general(spr_p_name_bg, 0, 0, 0, _panel_width, 32, _panel_center, _panel_y, 1, 1, 0, faction_colour, faction_colour, faction_colour, faction_colour, 1);
+            draw_sprite_ext(spr_faction_icons,_faction_index,xx+(_panel_width/2)-30,yy+25, 0.60, 0.60, 0, c_white, 1);
         } else {
             scr_shader_initialize();
             var main_color = make_colour_from_array(obj_controller.body_colour_replace);
             var right_pauldron = make_colour_from_array(obj_controller.pauldron_colour_replace);
-            draw_sprite_general(spr_p_name_bg, 0, 0, 0, string_width(name) + 60, 32, xx - (panel_width / 2), yy + 30, 1, 1, 0, main_color, main_color, right_pauldron, right_pauldron, 1);
+            draw_sprite_general(spr_p_name_bg, 0, 0, 0, _panel_width, 32, _panel_center, _panel_y, 1, 1, 0, main_color, main_color, right_pauldron, right_pauldron, 1);
             var faction_sprite = global.chapter_icon.sprite;
             if (sprite_exists(faction_sprite)) {
-                draw_sprite_ext(faction_sprite, 0, xx + (panel_width / 2) - 30, yy + 30, 0.2, 0.2, 0, c_white, 1);
+                draw_sprite_ext(faction_sprite, 0, xx + (_panel_width / 2) - 30, yy + 30, 0.2, 0.2, 0, c_white, 1);
             } else {
                 LOGGER.error($"{global.chapter_icon.name} chapter icon not found in any icon directory. Chapter icon will not render.");
             }
@@ -103,3 +113,7 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
     draw_sprite_ext(_sprite, 0, x - (64 * scale), y, scale, scale, 1, c_white, 1);
 }
 draw_set_valign(fa_top);
+
+pop_draw_return_values();
+
+

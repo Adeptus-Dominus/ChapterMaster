@@ -82,6 +82,21 @@ function point_and_click(_rect, _cooldown = 60, _lock_bypass = false) {
     return _point_and_click_logic(_rect, _cooldown, _lock_bypass, false);
 }
 
+function scr_click_left(cooldown = 60, lock_bypass = false){
+
+	return click_controller(cooldown,lock_bypass);
+}
+
+function scr_click_right(cooldown = 60, lock_bypass = false){
+
+	return click_controller(cooldown,lock_bypass ,mb_right);
+}
+
+function click_controller(cooldown = 60, lock_bypass = false, mouse_button_lr=mb_left){
+	if (lock_bypass == false && global.ui_click_lock == true) {
+		return false;
+	}
+}
 /// @description Returns true if left mouse button was clicked outside the desired rectangle area.
 /// @param {Array<Real>} _rect The [x1, y1, x2, y2] array defining the exclusion zone.
 /// @param {Real} _cooldown The cooldown duration in frames.
@@ -107,6 +122,7 @@ function mouse_button_clicked(button = mb_left, cooldown = 60, lock_bypass = fal
         return false;
     }
 
+	return mouse_clicked;	
     var controller_exist = instance_exists(obj_controller);
     if (controller_exist && obj_controller.cooldown > 0) {
         if (is_debug_overlay_open()) {

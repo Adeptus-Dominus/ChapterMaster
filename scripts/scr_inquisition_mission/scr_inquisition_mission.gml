@@ -11,7 +11,7 @@
     Helpers: 
     scr_mission_eta -> given the xy of a _star where the mission is, calculate how long you should have to complete the mission
             Todo? maybe add a disposition influence here so that angy inquisitor gives you less spare time and vice versa
-    scr_star_has_planet_with_feature -> given the id of a _star and a `P_features` enum value, check if any planet on that _star has the desired  feature
+    scr_star_has_planet_with_feature -> given the id of a _star and a `eP_FEATURES` enum value, check if any planet on that _star has the desired  feature
     star_has_planet_with_forces -> given the id of a _star, and a faction, returns whether or not there are forces present there and in sufficient number
 */
 

@@ -260,38 +260,31 @@ function spawn_chaos_warlord() {
             home_x = x + lengthdir_x(5000, point_direction(x, y, room_width / 2, room_height / 2));
             home_y = y + lengthdir_y(5000, point_direction(x, y, room_width / 2, room_height / 2));
             cargo_data.warband = {};
-            capital_number = 10;
-            frigate_number = 20;
-            escort_number = 40;
-        }
-        var rep, filtered_array, candidate_systems;
-        candidate_systems = [];
-        with (obj_star) {
-            rep = 0;
-            ya = false;
-            //should probably get turned into its own helper if used multiple times
-            filtered_array = array_filter(p_owner, function(val, idx) {
-                return scr_is_planet_owned_by_allies(self, idx);
-            });
-            if (array_length(filtered_array)) {
-                array_push(candidate_systems, self);
+		    capital_number=10;
+		    frigate_number=20;
+		    escort_number=40;
+		}
+		var rep, filtered_array, candidate_systems;
+		candidate_systems = [];
+	    with(obj_star){
+			rep=0;
+			ya=false;
+			//should probably get turned into its own helper if used multiple times
+			filtered_array = array_filter(p_owner, function(val, idx) {
+				return scr_is_planet_owned_by_allies(self, idx)
+			})
+			if array_length(filtered_array)
+				array_push(candidate_systems, self)
+	    }
+		
+        if (array_length(candidate_systems)){
+    		var fleet_target = nearest_instance(candidate_systems,nfleet);
+
+            with (nfleet){
+                nfleet.action_x=fleet_target.x;
+                nfleet.action_y=fleet_target.y;            
+                set_fleet_movement()    
             }
-        }
-
-        var fleet_target = array_reduce(candidate_systems, method({nfleet}, function(prev, curr) {
-            if (!prev) {
-                return curr;
-            }
-            var prev_dist = point_distance(prev.x, prev.y, nfleet.x, nfleet.y);
-            var curr_dist = point_distance(curr.x, curr.y, nfleet.x, nfleet.y);
-
-            return (prev_dist > curr_dist) ? curr : prev;
-        }), noone);
-
-        with (nfleet) {
-            nfleet.action_x = fleet_target.x;
-            nfleet.action_y = fleet_target.y;
-            set_fleet_movement();
         }
 
         var tix = $"Chaos Lord {faction_leader[eFACTION.CHAOS]} continues his Black Crusade into Sector {obj_ini.sector_name}.";

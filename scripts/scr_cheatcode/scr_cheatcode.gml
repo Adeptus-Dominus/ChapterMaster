@@ -138,17 +138,6 @@ function scr_cheatcode(argument0) {
                         }
                     }
                     break;
-
-                case "mechmission":
-                    LOGGER.debug("mech_mission");
-
-                    if (array_length(cheat_arguments)) {
-                        spawn_mechanicus_mission(cheat_arguments[0]);
-                    } else {
-                        spawn_mechanicus_mission();
-                    }
-                    break;
-
                 case "inquismission":
                     var mission = cheat_arguments[0];
                     LOGGER.debug($"{mission},");
@@ -426,46 +415,50 @@ function draw_planet_debug_options() {
     }
 }
 
-/// @mixin
-function draw_planet_debug_features() {
-    static _addable_features = [
-        {
-            e_num: eP_FEATURES.GENE_STEALER_CULT,
-            name: "GeneStealer Cult",
-        },
-        {
-            e_num: eP_FEATURES.ANCIENT_RUINS,
-            name: "Ancient Ruins",
-        },
-        {
-            e_num: eP_FEATURES.ARTIFACT,
-            name: "Artefact",
-        },
-        {
-            e_num: eP_FEATURES.STC_FRAGMENT,
-            name: "STC Fragment",
-        },
-        {
-            e_num: eP_FEATURES.SORORITAS_CATHEDRAL,
-            name: "Sororitas Cathedral",
-        },
-        {
-            e_num: eP_FEATURES.ORKWARBOSS,
-            name: "Ork Warboss",
-        },
-        {
-            e_num: eP_FEATURES.ORKSTRONGHOLD,
-            name: "Ork stronghold",
-        },
-        {
-            e_num: eP_FEATURES.MONASTERY,
-            name: "Fortress Monastery",
-        },
-        {
-            e_num: eP_FEATURES.STARSHIP,
-            name: "Ancient Starship",
-        }
-    ];
+//@mixin
+function draw_planet_debug_features(){
+	static _addable_features = [
+		{
+			e_num : eP_FEATURES.GENE_STEALER_CULT,
+			name : "GeneStealer Cult"
+		},
+		{
+			e_num : eP_FEATURES.ANCIENT_RUINS,
+			name : "Ancient Ruins"
+		},
+		{
+			e_num : eP_FEATURES.ARTIFACT,
+			name : "Artefact"
+		},
+		{
+			e_num : eP_FEATURES.STC_FRAGMENT,
+			name : "STC Fragment"
+		},
+		{
+			e_num : eP_FEATURES.SORORITAS_CATHEDRAL,
+			name : "Sororitas Cathedral"
+		},
+		{
+			e_num : eP_FEATURES.ORKWARBOSS,
+			name : "Ork Warboss"
+		},
+		{
+			e_num : eP_FEATURES.ORKSTRONGHOLD,
+			name : "Ork stronghold"
+		},
+		{
+			e_num : eP_FEATURES.MONASTERY,
+			name : "Fortress Monastery"
+		},
+		{
+			e_num : eP_FEATURES.STARSHIP,
+			name : "Ancient Starship"
+		},
+		{
+			e_num : eP_FEATURES.OLDBATTLEGROUND,
+			name : "Old Battle Ground"
+		},
+	]
 
     var base_y = 220;
     base_y += 2;
@@ -476,51 +469,79 @@ function draw_planet_debug_features() {
         draw_text(38, _y, _feat.name);
         if (point_and_click([38, _y, 337, _y + 20])) {
             var _new_feat = new NewPlanetFeature(_feat.e_num);
+            _new_feat.player_hidden = false;
             array_push(target.p_feature[obj_controller.selecting_planet], _new_feat);
         }
     }
 }
 
-/// @mixin
-function draw_planet_debug_problems() {
-    var base_y = 220;
-    var _keys = PLANET_PROBLEM_KEYS;
-    base_y += 2;
-    for (var i = 0; i < array_length(_keys); i++) {
-        var _y = base_y + i * 20;
-        draw_text(38, _y, _keys[i]);
-        if (scr_hit(38, _y, 337, _y + 20)) {
-            tooltip_draw(mission_name_key(_keys[i]));
-            if (mouse_button_clicked()) {
-                switch (_keys[i]) {
-                    case "inquisitor":
-                        mission_inquistion_hunt_inquisitor(target.id);
-                        break;
-                    case "necron":
-                        mission_inquisition_tomb_world(target.id);
-                        break;
-                    case "mech_raider":
-                        spawn_mechanicus_mission("mech_raider");
-                        break;
-                    case "mech_mars":
-                        spawn_mechanicus_mission("mech_mars");
-                        break;
-                    case "mech_bionics":
-                        spawn_mechanicus_mission("mech_bionics");
-                        break;
 
-                    default:
-                        scr_popup("error", "no specific debug action created please consider helping to make one", "");
-                        break;
-                }
-            }
-        }
-    }
+/// @mixin
+function draw_planet_debug_problems(){
+	var base_y = 220;
+	var _keys = PLANET_PROBLEM_KEYS;
+	base_y += 2;
+	for (var i=0;i<array_length(_keys);i++){
+		var _y = base_y + i * 20;
+		draw_text(38, _y, _keys[i]);
+		if (scr_hit(38, _y, 337,_y+20)){
+			tooltip_draw(mission_name_key(_keys[i]));
+			if (mouse_button_clicked()){
+				switch(_keys[i]){
+					case "inquisitor":
+						mission_inquistion_hunt_inquisitor(target.id);
+						break;
+					case "necron":
+						mission_inquisition_tomb_world(target.id);
+						break;
+					case "mech_raider":
+						spawn_mechanicus_mission("mech_raider");
+						break;
+					case "mech_mars":
+						spawn_mechanicus_mission("mech_mars");
+						break;
+					case "mech_bionics":
+						spawn_mechanicus_mission("mech_bionics");
+						break;
+					case "hunt_beast":
+						with (target){
+							scr_new_governor_mission(obj_controller.selecting_planet,"hunt_beast");
+						}
+						break;	
+					case "deliver_trophy":
+						var _unit = fetch_unit(scr_random_marine("",0));
+						var _navy_fleets = get_imperial_navy_fleets();
+						var _plan_type = target.p_type[obj_controller.selecting_planet];
+						var _pop_data = {
+				        	trophy_owner : _unit,
+				        	system: target.name,
+				        	planet : obj_controller.selecting_planet,
+				        	target_fleet : array_random_element(_navy_fleets),
+				        	beast : get_beast_name_by_planet_type(_plan_type)	,
+				        	planet_type :_plan_type	,		
+						}
+
+						var _pop = instance_create(0,0,obj_popup);
+
+						_pop.pop_data = _pop_data;
+
+						with (_pop){
+							init_deliver_trophy_mission();
+						}
+						break;
+					default:
+						scr_popup("error","no specific debug action created please consider helping to make one","");
+						break;
+				}
+			}
+		}
+	}
 }
 
+
 /// @mixin
-function draw_planet_debug_forces() {
-    add_draw_return_values();
+function draw_planet_debug_forces(){
+	add_draw_return_values();
     var current_planet = obj_controller.selecting_planet;
     var base_y = 220;
     // Close window if clicked outside

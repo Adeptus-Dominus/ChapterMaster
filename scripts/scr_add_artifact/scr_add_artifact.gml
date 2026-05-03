@@ -38,6 +38,7 @@ function scr_add_artifact(artifact_type = "random", artifact_tags = "", is_ident
             good = false;
         }
     }
+
     if (base_type == "") {
         if (array_contains(["Weapon", "Armour", "Gear", "Device"], artifact_type)) {
             base_type = artifact_type;
@@ -284,13 +285,22 @@ function ArtifactStruct(Index) constructor {
         return obj_ini.artifact[index];
     };
 
+    static update_type = function(new_type){
+        obj_ini.artifact[index] = new_type;
+    }
+
     static condition = function() {
         return obj_ini.artifact_condition[index];
     };
 
-    static loc = function() {
+    static loc = function(set_loc) {
         return obj_ini.artifact_loc[index];
     };
+
+
+    static set_loc = function(new_loc){
+        obj_ini.artifact_loc[index] = new_loc;
+    }
 
     //combination of what is normally lid and wid
     static sid = function() {
@@ -303,7 +313,8 @@ function ArtifactStruct(Index) constructor {
             "Statue",
             "Casket",
             "Chalice",
-            "Robot"
+            "Robot",
+            "trophy"
         ];
         if (array_contains(none_equips, type())) {
             _can_equip = false;
@@ -363,6 +374,11 @@ function ArtifactStruct(Index) constructor {
         return obj_ini.artifact_identified[index];
     };
 
+    static add_tag = function(tag_to_add){
+        if (!array_contains(tags(), tag_to_add)){
+            array_push(obj_ini.artifact_tags[index],tag_to_add);
+        }
+    }
     static has_tag = function(wanted_tag) {
         return array_contains(tags(), wanted_tag);
     };

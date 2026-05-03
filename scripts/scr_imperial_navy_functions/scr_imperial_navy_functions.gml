@@ -103,102 +103,97 @@ function check_navy_guard_still_live() {
     }
 }
 
-function build_new_navy_fleet(construction_forge) {
-    new_navy_fleet = instance_create(construction_forge.x, construction_forge.y, obj_en_fleet);
 
-    with (new_navy_fleet) {
-        owner = eFACTION.IMPERIUM;
+function build_new_navy_fleet(construction_forge){
+    new_navy_fleet=instance_create(construction_forge.x,construction_forge.y,obj_en_fleet);
 
-        capital_number = 0;
-        frigate_number = 0;
-        escort_number = 1;
-        home_x = x;
-        home_y = y;
-        warp_able = true;
-        with (construction_forge) {
-            present_fleet[2] += 1;
+    with(new_navy_fleet){
+	    owner=eFACTION.IMPERIUM;
+	    
+	    capital_number=0;
+	    frigate_number=0;
+	    escort_number=1;
+	    home_x=x;
+	    home_y=y;
+	    warp_able = true;
+	    with (construction_forge){
+            present_fleet[2]+=1;
         }
-        orbiting = construction_forge;
-        navy = 1;
-
-        var total_ships = 0;
-        total_ships += capital_number - 1;
-        total_ships += round((frigate_number / 2));
-        total_ships += round((escort_number / 4));
-        if (total_ships <= 1 && capital_number + frigate_number + escort_number > 0) {
-            total_ships = 1;
+	    orbiting=construction_forge;
+	    navy=1;
+	    
+	    var total_ships=0;
+	    total_ships+=round(standard_fleet_strength_calc());
+	    if (total_ships<=1 && capital_number+frigate_number+escort_number>0){
+            total_ships=1;
         }
-        choose_fleet_sprite_image();
-        image_index = total_ships;
-        image_speed = 0;
-
-        trade_goods = "building_ships";
-    }
+	    choose_fleet_sprite_image()
+	    image_index=total_ships;
+	    image_speed=0;
+	    
+	    trade_goods="building_ships";
+	}
 }
 
 /// @mixin
-function new_navy_ships_forge() {
-    if (trade_goods == "building_ships") {
-        var onceh = 0, advance = false, p = 0;
-
-        p = 0;
+function new_navy_ships_forge(){
+    if (trade_goods=="building_ships"){
+        var onceh=0,advance=false,p=0;
+    
+        p=0;
         is_orbiting();
-        for (var p = 1; p <= orbiting.planets; p++) {
-            if (orbiting.p_type[p] == "Forge") {
+        for (var p=1;p<=orbiting.planets;p++){
+            if (orbiting.p_type[p]="Forge"){
                 //if no non-imperium,player, or eldar aligned fleets or ground forces, continue
-                if (orbiting.p_orks[p] + orbiting.p_chaos[p] + orbiting.p_tyranids[p] + orbiting.p_necrons[p] + orbiting.p_tau[p] + orbiting.p_traitors[p] == 0) {
-                    if (orbiting.present_fleet[7] + orbiting.present_fleet[8] + orbiting.present_fleet[9] + orbiting.present_fleet[10] + orbiting.present_fleet[13] == 0) {
-                        advance = 1;
+                if (orbiting.p_orks[p]+orbiting.p_chaos[p]+orbiting.p_tyranids[p]+orbiting.p_necrons[p]+orbiting.p_tau[p]+orbiting.p_traitors[p]=0){
+                    if (orbiting.present_fleet[7]+orbiting.present_fleet[8]+orbiting.present_fleet[9]+orbiting.present_fleet[10]+orbiting.present_fleet[13]=0){
+                        advance=1;
                     }
                 }
-            }
+            } 
         }
-
-        if (!advance) {
+        
+        if (!advance){
             exit;
         }
 
-        //TODO here we can make fleet be restored more quickly by better forge worlds
-        if (escort_number < 12) {
-            escort_number += 1;
-        } else if (frigate_number < 5) {
-            frigate_number += 0.25;
-            onceh = 1;
-            if (frigate_number > 4.99) {
-                frigate_number = 5;
-            }
-        } else if (capital_number < 1) {
-            capital_number += 0.0834;
-            if (capital_number > 1) {
-                capital_number = 1;
-            }
-        }
-        if (onceh == 1) {
-            var ii = 0;
-            ii += capital_number;
-            ii += round((frigate_number / 2));
-            ii += round((escort_number / 4));
-
-            image_index = ii <= 1 ? 1 : ii;
+        //TODO here we can make fleet be restored more quickly by better forge worlds 
+        if (escort_number<12)  {
+            escort_number+=1;
         }
 
-        if (capital_number >= 1 && frigate_number >= 5 && escort_number >= 12) {
-            var i = -1;
-            repeat (capital_number) {
-                i += 1;
-                capital_max_imp[i] = (((floor(random(15)) + 1) * 1000000) + 15000000) * 2;
-            }
-            i = -1;
-            repeat (frigate_number) {
-                i += 1;
-                frigate_max_imp[i] = (500000 + (floor(random(50)) + 1) * 10000) * 2;
-            }
-            trade_goods = "";
+        else if (frigate_number<5) {
+            frigate_number+=0.25;
+            onceh=1;
+            if (frigate_number>4.99) then frigate_number=5;
         }
 
+        else if (capital_number<1) {
+            capital_number+=0.0834;
+            if (capital_number>1) then capital_number=1;
+        }
+        if (onceh=1){
+            var ii=round(standard_fleet_strength_calc());
+
+            image_index=ii<=1?1:ii;
+        }
+    
+        if (capital_number>=1 && frigate_number>=5 && escort_number>=12){
+            var i=-1;
+            repeat(capital_number){i+=1;
+                capital_max_imp[i]=(((floor(random(15))+1)*1000000)+15000000)*2;
+            }
+            i=-1;
+            repeat(frigate_number){i+=1;
+                frigate_max_imp[i]=(500000+(floor(random(50))+1)*10000)*2;
+            }
+            trade_goods="";
+        }
+
+    
         //if (trade_goods="building_ships" || !advance) then exit;
         end_sequence_finished = true;
-    }
+    } 
 }
 
 //TODO further breakup into a nvay fleet functions script
@@ -1088,8 +1083,22 @@ function setup_start_imperial_navy_fleet(system) {
     with (nav) {
         orbiting = system;
 
-        owner = eFACTION.IMPERIUM;
-        navy = 1;
+	    owner=eFACTION.IMPERIUM;
+	    navy=1;
+	    
+	    capital_number = choose(1,2,3);
+	    frigate_number = (capital_number*2)+3;
+	    escort_number=12;
+	    home_x=x;
+	    home_y=y;
+	    warp_able=true;
+	    
+	    image_speed=0;
+	    ii+=round(standard_fleet_strength_calc());
+	    if (ii<=1) and (ii>0){
+	    	ii=1;
+	    }
+	    image_index=ii;
 
         capital_number = choose(1, 2, 3);
         frigate_number = (capital_number * 2) + 3;
@@ -1117,3 +1126,19 @@ function setup_start_imperial_navy_fleet(system) {
         }
     }
 }
+
+function get_imperial_navy_fleets(){
+	var _fleets = [];
+
+	with (obj_en_fleet){
+		if (owner != eFACTION.IMPERIUM || !navy){
+			continue;
+		} else if (owner == eFACTION.IMPERIUM && navy){
+			array_push(_fleets, id);
+		}
+	}
+
+	return _fleets;
+}
+
+

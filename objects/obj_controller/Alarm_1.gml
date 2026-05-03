@@ -462,13 +462,13 @@ if (did) {
         }
         orkz += 3;
         n = array_length(_non_xenos_chaos);
+        _non_xenos_chaos = array_shuffle(_non_xenos_chaos);
         for (var j = 0; j < orkz && j < n; j++) {
-            _current_system = array_random_element(_non_xenos_chaos);
+            _current_system = array_pop(_non_xenos_chaos);
 
             _current_system.planet[1] = 1;
             _current_system.p_owner[1] = 90;
             _current_system.owner = 90;
-            array_delete(_non_xenos_chaos, i, 1);
         }
     }
 

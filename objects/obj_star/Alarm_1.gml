@@ -3,7 +3,16 @@
 // If getting to max pop is very rare, it will be awful to recruit from
 // some planets may be better or worse than others depending on their max pop.
 // TODO refactor and improve logic
-for (var i = 1; i <= 4; i++) {
+system_garrison = [0];
+system_sabatours = [0];
+system_datas = [0];
+for (var i = 1; i <= planets; i++) {
+    p_governor[i] = new GovernorProfile();
+    array_push(system_garrison, new GarrisonForce(p_operatives[i], false));
+    array_push(system_sabatours, new GarrisonForce(p_operatives[i], false, "sabotage"));
+    array_push(system_datas, new PlanetData(i, self));
+}
+for (var i = 1; i <= planets; i++) {
     p_population[i] = 0; // 10B
     switch (p_type[i]) {
         case "Lava":

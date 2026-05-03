@@ -16,12 +16,13 @@ function new_ork_fleet(xx, yy) {
     return fleet;
 }
 
-function orks_end_turn_growth() {
-    for (i = 1; i <= planets; i++) {
-        var _pdata = new PlanetData(i, self);
-        if (!p_orks[i]) {
+function orks_end_turn_growth(){
+    for (i=1;i<=planets;i++){
+        var _pdata = system_datas[i];
+        _pdata.refresh_data();
+        if (!p_orks[i]){
             var _strongholds = _pdata.get_features(eP_FEATURES.ORKSTRONGHOLD);
-            for (var s = 0; s < array_length(_strongholds); s++) {
+            for (var s=0;s<array_length(_strongholds);s++){
                 var _hold = _strongholds[s];
                 _hold.tier -= 0.01;
                 if (_hold.tier <= 0) {
@@ -74,8 +75,8 @@ function ork_fleet_arrive_target() {
                 break;
             }
         }
-        if (ork_attack_planet > 0) {
-            p_tyranids[ork_attack_planet] -= floor(_ork_fleet.capital_number + (_ork_fleet.frigate_number / 2));
+        if (ork_attack_planet>0){
+            p_tyranids[ork_attack_planet] -= round(standard_fleet_strength_calc(_ork_fleet));
 
             var _pdata = new PlanetData(ork_attack_planet, self);
 

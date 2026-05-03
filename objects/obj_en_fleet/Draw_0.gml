@@ -48,7 +48,7 @@ if (obj_controller.zoomed == 1) {
     }
 }
 
-// if (obj_controller.selected!=0) and (selected=1) then within=1;
+// if (obj_controller.selected!=0) and (selected=1) then _within=1;
 
 if (obj_controller.selecting_planet > 0) {
     if ((mouse_x >= __view_get(e__VW.XView, 0) + 529) && (mouse_y >= __view_get(e__VW.YView, 0) + 234) && (mouse_x < __view_get(e__VW.XView, 0) + 611) && (mouse_y < __view_get(e__VW.YView, 0) + 249)) {
@@ -95,7 +95,9 @@ switch (owner) {
             draw_icon = true;
             _has_warboss = true;
         }
+        break;
 }
+var _reset = false;
 
 var fleet_descript = "";
 if ((within == 1) || (selected > 0)) {
@@ -207,6 +209,8 @@ if (instance_exists(target)) {
     draw_line(x, y, target.x, target.y);
     draw_set_alpha(1);
 }
+
+pop_draw_return_values();
 
 /* */
 /*  */

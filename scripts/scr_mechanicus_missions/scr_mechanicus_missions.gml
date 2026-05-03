@@ -5,13 +5,13 @@ function mechanicus_missions_end_turn(planet) {
         var _lr_count = scr_vehicle_count("Land Raider", [name, planet, -1]);
         if ((array_length(_techs) >= 6) && (_lr_count >= 1)) {
             var _prob_data = p_problem_other_data[planet][raider_planet_slot];
-            var percent_complete = increment_mission_completion(_prob_data);
-            scr_alert("", $"mission", $"Mechanicus Mission on {planet_numeral_name(planet)} is {floor(percent_complete)}% complete.", 0, 0);
-            if (percent_complete >= 100) {
-                remove_planet_problem(planet, "mech_raider");
-                scr_mission_reward("mech_raider", id, planet);
-            }
-        }
+            var percent_complete = increment_mission_completion(_prob_data);                
+        	scr_alert("",$"mission",$"Mechanicus Mission on {planet_numeral_name(planet)} is {floor(percent_complete)}% complete.",0,0);
+        	if (percent_complete>=100){
+        		remove_planet_problem(planet,"mech_raider");
+        		scr_mission_reward("mech_raider",id,planet);
+        	}
+        }     	
     }
     var bionics_planet_slot = has_problem_planet_with_time(planet, "mech_bionics");
     if (bionics_planet_slot > -1) {

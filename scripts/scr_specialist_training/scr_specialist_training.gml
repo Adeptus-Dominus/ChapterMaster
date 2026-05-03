@@ -1,14 +1,15 @@
 /// @mixin
 function specialistfunct(specialist, req_exp) {
+	var _roles = active_roles();
     var spec_tips = [
-        string("{0} Potential", obj_ini.role[100][16]),
-        string("{0} Potential", obj_ini.role[100][15]),
-        string("{0} Potential", obj_ini.role[100][14]),
-        string("{0} Potential", obj_ini.role[100][17]),
-        string("{0} Applicant", obj_ini.role[100][16]),
-        string("{0} Applicant", obj_ini.role[100][15]),
-        string("{0} Applicant", obj_ini.role[100][14]),
-        string("{0} Applicant", obj_ini.role[100][17]),
+        string("{0} Potential", _roles[16]),
+        string("{0} Potential", _roles[15]),
+        string("{0} Potential", _roles[14]),
+        string("{0} Potential", _roles[17]),
+        string("{0} Applicant", _roles[16]),
+        string("{0} Applicant", _roles[15]),
+        string("{0} Applicant", _roles[14]),
+        string("{0} Applicant", _roles[17]),
         string("Promote to Marine")
     ];
 
@@ -66,7 +67,7 @@ function specialistfunct(specialist, req_exp) {
             break;
     }
 
-    if (role() == obj_ini.role[100][12]) {
+    if (role() == _roles[12]) {
         colors[0] = c_fuchsia;
     }
 
@@ -75,7 +76,7 @@ function specialistfunct(specialist, req_exp) {
     }
 
     if (experience >= req_exp) {
-        if (!(role() == obj_ini.role[100][12])) {
+        if (!(role() == _roles[12])) {
             spec_tip = tips_list[1];
         } else {
             spec_tip = tips_list[2];
@@ -93,7 +94,8 @@ function specialistfunct(specialist, req_exp) {
 //   specialist - Integer index (0: Techmarine, 1: Librarian, 2: Chaplain, 3: Apothecary)
 // Returns: Array containing company and position of selected marine, or "none" if no suitable marine found
 function spec_data_set(specialist) {
-    var _data = obj_controller.spec_train_data[specialist];
+	var _roles = active_roles();
+    var _data = spec_train_data[specialist];
     var _search = {
         "stat": _data.req,
         "job": "none",
@@ -103,9 +105,13 @@ function spec_data_set(specialist) {
         _search.role_tag = _data.name;
     }
 
-    var random_marine = scr_random_marine(
-        // TODO LOW SEARCH_OPTIONAL // Make this function handle optional search_params
-        [obj_ini.role[100][8], obj_ini.role[100][18], obj_ini.role[100][10], obj_ini.role[100][9]],
+    var random_marine=scr_random_marine( // TODO LOW SEARCH_OPTIONAL // Make this function handle optional search_params
+        [
+            _roles[8],
+            _roles[18],
+            _roles[10],
+            _roles[9]
+        ],
         _data.min_exp,
         _search
     );

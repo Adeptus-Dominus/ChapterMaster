@@ -18,8 +18,6 @@ function Table(data) constructor {
 
     move_data_to_current_scope(data);
 
-    update();
-
     static update = function(data) {
         move_data_to_current_scope(data);
         w = 0;
@@ -55,6 +53,8 @@ function Table(data) constructor {
         }
     };
 
+	update(data);
+		
     static draw = function() {
         add_draw_return_values();
 
@@ -97,10 +97,14 @@ function Table(data) constructor {
                         _row.click_left();
                     }
                 }
+				if (struct_exists(_row,"click_right")){
+					if (mouse_button_clicked(mb_right)){
+						_row.click_right();
+					}
+				}                
             }
-
-            _row_level += row_h;
-        }
-        pop_draw_return_values();
-    };
+			_row_level += row_h;
+		}
+		pop_draw_return_values();
+	};
 }
