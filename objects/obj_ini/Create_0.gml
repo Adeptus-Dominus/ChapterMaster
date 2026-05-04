@@ -196,12 +196,6 @@ serialize = function() {
             }
         }
     }
-    var squads = [];
-    if (array_length(object_ini.squads) > 0) {
-        for (var i = 0; i < array_length(object_ini.squads); i++) {
-            array_push(squads, object_ini.squads[i].jsonify(false));
-        }
-    }
 
     var artifact_struct_trimmed = [];
     for (var i = 0; i < array_length(artifact_struct); i++) {

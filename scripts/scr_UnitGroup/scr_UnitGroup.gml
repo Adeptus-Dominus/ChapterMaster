@@ -239,6 +239,10 @@ function UnitGroup(units) constructor{
 	// any stat allowed by the stat_valuator basically allows you to look for marines whith certain stat lines
 	// job allows you to find marines forfuling certain tasks like garrison or forge etc
 
+function collect_chapter(company){
+	return collect_role_group("all", "", opposite=false, search_conditions = {company:company}, true);
+}
+
 function collect_role_group(group=SPECIALISTS_STANDARD, location="", opposite=false, search_conditions = {}, return_as_UnitGroup = false){
 	var _units = [], unit, count=0, _add=false, _is_special_group;
 	var _max_count = 0;

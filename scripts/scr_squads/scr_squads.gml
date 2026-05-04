@@ -8,6 +8,9 @@ function fetch_squad(array_id) {
     return obj_ini.squads[$ array_id];
 }
 
+function get_squad_ids(){
+    return struct_get_names(obj_ini.squads);
+}
 // constructor for new squad
 function UnitSquad(squad_type = undefined, company = 0) constructor {
     type = squad_type;
