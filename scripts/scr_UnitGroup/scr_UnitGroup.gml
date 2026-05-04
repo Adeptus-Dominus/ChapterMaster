@@ -54,23 +54,24 @@ function UnitGroup(units) constructor{
 		return new UnitGroup(_wanted);
 	}
 
-	static highest_exp(){
-        var highest_exp = 0;
-        var exp_unit;
+	static highest_exp = function(){
+        var _highest_exp = 0;
+        var _exp_unit;
         for (var i = 0; i < number(); i++) {
         	var _unit = units[i];
             if (i == 0) {
-                highest_exp = _unit.experience;
+                _highest_exp = _unit.experience;
+                _exp_unit = _unit;
                 continue;
             }
 
-            if (_unit.experience > highest_exp) {
-                highest_exp = _unit.experience;
-                exp_unit = _unit;
+            if (_unit.experience > _highest_exp) {
+                _highest_exp = _unit.experience;
+                _exp_unit = _unit;
             }
         }
 
-        return exp_unit;
+        return _exp_unit;
 	}
 
 	static kill_percent = function(kill_percent, equipment = true, gene_seed_collect = true){
@@ -96,9 +97,12 @@ function UnitGroup(units) constructor{
 	}
 
 	var _roles = active_roles();
-	static sgt_types = role_groups(SPECIALISTS_RANK_AND_FILE);
+	
+	static sgt_types = role_groups(SPECIALISTS_SQUAD_LEADERS);
 
 	static create_squad = function(squad_type, squad_loadout = true, squad_index = -1, game_start = false){
+
+		LOGGER.info($"sgts : ${sgt_types}");
 
 		var roles = active_roles();
 
@@ -114,36 +118,39 @@ function UnitGroup(units) constructor{
 
 	    var _fulfilled = false;
 
-	    for (var s = 0; s < 2; s++) {
-
-	    	var _sgt_type = sgt_types[s];
-	    	var _available_sgt = get_from(
-		    	{
-		    		squadless : true,
-		    		role : _sgt_type,
-		    		max_wanted : 1
-		    	}
-		    );
-		    if (_available_sgt.number() == 0){
-		    	continue;
-		    }
-
-		    var _sgt = _available_sgt.units[0];
-		    squad.add_member(_sgt);
-		    squad_fulfilment[$ _sgt_type] += 1;
-		    sergeant_found = true;
-	    }
-
 	    var _squadless = get_from(
 	    	{
 	    		squadless : true,
 	    		roles : squad_unit_types
 	    	}
 	    );
-	    for (var i = 0; i < array_length(_squadless); i++) {
+
+	    for (var s = 0; s < 2; s++) {
+
+	    	var _sgt_type = sgt_types[s];
+	    	var _available_sgt = _squadless.get_from(
+		    	{
+		    		role : _sgt_type,
+		    		max_wanted : 1
+		    	}
+		    );
+
+		    if (_available_sgt.number() == 0){
+		    	continue;
+		    }
+
+		    var _sgt = _available_sgt.units[0];
+		    squad.add_member(_sgt);
+		    squad_fulfilment[$ _sgt_type]++;
+		    sergeant_found = true;
+	    }
+
+	    LOGGER.info($"ready to squad {_squadless.number()}");
+	    
+	    for (var i = 0; i < _squadless.number(); i++) {
 	        //fill squad roles
 
-	        unit = _squadless[i]
+	        unit = _squadless.units[i]
 
 	            //if no sergeant found add one marine to standard marine selection so that a marine can be promoted
 
@@ -178,12 +185,15 @@ function UnitGroup(units) constructor{
 	    /*and ((squad_fulfilment[$ obj_ini.role[100][8]] > 4)or (squad_fulfilment[$ obj_ini.role[100][10]] > 4) or (squad_fulfilment[$ obj_ini.role[100][9]] > 4)or (squad_fulfilment[$ obj_ini.role[100][3]] > 4) )*/
 
 	    var _members = squad.get_members(true);
+	    if (!bool(_members.number())){
+	    	return [false, squad.uid];
+	    }
 	    for (var s = 0; s < 2; s++) {
 
 	    	var _sgt_type = sgt_types[s];
 	        if (struct_exists(squad_fulfilment, _sgt_type) && (!sergeant_found)) {
-	        	
-	            var exp_unit = _members.highest_exp();
+
+	            var _exp_unit = _members.highest_exp();
 	            
 	            squad_fulfilment[$ _sgt_type]++;
 	        }
@@ -193,6 +203,7 @@ function UnitGroup(units) constructor{
 	    _fulfilled = true;
 	    for (var i = 0; i < array_length(squad_unit_types); i++) {
 	    	var _unit_role = squad_unit_types[i];
+	    	LOGGER.info($"{_unit_role}, {squad_fulfilment[$ _unit_role]}, {_fill_squad[$ _unit_role][$ "min"]}");
 	        if (squad_fulfilment[$ _unit_role] < _fill_squad[$ _unit_role][$ "min"]) {
 	            fulfilled = false;
 	            break;
@@ -201,9 +212,9 @@ function UnitGroup(units) constructor{
 	    if (_fulfilled) {
 	        for (var s = 0; s < 2; s++) {
 	            if (struct_exists(squad_fulfilment, sgt_types[s]) && (sergeant_found == false)) {
-	                exp_unit.update_role(sgt_types[s]); //if squad is viable promote marine to sergeant
+	                _exp_unit.update_role(sgt_types[s]); //if squad is viable promote marine to sergeant
 	                if (game_start && irandom(1) == 0) {
-	                    exp_unit.add_trait("lead_example");
+	                    _exp_unit.add_trait("lead_example");
 	                }
 	            }
 	        }
@@ -238,8 +249,8 @@ function UnitGroup(units) constructor{
 	// any stat allowed by the stat_valuator basically allows you to look for marines whith certain stat lines
 	// job allows you to find marines forfuling certain tasks like garrison or forge etc
 
-function collect_chapter(company){
-	return collect_role_group("all", "", opposite=false, search_conditions = {company:company}, true);
+function collect_company(company){
+	return collect_role_group("all", "", false, {companies : company}, true);
 }
 
 function collect_role_group(group=SPECIALISTS_STANDARD, location="", opposite=false, search_conditions = {}, return_as_UnitGroup = false){
@@ -349,13 +360,10 @@ function SearchConditions(data) constructor {
 				_add = false;
 			}
 		} else {
-			if (companies != unit.company){
-				_add = false;
-			}
+			_add = companies == unit.company;
 		}
 
 		_add = oposite_switch(_add);
-
 		return _add;
 	}
 
@@ -401,7 +409,7 @@ function SearchConditions(data) constructor {
 
 	static evaluate = function(unit){
 		self.unit = unit;
-		if (unit.name()==""){
+		if (unit.name() == ""){
 			return false;
 		}
 
@@ -412,6 +420,7 @@ function SearchConditions(data) constructor {
 				return false;
 			}
 		}
+
 
 	    if (_add){
 	    	if (struct_exists(self, "stat")){
@@ -444,7 +453,7 @@ function SearchConditions(data) constructor {
 		}
 
 		if (_add){
-			if (array_length(roles)){
+			if (bool(array_length(roles))){
 				_add = oposite_switch(array_contains(roles, unit.role()));
 			}
 		}

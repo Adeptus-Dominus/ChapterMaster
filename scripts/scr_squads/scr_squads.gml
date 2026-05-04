@@ -1,8 +1,3 @@
-/* okay so basically this function loops through a given company and attempts to sort the units in the company not in a squad already into 
-the requested squad type , if the squad is not possible it will  not be made*/
-// squad_type: the type of squad to be created as a string to access the correct key in obj_ini.squad_types
-// company : the company you wish to create the squad in (int)
-//squad_loadout: true if you want to use the squad loadout sorting algorithem to re-equip the squad in accordance with the squad type loadout
 
 function fetch_squad(array_id) {
     return obj_ini.squads[$ array_id];
@@ -11,9 +6,20 @@ function fetch_squad(array_id) {
 function get_squad_ids(){
     return struct_get_names(obj_ini.squads);
 }
+
+function squad_count(){
+    return array_length(get_squad_ids());
+}
 // constructor for new squad
+
+/* okay so basically this function loops through a given company and attempts to sort the units in the company not in a squad already into 
+the requested squad type , if the squad is not possible it will  not be made*/
+// squad_type: the type of squad to be created as a string to access the correct key in obj_ini.squad_types
+// company : the company you wish to create the squad in (int)
+//squad_loadout: true if you want to use the squad loadout sorting algorithem to re-equip the squad in accordance with the squad type loadout
+
+
 function UnitSquad(squad_type = undefined, company = 0) constructor {
-    type = squad_type;
     members = [];
     squad_fulfilment = {};
     base_company = company;
@@ -27,6 +33,10 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     formation_options = [];
     uid = scr_uuid_generate();
     allow_bulk_swap = true;
+
+    if (squad_type != undefined){
+        change_type(squad_type)
+    }
 
 
     //TODO introduce loyalty hits from long periods of exile from hierarchy nodes
@@ -612,19 +622,20 @@ function game_start_squads(){
 			}
 		}
 
-        var _company_marines = collect_role_group("all", "", false, {companies : comp_data.company}, true);
+        var _company_marines = collect_company(comp_data.company);
+        LOGGER.info(_company_marines.number());
 
 		for (var i = 0 ;i < array_length(_required); i++){
 			var _squad = _required[i];
 			var _created_count = 0;
-            var _last_squad_count = array_length(obj_ini.squads);
+            var _last_squad_count = squad_count();
 			while (
-				_last_squad_count == array_length(obj_ini.squads) &&
+				_last_squad_count == squad_count() &&
                 _squad.min_count > _created_count
 
 			) {
                 var _squad_name = _squad.squad;
-                _last_squad_count = array_length(obj_ini.squads) + 1;
+                _last_squad_count = squad_count() + 1;
                 var _results = _company_marines.create_squad(_squad_name, true, -1, true);
                 if (_results[0]){
                     var _new_squad = fetch_squad(_results[1]);
@@ -636,8 +647,8 @@ function game_start_squads(){
 
         var _squads_made = 0;
         var _squads_made_last = -1;
+
         while (_squads_made > _squads_made_last){
-            LOGGER.info($"squad marks : {_squads_made} , {_squads_made_last}")
             _squads_made_last = _squads_made
             for (var i = 0 ;i < array_length(_proportional); i++){
                 var _squad = _proportional[i];
@@ -657,86 +668,6 @@ function game_start_squads(){
 	}
 }
 
-/*function game_start_squads() {
-    obj_ini.squads = [];
-    var last_squad_count;
-    for (var company = 2; company < 10; company++) {
-        create_squad("command_squad", company);
-        last_squad_count = array_length(obj_ini.squads);
-        while (last_squad_count == array_length(obj_ini.squads)) {
-            ///keep making tact squads for as long as there are enough tact marines
-            if (scr_has_adv("Boarders")) {
-                last_squad_count = array_length(obj_ini.squads) + 1;
-                if (last_squad_count % 2 == 0) {
-                    create_squad("tactical_squad", company);
-                } else {
-                    create_squad("breachers", company);
-                }
-            } else {
-                last_squad_count = array_length(obj_ini.squads) + 1;
-                create_squad("tactical_squad", company);
-            }
-        }
-        last_squad_count = array_length(obj_ini.squads);
-        while (last_squad_count == array_length(obj_ini.squads)) {
-            ///keep making dev squads for as long as there are enough tact marines
-            last_squad_count = array_length(obj_ini.squads) + 1;
-            create_squad("devastator_squad", company);
-        }
-        last_squad_count = array_length(obj_ini.squads);
-        while (last_squad_count == array_length(obj_ini.squads)) {
-            if (scr_has_adv("Lightning Warriors")) {
-                last_squad_count = array_length(obj_ini.squads) + 1;
-                if (last_squad_count % 2 == 0) {
-                    create_squad("assault_squad", company);
-                } else {
-                    create_squad("bikers", company);
-                }
-            } else {
-                last_squad_count = array_length(obj_ini.squads) + 1;
-                create_squad("assault_squad", company);
-            }
-        }
-        if (obj_ini.equal_scouts) {
-            last_squad_count = array_length(obj_ini.squads);
-            while (last_squad_count == array_length(obj_ini.squads)) {
-                last_squad_count = array_length(obj_ini.squads) + 1;
-                create_squad("scout_squad", company);
-            }
-        }
-    }
-    company = 1;
-    create_squad("command_squad", company);
-    last_squad_count = array_length(obj_ini.squads);
-    while (last_squad_count == array_length(obj_ini.squads)) {
-        last_squad_count = array_length(obj_ini.squads) + 1;
-        if (last_squad_count % 2 == 0) {
-            create_squad("terminator_squad", company);
-        } else {
-            create_squad("terminator_assault_squad", company);
-        }
-    }
-    last_squad_count = array_length(obj_ini.squads);
-    while (last_squad_count == array_length(obj_ini.squads)) {
-        last_squad_count = array_length(obj_ini.squads) + 1;
-        create_squad("veteran_squad", company);
-    }
-    company = 10;
-    create_squad("command_squad", company);
-    last_squad_count = array_length(obj_ini.squads);
-    while (last_squad_count == array_length(obj_ini.squads)) {
-        ///keep making tact squads for as long as there are enough tact marines
-        last_squad_count = array_length(obj_ini.squads) + 1;
-        create_squad("scout_squad", company);
-    }
-
-    with (obj_ini) {
-        for (var i = 0; i <= 10; i++) {
-            scr_company_order(i);
-        }
-    }
-}
-*/
 function set_member_loc(loc_data) {
     var loc = loc_data.loc;
     var lid = loc_data.lid;

@@ -1601,7 +1601,9 @@ function scr_initialize_custom() {
     if (struct_exists(obj_creation, "squad_name")) {
         squad_name = obj_creation.squad_name;
     }
+
     squad_types = {};
+    
     var st = {
         "command_squad": [
             [
@@ -1656,7 +1658,7 @@ function scr_initialize_custom() {
                             ],
                             "wep2": [
                                 "Combat Knife",
-                                max
+                                "max"
                             ],
                         },
                         "option": {
@@ -1884,7 +1886,7 @@ function scr_initialize_custom() {
                             ],
                             "wep2": [
                                 "Combat Knife",
-                                max
+                                "max"
                             ],
                         },
                         "option": {
@@ -1912,7 +1914,7 @@ function scr_initialize_custom() {
                             ],
                             "wep2": [
                                 "Combat Knife",
-                                max
+                                "max"
                             ],
                         },
                         "option": {
@@ -2218,7 +2220,7 @@ function scr_initialize_custom() {
                             ],
                             "wep2": [
                                 "Combat Knife",
-                                max
+                                "max"
                             ],
                         },
                         "option": {
@@ -2366,7 +2368,7 @@ function scr_initialize_custom() {
                         "min": 4,
                         "loadout": {
                             //tactical marine
-                            "required": {"wep1": ["", max], "wep2": ["Chainsword", max], "mobi": ["Bike", max]},
+                            "required": {"wep1": ["", "max"], "wep2": ["Chainsword", "max"], "mobi": ["Bike", "max"]},
                         },
                         "role": $"Biker",
                     }
@@ -2378,7 +2380,7 @@ function scr_initialize_custom() {
                         "min": 1,
                         "loadout": {
                             //sergeant
-                            "required": {"wep1": ["", max], "wep2": ["Chainsword", max], "mobi": ["Bike", 1]},
+                            "required": {"wep1": ["", "max"], "wep2": ["Chainsword", "max"], "mobi": ["Bike", 1]},
                         },
                         "role": $"Biker {roles.sergeant}",
                     }
@@ -2400,7 +2402,7 @@ function scr_initialize_custom() {
                         "min": 4,
                         "loadout": {
                             //tactical breacher marine
-                            "required": {"wep1": [wep1[100][8], 7], "wep2": ["Boarding Shield", max], "armour": ["MK3 Iron Armour", max], "gear": ["Plasma Bomb", max], "mobi": ["", max]},
+                            "required": {"wep1": [wep1[100][8], 7], "wep2": ["Boarding Shield", "max"], "armour": ["MK3 Iron Armour", "max"], "gear": ["Plasma Bomb", "max"], "mobi": ["", "max"]},
                             "option": {"wep1": [[["Flamer", "Flamer", "Flamer", "Grav-Gun", "Meltagun", "Lascutter"], 2]]},
                         },
                         "role": $"Breacher",
@@ -2413,7 +2415,7 @@ function scr_initialize_custom() {
                         "min": 1,
                         "loadout": {
                             //sergeant
-                            "required": {"wep2": ["Boarding Shield", max], "armour": ["MK3 Iron Armour", max], "mobi": ["", max], "gear": ["Plasma Bomb", max]},
+                            "required": {"wep2": ["Boarding Shield", "max"], "armour": ["MK3 Iron Armour", "max"], "mobi": ["", "max"], "gear": ["Plasma Bomb", "max"]},
                             "option": {"wep1": [[WEAPON_LIST_RANGED_COMBI, 1]]},
                         },
                         "role": $"Breacher {roles.sergeant}",
@@ -2425,7 +2427,7 @@ function scr_initialize_custom() {
     }
 
     if (scr_has_adv("Assault Doctrine")) {
-        variable_struct_set(st, "veteran_squad", [[roles.veteran_sergeant, {"max": 1, "min": 1, "role": $"{roles.veteran_sergeant}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", max], "gear": ["Combat Shield", max]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 1]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 1]]}}}], [roles.veteran, {"max": 9, "min": 4, "role": $"{roles.veteran}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", max], "gear": ["Combat Shield", max]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 9]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 9]]}}}], ["type_data", {"display_data": $"{roles.veteran} {squad_name}", "formation_options": ["veteran", "assault", "devastator", "scout", "tactical"]}]]);
+        variable_struct_set(st, "veteran_squad", [[roles.veteran_sergeant, {"max": 1, "min": 1, "role": $"{roles.veteran_sergeant}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", "max"], "gear": ["Combat Shield", "max"]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 1]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 1]]}}}], [roles.veteran, {"max": 9, "min": 4, "role": $"{roles.veteran}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", "max"], "gear": ["Combat Shield", "max"]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 9]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 9]]}}}], ["type_data", {"display_data": $"{roles.veteran} {squad_name}", "formation_options": ["veteran", "assault", "devastator", "scout", "tactical"]}]]);
     }
 
     if (scr_has_adv("Devastator Doctrine")) {
@@ -2443,7 +2445,7 @@ function scr_initialize_custom() {
                         ],
                         "wep2": [
                             "Combat Knife",
-                            max
+                            "max"
                         ],
                     },
                     "option": {
@@ -3502,6 +3504,10 @@ function scr_initialize_custom() {
             }
         }
     }
+    //   ** sets up the starting squads**
+    LOGGER.info("set up the starting squads");
+    obj_ini.squads = {};
+    game_start_squads();
 }
 
 /// @description helper function to streamline code inside of scr_initialize_custom, should only be used as part of
@@ -3750,9 +3756,5 @@ function load_chapter_master_equipment() {
             }
         }
     }
-    //   ** sets up the starting squads**
-    LOGGER.info("set up the starting squads");
-    obj_ini.squads = {};
-    game_start_squads();
     return chapter_master_equip;
 }

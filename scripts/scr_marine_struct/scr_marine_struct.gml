@@ -1617,7 +1617,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static assignment = function() {
         if (squad != "none") {
             var _squad = get_squad();
-            if (obj__squad.assignment != "none") {
+            if (_squad.assignment != "none") {
                 return _squad.assignment.type;
             }
         }
@@ -2059,7 +2059,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static movement_after_math = function(end_company = company, end_slot = marine_number) {
         if (squad != "none") {
-            var squad_data = get_squad;
+            var squad_data = get_squad();
             var squad_member;
 
             for (var r = 0; r < array_length(squad_data.members); r++) {
@@ -2075,6 +2075,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                             end_slot
                         ];
                     }
+                    break;
                 }
             }
         }

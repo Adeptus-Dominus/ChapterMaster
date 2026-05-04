@@ -45,20 +45,21 @@ function CompanyStruct(comp) constructor {
         //array_copy(_squads, 0, obj_ini.squads, 0, array_length(obj_ini.squads));
         if (company >= 0) {
             company_squads = [];
-            var _cur_squad;
+            var _search_squad;
             var _squad_ids = get_squad_ids();
             for (var i = 0; i < array_length(_squad_ids); i++) {
-                _cur_squad = fetch_squad(_squad_ids[i]);
-                if (_cur_squad.base_company != company) {
+                _search_squad = fetch_squad(_squad_ids[i]);
+                if (_search_squad.base_company != company) {
                     continue;
                 }
-                _cur_squad.update_fulfilment();
-                if (bool(array_length(_cur_squad.members))) {
-                    array_push(company_squads, i);
+                _search_squad.update_fulfilment();
+                if (bool(array_length(_search_squad.members))) {
+                    array_push(company_squads, _search_squad);
                 }
             }
         }
         else if (company == -1) {
+            var _squad_ids = [];
             var _disp_units = obj_controller.display_unit;
             for (var i = 0; i < array_length(_disp_units); i++) {
                 var _unit = _disp_units[i];
@@ -66,23 +67,24 @@ function CompanyStruct(comp) constructor {
                     continue;
                 }
 
+                if (!struct_exists(obj_ini.squads,_unit.squad)) {
+                    _unit.squad = "none";
+                }
                 if (_unit.squad == "none") {
                     continue;
                 }
 
-                if (array_contains(company_squads, _unit.squad)) {
+                if (array_contains(_squad_ids, _unit.squad)) {
                     continue;
                 }
 
-                if (_unit.squad < array_length(obj_ini.squads)) {
-                    var _cur_squad = _squads[_unit.squad];
-                    _cur_squad.update_fulfilment();
-                    if (array_length(_cur_squad.members) > 0) {
-                        array_push(company_squads, _unit.squad);
-                    }
-                } else {
-                    _unit.squad = "none";
+                var _search_squad = _squads[$ _unit.squad];
+                _search_squad.update_fulfilment();
+                if (array_length(_search_squad.members) > 0) {
+                    array_push(company_squads, _search_squad);
+                    array_push(_search_squad.uid)
                 }
+
  
                 
             }
@@ -90,7 +92,7 @@ function CompanyStruct(comp) constructor {
         if (squad_location != "") {
             var _squads_len = array_length(company_squads);
             for (var i = _squads_len - 1; i >= 0; i--) {
-                var _squad = fetch_squad(company_squads[i]);
+                var _squad = company_squads[i];
                 var _squad_loc = _squad.squad_loci();
                 if (_squad_loc.system != squad_location) {
                     array_delete(company_squads, i, 1);
@@ -99,7 +101,7 @@ function CompanyStruct(comp) constructor {
         }
         has_squads = array_length(company_squads);
         if (has_squads) {
-            obj_controller.unit_focus = fetch_squad(company_squads[0]).fetch_member(0);
+            obj_controller.unit_focus = company_squads[0].fetch_member(0);
         }
     };
 
@@ -171,9 +173,10 @@ function CompanyStruct(comp) constructor {
         }
         var sprite_draw_delay = "none";
         var unit_sprite_coords = [];
-        for (var i = 0; i < array_length(current_squad.members); i++) {
-            member = fetch_unit(current_squad.members[i]);
-            if (!array_equals(squad_draw_surfaces[i][0], current_squad.members[i])) {
+        var _cur_squad = company_squads[current_squad];
+        for (var i = 0; i < array_length(_cur_squad.members); i++) {
+            member = fetch_unit(_cur_squad.members[i]);
+            if (!array_equals(squad_draw_surfaces[i][0], _cur_squad.members[i])) {
                 squad_draw_surfaces[i][0] = [
                     member.company,
                     member.marine_number
@@ -243,7 +246,8 @@ function CompanyStruct(comp) constructor {
 
     static draw_squad_assignment_options = function() {
         var _squad_sys = squad_loc.system;
-        if (current_squad.assignment == "none") {
+        var _cur_squad = company_squads[current_squad];
+        if (_cur_squad.assignment == "none") {
             draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 125, $"Squad has no current assignments", 1, 1, 0);
 
             var send_on_mission = false, mission_type;
@@ -254,7 +258,7 @@ function CompanyStruct(comp) constructor {
                 }
 
                 garrison_button.keystroke = press_exclusive(ord("G"));
-                if (array_contains(current_squad.class, "scout") || array_contains(current_squad.class, "bike")) {
+                if (array_contains(_cur_squad.class, "scout") || array_contains(_cur_squad.class, "bike")) {
                     if (sabotage_button.draw()) {
                         send_on_mission = true;
                         mission_type = "sabotage";
@@ -266,65 +270,67 @@ function CompanyStruct(comp) constructor {
             }
             bound_height[0] += 180;
         } else {
-            if (is_struct(current_squad.assignment)) {
-                var cur_assignment = current_squad.assignment;
-                draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 125, $"Assignment : {cur_assignment.type}", 1, 1, 0);
-                var tooltip_text = "Cancel Assignment";
-                var cancel_but = draw_unit_buttons([xx + bound_width[0] + 5, yy + bound_height[0] + 150], tooltip_text, [1, 1], c_red,,,, true);
-                if (point_and_click(cancel_but) || keyboard_check_pressed(ord("C"))) {
-                    var cancel_system = noone;
-                    with (obj_star) {
-                        if (name == _squad_sys) {
-                            cancel_system = self;
-                        }
+            if (!is_struct(_cur_squad.assignment)) {
+                return;
+            }
+            var cur_assignment = _cur_squad.assignment;
+            draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 125, $"Assignment : {cur_assignment.type}", 1, 1, 0);
+            var tooltip_text = "Cancel Assignment";
+            var cancel_but = draw_unit_buttons([xx + bound_width[0] + 5, yy + bound_height[0] + 150], tooltip_text, [1, 1], c_red,,,, true);
+            if (point_and_click(cancel_but) || keyboard_check_pressed(ord("C"))) {
+                var cancel_system = noone;
+                with (obj_star) {
+                    if (name == _squad_sys) {
+                        cancel_system = self;
                     }
-                    if (cancel_system != noone) {
-                        var planet = current_squad.assignment.ident;
-                        var operation;
-                        for (var i = 0; i < array_length(cancel_system.p_operatives[planet]); i++) {
-                            operation = cancel_system.p_operatives[planet][i];
-                            if (operation.type == "squad" && operation.reference == company_squads[_cur_squad]) {
-                                array_delete(cancel_system.p_operatives[planet], i, 1);
-                            }
-                        }
-                    }
-                    current_squad.assignment = "none";
                 }
-                bound_height[0] += 180;
-                if (cur_assignment.type == "garrison") {
-                    var garrison_but = draw_unit_buttons([cancel_but[2] + 10, cancel_but[1]], "View Garrison", [1, 1], c_red,,,, true);
-                    if (point_and_click(garrison_but)) {
-                        var garrrison_star = find_star_by_name(cur_assignment.location);
-                        obj_controller.view_squad = false;
-                        if (garrrison_star != "none") {
-                            scr_toggle_manage();
-                            obj_controller.x = garrrison_star.x;
-                            obj_controller.y = garrrison_star.y;
-                            obj_controller.selection_data = {
-                                system: garrrison_star.id,
-                                planet: cur_assignment.ident,
-                                feature: "",
-                            };
-                            garrrison_star.alarm[3] = 4;
+                if (cancel_system != noone) {
+                    var planet = _cur_squad.assignment.ident;
+                    var operation;
+                    for (var i = 0; i < array_length(cancel_system.p_operatives[planet]); i++) {
+                        operation = cancel_system.p_operatives[planet][i];
+                        if (operation.type == "squad" && operation.reference == _cur_squad.uid) {
+                            array_delete(cancel_system.p_operatives[planet], i, 1);
                         }
+                    }
+                }
+                _cur_squad.assignment = "none";
+            }
+            bound_height[0] += 180;
+            if (cur_assignment.type == "garrison") {
+                var garrison_but = draw_unit_buttons([cancel_but[2] + 10, cancel_but[1]], "View Garrison", [1, 1], c_red,,,, true);
+                if (point_and_click(garrison_but)) {
+                    var garrrison_star = find_star_by_name(cur_assignment.location);
+                    obj_controller.view_squad = false;
+                    if (garrrison_star != "none") {
+                        scr_toggle_manage();
+                        obj_controller.x = garrrison_star.x;
+                        obj_controller.y = garrrison_star.y;
+                        obj_controller.selection_data = {
+                            system: garrrison_star.id,
+                            planet: cur_assignment.ident,
+                            feature: "",
+                        };
+                        garrrison_star.alarm[3] = 4;
                     }
                 }
             }
+
         }
     };
 
     next_squad = function(up = true) {
         if (up) {
-            _cur_squad = _cur_squad + 1 >= array_length(company_squads) ? 0 : _cur_squad + 1;
+            current_squad = current_squad + 1 >= array_length(company_squads) ? 0 : current_squad + 1;
         } else {
-            _cur_squad = (_cur_squad - 1 < 0) ? array_length(company_squads) - 1 : _cur_squad - 1;
+            current_squad = (current_squad - 1 < 0) ? array_length(company_squads) - 1 : current_squad - 1;
         }
         member = grab_current_squad().members[0];
         obj_controller.unit_focus = fetch_unit(member);
     };
     squad_search();
 
-    _cur_squad = 0;
+    current_squad = -1;
     exit_period = false;
     unit_rollover = false;
     rollover_sequence = 0;
@@ -395,11 +401,11 @@ function CompanyStruct(comp) constructor {
     }
 
     static grab_current_squad = function() {
-        return fetch_squad(company_squads[_cur_squad]);
+        return company_squads[current_squad];
     };
 
     static default_member = function() {
-        var member = fetch_squad(company_squads[0]).members[0];
+        var member = company_squads[0].members[0];
         obj_controller.unit_focus = fetch_unit(member);
         selected_unit = obj_controller.unit_focus;
     };
@@ -417,130 +423,146 @@ function CompanyStruct(comp) constructor {
         yy = __view_get(e__VW.YView, 0) + 0;
         var member;
         selected_unit = obj_controller.unit_focus;
-        if (array_length(company_squads) > 0) {
-            if (selected_unit.company == company || company == -1) {
-                if (company_squads[_cur_squad] != selected_unit.squad) {
-                    var squad_found = false;
-                    for (var i = 0; i < array_length(company_squads); i++) {
-                        if (company_squads[i] == selected_unit.squad) {
-                            _cur_squad = i;
-                            squad_found = true;
-                            break;
-                        }
-                    }
-                    if (!squad_found) {
-                        default_member();
-                    }
-                }
-            } else {
-                default_member();
-            }
-        } else if (obj_controller.view_squad) {
+        if (array_length(company_squads) == 0) {
             obj_controller.view_squad = false;
             obj_controller.unit_profile = false;
+            return;
         }
+
+        if (current_squad == -1){
+            current_squad = 0;
+        }
+
+        if (selected_unit.company == company || company == -1) {
+            if (company_squads[current_squad].uid != selected_unit.squad) {
+                var squad_found = false;
+                for (var i = 0; i < array_length(company_squads); i++) {
+                    if (company_squads[i].uid == selected_unit.squad) {
+                        current_squad = i;
+                        squad_found = true;
+                        break;
+                    }
+                }
+                if (!squad_found) {
+                    default_member();
+                }
+            }
+        } else {
+            default_member();
+        }
+
         if (selected_unit.squad == "none") {
             default_member();
+            return;
+        }
+
+        var _cur_squad = selected_unit.get_squad();
+        bound_width = center_width;
+        bound_height = center_height;
+        draw_set_halign(fa_left);
+
+        if (array_length(company_squads) > 0) {
+            if (previous_squad_button.draw()) {
+                next_squad(false);
+            }
+            if (next_squad_button.draw()) {
+                next_squad();
+            }
+        }
+
+        draw_set_color(c_gray);
+        draw_set_alpha(1);
+        draw_set_halign(fa_center);
+        var _base_x = xx + bound_width[0] + ((bound_width[1] - bound_width[0]) / 2);
+        draw_text_transformed(_base_x - 6, yy + bound_height[0] + 6, $"{_cur_squad.display_name}", 1.5, 1.5, 0);
+        if (_cur_squad.nickname != "") {
+            draw_text_transformed(_base_x, yy + bound_height[0] + 30, $"{_cur_squad.display_name}", 1.5, 1.5, 0);
+        }
+
+        draw_set_halign(fa_left);
+        //should be moved elsewhere for efficiency
+        squad_leader = _cur_squad.determine_leader();
+        if (squad_leader != "none") {
+            var leader_text = $"Squad Leader : {fetch_unit(squad_leader).name_role()}";
+            draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 50, leader_text, 1, 1, 0);
+        }
+        squad_loc = _cur_squad.squad_loci();
+        draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 75, $"Squad Members : {_cur_squad.life_members}", 1, 1, 0);
+        draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 100, $"Squad Location : {squad_loc.text}", 1, 1, 0);
+
+        if (!squad_selection_mode()) {
+            draw_squad_assignment_options();
         } else {
-            current_squad = fetch_squad(selected_unit.squad);
-            bound_width = center_width;
-            bound_height = center_height;
-            draw_set_halign(fa_left);
-
-            if (array_length(company_squads) > 0) {
-                if (previous_squad_button.draw()) {
-                    next_squad(false);
-                }
-                if (next_squad_button.draw()) {
-                    next_squad();
-                }
+            var _select_action = false;
+            var _selected_squad = array_contains(selected_squads, _cur_squad.uid);
+            var _squad_button_dat = {
+                x1: xx + center_width[0] + 5,
+                y1: yy + center_height[0] + 150,
+                color: _selected_squad ? c_red : c_green,
+                label : _selected_squad? "De-select Squad" : "Select Squad",
             }
 
-            draw_set_color(c_gray);
-            draw_set_alpha(1);
-            draw_set_halign(fa_center);
-            draw_text_transformed(xx + bound_width[0] + ((bound_width[1] - bound_width[0]) / 2) - 6, yy + bound_height[0] + 6, $"{selected_unit.squad} {current_squad.display_name}", 1.5, 1.5, 0);
-            if (current_squad.nickname != "") {
-                draw_text_transformed(xx + bound_width[0] + ((bound_width[1] - bound_width[0]) / 2), yy + bound_height[0] + 30, $"{current_squad.display_name}", 1.5, 1.5, 0);
+            if (!_select_squad) {
+                _squad_button_dat.tooltip = obj_controller.selection_data.purpose;
+                _select_action = true;
             }
 
-            draw_set_halign(fa_left);
-            //should be moved elsewhere for efficiency
-            squad_leader = current_squad.determine_leader();
-            if (squad_leader != "none") {
-                var leader_text = $"Squad Leader : {fetch_unit(squad_leader).name_role()}";
-                draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 50, leader_text, 1, 1, 0);
-            }
-            squad_loc = current_squad.squad_loci();
-            draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 75, $"Squad Members : {current_squad.life_members}", 1, 1, 0);
-            draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 100, $"Squad Location : {squad_loc.text}", 1, 1, 0);
-
-            if (!squad_selection_mode()) {
-                draw_squad_assignment_options();
-            } else {
-                var _select_action = false;
-                if (array_contains(selected_squads, company_squads[_cur_squad])) {
-                    select_squad_button.update({color: c_red, label: "De-select Squad", x1: xx + center_width[0] + 5, y1: yy + center_height[0] + 150});
+            select_squad_button.update(_squad_button_dat);
+            if (select_squad_button.draw()) {
+                if (_select_action) {
+                    array_push(selected_squads, _cur_squad.uid);
                 } else {
-                    select_squad_button.update({color: c_green, label: "Select Squad", tooltip: obj_controller.selection_data.purpose, x1: xx + center_width[0] + 5, y1: yy + center_height[0] + 150});
-                    _select_action = true;
-                }
-                if (select_squad_button.draw()) {
-                    if (_select_action) {
-                        array_push(selected_squads, company_squads[_cur_squad]);
-                    } else {
-                        array_delete(selected_squads, array_find_value(selected_squads, company_squads[_cur_squad]), 1);
-                    }
+                    array_delete(selected_squads, array_find_value(selected_squads, _cur_squad.uid), 1);
                 }
             }
-            bound_height[0] += 125;
-            previous_squad_button.keystroke = press_exclusive(vk_left);
-            next_squad_button.keystroke = press_exclusive(vk_tab);
-            //TODO compartmentalise drop down option logic
-            var deploy_text = "Squad will deploy in the";
-            if (current_squad.formation_place != "") {
-                //draw_set_font(fnt_40k_14b)
-                draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0], deploy_text, 1, 1, 0);
-                button = draw_unit_buttons([xx + bound_width[0] + 5 + string_width(deploy_text), yy + bound_height[0] - 2], current_squad.formation_place, [1, 1], c_green,,,, true);
-                draw_set_color(c_red);
-                draw_text_transformed(xx + bound_width[0] + 5 + string_width(deploy_text) + string_width(current_squad.formation_place) + 9, yy + bound_height[0], "column", 1, 1, 0);
-                draw_set_color(c_gray);
-                if (array_length(current_squad.formation_options) > 1) {
-                    if (scr_hit(button)) {
-                        drop_down_open = true;
-                    }
-                    if (drop_down_open) {
-                        var roll_down_offset = 8 + string_height(current_squad.formation_place);
-                        for (var col = 0; col < array_length(current_squad.formation_options); col++) {
-                            if (current_squad.formation_options[col] == current_squad.formation_place) {
-                                continue;
-                            }
-                            button = draw_unit_buttons([button[0], button[3] + 2], current_squad.formation_options[col], [1, 1], c_red,,,, true);
-                            if (point_and_click(button)) {
-                                current_squad.formation_place = current_squad.formation_options[col];
-                                drop_down_open = false;
-                            }
-                            roll_down_offset += string_height(current_squad.formation_options[col]) + 4;
+        }
+        bound_height[0] += 125;
+        previous_squad_button.keystroke = press_exclusive(vk_left);
+        next_squad_button.keystroke = press_exclusive(vk_tab);
+        //TODO compartmentalise drop down option logic
+        var deploy_text = "Squad will deploy in the";
+        if (_cur_squad.formation_place != "") {
+            //draw_set_font(fnt_40k_14b)
+            draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0], deploy_text, 1, 1, 0);
+            button = draw_unit_buttons([xx + bound_width[0] + 5 + string_width(deploy_text), yy + bound_height[0] - 2], _cur_squad.formation_place, [1, 1], c_green,,,, true);
+            draw_set_color(c_red);
+            draw_text_transformed(xx + bound_width[0] + 5 + string_width(deploy_text) + string_width(_cur_squad.formation_place) + 9, yy + bound_height[0], "column", 1, 1, 0);
+            draw_set_color(c_gray);
+            if (array_length(_cur_squad.formation_options) > 1) {
+                if (scr_hit(button)) {
+                    drop_down_open = true;
+                }
+                if (drop_down_open) {
+                    var roll_down_offset = 8 + string_height(_cur_squad.formation_place);
+                    for (var col = 0; col < array_length(_cur_squad.formation_options); col++) {
+                        if (_cur_squad.formation_options[col] == _cur_squad.formation_place) {
+                            continue;
                         }
-                        if (!scr_hit(xx + bound_width[0] + 5 + string_width(deploy_text), yy + bound_height[0], xx + bound_width[0] + 13 + string_width(deploy_text) + string_width(current_squad.formation_place), yy + bound_height[0] + roll_down_offset)) {
+                        button = draw_unit_buttons([button[0], button[3] + 2], _cur_squad.formation_options[col], [1, 1], c_red,,,, true);
+                        if (point_and_click(button)) {
+                            _cur_squad.formation_place = _cur_squad.formation_options[col];
                             drop_down_open = false;
                         }
+                        roll_down_offset += string_height(_cur_squad.formation_options[col]) + 4;
+                    }
+                    if (!scr_hit(xx + bound_width[0] + 5 + string_width(deploy_text), yy + bound_height[0], xx + bound_width[0] + 13 + string_width(deploy_text) + string_width(_cur_squad.formation_place), yy + bound_height[0] + roll_down_offset)) {
+                        drop_down_open = false;
                     }
                 }
-                bound_height[0] += button[3] - button[1];
             }
-
-            if (reset_loadout_button.draw()) {
-                current_squad.sort_squad_loadout();
-                reset_squad_surface();
-            }
-
-            mass_equip_toggle.active = current_squad.allow_bulk_swap;
-            mass_equip_toggle.clicked();
-            mass_equip_toggle.draw();
-            current_squad.allow_bulk_swap = mass_equip_toggle.active;
-
-            draw_squad_unit_sprites();
+            bound_height[0] += button[3] - button[1];
         }
+
+        if (reset_loadout_button.draw()) {
+            _cur_squad.sort_squad_loadout();
+            reset_squad_surface();
+        }
+
+        mass_equip_toggle.active = _cur_squad.allow_bulk_swap;
+        mass_equip_toggle.clicked();
+        mass_equip_toggle.draw();
+        _cur_squad.allow_bulk_swap = mass_equip_toggle.active;
+
+        draw_squad_unit_sprites();
     };
 }
