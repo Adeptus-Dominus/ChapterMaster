@@ -428,7 +428,7 @@
           "role": "Breacher",
           "loadout": {
               "required": {
-                  "wep1": ["wep1[100][8]", 7],
+                  "wep1": ["wep1[8]", 7],
                   "wep2": ["Boarding Shield", "max"],
                   "armour": ["MK3 Iron Armour", "max"],
                   "gear": ["Plasma Bomb", "max"],
