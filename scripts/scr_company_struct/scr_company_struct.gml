@@ -48,7 +48,7 @@ function CompanyStruct(comp) constructor {
             var _cur_squad;
             var _squad_ids = get_squad_ids();
             for (var i = 0; i < array_length(_squad_ids); i++) {
-                _cur_squad = fetch_squad(_squad_ids[i];)
+                _cur_squad = fetch_squad(_squad_ids[i]);
                 if (_cur_squad.base_company != company) {
                     continue;
                 }
@@ -395,11 +395,11 @@ function CompanyStruct(comp) constructor {
     }
 
     static grab_current_squad = function() {
-        return obj_ini.squads[company_squads[_cur_squad]];
+        return fetch_squad(company_squads[_cur_squad]);
     };
 
     static default_member = function() {
-        var member = obj_ini.squads[company_squads[0]].members[0];
+        var member = fetch_squad(company_squads[0]).members[0];
         obj_controller.unit_focus = fetch_unit(member);
         selected_unit = obj_controller.unit_focus;
     };
@@ -442,7 +442,7 @@ function CompanyStruct(comp) constructor {
         if (selected_unit.squad == "none") {
             default_member();
         } else {
-            current_squad = obj_ini.squads[selected_unit.squad];
+            current_squad = fetch_squad(selected_unit.squad);
             bound_width = center_width;
             bound_height = center_height;
             draw_set_halign(fa_left);

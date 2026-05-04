@@ -1307,8 +1307,8 @@ function PlanetData(planet, system) constructor {
 
     static create_planet_garrison = function() {
         var company_data = obj_controller.company_data;
-        var squad_index = company_data.company_squads[company_data.cur_squad];
-        var current_squad = obj_ini.squads[squad_index];
+        var _squad_id = company_data.company_squads[company_data.cur_squad];
+        var current_squad = fetch_squad(_squad_id);
         current_squad.set_location(system.name, 0, planet);
         var _mission = obj_star_select.mission;
         current_squad.assignment = {
@@ -1318,7 +1318,7 @@ function PlanetData(planet, system) constructor {
         };
         var operation_data = {
             type: "squad",
-            reference: squad_index,
+            reference: _squad_id,
             job: _mission,
             task_time: 0,
         };

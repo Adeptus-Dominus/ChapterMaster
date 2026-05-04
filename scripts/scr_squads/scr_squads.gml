@@ -25,7 +25,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     type_data = {};
     formation_place = "";
     formation_options = [];
-    uid = "";
+    uid = scr_uuid_generate();
     allow_bulk_swap = true;
 
 
@@ -583,7 +583,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 // lots of room for customisation of different chapters here
 
 function game_start_squads(){
-    obj_ini.squads = [];
+    obj_ini.squads = {};
 	profiled_companies = [];
 
 	if (struct_exists(chapter_squad_arrangement, "companies")){
@@ -625,8 +625,10 @@ function game_start_squads(){
 			) {
                 var _squad_name = _squad.squad;
                 _last_squad_count = array_length(obj_ini.squads) + 1;
-                if (_company_marines.create_squad(_squad_name, true, -1, true)){
-                    obj_ini.squads[array_length(obj_ini.squads)- 1].base_company = comp_data.company;
+                var _results = _company_marines.create_squad(_squad_name, true, -1, true);
+                if (_results[0]){
+                    var _new_squad = fetch_squad(_results[1]);
+                    _new_squad.base_company = comp_data.company;
                     _created_count++;
                 }
             }
@@ -641,8 +643,10 @@ function game_start_squads(){
                 var _squad = _proportional[i];
                 var _squad_name = _squad.squad;
                 for (var s = 0; s < _squad.proportion; s++){
-                    if (_company_marines.create_squad(_squad_name, true, -1, true)){
-                        obj_ini.squads[array_length(obj_ini.squads ) - 1].base_company = comp_data.company;
+                    var _results = _company_marines.create_squad(_squad_name, true, -1, true);
+                    if (_results[0]){
+                        var _new_squad = fetch_squad(_results[1]);
+                        _new_squad.base_company = comp_data.company;
                         _squads_made++;
                     } else {
                         break;

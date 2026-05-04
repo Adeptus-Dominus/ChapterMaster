@@ -54,6 +54,25 @@ function UnitGroup(units) constructor{
 		return new UnitGroup(_wanted);
 	}
 
+	static highest_exp(){
+        var highest_exp = 0;
+        var exp_unit;
+        for (var i = 0; i < number(); i++) {
+        	var _unit = units[i];
+            if (i == 0) {
+                highest_exp = _unit.experience;
+                continue;
+            }
+
+            if (_unit.experience > highest_exp) {
+                highest_exp = _unit.experience;
+                exp_unit = _unit;
+            }
+        }
+
+        return exp_unit;
+	}
+
 	static kill_percent = function(kill_percent, equipment = true, gene_seed_collect = true){
 		var _kill_numb = floor((kill_percent/100) * number());
 		var _killed = 0;
@@ -102,7 +121,6 @@ function UnitGroup(units) constructor{
 		    	{
 		    		squadless : true,
 		    		role : _sgt_type,
-		    		squadless : true,
 		    		max_wanted : 1
 		    	}
 		    );
@@ -164,21 +182,9 @@ function UnitGroup(units) constructor{
 
 	    	var _sgt_type = sgt_types[s];
 	        if (struct_exists(squad_fulfilment, _sgt_type) && (!sergeant_found)) {
-	            var highest_exp = 0;
-	            var exp_unit;
+	        	
+	            var exp_unit = _members.highest_exp();
 	            
-	            for (var i = 0; i < _members.number(); i++) {
-	            	var _unit = _members.units[i];
-	                if (i == 0) {
-	                    highest_exp = _unit.experience;
-	                    continue;
-	                }
-
-	                if (_unit.experience > highest_exp) {
-	                    highest_exp = _unit.experience;
-	                    exp_unit = _unit;
-	                }
-	            }
 	            squad_fulfilment[$ _sgt_type]++;
 	        }
 	    }
@@ -186,7 +192,8 @@ function UnitGroup(units) constructor{
 	    //evaluate if the minimum unit type requirements have been met to create a new squad
 	    _fulfilled = true;
 	    for (var i = 0; i < array_length(squad_unit_types); i++) {
-	        if (squad_fulfilment[$ squad_unit_types[i]] < _fill_squad[$ squad_unit_types[i]][$ "min"]) {
+	    	var _unit_role = squad_unit_types[i];
+	        if (squad_fulfilment[$ _unit_role] < _fill_squad[$ _unit_role][$ "min"]) {
 	            fulfilled = false;
 	            break;
 	        }
@@ -204,24 +211,16 @@ function UnitGroup(units) constructor{
 	        squad.squad_fulfilment = squad_fulfilment;
 	        for (var i = 0; i < _members.number(); i++) {
 	            unit = _members.units[i];
-	            if (!squad_index) {
-	                unit.squad = squad_count;
-	            } else {
-	                unit.squad = squad_index;
-	            }
+	            unit.squad = squad.uid;
 	        }
-	        if (squad_index == -1) {
-	            array_push(obj_ini.squads, squad); //push squad to squads array thus creating squad
-	        } else {
-	            obj_ini.squads[squad_index] = squad;
-	        }
+	        obj_ini.squads[$ squad.uid] = squad;
 
 	        if (squad_loadout) {
-	            squad.sort_squad_loadout(false, false);
+	            squad.sort_squad_loadout(!game_start, !game_start);
 	        }
 	    }
 
-	    return _fulfilled;
+	    return [_fulfilled, squad.uid];
 	}
 }
 

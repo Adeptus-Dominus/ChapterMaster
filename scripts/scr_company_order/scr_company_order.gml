@@ -65,7 +65,7 @@ function sort_all_companies_to_map(map) {
 }
 
 /*takes a template of a role, required role number and if there are enough 
-of those units not in a squad creates a new squad of a given type*/
+of those units not in a _squad creates a new _squad of a given type*/
 function create_squad_from_squadless(squadless_and_squads, build_data, company) {
     var squadless = squadless_and_squads[0];
     var empty_squads = squadless_and_squads[1];
@@ -142,7 +142,7 @@ function scr_company_order(company) {
         var squadless = {};
 
         var _roles = active_roles();
-        // find units not in a squad
+        // find units not in a _squad
         for (i = company_length - 1; i >= 0; i--) {
             unit = fetch_unit([co, i]);
             if (!is_struct(unit)) {
@@ -165,22 +165,22 @@ function scr_company_order(company) {
         }
 
         //at this point check that all squads have the right types and numbers of units in them
-        var squad, wanted_roles;
+        var _squad, wanted_roles;
         var _squad_ids = get_squad_ids();
         for (i = 0; i < array_length(_squad_ids); i++) {
-            var _squad = obj_ini.squads[$ _squad_ids[i]]
+            var _squad = fetch_squad(_squad_ids[i]);
             if (_squad.base_company != co) {
                 if (array_length(_squad.members) == 0) {
                     array_push(empty_squads, i);
                 }
                 continue;
             }
-            squad = obj_ini.squads[i];
-            squad.update_fulfilment();
 
-            //squad has role spaces to fill
-            if (squad.has_space) {
-                wanted_roles = struct_get_names(squad.space);
+            _squad.update_fulfilment();
+
+            //_squad has role spaces to fill
+            if (_squad.has_space) {
+                wanted_roles = struct_get_names(_squad.space);
 
                 /* this finds sqauds that are in need of members and checks ot see if there 
 				are any squadless units in the chapter with
@@ -188,13 +188,13 @@ function scr_company_order(company) {
                 for (var r = array_length(wanted_roles) - 1; r >= 0; r--) {
                     var _wanted_role = wanted_roles[r];
                     if (struct_exists(squadless, _wanted_role)) {
-                        var _wanted_role_number = squad.space[$ _wanted_role];
+                        var _wanted_role_number = _squad.space[$ _wanted_role];
                         var _squadless_with_role = squadless[$ _wanted_role];
                         var _squadless_with_role_count = array_length(squadless[$ _wanted_role]);
 
-                        if (!squad.fulfilled) {
-                            if (struct_exists(squad.required, _wanted_role)) {
-                                var _needed_role_number = squad.required[$ _wanted_role];
+                        if (!_squad.fulfilled) {
+                            if (struct_exists(_squad.required, _wanted_role)) {
+                                var _needed_role_number = _squad.required[$ _wanted_role];
                                 while ((_squadless_with_role_count > 0) && (_needed_role_number > 0)) {
                                     var _marine_id = array_pop(_squadless_with_role);
                                     unit = fetch_unit([co, _marine_id]);
@@ -208,7 +208,7 @@ function scr_company_order(company) {
                                 }
                             }
                         }
-                        if (struct_exists(squad.space, _wanted_role)) {
+                        if (struct_exists(_squad.space, _wanted_role)) {
                             while ((_squadless_with_role_count > 0) && (_wanted_role_number > 0)) {
                                 var _marine_id = array_pop(_squadless_with_role);
                                 _squadless_with_role_count--;
@@ -219,29 +219,29 @@ function scr_company_order(company) {
                         }
                     }
                 }
-                //if no new sergeants are found for squad someone gets promoted
+                //if no new sergeants are found for _squad someone gets promoted
                 //find a new_sergeant
                 var _sarge = _roles[eROLE.SERGEANT];
-                if (struct_exists(squad.required, _sarge)) {
-                    if (squad.required[$ _sarge] > 0) {
-                        squad.new_sergeant();
-                        squad.required[$ _sarge]--;
+                if (struct_exists(_squad.required, _sarge)) {
+                    if (_squad.required[$ _sarge] > 0) {
+                        _squad.new_sergeant();
+                        _squad.required[$ _sarge]--;
                     }
                 }
                 //find a new veteran sergeant
                 var _vet_sarge = _roles[eROLE.VETERANSERGEANT];
-                if (struct_exists(squad.required, _vet_sarge)) {
-                    if (squad.required[$ _vet_sarge] > 0) {
-                        squad.new_sergeant(true);
-                        squad.required[$ _vet_sarge]--;
+                if (struct_exists(_squad.required, _vet_sarge)) {
+                    if (_squad.required[$ _vet_sarge] > 0) {
+                        _squad.new_sergeant(true);
+                        _squad.required[$ _vet_sarge]--;
                     }
                 }
                 for (var r = array_length(wanted_roles) - 1; r >= 0; r--) {
                     var _wanted_role = wanted_roles[r];
-                    if (struct_exists(squad.required, _wanted_role)) {
-                        if (squad.required[$ struct_exists] > 0) {
-                            var _mems = squad.get_members();
-                            squad.empty_squad();
+                    if (struct_exists(_squad.required, _wanted_role)) {
+                        if (_squad.required[$ struct_exists] > 0) {
+                            var _mems = _squad.get_members();
+                            _squad.empty_squad();
                             for (var m = 0; m < array_length(_mems); m++) {
                                 unit = _mems[m];
                                 if (unit.squad == "none" && unit.controllable()) {
@@ -305,7 +305,7 @@ function scr_company_order(company) {
             squadless_and_squad_spaces = create_squad_from_squadless(squadless_and_squad_spaces, squad_builder[i], co);
         }
 
-        //comand squads only get built to a max of one and are specialist so sit outside of general squad creation
+        //comand squads only get built to a max of one and are specialist so sit outside of general _squad creation
         if (struct_exists(squadless, _roles[eROLE.CAPTAIN]) && struct_exists(squadless, _roles[eROLE.CHAMPION]) && struct_exists(squadless, _roles[eROLE.ANCIENT])) {
             if ((array_length(squadless[$ _roles[eROLE.CAPTAIN]]) > 0) && (array_length(squadless[$ _roles[eROLE.CHAMPION]]) > 0) && (array_length(squadless[$ _roles[eROLE.ANCIENT]]) > 0)) {
                 new_squad_index = false;
@@ -344,7 +344,7 @@ function scr_company_order(company) {
                     array_delete(sorted_numbers, i, 1);
                     i--;
                     sort_length--;
-                    //if unit is part of a squad make sure rest of squad is grouped next to unit
+                    //if unit is part of a _squad make sure rest of _squad is grouped next to unit
                     if (unit.squad != "none") {
                         var cur_squad = unit.squad;
                         var r = -1;
