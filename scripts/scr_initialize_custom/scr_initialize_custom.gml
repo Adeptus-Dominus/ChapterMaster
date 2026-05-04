@@ -1412,6 +1412,7 @@ function scr_initialize_custom() {
     load_default_gear(eROLE.LIBRARIAN, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
     load_default_gear(eROLE.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.VETERANSERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
+    obj_ini.role[101] = obj_ini.role[100];
     if (scr_has_disadv("Psyker Intolerant")) {
         race[defaults_slot][eROLE.LIBRARIAN] = 0;
     }
@@ -1602,694 +1603,77 @@ function scr_initialize_custom() {
         squad_name = obj_creation.squad_name;
     }
 
-    squad_types = {};
-    
-    var st = {
-        "command_squad": [
-            [
-                roles.captain,
-                {
-                    "max": 1,
-                    "min": 1,
-                }
-            ],
-            [
-                roles.champion,
-                {
-                    "max": 1,
-                    "min": 0,
-                    "role": $"Company {roles.champion}",
-                }
-            ],
-            [
-                roles.apothecary,
-                {
-                    "max": 1,
-                    "min": 0,
-                    "role": $"Company {roles.apothecary}",
-                }
-            ],
-            [
-                roles.chaplain,
-                {
-                    "max": 1,
-                    "min": 0,
-                    "role": $"Company {roles.chaplain}",
-                }
-            ],
-            [
-                roles.ancient,
-                {
-                    "max": 1,
-                    "min": 1,
-                    "role": $"Company {roles.ancient}",
-                }
-            ],
-            [
-                roles.veteran,
-                {
-                    "max": 5,
-                    "min": 0,
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "",
-                                0
-                            ],
-                            "wep2": [
-                                "Combat Knife",
-                                "max"
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    WEAPON_LIST_RANGED_VETERAN,
-                                    5
-                                ]
-                            ],
-                        },
-                    },
-                    "role": $"Company {roles.veteran}",
-                }
-            ],
-            [
-                roles.techmarine,
-                {
-                    "max": 2,
-                    "min": 0,
-                    "role": $"Company {roles.techmarine}",
-                }
-            ],
-            [
-                roles.librarian,
-                {
-                    "max": 1,
-                    "min": 0,
-                    "role": $"Company {roles.librarian}",
-                }
-            ],
-            [
-                "type_data",
-                {
-                    "display_data": $"Command {squad_name}",
-                    "formation_options": [
-                        "command",
-                        "terminator",
-                        "veteran",
-                        "assault",
-                        "devastator",
-                        "scout",
-                        "tactical"
-                    ],
-                }
-            ]
-        ],
-        "terminator_squad": [
-            // Terminator Sergeant
-            [
-                roles.veteran_sergeant,
-                {
-                    "max": 1,
-                    "min": 1,
-                    "role": $"{roles.terminator} {roles.sergeant}",
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "",
-                                0
-                            ],
-                            "wep2": [
-                                "",
-                                0
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    [
-                                        "Power Fist",
-                                        "Chainfist"
-                                    ],
-                                    1
-                                ]
-                            ],
-                            "wep2": [
-                                [
-                                    WEAPON_LIST_RANGED_COMBI,
-                                    1
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            // Terminator
-            [
-                roles.terminator,
-                {
-                    "max": 4,
-                    "min": 2,
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "",
-                                0
-                            ],
-                            "wep2": [
-                                "",
-                                0
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    [
-                                        "Power Fist",
-                                        "Chainfist"
-                                    ],
-                                    4
-                                ]
-                            ],
-                            "wep2": [
-                                [
-                                    WEAPON_LIST_RANGED_COMBI,
-                                    3
-                                ]
-                            ],
-                            "wep2": [
-                                [
-                                    WEAPON_LIST_RANGED_HEAVY_TERMINATOR,
-                                    1
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            [
-                "type_data",
-                {
-                    "display_data": $"{roles.terminator} {squad_name}",
-                    "formation_options": [
-                        "terminator",
-                        "veteran",
-                        "assault",
-                        "devastator",
-                        "scout",
-                        "tactical"
-                    ],
-                }
-            ]
-        ],
-        "terminator_assault_squad": [
-            // Assault Terminator Sergeant
-            [
-                roles.veteran_sergeant,
-                {
-                    "max": 1,
-                    "min": 1,
-                    "role": $"Assault {roles.terminator} {roles.sergeant}",
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "Thunder Hammer",
-                                1
-                            ],
-                            "wep2": [
-                                "Storm Shield",
-                                1
-                            ],
-                        },
-                    },
-                }
-            ],
-            // Assault Terminator
-            [
-                roles.terminator,
-                {
-                    "max": 4,
-                    "min": 2,
-                    "role": $"Assault {roles.terminator}",
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "Thunder Hammer",
-                                1
-                            ],
-                            "wep2": [
-                                "Storm Shield",
-                                1
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    ["Lightning Claw"],
-                                    3,
-                                    {
-                                        "wep2": "Lightning Claw",
-                                    }
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            [
-                "type_data",
-                {
-                    "display_data": $"{roles.terminator} Assault {squad_name}",
-                    "formation_options": [
-                        "terminator",
-                        "veteran",
-                        "assault",
-                        "devastator",
-                        "scout",
-                        "tactical"
-                    ],
-                }
-            ]
-        ],
-        "veteran_squad": [
-            [
-                roles.veteran_sergeant,
-                {
-                    "max": 1,
-                    "min": 1,
-                    "role": $"{roles.veteran_sergeant}",
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "",
-                                0
-                            ],
-                            "wep2": [
-                                "Combat Knife",
-                                "max"
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    WEAPON_LIST_RANGED_VETERAN,
-                                    1
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            [
-                roles.veteran,
-                {
-                    "max": 9,
-                    "min": 4,
-                    "role": $"{roles.veteran}",
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "",
-                                0
-                            ],
-                            "wep2": [
-                                "Combat Knife",
-                                "max"
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    WEAPON_LIST_RANGED_VETERAN,
-                                    7
-                                ],
-                                [
-                                    WEAPON_LIST_RANGED_SPECIAL,
-                                    1
-                                ],
-                                [
-                                    WEAPON_LIST_RANGED_HEAVY,
-                                    1,
-                                    {
-                                        "mobi": "Heavy Weapons Pack",
-                                    }
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            [
-                "type_data",
-                {
-                    "display_data": $"{roles.veteran} {squad_name}",
-                    "formation_options": [
-                        "veteran",
-                        "assault",
-                        "devastator",
-                        "scout",
-                        "tactical"
-                    ],
-                }
-            ]
-        ],
-        "devastator_squad": [
-            [
-                roles.devastator,
-                {
-                    "max": 9,
-                    "min": 4,
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "Bolter",
-                                5
-                            ],
-                            "wep2": [
-                                "Combat Knife",
-                                9
-                            ],
-                            "mobi": [
-                                "",
-                                5
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    WEAPON_LIST_RANGED_HEAVY,
-                                    4,
-                                    {
-                                        "mobi": "Heavy Weapons Pack",
-                                    }
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            [
-                roles.sergeant,
-                {
-                    "max": 1,
-                    "min": 1,
-                    "role": $"{roles.devastator} {roles.sergeant}",
-                    "loadout": {
-                        "required": {
-                            "wep2": [
-                                "Combat Knife",
-                                1
-                            ],
-                            "mobi": [
-                                "",
-                                0
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    WEAPON_LIST_RANGED,
-                                    1
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            [
-                "type_data",
-                {
-                    "display_data": $"{roles.devastator} {squad_name}",
-                    "formation_options": [
-                        "devastator",
-                        "tactical",
-                        "assault",
-                        "scout"
-                    ],
-                }
-            ]
-        ],
-        "tactical_squad": [
-            [
-                roles.tactical,
-                {
-                    "max": 9,
-                    "min": 4,
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                wep1[100][8],
-                                7
-                            ],
-                            "wep2": [
-                                wep2[100][8],
-                                7
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    WEAPON_LIST_RANGED_SPECIAL,
-                                    1
-                                ],
-                                [
-                                    WEAPON_LIST_RANGED_HEAVY,
-                                    1,
-                                    {
-                                        "wep2": "Combat Knife",
-                                        "mobi": "Heavy Weapons Pack",
-                                    }
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            [
-                roles.sergeant,
-                {
-                    "max": 1,
-                    "min": 1,
-                    "role": $"{roles.tactical} {roles.sergeant}",
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "",
-                                0
-                            ],
-                            "wep2": [
-                                "",
-                                0
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    WEAPON_LIST_RANGED_PISTOLS_LONG,
-                                    1
-                                ]
-                            ],
-                            "wep2": [
-                                [
-                                    WEAPON_LIST_MELEE_BASIC,
-                                    1
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            [
-                "type_data",
-                {
-                    "display_data": $"{roles.tactical} {squad_name}",
-                    "formation_options": [
-                        "tactical",
-                        "assault",
-                        "devastator",
-                        "scout"
-                    ],
-                    "class": ["troop"],
-                }
-            ]
-        ],
-        "assault_squad": [
-            [
-                roles.assault,
-                {
-                    "max": 9,
-                    "min": 4,
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                wep1[100][10],
-                                5
-                            ],
-                            "wep2": [
-                                wep2[100][10],
-                                5
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    ["Eviscerator"],
-                                    2,
-                                    {
-                                        "wep2": "",
-                                    }
-                                ]
-                            ],
-                            "wep2": [
-                                [
-                                    [
-                                        "Flamer",
-                                        "Flamer",
-                                        "Flamer",
-                                        "Plasma Pistol"
-                                    ],
-                                    2
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            [
-                roles.sergeant,
-                {
-                    "max": 1,
-                    "min": 1,
-                    "role": $"{roles.assault} {roles.sergeant}",
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "",
-                                0
-                            ],
-                            "wep2": [
-                                "",
-                                0
-                            ],
-                            "gear": [
-                                "Combat Shield",
-                                1
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    WEAPON_LIST_RANGED_PISTOLS,
-                                    1
-                                ]
-                            ],
-                            "wep2": [
-                                [
-                                    WEAPON_LIST_MELEE_1H,
-                                    1
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            [
-                "type_data",
-                {
-                    "display_data": $"{roles.assault} {squad_name}",
-                    "formation_options": [
-                        "assault",
-                        "tactical",
-                        "devastator",
-                        "scout"
-                    ],
-                }
-            ]
-        ],
-        "scout_squad": [
-            [
-                roles.scout,
-                {
-                    "max": 9,
-                    "min": 4,
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "",
-                                0
-                            ],
-                            "wep2": [
-                                "Combat Knife",
-                                "max"
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    [
-                                        "Bolter",
-                                        "Bolter",
-                                        "Shotgun",
-                                        "Sniper Rifle",
-                                        "Stalker Pattern Bolter"
-                                    ],
-                                    8
-                                ],
-                                [
-                                    [
-                                        "Missile Launcher",
-                                        "Heavy Bolter"
-                                    ],
-                                    1
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ],
-            [
-                roles.sergeant,
-                {
-                    "max": 1,
-                    "min": 1,
-                    "loadout": {
-                        "required": {
-                            "wep1": [
-                                "",
-                                0
-                            ],
-                            "wep2": [
-                                "Combat Knife",
-                                1
-                            ],
-                        },
-                        "option": {
-                            "wep1": [
-                                [
-                                    WEAPON_LIST_RANGED,
-                                    1
-                                ]
-                            ],
-                        },
-                    },
-                    "role": $"{roles.scout} {roles.sergeant}",
-                }
-            ],
-            [
-                "type_data",
-                {
-                    "display_data": $"{roles.scout} {squad_name}",
-                    "class": ["scout"],
-                    "formation_options": [
-                        "scout",
-                        "tactical",
-                        "assault",
-                        "devastator"
-                    ],
-                }
-            ]
-        ],
-    };
+    squad_types = json_to_gamemaker(working_directory + $"main\\squads\\base_squads.json", json_parse);
+    var _swaps = [
+        // ── Heavy Ranged ──────────────────────────────────────────────
+        { "{WEAPON_LIST_RANGED_HEAVY_TERMINATOR}"  : WEAPON_LIST_RANGED_HEAVY_TERMINATOR },
+        { "{WEAPON_LIST_RANGED_HEAVY_LONG}"        : WEAPON_LIST_RANGED_HEAVY_LONG },
+        { "{WEAPON_LIST_RANGED_HEAVY_ASSAULT}"     : WEAPON_LIST_RANGED_HEAVY_ASSAULT },
+        { "{WEAPON_LIST_RANGED_HEAVY}"             : WEAPON_LIST_RANGED_HEAVY },
+        { "{WEAPON_LIST_RANGED_HEAVY_VETERAN}"     : WEAPON_LIST_RANGED_HEAVY_VETERAN },
+
+        // ── Special Ranged ────────────────────────────────────────────
+        { "{WEAPON_LIST_RANGED_SPECIAL_LONG}"      : WEAPON_LIST_RANGED_SPECIAL_LONG },
+        { "{WEAPON_LIST_RANGED_SPECIAL_ASSAULT}"   : WEAPON_LIST_RANGED_SPECIAL_ASSAULT },
+        { "{WEAPON_LIST_RANGED_SPECIAL}"           : WEAPON_LIST_RANGED_SPECIAL },
+
+        // ── Combi Ranged ──────────────────────────────────────────────
+        { "{WEAPON_LIST_RANGED_COMBI_LONG}"        : WEAPON_LIST_RANGED_COMBI_LONG },
+        { "{WEAPON_LIST_RANGED_COMBI_ASSAULT}"     : WEAPON_LIST_RANGED_COMBI_ASSAULT },
+        { "{WEAPON_LIST_RANGED_COMBI}"             : WEAPON_LIST_RANGED_COMBI },
+
+        // ── Pistols ───────────────────────────────────────────────────
+        { "{WEAPON_LIST_RANGED_PISTOLS_LONG}"      : WEAPON_LIST_RANGED_PISTOLS_LONG },
+        { "{WEAPON_LIST_RANGED_PISTOLS_ASSAULT}"   : WEAPON_LIST_RANGED_PISTOLS_ASSAULT },
+        { "{WEAPON_LIST_RANGED_PISTOLS}"           : WEAPON_LIST_RANGED_PISTOLS },
+
+        // ── General Ranged ────────────────────────────────────────────
+        { "{WEAPON_LIST_RANGED_VETERAN}"           : WEAPON_LIST_RANGED_VETERAN },
+        { "{WEAPON_LIST_RANGED}"                   : WEAPON_LIST_RANGED },
+
+        // ── Melee ─────────────────────────────────────────────────────
+        { "{WEAPON_LIST_MELEE_BASIC}"              : WEAPON_LIST_MELEE_BASIC },
+        { "{WEAPON_LIST_MELEE_1H}"                 : WEAPON_LIST_MELEE_1H },
+        { "{WEAPON_LIST_MELEE_HEAVY}"              : WEAPON_LIST_MELEE_HEAVY },
+        { "{WEAPON_LIST_MELEE_VETERAN}"            : WEAPON_LIST_MELEE_VETERAN },
+
+        // ── Weighted ──────────────────────────────────────────────────
+        { "{WEAPON_LIST_WEIGHTED_RANGED_PISTOLS}"  : WEAPON_LIST_WEIGHTED_RANGED_PISTOLS },
+    ];
+    var _roles_player = obj_ini.role[100];
+    var _default_player = obj_ini.role[101];
+    for (var i=1; i < 20; i++){
+        if (_roles_player[i] == ""){
+            continue;
+        }
+
+        if (_default_player[i] == ""){
+            continue;
+        }
+		var _set = {};
+		variable_struct_set(_set,_default_player[i],_roles_player[i]);
+
+        array_push(_swaps, _set);
+    }
+
+    for (i=1; i < 20; i++){
+        var _set = {};
+        var _key = $"wep1[{i}]";
+        var _val = obj_ini.wep1[100][i];
+        variable_struct_set(_set,_key,_val);
+        array_push(_swaps, _set);
+
+        var _set = {};
+        _key = $"wep2[{i}]";
+        _val = obj_ini.wep2[100][i];
+        variable_struct_set(_set,_key,_val);
+
+        array_push(_swaps, _set);
+    }
+
+    json_inject_swaps(squad_types, _swaps);
+
+
 
     // LOGGER.debug($"squads object for chapter {chapter_name}");
     // LOGGER.debug($"{st}");
@@ -2318,45 +1702,38 @@ function scr_initialize_custom() {
     // LOGGER.debug($"{st}");
 
     if (global.chapter_name == "Salamanders") {
-        st[$ "assault_squad"][0] = [
-            roles.assault,
-            {
-                "max": 9,
-                "min": 4,
-                "loadout": {
-                    "required": {
-                        "wep1": [
-                            wep1[100][10],
-                            5
-                        ],
-                        "wep2": [
-                            wep2[100][10],
-                            5
-                        ],
-                    },
-                    "option": {
-                        "wep1": [
-                            [
-                                ["Eviscerator"],
-                                2,
-                                {
-                                    "wep2": "",
-                                }
-                            ]
-                        ],
-                        "wep2": [
-                            [
-                                ["Flamer"],
-                                2
-                            ]
-                        ],
-                    },
-                },
-            }
-        ];
+        squad_types.assault_squad.loadout = {
+            "required": {
+                "wep1": [
+                    wep1[100][10],
+                    5
+                ],
+                "wep2": [
+                    wep2[100][10],
+                    5
+                ],
+            },
+            "option": {
+                "wep1": [
+                    [
+                        ["Eviscerator"],
+                        2,
+                        {
+                            "wep2": "",
+                        }
+                    ]
+                ],
+                "wep2": [
+                    [
+                        ["Flamer"],
+                        2
+                    ]
+                ],
+            },
+        }
     }
 
-    if (scr_has_adv("Lightning Warriors")) {
+    /*if (scr_has_adv("Lightning Warriors")) {
         variable_struct_set(
             st,
             "bikers",
@@ -2468,37 +1845,11 @@ function scr_initialize_custom() {
         ];
     }
 
-    var _squad_names = struct_get_names(st);
-    // LOGGER.debug($" {squad_names}");
-    // LOGGER.debug($"^^^ Squad names");
-
-    for (var st_iter = 0; st_iter < array_length(_squad_names); st_iter++) {
-        var _squad_name = _squad_names[st_iter];
-        var _squad_data = st[$ _squad_name];
-        squad_types[$ _squad_name] = {};
-        var _new_squad_data = squad_types[$ _squad_name];
-        // Guard: ensure array and entries are well-formed before indexing
-        if (!is_array(_squad_data)) {
-            continue;
-        }
-        var _len = array_length(_squad_data);
-        for (var iter_2 = 0; iter_2 < _len; iter_2++) {
-            var _entry = _squad_data[iter_2];
-            if (!is_array(_entry) || array_length(_entry) < 2) {
-                continue;
-            }
-            var _data_name = _entry[0];
-            if (!is_string(_data_name) || _data_name == "") {
-                continue;
-            }
-            _new_squad_data[$ _data_name] = _entry[1];
-        }
-    }
-
     if (scr_has_adv("Ambushers")) {
         var _class_data = squad_types.tactical_squad.type_data.class;
         array_push(_class_data, "scout");
     }
+    */
     // LOGGER.debug("Squad types");
     // LOGGER.debug(squad_types);
     #endregion
