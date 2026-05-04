@@ -45,37 +45,46 @@ function CompanyStruct(comp) constructor {
         //array_copy(_squads, 0, obj_ini.squads, 0, array_length(obj_ini.squads));
         if (company >= 0) {
             company_squads = [];
-            var cur_squad;
-            for (var i = 0; i < array_length(_squads); i++) {
-                cur_squad = _squads[i];
-                if (cur_squad.base_company != company) {
+            var _cur_squad;
+            var _squad_ids = get_squad_ids();
+            for (var i = 0; i < array_length(_squad_ids); i++) {
+                _cur_squad = fetch_squad(_squad_ids[i];)
+                if (_cur_squad.base_company != company) {
                     continue;
                 }
-                cur_squad.update_fulfilment();
-                if (array_length(_squads[i].members) > 0 && _squads[i].base_company == company) {
+                _cur_squad.update_fulfilment();
+                if (bool(array_length(_cur_squad.members))) {
                     array_push(company_squads, i);
                 }
             }
-        } else if (company == -1) {
+        }
+        else if (company == -1) {
             var _disp_units = obj_controller.display_unit;
             for (var i = 0; i < array_length(_disp_units); i++) {
                 var _unit = _disp_units[i];
-                if (!is_array(_unit)) {
-                    if (_unit.squad != "none") {
-                        if (array_contains(company_squads, _unit.squad)) {
-                            continue;
-                        }
-                        if (_unit.squad < array_length(obj_ini.squads)) {
-                            var cur_squad = _squads[_unit.squad];
-                            cur_squad.update_fulfilment();
-                            if (array_length(cur_squad.members) > 0) {
-                                array_push(company_squads, _unit.squad);
-                            }
-                        } else {
-                            _unit.squad = "none";
-                        }
-                    }
+                if (is_array(_unit)) {
+                    continue;
                 }
+
+                if (_unit.squad == "none") {
+                    continue;
+                }
+
+                if (array_contains(company_squads, _unit.squad)) {
+                    continue;
+                }
+
+                if (_unit.squad < array_length(obj_ini.squads)) {
+                    var _cur_squad = _squads[_unit.squad];
+                    _cur_squad.update_fulfilment();
+                    if (array_length(_cur_squad.members) > 0) {
+                        array_push(company_squads, _unit.squad);
+                    }
+                } else {
+                    _unit.squad = "none";
+                }
+ 
+                
             }
         }
         if (squad_location != "") {
@@ -274,7 +283,7 @@ function CompanyStruct(comp) constructor {
                         var operation;
                         for (var i = 0; i < array_length(cancel_system.p_operatives[planet]); i++) {
                             operation = cancel_system.p_operatives[planet][i];
-                            if (operation.type == "squad" && operation.reference == company_squads[cur_squad]) {
+                            if (operation.type == "squad" && operation.reference == company_squads[_cur_squad]) {
                                 array_delete(cancel_system.p_operatives[planet], i, 1);
                             }
                         }
@@ -306,16 +315,16 @@ function CompanyStruct(comp) constructor {
 
     next_squad = function(up = true) {
         if (up) {
-            cur_squad = cur_squad + 1 >= array_length(company_squads) ? 0 : cur_squad + 1;
+            _cur_squad = _cur_squad + 1 >= array_length(company_squads) ? 0 : _cur_squad + 1;
         } else {
-            cur_squad = (cur_squad - 1 < 0) ? array_length(company_squads) - 1 : cur_squad - 1;
+            _cur_squad = (_cur_squad - 1 < 0) ? array_length(company_squads) - 1 : _cur_squad - 1;
         }
         member = grab_current_squad().members[0];
         obj_controller.unit_focus = fetch_unit(member);
     };
     squad_search();
 
-    cur_squad = 0;
+    _cur_squad = 0;
     exit_period = false;
     unit_rollover = false;
     rollover_sequence = 0;
@@ -386,7 +395,7 @@ function CompanyStruct(comp) constructor {
     }
 
     static grab_current_squad = function() {
-        return obj_ini.squads[company_squads[cur_squad]];
+        return obj_ini.squads[company_squads[_cur_squad]];
     };
 
     static default_member = function() {
@@ -410,11 +419,11 @@ function CompanyStruct(comp) constructor {
         selected_unit = obj_controller.unit_focus;
         if (array_length(company_squads) > 0) {
             if (selected_unit.company == company || company == -1) {
-                if (company_squads[cur_squad] != selected_unit.squad) {
+                if (company_squads[_cur_squad] != selected_unit.squad) {
                     var squad_found = false;
                     for (var i = 0; i < array_length(company_squads); i++) {
                         if (company_squads[i] == selected_unit.squad) {
-                            cur_squad = i;
+                            _cur_squad = i;
                             squad_found = true;
                             break;
                         }
@@ -470,7 +479,7 @@ function CompanyStruct(comp) constructor {
                 draw_squad_assignment_options();
             } else {
                 var _select_action = false;
-                if (array_contains(selected_squads, company_squads[cur_squad])) {
+                if (array_contains(selected_squads, company_squads[_cur_squad])) {
                     select_squad_button.update({color: c_red, label: "De-select Squad", x1: xx + center_width[0] + 5, y1: yy + center_height[0] + 150});
                 } else {
                     select_squad_button.update({color: c_green, label: "Select Squad", tooltip: obj_controller.selection_data.purpose, x1: xx + center_width[0] + 5, y1: yy + center_height[0] + 150});
@@ -478,9 +487,9 @@ function CompanyStruct(comp) constructor {
                 }
                 if (select_squad_button.draw()) {
                     if (_select_action) {
-                        array_push(selected_squads, company_squads[cur_squad]);
+                        array_push(selected_squads, company_squads[_cur_squad]);
                     } else {
-                        array_delete(selected_squads, array_find_value(selected_squads, company_squads[cur_squad]), 1);
+                        array_delete(selected_squads, array_find_value(selected_squads, company_squads[_cur_squad]), 1);
                     }
                 }
             }

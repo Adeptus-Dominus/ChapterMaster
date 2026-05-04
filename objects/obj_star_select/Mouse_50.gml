@@ -45,7 +45,7 @@ if (__b__) {
                     if (obj_controller.menu == 1 && obj_controller.view_squad) {
                         var company_data = obj_controller.company_data;
                         var squad_index = company_data.company_squads[company_data.cur_squad];
-                        var current_squad = obj_ini.squads[squad_index];
+                        var current_squad = obj_ini.squads[$ squad_index];
                         if (sel_plan > 0) {
                             var planet = sel_plan;
                             for (var i = 0; i < array_length(target.p_operatives[planet]); i++) {

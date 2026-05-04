@@ -11,16 +11,16 @@ try {
             if (role_number[co] > 0) {
                 for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
                     if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
-                        var unit = fetch_unit([co, i]);
-                        if (unit.squad != "none") {
-                            var _squad = fetch_squad(unit.squad);
+                        var _unit = fetch_unit([co, i]);
+                        if (_unit.squad != "none") {
+                            var _squad = fetch_squad(_unit.squad);
                             if (!_squad.allow_bulk_swap) {
                                 continue;
                             }
                         }
 
                         // ** Start Armour **
-                        var unit_armour = unit.get_armour_data();
+                        var unit_armour = _unit.get_armour_data();
                         var has_valid_armour = is_struct(unit_armour);
 
                         // Check if unit_armour is a struct and evaluate tag-based or name-based compatibility
@@ -39,45 +39,45 @@ try {
 
                         // Attempt to equip if not valid
                         if (!has_valid_armour) {
-                            var result = unit.update_armour(req_armour);
+                            var result = _unit.update_armour(req_armour);
 
                             // Fallback: If request was for Power Armour but update failed, try Terminator
                             if (result != "complete" && req_armour == STR_ANY_POWER_ARMOUR) {
-                                unit.update_armour(STR_ANY_TERMINATOR_ARMOUR);
+                                _unit.update_armour(STR_ANY_TERMINATOR_ARMOUR);
                             }
 
                             // Refresh unit_armour after update
-                            unit_armour = unit.get_armour_data();
+                            unit_armour = _unit.get_armour_data();
                         }
                         // ** End Armour **
 
                         // ** Start Weapons **
-                        if (unit.weapon_one() != req_wep1) {
-                            if (is_string(unit.weapon_one(true))) {
-                                if (can_assign_weapon(unit, req_wep1)) {
-                                    unit.update_weapon_one(req_wep1);
+                        if (_unit.weapon_one() != req_wep1) {
+                            if (is_string(_unit.weapon_one(true))) {
+                                if (can_assign_weapon(_unit, req_wep1)) {
+                                    _unit.update_weapon_one(req_wep1);
                                 }
                             }
                         }
-                        if (unit.weapon_two() != req_wep2) {
-                            if (is_string(unit.weapon_two(true))) {
-                                if (can_assign_weapon(unit, req_wep2)) {
-                                    unit.update_weapon_two(req_wep2);
+                        if (_unit.weapon_two() != req_wep2) {
+                            if (is_string(_unit.weapon_two(true))) {
+                                if (can_assign_weapon(_unit, req_wep2)) {
+                                    _unit.update_weapon_two(req_wep2);
                                 }
                             }
                         }
                         // ** Start Gear **
-                        if (is_string(unit.gear(true))) {
-                            unit.update_gear(req_gear);
+                        if (is_string(_unit.gear(true))) {
+                            _unit.update_gear(req_gear);
                         }
 
                         // ** Start Mobility Items **
-                        if (unit.mobility_item() != req_mobi) {
+                        if (_unit.mobility_item() != req_mobi) {
                             var _forbidden_tags = ["terminator", "dreadnought"];
                             if (is_struct(unit_armour) && unit_armour.has_tags(_forbidden_tags)) {
-                                unit.update_mobility_item("");
+                                _unit.update_mobility_item("");
                             } else {
-                                unit.update_mobility_item(req_mobi);
+                                _unit.update_mobility_item(req_mobi);
                             }
                         }
                         // ** End role check **

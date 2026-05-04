@@ -5,7 +5,11 @@ the requested squad type , if the squad is not possible it will  not be made*/
 //squad_loadout: true if you want to use the squad loadout sorting algorithem to re-equip the squad in accordance with the squad type loadout
 
 function fetch_squad(array_id) {
-    return obj_ini.squads[array_id];
+    return obj_ini.squads[$ array_id];
+}
+
+function get_squad_ids(){
+    return struct_get_names(obj_ini.squads);
 }
 
 function create_squad(squad_type, company, squad_loadout = true, squad_index = false) {
@@ -29,6 +33,7 @@ function create_squad(squad_type, company, squad_loadout = true, squad_index = f
     for (var s = 0; s < 2; s++) {
         if (struct_exists(squad_fulfilment, sgt_types[s])) {
             sergeant_found = false;
+            collect_chapter(company)
             for (var i = 0; i < array_length(obj_ini.TTRPG[company]); i++) {
                 if (!is_struct(obj_ini.TTRPG[company][i])) {
                     obj_ini.TTRPG[company][i] = new TTRPG_stats("chapter", company, i, "blank");
