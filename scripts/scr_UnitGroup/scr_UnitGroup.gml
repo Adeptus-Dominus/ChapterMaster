@@ -75,6 +75,154 @@ function UnitGroup(units) constructor{
 			unit_func(units[i]);
 		}
 	}
+
+	var _roles = active_roles();
+	static sgt_types = role_groups(SPECIALISTS_RANK_AND_FILE);
+
+	static create_squad = function(squad_type, squad_loadout = true, squad_index = -1, game_start = false){
+
+		var roles = active_roles();
+
+	    var squad = new UnitSquad(squad_type);
+
+	    var squad_fulfilment = squad.squad_fulfilment;
+
+	    var sergeant_found = false;
+
+	    var squad_unit_types = squad.find_squad_unit_types();
+
+	    var _fill_squad = obj_ini.squad_types[$ squad_type];
+
+	    var _fulfilled = false;
+
+	    for (var s = 0; s < 2; s++) {
+
+	    	var _sgt_type = sgt_types[s];
+	    	var _available_sgt = get_from(
+		    	{
+		    		squadless : true,
+		    		role : _sgt_type,
+		    		squadless : true,
+		    		max_wanted : 1
+		    	}
+		    );
+		    if (_available_sgt.number() == 0){
+		    	continue;
+		    }
+
+		    var _sgt = _available_sgt.units[0];
+		    squad.add_member(_sgt);
+		    squad_fulfilment[$ _sgt_type] += 1;
+		    sergeant_found = true;
+	    }
+
+	    var _squadless = get_from(
+	    	{
+	    		squadless : true,
+	    		roles : squad_unit_types
+	    	}
+	    );
+	    for (var i = 0; i < array_length(_squadless); i++) {
+	        //fill squad roles
+
+	        unit = _squadless[i]
+
+	            //if no sergeant found add one marine to standard marine selection so that a marine can be promoted
+
+	        var _has_sgt_requirements = false;
+			for (var s = 0; s < 2; s++) {
+	    		var _sgt_type = sgt_types[s];
+	    		if (array_contains(squad_unit_types,_sgt_type)){
+	    			_has_sgt_requirements = true;
+	    		}
+	    	}
+
+	    	if (_has_sgt_requirements && sergeant_found){
+	    		_has_sgt_requirements = false;
+	    	}
+
+	    	//clone or else keeps pushing up number
+	    	var _max = variable_clone(_fill_squad[$ unit.role()][$ "max"]);
+            if (_has_sgt_requirements) {
+            	_max += 1;
+            }
+
+            if (squad_fulfilment[$ unit.role()] < _max) {
+                //if sergeants not required
+                squad_fulfilment[$ unit.role()]++;
+                squad.add_member(unit.company, unit.marine_number);
+            }
+
+	    }
+
+	    //if a new sergeant is needed find the marine with the highest experience in the squad
+	    //(which if everything works right should be a marine with the old_guard, seasoned, or ancient trait)
+	    /*and ((squad_fulfilment[$ obj_ini.role[100][8]] > 4)or (squad_fulfilment[$ obj_ini.role[100][10]] > 4) or (squad_fulfilment[$ obj_ini.role[100][9]] > 4)or (squad_fulfilment[$ obj_ini.role[100][3]] > 4) )*/
+
+	    var _members = squad.get_members(true);
+	    for (var s = 0; s < 2; s++) {
+
+	    	var _sgt_type = sgt_types[s];
+	        if (struct_exists(squad_fulfilment, _sgt_type) && (!sergeant_found)) {
+	            var highest_exp = 0;
+	            var exp_unit;
+	            
+	            for (var i = 0; i < _members.number(); i++) {
+	            	var _unit = _members.units[i];
+	                if (i == 0) {
+	                    highest_exp = _unit.experience;
+	                    continue;
+	                }
+
+	                if (_unit.experience > highest_exp) {
+	                    highest_exp = _unit.experience;
+	                    exp_unit = _unit;
+	                }
+	            }
+	            squad_fulfilment[$ _sgt_type]++;
+	        }
+	    }
+
+	    //evaluate if the minimum unit type requirements have been met to create a new squad
+	    _fulfilled = true;
+	    for (var i = 0; i < array_length(squad_unit_types); i++) {
+	        if (squad_fulfilment[$ squad_unit_types[i]] < _fill_squad[$ squad_unit_types[i]][$ "min"]) {
+	            fulfilled = false;
+	            break;
+	        }
+	    }
+	    if (_fulfilled) {
+	        for (var s = 0; s < 2; s++) {
+	            if (struct_exists(squad_fulfilment, sgt_types[s]) && (sergeant_found == false)) {
+	                exp_unit.update_role(sgt_types[s]); //if squad is viable promote marine to sergeant
+	                if (game_start && irandom(1) == 0) {
+	                    exp_unit.add_trait("lead_example");
+	                }
+	            }
+	        }
+	        //update units squad marker
+	        squad.squad_fulfilment = squad_fulfilment;
+	        for (var i = 0; i < _members.number(); i++) {
+	            unit = _members.units[i];
+	            if (!squad_index) {
+	                unit.squad = squad_count;
+	            } else {
+	                unit.squad = squad_index;
+	            }
+	        }
+	        if (squad_index == -1) {
+	            array_push(obj_ini.squads, squad); //push squad to squads array thus creating squad
+	        } else {
+	            obj_ini.squads[squad_index] = squad;
+	        }
+
+	        if (squad_loadout) {
+	            squad.sort_squad_loadout(false, false);
+	        }
+	    }
+
+	    return _fulfilled;
+	}
 }
 
 
@@ -144,13 +292,16 @@ function collect_role_group(group=SPECIALISTS_STANDARD, location="", opposite=fa
 }
 
 
-function SearchConditions(data) constructor{
+function SearchConditions(data) constructor {
 	group = "all";
 	opposite = false;
 	location = "";
 	max_wanted = 0;
 	companies = "all";
 	allegiance = "";
+	squadless = false;
+	role = "";
+	roles = [];
 
 	static update_constants = function(data){
 		move_data_to_current_scope(data);
@@ -162,9 +313,11 @@ function SearchConditions(data) constructor{
 				group_search_heads = false;
 			}
 		}
+
 		complex_location = is_array(location);
 
 		search_companies = !is_string(companies);
+
 		if (search_companies){
 			search_multiple_companies = is_array(companies);
 		}
@@ -272,6 +425,24 @@ function SearchConditions(data) constructor{
 		if (_add){
 			if (allegiance != ""){
 				_add = oposite_switch(unit.allegiance == allegiance);
+			}
+		}
+
+		if (_add){
+			if (squadless){
+				_add = oposite_switch(unit.squad == "none");
+			}
+		}
+
+		if (_add){
+			if (role != ""){
+				_add = oposite_switch(unit.role() == role);
+			}
+		}
+
+		if (_add){
+			if (array_length(roles)){
+				_add = oposite_switch(array_contains(roles, unit.role()));
 			}
 		}
 

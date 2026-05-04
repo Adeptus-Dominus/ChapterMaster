@@ -574,6 +574,7 @@
     {"$GMIncludedFile":"","%Name":"readme.md","CopyToMask":-1,"filePath":"datafiles/main","name":"readme.md","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"load_sets.json","CopyToMask":-1,"filePath":"datafiles/main/role_markings","name":"load_sets.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"pauldron.png","CopyToMask":-1,"filePath":"datafiles/main/role_markings/ultramarines","name":"pauldron.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"company_squad_builds.json","CopyToMask":-1,"filePath":"datafiles/main/squads","name":"company_squad_builds.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"version.json","CopyToMask":-1,"filePath":"datafiles/main","name":"version.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"data.json","CopyToMask":-1,"filePath":"datafiles/main/visual_sets/Company_marks_roman_right_knee","name":"data.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"12.png","CopyToMask":-1,"filePath":"datafiles/main/visual_sets/Company_marks_roman_right_knee/one","name":"12.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},

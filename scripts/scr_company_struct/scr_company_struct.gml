@@ -65,7 +65,8 @@ function CompanyStruct(comp) constructor {
                         if (array_contains(company_squads, _unit.squad)) {
                             continue;
                         }
-                        if (_unit.squad < array_length(obj_ini.squads)) {
+                        var _squad_ids = struc;
+                        if (struct_exists(obj_ini.squads, _unit.squad)) {
                             var cur_squad = _squads[_unit.squad];
                             cur_squad.update_fulfilment();
                             if (array_length(cur_squad.members) > 0) {

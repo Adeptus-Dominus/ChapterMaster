@@ -1568,6 +1568,7 @@ function scr_initialize_custom() {
     #endregion
 
     #region Squad Loadouts
+    obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main\\squads\\company_squad_builds.json", json_parse);
     /*
 		squad guidance
 			define a role that can exist in a squad by defining 
@@ -2862,6 +2863,8 @@ function scr_initialize_custom() {
     function _is_terminator(_armour) {
         return array_contains(["Terminator Armour", "Tartaros"], _armour);
     }
+
+
     for (var _c = 0, _clen = array_length(_coys); _c < _clen; _c++) {
         var k = 0, v = 0; //k = marine slot, v = vehicle slot
 
@@ -3747,6 +3750,9 @@ function load_chapter_master_equipment() {
             }
         }
     }
-
+    //   ** sets up the starting squads**
+    LOGGER.info("set up the starting squads");
+    obj_ini.squads = {};
+    game_start_squads();
     return chapter_master_equip;
 }

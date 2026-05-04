@@ -4,13 +4,14 @@ function temp_marine_variables(co, unit_num) {
     if (unit.squad != "none") {
         var squad_member;
         var found = false;
-        var _squad_members = squads[unit.squad].members;
+        var _mar_squad = fetch_squad(unit.squad);
+        var _squad_members = _mar_squad.members;
         for (var r = 0; r < array_length(_squad_members); r++) {
             squad_member = _squad_members[r];
             try {
                 if (is_array(squad_member)) {
                     if ((squad_member[0] == unit.company) && (squad_member[1] == unit.marine_number)) {
-                        squads[unit.squad].members[r] = [
+                        _mar_squad.members[r] = [
                             co,
                             array_length(temp_name)
                         ];
@@ -82,7 +83,8 @@ function create_squad_from_squadless(squadless_and_squads, build_data, company) 
             }
             var sorted_units = 0;
             for (var i = 0; i < role_number; i++) {
-                unit = TTRPG[company][squadless[$ role][i]];
+                var _role_slot =  [squadless[$ role][i];
+                unit = fetch_unit([company,_role_slot]])
                 if (unit.squad != "none") {
                     array_delete(squadless[$ role], i, 1);
                     sorted_units++;
@@ -343,7 +345,7 @@ function scr_company_order(company) {
                         var r = -1;
                         while (r < sort_length) {
                             r++;
-                            var squad_unit = TTRPG[co][sorted_numbers[r]];
+                            var squad_unit = fetch_unit([co, sorted_numbers[r]]);
                             if (squad_unit.squad == cur_squad) {
                                 temp_marine_variables(co, sorted_numbers[r]);
                                 array_delete(sorted_numbers, r, 1);
