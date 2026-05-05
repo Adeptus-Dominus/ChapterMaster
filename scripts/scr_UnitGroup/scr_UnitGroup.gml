@@ -54,6 +54,10 @@ function UnitGroup(units) constructor{
 		return new UnitGroup(_wanted);
 	}
 
+	static index_roles = function(){
+		return new UnitIndex(units);
+	}
+
 	static highest_exp = function(){
         var _highest_exp = 0;
         var _exp_unit;
@@ -146,7 +150,7 @@ function UnitGroup(units) constructor{
 	    }
 
 	    LOGGER.info($"ready to squad {_squadless.number()}");
-	    
+
 	    for (var i = 0; i < _squadless.number(); i++) {
 	        //fill squad roles
 
@@ -238,6 +242,42 @@ function UnitGroup(units) constructor{
 
 
 
+function UnitIndex(units){
+	role_index = {};
+
+	static add_to_index = function(units){
+		for (var i=0; i<array_length(units); i++){
+			var _unit = units[i];
+	        if (!struct_exists(role_index, _unit.role())) {
+	            role_index[$ _unit.role()] = [_unit];
+	        } else {
+	            array_push(role_index[$ unit.role()], _unit);
+	        }
+		}
+	}
+	add_to_index(units);
+
+	static has_role =- function(role){
+		return (struct_exists(role_index, role) && array_length(role_index[$ role]) > 0);
+	}
+
+	static keys = function(){
+		return struct_get_names(role_index);
+	}
+	static pop_role_member = function(role){
+		return array_pop(role_index[$ role]);
+	}
+	static turn_to_group = function(){
+		var _units = [];
+		var _keys = keys();
+		for (var i = 0; i < array_length(_keys); i++){
+			for (var u = 0; u <array_length(role_index[$ _keys[i]]); u++){
+				array_push(_units, role_index[$ _keys[i]][u]);
+			}
+		}
+		return new UnitGroup(_units);
+	}
+}
 //TODO write this out with proper formatting when i can be assed
 //Used to quikcly collect groups of marines with given parameters
 // group takes a string relating to options in the role_groups function, to ignore filtering by group use "all"

@@ -233,7 +233,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         return squad_unit_types;
     };
 
-    static get_squad_structs = function() {
+    static get_squad_structs = function(as_UnitGroup) {
         var _struct_array = [];
         for (var i = array_length(members) - 1; i >= 0; i--) {
             unit = fetch_unit(members[i]);
@@ -293,7 +293,8 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
     /*checks the status of squad so it can be either restocked or 
 		deleted if there are no longer enough members ot make a squad*/
-    static update_fulfilment = function() {
+        // fill from requiurees a valid UnitIndex struct
+    static update_fulfilment = function(fill_from = undefined) {
         var unit;
 
         squad_fulfilment = {};
@@ -334,6 +335,17 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
             var _min_role_allowed = fill_squad[$ _wanted_unit_role][$ "min"];
 
+            if (fill_from != undefined){
+                while (fill_from.has_role(_wanted_unit_role) && 
+                    _squad_role_current < _max_role_count) {
+                    var _new_member = fill_from.pop_role_member(_wanted_unit_role);
+                    add_member([_new_member.company, _new_member.marine_number]);
+                    squad_fulfilment[$ _wanted_unit_role]++;
+                    _squad_role_current = squad_fulfilment[$ _wanted_unit_role];
+                    _new_member.squad = uid;
+                }
+            }
+
             if (_squad_role_current < _max_role_count) {
                 space[$ _wanted_unit_role] = _max_role_count - _squad_role_current;
                 has_space = true;
@@ -344,7 +356,25 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 required[$ _wanted_unit_role] = _min_role_allowed - _squad_role_current;
             }
         }
+        var _sarge = obj_ini.roles[100][eROLE.SERGEANT];
+        if (struct_exists(required, _sarge)) {
+            if (_squad.required[$ _sarge] > 0) {
+                _squad.new_sergeant();
+                _squad.required[$ _sarge]--;
+                update_fulfilment();
+            }
+        }
+        //find a new veteran sergeant
+        var _vet_sarge = obj_ini.roles[100][eROLE.VETERANSERGEANT];
+        if (struct_exists(required, _vet_sarge)) {
+            if (_squad.required[$ _vet_sarge] > 0) {
+                _squad.new_sergeant(true);
+                _squad.required[$ _vet_sarge]--;
+                update_fulfilment();
+            }
+        }
     };
+
 
     static empty_squad = function() {
         for (var r = array_length(members) - 1; r >= 0; r--) {
@@ -352,6 +382,18 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         }
         members = [];
     };
+
+    static empty_squad_to_index = function(index){
+        var _mems = [];
+        var _mem;
+        for (var r = array_length(members) - 1; r >= 0; r--) {
+            _mem = fetch_member(r)
+            _mem.squad = "none";
+            array_push(_mems, _mem);
+        }
+        index.add_to_index(_mems);
+        members = [];        
+    }
 
     static fetch_member = function(index) {
         return fetch_unit(members[index]);
@@ -594,7 +636,6 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
 function game_start_squads(){
     obj_ini.squads = {};
-	profiled_companies = [];
 
 	if (struct_exists(chapter_squad_arrangement, "companies")){
 		var _comp_datas = chapter_squad_arrangement.companies;
@@ -604,7 +645,6 @@ function game_start_squads(){
 	}
 
 	static build_company_from_data = function(comp_data){
-		array_push(profiled_companies, comp_data.company);
 		var _required = [];
 		var _proportional = [];
 		for (var i=0;i<array_length(comp_data.squads);i++){

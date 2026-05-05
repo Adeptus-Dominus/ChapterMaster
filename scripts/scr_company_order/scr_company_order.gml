@@ -64,46 +64,6 @@ function sort_all_companies_to_map(map) {
     }
 }
 
-/*takes a template of a role, required role number and if there are enough 
-of those units not in a _squad creates a new _squad of a given type*/
-function create_squad_from_squadless(squadless_and_squads, build_data, company) {
-    var squadless = squadless_and_squads[0];
-    var empty_squads = squadless_and_squads[1];
-    var role = build_data[1];
-    var required_unit_count = build_data[2];
-    var new_squad_type = build_data[0];
-    var new_squad_index, role_number;
-    if (struct_exists(squadless, role)) {
-        role_number = array_length(squadless[$ role]);
-        while (role_number >= required_unit_count) {
-            new_squad_index = false;
-            if (array_length(empty_squads) > 0) {
-                new_squad_index = empty_squads[0];
-                array_delete(empty_squads, 0, 1);
-                create_squad(new_squad_type, company, false, new_squad_index);
-            } else {
-                create_squad(new_squad_type, company, false);
-            }
-            var sorted_units = 0;
-            for (var i = 0; i < role_number; i++) {
-                var _squadless_id = squadless[$ role][i];
-                unit = fetch_unit([company, _squadless_id]);
-                if (unit.squad != "none") {
-                    array_delete(squadless[$ role], i, 1);
-                    sorted_units++;
-                    i--;
-                    role_number--;
-                }
-            }
-            //this is to catch any potential infinite loops where by squads dont get formed and the role number dosnt derease
-            if (sorted_units == 0) {
-                break;
-            }
-        }
-    }
-    return [squadless, empty_squads];
-}
-
 function scr_company_order(company) {
     try {
         // company : company number
@@ -112,7 +72,7 @@ function scr_company_order(company) {
 
         var i = -1;
         //TODO optomise to reasonable array sizes
-        var temp_vrace, temp_vloc, temp_vrole, temp_vwep1, temp_vwep2, temp_vup, temp_vhp, temp_vchaos, temp_vpilots, temp_vlid, temp_vwid, unit;
+        var unit;
         var company_size = 501;
         temp_race = [];
         temp_loc = [];
@@ -142,27 +102,12 @@ function scr_company_order(company) {
         var squadless = {};
 
         var _roles = active_roles();
+
+        var _company_marines = collect_company(comp_data.company);
+        var _squadless = _company_marines.get_from({squadless : true,});
+
+        var _squadless_index = _squadless.index_roles();
         // find units not in a _squad
-        for (i = company_length - 1; i >= 0; i--) {
-            unit = fetch_unit([co, i]);
-            if (!is_struct(unit)) {
-                TTRPG[co][i] = new TTRPG_stats("chapter", co, i, "blank");
-                unit = fetch_unit([co, i]);
-            }
-            if (unit.name() == "") {
-                continue;
-            }
-
-            unit = fetch_unit([co, i]);
-
-            if (unit.squad == "none") {
-                if (!struct_exists(squadless, unit.role())) {
-                    squadless[$ unit.role()] = [i];
-                } else {
-                    array_push(squadless[$ unit.role()], i);
-                }
-            }
-        }
 
         //at this point check that all squads have the right types and numbers of units in them
         var _squad, wanted_roles;
@@ -170,155 +115,27 @@ function scr_company_order(company) {
         for (i = 0; i < array_length(_squad_ids); i++) {
             var _squad = fetch_squad(_squad_ids[i]);
             if (_squad.base_company != co) {
-                if (array_length(_squad.members) == 0) {
-                    array_push(empty_squads, i);
+                if (bool(array_length(_squad.members))) {
+                    array_push(empty_squads, _squad);
                 }
                 continue;
             }
 
-            _squad.update_fulfilment();
+            _squad.update_fulfilment(_squadless_index);
 
-            //_squad has role spaces to fill
-            if (_squad.has_space) {
-                wanted_roles = struct_get_names(_squad.space);
-
-                /* this finds sqauds that are in need of members and checks ot see if there 
-				are any squadless units in the chapter with
-				the right role to fill the gap*/
-                for (var r = array_length(wanted_roles) - 1; r >= 0; r--) {
-                    var _wanted_role = wanted_roles[r];
-                    if (struct_exists(squadless, _wanted_role)) {
-                        var _wanted_role_number = _squad.space[$ _wanted_role];
-                        var _squadless_with_role = squadless[$ _wanted_role];
-                        var _squadless_with_role_count = array_length(squadless[$ _wanted_role]);
-
-                        if (!_squad.fulfilled) {
-                            if (struct_exists(_squad.required, _wanted_role)) {
-                                var _needed_role_number = _squad.required[$ _wanted_role];
-                                while ((_squadless_with_role_count > 0) && (_needed_role_number > 0)) {
-                                    var _marine_id = array_pop(_squadless_with_role);
-                                    unit = fetch_unit([co, _marine_id]);
-
-                                    unit.add_to_squad(i);
-
-                                    _squadless_with_role_count--;
-
-                                    _needed_role_number--;
-                                    _wanted_role_number--;
-                                }
-                            }
-                        }
-                        if (struct_exists(_squad.space, _wanted_role)) {
-                            while ((_squadless_with_role_count > 0) && (_wanted_role_number > 0)) {
-                                var _marine_id = array_pop(_squadless_with_role);
-                                _squadless_with_role_count--;
-                                unit = fetch_unit([co, _marine_id]);
-                                unit.add_to_squad(i);
-                                _wanted_role_number--;
-                            }
-                        }
-                    }
-                }
-                //if no new sergeants are found for _squad someone gets promoted
-                //find a new_sergeant
-                var _sarge = _roles[eROLE.SERGEANT];
-                if (struct_exists(_squad.required, _sarge)) {
-                    if (_squad.required[$ _sarge] > 0) {
-                        _squad.new_sergeant();
-                        _squad.required[$ _sarge]--;
-                    }
-                }
-                //find a new veteran sergeant
-                var _vet_sarge = _roles[eROLE.VETERANSERGEANT];
-                if (struct_exists(_squad.required, _vet_sarge)) {
-                    if (_squad.required[$ _vet_sarge] > 0) {
-                        _squad.new_sergeant(true);
-                        _squad.required[$ _vet_sarge]--;
-                    }
-                }
-                for (var r = array_length(wanted_roles) - 1; r >= 0; r--) {
-                    var _wanted_role = wanted_roles[r];
-                    if (struct_exists(_squad.required, _wanted_role)) {
-                        if (_squad.required[$ struct_exists] > 0) {
-                            var _mems = _squad.get_members();
-                            _squad.empty_squad();
-                            for (var m = 0; m < array_length(_mems); m++) {
-                                unit = _mems[m];
-                                if (unit.squad == "none" && unit.controllable()) {
-                                    if (!struct_exists(squadless, unit.role())) {
-                                        squadless[$ unit.role()] = [i];
-                                    } else {
-                                        array_push(squadless[$ unit.role()], i);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            if (!_squad.fulfilled && _squad.type != "command_squad"){
+                _squad.empty_squad_to_index(_squadless_index);
             }
         }
 
-        var squadless_and_squad_spaces = [
-            squadless,
-            empty_squads
-        ];
-
-        var squad_builder = [
-            [
-                "tactical_squad",
-                _roles[eROLE.TACTICAL],
-                5
-            ],
-            [
-                "devastator_squad",
-                _roles[eROLE.DEVASTATOR],
-                5
-            ],
-            [
-                "veteran_squad",
-                _roles[eROLE.VETERAN],
-                5
-            ],
-            [
-                "terminator_squad",
-                _roles[eROLE.TERMINATOR],
-                4
-            ],
-            [
-                "terminator_assault_squad",
-                _roles[eROLE.TERMINATOR],
-                4
-            ],
-            [
-                "assault_squad",
-                _roles[eROLE.ASSAULT],
-                5
-            ],
-            [
-                "scout_squad",
-                _roles[eROLE.SCOUT],
-                5
-            ]
-        ];
-
-        for (i = 0; i < array_length(squad_builder); i++) {
-            squadless_and_squad_spaces = create_squad_from_squadless(squadless_and_squad_spaces, squad_builder[i], co);
-        }
-
-        //comand squads only get built to a max of one and are specialist so sit outside of general _squad creation
-        if (struct_exists(squadless, _roles[eROLE.CAPTAIN]) && struct_exists(squadless, _roles[eROLE.CHAMPION]) && struct_exists(squadless, _roles[eROLE.ANCIENT])) {
-            if ((array_length(squadless[$ _roles[eROLE.CAPTAIN]]) > 0) && (array_length(squadless[$ _roles[eROLE.CHAMPION]]) > 0) && (array_length(squadless[$ _roles[eROLE.ANCIENT]]) > 0)) {
-                new_squad_index = false;
-                if (array_length(empty_squads) > 0) {
-                    new_squad_index = empty_squads[0];
-                    array_delete(empty_squads, 0, 1);
-                    create_squad("command_squad", co, false, new_squad_index);
-                } else {
-                    create_squad("command_squad", co, false);
-                }
+        for (var i=0;i<array_length(empty_squads);i++){
+            var _squad = empty_squads[i];
+            _squad.update_fulfilment(_squadless_index);
+            if (!_squad.fulfilled && _squad.type != "command_squad"){
+                _squad.empty_squad_to_index(_squadless_index);
             }
         }
-        var sorted_numbers = [];
+    
 
         //this stops over strenuous repeats should greatly speed up company reshuffle
         for (i = 0; i < company_length; i++) {
