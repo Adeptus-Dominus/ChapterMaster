@@ -94,12 +94,12 @@ function scr_company_order(company) {
         temp_struct = [];
 
         // the order that marines are displayed in the company view screen(this order is augmented by squads)
-        var role_orders = role_hierarchy();
+        var _role_orders = role_hierarchy();
 
-        var empty_squads = [];
-        var role_shuffle_length = array_length(role_orders);
-        var company_length = array_length(name[co]);
-        var squadless = {};
+        var _empty_squads = [];
+        var _role_shuffle_length = array_length(_role_orders);
+        var _company_length = array_length(name[co]);
+        var _squadless = {};
 
         var _roles = active_roles();
 
@@ -116,7 +116,7 @@ function scr_company_order(company) {
             var _squad = fetch_squad(_squad_ids[i]);
             if (_squad.base_company != co) {
                 if (bool(array_length(_squad.members))) {
-                    array_push(empty_squads, _squad);
+                    array_push(_empty_squads, _squad);
                 }
                 continue;
             }
@@ -128,8 +128,7 @@ function scr_company_order(company) {
             }
         }
 
-        for (var i=0;i<array_length(empty_squads);i++){
-            var _squad = empty_squads[i];
+        for (var i=0;i<array_length(_empty_squads);i++){
             _squad.update_fulfilment(_squadless_index);
             if (!_squad.fulfilled && _squad.type != "command_squad"){
                 _squad.empty_squad_to_index(_squadless_index);
@@ -138,11 +137,11 @@ function scr_company_order(company) {
     
 
         //this stops over strenuous repeats should greatly speed up company reshuffle
-        for (i = 0; i < company_length; i++) {
+        for (i = 0; i < _company_length; i++) {
             sorted_numbers[i] = i;
         }
-        for (var role_name = 0; role_name < role_shuffle_length; role_name++) {
-            var wanted_role = role_orders[role_name];
+        for (var role_name = 0; role_name < _role_shuffle_length; role_name++) {
+            var wanted_role = _role_orders[role_name];
             var sort_length = array_length(sorted_numbers) - 1;
             i = -1;
             while (i < sort_length) {

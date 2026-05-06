@@ -20,6 +20,10 @@ function UnitGroup(units) constructor{
 		return false;
 	}
 
+	static count_squads(squad_type){
+
+	}
+
 	static has_base_group = function(group){
 		for (var i=0;i<array_length(units);i++){
 			if (units[i].base_group == group){
@@ -237,6 +241,68 @@ function UnitGroup(units) constructor{
 
 	    return [_fulfilled, squad.uid];
 	}
+
+	static organise_by_template = function(template){
+
+		var _required = [];
+		var _proportional = [];
+
+		for (var i=0;i<array_length(template.squads);i++){
+			var _squad = template.squads[i];
+            if (!struct_exists(obj_ini.squad_types , _squad.squad)){
+                continue;
+            }
+			if (struct_exists(_squad ,"require") && _squad.require){
+				array_push(_required, _squad);
+				continue;
+			}
+			if (struct_exists(_squad ,"proportion") && bool(_squad.proportion)){
+				array_push(_proportional, _squad);
+				continue;				
+			}
+		}
+
+		for (var i = 0 ;i < array_length(_required); i++){
+			var _squad = _required[i];
+			var _created_count = 0;
+            var _last_squad_count = squad_count();
+			while (
+				_last_squad_count == squad_count() &&
+                _squad.min_count > _created_count
+
+			) {
+                var _squad_name = _squad.squad;
+                _last_squad_count = squad_count() + 1;
+                var _results = create_squad(_squad_name, true, -1, true);
+                if (_results[0]){
+                    var _new_squad = fetch_squad(_results[1]);
+                    _new_squad.base_company = template.company;
+                    _created_count++;
+                }
+            }
+		}
+
+        var _squads_made = 0;
+        var _squads_made_last = -1;
+
+        while (_squads_made > _squads_made_last){
+            _squads_made_last = _squads_made
+            for (var i = 0 ;i < array_length(_proportional); i++){
+                var _squad = _proportional[i];
+                var _squad_name = _squad.squad;
+                for (var s = 0; s < _squad.proportion; s++){
+                    var _results = create_squad(_squad_name, true, -1, true);
+                    if (_results[0]){
+                        var _new_squad = fetch_squad(_results[1]);
+                        _new_squad.base_company = template.company;
+                        _squads_made++;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+	}
 }
 
 
@@ -257,7 +323,7 @@ function UnitIndex(units){
 	}
 	add_to_index(units);
 
-	static has_role =- function(role){
+	static has_role = function(role){
 		return (struct_exists(role_index, role) && array_length(role_index[$ role]) > 0);
 	}
 

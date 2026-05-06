@@ -640,71 +640,9 @@ function game_start_squads(){
 	if (struct_exists(chapter_squad_arrangement, "companies")){
 		var _comp_datas = chapter_squad_arrangement.companies;
 		for (var i=0;i<array_length(_comp_datas);i++){
-			build_company_from_data(_comp_datas[i]);
+            var _company(_comp_datas[i].company);
+            _company.organise_by_template(_comp_datas[i]);
 		}
-	}
-
-	static build_company_from_data = function(comp_data){
-		var _required = [];
-		var _proportional = [];
-		for (var i=0;i<array_length(comp_data.squads);i++){
-			var _squad = comp_data.squads[i];
-            if (!struct_exists(obj_ini.squad_types , _squad.squad)){
-                continue;
-            }
-			if (struct_exists(_squad ,"require") && _squad.require){
-				array_push(_required, _squad);
-				continue;
-			}
-			if (struct_exists(_squad ,"proportion") && bool(_squad.proportion)){
-				array_push(_proportional, _squad);
-				continue;				
-			}
-		}
-
-        var _company_marines = collect_company(comp_data.company);
-        LOGGER.info(_company_marines.number());
-
-		for (var i = 0 ;i < array_length(_required); i++){
-			var _squad = _required[i];
-			var _created_count = 0;
-            var _last_squad_count = squad_count();
-			while (
-				_last_squad_count == squad_count() &&
-                _squad.min_count > _created_count
-
-			) {
-                var _squad_name = _squad.squad;
-                _last_squad_count = squad_count() + 1;
-                var _results = _company_marines.create_squad(_squad_name, true, -1, true);
-                if (_results[0]){
-                    var _new_squad = fetch_squad(_results[1]);
-                    _new_squad.base_company = comp_data.company;
-                    _created_count++;
-                }
-            }
-		}
-
-        var _squads_made = 0;
-        var _squads_made_last = -1;
-
-        while (_squads_made > _squads_made_last){
-            _squads_made_last = _squads_made
-            for (var i = 0 ;i < array_length(_proportional); i++){
-                var _squad = _proportional[i];
-                var _squad_name = _squad.squad;
-                for (var s = 0; s < _squad.proportion; s++){
-                    var _results = _company_marines.create_squad(_squad_name, true, -1, true);
-                    if (_results[0]){
-                        var _new_squad = fetch_squad(_results[1]);
-                        _new_squad.base_company = comp_data.company;
-                        _squads_made++;
-                    } else {
-                        break;
-                    }
-                }
-            }
-        }
 	}
 }
 

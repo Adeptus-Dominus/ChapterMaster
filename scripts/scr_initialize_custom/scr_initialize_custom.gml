@@ -1642,6 +1642,7 @@ function scr_initialize_custom() {
     ];
     var _roles_player = obj_ini.role[100];
     var _default_player = obj_ini.role[101];
+    
     for (var i=1; i < 20; i++){
         if (_roles_player[i] == ""){
             continue;
