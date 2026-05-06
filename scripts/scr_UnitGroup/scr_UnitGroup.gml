@@ -20,17 +20,12 @@ function UnitGroup(units) constructor{
 		return false;
 	}
 
-	static count_squads(squad_type){
-		
-	}
-
 	static has_base_group = function(group){
 		for (var i=0;i<array_length(units);i++){
 			if (units[i].base_group == group){
 				return true;
 			}
 		}
-
 		return false;		
 	}
 
@@ -104,6 +99,45 @@ function UnitGroup(units) constructor{
 		}
 	}
 
+	static count_squads(squad_type){
+		var _count = 0;
+		var _squads = [];
+		var _unit, _squad;
+		for (var i=0;i<array_length(units);i++){
+			_unit = units[i];
+			if (array_contains(_squads , unit.squad)){
+				continue;
+			}
+
+			_squad = unit.get_squad();
+
+			if (_squad.type == squad_type){
+				_count++;
+			}
+		}
+	}
+
+	static index_squads(){
+		var _count = 0;
+		var _squads = [];
+		var _squad_index = {};
+		var _unit, _squad;
+		for (var i=0;i<array_length(units);i++){
+			_unit = units[i];
+			if (array_contains(_squads , unit.squad)){
+				continue;
+			}
+
+			_squad = unit.get_squad();
+
+			if (!struct_exists(_squad_index, _squad.type)){
+				_squad_index[_squad.type] = [];
+			}
+			array_push(_squad_index[$ _squad.type], unit.squad);
+		}
+
+		return _squad_index;
+	}
 	var _roles = active_roles();
 	
 	static sgt_types = role_groups(SPECIALISTS_SQUAD_LEADERS);
@@ -247,11 +281,19 @@ function UnitGroup(units) constructor{
 		var _required = [];
 		var _proportional = [];
 
+		var _squad_index = index_squads();
+
 		for (var i=0;i<array_length(template.squads);i++){
 			var _squad = template.squads[i];
+
             if (!struct_exists(obj_ini.squad_types , _squad.squad)){
                 continue;
             }
+
+            if (!struct_exists(_squad_index , _squad.squad)){
+                _squad_index[$ _squad.squad] = [];
+            }
+
 			if (struct_exists(_squad ,"require") && _squad.require){
 				array_push(_required, _squad);
 				continue;
@@ -264,14 +306,14 @@ function UnitGroup(units) constructor{
 
 		for (var i = 0 ;i < array_length(_required); i++){
 			var _squad = _required[i];
-			var _created_count = 0;
+			var _squad_name = _squad.squad;
+			var _created_count = array_length(_squad_index[$ _squad_name]);
             var _last_squad_count = squad_count();
 			while (
 				_last_squad_count == squad_count() &&
                 _squad.min_count > _created_count
 
 			) {
-                var _squad_name = _squad.squad;
                 _last_squad_count = squad_count() + 1;
                 var _results = create_squad(_squad_name, true, -1, true);
                 if (_results[0]){

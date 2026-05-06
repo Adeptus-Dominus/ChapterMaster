@@ -21,6 +21,7 @@ the requested squad type , if the squad is not possible it will  not be made*/
 
 function UnitSquad(squad_type = undefined, company = 0) constructor {
     members = [];
+    type = "";
     squad_fulfilment = {};
     base_company = company;
     life_members = 0;

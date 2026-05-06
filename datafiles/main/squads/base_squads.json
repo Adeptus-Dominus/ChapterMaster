@@ -112,7 +112,8 @@
         "devastator",
         "scout",
         "tactical"
-      ]
+      ],
+      "base" : "terminator",
     }
   },
 
