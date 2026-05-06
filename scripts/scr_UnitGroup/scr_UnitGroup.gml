@@ -21,7 +21,7 @@ function UnitGroup(units) constructor{
 	}
 
 	static count_squads(squad_type){
-
+		
 	}
 
 	static has_base_group = function(group){
