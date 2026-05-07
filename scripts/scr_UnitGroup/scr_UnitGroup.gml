@@ -306,7 +306,7 @@ function UnitGroup(units) constructor{
 	    	var _unit_role = squad_unit_types[i];
 	    	LOGGER.info($"{_unit_role}, {squad_fulfilment[$ _unit_role]}, {_fill_squad[$ _unit_role][$ "min"]}");
 	        if (squad_fulfilment[$ _unit_role] < _fill_squad[$ _unit_role][$ "min"]) {
-	            fulfilled = false;
+	            _fulfilled = false;
 	            break;
 	        }
 	    }
@@ -406,6 +406,7 @@ function UnitGroup(units) constructor{
 	}
 
 	static order_by_rank = function(){
+		// the order that marines are displayed in the company view screen(this order is augmented by squads)
 		var _role_orders = role_hierarchy();
 		var _role_shuffle_length = array_length(_role_orders);
 		var _match_roles = new UnitGroup([]);
@@ -425,6 +426,8 @@ function UnitGroup(units) constructor{
 					max_wanted : _members_count,
 				};
 				_match_roles.add_units(self, _conditions, true, i+1);
+
+				array_push(_sorted_squads, _unit.squad);
 			}
 		}
 		_match_roles.add_units(self,{},true);
@@ -551,6 +554,9 @@ function SearchConditions(data) constructor {
 	roles = [];
 	squad = "";
 
+	var checks_order = [
+
+	];
 	static update_constants = function(data){
 		move_data_to_current_scope(data);
 		group_is_complex = is_array(group);
@@ -567,6 +573,7 @@ function SearchConditions(data) constructor {
 		search_companies = !is_string(companies);
 
 		if (search_companies){
+			array_push(checks_order, company_evaluate);
 			search_multiple_companies = is_array(companies);
 		}
 
@@ -574,20 +581,77 @@ function SearchConditions(data) constructor {
 			found = 0;
 		}
 
+		if (location!=""){
+			array_push(checks_order, location_evaluate);
+		}
+
+		if (group!="all"){
+			array_push(checks_order, group_evaluate);
+		}
+
+		if (struct_exists(self, "stat")){
+			array_push(checks_order, stat_valuate);
+		}
+		if (struct_exists(self,"job")){
+			array_push(checks_order, oposite_switch);
+		}
+
+		if (allegiance != ""){
+			array_push(checks_order, allegiance_valuate);
+		}
+
+		if (squadless){
+			array_push(checks_order, squadless_valuate);
+		}
+		if (role != ""){
+			array_push(checks_order, role_valuate);
+		}
+		if (bool(array_length(roles))){
+			array_push(checks_order, roles_valuate);
+		}
+	    if (squad != ""){
+	    	array_push(checks_order, squad_valuate);
+	    }		
 		end_loop = false;
 	}
 
 	update_constants(data);
 
+
 	static oposite_switch = function(val){
 		return opposite ? !val : val;
 	}
 
+	static squad_valuate = function(){
+		return oposite_switch(unit.squad == squad);
+	}
+
+	static roles_valuate = function(){
+		return oposite_switch(array_contains(roles, unit.role()));
+	}
+
+	static role_valuate = function(){
+		return oposite_switch(unit.role() == role);
+	}
+
+	static squadless_valuate = function(){
+		return oposite_switch(unit.squad == "none");
+	}
+
+	static allegiance_valuate = function(){
+		return oposite_switch(unit.allegiance == allegiance);
+	}
+
+	static job_valuate = function(){
+		return oposite_switch((unit.assignment() == job));
+	}
+
+	static stat_valuate = function(){
+		return oposite_switch(stat_valuator(stat, unit));
+	}
+
 	static company_evaluate = function(){
 		var _add = true;
-		if (!search_companies){
-			return true;
-		}
 
 		if (search_multiple_companies){
 			if (!array_contains(companies, unit.company)){
@@ -604,41 +668,35 @@ function SearchConditions(data) constructor {
 	static group_evaluate = function(){
 
 		var _add = true;
-		if (group!="all"){
-			var _group = group;
-			if (group_is_complex){
-				if (group_search_heads) {
-					_add = unit.IsSpecialist(_group[0], _group[1], _group[2]);
-				} else {
-					_add = unit.IsSpecialist(_group[0], _group[1]);
-				}
+
+		var _group = group;
+		if (group_is_complex){
+			if (group_search_heads) {
+				_add = unit.IsSpecialist(_group[0], _group[1], _group[2]);
 			} else {
-				_add = unit.IsSpecialist(_group);
+				_add = unit.IsSpecialist(_group[0], _group[1]);
 			}
-			_add = oposite_switch(_add);
+		} else {
+			_add = unit.IsSpecialist(_group);
 		}
+		_add = oposite_switch(_add);
+
 		return _add;
 	}
 
 	static location_evaluate = function(){
 		var _add = true;
-		if (location!=""){
-	   		if (!complex_location){
-	       		_add = unit.is_at_location(location);
-	       	} else {
-	       		_add = unit.is_at_location(location[0], location[1], location[2]);
-	       	}
-	       	_add = oposite_switch(_add);
-		}
+
+   		if (!complex_location){
+       		_add = unit.is_at_location(location);
+       	} else {
+       		_add = unit.is_at_location(location[0], location[1], location[2]);
+       	}
+       	_add = oposite_switch(_add);
+
 
 		return _add;
 	}
-
-	static checks_order = [
-		company_evaluate,
-		group_evaluate,
-		location_evaluate
-	];
 
 
 	static evaluate = function(unit){
@@ -654,69 +712,7 @@ function SearchConditions(data) constructor {
 				return false;
 			}
 		}
-
-
-	    if (!_add){
-	    	return false;
-	    }
-
-    	if (struct_exists(self, "stat")){
-    		_add = oposite_switch(stat_valuator(stat, unit));
-    	}
-
-	    if (!_add){
-	    	return false;
-	    }
-
-    	if (struct_exists(self,"job")){
-    		_add = oposite_switch((unit.assignment() == job));
-    	}
 		
-
-
-	    if (!_add){
-	    	return false;
-	    }
-
-		if (allegiance != ""){
-			_add = oposite_switch(unit.allegiance == allegiance);
-		}
-		
-
-	    if (!_add){
-	    	return false;
-	    }
-
-		if (squadless){
-			_add = oposite_switch(unit.squad == "none");
-		}
-		
-
-	    if (!_add){
-	    	return false;
-	    }
-
-		if (role != ""){
-			_add = oposite_switch(unit.role() == role);
-		}
-		
-
-	    if (!_add){
-	    	return false;
-	    }
-
-		if (bool(array_length(roles))){
-			_add = oposite_switch(array_contains(roles, unit.role()));
-		}
-
-	    if (!_add){
-	    	return false;
-	    }
-
-	    if (squad != ""){
-	    	_add = unit.squad == squad;
-	    }	
-
 	    if (max_wanted > 0 && _add){
 	    	found++;
 	    	if (found >= max_wanted){

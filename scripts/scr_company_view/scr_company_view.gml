@@ -154,7 +154,7 @@ function scr_company_view(company) {
     var company_length = array_length(obj_ini.TTRPG[company]);
 
     for (var v = 0; v < company_length; v++) {
-        unit = obj_ini.TTRPG[company][v];
+        unit = fetch_unit([company, v]);
 
         if (unit.name() != "") {
             unit_loc = unit.marine_location();

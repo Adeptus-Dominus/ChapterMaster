@@ -25,11 +25,7 @@ function scr_company_order(company) {
 
         var i = -1;
 
-        // the order that marines are displayed in the company view screen(this order is augmented by squads)
-        var _role_orders = role_hierarchy();
-
         var _empty_squads = [];
-        var _role_shuffle_length = array_length(_role_orders);
         var _company_length = array_length(name[co]);
         var _squadless = {};
 
@@ -61,9 +57,12 @@ function scr_company_order(company) {
         }
 
         for (var i=0;i<array_length(_empty_squads);i++){
+            var _squad = _empty_squads[i];
             _squad.update_fulfilment(_squadless_index);
             if (!_squad.fulfilled && _squad.type != "command_squad"){
                 _squad.empty_squad_to_index(_squadless_index);
+            } else {
+                _squad.base_company = co;
             }
         }
 
@@ -107,7 +106,8 @@ function scr_company_order(company) {
 
         for (i = 0; i < array_length(_temps); i++) {
             var _unit = _temps[i];
-            TTRPG[co][i]  = _unit.unit;
+            var _struc = _unit.unit;
+            TTRPG[co][i]  = _struc;
             race[co][i]   = _unit.race;
             name[co][i]   = _unit.name;
             role[co][i]   = _unit.role;
@@ -119,13 +119,17 @@ function scr_company_order(company) {
             age[co][i]    = _unit.age;
             spe[co][i]    = _unit.spe;
             god[co][i]    = _unit.god;
-            _unit.unit.company       = co;
-            _unit.unit.marine_number = i;
-            if (_unit.unit.squad != "none"){
-                var _squad = _unit.unit.get_squad();
+            if (TTRPG[_struc.company][_struc.marine_number].uid == _struc.uid){
+                TTRPG[_struc.company][_struc.marine_number] = new TTRPG_stats("chapter", _struc.company , _struc.marine_number, "blank");
+                scr_wipe_unit(_struc.company , _struc.marine_number);
+            }
+            _struc.company       = co;
+            _struc.marine_number = i;
+            if (_struc.squad != "none"){
+                var _squad = _struc.get_squad();
                 array_push(_squad.members, [co, i]);
             }
-            _unit.unit.movement_after_math(co, i, false);
+            _struc.movement_after_math(co, i, false);
         }
         /*	i=0;repeat(300){i+=1;
 	    if (role[co][i]="Death Company"){

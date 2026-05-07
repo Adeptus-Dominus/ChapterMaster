@@ -294,7 +294,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
     /*checks the status of squad so it can be either restocked or 
 		deleted if there are no longer enough members ot make a squad*/
-        // fill from requiurees a valid UnitIndex struct
+        // fill from requiures a valid UnitIndex struct
     static update_fulfilment = function(fill_from = undefined) {
         var unit;
 
@@ -359,19 +359,17 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         }
         var _sarge = obj_ini.role[100][eROLE.SERGEANT];
         if (struct_exists(required, _sarge)) {
-            if (_squad.required[$ _sarge] > 0) {
-                _squad.new_sergeant();
-                _squad.required[$ _sarge]--;
-                update_fulfilment();
+            if (required[$ _sarge] > 0) {
+                new_sergeant();
+                required[$ _sarge]--;
             }
         }
         //find a new veteran sergeant
         var _vet_sarge = obj_ini.role[100][eROLE.VETERANSERGEANT];
         if (struct_exists(required, _vet_sarge)) {
-            if (_squad.required[$ _vet_sarge] > 0) {
-                _squad.new_sergeant(true);
-                _squad.required[$ _vet_sarge]--;
-                update_fulfilment();
+            if (required[$ _vet_sarge] > 0) {
+                new_sergeant(true);
+                required[$ _vet_sarge]--;
             }
         }
     };
