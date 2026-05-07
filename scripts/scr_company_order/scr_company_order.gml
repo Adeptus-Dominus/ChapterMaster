@@ -26,7 +26,6 @@ function scr_company_order(company) {
         var i = -1;
 
         var _empty_squads = [];
-        var _company_length = array_length(name[co]);
         var _squadless = {};
 
         var _roles = active_roles();
@@ -75,7 +74,6 @@ function scr_company_order(company) {
             _squad.members = [];
         }
 
-        var c = [];
         var _temps = [];
         for (i = 0; i < array_length(_company_marines.units); i++) {
             var _unit = _company_marines.units[i]
@@ -119,9 +117,11 @@ function scr_company_order(company) {
             age[co][i]    = _unit.age;
             spe[co][i]    = _unit.spe;
             god[co][i]    = _unit.god;
-            if (TTRPG[_struc.company][_struc.marine_number].uid == _struc.uid){
-                TTRPG[_struc.company][_struc.marine_number] = new TTRPG_stats("chapter", _struc.company , _struc.marine_number, "blank");
-                scr_wipe_unit(_struc.company , _struc.marine_number);
+            if (_struc.marine_number != i){
+                if (TTRPG[_struc.company][_struc.marine_number].uid == _struc.uid){
+                    TTRPG[_struc.company][_struc.marine_number] = new TTRPG_stats("chapter", _struc.company , _struc.marine_number, "blank");
+                    scr_wipe_unit(_struc.company , _struc.marine_number);
+                }
             }
             _struc.company       = co;
             _struc.marine_number = i;
@@ -154,7 +154,7 @@ function scr_company_order(company) {
 function role_hierarchy() {
     var _roles = obj_ini.role[100];
     var hierarchy = [
-        obj_ini.role[100][eROLE.CHAPTERMASTER],
+        _roles[eROLE.CHAPTERMASTER],
         "Forge Master",
         "Master of Sanctity",
         "Master of the Apothecarion",

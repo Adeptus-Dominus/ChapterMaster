@@ -554,9 +554,7 @@ function SearchConditions(data) constructor {
 	roles = [];
 	squad = "";
 
-	var checks_order = [
-
-	];
+	checks_order = [];
 	static update_constants = function(data){
 		move_data_to_current_scope(data);
 		group_is_complex = is_array(group);
@@ -712,7 +710,7 @@ function SearchConditions(data) constructor {
 				return false;
 			}
 		}
-		
+
 	    if (max_wanted > 0 && _add){
 	    	found++;
 	    	if (found >= max_wanted){
