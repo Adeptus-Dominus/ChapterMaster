@@ -154,7 +154,8 @@
         "devastator",
         "scout",
         "tactical"
-      ]
+      ],
+      "base" : "terminator",
     }
   },
 
@@ -201,8 +202,9 @@
         "devastator",
         "scout",
         "tactical"
-      ]
-    }
+      ],
+      "base" : "veteran"
+    },
   },
 
   "devastator_squad": {
@@ -245,7 +247,8 @@
         "tactical",
         "assault",
         "scout"
-      ]
+      ],
+      "base" : "devastator"
     }
   },
 
@@ -293,8 +296,9 @@
         "assault",
         "devastator",
         "scout"
-      ]
-    }
+      ],
+      "base":"tactical"
+    },
   },
 
   "assault_squad": {
@@ -343,7 +347,8 @@
         "tactical",
         "devastator",
         "scout"
-      ]
+      ],
+      "base":"assault"
     }
   },
 

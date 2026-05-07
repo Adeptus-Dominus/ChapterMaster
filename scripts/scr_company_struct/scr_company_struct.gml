@@ -176,7 +176,8 @@ function CompanyStruct(comp) constructor {
         var _cur_squad = company_squads[current_squad];
         for (var i = 0; i < array_length(_cur_squad.members); i++) {
             member = fetch_unit(_cur_squad.members[i]);
-            if (!array_equals(squad_draw_surfaces[i][0], _cur_squad.members[i])) {
+            var _member_co_id = _cur_squad.members[i];
+            if (!array_equals(squad_draw_surfaces[i][0], _member_co_id)) {
                 squad_draw_surfaces[i][0] = [
                     member.company,
                     member.marine_number

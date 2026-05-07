@@ -1,50 +1,3 @@
-//stashes varibles for marine reordering
-function temp_marine_variables(co, unit_num) {
-    var unit = fetch_unit([co, unit_num]);
-    if (unit.squad != "none") {
-        var squad_member;
-        var found = false;
-        var _mar_squad = fetch_squad(unit.squad);
-        var _squad_members = _mar_squad.members;
-        for (var r = 0; r < array_length(_squad_members); r++) {
-            squad_member = _squad_members[r];
-            try {
-                if (!is_array(squad_member)) {
-                    continue;
-                }
-                if ((squad_member[0] == unit.company) && (squad_member[1] == unit.marine_number)) {
-                    var _squad = squads[$ unit.squad];
-                    _squad.members[r] = [
-                        co,
-                        array_length(temp_name)
-                    ];
-                    found = true;
-                    break;
-                }
-
-            } catch (_exception) {
-                handle_exception(_exception);
-                unit.squad = "none";
-            }
-        }
-        if (!found) {
-            unit.squad = "none";
-        }
-    }
-    array_push(temp_race, race[co][unit_num]);
-    array_push(temp_name, name[co][unit_num]);
-    array_push(temp_role, role[co][unit_num]);
-    array_push(temp_wep1, wep1[co][unit_num]);
-    array_push(temp_wep2, wep2[co][unit_num]);
-    array_push(temp_armour, armour[co][unit_num]);
-    array_push(temp_gear, gear[co][unit_num]);
-    array_push(temp_age, age[co][unit_num]);
-    array_push(temp_mobi, mobi[co][unit_num]);
-    array_push(temp_spe, spe[co][unit_num]);
-    array_push(temp_god, god[co][unit_num]);
-    array_push(temp_struct, variable_clone(TTRPG[co][unit_num]));
-    scr_wipe_unit(co, unit_num);
-}
 
 function sort_all_companies() {
     with (obj_ini) {
@@ -71,27 +24,6 @@ function scr_company_order(company) {
         var co = company;
 
         var i = -1;
-        //TODO optomise to reasonable array sizes
-        var unit;
-        var company_size = 501;
-        temp_race = [];
-        temp_loc = [];
-        temp_name = [];
-        temp_role = [];
-        temp_lid = [];
-        temp_wid = [];
-        temp_wep1 = [];
-        temp_wep2 = [];
-        temp_armour = [];
-        temp_gear = [];
-        temp_mobi = [];
-        temp_hp = [];
-        temp_chaos = [];
-        temp_experience = [];
-        temp_age = [];
-        temp_spe = [];
-        temp_god = [];
-        temp_struct = [];
 
         // the order that marines are displayed in the company view screen(this order is augmented by squads)
         var _role_orders = role_hierarchy();
@@ -103,8 +35,8 @@ function scr_company_order(company) {
 
         var _roles = active_roles();
 
-        var _company_marines = collect_company(comp_data.company);
-        var _squadless = _company_marines.get_from({squadless : true,});
+        var _company_marines = collect_company(company);
+        var _squadless = _company_marines.get_from({squadless : true});
 
         var _squadless_index = _squadless.index_roles();
         // find units not in a _squad
@@ -134,50 +66,37 @@ function scr_company_order(company) {
                 _squad.empty_squad_to_index(_squadless_index);
             }
         }
+
+        _company_marines.order_by_rank();
+
+        var _squads = _company_marines.count_squads("all",true);
+
+        for (var i=0;i<array_length(_squads);i++){
+            _squad = fetch_squad(_squads[i]);
+            _squad.members = [];
+        }
+
+        var c = [];
+        var _temps = [];
+        for (i = 0; i < array_length(_company_marines.units); i++) {
+            var _unit = _company_marines.units[i]
+            array_push(_temps , {
+                unit : _unit,
+                race : _unit.race(),
+                name : _unit.name(),
+                role : _unit.role(),
+                wep1 : _unit.weapon_one(true),
+                wep2 : _unit.weapon_two(true),
+                armour : _unit.armour(true),
+                gear : _unit.gear(true),
+                mobi : _unit.mobility_item(true),
+                age : _unit.age(),
+                spe : _unit.specials(),
+                god : _unit.god_status(),
+            });
+        }
     
 
-        //this stops over strenuous repeats should greatly speed up company reshuffle
-        for (i = 0; i < _company_length; i++) {
-            sorted_numbers[i] = i;
-        }
-        for (var role_name = 0; role_name < _role_shuffle_length; role_name++) {
-            var wanted_role = _role_orders[role_name];
-            var sort_length = array_length(sorted_numbers) - 1;
-            i = -1;
-            while (i < sort_length) {
-                i++;
-                if (role_name == 0) {
-                    if (name[co][sorted_numbers[i]] == "") {
-                        array_delete(sorted_numbers, i, 1);
-                        i--;
-                        sort_length--;
-                        continue;
-                    }
-                }
-                unit = TTRPG[co][sorted_numbers[i]];
-                if (unit.role() == wanted_role) {
-                    temp_marine_variables(co, sorted_numbers[i]);
-                    array_delete(sorted_numbers, i, 1);
-                    i--;
-                    sort_length--;
-                    //if unit is part of a _squad make sure rest of _squad is grouped next to unit
-                    if (unit.squad != "none") {
-                        var cur_squad = unit.squad;
-                        var r = -1;
-                        while (r < sort_length) {
-                            r++;
-                            var squad_unit = fetch_unit([co, sorted_numbers[r]]);
-                            if (squad_unit.squad == cur_squad) {
-                                temp_marine_variables(co, sorted_numbers[r]);
-                                array_delete(sorted_numbers, r, 1);
-                                r--;
-                                sort_length--;
-                            }
-                        }
-                    }
-                }
-            }
-        }
         //position 2 in role order
         /*if (global.chapter_name!="Space Wolves") and (global.chapter_name!="Iron Hands"){
 	i=0;repeat(300){i+=1;
@@ -186,24 +105,27 @@ function scr_company_order(company) {
 	    }
 	}*/
 
-        // Return here
-        for (i = 0; i < array_length(temp_name); i++) {
-            race[co][i] = temp_race[i];
-            name[co][i] = temp_name[i];
-            role[co][i] = temp_role[i];
-            wep1[co][i] = temp_wep1[i];
-            wep2[co][i] = temp_wep2[i];
-            armour[co][i] = temp_armour[i];
-            gear[co][i] = temp_gear[i];
-            mobi[co][i] = temp_mobi[i];
-            age[co][i] = temp_age[i];
-            spe[co][i] = temp_spe[i];
-            god[co][i] = temp_god[i];
-            TTRPG[co][i] = temp_struct[i];
-            var unit = TTRPG[co][i];
-            unit.company = co;
-            unit.marine_number = i;
-            unit.movement_after_math();
+        for (i = 0; i < array_length(_temps); i++) {
+            var _unit = _temps[i];
+            TTRPG[co][i]  = _unit.unit;
+            race[co][i]   = _unit.race;
+            name[co][i]   = _unit.name;
+            role[co][i]   = _unit.role;
+            wep1[co][i]   = _unit.wep1;
+            wep2[co][i]   = _unit.wep2;
+            armour[co][i] = _unit.armour;
+            gear[co][i]   = _unit.gear;
+            mobi[co][i]   = _unit.mobi;
+            age[co][i]    = _unit.age;
+            spe[co][i]    = _unit.spe;
+            god[co][i]    = _unit.god;
+            _unit.unit.company       = co;
+            _unit.unit.marine_number = i;
+            if (_unit.unit.squad != "none"){
+                var _squad = _unit.unit.get_squad();
+                array_push(_squad.members, [co, i]);
+            }
+            _unit.unit.movement_after_math(co, i, false);
         }
         /*	i=0;repeat(300){i+=1;
 	    if (role[co][i]="Death Company"){

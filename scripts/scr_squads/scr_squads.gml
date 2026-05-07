@@ -357,7 +357,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 required[$ _wanted_unit_role] = _min_role_allowed - _squad_role_current;
             }
         }
-        var _sarge = obj_ini.roles[100][eROLE.SERGEANT];
+        var _sarge = obj_ini.role[100][eROLE.SERGEANT];
         if (struct_exists(required, _sarge)) {
             if (_squad.required[$ _sarge] > 0) {
                 _squad.new_sergeant();
@@ -366,7 +366,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
             }
         }
         //find a new veteran sergeant
-        var _vet_sarge = obj_ini.roles[100][eROLE.VETERANSERGEANT];
+        var _vet_sarge = obj_ini.role[100][eROLE.VETERANSERGEANT];
         if (struct_exists(required, _vet_sarge)) {
             if (_squad.required[$ _vet_sarge] > 0) {
                 _squad.new_sergeant(true);
@@ -641,7 +641,7 @@ function game_start_squads(){
 	if (struct_exists(chapter_squad_arrangement, "companies")){
 		var _comp_datas = chapter_squad_arrangement.companies;
 		for (var i=0;i<array_length(_comp_datas);i++){
-            var _company(_comp_datas[i].company);
+            var _company = collect_company(_comp_datas[i].company);
             _company.organise_by_template(_comp_datas[i]);
 		}
 	}

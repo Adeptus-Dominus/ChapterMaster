@@ -1861,7 +1861,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static in_jail = function() {
-        return obj_ini.god[company][marine_number] >= 10;
+        return god_status() >= 10;
+    };
+
+    static god_status = function() {
+        return obj_ini.god[company][marine_number];
     };
 
     static forge_point_generation = unit_forge_point_generation;
@@ -2057,8 +2061,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
     };
 
-    static movement_after_math = function(end_company = company, end_slot = marine_number) {
-        if (squad != "none") {
+    static movement_after_math = function(end_company = company, end_slot = marine_number, check_squads = true) {
+        if (squad != "none" && check_squads) {
             var squad_data = get_squad();
             var squad_member;
 

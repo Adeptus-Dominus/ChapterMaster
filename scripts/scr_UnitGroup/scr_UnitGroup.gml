@@ -38,19 +38,56 @@ function UnitGroup(units) constructor{
 		return false;		
 	}
 
-	static get_from = function(search_conditions = {}){
+	static get_from = function(search_conditions = {},as_UnitGroup = true, remove_from = false){
 		var _wanted = [];
 		var conditions = new SearchConditions(search_conditions);
-		for (var i=0;i<array_length(units);i++){
-			if (conditions.evaluate(units[i])){
+		var _search_len = array_length(units) - 1;
+		var _has_conditions = !struct_empty(search_conditions);
+		for (var i = _search_len; i >= 0; i--) {
+			var _want = true;
+			if (_has_conditions){
+				_want = conditions.evaluate(units[i]);
+			}
+			if (_want){
 				array_push(_wanted,units[i]);
+				if (remove_from){
+					array_delete(units , i ,1);
+				}
 			}
 			if (conditions.end_loop){
 				break;
 			}
 		}
 
-		return new UnitGroup(_wanted);
+		if (as_UnitGroup){
+			return new UnitGroup(_wanted);
+		} else {
+			return _wanted;
+		}
+
+	}
+
+	static add_units = function(group_two, conditions = {}, remove_from = false, join_index = -1){
+		var _new_adds = group_two.get_from(conditions, false,remove_from);
+		if (!bool(array_length(_new_adds))){
+			return;
+		}
+
+		if (join_index > array_length(units) - 1){
+			join_index = -1;
+		}
+		if (join_index > -1){
+			for (var i = array_length(_new_adds)-1;i >= 0 ;i--){
+				var _unit = _new_adds[i];
+				array_insert(units, join_index, _unit);
+
+			}
+		} else {
+			for (var i = 0;i < array_length(_new_adds) ;i++){
+				var _unit = _new_adds[i];
+				array_push(units, _unit);
+			}			
+		}
 	}
 
 	static index_roles = function(){
@@ -99,45 +136,66 @@ function UnitGroup(units) constructor{
 		}
 	}
 
-	static count_squads(squad_type){
+	static count_squads = function(squad_type = "all", return_array = false){
 		var _count = 0;
 		var _squads = [];
 		var _unit, _squad;
+		var _all_squads = squad_type == "all";
 		for (var i=0;i<array_length(units);i++){
 			_unit = units[i];
-			if (array_contains(_squads , unit.squad)){
+			if (_unit.squad == "none"){
+				continue;
+			}
+			if (array_contains(_squads , _unit.squad)){
 				continue;
 			}
 
-			_squad = unit.get_squad();
+			_squad = _unit.get_squad();
 
-			if (_squad.type == squad_type){
-				_count++;
+			var _add = true;
+			if (squad_type != "all"){
+				if (_squad.type != squad_type){
+					_add = false;
+				}
 			}
+			if (_add){
+				_count++;
+				array_push(_squads,_unit.squad);
+			}
+		}
+
+		if (!return_array){
+			return _count;
+		} else {
+			return _squads;
 		}
 	}
 
-	static index_squads(){
+	static index_squads = function(){
 		var _count = 0;
 		var _squads = [];
 		var _squad_index = {};
 		var _unit, _squad;
 		for (var i=0;i<array_length(units);i++){
 			_unit = units[i];
-			if (array_contains(_squads , unit.squad)){
+			if (_unit.squad == "none"){
+				continue;
+			}
+			if (array_contains(_squads , _unit.squad)){
 				continue;
 			}
 
-			_squad = unit.get_squad();
+			_squad = _unit.get_squad();
 
 			if (!struct_exists(_squad_index, _squad.type)){
 				_squad_index[_squad.type] = [];
 			}
-			array_push(_squad_index[$ _squad.type], unit.squad);
+			array_push(_squad_index[$ _squad.type], _unit.squad);
 		}
 
 		return _squad_index;
 	}
+
 	var _roles = active_roles();
 	
 	static sgt_types = role_groups(SPECIALISTS_SQUAD_LEADERS);
@@ -189,10 +247,11 @@ function UnitGroup(units) constructor{
 
 	    LOGGER.info($"ready to squad {_squadless.number()}");
 
+	    var _unit
 	    for (var i = 0; i < _squadless.number(); i++) {
 	        //fill squad roles
 
-	        unit = _squadless.units[i]
+	        _unit = _squadless.units[i]
 
 	            //if no sergeant found add one marine to standard marine selection so that a marine can be promoted
 
@@ -209,15 +268,15 @@ function UnitGroup(units) constructor{
 	    	}
 
 	    	//clone or else keeps pushing up number
-	    	var _max = variable_clone(_fill_squad[$ unit.role()][$ "max"]);
+	    	var _max = variable_clone(_fill_squad[$ _unit.role()][$ "max"]);
             if (_has_sgt_requirements) {
             	_max += 1;
             }
 
-            if (squad_fulfilment[$ unit.role()] < _max) {
+            if (squad_fulfilment[$ _unit.role()] < _max) {
                 //if sergeants not required
-                squad_fulfilment[$ unit.role()]++;
-                squad.add_member(unit.company, unit.marine_number);
+                squad_fulfilment[$ _unit.role()]++;
+                squad.add_member(_unit.company, _unit.marine_number);
             }
 
 	    }
@@ -241,7 +300,7 @@ function UnitGroup(units) constructor{
 	        }
 	    }
 
-	    //evaluate if the minimum unit type requirements have been met to create a new squad
+	    //evaluate if the minimum _unit type requirements have been met to create a new squad
 	    _fulfilled = true;
 	    for (var i = 0; i < array_length(squad_unit_types); i++) {
 	    	var _unit_role = squad_unit_types[i];
@@ -263,8 +322,8 @@ function UnitGroup(units) constructor{
 	        //update units squad marker
 	        squad.squad_fulfilment = squad_fulfilment;
 	        for (var i = 0; i < _members.number(); i++) {
-	            unit = _members.units[i];
-	            unit.squad = squad.uid;
+	            _unit = _members.units[i];
+	            _unit.squad = squad.uid;
 	        }
 	        obj_ini.squads[$ squad.uid] = squad;
 
@@ -345,12 +404,38 @@ function UnitGroup(units) constructor{
             }
         }
 	}
+
+	static order_by_rank = function(){
+		var _role_orders = role_hierarchy();
+		var _role_shuffle_length = array_length(_role_orders);
+		var _match_roles = new UnitGroup([]);
+		var _sorted_squads = [];
+		for (var role_name = 0; role_name < _role_shuffle_length; role_name++) {
+			var _wanted_role = _role_orders[role_name];
+			_match_roles.add_units(self, {role : _wanted_role}, true, -1);
+			for (var i=0;i<array_length(_match_roles.units);i++){
+				var _unit = _match_roles.units[i];
+				if (_unit.squad == "none" || array_contains(_sorted_squads,_unit.squad)){
+					continue;
+				}
+				var _squad = fetch_squad(_unit.squad);
+				var _members_count = array_length(_squad.members);
+				var _conditions = {
+					squad : _unit.squad,
+					max_wanted : _members_count,
+				};
+				_match_roles.add_units(self, _conditions, true, i+1);
+			}
+		}
+		_match_roles.add_units(self,{},true);
+		units = _match_roles.units;
+	}
 }
 
 
 
 
-function UnitIndex(units){
+function UnitIndex(units) constructor{
 	role_index = {};
 
 	static add_to_index = function(units){
@@ -359,7 +444,7 @@ function UnitIndex(units){
 	        if (!struct_exists(role_index, _unit.role())) {
 	            role_index[$ _unit.role()] = [_unit];
 	        } else {
-	            array_push(role_index[$ unit.role()], _unit);
+	            array_push(role_index[$ _unit.role()], _unit);
 	        }
 		}
 	}
@@ -402,7 +487,7 @@ function collect_company(company){
 }
 
 function collect_role_group(group=SPECIALISTS_STANDARD, location="", opposite=false, search_conditions = {}, return_as_UnitGroup = false){
-	var _units = [], unit, count=0, _add=false, _is_special_group;
+	var _units = [], _unit, count=0, _add=false, _is_special_group;
 	var _max_count = 0;
 	var _total_count = 0;
 	if (struct_exists(search_conditions, "max")){
@@ -464,6 +549,7 @@ function SearchConditions(data) constructor {
 	squadless = false;
 	role = "";
 	roles = [];
+	squad = "";
 
 	static update_constants = function(data){
 		move_data_to_current_scope(data);
@@ -570,46 +656,70 @@ function SearchConditions(data) constructor {
 		}
 
 
-	    if (_add){
-	    	if (struct_exists(self, "stat")){
-	    		_add = oposite_switch(stat_valuator(stat, unit));
-	    	}
+	    if (!_add){
+	    	return false;
 	    }
 
-	    if (_add){
-	    	if (struct_exists(self,"job")){
-	    		_add = oposite_switch((unit.assignment() == job));
-	    	}
+    	if (struct_exists(self, "stat")){
+    		_add = oposite_switch(stat_valuator(stat, unit));
+    	}
+
+	    if (!_add){
+	    	return false;
+	    }
+
+    	if (struct_exists(self,"job")){
+    		_add = oposite_switch((unit.assignment() == job));
+    	}
+		
+
+
+	    if (!_add){
+	    	return false;
+	    }
+
+		if (allegiance != ""){
+			_add = oposite_switch(unit.allegiance == allegiance);
+		}
+		
+
+	    if (!_add){
+	    	return false;
+	    }
+
+		if (squadless){
+			_add = oposite_switch(unit.squad == "none");
+		}
+		
+
+	    if (!_add){
+	    	return false;
+	    }
+
+		if (role != ""){
+			_add = oposite_switch(unit.role() == role);
+		}
+		
+
+	    if (!_add){
+	    	return false;
+	    }
+
+		if (bool(array_length(roles))){
+			_add = oposite_switch(array_contains(roles, unit.role()));
 		}
 
-		if (_add){
-			if (allegiance != ""){
-				_add = oposite_switch(unit.allegiance == allegiance);
-			}
-		}
+	    if (!_add){
+	    	return false;
+	    }
 
-		if (_add){
-			if (squadless){
-				_add = oposite_switch(unit.squad == "none");
-			}
-		}
-
-		if (_add){
-			if (role != ""){
-				_add = oposite_switch(unit.role() == role);
-			}
-		}
-
-		if (_add){
-			if (bool(array_length(roles))){
-				_add = oposite_switch(array_contains(roles, unit.role()));
-			}
-		}
+	    if (squad != ""){
+	    	_add = unit.squad == squad;
+	    }	
 
 	    if (max_wanted > 0 && _add){
 	    	found++;
-	    	if (found > max_wanted){
-	    		_add = false;
+	    	if (found >= max_wanted){
 	    		end_loop = true;
 	    	}
 	    }
@@ -619,26 +729,25 @@ function SearchConditions(data) constructor {
 	}
 
 }
-
-function stat_valuator(search_params, unit) {
+function stat_valuator(search_params, _unit) {
     var match = true;
     for (var stat = 0; stat < array_length(search_params); stat++) {
         var _stat_val = search_params[stat];
-        if (!struct_exists(unit, _stat_val[0])) {
+        if (!struct_exists(_unit, _stat_val[0])) {
             match = false;
             break;
         }
         switch (_stat_val[2]) {
             case "inmore":
             case "more":
-                if (unit[$ _stat_val[0]] < _stat_val[1]) {
+                if (_unit[$ _stat_val[0]] < _stat_val[1]) {
                     match = false;
                     break;
                 }
                 break;
 
             case "exmore":
-                if (unit[$ _stat_val[0]] <= _stat_val[1]) {
+                if (_unit[$ _stat_val[0]] <= _stat_val[1]) {
                     match = false;
                     break;
                 }
@@ -646,14 +755,14 @@ function stat_valuator(search_params, unit) {
 
             case "inless":
             case "less":
-                if (unit[$ _stat_val[0]] > _stat_val[1]) {
+                if (_unit[$ _stat_val[0]] > _stat_val[1]) {
                     match = false;
                     break;
                 }
                 break;
 
             case "exless":
-                if (unit[$ _stat_val[0]] >= _stat_val[1]) {
+                if (_unit[$ _stat_val[0]] >= _stat_val[1]) {
                     match = false;
                     break;
                 }
@@ -666,28 +775,28 @@ function stat_valuator(search_params, unit) {
 
 //TOODO probably just roll this into other checks
 function collect_by_religeon(religion, sub_cult = "", location = "") {
-    var _units = [], unit, count = 0, _add = false;
+    var _units = [], _unit, count = 0, _add = false;
     for (var com = 0; com <= obj_ini.companies; com++) {
         for (var i = 1; i < array_length(obj_ini.TTRPG[com]); i++) {
             _add = false;
-            unit = obj_ini.TTRPG[com][i];
-            if (unit.name() == "") {
+            _unit = obj_ini.TTRPG[com][i];
+            if (_unit.name() == "") {
                 continue;
             }
-            if (unit.religion == religion) {
+            if (_unit.religion == religion) {
                 if (sub_cult != "") {
-                    if (unit.religion_sub_cult != "sub_cult") {
+                    if (_unit.religion_sub_cult != "sub_cult") {
                         continue;
                     }
                 }
                 if (location == "") {
                     _add = true;
-                } else if (unit.is_at_location(location)) {
+                } else if (_unit.is_at_location(location)) {
                     _add = true;
                 }
             }
             if (_add) {
-                array_push(_units, unit);
+                array_push(_units, _unit);
             }
         }
     }
@@ -710,7 +819,7 @@ enum eMISSION_SELECT_TYPE {
 
 function group_selection(group, selection_data = {}) {
     try {
-        var unit, s, unit_location;
+        var _unit, s, unit_location;
         obj_controller.selection_data = selection_data;
         set_zoom_to_default();
         with (obj_controller) {
@@ -739,12 +848,12 @@ function group_selection(group, selection_data = {}) {
                     }
                     continue;
                 }
-                unit = group[i];
-                add_man_to_manage_arrays(unit);
+                _unit = group[i];
+                add_man_to_manage_arrays(_unit);
 
                 if (selection_data.purpose_code == "forge_assignment") {
-                    if (unit.job != "none") {
-                        if (unit.job.type == "forge" && unit.job.planet == selection_data.planet) {
+                    if (_unit.job != "none") {
+                        if (_unit.job.type == "forge" && _unit.job.planet == selection_data.planet) {
                             man_sel[array_length(display_unit) - 1] = 1;
                             man_size++;
                             selection_data.start_count++;
@@ -755,8 +864,8 @@ function group_selection(group, selection_data = {}) {
             var last_vehicle = 0;
             if (array_length(vehicles) > 0) {
                 for (var veh = 0; veh < array_length(vehicles); veh++) {
-                    unit = vehicles[veh];
-                    add_vehicle_to_manage_arrays(unit);
+                    _unit = vehicles[veh];
+                    add_vehicle_to_manage_arrays(_unit);
                 }
             }
             other_manage_data();
