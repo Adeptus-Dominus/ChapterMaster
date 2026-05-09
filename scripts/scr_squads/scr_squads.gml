@@ -398,6 +398,14 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         return fetch_unit(members[index]);
     };
 
+    static fetch_members = function(){
+        return collect_role_group("all", "", false, {
+            "company":base_company,
+            "squad" :  uid,
+            "max_wanted" : array_length(members),
+        });
+    }
+
     static add_member = function(comp, unit_number) {
         array_push(members, [comp, unit_number]);
         life_members++;
@@ -635,7 +643,6 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
 function game_start_squads(){
     obj_ini.squads = {};
-
 	if (struct_exists(chapter_squad_arrangement, "companies")){
 		var _comp_datas = chapter_squad_arrangement.companies;
 		for (var i=0;i<array_length(_comp_datas);i++){

@@ -200,13 +200,18 @@ function UnitGroup(units) constructor{
 	
 	static sgt_types = role_groups(SPECIALISTS_SQUAD_LEADERS);
 
-	static create_squad = function(squad_type, squad_loadout = true, squad_index = -1, game_start = false){
+	static create_squad = function(squad_type, squad_loadout = true, squad_uid = "", game_start = false){
 
 		LOGGER.info($"sgts : ${sgt_types}");
 
 		var roles = active_roles();
 
-	    var squad = new UnitSquad(squad_type);
+		var squad;
+		if (squad_uid != ""){
+			squad = fetch_squad(squad_uid);
+		} else {
+			squad = new UnitSquad(squad_type);
+		}
 
 	    var squad_fulfilment = squad.squad_fulfilment;
 
@@ -335,12 +340,14 @@ function UnitGroup(units) constructor{
 	    return [_fulfilled, squad.uid];
 	}
 
-	static organise_by_template = function(template){
+	static organise_by_template = function(template, squad_index=false, empty_squads_index = {}, game_start = true){
 
 		var _required = [];
 		var _proportional = [];
 
-		var _squad_index = index_squads();
+		if (squad_index == false){
+			var _squad_index = index_squads();
+		}
 
 		for (var i=0;i<array_length(template.squads);i++){
 			var _squad = template.squads[i];
@@ -374,11 +381,24 @@ function UnitGroup(units) constructor{
 
 			) {
                 _last_squad_count = squad_count() + 1;
-                var _results = create_squad(_squad_name, true, -1, true);
+            	var _squad_uid = "";
+            	if (struct_exists(empty_squads_index, _squad_name)){
+            		_squad_uid = empty_squads_index[$ _squad_name][0].uid;
+            	}
+                var _results = create_squad(_squad_name, true, _squad_uid, game_start);
                 if (_results[0]){
                     var _new_squad = fetch_squad(_results[1]);
                     _new_squad.base_company = template.company;
                     _created_count++;
+                    if (_squad_uid == ""){
+                    	continue;
+                    }
+
+                	array_delete(empty_squads_index[$ _squad_name],0,1);
+                	if (!bool(array_length(empty_squads_index[$ _squad_name]))){
+                		struct_remove(empty_squads_index, _squad_name);
+                	}
+
                 }
             }
 		}
@@ -391,12 +411,26 @@ function UnitGroup(units) constructor{
             for (var i = 0 ;i < array_length(_proportional); i++){
                 var _squad = _proportional[i];
                 var _squad_name = _squad.squad;
+            	var _squad_uid = "";
+            	if (struct_exists(empty_squads_index, _squad_name)){
+            		_squad_uid = empty_squads_index[$ _squad_name][0].uid;
+            	}
                 for (var s = 0; s < _squad.proportion; s++){
-                    var _results = create_squad(_squad_name, true, -1, true);
+                    var _results = create_squad(_squad_name, true, _squad_uid, game_start);
                     if (_results[0]){
                         var _new_squad = fetch_squad(_results[1]);
                         _new_squad.base_company = template.company;
                         _squads_made++;
+
+	                    if (_squad_uid == ""){
+	                    	continue;
+	                    }
+
+	                	array_delete(empty_squads_index[$ _squad_name],0,1);
+	                	if (!bool(array_length(empty_squads_index[$ _squad_name]))){
+	                		struct_remove(empty_squads_index, _squad_name);
+	                	}
+
                     } else {
                         break;
                     }
@@ -463,12 +497,13 @@ function UnitIndex(units) constructor{
 	static pop_role_member = function(role){
 		return array_pop(role_index[$ role]);
 	}
-	static turn_to_group = function(){
+	static turn_to_UnitGroup = function(){
 		var _units = [];
 		var _keys = keys();
 		for (var i = 0; i < array_length(_keys); i++){
-			for (var u = 0; u <array_length(role_index[$ _keys[i]]); u++){
-				array_push(_units, role_index[$ _keys[i]][u]);
+			var _role = _keys[i];
+			for (var u = 0; u <array_length(role_index[$ _role]); u++){
+				array_push(_units, role_index[$ _role][u]);
 			}
 		}
 		return new UnitGroup(_units);

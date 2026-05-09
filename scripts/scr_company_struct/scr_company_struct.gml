@@ -67,9 +67,10 @@ function CompanyStruct(comp) constructor {
                     continue;
                 }
 
-                if (!struct_exists(obj_ini.squads,_unit.squad)) {
+                if (!struct_exists(_squads, _unit.squad)) {
                     _unit.squad = "none";
                 }
+
                 if (_unit.squad == "none") {
                     continue;
                 }
@@ -78,15 +79,13 @@ function CompanyStruct(comp) constructor {
                     continue;
                 }
 
-                var _search_squad = _squads[$ _unit.squad];
+                var _search_squad = _unit.get_squad();
                 _search_squad.update_fulfilment();
+
                 if (array_length(_search_squad.members) > 0) {
                     array_push(company_squads, _search_squad);
-                    array_push(_search_squad.uid)
+                    array_push(_squad_ids, _unit.squad);
                 }
-
- 
-                
             }
         }
         if (squad_location != "") {
@@ -158,12 +157,27 @@ function CompanyStruct(comp) constructor {
     };
 
     static draw_squad_unit_sprites = function() {
+        add_draw_return_values();
         var member_width = 0, member_height = 0;
         var x_mod = 0, y_mod = 0;
 
         var x_overlap_mod = 0;
+
+        var _start_box = new Box({
+            x1 :xx + 25,
+            y1 :yy + 144,
+            x2 :xx + 925,
+            y2 :yy + 981,           
+        });
+
+        var _full_box = new Box({
+            x1 : xx + 25,
+            y1 : yy + 144,
+            x2 : xx + 525,
+            y2 : yy + 981
+        })
         if (unit_rollover) {
-            if (scr_hit(xx + 25, yy + 144, xx + 925, yy + 981)) {
+            if (_start_box.hit()) {
                 x_overlap_mod = 180;
             } else {
                 unit_rollover = !unit_rollover;
@@ -172,63 +186,74 @@ function CompanyStruct(comp) constructor {
             x_overlap_mod = 90 + (9 * rollover_sequence);
         }
         var sprite_draw_delay = "none";
-        var unit_sprite_coords = [];
+        var unit_sprite_coords = {};
         var _cur_squad = company_squads[current_squad];
+        var _reset_surface = false;
+        var _member = _cur_squad.fetch_member(0);
+        if (array_length(squad_draw_surfaces) == 0 || (squad_draw_surfaces[0][0] != _member.uid)) {
+            reset_squad_surface();
+            _reset_surface =  true;
+        }   
         for (var i = 0; i < array_length(_cur_squad.members); i++) {
-            member = fetch_unit(_cur_squad.members[i]);
-            var _member_co_id = _cur_squad.members[i];
-            if (!array_equals(squad_draw_surfaces[i][0], _member_co_id)) {
-                squad_draw_surfaces[i][0] = [
-                    member.company,
-                    member.marine_number
-                ];
-                squad_draw_surfaces[i][1] = member.draw_unit_image();
-            }
-            var cur_member_surface = squad_draw_surfaces[i][1];
-            if (member.name() != "") {
-                if (member_width == 5) {
-                    member_width = 0;
-                    x_mod = 0;
-                    member_height++;
-                    y_mod += 231;
-                }
-                member_width++;
-                cur_member_surface.draw_part(xx + 25 + x_mod, yy + 144 + y_mod, 0, 0, 166, 231, true);
+            var _member = _cur_squad.fetch_member(i);
 
-                if (cur_member_surface.hit() && !exit_period && unit_rollover) {
-                    sprite_draw_delay = [
-                        member,
-                        cur_member_surface.box(),
-                        cur_member_surface
-                    ];
-                    obj_controller.unit_focus = member;
-                } else {
-                    if (obj_controller.unit_focus.company == member.company && obj_controller.unit_focus.marine_number == member.marine_number && !is_array(sprite_draw_delay)) {
-                        sprite_draw_delay = [
-                            member,
-                            cur_member_surface.box(),
-                            cur_member_surface
-                        ];
-                        obj_controller.unit_focus = member;
-                    }
-                }
-                x_mod += x_overlap_mod;
+            if (_reset_surface){
+                array_push(squad_draw_surfaces, [
+                    _member.uid,
+                    _member.draw_unit_image()
+                ]);
+            }
+
+
+            var _mem_draw_data = squad_draw_surfaces[i];
+            var cur_member_surface = _mem_draw_data[1];
+            if (_member.name() == "") {
+                continue;
+            }
+            if (member_width == 5) {
+                member_width = 0;
+                x_mod = 0;
+                member_height++;
+                y_mod += 231;
+            };
+
+            member_width++;
+
+            cur_member_surface.draw_part(_start_box.x1 + x_mod, _start_box.y1 + y_mod, 0, 0, 166, 231, true);
+
+            x_mod += x_overlap_mod;
+
+            var _use_draw_delay = (cur_member_surface.hit() && !exit_period && unit_rollover);
+
+            if(!_use_draw_delay){
+                _use_draw_delay = obj_controller.unit_focus.uid == _member.uid;
+            }
+
+            if (_use_draw_delay){
+                var _outline = cur_member_surface.box();
+                _outline.colour = c_red;
+                sprite_draw_delay = {
+                    unit : _member,
+                    draw_coords : _outline,
+                    unit_surface : cur_member_surface
+                };
+                obj_controller.unit_focus = _member;                
             }
         }
-        if (is_array(sprite_draw_delay)) {
-            member = sprite_draw_delay[0];
-            unit_sprite_coords = sprite_draw_delay[1];
-            sprite_draw_delay[2].draw_part(unit_sprite_coords[0], unit_sprite_coords[1], 0, 0, 166, 231, true);
-            draw_set_color(c_red);
-            draw_rectangle(unit_sprite_coords[0], unit_sprite_coords[1], unit_sprite_coords[2], unit_sprite_coords[3], 1);
-            draw_set_color(c_gray);
+
+        if (is_struct(sprite_draw_delay)) {
+            var _member = sprite_draw_delay.unit;
+            unit_sprite_coords = sprite_draw_delay.draw_coords;
+            var _surface = sprite_draw_delay.unit_surface;
+            _surface.draw_part(unit_sprite_coords.x1, unit_sprite_coords.y1, 0, 0, 166, 231, true);
+            unit_sprite_coords.draw(true);
             if (mouse_check_button_pressed(mb_left)) {
                 unit_rollover = false;
                 exit_period = true;
             }
         }
         if (!unit_rollover && !instance_exists(obj_star_select)) {
-            if (scr_hit(xx + 25, yy + 144, xx + 525, yy + 981) && !exit_period) {
+            if (_full_box.hit() && !exit_period) {
                 if (rollover_sequence < 10) {
                     rollover_sequence++;
                 } else {
@@ -240,9 +265,10 @@ function CompanyStruct(comp) constructor {
                 }
             }
         }
-        if (exit_period && !scr_hit(xx + 25, yy + 144, xx + 525, yy + 981)) {
+        if (exit_period && !_full_box.hit()) {
             exit_period = false;
         }
+        pop_draw_return_values();
     };
 
     static draw_squad_assignment_options = function() {
@@ -326,8 +352,8 @@ function CompanyStruct(comp) constructor {
         } else {
             current_squad = (current_squad - 1 < 0) ? array_length(company_squads) - 1 : current_squad - 1;
         }
-        member = grab_current_squad().members[0];
-        obj_controller.unit_focus = fetch_unit(member);
+        var _member = grab_current_squad().members[0];
+        obj_controller.unit_focus = fetch_unit(_member);
     };
     squad_search();
 
@@ -348,23 +374,18 @@ function CompanyStruct(comp) constructor {
     static reset_squad_surface = function() {
         if (is_array(squad_draw_surfaces)) {
             for (var i = 0; i < array_length(squad_draw_surfaces); i++) {
-                if (is_array(squad_draw_surfaces[i])) {
-                    if (is_struct(squad_draw_surfaces[i][1])) {
-                        squad_draw_surfaces[i][1].destroy_image();
-                    }
+                var _mem_data = squad_draw_surfaces[i];
+                if (!is_array(_mem_data)) {
+                    continue;
                 }
+                if (!is_struct(_mem_data[1])) {
+                    continue;
+                }
+
+                _mem_data[1].destroy_image();
             }
         }
-        squad_draw_surfaces = array_create(15, []);
-        for (var i = 0; i < 15; i++) {
-            squad_draw_surfaces[i] = [
-                [
-                    -1,
-                    -1
-                ],
-                false
-            ];
-        }
+        squad_draw_surfaces = [];
     };
 
     squad_draw_surfaces = [];
@@ -406,10 +427,15 @@ function CompanyStruct(comp) constructor {
     };
 
     static default_member = function() {
-        var member = company_squads[0].members[0];
-        obj_controller.unit_focus = fetch_unit(member);
+        var _member = company_squads[0].members[0];
+        obj_controller.unit_focus = fetch_unit(_member);
         selected_unit = obj_controller.unit_focus;
     };
+
+    static exit_squad_view = function(){
+        obj_controller.view_squad = false;
+        obj_controller.unit_profile = false;       
+    }
 
     static draw_squad_view = function() {
         center_width = [
@@ -422,11 +448,10 @@ function CompanyStruct(comp) constructor {
         ];
         xx = __view_get(e__VW.XView, 0) + 0;
         yy = __view_get(e__VW.YView, 0) + 0;
-        var member;
+        var _member;
         selected_unit = obj_controller.unit_focus;
         if (array_length(company_squads) == 0) {
-            obj_controller.view_squad = false;
-            obj_controller.unit_profile = false;
+            exit_squad_view();
             return;
         }
 
@@ -434,8 +459,10 @@ function CompanyStruct(comp) constructor {
             current_squad = 0;
         }
 
+        var _find_squad_member = false;
         if (selected_unit.company == company || company == -1) {
-            if (company_squads[current_squad].uid != selected_unit.squad) {
+            var _current = grab_current_squad();
+            if (_current.uid != selected_unit.squad) {
                 var squad_found = false;
                 for (var i = 0; i < array_length(company_squads); i++) {
                     if (company_squads[i].uid == selected_unit.squad) {
@@ -445,15 +472,23 @@ function CompanyStruct(comp) constructor {
                     }
                 }
                 if (!squad_found) {
-                    default_member();
+                    _find_squad_member = true;
                 }
             }
         } else {
-            default_member();
+            _find_squad_member = true;
         }
 
         if (selected_unit.squad == "none") {
+            _find_squad_member = true;
+        }
+
+        if (_find_squad_member){
             default_member();
+        }
+
+        if (selected_unit.squad == "none"){
+            exit_squad_view();
             return;
         }
 

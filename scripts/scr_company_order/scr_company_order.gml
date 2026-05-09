@@ -42,7 +42,7 @@ function scr_company_order(company) {
         for (i = 0; i < array_length(_squad_ids); i++) {
             var _squad = fetch_squad(_squad_ids[i]);
             if (_squad.base_company != co) {
-                if (bool(array_length(_squad.members))) {
+                if (!bool(array_length(_squad.members))) {
                     array_push(_empty_squads, _squad);
                 }
                 continue;
@@ -55,6 +55,7 @@ function scr_company_order(company) {
             }
         }
 
+        var _empty_index = {};
         for (var i=0;i<array_length(_empty_squads);i++){
             var _squad = _empty_squads[i];
             _squad.update_fulfilment(_squadless_index);
@@ -62,7 +63,30 @@ function scr_company_order(company) {
                 _squad.empty_squad_to_index(_squadless_index);
             } else {
                 _squad.base_company = co;
+                if (!struct_exists(_empty_index, _squad.type)){
+                    _empty_index[$ _squad.type] = [];
+                }
+                array_push(_empty_index, _squad);
             }
+        }
+
+        var _squadless = _squadless_index.turn_to_UnitGroup();
+
+        if (_squadless.number() > 3){
+            var _squad_index = _company_marines.squad_index();
+            var _data_match=false;
+            var _data;
+            if (struct_exists(obj_ini.chapter_squad_arrangement, "companies")){
+                var _comp_datas = obj_ini.chapter_squad_arrangement.companies;
+                for (var i=0;i<array_length(_comp_datas);i++){
+                   if (_comp_datas[i].company == co){
+                        _data_match = true;
+                        _data = _comp_datas[i];
+                   }
+                }
+            }
+            _squadless.organise_by_template(_data, _squad_index, _empty_index, false);
+
         }
 
         _company_marines.order_by_rank();

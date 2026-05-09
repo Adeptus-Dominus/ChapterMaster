@@ -82,7 +82,7 @@ function UnitImage(_unit_sprite) constructor {
     };
 
     static box = function() {
-        return [x1, y1, x2, y2];
+        return new Box({x1,y1,x2,y2});
     };
 
     static destroy_image = function() {
