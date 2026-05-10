@@ -149,8 +149,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static squad_role = function() {
         var temp_role = role();
         if (squad != "none") {
-            if (struct_exists(obj_ini.squad_types[$ obj_ini.squads[squad].type], temp_role)) {
-                var role_info = obj_ini.squad_types[$ obj_ini.squads[squad].type][$ temp_role];
+            var _squad = fetch_squad(squad);
+            if (struct_exists(obj_ini.squad_types[$ _squad.type], temp_role)) {
+                var role_info = obj_ini.squad_types[$ _squad.type][$ temp_role];
                 if (struct_exists(role_info, "role")) {
                     temp_role = role_info[$ "role"];
                 }
@@ -1645,10 +1646,15 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return armour_rating;
     };
 
+    static get_squad = function(){
+        return fetch_squad(squad);
+    }
+
     static assignment = function() {
         if (squad != "none") {
-            if (obj_ini.squads[squad].assignment != "none") {
-                return obj_ini.squads[squad].assignment.type;
+            var _squad = get_squad();
+            if (_squad.assignment != "none") {
+                return _squad.assignment.type;
             }
         }
         if (job != "none") {
@@ -1660,14 +1666,15 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static remove_from_squad = function() {
         if (squad != "none") {
-            if (squad < array_length(obj_ini.squads)) {
-                for (var r = 0; r < array_length(obj_ini.squads[squad].members); r++) {
-                    squad_member = obj_ini.squads[squad].members[r];
-                    if ((squad_member[0] == company) && (squad_member[1] == marine_number)) {
-                        array_delete(obj_ini.squads[squad].members, r, 1);
-                    }
+            var _squad = get_squad();
+
+            for (var r = 0; r < array_length(_squad.members); r++) {
+                squad_member = _squad.members[r];
+                if ((squad_member[0] == company) && (squad_member[1] == marine_number)) {
+                    array_delete(_squad.members, r, 1);
                 }
             }
+
             squad = "none";
         }
     };
@@ -1675,8 +1682,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static squad_type = function() {
         var _type = "none";
         if (squad != "none") {
-            if (squad < array_length(obj_ini.squads)) {
-                return obj_ini.squads[squad].type;
+            if (struct_exists(obj_ini.squads, squad)) {
+                return get_squad().type;
             }
         }
         return _type;
@@ -1690,7 +1697,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             remove_from_squad();
         }
         squad = new_squad;
-        var _squad = fetch_squad(squad);
+        var _squad = get_squad();
         _squad.add_member(company, marine_number);
     };
 
@@ -1717,16 +1724,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return [location_type, location_id, location_name];
     };
 
-    static controllable = function() {
-        return !location_out_of_player_control(location_string);
-    };
-
     //quick way of getting name and role combined in string
     static name_role = function(include_epithet = true) {
         var temp_role = role();
         if (squad != "none") {
-            if (struct_exists(obj_ini.squad_types[$ obj_ini.squads[squad].type], temp_role)) {
-                var role_info = obj_ini.squad_types[$ obj_ini.squads[squad].type][$ temp_role];
+            var _squad = get_squad();
+            if (struct_exists(obj_ini.squad_types[$ _squad.type], temp_role)) {
+                var role_info = obj_ini.squad_types[$ _squad.type][$ temp_role];
                 if (struct_exists(role_info, "role")) {
                     temp_role = role_info[$ "role"];
                 }
@@ -1740,6 +1744,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         }
         return string("{0} {1}", temp_role, name());
+    };
+
+    static controllable = function() {
+        return !location_out_of_player_control(location_string);
     };
 
     static full_title = function() {
@@ -1896,7 +1904,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static in_jail = function() {
-        return obj_ini.god[company][marine_number] >= 10;
+        return god_status() >= 10;
+    };
+
+    static god_status = function() {
+        return obj_ini.god[company][marine_number];
     };
 
     static forge_point_generation = unit_forge_point_generation;
@@ -2104,9 +2116,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
     };
 
-    static movement_after_math = function(end_company = company, end_slot = marine_number) {
-        if (squad != "none") {
-            var squad_data = obj_ini.squads[squad];
+    static movement_after_math = function(end_company = company, end_slot = marine_number, check_squads = true) {
+        if (squad != "none" && check_squads) {
+            var squad_data = get_squad();
             var squad_member;
 
             for (var r = 0; r < array_length(squad_data.members); r++) {
@@ -2122,6 +2134,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                             end_slot
                         ];
                     }
+                    break;
                 }
             }
         }

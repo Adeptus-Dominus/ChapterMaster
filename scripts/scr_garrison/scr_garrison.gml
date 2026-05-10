@@ -38,30 +38,22 @@ function GarrisonForce(operatives, turn_end = false, type = "garrison") construc
     viable_garrison = 0;
     var operative, unit, member;
     self.type = type
-
     static update = function(operatives,turn_end){
-        for (var ops = 0; ops < array_length(operatives); ops++) {
-            if (operatives[ops].type == "squad") {
-                if (operatives[ops].job == type) {
-                    //marine garrison on planet
-                    if (array_length(obj_ini.squads[operatives[ops].reference].members) > 0) {
-                        operative = obj_ini.squads[operatives[ops].reference];
-                        array_push(garrison_squads, operative);
-                        total_garrison += array_length(operative.members);
-                        garrison_force = true;
-                        for (var i = 0; i < array_length(operative.members); i++) {
-                            member = operative.members[i];
-                            unit = fetch_unit([member[0], member[1]]);
-                            if (!is_struct(unit)) {
-                                continue;
-                            }
-                            if (unit.name() == "") {
-                                continue;
-                            }
-                            array_push(members, unit);
-                            if (unit.hp() > 0) {
-                                viable_garrison++;
-                            }
+    for (var ops = 0; ops < array_length(planet_operatives); ops++) {
+        if (planet_operatives[ops].type == "squad") {
+            if (planet_operatives[ops].job == type) {
+                //marine garrison on planet
+                var _squad = fetch_squad(planet_operatives[ops].reference);
+                if (array_length(_squad.members) > 0) {
+                    operative = _squad;
+                    array_push(garrison_squads, operative);
+                    total_garrison += array_length(operative.members);
+                    garrison_force = true;
+                    for (var i = 0; i < array_length(operative.members); i++) {
+                        member = operative.members[i];
+                        unit = fetch_unit([member[0], member[1]]);
+                        if (!is_struct(unit)) {
+                            continue;
                         }
                         if (turn_end) {
                             operatives[ops].task_time++;

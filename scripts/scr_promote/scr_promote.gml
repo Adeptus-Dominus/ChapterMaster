@@ -54,7 +54,7 @@ function setup_promotion_popup() {
                         if (unit.squad != "none") {
                             // this evaluates if you are trying promote a whole squad
                             var move_squad = unit.squad;
-                            squad = obj_ini.squads[move_squad];
+                            squad = fetch_squad(move_squad);
                             squad.update_fulfilment();
                             move_members = squad.members;
                             if (array_length(move_members) == 1) {
