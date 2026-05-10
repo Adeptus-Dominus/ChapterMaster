@@ -1570,37 +1570,18 @@ function scr_initialize_custom() {
 
     #region Squad Loadouts
     obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main\\squads\\company_squad_builds.json", json_parse);
-    /*
-		squad guidance
-			define a role that can exist in a squad by defining 
-			[<role>, {
-				"max":<maximum number of this role allowed in squad>
-				"min":<minimum number of this role required in squad>
-				}
-			]
-			by adding "loadout" as a key to the role struct e.g {"min":1,"max":1,"loadout":{}}
-				a default or optional loadout can be created for the given role in the squad
-			"loadout" has two possible keys "required" and "option"
-			a required loadout always follows this syntax <loadout_slot>:[<loadout_item>,<required number>]
-				so "wep1":["Bolter",4], will mean four marines are always equipped with 4 bolters in the wep1 slot
 
-			option loadouts follow the following syntax <loudout_slot>:[[<loadout_item_list>],<allowed_number>]
-				for example [["Flamer", "Meltagun"],1], means the role can have a max of one flamer or meltagun
-					[["Plasma Pistol","Bolt Pistol"], 4] means the role can have a mix of 4 plasma pistols and bolt pistols on top
-						of all required loadout options
-
-	*/
-    var squad_name = "Squad";
+    var _squad_name = "Squad";
     if (obj_creation.custom != eCHAPTER_TYPE.PREMADE) {
         if (obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
-            squad_name = "Pack";
+            _squad_name = "Pack";
         }
         if (obj_ini.progenitor == ePROGENITOR.IRON_HANDS) {
-            squad_name = "Clave";
+            _squad_name = "Clave";
         }
     }
     if (struct_exists(obj_creation, "squad_name")) {
-        squad_name = obj_creation.squad_name;
+        _squad_name = obj_creation._squad_name;
     }
 
     squad_types = json_to_gamemaker(working_directory + $"main\\squads\\base_squads.json", json_parse);
@@ -1639,6 +1620,7 @@ function scr_initialize_custom() {
 
         // ── Weighted ──────────────────────────────────────────────────
         { "{WEAPON_LIST_WEIGHTED_RANGED_PISTOLS}"  : WEAPON_LIST_WEIGHTED_RANGED_PISTOLS },
+        {"{_squad_name}"}                           : _squad_name
     ];
     var _roles_player = obj_ini.role[100];
     var _default_player = obj_ini.role[101];
@@ -1686,14 +1668,14 @@ function scr_initialize_custom() {
             var names = struct_get_names(st);
             // LOGGER.debug($"names {names}");
             for (var n = 0; n < array_length(names); n++) {
-                var squad_name = names[n];
-                // LOGGER.debug($"matched squad name name {squad_name}");
+                var _squad_name = names[n];
+                // LOGGER.debug($"matched squad name name {_squad_name}");
 
-                if (struct_exists(custom_squads, squad_name)) {
-                    var custom_squad = struct_get(custom_squads, squad_name);
-                    // LOGGER.debug($"overwriting squad layout for {squad_name}");
+                if (struct_exists(custom_squads, _squad_name)) {
+                    var custom_squad = struct_get(custom_squads, _squad_name);
+                    // LOGGER.debug($"overwriting squad layout for {_squad_name}");
                     // LOGGER.debug($"{custom_squad}")
-                    variable_struct_set(st, squad_name, custom_squad);
+                    variable_struct_set(st, _squad_name, custom_squad);
                 }
             }
         }
@@ -1763,7 +1745,7 @@ function scr_initialize_custom() {
                         "role": $"Biker {roles.sergeant}",
                     }
                 ],
-                ["type_data", {"display_data": $"Bike {squad_name}", "class": ["bike"], "formation_options": ["assault", "tactical"]}]
+                ["type_data", {"display_data": $"Bike {_squad_name}", "class": ["bike"], "formation_options": ["assault", "tactical"]}]
             ]
         );
     }
@@ -1799,13 +1781,13 @@ function scr_initialize_custom() {
                         "role": $"Breacher {roles.sergeant}",
                     }
                 ],
-                ["type_data", {"display_data": $"Breacher {squad_name}", "formation_options": ["tactical", "assault", "devastator", "scout"]}]
+                ["type_data", {"display_data": $"Breacher {_squad_name}", "formation_options": ["tactical", "assault", "devastator", "scout"]}]
             ]
         );
     }
 
     if (scr_has_adv("Assault Doctrine")) {
-        variable_struct_set(st, "veteran_squad", [[roles.veteran_sergeant, {"max": 1, "min": 1, "role": $"{roles.veteran_sergeant}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", "max"], "gear": ["Combat Shield", "max"]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 1]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 1]]}}}], [roles.veteran, {"max": 9, "min": 4, "role": $"{roles.veteran}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", "max"], "gear": ["Combat Shield", "max"]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 9]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 9]]}}}], ["type_data", {"display_data": $"{roles.veteran} {squad_name}", "formation_options": ["veteran", "assault", "devastator", "scout", "tactical"]}]]);
+        variable_struct_set(st, "veteran_squad", [[roles.veteran_sergeant, {"max": 1, "min": 1, "role": $"{roles.veteran_sergeant}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", "max"], "gear": ["Combat Shield", "max"]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 1]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 1]]}}}], [roles.veteran, {"max": 9, "min": 4, "role": $"{roles.veteran}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", "max"], "gear": ["Combat Shield", "max"]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 9]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 9]]}}}], ["type_data", {"display_data": $"{roles.veteran} {_squad_name}", "formation_options": ["veteran", "assault", "devastator", "scout", "tactical"]}]]);
     }
 
     if (scr_has_adv("Devastator Doctrine")) {

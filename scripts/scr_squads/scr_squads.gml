@@ -18,7 +18,27 @@ the requested squad type , if the squad is not possible it will  not be made*/
 // company : the company you wish to create the squad in (int)
 //squad_loadout: true if you want to use the squad loadout sorting algorithem to re-equip the squad in accordance with the squad type loadout
 
+    /*
+        squad guidance
+            define a role that can exist in a squad by defining 
+            [<role>, {
+                "max":<maximum number of this role allowed in squad>
+                "min":<minimum number of this role required in squad>
+                }
+            ]
+            by adding "loadout" as a key to the role struct e.g {"min":1,"max":1,"loadout":{}}
+                a default or optional loadout can be created for the given role in the squad
+            "loadout" has two possible keys "required" and "option"
+            a required loadout always follows this syntax <loadout_slot>:[<loadout_item>,<required number>]
+                so "wep1":["Bolter",4], will mean four marines are always equipped with 4 bolters in the wep1 slot
 
+            option loadouts follow the following syntax <loudout_slot>:[[<loadout_item_list>],<allowed_number>]
+                for example [["Flamer", "Meltagun"],1], means the role can have a max of one flamer or meltagun
+                    [["Plasma Pistol","Bolt Pistol"], 4] means the role can have a mix of 4 plasma pistols and bolt pistols on top
+                        of all required loadout options
+
+    */
+    
 function UnitSquad(squad_type = undefined, company = 0) constructor {
     members = [];
     type = "";

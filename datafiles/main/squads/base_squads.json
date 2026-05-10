@@ -51,7 +51,7 @@
       "role": "Company Librarian"
     },
     "type_data": {
-      "display_data": "Command Squad",
+      "display_data": "Command {squad_name}",
       "formation_options": [
         "command",
         "terminator",
@@ -104,7 +104,7 @@
       }
     },
     "type_data": {
-      "display_data": "Terminator Squad",
+      "display_data": "Terminator {squad_name}",
       "formation_options": [
         "terminator",
         "veteran",
@@ -146,7 +146,7 @@
       }
     },
     "type_data": {
-      "display_data": "Terminator Assault Squad",
+      "display_data": "Terminator Assault {squad_name}",
       "formation_options": [
         "terminator",
         "veteran",
@@ -195,7 +195,7 @@
       }
     },
     "type_data": {
-      "display_data": "Veteran Squad",
+      "display_data": "Veteran {squad_name}",
       "formation_options": [
         "veteran",
         "assault",
@@ -241,7 +241,7 @@
       }
     },
     "type_data": {
-      "display_data": "Devastator Squad",
+      "display_data": "Devastator {squad_name}",
       "formation_options": [
         "devastator",
         "tactical",
@@ -289,7 +289,7 @@
       }
     },
     "type_data": {
-      "display_data": "Tactical Squad",
+      "display_data": "Tactical {squad_name}",
       "class": ["troop"],
       "formation_options": [
         "tactical",
@@ -341,7 +341,7 @@
       }
     },
     "type_data": {
-      "display_data": "Assault Squad",
+      "display_data": "Assault {squad_name}",
       "formation_options": [
         "assault",
         "tactical",
@@ -386,7 +386,7 @@
       }
     },
     "type_data": {
-      "display_data": "Scout Squad",
+      "display_data": "Scout {squad_name}",
       "class": ["scout"],
       "formation_options": [
         "scout",
@@ -422,7 +422,7 @@
           }
       },
       "type_data": {
-          "display_data": "Bike Squad",
+          "display_data": "Bike {squad_name}",
           "class": ["bike"],
           "formation_options": ["assault", "tactical"]
       }
@@ -466,7 +466,7 @@
           }
       },
       "type_data": {
-          "display_data": "Breacher Squad",
+          "display_data": "Breacher {squad_name}",
           "formation_options": ["tactical", "assault", "devastator", "scout"]
       }
   }
