@@ -538,7 +538,7 @@ function CompanyStruct(comp) constructor {
                 label : _selected_squad? "De-select Squad" : "Select Squad",
             }
 
-            if (!_select_squad) {
+            if (!_selected_squad) {
                 _squad_button_dat.tooltip = obj_controller.selection_data.purpose;
                 _select_action = true;
             }

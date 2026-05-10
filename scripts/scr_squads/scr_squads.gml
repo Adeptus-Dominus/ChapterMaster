@@ -360,7 +360,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 while (fill_from.has_role(_wanted_unit_role) && 
                     _squad_role_current < _max_role_count) {
                     var _new_member = fill_from.pop_role_member(_wanted_unit_role);
-                    add_member([_new_member.company, _new_member.marine_number]);
+                    add_member(_new_member.company, _new_member.marine_number);
                     squad_fulfilment[$ _wanted_unit_role]++;
                     _squad_role_current = squad_fulfilment[$ _wanted_unit_role];
                     _new_member.squad = uid;

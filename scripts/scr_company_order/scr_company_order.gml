@@ -66,14 +66,14 @@ function scr_company_order(company) {
                 if (!struct_exists(_empty_index, _squad.type)){
                     _empty_index[$ _squad.type] = [];
                 }
-                array_push(_empty_index, _squad);
+                array_push(_empty_index[$ _squad.type], _squad);
             }
         }
 
         var _squadless = _squadless_index.turn_to_UnitGroup();
 
         if (_squadless.number() > 3){
-            var _squad_index = _company_marines.squad_index();
+            var _squad_index = _company_marines.index_squads();
             var _data_match=false;
             var _data;
             if (struct_exists(obj_ini.chapter_squad_arrangement, "companies")){
@@ -85,7 +85,9 @@ function scr_company_order(company) {
                    }
                 }
             }
-            _squadless.organise_by_template(_data, _squad_index, _empty_index, false);
+            if (_data_match){
+                _squadless.organise_by_template(_data, _squad_index, _empty_index, false);
+            }
 
         }
 
@@ -100,7 +102,7 @@ function scr_company_order(company) {
 
         var _temps = [];
         for (i = 0; i < array_length(_company_marines.units); i++) {
-            var _unit = _company_marines.units[i]
+            var _unit = _company_marines.units[i];
             array_push(_temps , {
                 unit : _unit,
                 race : _unit.race(),

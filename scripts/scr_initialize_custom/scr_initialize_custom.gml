@@ -1581,7 +1581,7 @@ function scr_initialize_custom() {
         }
     }
     if (struct_exists(obj_creation, "squad_name")) {
-        _squad_name = obj_creation._squad_name;
+        _squad_name = obj_creation.squad_name;
     }
 
     squad_types = json_to_gamemaker(working_directory + $"main\\squads\\base_squads.json", json_parse);
@@ -1620,12 +1620,12 @@ function scr_initialize_custom() {
 
         // ── Weighted ──────────────────────────────────────────────────
         { "{WEAPON_LIST_WEIGHTED_RANGED_PISTOLS}"  : WEAPON_LIST_WEIGHTED_RANGED_PISTOLS },
-        {"{_squad_name}"}                           : _squad_name
+        {"{squad_name}"                   : _squad_name}        
     ];
     var _roles_player = obj_ini.role[100];
     var _default_player = obj_ini.role[101];
-    
-    for (var i=1; i < 20; i++){
+    var i;
+    for (i=1; i < 20; i++){
         if (_roles_player[i] == ""){
             continue;
         }
@@ -1659,13 +1659,13 @@ function scr_initialize_custom() {
 
 
     // LOGGER.debug($"squads object for chapter {chapter_name}");
-    // LOGGER.debug($"{st}");
+    // LOGGER.debug($"{custom_squads}");
 
     if (struct_exists(obj_creation, "custom_squads")) {
         var custom_squads = obj_creation.custom_squads;
         // LOGGER.debug($"custom roles {custom_squads}");
         if (array_length(struct_get_names(custom_squads)) != 0) {
-            var names = struct_get_names(st);
+            var names = struct_get_names(custom_squads);
             // LOGGER.debug($"names {names}");
             for (var n = 0; n < array_length(names); n++) {
                 var _squad_name = names[n];
@@ -1675,14 +1675,14 @@ function scr_initialize_custom() {
                     var custom_squad = struct_get(custom_squads, _squad_name);
                     // LOGGER.debug($"overwriting squad layout for {_squad_name}");
                     // LOGGER.debug($"{custom_squad}")
-                    variable_struct_set(st, _squad_name, custom_squad);
+                    variable_struct_set(custom_squads, _squad_name, custom_squad);
                 }
             }
         }
     }
 
     // LOGGER.debug($"roles object for chapter {chapter_name} after setting from obj");
-    // LOGGER.debug($"{st}");
+    // LOGGER.debug($"{custom_squads}");
 
     if (global.chapter_name == "Salamanders") {
         squad_types.assault_squad.loadout = {
@@ -1718,7 +1718,7 @@ function scr_initialize_custom() {
 
     /*if (scr_has_adv("Lightning Warriors")) {
         variable_struct_set(
-            st,
+            custom_squads,
             "bikers",
             [
                 [
@@ -1752,7 +1752,7 @@ function scr_initialize_custom() {
 
     if (scr_has_adv("Boarders")) {
         variable_struct_set(
-            st,
+            custom_squads,
             "breachers",
             [
                 [
@@ -1787,11 +1787,11 @@ function scr_initialize_custom() {
     }
 
     if (scr_has_adv("Assault Doctrine")) {
-        variable_struct_set(st, "veteran_squad", [[roles.veteran_sergeant, {"max": 1, "min": 1, "role": $"{roles.veteran_sergeant}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", "max"], "gear": ["Combat Shield", "max"]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 1]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 1]]}}}], [roles.veteran, {"max": 9, "min": 4, "role": $"{roles.veteran}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", "max"], "gear": ["Combat Shield", "max"]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 9]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 9]]}}}], ["type_data", {"display_data": $"{roles.veteran} {_squad_name}", "formation_options": ["veteran", "assault", "devastator", "scout", "tactical"]}]]);
+        variable_struct_set(custom_squads, "veteran_squad", [[roles.veteran_sergeant, {"max": 1, "min": 1, "role": $"{roles.veteran_sergeant}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", "max"], "gear": ["Combat Shield", "max"]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 1]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 1]]}}}], [roles.veteran, {"max": 9, "min": 4, "role": $"{roles.veteran}", "loadout": {"required": {"wep1": ["", 0], "wep2": ["", 0], "mobi": ["Jump Pack", "max"], "gear": ["Combat Shield", "max"]}, "option": {"wep1": [[WEAPON_LIST_RANGED_PISTOLS, 9]], "wep2": [[WEAPON_LIST_MELEE_VETERAN, 9]]}}}], ["type_data", {"display_data": $"{roles.veteran} {_squad_name}", "formation_options": ["veteran", "assault", "devastator", "scout", "tactical"]}]]);
     }
 
     if (scr_has_adv("Devastator Doctrine")) {
-        st[$ "veteran_squad"][1] = [
+        custom_squads[$ "veteran_squad"][1] = [
             roles.veteran,
             {
                 "max": 9,

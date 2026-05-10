@@ -345,6 +345,8 @@ function UnitGroup(units) constructor{
 		var _required = [];
 		var _proportional = [];
 
+		var _squad_index = {};
+
 		if (squad_index == false){
 			var _squad_index = index_squads();
 		}
@@ -370,6 +372,7 @@ function UnitGroup(units) constructor{
 			}
 		}
 
+		var _squad_uid;
 		for (var i = 0 ;i < array_length(_required); i++){
 			var _squad = _required[i];
 			var _squad_name = _squad.squad;
@@ -381,7 +384,7 @@ function UnitGroup(units) constructor{
 
 			) {
                 _last_squad_count = squad_count() + 1;
-            	var _squad_uid = "";
+            	_squad_uid = "";
             	if (struct_exists(empty_squads_index, _squad_name)){
             		_squad_uid = empty_squads_index[$ _squad_name][0].uid;
             	}

@@ -1103,7 +1103,6 @@ function scr_ui_manage() {
                             unit_profile = true;
                             try{
                                 company_data.draw_squad_view();
-                                company_data.draw_squad_view();
                             } catch(_exception){
                                 handle_exception(_exception);
                                 obj_controller.view_squad = false;

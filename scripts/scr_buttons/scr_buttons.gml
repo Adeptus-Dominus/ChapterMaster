@@ -52,7 +52,7 @@ function Box(data) constructor{
 
     static draw = function(outline){
         add_draw_return_values();
-        draw_set_color(c_red);
+        draw_set_color(colour);
         draw_rectangle(x1, y1, x2, y2, outline);
         pop_draw_return_values();
     }

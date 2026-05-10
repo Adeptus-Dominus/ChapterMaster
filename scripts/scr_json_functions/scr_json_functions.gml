@@ -66,6 +66,9 @@ function json_inject_swaps(_data, _swaps) {
         for (var _i = 0; _i < _klen; _i++) {
             var _key      = _keys[_i];
             var _key_swap = json_inject_swaps(_key, _swaps);
+            if (!is_string(_key_swap)){
+                _key_swap = _key; 
+            }
             var _val      = json_inject_swaps(_data[$ _key], _swaps);
 
             if (_key_swap != _key) {
