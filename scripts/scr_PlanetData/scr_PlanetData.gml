@@ -1307,9 +1307,9 @@ function PlanetData(planet, system) constructor {
 
     static create_planet_garrison = function() {
         var company_data = obj_controller.company_data;
-        var _squad_id = company_data.company_squads[company_data.cur_squad];
-        var current_squad = fetch_squad(_squad_id);
+        var current_squad = company_data.grab_current_squad();
         current_squad.set_location(system.name, 0, planet);
+        
         var _mission = obj_star_select.mission;
         current_squad.assignment = {
             type: _mission,
@@ -1318,7 +1318,7 @@ function PlanetData(planet, system) constructor {
         };
         var operation_data = {
             type: "squad",
-            reference: _squad_id,
+            reference: current_squad.uid,
             job: _mission,
             task_time: 0,
         };
@@ -1344,53 +1344,56 @@ function PlanetData(planet, system) constructor {
             planet_draw = c_red;
             tooltip_draw("Can't garrison on non-friendly planet or planet with no friendly PDF", 150);
         }
-        if (mouse_check_button_pressed(mb_left)) {
-            if (garrison_assignment) {
-                if (!(garrison_issue && _mission == "garrison")) {
-                    create_planet_garrison();
-                    exit;
-                }
-            } else if (!_loading) {
-                garrison = new GarrisonForce(operatives);
-                system.garrison = garrison.garrison_force;
-                feature = "";
-                buttons_selected = false;
-            } else if (_loading && planet > 0) {
-                obj_controller.unload = planet;
-                obj_controller.return_object = system;
-                obj_controller.return_size = obj_controller.man_size;
-                edit_player_forces(obj_controller.man_size);
+        if (!mouse_check_button_pressed(mb_left)) {
+            return;
+        }
 
-                // 135 ; SPECIAL PLANET CRAP HERE
-
-                // Recon Stuff
-
-                if (has_problem("recon")) {
-                    var arti = instance_create(system.x, system.y, obj_temp7); // Unloading / artifact crap
-
-                    arti.num = planet;
-                    arti.alarm[0] = 1;
-                    arti.loc = obj_controller.selecting_location;
-                    arti.managing = obj_controller.managing;
-                    arti.type = "recon";
-
-                    with (arti) {
-                        setup_planet_mission_group();
-                    }
-                }
-                if (!instance_exists(obj_ground_mission)) {
-                    check_for_artifact_grab_mission();
-                }
-                if (!instance_exists(obj_ground_mission)) {
-                    check_for_stc_grab_mission();
-                }
-                // Ancient Ruins
-                if (!instance_exists(obj_ground_mission)) {
-                    scr_check_for_ruins_exploration();
-                }
-                instance_destroy(obj_star_select);
+        if (garrison_assignment) {
+            if (!(garrison_issue && _mission == "garrison")) {
+                create_planet_garrison();
                 exit;
             }
+        } else if (!_loading) {
+            garrison = new GarrisonForce(operatives);
+            LOGGER.info($"{garrison.garrison_force}");
+            system.garrison = garrison.garrison_force;
+            feature = "";
+            buttons_selected = false;
+        } else if (_loading && planet > 0) {
+            obj_controller.unload = planet;
+            obj_controller.return_object = system;
+            obj_controller.return_size = obj_controller.man_size;
+            edit_player_forces(obj_controller.man_size);
+
+            // 135 ; SPECIAL PLANET CRAP HERE
+
+            // Recon Stuff
+
+            if (has_problem("recon")) {
+                var arti = instance_create(system.x, system.y, obj_temp7); // Unloading / artifact crap
+
+                arti.num = planet;
+                arti.alarm[0] = 1;
+                arti.loc = obj_controller.selecting_location;
+                arti.managing = obj_controller.managing;
+                arti.type = "recon";
+
+                with (arti) {
+                    setup_planet_mission_group();
+                }
+            }
+            if (!instance_exists(obj_ground_mission)) {
+                check_for_artifact_grab_mission();
+            }
+            if (!instance_exists(obj_ground_mission)) {
+                check_for_stc_grab_mission();
+            }
+            // Ancient Ruins
+            if (!instance_exists(obj_ground_mission)) {
+                scr_check_for_ruins_exploration();
+            }
+            instance_destroy(obj_star_select);
+            exit;
         }
-    };
+    }
 }
