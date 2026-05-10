@@ -1397,3 +1397,62 @@ function PlanetData(planet, system) constructor {
         }
     }
 }
+
+
+    static planet_selection_logic = function(){
+        var planet_is_allies = scr_is_planet_owned_by_allies(system, planet);
+        var garrison_issue = (!planet_is_allies || pdf<=0);
+        var _mission = variable_instance_exists(obj_star_select,"mission") ? obj_star_select.mission : "";
+
+        var _loading =  obj_star_select.loading;
+        var garrison_assignment = obj_controller.view_squad && _loading;
+        if (garrison_assignment && (garrison_issue && _mission=="garrisons")){
+            planet_draw = c_red;
+            tooltip_draw("Can't garrisons on non-friendly planet or planet with no friendly PDF", 150);                  
+        }
+        if (mouse_check_button_pressed(mb_left)){
+            if (garrison_assignment){
+                if (!(garrison_issue && _mission=="garrisons")){
+                    create_planet_garrison();
+                    exit;
+                }
+            } else if (!_loading){
+                garrisons.update(operatives);
+                system.garrisons = garrisons.garrison_force;
+                feature="";
+                buttons_selected=false;                 
+            } else if (_loading && planet >0){ 
+
+                obj_controller.unload=planet;
+                obj_controller.return_object=system;
+                obj_controller.return_size=obj_controller.man_size;
+                edit_player_forces(obj_controller.man_size)
+                
+                // 135 ; SPECIAL PLANET CRAP HERE
+                
+                // Recon Stuff
+
+                if (has_problem("recon")){
+                    var arti=instance_create(system.x,system.y,obj_temp7);// Unloading / artifact crap
+
+                    arti.num=planet;
+                    arti.alarm[0]=1;
+                    arti.loc=obj_controller.selecting_location;
+                    arti.managing=obj_controller.managing;
+                    arti.type="recon";
+
+                    with (arti){
+                        setup_planet_mission_group()
+                    }
+                }
+                if (!instance_exists(obj_ground_mission)){
+                    check_for_artifact_grab_mission();
+                    check_for_stc_grab_mission();
+                    scr_check_for_ruins_exploration(); 
+                } 
+                instance_destroy(obj_star_select);
+                exit;
+            }                       
+            
+        }        
+    }
