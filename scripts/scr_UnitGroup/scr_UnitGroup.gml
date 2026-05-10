@@ -348,7 +348,7 @@ function UnitGroup(units) constructor{
 		var _squad_index = {};
 
 		if (squad_index == false){
-			var _squad_index = index_squads();
+			var _squad_index = squad_index;
 		}
 
 		for (var i=0;i<array_length(template.squads);i++){
