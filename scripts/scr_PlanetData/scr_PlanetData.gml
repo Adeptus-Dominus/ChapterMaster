@@ -1396,8 +1396,6 @@ function PlanetData(planet, system) constructor {
             exit;
         }
     }
-}
-
 
     static planet_selection_logic = function(){
         var planet_is_allies = scr_is_planet_owned_by_allies(system, planet);
@@ -1517,4 +1515,6 @@ static draw_planet_population_controls = function(){
             }
         }
     }
+
+}
 
