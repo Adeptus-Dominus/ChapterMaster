@@ -41,8 +41,9 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
         if (planet_operatives[ops].type == "squad") {
             if (planet_operatives[ops].job == type) {
                 //marine garrison on planet
-                if (array_length(obj_ini.squads[planet_operatives[ops].reference].members) > 0) {
-                    operative = obj_ini.squads[planet_operatives[ops].reference];
+                var _squad = fetch_squad(planet_operatives[ops].reference);
+                if (array_length(_squad.members) > 0) {
+                    operative = _squad;
                     array_push(garrison_squads, operative);
                     total_garrison += array_length(operative.members);
                     garrison_force = true;

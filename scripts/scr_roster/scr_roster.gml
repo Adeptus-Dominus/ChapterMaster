@@ -284,7 +284,8 @@ function Roster() constructor {
                         if (_squad_type != "none") {
                             if (!array_contains(_squads, _squad_type)) {
                                 array_push(_squads, _squad_type);
-                                new_squad_button(obj_ini.squads[_unit.squad].display_name, _squad_type);
+                                var _squad = fetch_squad(_unit.squad);
+                                new_squad_button(_squad.display_name, _squad_type);
                             }
                         }
                     } else {
@@ -676,7 +677,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
         new_combat.big_mofo = 3;
     }
     if (unit.squad != "none") {
-        var squad = obj_ini.squads[unit.squad];
+        var squad = unit.get_squad();
         switch (squad.formation_place) {
             case "assault":
                 col = obj_controller.bat_assault_column;

@@ -33,7 +33,7 @@ function scr_unit_detail_text() {
         if (squad != "none") {
             chapter_role += is_superior ? $"{unit_name}, sergeant of the " : $"{unit_name}, member of the ";
             chapter_role += scr_convert_company_to_string(company, true, true);
-            chapter_role += string(" {0} {1}.", squad, obj_ini.squads[squad].display_name);
+            chapter_role += string(" {0} {1}.", squad, fetch_squad(squad).display_name);
         } else {
             chapter_role += $"{unit_name}, {unit_role} from the ";
             chapter_role += scr_convert_company_to_string(company, false, true) + ".";

@@ -196,12 +196,6 @@ serialize = function() {
             }
         }
     }
-    var squads = [];
-    if (array_length(object_ini.squads) > 0) {
-        for (var i = 0; i < array_length(object_ini.squads); i++) {
-            array_push(squads, object_ini.squads[i].jsonify(false));
-        }
-    }
 
     var artifact_struct_trimmed = [];
     for (var i = 0; i < array_length(artifact_struct); i++) {
@@ -321,12 +315,14 @@ deserialize = function(save_data) {
     }
 
     if (struct_exists(save_data, "squad_structs")) {
-        obj_ini.squads = [];
-        var squad_fetch = save_data.squad_structs;
-        for (i = 0; i < array_length(squad_fetch); i++) {
-            var sq = new UnitSquad();
-            sq.load_json_data(squad_fetch[i]);
-            array_push(obj_ini.squads, sq);
+        obj_ini.squads = {};
+        var _squad_fetch = save_data.squad_structs;
+        var _squad_uid = struct_get_names(_squad_fetch);
+        for (var i = 0; i < array_length(_squad_uid); i++){
+            var _uid = _squad_uid[i];
+            var _sq = new UnitSquad();
+            _sq.load_json_data(_squad_fetch[$ _uid]);
+            obj_ini.squads[$ _uid] = _sq;
         }
     }
 

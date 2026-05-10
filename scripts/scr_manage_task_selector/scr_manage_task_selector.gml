@@ -40,7 +40,7 @@ function scr_manage_task_selector() {
 
 function task_selector_squad_manage() {
     for (var i = 0; i < array_length(company_data.selected_squads); i++) {
-        var _squad = obj_ini.squads[company_data.selected_squads[i]];
+        var _squad = fetch_squad(company_data.selected_squads[i]);
         switch (selection_data.purpose_code) {
             case "protect_raiders":
                 init_protect_raider_mission(_squad);

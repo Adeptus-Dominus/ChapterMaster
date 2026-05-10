@@ -38,24 +38,28 @@ function scr_start_load(fleet, load_from_star, load_options) {
 
     if (split_vets) {
         var comp_split = 0;
-        for (var squads = 0; squads < array_length(obj_ini.squads); squads++) {
+        var _squad_ids = get_squad_ids();
+        for (var squads = 0; squads < array_length(_squad_ids); squads++) {
             if (comp_split > 7 || !comp_has_units[comp_split + 2]) {
                 comp_split = 0;
             }
-            if (obj_ini.squads[squads].base_company == 1) {
-                array_push(total_distribute_squads[comp_split], squads);
+            var _squad = fetch_squad(_squad_ids[i]);
+            if (_squad.base_company == 1) {
+                array_push(total_distribute_squads[comp_split], _squad);
                 comp_split++;
             }
         }
     }
     if (split_scouts) {
         var comp_split = 0;
-        for (var squads = 0; squads < array_length(obj_ini.squads); squads++) {
+        var _squad_ids = get_squad_ids();
+        for (var squads = 0; squads < array_length(_squad_ids); squads++) {
             if (comp_split > 7 || !comp_has_units[comp_split + 2]) {
                 comp_split = 0;
             }
-            if (obj_ini.squads[squads].base_company == 10) {
-                array_push(total_distribute_squads[comp_split], squads);
+            var _squad = fetch_squad(_squad_ids[i]);
+            if (_squad.base_company == 10) {
+                array_push(total_distribute_squads[comp_split], _squad);
                 comp_split++;
             }
         }
@@ -98,7 +102,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
         var ship_fit = true;
 
         for (_unit = 0; _unit < (array_length(obj_ini.role[_comp]) - 1); _unit++) {
-            _marine = obj_ini.TTRPG[_comp][_unit];
+            _marine = fetch_unit([_comp, _unit]);
             // check if marine exists
             if (_marine.name() != "") {
                 //calculate marine space
@@ -111,8 +115,10 @@ function scr_start_load(fleet, load_from_star, load_options) {
             var squaddy;
             var company_squad_dist = total_distribute_squads[_comp - 2];
             for (var squad = 0; squad < array_length(company_squad_dist); squad++) {
-                for (var squad_member = 0; squad_member < array_length(obj_ini.squads[company_squad_dist[squad]].members); squad_member++) {
-                    squaddy = obj_ini.squads[company_squad_dist[squad]].members[squad_member];
+                var _squad = company_squad_dist[squad];
+                var _members = _squad.members;
+                for (var squad_member = 0; squad_member < array_length(_members); squad_member++) {
+                    squaddy = _members[squad_member];
                     _marine = fetch_unit(squaddy);
                     var marine_size = _marine.get_unit_size();
                     _company_size += marine_size;

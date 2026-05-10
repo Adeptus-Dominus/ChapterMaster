@@ -608,7 +608,7 @@ function draw_sprite_and_unit_equip_data() {
             //TODO implement tooltip explaining potential loyalty hit of demoting a sgt
             // Sergeant promotion button
             if (view_squad && company_data.has_squads) {
-                if (company_data.cur_squad != 0) {
+                if (company_data.current_squad != -1) {
                     var cur_squad = company_data.grab_current_squad();
                     var sgt_possible = cur_squad.type != "command_squad" && !selected_unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS);
                     if (selected_unit != cur_squad.squad_leader) {
@@ -1101,7 +1101,13 @@ function scr_ui_manage() {
                             unit_profile = false;
                         } else if (company_data.has_squads) {
                             unit_profile = true;
-                            company_data.draw_squad_view();
+                            try{
+                                company_data.draw_squad_view();
+                            } catch(_exception){
+                                handle_exception(_exception);
+                                obj_controller.view_squad = false;
+                                obj_controller.unit_profile = false;                                
+                            }
                         }
                     }
                 }
