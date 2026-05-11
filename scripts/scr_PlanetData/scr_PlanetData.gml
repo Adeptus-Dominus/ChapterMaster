@@ -947,7 +947,7 @@ function PlanetData(planet, system) constructor {
             draw_text(xx + 480, yy + 196, $"{system.name} {nm}  ({planet_type})");
         }
         if (is_craftworld) {
-            draw_text(xx + 480, yy + 196, string(system.name) + " (Craftworld)");
+            draw_text(xx + 480, yy + 196, $"{system.name} (Craftworld)");
         }
         // if (is_craftworld=0) and (is_hulk=0) then draw_text(xx+534,yy+214,string(planet_type)+" World");
         // if (is_craftworld=1) then draw_text(xx+594,yy+214,"Craftworld");
@@ -1307,9 +1307,9 @@ function PlanetData(planet, system) constructor {
 
     static create_planet_garrison = function() {
         var company_data = obj_controller.company_data;
-        var _squad_id = company_data.company_squads[company_data.cur_squad];
-        var current_squad = fetch_squad(_squad_id);
+        var current_squad = company_data.grab_current_squad();
         current_squad.set_location(system.name, 0, planet);
+        
         var _mission = obj_star_select.mission;
         current_squad.assignment = {
             type: _mission,
@@ -1318,7 +1318,7 @@ function PlanetData(planet, system) constructor {
         };
         var operation_data = {
             type: "squad",
-            reference: _squad_id,
+            reference: current_squad.uid,
             job: _mission,
             task_time: 0,
         };
@@ -1344,53 +1344,138 @@ function PlanetData(planet, system) constructor {
             planet_draw = c_red;
             tooltip_draw("Can't garrison on non-friendly planet or planet with no friendly PDF", 150);
         }
-        if (mouse_check_button_pressed(mb_left)) {
-            if (garrison_assignment) {
-                if (!(garrison_issue && _mission == "garrison")) {
-                    create_planet_garrison();
-                    exit;
-                }
-            } else if (!_loading) {
-                garrison = new GarrisonForce(operatives);
-                system.garrison = garrison.garrison_force;
-                feature = "";
-                buttons_selected = false;
-            } else if (_loading && planet > 0) {
-                obj_controller.unload = planet;
-                obj_controller.return_object = system;
-                obj_controller.return_size = obj_controller.man_size;
-                edit_player_forces(obj_controller.man_size);
+        if (!mouse_check_button_pressed(mb_left)) {
+            return;
+        }
 
-                // 135 ; SPECIAL PLANET CRAP HERE
-
-                // Recon Stuff
-
-                if (has_problem("recon")) {
-                    var arti = instance_create(system.x, system.y, obj_temp7); // Unloading / artifact crap
-
-                    arti.num = planet;
-                    arti.alarm[0] = 1;
-                    arti.loc = obj_controller.selecting_location;
-                    arti.managing = obj_controller.managing;
-                    arti.type = "recon";
-
-                    with (arti) {
-                        setup_planet_mission_group();
-                    }
-                }
-                if (!instance_exists(obj_ground_mission)) {
-                    check_for_artifact_grab_mission();
-                }
-                if (!instance_exists(obj_ground_mission)) {
-                    check_for_stc_grab_mission();
-                }
-                // Ancient Ruins
-                if (!instance_exists(obj_ground_mission)) {
-                    scr_check_for_ruins_exploration();
-                }
-                instance_destroy(obj_star_select);
+        if (garrison_assignment) {
+            if (!(garrison_issue && _mission == "garrison")) {
+                create_planet_garrison();
                 exit;
             }
+        } else if (!_loading) {
+            obj_star_select.garrison = new GarrisonForce(operatives);
+            system.garrison = obj_star_select.garrison.garrison_force;
+            obj_star_select.feature = "";
+            buttons_selected = false;
+        } else if (_loading && planet > 0) {
+            obj_controller.unload = planet;
+            obj_controller.return_object = system;
+            obj_controller.return_size = obj_controller.man_size;
+            edit_player_forces(obj_controller.man_size);
+
+            // 135 ; SPECIAL PLANET CRAP HERE
+
+            // Recon Stuff
+
+            if (has_problem("recon")) {
+                var arti = instance_create(system.x, system.y, obj_temp7); // Unloading / artifact crap
+
+                arti.num = planet;
+                arti.alarm[0] = 1;
+                arti.loc = obj_controller.selecting_location;
+                arti.managing = obj_controller.managing;
+                arti.type = "recon";
+
+                with (arti) {
+                    setup_planet_mission_group();
+                }
+            }
+            if (!instance_exists(obj_ground_mission)) {
+                check_for_artifact_grab_mission();
+            }
+            if (!instance_exists(obj_ground_mission)) {
+                check_for_stc_grab_mission();
+            }
+            // Ancient Ruins
+            if (!instance_exists(obj_ground_mission)) {
+                scr_check_for_ruins_exploration();
+            }
+            instance_destroy(obj_star_select);
+            exit;
         }
-    };
+    }
+
+    static draw_planet_population_controls = function(){
+        draw_set_color(c_gray);
+        var _gar_slate = obj_star_select.garrison_data_slate;
+        _gar_slate.sub_title = "";
+        _gar_slate.body_text = "";
+        _gar_slate.title = "";
+        var xx = _gar_slate.XX;
+        var yy = _gar_slate.YY;                
+        var _half_way =  _gar_slate.height/2;
+        var spacing_x = 100
+        var spacing_y = 65
+        draw_set_halign(fa_left);
+        if (!is_hulk) {
+            var _imperium_status = obj_controller.faction_status[eFACTION.IMPERIUM];
+            if (_imperium_status != "War" && current_owner <= 5) || (_imperium_status == "War") {
+
+                var _col_button = obj_star_select.colonist_button;
+
+                _col_button.update({
+                    x1:xx+35,
+                    y1:_half_way,
+                });
+
+                _col_button.draw(array_length(obj_star_select.potential_donors));
+
+                var _recruit_button = obj_star_select.recruiting_button;
+
+                _recruit_button.update({
+                    x1:xx+(spacing_x*2)+15,
+                    y1:_half_way,
+                    allow_click : true,
+                });
+
+                _recruit_button.draw();
+
+                if (!has_feature(eP_FEATURES.RECRUITING_WORLD)) {
+                    return;
+                }
+
+                var _recruit_world = get_features(eP_FEATURES.RECRUITING_WORLD)[0];
+                var _recruit_string = "Abduct"
+                if (_recruit_world.recruit_type == 0) && (owner_status() != "War" && owner_status() != "Antagonism" || player_disposition >= 50) {
+                    _recruit_string = "Open: Voluntery";
+                } else if (_recruit_world.recruit_type == 0 && player_disposition <= 50) {
+                    _recruit_string = "Covert: Voluntery";
+                }
+
+                draw_text(xx+(spacing_x*3)+35, _half_way-20, _recruit_string);
+
+                var _type_button = obj_star_select.recruitment_type_button;
+                _type_button.update({
+                    x1:xx+(spacing_x*3)+35,
+                    y1:_half_way,
+                    allow_click : true,
+                });
+
+                _type_button.draw(true);
+
+                draw_text(xx+(spacing_x*3)-15, _half_way+(spacing_y)-20, $"Req:{_recruit_world.recruit_cost * 2}");
+
+                if (_recruit_world.recruit_cost > 0) {
+                    obj_star_select.recruitment_costdown_button.update({
+                        x1:xx+(spacing_x*2)+35,
+                        y1:_half_way+(spacing_y),
+                        allow_click : true,
+                    });
+                    obj_star_select.recruitment_costdown_button.draw(true);
+                }
+                if (_recruit_world.recruit_cost < 5) {
+                    obj_star_select.recruitment_costup_button.update({
+                        x1:xx+(spacing_x*3)+35,
+                        y1:_half_way+(spacing_y),
+                        allow_click : true,
+                    });
+                    obj_star_select.recruitment_costup_button.draw(true);
+                }
+
+            }
+        }
+    }
+
 }
+

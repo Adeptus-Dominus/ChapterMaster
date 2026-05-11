@@ -187,7 +187,7 @@ function CompanyStruct(comp) constructor {
         }
         var sprite_draw_delay = "none";
         var unit_sprite_coords = {};
-        var _cur_squad = company_squads[current_squad];
+        var _cur_squad = grab_current_squad();
         var _reset_surface = false;
         var _member = _cur_squad.fetch_member(0);
         if (array_length(squad_draw_surfaces) == 0 || (squad_draw_surfaces[0][0] != _member.uid)) {
@@ -273,7 +273,7 @@ function CompanyStruct(comp) constructor {
 
     static draw_squad_assignment_options = function() {
         var _squad_sys = squad_loc.system;
-        var _cur_squad = company_squads[current_squad];
+        var _cur_squad = grab_current_squad();
         if (_cur_squad.assignment == "none") {
             draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 125, $"Squad has no current assignments", 1, 1, 0);
 
