@@ -176,9 +176,9 @@ function format_time(_time) {
 }
 
 function clean_callstack_prefixes(_string) {
-    _string = string_replace(_string, "gml_Object_", "");
-    _string = string_replace(_string, "gml_Script_", "");
-
+    _string = string_replace_all(_string, "gml_Object_", "");
+    _string = string_replace_all(_string, "gml_Script_", "");
+    _string = string_replace_all(_string, "gml_GlobalScript_", "");
     return _string;
 }
 
@@ -194,47 +194,53 @@ function clean_stacktrace(_stacktrace_array) {
 /// @param {string} _line_string The raw string from debug_get_callstack()
 /// @returns {string}
 function clean_stacktrace_line(_line_string) {
-    var _str = _line_string;
+    var _work_string = _line_string;
     var _code_snippet = "";
 
-    // 1. Extract the Source Code suffix (the part after " - ")
-    var _code_pos = string_pos(") - ", _str);
-    if (_code_pos > 0) {
-        // Grab everything after the " - "
-        _code_snippet = string_delete(_str, 1, _code_pos + 3);
+    // 1. Extract Code Snippet (Suffix after -)
+    var _divider_pos = string_pos(") - ", _work_string);
+    if (_divider_pos > 0) {
+        _code_snippet = string_delete(_work_string, 1, _divider_pos + 3);
         _code_snippet = string_trim(_code_snippet);
-        // Remove the code from our working string
-        _str = string_copy(_str, 1, _code_pos);
+        _work_string = string_copy(_work_string, 1, _divider_pos);
     }
 
     // 2. Extract Line Number
-    var _line_num = "";
-    var _open_paren = string_last_pos("(line ", _str);
-    if (_open_paren > 0) {
-        _line_num = string_digits(string_copy(_str, _open_paren, string_length(_str)));
-        _str = string_trim(string_copy(_str, 1, _open_paren - 1));
+    var _line_number = "";
+    var _line_tag_pos = string_last_pos("(line ", _work_string);
+    if (_line_tag_pos > 0) {
+        _line_number = string_copy(_work_string, _line_tag_pos, string_length(_work_string));
+        _line_number = string_digits(_line_number);
+        _work_string = string_copy(_work_string, 1, _line_tag_pos - 1);
+        _work_string = string_trim(_work_string);
     }
 
-    // 3. Cleanup GML Prefixes
-    _str = clean_callstack_prefixes(_str);
+    // 3. Cleanup Prefixes
+    _work_string = clean_callstack_prefixes(_work_string);
 
-    // 4. Build the core string
-    var _final_out = "";
-    if (string_contains("@", _str)) {
-        var _parts = string_split(_str, "@");
+    // 4. Handle Method/Anonymous Chains (@ symbols)
+    var _final_callsite = "";
+    if (string_contains("@", _work_string)) {
+        var _parts = string_split(_work_string, "@");
         var _method_name = _parts[0];
-        var _location = _parts[array_length(_parts) - 1];
-        _final_out = $"{_location}:{_line_num} >> {_method_name}";
+        var i = array_length(_parts) - 1;
+        var _location = _parts[i];
+        
+        if (_method_name == "anon") {
+            _method_name = "anonymous";
+        }
+
+        _final_callsite = $"{_location}:{_line_number} >> {_method_name}";
     } else {
-        _final_out = $"{_str}:{_line_num}";
+        _final_callsite = $"{_work_string}:{_line_number}";
     }
 
-    // 5. Append the Code Snippet if we found one
+    // 5. Append Snippet
     if (_code_snippet != "") {
-        _final_out += $" >> {_code_snippet}";
+        _final_callsite += $" >> {_code_snippet}";
     }
 
-    return _final_out;
+    return _final_callsite;
 }
 
 /// @description Formats the GM constant to a readable OS name.
@@ -290,11 +296,11 @@ function Logger() constructor {
     static _get_caller = function() {
         var _stack = debug_get_callstack(4);
         if (array_length(_stack) < 4) {
-            return "unknown";
+            return "unknown_caller";
         }
 
         var _raw = _stack[3];
-        var _clean = clean_callstack_prefixes(_raw);
+        var _clean = clean_stacktrace_line(_raw);
 
         return _clean;
     };
