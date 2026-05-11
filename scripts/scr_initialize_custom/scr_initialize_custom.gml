@@ -2362,9 +2362,32 @@ function scr_initialize_custom() {
         LOGGER.info($"New Company Totals: eq specialists: {equal_specialists}: scout coy {scout_company_behaviour} equal_scouts: {equal_scouts}");
         // LOGGER.info($"Company {_coy.coy}: {json_stringify(_coy, true)}");
 
-        var attrs = struct_get_names(_coy);
-
+        var _set_company_makeup = function(old_values, new_values){
+            var _override_keys = struct_get_names(new_values);
+            var _override_keys_count = array_length(_override_keys);
+            for (var j = 0; j < _override_keys_count; j++) {
+                var _okey_hash = _override_keys[j];
+                var _okey_ins = new_values[$ _okey_hash];
+                LOGGER.info($"{_okey_hash}<{_okey_ins}<{old_values}")
+                old_values[$ _okey_hash] = _okey_ins;
+            }
+            return old_values;
+        }
+        if (struct_exists(obj_creation, "companies")) {
+            var _company_keys = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"];
+            var _company_keys_count = array_length(_company_keys);
+            for (var i = 0; i < _company_keys_count; i++) {
+                var _company_string = _company_keys[i]
+                if (struct_exists(obj_creation.companies, _company_string) && struct_exists(companies, _company_string)) {
+                    var _ckey_ins = obj_creation.companies[$ _company_string];
+                    var _ckey_var = companies[$ _company_string];                    
+                    companies[$ _company_string] = _set_company_makeup(_ckey_var, _ckey_ins);
+                }
+            }
+        }
         // LOGGER.info($"attrs {attrs}");
+
+        var attrs = struct_get_names(_coy);
 
         for (var _a = 0, _alen = array_length(attrs); _a < _alen; _a++) {
             var _is_vehicle = false;

@@ -185,7 +185,7 @@ function UnitGroup(units) constructor {
             _squad = _unit.get_squad();
 
             if (!struct_exists(_squad_index, _squad.type)) {
-                _squad_index[_squad.type] = [];
+                _squad_index[$ _squad.type] = [];
             }
             array_push(_squad_index[$ _squad.type], _unit.squad);
         }
