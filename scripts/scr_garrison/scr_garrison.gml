@@ -46,6 +46,8 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
             //marine garrison on planet
             var _squad = fetch_squad(_op.reference);
             if (array_length(_squad.members) <= 0) {
+                array_delete(planet_operatives, ops, 1);
+                ops--;
                 continue;
             }
 
@@ -72,9 +74,6 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
             if (_op.task_time > time_on_planet) {
                 time_on_planet = _op.task_time;
             }
-        } else {
-            array_delete(planet_operatives, ops, 1);
-            ops--;
         }
 
     }

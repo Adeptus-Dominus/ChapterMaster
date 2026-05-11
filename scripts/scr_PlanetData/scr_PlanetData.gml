@@ -947,7 +947,7 @@ function PlanetData(planet, system) constructor {
             draw_text(xx + 480, yy + 196, $"{system.name} {nm}  ({planet_type})");
         }
         if (is_craftworld) {
-            draw_text(xx + 480, yy + 196,  + $"{system.name} (Craftworld)");
+            draw_text(xx + 480, yy + 196, $"{system.name} (Craftworld)");
         }
         // if (is_craftworld=0) and (is_hulk=0) then draw_text(xx+534,yy+214,string(planet_type)+" World");
         // if (is_craftworld=1) then draw_text(xx+594,yy+214,"Craftworld");
