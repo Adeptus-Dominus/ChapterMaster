@@ -947,7 +947,7 @@ function PlanetData(planet, system) constructor {
             draw_text(xx + 480, yy + 196, $"{system.name} {nm}  ({planet_type})");
         }
         if (is_craftworld) {
-            draw_text(xx + 480, yy + 196, string(system.name) + " (Craftworld)");
+            draw_text(xx + 480, yy + 196,  + $"{system.name} (Craftworld)");
         }
         // if (is_craftworld=0) and (is_hulk=0) then draw_text(xx+534,yy+214,string(planet_type)+" World");
         // if (is_craftworld=1) then draw_text(xx+594,yy+214,"Craftworld");
@@ -1416,7 +1416,7 @@ function PlanetData(planet, system) constructor {
                     y1:_half_way,
                 });
 
-                _col_button.draw(array_length(potential_donors));
+                _col_button.draw(array_length(obj_star_select.potential_donors));
 
                 var _recruit_button = obj_star_select.recruiting_button;
 
@@ -1448,7 +1448,7 @@ function PlanetData(planet, system) constructor {
                     y1:_half_way,
                     allow_click : true,
                 });
-                
+
                 _type_button.draw(true);
 
                 draw_text(xx+(spacing_x*3)-15, _half_way+(spacing_y)-20, $"Req:{_recruit_world.recruit_cost * 2}");
