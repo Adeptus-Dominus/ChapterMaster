@@ -290,7 +290,7 @@ function NameGenerator() constructor {
 
     static GenerateFromSet = function(set_name, reset_on_using_up_all_names = true) {
         if (!struct_exists(name_sets, set_name)) {
-            LOGGER.info("Set name does not exist");
+            LOGGER.error($"Set name {set_name} does not exist");
             return "No Set Name";
         }
 
@@ -379,7 +379,7 @@ function NameGenerator() constructor {
 
     static get_name_set = function(set_name) {
         if (!struct_exists(name_sets, set_name)) {
-            LOGGER.info("Set name does not exist");
+            LOGGER.error($"Set name {set_name} does not exist");
             return "No Set Name";
         }
 
