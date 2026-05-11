@@ -1399,6 +1399,9 @@ function PlanetData(planet, system) constructor {
     static draw_planet_population_controls = function(){
         draw_set_color(c_gray);
         var _gar_slate = obj_star_select.garrison_data_slate;
+        _gar_slate.sub_title = "";
+        _gar_slate.body_text = "";
+        _gar_slate.title = "";
         var xx = _gar_slate.XX;
         var yy = _gar_slate.YY;                
         var _half_way =  _gar_slate.height/2;
