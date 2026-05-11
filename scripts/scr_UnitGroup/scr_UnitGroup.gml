@@ -322,99 +322,98 @@ function UnitGroup(units) constructor {
         return [_fulfilled, squad.uid];
     };
 
-    static organise_by_template = function(template, squad_index = false, empty_squads_index = {}, game_start = true) {
-        var _required = [];
-        var _proportional = [];
-
-        var _squad_index = {};
-
-        if (squad_index == false) {
-            var _squad_index = squad_index;
+    /// @param {Struct} _template
+    /// @param {Struct} _squad_index
+    /// @param {Struct} _empty_squads_index
+    /// @param {Bool} _is_game_start
+    static organise_by_template = function(_template, _squad_index = {}, _empty_squads_index = {}, _is_game_start = true) {
+        if (!_template || !struct_exists(_template, "squads")) {
+            return;
         }
 
-        for (var i = 0; i < array_length(template.squads); i++) {
-            var _squad = template.squads[i];
+        var _required_squads = [];
+        var _proportional_squads = [];
+        var _valid_squad_types = obj_ini.squad_types;
 
-            if (!struct_exists(obj_ini.squad_types, _squad.squad)) {
+        // 1. Template
+        var _template_squad_list = _template.squads;
+        for (var i = 0, _count = array_length(_template_squad_list); i < _count; i++) {
+            var _squad_definition = _template_squad_list[i];
+            var _squad_type_name = _squad_definition.squad;
+
+            if (!struct_exists(_valid_squad_types, _squad_type_name)) {
                 continue;
             }
 
-            if (!struct_exists(_squad_index, _squad.squad)) {
-                _squad_index[$ _squad.squad] = [];
+            if (!struct_exists(_squad_index, _squad_type_name)) {
+                _squad_index[$ _squad_type_name] = [];
             }
 
-            if (struct_exists(_squad, "require") && _squad.require) {
-                array_push(_required, _squad);
-                continue;
-            }
-            if (struct_exists(_squad, "proportion") && bool(_squad.proportion)) {
-                array_push(_proportional, _squad);
-                continue;
+            if (_squad_definition[$ "require"]) {
+                array_push(_required_squads, _squad_definition);
+            } else if (_squad_definition[$ "proportion"]) {
+                array_push(_proportional_squads, _squad_definition);
             }
         }
 
-        var _squad_uid;
-        for (var i = 0; i < array_length(_required); i++) {
-            var _squad = _required[i];
-            var _squad_name = _squad.squad;
-            var _created_count = array_length(_squad_index[$ _squad_name]);
-            var _last_squad_count = squad_count();
-            while (_last_squad_count == squad_count() && _squad.min_count > _created_count) {
-                _last_squad_count = squad_count() + 1;
-                _squad_uid = "";
-                if (struct_exists(empty_squads_index, _squad_name)) {
-                    _squad_uid = empty_squads_index[$ _squad_name][0].uid;
-                }
-                var _results = create_squad(_squad_name, true, _squad_uid, game_start);
-                if (_results[0]) {
-                    var _new_squad = fetch_squad(_results[1]);
-                    _new_squad.base_company = template.company;
-                    _created_count++;
-                    if (_squad_uid == "") {
-                        continue;
-                    }
+        // 2. Required Squads
+        for (var i = 0, _count = array_length(_required_squads); i < _count; i++) {
+            var _squad_data = _required_squads[i];
+            var _squad_name = _squad_data.squad;
+            var _current_count = array_length(_squad_index[$ _squad_name]);
 
-                    array_delete(empty_squads_index[$ _squad_name], 0, 1);
-                    if (!bool(array_length(empty_squads_index[$ _squad_name]))) {
-                        struct_remove(empty_squads_index, _squad_name);
-                    }
+            while (_current_count < _squad_data.min_count) {
+                if (_process_squad_creation(_squad_name, _empty_squads_index, _template.company, _is_game_start)) {
+                    _current_count++;
+                } else {
+                    break;
                 }
             }
         }
 
-        var _squads_made = 0;
-        var _squads_made_last = -1;
+        // 3. Proportional Squads
+        var _has_created_squad_this_pass = true;
+        while (_has_created_squad_this_pass) {
+            _has_created_squad_this_pass = false;
 
-        while (_squads_made > _squads_made_last) {
-            _squads_made_last = _squads_made;
-            for (var i = 0; i < array_length(_proportional); i++) {
-                var _squad = _proportional[i];
-                var _squad_name = _squad.squad;
-                var _squad_uid = "";
-                if (struct_exists(empty_squads_index, _squad_name)) {
-                    _squad_uid = empty_squads_index[$ _squad_name][0].uid;
-                }
-                for (var s = 0; s < _squad.proportion; s++) {
-                    var _results = create_squad(_squad_name, true, _squad_uid, game_start);
-                    if (_results[0]) {
-                        var _new_squad = fetch_squad(_results[1]);
-                        _new_squad.base_company = template.company;
-                        _squads_made++;
+            for (var i = 0, _count = array_length(_proportional_squads); i < _count; i++) {
+                var _squad_data = _proportional_squads[i];
+                var _squad_name = _squad_data.squad;
+                var _proportion_amount = _squad_data.proportion;
 
-                        if (_squad_uid == "") {
-                            continue;
-                        }
-
-                        array_delete(empty_squads_index[$ _squad_name], 0, 1);
-                        if (!bool(array_length(empty_squads_index[$ _squad_name]))) {
-                            struct_remove(empty_squads_index, _squad_name);
-                        }
+                for (var p = 0; p < _proportion_amount; p++) {
+                    if (_process_squad_creation(_squad_name, _empty_squads_index, _template.company, _is_game_start)) {
+                        _has_created_squad_this_pass = true;
                     } else {
                         break;
                     }
                 }
             }
         }
+    };
+
+    static _process_squad_creation = function(_type_name, _empty_index, _company, _start_flag) {
+        var _target_uid = "";
+        var _available_pool = _empty_index[$ _type_name];
+
+        if (is_array(_available_pool) && array_length(_available_pool) > 0) {
+            _target_uid = _available_pool[0].uid;
+        }
+
+        var _result = create_squad(_type_name, true, _target_uid, _start_flag);
+        if (_result[0]) {
+            var _new_squad_instance = fetch_squad(_result[1]);
+            _new_squad_instance.base_company = _company;
+
+            if (_target_uid != "") {
+                array_delete(_available_pool, 0, 1);
+                if (array_length(_available_pool) == 0) {
+                    struct_remove(_empty_index, _type_name);
+                }
+            }
+            return true;
+        }
+        return false;
     };
 
     static order_by_rank = function() {
