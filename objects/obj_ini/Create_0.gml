@@ -232,6 +232,7 @@ serialize = function() {
         "role_spawn_buffs",
         "TTRPG",
         "squads",
+        "squad_structs",
         "squad_types",
         "marines",
         "last_ship"
@@ -314,9 +315,9 @@ deserialize = function(save_data) {
         }
     }
 
-    if (struct_exists(save_data, "squad_structs")) {
+    var _squad_fetch = save_data[$ "squad_structs"];
+    if (_squad_fetch && is_struct(_squad_fetch)) {
         obj_ini.squads = {};
-        var _squad_fetch = save_data.squad_structs;
         var _squad_uid = struct_get_names(_squad_fetch);
         for (var i = 0; i < array_length(_squad_uid); i++) {
             var _uid = _squad_uid[i];
