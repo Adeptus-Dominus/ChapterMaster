@@ -198,7 +198,8 @@ serialize = function() {
     }
 
     var artifact_struct_trimmed = [];
-    for (var i = 0; i < array_length(artifact_struct); i++) {
+    var _artifact_count = array_length(artifact_struct);
+    for (var i = 0; i < _artifact_count; i++) {
         if (artifact_struct[i].name != "") {
             array_push(artifact_struct_trimmed, artifact_struct[i]);
         }
@@ -315,15 +316,16 @@ deserialize = function(save_data) {
         }
     }
 
-    var _squad_fetch = save_data[$ "squad_structs"];
-    if (_squad_fetch && is_struct(_squad_fetch)) {
+    var _squad_structs = save_data[$ "squad_structs"];
+    if (_squad_structs && is_struct(_squad_structs)) {
         obj_ini.squads = {};
-        var _squad_uid = struct_get_names(_squad_fetch);
-        for (var i = 0; i < array_length(_squad_uid); i++) {
-            var _uid = _squad_uid[i];
-            var _sq = new UnitSquad();
-            _sq.load_json_data(_squad_fetch[$ _uid]);
-            obj_ini.squads[$ _uid] = _sq;
+        var _squad_uids = struct_get_names(_squad_structs);
+        var _squad_count = array_length(_squad_uids);
+        for (var i = 0; i < _squad_count; i++) {
+            var _squad_uid = _squad_uids[i];
+            var _squad = new UnitSquad();
+            _squad.load_json_data(_squad_structs[$ _squad_uid]);
+            obj_ini.squads[$ _squad_uid] = _squad;
         }
     }
 
