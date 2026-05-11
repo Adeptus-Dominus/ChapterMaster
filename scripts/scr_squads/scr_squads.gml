@@ -1,15 +1,15 @@
-
 function fetch_squad(array_id) {
     return obj_ini.squads[$ array_id];
 }
 
-function get_squad_ids(){
+function get_squad_ids() {
     return struct_get_names(obj_ini.squads);
 }
 
-function squad_count(){
+function squad_count() {
     return array_length(get_squad_ids());
 }
+
 // constructor for new squad
 
 /* okay so basically this function loops through a given company and attempts to sort the units in the company not in a squad already into 
@@ -18,7 +18,7 @@ the requested squad type , if the squad is not possible it will  not be made*/
 // company : the company you wish to create the squad in (int)
 //squad_loadout: true if you want to use the squad loadout sorting algorithem to re-equip the squad in accordance with the squad type loadout
 
-    /*
+/*
         squad guidance
             define a role that can exist in a squad by defining 
             [<role>, {
@@ -38,7 +38,7 @@ the requested squad type , if the squad is not possible it will  not be made*/
                         of all required loadout options
 
     */
-    
+
 function UnitSquad(squad_type = undefined, company = 0) constructor {
     members = [];
     type = "";
@@ -55,10 +55,9 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     uid = scr_uuid_generate();
     allow_bulk_swap = true;
 
-    if (squad_type != undefined){
-        change_type(squad_type)
+    if (squad_type != undefined) {
+        change_type(squad_type);
     }
-
 
     //TODO introduce loyalty hits from long periods of exile from hierarchy nodes
     // nodes will be captains chapter masters and other senior staff
@@ -314,7 +313,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
     /*checks the status of squad so it can be either restocked or 
 		deleted if there are no longer enough members ot make a squad*/
-        // fill from requiures a valid UnitIndex struct
+    // fill from requiures a valid UnitIndex struct
     static update_fulfilment = function(fill_from = undefined) {
         var unit;
 
@@ -356,9 +355,8 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
             var _min_role_allowed = fill_squad[$ _wanted_unit_role][$ "min"];
 
-            if (fill_from != undefined){
-                while (fill_from.has_role(_wanted_unit_role) && 
-                    _squad_role_current < _max_role_count) {
+            if (fill_from != undefined) {
+                while (fill_from.has_role(_wanted_unit_role) && _squad_role_current < _max_role_count) {
                     var _new_member = fill_from.pop_role_member(_wanted_unit_role);
                     add_member(_new_member.company, _new_member.marine_number);
                     squad_fulfilment[$ _wanted_unit_role]++;
@@ -394,7 +392,6 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         }
     };
 
-
     static empty_squad = function() {
         for (var r = array_length(members) - 1; r >= 0; r--) {
             fetch_member(r).squad = "none";
@@ -402,29 +399,25 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         members = [];
     };
 
-    static empty_squad_to_index = function(index){
+    static empty_squad_to_index = function(index) {
         var _mems = [];
         var _mem;
         for (var r = array_length(members) - 1; r >= 0; r--) {
-            _mem = fetch_member(r)
+            _mem = fetch_member(r);
             _mem.squad = "none";
             array_push(_mems, _mem);
         }
         index.add_to_index(_mems);
-        members = [];        
-    }
+        members = [];
+    };
 
     static fetch_member = function(index) {
         return fetch_unit(members[index]);
     };
 
-    static fetch_members = function(){
-        return collect_role_group("all", "", false, {
-            "company":base_company,
-            "squad" :  uid,
-            "max_wanted" : array_length(members),
-        });
-    }
+    static fetch_members = function() {
+        return collect_role_group("all", "", false, {"company": base_company, "squad": uid, "max_wanted": array_length(members)});
+    };
 
     static add_member = function(comp, unit_number) {
         array_push(members, [comp, unit_number]);
@@ -651,7 +644,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         for (var i = 0; i < array_length(members); i++) {
             array_push(mems, fetch_member(i));
         }
-        if (as_UnitGroup){
+        if (as_UnitGroup) {
             return new UnitGroup(mems);
         }
         return mems;
@@ -661,15 +654,15 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 // creates the origional distribution of squads accross the chapter
 // lots of room for customisation of different chapters here
 
-function game_start_squads(){
+function game_start_squads() {
     obj_ini.squads = {};
-	if (struct_exists(chapter_squad_arrangement, "companies")){
-		var _comp_datas = chapter_squad_arrangement.companies;
-		for (var i=0;i<array_length(_comp_datas);i++){
+    if (struct_exists(chapter_squad_arrangement, "companies")) {
+        var _comp_datas = chapter_squad_arrangement.companies;
+        for (var i = 0; i < array_length(_comp_datas); i++) {
             var _company = collect_company(_comp_datas[i].company);
             _company.organise_by_template(_comp_datas[i]);
-		}
-	}
+        }
+    }
 }
 
 function set_member_loc(loc_data) {

@@ -21,7 +21,6 @@ function scr_has_style(style) {
         }
     }
     return result;
-
 }
 
 function valid_sprite_transform_data(data) {

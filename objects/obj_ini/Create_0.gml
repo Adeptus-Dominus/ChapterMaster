@@ -318,7 +318,7 @@ deserialize = function(save_data) {
         obj_ini.squads = {};
         var _squad_fetch = save_data.squad_structs;
         var _squad_uid = struct_get_names(_squad_fetch);
-        for (var i = 0; i < array_length(_squad_uid); i++){
+        for (var i = 0; i < array_length(_squad_uid); i++) {
             var _uid = _squad_uid[i];
             var _sq = new UnitSquad();
             _sq.load_json_data(_squad_fetch[$ _uid]);
@@ -351,7 +351,7 @@ deserialize = function(save_data) {
         variable_struct_set(obj_ini, "gene_slaves", save_data.gene_slaves);
     }
 
-    if (struct_exists(save_data, "chapter_data")){
+    if (struct_exists(save_data, "chapter_data")) {
         obj_ini.chapter_data = new ChapterGameData(save_data.chapter_data);
     }
 };

@@ -161,7 +161,7 @@ function deserialize(save_data) {
         "id",
         "present_fleet",
         "planet_data",
-        "feature",
+        "feature"
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
@@ -191,7 +191,7 @@ function deserialize(save_data) {
             for (var v = 0; v < array_length(var_names); v++) {
                 var var_name = var_names[v];
 
-                if (var_name == "p_feature"){
+                if (var_name == "p_feature") {
                     var _planet_features = planet[$ var_name];
                     for (var f = 0; f < array_length(_planet_features); f++) {
                         var _feat = _planet_features[f];
@@ -205,7 +205,7 @@ function deserialize(save_data) {
 
                         array_push(self.p_feature[p], _new_feat);
                     }
-                     continue;
+                    continue;
                 }
                 var val = planet[$ var_name];
                 // var_name = "p_type"

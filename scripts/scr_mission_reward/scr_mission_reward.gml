@@ -229,9 +229,7 @@ function scr_mission_reward(mission, star, planet) {
             mech_disp_change = 2;
             obj_controller.requisition += 150 * _marines.number();
             _marines.kill_percent(100);
-        }
-
-        else if (result == "Bionics" || result == "Requisition") {
+        } else if (result == "Bionics" || result == "Requisition") {
             var _new_bionics = irandom_range(40, 100);
             obj_controller.disposition[3] += 1;
             mech_disp_change = 1;

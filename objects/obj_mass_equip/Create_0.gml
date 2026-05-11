@@ -53,4 +53,4 @@ can_assign_weapon = function(unit, weapon_name) {
         default:
             return true;
     }
-}
+};

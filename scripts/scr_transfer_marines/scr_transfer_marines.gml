@@ -66,7 +66,7 @@ function transfer_marines() {
                             obj_controller.man_sel[w + mem] = 0;
                             var member_unit = fetch_unit(move_members[mem]);
                             scr_move_unit_info(member_unit.company, target_comp, member_unit.marine_number, mahreens, false);
-                            var _unit = fetch_unit([target_comp,mahreens]);
+                            var _unit = fetch_unit([target_comp, mahreens]);
                             _unit.squad = move_squad;
                             squad.members[mem][0] = target_comp;
                             squad.members[mem][1] = mahreens;

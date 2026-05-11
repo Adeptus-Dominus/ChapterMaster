@@ -729,18 +729,18 @@ function scr_initialize_custom() {
     chapter_data = new ChapterGameData();
 
     adv = [];
-    for (var i = 0;i<array_length(obj_creation.all_advantages);i++){
+    for (var i = 0; i < array_length(obj_creation.all_advantages); i++) {
         var _adv = obj_creation.all_advantages[i];
-        if (_adv.activated){
+        if (_adv.activated) {
             LOGGER.info($"{_adv}");
             array_push(adv, _adv.name);
             chapter_data.add_trait_data(_adv);
         }
     }
     dis = [];
-    for (var i = 0;i<array_length(obj_creation.all_disadvantages);i++){
+    for (var i = 0; i < array_length(obj_creation.all_disadvantages); i++) {
         var _disadv = obj_creation.all_disadvantages[i];
-        if (_disadv.activated){
+        if (_disadv.activated) {
             LOGGER.info($"{_disadv}");
             array_push(dis, _disadv.name);
             chapter_data.add_trait_data(_disadv);
@@ -1587,76 +1587,112 @@ function scr_initialize_custom() {
     squad_types = json_to_gamemaker(working_directory + $"main\\squads\\base_squads.json", json_parse);
     var _swaps = [
         // ── Heavy Ranged ──────────────────────────────────────────────
-        { "{WEAPON_LIST_RANGED_HEAVY_TERMINATOR}"  : WEAPON_LIST_RANGED_HEAVY_TERMINATOR },
-        { "{WEAPON_LIST_RANGED_HEAVY_LONG}"        : WEAPON_LIST_RANGED_HEAVY_LONG },
-        { "{WEAPON_LIST_RANGED_HEAVY_ASSAULT}"     : WEAPON_LIST_RANGED_HEAVY_ASSAULT },
-        { "{WEAPON_LIST_RANGED_HEAVY}"             : WEAPON_LIST_RANGED_HEAVY },
-        { "{WEAPON_LIST_RANGED_HEAVY_VETERAN}"     : WEAPON_LIST_RANGED_HEAVY_VETERAN },
-
+        {
+            "{WEAPON_LIST_RANGED_HEAVY_TERMINATOR}": WEAPON_LIST_RANGED_HEAVY_TERMINATOR,
+        },
+        {
+            "{WEAPON_LIST_RANGED_HEAVY_LONG}": WEAPON_LIST_RANGED_HEAVY_LONG,
+        },
+        {
+            "{WEAPON_LIST_RANGED_HEAVY_ASSAULT}": WEAPON_LIST_RANGED_HEAVY_ASSAULT,
+        },
+        {
+            "{WEAPON_LIST_RANGED_HEAVY}": WEAPON_LIST_RANGED_HEAVY,
+        },
+        {
+            "{WEAPON_LIST_RANGED_HEAVY_VETERAN}": WEAPON_LIST_RANGED_HEAVY_VETERAN,
+        },
         // ── Special Ranged ────────────────────────────────────────────
-        { "{WEAPON_LIST_RANGED_SPECIAL_LONG}"      : WEAPON_LIST_RANGED_SPECIAL_LONG },
-        { "{WEAPON_LIST_RANGED_SPECIAL_ASSAULT}"   : WEAPON_LIST_RANGED_SPECIAL_ASSAULT },
-        { "{WEAPON_LIST_RANGED_SPECIAL}"           : WEAPON_LIST_RANGED_SPECIAL },
-
+        {
+            "{WEAPON_LIST_RANGED_SPECIAL_LONG}": WEAPON_LIST_RANGED_SPECIAL_LONG,
+        },
+        {
+            "{WEAPON_LIST_RANGED_SPECIAL_ASSAULT}": WEAPON_LIST_RANGED_SPECIAL_ASSAULT,
+        },
+        {
+            "{WEAPON_LIST_RANGED_SPECIAL}": WEAPON_LIST_RANGED_SPECIAL,
+        },
         // ── Combi Ranged ──────────────────────────────────────────────
-        { "{WEAPON_LIST_RANGED_COMBI_LONG}"        : WEAPON_LIST_RANGED_COMBI_LONG },
-        { "{WEAPON_LIST_RANGED_COMBI_ASSAULT}"     : WEAPON_LIST_RANGED_COMBI_ASSAULT },
-        { "{WEAPON_LIST_RANGED_COMBI}"             : WEAPON_LIST_RANGED_COMBI },
-
+        {
+            "{WEAPON_LIST_RANGED_COMBI_LONG}": WEAPON_LIST_RANGED_COMBI_LONG,
+        },
+        {
+            "{WEAPON_LIST_RANGED_COMBI_ASSAULT}": WEAPON_LIST_RANGED_COMBI_ASSAULT,
+        },
+        {
+            "{WEAPON_LIST_RANGED_COMBI}": WEAPON_LIST_RANGED_COMBI,
+        },
         // ── Pistols ───────────────────────────────────────────────────
-        { "{WEAPON_LIST_RANGED_PISTOLS_LONG}"      : WEAPON_LIST_RANGED_PISTOLS_LONG },
-        { "{WEAPON_LIST_RANGED_PISTOLS_ASSAULT}"   : WEAPON_LIST_RANGED_PISTOLS_ASSAULT },
-        { "{WEAPON_LIST_RANGED_PISTOLS}"           : WEAPON_LIST_RANGED_PISTOLS },
-
+        {
+            "{WEAPON_LIST_RANGED_PISTOLS_LONG}": WEAPON_LIST_RANGED_PISTOLS_LONG,
+        },
+        {
+            "{WEAPON_LIST_RANGED_PISTOLS_ASSAULT}": WEAPON_LIST_RANGED_PISTOLS_ASSAULT,
+        },
+        {
+            "{WEAPON_LIST_RANGED_PISTOLS}": WEAPON_LIST_RANGED_PISTOLS,
+        },
         // ── General Ranged ────────────────────────────────────────────
-        { "{WEAPON_LIST_RANGED_VETERAN}"           : WEAPON_LIST_RANGED_VETERAN },
-        { "{WEAPON_LIST_RANGED}"                   : WEAPON_LIST_RANGED },
-
+        {
+            "{WEAPON_LIST_RANGED_VETERAN}": WEAPON_LIST_RANGED_VETERAN,
+        },
+        {
+            "{WEAPON_LIST_RANGED}": WEAPON_LIST_RANGED,
+        },
         // ── Melee ─────────────────────────────────────────────────────
-        { "{WEAPON_LIST_MELEE_BASIC}"              : WEAPON_LIST_MELEE_BASIC },
-        { "{WEAPON_LIST_MELEE_1H}"                 : WEAPON_LIST_MELEE_1H },
-        { "{WEAPON_LIST_MELEE_HEAVY}"              : WEAPON_LIST_MELEE_HEAVY },
-        { "{WEAPON_LIST_MELEE_VETERAN}"            : WEAPON_LIST_MELEE_VETERAN },
-
+        {
+            "{WEAPON_LIST_MELEE_BASIC}": WEAPON_LIST_MELEE_BASIC,
+        },
+        {
+            "{WEAPON_LIST_MELEE_1H}": WEAPON_LIST_MELEE_1H,
+        },
+        {
+            "{WEAPON_LIST_MELEE_HEAVY}": WEAPON_LIST_MELEE_HEAVY,
+        },
+        {
+            "{WEAPON_LIST_MELEE_VETERAN}": WEAPON_LIST_MELEE_VETERAN,
+        },
         // ── Weighted ──────────────────────────────────────────────────
-        { "{WEAPON_LIST_WEIGHTED_RANGED_PISTOLS}"  : WEAPON_LIST_WEIGHTED_RANGED_PISTOLS },
-        {"{squad_name}"                   : _squad_name}        
+        {
+            "{WEAPON_LIST_WEIGHTED_RANGED_PISTOLS}": WEAPON_LIST_WEIGHTED_RANGED_PISTOLS,
+        },
+        {
+            "{squad_name}": _squad_name,
+        }
     ];
     var _roles_player = obj_ini.role[100];
     var _default_player = obj_ini.role[101];
     var i;
-    for (i=1; i < 20; i++){
-        if (_roles_player[i] == ""){
+    for (i = 1; i < 20; i++) {
+        if (_roles_player[i] == "") {
             continue;
         }
 
-        if (_default_player[i] == ""){
+        if (_default_player[i] == "") {
             continue;
         }
-		var _set = {};
-		variable_struct_set(_set,_default_player[i],_roles_player[i]);
+        var _set = {};
+        variable_struct_set(_set, _default_player[i], _roles_player[i]);
 
         array_push(_swaps, _set);
     }
 
-    for (i=1; i < 20; i++){
+    for (i = 1; i < 20; i++) {
         var _set = {};
         var _key = $"wep1[{i}]";
         var _val = obj_ini.wep1[100][i];
-        variable_struct_set(_set,_key,_val);
+        variable_struct_set(_set, _key, _val);
         array_push(_swaps, _set);
 
         var _set = {};
         _key = $"wep2[{i}]";
         _val = obj_ini.wep2[100][i];
-        variable_struct_set(_set,_key,_val);
+        variable_struct_set(_set, _key, _val);
 
         array_push(_swaps, _set);
     }
 
     json_inject_swaps(squad_types, _swaps);
-
-
 
     // LOGGER.debug($"squads object for chapter {chapter_name}");
     // LOGGER.debug($"{custom_squads}");
@@ -1713,7 +1749,7 @@ function scr_initialize_custom() {
                     ]
                 ],
             },
-        }
+        };
     }
 
     /*if (scr_has_adv("Lightning Warriors")) {
@@ -2199,7 +2235,6 @@ function scr_initialize_custom() {
     function _is_terminator(_armour) {
         return array_contains(["Terminator Armour", "Tartaros"], _armour);
     }
-
 
     for (var _c = 0, _clen = array_length(_coys); _c < _clen; _c++) {
         var k = 0, v = 0; //k = marine slot, v = vehicle slot

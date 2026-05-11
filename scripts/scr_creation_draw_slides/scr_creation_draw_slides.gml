@@ -602,7 +602,6 @@ function draw_chapter_trait_select() {
     }
 
     if (popup != "icons") {
-
         draw_selected_chapter_traits(eCHAPTER_TRAIT_TYPE.ADV);
         draw_selected_chapter_traits(eCHAPTER_TRAIT_TYPE.DISADV);
 

@@ -75,7 +75,6 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
                 time_on_planet = _op.task_time;
             }
         }
-
     }
 
     static garrison_sustain_damages = function(win_or_loss) {

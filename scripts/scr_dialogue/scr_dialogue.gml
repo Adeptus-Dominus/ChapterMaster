@@ -793,7 +793,6 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if (diplo_keyphrase == "denounced") {
                 if (faction_gender[10] == 1) {
-
                     alter_disposition(10, -1);
 
                     var _diag_opts = [
@@ -1913,7 +1912,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 }
                 rando = choose(1, 2, 3);
                 if (rela == "friendly") {
-                    alter_disposition(diplomacy, choose(2,1));
+                    alter_disposition(diplomacy, choose(2, 1));
                     if (rando == 1) {
                         diplo_text = "Words are wind and mean nothing between two servants of the Emperor's eternal glory.";
                     }
@@ -2284,12 +2283,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 }
             }
             if (diplo_keyphrase == "loyalty_zero") {
-                alter_dispositions([
-                    [eFACTION.IMPERIUM, -20],
-                    [eFACTION.MECHANICUS, -15],
-                    [eFACTION.ECCLESIARCHY, -20],
-                    [eFACTION.INQUISITION, -20]
-                ]);
+                alter_dispositions([[eFACTION.IMPERIUM, -20], [eFACTION.MECHANICUS, -15], [eFACTION.ECCLESIARCHY, -20], [eFACTION.INQUISITION, -20]]);
                 diplo_text = "Your arrogant, blatant disregard for proper Imperial conduct can no longer go unanswered, Astartes.  Time and time again you have ignored the Imperium's call to arms, refusing to strike out at the enemies of man when it was most needed, and callously ignored the Inquisition's wants.  It has become clear that you are not in line with the High Lords of Terra and His will.  This heresy must be cut from your Chapter like the festering blight it is.  You may either atone for your Chapter's crimes, in penitence, or see it ground to dust around you.";
                 // Speak your next words carefully, Chapter Master, for they may damn all the souls of your men to oblivion.
 

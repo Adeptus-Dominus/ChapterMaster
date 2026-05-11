@@ -1388,7 +1388,6 @@ if (global.chapter_name == "Soul Drinkers") {
     gene_seed = 60;
 }
 
-
 system_fleet_strength = 0;
 // **sets up starting forge_points
 LOGGER.info("set up the specialist points");
@@ -1699,7 +1698,6 @@ for (var company = 0; company < 10; company++) {
         temp[njm] = string_delete(temp[njm], vih, 1);
     }
 }
-
 
 LOGGER.info("create Ships");
 

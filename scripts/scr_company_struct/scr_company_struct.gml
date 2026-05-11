@@ -57,8 +57,7 @@ function CompanyStruct(comp) constructor {
                     array_push(company_squads, _search_squad);
                 }
             }
-        }
-        else if (company == -1) {
+        } else if (company == -1) {
             var _squad_ids = [];
             var _disp_units = obj_controller.display_unit;
             for (var i = 0; i < array_length(_disp_units); i++) {
@@ -163,19 +162,9 @@ function CompanyStruct(comp) constructor {
 
         var x_overlap_mod = 0;
 
-        var _start_box = new Box({
-            x1 :xx + 25,
-            y1 :yy + 144,
-            x2 :xx + 925,
-            y2 :yy + 981,           
-        });
+        var _start_box = new Box({x1: xx + 25, y1: yy + 144, x2: xx + 925, y2: yy + 981});
 
-        var _full_box = new Box({
-            x1 : xx + 25,
-            y1 : yy + 144,
-            x2 : xx + 525,
-            y2 : yy + 981
-        })
+        var _full_box = new Box({x1: xx + 25, y1: yy + 144, x2: xx + 525, y2: yy + 981});
         if (unit_rollover) {
             if (_start_box.hit()) {
                 x_overlap_mod = 180;
@@ -192,18 +181,14 @@ function CompanyStruct(comp) constructor {
         var _member = _cur_squad.fetch_member(0);
         if (array_length(squad_draw_surfaces) == 0 || (squad_draw_surfaces[0][0] != _member.uid)) {
             reset_squad_surface();
-            _reset_surface =  true;
-        }   
+            _reset_surface = true;
+        }
         for (var i = 0; i < array_length(_cur_squad.members); i++) {
             var _member = _cur_squad.fetch_member(i);
 
-            if (_reset_surface){
-                array_push(squad_draw_surfaces, [
-                    _member.uid,
-                    _member.draw_unit_image()
-                ]);
+            if (_reset_surface) {
+                array_push(squad_draw_surfaces, [_member.uid, _member.draw_unit_image()]);
             }
-
 
             var _mem_draw_data = squad_draw_surfaces[i];
             var cur_member_surface = _mem_draw_data[1];
@@ -215,7 +200,7 @@ function CompanyStruct(comp) constructor {
                 x_mod = 0;
                 member_height++;
                 y_mod += 231;
-            };
+            }
 
             member_width++;
 
@@ -223,21 +208,21 @@ function CompanyStruct(comp) constructor {
 
             x_mod += x_overlap_mod;
 
-            var _use_draw_delay = (cur_member_surface.hit() && !exit_period && unit_rollover);
+            var _use_draw_delay = cur_member_surface.hit() && !exit_period && unit_rollover;
 
-            if(!_use_draw_delay){
+            if (!_use_draw_delay) {
                 _use_draw_delay = obj_controller.unit_focus.uid == _member.uid;
             }
 
-            if (_use_draw_delay){
+            if (_use_draw_delay) {
                 var _outline = cur_member_surface.box();
                 _outline.colour = c_red;
                 sprite_draw_delay = {
-                    unit : _member,
-                    draw_coords : _outline,
-                    unit_surface : cur_member_surface
+                    unit: _member,
+                    draw_coords: _outline,
+                    unit_surface: cur_member_surface,
                 };
-                obj_controller.unit_focus = _member;                
+                obj_controller.unit_focus = _member;
             }
         }
 
@@ -342,7 +327,6 @@ function CompanyStruct(comp) constructor {
                     }
                 }
             }
-
         }
     };
 
@@ -432,10 +416,10 @@ function CompanyStruct(comp) constructor {
         selected_unit = obj_controller.unit_focus;
     };
 
-    static exit_squad_view = function(){
+    static exit_squad_view = function() {
         obj_controller.view_squad = false;
-        obj_controller.unit_profile = false;       
-    }
+        obj_controller.unit_profile = false;
+    };
 
     static draw_squad_view = function() {
         center_width = [
@@ -455,7 +439,7 @@ function CompanyStruct(comp) constructor {
             return;
         }
 
-        if (current_squad == -1){
+        if (current_squad == -1) {
             current_squad = 0;
         }
 
@@ -483,11 +467,11 @@ function CompanyStruct(comp) constructor {
             _find_squad_member = true;
         }
 
-        if (_find_squad_member){
+        if (_find_squad_member) {
             default_member();
         }
 
-        if (selected_unit.squad == "none"){
+        if (selected_unit.squad == "none") {
             exit_squad_view();
             return;
         }
@@ -535,8 +519,8 @@ function CompanyStruct(comp) constructor {
                 x1: xx + center_width[0] + 5,
                 y1: yy + center_height[0] + 150,
                 color: _selected_squad ? c_red : c_green,
-                label : _selected_squad? "De-select Squad" : "Select Squad",
-            }
+                label: _selected_squad ? "De-select Squad" : "Select Squad",
+            };
 
             if (!_selected_squad) {
                 _squad_button_dat.tooltip = obj_controller.selection_data.purpose;
