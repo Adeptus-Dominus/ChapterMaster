@@ -1698,7 +1698,6 @@ function scr_initialize_custom() {
     // LOGGER.debug($"{custom_squads}");
 
     if (struct_exists(obj_creation, "squad_builder")){
-        LOGGER.info(obj_creation.squad_builder);
         for (var s=0; s<array_length(obj_creation.squad_builder);s++){
             var _custom_build = obj_creation.squad_builder[s];
             for (var i=0;i<array_length(obj_ini.chapter_squad_arrangement.companies);i++){
@@ -1708,7 +1707,6 @@ function scr_initialize_custom() {
                 }
             }
         }
-        LOGGER.info(obj_ini.chapter_squad_arrangement);
     }
 
     if (struct_exists(obj_creation, "custom_squads")) {
@@ -1716,7 +1714,6 @@ function scr_initialize_custom() {
         with (squad_types){
             move_data_to_current_scope(_customs);
         }
-        LOGGER.info(struct_get_names(squad_types));
     }
 
     // LOGGER.debug($"roles object for chapter {chapter_name} after setting from obj");
