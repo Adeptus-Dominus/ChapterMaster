@@ -49,7 +49,7 @@ function scr_company_order(company) {
 
             _squad.update_fulfilment(_squadless_index);
 
-            if (!_squad.fulfilled && _squad.type != "command_squad") {
+            if (!_squad.fulfilled && _squad.base != "command") {
                 _squad.empty_squad_to_index(_squadless_index);
             }
         }
@@ -58,7 +58,7 @@ function scr_company_order(company) {
         for (var i = 0; i < array_length(_empty_squads); i++) {
             var _squad = _empty_squads[i];
             _squad.update_fulfilment(_squadless_index);
-            if (!_squad.fulfilled && _squad.type != "command_squad") {
+            if (!_squad.fulfilled && _squad.base != "command") {
                 _squad.empty_squad_to_index(_squadless_index);
             } else {
                 _squad.base_company = co;

@@ -50,6 +50,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     class = [];
     squad_leader = "";
     type_data = {};
+    base = "tactical";
     formation_place = "";
     formation_options = [];
     uid = scr_uuid_generate();
@@ -222,6 +223,9 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         display_name = type_data[$ "display_data"];
         if (struct_exists(type_data, "class")) {
             class = type_data.class;
+        }
+        if (struct_exists(type_data, "base")){
+            base = type_data.base;
         }
         if (struct_exists(type_data, "formation_options")) {
             formation_options = type_data.formation_options;

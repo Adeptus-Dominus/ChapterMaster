@@ -1697,24 +1697,26 @@ function scr_initialize_custom() {
     // LOGGER.debug($"squads object for chapter {chapter_name}");
     // LOGGER.debug($"{custom_squads}");
 
-    if (struct_exists(obj_creation, "custom_squads")) {
-        var custom_squads = obj_creation.custom_squads;
-        // LOGGER.debug($"custom roles {custom_squads}");
-        if (array_length(struct_get_names(custom_squads)) != 0) {
-            var names = struct_get_names(custom_squads);
-            // LOGGER.debug($"names {names}");
-            for (var n = 0; n < array_length(names); n++) {
-                var _squad_name = names[n];
-                // LOGGER.debug($"matched squad name name {_squad_name}");
-
-                if (struct_exists(custom_squads, _squad_name)) {
-                    var custom_squad = struct_get(custom_squads, _squad_name);
-                    // LOGGER.debug($"overwriting squad layout for {_squad_name}");
-                    // LOGGER.debug($"{custom_squad}")
-                    variable_struct_set(custom_squads, _squad_name, custom_squad);
+    if (struct_exists(obj_creation, "squad_builder")){
+        LOGGER.info(obj_creation.squad_builder);
+        for (var s=0; s<array_length(obj_creation.squad_builder);s++){
+            var _custom_build = obj_creation.squad_builder[s];
+            for (var i=0;i<array_length(obj_ini.chapter_squad_arrangement.companies);i++){
+                var _default_build = obj_ini.chapter_squad_arrangement.companies[i];
+                if (_custom_build.company == _default_build.company){
+                    obj_ini.chapter_squad_arrangement.companies[i] = _custom_build;
                 }
             }
         }
+        LOGGER.info(obj_ini.chapter_squad_arrangement);
+    }
+
+    if (struct_exists(obj_creation, "custom_squads")) {
+        var _customs = obj_creation.custom_squads;
+        with (squad_types){
+            move_data_to_current_scope(_customs);
+        }
+        LOGGER.info(struct_get_names(squad_types));
     }
 
     // LOGGER.debug($"roles object for chapter {chapter_name} after setting from obj");
