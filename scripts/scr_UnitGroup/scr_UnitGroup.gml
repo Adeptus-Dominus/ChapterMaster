@@ -198,7 +198,7 @@ function UnitGroup(units) constructor {
     static sgt_types = role_groups(SPECIALISTS_SQUAD_LEADERS);
 
     static create_squad = function(squad_type, squad_loadout = true, squad_uid = "", game_start = false) {
-        LOGGER.info($"sgts : ${sgt_types}");
+        // LOGGER.info($"sgts : ${sgt_types}");
 
         var roles = active_roles();
 
@@ -235,7 +235,7 @@ function UnitGroup(units) constructor {
             sergeant_found = true;
         }
 
-        LOGGER.info($"ready to squad {_squadless.number()}");
+        // LOGGER.info($"ready to squad {_squadless.number()}");
 
         var _unit;
         for (var i = 0; i < _squadless.number(); i++) {
@@ -291,7 +291,7 @@ function UnitGroup(units) constructor {
         _fulfilled = true;
         for (var i = 0; i < array_length(squad_unit_types); i++) {
             var _unit_role = squad_unit_types[i];
-            LOGGER.info($"{_unit_role}, {squad_fulfilment[$ _unit_role]}, {_fill_squad[$ _unit_role][$ "min"]}");
+            // LOGGER.info($"{_unit_role}, {squad_fulfilment[$ _unit_role]}, {_fill_squad[$ _unit_role][$ "min"]}");
             if (squad_fulfilment[$ _unit_role] < _fill_squad[$ _unit_role][$ "min"]) {
                 _fulfilled = false;
                 break;

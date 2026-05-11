@@ -213,7 +213,7 @@ function ChapterTrait(trait) constructor {
 
 function Advantage(trait) : ChapterTrait(trait) constructor {
     static id_start = 1;
-    LOGGER.info(id_start);
+    // LOGGER.info(id_start);
     id = id_start;
     id_start++;
 
@@ -245,7 +245,7 @@ function Advantage(trait) : ChapterTrait(trait) constructor {
 
 function Disadvantage(trait) : ChapterTrait(trait) constructor {
     static id_start = 1;
-    LOGGER.info(id_start);
+    // LOGGER.info(id_start);
     id = id_start;
     id_start++;
 
@@ -433,7 +433,7 @@ function ChapterGameData(data = {}) constructor {
         for (var t = 0; t < array_length(tags); t++) {
             var _tag = tags[t];
 
-            LOGGER.info($"{_tag} : {equipment_tag_mods}");
+            // LOGGER.info($"{_tag} : {equipment_tag_mods}");
 
             if (!struct_exists(equipment_tag_mods, _tag)) {
                 continue;

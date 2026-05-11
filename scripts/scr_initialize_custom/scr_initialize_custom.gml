@@ -732,7 +732,7 @@ function scr_initialize_custom() {
     for (var i = 0; i < array_length(obj_creation.all_advantages); i++) {
         var _adv = obj_creation.all_advantages[i];
         if (_adv.activated) {
-            LOGGER.info($"{_adv}");
+            // LOGGER.info($"{_adv}");
             array_push(adv, _adv.name);
             chapter_data.add_trait_data(_adv);
         }
@@ -741,7 +741,7 @@ function scr_initialize_custom() {
     for (var i = 0; i < array_length(obj_creation.all_disadvantages); i++) {
         var _disadv = obj_creation.all_disadvantages[i];
         if (_disadv.activated) {
-            LOGGER.info($"{_disadv}");
+            // LOGGER.info($"{_disadv}");
             array_push(dis, _disadv.name);
             chapter_data.add_trait_data(_disadv);
         }
@@ -2176,7 +2176,7 @@ function scr_initialize_custom() {
         },
     };
 
-    LOGGER.info($"Pre balancing company totals: {json_stringify(companies, true)}");
+    // LOGGER.info($"Pre balancing company totals: {json_stringify(companies, true)}");
     // Extra vehicles loaded from json files all get dumped into the 10th company for the player to sort out
 
     var vehicle_keys = [
@@ -2356,7 +2356,7 @@ function scr_initialize_custom() {
             }
         }
 
-        LOGGER.info($"New Company Totals: eq specialists: {equal_specialists}: scout coy {scout_company_behaviour} equal_scouts: {equal_scouts}");
+        // LOGGER.info($"New Company Totals: eq specialists: {equal_specialists}: scout coy {scout_company_behaviour} equal_scouts: {equal_scouts}");
         // LOGGER.info($"Company {_coy.coy}: {json_stringify(_coy, true)}");
 
         var _set_company_makeup = function(old_values, new_values){
