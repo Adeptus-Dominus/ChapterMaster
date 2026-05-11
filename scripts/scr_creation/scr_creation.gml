@@ -270,19 +270,19 @@ function scr_creation(slide_num) {
                     disposition[eSTART_FACTION.IMPERIUM] += (5 - strength) * 2;
                 }
 
-                for (var i = 0;i<array_length(obj_creation.all_advantages);i++){
+                for (var i = 0; i < array_length(obj_creation.all_advantages); i++) {
                     var _adv = obj_creation.all_advantages[i];
-                    if (_adv.activated){
+                    if (_adv.activated) {
                         _adv.alter_starting_dispositions();
                     }
                 }
 
-                for (var i = 0;i<array_length(obj_creation.all_disadvantages);i++){
+                for (var i = 0; i < array_length(obj_creation.all_disadvantages); i++) {
                     var _dis_adv = obj_creation.all_disadvantages[i];
-                    if (_dis_adv.activated){
+                    if (_dis_adv.activated) {
                         _dis_adv.alter_starting_dispositions();
                     }
-                }               
+                }
             }
         }
     }

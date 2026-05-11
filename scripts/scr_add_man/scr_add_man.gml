@@ -91,12 +91,12 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
             case "Ranger":
                 obj_ini.name[target_company][_company_slot] = global.name_generator.GenerateMultiSyllable("eldar", 2);
                 break;
-                
+
             case "Ork Sniper":
             case "Flash Git":
                 obj_ini.name[target_company][_company_slot] = global.name_generator.GenerateComposite("ork", false);
                 break;
-                
+
             case "Sister of Battle":
             case "Sister Hospitaler":
                 obj_ini.name[target_company][_company_slot] = global.name_generator.GenerateFromSet("imperial_female");

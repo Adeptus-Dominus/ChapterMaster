@@ -65,7 +65,7 @@ function string_gender_pronouns(gender) {
     return _string;
 }
 
-function string_plus_minus(value){
+function string_plus_minus(value) {
     return value < 0 ? "" : "+";
 }
 

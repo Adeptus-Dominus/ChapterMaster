@@ -1101,12 +1101,12 @@ function scr_ui_manage() {
                             unit_profile = false;
                         } else if (company_data.has_squads) {
                             unit_profile = true;
-                            try{
+                            try {
                                 company_data.draw_squad_view();
-                            } catch(_exception){
+                            } catch (_exception) {
                                 handle_exception(_exception);
                                 obj_controller.view_squad = false;
-                                obj_controller.unit_profile = false;                                
+                                obj_controller.unit_profile = false;
                             }
                         }
                     }

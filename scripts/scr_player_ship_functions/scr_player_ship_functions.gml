@@ -34,11 +34,10 @@ function return_lost_ship() {
         var _text = $"The ship {obj_ini.ship[_return_id]} has returned to real space and is now orbiting the {_star.name} system\n";
 
         static unit_effects = {
-            "geller_fail" : function(unit){
+            "geller_fail": function(unit) {
                 unit.edit_corruption(max(0, irandom_range(20, 120) - unit.piety));
             },
-
-        }
+        };
         if (_return_defect < 90) {
             var _units = collect_role_group("all", [_star.name, 0, _return_id], false, {}, true);
             _units.shuffle();
@@ -48,7 +47,7 @@ function return_lost_ship() {
                 obj_ini.ship_hp[_return_id] *= random_range(0.2, 0.8);
                 _text += $"Reports indicate it has suffered damage as a result of it's time in the warp";
             } else if (_return_defect > 70) {
-                var _techs = _units.get_from({group:SPECIALISTS_TECHS});
+                var _techs = _units.get_from({group: SPECIALISTS_TECHS});
                 if (bool(_techs.number())) {
                     _techs.kill_percent(100);
                 }

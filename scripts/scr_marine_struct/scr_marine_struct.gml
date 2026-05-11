@@ -1008,9 +1008,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return _powers_learned;
     };
 
-    static roll_dice = function(dices = 1, faces = 6, player_benefit_at="none"){
-        return roll_dice_unit(dices , faces , player_benefit_at, self);
-    }
+    static roll_dice = function(dices = 1, faces = 6, player_benefit_at = "none") {
+        return roll_dice_unit(dices, faces, player_benefit_at, self);
+    };
 
     static roll_psionics = function() {
         var _dice_count = marine_ascension == "pre_game" ? 1 : 2;
@@ -1610,9 +1610,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return armour_rating;
     };
 
-    static get_squad = function(){
+    static get_squad = function() {
         return fetch_squad(squad);
-    }
+    };
 
     static assignment = function() {
         if (squad != "none") {
