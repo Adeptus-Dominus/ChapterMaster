@@ -41,7 +41,7 @@ enum eLOCATION_TYPES {
     WARP,
 }
 
-global.arr_psy_levels = ["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta", "Gamma Plus"];
+global.arr_psy_levels = ["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta Plus", "Gamma Plus"];
 global.arr_negative_psy_levels = ["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"];
 
 enum eEQUIPMENT_SLOT {
