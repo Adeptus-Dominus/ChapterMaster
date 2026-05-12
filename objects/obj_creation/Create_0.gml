@@ -46,7 +46,7 @@ audio_play_sound(snd_diboz, 0, true, 0.1);
 audio_sound_gain(snd_diboz, 1, 5000);
 
 global.load = -1;
-planet_types = PLANET_TYPES;
+planet_types = global.planet_types;
 skip = false;
 premades = true;
 

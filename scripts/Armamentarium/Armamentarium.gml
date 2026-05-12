@@ -809,10 +809,10 @@ function Armamentarium(_controller) constructor {
         }
 
         var _pace = controller.training_techmarine;
-        _text += $" The training pace is {RECRUITMENT_PACE_DESCRIPTIONS[_pace] ?? "unknown"}.";
+        _text += $" The training pace is {global.recruitment_pace_descriptions[_pace] ?? "unknown"}.";
 
         if (controller.tech_aspirant > 0 && _pace > 0) {
-            var _eta_val = floor((359 - controller.tech_points) / TECHMARINE_TRAINING_TIERS[_pace]) + 1;
+            var _eta_val = floor((359 - controller.tech_points) / global.techmarine_training_tiers[_pace]) + 1;
             _text += $" An Aspirant will finish training in {_eta_val} month(s).";
         }
         advisor_report_text = _text;

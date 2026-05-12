@@ -31,7 +31,7 @@ try {
 
             meet_system_governors(orbiting);
         }
-    } else if (array_contains(FLEET_MOVE_OPTIONS, action)) {
+    } else if (array_contains(global.fleet_move_options, action)) {
         var i;
         set_fleet_location("Warp");
 

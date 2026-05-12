@@ -18,8 +18,9 @@
 		the string (usually max) is guidance so in the instance of max it will pick the larger value of the mean and the gauss function return
 */
 // will swap these out for enums or some better method as i develop where this is going
-#macro UNIT_BODY_PARTS ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw", "head"]
-#macro UNIT_BODY_PARTS_DISPLAY ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw", "Head"]
+global.unit_body_parts = ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw", "head"];
+global.unit_body_parts_display = ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw", "Head"];
+
 global.religions = {
     "imperial_cult": {
         "name": "Imperial Cult",
@@ -40,8 +41,8 @@ enum eLOCATION_TYPES {
     WARP,
 }
 
-#macro ARR_psy_levels ["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta", "Gamma Plus"]
-#macro ARR_negative_psy_levels ["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]
+global.arr_psy_levels = ["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta", "Gamma Plus"];
+global.arr_negative_psy_levels = ["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"];
 
 enum eEQUIPMENT_SLOT {
     WEAPON_ONE,
@@ -309,7 +310,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         sz = 1;
         if (string_count("Dread", arm) > 0) {
             sz += 5;
-        } else if (array_contains(LIST_TERMINATOR_ARMOUR, arm)) {
+        } else if (array_contains(global.list_terminator_armour, arm)) {
             sz += 1;
         }
         //var mobi =  mobility_item();
@@ -367,7 +368,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     allegiance = faction; //faction alligience defaults to the chapter
 
     static stat_boosts = function(stat_boosters) {
-        var stats = UNIT_STAT_LIST;
+        var stats = global.stat_list;
         var edits = struct_get_names(stat_boosters);
         var edit_stat, random_stat, stat_mod;
         for (var stat_iter = 0; stat_iter < array_length(stats); stat_iter++) {
@@ -759,7 +760,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
         // Identify eligible parts
         var _eligible_parts = [];
-        var _body_parts = UNIT_BODY_PARTS;
+        var _body_parts = global.unit_body_parts;
         for (var i = 0, _len = array_length(_body_parts); i < _len; i++) {
             var _part_name = _body_parts[i];
             if (!get_body_data("bionic", _part_name)) {

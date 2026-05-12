@@ -26,7 +26,7 @@ function fleet_engaged(fleet = undefined) {
     var _fleet_action = fleet.action;
     if (_fleet_action != "" && _fleet_action != "move") {
         //don't inspect if engaged in non negotiable actions
-        if (array_contains(FLEET_MOVE_OPTIONS, _fleet_action)) {
+        if (array_contains(global.fleet_move_options, _fleet_action)) {
             _engaged = true;
         }
     }

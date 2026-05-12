@@ -1,7 +1,8 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-#macro PLANET_TYPES ["Dead","Ice", "Temperate","Feudal","Shrine","Agri","Death","Hive","Forge","Desert","Lava"]
+global.planet_types = ["Dead","Ice", "Temperate","Feudal","Shrine","Agri","Death","Hive","Forge","Desert","Lava"];
+
 enum ePLAYER_BASE {
     NONE = 0,
     HOME_WORLD = 1,
@@ -91,7 +92,7 @@ function player_home_star(home_planet) {
         p_defenses[home_planet] = 225;
     }
 
-    var _planet_types = PLANET_TYPES;
+    var _planet_types = global.planet_types;
     if (p_type[home_planet] == "random") {
         p_type[home_planet] = array_random_element(_planet_types);
     }
@@ -152,7 +153,7 @@ function set_player_homeworld_star(chosen_star) {
         var _home_star = irandom_range(1, planets);
 
         player_home_star(_home_star);
-        var _planet_types = PLANET_TYPES;
+        var _planet_types = global.planet_types;
 
         if (obj_ini.recruit_relative_loc == 1) {
             var _possible_planets = [];

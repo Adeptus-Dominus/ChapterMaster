@@ -8,16 +8,17 @@ enum eTRIALS {
     APPRENTICESHIP,
     NUM,
 }
-#macro RECRUITMENT_PACE_DESCRIPTIONS [" is currently halted"," is advancing sluggishly"," is advancing slowly"," is advancing moderately fast"," is advancing fast"," is advancing frenetically"," is advancing as fast as possible"]
 
-#macro RECRUITEMENT_RATES_CAPS ["HALTED","SLUGGISH","SLOW","MODERATE","FAST","FRENETIC","MAXIMUM",]
-#macro RECRUITMENT_RATES ["halted","sluggish","slow","moderate","fast","frenetic","hereticly fast"]
+global.recruitment_pace_descriptions = [" is currently halted"," is advancing sluggishly"," is advancing slowly"," is advancing moderately fast"," is advancing fast"," is advancing frenetically"," is advancing as fast as possible"];
 
-#macro NEOPHYTE_RATES_CAPS ["HALTED","ONGOING"]
-#macro NEOPHYTE_RATES ["halted","ongoing"]
-#macro APOTHECARY_TRAINING_TIERS [0,0.8,0.9,1,1.5,2,4 ]
-#macro CHAPLAIN_TRAINING_TIERS [0,0.8,0.9, 1,1.5,2,4]
-#macro TECHMARINE_TRAINING_TIERS [0,1,2,4, 6,10,14]
+global.recruitement_rates_caps = ["HALTED","SLUGGISH","SLOW","MODERATE","FAST","FRENETIC","MAXIMUM",];
+global.recruitment_rates = ["halted","sluggish","slow","moderate","fast","frenetic","hereticly fast"];
+
+global.neophyte_rates_caps = ["HALTED","ONGOING"];
+global.neophyte_rates = ["halted","ongoing"];
+global.apothecary_training_tiers = [0,0.8,0.9,1,1.5,2,4 ];
+global.chaplain_training_tiers = [0,0.8,0.9, 1,1.5,2,4];
+global.techmarine_training_tiers = [0,1,2,4, 6,10,14];
 
 function find_recruit_success_chance(local_apothecary_points, system, planet, ui = 0) {
     var p_data = new PlanetData(planet, system);
@@ -577,7 +578,7 @@ function find_favoured_training_traits(training_enum) {
     var favoured_traits = [];
     var _trait_id = "";
     var stat_diffs = {};
-    var _stat_names = UNIT_STAT_LIST;
+    var _stat_names = global.stat_list;
     for (var i = 0; i < array_length(_stat_names); i++) {
         stat_diffs[$ _stat_names[i]] = 0;
     }
@@ -712,7 +713,7 @@ function scr_compile_trial_bonus_string(trial_data) {
 function StatDistributionUnit(data) constructor {
     data_upper_end = 0;
     data_lower_end = 0;
-    var _stat_names = UNIT_STAT_LIST;
+    var _stat_names = global.stat_list;
     for (var i = 0; i < array_length(_stat_names); i++) {
         var _stat = _stat_names[i];
         if (data[$ _stat] < data_lower_end) {
@@ -767,7 +768,7 @@ function scr_draw_recruit_advisor() {
     var blurp, eta, va;
     var romanNumerals;
     romanNumerals = scr_roman_numerals();
-    var _recruit_rate = RECRUITEMENT_RATES_CAPS;
+    var _recruit_rate = global.recruitement_rates_caps;
     var xx = __view_get(e__VW.XView, 0) + 0;
     var yy = __view_get(e__VW.YView, 0) + 0;
     blurp = "";
@@ -840,7 +841,7 @@ function scr_draw_recruit_advisor() {
         }
 
         if (gene_seed > 0) {
-            var _recruit_rates = NEOPHYTE_RATES;
+            var _recruit_rates = global.neophyte_rates;
             var _cur_recruit_rate = $"The recruitment is {_recruit_rates[recruiting]}";
             if ((recruiting == 0) && (marines >= 1000)) {
                 blurp += $"\n{_cur_recruit_rate}. You must only give me the word and I can begin further increasing our numbers... though this would violate the Codex Astartes.";
@@ -880,7 +881,7 @@ function scr_draw_recruit_advisor() {
 
     // draw_line(xx+216,yy+252,xx+597,yy+252);draw_line(xx+216,yy+292,xx+597,yy+292);
 
-    var _neophyte_rate = NEOPHYTE_RATES_CAPS;
+    var _neophyte_rate = global.neophyte_rates_caps;
     var blur = "", amo = 0;
     // ** Normal recruiting **
     draw_set_color(16291875);

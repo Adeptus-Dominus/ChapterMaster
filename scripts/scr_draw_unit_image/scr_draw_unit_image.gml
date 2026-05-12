@@ -240,7 +240,7 @@ function scr_draw_unit_image(_background = false) {
             var halo = 0;
             var reverent_guardians = false;
             var body_part;
-            static _body_parts = UNIT_BODY_PARTS;
+            static _body_parts = global.unit_body_parts;
 
             // Chaplain
             if (is_specialist(unit_role, SPECIALISTS_CHAPLAINS, true)) {

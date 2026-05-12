@@ -388,10 +388,10 @@ function faction_disposition_rating_string(diplomacy) {
     with (obj_controller) {
         var _disposition_rating = "";
         if (disposition[diplomacy] <= -20) {
-            _disposition_rating = ALLIANCE_GRADES[0];
+            _disposition_rating = global.alliance_grades[0];
         } else {
             var _grade = clamp(floor((disposition[diplomacy] + 39) / 20), 1, 7);
-            _disposition_rating = ALLIANCE_GRADES[_grade];
+            _disposition_rating = global.alliance_grades[_grade];
         }
         return _disposition_rating;
     }
@@ -574,7 +574,7 @@ function scr_ui_diplomacy() {
             _diplomacy_faction_alligience = "";
         }
 
-        _diplomacy_faction_name = FACTION_NAMES[diplomacy];
+        _diplomacy_faction_name = global.faction_names[diplomacy];
 
         draw_text_transformed(xx + 622, yy + 66, _diplomacy_faction_name, 1, 1, 0);
 
@@ -601,7 +601,7 @@ function scr_ui_diplomacy() {
 
     if (warning == 1 || diplomacy >= 6) {
         var warn;
-        if (array_contains(XENOS_FACTIONS, diplomacy)) {
+        if (array_contains(global.xenos_factions, diplomacy)) {
             warn = "Consorting with xenos will cause your disposition with the Imperium to lower.";
         } else {
             warn = "Consorting with heretics will cause your disposition with the Imperium to plummet.";

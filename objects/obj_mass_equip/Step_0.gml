@@ -3,8 +3,8 @@ try {
         instance_destroy();
     }
 
-    var _list_basic_armour = LIST_BASIC_POWER_ARMOUR;
-    var _list_term_armour = LIST_TERMINATOR_ARMOUR;
+    var _list_basic_armour = global.list_basic_power_armour;
+    var _list_term_armour = global.list_terminator_armour;
 
     if (engage == true) {
         for (var co = 0; co <= obj_ini.companies; co++) {

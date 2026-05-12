@@ -45,33 +45,33 @@ enum eCHAPTER_TYPE {
     CUSTOM,
 }
 
-#macro WEAPON_LIST_RANGED_HEAVY_TERMINATOR ["Heavy Flamer", "Heavy Flamer", "Heavy Flamer", "Assault Cannon", "Assault Cannon", "Multi-Melta", "Plasma Cannon", "Grav-Cannon"]
-#macro WEAPON_LIST_RANGED_HEAVY_LONG ["Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Missile Launcher", "Lascannon", "Lascannon", "Plasma Cannon", "Grav-Cannon"]
-#macro WEAPON_LIST_RANGED_HEAVY_ASSAULT ["Heavy Flamer", "Heavy Flamer", "Heavy Flamer", "Multi-Melta"]
-#macro WEAPON_LIST_RANGED_HEAVY array_concat(WEAPON_LIST_RANGED_HEAVY_LONG, WEAPON_LIST_RANGED_HEAVY_ASSAULT)
-#macro WEAPON_LIST_RANGED_HEAVY_VETERAN ["Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Lascannon", "Lascannon", "Multi-Melta", "Plasma Cannon", "Grav-Cannon"]
+global.weapon_list_ranged_heavy_terminator = ["Heavy Flamer", "Heavy Flamer", "Heavy Flamer", "Assault Cannon", "Assault Cannon", "Multi-Melta", "Plasma Cannon", "Grav-Cannon"];
+global.weapon_list_ranged_heavy_long = ["Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Missile Launcher", "Lascannon", "Lascannon", "Plasma Cannon", "Grav-Cannon"];
+global.weapon_list_ranged_heavy_assault = ["Heavy Flamer", "Heavy Flamer", "Heavy Flamer", "Multi-Melta"];
+global.weapon_list_ranged_heavy = array_concat(global.weapon_list_ranged_heavy_long, global.weapon_list_ranged_heavy_assault);
+global.weapon_list_ranged_heavy_veteran = ["Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Lascannon", "Lascannon", "Multi-Melta", "Plasma Cannon", "Grav-Cannon"];
 
-#macro WEAPON_LIST_RANGED_SPECIAL_LONG ["Plasma Gun", "Plasma Gun", "Plasma Gun", "Grav-Gun"]
-#macro WEAPON_LIST_RANGED_SPECIAL_ASSAULT ["Flamer", "Flamer", "Flamer", "Meltagun"]
-#macro WEAPON_LIST_RANGED_SPECIAL array_concat(WEAPON_LIST_RANGED_SPECIAL_LONG, WEAPON_LIST_RANGED_SPECIAL_ASSAULT)
+global.weapon_list_ranged_special_long = ["Plasma Gun", "Plasma Gun", "Plasma Gun", "Grav-Gun"];
+global.weapon_list_ranged_special_assault = ["Flamer", "Flamer", "Flamer", "Meltagun"];
+global.weapon_list_ranged_special = array_concat(global.weapon_list_ranged_special_long, global.weapon_list_ranged_special_assault);
 
-#macro WEAPON_LIST_RANGED_COMBI_LONG ["Storm Bolter", "Storm Bolter", "Storm Bolter", "Storm Bolter", "Combiplasma", "Combiplasma", "Combigrav"]
-#macro WEAPON_LIST_RANGED_COMBI_ASSAULT ["Combiflamer", "Combiflamer", "Combiflamer", "Combimelta"]
-#macro WEAPON_LIST_RANGED_COMBI array_concat(WEAPON_LIST_RANGED_COMBI_LONG, WEAPON_LIST_RANGED_COMBI_ASSAULT)
+global.weapon_list_ranged_combi_long = ["Storm Bolter", "Storm Bolter", "Storm Bolter", "Storm Bolter", "Combiplasma", "Combiplasma", "Combigrav"];
+global.weapon_list_ranged_combi_assault = ["Combiflamer", "Combiflamer", "Combiflamer", "Combimelta"];
+global.weapon_list_ranged_combi = array_concat(global.weapon_list_ranged_combi_long, global.weapon_list_ranged_combi_assault);
 
-#macro WEAPON_LIST_RANGED_PISTOLS_LONG ["Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Plasma Pistol", "Plasma Pistol", "Grav-Pistol"]
-#macro WEAPON_LIST_RANGED_PISTOLS_ASSAULT ["Hand Flamer", "Hand Flamer", "Hand Flamer", "Infernus Pistol"]
-#macro WEAPON_LIST_RANGED_PISTOLS array_concat(WEAPON_LIST_RANGED_PISTOLS_LONG, WEAPON_LIST_RANGED_PISTOLS_ASSAULT)
+global.weapon_list_ranged_pistols_long = ["Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Plasma Pistol", "Plasma Pistol", "Grav-Pistol"];
+global.weapon_list_ranged_pistols_assault = ["Hand Flamer", "Hand Flamer", "Hand Flamer", "Infernus Pistol"];
+global.weapon_list_ranged_pistols = array_concat(global.weapon_list_ranged_pistols_long, global.weapon_list_ranged_pistols_assault);
 
-#macro WEAPON_LIST_RANGED_VETERAN array_concat(["Bolter", "Bolter", "Bolter"], WEAPON_LIST_RANGED_COMBI)
-#macro WEAPON_LIST_RANGED array_concat(WEAPON_LIST_RANGED_PISTOLS_LONG, WEAPON_LIST_RANGED_VETERAN)
+global.weapon_list_ranged_veteran = array_concat(["Bolter", "Bolter", "Bolter"], global.weapon_list_ranged_combi);
+global.weapon_list_ranged = array_concat(global.weapon_list_ranged_pistols_long, global.weapon_list_ranged_veteran);
 
-#macro WEAPON_LIST_MELEE_BASIC ["Chainsword", "Chainsword", "Chainaxe"]
-#macro WEAPON_LIST_MELEE_1H ["Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"]
-#macro WEAPON_LIST_MELEE_HEAVY ["Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Heavy Thunder Hammer"]
-#macro WEAPON_LIST_MELEE_VETERAN ["Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"]
+global.weapon_list_melee_basic = ["Chainsword", "Chainsword", "Chainaxe"];
+global.weapon_list_melee_1h = ["Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"];
+global.weapon_list_melee_heavy = ["Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Heavy Thunder Hammer"];
+global.weapon_list_melee_veteran = ["Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"];
 
-#macro WEAPON_LIST_WEIGHTED_RANGED_PISTOLS [["Bolt Pistol", 4], ["Plasma Pistol", 2], ["Grav-Pistol", 1]]
+global.weapon_list_weighted_ranged_pistols = [["Bolt Pistol", 4], ["Plasma Pistol", 2], ["Grav-Pistol", 1]];
 
 function progenitor_map() {
     var founding_chapters = [
@@ -1588,73 +1588,73 @@ function scr_initialize_custom() {
     var _swaps = [
         // ── Heavy Ranged ──────────────────────────────────────────────
         {
-            "{WEAPON_LIST_RANGED_HEAVY_TERMINATOR}": WEAPON_LIST_RANGED_HEAVY_TERMINATOR,
+            "{WEAPON_LIST_RANGED_HEAVY_TERMINATOR}": global.weapon_list_ranged_heavy_terminator,
         },
         {
-            "{WEAPON_LIST_RANGED_HEAVY_LONG}": WEAPON_LIST_RANGED_HEAVY_LONG,
+            "{WEAPON_LIST_RANGED_HEAVY_LONG}": global.weapon_list_ranged_heavy_long,
         },
         {
-            "{WEAPON_LIST_RANGED_HEAVY_ASSAULT}": WEAPON_LIST_RANGED_HEAVY_ASSAULT,
+            "{WEAPON_LIST_RANGED_HEAVY_ASSAULT}": global.weapon_list_ranged_heavy_assault,
         },
         {
-            "{WEAPON_LIST_RANGED_HEAVY}": WEAPON_LIST_RANGED_HEAVY,
+            "{WEAPON_LIST_RANGED_HEAVY}": global.weapon_list_ranged_heavy,
         },
         {
-            "{WEAPON_LIST_RANGED_HEAVY_VETERAN}": WEAPON_LIST_RANGED_HEAVY_VETERAN,
+            "{WEAPON_LIST_RANGED_HEAVY_VETERAN}": global.weapon_list_ranged_heavy_veteran,
         },
         // ── Special Ranged ────────────────────────────────────────────
         {
-            "{WEAPON_LIST_RANGED_SPECIAL_LONG}": WEAPON_LIST_RANGED_SPECIAL_LONG,
+            "{WEAPON_LIST_RANGED_SPECIAL_LONG}": global.weapon_list_ranged_special_long,
         },
         {
-            "{WEAPON_LIST_RANGED_SPECIAL_ASSAULT}": WEAPON_LIST_RANGED_SPECIAL_ASSAULT,
+            "{WEAPON_LIST_RANGED_SPECIAL_ASSAULT}": global.weapon_list_ranged_special_assault,
         },
         {
-            "{WEAPON_LIST_RANGED_SPECIAL}": WEAPON_LIST_RANGED_SPECIAL,
+            "{WEAPON_LIST_RANGED_SPECIAL}": global.weapon_list_ranged_special,
         },
         // ── Combi Ranged ──────────────────────────────────────────────
         {
-            "{WEAPON_LIST_RANGED_COMBI_LONG}": WEAPON_LIST_RANGED_COMBI_LONG,
+            "{WEAPON_LIST_RANGED_COMBI_LONG}": global.weapon_list_ranged_combi_long,
         },
         {
-            "{WEAPON_LIST_RANGED_COMBI_ASSAULT}": WEAPON_LIST_RANGED_COMBI_ASSAULT,
+            "{WEAPON_LIST_RANGED_COMBI_ASSAULT}": global.weapon_list_ranged_combi_assault,
         },
         {
-            "{WEAPON_LIST_RANGED_COMBI}": WEAPON_LIST_RANGED_COMBI,
+            "{WEAPON_LIST_RANGED_COMBI}": global.weapon_list_ranged_combi,
         },
         // ── Pistols ───────────────────────────────────────────────────
         {
-            "{WEAPON_LIST_RANGED_PISTOLS_LONG}": WEAPON_LIST_RANGED_PISTOLS_LONG,
+            "{WEAPON_LIST_RANGED_PISTOLS_LONG}": global.weapon_list_ranged_pistols_long,
         },
         {
-            "{WEAPON_LIST_RANGED_PISTOLS_ASSAULT}": WEAPON_LIST_RANGED_PISTOLS_ASSAULT,
+            "{WEAPON_LIST_RANGED_PISTOLS_ASSAULT}": global.weapon_list_ranged_pistols_assault,
         },
         {
-            "{WEAPON_LIST_RANGED_PISTOLS}": WEAPON_LIST_RANGED_PISTOLS,
+            "{WEAPON_LIST_RANGED_PISTOLS}": global.weapon_list_ranged_pistols,
         },
         // ── General Ranged ────────────────────────────────────────────
         {
-            "{WEAPON_LIST_RANGED_VETERAN}": WEAPON_LIST_RANGED_VETERAN,
+            "{WEAPON_LIST_RANGED_VETERAN}": global.weapon_list_ranged_veteran,
         },
         {
-            "{WEAPON_LIST_RANGED}": WEAPON_LIST_RANGED,
+            "{WEAPON_LIST_RANGED}": global.weapon_list_ranged,
         },
         // ── Melee ─────────────────────────────────────────────────────
         {
-            "{WEAPON_LIST_MELEE_BASIC}": WEAPON_LIST_MELEE_BASIC,
+            "{WEAPON_LIST_MELEE_BASIC}": global.weapon_list_melee_basic,
         },
         {
-            "{WEAPON_LIST_MELEE_1H}": WEAPON_LIST_MELEE_1H,
+            "{WEAPON_LIST_MELEE_1H}": global.weapon_list_melee_1h,
         },
         {
-            "{WEAPON_LIST_MELEE_HEAVY}": WEAPON_LIST_MELEE_HEAVY,
+            "{WEAPON_LIST_MELEE_HEAVY}": global.weapon_list_melee_heavy,
         },
         {
-            "{WEAPON_LIST_MELEE_VETERAN}": WEAPON_LIST_MELEE_VETERAN,
+            "{WEAPON_LIST_MELEE_VETERAN}": global.weapon_list_melee_veteran,
         },
         // ── Weighted ──────────────────────────────────────────────────
         {
-            "{WEAPON_LIST_WEIGHTED_RANGED_PISTOLS}": WEAPON_LIST_WEIGHTED_RANGED_PISTOLS,
+            "{WEAPON_LIST_WEIGHTED_RANGED_PISTOLS}": global.weapon_list_weighted_ranged_pistols,
         },
         {
             "{squad_name}": _squad_name,
@@ -2020,7 +2020,7 @@ function scr_initialize_custom() {
         k += 1;
         commands += 1;
         man_size += 1;
-        add_unit_to_company("marine", company, k, roles.techmarine, eROLE.TECHMARINE, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        add_unit_to_company("marine", company, k, roles.techmarine, eROLE.TECHMARINE, "default", choose_weighted(global.weapon_list_weighted_ranged_pistols));
     }
 
     // Librarians in the librarium
@@ -2028,14 +2028,14 @@ function scr_initialize_custom() {
         k += 1;
         commands += 1;
         man_size += 1;
-        var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.LIBRARIAN, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.LIBRARIAN, "default", choose_weighted(global.weapon_list_weighted_ranged_pistols));
     }
     // Codiciery
     repeat (codiciery) {
         k += 1;
         commands += 1;
         man_size += 1;
-        var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.LIBRARIAN, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.LIBRARIAN, "default", choose_weighted(global.weapon_list_weighted_ranged_pistols));
     }
 
     // Lexicanum
@@ -2043,7 +2043,7 @@ function scr_initialize_custom() {
         k += 1;
         commands += 1;
         man_size += 1;
-        var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.LIBRARIAN, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.LIBRARIAN, "default", choose_weighted(global.weapon_list_weighted_ranged_pistols));
     }
 
     // Apothecaries in Apothecarion
@@ -2051,7 +2051,7 @@ function scr_initialize_custom() {
         k += 1;
         commands += 1;
         man_size += 1;
-        add_unit_to_company("marine", company, k, roles.apothecary, eROLE.APOTHECARY, "Chainsword", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        add_unit_to_company("marine", company, k, roles.apothecary, eROLE.APOTHECARY, "Chainsword", choose_weighted(global.weapon_list_weighted_ranged_pistols));
     }
 
     // Chaplains in Reclusium
@@ -2059,7 +2059,7 @@ function scr_initialize_custom() {
         k += 1;
         commands += 1;
         man_size += 1;
-        add_unit_to_company("marine", company, k, roles.chaplain, eROLE.CHAPLAIN, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
+        add_unit_to_company("marine", company, k, roles.chaplain, eROLE.CHAPLAIN, "default", choose_weighted(global.weapon_list_weighted_ranged_pistols));
     }
 
     // Honour Guard
@@ -2500,7 +2500,7 @@ function scr_initialize_custom() {
                     commands++;
                     _rolename = roles.captain;
                     _erole = eROLE.CAPTAIN;
-                    _wep2 = choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS);
+                    _wep2 = choose_weighted(global.weapon_list_weighted_ranged_pistols);
                     if (equal_specialists == false && _coy.coy == 8) {
                         _mobi = "Jump Pack";
                     }
@@ -2514,7 +2514,7 @@ function scr_initialize_custom() {
                     commands++;
                     _rolename = roles.chaplain;
                     _erole = eROLE.CHAPLAIN;
-                    _wep2 = choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS);
+                    _wep2 = choose_weighted(global.weapon_list_weighted_ranged_pistols);
                     if (equal_specialists == false && _coy.coy == 8) {
                         _mobi = "Jump Pack";
                     }

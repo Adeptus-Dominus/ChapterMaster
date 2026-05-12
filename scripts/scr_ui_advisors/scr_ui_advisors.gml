@@ -75,10 +75,10 @@ function scr_ui_advisors() {
         //
         if ((global.chapter_name != "Space Wolves") && (global.chapter_name != "Iron Hands")) {
             blurp += "##Currently, we are training additional " + string(obj_ini.role[100][14]) + " at a ";
-            var _recruit_rates = RECRUITMENT_RATES;
+            var _recruit_rates = global.recruitment_rates;
             blurp += _recruit_rates[training_chaplain];
             if (training_chaplain > 0 && training_chaplain <= 6) {
-                var training_points_values = CHAPLAIN_TRAINING_TIERS;
+                var training_points_values = global.chaplain_training_tiers;
                 eta = floor((47 - chaplain_points) / training_points_values[training_chaplain]) + 1;
             }
             //
@@ -137,7 +137,7 @@ function scr_ui_advisors() {
             if ((global.chapter_name != "Space Wolves") && (global.chapter_name != "Iron Hands")) {
                 blurp += "Training of further " + string(obj_ini.role[100][14]) + "s";
                 if (training_chaplain >= 0 && training_chaplain <= 6) {
-                    var _recruit_pace = RECRUITMENT_PACE_DESCRIPTIONS;
+                    var _recruit_pace = global.recruitment_pace_descriptions;
                     blurp += _recruit_pace[training_chaplain];
                 }
                 if (training_chaplain > 0) {

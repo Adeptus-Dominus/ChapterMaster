@@ -117,7 +117,7 @@ function apothecary_training() {
     // ** Training **
     // * Apothecary *
     var recruit_count = 0;
-    var training_points_values = APOTHECARY_TRAINING_TIERS;
+    var training_points_values = global.apothecary_training_tiers;
     apothecary_recruit_points += training_points_values[training_apothecary];
 
     novice_type = string("{0} Aspirant", obj_ini.role[100][15]);
@@ -199,7 +199,7 @@ function chaplain_training() {
     // * Chaplain training *
     // TODO add functionality for Space Wolves and Iron Hands
     var recruit_count = 0;
-    var training_points_values = CHAPLAIN_TRAINING_TIERS;
+    var training_points_values = global.chaplain_training_tiers;
     if ((global.chapter_name != "Space Wolves") && (global.chapter_name != "Iron Hands")) {
         chaplain_points += training_points_values[training_chaplain];
         novice_type = string("{0} Aspirant", obj_ini.role[100][14]);
@@ -277,7 +277,7 @@ function chaplain_training() {
 function librarian_training() {
     var recruit_count = 0;
     // * Psycher Training *
-    var training_points_values = CHAPLAIN_TRAINING_TIERS;
+    var training_points_values = global.chaplain_training_tiers;
     psyker_points += training_points_values[training_psyker];
 
     var goal = 48;
