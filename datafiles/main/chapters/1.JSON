@@ -179,7 +179,7 @@
         },
         {
           "name": "Traitor's Bane", //the most holy name of your long schlong weapon
-          "description": "Weapon taken by Chief Librarian Ezekiel as his personal favourite, it radiates fell power and traps the souls of an Fallen slain in battle. It is said shadows wrap around the blade when Fallen are near", //write fun stuff
+          "description": "Weapon taken by Chief Librarian Ezekiel as his personal favourite, it radiates fell power and traps the souls of a Fallen slain in battle. It is said shadows wrap around the blade when Fallen are near", //write fun stuff
           "base_weapon_type": "Force Sword", //doesn't matter if it's armour, gear, mobi or anything else, you always use base_weapon_type to define it
           "slot": "" //leave empty if you want it to be stored in the Librarium without assignment
         },
