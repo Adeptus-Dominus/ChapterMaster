@@ -392,34 +392,35 @@ function ArtifactStruct(Index) constructor {
     };
 
     static artifact_faction_value = function(faction) {
-        global.art_player = [];
-        global.art_imperium = ["PUR", "ADAMANTINE", "GLOW", "CHB", "UFL", "UBOLT", "DUB"];
-        global.art_mechanicus = ["PUR", "RO", "CRU"];
-        global.art_inquisition = ["PUR"];
-        global.art_ecclesiarchy = ["PUR", "ART", "GOLD"];
-        global.art_eldar = ["SUP", "ART", "JAD", "SILENT", "SCOPE"];
-        global.art_ork = [];
-        global.art_tau = ["SUP", "ART", "BIG", "SOO", "SCOPE"];
-        global.art_tyranids = []; // Tyranids, Genestealers
-        global.art_chaos = []; // Chaos, Heretics
-        global.art_necrons = [];
+        static art_player = [];
+        static art_imperium = ["PUR", "ADAMANTINE", "GLOW", "CHB", "UFL", "UBOLT", "DUB"];
+        static art_mechanicus = ["PUR", "RO", "CRU"];
+        static art_inquisition = ["PUR"];
+        static art_ecclesiarchy = ["PUR", "ART", "GOLD"];
+        static art_eldar = ["SUP", "ART", "JAD", "SILENT", "SCOPE"];
+        static art_ork = [];
+        static art_tau = ["SUP", "ART", "BIG", "SOO", "SCOPE"];
+        static art_tyranids = []; // Tyranids, Genestealers
+        static art_chaos = []; // Chaos, Heretics
+        static art_necrons = [];
 
         var faction_preferences = [
             [],
-            global.art_player,
-            global.art_imperium,
-            global.art_mechanicus,
-            global.art_inquisition,
-            global.art_ecclesiarchy,
-            global.art_eldar,
-            global.art_ork,
-            global.art_tau,
-            global.art_tyranids,
-            global.art_chaos,
-            global.art_chaos,
-            global.art_tyranids,
-            global.art_necrons
+            art_player,
+            art_imperium,
+            art_mechanicus,
+            art_inquisition,
+            art_ecclesiarchy,
+            art_eldar,
+            art_ork,
+            art_tau,
+            art_tyranids,
+            art_chaos,
+            art_chaos,
+            art_tyranids,
+            art_necrons
         ];
+
         if (faction < 0 || faction >= array_length(faction_preferences)) {
             // Logging or fallback
             LOGGER.warning("Warning: Faction index out of range. Defaulting to empty preferences.");
