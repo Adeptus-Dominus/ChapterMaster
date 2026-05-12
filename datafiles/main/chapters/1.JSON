@@ -209,7 +209,7 @@
         },
         {
           "name": "Deathbringer's Aegis", //the most holy name of your long schlong weapon
-          "description": "One of the six sets of battle plate crafted to mark the Lion's re-envisioning of the Hexagrammaton. However, he Aegis was one of the few relics of Hexagramaton to be forged of Terminator plate, and aside from that contained additional neural regulators and medicae infusers that make the armour perfect in resilience for the Masters of the Deathwing in their role", //write fun stuff
+          "description": "One of the six sets of battle plate crafted to mark the Lion's re-envisioning of the Hexagrammaton. However, the Aegis was one of the few relics of the Hexagrammaton to be forged of Terminator plate, and aside from that contained additional neural regulators and medicae infusers that make the armour perfect in resilience for the Masters of the Deathwing in their role", //write fun stuff
           "base_weapon_type": "Tartaros", //doesn't matter if it's armour, gear, mobi or anything else, you always use base_weapon_type to define it
           "slot": "" //leave empty if you want it to be stored in the Librarium without assignment
         },
