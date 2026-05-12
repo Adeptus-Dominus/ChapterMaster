@@ -3,7 +3,7 @@
   {
     "id": 1, //number for your JSON file to be referenced in game files
     "name": "Dark Angels", //name of the chapter
-    "flavor": "The Dark Angels are the Progenitor Chapter formed from the First Legion of Primarch Lion El'Johnson. Though through their secretive nature their allegiance and actions may be questionable, they are some of the most deadly and well-armed Astartes in the Imperium", //the short description that appears on popup when you hover over a chapter image
+    "flavor": "The Dark Angels are the Progenitor Chapter formed from the First Legion of Primarch Lion El'Jonson. Though through their secretive nature their allegiance and actions may be questionable, they are some of the most deadly and well-armed Astartes in the Imperium", //the short description that appears on popup when you hover over a chapter image
     "battle_cry": "Repent! For tomorrow you die!", //this is where you cry. I mean this is where you say what are you crying about. I mean... fuck it just type shit here to scream at people
     "origin": 1, //[1] Founding [2] Successor [3] Other [4] Custom
     "points": 150, //creation points, feel free to cheat here for more wild stuff in custom if you don't like doing it via files
