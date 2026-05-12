@@ -149,7 +149,7 @@
         },
         {
           "name": "Fellbane", //the most holy name of your long schlong weapon
-          "description": "Personal weapon of Master Balthasar of the 5th Company, one of the few Heavenflall blades in active service", //write fun stuff
+          "description": "Personal weapon of Master Balthasar of the 5th Company, one of the few Heavenfall blades in active service", //write fun stuff
           "base_weapon_type": "Power Sword", //doesn't matter if it's armour, gear, mobi or anything else, you always use base_weapon_type to define it
           "slot": "" //leave empty if you want it to be stored in the Librarium without assignment
         },
