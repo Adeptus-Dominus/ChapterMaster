@@ -12,7 +12,7 @@ enum eTRIALS {
 global.recruitment_pace_descriptions = [" is currently halted"," is advancing sluggishly"," is advancing slowly"," is advancing moderately fast"," is advancing fast"," is advancing frenetically"," is advancing as fast as possible"];
 
 global.recruitement_rates_caps = ["HALTED","SLUGGISH","SLOW","MODERATE","FAST","FRENETIC","MAXIMUM",];
-global.recruitment_rates = ["halted","sluggish","slow","moderate","fast","frenetic","hereticly fast"];
+global.recruitment_rates = ["halted","sluggish","slow","moderate","fast","frenetic","heretically fast"];
 
 global.neophyte_rates_caps = ["HALTED","ONGOING"];
 global.neophyte_rates = ["halted","ongoing"];
