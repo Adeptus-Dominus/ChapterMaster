@@ -224,8 +224,10 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         if (struct_exists(type_data, "class")) {
             class = type_data.class;
         }
-        if (struct_exists(type_data, "base")){
+        if (struct_exists(type_data, "base")) {
             base = type_data.base;
+        } else {
+            base = "tactical";
         }
         if (struct_exists(type_data, "formation_options")) {
             formation_options = type_data.formation_options;
