@@ -517,7 +517,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                 if (_unit.IsSpecialist(SPECIALISTS_COMMAND)) {
                     changed = true;
                 } else if (_unit.squad != "none") {
-                    if (fetch_squad(_unit.squad).type == "command_squad") {
+                    if (fetch_squad(_unit.squad).base == "command") {
                         changed = true;
                     }
                 }
