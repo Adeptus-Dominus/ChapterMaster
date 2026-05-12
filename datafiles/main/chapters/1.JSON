@@ -16,7 +16,7 @@
     "purity": 10, //1-10
     "stability": 99, //1-99
     "cooperation": 8, //1-10
-    "homeworld_exists:": 1, //only is there for an obscure bit of code, but to avoid bugs and crashes keep it as is until we fix it
+    "homeworld_exists": 1, //only is there for an obscure bit of code, but to avoid bugs and crashes keep it as is until we fix it
     "recruiting_exists": 1, //same here
     "home_warp": 1, //[0] low/no connections [1] connected [2] warp hub
     "home_planets": 0, //how many planets in home system, [0]=1 [3]=4
