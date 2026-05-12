@@ -393,13 +393,41 @@ function ArtifactStruct(Index) constructor {
 
     static artifact_faction_value = function(faction) {
         static art_player = [];
-        static art_imperium = ["PUR", "ADAMANTINE", "GLOW", "CHB", "UFL", "UBOLT", "DUB"];
-        static art_mechanicus = ["PUR", "RO", "CRU"];
+        static art_imperium = [
+            "PUR",
+            "ADAMANTINE",
+            "GLOW",
+            "CHB",
+            "UFL",
+            "UBOLT",
+            "DUB"
+        ];
+        static art_mechanicus = [
+            "PUR",
+            "RO",
+            "CRU"
+        ];
         static art_inquisition = ["PUR"];
-        static art_ecclesiarchy = ["PUR", "ART", "GOLD"];
-        static art_eldar = ["SUP", "ART", "JAD", "SILENT", "SCOPE"];
+        static art_ecclesiarchy = [
+            "PUR",
+            "ART",
+            "GOLD"
+        ];
+        static art_eldar = [
+            "SUP",
+            "ART",
+            "JAD",
+            "SILENT",
+            "SCOPE"
+        ];
         static art_ork = [];
-        static art_tau = ["SUP", "ART", "BIG", "SOO", "SCOPE"];
+        static art_tau = [
+            "SUP",
+            "ART",
+            "BIG",
+            "SOO",
+            "SCOPE"
+        ];
         static art_tyranids = []; // Tyranids, Genestealers
         static art_chaos = []; // Chaos, Heretics
         static art_necrons = [];

@@ -1,6 +1,18 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-global.stat_list = ["constitution", "strength", "luck", "dexterity", "wisdom", "piety", "charisma", "technology","intelligence", "weapon_skill", "ballistic_skill"];
+global.stat_list = [
+    "constitution",
+    "strength",
+    "luck",
+    "dexterity",
+    "wisdom",
+    "piety",
+    "charisma",
+    "technology",
+    "intelligence",
+    "weapon_skill",
+    "ballistic_skill"
+];
 
 global.stat_shorts = {
     "constitution": "CON",

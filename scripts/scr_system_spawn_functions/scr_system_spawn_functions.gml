@@ -1,7 +1,19 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-global.planet_types = ["Dead","Ice", "Temperate","Feudal","Shrine","Agri","Death","Hive","Forge","Desert","Lava"];
+global.planet_types = [
+    "Dead",
+    "Ice",
+    "Temperate",
+    "Feudal",
+    "Shrine",
+    "Agri",
+    "Death",
+    "Hive",
+    "Forge",
+    "Desert",
+    "Lava"
+];
 
 enum ePLAYER_BASE {
     NONE = 0,

@@ -45,33 +45,159 @@ enum eCHAPTER_TYPE {
     CUSTOM,
 }
 
-global.weapon_list_ranged_heavy_terminator = ["Heavy Flamer", "Heavy Flamer", "Heavy Flamer", "Assault Cannon", "Assault Cannon", "Multi-Melta", "Plasma Cannon", "Grav-Cannon"];
-global.weapon_list_ranged_heavy_long = ["Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Missile Launcher", "Lascannon", "Lascannon", "Plasma Cannon", "Grav-Cannon"];
-global.weapon_list_ranged_heavy_assault = ["Heavy Flamer", "Heavy Flamer", "Heavy Flamer", "Multi-Melta"];
+global.weapon_list_ranged_heavy_terminator = [
+    "Heavy Flamer",
+    "Heavy Flamer",
+    "Heavy Flamer",
+    "Assault Cannon",
+    "Assault Cannon",
+    "Multi-Melta",
+    "Plasma Cannon",
+    "Grav-Cannon"
+];
+global.weapon_list_ranged_heavy_long = [
+    "Heavy Bolter",
+    "Heavy Bolter",
+    "Heavy Bolter",
+    "Heavy Bolter",
+    "Missile Launcher",
+    "Missile Launcher",
+    "Missile Launcher",
+    "Lascannon",
+    "Lascannon",
+    "Plasma Cannon",
+    "Grav-Cannon"
+];
+global.weapon_list_ranged_heavy_assault = [
+    "Heavy Flamer",
+    "Heavy Flamer",
+    "Heavy Flamer",
+    "Multi-Melta"
+];
 global.weapon_list_ranged_heavy = array_concat(global.weapon_list_ranged_heavy_long, global.weapon_list_ranged_heavy_assault);
-global.weapon_list_ranged_heavy_veteran = ["Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Lascannon", "Lascannon", "Multi-Melta", "Plasma Cannon", "Grav-Cannon"];
+global.weapon_list_ranged_heavy_veteran = [
+    "Heavy Bolter",
+    "Heavy Bolter",
+    "Missile Launcher",
+    "Lascannon",
+    "Lascannon",
+    "Multi-Melta",
+    "Plasma Cannon",
+    "Grav-Cannon"
+];
 
-global.weapon_list_ranged_special_long = ["Plasma Gun", "Plasma Gun", "Plasma Gun", "Grav-Gun"];
-global.weapon_list_ranged_special_assault = ["Flamer", "Flamer", "Flamer", "Meltagun"];
+global.weapon_list_ranged_special_long = [
+    "Plasma Gun",
+    "Plasma Gun",
+    "Plasma Gun",
+    "Grav-Gun"
+];
+global.weapon_list_ranged_special_assault = [
+    "Flamer",
+    "Flamer",
+    "Flamer",
+    "Meltagun"
+];
 global.weapon_list_ranged_special = array_concat(global.weapon_list_ranged_special_long, global.weapon_list_ranged_special_assault);
 
-global.weapon_list_ranged_combi_long = ["Storm Bolter", "Storm Bolter", "Storm Bolter", "Storm Bolter", "Combiplasma", "Combiplasma", "Combigrav"];
-global.weapon_list_ranged_combi_assault = ["Combiflamer", "Combiflamer", "Combiflamer", "Combimelta"];
+global.weapon_list_ranged_combi_long = [
+    "Storm Bolter",
+    "Storm Bolter",
+    "Storm Bolter",
+    "Storm Bolter",
+    "Combiplasma",
+    "Combiplasma",
+    "Combigrav"
+];
+global.weapon_list_ranged_combi_assault = [
+    "Combiflamer",
+    "Combiflamer",
+    "Combiflamer",
+    "Combimelta"
+];
 global.weapon_list_ranged_combi = array_concat(global.weapon_list_ranged_combi_long, global.weapon_list_ranged_combi_assault);
 
-global.weapon_list_ranged_pistols_long = ["Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Plasma Pistol", "Plasma Pistol", "Grav-Pistol"];
-global.weapon_list_ranged_pistols_assault = ["Hand Flamer", "Hand Flamer", "Hand Flamer", "Infernus Pistol"];
+global.weapon_list_ranged_pistols_long = [
+    "Bolt Pistol",
+    "Bolt Pistol",
+    "Bolt Pistol",
+    "Plasma Pistol",
+    "Plasma Pistol",
+    "Grav-Pistol"
+];
+global.weapon_list_ranged_pistols_assault = [
+    "Hand Flamer",
+    "Hand Flamer",
+    "Hand Flamer",
+    "Infernus Pistol"
+];
 global.weapon_list_ranged_pistols = array_concat(global.weapon_list_ranged_pistols_long, global.weapon_list_ranged_pistols_assault);
 
 global.weapon_list_ranged_veteran = array_concat(["Bolter", "Bolter", "Bolter"], global.weapon_list_ranged_combi);
 global.weapon_list_ranged = array_concat(global.weapon_list_ranged_pistols_long, global.weapon_list_ranged_veteran);
 
-global.weapon_list_melee_basic = ["Chainsword", "Chainsword", "Chainaxe"];
-global.weapon_list_melee_1h = ["Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"];
-global.weapon_list_melee_heavy = ["Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Heavy Thunder Hammer"];
-global.weapon_list_melee_veteran = ["Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"];
+global.weapon_list_melee_basic = [
+    "Chainsword",
+    "Chainsword",
+    "Chainaxe"
+];
+global.weapon_list_melee_1h = [
+    "Chainsword",
+    "Chainsword",
+    "Chainsword",
+    "Chainsword",
+    "Chainsword",
+    "Chainsword",
+    "Chainsword",
+    "Chainsword",
+    "Chainsword",
+    "Power Sword",
+    "Power Sword",
+    "Power Sword",
+    "Lightning Claw",
+    "Lightning Claw",
+    "Lightning Claw",
+    "Power Fist",
+    "Power Fist",
+    "Thunder Hammer"
+];
+global.weapon_list_melee_heavy = [
+    "Eviscerator",
+    "Eviscerator",
+    "Eviscerator",
+    "Eviscerator",
+    "Eviscerator",
+    "Heavy Thunder Hammer"
+];
+global.weapon_list_melee_veteran = [
+    "Chainsword",
+    "Chainsword",
+    "Chainsword",
+    "Power Sword",
+    "Power Sword",
+    "Power Sword",
+    "Lightning Claw",
+    "Lightning Claw",
+    "Lightning Claw",
+    "Power Fist",
+    "Power Fist",
+    "Thunder Hammer"
+];
 
-global.weapon_list_weighted_ranged_pistols = [["Bolt Pistol", 4], ["Plasma Pistol", 2], ["Grav-Pistol", 1]];
+global.weapon_list_weighted_ranged_pistols = [
+    [
+        "Bolt Pistol",
+        4
+    ],
+    [
+        "Plasma Pistol",
+        2
+    ],
+    [
+        "Grav-Pistol",
+        1
+    ]
+];
 
 function progenitor_map() {
     var founding_chapters = [
@@ -1697,12 +1823,12 @@ function scr_initialize_custom() {
     // LOGGER.debug($"squads object for chapter {chapter_name}");
     // LOGGER.debug($"{custom_squads}");
 
-    if (struct_exists(obj_creation, "squad_builder")){
-        for (var s=0; s<array_length(obj_creation.squad_builder);s++){
+    if (struct_exists(obj_creation, "squad_builder")) {
+        for (var s = 0; s < array_length(obj_creation.squad_builder); s++) {
             var _custom_build = obj_creation.squad_builder[s];
-            for (var i=0;i<array_length(obj_ini.chapter_squad_arrangement.companies);i++){
+            for (var i = 0; i < array_length(obj_ini.chapter_squad_arrangement.companies); i++) {
                 var _default_build = obj_ini.chapter_squad_arrangement.companies[i];
-                if (_custom_build.company == _default_build.company){
+                if (_custom_build.company == _default_build.company) {
                     obj_ini.chapter_squad_arrangement.companies[i] = _custom_build;
                 }
             }
@@ -1711,7 +1837,7 @@ function scr_initialize_custom() {
 
     if (struct_exists(obj_creation, "custom_squads")) {
         var _customs = obj_creation.custom_squads;
-        with (squad_types){
+        with (squad_types) {
             move_data_to_current_scope(_customs);
         }
     }
@@ -2359,25 +2485,36 @@ function scr_initialize_custom() {
         // LOGGER.info($"New Company Totals: eq specialists: {equal_specialists}: scout coy {scout_company_behaviour} equal_scouts: {equal_scouts}");
         // LOGGER.info($"Company {_coy.coy}: {json_stringify(_coy, true)}");
 
-        var _set_company_makeup = function(old_values, new_values){
+        var _set_company_makeup = function(old_values, new_values) {
             var _override_keys = struct_get_names(new_values);
             var _override_keys_count = array_length(_override_keys);
             for (var j = 0; j < _override_keys_count; j++) {
                 var _okey_hash = _override_keys[j];
                 var _okey_ins = new_values[$ _okey_hash];
-                LOGGER.info($"{_okey_hash}<{_okey_ins}<{old_values}")
+                LOGGER.info($"{_okey_hash}<{_okey_ins}<{old_values}");
                 old_values[$ _okey_hash] = _okey_ins;
             }
             return old_values;
-        }
+        };
         if (struct_exists(obj_creation, "companies")) {
-            var _company_keys = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"];
+            var _company_keys = [
+                "first",
+                "second",
+                "third",
+                "fourth",
+                "fifth",
+                "sixth",
+                "seventh",
+                "eighth",
+                "ninth",
+                "tenth"
+            ];
             var _company_keys_count = array_length(_company_keys);
             for (var i = 0; i < _company_keys_count; i++) {
-                var _company_string = _company_keys[i]
+                var _company_string = _company_keys[i];
                 if (struct_exists(obj_creation.companies, _company_string) && struct_exists(companies, _company_string)) {
                     var _ckey_ins = obj_creation.companies[$ _company_string];
-                    var _ckey_var = companies[$ _company_string];                    
+                    var _ckey_var = companies[$ _company_string];
                     companies[$ _company_string] = _set_company_makeup(_ckey_var, _ckey_ins);
                 }
             }
