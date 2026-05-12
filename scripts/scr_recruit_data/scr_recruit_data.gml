@@ -11,7 +11,7 @@ enum eTRIALS {
 
 global.recruitment_pace_descriptions = [" is currently halted"," is advancing sluggishly"," is advancing slowly"," is advancing moderately fast"," is advancing fast"," is advancing frenetically"," is advancing as fast as possible"];
 
-global.recruitement_rates_caps = ["HALTED","SLUGGISH","SLOW","MODERATE","FAST","FRENETIC","MAXIMUM",];
+global.recruitment_rates_caps = ["HALTED","SLUGGISH","SLOW","MODERATE","FAST","FRENETIC","MAXIMUM",];
 global.recruitment_rates = ["halted","sluggish","slow","moderate","fast","frenetic","heretically fast"];
 
 global.neophyte_rates_caps = ["HALTED","ONGOING"];
@@ -768,7 +768,7 @@ function scr_draw_recruit_advisor() {
     var blurp, eta, va;
     var romanNumerals;
     romanNumerals = scr_roman_numerals();
-    var _recruit_rate = global.recruitement_rates_caps;
+    var _recruit_rate = global.recruitment_rates_caps;
     var xx = __view_get(e__VW.XView, 0) + 0;
     var yy = __view_get(e__VW.YView, 0) + 0;
     blurp = "";
