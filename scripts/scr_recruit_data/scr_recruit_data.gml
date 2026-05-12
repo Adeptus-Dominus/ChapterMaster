@@ -9,16 +9,70 @@ enum eTRIALS {
     NUM,
 }
 
-global.recruitment_pace_descriptions = [" is currently halted"," is advancing sluggishly"," is advancing slowly"," is advancing moderately fast"," is advancing fast"," is advancing frenetically"," is advancing as fast as possible"];
+global.recruitment_pace_descriptions = [
+    " is currently halted",
+    " is advancing sluggishly",
+    " is advancing slowly",
+    " is advancing moderately fast",
+    " is advancing fast",
+    " is advancing frenetically",
+    " is advancing as fast as possible"
+];
 
-global.recruitment_rates_caps = ["HALTED","SLUGGISH","SLOW","MODERATE","FAST","FRENETIC","MAXIMUM",];
-global.recruitment_rates = ["halted","sluggish","slow","moderate","fast","frenetic","heretically fast"];
+global.recruitment_rates_caps = [
+    "HALTED",
+    "SLUGGISH",
+    "SLOW",
+    "MODERATE",
+    "FAST",
+    "FRENETIC",
+    "MAXIMUM"
+];
+global.recruitment_rates = [
+    "halted",
+    "sluggish",
+    "slow",
+    "moderate",
+    "fast",
+    "frenetic",
+    "heretically fast"
+];
 
-global.neophyte_rates_caps = ["HALTED","ONGOING"];
-global.neophyte_rates = ["halted","ongoing"];
-global.apothecary_training_tiers = [0,0.8,0.9,1,1.5,2,4 ];
-global.chaplain_training_tiers = [0,0.8,0.9, 1,1.5,2,4];
-global.techmarine_training_tiers = [0,1,2,4, 6,10,14];
+global.neophyte_rates_caps = [
+    "HALTED",
+    "ONGOING"
+];
+global.neophyte_rates = [
+    "halted",
+    "ongoing"
+];
+global.apothecary_training_tiers = [
+    0,
+    0.8,
+    0.9,
+    1,
+    1.5,
+    2,
+    4
+];
+global.chaplain_training_tiers = [
+    0,
+    0.8,
+    0.9,
+    1,
+    1.5,
+    2,
+    4
+];
+global.techmarine_training_tiers = [
+    0,
+    1,
+    2,
+    4,
+    6,
+    10,
+    14
+];
 
 function find_recruit_success_chance(local_apothecary_points, system, planet, ui = 0) {
     var p_data = new PlanetData(planet, system);

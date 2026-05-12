@@ -18,8 +18,30 @@
 		the string (usually max) is guidance so in the instance of max it will pick the larger value of the mean and the gauss function return
 */
 // will swap these out for enums or some better method as i develop where this is going
-global.unit_body_parts = ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw", "head"];
-global.unit_body_parts_display = ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw", "Head"];
+global.unit_body_parts = [
+    "left_leg",
+    "right_leg",
+    "torso",
+    "right_arm",
+    "left_arm",
+    "left_eye",
+    "right_eye",
+    "throat",
+    "jaw",
+    "head"
+];
+global.unit_body_parts_display = [
+    "Left Leg",
+    "Right Leg",
+    "Torso",
+    "Right Arm",
+    "Left Arm",
+    "Left Eye",
+    "Right Eye",
+    "Throat",
+    "Jaw",
+    "Head"
+];
 
 global.religions = {
     "imperial_cult": {
@@ -41,8 +63,38 @@ enum eLOCATION_TYPES {
     WARP,
 }
 
-global.arr_psy_levels = ["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta Plus", "Gamma Plus"];
-global.arr_negative_psy_levels = ["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"];
+global.arr_psy_levels = [
+    "Rho",
+    "Pi",
+    "Omicron",
+    "Xi",
+    "Nu",
+    "Mu",
+    "Lambda",
+    "Kappa",
+    "Iota",
+    "Theta",
+    "Eta",
+    "Zeta",
+    "Epsilon",
+    "Delta",
+    "Gamma",
+    "Beta",
+    "Alpha",
+    "Alpha Plus",
+    "Beta Plus",
+    "Gamma Plus"
+];
+global.arr_negative_psy_levels = [
+    "Rho",
+    "Sigma",
+    "Tau",
+    "Upsilon",
+    "Phi",
+    "Chi",
+    "Psi",
+    "Omega"
+];
 
 enum eEQUIPMENT_SLOT {
     WEAPON_ONE,

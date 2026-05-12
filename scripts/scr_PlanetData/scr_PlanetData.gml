@@ -1,7 +1,15 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-global.force_strength_descriptions = ["none", "Minimal", "Sparse", "Moderate", "Numerous", "Very Numerous", "Overwhelming"];
+global.force_strength_descriptions = [
+    "none",
+    "Minimal",
+    "Sparse",
+    "Moderate",
+    "Numerous",
+    "Very Numerous",
+    "Overwhelming"
+];
 
 /// @param {real} planet
 /// @param {Asset.GMObject.obj_star} system

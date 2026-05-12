@@ -1,6 +1,12 @@
 //TODO: a bunch of stuff in this file and related to it uses strings, replace them with constants;
 
-global.psy_disciplines_starting = ["librarius", "biomancy", "pyromancy", "telekinesis", "rune_magic"];
+global.psy_disciplines_starting = [
+    "librarius",
+    "biomancy",
+    "pyromancy",
+    "telekinesis",
+    "rune_magic"
+];
 
 #macro PSY_PERILS_CHANCE_MIN 1
 #macro PSY_PERILS_CHANCE_BASE 10

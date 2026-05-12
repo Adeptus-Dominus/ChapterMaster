@@ -225,7 +225,7 @@ function clean_stacktrace_line(_line_string) {
         var _method_name = _parts[0];
         var i = array_length(_parts) - 1;
         var _location = _parts[i];
-        
+
         if (_method_name == "anon") {
             _method_name = "anonymous";
         }
