@@ -215,7 +215,7 @@
         },
         {
           "name": "Dreadbringer's Plate", //the most holy name of your long schlong weapon
-          "description": "Formed of hardened Ceramite and ferro-crystalline ores native to Caliban, it is another of the Hexagrammaton relics. Because of its composition it could withstand the most potent of corrosives without damaged. It was said that the First Master of the Dreadwing walked through a maelstrom of Phosphex unscathed.", //write fun stuff
+          "description": "Formed of hardened Ceramite and ferro-crystalline ores native to Caliban, it is another of the Hexagrammaton relics. Because of its composition it could withstand the most potent of corrosives without damage. It was said that the First Master of the Dreadwing walked through a maelstrom of Phosphex unscathed.", //write fun stuff
           "base_weapon_type": "Artificer Armour", //doesn't matter if it's armour, gear, mobi or anything else, you always use base_weapon_type to define it
           "slot": "" //leave empty if you want it to be stored in the Librarium without assignment
         },
