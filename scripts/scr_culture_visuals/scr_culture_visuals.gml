@@ -1966,15 +1966,15 @@ function DummyMarine() constructor {
     last_armour = "MK7 Aquila";
 
     static armour = function() {
-        var armours = LIST_BASIC_POWER_ARMOUR;
+        var armours = global.list_basic_power_armour;
         var _last_armour = last_armour;
         with (obj_creation) {
             if (!livery_picker.freeze_armour) {
                 var _armour = armour[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.TACTICAL];
                 if (array_contains(armours, _armour) || _armour == STR_ANY_POWER_ARMOUR) {
                     _armour = array_random_element(armours);
-                } else if (array_contains(LIST_TERMINATOR_ARMOUR, _armour) || _armour == STR_ANY_POWER_ARMOUR) {
-                    _armour = array_random_element(LIST_TERMINATOR_ARMOUR);
+                } else if (array_contains(global.list_terminator_armour, _armour) || _armour == STR_ANY_POWER_ARMOUR) {
+                    _armour = array_random_element(global.list_terminator_armour);
                 }
                 if (_armour == "Power Armour") {
                     _armour = "MK7 Aquila";
@@ -2084,7 +2084,7 @@ function scr_get_body_data(body_item_key, body_slot = "none") {
     } else {
         var item_key_map = {};
         var body_part_area_keys;
-        var _body_parts = UNIT_BODY_PARTS;
+        var _body_parts = global.unit_body_parts;
         for (var i = 0; i < array_length(_body_parts); i++) {
             //search all body parts
             body_area = body[$ _body_parts[i]];

@@ -14,10 +14,10 @@ function scr_draw_unit_stat_data(manage = false, data_block = {x1: 1008, y1: 520
     var trait_tool_tips = [];
     var unit_name = name();
     if (psionic < 0) {
-        var _psy_levels = ARR_negative_psy_levels;
+        var _psy_levels = global.arr_negative_psy_levels;
         var _psionic_assignment = _psy_levels[psionic * -1];
     } else {
-        var _psy_levels = ARR_psy_levels;
+        var _psy_levels = global.arr_psy_levels;
         var _psionic_assignment = _psy_levels[psionic];
     }
     data_block.x1 += xx;
@@ -270,7 +270,7 @@ function scr_draw_unit_stat_data(manage = false, data_block = {x1: 1008, y1: 520
             var y2 = y1 + string_height(trait_name);
 
             var _trait_growth_effect = "";
-            var _stat_list = UNIT_STAT_LIST;
+            var _stat_list = global.stat_list;
             for (var j = 0; j < array_length(_stat_list); j++) {
                 var _stat = _stat_list[j];
                 var _stat_name = global.stat_display_strings[$ _stat];

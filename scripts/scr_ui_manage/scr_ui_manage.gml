@@ -356,8 +356,8 @@ function reset_manage_unit_constants(unit) {
         _bionic_tool += "\nFor everyone else? It's time for the emperor's mercy.";
         _bionic_tool += "\n\nCurrent Bionic Augmentations:\n";
 
-        var _body_parts = UNIT_BODY_PARTS;
-        var _body_parts_display = UNIT_BODY_PARTS_DISPLAY;
+        var _body_parts = global.unit_body_parts;
+        var _body_parts_display = global.unit_body_parts_display;
 
         for (var part = 0; part < array_length(_body_parts); part++) {
             if (struct_exists(unit.body[$ _body_parts[part]], "bionic")) {

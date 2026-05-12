@@ -75,10 +75,10 @@ function scr_add_artifact(artifact_type = "random", artifact_tags = "", is_ident
 
     if ((base_type == "Armour") && (base_type_detail == "")) {
         if (rand2 <= 70) {
-            var _armour_list = LIST_BASIC_POWER_ARMOUR;
+            var _armour_list = global.list_basic_power_armour;
             base_type_detail = array_random_element(_armour_list);
         } else if (rand2 <= 80) {
-            var _armour_list = LIST_TERMINATOR_ARMOUR;
+            var _armour_list = global.list_terminator_armour;
             base_type_detail = _armour_list[irandom(array_length(_armour_list) - 1)];
         } else if (rand2 <= 90) {
             base_type_detail = "Dreadnought Armour";
@@ -392,33 +392,33 @@ function ArtifactStruct(Index) constructor {
     };
 
     static artifact_faction_value = function(faction) {
-        #macro ART_PLAYER []
-        #macro ART_IMPERIUM ["PUR", "ADAMANTINE", "GLOW", "CHB", "UFL", "UBOLT", "DUB"]
-        #macro ART_MECHANICUS ["PUR", "RO", "CRU"]
-        #macro ART_INQUISITION ["PUR"]
-        #macro ART_ECCLESIARCHY ["PUR", "ART", "GOLD"]
-        #macro ART_ELDAR ["SUP", "ART", "JAD", "SILENT", "SCOPE"]
-        #macro ART_ORK []
-        #macro ART_TAU ["SUP", "ART", "BIG", "SOO", "SCOPE"]
-        #macro ART_TYRANIDS [] // Tyranids, Genestealers
-        #macro ART_CHAOS [] // Chaos, Heretics
-        #macro ART_NECRONS []
+        global.art_player = [];
+        global.art_imperium = ["PUR", "ADAMANTINE", "GLOW", "CHB", "UFL", "UBOLT", "DUB"];
+        global.art_mechanicus = ["PUR", "RO", "CRU"];
+        global.art_inquisition = ["PUR"];
+        global.art_ecclesiarchy = ["PUR", "ART", "GOLD"];
+        global.art_eldar = ["SUP", "ART", "JAD", "SILENT", "SCOPE"];
+        global.art_ork = [];
+        global.art_tau = ["SUP", "ART", "BIG", "SOO", "SCOPE"];
+        global.art_tyranids = []; // Tyranids, Genestealers
+        global.art_chaos = []; // Chaos, Heretics
+        global.art_necrons = [];
 
         var faction_preferences = [
             [],
-            ART_PLAYER,
-            ART_IMPERIUM,
-            ART_MECHANICUS,
-            ART_INQUISITION,
-            ART_ECCLESIARCHY,
-            ART_ELDAR,
-            ART_ORK,
-            ART_TAU,
-            ART_TYRANIDS,
-            ART_CHAOS,
-            ART_CHAOS,
-            ART_TYRANIDS,
-            ART_NECRONS
+            global.art_player,
+            global.art_imperium,
+            global.art_mechanicus,
+            global.art_inquisition,
+            global.art_ecclesiarchy,
+            global.art_eldar,
+            global.art_ork,
+            global.art_tau,
+            global.art_tyranids,
+            global.art_chaos,
+            global.art_chaos,
+            global.art_tyranids,
+            global.art_necrons
         ];
         if (faction < 0 || faction >= array_length(faction_preferences)) {
             // Logging or fallback

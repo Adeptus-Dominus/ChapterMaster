@@ -77,7 +77,7 @@ function ChapterTrait(trait) constructor {
     static effects_string = function() {
         var _str = "";
 
-        var _fac_names = FACTION_NAMES;
+        var _fac_names = global.faction_names;
 
         // --- Faction disposition mods ---
         if (is_array(faction_disp_mods) && array_length(faction_disp_mods) > 0) {

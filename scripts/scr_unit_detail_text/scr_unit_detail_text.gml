@@ -15,14 +15,14 @@ function scr_unit_detail_text() {
     };
     var body_bionics = get_body_data("bionic");
     if (psionic < 0) {
-        var _psy_levels = ARR_negative_psy_levels;
+        var _psy_levels = global.arr_negative_psy_levels;
         var _psionic_assignment = _psy_levels[psionic * -1];
     } else {
-        var _psy_levels = ARR_psy_levels;
+        var _psy_levels = global.arr_psy_levels;
         var _psionic_assignment = _psy_levels[psionic];
     }
-    var _body_parts = UNIT_BODY_PARTS;
-    var _body_parts_display = UNIT_BODY_PARTS_DISPLAY;
+    var _body_parts = global.unit_body_parts;
+    var _body_parts_display = global.unit_body_parts_display;
     if (base_group == "astartes") {
         is_astartes = true;
     }
