@@ -227,7 +227,7 @@
         },
         {
           "name": "Shield of Calloson", //the most holy name of your long schlong weapon
-          "description": "This Storm Shield is a relic of the Dark Angels, reserved for Deathwing use. its resilience is legendary", //write fun stuff
+          "description": "This Storm Shield is a relic of the Dark Angels, reserved for Deathwing use. Its resilience is legendary", //write fun stuff
           "base_weapon_type": "Storm Shield", //doesn't matter if it's armour, gear, mobi or anything else, you always use base_weapon_type to define it
           "slot": "" //leave empty if you want it to be stored in the Librarium without assignment
         }
