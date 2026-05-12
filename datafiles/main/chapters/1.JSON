@@ -119,7 +119,7 @@
         },
         {
           "name": "The Protector", //the most holy name of your long schlong weapon
-          "description": "A suit of armour which history starts in the late M37 where Master MEthias of the 5th Company survived a close range battle cannon shot wearing this armour. Henceforth this suit of armour has been given to high ranking Dark Angels until eventually it became one of the symbols of office of the Chapter Master", //write fun stuff
+          "description": "A suit of armour which history starts in the late M37 where Master Methias of the 5th Company survived a close range battle cannon shot wearing this armour. Henceforth this suit of armour has been given to high ranking Dark Angels until eventually it became one of the symbols of office of the Chapter Master", //write fun stuff
           "base_weapon_type": "Artificer Armour", //doesn't matter if it's armour, gear, mobi or anything else, you always use base_weapon_type to define it
           "slot": "armour" //leave empty if you want it to be stored in the Librarium without assignment
         },
