@@ -56,7 +56,6 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     static sort = function(){
         for (var i = 0; i < array_length(squad_unit_types); i++) {
             unit_role = squad_unit_types[i];
-            LOGGER.info(squad_unit_types[i]);
             role_squad_loadout();
         }
     }
@@ -103,7 +102,6 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     }
 
     static equip_required_for_role = function(_unit){
-        LOGGER.info(required_load);
         if (required_load[$ current_load_slot][2] < required_load[$ current_load_slot][1]) {
             //if the required amount of equipment is not in the squad already equip this marine with equipment
             var _item_to_add = required_load[$ current_load_slot][0];
@@ -189,7 +187,6 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
             }
 
             if (required_load != undefined && struct_exists(required_load, current_load_slot)) {
-                LOGGER.info("has required : {}");
                 var _needed_required = equip_required_for_role(_unit);
                 if (_needed_required){
                     continue;
