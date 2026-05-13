@@ -190,7 +190,8 @@
           "wep1": [
             ["{WEAPON_LIST_RANGED_VETERAN}", 7],
             ["{WEAPON_LIST_RANGED_SPECIAL}", 1],
-            ["{WEAPON_LIST_RANGED_HEAVY}", 1, { "mobi": "Heavy Weapons Pack" }]
+            ["{WEAPON_LIST_RANGED_HEAVY}", 1, 
+              { "mobi": "Heavy Weapons Pack" }]
           ]
         }
       }
