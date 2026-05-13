@@ -9,6 +9,11 @@ function UnitGroup(units) constructor {
         units = array_shuffle(units);
     };
 
+    static pop = function(){
+        return array_pop(units);
+    }
+
+
     static has_role = function(role) {
         for (var i = 0; i < array_length(units); i++) {
             if (units[i].role() == role) {

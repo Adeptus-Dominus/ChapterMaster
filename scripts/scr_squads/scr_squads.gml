@@ -38,7 +38,196 @@ the requested squad type , if the squad is not possible it will  not be made*/
                         of all required loadout options
 
     */
+function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) constructor {
+    self.target_squad = squad;
+    self.from_armoury = from_armoury;
+    self.to_armoury = to_armoury;
+    squad_type = target_squad.type;
+    squad_unit_types = squad.find_squad_unit_types();
+    full_squad_data = obj_ini.squad_types[$ squad_type];
+    unit_role = "";
+    members_UnitGroup = squad.get_members(true);
+    members_UnitGroup.shuffle();  
+    optional_load = undefined;
+    required_load = undefined;
 
+    target_squad.update_fulfilment();
+
+    static sort = function(){
+        for (var i = 0; i < array_length(squad_unit_types); i++) {
+            unit_role = squad_unit_types[i];
+            role_squad_loadout();
+        }
+    }
+
+    //TODO we proobably have amcaro or soomethinng for this somewhere
+    static load_out_areas = [
+        "wep1",
+        "wep2",
+        "armour",
+        "gear",
+        "mobi"
+    ];
+
+    static structure_role_optional_loadout = function(optional_data){
+
+        optional_load = variable_clone(optional_data); //create a fulfillment object for optional loadouts
+
+        var _optional_loadout_slots = struct_get_names(optional_load);
+
+        for (var slot = 0; slot < array_length(_optional_loadout_slots); slot++) {
+            var _load_out_slot = _optional_loadout_slots[slot];
+            for (var i = 0; i < array_length(optional_load[$ _load_out_slot]); i++) {
+                array_insert(optional_load[$ _load_out_slot][i], 2, 0);
+            }
+        }      
+    }
+
+    static structure_role_required_loadout = function(required_data){
+        //find out if the _unit type for the squad has required  equipment thresholds
+
+        required_load = variable_clone(required_data);
+        required_loadout_slots = struct_get_names(required_load);
+        for (var i = 0; i < array_length(required_loadout_slots); i++) {
+            var _current_load_slot = required_loadout_slots[i];
+            var _equip_slot = required_load[$ _current_load_slot];
+            if (is_string(required_load[$ _current_load_slot][1])) {
+                if (required_load[$ _current_load_slot][1] == "max") {
+                    required_load[$ _current_load_slot][1] = target_squad.squad_fulfilment[$ unit_role];
+                }
+            }
+            array_insert(required_load[$ _current_load_slot], 2, 0);
+        }
+
+    }
+
+    static equip_required_for_role = function(_unit){
+        if (required_load[$ current_load_slot][2] < required_load[$ current_load_slot][1]) {
+            //if the required amount of equipment is not in the squad already equip this marine with equipment
+            var _item_to_add = required_load[$ current_load_slot][0];
+            var required_load_set = {};
+            required_load_set[$ current_load_slot] = _item_to_add;
+            _unit.alter_equipment(required_load_set, from_armoury, to_armoury);
+            required_load[$ current_load_slot][2]++;
+            return true;
+        } //if all required equipment is included in the squad start adding optional equipment
+        return false;
+    }
+
+    static equip_optional_for_role = function(_unit){
+            //this basically ensures the optional squad items are randomly selected and allocated in order to make squads more variable
+
+        var _optional_groups = optional_load[$ current_load_slot];
+        for (var i = 0; i < array_length(_optional_groups); i++) {
+            var _optional_load_data = _optional_groups[i];
+            var _optionals_filled = _optional_load_data[2];
+            var _optionals_max_allowed = _optional_load_data[1];
+            var _optionals_equipment = _optional_load_data[0];
+            var _item_to_add;
+            if (_optionals_filled < _optionals_max_allowed) {
+                var _is_equipment_set = array_length(_optional_load_data) > 3;
+
+                if (is_array(_optionals_equipment)) {
+                    //if the array items are varibale e.g a struct
+                    _item_to_add = array_random_element(_optionals_equipment);
+                } else {
+                    _item_to_add = _optionals_equipment;
+                }
+
+                // this ensures a marine never gets overloaded with an overly bulky weapon loadout
+                if (current_load_slot == "wep1") {
+                    var _return_item = _unit.weapon_one();
+                    _unit.update_weapon_one(_item_to_add, from_armoury, to_armoury);
+                    _unit.ranged_attack();
+                    _unit.melee_attack();
+                    if ((_unit.encumbered_ranged || _unit.encumbered_melee) && !_is_equipment_set) {
+                        _unit.update_weapon_one(_return_item, from_armoury, to_armoury);
+                        continue;
+                    }
+                } else if (current_load_slot == "wep2") {
+                    var _return_item = _unit.weapon_two();
+                    _unit.update_weapon_two(_item_to_add, from_armoury, to_armoury);
+                    _unit.ranged_attack();
+                    _unit.melee_attack();
+                    if ((_unit.encumbered_ranged || _unit.encumbered_melee) && !_is_equipment_set) {
+                        _unit.update_weapon_two(_return_item, from_armoury, to_armoury);
+                        continue;
+                    }
+                }
+                var _opt_load_out = {};
+                _opt_load_out[$ current_load_slot] = _item_to_add;
+                _unit.alter_equipment(_opt_load_out, from_armoury, to_armoury);
+                _optional_load_data[1]++;
+                if (_is_equipment_set) {
+                    var _equip_set_data = _optional_load_data[3];
+                    if (is_struct(_equip_set_data)) {
+                        _unit.alter_equipment(_equip_set_data, from_armoury, to_armoury);
+                        array_push(ignore_units, _unit.uid);
+                    }
+                }
+                break;
+            }
+        }
+
+    }
+
+    static equip_loudouts_specific_equip_slot = function(){
+        var _members_with_role = members_UnitGroup.get_from({role:unit_role});
+        if (!struct_exists(current_unit_squad_data, "loadout")) {
+            return;
+        }
+        var _unit;
+        var _loudouts = current_unit_squad_data[$ "loadout"];
+        while (_members_with_role.number() > 0) {
+            _unit = _members_with_role.pop();
+            if (array_contains(ignore_units, _unit.uid)) {
+                continue;
+            }
+            if (_unit.role() != unit_role) {
+                continue;
+            }
+
+            if (required_load != undefined && struct_exists(required_load, current_load_slot)) {
+                var _needed_required = equip_required_for_role(_unit);
+                if (_needed_required){
+                    continue;
+                }
+            }
+
+            if (optional_load != undefined && struct_exists(optional_load, current_load_slot)) {
+                equip_optional_for_role(_unit);
+            }
+        }
+    }
+
+    static role_squad_loadout = function(){
+        required_load = undefined;
+        optional_load = undefined;
+
+        current_unit_squad_data = full_squad_data[$ unit_role];
+        if (!struct_exists(current_unit_squad_data, "loadout")) {
+            return;
+        }
+
+        var _loudout_data = current_unit_squad_data[$ "loadout"];
+        //find out if the _unit type for the squad has optional equipment thresholds
+        if (struct_exists(_loudout_data, "option")) {
+            structure_role_optional_loadout(_loudout_data[$ "option"]);
+        }
+
+        //if there are required loadout items
+        if (struct_exists(_loudout_data, "required")) {
+            structure_role_required_loadout(_loudout_data[$"required"]);
+        }
+
+        ignore_units = [];          
+        for (var i = 0; i < array_length(load_out_areas); i++) {
+            current_load_slot = load_out_areas[i];
+            equip_loudouts_specific_equip_slot();
+        }
+    }
+
+}
 function UnitSquad(squad_type = undefined, company = 0) constructor {
     members = [];
     type = "";
@@ -72,148 +261,9 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 			in future i'd like to tailer these to marine skill sets e.g the marines with the best ranged stats get given the best ranged equipment	
 		*/
     static sort_squad_loadout = function(from_armoury = true, to_armoury = true) {
-        var unit;
 
-        var required_load, unit_type, load_out_name, load_out_areas, load_out_slot, load_item, optional_load, item_to_add;
-        squad_unit_types = find_squad_unit_types();
-        var full_squad_data = obj_ini.squad_types[$ type];
-        for (var i = 0; i < array_length(squad_unit_types); i++) {
-            unit_type = squad_unit_types[i];
-            required_load = "none";
-            optional_load = "none";
-
-            var unit_squad_data = full_squad_data[$ unit_type];
-            var optional_loadout_slots = [];
-            if (struct_exists(unit_squad_data, "loadout")) {
-                //find out if the unit type for the squad has optional equipment thresholds
-                if (struct_exists(unit_squad_data[$ "loadout"], "option")) {
-                    if (optional_load == "none") {
-                        optional_load = variable_clone(unit_squad_data[$ "loadout"][$ "option"]); //create a fulfillment object for optional loadouts
-
-                        optional_loadout_slots = struct_get_names(optional_load);
-
-                        for (load_out_name = 0; load_out_name < array_length(optional_loadout_slots); load_out_name++) {
-                            load_out_slot = optional_loadout_slots[load_out_name];
-                            for (load_item = 0; load_item < array_length(optional_load[$ load_out_slot]); load_item++) {
-                                array_insert(optional_load[$ load_out_slot][load_item], 2, 0);
-                            }
-                        }
-                    }
-                }
-
-                var required_loadout_slots = [];
-                //if there are required loadout items
-                if (struct_exists(unit_squad_data[$ "loadout"], "required")) {
-                    //find out if the unit type for the squad has required  equipment thresholds
-                    if (required_load == "none") {
-                        required_load = variable_clone(unit_squad_data[$ "loadout"][$ "required"]);
-                        required_loadout_slots = struct_get_names(required_load);
-                        for (load_out_name = 0; load_out_name < array_length(required_loadout_slots); load_out_name++) {
-                            load_out_slot = required_loadout_slots[load_out_name];
-                            if (is_string(required_load[$ load_out_slot][1])) {
-                                if (required_load[$ load_out_slot][1] == "max") {
-                                    required_load[$ load_out_slot][1] = squad_fulfilment[$ unit_type];
-                                }
-                            }
-                            array_insert(required_load[$ load_out_slot], 2, 0);
-                        }
-                    }
-                }
-                load_out_areas = [
-                    "wep1",
-                    "wep2",
-                    "armour",
-                    "gear",
-                    "mobi"
-                ];
-                var copy_squad;
-                var new_copy_unit;
-                var ignore_units = [];
-                for (load_out_name = 0; load_out_name < array_length(load_out_areas); load_out_name++) {
-                    copy_squad = [];
-                    load_out_slot = load_out_areas[load_out_name];
-                    array_copy(copy_squad, 0, members, 0, array_length(members)); //create a copy of the squad members
-                    while (array_length(copy_squad) > 0) {
-                        new_copy_unit = irandom(array_length(copy_squad) - 1); //loop through the squad members randomly so that each squad has different marine loadouts
-                        unit = fetch_unit(copy_squad[new_copy_unit]);
-                        if (array_contains(ignore_units, unit.marine_number)) {
-                            array_delete(copy_squad, new_copy_unit, 1);
-                            continue;
-                        }
-                        if (unit.role() == unit_type) {
-                            if (struct_exists(unit_squad_data, "loadout")) {
-                                if (required_load != "none" && array_contains(required_loadout_slots, load_out_slot)) {
-                                    if (required_load[$ load_out_slot][2] < required_load[$ load_out_slot][1]) {
-                                        //if the required amount of equipment is not in the squad already equip this marine with equipment
-                                        item_to_add = required_load[$ load_out_slot][0];
-                                        var required_load_set = {};
-                                        required_load_set[$ load_out_slot] = item_to_add;
-                                        unit.alter_equipment(required_load_set, from_armoury, to_armoury);
-                                        required_load[$ load_out_slot][2]++;
-                                        array_delete(copy_squad, new_copy_unit, 1);
-                                        continue;
-                                    } //if all required equipment is included in the squad start adding optional equipment
-                                }
-                                if (struct_exists(unit_squad_data[$ "loadout"], "option")) {
-                                    if (optional_load != "none") {
-                                        if (struct_exists(optional_load, load_out_slot) && array_contains(optional_loadout_slots, load_out_slot)) {
-                                            //this basically ensures the optional squad items are randomly selected and allocated in order to make squads more variable
-
-                                            for (load_item = 0; load_item < array_length(optional_load[$ load_out_slot]); load_item++) {
-                                                var optional_load_data = optional_load[$ load_out_slot][load_item];
-                                                if (optional_load_data[2] < optional_load_data[1]) {
-                                                    var equipment_set = array_length(optional_load_data) > 3;
-
-                                                    if (is_array(optional_load_data[0])) {
-                                                        //if the array items are varibale e.g a struct
-                                                        item_to_add = optional_load_data[0][irandom(array_length(optional_load[$ load_out_slot][load_item][0]) - 1)];
-                                                    } else {
-                                                        item_to_add = optional_load_data[0];
-                                                    }
-
-                                                    // this ensures a marine never gets overloaded with an overly bulky weapon loadout
-                                                    if (load_out_slot == "wep1") {
-                                                        var return_item = unit.weapon_one();
-                                                        unit.update_weapon_one(item_to_add, from_armoury, to_armoury);
-                                                        unit.ranged_attack();
-                                                        unit.melee_attack();
-                                                        if ((unit.encumbered_ranged || unit.encumbered_melee) && !equipment_set) {
-                                                            unit.update_weapon_one(return_item, from_armoury, to_armoury);
-                                                            continue;
-                                                        }
-                                                    } else if (load_out_slot == "wep2") {
-                                                        var return_item = unit.weapon_two();
-                                                        unit.update_weapon_two(item_to_add, from_armoury, to_armoury);
-                                                        unit.ranged_attack();
-                                                        unit.melee_attack();
-                                                        if ((unit.encumbered_ranged || unit.encumbered_melee) && !equipment_set) {
-                                                            unit.update_weapon_two(return_item, from_armoury, to_armoury);
-                                                            continue;
-                                                        }
-                                                    }
-                                                    var opt_load_out = {};
-                                                    opt_load_out[$ load_out_slot] = item_to_add;
-                                                    unit.alter_equipment(opt_load_out, from_armoury, to_armoury);
-                                                    optional_load[$ load_out_slot][load_item][2]++;
-                                                    if (equipment_set) {
-                                                        if (is_struct(optional_load_data[3])) {
-                                                            unit.alter_equipment(optional_load_data[3], from_armoury, to_armoury);
-                                                            array_push(ignore_units, unit.marine_number);
-                                                        }
-                                                    }
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        array_delete(copy_squad, new_copy_unit, 1);
-                    }
-                }
-            }
-        }
+       var _sorter = new SquadEquipmentSorting(self ,from_armoury,to_armoury);
+       _sorter.sort();
     };
 
     static stat_av = function(stat) {};
@@ -262,12 +312,12 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     static get_squad_structs = function(as_UnitGroup) {
         var _struct_array = [];
         for (var i = array_length(members) - 1; i >= 0; i--) {
-            unit = fetch_unit(members[i]);
-            if (unit.name() == "") {
+            _unit = fetch_unit(members[i]);
+            if (_unit.name() == "") {
                 array_delete(members, i, 1);
                 continue;
             } else {
-                array_push(_struct_array, unit);
+                array_push(_struct_array, _unit);
             }
         }
         return _struct_array;
@@ -276,20 +326,20 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     // for creating a new sergeant from existing squad members
     static new_sergeant = function(veteran = false) {
         var exp_unit = "";
-        var unit;
+        var _unit;
         var highest_exp = 0;
         var member_length = array_length(members);
         for (var i = 0; i < member_length; i++) {
-            unit = fetch_unit(members[i]);
-            if (unit.name() == "") {
+            _unit = fetch_unit(members[i]);
+            if (_unit.name() == "") {
                 array_delete(members, i, 1);
                 member_length--;
                 i--;
                 continue;
             }
-            if (unit.experience > highest_exp) {
-                highest_exp = unit.experience;
-                exp_unit = unit;
+            if (_unit.experience > highest_exp) {
+                highest_exp = _unit.experience;
+                exp_unit = _unit;
             }
         }
         if ((array_length(members) > 0) && is_struct(exp_unit)) {
@@ -321,7 +371,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 		deleted if there are no longer enough members ot make a squad*/
     // fill from requiures a valid UnitIndex struct
     static update_fulfilment = function(fill_from = undefined) {
-        var unit;
+        var _unit;
 
         squad_fulfilment = {};
         var fill_squad = obj_ini.squad_types[$ type]; //grab all the squad struct info from the squad_types struct
@@ -339,15 +389,15 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         var member_length = array_length(members);
         for (var i = member_length - 1; i >= 0; i--) {
             //checks squad member is still valid
-            unit = fetch_member(i);
-            if (unit.name() == "") {
+            _unit = fetch_member(i);
+            if (_unit.name() == "") {
                 array_delete(members, i, 1);
                 continue;
             }
-            if (struct_exists(squad_fulfilment, unit.role())) {
-                squad_fulfilment[$ unit.role()]++;
+            if (struct_exists(squad_fulfilment, _unit.role())) {
+                squad_fulfilment[$ _unit.role()]++;
             } else {
-                squad_fulfilment[$ unit.role()] = 1;
+                squad_fulfilment[$ _unit.role()] = 1;
             }
         }
         fulfilled = true;
@@ -464,7 +514,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         var locations = [];
         var system = "";
         var unit_loc;
-        var unit;
+        var _unit;
         var same_system = true;
         var same_loc_type = true;
         var loc_type = false;
@@ -474,14 +524,14 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         var planet_side = false;
         var exact_loc = false;
         for (var i = 0; i < member_length; i++) {
-            unit = fetch_unit(members[i]);
-            if (unit.name() == "") {
+            _unit = fetch_unit(members[i]);
+            if (_unit.name() == "") {
                 array_delete(members, i, 1);
                 member_length--;
                 i--;
                 continue;
             }
-            unit_loc = unit.marine_location();
+            unit_loc = _unit.marine_location();
             if (system == "") {
                 system = unit_loc[2];
                 loc_type = unit_loc[0];
@@ -536,15 +586,15 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     //this means the highest ranking dude in a squad will always be the squad leader
     //failing that the highest experience dude
     static determine_leader = function() {
-        var unit;
+        var _unit;
         var member_length = array_length(members);
         var hierarchy = role_hierarchy();
         var leader_hier_pos = array_length(hierarchy);
-        var leader = "none", unit;
+        var leader = "none", _unit;
         var highest_exp = 0;
         for (var i = 0; i < member_length; i++) {
-            unit = fetch_unit(members[i]);
-            if (unit.name() == "") {
+            _unit = fetch_unit(members[i]);
+            if (_unit.name() == "") {
                 array_delete(members, i, 1);
                 member_length--;
                 i--;
@@ -552,30 +602,30 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
             } else {
                 if (leader == "none") {
                     leader = [
-                        unit.company,
-                        unit.marine_number
+                        _unit.company,
+                        _unit.marine_number
                     ];
                     for (var r = 0; r < array_length(hierarchy); r++) {
-                        if (hierarchy[r] == unit.role()) {
+                        if (hierarchy[r] == _unit.role()) {
                             leader_hier_pos = r;
                             break;
                         }
                     }
-                } else if (hierarchy[leader_hier_pos] == unit.role()) {
+                } else if (hierarchy[leader_hier_pos] == _unit.role()) {
                     var _leader = fetch_unit(leader);
-                    if (_leader.experience < unit.experience) {
+                    if (_leader.experience < _unit.experience) {
                         leader = [
-                            unit.company,
-                            unit.marine_number
+                            _unit.company,
+                            _unit.marine_number
                         ];
                     }
                 } else {
                     for (var r = 0; r < leader_hier_pos; r++) {
-                        if (hierarchy[r] == unit.role()) {
+                        if (hierarchy[r] == _unit.role()) {
                             leader_hier_pos = r;
                             leader = [
-                                unit.company,
-                                unit.marine_number
+                                _unit.company,
+                                _unit.marine_number
                             ];
                             break;
                         }
@@ -620,18 +670,18 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     };
 
     static member_loop = function(member_func, data_pack) {
-        var unit;
+        var _unit;
         member_length = array_length(members);
         for (var i = 0; i < member_length; i++) {
-            unit = fetch_unit(members[i]);
-            if (unit.name() == "") {
+            _unit = fetch_unit(members[i]);
+            if (_unit.name() == "") {
                 array_delete(members, i, 1);
                 member_length--;
                 i--;
                 continue;
             } else {
                 var pack_return;
-                with (unit) {
+                with (_unit) {
                     pack_return = member_func(data_pack);
                 }
                 data_pack = pack_return;
