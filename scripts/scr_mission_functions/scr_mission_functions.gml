@@ -520,6 +520,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index) {
         var _unit;
         var _unit_report_string = "";
         var _deaths = 0;
+        var _successful_hunters = [];
         if (!array_length(_hunters)) {
             remove_planet_problem(targ_planet, "hunt_beast");
             return;
