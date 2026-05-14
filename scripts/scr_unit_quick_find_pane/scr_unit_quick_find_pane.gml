@@ -11,9 +11,37 @@ function UnitQuickFindPanel() constructor {
         "missions": new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
     };
 
+    hovered_fleet_data = undefined;
+
     static detail_slate = new DataSlateMKTwo();
 
     view_area = "fleets";
+    hover_item = "none";
+    travel_target = [];
+    travel_time = 0;
+    travel_increments = [];
+    is_entered = false;
+    start_fleet = 0;
+    start_system = 0;
+    garrison_log = {};
+    mission_log = [];
+    hide_sequence = 0;
+    current_hover = -1;
+    hover_count = 0;
+
+    var xx = main_panel.XX;
+    var yy = main_panel.YY;
+
+    fleet_table = new Table({
+        x1:               xx + 10,
+        y1:               yy + 50,
+        x2:               xx + main_panel.width,
+        y2:               yy + main_panel.height,
+        headings:         ["Capitals", "Frigates", "Escorts", "Location"],
+        row_key_draw:     ["capitals", "frigates", "escorts", "location"],
+        set_column_widths: [70,         70,          70,        100       ],
+        row_h:            20,
+    });
 
     static has_troops = function(name) {
         return struct_exists(garrison_log, name);
@@ -128,6 +156,121 @@ function UnitQuickFindPanel() constructor {
         }
     };
 
+    // ── UPDATER  (call in Step or whenever fleet data changes) ────────────────────
+    static update_fleet_table = function() {
+
+        var xx   = main_panel.XX;
+        var yy   = main_panel.YY;
+        var _rows = [];
+
+        for (var i = start_fleet; i < instance_number(obj_p_fleet); i++) {
+
+            var _cur_fleet = instance_find(obj_p_fleet, i);
+
+            // ── Resolve location string ───────────────────────────────────────────
+            var _loc = "";
+            var _zoomable = true;
+            var _point_data = _cur_fleet.point_breakdown;
+
+            if (_cur_fleet.action == "Lost") {
+                _loc  = "Lost";
+                _zoomable = false;
+
+            } else if (string_count("crusade", _cur_fleet.action)) {
+                _loc = "Crusading";
+                _zoomable = false;
+
+            } else if (_cur_fleet.action == "move") {
+                _loc = "Warp Travel";
+
+            } else {
+                var _near_star = instance_nearest(_cur_fleet.x, _cur_fleet.y, obj_star);
+                _loc = _near_star.name;
+                var _sys_points = obj_controller.specialist_point_handler.point_breakdown.systems;
+                if (struct_exists(_sys_points, _near_star.name)) {
+                    _point_data = _sys_points[$ _near_star.name][0];
+                }                
+            }
+
+            // ── Build row struct, capturing per-iteration values via method() ─────
+            var _row = {
+                capitals: _cur_fleet.capital_number,
+                frigates: _cur_fleet.frigate_number,
+                escorts:  _cur_fleet.escort_number,
+                location: _loc,
+                parent: self,
+                fleet: _cur_fleet,
+                point_data : _point_data
+            };
+            
+            _row.hover = method(
+                _row,
+                function() {
+                    obj_controller.location_viewer.hovered_fleet_data = point_data;
+                    tooltip_draw("left click to view");
+                }
+            )
+
+            // Click to pan camera — only when location is meaningful
+            if (_zoomable) {
+                _row.click_left = method(
+                    _row,
+                    function() {
+                        set_map_pan_to_loc(fleet);
+                    }
+                );
+            }
+
+            array_push(_rows, _row);
+        }
+
+        fleet_table.update({row_data: _rows });
+    }
+    static draw_fleet_area =  function(){
+        var xx = main_panel.XX;
+        var yy = main_panel.YY;
+
+        if (fleet_table.row_count() != instance_number(obj_p_fleet)){
+            update_fleet_table()
+        }
+
+        fleet_table.update({
+            x1  :  xx + 40,
+            y1  :  yy + 50,
+            y2 : yy + 50 + main_panel.height,
+            colour : c_white,
+            font : fnt_40k_14
+        });
+        
+        fleet_table.draw();
+
+        // ── Hover detail slate (drawn after table so it renders on top) ───────────
+        if (hovered_fleet_data != undefined) {
+            var _fpd = hovered_fleet_data;
+            var _sx  = main_panel.XX + main_panel.width - 10;
+            var _sy  = yy + 90 + 18;
+            detail_slate.draw(_sx, _sy, 1.5, 1.5);
+
+            draw_set_font(fnt_40k_12i);
+            draw_set_halign(fa_center);
+
+            // Headers
+            draw_text(_sx + 160, _sy + 10, "forge point\ntotal");
+            draw_text(_sx + 240, _sy + 10, "forge point\nuse");
+            draw_text(_sx + 320, _sy + 10, "apothecary\npoint total");
+            draw_text(_sx + 400, _sy + 10, "apothecary\npoint use");
+            draw_text(_sx + 60,  _sy + 50, "Orbiting");
+
+            // Values
+            var _vy = _sy + 50;
+            draw_text(_sx + 160, _vy, _fpd.forge_points);
+            draw_text(_sx + 240, _vy, _fpd.forge_points_use);
+            draw_text(_sx + 320, _vy, _fpd.heal_points);
+            draw_text(_sx + 400, _vy, _fpd.heal_points_use);
+
+            hovered_fleet_data = undefined;   // reset each frame
+        }
+    }
     update_mission_log = function() {
         mission_log = [];
         var temp_log = [];
@@ -165,6 +308,7 @@ function UnitQuickFindPanel() constructor {
                     var _event = events[i];
                     if (struct_exists(_event, "turn_end")){
                         switch (_event.turn_end){
+                            //this is being pre seeded for a later coming feature set
                             case "deliver_trophy_end_turn_check" : 
                                 var _mission = $"Deliver Trophy Guard";
                                 var _sys = fleets_next_location();
@@ -210,8 +354,8 @@ function UnitQuickFindPanel() constructor {
         var _data = {
             x1  :  xx+60,
             y1  :  yy+50,
-            y2  :  yy  + h,
-            set_column_widths  :  [80,130],
+            y2  :  yy  + main_panel.height + 50,
+            set_column_widths  :  [70,150],
             headings  :  ["Location", "Mission","Time\nRemaining"],
             row_data  :  mission_log,
             row_key_draw  :  ["system","mission","time"],
@@ -219,103 +363,13 @@ function UnitQuickFindPanel() constructor {
         mission_table = new Table(_data);
     };
 
-
-    hover_item = "none";
-    travel_target = [];
-    travel_time = 0;
-    travel_increments = [];
-    is_entered = false;
-    start_fleet = 0;
-    start_system = 0;
-    garrison_log = {};
-    mission_log = [];
-    hide_sequence = 0;
-    current_hover = -1;
-    hover_count = 0;
     main_panel.inside_method = function() {
         var xx = main_panel.XX;
         var yy = main_panel.YY;
         is_entered = scr_hit(xx, yy, xx + main_panel.width, yy + main_panel.height);
+        // ── DRAW ─────────────────────────────────────────────────────────────────────
         if (view_area == "fleets") {
-            var cur_fleet;
-            draw_set_color(c_white);
-            draw_set_halign(fa_center);
-            draw_text(xx + 80, yy + 50, "Capitals");
-            draw_text(xx + 160, yy + 50, "Frigates");
-            draw_text(xx + 240, yy + 50, "Escorts");
-            draw_text(xx + 310, yy + 50, "Location");
-            var i = start_fleet;
-            while (i < instance_number(obj_p_fleet) && (yy + 90 + (20 * i) + 12 + 20) < main_panel.YY + yy + main_panel.height) {
-                if (scr_hit(xx + 10, yy + 90 + (20 * i), xx + main_panel.width, yy + 90 + (20 * i) + 18)) {
-                    draw_set_color(c_gray);
-                    draw_rectangle(xx + 10 + 20, yy + 90 + (20 * i) - 2, xx + main_panel.width - 20, yy + 90 + (20 * i) + 18, 0);
-                    draw_set_color(c_white);
-                }
-                cur_fleet = instance_find(obj_p_fleet, i);
-                draw_text(xx + 80, yy + 90 + (20 * i), cur_fleet.capital_number);
-                draw_text(xx + 160, yy + 90 + (20 * i), cur_fleet.frigate_number);
-                draw_text(xx + 240, yy + 90 + (20 * i), cur_fleet.escort_number);
-                var _fleet_point_data = cur_fleet.point_breakdown;
-                var _loc_display_string = "";
-                var _zoomable_loc = true;
-                if (cur_fleet.action == "Lost") {
-                    _loc_display_string = "Lost";
-                    _zoomable_loc = false;
-                } else if (string_count("crusade", cur_fleet.action)) {
-                    _loc_display_string = "Crusading";
-                    _zoomable_loc = false;
-                } else if (cur_fleet.action == "move") {
-                    _loc_display_string = "Warp Travel";
-                } else {
-                    var _near_star = instance_nearest(cur_fleet.x, cur_fleet.y, obj_star);
-                    _loc_display_string = _near_star.name;
-
-                    var _special_points = obj_controller.specialist_point_handler.point_breakdown.systems;
-                    if (struct_exists(_special_points, _near_star)) {
-                        var _fleet_point_data = _special_points[$ _near_star.name][0];
-                    }
-                }
-                draw_text(xx + 310, yy + 90 + (20 * i), _loc_display_string);
-
-                var _fleet_coords = [
-                    xx + 10,
-                    yy + 90 + (20 * i) - 2,
-                    xx + main_panel.width,
-                    yy + 90 + (20 * i) + 18
-                ];
-
-                if (_zoomable_loc) {
-                    if (point_and_click([xx + 10, yy + 90 + (20 * i) - 2, xx + main_panel.width, yy + 90 + (20 * i) + 18])) {
-                        travel_target = [
-                            cur_fleet.x,
-                            cur_fleet.y
-                        ];
-                        travel_increments = [
-                            (travel_target[0] - obj_controller.x) / 15,
-                            (travel_target[1] - obj_controller.y) / 15
-                        ];
-                        travel_time = 0;
-                    }
-                }
-
-                if (scr_hit(_fleet_coords)) {
-                    detail_slate.draw(xx + main_panel.width - 10, _fleet_coords[1] - 20, 1.5, 1.5);
-                    var _xx = xx + main_panel.width - 10;
-                    var _yy = _fleet_coords[1] - 20;
-                    draw_set_font(fnt_40k_12i);
-                    draw_text(_xx + 160, _yy + 10, "forge point\ntotal");
-                    draw_text(_xx + 240, _yy + 10, "forge point\nuse");
-                    draw_text(_xx + 320, _yy + 10, "apothecary\npoint total");
-                    draw_text(_xx + 400, _yy + 10, "apothecary\npoint use");
-                    draw_text(_xx + 60, _yy + 50, "Orbiting");
-                    var _y_line = _yy + 50;
-                    draw_text(_xx + 160, _y_line, _fleet_point_data.forge_points);
-                    draw_text(_xx + 240, _y_line, _fleet_point_data.forge_points_use);
-                    draw_text(_xx + 320, _y_line, _fleet_point_data.heal_points);
-                    draw_text(_xx + 400, _y_line, _fleet_point_data.heal_points_use);
-                }
-                i++;
-            }
+            draw_fleet_area();
         } else if (view_area == "garrisons") {
             var system_data;
             draw_set_color(c_white);
@@ -424,50 +478,11 @@ function UnitQuickFindPanel() constructor {
                 }
             }
         } else if (view_area == "missions") {
-            draw_set_color(c_white);
-            draw_set_halign(fa_center);
-            draw_text(xx + 80, yy + 50, "Location");
-            draw_text(xx + 160, yy + 50, "Mission");
-            draw_text(xx + 290, yy + 50, "Time Remaining");
-            var i = 0;
-            while (i < array_length(mission_log) && (90 + (20 * i) + 12 + 20) < main_panel.height) {
-                mission = mission_log[i];
-                entered = false;
-                if (scr_hit(xx + 10, yy + 90 + (20 * i), xx + main_panel.width, yy + 90 + (20 * i) + 18)) {
-                    draw_set_color(c_gray);
-                    draw_rectangle(xx + 10 + 20, yy + 90 + (20 * i) - 2, xx + main_panel.width - 20, yy + 90 + (20 * i) + 18, 0);
-                    draw_set_color(c_white);
-                    entered = true;
-                }
-                if (mission.system != "") {
-                    draw_text(xx + 80, yy + 90 + (20 * i), $"{mission.system} {scr_roman_numerals()[mission.planet - 1]}");
-                }
-                draw_set_halign(fa_left);
-                if (entered) {
-                    draw_text(xx + 160 - 20, yy + 90 + (20 * i), mission.mission);
-                } else {
-                    draw_text(xx + 160 - 20, yy + 90 + (20 * i), string_truncate(mission.mission, 150));
-                }
-                draw_set_halign(fa_center);
-                if (!entered) {
-                    draw_text(xx + 310, yy + 90 + (20 * i), mission.time);
-                }
-                if (point_and_click([xx + 10, yy + 90 + (20 * i) - 2, xx + main_panel.width, yy + 90 + (20 * i) + 18])) {
-                    var star = find_star_by_name(mission.system);
-                    if (star != "none") {
-                        travel_target = [
-                            star.x,
-                            star.y
-                        ];
-                    }
-                    travel_increments = [
-                        (travel_target[0] - obj_controller.x) / 15,
-                        (travel_target[1] - obj_controller.y) / 15
-                    ];
-                    travel_time = 0;
-                }
-                i++;
-            }
+                    mission_table.update({
+                x1  :  xx+35,
+                y1  :  yy+50,
+            });
+            mission_table.draw();
         }
     };
 
@@ -492,6 +507,7 @@ function UnitQuickFindPanel() constructor {
                     main_panel.draw(x_draw, 110, 0.46, 0.75);
                     if (tab_buttons.fleets.draw(x_draw, 79, "Fleets")) {
                         view_area = "fleets";
+                        update_fleet_table();
                     }
                     if (tab_buttons.garrisons.draw(115 + x_draw, 79, "System Troops")) {
                         view_area = "garrisons";
