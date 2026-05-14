@@ -1777,16 +1777,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     //quick way of getting name and role combined in string
-    static name_role = function(include_epithet = true) {
-        var temp_role = role();
-        if (squad != "none") {
-            var _squad = get_squad();
-            if (struct_exists(obj_ini.squad_types[$ _squad.type], temp_role)) {
-                var role_info = obj_ini.squad_types[$ _squad.type][$ temp_role];
-                if (struct_exists(role_info, "role")) {
-                    temp_role = role_info[$ "role"];
-                }
-            }
+    static name_role = function(include_epithet = true, include_role = true) {
+
+        var _name = name();
+
+         if (include_role){
+            var _temp_role = squad_role();
+            _name = string("{0} {1}", _temp_role, _name);
         }
 
         if (include_epithet){
@@ -1794,11 +1791,15 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             if (array_length(epithets)){
                 epithet += $" {epithets[0].title}";
             }
-
-            return string("{0} {1} {2}", temp_role, name(), epithet);
         }
 
-        return string("{0} {1}", temp_role, name());
+        if (include_epithet && epithet != ""){
+            return string("{0} {1}", _name, epithet);
+        }
+
+        return _name;
+
+        
     };
 
     static controllable = function() {

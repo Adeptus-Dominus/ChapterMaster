@@ -410,16 +410,57 @@ function reset_manage_unit_constants(unit) {
             font :fnt_40k_30b,
             scale_text :true,
             max_width : 250,
+            min_scale : 0.7
         };
 
-        var _name=unit.name();
-        if (array_length(unit.epithets)){
-            _name += unit.epithets[0].title;
-        }
+
+        var _name=unit.name_role(true, false);
+
         unit_manage_constants.name = new ReactiveString(_name,0,0,_string_data);
+
+
+        var _role_name = "";
+
+        var _comp_string = "";
+
+        if (unit.company <= 0) {
+            _role_name = $"{unit.squad_role()}";
+        } else if (unit.IsSpecialist()) {
+            _comp_string = $"{unit.company_roman()} Company";
+            _role_name = $"{unit.role()}";
+        } else {
+            _comp_string = $"{unit.company_roman()} Company";
+            _role_name = $"{unit.squad_role()}";
+        }      
+
+        _string_data = {
+            colour : #50a076,
+            scale : 1,
+            halign :fa_center,
+            font :fnt_40k_14b,
+            scale_text :true,
+            max_width : 250,
+        };
+
+        unit_manage_constants.role_name = new ReactiveString(_role_name,0,0,_string_data);
+
+
+        _string_data = {
+            colour : #50a076,
+            scale : 1,
+            halign :fa_center,
+            font :fnt_40k_14b,
+            scale_text :true,
+            max_width : 250,
+        };
+
+        unit_manage_constants.company_string = new ReactiveString(_comp_string,0,0,_string_data);
+
     // TODO
-}*/
-    } catch (_exception) {} //not sure handling with normal method exception could just be a pain here
+    } catch (_exception) {
+        handle_exception(_exception);
+        obj_controller.unit_focus = undefined;
+    } //not sure handling with normal method exception could just be a pain here
 }
 
 /// @mixin
@@ -638,30 +679,26 @@ function draw_sprite_and_unit_equip_data() {
             draw_set_color(line_color);
 
             // Draw unit name and role
-            var _name_box = {
+
+            unit_manage_constants.name.update({
+                x1: xx + 402,
+                y1: yy + 76,
+            });
+
+
+            unit_manage_constants.role_name.update({
+                x1: xx + 402,
+                y1: yy + 56,
+            });
+
+            unit_manage_constants.company_string.update({
                 x1: xx + 402,
                 y1: yy + 36,
-                text1: "",
-                text2: "",
-                text3: selected_unit.name(),
-            };
-            _name_box.y2 = _name_box.y1 + 20;
-            _name_box.y3 = _name_box.y2 + 20;
-            if (selected_unit.company <= 0) {
-                _name_box.text2 = $"{selected_unit.squad_role()}";
-            } else if (selected_unit.IsSpecialist()) {
-                _name_box.text1 = $"{selected_unit.company_roman()} Company";
-                _name_box.text2 = $"{selected_unit.role()}";
-            } else {
-                _name_box.text1 = $"{selected_unit.company_roman()} Company";
-                _name_box.text2 = $"{selected_unit.squad_role()}";
-            }
-            draw_set_halign(fa_center);
-            draw_set_font(fnt_40k_14b);
-            draw_text_transformed_outline(_name_box.x1, _name_box.y1, _name_box.text1, 1, 1, 0);
-            draw_text_transformed_outline(_name_box.x1, _name_box.y2, _name_box.text2, 1, 1, 0);
-            draw_set_font(fnt_40k_30b);
-            draw_text_transformed_outline(_name_box.x1, _name_box.y3, _name_box.text3, 0.7, 0.7, 0);
+            });
+
+            unit_manage_constants.name.draw();
+            unit_manage_constants.role_name.draw();
+            unit_manage_constants.company_string.draw();
 
             // Draw unit info
             draw_set_font(fnt_40k_14);
