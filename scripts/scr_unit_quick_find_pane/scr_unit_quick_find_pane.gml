@@ -336,10 +336,9 @@ function UnitQuickFindPanel() constructor {
                                 _mission_data.click_right = method(_mission_data,function(){
                                     var _unit = fetch_unit_uid(important_person);
                                     if (_unit != "none"){
-                                        var _unit_l = [fetch_unit_uid(important_person)];
+                                        var _unit_l = [_unit];
+                                        group_selection(_unit_l);
                                     };
-
-                                    group_selection(_unit_l);
                                 });
 
                                 array_push(temp_log,_mission_data);
