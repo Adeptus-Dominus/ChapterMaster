@@ -257,6 +257,11 @@ deserialize = function(save_data) {
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);
+
+    if (!array_contains(all_names, "chapter_squad_arrangement")){
+        obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main\\squads\\company_squad_builds.json", json_parse);
+    }
+    
     var _len = array_length(all_names);
     for (var i = 0; i < _len; i++) {
         var var_name = all_names[i];
