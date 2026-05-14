@@ -520,6 +520,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index) {
         var _unit;
         var _unit_report_string = "";
         var _deaths = 0;
+        var _successful_hunters = [];
         if (!array_length(_hunters)) {
             remove_planet_problem(targ_planet, "hunt_beast");
             return;
@@ -533,11 +534,8 @@ function complete_beast_hunt_mission(targ_planet, problem_index) {
                 }
             }
             if (_unit_pass[0]) {
-                var _start_stats = variable_clone(_unit.get_stat_line());
-                _unit.add_trait("beast_slayer");
-                var end_stat = _unit.get_stat_line();
-                var _stat_diff = compare_stats(end_stat, _start_stats);
-                _unit_report_string += $"{_unit.name_role()} Has gained the trait {global.trait_list.beast_slayer.display_name}, {print_stat_diffs(_stat_diff)}\n";
+                _unit_report_string += _unit.add_trait("beast_slayer",true, true);
+                array_push(_successful_hunters, _unit);
             } else {
                 var _tough_check = _tester.standard_test(_unit, "constitution", _unit.luck);
                 if (!_tough_check[0]) {
