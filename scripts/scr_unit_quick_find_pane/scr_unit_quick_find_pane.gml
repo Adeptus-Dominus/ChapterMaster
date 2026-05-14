@@ -132,27 +132,30 @@ function UnitQuickFindPanel() constructor {
         mission_log = [];
         var temp_log = [];
         var p, i, problems;
-        with (obj_star) {
-            for (i = 1; i <= planets; i++) {
+        with(obj_star){
+            for (i=1;i<=planets;i++){
                 problems = p_problem[i];
-                for (p = 0; p < array_length(problems); p++) {
-                    if (problems[p] != "") {
-                        if (problem_has_key_and_value(i, p, "stage", "preliminary")) {
-                            continue;
-                        }
-                        var mission_explain = mission_name_key(problems[p]);
-                        if (mission_explain != "none") {
-                            array_push(temp_log, {system: name, mission: mission_explain, time: p_timer[i][p], planet: i});
-                        }
+                for (p = 0;p<array_length(problems);p++){
+                    if (problems[p] == ""){
+                        continue;
                     }
-                }
-            }
-        }
-        for (i = 0; i < array_length(obj_controller.quest); i++) {
-            if (obj_controller.quest[i] != "") {
-                var mission_explain = mission_name_key(obj_controller.quest[i]);
-                if (mission_explain != "none") {
-                    array_push(temp_log, {system: "", mission: mission_explain, time: obj_controller.quest_end[i] - obj_controller.turn, planet: 0});
+                    if (problem_has_key_and_value(i,p,"stage","preliminary")) then continue;
+                    var mission_explain =  mission_name_key(problems[p]);
+                    if (mission_explain != "none"){
+                        var _data = {
+                            system  :  name,
+                            mission  :  mission_explain,
+                            time  :  p_timer[i][p],
+                            planet  :  i,
+                        };
+                        
+                        _data.click_left = method(_data,function(){
+                            set_map_pan_to_loc(system);
+                        });
+
+                        array_push(temp_log,_data);
+                    }
+        
                 }
             }
         }

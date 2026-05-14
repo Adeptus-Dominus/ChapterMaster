@@ -21,6 +21,7 @@ ii_check = floor(random(5)) + 1;
 etah = 0;
 safe = 0;
 last_turn_check = 0;
+events = [];
 
 
 uid = scr_uuid_generate();
