@@ -156,8 +156,66 @@ function UnitQuickFindPanel() constructor {
                 }
             }
         }
+        with (obj_en_fleet){
+            if (array_length(events)){
+                for (var i=0;i<array_length(events);i++){
+                    var _event = events[i];
+                    if (struct_exists(_event, "turn_end")){
+                        switch (_event.turn_end){
+                            case "deliver_trophy_end_turn_check" : 
+                                var _mission = $"Deliver Trophy Guard";
+                                var _sys = fleets_next_location();
+                                var _mission_data = {
+                                    mission  :  _mission,
+                                    system  :  _sys.name,
+                                    system_id  :  _sys.id,
+                                    target  :  id,
+                                    important_person  :  _event.fleetevent_data.trophy_owner,
+                                    person_name  :  _event.fleetevent_data.delivering_marine,
+                                    planet  :  0,
+                                    start_system  :  _event.fleetevent_data.system,
+                                    time  :  _event.timer,
+                                };
+
+                                _mission_data.click_left = method(_mission_data,function(){
+                                    set_map_pan_to_loc(system_id);
+                                });
+
+                                _mission_data.hover = method(_mission_data,function(){
+                                    tooltip_draw($"You are to have {person_name} deliver trophy hunted on {start_system} to the {start_system} regiments\n\nLeft click to see target fleet intercept system right click to view the trophy bearing marine {person_name}");
+                                });
+
+                                _mission_data.click_right = method(_mission_data,function(){
+                                    var _unit = fetch_unit_uid(important_person);
+                                    if (_unit != "none"){
+                                        var _unit_l = [fetch_unit_uid(important_person)];
+                                    };
+
+                                    group_selection(_unit_l);
+                                });
+
+                                array_push(temp_log,_mission_data);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
         mission_log = temp_log;
+
+        var _data = {
+            x1  :  xx+60,
+            y1  :  yy+50,
+            y2  :  yy  + h,
+            set_column_widths  :  [80,130],
+            headings  :  ["Location", "Mission","Time\nRemaining"],
+            row_data  :  mission_log,
+            row_key_draw  :  ["system","mission","time"],
+        }
+        mission_table = new Table(_data);
     };
+
+
     hover_item = "none";
     travel_target = [];
     travel_time = 0;
