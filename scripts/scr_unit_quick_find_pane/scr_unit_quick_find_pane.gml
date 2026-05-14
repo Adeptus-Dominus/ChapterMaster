@@ -205,7 +205,8 @@ function UnitQuickFindPanel() constructor {
             }
         }
         mission_log = temp_log;
-
+        var xx = main_panel.XX;
+        var yy = main_panel.YY;
         var _data = {
             x1  :  xx+60,
             y1  :  yy+50,

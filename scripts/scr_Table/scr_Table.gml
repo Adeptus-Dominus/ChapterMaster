@@ -88,15 +88,23 @@ function Table(data) constructor {
                     draw_text(_col_draw_x + (column_widths[d] / 2), _row_level, _row[$ _key]);
                     _col_draw_x += column_widths[d] + col_spacing;
                 }
-                if (_row_entered && struct_exists(_row, "hover")) {
+                if (!_row_entered){
+                    continue;
+                }
+                if (struct_exists(_row, "hover")) {
                     //LOGGER.debug($"click : {struct_exists(_row,"click_left")}");
                     _row.hover();
                 }
-                if (_row_entered && struct_exists(_row, "click_left")) {
+                if (struct_exists(_row, "click_left")) {
                     if (mouse_button_clicked()) {
                         _row.click_left();
                     }
                 }
+                if (struct_exists(_row,"click_right")){
+                    if (mouse_button_clicked(mb_right)){
+                        _row.click_right();
+                    }
+                } 
             }
 
             _row_level += row_h;
