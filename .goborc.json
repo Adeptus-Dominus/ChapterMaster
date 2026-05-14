@@ -1,0 +1,9 @@
+{
+  "limitWidth": false,
+  "useTabs": false,
+  "tabWidth": 4,
+  "verticalStructs": true,
+  "verticalArrays": true,
+  "multilineTernary": false,
+  "blankLineAfterBlocks": false
+}
