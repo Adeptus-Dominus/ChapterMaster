@@ -137,6 +137,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     religion_sub_cult = "none";
     base_group = "none";
     role_history = [];
+    epithets = [];
     enum eROLE_TAG {
         Techmarine = 0,
         Librarian = 1,
@@ -928,6 +929,17 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static update_age = function(new_val) {
         obj_ini.age[company][marine_number] = new_val;
     };
+
+    //TODO build epithets in to marine profile
+    static add_epithet = function(epithet){
+        if (is_string(epithet)){
+            epithet = {
+                title : epithet,
+                story : "",
+            }
+        }
+        array_push(epithets,epithet);
+    }
 
     static name = function() {
         return obj_ini.name[company][marine_number];
