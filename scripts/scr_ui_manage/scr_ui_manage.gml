@@ -402,7 +402,21 @@ function reset_manage_unit_constants(unit) {
         unit_manage_image = unit.draw_unit_image();
 
         temp[122] = unit.handle_stat_growth();
-        /*if (man[sel]="vehicle"){
+        
+        var _string_data = {
+            colour : #50a076,
+            scale : 0.7,
+            halign :fa_center,
+            font :fnt_40k_30b,
+            scale_text :true,
+            max_width : 250,
+        };
+
+        var _name=unit.name();
+        if (array_length(unit.epithets)){
+            _name += unit.epithets[0].title;
+        }
+        unit_manage_constants.name = new ReactiveString(_name,0,0,_string_data);
     // TODO
 }*/
     } catch (_exception) {} //not sure handling with normal method exception could just be a pain here
