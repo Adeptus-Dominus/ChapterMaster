@@ -378,7 +378,7 @@ function UnitButtonObject(data = false) constructor {
 
                 text_scale = _text_scale.scale;
 
-                text = _text_scale.text;
+                label = _text_scale.text;
             }
             h = string_height(label) + 4;
         }
