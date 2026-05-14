@@ -1574,4 +1574,4 @@ function draw_manage_selection_buttons(xx, yy) {
             }
         }
     }
-}
+} 
