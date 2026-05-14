@@ -88,6 +88,9 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
     h = 0;
     w = 0;
     scale_text = false;
+    with_outline = true;
+    min_scale = 0;
+    allow_line_breaks = true;
 
     move_data_to_current_scope(data);
 
@@ -106,7 +109,9 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
                 y2 = y1 + h;
             } else {
                 w = max_width;
-                scale = calc_text_scale_confines(text, max_width);
+                var _scale_edits = calc_text_scale_confines(text, max_width, 0,allow_line_breaks)
+                scale = _scale_edits.scale;
+                text = _scale_edits.text;
                 h = string_height(text) * scale;
             }
         } else {
@@ -133,7 +138,11 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
             if (!scale_text) {
                 draw_text_ext_outline(x1, y1, text, -1, max_width, c_black, colour);
             } else {
-                draw_text_transformed(x1, y1, text, scale, scale, 0);
+                if (with_outline) {
+                    draw_text_transformed_outline(x1, y1, text, scale, scale, 0);
+                } else {
+                    draw_text_transformed(x1, y1, text, scale, scale, 0);
+                }
             }
         } else {
             draw_text_outline(x1, y1, text, c_black, colour);
@@ -365,7 +374,11 @@ function UnitButtonObject(data = false) constructor {
                 w = string_width(label) + 10;
                 h = string_height(label) + 4;
             } else {
-                text_scale = calc_text_scale_confines(label, w, 10);
+                var _text_scale = calc_text_scale_confines(label, w, 10);
+
+                text_scale = _text_scale.scale;
+
+                label = _text_scale.text;
             }
             h = string_height(label) + 4;
         }

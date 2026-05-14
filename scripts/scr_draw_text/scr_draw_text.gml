@@ -125,14 +125,59 @@ function draw_text_shadow(_x, _y, _text) {
     draw_text(_x, _y, _text);
 }
 
-function calc_text_scale_confines(text, width, buffer = 0) {
-    var _scale = 1;
-    var _string_width = string_width(text);
-    if (_string_width > (width - buffer)) {
-        _scale = (width - buffer) / _string_width;
+/// @param {string} text
+/// @param {real}   width
+/// @param {real}   buffer
+/// @param {bool}   allow_line_breaking
+/// @returns {struct} { text, scale }
+function calc_text_scale_confines(text, width, buffer = 0, allow_line_breaking = true) {
+
+    var _usable_width = max(0, width - buffer);
+    var _text         = text;
+    var _scale        = 1;
+
+    var _string_width = string_width(_text);
+
+    if (_string_width > _usable_width) {
+        _scale = _usable_width / _string_width;
+
+        // Only attempt line-breaking when scale has shrunk enough to warrant it
+        if (allow_line_breaking && _scale < 0.5) {
+
+            // ── Word-wrap pass ────────────────────────────────────────────
+            var _words      = string_split(_text, " ");   // GM 2022.1+
+            var _lines      = [""];
+            var _line_idx   = 0;
+
+            for (var i = 0; i < array_length(_words); i++) {
+                var _word      = _words[i];
+                var _candidate = (_lines[_line_idx] != "") 
+                                 ? _lines[_line_idx] + " " + _word 
+                                 : _word;
+
+                if (string_width(_candidate) > _usable_width && _lines[_line_idx] != "") {
+                    // Current line is full — open a new one
+                    _line_idx++;
+                    array_push(_lines, _word);
+                } else {
+                    _lines[_line_idx] = _candidate;
+                }
+            }
+
+            _text = string_join_ext("\n", _lines);        // GM 2022.6+
+
+            // ── Recalculate scale from the widest wrapped line ────────────
+            var _max_w = 0;
+            for (var i = 0; i < array_length(_lines); i++) {
+                var _lw = string_width(_lines[i]);
+                if (_lw > _max_w) _max_w = _lw;
+            }
+
+            _scale = (_max_w > _usable_width) ? (_usable_width / _max_w) : 1;
+        }
     }
 
-    return _scale;
+    return { text: _text, scale: _scale };
 }
 
 /// @function draw_text_ext_shadow

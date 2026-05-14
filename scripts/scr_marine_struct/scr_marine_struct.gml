@@ -137,6 +137,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     religion_sub_cult = "none";
     base_group = "none";
     role_history = [];
+    epithets = [];
     enum eROLE_TAG {
         Techmarine = 0,
         Librarian = 1,
@@ -928,6 +929,17 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static update_age = function(new_val) {
         obj_ini.age[company][marine_number] = new_val;
     };
+
+    //TODO build epithets in to marine profile
+    static add_epithet = function(epithet){
+        if (is_string(epithet)){
+            epithet = {
+                title : epithet,
+                story : "",
+            }
+        }
+        array_push(epithets,epithet);
+    }
 
     static name = function() {
         return obj_ini.name[company][marine_number];
@@ -1765,18 +1777,29 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     //quick way of getting name and role combined in string
-    static name_role = function() {
-        var temp_role = role();
-        if (squad != "none") {
-            var _squad = get_squad();
-            if (struct_exists(obj_ini.squad_types[$ _squad.type], temp_role)) {
-                var role_info = obj_ini.squad_types[$ _squad.type][$ temp_role];
-                if (struct_exists(role_info, "role")) {
-                    temp_role = role_info[$ "role"];
-                }
+    static name_role = function(include_epithet = true, include_role = true) {
+
+        var _name = name();
+
+         if (include_role){
+            var _temp_role = squad_role();
+            _name = string("{0} {1}", _temp_role, _name);
+        }
+
+        if (include_epithet){
+            var _epithet = "";
+            if (array_length(epithets)){
+                _epithet += $"{epithets[0].title}";
             }
         }
-        return string("{0} {1}", temp_role, name());
+
+        if (include_epithet && _epithet != ""){
+            return string("{0} {1}", _name, _epithet);
+        }
+
+        return _name;
+
+        
     };
 
     static controllable = function() {
