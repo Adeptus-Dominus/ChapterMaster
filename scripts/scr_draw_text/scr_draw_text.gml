@@ -132,7 +132,7 @@ function draw_text_shadow(_x, _y, _text) {
 /// @returns {struct} { text, scale }
 function calc_text_scale_confines(text, width, buffer = 0, allow_line_breaking = true) {
 
-    var _usable_width = width - buffer;
+    var _usable_width = max(0, width - buffer);
     var _text         = text;
     var _scale        = 1;
 

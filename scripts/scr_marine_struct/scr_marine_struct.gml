@@ -1787,14 +1787,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
 
         if (include_epithet){
-            epithet = "";
+            var _epithet = "";
             if (array_length(epithets)){
-                epithet += $" {epithets[0].title}";
+                _epithet += $"{epithets[0].title}";
             }
         }
 
-        if (include_epithet && epithet != ""){
-            return string("{0} {1}", _name, epithet);
+        if (include_epithet && _epithet != ""){
+            return string("{0} {1}", _name, _epithet);
         }
 
         return _name;
