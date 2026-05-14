@@ -22,7 +22,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
         ui_weapon[left_or_right] = sprite;
         arm_variant[left_or_right] = 1;
         ui_spec[left_or_right] = false;
-        new_weapon_draw[left_or_right] = true;
+        single_left_right_profile[left_or_right] = true;
         display_type = "normal_ranged";
     };
 
@@ -50,7 +50,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
         arm_variant[left_or_right] = 0;
         hand_variant[left_or_right] = 0;
         ui_spec[left_or_right] = true;
-        new_weapon_draw[left_or_right] = true;
+        single_left_right_profile[left_or_right] = true;
         display_type = "special_ranged";
     };
 
