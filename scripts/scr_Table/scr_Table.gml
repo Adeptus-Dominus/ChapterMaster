@@ -136,7 +136,9 @@ function Table(data) constructor {
                 draw_rectangle(x1, _row_level, x1 + w, _row_level + row_h, 1);
             }
 
-            row_method(_row, _row_entered);
+            if (is_struct(_row)) {
+                row_method(_row, _row_entered);
+            }
 
             _row_level += row_h;
         }
