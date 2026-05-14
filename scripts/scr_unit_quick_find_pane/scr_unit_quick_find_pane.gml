@@ -290,10 +290,11 @@ function UnitQuickFindPanel() constructor {
                             mission  :  mission_explain,
                             time  :  p_timer[i][p],
                             planet  :  i,
+                            system_id : id
                         };
                         
                         _data.click_left = method(_data,function(){
-                            set_map_pan_to_loc(system);
+                            set_map_pan_to_loc(system_id);
                         });
 
                         array_push(temp_log,_data);
@@ -487,68 +488,72 @@ function UnitQuickFindPanel() constructor {
     };
 
     static draw = function() {
-        add_draw_return_values();
-        if (obj_controller.menu == 0 && obj_controller.zoomed == 0) {
-            if (!instances_exist_any([obj_fleet_select, obj_star_select])) {
-                var x_draw = 0;
-                var lower_draw = main_panel.height + 110;
-                if (hide_sequence == 30) {
-                    hide_sequence = 0;
-                }
-                if ((hide_sequence > 0 && hide_sequence < 15) || (hide_sequence > 15 && hide_sequence < 30)) {
-                    if (hide_sequence > 15) {
-                        x_draw = ((main_panel.width / 15) * (hide_sequence - 15)) - main_panel.width;
-                    } else {
-                        x_draw = -((main_panel.width / 15) * hide_sequence);
+        try {
+            add_draw_return_values();
+            if (obj_controller.menu == 0 && obj_controller.zoomed == 0) {
+                if (!instances_exist_any([obj_fleet_select, obj_star_select])) {
+                    var x_draw = 0;
+                    var lower_draw = main_panel.height + 110;
+                    if (hide_sequence == 30) {
+                        hide_sequence = 0;
                     }
-                    hide_sequence++;
-                }
-                if (hide_sequence > 15 || hide_sequence < 15) {
-                    main_panel.draw(x_draw, 110, 0.46, 0.75);
-                    if (tab_buttons.fleets.draw(x_draw, 79, "Fleets")) {
-                        view_area = "fleets";
-                        update_fleet_table();
+                    if ((hide_sequence > 0 && hide_sequence < 15) || (hide_sequence > 15 && hide_sequence < 30)) {
+                        if (hide_sequence > 15) {
+                            x_draw = ((main_panel.width / 15) * (hide_sequence - 15)) - main_panel.width;
+                        } else {
+                            x_draw = -((main_panel.width / 15) * hide_sequence);
+                        }
+                        hide_sequence++;
                     }
-                    if (tab_buttons.garrisons.draw(115 + x_draw, 79, "System Troops")) {
-                        view_area = "garrisons";
-                        update_garrison_log();
-                    }
-                    if (tab_buttons.missions.draw(230 + x_draw, 79, "Missions")) {
-                        view_area = "missions";
-                        update_garrison_log();
-                    }
-                    if (x_draw < 0) {
-                        tab_buttons.hider.draw(0, lower_draw, "Show");
-                    } else {
-                        if (tab_buttons.hider.draw(x_draw + 280, lower_draw, "Hide")) {
+                    if (hide_sequence > 15 || hide_sequence < 15) {
+                        main_panel.draw(x_draw, 110, 0.46, 0.75);
+                        if (tab_buttons.fleets.draw(x_draw, 79, "Fleets")) {
+                            view_area = "fleets";
+                            update_fleet_table();
+                        }
+                        if (tab_buttons.garrisons.draw(115 + x_draw, 79, "System Troops")) {
+                            view_area = "garrisons";
+                            update_garrison_log();
+                        }
+                        if (tab_buttons.missions.draw(230 + x_draw, 79, "Missions")) {
+                            view_area = "missions";
+                            update_mission_log();
+                        }
+                        if (x_draw < 0) {
+                            tab_buttons.hider.draw(0, lower_draw, "Show");
+                        } else {
+                            if (tab_buttons.hider.draw(x_draw + 280, lower_draw, "Hide")) {
+                                hide_sequence++;
+                            }
+                        }
+                    } else if (hide_sequence == 15) {
+                        if (tab_buttons.hider.draw(0, lower_draw, "Show")) {
                             hide_sequence++;
                         }
                     }
-                } else if (hide_sequence == 15) {
-                    if (tab_buttons.hider.draw(0, lower_draw, "Show")) {
-                        hide_sequence++;
+                    /*if (tab_buttons.troops.draw(345,79, "Troops")){
+    				    view_area="troops";
+    				}*/
+                }
+                if (array_length(travel_target) == 2) {
+                    if (obj_controller.x != travel_target[0] || obj_controller.y != travel_target[1]) {
+                        obj_controller.x += travel_increments[0];
+                        obj_controller.y += travel_increments[1];
+                        travel_time++;
+                    } else {
+                        travel_target = [];
+                    }
+                    if (travel_time == 15) {
+                        obj_controller.x = travel_target[0];
+                        obj_controller.y = travel_target[1];
+                        travel_target = [];
                     }
                 }
-                /*if (tab_buttons.troops.draw(345,79, "Troops")){
-				    view_area="troops";
-				}*/
             }
-            if (array_length(travel_target) == 2) {
-                if (obj_controller.x != travel_target[0] || obj_controller.y != travel_target[1]) {
-                    obj_controller.x += travel_increments[0];
-                    obj_controller.y += travel_increments[1];
-                    travel_time++;
-                } else {
-                    travel_target = [];
-                }
-                if (travel_time == 15) {
-                    obj_controller.x = travel_target[0];
-                    obj_controller.y = travel_target[1];
-                    travel_target = [];
-                }
-            }
+            pop_draw_return_values();
+        } catch(_exception){
+            //dangerous to handle wiljustmake game unplayable if crash does occur
         }
-        pop_draw_return_values();
     };
 }
 

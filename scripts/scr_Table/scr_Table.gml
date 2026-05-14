@@ -106,7 +106,6 @@ function Table(data) constructor {
 
         var _row_level = y1 + header_h + 5;
         var _cols = array_length(column_widths);
-        var _row_entered = scr_hit_dimensions(_col_draw_x, _row_level, w, row_h);
 
         for (var i = 0; i < array_length(row_data); i++) {
             //TODO add built in support for scrolling tables
@@ -114,6 +113,8 @@ function Table(data) constructor {
                 break;
             }
             _col_draw_x = x1;
+            var _row_entered = scr_hit_dimensions(_col_draw_x, _row_level, w, row_h);
+            
             var _row = row_data[i];
             if (is_array(row_data[i])) {
                 for (var d = 0; d < array_length(_row) && d < _cols; d++) {
