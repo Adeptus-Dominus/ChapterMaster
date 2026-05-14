@@ -1777,7 +1777,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     //quick way of getting name and role combined in string
-    static name_role = function() {
+    static name_role = function(include_epithet = true) {
         var temp_role = role();
         if (squad != "none") {
             var _squad = get_squad();
@@ -1788,6 +1788,16 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 }
             }
         }
+
+        if (include_epithet){
+            epithet = "";
+            if (array_length(epithets)){
+                epithet += $" {epithets[0].title}";
+            }
+
+            return string("{0} {1} {2}", temp_role, name(), epithet);
+        }
+
         return string("{0} {1}", temp_role, name());
     };
 
