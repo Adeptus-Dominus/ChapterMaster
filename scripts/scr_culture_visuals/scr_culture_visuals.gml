@@ -3234,17 +3234,21 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_weapon_storm,
-                single_left_right_profile: true,
-                 subcomponents: [
+                weapon_data : {
+                    single_left_right_profile: true,
+                },
+                subcomponents: [
                     [
                         spr_blank,
                         spr_weapon_storm_boss
                     ],
-                 ]
+                ]
             },
             {
                 sprite: spr_weapon_storm_complex,
-                single_left_right_profile: true,
+                weapon_data : {
+                    single_left_right_profile: true,
+                },
                 subcomponents: [
                     [
                         spr_blank,
