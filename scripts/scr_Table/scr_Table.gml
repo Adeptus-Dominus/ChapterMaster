@@ -12,9 +12,13 @@ function Table(data) constructor {
 
     halign = fa_center;
 
+    colour = CM_GREEN_COLOR;
+
     header_h = 0;
 
     col_spacing = 5;
+
+    font = fnt_40k_14;
 
     move_data_to_current_scope(data);
 
@@ -55,11 +59,44 @@ function Table(data) constructor {
         }
     };
 
+    static row_method = function(_row, _row_entered){
+
+        if (!_row_entered){
+            return;
+        }
+
+        if (struct_exists(_row, "hover")) {
+            //LOGGER.debug($"click : {struct_exists(_row,"click_left")}");
+            _row.hover();
+        }
+
+        if (struct_exists(_row, "click_left")) {
+            if (mouse_button_clicked()) {
+                _row.click_left();
+            }
+        }
+
+        if (struct_exists(_row,"click_right")){
+            if (mouse_button_clicked(mb_right)){
+                _row.click_right();
+            }
+        } 
+    }
+
+    static row_count = function(){
+        return array_length(row_data);
+    }
+
+
     static draw = function() {
         add_draw_return_values();
 
         draw_set_halign(halign);
         draw_set_valign(fa_top);
+        draw_set_color(colour);
+        draw_set_font(font);
+
+        row_h = max(row_h, string_height("a") + 1);
 
         var _col_draw_x = x1;
         for (var i = 0; i < array_length(headings); i++) {
@@ -69,14 +106,16 @@ function Table(data) constructor {
 
         var _row_level = y1 + header_h + 5;
         var _cols = array_length(column_widths);
+
         for (var i = 0; i < array_length(row_data); i++) {
             //TODO add built in support for scrolling tables
             if (_row_level > y2 - row_h) {
                 break;
             }
             _col_draw_x = x1;
-            var _row = row_data[i];
             var _row_entered = scr_hit_dimensions(_col_draw_x, _row_level, w, row_h);
+            
+            var _row = row_data[i];
             if (is_array(row_data[i])) {
                 for (var d = 0; d < array_length(_row) && d < _cols; d++) {
                     draw_text(_col_draw_x + (column_widths[d] / 2), _row_level, _row[d]);
@@ -85,18 +124,20 @@ function Table(data) constructor {
             } else if (is_struct(_row)) {
                 for (var d = 0; d < array_length(row_key_draw) && d < _cols; d++) {
                     var _key = row_key_draw[d];
-                    draw_text(_col_draw_x + (column_widths[d] / 2), _row_level, _row[$ _key]);
+                    var _scale_edits = calc_text_scale_confines(_row[$ _key], column_widths[d], 0);
+                    var _scale = min(1,_scale_edits.scale);
+                    var _text = _scale_edits.text;
+                    draw_text_transformed(_col_draw_x + (column_widths[d] / 2),_row_level, _text, _scale,_scale, 0)
                     _col_draw_x += column_widths[d] + col_spacing;
                 }
-                if (_row_entered && struct_exists(_row, "hover")) {
-                    //LOGGER.debug($"click : {struct_exists(_row,"click_left")}");
-                    _row.hover();
-                }
-                if (_row_entered && struct_exists(_row, "click_left")) {
-                    if (mouse_button_clicked()) {
-                        _row.click_left();
-                    }
-                }
+            }
+
+            if (_row_entered){
+                draw_rectangle(x1, _row_level, x1 + w, _row_level + row_h, 1);
+            }
+
+            if (is_struct(_row)) {
+                row_method(_row, _row_entered);
             }
 
             _row_level += row_h;
