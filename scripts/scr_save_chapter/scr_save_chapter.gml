@@ -31,17 +31,17 @@ function scr_save_chapter(chapter_id) {
     chap.home_planets = buttons.home_planets.current_selection;
 
     var adv = [];
-    for (var i = 0;i<array_length(obj_creation.all_advantages);i++){
+    for (var i = 0; i < array_length(obj_creation.all_advantages); i++) {
         var _adv = obj_creation.all_advantages[i];
-        if (_adv.activated){
+        if (_adv.activated) {
             array_push(adv, _adv.name);
         }
     }
-    
+
     var dis = [];
-    for (var i = 0;i<array_length(obj_creation.all_disadvantages);i++){
+    for (var i = 0; i < array_length(obj_creation.all_disadvantages); i++) {
         var _disadv = obj_creation.all_disadvantages[i];
-        if (_disadv.activated){
+        if (_disadv.activated) {
             array_push(dis, _disadv.name);
         }
     }

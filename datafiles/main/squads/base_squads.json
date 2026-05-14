@@ -1,0 +1,475 @@
+{
+  "command_squad": {
+    "Captain": {
+      "max": 1,
+      "min": 1
+    },
+    "Champion": {
+      "max": 1,
+      "min": 0,
+      "role": "Company Champion"
+    },
+    "Apothecary": {
+      "max": 1,
+      "min": 0,
+      "role": "Company Apothecary"
+    },
+    "Chaplain": {
+      "max": 1,
+      "min": 0,
+      "role": "Company Chaplain"
+    },
+    "Ancient": {
+      "max": 1,
+      "min": 1,
+      "role": "Company Ancient"
+    },
+    "Veteran": {
+      "max": 5,
+      "min": 0,
+      "role": "Company Veteran",
+      "loadout": {
+        "required": {
+          "wep1": ["", 0],
+          "wep2": ["Combat Knife", "max"]
+        },
+        "option": {
+          "wep1": [
+            ["{WEAPON_LIST_RANGED_VETERAN}", 5]
+          ]
+        }
+      }
+    },
+    "Techmarine": {
+      "max": 2,
+      "min": 0,
+      "role": "Company Techmarine"
+    },
+    "Librarian": {
+      "max": 1,
+      "min": 0,
+      "role": "Company Librarian"
+    },
+    "type_data": {
+      "display_data": "Command {squad_name}",
+      "formation_options": [
+        "command",
+        "terminator",
+        "veteran",
+        "assault",
+        "devastator",
+        "scout",
+        "tactical"
+      ],
+      "base" : "command"
+    }
+  },
+
+  "terminator_squad": {
+    "Veteran Sergeant": {
+      "max": 1,
+      "min": 1,
+      "role": "Terminator Sergeant",
+      "loadout": {
+        "required": {
+          "wep1": ["", 0],
+          "wep2": ["", 0]
+        },
+        "option": {
+          "wep1": [
+            [["Power Fist", "Chainfist"], 1]
+          ],
+          "wep2": [
+            ["{WEAPON_LIST_RANGED_COMBI}", 1]
+          ]
+        }
+      }
+    },
+    "Terminator": {
+      "max": 4,
+      "min": 2,
+      "loadout": {
+        "required": {
+          "wep1": ["", 0],
+          "wep2": ["", 0]
+        },
+        "option": {
+          "wep1": [
+            [["Power Fist", "Chainfist"], 4]
+          ],
+          "wep2": [
+            ["{WEAPON_LIST_RANGED_COMBI}", 3],
+            ["{WEAPON_LIST_RANGED_HEAVY_TERMINATOR}", 1]
+          ]
+        }
+      }
+    },
+    "type_data": {
+      "display_data": "Terminator {squad_name}",
+      "formation_options": [
+        "terminator",
+        "veteran",
+        "assault",
+        "devastator",
+        "scout",
+        "tactical"
+      ],
+      "base" : "terminator",
+    }
+  },
+
+  "terminator_assault_squad": {
+    "Veteran Sergeant": {
+      "max": 1,
+      "min": 1,
+      "role": "Assault Terminator Sergeant",
+      "loadout": {
+        "required": {
+          "wep1": ["Thunder Hammer", 1],
+          "wep2": ["Storm Shield", 1]
+        }
+      }
+    },
+    "Terminator": {
+      "max": 4,
+      "min": 2,
+      "role": "Assault Terminator",
+      "loadout": {
+        "required": {
+          "wep1": ["Thunder Hammer", 1],
+          "wep2": ["Storm Shield", 1]
+        },
+        "option": {
+          "wep1": [
+            [["Lightning Claw"], 3, { "wep2": "Lightning Claw" }]
+          ]
+        }
+      }
+    },
+    "type_data": {
+      "display_data": "Terminator Assault {squad_name}",
+      "formation_options": [
+        "terminator",
+        "veteran",
+        "assault",
+        "devastator",
+        "scout",
+        "tactical"
+      ],
+      "base" : "terminator",
+    }
+  },
+
+  "veteran_squad": {
+    "Veteran Sergeant": {
+      "max": 1,
+      "min": 1,
+      "role": "Veteran Sergeant",
+      "loadout": {
+        "required": {
+          "wep1": ["", 0],
+          "wep2": ["Combat Knife", "max"]
+        },
+        "option": {
+          "wep1": [
+            ["{WEAPON_LIST_RANGED_VETERAN}", 1]
+          ]
+        }
+      }
+    },
+    "Veteran": {
+      "max": 9,
+      "min": 4,
+      "role": "Veteran",
+      "loadout": {
+        "required": {
+          "wep1": ["", 0],
+          "wep2": ["Combat Knife", "max"]
+        },
+        "option": {
+          "wep1": [
+            ["{WEAPON_LIST_RANGED_VETERAN}", 7],
+            ["{WEAPON_LIST_RANGED_SPECIAL}", 1],
+            ["{WEAPON_LIST_RANGED_HEAVY}", 1, 
+              { "mobi": "Heavy Weapons Pack" }]
+          ]
+        }
+      }
+    },
+    "type_data": {
+      "display_data": "Veteran {squad_name}",
+      "formation_options": [
+        "veteran",
+        "assault",
+        "devastator",
+        "scout",
+        "tactical"
+      ],
+      "base" : "veteran"
+    },
+  },
+
+  "devastator_squad": {
+    "Devastator": {
+      "max": 9,
+      "min": 4,
+      "loadout": {
+        "required": {
+          "wep1": ["Bolter", 5],
+          "wep2": ["Combat Knife", 9],
+          "mobi": ["", 5]
+        },
+        "option": {
+          "wep1": [
+            ["{WEAPON_LIST_RANGED_HEAVY}", 4, { "mobi": "Heavy Weapons Pack" }]
+          ]
+        }
+      }
+    },
+    "Sergeant": {
+      "max": 1,
+      "min": 1,
+      "role": "Devastator Sergeant",
+      "loadout": {
+        "required": {
+          "wep2": ["Combat Knife", 1],
+          "mobi": ["", 0]
+        },
+        "option": {
+          "wep1": [
+            ["{WEAPON_LIST_RANGED}", 1]
+          ]
+        }
+      }
+    },
+    "type_data": {
+      "display_data": "Devastator {squad_name}",
+      "formation_options": [
+        "devastator",
+        "tactical",
+        "assault",
+        "scout"
+      ],
+      "base" : "devastator"
+    }
+  },
+
+  "tactical_squad": {
+    "Tactical": {
+      "max": 9,
+      "min": 4,
+      "loadout": {
+        "required": {
+          "wep1": ["wep1[8]", 7],
+          "wep2": ["wep2[8]", 7]
+        },
+        "option": {
+          "wep1": [
+            ["{WEAPON_LIST_RANGED_SPECIAL}", 1],
+            ["{WEAPON_LIST_RANGED_HEAVY}", 1, { "wep2": "Combat Knife", "mobi": "Heavy Weapons Pack" }]
+          ]
+        }
+      }
+    },
+    "Sergeant": {
+      "max": 1,
+      "min": 1,
+      "role": "Tactical Sergeant",
+      "loadout": {
+        "required": {
+          "wep1": ["", 0],
+          "wep2": ["", 0]
+        },
+        "option": {
+          "wep1": [
+            ["{WEAPON_LIST_RANGED_PISTOLS_LONG}", 1]
+          ],
+          "wep2": [
+            ["{WEAPON_LIST_MELEE_BASIC}", 1]
+          ]
+        }
+      }
+    },
+    "type_data": {
+      "display_data": "Tactical {squad_name}",
+      "class": ["troop"],
+      "formation_options": [
+        "tactical",
+        "assault",
+        "devastator",
+        "scout"
+      ],
+      "base":"tactical"
+    },
+  },
+
+  "assault_squad": {
+    "Assault": {
+      "max": 9,
+      "min": 4,
+      "loadout": {
+        "required": {
+          "wep1": ["wep1[10]", 5],
+          "wep2": ["wep2[10]", 5]
+        },
+        "option": {
+          "wep1": [
+            [["Eviscerator"], 2, { "wep2": "" }]
+          ],
+          "wep2": [
+            [["Flamer", "Flamer", "Flamer", "Plasma Pistol"], 2]
+          ]
+        }
+      }
+    },
+    "Sergeant": {
+      "max": 1,
+      "min": 1,
+      "role": "Assault Sergeant",
+      "loadout": {
+        "required": {
+          "wep1": ["", 0],
+          "wep2": ["", 0],
+          "gear": ["Combat Shield", 1]
+        },
+        "option": {
+          "wep1": [
+            ["{WEAPON_LIST_RANGED_PISTOLS}", 1]
+          ],
+          "wep2": [
+            ["{WEAPON_LIST_MELEE_1H}", 1]
+          ]
+        }
+      }
+    },
+    "type_data": {
+      "display_data": "Assault {squad_name}",
+      "formation_options": [
+        "assault",
+        "tactical",
+        "devastator",
+        "scout"
+      ],
+      "base":"assault"
+    }
+  },
+
+  "scout_squad": {
+    "Scout": {
+      "max": 9,
+      "min": 4,
+      "loadout": {
+        "required": {
+          "wep1": ["", 0],
+          "wep2": ["Combat Knife", "max"]
+        },
+        "option": {
+          "wep1": [
+            [["Bolter", "Bolter", "Shotgun", "Sniper Rifle", "Stalker Pattern Bolter"], 8],
+            [["Missile Launcher", "Heavy Bolter"], 1]
+          ]
+        }
+      }
+    },
+    "Sergeant": {
+      "max": 1,
+      "min": 1,
+      "role": "Scout Sergeant",
+      "loadout": {
+        "required": {
+          "wep1": ["", 0],
+          "wep2": ["Combat Knife", 1]
+        },
+        "option": {
+          "wep1": [
+            ["{WEAPON_LIST_RANGED}", 1]
+          ]
+        }
+      }
+    },
+    "type_data": {
+      "display_data": "Scout {squad_name}",
+      "class": ["scout"],
+      "formation_options": [
+        "scout",
+        "tactical",
+        "assault",
+        "devastator"
+      ]
+    }
+  },
+  "bike_squad": {
+      "Assault": {
+          "max": 9,
+          "min": 4,
+          "role": "Biker",
+          "loadout": {
+              "required": {
+                  "wep1": ["", "max"],
+                  "wep2": ["Chainsword", "max"],
+                  "mobi": ["Bike", "max"]
+              }
+          }
+      },
+      "Sergeant": {
+          "max": 1,
+          "min": 1,
+          "role": "Biker Sergeant",
+          "loadout": {
+              "required": {
+                  "wep1": ["", "max"],
+                  "wep2": ["Chainsword", "max"],
+                  "mobi": ["Bike", 1]
+              }
+          }
+      },
+      "type_data": {
+          "display_data": "Bike {squad_name}",
+          "class": ["bike"],
+          "formation_options": ["assault", "tactical"]
+      }
+  },
+  "breacher_squad": {
+      "Tactical": {
+          "max": 9,
+          "min": 4,
+          "role": "Breacher",
+          "loadout": {
+              "required": {
+                  "wep1": ["wep1[8]", 7],
+                  "wep2": ["Boarding Shield", "max"],
+                  "armour": ["MK3 Iron Armour", "max"],
+                  "gear": ["Plasma Bomb", "max"],
+                  "mobi": ["", "max"]
+              },
+              "option": {
+                  "wep1": [
+                      [["Flamer", "Flamer", "Flamer", "Grav-Gun", "Meltagun", "Lascutter"], 2]
+                  ]
+              }
+          }
+      },
+      "Sergeant": {
+          "max": 1,
+          "min": 1,
+          "role": "Breacher Sergeant",
+          "loadout": {
+              "required": {
+                  "wep2": ["Boarding Shield", "max"],
+                  "armour": ["MK3 Iron Armour", "max"],
+                  "mobi": ["", "max"],
+                  "gear": ["Plasma Bomb", "max"]
+              },
+              "option": {
+                  "wep1": [
+                      ["{WEAPON_LIST_RANGED_COMBI}", 1]
+                  ]
+              }
+          }
+      },
+      "type_data": {
+          "display_data": "Breacher {squad_name}",
+          "formation_options": ["tactical", "assault", "devastator", "scout"]
+      }
+  }
+}

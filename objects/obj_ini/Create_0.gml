@@ -196,15 +196,10 @@ serialize = function() {
             }
         }
     }
-    var squads = [];
-    if (array_length(object_ini.squads) > 0) {
-        for (var i = 0; i < array_length(object_ini.squads); i++) {
-            array_push(squads, object_ini.squads[i].jsonify(false));
-        }
-    }
 
     var artifact_struct_trimmed = [];
-    for (var i = 0; i < array_length(artifact_struct); i++) {
+    var _artifact_count = array_length(artifact_struct);
+    for (var i = 0; i < _artifact_count; i++) {
         if (artifact_struct[i].name != "") {
             array_push(artifact_struct_trimmed, artifact_struct[i]);
         }
@@ -238,6 +233,7 @@ serialize = function() {
         "role_spawn_buffs",
         "TTRPG",
         "squads",
+        "squad_structs",
         "squad_types",
         "marines",
         "last_ship"
@@ -261,6 +257,11 @@ deserialize = function(save_data) {
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);
+
+    if (!array_contains(all_names, "chapter_squad_arrangement")){
+        obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main\\squads\\company_squad_builds.json", json_parse);
+    }
+    
     var _len = array_length(all_names);
     for (var i = 0; i < _len; i++) {
         var var_name = all_names[i];
@@ -320,13 +321,16 @@ deserialize = function(save_data) {
         }
     }
 
-    if (struct_exists(save_data, "squad_structs")) {
-        obj_ini.squads = [];
-        var squad_fetch = save_data.squad_structs;
-        for (i = 0; i < array_length(squad_fetch); i++) {
-            var sq = new UnitSquad();
-            sq.load_json_data(squad_fetch[i]);
-            array_push(obj_ini.squads, sq);
+    var _squad_structs = save_data[$ "squad_structs"];
+    if (_squad_structs && is_struct(_squad_structs)) {
+        obj_ini.squads = {};
+        var _squad_uids = struct_get_names(_squad_structs);
+        var _squad_count = array_length(_squad_uids);
+        for (var i = 0; i < _squad_count; i++) {
+            var _squad_uid = _squad_uids[i];
+            var _squad = new UnitSquad();
+            _squad.load_json_data(_squad_structs[$ _squad_uid]);
+            obj_ini.squads[$ _squad_uid] = _squad;
         }
     }
 
@@ -355,7 +359,7 @@ deserialize = function(save_data) {
         variable_struct_set(obj_ini, "gene_slaves", save_data.gene_slaves);
     }
 
-    if (struct_exists(save_data, "chapter_data")){
+    if (struct_exists(save_data, "chapter_data")) {
         obj_ini.chapter_data = new ChapterGameData(save_data.chapter_data);
     }
 };

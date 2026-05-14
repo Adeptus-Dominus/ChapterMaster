@@ -38,38 +38,41 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
     viable_garrison = 0;
     var operative, unit, member;
     for (var ops = 0; ops < array_length(planet_operatives); ops++) {
-        if (planet_operatives[ops].type == "squad") {
-            if (planet_operatives[ops].job == type) {
-                //marine garrison on planet
-                if (array_length(obj_ini.squads[planet_operatives[ops].reference].members) > 0) {
-                    operative = obj_ini.squads[planet_operatives[ops].reference];
-                    array_push(garrison_squads, operative);
-                    total_garrison += array_length(operative.members);
-                    garrison_force = true;
-                    for (var i = 0; i < array_length(operative.members); i++) {
-                        member = operative.members[i];
-                        unit = fetch_unit([member[0], member[1]]);
-                        if (!is_struct(unit)) {
-                            continue;
-                        }
-                        if (unit.name() == "") {
-                            continue;
-                        }
-                        array_push(members, unit);
-                        if (unit.hp() > 0) {
-                            viable_garrison++;
-                        }
-                    }
-                    if (turn_end) {
-                        planet_operatives[ops].task_time++;
-                    }
-                    if (planet_operatives[ops].task_time > time_on_planet) {
-                        time_on_planet = planet_operatives[ops].task_time;
-                    }
-                } else {
-                    array_delete(planet_operatives, ops, 1);
-                    ops--;
+        var _op = planet_operatives[ops];
+        if (_op.type == "squad") {
+            if (_op.job != type) {
+                continue;
+            }
+            //marine garrison on planet
+            var _squad = fetch_squad(_op.reference);
+            if (array_length(_squad.members) <= 0) {
+                array_delete(planet_operatives, ops, 1);
+                ops--;
+                continue;
+            }
+
+            operative = _squad;
+            array_push(garrison_squads, operative);
+            total_garrison += array_length(operative.members);
+            garrison_force = true;
+            for (var i = 0; i < array_length(operative.members); i++) {
+                unit = operative.fetch_member(i);
+                if (!is_struct(unit)) {
+                    continue;
                 }
+                if (unit.name() == "") {
+                    continue;
+                }
+                array_push(members, unit);
+                if (unit.hp() > 0) {
+                    viable_garrison++;
+                }
+            }
+            if (turn_end) {
+                _op.task_time++;
+            }
+            if (_op.task_time > time_on_planet) {
+                time_on_planet = _op.task_time;
             }
         }
     }
@@ -119,7 +122,7 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
         var unit;
         for (var _squad = 0; _squad < array_length(garrison_squads); _squad++) {
             var _leader = garrison_squads[_squad].determine_leader();
-            unit = obj_ini.TTRPG[_leader[0]][_leader[1]];
+            unit = fetch_unit(_leader);
             if (garrison_leader == "none") {
                 garrison_leader = unit;
                 for (var r = 0; r < array_length(hierarchy); r++) {

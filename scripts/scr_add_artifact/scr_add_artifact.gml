@@ -75,10 +75,10 @@ function scr_add_artifact(artifact_type = "random", artifact_tags = "", is_ident
 
     if ((base_type == "Armour") && (base_type_detail == "")) {
         if (rand2 <= 70) {
-            var _armour_list = LIST_BASIC_POWER_ARMOUR;
+            var _armour_list = global.list_basic_power_armour;
             base_type_detail = array_random_element(_armour_list);
         } else if (rand2 <= 80) {
-            var _armour_list = LIST_TERMINATOR_ARMOUR;
+            var _armour_list = global.list_terminator_armour;
             base_type_detail = _armour_list[irandom(array_length(_armour_list) - 1)];
         } else if (rand2 <= 90) {
             base_type_detail = "Dreadnought Armour";
@@ -392,34 +392,63 @@ function ArtifactStruct(Index) constructor {
     };
 
     static artifact_faction_value = function(faction) {
-        #macro ART_PLAYER []
-        #macro ART_IMPERIUM ["PUR", "ADAMANTINE", "GLOW", "CHB", "UFL", "UBOLT", "DUB"]
-        #macro ART_MECHANICUS ["PUR", "RO", "CRU"]
-        #macro ART_INQUISITION ["PUR"]
-        #macro ART_ECCLESIARCHY ["PUR", "ART", "GOLD"]
-        #macro ART_ELDAR ["SUP", "ART", "JAD", "SILENT", "SCOPE"]
-        #macro ART_ORK []
-        #macro ART_TAU ["SUP", "ART", "BIG", "SOO", "SCOPE"]
-        #macro ART_TYRANIDS [] // Tyranids, Genestealers
-        #macro ART_CHAOS [] // Chaos, Heretics
-        #macro ART_NECRONS []
+        static art_player = [];
+        static art_imperium = [
+            "PUR",
+            "ADAMANTINE",
+            "GLOW",
+            "CHB",
+            "UFL",
+            "UBOLT",
+            "DUB"
+        ];
+        static art_mechanicus = [
+            "PUR",
+            "RO",
+            "CRU"
+        ];
+        static art_inquisition = ["PUR"];
+        static art_ecclesiarchy = [
+            "PUR",
+            "ART",
+            "GOLD"
+        ];
+        static art_eldar = [
+            "SUP",
+            "ART",
+            "JAD",
+            "SILENT",
+            "SCOPE"
+        ];
+        static art_ork = [];
+        static art_tau = [
+            "SUP",
+            "ART",
+            "BIG",
+            "SOO",
+            "SCOPE"
+        ];
+        static art_tyranids = []; // Tyranids, Genestealers
+        static art_chaos = []; // Chaos, Heretics
+        static art_necrons = [];
 
         var faction_preferences = [
             [],
-            ART_PLAYER,
-            ART_IMPERIUM,
-            ART_MECHANICUS,
-            ART_INQUISITION,
-            ART_ECCLESIARCHY,
-            ART_ELDAR,
-            ART_ORK,
-            ART_TAU,
-            ART_TYRANIDS,
-            ART_CHAOS,
-            ART_CHAOS,
-            ART_TYRANIDS,
-            ART_NECRONS
+            art_player,
+            art_imperium,
+            art_mechanicus,
+            art_inquisition,
+            art_ecclesiarchy,
+            art_eldar,
+            art_ork,
+            art_tau,
+            art_tyranids,
+            art_chaos,
+            art_chaos,
+            art_tyranids,
+            art_necrons
         ];
+
         if (faction < 0 || faction >= array_length(faction_preferences)) {
             // Logging or fallback
             LOGGER.warning("Warning: Faction index out of range. Defaulting to empty preferences.");

@@ -349,12 +349,12 @@ function calculate_equipment_needs() {
         if ((obj_controller.man[i] != "") && obj_controller.man_sel[i] && obj_controller.ma_promote[i] && (obj_controller.ma_exp[i] >= min_exp)) {
             if (is_struct(unit_armour)) {
                 if (req_armour == STR_ANY_POWER_ARMOUR) {
-                    if (array_contains(LIST_BASIC_POWER_ARMOUR, unit_armour.name)) {
+                    if (array_contains(global.list_basic_power_armour, unit_armour.name)) {
                         have_armour_num += 1;
                     }
                 }
                 if (req_armour == STR_ANY_TERMINATOR_ARMOUR) {
-                    if (array_contains(LIST_TERMINATOR_ARMOUR, unit_armour.name)) {
+                    if (array_contains(global.list_terminator_armour, unit_armour.name)) {
                         have_armour_num += 1;
                     }
                 }
@@ -386,12 +386,12 @@ function calculate_equipment_needs() {
 
     // This checks to see if there is any more in the armoury
     if (req_armour == STR_ANY_POWER_ARMOUR) {
-        var _armour_list = LIST_BASIC_POWER_ARMOUR;
+        var _armour_list = global.list_basic_power_armour;
         for (i = 0; i < array_length(_armour_list); i++) {
             have_armour_num += scr_item_count(_armour_list[i]);
         }
     } else if (req_armour == STR_ANY_TERMINATOR_ARMOUR) {
-        var _armour_list = LIST_TERMINATOR_ARMOUR;
+        var _armour_list = global.list_terminator_armour;
         for (i = 0; i < array_length(_armour_list); i++) {
             have_armour_num += scr_item_count(_armour_list[i]);
         }

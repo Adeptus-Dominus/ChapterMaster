@@ -1,6 +1,12 @@
 //TODO: a bunch of stuff in this file and related to it uses strings, replace them with constants;
 
-#macro PSY_DISCIPLINES_STARTING ["librarius", "biomancy", "pyromancy", "telekinesis", "rune_magic"]
+global.psy_disciplines_starting = [
+    "librarius",
+    "biomancy",
+    "pyromancy",
+    "telekinesis",
+    "rune_magic"
+];
 
 #macro PSY_PERILS_CHANCE_MIN 1
 #macro PSY_PERILS_CHANCE_BASE 10
@@ -474,7 +480,7 @@ function power_conditions_check(conditions_array) {
 /// @mixin
 function player_select_powers() {
     if (race[100][17] != 0) {
-        var _starting_powers = PSY_DISCIPLINES_STARTING;
+        var _starting_powers = global.psy_disciplines_starting;
         var _discipline_index = array_get_index(_starting_powers, discipline);
         if (_discipline_index == -1) {
             discipline = _starting_powers[0];

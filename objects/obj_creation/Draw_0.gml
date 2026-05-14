@@ -813,8 +813,8 @@ try {
         //TODO refactor to make arrow buttoon objects
         if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && (!instance_exists(obj_creation_popup))) {
             var _lock = false;
-            if (scr_hit([925, 756, 997, 824])){
-                if (slide == eCREATION_SLIDES.CHAPTERTRAITS && points > maxpoints){ 
+            if (scr_hit([925, 756, 997, 824])) {
+                if (slide == eCREATION_SLIDES.CHAPTERTRAITS && points > maxpoints) {
                     tooltip_draw("Points Too High!!");
                     _lock = true;
                 }

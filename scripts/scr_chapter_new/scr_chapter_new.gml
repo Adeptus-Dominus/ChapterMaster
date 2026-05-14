@@ -481,8 +481,16 @@ function scr_chapter_new(chapter_identifier) {
             obj_creation.custom_squads = chapter_object.custom_squads;
         }
 
+        if (struct_exists(chapter_object, "squad_builder")) {
+            obj_creation.squad_builder = chapter_object.squad_builder;
+        }
+
         if (struct_exists(chapter_object, "custom_advisors")) {
             obj_creation.custom_advisors = chapter_object.custom_advisors;
+        }
+
+        if (struct_exists(chapter_object, "companies")) {
+            obj_creation.companies = chapter_object.companies;
         }
 
         // Validate and clamp trait values to sane ranges (defaulting if missing/invalid)

@@ -18,8 +18,31 @@
 		the string (usually max) is guidance so in the instance of max it will pick the larger value of the mean and the gauss function return
 */
 // will swap these out for enums or some better method as i develop where this is going
-#macro UNIT_BODY_PARTS ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw", "head"]
-#macro UNIT_BODY_PARTS_DISPLAY ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw", "Head"]
+global.unit_body_parts = [
+    "left_leg",
+    "right_leg",
+    "torso",
+    "right_arm",
+    "left_arm",
+    "left_eye",
+    "right_eye",
+    "throat",
+    "jaw",
+    "head"
+];
+global.unit_body_parts_display = [
+    "Left Leg",
+    "Right Leg",
+    "Torso",
+    "Right Arm",
+    "Left Arm",
+    "Left Eye",
+    "Right Eye",
+    "Throat",
+    "Jaw",
+    "Head"
+];
+
 global.religions = {
     "imperial_cult": {
         "name": "Imperial Cult",
@@ -40,8 +63,38 @@ enum eLOCATION_TYPES {
     WARP,
 }
 
-#macro ARR_psy_levels ["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta", "Gamma Plus"]
-#macro ARR_negative_psy_levels ["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]
+global.arr_psy_levels = [
+    "Rho",
+    "Pi",
+    "Omicron",
+    "Xi",
+    "Nu",
+    "Mu",
+    "Lambda",
+    "Kappa",
+    "Iota",
+    "Theta",
+    "Eta",
+    "Zeta",
+    "Epsilon",
+    "Delta",
+    "Gamma",
+    "Beta",
+    "Alpha",
+    "Alpha Plus",
+    "Beta Plus",
+    "Gamma Plus"
+];
+global.arr_negative_psy_levels = [
+    "Rho",
+    "Sigma",
+    "Tau",
+    "Upsilon",
+    "Phi",
+    "Chi",
+    "Psi",
+    "Omega"
+];
 
 enum eEQUIPMENT_SLOT {
     WEAPON_ONE,
@@ -148,8 +201,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static squad_role = function() {
         var temp_role = role();
         if (squad != "none") {
-            if (struct_exists(obj_ini.squad_types[$ obj_ini.squads[squad].type], temp_role)) {
-                var role_info = obj_ini.squad_types[$ obj_ini.squads[squad].type][$ temp_role];
+            var _squad = fetch_squad(squad);
+            if (struct_exists(obj_ini.squad_types[$ _squad.type], temp_role)) {
+                var role_info = obj_ini.squad_types[$ _squad.type][$ temp_role];
                 if (struct_exists(role_info, "role")) {
                     temp_role = role_info[$ "role"];
                 }
@@ -308,7 +362,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         sz = 1;
         if (string_count("Dread", arm) > 0) {
             sz += 5;
-        } else if (array_contains(LIST_TERMINATOR_ARMOUR, arm)) {
+        } else if (array_contains(global.list_terminator_armour, arm)) {
             sz += 1;
         }
         //var mobi =  mobility_item();
@@ -366,7 +420,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     allegiance = faction; //faction alligience defaults to the chapter
 
     static stat_boosts = function(stat_boosters) {
-        var stats = UNIT_STAT_LIST;
+        var stats = global.stat_list;
         var edits = struct_get_names(stat_boosters);
         var edit_stat, random_stat, stat_mod;
         for (var stat_iter = 0; stat_iter < array_length(stats); stat_iter++) {
@@ -396,15 +450,38 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     //adds a trait to a marines trait list
-    static add_trait = function(trait) {
-        var balance_value;
+    static add_trait = function(trait,return_stat_diff = false, return_description = false) {
+
+        if (return_stat_diff){
+            var _start_stats = get_stat_line();
+        }
         if (struct_exists(global.trait_list, trait)) {
             if (!array_contains(traits, trait)) {
+
+                var _return_string = "";
                 var selec_trait = global.trait_list[$ trait];
                 stat_boosts(selec_trait);
                 array_push(traits, trait);
+
+                if (return_stat_diff){
+                    var _end_stats = get_stat_line();
+
+                    var _stat_diff = compare_stats(_end_stats,_start_stats);
+                }
+
+                if (return_description){
+                    _return_string += $"{name_role()} Has gained the trait {selec_trait.display_name}";
+                }
+
+                if (return_stat_diff){
+                    _return_string +=$", {(print_stat_diffs(_stat_diff))}"
+                }
+
+                return _return_string
             }
         }
+
+        return "";
     };
 
     static has_trait = marine_has_trait;
@@ -758,7 +835,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
         // Identify eligible parts
         var _eligible_parts = [];
-        var _body_parts = UNIT_BODY_PARTS;
+        var _body_parts = global.unit_body_parts;
         for (var i = 0, _len = array_length(_body_parts); i < _len; i++) {
             var _part_name = _body_parts[i];
             if (!get_body_data("bionic", _part_name)) {
@@ -1007,9 +1084,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return _powers_learned;
     };
 
-    static roll_dice = function(dices = 1, faces = 6, player_benefit_at="none"){
-        return roll_dice_unit(dices , faces , player_benefit_at, self);
-    }
+    static roll_dice = function(dices = 1, faces = 6, player_benefit_at = "none") {
+        return roll_dice_unit(dices, faces, player_benefit_at, self);
+    };
 
     static roll_psionics = function() {
         var _dice_count = marine_ascension == "pre_game" ? 1 : 2;
@@ -1609,10 +1686,15 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return armour_rating;
     };
 
+    static get_squad = function() {
+        return fetch_squad(squad);
+    };
+
     static assignment = function() {
         if (squad != "none") {
-            if (obj_ini.squads[squad].assignment != "none") {
-                return obj_ini.squads[squad].assignment.type;
+            var _squad = get_squad();
+            if (_squad.assignment != "none") {
+                return _squad.assignment.type;
             }
         }
         if (job != "none") {
@@ -1624,14 +1706,15 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static remove_from_squad = function() {
         if (squad != "none") {
-            if (squad < array_length(obj_ini.squads)) {
-                for (var r = 0; r < array_length(obj_ini.squads[squad].members); r++) {
-                    squad_member = obj_ini.squads[squad].members[r];
-                    if ((squad_member[0] == company) && (squad_member[1] == marine_number)) {
-                        array_delete(obj_ini.squads[squad].members, r, 1);
-                    }
+            var _squad = get_squad();
+
+            for (var r = 0; r < array_length(_squad.members); r++) {
+                squad_member = _squad.members[r];
+                if ((squad_member[0] == company) && (squad_member[1] == marine_number)) {
+                    array_delete(_squad.members, r, 1);
                 }
             }
+
             squad = "none";
         }
     };
@@ -1639,8 +1722,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static squad_type = function() {
         var _type = "none";
         if (squad != "none") {
-            if (squad < array_length(obj_ini.squads)) {
-                return obj_ini.squads[squad].type;
+            if (struct_exists(obj_ini.squads, squad)) {
+                return get_squad().type;
             }
         }
         return _type;
@@ -1654,7 +1737,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             remove_from_squad();
         }
         squad = new_squad;
-        var _squad = fetch_squad(squad);
+        var _squad = get_squad();
         _squad.add_member(company, marine_number);
     };
 
@@ -1681,22 +1764,23 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return [location_type, location_id, location_name];
     };
 
-    static controllable = function() {
-        return !location_out_of_player_control(location_string);
-    };
-
     //quick way of getting name and role combined in string
     static name_role = function() {
         var temp_role = role();
         if (squad != "none") {
-            if (struct_exists(obj_ini.squad_types[$ obj_ini.squads[squad].type], temp_role)) {
-                var role_info = obj_ini.squad_types[$ obj_ini.squads[squad].type][$ temp_role];
+            var _squad = get_squad();
+            if (struct_exists(obj_ini.squad_types[$ _squad.type], temp_role)) {
+                var role_info = obj_ini.squad_types[$ _squad.type][$ temp_role];
                 if (struct_exists(role_info, "role")) {
                     temp_role = role_info[$ "role"];
                 }
             }
         }
         return string("{0} {1}", temp_role, name());
+    };
+
+    static controllable = function() {
+        return !location_out_of_player_control(location_string);
     };
 
     static full_title = function() {
@@ -1853,7 +1937,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static in_jail = function() {
-        return obj_ini.god[company][marine_number] >= 10;
+        return god_status() >= 10;
+    };
+
+    static god_status = function() {
+        return obj_ini.god[company][marine_number];
     };
 
     static forge_point_generation = unit_forge_point_generation;
@@ -2049,9 +2137,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
     };
 
-    static movement_after_math = function(end_company = company, end_slot = marine_number) {
-        if (squad != "none") {
-            var squad_data = obj_ini.squads[squad];
+    static movement_after_math = function(end_company = company, end_slot = marine_number, check_squads = true) {
+        if (squad != "none" && check_squads) {
+            var squad_data = get_squad();
             var squad_member;
 
             for (var r = 0; r < array_length(squad_data.members); r++) {
@@ -2067,6 +2155,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                             end_slot
                         ];
                     }
+                    break;
                 }
             }
         }

@@ -3,6 +3,7 @@
 </p>
 
 # Chapter Master - Adeptus Dominus
+[![Release-Development](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/release_dev.yml/badge.svg)](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/release_dev.yml)
 [![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
 [![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/Adeptus-Dominus/ChapterMaster?logoColor=%23808080&label=CodeRabbit%20Reviews&labelColor=fd5608&color=545454)](https://coderabbit.ai/)
 [![GitHub repo size](https://img.shields.io/github/repo-size/Adeptus-Dominus/ChapterMaster?style=flat&label=Repo%20Size&labelColor=4493f8&color=545454)](https://github.com/Adeptus-Dominus/ChapterMaster)

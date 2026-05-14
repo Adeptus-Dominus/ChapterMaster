@@ -223,24 +223,13 @@ function scr_mission_reward(mission, star, planet) {
         }
         mech_disp_change = 0;
         var _text = "The Adeptus Mechanicus have finished experimenting on your marines";
-        var _marines = collect_role_group("all", [star.name, planet, -1]);
+        var _marines = collect_role_group("all", [star.name, planet, -1], false, {}, true);
         if (result == "Marines Lost") {
             _text += "- unfortunantly none of them have survived.  150 Requisition has provided as weregild for each Astartes lost.";
             mech_disp_change = 2;
-
-            for (var i = 0; i < array_length(_marines); i++) {
-                var _unit = _marines[i];
-                obj_controller.requisition += 150;
-
-                star.p_player[planet] -= _unit.get_unit_size();
-
-                kill_and_recover(_unit.company, _unit.marine_number, true, true);
-
-                cleanup[_unit.company] = 1;
-            }
-        }
-
-        if (result == "Bionics" || result == "Requisition") {
+            obj_controller.requisition += 150 * _marines.number();
+            _marines.kill_percent(100);
+        } else if (result == "Bionics" || result == "Requisition") {
             var _new_bionics = irandom_range(40, 100);
             obj_controller.disposition[3] += 1;
             mech_disp_change = 1;
@@ -255,8 +244,8 @@ function scr_mission_reward(mission, star, planet) {
                 obj_controller.requisition += req_gain;
             }
             var _limit = 0;
-            for (var i = 0; i < array_length(_marines); i++) {
-                var _unit = _marines[i];
+            for (var i = 0; i < array_length(_marines.units); i++) {
+                var _unit = _marines.units[i];
                 if (_unit.bionics > 0) {
                     _unit.update_health(irandom_range(2, 80));
 

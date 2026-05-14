@@ -42,6 +42,22 @@ function pop_draw_return_values() {
 // 🟩 UI ELEMENTS
 // --------------------
 
+function Box(data) constructor {
+    colour = CM_GREEN_COLOR;
+    move_data_to_current_scope(data);
+
+    static hit = function() {
+        return scr_hit(x1, y1, x2, y2);
+    };
+
+    static draw = function(outline) {
+        add_draw_return_values();
+        draw_set_color(colour);
+        draw_rectangle(x1, y1, x2, y2, outline);
+        pop_draw_return_values();
+    };
+}
+
 /// @function ReactiveString(text, x1, y1, data)
 /// @constructor
 /// @category UI

@@ -43,7 +43,7 @@ function transfer_marines() {
                 if (unit.squad != "none") {
                     // this evaluates if you are tryin to move a whole squad and if so moves teh squad to a new company
                     var move_squad = unit.squad;
-                    squad = obj_ini.squads[move_squad];
+                    squad = fetch_squad(move_squad);
                     move_members = squad.members;
                     for (var mem = 0; mem < array_length(move_members); mem++) {
                         //check all members have been selected and are in the same company
@@ -66,7 +66,8 @@ function transfer_marines() {
                             obj_controller.man_sel[w + mem] = 0;
                             var member_unit = fetch_unit(move_members[mem]);
                             scr_move_unit_info(member_unit.company, target_comp, member_unit.marine_number, mahreens, false);
-                            obj_ini.TTRPG[target_comp][mahreens].squad = move_squad;
+                            var _unit = fetch_unit([target_comp, mahreens]);
+                            _unit.squad = move_squad;
                             squad.members[mem][0] = target_comp;
                             squad.members[mem][1] = mahreens;
                             mahreens++;

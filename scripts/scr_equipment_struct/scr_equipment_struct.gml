@@ -378,7 +378,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
     static owner_data = function(owner) {
         //centralization of bonuses originating from weapon improvements e.g STCs
         if (owner == "chapter") {
-            if (type == "weapon") {
+            if (type == "weapon" && instance_exists(obj_controller)) {
                 if (obj_controller.stc_bonus[1] > 0 && obj_controller.stc_bonus[1] < 5) {
                     if (obj_controller.stc_bonus[1] == 2 && has_tag("chain")) {
                         attack *= 1.07;

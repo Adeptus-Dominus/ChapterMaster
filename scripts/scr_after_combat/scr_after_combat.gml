@@ -92,6 +92,7 @@ function add_vehicles_to_recovery() {
         }
     }
 }
+
 /// @mixin
 function assemble_alive_units() {
     for (var i = 0; i < array_length(unit_struct); i++) {

@@ -13,18 +13,17 @@ function distribute_strength_to_fleet(strength, fleet) {
 }
 
 /// @mixin obj_en_fleet
-function random_sector_exit_point(){
+function random_sector_exit_point() {
     action_x = choose(room_width * -1, room_width * 2);
     action_y = choose(room_height * -1, room_height * 2);
 }
 
-
 /// @mixin obj_en_fleet
-function in_room(object = undefined){
-    if (object == undefined){
+function in_room(object = undefined) {
+    if (object == undefined) {
         object = self;
     }
-    return !(object.x < 0 || object.x > room_width || object.y < 0 || object.y > room_height)
+    return !(object.x < 0 || object.x > room_width || object.y < 0 || object.y > room_height);
 }
 
 //to be run within with scope
@@ -48,6 +47,17 @@ function scr_valid_fleet_target(target) {
         valid = target.object_index == obj_p_fleet || target.object_index == obj_en_fleet;
     }
     return valid;
+}
+
+function get_fleet_uid(search_uid){
+    var _fleet = undefined;
+    with (obj_en_fleet){
+        if (uid == search_uid){
+            _fleet = id;
+            break;
+        }
+    }
+    return _fleet;
 }
 
 function fleets_next_location(fleet = "none", visited = []) {
