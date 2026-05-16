@@ -1541,7 +1541,7 @@
           {
             "squad": "deathwing_squad",
             "proportion": 1
-          },
+          }
         ]
       },
       {
@@ -1551,13 +1551,14 @@
             "squad": "ravenwing_command_squad",
             "max_count": 1,
             "min_count": 1,
+            "require": true
           },
           {
             "squad": "ravenwing_squad",
             "proportion": 1
-          },
+          }
         ]
-      },
+      }
     ],
   "custom_squads" : {
   "deathwing_command_squad": {
@@ -1650,6 +1651,7 @@
     "type_data": {
       "display_data": "Deathwing Command Squad",
       "formation_options": ["champion", "command", "terminator", "veteran", "assault", "devastator", "scout", "tactical"],
+      "allowed_companies": [1],
       "base": "command"
     }
   },
@@ -1827,7 +1829,8 @@
     "type_data": {
       "display_data": "Ravenwing Command Squad",
       "formation_options": ["champion", "command", "terminator", "veteran", "assault", "devastator", "scout", "tactical"],
-      "base": "command",
+      "allowed_companies": [2],
+      "base": "command"
     }
   }
 }
