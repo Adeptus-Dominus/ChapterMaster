@@ -476,7 +476,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     };
 
     static add_member = function(comp, unit_number) {
-        if (is_struct(comp){
+        if (is_struct(comp)){
             unit_number = comp.marine_number;
             comp = comp.company;
         }
