@@ -98,9 +98,6 @@ function CompanyStruct(comp) constructor {
             }
         }
         has_squads = array_length(company_squads);
-        if (has_squads) {
-            obj_controller.unit_focus = company_squads[0].fetch_member(0);
-        }
     };
 
     var xx = __view_get(e__VW.XView, 0) + 0;

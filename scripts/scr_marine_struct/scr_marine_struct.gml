@@ -1697,6 +1697,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
         return armour_rating;
     };
+    
+    static in_squad = function(){
+        return squad != "none";
+    }
 
     static get_squad = function() {
         return fetch_squad(squad);

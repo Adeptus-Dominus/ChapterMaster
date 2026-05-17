@@ -129,10 +129,7 @@ function reset_manage_unit_constants(unit) {
         }
 
         unit_manage_constants = {};
-        last_unit = [
-            unit.company,
-            unit.marine_number
-        ];
+
         marine_armour[0] = unit.armour();
         fix_right = 0;
         equip_data = unit.unit_equipment_data();
@@ -141,7 +138,7 @@ function reset_manage_unit_constants(unit) {
             unit_manage_constants.owner = unit.race();
         }
 
-        unit_manage_constants.current_data = last_unit;
+        unit_manage_constants.current_data = unit.uid;
 
         var _damage_res = unit.damage_resistance();
 
@@ -616,7 +613,7 @@ function draw_sprite_and_unit_equip_data() {
         draw_set_font(fnt_40k_14b);
         if (is_struct(obj_controller.unit_focus)) {
             var selected_unit = obj_controller.unit_focus; //unit struct
-            if (!array_equals([selected_unit.company, selected_unit.marine_number], unit_manage_constants.current_data)) {
+            if (selected_unit.uid != unit_manage_constants.current_data) {
                 reset_manage_unit_constants(selected_unit);
             }
             ///tooltip_text stacks hover over type tooltips into an array and draws them last so as not to create drawing order issues
