@@ -11,10 +11,14 @@
         },
         {
           "squad": "terminator_squad",
-          "proportion": 1
+          "proportion": 2
         },
         {
           "squad": "terminator_assault_squad",
+          "proportion": 2
+        },
+        {
+          "squad": "veteran_squad",
           "proportion": 1
         }
       ]
