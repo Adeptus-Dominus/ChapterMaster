@@ -354,6 +354,12 @@ function drop_select_unit_selection() {
                             exit;
                         }
                     }
+
+                    _p_data = p_target.system_datas[planet_number];
+
+                    _p_data.refresh_data();
+
+                    _p_data.purge(purge, _purge_score);
                 }
             }
 
