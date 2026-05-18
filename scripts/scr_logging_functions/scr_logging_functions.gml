@@ -67,53 +67,31 @@ function error_get_context() {
 /// @param {string} _critical - Optional.
 /// @param {string} _report_title - Optional. Preset title for the bug report.
 function handle_error(_header, _message, _stacktrace = "", _critical = false, _report_title = "") {
-    var _context = error_get_context();
-    var _full_log = "";
+    var _error = new GameError();
+    _error.init(_header, _message, _stacktrace, _critical, _report_title);
+    
+    create_error_file(_error.error_file_text);
 
-    var _sections = [
-        LB_92,
-        _header,
-        "",
-        $"Date-Time: {DATE_TIME_3}",
-        $"Game Version: {global.game_version}",
-        $"Build Date: {global.build_date}",
-        $"Commit Hash: {global.commit_hash}",
-        "",
-        "Save Details:",
-        $"Chapter Name: {_context.chapter}",
-        $"Current Turn: {_context.turn}",
-        $"Game Seed: {_context.seed}",
-        "",
-        "Error Details:",
-        _message,
-        "",
-        "Stacktrace:",
-        _stacktrace,
-        LB_92
-    ];
+    show_debug_message(LB_92);
+    show_debug_message(_message);
+    show_debug_message(_stacktrace);
+    show_debug_message(LB_92);
 
-    for (var i = 0, _len = array_length(_sections); i < _len; i++) {
-        _full_log += $"{_sections[i]}\n";
+    if (_critical
+        || (!variable_global_exists("active_error_dialogs")
+            || !ds_exists(global.active_error_dialogs, ds_type_map)
+            || !variable_global_exists("error_queue")
+            || !ds_exists(global.error_queue, ds_type_queue)))
+    {
+        clipboard_set_text(_error.clipboard_text);
+        show_message(_error.player_message);
+        return;
+    } else if (ds_map_size(global.active_error_dialogs) == 0) {
+        var _msg_id = show_message_async(_error.player_message);
+        ds_map_add(global.active_error_dialogs, _msg_id, _error);
+    } else {
+        ds_queue_enqueue(global.error_queue, _error);
     }
-
-    var _error_file_text = (_report_title != "") ? $"{_report_title}\n{_full_log}" : _full_log;
-    create_error_file(_error_file_text);
-
-    var _clipboard = (_report_title != "") ? $"{_report_title}\n" : "";
-    _clipboard += markdown_codeblock(_full_log, "log");
-    clipboard_set_text(_clipboard);
-
-    var _path_hint = string_replace(game_save_id, "/", "\\");
-    var _player_msg = $"{_header}\n\n{_message}\n\n";
-    _player_msg += $"The error log is in your clipboard and saved at:\n{_path_hint}Logs\\\n\n";
-    _player_msg += "1) Create a bug report on Discord.\n2) Press CTRL+V to paste the log.\n\nThank you!";
-
-    if (!_critical) {
-        _player_msg += $"\n\n{STR_ERROR_MESSAGE_PS}";
-    }
-
-    show_debug_message(_full_log);
-    show_message(_player_msg);
 }
 
 /// @function handle_exception
