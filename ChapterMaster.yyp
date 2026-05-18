@@ -760,6 +760,7 @@
     {"id":{"name":"instance_create","path":"scripts/instance_create/instance_create.yy",},},
     {"id":{"name":"is_specialist","path":"scripts/is_specialist/is_specialist.yy",},},
     {"id":{"name":"JsonFileListLoader","path":"scripts/JsonFileListLoader/JsonFileListLoader.yy",},},
+    {"id":{"name":"Logger","path":"scripts/Logger/Logger.yy",},},
     {"id":{"name":"macros","path":"scripts/macros/macros.yy",},},
     {"id":{"name":"NameGenerator","path":"scripts/NameGenerator/NameGenerator.yy",},},
     {"id":{"name":"object_get_depth","path":"scripts/object_get_depth/object_get_depth.yy",},},
