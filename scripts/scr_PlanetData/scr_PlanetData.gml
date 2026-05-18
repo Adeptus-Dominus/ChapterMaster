@@ -16,12 +16,105 @@ global.force_strength_descriptions = [
 function PlanetData(planet, system) constructor {
     //safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
     //disposition
-    if (system.dispo[planet] < -100 && system.dispo[planet] > -1000 && system.p_owner[planet] != eFACTION.PLAYER) {
-        // Personal Rule code be doing some interesting things
-        system.dispo[planet] = -100; // TODO LOW DISPOSITION_REVAMP // Consider revamping the disposition system
-    } else if (system.dispo[planet] > 100) {
-        system.dispo[planet] = 100;
+
+    static refresh_data = function(){
+        features = system.p_feature[planet];
+        current_owner = system.p_owner[planet];
+        origional_owner = system.p_first[planet];
+        population = system.p_population[planet];
+        max_population = system.p_max_population[planet];
+        large_population = system.p_large[planet];
+        secondary_population = system.p_pop[planet];
+        is_craftworld = system.craftworld;
+        is_hulk = system.space_hulk;
+        x = system.x;
+        y = system.y;
+        player_disposition = system.dispo[planet];
+        planet_type = system.p_type[planet];
+        operatives = system.p_operatives[planet];
+        pdf = system.p_pdf[planet];
+        fortification_level  = system.p_fortified[planet];
+        star_station = system.p_station[planet];
+        pdf_loss_reduction = 0;
+
+        // Whether or not player forces are on the planet
+        player_forces = system.p_player[planet];
+
+        defence_lasers = system.p_lasers[planet];
+        defence_silos = system.p_silo[planet];
+        ground_defences = system.p_defenses[planet];
+        upgrades = system.p_upgrades[planet];
+        // v how much of a problem they are from 1-5
+        planet_forces = array_create(14, 0);
+        guardsmen = system.p_guardsmen[planet];
+        pdf = system.p_pdf[planet];
+
+        try{
+            planet_forces[eFACTION.PLAYER] = player_forces;
+
+            planet_forces[eFACTION.IMPERIUM] =  guardsmen;
+
+            planet_forces[eFACTION.ECCLESIARCHY] =  system.p_sisters[planet];
+            planet_forces[eFACTION.ELDAR] =  system.p_eldar[planet];
+            planet_forces[eFACTION.ORK] =  system.p_orks[planet];
+            planet_forces[eFACTION.TAU] =  system.p_tau[planet];
+            planet_forces[eFACTION.TYRANIDS] =  system.p_tyranids[planet];
+            planet_forces[eFACTION.CHAOS] = system.p_chaos[planet]+ system.p_demons[planet];
+            planet_forces[eFACTION.HERETICS] = system.p_traitors[planet];     
+
+            planet_forces[eFACTION.NECRONS] = system.p_necrons[planet];
+        }catch(_exception){
+            handle_exception(_exception);
+        }
+        
+        fortification_level  = system.p_fortified[planet];
+
+        is_heretic = system.p_hurssy[planet];
+
+        heretic_timer = system.p_hurssy_time[planet];
+
+        secret_corruption = system.p_heresy_secret[planet];
+
+        corruption = system.p_heresy[planet];
+
+        population_influences = system.p_influence[planet];
+
+        raided_this_turn = system.p_raided[planet];
+        // 
+        governor = system.p_governor[planet];
+
+        problems = system.p_problem[planet];
+        problems_data = system.p_problem_other_data[planet];
+        problem_timers = system.p_timer[planet];
+
+        deamons = system.p_demons[planet];
+        chaos_forces = system.p_chaos[planet];
+
+        requests_help = system.p_halp[planet];
+
+    //safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
+        //disposition
+        if (system.dispo[planet] < -100 && system.dispo[planet] > -1000 && system.p_owner[planet] != eFACTION.PLAYER ) { // Personal Rule code be doing some interesting things
+            system.dispo[planet] = -100; // TODO LOW DISPOSITION_REVAMP // Consider revamping the disposition system
+        } else if (system.dispo[planet] > 100) {
+            system.dispo[planet] = 100;
+        }
+
+        garrisons = system.system_garrison[planet];
+        sabatours = system.system_sabatours[planet];
+        system.system_datas[planet] = self;
+
+        // current planet heresy
+        if (population == 0) {
+            system.p_heresy[planet] = 0;
+            system.p_heresy_secret[planet] = 0;
+            for (var i = 0; i < array_length(system.p_influence[planet]); ++i) {
+                system.p_influence[planet][i] = 0;
+            }
+        }
     }
+
+    refresh_data();
     //
     static large_pop_conversion = 1000000000;
 
@@ -483,15 +576,6 @@ function PlanetData(planet, system) constructor {
     chaos_forces = system.p_chaos[planet];
 
     requests_help = system.p_halp[planet];
-
-    // current planet heresy
-    if (population == 0) {
-        system.p_heresy[planet] = 0;
-        system.p_heresy_secret[planet] = 0;
-        for (var i = 0; i < array_length(system.p_influence[planet]); ++i) {
-            system.p_influence[planet][i] = 0;
-        }
-    }
 
     corruption = system.p_heresy[planet];
 
