@@ -302,6 +302,16 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
             }
             squad_fulfilment[$ _wanted_unit_role] = 0; //create a fulfilment structure to log members of squad
         }
+        //Mapping for role groups in alternative source; 
+        squad_role_alternatives = {};
+            for (var i =0; i < array_length(squad_unit_types); i++) {
+                var _role_name = squad_unit_types[i];
+                var _role_def = fill_squad[$ _role_name];
+                //alternative source presence check
+                if (struct_exists(_role_def, "alternative_roles")) {
+                    squad_role_alternatives[$ _role_name] = _role_def.alternative_roles;
+                }
+            }
         return squad_unit_types;
     };
 

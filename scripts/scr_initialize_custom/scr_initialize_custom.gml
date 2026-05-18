@@ -1830,40 +1830,7 @@ function scr_initialize_custom() {
         };
     }
 
-    /*if (scr_has_adv("Lightning Warriors")) {
-        variable_struct_set(
-            custom_squads,
-            "bikers",
-            [
-                [
-                    roles.assault,
-                    {
-                        "max": 9,
-                        "min": 4,
-                        "loadout": {
-                            //tactical marine
-                            "required": {"wep1": ["", "max"], "wep2": ["Chainsword", "max"], "mobi": ["Bike", "max"]},
-                        },
-                        "role": $"Biker",
-                    }
-                ],
-                [
-                    roles.sergeant,
-                    {
-                        "max": 1,
-                        "min": 1,
-                        "loadout": {
-                            //sergeant
-                            "required": {"wep1": ["", "max"], "wep2": ["Chainsword", "max"], "mobi": ["Bike", 1]},
-                        },
-                        "role": $"Biker {roles.sergeant}",
-                    }
-                ],
-                ["type_data", {"display_data": $"Bike {_squad_name}", "class": ["bike"], "formation_options": ["assault", "tactical"]}]
-            ]
-        );
-    }
-
+    /*
     if (scr_has_adv("Boarders")) {
         variable_struct_set(
             custom_squads,

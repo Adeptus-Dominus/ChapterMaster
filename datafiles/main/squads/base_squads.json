@@ -399,17 +399,22 @@
     }
   },
   "bike_squad": {
-      "Assault": {
-          "max": 9,
-          "min": 4,
-          "role": "Biker",
-          "loadout": {
-              "required": {
-                  "wep1": ["", "max"],
-                  "wep2": ["Chainsword", "max"],
-                  "mobi": ["Bike", "max"]
-              }
+      "Biker": {
+        "max": 7,
+        "min": 2,
+        "role": "Biker",
+        "alternative_roles": ["Tactical", "Assault"],
+        "loadout": {
+          "required": {
+            "armour": ["",0],
+            "wep1": ["", 0],
+            "wep2": ["Bolt Pistol", 2],
+            "mobi": ["Bike", "max"]
+          },
+          "option": {
+            "wep1": [[["","Chainsword","Chainaxe"],5,{"wep2":"Bolt Pistol"}]]
           }
+        }
       },
       "Sergeant": {
           "max": 1,
