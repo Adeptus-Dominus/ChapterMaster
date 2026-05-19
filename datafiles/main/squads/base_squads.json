@@ -210,7 +210,7 @@
   },
 
   "devastator_squad": {
-    "Devastator": {
+    "Devastator Marine": {
       "max": 9,
       "min": 4,
       "loadout": {
@@ -255,7 +255,7 @@
   },
 
   "tactical_squad": {
-    "Tactical": {
+    "Tactical Marine": {
       "max": 9,
       "min": 4,
       "loadout": {
@@ -304,7 +304,7 @@
   },
 
   "assault_squad": {
-    "Assault": {
+    "Assault Marine": {
       "max": 9,
       "min": 4,
       "loadout": {
@@ -435,7 +435,7 @@
       }
   },
   "breacher_squad": {
-      "Tactical": {
+      "Tactical Marine": {
           "max": 9,
           "min": 4,
           "role": "Breacher",
