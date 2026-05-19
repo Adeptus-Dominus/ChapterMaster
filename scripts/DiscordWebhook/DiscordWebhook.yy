@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"DiscordWebhook",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"DiscordWebhook",
+  "parent":{
+    "name":"GMHook",
+    "path":"folders/Libraries/GMHook.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

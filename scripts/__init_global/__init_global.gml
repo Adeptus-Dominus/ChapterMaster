@@ -52,4 +52,7 @@ function __init_global() {
     global.name_generator = new NameGenerator();
     global.star_sprites = ds_map_create();
     global.base_component_surface = -1;
+
+    global.error_queue = ds_queue_create();
+    global.active_error_dialogs  = ds_map_create();
 }

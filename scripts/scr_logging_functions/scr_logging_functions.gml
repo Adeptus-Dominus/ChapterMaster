@@ -67,53 +67,31 @@ function error_get_context() {
 /// @param {string} _critical - Optional.
 /// @param {string} _report_title - Optional. Preset title for the bug report.
 function handle_error(_header, _message, _stacktrace = "", _critical = false, _report_title = "") {
-    var _context = error_get_context();
-    var _full_log = "";
+    var _error = new GameError();
+    _error.init(_header, _message, _stacktrace, _critical, _report_title);
+    
+    create_error_file(_error.error_file_text);
 
-    var _sections = [
-        LB_92,
-        _header,
-        "",
-        $"Date-Time: {DATE_TIME_3}",
-        $"Game Version: {global.game_version}",
-        $"Build Date: {global.build_date}",
-        $"Commit Hash: {global.commit_hash}",
-        "",
-        "Save Details:",
-        $"Chapter Name: {_context.chapter}",
-        $"Current Turn: {_context.turn}",
-        $"Game Seed: {_context.seed}",
-        "",
-        "Error Details:",
-        _message,
-        "",
-        "Stacktrace:",
-        _stacktrace,
-        LB_92
-    ];
+    show_debug_message(LB_92);
+    show_debug_message(_message);
+    show_debug_message(_stacktrace);
+    show_debug_message(LB_92);
 
-    for (var i = 0, _len = array_length(_sections); i < _len; i++) {
-        _full_log += $"{_sections[i]}\n";
+    if (_critical
+        || (!variable_global_exists("active_error_dialogs")
+            || !ds_exists(global.active_error_dialogs, ds_type_map)
+            || !variable_global_exists("error_queue")
+            || !ds_exists(global.error_queue, ds_type_queue)))
+    {
+        clipboard_set_text(_error.clipboard_text);
+        show_message(_error.player_message);
+        return;
+    } else if (ds_map_size(global.active_error_dialogs) == 0) {
+        var _msg_id = show_message_async(_error.player_message);
+        ds_map_add(global.active_error_dialogs, _msg_id, _error);
+    } else {
+        ds_queue_enqueue(global.error_queue, _error);
     }
-
-    var _error_file_text = (_report_title != "") ? $"{_report_title}\n{_full_log}" : _full_log;
-    create_error_file(_error_file_text);
-
-    var _clipboard = (_report_title != "") ? $"{_report_title}\n" : "";
-    _clipboard += markdown_codeblock(_full_log, "log");
-    clipboard_set_text(_clipboard);
-
-    var _path_hint = string_replace(game_save_id, "/", "\\");
-    var _player_msg = $"{_header}\n\n{_message}\n\n";
-    _player_msg += $"The error log is in your clipboard and saved at:\n{_path_hint}Logs\\\n\n";
-    _player_msg += "1) Create a bug report on Discord.\n2) Press CTRL+V to paste the log.\n\nThank you!";
-
-    if (!_critical) {
-        _player_msg += $"\n\n{STR_ERROR_MESSAGE_PS}";
-    }
-
-    show_debug_message(_full_log);
-    show_message(_player_msg);
 }
 
 /// @function handle_exception
@@ -268,92 +246,4 @@ function os_type_format(_os_type) {
     } else {
         return _os_type_dictionary.os_unknown;
     }
-}
-
-/// @function Logger() constructor
-/// @description A Python-inspired logger that traces the callsite and timestamp for every message.
-function Logger() constructor {
-    static active_level = eLOG_LEVEL.DEBUG;
-    static file_logging = true;
-    static file_logging_level = eLOG_LEVEL.INFO;
-    static log_filename = PATH_LAST_MESSAGES;
-
-    /// @description Physically writes the queue to the file.
-    /// @param {Any} _message
-    static log_to_file = function(_message) {
-        var _f = file_text_open_append(log_filename);
-        if (_f == -1) {
-            return;
-        }
-
-        file_text_write_string(_f, string(_message) + "\n");
-
-        file_text_close(_f);
-    };
-
-    /// @description Extracts the calling script and line number.
-    /// @returns {string}
-    static _get_caller = function() {
-        var _stack = debug_get_callstack(4);
-        if (array_length(_stack) < 4) {
-            return "unknown_caller";
-        }
-
-        var _raw = _stack[3];
-        var _clean = clean_stacktrace_line(_raw);
-
-        return _clean;
-    };
-
-    static _write = function(_level, _level_label, _message, _exception = "") {
-        if (_level < active_level) {
-            return;
-        }
-
-        var _t = date_current_datetime();
-        var _time = $"{format_time(date_get_hour(_t))}:{format_time(date_get_minute(_t))}:{format_time(date_get_second(_t))}";
-        var _caller = _get_caller();
-
-        var _out = $"{_time} | {_level_label} | {_caller} >> {_message}";
-
-        if (_exception != "") {
-            _out += $"\n{_exception}";
-        }
-
-        show_debug_message(_out);
-
-        if (file_logging && _level >= file_logging_level) {
-            log_to_file(_out);
-        }
-    };
-
-    /// @param {Any} _message
-    static debug = function(_message) {
-        _write(eLOG_LEVEL.DEBUG, "DEBUG", _message);
-    };
-
-    /// @param {Any} _message
-    static info = function(_message) {
-        _write(eLOG_LEVEL.INFO, "INFO", _message);
-    };
-
-    /// @param {Any} _message
-    static warning = function(_message) {
-        _write(eLOG_LEVEL.WARNING, "WARNING", _message);
-    };
-
-    /// @param {Any} _message
-    static error = function(_message) {
-        _write(eLOG_LEVEL.ERROR, "ERROR", _message);
-    };
-
-    /// @param {Any} _message
-    static critical = function(_message) {
-        _write(eLOG_LEVEL.CRITICAL, "CRITICAL", _message);
-    };
-
-    /// @param {Any} _message
-    static exception = function(_message, _exception) {
-        _write(eLOG_LEVEL.ERROR, "ERROR", _message, _exception);
-    };
 }

@@ -24,7 +24,7 @@ heh2 = 0;
 companies = 10;
 progenitor = ePROGENITOR.NONE;
 aspirant_trial = 0;
-obj_ini.custom_advisors = {};
+custom_advisors = {};
 
 //default sector name to prevent potential crash
 sector_name = "Terra Nova";
@@ -44,7 +44,6 @@ penitent_current = 0;
 penitent_end = 0;
 man_size = 0;
 home_planet = 2;
-artifact_struct = array_create(200);
 
 // Equipment- maybe the bikes should go here or something?          yes they should
 equipment = {};
@@ -62,6 +61,8 @@ artifact_struct = array_create(_artifact_array_size);
 for (var i = 0; i < _artifact_array_size; i++) {
     artifact_struct[i] = new ArtifactStruct(i);
 }
+
+squads = {};
 
 // Ship Init
 
@@ -303,12 +304,12 @@ deserialize = function(save_data) {
         variable_struct_set(obj_ini, "squad_types", save_data.squad_types);
     }
 
-    if (struct_exists(save_data, "marine_structs")) {
+    var _marine_structs = save_data[$ "marine_structs"];
+    if (is_array(_marine_structs)) {
         obj_ini.TTRPG = array_create(11, []);
-        var marines_encoded_arr = save_data.marine_structs;
-        var _m_ar_len = array_length(marines_encoded_arr);
+        var _m_ar_len = array_length(_marine_structs);
         for (var m = 0; m < _m_ar_len; m++) {
-            var marine_json = marines_encoded_arr[m];
+            var marine_json = _marine_structs[m];
             var coy = marine_json.company;
             var mar = marine_json.marine_number;
             load_marine_struct(coy, mar, marine_json);
@@ -322,7 +323,7 @@ deserialize = function(save_data) {
     }
 
     var _squad_structs = save_data[$ "squad_structs"];
-    if (_squad_structs && is_struct(_squad_structs)) {
+    if (is_struct(_squad_structs)) {
         obj_ini.squads = {};
         var _squad_uids = struct_get_names(_squad_structs);
         var _squad_count = array_length(_squad_uids);
@@ -334,16 +335,16 @@ deserialize = function(save_data) {
         }
     }
 
-    if (struct_exists(save_data, "artifact_struct")) {
+    var _artifact_struct = save_data[$ "artifact_struct"];
+    if (is_array(_artifact_struct)) {
         obj_ini.artifact_struct = [];
-        var artifact_str_arr = save_data.artifact_struct;
-        var _len = array_length(artifact_str_arr);
+        var _len = array_length(_artifact_struct);
         for (var i = 0; i < 200; i++) {
             // 200 is the max number of artifacts
             var arti_struct = new ArtifactStruct(i);
             if (i < _len) {
                 // still within the save_data array
-                var arti = artifact_str_arr[i];
+                var arti = _artifact_struct[i];
                 if (arti != -1) {
                     // in the serializer we trim out empty slots so there will be nothing to load
                     arti_struct.load_json_data(arti);

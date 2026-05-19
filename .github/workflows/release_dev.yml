@@ -261,7 +261,7 @@ jobs:
           body: ${{steps.build_changelog.outputs.changelog}}
           token: ${{ secrets.RELEASE_TOKEN_SECRET }}
           tag_name: ${{ needs.prepare_release.outputs.tag_name }}
-          prerelease: true
-          make_latest: false
+          prerelease: false
+          make_latest: true
           files: |
             ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*

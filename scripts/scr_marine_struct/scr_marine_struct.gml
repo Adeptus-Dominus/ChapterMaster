@@ -244,6 +244,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         obj_ini.role[company][marine_number] = new_role;
         if (instance_exists(obj_controller)) {
             array_push(role_history, [role(), obj_controller.turn]);
+        } else {
+            array_push(role_history, [role(), "pre_game"]);
         }
         if (new_role == obj_ini.role[100][5]) {
             if (company == 2) {
