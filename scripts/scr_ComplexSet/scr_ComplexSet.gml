@@ -101,11 +101,11 @@ function ComplexSet(_unit) constructor {
         right_knee: spr_mk7_complex_knees,
     };
 
-    _are_exceptions = false;
+    _has_exceptions = false;
     exceptions = [];
 
     static check_exception = function(exception_key) {
-        if (_are_exceptions) {
+        if (_has_exceptions) {
             var array_position = array_find_value(exceptions, exception_key);
             if (array_position > -1) {
                 array_delete(exceptions, array_position, 1);
@@ -126,8 +126,11 @@ function ComplexSet(_unit) constructor {
 
     right_arm_data = [];
 
+    // Tracks sprites that ComplexSet owns (e.g. weapon duplicates) for cleanup
+    owned_sprites = [];
+
     static base_modulars_checks = function(mod_item) {
-        _are_exceptions = false;
+        _has_exceptions = false;
         var _mod = mod_item;
         exceptions = [];
 
@@ -136,7 +139,7 @@ function ComplexSet(_unit) constructor {
         }
 
         if (struct_exists(_mod, "allow_either")) {
-            _are_exceptions = true;
+            _has_exceptions = true;
             exceptions = variable_clone(_mod.allow_either);
         }
         if (struct_exists(_mod, "max_saturation")) {
@@ -158,14 +161,14 @@ function ComplexSet(_unit) constructor {
                 var _increment_count = max(1, floor(_mod.max_saturation / 5));
                 var _increments = (_m_exp - _min) / _increment_count;
                 var _sat_roof = _mod.max_saturation;
-                var _mar_exp = unit.experience;
+                var _unit_exp = unit.experience;
 
-                if (_mar_exp >= _m_exp) {
+                if (_unit_exp >= _m_exp) {
                     spawn_chance = _mod.max_saturation;
                 } else {
-                    var calc_exp = max(0, _mar_exp - _min);
-                    var _inc_point = floor(calc_exp / _increments);
-                    _max_sat = clamp(_inc_point * 5, 0, _mod.max_saturation);
+                    var calc_exp = max(0, _unit_exp - _min);
+                    var _increment = floor(calc_exp / _increments);
+                    _max_sat = clamp(_increment * 5, 0, _mod.max_saturation);
                 }
             }
         }
@@ -607,7 +610,53 @@ function ComplexSet(_unit) constructor {
         }
     };
 
-    static set_component_shadow_packs = function(component_name, choice) {
+    /// Resolves a global frame choice for an area into (source_sprite, local_frame)
+    static resolve_area = function(area_name, global_choice) {
+        if (!struct_exists(self, area_name)) {
+            return undefined;
+        }
+
+        var _area_data = self[$ area_name];
+        if (is_struct(_area_data)) {
+            // Composite area with source references
+            var _total = _area_data.total;
+            var _choice = global_choice % _total;
+            for (var i = 0; i < array_length(_area_data.sources); i++) {
+                if (_choice < _area_data.offsets[i] + _area_data.source_frames[i]) {
+                    return {sprite: _area_data.sources[i], frame: _choice - _area_data.offsets[i]};
+                }
+            }
+
+            return undefined;
+        }
+
+        // Raw sprite ID (complex_helms head, or backward compat)
+        if (!sprite_exists(_area_data)) {
+            return undefined;
+        }
+
+        return {sprite: _area_data, frame: global_choice % sprite_get_number(_area_data)};
+    };
+
+    /// Gets the total number of frames for an area
+    static area_total_frames = function(area_name) {
+        if (!struct_exists(self, area_name)) {
+            return 0;
+        }
+
+        var _area_data = self[$ area_name];
+        if (is_struct(_area_data)) {
+            return _area_data.total;
+        }
+
+        if (sprite_exists(_area_data)) {
+            return sprite_get_number(_area_data);
+        }
+
+        return 0;
+    };
+
+    static set_component_shadow_packs = function(component_name, choice, resolved_sprite, resolved_frame) {
         if (struct_exists(shadow_set, component_name)) {
             var _shadow_set = shadow_set[$ component_name];
             for (var i = 0; i < array_length(_shadow_set); i++) {
@@ -617,12 +666,12 @@ function ComplexSet(_unit) constructor {
                     var _final_shadow_index = choice - _spec_shadow[0];
                     //LOGGER.debug($"final_index {_final_shadow_index}, {_spec_shadow[0]}, {_spec_shadow[1]}, {choice},{_shadow_item}");
 
-                    var _sprite = self[$ component_name];
                     // Compute UV transform for this shadow texture
-                    if (!sprite_exists(_sprite) || !sprite_exists(_shadow_item)) {
+                    if (!sprite_exists(resolved_sprite) || !sprite_exists(_shadow_item)) {
                         exit;
                     }
-                    var _shadow_transform_data = sprite_get_uvs_transformed(_sprite, choice, _shadow_item, _final_shadow_index);
+
+                    var _shadow_transform_data = sprite_get_uvs_transformed(resolved_sprite, resolved_frame, _shadow_item, _final_shadow_index);
 
                     if (valid_sprite_transform_data(_shadow_transform_data)) {
                         shader_set_uniform_f_array(shadow_transform_uniform, _shadow_transform_data);
@@ -687,7 +736,9 @@ function ComplexSet(_unit) constructor {
         }
     };
 
-    static draw_component_with_textures = function(_sprite, _choice, _tex_names, texture_draws, component_name) {
+    static draw_component_with_textures = function(resolved_sprite, resolved_choice, component_name) {
+        var _texture_draws = current_texture_draws;
+        var _tex_names = struct_get_names(_texture_draws);
         var _return_surface = surface_get_target();
         surface_reset_target();
         shader_reset();
@@ -697,10 +748,10 @@ function ComplexSet(_unit) constructor {
 
         shader_set(armour_texture);
         shader_set_uniform_i(texture_use_shadow_uniform, shadow_enabled);
-        set_component_shadow_packs(component_name, _choice);
+        set_component_shadow_packs(component_name, resolved_original_choice, resolved_sprite, resolved_choice);
 
         for (var i = 0; i < array_length(_tex_names); i++) {
-            var _tex_data = texture_draws[$ _tex_names[i]];
+            var _tex_data = _texture_draws[$ _tex_names[i]];
 
             var tex_frame = 0;
             if (component_name == "left_pauldron_base") {
@@ -724,7 +775,7 @@ function ComplexSet(_unit) constructor {
 			*/
 
             for (var t = 0; t < array_length(_tex_data.areas); t++) {
-                var _mask_transform_data = sprite_get_uvs_transformed(_sprite, _choice, _tex_data.texture, tex_frame);
+                var _mask_transform_data = sprite_get_uvs_transformed(resolved_sprite, resolved_choice, _tex_data.texture, tex_frame);
                 if (!valid_sprite_transform_data(_mask_transform_data)) {
                     continue;
                 }
@@ -732,7 +783,7 @@ function ComplexSet(_unit) constructor {
                 texture_set_stage(armour_texture_sampler, tex_texture);
                 shader_set_uniform_f_array(texture_replace_col_uniform, _tex_data.areas[t]);
 
-                draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
+                draw_sprite(resolved_sprite, resolved_choice, component_final_draw_x, component_final_draw_y);
             }
         }
 
@@ -741,9 +792,9 @@ function ComplexSet(_unit) constructor {
         shader_reset();
 
         shader_set(full_livery_shader);
-        set_component_shadow_packs(component_name, _choice);
+        set_component_shadow_packs(component_name, resolved_original_choice, resolved_sprite, resolved_choice);
 
-        draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
+        draw_sprite(resolved_sprite, resolved_choice ?? 0, component_final_draw_x, component_final_draw_y);
         draw_surface(global.base_component_surface, 0, 0);
     };
 
@@ -754,8 +805,9 @@ function ComplexSet(_unit) constructor {
         }
         if (struct_exists(self, component_name)) {
             shadow_enabled = 0;
-            var _sprite = self[$ component_name];
-            if (!sprite_exists(_sprite)) {
+            current_texture_draws = texture_draws;
+
+            if (!struct_exists(self, component_name)) {
                 return "error failed no sprite found";
             }
 
@@ -766,22 +818,40 @@ function ComplexSet(_unit) constructor {
             var component_map_choice = 3;
             if (struct_exists(variation_map, component_name) && choice_lock == -1) {
                 component_map_choice = variation_map[$ component_name];
-                _choice = component_map_choice % sprite_get_number(_sprite);
+                _choice = component_map_choice % area_total_frames(component_name);
             } else if (choice_lock > -1) {
                 _choice = choice_lock;
             }
 
+            // Resolve to (source_sprite, local_frame)
+            var _resolved = resolve_area(component_name, _choice);
+            if (!is_struct(_resolved) || !sprite_exists(_resolved.sprite)) {
+                return "error failed no sprite found";
+            }
+
+            resolved_original_choice = _choice;
+
             check_component_overides(component_name, _choice);
-            set_component_shadow_packs(component_name, _choice);
+            set_component_shadow_packs(component_name, _choice, _resolved.sprite, _resolved.frame);
 
             shader_set_uniform_i(use_shadow_uniform, shadow_enabled);
 
+            var _flip_x = false;
+            var _component_data = self[$ component_name];
+            if (is_struct(_component_data) && struct_exists(_component_data, "flip_x") && _component_data.flip_x) {
+                _flip_x = true;
+            }
+
             var _tex_names = struct_get_names(texture_draws);
 
-            if (array_length(_tex_names) > 0) {
-                draw_component_with_textures(_sprite, _choice, _tex_names, texture_draws, component_name);
+            if (_flip_x && array_length(_tex_names) == 0) {
+                var _w = sprite_get_width(_resolved.sprite);
+                var _ox = sprite_get_xoffset(_resolved.sprite);
+                draw_sprite_ext(_resolved.sprite, _resolved.frame ?? 0, component_final_draw_x + _w - _ox * 2, component_final_draw_y, -1, 1, 0, c_white, 1);
+            } else if (array_length(_tex_names) > 0) {
+                draw_component_with_textures(_resolved.sprite, _resolved.frame, component_name);
             } else {
-                draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
+                draw_sprite(_resolved.sprite, _resolved.frame ?? 0, component_final_draw_x, component_final_draw_y);
             }
 
             handle_component_subcomponents(component_name, _choice);
@@ -926,7 +996,7 @@ function ComplexSet(_unit) constructor {
             }
         } else {
             if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite) && (weapon_right.ui_twoh == false)) {
-                weapon_left.sprite = return_sprite_mirrored(weapon_left.sprite);
+                weapon_left.flip_x = true;
                 draw_weapon(weapon_left, "left_weapon");
             }
         }
@@ -937,14 +1007,6 @@ function ComplexSet(_unit) constructor {
                     draw_unit_hands(i);
                 }
             }
-        }
-
-        // Draw hands above the weapon sprite;
-        if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
-            sprite_delete(weapon_right.sprite);
-        }
-        if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite)) {
-            sprite_delete(weapon_left.sprite);
         }
     };
 
@@ -959,6 +1021,13 @@ function ComplexSet(_unit) constructor {
         //LOGGER.debug($" shadows {_shadows}");
 
         add_to_area(position, weapon.sprite, "none", _subs, _shadows);
+
+        if (struct_exists(self, position)) {
+            var _component_data = self[$ position];
+            if (is_struct(_component_data)) {
+                _component_data.flip_x = struct_exists(weapon, "flip_x") && weapon.flip_x;
+            }
+        }
 
         draw_component(position, {}, choice_lock);
 
@@ -1011,13 +1080,11 @@ function ComplexSet(_unit) constructor {
 
         if (array_length(left_arm_data)) {
             weapon_left = variable_clone(left_arm_data[variation_map.left_weapon % array_length(left_arm_data)]);
-            weapon_left.sprite = sprite_duplicate(weapon_left.sprite);
         } else {
             weapon_left = {};
         }
         if (array_length(right_arm_data)) {
             weapon_right = variable_clone(right_arm_data[variation_map.right_weapon % array_length(right_arm_data)]);
-            weapon_right.sprite = sprite_duplicate(weapon_right.sprite);
         } else {
             weapon_right = {};
         }
@@ -1262,10 +1329,14 @@ function ComplexSet(_unit) constructor {
                         continue;
                     }
                     if ((_torso_purity_seals[i] + _exp) > 100) {
-                        draw_sprite(purity_seals, _torso_purity_seals[i], _x_offset + positions[i][0], _y_offset + positions[i][1]);
+                        var _resolved = resolve_area("purity_seals", _torso_purity_seals[i]);
+                        if (is_struct(_resolved) && sprite_exists(_resolved.sprite)) {
+                            draw_sprite(_resolved.sprite, _resolved.frame, _x_offset + positions[i][0], _y_offset + positions[i][1]);
+                        }
                     }
                 }
             }
+
             if (struct_exists(_body[$ "left_arm"], "purity_seal")) {
                 var _arm_seals = _body[$ "left_arm"][$ "purity_seal"];
                 if (armour_type == eARMOUR_TYPE.NORMAL) {
@@ -1300,10 +1371,14 @@ function ComplexSet(_unit) constructor {
                         continue;
                     }
                     if ((_arm_seals[i] + _exp) > 100) {
-                        draw_sprite(purity_seals, _arm_seals[i], _x_offset + positions[i][0], _y_offset + positions[i][1]);
+                        var _resolved = resolve_area("purity_seals", _arm_seals[i]);
+                        if (is_struct(_resolved) && sprite_exists(_resolved.sprite)) {
+                            draw_sprite(_resolved.sprite, _resolved.frame, _x_offset + positions[i][0], _y_offset + positions[i][1]);
+                        }
                     }
                 }
             }
+
             if (struct_exists(_body[$ "right_arm"], "purity_seal")) {
                 var _arm_seals = _body[$ "right_arm"][$ "purity_seal"];
                 if (armour_type == eARMOUR_TYPE.NORMAL) {
@@ -1342,7 +1417,10 @@ function ComplexSet(_unit) constructor {
                         continue;
                     }
                     if ((_arm_seals[i] + _exp) > 100) {
-                        draw_sprite(purity_seals, _arm_seals[i], _x_offset + positions[i][0], _y_offset + positions[i][1]);
+                        var _resolved = resolve_area("purity_seals", _arm_seals[i]);
+                        if (is_struct(_resolved) && sprite_exists(_resolved.sprite)) {
+                            draw_sprite(_resolved.sprite, _resolved.frame, _x_offset + positions[i][0], _y_offset + positions[i][1]);
+                        }
                     }
                 }
             }
@@ -1458,16 +1536,64 @@ function ComplexSet(_unit) constructor {
         shader_set(full_livery_shader);
     };
 
+    /// @desc Add a sprite reference to an area without duplicating or merging pixel data.
+    /// Stores source references in a composite struct. At draw time, resolve_area()
+    /// maps a global frame choice to the correct source sprite + local frame.
+    /// @param area {string} Area name
+    /// @param add_sprite {sprite} Source sprite to add (not duplicated — we store the reference!)
+    /// @param overide_data {any} Override data for this sprite's frame range
+    /// @param sub_components {any} Sub-component data for this sprite's frame range
+    /// @param shadow {any} Shadow data for this sprite's frame range
     static add_to_area = function(area, add_sprite, overide_data = "none", sub_components = "none", shadow = "none") {
         if (sprite_exists(add_sprite)) {
             var _add_sprite_length = sprite_get_number(add_sprite);
             if (!struct_exists(self, area)) {
-                self[$ area] = sprite_duplicate(add_sprite);
+                self[$ area] = {
+                    sources: [add_sprite],
+                    offsets: [0],
+                    source_frames: [_add_sprite_length],
+                    total: _add_sprite_length,
+                };
                 var _overide_start = 0;
             } else {
-                var _overide_start = sprite_get_number(self[$ area]);
-                sprite_merge(self[$ area], add_sprite);
+                var _existing_data = self[$ area];
+                if (is_struct(_existing_data)) {
+                    var _overide_start = _existing_data.total;
+                    array_push(_existing_data.sources, add_sprite);
+                    array_push(_existing_data.offsets, _overide_start);
+                    array_push(_existing_data.source_frames, _add_sprite_length);
+                    _existing_data.total += _add_sprite_length;
+                } else {
+                    var _overide_start = 0;
+                    if (sprite_exists(_existing_data)) {
+                        _overide_start = sprite_get_number(_existing_data);
+                        self[$ area] = {
+                            sources: [
+                                _existing_data,
+                                add_sprite,
+                            ],
+                            offsets: [
+                                0,
+                                _overide_start,
+                            ],
+                            source_frames: [
+                                sprite_get_number(_existing_data),
+                                _add_sprite_length,
+                            ],
+                            total: _overide_start + _add_sprite_length,
+                        };
+                    } else {
+                        self[$ area] = {
+                            sources: [add_sprite],
+                            offsets: [0],
+                            source_frames: [_add_sprite_length],
+                            total: _add_sprite_length,
+                        };
+                        var _overide_start = 0;
+                    }
+                }
             }
+
             if (overide_data != "none") {
                 add_overide(area, _overide_start, _add_sprite_length, overide_data);
             }
@@ -1533,7 +1659,6 @@ function ComplexSet(_unit) constructor {
 
     static remove_area = function(area) {
         if (struct_exists(self, area)) {
-            sprite_delete(self[$ area]);
             struct_remove(self, area);
             if (struct_exists(overides, area)) {
                 struct_remove(overides, area);
@@ -1636,6 +1761,11 @@ function ComplexSet(_unit) constructor {
     };
 
     static complex_helms = function(data) {
+        var _head_resolved = resolve_area("head", variation_map.head % area_total_frames("head"));
+        if (!is_struct(_head_resolved) || !sprite_exists(_head_resolved.sprite)) {
+            return;
+        }
+
         set_complex_shader_area(["eye_lense"], data.helm_lens);
         if (data.helm_pattern == 0) {
             set_complex_shader_area(["left_head", "right_head", "left_muzzle", "right_muzzle"], data.helm_primary);
@@ -1643,8 +1773,8 @@ function ComplexSet(_unit) constructor {
             set_complex_shader_area(["left_head", "right_head"], data.helm_primary);
             set_complex_shader_area(["left_muzzle", "right_muzzle"], data.helm_secondary);
         } else if (data.helm_pattern == 1 || data.helm_pattern == 3) {
-            var _surface_width = sprite_get_width(head);
-            var _surface_height = sprite_get_height(head);
+            var _surface_width = sprite_get_width(_head_resolved.sprite);
+            var _surface_height = sprite_get_height(_head_resolved.sprite);
             var _head_surface = surface_create(_surface_width, 60);
             //var _decoration_surface = surface_create(_surface_width, 60);
             surface_set_target(_head_surface);
@@ -1686,14 +1816,23 @@ function ComplexSet(_unit) constructor {
             //draw_sprite(spr_helm_stripe, data.helm_pattern==1?0:1, 0, 0);
             surface_reset_target();
 
-            if (sprite_exists(head)) {
-                sprite_delete(head);
-            }
-
-            head = sprite_create_from_surface(_head_surface, 0, 0, _surface_width, 60, false, false, 0, 0);
+            var _new_head = sprite_create_from_surface(_head_surface, 0, 0, _surface_width, 60, false, false, 0, 0);
             surface_clear_and_free(_head_surface);
             shader_set(full_livery_shader);
+            array_push(owned_sprites, _new_head);
+            self[$ "head"] = _new_head;
         }
+    };
+
+    /// @desc Cleans up owned sprites (weapon duplicates, generated sprites). Does NOT delete original asset sprites.
+    static destroy_images = function() {
+        for (var i = 0; i < array_length(owned_sprites); i++) {
+            if (sprite_exists(owned_sprites[i])) {
+                sprite_delete(owned_sprites[i]);
+            }
+        }
+
+        owned_sprites = [];
     };
 
     base_armour();
