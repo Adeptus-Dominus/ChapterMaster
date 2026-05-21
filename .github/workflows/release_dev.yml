@@ -208,7 +208,7 @@ jobs:
           # Use Bash parameter expansion: ${parameter//pattern/string}
           # Replaces all occurrences of '/' with '-'
           formattedTagName="${rawTagName//\//-}"
-          releaseName="ChapterMaster $formattedTagName"
+          releaseName="$formattedTagName"
           echo "Calculated release name: $releaseName"
           # Set the output using standard Bash redirection to the GITHUB_OUTPUT file
           echo "release_name=$releaseName" >> $GITHUB_OUTPUT
