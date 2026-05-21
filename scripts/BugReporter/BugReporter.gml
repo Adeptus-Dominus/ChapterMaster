@@ -60,20 +60,21 @@ function GameError() constructor {
         var _sections = [
             header,
             "",
-            $"Date-Time: {date_time}",
-            $"Game Version: {game_version}",
-            $"Build Date: {build_date}",
-            $"Commit Hash: {commit_hash}",
+            "### System Details:",
+            $"- Date-Time: {date_time}",
+            $"- Game Version: {game_version}",
+            $"- Build Date: {build_date}",
+            $"- Commit Hash: {commit_hash}",
             "",
-            "Save Details:",
-            $"Chapter Name: {chapter}",
-            $"Current Turn: {turn}",
-            $"Game Seed: {seed}",
+            "### Save Details:",
+            $"- Chapter Name: {chapter}",
+            $"- Current Turn: {turn}",
+            $"- Game Seed: {seed}",
             "",
-            "Error Details:",
+            "### Error Details:",
             message,
             "",
-            "Stacktrace:",
+            "### Stacktrace:",
             stacktrace,
         ];
         
@@ -100,15 +101,14 @@ function GameError() constructor {
     static build_player_message = function() {
         var _path_hint = string_replace_all(game_save_id, "/", "\\");
         var _msg = $"{header}\n\n{message}\n\n";
-    
-        if (critical) {
-            _msg += $"The error log is in your clipboard and saved at:\n{_path_hint}Logs\\\n\n";
-            _msg += "1) Create a bug report on Discord.\n2) Press CTRL+V to paste the log.\n\nThank you!";
+
+        _msg += $"The error log was saved at:\n{_path_hint}Logs\\\n\n";
+
+        if (critical) {            
+            _msg += "Do you want to send the error log, debug log, and your last autosave to our Discord as a bug report? The process is automated and takes a few seconds, you won't notice anything.";
         } else {
-            _msg += $"The error log was saved at:\n{_path_hint}Logs\\\n\n";
             _msg += "After closing this message, you will be prompted to describe what you were doing.\n";
-            _msg += "Your message and the error log will be sent to our Discord automatically.\n\n";
-            _msg += "Thank you!\n\n";
+            _msg += "Your message and the error log will be sent to our Discord automatically. You can decline by pressing 'cancel'.\n\n";
             _msg += $"{STR_ERROR_MESSAGE_PS}";
         }
         return _msg;
@@ -127,8 +127,9 @@ function BugReporter() constructor {
         global.active_bug_report = self; 
     };
 
-    /// @desc Sends the report to Discord
-    static send = function(_user_text) {
+    /// @desc Sends the report to Discord with optional user notes.
+    /// @param {string} _user_text Optional user description text.
+    static send = function(_user_text = "") {
         var _url = "__DISCORD_WEBHOOK_URL__";
 
         if (_url == "" || string_pos("__", _url) == 1) {
@@ -145,15 +146,30 @@ function BugReporter() constructor {
             var embed = new DiscordEmbed();
             embed.SetTitle("Error Details")
                 .SetDescription(pending_error.full_log)
-                .AddField("User Message", _user_text)
-                .SetColor(0x00ff00)
+                .SetColor(0x00ff00);
+
+            if (_user_text != "") {
+                embed.AddField("User Message:", _user_text);
+            }
 
             var _hook = new DiscordWebhook(_url);
             _hook.SetUser("Bug Reporter")
                 .SetThread(pending_error.report_title)
-                .AddEmbed(embed)
-                .Execute();
-            
+                .AddEmbed(embed);
+
+            if (file_exists(PATH_LAST_MESSAGES)) {
+                _hook.AddFile(PATH_LAST_MESSAGES);
+            }
+
+            if (file_exists(PATH_AUTOSAVE_FILE)) {
+                var _save_data = json_to_gamemaker(PATH_AUTOSAVE_FILE, json_parse);
+                var _seed = is_struct(_save_data) ? _save_data[$ "game_seed"] : undefined;
+                if (!is_undefined(_seed) && _seed == pending_error.seed) {
+                    _hook.AddFile(PATH_AUTOSAVE_FILE);
+                }
+            }
+
+            _hook.Execute();
 
             LOGGER.debug("Payload dispatched to Discord.");
         } catch (_ex) {

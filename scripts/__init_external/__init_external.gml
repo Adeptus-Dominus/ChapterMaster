@@ -30,7 +30,9 @@ function __init_external() {
     #macro PATH_CUSTOM_ICONS "Custom Files\\Custom Icons\\"
     #macro PATH_CHAPTER_ICONS working_directory + "\\images\\creation\\chapters\\icons\\"
     #macro PATH_INCLUDED_ICONS working_directory + "\\images\\creation\\customicons\\"
-    #macro PATH_LAST_MESSAGES "Logs/last_messages.log"
+    #macro PATH_LOG_DIRECTORY "Logs/"
+    #macro LAST_MESSAGES_LOG "last_messages.log"
+    #macro PATH_LAST_MESSAGES PATH_LOG_DIRECTORY + LAST_MESSAGES_LOG
 
     global.chapter_icons_map = ds_map_create();
 
