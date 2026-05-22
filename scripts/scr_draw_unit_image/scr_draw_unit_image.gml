@@ -529,8 +529,12 @@ function scr_draw_unit_image(_background = false) {
         complex_set.destroy_images();
     }
 
-    surface_clear_and_free(global.base_component_surface);
+    if (surface_exists(global.base_component_surface)) {
+        surface_clear_and_free(global.base_component_surface);
+    }
+
     global.base_component_surface = -1;
+
     var _keep_alive = [
         "unit",
         "_texture_draws",
