@@ -278,71 +278,82 @@
         */
         "squad_name": "Squad",
         "custom_squads": {
-            "scout_squad": [
-                [
-                    "Sergeant",
-                    {
-                        "max": 1,
-                        "min": 1,
-                        "role": "Sergeant",
-                        "loadout": {
-                            "required": {
-                                "wep1": [
-                                    "Chainsword",
-                                    1
-                                ],
-                                "wep2": [
-                                    "Bolt Pistol",
-                                    1
-                                ]
-                            }
-                        }
-                    }
-                ],
-                [
-                    "Neophyte",
-                    {
-                        "max": 9,
-                        "min": 4,
-                        "loadout": {
-                            "required": {
-                                "wep1": [
-                                    "Bolter",
-                                    2
-                                ],
-                            },
-                            "option": {
-                                "wep1": [
+            "scout_squad": {
+                "Neophyte": {
+                    "max": 9,
+                    "min": 4,
+                    "loadout": {
+                        "required": {
+                            "wep1": [
+                                "",
+                                0
+                            ],
+                            "wep2": [
+                                "Combat Knife",
+                                "max"
+                            ]
+                        },
+                        "option": {
+                            "wep1": [
+                                [
                                     [
-                                        [
-                                            "Chainsword"
-                                        ],
-                                        3,
-                                        {
-                                            "wep2": "Bolt Pistol"
-                                        }
-                                    ]
+                                        "Bolter",
+                                        "Bolter",
+                                        "Shotgun",
+                                        "Sniper Rifle",
+                                        "Stalker Pattern Bolter"
+                                    ],
+                                    8
+                                ],
+                                [
+                                    [
+                                        "Missile Launcher",
+                                        "Heavy Bolter"
+                                    ],
+                                    1
                                 ]
-                            }
+                            ]
                         }
                     }
-                ],
-                [
-                    "type_data",
-                    {
-                        "display_data": "Crusader Squad",
-                        "class": [
-                            "scout"
-                        ],
-                        "formation_options": [
-                            "scout",
-                            "tactical",
-                            "assault",
-                            "devastator"
-                        ],
+                },
+                "Sergeant": {
+                    "max": 1,
+                    "min": 1,
+                    "role": "Scout Sergeant",
+                    "loadout": {
+                        "required": {
+                            "wep1": [
+                                "",
+                                0
+                            ],
+                            "wep2": [
+                                "Combat Knife",
+                                1
+                            ]
+                        },
+                        "option": {
+                            "wep1": [
+                                [
+                                    "{WEAPON_LIST_RANGED}",
+                                    1
+                                ]
+                            ]
+                        }
                     }
-                ]
-            ]
+                },
+                "type_data": {
+                    "display_data": "Crusader Squad",
+                    "class": [
+                        "scout"
+                    ],
+                    "formation_options": [
+                        "scout",
+                        "tactical",
+                        "assault",
+                        "devastator"
+                    ]
+                }
+            }
         }
     }
 }
