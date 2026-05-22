@@ -244,8 +244,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         obj_ini.role[company][marine_number] = new_role;
         if (instance_exists(obj_controller)) {
             array_push(role_history, [role(), obj_controller.turn]);
-        } else {
-            array_push(role_history, [role(), "pre_game"]);
         }
         if (new_role == obj_ini.role[100][5]) {
             if (company == 2) {
@@ -671,13 +669,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 ]; //marines_promotion and demotion history
                 marine_ascension = (obj_controller.millenium * 1000) + obj_controller.year; // on what day did this marine begin to exist
             } else {
-                role_history = [
-                    [
-                        obj_ini.role[company][marine_number],
-                        "pre_game"
-                    ]
-                ];
-                marine_ascension = "pre_game"; // on what day did turn did this marine begin to exist
+                role_history = [];
+                marine_ascension = 0; // on what turn did this marine begin to exist
             }
 
             roll_psionics();
@@ -1103,7 +1096,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static roll_psionics = function() {
-        var _dice_count = marine_ascension == "pre_game" ? 1 : 2;
+        var _dice_count = 1;
         var _psionics_roll = roll_dice_chapter(_dice_count, 100);
 
         if (scr_has_adv("Warp Touched")) {
