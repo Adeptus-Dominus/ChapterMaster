@@ -90,6 +90,9 @@ function ComplexSet(_unit) constructor {
     unit = _unit;
     draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
     //draw_helms = false;
+
+    current_texture_draws = {};
+
     static mk7_bits = {
         armour: spr_mk7_complex,
         left_trim: spr_mk7_left_trim,
@@ -737,8 +740,6 @@ function ComplexSet(_unit) constructor {
     };
 
     static draw_component_with_textures = function(resolved_sprite, resolved_choice, component_name) {
-        var _texture_draws = current_texture_draws;
-        var _tex_names = struct_get_names(_texture_draws);
         var _return_surface = surface_get_target();
         surface_reset_target();
         shader_reset();
@@ -750,8 +751,10 @@ function ComplexSet(_unit) constructor {
         shader_set_uniform_i(texture_use_shadow_uniform, shadow_enabled);
         set_component_shadow_packs(component_name, resolved_original_choice, resolved_sprite, resolved_choice);
 
+        var _tex_names = struct_get_names(current_texture_draws);
         for (var i = 0; i < array_length(_tex_names); i++) {
-            var _tex_data = _texture_draws[$ _tex_names[i]];
+            var _tex_name = _tex_names[i];
+            var _tex_data = current_texture_draws[$ _tex_name];
 
             var tex_frame = 0;
             if (component_name == "left_pauldron_base") {
@@ -843,7 +846,6 @@ function ComplexSet(_unit) constructor {
             }
 
             var _tex_names = struct_get_names(texture_draws);
-
             if (_flip_x && array_length(_tex_names) == 0) {
                 var _w = sprite_get_width(_resolved.sprite);
                 var _ox = sprite_get_xoffset(_resolved.sprite);
