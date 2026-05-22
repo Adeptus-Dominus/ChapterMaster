@@ -79,9 +79,9 @@
             "recruiter": "Emrik"
         },
         "battle_cry": "No Pity! No Remorse! No Fear!",
-        "equal_specialists": 1,
-        "equal_scouts": 1,
-        "scout_company_behaviour": 1, //0 default codex compliant, 1 scouts are replaced with bolter neophytes
+        "equal_specialists": 0,
+        "equal_scouts": 0,
+        "scout_company_behaviour": 0, //0 default codex compliant, 1 scouts are replaced with bolter neophytes
         "load_to_ships": {
             "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
             "split_scouts": 0, // 0 no, 1 yes
@@ -226,21 +226,14 @@
         */
         "custom_roles": {
             "chapter_master": {
-                "name": "High Marshall"
+                "name": "High Marshal"
             },
             "captain": {
-                "name": "Marshall",
+                "name": "Marshal",
                 "wep1": "Power Sword"
-            },
-            "veteran": {
-                "name": "Sword Brother"
             },
             "tactical": {
                 "name": "Initiate"
-            },
-            "scout": {
-                "name": "Neophyte",
-                "wep1": "Bolter"
             },
             "champion": {
                 "wep1": "Relic Blade",
@@ -276,10 +269,77 @@
                 - gear: special equipment needed for certain roles, like a Roasrius or Narthecium
         *   - type_data: names the squad, allows certain formations ? idk what that does yet
         */
+        "squad_builder":[
+        {
+        "company": 10,
+        "squads": [
+          {
+            "squad": "command_squad",
+            "max_count": 1,
+            "min_count": 1,
+            "require": true
+          },
+          {
+            "squad": "neophyte_squad",
+            "proportion": 1
+          }
+        ]
+      }
+        ],
         "squad_name": "Squad",
         "custom_squads": {
-            "scout_squad": {
-                "Neophyte": {
+  "veteran_squad": {
+    "Veteran Sergeant": {
+      "max": 1,
+      "min": 1,
+      "role": "Veteran Sergeant",
+      "loadout": {
+        "required": {
+          "wep1": ["", 0],
+          "wep2": ["Combat Knife", "max"]
+        },
+        "option": {
+          "wep1": [
+            ["{WEAPON_LIST_RANGED_VETERAN}", 1]
+          ]
+        }
+      }
+    },
+    "Veteran": {
+      "max": 9,
+      "min": 4,
+      "role":"Sword Brother",
+      "loadout": {
+        "required": {
+          "wep1": ["", 0],
+          "wep2": ["Combat Knife", "max"]
+        },
+        "option": {
+          "wep1": [
+            ["{WEAPON_LIST_RANGED_VETERAN}", 7],
+            ["{WEAPON_LIST_RANGED_SPECIAL}", 1],
+            ["{WEAPON_LIST_RANGED_HEAVY}", 1, 
+              { "mobi": "Heavy Weapons Pack" }]
+          ]
+        }
+      }
+    },
+    "type_data": {
+      "display_data": "Veteran {squad_name}",
+      "formation_options": [
+        "veteran",
+        "assault",
+        "devastator",
+        "scout",
+        "tactical",
+        "Sword Brother"
+      ],
+      "base" : "veteran"
+    }
+  },
+            "neophyte_squad": {
+                "Scout": {
+                    "role": "Neophyte",
                     "max": 9,
                     "min": 4,
                     "loadout": {
@@ -299,6 +359,7 @@
                                     [
                                         "Bolter",
                                         "Bolter",
+                                        "Bolter",
                                         "Shotgun",
                                         "Sniper Rifle",
                                         "Stalker Pattern Bolter"
@@ -310,7 +371,7 @@
                                         "Missile Launcher",
                                         "Heavy Bolter"
                                     ],
-                                    1
+                                    1, {"mobi": "Heavy Weapons Pack"}
                                 ]
                             ]
                         }
@@ -319,7 +380,7 @@
                 "Sergeant": {
                     "max": 1,
                     "min": 1,
-                    "role": "Scout Sergeant",
+                    "role": "Sword Brother",
                     "loadout": {
                         "required": {
                             "wep1": [
@@ -329,28 +390,30 @@
                             "wep2": [
                                 "Combat Knife",
                                 1
-                            ]
+                            ],
+                            "armour": ["",0]
                         },
                         "option": {
                             "wep1": [
                                 [
-                                    "{WEAPON_LIST_RANGED}",
+                                    "{WEAPON_LIST_RANGED_VETERAN}",
                                     1
                                 ]
-                            ]
+                            ],
+                            "armour": [[["MK7 Aquila","MK7 Aquila","MK7 Aquila","MK8 Errant"],1]]
                         }
                     }
                 },
                 "type_data": {
-                    "display_data": "Crusader Squad",
-                    "class": [
-                        "scout"
-                    ],
+                    "display_data": "Crusader {squad_name}",
+                    "class": ["scout"],
+                    "base": ["scout_squad"],
                     "formation_options": [
                         "scout",
                         "tactical",
                         "assault",
-                        "devastator"
+                        "devastator",
+                        "veteran"
                     ]
                 }
             }

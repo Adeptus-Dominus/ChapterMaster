@@ -1818,8 +1818,6 @@ function scr_initialize_custom() {
         array_push(_swaps, _set);
     }
 
-    json_inject_swaps(squad_types, _swaps);
-
     // LOGGER.debug($"squads object for chapter {chapter_name}");
     // LOGGER.debug($"{custom_squads}");
 
@@ -1842,6 +1840,7 @@ function scr_initialize_custom() {
         }
     }
 
+    json_inject_swaps(squad_types, _swaps);
     // LOGGER.debug($"roles object for chapter {chapter_name} after setting from obj");
     // LOGGER.debug($"{custom_squads}");
 

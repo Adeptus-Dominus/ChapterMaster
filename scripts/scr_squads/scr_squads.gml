@@ -615,7 +615,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                             break;
                         }
                     }
-                } else if (hierarchy[leader_hier_pos] == _unit.role()) {
+                } else if (leader_hier_pos < array_length(hierarchy) && hierarchy[leader_hier_pos] == _unit.role()) {
                     var _leader = fetch_unit(leader);
                     if (_leader.experience < _unit.experience) {
                         leader = [
