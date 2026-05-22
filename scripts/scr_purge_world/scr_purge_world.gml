@@ -6,7 +6,7 @@ function scr_purge_world(action_type, action_score) {
 
 	var _pop_before = population;
 	var _no_chaos = (planet_forces[eFACTION.HERETICS] + planet_forces[eFACTION.CHAOS])==0
-	if ((action_type==eDROPTYPE.PURGEFIRE || action_type==eDROPTYPE.PURGESELECTIVE) && _no_chaos && obj_controller.turn>=obj_controller.chaos_turn){
+	if ((action_type==eDROP_TYPE.PURGEFIRE || action_type==eDROP_TYPE.PURGESELECTIVE) && _no_chaos && obj_controller.turn>=obj_controller.chaos_turn){
 	    if (has_feature(P_features.WARLORD10) && obj_controller.known[10]=0 && obj_controller.faction_gender[10]=1){
 	    	with(obj_drop_select){
 		        var pop=instance_create(0,0,obj_popup);
@@ -63,7 +63,7 @@ function scr_purge_world(action_type, action_score) {
 
 	// TODO - while I don't expect Surface to Orbit weapons retaliating against player's purge bombardment, it might still be worthwhile to consider possible situations
 
-	if (action_type=eDROPTYPE.PURGEBOMBARD){// Bombardment
+	if (action_type=eDROP_TYPE.PURGEBOMBARD){// Bombardment
 		var _ship = string_plural("ship",ships_selected);
 	    txt1=choose($"Your cruiser and larger {_ship}", $"The heavens rumble and thunder as your {_ship}");
 	    txt1+=choose(" position themselves over the target in close orbit, and unleash", " unload");
@@ -130,7 +130,7 @@ function scr_purge_world(action_type, action_score) {
 	}
 
 
-	if (action_type=eDROPTYPE.PURGEFIRE){// Burn baby burn
+	if (action_type=eDROP_TYPE.PURGEFIRE){// Burn baby burn
 	    var i=0;
 	    if (has_problem("cleanse")){
         	isquest=1;
@@ -208,7 +208,7 @@ function scr_purge_world(action_type, action_score) {
 	}
 
 
-	if (action_type=eDROPTYPE.PURGESELECTIVE){// Blam!
+	if (action_type=eDROP_TYPE.PURGESELECTIVE){// Blam!
 	    var i=0;
 	    if (has_problem_planet(planet, "purge", star)){
         	isquest=1;
@@ -269,11 +269,11 @@ function scr_purge_world(action_type, action_score) {
 
 
 
-	if (action_type=eDROPTYPE.PURGEASSASSINATE){
+	if (action_type=eDROP_TYPE.PURGEASSASSINATE){
 		assasinate_governor_setup();
 	}
 
-	if (action_type!=eDROPTYPE.PURGEASSASSINATE){
+	if (action_type!=eDROP_TYPE.PURGEASSASSINATE){
 	    if (isquest=0){// DO EET
 	        txt2=txt1;
 	        if (heres_target == "corruption"){
@@ -284,10 +284,10 @@ function scr_purge_world(action_type, action_score) {
 				alter_influence(eFACTION.TYRANIDS , -influence_reduction);
 	        }
 
-	        if (action_type<eDROPTYPE.PURGESELECTIVE){
+	        if (action_type<eDROP_TYPE.PURGESELECTIVE){
 	        	set_population(pop_after);
 	        }
-	        if (action_type==eDROPTYPE.PURGESELECTIVE && !population_large){
+	        if (action_type==eDROP_TYPE.PURGESELECTIVE && !population_large){
 	        	set_population(pop_after);
 	        }
         
