@@ -720,7 +720,7 @@ function SearchConditions(data) constructor {
     static evaluate = function(unit) {
         self.unit = unit;
         if (unit.name() == "") {
-            LOGGER.error($"Empty name! Unit:\n{unit}");
+            // LOGGER.error($"Empty name! Unit:\n{unit}");
             return false;
         }
 
