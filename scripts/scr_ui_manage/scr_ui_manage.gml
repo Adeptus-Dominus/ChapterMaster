@@ -1122,7 +1122,7 @@ function scr_ui_manage() {
             if (_draw_selec_buttons && instance_exists(obj_popup)) {
                 _draw_selec_buttons = obj_popup.type != ePOPUP_TYPE.EQUIP;
             }
-            if (_draw_selec_buttons) {
+            if (_draw_selec_buttons && is_struct(obj_controller.unit_focus)) {
                 draw_manage_selection_buttons(xx, yy);
             }
 

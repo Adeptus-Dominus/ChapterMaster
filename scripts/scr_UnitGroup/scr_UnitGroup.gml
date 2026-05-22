@@ -432,7 +432,7 @@ function UnitGroup(units) constructor {
             _match_roles.add_units(self, {role: _wanted_role}, true, -1);
             for (var i = 0; i < array_length(_match_roles.units); i++) {
                 var _unit = _match_roles.units[i];
-                if (_unit.squad == "none" || array_contains(_sorted_squads, _unit.squad)) {
+                if (_unit.role() == "" || _unit.squad == "none" || array_contains(_sorted_squads, _unit.squad)) {
                     continue;
                 }
                 var _squad = fetch_squad(_unit.squad);
@@ -457,10 +457,16 @@ function UnitIndex(units) constructor {
     static add_to_index = function(units) {
         for (var i = 0; i < array_length(units); i++) {
             var _unit = units[i];
-            if (!struct_exists(role_index, _unit.role())) {
-                role_index[$ _unit.role()] = [_unit];
+            var _role = _unit.role();
+            if (_role == "") {
+                LOGGER.error($"Empty role! Unit:\n{_unit}");
+                continue;
+            }
+
+            if (!struct_exists(role_index, _role)) {
+                role_index[$ _role] = [_unit];
             } else {
-                array_push(role_index[$ _unit.role()], _unit);
+                array_push(role_index[$ _role], _unit);
             }
         }
     };
@@ -714,6 +720,7 @@ function SearchConditions(data) constructor {
     static evaluate = function(unit) {
         self.unit = unit;
         if (unit.name() == "") {
+            // LOGGER.error($"Empty name! Unit:\n{unit}");
             return false;
         }
 
@@ -787,6 +794,7 @@ function collect_by_religeon(religion, sub_cult = "", location = "") {
             _add = false;
             _unit = obj_ini.TTRPG[com][i];
             if (_unit.name() == "") {
+                LOGGER.error($"Empty name! Unit:\n{_unit}");
                 continue;
             }
             if (_unit.religion == religion) {

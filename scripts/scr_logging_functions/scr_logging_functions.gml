@@ -2,8 +2,6 @@
 #macro STR_ERROR_MESSAGE_HEAD2 $"Your game just encountered a critical error! :("
 #macro STR_ERROR_MESSAGE_HEAD3 "Your game just encountered and caught an error! ({0})"
 #macro STR_ERROR_MESSAGE_PS $"P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum."
-#macro ERR_LOG_DIRECTORY "Logs/"
-#macro ERR_PATH_LAST_MESSAGES "last_messages.log"
 
 enum eLOG_LEVEL {
     DEBUG,
@@ -20,11 +18,11 @@ function create_error_file(_message) {
         return;
     }
 
-    if (!directory_exists(ERR_LOG_DIRECTORY)) {
-        directory_create(ERR_LOG_DIRECTORY);
+    if (!directory_exists(PATH_LOG_DIRECTORY)) {
+        directory_create(PATH_LOG_DIRECTORY);
     }
 
-    var _log_file = file_text_open_write($"{ERR_LOG_DIRECTORY}{DATE_TIME_1}_error.log");
+    var _log_file = file_text_open_write($"{PATH_LOG_DIRECTORY}{DATE_TIME_1}_error.log");
     file_text_write_string(_log_file, _message);
     file_text_close(_log_file);
 
@@ -33,15 +31,15 @@ function create_error_file(_message) {
 
 /// @description Creates a copy of the last_messages.log file, with the current date in the name, in the same folder.
 function copy_last_messages_file() {
-    if (!file_exists(ERR_PATH_LAST_MESSAGES)) {
+    if (!file_exists(PATH_LAST_MESSAGES)) {
         return;
     }
 
-    if (!directory_exists(ERR_LOG_DIRECTORY)) {
-        directory_create(ERR_LOG_DIRECTORY);
+    if (!directory_exists(PATH_LOG_DIRECTORY)) {
+        directory_create(PATH_LOG_DIRECTORY);
     }
 
-    file_copy(ERR_PATH_LAST_MESSAGES, $"{ERR_LOG_DIRECTORY}{DATE_TIME_1}_messages.log");
+    file_copy(PATH_LAST_MESSAGES, $"{PATH_LOG_DIRECTORY}{DATE_TIME_1}_messages.log");
 }
 
 /// @desc Provides game-specific state data to the error handler without tight coupling.
@@ -77,14 +75,17 @@ function handle_error(_header, _message, _stacktrace = "", _critical = false, _r
     show_debug_message(_stacktrace);
     show_debug_message(LB_92);
 
-    if (_critical
-        || (!variable_global_exists("active_error_dialogs")
-            || !ds_exists(global.active_error_dialogs, ds_type_map)
-            || !variable_global_exists("error_queue")
-            || !ds_exists(global.error_queue, ds_type_queue)))
-    {
-        clipboard_set_text(_error.clipboard_text);
-        show_message(_error.player_message);
+    if (_critical || (!variable_global_exists("active_error_dialogs") || !ds_exists(global.active_error_dialogs, ds_type_map) || !variable_global_exists("error_queue") || !ds_exists(global.error_queue, ds_type_queue))) {
+        var _send_report = show_question(_error.player_message);
+
+        if (!_send_report) {
+            return;
+        }
+
+        var _reporter = new BugReporter();
+        _reporter.pending_error = _error;
+        _reporter.send();
+
         return;
     } else if (ds_map_size(global.active_error_dialogs) == 0) {
         var _msg_id = show_message_async(_error.player_message);

@@ -523,20 +523,18 @@ function scr_draw_unit_image(_background = false) {
     }
     surface_reset_target();
     shader_reset();
-    //LOGGER.debug($"1{get_marine_icon_set(2)}");
-    var _complex_sprite_names = struct_get_names(complex_set);
-    for (var i = 0; i < array_length(_complex_sprite_names); i++) {
-        var _area = _complex_sprite_names[i];
-        var _item = complex_set[$ _area];
-        if (!is_callable(_item) && !is_struct(_item) && !is_array(_item) && !is_string(_item)) {
-            if (sprite_exists(_item)) {
-                sprite_delete(_item);
-            }
-        }
+
+    // Clean up owned sprites (weapon duplicates, generated surfaces) but NOT original asset sprites
+    if (is_struct(complex_set) && struct_exists(complex_set, "destroy_images")) {
+        complex_set.destroy_images();
     }
 
-    surface_clear_and_free(global.base_component_surface);
+    if (surface_exists(global.base_component_surface)) {
+        surface_clear_and_free(global.base_component_surface);
+    }
+
     global.base_component_surface = -1;
+
     var _keep_alive = [
         "unit",
         "_texture_draws",

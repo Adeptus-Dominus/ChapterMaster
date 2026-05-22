@@ -39,7 +39,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
     if (split_vets) {
         var comp_split = 0;
         var _squad_ids = get_squad_ids();
-        for (var squads = 0; squads < array_length(_squad_ids); squads++) {
+        for (var i = 0; i < array_length(_squad_ids); i++) {
             if (comp_split > 7 || !comp_has_units[comp_split + 2]) {
                 comp_split = 0;
             }
@@ -53,7 +53,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
     if (split_scouts) {
         var comp_split = 0;
         var _squad_ids = get_squad_ids();
-        for (var squads = 0; squads < array_length(_squad_ids); squads++) {
+        for (var i = 0; i < array_length(_squad_ids); i++) {
             if (comp_split > 7 || !comp_has_units[comp_split + 2]) {
                 comp_split = 0;
             }

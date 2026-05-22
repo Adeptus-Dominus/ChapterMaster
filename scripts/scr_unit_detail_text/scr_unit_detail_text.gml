@@ -47,10 +47,10 @@ function scr_unit_detail_text() {
     unit_data_string += "\n";
     if (base_group == "astartes") {
         var ascension_date = marine_ascension;
-        if (ascension_date == "pre_game") {
-            ascension_date = "when the chapter was created";
+        if (ascension_date == 0) {
+            ascension_date = "unknown";
         }
-        unit_data_string += $"{round(age())} years old. Ascended to an Astartes in the year {ascension_date}.";
+        unit_data_string += $"{round(age())} years old. Ascended to an Astartes in the {ascension_date} year.";
         if (struct_exists(spawn_data, "recruit_data")) {
             var recruit_data = spawn_data.recruit_data;
             unit_data_string += "\n";

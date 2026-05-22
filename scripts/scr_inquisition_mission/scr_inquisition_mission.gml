@@ -309,9 +309,9 @@ function mission_inquistion_hunt_inquisitor(star_id = -1) {
 
     var eta = scr_mission_eta(_star.x, _star.y, 1);
     eta = max(eta, 8);
-    var text = $"The Inquisition is trusting you with a special mission.  A radical inquisitor named {_name} will be visiting the {string(_star.name)} system in {string(eta)} month's time.  They are highly suspect of heresy, and as such, are to be put down.  Can your chapter handle this mission?";
+    var text = $"The Inquisition is trusting you with a special mission.  A radical inquisitor named {_name} will be visiting the {_star.name} system in {eta} month's time.  They are highly suspect of heresy, and as such, are to be put down.  Can your chapter handle this mission?";
     if (obj_controller.demanding) {
-        text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  A radical inquisitor is enroute to {_star.name}, expected within {estimate} months.  They are to be silenced and removed.";
+        text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  A radical inquisitor is enroute to {_star.name}, expected within {eta} months.  They are to be silenced and removed.";
     }
     var _options = [
         {
