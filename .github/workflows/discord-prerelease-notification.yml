@@ -1,6 +1,7 @@
 name: Discord Release Notification
 on:
   release:
+    types: [released, prereleased]
 permissions:
     contents: read
 jobs:
