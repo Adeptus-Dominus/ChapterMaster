@@ -266,6 +266,41 @@ if (purge == 0) {
         forces += 1;
         force_present[forces] = 13;
     }
+
+    //TODO fold race_quantities and races into a struct
+    race_quantities = [
+        0,
+        sisters,
+        eldar,
+        ork,
+        tau,
+        tyranids,
+        traitors,
+        csm,
+        demons,
+        necrons
+    ];
+    races = [
+        "",
+        "Ecclesiarchy",
+        "Eldar",
+        "Orks",
+        "Tau",
+        "Tyranids",
+        "Heretics",
+        "CSMs",
+        "Daemons",
+        "Necrons"
+    ];
+    threat_levels = [
+        "",
+        "Minima (1)",
+        "Parvus (2)",
+        "Moderatus (3)",
+        "Significus (4)",
+        "Enormicus (5)",
+        "Extremis (6)"
+    ];
 } else {
     var _viable_ground_forces = roster.marines_total();
     bombard_purge = new PurgeButton(4, 631, 231, eDROP_TYPE.PURGEBOMBARD);
