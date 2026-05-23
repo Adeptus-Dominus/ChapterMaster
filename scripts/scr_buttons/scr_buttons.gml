@@ -1178,7 +1178,9 @@ function ToggleButton(data = {}) constructor {
     clicked_check_default = false;
 
     update = function(data) {
-        move_data_to_current_scope(data, true);
+        if (is_struct(data)) {
+            move_data_to_current_scope(data, true);
+        }
         add_draw_return_values();
         draw_set_font(font);
         if (style == "default") {
