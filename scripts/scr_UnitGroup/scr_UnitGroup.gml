@@ -436,7 +436,7 @@ function UnitGroup(units) constructor {
             for (var i = 0; i < array_length(_match_roles.units); i++) {
                 var _unit = _match_roles.units[i];
                 if (_unit.squad == "none" || array_contains(
-                    base_group, _unit.squad)) {
+                    _sorted_squads, _unit.squad)) {
                     continue;
                 }
                 var _squad = fetch_squad(_unit.squad);

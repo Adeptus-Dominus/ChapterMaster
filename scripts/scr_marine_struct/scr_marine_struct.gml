@@ -941,7 +941,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     }; // get marine name
 
     static set_name = function(new_name){
-        return obj_ini.name[company][marine_number] = new_name
+        obj_ini.name[company][marine_number] = new_name;
+        return new_name;
     }
 
     static gear = function(raw = false) {

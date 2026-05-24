@@ -98,7 +98,7 @@ function scr_special_view(command_group) {
     last_man = b;
     last_vehicle = 0;
 
-    for (var i = 0; i < 101; i++) {
+    for (var i = 0; i < array_length(obj_ini.veh_race[company]); i++) {
         // 100
         if (obj_ini.veh_race[company][i] != 0) {
             add_vehicle_to_manage_arrays([company, i]);
