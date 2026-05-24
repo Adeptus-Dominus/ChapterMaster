@@ -41,7 +41,6 @@ function scr_special_view(command_group) {
         }
     }
 
-    v = 0;
     if ((command_group == 13) || (command_group == 0)) {
         // Librarium
         var libs = collect_role_group([SPECIALISTS_LIBRARIANS, true]);
@@ -52,7 +51,6 @@ function scr_special_view(command_group) {
         }
     }
 
-    v = 0;
     if ((command_group == 14) || (command_group == 0)) {
         // Reclusium
         var chaps = collect_role_group([SPECIALISTS_CHAPLAINS, true]);
@@ -63,7 +61,6 @@ function scr_special_view(command_group) {
         }
     }
 
-    v = 0;
     squads = 0;
     if ((command_group == 15) || (command_group == 0)) {
         // Armamentarium
@@ -82,17 +79,17 @@ function scr_special_view(command_group) {
             if (obj_ini.name[0][v] == "") {
                 continue;
             }
-            if (obj_ini.TTRPG[0][v].ship_location > -1) {
-                var ham = obj_ini.TTRPG[0][v].ship_location;
+            var _unit = fetch_unit([0 , v]);
+            if (_unit.ship_location > -1) {
+                var ham = _unit.ship_location;
                 if (obj_ini.ship_location[ham] == "Lost") {
                     continue;
                 }
             }
 
-            unit = obj_ini.TTRPG[0][v];
-            yep = !(unit.IsSpecialist(SPECIALISTS_TECHS) || unit.IsSpecialist(SPECIALISTS_CHAPLAINS) || unit.IsSpecialist(SPECIALISTS_LIBRARIANS) || unit.IsSpecialist(SPECIALISTS_APOTHECARIES));
+            yep = !(_unit.IsSpecialist(SPECIALISTS_TECHS) || _unit.IsSpecialist(SPECIALISTS_CHAPLAINS) || _unit.IsSpecialist(SPECIALISTS_LIBRARIANS) || _unit.IsSpecialist(SPECIALISTS_APOTHECARIES));
             if (yep) {
-                add_man_to_manage_arrays(unit);
+                add_man_to_manage_arrays(_unit);
             }
         }
     }
@@ -101,7 +98,7 @@ function scr_special_view(command_group) {
     last_man = b;
     last_vehicle = 0;
 
-    for (var i = 1; i < 101; i++) {
+    for (var i = 0; i < 101; i++) {
         // 100
         if (obj_ini.veh_race[company][i] != 0) {
             add_vehicle_to_manage_arrays([company, i]);
@@ -110,7 +107,7 @@ function scr_special_view(command_group) {
 
     squads = 0;
     //TODO unify this data with other_manage_data() method
-    for (var i = 1; i < array_length(display_unit); i++) {
+    for (var i = 0; i < array_length(display_unit); i++) {
         onceh = 0;
         var ahuh = 0;
         if (man[i] == "man") {

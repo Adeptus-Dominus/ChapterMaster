@@ -429,10 +429,14 @@ function UnitGroup(units) constructor {
         var _sorted_squads = [];
         for (var role_name = 0; role_name < _role_shuffle_length; role_name++) {
             var _wanted_role = _role_orders[role_name];
+            if (_wanted_role == ""){
+                continue;
+            }
             _match_roles.add_units(self, {role: _wanted_role}, true, -1);
             for (var i = 0; i < array_length(_match_roles.units); i++) {
                 var _unit = _match_roles.units[i];
-                if (_unit.role() == "" || _unit.squad == "none" || array_contains(_sorted_squads, _unit.squad)) {
+                if (_unit.squad == "none" || array_contains(
+                    base_group, _unit.squad)) {
                     continue;
                 }
                 var _squad = fetch_squad(_unit.squad);
@@ -720,7 +724,14 @@ function SearchConditions(data) constructor {
     static evaluate = function(unit) {
         self.unit = unit;
         if (unit.name() == "") {
+            unit.base_group = "none";
             // LOGGER.error($"Empty name! Unit:\n{unit}");
+            return false;
+        }
+
+        if (unit.role() == ""){
+            unit.set_name("");
+            unit.base_group = "none";
             return false;
         }
 

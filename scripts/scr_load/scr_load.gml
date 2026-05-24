@@ -1,7 +1,4 @@
-function load_marine_struct(company, marine, struct) {
-    obj_ini.TTRPG[company][marine] = new TTRPG_stats("chapter", company, marine, "blank");
-    obj_ini.TTRPG[company][marine].load_json_data(struct);
-}
+
 
 function scr_load(save_part, save_id) {
     var t1 = get_timer();

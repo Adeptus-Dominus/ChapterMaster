@@ -185,24 +185,24 @@ if (global.load == -1) {
 serialize = function() {
     var object_ini = self;
 
-    var marines = array_create(0);
-    for (var coy = 0; coy <= 10; coy++) {
-        for (var mar = 0; mar <= 500; mar++) {
-            var marine_json;
-            if (obj_ini.name[coy][mar] != "") {
-                marine_json = jsonify_marine_struct(coy, mar, false);
-                array_push(marines, marine_json);
-            } else if (mar > 0) {
+    var _marines = array_create(0);
+    for (var _coy = 0; _coy <= 10; _coy++) {
+        for (var _mar = 0; _mar <= 500; _mar++) {
+            var _marine_json;
+            if (obj_ini.name[_coy][_mar] != "") {
+                _marine_json = jsonify_marine_struct(_coy, _mar, false);
+                array_push(_marines, _marine_json);
+            } else if (_mar > 0 && _mar <= 499 && obj_ini.name[_coy][_mar + 1] == "") {
                 break;
             }
         }
     }
 
-    var artifact_struct_trimmed = [];
+    var _artifact_struct_trimmed = [];
     var _artifact_count = array_length(artifact_struct);
     for (var i = 0; i < _artifact_count; i++) {
         if (artifact_struct[i].name != "") {
-            array_push(artifact_struct_trimmed, artifact_struct[i]);
+            array_push(_artifact_struct_trimmed, artifact_struct[i]);
         }
     }
 
@@ -215,8 +215,8 @@ serialize = function() {
         company_liveries: company_liveries,
         complex_livery_data: complex_livery_data,
         squad_types: squad_types,
-        artifact_struct: artifact_struct_trimmed,
-        marine_structs: marines,
+        artifact_struct: _artifact_struct_trimmed,
+        marine_structs: _marines,
         squad_structs: squads,
         equipment: equipment,
         gene_slaves: gene_slaves, // squads // marines,
@@ -305,19 +305,28 @@ deserialize = function(save_data) {
     }
 
     var _marine_structs = save_data[$ "marine_structs"];
+
+    function load_marine_struct(company, marine, struct) {
+        obj_ini.TTRPG[company][marine] = new TTRPG_stats("chapter", company, marine, "blank");
+        obj_ini.TTRPG[company][marine].load_json_data(struct);
+    }
+
+    obj_ini.TTRPG = array_create(11, array_create(501,[]));
+    for (var _coy = 0; _coy < 11; _coy++) {
+        for (var _mar = 0; _mar <= 500; _mar++) {
+            obj_ini.TTRPG[_coy][_mar] = new TTRPG_stats("chapter", _coy, _mar, "blank");
+        }
+    }
+    
     if (is_array(_marine_structs)) {
-        obj_ini.TTRPG = array_create(11, []);
         var _m_ar_len = array_length(_marine_structs);
         for (var m = 0; m < _m_ar_len; m++) {
-            var marine_json = _marine_structs[m];
-            var coy = marine_json.company;
-            var mar = marine_json.marine_number;
-            load_marine_struct(coy, mar, marine_json);
-        }
-        for (var coy = 0; coy < 11; coy++) {
-            var mar_start = array_length(obj_ini.TTRPG[coy]);
-            for (var mar = mar_start; mar < 501; mar++) {
-                obj_ini.TTRPG[coy][mar] = new TTRPG_stats("chapter", coy, mar, "blank");
+            var _marine_json = _marine_structs[m];
+            var _coy = _marine_json.company;
+            var _mar = _marine_json.marine_number;
+            load_marine_struct(_coy, _mar, _marine_json);
+            if (!is_struct(fetch_unit([_coy, _mar]))){
+                obj_ini.TTRPG[_coy][_mar] = new TTRPG_stats("chapter", _coy, _mar, "blank");
             }
         }
     }

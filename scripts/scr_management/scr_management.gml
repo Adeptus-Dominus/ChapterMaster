@@ -87,6 +87,7 @@ function scr_management(argument0) {
             nam[i] = "";
         }
 
+        //TODO update all this old shit to use UnitIndex
         // ****** MAIN PANEL ******
         q = 0;
         company = 0;
