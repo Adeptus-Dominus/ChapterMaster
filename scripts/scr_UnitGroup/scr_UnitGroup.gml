@@ -477,6 +477,10 @@ function UnitIndex(units) constructor {
 
     add_to_index(units);
 
+    static role_count = function(role){
+        return array_length(role_index[$ role])
+    }
+
     static has_role = function(role) {
         return struct_exists(role_index, role) && array_length(role_index[$ role]) > 0;
     };

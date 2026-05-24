@@ -427,82 +427,24 @@ function scr_management(argument0) {
             nam[9] = (role_names[eROLE.CHAMPION] == "Champion") ? "Champion" : role_names[eROLE.CHAMPION];
             nam[10] = role_names[eROLE.TERMINATOR];
             nam[11] = role_names[eROLE.SERGEANT];
-            nam[12] = (role_names[eROLE.VETERANSERGEANT] == "Veteran Sergeant") ? "Sergeant" : role_names[eROLE.VETERANSERGEANT];
+            nam[12] = (role_names[eROLE.VETERANSERGEANT] == "Veteran Sergeant") ? "Vet Sergeant" : role_names[eROLE.VETERANSERGEANT];
             nam[13] = role_names[eROLE.VETERAN];
             nam[14] = role_names[eROLE.TACTICAL];
             nam[15] = role_names[eROLE.ASSAULT];
             nam[16] = role_names[eROLE.DEVASTATOR];
             nam[17] = role_names[eROLE.SCOUT];
-            nam[18] = role_names[eROLE.DREADNOUGHT]; // Venerable Dreadnought, just the role name is too long for the company box
+            nam[18] = "Venerable " + role_names[eROLE.DREADNOUGHT]; // Venerable Dreadnought, just the role name is too long for the company box
             nam[19] = role_names[eROLE.DREADNOUGHT];
             nam[20] = "Land Raider";
             nam[21] = "Predator";
             nam[22] = "Rhino";
             nam[23] = "Land Speeder";
             nam[24] = "Whirlwind";
-            for (var i = 0; i < array_length(obj_ini.TTRPG[company]); i++) {
-                unit = obj_ini.TTRPG[company][i];
-                if (unit.name() == "") {
-                    continue;
-                }
-                if (unit.role() == role_names[eROLE.CAPTAIN]) {
-                    num[1]++;
-                    nam[1] = unit.name();
-                }
-                // Space Wolves exception
-                if (chapter_name != "Iron Hands" && unit.role() == role_names[eROLE.CHAPLAIN]) {
-                    num[2]++;
-                }
-                if (chapter_name != "Space Wolves" && unit.role() == role_names[eROLE.APOTHECARY]) {
-                    num[3]++;
-                }
-                if (unit.role() == role_names[eROLE.TECHMARINE]) {
-                    num[4]++;
-                }
-                if (unit.role() == role_names[eROLE.LIBRARIAN]) {
-                    num[5]++;
-                }
-                if (unit.role() == "Codiciery") {
-                    num[6]++;
-                }
-                if (unit.role() == "Lexicanum") {
-                    num[7]++;
-                }
-                if (unit.role() == role_names[eROLE.ANCIENT]) {
-                    num[8]++;
-                }
-                if (unit.role() == role_names[eROLE.CHAMPION]) {
-                    num[9]++;
-                }
-                if (unit.role() == role_names[eROLE.TERMINATOR]) {
-                    num[10]++;
-                }
-                if (unit.role() == role_names[eROLE.SERGEANT]) {
-                    num[11]++;
-                }
-                if (unit.role() == role_names[eROLE.VETERANSERGEANT]) {
-                    num[12]++;
-                }
-                if (unit.role() == role_names[eROLE.VETERAN]) {
-                    num[13]++;
-                }
-                if (unit.role() == role_names[eROLE.TACTICAL]) {
-                    num[14]++;
-                }
-                if (unit.role() == role_names[eROLE.ASSAULT]) {
-                    num[15]++;
-                }
-                if (unit.role() == role_names[eROLE.DEVASTATOR]) {
-                    num[16]++;
-                }
-                if (unit.role() == role_names[eROLE.SCOUT]) {
-                    num[17]++;
-                }
-                if (unit.role() == "Venerable " + string(role_names[eROLE.DREADNOUGHT])) {
-                    num[18]++;
-                }
-                if (unit.role() == role_names[eROLE.DREADNOUGHT]) {
-                    num[19]++;
+
+            var _company_group = collect_company(company).index_roles();
+            for (var i = 2; i <= 19 ; i++){
+                if (_company_group.has_role(nam[i])){
+                    num[i] = _company_group.role_count(nam[i]);
                 }
             }
 
