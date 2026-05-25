@@ -46,18 +46,17 @@ slate_panel.inside_method = function() {
         }
         draw_set_font(fnt_cul_14);
         draw_text(x + (panel_width / 2), y + 89, string_hash_to_newline(title));
-        if (line[1] != "") {
-            if (italic[1] == 1) {
+        if (array_length(line) > 0 && line[0] != "") {
+            if (italic[0] == 1) {
                 draw_set_font(fnt_40k_14i);
             } else {
                 draw_set_font(fnt_40k_14);
             }
-            draw_text_glow(x + (panel_width / 2), y + 112, string_hash_to_newline(line[1]), c_white, #50a076);
+            draw_text_glow(x + (panel_width / 2), y + 112, string_hash_to_newline(line[0]), c_white, #50a076);
             draw_set_font(fnt_40k_12);
         }
-        var l = 1;
-        repeat (10) {
-            l += 1;
+        draw_lines(x + (panel_width / 2), y + 112, 20,false)
+        for (var l = 0;l < array_length(line); l++){
             if (line[l] != "") {
                 draw_text(x + (panel_width / 2), y + 112 + ((l - 1) * 20), string_hash_to_newline(line[l]));
             }
@@ -88,42 +87,30 @@ slate_panel.inside_method = function() {
         draw_set_font(fnt_cul_14);
         draw_text(x + (panel_width / 2), y + 20, string_hash_to_newline(title));
         draw_set_font(fnt_40k_12);
-        if (line[1] != "") {
-            if (italic[1] == 1) {
+        if (array_length(line) > 0 && line[0] != "") {
+            if (italic[0] == 1) {
                 draw_set_font(fnt_40k_12i);
             }
-            draw_func = (bold[1] == 1) ? draw_text_bold : draw_text;
-            draw_func(x + (panel_width / 2), y + 43, string_hash_to_newline(line[1]));
+            draw_func = (bold[0] == 1) ? draw_text_bold : draw_text;
+            draw_func(x + (panel_width / 2), y + 43, string_hash_to_newline(line[0]));
             draw_set_font(fnt_40k_12);
         }
-        var l = 1;
-        repeat (10) {
-            l += 1;
-            if (line[l] != "") {
-                draw_text(x + (panel_width / 2), y + 43 + ((l - 1) * 20), string_hash_to_newline(line[l]));
-            }
-        }
+        draw_lines(x + (panel_width / 2), y + 43, 20, false);
     } else if (header == 1) {
         draw_sprite_stretched(spr_master_title, 0, x, y - 2, panel_width + 2, 4);
         draw_set_font(fnt_cul_14);
         draw_text(x + (panel_width / 2), y + 30, string_hash_to_newline(title));
         draw_set_font(fnt_40k_12);
-        if (line[1] != "") {
-            if (italic[1] == 1) {
+        if (line[0] != "") {
+            if (italic[0] == 1) {
                 draw_set_font(fnt_40k_12i);
             }
-            draw_func = (bold[1] == 1) ? draw_text_bold : draw_text;
-            draw_func(x + (panel_width / 2), y + 53, string_hash_to_newline(line[1]));
+            draw_func = (bold[0] == 1) ? draw_text_bold : draw_text;
+            draw_func(x + (panel_width / 2), y + 53, string_hash_to_newline(line[0]));
             draw_set_font(fnt_40k_12);
         }
-        var l;
-        l = 1;
-        repeat (24) {
-            l += 1;
-            if (line[l] != "") {
-                draw_text(x + (panel_width / 2), y + 53 + ((l - 1) * 18), string_truncate(line[l], 134));
-            }
-        }
+
+        draw_lines(x + (panel_width / 2), y + 53, 18, true);
     }
     draw_set_color(c_white);
 };
@@ -133,7 +120,7 @@ var y_scale = panel_height / 860;
 
 try {
     slate_panel.draw(x, y, x_scale, y_scale);
-    // draw_text(x+(panel_width/2),y-60,string(manage)+") "+string(line[1])+"#"+string(line[2])+"#"+string(line[3]));
+    // draw_text(x+(panel_width/2),y-60,string(manage)+") "+string(line[0])+"#"+string(line[2])+"#"+string(line[3]));
 
     if (point_and_click([x, y, x + panel_width, y + panel_height])) {
         obj_controller.managing = manage;

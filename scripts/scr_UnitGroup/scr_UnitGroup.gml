@@ -489,6 +489,18 @@ function UnitIndex(units) constructor {
         return struct_get_names(role_index);
     };
 
+    static hierarchy_keys = function(){
+        var _keys = keys();
+        var _all_roles = role_hierarchy();
+        for (var i = array_length(_all_roles)-1;i >= 0; i-- ){
+            if (!array_contains(_keys , _all_roles[i])){
+                array_delete(_all_roles, i, 1);
+            }
+        }
+
+        return _all_roles;
+    }
+
     static pop_role_member = function(role) {
         return array_pop(role_index[$ role]);
     };
@@ -504,6 +516,20 @@ function UnitIndex(units) constructor {
         }
         return new UnitGroup(_units);
     };
+
+    static create_plural_strings_array = function(arrange_with_hierarchy = true){
+        var _strings_array = [];
+        if (arrange_with_hierarchy){
+            var _keys = hierarchy_keys();
+        } else{
+            _keys = keys();
+        }
+        for (var i = 0;i<array_length(_keys); i++){
+            array_push(_strings_array, string_plural_count(_keys[i], role_count(_keys[i]), false));
+        }
+
+        return _strings_array;
+    }
 }
 
 //TODO write this out with proper formatting when i can be assed

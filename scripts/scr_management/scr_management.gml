@@ -15,12 +15,7 @@ function scr_management(argument0) {
         }
 
         var pane;
-
-        pane = instance_create(700, 180 - 48, obj_managment_panel);
-        pane.company = 0;
-        pane.manage = 11;
-        pane.header = 3;
-        pane.title = "HEADQUARTERS";
+        var _command_company = collect_company(0);
 
         pane = instance_create(475, 180 - 48, obj_managment_panel);
         pane.company = 0;
@@ -28,23 +23,79 @@ function scr_management(argument0) {
         pane.header = 2;
         pane.title = "RECLUSIUM";
 
+        var _reclusium_units = _command_company.get_from({group:[SPECIALISTS_CHAPLAINS, true, true]}, true, true);
+
+        var _head = _reclusium_units.get_from({group : SPECIALISTS_HEADS, max_wanted : 1});
+
+        if (_head.number() > 0){
+            pane.line = [_head.units[0].name()];
+        }
+
+        var _reclusium_units = _reclusium_units.index_roles();
+
+        pane.line = array_join(pane.line,_reclusium_units.create_plural_strings_array());
+
         pane = instance_create(275, 180 - 48, obj_managment_panel);
         pane.company = 0;
         pane.manage = 12;
         pane.header = 2;
         pane.title = "APOTHECARIUM";
 
+        var _apothecary_units = _command_company.get_from({group:[SPECIALISTS_APOTHECARIES, true, true]}, true, true);
+        var _head = _apothecary_units.get_from({group : SPECIALISTS_HEADS, max_wanted : 1});
+
+        if (_head.number() > 0){
+            pane.line = [_head.units[0].name()];
+        }
+        var _apothecary_units = _apothecary_units.index_roles();
+
+        pane.line = array_join(pane.line,_apothecary_units.create_plural_strings_array());
+
         pane = instance_create(925, 180 - 48, obj_managment_panel);
         pane.company = 0;
         pane.manage = 15;
         pane.header = 2;
         pane.title = "ARMOURY";
+        var _armoury_units = _command_company.get_from({group:[SPECIALISTS_TECHS, true, true]}, true, true);
+        var _head = _armoury_units.get_from({group : SPECIALISTS_HEADS, max_wanted : 1});
 
+        if (_head.number() > 0){
+            pane.line = [_head.units[0].name()];
+        }
+        var _armoury_units = _armoury_units.index_roles();
+
+        pane.line = array_join(pane.line, _armoury_units.create_plural_strings_array());
+
+        pane = instance_create(925, 180 - 48, obj_managment_panel);
         pane = instance_create(1125, 180 - 48, obj_managment_panel);
         pane.company = 0;
         pane.manage = 13;
         pane.header = 2;
         pane.title = "LIBRARIUM";
+
+        var _lib_units = _command_company.get_from({group:[SPECIALISTS_LIBRARIANS, true, true]}, true, true);
+        var _head = _lib_units.get_from({group : SPECIALISTS_HEADS, max_wanted : 1});
+
+        if (_head.number() > 0){
+            pane.line = [_head.units[0].name()];
+        }
+        var _lib_units = _lib_units.index_roles();
+
+        pane.line = array_join(pane.line,_lib_units.create_plural_strings_array());
+
+        pane = instance_create(700, 180 - 48, obj_managment_panel);
+        pane.company = 0;
+        pane.manage = 11;
+        pane.header = 3;
+        pane.title = "HEADQUARTERS";
+        var _head = _command_company.get_from({group : SPECIALISTS_HEADS, max_wanted : 1});
+
+        if (_head.number() > 0){
+            pane.line = [_head.units[0].name()];
+        }
+        var _command_units = _command_company.index_roles();
+
+        pane.line = array_join(pane.line,_command_units.create_plural_strings_array())
 
         // Coordinates declaration and text initiation
         var xx = 25, yy = 400 - 48, t;
@@ -64,347 +115,6 @@ function scr_management(argument0) {
 
         // Generates the company if there are more than 10 companites
         // TODO improve logic or add extra romanNumerals to array TBD
-        if (obj_ini.companies > 10) {
-            xx = 25;
-            yy = 400 - 48 + 258;
-            t = "";
-
-            for (var i = 11; i <= obj_ini.companies; i++) {
-                t = scr_convert_company_to_string(i);
-
-                var pane = instance_create(xx, yy, obj_managment_panel);
-                pane.company = i;
-                pane.manage = i + 100;
-                pane.header = 1;
-                pane.title = t;
-
-                xx += 156;
-            }
-        }
-
-        for (var i = 1; i <= 50; i++) {
-            num[i] = 0;
-            nam[i] = "";
-        }
-
-        //TODO update all this old shit to use UnitIndex
-        // ****** MAIN PANEL ******
-        q = 0;
-        company = 0;
-        obj_controller.temp[71] = 11;
-
-        for (var i = 0; i < 50; i++) {
-            num[i] = 0;
-            nam[i] = "";
-        }
-        nam[2] = role_names[eROLE.HONOURGUARD];
-
-        for (var i = 0; i < array_length(obj_ini.name[0]); i++) {
-            unit = fetch_unit([0, i]);
-            if (unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
-                num[1] += 1;
-                if (nam[1] == "") {
-                    nam[1] = unit.name();
-                }
-            }
-            if (unit.role() == role_names[eROLE.HONOURGUARD]) {
-                num[2] += 1;
-            }
-        }
-
-        // if (num[2]=0) then nam[2]="Strategic Staff";// reserved for co-master alien or something
-
-        // if (num[2]>0) {
-        // 	nam[2]=string(num)+"x "+string(role_names[eROLE.HONOURGUARD]);
-        // 	nam[3]="Strategic Staff";
-        // 	num[3]=1;
-        // }
-
-        with (obj_managment_panel) {
-            if (manage != obj_controller.temp[71]) {
-                instance_deactivate_object(id);
-            }
-        }
-
-        if (num[1] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string(nam[1]);
-            // obj_managment_panel.italic[q]=1;
-            obj_managment_panel.bold[q] = 1;
-        }
-        if (num[2] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string_plural_count(nam[2], num[2], false);
-        }
-
-        // obj_managment_panel.italic[1]=1;
-        obj_managment_panel.bold[q] = 1;
-        instance_activate_object(obj_managment_panel);
-
-        // ll=0;ll2=0;repeat(200){ll2++;if (obj_ini.role[company,ll2]=role_names[eROLE.HONOURGUARD]) then ll++;}
-        // if (ll>0) then temp[3]=string(ll)+"x "+string(role_names[eROLE.HONOURGUARD]);
-
-        // ** Apothecarium **
-        q = 0;
-        company = 0;
-        obj_controller.temp[71] = 12;
-        for (var i = 0; i < 50; i++) {
-            num[i] = 0;
-            nam[i] = "";
-        }
-        nam[2] = role_names[eROLE.APOTHECARY];
-
-        // Ranks
-        nam[3] = string(role_names[eROLE.APOTHECARY]) + " Aspirant"; // nam[4]="Sister Hospitaler";
-
-        for (var i = 1; i <= 200; i++) {
-            unit = fetch_unit([0, i]);
-            if (unit.role() == "Master of the Apothecarion") {
-                num[1] += 1;
-                if (nam[1] == "") {
-                    nam[1] = unit.name();
-                }
-            }
-
-            if (unit.role() == role_names[eROLE.APOTHECARY]) {
-                num[2] += 1;
-            }
-
-            if (unit.role() == string(role_names[eROLE.APOTHECARY]) + " Aspirant") {
-                num[3] += 1;
-            }
-            // if (unit.role() == "Sister Hospitaler") then num[4] += 1;
-        }
-
-        with (obj_managment_panel) {
-            if (manage != obj_controller.temp[71]) {
-                instance_deactivate_object(id);
-            }
-        }
-
-        if (num[1] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string(nam[1]);
-            // obj_managment_panel.italic[q]=1;
-            obj_managment_panel.bold[q] = 1;
-        }
-        if (num[2] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string_plural_count(nam[2], num[2], false);
-        }
-        if (num[3] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string_plural_count(nam[3], num[3], false);
-        }
-        // if (num[4]>0){q++;obj_managment_panel.line[q]=string(num[4])+"x "+string(nam[4]);}
-        instance_activate_object(obj_managment_panel);
-
-        // ** Reclusium **
-        q = 0;
-        company = 0;
-        obj_controller.temp[71] = 14;
-
-        for (var i = 0; i < 50; i++) {
-            num[i] = 0;
-            nam[i] = "";
-        }
-
-        nam[2] = role_names[eROLE.CHAPLAIN];
-
-        // Ranks
-        nam[3] = string(role_names[eROLE.CHAPLAIN]) + " Aspirant";
-
-        for (var i = 1; i <= 200; i++) {
-            unit = fetch_unit([0, i]);
-            if (unit.role() == "Master of Sanctity") {
-                num[1] += 1;
-                if (nam[1] == "") {
-                    nam[1] = unit.name();
-                }
-            }
-
-            if (unit.role() == role_names[eROLE.CHAPLAIN]) {
-                num[2] += 1;
-            }
-
-            if (unit.role() == string(role_names[eROLE.CHAPLAIN]) + " Aspirant") {
-                num[3] += 1;
-            }
-        }
-
-        with (obj_managment_panel) {
-            if (manage != obj_controller.temp[71]) {
-                instance_deactivate_object(id);
-            }
-        }
-
-        if (num[1] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string(nam[1]);
-            // obj_managment_panel.italic[q]=1;
-            obj_managment_panel.bold[q] = 1;
-        }
-
-        // TODO add specific Space Wolves and successor chapter logic for Master of Sanctity
-        // if (global.chapter_name!="Space Wolves")
-
-        // Specific Iron Hands chapter logic
-        if (chapter_name != "Iron Hands") {
-            if (num[2] > 0) {
-                q++;
-                obj_managment_panel.line[q] = string_plural_count(nam[2], num[2], false);
-            }
-            if (num[3] > 0) {
-                q++;
-                obj_managment_panel.line[q] = string_plural_count(nam[3], num[3], false);
-            }
-        }
-        instance_activate_object(obj_managment_panel);
-
-        // ** Armoury **
-        q = 0;
-        company = 0;
-        obj_controller.temp[71] = 15;
-
-        for (var i = 0; i < 50; i++) {
-            num[i] = 0;
-            nam[i] = "";
-        }
-
-        nam[2] = role_names[eROLE.TECHMARINE];
-
-        // Ranks
-        nam[3] = string(role_names[eROLE.TECHMARINE]) + " Aspirant";
-        nam[4] = "Techpriest";
-
-        for (var i = 1; i <= 200; i++) {
-            unit = fetch_unit([0, i]);
-            if (unit.role() == "Forge Master") {
-                num[1] += 1;
-                if (nam[1] == "") {
-                    nam[1] = unit.name();
-                }
-            }
-
-            if (unit.role() == role_names[eROLE.TECHMARINE]) {
-                num[2] += 1;
-            }
-
-            if (unit.role() == string(role_names[eROLE.TECHMARINE]) + " Aspirant") {
-                num[3] += 1;
-            }
-
-            if (unit.role() == "Techpriest") {
-                num[4] += 1;
-            }
-        }
-
-        with (obj_managment_panel) {
-            if (manage != obj_controller.temp[71]) {
-                instance_deactivate_object(id);
-            }
-        }
-
-        if (num[1] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string(nam[1]);
-            // obj_managment_panel.italic[q]=1;
-            obj_managment_panel.bold[q] = 1;
-        }
-
-        if (num[2] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string_plural_count(nam[2], num[2], false);
-        }
-
-        if (num[3] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string_plural_count(nam[3], num[3], false);
-        }
-
-        if (num[4] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string_plural_count(nam[4], num[4], false);
-        }
-
-        instance_activate_object(obj_managment_panel);
-
-        // ** Librarium **
-        q = 0;
-        company = 0;
-        obj_controller.temp[71] = 13;
-        for (var i = 0; i < 50; i++) {
-            num[i] = 0;
-            nam[i] = "";
-        }
-
-        nam[2] = role_names[eROLE.LIBRARIAN];
-
-        // Ranks
-        nam[3] = "Codiciery";
-        nam[4] = "Lexicanum";
-        nam[5] = string(role_names[eROLE.LIBRARIAN]) + " Aspirant";
-
-        for (var i = 1; i <= 200; i++) {
-            unit = fetch_unit([0, i]);
-            if (unit.role() == "Chief " + string(role_names[eROLE.LIBRARIAN])) {
-                num[1] += 1;
-                if (nam[1] == "") {
-                    nam[1] = unit.name();
-                }
-            }
-
-            if (unit.role() == role_names[eROLE.LIBRARIAN]) {
-                num[2] += 1;
-            }
-
-            if (unit.role() == "Codiciery") {
-                num[3] += 1;
-            }
-
-            if (unit.role() == "Lexicanum") {
-                num[4] += 1;
-            }
-
-            if (unit.role() == string(role_names[eROLE.LIBRARIAN]) + " Aspirant") {
-                num[5] += 1;
-            }
-        }
-
-        with (obj_managment_panel) {
-            if (manage != obj_controller.temp[71]) {
-                instance_deactivate_object(id);
-            }
-        }
-
-        if (num[1] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string(nam[1]);
-            // obj_managment_panel.italic[q]=1;
-            obj_managment_panel.bold[q] = 1;
-        }
-
-        if (num[2] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string_plural_count(nam[2], num[2], false);
-        }
-
-        if (num[3] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string_plural_count(nam[3], num[3], false);
-        }
-
-        if (num[4] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string_plural_count(nam[4], num[4], false);
-        }
-
-        if (num[5] > 0) {
-            q++;
-            obj_managment_panel.line[q] = string_plural_count(nam[5], num[5], false);
-        }
-
-        instance_activate_object(obj_managment_panel);
 
         // ** Marines and vehicles per company and HQ by ranks **
         for (company = 1; company <= obj_ini.companies; company++) {
@@ -416,7 +126,7 @@ function scr_management(argument0) {
                 nam[i] = "";
             }
             // Indexing the names to nam array
-            // nam[1] = role_names[eROLE.CAPTAIN];
+            nam[1] = role_names[eROLE.CAPTAIN];
             nam[2] = role_names[eROLE.CHAPLAIN];
             nam[3] = role_names[eROLE.APOTHECARY];
             nam[4] = role_names[eROLE.TECHMARINE];
