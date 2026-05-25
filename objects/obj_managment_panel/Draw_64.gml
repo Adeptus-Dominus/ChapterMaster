@@ -46,21 +46,9 @@ slate_panel.inside_method = function() {
         }
         draw_set_font(fnt_cul_14);
         draw_text(x + (panel_width / 2), y + 89, string_hash_to_newline(title));
-        if (array_length(line) > 0 && line[0] != "") {
-            if (italic[0] == 1) {
-                draw_set_font(fnt_40k_14i);
-            } else {
-                draw_set_font(fnt_40k_14);
-            }
-            draw_text_glow(x + (panel_width / 2), y + 112, string_hash_to_newline(line[0]), c_white, #50a076);
-            draw_set_font(fnt_40k_12);
-        }
+
         draw_lines(x + (panel_width / 2), y + 112, 20,false)
-        for (var l = 0;l < array_length(line); l++){
-            if (line[l] != "") {
-                draw_text(x + (panel_width / 2), y + 112 + ((l - 1) * 20), string_hash_to_newline(line[l]));
-            }
-        }
+
     } else if (header == 2) {
         slate_panel.draw_top_piece = false;
         draw_sprite_stretched(spr_company_title, company, x + 40, y - 2, panel_width - 80, 4);
@@ -87,28 +75,13 @@ slate_panel.inside_method = function() {
         draw_set_font(fnt_cul_14);
         draw_text(x + (panel_width / 2), y + 20, string_hash_to_newline(title));
         draw_set_font(fnt_40k_12);
-        if (array_length(line) > 0 && line[0] != "") {
-            if (italic[0] == 1) {
-                draw_set_font(fnt_40k_12i);
-            }
-            draw_func = (bold[0] == 1) ? draw_text_bold : draw_text;
-            draw_func(x + (panel_width / 2), y + 43, string_hash_to_newline(line[0]));
-            draw_set_font(fnt_40k_12);
-        }
+
         draw_lines(x + (panel_width / 2), y + 43, 20, false);
     } else if (header == 1) {
         draw_sprite_stretched(spr_master_title, 0, x, y - 2, panel_width + 2, 4);
         draw_set_font(fnt_cul_14);
         draw_text(x + (panel_width / 2), y + 30, string_hash_to_newline(title));
         draw_set_font(fnt_40k_12);
-        if (line[0] != "") {
-            if (italic[0] == 1) {
-                draw_set_font(fnt_40k_12i);
-            }
-            draw_func = (bold[0] == 1) ? draw_text_bold : draw_text;
-            draw_func(x + (panel_width / 2), y + 53, string_hash_to_newline(line[0]));
-            draw_set_font(fnt_40k_12);
-        }
 
         draw_lines(x + (panel_width / 2), y + 53, 18, true);
     }
