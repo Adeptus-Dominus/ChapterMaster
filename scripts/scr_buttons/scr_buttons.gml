@@ -38,6 +38,16 @@ function pop_draw_return_values() {
     }
 }
 
+function standard_loc_data() {
+    x1 = 0;
+    y1 = 0;
+    y2 = 0;
+    x2 = 0;
+    w = 0;
+    h = 0;
+}
+
+
 // --------------------
 // 🟩 UI ELEMENTS
 // --------------------
@@ -329,15 +339,6 @@ function draw_unit_buttons(position, text, size_mod = [1.5, 1.5], colour = c_gra
     return [position[0], position[1], x2, y2];
 }
 
-function standard_loc_data() {
-    x1 = 0;
-    y1 = 0;
-    y2 = 0;
-    x2 = 0;
-    w = 0;
-    h = 0;
-}
-
 /// @function UnitButtonObject(data)
 /// @constructor
 /// @category UI
@@ -345,10 +346,7 @@ function standard_loc_data() {
 /// @param {struct|bool} [data=false] Initial property overrides.
 /// @returns {UnitButtonObject}
 function UnitButtonObject(data = false) constructor {
-    x1 = 0;
-    y1 = 0;
-    w = 102;
-    h = 30;
+    standard_loc_data();
     h_gap = 4;
     v_gap = 4;
     text_scale = 1;
@@ -882,16 +880,15 @@ function MultiSelect(options_array, title, data = {}) constructor {
     self.title = title;
     x_gap = 10;
     y_gap = 5;
-    x1 = 0;
-    y1 = 0;
-    x2 = 0;
-    y2 = 0;
+    standard_loc_data();
     on_change = false;
     active_col = CM_GREEN_COLOR;
     inactive_col = c_gray;
     max_width = 0;
     max_height = 0;
     toggles = [];
+    changed = false;
+    draw_alighn = "horizontal";
     for (var i = 0; i < array_length(options_array); i++) {
         var _next_tog = new ToggleButton(options_array[i]);
         _next_tog.active = false;
@@ -901,39 +898,67 @@ function MultiSelect(options_array, title, data = {}) constructor {
 
     update(data);
 
-    static draw = function(allow_changes = true) {
-        add_draw_return_values();
-        var _change_method = is_callable(on_change);
-        draw_text(x1, y1, title);
-
-        var _prev_x = x1;
-        var _prev_y = y1 + string_height(title) + 10;
-        var items_on_row = 0;
-        for (var i = 0; i < array_length(toggles); i++) {
-            var _cur_opt = toggles[i];
-            _cur_opt.x1 = _prev_x;
-            _cur_opt.y1 = _prev_y;
-            _cur_opt.update();
-            if (_cur_opt.clicked() && allow_changes) {
-                if (_change_method) {
-                    on_change();
-                }
-            }
-            _cur_opt.button_color = _cur_opt.active ? active_col : inactive_col;
-            _cur_opt.draw();
-            items_on_row++;
-
-            _prev_x = _cur_opt.x2 + x_gap;
-
-            x2 = _prev_x > x2 ? _prev_x : x2;
-            y2 = _prev_y + _cur_opt.height;
+    static draw_toggle = function(index){
+        var _cur_opt = toggles[index];
+        _cur_opt.update(next_draw);
+        if (_cur_opt.clicked() && allow_changes) {
+            changed = true;
+        }
+        _cur_opt.button_color = _cur_opt.active ? active_col : inactive_col;
+        _cur_opt.draw();
+        next_draw.row_or_column_draw_count++;
+        //TODO probably set an enum up for this later
+        if (draw_alighn == "horizontal"){
+            next_draw.x1 = _cur_opt.x2 + x_gap;
+            x2 = next_draw.x1 > x2 ? next_draw.x1 : x2;
+            y2 = next_draw.y1 + _cur_opt.h;
             if (max_width > 0) {
-                if (_prev_x - x1 > max_width) {
-                    _prev_x = x1;
-                    _prev_y += _cur_opt.height + y_gap;
-                    items_on_row = 0;
+                if (next_draw.x1 - x1 > max_width) {
+                    next_draw.x1 = x1;
+                    next_draw.y1 += _cur_opt.h + y_gap;
+                    next_draw.row_or_column_draw_count = 0;
                 }
             }
+        } else {
+            next_draw.y1 = _cur_opt.y2 + y_gap;
+            y2 = next_draw.y1 > y2 ? next_draw.y1 : y2;
+            x2 = next_draw.x1 + _cur_opt.w;
+            if (max_height > 0) {
+                if (next_draw.y1 - y1 > max_height) {
+                    next_draw.y1 = y1;
+                    next_draw.x1 += _cur_opt.w + x_gap;
+                    next_draw.row_or_column_draw_count = 0;
+                }
+            }            
+        }
+    }
+
+    static reset_next_draw = function(){
+        next_draw = {
+            x1 : x1,
+            y1 : y1,
+            row_or_column_draw_count : 0,
+        }
+    }
+
+    static draw = function(allow_changes = true) {
+        changed = false;
+        self.allow_changes = allow_changes;
+        add_draw_return_values();
+        has_change_method = is_callable(on_change);
+
+        reset_next_draw();
+
+        if (title != ""){
+            draw_text(x1, y1, title);
+            next_draw.y1 += string_height(title) + 10;
+        }
+
+        for (var i = 0; i < array_length(toggles); i++) {
+            draw_toggle(i);
+        }
+        if (changed && has_change_method) {
+            on_change();
         }
         pop_draw_return_values();
     };
@@ -953,6 +978,13 @@ function MultiSelect(options_array, title, data = {}) constructor {
         for (var i = 0; i < array_length(toggles); i++) {
             var _cur_opt = toggles[i];
             _cur_opt.active = false;
+        }
+    };
+
+    static select_all = function() {
+        for (var i = 0; i < array_length(toggles); i++) {
+            var _cur_opt = toggles[i];
+            _cur_opt.active = true;
         }
     };
 
@@ -989,6 +1021,7 @@ function item_data_updater(data) {
 /// @returns {RadioSet}
 function RadioSet(options_array, title = "", data = {}) constructor {
     toggles = [];
+    standard_loc_data();
     current_selection = 0;
     self.title = title;
     active_col = CM_GREEN_COLOR;
@@ -996,8 +1029,6 @@ function RadioSet(options_array, title = "", data = {}) constructor {
     allow_changes = true;
     x_gap = 10;
     y_gap = 5;
-    x1 = 0;
-    y1 = 0;
     title_font = fnt_40k_14b;
     draw_title = true;
     space_evenly = false;
@@ -1064,7 +1095,7 @@ function RadioSet(options_array, title = "", data = {}) constructor {
 
             _prev_x = _cur_opt.x2 + x_gap;
             row_width = _prev_x - x1;
-            row_height = max(row_height, _cur_opt.height);
+            row_height = max(row_height, _cur_opt.h);
 
             var row_full = (max_width > 0) && (row_width > max_width);
             var last_item = i == array_length(toggles) - 1;
@@ -1127,14 +1158,12 @@ function RadioSet(options_array, title = "", data = {}) constructor {
 /// @param {struct} [data={}] Initial properties.
 /// @returns {ToggleButton}
 function ToggleButton(data = {}) constructor {
-    x1 = 0;
-    y1 = 0;
-    x2 = 0;
-    y2 = 0;
+    standard_loc_data();
     tooltip = "";
     str1 = "";
-    width = 0;
-    height = 0;
+    w = 0;
+    h = 0;
+    text_padding = 0.03;
     state_alpha = 1;
     hover_alpha = 1;
     active = true;
@@ -1143,32 +1172,36 @@ function ToggleButton(data = {}) constructor {
     button_color = c_gray;
     font = fnt_40k_12;
     style = "default";
+    hover_func = undefined;
 
     //make true to run clicked() within draw sequence
     clicked_check_default = false;
 
-    update = function() {
+    update = function(data) {
+        if (is_struct(data)) {
+            move_data_to_current_scope(data, true);
+        }
         add_draw_return_values();
         draw_set_font(font);
         if (style == "default") {
-            if (width == 0) {
-                width = string_width(str1) + 4;
+            if (w == 0) {
+                w = string_width(str1);
+                w *= (1 + (text_padding * 2));
             }
-            if (height == 0) {
-                height = string_height(str1) + 4;
+            if (h == 0) {
+                h = string_height(str1);
+                h *= (1 + (text_padding * 2));
             }
         } else if (style == "box") {
-            width = max(32, string_width(str1)) + 6;
-            height = 32 + 2 + string_height(str1);
+            w = max(32, string_width(str1) * (1 + (text_padding * 2))) + 6;
+            h = 32 +  (string_height(str1) * (1 + (text_padding * 2)));
         }
-        x2 = x1 + width;
-        y2 = y1 + height;
+        x2 = x1 + w;
+        y2 = y1 + h;
         pop_draw_return_values();
     };
 
-    move_data_to_current_scope(data, true);
-
-    update();
+    update(data);
 
     hover = function() {
         return scr_hit(x1, y1, x2, y2);
@@ -1184,18 +1217,20 @@ function ToggleButton(data = {}) constructor {
         }
     };
 
-    draw = function(is_active = active) {
-        self.active = is_active;
+    draw = function(is_active = undefined) {
+        if (is_active != undefined){
+            self.active = is_active;
+        }
         add_draw_return_values();
         draw_set_font(font);
         var str1_h = string_height(str1);
-        var text_padding = width * 0.03;
-        var text_x = x1 + text_padding;
-        var text_y = y1 + text_padding;
+        var _text_padding = w * 0.03;
+        var text_x = x1 + _text_padding;
+        var text_y = y1 + _text_padding;
         var total_alpha;
 
         if (text_halign == fa_center) {
-            text_x = x1 + (width / 2);
+            text_x = x1 + (w / 2);
         }
 
         if (!active) {
@@ -1216,16 +1251,21 @@ function ToggleButton(data = {}) constructor {
                 } // Increase state_alpha when not hovered
             }
         }
-        if (tooltip != "") {
-            if (hover()) {
+       
+        if (hover()) {
+            if (tooltip != "") {
                 tooltip_draw(tooltip);
             }
+            if (is_callable(hover_func)){
+                hover_func();
+            }
         }
+
 
         total_alpha = state_alpha * hover_alpha;
 
         if (style == "default") {
-            draw_rectangle_color_simple(x1, y1, x1 + width, y1 + str1_h, 1, button_color, total_alpha);
+            draw_rectangle_color_simple(x1, y1, x1 + w, y1 + h, 1, button_color, total_alpha);
             draw_set_halign(text_halign);
             draw_set_valign(fa_top);
             draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
@@ -1244,10 +1284,10 @@ function ToggleButton(data = {}) constructor {
             draw_set_alpha(1);
         }
 
-        if (clicked_check_default) {
-            clicked();
-        }
         pop_draw_return_values();
+        if (clicked_check_default) {
+            return clicked();
+        }
     };
 }
 

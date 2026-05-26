@@ -325,9 +325,9 @@ function damage_vehicles(_damage_data, _shots, _damage, _weapon_index) {
         veh_index = array_random_element(valid_vehicles);
 
         // Apply damage
-        var _modified_damage = _damage - (veh_ac[veh_index] * _armour_mod);
+        var _modified_damage = _damage - veh_ac[veh_index] * _armour_mod;
         if (_modified_damage < 0) {
-            _modified_damage = 0.25;
+            _modified_damage = 0;
         }
         if (enemy == 13 && _modified_damage < 1) {
             _modified_damage = 1;

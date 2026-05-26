@@ -43,19 +43,18 @@ if (__b__) {
                     sel_plan = 0;
                     obj_controller.cooldown = 8000;
                     if (obj_controller.menu == 1 && obj_controller.view_squad) {
-                        var company_data = obj_controller.company_data;
-                        var squad_index = company_data.company_squads[company_data.cur_squad];
-                        var current_squad = fetch_squad(squad_index);
+                        var _company_data = obj_controller.company_data;
+                        var _current_squad = _company_data.grab_current_squad();
                         if (sel_plan > 0) {
                             var planet = sel_plan;
                             for (var i = 0; i < array_length(target.p_operatives[planet]); i++) {
                                 operation = target.p_operatives[planet][i];
-                                if (operation.type == "squad" && operation.reference == squad_index) {
+                                if (operation.type == "squad" && operation.reference == _current_squad.uid) {
                                     array_delete(target.p_operatives[planet], i, 1);
                                 }
                             }
                         }
-                        current_squad.assignment = "none";
+                        _current_squad.assignment = "none";
                     }
                     instance_destroy();
                 }
