@@ -391,6 +391,10 @@ function UnitButtonObject(data = false) constructor {
         for (i = 0; i < array_length(_updaters); i++) {
             self[$ _updaters[i]] = data[$ _updaters[i]];
         }
+        if (struct_exists(data, "label") && !struct_exists(data, "set_width")) {
+        set_width = false;
+        w = 0;
+        }
         if (!set_height_width) {
             update_loc();
         }
@@ -434,6 +438,7 @@ function UnitButtonObject(data = false) constructor {
                 _temp_alpha = 0.5;
                 allow_click = false;
             }
+            update_loc();
             _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1], label, [text_scale, text_scale], active ? color : inactive_col,, font, _temp_alpha);
         } else if (style == "pixel") {
             var _widths = [
@@ -986,6 +991,7 @@ function MultiSelect(options_array, title, data = {}) constructor {
             var _cur_opt = toggles[i];
             _cur_opt.active = true;
         }
+        changed = true;
     };
 
     static selections = function() {

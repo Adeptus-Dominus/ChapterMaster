@@ -1308,65 +1308,22 @@ function draw_manage_selection_buttons(xx, yy) {
     draw_set_font(fnt_40k_14b);
     draw_set_color(#50a076);
     var button = new UnitButtonObject();
-
-    button.h = 15;
-    button.x1 = right_ui_block.x1 + 1;
-    button.y1 = right_ui_block.y2 - 6 - 30;
-    button.x2 = button.x1 + 128;
-    button.y2 = button.y1 + button.h;
-    // Load/Unload to ship button
-    button.label = "Load";
-    var load_unload_possible = man_size > 0;
-
-    button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("L"));
-    button.tooltip = "Press Shift L";
-    if (load_unload_possible) {
-        button.alpha = 1;
-        if (sel_loading == -1) {
-            if (button.draw()) {
-                load_selection();
-            }
-        } else if (sel_loading != -1) {
-            button.label = "Unload";
-            if (button.draw()) {
-                unload_selection(); // Unload - ask for planet confirmation
-            }
-        }
-    } else {
-        button.alpha = 0.5;
-        button.draw(false);
-    }
-
-    button.move("down", true);
-
-    button.label = "Reload";
-    //button.keystroke = (keyboard_check(vk_shift) && (keyboard_check_pressed(ord("F"))));
-    if (instance_exists(obj_controller) && is_struct(_unit_focus)) {
-        button.tooltip = $"{_unit_focus.last_ship.name}"; //Press Shift F";
-    }
-    reload_possible = man_size > 0 && sel_loading == -1;
-    if (reload_possible) {
-        button.alpha = 1;
-        if (button.draw()) {
-            scr_company_load(selecting_location);
-            load_marines_into_ship(selecting_location, sh_ide, display_unit, true);
-        }
-    } else {
-        button.alpha = 0.5;
-        button.draw(false);
-    }
+    //new load/unload having its own row now, calculated from Y first
+    var _load_button_h = 15;
+    var _load_button_h_gap = 4;
+    var _load_row_total_h = (_load_button_h * 2) + _load_button_h_gap; // Load + gap + Reload
 
     button.h = 30;
-    button.x1 = right_ui_block.x1 + 26;
-    button.y1 = right_ui_block.y2 - 6 - 30;
+    var action_button_bottom_y = right_ui_block.y2 - 6 - 30 - _load_row_total_h - _load_button_h_gap;
+    var action_button_x = right_ui_block.x1 + 26;
+    button.x1 = action_button_x;
+    button.y1 = action_button_bottom_y;
     button.x2 = button.x1 + button.w;
     button.y2 = button.y1 + button.h;
-    button.move("right", true);
 
     // // Re equip button
     button.label = "Re-equip";
     var equip_possible = !_non_control_loc && man_size > 0;
-
     button.alpha = equip_possible ? 1 : 0.5;
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("E"));
     button.tooltip = "Press Shift E";
@@ -1374,15 +1331,13 @@ function draw_manage_selection_buttons(xx, yy) {
     if (button.draw() && equip_possible) {
         set_up_equip_popup();
     }
-
-    button.move("right");
+    action_button_x += button.w + button.v_gap;
 
     // // Promote button
+    button.x1 = action_button_x;
     button.label = "Promote";
-
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("P"));
     button.tooltip = "Press Shift P";
-
     var promote_possible = sel_promoting > 0 && !_non_control_loc && man_size > 0;
     button.alpha = promote_possible ? 1 : 0.5;
     if (button.draw()) {
@@ -1390,13 +1345,13 @@ function draw_manage_selection_buttons(xx, yy) {
             setup_promotion_popup();
         }
     }
-    button.move("right", true);
+    action_button_x += button.w + button.v_gap;
 
     // // Put in jail button
+    button.x1 = action_button_x;
     button.label = "Jail";
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("J"));
     button.tooltip = "Press Shift J";
-
     var jail_possible = man_size > 0;
     button.alpha = jail_possible ? 1 : 0.5;
     if (button.draw()) {
@@ -1404,9 +1359,10 @@ function draw_manage_selection_buttons(xx, yy) {
             jail_selection();
         }
     }
-    button.x1 += button.w + button.h_gap;
-    button.x2 += button.w + button.h_gap;
+    action_button_x += button.w + button.v_gap;
+
     // // Add bionics button
+    button.x1 = action_button_x;
     button.label = "Add Bionics";
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("B"));
     button.tooltip = "Press Shift B";
@@ -1421,11 +1377,12 @@ function draw_manage_selection_buttons(xx, yy) {
         }
     }
 
-    button.move("up", true);
-
-    button.move("left", true, 4);
+    var action_button_top_y = action_button_bottom_y - (button.h + button.h_gap);
+    action_button_x = right_ui_block.x1 + 26;
+    button.y1 = action_button_top_y;
 
     // // Designate as boarder unit
+    button.x1 = action_button_x;
     button.label = "Set Boarder";
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("Q"));
     button.tooltip = "Press Shift Q";
@@ -1436,9 +1393,10 @@ function draw_manage_selection_buttons(xx, yy) {
             toggle_selection_borders();
         }
     }
-    button.move("right", true);
+    action_button_x += button.w + button.v_gap;
 
     // // Reset changes button
+    button.x1 = action_button_x;
     button.label = "Reset";
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("R"));
     button.tooltip = "Press Shift R";
@@ -1455,10 +1413,10 @@ function draw_manage_selection_buttons(xx, yy) {
         button.alpha = 0.5;
         button.draw(false);
     }
-
-    button.move("right", true);
+    action_button_x += button.w + button.v_gap;
 
     // // Transfer to another company button
+    button.x1 = action_button_x;
     button.label = "Transfer";
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("T"));
     button.tooltip = "Press Shift T";
@@ -1472,8 +1430,10 @@ function draw_manage_selection_buttons(xx, yy) {
         button.alpha = 0.5;
         button.draw(false);
     }
+    action_button_x += button.w + button.v_gap;
 
-    button.move("right", true);
+    // // Move Ship button
+    button.x1 = action_button_x;
     button.label = "Move Ship";
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("M"));
     button.tooltip = "Press Shift M";
@@ -1487,14 +1447,13 @@ function draw_manage_selection_buttons(xx, yy) {
         button.alpha = 0.5;
         button.draw(false);
     }
+    action_button_x += button.w + button.v_gap;
 
-    button.move("right", true);
-
+    // // Manage Tags button
+    button.x1 = action_button_x;
     button.label = "Manage Tags";
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("F"));
     button.tooltip = "Press Shift F"; //Press Shift F";
-    button.alpha = 0.5;
-
     button.alpha = 1;
     if (button.draw()) {
         if (!instance_exists(obj_popup)) {
@@ -1502,6 +1461,51 @@ function draw_manage_selection_buttons(xx, yy) {
         } else if (obj_popup.type == ePOPUP_TYPE.ADD_TAGS) {
             instance_destroy(obj_popup);
         }
+    }
+    //new fixes for the load shit
+    button.h = _load_button_h;
+    button.x1 = right_ui_block.x1 + 26;
+    button.y1 = action_button_bottom_y + 30 + _load_button_h_gap;
+    button.x2 = button.x1 + button.w;
+    button.y2 = button.y1 + button.h;
+    button.label = "Load";
+    var load_unload_possible = man_size > 0;
+    button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("L"));
+    button.tooltip = "Press Shift L";
+    if (load_unload_possible) {
+        button.alpha = 1;
+        if (sel_loading == -1) {
+            if (button.draw()) {
+                load_selection();
+            }
+        } else if (sel_loading != -1) {
+            button.label = "Unload";
+            if (button.draw()) {
+                unload_selection();
+            }
+        }
+    } else {
+        button.alpha = 0.5;
+        button.draw(false);
+    }
+
+    button.move("right", true);
+
+    button.label = "Reload";
+    button.keystroke = false;
+    if (instance_exists(obj_controller) && is_struct(_unit_focus)) {
+        button.tooltip = $"{_unit_focus.last_ship.name}";
+    }
+    reload_possible = man_size > 0 && sel_loading == -1;
+    if (reload_possible) {
+        button.alpha = 1;
+        if (button.draw()) {
+            scr_company_load(selecting_location);
+            load_marines_into_ship(selecting_location, sh_ide, display_unit, true);
+        }
+    } else {
+        button.alpha = 0.5;
+        button.draw(false);
     }
 
     if (sel_uni[1] != "") {
@@ -1516,54 +1520,61 @@ function draw_manage_selection_buttons(xx, yy) {
         // draw_text_transformed(actions_block.x1 + 4, actions_block.x1 + 64,"Options:",0.5,0.5,0);
 
         // Select all units button
+        // button reset code
+        var top_x = actions_block.x1 + 26;
+        var top_y = actions_block.y1 + 70;
 
-        button.move("up", true, 4.15);
-
-        button.move("left", true, 4);
+        button.set_width = false;
+        button.w = 0;
+        button.h = 0;
+        button.font = fnt_40k_14b;
+        button.text_scale = 1;
 
         button.label = "Select All";
+        button.x1 = top_x;
+        button.y1 = top_y;
+        button.update_loc();
         button.tooltip = "";
         button.keystroke = false;
         button.alpha = 1;
         if (button.draw()) {
-            // scr_load_all(loading); //not sure whether loading was intentional or not
             sel_all = "all";
         }
 
-        button.move("right", true, 1);
+        button.x1 = top_x + button.w + button.v_gap;
+        button.update_loc();
         button.label = "Filter Mode";
         button.alpha = filter_mode ? 1 : 0.5;
         if (button.draw()) {
             filter_mode = !filter_mode;
         }
 
-        button.move("left", true, 1);
+        button.x1 = top_x;
+        button.update_loc();
+        button.y1 = top_y + button.h + button.v_gap + 4;
         // Select all infantry button
-        button.y1 += button.h + button.v_gap + 4;
-        button.h /= 1.4;
-        button.w = 128;
-        button.x2 = button.x1 + button.w;
-        button.y2 = button.y1 + button.h;
-        var inf_button_pos = [
-            button.x1,
-            button.y1,
-            button.x2,
-            button.y2
-        ];
-        button.label = "All Infantry";
-        button.alpha = 1;
         button.font = fnt_40k_12;
         draw_set_font(fnt_40k_12);
+        button.label = "All Infantry";
+        button.alpha = 1;
         if (button.draw()) {
             sel_all = "man";
         }
+
+        var inf_type_x = button.x1 + button.w + button.v_gap;
+        var inf_type_y = button.y1;
+
         // Select infantry type buttons
         for (var i = 1; i <= 8; i++) {
             if (sel_uni[i] != "") {
-                button.move("right", true);
-                if (i == 4) {
-                    button.move("left", true, 4);
-                    button.move("down", true);
+                if (i == 1) {
+                    button.x1 = inf_type_x;
+                    button.y1 = inf_type_y;
+                } else if (i == 5) {
+                    button.x1 = inf_type_x;
+                    button.y1 = inf_type_y + button.h + button.v_gap;
+                } else {
+                    button.x1 += button.w + button.v_gap;
                 }
                 button.label = string_truncate(sel_uni[i], 126);
                 button.alpha = 1;
@@ -1576,22 +1587,28 @@ function draw_manage_selection_buttons(xx, yy) {
 
     // Select all vehicles button
     if (sel_veh[1] != "") {
-        button.x1 = inf_button_pos[0];
-        button.x2 = inf_button_pos[2];
-        button.y1 = inf_button_pos[1] + (button.h + button.v_gap) * 2 + 4;
-        button.y2 = button.y1 + button.h;
+        button.x1 = top_x;
+        button.y1 = inf_type_y + (button.h + button.v_gap) * 2 + 4;
         button.label = "All Vehicles";
         button.alpha = 1;
         if (button.draw()) {
             sel_all = "vehicle";
         }
+
+        var veh_type_x = button.x1 + button.w + button.v_gap;
+        var veh_type_y = button.y1;
+
         // Select vehicle type buttons
         for (var i = 1; i <= 8; i++) {
             if (sel_veh[i] != "") {
-                button.move("right", true);
-                if (i == 4) {
-                    button.move("left", true, 4);
-                    button.move("down", true);
+                if (i == 1) {
+                    button.x1 = veh_type_x;
+                    button.y1 = veh_type_y;
+                } else if (i == 5) {
+                    button.x1 = veh_type_x;
+                    button.y1 = veh_type_y + button.h + button.v_gap;
+                } else {
+                    button.x1 += button.w + button.v_gap;
                 }
                 button.label = string_truncate(sel_veh[i], 126);
                 button.alpha = 1;
