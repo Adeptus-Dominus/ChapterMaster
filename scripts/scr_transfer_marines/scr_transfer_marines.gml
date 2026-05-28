@@ -151,81 +151,85 @@ function transfer_marines() {
 }
 
 function set_up_transfer_popup() {
-    if (instance_number(obj_popup) == 0) {
-        var pip = instance_create(0, 0, obj_popup);
-        pip.type = 5.1;
-        pip.company = managing;
+    with (obj_controller) {
+        if (instance_number(obj_popup) == 0) {
+            var pip = instance_create(0, 0, obj_popup);
+            pip.type = 5.1;
+            pip.company = managing;
+    
+            var god = 0, _marine_count = 0, _vehicle_count = 0, checky = 0, check_number = 0;
+            var _min_exp = 9999999999;
+    
+            for (var f = 0; f < array_length(display_unit); f++) {
+                if (!(man_sel[f] == 1)) {
+                    continue;
+                }
+            
+                // Set unit_role from the first selected unit only
+                if (god == 0) {
+                    if (man[f] == "man") {
+                        god = 1;
+                        pip.unit_role = ma_role[f];
+                    } else if (man[f] == "vehicle") {
+                        god = 1;
+                        pip.unit_role = ma_role[f];
+                    }
+                }
+            
+                // Accumulate across ALL selected units
+                if (man[f] == "man") {
+                    _min_exp = min(_min_exp, ma_exp[f]);
+                    _marine_count += 1;
+                    checky = 1;
 
-        var god = 0, _marine_count = 0, _vehicle_count = 0, checky = 0, check_number = 0;
-        var _min_exp = 9999999999;
-        for (var f = 0; f < array_length(display_unit); f++) {
-            if (!(man_sel[f] == 1)) {
-                continue;
+                    var _current_role = ma_role[f];
+                    var _target_roles = [
+                        obj_ini.role[100][eROLE.CHAMPION],
+                        obj_ini.role[100][eROLE.LIBRARIAN],
+                        obj_ini.role[100][eROLE.CHAPLAIN],
+                        obj_ini.role[100][eROLE.APOTHECARY],
+                        obj_ini.role[100][eROLE.TECHMARINE]
+                    ];
+                    
+                    if (array_contains(_target_roles, _current_role)) {
+                        checky = 0;
+                    }
+            
+                    if (checky == 1) {
+                        check_number += 1;
+                    }
+                } else if (man[f] == "vehicle") {
+                    _vehicle_count += 1;
+                }
             }
-            if (god == 1) {
-                break;
+    
+            if (_vehicle_count > 1) {
+                pip.unit_role = "Vehicles";
             }
-            if ((god == 0) && (man[f] == "man")) {
-                god = 1;
-                pip.unit_role = ma_role[f];
-                _min_exp = min(_min_exp, ma_exp[f]);
+            if (_marine_count > 1) {
+                pip.unit_role = "Marines";
             }
-            if ((god == 0) && (man[f] == "vehicle")) {
-                god = 1;
-                pip.unit_role = ma_role[f];
+            if ((_marine_count > 0) && (_vehicle_count > 0)) {
+                pip.unit_role = "Units";
             }
-
-            if (man[f] == "man") {
-                _marine_count += 1;
-                checky = 1;
-                if (ma_role[f] == obj_ini.role[100][7]) {
-                    checky = 0;
+            pip.units = _marine_count + _vehicle_count;
+            pip.min_exp = _min_exp;
+            if (_marine_count > 0 && check_number > 0 && !command_set[1]) {
+                cooldown = 8000;
+                with (pip) {
+                    instance_destroy();
                 }
-                if (ma_role[f] == obj_ini.role[100][14]) {
-                    checky = 0;
+            } else {
+                with (pip) {
+                    cancel_button = new UnitButtonObject({x1: 1061, y1: 491, style: "pixel", label: "Cancel"});
+                    main_slate = new DataSlate({style: "decorated", XX: 1006, YY: 143, set_width: true, width: 571, height: 350});
+                    // Inside with(pip), 'min_exp' refers to pip.min_exp
+                    if (unit_role == "Vehicles") {
+                        min_exp = -1; // sentinel to bypass gating only for vehicles
+                    }
+                    target_company_radio(min_exp);
+                    transfer_button = new UnitButtonObject({x1: 1450, y1: 491, style: "pixel", label: "Transfer"});
                 }
-                if (ma_role[f] == obj_ini.role[100][15]) {
-                    checky = 0;
-                }
-                if (ma_role[f] == obj_ini.role[100][16]) {
-                    checky = 0;
-                }
-                if (ma_role[f] == obj_ini.role[100][17]) {
-                    checky = 0;
-                }
-                if (checky == 1) {
-                    check_number += 1;
-                }
-            } else if (man[f] == "vehicle") {
-                _vehicle_count += 1;
-            }
-        }
-        if (_vehicle_count > 1) {
-            pip.unit_role = "Vehicles";
-        }
-        if (_marine_count > 1) {
-            pip.unit_role = "Marines";
-        }
-        if ((_marine_count > 0) && (_vehicle_count > 0)) {
-            pip.unit_role = "Units";
-        }
-        pip.units = _marine_count + _vehicle_count;
-        pip.min_exp = _min_exp;
-        if (_marine_count > 0 && check_number > 0 && !command_set[1]) {
-            cooldown = 8000;
-            with (pip) {
-                instance_destroy();
-            }
-        } else {
-            with (pip) {
-                cancel_button = new UnitButtonObject({x1: 1061, y1: 491, style: "pixel", label: "Cancel"});
-                main_slate = new DataSlate({style: "decorated", XX: 1006, YY: 143, set_width: true, width: 571, height: 350});
-                // Inside with(pip), 'min_exp' refers to pip.min_exp
-                if (unit_role == "Vehicles") {
-                    min_exp = -1; // sentinel to bypass gating only for vehicles
-                }
-                target_company_radio(min_exp);
-                transfer_button = new UnitButtonObject({x1: 1450, y1: 491, style: "pixel", label: "Transfer"});
             }
         }
     }
