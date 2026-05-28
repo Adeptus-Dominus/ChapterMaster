@@ -25,6 +25,7 @@ function scr_load(save_part, save_id) {
         scr_load_chapter_icon(globals.icon_name, true);
         global.chapter_name = globals.chapter_name;
         global.custom = globals.custom;
+        global.game_seed = globals.game_seed;
     }
 
     if ((save_part == 2) || (save_part == 0)) {
