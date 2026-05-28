@@ -157,7 +157,7 @@ function set_up_transfer_popup() {
         pip.company = managing;
 
         var god = 0, _marine_count = 0, _vehicle_count = 0, checky = 0, check_number = 0;
-        var _min_exp = 0;
+        var _min_exp = 9999999999;
         for (var f = 0; f < array_length(display_unit); f++) {
             if (!(man_sel[f] == 1)) {
                 continue;
@@ -210,6 +210,7 @@ function set_up_transfer_popup() {
             pip.unit_role = "Units";
         }
         pip.units = _marine_count + _vehicle_count;
+        pip.min_exp = _min_exp;
         if (_marine_count > 0 && check_number > 0 && !command_set[1]) {
             cooldown = 8000;
             with (pip) {
