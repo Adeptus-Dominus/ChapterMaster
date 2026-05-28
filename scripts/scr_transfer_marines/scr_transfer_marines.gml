@@ -2,14 +2,15 @@ function draw_popup_transfer() {
     main_slate.draw_with_dimensions();
     draw_set_color(CM_GREEN_COLOR);
     draw_text(1292, 145, "Transferring");
-
     draw_set_font(fnt_40k_12);
-    if (((unit_role != obj_ini.role[100][17]) || (obj_controller.command_set[1] != 0)) && (unit_role != "Lexicanum") && (unit_role != "Codiciery")) {
-        companies_select.draw();
-    }
+
+    companies_select.draw();
+    target_comp = 0;
+
     if (companies_select.changed) {
         target_comp = companies_select.selection_val("val");
     }
+
     if (cancel_button.draw()) {
         instance_destroy();
     }
@@ -160,15 +161,11 @@ function set_up_transfer_popup() {
         var _marine_count = 0;
         var _vehicle_count = 0;
         var _min_exp = 99999999;
-        var _disallowed = false;
+        var _allowed = true;
         var _selected_role = "None";
-        var _allowed_roles = [
-            obj_ini.role[100][eROLE.CHAMPION],
-            obj_ini.role[100][eROLE.LIBRARIAN],
-            obj_ini.role[100][eROLE.CHAPLAIN],
-            obj_ini.role[100][eROLE.APOTHECARY],
-            obj_ini.role[100][eROLE.TECHMARINE]
-        ];
+
+        // I think command_set[1] is Allow Astartes Transfer chapter option;
+        var _allow_transfers = command_set[1];
 
         for (var f = 0; f < array_length(display_unit); f++) {
             if (!(man_sel[f] == 1)) {
@@ -192,12 +189,16 @@ function set_up_transfer_popup() {
                 _min_exp = min(_min_exp, ma_exp[f]);
                 _marine_count += 1;
 
-                if (!_disallowed && !array_contains(_allowed_roles, _role)) {
-                    _disallowed = true;
+                if (!_allow_transfers && _allowed && !is_specialist(_role, SPECIALISTS_BRANCHES, true, false)) {
+                    _allowed = false;
                 }
             } else if (_type == "vehicle") {
                 _vehicle_count += 1;
             }
+        }
+
+        if (!_allowed) {
+            exit;
         }
 
         if ((_marine_count > 0) && (_vehicle_count > 0)) {
@@ -212,20 +213,17 @@ function set_up_transfer_popup() {
             _min_exp = -1;
         }
 
-        // I think command_set[1] is Allow Astartes Transfer chapter option;
-        if (!_disallowed || command_set[1]) {
-            var pip = instance_create(0, 0, obj_popup);
-            with (pip) {
-                type = 5.1;
-                company = managing;
-                unit_role = _selected_role;
-                units = _marine_count + _vehicle_count;
-                min_exp = _min_exp;
-                cancel_button = new UnitButtonObject({x1: 1061, y1: 491, style: "pixel", label: "Cancel"});
-                main_slate = new DataSlate({style: "decorated", XX: 1006, YY: 143, set_width: true, width: 571, height: 350});
-                target_company_radio(min_exp);
-                transfer_button = new UnitButtonObject({x1: 1450, y1: 491, style: "pixel", label: "Transfer"});
-            }
+        var pip = instance_create(0, 0, obj_popup);
+        with (pip) {
+            type = 5.1;
+            company = obj_controller.managing;
+            unit_role = _selected_role;
+            units = _marine_count + _vehicle_count;
+            min_exp = _min_exp;
+            cancel_button = new UnitButtonObject({x1: 1061, y1: 491, style: "pixel", label: "Cancel"});
+            main_slate = new DataSlate({style: "decorated", XX: 1006, YY: 143, set_width: true, width: 571, height: 350});
+            target_company_radio(min_exp);
+            transfer_button = new UnitButtonObject({x1: 1450, y1: 491, style: "pixel", label: "Transfer"});
         }
     }
 }
