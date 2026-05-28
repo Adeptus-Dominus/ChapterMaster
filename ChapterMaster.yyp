@@ -2,9 +2,9 @@
   "$GMProject":"v1",
   "%Name":"ChapterMaster",
   "AudioGroups":[
-    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
-    {"$GMAudioGroup":"v1","%Name":"audiogroup_sfx","exportDir":"","name":"audiogroup_sfx","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
-    {"$GMAudioGroup":"v1","%Name":"audiogroup_music","exportDir":"","name":"audiogroup_music","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"","%Name":"audiogroup_sfx","name":"audiogroup_sfx","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"","%Name":"audiogroup_music","name":"audiogroup_music","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
     "children":[],
@@ -776,6 +776,7 @@
     {"id":{"name":"scr_apothecary_ship","path":"scripts/scr_apothecary_ship/scr_apothecary_ship.yy",},},
     {"id":{"name":"scr_array_functions","path":"scripts/scr_array_functions/scr_array_functions.yy",},},
     {"id":{"name":"scr_audience","path":"scripts/scr_audience/scr_audience.yy",},},
+    {"id":{"name":"scr_autosave","path":"scripts/scr_autosave/scr_autosave.yy",},},
     {"id":{"name":"scr_battle_allies","path":"scripts/scr_battle_allies/scr_battle_allies.yy",},},
     {"id":{"name":"scr_battle_sort","path":"scripts/scr_battle_sort/scr_battle_sort.yy",},},
     {"id":{"name":"scr_bionics_count","path":"scripts/scr_bionics_count/scr_bionics_count.yy",},},

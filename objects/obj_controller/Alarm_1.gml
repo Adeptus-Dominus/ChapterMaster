@@ -639,4 +639,7 @@ if (instance_exists(obj_temp7)) {
     scr_star_ownership(false);
 }*/
 
-// x=0;y=0; 
+// Save immediately after world gen
+if (global.load == -1 && global.settings.autosave == true) {
+    alarm[2] = 5;
+}
