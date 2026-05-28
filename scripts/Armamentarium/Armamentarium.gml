@@ -452,9 +452,9 @@ function Armamentarium(_controller) constructor {
     enter_forge_button = new ShutterButton();
     enter_forge_button.cover_text = "FORGE";
 
-    forge_button = new SpriteButton(spr_build_tiny);
-    buy_button = new SpriteButton(spr_buy_tiny);
-    sell_button = new SpriteButton(spr_sell_tiny);
+    forge_button = new SpriteButton({sprite:spr_build_tiny});
+    buy_button = new SpriteButton({sprite:spr_buy_tiny});
+    sell_button = new SpriteButton({sprite:spr_sell_tiny});
 
     var _cat_options = [
         {
@@ -1009,8 +1009,13 @@ function Armamentarium(_controller) constructor {
         if (is_in_forge) {
             var _can_forge = _item.meets_requirements || global.cheat_debug;
 
-            forge_button.tooltip_text = _can_forge ? "Add to Forge Queue" : _item.get_missing_technologies_tooltip();
-            forge_button.draw(1530, _y + 2, _can_forge);
+            forge_button.update({
+                tooltip_text: _can_forge ? "Add to Forge Queue" : _item.get_missing_technologies_tooltip(),
+                x1: 1530,
+                y1 : _y + 2
+            })
+            
+            forge_button.draw(_can_forge);
 
             if (forge_button.is_clicked) {
                 var _queue = controller.specialist_point_handler.forge_queue;
@@ -1027,8 +1032,13 @@ function Armamentarium(_controller) constructor {
         var _can_afford = (controller.requisition >= _cost) || global.cheat_debug;
         var _can_buy = _item.buyable || global.cheat_debug;
 
-        buy_button.tooltip_text = !_can_buy ? "Unavailable for purchase" : (_can_afford ? "Buy" : "Insufficient Requisition");
-        buy_button.draw(1530, _y + 2, _can_buy && _can_afford);
+        buy_button.update({
+            tooltip_text : !_can_buy ? "Unavailable for purchase" : (_can_afford ? "Buy" : "Insufficient Requisition"),
+            x1 : 1530,
+            y1 : _y + 2
+        });
+
+        buy_button.draw(_can_afford);
 
         if (buy_button.is_clicked) {
             _buy_item(_item, _cost, _count);
@@ -1036,8 +1046,11 @@ function Armamentarium(_controller) constructor {
 
         var _can_sell = !array_contains(["ships", "vehicles"], shop_type) && _item.stocked > 0;
 
-        sell_button.tooltip_text = $"Sell for {round(_item.value * SHOP_SELL_MOD)} (x{SHOP_SELL_MOD} of value)";
-        sell_button.draw(1480, _y + 2, _can_sell);
+        sell_button.update({
+            tooltip_text : $"Sell for {round(_item.value * SHOP_SELL_MOD)} (x{SHOP_SELL_MOD} of value)",
+            x1 : 1480,
+            y1 : _y + 2
+        })
 
         if (sell_button.is_clicked) {
             _sell_item(_item, _count, SHOP_SELL_MOD);

@@ -45,6 +45,7 @@ function standard_loc_data() {
     x2 = 0;
     w = 0;
     h = 0;
+
 }
 
 
@@ -54,7 +55,7 @@ function standard_loc_data() {
 
 function Box(data) constructor {
     colour = CM_GREEN_COLOR;
-    move_data_to_current_scope(data);
+    move_data_to_current_scope(data, true);
 
     static hit = function() {
         return scr_hit(x1, y1, x2, y2);
@@ -237,10 +238,13 @@ function LabeledIcon(icon, text, x1 = 0, y1 = 0, data = false) constructor {
 /// @param {Asset.GMSprite} _sprite The default sprite to display.
 /// @param {Asset.GMSprite} _hover_sprite Optional sprite to show when hovered.
 /// @returns {Struct.SpriteButton}
-function SpriteButton(_sprite, _hover_sprite = -1) constructor {
-    sprite = _sprite;
-    hover_sprite = _hover_sprite;
+function SpriteButton(data) constructor {
+    standard_loc_data();
+    sprite = spr_none;
+    hover_sprite = spr_none;
 
+    cycle_index = false;
+    draw_index = 0;
     scale_x = 1.0;
     scale_y = 1.0;
     alpha_hover = 1.0;
@@ -256,15 +260,22 @@ function SpriteButton(_sprite, _hover_sprite = -1) constructor {
     is_hovered = false;
     is_clicked = false;
 
+    static update = function(data){
+        move_data_to_current_scope(data,true);
+        x2 = x1 + (width * scale_x);
+        y2 = y1 + (height * scale_y);
+    }
+
+    move_data_to_current_scope(data);
     /// @desc Updates interaction state and draws the button.
     /// @param {real} _x The X position to draw at.
     /// @param {real} _y The Y position to draw at.
     /// @param {bool} _enabled If false, interaction is disabled and the button appears faded.
-    static draw = function(_x, _y, _enabled = true) {
-        var _x2 = _x + (width * scale_x);
-        var _y2 = _y + (height * scale_y);
+    static draw = function(_enabled = true) {
 
-        is_hovered = scr_hit(_x, _y, _x2, _y2);
+        add_draw_return_values();
+
+        is_hovered = sr_hit_struct();
         is_clicked = _enabled && is_hovered && mouse_button_clicked();
 
         if (is_hovered) {
@@ -280,7 +291,9 @@ function SpriteButton(_sprite, _hover_sprite = -1) constructor {
         var _draw_sprite = (_enabled && is_hovered && hover_sprite != -1) ? hover_sprite : sprite;
         var _draw_alpha = _enabled ? (is_hovered ? alpha_hover : alpha_idle) : alpha_disabled;
 
-        draw_sprite_ext(_draw_sprite, 0, _x, _y, scale_x, scale_y, 0, c_white, _draw_alpha);
+        draw_index = cycle_index ? draw_index + 1 : draw_index;
+        draw_sprite_ext(_draw_sprite, draw_index, _x, _y, scale_x, scale_y, 0, c_white, _draw_alpha);
+        pop_draw_return_values();
     };
 }
 
@@ -423,7 +436,7 @@ function UnitButtonObject(data = false) constructor {
         }
     };
 
-    static disabled = false;
+    disabled = false;
 
     static draw = function(allow_click = true) {
         add_draw_return_values();

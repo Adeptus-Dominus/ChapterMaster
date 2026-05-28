@@ -10,6 +10,15 @@ function scr_hit(x1 = 0, y1 = 0, x2 = 0, y2 = 0, force_gui = false) {
     }
 }
 
+/// @function sr_hit_struct
+/// @description Returns true if mouse is hovering on the specified rectangle area runs withi any valid strucct with x1, y1, x2, y2.
+/// @returns {bool}
+/// @mixin
+function sr_hit_struct(){
+    var _mouse_consts = force_gui ? [device_mouse_x_to_gui(0), device_mouse_y_to_gui(0)] : return_mouse_consts();
+    return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], x1, y1, x2, y2);
+}
+
 function scr_hit_relative(x1, relative = [0, 0]) {
     var _mouse_consts = return_mouse_consts();
     return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], relative[0] + x1[0], relative[1] + x1[1], relative[0] + x1[2], relative[1] + x1[3]);
