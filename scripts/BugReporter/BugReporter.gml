@@ -162,10 +162,13 @@ function BugReporter() constructor {
             }
 
             if (file_exists(PATH_AUTOSAVE_FILE)) {
-                var _save_data = json_to_gamemaker(PATH_AUTOSAVE_FILE, json_parse);
-                var _seed = is_struct(_save_data) ? _save_data[$ "game_seed"] : undefined;
-                if (!is_undefined(_seed) && _seed == pending_error.seed) {
-                    _hook.AddFile(PATH_AUTOSAVE_FILE);
+                var _save = json_to_gamemaker(PATH_AUTOSAVE_FILE, json_parse);
+                var _save_data = is_struct(_save) ? _save[$ "Save"] : undefined;
+                if (is_struct(_save_data)) {
+                    var _seed = _save_data[$ "game_seed"];
+                    if (!is_undefined(_seed) && _seed == pending_error.seed) {
+                        _hook.AddFile(PATH_AUTOSAVE_FILE);
+                    }
                 }
             }
 
