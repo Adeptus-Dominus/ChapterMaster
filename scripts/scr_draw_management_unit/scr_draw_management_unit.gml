@@ -173,10 +173,10 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         draw_set_color(c_gray);
         draw_set_alpha(1);
         draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 1);
-        if (man[selected] == "man" && is_struct(_unit)) {
-            var _is_rank_file = unit.IsSpecialist(SPECIALISTS_RANK_AND_FILE);
+        if (man[selected] == "man" && is_struct(display_unit[selected])) {
+            var _unit = display_unit[selected];
+            var _is_rank_file = _unit.is_specialist(SPECIALISTS_RANK_AND_FILE);
             if (_is_rank_file) {
-                var _unit = display_unit[selected];
                 var _role = _unit.role();
                 var _experience = _unit.experience;
 
