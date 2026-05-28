@@ -169,11 +169,6 @@ function set_up_equip_popup() {
                         str1: "Master Crafted",
                         font: fnt_40k_14b,
                         val: 1,
-                    },
-                    {
-                        str1: "Artificer",
-                        font: fnt_40k_14b,
-                        val: 2,
                     }
                 ];
                 quality_radio = new RadioSet(_quality_options, "", {max_width: 500, x1: 1040, y1: 318});
