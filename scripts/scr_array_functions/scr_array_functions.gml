@@ -333,7 +333,7 @@ function array_create_advanced(_size = 1, _default = 0) {
     var _array = array_create(_size);
 
     for (var i = 0; i < _size; i++) {
-        _array[@ i] = variable_clone(_default);
+        _array[i] = variable_clone(_default);
     }
 
     return _array;
