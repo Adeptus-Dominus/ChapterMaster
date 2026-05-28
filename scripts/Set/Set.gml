@@ -6,15 +6,19 @@ function Set(_array = []) constructor {
     }
 
     static add = function(_key) {
-        return ds_map_add(data, _key, true);
+        ds_map_add(data, _key, true);
+        return self;
     };
 
     static remove = function(_key) {
+        var existed = ds_map_exists(data, _key);
         ds_map_delete(data, _key);
+        return existed;
     };
 
     static clear = function() {
         ds_map_clear(data);
+        return self;
     };
 
     static has = function(_key) {
@@ -27,6 +31,7 @@ function Set(_array = []) constructor {
             var _key = _keys[i];
             _callback(_key);
         }
+        return self;
     };
 
     static size = function() {
@@ -43,5 +48,7 @@ function Set(_array = []) constructor {
 
     static destroy = function() {
         ds_map_destroy(data);
+        data = -1;
+        return self;
     };
 }
