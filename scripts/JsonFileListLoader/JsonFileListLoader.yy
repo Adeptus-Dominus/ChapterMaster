@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"JsonFileListLoader",
   "parent":{
-    "name":"Files",
-    "path":"folders/Scripts/Helpers/Files.yy",
+    "name":"Constructors",
+    "path":"folders/Scripts/Constructors.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
