@@ -259,10 +259,10 @@ deserialize = function(save_data) {
     // Automatic var setting
     var all_names = struct_get_names(save_data);
 
-    if (!array_contains(all_names, "chapter_squad_arrangement")){
+    if (!array_contains(all_names, "chapter_squad_arrangement")) {
         obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main\\squads\\company_squad_builds.json", json_parse);
     }
-    
+
     var _len = array_length(all_names);
     for (var i = 0; i < _len; i++) {
         var var_name = all_names[i];
@@ -311,13 +311,13 @@ deserialize = function(save_data) {
         obj_ini.TTRPG[company][marine].load_json_data(struct);
     }
 
-    obj_ini.TTRPG = array_create(11, array_create(501,[]));
+    obj_ini.TTRPG = array_create(11, array_create(501, []));
     for (var _coy = 0; _coy < 11; _coy++) {
         for (var _mar = 0; _mar <= 500; _mar++) {
             obj_ini.TTRPG[_coy][_mar] = new TTRPG_stats("chapter", _coy, _mar, "blank");
         }
     }
-    
+
     if (is_array(_marine_structs)) {
         var _m_ar_len = array_length(_marine_structs);
         for (var m = 0; m < _m_ar_len; m++) {
@@ -325,7 +325,7 @@ deserialize = function(save_data) {
             var _coy = _marine_json.company;
             var _mar = _marine_json.marine_number;
             load_marine_struct(_coy, _mar, _marine_json);
-            if (!is_struct(fetch_unit([_coy, _mar]))){
+            if (!is_struct(fetch_unit([_coy, _mar]))) {
                 obj_ini.TTRPG[_coy][_mar] = new TTRPG_stats("chapter", _coy, _mar, "blank");
             }
         }

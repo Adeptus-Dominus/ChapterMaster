@@ -9,10 +9,9 @@ function UnitGroup(units) constructor {
         units = array_shuffle(units);
     };
 
-    static pop = function(){
+    static pop = function() {
         return array_pop(units);
-    }
-
+    };
 
     static has_role = function(role) {
         for (var i = 0; i < array_length(units); i++) {
@@ -429,14 +428,13 @@ function UnitGroup(units) constructor {
         var _sorted_squads = [];
         for (var role_name = 0; role_name < _role_shuffle_length; role_name++) {
             var _wanted_role = _role_orders[role_name];
-            if (_wanted_role == ""){
+            if (_wanted_role == "") {
                 continue;
             }
             _match_roles.add_units(self, {role: _wanted_role}, true, -1);
             for (var i = 0; i < array_length(_match_roles.units); i++) {
                 var _unit = _match_roles.units[i];
-                if (_unit.squad == "none" || array_contains(
-                    _sorted_squads, _unit.squad)) {
+                if (_unit.squad == "none" || array_contains(_sorted_squads, _unit.squad)) {
                     continue;
                 }
                 var _squad = fetch_squad(_unit.squad);
@@ -477,9 +475,9 @@ function UnitIndex(units) constructor {
 
     add_to_index(units);
 
-    static role_count = function(role){
-        return array_length(role_index[$ role])
-    }
+    static role_count = function(role) {
+        return array_length(role_index[$ role]);
+    };
 
     static has_role = function(role) {
         return struct_exists(role_index, role) && array_length(role_index[$ role]) > 0;
@@ -489,17 +487,17 @@ function UnitIndex(units) constructor {
         return struct_get_names(role_index);
     };
 
-    static hierarchy_keys = function(){
+    static hierarchy_keys = function() {
         var _keys = keys();
         var _all_roles = role_hierarchy();
-        for (var i = array_length(_all_roles)-1;i >= 0; i-- ){
-            if (!array_contains(_keys , _all_roles[i])){
+        for (var i = array_length(_all_roles) - 1; i >= 0; i--) {
+            if (!array_contains(_keys, _all_roles[i])) {
                 array_delete(_all_roles, i, 1);
             }
         }
 
         return _all_roles;
-    }
+    };
 
     static pop_role_member = function(role) {
         return array_pop(role_index[$ role]);
@@ -517,42 +515,38 @@ function UnitIndex(units) constructor {
         return new UnitGroup(_units);
     };
 
-    static create_plural_strings_array = function(arrange_with_hierarchy = true, allow_draw_data = true, use_names_for_heads = true){
+    static create_plural_strings_array = function(arrange_with_hierarchy = true, allow_draw_data = true, use_names_for_heads = true) {
         var _strings_array = [];
-		var _keys;
-        if (arrange_with_hierarchy){
+        var _keys;
+        if (arrange_with_hierarchy) {
             _keys = hierarchy_keys();
-        } else{
+        } else {
             _keys = keys();
         }
-        for (var i = 0;i<array_length(_keys); i++){
+        for (var i = 0; i < array_length(_keys); i++) {
             var _count = role_count(_keys[i]);
-            if (_count == 0){
+            if (_count == 0) {
                 continue;
             }
-            if (_count == 1){
-                if (allow_draw_data){
+            if (_count == 1) {
+                if (allow_draw_data) {
                     var _string = _keys[i];
                     var _italic = false;
-                    if (use_names_for_heads && is_specialist(_keys[i],SPECIALISTS_HEADS) || _keys[i] == active_roles()[eROLE.CAPTAIN]){
+                    if (use_names_for_heads && is_specialist(_keys[i], SPECIALISTS_HEADS) || _keys[i] == active_roles()[eROLE.CAPTAIN]) {
                         _string = role_index[$ _keys[i]][0].name();
                         _italic = true;
                     }
-                    array_push(_strings_array, {
-                        str1 : _string,
-                        bold : true,
-                        italic : _italic,
-                    });
+                    array_push(_strings_array, {str1: _string, bold: true, italic: _italic});
                 } else {
                     array_push(_strings_array, string(_keys[i]));
                 }
-            }else {
+            } else {
                 array_push(_strings_array, string_plural_count(_keys[i], role_count(_keys[i]), false));
             }
         }
 
         return _strings_array;
-    }
+    };
 }
 
 //TODO write this out with proper formatting when i can be assed
@@ -782,7 +776,7 @@ function SearchConditions(data) constructor {
             return false;
         }
 
-        if (unit.role() == ""){
+        if (unit.role() == "") {
             unit.set_name("");
             unit.base_group = "none";
             return false;

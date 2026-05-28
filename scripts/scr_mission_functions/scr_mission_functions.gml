@@ -534,7 +534,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index) {
                 }
             }
             if (_unit_pass[0]) {
-                _unit_report_string += _unit.add_trait("beast_slayer",true, true);
+                _unit_report_string += _unit.add_trait("beast_slayer", true, true);
                 array_push(_successful_hunters, _unit);
             } else {
                 var _tough_check = _tester.standard_test(_unit, "constitution", _unit.luck);

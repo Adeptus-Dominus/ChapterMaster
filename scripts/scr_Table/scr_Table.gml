@@ -59,9 +59,8 @@ function Table(data) constructor {
         }
     };
 
-    static row_method = function(_row, _row_entered){
-
-        if (!_row_entered){
+    static row_method = function(_row, _row_entered) {
+        if (!_row_entered) {
             return;
         }
 
@@ -76,17 +75,16 @@ function Table(data) constructor {
             }
         }
 
-        if (struct_exists(_row,"click_right")){
-            if (mouse_button_clicked(mb_right)){
+        if (struct_exists(_row, "click_right")) {
+            if (mouse_button_clicked(mb_right)) {
                 _row.click_right();
             }
-        } 
-    }
+        }
+    };
 
-    static row_count = function(){
+    static row_count = function() {
         return array_length(row_data);
-    }
-
+    };
 
     static draw = function() {
         add_draw_return_values();
@@ -114,7 +112,7 @@ function Table(data) constructor {
             }
             _col_draw_x = x1;
             var _row_entered = scr_hit_dimensions(_col_draw_x, _row_level, w, row_h);
-            
+
             var _row = row_data[i];
             if (is_array(row_data[i])) {
                 for (var d = 0; d < array_length(_row) && d < _cols; d++) {
@@ -125,14 +123,14 @@ function Table(data) constructor {
                 for (var d = 0; d < array_length(row_key_draw) && d < _cols; d++) {
                     var _key = row_key_draw[d];
                     var _scale_edits = calc_text_scale_confines(_row[$ _key], column_widths[d], 0);
-                    var _scale = min(1,_scale_edits.scale);
+                    var _scale = min(1, _scale_edits.scale);
                     var _text = _scale_edits.text;
-                    draw_text_transformed(_col_draw_x + (column_widths[d] / 2),_row_level, _text, _scale,_scale, 0)
+                    draw_text_transformed(_col_draw_x + (column_widths[d] / 2), _row_level, _text, _scale, _scale, 0);
                     _col_draw_x += column_widths[d] + col_spacing;
                 }
             }
 
-            if (_row_entered){
+            if (_row_entered) {
                 draw_rectangle(x1, _row_level, x1 + w, _row_level + row_h, 1);
             }
 

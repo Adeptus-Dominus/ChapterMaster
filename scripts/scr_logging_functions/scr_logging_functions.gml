@@ -67,7 +67,7 @@ function error_get_context() {
 function handle_error(_header, _message, _stacktrace = "", _critical = false, _report_title = "") {
     var _error = new GameError();
     _error.init(_header, _message, _stacktrace, _critical, _report_title);
-    
+
     create_error_file(_error.error_file_text);
 
     show_debug_message(LB_92);

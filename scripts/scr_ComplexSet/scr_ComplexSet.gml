@@ -1572,15 +1572,15 @@ function ComplexSet(_unit) constructor {
                         self[$ area] = {
                             sources: [
                                 _existing_data,
-                                add_sprite,
+                                add_sprite
                             ],
                             offsets: [
                                 0,
-                                _overide_start,
+                                _overide_start
                             ],
                             source_frames: [
                                 sprite_get_number(_existing_data),
-                                _add_sprite_length,
+                                _add_sprite_length
                             ],
                             total: _overide_start + _add_sprite_length,
                         };

@@ -1118,15 +1118,13 @@ function setup_start_imperial_navy_fleet(system) {
     }
 }
 
-
-
-function get_imperial_navy_fleets(){
+function get_imperial_navy_fleets() {
     var _fleets = [];
 
-    with (obj_en_fleet){
-        if (owner != eFACTION.IMPERIUM || !navy){
+    with (obj_en_fleet) {
+        if (owner != eFACTION.IMPERIUM || !navy) {
             continue;
-        } else if (owner == eFACTION.IMPERIUM && navy){
+        } else if (owner == eFACTION.IMPERIUM && navy) {
             array_push(_fleets, id);
         }
     }

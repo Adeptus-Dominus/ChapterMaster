@@ -1,5 +1,3 @@
-
-
 function scr_load(save_part, save_id) {
     var t1 = get_timer();
     var filename = string(PATH_SAVE_FILES, save_id);

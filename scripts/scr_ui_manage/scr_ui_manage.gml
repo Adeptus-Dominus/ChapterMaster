@@ -399,22 +399,20 @@ function reset_manage_unit_constants(unit) {
         unit_manage_image = unit.draw_unit_image();
 
         temp[122] = unit.handle_stat_growth();
-        
+
         var _string_data = {
-            colour : #50a076,
-            scale : 0.7,
-            halign :fa_center,
-            font :fnt_40k_30b,
-            scale_text :true,
-            max_width : 250,
-            min_scale : 0.7
+            colour: #50a076,
+            scale: 0.7,
+            halign: fa_center,
+            font: fnt_40k_30b,
+            scale_text: true,
+            max_width: 250,
+            min_scale: 0.7,
         };
 
+        var _name = unit.name_role(true, false);
 
-        var _name=unit.name_role(true, false);
-
-        unit_manage_constants.name = new ReactiveString(_name,0,0,_string_data);
-
+        unit_manage_constants.name = new ReactiveString(_name, 0, 0, _string_data);
 
         var _role_name = "";
 
@@ -428,32 +426,31 @@ function reset_manage_unit_constants(unit) {
         } else {
             _comp_string = $"{unit.company_roman()} Company";
             _role_name = $"{unit.squad_role()}";
-        }      
+        }
 
         _string_data = {
-            colour : #50a076,
-            scale : 1,
-            halign :fa_center,
-            font :fnt_40k_14b,
-            scale_text :true,
-            max_width : 250,
+            colour: #50a076,
+            scale: 1,
+            halign: fa_center,
+            font: fnt_40k_14b,
+            scale_text: true,
+            max_width: 250,
         };
 
-        unit_manage_constants.role_name = new ReactiveString(_role_name,0,0,_string_data);
-
+        unit_manage_constants.role_name = new ReactiveString(_role_name, 0, 0, _string_data);
 
         _string_data = {
-            colour : #50a076,
-            scale : 1,
-            halign :fa_center,
-            font :fnt_40k_14b,
-            scale_text :true,
-            max_width : 250,
+            colour: #50a076,
+            scale: 1,
+            halign: fa_center,
+            font: fnt_40k_14b,
+            scale_text: true,
+            max_width: 250,
         };
 
-        unit_manage_constants.company_string = new ReactiveString(_comp_string,0,0,_string_data);
+        unit_manage_constants.company_string = new ReactiveString(_comp_string, 0, 0, _string_data);
 
-    // TODO
+        // TODO
     } catch (_exception) {
         handle_exception(_exception);
         obj_controller.unit_focus = undefined;
@@ -677,21 +674,11 @@ function draw_sprite_and_unit_equip_data() {
 
             // Draw unit name and role
 
-            unit_manage_constants.name.update({
-                x1: xx + 402,
-                y1: yy + 76,
-            });
+            unit_manage_constants.name.update({x1: xx + 402, y1: yy + 76});
 
+            unit_manage_constants.role_name.update({x1: xx + 402, y1: yy + 56});
 
-            unit_manage_constants.role_name.update({
-                x1: xx + 402,
-                y1: yy + 56,
-            });
-
-            unit_manage_constants.company_string.update({
-                x1: xx + 402,
-                y1: yy + 36,
-            });
+            unit_manage_constants.company_string.update({x1: xx + 402, y1: yy + 36});
 
             unit_manage_constants.name.draw();
             unit_manage_constants.role_name.draw();

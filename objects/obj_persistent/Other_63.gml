@@ -1,15 +1,15 @@
-var _id   = ds_map_find_value(async_load, "id");
+var _id = ds_map_find_value(async_load, "id");
 var _status = ds_map_find_value(async_load, "status");
 var _result = ds_map_find_value(async_load, "result");
 
 if (ds_map_exists(global.active_error_dialogs, _id)) {
     var _error = ds_map_find_value(global.active_error_dialogs, _id);
     ds_map_delete(global.active_error_dialogs, _id);
-    
+
     if (is_instanceof(_error, GameError)) {
         var _reporter = new BugReporter();
         _reporter.pending_error = _error;
-        
+
         if (!ds_queue_empty(global.error_queue)) {
             global.pending_next_error = ds_queue_dequeue(global.error_queue);
         } else {
@@ -28,7 +28,7 @@ if (global.active_bug_report != undefined && is_struct(global.active_bug_report)
         }
         delete global.active_bug_report;
         global.active_bug_report = undefined;
-        
+
         if (global.pending_next_error != undefined && is_struct(global.pending_next_error)) {
             var _next = global.pending_next_error;
             global.pending_next_error = undefined;

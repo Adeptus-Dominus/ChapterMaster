@@ -47,7 +47,6 @@ function standard_loc_data() {
     h = 0;
 }
 
-
 // --------------------
 // 🟩 UI ELEMENTS
 // --------------------
@@ -119,7 +118,7 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
                 y2 = y1 + h;
             } else {
                 w = max_width;
-                var _scale_edits = calc_text_scale_confines(text, max_width, 0,allow_line_breaks)
+                var _scale_edits = calc_text_scale_confines(text, max_width, 0, allow_line_breaks);
                 scale = _scale_edits.scale;
                 text = _scale_edits.text;
                 h = string_height(text) * scale;
@@ -392,8 +391,8 @@ function UnitButtonObject(data = false) constructor {
             self[$ _updaters[i]] = data[$ _updaters[i]];
         }
         if (struct_exists(data, "label") && !struct_exists(data, "set_width")) {
-        set_width = false;
-        w = 0;
+            set_width = false;
+            w = 0;
         }
         if (!set_height_width) {
             update_loc();
@@ -903,7 +902,7 @@ function MultiSelect(options_array, title, data = {}) constructor {
 
     update(data);
 
-    static draw_toggle = function(index){
+    static draw_toggle = function(index) {
         var _cur_opt = toggles[index];
         _cur_opt.update(next_draw);
         if (_cur_opt.clicked() && allow_changes) {
@@ -913,7 +912,7 @@ function MultiSelect(options_array, title, data = {}) constructor {
         _cur_opt.draw();
         next_draw.row_or_column_draw_count++;
         //TODO probably set an enum up for this later
-        if (draw_alighn == "horizontal"){
+        if (draw_alighn == "horizontal") {
             next_draw.x1 = _cur_opt.x2 + x_gap;
             x2 = next_draw.x1 > x2 ? next_draw.x1 : x2;
             y2 = next_draw.y1 + _cur_opt.h;
@@ -934,17 +933,17 @@ function MultiSelect(options_array, title, data = {}) constructor {
                     next_draw.x1 += _cur_opt.w + x_gap;
                     next_draw.row_or_column_draw_count = 0;
                 }
-            }            
+            }
         }
-    }
+    };
 
-    static reset_next_draw = function(){
+    static reset_next_draw = function() {
         next_draw = {
-            x1 : x1,
-            y1 : y1,
-            row_or_column_draw_count : 0,
-        }
-    }
+            x1: x1,
+            y1: y1,
+            row_or_column_draw_count: 0,
+        };
+    };
 
     static draw = function(allow_changes = true) {
         changed = false;
@@ -954,7 +953,7 @@ function MultiSelect(options_array, title, data = {}) constructor {
 
         reset_next_draw();
 
-        if (title != ""){
+        if (title != "") {
             draw_text(x1, y1, title);
             next_draw.y1 += string_height(title) + 10;
         }
@@ -1192,15 +1191,15 @@ function ToggleButton(data = {}) constructor {
         if (style == "default") {
             if (w == 0) {
                 w = string_width(str1);
-                w *= (1 + (text_padding * 2));
+                w *= 1 + (text_padding * 2);
             }
             if (h == 0) {
                 h = string_height(str1);
-                h *= (1 + (text_padding * 2));
+                h *= 1 + (text_padding * 2);
             }
         } else if (style == "box") {
             w = max(32, string_width(str1) * (1 + (text_padding * 2))) + 6;
-            h = 32 +  (string_height(str1) * (1 + (text_padding * 2)));
+            h = 32 + (string_height(str1) * (1 + (text_padding * 2)));
         }
         x2 = x1 + w;
         y2 = y1 + h;
@@ -1224,7 +1223,7 @@ function ToggleButton(data = {}) constructor {
     };
 
     draw = function(is_active = undefined) {
-        if (is_active != undefined){
+        if (is_active != undefined) {
             self.active = is_active;
         }
         add_draw_return_values();
@@ -1257,16 +1256,15 @@ function ToggleButton(data = {}) constructor {
                 } // Increase state_alpha when not hovered
             }
         }
-       
+
         if (hover()) {
             if (tooltip != "") {
                 tooltip_draw(tooltip);
             }
-            if (is_callable(hover_func)){
+            if (is_callable(hover_func)) {
                 hover_func();
             }
         }
-
 
         total_alpha = state_alpha * hover_alpha;
 

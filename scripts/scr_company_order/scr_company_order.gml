@@ -88,22 +88,20 @@ function scr_company_order(company) {
                 _squadless.organise_by_template(_data, _squad_index, _empty_index, false);
             }
 
-            _squadless = _squadless.get_from({
-                group: SPECIALISTS_SQUAD_LEADERS,
-                squadless: true,
-            });
-            
-            _squadless.for_each(function(loop_unit) {
-                var _sgts = role_groups(SPECIALISTS_SQUAD_LEADERS);
-                var _role_h_len = array_length(loop_unit.role_history);
-                for (var i = _role_h_len - 1; i >= 0; i--) {
-                    var _role = loop_unit.role_history[i][0];
-                    if (!array_contains(_sgts, _role)) {
-                        loop_unit.update_role(_role);
-                        break;
+            _squadless = _squadless.get_from({group: SPECIALISTS_SQUAD_LEADERS, squadless: true});
+
+            _squadless
+                .for_each(function(loop_unit) {
+                    var _sgts = role_groups(SPECIALISTS_SQUAD_LEADERS);
+                    var _role_h_len = array_length(loop_unit.role_history);
+                    for (var i = _role_h_len - 1; i >= 0; i--) {
+                        var _role = loop_unit.role_history[i][0];
+                        if (!array_contains(_sgts, _role)) {
+                            loop_unit.update_role(_role);
+                            break;
+                        }
                     }
-                }
-            });
+                });
         }
 
         _company_marines.order_by_rank();
