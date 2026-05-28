@@ -299,14 +299,19 @@ function scr_creation(slide_num) {
     if (slide_num == eCREATION_SLIDES.CHAPTERMASTER) {
         if (chapter_master_name != "" && chapter_master_melee != 0 && chapter_master_ranged != 0 && chapter_master_specialty != 0) {
             cooldown = 9999;
-            instance_create(0, 0, obj_ini);
-            audio_stop_all();
-            audio_play_sound(snd_royal, 0, true);
-            audio_sound_gain(snd_royal, 1, 5000);
 
             if (founding == ePROGENITOR.RANDOM) {
                 founding = irandom_range(ePROGENITOR.NONE, ePROGENITOR.RAVEN_GUARD);
             }
+
+            if (custom == eCHAPTER_TYPE.CUSTOM && global.chapter_id != eCHAPTERS.UNKNOWN) {
+                scr_save_chapter(global.chapter_id);
+            }
+
+            instance_create(0, 0, obj_ini);
+            audio_stop_all();
+            audio_play_sound(snd_royal, 0, true);
+            audio_sound_gain(snd_royal, 1, 5000);
 
             if (founding == eCHAPTERS.SALAMANDERS || global.chapter_id == eCHAPTERS.SALAMANDERS) {
                 obj_ini.skin_color = 1;
