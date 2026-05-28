@@ -500,7 +500,7 @@ function scr_ui_settings() {
                     /*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
                     draw_set_alpha(0.1);
                     draw_set_color(c_white);
-                    draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
+                    draw_rectangle(xxx, yyy, x289, y20, 0);
                     draw_set_alpha(1);
 
                     if (i <= 3) {
@@ -555,6 +555,15 @@ function scr_ui_settings() {
         pop_draw_return_values();
     }
 }
+function scr_select_company_settings_ui(){
+// Role Settings
+    var _comp_buttons = settings_buttons_ui_components.company_settings_selection_buttons;
+    for (var i = 0; i<array_length(_comp_buttons); i++){
+        var _button = _comp_buttons[i];
+        _button.draw();
+        if (!_button.clicked){
+            continue;
+        }
 
 
 function scr_select_company_settings_ui(){
