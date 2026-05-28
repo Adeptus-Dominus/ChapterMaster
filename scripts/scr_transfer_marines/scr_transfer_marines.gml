@@ -5,7 +5,6 @@ function draw_popup_transfer() {
     draw_set_font(fnt_40k_12);
 
     companies_select.draw();
-    target_comp = 0;
 
     if (companies_select.changed) {
         target_comp = companies_select.selection_val("val");
@@ -222,6 +221,7 @@ function set_up_transfer_popup() {
             min_exp = _min_exp;
             cancel_button = new UnitButtonObject({x1: 1061, y1: 491, style: "pixel", label: "Cancel"});
             main_slate = new DataSlate({style: "decorated", XX: 1006, YY: 143, set_width: true, width: 571, height: 350});
+            target_comp = 0; // HQ button is selected from the start, this is needed so it actually works without deselection;
             target_company_radio(min_exp);
             transfer_button = new UnitButtonObject({x1: 1450, y1: 491, style: "pixel", label: "Transfer"});
         }
