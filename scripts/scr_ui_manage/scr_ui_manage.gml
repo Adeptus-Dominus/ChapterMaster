@@ -132,7 +132,7 @@ function reset_manage_unit_constants(unit) {
 
         marine_armour[0] = unit.armour();
         fix_right = 0;
-        equip_data = unit.unit_equipment_data();
+        var _equip_data = unit.unit_equipment_data();
         unit_manage_constants.faction_owner = "1";
         if (unit.race() != 1) {
             unit_manage_constants.owner = unit.race();
@@ -144,7 +144,7 @@ function reset_manage_unit_constants(unit) {
 
         //armour
         var _data = {
-            tooltip: $"==Armour==\n {is_struct(equip_data.armour_data) ? equip_data.armour_data.item_tooltip_desc_gen() : ""}",
+            tooltip: $"==Armour==\n {is_struct(_equip_data.armour_data) ? _equip_data.armour_data.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.armour_quality),
             max_width: 187,
         };
@@ -155,7 +155,7 @@ function reset_manage_unit_constants(unit) {
         // Gear
 
         var _data = {
-            tooltip: $"==Gear==\n{is_struct(equip_data.gear_data) ? equip_data.gear_data.item_tooltip_desc_gen() : ""}",
+            tooltip: $"==Gear==\n{is_struct(_equip_data.gear_data) ? _equip_data.gear_data.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.gear_quality),
             max_width: 187,
         };
@@ -164,7 +164,7 @@ function reset_manage_unit_constants(unit) {
 
         //mobility
         var _data = {
-            tooltip: $"==Back/Mobilitiy==\n{is_struct(equip_data.mobility_data) ? equip_data.mobility_data.item_tooltip_desc_gen() : ""}",
+            tooltip: $"==Back/Mobilitiy==\n{is_struct(_equip_data.mobility_data) ? _equip_data.mobility_data.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.mobility_item_quality),
             max_width: 187,
         };
@@ -172,7 +172,7 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.mobi_string = new ReactiveString(unit.equipments_qual_string("mobi", true), 0, 0, _data);
 
         var _data = {
-            tooltip: $"==First Weapon==\n{is_struct(equip_data.weapon_one_data) ? equip_data.weapon_one_data.item_tooltip_desc_gen() : ""}",
+            tooltip: $"==First Weapon==\n{is_struct(_equip_data.weapon_one_data) ? _equip_data.weapon_one_data.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.weapon_one_quality),
             max_width: 187,
         };
@@ -181,7 +181,7 @@ function reset_manage_unit_constants(unit) {
 
         //mobility
         var _data = {
-            tooltip: $"==Second Weapon==\n{is_struct(equip_data.weapon_two_data) ? equip_data.weapon_two_data.item_tooltip_desc_gen() : ""}",
+            tooltip: $"==Second Weapon==\n{is_struct(_equip_data.weapon_two_data) ? _equip_data.weapon_two_data.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.weapon_two_quality),
             max_width: 187,
         };
