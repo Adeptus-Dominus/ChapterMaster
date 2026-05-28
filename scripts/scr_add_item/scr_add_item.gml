@@ -10,9 +10,7 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
 
     static qualities = [
         "standard",
-        "exemplary",
         "master_crafted",
-        "artificer",
         "artifact"
     ];
 

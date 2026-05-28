@@ -23,7 +23,6 @@ safe = 0;
 last_turn_check = 0;
 events = [];
 
-
 uid = scr_uuid_generate();
 //TODO set up special save method for faction specific fleet variables
 inquisitor = -1;

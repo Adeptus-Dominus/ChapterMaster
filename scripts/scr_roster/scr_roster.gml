@@ -10,21 +10,9 @@ function Roster() constructor {
     squad_buttons = [];
     company_buttons = [];
     roster_local_string = "";
-    local_button = new ToggleButton({
-        str1 : "Local Forces",
-        text_halign : fa_center,
-        text_color : CM_GREEN_COLOR,
-        button_color : CM_GREEN_COLOR,
-        active : false
-    }); 
+    local_button = new ToggleButton({str1: "Local Forces", text_halign: fa_center, text_color: CM_GREEN_COLOR, button_color: CM_GREEN_COLOR, active: false});
 
-    select_all_ships = new UnitButtonObject({
-        x1 : 700,
-        y1 : 299,
-        label : "All Ships",
-        text_color : CM_GREEN_COLOR,
-        button_color : CM_GREEN_COLOR
-    });
+    select_all_ships = new UnitButtonObject({x1: 700, y1: 299, label: "All Ships", text_color: CM_GREEN_COLOR, button_color: CM_GREEN_COLOR});
 
     static only_locals = function() {
         for (var i = 0; i < array_length(ships); i++) {
@@ -33,7 +21,7 @@ function Roster() constructor {
         }
         local_button.active = true;
     };
-    
+
     static format_roster_string = function() {
         roster_string = "";
         var _roster_types = struct_get_names(selected_roster);
@@ -179,28 +167,17 @@ function Roster() constructor {
         array_push(squad_buttons, _button);
     };
 
-    ship_multi_selector = new MultiSelect([], "", {
-        draw_alighn : "vertical",
-        max_height : 200,
-    });
+    ship_multi_selector = new MultiSelect([], "", {draw_alighn: "vertical", max_height: 200});
 
     static new_ship_button = function(display, ship_id) {
         var _button = new ToggleButton();
-        _button.update({
-            str1 : display,
-            text_halign : fa_center,
-            text_color : CM_GREEN_COLOR,
-            button_color : CM_GREEN_COLOR,
-            width : string_width(display) + 10,
-            active : false,
-            ship_id,
-        });
+        _button.update({str1: display, text_halign: fa_center, text_color: CM_GREEN_COLOR, button_color: CM_GREEN_COLOR, width: string_width(display) + 10, active: false, ship_id});
 
         _button.roster = self;
-        _button.hover_func = method(_button, function(){
+        _button.hover_func = method(_button, function() {
             roster.update_local_string(ship_id);
         });
-        
+
         array_push(ships, _button);
         array_push(ship_multi_selector.toggles, _button);
     };

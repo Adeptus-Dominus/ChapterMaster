@@ -54,5 +54,5 @@ function __init_global() {
     global.base_component_surface = -1;
 
     global.error_queue = ds_queue_create();
-    global.active_error_dialogs  = ds_map_create();
+    global.active_error_dialogs = ds_map_create();
 }

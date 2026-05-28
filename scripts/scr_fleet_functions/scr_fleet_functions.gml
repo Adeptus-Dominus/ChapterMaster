@@ -49,10 +49,10 @@ function scr_valid_fleet_target(target) {
     return valid;
 }
 
-function get_fleet_uid(search_uid){
+function get_fleet_uid(search_uid) {
     var _fleet = undefined;
-    with (obj_en_fleet){
-        if (uid == search_uid){
+    with (obj_en_fleet) {
+        if (uid == search_uid) {
             _fleet = id;
             break;
         }

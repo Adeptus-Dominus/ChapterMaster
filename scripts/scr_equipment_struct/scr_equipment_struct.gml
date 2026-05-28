@@ -474,9 +474,7 @@ function quality_string_conversion(quality_request) {
     var quality_conversions = {
         standard: "Normal",
         master_crafted: "Master Crafted",
-        artificer: "Articifer",
         artifact: "Artifact",
-        exemplary: "Exemplary",
     };
     if (struct_exists(quality_conversions, quality_request)) {
         return quality_conversions[$ quality_request];
@@ -502,12 +500,8 @@ function quality_color(_item_quality) {
             return draw_get_color();
         case "master_crafted":
             return #bf9340;
-        case "artificer":
-            return #bf4040;
         case "artifact":
             return #40bfbf;
-        case "exemplary":
-            return #80bf40;
     }
 }
 

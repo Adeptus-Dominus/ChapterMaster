@@ -21,7 +21,7 @@ Arguments with stars `(argument*)` can be omitted.
 - `stcpopulate` - spawns an STC fragment on all planets.
 - `additem "(name)" (number*) (quality*)` - spawns an item(s) with specified parameters.
     - `"(name)"` - item name in quotes, as it's written in the game. Case sensitive. "Bolter", "Power Axe", etc.
-    - `(quality*)` - possible values: standard, master_crafted, artificer, artifact, exemplary. Case insensitive.
+    - `(quality*)` - possible values: `standard`, `master_crafted`, `artifact`. Case insensitive.
 - `newapoth` - spawns an Apothecary (40 points, Needs testing).
 - `newpsyk` - spawns a Librarian (70 points, Needs testing).
 - `newtech` - spawns a Techmarine (400 points, Needs testing).

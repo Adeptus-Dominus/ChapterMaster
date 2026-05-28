@@ -79,7 +79,7 @@ function scr_special_view(command_group) {
             if (obj_ini.name[0][v] == "") {
                 continue;
             }
-            var _unit = fetch_unit([0 , v]);
+            var _unit = fetch_unit([0, v]);
             if (_unit.ship_location > -1) {
                 var ham = _unit.ship_location;
                 if (obj_ini.ship_location[ham] == "Lost") {

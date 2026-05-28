@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"UINodeScripts",
   "parent":{
-    "name":"User Interface",
-    "path":"folders/Scripts/User Interface.yy",
+    "name":"Constructors",
+    "path":"folders/Scripts/Constructors.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
