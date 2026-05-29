@@ -100,6 +100,11 @@ function __init_external() {
         global.commit_hash = _commit_hash;
     }
 
+    if (global.game_version != "compiled") {
+        global.version_checker = new UpdateChecker();
+        global.version_checker.check();
+    }
+
     global.weapons = json_to_gamemaker(working_directory + "\\data\\weapons.json", json_parse);
     global.gear = {
         "armour": json_to_gamemaker(working_directory + "\\data\\armour.json", json_parse),

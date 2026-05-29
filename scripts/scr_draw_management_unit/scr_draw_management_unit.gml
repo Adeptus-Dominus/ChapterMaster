@@ -174,8 +174,9 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         draw_set_alpha(1);
         draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 1);
         if (man[selected] == "man" && is_struct(display_unit[selected])) {
-            if (!unit_specialist) {
-                var _unit = display_unit[selected];
+            var _unit = display_unit[selected];
+            var _is_rank_file = _unit.is_specialist(SPECIALISTS_RANK_AND_FILE);
+            if (_is_rank_file) {
                 var _role = _unit.role();
                 var _experience = _unit.experience;
 
@@ -188,45 +189,46 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                 for (var s = 0; s <= 3; s++) {
                     _data = obj_controller.spec_train_data[s];
                     var valid = stat_valuator(_data.req, _unit);
-                    if (valid) {
-                        unit_specialism_option = true;
-                        var _draw_coords = [
-                            _circle_coords[0] + _data.coord_offset[0],
-                            _circle_coords[1] + _data.coord_offset[1]
-                        ];
+                    if (!valid) {
+                        continue;
+                    }
+                    unit_specialism_option = true;
+                    var _draw_coords = [
+                        _circle_coords[0] + _data.coord_offset[0],
+                        _circle_coords[1] + _data.coord_offset[1]
+                    ];
 
-                        var _draw_coords_mouse = [
-                            _draw_coords[0] - _circle_radius,
-                            _draw_coords[1] - _circle_radius,
-                            _draw_coords[0] + _circle_radius,
-                            _draw_coords[1] + _circle_radius
-                        ];
-                        specialistdir = _unit.specialist_tooltips(_data.name, _data.min_exp);
+                    var _draw_coords_mouse = [
+                        _draw_coords[0] - _circle_radius,
+                        _draw_coords[1] - _circle_radius,
+                        _draw_coords[0] + _circle_radius,
+                        _draw_coords[1] + _circle_radius
+                    ];
+                    specialistdir = _unit.specialist_tooltips(_data.name, _data.min_exp);
 
-                        if (scr_hit(_draw_coords_mouse)) {
-                            draw_set_alpha(0.8);
-                            if (mouse_button_clicked()) {
-                                switch (_data.name) {
-                                    case "Techmarine":
-                                        _unit.role_tag[eROLE_TAG.Techmarine] = !_unit.role_tag[eROLE_TAG.Techmarine];
-                                        break;
-                                    case "Librarian":
-                                        _unit.role_tag[eROLE_TAG.Librarian] = !_unit.role_tag[eROLE_TAG.Librarian];
-                                        break;
-                                    case "Chaplain":
-                                        _unit.role_tag[eROLE_TAG.Chaplain] = !_unit.role_tag[eROLE_TAG.Chaplain];
-                                        break;
-                                    case "Apothecary":
-                                        _unit.role_tag[eROLE_TAG.Apothecary] = !_unit.role_tag[eROLE_TAG.Apothecary];
-                                        break;
-                                }
+                    if (scr_hit(_draw_coords_mouse)) {
+                        draw_set_alpha(0.8);
+                        if (mouse_button_clicked()) {
+                            switch (_data.name) {
+                                case "Techmarine":
+                                    _unit.role_tag[eROLE_TAG.Techmarine] = !_unit.role_tag[eROLE_TAG.Techmarine];
+                                    break;
+                                case "Librarian":
+                                    _unit.role_tag[eROLE_TAG.Librarian] = !_unit.role_tag[eROLE_TAG.Librarian];
+                                    break;
+                                case "Chaplain":
+                                    _unit.role_tag[eROLE_TAG.Chaplain] = !_unit.role_tag[eROLE_TAG.Chaplain];
+                                    break;
+                                case "Apothecary":
+                                    _unit.role_tag[eROLE_TAG.Apothecary] = !_unit.role_tag[eROLE_TAG.Apothecary];
+                                    break;
                             }
                         }
-
-                        draw_circle_colour(_draw_coords[0], _draw_coords[1], _circle_radius, specialistdir.colors[0], specialistdir.colors[1], 0);
-                        draw_set_alpha(1.0);
-                        array_push(potential_tooltip, [specialistdir.spec_tip, _draw_coords_mouse]);
                     }
+
+                    draw_circle_colour(_draw_coords[0], _draw_coords[1], _circle_radius, specialistdir.colors[0], specialistdir.colors[1], 0);
+                    draw_set_alpha(1.0);
+                    array_push(potential_tooltip, [specialistdir.spec_tip, _draw_coords_mouse]);
                 }
             }
         }
