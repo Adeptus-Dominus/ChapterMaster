@@ -184,8 +184,15 @@ function scr_toggle_setting() {
                 popup = 0;
                 selected = 0;
                 hide_banner = 1;
+                try{
+                    setup_ui_chapter_settings();
+                } catch (_exception){
+                    handle_exception(_exception);
+                    scr_toggle_setting();
+                }
             } else if (settings) {
                 menu = eMENU.SETTINGS;
+                setup_ui_chapter_settings();
                 cooldown = 8000;
                 click = 1;
                 settings = 0;

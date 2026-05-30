@@ -250,8 +250,6 @@ function SpriteButton(data) constructor {
     alpha_hover = 1.0;
     alpha_idle = 0.8;
     alpha_disabled = 0.5;
-    width = sprite_get_width(_sprite);
-    height = sprite_get_height(_sprite);
 
     sound_click = snd_click;
     tooltip_text = "";
@@ -262,6 +260,8 @@ function SpriteButton(data) constructor {
 
     static update = function(data){
         move_data_to_current_scope(data,true);
+        width = sprite_get_width(sprite);
+        height = sprite_get_height(sprite);
         x2 = x1 + (width * scale_x);
         y2 = y1 + (height * scale_y);
     }

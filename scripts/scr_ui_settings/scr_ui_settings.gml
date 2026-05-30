@@ -15,7 +15,7 @@ function setup_ui_chapter_settings(){
         {
             str1: "Raid", 
             font: fnt_40k_30b, 
-            tooltip: "Can only be used in Raids. Prevents the use of all vehicles aside from Dreadnoughts and Land Speeders. Starts in melee."
+            tooltip: "Can only be used in Raids. Prevents the use of all vehicles aside from Dreadnoughts and Land Speeders. Starts in melee.",
             value : "raid",
             style : "box"
         },
@@ -66,7 +66,7 @@ function setup_ui_chapter_settings(){
         eROLE.SCOUT,
         eROLE.SERGEANT,
         eROLE.VETERANSERGEANT,
-    ]
+    ];
 
     var _but_x = 1277;
     var _but_y = 220;
@@ -77,15 +77,15 @@ function setup_ui_chapter_settings(){
 
         var _active = obj_ini.race[100][_role_id] != 0;
         var _button = new UnitButtonObject({
-            style = "pixel",
+            style : "pixel",
             x1 : _but_x,
             y1 : _but_y,
             label : obj_ini.role[100][_role_id],
             set_width : true,
             w : 289,
             active : _active,
-            role_id : _role_id
-            tooltip : string(obj_ini.role[100][_role_id]) + " Settings\n" + _base_tool;
+            role_id : _role_id,
+            tooltip : string(obj_ini.role[100][_role_id]) + " Settings\n" + _base_tool
         });
 
         _but_y += 30;
@@ -96,23 +96,22 @@ function setup_ui_chapter_settings(){
     settings_buttons_ui_components.role_settings_selection_buttons = role_settings_selection_buttons;
 
     company_settings_selection_buttons = [];
-    var _but_x = 936;
-    var _but_y = 220;
+    _but_x = 936;
+    _but_y = 220;
     var romanNumerals = scr_roman_numerals();
-    var _base_tool = "Click to open the settings for this company.";
+    _base_tool = "Click to open the settings for this company.";
 
     for (var i = 0; i<obj_ini.companies; i++){
 
-        var _string = i == 0 ? "Headquarters" : romanNumerals[ides - 1] + " Company"
+        var _string = i == 0 ? "Headquarters" : romanNumerals[i - 1] + " Company"
         var _button = new UnitButtonObject({
-            style = "pixel",
+            style : "pixel",
             x1 : _but_x,
             y1 : _but_y,
-            label : obj_string,
+            label : _string,
             set_width : true,
             w : 289,
-            role_id : _role_id
-            tooltip : _string + " Settings\n" + _base_tool;
+            tooltip : _string + " Settings\n" + _base_tool
         });
 
         _but_y += 30;
@@ -122,16 +121,21 @@ function setup_ui_chapter_settings(){
 
     settings_buttons_ui_components.company_settings_selection_buttons = company_settings_selection_buttons;
 
-    settings_buttons_ui_components.boarding_objectives = new ReactiveString("Boarding Objective", 28, 611, {
-        tooltip = "Boarding Objective\nThe objective of your Astartes once they board an enemy ship."
-    });
+    settings_buttons_ui_components.boarding_objectives = new ReactiveString(
+        "Boarding Objective",
+        100,
+        600, 
+        {
+            tooltip : "Boarding Objective\nThe objective of your Astartes once they board an enemy ship."
+        }
+    );
 
 
     var _toggle_dam_sys = new ToggleButton({
         style : "box",
         tooltip : "Your Astartes will attempt to disable the ship by attacking the ship bridge and systems.",
         str1 : "Damage Systems",
-        x1 : 31,
+        x1 : 50,
         y1 : 634,
         active : command_set[20]
     });
@@ -142,8 +146,8 @@ function setup_ui_chapter_settings(){
         style : "box",
         tooltip : "Your Astartes will use equipped Plasma Bombs to massively damage the boarded ship.",
         str1 : "Use Plasma Bombs",
-        x1 : 51,
-        y1 : 660,
+        x1 : 150,
+        y1 : 634,
         active : command_set[21]
     });
 
@@ -153,7 +157,7 @@ function setup_ui_chapter_settings(){
         style : "box",
         tooltip : "Your Astartes will attempt to commandeer the vessel, to be permenantely used or salvaged.",
         str1 : "Commandeer Ship",
-        x1 : 31,
+        x1 : 75,
         y1 : 688,
         active : command_set[22]
     });
@@ -210,7 +214,7 @@ function setup_ui_chapter_settings(){
     var _roles = active_roles();
 
 
-    var _role_order = [
+    _role_order = [
         eROLE.CAPTAIN,
         eROLE.ANCIENT,
         eROLE.CHAMPION,
@@ -228,8 +232,8 @@ function setup_ui_chapter_settings(){
             {
                 str1 : _role_name,
                 font : fnt_40k_14,
-                active : comand_set[3 + i],
-                tooltip : $"activate to make {_role_name} a default eember of your company command."
+                active : command_set[3 + i],
+                tooltip : $"activate to make {_role_name}s a default member of your company command."
             }           
         )
     }
@@ -251,7 +255,7 @@ function setup_ui_chapter_settings(){
             {
                 str1 : "Board Next Nearest",
                 font : fnt_40k_14,
-                style : "box"
+                style : "box",
                 tooltip : "After disabling an enemy vessel your Astartes will launch a new boarding mission at the nearest enemy."
             },
             {
@@ -263,19 +267,19 @@ function setup_ui_chapter_settings(){
         "Post-Boarding", 
         {
             draw_alighn : "vertical",
-            x1 : 28,
-            y1 : 747,
+            x1 : 40,
+            y1 : 730,
         }
     );
 
     _sets.post_boarding_action = _post_boarding;
 
-    _sets.auto_board_multi = new RadioSet(
+    _sets.auto_board_multi = new MultiSelect(
         [
             {
                 str1 : "Battleships",
                 font : fnt_40k_14,
-                style : "box"
+                style : "box",
                 tooltip : "If checked your ships will launch Boarding teams automatically when an eligible target is in range."
             },
             {
@@ -288,10 +292,11 @@ function setup_ui_chapter_settings(){
         "Automatic Boarding", 
         {
             draw_alighn : "vertical",
-            x1 : 288,
-            y1 : 747,
+            x1 : 325,
+            y1 : 730,
         }
     );
+}
 
 function scr_ui_settings() {
     if (menu < eMENU.SETTINGS || menu > eMENU.ROLE_SETTINGS){
@@ -309,7 +314,7 @@ function scr_ui_settings() {
     yy = __view_get(e__VW.YView, 0) + 0;
 
 
-    draw_sprite(spr_settings_bg, 0, xx, yy);
+    draw_sprite(spr_settings_bg, 0, 0, 0);
 
 
     if ((menu == eMENU.FORMATIONS_SETTINGS) && (formating > 0)) {
@@ -353,7 +358,7 @@ function scr_ui_settings() {
         _com_multi.draw();
 
         for (var i=0;i<array_length(_com_multi.toggles);i++){
-            comand_set[3 + i] = _com_multi.toggles[i].active;
+            command_set[3 + i] = _com_multi.toggles[i].active;
         }
 
         _ui_feats.boarding_objectives.draw();
@@ -379,7 +384,7 @@ function scr_ui_settings() {
 
         var _toggle_commandeer = settings_buttons_ui_components.boarding_commandeer;
 
-        if (_toggle_commandeer.draw){
+        if (_toggle_commandeer.draw()){
             if (_toggle_commandeer.active){
                 command_set[22] = 1;
                 command_set[20] = 0;
@@ -430,11 +435,11 @@ function scr_ui_settings() {
             draw_set_color(c_gray);
 
             if (bat_formation[i] != "") {
-                draw_rectangle(xxx, yyy, x289, y20, 0);
+                draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
             }
             if (i > 2) {
                 if ((bat_formation[i] == "") && (bat_formation[i - 1] != "")) {
-                    draw_rectangle(xxx, yyy, x289, y20, 0);
+                    draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
                 }
             }
 
@@ -460,11 +465,11 @@ function scr_ui_settings() {
 
             if ((shw != "") || (isnew == true)) {
                 draw_text(xxx, yyy, string(shw));
-                if (scr_hit(xxx, yyy, x289, y20) == true) {
+                if (scr_hit(xxx, yyy, xxx + 289, yyy + 20) == true) {
                     /*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
                     draw_set_alpha(0.1);
                     draw_set_color(c_white);
-                    draw_rectangle(xxx, yyy, x289, y20, 0);
+                    draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
                     draw_set_alpha(1);
 
                     if (i <= 3) {
@@ -519,13 +524,14 @@ function scr_ui_settings() {
         pop_draw_return_values();
     }
 }
+
+
 function scr_select_company_settings_ui(){
-// Role Settings
+// Company Settings
     var _comp_buttons = settings_buttons_ui_components.company_settings_selection_buttons;
     for (var i = 0; i<array_length(_comp_buttons); i++){
         var _button = _comp_buttons[i];
-        _button.draw();
-        if (!_button.clicked){
+        if (!_button.draw()){
             continue;
         }
 
@@ -541,8 +547,7 @@ function scr_select_role_settings_ui(){
     var _role_buttons = settings_buttons_ui_components.role_settings_selection_buttons;
     for (var i = 0; i<array_length(_role_buttons); i++){
         var _button = _role_buttons[i];
-        _button.draw();
-        if (!_button.clicked){
+        if (!_button.draw()){
             continue;
         }
         settings = _button.role_id;
@@ -692,6 +697,7 @@ function scr_draw_formation_settings(){
         if (bat_formation[formating] == "") {
             bat_formation_type[formating] = 0;
         }
+        pop_draw_return_values();
         exit;            
     }
 
@@ -706,15 +712,15 @@ function scr_draw_formation_settings(){
 
     var _formation_type = bat_formation_type[formating] == 1;
 
-    formation_radio = new settings_buttons_ui_components.formation_radio
+    var _formation_radio = settings_buttons_ui_components.formation_radio
 
     if (formating <= 3){
-        formation_radio.allow_changes = false;
+        _formation_radio.allow_changes = false;
     }
-    formation_radio.draw();
+    _formation_radio.draw();
 
-    if (formation_radio.changed){
-        var _new_val =  formation_radio.selection_val();
+    if (_formation_radio.changed){
+        var _new_val =  _formation_radio.selection_val("value");
         if (_new_val == "attack"){
             bat_formation_type[formating] = 1;
             scr_ui_formation_bars();            
@@ -725,9 +731,9 @@ function scr_draw_formation_settings(){
     }
 
 
-    attack_box = settings_buttons_ui_components.attack_box;
+    var _attack_box = settings_buttons_ui_components.attack_box;
 
-    raid_box = new settings_buttons_ui_components.raid_box;
+    var _raid_box = settings_buttons_ui_components.raid_box;
    
     draw_set_color(c_gray);
     draw_set_alpha(0.25);
@@ -740,15 +746,15 @@ function scr_draw_formation_settings(){
         _player_deploys_x += 50;
     }
     draw_set_alpha(1);
-
+	
+	var _enemy_deploy_boxes_x;
     // Attack Box
     if (bat_formation_type[formating] == 1) {
-        attack_box.draw(1);
-        var _enemy_deploy_boxes_x = 1054;
-    }else 
-    {
-        raid_box.draw(1);
-        var _enemy_deploy_boxes_x = 684;
+        _attack_box.draw(1);
+        _enemy_deploy_boxes_x = 1054;
+    } else {
+        _raid_box.draw(1);
+        _enemy_deploy_boxes_x = 684;
     }
 
     draw_set_alpha(0.25);
