@@ -726,6 +726,7 @@
     {"id":{"name":"rm_testing_new","path":"rooms/rm_testing_new/rm_testing_new.yy",},},
     {"id":{"name":"rm_tutorial","path":"rooms/rm_tutorial/rm_tutorial.yy",},},
     {"id":{"name":"__global_object_depths","path":"scripts/__global_object_depths/__global_object_depths.yy",},},
+    {"id":{"name":"__gml_pragma_global","path":"scripts/__gml_pragma_global/__gml_pragma_global.yy",},},
     {"id":{"name":"__init_action","path":"scripts/__init_action/__init_action.yy",},},
     {"id":{"name":"__init_d3d","path":"scripts/__init_d3d/__init_d3d.yy",},},
     {"id":{"name":"__init_external","path":"scripts/__init_external/__init_external.yy",},},

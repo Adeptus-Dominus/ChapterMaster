@@ -1,5 +1,3 @@
-gml_pragma("global", "__init_external();");
-
 function __init_external() {
     // Delete leftover files from old versions;
     // Remove these lines after a couple of months;
