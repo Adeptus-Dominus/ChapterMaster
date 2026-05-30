@@ -726,10 +726,60 @@ function get_compay_squad_arrangement(company){
 
 function SquadArrangementEditor(company) constructor {
     self.company = company;
-    arrangement = get_compay_squad_arrangement(company);
+    arrangement = get_compay_squad_arrangement(company).squads;
 
-    var _squads = squad_types
-    add_new_required_type = 
+    squads = obj_ini.squad_types;
+    static add_new_required_type = function(){
+
+    }
+
+    required_string = new ReactiveString(
+        "Required Squads", 
+        100, 
+        300,
+        {tooltip : "Required Squads will always get filled and created first"}
+    )
+
+    proportional_string = new ReactiveString(
+        "Proportional Squads", 
+        400, 
+        300,
+        {tooltip : "Proportional Squads will be built proporionally to other proportional squads for example if the proportional value of Tactical Squads was 1 and the proportional value of biker squads was 2 the system will try to make 2 biker squads foor every one tactical squad "}
+    )
+
+    static draw_required_squad = function(draw_squad){
+        var _squad_data = squads[$ draw_squad.squad];
+        draw_rectangle(100,required_y, 300, required_y + 50);
+        draw_set_halign(fa_center);
+        draw_text(175, required_y + 5, _squad_data.type_data.display_data);
+
+        if (point_and_click(draw_unit_buttons([150, required_y + 25], "-", [0.75, 0.75], c_red))) {
+
+        }
+    
+        if (point_and_click(draw_unit_buttons([250, required_y + 25], "+", [0.75, 0.75], c_green))) {
+
+        }
+        if (point_and_click(draw_unit_buttons([150, required_y + 40], "-", [0.75, 0.75], c_red))) {
+
+        }
+        if (point_and_click(draw_unit_buttons([250, required_y + 40], "+", [0.75, 0.75], c_green))) {
+
+        }
+
+    }
+
+    static draw = function(){
+        required_y = 140;
+        proportion_y = 140;
+        for (var i=0;i<array_length(arrangement);i++){
+            var _squad = arrangement[i]
+            if (struct_exists(_squad, "require") && _squad.require == true){
+                draw_required_squad(_squad);
+            }
+        }
+    }
+
 }
 
 function game_start_squads() {

@@ -103,7 +103,7 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
     min_scale = 0;
     allow_line_breaks = true;
 
-    move_data_to_current_scope(data);
+    move_data_to_current_scope(data, true);
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
@@ -163,6 +163,39 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
         }
         pop_draw_return_values();
     };
+}
+
+function ValueShifter(value_text, data){
+    standard_loc_data();
+    reactive_string = new ReactiveString(value_text, {halign : fa_center});
+
+    current_value = 0;
+    shift_value = 1;
+
+    decrease_button = new UnitButtonObject({label:"-", color : c_red});
+    increase_button = new UnitButtonObject({label:"-", color : c_red});
+
+    static update = function(data = {}){
+        move_data_to_current_scope(data, true);
+        reactive_string.update({x1,y1});
+
+        var _react_width_diff = (reactive_string.w / 2) + 10;
+        decrease_button.update({x1 : x1 - _react_width_diff, y1 : y1});
+        increase_button.update({x1 : x1 + _react_width_diff, y1 : y1});
+    }
+
+    update(data)
+
+    static draw = function(){
+        reactive_string.draw();
+        if (decrease_button.draw()){
+            current_value -= shift_value;
+        }
+
+        if (increase_button.draw()){
+            current_value += shift_value;
+        }
+    }
 }
 
 /// @function LabeledIcon(icon, text, x1, y1, data)
