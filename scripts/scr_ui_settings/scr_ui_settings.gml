@@ -137,7 +137,8 @@ function setup_ui_chapter_settings(){
         str1 : "Damage Systems",
         x1 : 50,
         y1 : 634,
-        active : command_set[20]
+        active : command_set[20],
+        clicked_check_default : true
     });
 
     settings_buttons_ui_components.boarding_damage_systems = _toggle_dam_sys;
@@ -148,7 +149,8 @@ function setup_ui_chapter_settings(){
         str1 : "Use Plasma Bombs",
         x1 : 150,
         y1 : 634,
-        active : command_set[21]
+        active : command_set[21],
+        clicked_check_default : true
     });
 
     settings_buttons_ui_components.boarding_plasma_bombs = _toggle_use_plasma;
@@ -159,7 +161,8 @@ function setup_ui_chapter_settings(){
         str1 : "Commandeer Ship",
         x1 : 75,
         y1 : 688,
-        active : command_set[22]
+        active : command_set[22],
+        clicked_check_default : true
     });
 
     settings_buttons_ui_components.boarding_commandeer = _toggle_commandeer;
@@ -167,48 +170,54 @@ function setup_ui_chapter_settings(){
     var _sets = settings_buttons_ui_components;
 
     _sets.progenitor_livery = new ToggleButton({
-        x1 : 31,
+        x1 : 50,
         y1 : 140,
         str1 : "Progenitor Livery",
         tooltip : "Turned off by default. \nWhen turned on, various unit visuals may change depending on your progenitor chapter.",
         active : progenitor_visuals,
-        style : "box"
+        style : "box",
+        clicked_check_default : true
     });
 
     _sets.astartes_transfer_toggle = new ToggleButton({
-        x1 : 31,
-        y1 : 170,
+        x1 : _sets.progenitor_livery.x2 + 10,
+        y1 : 140,
         str1 : "Allow Astartes Transfer",
         tooltip : "Turned off by default. Allows you to transfer Astartes in the same way as vehicles.",
         active : command_set[1],
-        style : "box"
+        style : "box",
+        clicked_check_default : true
     });
 
     _sets.codex_compliant = new ToggleButton({
-        x1 : 31,
-        y1 : 200,
+        x1 : _sets.astartes_transfer_toggle.x2 + 10,
+        y1 : 140,
         str1 : "Codex Compliant Organization",
         tooltip : "When enabled, marine promotions are limited based on their current company and EXP, overall following the Codex Astartes promotion sequence.",
         active : command_set[2],
-        style : "box"
+        style : "box",
+        clicked_check_default : true
     });
 
+    var _y = _sets.progenitor_livery.y2 + 10;
     _sets.modest_livery = new ToggleButton({
-        x1 : 31,
-        y1 : 230,
+        x1 : 50,
+        y1 : _y,
         str1 : "Modest Livery",
         tooltip : "Turned off by default.  Prevents Advantages and Disadvantages from changing the appearances of your marines, effectively disabling any special ornamentation or possible battle wear.",
         active : modest_livery,
-        style : "box"
+        style : "box",
+        clicked_check_default : true
     });
 
     _sets.tagged_training = new ToggleButton({
-        x1 : 31,
-        y1 : 260,
-        str1 : "Tagged TrainingLivery",
+        x1 : _sets.astartes_transfer_toggle.x1,
+        y1 : _y,
+        str1 : "Tagged Training Livery",
         tooltip : "Turned off by default, makes specialist training select only tagged marines, click on their potential indicators to tag.",
         active : tagged_training,
-        style : "box"
+        style : "box",
+        clicked_check_default : true
     });
 
     var _roles = active_roles();
@@ -243,7 +252,7 @@ function setup_ui_chapter_settings(){
         "Company Command Structure", 
         {
             draw_alighn : "vertical",
-            x1 : 28,
+            x1 : 75,
             y1 : 300,
         }
     );
@@ -291,7 +300,6 @@ function setup_ui_chapter_settings(){
         ], 
         "Automatic Boarding", 
         {
-            draw_alighn : "vertical",
             x1 : 325,
             y1 : 730,
         }
@@ -299,23 +307,14 @@ function setup_ui_chapter_settings(){
 }
 
 function scr_ui_settings() {
-    if (menu < eMENU.SETTINGS || menu > eMENU.ROLE_SETTINGS){
-        return;
-    }
+
     var romanNumerals = scr_roman_numerals();
     // Var declaration
-    var xx, yy;
     var tool1 = "", tool2 = "";
     var _che = false;
     var cx, cy;
     var x5 = 0, y5 = 0, x6 = 0;
     var too_img = 0;
-    xx = __view_get(e__VW.XView, 0) + 0;
-    yy = __view_get(e__VW.YView, 0) + 0;
-
-
-    draw_sprite(spr_settings_bg, 0, 0, 0);
-
 
     if ((menu == eMENU.FORMATIONS_SETTINGS) && (formating > 0)) {
         scr_draw_formation_settings();
@@ -345,7 +344,10 @@ function scr_ui_settings() {
         progenitor_visuals = _ui_feats.progenitor_livery.active;
 
         _ui_feats.astartes_transfer_toggle.draw();
-        command_set[1] = _ui_feats.astartes_transfer_toggle.active;        
+        command_set[1] = _ui_feats.astartes_transfer_toggle.active; 
+
+        _ui_feats.codex_compliant.draw();  
+        command_set[2] = _ui_feats.codex_compliant.active;
 
         _ui_feats.modest_livery.draw();
         modest_livery = _ui_feats.modest_livery.active; 

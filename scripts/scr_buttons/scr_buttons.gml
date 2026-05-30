@@ -292,7 +292,7 @@ function SpriteButton(data) constructor {
         var _draw_alpha = _enabled ? (is_hovered ? alpha_hover : alpha_idle) : alpha_disabled;
 
         draw_index = cycle_index ? draw_index + 1 : draw_index;
-        draw_sprite_ext(_draw_sprite, draw_index, _x, _y, scale_x, scale_y, 0, c_white, _draw_alpha);
+        draw_sprite_ext(_draw_sprite, draw_index, x1, y1, scale_x, scale_y, 0, c_white, _draw_alpha);
         pop_draw_return_values();
     };
 }
