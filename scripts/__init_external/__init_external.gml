@@ -98,8 +98,9 @@ function __init_external() {
         global.commit_hash = _commit_hash;
     }
 
+    global.version_checker = new UpdateChecker();
+
     if (global.game_version != "compiled") {
-        global.version_checker = new UpdateChecker();
         global.version_checker.check();
     }
 

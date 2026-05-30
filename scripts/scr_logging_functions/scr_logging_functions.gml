@@ -75,6 +75,15 @@ function handle_error(_header, _message, _stacktrace = "", _critical = false, _r
     show_debug_message(_stacktrace);
     show_debug_message(LB_92);
 
+    // Outdated version. Intercept, offer update link, skip report
+    if (global.version_checker.update_available) {
+        var _open_update = show_question(_error.player_message);
+        if (_open_update && global.version_checker.latest_release_url != "") {
+            url_open(global.version_checker.latest_release_url);
+        }
+        return;
+    }
+
     if (_critical || (!variable_global_exists("active_error_dialogs") || !ds_exists(global.active_error_dialogs, ds_type_map) || !variable_global_exists("error_queue") || !ds_exists(global.error_queue, ds_type_queue))) {
         var _send_report = show_question(_error.player_message);
 

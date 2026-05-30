@@ -16,7 +16,6 @@ function GameError() constructor {
 
     full_log = "";
     error_file_text = "";
-    clipboard_text = "";
     player_message = "";
 
     /// @description Initializes error with all data
@@ -49,7 +48,6 @@ function GameError() constructor {
         // Build the log
         full_log = build_full_log();
         error_file_text = build_error_file_text();
-        clipboard_text = build_clipboard_text();
         player_message = build_player_message();
 
         return self;
@@ -104,7 +102,10 @@ function GameError() constructor {
 
         _msg += $"The error log was saved at:\n{_path_hint}Logs\\\n\n";
 
-        if (critical) {
+        if (global.version_checker.update_available) {
+            _msg += "You are using an outdated build. Automated bug reports are only accepted for the latest version.\n\n";
+            _msg += "Do you want to open the latest release page in your browser?";
+        } else if (critical) {
             _msg += "Do you want to send the error log, debug log, and your last autosave to our Discord as a bug report? The process is automated and takes a few seconds, you won't notice anything.";
         } else {
             _msg += "After closing this message, you will be prompted to describe what you were doing.\n";
@@ -139,6 +140,11 @@ function BugReporter() constructor {
 
         if (!is_instanceof(pending_error, GameError)) {
             LOGGER.error("Not a valid GameError");
+            return;
+        }
+
+        if (global.version_checker.update_available) {
+            LOGGER.debug("Outdated version, report skipped.");
             return;
         }
 
