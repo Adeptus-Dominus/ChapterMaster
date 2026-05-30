@@ -132,7 +132,7 @@ function setup_ui_chapter_settings(){
         tooltip : "Your Astartes will attempt to disable the ship by attacking the ship bridge and systems.",
         str1 : "Damage Systems",
         x1 : 31,
-        cy : 634,
+        y1 : 634,
         active : command_set[20]
     });
 
@@ -143,7 +143,7 @@ function setup_ui_chapter_settings(){
         tooltip : "Your Astartes will use equipped Plasma Bombs to massively damage the boarded ship.",
         str1 : "Use Plasma Bombs",
         x1 : 51,
-        cy : 660,
+        y1 : 660,
         active : command_set[21]
     });
 
@@ -154,12 +154,144 @@ function setup_ui_chapter_settings(){
         tooltip : "Your Astartes will attempt to commandeer the vessel, to be permenantely used or salvaged.",
         str1 : "Commandeer Ship",
         x1 : 31,
-        cy : 688,
+        y1 : 688,
         active : command_set[22]
     });
 
     settings_buttons_ui_components.boarding_commandeer = _toggle_commandeer;
-}
+
+    var _sets = settings_buttons_ui_components;
+
+    _sets.progenitor_livery = new ToggleButton({
+        x1 : 31,
+        y1 : 140,
+        str1 : "Progenitor Livery",
+        tooltip : "Turned off by default. \nWhen turned on, various unit visuals may change depending on your progenitor chapter.",
+        active : progenitor_visuals,
+        style : "box"
+    });
+
+    _sets.astartes_transfer_toggle = new ToggleButton({
+        x1 : 31,
+        y1 : 170,
+        str1 : "Allow Astartes Transfer",
+        tooltip : "Turned off by default. Allows you to transfer Astartes in the same way as vehicles.",
+        active : command_set[1],
+        style : "box"
+    });
+
+    _sets.codex_compliant = new ToggleButton({
+        x1 : 31,
+        y1 : 200,
+        str1 : "Codex Compliant Organization",
+        tooltip : "When enabled, marine promotions are limited based on their current company and EXP, overall following the Codex Astartes promotion sequence.",
+        active : command_set[2],
+        style : "box"
+    });
+
+    _sets.modest_livery = new ToggleButton({
+        x1 : 31,
+        y1 : 230,
+        str1 : "Modest Livery",
+        tooltip : "Turned off by default.  Prevents Advantages and Disadvantages from changing the appearances of your marines, effectively disabling any special ornamentation or possible battle wear.",
+        active : modest_livery,
+        style : "box"
+    });
+
+    _sets.tagged_training = new ToggleButton({
+        x1 : 31,
+        y1 : 260,
+        str1 : "Tagged TrainingLivery",
+        tooltip : "Turned off by default, makes specialist training select only tagged marines, click on their potential indicators to tag.",
+        active : tagged_training,
+        style : "box"
+    });
+
+    var _roles = active_roles();
+
+
+    var _role_order = [
+        eROLE.CAPTAIN,
+        eROLE.ANCIENT,
+        eROLE.CHAMPION,
+        eROLE.CHAPLAIN,
+        eROLE.APOTHECARY,
+        eROLE.LIBRARIAN,
+        eROLE.TECHMARINE
+    ]
+
+    var _tog_buttons = [];
+
+    for (var i=0;i<array_length(_role_order);i++){
+        var _role_name = _roles[_role_order[i]];
+        array_push(_tog_buttons, 
+            {
+                str1 : _role_name,
+                font : fnt_40k_14,
+                active : comand_set[3 + i],
+                tooltip : $"activate to make {_role_name} a default eember of your company command."
+            }           
+        )
+    }
+
+    var _command_mult = new MultiSelect(
+        _tog_buttons, 
+        "Company Command Structure", 
+        {
+            draw_alighn : "vertical",
+            x1 : 28,
+            y1 : 300,
+        }
+    );
+
+    _sets.comany_command_structure = _command_mult;
+
+    var _post_boarding = new RadioSet(
+        [
+            {
+                str1 : "Board Next Nearest",
+                font : fnt_40k_14,
+                style : "box"
+                tooltip : "After disabling an enemy vessel your Astartes will launch a new boarding mission at the nearest enemy."
+            },
+            {
+                str1 : "Return and Recuperate",
+                font : fnt_40k_14,
+                style : "box",
+            }
+        ], 
+        "Post-Boarding", 
+        {
+            draw_alighn : "vertical",
+            x1 : 28,
+            y1 : 747,
+        }
+    );
+
+    _sets.post_boarding_action = _post_boarding;
+
+    _sets.auto_board_multi = new RadioSet(
+        [
+            {
+                str1 : "Battleships",
+                font : fnt_40k_14,
+                style : "box"
+                tooltip : "If checked your ships will launch Boarding teams automatically when an eligible target is in range."
+            },
+            {
+                str1 : "Cruisers",
+                font : fnt_40k_14,
+                style : "box",
+                tooltip : "If checked your ships will launch Boarding teams automatically when an eligible target is in range."
+            }
+        ], 
+        "Automatic Boarding", 
+        {
+            draw_alighn : "vertical",
+            x1 : 288,
+            y1 : 747,
+        }
+    );
 
 function scr_ui_settings() {
     if (menu < eMENU.SETTINGS || menu > eMENU.ROLE_SETTINGS){
@@ -189,6 +321,7 @@ function scr_ui_settings() {
     }
 
     if (menu == eMENU.SETTINGS) {
+        add_draw_return_values();
         var _ui_feats = settings_buttons_ui_components;
         // Reset vars
         tool1 = "";
@@ -203,249 +336,25 @@ function scr_ui_settings() {
 
         yy -= 64;
 
-        cx = 31;
-        cy = 203;
-        _che = progenitor_visuals;
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
+        _ui_feats.progenitor_livery.draw();
+        progenitor_visuals = _ui_feats.progenitor_livery.active;
 
-        var _option_name = "Progenitor Livery";
-        draw_text(cx + 35, cy, _option_name);
+        _ui_feats.astartes_transfer_toggle.draw();
+        command_set[1] = _ui_feats.astartes_transfer_toggle.active;        
 
-        if (scr_hit(cx, cy, cx + string_width(_option_name) + 35, cy + sprite_get_height(spr_creation_check))) {
-            tool1 = _option_name;
-            tool2 = "Turned off by default. \nWhen turned on, various unit visuals may change depending on your progenitor chapter.";
-            if (mouse_button_clicked()) {
-                progenitor_visuals = !progenitor_visuals;
-            }
+        _ui_feats.modest_livery.draw();
+        modest_livery = _ui_feats.modest_livery.active; 
+
+        _ui_feats.tagged_training.draw();
+        tagged_training = _ui_feats.tagged_training.active; 
+        
+        var _com_multi = _ui_feats.comany_command_structure;
+
+        _com_multi.draw();
+
+        for (var i=0;i<array_length(_com_multi.toggles);i++){
+            comand_set[3 + i] = _com_multi.toggles[i].active;
         }
-
-        draw_text(66, 238, "Allow Astartes Transfer");
-        _che = command_set[1];
-        cx = 31;
-        cy = 234;
-
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-        if (scr_hit(cx + 31, cy, cx + 260, cy + 20) == true) {
-            tool1 = "Allow Astartes Transfer";
-            tool2 = "Turned off by default. Allows you to transfer Astartes in the same way as vehicles.";
-        }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh;
-            onceh = 0;
-            if ((onceh == 0) && (command_set[1] == 0)) {
-                onceh = 1;
-                command_set[1] = 1;
-            }
-            if ((onceh == 0) && (command_set[1] == 1)) {
-                onceh = 1;
-                command_set[1] = 0;
-            }
-        }
-
-        draw_text(66, 273, "Codex Compliant Organization");
-        _che = command_set[2];
-        cx = 31;
-        cy = 269;
-
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-        if (scr_hit(cx + 31, cy, cx + 300, cy + 20) == true) {
-            tool1 = "Codex Compliant Organization";
-            tool2 = "When enabled, marine promotions are limited based on their current company and EXP, overall following the Codex Astartes promotion sequence." + "\n\n" + "When disabled, you can promote marines to any company, from any company, disregarding any EXP requirements." + "\n" + "Terminators, Dreadnoughts and Company Command roles retain EXP requirements however.";
-        }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-
-            if ((onceh == 0) && (command_set[2] == 1)) {
-                onceh = 1;
-                command_set[2] = 0;
-            }
-            if ((onceh == 0) && (command_set[2] == 0)) {
-                onceh = 1;
-                command_set[2] = 1;
-            }
-        }
-
-        draw_text(66, 308, "Modest Livery");
-        _che = modest_livery;
-        cx = 31;
-        cy = 304;
-
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-        if (scr_hit(cx + 31, cy, cx + 300, cy + 20) == true) {
-            tool1 = "Modest Livery";
-            tool2 = "Turned off by default.  Prevents Advantages and Disadvantages from changing the appearances of your marines, effectively disabling any special ornamentation or possible battle wear.";
-        }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-
-            if ((onceh == 0) && (modest_livery == 0)) {
-                onceh = 1;
-                modest_livery = 1;
-            }
-            if ((onceh == 0) && (modest_livery == 1)) {
-                onceh = 1;
-                modest_livery = 0;
-            }
-        }
-
-        draw_text(66, 343, "Tagged Training");
-        _che = tagged_training;
-        cx = 31;
-        cy = 339;
-
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-        if (scr_hit(cx + 31, cy, cx + 300, cy + 20) == true) {
-            tool1 = "Tagged training";
-            tool2 = "Turned off by default, makes specialist training select only tagged marines, click on their potential indicators to tag.";
-        }
-        if (point_and_click([cx, cy, cx + 32, cy + 32])) {
-            tagged_training = !tagged_training;
-        }
-
-        yy += 35;
-
-        draw_text(28, 332, "Company Command Structure");
-
-        if (scr_hit(28, 332, 316, 352) == true) {
-            tool1 = "Comany Command Structure";
-            tool2 = "The default members of your Company Command.";
-        }
-
-        draw_text(66, 359, "Captain");
-        draw_text(66, 386, "Standard Bearer");
-        draw_text(66, 413, "Champion");
-        draw_text(66, 440, "Chaplain");
-        draw_text(66, 467, "Apothecary");
-        draw_text(66, 494, "Librarian");
-        draw_text(66, 521, "Techmarine");
-
-        _che = command_set[3];
-        cx = 31;
-        cy = 355;
-
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-
-            if ((onceh == 0) && (command_set[3] == 0)) {
-                onceh = 1;
-                command_set[3] = 1;
-            }
-            if ((onceh == 0) && (command_set[3] == 1)) {
-                onceh = 1;
-                command_set[3] = 0;
-            }
-        }
-
-        _che = command_set[4];
-        cx = 31;
-        cy = 382;
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-
-            if ((onceh == 0) && (command_set[4] == 0)) {
-                onceh = 1;
-                command_set[4] = 1;
-            }
-            if ((onceh == 0) && (command_set[4] == 1)) {
-                onceh = 1;
-                command_set[4] = 0;
-            }
-        }
-
-        _che = command_set[5];
-        cx = 31;
-        cy = 409;
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-
-            if ((onceh == 0) && (command_set[5] == 0)) {
-                onceh = 1;
-                command_set[5] = 1;
-            }
-            if ((onceh == 0) && (command_set[5] == 1)) {
-                onceh = 1;
-                command_set[5] = 0;
-            }
-        }
-
-        _che = command_set[6];
-        cx = 31;
-        cy = 436;
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-
-            if ((onceh == 0) && (command_set[6] == 0)) {
-                onceh = 1;
-                command_set[6] = 1;
-            }
-            if ((onceh == 0) && (command_set[6] == 1)) {
-                onceh = 1;
-                command_set[6] = 0;
-            }
-        }
-
-        _che = command_set[7];
-        cx = 31;
-        cy = 463;
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-
-            if ((onceh == 0) && (command_set[7] == 0)) {
-                onceh = 1;
-                command_set[7] = 1;
-            }
-            if ((onceh == 0) && (command_set[7] == 1)) {
-                onceh = 1;
-                command_set[7] = 0;
-            }
-        }
-
-        _che = command_set[8];
-        cx = 31;
-        cy = 490;
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-
-            if ((onceh == 0) && (command_set[8] == 0)) {
-                onceh = 1;
-                command_set[8] = 1;
-            }
-            if ((onceh == 0) && (command_set[8] == 1)) {
-                onceh = 1;
-                command_set[8] = 0;
-            }
-        }
-
-        _che = command_set[9];
-        cx = 31;
-        cy = 517;
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-
-            if ((onceh == 0) && (command_set[9] == 0)) {
-                onceh = 1;
-                command_set[9] = 1;
-            }
-            if ((onceh == 0) && (command_set[9] == 1)) {
-                onceh = 1;
-                command_set[9] = 0;
-            }
-        }
-
-        yy -= 35;
 
         _ui_feats.boarding_objectives.draw();
 
@@ -468,130 +377,39 @@ function scr_ui_settings() {
             }
         }
 
-        draw_set_alpha(0.5);
-        _che = command_set[22];
-        cx = 31;
-        cy = 611 + 77;
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
+        var _toggle_commandeer = settings_buttons_ui_components.boarding_commandeer;
 
-        if (scr_hit(cx + 31, cy, cx + 260, cy + 20) == true) {
-            tool1 = "Commandeer Ship";
-            tool2 = "Your Astartes will attempt to commandeer the vessel, to be permenantely used or salvaged.";
-        }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-
-            if ((onceh == 0) && (command_set[22] == 0)) {
-                onceh = 1;
+        if (_toggle_commandeer.draw){
+            if (_toggle_commandeer.active){
                 command_set[22] = 1;
                 command_set[20] = 0;
-                command_set[21] = 0;
-            }
-        }
-        draw_set_alpha(1);
-
-        // 59 lower
-
-        if (command_set[22] == 1) {
-            draw_set_alpha(0.5);
-        }
-        draw_text(28, 747, "Post-Boarding");
-        if (scr_hit(28, 747, 316 - 150, 767) == true) {
-            tool1 = "Post-Boarding";
-            tool2 = "What your Boarders will do after achieving their objective.  This is disabled if your objective is to Commandeer the enemy ships.";
+                command_set[21] = 0;  
+            }  else {
+                command_set[22] = 0;
+            }        
         }
 
-        draw_text(66, 747 + 27, "Board Next Nearest");
-        draw_text(86, 747 + 54, "Return and Recuperate");
+        var _post_board = settings_buttons_ui_components.post_boarding_action;
 
-        _che = command_set[23];
-        if (command_set[22] == 1) {
-            _che = 0;
-        }
-        cx = 31;
-        cy = 747 + 23;
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-        if (scr_hit(cx + 31, cy, cx + 260 - 70, cy + 20) == true) {
-            tool1 = "Board Next Nearest";
-            tool2 = "After disabling an enemy vessel your Astartes will launch a new boarding mission at the nearest enemy.";
-        }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-
-            if ((onceh == 0) && (command_set[23] == 0) && (command_set[22] == 0)) {
-                onceh = 1;
-                command_set[23] = 1;
-                command_set[24] = 0;
-            }
+        if (command_set[22] == 1){
+            _post_board.allow_changes = false;
+            _post_board.current_selection = -1;
+            command_set[23] = false
         }
 
-        _che = command_set[24];
-        if (command_set[22] == 1) {
-            _che = 0;
-        }
-        cx = 51;
-        cy = 747 + 50;
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-        if (scr_hit(cx + 31, cy, cx + 260 - 70, cy + 20) == true) {
-            tool1 = "Return and Recuperate";
-            tool2 = "After disabling an enemy vessel your Astartes will return to their mother vessel and heal.";
-        }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
+        _post_board.draw();
 
-            if ((onceh == 0) && (command_set[24] == 0) && (command_set[22] == 0)) {
-                onceh = 1;
-                command_set[24] = 1;
-                command_set[23] = 0;
-            }
-        }
-        draw_set_alpha(1);
+        command_set[23] = _post_board.toggles[0].active;
+        command_set[24] = _post_board.toggles[1].active;
 
-        xx += 260;
-        draw_text(28, 747, "Automatic Boarding");
-        if (scr_hit(28, 747, 316, 767) == true) {
-            tool1 = "Automatic Boarding";
-            tool2 = "If checked your ships will launch Boarding teams automatically when an eligible target is in range.";
-        }
+        var _auto_board = settings_buttons_ui_components.auto_board_multi;
 
-        draw_text(66, 747 + 27, "Battleships");
-        draw_text(86, 747 + 54, "Cruisers");
+        _auto_board.draw();
 
-        _che = command_set[25];
-        cx = 31;
-        cy = 747 + 23;
+        command_set[25] = _auto_board.toggles[0].active;
 
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
+        command_set[26] = _auto_board.toggles[1].active;
 
-            if ((onceh == 0) && (command_set[25] == 0)) {
-                onceh = 1;
-                command_set[25] = 1;
-            }
-            if ((onceh == 0) && (command_set[25] == 1)) {
-                onceh = 1;
-                command_set[25] = 0;
-            }
-        }
-
-        _che = command_set[26];
-        cx = 51;
-        cy = 747 + 50;
-        draw_sprite(spr_creation_check, _che + 2, cx, cy);
-
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh = 0;
-            if ((onceh == 0) && (command_set[26] == 0)) {
-                onceh = 1;
-                command_set[26] = 1;
-            }
-            if ((onceh == 0) && (command_set[26] == 1)) {
-                onceh = 1;
-                command_set[26] = 0;
-            }
-        }
-        xx -= 260;
         yy += 64;
 
         draw_text(937 - 341, 207, "Battle Formations");
@@ -698,6 +516,7 @@ function scr_ui_settings() {
         if (tool1 != "") {
             tooltip_draw(tool2,,,,, tool1);
         }
+        pop_draw_return_values();
     }
 }
 function scr_select_company_settings_ui(){
