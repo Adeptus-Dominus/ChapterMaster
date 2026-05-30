@@ -714,6 +714,24 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 // creates the origional distribution of squads accross the chapter
 // lots of room for customisation of different chapters here
 
+function get_compay_squad_arrangement(company){
+    var _comp_datas = chapter_squad_arrangement.companies;
+    for (var i = 0; i < array_length(_comp_datas); i++) {
+        if (_comp_datas[i].company == company){
+            return _comp_datas[i];
+        }
+    }
+
+}
+
+function SquadArrangementEditor(company) constructor {
+    self.company = company;
+    arrangement = get_compay_squad_arrangement(company);
+
+    var _squads = squad_types
+    add_new_required_type = 
+}
+
 function game_start_squads() {
     obj_ini.squads = {};
     if (struct_exists(chapter_squad_arrangement, "companies")) {

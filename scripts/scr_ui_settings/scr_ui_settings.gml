@@ -318,10 +318,10 @@ function scr_ui_settings() {
 
     if ((menu == eMENU.FORMATIONS_SETTINGS) && (formating > 0)) {
         scr_draw_formation_settings();
-    }
-
-    if (menu == eMENU.ROLE_SETTINGS) {
+    }else if (menu == eMENU.ROLE_SETTINGS) {
         scr_draw_role_settings_ui();
+    }else if (menu == eMENU.COMPANY_SETTINGS){
+        scr_draw_company_settings_ui();
     }
 
     if (menu == eMENU.SETTINGS) {
@@ -465,7 +465,7 @@ function scr_ui_settings() {
                 }
             }
 
-            if ((shw != "") || (isnew == true)) {
+            if (shw != "" || isnew == true) {
                 draw_text(xxx, yyy, string(shw));
                 if (scr_hit(xxx, yyy, xxx + 289, yyy + 20) == true) {
                     /*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
@@ -540,8 +540,15 @@ function scr_select_company_settings_ui(){
 
         /*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
         menu = eMENU.COMPANY_SETTINGS;
-        settings = i;   
+        settings = i;
+        if (settings != 0){
+            squad_arrangement = get_compay_squad_arrangement(settings);
+        }
     }
+}
+
+function scr_draw_company_settings_ui(){
+
 }
 
 function scr_select_role_settings_ui(){
