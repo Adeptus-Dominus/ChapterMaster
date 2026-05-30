@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"__init_external",
+  "%Name":"__init",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__init_external",
+  "name":"__init",
   "parent":{
-    "name":"compatibility",
-    "path":"folders/Scripts/compatibility.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

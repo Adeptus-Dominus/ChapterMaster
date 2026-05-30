@@ -1,3 +1,5 @@
+#macro LOGGER global.logger
+
 /// @function Logger() constructor
 /// @description A Python-inspired logger that traces the callsite and timestamp for every message.
 function Logger() constructor {
