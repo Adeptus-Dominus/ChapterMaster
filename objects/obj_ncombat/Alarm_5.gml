@@ -592,7 +592,7 @@ if (defeat == 0 && _reduce_power) {
         scr_newtext();
     }
 
-    if (enemy == eFACTION.NECRONS && p_data.forces[eFACTION.NECRONS] < 3 && awake_tomb_world(p_data.features) == 1) {
+    if (enemy == eFACTION.NECRONS && p_data.planet_forces[eFACTION.NECRONS] < 3 && awake_tomb_world(p_data.features) == 1) {
         // var bombs;bombs=scr_check_equip("Plasma Bomb",battle_loc,battle_id,0);
         // var bombs;bombs=scr_check_equip("Plasma Bomb","","",0);
 
