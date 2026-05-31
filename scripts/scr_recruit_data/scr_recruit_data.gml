@@ -257,6 +257,7 @@ function find_recruit_corruption(planet_type) {
 }
 
 // to be run in teh scope of the PlanetData struct
+/// @self Struct.PlanetData
 function planet_training_sequence(local_apothecary_points) {
     var thirdpop = max_population / 3;
     var halfpop = max_population / 2;
@@ -817,7 +818,7 @@ function set_up_recruitment_view() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function scr_draw_recruit_advisor() {
     var blurp, eta, va;
     var romanNumerals;

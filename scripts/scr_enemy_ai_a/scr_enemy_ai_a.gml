@@ -1,4 +1,4 @@
-/// @mixin
+/// @self Asset.GMObject.obj_star
 function scr_enemy_ai_a() {
     system_garrison = [];
     system_sabatours = [];

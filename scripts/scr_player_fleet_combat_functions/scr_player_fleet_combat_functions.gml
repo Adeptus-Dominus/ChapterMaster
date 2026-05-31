@@ -1,5 +1,6 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+/// @param {Asset.GMObject.obj_fleet} combat
 function add_fleet_ships_to_combat(fleet, combat) {
     var capital_count = array_length(fleet.capital);
     var _ship_id;
@@ -52,6 +53,7 @@ function add_fleet_ships_to_combat(fleet, combat) {
     }
 }
 
+/// @param {Asset.GMObject.obj_fleet} combat
 function sort_ships_into_columns(combat) {
     var col = 5;
     with (combat) {
@@ -108,7 +110,7 @@ function sort_ships_into_columns(combat) {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_fleet
 function player_fleet_ship_spawner() {
     var x2 = 224;
     var hei = 0, sizz = 0;
@@ -178,7 +180,7 @@ function player_fleet_ship_spawner() {
     } // End repeat
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_p_ship
 function setup_player_combat_ship() {
     action = "";
     direction = 0;

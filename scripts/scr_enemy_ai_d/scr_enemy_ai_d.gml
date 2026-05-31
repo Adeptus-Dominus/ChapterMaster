@@ -1,4 +1,4 @@
-/// @mixin
+/// @self Asset.GMObject.obj_star
 function scr_enemy_ai_d() {
     if (x < -15000) {
         x += 20000;

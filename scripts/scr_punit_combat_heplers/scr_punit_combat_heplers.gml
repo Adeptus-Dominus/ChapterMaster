@@ -190,7 +190,7 @@ function block_position_collision(position_x, position_y) {
 /// @param {real} blocks How far to move (in unit blocks)
 /// @param {bool} allow_collision Are unit blocks allowed to passthrough other unit blocks
 /// @return {bool}
-/// @mixin
+/// @self Asset.GMObject.obj_pnunit
 function move_unit_block(direction, blocks = 1, allow_collision = false) {
     try {
         var distance = 10 * blocks;
@@ -214,7 +214,7 @@ function move_unit_block(direction, blocks = 1, allow_collision = false) {
 }
 
 /// @description Attempts to move an enemy unit block, choosing direction based on whenever they are flanking or not, only if `obj_nfort` doesn't exists.
-/// @mixin
+/// @self Asset.GMObject.obj_enunit
 function move_enemy_block() {
     if (instance_exists(obj_nfort)) {
         exit;
@@ -239,7 +239,7 @@ function move_enemy_blocks() {
     ds_priority_destroy(_enemy_movement_queue);
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit
 function block_composition_string() {
     var _composition_string = "";
 
@@ -282,12 +282,12 @@ function draw_block_fadein() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit
 function update_block_size() {
     column_size = (men * 0.5) + medi + (dreads * 2) + (veh * 2.5);
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit
 function update_block_unit_count() {
     unit_count = men + medi + dreads + veh;
 }

@@ -58,7 +58,7 @@ function generate_marine_powers_description_string(unit) {
 
 /// @desc Psychic powers execution mess. Called in the scope of obj_pnunit.
 /// @param {real} caster_id - ID of the caster in the player column from obj_pnunit.
-/// @mixin
+/// @self Asset.GMObject.obj_pnunit
 function scr_powers(caster_id) {
     // Gather unit data
     /// @type {Struct.TTRPG_stats}
@@ -477,7 +477,7 @@ function power_conditions_check(conditions_array) {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_creation
 function player_select_powers() {
     if (race[100][17] != 0) {
         var _starting_powers = global.psy_disciplines_starting;

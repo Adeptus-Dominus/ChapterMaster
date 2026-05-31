@@ -190,7 +190,7 @@ function set_shader_array(shader_array) {
     }
 }
 
-/// @mixin
+/// @self Struct.TTRPG_stats
 function scr_draw_unit_image(_background = false) {
     var _role = active_roles();
     var complex_set = {};

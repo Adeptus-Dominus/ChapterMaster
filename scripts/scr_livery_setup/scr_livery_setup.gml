@@ -1,5 +1,6 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+/// @self Asset.GMObject.obj_creation
 function scr_livery_setup() {
     add_draw_return_values();
     draw_set_font(fnt_40k_30b);

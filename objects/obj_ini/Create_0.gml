@@ -121,6 +121,17 @@ veh_upgrade = array_create_2d(_max_companies, _max_vehicles, "");
 veh_acc = array_create_2d(_max_companies, _max_vehicles, "");
 
 // Unit Init
+defaults_slot = 100;
+
+load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
+    role[defaults_slot][_role_id] = _role_name;
+    wep1[defaults_slot][_role_id] = _wep1;
+    wep2[defaults_slot][_role_id] = _wep2;
+    armour[defaults_slot][_role_id] = _armour;
+    mobi[defaults_slot][_role_id] = _mobi;
+    gear[defaults_slot][_role_id] = _gear;
+    race[defaults_slot][_role_id] = 1;
+};
 
 /// @type {Array<Array>}
 race = [[]];

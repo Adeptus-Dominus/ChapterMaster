@@ -1,6 +1,6 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function scr_fleet_advisor() {
     //TODO swap this xx yy stuff out for a surface
     var xx = __view_get(e__VW.XView, 0) + 0;
