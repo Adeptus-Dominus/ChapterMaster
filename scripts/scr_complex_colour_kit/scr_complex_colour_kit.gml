@@ -925,7 +925,7 @@ function get_shader_colour_from_arrays(colour) {
         ];
     }
     catch (_exception) {
-        //handle_exception(_exception);
+        //ERROR_HANDLER.handle_exception(_exception);
         var colour_set = [
             0,
             0,

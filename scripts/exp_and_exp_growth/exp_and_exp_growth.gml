@@ -89,7 +89,7 @@ function eval_trait_stat_data(trait_stat_data) {
     return trait_stat_value;
 }
 
-/// @mixin
+/// @self Struct.TTRPG_stats
 function unit_stat_growth(grow_stat = false) {
     var base_group_growth_sets = {
         astartes: [

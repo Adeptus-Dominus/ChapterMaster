@@ -8,7 +8,7 @@ function scr_autosave() {
         obj_saveload.autosaving = true;
         scr_save(0, 0, true);
     } catch (_e) {
-        handle_exception(_e);
+        ERROR_HANDLER.handle_exception(_e);
     } finally {
         with (obj_saveload) {
             instance_destroy();

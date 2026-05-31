@@ -10,6 +10,7 @@ function SettingsManager() constructor {
         h: 900,
     };
     autosave = true;
+    username = "";
 
     static load = function() {
         ini_open("saves.ini");
@@ -18,6 +19,7 @@ function SettingsManager() constructor {
         sfx_volume = ini_read_real("Settings", "effect_volume", 1);
         fullscreen = ini_read_real("Settings", "fullscreen", 1);
         autosave = ini_read_real("Settings", "autosave", true);
+        username = ini_read_string("Settings", "username", "");
 
         var rect_str = ini_read_string("Settings", "window_data", "0|0|1600|900|");
         var parts = string_split(rect_str, "|");
@@ -37,6 +39,7 @@ function SettingsManager() constructor {
         ini_write_real("Settings", "music_volume", music_volume);
         ini_write_real("Settings", "fullscreen", fullscreen);
         ini_write_real("Settings", "autosave", autosave);
+        ini_write_string("Settings", "username", username);
         var _window_data = $"{window_rect.x}|{window_rect.y}|{window_rect.w}|{window_rect.h}|";
         ini_write_string("Settings", "window_data", _window_data);
         ini_close();

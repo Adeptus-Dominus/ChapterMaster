@@ -8,6 +8,7 @@ home_y = 0;
 selected = 0;
 ret = 0;
 hurt = 0;
+/// @type {Asset.GMObject.obj_star}
 orbiting = 0;
 rep = 3;
 minimum_eta = 2;
@@ -32,38 +33,26 @@ cargo_data = {};
 image_xscale = 1.25;
 image_yscale = 1.25;
 
-var i = -1;
-repeat (21) {
-    i += 1;
-    capital[i] = "";
-    capital_num[i] = 0;
-    capital_sel[i] = 1;
-    capital_imp[i] = 0;
+var _capital_size = 21;
+var _ship_size = 31;
 
-    capital_max_imp[i] = 0;
-}
+capital = array_create(_capital_size, "");
+capital_num = array_create(_capital_size, 0);
+capital_sel = array_create(_capital_size, 1);
+capital_imp = array_create(_capital_size, 0);
+capital_max_imp = array_create(_capital_size, 0);
 
-var i;
-i = -1;
-repeat (31) {
-    i += 1;
-    frigate[i] = "";
-    frigate_num[i] = 0;
-    frigate_sel[i] = 1;
-    frigate_imp[i] = 0;
-    frigate_max_imp[i] = 0;
-}
+frigate = array_create(_ship_size, "");
+frigate_num = array_create(_ship_size, 0);
+frigate_sel = array_create(_ship_size, 1);
+frigate_imp = array_create(_ship_size, 0);
+frigate_max_imp = array_create(_ship_size, 0);
 
-var i;
-i = -1;
-repeat (31) {
-    i += 1;
-    escort[i] = "";
-    escort_num[i] = 0;
-    escort_sel[i] = 1;
-    escort_imp[i] = 0;
-    escort_max_imp[i] = 0;
-}
+escort = array_create(_ship_size, "");
+escort_num = array_create(_ship_size, 0);
+escort_sel = array_create(_ship_size, 1);
+escort_imp = array_create(_ship_size, 0);
+escort_max_imp = array_create(_ship_size, 0);
 
 image_speed = 0;
 

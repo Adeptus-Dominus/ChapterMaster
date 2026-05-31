@@ -211,217 +211,216 @@ function UIMouseEventComponent(owner, name = "") : UIEventComponent(owner, name)
     ev_type = MOUSE_EV_TYPE.ON_ENTER;
 }
 
-function UIKeyboardEventComponent(owner, name = "") : UIEventComponent(owner, name) constructor {
-    enum KEY_EV_TYPE {
-        BASIC,
-        DIRECT,
-        PRESS,
-        RELEASE,
-    }
+// function UIKeyboardEventComponent(owner, name = "") : UIEventComponent(owner, name) constructor {
+//     enum KEY_EV_TYPE {
+//         BASIC,
+//         DIRECT,
+//         PRESS,
+//         RELEASE,
+//     }
 
-    static __ev_funcs = [
-        keyboard_check,
-        keyboard_check_direct,
-        keyboard_check_pressed,
-        keyboard_check_released
-    ];
+//     static __ev_funcs = [
+//         keyboard_check,
+//         keyboard_check_direct,
+//         keyboard_check_pressed,
+//         keyboard_check_released
+//     ];
 
-    ev_type = KEY_EV_TYPE.BASIC;
-    ev_code = vk_anykey;
-}
+//     ev_type = KEY_EV_TYPE.BASIC;
+//     ev_code = vk_anykey;
+// }
 
-function UIMouseButtonEventComponent(owner, name = "") : UIEventComponent(owner, name) constructor {
-    enum MOUSE_BT_EV_TYPE {
-        DIRECT, //0
-        PRESS, //1
-        RELEASE, //2
-        SCROLL_UP, //3
-        SCROLL_DOWN, //4
-        GLOBAL_DIRECT, //5
-        GLOBAL_PRESS, //6
-        GLOBAL_RELEASE, //7
-        GLOBAL_SCROLL_UP, //8
-        GLOBAL_SCROLL_DOWN, //9
-    }
+// function UIMouseButtonEventComponent(owner, name = "") : UIEventComponent(owner, name) constructor {
+//     enum MOUSE_BT_EV_TYPE {
+//         DIRECT, //0
+//         PRESS, //1
+//         RELEASE, //2
+//         SCROLL_UP, //3
+//         SCROLL_DOWN, //4
+//         GLOBAL_DIRECT, //5
+//         GLOBAL_PRESS, //6
+//         GLOBAL_RELEASE, //7
+//         GLOBAL_SCROLL_UP, //8
+//         GLOBAL_SCROLL_DOWN, //9
+//     }
 
-    static __ev_funcs = [
-        mouse_check_button,
-        mouse_check_button_pressed,
-        mouse_check_button_released,
-        function(b) {
-            return mouse_wheel_up();
-        },
-        function(b) {
-            return mouse_wheel_down();
-        }
-    ];
+//     static __ev_funcs = [
+//         mouse_check_button,
+//         mouse_check_button_pressed,
+//         mouse_check_button_released,
+//         function(b) {
+//             return mouse_wheel_up();
+//         },
+//         function(b) {
+//             return mouse_wheel_down();
+//         }
+//     ];
 
-    static is_mouse_in_rect = function() {
-        var _x, _y, _w, _h;
-        _x = owner.gui_x;
-        _y = owner.gui_y;
-        _w = _x + owner.width;
-        _h = _y + owner.height;
-        var f1 = mouse_x;
-        var f2 = mouse_y;
-        if (use_gui_coords) {
-            f1 = window_mouse_get_x();
-            f2 = window_mouse_get_y();
-        }
-        return point_in_rectangle(f1, f2, _x, _y, _w, _h);
-    };
+//     static is_mouse_in_rect = function() {
+//         var _x, _y, _w, _h;
+//         _x = owner.gui_x;
+//         _y = owner.gui_y;
+//         _w = _x + owner.width;
+//         _h = _y + owner.height;
+//         var f1 = mouse_x;
+//         var f2 = mouse_y;
+//         if (use_gui_coords) {
+//             f1 = window_mouse_get_x();
+//             f2 = window_mouse_get_y();
+//         }
+//         return point_in_rectangle(f1, f2, _x, _y, _w, _h);
+//     };
 
-    static is_event = function() {
-        return !is_canceled && owner.is_active && __ev_funcs[ev_type % MOUSE_BT_EV_TYPE.GLOBAL_DIRECT](ev_code) && (ev_type >= MOUSE_BT_EV_TYPE.GLOBAL_DIRECT || is_mouse_in_rect());
-    };
+//     static is_event = function() {
+//         return !is_canceled && owner.is_active && __ev_funcs[ev_type % MOUSE_BT_EV_TYPE.GLOBAL_DIRECT](ev_code) && (ev_type >= MOUSE_BT_EV_TYPE.GLOBAL_DIRECT || is_mouse_in_rect());
+//     };
 
-    time_source_reconfigure(
-        event_time_source,
-        1,
-        time_source_units_frames,
-        function() {
-            if (is_event()) {
-                callback(self);
-            }
+//     time_source_reconfigure(
+//         event_time_source,
+//         1,
+//         time_source_units_frames,
+//         function() {
+//             if (is_event()) {
+//                 callback(self);
+//             }
 
-            is_canceled = false;
-        },
-        [],
-        -1
-    );
+//             is_canceled = false;
+//         },
+//         [],
+//         -1
+//     );
 
-    time_source_start(event_time_source);
-    ev_type = MOUSE_BT_EV_TYPE.DIRECT;
-    ev_code = mb_any;
-}
+//     time_source_start(event_time_source);
+//     ev_type = MOUSE_BT_EV_TYPE.DIRECT;
+//     ev_code = mb_any;
+// }
 
-function UINodeDebugComponent(owner, name = "") : UIComponent(owner, name) constructor {
-    static error_code_map = [
-        "OutsideOfRectError",
-        "SuccessStatus",
-        "EdgeOverlapError",
-        "SameSizeAsChildError",
-        "SurroundsChildError",
-        "CriticalError"
-    ];
-    status_messages = [];
-    self.owner = owner;
+// function UINodeDebugComponent(owner, name = "") : UIComponent(owner, name) constructor {
+//     static error_code_map = [
+//         "OutsideOfRectError",
+//         "SuccessStatus",
+//         "EdgeOverlapError",
+//         "SameSizeAsChildError",
+//         "SurroundsChildError",
+//         "CriticalError"
+//     ];
+//     status_messages = [];
+//     self.owner = owner;
 
-    /**
-	 * Pushes an error message to the stack for deferred handling/logging
-	 * @param {enum.UINODE_STATUS} type
-	 */
-    static push_status = function(type, tester, testee, caller) {
-        var err = {
-            type,
-            ui_node: weak_ref_create(tester),
-            caused_by: weak_ref_create(testee),
-            caller,
-        };
-        array_push(status_messages, err);
-    };
+//     /**
+// 	 * Pushes an error message to the stack for deferred handling/logging
+// 	 * @param {enum.UINODE_STATUS} type
+// 	 */
+//     static push_status = function(type, tester, testee, caller) {
+//         var err = {
+//             type,
+//             ui_node: weak_ref_create(tester),
+//             caused_by: weak_ref_create(testee),
+//             caller,
+//         };
+//         array_push(status_messages, err);
+//     };
 
-    static log = function() {
-        var str = $"{owner.gid} UINodeDebugComponent : \{\n";
+//     static log = function() {
+//         var str = $"{owner.gid} UINodeDebugComponent : \{\n";
 
-        for (var i = 0; i < array_length(status_messages); i++) {
-            var code = error_code_map[status_messages[i].type];
-            var ref1 = undefined;
-            var ref2 = undefined;
-            var func = status_messages[i].caller;
+//         for (var i = 0; i < array_length(status_messages); i++) {
+//             var code = error_code_map[status_messages[i].type];
+//             var ref1 = undefined;
+//             var ref2 = undefined;
+//             var func = status_messages[i].caller;
 
-            if (weak_ref_alive(status_messages[i].ui_node)) {
-                with (status_messages[i].ui_node.ref) {
-                    ref2 = {
-                        gid,
-                        gui_x,
-                        gui_y,
-                        width,
-                        height,
-                    };
-                }
-            }
-            if (weak_ref_alive(status_messages[i].caused_by)) {
-                with (status_messages[i].caused_by.ref) {
-                    ref1 = {
-                        gid,
-                        gui_x,
-                        gui_y,
-                        width,
-                        height,
-                    };
-                }
-            }
-            str += string("  UIWARNING: {0} caused by node: {1} against node: {2} in function: {3}\n", code, ref1, ref2, func);
-        }
-        LOGGER.debug(str + "}");
-    };
+//             if (weak_ref_alive(status_messages[i].ui_node)) {
+//                 with (status_messages[i].ui_node.ref) {
+//                     ref2 = {
+//                         gid,
+//                         gui_x,
+//                         gui_y,
+//                         width,
+//                         height,
+//                     };
+//                 }
+//             }
+//             if (weak_ref_alive(status_messages[i].caused_by)) {
+//                 with (status_messages[i].caused_by.ref) {
+//                     ref1 = {
+//                         gid,
+//                         gui_x,
+//                         gui_y,
+//                         width,
+//                         height,
+//                     };
+//                 }
+//             }
+//             str += string("  UIWARNING: {0} caused by node: {1} against node: {2} in function: {3}\n", code, ref1, ref2, func);
+//         }
+//         LOGGER.debug(str + "}");
+//     };
 
-    static toString = function() {
-        return "UINodeDebugComponent";
-    };
-}
+//     static toString = function() {
+//         return "UINodeDebugComponent";
+//     };
+// }
 
-/// @mixin
-function star_ui_name_node() {
-    var star_base_ui_elem = new UIElement(sprite_width, sprite_height + 32, eUI_ALIGN_X.x_left, eUI_ALIGN_Y.y_top);
-    ui_node = new UINode(star_base_ui_elem, x - sprite_xoffset, y - sprite_yoffset);
+// function star_ui_name_node() {
+//     var star_base_ui_elem = new UIElement(sprite_width, sprite_height + 32, eUI_ALIGN_X.x_left, eUI_ALIGN_Y.y_top);
+//     ui_node = new UINode(star_base_ui_elem, x - sprite_xoffset, y - sprite_yoffset);
 
-    var system_name_element = new UIElement(string_width(name) + 60, 32, eUI_ALIGN_X.x_center, eUI_ALIGN_Y.y_bottom);
-    var left_align_element = new UIElement(18, 18, eUI_ALIGN_X.x_left, eUI_ALIGN_Y.y_center);
-    var right_align_element = new UIElement(18, 18, eUI_ALIGN_X.x_right, eUI_ALIGN_Y.y_center);
+//     var system_name_element = new UIElement(string_width(name) + 60, 32, eUI_ALIGN_X.x_center, eUI_ALIGN_Y.y_bottom);
+//     var left_align_element = new UIElement(18, 18, eUI_ALIGN_X.x_left, eUI_ALIGN_Y.y_center);
+//     var right_align_element = new UIElement(18, 18, eUI_ALIGN_X.x_right, eUI_ALIGN_Y.y_center);
 
-    ui_node
-        .add_element(system_name_element, 0, 0, 0, 0)
-        .add_component(UISpriteRendererComponent)
-        .set_sprite(spr_p_name_bg)
-        .set_callback(function(context) {
-            if (owner != eFACTION.PLAYER) {
-                context.set_color_solid(global.star_name_colors[owner]);
-            } else {
-                scr_shader_initialize();
-                var main_color = make_colour_from_array(obj_controller.body_colour_replace);
-                var right_pauldron = make_colour_from_array(obj_controller.pauldron_colour_replace);
-                context.set_vertical_gradient(main_color, right_pauldron);
-            }
-        })
-        .finalize()
-        .add_component(UITextRendererComponent)
-        .set_color_solid(c_white)
-        .set_callback(function(context) {
-            context.text = name;
+//     ui_node
+//         .add_element(system_name_element, 0, 0, 0, 0)
+//         .add_component(UISpriteRendererComponent)
+//         .set_sprite(spr_p_name_bg)
+//         .set_callback(function(context) {
+//             if (owner != eFACTION.PLAYER) {
+//                 context.set_color_solid(global.star_name_colors[owner]);
+//             } else {
+//                 scr_shader_initialize();
+//                 var main_color = make_colour_from_array(obj_controller.body_colour_replace);
+//                 var right_pauldron = make_colour_from_array(obj_controller.pauldron_colour_replace);
+//                 context.set_vertical_gradient(main_color, right_pauldron);
+//             }
+//         })
+//         .finalize()
+//         .add_component(UITextRendererComponent)
+//         .set_color_solid(c_white)
+//         .set_callback(function(context) {
+//             context.text = name;
 
-            var new_w = string_width(name) + 60;
-            context.set_halign(fa_center);
-            context.set_valign(fa_middle);
-            context.owner.resize(new_w, 32);
-            if (owner == eFACTION.PLAYER) {
-                var main_trim = make_colour_from_array(obj_controller.trim_colour_replace);
-                context.set_color_solid(main_trim);
-            }
-        })
-        .finalize()
-        .add_element(left_align_element, 0, 0, 0, 0)
-        .add_component(UISpriteRendererComponent)
-        .set_sprite(spr_planets)
-        .set_image_index(9)
-        .set_image_speed(0)
-        .set_callback(function(context) {
-            context.is_canceled = !system_player_ground_forces;
-        })
-        .finalize()
-        .finalize()
-        .add_element(right_align_element, 0, 0, 0, 0)
-        .add_component(UISpriteRendererComponent)
-        .set_callback(function(context) {
-            if (owner == eFACTION.PLAYER) {
-                context.set_sprite(obj_img.creation[1]);
-                context.set_image_index(0); // I have no idea what kind of schizo code this is, so I'll just set it to 0;
-            } else {
-                context.set_sprite(obj_img.force[owner]);
-            }
-        })
-        .set_image_speed(0)
-        .finalize()
-        .finalize();
-}
+//             var new_w = string_width(name) + 60;
+//             context.set_halign(fa_center);
+//             context.set_valign(fa_middle);
+//             context.owner.resize(new_w, 32);
+//             if (owner == eFACTION.PLAYER) {
+//                 var main_trim = make_colour_from_array(obj_controller.trim_colour_replace);
+//                 context.set_color_solid(main_trim);
+//             }
+//         })
+//         .finalize()
+//         .add_element(left_align_element, 0, 0, 0, 0)
+//         .add_component(UISpriteRendererComponent)
+//         .set_sprite(spr_planets)
+//         .set_image_index(9)
+//         .set_image_speed(0)
+//         .set_callback(function(context) {
+//             context.is_canceled = !system_player_ground_forces;
+//         })
+//         .finalize()
+//         .finalize()
+//         .add_element(right_align_element, 0, 0, 0, 0)
+//         .add_component(UISpriteRendererComponent)
+//         .set_callback(function(context) {
+//             if (owner == eFACTION.PLAYER) {
+//                 context.set_sprite(obj_img.creation[1]);
+//                 context.set_image_index(0); // I have no idea what kind of schizo code this is, so I'll just set it to 0;
+//             } else {
+//                 context.set_sprite(obj_img.force[owner]);
+//             }
+//         })
+//         .set_image_speed(0)
+//         .finalize()
+//         .finalize();
+// }

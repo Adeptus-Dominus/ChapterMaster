@@ -1,4 +1,3 @@
-/// @mixin
 /// @desc Waits for a set amount of steps and executes a function/codeblock.
 /// @arg {real} timer How many steps to wait. 0 executes it next frame.
 /// @arg {function} func

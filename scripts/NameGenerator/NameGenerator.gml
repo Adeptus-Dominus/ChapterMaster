@@ -167,7 +167,7 @@ function NameTracker(set_name) constructor {
             }
             return _name;
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
             return "name_error";
         }
     };

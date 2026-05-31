@@ -59,7 +59,7 @@ function scr_librarium_gui() {
             try {
                 artif_descr = cur_arti.get_description();
             } catch (_exception) {
-                handle_exception(_exception);
+                ERROR_HANDLER.handle_exception(_exception);
             }
 
             tooltip = "";

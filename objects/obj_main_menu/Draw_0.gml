@@ -28,13 +28,13 @@ if (point_and_click([1400, 830, 1600, 900])) {
 }
 
 // Update notification
-if (variable_global_exists("version_checker") && global.version_checker.update_available) {
+if (UPDATE_CHECKER.update_available) {
     draw_set_font(fnt_cul_14);
     draw_set_color(update_blink_visible ? c_yellow : c_gray);
-    draw_text(1598, 790, $"Update: {global.version_checker.latest_version}\nClick to open download page");
+    draw_text(1598, 790, $"Update: {UPDATE_CHECKER.latest_version}\nClick to open download page");
 
     if (point_and_click([1400, 780, 1600, 830])) {
-        url_open(global.version_checker.latest_release_url);
+        url_open(UPDATE_CHECKER.latest_release_url);
         audio_play_sound(snd_click_small, 0, false);
     }
 }

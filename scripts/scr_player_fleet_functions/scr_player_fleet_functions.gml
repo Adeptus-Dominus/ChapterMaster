@@ -456,7 +456,7 @@ function player_retreat_from_fleet_combat() {
             instance_destroy();
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -627,7 +627,7 @@ function get_nearest_player_fleet(nearest_x, nearest_y, is_static = false, is_mo
     return chosen_fleet;
 }
 
-/// @mixin obj_star
+/// @self Asset.GMObject.obj_star
 function has_orbiting_player_fleet() {
     if (instance_exists(obj_p_fleet)) {
         var _nearest = instance_nearest(x, y, obj_p_fleet);

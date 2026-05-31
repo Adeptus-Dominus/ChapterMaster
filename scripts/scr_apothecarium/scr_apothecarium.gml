@@ -40,7 +40,7 @@ function add_new_gene_slave() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function scr_apothecarium() {
     draw_sprite(spr_rock_bg, 0, xx, yy);
 

@@ -518,7 +518,7 @@ try {
     try {
         event_end_turn_action();
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
     // Right here need to sort the battles within the obj_turn_end
     with (obj_turn_end) {
@@ -668,7 +668,7 @@ try {
         }
     }
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
 }
 
 if (helpful_places != false) {

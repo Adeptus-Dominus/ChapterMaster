@@ -15,7 +15,7 @@ enum eSYSTEM_LOC {
     PLANET4,
 }
 
-/// @mixin
+/// @self Struct.SpecialistPointHandler
 function calculate_full_chapter_spread() {
     obj_controller.command = 0;
     obj_controller.marines = 0;
@@ -172,7 +172,7 @@ function system_point_data_spawn() {
     return [variable_clone(_single_point_pos), variable_clone(_single_point_pos), variable_clone(_single_point_pos), variable_clone(_single_point_pos), variable_clone(_single_point_pos)];
 }
 
-/// @mixin
+/// @self Struct.SpecialistPointHandler
 function process_specialist_points() {
     var _spreads = chapter_spread();
     var _tech_spread = _spreads[0];

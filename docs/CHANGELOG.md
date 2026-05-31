@@ -79,14 +79,14 @@ Crashes:
 - Game Version is tracked through `global.game_version`, Build Date through `global.build_date`.
 - `scr_fleet_advisor` is refactored a bit. Less hardcoding, should be easier to adjust ([#69](https://github.com/EttyKitty/ChapterMaster/pull/69)).
 - All string manupulation functions are moved into `scr_string_functions` ([#70](https://github.com/EttyKitty/ChapterMaster/pull/70)).
-- `handle_exception()` in all catch statements.
+- `ERROR_HANDLER.handle_exception()` in all catch statements.
 - `scr_click_left` now sets the cooldown, in addition to checking it.
 - Click detection functions now accept a custom cooldown value.
 - New functions: 
   - `array_to_string_list()` - renamed `format_stacktrace()`, array into a string, with each element on a newline.
   - `json_to_gamemaker()` - accepts path to json file and outputs a struct or a dslist.
   - `markdown_codeblock()` - accepts a string and wraps it with markdown codeblock symbols.
-  - `handle_exception()` - accepts an exception struct, usually from a try-catch loop, displays an error and creates an error log.
+  - `ERROR_HANDLER.handle_exception()` - accepts an exception struct, usually from a try-catch loop, displays an error and creates an error log.
   - `integer_to_letters()` - converts an integer to an english word, supports ordinal forms.
 
 ## [0.9.4.0]

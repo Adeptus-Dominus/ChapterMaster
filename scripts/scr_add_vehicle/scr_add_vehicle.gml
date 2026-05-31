@@ -132,7 +132,7 @@ function scr_add_vehicle(vehicle_type, target_company, otherdata = {}, weapon1 =
 
         return [target_company, good];
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -154,6 +154,6 @@ function destroy_vehicle(co, num) {
         obj_ini.veh_wid[co][num] = 0;
     } catch (_exception) {
         LOGGER.critical($"Company: {co}, Index: {num}");
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }

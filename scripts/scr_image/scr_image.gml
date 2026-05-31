@@ -973,7 +973,7 @@ function scr_image_cache(path, image_id, use_app_data = false) {
         }
         return drawing_sprite;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 

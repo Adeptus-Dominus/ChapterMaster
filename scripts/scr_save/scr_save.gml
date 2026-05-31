@@ -138,7 +138,7 @@ function scr_save(save_part, save_id, autosaving = false) {
             }
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 
     var t2 = get_timer();

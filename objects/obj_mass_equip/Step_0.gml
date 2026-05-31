@@ -296,7 +296,7 @@ try {
         }
     }
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
     obj_controller.menu = 21;
     obj_controller.settings = 0;
     instance_destroy();

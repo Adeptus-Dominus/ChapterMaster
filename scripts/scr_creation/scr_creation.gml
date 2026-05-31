@@ -8,7 +8,7 @@ enum eSTART_FACTION {
     RESERVED,
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_creation
 function set_complex_livery_buttons() {
     try {
         var _type = complex_livery_radio.selection_val("value");
@@ -31,11 +31,11 @@ function set_complex_livery_buttons() {
         // --- Update current pattern selection ---
         advanced_helmet_livery.current_selection = _data.helm_pattern;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_creation
 function update_creation_roles_radio(start_role = 1) {
     var _role_data = [];
 
@@ -55,7 +55,7 @@ function update_creation_roles_radio(start_role = 1) {
     roles_radio.current_selection = -1;
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_creation
 function bulk_selection_buttons_setup() {
     var _button_data = [
         {
@@ -130,7 +130,7 @@ function bulk_selection_buttons_setup() {
     }
 }
 
-/// @mixin obj_creation
+/// @self Asset.GMObject.obj_creation
 function scr_creation(slide_num) {
     // 1 = chapter select
     // 2 = Chapter Naming, Points assignment, advantages/disadvantages

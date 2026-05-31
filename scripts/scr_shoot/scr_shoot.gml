@@ -543,6 +543,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             }
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }

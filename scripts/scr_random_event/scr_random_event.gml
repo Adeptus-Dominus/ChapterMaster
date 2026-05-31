@@ -260,7 +260,7 @@ function scr_random_event(execute_now) {
                 scr_event_log("", $"The Space Hulk {spaceHulk.name} appears near the {star_id.name} system.", star_id.name);
                 _evented = true;
             } catch (_exception) {
-                handle_exception(_exception);
+                ERROR_HANDLER.handle_exception(_exception);
             }
         }
     } else if (chosen_event == eEVENT.PROMOTION) {

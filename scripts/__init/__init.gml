@@ -1,6 +1,21 @@
-gml_pragma("global", "__init_external();");
+#macro PATH_SAVE_FILES "Save Files\\save{0}.json"
+#macro PATH_AUTOSAVE_FILE "Save Files\\save0.json"
+#macro PATH_CUSTOM_ICONS "Custom Files\\Custom Icons\\"
+#macro PATH_CHAPTER_ICONS working_directory + "\\images\\creation\\chapters\\icons\\"
+#macro PATH_INCLUDED_ICONS working_directory + "\\images\\creation\\customicons\\"
+#macro PATH_LOG_DIRECTORY "Logs/"
+#macro LAST_MESSAGES_LOG "last_messages.log"
+#macro PATH_LAST_MESSAGES PATH_LOG_DIRECTORY + LAST_MESSAGES_LOG
 
-function __init_external() {
+/// @desc Called via gml_pragma("global") at startup, before any room.
+function __init() {
+    global.error_handler = new ErrorHandler();
+
+    global.logger = new Logger();
+    global.logger.active_level = (code_is_compiled()) ? eLOG_LEVEL.WARNING : eLOG_LEVEL.DEBUG;
+
+    global.update_checker = new UpdateChecker();
+
     // Delete leftover files from old versions;
     // Remove these lines after a couple of months;
     // ========================
@@ -24,15 +39,6 @@ function __init_external() {
     if (!directory_exists("Save Files")) {
         directory_create("Save Files");
     }
-
-    #macro PATH_SAVE_FILES "Save Files\\save{0}.json"
-    #macro PATH_AUTOSAVE_FILE "Save Files\\save0.json"
-    #macro PATH_CUSTOM_ICONS "Custom Files\\Custom Icons\\"
-    #macro PATH_CHAPTER_ICONS working_directory + "\\images\\creation\\chapters\\icons\\"
-    #macro PATH_INCLUDED_ICONS working_directory + "\\images\\creation\\customicons\\"
-    #macro PATH_LOG_DIRECTORY "Logs/"
-    #macro LAST_MESSAGES_LOG "last_messages.log"
-    #macro PATH_LAST_MESSAGES PATH_LOG_DIRECTORY + LAST_MESSAGES_LOG
 
     global.chapter_icons_map = ds_map_create();
 
@@ -101,8 +107,9 @@ function __init_external() {
     }
 
     if (global.game_version != "compiled") {
-        global.version_checker = new UpdateChecker();
-        global.version_checker.check();
+        global.update_checker.check();
+    } else {
+        global.update_checker.compiled = true;
     }
 
     global.weapons = json_to_gamemaker(working_directory + "\\data\\weapons.json", json_parse);
@@ -117,4 +124,52 @@ function __init_external() {
     global.technologies = json_to_gamemaker(working_directory + "\\data\\technologies.json", json_parse);
 
     global.base_stats = json_to_gamemaker(working_directory + "\\data\\unit_stats.json", json_parse);
+
+    layer_force_draw_depth(true, 0); // force all layers to draw at depth 0
+    draw_set_colour(c_black);
+
+    initialize_marine_traits();
+
+    initialize_dialogue();
+
+    var _log_file = file_text_open_write(PATH_LAST_MESSAGES);
+    if (_log_file != -1) {
+        file_text_write_string(_log_file, $"--- Log Started: {date_datetime_string(date_current_datetime())} ---\n");
+        file_text_close(_log_file);
+    }
+
+    global.culture_styles = [
+        "Greek",
+        "Roman",
+        "Knightly",
+        "Gladiator",
+        "Mongol",
+        "Feral",
+        "Flame Cult",
+        "Mechanical Cult",
+        "Prussian",
+        "Cthonian",
+        "Alpha",
+        "Ultra",
+        "Renaissance",
+        "Blood",
+        "Angelic",
+        "Crusader",
+        "Gothic",
+        "Wolf Cult",
+        "Runic"
+    ];
+
+    try {
+        load_visual_sets();
+    } catch (_exception) {
+        global.error_handler.handle_exception(_exception);
+    }
+
+    global.chapter_name = "None";
+    global.game_seed = 0;
+    global.ui_click_lock = false;
+    global.name_generator = new NameGenerator();
+    global.star_sprites = ds_map_create();
+    global.base_component_surface = -1;
 }

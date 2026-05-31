@@ -3156,7 +3156,7 @@ try {
 
     instance_activate_object(obj_enunit);
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
     instance_destroy(obj_enunit);
     instance_destroy(obj_pnunit);
     instance_destroy(obj_ncombat);
