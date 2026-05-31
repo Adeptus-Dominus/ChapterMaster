@@ -724,13 +724,104 @@ function get_compay_squad_arrangement(company){
 
 }
 
+function RequireSquadEditor(data) constructor(){
+    move_data_to_current_scope(data):
+    
+    deleted = false;
+    static draw = function(){
+        box.draw();
+        min_val_shift.draw();
+        max_val_shift.draw();
+        squad_title.draw();
+        required_squad.min_count = max(min_val_shift.current_value, 1);
+        required_squad.max_count = max_val_shift.current_value;
+        if (delete.draw()){
+            for (var i=0;i<array_length(arrangement);i++){
+                var _squad = arrangement[i]
+                if (struct_exists(_squad, "require") && _squad.require == true){
+                    if (required_squad.squad == _squad.squad){
+                        array_delete(arrangement, i, 1);
+                        break;
+                    }
+                }
+            }            
+        }
+    }
+}
 function SquadArrangementEditor(company) constructor {
     self.company = company;
     arrangement = get_compay_squad_arrangement(company).squads;
 
     squads = obj_ini.squad_types;
-    static add_new_required_type = function(){
+    required_types = [];
+    required_y = 0;
+    static add_new_required_type = function(required_squad){
+        var _squad_data = squads[$ required_squad.squad];
+        var min_val_shift = new ValueShifter(
+            "min",
+            {
+                current_value : required_squad.min_count,
+                x1 : 175,
+                y1 : required_y + 40,
+            },
+        );
+        var max_val_shift = new ValueShifter(
+            "max",
+            {
+                current_value : required_squad.max_count,
+                x1 : 175,
+                y1 : required_y + 25,
+            },
+        );
+        var box = new Box({
+            x1 : 100,
+            y1 : required_y, 
+            x2 : 300, 
+            y2 : required_y + 50
+        });
 
+        var squad_title = new ReactiveString(
+            _squad_data.type_data.display_data,
+            175, 
+            required_y + 5,
+            {
+                halign : fa_center,
+            }
+        );
+
+        var delete = new UnitButtonObject({
+            style : pixel,
+            label : "remove squad",
+            tooltip : $"remove {required_squad.squad} from required squads",
+            set_width : true
+            x1 : 100,
+            y1 : box.y2,
+            w : 200,
+        })
+
+        var _edit = new RequireSquadEditor({
+            required_squad,
+            box,
+            max_val_shift,
+            min_val_shift,
+            squad_title,
+            delete
+        });
+
+        array_push(required_types, new RequireSquadEditor());
+
+        required_y += 80;
+    }
+
+    static reset_required_squads = function(){
+        required_types = [];
+        required_y = 0;
+        for (var i=0;i<array_length(arrangement);i++){
+            var _squad = arrangement[i]
+            if (struct_exists(_squad, "require") && _squad.require == true){
+                add_new_required_type(_squad);
+            }
+        }
     }
 
     required_string = new ReactiveString(
@@ -747,36 +838,18 @@ function SquadArrangementEditor(company) constructor {
         {tooltip : "Proportional Squads will be built proporionally to other proportional squads for example if the proportional value of Tactical Squads was 1 and the proportional value of biker squads was 2 the system will try to make 2 biker squads foor every one tactical squad "}
     )
 
-    static draw_required_squad = function(draw_squad){
-        var _squad_data = squads[$ draw_squad.squad];
-        draw_rectangle(100,required_y, 300, required_y + 50);
-        draw_set_halign(fa_center);
-        draw_text(175, required_y + 5, _squad_data.type_data.display_data);
-
-        if (point_and_click(draw_unit_buttons([150, required_y + 25], "-", [0.75, 0.75], c_red))) {
-
-        }
-    
-        if (point_and_click(draw_unit_buttons([250, required_y + 25], "+", [0.75, 0.75], c_green))) {
-
-        }
-        if (point_and_click(draw_unit_buttons([150, required_y + 40], "-", [0.75, 0.75], c_red))) {
-
-        }
-        if (point_and_click(draw_unit_buttons([250, required_y + 40], "+", [0.75, 0.75], c_green))) {
-
-        }
-
-    }
-
     static draw = function(){
-        required_y = 140;
-        proportion_y = 140;
-        for (var i=0;i<array_length(arrangement);i++){
-            var _squad = arrangement[i]
-            if (struct_exists(_squad, "require") && _squad.require == true){
-                draw_required_squad(_squad);
+        var _reset_required_structs = false;
+        for (var i=0;i<array_length(required_types);i++){
+            var _squad = required_types[i]
+            _squad.draw();
+            if (_squad.deleted){
+                _reset_required_structs = true;
             }
+        }
+
+        if (_reset_required_structs){
+            reset_required_squads();
         }
     }
 

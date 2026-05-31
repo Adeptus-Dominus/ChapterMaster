@@ -548,7 +548,7 @@ function scr_select_company_settings_ui(){
 }
 
 function scr_draw_company_settings_ui(){
-
+    squad_arrangement.draw();
 }
 
 function scr_select_role_settings_ui(){
