@@ -13,6 +13,7 @@ function GameError() constructor {
     game_version = "";
     build_date = "";
     commit_hash = "";
+    username = "";
 
     full_log = "";
     error_file_text = "";
@@ -44,6 +45,7 @@ function GameError() constructor {
         game_version = global.game_version;
         build_date = global.build_date;
         commit_hash = global.commit_hash;
+        username = global.settings.username ?? "";
 
         // Build the log
         full_log = build_full_log();
@@ -68,6 +70,8 @@ function GameError() constructor {
             $"- Chapter Name: {chapter}",
             $"- Current Turn: {turn}",
             $"- Game Seed: {seed}",
+            "",
+            $"### Reporter: {username}",
             "",
             "### Error Details:",
             message,
@@ -150,7 +154,7 @@ function BugReporter() constructor {
 
         try {
             var embed = new DiscordEmbed();
-            embed.SetTitle("Error Details").SetDescription(pending_error.full_log).SetColor(0x00ff00);
+            embed.SetTitle("Error Details").SetDescription(pending_error.full_log).SetColor(0x00ff00).AddField("Username", pending_error.username);
 
             if (_user_text != "") {
                 embed.AddField("User Message:", _user_text);

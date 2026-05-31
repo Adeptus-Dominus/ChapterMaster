@@ -1,8 +1,11 @@
+global.username_prompt.handle();
+
+
 var _id = ds_map_find_value(async_load, "id");
 var _status = ds_map_find_value(async_load, "status");
 var _result = ds_map_find_value(async_load, "result");
 
-if (ds_map_exists(global.active_error_dialogs, _id)) {
+if (variable_global_exists("active_error_dialogs") && ds_map_exists(global.active_error_dialogs, _id)) {
     var _error = ds_map_find_value(global.active_error_dialogs, _id);
     ds_map_delete(global.active_error_dialogs, _id);
 
@@ -20,7 +23,7 @@ if (ds_map_exists(global.active_error_dialogs, _id)) {
     exit;
 }
 
-if (global.active_bug_report != undefined && is_struct(global.active_bug_report)) {
+if (variable_global_exists("active_bug_report") && is_struct(global.active_bug_report)) {
     if (_id == global.active_bug_report.async_id) {
         if (_status && _result != "") {
             global.active_bug_report.send(_result);

@@ -602,7 +602,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.5.1065",
+    "IDEVersion":"2024.1400.5.1055",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -792,7 +792,6 @@
     {"id":{"name":"scr_ChapterTraits","path":"scripts/scr_ChapterTraits/scr_ChapterTraits.yy",},},
     {"id":{"name":"scr_cheatcode","path":"scripts/scr_cheatcode/scr_cheatcode.yy",},},
     {"id":{"name":"scr_check_equip","path":"scripts/scr_check_equip/scr_check_equip.yy",},},
-    {"id":{"name":"UpdateChecker","path":"scripts/UpdateChecker/UpdateChecker.yy",},},
     {"id":{"name":"scr_choose_weighted","path":"scripts/scr_choose_weighted/scr_choose_weighted.yy",},},
     {"id":{"name":"scr_civil_roster","path":"scripts/scr_civil_roster/scr_civil_roster.yy",},},
     {"id":{"name":"scr_clean","path":"scripts/scr_clean/scr_clean.yy",},},
@@ -990,6 +989,8 @@
     {"id":{"name":"UIComponents","path":"scripts/UIComponents/UIComponents.yy",},},
     {"id":{"name":"UINodeScripts","path":"scripts/UINodeScripts/UINodeScripts.yy",},},
     {"id":{"name":"UIRenderComponents","path":"scripts/UIRenderComponents/UIRenderComponents.yy",},},
+    {"id":{"name":"UpdateChecker","path":"scripts/UpdateChecker/UpdateChecker.yy",},},
+    {"id":{"name":"UsernamePrompt","path":"scripts/UsernamePrompt/UsernamePrompt.yy",},},
     {"id":{"name":"armour_texture","path":"shaders/armour_texture/armour_texture.yy",},},
     {"id":{"name":"full_livery_shader","path":"shaders/full_livery_shader/full_livery_shader.yy",},},
     {"id":{"name":"helm_shader","path":"shaders/helm_shader/helm_shader.yy",},},
