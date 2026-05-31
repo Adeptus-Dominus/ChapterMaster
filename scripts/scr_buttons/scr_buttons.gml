@@ -534,7 +534,6 @@ function PurchaseButton(req) : UnitButtonObject() constructor {
             pop_draw_return_values();
             return false;
         }
-        pop_draw_return_values();
     };
 }
 

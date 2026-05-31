@@ -176,10 +176,8 @@ function NameTracker(set_name) constructor {
         switch (preffered_method) {
             case "composite":
                 return CompositeNameGeneration();
-                break;
             case "complex":
                 return ComplexTitledName(composite_names);
-                break;
             default:
                 return SimpleNameGeneration();
         }
