@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"BugReporter",
+  "%Name":"ErrorHandler",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"BugReporter",
+  "name":"ErrorHandler",
   "parent":{
     "name":"Constructors",
     "path":"folders/Scripts/Constructors.yy",

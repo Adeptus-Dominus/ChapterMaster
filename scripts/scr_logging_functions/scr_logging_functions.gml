@@ -1,63 +1,3 @@
-#macro STR_ERROR_MESSAGE_HEAD $"Your game just encountered and caught an error!"
-#macro STR_ERROR_MESSAGE_HEAD2 $"Your game just encountered a critical error! :("
-#macro STR_ERROR_MESSAGE_HEAD3 "Your game just encountered and caught an error! ({0})"
-#macro STR_ERROR_MESSAGE_PS $"P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum."
-
-enum eLOG_LEVEL {
-    DEBUG,
-    INFO,
-    WARNING,
-    ERROR,
-    CRITICAL,
-}
-
-/// @description Logs the _message into a file in the Logs folder.
-/// @param {string} _message - The message to log.
-function create_error_file(_message) {
-    if (string_length(_message) == 0) {
-        return;
-    }
-
-    if (!directory_exists(PATH_LOG_DIRECTORY)) {
-        directory_create(PATH_LOG_DIRECTORY);
-    }
-
-    var _log_file = file_text_open_write($"{PATH_LOG_DIRECTORY}{DATE_TIME_1}_error.log");
-    file_text_write_string(_log_file, _message);
-    file_text_close(_log_file);
-
-    copy_last_messages_file();
-}
-
-/// @description Creates a copy of the last_messages.log file, with the current date in the name, in the same folder.
-function copy_last_messages_file() {
-    if (!file_exists(PATH_LAST_MESSAGES)) {
-        return;
-    }
-
-    if (!directory_exists(PATH_LOG_DIRECTORY)) {
-        directory_create(PATH_LOG_DIRECTORY);
-    }
-
-    file_copy(PATH_LAST_MESSAGES, $"{PATH_LOG_DIRECTORY}{DATE_TIME_1}_messages.log");
-}
-
-/// @desc Provides game-specific state data to the error handler without tight coupling.
-/// @returns {Struct}
-function error_get_context() {
-    var _context = {
-        chapter: global.chapter_name ?? "???",
-        seed: global.game_seed ?? "???",
-        turn: "???",
-    };
-
-    if (instance_exists(obj_controller)) {
-        _context.turn = obj_controller.turn;
-    }
-
-    return _context;
-}
-
 /// @description Displays a popup, logs the error into file, and copies to clipboard.
 /// @param {string} _header - Header for the error popup.
 /// @param {string} _message - Detailed message for the error.
@@ -65,10 +5,9 @@ function error_get_context() {
 /// @param {string} _critical - Optional.
 /// @param {string} _report_title - Optional. Preset title for the bug report.
 function handle_error(_header, _message, _stacktrace = "", _critical = false, _report_title = "") {
-    var _error = new GameError();
-    _error.init(_header, _message, _stacktrace, _critical, _report_title);
+    var _error = new GameError(_header, _message, _stacktrace, _critical, _report_title);
 
-    create_error_file(_error.error_file_text);
+    ERROR_HANDLER._write_error_log(_error.error_file_text);
 
     show_debug_message(LB_92);
     show_debug_message(_message);
@@ -76,32 +15,28 @@ function handle_error(_header, _message, _stacktrace = "", _critical = false, _r
     show_debug_message(LB_92);
 
     // Outdated version. Intercept, offer update link, skip report
-    if (global.version_checker.update_available) {
+    if (UPDATE_CHECKER.update_available) {
         var _open_update = show_question(_error.player_message);
-        if (_open_update && global.version_checker.latest_release_url != "") {
-            url_open(global.version_checker.latest_release_url);
+        if (_open_update && UPDATE_CHECKER.latest_release_url != "") {
+            url_open(UPDATE_CHECKER.latest_release_url);
         }
         return;
     }
 
-    if (_critical || (!variable_global_exists("active_error_dialogs") || !ds_exists(global.active_error_dialogs, ds_type_map) || !variable_global_exists("error_queue") || !ds_exists(global.error_queue, ds_type_queue))) {
+    if (_critical) {
         var _send_report = show_question(_error.player_message);
 
         if (!_send_report) {
             return;
         }
 
-        var _reporter = new BugReporter();
-        _reporter.pending_error = _error;
-        _reporter.send();
+        ERROR_HANDLER.pending_error = _error;
+        ERROR_HANDLER.send();
 
         return;
-    } else if (ds_map_size(global.active_error_dialogs) == 0) {
-        var _msg_id = show_message_async(_error.player_message);
-        ds_map_add(global.active_error_dialogs, _msg_id, _error);
-    } else {
-        ds_queue_enqueue(global.error_queue, _error);
     }
+
+    ERROR_HANDLER.show(_error);
 }
 
 /// @function handle_exception
@@ -146,24 +81,25 @@ exception_unhandled_handler(function(_exception) {
     return 0;
 });
 
-/// @function markdown_codeblock
-/// @description Formats text as a code block.
+/// @desc Formats text as a code block.
 /// @param {string} _message The message to format.
 /// @param {string} _language (Optional) Code language prefix to add into the codeblock.
-/// @returns {string} The formatted message.
-function markdown_codeblock(_message, _language = "") {
+/// @returns {string} The formatted string.
+function format_codeblock(_message, _language = "") {
     return string_length(_message) > 0 ? $"```{_language}\n{_message}\n```" : "";
 }
 
-/// @function format_time
-/// @description Converts to string and adds a 0 at the start, if input is less than 10.
+/// @desc Converts to string and adds a 0 at the start, if input is less than 10.
 /// @param {real} _time - Usually hours, minutes or seconds.
 /// @returns {string}
 function format_time(_time) {
     return (_time < 10) ? $"0{_time}" : string(_time);
 }
 
-function clean_callstack_prefixes(_string) {
+/// @desc Removes all GM prefixes from a string.
+/// @param {string} _string
+/// @returns {string}
+function clean_prefixes(_string) {
     _string = string_replace_all(_string, "gml_Object_", "");
     _string = string_replace_all(_string, "gml_Script_", "");
     _string = string_replace_all(_string, "gml_GlobalScript_", "");
@@ -204,7 +140,7 @@ function clean_stacktrace_line(_line_string) {
     }
 
     // 3. Cleanup Prefixes
-    _work_string = clean_callstack_prefixes(_work_string);
+    _work_string = clean_prefixes(_work_string);
 
     // 4. Handle Method/Anonymous Chains (@ symbols)
     var _final_callsite = "";

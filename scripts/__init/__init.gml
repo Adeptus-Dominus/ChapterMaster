@@ -9,6 +9,19 @@
 
 /// @desc Called via gml_pragma("global") at startup, before any room.
 function __init() {
+    global.error_handler = new ErrorHandler();
+
+    global.logger = new Logger();
+    global.logger.active_level = (code_is_compiled()) ? eLOG_LEVEL.WARNING : eLOG_LEVEL.DEBUG;
+
+    global.update_checker = new UpdateChecker();
+
+    if (global.game_version != "compiled") {
+        global.update_checker.check();
+    } else {
+        global.update_checker.compiled = true;
+    }
+
     // Delete leftover files from old versions;
     // Remove these lines after a couple of months;
     // ========================
@@ -32,9 +45,6 @@ function __init() {
     if (!directory_exists("Save Files")) {
         directory_create("Save Files");
     }
-
-    global.logger = new Logger();
-    global.logger.active_level = (code_is_compiled()) ? eLOG_LEVEL.WARNING : eLOG_LEVEL.DEBUG;
 
     global.chapter_icons_map = ds_map_create();
 
@@ -102,12 +112,6 @@ function __init() {
         global.commit_hash = _commit_hash;
     }
 
-    global.version_checker = new UpdateChecker();
-
-    if (global.game_version != "compiled") {
-        global.version_checker.check();
-    }
-
     global.weapons = json_to_gamemaker(working_directory + "\\data\\weapons.json", json_parse);
     global.gear = {
         "armour": json_to_gamemaker(working_directory + "\\data\\armour.json", json_parse),
@@ -159,7 +163,7 @@ function __init() {
     try {
         load_visual_sets();
     } catch (_exception) {
-        handle_exception(_exception);
+        global.error_handler.ERROR_HANDLER.handle_exception(_exception);
     }
 
     global.chapter_name = "None";
@@ -168,7 +172,4 @@ function __init() {
     global.name_generator = new NameGenerator();
     global.star_sprites = ds_map_create();
     global.base_component_surface = -1;
-
-    global.error_queue = ds_queue_create();
-    global.active_error_dialogs = ds_map_create();
 }

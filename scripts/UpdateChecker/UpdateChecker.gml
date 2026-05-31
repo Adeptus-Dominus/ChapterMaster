@@ -1,3 +1,5 @@
+#macro UPDATE_CHECKER global.update_checker
+
 /// @desc Checks GitHub for newer game releases. Create with `new UpdateChecker()`.
 /// Encapsulates HTTP request lifecycle and update state.
 function UpdateChecker() constructor {
@@ -10,6 +12,8 @@ function UpdateChecker() constructor {
     latest_release_url = "";
     /// Whether a newer version than current is available
     update_available = false;
+    /// Debug or release build
+    compiled = false;
 
     /// @desc Fires HTTP request to GitHub releases API.
     /// Called once at startup after global.game_version is set.
