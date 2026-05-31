@@ -18,7 +18,7 @@ function move_data_to_current_scope(move_struct, overide = true) {
                 }
             }
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     }
 }

@@ -31,7 +31,7 @@ function set_complex_livery_buttons() {
         // --- Update current pattern selection ---
         advanced_helmet_livery.current_selection = _data.helm_pattern;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 

@@ -283,7 +283,7 @@ function scr_enemy_ai_d() {
             try {
                 complete_garrison_mission(i, garrison_mission);
             } catch (_exception) {
-                handle_exception(_exception);
+                ERROR_HANDLER.handle_exception(_exception);
             }
         }
         var _beast_hunt = has_problem_planet_and_time(i, "hunt_beast", 0);
@@ -291,7 +291,7 @@ function scr_enemy_ai_d() {
             try {
                 complete_beast_hunt_mission(i, _beast_hunt);
             } catch (_exception) {
-                handle_exception(_exception);
+                ERROR_HANDLER.handle_exception(_exception);
             }
         }
 
@@ -300,7 +300,7 @@ function scr_enemy_ai_d() {
             try {
                 complete_train_forces_mission(i, train_forces);
             } catch (_exception) {
-                handle_exception(_exception);
+                ERROR_HANDLER.handle_exception(_exception);
             }
         }
 

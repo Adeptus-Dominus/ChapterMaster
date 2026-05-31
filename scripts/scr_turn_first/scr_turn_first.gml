@@ -70,6 +70,6 @@ function scr_turn_first() {
             }
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }

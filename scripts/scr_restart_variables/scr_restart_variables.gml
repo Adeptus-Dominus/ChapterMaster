@@ -578,7 +578,7 @@ function scr_restart_variables(saved_game) {
 
         if (saved_game == 4) {}
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 

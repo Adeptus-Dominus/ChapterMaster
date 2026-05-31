@@ -45,7 +45,7 @@ function squeeze_map_forces() {
             }
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -67,7 +67,7 @@ function target_block_is_valid(target, desired_type) {
         }
         return _is_valid;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -103,7 +103,7 @@ function get_rightmost(block_type = obj_pnunit, include_flanking = true, include
         }
         return rightmost;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -111,7 +111,7 @@ function block_has_armour(target) {
     try {
         return target.veh + target.dreads;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -144,7 +144,7 @@ function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
         }
         return left_most;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -152,7 +152,7 @@ function get_block_distance(block) {
     try {
         return point_distance(x, y, block.x, block.y) / 10;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -169,7 +169,7 @@ function calculate_block_distances(first_block, second_block) {
         }
         return floor(floor((first_block.x - second_block.x) / 10));
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -181,7 +181,7 @@ function block_position_collision(position_x, position_y) {
     try {
         return collision_point(position_x, position_y, obj_enunit, 0, 1) || collision_point(position_x, position_y, obj_pnunit, 0, 1);
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -209,7 +209,7 @@ function move_unit_block(direction, blocks = 1, allow_collision = false) {
             return false;
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 

@@ -859,7 +859,7 @@ try {
         draw_text_ext(mouse_x + 22, mouse_y + 42, string_hash_to_newline(string(tooltip2)), -1, 500);
     }
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
     room_goto(rm_main_menu);
 }
 

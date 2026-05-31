@@ -422,7 +422,7 @@ function draw_planet_debug_options() {
         }
         pop_draw_return_values();
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 

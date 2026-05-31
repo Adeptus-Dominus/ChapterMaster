@@ -1,6 +1,6 @@
 #macro UPDATE_CHECKER global.update_checker
 
-/// @desc Checks GitHub for newer game releases. Create with `new UpdateChecker()`.
+/// @desc Checks GitHub for newer game releases.
 /// Encapsulates HTTP request lifecycle and update state.
 function UpdateChecker() constructor {
     request_id = undefined;

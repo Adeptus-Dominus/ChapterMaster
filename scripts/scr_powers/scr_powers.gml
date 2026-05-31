@@ -348,7 +348,7 @@ function get_discipline_data(_discipline_name, _data_name) {
         }
         return _data_content;
     } else {
-        assert_error_popup("Requested discipline was not found!");
+        ERROR_HANDLER.assert_popup("Requested discipline was not found!");
         return;
     }
 }
@@ -380,7 +380,7 @@ function get_power_data(_power_id, _data_name = "") {
             return _data_content;
         }
     } else {
-        assert_error_popup("Requested power was not found!");
+        ERROR_HANDLER.assert_popup("Requested power was not found!");
     }
 
     return;
@@ -472,7 +472,7 @@ function power_conditions_check(conditions_array) {
             return true;
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         return false;
     }
 }
@@ -531,10 +531,10 @@ function get_tome_discipline(_tome_tags) {
                 }
             }
         }
-        assert_error_popup("no matching discipline was found.");
+        ERROR_HANDLER.assert_popup("no matching discipline was found.");
         return "";
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         return "";
     }
 }
@@ -555,10 +555,10 @@ function match_power_prefix(power_prefix) {
                 }
             }
         }
-        assert_error_popup("no matching discipline was found.");
+        ERROR_HANDLER.assert_popup("no matching discipline was found.");
         return "";
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         return "";
     }
 }

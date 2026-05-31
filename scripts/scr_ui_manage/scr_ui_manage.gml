@@ -453,7 +453,7 @@ function reset_manage_unit_constants(unit) {
 
         // TODO
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         obj_controller.unit_focus = undefined;
     } //not sure handling with normal method exception could just be a pain here
 }
@@ -1136,7 +1136,7 @@ function scr_ui_manage() {
                             try {
                                 company_data.draw_squad_view();
                             } catch (_exception) {
-                                handle_exception(_exception);
+                                ERROR_HANDLER.handle_exception(_exception);
                                 obj_controller.view_squad = false;
                                 obj_controller.unit_profile = false;
                             }

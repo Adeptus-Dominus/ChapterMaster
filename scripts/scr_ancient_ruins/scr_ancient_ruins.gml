@@ -69,7 +69,7 @@ function scr_ruins_suprise_attack_player() {
         instance_destroy(obj_popup);
         instance_destroy(obj_star_select);
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         instance_activate_all();
         instance_destroy(obj_popup);
         instance_destroy(obj_star_select);
@@ -274,7 +274,7 @@ function scr_explore_ruins() {
         );
         pip.image = "ancient_ruins";
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 

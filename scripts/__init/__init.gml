@@ -16,12 +16,6 @@ function __init() {
 
     global.update_checker = new UpdateChecker();
 
-    if (global.game_version != "compiled") {
-        global.update_checker.check();
-    } else {
-        global.update_checker.compiled = true;
-    }
-
     // Delete leftover files from old versions;
     // Remove these lines after a couple of months;
     // ========================
@@ -112,6 +106,12 @@ function __init() {
         global.commit_hash = _commit_hash;
     }
 
+    if (global.game_version != "compiled") {
+        global.update_checker.check();
+    } else {
+        global.update_checker.compiled = true;
+    }
+
     global.weapons = json_to_gamemaker(working_directory + "\\data\\weapons.json", json_parse);
     global.gear = {
         "armour": json_to_gamemaker(working_directory + "\\data\\armour.json", json_parse),
@@ -163,7 +163,7 @@ function __init() {
     try {
         load_visual_sets();
     } catch (_exception) {
-        global.error_handler.ERROR_HANDLER.handle_exception(_exception);
+        global.error_handler.handle_exception(_exception);
     }
 
     global.chapter_name = "None";

@@ -53,7 +53,7 @@ if (ai_a >= 0) {
         try {
             scr_enemy_ai_a();
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     }
 }
@@ -63,7 +63,7 @@ if (ai_b >= 0) {
         try {
             scr_enemy_ai_b();
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     }
 }
@@ -73,7 +73,7 @@ if (ai_c >= 0) {
         try {
             scr_enemy_ai_c();
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     }
 }
@@ -83,7 +83,7 @@ if (ai_d >= 0) {
         try {
             scr_enemy_ai_d();
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     }
 }
@@ -93,7 +93,7 @@ if (ai_e >= 0) {
         try {
             scr_enemy_ai_e();
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     }
 }

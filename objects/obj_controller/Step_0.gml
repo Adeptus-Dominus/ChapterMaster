@@ -542,5 +542,5 @@ try {
         }
     }
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
 }

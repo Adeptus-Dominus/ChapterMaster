@@ -510,7 +510,7 @@ function planet_selection_action() {
                 try {
                     p_data.planet_selection_logic();
                 } catch (_exception) {
-                    handle_exception(_exception);
+                    ERROR_HANDLER.handle_exception(_exception);
                     instance_destroy();
                 }
             }

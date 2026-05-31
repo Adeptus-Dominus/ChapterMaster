@@ -138,12 +138,12 @@ function UnitQuickFindPanel() constructor {
                         evaluate_vehicle_for_garrison_log(co, u);
                     }
                 } catch (_exception) {
-                    handle_exception(_exception);
+                    ERROR_HANDLER.handle_exception(_exception);
                 }
             }
             update_mission_log();
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     };
 

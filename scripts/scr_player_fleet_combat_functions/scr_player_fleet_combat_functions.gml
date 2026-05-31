@@ -48,7 +48,7 @@ function add_fleet_ships_to_combat(fleet, combat) {
             array_push(combat.ship_contents, obj_ini.ship_contents[_ship_id]);
             array_push(combat.ship_turrets, obj_ini.ship_turrets[_ship_id]);
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     }
 }

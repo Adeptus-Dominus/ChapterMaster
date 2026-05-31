@@ -323,7 +323,7 @@ function calculate_action_speed(fleet = "none", selected = false) {
             }
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         return 200;
     }
 }
@@ -546,7 +546,7 @@ function scr_orbiting_player_fleet(system = "none") {
                 return scr_orbiting_player_fleet();
             }
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     }
 

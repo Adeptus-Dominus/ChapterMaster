@@ -62,6 +62,6 @@ try {
     }
     obj_controller.selection_data = false;
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
     obj_controller.selection_data = false;
 }

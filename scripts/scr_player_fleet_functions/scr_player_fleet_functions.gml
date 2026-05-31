@@ -456,7 +456,7 @@ function player_retreat_from_fleet_combat() {
             instance_destroy();
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 

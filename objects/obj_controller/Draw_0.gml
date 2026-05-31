@@ -2,14 +2,14 @@
 try {
     scr_ui_manage();
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
     main_map_defaults();
 }
 
 try {
     scr_ui_advisors();
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
     main_map_defaults();
 }
 if (menu == eMENU.DIPLOMACY) {
@@ -20,7 +20,7 @@ if (menu == eMENU.DIPLOMACY) {
 
         scr_ui_diplomacy();
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         main_map_defaults();
     }
 }
@@ -28,7 +28,7 @@ try {
     scr_ui_settings();
     scr_ui_popup();
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
     main_map_defaults();
 }
 

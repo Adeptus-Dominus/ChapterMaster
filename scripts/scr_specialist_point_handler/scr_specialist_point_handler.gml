@@ -160,7 +160,7 @@ function SpecialistPointHandler() constructor {
         try {
             pre_error_wrapped_research_points();
         } catch (ex) {
-            handle_exception(ex);
+            ERROR_HANDLER.handle_exception(ex);
         }
     };
 
@@ -320,7 +320,7 @@ function SpecialistPointHandler() constructor {
                 }
             }
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     };
 
@@ -514,7 +514,7 @@ function SpecialistPointHandler() constructor {
             }
         } catch (_exception) {
             LOGGER.critical(_forge_order);
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     };
     /*static apothecary_points_calc(){

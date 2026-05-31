@@ -176,7 +176,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
             }
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 

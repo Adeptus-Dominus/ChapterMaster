@@ -77,7 +77,9 @@ function GameError(_header, _message, _stacktrace = "", _critical = false, _repo
 
         _msg += $"The error log was saved at:\n{_path_hint}Logs\\\n\n";
 
-        if (UPDATE_CHECKER.update_available) {
+        if (UPDATE_CHECKER.compiled) {
+            _msg += "You are using a debug build. Automated bug reports disabled.\n\n";
+        } else if (UPDATE_CHECKER.update_available) {
             _msg += "You are using an outdated build. Automated bug reports are only accepted for the latest version.\n\n";
             _msg += "Do you want to open the latest release page in your browser?";
         } else if (critical) {
@@ -101,7 +103,7 @@ function ErrorHandler() constructor {
     /// @type {Struct.GameError}
     pending_error = undefined;
 
-    /// @desc Provides game-specific state data to the error handler without tight coupling.
+    /// @desc Provides game-specific state data to the error handler.
     /// @returns {Struct}
     static _get_context = function() {
         var _context = {
@@ -260,5 +262,82 @@ function ErrorHandler() constructor {
         } catch (_ex) {
             LOGGER.error("Failed to package report: " + _ex.message);
         } finally {}
+    };
+
+    /// @description Entry point for error handling. Creates GameError, logs it, routes to dialog queue or sends directly.
+    /// @param {string} _header
+    /// @param {string} _message
+    /// @param {string} _stacktrace
+    /// @param {bool} _critical
+    /// @param {string} _report_title
+    static handle = function(_header, _message, _stacktrace = "", _critical = false, _report_title = "") {
+        var _error = new GameError(_header, _message, _stacktrace, _critical, _report_title);
+
+        _write_error_log(_error.error_file_text);
+
+        show_debug_message(LB_92);
+        show_debug_message(_message);
+        show_debug_message(_stacktrace);
+        show_debug_message(LB_92);
+
+        // Outdated version. Intercept, offer update link, skip report
+        if (UPDATE_CHECKER.update_available) {
+            var _open_update = show_question(_error.player_message);
+            if (_open_update && UPDATE_CHECKER.latest_release_url != "") {
+                url_open(UPDATE_CHECKER.latest_release_url);
+            }
+            return;
+        }
+
+        if (_critical) {
+            var _send_report = show_question(_error.player_message);
+
+            if (!_send_report) {
+                return;
+            }
+
+            ERROR_HANDLER.pending_error = _error;
+            ERROR_HANDLER.send();
+
+            return;
+        }
+
+        show(_error);
+    };
+
+    /// @description Handles an exception object from GameMaker's exception system.
+    /// @param {exception} _exception
+    /// @param {string} custom_title
+    /// @param {bool} critical
+    /// @param {string} error_marker
+    static handle_exception = function(_exception, custom_title = STR_ERROR_MESSAGE_HEAD, critical = false, error_marker = "") {
+        var _header = critical ? STR_ERROR_MESSAGE_HEAD2 : custom_title;
+        var _message = _exception.longMessage;
+        var _stacktrace = _exception.stacktrace;
+        clean_stacktrace(_stacktrace);
+
+        var _critical = critical ? "CRASH! " : "";
+        var _build_date = global.build_date == "unknown build" ? "" : $"/{global.build_date}";
+        var _problem_line = (array_length(_stacktrace) > 0) ? _stacktrace[0] : "unknown";
+        var _report_title = $"{_critical}[{global.game_version}{_build_date}] {_problem_line}";
+
+        _stacktrace = array_to_string_list(_stacktrace);
+
+        handle(_header, _message, _stacktrace, critical, _report_title);
+    };
+
+    /// @description Shows a popup for errors triggered by unexpected conditions.
+    /// @param {string} _message
+    /// @param {string} _header
+    static assert_popup = function(_message, _header = "Your game just encountered an error!") {
+        var _stacktrace_array = debug_get_callstack();
+
+        array_shift(_stacktrace_array); // throw away the first line, it's this function
+        array_pop(_stacktrace_array); // and the last line, it's the `0` debug_get_callstack returns for the top of the stack
+        clean_stacktrace(_stacktrace_array);
+
+        var _stacktrace = array_to_string_list(_stacktrace_array);
+
+        handle(_header, _message, _stacktrace);
     };
 }

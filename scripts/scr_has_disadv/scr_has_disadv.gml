@@ -11,7 +11,7 @@ function scr_has_disadv(disadvantage) {
             result = array_contains(obj_ini.dis, disadvantage);
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         result = false;
     }
     return result;

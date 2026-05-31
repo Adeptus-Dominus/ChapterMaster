@@ -591,7 +591,7 @@ function ArtifactStruct(Index) constructor {
                 }
             }
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
         bearer = false;
         obj_ini.artifact_equipped[index] = false;
@@ -844,7 +844,7 @@ function corrupt_artifact_collectors(last_artifact) {
             }
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
