@@ -1,4 +1,4 @@
-///@mixin obj_popup
+/// @self Asset.GMObject.obj_popup
 function tech_uprising_event_aftermath() {
     var tech, t, i, check_tech, location_techs, location_heretics, delete_positions;
     techs = collect_role_group(SPECIALISTS_TECHS);
@@ -17,6 +17,7 @@ function tech_uprising_event_aftermath() {
         delete_positions = [];
         location_techs = [];
         location_heretics = [];
+        /// @type {Struct.TTRPG_stats}
         tech = techs[i];
         if (tech.has_trait("tech_heretic")) {
             array_push(location_heretics, tech);
@@ -183,6 +184,7 @@ function setup_new_forge_master_popup(techs) {
     scr_popup("New Forge Master", $"The Demise of Forge Master {last_master} means a replacement must be chosen. Several Options have already been put forward to you but it is ultimatly your decision.", "new_forge_master", _pop_data);
 }
 
+/// @self Asset.GMObject.obj_popup
 function setup_popup_marine_stat_display(unit) {
     if (unit.uid != pop_data.marine_stat_display_uid) {
         if (is_struct(pop_data.marine_display_image)) {
@@ -195,6 +197,8 @@ function setup_popup_marine_stat_display(unit) {
     pop_data.marine_display_triggered = true;
 }
 
+/// @self Asset.GMObject.obj_popup
+/// @param {Struct.TTRPG_stats} pick
 function new_forge_master_chosen(pick) {
     var cur_tech;
     var skill_lack = 0;
@@ -203,7 +207,8 @@ function new_forge_master_chosen(pick) {
     var popularity_lack = 0;
     var charisma_test = 0;
     techs = pop_data.techs;
-    for (i = 0; i < array_length(techs); i++) {
+    for (var i = 0; i < array_length(techs); i++) {
+        /// @type {Struct.TTRPG_stats}
         cur_tech = techs[i];
         if (cur_tech.uid == pick.uid) {
             continue;

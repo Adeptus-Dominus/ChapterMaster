@@ -30,7 +30,7 @@ jobs:
       - name: Inject Discord webhook URL
         shell: pwsh
         run: |
-          $file = "scripts/BugReporter/BugReporter.gml"
+          $file = "scripts/ErrorHandler/ErrorHandler.gml"
           $placeholder = "__DISCORD_WEBHOOK_URL__"
           $url = "${{ secrets.DISCORD_BUG_REPORT_WEBHOOK_URL }}"
           $content = Get-Content $file -Raw

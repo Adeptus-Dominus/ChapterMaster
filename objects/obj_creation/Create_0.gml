@@ -423,6 +423,14 @@ setup_chapter_traits();
 // disadvantage[i]="First In, Last Out";dis_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
 // disadvantage[i]="Rival Brotherhood";dis_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
 
+race = [];
+role = [];
+wep1 = [];
+wep2 = [];
+armour = [];
+gear = [];
+mobi = [];
+
 // Default Marine Loadouts
 for (var slot = 99; slot <= 103; slot++) {
     for (var i = 0; i <= 50; i++) {
@@ -438,7 +446,7 @@ for (var slot = 99; slot <= 103; slot++) {
 
 defaults_slot = 100;
 
-function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
+load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
     role[defaults_slot][_role_id] = _role_name;
     wep1[defaults_slot][_role_id] = _wep1;
     wep2[defaults_slot][_role_id] = _wep2;

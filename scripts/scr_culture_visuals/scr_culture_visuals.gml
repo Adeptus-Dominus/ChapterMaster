@@ -2097,7 +2097,6 @@ function scr_get_body_data(body_item_key, body_slot = "none") {
         }
         return item_key_map;
     }
-    return false;
 }
 
 function generate_marine_body() {

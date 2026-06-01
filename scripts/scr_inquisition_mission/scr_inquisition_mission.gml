@@ -239,7 +239,7 @@ function mission_inquisition_tomb_world(tomb_worlds) {
     scr_popup("Inquisition Mission", text, "inquisition", _pop_data);
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_popup
 function init_mission_inquisition_tomb_world() {
     mission_star = find_star_by_name(pop_data.system);
     if (mission_star == "none") {
@@ -340,7 +340,7 @@ function mission_inquistion_hunt_inquisitor(star_id = -1) {
     scr_popup("Inquisition Mission", text, "inquisition", _pop_data);
 }
 
-/// @mixin obj_popup
+/// @self Asset.GMObject.obj_popup
 function add_new_inquis_mission() {
     if (add_new_problem(pop_data.planet, pop_data.mission, pop_data.estimate, mission_star)) {
         new_star_event_marker("green");
@@ -348,6 +348,7 @@ function add_new_inquis_mission() {
     }
 }
 
+/// @self Asset.GMObject.obj_popup
 function init_mission_hunt_inquisitor() {
     mission_star = find_star_by_name(pop_data.system);
     if (mission_star == "none") {
@@ -377,6 +378,7 @@ function init_mission_hunt_inquisitor() {
     }
 }
 
+/// @self Asset.GMObject.obj_popup
 function mission_hunt_inquisitor_hear_out_radical_inquisitor() {
     var _offer = choose(1, 1, 2, 2, 3);
 
@@ -427,6 +429,7 @@ function mission_hunt_inquisitor_hear_out_radical_inquisitor() {
     exit;
 }
 
+/// @self Asset.GMObject.obj_popup
 function mission_hunt_inquisitor_take_artifact_bribe() {
     with (pop_data.inquisitor_ship) {
         random_sector_exit_point();
@@ -448,6 +451,7 @@ function mission_hunt_inquisitor_take_artifact_bribe() {
     add_event({e_id: "inquisitor_spared", duration: irandom_range(6, 18) + 1, variation: 1});
 }
 
+/// @self Asset.GMObject.obj_popup
 function mission_hunt_inquisitor_take_artifact_double_cross() {
     with (pop_data.inquisitor_ship) {
         instance_destroy();
@@ -464,6 +468,7 @@ function mission_hunt_inquisitor_take_artifact_double_cross() {
     scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
 }
 
+/// @self Asset.GMObject.obj_popup
 function mission_hunt_inquisitor_show_mercy() {
     with (pop_data.inquisitor_ship) {
         random_sector_exit_point();
@@ -482,6 +487,7 @@ function mission_hunt_inquisitor_show_mercy() {
     add_event({e_id: "inquisitor_spared", duration: irandom_range(6, 18) + 1, variation: 2});
 }
 
+/// @self Asset.GMObject.obj_popup
 function mission_hunt_inquisitor_destroy_inquisitor_ship() {
     LOGGER.debug("mission_hunt_inquisitor_destroy_inquisitor_ship");
     var _final_disp_mod = 0;
@@ -676,7 +682,7 @@ function mission_investigate_planet() {
     scr_popup("Inquisition Recon", text, "inquisition", $"recon|{string(_star.name)}|{string(planet)}|{string(eta)}|");
 }
 
-/// @mixin obj_star
+/// @self Asset.GMObject.obj_star
 function setup_necron_tomb_raid(planet) {
     LOGGER.info($"player on planet with necron mission {name} planet: {planet}");
     var have_bomb;
@@ -709,7 +715,7 @@ function setup_necron_tomb_raid(planet) {
     }
 }
 
-/// @mixin obj_popup
+/// @self Asset.GMObject.obj_popup
 function necron_tomb_mission_start() {
     mission_star = find_star_by_name(pop_data.loc);
     planet = pop_data.planet;
@@ -720,6 +726,7 @@ function necron_tomb_mission_start() {
     text = "Your marines enter the massive tunnel complex, following the energy readings.  At first the walls are cramped and tiny, closing about them, but the tunnels widen at a rapid pace.";
 }
 
+/// @self Asset.GMObject.obj_popup
 function necron_tomb_mission_sequence() {
     var battle;
     var player_forces = 0;

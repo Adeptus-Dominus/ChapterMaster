@@ -1,5 +1,6 @@
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function load_marines_into_ship(system, ship, units, reload = false) {
+    /// @self Asset.GMObject.obj_controller
     static _load_into_ship = function(system, ship, units, size, loop, reload) {
         var load_from_star = find_star_by_name(system);
         if (is_struct(units[loop])) {
@@ -119,7 +120,7 @@ function command_slot_draw(xx, yy, slot_text) {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 /// @param {Struct.TTRPG_stats} unit
 function reset_manage_unit_constants(unit) {
     try {
@@ -452,12 +453,12 @@ function reset_manage_unit_constants(unit) {
 
         // TODO
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         obj_controller.unit_focus = undefined;
     } //not sure handling with normal method exception could just be a pain here
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function company_specific_management() {
     add_draw_return_values();
     draw_set_font(fnt_40k_30b);
@@ -505,7 +506,7 @@ function company_specific_management() {
     pop_draw_return_values();
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function alternative_manage_views(x1, y1) {
     //for some reason management_buttons keeps dying so hopefully this will solve the issue until something better can be found
     if (!is_struct(management_buttons)) {
@@ -596,7 +597,7 @@ function alternative_manage_views(x1, y1) {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function draw_sprite_and_unit_equip_data() {
     draw_set_font(fnt_40k_14);
     draw_set_halign(fa_left);
@@ -771,7 +772,7 @@ function draw_sprite_and_unit_equip_data() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function scr_ui_manage() {
     if (combat != 0) {
         exit;
@@ -862,15 +863,11 @@ function scr_ui_manage() {
         // Back
 
         draw_set_halign(fa_left);
-        var top = man_current, sel = top, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "";
+        var top = man_current, sel = top, temp1 = "", temp2 = "", temp3 = "", temp4 = "";
 
-        // Var creation
-        var ma_ar = "", ma_we1 = "", ma_we2 = "", ma_ge = "", ma_mb = "", ttt = 0;
-        var ar_ar = 0, ar_we1 = 0, ar_we2 = 0, ar_ge = 0, ar_mb = 0, eventing = false;
 
         yy += 77;
 
-        var unit_specialism_option = false, spec_tip = "";
         //TODO store these in global tooltip storage
         potential_tooltip = [];
         health_tooltip = [];
@@ -1139,7 +1136,7 @@ function scr_ui_manage() {
                             try {
                                 company_data.draw_squad_view();
                             } catch (_exception) {
-                                handle_exception(_exception);
+                                ERROR_HANDLER.handle_exception(_exception);
                                 obj_controller.view_squad = false;
                                 obj_controller.unit_profile = false;
                             }
@@ -1272,7 +1269,7 @@ function scr_ui_manage() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function draw_manage_selection_buttons(xx, yy) {
     var sel_loading = obj_controller.selecting_ship;
     var _unit_focus = obj_controller.unit_focus;

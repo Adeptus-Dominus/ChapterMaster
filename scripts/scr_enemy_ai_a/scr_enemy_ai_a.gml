@@ -1,4 +1,4 @@
-/// @mixin
+/// @self Asset.GMObject.obj_star
 function scr_enemy_ai_a() {
     system_garrison = [];
     system_sabatours = [];
@@ -141,7 +141,7 @@ function scr_enemy_ai_a() {
                     pdf_score = determine_pdf_defence(_planet_data.pdf,, _planet_data.fortification_level)[0];
                 }
             } catch (_exception) {
-                handle_exception(_exception, "Pdf defence error",, $"{_run}");
+                ERROR_HANDLER.handle_exception(_exception, "Pdf defence error",, $"{_run}");
             }
             //
             // if (p_eldar[_run]>0) and (p_owner[_run]!=6) then pdf_attack="eldar";

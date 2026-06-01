@@ -9,7 +9,7 @@ function scr_has_style(style) {
                 result = array_contains(obj_ini.culture_styles, style);
             }
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
             result = false;
         }
     } else {
@@ -507,7 +507,7 @@ function ComplexSet(_unit) constructor {
                 }
             }
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     };
 

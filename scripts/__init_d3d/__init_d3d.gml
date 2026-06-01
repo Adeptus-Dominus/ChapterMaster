@@ -1,6 +1,3 @@
-// This will execute before the first room of the game executes.
-gml_pragma("global", "__init_d3d()");
-
 enum e__YYM {
     PointB,
     LineB,

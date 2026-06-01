@@ -649,11 +649,11 @@ function get_slot_name(_role, _slot) {
 /// @returns {array} The list of items to populate the selection list with.
 function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_company_standard = false, _show_available_only = false, _master_crafted_only = false, _skip_none = false) {
     if (_item_names == undefined) {
-        assert_error_popup("_item_names is undefined");
+        ERROR_HANDLER.assert_popup("_item_names is undefined");
         return;
     }
     if (!is_array(_item_names)) {
-        assert_error_popup($"_item_names is not an array: {_item_names}");
+        ERROR_HANDLER.assert_popup($"_item_names is not an array: {_item_names}");
         return;
     }
 
@@ -733,7 +733,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             push_marine_melee_weapons_item_names(_item_names);
                         }
                     } else {
-                        assert_error_popup($"Invalid engagement enumerator for infantry: {_engagement}");
+                        ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for infantry: {_engagement}");
                         return;
                     }
                     break;
@@ -789,7 +789,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     }
                     break;
                 default:
-                    assert_error_popup($"Invalid slot for infantry: {_slot}");
+                    ERROR_HANDLER.assert_popup($"Invalid slot for infantry: {_slot}");
                     return;
             }
             break;
@@ -847,7 +847,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             push_dreadnought_melee_weapons_item_names(_item_names);
                         }
                     } else {
-                        assert_error_popup($"Invalid engagement enumerator for dreadnought: {_engagement}");
+                        ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for dreadnought: {_engagement}");
                         return;
                     }
                     break;
@@ -860,7 +860,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     // Dreadnought doesn't have these slots, but empty lists are shown in the UI
                     break;
                 default:
-                    assert_error_popup($"Invalid slot for dreadnought: {_slot}");
+                    ERROR_HANDLER.assert_popup($"Invalid slot for dreadnought: {_slot}");
                     return;
             }
             break;
@@ -878,7 +878,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                         push_land_raider_front_weapons_item_names(_item_names);
                         push_land_raider_relic_front_weapons_item_names(_item_names);
                     } else {
-                        assert_error_popup($"Invalid engagement enumerator for land raider: {_engagement}");
+                        ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for land raider: {_engagement}");
                         return;
                     }
                     break;
@@ -893,7 +893,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                         push_land_raider_regular_sponsons_item_names(_item_names);
                         push_land_raider_relic_sponsons_item_names(_item_names);
                     } else {
-                        assert_error_popup($"Invalid engagement enumerator for land raider: {_engagement}");
+                        ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for land raider: {_engagement}");
                         return;
                     }
                     break;
@@ -907,7 +907,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     push_tank_accessory_item_names(_item_names, _with_none_if_not_skip, false);
                     break;
                 default:
-                    assert_error_popup($"Invalid slot for land raider: {_slot}");
+                    ERROR_HANDLER.assert_popup($"Invalid slot for land raider: {_slot}");
                     return;
             }
             break;
@@ -930,7 +930,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     // Rhino doesn't have these slots, but empty lists are shown in the UI
                     break;
                 default:
-                    assert_error_popup($"Invalid slot for rhino: {_slot}");
+                    ERROR_HANDLER.assert_popup($"Invalid slot for rhino: {_slot}");
                     return;
             }
             break;
@@ -953,7 +953,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     push_tank_accessory_item_names(_item_names, false, false);
                     break;
                 default:
-                    assert_error_popup($"Invalid slot for predator: {_slot}");
+                    ERROR_HANDLER.assert_popup($"Invalid slot for predator: {_slot}");
                     return;
             }
             break;
@@ -972,7 +972,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     // Land speeder doesn't have these slots, but empty lists are shown in the UI
                     break;
                 default:
-                    assert_error_popup($"Invalid slot for land speeder: {_slot}");
+                    ERROR_HANDLER.assert_popup($"Invalid slot for land speeder: {_slot}");
                     return;
             }
             break;
@@ -995,7 +995,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     // Whirlwind doesn't have this slot, but an empty list is shown in the UI
                     break;
                 default:
-                    assert_error_popup($"Invalid slot for whirlwind: {_slot}");
+                    ERROR_HANDLER.assert_popup($"Invalid slot for whirlwind: {_slot}");
                     return;
             }
             break;

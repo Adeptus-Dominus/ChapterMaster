@@ -76,9 +76,9 @@ p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
 system_player_ground_forces = 0;
 garrison = false;
 
-for (run = 8; run <= 30; run++) {
-    present_fleet[run] = 0;
-}
+var _array_size = 23;
+present_fleet = array_create(_array_size, 0);
+
 vision = 1;
 // present_fleets=0;
 // tau_fleets=0;

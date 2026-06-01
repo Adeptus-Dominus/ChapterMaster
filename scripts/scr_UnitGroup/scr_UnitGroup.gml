@@ -955,7 +955,7 @@ function group_selection(group, selection_data = {}) {
     }
     catch (_exception) {
         //handle and send player back to map
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         scr_toggle_manage();
     }
 }

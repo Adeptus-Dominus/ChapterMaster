@@ -412,7 +412,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 variable_struct_set(self, names[i], variable_struct_get(data, names[i]));
             }
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     };
 

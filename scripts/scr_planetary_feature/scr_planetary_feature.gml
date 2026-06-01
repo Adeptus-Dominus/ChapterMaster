@@ -405,7 +405,7 @@ function ground_mission_leave_it_function() {
     instance_destroy();
 }
 
-/// @mixin PlanetData
+/// @self Struct.PlanetData
 function discover_artifact_popup(feature) {
     obj_controller.menu = eMENU.DEFAULT;
     /*if ((planet_type == "Dead" || current_owner == eFACTION.PLAYER)) {
@@ -489,7 +489,7 @@ function discover_artifact_popup(feature) {
     }
 }
 
-/// @mixin obj_star_select
+/// @self Asset.GMObject.obj_star_select
 function planet_selection_action() {
     var xx = __view_get(e__VW.XView, 0) + 0;
     var yy = __view_get(e__VW.YView, 0) + 0;
@@ -510,7 +510,7 @@ function planet_selection_action() {
                 try {
                     p_data.planet_selection_logic();
                 } catch (_exception) {
-                    handle_exception(_exception);
+                    ERROR_HANDLER.handle_exception(_exception);
                     instance_destroy();
                 }
             }
@@ -536,7 +536,7 @@ function planet_selection_action() {
     }
 }
 
-/// @mixin PlanetData
+/// @self Struct.PlanetData
 function check_for_stc_grab_mission() {
     // STC Grab
     if (has_feature(eP_FEATURES.STC_FRAGMENT)) {
@@ -567,7 +567,7 @@ function check_for_stc_grab_mission() {
     }
 }
 
-/// @mixin PlanetData
+/// @self Struct.PlanetData
 function discover_stc_fragment_popup(techies, mechanicus_reps) {
     var _owner = current_owner;
     obj_controller.menu = eMENU.DEFAULT;
@@ -609,7 +609,7 @@ function discover_stc_fragment_popup(techies, mechanicus_reps) {
     pop.add_option(options);
 }
 
-/// @mixin PlanetData
+/// @self Struct.PlanetData
 function check_for_artifact_grab_mission() {
     if (has_feature(eP_FEATURES.ARTIFACT)) {
         var artifact = instance_create(system.x, system.y, obj_ground_mission); // Unloading / artifact crap
@@ -624,7 +624,7 @@ function check_for_artifact_grab_mission() {
     }
 }
 
-/// @mixin obj_ground_mission
+/// @self Asset.GMObject.obj_ground_mission
 function ground_forces_collect_artifact() {
     with (obj_ground_mission) {
         scr_return_ship(pdata.system.name, self, pdata.planet);

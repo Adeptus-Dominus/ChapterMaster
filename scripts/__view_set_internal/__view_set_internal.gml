@@ -1,9 +1,9 @@
-/// @mixin
 function __view_set_internal(argument0, argument1, argument2) {
     var __prop = argument0;
     var __index = argument1;
     var __val = argument2;
     var __cam = view_get_camera(__index);
+    var __res
 
     switch (__prop) {
         case e__VW.XView:

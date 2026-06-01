@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"BugReporter",
+  "%Name":"__gml_pragma_global",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"BugReporter",
+  "name":"__gml_pragma_global",
   "parent":{
-    "name":"Constructors",
-    "path":"folders/Scripts/Constructors.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -211,7 +211,7 @@ function planet_imperium_ground_total(planet_check) {
 /// @returns {Id.Instance.obj_star | String} Returns the `obj_star` instance that matches `search_name`, or the string `"none"` if no matching star is found.
 function find_star_by_name(search_name) {
     if (!instance_exists(obj_star)) {
-        assert_error_popup("Not a single instance of obj_star exists!");
+        ERROR_HANDLER.assert_popup("Not a single instance of obj_star exists!");
         return "none";
     }
 

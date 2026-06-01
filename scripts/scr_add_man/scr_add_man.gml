@@ -1,4 +1,4 @@
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption, other_gear, home_spot, other_data = {}) {
     // TODO: Refactor into TTRPG_stats methods; current struct migration is ongoing.
 

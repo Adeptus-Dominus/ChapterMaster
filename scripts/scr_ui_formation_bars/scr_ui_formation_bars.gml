@@ -1,4 +1,4 @@
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function scr_ui_formation_bars() {
     var ui_formations_data = {
         nbar: 0,
@@ -98,7 +98,7 @@ function scr_ui_formation_bars() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function init_combat_bars(bar, ii, formations_data, size, image_index, unit_type) {
     formations_data.nbar = instance_create(formations_data.x9, formations_data.y9 + temp[formations_data.te], obj_formation_bar);
     formations_data.nbar.size = size;

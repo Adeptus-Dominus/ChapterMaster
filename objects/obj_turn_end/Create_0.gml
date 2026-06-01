@@ -28,50 +28,43 @@ cooldown = 10;
 
 obj_controller.menu = 999; // show nothing, click nothing
 
-i = -1;
-repeat (11) {
-    i += 1;
-    enemy_fleet[i] = 0;
-    allied_fleet[i] = 0;
-    ecap[i] = 0;
-    efri[i] = 0;
-    eesc[i] = 0;
-    acap[i] = 0;
-    afri[i] = 0;
-    aesc[i] = 0;
-}
+var _fleet_size = 11;
+enemy_fleet = array_create(_fleet_size, 0);
+allied_fleet = array_create(_fleet_size, 0);
+ecap = array_create(_fleet_size, 0);
+efri = array_create(_fleet_size, 0);
+eesc = array_create(_fleet_size, 0);
+acap = array_create(_fleet_size, 0);
+afri = array_create(_fleet_size, 0);
+aesc = array_create(_fleet_size, 0);
 
-i = -1;
-repeat (91) {
-    i += 1;
+var _popup_size = 91;
+popup = array_create(_popup_size, 0);
+popup_type = array_create(_popup_size, "");
+popup_text = array_create(_popup_size, "");
+popup_image = array_create(_popup_size, "");
+popup_special = array_create(_popup_size, "");
 
-    popup[i] = 0;
-    popup_type[i] = "";
-    popup_text[i] = "";
-    popup_image[i] = "";
-    popup_special[i] = "";
+alert = array_create(_popup_size, 0);
+alert_type = array_create(_popup_size, "");
+alert_text = array_create(_popup_size, "");
 
-    alert[i] = 0;
-    alert_type[i] = "";
-    alert_text[i] = "";
+alert_char = array_create(_popup_size, 0);
+alert_alpha = array_create(_popup_size, 0);
+alert_txt = array_create(_popup_size, "");
+alert_color = array_create(_popup_size, "");
 
-    alert_char[i] = 0;
-    alert_alpha[i] = 0;
-    alert_txt[i] = "";
-    alert_color[i] = "";
+battle = array_create(_popup_size, 0);
+battle_location = array_create(_popup_size, "");
+battle_world = array_create(_popup_size, 0);
+battle_opponent = array_create(_popup_size, 0);
+/// @type {Asset.GMObject.obj_star} 
+battle_object = array_create(_popup_size, 0);
+battle_pobject = array_create(_popup_size, 0);
+battle_special = array_create(_popup_size, "");
 
-    battle[i] = 0; // Set to 0 for none, 1 for battle to do, and 2 for resolved
-    battle_location[i] = "";
-    battle_world[i] = 0; // Be like -50 for space battle
-    battle_opponent[i] = 0; // faction ID
-    battle_object[i] = 0; // faction object for the fleets
-    battle_pobject[i] = 0; // player object for the fleets
-    battle_special[i] = "";
-
-    if (i < 16) {
-        strin[i] = "";
-    }
-}
+var _string_size = 16;
+strin = array_create(_string_size, "");
 
 audiences = 0;
 audience = 0;

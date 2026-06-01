@@ -181,7 +181,7 @@ function ChapterData() constructor {
     }
 }
 
-/// @mixin obj_creation
+/// @self Asset.GMObject.obj_creation
 /// @description called when a chapter's icon is clicked on the first page after the main menu.
 /// used to set up initialise the data that is later fed into `scr_initialize_custom` when the game starts
 function scr_chapter_new(chapter_identifier) {
@@ -211,7 +211,7 @@ function scr_chapter_new(chapter_identifier) {
     points = 100;
     maxpoints = 100;
 
-    function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
+    load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
         for (var i = 100; i <= 102; i++) {
             obj_creation.role[i][_role_id] = _role_name;
             obj_creation.wep1[i][_role_id] = _wep1;

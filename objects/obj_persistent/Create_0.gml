@@ -5,6 +5,9 @@ global.settings.load();
 global.settings.apply_video();
 global.settings.apply_audio();
 
+USERNAME_PROMPT = new UsernamePrompt();
+USERNAME_PROMPT.prompt();
+
 global.save_version = 0;
 global.returned = 0;
 global.debug = 0;

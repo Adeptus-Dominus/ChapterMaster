@@ -54,7 +54,7 @@ function JsonFileListLoader() constructor {
 
             LOGGER.info($"Successfully loaded {item_total} values from {relative_file_path}");
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
             result.values = {};
         } finally {
             // do not return incomplete/invalid data

@@ -180,7 +180,7 @@ function UISpriteRendererComponent(owner, name) : UIRenderComponent(owner, name)
         try {
             draw_sprite_general(sprite, img_index, left, top, __spr_width, __spr_height, gx, gy, owner.width / __spr_width, owner.height / __spr_height, angle, col1, col2, col3, col4, alpha);
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
         img_index = (img_index + img_speed) % __spr_frames;
     };

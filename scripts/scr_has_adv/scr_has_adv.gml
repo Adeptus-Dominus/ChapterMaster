@@ -11,7 +11,7 @@ function scr_has_adv(advantage) {
             result = array_contains(obj_ini.adv, advantage);
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         result = false;
     }
     return result;

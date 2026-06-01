@@ -495,7 +495,6 @@ function setup_battle_formations() {
     obj_controller.bat_scout_column = obj_controller.bat_scou_for[new_combat.formation_set];
 }
 
-/// @mixin
 function add_unit_to_battle(unit, meeting, is_local) {
     var new_combat = obj_ncombat;
     var man_size = 1;
@@ -672,27 +671,21 @@ function add_unit_to_battle(unit, meeting, is_local) {
         switch (squad.formation_place) {
             case "assault":
                 col = obj_controller.bat_assault_column;
-                column_decided = true;
                 break;
             case "veteran":
                 col = obj_controller.bat_veteran_column;
-                column_decided = true;
                 break;
             case "tactical":
                 col = obj_controller.bat_tactical_column;
-                column_decided = true;
                 break;
             case "devastator":
                 col = obj_controller.bat_devastator_column;
-                column_decided = true;
                 break;
             case "terminator":
                 col = obj_controller.bat_terminator_column;
-                column_decided = true;
                 break;
             case "command":
                 col = obj_controller.bat_command_column;
-                column_decided = true;
                 break;
         }
     }
