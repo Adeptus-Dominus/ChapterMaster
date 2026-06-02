@@ -12,6 +12,11 @@
             "master_crafted": 30,
             "standard": 25
         },
+        "melee_mod":{
+            "artifact": 30,
+            "master_crafted": 25,
+            "standard": 20
+        },
         "second_profiles": [
             "Twin Linked Bolters"
         ],
@@ -30,6 +35,11 @@
             "artifact": 50,
             "master_crafted": 40,
             "standard": 35
+        },
+        "melee_mod":{
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
         },
         "second_profiles": [
             "Twin Linked Bolters"
