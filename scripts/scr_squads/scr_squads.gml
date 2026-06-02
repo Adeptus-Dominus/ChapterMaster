@@ -779,9 +779,9 @@ function SquadArrangementEditor(company) constructor {
     squads = obj_ini.squad_types;
 
     // --- layout constants (all derived from required_editor_box) ---
-    static y_top        = 175;
-    static column_gap   = 25;
-    static column_w     = 200;
+    static y_top = 175;
+    static column_gap = 25;
+    static column_w = 200;
 
     required_editor_box = new Box({
         x1 : 100,
@@ -790,22 +790,27 @@ function SquadArrangementEditor(company) constructor {
         h  : 1000,
     });
 
-    static required_picker_x      = function() { return required_editor_box.x2 + column_gap; }
-    static proportional_editor_x  = function() { return required_picker_x() + column_w + column_gap; }
-    static proportional_picker_x  = function() { return proportional_editor_x() + column_w + column_gap; }
+    static required_picker_x = function() {
+        return required_editor_box.x2 + column_gap; 
+    }
 
-    // --- state ---
-    required_types      = [];
-    required_y          = y_top;
-    proportional_types  = [];
-    proportional_y      = y_top;
+    static proportional_editor_x  = function() {
+        return required_picker_x() + column_w + column_gap;
+    }
 
-    showing_required_picker     = false;
+    static proportional_picker_x  = function() {
+        return proportional_editor_x() + column_w + column_gap;
+    }
+
+    required_types = [];
+    required_y = y_top;
+    proportional_types = [];
+    proportional_y = y_top;
+
+    showing_required_picker = false;
     showing_proportional_picker = false;
-    required_picker_options     = [];
+    required_picker_options = [];
     proportional_picker_options = [];
-
-    // --- squad builders ---
 
     static get_squads_not_in_arrangement = function(require_filter, picker_x, picker_start_y) {
         var _available  = [];
@@ -825,13 +830,13 @@ function SquadArrangementEditor(company) constructor {
             if (!_already_present) {
                 var _squad_data = squads[$ _key];
                 var _btn = new UnitButtonObject({
-                    style     : "pixel",
-                    label     : _squad_data.type_data.display_data,
-                    tooltip   : $"add {_key} as a {require_filter ? "required" : "proportional"} squad",
+                    style : "pixel",
+                    label : _squad_data.type_data.display_data,
+                    tooltip : $"add {_key} as a {require_filter ? "required" : "proportional"} squad",
                     set_width : true,
-                    x1        : picker_x,
-                    y1        : _py,
-                    w         : column_w,
+                    x1 : picker_x,
+                    y1 : _py,
+                    w : column_w,
                 });
                 _py += _btn.h + 4;
                 array_push(_available, { key : _key, btn : _btn });
@@ -841,15 +846,15 @@ function SquadArrangementEditor(company) constructor {
     }
 
     static add_new_required_type = function(required_squad) {
-        var _squad_data    = squads[$ required_squad.squad];
+        var _squad_data = squads[$ required_squad.squad];
         var _squad_display = _squad_data.type_data.display_data;
-        var _cx            = required_editor_box.x1 + (required_editor_box.w / 2);
+        var _cx = required_editor_box.x1 + (required_editor_box.w / 2);
 
         var box = new Box({
             x1 : required_editor_box.x1,
             y1 : required_y,
             w  : required_editor_box.w,
-            h  : 55,
+            h  : 80,
         });
 
         var squad_title = new ReactiveString(
@@ -863,10 +868,10 @@ function SquadArrangementEditor(company) constructor {
             "max",
             {
                 current_value : required_squad.max_count,
-                x1            : _cx,
-                y1            : required_y + 25,
-                max_clamp     : 50,
-                min_clamp     : 1,
+                x1 : _cx,
+                y1 : required_y + 25,
+                max_clamp : 50,
+                min_clamp : 1,
             },
         );
 
@@ -874,21 +879,21 @@ function SquadArrangementEditor(company) constructor {
             "min",
             {
                 current_value : required_squad.min_count,
-                x1            : _cx,
-                y1            : required_y + 55,
-                min_clamp     : 1,
-                max_clamp     : 50,
+                x1 : _cx,
+                y1 : required_y + 55,
+                min_clamp : 1,
+                max_clamp : 50,
             },
         );
 
         var delete_button = new UnitButtonObject({
-            style     : "pixel",
-            label     : "remove squad",
-            tooltip   : $"remove {_squad_display} from required squads",
+            style : "pixel",
+            label : "remove squad",
+            tooltip : $"remove {_squad_display} from required squads",
             set_width : true,
-            x1        : required_editor_box.x1,
-            y1        : box.y2,
-            w         : required_editor_box.w,
+            x1 : required_editor_box.x1,
+            y1 : box.y2,
+            w : required_editor_box.w,
         });
 
         var _edit = new RequireSquadEditor({
@@ -905,16 +910,16 @@ function SquadArrangementEditor(company) constructor {
     }
 
     static add_new_proportional_type = function(required_squad) {
-        var _squad_data    = squads[$ required_squad.squad];
+        var _squad_data = squads[$ required_squad.squad];
         var _squad_display = _squad_data.type_data.display_data;
-        var _px            = proportional_editor_x();
-        var _cx            = _px + (column_w / 2);
+        var _px = proportional_editor_x();
+        var _cx = _px + (column_w / 2);
 
         var box = new Box({
             x1 : _px,
             y1 : proportional_y,
-            w  : column_w,
-            h  : 50,
+            w : column_w,
+            h : 50,
         });
 
         var squad_title = new ReactiveString(
@@ -928,21 +933,21 @@ function SquadArrangementEditor(company) constructor {
             "proportion",
             {
                 current_value : required_squad.proportion,
-                x1            : _cx,
-                y1            : proportional_y + 25,
-                min_clamp     : 1,
-                max_clamp     : 50,
+                x1 : _cx,
+                y1 : proportional_y + 25,
+                min_clamp : 1,
+                max_clamp : 50,
             },
         );
 
         var delete_button = new UnitButtonObject({
-            style     : "pixel",
-            label     : "remove squad",
-            tooltip   : $"remove {_squad_display} from proportional squads",
+            style : "pixel",
+            label : "remove squad",
+            tooltip : $"remove {_squad_display} from proportional squads",
             set_width : true,
-            x1        : _px,
-            y1        : box.y2,
-            w         : column_w,
+            x1 : _px,
+            y1 : box.y2,
+            w : column_w,
         });
 
         var _edit = new ProportionalSquadEditor({
@@ -985,8 +990,8 @@ function SquadArrangementEditor(company) constructor {
     // --- picker openers ---
 
     static open_required_picker = function() {
-        required_picker_options     = get_squads_not_in_arrangement(true,  required_picker_x(),     add_required_button.y2 + 4);
-        showing_required_picker     = true;
+        required_picker_options = get_squads_not_in_arrangement(true,  required_picker_x(),     add_required_button.y2 + 4);
+        showing_required_picker = true;
         showing_proportional_picker = false;
         proportional_picker_options = [];
     }
@@ -994,8 +999,8 @@ function SquadArrangementEditor(company) constructor {
     static open_proportional_picker = function() {
         proportional_picker_options = get_squads_not_in_arrangement(false, proportional_picker_x(), add_proportional_button.y2 + 4);
         showing_proportional_picker = true;
-        showing_required_picker     = false;
-        required_picker_options     = [];
+        showing_required_picker = false;
+        required_picker_options = [];
     }
 
     // --- picker drawers ---
@@ -1051,23 +1056,23 @@ function SquadArrangementEditor(company) constructor {
     // --- add buttons (top of their picker column, y tracks below last editor on reset) ---
 
     add_required_button = new UnitButtonObject({
-        style     : "pixel",
-        label     : "add required squad",
-        tooltip   : "add a new required squad to this company",
+        style : "pixel",
+        label : "add required squad",
+        tooltip : "add a new required squad to this company",
         set_width : true,
-        x1        : required_picker_x(),
-        y1        : y_top,
-        w         : column_w,
+        x1 : required_picker_x(),
+        y1 : y_top,
+        w : column_w,
     });
 
     add_proportional_button = new UnitButtonObject({
-        style     : "pixel",
-        label     : "add proportional squad",
-        tooltip   : "add a new proportional squad to this company",
+        style : "pixel",
+        label : "add proportional squad",
+        tooltip : "add a new proportional squad to this company",
         set_width : true,
-        x1        : proportional_picker_x(),
-        y1        : y_top,
-        w         : column_w,
+        x1 : proportional_picker_x(),
+        y1 : y_top,
+        w : column_w,
     });
 
     reset_required_squads();

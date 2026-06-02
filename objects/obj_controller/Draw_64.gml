@@ -32,7 +32,7 @@ if (is_test_map == true) {
 try {
     if (menu == eMENU.ARMAMENTARIUM) {
         armamentarium.draw();
-    } else if (menu >= eMENU.SETTINGS && menu <= eMENU.ROLE_SETTINGS){
+    } else if (menu >= eMENU.SETTINGS && menu <= eMENU.FORMATIONS_SETTINGS){
         draw_sprite(spr_settings_bg, 0, 0, 0);
     }
 } catch (_exception) {

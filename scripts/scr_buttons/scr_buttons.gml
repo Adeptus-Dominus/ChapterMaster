@@ -545,7 +545,7 @@ function UnitButtonObject(data = false) constructor {
             _widths[0] *= height_scale;
             _widths[2] *= height_scale;
             draw_sprite_ext(spr_pixel_button_left, 0, x1, y1, height_scale, height_scale, 0, c_white, 1);
-            var _width_scale = w / _widths[1];
+            var _width_scale = (w - _widths[0] - _widths[2]) / _widths[1];
             _widths[1] *= _width_scale;
             draw_sprite_ext(spr_pixel_button_middle, 0, x1 + _widths[0], y1, _width_scale, height_scale, 0, c_white, 1);
             draw_sprite_ext(spr_pixel_button_right, allow_click, x1 + _widths[0] + _widths[1], y1, height_scale, height_scale, 0, c_white, 1);
