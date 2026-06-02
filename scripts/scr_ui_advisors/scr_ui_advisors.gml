@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function scr_ui_advisors() {
     var xx, yy, blurp, eta, va;
     var romanNumerals;

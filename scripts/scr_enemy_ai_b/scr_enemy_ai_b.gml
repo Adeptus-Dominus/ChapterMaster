@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function scr_enemy_ai_b() {
     // Imperial Repleneshes numbers
     // If no enemies and guard < pop /470 then increase guardsman

@@ -910,7 +910,7 @@ function equip_artifact_popup_setup() {
     }
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function equip_artifact_popup_draw() {
     var arti = obj_ini.artifact_struct[obj_controller.menu_artifact];
     main_slate.draw_with_dimensions();

@@ -582,7 +582,7 @@ function scr_restart_variables(saved_game) {
     }
 }
 
-/// @self Asset.GMObject.obj_creation
+/// @mixin
 function reset_creation_variables() {
     for (var i = 0; i < 21; i++) {
         world[i] = "";

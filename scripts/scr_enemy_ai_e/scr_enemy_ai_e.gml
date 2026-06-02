@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function scr_enemy_ai_e() {
     // Guess I'll handle all of the ship combat in here
     // This needs to keep on running in each sector until only one faction's fleet remains

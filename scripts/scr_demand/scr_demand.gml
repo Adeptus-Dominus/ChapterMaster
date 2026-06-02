@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function threat_plausibility() {
     var _threat = 20;
     var _good_imperium_position = disposition[eFACTION.IMPERIUM] > 50 ? 1 : -1;
@@ -15,7 +15,7 @@ function clear_inspections() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function inquis_use_inspection_pass() {
     if (inspection_passes > 0) {
         inspection_passes -= 1;
@@ -26,7 +26,7 @@ function inquis_use_inspection_pass() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function inquis_demand_inspection_pass() {
     var resistance = 10;
     clear_diplo_choices();
@@ -45,7 +45,7 @@ function inquis_demand_inspection_pass() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function scr_demand(demand_type) {
     // demand_type: button
 

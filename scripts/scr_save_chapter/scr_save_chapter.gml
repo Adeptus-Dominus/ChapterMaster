@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_creation
+/// @mixin
 function scr_save_chapter(chapter_id) {
     //saves a player made chapter into json file in AppData for use later
     var chaptersave = $"chaptersave#{chapter_id}.json";

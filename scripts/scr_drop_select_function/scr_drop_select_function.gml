@@ -7,7 +7,7 @@ enum eDROP_TYPE {
     PURGEASSASSINATE,
 }
 
-/// @self Asset.GMObject.obj_drop_select
+/// @mixin
 function drop_select_unit_selection() {
     w = 660;
     h = 520;
@@ -464,7 +464,7 @@ function drop_select_draw() {
     }
 }
 
-/// @self Asset.GMObject.obj_drop_select
+/// @mixin
 function collect_local_units() {
     //
     // I think this script is used to count local forces. l_ meaning local.

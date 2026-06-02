@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_pnunit
+/// @mixin
 function add_marines_to_recovery() {
     var _roles = active_roles();
     for (var i = 0; i < array_length(unit_struct); i++) {
@@ -62,7 +62,7 @@ function add_marines_to_recovery() {
     }
 }
 
-/// @self Asset.GMObject.obj_pnunit
+/// @mixin
 function add_vehicles_to_recovery() {
     var _vehicles_priority = {
         "Land Raider": 10,
@@ -93,7 +93,7 @@ function add_vehicles_to_recovery() {
     }
 }
 
-/// @self Asset.GMObject.obj_pnunit
+/// @mixin
 function assemble_alive_units() {
     for (var i = 0; i < array_length(unit_struct); i++) {
         var _unit = unit_struct[i];
@@ -162,7 +162,7 @@ function check_for_plasma_bomb_and_tomb(unit) {
     }
 }
 
-/// @self Asset.GMObject.obj_pnunit
+/// @mixin
 function after_battle_part2() {
     var _unit;
 
@@ -213,7 +213,7 @@ function after_battle_part2() {
     }
 }
 
-/// @self Asset.GMObject.obj_pnunit
+/// @mixin
 function after_battle_part1() {
     var unit;
     var skill_level;

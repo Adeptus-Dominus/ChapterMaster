@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function scr_star_ownership(argument0) {
     var run = 0;
     var ork_owner, tau_owner, player_owner, imperium_owner, eldar_owner, traitors_owner, forge_owner, tyranids_owner, necrons_owner, nun_owner;

@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_creation
+/// @mixin
 /// @description  Called when an empty custom chapter icon is picked, or the custom icon in bottom right is picked from the new game menu.
 /// if "Create Custom" is picked, custom_or_random = 0, if "Create Random" is picked, custom_or_random = 1
 /// @param {Real} custom_or_random 0 if Blank Custom, 1 if Random

@@ -110,7 +110,7 @@ function sort_ships_into_columns(combat) {
     }
 }
 
-/// @self Asset.GMObject.obj_fleet
+/// @mixin
 function player_fleet_ship_spawner() {
     var x2 = 224;
     var hei = 0, sizz = 0;
@@ -180,7 +180,7 @@ function player_fleet_ship_spawner() {
     } // End repeat
 }
 
-/// @self Asset.GMObject.obj_p_ship
+/// @mixin
 function setup_player_combat_ship() {
     action = "";
     direction = 0;

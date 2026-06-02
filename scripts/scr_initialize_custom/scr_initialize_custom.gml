@@ -743,7 +743,7 @@ function trial_map(trial_name) {
     }
 }
 
-/// @self Asset.GMObject.obj_ini
+/// @mixin
 function scr_initialize_custom() {
     // LOGGER.debug("Executing scr_initialize_custom");
 
@@ -1486,7 +1486,7 @@ function scr_initialize_custom() {
 
     var _current_age = ((millenium * 1000) + year) - 10;
 
-    /// @self Asset.GMObject.obj_ini
+    /// @mixin
     var _init_marine_row = function(_idx, _count, _age_val) {
         var _len = _count + 1;
         race[_idx] = array_create(_len, 1);
@@ -3151,7 +3151,7 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
     return spawn_unit;
 }
 
-/// @self Asset.GMObject.obj_ini
+/// @mixin
 function load_chapter_master_equipment() {
     var chapter_master_equip = {};
     switch (obj_ini.master_melee) {

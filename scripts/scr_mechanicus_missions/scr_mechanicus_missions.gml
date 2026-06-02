@@ -270,7 +270,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
     return _evented;
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function accept_mechanicus_tomb_mission() {
     var _planet = false;
     var _star = pop_data.star;
@@ -296,7 +296,7 @@ function accept_mechanicus_tomb_mission() {
     }
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function accept_mechanicus_land_raider_mission() {
     var _star = pop_data.star;
     var _forge_planet = scr_get_planet_with_type(_star, "Forge");
@@ -320,7 +320,7 @@ function accept_mechanicus_land_raider_mission() {
     reset_popup_options();
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function accept_mechanicus_bionics_mission() {
     var _star = pop_data.star;
     var _forge_planet = scr_get_planet_with_type(_star, "Forge");
@@ -344,7 +344,7 @@ function accept_mechanicus_bionics_mission() {
     reset_popup_options();
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function accept_mechanicus_mars_mission() {
     var _star = pop_data.star;
     var _forge_planet = scr_get_planet_with_type(_star, "Forge");
@@ -370,7 +370,7 @@ function accept_mechanicus_mars_mission() {
     reset_popup_options();
 }
 
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function mechanicus_mars_mission_target_time_elapsed(planet) {
     var techs_taken, com, ide, ship_planet, _unit;
     techs_taken = 0;

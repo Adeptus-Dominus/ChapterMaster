@@ -1,6 +1,6 @@
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function load_marines_into_ship(system, ship, units, reload = false) {
-    /// @self Asset.GMObject.obj_controller
+    /// @mixin
     static _load_into_ship = function(system, ship, units, size, loop, reload) {
         var load_from_star = find_star_by_name(system);
         if (is_struct(units[loop])) {
@@ -120,7 +120,7 @@ function command_slot_draw(xx, yy, slot_text) {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 /// @param {Struct.TTRPG_stats} unit
 function reset_manage_unit_constants(unit) {
     try {
@@ -458,7 +458,7 @@ function reset_manage_unit_constants(unit) {
     } //not sure handling with normal method exception could just be a pain here
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function company_specific_management() {
     add_draw_return_values();
     draw_set_font(fnt_40k_30b);
@@ -506,7 +506,7 @@ function company_specific_management() {
     pop_draw_return_values();
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function alternative_manage_views(x1, y1) {
     //for some reason management_buttons keeps dying so hopefully this will solve the issue until something better can be found
     if (!is_struct(management_buttons)) {
@@ -597,7 +597,7 @@ function alternative_manage_views(x1, y1) {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function draw_sprite_and_unit_equip_data() {
     draw_set_font(fnt_40k_14);
     draw_set_halign(fa_left);
@@ -772,7 +772,7 @@ function draw_sprite_and_unit_equip_data() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function scr_ui_manage() {
     if (combat != 0) {
         exit;
@@ -1269,7 +1269,7 @@ function scr_ui_manage() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function draw_manage_selection_buttons(xx, yy) {
     var sel_loading = obj_controller.selecting_ship;
     var _unit_focus = obj_controller.unit_focus;

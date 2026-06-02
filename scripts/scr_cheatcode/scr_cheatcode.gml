@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function scr_cheatcode(argument0) {
     try {
         if (argument0 == "") {
@@ -396,7 +396,7 @@ function scr_cheatcode(argument0) {
     }
 }
 
-/// @self Asset.GMObject.obj_star_select
+/// @mixin
 function draw_planet_debug_options() {
     try {
         add_draw_return_values();
@@ -426,7 +426,7 @@ function draw_planet_debug_options() {
     }
 }
 
-/// @self Asset.GMObject.obj_star_select
+/// @mixin
 function draw_planet_debug_features() {
     static _addable_features = [
         {
@@ -481,7 +481,7 @@ function draw_planet_debug_features() {
     }
 }
 
-/// @self Asset.GMObject.obj_star_select
+/// @mixin
 function draw_planet_debug_problems() {
     var base_y = 220;
     var _keys = global.planet_problem_keys;
@@ -518,7 +518,7 @@ function draw_planet_debug_problems() {
     }
 }
 
-/// @self Asset.GMObject.obj_star_select
+/// @mixin
 function draw_planet_debug_forces() {
     add_draw_return_values();
     var current_planet = obj_controller.selecting_planet;
@@ -574,7 +574,7 @@ function draw_planet_debug_forces() {
     pop_draw_return_values();
 }
 
-/// @self Asset.GMObject.obj_star_select
+/// @mixin
 function new_system_debug_popup() {
     /// @type {Asset.GMObject.obj_popup}
     var pop = instance_create(0, 0, obj_popup);
@@ -587,7 +587,7 @@ function new_system_debug_popup() {
     pop.add_option([{str1: "Enemy invasion", choice_func: system_debug_enemy_invasion}, {str1: "Spawn Fleet", choice_func: system_debug_spawn_fleet}, {str1: "Delete Fleet", choice_func: system_debug_remove_fleet}, {str1: "Cancel", choice_func: popup_default_close}]);
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function system_debug_enemy_invasion() {
     text = "Select a faction";
     replace_options(
@@ -618,7 +618,7 @@ function system_debug_enemy_invasion() {
 }
 
 //TODO refactor and allow for greater range of factions
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function system_debug_enemy_invasion_spawn() {
     if (invasion_faction != 9) {
         if (invasion_faction == 0) {
@@ -671,13 +671,13 @@ function system_debug_enemy_invasion_spawn() {
     }
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function system_debug_spawn_fleet() {
     text = "Imperium, Heretic, or Xeno?";
     replace_options([{str1: "Imperium", choice_func: debug_spawn_imperium_fleet}, {str1: "Heretic", choice_func: debug_spawn_heretic_fleet}, {str1: "Xeno", choice_func: debug_add_xenos_fleet_options}]);
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function debug_spawn_imperium_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
     var fleet = instance_create(star.x, star.y, obj_en_fleet);
@@ -691,7 +691,7 @@ function debug_spawn_imperium_fleet() {
     instance_destroy();
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function debug_spawn_heretic_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
     var fleet = instance_create(star.x, star.y, obj_en_fleet);
@@ -705,13 +705,13 @@ function debug_spawn_heretic_fleet() {
     instance_destroy();
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function debug_add_xenos_fleet_options() {
     text = "Select Xeno faction to spawn:";
     replace_options([{str1: "Ork", choice_func: debug_spawn_ork_fleet}, {str1: "Tau", choice_func: debug_spawn_tau_fleet}, {str1: "Cancel", choice_func: popup_default_close}]);
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function debug_spawn_ork_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
     var fleet = instance_create(star.x, star.y, obj_en_fleet);
@@ -725,7 +725,7 @@ function debug_spawn_ork_fleet() {
     instance_destroy();
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function debug_spawn_tau_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
     var fleet = instance_create(star.x, star.y, obj_en_fleet);
@@ -739,7 +739,7 @@ function debug_spawn_tau_fleet() {
     instance_destroy();
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function system_debug_remove_fleet() {
     var _opts = [];
     var _fleets = [];

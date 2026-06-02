@@ -557,7 +557,7 @@ function HoverBox() constructor {
     };
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function exit_adhoc_manage() {
     scr_toggle_manage();
     if (struct_exists(selection_data, "system") && instance_exists(selection_data.system)) {
@@ -565,7 +565,7 @@ function exit_adhoc_manage() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function update_garrison_manage() {
     location_viewer.update_garrison_log();
     var _selection = [];
@@ -615,7 +615,7 @@ function update_general_manage_view() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function toggle_selection_borders() {
     for (var p = 0; p < array_length(display_unit); p++) {
         if ((man_sel[p] == 1) && (man[p] == "man")) {
@@ -630,7 +630,7 @@ function toggle_selection_borders() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function add_bionics_selection() {
     if (scr_item_count("Bionics") <= 0) {
         return;
@@ -656,7 +656,7 @@ function add_bionics_selection() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function jail_selection() {
     for (var f = 0; f < array_length(display_unit); f++) {
         if (man[f] != "man" || !man_sel[f]) {
@@ -682,7 +682,7 @@ function jail_selection() {
     alarm[6] = 7;
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function load_selection() {
     if (man_size > 0 && !location_out_of_player_control(selecting_location)) {
         scr_company_load(selecting_location);
@@ -691,7 +691,7 @@ function load_selection() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function unload_selection() {
     if (man_size > 0 && obj_controller.selecting_ship >= 0 && !instance_exists(obj_star_select) && !location_out_of_player_control(selecting_location) && selecting_location != "Warp") {
         cooldown = 8000;
@@ -721,7 +721,7 @@ function unload_selection() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function reset_selection_equipment() {
     var _unit;
     for (var f = 0; f < array_length(display_unit); f++) {
@@ -735,7 +735,7 @@ function reset_selection_equipment() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function add_tag_to_selection(new_tag) {
     var _unit;
     for (var f = 0; f < array_length(display_unit); f++) {
@@ -749,7 +749,7 @@ function add_tag_to_selection(new_tag) {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function promote_selection() {
     if ((sel_promoting == 1) && (instance_number(obj_popup) == 0)) {
         var pip = instance_create(0, 0, obj_popup);
@@ -778,7 +778,7 @@ function promote_selection() {
 }
 
 //to be run in obj_star_select
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function setup_planet_mission_group() {
     man_sel = [];
     display_unit = [];

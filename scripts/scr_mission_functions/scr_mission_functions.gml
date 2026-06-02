@@ -84,7 +84,7 @@ function mission_name_key(mission) {
     }
 }
 
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function scr_new_governor_mission(planet, problem = "") {
     if (p_owner[planet] != eFACTION.IMPERIUM) {
         exit;
@@ -289,7 +289,7 @@ function init_protect_raider_mission(squad) {
     }
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function protect_raiders_suppress_information() {
     title = "Captains Disgruntled";
     options1 = "continue";
@@ -315,7 +315,7 @@ function protect_raiders_suppress_information() {
     }
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function protect_raiders_hold_memorial() {
     reset_popup_options();
     options1 = "continue";
@@ -352,7 +352,7 @@ function init_train_forces_mission(planet, star, mission_slot, marine) {
     }
 }
 
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function complete_garrison_mission(targ_planet, problem_index) {
     var planet = new PlanetData(targ_planet, self);
     if (problem_has_key_and_value(targ_planet, problem_index, "stage", "active")) {
@@ -578,7 +578,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index) {
 
 //TODO allow most of these functions to be condensed and allow arrays of problems or planets and maybe increase filtering options
 //filtering options could be done via universal methods that all the filters to be passed to many other game systems
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function has_any_problem_planet(planet, star = "none") {
     if (star == "none") {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
@@ -594,7 +594,7 @@ function has_any_problem_planet(planet, star = "none") {
     return false;
 }
 
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function planet_problemless(planet, star = "none") {
     var _problemless = true;
     if (star == "none") {
@@ -619,7 +619,7 @@ function star_problemless(){
 }*/
 
 // returns a bool for if any planet on a given star has the given problem
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function has_problem_star(problem, star = "none") {
     var has_problem = false;
     if (star == "none") {
@@ -639,7 +639,7 @@ function has_problem_star(problem, star = "none") {
 }
 
 //returns a bool for if a planet has a given problem
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function has_problem_planet(planet, problem, star = "none") {
     if (star == "none") {
         return array_contains(p_problem[planet], problem);
@@ -651,7 +651,7 @@ function has_problem_planet(planet, problem, star = "none") {
 }
 
 //returns the array position of a given problem on a given planet if the specfied time is given
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function has_problem_planet_and_time(planet, problem, time, star = "none") {
     var _had_problem = -1;
     if (star == "none") {
@@ -671,7 +671,7 @@ function has_problem_planet_and_time(planet, problem, time, star = "none") {
 }
 
 //returns the array position of a given problem on a given planet if the specfied time is above 0
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function has_problem_planet_with_time(planet, problem, star = "none") {
     var _had_problem = -1;
     if (star == "none") {
@@ -691,7 +691,7 @@ function has_problem_planet_with_time(planet, problem, star = "none") {
 }
 
 //returns the array position of a gien problem on a given planet
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function find_problem_planet(planet, problem, star = "none") {
     if (star == "none") {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
@@ -708,7 +708,7 @@ function find_problem_planet(planet, problem, star = "none") {
 }
 
 ///removie all of a given problem from a planet
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function remove_planet_problem(planet, problem, star = "none") {
     var _had_problem = -1;
     if (star == "none") {
@@ -729,7 +729,7 @@ function remove_planet_problem(planet, problem, star = "none") {
 }
 
 //find an open problem slot on a given planet
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function open_problem_slot(planet, star = "none") {
     if (star == "none") {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
@@ -746,7 +746,7 @@ function open_problem_slot(planet, star = "none") {
 }
 
 //remove all of a given problem types from a star
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function remove_star_problem(problem, star = "none") {
     if (star == "none") {
         for (var i = 1; i <= planets; i++) {
@@ -760,7 +760,7 @@ function remove_star_problem(problem, star = "none") {
 }
 
 //count donw the p_timer on a given planet
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function problem_count_down(planet, count_change = 1) {
     for (var i = 0; i < array_length(p_problem[planet]); i++) {
         if (p_problem[planet][i] != "") {
@@ -774,7 +774,7 @@ function problem_count_down(planet, count_change = 1) {
 }
 
 //add a new problem
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function add_new_problem(planet, problem, timer, star = "none", other_data = {}) {
     var problem_added = false;
     if (star == "none") {
@@ -795,7 +795,7 @@ function add_new_problem(planet, problem, timer, star = "none", other_data = {})
     return problem_added;
 }
 
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function increment_mission_completion(mission_data) {
     if (!struct_exists(mission_data, "completion")) {
         mission_data.completion = 0;
@@ -810,7 +810,7 @@ function increment_mission_completion(mission_data) {
 
 //search problem data for a given and key and iff applicable value on that key
 //TODO increase filtering and search options
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function problem_has_key_and_value(planet, problem, key, value = "", star = "none") {
     var has_data = false;
     if (star == "none") {

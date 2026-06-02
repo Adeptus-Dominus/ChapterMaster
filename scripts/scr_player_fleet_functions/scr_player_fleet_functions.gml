@@ -625,7 +625,7 @@ function get_nearest_player_fleet(nearest_x, nearest_y, is_static = false, is_mo
     return chosen_fleet;
 }
 
-/// @self Asset.GMObject.obj_star
+/// @mixin
 function has_orbiting_player_fleet() {
     if (instance_exists(obj_p_fleet)) {
         var _nearest = instance_nearest(x, y, obj_p_fleet);

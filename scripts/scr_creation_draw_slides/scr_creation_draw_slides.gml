@@ -11,7 +11,7 @@ enum eCREATION_SLIDES {
     CHAPTERMASTER = 7,
 }
 
-/// @self Asset.GMObject.obj_creation
+/// @mixin
 function draw_chapter_select() {
     draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_40k_30b);
@@ -396,13 +396,13 @@ function draw_chapter_select() {
     }
 }
 
-/// @self Asset.GMObject.obj_creation
+/// @mixin
 function setup_chapter_trait_select() {
     chapter_type_radio = new RadioSet([{str1: "Homeworld", font: fnt_40k_14b, tooltip: "Homeworld\nYour chapter has a homeworld that they base on.  Contained upon it is a massive Fortress Monastery, which provides high levels of defense and automated weapons."}, {str1: "Fleet Based", font: fnt_40k_14b, tooltip: "Fleet Based\nRather than a homeworld your chapter begins near their recruiting world.  The fleet includes a Battle Barge, which serves as a mobile base, and powerful ship."}, {str1: "Penitent", font: fnt_40k_14b, tooltip: "Penitent\nAs with Fleet Based, but you must crusade and fight until your penitence meter runs out.  Note that recruiting is disabled until then."}], "Chapter Type", {x1: 445, y1: 211, max_width: 1125 - 445, center: true});
     chapter_type_radio.current_selection = fleet_type - 1;
 }
 
-/// @self Asset.GMObject.obj_creation
+/// @mixin
 function draw_chapter_trait_select() {
     draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_40k_30b);
@@ -708,7 +708,7 @@ function draw_chapter_trait_select() {
     }
 }
 
-/// @self Asset.GMObject.obj_creation
+/// @mixin
 function draw_chapter_homeworld_select() {
     var yar = 0;
     draw_set_color(CM_GREEN_COLOR);
@@ -725,7 +725,7 @@ function draw_chapter_homeworld_select() {
     draw_rectangle(445, 200, 1125, 202, 0);
 
     scr_creation_home_planet_create();
-    /// @self Asset.GMObject.obj_creation
+    /// @mixin
     left_data_slate.inside_method = function() {
         if (!buttons.complex_homeworld.active) {
             var trial_data = scr_trial_data();

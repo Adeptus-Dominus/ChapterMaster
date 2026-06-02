@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_ncombat
+/// @mixin
 function necron_tomb_raid_post_battle_sequence() {
     if (!string_count("wake", battle_special)) {
         if (defeat == 1) {
@@ -53,7 +53,7 @@ function necron_tomb_raid_post_battle_sequence() {
     }
 }
 
-/// @self Asset.GMObject.obj_ncombat
+/// @mixin
 function protect_raiders_battle_aftermath() {
     instance_activate_object(obj_star);
     // show_message(obj_turn_end.current_battle);
@@ -80,7 +80,7 @@ function protect_raiders_battle_aftermath() {
     instance_deactivate_object(obj_star);
 }
 
-/// @self Asset.GMObject.obj_ncombat
+/// @mixin
 function hunt_fallen_battle_aftermath() {
     if (!defeat) {
         with (obj_turn_end) {

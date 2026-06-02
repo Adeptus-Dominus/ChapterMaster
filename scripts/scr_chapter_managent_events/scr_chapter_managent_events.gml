@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function tech_uprising_event_aftermath() {
     var tech, t, i, check_tech, location_techs, location_heretics, delete_positions;
     techs = collect_role_group(SPECIALISTS_TECHS);
@@ -184,7 +184,7 @@ function setup_new_forge_master_popup(techs) {
     scr_popup("New Forge Master", $"The Demise of Forge Master {last_master} means a replacement must be chosen. Several Options have already been put forward to you but it is ultimatly your decision.", "new_forge_master", _pop_data);
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 function setup_popup_marine_stat_display(unit) {
     if (unit.uid != pop_data.marine_stat_display_uid) {
         if (is_struct(pop_data.marine_display_image)) {
@@ -197,7 +197,7 @@ function setup_popup_marine_stat_display(unit) {
     pop_data.marine_display_triggered = true;
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @mixin
 /// @param {Struct.TTRPG_stats} pick
 function new_forge_master_chosen(pick) {
     var cur_tech;

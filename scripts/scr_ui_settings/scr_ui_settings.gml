@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function scr_ui_settings() {
     var romanNumerals = scr_roman_numerals();
     // Var declaration

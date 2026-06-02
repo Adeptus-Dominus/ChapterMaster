@@ -1,4 +1,4 @@
-/// @self Asset.GMObject.obj_p_fleet
+/// @mixin
 function scr_add_corruption(is_fleet, modifier_type) {
     // is_fleet: fleet (true) or planet (false)
     // modifier_type: amount

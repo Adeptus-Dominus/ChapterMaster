@@ -112,7 +112,7 @@ function spec_data_set(specialist) {
     return random_marine;
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function apothecary_training() {
     // ** Training **
     // * Apothecary *
@@ -195,7 +195,7 @@ function apothecary_training() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function chaplain_training() {
     // * Chaplain training *
     // TODO add functionality for Space Wolves and Iron Hands
@@ -274,7 +274,7 @@ function chaplain_training() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function librarian_training() {
     var recruit_count = 0;
     // * Psycher Training *
@@ -340,7 +340,7 @@ function librarian_training() {
     }
 }
 
-/// @self Asset.GMObject.obj_controller
+/// @mixin
 function techmarine_training() {
     var recruit_count = 0;
 
