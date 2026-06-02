@@ -152,7 +152,7 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             tier = 1;
             break;
         case eP_FEATURES.MONASTERY:
-            planet_display = "Fortress Monastary";
+            planet_display = "Fortress Monastery";
             player_hidden = 0;
             forge = 0;
             name = global.name_generator.GenerateFromSet("imperial_ship");
