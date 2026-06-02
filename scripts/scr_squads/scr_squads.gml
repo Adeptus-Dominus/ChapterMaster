@@ -847,7 +847,7 @@ function SquadArrangementEditor(company) constructor {
     }
 
     static add_new_required_type = function(required_squad) {
-        var _squad_data    = squads[$ required_squad.squad];
+        var _squad_data = squads[$ required_squad.squad];
         var _squad_display = _squad_data.type_data.display_data;
         var _cx = required_editor_box.x1 + (required_editor_box.w / 2);
 
@@ -888,9 +888,9 @@ function SquadArrangementEditor(company) constructor {
         );
 
         var delete_button = new UnitButtonObject({
-            style     : "pixel",
-            label     : "remove squad",
-            tooltip   : $"remove {_squad_display} from required squads",
+            style : "pixel",
+            label : "remove squad",
+            tooltip : $"remove {_squad_display} from required squads",
             set_width : true,
             x1 : required_editor_box.x1,
             y1 : box.y2,
@@ -911,7 +911,7 @@ function SquadArrangementEditor(company) constructor {
     }
 
     static add_new_proportional_type = function(required_squad) {
-        var _squad_data    = squads[$ required_squad.squad];
+        var _squad_data = squads[$ required_squad.squad];
         var _squad_display = _squad_data.type_data.display_data;
         var _px = proportional_editor_x();
         var _cx = _px + (column_w / 2);
@@ -942,9 +942,9 @@ function SquadArrangementEditor(company) constructor {
         );
 
         var delete_button = new UnitButtonObject({
-            style     : "pixel",
-            label     : "remove squad",
-            tooltip   : $"remove {_squad_display} from proportional squads",
+            style : "pixel",
+            label : "remove squad",
+            tooltip : $"remove {_squad_display} from proportional squads",
             set_width : true,
             x1 : _px,
             y1 : box.y2,
