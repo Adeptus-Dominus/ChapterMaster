@@ -1194,7 +1194,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if (diplo_keyphrase == "denounced") {
                 if (faction_justmet == 1) {
-                    alter_dispositions(diplomacy, -5);
+                    alter_dispositions([[eFACTION.IMPERIUM, -5]]);
                     faction_justmet = 0;
                 }
                 rando = choose(1, 2, 3);

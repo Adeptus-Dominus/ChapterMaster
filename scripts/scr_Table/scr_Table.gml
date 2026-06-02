@@ -22,8 +22,6 @@ function Table(data) constructor {
 
     move_data_to_current_scope(data);
 
-    update();
-
     static update = function(data) {
         move_data_to_current_scope(data);
         w = 0;
@@ -59,6 +57,8 @@ function Table(data) constructor {
         }
     };
 
+    update(data);
+	
     static row_method = function(_row, _row_entered) {
         if (!_row_entered) {
             return;

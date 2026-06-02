@@ -1181,7 +1181,7 @@ function ToggleButton(data = {}) constructor {
     //make true to run clicked() within draw sequence
     clicked_check_default = false;
 
-    update = function(data) {
+    update = function(data = {}) {
         if (is_struct(data)) {
             move_data_to_current_scope(data, true);
         }

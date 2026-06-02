@@ -52,7 +52,7 @@ function UpdateChecker() constructor {
         try {
             _json = json_parse(_result);
         } catch (_e) {
-            LOGGER.error("json_parse failed, skipping", _e);
+            LOGGER.error($"json_parse failed, skipping {_e}");
             update_available = false;
             return update_available;
         }
