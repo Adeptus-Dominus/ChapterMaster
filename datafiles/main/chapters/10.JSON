@@ -158,6 +158,7 @@
         * use negative numbers to subtract ships
         */
         "extra_ships": {
+            "gloriana": 0,
             "battle_barges": 0,
             "gladius": 0,
             "strike_cruisers": 0,
@@ -184,9 +185,9 @@
             "codiciery": 0,
             "lexicanum": 0,
             "terminator": 0,
-            "assault": 10,
+            "assault": 0,
             "veteran": 0,
-            "devastator": -10
+            "devastator": 0
         },
         /**
         * * Default Marine strength

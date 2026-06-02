@@ -182,6 +182,7 @@
         * * Stacks with advantages/disadvantages
         */
         "extra_ships": {
+            "gloriana": 0,
             "battle_barges": -1,
             "strike_cruisers": -4,
             "gladius": 0,

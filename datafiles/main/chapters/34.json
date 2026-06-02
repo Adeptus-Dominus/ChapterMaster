@@ -49,6 +49,7 @@
     "fleet_type": 1.0,
     "strength": 5.0,
     "extra_ships": {
+      "gloriana": 0,
       "battle_barges": 0.0,
       "gladius": 0.0,
       "strike_cruisers": 0.0,

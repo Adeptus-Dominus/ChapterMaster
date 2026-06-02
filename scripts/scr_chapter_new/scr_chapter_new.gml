@@ -104,6 +104,7 @@ function ChapterData() constructor {
         armour: "",
     };
     extra_ships = {
+        glorianas: 0,
         battle_barges: 0,
         gladius: 0,
         strike_cruisers: 0,

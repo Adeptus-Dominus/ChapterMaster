@@ -69,6 +69,13 @@
             ]
         },
         "flagship_name": "Legerin Heqite",
+        "extra_ships": {
+            "gloriana": 0,
+            "battle_barges": 1,
+            "gladius": 0,
+            "strike_cruisers": 0,
+            "hunters": 0
+        },
         "custom_roles": {
             "chaplain": {
                 "name": "Orator"

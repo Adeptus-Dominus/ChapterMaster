@@ -143,6 +143,7 @@
         * * Stacks with advantages/disadvantages
         */
         "extra_ships": {
+            "gloriana": 0,
             "battle_barges": 0,
             "gladius": -4,
             "strike_cruisers": 0,

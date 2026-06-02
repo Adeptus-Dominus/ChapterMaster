@@ -137,6 +137,7 @@
         * use negative numbers to subtract ships
         */
         "extra_ships": {
+            "gloriana": 0,
             "battle_barges": 1,
             "gladius": 0,
             "strike_cruisers": 0,
