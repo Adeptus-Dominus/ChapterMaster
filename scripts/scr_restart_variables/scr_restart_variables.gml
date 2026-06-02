@@ -1,5 +1,4 @@
 // Restarts variables, ensuring loaded saves are properly initialized
-/// @mixin
 function scr_restart_variables(saved_game) {
     try {
         if (saved_game == 1) {
@@ -579,10 +578,11 @@ function scr_restart_variables(saved_game) {
 
         if (saved_game == 4) {}
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
+/// @self Asset.GMObject.obj_creation
 function reset_creation_variables() {
     for (var i = 0; i < 21; i++) {
         world[i] = "";

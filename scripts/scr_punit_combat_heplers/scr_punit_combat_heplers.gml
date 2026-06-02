@@ -45,7 +45,7 @@ function squeeze_map_forces() {
             }
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -67,7 +67,7 @@ function target_block_is_valid(target, desired_type) {
         }
         return _is_valid;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -103,7 +103,7 @@ function get_rightmost(block_type = obj_pnunit, include_flanking = true, include
         }
         return rightmost;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -111,7 +111,7 @@ function block_has_armour(target) {
     try {
         return target.veh + target.dreads;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -144,7 +144,7 @@ function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
         }
         return left_most;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -152,7 +152,7 @@ function get_block_distance(block) {
     try {
         return point_distance(x, y, block.x, block.y) / 10;
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -169,7 +169,7 @@ function calculate_block_distances(first_block, second_block) {
         }
         return floor(floor((first_block.x - second_block.x) / 10));
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -181,7 +181,7 @@ function block_position_collision(position_x, position_y) {
     try {
         return collision_point(position_x, position_y, obj_enunit, 0, 1) || collision_point(position_x, position_y, obj_pnunit, 0, 1);
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -190,7 +190,7 @@ function block_position_collision(position_x, position_y) {
 /// @param {real} blocks How far to move (in unit blocks)
 /// @param {bool} allow_collision Are unit blocks allowed to passthrough other unit blocks
 /// @return {bool}
-/// @mixin
+/// @self Asset.GMObject.obj_pnunit
 function move_unit_block(direction, blocks = 1, allow_collision = false) {
     try {
         var distance = 10 * blocks;
@@ -209,12 +209,12 @@ function move_unit_block(direction, blocks = 1, allow_collision = false) {
             return false;
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
 /// @description Attempts to move an enemy unit block, choosing direction based on whenever they are flanking or not, only if `obj_nfort` doesn't exists.
-/// @mixin
+/// @self Asset.GMObject.obj_enunit
 function move_enemy_block() {
     if (instance_exists(obj_nfort)) {
         exit;
@@ -239,7 +239,7 @@ function move_enemy_blocks() {
     ds_priority_destroy(_enemy_movement_queue);
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit
 function block_composition_string() {
     var _composition_string = "";
 
@@ -282,12 +282,12 @@ function draw_block_fadein() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit
 function update_block_size() {
     column_size = (men * 0.5) + medi + (dreads * 2) + (veh * 2.5);
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit
 function update_block_unit_count() {
     unit_count = men + medi + dreads + veh;
 }

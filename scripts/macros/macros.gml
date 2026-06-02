@@ -30,9 +30,6 @@ global.alliance_grades = ["Hated", "Hostile","Suspicious","Uneasy","Neutral","Al
 
 #macro SHIP_WEAPON_SLOTS 8
 
-#macro LOGGER global.logger
-
-
 enum eFACTION {
     PLAYER = 1,
     IMPERIUM,

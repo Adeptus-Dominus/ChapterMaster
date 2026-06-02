@@ -1,6 +1,6 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-/// @mixin
+/// @self Struct.NewPlanetFeature
 function scr_ancient_ruins_setup() {
     var ruin_data = choose(["tiny", 5], ["small", 15], ["medium", 55], ["large", 110], ["sprawling", 0]);
     ruins_size = ruin_data[0];
@@ -17,6 +17,7 @@ function scr_ancient_ruins_setup() {
     player_hidden = 1;
 }
 
+/// @self Struct.PlanetData
 function scr_ruins_suprise_attack_player() {
     try {
         instance_deactivate_all(true);
@@ -68,7 +69,7 @@ function scr_ruins_suprise_attack_player() {
         instance_destroy(obj_popup);
         instance_destroy(obj_star_select);
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         instance_activate_all();
         instance_destroy(obj_popup);
         instance_destroy(obj_star_select);
@@ -78,6 +79,7 @@ function scr_ruins_suprise_attack_player() {
 }
 
 //spawn point for starship
+/// @self Struct.NewPlanetFeature
 function scr_ruins_find_starship() {
     f_type = eP_FEATURES.STARSHIP;
     planet_display = "Ancient Starship";
@@ -87,6 +89,7 @@ function scr_ruins_find_starship() {
 }
 
 //allows ruins to be entered to retrive fallen marine gear
+/// @self Struct.NewPlanetFeature
 function scr_ruins_player_forces_defeated() {
     planet_display = "Failed Ruins Expidition";
     completion_level = 1;
@@ -97,8 +100,9 @@ function scr_ruins_player_forces_defeated() {
 }
 
 //revcover equipment of fallen marines from ruins
-/// @mixin
+/// @self Struct.NewPlanetFeature
 function scr_ruins_recover_from_dead() {
+    /// @type {Asset.GMObject.obj_popup}
     var pop = instance_create(0, 0, obj_popup);
     var route = random(5);
     pop.image = "ancient_ruins";
@@ -152,13 +156,14 @@ function scr_ruins_recover_from_dead() {
 }
 
 //mark ruins as fully explored
+/// @self Struct.NewPlanetFeature
 function scr_ruins_explored() {
     planet_display = "Ancient Ruins";
     exploration_complete = true;
 }
 
 //determine what race the ruins once belonged to effect enemies that can be found
-/// @mixin
+/// @self Struct.NewPlanetFeature
 function scr_ruins_determine_race() {
     var dice = floor(random(100)) + 1;
     if (dice <= 9) {
@@ -178,17 +183,19 @@ function scr_ruins_determine_race() {
     }
 }
 
-/// @mixin
+/// @self Struct.PlanetData
 function scr_explore_ruins() {
     try {
         obj_controller.current_planet_feature = self;
         obj_controller.menu = 0;
 
+        /// @type {Asset.GMObject.obj_popup}
         var pip = instance_create(0, 0, obj_popup);
         pip.title = "Ancient Ruins";
 
         var nu = planet_numeral_name(planet, star);
 
+        /// @type {Asset.GMObject.obj_ground_mission}
         var arti = instance_create(star.x, star.y, obj_ground_mission);
         arti.explore_feature = self;
         arti.num = planet;
@@ -267,13 +274,14 @@ function scr_explore_ruins() {
         );
         pip.image = "ancient_ruins";
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
-///@mixin obj_popup
+/// @self Asset.GMObject.obj_popup
 function ruins_exploration_main_sequence() {
     // Begin
+    /// @type {Struct.NewPlanetFeature}
     var _ruins = obj_ground_mission.explore_feature;
     var ruins_battle = 0, ruins_fact = 0, ruins_disp = 0, ruins_reward = 0, dice, battle_threat = 0;
 
@@ -366,12 +374,14 @@ function ruins_exploration_main_sequence() {
     }
 }
 
-/// @mixin PlanetData
+/// @self Struct.PlanetData
 function scr_check_for_ruins_exploration() {
     var _ruins_list = get_features(eP_FEATURES.ANCIENT_RUINS);
+    /// @type {Struct.NewPlanetFeature}
     var _explore_ruins = 0;
     if (array_length(_ruins_list) > 0) {
         for (var _ruin = 0; _ruin < array_length(_ruins_list); _ruin++) {
+            /// @type {Struct.PlanetData}
             var _cur_ruins = _ruins_list[_ruin];
             if (_cur_ruins.exploration_complete == false) {
                 _explore_ruins = _cur_ruins;
@@ -390,10 +400,12 @@ function scr_check_for_ruins_exploration() {
 
 // show_message("so far so good, defeat:"+string(defeat));
 
+/// @self Struct.NewPlanetFeature
 function scr_ruins_combat_end() {
     var _star = 0;
     ruins_battle = choose(6, 7, 9, 10, 11, 12);
 
+    /// @type {Asset.GMObject.obj_star}
     _star = find_star_by_name(obj_ground_mission.battle_loc);
     var planet = obj_ground_mission.num;
     var _battle_threat = obj_ground_mission.battle_threat;
@@ -453,6 +465,7 @@ function scr_ruins_combat_end() {
                 }
             }
         }
+        /// @type {Asset.GMObject.obj_popup}
         var pop = instance_create(0, 0, obj_popup);
         switch (ruins_battle) {
             case 10:

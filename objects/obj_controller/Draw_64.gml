@@ -36,7 +36,7 @@ try {
         draw_sprite(spr_settings_bg, 0, 0, 0);
     }
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
     menu = eMENU.DEFAULT;
 }
 
@@ -55,7 +55,7 @@ if (menu == eMENU.DIPLOMACY) {
                 try {
                     trade_attempt.draw_trade_screen();
                 } catch (_exception) {
-                    handle_exception(_exception);
+                    ERROR_HANDLER.handle_exception(_exception);
                     delete trade_attempt;
                     trading = false;
                 }
@@ -271,7 +271,7 @@ try {
         scr_ui_settings();
     }
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
     menu = eMENU.DEFAULT;
 }
 

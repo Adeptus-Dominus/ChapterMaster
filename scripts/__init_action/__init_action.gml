@@ -1,6 +1,3 @@
-// This will execute before the first room of the game executes.
-gml_pragma("global", "__init_action()");
-
 // @stitch-ignore-next-line: unused-function
 function __init_action() {
     global.__part_syst = -1;

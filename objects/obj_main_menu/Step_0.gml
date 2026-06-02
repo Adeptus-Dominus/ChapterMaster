@@ -13,3 +13,6 @@ if (fade_alpha <= 0.5) {
         obj_cursor.image_alpha = title_alpha;
     }
 }
+
+// Blink update notification every 600ms
+update_blink_visible = floor(current_time / 600) % 2 == 0;

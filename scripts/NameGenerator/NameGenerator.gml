@@ -167,7 +167,7 @@ function NameTracker(set_name) constructor {
             }
             return _name;
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
             return "name_error";
         }
     };
@@ -176,10 +176,8 @@ function NameTracker(set_name) constructor {
         switch (preffered_method) {
             case "composite":
                 return CompositeNameGeneration();
-                break;
             case "complex":
                 return ComplexTitledName(composite_names);
-                break;
             default:
                 return SimpleNameGeneration();
         }

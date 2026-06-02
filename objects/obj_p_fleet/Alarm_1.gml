@@ -172,5 +172,5 @@ try {
         instance_activate_object(obj_star);
     }
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
 }

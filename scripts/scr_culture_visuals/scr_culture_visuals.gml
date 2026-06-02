@@ -2097,7 +2097,6 @@ function scr_get_body_data(body_item_key, body_slot = "none") {
         }
         return item_key_map;
     }
-    return false;
 }
 
 function generate_marine_body() {
@@ -3234,19 +3233,19 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_weapon_storm,
-                weapon_data : {
+                weapon_data: {
                     single_left_right_profile: true,
                 },
                 subcomponents: [
                     [
                         spr_blank,
                         spr_weapon_storm_boss
-                    ],
-                ]
+                    ]
+                ],
             },
             {
                 sprite: spr_weapon_storm_complex,
-                weapon_data : {
+                weapon_data: {
                     single_left_right_profile: true,
                 },
                 subcomponents: [
@@ -3257,7 +3256,7 @@ global.weapon_visual_data = {
                     [
                         spr_blank,
                         spr_weapon_storm_boss
-                    ],
+                    ]
                 ],
             },
             {

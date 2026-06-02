@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_ds_functions",
+  "%Name":"UsernamePrompt",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_ds_functions",
+  "name":"UsernamePrompt",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Constructors",
+    "path":"folders/Scripts/Constructors.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

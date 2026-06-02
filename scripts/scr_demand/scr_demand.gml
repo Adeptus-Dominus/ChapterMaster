@@ -1,4 +1,4 @@
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function threat_plausibility() {
     var _threat = 20;
     var _good_imperium_position = disposition[eFACTION.IMPERIUM] > 50 ? 1 : -1;
@@ -15,7 +15,7 @@ function clear_inspections() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function inquis_use_inspection_pass() {
     if (inspection_passes > 0) {
         inspection_passes -= 1;
@@ -26,10 +26,9 @@ function inquis_use_inspection_pass() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function inquis_demand_inspection_pass() {
     var resistance = 10;
-    var _worked = false;
     clear_diplo_choices();
     if (inspection_passes == 0) {
         rull = floor(random(10)) + 1;
@@ -40,14 +39,13 @@ function inquis_demand_inspection_pass() {
             clear_inspections();
             diplo_text = "Very well Chapter Master I Your service to the imperium is well known i have no doubt that you would not ask such of me without good reasoon. I shall forgoe my normal duties just this onece. \n do not becomne complacent Chapter Master i may not always be so generous";
         } else {
-            var _diff = resistance - rull;
             alter_disposition(eFACTION.INQUISITION, -1);
             diplo_text = "Consider your request denied. If there is heresy or any wrong doing i shal see that is rooted out and made plain for all to see";
         }
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function scr_demand(demand_type) {
     // demand_type: button
 
@@ -429,7 +427,6 @@ function scr_demand(demand_type) {
         force_goodbye = 1;
     }
     if (worked == false) {
-        var h = 0;
         clear_diplo_choices();
         if ((rela == "friendly") && (no_penalty == false)) {
             disposition[trading_demand] -= 2;

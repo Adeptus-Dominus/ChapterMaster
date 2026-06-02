@@ -12,21 +12,19 @@ function distribute_strength_to_fleet(strength, fleet) {
     }
 }
 
-/// @mixin obj_en_fleet
+/// @self Asset.GMObject.obj_en_fleet
 function random_sector_exit_point() {
     action_x = choose(room_width * -1, room_width * 2);
     action_y = choose(room_height * -1, room_height * 2);
 }
 
-/// @mixin obj_en_fleet
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function in_room(object = undefined) {
-    if (object == undefined) {
-        object = self;
-    }
+	object ??= self;
     return !(object.x < 0 || object.x > room_width || object.y < 0 || object.y > room_height);
 }
 
-//to be run within with scope
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function set_fleet_target(targ_x, targ_y, final_target) {
     action_x = targ_x;
     action_y = targ_y;
@@ -49,10 +47,10 @@ function scr_valid_fleet_target(target) {
     return valid;
 }
 
-function get_fleet_uid(search_uid){
+function get_fleet_uid(search_uid) {
     var _fleet = undefined;
-    with (obj_en_fleet){
-        if (uid == search_uid){
+    with (obj_en_fleet) {
+        if (uid == search_uid) {
             _fleet = id;
             break;
         }
@@ -60,6 +58,7 @@ function get_fleet_uid(search_uid){
     return _fleet;
 }
 
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function fleets_next_location(fleet = "none", visited = []) {
     var targ_location = "none";
 
@@ -107,7 +106,7 @@ function chase_fleet_target_set(target) {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function fleet_intercept_time_calculate(target_intercept) {
     var intercept_time = -1;
     var targ_location = fleets_next_location(target_intercept);
@@ -145,6 +144,7 @@ function get_largest_player_fleet() {
     return chosen_fleet;
 }
 
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function is_orbiting(fleet = "none") {
     if (fleet == "none") {
         if (action != "") {
@@ -168,7 +168,7 @@ function is_orbiting(fleet = "none") {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function set_fleet_movement(fastest_route = true, new_action = "move", minimum_eta = 1, maximum_eta = 1000) {
     action = "";
 
@@ -226,7 +226,6 @@ function set_fleet_movement(fastest_route = true, new_action = "move", minimum_e
     }
 }
 
-//TODO build into unit struct
 function load_unit_to_fleet(fleet, unit) {
     var loaded = false;
     var all_ships = fleet_full_ship_array(fleet);
@@ -282,7 +281,7 @@ function calculate_fleet_eta(xx, yy, xxx, yyy, fleet_speed, star1 = true, star2 
     return eta;
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function calculate_action_speed(fleet = "none", selected = false) {
     try {
         if (fleet == "none") {
@@ -322,12 +321,12 @@ function calculate_action_speed(fleet = "none", selected = false) {
             }
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
         return 200;
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_en_fleet
 function scr_efleet_arrive_at_trade_loc() {
     //if player fleet at star or player forces trade
     var chase_fleet = false;
@@ -545,7 +544,7 @@ function scr_orbiting_player_fleet(system = "none") {
                 return scr_orbiting_player_fleet();
             }
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     }
 
@@ -669,7 +668,7 @@ function fleet_star_draw_offsets() {
 }
 
 //TODO further split this shite up
-/// @mixin
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function fleet_arrival_logic() {
     var cur_star, sta, steh_dist, old_x, old_y;
     cur_star = instance_nearest(action_x, action_y, obj_star);
@@ -1136,6 +1135,7 @@ function fleet_arrival_logic() {
     exit; // end of eta=0
 }
 
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function choose_fleet_sprite_image() {
     if (owner == eFACTION.IMPERIUM && !fleet_has_cargo("colonize")) {
         sprite_index = spr_fleet_imperial;
@@ -1175,6 +1175,7 @@ function merge_fleets(main_fleet, merge_fleet) {
     instance_destroy(merge_fleet.id);
 }
 
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function fleet_respond_crusade() {
     if (owner != eFACTION.IMPERIUM) {
         exit;

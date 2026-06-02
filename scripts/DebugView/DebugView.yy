@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"DebugView",
   "parent":{
-    "name":"Helpers",
-    "path":"folders/Scripts/Helpers.yy",
+    "name":"Constructors",
+    "path":"folders/Scripts/Constructors.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

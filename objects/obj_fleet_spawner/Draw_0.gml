@@ -1,5 +1,4 @@
-exit;
-
+/*
 var y1, y2;
 y1 = y - (height / 2);
 y2 = y + (height / 2);
@@ -13,3 +12,4 @@ if (x < 800) {
 if (x > 800) {
     draw_rectangle(room_width - 300, y1, room_width + 300, y2, 0);
 }
+*/

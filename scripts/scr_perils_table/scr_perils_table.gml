@@ -1,4 +1,4 @@
-/// @mixin
+/// @self Asset.GMObject.obj_pnunit
 function scr_perils_table(perils_strength, unit, psy_discipline, power_name, unit_id) {
     var combat_perils = [
         [

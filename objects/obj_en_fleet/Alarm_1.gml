@@ -36,7 +36,7 @@ try {
             try {
                 fleet_respond_crusade();
             } catch (_exception) {
-                handle_exception(_exception);
+                ERROR_HANDLER.handle_exception(_exception);
             }
         }
     } else {
@@ -478,5 +478,5 @@ try {
         }
     }
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
 }

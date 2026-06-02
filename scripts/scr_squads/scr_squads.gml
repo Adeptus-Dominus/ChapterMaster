@@ -47,18 +47,18 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     full_squad_data = obj_ini.squad_types[$ squad_type];
     unit_role = "";
     members_UnitGroup = squad.get_members(true);
-    members_UnitGroup.shuffle();  
+    members_UnitGroup.shuffle();
     optional_load = undefined;
     required_load = undefined;
 
     target_squad.update_fulfilment();
 
-    static sort = function(){
+    static sort = function() {
         for (var i = 0; i < array_length(squad_unit_types); i++) {
             unit_role = squad_unit_types[i];
             role_squad_loadout();
         }
-    }
+    };
 
     //TODO we proobably have amcaro or soomethinng for this somewhere
     static load_out_areas = [
@@ -69,8 +69,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         "mobi"
     ];
 
-    static structure_role_optional_loadout = function(optional_data){
-
+    static structure_role_optional_loadout = function(optional_data) {
         optional_load = variable_clone(optional_data); //create a fulfillment object for optional loadouts
 
         var _optional_loadout_slots = struct_get_names(optional_load);
@@ -80,10 +79,10 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
             for (var i = 0; i < array_length(optional_load[$ _load_out_slot]); i++) {
                 array_insert(optional_load[$ _load_out_slot][i], 2, 0);
             }
-        }      
-    }
+        }
+    };
 
-    static structure_role_required_loadout = function(required_data){
+    static structure_role_required_loadout = function(required_data) {
         //find out if the _unit type for the squad has required  equipment thresholds
 
         required_load = variable_clone(required_data);
@@ -98,10 +97,9 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
             }
             array_insert(required_load[$ _current_load_slot], 2, 0);
         }
+    };
 
-    }
-
-    static equip_required_for_role = function(_unit){
+    static equip_required_for_role = function(_unit) {
         if (required_load[$ current_load_slot][2] < required_load[$ current_load_slot][1]) {
             //if the required amount of equipment is not in the squad already equip this marine with equipment
             var _item_to_add = required_load[$ current_load_slot][0];
@@ -112,10 +110,10 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
             return true;
         } //if all required equipment is included in the squad start adding optional equipment
         return false;
-    }
+    };
 
-    static equip_optional_for_role = function(_unit){
-            //this basically ensures the optional squad items are randomly selected and allocated in order to make squads more variable
+    static equip_optional_for_role = function(_unit) {
+        //this basically ensures the optional squad items are randomly selected and allocated in order to make squads more variable
 
         var _optional_groups = optional_load[$ current_load_slot];
         for (var i = 0; i < array_length(_optional_groups); i++) {
@@ -168,11 +166,10 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                 break;
             }
         }
+    };
 
-    }
-
-    static equip_loudouts_specific_equip_slot = function(){
-        var _members_with_role = members_UnitGroup.get_from({role:unit_role});
+    static equip_loudouts_specific_equip_slot = function() {
+        var _members_with_role = members_UnitGroup.get_from({role: unit_role});
         if (!struct_exists(current_unit_squad_data, "loadout")) {
             return;
         }
@@ -189,7 +186,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
 
             if (required_load != undefined && struct_exists(required_load, current_load_slot)) {
                 var _needed_required = equip_required_for_role(_unit);
-                if (_needed_required){
+                if (_needed_required) {
                     continue;
                 }
             }
@@ -198,9 +195,9 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                 equip_optional_for_role(_unit);
             }
         }
-    }
+    };
 
-    static role_squad_loadout = function(){
+    static role_squad_loadout = function() {
         required_load = undefined;
         optional_load = undefined;
 
@@ -217,17 +214,17 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
 
         //if there are required loadout items
         if (struct_exists(_loudout_data, "required")) {
-            structure_role_required_loadout(_loudout_data[$"required"]);
+            structure_role_required_loadout(_loudout_data[$ "required"]);
         }
 
-        ignore_units = [];          
+        ignore_units = [];
         for (var i = 0; i < array_length(load_out_areas); i++) {
             current_load_slot = load_out_areas[i];
             equip_loudouts_specific_equip_slot();
         }
-    }
-
+    };
 }
+
 function UnitSquad(squad_type = undefined, company = 0) constructor {
     members = [];
     type = "";
@@ -261,9 +258,8 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 			in future i'd like to tailer these to marine skill sets e.g the marines with the best ranged stats get given the best ranged equipment	
 		*/
     static sort_squad_loadout = function(from_armoury = true, to_armoury = true) {
-
-       var _sorter = new SquadEquipmentSorting(self ,from_armoury,to_armoury);
-       _sorter.sort();
+        var _sorter = new SquadEquipmentSorting(self, from_armoury, to_armoury);
+        _sorter.sort();
     };
 
     static stat_av = function(stat) {};
@@ -476,7 +472,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     };
 
     static add_member = function(comp, unit_number) {
-        if (is_struct(comp)){
+        if (is_struct(comp)) {
             unit_number = comp.marine_number;
             comp = comp.company;
         }

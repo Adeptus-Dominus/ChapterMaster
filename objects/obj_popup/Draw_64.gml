@@ -126,7 +126,7 @@ try {
             try {
                 draw_popup_options();
             } catch (_exception) {
-                handle_exception(_exception);
+                ERROR_HANDLER.handle_exception(_exception);
                 popup_default_close();
             }
         }
@@ -135,5 +135,5 @@ try {
     }
 } catch (_exception) {
     instance_destroy();
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
 }

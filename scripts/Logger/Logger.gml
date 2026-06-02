@@ -1,3 +1,13 @@
+#macro LOGGER global.logger
+
+enum eLOG_LEVEL {
+    DEBUG,
+    INFO,
+    WARNING,
+    ERROR,
+    CRITICAL,
+}
+
 /// @function Logger() constructor
 /// @description A Python-inspired logger that traces the callsite and timestamp for every message.
 function Logger() constructor {

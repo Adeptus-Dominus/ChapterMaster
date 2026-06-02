@@ -23,11 +23,11 @@ function scr_management(argument0) {
         pane.header = 2;
         pane.title = "RECLUSIUM";
 
-        var _reclusium_units = _command_company.get_from({group:[SPECIALISTS_CHAPLAINS, true, true]}, true, true);
+        var _reclusium_units = _command_company.get_from({group: [SPECIALISTS_CHAPLAINS, true, true]}, true, true);
 
         var _reclusium_units = _reclusium_units.index_roles();
 
-        pane.line = array_join(pane.line,_reclusium_units.create_plural_strings_array());
+        pane.line = array_join(pane.line, _reclusium_units.create_plural_strings_array());
 
         pane = instance_create(275, 180 - 48, obj_managment_panel);
         pane.company = 0;
@@ -35,18 +35,18 @@ function scr_management(argument0) {
         pane.header = 2;
         pane.title = "APOTHECARIUM";
 
-        var _apothecary_units = _command_company.get_from({group:[SPECIALISTS_APOTHECARIES, true, true]}, true, true);
+        var _apothecary_units = _command_company.get_from({group: [SPECIALISTS_APOTHECARIES, true, true]}, true, true);
 
         var _apothecary_units = _apothecary_units.index_roles();
 
-        pane.line = array_join(pane.line,_apothecary_units.create_plural_strings_array());
+        pane.line = array_join(pane.line, _apothecary_units.create_plural_strings_array());
 
         pane = instance_create(925, 180 - 48, obj_managment_panel);
         pane.company = 0;
         pane.manage = 15;
         pane.header = 2;
         pane.title = "ARMOURY";
-        var _armoury_units = _command_company.get_from({group:[SPECIALISTS_TECHS, true, true]}, true, true);
+        var _armoury_units = _command_company.get_from({group: [SPECIALISTS_TECHS, true, true]}, true, true);
 
         var _armoury_units = _armoury_units.index_roles();
 
@@ -59,11 +59,11 @@ function scr_management(argument0) {
         pane.header = 2;
         pane.title = "LIBRARIUM";
 
-        var _lib_units = _command_company.get_from({group:[SPECIALISTS_LIBRARIANS, true, true]}, true, true);
+        var _lib_units = _command_company.get_from({group: [SPECIALISTS_LIBRARIANS, true, true]}, true, true);
 
         var _lib_units = _lib_units.index_roles();
 
-        pane.line = array_join(pane.line,_lib_units.create_plural_strings_array());
+        pane.line = array_join(pane.line, _lib_units.create_plural_strings_array());
 
         pane = instance_create(700, 180 - 48, obj_managment_panel);
         pane.company = 0;
@@ -73,7 +73,7 @@ function scr_management(argument0) {
 
         var _command_units = _command_company.index_roles();
 
-        pane.line = array_join(pane.line,_command_units.create_plural_strings_array());
+        pane.line = array_join(pane.line, _command_units.create_plural_strings_array());
 
         // Coordinates declaration and text initiation
         var xx = 25, yy = 400 - 48, t;
@@ -90,7 +90,7 @@ function scr_management(argument0) {
 
             var _company_group = collect_company(company).index_roles();
 
-            pane.line = array_join(pane.line,_company_group.create_plural_strings_array());
+            pane.line = array_join(pane.line, _company_group.create_plural_strings_array());
 
             var num = array_create(5, 0);
             var nam = [
@@ -98,12 +98,12 @@ function scr_management(argument0) {
                 "Predator",
                 "Rhino",
                 "Land Speeder",
-                 "Whirlwind",
-            ]
+                "Whirlwind"
+            ];
             // Vehicles
             for (var i = 0; i < array_length(obj_ini.veh_role[company]); i++) {
-                for (var s = 0;s<array_length(nam);s++){
-                    if (obj_ini.veh_role[company][i] == nam[s]){
+                for (var s = 0; s < array_length(nam); s++) {
+                    if (obj_ini.veh_role[company][i] == nam[s]) {
                         num[s]++;
                     }
                 }
@@ -112,11 +112,7 @@ function scr_management(argument0) {
             for (var d = 0; d < 5; d++) {
                 if (num[d] > 0) {
                     if (d == 1) {
-                        array_push(pane.line, {
-                            str1 : nam[d],
-                            bold : true,
-                            italic : false,
-                        });
+                        array_push(pane.line, {str1: nam[d], bold: true, italic: false});
                         // obj_managment_panel.italic[q] = 1;
                     } else {
                         array_push(pane.line, nam[d], string_plural_count(nam[d], num[d], false));

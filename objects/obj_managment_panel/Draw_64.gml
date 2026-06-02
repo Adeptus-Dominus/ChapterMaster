@@ -47,8 +47,7 @@ slate_panel.inside_method = function() {
         draw_set_font(fnt_cul_14);
         draw_text(x + (panel_width / 2), y + 89, string_hash_to_newline(title));
 
-        draw_lines(x + (panel_width / 2), y + 112, 20,false)
-
+        draw_lines(x + (panel_width / 2), y + 112, 20, false);
     } else if (header == 2) {
         slate_panel.draw_top_piece = false;
         draw_sprite_stretched(spr_company_title, company, x + 40, y - 2, panel_width - 80, 4);
@@ -103,6 +102,6 @@ try {
         }
     }
 } catch (_exception) {
-    handle_exception(_exception);
+    ERROR_HANDLER.handle_exception(_exception);
     scr_toggle_manage();
 }

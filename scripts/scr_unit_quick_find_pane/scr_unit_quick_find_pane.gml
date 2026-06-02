@@ -32,16 +32,7 @@ function UnitQuickFindPanel() constructor {
     var xx = main_panel.XX;
     var yy = main_panel.YY;
 
-    fleet_table = new Table({
-        x1:               xx + 10,
-        y1:               yy + 50,
-        x2:               xx + main_panel.width,
-        y2:               yy + main_panel.height,
-        headings:         ["Capitals", "Frigates", "Escorts", "Location"],
-        row_key_draw:     ["capitals", "frigates", "escorts", "location"],
-        set_column_widths: [70,         70,          70,        100       ],
-        row_h:            20,
-    });
+    fleet_table = new Table({x1: xx + 10, y1: yy + 50, x2: xx + main_panel.width, y2: yy + main_panel.height, headings: ["Capitals", "Frigates", "Escorts", "Location"], row_key_draw: ["capitals", "frigates", "escorts", "location"], set_column_widths: [70, 70, 70, 100], row_h: 20});
 
     static has_troops = function(name) {
         return struct_exists(garrison_log, name);
@@ -147,24 +138,22 @@ function UnitQuickFindPanel() constructor {
                         evaluate_vehicle_for_garrison_log(co, u);
                     }
                 } catch (_exception) {
-                    handle_exception(_exception);
+                    ERROR_HANDLER.handle_exception(_exception);
                 }
             }
             update_mission_log();
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
     };
 
     // ── UPDATER  (call in Step or whenever fleet data changes) ────────────────────
     static update_fleet_table = function() {
-
-        var xx   = main_panel.XX;
-        var yy   = main_panel.YY;
+        var xx = main_panel.XX;
+        var yy = main_panel.YY;
         var _rows = [];
 
         for (var i = start_fleet; i < instance_number(obj_p_fleet); i++) {
-
             var _cur_fleet = instance_find(obj_p_fleet, i);
 
             // ── Resolve location string ───────────────────────────────────────────
@@ -173,82 +162,68 @@ function UnitQuickFindPanel() constructor {
             var _point_data = _cur_fleet.point_breakdown;
 
             if (_cur_fleet.action == "Lost") {
-                _loc  = "Lost";
+                _loc = "Lost";
                 _zoomable = false;
-
             } else if (string_count("crusade", _cur_fleet.action)) {
                 _loc = "Crusading";
                 _zoomable = false;
-
             } else if (_cur_fleet.action == "move") {
                 _loc = "Warp Travel";
-
             } else {
                 var _near_star = instance_nearest(_cur_fleet.x, _cur_fleet.y, obj_star);
                 _loc = _near_star.name;
                 var _sys_points = obj_controller.specialist_point_handler.point_breakdown.systems;
                 if (struct_exists(_sys_points, _near_star.name)) {
                     _point_data = _sys_points[$ _near_star.name][0];
-                }                
+                }
             }
 
             // ── Build row struct, capturing per-iteration values via method() ─────
             var _row = {
                 capitals: _cur_fleet.capital_number,
                 frigates: _cur_fleet.frigate_number,
-                escorts:  _cur_fleet.escort_number,
+                escorts: _cur_fleet.escort_number,
                 location: _loc,
                 parent: self,
                 fleet: _cur_fleet,
-                point_data : _point_data
+                point_data: _point_data,
             };
-            
-            _row.hover = method(
-                _row,
-                function() {
-                    obj_controller.location_viewer.hovered_fleet_data = point_data;
-                    tooltip_draw("left click to view");
-                }
-            )
+
+            _row.hover = method(_row, function() {
+                obj_controller.location_viewer.hovered_fleet_data = point_data;
+                tooltip_draw("left click to view");
+            });
 
             // Click to pan camera — only when location is meaningful
             if (_zoomable) {
-                _row.click_left = method(
-                    _row,
-                    function() {
-                        set_map_pan_to_loc(fleet);
-                    }
-                );
+                _row.click_left = method(_row, function() {
+                    set_map_pan_to_loc(fleet);
+                });
             }
 
             array_push(_rows, _row);
         }
 
-        fleet_table.update({row_data: _rows });
-    }
-    static draw_fleet_area =  function(){
+        fleet_table.update({row_data: _rows});
+    };
+
+    static draw_fleet_area = function() {
         var xx = main_panel.XX;
         var yy = main_panel.YY;
 
-        if (fleet_table.row_count() != instance_number(obj_p_fleet)){
-            update_fleet_table()
+        if (fleet_table.row_count() != instance_number(obj_p_fleet)) {
+            update_fleet_table();
         }
 
-        fleet_table.update({
-            x1  :  xx + 40,
-            y1  :  yy + 50,
-            y2 : yy + 50 + main_panel.height,
-            colour : c_white,
-            font : fnt_40k_14
-        });
-        
+        fleet_table.update({x1: xx + 40, y1: yy + 50, y2: yy + 50 + main_panel.height, colour: c_white, font: fnt_40k_14});
+
         fleet_table.draw();
 
         // ── Hover detail slate (drawn after table so it renders on top) ───────────
         if (hovered_fleet_data != undefined) {
             var _fpd = hovered_fleet_data;
-            var _sx  = main_panel.XX + main_panel.width - 10;
-            var _sy  = yy + 90 + 18;
+            var _sx = main_panel.XX + main_panel.width - 10;
+            var _sy = yy + 90 + 18;
             detail_slate.draw(_sx, _sy, 1.5, 1.5);
 
             draw_set_font(fnt_40k_12i);
@@ -259,7 +234,7 @@ function UnitQuickFindPanel() constructor {
             draw_text(_sx + 240, _sy + 10, "forge point\nuse");
             draw_text(_sx + 320, _sy + 10, "apothecary\npoint total");
             draw_text(_sx + 400, _sy + 10, "apothecary\npoint use");
-            draw_text(_sx + 60,  _sy + 50, "Orbiting");
+            draw_text(_sx + 60, _sy + 50, "Orbiting");
 
             // Values
             var _vy = _sy + 50;
@@ -268,80 +243,82 @@ function UnitQuickFindPanel() constructor {
             draw_text(_sx + 320, _vy, _fpd.heal_points);
             draw_text(_sx + 400, _vy, _fpd.heal_points_use);
 
-            hovered_fleet_data = undefined;   // reset each frame
+            hovered_fleet_data = undefined; // reset each frame
         }
-    }
+    };
+
     update_mission_log = function() {
         mission_log = [];
         var temp_log = [];
         var p, i, problems;
-        with(obj_star){
-            for (i=1;i<=planets;i++){
+        with (obj_star) {
+            for (i = 1; i <= planets; i++) {
                 problems = p_problem[i];
-                for (p = 0;p<array_length(problems);p++){
-                    if (problems[p] == ""){
+                for (p = 0; p < array_length(problems); p++) {
+                    if (problems[p] == "") {
                         continue;
                     }
-                    if (problem_has_key_and_value(i,p,"stage","preliminary")) then continue;
-                    var mission_explain =  mission_name_key(problems[p]);
-                    if (mission_explain != "none"){
+                    if (problem_has_key_and_value(i, p, "stage", "preliminary")) {
+                        continue;
+                    }
+                    var mission_explain = mission_name_key(problems[p]);
+                    if (mission_explain != "none") {
                         var _data = {
-                            system  :  name,
-                            mission  :  mission_explain,
-                            time  :  p_timer[i][p],
-                            planet  :  i,
-                            system_id : id
+                            system: name,
+                            mission: mission_explain,
+                            time: p_timer[i][p],
+                            planet: i,
+                            system_id: id,
                         };
-                        
-                        _data.click_left = method(_data,function(){
+
+                        _data.click_left = method(_data, function() {
                             set_map_pan_to_loc(system_id);
                         });
 
-                        array_push(temp_log,_data);
+                        array_push(temp_log, _data);
                     }
-        
                 }
             }
         }
-        with (obj_en_fleet){
-            if (array_length(events)){
-                for (var i=0;i<array_length(events);i++){
+        with (obj_en_fleet) {
+            if (array_length(events)) {
+                for (var i = 0; i < array_length(events); i++) {
                     var _event = events[i];
-                    if (struct_exists(_event, "turn_end")){
-                        switch (_event.turn_end){
+                    if (struct_exists(_event, "turn_end")) {
+                        switch (_event.turn_end) {
                             //this is being pre seeded for a later coming feature set
-                            case "deliver_trophy_end_turn_check" : 
+                            case "deliver_trophy_end_turn_check":
                                 var _mission = $"Deliver Trophy Guard";
                                 var _sys = fleets_next_location();
                                 var _mission_data = {
-                                    mission  :  _mission,
-                                    system  :  _sys.name,
-                                    system_id  :  _sys.id,
-                                    target  :  id,
-                                    important_person  :  _event.fleetevent_data.trophy_owner,
-                                    person_name  :  _event.fleetevent_data.delivering_marine,
-                                    planet  :  0,
-                                    start_system  :  _event.fleetevent_data.system,
-                                    time  :  _event.timer,
+                                    mission: _mission,
+                                    system: _sys.name,
+                                    system_id: _sys.id,
+                                    target: id,
+                                    important_person: _event.fleetevent_data.trophy_owner,
+                                    person_name: _event.fleetevent_data.delivering_marine,
+                                    planet: 0,
+                                    start_system: _event.fleetevent_data.system,
+                                    time: _event.timer,
                                 };
 
-                                _mission_data.click_left = method(_mission_data,function(){
+                                _mission_data.click_left = method(_mission_data, function() {
                                     set_map_pan_to_loc(system_id);
                                 });
 
-                                _mission_data.hover = method(_mission_data,function(){
+                                _mission_data.hover = method(_mission_data, function() {
                                     tooltip_draw($"You are to have {person_name} deliver trophy hunted on {start_system} to the {start_system} regiments\n\nLeft click to see target fleet intercept system right click to view the trophy bearing marine {person_name}");
                                 });
 
-                                _mission_data.click_right = method(_mission_data,function(){
+                                _mission_data.click_right = method(_mission_data, function() {
                                     var _unit = fetch_unit_uid(important_person);
-                                    if (_unit != "none"){
+                                    if (_unit != "none") {
                                         var _unit_l = [_unit];
                                         group_selection(_unit_l);
-                                    };
+                                    }
                                 });
 
-                                array_push(temp_log,_mission_data);
+                                array_push(temp_log, _mission_data);
                                 break;
                         }
                     }
@@ -352,14 +329,25 @@ function UnitQuickFindPanel() constructor {
         var xx = main_panel.XX;
         var yy = main_panel.YY;
         var _data = {
-            x1  :  xx+60,
-            y1  :  yy+50,
-            y2  :  yy  + main_panel.height + 50,
-            set_column_widths  :  [70,150],
-            headings  :  ["Location", "Mission","Time\nRemaining"],
-            row_data  :  mission_log,
-            row_key_draw  :  ["system","mission","time"],
-        }
+            x1: xx + 60,
+            y1: yy + 50,
+            y2: yy + main_panel.height + 50,
+            set_column_widths: [
+                70,
+                150
+            ],
+            headings: [
+                "Location",
+                "Mission",
+                "Time\nRemaining"
+            ],
+            row_data: mission_log,
+            row_key_draw: [
+                "system",
+                "mission",
+                "time"
+            ],
+        };
         mission_table = new Table(_data);
     };
 
@@ -478,10 +466,7 @@ function UnitQuickFindPanel() constructor {
                 }
             }
         } else if (view_area == "missions") {
-                    mission_table.update({
-                x1  :  xx+35,
-                y1  :  yy+50,
-            });
+            mission_table.update({x1: xx + 35, y1: yy + 50});
             mission_table.draw();
         }
     };
@@ -550,9 +535,8 @@ function UnitQuickFindPanel() constructor {
                 }
             }
             pop_draw_return_values();
-        } catch(_exception){
-            //dangerous to handle wiljustmake game unplayable if crash does occur
         }
+        catch (_exception) {} //dangerous to handle wiljustmake game unplayable if crash does occur
     };
 }
 
@@ -573,6 +557,7 @@ function HoverBox() constructor {
     };
 }
 
+/// @self Asset.GMObject.obj_controller
 function exit_adhoc_manage() {
     scr_toggle_manage();
     if (struct_exists(selection_data, "system") && instance_exists(selection_data.system)) {
@@ -580,6 +565,7 @@ function exit_adhoc_manage() {
     }
 }
 
+/// @self Asset.GMObject.obj_controller
 function update_garrison_manage() {
     location_viewer.update_garrison_log();
     var _selection = [];
@@ -629,6 +615,7 @@ function update_general_manage_view() {
     }
 }
 
+/// @self Asset.GMObject.obj_controller
 function toggle_selection_borders() {
     for (var p = 0; p < array_length(display_unit); p++) {
         if ((man_sel[p] == 1) && (man[p] == "man")) {
@@ -643,7 +630,7 @@ function toggle_selection_borders() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_controller
 function add_bionics_selection() {
     if (scr_item_count("Bionics") <= 0) {
         return;
@@ -669,6 +656,7 @@ function add_bionics_selection() {
     }
 }
 
+/// @self Asset.GMObject.obj_controller
 function jail_selection() {
     for (var f = 0; f < array_length(display_unit); f++) {
         if (man[f] != "man" || !man_sel[f]) {
@@ -694,6 +682,7 @@ function jail_selection() {
     alarm[6] = 7;
 }
 
+/// @self Asset.GMObject.obj_controller
 function load_selection() {
     if (man_size > 0 && !location_out_of_player_control(selecting_location)) {
         scr_company_load(selecting_location);
@@ -702,6 +691,7 @@ function load_selection() {
     }
 }
 
+/// @self Asset.GMObject.obj_controller
 function unload_selection() {
     if (man_size > 0 && obj_controller.selecting_ship >= 0 && !instance_exists(obj_star_select) && !location_out_of_player_control(selecting_location) && selecting_location != "Warp") {
         cooldown = 8000;
@@ -731,6 +721,7 @@ function unload_selection() {
     }
 }
 
+/// @self Asset.GMObject.obj_controller
 function reset_selection_equipment() {
     var _unit;
     for (var f = 0; f < array_length(display_unit); f++) {
@@ -744,6 +735,7 @@ function reset_selection_equipment() {
     }
 }
 
+/// @self Asset.GMObject.obj_controller
 function add_tag_to_selection(new_tag) {
     var _unit;
     for (var f = 0; f < array_length(display_unit); f++) {
@@ -757,6 +749,7 @@ function add_tag_to_selection(new_tag) {
     }
 }
 
+/// @self Asset.GMObject.obj_controller
 function promote_selection() {
     if ((sel_promoting == 1) && (instance_number(obj_popup) == 0)) {
         var pip = instance_create(0, 0, obj_popup);
@@ -785,6 +778,7 @@ function promote_selection() {
 }
 
 //to be run in obj_star_select
+/// @self Asset.GMObject.obj_controller
 function setup_planet_mission_group() {
     man_sel = [];
     display_unit = [];

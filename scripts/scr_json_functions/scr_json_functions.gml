@@ -23,7 +23,7 @@ function json_to_gamemaker(_json_path, _func) {
             throw $"File {_json_path} not found!";
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     } finally {
         if (is_undefined(file_buffer) == false) {
             buffer_delete(file_buffer);

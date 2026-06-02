@@ -591,7 +591,7 @@ function ArtifactStruct(Index) constructor {
                 }
             }
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
         bearer = false;
         obj_ini.artifact_equipped[index] = false;
@@ -844,7 +844,7 @@ function corrupt_artifact_collectors(last_artifact) {
             }
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
@@ -910,7 +910,7 @@ function equip_artifact_popup_setup() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_popup
 function equip_artifact_popup_draw() {
     var arti = obj_ini.artifact_struct[obj_controller.menu_artifact];
     main_slate.draw_with_dimensions();

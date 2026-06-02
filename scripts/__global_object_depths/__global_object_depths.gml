@@ -1,6 +1,3 @@
-// This will execute before the first room of the game executes.
-gml_pragma("global", "__global_object_depths()");
-
 // @stitch-ignore-next-line: unused-function
 function __global_object_depths() {
     // Initialise the global array that allows the lookup of the depth of a given object

@@ -7,7 +7,8 @@ enum eDROP_TYPE {
     PURGEASSASSINATE,
 }
 
-function drop_select_unit_selection(){
+/// @self Asset.GMObject.obj_drop_select
+function drop_select_unit_selection() {
     w = 660;
     h = 520;
     // Center of the screen
@@ -82,19 +83,15 @@ function drop_select_unit_selection(){
     _buttons_y += 21;
 
     // Ship buttons;
-    roster.ship_multi_selector.update({
-        x1 : _buttons_x,
-        y1 : _buttons_y
-    });
+    roster.ship_multi_selector.update({x1: _buttons_x, y1: _buttons_y});
 
     roster.ship_multi_selector.draw();
-
 
     if (roster.select_all_ships.draw()) {
         roster.ship_multi_selector.select_all();
     }
 
-    if (roster.ship_multi_selector.changed){
+    if (roster.ship_multi_selector.changed) {
         roster.update_roster();
     }
 
@@ -384,7 +381,7 @@ function drop_select_unit_selection(){
 function drop_select_draw() {
     with (obj_drop_select) {
         if (purge != eDROP_TYPE.PURGESELECT) {
-           drop_select_unit_selection();
+            drop_select_unit_selection();
         }
 
         // Purge shit happens bellow;
@@ -467,7 +464,7 @@ function drop_select_draw() {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_drop_select
 function collect_local_units() {
     //
     // I think this script is used to count local forces. l_ meaning local.

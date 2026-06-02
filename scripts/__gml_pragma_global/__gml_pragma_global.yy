@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"BugReporter",
+  "%Name":"__gml_pragma_global",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"BugReporter",
+  "name":"__gml_pragma_global",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

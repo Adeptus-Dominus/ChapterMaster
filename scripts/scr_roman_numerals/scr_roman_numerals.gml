@@ -56,8 +56,7 @@ function int_to_roman(_num) {
     return _result;
 }
 
-
-function irandom_numeral(max_val){
+function irandom_numeral(max_val) {
     var _bounded_max = clamp(max_val, 1, 100);
     return int_to_roman(irandom_range(1, _bounded_max));
 }

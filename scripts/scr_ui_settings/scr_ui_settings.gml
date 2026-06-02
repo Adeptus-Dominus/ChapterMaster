@@ -1,3 +1,4 @@
+/// @self Asset.GMObject.obj_controller
 /// @mixin
 function setup_ui_chapter_settings(){
     settings_buttons_ui_components = {};

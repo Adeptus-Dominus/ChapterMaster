@@ -1,6 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
+/// @self Asset.GMObject.obj_pnunit
 function add_second_profiles_to_stack(weapon, head_role = false, unit = "none") {
     if (array_length(weapon.second_profiles) > 0) {
         //for adding in intergrated weaponry
@@ -22,6 +23,7 @@ function add_second_profiles_to_stack(weapon, head_role = false, unit = "none") 
     }
 }
 
+/// @self Asset.GMObject.obj_pnunit
 function add_data_to_stack(stack_index, weapon, unit_damage = false, head_role = false, unit = "none") {
     if (unit_damage) {
         att[stack_index] += unit_damage;
@@ -58,6 +60,7 @@ function add_data_to_stack(stack_index, weapon, unit_damage = false, head_role =
     }
 }
 
+/// @self Asset.GMObject.obj_pnunit
 function find_stack_index(weapon_name, head_role = false, unit = "none") {
     final_index = -1;
     var allow = false;
@@ -78,6 +81,7 @@ function find_stack_index(weapon_name, head_role = false, unit = "none") {
     return final_index;
 }
 
+/// @self Asset.GMObject.obj_pnunit
 function player_head_role_stack(stack_index, unit) {
     wep_title[stack_index] = unit.role();
     if (!array_contains(wep_solo[stack_index], unit.name())) {
@@ -85,7 +89,7 @@ function player_head_role_stack(stack_index, unit) {
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_pnunit
 function scr_player_combat_weapon_stacks() {
     if (defenses == 1) {
         var i = 0;
@@ -345,6 +349,7 @@ function scr_player_combat_weapon_stacks() {
     }
 }
 
+/// @self Asset.GMObject.obj_ncombat
 function set_up_player_blocks_turn() {
     if (instance_exists(obj_pnunit)) {
         with (obj_pnunit) {
@@ -356,6 +361,7 @@ function set_up_player_blocks_turn() {
     turn_count++;
 }
 
+/// @self Asset.GMObject.obj_ncombat
 function reset_combat_message_arrays() {
     messages = 0;
     messages_to_show = 8;
@@ -374,6 +380,7 @@ function reset_combat_message_arrays() {
     messages_shown = 0;
 }
 
+/// @self Asset.GMObject.obj_pnunit
 function scr_add_unit_to_roster(unit, is_local = false, is_ally = false) {
     array_push(unit_struct, unit);
     array_push(marine_co, unit.company);

@@ -85,7 +85,7 @@ function destroy_empty_column(_target_column) {
 
 /// @function check_dead_marines
 /// @description Checks if the marine is dead and then runs various related code
-/// @mixin
+/// @self Asset.GMObject.obj_pnunit
 function check_dead_marines(unit_struct, unit_index) {
     var unit_lost = false;
 
@@ -118,6 +118,8 @@ function check_dead_marines(unit_struct, unit_index) {
     return unit_lost;
 }
 
+/// @self Asset.GMObject.obj_pnunit
+/// @param {Asset.GMObject.obj_pnunit} target_object
 function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position) {
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //
@@ -174,11 +176,11 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
             }
         }
     } catch (_exception) {
-        handle_exception(_exception);
+        ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_pnunit
 function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
     var _armour_pierce = apa[_weapon_index];
     var _armour_mod = 0;
@@ -281,7 +283,7 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
     return;
 }
 
-/// @mixin
+/// @self Asset.GMObject.obj_pnunit
 function damage_vehicles(_damage_data, _shots, _damage, _weapon_index) {
     var _armour_pierce = apa[_weapon_index];
     var _armour_mod = 0;
