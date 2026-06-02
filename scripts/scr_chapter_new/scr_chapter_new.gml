@@ -30,7 +30,7 @@ function ChapterData() constructor {
     home_planets = 1;
 
     flagship_name = global.name_generator.GenerateFromSet("imperial_ship");
-    monastary_name = "";
+    monastery_name = "";
     advantages = array_create(9);
     disadvantages = array_create(9);
     discipline = "librarius"; // todo convert to enum
