@@ -9,7 +9,7 @@
         "description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and respectable Twin-Linked Bolters for offensive action.",
         "hp_mod": {
             "artifact": 35,
-            "master_crafted": 25,
+            "master_crafted": 30,
             "standard": 25
         },
         "second_profiles": [
@@ -27,13 +27,12 @@
         },
         "description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and respectable Twin-Linked Bolters for offensive action. Sports an additional sidecar with a heavy weapon of choice [WIP only HB present].",
         "hp_mod": {
-            "artifact": 35,
-            "master_crafted": 25,
-            "standard": 25
+            "artifact": 50,
+            "master_crafted": 40,
+            "standard": 35
         },
         "second_profiles": [
-            "Twin Linked Bolters",
-            "Heavy Bolter"
+            "Twin Linked Bolters"
         ],
         "value": 35,
         "requires_to_forge": ["combi_1"]
