@@ -542,7 +542,7 @@ function scr_select_company_settings_ui(){
         menu = eMENU.COMPANY_SETTINGS;
         settings = i;
         if (settings != 0){
-            squad_arrangement = get_compay_squad_arrangement(settings);
+            squad_arrangement = new SquadArrangementEditor(settings);
         }
     }
 }

@@ -54,8 +54,24 @@ function standard_loc_data() {
 // --------------------
 
 function Box(data) constructor {
+    standard_loc_data();
     colour = CM_GREEN_COLOR;
-    move_data_to_current_scope(data, true);
+
+    static update = function(data){
+        move_data_to_current_scope(data, true);
+
+        if (w == 0 && x2 > 0){
+            w = x2 - x1;
+        }
+        if (h == 0 && y2 > 0){
+            w = y2 - y1;
+        }
+
+        y2 = y1 + h;
+        x2 = x1 + w;
+    }
+
+    update(data);
 
     static hit = function() {
         return scr_hit(x1, y1, x2, y2);
@@ -165,34 +181,67 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
     };
 }
 
-function ValueShifter(value_text, data){
+function ValueShifter(value_text, data) constructor{
     standard_loc_data();
+    string_tag = value_text;
+    max_clamp = 1000;
+    min_clamp = -1000;
     reactive_string = new ReactiveString(value_text, {halign : fa_center});
 
     current_value = 0;
     shift_value = 1;
 
-    decrease_button = new UnitButtonObject({label:"-", color : c_red});
-    increase_button = new UnitButtonObject({label:"-", color : c_red});
+
+    draw_set_font(fnt_40k_14b);
+    var _but_width = string_height("-") + 8;
+
+    decrease_button = new UnitButtonObject({
+        label:"-", 
+        color : c_red,
+        tooltip : "click to decrease",
+        set_width : true,
+        w : _but_width
+    });
+
+    increase_button = new UnitButtonObject({
+        label:"-", 
+        color : c_green,
+        tooltip : "click to increase",
+        set_width : true,
+        w : _but_width
+    });
 
     static update = function(data = {}){
         move_data_to_current_scope(data, true);
-        reactive_string.update({x1,y1});
+        reactive_string.update({
+            x1, 
+            y1, 
+            text : $"{string_tag}:{current_value}"
+        });
 
         var _react_width_diff = (reactive_string.w / 2) + 10;
-        decrease_button.update({x1 : x1 - _react_width_diff, y1 : y1});
-        increase_button.update({x1 : x1 + _react_width_diff, y1 : y1});
+        decrease_button.update({
+            x1 : x1 - _react_width_diff - decrease_button.w, 
+            y1 : y1
+        });
+        increase_button.update({
+            x1 : x1 + _react_width_diff, 
+            y1 : y1
+        });
     }
 
     update(data)
 
     static draw = function(){
+        update();
         reactive_string.draw();
-        if (decrease_button.draw()){
+        var _allow = current_value > min_clamp;
+        if (decrease_button.draw(_allow)){
             current_value -= shift_value;
         }
 
-        if (increase_button.draw()){
+        _allow = current_value < max_clamp;
+        if (increase_button.draw(_allow)){
             current_value += shift_value;
         }
     }
