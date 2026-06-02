@@ -267,7 +267,7 @@ try {
         }
     } else if (menu == eMENU.LIBRARIUM) {
         scr_librarium_gui();
-    } else if (menu >= eMENU.SETTINGS || menu <= eMENU.FORMATIONS_SETTINGS) {
+    } else if (menu >= eMENU.SETTINGS && menu <= eMENU.FORMATIONS_SETTINGS) {
         scr_ui_settings();
     }
 } catch (_exception) {
