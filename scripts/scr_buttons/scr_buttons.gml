@@ -356,7 +356,7 @@ function UnitButtonObject(data = false) constructor {
     keystroke = false;
     active = true;
     tooltip = "";
-    bind_method = "";
+    bind_method = undefined;
     bind_scope = false;
     set_width = false;
     style = "standard";
@@ -884,7 +884,7 @@ function MultiSelect(options_array, title, data = {}) constructor {
     x_gap = 10;
     y_gap = 5;
     standard_loc_data();
-    on_change = false;
+    on_change = undefined;
     active_col = CM_GREEN_COLOR;
     inactive_col = c_gray;
     max_width = 0;
