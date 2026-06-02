@@ -13,26 +13,27 @@ function setup_ui_chapter_settings(){
     settings_buttons_ui_components.formation_name_input = new TextBarArea(600,66);
 
     settings_buttons_ui_components.formation_radio = new RadioSet([
-        {
-            str1: "Raid", 
-            font: fnt_40k_30b, 
-            tooltip: "Can only be used in Raids. Prevents the use of all vehicles aside from Dreadnoughts and Land Speeders. Starts in melee.",
-            value : "raid",
-            style : "box"
-        },
-        {
-            str1: "Attack", 
-            font: fnt_40k_30b, 
-            tooltip: "Can't be used in Raids. Can use any vehicles.",
-            value : "attack",
-            style : "box"
-        },
+            {
+                str1: "Raid", 
+                font: fnt_40k_30b, 
+                tooltip: "Can only be used in Raids. Prevents the use of all vehicles aside from Dreadnoughts and Land Speeders. Starts in melee.",
+                value : "raid",
+                style : "box"
+            },
+            {
+                str1: "Attack", 
+                font: fnt_40k_30b, 
+                tooltip: "Can't be used in Raids. Can use any vehicles.",
+                value : "attack",
+                style : "box"
+            },
+        ]
         "Formation",
         {
             x1 : 757,
             y1 : 120
         }
-    ]);
+    );
 
     settings_buttons_ui_components.attack_box = new Box({
         x1 : 35, 
