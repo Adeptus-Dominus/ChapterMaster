@@ -402,7 +402,10 @@ function scr_ui_settings() {
         if (command_set[22] == 1){
             _post_board.allow_changes = false;
             _post_board.current_selection = -1;
-            command_set[23] = false
+            command_set[23] = false;
+            command_set[24] = false;
+        } else {
+            _post_board.allow_changes = true;
         }
 
         _post_board.draw();
