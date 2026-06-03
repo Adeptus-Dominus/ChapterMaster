@@ -745,7 +745,7 @@ function ComplexSet(_unit) constructor {
         shader_reset();
 
         surface_set_target(global.base_component_surface);
-        draw_clear_alpha(c_white, 0);
+        draw_clear_alpha(c_black, 0);
 
         shader_set(armour_texture);
         shader_set_uniform_i(texture_use_shadow_uniform, shadow_enabled);

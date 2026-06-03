@@ -165,7 +165,7 @@ function ScrollableContainer(_width, _height) constructor {
             surface_height = surface_get_height(surface);
         }
         surface_set_target(surface);
-        draw_clear_alpha(c_white, 0);
+        draw_clear_alpha(c_black, 0);
     };
 
     mouse_binds = [];

@@ -36,7 +36,7 @@ enum eARMOUR_TYPE {
 
 function surface_clear_and_free(_surface) {
     surface_set_target(_surface);
-    draw_clear_alpha(c_white, 0);
+    draw_clear_alpha(c_black, 0);
     surface_reset_target();
     surface_free(_surface);
 }
