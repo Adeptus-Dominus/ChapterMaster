@@ -5,7 +5,7 @@ varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
 uniform float highlight;
-vec3 light_or_dark(vec3 m_colour, float shade){
+vec3 light_or_dark(vec3 m_colour, float shade) {
     return vec3((m_colour.r * shade) + 0.01, m_colour.g * shade, m_colour.b * shade);
 }
 

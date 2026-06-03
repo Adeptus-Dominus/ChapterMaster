@@ -14,7 +14,7 @@ void main() {
     vec4 col = texture2D(gm_BaseTexture, v_vTexcoord);
 
     if (col.rgb == vec3(_200COL, 0.0, 0.0)) {
-        col.rgb = replace_colour.rgb;        
+        col.rgb = replace_colour.rgb;
     }
 
     gl_FragColor = v_vColour * col;

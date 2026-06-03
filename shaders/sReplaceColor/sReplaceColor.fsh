@@ -27,7 +27,7 @@ uniform sampler2D background_texture;
 uniform sampler2D armour_texture;
 
 vec3 light_or_dark(vec3 m_colour, float shade) {
-  return vec3((m_colour.r * shade) + 0.01, m_colour.g * shade, m_colour.b * shade);
+    return vec3((m_colour.r * shade) + 0.01, m_colour.g * shade, m_colour.b * shade);
 }
 
 void main() {
@@ -39,7 +39,7 @@ void main() {
     const vec3 robes_darkness_2 = vec3(148.0 / 255.0, 132.0 / 255.0, 108.0 / 255.0);
 
     vec4 col = texture2D(gm_BaseTexture, v_vTexcoord);
-    if (u_blend_modes == 3 && (col.rgb == f_Colour1.rgb || col.rgb == f_Colour2.rgb)){
+    if (u_blend_modes == 3 && (col.rgb == f_Colour1.rgb || col.rgb == f_Colour2.rgb)) {
         vec4 background = texture2D(background_texture, v_vTexcoord);
         if (background.rgb == helm_replace.rgb || background.rgb == helm_second_replace.rgb || helm_lense_replace.rgb == helm_replace.rgb) {
             col.rgb = background.rgb;
@@ -48,10 +48,9 @@ void main() {
         col.rgb = f_Replace1.rgb;
     } else if (col.rgb == f_Replace1.rgb && u_blend_modes == 2) {//draw textured armour
         vec2 i = vec2(5.0 * v_vTexcoord.x, 5.0 * v_vTexcoord.y);
-        while (i.x > 1.0){
+        while (i.x > 1.0) {
             i.x -= 1.0;
-        }
-        while (i.y > 1.0) {
+        } while (i.y > 1.0) {
             i.y -= 1.0;
         }
         vec4 armour_texture_col = texture2D(armour_texture, i);
@@ -95,7 +94,7 @@ void main() {
             col.a = 0.0;
         } else if (background_col.rgb == robe_dark.rgb) {
             col.a = 0.0;
-        } else if ((background_col.rgb != f_Replace1.rgb) && (background_col.rgb != f_Replace2.rgb) && (background_col.rgb != f_Replace3.rgb) && background_col.a > 0.0 ) {
+        } else if ((background_col.rgb != f_Replace1.rgb) && (background_col.rgb != f_Replace2.rgb) && (background_col.rgb != f_Replace3.rgb) && background_col.a > 0.0) {
             col.a = 0.0;
         }
     }

@@ -39,35 +39,25 @@ vec3 remapRightToLeft(vec3 col) {
     // === Right → Left body mapping ===
     if (col == vec3(0.0, 0.0, 1.0)) {            // right_head
         return vec3(0.0, 0.0, _128COL);          // left_head
-    }
-    else if (col == vec3(_181COL, 0.0, 1.0)) {   // right_backpack
+    } else if (col == vec3(_181COL, 0.0, 1.0)) {   // right_backpack
         return vec3(_104COL, 0.0, _168COL);      // left_backpack
-    }
-    else if (col == vec3(_64COL, _128COL, 1.0)) { // right_muzzle
+    } else if (col == vec3(_64COL, _128COL, 1.0)) { // right_muzzle
         return vec3(_128COL, _64COL, 1.0);       // left_muzzle
-    }
-    else if (col == vec3(1.0, _20COL, _147COL)) { // right_chest
+    } else if (col == vec3(1.0, _20COL, _147COL)) { // right_chest
         return vec3(_128COL, 0.0, _128COL);      // left_chest
-    }
-    else if (col == vec3(0.0, _128COL, _128COL)) { // right_trim
+    } else if (col == vec3(0.0, _128COL, _128COL)) { // right_trim
         return vec3(1.0, _128COL, 0.0);          // left_trim
-    }
-    else if (col == vec3(1.0, 1.0, 1.0)) {       // right_pauldron
+    } else if (col == vec3(1.0, 1.0, 1.0)) {       // right_pauldron
         return vec3(1.0, 1.0, 0.0);              // left_pauldron
-    }
-    else if (col == vec3(0.0, _128COL, 0.0)) {   // right_leg_upper
+    } else if (col == vec3(0.0, _128COL, 0.0)) {   // right_leg_upper
         return vec3(1.0, _112COL, _170COL);      // left_leg_upper
-    }
-    else if (col == vec3(_214COL, _194COL, 1.0)) { // right_leg_knee
+    } else if (col == vec3(_214COL, _194COL, 1.0)) { // right_leg_knee
         return vec3(1.0, 0.0, 0.0);              // left_leg_knee
-    }
-    else if (col == vec3(_165COL, _84COL, _24COL)) { // right_leg_lower
+    } else if (col == vec3(_165COL, _84COL, _24COL)) { // right_leg_lower
         return vec3(_128COL, 0.0, 0.0);          // left_leg_lower
-    }
-    else if (col == vec3(_138COL, _218COL, _140COL)) { // right_arm
+    } else if (col == vec3(_138COL, _218COL, _140COL)) { // right_arm
         return vec3(1.0, _230COL, _140COL);      // left_arm
-    }
-    else if (col == vec3(_46COL, _169COL, _151COL)) { // right_hand
+    } else if (col == vec3(_46COL, _169COL, _151COL)) { // right_hand
         return vec3(1.0, _160COL, _112COL);      // left_hand
     }
 
@@ -83,10 +73,18 @@ void main() {
     }
 
     // Intel fix — snap near-128 values to exact 128
-    if (col_orig.r >= _127_25COL && col_orig.r <= _128_75COL) { col_orig.r = _128COL; }
-    if (col_orig.g >= _127_25COL && col_orig.g <= _128_75COL) { col_orig.g = _128COL; }
-    if (col_orig.b >= _127_25COL && col_orig.b <= _128_75COL) { col_orig.b = _128COL; }
-    if (col_orig.a >= _127_25COL && col_orig.a <= _128_75COL) { col_orig.a = _128COL; }
+    if (col_orig.r >= _127_25COL && col_orig.r <= _128_75COL) {
+        col_orig.r = _128COL;
+    }
+    if (col_orig.g >= _127_25COL && col_orig.g <= _128_75COL) {
+        col_orig.g = _128COL;
+    }
+    if (col_orig.b >= _127_25COL && col_orig.b <= _128_75COL) {
+        col_orig.b = _128COL;
+    }
+    if (col_orig.a >= _127_25COL && col_orig.a <= _128_75COL) {
+        col_orig.a = _128COL;
+    }
 
     vec4 col = col_orig;
     col.rgb = remapRightToLeft(col.rgb);

@@ -11,7 +11,6 @@ uniform sampler2D armour_texture;
 uniform int blend;
 uniform vec3 blend_colour;
 
-
 // === SHADOW AUGMENT: new uniforms ===
 uniform sampler2D shadow_texture;
 uniform int use_shadow;
@@ -19,26 +18,17 @@ varying vec2 v_vShadowCoord;
 
 // === Utility: RGB <-> HSV ===
 vec3 rgb2hsv(vec3 c) {
-    vec4 K = vec4(0.0, -1.0/3.0, 2.0/3.0, -1.0);
-    vec4 p = mix(vec4(c.bg, K.wz),
-                 vec4(c.gb, K.xy),
-                 step(c.b, c.g));
-    vec4 q = mix(vec4(p.xyw, c.r),
-                 vec4(c.r, p.yzx),
-                 step(p.x, c.r));
+    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
 
     float d = q.x - min(q.w, q.y);
     float e = 1.0e-10;
-    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)),
-                d / (q.x + e),
-                q.x);
+    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
 }
 
 vec3 hsv2rgb(vec3 c) {
-    vec3 rgb = clamp(abs(mod(c.x*6.0 + vec3(0.0,4.0,2.0),
-                              6.0) - 3.0) - 1.0,
-                     0.0,
-                     1.0);
+    vec3 rgb = clamp(abs(mod(c.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);
     return c.z * mix(vec3(1.0), rgb, c.y);
 }
 
@@ -46,10 +36,12 @@ vec3 hsv2rgb(vec3 c) {
 float hueMixClamp(float fromHue, float toHue, float t, float maxShift) {
     // Compute shortest path delta
     float delta = mod((toHue - fromHue + 540.0), 360.0) - 180.0;
-    
+
     // Clamp delta to maxShift (in degrees)
-    if (delta > maxShift) delta = maxShift;
-    if (delta < -maxShift) delta = -maxShift;
+    if (delta > maxShift)
+        delta = maxShift;
+    if (delta < -maxShift)
+        delta = -maxShift;
 
     return mod(fromHue + delta * t, 360.0);
 }
@@ -92,9 +84,12 @@ vec3 light_or_dark(vec3 m_colour, float shade, float maxHueShift) {
 
     if (!near_black) {
         float maxDelta = 0.05;
-        if (m_colour.r < max(m_colour.g, m_colour.b)) rgb.r = min(rgb.r, max(rgb.g, rgb.b) + maxDelta);
-        if (m_colour.g < max(m_colour.r, m_colour.b)) rgb.g = min(rgb.g, max(rgb.r, rgb.b) + maxDelta);
-        if (m_colour.b < max(m_colour.r, m_colour.g)) rgb.b = min(rgb.b, max(rgb.r, rgb.g) + maxDelta);
+        if (m_colour.r < max(m_colour.g, m_colour.b))
+            rgb.r = min(rgb.r, max(rgb.g, rgb.b) + maxDelta);
+        if (m_colour.g < max(m_colour.r, m_colour.b))
+            rgb.g = min(rgb.g, max(rgb.r, rgb.b) + maxDelta);
+        if (m_colour.b < max(m_colour.r, m_colour.g))
+            rgb.b = min(rgb.b, max(rgb.r, rgb.g) + maxDelta);
     }
 
     if (near_black && shade > 1.0) {
@@ -134,7 +129,6 @@ void main() {
     if (col.a >= _127_25COL && col.a <= _128_75COL) {
         col.a = _128COL;
     }
-    //
 
     vec4 tex_col = texture2D(armour_texture, v_vMaskCoord);
 
@@ -143,19 +137,25 @@ void main() {
     } else {
         vec4 col_orig = col;
         col = tex_col;
-        
+
         /*if (blend == 1) {
             col.rgb = col.rgb * blend_colour.rgb;
         }*/
-        if (use_shadow != 1){
-
-            if (col_orig.a == _128COL){ col.rgb = light_or_dark(col.rgb, 1.2, 85.0); col.a = 1.0; }
-            else if (col_orig.a == _60COL) { col.rgb = light_or_dark(col.rgb, 1.4, 85.0); col.a = 1.0; }
-            else if (col_orig.a == _215COL) { col.rgb = light_or_dark(col.rgb,0.6, 85.0); col.a = 1.0; }
-            else if (col_orig.a == _160COL) { col.rgb = light_or_dark(col.rgb, 0.8, 85.0); col.a = 1.0; }
-
-        }    
-        else if (use_shadow == 1) {
+        if (use_shadow != 1) {
+            if (col_orig.a == _128COL) {
+                col.rgb = light_or_dark(col.rgb, 1.2, 85.0);
+                col.a = 1.0;
+            } else if (col_orig.a == _60COL) {
+                col.rgb = light_or_dark(col.rgb, 1.4, 85.0);
+                col.a = 1.0;
+            } else if (col_orig.a == _215COL) {
+                col.rgb = light_or_dark(col.rgb, 0.6, 85.0);
+                col.a = 1.0;
+            } else if (col_orig.a == _160COL) {
+                col.rgb = light_or_dark(col.rgb, 0.8, 85.0);
+                col.a = 1.0;
+            }
+        } else if (use_shadow == 1) {
             vec4 shadow_col = texture2D(shadow_texture, v_vShadowCoord);
             float intensity = shadow_col.r;
 
@@ -164,9 +164,7 @@ void main() {
 
             col.rgb = light_or_dark(col.rgb, shadow_factor, 85.0);
         }
-
     }
-
 
     gl_FragColor = v_vColour * col;
     //gl_FragColor = v_vColour * (background_col*texture2D(gm_BaseTexture, v_vTexcoord));
