@@ -2944,11 +2944,6 @@ function scr_initialize_custom() {
     LOGGER.info("set up the starting squads");
     obj_ini.squads = {};
     game_start_squads();
-
-    // Populate TTRPG display arrays immediately so the management screen
-    // shows unit data before any fleet event fires sort_all_companies
-    LOGGER.info("initial company sort");
-    sort_all_companies();
 }
 
 /// @description helper function to streamline code inside of scr_initialize_custom, should only be used as part of game setup and not during normal gameplay
