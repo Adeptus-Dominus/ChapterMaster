@@ -228,16 +228,18 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                     stat_boosts({strength: 4, constitution: 4, dexterity: 4}); //will decide on if these are needed
                 }
             }
-            if (!is_specialist(role())) {
-                //logs changes too and from specialist status
-                if (is_specialist(new_role)) {
-                    obj_controller.marines -= 1;
-                    obj_controller.command += 1;
-                }
-            } else {
-                if (!is_specialist(new_role)) {
-                    obj_controller.marines += 1;
-                    obj_controller.command -= 1;
+            if (instance_exists(obj_controller)) {
+                if (!is_specialist(role())) {
+                    //logs changes too and from specialist status
+                    if (is_specialist(new_role)) {
+                        obj_controller.marines -= 1;
+                        obj_controller.command += 1;
+                    }
+                } else {
+                    if (!is_specialist(new_role)) {
+                        obj_controller.marines += 1;
+                        obj_controller.command -= 1;
+                    }
                 }
             }
         }
