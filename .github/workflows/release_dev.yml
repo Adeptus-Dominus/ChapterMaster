@@ -76,18 +76,18 @@ jobs:
           # Use sed to indent messages for clarity in logs
           echo "$ALL_MSGS" | sed 's/^/  /'
 
-          # only build if at least one message does NOT match exclude pattern
+          # Only build if at least one message matches include pattern
           # The -v option inverts the match; -E enables extended regex; -q suppresses output.
           # The overall command exits successfully (0) if a non-matching line is found.
-          EXCLUDE="^(docs|chore|style|ci)"
-          if echo "$ALL_MSGS" | grep -vEq "$EXCLUDE"; then
-            echo "Found at least one commit message not matching the exclude pattern '$EXCLUDE'."
+
+          INCLUDE="^(feat|fix)"
+          if echo "$ALL_MSGS" | grep -vEq "$INCLUDE"; then
+            echo "Found at least one commit message matching the include pattern '$INCLUDE'."
             echo "Build needed."
             echo "needed=true" >> $GITHUB_OUTPUT
           else
-            echo "All new commit messages match the exclude pattern '$EXCLUDE'."
+            echo "None new commit messages match the include pattern '$INCLUDE'."
             echo "Skipping build."
-            # needed is already defaulted to false.
           fi
 
   prepare_release:
