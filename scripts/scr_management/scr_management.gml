@@ -10,6 +10,11 @@ function scr_management(argument0) {
     var unit;
 
     if (argument0 == 1) {
+        // Ensure TTRPG display data is up to date before drawing the overview
+        with (obj_ini) {
+            sort_all_companies();
+        }
+
         with (obj_managment_panel) {
             instance_destroy();
         }
@@ -87,6 +92,10 @@ function scr_management(argument0) {
             pane.manage = company;
             pane.header = 1;
             pane.title = t;
+
+            // Populate company panel — same pattern as the HQ specialty panels above
+            var _co_units = collect_company(company).index_roles();
+            pane.line = array_join(pane.line, _co_units.create_plural_strings_array());
 
             xx += 156;
         }
@@ -545,17 +554,7 @@ function scr_management(argument0) {
                 }
             }
 
-            for (var d = 0; d < 5; d++) {
-                if (num[d] > 0) {
-                    if (d == 1) {
-                        array_push(pane.line, {str1: nam[d], bold: true, italic: false});
-                        // obj_managment_panel.italic[q] = 1;
-                    } else {
-                        array_push(pane.line, nam[d], string_plural_count(nam[d], num[d], false));
-                    }
-                }
-            }
-            xx += 156;
+            // company panels are now populated at creation time above — nothing to do here
         }
     }
 }
