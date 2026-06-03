@@ -174,6 +174,7 @@
         * * Stacks with advantages/disadvantages
         */
         "extra_ships": {
+            "gloriana": 0,
             "battle_barges": 0,
             "gladius": 0,
             "strike_cruisers": 0,
@@ -243,9 +244,9 @@
             "captain": {
                 "name": "Warleader"
             },
-            "sergeant": {
+            /*"sergeant": {
                 "name": "Pride Leader"
-            },
+            },*/
             "chaplain": {
                 "name": "Deathspeaker"
             },
