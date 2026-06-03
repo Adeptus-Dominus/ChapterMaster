@@ -81,12 +81,12 @@ jobs:
           # The overall command exits successfully (0) if a non-matching line is found.
 
           INCLUDE="^(feat|fix)"
-          if echo "$ALL_MSGS" | grep -vEq "$INCLUDE"; then
+          if echo "$ALL_MSGS" | grep -Eq "$INCLUDE"; then
             echo "Found at least one commit message matching the include pattern '$INCLUDE'."
             echo "Build needed."
             echo "needed=true" >> $GITHUB_OUTPUT
           else
-            echo "None new commit messages match the include pattern '$INCLUDE'."
+            echo "No new commit messages match the include pattern '$INCLUDE'."
             echo "Skipping build."
           fi
 
