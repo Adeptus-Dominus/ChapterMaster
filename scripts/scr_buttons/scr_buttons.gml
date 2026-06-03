@@ -118,13 +118,13 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords) {
             _found = true;
             if (point_and_click(move_up_coords)) {
                 if (i == 0) {
-                    _new_val = list[0];
+                    _new_val = list[array_length(list) - 1];
                 } else {
                     _new_val = list[i - 1];
                 }
             } else if (point_and_click(move_down_coords)) {
                 if (i == array_length(list) - 1) {
-                    _new_val = list[array_length(list) - 1];
+                    _new_val = list[0];
                 } else {
                     _new_val = list[i + 1];
                 }
@@ -199,7 +199,7 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
-        add_draw_return_values();
+        var temp_font = draw_get_font();
         draw_set_font(font);
         if (max_width > -1) {
             if (!scale_text) {
@@ -222,7 +222,7 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
             x2 = x1 + w;
             y2 = y1 + h;
         }
-        pop_draw_return_values();
+        draw_set_font(temp_font);
     };
 
     static hit = function() {
@@ -268,8 +268,6 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
 function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = {}) constructor {
     x1 = x1_param;
     y1 = y1_param;
-    x2 = 0;
-    y2 = 0;
 
     text = text_param;
     text_max_width = -1;
@@ -282,15 +280,21 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
     icon_height = sprite_get_height(icon);
     w = icon_width;
     h = icon_height;
+    x2 = x1 + w;
+    y2 = y1 + icon_height;
+	temp_font = draw_get_font();
+	draw_set_font(font);
+	text_width = string_width(text) + 2;
+	draw_set_font(temp_font);
 
     move_data_to_current_scope(data);
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         if (text_position == "right") {
-            w = icon_width + 2 + string_width(text);
-            x2 = x1 + w;
+            w = icon_width + text_width;
             h = icon_height;
+            x2 = x1 + w;
             y2 = y1 + icon_height;
         } else {
             w = icon_width;
@@ -404,8 +408,8 @@ function UnitButtonObject(data = {}) constructor {
 
     static update_loc = function() {
         if (label != "") {
-            add_draw_return_values();
-            draw_set_font(font);
+            var temp_font = draw_get_font();
+           	draw_set_font(font);
             if (!set_width) {
                 w = string_width(label) + 10;
                 h = string_height(label) + 4;
@@ -417,7 +421,7 @@ function UnitButtonObject(data = {}) constructor {
                 label = _text_scale.text;
             }
             h = string_height(label) + 4;
-            pop_draw_return_values();
+            draw_set_font(temp_font);
         }
         x2 = x1 + w;
         y2 = y1 + h;
@@ -543,7 +547,6 @@ function PurchaseButton(req) : UnitButtonObject() constructor {
 
     static draw = function(allow_click = true) {
         add_draw_return_values();
-
         var _but = draw_unit_buttons([x1, y1, x2, y2], label, [1, 1], color,,, alpha);
         var _sh = sprite_get_height(spr_requisition);
         var _scale = (y2 - y1) / _sh;
@@ -976,7 +979,6 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
     static draw = function(allow_changes_param = true) {
         changed = false;
         allow_changes = allow_changes_param;
-        add_draw_return_values();
         has_change_method = is_callable(on_change);
 
         reset_next_draw();
@@ -992,7 +994,6 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
         if (changed && has_change_method) {
             on_change();
         }
-        pop_draw_return_values();
     };
 
     static set = function(set_array) {
@@ -1203,6 +1204,8 @@ function ToggleButton(data = {}) constructor {
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
+        var temp_font = draw_get_font();
+        draw_set_font(font);
         if (style == "default") {
             if (w == 0) {
                 w = string_width(str1);
@@ -1218,6 +1221,7 @@ function ToggleButton(data = {}) constructor {
         }
         x2 = x1 + w;
         y2 = y1 + h;
+        draw_set_font(temp_font);
     };
 
     static hover = function() {
