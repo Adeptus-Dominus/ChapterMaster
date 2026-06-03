@@ -72,7 +72,7 @@ function load_new_icon(new_sprite_surface, path, add_place, key) {
         var _height = sprite_get_height(_new_sprite);
         surface_resize(new_sprite_surface, _width, _height);
         surface_set_target(new_sprite_surface);
-        draw_clear_alpha(c_white, 0);
+        draw_clear_alpha(c_black, 0);
         draw_sprite_ext(_new_sprite, 0, _width, 0, -1, 1, 0, c_white, 1);
         surface_reset_target();
         sprite_add_from_surface(_new_sprite, new_sprite_surface, 0, 0, _width, _height, 1, 0);
