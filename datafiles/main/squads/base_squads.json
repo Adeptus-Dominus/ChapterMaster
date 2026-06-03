@@ -481,13 +481,16 @@
                 "wep2": ["", 0],
                 "mobi": ["Bike", 1]
               },
-              "option": {
-                "wep1": [
-                  [["Power Sword", "Power Spear", "Power Axe", "Power Fist", "Chainaxe", "Chainsword"],1],
-                  [["Lightning Claw"],1,{"wep2":"Lightning Claw"}]
-                ],
-                "wep2": [[["Volkite Serpenta", "Plasma Pistol", "Bolt Pistol", "Phobos Bolt Pistol", "Grav-Pistol", "Hand Flamer", "Infernus Pistol", "RyzPlsmPis"],1]]
-              }
+              "random_pick": [
+                {
+                  "wep1": ["Power Sword", "Power Spear", "Power Axe", "Power Fist", "Chainaxe", "Chainsword"],
+                  "wep2": ["Volkite Serpenta", "Plasma Pistol", "Bolt Pistol", "Phobos Bolt Pistol", "Grav-Pistol", "Hand Flamer", "Infernus Pistol", "RyzPlsmPis"]
+                },
+                {
+                  "wep1": "Lightning Claw",
+                  "wep2": "Lightning Claw"
+                }
+              ]
           }
       },
       "type_data": {
