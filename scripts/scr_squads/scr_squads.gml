@@ -216,6 +216,38 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         }
     };
 
+    // Picks ONE entry (loadout category) at random, then resolves each slot:
+    // string values are used directly; array values get one item picked at random.
+    // Any slot omitted from an entry is left unchanged on the unit.
+    //
+    // JSON example:
+    //   "random_pick": [
+    //     { "wep1": ["Sword","Axe","Mace"], "wep2": ["Pistol","Plasma","Volkite"] },
+    //     { "wep1": "Lightning Claw", "wep2": "Lightning Claw" }
+    //   ]
+    static equip_random_pick_for_role = function(pick_options) {
+        var _actual_role = role_key_to_actual[$ unit_role];
+        var _members_with_role = members_UnitGroup.get_from({role: _actual_role});
+        while (_members_with_role.number() > 0) {
+            var _unit = _members_with_role.pop();
+            if (array_contains(ignore_units, _unit.uid)) continue;
+            if (_unit.role() != _actual_role) continue;
+
+            // Pick a random loadout category
+            var _chosen = pick_options[irandom(array_length(pick_options) - 1)];
+
+            // Resolve slots: array values → random element; strings → used as-is
+            var _resolved = {};
+            var _slots = struct_get_names(_chosen);
+            for (var _s = 0; _s < array_length(_slots); _s++) {
+                var _slot  = _slots[_s];
+                var _value = _chosen[$ _slot];
+                _resolved[$ _slot] = is_array(_value) ? array_random_element(_value) : _value;
+            }
+            _unit.alter_equipment(_resolved, from_armoury, to_armoury);
+        }
+    };
+
     static role_squad_loadout = function() {
         required_load = undefined;
         optional_load = undefined;
@@ -240,6 +272,11 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         for (var i = 0; i < array_length(load_out_areas); i++) {
             current_load_slot = load_out_areas[i];
             equip_loudouts_specific_equip_slot();
+        }
+
+        // random_pick runs after required/option — picks one complete loadout at random
+        if (struct_exists(_loudout_data, "random_pick")) {
+            equip_random_pick_for_role(_loudout_data[$ "random_pick"]);
         }
     };
 }
