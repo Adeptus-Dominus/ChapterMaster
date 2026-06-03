@@ -45,10 +45,19 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     squad_type = target_squad.type;
     squad_unit_types = squad.find_squad_unit_types();
     full_squad_data = obj_ini.squad_types[$ squad_type];
+    //build a map from JSON key
+    role_key_to_actual = {};
+    for (var _i = 0; _i < array_length(squad_unit_types); _i++) {
+    var _key = squad_unit_types[_i];
+    var _def = full_squad_data[$ _key];
+    var _actual = struct_exists(_def, "role") ? _def.role : _key;
+    role_key_to_actual[$ _key] = _actual;
+    }
     unit_role = "";
     members_UnitGroup = squad.get_members(true);
     members_UnitGroup.shuffle();
     optional_load = undefined;
+    optional_fill_counts = {};   // flat struct: "slot_groupIndex" -> filled count
     required_load = undefined;
 
     target_squad.update_fulfilment();
@@ -69,18 +78,24 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         "mobi"
     ];
 
-    static structure_role_optional_loadout = function(optional_data) {
-        optional_load = variable_clone(optional_data); //create a fulfillment object for optional loadouts
+    static structure_role_optional_loadout = function(optional_data){
 
+        // Use the original data directly — no clone needed since optional_load is now read-only
+        // (all mutable state lives in optional_fill_counts). variable_clone can incorrectly
+        // flatten doubly-nested arrays in this GML version, corrupting the group structure.
+        optional_load = optional_data;
+
+        // Initialise fill-count tracking in a flat struct (struct field writes are always
+        // in-place in GML — no copy-on-write issues unlike nested array element writes)
+        optional_fill_counts = {};
         var _optional_loadout_slots = struct_get_names(optional_load);
-
         for (var slot = 0; slot < array_length(_optional_loadout_slots); slot++) {
             var _load_out_slot = _optional_loadout_slots[slot];
             for (var i = 0; i < array_length(optional_load[$ _load_out_slot]); i++) {
-                array_insert(optional_load[$ _load_out_slot][i], 2, 0);
+                optional_fill_counts[$ _load_out_slot + "_" + string(i)] = 0;
             }
         }
-    };
+    }
 
     static structure_role_required_loadout = function(required_data) {
         //find out if the _unit type for the squad has required  equipment thresholds
@@ -117,13 +132,13 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
 
         var _optional_groups = optional_load[$ current_load_slot];
         for (var i = 0; i < array_length(_optional_groups); i++) {
-            var _optional_load_data = _optional_groups[i];
-            var _optionals_filled = _optional_load_data[2];
-            var _optionals_max_allowed = _optional_load_data[1];
-            var _optionals_equipment = _optional_load_data[0];
+            var _count_key             = current_load_slot + "_" + string(i);
+            var _optionals_filled      = optional_fill_counts[$ _count_key];   // read from flat struct
+            var _optionals_max_allowed = _optional_groups[i][1];
+            var _optionals_equipment   = _optional_groups[i][0];
             var _item_to_add;
             if (_optionals_filled < _optionals_max_allowed) {
-                var _is_equipment_set = array_length(_optional_load_data) > 3;
+                var _is_equipment_set = array_length(_optional_groups[i]) > 2;
 
                 if (is_array(_optionals_equipment)) {
                     //if the array items are varibale e.g a struct
@@ -155,9 +170,10 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                 var _opt_load_out = {};
                 _opt_load_out[$ current_load_slot] = _item_to_add;
                 _unit.alter_equipment(_opt_load_out, from_armoury, to_armoury);
-                _optional_load_data[1]++;
+                // Struct field write — guaranteed in-place, no copy-on-write in GML
+                optional_fill_counts[$ _count_key]++;
                 if (_is_equipment_set) {
-                    var _equip_set_data = _optional_load_data[3];
+                    var _equip_set_data = _optional_groups[i][2];
                     if (is_struct(_equip_set_data)) {
                         _unit.alter_equipment(_equip_set_data, from_armoury, to_armoury);
                         array_push(ignore_units, _unit.uid);
@@ -168,8 +184,9 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         }
     };
 
-    static equip_loudouts_specific_equip_slot = function() {
-        var _members_with_role = members_UnitGroup.get_from({role: unit_role});
+    static equip_loudouts_specific_equip_slot = function(){
+        var _actual_role = role_key_to_actual[$ unit_role];
+        var _members_with_role = members_UnitGroup.get_from({role: _actual_role});
         if (!struct_exists(current_unit_squad_data, "loadout")) {
             return;
         }
@@ -177,18 +194,21 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         var _loudouts = current_unit_squad_data[$ "loadout"];
         while (_members_with_role.number() > 0) {
             _unit = _members_with_role.pop();
-            if (array_contains(ignore_units, _unit.uid)) {
-                continue;
-            }
-            if (_unit.role() != unit_role) {
+            if (_unit.role() != _actual_role) {
                 continue;
             }
 
+            // Required loadout is always applied — ignore_units only gates optional extras
             if (required_load != undefined && struct_exists(required_load, current_load_slot)) {
                 var _needed_required = equip_required_for_role(_unit);
                 if (_needed_required) {
                     continue;
                 }
+            }
+
+            // Optional loadout respects ignore_units (units that already got a full equipment set)
+            if (array_contains(ignore_units, _unit.uid)) {
+                continue;
             }
 
             if (optional_load != undefined && struct_exists(optional_load, current_load_slot)) {
@@ -330,10 +350,10 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     };
 
     // for creating a new sergeant from existing squad members
-    static new_sergeant = function(veteran = false) {
+    static new_sergeant = function(veteran = false, target_role = undefined) {
         var exp_unit = "";
         var _unit;
-        var highest_exp = 0;
+        var highest_exp = -1;
         var member_length = array_length(members);
         for (var i = 0; i < member_length; i++) {
             _unit = fetch_unit(members[i]);
@@ -343,7 +363,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 i--;
                 continue;
             }
-            if (_unit.experience > highest_exp) {
+            if (exp_unit == "" || _unit.experience > highest_exp) {
                 highest_exp = _unit.experience;
                 exp_unit = _unit;
             }
@@ -351,7 +371,9 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         if ((array_length(members) > 0) && is_struct(exp_unit)) {
             if (exp_unit.name() != "") {
                 var new_role;
-                if (veteran == true) {
+                if (target_role != undefined) {
+                    new_role = target_role;
+                } else if (veteran == true) {
                     new_role = obj_ini.role[100][19];
                 } else {
                     new_role = obj_ini.role[100][18];
@@ -384,6 +406,8 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
         var squad_unit_types = struct_get_names(fill_squad); //find out what type of units squad consists of
         var unit_type_count = array_length(squad_unit_types);
+        // build actual_role → json_key map to handle slots with a "role" override
+        var _actual_to_key = {};
         for (var i = unit_type_count - 1; i >= 0; i--) {
             var _wanted_unit_role = squad_unit_types[i];
             if (_wanted_unit_role == "type_data") {
@@ -391,6 +415,9 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 continue;
             }
             squad_fulfilment[$ _wanted_unit_role] = 0; //create a fulfilment structure to log members of squad
+            var _role_def = fill_squad[$ _wanted_unit_role];
+            var _mapped = struct_exists(_role_def, "role") ? _role_def.role : _wanted_unit_role;
+            _actual_to_key[$ _mapped] = _wanted_unit_role;
         }
         var member_length = array_length(members);
         for (var i = member_length - 1; i >= 0; i--) {
@@ -400,10 +427,13 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 array_delete(members, i, 1);
                 continue;
             }
-            if (struct_exists(squad_fulfilment, _unit.role())) {
-                squad_fulfilment[$ _unit.role()]++;
+            // map actual role to json key so role-overridden slots are counted correctly
+            var _unit_role = _unit.role();
+            var _slot_key = struct_exists(_actual_to_key, _unit_role) ? _actual_to_key[$ _unit_role] : _unit_role;
+            if (struct_exists(squad_fulfilment, _slot_key)) {
+                squad_fulfilment[$ _slot_key]++;
             } else {
-                squad_fulfilment[$ _unit.role()] = 1;
+                squad_fulfilment[$ _slot_key] = 1;
             }
         }
         fulfilled = true;
@@ -418,8 +448,15 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
             var _min_role_allowed = fill_squad[$ _wanted_unit_role][$ "min"];
 
             if (fill_from != undefined) {
-                while (fill_from.has_role(_wanted_unit_role) && _squad_role_current < _max_role_count) {
-                    var _new_member = fill_from.pop_role_member(_wanted_unit_role);
+                var _fill_role = struct_exists(fill_squad[$ _wanted_unit_role], "role")
+                    ? fill_squad[$ _wanted_unit_role].role : _wanted_unit_role;
+                // Also try the JSON key itself as a source role (base role before squad rename)
+                var _fill_role_base = _wanted_unit_role;
+                while (_squad_role_current < _max_role_count) {
+                    var _pick_role = fill_from.has_role(_fill_role) ? _fill_role
+                        : (fill_from.has_role(_fill_role_base) ? _fill_role_base : "");
+                    if (_pick_role == "") break;
+                    var _new_member = fill_from.pop_role_member(_pick_role);
                     add_member(_new_member.company, _new_member.marine_number);
                     squad_fulfilment[$ _wanted_unit_role]++;
                     _squad_role_current = squad_fulfilment[$ _wanted_unit_role];
@@ -437,19 +474,23 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 required[$ _wanted_unit_role] = _min_role_allowed - _squad_role_current;
             }
         }
-        var _sarge = obj_ini.role[100][eROLE.SERGEANT];
-        if (struct_exists(required, _sarge)) {
-            if (required[$ _sarge] > 0) {
-                new_sergeant();
-                required[$ _sarge]--;
-            }
-        }
-        //find a new veteran sergeant
-        var _vet_sarge = obj_ini.role[100][eROLE.VETERANSERGEANT];
-        if (struct_exists(required, _vet_sarge)) {
-            if (required[$ _vet_sarge] > 0) {
-                new_sergeant(true);
-                required[$ _vet_sarge]--;
+        var _default_sarge = obj_ini.role[100][eROLE.SERGEANT];
+        var _default_vet_sarge = obj_ini.role[100][eROLE.VETERANSERGEANT];
+        var _required_keys = struct_get_names(required);
+        for (var _ri = 0; _ri < array_length(_required_keys); _ri++) {
+            var _req_key = _required_keys[_ri];
+            if (required[$ _req_key] <= 0) continue;
+            var _role_def = fill_squad[$ _req_key];
+            if (_role_def == undefined) continue;
+            var _actual_role = struct_exists(_role_def, "role") ? _role_def.role : _req_key;
+            if (_req_key == _default_sarge || _actual_role == _default_sarge
+                || string_lower(_req_key) == "sergeant") {
+                new_sergeant(false, _actual_role);
+                required[$ _req_key]--;
+            } else if (_req_key == _default_vet_sarge || _actual_role == _default_vet_sarge
+                || string_lower(_req_key) == "veteran sergeant") {
+                new_sergeant(true, _actual_role);
+                required[$ _req_key]--;
             }
         }
     };
