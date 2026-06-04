@@ -370,12 +370,12 @@ function SpriteButton(_sprite, _hover_sprite = undefined) constructor {
                 tooltip_draw(tooltip_text, tooltip_w);
             }
 
-            if (is_clicked && sound_click != -1) {
+            if (is_clicked && sound_click != undefined) {
                 audio_play_sound(sound_click, 10, false);
             }
         }
 
-        var _draw_sprite = (_enabled && is_hovered && hover_sprite != -1) ? hover_sprite : sprite;
+        var _draw_sprite = (_enabled && is_hovered && hover_sprite != undefined) ? hover_sprite : sprite;
         var _draw_alpha = _enabled ? (is_hovered ? alpha_hover : alpha_idle) : alpha_disabled;
 
         draw_sprite_ext(_draw_sprite, 0, _x, _y, scale_x, scale_y, 0, c_white, _draw_alpha);
