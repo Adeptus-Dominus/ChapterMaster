@@ -1815,7 +1815,7 @@
       "role": "Black Knight",
       "loadout": {
         "required": {
-          "wep1": ["Chainsword", 4],
+          "wep1": ["Power Sword", 4],
           "wep2": ["Bolt Pistol", 2],
           "mobi": ["Bike", 4]
         },
