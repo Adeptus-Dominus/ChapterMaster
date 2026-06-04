@@ -202,7 +202,8 @@ function UnitGroup(units) constructor {
     static sgt_types = role_groups(SPECIALISTS_SQUAD_LEADERS);
 
     static create_squad = function(squad_type, squad_loadout = true, squad_uid = "", game_start = false) {
-        // LOGGER.info($"sgts : ${sgt_types}");
+        //LOGGER.info($"sgts : ${sgt_types}");
+        
 
         var roles = active_roles();
 
@@ -222,20 +223,55 @@ function UnitGroup(units) constructor {
         var _fill_squad = obj_ini.squad_types[$ squad_type];
 
         var _fulfilled = false;
+        //adding multiple role sources on gen within a single squad
+        var _all_roles_to_fetch = array_create(0);
+            for (var r = 0; r < array_length(squad_unit_types); r++) {
+            var _primary_role = squad_unit_types[r];
+            var _primary_role_def = _fill_squad[$ _primary_role];
+            var _primary_role_name = struct_exists(_primary_role_def, "role") ? _primary_role_def.role : _primary_role;
+            LOGGER.info($"Squad type: {squad_type}, Looking for roles: {_all_roles_to_fetch}");
+            if (!array_contains(_all_roles_to_fetch, _primary_role_name)) {
+                array_push(_all_roles_to_fetch, _primary_role_name);
+            }
 
-        var _squadless = get_from({squadless: true, roles: squad_unit_types});
+            //add alternative source roles to fetch list if this squad role defines them
+            if (struct_exists(_primary_role_def, "alternative_roles")) {
+                var _alternatives = _primary_role_def.alternative_roles;
+                for (var a = 0; a < array_length(_alternatives); a++) {
+                    if (!array_contains(_all_roles_to_fetch, _alternatives[a])) {
+                        array_push(_all_roles_to_fetch, _alternatives[a]);
+                    }
+                }
+            }
+        }
+
+
+        var _squadless = get_from({squadless: true, roles: _all_roles_to_fetch});
+        LOGGER.info($"Squadless count before: {_squadless.number()}");
 
         for (var s = 0; s < 2; s++) {
             var _sgt_type = sgt_types[s];
-            var _available_sgt = _squadless.get_from({role: _sgt_type, max_wanted: 1});
+            var _available_sgt = _squadless.get_from({role: _sgt_type, max_wanted: 1}, true, true);
 
             if (_available_sgt.number() == 0) {
                 continue;
             }
 
             var _sgt = _available_sgt.units[0];
-            squad.add_member(_sgt);
-            squad_fulfilment[$ _sgt_type]++;
+            squad.add_member(_sgt.company, _sgt.marine_number);
+            var _sgt_group = "";
+            for (var r = 0; r < array_length(squad_unit_types); r++) {
+                var _role_name = squad_unit_types[r];
+                var _role_def = _fill_squad[$ _role_name];
+                var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
+                if (_primary_role_name == _sgt_type) {
+                    _sgt_group = _role_name;
+                    break;
+                }
+            }
+            if (_sgt_group != "") {
+                squad_fulfilment[$ _sgt_group]++;
+            }
             sergeant_found = true;
         }
 
@@ -252,8 +288,17 @@ function UnitGroup(units) constructor {
             var _has_sgt_requirements = false;
             for (var s = 0; s < 2; s++) {
                 var _sgt_type = sgt_types[s];
-                if (array_contains(squad_unit_types, _sgt_type)) {
-                    _has_sgt_requirements = true;
+                for (var r = 0; r < array_length(squad_unit_types); r++) {
+                    var _role_name = squad_unit_types[r];
+                    var _role_def = _fill_squad[$ _role_name];
+                    var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
+                    if (_sgt_type == _primary_role_name) {
+                        _has_sgt_requirements = true;
+                        break;
+                    }
+                }
+                if (_has_sgt_requirements) {
+                    break;
                 }
             }
 
@@ -262,14 +307,47 @@ function UnitGroup(units) constructor {
             }
 
             //clone or else keeps pushing up number
-            var _max = variable_clone(_fill_squad[$ _unit.role()][$ "max"]);
+            //EXPERIMENTAL Determine which role GROUP this marine belongs to
+            var _target_role = _unit.role();
+            var _role_group = "";  // default to the marine's own role
+            
+            // Search through defined role groups to find which one this marine belongs to
+            for (var r = 0; r < array_length(squad_unit_types); r++) {
+                var _role_name = squad_unit_types[r];
+                var _role_def = _fill_squad[$ _role_name];
+                var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
+
+                
+                // Check if marine matches this primary role
+                if (_target_role == _primary_role_name) {
+                    _role_group = _role_name;
+                    break;
+                }
+                
+                // Check if marine matches any alternative roles for this group
+                if (struct_exists(_role_def, "alternative_roles")) {
+                    var _alts = _role_def.alternative_roles;
+                    if (array_contains(_alts, _target_role)) {
+                        _role_group = _role_name;
+                        break;
+                    }
+                }
+            }
+
+            if (_role_group == "") {
+                continue;
+            }
+            
+            // NEW: Check max capacity for the ROLE GROUP (not the source role)
+            var _max = variable_clone(_fill_squad[$ _role_group][$ "max"]);
             if (_has_sgt_requirements) {
                 _max += 1;
             }
 
-            if (squad_fulfilment[$ _unit.role()] < _max) {
+            // NEW: Track fulfillment by role GROUP, allowing alternatives to fill the same slot
+            if (squad_fulfilment[$ _role_group] < _max) {
                 //if sergeants not required
-                squad_fulfilment[$ _unit.role()]++;
+                squad_fulfilment[$ _role_group]++;
                 squad.add_member(_unit.company, _unit.marine_number);
             }
         }
@@ -284,10 +362,23 @@ function UnitGroup(units) constructor {
         }
         for (var s = 0; s < 2; s++) {
             var _sgt_type = sgt_types[s];
-            if (struct_exists(squad_fulfilment, _sgt_type) && (!sergeant_found)) {
+            var _sgt_group = "";
+            for (var r = 0; r < array_length(squad_unit_types); r++) {
+                var _role_name = squad_unit_types[r];
+                var _role_def = _fill_squad[$ _role_name];
+                var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
+                if (_primary_role_name == _sgt_type) {
+                    _sgt_group = _role_name;
+                    break;
+                }
+            }            if (_sgt_group != "" && struct_exists(squad_fulfilment, _sgt_group) && (!sergeant_found)) {
                 var _exp_unit = _members.highest_exp();
 
-                squad_fulfilment[$ _sgt_type]++;
+                _exp_unit.update_role(_sgt_type);
+                squad_fulfilment[$ _sgt_group]++;
+                if (game_start && irandom(1) == 0) {
+                    _exp_unit.add_trait("lead_example");
+                }
             }
         }
 

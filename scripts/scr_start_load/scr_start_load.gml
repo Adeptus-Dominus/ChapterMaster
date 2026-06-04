@@ -43,7 +43,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
             if (comp_split > 7 || !comp_has_units[comp_split + 2]) {
                 comp_split = 0;
             }
-            var _squad = fetch_squad(_squad_ids[i]);
+            var _squad = fetch_squad(_squad_ids[squads]);
             if (_squad.base_company == 1) {
                 array_push(total_distribute_squads[comp_split], _squad);
                 comp_split++;
@@ -57,7 +57,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
             if (comp_split > 7 || !comp_has_units[comp_split + 2]) {
                 comp_split = 0;
             }
-            var _squad = fetch_squad(_squad_ids[i]);
+            var _squad = fetch_squad(_squad_ids[squads]);
             if (_squad.base_company == 10) {
                 array_push(total_distribute_squads[comp_split], _squad);
                 comp_split++;
