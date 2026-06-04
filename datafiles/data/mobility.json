@@ -9,13 +9,42 @@
         "description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and respectable Twin-Linked Bolters for offensive action.",
         "hp_mod": {
             "artifact": 35,
-            "master_crafted": 25,
+            "master_crafted": 30,
             "standard": 25
+        },
+        "melee_mod":{
+            "artifact": 30,
+            "master_crafted": 25,
+            "standard": 20
         },
         "second_profiles": [
             "Twin Linked Bolters"
         ],
         "value": 35,
+        "requires_to_forge": ["combi_1"]
+    },
+    "Attack Bike": {
+        "abbreviation": "At Bike",
+        "damage_resistance_mod": {
+            "artifact": 10,
+            "master_crafted": 10,
+            "standard": 5
+        },
+        "description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and respectable Twin-Linked Bolters for offensive action. Sports an additional sidecar with a heavy weapon of choice.",
+        "hp_mod": {
+            "artifact": 50,
+            "master_crafted": 40,
+            "standard": 35
+        },
+        "melee_mod":{
+            "artifact": 20,
+            "master_crafted": 15,
+            "standard": 10
+        },
+        "second_profiles": [
+            "Twin Linked Bolters"
+        ],
+        "value": 95,
         "requires_to_forge": ["combi_1"]
     },
     "Conversion Beamer Pack": {
