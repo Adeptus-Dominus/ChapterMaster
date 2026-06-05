@@ -428,7 +428,14 @@ function scr_chapter_new(chapter_identifier) {
             load.split_scouts,
             load.split_vets
         ];
-        obj_creation.squad_distribution = chapter_object.squad_distribution;
+        if (struct_exists(chapter_object, "squad_distribution")) {
+            obj_creation.squad_distribution = chapter_object.squad_distribution;
+        } else if (struct_exists(chapter_object, "equal_specialists")) {
+            // migrate old saves
+            obj_creation.squad_distribution = chapter_object.equal_specialists;
+        } else {
+            obj_creation.squad_distribution = 0;
+        }
         if (struct_exists(chapter_object, "scout_company_behaviour")) {
             obj_creation.scout_company_behaviour = chapter_object.scout_company_behaviour;
         } else {
