@@ -5,6 +5,7 @@ try {
     tooltip = "";
     tooltip2 = "";
     col_shift = is_string(type);
+
     if (!col_shift) {
         col_shift = type > 0;
         equip = type > 20;
@@ -13,39 +14,10 @@ try {
     if (col_shift) {
         if (!equip) {
             draw_set_font(fnt_40k_30b);
-            var _colour_type = "";
-            switch (type) {
-                case 1:
-                    _colour_type = "Primary Color";
-                    break;
-                case 2:
-                    _colour_type = "Secondary Color";
-                    break;
-                case 3:
-                    _colour_type = "Pauldron 1 Color";
-                    break;
-                case 4:
-                    _colour_type = "Pauldron 2 Color";
-                    break;
-                case 5:
-                    _colour_type = "Trim Color Color";
-                    break;
-                case 6:
-                    _colour_type = "Lens Color Color";
-                    break;
-                case 7:
-                    _colour_type = "Weapon Color Color";
-                    break;
-                case "sgt_helm_primary":
-                    _colour_type = "Sgt Helm Primary";
-                    break;
-                case "sgt_helm_secondary":
-                    _colour_type = "Sgt Helm Secondary";
-                    break;
-            }
+            var _type_key = string(type);
+            var _colour_type = struct_exists(type_names, _type_key) ? type_names[$ _type_key] : "";
     
             picker.title = _colour_type;
-            //draw_text_transformed(444,550,_colour_type,0.6,0.6,0);
     
             var _action = picker.draw();
             if (_action == "destroy") {
@@ -54,33 +26,16 @@ try {
             } else {
                 var _col = picker.chosen;
                 if (start_colour == -1) {
-                    switch (type) {
-                        case 1:
-                            start_colour = obj_creation.main_color;
-                            break;
-                        case 2:
-                            start_colour = obj_creation.secondary_color;
-                            break;
-                        case 3:
-                            start_colour = obj_creation.left_pauldron;
-                            break;
-                        case 4:
-                            start_colour = obj_creation.right_pauldron;
-                            break;
-                        case 5:
-                            start_colour = obj_creation.main_trim;
-                            break;
-                        case 6:
-                            start_colour = obj_creation.lens_color;
-                            break;
-                        case 7:
-                            start_colour = obj_creation.weapon_color;
-                            if (is_string(type)) {
-                                start_colour = obj_creation.complex_livery_data[$ role][$ type];
+                    if (is_numeric(type) && type >= 1 && type <= 7) {
+                        start_colour = variable_instance_get(obj_creation, type_fields[type]);
+                    } else if (is_string(type)) {
+                        var role_data = obj_creation.complex_livery_data[$ role];
+                        if (is_struct(role_data) && struct_exists(role_data, type)) {
+                            start_colour = role_data[$ type];
                             }
-                            break;
                     }
                 }
+
                 if (is_array(_col)) {
                     if (is_string(type)) {
                         obj_creation.complex_livery_data[$ role][$ type] = _col;
@@ -89,30 +44,15 @@ try {
                     if (_col == -1) {
                         _col = start_colour;
                     }
-                    if (type == 1) {
-                        obj_creation.main_color = _col;
+
+                    if (is_numeric(type) && type >= 1 && type <= 7) {
+                        variable_instance_set(obj_creation, type_fields[type], _col);
                     }
-                    if (type == 2) {
-                        obj_creation.secondary_color = _col;
-                    }
-                    if (type == 3) {
-                        obj_creation.left_pauldron = _col;
-                    }
-                    if (type == 4) {
-                        obj_creation.right_pauldron = _col;
-                    }
-                    if (type == 5) {
-                        obj_creation.main_trim = _col;
-                    }
-                    if (type == 6) {
-                        obj_creation.lens_color = _col;
-                    }
-                    if (type == 7) {
-                        obj_creation.weapon_color = _col;
-                    }
+
                     with (obj_creation) {
                         bulk_selection_buttons_setup();
                     }
+
                     if (is_string(type)) {
                         obj_creation.complex_livery_data[$ role][$ type] = _col;
                         with (obj_creation) {
@@ -128,184 +68,101 @@ try {
             ide = type - 100;
     
             draw_set_font(fnt_40k_30b);
-            if ((obj_creation.role[co][ide] == "") || (badname == 1)) {
+
+            var _role_name = obj_creation.role[co][ide];
+            var _text_selected = obj_creation.text_selected;
+            var _sel_key = "unit_name" + string(ide);
+
+            if (_role_name == "" || badname == 1) {
                 draw_set_color(c_red);
             }
-            if (obj_creation.text_selected != "unit_name" + string(ide)) {
-                draw_text_transformed(444, 550, string_hash_to_newline(obj_creation.role[co][ide]), 0.6, 0.6, 0);
+
+            var _display_text = string(_role_name);
+            if (_text_selected == _sel_key && obj_creation.text_bar <= 30) {
+                _display_text += "|";
             }
-            if ((obj_creation.text_selected == "unit_name" + string(ide)) && (obj_creation.text_bar > 30)) {
-                draw_text_transformed(444, 550, string_hash_to_newline(string(obj_creation.role[co][ide])), 0.6, 0.6, 0);
-            }
-            if ((obj_creation.text_selected == "unit_name" + string(ide)) && (obj_creation.text_bar <= 30)) {
-                draw_text_transformed(444, 550, string_hash_to_newline(string(obj_creation.role[co][ide]) + "|"), 0.6, 0.6, 0);
-            }
-            var hei = string_height_ext(string_hash_to_newline(string(obj_creation.role[co][ide]) + "Q"), -1, 580) * 0.6;
-            if (scr_hit(444, 550, 820, 550 + hei)) {
+
+            draw_text_transformed(444, 550, string_hash_to_newline(_display_text), 0.6, 0.6, 0);
+
+            var _height = string_height_ext(string_hash_to_newline(string(_role_name) + "Q"), -1, 580) * 0.6;
+            if (scr_hit(444, 550, 820, 550 + _height)) {
                 obj_cursor.image_index = 2;
                 tooltip = "Astartes Role Name";
-                tooltip2 = $"The name of this Astartes Role.  The plural form will be ''{obj_creation.role[co][ide]}s''.";
+                tooltip2 = $"The name of this Astartes Role.  The plural form will be ''{_role_name}s''.";
                 if (mouse_button_clicked()) {
-                    obj_creation.text_selected = $"unit_name{ide}";
-                    keyboard_string = obj_creation.role[co][ide];
+                    obj_creation.text_selected = _sel_key;
+                    keyboard_string = _role_name;
                 }
             }
-            if (obj_creation.text_selected == "unit_name" + string(ide)) {
+
+            if (_text_selected == _sel_key) {
                 obj_creation.role[co][ide] = keyboard_string;
             }
-            draw_rectangle(444 - 1, 550 - 1, 822, 550 + hei, 1);
+
+            draw_rectangle(444 - 1, 550 - 1, 822, 550 + _height, 1);
             draw_set_color(CM_GREEN_COLOR);
     
             draw_set_font(fnt_40k_14b);
             draw_set_halign(fa_right);
     
-            var spacing = 22;
+            var _spacing = 22;
             var x5 = 594;
-            var y5 = 597 - spacing;
+            var y5 = 597 - _spacing;
     
-            for (var slot_count = 0; slot_count <= 4; slot_count++) {
-                y5 += spacing;
-                var title = $"{get_slot_name(type - 100, slot_count)}: ";
-                var equipment_slot;
-                switch (slot_count) {
-                    // slots
-                    case eEQUIPMENT_SLOT.WEAPON_ONE:
-                        equipment_slot = obj_creation.wep1[co][ide];
-                        break;
-                    case eEQUIPMENT_SLOT.WEAPON_TWO:
-                        equipment_slot = obj_creation.wep2[co][ide];
-                        break;
-                    case eEQUIPMENT_SLOT.ARMOUR:
-                        equipment_slot = obj_creation.armour[co][ide];
-                        break;
-                    case eEQUIPMENT_SLOT.GEAR:
-                        equipment_slot = obj_creation.gear[co][ide];
-                        break;
-                    case eEQUIPMENT_SLOT.MOBILITY:
-                        equipment_slot = obj_creation.mobi[co][ide];
-                        break;
-                }
+            for (var _slot_count = 0; _slot_count <= 4; _slot_count++) {
+                y5 += _spacing;
     
                 draw_set_halign(fa_right);
                 draw_set_color(CM_GREEN_COLOR);
-                draw_rectangle(x5, y5, x5 - string_width(string_hash_to_newline(title)), y5 + string_height(string_hash_to_newline(title)) - 2, 1);
-                draw_text(x5, y5, string_hash_to_newline(string(title)));
+
+                var _title = $"{get_slot_name(type - 100, _slot_count)}: ";
+                _title = string_hash_to_newline(_title);
+                var _title_width = string_width(_title);
+                var _title_height = string_height(_title) - 2;
+
+                draw_rectangle(x5, y5, x5 - _title_width, y5 + _title_height, 1);
+                draw_text(x5, y5, _title);
     
-                if (scr_hit(x5 - string_width(string_hash_to_newline(title)), y5, x5, y5 + string_height(string_hash_to_newline(title)) - 2)) {
+                if (scr_hit(x5 - _title_width, y5, x5, y5 + _title_height)) {
                     draw_set_color(c_white);
                     draw_set_alpha(0.2);
-                    draw_rectangle(x5, y5, x5 - string_width(string_hash_to_newline(title)), y5 + string_height(string_hash_to_newline(title)) - 2, 0);
+                    draw_rectangle(x5, y5, x5 - _title_width, y5 + _title_height, 0);
     
                     if (mouse_button_clicked()) {
-                        var unit_type = type - 100;
-                        var is_invalid = unit_type == eROLE.DREADNOUGHT && slot_count > eEQUIPMENT_SLOT.WEAPON_TWO;
+                        var _unit_type = type - 100;
+                        var _is_invalid = _unit_type == eROLE.DREADNOUGHT && _slot_count > eEQUIPMENT_SLOT.WEAPON_TWO;
     
-                        if (!is_invalid) {
+                        if (!_is_invalid) {
                             tab = 1;
-                            target_gear = slot_count;
+                            target_gear = _slot_count;
                             item_name = [];
-                            scr_get_item_names(
-                                item_name,
-                                unit_type, // eROLE
-                                slot_count, // slot
-                                eENGAGEMENT.RANGED,
-                                false, // no company standard
-                                false // don't limit to available items
-                            );
+                            scr_get_item_names(item_name, _unit_type, _slot_count, eENGAGEMENT.RANGED, false, false);
                         }
                     }
                 }
+
+                var _array_name = slot_arrays[_slot_count];
+                var _slot_array2d = variable_instance_get(obj_creation, _array_name);
+                var _equipment_slot = _slot_array2d[co][ide];
+
                 draw_set_alpha(1);
                 draw_set_color(CM_GREEN_COLOR);
                 draw_set_halign(fa_left);
-                draw_text(600, y5, string_hash_to_newline(string(equipment_slot)));
+                draw_text(600, y5, string_hash_to_newline(string(_equipment_slot)));
             }
     
-            var confirm_gear_button = {
+            var _confirm_gear_button = {
                 alpha: 1,
                 rects: [],
             };
-            confirm_gear_button.alpha = target_gear > -1 ? 0.5 : 1;
-            confirm_gear_button.rects = draw_unit_buttons([614, 716], "CONFIRM", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b, confirm_gear_button.alpha);
-            if (target_gear == -1 && point_and_click(confirm_gear_button.rects)) {
-                var possible_custom_roles = [
-                    [
-                        "chapter_master",
-                        eROLE.CHAPTERMASTER
-                    ],
-                    [
-                        "honour_guard",
-                        eROLE.HONOURGUARD
-                    ],
-                    [
-                        "veteran",
-                        eROLE.VETERAN
-                    ],
-                    [
-                        "terminator",
-                        eROLE.TERMINATOR
-                    ],
-                    [
-                        "captain",
-                        eROLE.CAPTAIN
-                    ],
-                    [
-                        "dreadnought",
-                        eROLE.DREADNOUGHT
-                    ],
-                    [
-                        "champion",
-                        eROLE.CHAMPION
-                    ],
-                    [
-                        "tactical",
-                        eROLE.TACTICAL
-                    ],
-                    [
-                        "devastator",
-                        eROLE.DEVASTATOR
-                    ],
-                    [
-                        "assault",
-                        eROLE.ASSAULT
-                    ],
-                    [
-                        "ancient",
-                        eROLE.ANCIENT
-                    ],
-                    [
-                        "scout",
-                        eROLE.SCOUT
-                    ],
-                    [
-                        "chaplain",
-                        eROLE.CHAPLAIN
-                    ],
-                    [
-                        "apothecary",
-                        eROLE.APOTHECARY
-                    ],
-                    [
-                        "techmarine",
-                        eROLE.TECHMARINE
-                    ],
-                    [
-                        "librarian",
-                        eROLE.LIBRARIAN
-                    ],
-                    [
-                        "sergeant",
-                        eROLE.SERGEANT
-                    ],
-                    [
-                        "veteran_sergeant",
-                        eROLE.VETERANSERGEANT
-                    ]
-                ];
-    
+            _confirm_gear_button.alpha = target_gear > -1 ? 0.5 : 1;
+            _confirm_gear_button.rects = draw_unit_buttons([614, 716], "CONFIRM", [1, 1], CM_GREEN_COLOR, undefined, fnt_40k_14b, _confirm_gear_button.alpha);
+
+            if (target_gear == -1 && point_and_click(_confirm_gear_button.rects)) {
                 var _role_id = ide;
                 for (var i = 0; i < array_length(possible_custom_roles); i++) {
-                    if (possible_custom_roles[i][1] == _role_id) {
+                    var _role_pair = possible_custom_roles[i];
+                    if (_role_pair[1] == _role_id) {
                         var c_role = {
                             name: obj_creation.role[100][_role_id],
                             wep1: obj_creation.wep1[100][_role_id],
@@ -314,7 +171,8 @@ try {
                             mobi: obj_creation.mobi[100][_role_id],
                             armour: obj_creation.armour[100][_role_id],
                         };
-                        variable_struct_set(obj_creation.custom_roles, possible_custom_roles[i][0], c_role);
+                        variable_struct_set(obj_creation.custom_roles, _role_pair[0], c_role);
+                        break;
                     }
                 }
     
@@ -325,7 +183,7 @@ try {
             }
     
             draw_set_halign(fa_left);
-            if (scr_hit(434, 591, 594, 709) == true) {
+            if (scr_hit(434, 591, 594, 709)) {
                 tooltip = "Gear";
                 tooltip2 = "The equipment this Astartes Role defaults to.  Note that if defaults are set to expensive items the Astartes may instead be provided with more usual equipment.";
             }
@@ -393,7 +251,6 @@ try {
                             obj_creation.mobi[co][ide] = buh;
                             break;
                     }
-                    target_gear = 0;
                 }
             }
         }
@@ -438,13 +295,12 @@ try {
                             obj_creation.mobi[co][ide] = buh;
                             break;
                     }
-                    target_gear = -1;
                 }
             }
             tab = 1;
         }
     
-        if (point_and_click(draw_unit_buttons([980, 716], "CANCEL", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b, 1))) {
+        if (point_and_click(draw_unit_buttons([980, 716], "CLOSE", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b, 1))) {
             target_gear = -1;
         }
     }
