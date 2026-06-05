@@ -54,6 +54,12 @@
       "company": 3,
       "squads": [
         {
+          "squad": "command_squad",
+          "max_count": 1,
+          "min_count": 1,
+          "require": true
+        },
+        {
           "squad": "tactical_squad",
           "proportion": 4
         },
