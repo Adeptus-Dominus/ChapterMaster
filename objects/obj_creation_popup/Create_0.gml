@@ -6,6 +6,7 @@ badname = 0;
 rows = 0;
 
 picker = new ColourPicker(20, 550, 350);
+picker.disable_textures = true;
 start_colour = -1;
 
 tooltip = "";

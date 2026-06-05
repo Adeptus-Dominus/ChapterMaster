@@ -968,6 +968,7 @@ function ColourPicker(xx, yy, max_width = 400) constructor {
     box_size = 30;
     choose_textures = false;
     markings = false;
+    disable_textures = false;
     self.max_width = max_width;
     base_colour = 0;
     title = "";
@@ -1125,7 +1126,7 @@ function ColourPicker(xx, yy, max_width = 400) constructor {
                     }
                 });
             }
-        } else {
+        } else if (!disable_textures) {
             draw_textures_surface(function(tex_data) {
                 chosen = [
                     "texture",
@@ -1155,7 +1156,7 @@ function ColourPicker(xx, yy, max_width = 400) constructor {
             markings_options.y1 = y + (box_size * (row + 1));
         }
 
-        if (!markings) {
+        if (!markings && !disable_textures) {
             var tex_coords = draw_unit_buttons([x + max_width / 2, y + (box_size * (row + 1))], "Texture");
             markings_options.y1 = tex_coords[3];
             if (point_and_click(tex_coords)) {
