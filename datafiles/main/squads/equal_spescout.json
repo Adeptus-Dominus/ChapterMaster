@@ -250,7 +250,11 @@
         },
         {
           "squad": "scout_squad",
-          "proportion": 1
+          "proportion": 5
+        },
+        {
+          "squad": "tactical_squad",
+          "proportion": 4
         }
       ]
     }

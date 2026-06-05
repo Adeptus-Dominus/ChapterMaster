@@ -2360,6 +2360,15 @@ function scr_initialize_custom() {
     var _moved_scouts = 0;
 
     var _coys = struct_get_names(companies);
+    // ensure 10th company is processed last so _moved_scouts is fully accumulated before its tacticals are set
+    var _tenth_idx = -1;
+    for (var _i = 0; _i < array_length(_coys); _i++) {
+        if (_coys[_i] == "tenth") { _tenth_idx = _i; break; }
+    }
+    if (_tenth_idx != -1 && _tenth_idx != array_length(_coys) - 1) {
+        array_delete(_coys, _tenth_idx, 1);
+        array_push(_coys, "tenth");
+    }
     function _is_terminator(_armour) {
         return array_contains(["Terminator Armour", "Tartaros"], _armour);
     }
