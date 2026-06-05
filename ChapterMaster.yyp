@@ -743,6 +743,8 @@
     {"id":{"name":"action_set_alarm","path":"scripts/action_set_alarm/action_set_alarm.yy",},},
     {"id":{"name":"action_set_relative","path":"scripts/action_set_relative/action_set_relative.yy",},},
     {"id":{"name":"Armamentarium","path":"scripts/Armamentarium/Armamentarium.yy",},},
+    {"id":{"name":"ColourItem","path":"scripts/ColourItem/ColourItem.yy",},},
+    {"id":{"name":"ColourPicker","path":"scripts/ColourPicker/ColourPicker.yy",},},
     {"id":{"name":"d3d_set_fog","path":"scripts/d3d_set_fog/d3d_set_fog.yy",},},
     {"id":{"name":"DebugView","path":"scripts/DebugView/DebugView.yy",},},
     {"id":{"name":"DiploBasicNodes","path":"scripts/DiploBasicNodes/DiploBasicNodes.yy",},},
