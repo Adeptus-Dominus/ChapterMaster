@@ -919,6 +919,7 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
     inactive_col = c_gray;
     max_width = 0;
     max_height = 0;
+    /// @type {Array<Struct.ToggleButton>} 
     toggles = [];
     changed = false;
     draw_alighn = "horizontal";
@@ -936,6 +937,9 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
 
     static draw_toggle = function(index) {
         var _cur_opt = toggles[index];
+        _cur_opt.x1 = next_draw.x1;
+        _cur_opt.y1 = next_draw.y1;
+        _cur_opt.update();
         if (_cur_opt.clicked() && allow_changes) {
             changed = true;
         }
