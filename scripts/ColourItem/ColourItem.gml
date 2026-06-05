@@ -156,8 +156,8 @@ function ColourItem(_xx, _yy) constructor {
         left_trim: [
             -150,
             31,
-            string_width("R Trim"),
-            string_height("R Trim")
+            string_width("L Trim"),
+            string_height("L Trim")
         ],
         left_chest: [
             84,
