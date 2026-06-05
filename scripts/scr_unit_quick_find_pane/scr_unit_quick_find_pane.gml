@@ -653,6 +653,8 @@ function add_bionics_selection() {
         }
 
         _unit.add_bionics();
+        ma_health[i] = _unit.hp();
+        ma_health_string[i] = $"{round((_unit.hp() / _unit.max_health()) * 100)}% HP";
     }
 }
 
