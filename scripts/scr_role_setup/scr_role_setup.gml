@@ -1,6 +1,6 @@
 /// @self Asset.GMObject.obj_creation
 function role_setup_objects() {
-    specialist_distribution_box = new ToggleButton({str1: "Equal Specialist Distribution", font: fnt_40k_12, style: "box", x1: 560, y1: 250, tooltip: $"Specialist Distribution\nCheck if you wish for your Companies to be uniform and each contain {role[100][10]}s and {role[100][9]}s.", active: equal_specialists, clicked_check_default: true});
+    specialist_distribution_box = new ToggleButton({str1: "Equal Specialist Distribution", font: fnt_40k_12, style: "box", x1: 560, y1: 250, tooltip: $"Specialist Distribution\nCheck if you wish for your Companies to be uniform and each contain {role[100][10]}s and {role[100][9]}s.", active: squad_distribution, clicked_check_default: true});
 
     load_to_ship_radio = new RadioSet([{str1: "On Planet", font: fnt_40k_12, style: "box", tooltip: $"On Planet/nCheck to have your Astartes Start on your home planet."}, {str1: "Load to Ships", font: fnt_40k_12, style: "box", tooltip: $"Load to Ships\nCheck to have your Astartes automatically loaded into ships when the game starts."}, {str1: "Load (Sans Escorts)", font: fnt_40k_12, style: "box", tooltip: $"Load (Sans Escorts)\nCheck to have your Astartes automatically loaded into ships, except for Escorts, when the game starts."}], "", {x1: 445, y1: 310, x_gap: 20, center: true, max_width: 400});
     load_to_ship_radio.current_selection = load_to_ships[0];
@@ -36,17 +36,20 @@ function scr_role_setup() {
         draw_set_alpha(0.5);
     }
 
-    specialist_distribution_box.draw(equal_specialists);
-    equal_specialists = specialist_distribution_box.active;
+    specialist_distribution_box.update();
+    specialist_distribution_box.draw(squad_distribution);
+    squad_distribution = specialist_distribution_box.active;
 
     load_to_ship_radio.draw();
 
     load_to_ships[0] = load_to_ship_radio.current_selection;
 
     if (load_to_ships[0] > 0) {
+        distribute_scouts_box.update();
         distribute_scouts_box.draw(load_to_ships[1]);
         load_to_ships[1] = distribute_scouts_box.active;
 
+        distribute_vets_box.update();
         distribute_vets_box.draw(load_to_ships[2]);
         load_to_ships[2] = distribute_vets_box.active;
     }

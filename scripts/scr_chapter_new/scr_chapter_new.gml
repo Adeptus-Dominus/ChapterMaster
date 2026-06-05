@@ -82,7 +82,7 @@ function ChapterData() constructor {
         mucranoid: 0,
     };
     battle_cry = "For the Emperor";
-    equal_specialists = 0;
+    squad_distribution = 0;
     load_to_ships = {
         escort_load: 2,
         split_scouts: 0,
@@ -428,16 +428,11 @@ function scr_chapter_new(chapter_identifier) {
             load.split_scouts,
             load.split_vets
         ];
-        obj_creation.equal_specialists = chapter_object.equal_specialists;
+        obj_creation.squad_distribution = chapter_object.squad_distribution;
         if (struct_exists(chapter_object, "scout_company_behaviour")) {
             obj_creation.scout_company_behaviour = chapter_object.scout_company_behaviour;
         } else {
             obj_creation.scout_company_behaviour = 0; //default
-        }
-        if (struct_exists(chapter_object, "equal_scouts")) {
-            obj_creation.equal_scouts = chapter_object.equal_scouts;
-        } else {
-            obj_creation.equal_scouts = 0;
         }
 
         obj_creation.mutations = 0;

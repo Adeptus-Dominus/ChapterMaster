@@ -199,7 +199,7 @@ lordexec = global.name_generator.ChapterMemberNameGeneration(); //8th
 relmaster = global.name_generator.ChapterMemberNameGeneration(); //9th
 recruiter = global.name_generator.ChapterMemberNameGeneration(); //10th
 
-equal_specialists = 0;
+squad_distribution = 0;
 load_to_ships = [
     2,
     0,

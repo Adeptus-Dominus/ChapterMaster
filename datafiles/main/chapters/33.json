@@ -104,7 +104,7 @@
             "recruiter": ""
         },
         "battle_cry": "For the Emperor!",
-        "equal_specialists": 0, // 0 if no, 1 if yes. If yes, will distribute specialist roles like Assaults and Devastators equally between companies. Otherwise all Assaults go in Company 8 and all Devastators in Company 9
+        "squad_distribution": 0, // 0 if no, 1 if yes. If yes, will distribute specialist roles like Assaults and Devastators equally between companies. Otherwise all Assaults go in Company 8 and all Devastators in Company 9
         "load_to_ships": {
             "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
             "split_scouts": 0, // 0 no, 1 yes. If yes, splits scouts between companies equally. Otherwise all scouts are kept in 10th Company.

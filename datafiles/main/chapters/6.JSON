@@ -75,7 +75,7 @@
             "recruiter": "Telavech"
         },
         "battle_cry": "The flesh is weak!",
-        "equal_specialists": 1,
+        "squad_distribution": 1,
         "load_to_ships": {
             "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
             "split_scouts": 0, // 0 no, 1 yes

@@ -75,7 +75,7 @@
             "recruiter": "Sven Bloodhowl"
         },
         "battle_cry": "For Russ and the Allfather!",
-        "equal_specialists": 1,
+        "squad_distribution": 1,
         /** reference the image id in datafiles/images/advisor */
         "custom_advisors": {
             "librarian": 11,

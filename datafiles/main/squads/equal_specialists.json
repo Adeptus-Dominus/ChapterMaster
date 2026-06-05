@@ -37,10 +37,6 @@
           "proportion": 6
         },
         {
-          "squad": "breacher_squad",
-          "proportion": 0
-        },
-        {
           "squad": "devastator_squad",
           "proportion": 2
         },
@@ -62,10 +58,6 @@
         {
           "squad": "tactical_squad",
           "proportion": 6
-        },
-        {
-          "squad": "breacher_squad",
-          "proportion": 0
         },
         {
           "squad": "devastator_squad",
@@ -91,10 +83,6 @@
           "proportion": 6
         },
         {
-          "squad": "breacher_squad",
-          "proportion": 0
-        },
-        {
           "squad": "devastator_squad",
           "proportion": 2
         },
@@ -118,10 +106,6 @@
           "proportion": 6
         },
         {
-          "squad": "breacher_squad",
-          "proportion": 0
-        },
-        {
           "squad": "devastator_squad",
           "proportion": 2
         },
@@ -142,7 +126,15 @@
         },
         {
           "squad": "tactical_squad",
-          "proportion": 1
+          "proportion": 6
+        },
+        {
+          "squad": "devastator_squad",
+          "proportion": 2
+        },
+        {
+          "squad": "assault_squad",
+          "proportion": 2
         }
       ]
     },
@@ -157,7 +149,15 @@
         },
         {
           "squad": "tactical_squad",
-          "proportion": 1
+          "proportion": 6
+        },
+        {
+          "squad": "devastator_squad",
+          "proportion": 2
+        },
+        {
+          "squad": "assault_squad",
+          "proportion": 2
         }
       ]
     },
@@ -171,8 +171,16 @@
           "require": true
         },
         {
+          "squad": "tactical_squad",
+          "proportion": 6
+        },
+        {
+          "squad": "devastator_squad",
+          "proportion": 2
+        },
+        {
           "squad": "assault_squad",
-          "proportion": 1
+          "proportion": 2
         }
       ]
     },
@@ -186,8 +194,16 @@
           "require": true
         },
         {
+          "squad": "tactical_squad",
+          "proportion": 6
+        },
+        {
           "squad": "devastator_squad",
-          "proportion": 1
+          "proportion": 2
+        },
+        {
+          "squad": "assault_squad",
+          "proportion": 2
         }
       ]
     },

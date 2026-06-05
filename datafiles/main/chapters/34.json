@@ -17,7 +17,7 @@
       "membrane": 0.0
     },
     "battle_cry": "By the Blood of Sanguinius",
-    "equal_specialists": 1.0,
+    "squad_distribution": 1.0,
     "origin": 2,
     "custom_advisors": {},
     "load_to_ships": {
