@@ -1,5 +1,6 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+/// @self Asset.GMObject.obj_controller
 function scr_kill_unit(company, unit_slot) {
     try {
         if (obj_ini.role[company][unit_slot] == "Forge Master") {
