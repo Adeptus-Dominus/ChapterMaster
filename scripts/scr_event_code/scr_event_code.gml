@@ -311,8 +311,8 @@ function strange_build_event() {
         marine_and_company = scr_random_marine("", 0, "none");
     }
     if (marine_and_company != "none") {
-        var marine = marine_and_company[0];
-        var company = marine_and_company[1];
+        var company = marine_and_company[0];
+        var marine = marine_and_company[1];
         var text = "";
         var _unit = fetch_unit(marine_and_company);
         var role = _unit.role();

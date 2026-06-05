@@ -12,7 +12,7 @@ function scr_kill_unit(company, unit_slot) {
             alarm[7] = 5;
             global.defeat = 1;
         }
-        _unit = fetch_unit([company, unit_slot]);
+        var _unit = fetch_unit([company, unit_slot]);
         if (_unit.weapon_one() == "Company Standard" || _unit.weapon_two() == "Company Standard") {
             scr_loyalty("Lost Standard", "+");
         }
