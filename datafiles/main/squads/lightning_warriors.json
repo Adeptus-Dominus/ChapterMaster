@@ -1,242 +1,198 @@
 {
+  "default_squads": [
+    { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+    { "squad": "tactical_squad", "proportion": 0 },
+    { "squad": "bike_squad", "proportion": 7 },
+    { "squad": "attack_bike_squad", "proportion": 3 },
+    { "squad": "devastator_squad", "proportion": 0 },
+    { "squad": "assault_squad", "proportion": 0 }
+  ],
   "companies": [
     {
       "company": 1,
       "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "terminator_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "terminator_assault_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "veteran_squad",
-          "proportion": 1
-        }
-      ]
-    },
-    {
-      "company": 2,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 0
-        },
-        {
-          "squad": "bike_squad",
-          "proportion": 7
-        },
-        {
-          "squad": "attack_bike_squad",
-          "proportion": 3
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 0
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 0
-        }
-      ]
-    },
-    {
-      "company": 3,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 0
-        },
-        {
-          "squad": "bike_squad",
-          "proportion": 7
-        },
-        {
-          "squad": "attack_bike_squad",
-          "proportion": 3
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 0
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 0
-        }
-      ]
-    },
-    {
-      "company": 4,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 0
-        },
-        {
-          "squad": "bike_squad",
-          "proportion": 7
-        },
-        {
-          "squad": "attack_bike_squad",
-          "proportion": 3
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 0
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 0
-        }
-      ]
-    },
-    {
-      "company": 5,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 0
-        },
-        {
-          "squad": "bike_squad",
-          "proportion": 7
-        },
-        {
-          "squad": "attack_bike_squad",
-          "proportion": 3
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 0
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 0
-        }
-      ]
-    },
-    {
-      "company": 6,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 0
-        },
-        {
-          "squad": "bike_squad",
-          "proportion": 7
-        },
-        {
-          "squad": "attack_bike_squad",
-          "proportion": 3
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 0
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 0
-        }
+        { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+        { "squad": "terminator_squad", "proportion": 2 },
+        { "squad": "terminator_assault_squad", "proportion": 2 },
+        { "squad": "veteran_squad", "proportion": 1 }
       ]
     },
     {
       "company": 7,
       "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 1
-        }
+        { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+        { "squad": "tactical_squad", "proportion": 1 }
       ]
     },
     {
       "company": 8,
       "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 1
-        }
+        { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+        { "squad": "assault_squad", "proportion": 1 }
       ]
     },
     {
       "company": 9,
       "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 1
-        }
+        { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+        { "squad": "devastator_squad", "proportion": 1 }
       ]
     },
     {
       "company": 10,
       "squads": [
+        { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+        { "squad": "scout_squad", "proportion": 1 }
+      ]
+    }
+  ],
+  "distribution_overrides": {
+    "equal_specialists": {
+      "default_squads": [
+        { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+        { "squad": "attack_bike_squad", "proportion": 2 },
+        { "squad": "bike_squad", "proportion": 4 },
+        { "squad": "tactical_squad", "proportion": 2 },
+        { "squad": "devastator_squad", "proportion": 1 },
+        { "squad": "assault_squad", "proportion": 1 }
+      ],
+      "companies": [
         {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
+          "company": 7,
+          "squads": [
+            { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "attack_bike_squad", "proportion": 2 },
+            { "squad": "bike_squad", "proportion": 4 },
+            { "squad": "tactical_squad", "proportion": 2 },
+            { "squad": "devastator_squad", "proportion": 1 },
+            { "squad": "assault_squad", "proportion": 1 }
+          ]
         },
         {
-          "squad": "scout_squad",
-          "proportion": 1
+          "company": 8,
+          "squads": [
+            { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "attack_bike_squad", "proportion": 2 },
+            { "squad": "bike_squad", "proportion": 4 },
+            { "squad": "tactical_squad", "proportion": 2 },
+            { "squad": "devastator_squad", "proportion": 1 },
+            { "squad": "assault_squad", "proportion": 1 }
+          ]
+        },
+        {
+          "company": 9,
+          "squads": [
+            { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "attack_bike_squad", "proportion": 2 },
+            { "squad": "bike_squad", "proportion": 4 },
+            { "squad": "tactical_squad", "proportion": 2 },
+            { "squad": "devastator_squad", "proportion": 1 },
+            { "squad": "assault_squad", "proportion": 1 }
+          ]
+        }
+      ]
+    },
+    "equal_scouts": {
+      "default_squads": [
+        { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+        { "squad": "attack_bike_squad", "proportion": 3 },
+        { "squad": "bike_squad", "proportion": 5 },
+        { "squad": "scout_squad", "proportion": 2 }
+      ],
+      "companies": [
+        {
+          "company": 7,
+          "squads": [
+            { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "attack_bike_squad", "proportion": 3 },
+            { "squad": "bike_squad", "proportion": 5 },
+            { "squad": "scout_squad", "proportion": 2 }
+          ]
+        },
+        {
+          "company": 8,
+          "squads": [
+            { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "attack_bike_squad", "proportion": 3 },
+            { "squad": "bike_squad", "proportion": 5 },
+            { "squad": "scout_squad", "proportion": 2 }
+          ]
+        },
+        {
+          "company": 9,
+          "squads": [
+            { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "attack_bike_squad", "proportion": 3 },
+            { "squad": "bike_squad", "proportion": 5 },
+            { "squad": "scout_squad", "proportion": 2 }
+          ]
+        },
+        {
+          "company": 10,
+          "squads": [
+            { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "scout_squad", "proportion": 5 },
+            { "squad": "bike_squad", "proportion": 4 }
+          ]
+        }
+      ]
+    },
+    "equal_spescout": {
+      "default_squads": [
+        { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+        { "squad": "attack_bike_squad", "proportion": 2 },
+        { "squad": "bike_squad", "proportion": 3 },
+        { "squad": "tactical_squad", "proportion": 2 },
+        { "squad": "devastator_squad", "proportion": 1 },
+        { "squad": "assault_squad", "proportion": 1 },
+        { "squad": "scout_squad", "proportion": 1 }
+      ],
+      "companies": [
+        {
+          "company": 7,
+          "squads": [
+            { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "attack_bike_squad", "proportion": 2 },
+            { "squad": "bike_squad", "proportion": 3 },
+            { "squad": "tactical_squad", "proportion": 2 },
+            { "squad": "devastator_squad", "proportion": 1 },
+            { "squad": "assault_squad", "proportion": 1 },
+            { "squad": "scout_squad", "proportion": 1 }
+          ]
+        },
+        {
+          "company": 8,
+          "squads": [
+            { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "attack_bike_squad", "proportion": 2 },
+            { "squad": "bike_squad", "proportion": 3 },
+            { "squad": "tactical_squad", "proportion": 2 },
+            { "squad": "devastator_squad", "proportion": 1 },
+            { "squad": "assault_squad", "proportion": 1 },
+            { "squad": "scout_squad", "proportion": 1 }
+          ]
+        },
+        {
+          "company": 9,
+          "squads": [
+            { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "attack_bike_squad", "proportion": 2 },
+            { "squad": "bike_squad", "proportion": 3 },
+            { "squad": "tactical_squad", "proportion": 2 },
+            { "squad": "devastator_squad", "proportion": 1 },
+            { "squad": "assault_squad", "proportion": 1 },
+            { "squad": "scout_squad", "proportion": 1 }
+          ]
+        },
+        {
+          "company": 10,
+          "squads": [
+            { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "scout_squad", "proportion": 5 },
+            { "squad": "bike_squad", "proportion": 4 }
+          ]
         }
       ]
     }
-  ]
+  }
 }

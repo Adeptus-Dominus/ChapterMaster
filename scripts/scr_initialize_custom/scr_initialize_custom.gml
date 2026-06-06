@@ -1639,23 +1639,41 @@ function scr_initialize_custom() {
     #endregion
 
     #region Squad Loadouts
-    switch (obj_creation.squad_distribution) {
-        case 1: // equal specialists only
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/equal_specialists.json", json_parse);
-            break;
-        case 2: // equal scouts only
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/equal_scouts.json", json_parse);
-            break;
-        case 3: // equal specialists and equal scouts
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/equal_spescout.json", json_parse);
-            break;
-        default: // 0 = standard
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/company_squad_builds.json", json_parse);
-            break;
+    if (scr_has_adv("Lightning Warriors")) {
+        obj_ini.chapter_squad_arrangement = json_to_gamemaker(
+            working_directory + $"main\\squads\\lightning_warriors.json", json_parse);
+        var _dist_key = "";
+        switch (obj_creation.squad_distribution) {
+            case 1: _dist_key = "equal_specialists"; break;
+            case 2: _dist_key = "equal_scouts";      break;
+            case 3: _dist_key = "equal_spescout";    break;
+        }
+        if (_dist_key != ""
+                && struct_exists(obj_ini.chapter_squad_arrangement, "distribution_overrides")
+                && struct_exists(obj_ini.chapter_squad_arrangement.distribution_overrides, _dist_key)) {
+            apply_squad_distribution_override(
+                obj_ini.chapter_squad_arrangement,
+                obj_ini.chapter_squad_arrangement.distribution_overrides[$ _dist_key]);
+        }
+    } else {
+        switch (obj_creation.squad_distribution) {
+            case 1: // equal specialists only
+                obj_ini.chapter_squad_arrangement = json_to_gamemaker(
+                    working_directory + $"main\\squads\\equal_specialists.json", json_parse);
+                break;
+            case 2: // equal scouts only
+                obj_ini.chapter_squad_arrangement = json_to_gamemaker(
+                    working_directory + $"main\\squads\\equal_scouts.json", json_parse);
+                break;
+            case 3: // equal specialists and equal scouts
+                obj_ini.chapter_squad_arrangement = json_to_gamemaker(
+                    working_directory + $"main\\squads\\equal_spescout.json", json_parse);
+                break;
+            default: // 0 = standard
+                obj_ini.chapter_squad_arrangement = json_to_gamemaker(
+                    working_directory + $"main\\squads\\company_squad_builds.json", json_parse);
+                break;
+        }
     }
 
     var _squad_name = "Squad";
@@ -1777,14 +1795,25 @@ function scr_initialize_custom() {
         array_push(_swaps, _set);
     }
 
-    if (variable_instance_exists(obj_creation, "squad_builder")) {
+    // LOGGER.debug($"squads object for chapter {chapter_name}");
+    // LOGGER.debug($"{custom_squads}");
+
+    if (struct_exists(obj_creation, "squad_builder")) {
+        if (!struct_exists(obj_ini.chapter_squad_arrangement, "companies")) {
+            obj_ini.chapter_squad_arrangement.companies = [];
+        }
         for (var s = 0; s < array_length(obj_creation.squad_builder); s++) {
             var _custom_build = obj_creation.squad_builder[s];
+            var _found = false;
             for (var i = 0; i < array_length(obj_ini.chapter_squad_arrangement.companies); i++) {
-                var _default_build = obj_ini.chapter_squad_arrangement.companies[i];
-                if (_custom_build.company == _default_build.company) {
+                if (obj_ini.chapter_squad_arrangement.companies[i].company == _custom_build.company) {
                     obj_ini.chapter_squad_arrangement.companies[i] = _custom_build;
+                    _found = true;
+                    break;
                 }
+            }
+            if (!_found) {
+                array_push(obj_ini.chapter_squad_arrangement.companies, _custom_build);
             }
         }
     }

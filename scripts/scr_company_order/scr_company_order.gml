@@ -70,18 +70,8 @@ function scr_company_order(company) {
 
         if (_squadless.number() > 3) {
             var _squad_index = _company_marines.index_squads();
-            var _data_match = false;
-            var _data;
-            if (struct_exists(obj_ini.chapter_squad_arrangement, "companies")) {
-                var _comp_datas = obj_ini.chapter_squad_arrangement.companies;
-                for (var i = 0; i < array_length(_comp_datas); i++) {
-                    if (_comp_datas[i].company == co) {
-                        _data_match = true;
-                        _data = _comp_datas[i];
-                    }
-                }
-            }
-            if (_data_match) {
+            var _data = resolve_company_arrangement(obj_ini.chapter_squad_arrangement, co);
+            if (_data != undefined) {
                 _squadless.organise_by_template(_data, _squad_index, _empty_index, false);
             }
 

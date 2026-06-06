@@ -793,6 +793,52 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     };
 }
 
+// Resolves the squad arrangement data for a specific company number from an arrangement struct.
+// Checks explicit companies entries first, falls back to default_squads if present.
+// Returns undefined if neither is available.
+function resolve_company_arrangement(arrangement, company_number) {
+    if (struct_exists(arrangement, "companies")) {
+        var _companies = arrangement.companies;
+        for (var i = 0; i < array_length(_companies); i++) {
+            if (_companies[i].company == company_number) {
+                return _companies[i];
+            }
+        }
+    }
+    if (struct_exists(arrangement, "default_squads")) {
+        return { company: company_number, squads: arrangement.default_squads };
+    }
+    return undefined;
+}
+
+// Applies a distribution_overrides entry onto a loaded arrangement in-place.
+// Replaces default_squads if the override defines them, and upserts any explicit company entries.
+function apply_squad_distribution_override(arrangement, override) {
+    if (struct_exists(override, "default_squads")) {
+        arrangement.default_squads = override.default_squads;
+    }
+    if (struct_exists(override, "companies")) {
+        if (!struct_exists(arrangement, "companies")) {
+            arrangement.companies = [];
+        }
+        var _ovr_companies = override.companies;
+        for (var oi = 0; oi < array_length(_ovr_companies); oi++) {
+            var _ovr = _ovr_companies[oi];
+            var _found = false;
+            for (var ai = 0; ai < array_length(arrangement.companies); ai++) {
+                if (arrangement.companies[ai].company == _ovr.company) {
+                    arrangement.companies[ai] = _ovr;
+                    _found = true;
+                    break;
+                }
+            }
+            if (!_found) {
+                array_push(arrangement.companies, _ovr);
+            }
+        }
+    }
+}
+
 // creates the origional distribution of squads accross the chapter
 // lots of room for customisation of different chapters here
 
@@ -1212,11 +1258,11 @@ function SquadArrangementEditor(company) constructor {
 
 function game_start_squads() {
     obj_ini.squads = {};
-    if (struct_exists(chapter_squad_arrangement, "companies")) {
-        var _comp_datas = obj_ini.chapter_squad_arrangement.companies;
-        for (var i = 0; i < array_length(_comp_datas); i++) {
-            var _company = collect_company(_comp_datas[i].company);
-            _company.organise_by_template(_comp_datas[i]);
+    for (var co = 1; co <= obj_ini.companies; co++) {
+        var _data = resolve_company_arrangement(obj_ini.chapter_squad_arrangement, co);
+        if (_data != undefined) {
+            var _company = collect_company(co);
+            _company.organise_by_template(_data);
         }
     }
 }
