@@ -2,14 +2,13 @@
 function scr_ui_settings() {
     var romanNumerals = scr_roman_numerals();
     // Var declaration
-    var xx, yy;
     var tool1 = "", tool2 = "";
     var che = false;
     var cx, cy;
     var x5 = 0, y5 = 0, x6 = 0;
     var too_img = 0;
-    xx = __view_get(e__VW.XView, 0) + 0;
-    yy = __view_get(e__VW.YView, 0) + 0;
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
 
     if ((menu >= 21) && (menu <= 24)) {
         draw_sprite(spr_settings_bg, 0, xx, yy);
@@ -284,7 +283,6 @@ function scr_ui_settings() {
             draw_set_halign(fa_left);
             draw_text_ext(xx + 1227, yy + 565, string(tooltip2), -1, 323);
 
-            // draw_sprite(spr_formation_splash,too_img,xx+1271,yy+252);
             scr_image("formation", too_img, xx + 1271, yy + 252, 239, 297);
         }
 
@@ -306,8 +304,7 @@ function scr_ui_settings() {
     if (menu == 23) {
         if (settings > 0) {
             var co = 100;
-            var ide;
-            ide = settings;
+            var index = settings;
 
             draw_sprite_ext(spr_arrow, 0, xx + 25, yy + 70, 2, 2, 0, c_white, 1); // Back
             if ((scr_hit(xx + 25, yy + 70, xx + 25 + 64, yy + 70 + 64) == true) && mouse_button_clicked()) {
@@ -330,10 +327,11 @@ function scr_ui_settings() {
             draw_set_font(fnt_40k_30b);
             draw_set_color(c_gray);
             draw_set_halign(fa_left);
-            draw_text_transformed(xx + 678, yy + 160, obj_ini.role[co][ide], 0.6, 0.6, 0);
-            var wid, hei;
-            wid = 0;
-            hei = string_height_ext(string(obj_ini.role[co][ide]) + "Q", -1, 580) * 0.6;
+            draw_text_transformed(xx + 678, yy + 160, obj_ini.role[co][index], 0.6, 0.6, 0);
+
+            var wid = 0;
+            var hei = string_height_ext(string(obj_ini.role[co][index]) + "Q", -1, 580) * 0.6;
+
             draw_rectangle(xx + 678 - 1, yy + 160 - 1, xx + 1056, yy + 160 + hei, 1);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_14b);
@@ -341,7 +339,7 @@ function scr_ui_settings() {
 
             var title = "";
             var geh = "";
-            spacing = 22;
+            var spacing = 22;
             x5 = xx + 830;
             y5 = yy + 207 - spacing;
 
@@ -349,23 +347,23 @@ function scr_ui_settings() {
                 y5 += spacing;
                 if (gg == 0) {
                     title = "Main Weapon: ";
-                    geh = obj_ini.wep1[co][ide];
+                    geh = obj_ini.wep1[co][index];
                 }
                 if (gg == 1) {
                     title = "Secondary Weapon: ";
-                    geh = obj_ini.wep2[co][ide];
+                    geh = obj_ini.wep2[co][index];
                 }
                 if (gg == 2) {
                     title = "Armour: ";
-                    geh = obj_ini.armour[co][ide];
+                    geh = obj_ini.armour[co][index];
                 }
                 if (gg == 3) {
                     title = "Special Item: ";
-                    geh = obj_ini.gear[co][ide];
+                    geh = obj_ini.gear[co][index];
                 }
                 if (gg == 4) {
                     title = "Mobility Item: ";
-                    geh = obj_ini.mobi[co][ide];
+                    geh = obj_ini.mobi[co][index];
                 }
 
                 draw_set_halign(fa_right);
@@ -381,10 +379,10 @@ function scr_ui_settings() {
 
                     var nep = false;
 
-                    if (((obj_ini.armour[co][ide] == "Terminator Armour") || (obj_ini.armour[co][ide] == "Dreadnought")) && (gg == 3)) {
+                    if (((obj_ini.armour[co][index] == "Terminator Armour") || (obj_ini.armour[co][index] == "Dreadnought")) && (gg == 3)) {
                         nep = true;
                     }
-                    if ((ide == 6) && ((gg == 2) || (gg == 4))) {
+                    if ((index == 6) && ((gg == 2) || (gg == 4))) {
                         nep = true;
                     }
 
@@ -401,8 +399,7 @@ function scr_ui_settings() {
                                 gg, // slot
                                 is_hand_slot ? (obj_mass_equip.tab == 0 ? eENGAGEMENT.RANGED : eENGAGEMENT.MELEE) : eENGAGEMENT.NONE,
                                 true, // include company standard
-                                false, // show all regardless of inventory
-
+                                false // show all regardless of inventory
                             );
                         }
                     }
@@ -456,8 +453,7 @@ function scr_ui_settings() {
             tool2 = "Turned off by default. Allows you to transfer Astartes in the same way as vehicles.";
         }
         if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
-            var onceh;
-            onceh = 0;
+            var onceh = 0;
             if ((onceh == 0) && (command_set[1] == 0)) {
                 onceh = 1;
                 command_set[1] = 1;
@@ -476,7 +472,12 @@ function scr_ui_settings() {
         draw_sprite(spr_creation_check, che + 2, cx, cy);
         if (scr_hit(cx + 31, cy, cx + 300, cy + 20) == true) {
             tool1 = "Codex Compliant Organization";
-            tool2 = "When enabled, marine promotions are limited based on their current company and EXP, overall following the Codex Astartes promotion sequence." + "\n\n" + "When disabled, you can promote marines to any company, from any company, disregarding any EXP requirements." + "\n" + "Terminators, Dreadnoughts and Company Command roles retain EXP requirements however.";
+            tool2 =
+                "When enabled, marine promotions are limited based on their current company and EXP, overall following the Codex Astartes promotion sequence."
+                + "\n\n"
+                + "When disabled, you can promote marines to any company, from any company, disregarding any EXP requirements."
+                + "\n"
+                + "Terminators, Dreadnoughts and Company Command roles retain EXP requirements however.";
         }
         if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked()) {
             var onceh = 0;
@@ -855,74 +856,71 @@ function scr_ui_settings() {
         draw_text(xx + 1278, yy + 207, "Astartes Role Settings");
 
         // Role Settings
-        var ide, xxx, yyy;
-        ide = 0;
-        xxx = xx + 1277;
-        yyy = yy + 250 - 31;
+        var index = 0;
+        var xxx = xx + 1277;
+        var yyy = yy + 250 - 31;
 
-        for (var derpaderp = 1; derpaderp <= 14; derpaderp++) {
-            if (derpaderp == 1) {
-                ide = 15;
+        for (var i = 1; i <= 14; i++) {
+            if (i == 1) {
+                index = 15;
             }
-            if (derpaderp == 2) {
-                ide = 14;
+            if (i == 2) {
+                index = 14;
             }
-            if (derpaderp == 3) {
-                ide = 17;
+            if (i == 3) {
+                index = 17;
             }
-            if (derpaderp == 4) {
-                ide = 16;
+            if (i == 4) {
+                index = 16;
             }
-            if (derpaderp == 5) {
-                ide = 5;
+            if (i == 5) {
+                index = 5;
             }
-            if (derpaderp == 6) {
-                ide = 7;
+            if (i == 6) {
+                index = 7;
             }
-            if (derpaderp == 7) {
-                ide = 2;
+            if (i == 7) {
+                index = 2;
             }
-            if (derpaderp == 8) {
-                ide = 4;
+            if (i == 8) {
+                index = 4;
             }
-            if (derpaderp == 9) {
-                ide = 3;
+            if (i == 9) {
+                index = 3;
             }
-            if (derpaderp == 10) {
-                ide = 6;
+            if (i == 10) {
+                index = 6;
             }
-            if (derpaderp == 11) {
-                ide = 8;
+            if (i == 11) {
+                index = 8;
             }
-            if (derpaderp == 12) {
-                ide = 9;
+            if (i == 12) {
+                index = 9;
             }
-            if (derpaderp == 13) {
-                ide = 10;
+            if (i == 13) {
+                index = 10;
             }
-            if (derpaderp == 14) {
-                ide = 12;
+            if (i == 14) {
+                index = 12;
             }
 
             draw_set_alpha(1);
-            if (obj_ini.race[100][ide] != 0) {
+            if (obj_ini.race[100][index] != 0) {
                 // Creates mass_equip here
-                // if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
                 yyy += 31;
                 draw_set_color(c_gray);
                 draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
                 draw_set_color(0);
-                draw_text(xxx, yyy, obj_ini.role[100][ide]);
+                draw_text(xxx, yyy, obj_ini.role[100][index]);
                 if (scr_hit(xxx, yyy, xxx + 289, yyy + 20) == true) {
-                    /*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
                     draw_set_alpha(0.1);
                     draw_set_color(c_white);
                     draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
                     draw_set_alpha(1);
-                    tool1 = string(obj_ini.role[100][ide]) + " Settings";
+                    tool1 = string(obj_ini.role[100][index]) + " Settings";
                     tool2 = "Click to open the settings for this unit.";
                     if (mouse_button_clicked()) {
-                        settings = ide;
+                        settings = index;
                         menu = 23;
                         with (obj_mass_equip) {
                             instance_destroy();
@@ -936,32 +934,28 @@ function scr_ui_settings() {
         xxx = xx + 936;
         yyy = yy + 250 - 31;
 
-        for (var ides = 0; ides <= 10; ides++) {
-            draw_set_alpha(1);
-            // if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
+        for (var i = 0; i <= 10; i++) {
             yyy += 31;
             draw_set_color(c_gray);
             draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
             draw_set_color(0);
 
             var shw = "";
-            if (ides == 0) {
+            if (i == 0) {
                 shw = "Headquarters";
             }
-            if (ides > 0) {
-                shw = romanNumerals[ides - 1] + " Company";
+            if (i > 0) {
+                shw = romanNumerals[i - 1] + " Company";
             }
             draw_text(xxx, yyy, string(shw));
 
             if (scr_hit(xxx, yyy, xxx + 289, yyy + 20) == true) {
-                /*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
                 draw_set_alpha(0.1);
                 draw_set_color(c_white);
                 draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
                 draw_set_alpha(1);
                 tool1 = string(shw) + " Settings";
                 tool2 = "Click to open the settings for this company.";
-                // if (mouse_left>=1) and (cooldown<=0){settings=ides;menu=22;}
             }
         }
 
@@ -970,7 +964,6 @@ function scr_ui_settings() {
 
         for (var i = 1; i <= 11; i++) {
             draw_set_alpha(1);
-            // if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
             yyy += 31;
             draw_set_color(c_gray);
 
@@ -985,8 +978,8 @@ function scr_ui_settings() {
 
             draw_set_color(0);
 
-            var shw = "", isnew = false;
-            shw = string(bat_formation[i]);
+            var isnew = false;
+            var shw = string(bat_formation[i]);
 
             if (i > 3) {
                 if (bat_formation_type[i] == 1) {
@@ -1006,7 +999,6 @@ function scr_ui_settings() {
             if ((shw != "") || (isnew == true)) {
                 draw_text(xxx, yyy, string(shw));
                 if (scr_hit(xxx, yyy, xxx + 289, yyy + 20) == true) {
-                    /*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
                     draw_set_alpha(0.1);
                     draw_set_color(c_white);
                     draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
