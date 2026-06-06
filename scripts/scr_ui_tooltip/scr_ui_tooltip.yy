@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_ui_popup",
+  "%Name":"scr_ui_tooltip",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_ui_popup",
+  "name":"scr_ui_tooltip",
   "parent":{
     "name":"Interface",
     "path":"folders/Scripts/Interface.yy",

@@ -1,32 +1,18 @@
 //TODO almost all of this can be handled in the gui layer
 try {
     scr_ui_manage();
-} catch (_exception) {
-    ERROR_HANDLER.handle_exception(_exception);
-    main_map_defaults();
-}
-
-try {
     scr_ui_advisors();
-} catch (_exception) {
-    ERROR_HANDLER.handle_exception(_exception);
-    main_map_defaults();
-}
-if (menu == eMENU.DIPLOMACY) {
-    try {
+    scr_ui_settings();
+    scr_ui_tooltip();
+    if (menu == eMENU.DIPLOMACY) {
         /*if (audience > 0 && instance_exists(obj_turn_end)){
 	     menu = 20;
 		 }*/
-
         scr_ui_diplomacy();
-    } catch (_exception) {
-        ERROR_HANDLER.handle_exception(_exception);
-        main_map_defaults();
     }
-}
-try {
-    scr_ui_settings();
-    scr_ui_popup();
+    if (menu == eMENU.SECRET_LAIR) {
+        scr_secret_lair_view();
+    }
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
     main_map_defaults();

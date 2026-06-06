@@ -131,7 +131,7 @@ try {
     }
     // Nope // Cleans up menu
     if ((menu != 60) && instance_exists(obj_temp_build)) {
-        if (obj_temp_build.isnew == 1) {
+        if (obj_temp_build.isnew) {
             menu = 60;
         }
         with (obj_managment_panel) {

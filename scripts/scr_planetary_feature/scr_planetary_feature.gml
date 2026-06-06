@@ -233,17 +233,17 @@ function system_feature_bool(system, search_feature) {
 //returns 1 if feature found on given planet returns 0 if feature not found on planet
 function planet_feature_bool(planet, search_feature) {
     var feature_count = array_length(planet);
-    var feature_exists = 0;
+    var feature_exists = false;
     if (feature_count > 0) {
         for (var fc = 0; fc < feature_count; fc++) {
             if (!is_array(search_feature)) {
                 if (planet[fc].f_type == search_feature) {
-                    feature_exists = 1;
+                    feature_exists = true;
                 }
             } else {
                 feature_exists = array_contains(search_feature, planet[fc].f_type);
             }
-            if (feature_exists == 1) {
+            if (feature_exists) {
                 break;
             }
         }

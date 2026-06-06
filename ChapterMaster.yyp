@@ -2,9 +2,9 @@
   "$GMProject":"v1",
   "%Name":"ChapterMaster",
   "AudioGroups":[
-    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
-    {"$GMAudioGroup":"","%Name":"audiogroup_sfx","name":"audiogroup_sfx","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
-    {"$GMAudioGroup":"","%Name":"audiogroup_music","name":"audiogroup_music","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_sfx","exportDir":"","name":"audiogroup_sfx","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_music","exportDir":"","name":"audiogroup_music","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
     "children":[],
@@ -605,7 +605,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.5.1055",
+    "IDEVersion":"2026.0.0.16",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -936,6 +936,7 @@
     {"id":{"name":"scr_save_chapter","path":"scripts/scr_save_chapter/scr_save_chapter.yy",},},
     {"id":{"name":"scr_save","path":"scripts/scr_save/scr_save.yy",},},
     {"id":{"name":"scr_scrollbar","path":"scripts/scr_scrollbar/scr_scrollbar.yy",},},
+    {"id":{"name":"scr_secret_lair_view","path":"scripts/scr_secret_lair_view/scr_secret_lair_view.yy",},},
     {"id":{"name":"scr_serialization_functions","path":"scripts/scr_serialization_functions/scr_serialization_functions.yy",},},
     {"id":{"name":"scr_shader_initialize","path":"scripts/scr_shader_initialize/scr_shader_initialize.yy",},},
     {"id":{"name":"scr_ship_battle","path":"scripts/scr_ship_battle/scr_ship_battle.yy",},},
@@ -971,9 +972,9 @@
     {"id":{"name":"scr_ui_display_weapons","path":"scripts/scr_ui_display_weapons/scr_ui_display_weapons.yy",},},
     {"id":{"name":"scr_ui_formation_bars","path":"scripts/scr_ui_formation_bars/scr_ui_formation_bars.yy",},},
     {"id":{"name":"scr_ui_manage","path":"scripts/scr_ui_manage/scr_ui_manage.yy",},},
-    {"id":{"name":"scr_ui_popup","path":"scripts/scr_ui_popup/scr_ui_popup.yy",},},
     {"id":{"name":"scr_ui_refresh","path":"scripts/scr_ui_refresh/scr_ui_refresh.yy",},},
     {"id":{"name":"scr_ui_settings","path":"scripts/scr_ui_settings/scr_ui_settings.yy",},},
+    {"id":{"name":"scr_ui_tooltip","path":"scripts/scr_ui_tooltip/scr_ui_tooltip.yy",},},
     {"id":{"name":"scr_unit_detail_text","path":"scripts/scr_unit_detail_text/scr_unit_detail_text.yy",},},
     {"id":{"name":"scr_unit_equip_functions","path":"scripts/scr_unit_equip_functions/scr_unit_equip_functions.yy",},},
     {"id":{"name":"scr_unit_quick_find_pane","path":"scripts/scr_unit_quick_find_pane/scr_unit_quick_find_pane.yy",},},

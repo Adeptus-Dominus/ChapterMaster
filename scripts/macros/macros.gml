@@ -70,6 +70,7 @@ enum eMENU {
     DIPLOMACY = 20,
     SETTINGS = 21,
     GAME_HELP = 30,
+    SECRET_LAIR = 60
 }
 
 enum eLUCK {

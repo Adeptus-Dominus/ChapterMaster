@@ -1,23 +1,23 @@
-target = 0;
-planet = 0;
+target = noone;
+planet = noone;
 
-lair = 0;
-arsenal = 0;
-gene_vault = 0;
+lair = false;
+arsenal = false;
+gene_vault = false;
 
-isnew = 0;
-forge = 0;
-hippo = 0;
-beastarium = 0;
-torture = 0;
-narcotics = 0;
+isnew = false;
+forge = false;
+hippo = false;
+beastarium = false;
+torture = false;
+narcotics = false;
 relic = 0;
-cookery = 0;
-vox = 0;
-librarium = 0;
-throne = 0;
-stasis = 0;
+cookery = false;
+vox = false;
+librarium = false;
+throne = false;
+stasis = false;
 stasis_occupants = "";
-swimming = 0;
+swimming = false;
 
 action_set_alarm(1, 0);
