@@ -52,12 +52,9 @@ for (var i = 0; i < array_length(tooltip_data); i++) {
         _footer_h = string_height_ext(_footer, DEFAULT_LINE_GAP, _footer_w);
     }
 
-    // Add Footer, Header, and Tooltip heights to rectangle height
-    _rect_y += _footer_h + DEFAULT_LINE_GAP + _header_h + DEFAULT_LINE_GAP + _text_h;
-
     // Calculate rectangle size
     var _rect_w = max(_header_w, _text_w, _footer_w) + _text_padding_x * 2;
-    var _rect_h = _text_h + (_text_padding_y * 2) + _header_h + _footer_h;
+    var _rect_h = _header_h + _text_padding_y + _text_h + _text_padding_y + _footer_h + _text_padding_y;
 
     // Check if the tooltip goes over the right part of the screen and flip left if so
     if (_rect_x + _rect_w > display_get_gui_width() - _screen_hpadding) {
@@ -89,13 +86,15 @@ for (var i = 0; i < array_length(tooltip_data); i++) {
     // Draw tooltip text
     draw_set_font(_font);
     draw_text_ext_transformed_colour(_rect_x + _text_padding_x, _rect_y + _text_padding_y, _tooltip, DEFAULT_LINE_GAP, _text_w, 1, 1, 0, _text_color, _text_color, _text_color, _text_color, 1);
-    _text_padding_y += string_height(_tooltip) * (_force_width && string_width(_tooltip) > _width) ? 2 : 1 + DEFAULT_LINE_GAP;
+    var _line_multiplier = (_force_width && string_width(_tooltip) > _width) ? 2 : 1;
+    var _text_height = string_height(_tooltip) * _line_multiplier;
+    _text_padding_y += _text_height + DEFAULT_LINE_GAP;
 
-    // Draw footer text if it exists, this was so finicky if you see a better way to re-write this please be my guest.
+    // Draw footer text if it exists
     if (_footer != "") {
         draw_set_font(_footer_font);
-        draw_text_ext_transformed_colour(_rect_x + _text_padding_x, _rect_y + (_text_padding_y * 1.5), _footer, DEFAULT_LINE_GAP, _footer_w, 1, 1, 0, _text_color, _text_color, _text_color, _text_color, 1);
-        _text_padding_y += (_footer_h + DEFAULT_LINE_GAP) * 2;
+        draw_text_ext_transformed_colour(_rect_x + _text_padding_x, _rect_y + _text_padding_y, _footer, DEFAULT_LINE_GAP, _footer_w, 1, 1, 0, _text_color, _text_color, _text_color, _text_color, 1);
+        _text_padding_y += _footer_h + DEFAULT_LINE_GAP;
         if (_cost != 0) {
             var _cost_color = (obj_controller.requisition < _cost) ? c_red : #F89823;
             draw_sprite(spr_requisition, 0, _rect_x + _text_padding_x, _rect_y + _text_padding_y);

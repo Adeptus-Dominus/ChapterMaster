@@ -744,7 +744,7 @@ lair_styles = [
     {name: "Barbarian", description: "Heavy on leather, hides, and trophy body parts.", tag: "BRB"},
     {name: "Disco", description: "Rainbow colored dance floor and steel rafters.", tag: "DIS"},
     {name: "Feudal", description: "Lots of stone, metal filigree, and statues.", tag: "FEU"},
-    {name: "Gothic", description: "Heavy on leather, hides, and trophy body parts.", tag: "GTH"},
+    {name: "Gothic", description: "Lightly-dusty stone, mosaics, and statues throughout.", tag: "GTH"},
     {name: "Mechanicus", description: "Grates, tubes, gears, and augmented reality.", tag: "MCH"},
     {name: "Prospero", description: "Marble or sandstone surfaces and gold filigree.", tag: "PRS"},
     {name: "Rave Club", description: "Large, open area with neon or strobe lights.", tag: "RAV"},

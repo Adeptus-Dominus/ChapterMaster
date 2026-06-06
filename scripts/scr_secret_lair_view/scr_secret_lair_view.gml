@@ -454,6 +454,8 @@ function scr_secret_lair_view(){
                 draw_text_ext_transformed(button_x1 + button_padding, button_y1 + button_padding, lair_window_description_text, -1, 470 * (2 + (hh * -1)), hh, hh, 0);
 
                 // I know for a fact there is a better way to do this, and im sure this file could use another refactor, but oh my god im sick of it and it works and looks fine im done
+                button_x1 = xx + 494;
+                button_x2 = xx + 614;
                 var tooltip_header = "";
                 var tooltip_desc = "";
                 var tooltip_rp_cost = 0;
@@ -485,60 +487,60 @@ function scr_secret_lair_view(){
                     tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
-                // Torture Chamber
+                // Narcotics
                 if (scr_hit(button_x1, yy + 100, button_x2, yy + 120)) { // + ((5 - 1) * 22)
                     tooltip_rp_cost = 500;
-                    tooltip_header = "Torture Chamber";
-                    tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
+                    tooltip_header = "Narcotics";
+                    tooltip_desc = "Several boxes worth of Obscura, Black Lethe, Kyxa... line it up.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
-                // Torture Chamber
+                // Relic Room
                 if (scr_hit(button_x1, yy + 122, button_x2, yy + 142)) { // + ((6 - 1) * 22)
                     tooltip_rp_cost = 500;
-                    tooltip_header = "Torture Chamber";
-                    tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
+                    tooltip_header = "Relic Room";
+                    tooltip_desc = "A room meant for displaying trophies.  May be purchased successive times.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
-                // Torture Chamber
+                // Cookery
                 if (scr_hit(button_x1, yy + 144, button_x2, yy + 164)) { // + ((7 - 1) * 22)
-                    tooltip_rp_cost = 500;
-                    tooltip_header = "Torture Chamber";
-                    tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
+                    tooltip_rp_cost = 250;
+                    tooltip_header = "Cookery";
+                    tooltip_desc = "A larger, well-stocked cookery, complete with a number of Imperial Chef servants.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
-                // Torture Chamber
+                // Vox Casters
                 if (scr_hit(button_x1, yy + 166, button_x2, yy + 186)) { // + ((8 - 1) * 22)
-                    tooltip_rp_cost = 500;
-                    tooltip_header = "Torture Chamber";
-                    tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
+                    tooltip_rp_cost = 250;
+                    tooltip_header = "Vox Casters";
+                    tooltip_desc = "All the bass one could ever imaginably need.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
-                // Torture Chamber
+                // Librarium
                 if (scr_hit(button_x1, yy + 188, button_x2, yy + 206)) { // + ((9 - 1) * 22)
-                    tooltip_rp_cost = 500;
-                    tooltip_header = "Torture Chamber";
-                    tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
+                    tooltip_rp_cost = 250;
+                    tooltip_header = "Librarium";
+                    tooltip_desc = "A study fit to hold a staggering amount of tomes and scrolls.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
-                // Torture Chamber
+                // Throne
                 if (scr_hit(button_x1, yy + 210, button_x2, yy + 228)) { // + ((10 - 1) * 22)
-                    tooltip_rp_cost = 500;
-                    tooltip_header = "Torture Chamber";
-                    tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
+                    tooltip_rp_cost = 250;
+                    tooltip_header = "Throne";
+                    tooltip_desc = "A massive, ego boosting throne.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
-                // Torture Chamber
+                // Stasis Pods
                 if (scr_hit(button_x1, yy + 232, button_x2, yy + 250)) { // + ((11 - 1) * 22)
-                    tooltip_rp_cost = 500;
-                    tooltip_header = "Torture Chamber";
-                    tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
+                    tooltip_rp_cost = 200;
+                    tooltip_header = "Stasis Pods";
+                    tooltip_desc = "Though they start empty, you may capture and display your foes in these.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
                 // Torture Chamber
                 if (scr_hit(button_x1, yy + 254, button_x2, yy + 272)) { // + ((12 - 1) * 22)
-                    tooltip_rp_cost = 500;
-                    tooltip_header = "Torture Chamber";
-                    tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
+                    tooltip_rp_cost = 100;
+                    tooltip_header = "Swimming Pool";
+                    tooltip_desc = "A large body of water meant for excersize or relaxation.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
             }
