@@ -2299,6 +2299,7 @@ function scr_initialize_custom() {
     var equal_scouts = (squad_distribution == 2 || squad_distribution == 3);
     obj_ini.equal_scouts = equal_scouts; // for use in squad creation later
 
+    var _lw = scr_has_adv("Lightning Warriors");
     var _moved_scouts = 0;
 
     var _coys = struct_get_names(companies);
@@ -2417,14 +2418,40 @@ function scr_initialize_custom() {
                 _coy.devastators = 0;
             }
             if (real(_coy.coy) == 8) {
-                _coy.tacticals = 0;
-                _coy.assaults = _coy.total;
-                _coy.devastators = 0;
+                if (_lw && equal_scouts) {
+                    if (companies.tenth.scouts > 10) {
+                        _coy.scouts = 10;
+                        _moved_scouts += 10;
+                        _coy.tacticals = _coy.total - _coy.scouts;
+                        companies.tenth.scouts -= 10;
+                    } else {
+                        _coy.tacticals = _coy.total;
+                    }
+                    _coy.assaults = 0;
+                    _coy.devastators = 0;
+                } else {
+                    _coy.tacticals = 0;
+                    _coy.assaults = _coy.total;
+                    _coy.devastators = 0;
+                }
             }
             if (real(_coy.coy) == 9) {
-                _coy.tacticals = 0;
-                _coy.assaults = 0;
-                _coy.devastators = _coy.total;
+                if (_lw && equal_scouts) {
+                    if (companies.tenth.scouts > 10) {
+                        _coy.scouts = 10;
+                        _moved_scouts += 10;
+                        _coy.tacticals = _coy.total - _coy.scouts;
+                        companies.tenth.scouts -= 10;
+                    } else {
+                        _coy.tacticals = _coy.total;
+                    }
+                    _coy.assaults = 0;
+                    _coy.devastators = 0;
+                } else {
+                    _coy.tacticals = 0;
+                    _coy.assaults = 0;
+                    _coy.devastators = _coy.total;
+                }
             }
             if (real(_coy.coy) == 10 && equal_scouts) {
                 _coy.tacticals = _moved_scouts;
