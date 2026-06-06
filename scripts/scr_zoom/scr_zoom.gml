@@ -39,12 +39,12 @@ function scr_zoom_keys() {
 
     //this is changes the zoom based on scolling but you can set it how ever you like
     var zoom_delta = 0;
-    if (keyboard_check(vk_add) || keyboard_check(187) || keyboard_check(24) || mouse_wheel_down()) {
+    if (keyboard_check(vk_subtract) || keyboard_check(187) || keyboard_check(24) || mouse_wheel_down()) {
         if (obj_controller.map_scale > 0.1) {
             zoom_delta = -1;
         }
     }
-    if (keyboard_check(vk_subtract) || mouse_wheel_up()) {
+    if (keyboard_check(vk_add) || mouse_wheel_up()) {
         if (obj_controller.map_scale < 3) {
             zoom_delta = +1
         }
