@@ -178,6 +178,20 @@ function role_hierarchy() {
         "Death Company",
         _roles[eROLE.VETERANSERGEANT],
         _roles[eROLE.SERGEANT],
+        _roles[eROLE.TERMINATOR],
+        _roles[eROLE.VETERAN],
+        _roles[eROLE.TACTICAL],
+        _roles[eROLE.ASSAULT],
+        _roles[eROLE.DEVASTATOR],
+        _roles[eROLE.SCOUT],
+        $"Venerable {_roles[eROLE.DREADNOUGHT]}",
+        _roles[eROLE.DREADNOUGHT],
+        "Skitarii",
+        "Crusader",
+        "Ranger",
+        "Sister of Battle",
+        "Flash Git",
+        "Ork Sniper"
     ];
 
     // Dynamically collect squad-specific sergeant role variants (e.g. "Biker Sergeant", "Tactical Sergeant")
@@ -246,23 +260,6 @@ function role_hierarchy() {
             }
         }
     }
-
-    array_push(hierarchy,
-        _roles[eROLE.TERMINATOR],
-        _roles[eROLE.VETERAN],
-        _roles[eROLE.TACTICAL],
-        _roles[eROLE.ASSAULT],
-        _roles[eROLE.DEVASTATOR],
-        _roles[eROLE.SCOUT],
-        $"Venerable {_roles[eROLE.DREADNOUGHT]}",
-        _roles[eROLE.DREADNOUGHT],
-        "Skitarii",
-        "Crusader",
-        "Ranger",
-        "Sister of Battle",
-        "Flash Git",
-        "Ork Sniper"
-    );
 
     return hierarchy;
 }
