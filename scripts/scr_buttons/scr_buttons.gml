@@ -277,7 +277,7 @@ function ValueShifter(value_text, data) constructor{
     string_tag = value_text;
     max_clamp = 1000;
     min_clamp = -1000;
-    reactive_string = new ReactiveString(value_text, {halign : fa_center});
+    reactive_string = new ReactiveString(value_text, 0, 0, {halign : fa_center});
 
     current_value = 0;
     shift_value = 1;
