@@ -536,7 +536,7 @@ function scr_secret_lair_view(){
                     tooltip_desc = "Though they start empty, you may capture and display your foes in these.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
-                // Torture Chamber
+                // Swimming Pool
                 if (scr_hit(button_x1, yy + 254, button_x2, yy + 272)) { // + ((12 - 1) * 22)
                     tooltip_rp_cost = 100;
                     tooltip_header = "Swimming Pool";
