@@ -310,6 +310,10 @@ function setup_ui_chapter_settings(){
             y1 : 710,
         }
     );
+
+    _sets.auto_board_multi.toggles[0].active = command_set[25];
+
+    _sets.auto_board_multi.toggles[1].active = command_set[26];
 }
 
     _sets.auto_board_multi.toggles[0].active = command_set[25];
