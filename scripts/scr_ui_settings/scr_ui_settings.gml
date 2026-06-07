@@ -440,12 +440,13 @@ function scr_ui_settings() {
             // if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
             yyy += 31;
             draw_set_color(c_gray);
+            var _formation = bat_formation[i];
 
-            if (bat_formation[i] != "") {
+            if (_formation != "") {
                 draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
             }
             if (i > 2) {
-                if ((bat_formation[i] == "") && (bat_formation[i - 1] != "")) {
+                if ((_formation == "") && (bat_formation[i - 1] != "")) {
                     draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
                 }
             }
@@ -457,10 +458,10 @@ function scr_ui_settings() {
 
             if (i > 3) {
                 if (bat_formation_type[i] == 1) {
-                    shw = "A] " + string(shw);
+                    shw = $"A] {string(shw)}";
                 }
-                if (bat_formation_type[i] == 2) {
-                    shw = "R] " + string(shw);
+                else if (bat_formation_type[i] == 2) {
+                    shw = $"R] {string(shw)}";
                 }
             }
             if (i > 2) {
@@ -485,7 +486,7 @@ function scr_ui_settings() {
                     tool2 = "Click to open the settings for this formation.";
                     if (i > 3) {
                         if (bat_formation[i] != "") {
-                            tool1 = string(bat_formation[i]) + " Settings";
+                            tool1 = $"{string(bat_formation[i])} Settings";
                             tool2 = "Click to open the settings for this formation.";
                         }
                         if (bat_formation[i] == "") {
@@ -553,6 +554,8 @@ function scr_select_company_settings_ui(){
 }
 
 function scr_draw_company_settings_ui(){
+    var _back_button = settings_buttons_ui_components.back_arrow;
+    _back_button.draw();
     squad_arrangement.draw();
 }
 
@@ -580,8 +583,8 @@ function scr_draw_role_settings_ui(){
             var ide;
             ide = settings;
 
-                var _back_button = settings_buttons_ui_components.back_arrow;
-            _back_button.draw()
+            var _back_button = settings_buttons_ui_components.back_arrow;
+            _back_button.draw();
             if (_back_button.is_clicked) {
                 with (obj_mass_equip) {
                     instance_destroy();
@@ -701,7 +704,7 @@ function scr_draw_formation_settings(){
     draw_set_alpha(1);
     // Back arrow
     var _back_button = settings_buttons_ui_components.back_arrow;
-    _back_button.draw()
+    _back_button.draw();
     if (_back_button.is_clicked){
         with (obj_formation_bar) {
             instance_destroy();
