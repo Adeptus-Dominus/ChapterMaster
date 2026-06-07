@@ -737,6 +737,7 @@ function ProportionalSquadEditor(data) constructor {
                     if (required_squad.squad == _squad.squad) {
                         array_delete(arrangement, i, 1);
                         deleted = true;
+                        deleted = true;
                         break;
                     }
                 }

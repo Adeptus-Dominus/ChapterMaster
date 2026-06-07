@@ -1038,7 +1038,7 @@ function Armamentarium(_controller) constructor {
             y1 : _y + 2
         });
 
-        buy_button.draw(_can_afford);
+        buy_button.draw(_can_buy && _can_afford);
 
         if (buy_button.is_clicked) {
             _buy_item(_item, _cost, _count);
