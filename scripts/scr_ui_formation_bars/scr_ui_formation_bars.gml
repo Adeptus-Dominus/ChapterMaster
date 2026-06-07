@@ -26,35 +26,31 @@ function scr_ui_formation_bars() {
         temp[ui_formations_data.te] = 0;
         temp[ui_formations_data.te + 100] = 0;
 
-        for (var ii = 1; ii <= 17; ii++) {
-            if ((ii == 1) && (bat_comm_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 2, 0, "HQ");
-            } else if ((ii == 2) && (bat_hono_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "Hono");
-            } else if ((ii == 3) && (bat_libr_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 8, "Lib");
-            } else if ((ii == 4) && (bat_tech_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 9, "Tech");
-            } else if ((ii == 5) && (bat_term_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 10, "Term");
-            } else if ((ii == 6) && (bat_vete_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 2, 6, "Veteran");
-            } else if ((ii == 7) && (bat_tact_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 6, 3, "Tactical");
-            } else if ((ii == 8) && (bat_deva_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 3, 2, "Devastator");
-            } else if ((ii == 9) && (bat_assa_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 3, 5, "Assault");
-            } else if ((ii == 10) && (bat_scou_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 4, "Sco");
-            } else if ((ii == 11) && (bat_drea_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 2, 11, "Dread");
-            } else if ((ii == 12) && (bat_hire_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 7, "???");
-            } else if ((ii == 16) && (bat_landspee_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 2, 14, "Land Speeder");
-            }
+        var _bar_configs = [
+            { ii: 1, for_arr: bat_comm_for, type: 2, sub: 0, label: "HQ"},
+            { ii: 2, for_arr: bat_hono_for, type: 1, sub: 1, label: "Hono"},
+            { ii: 3, for_arr: bat_libr_for, type: 1, sub: 8, label: "Lib"},
+            { ii: 4, for_arr: bat_tech_for, type: 1, sub: 9, label: "Tech"},
+            { ii: 5, for_arr: bat_term_for, type: 1, sub: 10, label: "Term"},
+            { ii: 6, for_arr: bat_vete_for, type: 2, sub: 6, label: "Veteran" },
+            { ii: 7, for_arr: bat_tact_for, type: 6, sub: 3, label: "Tactical"},
+            { ii: 8, for_arr: bat_deva_for, type: 3, sub: 2, label: "Devastator"},
+            { ii: 9, for_arr: bat_assa_for, type: 3, sub: 5, label: "Assault"},
+            { ii: 10, for_arr: bat_scou_for, type: 1, sub: 4, label: "Sco"},
+            { ii: 11, for_arr: bat_drea_for, type: 2, sub: 11, label: "Dread"},
+            { ii: 12, for_arr: bat_hire_for, type: 1, sub: 7, label: "???"},
+            { ii: 16, for_arr: bat_landspee_for, type: 2, sub: 14, label: "Land Speeder"},
+        ];
 
+        for (var _i = 0; _i < array_length(_bar_configs); _i++) {
+            var _cfg = _bar_configs[_i];
+            if ((_cfg.ii == ii) && (_cfg.for_arr[_formatting] == bar)) {
+                init_combat_bars(bar, ii, ui_formations_data, _cfg.type, _cfg.sub, _cfg.label);
+                break;
+            }
+        }
+
+        for (var ii = 13; ii <= 17; ii++) {
             if (bat_formation_type[_formatting] != 2) {
                 if ((ii == 13) && (bat_rhin_for[_formatting] == bar)) {
                     init_combat_bars(bar, ii, ui_formations_data, 4, 12, "Rhino");
@@ -304,15 +300,6 @@ function scr_draw_formation_settings(){
         tooltip_draw(tooltip2,350, , CM_GREEN_COLOR, fnt_40k_14, tooltip);
     }
     pop_draw_return_values();
-}
-
-
-function formation_bar_draw(){
-    if (dragging && instance_exists(mah_target)){
-        if (mouse_check_button_released(mb_left)){
-            release_bar();
-        }
-    }
 }
 
 
