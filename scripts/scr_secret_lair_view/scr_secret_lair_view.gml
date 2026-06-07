@@ -1,10 +1,10 @@
 /// @function scr_secret_lair_view()
 /// @category UI
 /// @description Displays information on secret lairs
-function scr_secret_lair_view(){
+function scr_secret_lair_view() {
     var xx = camera_get_view_x(view_camera[0]) + 25;
     var yy = camera_get_view_y(view_camera[0]) + 165;
-    
+
     add_draw_return_values();
     draw_sprite(spr_popup_large, 1, xx, yy);
     draw_set_color(c_gray);
@@ -17,20 +17,22 @@ function scr_secret_lair_view(){
     var secret_base = false;
     var title = "";
     var lair_window_description_text = "";
-    /// @type {Struct.NewPlanetFeature|undefined} 
+    /// @type {Struct.NewPlanetFeature|undefined}
     var lair_struct = undefined;
 
     if (planet_feature_bool(planet_upgrades, eP_FEATURES.SECRET_BASE)) {
         secret_base = true;
     }
+
     if (planet_feature_bool(planet_upgrades, eP_FEATURES.ARSENAL)) {
         arsenal = true;
     }
+
     if (planet_feature_bool(planet_upgrades, eP_FEATURES.GENE_VAULT)) {
         gene_vault = true;
     }
 
-    var lair_exists = (gene_vault || arsenal || secret_base);
+    var lair_exists = gene_vault || arsenal || secret_base;
 
     if (obj_temp_build.isnew) {
         title = "Secret Lair (" + string(obj_temp_build.target.name) + " " + scr_roman(obj_temp_build.planet) + ")";
@@ -61,7 +63,9 @@ function scr_secret_lair_view(){
                 draw_set_alpha(1);
 
                 if (mouse_button_clicked()) {
-                    var base_options = {style: style.tag};
+                    var base_options = {
+                        style: style.tag,
+                    };
                     obj_temp_build.isnew = false;
                     array_push(planet_upgrades, new NewPlanetFeature(eP_FEATURES.SECRET_BASE, base_options));
                 }
@@ -100,8 +104,6 @@ function scr_secret_lair_view(){
                 draw_set_font(fnt_40k_14b);
                 draw_text(xx + 21, yy + 65, $"This feature will be constructed in {lair_struct.built - obj_controller.turn} months.");
             } else if (lair_struct.built <= obj_controller.turn) {
-
-
                 var button_label = "";
                 var button_desc = "";
                 var cost = 0;
@@ -110,7 +112,7 @@ function scr_secret_lair_view(){
                 var button_x2 = xx + 614;
                 var button_y2 = yy + 32;
                 var button_padding = 2;
-                
+
                 for (var r = 1; r <= 12; r++) {
                     var button_alpha = 1;
                     switch (r) {
@@ -118,6 +120,7 @@ function scr_secret_lair_view(){
                             if (lair_struct.forge) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 1000;
                             button_label = "Forge";
                             button_desc = "A modest, less elaborate forge able to employ a handful of Astartes or Techpriest.";
@@ -126,6 +129,7 @@ function scr_secret_lair_view(){
                             if (lair_struct.hippo) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 1000;
                             button_label = "Hippodrome";
                             button_desc = "A moderate sized garage fit to hold, service, and display vehicles.";
@@ -134,6 +138,7 @@ function scr_secret_lair_view(){
                             if (lair_struct.beastarium) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 1000;
                             button_label = "Beastarium";
                             button_desc = "An enclosure with simulated greenery and foilage meant to hold beasts.";
@@ -142,6 +147,7 @@ function scr_secret_lair_view(){
                             if (lair_struct.torture) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 500;
                             button_label = "Torture Chamber";
                             button_desc = "Only the best for the best.  A room full of torture tools and devices.";
@@ -150,6 +156,7 @@ function scr_secret_lair_view(){
                             if (lair_struct.narcotics) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 500;
                             button_label = "Narcotics";
                             button_desc = "Several boxes worth of Obscura, Black Lethe, Kyxa... line it up.";
@@ -158,6 +165,7 @@ function scr_secret_lair_view(){
                             if (lair_struct.relic > 0) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 500;
                             button_label = "Relic Room";
                             button_desc = "A room meant for displaying trophies.  May be purchased successive times.";
@@ -166,6 +174,7 @@ function scr_secret_lair_view(){
                             if (lair_struct.cookery) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 250;
                             button_label = "Cookery";
                             button_desc = "A larger, well-stocked cookery, complete with a number of Imperial Chef servants.";
@@ -174,6 +183,7 @@ function scr_secret_lair_view(){
                             if (lair_struct.vox) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 250;
                             button_label = "Vox Casters";
                             button_desc = "All the bass one could ever imaginably need.";
@@ -182,6 +192,7 @@ function scr_secret_lair_view(){
                             if (lair_struct.librarium) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 250;
                             button_label = "Librarium";
                             button_desc = "A study fit to hold a staggering amount of tomes and scrolls.";
@@ -190,6 +201,7 @@ function scr_secret_lair_view(){
                             if (lair_struct.throne) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 250;
                             button_label = "Throne";
                             button_desc = "A massive, ego boosting throne.";
@@ -198,6 +210,7 @@ function scr_secret_lair_view(){
                             if (lair_struct.stasis) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 200;
                             button_label = "Stasis Pods";
                             button_desc = "Though they start empty, you may capture and display your foes in these.";
@@ -206,12 +219,13 @@ function scr_secret_lair_view(){
                             if (lair_struct.swimming) {
                                 button_alpha = 0.33;
                             }
+
                             cost = 100;
                             button_label = "Swimming Pool";
                             button_desc = "A large body of water meant for excersize or relaxation.";
                             break;
                     }
-                    
+
                     button_y1 = yy + 12 + ((r - 1) * 22);
                     button_y2 = yy + 32 + ((r - 1) * 22);
 
@@ -227,9 +241,11 @@ function scr_secret_lair_view(){
                         if (button_alpha <= 0.33) {
                             draw_set_alpha(0.1);
                         }
+
                         if (button_alpha > 0.33) {
                             draw_set_alpha(0.2);
                         }
+
                         draw_set_color(c_black);
                         draw_rectangle(button_x1, button_y1, button_x2, button_y2, 0);
                         draw_set_alpha(1);
@@ -324,20 +340,25 @@ function scr_secret_lair_view(){
                         lair_window_description_text += "a massive throne, though it is currently vacant.  ";
                     }
                 }
+
                 if ((lair_struct.vox > 0) && (obj_temp_build.target.p_player[obj_controller.selecting_planet] > 0)) {
                     lair_window_description_text += "Heretical music blasts from the vox-casters, shaking the walls.  ";
                 }
+
                 if (lair_struct.narcotics > 0) {
                     lair_window_description_text += "  Many of the tables have lines of white powder set on paper or bunches of needles.  Plastic straws lay close by.  ";
                 }
+
                 if (lair_struct.cookery == 1) {
                     if (obj_temp_build.target.p_player[obj_controller.selecting_planet] > 0) {
                         lair_window_description_text += "Imperial Chefs are currently bustling to and from the kitchen, cooking savory treats and food for those present.  ";
                     }
+
                     if (obj_temp_build.target.p_player[obj_controller.selecting_planet] == 0) {
                         lair_window_description_text += "The Imperial Chefs are mostly idle, making use of the other rooms and facilities.  ";
                     }
                 }
+
                 switch (lair_struct.stock) {
                     case 1:
                         lair_window_description_text += "  One of the chambers is hollowed out to display war trophies and gear.  ";
@@ -416,33 +437,41 @@ function scr_secret_lair_view(){
                         if (lair_struct.stock >= 30) {
                             lair_window_description_text += "  Gold and gems are EVERYWHERE.  The main chamber in particular is a sea of gold and gems, especially deep at the corners.  In all it is nearly three feet deep.  Coins clink and settle as your forces walk through the room.  ";
                         }
+
                         break;
                 }
+
                 if (lair_struct.forge > 0) {
                     lair_window_description_text += "  Your lair has a forge, fit to be used by several astartes at once.  ";
                 }
+
                 if (lair_struct.hippo > 0) {
                     lair_window_description_text += "  Your lair has a hippodrome, or garage, that holds luxury vehicles.  ";
                 }
+
                 if (lair_struct.torture > 0) {
                     lair_window_description_text += "  One of the rooms is a well-stocked torture chamber.  ";
                 }
+
                 if (lair_struct.librarium > 0) {
                     lair_window_description_text += "  A large librarium makes up one of the wings, holding countless novels, books, scrolls, and documents on various topics.  ";
                 }
+
                 if (lair_struct.beastarium > 0) {
                     lair_window_description_text += "  Your lair has a beastarium, animals native to your homeworld living within.  ";
                 }
+
                 if (lair_struct.swimming > 0) {
                     lair_window_description_text += "  A large swimming pool with chapter-themed floaties is emplaced near the entrance.  ";
                 }
+
                 if (lair_struct.stasis > 0) {
                     lair_window_description_text += "  One of the chambers holds several stasis pods for display.  They are currently empty.  ";
                 }
 
                 button_x1 = xx + 12;
                 button_y1 = yy + 45;
-                
+
                 draw_set_color(c_gray);
                 draw_set_font(fnt_40k_14);
                 draw_set_halign(fa_left);
@@ -453,6 +482,7 @@ function scr_secret_lair_view(){
                 while ((string_height_ext(lair_window_description_text, -1, 470) * hh) > 330 && hh > min_scale) {
                     hh -= 0.1;
                 }
+
                 draw_text_ext_transformed(button_x1 + button_padding, button_y1 + button_padding, lair_window_description_text, -1, 470 * (2 + (hh * -1)), hh, hh, 0);
 
                 // I know for a fact there is a better way to do this, and im sure this file could use another refactor, but oh my god im sick of it and it works and looks fine im done
@@ -462,84 +492,107 @@ function scr_secret_lair_view(){
                 var tooltip_desc = "";
                 var tooltip_rp_cost = 0;
                 // Forge
-                if (scr_hit(button_x1, yy + 12, button_x2, yy + 32)) { // + ((1 - 1) * 22)
+                if (scr_hit(button_x1, yy + 12, button_x2, yy + 32)) {
+                    // + ((1 - 1) * 22)
                     tooltip_rp_cost = 1000;
                     tooltip_header = "Forge";
                     tooltip_desc = "A modest, less elaborate forge able to employ a handful of Astartes or Techpriest.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
+
                 // Hippodrome
-                if (scr_hit(button_x1, yy + 34, button_x2, yy + 54)) { // + ((2 - 1) * 22)
+                if (scr_hit(button_x1, yy + 34, button_x2, yy + 54)) {
+                    // + ((2 - 1) * 22)
                     tooltip_rp_cost = 1000;
                     tooltip_header = "Hippodrome";
                     tooltip_desc = "A moderate sized garage fit to hold, service, and display vehicles.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
+
                 // Beastarium
-                if (scr_hit(button_x1, yy + 56, button_x2, yy + 76)) { // + ((3 - 1) * 22)
+                if (scr_hit(button_x1, yy + 56, button_x2, yy + 76)) {
+                    // + ((3 - 1) * 22)
                     tooltip_rp_cost = 1000;
                     tooltip_header = "Beastarium";
                     tooltip_desc = "An enclosure with simulated greenery and foilage meant to hold beasts.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
+
                 // Torture Chamber
-                if (scr_hit(button_x1, yy + 78, button_x2, yy + 98)) { // + ((4 - 1) * 22)
+                if (scr_hit(button_x1, yy + 78, button_x2, yy + 98)) {
+                    // + ((4 - 1) * 22)
                     tooltip_rp_cost = 500;
                     tooltip_header = "Torture Chamber";
                     tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
+
                 // Narcotics
-                if (scr_hit(button_x1, yy + 100, button_x2, yy + 120)) { // + ((5 - 1) * 22)
+                if (scr_hit(button_x1, yy + 100, button_x2, yy + 120)) {
+                    // + ((5 - 1) * 22)
                     tooltip_rp_cost = 500;
                     tooltip_header = "Narcotics";
                     tooltip_desc = "Several boxes worth of Obscura, Black Lethe, Kyxa... line it up.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
+
                 // Relic Room
-                if (scr_hit(button_x1, yy + 122, button_x2, yy + 142)) { // + ((6 - 1) * 22)
+                if (scr_hit(button_x1, yy + 122, button_x2, yy + 142)) {
+                    // + ((6 - 1) * 22)
                     tooltip_rp_cost = 500;
                     tooltip_header = "Relic Room";
                     tooltip_desc = "A room meant for displaying trophies.  May be purchased successive times.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
+
                 // Cookery
-                if (scr_hit(button_x1, yy + 144, button_x2, yy + 164)) { // + ((7 - 1) * 22)
+                if (scr_hit(button_x1, yy + 144, button_x2, yy + 164)) {
+                    // + ((7 - 1) * 22)
                     tooltip_rp_cost = 250;
                     tooltip_header = "Cookery";
                     tooltip_desc = "A larger, well-stocked cookery, complete with a number of Imperial Chef servants.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
+
                 // Vox Casters
-                if (scr_hit(button_x1, yy + 166, button_x2, yy + 186)) { // + ((8 - 1) * 22)
+                if (scr_hit(button_x1, yy + 166, button_x2, yy + 186)) {
+                    // + ((8 - 1) * 22)
                     tooltip_rp_cost = 250;
                     tooltip_header = "Vox Casters";
                     tooltip_desc = "All the bass one could ever imaginably need.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
+
                 // Librarium
-                if (scr_hit(button_x1, yy + 188, button_x2, yy + 206)) { // + ((9 - 1) * 22)
+                if (scr_hit(button_x1, yy + 188, button_x2, yy + 206)) {
+                    // + ((9 - 1) * 22)
                     tooltip_rp_cost = 250;
                     tooltip_header = "Librarium";
                     tooltip_desc = "A study fit to hold a staggering amount of tomes and scrolls.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
+
                 // Throne
-                if (scr_hit(button_x1, yy + 210, button_x2, yy + 228)) { // + ((10 - 1) * 22)
+                if (scr_hit(button_x1, yy + 210, button_x2, yy + 228)) {
+                    // + ((10 - 1) * 22)
                     tooltip_rp_cost = 250;
                     tooltip_header = "Throne";
                     tooltip_desc = "A massive, ego boosting throne.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
+
                 // Stasis Pods
-                if (scr_hit(button_x1, yy + 232, button_x2, yy + 250)) { // + ((11 - 1) * 22)
+                if (scr_hit(button_x1, yy + 232, button_x2, yy + 250)) {
+                    // + ((11 - 1) * 22)
                     tooltip_rp_cost = 200;
                     tooltip_header = "Stasis Pods";
                     tooltip_desc = "Though they start empty, you may capture and display your foes in these.";
                     tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
                 }
+
                 // Swimming Pool
-                if (scr_hit(button_x1, yy + 254, button_x2, yy + 272)) { // + ((12 - 1) * 22)
+                if (scr_hit(button_x1, yy + 254, button_x2, yy + 272)) {
+                    // + ((12 - 1) * 22)
                     tooltip_rp_cost = 100;
                     tooltip_header = "Swimming Pool";
                     tooltip_desc = "A large body of water meant for excersize or relaxation.";
@@ -548,6 +601,7 @@ function scr_secret_lair_view(){
             }
         }
     }
+
     draw_set_font(fnt_40k_14b);
     lair_window_description_text = "";
     if (planet_feature_bool(planet_upgrades, eP_FEATURES.ARSENAL) == 1) {
@@ -558,6 +612,7 @@ function scr_secret_lair_view(){
             lair_window_description_text = "A moderate sized Arsenal, this structure has ample holding area to store any number of artifacts and wargear.  Since being discovered it may no longer hide Chaos and Daemonic wargear from routine Inquisition inspections.  You may wish to construct another Arsenal on a different planet.";
         }
     }
+
     if (planet_feature_bool(planet_upgrades, eP_FEATURES.GENE_VAULT) == 1) {
         lair_struct = planet_upgrades[search_planet_features(planet_upgrades, eP_FEATURES.GENE_VAULT)[0]];
         if (lair_struct.inquis_hidden == 1) {
@@ -566,21 +621,25 @@ function scr_secret_lair_view(){
             lair_window_description_text = "A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Since being discovered all the contents are known to the Inquisition.  Your Gene-Seed remains protected but you may wish to build a new, secret one.";
         }
     }
-    if ((arsenal) || (gene_vault)) {
+
+    if (arsenal || gene_vault) {
         draw_text_ext(xx + 21, yy + 65, lair_window_description_text, -1, 595);
     }
+
     if (!lair_exists && !obj_temp_build.isnew) {
         draw_set_font(fnt_40k_14b);
         if (!secret_base) {
             draw_text(xx + 21, yy + 45, "Lair");
         }
+
         if (!arsenal) {
             draw_text(xx + 21, yy + 110, "Arsenal");
         }
+
         if (!gene_vault) {
             draw_text(xx + 21, yy + 175, "Gene-Vault");
         }
-        
+
         draw_set_font(fnt_40k_14);
 
         draw_sprite(spr_requisition, 0, xx + 160, yy + 47);
@@ -589,6 +648,7 @@ function scr_secret_lair_view(){
         } else {
             draw_set_color(#F89823);
         }
+
         draw_text(xx + 180, yy + 47, "1000");
         draw_set_color(c_gray);
         draw_text_ext(xx + 21, yy + 65, "Customizable hideout that your forces may garrison into.  The Lair may be upgraded further.", -6, 600);
@@ -607,7 +667,7 @@ function scr_secret_lair_view(){
                 obj_controller.requisition -= 1000;
             }
         }
-        
+
         draw_set_halign(fa_left);
 
         draw_sprite(spr_requisition, 0, xx + 160, yy + 112);
@@ -616,6 +676,7 @@ function scr_secret_lair_view(){
         } else {
             draw_set_color(#F89823);
         }
+
         draw_text(xx + 180, yy + 112, "1500");
         draw_set_color(c_gray);
         draw_text_ext(xx + 21, yy + 130, "Hidden armoury that stores unused Chaos and Daemonic artifacts, preventing them from discovery.", -1, 600);
@@ -634,7 +695,7 @@ function scr_secret_lair_view(){
                 obj_controller.requisition -= 1500;
             }
         }
-        
+
         draw_set_halign(fa_left);
 
         draw_sprite(spr_requisition, 0, xx + 160, yy + 177);
@@ -643,6 +704,7 @@ function scr_secret_lair_view(){
         } else {
             draw_set_color(#F89823);
         }
+
         draw_text(xx + 180, yy + 177, "4000");
         draw_set_color(c_gray);
         draw_text_ext(xx + 21, yy + 195, "Hidden gene-vault that off-sources the majority of your Gene-Seed and Test-Slave Incubators.", -1, 600);
@@ -661,6 +723,7 @@ function scr_secret_lair_view(){
                 obj_controller.requisition -= 4000;
             }
         }
+
         draw_set_halign(fa_left);
     }
 
@@ -679,5 +742,6 @@ function scr_secret_lair_view(){
             obj_controller.menu = eMENU.DEFAULT;
         }
     }
+
     pop_draw_return_values();
 }
