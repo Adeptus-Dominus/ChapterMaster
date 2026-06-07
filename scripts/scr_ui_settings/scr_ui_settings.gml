@@ -556,7 +556,9 @@ function scr_select_company_settings_ui(){
 function scr_draw_company_settings_ui(){
     var _back_button = settings_buttons_ui_components.back_arrow;
     _back_button.draw();
-    squad_arrangement.draw();
+    if (settings != 0 && is_struct(squad_arrangement)) {
+        squad_arrangement.draw();
+    }
 }
 
 function scr_select_role_settings_ui(){
