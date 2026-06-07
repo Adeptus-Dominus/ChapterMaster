@@ -1,7 +1,12 @@
 try {
+    add_draw_return_values();
+
     if (instance_number(obj_ncombat) || instance_number(obj_popup)) {
         exit;
     }
+
+    draw_set_font(fnt_40k_14b);
+    draw_set_color(CM_GREEN_COLOR);
 
     w = 660;
     h = 520;
@@ -23,14 +28,11 @@ try {
         var _heigth = local_content_slate.height;
         if (purge == 0) {
             draw_set_halign(fa_left);
-            draw_text_ext(_xx + 15, _yy, roster.roster_local_string, -1, local_content_slate.width - 30);
-            draw_text_ext(_xx + 15.1, _yy + 0.1, roster.roster_local_string, -1, local_content_slate.width - 30);
+            draw_text_ext(_xx + 15, _yy, roster.roster_local_string, -1, local_content_slate.width - 40);
         }
         if (purge != eDROP_TYPE.RAIDATTACK) {
             if (purge == eDROP_TYPE.PURGESELECT) {
                 draw_set_halign(fa_center);
-                draw_set_font(fnt_40k_30b);
-
                 draw_set_color(c_gray);
                 var _exit = draw_unit_buttons([_xx + (_width / 2) - 40, 559], "Cancel");
                 if (point_and_click(_exit)) {
@@ -71,18 +73,15 @@ try {
             local_content_slate.draw(local_content_slate.XX, _y_center, (300 / 860), (520 / 850));
         }
     }
-    draw_set_halign(fa_center);
-    draw_set_font(fnt_40k_14b);
     roster_slate.inside_method = function() {
         var _xx = roster_slate.XX + (roster_slate.width / 2);
         var _yy = roster_slate.YY + 40;
         if (purge == 0) {
-            draw_text_transformed(_xx, _yy, "Battle Roster", 2, 2, 0);
+            draw_text_ext(_xx, _yy, "Battle Roster", -1, roster_slate.width - 40);
             _yy += 30;
-            draw_text_ext(_xx, _yy, roster.roster_string, -1, roster_slate.width - 30);
-            draw_text_ext(_xx + 0.1, _yy + 0.1, roster.roster_string, -1, roster_slate.width - 30);
+            draw_text_ext(_xx, _yy, roster.roster_string, -1, roster_slate.width - 40);
         } else if (purge > eDROP_TYPE.PURGESELECT) {
-            draw_text_transformed(_xx, _yy, "Purge Insight", 2, 2, 0);
+            draw_text_ext(_xx, _yy, "Purge Insight", -1, roster_slate.width - 40);
             _yy += 30;
             var hers, influ, poppy;
             var hers = p_target.p_heresy[planet_number] + p_target.p_heresy_secret[planet_number];
@@ -96,11 +95,11 @@ try {
             draw_text(_xx + 14, _yy + 10, $"Heresy: {max(hers, influ[eFACTION.TAU])}%");
             draw_text(_xx + 14, _yy + 20, $"Population: {poppy}");
         } else if (purge == eDROP_TYPE.PURGESELECT) {
-            draw_text_transformed(_xx, _yy, "Purge", 2, 2, 0);
+            draw_text_ext(_xx, _yy, "Purge", -1, roster_slate.width - 40);
             _yy += 30;
             for (var i = 0; i < array_length(purge_options); i++) {
                 if (purge_options[i].hover()) {
-                    draw_text_ext(_xx, _yy, purge_options[i].description, -1, roster_slate.width - 30);
+                    draw_text_ext(_xx, _yy, purge_options[i].description, -1, roster_slate.width - 40);
                 }
             }
         }
@@ -121,4 +120,6 @@ try {
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
     instance_destroy();
+} finally {
+    pop_draw_return_values();
 }

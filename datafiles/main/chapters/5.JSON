@@ -770,7 +770,7 @@
             "recruiter": "Borgio"
         },
         "battle_cry": "For the Emperor and Sanguinius! Death! DEATH!",
-        "equal_specialists": 0,
+        "squad_distribution": 0,
         "load_to_ships": {
             "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
             "split_scouts": 0, // 0 no, 1 yes

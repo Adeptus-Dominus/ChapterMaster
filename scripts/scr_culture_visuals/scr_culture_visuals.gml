@@ -72,7 +72,7 @@ function load_new_icon(new_sprite_surface, path, add_place, key) {
         var _height = sprite_get_height(_new_sprite);
         surface_resize(new_sprite_surface, _width, _height);
         surface_set_target(new_sprite_surface);
-        draw_clear_alpha(c_white, 0);
+        draw_clear_alpha(c_black, 0);
         draw_sprite_ext(_new_sprite, 0, _width, 0, -1, 1, 0, c_white, 1);
         surface_reset_target();
         sprite_add_from_surface(_new_sprite, new_sprite_surface, 0, 0, _width, _height, 1, 0);
@@ -1885,29 +1885,6 @@ global.modular_drawing_items = [
         body_types: [2],
     }
 ];
-
-function fetch_marine_components_to_memory() {
-    array_foreach(global.modular_drawing_items, function(_element, _index) {
-        try {
-            if (_element.position != "weapon" && sprite_exists(_element.sprite)) {
-                sprite_prefetch(_element.sprite);
-                if (struct_exists(_element, "overides")) {
-                    var _override_areas = struct_get_names(_element.overides);
-                    for (var i = 0; i < array_length(_override_areas); i++) {
-                        sprite_prefetch(_element.overides[$ _override_areas[i]]);
-                    }
-                }
-            }
-            if (struct_exists(_element, "shadows")) {
-                sprite_prefetch(_element.shadows);
-            }
-        }
-        catch (_exception) {
-            // Sprite prefetch failure logged but non-fatal
-            show_debug_message($"Sprite prefetch failed for element at index {_index}: {_exception}");
-        }
-    });
-}
 
 function DummyMarine() constructor {
     static update = function() {

@@ -1492,6 +1492,12 @@ function draw_manage_selection_buttons(xx, yy) {
         button.draw(false);
     }
 
+    var top_x = actions_block.x1 + 26;
+    var top_y = actions_block.y1 + 70;
+
+    var inf_type_x = top_x;
+    var inf_type_y = top_y;
+
     if (sel_uni[1] != "") {
         // How much space the selected unit takes
         draw_set_font(fnt_40k_30b);
@@ -1505,8 +1511,6 @@ function draw_manage_selection_buttons(xx, yy) {
 
         // Select all units button
         // button reset code
-        var top_x = actions_block.x1 + 26;
-        var top_y = actions_block.y1 + 70;
 
         button.set_width = false;
         button.w = 0;
@@ -1545,8 +1549,8 @@ function draw_manage_selection_buttons(xx, yy) {
             sel_all = "man";
         }
 
-        var inf_type_x = button.x1 + button.w + button.v_gap;
-        var inf_type_y = button.y1;
+        inf_type_x = button.x1 + button.w + button.v_gap;
+        inf_type_y = button.y1;
 
         // Select infantry type buttons
         for (var i = 1; i <= 8; i++) {

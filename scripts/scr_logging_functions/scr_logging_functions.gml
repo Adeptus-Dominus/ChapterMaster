@@ -41,9 +41,10 @@ function clean_stacktrace(_stacktrace_array) {
 /// @returns {string}
 function clean_stacktrace_line(_line_string) {
     var _work_string = _line_string;
-    var _code_snippet = "";
+    var _final_callsite = "";
 
     // 1. Extract Code Snippet (Suffix after -)
+    var _code_snippet = "";
     var _divider_pos = string_pos(") - ", _work_string);
     if (_divider_pos > 0) {
         _code_snippet = string_delete(_work_string, 1, _divider_pos + 3);
@@ -52,20 +53,23 @@ function clean_stacktrace_line(_line_string) {
     }
 
     // 2. Extract Line Number
-    var _line_number = "";
-    var _line_tag_pos = string_last_pos("(line ", _work_string);
-    if (_line_tag_pos > 0) {
-        _line_number = string_copy(_work_string, _line_tag_pos, string_length(_work_string));
-        _line_number = string_digits(_line_number);
-        _work_string = string_copy(_work_string, 1, _line_tag_pos - 1);
-        _work_string = string_trim(_work_string);
+    var _line_number = "???";
+    _divider_pos = string_last_pos("(line ", _work_string);
+    if (_divider_pos == 0) {
+        _divider_pos = string_last_pos(":", _work_string);
+    }
+
+    if (_divider_pos > 0) {
+        var _full_len = string_length(_work_string);
+        var _num_str = string_digits(string_copy(_work_string, _divider_pos, _full_len - _divider_pos + 1));
+        _line_number = _num_str;
+        _work_string = string_trim(string_copy(_work_string, 1, _divider_pos - 1));
     }
 
     // 3. Cleanup Prefixes
     _work_string = clean_prefixes(_work_string);
 
     // 4. Handle Method/Anonymous Chains (@ symbols)
-    var _final_callsite = "";
     if (string_contains("@", _work_string)) {
         var _parts = string_split(_work_string, "@");
         var _method_name = _parts[0];
@@ -76,7 +80,7 @@ function clean_stacktrace_line(_line_string) {
             _method_name = "anonymous";
         }
 
-        _final_callsite = $"{_location}:{_line_number} >> {_method_name}";
+        _final_callsite = $"{_location}:{_method_name}:{_line_number}";
     } else {
         _final_callsite = $"{_work_string}:{_line_number}";
     }

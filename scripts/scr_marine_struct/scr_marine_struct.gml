@@ -1104,12 +1104,12 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
         if (scr_has_adv("Warp Touched")) {
             if (_psionics_roll < 170) {
-                var _second_roll = roll_dice(_dice_count, 100, "high");
+                var _second_roll = roll_dice_chapter(_dice_count, 100, "high");
                 _psionics_roll = _second_roll > _psionics_roll ? _second_roll : _psionics_roll;
             }
         } else if (scr_has_disadv("Psyker Intolerant")) {
             if (_psionics_roll >= 170) {
-                var _second_roll = roll_dice(_dice_count, 100, "low");
+                var _second_roll = roll_dice_chapter(_dice_count, 100, "low");
                 _psionics_roll = _second_roll < _psionics_roll ? _second_roll : _psionics_roll;
             }
         }

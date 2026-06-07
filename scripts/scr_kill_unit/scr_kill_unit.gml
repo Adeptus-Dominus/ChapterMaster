@@ -1,5 +1,6 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+/// @self Asset.GMObject.obj_controller
 function scr_kill_unit(company, unit_slot) {
     try {
         if (obj_ini.role[company][unit_slot] == "Forge Master") {
@@ -11,7 +12,7 @@ function scr_kill_unit(company, unit_slot) {
             alarm[7] = 5;
             global.defeat = 1;
         }
-        _unit = fetch_unit([company, unit_slot]);
+        var _unit = fetch_unit([company, unit_slot]);
         if (_unit.weapon_one() == "Company Standard" || _unit.weapon_two() == "Company Standard") {
             scr_loyalty("Lost Standard", "+");
         }

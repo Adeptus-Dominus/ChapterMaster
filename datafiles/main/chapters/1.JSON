@@ -265,7 +265,7 @@
         "The Remorseless", //9th
         "The Redeemed"  //10th
       ],
-    "equal_specialists": 0,// 0 if no, 1 if yes. If yes, will distribute specialist roles like Assaults and Devastators equally between companies. Otherwise all Assaults go in Company 8 and all Devastators in Company 9
+    "squad_distribution": 0,// 0 if no, 1 if yes. If yes, will distribute specialist roles like Assaults and Devastators equally between companies. Otherwise all Assaults go in Company 8 and all Devastators in Company 9
     "flagship_name":  "Invincible Reason", // leave blank to autogenerate
     "load_to_ships": 
       {

@@ -138,7 +138,7 @@ if ((change_slide == 35) || (change_slide == 36) || (chapter_name == "Doom Benef
         fmaster = global.name_generator.ChapterMemberNameGeneration();
         recruiter = global.name_generator.ChapterMemberNameGeneration();
         admiral = global.name_generator.ChapterMemberNameGeneration();
-        equal_specialists = 0;
+        squad_distribution = 0;
         load_to_ships = [
             2,
             0,

@@ -40,26 +40,17 @@ varying vec2 v_vShadowCoord;
 
 // === Utility: RGB <-> HSV ===
 vec3 rgb2hsv(vec3 c) {
-    vec4 K = vec4(0.0, -1.0/3.0, 2.0/3.0, -1.0);
-    vec4 p = mix(vec4(c.bg, K.wz),
-                 vec4(c.gb, K.xy),
-                 step(c.b, c.g));
-    vec4 q = mix(vec4(p.xyw, c.r),
-                 vec4(c.r, p.yzx),
-                 step(p.x, c.r));
+    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
 
     float d = q.x - min(q.w, q.y);
     float e = 1.0e-10;
-    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)),
-                d / (q.x + e),
-                q.x);
+    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
 }
 
 vec3 hsv2rgb(vec3 c) {
-    vec3 rgb = clamp(abs(mod(c.x*6.0 + vec3(0.0,4.0,2.0),
-                              6.0) - 3.0) - 1.0,
-                     0.0,
-                     1.0);
+    vec3 rgb = clamp(abs(mod(c.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);
     return c.z * mix(vec3(1.0), rgb, c.y);
 }
 
@@ -67,10 +58,12 @@ vec3 hsv2rgb(vec3 c) {
 float hueMixClamp(float fromHue, float toHue, float t, float maxShift) {
     // Compute shortest path delta
     float delta = mod((toHue - fromHue + 540.0), 360.0) - 180.0;
-    
+
     // Clamp delta to maxShift (in degrees)
-    if (delta > maxShift) delta = maxShift;
-    if (delta < -maxShift) delta = -maxShift;
+    if (delta > maxShift)
+        delta = maxShift;
+    if (delta < -maxShift)
+        delta = -maxShift;
 
     return mod(fromHue + delta * t, 360.0);
 }
@@ -113,9 +106,12 @@ vec3 light_or_dark(vec3 m_colour, float shade, float maxHueShift) {
 
     if (!near_black) {
         float maxDelta = 0.05;
-        if (m_colour.r < max(m_colour.g, m_colour.b)) rgb.r = min(rgb.r, max(rgb.g, rgb.b) + maxDelta);
-        if (m_colour.g < max(m_colour.r, m_colour.b)) rgb.g = min(rgb.g, max(rgb.r, rgb.b) + maxDelta);
-        if (m_colour.b < max(m_colour.r, m_colour.g)) rgb.b = min(rgb.b, max(rgb.r, rgb.g) + maxDelta);
+        if (m_colour.r < max(m_colour.g, m_colour.b))
+            rgb.r = min(rgb.r, max(rgb.g, rgb.b) + maxDelta);
+        if (m_colour.g < max(m_colour.r, m_colour.b))
+            rgb.g = min(rgb.g, max(rgb.r, rgb.b) + maxDelta);
+        if (m_colour.b < max(m_colour.r, m_colour.g))
+            rgb.b = min(rgb.b, max(rgb.r, rgb.g) + maxDelta);
     }
 
     if (near_black && shade > 1.0) {
@@ -125,7 +121,6 @@ vec3 light_or_dark(vec3 m_colour, float shade, float maxHueShift) {
 
     return rgb;
 }
-
 
 void main() {
     const float _20COL = 20.0 / 255.0;
@@ -164,48 +159,93 @@ void main() {
     }
 
     // Intel fix
-    if (col_orig.r >= _127_25COL && col_orig.r <= _128_75COL) { col_orig.r = _128COL; }
-    if (col_orig.g >= _127_25COL && col_orig.g <= _128_75COL) { col_orig.g = _128COL; }
-    if (col_orig.b >= _127_25COL && col_orig.b <= _128_75COL) { col_orig.b = _128COL; }
-    if (col_orig.a >= _127_25COL && col_orig.a <= _128_75COL) { col_orig.a = _128COL; }
+    if (col_orig.r >= _127_25COL && col_orig.r <= _128_75COL) {
+        col_orig.r = _128COL;
+    }
+    if (col_orig.g >= _127_25COL && col_orig.g <= _128_75COL) {
+        col_orig.g = _128COL;
+    }
+    if (col_orig.b >= _127_25COL && col_orig.b <= _128_75COL) {
+        col_orig.b = _128COL;
+    }
+    if (col_orig.a >= _127_25COL && col_orig.a <= _128_75COL) {
+        col_orig.a = _128COL;
+    }
 
     vec4 col = col_orig;
 
     // === Existing replacement logic ===
-    if (col.rgb == vec3(0.0, 0.0, _128COL).rgb) { col.rgb = left_head.rgb; }
-    else if (col.rgb == vec3(_181COL, 0.0, 1.0).rgb) { col.rgb = right_backpack.rgb; }
-    else if (col.rgb == vec3(_104COL, 0.0, _168COL).rgb) { col.rgb = left_backpack.rgb; }
-    else if (col.rgb == vec3(0.0, 0.0, 1.0).rgb){ col.rgb = right_head.rgb; }
-    else if (col.rgb == vec3(_128COL, _64COL, 1.0).rgb) { col.rgb = left_muzzle.rgb; }
-    else if (col.rgb == vec3(_64COL, _128COL, 1.0).rgb) { col.rgb = right_muzzle.rgb; }
-    else if (col.rgb == vec3(0.0, 1.0, 0.0).rgb) { col.rgb = eye_lense.rgb; }
-    else if (col.rgb == vec3(1.0, _20COL, _147COL).rgb) { col.rgb = right_chest.rgb; }
-    else if (col.rgb == vec3(_128COL, 0.0, _128COL).rgb) { col.rgb = left_chest.rgb; }
-    else if (col.rgb == vec3(0.0, _128COL, _128COL).rgb) { col.rgb = right_trim.rgb; }
-    else if (col.rgb == vec3(1.0, _128COL, 0.0).rgb) { col.rgb = left_trim.rgb; }
-    else if (col.rgb == vec3(_135COL, _130COL, _188COL).rgb) { col.rgb = metallic_trim.rgb; }
-    else if (col.rgb == vec3(1.0, 1.0, 1.0).rgb) { col.rgb = right_pauldron.rgb; }
-    else if (col.rgb == vec3(1.0, 1.0, 0.0).rgb) { col.rgb = left_pauldron.rgb; }
-    else if (col.rgb == vec3(0.0, _128COL, 0.0).rgb) { col.rgb = right_leg_upper.rgb; }
-    else if (col.rgb == vec3(1.0, _112COL, _170COL).rgb) { col.rgb = left_leg_upper.rgb; }
-    else if (col.rgb == vec3(1.0, 0.0, 0.0).rgb) { col.rgb = left_leg_knee.rgb; }
-    else if (col.rgb == vec3(_128COL, 0.0, 0.0).rgb) { col.rgb = left_leg_lower.rgb; }
-    else if (col.rgb == vec3(_214COL, _194COL, 1.0).rgb) { col.rgb = right_leg_knee.rgb; }
-    else if (col.rgb == vec3(_165COL, _84COL, _24COL).rgb) { col.rgb = right_leg_lower.rgb; }
-    else if (col.rgb == vec3(_138COL, _218COL, _140COL).rgb) { col.rgb = right_arm.rgb; }
-    else if (col.rgb == vec3(_46COL, _169COL, _151COL).rgb) { col.rgb = right_hand.rgb; }
-    else if (col.rgb == vec3(1.0, _230COL, _140COL).rgb) { col.rgb = left_arm.rgb; }
-    else if (col.rgb == vec3(1.0, _160COL, _112COL).rgb) { col.rgb = left_hand.rgb; }
-    else if (col.rgb == vec3(_128COL, _128COL, 0.0)) { col.rgb = company_marks.rgb; }
-    else if (col.rgb == vec3(0.0, 1.0, 1.0)) { col.rgb = weapon_primary.rgb; }
-    else if (col.rgb == vec3(1.0, 0.0, 1.0)) { col.rgb = weapon_secondary.rgb; }
+    if (col.rgb == vec3(0.0, 0.0, _128COL).rgb) {
+        col.rgb = left_head.rgb;
+    } else if (col.rgb == vec3(_181COL, 0.0, 1.0).rgb) {
+        col.rgb = right_backpack.rgb;
+    } else if (col.rgb == vec3(_104COL, 0.0, _168COL).rgb) {
+        col.rgb = left_backpack.rgb;
+    } else if (col.rgb == vec3(0.0, 0.0, 1.0).rgb) {
+        col.rgb = right_head.rgb;
+    } else if (col.rgb == vec3(_128COL, _64COL, 1.0).rgb) {
+        col.rgb = left_muzzle.rgb;
+    } else if (col.rgb == vec3(_64COL, _128COL, 1.0).rgb) {
+        col.rgb = right_muzzle.rgb;
+    } else if (col.rgb == vec3(0.0, 1.0, 0.0).rgb) {
+        col.rgb = eye_lense.rgb;
+    } else if (col.rgb == vec3(1.0, _20COL, _147COL).rgb) {
+        col.rgb = right_chest.rgb;
+    } else if (col.rgb == vec3(_128COL, 0.0, _128COL).rgb) {
+        col.rgb = left_chest.rgb;
+    } else if (col.rgb == vec3(0.0, _128COL, _128COL).rgb) {
+        col.rgb = right_trim.rgb;
+    } else if (col.rgb == vec3(1.0, _128COL, 0.0).rgb) {
+        col.rgb = left_trim.rgb;
+    } else if (col.rgb == vec3(_135COL, _130COL, _188COL).rgb) {
+        col.rgb = metallic_trim.rgb;
+    } else if (col.rgb == vec3(1.0, 1.0, 1.0).rgb) {
+        col.rgb = right_pauldron.rgb;
+    } else if (col.rgb == vec3(1.0, 1.0, 0.0).rgb) {
+        col.rgb = left_pauldron.rgb;
+    } else if (col.rgb == vec3(0.0, _128COL, 0.0).rgb) {
+        col.rgb = right_leg_upper.rgb;
+    } else if (col.rgb == vec3(1.0, _112COL, _170COL).rgb) {
+        col.rgb = left_leg_upper.rgb;
+    } else if (col.rgb == vec3(1.0, 0.0, 0.0).rgb) {
+        col.rgb = left_leg_knee.rgb;
+    } else if (col.rgb == vec3(_128COL, 0.0, 0.0).rgb) {
+        col.rgb = left_leg_lower.rgb;
+    } else if (col.rgb == vec3(_214COL, _194COL, 1.0).rgb) {
+        col.rgb = right_leg_knee.rgb;
+    } else if (col.rgb == vec3(_165COL, _84COL, _24COL).rgb) {
+        col.rgb = right_leg_lower.rgb;
+    } else if (col.rgb == vec3(_138COL, _218COL, _140COL).rgb) {
+        col.rgb = right_arm.rgb;
+    } else if (col.rgb == vec3(_46COL, _169COL, _151COL).rgb) {
+        col.rgb = right_hand.rgb;
+    } else if (col.rgb == vec3(1.0, _230COL, _140COL).rgb) {
+        col.rgb = left_arm.rgb;
+    } else if (col.rgb == vec3(1.0, _160COL, _112COL).rgb) {
+        col.rgb = left_hand.rgb;
+    } else if (col.rgb == vec3(_128COL, _128COL, 0.0)) {
+        col.rgb = company_marks.rgb;
+    } else if (col.rgb == vec3(0.0, 1.0, 1.0)) {
+        col.rgb = weapon_primary.rgb;
+    } else if (col.rgb == vec3(1.0, 0.0, 1.0)) {
+        col.rgb = weapon_secondary.rgb;
+    }
 
-    if (use_shadow != 1){
+    if (use_shadow != 1) {
         if (col_orig.rgb != col.rgb) {
-            if (col_orig.a == _128COL){ col.rgb = light_or_dark(col.rgb, 1.2, 85.0); col.a = 1.0; }
-            else if (col_orig.a == _60COL) { col.rgb = light_or_dark(col.rgb, 1.4, 85.0); col.a = 1.0; }
-            else if (col_orig.a == _215COL) { col.rgb = light_or_dark(col.rgb,0.6, 85.0); col.a = 1.0; }
-            else if (col_orig.a == _160COL) { col.rgb = light_or_dark(col.rgb, 0.8, 85.0); col.a = 1.0; }
+            if (col_orig.a == _128COL) {
+                col.rgb = light_or_dark(col.rgb, 1.2, 85.0);
+                col.a = 1.0;
+            } else if (col_orig.a == _60COL) {
+                col.rgb = light_or_dark(col.rgb, 1.4, 85.0);
+                col.a = 1.0;
+            } else if (col_orig.a == _215COL) {
+                col.rgb = light_or_dark(col.rgb, 0.6, 85.0);
+                col.a = 1.0;
+            } else if (col_orig.a == _160COL) {
+                col.rgb = light_or_dark(col.rgb, 0.8, 85.0);
+                col.a = 1.0;
+            }
         }
     }
 
@@ -216,11 +256,11 @@ void main() {
     const vec3 robes_highlight_2 = vec3(186.0 / 255.0, 165.0 / 255.0, 135.0 / 255.0);
     const vec3 robes_darkness_2 = vec3(148.0 / 255.0, 132.0 / 255.0, 108.0 / 255.0);
     if (col.rgb == robes_colour_base.rgb || col.rgb == robes_colour_base_2.rgb) {
-        col.rgb = light_or_dark(robes_colour_replace , 1.0,85.0).rgb;
+        col.rgb = light_or_dark(robes_colour_replace, 1.0, 85.0).rgb;
     } else if (col.rgb == robes_highlight.rgb || col.rgb == robes_highlight_2.rgb) {
-        col.rgb = light_or_dark(robes_colour_replace , 1.25,85.0).rgb;
+        col.rgb = light_or_dark(robes_colour_replace, 1.25, 85.0).rgb;
     } else if (col.rgb == robes_darkness.rgb || col.rgb == robes_darkness_2.rgb) {
-        col.rgb = light_or_dark(robes_colour_replace , 0.75,85.0).rgb;
+        col.rgb = light_or_dark(robes_colour_replace, 0.75, 85.0).rgb;
     }
 
     // === SHADOW AUGMENT: artist-friendly highlight/shadow grading ===

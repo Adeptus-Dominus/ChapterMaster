@@ -31,6 +31,7 @@ function find_event(e_id) {
     return _event_found;
 }
 
+/// @self Asset.GMObject.obj_controller
 function event_end_turn_action() {
     var _event_length = array_length(event);
     for (var i = _event_length - 1; i >= 0; i--) {
@@ -310,8 +311,8 @@ function strange_build_event() {
         marine_and_company = scr_random_marine("", 0, "none");
     }
     if (marine_and_company != "none") {
-        var marine = marine_and_company[0];
-        var company = marine_and_company[1];
+        var company = marine_and_company[0];
+        var marine = marine_and_company[1];
         var text = "";
         var _unit = fetch_unit(marine_and_company);
         var role = _unit.role();
@@ -437,6 +438,7 @@ function make_faction_enemy_event() {
     return false;
 }
 
+/// @self Asset.GMObject.obj_popup
 function event_dispose_of_mutated_gene() {
     if (pop_data.percent_remove > 0) {
         var _removal_amount = ceil(obj_controller.gene_seed * (pop_data.percent_remove / 100));

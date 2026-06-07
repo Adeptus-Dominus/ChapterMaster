@@ -32,6 +32,7 @@ function set_fleet_target(targ_x, targ_y, final_target) {
     action_eta = floor(point_distance(x, y, targ_x, targ_y) / 128) + 1;
 }
 
+/// @param {Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet} target
 function scr_valid_fleet_target(target) {
     if (target == noone) {
         return false;
@@ -59,6 +60,7 @@ function get_fleet_uid(search_uid) {
 }
 
 /// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
+/// @param {Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet} fleet
 function fleets_next_location(fleet = "none", visited = []) {
     var targ_location = "none";
 
@@ -1161,6 +1163,8 @@ function choose_fleet_sprite_image() {
     image_speed = 0;
 }
 
+/// @param {Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet} main_fleet
+/// @param {Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet} merge_fleet
 function merge_fleets(main_fleet, merge_fleet) {
     main_fleet.capital_number += merge_fleet.capital_number;
     main_fleet.frigate_number += merge_fleet.frigate_number;

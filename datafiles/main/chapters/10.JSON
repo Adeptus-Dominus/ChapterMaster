@@ -79,9 +79,8 @@
             "recruiter": "Emrik"
         },
         "battle_cry": "No Pity! No Remorse! No Fear!",
-        "equal_specialists": 0,
-        "equal_scouts": 0,
-        "scout_company_behaviour": 0, //0 default codex compliant, 1 scouts are replaced with bolter neophytes
+        "squad_distribution": 0,
+"scout_company_behaviour": 0, //0 default codex compliant, 1 scouts are replaced with bolter neophytes
         "load_to_ships": {
             "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
             "split_scouts": 0, // 0 no, 1 yes
