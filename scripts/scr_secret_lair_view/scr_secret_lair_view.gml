@@ -17,6 +17,8 @@ function scr_secret_lair_view(){
     var secret_base = false;
     var title = "";
     var lair_window_description_text = "";
+    /// @type {Struct.NewPlanetFeature|undefined} 
+    var lair_struct = undefined;
 
     if (planet_feature_bool(planet_upgrades, eP_FEATURES.SECRET_BASE)) {
         secret_base = true;
@@ -76,7 +78,7 @@ function scr_secret_lair_view(){
      //TODO add a PlanetData object to obj_temp_build so that planet nae can be generated with PlanetData.name()
     if (!lair_exists) {
         title = "Build (" + string(obj_temp_build.target.name) + " " + scr_roman(obj_temp_build.planet) + ")";
-    } else if (lair_exists) {
+    } else {
         if (secret_base) {
             title = "Secret Lair (" + string(obj_temp_build.target.name) + " " + scr_roman(obj_temp_build.planet) + ")";
         } else if (arsenal) {
@@ -93,15 +95,12 @@ function scr_secret_lair_view(){
     if (secret_base) {
         var search_list = search_planet_features(planet_upgrades, eP_FEATURES.SECRET_BASE);
         if (array_length(search_list) > 0) {
-            var secret = true;
-            secret_base = planet_upgrades[search_list[0]];
-            if (secret_base.built > obj_controller.turn) {
+            lair_struct = planet_upgrades[search_list[0]];
+            if (lair_struct.built > obj_controller.turn) {
                 draw_set_font(fnt_40k_14b);
-                draw_text(xx + 21, yy + 65, $"This feature will be constructed in {secret_base.built - obj_controller.turn} months.");
-            } else if (secret_base.built <= obj_controller.turn) {
-                if (secret_base.inquis_hidden != 1) {
-                    secret = false;
-                }
+                draw_text(xx + 21, yy + 65, $"This feature will be constructed in {lair_struct.built - obj_controller.turn} months.");
+            } else if (lair_struct.built <= obj_controller.turn) {
+
 
                 var button_label = "";
                 var button_desc = "";
@@ -116,7 +115,7 @@ function scr_secret_lair_view(){
                     var button_alpha = 1;
                     switch (r) {
                         case 1:
-                            if (secret_base.forge) {
+                            if (lair_struct.forge) {
                                 button_alpha = 0.33;
                             }
                             cost = 1000;
@@ -124,7 +123,7 @@ function scr_secret_lair_view(){
                             button_desc = "A modest, less elaborate forge able to employ a handful of Astartes or Techpriest.";
                             break;
                         case 2:
-                            if (secret_base.hippo) {
+                            if (lair_struct.hippo) {
                                 button_alpha = 0.33;
                             }
                             cost = 1000;
@@ -132,7 +131,7 @@ function scr_secret_lair_view(){
                             button_desc = "A moderate sized garage fit to hold, service, and display vehicles.";
                             break;
                         case 3:
-                            if (secret_base.beastarium) {
+                            if (lair_struct.beastarium) {
                                 button_alpha = 0.33;
                             }
                             cost = 1000;
@@ -140,7 +139,7 @@ function scr_secret_lair_view(){
                             button_desc = "An enclosure with simulated greenery and foilage meant to hold beasts.";
                             break;
                         case 4:
-                            if (secret_base.torture) {
+                            if (lair_struct.torture) {
                                 button_alpha = 0.33;
                             }
                             cost = 500;
@@ -148,7 +147,7 @@ function scr_secret_lair_view(){
                             button_desc = "Only the best for the best.  A room full of torture tools and devices.";
                             break;
                         case 5:
-                            if (secret_base.narcotics) {
+                            if (lair_struct.narcotics) {
                                 button_alpha = 0.33;
                             }
                             cost = 500;
@@ -156,12 +155,15 @@ function scr_secret_lair_view(){
                             button_desc = "Several boxes worth of Obscura, Black Lethe, Kyxa... line it up.";
                             break;
                         case 6:
+                            if (lair_struct.relic > 0) {
+                                button_alpha = 0.33;
+                            }
                             cost = 500;
                             button_label = "Relic Room";
                             button_desc = "A room meant for displaying trophies.  May be purchased successive times.";
                             break;
                         case 7:
-                            if (secret_base.cookery) {
+                            if (lair_struct.cookery) {
                                 button_alpha = 0.33;
                             }
                             cost = 250;
@@ -169,7 +171,7 @@ function scr_secret_lair_view(){
                             button_desc = "A larger, well-stocked cookery, complete with a number of Imperial Chef servants.";
                             break;
                         case 8:
-                            if (secret_base.vox) {
+                            if (lair_struct.vox) {
                                 button_alpha = 0.33;
                             }
                             cost = 250;
@@ -177,7 +179,7 @@ function scr_secret_lair_view(){
                             button_desc = "All the bass one could ever imaginably need.";
                             break;
                         case 9:
-                            if (secret_base.librarium) {
+                            if (lair_struct.librarium) {
                                 button_alpha = 0.33;
                             }
                             cost = 250;
@@ -185,7 +187,7 @@ function scr_secret_lair_view(){
                             button_desc = "A study fit to hold a staggering amount of tomes and scrolls.";
                             break;
                         case 10:
-                            if (secret_base.throne) {
+                            if (lair_struct.throne) {
                                 button_alpha = 0.33;
                             }
                             cost = 250;
@@ -193,7 +195,7 @@ function scr_secret_lair_view(){
                             button_desc = "A massive, ego boosting throne.";
                             break;
                         case 11:
-                            if (secret_base.stasis) {
+                            if (lair_struct.stasis) {
                                 button_alpha = 0.33;
                             }
                             cost = 200;
@@ -201,7 +203,7 @@ function scr_secret_lair_view(){
                             button_desc = "Though they start empty, you may capture and display your foes in these.";
                             break;
                         case 12:
-                            if (secret_base.swimming) {
+                            if (lair_struct.swimming) {
                                 button_alpha = 0.33;
                             }
                             cost = 100;
@@ -235,41 +237,41 @@ function scr_secret_lair_view(){
                             obj_controller.requisition -= cost;
                             switch (r) {
                                 case 1:
-                                    secret_base.forge = true;
-                                    secret_base.forge_data = new PlayerForge();
+                                    lair_struct.forge = true;
+                                    lair_struct.forge_data = new PlayerForge();
                                     break;
                                 case 2:
-                                    secret_base.hippo = true;
+                                    lair_struct.hippo = true;
                                     break;
                                 case 3:
-                                    secret_base.beastarium = true;
+                                    lair_struct.beastarium = true;
                                     break;
                                 case 4:
-                                    secret_base.torture = true;
+                                    lair_struct.torture = true;
                                     break;
                                 case 5:
-                                    secret_base.narcotics = true;
+                                    lair_struct.narcotics = true;
                                     break;
                                 case 6:
-                                    secret_base.relic += 1;
+                                    lair_struct.relic += 1;
                                     break;
                                 case 7:
-                                    secret_base.cookery = true;
+                                    lair_struct.cookery = true;
                                     break;
                                 case 8:
-                                    secret_base.vox = true;
+                                    lair_struct.vox = true;
                                     break;
                                 case 9:
-                                    secret_base.librarium = true;
+                                    lair_struct.librarium = true;
                                     break;
                                 case 10:
-                                    secret_base.throne = true;
+                                    lair_struct.throne = true;
                                     break;
                                 case 11:
-                                    secret_base.stasis = true;
+                                    lair_struct.stasis = true;
                                     break;
                                 case 12:
-                                    secret_base.swimming = true;
+                                    lair_struct.swimming = true;
                                     break;
                             }
                         }
@@ -277,14 +279,14 @@ function scr_secret_lair_view(){
                 }
 
                 lair_window_description_text = "Deep beneath the surface of " + string(obj_temp_build.target.name) + " " + scr_roman(obj_controller.selecting_planet) + " lays your ";
-                if (secret) {
+                if (lair_struct.inquis_hidden == 1) {
                     lair_window_description_text += "secret lair.  ";
-                } else if (!secret) {
+                } else {
                     lair_window_description_text += "previously discovered lair.  ";
                 }
 
                 lair_window_description_text += "It is massive";
-                switch (secret_base.style) {
+                switch (lair_struct.style) {
                     case "BRB":
                         lair_window_description_text += ", the walls decorated with animal hides and leather.  Among the copius body-trophies and bones are torches that hiss and spit.  ";
                         break;
@@ -314,7 +316,7 @@ function scr_secret_lair_view(){
                         break;
                 }
 
-                if (secret_base.throne == 1) {
+                if (lair_struct.throne == 1) {
                     lair_window_description_text += "  The center chamber is dominated by ";
                     if (obj_controller.temp[104] == string(obj_temp_build.target.name) + "." + string(obj_controller.selecting_planet)) {
                         lair_window_description_text += "a massive throne, which you are currently seated upon.  ";
@@ -322,13 +324,13 @@ function scr_secret_lair_view(){
                         lair_window_description_text += "a massive throne, though it is currently vacant.  ";
                     }
                 }
-                if ((secret_base.vox > 0) && (obj_temp_build.target.p_player[obj_controller.selecting_planet] > 0)) {
+                if ((lair_struct.vox > 0) && (obj_temp_build.target.p_player[obj_controller.selecting_planet] > 0)) {
                     lair_window_description_text += "Heretical music blasts from the vox-casters, shaking the walls.  ";
                 }
-                if (secret_base.narcotics > 0) {
+                if (lair_struct.narcotics > 0) {
                     lair_window_description_text += "  Many of the tables have lines of white powder set on paper or bunches of needles.  Plastic straws lay close by.  ";
                 }
-                if (secret_base.cookery == 1) {
+                if (lair_struct.cookery == 1) {
                     if (obj_temp_build.target.p_player[obj_controller.selecting_planet] > 0) {
                         lair_window_description_text += "Imperial Chefs are currently bustling to and from the kitchen, cooking savory treats and food for those present.  ";
                     }
@@ -336,7 +338,7 @@ function scr_secret_lair_view(){
                         lair_window_description_text += "The Imperial Chefs are mostly idle, making use of the other rooms and facilities.  ";
                     }
                 }
-                switch (secret_base.stock) {
+                switch (lair_struct.stock) {
                     case 1:
                         lair_window_description_text += "  One of the chambers is hollowed out to display war trophies and gear.  ";
                         break;
@@ -411,30 +413,30 @@ function scr_secret_lair_view(){
                         lair_window_description_text += "  Gold and gems are everywhere, occasionally attached to the walls and ceiling where able.  ";
                         break;
                     default:
-                        if (secret_base.stock >= 30) {
+                        if (lair_struct.stock >= 30) {
                             lair_window_description_text += "  Gold and gems are EVERYWHERE.  The main chamber in particular is a sea of gold and gems, especially deep at the corners.  In all it is nearly three feet deep.  Coins clink and settle as your forces walk through the room.  ";
                         }
                         break;
                 }
-                if (secret_base.forge > 0) {
+                if (lair_struct.forge > 0) {
                     lair_window_description_text += "  Your lair has a forge, fit to be used by several astartes at once.  ";
                 }
-                if (secret_base.hippo > 0) {
+                if (lair_struct.hippo > 0) {
                     lair_window_description_text += "  Your lair has a hippodrome, or garage, that holds luxury vehicles.  ";
                 }
-                if (secret_base.torture > 0) {
+                if (lair_struct.torture > 0) {
                     lair_window_description_text += "  One of the rooms is a well-stocked torture chamber.  ";
                 }
-                if (secret_base.librarium > 0) {
+                if (lair_struct.librarium > 0) {
                     lair_window_description_text += "  A large librarium makes up one of the wings, holding countless novels, books, scrolls, and documents on various topics.  ";
                 }
-                if (secret_base.beastarium > 0) {
+                if (lair_struct.beastarium > 0) {
                     lair_window_description_text += "  Your lair has a beastarium, animals native to your homeworld living within.  ";
                 }
-                if (secret_base.swimming > 0) {
+                if (lair_struct.swimming > 0) {
                     lair_window_description_text += "  A large swimming pool with chapter-themed floaties is emplaced near the entrance.  ";
                 }
-                if (secret_base.stasis > 0) {
+                if (lair_struct.stasis > 0) {
                     lair_window_description_text += "  One of the chambers holds several stasis pods for display.  They are currently empty.  ";
                 }
 
@@ -549,20 +551,18 @@ function scr_secret_lair_view(){
     draw_set_font(fnt_40k_14b);
     lair_window_description_text = "";
     if (planet_feature_bool(planet_upgrades, eP_FEATURES.ARSENAL) == 1) {
-        arsenal = planet_upgrades[search_planet_features(planet_upgrades, eP_FEATURES.ARSENAL)[0]];
-        if (arsenal.inquis_hidden == 1) {
+        lair_struct = planet_upgrades[search_planet_features(planet_upgrades, eP_FEATURES.ARSENAL)[0]];
+        if (lair_struct.inquis_hidden == 1) {
             lair_window_description_text = "A moderate sized secret Arsenal, this structure has ample holding area to store any number of artifacts and wargear.  Chaos and Daemonic items will be sent here by your Master of Relics, and due to the secret nature of its existance, the Inquisition will not find them during routine inspections.";
-        }
-        if (arsenal.inquis_hidden == 0) {
+        } else {
             lair_window_description_text = "A moderate sized Arsenal, this structure has ample holding area to store any number of artifacts and wargear.  Since being discovered it may no longer hide Chaos and Daemonic wargear from routine Inquisition inspections.  You may wish to construct another Arsenal on a different planet.";
         }
     }
     if (planet_feature_bool(planet_upgrades, eP_FEATURES.GENE_VAULT) == 1) {
-        gene_vault = planet_upgrades[search_planet_features(planet_upgrades, eP_FEATURES.GENE_VAULT)[0]];
-        if (gene_vault.inquis_hidden == 1) {
+        lair_struct = planet_upgrades[search_planet_features(planet_upgrades, eP_FEATURES.GENE_VAULT)[0]];
+        if (lair_struct.inquis_hidden == 1) {
             lair_window_description_text = "A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Due to its secret nature you may amass Gene-Seed and Test-Slave Incubators without fear of Inquisition reprisal or taking offense.";
-        }
-        if (gene_vault.inquis_hidden == 0) {
+        } else {
             lair_window_description_text = "A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Since being discovered all the contents are known to the Inquisition.  Your Gene-Seed remains protected but you may wish to build a new, secret one.";
         }
     }
