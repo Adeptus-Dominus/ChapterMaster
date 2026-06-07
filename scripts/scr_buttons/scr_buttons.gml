@@ -212,8 +212,6 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
     with_outline = true;
     allow_line_breaks = true;
 
-    move_data_to_current_scope(data, true);
-
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         var temp_font = draw_get_font();
@@ -241,6 +239,8 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
         }
         draw_set_font(temp_font);
     };
+
+    update(data);
 
     static hit = function() {
         return scr_hit(x1, y1, x2, y2);
@@ -370,8 +370,6 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
 	text_width = string_width(text) + 2;
 	draw_set_font(temp_font);
 
-    move_data_to_current_scope(data);
-
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         if (text_position == "right") {
@@ -386,6 +384,8 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
             y2 = y1 + icon_height;
         }
     };
+
+    update(data);
 
     static hit = function() {
         return scr_hit(x1, y1, x2, y2);
@@ -522,7 +522,6 @@ function UnitButtonObject(data = {}) constructor {
         y2 = y1 + h;
     };
     
-    move_data_to_current_scope(data);
     update_loc();
 
     static update = function(data = {}) {
@@ -535,6 +534,8 @@ function UnitButtonObject(data = {}) constructor {
             update_loc();
         }
     };
+
+    update(data);
 
     static move = function(m_direction, with_gap = false, multiplier = 1) {
         switch (m_direction) {
@@ -1024,11 +1025,11 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
         array_push(toggles, _next_tog);
     }
     
-    move_data_to_current_scope(data);
-    
     static update = function(data = {}) {
         move_data_to_current_scope(data);
     };
+
+    update(data)
 
     static draw_toggle = function(index) {
         var _cur_opt = toggles[index];
@@ -1167,11 +1168,11 @@ function RadioSet(options_array, title_param = "", data = {}) constructor {
         array_push(toggles, new ToggleButton(options_array[i]));
     }
     
-    move_data_to_current_scope(data);
-
     static update = function(data = {}) {
         move_data_to_current_scope(data);
     };
+
+    update(data)
 
     static draw_option = function(_x, _y, index) {
         var _cur_opt = toggles[index];
@@ -1298,7 +1299,7 @@ function ToggleButton(data = {}) constructor {
 
     //make true to run clicked() within draw sequence
     clicked_check_default = false;
-
+    
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         var temp_font = draw_get_font();
@@ -1431,9 +1432,7 @@ function InteractiveButton(data = {}) constructor {
     text_halign = fa_left;
     text_color = c_gray;
     button_color = c_gray;
-    
-    move_data_to_current_scope(data);
-    
+        
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         if (width == 0) {
@@ -1445,6 +1444,8 @@ function InteractiveButton(data = {}) constructor {
         x2 = x1 + width;
         y2 = y1 + height;
     };
+
+    update(data);
 
     static hover = function() {
         return scr_hit(x1, y1, x2, y2);
