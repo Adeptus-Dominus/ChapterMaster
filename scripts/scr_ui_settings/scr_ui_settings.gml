@@ -243,7 +243,6 @@ function setup_ui_chapter_settings(){
             {
                 str1 : _role_name,
                 font : fnt_40k_14,
-                active : command_set[3 + i],
                 tooltip : $"activate to make {_role_name}s a default member of your company command."
             }           
         )
@@ -258,6 +257,11 @@ function setup_ui_chapter_settings(){
             y1 : 300,
         }
     );
+
+    for (var i=0;i<array_length(_command_mult.toggles);i++){
+        var _tog = _command_mult.toggles[i];
+        _tog.active = bool(command_set[3 + i]);
+    }
 
     _sets.comany_command_structure = _command_mult;
 
@@ -306,6 +310,10 @@ function setup_ui_chapter_settings(){
             y1 : 730,
         }
     );
+
+    _sets.auto_board_multi.toggles[0].active = command_set[25];
+
+    _sets.auto_board_multi.toggles[1].active = command_set[26];
 }
 
 function scr_ui_settings() {
@@ -326,7 +334,25 @@ function scr_ui_settings() {
         scr_draw_company_settings_ui();
     }
 
-    if (menu == eMENU.SETTINGS) {
+    if (menu != eMENU.SETTINGS){
+        var _back_button = settings_buttons_ui_components.back_arrow;
+        _back_button.draw();
+        if (_back_button.is_clicked){
+
+            with (obj_formation_bar) {
+                instance_destroy();
+            }
+            if (bat_formation[formating] == "") {
+                bat_formation_type[formating] = 0;
+            }
+            pop_draw_return_values();
+            with (obj_mass_equip) {
+                instance_destroy();
+            }
+            menu = eMENU.SETTINGS;
+            exit;
+        }
+    } else if (menu == eMENU.SETTINGS) {
         add_draw_return_values();
         var _ui_feats = settings_buttons_ui_components;
         // Reset vars
@@ -554,8 +580,6 @@ function scr_select_company_settings_ui(){
 }
 
 function scr_draw_company_settings_ui(){
-    var _back_button = settings_buttons_ui_components.back_arrow;
-    _back_button.draw();
     if (settings != 0 && is_struct(squad_arrangement)) {
         squad_arrangement.draw();
     }
@@ -584,16 +608,6 @@ function scr_draw_role_settings_ui(){
             var co = 100;
             var ide;
             ide = settings;
-
-            var _back_button = settings_buttons_ui_components.back_arrow;
-            _back_button.draw();
-            if (_back_button.is_clicked) {
-                with (obj_mass_equip) {
-                    instance_destroy();
-                }
-                menu = 21;
-                exit;
-            }
 
             draw_set_halign(fa_center);
             draw_set_color(c_gray);
@@ -705,20 +719,6 @@ function scr_draw_formation_settings(){
 
     draw_set_alpha(1);
     // Back arrow
-    var _back_button = settings_buttons_ui_components.back_arrow;
-    _back_button.draw();
-    if (_back_button.is_clicked){
-        with (obj_formation_bar) {
-            instance_destroy();
-        }
-
-        menu = 21;
-        if (bat_formation[formating] == "") {
-            bat_formation_type[formating] = 0;
-        }
-        pop_draw_return_values();
-        exit;            
-    }
 
     draw_sprite(spr_formation_arrow, 0, 550, 385);
 

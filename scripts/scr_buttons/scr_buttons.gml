@@ -421,7 +421,7 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
 function SpriteButton(data) constructor {
     standard_loc_data();
     sprite = spr_none;
-    hover_sprite = spr_none;
+    hover_sprite = undefined;
 
     cycle_index = false;
     draw_index = 0;
@@ -584,7 +584,7 @@ function UnitButtonObject(data = {}) constructor {
             var _width_scale = (w - _widths[0] - _widths[2]) / _widths[1];
             _widths[1] *= _width_scale;
             draw_sprite_ext(spr_pixel_button_middle, 0, x1 + _widths[0], y1, _width_scale, height_scale, 0, c_white, 1);
-            draw_sprite_ext(spr_pixel_button_right, 0, x1 + _widths[0] + _widths[1], y1, height_scale, height_scale, 0, c_white, 1);
+            draw_sprite_ext(spr_pixel_button_right, allow_click, x1 + _widths[0] + _widths[1], y1, height_scale, height_scale, 0, c_white, 1);
             var _text_position_x = x1 + _widths[0] + 2;
             _text_position_x += _widths[1] / 2;
             draw_set_font(font);
@@ -1298,8 +1298,6 @@ function ToggleButton(data = {}) constructor {
 
     //make true to run clicked() within draw sequence
     clicked_check_default = false;
-    
-    move_data_to_current_scope(data);
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
@@ -1322,6 +1320,8 @@ function ToggleButton(data = {}) constructor {
         y2 = y1 + h;
         draw_set_font(temp_font);
     };
+
+    update(data);
 
     static hover = function() {
         return scr_hit(x1, y1, x2, y2);
