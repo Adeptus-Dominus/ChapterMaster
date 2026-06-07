@@ -379,8 +379,8 @@ function scr_ui_settings() {
         var _toggle_use_plasma = _ui_feats.boarding_plasma_bombs;
 
         if (_toggle_use_plasma.draw()){
-            command_set[21] = _toggl_dam_sys.active;
-            if (_toggl_dam_sys.active){
+            command_set[21] = _toggle_use_plasma.active;
+            if (_toggle_use_plasma.active){
                 command_set[22] = false;
                 command_set[20] = false;
             }

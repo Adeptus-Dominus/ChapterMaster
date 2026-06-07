@@ -157,7 +157,7 @@ function Box(data) constructor {
             w = x2 - x1;
         }
         if (h == 0 && y2 > 0){
-            w = y2 - y1;
+            h = y2 - y1;
         }
 
         y2 = y1 + h;
