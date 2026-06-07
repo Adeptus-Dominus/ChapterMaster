@@ -1052,6 +1052,8 @@ function Armamentarium(_controller) constructor {
             y1 : _y + 2
         })
 
+        sell_button.draw(_can_sell);
+
         if (sell_button.is_clicked) {
             _sell_item(_item, _count, SHOP_SELL_MOD);
         }
