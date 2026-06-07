@@ -27,7 +27,7 @@ function setup_ui_chapter_settings(){
                 value : "attack",
                 style : "box"
             },
-        ]
+        ],
         "Formation",
         {
             x1 : 757,

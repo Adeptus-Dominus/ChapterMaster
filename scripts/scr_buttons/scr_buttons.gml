@@ -190,6 +190,7 @@ function Box(data) constructor {
 /// var rs = new ReactiveString("Hello", 100, 200);
 /// rs.draw();
 function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) constructor {
+    standard_loc_data();
     x1 = x1_param;
     y1 = y1_param;
     text = text_param;
