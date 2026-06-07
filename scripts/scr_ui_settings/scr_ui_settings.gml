@@ -71,7 +71,7 @@ function setup_ui_chapter_settings(){
     ];
 
     var _but_x = 1277;
-    var _but_y = 220;
+    var _but_y = 230;
     var _base_tool = "Click to open the settings for this unit.";
 
     for (var i = 0; i<array_length(_role_order); i++){
@@ -99,7 +99,7 @@ function setup_ui_chapter_settings(){
 
     company_settings_selection_buttons = [];
     _but_x = 936;
-    _but_y = 220;
+    _but_y = 230;
     var romanNumerals = scr_roman_numerals();
     _base_tool = "Click to open the settings for this company.";
 
@@ -125,8 +125,8 @@ function setup_ui_chapter_settings(){
 
     settings_buttons_ui_components.boarding_objectives = new ReactiveString(
         "Boarding Objective",
-        100,
-        600, 
+        110,
+        570, 
         {
             tooltip : "Boarding Objective\nThe objective of your Astartes once they board an enemy ship."
         }
@@ -138,7 +138,7 @@ function setup_ui_chapter_settings(){
         tooltip : "Your Astartes will attempt to disable the ship by attacking the ship bridge and systems.",
         str1 : "Damage Systems",
         x1 : 50,
-        y1 : 634,
+        y1 : 604,
         active : command_set[20],
         clicked_check_default : true
     });
@@ -149,8 +149,8 @@ function setup_ui_chapter_settings(){
         style : "box",
         tooltip : "Your Astartes will use equipped Plasma Bombs to massively damage the boarded ship.",
         str1 : "Use Plasma Bombs",
-        x1 : 150,
-        y1 : 634,
+        x1 : _toggle_dam_sys.x2 + 10,
+        y1 : 604,
         active : command_set[21],
         clicked_check_default : true
     });
@@ -161,7 +161,7 @@ function setup_ui_chapter_settings(){
         style : "box",
         tooltip : "Your Astartes will attempt to commandeer the vessel, to be permenantely used or salvaged.",
         str1 : "Commandeer Ship",
-        x1 : 75,
+        x1 : _toggle_dam_sys.x1 + (_toggle_use_plasma.x2 - _toggle_dam_sys.x1)/2,
         y1 : 688,
         active : command_set[22],
         clicked_check_default : true
@@ -281,9 +281,8 @@ function setup_ui_chapter_settings(){
         ], 
         "Post-Boarding", 
         {
-            draw_alighn : "vertical",
-            x1 : 40,
-            y1 : 730,
+            x1 : 80,
+            y1 : 710,
         }
     );
 
@@ -295,19 +294,19 @@ function setup_ui_chapter_settings(){
                 str1 : "Battleships",
                 font : fnt_40k_14,
                 style : "box",
-                tooltip : "If checked your ships will launch Boarding teams automatically when an eligible target is in range."
+                tooltip : "If checked your Battleships will launch Boarding teams automatically when an eligible target is in range."
             },
             {
                 str1 : "Cruisers",
                 font : fnt_40k_14,
                 style : "box",
-                tooltip : "If checked your ships will launch Boarding teams automatically when an eligible target is in range."
+                tooltip : "If checked your Cruisers will launch Boarding teams automatically when an eligible target is in range."
             }
         ], 
         "Automatic Boarding", 
         {
-            x1 : 325,
-            y1 : 730,
+            x1 : 350,
+            y1 : 710,
         }
     );
 
@@ -326,7 +325,7 @@ function scr_ui_settings() {
     var x5 = 0, y5 = 0, x6 = 0;
     var too_img = 0;
 
-    if ((menu == eMENU.FORMATIONS_SETTINGS) && (formating > 0)) {
+    if (menu == eMENU.FORMATIONS_SETTINGS && formating > 0) {
         scr_draw_formation_settings();
     }else if (menu == eMENU.ROLE_SETTINGS) {
         scr_draw_role_settings_ui();
@@ -349,6 +348,7 @@ function scr_ui_settings() {
             with (obj_mass_equip) {
                 instance_destroy();
             }
+            settings = 0;
             menu = eMENU.SETTINGS;
             exit;
         }
@@ -365,8 +365,6 @@ function scr_ui_settings() {
         draw_text_transformed(800, 110, "(Codex Compliant)", 0.6, 0.6, 0);
         draw_set_font(fnt_40k_14);
         draw_set_halign(fa_left);
-
-        yy -= 64;
 
         _ui_feats.progenitor_livery.draw();
         progenitor_visuals = _ui_feats.progenitor_livery.active;
@@ -448,8 +446,6 @@ function scr_ui_settings() {
 
         command_set[26] = _auto_board.toggles[1].active;
 
-        yy += 64;
-
         draw_text(937 - 341, 207, "Battle Formations");
         draw_text(937, 207, "Company Settings");
         draw_text(1278, 207, "Astartes Role Settings");
@@ -499,7 +495,7 @@ function scr_ui_settings() {
 
             if (shw != "" || isnew == true) {
                 draw_text(xxx, yyy, string(shw));
-                if (scr_hit(xxx, yyy, xxx + 289, yyy + 20) == true) {
+                if (scr_hit(xxx, yyy, xxx + 289, yyy + 20)) {
                     /*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
                     draw_set_alpha(0.1);
                     draw_set_color(c_white);
@@ -511,8 +507,8 @@ function scr_ui_settings() {
                     }
                     tool2 = "Click to open the settings for this formation.";
                     if (i > 3) {
-                        if (bat_formation[i] != "") {
-                            tool1 = $"{string(bat_formation[i])} Settings";
+                        if (_formation != "") {
+                            tool1 = $"{_formation} Settings";
                             tool2 = "Click to open the settings for this formation.";
                         }
                         if (bat_formation[i] == "") {
@@ -602,9 +598,253 @@ function scr_select_role_settings_ui(){
     }
 }
 
+function scr_draw_mass_equip_gui(){
+
+    if (total_role_number > 0) {
+        draw_set_color(c_gray);
+        draw_set_halign(fa_left);
+        draw_set_font(fnt_40k_30b);
+        draw_set_alpha(1);
+
+        draw_text_ext_transformed( 107,  160, string_hash_to_newline(string(total_roles)), -1, 471 * 1.66, 0.6, 0.6, 0);
+
+        draw_text_ext_transformed( 107,  190 + (string_height_ext(string_hash_to_newline(total_roles), -1, 471 * 1.66) * 0.6), string_hash_to_newline(string(all_equip)), -1, 471 * 1.66, 0.6, 0.6, 0);
+
+        draw_set_alpha(1);
+        if (good1 + good2 + good3 + good4 + good5 != 5) {
+            draw_set_alpha(0.5);
+        }
+        draw_set_font(fnt_40k_14b);
+        draw_set_halign(fa_center);
+        draw_set_color(c_gray);
+        draw_rectangle( 114,  626,  560,  665, 0);
+        draw_set_color(0);
+        draw_text( 333,  636, string_hash_to_newline("Requip All " + string(obj_ini.role[100][role]) + " With Default Items"));
+        if (scr_hit( 114,  626,  560,  665) == true) {
+            draw_set_color(c_white);
+            draw_set_alpha(0.2);
+            if (good1 + good2 + good3 + good4 + good5 != 5) {
+                draw_set_alpha(0.1);
+            }
+            draw_rectangle( 114,  626,  560,  665, 0);
+            draw_set_alpha(1);
+            if (mouse_button_clicked() && (good1 + good2 + good3 + good4 + good5 == 5)) {
+                engage = true;
+                refresh = true;
+                effect_create_above(ef_firework,  800,  400, 5, c_yellow);
+            }
+        }
+        draw_set_alpha(1);
+
+        draw_set_font(fnt_40k_30b);
+        draw_set_halign(fa_left);
+
+        if (req_wep1 != "") {
+            draw_set_color(c_gray);
+            if (req_wep1_num > have_wep1_num) {
+                draw_set_color(c_red);
+            }
+            if (req_wep1_num > have_wep1_num) {
+                draw_text_transformed( 154,  670, string_hash_to_newline("-Not enough " + string(req_wep1) + " (Have " + string(have_wep1_num) + ", Need " + string(req_wep1_num) + ")"), 0.6, 0.6, 0);
+            }
+            if (req_wep1_num <= have_wep1_num) {
+                draw_text_transformed( 154,  670, string_hash_to_newline("-" + string(req_wep1) + " (Have " + string(have_wep1_num) + ", Need " + string(req_wep1_num) + ")"), 0.6, 0.6, 0);
+            }
+        }
+        if (req_wep2 != "") {
+            draw_set_color(c_gray);
+            if (req_wep2_num > have_wep2_num) {
+                draw_set_color(c_red);
+            }
+            if (req_wep2_num > have_wep2_num) {
+                draw_text_transformed( 154,  698, string_hash_to_newline("-Not enough " + string(req_wep2) + " (Have " + string(have_wep2_num) + ", Need " + string(req_wep2_num) + ")"), 0.6, 0.6, 0);
+            }
+            if (req_wep2_num <= have_wep2_num) {
+                draw_text_transformed( 154,  698, string_hash_to_newline("-" + string(req_wep2) + " (Have " + string(have_wep2_num) + ", Need " + string(req_wep2_num) + ")"), 0.6, 0.6, 0);
+            }
+        }
+        if (req_armour != "") {
+            draw_set_color(c_gray);
+            if (req_armour_num > have_armour_num) {
+                draw_set_color(c_red);
+            }
+            if (req_armour_num > have_armour_num) {
+                draw_text_transformed( 154,  726, string_hash_to_newline("-Not enough " + string(req_armour) + " (Have " + string(have_armour_num) + ", Need " + string(req_armour_num) + ")"), 0.6, 0.6, 0);
+            }
+            if (req_armour_num <= have_armour_num) {
+                draw_text_transformed( 154,  726, string_hash_to_newline("-" + string(req_armour) + " (Have " + string(have_armour_num) + ", Need " + string(req_armour_num) + ")"), 0.6, 0.6, 0);
+            }
+        }
+        if (req_gear != "") {
+            draw_set_color(c_gray);
+            if (req_gear_num > have_gear_num) {
+                draw_set_color(c_red);
+            }
+            if (req_gear_num > have_gear_num) {
+                draw_text_transformed( 154,  754, string_hash_to_newline("-Not enough " + string(req_gear) + " (Have " + string(have_gear_num) + ", Need " + string(req_gear_num) + ")"), 0.6, 0.6, 0);
+            }
+            if (req_gear_num <= have_gear_num) {
+                draw_text_transformed( 154,  754, string_hash_to_newline("-" + string(req_gear) + " (Have " + string(have_gear_num) + ", Need " + string(req_gear_num) + ")"), 0.6, 0.6, 0);
+            }
+        }
+        if (req_mobi != "") {
+            draw_set_color(c_gray);
+            if (req_mobi_num > have_mobi_num) {
+                draw_set_color(c_red);
+            }
+            if (req_mobi_num > have_mobi_num) {
+                draw_text_transformed( 154,  782, string_hash_to_newline("-Not enough " + string(req_mobi) + " (Have " + string(have_mobi_num) + ", Need " + string(req_mobi_num) + ")"), 0.6, 0.6, 0);
+            }
+            if (req_mobi_num <= have_mobi_num) {
+                draw_text_transformed( 154,  782, string_hash_to_newline("-" + string(req_mobi) + " (Have " + string(have_mobi_num) + ", Need " + string(req_mobi_num) + ")"), 0.6, 0.6, 0);
+            }
+        }
+    }
+
+    if (total_role_number > 0 && tab > -1) {
+        item_name = [];
+        var infanty_roles = [
+            eROLE.CHAPTERMASTER,
+            eROLE.HONOURGUARD,
+            eROLE.VETERAN,
+            eROLE.TERMINATOR,
+            eROLE.CAPTAIN,
+            eROLE.CHAMPION,
+            eROLE.TACTICAL,
+            eROLE.DEVASTATOR,
+            eROLE.ASSAULT,
+            eROLE.ANCIENT,
+            eROLE.SCOUT,
+            eROLE.CHAPLAIN,
+            eROLE.APOTHECARY,
+            eROLE.TECHMARINE,
+            eROLE.LIBRARIAN,
+            eROLE.SERGEANT,
+            eROLE.VETERANSERGEANT,
+            eROLE.DREADNOUGHT
+        ];
+        // hand slots
+        if ((tab == 0 || tab == 1) && array_get_index(infanty_roles, obj_controller.settings) >= 0) {
+            // Get all available hand weapons
+            scr_get_item_names(
+                item_name,
+                obj_controller.settings, // eROLE
+                0, // slot
+                eENGAGEMENT.ANY,
+                true, // include the company standard
+                false, // do not limit to available items
+
+            );
+            scr_get_item_names(
+                item_name,
+                obj_controller.settings, // eROLE
+                1, // slot
+                eENGAGEMENT.ANY,
+                false, // include the company standard
+                false, // do not limit to available items
+                false, // not only mastercrafted
+                true // put none in the list only once
+            );
+            array_resize(item_name, array_unique_ext(item_name));
+        } else {
+            scr_get_item_names(
+                item_name,
+                obj_controller.settings, // eROLE
+                tab, // slot
+                eENGAGEMENT.NONE, // doesn't matter to non infantry/non hand slots
+                true, // include the company standard
+                false, // do not limit to available items
+
+            );
+        }
+
+        draw_set_color(0);
+        draw_rectangle( 1183,  160,  1506,  747, 0);
+
+        draw_set_color(c_gray);
+        draw_rectangle( 1184,  161,  1505,  746, 1);
+        draw_rectangle( 1185,  162,  1504,  745, 1);
+        draw_rectangle( 1186,  163,  1503,  744, 1);
+
+        draw_set_font(fnt_40k_30b);
+        var slot_name = get_slot_name(obj_controller.settings, tab);
+        draw_text_transformed( 1203,  174, string_hash_to_newline($"Select {slot_name}"), 0.6, 0.6, 0);
+        draw_set_font(fnt_40k_14b);
+
+        var x3 =  1205; // Starting x position for the first column
+        var y3 =  205; // Starting y position
+        var space = 18; // Amount to move down for each item
+        var items_per_column = 24;
+        var column_width = 146;
+        var column_gap = 3;
+
+        for (var h = 0; h < array_length(item_name); h++) {
+            if (h > 0 && h % items_per_column == 0) {
+                x3 += column_width;
+                y3 =  205;
+            }
+
+            draw_set_color(c_gray);
+            var scale = string_width(item_name[h]) >= 140 ? 0.75 : 1;
+            draw_text_transformed(x3, y3, item_name[h], scale, 1, 0);
+
+            // keep track of the item's bottom right corner
+            var item_x2 = x3 + (column_width - column_gap);
+            var item_y2 = y3 + space - 1;
+
+            if (scr_hit(x3, y3, item_x2, item_y2)) {
+                draw_set_color(c_white);
+                draw_set_alpha(0.2);
+                draw_text_transformed(x3, y3, item_name[h], scale, 1, 0);
+                draw_set_alpha(1);
+
+                if (mouse_button_clicked()) {
+                    var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
+
+                    switch (tab) {
+                        // slots
+                        case 0:
+                            obj_ini.wep1[100][role] = buh;
+                            break;
+                        case 1:
+                            obj_ini.wep2[100][role] = buh;
+                            break;
+                        case 2:
+                            obj_ini.armour[100][role] = buh;
+                            // No bikes or jump packs for Terminators
+                            if (array_contains(global.list_terminator_armour, buh) || buh == STR_ANY_TERMINATOR_ARMOUR) {
+                                obj_ini.mobi[100][role] = "";
+                            }
+                            break;
+                        case 3:
+                            obj_ini.gear[100][role] = buh;
+                            break;
+                        case 4:
+                            obj_ini.mobi[100][role] = buh;
+                            break;
+                    }
+                    tab = -1;
+                    refresh = true;
+                }
+            }
+            y3 += space;
+        }
+
+        if (cancel_button.draw()){
+            tab = -1;
+        }
+    }
+
+    /* */
+    /*  */
+
+}
 function scr_draw_role_settings_ui(){
     if (menu == eMENU.ROLE_SETTINGS) {
         if (settings > 0) {
+            with (obj_mass_equip){
+                scr_draw_mass_equip_gui();
+            }
             var co = 100;
             var ide;
             ide = settings;
@@ -705,195 +945,4 @@ function scr_draw_role_settings_ui(){
             }
         }
     }
-}
-
-
-function scr_draw_formation_settings(){
-    add_draw_return_values();
-    // Reset vars
-    tool1 = "";
-    tool2 = "";
-    draw_set_halign(fa_center);
-    draw_set_color(c_gray);
-    draw_set_font(fnt_40k_30b);
-
-    draw_set_alpha(1);
-    // Back arrow
-
-    draw_sprite(spr_formation_arrow, 0, 550, 385);
-
-    var _name_input = settings_buttons_ui_components.formation_name_input;
-
-    bat_formation[formating] = _name_input.draw(bat_formation[formating]);
-
-    draw_set_font(fnt_40k_14);
-    draw_set_halign(fa_left);
-
-    var _formation_type = bat_formation_type[formating] == 1;
-
-    var _formation_radio = settings_buttons_ui_components.formation_radio
-
-    if (formating <= 3){
-        _formation_radio.allow_changes = false;
-    }
-    _formation_radio.draw();
-
-    if (_formation_radio.changed){
-        var _new_val =  _formation_radio.selection_val("value");
-        if (_new_val == "attack"){
-            bat_formation_type[formating] = 1;
-            scr_ui_formation_bars();            
-        } else if (_new_val == "raid"){
-            bat_formation_type[formating] = 2;
-            scr_ui_formation_bars();            
-        }
-    }
-
-
-    var _attack_box = settings_buttons_ui_components.attack_box;
-
-    var _raid_box = settings_buttons_ui_components.raid_box;
-   
-    draw_set_color(c_gray);
-    draw_set_alpha(0.25);
-
-    var _player_deploys_x = 49;
-    var  _player_deploys_y = 224;
-
-    for (var i = 0; i < 10; i++) {
-        draw_rectangle(_player_deploys_x, _player_deploys_y, _player_deploys_x + 38, _player_deploys_y + 464, 0);
-        _player_deploys_x += 50;
-    }
-    draw_set_alpha(1);
-	
-	var _enemy_deploy_boxes_x;
-    // Attack Box
-    if (bat_formation_type[formating] == 1) {
-        _attack_box.draw(1);
-        _enemy_deploy_boxes_x = 1054;
-    } else {
-        _raid_box.draw(1);
-        _enemy_deploy_boxes_x = 684;
-    }
-
-    draw_set_alpha(0.25);
-    // Draw Enemy boxes
-    draw_set_color(c_red);
-    var _enemy_deploy_boxes_y = 224;
-    for (var i = 0; i < 3; i++) {
-        draw_rectangle(_enemy_deploy_boxes_x, _enemy_deploy_boxes_y, _enemy_deploy_boxes_x + 38, _enemy_deploy_boxes_y + 464, 0);
-        _enemy_deploy_boxes_x += 50;
-    }
-
-    // Draw Secondary info box
-    draw_set_alpha(1);
-    draw_set_color(c_gray);
-    draw_rectangle( 1221,  211,  1561,  703, 1);
-    draw_rectangle( 1220,  212,  1560,  702, 1);
-    draw_set_alpha(1);
-
-    draw_set_halign(fa_center);
-    draw_set_font(fnt_40k_30b);
-
-    // This is where the cursor is changed- needs to be smart and also pass the instance type
-    tooltip = "";
-    tooltip_other = "";
-
-    if (collision_point(mouse_x, mouse_y, obj_formation_bar, 1, 1) && (obj_cursor.image_index == 0)) {
-        obj_cursor.image_index = 3;
-    }
-    if ((!collision_point(mouse_x, mouse_y, obj_formation_bar, 1, 1)) && (obj_cursor.image_index == 3)) {
-        obj_cursor.image_index = 0;
-    }
-
-    if (obj_cursor.image_index == 3) {
-        var theh = instance_position(mouse_x, mouse_y, obj_formation_bar);
-        if (instance_exists(theh)) {
-            if (theh.unit_id == 1) {
-                tooltip = "Headquarters";
-                tooltip2 = "You and your advisors will be placed within this section.  It is strongly advisable you give them backup in this same column.";
-            }
-            if (theh.unit_id == 2) {
-                tooltip = "Honour Guard";
-                tooltip2 = "Any Honour Guard within your Headquarters will be placed here.  The best place for them within the formation depends on loadout.";
-            }
-            if (theh.unit_id == 3) {
-                tooltip = "Librarians";
-                tooltip2 = "Epistolary, Lexicanum, and Codiciery make up this section.  They tend to deal decent damage and offer useful buffs for other units.";
-            }
-            if (theh.unit_id == 4) {
-                tooltip = "Techmarines";
-                tooltip2 = "Techmarines and their servitors are placed within this block.  It is advisable that they are placed near your vehicles and armour.";
-            }
-            if (theh.unit_id == 5) {
-                tooltip = "Terminators";
-                tooltip2 = "Any Terminators that you may have will be placed here.  They can very easily soak lots of damage and dish it back in return.";
-            }
-            if (theh.unit_id == 6) {
-                tooltip = "Veterans";
-                tooltip2 = "Veterans, the most experienced tacticals of your Chapter, are placed here.  Their best position in the formation depends on loadout.";
-            }
-            if (theh.unit_id == 7) {
-                tooltip = "Tacticals";
-                tooltip2 = "The greater bulk of your Chapter, the tactical marines, go here.  Tactical marines may be situated nearly anywhere.  Note that Apothecaries and Chaplains without jump-packs will also be placed here.";
-            }
-            if (theh.unit_id == 8) {
-                tooltip = "Devastators";
-                tooltip2 = "Devastators offer much long ranged firepower.  As a result they are best placed in the rear of your formation.";
-            }
-            if (theh.unit_id == 9) {
-                tooltip = "Assaults";
-                tooltip2 = "Assault marines are damage powerhouses, but tend to be squisher.  You may or may not wish for them to be on the front lines.  Note that Apothecaries and Chaplains with jump-packs will be placed here.";
-            }
-            if (theh.unit_id == 10) {
-                tooltip = "Scouts";
-                tooltip2 = "Scouts are not-yet full fledged Astartes.  Striking a balance between exposure to the enemy, for experience, and safety is key.";
-            }
-            if (theh.unit_id == 11) {
-                tooltip = "Dreadnoughts";
-                tooltip2 = "Dreadnoughts are the most durable and tough marines within your chapter.  They are best suited for the front lines.";
-            }
-            if (theh.unit_id == 12) {
-                tooltip = "Hirelings";
-                tooltip2 = "Any and all units that you recieve from other factions are placed within this block.";
-            }
-            if (theh.unit_id == 13) {
-                tooltip = "Rhinos";
-                tooltip2 = "Rhinos offer protection for units behind them but are not well armoured and lacking in firepower.";
-            }
-            if (theh.unit_id == 14) {
-                tooltip = "Predators";
-                tooltip2 = "Predators offer protection for units behind them and have a decent amount of long ranged firepower.";
-            }
-            if (theh.unit_id == 15) {
-                tooltip = "Land Raiders";
-                tooltip2 = "Land Raiders are incredibly tanky war machines that protect rear columns and offer tremendous amounts of firepower.  Other super-heavy vehicles will also be placed here.";
-            }
-            if (theh.unit_id == 16) {
-                tooltip = "Land Speeders";
-                tooltip2 = "Land Speeders are incredibly agile attack vehicles that offer a light highly mobile heavy weapon platform.";
-            }
-            if (theh.unit_id == 17) {
-                tooltip = "Whirlwinds";
-                tooltip2 = "Whirlwinds are armoured fire-support capable of supporting assaults from a long range safe from enemy retaliation.";
-            }
-            too_img = theh.unit_id - 1;
-        }
-    }
-
-    if (tooltip != "") {
-        draw_set_font(fnt_40k_30b);
-        draw_text_transformed(1398, 213, string(tooltip), 0.75, 0.75, 0);
-        draw_set_font(fnt_40k_14);
-        draw_set_halign(fa_left);
-        draw_text_ext(1227, 565, string(tooltip2), -1, 323);
-
-        // draw_sprite(spr_formation_splash,too_img,xx+1271,yy+252);
-        scr_image("formation", too_img, 1271, 252, 239, 297);
-    }
-
-    if (tool1 != "") {
-        tooltip_draw(tooltip2,350, , CM_GREEN_COLOR, fnt_40k_14, tooltip);
-    }
-    pop_draw_return_values();
 }
