@@ -1,4 +1,4 @@
-if (cooldown > 0) {
+if (cooldown <= 0) {
     if (hide == true) {
         exit;
     }
