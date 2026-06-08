@@ -754,7 +754,7 @@ function RequireSquadEditor(data) constructor{
     static draw = function(){
         box.draw();
         min_val_shift.update({
-            max_clamp : max_val_shift
+            max_clamp : max_val_shift.current_value
         });
         min_val_shift.draw();
         max_val_shift.draw();
