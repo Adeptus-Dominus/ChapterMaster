@@ -2358,7 +2358,22 @@ function scr_initialize_custom() {
         /// comp 10: tac 40: scout 50;
         if (squad_distribution == 1 || squad_distribution == 3) {
             if (_coy.coy >= 2 && _coy.coy <= 9) {
-                if (equal_scouts) {
+                // Scout distribution logic for equal_scouts (sd==2) and equal_spescout (sd==3).
+                //
+                // For standard equal_scouts (sd==2) or equal_spescout without LW (sd==3, !_lw):
+                //   10 scouts are moved from the 10th company bank into each battle company so
+                //   that the JSON template's scout_squad proportion can fill at game start.
+                //
+                // For LW + equal_spescout (sd==3, _lw==true) scouts are NOT drained from 10th:
+                //   - 10th company retains its full scout bank (~90) so its own scout_squad
+                //     proportions (from the equal_spescout override) fill correctly.
+                //   - Companies 2-9 receive no scout marines at game start; the scout_squad(1)
+                //     proportion in their JSON template simply produces no squads initially.
+                //     Scouts can be recruited into those companies naturally during the campaign.
+                //
+                // Note: for LW + equal_scouts (sd==2) this branch is not reached at all because
+                //   sd==2 does not satisfy (sd==1 || sd==3), so it falls to the else block below.
+                if (equal_scouts && !(squad_distribution == 3 && _lw)) {
                     if (companies.tenth.scouts > 10) {
                         //theoretically this keeps track of moving scouts from the bank of them in 10th
                         _coy.scouts = 10;
@@ -2375,7 +2390,13 @@ function scr_initialize_custom() {
                 _coy.assaults = assault;
                 _coy.devastators = devastator;
             }
-            if (equal_scouts && _coy.coy == 10) {
+            // For equal_scouts or equal_spescout (without LW), replace the scouts that were moved
+            // out of 10th company with an equivalent number of tacticals so the 10th's total
+            // marine count stays consistent. _moved_scouts tracks the cumulative scouts transferred
+            // to other companies during the loop above.
+            // Skipped for LW + equal_spescout (sd==3, _lw==true) because no scouts were moved in
+            // that path; 10th company retains its scouts and needs no tactical swap.
+            if (equal_scouts && _coy.coy == 10 && !(squad_distribution == 3 && _lw)) {
                 // theoretically this swaps moved scouts with tacticals
                 _coy.tacticals = _moved_scouts;
             }
@@ -2400,8 +2421,15 @@ function scr_initialize_custom() {
                 _coy.devastators = devastator;
             }
 
+            // Companies 6-7: only receive scouts under the non-LW equal_scouts arrangement
+            // (company_squad_builds/equal_scouts.json gives 6-7 nothing but tactical_squad
+            // when Lightning Warriors is active - lightning_warriors.json's equal_scouts
+            // override does the same: companies 6 and 7 are tactical_squad-only, with no
+            // scout_squad entry at all). Granting _coy.scouts here for LW would create scout
+            // marines that the LW template can never organise into squads, leaving them as
+            // stray squadless scouts in companies that should be scout-free.
             if (real(_coy.coy) >= 6 && real(_coy.coy) <= 7) {
-                if (equal_scouts) {
+                if (equal_scouts && !_lw) {
                     if (companies.tenth.scouts > 10) {
                         _coy.scouts = 10;
                         _moved_scouts += _coy.scouts;
@@ -2417,41 +2445,24 @@ function scr_initialize_custom() {
                 _coy.assaults = 0;
                 _coy.devastators = 0;
             }
+            // Company 8 and 9: always pure assault / devastator reserves for equal_scouts
+            // (sd==2), regardless of Lightning Warriors. Both company_squad_builds/
+            // equal_scouts.json AND lightning_warriors.json's equal_scouts override define
+            // company 8 as assault_squad-only and company 9 as devastator_squad-only - neither
+            // lists a scout_squad. The previous `_lw && equal_scouts` branches incorrectly
+            // handed these companies scout marines that the LW override's templates have no
+            // scout_squad to absorb, producing stray squadless scouts (the "all companies get
+            // scouts" symptom). Scouts for equal_scouts + LW must stay confined to companies
+            // 2-5, matching the override's default_squads scout_squad proportion.
             if (real(_coy.coy) == 8) {
-                if (_lw && equal_scouts) {
-                    if (companies.tenth.scouts > 10) {
-                        _coy.scouts = 10;
-                        _moved_scouts += 10;
-                        _coy.tacticals = _coy.total - _coy.scouts;
-                        companies.tenth.scouts -= 10;
-                    } else {
-                        _coy.tacticals = _coy.total;
-                    }
-                    _coy.assaults = 0;
-                    _coy.devastators = 0;
-                } else {
-                    _coy.tacticals = 0;
-                    _coy.assaults = _coy.total;
-                    _coy.devastators = 0;
-                }
+                _coy.tacticals = 0;
+                _coy.assaults = _coy.total;
+                _coy.devastators = 0;
             }
             if (real(_coy.coy) == 9) {
-                if (_lw && equal_scouts) {
-                    if (companies.tenth.scouts > 10) {
-                        _coy.scouts = 10;
-                        _moved_scouts += 10;
-                        _coy.tacticals = _coy.total - _coy.scouts;
-                        companies.tenth.scouts -= 10;
-                    } else {
-                        _coy.tacticals = _coy.total;
-                    }
-                    _coy.assaults = 0;
-                    _coy.devastators = 0;
-                } else {
-                    _coy.tacticals = 0;
-                    _coy.assaults = 0;
-                    _coy.devastators = _coy.total;
-                }
+                _coy.tacticals = 0;
+                _coy.assaults = 0;
+                _coy.devastators = _coy.total;
             }
             if (real(_coy.coy) == 10 && equal_scouts) {
                 _coy.tacticals = _moved_scouts;
