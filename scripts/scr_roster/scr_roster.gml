@@ -682,6 +682,9 @@ function add_unit_to_battle(unit, meeting, is_local) {
             case "command":
                 col = obj_controller.bat_command_column;
                 break;
+            case "scout":
+                col = obj_controller.bat_scout_column;
+                break;
         }
     }
     if (col == 0) {
