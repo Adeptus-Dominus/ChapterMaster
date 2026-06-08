@@ -252,4 +252,4 @@ if (enemy == 9) {
 }
 
 /* */
-action_set_alarm(2, 3);
+alarm_set(3, 2);

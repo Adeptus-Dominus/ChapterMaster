@@ -216,10 +216,7 @@ if ((men + veh == 1) && (instance_number(obj_enunit) == 1)) {
     }
 }
 
-/* */
-var __b__;
-__b__ = action_if_variable(obj_ncombat.enemy, 1, 0);
-if (__b__) {
+if (obj_ncombat.enemy == 1) {
     var j;
     j = 0;
     men = 0;
@@ -358,8 +355,7 @@ if (__b__) {
 
     /* */
 }
-__b__ = action_if_variable(obj_ncombat.enemy, 2, 0);
-if (__b__) {
+if (obj_ncombat.enemy == 2) {
     repeat (20) {
         j += 1;
         if (dudes[j] == "Imperial Guardsman") {
@@ -443,8 +439,7 @@ if (__b__) {
 
     /* */
 }
-__b__ = action_if_variable(obj_ncombat.enemy, 3, 0);
-if (__b__) {
+if (obj_ncombat.enemy == 3) {
     repeat (20) {
         j += 1;
         if (dudes[j] == "Thallax") {
@@ -469,8 +464,7 @@ if (__b__) {
 
     /* */
 }
-__b__ = action_if_variable(obj_ncombat.enemy, 5, 0);
-if (__b__) {
+if (obj_ncombat.enemy == 5) {
     repeat (20) {
         j += 1;
         if (dudes[j] == "Leader") {
@@ -655,8 +649,7 @@ if (__b__) {
 
     /* */
 }
-__b__ = action_if_variable(obj_ncombat.enemy, 6, 0);
-if (__b__) {
+if (obj_ncombat.enemy == 6) {
     repeat (20) {
         j += 1;
         if (dudes[j] == "Leader") {
@@ -928,8 +921,7 @@ if (__b__) {
 
     /* */
 }
-__b__ = action_if_variable(obj_ncombat.enemy, 7, 0);
-if (__b__) {
+if (obj_ncombat.enemy == 7) {
     repeat (20) {
         j += 1;
         if (dudes[j] == "Leader") {
@@ -1094,8 +1086,7 @@ if (__b__) {
 
     /* */
 }
-__b__ = action_if_variable(obj_ncombat.enemy, 8, 0);
-if (__b__) {
+if (obj_ncombat.enemy == 8) {
     repeat (20) {
         j += 1;
         if (dudes[j] == "XV8 Commander") {
@@ -1200,8 +1191,7 @@ if (__b__) {
 
     /* */
 }
-__b__ = action_if_variable(obj_ncombat.enemy, 9, 0);
-if (__b__) {
+if (obj_ncombat.enemy == 9) {
     repeat (20) {
         j += 1;
         if (dudes[j] == "Hive Tyrant") {
@@ -1299,10 +1289,8 @@ if (__b__) {
 
     /* */
 }
-__b__ = action_if_variable(obj_ncombat.enemy, 10, 4);
-if (__b__) {
-    __b__ = action_if_variable(obj_ncombat.enemy, 12, 1);
-    if (__b__) {
+if (obj_ncombat.enemy >= 10) {
+if (obj_ncombat.enemy < 12) {
         repeat (20) {
             j += 1;
             if ((dudes[j] == "Leader") && (obj_controller.faction_gender[10] == 1)) {
@@ -1661,8 +1649,7 @@ if (__b__) {
         /* */
     }
 }
-__b__ = action_if_variable(obj_ncombat.enemy, 13, 0);
-if (__b__) {
+if (obj_ncombat.enemy == 13) {
     repeat (20) {
         j += 1;
 

@@ -28,7 +28,6 @@ storm_image = 0;
 trader = 0;
 visited = 0;
 stored_owner = -1;
-star_surface = 0;
 
 // sets up default planet variables
 var _planet_array_size = 9;

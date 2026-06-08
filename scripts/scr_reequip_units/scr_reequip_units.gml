@@ -1,6 +1,6 @@
 /// @self Asset.GMObject.obj_controller
 function set_up_equip_popup() {
-    if (instance_number(obj_popup) == 0) {
+    if (!instance_exists(obj_popup)) {
         var f = 0, god = 0, nuuum = 0;
         var o_wep1 = "", o_wep2 = "", o_armour = "", o_gear = "", o_mobi = "";
         var b_wep1 = 0, b_wep2 = 0, b_armour = 0, b_gear = 0, b_mobi = 0;

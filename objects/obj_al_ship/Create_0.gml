@@ -43,4 +43,4 @@ weapon_ammo = array_create(SHIP_WEAPON_SLOTS, 999);
 weapon_range = array_create(SHIP_WEAPON_SLOTS, 0);
 weapon_minrange = array_create(SHIP_WEAPON_SLOTS, 0);
 
-action_set_alarm(1, 0);
+alarm_set(0, 1);
