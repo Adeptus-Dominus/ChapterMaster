@@ -475,6 +475,9 @@ function PurgeButton(purge_image, xx, yy, purge_type) constructor {
     };
 }
 
+/// @desc Resolves the chosen formation (formation_set, e.g. Attack/Defend/Raid) into concrete
+///       per-role battle columns on obj_controller, which add_unit_to_battle/add_vehicle_to_battle
+///       then use to place individual units.
 function setup_battle_formations() {
     // Formation here
     var new_combat = obj_ncombat;
@@ -497,6 +500,17 @@ function setup_battle_formations() {
     obj_controller.bat_scout_column = obj_controller.bat_scou_for[new_combat.formation_set];
 }
 
+/// @desc Determines which formation column (block) a single marine is placed into for the
+///       current battle and adds them to the nearest obj_pnunit at that column.
+///       Resolution order: 1) the unit's individual role (sergeant variants, Scout, Tactical,
+///       Veteran, Devastator, Assault, Librarian/Techmarine specialists, Honour Guard,
+///       Dreadnought, Terminator, Chapter Master/heads, Death Company), then 2) if the unit
+///       belongs to a squad, the squad's formation_place overrides the role-based column
+///       (assault/veteran/tactical/devastator/terminator/command/scout), and finally
+///       3) anything still unresolved (col == 0) defaults to the hireling column.
+/// @param {Id.Instance} unit The marine instance being added to the battle.
+/// @param {Bool} meeting Whether this is a meeting/temp roster (uses obj_temp_meeting lookups) rather than a normal company roster.
+/// @param {Bool} is_local Whether this unit belongs to the local (player-controlled) side.
 function add_unit_to_battle(unit, meeting, is_local) {
     var new_combat = obj_ncombat;
     var man_size = 1;
