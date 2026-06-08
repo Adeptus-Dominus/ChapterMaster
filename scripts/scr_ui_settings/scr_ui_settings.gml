@@ -305,7 +305,7 @@ function setup_ui_chapter_settings(){
         ], 
         "Automatic Boarding", 
         {
-            x1 : 350,
+            x1 : 370,
             y1 : 710,
         }
     );
@@ -503,7 +503,7 @@ function scr_ui_settings() {
                     draw_set_alpha(1);
 
                     if (i <= 3) {
-                        tool1 = string(shw) + " Settings";
+                        tool1 = $"{shw} Settings";
                     }
                     tool2 = "Click to open the settings for this formation.";
                     if (i > 3) {
@@ -619,7 +619,7 @@ function scr_draw_mass_equip_gui(){
         draw_set_color(c_gray);
         draw_rectangle( 114,  626,  560,  665, 0);
         draw_set_color(0);
-        draw_text( 333,  636, string_hash_to_newline("Requip All " + string(obj_ini.role[100][role]) + " With Default Items"));
+        draw_text( 333,  636, $"Requip All {obj_ini.role[100][role]} With Default Items");
         if (scr_hit( 114,  626,  560,  665) == true) {
             draw_set_color(c_white);
             draw_set_alpha(0.2);
@@ -768,7 +768,7 @@ function scr_draw_mass_equip_gui(){
 
         draw_set_font(fnt_40k_30b);
         var slot_name = get_slot_name(obj_controller.settings, tab);
-        draw_text_transformed( 1203,  174, string_hash_to_newline($"Select {slot_name}"), 0.6, 0.6, 0);
+        draw_text_transformed( 1203,  174, $"Select {slot_name}", 0.6, 0.6, 0);
         draw_set_font(fnt_40k_14b);
 
         var x3 =  1205; // Starting x position for the first column
