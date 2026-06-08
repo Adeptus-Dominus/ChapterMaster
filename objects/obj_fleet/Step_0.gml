@@ -1,7 +1,7 @@
 // if (woohoo<60) then woohoo+=1;
 
 if (beg != 0) /* and (instance_exists(obj_fleet_controller))*/ {
-    if ((combat_end > -1) && (instance_number(obj_en_ship) == 0)) {
+    if ((combat_end > -1) && (!instance_exists(obj_en_ship))) {
         combat_end -= 1;
         victory = true;
     }
@@ -27,10 +27,10 @@ if (beg != 0) /* and (instance_exists(obj_fleet_controller))*/ {
         LOGGER.info("Fleet Combat Ended- Victory - Enemy:" + string(enemy[1]));
     }
 
-    if ((combat_end > -1) && (instance_number(obj_en_ship) == 0)) {
+    if ((combat_end > -1) && (!instance_exists(obj_en_ship))) {
         combat_end -= 1;
     }
-    if ((combat_end > -1) && (instance_number(obj_p_ship) == 0)) {
+    if ((combat_end > -1) && (!instance_exists(obj_p_ship))) {
         combat_end -= 1;
     }
 }

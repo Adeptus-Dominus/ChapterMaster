@@ -203,7 +203,7 @@ function scr_demand(demand_type) {
             with (obj_temp5) {
                 instance_destroy();
             }
-            if ((instance_number(obj_ground_mission) > 1) && (instance_number(obj_temp3) == 0)) {
+            if ((instance_number(obj_ground_mission) > 1) && (!instance_exists(obj_temp3))) {
                 resistance -= 5;
             }
             with (obj_ground_mission) {
