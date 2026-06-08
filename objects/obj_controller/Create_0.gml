@@ -1852,7 +1852,7 @@ remov = string_length(string(temp[65]) + string(temp[66]) + string(temp[67]) + s
 
 instance_create(0, 0, obj_tooltip);
 
-action_set_alarm(2, 0);
+alarm_set(0, 2);
 
 //ensure fleet tab isup to date at gae start
 location_viewer.update_fleet_table();

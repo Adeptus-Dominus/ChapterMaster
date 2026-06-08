@@ -595,5 +595,5 @@ weapon_colour_replace = [
     col_b[weapon_color] / 255
 ];
 /* */
-action_set_alarm(30, 1);
+alarm_set(1, 30);
 /*  */

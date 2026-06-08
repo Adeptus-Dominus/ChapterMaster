@@ -1,6 +1,4 @@
-var __b__;
-__b__ = action_if_variable(owner, 6, 0);
-if (!__b__) {
+if (owner != 6) {
     image_angle = direction;
 
     if (obj_fleet.start != 5) {
@@ -587,8 +585,7 @@ if (!__b__) {
 
     /* */
 }
-__b__ = action_if_variable(owner, 6, 0);
-if (__b__) {
+if (owner == 6) {
     image_angle = direction;
 
     if (obj_fleet.start != 5) {

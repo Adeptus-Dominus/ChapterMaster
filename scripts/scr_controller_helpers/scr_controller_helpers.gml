@@ -2,7 +2,7 @@
 function scr_menu_clear_up(specific_area_function) {
     var spec_func = specific_area_function;
     with (obj_controller) {
-        var menu_action_allowed = action_if_number(obj_saveload, 0, 0) && action_if_number(obj_drop_select, 0, 0) && action_if_number(obj_popup_dialogue, 0, 0) && action_if_number(obj_ncombat, 0, 0);
+        var menu_action_allowed = !instance_exists(obj_saveload) && !instance_exists(obj_drop_select) && !instance_exists(obj_popup_dialogue) && !instance_exists(obj_ncombat);
 
         if (menu_action_allowed) {
             if (combat != 0) {

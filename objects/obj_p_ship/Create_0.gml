@@ -63,4 +63,4 @@ board_co = [];
 board_id = [];
 board_location = [];
 board_raft = [];
-//action_set_alarm(1, 0); 
+//alarm_set(0, 1);

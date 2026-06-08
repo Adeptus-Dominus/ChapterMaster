@@ -298,8 +298,7 @@ instance_activate_object(obj_pnunit);
 
 //TODO: Everything bellow has to be scrapped and reworked;
 //! Commented out stuff bellow, until I understand why it exists;
-/* __b__ = action_if_variable(image_index, -500, 0);
-if (__b__) {
+/*if (image_index == -500) {
     var leftest, charge = 0,
         enemy2 = 0;
 

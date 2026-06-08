@@ -1,2 +1,2 @@
-action_set_relative(1);
-action_set_relative(0);
+global.__argument_relative = 1;
+global.__argument_relative = 0;
