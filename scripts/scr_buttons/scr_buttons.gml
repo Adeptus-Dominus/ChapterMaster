@@ -446,7 +446,8 @@ function SpriteButton(data) constructor {
         y2 = y1 + (height * scale_y);
     }
 
-    move_data_to_current_scope(data);
+    update(data);
+
     /// @desc Updates interaction state and draws the button.
     /// @param {real} _x The X position to draw at.
     /// @param {real} _y The Y position to draw at.

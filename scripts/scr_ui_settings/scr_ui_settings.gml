@@ -10,7 +10,7 @@ function setup_ui_chapter_settings(){
         scale_y : 2
     });
 
-    settings_buttons_ui_components.formation_name_input = new TextBarArea(600,66);
+    settings_buttons_ui_components.formation_name_input = new TextBarArea(800,66);
 
     settings_buttons_ui_components.formation_radio = new RadioSet([
             {
@@ -161,8 +161,8 @@ function setup_ui_chapter_settings(){
         style : "box",
         tooltip : "Your Astartes will attempt to commandeer the vessel, to be permenantely used or salvaged.",
         str1 : "Commandeer Ship",
-        x1 : _toggle_dam_sys.x1 + (_toggle_use_plasma.x2 - _toggle_dam_sys.x1)/2,
-        y1 : 688,
+        x1 : _toggle_use_plasma.x2 + 10,
+        y1 : 604,
         active : command_set[22],
         clicked_check_default : true
     });
@@ -335,7 +335,7 @@ function scr_ui_settings() {
 
     if (menu != eMENU.SETTINGS){
         var _back_button = settings_buttons_ui_components.back_arrow;
-        _back_button.draw();
+        _back_button.draw(true);
         if (_back_button.is_clicked){
 
             with (obj_formation_bar) {
