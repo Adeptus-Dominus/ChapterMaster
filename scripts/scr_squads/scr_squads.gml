@@ -793,9 +793,16 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     };
 }
 
-// Resolves the squad arrangement data for a specific company number from an arrangement struct.
-// Checks explicit companies entries first, falls back to default_squads if present.
-// Returns undefined if neither is available.
+/// @function resolve_company_arrangement
+/// @description Resolves the squad template for a specific company number from a loaded
+///              arrangement struct. Explicit per-company entries take priority; if none matches,
+///              the arrangement's default_squads array is wrapped and returned. Returns undefined
+///              if the arrangement contains neither a matching company entry nor a default_squads.
+/// @param {Struct} arrangement  A parsed squad-arrangement struct (e.g. from lightning_warriors.json).
+///                              Expected fields: optional {Array} companies, optional {Array} default_squads.
+/// @param {Real}   company_number  The 1-based company index to resolve a template for.
+/// @return {Struct|Undefined}  A company template struct with fields {Real} company and {Array} squads,
+///                             or undefined if no template can be resolved.
 function resolve_company_arrangement(arrangement, company_number) {
     if (struct_exists(arrangement, "companies")) {
         var _companies = arrangement.companies;
@@ -811,11 +818,34 @@ function resolve_company_arrangement(arrangement, company_number) {
     return undefined;
 }
 
-// Applies a distribution_overrides entry onto a loaded arrangement in-place.
-// Replaces default_squads if the override defines them, and upserts any explicit company entries.
+/// @function apply_squad_distribution_override
+/// @description Merges a distribution_overrides entry into a loaded arrangement struct in-place.
+///              Two operations are performed:
+///                1. If the override defines default_squads, a deep clone of that array replaces
+///                   arrangement.default_squads. Cloning keeps the two references independent so
+///                   any future in-place mutation of one cannot corrupt the other.
+///                2. If the override defines a companies array, each entry is upserted into
+///                   arrangement.companies — matching on the company number field, replacing an
+///                   existing entry if found or appending if not.
+///              Squad order within default_squads and company squads arrays matters: squads that
+///              only accept their own marine role (e.g. devastator_squad, assault_squad) must be
+///              listed before squads that use alternative_roles (e.g. bike_squad, attack_bike_squad)
+///              so that specific squads claim their marines before greedy squads can absorb them.
+/// @param {Struct} arrangement  The live chapter_squad_arrangement struct to mutate.
+/// @param {Struct} override     One distribution_overrides child struct from the same JSON
+///                              (e.g. arrangement.distribution_overrides.equal_specialists).
+///                              Expected optional fields: {Array} default_squads, {Array} companies.
+/// @return {Undefined}
 function apply_squad_distribution_override(arrangement, override) {
     if (struct_exists(override, "default_squads")) {
-        arrangement.default_squads = override.default_squads;
+        // Deep-clone so arrangement.default_squads is independent of the override sub-struct,
+        // preventing any future in-place mutation of the array from corrupting both references.
+        var _src = override.default_squads;
+        var _clone = array_create(array_length(_src));
+        for (var _i = 0; _i < array_length(_src); _i++) {
+            _clone[_i] = variable_clone(_src[_i]);
+        }
+        arrangement.default_squads = _clone;
     }
     if (struct_exists(override, "companies")) {
         if (!struct_exists(arrangement, "companies")) {
@@ -839,9 +869,15 @@ function apply_squad_distribution_override(arrangement, override) {
     }
 }
 
-// creates the origional distribution of squads accross the chapter
-// lots of room for customisation of different chapters here
-
+/// @function game_start_squads
+/// @description Populates obj_ini.squads at game start by iterating every company and calling
+///              organise_by_template with the resolved squad template for that company.
+///              Templates are resolved from obj_ini.chapter_squad_arrangement via
+///              resolve_company_arrangement; companies with no resolvable template are skipped.
+///              Must be called after obj_ini.chapter_squad_arrangement has been fully built
+///              (including any apply_squad_distribution_override calls) and after all marine
+///              individuals have been created by the count-based initialisation pass.
+/// @return {Undefined}
 function get_compay_squad_arrangement(company){
     var _comp_datas = obj_ini.chapter_squad_arrangement.companies;
     for (var i = 0; i < array_length(_comp_datas); i++) {
