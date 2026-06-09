@@ -53,7 +53,6 @@ init_drag = function(){
 	    if ((obj_cursor.dragging == 0) && (obj_controller.cooldown <= 0)) {
 	        obj_cursor.dragging = 1;
 	        dragging = true;
-	        obj_controller.cooldown = 9999;
 	        obj_controller.click = 1;
 
 	        // save crap
@@ -113,7 +112,6 @@ mouse_release = function(){
 	if ((dragging == true) && instance_exists(mah_target)) {
 	    if (mah_target.col_parent == col_parent) {
 	        obj_controller.click = 1;
-	        obj_controller.cooldown = 20;
 	        x = old_x;
 	        y = old_y;
 	        rel_mousex = 0;
@@ -141,7 +139,6 @@ mouse_release = function(){
 	        if (obj_controller.temp[te] + size <= 10) {
 	            obj_controller.temp[4800 + col_parent] -= size;
 	            obj_controller.click = 1;
-	            obj_controller.cooldown = 20;
 	            if (unit_id == 1) {
 	                obj_controller.bat_comm_for[obj_controller.formating] = mah_target.col_parent;
 	            }
@@ -201,16 +198,15 @@ mouse_release = function(){
 	            with (obj_temp8) {
 	                instance_destroy();
 	            }
-	            with (obj_controller) {
+            with (obj_controller) {
 	                scr_ui_formation_bars();
-	            }
+            }
 	            exit;
 	        }
 	        if (obj_controller.temp[te] + size > 10) {
 	            dragging = false;
 	            x = old_x;
 	            y = old_y;
-	            obj_controller.cooldown = 20;
 	            obj_cursor.dragging = 0;
 	            obj_cursor.image_index = 0;
 	            if ((global.settings.master_volume > 0) && (global.settings.sfx_volume > 0)) {
@@ -223,7 +219,6 @@ mouse_release = function(){
 	            dragging = false;
 	            x = old_x;
 	            y = old_y;
-	            obj_controller.cooldown = 20;
 	            obj_cursor.dragging = 0;
 	            obj_cursor.image_index = 0;
 	            if ((global.settings.master_volume > 0) && (global.settings.sfx_volume > 0)) {
