@@ -33,11 +33,10 @@ if (actual_hi > max_hi) {
     }
 }
 
-draw_text_transformed(_x1 + 28, _y1 + (height / 2), string(unit_type), text_xscale, text_xscale, 270);
-
-
 draw_sprite_ext(spr_formation_bars, image_index, _x1, _y1, image_xscale, image_yscale, 0, c_white, 1);
-
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+draw_text_transformed_outline(_x1 + (width / 2), _y1 + (height / 2), string(unit_type), text_xscale, text_xscale, 270, c_black, c_white);
 
 bar_hit();
 
