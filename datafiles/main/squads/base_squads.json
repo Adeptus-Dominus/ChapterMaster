@@ -530,7 +530,7 @@
                 "mobi": ["Attack Bike", 1]
             },
             "option": {
-              "wep1": [[["Multi-Melta", "Heavy Bolter", "Plasma Cannon", "Lascannon"],1]],
+              "wep1": [[["Multi-Melta", "Plasma Cannon", "Lascannon"],1]],
               "wep2": [[["Chainsword", "Chainaxe", "Power Sword", "Power Spear", "Power Axe"],1]]
             }
         }
