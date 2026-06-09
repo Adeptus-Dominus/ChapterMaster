@@ -41,7 +41,8 @@ bar_hit = function(){
 		draw_set_halign(fa_center);
 
 	    // draw_sprite(spr_formation_splash,too_img,xx+1271,yy+252);
-	    scr_image("formation", unit_id, 1271, 252, 239, 297);
+		// unit_id-1 because reasons, otherwise sprites are wrong
+	    scr_image("formation", unit_id-1, 1271, 252, 239, 297);
 
 	    init_drag();
 	}
