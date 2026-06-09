@@ -89,7 +89,7 @@ function scr_ui_formation_bars() {
                 bat_landspee_for[bar] = 4;
                 bat_whirl_for[bar] = 1;
                 bat_scou_for[bar] = 1;
-                bar_fix = 1;
+                bar_fix = true;
             }
         }
 

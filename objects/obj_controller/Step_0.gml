@@ -19,8 +19,8 @@ try {
     if (text_bar > 60) {
         text_bar = 1;
     }
-    if (bar_fix > 0) {
-        bar_fix = -1;
+    if (bar_fix) {
+        bar_fix = false;
         scr_ui_formation_bars();
     }
     // TODO change this into a constructor which is in a separated script

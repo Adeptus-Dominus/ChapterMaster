@@ -199,7 +199,7 @@ mouse_release = function(){
 	                instance_destroy();
 	            }
             with (obj_controller) {
-	                scr_ui_formation_bars();
+                bar_fix = true;
             }
 	            exit;
 	        }
