@@ -1,6 +1,18 @@
-/// @function tooltip_draw(_tooltip, _width, _coords, _text_color, _font, _header, _header_font, _force_width)
+/// @function tooltip_draw(_tooltip, _width, _coords, _text_color, _font, _header, _header_font, _force_width, _footer, _footer_font, _cost)
 /// @category UI
-/// @description Logic to draw a tooltip object with optional header
+/// @description Logic to draw a tooltip object with optional header and footer
+/// @param {String} _tooltip The tooltip text content
+/// @param {Real} _width The maximum tooltip width
+/// @param {Array} _coords The x/y coordinates for the tooltip
+/// @param {Constant.Color} _text_color The text color
+/// @param {Asset.GMFont} _font The font to use
+/// @param {String} _header Optional header text
+/// @param {Asset.GMFont} _header_font The header font
+/// @param {Bool} _force_width Whether to force the specified width
+/// @param {String} _footer Optional footer text
+/// @param {Asset.GMFont} _footer_font The footer font
+/// @param {Real} _cost Optional cost to display
+/// @returns {Undefined}
 function tooltip_draw(_tooltip = "", _width = 350, _coords = return_mouse_consts(), _text_color = #50a076, _font = fnt_40k_14, _header = "", _header_font = fnt_40k_14b, _force_width = false, _footer = "", _footer_font = fnt_40k_12, _cost = 0) {
     if (!instance_exists(obj_tooltip)) {
         instance_create(0, 0, obj_tooltip);

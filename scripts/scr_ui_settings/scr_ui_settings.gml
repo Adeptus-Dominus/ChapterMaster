@@ -754,8 +754,7 @@ function scr_draw_mass_equip_gui(){
                 eENGAGEMENT.NONE, // doesn't matter to non infantry/non hand slots
                 true, // include the company standard
                 false, // do not limit to available items
-
-            scr_image("formation", too_img, xx + 1271, yy + 252, 239, 297);
+                );
         }
 
         draw_set_color(0);

@@ -44,8 +44,6 @@ try {
 draw_set_alpha(1);
 draw_set_valign(fa_top);
 draw_set_halign(fa_left);
-var xx = 0;
-var yy = 0;
 if (menu == eMENU.DIPLOMACY) {
     add_draw_return_values();
     if (diplomacy > 0) {

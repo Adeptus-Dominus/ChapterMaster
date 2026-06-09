@@ -2,7 +2,6 @@
 try {
     scr_ui_manage();
     scr_ui_advisors();
-    scr_ui_settings();
     scr_ui_tooltip();
     if (menu == eMENU.DIPLOMACY) {
         /*if (audience > 0 && instance_exists(obj_turn_end)){
@@ -13,7 +12,6 @@ try {
     if (menu == eMENU.SECRET_LAIR) {
         scr_secret_lair_view();
     }
-    scr_ui_popup();
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
     main_map_defaults();

@@ -73,6 +73,7 @@ function scr_secret_lair_view(){
         }
     }
 
+     //TODO add a PlanetData object to obj_temp_build so that planet nae can be generated with PlanetData.name()
     if (!lair_exists) {
         title = "Build (" + string(obj_temp_build.target.name) + " " + scr_roman(obj_temp_build.planet) + ")";
     } else if (lair_exists) {
@@ -89,7 +90,7 @@ function scr_secret_lair_view(){
 
     draw_set_halign(fa_left);
 
-    if (secret_base > 0) {
+    if (secret_base) {
         var search_list = search_planet_features(planet_upgrades, eP_FEATURES.SECRET_BASE);
         if (array_length(search_list) > 0) {
             var secret = true;
@@ -446,10 +447,9 @@ function scr_secret_lair_view(){
                 draw_rectangle(button_x1, yy + 45, xx + 486, yy + 378, 1);
 
                 var hh = 1;
-                for (var i = 0; i < 2; i++) {
-                    if ((string_height_ext(lair_window_description_text, -1, 470) * hh) > 330) {
-                        hh -= 0.1;
-                    }
+                var min_scale = 0.6;
+                while ((string_height_ext(lair_window_description_text, -1, 470) * hh) > 330 && hh > min_scale) {
+                    hh -= 0.1;
                 }
                 draw_text_ext_transformed(button_x1 + button_padding, button_y1 + button_padding, lair_window_description_text, -1, 470 * (2 + (hh * -1)), hh, hh, 0);
 
@@ -666,17 +666,17 @@ function scr_secret_lair_view(){
 
     draw_set_font(fnt_40k_30b);
     draw_set_color(c_gray);
-    draw_rectangle(xx + 312 - 60, yy + 388, xx + 312 + 60, yy + 420, 0);
+    draw_rectangle(xx + 252, yy + 388, xx + 372, yy + 420, 0);
     draw_set_halign(fa_center);
     draw_set_color(c_black);
     draw_text(xx + 312, yy + 388, "Back");
-    if (scr_hit(xx + 312 - 60, yy + 388, xx + 312 + 60, yy + 420) == true) {
+    if (scr_hit(xx + 252, yy + 388, xx + 372, yy + 420)) {
         draw_set_alpha(0.2);
-        draw_rectangle(xx + 312 - 60, yy + 388, xx + 312 + 60, yy + 420, 0);
+        draw_rectangle(xx + 252, yy + 388, xx + 372, yy + 420, 0);
         draw_set_alpha(1);
 
         if (mouse_button_clicked()) {
-            obj_controller.menu = 0;
+            obj_controller.menu = eMENU.DEFAULT;
         }
     }
     pop_draw_return_values();
