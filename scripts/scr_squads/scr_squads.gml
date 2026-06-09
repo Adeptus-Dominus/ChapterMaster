@@ -63,6 +63,50 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     target_squad.update_fulfilment();
 
     static sort = function() {
+        // Build the set of weapon slots this squad's loadout actively manages,
+        // across all roles (required + option + random_pick).
+        // Only wep1/wep2 are cleared — other slots (armour, gear, mobi) are
+        // intentionally left as-is since they may carry meaningful defaults.
+        var _weapon_slots = ["wep1", "wep2"];
+        var _managed_slots = {};
+        for (var _ri = 0; _ri < array_length(squad_unit_types); _ri++) {
+            var _role_data = full_squad_data[$ squad_unit_types[_ri]];
+            if (!struct_exists(_role_data, "loadout")) continue;
+            var _ld = _role_data.loadout;
+            if (struct_exists(_ld, "required")) {
+                var _slots = struct_get_names(_ld.required);
+                for (var _s = 0; _s < array_length(_slots); _s++)
+                    _managed_slots[$ _slots[_s]] = true;
+            }
+            if (struct_exists(_ld, "option")) {
+                var _slots = struct_get_names(_ld.option);
+                for (var _s = 0; _s < array_length(_slots); _s++)
+                    _managed_slots[$ _slots[_s]] = true;
+            }
+            if (struct_exists(_ld, "random_pick")) {
+                var _picks = _ld.random_pick;
+                for (var _p = 0; _p < array_length(_picks); _p++) {
+                    var _slots = struct_get_names(_picks[_p]);
+                    for (var _s = 0; _s < array_length(_slots); _s++)
+                        _managed_slots[$ _slots[_s]] = true;
+                }
+            }
+        }
+        // Clear managed weapon slots on every member so pre-initialization
+        // defaults (e.g. a Bolt Pistol carried before squad assignment) don't
+        // interfere with the encumbrance check during loadout assignment.
+        var _all_members = target_squad.get_members(true);
+        for (var _mi = 0; _mi < _all_members.number(); _mi++) {
+            var _u = _all_members.units[_mi];
+            for (var _s = 0; _s < array_length(_weapon_slots); _s++) {
+                if (struct_exists(_managed_slots, _weapon_slots[_s])) {
+                    var _clear = {};
+                    _clear[$ _weapon_slots[_s]] = "";
+                    _u.alter_equipment(_clear, false, false);
+                }
+            }
+        }
+
         for (var i = 0; i < array_length(squad_unit_types); i++) {
             unit_role = squad_unit_types[i];
             role_squad_loadout();
