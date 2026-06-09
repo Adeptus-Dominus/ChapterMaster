@@ -103,7 +103,8 @@ function setup_ui_chapter_settings(){
     var romanNumerals = scr_roman_numerals();
     _base_tool = "Click to open the settings for this company.";
 
-    for (var i = 0; i<obj_ini.companies; i++){
+    // i<= to include the scount company
+    for (var i = 0; i<=obj_ini.companies; i++){
 
         var _string = i == 0 ? "Headquarters" : romanNumerals[i - 1] + " Company"
         var _button = new UnitButtonObject({
@@ -559,19 +560,18 @@ function scr_ui_settings() {
 function scr_select_company_settings_ui(){
 // Company Settings
     var _comp_buttons = settings_buttons_ui_components.company_settings_selection_buttons;
-    for (var i = 0; i<array_length(_comp_buttons); i++){
+
+    // start at 1 to exclude HQ
+    for (var i = 1; i<array_length(_comp_buttons); i++){
         var _button = _comp_buttons[i];
         if (!_button.draw()){
             continue;
         }
 
-
         /*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
         menu = eMENU.COMPANY_SETTINGS;
         settings = i;
-        if (settings != 0){
-            squad_arrangement = new SquadArrangementEditor(settings);
-        }
+        squad_arrangement = new SquadArrangementEditor(settings);
     }
 }
 
