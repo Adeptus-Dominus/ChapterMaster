@@ -1,10 +1,6 @@
-var __b__;
-__b__ = action_if_number(obj_popup, 0, 0);
-if (__b__) {
-    __b__ = action_if_variable(cd, 1, 1);
-    if (__b__) {
-        __b__ = action_if_variable(click_stall_timer, 1, 1);
-        if (__b__) {
+if (!instance_exists(obj_popup)) {
+    if (cd < 1) {
+        if (click_stall_timer < 1) {
             // with(ob_ennt){shomesge(string(dudes[1])+"|"+string(dudes_num[1])+"|"+string(men+medi)+"|"+string(dudes_hp[1]));}
 
             // 135;

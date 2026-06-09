@@ -147,8 +147,24 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords) {
 /// @category UI
 /// @description A simple drawable box
 function Box(data) constructor {
+    standard_loc_data();
     colour = CM_GREEN_COLOR;
-    move_data_to_current_scope(data);
+
+    static update = function(data){
+        move_data_to_current_scope(data, true);
+
+        if (w == 0 && x2 > 0){
+            w = x2 - x1;
+        }
+        if (h == 0 && y2 > 0){
+            h = y2 - y1;
+        }
+
+        y2 = y1 + h;
+        x2 = x1 + w;
+    }
+
+    update(data);
 
     static hit = function() {
         return scr_hit(x1, y1, x2, y2);
@@ -174,6 +190,7 @@ function Box(data) constructor {
 /// var rs = new ReactiveString("Hello", 100, 200);
 /// rs.draw();
 function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) constructor {
+    standard_loc_data();
     x1 = x1_param;
     y1 = y1_param;
     text = text_param;
@@ -256,6 +273,72 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
     };
 }
 
+function ValueShifter(value_text, data) constructor{
+    standard_loc_data();
+    string_tag = value_text;
+    max_clamp = 1000;
+    min_clamp = -1000;
+    reactive_string = new ReactiveString(value_text, 0, 0, {halign : fa_center});
+
+    current_value = 0;
+    shift_value = 1;
+
+
+    draw_set_font(fnt_40k_14b);
+    var _but_width = string_height("-") + 8;
+
+    decrease_button = new UnitButtonObject({
+        label:"-", 
+        color : c_red,
+        tooltip : "click to decrease",
+        set_width : true,
+        w : _but_width
+    });
+
+    increase_button = new UnitButtonObject({
+        label:"-", 
+        color : c_green,
+        tooltip : "click to increase",
+        set_width : true,
+        w : _but_width
+    });
+
+    static update = function(data = {}){
+        move_data_to_current_scope(data, true);
+        reactive_string.update({
+            x1, 
+            y1, 
+            text : $"{string_tag}:{current_value}"
+        });
+
+        var _react_width_diff = (reactive_string.w / 2) + 10;
+        decrease_button.update({
+            x1 : x1 - _react_width_diff - decrease_button.w, 
+            y1 : y1
+        });
+        increase_button.update({
+            x1 : x1 + _react_width_diff, 
+            y1 : y1
+        });
+    }
+
+    update(data)
+
+    static draw = function(){
+        update();
+        reactive_string.draw();
+        var _allow = current_value > min_clamp;
+        if (decrease_button.draw(_allow)){
+            current_value -= shift_value;
+        }
+
+        _allow = current_value < max_clamp;
+        if (increase_button.draw(_allow)){
+            current_value += shift_value;
+        }
+    }
+}
+
 /// @function LabeledIcon(icon, text, x1, y1, data)
 /// @constructor
 /// @category UI
@@ -335,17 +418,18 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
 /// @param {Asset.GMSprite} _sprite The default sprite to display.
 /// @param {Asset.GMSprite} _hover_sprite Optional sprite to show when hovered.
 /// @returns {Struct.SpriteButton}
-function SpriteButton(_sprite, _hover_sprite = undefined) constructor {
-    sprite = _sprite;
-    hover_sprite = _hover_sprite;
+function SpriteButton(data) constructor {
+    standard_loc_data();
+    sprite = spr_none;
+    hover_sprite = undefined;
 
+    cycle_index = false;
+    draw_index = 0;
     scale_x = 1.0;
     scale_y = 1.0;
     alpha_hover = 1.0;
     alpha_idle = 0.8;
     alpha_disabled = 0.5;
-    width = sprite_get_width(_sprite);
-    height = sprite_get_height(_sprite);
 
     sound_click = snd_click;
     tooltip_text = "";
@@ -354,15 +438,25 @@ function SpriteButton(_sprite, _hover_sprite = undefined) constructor {
     is_hovered = false;
     is_clicked = false;
 
+    static update = function(data){
+        move_data_to_current_scope(data,true);
+        width = sprite_get_width(sprite);
+        height = sprite_get_height(sprite);
+        x2 = x1 + (width * scale_x);
+        y2 = y1 + (height * scale_y);
+    }
+
+    update(data);
+
     /// @desc Updates interaction state and draws the button.
     /// @param {real} _x The X position to draw at.
     /// @param {real} _y The Y position to draw at.
     /// @param {bool} _enabled If false, interaction is disabled and the button appears faded.
-    static draw = function(_x, _y, _enabled = true) {
-        var _x2 = _x + (width * scale_x);
-        var _y2 = _y + (height * scale_y);
+    static draw = function(_enabled = true) {
 
-        is_hovered = scr_hit(_x, _y, _x2, _y2);
+        add_draw_return_values();
+
+        is_hovered = sr_hit_struct();
         is_clicked = _enabled && is_hovered && mouse_button_clicked();
 
         if (is_hovered) {
@@ -378,7 +472,9 @@ function SpriteButton(_sprite, _hover_sprite = undefined) constructor {
         var _draw_sprite = (_enabled && is_hovered && hover_sprite != undefined) ? hover_sprite : sprite;
         var _draw_alpha = _enabled ? (is_hovered ? alpha_hover : alpha_idle) : alpha_disabled;
 
-        draw_sprite_ext(_draw_sprite, 0, _x, _y, scale_x, scale_y, 0, c_white, _draw_alpha);
+        draw_index = cycle_index ? draw_index + 1 : draw_index;
+        draw_sprite_ext(_draw_sprite, draw_index, x1, y1, scale_x, scale_y, 0, c_white, _draw_alpha);
+        pop_draw_return_values();
     };
 }
 
@@ -463,7 +559,7 @@ function UnitButtonObject(data = {}) constructor {
         }
     };
 
-    static disabled = false;
+    disabled = false;
 
     static draw = function(allow_click = true) {
         add_draw_return_values();
@@ -487,7 +583,7 @@ function UnitButtonObject(data = {}) constructor {
             _widths[0] *= height_scale;
             _widths[2] *= height_scale;
             draw_sprite_ext(spr_pixel_button_left, 0, x1, y1, height_scale, height_scale, 0, c_white, 1);
-            var _width_scale = w / _widths[1];
+            var _width_scale = (w - _widths[0] - _widths[2]) / _widths[1];
             _widths[1] *= _width_scale;
             draw_sprite_ext(spr_pixel_button_middle, 0, x1 + _widths[0], y1, _width_scale, height_scale, 0, c_white, 1);
             draw_sprite_ext(spr_pixel_button_right, allow_click, x1 + _widths[0] + _widths[1], y1, height_scale, height_scale, 0, c_white, 1);

@@ -1,6 +1,5 @@
 // Manages ship and unit selection depending on menus
-var __b__ = action_if_number(obj_popup, 0, 0);
-if (__b__) {
+if (!instance_exists(obj_popup)) {
     if (menu == 1 && (managing > 0 || managing == -1) && man_max > 0) {
         if (man_current > 0) {
             man_current -= 1;

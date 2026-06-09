@@ -13,6 +13,7 @@ try {
     if (menu == eMENU.SECRET_LAIR) {
         scr_secret_lair_view();
     }
+    scr_ui_popup();
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
     main_map_defaults();

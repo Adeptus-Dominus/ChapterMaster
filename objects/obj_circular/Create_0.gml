@@ -55,4 +55,4 @@ with (obj_p_ship) {
         target_y = mouse_y + lengthdir_y(action_dis, action_dir);
     }
 }
-action_set_alarm(6, 0);
+alarm_set(0, 6);

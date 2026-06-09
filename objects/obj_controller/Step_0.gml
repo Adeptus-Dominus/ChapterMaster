@@ -19,8 +19,8 @@ try {
     if (text_bar > 60) {
         text_bar = 1;
     }
-    if (bar_fix > 0) {
-        bar_fix = -1;
+    if (bar_fix) {
+        bar_fix = false;
         scr_ui_formation_bars();
     }
     // TODO change this into a constructor which is in a separated script
@@ -444,7 +444,7 @@ try {
         }
     }
     // Rrepair ships
-    if ((menu == 0) && (repair_ships > 0) && (instance_number(obj_turn_end) == 0) && (instance_number(obj_popup) == 0)) {
+    if ((menu == 0) && (repair_ships > 0) && (!instance_exists(obj_turn_end)) && (!instance_exists(obj_popup))) {
         repair_ships = 0;
 
         var pip = instance_create(0, 0, obj_popup);

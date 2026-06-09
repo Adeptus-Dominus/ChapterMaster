@@ -20,4 +20,4 @@ stasis = false;
 stasis_occupants = "";
 swimming = false;
 
-action_set_alarm(1, 0);
+alarm_set(0, 1);

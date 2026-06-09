@@ -84,7 +84,7 @@ sound_in = 0;
 sound_to = "";
 fix_right = 0;
 text_bar = 0;
-bar_fix = 0;
+bar_fix = false;
 last_attack_form = 1;
 last_raid_form = 3;
 double_click = 0;
@@ -989,17 +989,17 @@ faction_status[eFACTION.GENESTEALER] = "War";
 faction_status[eFACTION.NECRONS] = "War";
 // ** Sets faction gender for names **
 faction_gender = array_create(14, 1);
-faction_gender[6] = set_gender();
-faction_gender[8] = set_gender();
+faction_gender[eFACTION.ELDAR] = set_gender();
+faction_gender[eFACTION.TAU] = set_gender();
 
 //TODO this syntax for choosing gendered naes is kinda ass to read
 faction_leader[eFACTION.INQUISITION] = _name_gen.GenerateFromSet($"imperial_{string_gender(faction_gender[eFACTION.INQUISITION])}");
 
-faction_gender[10] = set_gender();
-if (faction_gender[10] == eGENDER.FEMALE) {
+faction_gender[eFACTION.CHAOS] = set_gender();
+if (faction_gender[eFACTION.CHAOS] == eGENDER.FEMALE) {
     faction_leader[eFACTION.CHAOS] = choose("1", "1", "1", "2");
 }
-if (faction_gender[10] == eGENDER.MALE) {
+if (faction_gender[eFACTION.CHAOS] == eGENDER.MALE) {
     faction_leader[eFACTION.CHAOS] = choose("1", "2", "2", "2");
 }
 if (faction_leader[eFACTION.CHAOS] == "1") {
@@ -1867,7 +1867,7 @@ remov = string_length(string(temp[65]) + string(temp[66]) + string(temp[67]) + s
 
 instance_create(0, 0, obj_tooltip);
 
-action_set_alarm(2, 0);
+alarm_set(0, 2);
 
 //ensure fleet tab isup to date at gae start
 location_viewer.update_fleet_table();
