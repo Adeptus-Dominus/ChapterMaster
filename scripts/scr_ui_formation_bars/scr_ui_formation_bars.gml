@@ -74,6 +74,7 @@ function scr_ui_formation_bars() {
             if (temp[4800 + bar] > 10) {
                 bat_deva_for[bar] = 1;
                 bat_assa_for[bar] = 4;
+                bat_bike_for[bar] = 4;
                 bat_tact_for[bar] = 2;
                 bat_vete_for[bar] = 2;
                 bat_hire_for[bar] = 3;

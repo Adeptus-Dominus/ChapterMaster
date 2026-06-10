@@ -185,6 +185,46 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
                 }
             }
         }
+    } else if (weapon_name == "Speed Force" || weapon_name == "Speed Force(M)") {
+        flavoured = true;
+        if (!character_shot) {
+            if (number_of_shots < 20) {
+                attack_message += $"{number_of_shots} Astartes on Bikes speed ahead, their Bikes roaring like beasts of old- ";
+            } else if (number_of_shots >= 20 && number_of_shots < 100) {
+                attack_message += $"Squads of {number_of_shots} Astartes thunder ahead on their Bikes. They descend upon the enemy- ";
+            } else {
+                attack_message += $"A massive wave of {number_of_shots} Astartes rolls ahead on top of their mighty Bikes. They crash into enemy lines, smashing their foe- ";
+            }
+            if (target.dudes_num[targeh] == 1) {
+                if (casulties == 0) {
+                    attack_message += $"but the {target_name} endures the onslaught.";
+                } else {
+                    attack_message += $"the {target_name} falls to the charge.";
+                }
+            } else {
+                if (casulties == 0) {
+                    attack_message += $"{target_name} ranks are hit, but no casualties are confirmed.";
+                } else {
+                    attack_message += $"{target_name} ranks are hit, killing {casulties} in an instant.";
+                }
+            }
+        } else {
+            if (target.dudes_num[targeh] == 1) {
+                attack_message += string(unit_name) + $" speeds on his bike, soaring and crashing into the {target_name}- ";
+                if (casulties == 0) {
+                    attack_message += $"but it endures the onslaught.";
+                } else {
+                    attack_message += $"and it falls to the charge.";
+                }
+            } else {
+                attack_message += string(unit_name) + $" speeds on his bike, slamming into {target_name} ranks- ";
+                if (casulties == 0) {
+                    attack_message += $"but all survive the impact.";
+                } else {
+                    attack_message += $"killing {casulties} perish in the attack.";
+                }
+            }
+        }
     } else if (weapon_name == "Assault Cannon") {
         flavoured = true;
         if (!character_shot) {

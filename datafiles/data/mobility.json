@@ -2,9 +2,9 @@
     "Bike": {
         "abbreviation": "Bike",
         "damage_resistance_mod": {
-            "artifact": 10,
-            "master_crafted": 10,
-            "standard": 5
+            "artifact": 40,
+            "master_crafted": 30,
+            "standard": 20
         },
         "description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and respectable Twin-Linked Bolters for offensive action.",
         "hp_mod": {
@@ -17,6 +17,12 @@
             "master_crafted": 25,
             "standard": 20
         },
+        "special_properties":[
+        "Speed Force"
+        ],
+        "tags":[
+            "bike"
+        ],
         "second_profiles": [
             "Twin Linked Bolters"
         ],
@@ -26,9 +32,9 @@
     "Attack Bike": {
         "abbreviation": "At Bike",
         "damage_resistance_mod": {
-            "artifact": 10,
-            "master_crafted": 10,
-            "standard": 5
+            "artifact": 40,
+            "master_crafted": 30,
+            "standard": 25
         },
         "description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and respectable Twin-Linked Bolters for offensive action. Sports an additional sidecar with a heavy weapon of choice.",
         "hp_mod": {
@@ -41,8 +47,14 @@
             "master_crafted": 15,
             "standard": 10
         },
+        "special_properties": [
+            "Speed Force"
+        ],
         "second_profiles": [
             "Twin Linked Bolters"
+        ],
+        "tags":[
+            "bike"
         ],
         "value": 95,
         "requires_to_forge": ["combi_1"]
