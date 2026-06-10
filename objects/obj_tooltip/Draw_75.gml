@@ -33,7 +33,7 @@ for (var i = 0; i < array_length(tooltip_data); i++) {
 
     // Set the font for the tooltip text and calculate its size
     draw_set_font(_font);
-    var _text_w = _force_width ? _width : max(string_width(_tooltip), _width);
+    var _text_w = _force_width ? _width : min(string_width(_tooltip), _width);
     var _text_h = string_height_ext(_tooltip, DEFAULT_LINE_GAP, _text_w);
 
     // If a header is provided, calculate its size and adjust the rectangle size
