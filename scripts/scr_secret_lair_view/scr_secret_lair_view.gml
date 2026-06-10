@@ -506,7 +506,7 @@ function scr_secret_lair_view() {
                     tooltip_rp_cost = 1000;
                     tooltip_header = "Hippodrome";
                     tooltip_desc = "A moderate sized garage fit to hold, service, and display vehicles.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Beastarium
@@ -515,7 +515,7 @@ function scr_secret_lair_view() {
                     tooltip_rp_cost = 1000;
                     tooltip_header = "Beastarium";
                     tooltip_desc = "An enclosure with simulated greenery and foilage meant to hold beasts.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Torture Chamber
@@ -524,7 +524,7 @@ function scr_secret_lair_view() {
                     tooltip_rp_cost = 500;
                     tooltip_header = "Torture Chamber";
                     tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Narcotics
@@ -533,7 +533,7 @@ function scr_secret_lair_view() {
                     tooltip_rp_cost = 500;
                     tooltip_header = "Narcotics";
                     tooltip_desc = "Several boxes worth of Obscura, Black Lethe, Kyxa... line it up.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Relic Room
@@ -542,7 +542,7 @@ function scr_secret_lair_view() {
                     tooltip_rp_cost = 500;
                     tooltip_header = "Relic Room";
                     tooltip_desc = "A room meant for displaying trophies.  May be purchased successive times.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Cookery
@@ -551,7 +551,7 @@ function scr_secret_lair_view() {
                     tooltip_rp_cost = 250;
                     tooltip_header = "Cookery";
                     tooltip_desc = "A larger, well-stocked cookery, complete with a number of Imperial Chef servants.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Vox Casters
@@ -560,7 +560,7 @@ function scr_secret_lair_view() {
                     tooltip_rp_cost = 250;
                     tooltip_header = "Vox Casters";
                     tooltip_desc = "All the bass one could ever imaginably need.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Librarium
@@ -569,7 +569,7 @@ function scr_secret_lair_view() {
                     tooltip_rp_cost = 250;
                     tooltip_header = "Librarium";
                     tooltip_desc = "A study fit to hold a staggering amount of tomes and scrolls.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Throne
@@ -578,7 +578,7 @@ function scr_secret_lair_view() {
                     tooltip_rp_cost = 250;
                     tooltip_header = "Throne";
                     tooltip_desc = "A massive, ego boosting throne.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Stasis Pods
@@ -587,7 +587,7 @@ function scr_secret_lair_view() {
                     tooltip_rp_cost = 200;
                     tooltip_header = "Stasis Pods";
                     tooltip_desc = "Though they start empty, you may capture and display your foes in these.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Swimming Pool
@@ -596,7 +596,7 @@ function scr_secret_lair_view() {
                     tooltip_rp_cost = 100;
                     tooltip_header = "Swimming Pool";
                     tooltip_desc = "A large body of water meant for excersize or relaxation.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
                 }
             }
         }
