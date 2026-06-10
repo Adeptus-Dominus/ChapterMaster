@@ -456,7 +456,7 @@
   "bike_squad": {
       "Tactical": {
         "max": 7,
-        "min": 2,
+        "min": 1,
         "role": "Biker",
         "alternative_roles": ["Assault","Devastator","Tactical"],
         "loadout": {
@@ -496,7 +496,8 @@
       "type_data": {
           "display_data": "Bike {squad_name}",
           "class": ["bike"],
-          "formation_options": ["assault", "tactical","devastator","scout"]
+          "formation_options": ["biker","assault", "tactical","devastator","scout"],
+          "base": "biker"
       }
   },
 
@@ -538,7 +539,8 @@
     "type_data": {
         "display_data": "Attack Bike {squad_name}",
         "class": ["bike"],
-        "formation_options": ["assault", "tactical", "devastator", "scout"]
+        "formation_options": ["biker","assault", "tactical", "devastator", "scout"],
+        "base": "biker"
     }
 }
 }

@@ -827,6 +827,7 @@ bat_formation = array_create(_count, "");
 bat_formation_type = array_create(_count, 0);
 bat_deva_for = array_create(_count, 1);
 bat_assa_for = array_create(_count, 4);
+bat_bike_for = array_create(_count, 4);
 bat_tact_for = array_create(_count, 2);
 bat_vete_for = array_create(_count, 2);
 bat_hire_for = array_create(_count, 3);
@@ -852,6 +853,7 @@ default_bat_formation();
 
 bat_devastator_column = 1;
 bat_assault_column = 4;
+bat_bike_column = 4;
 bat_tactical_column = 2;
 bat_veteran_column = 2;
 bat_hire_column = 3;

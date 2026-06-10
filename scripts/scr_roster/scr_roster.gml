@@ -483,6 +483,7 @@ function setup_battle_formations() {
     var new_combat = obj_ncombat;
     obj_controller.bat_devastator_column = obj_controller.bat_deva_for[new_combat.formation_set];
     obj_controller.bat_assault_column = obj_controller.bat_assa_for[new_combat.formation_set];
+    obj_controller.bat_bike_column = obj_controller.bat_bike_for[new_combat.formation_set];
     obj_controller.bat_tactical_column = obj_controller.bat_tact_for[new_combat.formation_set];
     obj_controller.bat_veteran_column = obj_controller.bat_vete_for[new_combat.formation_set];
     obj_controller.bat_hire_column = obj_controller.bat_hire_for[new_combat.formation_set];
@@ -698,6 +699,9 @@ function add_unit_to_battle(unit, meeting, is_local) {
                 break;
             case "scout":
                 col = obj_controller.bat_scout_column;
+                break;
+            case "biker":
+                col = obj_controller.bat_bike_column;
                 break;
         }
     }
