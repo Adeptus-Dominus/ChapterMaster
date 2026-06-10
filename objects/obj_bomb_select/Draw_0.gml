@@ -1,7 +1,7 @@
-xx = __view_get(e__VW.XView, 0);
-yy = __view_get(e__VW.YView, 0);
-ww = __view_get(e__VW.WView, 0);
-hh = __view_get(e__VW.HView, 0);
+xx = camera_get_view_x(view_camera[0]);
+yy = camera_get_view_y(view_camera[0]);
+ww = camera_get_view_width(view_camera[0]);
+hh = camera_get_view_height(view_camera[0]);
 
 // Sets the bombard target, its forces and draws the ships wich will bombard said target
 bomb_window = {

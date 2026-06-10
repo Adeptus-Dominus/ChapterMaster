@@ -1,8 +1,8 @@
 function scr_void_click() {
     var good = true;
 
-    var xx = __view_get(e__VW.XView, 0) + 0;
-    var yy = __view_get(e__VW.YView, 0) + 0;
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
 
     var scale = obj_controller.scale_mod;
     if (obj_controller.cooldown > 0) {
@@ -12,10 +12,10 @@ function scr_void_click() {
         return false;
     }
     if (!obj_controller.zoomed) {
-        if (mouse_y < __view_get(e__VW.YView, 0) + (62 * scale)) {
+        if (mouse_y < camera_get_view_y(view_camera[0]) + (62 * scale)) {
             return false;
         }
-        if (mouse_y > __view_get(e__VW.YView, 0) + (830 * scale)) {
+        if (mouse_y > camera_get_view_y(view_camera[0]) + (830 * scale)) {
             return false;
         }
     }

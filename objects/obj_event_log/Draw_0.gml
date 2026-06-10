@@ -6,9 +6,8 @@ if (help == 0) {
         }
     }
     if (bad == 0) {
-        var ent;
-        var xx = __view_get(e__VW.XView, 0) + 0;
-        var yy = __view_get(e__VW.YView, 0) + 0;
+        var xx = camera_get_view_x(view_camera[0]);
+        var yy = camera_get_view_y(view_camera[0]);
         draw_set_alpha(1);
         draw_set_color(0);
         draw_rectangle(xx, yy, xx + 1600, yy + 900, 0);
@@ -66,9 +65,8 @@ if (help == 0) {
 }
 
 if (help == 1) {
-    var xx, yy;
-    xx = __view_get(e__VW.XView, 0);
-    yy = __view_get(e__VW.YView, 0);
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
     draw_set_color(0);
     draw_set_alpha(0.75);
     draw_rectangle(0, 0, room_width, room_height, 0);

@@ -6,8 +6,8 @@
 // Main menu movement
 
 function in_camera_view(rect) {
-    var x1 = __view_get(e__VW.XView, 0);
-    var y1 = __view_get(e__VW.YView, 0);
+    var x1 = camera_get_view_x(view_camera[0]);
+    var y1 = camera_get_view_y(view_camera[0]);
     var w = x1 + camera_get_view_width(view_camera[0]);
     var h = y1 + camera_get_view_height(view_camera[0]);
     return rectangle_in_rectangle(rect[0], rect[1], rect[2], rect[3], x1, y1, w, h);
@@ -24,8 +24,8 @@ function main_map_move_keys() {
             if (keyboard_check(vk_shift)) {
                 spd *= 3;
             } // shift down, increase speed
-            var view_x = __view_get(e__VW.XView, 0) + 2;
-            var view_y = __view_get(e__VW.YView, 0) + 2;
+            var view_x = camera_get_view_x(view_camera[0]) + 2;
+            var view_y = camera_get_view_y(view_camera[0]) + 2;
 
             if ((keyboard_check(vk_left) || (mouse_x <= view_x + (view_w * 0.02)) || keyboard_check(ord("A"))) && (x > x_limits)) {
                 var rel_view = view_w > global.default_view_width ? global.default_view_width / 2 : view_w / 2;
@@ -152,7 +152,7 @@ function draw_warp_lanes() {
             if (_allow_tooltips && instance_exists(obj_fleet_select)) {
                 var mouse_consts = return_mouse_consts();
 
-                _allow_tooltips = !obj_fleet_select.currently_entered || (mouse_consts[0] - __view_get(e__VW.XView, 0) > 300);
+                _allow_tooltips = !obj_fleet_select.currently_entered || (mouse_consts[0] - camera_get_view_x(view_camera[0]) > 300);
             }
             var warp_route_tooltip = "Major warp route to {0} (x4 travel speed for warp capable crafts)\n\nHold Shift and click Left Mouse Button to see destination.";
             if (scr_hit(hit_box)) {

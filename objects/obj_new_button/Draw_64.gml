@@ -12,9 +12,9 @@ if (sprite_exists(_sprite_index)) {
 }
 
 if (highlight > 0 && sprite_exists(_hover_index)) {
-    draw_set_blend_mode(bm_add);
+    gpu_set_blendmode(bm_add);
     draw_sprite_ext(_hover_index, 0, x, y, scaling, scaling, 0, c_white, highlight * 2);
-    draw_set_blend_mode(bm_normal);
+    gpu_set_blendmode(bm_normal);
 }
 
 draw_set_color(c_white);

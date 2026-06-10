@@ -95,8 +95,8 @@ function add_diplomacy_option(option = {}) {
 }
 
 function basic_diplomacy_screen() {
-    var yy = __view_get(e__VW.YView, 0);
-    var xx = __view_get(e__VW.XView, 0);
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
     if (trading == 0 && valid_diplomacy_options()) {
         if (!force_goodbye) {
             draw_set_halign(fa_center);
@@ -129,7 +129,7 @@ function basic_diplomacy_screen() {
             if (diplo_pressed > -1) {
                 evaluate_chosen_diplomacy_option(diplo_pressed);
             }
-            yy = __view_get(e__VW.YView, 0);
+            yy = camera_get_view_y(view_camera[0]);
         }
         if ((menu == eMENU.DIPLOMACY) && (diplomacy == 10.1)) {
             scr_emmisary_diplomacy_routes();

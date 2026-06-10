@@ -791,8 +791,8 @@ function set_up_recruitment_view() {
         click = 1;
         recruit_list_pane = new DataSlate();
         recruit_list_pane.inside_method = function() {
-            var xx = __view_get(e__VW.XView, 0) + 0;
-            var yy = __view_get(e__VW.YView, 0) + 0 + 60;
+            var xx = camera_get_view_x(view_camera[0]);
+            var yy = camera_get_view_y(view_camera[0]) + 60;
             draw_set_font(fnt_40k_30b);
             draw_set_halign(fa_center);
             draw_text_transformed(xx + 1242, yy + 70, "Neophytes", 0.6, 0.6, 0);
@@ -820,14 +820,13 @@ function set_up_recruitment_view() {
 
 /// @self Asset.GMObject.obj_controller
 function scr_draw_recruit_advisor() {
-    var blurp, eta, va;
-    var romanNumerals;
-    romanNumerals = scr_roman_numerals();
+    var va;
+    var romanNumerals = scr_roman_numerals();
     var _recruit_rate = global.recruitment_rates_caps;
-    var xx = __view_get(e__VW.XView, 0) + 0;
-    var yy = __view_get(e__VW.YView, 0) + 0;
-    blurp = "";
-    eta = 0;
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
+    var blurp = "";
+    var eta = 0;
     draw_sprite(spr_rock_bg, 0, xx, yy);
     draw_set_alpha(0.75);
     draw_set_color(0);
@@ -1108,8 +1107,8 @@ function scr_draw_recruit_advisor() {
     draw_sprite(spr_arrow, 1, xx + 717, yy + 515);
     recruit_list_pane.draw(xx + 940, yy + 66, 0.72);
     left_panel.inside_method = function() {
-        var xx = __view_get(e__VW.XView, 0) + 0;
-        var yy = __view_get(e__VW.YView, 0) + 0;
+        var xx = camera_get_view_x(view_camera[0]);
+        var yy = camera_get_view_y(view_camera[0]);
         draw_set_halign(fa_left);
         draw_set_font(fnt_40k_14);
         if (left_panel.percent_cut > 90) {

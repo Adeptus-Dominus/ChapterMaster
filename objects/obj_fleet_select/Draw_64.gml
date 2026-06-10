@@ -3,12 +3,6 @@ try {
     if (!obj_controller.zoomed) {
         var zm = 1, tit = "", mnz = 0;
 
-        //if (fleet_minimized=0){
-        //    draw_set_color(c_black);
-        //    draw_rectangle(__view_get( e__VW.XView, 0 )+44,__view_get( e__VW.YView, 0 )+110,__view_get( e__VW.XView, 0 )+267,__view_get( e__VW.YView, 0 )+110+void_hei,0);
-        //    draw_set_color(c_gray);
-        //    draw_rectangle(__view_get( e__VW.XView, 0 )+44,__view_get( e__VW.YView, 0 )+110,__view_get( e__VW.XView, 0 )+267,__view_get( e__VW.YView, 0 )+110+void_hei,1);
-        //}
         draw_set_color(c_gray);
 
         fleet_min_button = "-";

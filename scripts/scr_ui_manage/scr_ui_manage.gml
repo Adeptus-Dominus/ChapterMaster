@@ -803,10 +803,21 @@ function scr_ui_manage() {
         if (man_size < 1) {
             reset_manage_selections();
         }
-        var unit, x1, x2, x3, y1, y2, y3, text;
-        var tooltip_text = "", bionic_tooltip = "";
+        var unit;
+        var x1;
+        var x2;
+        var x3;
+        var y1;
+        var y2;
+        var y3;
+        var text;
+        var tooltip_text = "";
+        var bionic_tooltip = "";
         company_data.tooltip_drawing = [];
-        var xx = __view_get(e__VW.XView, 0) + 0, yy = __view_get(e__VW.YView, 0) + 0, bb = "", img = 0;
+        var xx = camera_get_view_x(view_camera[0]);
+        var yy = camera_get_view_y(view_camera[0]);
+        var bb = "";
+        var img = 0;
 
         // Draw BG
         draw_set_alpha(1);
@@ -816,7 +827,9 @@ function scr_ui_manage() {
         draw_set_color(c_gray); // CM_GREEN_COLOR
 
         // Var declarations
-        var c = 0, _company_name = "", skin = obj_ini.skin_color;
+        var c = 0;
+        var _company_name = "";
+        var skin = obj_ini.skin_color;
         static stats_displayed = false;
 
         if (managing < 0) {
@@ -1069,16 +1082,14 @@ function scr_ui_manage() {
             sel_all = "";
 
             draw_set_color(c_black);
-            xx = __view_get(e__VW.XView, 0) + 0;
-            yy = __view_get(e__VW.YView, 0) + 0;
+            xx = camera_get_view_x(view_camera[0]);
+            yy = camera_get_view_y(view_camera[0]);
             draw_rectangle(xx + 974, yy + 165, xx + 1005, yy + 822, 0);
             draw_set_color(c_gray);
             draw_rectangle(xx + 974, yy + 165, xx + 1005, yy + 822, 1);
 
             // Squad outline
             draw_rectangle(xx + 25, yy + 142, xx + 14 + 8, yy + 822, 1);
-            // draw_rectangle(xx+577,yy+64,xx+600,yy+85,1);
-            // draw_rectangle(xx+577,yy+379,xx+600,yy+400,1);
 
             draw_set_color(0);
             draw_rectangle(xx + 974, yy + 141, xx + 1005, yy + 172, 0);
@@ -1117,11 +1128,11 @@ function scr_ui_manage() {
             var selected_unit = obj_controller.unit_focus;
             if ((selected_unit.name() != "") && (selected_unit.race() != 0)) {
                 draw_set_alpha(1);
-                var xx = __view_get(e__VW.XView, 0) + 0, yy = __view_get(e__VW.YView, 0) + 0;
+                var xx = camera_get_view_x(view_camera[0]);
+                var yy = camera_get_view_y(view_camera[0]);
                 if (obj_controller.unit_profile && !instance_exists(obj_popup)) {
                     stats_displayed = true;
                     selected_unit.stat_display(true);
-                    //tooltip_draw(stat_x, stat_y+string_height(stat_display),0,0,100,17);
                 } else {
                     stats_displayed = false;
                 }
@@ -1148,13 +1159,11 @@ function scr_ui_manage() {
         setup_tooltip_list(company_data.tooltip_drawing);
     } else if (menu == 30 && (managing > 0 || managing == -1)) {
         // Load to ships
+        var bb = "";
+        var img = 0;
 
-        var xx, yy, bb, img;
-        bb = "";
-        img = 0;
-
-        xx = __view_get(e__VW.XView, 0) + 0;
-        yy = __view_get(e__VW.YView, 0) + 0;
+        var xx = camera_get_view_x(view_camera[0]);
+        var yy = camera_get_view_y(view_camera[0]);
 
         // BG
         draw_set_alpha(1);
@@ -1164,7 +1173,8 @@ function scr_ui_manage() {
         draw_set_color(c_gray); // CM_GREEN_COLOR
 
         // Draw Title
-        var c = 0, fx = "";
+        var c = 0;
+        var fx = "";
         if (managing <= 10) {
             c = managing;
         }
@@ -1261,8 +1271,8 @@ function scr_ui_manage() {
         draw_set_font(fnt_40k_14b);
         draw_text_transformed(xx + 320, yy + 402, $"Click a Ship to Load Selection (Req. {man_size} Space)", 1, 1, 0);
 
-        xx = __view_get(e__VW.XView, 0) + 0;
-        yy = __view_get(e__VW.YView, 0) + 0;
+        xx = camera_get_view_x(view_camera[0]);
+        yy = camera_get_view_y(view_camera[0]);
 
         // draw_text_transformed(xx + 488, yy + 426, "Selection Size: " + string(man_size), 0.4, 0.4, 0);
         scr_scrollbar(974, 172, 1005, 790, 34, ship_max, ship_current);

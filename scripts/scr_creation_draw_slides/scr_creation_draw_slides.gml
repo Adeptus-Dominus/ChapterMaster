@@ -674,11 +674,11 @@ function draw_chapter_trait_select() {
             draw_sprite_stretched(_icon_sprite, 0, x3, y3, 96, 96);
 
             if (scr_hit(real_x3, real_y3, real_x3 + 96, real_y3 + 96)) {
-                draw_set_blend_mode(bm_add);
+                gpu_set_blendmode(bm_add);
                 draw_set_alpha(0.25);
                 draw_set_color(16119285);
                 draw_rectangle(x3, y3, x3 + 96, y3 + 96, false);
-                draw_set_blend_mode(bm_normal);
+                gpu_set_blendmode(bm_normal);
                 draw_set_alpha(1);
                 draw_set_color(CM_GREEN_COLOR);
 

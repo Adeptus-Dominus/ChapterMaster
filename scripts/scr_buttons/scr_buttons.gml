@@ -1550,10 +1550,10 @@ function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x
             oscillate = max(0, oscillate - 1.0);
             hover_alpha = min(1.0, hover_alpha + 0.42);
 
-            draw_set_blend_mode(bm_add);
+            gpu_set_blendmode(bm_add);
             draw_set_alpha(hover_alpha);
             draw_sprite_ext(hover_sprite, 0, _x, _y, _x_scale, _y_scale, 0, c_white, hover_alpha);
-            draw_set_blend_mode(bm_normal);
+            gpu_set_blendmode(bm_normal);
 
             oscillate_down = true;
             is_clicked = mouse_button_clicked(, 0, true);
@@ -1572,10 +1572,10 @@ function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x
 
             if (hover_alpha > 0) {
                 hover_alpha -= 0.04;
-                draw_set_blend_mode(bm_add);
+                gpu_set_blendmode(bm_add);
                 draw_set_alpha(hover_alpha);
                 draw_sprite_ext(hover_sprite, 0, _x, _y, _x_scale, _y_scale, 0, c_white, hover_alpha);
-                draw_set_blend_mode(bm_normal);
+                gpu_set_blendmode(bm_normal);
             }
         }
 

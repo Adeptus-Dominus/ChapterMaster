@@ -160,8 +160,8 @@ function scr_librarium_gui() {
 function scr_librarium() {
     add_draw_return_values();
     var blurp = "";
-    var xx = __view_get(e__VW.XView, 0) + 0;
-    var yy = __view_get(e__VW.YView, 0) + 0;
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
     draw_sprite(spr_rock_bg, 0, xx, yy);
 
     draw_set_alpha(0.75);

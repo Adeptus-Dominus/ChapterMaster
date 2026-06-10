@@ -1,22 +1,16 @@
 if (!instance_exists(obj_drop_select) && !instance_exists(obj_bomb_select)) {
-    var m_dist, exi;
-    exi = 0;
-
-    m_dist = point_distance(x, y, mouse_x, mouse_y);
-
     if (!scr_void_click()) {
         exit;
     }
-
-    if (((obj_controller.zoomed == 0) && (mouse_y < __view_get(e__VW.YView, 0) + 60)) || (obj_controller.menu != 0)) {
-        exi = 1;
-    }
-    if (((obj_controller.zoomed == 0) && (mouse_y > __view_get(e__VW.YView, 0) + 836)) || (obj_controller.menu != 0)) {
-        exi = 1;
-    }
-
-    if (exi == 1) {
-        exit;
+    if (obj_controller.zoomed == 0) {
+        if (mouse_y < camera_get_view_y(view_camera[0]) + 60) {
+            exit;
+        } else if (mouse_y > camera_get_view_y(view_camera[0]) + 836) {
+            exit;
+        }
+        if (obj_controller.menu != 0) {
+            exit;
+        }
     }
 
     if ((obj_controller.popup == 1) && (obj_controller.cooldown <= 0)) {

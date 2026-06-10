@@ -400,8 +400,8 @@ function scr_ui_diplomacy() {
         return;
     }
 
-    var xx = __view_get(e__VW.XView, 0) + 0;
-    var yy = __view_get(e__VW.YView, 0) + 0;
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
     var show_stuff = false;
     var warning = 0;
 
@@ -510,8 +510,8 @@ function scr_ui_diplomacy() {
         #endregion
     }
 
-    xx = __view_get(e__VW.XView, 0);
-    yy = __view_get(e__VW.YView, 0);
+    xx = camera_get_view_x(view_camera[0]);
+    yy = camera_get_view_y(view_camera[0]);
 
     var _main_slate = diplo_buttons.main_slate;
     _main_slate.XX = xx + 328;

@@ -1,6 +1,5 @@
-// if (wounded>0) then d3d_set_fog(true,16645629,0,0);
 if (wounded > 0) {
-    d3d_set_fog(true, 255, 0, 0);
+    gpu_set_fog(true, 255, 0, 0);
 }
 if (wounded <= 0) {
     if (shader_is_compiled(sReplaceColor)) {
@@ -99,9 +98,8 @@ if (animation == "fire") {
 if (wounded <= 0) {
     shader_reset();
 }
-// if (wounded>0) then d3d_set_fog(false,16645629,0,0);
 if (wounded > 0) {
-    d3d_set_fog(false, 255, 0, 0);
+    gpu_set_fog(false, 255, 0, 0);
 }
 
 if (wounded > 0) {

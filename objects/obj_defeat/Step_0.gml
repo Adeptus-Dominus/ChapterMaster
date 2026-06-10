@@ -1,4 +1,3 @@
-global.__argument_relative = 1;
 if (fade > 0) {
     fade += -1;
 }
@@ -13,4 +12,3 @@ if (fadeout == 1) {
 if (fadeout == 60) {
     game_restart();
 }
-global.__argument_relative = 0;

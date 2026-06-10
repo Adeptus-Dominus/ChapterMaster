@@ -8,11 +8,10 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
             exit;
         }
 
-        var xx, yy, dist, close;
-        xx = __view_get(e__VW.XView, 0) + 0;
-        yy = __view_get(e__VW.YView, 0) + 0;
-        dist = 999;
-        close = false;
+        var xx = camera_get_view_x(view_camera[0]);
+        var yy = camera_get_view_y(view_camera[0]);
+        var dist = 999;
+        var close = false;
 
         if (debug != 0) {
             exit;

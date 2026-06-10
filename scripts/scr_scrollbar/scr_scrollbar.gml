@@ -8,27 +8,19 @@ function scr_scrollbar(argument0, argument1, argument2, argument3, argument4, ar
     // argument6: current_position
 
     if ((argument5 != 0) && (argument5 > argument4)) {
-        var xx, yy, x1, x2, y1, y2;
-        var siz1, siz2, siz3;
-        // draw_set_color(CM_GREEN_COLOR);
-        xx = 0;
-        yy = 0;
-        x1 = 0;
-        x2 = 0;
-        y1 = 0;
-        y2 = 0;
-        temp1 = 0;
-        temp2 = 0;
-        siz1 = 0;
-        siz2 = 0;
-        siz3 = 0;
+        var x1 = 0;
+        var x2 = 0;
+        var y1 = 0;
+        var y2 = 0;
+        var temp1 = 0;
+        var temp2 = 0;
 
-        xx = __view_get(e__VW.XView, 0) + 0;
-        yy = __view_get(e__VW.YView, 0) + 0;
+        var xx = camera_get_view_x(view_camera[0]);
+        var yy = camera_get_view_y(view_camera[0]);
 
-        siz1 = argument3 - argument1; // know the size of the total scroll area
-        siz2 = (argument4 / argument5) * siz1; // know the relative size of the bar
-        siz3 = (argument6 / argument5) * siz1; // know the pre-space before the bar is drawn
+        var siz1 = argument3 - argument1; // know the size of the total scroll area
+        var siz2 = (argument4 / argument5) * siz1; // know the relative size of the bar
+        var siz3 = (argument6 / argument5) * siz1; // know the pre-space before the bar is drawn
 
         if ((!instance_exists(obj_controller)) && instance_exists(obj_creation)) {
             var checka = 0;

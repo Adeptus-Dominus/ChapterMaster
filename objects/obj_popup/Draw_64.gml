@@ -30,7 +30,7 @@ try {
             draw_set_color(CM_GREEN_COLOR);
 
             if (!obj_controller.zoomed) {
-                draw_text_transformed(__view_get(e__VW.XView, 0) + 320, __view_get(e__VW.YView, 0) + 60, "SELECT DESTINATION", 0.5, 0.5, 0);
+                draw_text_transformed(camera_get_view_x(view_camera[0]) + 320, camera_get_view_y(view_camera[0]) + 60, "SELECT DESTINATION", 0.5, 0.5, 0);
             } else {
                 draw_text_transformed(room_width / 2, 60 * 3, "SELECT DESTINATION", 1.5, 1.5, 0);
             }

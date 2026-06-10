@@ -1,5 +1,5 @@
-xx = __view_get(e__VW.XView, 0) + x;
-yy = __view_get(e__VW.YView, 0) + y;
+xx = camera_get_view_x(view_camera[0]) + x;
+yy = camera_get_view_y(view_camera[0]) + y;
 
 obj_controller.cooldown = 8000;
 question = "";
@@ -22,8 +22,6 @@ accept_button = {
     x2: xx + 275,
     y2: yy + 123,
 };
-
-//
 
 // question="How many Terminator Armours?  Max: 5";
 // maximum=5;

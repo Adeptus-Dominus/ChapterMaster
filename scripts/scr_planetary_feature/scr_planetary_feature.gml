@@ -491,8 +491,8 @@ function discover_artifact_popup(feature) {
 
 /// @self Asset.GMObject.obj_star_select
 function planet_selection_action() {
-    var xx = __view_get(e__VW.XView, 0) + 0;
-    var yy = __view_get(e__VW.YView, 0) + 0;
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
     if (instance_exists(target)) {
         if (loading) {
             obj_controller.selecting_planet = 0;

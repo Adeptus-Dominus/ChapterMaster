@@ -26,7 +26,7 @@ function scr_menu_clear_up(specific_area_function) {
                 exit;
             }
             if ((zoomed == 0) && (cooldown <= 0) && (menu >= 500) && (menu <= 510)) {
-                if (mouse_y >= __view_get(e__VW.YView, 0) + 27) {
+                if (mouse_y >= camera_get_view_y(view_camera[0]) + 27) {
                     cooldown = 8000;
                     if ((menu >= 500) && (temp[menu - 434] == "")) {
                         menu = 0;
@@ -38,13 +38,9 @@ function scr_menu_clear_up(specific_area_function) {
                 }
             }
 
-            /*if (menu >= 500 && array_length(obj_turn_end.audience_stack) == 0) {
-                exit;
-            }*/
-
             diyst = 999;
-            xx = __view_get(e__VW.XView, 0);
-            yy = __view_get(e__VW.YView, 0);
+            xx = camera_get_view_x(view_camera[0]);
+            yy = camera_get_view_y(view_camera[0]);
 
             if (menu == 0) {
                 hide_banner = 0;

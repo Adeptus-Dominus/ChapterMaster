@@ -1,13 +1,12 @@
 /// @self Asset.GMObject.obj_controller
 function scr_ui_advisors() {
-    var xx, yy, blurp, eta, va;
-    var romanNumerals;
-    romanNumerals = scr_roman_numerals();
+    var va;
+    var romanNumerals = scr_roman_numerals();
 
-    xx = __view_get(e__VW.XView, 0) + 0;
-    yy = __view_get(e__VW.YView, 0) + 0;
-    blurp = "";
-    eta = 0;
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
+    var blurp = "";
+    var eta = 0;
 
     // This script draws all of the ADVISOR screens
 

@@ -1,7 +1,6 @@
-var xx, yy, ii;
-xx = __view_get(e__VW.XView, 0) + 317;
-yy = __view_get(e__VW.YView, 0) + 144;
-ii = 0;
+var xx = camera_get_view_x(view_camera[0]) + 317;
+var yy = camera_get_view_y(view_camera[0]) + 144;
+var ii = 0;
 
 draw_set_alpha(fade_alpha);
 
@@ -10,17 +9,13 @@ draw_sprite(spr_popup_event, 0, xx, yy);
 draw_sprite(spr_popup_event, 1, xx, yy);
 
 // Draw avatars here
-var x5, y5;
-x5 = xx + 15 - 120;
-y5 = yy + 482;
-
-ii = 0;
+var x5 = xx - 105;
+var y5 = yy + 482;
 
 draw_set_color(0);
 draw_set_font(fnt_40k_30b);
 draw_set_halign(fa_center);
-// draw_text(view_xview[0]+800,view_yview[0]+165,string(obj_controller.fest_type)+"#"+string(obj_controller.fest_display)+"] "+string(obj_controller.fest_display_tags));
-draw_text(__view_get(e__VW.XView, 0) + 800, __view_get(e__VW.YView, 0) + 165, string_hash_to_newline(string(obj_controller.fest_type)));
+draw_text(camera_get_view_x(view_camera[0]) + 800, camera_get_view_y(view_camera[0]) + 165, string_hash_to_newline(string(obj_controller.fest_type)));
 
 if (avatars > 0) {
     if (shader_is_compiled(sReplaceColor)) {
@@ -74,15 +69,15 @@ if (exit_fade >= 0) {
     draw_set_alpha(min(fade_alpha, ealpha));
 
     if (exit_fade < 30) {
-        draw_sprite(spr_help_exit, 0, __view_get(e__VW.XView, 0) + 1238, __view_get(e__VW.YView, 0) + 200);
+        draw_sprite(spr_help_exit, 0, camera_get_view_x(view_camera[0]) + 1238, camera_get_view_y(view_camera[0]) + 200);
     }
     if (exit_fade >= 30) {
         draw_set_alpha(min(fade_alpha, 1));
-        if (scr_hit(__view_get(e__VW.XView, 0) + 1238, __view_get(e__VW.YView, 0) + 200, __view_get(e__VW.XView, 0) + 1271, __view_get(e__VW.YView, 0) + 233) == false) {
-            draw_sprite(spr_help_exit, 0, __view_get(e__VW.XView, 0) + 1238, __view_get(e__VW.YView, 0) + 200);
+        if (!scr_hit(camera_get_view_x(view_camera[0]) + 1238, camera_get_view_y(view_camera[0]) + 200, camera_get_view_x(view_camera[0]) + 1271, camera_get_view_y(view_camera[0]) + 233)) {
+            draw_sprite(spr_help_exit, 0, camera_get_view_x(view_camera[0]) + 1238, camera_get_view_y(view_camera[0]) + 200);
         }
-        if (scr_hit(__view_get(e__VW.XView, 0) + 1238, __view_get(e__VW.YView, 0) + 200, __view_get(e__VW.XView, 0) + 1271, __view_get(e__VW.YView, 0) + 233) == true) {
-            draw_sprite(spr_help_exit, 1, __view_get(e__VW.XView, 0) + 1238, __view_get(e__VW.YView, 0) + 200);
+        if (scr_hit(camera_get_view_x(view_camera[0]) + 1238, camera_get_view_y(view_camera[0]) + 200, camera_get_view_x(view_camera[0]) + 1271, camera_get_view_y(view_camera[0]) + 233)) {
+            draw_sprite(spr_help_exit, 1, camera_get_view_x(view_camera[0]) + 1238, camera_get_view_y(view_camera[0]) + 200);
             if (mouse_button_clicked() && (closing == false)) {
                 closing = true;
                 fading = -1;

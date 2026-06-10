@@ -375,9 +375,9 @@ try {
     if (menu == 1 && (managing > 0 || managing < 0)) {
         if (!view_squad) {
             var c = 0, fx = "";
-            var xx, yy, bb = "";
-            xx = __view_get(e__VW.XView, 0) + 0;
-            yy = __view_get(e__VW.YView, 0) + 0;
+            var bb = "";
+            var xx = camera_get_view_x(view_camera[0]);
+            var yy = camera_get_view_y(view_camera[0]);
 
             if (managing <= 10) {
                 c = managing;
