@@ -405,13 +405,14 @@ function PlanetData(planet, system) constructor {
         var _orks = planet_forces[eFACTION.ORK];
         if ((current_owner == eFACTION.ORK) && (_orks < 5) && (planet_forces[eFACTION.HERETICS] == 0) && (player_forces <= 0 || !is_garrison_force)) {
             if ((_orks> 0) && (_ork_growth <= _ork_growth_threshold)) {
-                if (sabotage_force) {
+                var _grow_orks = true;
+                if (sabatours.garrison_force) {
                     if (irandom(3) < 2) {
                         scr_event_log("green", $"sabotage force on {name()} disrupts ork forces", name);
-                    } else {
-                        add_forces(eFACTION.ORK,1);
+                        _grow_orks = false;
                     }
-                } else {
+                }
+                if (_grow_orks){
                     add_forces(eFACTION.ORK,1);
                 }
             }
@@ -962,13 +963,13 @@ function PlanetData(planet, system) constructor {
     static pdf_loss_reduction_calc = function() {
         pdf_loss_reduction = fortification_level * 0.001;
         if (pdf_will_support_player()) {
-            pdf_loss_reduction += garrison.viable_garrison * 0.0005;
+            pdf_loss_reduction += garrisons.viable_garrison * 0.0005;
         }
         return pdf_loss_reduction;
     };
 
     static pdf_defence_loss_to_orks = function() {
-        var active_garrison = pdf_will_support_player() && garrison.viable_garrison > 0;
+        var active_garrison = pdf_will_support_player() && garrisons.viable_garrison > 0;
         if ((planet_forces[eFACTION.ORK] >= 4) && (pdf >= 30000)) {
             pdf = floor(pdf * min(0.95, 0.55 + pdf_loss_reduction));
         } else if (planet_forces[eFACTION.ORK] >= 4 && pdf < 30000 && pdf >= 10000) {
@@ -1584,7 +1585,8 @@ function PlanetData(planet, system) constructor {
             }
         }
     };
-static end_of_turn_population_influence_and_enemy_growth = function(){
+
+    static end_of_turn_population_influence_and_enemy_growth = function(){
 
         sabotage_force = sabatours.garrison_force;
         total_garrison = garrisons.total_garrison;

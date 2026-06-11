@@ -535,8 +535,7 @@ function scr_enemy_ai_d() {
 
     // Local problems will go here
     var planet;
-    for (var i = 0; i <= planets; i++) {
-        planet = i + 1;
+    for (var i = 1; i <= planets; i++) {
         if (i < array_length(system_garrison)) {
             var garrison = system_garrison[i];
             if (garrison.garrison_force) {
