@@ -20,32 +20,6 @@ try {
         master_crafted = 0;
     }
 
-    if ((image == "fuklaw") && (save > 0)) {
-        if (press == 0) {
-            var del = obj_saveload.save[save];
-            var _save_file = string(PATH_SAVE_FILES, del);
-            if (file_exists(_save_file)) {
-                file_delete(_save_file);
-                if (file_exists($"save{del}log.ini")) {
-                    file_delete($"save{del}log.ini");
-                }
-                with (obj_saveload) {
-                    instance_destroy();
-                }
-                var news = instance_create_depth(0, 0, obj_saveload.depth, obj_saveload);
-                news.menu = woopwoopwoop;
-                news.top = owner;
-                news.alarm[4] = 1;
-
-                instance_destroy();
-            }
-        }
-        if (press == 1) {
-            instance_destroy();
-        }
-        exit;
-    }
-
     //! I don't think this is even used?
     if ((room_get_name(room) == "rm_main_menu") && (title == "Tutorial")) {
         if (press == 1) {
