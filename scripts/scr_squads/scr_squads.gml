@@ -873,7 +873,7 @@ function SquadArrangementEditor(company) constructor {
                 y1 : required_y + 25,
                 max_clamp : 50,
                 min_clamp : 1,
-            },
+            }
         );
 
         var min_val_shift = new ValueShifter(
@@ -884,7 +884,7 @@ function SquadArrangementEditor(company) constructor {
                 y1 : required_y + 55,
                 min_clamp : 1,
                 max_clamp : 50,
-            },
+            }
         );
 
         var delete_button = new UnitButtonObject({
@@ -938,7 +938,7 @@ function SquadArrangementEditor(company) constructor {
                 y1 : proportional_y + 25,
                 min_clamp : 1,
                 max_clamp : 50,
-            },
+            }
         );
 
         var delete_button = new UnitButtonObject({
