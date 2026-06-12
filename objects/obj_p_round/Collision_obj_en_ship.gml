@@ -1,6 +1,5 @@
 if ((other.class != "Daemon") || (other.image_alpha >= 1)) {
-    var arm;
-    arm = other.armour_front;
+    var arm = other.armour_front;
 
     dam = dam * obj_fleet.global_attack;
 
@@ -22,7 +21,7 @@ if ((other.class != "Daemon") || (other.image_alpha >= 1)) {
     }
 
     if (sprite_index == spr_torpedo) {
-        instance_create(x, y, obj_explosion);
+        instance_create_depth(x, y, obj_explosion.depth, obj_explosion);
     }
 }
 

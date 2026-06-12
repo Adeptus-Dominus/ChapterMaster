@@ -1,15 +1,12 @@
 direction = 180;
 speed = 2;
 
-depth = (y * -1) / 2;
+depth = 0;
 
 enemies_alive = 20;
 enemies_max = 20;
 
-var i;
-i = -1;
-repeat (51) {
-    i += 1;
+for (var i = 0; i <= 50; i++) {
     enemy[i] = 1;
     if (i > 20) {
         enemy[i] = 0;
@@ -22,14 +19,3 @@ repeat (51) {
     enemy_ac[i] = 10;
     enemy_dr[i] = 1;
 }
-
-/*
-while (place_meeting(x,y,other))
-{
-x += lengthdir_x(1, direction - 180);
-y += lengthdir_y(1, direction - 180);
-}
-*/
-
-/* */
-/*  */

@@ -9,7 +9,7 @@ function create_boarding_craft(target_ship) {
 
     board_cooldown = 45;
 
-    var bear = instance_create(x, y, obj_p_assra);
+    var bear = instance_create_depth(x, y, obj_p_assra.depth, obj_p_assra);
     bear.apothecary = 0;
     o = first;
 

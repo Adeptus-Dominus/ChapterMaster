@@ -12,11 +12,7 @@ if (blind_fire == 0) {
             target_re = 240 + floor(random(30)) + 1;
         }
     }
-    var trange;
-    trange = 9999;
     if (instance_exists(target)) {
-        trange = point_distance(x, y, target.x, target.y);
-
         target_re -= 1;
         if (target_re == 0) {
             target = instance_nearest(x, y, obj_ork);
@@ -47,12 +43,7 @@ if (blind_fire == 0) {
 
 if (blind_fire == 1) {
     // obj_enemy_leftest
-
-    var trange;
-    trange = 9999;
     if (instance_exists(obj_enemy_leftest)) {
-        trange = point_distance(x, 0, obj_enemy_leftest.x, 0);
-
         if (point_distance(x, 0, obj_enemy_leftest.x, 0) > range) {
             if ((action == "") || ((action == "move") && (animation == ""))) {
                 action = "move";
@@ -91,11 +82,7 @@ if (action == "move") {
 if (action == "fire") {
     // Decide which weapon to use
 
-    var i, m;
-
-    i = 0;
-    repeat (10) {
-        i += 1;
+    for (var i = 1; i <= 10; i++) {
         if (marine_wep1_cooldown[i] > 0) {
             marine_wep1_cooldown[i] -= 1;
         }
@@ -104,8 +91,7 @@ if (action == "fire") {
             marine_wep1_reload[i] -= 1;
 
             if (marine_wep1_reload[i] == 1) {
-                var relo;
-                relo = min(marine_wep1_ammo[i], marine_wep1_clip_size[i]);
+                var relo = min(marine_wep1_ammo[i], marine_wep1_clip_size[i]);
                 marine_wep1_ammo[i] -= relo;
                 marine_wep1_clip[i] += relo;
                 marine_wep1_reload[i] = 0;
@@ -113,15 +99,11 @@ if (action == "fire") {
         }
     }
 
-    i = 0;
-    m = 0;
-    repeat (20) {
-        i += 1;
-        m = 0;
+    for (var i = 1; i <= 20; i++) {
+        var m = 0;
 
         if ((weapon_group[i] != "") && (weapon_range[i] >= trange) && (instance_exists(target) || ((blind_fire == 1) && (weapon_range[i] >= trange)))) {
-            var bull;
-            bull = 0;
+            var bull = 0;
 
             repeat (10) {
                 m += 1;
@@ -129,7 +111,7 @@ if (action == "fire") {
                     if ((marine_wep1_reload[m] <= 0) && (marine_wep1_cooldown[m] <= 0) && (marine_wep1_range[m] > 50)) {
                         if ((blind_fire == 0) || ((blind_fire == 1) && collision_line(x, y, x + marine_wep1_range[m], y, obj_ork, 0, 1))) {
                             if ((!instance_exists(bull)) || (bull == 0)) {
-                                bull = instance_create(x + 23, y - 24, obj_p1_bullet);
+                                bull = instance_create_depth(x + 23, y - 24, obj_p1_bullet.depth, obj_p1_bullet);
                             }
                             bull.image_speed = 0;
 
@@ -182,27 +164,6 @@ if (action == "fire") {
         }
     }
 
-    /*
-    weapon_group[i]="";
-    weapon_num[i]=0;
-    weapon_cool[i]=0;
-    weapon_range[i]=0;
-    
-    marine_wep1_ammo[i]=50;
-    marine_wep1_clip[i]=10;
-    marine_wep1_reload[i]=0;
-    marine_wep1_reload_time[i]=60;
-    
-    
-    
-    projectile_infos=0;
-    projectile_damage[i]=0;
-    projectile_arp[i]=0;
-    projectile_splash[i]=0;
-    projectile_range[i]=0;
-    
-    */
-
     speed = 0;
 
     if ((firing == 1) && (ii <= 3)) {
@@ -217,6 +178,3 @@ if (action == "fire") {
         image_speed = 0;
     }
 }
-
-/* */
-/*  */

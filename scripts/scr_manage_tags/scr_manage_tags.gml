@@ -1,6 +1,6 @@
 function set_up_tag_manager() {
     instance_destroy(obj_popup);
-    var pip = instance_create(0, 0, obj_popup);
+    var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
     pip.type = ePOPUP_TYPE.ADD_TAGS;
     pip.subtype = eTAG_MANAGER.SELECTION;
 

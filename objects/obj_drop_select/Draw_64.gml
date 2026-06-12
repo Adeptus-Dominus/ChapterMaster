@@ -39,13 +39,6 @@ try {
                     instance_destroy();
                 }
             }
-            var _xx = local_content_slate.XX;
-
-            /*if (instance_exists(p_target)) {
-                if (p_target.p_type[planet_number] = "Shrine") then nup = true;
-            }
-            */
-            // 89,31
             draw_set_halign(fa_left);
             for (var i = 0; i < array_length(purge_options); i++) {
                 var _purge_button = purge_options[i];
@@ -83,7 +76,7 @@ try {
         } else if (purge > eDROP_TYPE.PURGESELECT) {
             draw_text_ext(_xx, _yy, "Purge Insight", -1, roster_slate.width - 40);
             _yy += 30;
-            var hers, influ, poppy;
+            var poppy = "";
             var hers = p_target.p_heresy[planet_number] + p_target.p_heresy_secret[planet_number];
             var influ = p_target.p_influence[planet_number];
             if (p_target.p_large[planet_number] == 1) {
@@ -108,7 +101,7 @@ try {
     var _draw_y = _y_center;
     if (purge > eDROP_TYPE.PURGESELECT) {
         if (roster_slate.XX < _x_center + 660) {
-            var _draw_x = min(roster_slate.XX + 15, _x_center + 660);
+            _draw_x = min(roster_slate.XX + 15, _x_center + 660);
         } else {
             _draw_x = roster_slate.XX;
         }

@@ -1,7 +1,7 @@
 ship_id = 0;
 master_present = 0;
 o_dist = 0;
-
+depth = 5;
 selected = 0;
 sel_x1 = 0;
 sel_y1 = 0;

@@ -5,8 +5,7 @@ function scr_destroy_planet(destruction_method) {
     enemy9 = 0;
 
     if (destruction_method == 2) {
-        var pip;
-        pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         with (pip) {
             title = "Exterminatus";
             image = "exterminatus";
@@ -21,7 +20,7 @@ function scr_destroy_planet(destruction_method) {
         obj_star_select.torpedo -= 1;
         enemy9 = you.p_owner[obj_controller.selecting_planet];
     } else if (destruction_method == 1) {
-        var pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         with (pip) {
             title = "Exterminatus";
             image = "exterminatus";

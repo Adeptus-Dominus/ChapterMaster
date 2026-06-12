@@ -26,5 +26,5 @@ if (obj_controller.zoomed == 1) {
 with (obj_fleet_select) {
     instance_destroy();
 }
-instance_create(x, y, obj_fleet_select);
+instance_create_depth(x, y, obj_fleet_select.depth, obj_fleet_select);
 obj_fleet_select.owner = self.owner;

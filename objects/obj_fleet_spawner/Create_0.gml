@@ -1,14 +1,10 @@
 owner = 0;
 height = 0;
 number = 0;
-
+depth = -9999;
 alarm[0] = 1;
 
-var i, t;
-i = -1;
-t = 0;
-repeat (11) {
-    i += 1;
+for (var i = 0; i <= 10; i++) {
     en_column[i] = "";
     en_width[i] = 0;
     en_height[i] = 0;

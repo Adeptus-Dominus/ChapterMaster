@@ -14,7 +14,7 @@ function scr_popup(type, text, image, popup_special = "") {
         obj_turn_end.popup_special[obj_turn_end.popups] = popup_special;
     } else {
         /// @type {Asset.GMObject.obj_popup} 
-        var pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pip.title = type;
         pip.text = text;
 

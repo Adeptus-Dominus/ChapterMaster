@@ -95,7 +95,7 @@ function event_end_turn_action() {
                         dirr += irandom_range(50, 100);
                         xx = star_id.x + lengthdir_x(72, dirr);
                         yy = star_id.y + lengthdir_y(72, dirr);
-                        flee = instance_create(xx, yy, obj_en_fleet);
+                        flee = instance_create_depth(xx, yy, obj_en_fleet.depth, obj_en_fleet);
                         flee.owner = eFACTION.CHAOS;
                         flee.sprite_index = spr_fleet_chaos;
                         flee.image_index = 4;
@@ -128,7 +128,7 @@ function event_end_turn_action() {
                 }
                 if (array_length(active_forges) > 0) {
                     var ship_spawn = active_forges[irandom(array_length(active_forges) - 1)];
-                    var _new_player_fleet = instance_create(ship_spawn.system.x, ship_spawn.system.y, obj_p_fleet);
+                    var _new_player_fleet = instance_create_depth(ship_spawn.system.x, ship_spawn.system.y, obj_p_fleet.depth, obj_p_fleet);
 
                     // Creates the ship
                     var last_ship = new_player_ship(new_ship_event, ship_spawn.system.name);
@@ -143,7 +143,7 @@ function event_end_turn_action() {
                     if (obj_ini.ship_size[last_ship] == 1) {
                         scr_popup("Ship Constructed", $"Your new {obj_ini.ship_class[last_ship]} Escort '{obj_ini.ship[last_ship]}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.", "shipyard", "");
                     }
-                    var bob = instance_create(ship_spawn.system.x + 16, ship_spawn.system.y - 24, obj_star_event);
+                    var bob = instance_create_depth(ship_spawn.system.x + 16, ship_spawn.system.y - 24, obj_star_event.depth, obj_star_event);
                     bob.image_alpha = 1;
                     bob.image_speed = 1;
                 }

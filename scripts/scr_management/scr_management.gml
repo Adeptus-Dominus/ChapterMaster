@@ -17,7 +17,7 @@ function scr_management(argument0) {
         var pane;
         var _command_company = collect_company(0);
 
-        pane = instance_create(475, 180 - 48, obj_managment_panel);
+        pane = instance_create_depth(475, 180 - 48, obj_managment_panel.depth, obj_managment_panel);
         pane.company = 0;
         pane.manage = 14;
         pane.header = 2;
@@ -29,7 +29,7 @@ function scr_management(argument0) {
 
         pane.line = array_join(pane.line, _reclusium_units.create_plural_strings_array());
 
-        pane = instance_create(275, 180 - 48, obj_managment_panel);
+        pane = instance_create_depth(275, 180 - 48, obj_managment_panel.depth, obj_managment_panel);
         pane.company = 0;
         pane.manage = 12;
         pane.header = 2;
@@ -41,7 +41,7 @@ function scr_management(argument0) {
 
         pane.line = array_join(pane.line, _apothecary_units.create_plural_strings_array());
 
-        pane = instance_create(925, 180 - 48, obj_managment_panel);
+        pane = instance_create_depth(925, 180 - 48, obj_managment_panel.depth, obj_managment_panel);
         pane.company = 0;
         pane.manage = 15;
         pane.header = 2;
@@ -52,8 +52,8 @@ function scr_management(argument0) {
 
         pane.line = array_join(pane.line, _armoury_units.create_plural_strings_array());
 
-        pane = instance_create(925, 180 - 48, obj_managment_panel);
-        pane = instance_create(1125, 180 - 48, obj_managment_panel);
+        pane = instance_create_depth(925, 180 - 48, obj_managment_panel.depth, obj_managment_panel);
+        pane = instance_create_depth(1125, 180 - 48, obj_managment_panel.depth, obj_managment_panel);
         pane.company = 0;
         pane.manage = 13;
         pane.header = 2;
@@ -65,7 +65,7 @@ function scr_management(argument0) {
 
         pane.line = array_join(pane.line, _lib_units.create_plural_strings_array());
 
-        pane = instance_create(700, 180 - 48, obj_managment_panel);
+        pane = instance_create_depth(700, 180 - 48, obj_managment_panel.depth, obj_managment_panel);
         pane.company = 0;
         pane.manage = 11;
         pane.header = 3;
@@ -82,7 +82,7 @@ function scr_management(argument0) {
         for (var company = 1; company <= 10; company++) {
             t = string_upper(scr_convert_company_to_string(company));
 
-            var pane = instance_create(xx, yy, obj_managment_panel);
+            var pane = instance_create_depth(xx, yy, obj_managment_panel.depth, obj_managment_panel);
             pane.company = company;
             pane.manage = company;
             pane.header = 1;

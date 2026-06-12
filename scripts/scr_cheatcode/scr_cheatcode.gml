@@ -577,7 +577,7 @@ function draw_planet_debug_forces() {
 /// @self Asset.GMObject.obj_star_select
 function new_system_debug_popup() {
     /// @type {Asset.GMObject.obj_popup}
-    var pop = instance_create(0, 0, obj_popup);
+    var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
     pop.image = "debug_banshee";
     pop.title = "DEBUG";
     pop.planet = 1;
@@ -630,7 +630,7 @@ function system_debug_enemy_invasion_spawn() {
         with (obj_star) {
             if ((choose(0, 1, 1) == 1) && (owner != eFACTION.ELDAR) && (owner != 1)) {
                 /// @type {Asset.GMObject.obj_en_fleet}
-                var fleet = instance_create(x, y, obj_en_fleet);
+                var fleet = instance_create_depth(x, y, obj_en_fleet.depth, obj_en_fleet);
                 fleet.owner = obj_popup.invasion_faction;
                 if (obj_popup.invasion_faction == 7) {
                     fleet.sprite_index = spr_fleet_ork;
@@ -680,7 +680,7 @@ function system_debug_spawn_fleet() {
 /// @self Asset.GMObject.obj_popup
 function debug_spawn_imperium_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
-    var fleet = instance_create(star.x, star.y, obj_en_fleet);
+    var fleet = instance_create_depth(star.x, star.y, obj_en_fleet.depth, obj_en_fleet);
     fleet.owner = eFACTION.IMPERIUM;
     fleet.sprite_index = spr_fleet_imperial;
     fleet.capital_number = 2;
@@ -694,7 +694,7 @@ function debug_spawn_imperium_fleet() {
 /// @self Asset.GMObject.obj_popup
 function debug_spawn_heretic_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
-    var fleet = instance_create(star.x, star.y, obj_en_fleet);
+    var fleet = instance_create_depth(star.x, star.y, obj_en_fleet.depth, obj_en_fleet);
     fleet.owner = eFACTION.CHAOS;
     fleet.sprite_index = spr_fleet_chaos;
     fleet.capital_number = 2;
@@ -714,7 +714,7 @@ function debug_add_xenos_fleet_options() {
 /// @self Asset.GMObject.obj_popup
 function debug_spawn_ork_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
-    var fleet = instance_create(star.x, star.y, obj_en_fleet);
+    var fleet = instance_create_depth(star.x, star.y, obj_en_fleet.depth, obj_en_fleet);
     fleet.owner = eFACTION.ORK;
     fleet.sprite_index = spr_fleet_ork;
     fleet.capital_number = 2;
@@ -728,7 +728,7 @@ function debug_spawn_ork_fleet() {
 /// @self Asset.GMObject.obj_popup
 function debug_spawn_tau_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
-    var fleet = instance_create(star.x, star.y, obj_en_fleet);
+    var fleet = instance_create_depth(star.x, star.y, obj_en_fleet.depth, obj_en_fleet);
     fleet.owner = eFACTION.TAU;
     fleet.sprite_index = spr_fleet_tau;
     fleet.capital_number = 2;

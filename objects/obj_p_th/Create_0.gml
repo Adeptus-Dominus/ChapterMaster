@@ -2,7 +2,7 @@ image_xscale = 0.5;
 image_yscale = 0.5;
 speed = 4;
 shields = 0;
-
+depth = 0;
 target = 0;
 
 if (instance_exists(obj_en_in)) {

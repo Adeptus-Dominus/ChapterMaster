@@ -815,7 +815,7 @@ if (obj_ini.omophagea) {
                     scr_event_log("red", "EXCOMMUNICATUS TRAITORUS");
                     obj_controller.alarm[8] = 1;
                     if (!instance_exists(obj_turn_end)) {
-                        var pip = instance_create(0, 0, obj_popup);
+                        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
                         pip.title = "Inquisitor Killed";
                         pip.text = msg;
                         pip.image = "inquisition";

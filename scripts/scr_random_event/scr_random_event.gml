@@ -382,7 +382,7 @@ function scr_random_event(execute_now) {
         scr_popup("Rogue Trader", text, "rogue_trader", "");
         star.trader += choose(3, 4, 5);
         var star_alert;
-        star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
+        star_alert = instance_create_depth(star.x + 16, star.y - 24, obj_star_event.depth, obj_star_event);
         star_alert.image_alpha = 1;
         star_alert.image_speed = 1;
         _evented = true;
@@ -421,7 +421,7 @@ function scr_random_event(execute_now) {
                 }
                 scr_popup("Fleet Attacked", text, "", "");
                 _evented = true;
-                var star_alert = instance_create(fleet.x + 16, fleet.y - 24, obj_star_event);
+                var star_alert = instance_create_depth(fleet.x + 16, fleet.y - 24, obj_star_event.depth, obj_star_event);
                 star_alert.image_alpha = 1;
                 star_alert.image_speed = 1;
                 star_alert.col = "red";
@@ -444,7 +444,7 @@ function scr_random_event(execute_now) {
         if (add_new_problem(planet, "harlequins", irandom_range(2, 5), star)) {
             var text = "Eldar Harlequins have been seen on planet " + string(star.name) + " " + scr_roman(planet) + ". Their purposes are unknown.";
             scr_popup("Harlequin Troupe", text, "harlequin", "");
-            var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
+            var star_alert = instance_create_depth(star.x + 16, star.y - 24, obj_star_event.depth, obj_star_event);
             star_alert.image_alpha = 1;
             star_alert.image_speed = 1;
             star_alert.col = "green";
@@ -481,7 +481,7 @@ function scr_random_event(execute_now) {
 
         var text = string(star.name) + scr_roman(planet);
         scr_popup("War of Succession", "The planetary governor of " + string(text) + " has died.  Several subordinates and other parties each claim to be the true heir and successor- war has erupted across the planet as a result.  Heresy thrives in chaos.", "succession", "");
-        var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
+        var star_alert = instance_create_depth(star.x + 16, star.y - 24, obj_star_event.depth, obj_star_event);
         star_alert.image_alpha = 1;
         star_alert.image_speed = 1;
         star_alert.col = "red";
@@ -776,7 +776,7 @@ function event_fallen() {
         var text = "Sources indicate one of the Fallen may be upon " + string(star.name) + " " + string(scr_roman(planet)) + ".  We have " + string(eta) + " months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
         scr_popup("Hunt the Fallen", text, "fallen", "");
         scr_event_log("", "Sources indicate one of the Fallen may be upon " + string(star.name) + " " + string(scr_roman(planet)) + ".  We have " + string(eta) + " months to investigate.");
-        var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
+        var star_alert = instance_create_depth(star.x + 16, star.y - 24, obj_star_event.depth, obj_star_event);
         star_alert.image_alpha = 1;
         star_alert.image_speed = 1;
         star_alert.col = "purple";

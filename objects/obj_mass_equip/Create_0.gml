@@ -2,6 +2,7 @@ tab = -1;
 role = obj_controller.settings;
 refresh = true;
 engage = false;
+depth = -1001;
 
 total_role_number = 0;
 total_roles = "";

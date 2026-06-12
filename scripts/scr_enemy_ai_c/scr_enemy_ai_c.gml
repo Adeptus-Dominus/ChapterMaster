@@ -150,7 +150,7 @@ function scr_enemy_ai_c() {
                         if ((contin == 3) && (rando <= 25) && ((obj_controller.chaos_fleets + 15) < instance_number(obj_star))) {
                             // Create a fleet
                             // fleet=instance_create
-                            fleet = instance_create(x, y, obj_en_fleet);
+                            fleet = instance_create_depth(x, y, obj_en_fleet.depth, obj_en_fleet);
                             fleet.owner = eFACTION.CHAOS;
                             fleet.sprite_index = spr_fleet_chaos;
                             fleet.image_index = 1;
@@ -477,7 +477,7 @@ function scr_enemy_ai_c() {
                         }
                         if ((contin == 3) && (rando <= 25) && (obj_controller.tau_fleets < (obj_controller.tau_stars + 1))) {
                             // Create a fleet
-                            fleet = instance_create(x, y, obj_en_fleet);
+                            fleet = instance_create_depth(x, y, obj_en_fleet.depth, obj_en_fleet);
                             fleet.owner = eFACTION.TAU;
                             fleet.sprite_index = spr_fleet_tau;
                             fleet.image_index = 1;

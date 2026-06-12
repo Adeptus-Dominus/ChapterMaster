@@ -46,7 +46,7 @@ switch (effect) {
         break;
 
     case eIN_GAME_MENU_EFFECT.EXIT:
-        instance_create(0, 0, obj_fade);
+        instance_create_depth(0, 0, obj_fade.depth, obj_fade);
         fading = 0.1;
         break;
 

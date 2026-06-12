@@ -640,7 +640,7 @@ function PlanetData(planet, system) constructor {
 
                     var locy = $"{name()}";
 
-                    var flit = instance_create(system.x, system.y, obj_p_fleet);
+                    var flit = instance_create_depth(system.x, system.y, obj_p_fleet.depth, obj_p_fleet);
 
                     var _slaughter = new_player_ship("Gloriana", system.name, "Slaughtersong");
                     add_ship_to_fleet(_slaughter, flit);
@@ -1377,7 +1377,7 @@ function PlanetData(planet, system) constructor {
             // Recon Stuff
 
             if (has_problem("recon")) {
-                var arti = instance_create(system.x, system.y, obj_temp7); // Unloading / artifact crap
+                var arti = instance_create_depth(system.x, system.y, obj_temp7.depth, obj_temp7); // Unloading / artifact crap
 
                 arti.num = planet;
                 arti.alarm[0] = 1;

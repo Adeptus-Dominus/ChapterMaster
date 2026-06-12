@@ -2,7 +2,7 @@ fade_val = 0;
 fade_target = 0;
 target_room = -1;
 is_quitting = false;
-
+depth = -50;
 buttons = [];
 
 if (room_get_name(room) == "rm_creation") {

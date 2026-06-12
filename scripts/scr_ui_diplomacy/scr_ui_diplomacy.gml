@@ -86,7 +86,7 @@ function exit_diplomacy_dialogue() {
 
     if ((liscensing == 2) && (repair_ships == 0)) {
         cooldown = 8;
-        var cru = instance_create(mouse_x, mouse_y, obj_crusade);
+        var cru = instance_create_depth(mouse_x, mouse_y, obj_crusade.depth, obj_crusade);
         cru.owner = diplomacy;
         cru.placing = true;
         exit_all = 0;

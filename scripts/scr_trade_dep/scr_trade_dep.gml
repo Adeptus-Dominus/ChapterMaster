@@ -44,7 +44,7 @@ function scr_trade_dep() {
 }
 
 function setup_ai_trade_fleet(start_place, faction) {
-    var flit = instance_create(start_place.x, start_place.y, obj_en_fleet);
+    var flit = instance_create_depth(start_place.x, start_place.y, obj_en_fleet.depth, obj_en_fleet);
 
     with (flit) {
         owner = faction;

@@ -1,6 +1,6 @@
 // Resets all variables related to ship creation
 ship_id = 0;
-
+depth = 5;
 action = "";
 direction = 0;
 /// @type {Asset.GMObject.obj_en_ship}

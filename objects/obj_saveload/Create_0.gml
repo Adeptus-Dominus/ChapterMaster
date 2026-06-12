@@ -6,6 +6,7 @@ GameSave.EnemyFleet = [];
 GameSave.Ini = {};
 GameSave.Controller = {};
 GameSave.EventLog = [];
+depth = -16000;
 
 menu = 0; // 1 : save, 2: load
 save_part = 0;
@@ -53,9 +54,7 @@ save_icon = array_create(201, -1);
 
 saves = 0;
 
-var i = 0;
-
-repeat (100) {
+for (var i = 0; i < 100; i++) {
     if (file_exists(string(PATH_SAVE_FILES, i))) {
         save[saves] = i;
         saves += 1;
@@ -66,7 +65,6 @@ repeat (100) {
     if (file_exists(string(PATH_SAVE_FILES, i + 1)) && (max_ini > 0)) {
         max_ini = 0;
     }
-    i += 1;
 }
 
 first_open = saves;

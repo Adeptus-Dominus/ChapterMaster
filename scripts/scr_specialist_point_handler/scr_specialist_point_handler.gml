@@ -291,7 +291,6 @@ function SpecialistPointHandler() constructor {
                                     _noticed_heresy = true;
                                     scr_event_log("purple", $"{techs[forge_master].name_role()} Has noticed signs of tech heresy amoung the Armentarium ranks");
                                     scr_alert("purple", "Tech Heresy", $"{techs[forge_master].name_role()} Has noticed signs of tech heresy amoung the Armentarium ranks");
-                                    //pip=instance_create(0,0,obj_popup);
                                 }
                             }
                         }

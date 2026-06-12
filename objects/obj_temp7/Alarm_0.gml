@@ -1,12 +1,10 @@
 if (num > 0) {
     // Hmmmmmmm
-    var stah;
-    stah = instance_nearest(x, y, obj_star);
+    var stah = instance_nearest(x, y, obj_star);
     obj_controller.menu = 0;
 
     if (has_problem_planet(num, "recon", stah)) {
-        var pop;
-        pop = instance_create(0, 0, obj_popup);
+        var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pop.image = "inquisition";
         pop.title = "Investigation Completed";
         pop.text = "Your marines have scouted out " + string(stah.name) + " " + string(scr_roman(num)) + " and satisfied the mission requirements.";

@@ -25,7 +25,7 @@ function scr_fleet_advisor() {
             scr_image("advisor/splash", obj_ini.custom_advisors.admiral, xx + 16, yy + 43, 310, 828);
         } else {
             scr_image("advisor/splash", 7, xx + 16, yy + 43, 310, 828);
-        } // draw_sprite(spr_advisors,6,xx+16,yy+43);
+        }
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
@@ -36,7 +36,6 @@ function scr_fleet_advisor() {
     }
     if (menu_adept == 1) {
         scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
-        // draw_sprite(spr_advisors,0,xx+16,yy+43);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
@@ -245,7 +244,7 @@ function scr_fleet_advisor() {
                                 with (obj_fleet_show) {
                                     instance_destroy();
                                 }
-                                instance_create(x, y, obj_fleet_show);
+                                instance_create_depth(x, y, obj_fleet_show.depth, obj_fleet_show);
                             }
                         }
                     }
@@ -302,7 +301,6 @@ function scr_fleet_advisor() {
             }
 
             draw_set_font(fnt_40k_12);
-            // draw_text_ext(xx + 352, 775, $"Carrying ({cn.temp[118]}): {cn.temp[119]}", -1, 542);
             draw_set_font(fnt_40k_14);
         }
     }

@@ -167,7 +167,7 @@ if (owner == eFACTION.IMPERIUM || owner == eFACTION.ORK || owner == eFACTION.MEC
 
     if (system_fleet > 0) {
         // DISABLED FOR TESTING FLEET COMBAT
-        fleet = instance_create(x, y, obj_en_fleet);
+        fleet = instance_create_depth(x, y, obj_en_fleet.depth, obj_en_fleet);
         fleet.owner = eFACTION.IMPERIUM;
 
         fleet.capital_number = capital;
@@ -252,7 +252,7 @@ if (owner == eFACTION.TAU) {
         escort = floor(random_range(5, 12));
     }
     if (system_fleet > 0) {
-        fleet = instance_create(x, y, obj_en_fleet);
+        fleet = instance_create_depth(x, y, obj_en_fleet.depth, obj_en_fleet);
         fleet.owner = eFACTION.TAU;
         // Create ships here
         fleet.sprite_index = spr_fleet_tau;
@@ -314,7 +314,6 @@ if (owner == eFACTION.TYRANIDS) {
                     p_tyranids[i] = choose(4, 5, 5);
                     break;
             }
-            //array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.GENE_STEALER_CULT));
         }
         p_owner[i] = eFACTION.IMPERIUM;
     }
@@ -348,7 +347,6 @@ for (var i = 1; i <= planets; i++) {
         p_sisters[i] = 4;
         adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[i] * 10) - irandom(5), i);
     }
-    // if (p_owner[i]=3) or (p_owner[i]=5){p_feature[i]="Artifact|";}Testing ; 137
 }
 
 if ((name == "Kim Jong") && (owner == eFACTION.CHAOS)) {
@@ -379,8 +377,6 @@ if ((i == 1) && (planets > 0)) {
 
     if ((array_length(p_feature[i]) == 0) && (p_owner[i] != 1) && nostart) {
         var ranb = 0;
-        // if (ranb=1) and (p_owner[i]!=1) and (p_owner[i]!=2) and (p_owner[i]!=3) then ranb=floor(random(4))+2;
-        //
         var goo = 0;
         if (goo == 0) {
             for (var j = 0; j < 10; j++) {
@@ -472,57 +468,6 @@ if ((hyu == 0) && (owner == eFACTION.TYRANIDS)) {
 }
 
 scr_star_ownership(false);
-
-if (obj_controller.is_test_map == true) {
-    /*if (p_owner[1]=3) then p_feature[1]="STC Fragment|";
-    if (p_owner[2]=3) then p_feature[2]="STC Fragment|";
-    if (p_owner[3]=3) then p_feature[3]="STC Fragment|";
-    
-    
-    // Testing new guardsmen
-    p_guardsmen[1]=5000000;
-    p_tyranids[1]=4;
-    
-    p_guardsmen[2]=500000;
-    p_tyranids[2]=3;
-    
-    p_guardsmen[3]=100000;
-    p_tyranids[3]=2;
-    
-    p_orks[1]=0;p_orks[2]=0;p_orks[3]=0;*/
-}
-
-// if (obj_controller.is_test_map=true) and (p_owner[2]=1){
-
-if (p_owner[2] == 1) {
-    /*
-    p_guardsmen[2]=10000000;
-    p_pdf[2]=0;
-    obj_controller.faction_status[eFACTION.IMPERIUM]="War";
-    */
-
-    // p_type[1]="Dead";
-    // p_feature[2]="";
-
-    // p_orks[2]=3;
-    // p_feature[2]="Starship!0!|";
-
-    /*repeat(4){
-        var fleet;fleet=instance_create(x+(floor(random_range(100,200))*choose(1,-1)),y+(floor(random_range(100,200))*choose(1,-1)),obj_en_fleet);
-        fleet.owner = eFACTION.CHAOS;fleet.sprite_index=spr_fleet_chaos;fleet.orbiting=0;
-        fleet.action_x=x;fleet.action_y=y;fleet.alarm[4]=1;
-        
-        fleet.capital_number=0;
-        fleet.frigate_number=1;
-        fleet.escort_number=2;
-        
-        // Create ships here
-        fleet.image_speed=0;
-        var ii;ii=0;ii+=capital-1;ii+=round((frigate/2));ii+=round((escort/4));
-        if (ii<=1) and (capital+frigate+escort>0) then ii=1;
-        fleet.image_index=ii;
-    }*/
-}
 
 if ((obj_controller.is_test_map != true) && (p_owner[2] != 1)) {
     for (var i = 1; i <= 4; i++) {

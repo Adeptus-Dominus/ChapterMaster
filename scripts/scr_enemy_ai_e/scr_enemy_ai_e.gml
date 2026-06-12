@@ -529,10 +529,10 @@ function scr_enemy_ai_e() {
                         with (obj_en_fleet) {
                             if ((action == "") && (orbiting == obj_controller.temp[1049]) && (owner == 10)) {
                                 if (string_count("warband", trade_goods) > 0) {
-                                    instance_create(x, y, obj_temp2);
+                                    instance_create_depth(x, y, obj_temp2.depth, obj_temp2);
                                 }
                                 if (string_lower(trade_goods) == "csm") {
-                                    instance_create(x, y, obj_temp3);
+                                    instance_create_depth(x, y, obj_temp3.depth, obj_temp3);
                                 }
                             }
                         }
@@ -812,14 +812,14 @@ function scr_enemy_ai_e() {
     if (chaos_meeting > 0) {
         // Run through forces and determine what all is there
 
-        instance_create(0, 0, obj_temp_meeting);
+        instance_create_depth(0, 0, obj_temp_meeting.depth, obj_temp_meeting);
 
-        var i, co, ii, otm, good, master_present;
-        ii = 0;
-        i = 0;
-        co = -1;
-        good = 0;
-        master_present = 0;
+        var otm;
+        var ii = 0;
+        var i = 0;
+        var co = -1;
+        var good = 0;
+        var master_present = 0;
         repeat (11) {
             co += 1;
             i = 0;

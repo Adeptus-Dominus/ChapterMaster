@@ -63,7 +63,7 @@ if (did) {
         _current_system.p_player[2] += obj_ini.man_size;
     }
 
-    var fleet = instance_create(_current_system.x, _current_system.y, obj_p_fleet);
+    var fleet = instance_create_depth(_current_system.x, _current_system.y, obj_p_fleet.depth, obj_p_fleet);
     fleet.owner = eFACTION.PLAYER;
 
     for (var f = 0; f < array_length(obj_ini.ship); f++) {
@@ -77,7 +77,7 @@ if (did) {
     if (obj_ini.load_to_ships[0] > 0) {
         scr_start_load(fleet, _current_system, obj_ini.load_to_ships);
         with (obj_p_fleet) {
-            instance_create(x, y, obj_fleet_show);
+            instance_create_depth(x, y, obj_fleet_show.depth, obj_fleet_show);
         }
     }
 
@@ -526,12 +526,12 @@ for (var i = 0; i < 100; i++) {
         }
     }
     if (go == 2) {
-        var craft = instance_create(xx, yy, obj_star);
+        var craft = instance_create_depth(xx, yy, obj_star.depth, obj_star);
         craft.craftworld = 1;
         go = 999;
         array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.WARLORD6));
 
-        var elforce = instance_create(xx, yy, obj_en_fleet);
+        var elforce = instance_create_depth(xx, yy, obj_en_fleet.depth, obj_en_fleet);
         elforce.sprite_index = spr_fleet_eldar;
         elforce.owner = eFACTION.ELDAR;
         elforce.capital_number = choose(2, 3);
@@ -582,48 +582,13 @@ with (obj_creation) {
 
 create_complex_star_routes(_player_star.id);
 
-/* //135 testing crusade object
-instance_create(x,y,obj_crusade);
-obj_crusade.placing=1;scr_zoom();*/
-
-// 135 ; testing artifacts with combat
-// argument0 : type
-// argument1 : tags
-// argument2 : identified
-// argument3: location
-// argument4: sid
-
-// scr_add_artifact("Weapon","",4,obj_ini.home_name,1);
-
-/*scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);*/
-
-// scr_add_item("Cyclonic Torpedo",5);
-// scr_add_item("Exterminatus",5);
-
-if (is_test_map == true) {
-    // scr_add_item("Exterminatus",5);
-    /*scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);*/
-}
-
 with (obj_temp7) {
     instance_destroy();
 }
 //for tau fleets, if it is stationed on a system it owns, make a temp7 obj
 with (obj_en_fleet) {
     if ((owner == eFACTION.TAU) && (instance_nearest(x, y, obj_star).owner == eFACTION.TAU)) {
-        instance_create(x, y, obj_temp7);
+        instance_create_depth(x, y, obj_temp7.depth, obj_temp7);
     }
 }
 //if any temp objects exist, find the one nearest to the center of the room and set your direction to
@@ -634,10 +599,6 @@ if (instance_exists(obj_temp7)) {
         other.terra_direction = point_direction(x, y, room_width / 2, room_height / 2);
     }
 }
-
-/*with(obj_star){
-    scr_star_ownership(false);
-}*/
 
 // Save immediately after world gen
 if (global.load == -1 && global.settings.autosave == true) {

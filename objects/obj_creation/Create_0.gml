@@ -3,6 +3,7 @@
  * It contains data and logic for setting up custom chapters as well as populating the new game menu with data for pre-existing chapters.
  */
 keyboard_string = "";
+depth = -49;
 
 #region Icon Grid settings for chapter selection
 icon_width = 48;

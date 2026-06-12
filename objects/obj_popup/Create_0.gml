@@ -14,6 +14,7 @@ if (size == 3) {
 image_wid = 0;
 image_hei = 0;
 image = "";
+depth = -16000;
 
 master_crafted = 0;
 hide = false;
@@ -121,7 +122,6 @@ company_promote_data = [
 ];
 
 for (var i = 0; i <= 10; i++) {
-    i += 1;
     role_name[i] = "";
     role_exp[i] = 0;
 }
@@ -133,7 +133,7 @@ get_unit_promotion_options = function() {
         role_name[i] = "";
         role_exp[i] = 0;
     }
-    i = 0;
+    var i = 0;
     // this area does the required exp for roles per company
     if (unit_role == obj_ini.role[100][16]) {
         //techmarine

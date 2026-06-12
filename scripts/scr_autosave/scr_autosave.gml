@@ -2,7 +2,7 @@
 function scr_autosave() {
     try {
         if (!instance_exists(obj_saveload)) {
-            instance_create(0, 0, obj_saveload);
+            instance_create_depth(0, 0, obj_saveload.depth, obj_saveload);
         }
 
         obj_saveload.autosaving = true;

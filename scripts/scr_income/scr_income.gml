@@ -119,11 +119,11 @@ function scr_income() {
         with (obj_star) {
             if (planet_feature_bool(p_feature[1], eP_FEATURES.MONASTERY) == 1) {
                 obj_controller.income += 10;
-                instance_create(x, y, obj_temp1);
+                instance_create_depth(x, y, obj_temp1.depth, obj_temp1);
             }
             if (planet_feature_bool(p_feature[2], eP_FEATURES.MONASTERY) == 1) {
                 obj_controller.income += 10;
-                instance_create(x, y, obj_temp1);
+                instance_create_depth(x, y, obj_temp1.depth, obj_temp1);
             }
             if (owner == eFACTION.TAU) {
                 obj_controller.tau_stars += 1;

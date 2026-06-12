@@ -108,7 +108,7 @@ function scr_livery_setup() {
         for (var i = 0; i < array_length(bulk_buttons); i++) {
             if (bulk_buttons[i].draw(custom == eCHAPTER_TYPE.CUSTOM)) {
                 instance_destroy(obj_creation_popup);
-                var pp = instance_create(0, 0, obj_creation_popup);
+                var pp = instance_create_depth(0, 0, obj_creation_popup.depth, obj_creation_popup);
                 pp.type = i + 1;
                 pp.picker.title = bulk_buttons[i].label;
             }
@@ -122,7 +122,7 @@ function scr_livery_setup() {
 
             if (_button.draw()) {
                 instance_destroy(obj_creation_popup);
-                var pp = instance_create(0, 0, obj_creation_popup);
+                var pp = instance_create_depth(0, 0, obj_creation_popup.depth, obj_creation_popup);
                 pp.type = _button.area;
                 pp.role = _button.role_id;
             }

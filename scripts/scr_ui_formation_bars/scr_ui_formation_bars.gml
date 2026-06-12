@@ -42,7 +42,7 @@ function scr_ui_formation_bars() {
     for (var bar = 1; bar <= 10; bar++) {
         ui_formations_data.te++;
         temp[ui_formations_data.te] = 0;
-        var cu = instance_create(ui_formations_data.x9, ui_formations_data.y9, obj_temp8);
+        var cu = instance_create_depth(ui_formations_data.x9, ui_formations_data.y9, obj_temp8.depth, obj_temp8);
         cu.col_parent = bar;
 
         temp[ui_formations_data.te] = 0;
@@ -100,7 +100,7 @@ function scr_ui_formation_bars() {
 
 /// @self Asset.GMObject.obj_controller
 function init_combat_bars(bar, formations_data, unit_data) {
-    formations_data.nbar = instance_create(formations_data.x9, formations_data.y9 + temp[formations_data.te], obj_formation_bar);
+    formations_data.nbar = instance_create_depth(formations_data.x9, formations_data.y9 + temp[formations_data.te], obj_formation_bar.depth, obj_formation_bar);
 
     with (formations_data.nbar){
         move_data_to_current_scope(unit_data)

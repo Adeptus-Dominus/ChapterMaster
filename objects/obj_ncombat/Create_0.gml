@@ -8,7 +8,7 @@ co = -1;
 co = 0;
 i = 0;
 hue = 0;
-
+depth = -16000;
 turn_count = 0;
 LOGGER.info("Ground Combat Started");
 
@@ -54,10 +54,10 @@ var i, u;
 i = 11;
 repeat (10) {
     i -= 1; // This creates the objects to then be filled in
-    u = instance_create(i * 10, 240, obj_pnunit);
+    u = instance_create_depth(i * 10, 240, obj_pnunit.depth, obj_pnunit);
 }
 
-instance_create(0, 0, obj_centerline);
+instance_create_depth(0, 0, obj_centerline.depth, obj_centerline);
 
 local_forces = 0;
 battle_loc = "";
@@ -199,8 +199,6 @@ timer_speed = 0;
 timer_maxspeed = 1;
 timer_pause = -1;
 turns = 1;
-
-//
 
 scouts = 0;
 tacticals = 0;

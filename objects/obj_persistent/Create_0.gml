@@ -1,4 +1,5 @@
 randomize();
+depth = 0;
 
 global.settings = new SettingsManager();
 global.settings.load();

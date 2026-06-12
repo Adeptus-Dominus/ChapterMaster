@@ -50,7 +50,7 @@ if (instance_exists(target)) {
         if (owner == eFACTION.TAU) {
             cooldown1 = 20;
         }
-        bull = instance_create(x, y, obj_en_round);
+        bull = instance_create_depth(x, y, obj_en_round.depth, obj_en_round);
         bull.direction = self.direction;
         if ((owner == eFACTION.TAU) || (owner == eFACTION.ELDAR)) {
             bull.sprite_index = spr_pulse;
@@ -119,6 +119,6 @@ if ((!instance_exists(target)) || (target.x <= -4000)) {
 }
 
 if (hp <= 0) {
-    instance_create(x, y, obj_explosion);
+    instance_create_depth(x, y, obj_explosion.depth, obj_explosion);
     instance_destroy();
 }

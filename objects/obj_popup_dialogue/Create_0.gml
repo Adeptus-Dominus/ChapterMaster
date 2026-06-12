@@ -1,5 +1,6 @@
-xx = camera_get_view_x(view_camera[0]) + x;
-yy = camera_get_view_y(view_camera[0]) + y;
+var xx = camera_get_view_x(view_camera[0]) + x;
+var yy = camera_get_view_y(view_camera[0]) + y;
+depth = -16000;
 
 obj_controller.cooldown = 8000;
 question = "";

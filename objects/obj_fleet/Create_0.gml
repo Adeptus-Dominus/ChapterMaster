@@ -1,6 +1,6 @@
 instance_activate_object(obj_controller);
 LOGGER.info("Fleet Combat Started");
-
+depth = -5000;
 beg = 0;
 fallen = 0;
 fallen_command = 0;
@@ -13,7 +13,6 @@ battle_special = "";
 csm_exp = 0;
 star_name = "";
 
-// woohoo=0;
 left_down = 0;
 
 view_x = obj_controller.x;
@@ -126,7 +125,7 @@ betchers = obj_ini.betchers; // slight melee penalty
 catalepsean = obj_ini.catalepsean; // minor global attack decrease
 occulobe = obj_ini.occulobe; // penalty if morning and susceptible to flash grenades
 mucranoid = obj_ini.mucranoid; // chance to short-circuit
-//
+
 global_melee = 1;
 global_bolter = 1;
 global_attack = 1;
@@ -150,7 +149,6 @@ if (scr_has_adv("Kings of Space")) {
     global_attack += 0.1;
 }
 
-//
 master = 0;
 time = 0;
 
@@ -203,6 +201,3 @@ column[5] = "escort";
 column_width[5] = 76;
 
 color_index = 0;
-
-/* */
-/*  */

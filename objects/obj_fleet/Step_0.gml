@@ -1,6 +1,4 @@
-// if (woohoo<60) then woohoo+=1;
-
-if (beg != 0) /* and (instance_exists(obj_fleet_controller))*/ {
+if (beg != 0) {
     if ((combat_end > -1) && (!instance_exists(obj_en_ship))) {
         combat_end -= 1;
         victory = true;
@@ -45,8 +43,7 @@ if (start == 5) {
         if (player_lasers_cd <= 0) {
             player_lasers_cd = round(360 / player_lasers);
             repeat (min(2, player_lasers)) {
-                var las;
-                las = instance_create(x - 150, random(room_height / 2) + (room_height / 4), obj_p_round);
+                var las = instance_create_depth(x - 150, random(room_height / 2) + (room_height / 4), obj_p_round.depth, obj_p_round);
                 las.direction = point_direction(las.x, las.y, player_lasers_target.x, player_lasers_target.y) + round(random_range(-4, 4));
                 las.image_xscale = 1.5;
                 las.image_yscale = 1.5;
@@ -59,6 +56,3 @@ if (start == 5) {
         }
     }
 }
-
-/* */
-/*  */

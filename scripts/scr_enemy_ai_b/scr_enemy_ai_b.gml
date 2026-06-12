@@ -85,7 +85,7 @@ function scr_enemy_ai_b() {
                             }
                         }
                     } else if (present_fleet[eFACTION.NECRONS] == 0) {
-                        necron_fleet = instance_create(x, y, obj_en_fleet);
+                        necron_fleet = instance_create_depth(x, y, obj_en_fleet.depth, obj_en_fleet);
                         necron_fleet.owner = eFACTION.NECRONS;
                         necron_fleet.capital_number = 1;
                         necron_fleet.sprite_index = spr_fleet_necron;
@@ -114,8 +114,7 @@ function scr_enemy_ai_b() {
                         }
                     }
                     if (enemy_fleets > 0) {
-                        var necron_fleet2;
-                        necron_fleet2 = instance_create(x, y, obj_en_fleet);
+                        var necron_fleet2 = instance_create_depth(x, y, obj_en_fleet.depth, obj_en_fleet);
                         necron_fleet2.owner = eFACTION.NECRONS;
                         necron_fleet2.sprite_index = spr_fleet_necron;
                         // necron_fleet2.image_index=0;

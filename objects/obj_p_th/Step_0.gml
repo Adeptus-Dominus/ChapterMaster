@@ -29,9 +29,8 @@ if (instance_exists(target)) {
     }
 
     if ((action == "shoot") && (cooldown1 <= 0)) {
-        var bull;
         cooldown1 = 30;
-        bull = instance_create(x, y, obj_p_round);
+        var bull = instance_create_depth(x, y, obj_p_round.depth, obj_p_round);
         bull.direction = self.direction;
         bull.speed = 20;
         bull.image_xscale = 0.5;
@@ -57,6 +56,6 @@ if (!instance_exists(target)) {
 }
 
 if (hp <= 0) {
-    instance_create(x, y, obj_explosion);
+    instance_create_depth(x, y, obj_explosion.depth, obj_explosion);
     instance_destroy();
 }

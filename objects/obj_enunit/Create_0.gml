@@ -9,7 +9,7 @@ hostile_splash = 0;
 flank = 0;
 flyer = 0; // Works same as flank, but does not get denoted as such
 neww = 0;
-
+depth = -16000;
 column_size = 0;
 
 unit_count = 0;

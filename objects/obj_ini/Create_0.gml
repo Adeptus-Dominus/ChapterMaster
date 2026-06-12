@@ -1,6 +1,7 @@
 // Global singletons
 // global.NameGenerator = new NameGenerator();
 LOGGER.debug("Creating obj_ini");
+depth = 0;
 
 // normal stuff
 specials = 0;
@@ -274,8 +275,8 @@ deserialize = function(save_data) {
         obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main\\squads\\company_squad_builds.json", json_parse);
     }
 
-    var _len = array_length(all_names);
-    for (var i = 0; i < _len; i++) {
+    var names_len = array_length(all_names);
+    for (var i = 0; i < names_len; i++) {
         var var_name = all_names[i];
         if (array_contains(exclusions, var_name)) {
             continue;

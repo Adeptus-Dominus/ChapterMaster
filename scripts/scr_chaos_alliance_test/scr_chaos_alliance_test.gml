@@ -73,7 +73,7 @@ function scr_chaos_alliance_test() {
             }
             if (yeah > 0) {
                 repeat (yeah) {
-                    instance_create(x, y, obj_temp8);
+                    instance_create_depth(x, y, obj_temp8.depth, obj_temp8);
                 }
             }
         }

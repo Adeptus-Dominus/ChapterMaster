@@ -60,14 +60,14 @@ if (owner != 6) {
         image_alpha = 0.5;
 
         if (owner != eFACTION.TYRANIDS) {
-            husk = instance_create(x, y, obj_en_husk);
+            husk = instance_create_depth(x, y, obj_en_husk.depth, obj_en_husk);
             husk.sprite_index = sprite_index;
             husk.direction = direction;
             husk.image_angle = image_angle;
             husk.depth = depth;
             husk.image_speed = 0;
             for (var i = 0; i < choose(4, 5, 6); i++) {
-                explo = instance_create(x, y, obj_explosion);
+                explo = instance_create_depth(x, y, obj_explosion.depth, obj_explosion);
                 explo.image_xscale = 0.5;
                 explo.image_yscale = 0.5;
                 explo.x += random_range(sprite_width * 0.25, sprite_width * -0.25);
@@ -260,7 +260,7 @@ if (owner != 6) {
                 dist = point_distance(x, y, targe.x, targe.y);
             }
             if ((dist > 64) && (dist < 300)) {
-                bull = instance_create(x, y, obj_al_round);
+                bull = instance_create_depth(x, y, obj_al_round.depth, obj_al_round);
                 bull.direction = point_direction(x, y, targe.x, targe.y);
                 if (owner == eFACTION.TYRANIDS) {
                     bull.sprite_index = spr_glob;
@@ -365,7 +365,7 @@ if (owner != 6) {
                 ok = 3;
                 // Weapons fire
                 if ((string_count("orpedo", wep) == 0) && (string_count("Interceptor", wep) == 0) && (string_count("ommerz", wep) == 0) && (string_count("Claws", wep) == 0) && (string_count("endrils", wep) == 0) && (ok == 3)) {
-                    bull = instance_create(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), obj_al_round);
+                    bull = instance_create_depth(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), obj_al_round.depth, obj_al_round);
                     bull.speed = 20;
                     bull.dam = dam;
                     if (targe == target) {
@@ -426,24 +426,24 @@ if (owner != 6) {
                 // Torpedo weapons
                 if ((string_count("orpedo", wep) == 1) && (ok == 3)) {
                     if (class != "Ravager") {
-                        bull = instance_create(x, y + lengthdir_y(-30, direction + 90), obj_al_round);
+                        bull = instance_create_depth(x, y + lengthdir_y(-30, direction + 90), obj_al_round.depth, obj_al_round);
                         bull.speed = 10;
                         bull.direction = direction;
                         bull.sprite_index = spr_torpedo;
                         bull.dam = dam;
                     }
-                    bull = instance_create(x, y + lengthdir_y(-10, direction + 90), obj_al_round);
+                    bull = instance_create_depth(x, y + lengthdir_y(-10, direction + 90), obj_al_round.depth, obj_al_round);
                     bull.speed = 10;
                     bull.direction = direction;
                     bull.sprite_index = spr_torpedo;
                     bull.dam = dam;
-                    bull = instance_create(x, y + lengthdir_y(10, direction + 90), obj_al_round);
+                    bull = instance_create_depth(x, y + lengthdir_y(10, direction + 90), obj_al_round.depth, obj_al_round);
                     bull.speed = 10;
                     bull.direction = direction;
                     bull.sprite_index = spr_torpedo;
                     bull.dam = dam;
                     if (class != "Ravager") {
-                        bull = instance_create(x, y + lengthdir_y(30, direction + 90), obj_al_round);
+                        bull = instance_create_depth(x, y + lengthdir_y(30, direction + 90), obj_al_round.depth, obj_al_round);
                         bull.speed = 10;
                         bull.direction = direction;
                         bull.sprite_index = spr_torpedo;
@@ -461,7 +461,7 @@ if (owner != 6) {
                 }
                 // Special weapons
                 if (((string_count("Interceptor", wep) == 1) || (string_count("ommerz", wep) == 1) || (string_count("Manta", wep) == 1) || (string_count("Glands", wep) == 1) || (string_count("Eldar Launch", wep) == 1)) && (ok == 3)) {
-                    bull = instance_create(x, y + lengthdir_y(-30, direction + 90), obj_al_in);
+                    bull = instance_create_depth(x, y + lengthdir_y(-30, direction + 90), obj_al_in.depth, obj_al_in);
                     bull.direction = self.direction;
                     bull.owner = self.owner;
                 }
@@ -509,7 +509,7 @@ if (owner == 6) {
 
         image_alpha = 0.5;
 
-        husk = instance_create(x, y, obj_en_husk);
+        husk = instance_create_depth(x, y, obj_en_husk.depth, obj_en_husk);
         husk.sprite_index = sprite_index;
         husk.direction = direction;
         husk.image_angle = image_angle;
@@ -517,7 +517,7 @@ if (owner == 6) {
         husk.image_speed = 0;
 
         for (var i = 0; i < choose(4, 5, 6); i++) {
-            explo = instance_create(x, y, obj_explosion);
+            explo = instance_create_depth(x, y, obj_explosion.depth, obj_explosion);
             explo.image_xscale = 0.5;
             explo.image_yscale = 0.5;
             explo.x += random_range(sprite_width * 0.25, sprite_width * -0.25);
@@ -594,7 +594,7 @@ if (owner == 6) {
             }
 
             if ((dist > 64) && (dist < 300)) {
-                bull = instance_create(x, y, obj_al_round);
+                bull = instance_create_depth(x, y, obj_al_round.depth, obj_al_round);
                 bull.direction = point_direction(x, y, targe.x, targe.y);
                 if (owner == eFACTION.TYRANIDS) {
                     bull.sprite_index = spr_glob;
@@ -705,7 +705,7 @@ if (owner == 6) {
                 ok = 3;
                 // Weapon types
                 if ((string_count("orpedo", wep) == 0) && (string_count("Interceptor", wep) == 0) && (string_count("ommerz", wep) == 0) && (string_count("Claws", wep) == 0) && (string_count("endrils", wep) == 0) && (ok == 3)) {
-                    bull = instance_create(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), obj_al_round);
+                    bull = instance_create_depth(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), obj_al_round.depth, obj_al_round);
                     bull.speed = 20;
                     bull.dam = dam;
                     if (targe == target) {
@@ -765,24 +765,24 @@ if (owner == 6) {
                 }
                 if ((string_count("orpedo", wep) == 1) && (ok == 3)) {
                     if (class != "Ravager") {
-                        bull = instance_create(x, y + lengthdir_y(-30, direction + 90), obj_al_round);
+                        bull = instance_create_depth(x, y + lengthdir_y(-30, direction + 90), obj_al_round.depth, obj_al_round);
                         bull.speed = 10;
                         bull.direction = direction;
                         bull.sprite_index = spr_torpedo;
                         bull.dam = dam;
                     }
-                    bull = instance_create(x, y + lengthdir_y(-10, direction + 90), obj_al_round);
+                    bull = instance_create_depth(x, y + lengthdir_y(-10, direction + 90), obj_al_round.depth, obj_al_round);
                     bull.speed = 10;
                     bull.direction = direction;
                     bull.sprite_index = spr_torpedo;
                     bull.dam = dam;
-                    bull = instance_create(x, y + lengthdir_y(10, direction + 90), obj_al_round);
+                    bull = instance_create_depth(x, y + lengthdir_y(10, direction + 90), obj_al_round.depth, obj_al_round);
                     bull.speed = 10;
                     bull.direction = direction;
                     bull.sprite_index = spr_torpedo;
                     bull.dam = dam;
                     if (class != "Ravager") {
-                        bull = instance_create(x, y + lengthdir_y(30, direction + 90), obj_al_round);
+                        bull = instance_create_depth(x, y + lengthdir_y(30, direction + 90), obj_al_round.depth, obj_al_round);
                         bull.speed = 10;
                         bull.direction = direction;
                         bull.sprite_index = spr_torpedo;
@@ -798,7 +798,7 @@ if (owner == 6) {
                     }
                 }
                 if (((string_count("Interceptor", wep) == 1) || (string_count("ommerz", wep) == 1) || (string_count("Manta", wep) == 1) || (string_count("Glands", wep) == 1) || (string_count("Eldar Launch", wep) == 1)) && (ok == 3)) {
-                    bull = instance_create(x, y + lengthdir_y(-30, direction + 90), obj_al_in);
+                    bull = instance_create_depth(x, y + lengthdir_y(-30, direction + 90), obj_al_in.depth, obj_al_in);
                     bull.direction = self.direction;
                     bull.owner = self.owner;
                 }

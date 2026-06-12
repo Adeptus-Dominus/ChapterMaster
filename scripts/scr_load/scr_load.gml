@@ -33,7 +33,7 @@ function scr_load(save_part, save_id) {
         var star_array = obj_saveload.GameSave.Stars;
         for (var i = 0; i < array_length(star_array); i++) {
             var star_save_data = star_array[i];
-            var star_instance = instance_create(0, 0, obj_star);
+            var star_instance = instance_create_depth(0, 0, obj_star.depth, obj_star);
             with (star_instance) {
                 deserialize(star_save_data);
             }
@@ -115,7 +115,7 @@ function scr_load(save_part, save_id) {
         var p_fleet = obj_saveload.GameSave.PlayerFleet;
         for (var i = 0; i < array_length(p_fleet); i++) {
             var deserialized = p_fleet[i];
-            var p_fleet_instance = instance_create(0, 0, obj_p_fleet);
+            var p_fleet_instance = instance_create_depth(0, 0, obj_p_fleet.depth, obj_p_fleet);
             with (p_fleet_instance) {
                 deserialize(deserialized);
             }
@@ -129,7 +129,7 @@ function scr_load(save_part, save_id) {
         var en_fleet = obj_saveload.GameSave.EnemyFleet;
         for (var i = 0; i < array_length(en_fleet); i++) {
             var deserialized = en_fleet[i];
-            var en_fleet_instance = instance_create(0, 0, obj_en_fleet);
+            var en_fleet_instance = instance_create_depth(0, 0, obj_en_fleet.depth, obj_en_fleet);
             with (en_fleet_instance) {
                 deserialize(deserialized);
             }
@@ -138,7 +138,7 @@ function scr_load(save_part, save_id) {
 
         LOGGER.info("Loading EVENT LOG");
         if (!instance_exists(obj_event_log)) {
-            instance_create(0, 0, obj_event_log);
+            instance_create_depth(0, 0, obj_event_log.depth, obj_event_log);
         }
         instance_activate_object(obj_event_log);
         obj_event_log.event = obj_saveload.GameSave.EventLog;

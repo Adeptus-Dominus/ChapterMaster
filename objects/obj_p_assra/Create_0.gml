@@ -1,6 +1,6 @@
 image_xscale = 0.5;
 image_yscale = 0.5;
-
+depth = -3;
 origin = 0;
 target = 0;
 cooldown = 0;

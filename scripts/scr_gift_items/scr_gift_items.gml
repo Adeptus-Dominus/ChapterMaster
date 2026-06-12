@@ -207,7 +207,7 @@ function are_giftable_factions() {
 
 function setup_gift_popup() {
     if (are_giftable_factions()) {
-        var pop = instance_create(0, 0, obj_popup);
+        var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pop.type = 9;
         with (pop) {
             cancel_button = new UnitButtonObject({x1: 700, y1: 370, style: "pixel", label: "Cancel"});

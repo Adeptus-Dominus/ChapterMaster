@@ -275,7 +275,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
                     array_push(_empty_ships, i);
                 } else {
                     var _star = array_pop(_imperial_stars);
-                    _new_fleet = instance_create(_star.x, _star.y, obj_p_fleet);
+                    _new_fleet = instance_create_depth(_star.x, _star.y, obj_p_fleet.depth, obj_p_fleet);
                     _new_fleet.owner = eFACTION.PLAYER;
                     add_ship_to_fleet(i, _new_fleet);
                     array_push(_fleets, _new_fleet);

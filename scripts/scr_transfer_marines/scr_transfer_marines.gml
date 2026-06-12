@@ -212,7 +212,7 @@ function set_up_transfer_popup() {
             _min_exp = -1;
         }
 
-        var pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         with (pip) {
             type = 5.1;
             company = obj_controller.managing;

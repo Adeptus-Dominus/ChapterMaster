@@ -10,7 +10,7 @@ function scr_gov_disp(argument0, argument1, argument2) {
         }
         with (obj_star) {
             if (name == obj_controller.temp[2000]) {
-                instance_create(x, y, obj_temp3);
+                instance_create_depth(x, y, obj_temp3.depth, obj_temp3);
             }
         }
         if (instance_exists(obj_temp3)) {

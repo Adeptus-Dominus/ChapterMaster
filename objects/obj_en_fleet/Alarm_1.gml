@@ -127,45 +127,6 @@ try {
         instance_activate_object(obj_crusade);
         instance_activate_object(obj_en_fleet);
 
-        /*if (action="") and (owner = eFACTION.IMPERIUM){// Defend nearby systems and return when done
-            
-            with(obj_star){
-                // 137 ; might want for it to defend under other circumstances
-                if (present_fleet[8]>0) and (owner<=5) and (x>2) and (y>2) then instance_create(x,y,obj_temp3);
-            }
-            if (instance_number(obj_temp3)=0) then ret=1;
-            if (instance_number(obj_temp3)>0){
-                var you,dis,mem;
-                you=instance_nearest(x,y,obj_temp3);
-                dis=point_distance(x,y,you.x,you.y);
-                
-                if (dis<300) and (image_index>=3){
-                    action_x=you.x;action_y=you.y;
-                    home_x=instance_nearest(x,y,obj_star).x;
-                    home_y=instance_nearest(x,y,obj_star).y;
-                    set_fleet_movement();with(obj_temp3){instance_destroy();}
-                    exit;
-                }
-                if (dis>=300) then ret=1;
-            }
-            
-            if (instance_exists(obj_crusade)){
-                var cru;cru=instance_nearest(x,y,obj_crusade);
-                if (cru.owner=self.owner) and (point_distance(x,y,cru.x,cru.y)<cru.radius) then ret=0;
-            }
-            
-            if (ret=1){
-                var cls;cls=instance_nearest(x,y,obj_star);
-                if ((cls.x!=home_x) or (cls.y!=home_y)) and (home_x+home_y>0){
-                    action_x=home_x;
-                    action_y=home_y;
-                    set_fleet_movement();
-                }
-            }
-    
-            with(obj_temp3){instance_destroy();}
-        }*/
-
         if (owner == eFACTION.INQUISITION) {
             var valid = true;
             if (instance_exists(target)) {
@@ -289,23 +250,6 @@ try {
                     obj_controller.known[eFACTION.TAU] = 1;
                 }
             }
-
-            /*if (image_index>=4){
-                with(obj_star){
-                    if (owner = eFACTION.TAU) and (present_fleets>0) and (tau_fleets=0){
-                        instance_create(x,y,obj_temp5);
-                    }
-                }
-                if (instance_exists(obj_temp5)){
-                    var wop;wop=instance_nearest(x,y,obj_temp5);
-                    if (wop!=0) and (point_distance(x,y,wop.x,wop.y)<300) and (wop.x>5) and (wop.y>5){
-                        target_x=wop.x;target_y=wop.y;
-                        home_x=x;home_y=y;
-                        set_fleet_movement();
-                    }
-                }
-                with(obj_temp5){instance_destroy();}
-            }*/
         }
 
         if (owner == eFACTION.TYRANIDS) {
@@ -380,8 +324,7 @@ try {
                                 good++;
                             }
 
-                            var new_fleet;
-                            new_fleet = instance_create(x, y, obj_en_fleet);
+                            var new_fleet = instance_create_depth(x, y, obj_en_fleet.depth, obj_en_fleet);
                             new_fleet.capital_number = floor(capital_number * 0.4);
                             new_fleet.frigate_number = floor(frigate_number * 0.4);
                             new_fleet.escort_number = floor(escort_number * 0.4);
@@ -393,11 +336,6 @@ try {
                             new_fleet.owner = eFACTION.TYRANIDS;
                             new_fleet.sprite_index = spr_fleet_tyranid;
                             new_fleet.image_index = 1;
-
-                            /*with(new_fleet){
-                                var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
-                                if (ii<=1) then ii=1;image_index=ii;
-                            }*/
 
                             new_fleet.action_x = plin2.x;
                             new_fleet.action_y = plin2.y;

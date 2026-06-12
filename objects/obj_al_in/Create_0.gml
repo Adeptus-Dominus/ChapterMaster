@@ -1,7 +1,7 @@
 image_xscale = 0.5;
 image_yscale = 0.5;
 speed = 6;
-
+depth = 0;
 target = 0;
 shields = 0;
 owner = 0;

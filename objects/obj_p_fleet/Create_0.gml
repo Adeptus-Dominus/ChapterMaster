@@ -6,6 +6,7 @@ selected = 0;
 orbiting = 0;
 warp_able = true;
 ii_check = choose(8, 9, 10, 11, 12);
+depth = -10;
 
 var wop = instance_nearest(x, y, obj_star);
 if (instance_exists(wop) && (y > 0) && (x > 0)) {
@@ -19,7 +20,6 @@ point_breakdown = single_loc_point_data();
 image_xscale = 1.25;
 image_yscale = 1.25;
 
-var i = -1;
 capital = [];
 capital_num = [];
 capital_sel = [];

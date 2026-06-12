@@ -5,7 +5,7 @@ max_x = 0;
 max_y = 0;
 cen_x = 0;
 cen_y = 0;
-
+depth = 0;
 with (obj_p_ship) {
     if (selected == 1) {
         if (x < obj_circular.min_x) {

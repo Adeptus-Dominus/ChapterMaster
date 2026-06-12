@@ -106,7 +106,7 @@ function check_navy_guard_still_live() {
 
 function build_new_navy_fleet(construction_forge) {
     /// @type {Asset.GMObject.obj_en_fleet}
-    var new_navy_fleet = instance_create(construction_forge.x, construction_forge.y, obj_en_fleet);
+    var new_navy_fleet = instance_create_depth(construction_forge.x, construction_forge.y, obj_en_fleet.depth, obj_en_fleet);
 
     with (new_navy_fleet) {
         owner = eFACTION.IMPERIUM;
@@ -337,12 +337,12 @@ function navy_hunt_player_assets() {
 
             with (obj_p_fleet) {
                 if (action == "") {
-                    instance_create(x, y, obj_temp7);
+                    instance_create_depth(x, y, obj_temp7.depth, obj_temp7);
                 }
             }
             with (obj_star) {
                 if (array_contains(p_owner, eFACTION.PLAYER)) {
-                    instance_create(x, y, obj_temp8);
+                    instance_create_depth(x, y, obj_temp8.depth, obj_temp8);
                 }
             }
 
@@ -420,22 +420,6 @@ function navy_hunt_player_assets() {
         with (obj_temp8) {
             instance_destroy();
         }
-
-        /*var homeworld_distance,homeworld_nearby,fleet_nearby,fleet_distance;
-        homeworld_distance=9999;fleet_distance=9999;fleet_nearby=0;homeworld_nearby=0;
-    
-        with(obj_p_fleet){if (action!="") then y-=20000;}// Disable non-stationary player fleets
-        if (instance_exists(obj_p_fleet)){fleet_nearby=instance_nearest(x,y,obj_p_fleet);fleet_distance=point_distance(x,y,fleet_nearby.x,fleet_nearby.y);}// Get closest player fleet
-        with(obj_star){if (owner  = eFACTION.PLAYER) then instance_create(x,y,obj_temp7);}// Create temp7 at player stars
-        if (instance_exists(obj_temp7)){homeworld_nearby=instance_nearest(x,y,obj_temp7);homeworld_distance=point_distance(x,y,homeworld_nearby.x,homeworld_nearby.y);}// Get closest star
-        with(obj_p_fleet){if (y<-10000) then y+=20000;}// Enable non-stationary player fleets
-    
-        if (homeworld_distance<=fleet_distance && homeworld_distance<7000 && instance_exists(homeworld_nearby)){// Go towards planet
-            action_x=homeworld_nearby.x;action_y=homeworld_nearby.y;set_fleet_movement();;exit;
-        }
-    
-    
-    */
     }
 }
 
@@ -1091,7 +1075,7 @@ function create_start_imperial_fleets() {
 function setup_start_imperial_navy_fleet(system) {
     var ii = 0;
     /// @type {Asset.GMObject.obj_en_fleet} 
-    var nav = instance_create(system.x, system.y, obj_en_fleet);
+    var nav = instance_create_depth(system.x, system.y, obj_en_fleet.depth, obj_en_fleet);
     var _star = system;
     _star.present_fleet[eFACTION.IMPERIUM] += 1;
     with (nav) {

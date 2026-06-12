@@ -51,7 +51,7 @@ function scr_event_gossip(argument0) {
     }
     with (obj_star) {
         if (owner == eFACTION.ORK) {
-            instance_create(x, y, obj_ground_mission);
+            instance_create_depth(x, y, obj_ground_mission.depth, obj_ground_mission);
         }
     }
     if ((instance_number(obj_ground_mission) > 4) && (obj_controller.known[eFACTION.ORK] > 0) && (obj_controller.faction_defeated[7] == 0)) {
@@ -74,7 +74,7 @@ function scr_event_gossip(argument0) {
     }
     with (obj_star) {
         if (owner == eFACTION.ORK) {
-            instance_create(x, y, obj_ground_mission);
+            instance_create_depth(x, y, obj_ground_mission.depth, obj_ground_mission);
         }
     }
     if (instance_number(obj_ground_mission) >= 8) {
@@ -90,7 +90,7 @@ function scr_event_gossip(argument0) {
     }
     with (obj_star) {
         if (owner == eFACTION.TAU) {
-            instance_create(x, y, obj_ground_mission);
+            instance_create_depth(x, y, obj_ground_mission.depth, obj_ground_mission);
         }
     }
     if (instance_number(obj_ground_mission) >= 8) {
@@ -106,7 +106,7 @@ function scr_event_gossip(argument0) {
     }
     with (obj_star) {
         if (owner == eFACTION.CHAOS) {
-            instance_create(x, y, obj_ground_mission);
+            instance_create_depth(x, y, obj_ground_mission.depth, obj_ground_mission);
         }
     }
     if (instance_number(obj_ground_mission) >= 8) {

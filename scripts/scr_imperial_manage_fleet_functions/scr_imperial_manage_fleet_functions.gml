@@ -1,5 +1,5 @@
 function new_colony_fleet(doner_star, doner_planet, target, target_planet, mission = "new_colony") {
-    var new_colonise_fleet = instance_create(doner_star.x, doner_star.y, obj_en_fleet);
+    var new_colonise_fleet = instance_create_depth(doner_star.x, doner_star.y, obj_en_fleet.depth, obj_en_fleet);
     new_colonise_fleet.owner = eFACTION.IMPERIUM;
     new_colonise_fleet.sprite_index = spr_fleet_civilian;
     new_colonise_fleet.image_index = 3;

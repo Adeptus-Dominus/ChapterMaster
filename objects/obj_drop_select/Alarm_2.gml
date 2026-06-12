@@ -1,7 +1,4 @@
-var i;
-i = -1;
-repeat (31) {
-    i += 1;
+for (var i = 0; i <= 30; i++) {
     ship[i] = "";
     ship_all[i] = 0;
     ship_use[i] = 0;

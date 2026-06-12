@@ -8,7 +8,7 @@ battle_loc = "";
 ship_id = 0;
 obj = 0;
 recoverable_gene_seed = 0;
-
+depth = 0;
 action_eta = 0;
 siz = 0;
 tch = 0;

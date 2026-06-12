@@ -36,9 +36,6 @@ if ((selected == 1) && (!instance_exists(obj_circular)) && (obj_fleet.control !=
             paction="turn";
         }*/
 
-        instance_create(20, 20, obj_circular);
+        instance_create_depth(20, 20, obj_circular.depth, obj_circular);
     }
 }
-
-/* */
-/*  */

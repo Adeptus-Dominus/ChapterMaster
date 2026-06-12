@@ -64,20 +64,14 @@ if ((hp <= 0) && (x > -5000)) {
 
     image_alpha = 0.5;
     if (obj_fleet.start != 0) {
-        /*ex=instance_create(x,y,obj_explosion);
-        ex.image_xscale=2;ex.image_yscale=2;
-        ex.image_speed=0.75;*/
-
-        var husk;
-        husk = instance_create(x, y, obj_en_husk);
+        var husk = instance_create_depth(x, y, obj_en_husk.depth, obj_en_husk);
         husk.sprite_index = sprite_index;
         husk.direction = direction;
         husk.image_angle = image_angle;
         husk.depth = depth;
         husk.image_speed = 0;
         repeat (choose(4, 5, 6)) {
-            var explo;
-            explo = instance_create(x, y, obj_explosion);
+            var explo = instance_create_depth(x, y, obj_explosion.depth, obj_explosion);
             explo.image_xscale = 0.5;
             explo.image_yscale = 0.5;
             explo.x += random_range(sprite_width * 0.25, sprite_width * -0.25);
@@ -267,7 +261,7 @@ if ((hp > 0) && instance_exists(target)) {
         }
 
         if ((dist > 64) && (dist < 300)) {
-            bull = instance_create(x, y, obj_p_round);
+            bull = instance_create_depth(x, y, obj_p_round.depth, obj_p_round);
             bull.direction = point_direction(x, y, targe.x, targe.y);
             bull.speed = 20;
             bull.dam = 3;
@@ -365,7 +359,7 @@ if ((hp > 0) && instance_exists(target)) {
                     ok = 3;
 
                     if ((string_count("orpedo", wep) == 0) && (string_count("hawk", wep) == 0) && (ok == 3)) {
-                        bull = instance_create(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), obj_p_round);
+                        bull = instance_create_depth(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), obj_p_round.depth, obj_p_round);
                         bull.speed = 20;
                         bull.dam = dam;
                         if (targe == target) {
@@ -391,26 +385,26 @@ if ((hp > 0) && instance_exists(target)) {
                     }
                     if ((string_count("orpedo", wep) == 1) && (ok == 3)) {
                         if (sprite_index == spr_ship_bb) {
-                            bull = instance_create(x, y + lengthdir_y(-30, direction + 90), obj_p_round);
+                            bull = instance_create_depth(x, y + lengthdir_y(-30, direction + 90), obj_p_round.depth, obj_p_round);
                             bull.speed = 10;
                             bull.direction = direction;
                             bull.sprite_index = spr_torpedo;
                             bull.dam = dam;
                         }
 
-                        bull = instance_create(x, y + lengthdir_y(-10, direction + 90), obj_p_round);
+                        bull = instance_create_depth(x, y + lengthdir_y(-10, direction + 90), obj_p_round.depth, obj_p_round);
                         bull.speed = 10;
                         bull.direction = direction;
                         bull.sprite_index = spr_torpedo;
                         bull.dam = dam;
-                        bull = instance_create(x, y + lengthdir_y(10, direction + 90), obj_p_round);
+                        bull = instance_create_depth(x, y + lengthdir_y(10, direction + 90), obj_p_round.depth, obj_p_round);
                         bull.speed = 10;
                         bull.direction = direction;
                         bull.sprite_index = spr_torpedo;
                         bull.dam = dam;
 
                         if (sprite_index == spr_ship_bb) {
-                            bull = instance_create(x, y + lengthdir_y(30, direction + 90), obj_p_round);
+                            bull = instance_create_depth(x, y + lengthdir_y(30, direction + 90), obj_p_round.depth, obj_p_round);
                             bull.speed = 10;
                             bull.direction = direction;
                             bull.sprite_index = spr_torpedo;
@@ -418,7 +412,7 @@ if ((hp > 0) && instance_exists(target)) {
                         }
                     }
                     if ((string_count("hawk", wep) == 1) && (ok == 3)) {
-                        bull = instance_create(x, y + lengthdir_y(-30, direction + 90), obj_p_th);
+                        bull = instance_create_depth(x, y + lengthdir_y(-30, direction + 90), obj_p_th.depth, obj_p_th);
                         bull.direction = self.direction;
                     }
                 }

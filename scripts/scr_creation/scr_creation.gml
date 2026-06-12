@@ -308,7 +308,7 @@ function scr_creation(slide_num) {
                 scr_save_chapter(global.chapter_id);
             }
 
-            instance_create(0, 0, obj_ini);
+            instance_create_depth(0, 0, obj_ini.depth, obj_ini);
             audio_stop_all();
             audio_play_sound(snd_royal, 0, true);
             audio_sound_gain(snd_royal, 1, 5000);

@@ -133,7 +133,7 @@ function scr_in_game_menu() {
         if ((!instance_exists(obj_ingame_menu)) && (!instance_exists(obj_popup)) && (!obj_controller.zoomed)) {
             // Main MENU
             set_zoom_to_default();
-            instance_create(0, 0, obj_ingame_menu);
+            instance_create_depth(0, 0, obj_ingame_menu.depth, obj_ingame_menu);
         }
     });
 }
@@ -509,7 +509,7 @@ function scr_end_turn() {
                         }
                     }
                     alarm[5] = 6;
-                    instance_create(0, 0, obj_turn_end);
+                    instance_create_depth(0, 0, obj_turn_end.depth, obj_turn_end);
                     scr_turn_first();
                 }
             }

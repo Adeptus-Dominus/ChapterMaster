@@ -140,7 +140,7 @@ function CompanyStruct(comp) constructor {
 
     static send_squad_on_mission = function(mission_type, star) {
         with (star) {
-            var unload_squad = instance_create(x, y, obj_star_select);
+            var unload_squad = instance_create_depth(x, y, obj_star_select.depth, obj_star_select);
             unload_squad.target = self;
             unload_squad.loading = 1;
             unload_squad.loading_name = name;

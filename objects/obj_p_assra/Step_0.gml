@@ -223,7 +223,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                     }
 
                     if ((target.hp <= 0) || (target.bridge <= 0)) {
-                        var husk = instance_create(target.x, target.y, obj_en_husk);
+                        var husk = instance_create_depth(target.x, target.y, obj_en_husk.depth, obj_en_husk);
 
                         if (experience == 0) {
                             experience = 2;
@@ -274,8 +274,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                         if (instance_exists(target)) {
                             if ((target.hp <= 0) && (target.bridge > 0)) {
                                 repeat (choose(3, 4, 5)) {
-                                    var explo;
-                                    explo = instance_create(target.x, target.y, obj_explosion);
+                                    var explo = instance_create_depth(target.x, target.y, obj_explosion.depth, obj_explosion);
                                     explo.image_xscale = 0.5;
                                     explo.image_yscale = 0.5;
                                     explo.x += random_range(target.sprite_width * 0.25, target.sprite_width * -0.25);
@@ -598,7 +597,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
         }
 
         if ((damaged_ship == 1) && instance_exists(target)) {
-            var explo = instance_create(target.x, target.y, obj_explosion);
+            var explo = instance_create_depth(target.x, target.y, obj_explosion.depth, obj_explosion);
             explo.image_xscale = 0.5;
             explo.image_yscale = 0.5;
             explo.x += random_range(target.sprite_width * 0.25, target.sprite_width * -0.25);
@@ -606,8 +605,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
         }
         if ((damaged_ship == 2) && instance_exists(target)) {
             repeat (3) {
-                var explo;
-                explo = instance_create(target.x, target.y, obj_explosion);
+                var explo = instance_create_depth(target.x, target.y, obj_explosion.depth, obj_explosion);
                 explo.sprite_index = spr_explosion_plas;
                 explo.image_xscale = 0.65;
                 explo.image_yscale = 0.65;
@@ -617,5 +615,3 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
         }
     }
 }
-
-// if (hp<=0){instance_create(x,y,obj_explosion);instance_destroy();} 

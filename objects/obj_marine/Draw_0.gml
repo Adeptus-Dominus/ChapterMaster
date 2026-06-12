@@ -105,13 +105,3 @@ if (wounded > 0) {
 if (wounded > 0) {
     wounded -= 1;
 }
-
-/*
-draw_set_color(0);
-draw_set_font(fnt_small);
-draw_set_halign(fa_left);
-draw_text(x-150,y-16,"Ammo:"+string(marine_wep1_clip[8])+"("+string(marine_wep1_ammo[8])+"), Reload:"+string(marine_wep1_reload[8]));
-*/
-
-/* */
-/*  */

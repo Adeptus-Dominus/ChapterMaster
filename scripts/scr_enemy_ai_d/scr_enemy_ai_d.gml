@@ -222,7 +222,7 @@ function scr_enemy_ai_d() {
 
             // show_message("x1:"+string(x)+", y1:"+string(y)+"#x2:"+string(x7)+", y2:"+string(y7));
 
-            flit = instance_create(x7, y7, obj_en_fleet);
+            flit = instance_create_depth(x7, y7, obj_en_fleet.depth, obj_en_fleet);
             if (has_problem_planet_and_time(i, "inquisitor1", 6)) {
                 flit.trade_goods = "male_her";
             }
@@ -324,14 +324,13 @@ function scr_enemy_ai_d() {
                     // p_timer[i][firstest]=floor(random_range(3,6))+1;
                     // show_message("Hive Fleet Destination: "+string(name)+"#ETA: "+string(p_timer[i][firstest]));
 
-                    var fleet, xx, yy;
-                    xx = random_range(room_width * 1.25, room_width * 2);
+                    var xx = random_range(room_width * 1.25, room_width * 2);
                     xx = choose(xx * -1, xx);
                     xx = x + xx;
-                    yy = random_range(room_height * 1.25, room_height * 2);
+                    var yy = random_range(room_height * 1.25, room_height * 2);
                     yy = choose(yy * -1, yy);
                     yy = y + yy;
-                    fleet = instance_create(xx, yy, obj_en_fleet);
+                    var fleet = instance_create_depth(xx, yy, obj_en_fleet.depth, obj_en_fleet);
                     fleet.owner = eFACTION.TYRANIDS;
                     fleet.sprite_index = spr_fleet_tyranid;
                     fleet.image_speed = 0;

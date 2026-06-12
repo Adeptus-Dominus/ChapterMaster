@@ -3,6 +3,7 @@ target = instance_nearest(x, y, obj_star);
 loading = 0;
 loading_name = "";
 alarm[0] = 1;
+depth = -20;
 debug = 0;
 guard = 0;
 pdf = 0;
@@ -108,13 +109,7 @@ tau_fleet = 0;
 tyranid_fleet = 0;
 heretic_fleet = 0;
 
-en_fleet[0] = 0;
-var i;
-i = -1;
-repeat (15) {
-    i += 1;
-    en_fleet[i] = 0;
-}
+en_fleet[0] = array_create(15, 0);
 
 if (obj_controller.menu == 0) {
     alarm[1] = 1;

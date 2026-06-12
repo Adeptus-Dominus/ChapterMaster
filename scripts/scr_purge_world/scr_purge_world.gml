@@ -12,7 +12,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
     if (((action_type == eDROP_TYPE.PURGEFIRE) || (action_type == eDROP_TYPE.PURGESELECTIVE)) && (star.p_traitors[planet] == 0) && (star.p_chaos[planet] == 0) && (obj_controller.turn >= obj_controller.chaos_turn)) {
         if ((planet_feature_bool(star.p_feature[planet], eP_FEATURES.WARLORD10) == 1) && (obj_controller.known[10] == 0) && (obj_controller.faction_gender[10] == 1)) {
             with (obj_drop_select) {
-                var pop = instance_create(0, 0, obj_popup);
+                var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
                 pop.image = "chaos_symbol";
                 pop.title = "Concealed Heresy";
                 pop.text = $"Your astartes set out and begin to cleanse {planet_numeral_name(planet, star)} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";
@@ -30,7 +30,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
                 instance_activate_object(obj_ini);
                 instance_activate_object(obj_drop_select);
 
-                instance_create(0, 0, obj_ncombat);
+                instance_create_depth(0, 0, obj_ncombat.depth, obj_ncombat);
                 obj_ncombat.battle_object = p_target;
                 obj_ncombat.battle_loc = p_target.name;
                 obj_ncombat.battle_id = obj_controller.selecting_planet;
@@ -388,7 +388,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 
         txt += "What is thy will?";
 
-        var pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pip.title = "Planetary Governor Assassinated";
         pip.text = txt;
         pip.planet = planet;
@@ -446,14 +446,14 @@ function scr_purge_world(star, planet, action_type, action_score) {
                 star.p_influence[planet][eFACTION.TAU] = 0;
             }
 
-            var pip = instance_create(0, 0, obj_popup);
+            var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             pip.title = "Purge Results";
             pip.text = txt2;
         }
         if (isquest == 1) {
             // DO EET
             var pip;
-            pip = instance_create(0, 0, obj_popup);
+            pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             pip.title = "Inquisition Mission Completed";
             pip.text = txt1;
             pip.image = "inquisition";

@@ -1,7 +1,4 @@
-var i;
-i = -1;
-repeat (61) {
-    i += 1;
+for (var i = 0; i <= 60; i++) {
     ship[i] = "";
     ship_all[i] = 0;
     ship_use[i] = 0;
@@ -14,16 +11,12 @@ max_ships = 0;
 if (sh_target != -50) {
     max_ships = sh_target.capital_number + sh_target.frigate_number + sh_target.escort_number;
 
-    var tump;
-    tump = 0;
-
-    var i, q, b;
-    i = 0;
-    q = 0;
-    b = 0;
+    var tump = 0;
+    var i = 0;
+    var q = 0;
     repeat (sh_target.capital_number) {
-        b += 1;
-        if (sh_target.capital[b] != "") {
+        q += 1;
+        if (sh_target.capital[q] != "") {
             i += 1;
             ship[i] = sh_target.capital[i];
 

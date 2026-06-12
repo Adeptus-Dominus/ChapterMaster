@@ -1,11 +1,9 @@
 projectile_infos = 0;
 life = 0;
 owner = 0;
+depth = -3;
 
-var i;
-i = -1;
-repeat (11) {
-    i += 1;
+for (var i = 0; i <= 10; i++) {
     projectile_damage[i] = 0;
     projectile_arp[i] = 0;
     projectile_splash[i] = 0;

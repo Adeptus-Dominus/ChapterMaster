@@ -382,7 +382,7 @@ function planet_numeral_name(planet, star = "none") {
 }
 
 function new_star_event_marker(colour) {
-    var bob = instance_create(x + 16, y - 24, obj_star_event);
+    var bob = instance_create_depth(x + 16, y - 24, obj_star_event.depth, obj_star_event);
     bob.image_alpha = 1;
     bob.image_speed = 1;
     bob.color = colour;
@@ -418,7 +418,7 @@ function is_dead_star(star = "none") {
 }
 
 function scr_create_space_hulk(xx, yy) {
-    var hulk = instance_create(xx, yy, obj_star);
+    var hulk = instance_create_depth(xx, yy, obj_star.depth, obj_star);
     hulk.space_hulk = 1;
     hulk.p_type[1] = "Space Hulk";
     hulk.name = global.name_generator.GenerateComposite("hulk", true);

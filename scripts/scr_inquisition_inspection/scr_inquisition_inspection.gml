@@ -434,7 +434,7 @@ function inquisitor_inspection_structure() constructor {
         if (finds.contraband_demand) {
             pop_txt += " The Inquisitor responsible for the inspection also demands that you hand over all heretical materials and Artifacts.";
             pop_spe = "contraband";
-            instance_create(x, y, obj_temp_arti);
+            instance_create_depth(x, y, obj_temp_arti.depth, obj_temp_arti);
         }
 
         // popup options and inline methods

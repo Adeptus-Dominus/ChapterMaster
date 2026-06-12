@@ -11,7 +11,7 @@ if (battle_special == 3.1) {
     that = instance_nearest(room_width / 2, room_height / 2, obj_star);
     instance_activate_all();
 
-    instance_create(0, 0, obj_ncombat);
+    instance_create_depth(0, 0, obj_ncombat.depth, obj_ncombat);
     obj_ncombat.enemy = 3;
     obj_ncombat.battle_object = that;
     obj_ncombat.battle_loc = loc;

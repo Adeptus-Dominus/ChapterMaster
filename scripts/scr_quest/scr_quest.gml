@@ -122,7 +122,7 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
         if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
             with (obj_star) {
                 if ((owner == eFACTION.PLAYER) && ((p_owner[1] == 1) || (p_owner[2] == 1))) {
-                    instance_create(x, y, obj_temp2);
+                    instance_create_depth(x, y, obj_temp2.depth, obj_temp2);
                 }
             }
         }
@@ -130,10 +130,10 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
             with (obj_p_fleet) {
                 // Get fleet star system
                 if ((capital_number > 0) && (action == "")) {
-                    instance_create(instance_nearest(x, y, obj_star).x, instance_nearest(x, y, obj_star).y, obj_temp2);
+                    instance_create_depth(instance_nearest(x, y, obj_star).x, instance_nearest(x, y, obj_star).y, obj_temp2.depth, obj_temp2);
                 }
                 if ((frigate_number > 0) && (action == "")) {
-                    instance_create(instance_nearest(x, y, obj_star).x, instance_nearest(x, y, obj_star).y, obj_ground_mission);
+                    instance_create_depth(instance_nearest(x, y, obj_star).x, instance_nearest(x, y, obj_star).y, obj_ground_mission.depth, obj_ground_mission);
                 }
             }
         }
@@ -141,7 +141,7 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
         with (obj_star) {
             // Get origin star system for enemy fleet
             if ((owner == quick_trade) && ((p_owner[1] == quick_trade) || (p_owner[2] == quick_trade) || (p_owner[3] == quick_trade) || (p_owner[4] == quick_trade))) {
-                instance_create(x, y, obj_temp3);
+                instance_create_depth(x, y, obj_temp3.depth, obj_temp3);
             }
         }
 
@@ -161,11 +161,11 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
             with (obj_p_fleet) {
                 var pop;
                 if ((capital_number > 0) && (action != "")) {
-                    pop = instance_create(action_x, action_y, obj_temp2);
+                    pop = instance_create_depth(action_x, action_y, obj_temp2.depth, obj_temp2);
                     pop.action_eta = action_eta;
                 }
                 if ((frigate_number > 0) && (action != "")) {
-                    pop = instance_create(action_x, action_y, obj_ground_mission);
+                    pop = instance_create_depth(action_x, action_y, obj_ground_mission.depth, obj_ground_mission);
                     pop.action_eta = action_eta;
                 }
             }
@@ -177,7 +177,7 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
             targ = instance_nearest(obj_ground_mission.x, obj_ground_mission.y, obj_temp3);
         }
 
-        flit = instance_create(targ.x, targ.y, obj_en_fleet);
+        flit = instance_create_depth(targ.x, targ.y, obj_en_fleet.depth, obj_en_fleet);
         flit.owner = quick_trade;
 
         if (quick_trade == 2) {

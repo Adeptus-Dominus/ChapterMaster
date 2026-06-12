@@ -224,7 +224,7 @@ function khorne_fleet_cargo() {
 }
 
 function spawn_chaos_fleet_at_system(system) {
-    var _new_fleet = instance_create(system.x, system.y, obj_en_fleet);
+    var _new_fleet = instance_create_depth(system.x, system.y, obj_en_fleet.depth, obj_en_fleet);
     with (_new_fleet) {
         owner = eFACTION.CHAOS;
         sprite_index = spr_fleet_chaos;
@@ -252,7 +252,7 @@ function spawn_chaos_warlord() {
         ox = width / 2 + lengthdir_x(len, fdir);
         oy = height / 2 + lengthdir_y(len, fdir);
 
-        var nfleet = instance_create(ox, oy, obj_en_fleet);
+        var nfleet = instance_create_depth(ox, oy, obj_en_fleet.depth, obj_en_fleet);
         with (nfleet) {
             owner = eFACTION.CHAOS;
             sprite_index = spr_fleet_chaos;

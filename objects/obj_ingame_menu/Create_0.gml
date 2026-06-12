@@ -2,9 +2,10 @@ fading = 0;
 effect = 0;
 settings = room == rm_main_menu;
 cooldown = 0;
+depth = -16000;
 
 var _spawn_button = function(_x, _y, _text, _target) {
-    var _butt = instance_create(_x, _y, obj_new_button);
+    var _butt = instance_create_depth(_x, _y, obj_new_button.depth, obj_new_button);
     _butt.button_id = 1;
     _butt.button_text = _text;
     _butt.target = _target;

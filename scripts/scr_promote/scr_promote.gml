@@ -1,6 +1,6 @@
 function setup_promotion_popup() {
     if ((sel_promoting == 1) && (!instance_exists(obj_popup))) {
-        var pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pip.type = 5;
         pip.company = managing;
 

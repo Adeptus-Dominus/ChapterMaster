@@ -72,7 +72,7 @@ function scr_demand(demand_type) {
         // Imperium
         with (obj_star) {
             if (owner == eFACTION.IMPERIUM) {
-                instance_create(x, y, obj_temp2);
+                instance_create_depth(x, y, obj_temp2.depth, obj_temp2);
             }
         }
         resistance = min(instance_number(obj_temp2), 8);
@@ -186,17 +186,17 @@ function scr_demand(demand_type) {
         if ((obj_controller.faction_status[eFACTION.ELDAR] == "War") || (obj_controller.faction_status[eFACTION.ELDAR] == "Antagonism")) {
             with (obj_star) {
                 if ((owner == eFACTION.ELDAR) && (craftworld == 1)) {
-                    instance_create(x, y, obj_temp5);
+                    instance_create_depth(x, y, obj_temp5.depth, obj_temp5);
                 }
             }
             with (obj_p_fleet) {
                 if ((point_distance(x, y, obj_temp5.x, obj_temp5.y) < 37) && (action == "")) {
-                    instance_create(x, y, obj_ground_mission);
+                    instance_create_depth(x, y, obj_ground_mission.depth, obj_ground_mission);
                 }
             }
             with (obj_en_fleet) {
                 if ((point_distance(x, y, obj_temp5.x, obj_temp5.y) < 37) && (action == "") && (owner == eFACTION.ELDAR)) {
-                    instance_create(x, y, obj_temp3);
+                    instance_create_depth(x, y, obj_temp3.depth, obj_temp3);
                 }
             }
 
@@ -281,7 +281,7 @@ function scr_demand(demand_type) {
     if (trading_demand == 8) {
         with (obj_star) {
             if (owner == eFACTION.TAU) {
-                instance_create(x, y, obj_temp2);
+                instance_create_depth(x, y, obj_temp2.depth, obj_temp2);
             }
         }
         resistance = min(instance_number(obj_temp2) * 2, 8) + 4;
@@ -324,7 +324,7 @@ function scr_demand(demand_type) {
                     var ns;
                     ns = instance_nearest(x, y, obj_en_fleet);
                     if ((point_distance(x, y, ns.x, ns.y) <= 50) && (action == "") && (image_index > 3)) {
-                        instance_create(x, y, obj_temp1);
+                        instance_create_depth(x, y, obj_temp1.depth, obj_temp1);
                     }
                     instance_deactivate_object(id);
                 }
@@ -335,7 +335,7 @@ function scr_demand(demand_type) {
                     var mahr;
                     mahr = instance_nearest(x, y, obj_p_fleet);
                     if ((point_distance(x, y, mahr.x, mahr.y) < 50) && (mahr.action == "")) {
-                        instance_create(x, y, obj_temp1);
+                        instance_create_depth(x, y, obj_temp1.depth, obj_temp1);
                     }
                 }
             }

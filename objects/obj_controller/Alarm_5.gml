@@ -71,10 +71,10 @@ try {
         }
         with (obj_p_fleet) {
             if (action != "") {
-                instance_create(x, y, obj_temp5);
+                instance_create_depth(x, y, obj_temp5.depth, obj_temp5);
             }
             if ((x < 0) || (x > room_width) || (y < 0) || (y > room_height)) {
-                instance_create(x, y, obj_temp5);
+                instance_create_depth(x, y, obj_temp5.depth, obj_temp5);
             }
         }
         if (instance_number(obj_temp5) >= instance_number(obj_p_fleet)) {

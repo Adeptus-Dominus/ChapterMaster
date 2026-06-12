@@ -4,11 +4,10 @@ if ((x < -1000) || (x > room_width + 1000) || (y < -1000) || (y > room_height + 
     instance_destroy();
 }
 
-var th, thd;
 if (dam <= 4) {
     if (instance_exists(obj_en_in)) {
-        th = instance_nearest(x, y, obj_en_in);
-        thd = point_distance(x, y, th.x, th.y);
+        var th = instance_nearest(x, y, obj_en_in);
+        var thd = point_distance(x, y, th.x, th.y);
         if (thd < 6) {
             th.hp -= self.dam - 1;
             instance_destroy();

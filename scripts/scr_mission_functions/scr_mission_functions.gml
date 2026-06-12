@@ -173,7 +173,7 @@ function init_garrison_mission(planet, star, mission_slot) {
         var garrison_length = 10 + irandom(6);
         star.p_timer[planet][mission_slot] = garrison_length;
         //pop.image="ancient_ruins";
-        var gar_pop = instance_create(0, 0, obj_popup);
+        var gar_pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         //TODO some new universal methods for popups
         gar_pop.title = $"Requested Garrison Provided to {numeral_name}";
         gar_pop.text = $"The governor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
@@ -195,7 +195,7 @@ function init_beast_hunt_mission(planet, star, mission_slot) {
         var _mission_length = irandom_range(2, 5);
         star.p_timer[planet][mission_slot] = _mission_length;
         //pop.image="ancient_ruins";
-        var gar_pop = instance_create(0, 0, obj_popup);
+        var gar_pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         //TODO some new universal methods for popups
         gar_pop.title = $"Marines assigned to hunt beasts around {numeral_name}";
         gar_pop.text = $"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.";
@@ -232,7 +232,7 @@ function init_protect_raider_mission(squad) {
         var _mission_data = variable_clone(selection_data);
         if (_wis_test[1] < -25) {
             scr_toggle_manage();
-            var gar_pop = instance_create(0, 0, obj_popup);
+            var gar_pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             gar_pop.title = $"Strange Disappearance";
             gar_pop.pdata = _pdata;
             gar_pop.text = $"Your Marines make planet fall and are directed to report to the governor for the duration of the operation after a period of reconnaissance dig in for their ambush. After a two weeks have passed A message from the governor reaches your astropaths that your marines have not been heard of for some time, The raiders also were not noted to have arrived onor left the planet";
@@ -258,7 +258,7 @@ function init_protect_raider_mission(squad) {
             gar_pop.add_option({str1: "Hold a Memorial", choice_func: protect_raiders_hold_memorial});
         } else {
             scr_toggle_manage();
-            var gar_pop = instance_create(0, 0, obj_popup);
+            var gar_pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             gar_pop.title = $"Ineffective Ambush";
             gar_pop.text = $"Your Marines Are ineffective at setting up an ambush the assailants clearly got wind of the operation or the plan was otherwise so ill thought out that by the time your forces arrived there was little that could be done to intercept them";
             //pip.image="event_march"
@@ -272,7 +272,7 @@ function init_protect_raider_mission(squad) {
             gar_pop.add_option("continue");
         }
     } else {
-        instance_create(0, 0, obj_ncombat);
+        instance_create_depth(0, 0, obj_ncombat.depth, obj_ncombat);
         obj_ncombat.enemy = eFACTION.ELDAR;
         obj_ncombat.battle_object = selection_data.system;
         obj_ncombat.battle_loc = selection_data.system.name;
@@ -332,7 +332,7 @@ function init_train_forces_mission(planet, star, mission_slot, marine) {
         var _mission_length = irandom_range(3, 12);
         star.p_timer[planet][mission_slot] = _mission_length;
         //pop.image="ancient_ruins";
-        var gar_pop = instance_create(0, 0, obj_popup);
+        var gar_pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         //TODO some new universal methods for popups
         gar_pop.title = $"Training forces on {numeral_name} begins";
         gar_pop.text = $"{marine.name_role()} Has taken leave of his current post in order to aid the governor of {numeral_name} and his pdf commanders with training local forces and bolstering defences.";

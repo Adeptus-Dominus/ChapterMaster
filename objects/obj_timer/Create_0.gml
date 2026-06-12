@@ -2,6 +2,7 @@ time_set = 0;
 time_passed = 0;
 end_function = undefined;
 end_function_args = [];
+depth = 0;
 
 execute_end_function = function() {
     if (is_method(end_function)) {

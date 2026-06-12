@@ -76,7 +76,7 @@ function scr_alert(colour, alert_type, alert_text, xx = 0, yy = 0) {
             yy += 20000;
         }
 
-        new_obj = instance_create(xx + 16, yy - 24, obj_star_event);
+        new_obj = instance_create_depth(xx + 16, yy - 24, obj_star_event.depth, obj_star_event);
         new_obj.col = colour;
     }
 }

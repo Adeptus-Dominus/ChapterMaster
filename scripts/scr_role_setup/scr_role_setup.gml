@@ -25,7 +25,7 @@ function scr_role_setup() {
         roles_radio.draw();
         if (roles_radio.changed && custom == eCHAPTER_TYPE.CUSTOM) {
             instance_destroy(obj_creation_popup);
-            var pp = instance_create(0, 0, obj_creation_popup);
+            var pp = instance_create_depth(0, 0, obj_creation_popup.depth, obj_creation_popup);
             pp.type = roles_radio.selection_val("role_id") + 100;
         }
     }

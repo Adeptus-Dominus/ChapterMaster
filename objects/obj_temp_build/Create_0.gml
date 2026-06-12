@@ -1,6 +1,6 @@
 target = noone;
 planet = noone;
-
+depth = 0;
 lair = false;
 arsenal = false;
 gene_vault = false;

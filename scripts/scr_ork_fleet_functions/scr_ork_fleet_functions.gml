@@ -1,8 +1,5 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
 function new_ork_fleet(xx, yy) {
-    fleet = instance_create(xx, yy, obj_en_fleet);
+    fleet = instance_create_depth(xx, yy, obj_en_fleet.depth, obj_en_fleet);
     fleet.owner = eFACTION.ORK;
     fleet.sprite_index = spr_fleet_ork;
     fleet.image_index = 1;
@@ -17,7 +14,7 @@ function new_ork_fleet(xx, yy) {
 }
 
 function orks_end_turn_growth() {
-    for (i = 1; i <= planets; i++) {
+    for (var i = 1; i <= planets; i++) {
         var _pdata = new PlanetData(i, self);
         if (!p_orks[i]) {
             var _strongholds = _pdata.get_features(eP_FEATURES.ORKSTRONGHOLD);

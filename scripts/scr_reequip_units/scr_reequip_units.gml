@@ -135,7 +135,7 @@ function set_up_equip_popup() {
         }
 
         if (vih > 0 && man_size > 0 && allow) {
-            var pip = instance_create(0, 0, obj_popup);
+            var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             pip.type = ePOPUP_TYPE.EQUIP;
             pip.o_wep1 = o_wep1;
             pip.o_wep2 = o_wep2;

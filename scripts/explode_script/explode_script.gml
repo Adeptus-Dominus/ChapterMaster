@@ -21,7 +21,7 @@ function explode_script(argument0, argument1) {
 	string(x)+"|"+string(y)+"|"
 
 	explode_script(mplay_message_value(),"|");//make like a banana string
-	      inst=instance_create(x,y,ghost_brbullet);//create ghost bullet
+	      inst=instance_create_depth(x,y,ghost_brbullet.depth,ghost_brbullet);//create ghost bullet
 	      inst.x=real(explode[0]);
 	      inst.y=real(explode[1]);
 	      inst.direction=real(explode[2]);

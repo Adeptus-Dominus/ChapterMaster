@@ -227,7 +227,7 @@ function drop_select_unit_selection() {
                 remove_planet_problem(planet_number, "meeting_trap", p_target);
             }
 
-            instance_create(0, 0, obj_ncombat);
+            instance_create_depth(0, 0, obj_ncombat.depth, obj_ncombat);
             obj_ncombat.battle_object = p_target;
             obj_ncombat.battle_loc = p_target.name;
             obj_ncombat.battle_id = planet_number;
@@ -333,8 +333,7 @@ function drop_select_unit_selection() {
             if (_chaos_lord_jump_possible && _no_know_chaos) {
                 if (_chaos_popup_turn_reached && _chaos_warlord_present) {
                     if (_chaos_unknown) {
-                        var pop;
-                        pop = instance_create(0, 0, obj_popup);
+                        var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
                         pop.image = "chaos_symbol";
                         pop.title = "Concealed Heresy";
                         pop.text = $"Your astartes set out and begin to cleanse {planet_numeral_name(_battle_sub_loc, _battle_place)} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";

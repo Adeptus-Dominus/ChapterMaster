@@ -15,7 +15,7 @@
 /// @returns {Undefined}
 function tooltip_draw(_tooltip = "", _width = 350, _coords = return_mouse_consts(), _text_color = #50a076, _font = fnt_40k_14, _header = "", _header_font = fnt_40k_14b, _force_width = false, _footer = "", _footer_font = fnt_40k_12, _cost = 0) {
     if (!instance_exists(obj_tooltip)) {
-        instance_create(0, 0, obj_tooltip);
+        instance_create_depth(0, 0, obj_tooltip.depth, obj_tooltip);
     }
     var scale = (instance_exists(obj_controller)) ? obj_controller.map_scale : 1;
     if (event_number != ev_gui) {

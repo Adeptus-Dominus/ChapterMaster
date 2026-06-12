@@ -3,7 +3,7 @@ rel_mousex = 0;
 rel_mousey = 0;
 old_x = 0;
 old_y = 0;
-
+depth = -1005;
 unit_type = "";
 unit_id = 0;
 
@@ -40,7 +40,6 @@ bar_hit = function(){
 		draw_set_font(fnt_40k_14b);
 		draw_set_halign(fa_center);
 
-	    // draw_sprite(spr_formation_splash,too_img,xx+1271,yy+252);
 		// unit_id-1 because reasons, otherwise sprites are wrong
 	    scr_image("formation", unit_id-1, 1271, 252, 239, 297);
 
@@ -60,12 +59,6 @@ init_drag = function(){
 	        rel_mousey = y - mouse_consts[1] - 1000;
 	        old_x = x;
 	        old_y = y;
-
-	        // Establish drop areas
-	        /*with(obj_temp8){instance_destroy();}
-	        with(obj_formation_bar){
-	            if (y<=view_yview[0]+230) then instance_create(x,y,obj_temp8);
-	        }*/
 	    }
 	}
 }
@@ -102,12 +95,7 @@ mouse_release = function(){
 		return;
 	}
 
-	var mah_target;
-	mah_target = 0;
-	/*if (dragging=true) and (nobar=true) then mah_target=col_target;
-	if (dragging=true) and (nobar=false) then mah_target=nearest_col;*/
-
-	mah_target = col_target;
+	var mah_target = col_target;
 
 	if ((dragging == true) && instance_exists(mah_target)) {
 	    if (mah_target.col_parent == col_parent) {
@@ -130,10 +118,8 @@ mouse_release = function(){
 
 	if ((dragging == true) && instance_exists(mah_target)) {
 	    if ((x >= mah_target.x - 5) && (x <= mah_target.x + 42) && (mouse_consts[1] >= 222) && (mouse_consts[1] <= 688)) {
-	        var himcol, te;
-	        himcol = mah_target.col_parent;
-	        te = 0;
-	        te = 4800 + himcol;
+	        var himcol = mah_target.col_parent;
+	        var te = 4800 + himcol;
 	        nexti = false;
 
 	        if (obj_controller.temp[te] + size <= 10) {
@@ -193,8 +179,6 @@ mouse_release = function(){
 	            obj_cursor.dragging = 0;
 	            obj_cursor.image_index = 0;
 
-	            // show_message("-> slot "+string(mah_target.col_parent)+", now "+string(obj_controller.temp[te]+size)+"/10 full, old slot is "+string(obj_controller.temp[4800+col_parent])+"/10");
-
 	            with (obj_temp8) {
 	                instance_destroy();
 	            }
@@ -227,9 +211,5 @@ mouse_release = function(){
 	        }
 	    }
 	}
-
-	/* */
-	/*  */
-
 }
 

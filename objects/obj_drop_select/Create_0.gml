@@ -15,15 +15,13 @@ raid_spec = 1;
 raid_wounded = obj_controller.select_wounded;
 refresh_raid = 0;
 remove_local = 1;
-
-//
+depth = -30;
 
 main_slate = new DataSlate();
 draw = drop_select_draw;
 main_slate.inside_method = draw;
 roster_slate = new DataSlate();
 local_content_slate = new DataSlate();
-var i = -1;
 formation_current = -1;
 via = array_create(100, 0);
 formation_possible = [];
@@ -59,7 +57,6 @@ if (!instance_exists(obj_saveload)) {
     tooltip2 = "";
     all_sel = 0;
 
-    var i = -1;
     var _ship_index = array_length(obj_ini.ship);
     ship = array_create(_ship_index, "");
     ship_size = array_create(_ship_index, 0);
@@ -68,13 +65,13 @@ if (!instance_exists(obj_saveload)) {
     ship_max = array_create(_ship_index, 0);
     ship_ide = array_create(_ship_index, -1);
 
-    i = 500;
-    ship[i] = "Local";
-    ship_size[i] = 0;
-    ship_all[i] = 0;
-    ship_use[i] = 0;
-    ship_max[i] = 0;
-    ship_ide[i] = -42;
+    // Why? I don't mind making this a magic number because well, that's what it is. If it's assigned to an i or not doesn't matter it's still magic
+    ship[500] = "Local";
+    ship_size[500] = 0;
+    ship_all[500] = 0;
+    ship_use[500] = 0;
+    ship_max[500] = 0;
+    ship_ide[500] = -42;
 
     menu = 0;
 
@@ -101,7 +98,7 @@ if (!instance_exists(obj_saveload)) {
     demons = 0;
 
     // Formation check
-    var i = 0, is = 0, arright = false;
+    var is = 0;
     var _formations = obj_controller.bat_formation;
     var _formation_types = obj_controller.bat_formation_type;
 
@@ -227,9 +224,8 @@ if (purge == 0) {
         attacking = 9;
     }
 
-    var forces, t_attack;
-    forces = 0;
-    t_attack = 0;
+    var forces = 0;
+    var t_attack = 0;
     if (sisters > 0) {
         forces += 1;
         force_present[forces] = 5;

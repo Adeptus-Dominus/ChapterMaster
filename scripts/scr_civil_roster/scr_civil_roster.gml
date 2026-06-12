@@ -43,22 +43,19 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
     obj_controller.bat_whirlwind_column = obj_controller.bat_whirl_for[new_combat.formation_set];
     obj_controller.bat_scout_column = obj_controller.bat_scou_for[new_combat.formation_set];
 
-    var co, v, meeting, he_good, unit;
-    co = 0;
-    v = 0;
-    meeting = true;
-    he_good = false;
+    var unit;
+    var co = 0;
+    var v = 0;
+    var meeting = true;
+    var he_good = false;
 
     instance_activate_object(obj_pnunit);
     instance_activate_object(obj_enunit);
     instance_activate_object(obj_centerline);
 
     if (new_combat.enemy == 1) {
-        var i, u;
-        i = 11;
-        repeat (10) {
-            i -= 1; // This creates the objects to then be filled in
-            u = instance_create(110 + (i * 10), 240, obj_enunit);
+        for (var i = 10; i >= 1; i--) { // This creates the objects to then be filled in
+            var u = instance_create_depth(110 + (i * 10), 240, obj_enunit.depth, obj_enunit);
         }
     }
 
@@ -91,9 +88,8 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
             }
 
             if (okay >= 1) {
-                var cooh, va;
-                cooh = 0;
-                va = 0;
+                var cooh = 0;
+                var va = 0;
 
                 if (meeting == false) {
                     cooh = co;
@@ -155,10 +151,9 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
                 if (he_good == -1) {
                     // show_message("enemy marine found");
 
-                    var col, moov, targ;
-                    col = 0;
-                    targ = 0;
-                    moov = 0;
+                    var col = 0;
+                    var targ = 0;
+                    var moov = 0;
 
                     if (unit.role() == deploying_unit.role[100][12]) {
                         col = 22 - obj_controller.bat_scout_column;
@@ -344,9 +339,8 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
                     /// @type {Asset.GMObject.obj_enunit}
                     targ = instance_nearest(col * 10, 240, obj_enunit);
 
-                    var t, first_openz;
-                    t = 0;
-                    first_openz = 0;
+                    var t = 0;
+                    var first_openz = 0;
                     repeat (700) {
                         t += 1;
                         if (first_openz == 0) {
@@ -372,9 +366,7 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
                     new_combat.enemy_forces += 1;
                     new_combat.enemy_max += 1;
 
-                    var dr;
-                    dr = 0;
-                    dr = 0.7 - ((targ.dudes_exp[targ.men] * targ.dudes_exp[targ.men]) / 40000);
+                    var dr = 0.7 - ((targ.dudes_exp[targ.men] * targ.dudes_exp[targ.men]) / 40000);
                     if (targ.dudes_gear[targ.men] == "Rosarius") {
                         dr -= 0.33;
                     }

@@ -41,11 +41,10 @@ if ((scr_hit(x, y, x + width, y + height) == true) && (obj_controller.dropdown_o
 }
 
 if (opened == 1) {
-    var ii, y5, yyy, hi;
-    ii = 0;
-    yyy = 24;
-    y5 = y;
-    hi = 24;
+    var ii = 0;
+    var yyy = 24;
+    var y5 = y;
+    var hi = 24;
 
     repeat (options) {
         ii += 1;
@@ -202,15 +201,6 @@ if ((tooltip != "Great Feast") && (target == "event_type")) {
     tooltip2 = "(NOT COMPLETED YET)";
 }
 
-/*
-if (tooltip="Tournament") then tooltip2="Hosts a non-lethal tournament for friendly competition.";
-if (tooltip="Deathmatch") then tooltip2="Pits all those present to fight until one remains standing.  HQ are unable to participate.";
-if (tooltip="Imperial Mass") then tooltip2="Hosts Imperial Cult Mass for your astartes, in praise of the Emperor.";
-if (tooltip="Chapter Sermon") then tooltip2="Hosts a Chapter Cult sermon for your astartes, praising the "+string(global.chapter_name)+".";
-if (tooltip="Chapter Relic") then tooltip2="Instructs your "+string(obj_ini.role[100][16])+"s and "+string(obj_ini.role[100][14])+"s to construct a Chapter artifact.";
-if (tooltip="Triumphal March") then tooltip2="Present Astartes will participate in a massive march to present a show of arms and power.";
-*/
-
 if ((tooltip != "") && (tooltip2 != "")) {
     draw_set_alpha(1);
     draw_set_font(fnt_40k_14);
@@ -224,6 +214,3 @@ if ((tooltip != "") && (tooltip2 != "")) {
     draw_set_font(fnt_40k_14);
     draw_text_ext(mouse_x + 22, mouse_y + 42, string_hash_to_newline(string(tooltip2)), -1, 500);
 }
-
-/* */
-/*  */

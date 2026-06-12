@@ -296,7 +296,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
             }
         }
 
-        var pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pip.title = "Bombard Results";
         pip.text = txt1 + txt2 + txt3;
         //pip.text=txt1+txt2+txt3+" "+string(sci1)+" "+string(heres_before)+" "+string(heres_after); // TODO LOW DEBUG_INFLUENCE // Put in debug code path and make it clearer
@@ -388,8 +388,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
             obj_controller.cooldown = 8;
         }
 
-        var pip;
-        pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pip.title = "Bombard Results";
         pip.text = txt1 + txt2 + txt3;
     }

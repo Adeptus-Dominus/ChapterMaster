@@ -100,6 +100,7 @@ scale_mod = 1;
 unit_manage_constants = {};
 unit_manage_constants.current_data = "";
 management_buttons = false;
+depth = -21;
 
 diplomacy_pathway = "";
 option_selections = [];
@@ -382,7 +383,7 @@ helpful_places_button = new UnitButtonObject({style: "pixel", label: "System Dat
 
 helpful_places = false;
 
-instance_create(x, y, obj_planet_map);
+instance_create_depth(x, y, obj_planet_map.depth, obj_planet_map);
 new_button_highlight = "";
 // new_button_highlighting=0;
 new_buttons_hide = 0;
@@ -1123,7 +1124,7 @@ if (instance_exists(obj_ini)) {
 
         scr_colors_initialize();
         scr_shader_initialize();
-        instance_create(-100, -100, obj_event_log);
+        instance_create_depth(-100, -100, obj_event_log.depth, obj_event_log);
         LOGGER.info("New Game");
     }
 }
@@ -1189,11 +1190,11 @@ serialize = function() {
 if (global.load >= 0) {
     load_game = global.load;
     successor_chapters = 0;
-    instance_create(0, 0, obj_saveload);
+    instance_create_depth(0, 0, obj_saveload.depth, obj_saveload);
     with (obj_ini) {
         instance_destroy();
     }
-    instance_create(0, 0, obj_ini);
+    instance_create_depth(0, 0, obj_ini.depth, obj_ini);
     // obj_saveload.menu=2;
     obj_saveload.alarm[0] = 1;
     obj_saveload.load_part = 1;
@@ -1321,7 +1322,7 @@ if (instance_exists(obj_ini)) {
 // 0: none      1: management
 // 11: apothecary       12: chaplain        13: librarium       14: armamentarium
 // ** Sets the star for the chapter ? **
-instance_create(irandom_range(400, room_width - 400), irandom_range(400, room_height - 400), obj_star);
+instance_create_depth(irandom_range(400, room_width - 400), irandom_range(400, room_height - 400), obj_star.depth, obj_star);
 planet = floor(random(5)) + 19;
 planet = 30 * 1.5;
 planet = 100;
@@ -1344,7 +1345,7 @@ while (instance_number(obj_star) < planet) {
     }
     if (repeats != 100) {
         if (!place_meeting(xx, yy, obj_star)) {
-            instance_create(xx, yy, obj_star);
+            instance_create_depth(xx, yy, obj_star.depth, obj_star);
         }
     }
 }
@@ -1865,7 +1866,7 @@ if (welcome_pages >= 5) {
 }
 remov = string_length(string(temp[65]) + string(temp[66]) + string(temp[67]) + string(temp[68]) + string(temp[69])) + 1;
 
-instance_create(0, 0, obj_tooltip);
+instance_create_depth(0, 0, obj_tooltip.depth, obj_tooltip);
 
 alarm_set(0, 2);
 

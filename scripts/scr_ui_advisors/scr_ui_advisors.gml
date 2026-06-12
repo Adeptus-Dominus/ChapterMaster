@@ -344,21 +344,21 @@ function scr_ui_advisors() {
             if (mouse_button_clicked()) {
                 menu = 12.1;
                 var dro = 0;
-                dro = instance_create(xx + 1064, yy + 124, obj_dropdown_sel);
+                dro = instance_create_depth(xx + 1064, yy + 124, obj_dropdown_sel.depth, obj_dropdown_sel);
                 dro.target = "event_type";
-                dro = instance_create(xx + 1100, yy + 183, obj_dropdown_sel);
+                dro = instance_create_depth(xx + 1100, yy + 183, obj_dropdown_sel.depth, obj_dropdown_sel);
                 dro.target = "event_loc";
                 dro.width = 186;
-                dro = instance_create(xx + 1088, yy + 264, obj_dropdown_sel);
+                dro = instance_create_depth(xx + 1088, yy + 264, obj_dropdown_sel.depth, obj_dropdown_sel);
                 dro.target = "event_lavish";
-                dro = instance_create(xx + 1041, yy + 377, obj_dropdown_sel);
+                dro = instance_create_depth(xx + 1041, yy + 377, obj_dropdown_sel.depth, obj_dropdown_sel);
                 dro.target = "event_display";
-                dro = instance_create(xx + 1041, yy + 433, obj_dropdown_sel);
+                dro = instance_create_depth(xx + 1041, yy + 433, obj_dropdown_sel.depth, obj_dropdown_sel);
                 dro.target = "event_repeat";
-                dro = instance_create(xx + 1325, yy + 433, obj_dropdown_sel);
+                dro = instance_create_depth(xx + 1325, yy + 433, obj_dropdown_sel.depth, obj_dropdown_sel);
                 dro.target = "event_honor";
 
-                dro = instance_create(xx + 1325, yy + 525, obj_dropdown_sel);
+                dro = instance_create_depth(xx + 1325, yy + 525, obj_dropdown_sel.depth, obj_dropdown_sel);
                 dro.target = "event_public";
 
                 fest_type = "Great Feast";

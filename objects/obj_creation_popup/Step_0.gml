@@ -1,8 +1,8 @@
 role_names_all = "";
 
-var derpaderp, z, idd;
-derpaderp = 0;
-idd = 0;
+var z;
+var derpaderp = 0;
+var idd = 0;
 if (!is_string(type)) {
     if (type >= 100) {
         z = type - 100;

@@ -151,7 +151,7 @@ try {
     if ((menu == 0) && instance_exists(obj_temp_build)) {
         obj_controller.selecting_planet = obj_temp_build.planet;
         // Pass variables to obj_controller.temp[t]=""; here
-        instance_create(obj_temp_build.x, obj_temp_build.y, obj_star_select);
+        instance_create_depth(obj_temp_build.x, obj_temp_build.y, obj_star_select.depth, obj_star_select);
         obj_star_select.loading_name = obj_controller.selected.name;
         popup = 3;
         with (obj_temp_build) {
@@ -447,7 +447,7 @@ try {
     if ((menu == 0) && (repair_ships > 0) && (!instance_exists(obj_turn_end)) && (!instance_exists(obj_popup))) {
         repair_ships = 0;
 
-        var pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pip.title = "Ships Repaired";
         pip.text = "In accordance with the Imperial Repair License, all " + string(obj_ini.chapter_name) + " ships orbiting friendly planets have been repaired. Note that repaired ships, and their fleets, are unable to act further this turn.";
         pip.image = "shipyard";

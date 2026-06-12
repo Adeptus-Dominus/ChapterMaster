@@ -2,6 +2,7 @@ fade_alpha = (global.returned > 0) ? 0 : 1.0;
 title_alpha = 0;
 cooldown = 0;
 update_blink_visible = false;
+depth = 0;
 
 audio_stop_all();
 global.current_music = audio_play_sound(snd_prologue, 10, true, 0.1);

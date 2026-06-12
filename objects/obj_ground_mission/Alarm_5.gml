@@ -1,12 +1,7 @@
-var comp, plan, i;
-i = 0;
-comp = 0;
-plan = 0;
-plan = instance_nearest(x, y, obj_star);
+var plan = instance_nearest(x, y, obj_star);
 
-var mission, mission_roll;
-mission = "bad";
-mission_roll = floor(random(100)) + 1;
+var mission = "bad";
+var mission_roll = floor(random(100)) + 1;
 if (scr_has_adv("Ambushers")) {
     mission_roll -= 15;
 }
@@ -19,10 +14,8 @@ if (mission_roll <= 60) {
 if (plan.p_type[num] == "Dead") {
     mission = "good";
 }
-// mission="bad";
 
-var pop;
-pop = instance_create(0, 0, obj_popup);
+var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
 pop.image = "artifact_recovered";
 pop.title = "STC Recovered!";
 
@@ -36,33 +29,16 @@ if ((mission == "good") && (plan.p_first[num] == 3) && (plan.p_type[num] == "For
     pop.text = "Your forces descend into the vaults of the Mechanicus Forge, bypassing sentries, automated defenses, and blast doors on the way.##";
     pop.text += "The STC Fragment has been safely recovered and stowed away.  It is ready to be decrypted or gifted at your convenience.";
 
-    /*if (plan.p_type[num]!="Dead"){
-        if (plan.p_owner[num]=2) then obj_controller.disposition[2]-=1;
-        if (plan.p_owner[num]=3) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
-        if (plan.p_owner[num]=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/4,10);
-        if (plan.p_owner[num]=5) then obj_controller.disposition[5]-=3;
-        if (plan.p_owner[num]=8) then obj_controller.disposition[8]-=3;
-    }*/
     scr_return_ship(loc, self, num);
 }
 if ((mission == "bad") && (plan.p_first[num] == 3) && (plan.p_type[num] == "Forge")) {
-    /*pop.text="Your marines converge upon the STC Fragment; resistance is light and easily dealt with.  After a brief firefight it is retrieved.##";
-    pop.text+="The fragment been safely stowed away, and is ready to be decrypted or gifted at your convenience.";
-
-    */
-
     pop.image = "thallax";
     pop.text = "Your forces descend into the vaults of the Mechanicus Forge.  Sentries, automated defenses, and blast doors stand in their way.##";
     pop.text += "Half-way through the mission a small army of Praetorian Servitors and Skitarii bear down upon your men.  The Mechanicus guards seem to be upset.";
 
-    /*if (plan.p_owner[num]=2) then obj_controller.disposition[2]-=2;*/
     if (plan.p_owner[num] == 3) {
         obj_controller.disposition[3] -= 40;
     }
-    /*if (plan.p_owner[num]=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/3,20);
-    if (plan.p_owner[num]=5) then obj_controller.disposition[5]-=max(obj_controller.disposition[3]/4,15);
-    if (plan.p_owner[num]=6) then obj_controller.disposition[6]-=15;
-    if (plan.p_owner[num]=8) then obj_controller.disposition[8]-=8;*/
 
     if ((plan.p_owner[num] > 3) && (plan.p_owner[num] <= 6)) {
         scr_audience(plan.p_owner[num], "artifact_angry",);
@@ -84,16 +60,14 @@ if ((mission == "bad") && (plan.p_first[num] == 3) && (plan.p_type[num] == "Forg
 }
 
 if (scr_has_adv("Tech-Scavengers")) {
-    var ex1, ex1_num, ex2, ex2_num, ex3, ex3_num;
-    ex1 = "";
-    ex1_num = 0;
-    ex2 = "";
-    ex2_num = 0;
-    ex3 = "";
-    ex3_num = 0;
+    var ex1 = "";
+    var ex1_num = 0;
+    var ex2 = "";
+    var ex2_num = 0;
+    var ex3 = "";
+    var ex3_num = 0;
 
-    var stah;
-    stah = instance_nearest(x, y, obj_star);
+    var stah = instance_nearest(x, y, obj_star);
 
     if (stah.p_first[num] == 2) {
         ex1 = "Meltagun";
@@ -152,6 +126,3 @@ obj_controller.trading_artifact = 0;
 clear_diplo_choices();
 obj_controller.menu = 0;
 instance_destroy();
-
-/* */
-/*  */

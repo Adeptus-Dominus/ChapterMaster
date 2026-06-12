@@ -28,7 +28,7 @@ if (obj_controller.zoomed == 1) {
 with (obj_star_select) {
     instance_destroy();
 }
-instance_create(x, y, obj_star_select);
+instance_create_depth(x, y, obj_star_select.depth, obj_star_select);
 obj_star_select.owner = self.owner;
 obj_star_select.target = self.id;
 

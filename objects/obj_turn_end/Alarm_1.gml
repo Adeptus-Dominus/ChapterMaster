@@ -47,8 +47,7 @@ if (!_is_audience) {
     current_popup += 1;
 
     if (popup[current_popup] != 0) {
-        var pip;
-        pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pip.title = popup_type[current_popup];
         pip.text = popup_text[current_popup];
         pip.image = popup_image[current_popup];

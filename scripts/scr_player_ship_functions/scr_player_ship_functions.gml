@@ -17,7 +17,7 @@ function return_lost_ship() {
             }
         }
         var _star = instance_find(obj_star, irandom(instance_number(obj_star) - 1));
-        _new_fleet = instance_create(_star.x, _star.y, obj_p_fleet);
+        _new_fleet = instance_create_depth(_star.x, _star.y, obj_p_fleet.depth, obj_p_fleet);
         _new_fleet.owner = eFACTION.PLAYER;
         if (_lost_fleet != "none") {
             find_and_move_ship_between_fleets(_lost_fleet, _new_fleet, _return_id);
@@ -188,14 +188,14 @@ function loose_ship_to_warp_event() {
         text += $"  {marine_count} Battle Brothers were onboard.";
     }
     scr_event_log("red", text);
-    var _lost_ship_fleet = "none";
+    var _lost_ship_fleet = noone;
     with (obj_p_fleet) {
         if (action == "Lost") {
             _lost_ship_fleet = id;
         }
     }
-    if (_lost_ship_fleet == "none") {
-        var _lost_ship_fleet = instance_create(-500, -500, obj_p_fleet);
+    if (_lost_ship_fleet == noone) {
+        var _lost_ship_fleet = instance_create_depth(-500, -500, obj_p_fleet.depth, obj_p_fleet);
         _lost_ship_fleet.owner = eFACTION.PLAYER;
     }
 

@@ -5,34 +5,9 @@ if (obj_controller.menu != my_menu) {
     instance_destroy();
 }
 
-/*
-
-
-
-
-option[1]="Great Feast";
-option[2]="Tournament";
-option[3]="Deathmatch";
-option[4]="Commision Relic";
-option[5]="Imperial Mass";
-option[6]="Cult Sermon";
-dro=instance_create(xx+1064,yy+126,obj_dropdown_sel);dro.target="event_type";
-            dro=instance_create(xx+1100,yy+184,obj_dropdown_sel);dro.target="event_loc";
-            dro=instance_create(xx+1088,yy+271,obj_dropdown_sel);dro.target="event_lavish";
-            dro=instance_create(xx+1041,yy+385,obj_dropdown_sel);dro.target="event_display";
-            dro=instance_create(xx+1041,yy+443,obj_dropdown_sel);dro.target="event_repeat";
-
-
-*/
-
 if (target == "event_type") {
     with (obj_controller) {
         fest_cost = 0;
-
-        /*
-        option[2]="Tournament";
-        option[3]="Deathmatch";
-        */
 
         if (fest_type == "Great Feast") {
             fest_cost = fest_lav * 20;
@@ -42,8 +17,7 @@ if (target == "event_type") {
             if (fest_locals > 0) {
                 fest_cost += 20 * fest_locals;
             }
-            var tt;
-            tt = fest_cost;
+            var tt = fest_cost;
             if (fest_feature1 == 0) {
                 fest_cost = 0;
             }
@@ -62,8 +36,7 @@ if (target == "event_type") {
             if (fest_locals > 0) {
                 fest_cost += 20 * fest_locals;
             }
-            var tt;
-            tt = fest_cost;
+            var tt = fest_cost;
 
             if (fest_feature2 > 0) {
                 fest_cost += 30;
@@ -71,10 +44,6 @@ if (target == "event_type") {
             if ((fest_type == "Tournament") && (fest_feature3 > 0)) {
                 fest_cost += 100;
             }
-
-            /*if (fest_feature1=0) then fest_cost=0;
-            if (fest_feature2>0) then fest_cost+=round(tt/2);
-            if (fest_feature3>0) then fest_cost+=tt;*/
         }
         if (fest_type == "Chapter Relic") {
             if (fest_feature1 == 1) {
@@ -156,38 +125,25 @@ if (target == "event_honor") {
 
 if ((target == "event_loc") && (determined_planets == 0)) {
     // Fill out the options for planets
-
-    var coo, ide, q;
-    coo = -1;
-    ide = 0;
-    q = 0;
-
-    repeat (11) {
-        coo += 1;
-        ide = 0;
-
-        repeat (300) {
-            ide += 1;
-            var _unit = fetch_unit([coo, ide]);
+    for (var coo = 0; coo <= 10; coo++) {
+        for (var mar = 1; mar <= 300; mar++) {
+            var _unit = fetch_unit([coo, mar]);
             if ((_unit.role() != obj_ini.role[100][6]) && (_unit.role() != "Venerable " + string(obj_ini.role[100][6])) && (_unit.planet_location > 0)) {
-                var stahp, first_open;
-                stahp = 0;
-                q = 0;
-                first_open = 0;
+                var stahp = false;
+                var first_open = 0;
 
-                repeat (100) {
-                    if (stahp == 0) {
-                        q += 1;
-                        if ((star[q] == "") && (first_open == 0)) {
-                            first_open = q;
+                for (var i = 1; i <= 100; i++) {
+                    if (!stahp) {
+                        if ((star[i] == "") && (first_open == 0)) {
+                            first_open = i;
                         }
-                        if (star[q] == _unit.location_string && star_planet[q] == _unit.planet_location) {
-                            stahp = 1;
-                            star_mahreens[q] += 1;
+                        if (star[i] == _unit.location_string && star_planet[i] == _unit.planet_location) {
+                            stahp = true;
+                            star_mahreens[i] += 1;
                         }
                     }
                 }
-                if (stahp == 0) {
+                if (!stahp) {
                     star[first_open] = _unit.location_string;
                     star_planet[first_open] = _unit.planet_location;
                     star_marheens[first_open] = 1;
@@ -233,12 +189,9 @@ if (target == "event_public") {
 }
 
 if (option[1] == "") {
-    var ii;
-    ii = 0;
-    repeat (50) {
-        ii += 1;
-        option[ii] = "";
-        option_id[ii] = 0;
+    for (var i = 1; i <= 50; i++) {
+        option[i] = "";
+        option_id[i] = 0;
     }
 
     if (target == "event_type") {
@@ -253,10 +206,9 @@ if (option[1] == "") {
         option_selected = 1;
     }
     if (target == "event_loc") {
-        var q, works, thatone;
-        q = 0;
-        works = 1;
-        thatone = false;
+        var q = 0;
+        var works = 1;
+        var thatone = false;
         option[1] = "None Selected";
         option_id[1] = -50;
         options = 1;
@@ -300,10 +252,9 @@ if (option[1] == "") {
         options = 5;
     }
     if (target == "event_display") {
-        var q, arti_work, thatone;
-        q = 0;
-        arti_work = 1;
-        thatone = false;
+        var q = 0;
+        var arti_work = 1;
+        var thatone = false;
         option[1] = "None";
         option_id[1] = -50;
         options = 1;
@@ -391,6 +342,3 @@ if (option[1] == "") {
         options = 4;
     }
 }
-
-/* */
-/*  */

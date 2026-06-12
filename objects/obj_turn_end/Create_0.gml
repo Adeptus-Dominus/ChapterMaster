@@ -2,8 +2,7 @@ instance_deactivate_object(obj_star_select);
 instance_deactivate_object(obj_drop_select);
 instance_deactivate_object(obj_bomb_select);
 
-var i;
-i = -1;
+depth = -999;
 keywords = "";
 last_open = 1;
 
@@ -72,18 +71,12 @@ audience_stack = [];
 
 alert_alpha[1] = 0.2;
 alert_char[1] = 1;
-i = -1;
 
 handle_discovered_governor_assasinations();
 
 if (audiences > 0) {
     // This is a one-off change all messages to declare war
-    var i = 0;
-    var war;
-    repeat (15) {
-        i += 1;
-        war[i] = 0;
-    }
+    var war = array_create(15, 0);
     for (var i = 0; i < array_length(audience_stack); i++) {
         var _audience = audience_stack[i];
         if ((_audience.topic != "declare_war") && (_audience.topic != "gene_xeno") && (_audience.topic != "") && (war[_audience.faction] == 0) && (obj_controller.faction_status[_audience.faction] != "War") && (_audience.faction != 10)) {
@@ -98,6 +91,3 @@ if (audiences > 0) {
 alerts = 0;
 fast = 0;
 show = 0;
-
-/* */
-/*  */

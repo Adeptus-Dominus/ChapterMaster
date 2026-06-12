@@ -155,17 +155,17 @@ function player_fleet_ship_spawner() {
                 if (ship_class[k] == column[col] || (player_ships_class(ship_id[k]) == column[col])) {
                     man = -1;
                     if (sizz >= 3 && ship_class[k] != "") {
-                        man = instance_create(x2, temp2, obj_p_capital);
+                        man = instance_create_depth(x2, temp2, obj_p_capital.depth, obj_p_capital);
                         man.ship_id = ship_id[k];
                         temp2 += hei;
                     }
                     if (sizz == 2 && ship_class[k] != "") {
-                        man = instance_create(x2, temp2, obj_p_cruiser);
+                        man = instance_create_depth(x2, temp2, obj_p_cruiser.depth, obj_p_cruiser);
                         man.ship_id = ship_id[k];
                         temp2 += hei;
                     }
                     if (sizz == 1 && ship_class[k] != "") {
-                        man = instance_create(x2, temp2, obj_p_escort);
+                        man = instance_create_depth(x2, temp2, obj_p_escort.depth, obj_p_escort);
                         man.ship_id = ship_id[k];
                         temp2 += hei;
                     }

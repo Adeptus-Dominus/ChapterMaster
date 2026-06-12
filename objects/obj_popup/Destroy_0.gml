@@ -9,7 +9,7 @@ if ((image == "chaos_symbol") && (title == "Concealed Heresy") && instance_exist
         instance_activate_object(obj_ini);
         instance_activate_object(obj_drop_select);
 
-        instance_create(0, 0, obj_ncombat);
+        instance_create_depth(0, 0, obj_ncombat.depth, obj_ncombat);
         obj_ncombat.battle_object = p_target;
         obj_ncombat.battle_loc = p_target.name;
         obj_ncombat.battle_id = obj_controller.selecting_planet;
@@ -37,7 +37,7 @@ if (instance_exists(obj_controller)) {
     }
 
     if (obj_controller.current_eventing == "chaos_trap") {
-        instance_create(0, 0, obj_ncombat);
+        instance_create_depth(0, 0, obj_ncombat.depth, obj_ncombat);
         obj_ncombat.battle_special = "cs_meeting_battle10";
 
         var meeting_star = "none";

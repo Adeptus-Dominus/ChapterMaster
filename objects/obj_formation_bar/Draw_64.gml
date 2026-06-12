@@ -1,17 +1,8 @@
-/*var tist;tist=true;
-if (tist=true){
-    if (nobar=true) then draw_set_alpha(0.5);
-    draw_set_color(c_purple);draw_set_alpha(1);
-    if (instance_exists(col_parent)) and (!instance_exists(col_target)){draw_line_width(mouse_x,mouse_y,col_parent._x1,col_parent._y1,2);}
-    if (instance_exists(col_target)){draw_line_width(mouse_x,mouse_y,col_target._x1,col_target._y1,5);}
-}*/ 
-
 add_draw_return_values();
 
 mouse_consts = return_mouse_consts();
 
 draw_set_alpha(1);
-
 
 var _x1 = x;
 var _y1 = y;
@@ -21,9 +12,8 @@ if (dragging){
 }
 
 var max_hi = height - 4;
-var actual_hi = 0;
 
-actual_hi = string_width(unit_type) * text_xscale;
+var actual_hi = string_width(unit_type) * text_xscale;
 if (actual_hi > max_hi) {
     repeat (10) {
         actual_hi = string_width(unit_type) * text_xscale;
@@ -58,5 +48,3 @@ if (dragging == false) {
 }
 
 pop_draw_return_values();
-/* */
-/*  */

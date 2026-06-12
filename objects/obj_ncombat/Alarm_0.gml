@@ -34,7 +34,7 @@ try {
     i = xxx / 10;
 
     if ((fortified > 1) && (enemy + threat != 17)) {
-        u = instance_create(0, 0, obj_nfort);
+        u = instance_create_depth(0, 0, obj_nfort.depth, obj_nfort);
         u.image_speed = 0;
         u.image_alpha = 0.5;
 
@@ -65,7 +65,7 @@ try {
 
     for (var j = 0; j < 10; j++) {
         i -= 1;
-        u = instance_create(i * 10, 240, obj_enunit);
+        u = instance_create_depth(i * 10, 240, obj_enunit.depth, obj_enunit);
         u.column = i - ((xxx / 10) - 10);
     }
     // *** Enemy Forces Special Event ***
@@ -75,7 +75,7 @@ try {
         with (obj_enunit) {
             instance_destroy();
         }
-        u = instance_create(10, 240, obj_enunit);
+        u = instance_create_depth(10, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "1";
         u.dudes[1] = "Malcadon Spyrer";
         u.dudes_num[1] = 1;
@@ -87,7 +87,7 @@ try {
     if (battle_special == "protect_raiders") {
         fortified = 0;
         threat = 3;
-        u = instance_create(20, 240, obj_enunit);
+        u = instance_create_depth(20, 240, obj_enunit.depth, obj_enunit);
         u.dudes[1] = "Dire Avenger";
         u.dudes_num[1] = 40;
         u.dudes_special[1] = "shimmershield";
@@ -109,7 +109,7 @@ try {
         with (obj_enunit) {
             instance_destroy();
         }
-        u = instance_create(80, 240, obj_enunit);
+        u = instance_create_depth(80, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "1";
         u.dudes[1] = "Fallen";
         u.dudes_num[1] = 1;
@@ -121,7 +121,7 @@ try {
         with (obj_enunit) {
             instance_destroy();
         }
-        u = instance_create(80, 240, obj_enunit);
+        u = instance_create_depth(80, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "1";
         u.dudes[1] = "Fallen";
         u.dudes_num[1] = choose(1, 1, 2, 2, 3);
@@ -133,7 +133,7 @@ try {
         with (obj_enunit) {
             instance_destroy();
         }
-        u = instance_create(xxx + 10, 240, obj_enunit);
+        u = instance_create_depth(xxx + 10, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "";
         u.dudes[1] = "Thallax";
         u.dudes_num[1] = 4;
@@ -149,7 +149,7 @@ try {
             instance_destroy();
         }
         enemy = 10;
-        u = instance_create(10, 240, obj_enunit);
+        u = instance_create_depth(10, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "1";
         u.dudes[1] = choose("Greater Daemon of Khorne", "Greater Daemon of Slaanesh", "Greater Daemon of Tzeentch", "Greater Daemon of Nurgle");
         u.dudes_num[1] = 1;
@@ -166,7 +166,7 @@ try {
         with (obj_enunit) {
             instance_destroy();
         }
-        u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit).x + 10, 240, obj_enunit);
+        u = instance_create_depth(instance_nearest(x + 1000, 240, obj_pnunit).x + 10, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "2";
         u.dudes[1] = "Necron Wraith";
         u.dudes_num[1] = 1;
@@ -185,7 +185,7 @@ try {
         with (obj_enunit) {
             instance_destroy();
         }
-        u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit).x + 10, 240, obj_enunit);
+        u = instance_create_depth(instance_nearest(x + 1000, 240, obj_pnunit).x + 10, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "21";
         u.dudes[1] = "Canoptek Spyder";
         u.dudes_num[1] = 1;
@@ -204,7 +204,7 @@ try {
         with (obj_enunit) {
             instance_destroy();
         }
-        u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit).x + 10, 240, obj_enunit);
+        u = instance_create_depth(instance_nearest(x + 1000, 240, obj_pnunit).x + 10, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "1";
         u.dudes[1] = "Tomb Stalker";
         u.dudes_num[1] = 1;
@@ -220,7 +220,7 @@ try {
         with (obj_enunit) {
             instance_destroy();
         }
-        u = instance_create(xxx + 20, 240, obj_enunit);
+        u = instance_create_depth(xxx + 20, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "";
         u.dudes[1] = "Leader";
         u.dudes_num[1] = 1;
@@ -231,7 +231,7 @@ try {
         u.dudes[3] = "Greater Daemon of Slaanesh";
         u.dudes_num[3] = 1;
         enemies[3] = 1;
-        u = instance_create(xxx + 10, 240, obj_enunit);
+        u = instance_create_depth(xxx + 10, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "";
         u.dudes[1] = "Venerable Chaos Terminator";
         u.dudes_num[1] = 20;
@@ -243,7 +243,7 @@ try {
         with (obj_enunit) {
             instance_destroy();
         }
-        u = instance_create(xxx + 20, 240, obj_enunit);
+        u = instance_create_depth(xxx + 20, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "";
         u.dudes[1] = "Greater Daemon of Tzeentch";
         u.dudes_num[1] = 1;
@@ -254,7 +254,7 @@ try {
         u.dudes[3] = "Venerable Chaos Terminator";
         u.dudes_num[3] = 20;
         enemies[3] = 20;
-        u = instance_create(xxx + 10, 240, obj_enunit);
+        u = instance_create_depth(xxx + 10, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = "";
         u.dudes[1] = "Venerable Chaos Chosen";
         u.dudes_num[1] = 40;
@@ -297,7 +297,7 @@ try {
             modi = random_range(0.80, 1.20) + 1;
             make = round(max(3, player_starting_dudes * modi));
 
-            u = instance_create(instance_nearest(x - 1000, 240, obj_pnunit).x - 10, 240, obj_enunit);
+            u = instance_create_depth(instance_nearest(x - 1000, 240, obj_pnunit).x - 10, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Meganob";
             u.dudes_num[1] = make;
             enemies[1] = u.dudes[1];
@@ -307,7 +307,7 @@ try {
                 engaged = 1;
             }
 
-            u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit).x + 20, 240, obj_enunit);
+            u = instance_create_depth(instance_nearest(x + 1000, 240, obj_pnunit).x + 20, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Slugga Boy";
             u.dudes_num[1] = make;
             enemies[1] = u.dudes[1];
@@ -323,7 +323,7 @@ try {
             modi = random_range(0.80, 1.20) + 1;
             make = round(max(3, player_starting_dudes * modi)) * 2;
 
-            u = instance_create(instance_nearest(x - 1000, 240, obj_pnunit).x - 10, 240, obj_enunit);
+            u = instance_create_depth(instance_nearest(x - 1000, 240, obj_pnunit).x - 10, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Genestealer";
             u.dudes_num[1] = round(make / 3);
             enemies[1] = u.dudes[1];
@@ -333,12 +333,12 @@ try {
                 engaged = 1;
             }
 
-            u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit).x + 10, 240, obj_enunit);
+            u = instance_create_depth(instance_nearest(x + 1000, 240, obj_pnunit).x + 10, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Genestealer";
             u.dudes_num[1] = round(make / 3);
             enemies[1] = u.dudes[1];
 
-            u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit).x + 50, 240, obj_enunit);
+            u = instance_create_depth(instance_nearest(x + 1000, 240, obj_pnunit).x + 50, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Genestealer";
             u.dudes_num[1] = make - (round(make / 3) * 2);
             enemies[1] = u.dudes[1];
@@ -351,7 +351,7 @@ try {
             modi = random_range(0.80, 1.20) + 1;
             make = round(max(3, player_starting_dudes * modi));
 
-            u = instance_create(instance_nearest(x - 1000, 240, obj_pnunit).x - 10, 240, obj_enunit);
+            u = instance_create_depth(instance_nearest(x - 1000, 240, obj_pnunit).x - 10, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Chaos Terminator";
             u.dudes_num[1] = round(make * 0.25);
             enemies[1] = u.dudes[1];
@@ -361,12 +361,12 @@ try {
                 engaged = 1;
             }
 
-            u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit).x + 10, 240, obj_enunit);
+            u = instance_create_depth(instance_nearest(x + 1000, 240, obj_pnunit).x + 10, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Chaos Space Marine";
             u.dudes_num[1] = round(make * 0.25);
             enemies[1] = u.dudes[1];
 
-            u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit).x + 50, 240, obj_enunit);
+            u = instance_create_depth(instance_nearest(x + 1000, 240, obj_pnunit).x + 50, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Cultist";
             u.dudes_num[1] = round(make * 0.5);
             enemies[1] = u.dudes[1];
@@ -374,7 +374,6 @@ try {
             hulk_forces = make;
         }
 
-        // show_message(string(instance_number(obj_enunit))+"x enemy blocks");
         instance_activate_object(obj_enunit);
         exit;
     }
@@ -488,7 +487,7 @@ try {
         var f = 0, guar = threat / 10;
 
         // Guardsmen
-        u = instance_create(xxx, 240, obj_enunit);
+        u = instance_create_depth(xxx, 240, obj_enunit.depth, obj_enunit);
         enemy_dudes = threat;
         u.dudes[1] = "Imperial Guardsman";
         u.dudes_num[1] = round(guar / 5);
@@ -498,7 +497,7 @@ try {
         f = round(threat / 20000);
         // Leman Russ D and Ogryn
         if (f > 0) {
-            u = instance_create(xxx + 10, 240, obj_enunit);
+            u = instance_create_depth(xxx + 10, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Leman Russ Demolisher";
             u.dudes_num[1] = f;
             enemies[1] = u.dudes[1];
@@ -511,7 +510,7 @@ try {
 
         // Chimera and Leman Russ
         f = max(1, round(threat / 10000));
-        u = instance_create(xxx + 20, 240, obj_enunit);
+        u = instance_create_depth(xxx + 20, 240, obj_enunit.depth, obj_enunit);
         u.dudes[1] = "Leman Russ Battle Tank";
         u.dudes_num[1] = f;
         enemies[1] = u.dudes[1];
@@ -522,27 +521,27 @@ try {
         instance_deactivate_object(u);
 
         // More Guard
-        u = instance_create(xxx + 30, 240, obj_enunit);
+        u = instance_create_depth(xxx + 30, 240, obj_enunit.depth, obj_enunit);
         u.dudes[1] = "Imperial Guardsman";
         u.dudes_num[1] = round(guar / 5);
         enemies[1] = u.dudes[1];
 
-        u = instance_create(xxx + 40, 240, obj_enunit);
+        u = instance_create_depth(xxx + 40, 240, obj_enunit.depth, obj_enunit);
         u.dudes[1] = "Imperial Guardsman";
         u.dudes_num[1] = round(guar / 5);
         enemies[1] = u.dudes[1];
 
-        u = instance_create(xxx + 50, 240, obj_enunit);
+        u = instance_create_depth(xxx + 50, 240, obj_enunit.depth, obj_enunit);
         u.dudes[1] = "Imperial Guardsman";
         u.dudes_num[1] = round(guar / 5);
         enemies[1] = u.dudes[1];
 
-        u = instance_create(xxx + 60, 240, obj_enunit);
+        u = instance_create_depth(xxx + 60, 240, obj_enunit.depth, obj_enunit);
         u.dudes[1] = "Imperial Guardsman";
         u.dudes_num[1] = round(guar / 5);
         enemies[1] = u.dudes[1];
 
-        u = instance_create(xxx + 70, 240, obj_enunit);
+        u = instance_create_depth(xxx + 70, 240, obj_enunit.depth, obj_enunit);
         f = round(threat / 50000);
 
         // Basilisk and Heavy Weapons
@@ -563,22 +562,12 @@ try {
         f = round(threat / 40000);
         // Vendetta
         if (f > 0) {
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Vendetta";
             u.dudes_num[1] = f;
             u.flank = 1;
             u.flyer = 1;
         }
-
-        /*u=instance_nearest(xxx,240,obj_enunit);enemy_dudes=threat;
-	u.dudes[1]="Imperial Guardsman";u.dudes_num[1]=floor(guard_effective*0.6);enemies[1]=u.dudes[1];
-	u.dudes[2]="Heavy Weapons Team";u.dudes_num[2]=min(1000,floor(guard_effective*0.1));enemies[2]=u.dudes[2];
-	if (threat>1){u.dudes[3]="Leman Russ Battle Tank";u.dudes_num[3]=min(1000,floor(guard_effective*0.1));enemies[3]=u.dudes[3];}
-	
-	u=instance_nearest(xxx,240+10,obj_enunit);enemy_dudes=threat;
-	u.dudes[1]="Imperial Guardsman";u.dudes_num[1]=floor(guard_effective*0.6);enemies[1]=u.dudes[1];
-	u.dudes[2]="Heavy Weapons Team";u.dudes_num[2]=min(1000,floor(guard_effective*0.1));enemies[2]=u.dudes[2];
-	if (threat>1){u.dudes[3]="Leman Russ Battle Tank";u.dudes_num[3]=min(1000,floor(guard_effective*0.1));enemies[3]=u.dudes[3];}*/
     }
 
     // ** Aeldar Force **
@@ -1268,8 +1257,6 @@ try {
 
     // ** Orks Forces **
     if (enemy == 7) {
-        // u=instance_create(-10,240,obj_enunit);
-        // u.dudes[1]="Stormboy";u.dudes_num[1]=2500;u.flank=1;// enemies[1]=u.dudes[1];
 
         // Small Ork Group
         if (threat == 1) {
@@ -1574,7 +1561,7 @@ try {
             u.dudes[2] = "Devilfish";
             u.dudes_num[2] = 4;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "XV25 Stealthsuit";
             u.dudes_num[1] = 6;
             u.flank = 1;
@@ -1611,7 +1598,7 @@ try {
             u.dudes[2] = "Devilfish";
             u.dudes_num[2] = 10;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "XV25 Stealthsuit";
             u.dudes_num[1] = 12;
             u.flank = 1;
@@ -1650,7 +1637,7 @@ try {
             u.dudes[3] = "XV8 Crisis";
             u.dudes_num[3] = 48;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "XV25 Stealthsuit";
             u.dudes_num[1] = 12;
             u.flank = 1;
@@ -1705,7 +1692,7 @@ try {
             u.dudes[3] = "XV8 Crisis";
             u.dudes_num[3] = 48;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "XV25 Stealthsuit";
             u.dudes_num[1] = 12;
             u.flank = 1;
@@ -1771,7 +1758,7 @@ try {
             u.dudes[3] = "XV8 Crisis";
             u.dudes_num[3] = 80;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "XV25 Stealthsuit";
             u.dudes_num[1] = 12;
             u.flank = 1;
@@ -1801,7 +1788,7 @@ try {
             u.dudes[1] = "Genestealer";
             u.dudes_num[1] = 10;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Lictor";
             u.dudes_num[1] = 1;
             u.flank = 1;
@@ -1821,7 +1808,7 @@ try {
             u.dudes[1] = "Cultist";
             u.dudes_num[1] = 150;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Lictor";
             u.dudes_num[1] = 1;
             u.flank = 1;
@@ -1843,7 +1830,7 @@ try {
             u.dudes[1] = "Cultist";
             u.dudes_num[1] = 600;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Lictor";
             u.dudes_num[1] = 6;
             u.flank = 1;
@@ -1900,7 +1887,7 @@ try {
             u.dudes[1] = "Carnifex";
             u.dudes_num[1] = 6;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Lictor";
             u.dudes_num[1] = 15;
             u.flank = 1;
@@ -1959,7 +1946,7 @@ try {
             u.dudes[2] = "Zoanthrope";
             u.dudes_num[2] = 10;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Lictor";
             u.dudes_num[1] = 20;
             u.flank = 1;
@@ -2018,7 +2005,7 @@ try {
             u.dudes[2] = "Zoanthrope";
             u.dudes_num[2] = 20;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Lictor";
             u.dudes_num[1] = 40;
             u.flank = 1;
@@ -2027,8 +2014,6 @@ try {
 
     // ** Chaos Forces **
     if ((enemy == 10) && (battle_special != "ship_demon") && (battle_special != "fallen1") && (battle_special != "fallen2") && (battle_special != "WL10_reveal") && (battle_special != "WL10_later") && (string_count("cs_meeting_battle", battle_special) == 0)) {
-        // u=instance_create(-10,240,obj_enunit);
-        // u.dudes[1]="Stormboy";u.dudes_num[1]=2500;u.flank=1;// enemies[1]=u.dudes[1];
         // Small Chaos Cult Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);
@@ -2401,7 +2386,7 @@ try {
             u.dudes[6] = "Possessed";
             u.dudes_num[6] = 30;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Chaos Terminator";
             u.dudes_num[1] = 10;
             u.flank = 1;
@@ -2460,7 +2445,7 @@ try {
             u.flank = 1;
             u.flyer = 1;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Chaos Terminator";
             u.dudes_num[1] = 20;
             u.flank = 1;
@@ -2643,7 +2628,7 @@ try {
             u.dudes[6] = "Possessed";
             u.dudes_num[6] = 30;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Chaos Terminator";
             u.dudes_num[1] = 10;
             u.flank = 1;
@@ -2707,7 +2692,7 @@ try {
             u.flank = 1;
             u.flyer = 1;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "World Eaters Terminator";
             u.dudes_num[1] = 20;
             u.flank = 1;
@@ -3041,7 +3026,7 @@ try {
             u.dudes[2] = "Monolith";
             u.dudes_num[2] = 1;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Necron Wraith";
             u.dudes_num[1] = 6;
             u.flank = 1;
@@ -3083,7 +3068,7 @@ try {
             u.dudes[3] = "Necron Destroyer";
             u.dudes_num[3] = 12;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Necron Wraith";
             u.dudes_num[1] = 12;
             u.flank = 1;
@@ -3125,7 +3110,7 @@ try {
             u.dudes[3] = "Necron Destroyer";
             u.dudes_num[3] = 20;
 
-            u = instance_create(0, 240, obj_enunit);
+            u = instance_create_depth(0, 240, obj_enunit.depth, obj_enunit);
             u.dudes[1] = "Necron Wraith";
             u.dudes_num[1] = 24;
             u.flank = 1;
@@ -3134,7 +3119,7 @@ try {
 
     // ** Set up player defenses **
     if (player_defenses + player_silos > 0) {
-        u = instance_create(-50, 240, obj_pnunit);
+        u = instance_create_depth(-50, 240, obj_pnunit.depth, obj_pnunit);
         u.defenses = 1;
 
         for (var i = 1; i <= 3; i++) {

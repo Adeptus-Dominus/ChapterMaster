@@ -1,9 +1,8 @@
 ship_id = 0;
 owner = 0;
-
+depth = 5;
 action = "";
 direction = 180;
-// if (instance_exists(obj_p_ship)){target=instance_nearest(x,y,obj_p_ship);}
 
 /// @type {Asset.GMObject.obj_p_ship}
 target_l = 0;

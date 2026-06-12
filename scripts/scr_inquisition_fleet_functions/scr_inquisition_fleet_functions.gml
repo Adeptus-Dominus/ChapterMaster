@@ -168,7 +168,7 @@ function new_inquisitor_inspection() {
 
             //get the second or third closest planet to launch inquisitor from
             var from_star = distance_removed_star(target_star.x, target_star.y);
-            new_inquis_fleet = instance_create(from_star.x, from_star.y, obj_en_fleet);
+            new_inquis_fleet = instance_create_depth(from_star.x, from_star.y, obj_en_fleet.depth, obj_en_fleet);
 
             with (new_inquis_fleet) {
                 base_inquis_fleet();
@@ -191,7 +191,7 @@ function new_inquisitor_inspection() {
         //get the second or third closest planet to launch inquisitor from
         var from_star = distance_removed_star(target_player_fleet.x, target_player_fleet.y);
 
-        new_inquis_fleet = instance_create(from_star.x, from_star.y, obj_en_fleet);
+        new_inquis_fleet = instance_create_depth(from_star.x, from_star.y, obj_en_fleet.depth, obj_en_fleet);
         var obj;
         with (new_inquis_fleet) {
             base_inquis_fleet();
@@ -299,7 +299,7 @@ function inquisitor_inspect_base() {
             launch_planet = nearest_star_with_ownership(x, y, [eFACTION.IMPERIUM, eFACTION.MECHANICUS], self.id);
             if (launch_planet != "none") {
                 if (instance_exists(launch_planet)) {
-                    flee = instance_create(launch_planet.x, launch_planet.y, obj_en_fleet);
+                    flee = instance_create_depth(launch_planet.x, launch_planet.y, obj_en_fleet.depth, obj_en_fleet);
                     with (flee) {
                         base_inquis_fleet();
                     }

@@ -3,7 +3,7 @@ animation = "";
 range = 400;
 wounded = 0;
 
-depth = (y * -1) / 2;
+depth = 0;
 
 ii = 0;
 blind_fire = 0;
@@ -27,9 +27,7 @@ firing = 0;
 marines_alive = 10;
 marines_max = 10;
 
-var i = -1;
-repeat (21) {
-    i += 1;
+for (var i = 0; i <= 20; i++) {
     marine[i] = 1;
     if (i > 10) {
         marine[i] = 0;
@@ -58,10 +56,6 @@ repeat (21) {
     marine_wep1_cooldown[i] = 0;
     marine_wep1_owner[i] = i;
 
-    /*marine_wep2[i]="";
-    marine_wep2_ammo[i]=0;
-    marine_wep2_reload[i]=0;
-    marine_wep2_spec[i]=0;*/
     marine_cqc[i] = 0;
 
     marine_ranged[i] = 1;
@@ -72,18 +66,14 @@ repeat (21) {
 // Bolter Reload: 10
 // once reload = 0 then it sets reload to negative something; each step is +=1, once it gets to -1 then ammo-=10 and reload=10
 
-i = -1;
-repeat (41) {
-    i += 1;
+for (var i = 0; i <= 40; i++) {
     weapon_group[i] = "";
     weapon_num[i] = 0;
     weapon_cool[i] = 0;
     weapon_range[i] = 0;
 }
 
-i = 0;
-repeat (10) {
-    i += 1;
+for (var i = 1; i<= 10; i++) {
     marine_armour[i] = "Power Armour";
 
     marine_wep1[i] = "Bolter";
@@ -97,7 +87,6 @@ repeat (10) {
     marine_wep1_range[i] = 400;
 
     if (i >= 8) {
-        // if (i>=1){
         marine_wep1[i] = "Flamer";
         marine_wep1_ammo[i] = 0;
         marine_wep1_clip[i] = 6;
@@ -108,20 +97,11 @@ repeat (10) {
         marine_wep1_firerate[i] = 50;
         marine_wep1_range[i] = 200;
     }
-
-    /*marine_wep2[i]="Chainsword";
-    marine_wep2_ammo[i]=0;
-    marine_wep2_reload[i]=999;*/
 }
 
-var i, n, g;
-i = 0;
-n = 0;
-g = 0;
-repeat (10) {
-    i += 1;
-    n = 0;
-    g = 0;
+for (var i = 1; i <= 10; i++) {
+    var n = 0;
+    var g = 0;
     repeat (10) {
         if (g == 0) {
             n += 1;
@@ -146,9 +126,4 @@ repeat (10) {
     }
 }
 
-// show_message(string(weapon_num[2])+"x "+string(weapon_group[2])+", range:"+string(weapon_range[2]));
-
 scr_shader_initialize();
-
-/* */
-/*  */

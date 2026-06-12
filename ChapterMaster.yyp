@@ -605,7 +605,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.5.1065",
+    "IDEVersion":"2026.0.0.16",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -728,7 +728,6 @@
     {"id":{"name":"rm_testing_half","path":"rooms/rm_testing_half/rm_testing_half.yy",},},
     {"id":{"name":"rm_testing_new","path":"rooms/rm_testing_new/rm_testing_new.yy",},},
     {"id":{"name":"rm_tutorial","path":"rooms/rm_tutorial/rm_tutorial.yy",},},
-    {"id":{"name":"__global_object_depths","path":"scripts/__global_object_depths/__global_object_depths.yy",},},
     {"id":{"name":"__gml_pragma_global","path":"scripts/__gml_pragma_global/__gml_pragma_global.yy",},},
     {"id":{"name":"__init","path":"scripts/__init/__init.yy",},},
     {"id":{"name":"Armamentarium","path":"scripts/Armamentarium/Armamentarium.yy",},},
@@ -750,7 +749,6 @@
     {"id":{"name":"Logger","path":"scripts/Logger/Logger.yy",},},
     {"id":{"name":"macros","path":"scripts/macros/macros.yy",},},
     {"id":{"name":"NameGenerator","path":"scripts/NameGenerator/NameGenerator.yy",},},
-    {"id":{"name":"object_get_depth","path":"scripts/object_get_depth/object_get_depth.yy",},},
     {"id":{"name":"scr_add_artifact","path":"scripts/scr_add_artifact/scr_add_artifact.yy",},},
     {"id":{"name":"scr_add_corruption","path":"scripts/scr_add_corruption/scr_add_corruption.yy",},},
     {"id":{"name":"scr_add_item","path":"scripts/scr_add_item/scr_add_item.yy",},},

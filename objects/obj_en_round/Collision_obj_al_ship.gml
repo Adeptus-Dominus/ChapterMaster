@@ -1,5 +1,4 @@
-var arm;
-arm = other.armour_front;
+var arm = other.armour_front;
 
 if (arm < dam) {
     dam -= arm;
@@ -19,7 +18,7 @@ if ((arm > dam) && (other.shields <= 0)) {
 }
 
 if (sprite_index == spr_torpedo) {
-    instance_create(x, y, obj_explosion);
+    instance_create_depth(x, y, obj_explosion.depth, obj_explosion);
 }
 
 instance_destroy();

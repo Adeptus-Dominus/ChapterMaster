@@ -6,13 +6,11 @@ img_cache: {
 }
  */
 LOGGER.debug("obj_img spawned");
+depth = -16000;
 
 image_cache = {};
 
-var i;
-i = -1;
-repeat (301) {
-    i += 1;
+for (var i = 0; i <= 300; i++) {
     creation[i] = 0;
     creation_exists[i] = -1;
     main[i] = 0;

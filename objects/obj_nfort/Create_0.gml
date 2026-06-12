@@ -1,7 +1,7 @@
 ac[0] = 0;
 hp[0] = 0;
 maxhp[0] = 0;
-
+depth = -16000;
 hostile_shots = 0;
 hostile_weapons = 0;
 engaged = 0;

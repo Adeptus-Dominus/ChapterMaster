@@ -391,7 +391,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             // show_message(string(instance_number(obj_ground_mission)));
 
             if (_found) {
-                instance_create(0, 0, obj_ncombat);
+                instance_create_depth(0, 0, obj_ncombat.depth, obj_ncombat);
                 with (obj_ncombat) {
                     battle_special = current_eventing;
                     battle_object = _star;
@@ -2990,7 +2990,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                 with (obj_star) {
                                     for (var i = 1; i <= 4; i++) {
                                         if (planet_feature_bool(p_feature[1], eP_FEATURES.WARLORD10) == 1) {
-                                            instance_create(x, y, obj_temp5);
+                                            instance_create_depth(x, y, obj_temp5.depth, obj_temp5);
                                         }
                                     }
                                 }
@@ -3025,7 +3025,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                             with (obj_star) {
                                 for (var i = 1; i <= 4; i++) {
                                     if (planet_feature_bool(p_feature[1], eP_FEATURES.ORKWARBOSS) == 1) {
-                                        instance_create(x, y, obj_temp5);
+                                        instance_create_depth(x, y, obj_temp5.depth, obj_temp5);
                                     }
                                 }
                             }
@@ -3076,14 +3076,14 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                 if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                                     with (obj_star) {
                                         if (owner == 1) {
-                                            instance_create(x, y, obj_temp6);
+                                            instance_create_depth(x, y, obj_temp6.depth, obj_temp6);
                                         }
                                     }
                                 }
                                 if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                                     with (obj_p_fleet) {
                                         if (capital_number > 0) {
-                                            instance_create(x, y, obj_temp6);
+                                            instance_create_depth(x, y, obj_temp6.depth, obj_temp6);
                                         }
                                     }
                                 }
@@ -3138,14 +3138,14 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                 if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
                                     with (obj_star) {
                                         if (owner == 1) {
-                                            instance_create(x, y, obj_temp6);
+                                            instance_create_depth(x, y, obj_temp6.depth, obj_temp6);
                                         }
                                     }
                                 }
                                 if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                                     with (obj_p_fleet) {
                                         if (capital_number > 0) {
-                                            instance_create(x, y, obj_temp6);
+                                            instance_create_depth(x, y, obj_temp6.depth, obj_temp6);
                                         }
                                     }
                                 }

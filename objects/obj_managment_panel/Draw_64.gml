@@ -92,7 +92,6 @@ var y_scale = panel_height / 860;
 
 try {
     slate_panel.draw(x, y, x_scale, y_scale);
-    // draw_text(x+(panel_width/2),y-60,string(manage)+") "+string(line[0])+"#"+string(line[2])+"#"+string(line[3]));
 
     if (point_and_click([x, y, x + panel_width, y + panel_height])) {
         obj_controller.managing = manage;

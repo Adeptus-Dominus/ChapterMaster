@@ -7,6 +7,7 @@ target = 0;
 target_score = 0;
 targets = 0;
 all_sel = 0;
+depth = -30;
 
 bomb = 0;
 bomb_score = 0;

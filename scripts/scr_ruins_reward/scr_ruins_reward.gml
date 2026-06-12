@@ -160,7 +160,7 @@ function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
     // 4. Execution Context
     var _planet_name = planet_numeral_name(_pid_idx, _star_system);
     /// @type {Asset.GMObject.obj_popup}
-    var _popup = instance_create(0, 0, obj_popup);
+    var _popup = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
     _popup.image = "ancient_ruins";
 
     scr_event_log("", $"The Ancient Ruins on {_planet_name} has been explored.", _star_system.name);

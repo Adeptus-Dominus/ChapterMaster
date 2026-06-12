@@ -11,6 +11,7 @@ fleet_minimized = false;
 fleet_all = true;
 screen_expansion = 20;
 star_travel = [];
+depth = -9;
 
 void_x = 0;
 void_y = 0;
@@ -29,15 +30,23 @@ selection_window.inside_method = function() {
     var width = selection_window.width;
     var height = selection_window.height;
 
-    // draw_text(view_xview[0]+46,view_yview[0]+117,"Title");
-    // draw_text(view_xview[0]+46,view_yview[0]+142,"1#2#3#4#5#6#7#8#9#10#11#1#13#14#15#16#17#18#19#20#21#22#23#24#25");
+    var lines = 0;
+    var posi = -1;
+    var colu = 1;
+    var y3 = 60;
+    var ty = 0;
+    var current_ship = 0;
+    var name = "";
+    var selection_box;
+    var scale = 1;
+    var void_h = 122;
+    var shew;
+    var ship_health = 0;
+    var escorts = escort;
+    var frigates = frigate;
+    var capitals = capital;
 
-    var type = "capital", lines = 0, posi = -1, colu = 1, x3 = 48, y3 = 60, escorts, frigates, capitals, ty = 0, current_ship = 0, current_fleet = 0, name = "", sal = 0, selection_box, scale = 1, void_h = 122, shew, ship_health = 0;
-    escorts = escort;
-    frigates = frigate;
-    capitals = capital;
-
-    current_fleet = instance_nearest(x, y, obj_p_fleet);
+    var current_fleet = instance_nearest(x, y, obj_p_fleet);
 
     if (escorts > 0) {
         ty++;
@@ -72,7 +81,8 @@ selection_window.inside_method = function() {
     }
 
     draw_set_halign(fa_center);
-    var ship_type, current_ship, sel_set, full_id;
+    var ship_type;
+    var full_id;
     if (screen_expansion > 0) {
         for (var j = 0; j < (escorts + frigates + capitals); j++) {
             draw_set_color(c_gray);
@@ -158,14 +168,6 @@ selection_window.inside_method = function() {
             if (fleet_all_click) {
                 ship_select = fleet_all;
             }
-
-            /*if (y3>670) and (posi<=escorts+frigates+capitals){
-	            lines=1;
-	            y3=30;
-	            x3+=223;
-	            posi++;
-	            colu++;
-	        }*/
 
             if ((posi <= escorts + frigates + capitals) && is_array(ship_type) && current_ship < array_length(ship_type)) {
                 name = ship_type[current_ship];

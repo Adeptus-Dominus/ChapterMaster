@@ -32,10 +32,10 @@ function fleet_engaged(fleet = undefined) {
     return _engaged;
 }
 
-function split_selected_into_new_fleet(start_fleet = "none") {
+function split_selected_into_new_fleet(start_fleet = noone) {
     var new_fleet;
-    if (start_fleet == "none") {
-        new_fleet = instance_create(x, y, obj_p_fleet);
+    if (start_fleet == noone) {
+        new_fleet = instance_create_depth(x, y, obj_p_fleet.depth, obj_p_fleet);
         new_fleet.owner = eFACTION.PLAYER;
         // Pass over ships to the new fleet, if they are selected
         var cap_number = array_length(capital);
@@ -399,7 +399,7 @@ function player_retreat_from_fleet_combat() {
         with (obj_temp_inq) {
             instance_destroy();
         }
-        instance_create(obj_turn_end.battle_pobject[obj_turn_end.current_battle].x, obj_turn_end.battle_pobject[obj_turn_end.current_battle].y, obj_temp_inq);
+        instance_create_depth(obj_turn_end.battle_pobject[obj_turn_end.current_battle].x, obj_turn_end.battle_pobject[obj_turn_end.current_battle].y, obj_temp_inq.depth, obj_temp_inq);
         with (obj_en_fleet) {
             if ((navy == 1) && (point_distance(x, y, obj_temp_inq.x, obj_temp_inq.y) < 40) && (trade_goods == "player_hold")) {
                 trade_goods = "";

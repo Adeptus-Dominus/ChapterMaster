@@ -14,7 +14,7 @@ if ((obj_controller.faction_gender[10] == 1) && (obj_controller.known[eFACTION.C
 
 with (obj_star) {
     if ((p_owner[1] == 1) || (p_owner[2] == 1) || (p_owner[3] == 1) || (p_owner[4] == 1)) {
-        var heh = instance_create(x, y, obj_crusade);
+        var heh = instance_create_depth(x, y, obj_crusade.depth, obj_crusade);
         heh.radius = 64;
         heh.duration = 9999;
         heh.show = false;

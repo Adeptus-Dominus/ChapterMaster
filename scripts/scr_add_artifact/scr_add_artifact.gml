@@ -621,7 +621,7 @@ function ArtifactStruct(Index) constructor {
         }
         if (_dwarn == true) {
             /// @type {Asset.GMObject.obj_popup}
-            var pip = instance_create(0, 0, obj_popup);
+            var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             pip.title = "Daemon Artifacts";
             pip.text = "Some artifacts, like the one you now wield, are a blasphemous union of the Materium's matter and the Immaterium's spirit, containing the essence of a bound daemon.  While they may offer great power, and enhanced perception, they are known to whisper poisonous lies to the wielder.  The path to damnation begins with good intentions, and many times artifacts such as these have been the cause.";
             pip.image = "";
@@ -884,7 +884,7 @@ function delete_artifact(index) {
 function equip_artifact_popup_setup() {
     instance_destroy(obj_popup);
     /// @type {Asset.GMObject.obj_popup}
-    var pop = instance_create(0, 0, obj_popup);
+    var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
     pop.type = ePOPUP_TYPE.ARTIFACT_EQUIP;
     pop.cooldown = 8;
     with (pop) {

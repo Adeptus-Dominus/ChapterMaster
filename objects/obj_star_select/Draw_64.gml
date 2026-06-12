@@ -325,7 +325,7 @@ try {
         }
         if (current_button != "") {
             if (array_contains(["Build", "Base", "Arsenal", "Gene-Vault"], current_button)) {
-                var building = instance_create(x, y, obj_temp_build);
+                var building = instance_create_depth(x, y, obj_temp_build.depth, obj_temp_build);
                 building.target = target;
                 building.planet = obj_controller.selecting_planet;
                 building.lair = p_data.has_upgrade(eP_FEATURES.SECRET_BASE);
@@ -365,7 +365,7 @@ try {
                     instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, purge: 1, planet_number: obj_controller.selecting_planet, sh_target: _targ});
                 }
             } else if (current_button == "Bombard") {
-                instance_create(x, y, obj_bomb_select);
+                instance_create_depth(x, y, obj_bomb_select.depth, obj_bomb_select);
                 if (instance_exists(obj_bomb_select)) {
                     obj_bomb_select.p_target = target;
                     obj_bomb_select.sh_target = instance_nearest(x, y, obj_p_fleet);

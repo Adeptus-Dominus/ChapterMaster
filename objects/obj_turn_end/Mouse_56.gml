@@ -16,7 +16,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
             var that, that2;
             that = instance_nearest(battle_pobject[current_battle].x, battle_pobject[current_battle].y, obj_p_fleet);
             that.alarm[3] = 1;
-            that2 = instance_create(0, 0, obj_popup);
+            that2 = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             that2.type = 99;
             obj_controller.force_scroll = 1;
         }
@@ -30,8 +30,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
 
             combating = 1;
 
-            instance_create(0, 0, obj_fleet);
-            //
+            instance_create_depth(0, 0, obj_fleet.depth, obj_fleet);
             obj_fleet.enemy[1] = enemy_fleet[1];
             obj_fleet.enemy_status[1] = -1;
 
@@ -124,7 +123,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
 
             var _battle_obj = battle_object[current_battle];
 
-            instance_create(0, 0, obj_ncombat);
+            instance_create_depth(0, 0, obj_ncombat.depth, obj_ncombat);
             obj_ncombat.enemy = battle_opponent[current_battle];
             obj_ncombat.battle_object = _battle_obj;
             obj_ncombat.battle_loc = _loc;

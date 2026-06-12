@@ -36,7 +36,7 @@ function awaken_tomb_event() {
     var text = string(star.name) + string(scr_roman(planet));
     scr_event_log("red", "The Necron Tomb on " + string(text) + " has surged into activity.");
     scr_popup("Necron Awakening", "The Necron Tomb on " + string(text) + " has surged into activity.  Rank upon rank of the abominations are pouring out from their tunnels.", "necron_tomb", "");
-    var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
+    var star_alert = instance_create_depth(star.x + 16, star.y - 24, obj_star_event.depth, obj_star_event);
     star_alert.image_alpha = 1;
     star_alert.image_speed = 1;
     star_alert.col = "red";

@@ -114,7 +114,7 @@ if ((owner == eFACTION.TAU) && (action == "") && (obj_controller.tau_messenger >
     fleet.present_fleets += 1;
     instance_deactivate_object(fleet);
 
-    fleet = instance_create(x, y, obj_en_fleet);
+    fleet = instance_create_depth(x, y, obj_en_fleet.depth, obj_en_fleet);
     fleet.owner = eFACTION.TAU;
     fleet.action_spd = 32;
     fleet.frigate_number = 1;

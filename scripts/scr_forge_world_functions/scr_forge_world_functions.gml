@@ -165,7 +165,7 @@ function build_planet_defence_fleets() {
                 _defence_fleet = true;
             }
         } else {
-            var _current_imperial_fleet = instance_create(forge.x, forge.y, obj_en_fleet);
+            var _current_imperial_fleet = instance_create_depth(forge.x, forge.y, obj_en_fleet.depth, obj_en_fleet);
             _defence_fleet = true;
             with (_current_imperial_fleet) {
                 navy = false;

@@ -11,13 +11,11 @@ part2 = "";
 part3 = "";
 exit_fade = -1;
 closing = false;
+depth = -16000;
 
 attendants = 0;
 avatars = 0;
-var i;
-i = -1;
-repeat (2501) {
-    i += 1;
+for (var i = 0; i <= 2500; i++) {
     attend_co[i] = 0;
     attend_id[i] = 0;
     attend_mood[i] = "";
@@ -64,23 +62,14 @@ scr_colors_initialize();
 scr_shader_initialize();
 
 if (obj_controller.fest_display > 0) {
-    var q, yep;
-    q = 0;
-    yep = 0;
     if (obj_ini.artifact_tags[obj_controller.fest_display] != obj_controller.fest_display_tags) {
-        repeat (20) {
-            q += 1;
-            if (yep == 0) {
-                if (obj_ini.artifact_tags[q] == obj_controller.fest_display_tags) {
-                    yep = q;
-                }
+        var fest = 0;
+        for (var i = 1; i <= 20; i++) {
+            if (obj_ini.artifact_tags[i] == obj_controller.fest_display_tags) {
+                fest = i;
+                break;
             }
         }
-        if (yep > 0) {
-            obj_controller.fest_display = q;
-        }
-        if (yep == 0) {
-            obj_controller.fest_display = 0;
-        }
+        obj_controller.fest_display = fest;
     }
 }

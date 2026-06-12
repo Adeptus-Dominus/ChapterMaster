@@ -17,12 +17,10 @@ if (sprite_index == spr_flame2) {
 }
 
 if ((life == 2) && (sprite_index != spr_flame2)) {
-    var miss;
-    miss = floor(random(100)) + 1;
+    var miss = floor(random(100)) + 1;
 
     if (miss <= 10) {
-        var rep;
-        rep = instance_create(x, y, obj_p1_bullet_miss);
+        var rep = instance_create_depth(x, y, obj_p1_bullet_miss.depth, obj_p1_bullet_miss);
         rep.sprite_index = sprite_index;
         rep.image_index = image_index;
         rep.image_speed = image_speed;

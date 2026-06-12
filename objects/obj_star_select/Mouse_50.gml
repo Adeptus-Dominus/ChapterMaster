@@ -185,7 +185,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
                     instance_activate_object(p_fleet);
                     instance_activate_object(obj_star);
 
-                    instance_create(0, 0, obj_fleet);
+                    instance_create_depth(0, 0, obj_fleet.depth, obj_fleet);
                     obj_fleet.star_name = target.name;
                     //
                     obj_fleet.enemy[1] = enemy_fleet[1];

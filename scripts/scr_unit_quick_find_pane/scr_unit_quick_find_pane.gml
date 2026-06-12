@@ -711,7 +711,7 @@ function unload_selection() {
                         }
                     }
                 }
-                boba = instance_create(unload_star.x, unload_star.y, obj_star_select);
+                boba = instance_create_depth(unload_star.x, unload_star.y, obj_star_select.depth, obj_star_select);
                 boba.loading = 1;
                 // selecting location is the ship right now; get it's orbit location
                 boba.loading_name = selecting_location;
@@ -754,7 +754,7 @@ function add_tag_to_selection(new_tag) {
 /// @self Asset.GMObject.obj_controller
 function promote_selection() {
     if ((sel_promoting == 1) && (!instance_exists(obj_popup))) {
-        var pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pip.type = 5;
         pip.company = managing;
 

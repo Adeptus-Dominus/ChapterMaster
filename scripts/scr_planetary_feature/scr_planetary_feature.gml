@@ -413,7 +413,7 @@ function discover_artifact_popup(feature) {
         exit;
     }*/
 
-    var pop = instance_create(0, 0, obj_popup);
+    var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
     pop.image = "artifact";
     pop.title = "Artifact Located";
     pop.text = $"The Artifact has been located upon {name()}; its condition and class are unlikely to be determined until returned to the ship. What is thy will?";
@@ -553,7 +553,7 @@ function check_for_stc_grab_mission() {
                 }
             }
         }
-        var arti = instance_create(system.x, system.y, obj_ground_mission); // Unloading / artifact crap
+        var arti = instance_create_depth(system.x, system.y, obj_ground_mission.depth, obj_ground_mission); // Unloading / artifact crap
         arti.num = planet;
         arti.loc = system.name;
         arti.pdata = self;
@@ -571,7 +571,7 @@ function check_for_stc_grab_mission() {
 function discover_stc_fragment_popup(techies, mechanicus_reps) {
     var _owner = current_owner;
     obj_controller.menu = eMENU.DEFAULT;
-    var pop = instance_create(0, 0, obj_popup);
+    var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
     pop.image = "stc";
     pop.title = "STC Fragment Located";
 
@@ -612,7 +612,7 @@ function discover_stc_fragment_popup(techies, mechanicus_reps) {
 /// @self Struct.PlanetData
 function check_for_artifact_grab_mission() {
     if (has_feature(eP_FEATURES.ARTIFACT)) {
-        var artifact = instance_create(system.x, system.y, obj_ground_mission); // Unloading / artifact crap
+        var artifact = instance_create_depth(system.x, system.y, obj_ground_mission.depth, obj_ground_mission); // Unloading / artifact crap
         artifact.num = planet;
         artifact.loc = obj_controller.selecting_location;
         artifact.managing = obj_controller.managing;
@@ -653,8 +653,7 @@ function ground_forces_collect_artifact() {
         }
         // mission="bad";
 
-        var pop;
-        pop = instance_create(0, 0, obj_popup);
+        var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pop.image = "artifact_recovered";
         pop.title = "Artifact Recovered!";
 
@@ -847,8 +846,7 @@ function remove_stc_from_planet() {
         }
         // mission="bad";
 
-        var pop;
-        pop = instance_create(0, 0, obj_popup);
+        var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pop.image = "artifact_recovered";
         pop.title = "STC Recovered!";
 
@@ -996,7 +994,7 @@ function recieve_artifact_in_discussion() {
     plan = instance_nearest(x, y, obj_star);
     var last_artifact = scr_add_artifact("random", "random", 4, loc, ship_id + 500);
 
-    var pop = instance_create(0, 0, obj_popup);
+    var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
     pop.image = "artifact_recovered";
     pop.title = "Artifact Recovered!";
     pop.text = $"The Artifact has been safely stowed away upon {loc}.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought home and identified posthaste.";
@@ -1062,7 +1060,7 @@ function send_stc_to_adeptus_mech() {
         if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
             with (obj_star) {
                 if ((owner == eFACTION.PLAYER) && ((p_owner[1] == 1) || (p_owner[2] == eFACTION.PLAYER))) {
-                    instance_create(x, y, obj_temp2);
+                    instance_create_depth(x, y, obj_temp2.depth, obj_temp2);
                 }
             }
         }
@@ -1070,10 +1068,10 @@ function send_stc_to_adeptus_mech() {
             with (obj_p_fleet) {
                 // Get fleet star system
                 if ((capital_number > 0) && (action == "")) {
-                    instance_create(instance_nearest(x, y, obj_star).x, instance_nearest(x, y, obj_star).y, obj_temp2);
+                    instance_create_depth(instance_nearest(x, y, obj_star).x, instance_nearest(x, y, obj_star).y, obj_temp2.depth, obj_temp2);
                 }
                 if ((frigate_number > 0) && (action == "")) {
-                    instance_create(instance_nearest(x, y, obj_star).x, instance_nearest(x, y, obj_star).y, obj_temp7);
+                    instance_create_depth(instance_nearest(x, y, obj_star).x, instance_nearest(x, y, obj_star).y, obj_temp7.depth, obj_temp7);
                 }
             }
         }
@@ -1098,18 +1096,18 @@ function send_stc_to_adeptus_mech() {
             with (obj_p_fleet) {
                 var pop;
                 if ((capital_number > 0) && (action != "")) {
-                    pop = instance_create(action_x, action_y, obj_temp2);
+                    pop = instance_create_depth(action_x, action_y, obj_temp2.depth, obj_temp2);
                     pop.action_eta = action_eta;
                 }
                 if ((frigate_number > 0) && (action != "")) {
-                    pop = instance_create(action_x, action_y, obj_temp7);
+                    pop = instance_create_depth(action_x, action_y, obj_temp7.depth, obj_temp7);
                     pop.action_eta = action_eta;
                 }
             }
         }
 
         if (is_struct(_target)) {
-            _enemy_fleet = instance_create(_target.x, _target.y, obj_en_fleet);
+            _enemy_fleet = instance_create_depth(_target.x, _target.y, obj_en_fleet.depth, obj_en_fleet);
 
             _enemy_fleet.owner = obj_controller.diplomacy;
             _enemy_fleet.home_x = _target.x;

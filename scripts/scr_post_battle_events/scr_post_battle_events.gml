@@ -8,7 +8,7 @@ function necron_tomb_raid_post_battle_sequence() {
         } else if (defeat == 0) {
             battle_data.mission_stage += 1;
             obj_controller.combat = 0;
-            var pip = instance_create(0, 0, obj_popup);
+            var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             pip.pop_data = battle_data;
 
             with (pip) {
@@ -18,7 +18,7 @@ function necron_tomb_raid_post_battle_sequence() {
             }
         }
     } else {
-        var pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         with (pip) {
             title = "Necron Tomb Awakens";
             image = "necron_army";
@@ -115,7 +115,7 @@ function space_hulk_explore_battle_aftermath() {
             var _reqi = irandom_range(30, 60) * 10;
             obj_controller.requisition += _reqi;
 
-            var pop = instance_create(0, 0, obj_popup);
+            var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             pop.image = "space_hulk_done";
             pop.title = "Space Hulk: Resources";
             pop.text = $"Your battle brothers have located several luxury goods and coginators within the Space Hulk.  They are salvaged and returned to the ship, granting {_reqi} Requisition.";
@@ -125,7 +125,7 @@ function space_hulk_explore_battle_aftermath() {
             var last_artifact = scr_add_artifact("random", "random", 4, loc, shi + 500);
             var i = 0;
 
-            var pop = instance_create(0, 0, obj_popup);
+            var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             pop.image = "space_hulk_done";
             pop.title = "Space Hulk: Artifact";
             pop.text = $"An Artifact has been retrieved from the Space Hulk and stowed upon {loc}.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought home and identified posthaste.";
@@ -134,7 +134,7 @@ function space_hulk_explore_battle_aftermath() {
             // STC
             scr_add_stc_fragment(); // STC here
             var pop;
-            pop = instance_create(0, 0, obj_popup);
+            pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             pop.image = "space_hulk_done";
             pop.title = "Space Hulk: STC Fragment";
             pop.text = "An STC Fragment has been retrieved from the Space Hulk and safely stowed away.  It is ready to be decrypted or gifted at your convenience.";
@@ -144,7 +144,7 @@ function space_hulk_explore_battle_aftermath() {
             var termi = choose(2, 2, 2, 3);
             scr_add_item("Terminator Armour", termi);
             var pop;
-            pop = instance_create(0, 0, obj_popup);
+            pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             pop.image = "space_hulk_done";
             pop.title = "Space Hulk: Terminator Armour";
             pop.text = "The fallen heretics wore several suits of Terminator Armour- a handful of them were found to be cleansible and worthy of use.  " + string(termi) + " Terminator Armour has been added to the Armamentarium.";

@@ -30,7 +30,7 @@ function scr_ruins_suprise_attack_player() {
         var _planet = obj_ground_mission.num;
         var _units = obj_ground_mission.display_unit;
 
-        instance_create(0, 0, obj_ncombat);
+        instance_create_depth(0, 0, obj_ncombat.depth, obj_ncombat);
 
         obj_ncombat.man_size_limit = man_size_limit;
 
@@ -103,7 +103,7 @@ function scr_ruins_player_forces_defeated() {
 /// @self Struct.NewPlanetFeature
 function scr_ruins_recover_from_dead() {
     /// @type {Asset.GMObject.obj_popup}
-    var pop = instance_create(0, 0, obj_popup);
+    var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
     var route = random(5);
     pop.image = "ancient_ruins";
     pop.title = "Ancient Ruins: Recovery";
@@ -190,13 +190,13 @@ function scr_explore_ruins() {
         obj_controller.menu = 0;
 
         /// @type {Asset.GMObject.obj_popup}
-        var pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         pip.title = "Ancient Ruins";
 
         var nu = planet_numeral_name(planet, star);
 
         /// @type {Asset.GMObject.obj_ground_mission}
-        var arti = instance_create(star.x, star.y, obj_ground_mission);
+        var arti = instance_create_depth(star.x, star.y, obj_ground_mission.depth, obj_ground_mission);
         arti.explore_feature = self;
         arti.num = planet;
         arti.loc = star.name;
@@ -466,7 +466,7 @@ function scr_ruins_combat_end() {
             }
         }
         /// @type {Asset.GMObject.obj_popup}
-        var pop = instance_create(0, 0, obj_popup);
+        var pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
         switch (ruins_battle) {
             case 10:
                 _star.p_traitors[planet] = _battle_threat + 1;

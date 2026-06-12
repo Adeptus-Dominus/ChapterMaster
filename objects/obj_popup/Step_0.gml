@@ -32,7 +32,7 @@ try {
                 with (obj_saveload) {
                     instance_destroy();
                 }
-                var news = instance_create(0, 0, obj_saveload);
+                var news = instance_create_depth(0, 0, obj_saveload.depth, obj_saveload);
                 news.menu = woopwoopwoop;
                 news.top = owner;
                 news.alarm[4] = 1;
@@ -151,7 +151,7 @@ try {
         }
 
         if ((press == 0) && (!instance_exists(obj_event))) {
-            instance_create(0, 0, obj_event);
+            instance_create_depth(0, 0, obj_event.depth, obj_event);
             if (obj_controller.fest_planet == 0) {
                 obj_controller.fest_attend = scr_event_dudes(1, 0, "", obj_controller.fest_sid);
             }
@@ -168,7 +168,7 @@ try {
             if (obj_controller.fest_repeats <= 0) {
                 obj_controller.fest_scheduled = 0;
 
-                instance_create(0, 0, obj_event);
+                instance_create_depth(0, 0, obj_event.depth, obj_event);
                 if (obj_controller.fest_planet == 0) {
                     obj_controller.fest_attend = scr_event_dudes(1, 0, "", obj_controller.fest_sid);
                 }

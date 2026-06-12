@@ -59,7 +59,7 @@ try {
 
         with (obj_star) {
             if (name == obj_ncombat.battle_loc) {
-                instance_create(x, y, obj_temp_meeting);
+                instance_create_depth(x, y, obj_temp_meeting.depth, obj_temp_meeting);
                 var i = 0, ii = 0, otm, good = 0, master_present = 0;
                 var run = 0, s = 0, chaos_meeting = 0;
 
@@ -126,7 +126,7 @@ try {
         }
 
         if (battle_special == "WL10_reveal") {
-            instance_create(battle_object.x, battle_object.y, obj_temp8);
+            instance_create_depth(battle_object.x, battle_object.y, obj_temp8.depth, obj_temp8);
             ox = battle_object.x;
             oy = battle_object.y; // battle_object.owner = eFACTION.CHAOS;
             battle_object.p_traitors[battle_id] = 6;
@@ -203,7 +203,7 @@ try {
             }
             if (!instance_exists(obj_turn_end)) {
                 scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
-                var _pop = instance_create(0, 0, obj_popup);
+                var _pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
                 _pop.image = "";
                 _pop.title = "Chaos Lord Killed";
                 _pop.text = "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " has been slain in combat.  Without his leadership the various forces of Chaos in the sector will crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer as threatened by the forces of Chaos.";
@@ -356,13 +356,13 @@ try {
         hunt_fallen_battle_aftermath();
     } else if ((defeat == 0) && (enemy == 9) && (battle_special == "tyranid_org")) {
         if (captured_gaunt > 1) {
-            _pop = instance_create(0, 0, obj_popup);
+            _pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             _pop.image = "inquisition";
             _pop.title = "Inquisition Mission Completed";
             _pop.text = "You have captured several Gaunt organisms.  The Inquisitor is pleased with your work, though she notes that only one is needed- the rest are to be purged.  It will be stored until it may be retrieved.  The mission is a success.";
         }
         if (captured_gaunt == 1) {
-            _pop = instance_create(0, 0, obj_popup);
+            _pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             _pop.image = "inquisition";
             _pop.title = "Inquisition Mission Completed";
             _pop.text = "You have captured a Gaunt organism- the Inquisitor is pleased with your work.  The Tyranid will be stored until it may be retrieved.  The mission is a success.";
@@ -380,7 +380,7 @@ try {
                     scr_recent("ship_destroyed", obj_ini.ship[i], i);
                 }
             }
-            var _pop = instance_create(0, 0, obj_popup);
+            var _pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             _pop.image = "";
             _pop.title = "Ship Destroyed";
             _pop.text = $"A handful of loyalist {global.chapter_name} make a fighting retreat to the engine of the vessel, '" + string(obj_ini.ship[battle_id]) + "', and then overload the main reactor.  Your ship explodes in a brilliant cloud of fire.";
@@ -420,8 +420,7 @@ try {
             if (instance_exists(obj_turn_end)) {
                 obj_turn_end.combating = 0; // obj_turn_end.alarm[1]=1;
             }
-            var pip;
-            pip = instance_create(0, 0, obj_popup);
+            var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             pip.title = "Enemies Vanquished";
             pip.text = "Not only have you killed the Chaos Lord, " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + ", but also all of your battle brothers that questioned your rule.  As you stand, alone, among the broken corpses of your enemies you begin to question what exactly it is that you accomplished.  No matter the results, you feel as though your actions have been noticed.";
         }
@@ -444,7 +443,7 @@ try {
             if (instance_exists(obj_turn_end)) {
                 obj_turn_end.combating = 0; // obj_turn_end.alarm[1]=1;
             }
-            var pip = instance_create(0, 0, obj_popup);
+            var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             pip.title = "Survived";
             pip.text = "You and the rest of your battle brothers fight your way out of the catacombs, back through the tunnel where you first entered.  By the time you manage it your forces are battered and bloodied and in desperate need of pickup.  The whole meeting was a bust- Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " clearly intended to kill you and simply be done with it.";
         }
@@ -460,7 +459,7 @@ try {
                 repeat (300) {
                     j += 1;
                     if (marine_type[j] == "Master of Sanctity") {
-                        instance_create(0, 0, obj_ground_mission);
+                        instance_create_depth(0, 0, obj_ground_mission.depth, obj_ground_mission);
                     }
                 }
             }
@@ -491,7 +490,7 @@ try {
                 if (instance_exists(obj_turn_end)) {
                     obj_turn_end.combating = 0; // obj_turn_end.alarm[1]=1;
                 }
-                var pip = instance_create(0, 0, obj_popup);
+                var pip = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
                 pip.title = "Chaos Lord Killed";
                 pip.text = "(Not completed yet- variable reward based on what chosen)";
             }
@@ -514,7 +513,7 @@ try {
                     scr_recent("ship_destroyed", obj_ini.ship[i], i);
                 }
             }
-            var _pop = instance_create(0, 0, obj_popup);
+            var _pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
             _pop.image = "";
             _pop.title = "Ship Destroyed";
             _pop.text = "The daemon has slayed all of your marines onboard.  It works its way to the engine of the vessel, '" + string(obj_ini.ship[battle_id]) + "', and then tears into the main reactor.  Your ship explodes in a brilliant cloud of fire.";
@@ -552,7 +551,7 @@ try {
                 }
                 if (!instance_exists(obj_turn_end)) {
                     scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
-                    var _pop = instance_create(0, 0, obj_popup);
+                    var _pop = instance_create_depth(0, 0, obj_popup.depth, obj_popup);
                     _pop.image = "";
                     _pop.title = "Black Crusade Ended";
                     _pop.text = $"The Chaos Lord {obj_controller.faction_leader[eFACTION.CHAOS]} has been slain in combat.  Without his leadership the Black Crusade is destined to crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer at threat by the forces of Chaos.";

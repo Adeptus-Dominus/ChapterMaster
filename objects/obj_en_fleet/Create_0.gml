@@ -8,7 +8,7 @@ home_y = 0;
 selected = 0;
 ret = 0;
 hurt = 0;
-/// @type {Asset.GMObject.obj_star}
+depth = -10;
 orbiting = 0;
 rep = 3;
 minimum_eta = 2;

@@ -1,13 +1,10 @@
 draw_set_alpha(1);
-// draw_sprite(spr_defeat,global.defeat,331,73);
 scr_image("defeat", global.defeat, 331, 73, 938, 554);
 
-var xx, yy, cus;
-xx = 331;
-yy = 93;
-cus = false;
-
-var sprx = 728, spry = 83, sprw = 135, sprh = 135;
+var sprx = 728;
+var spry = 83;
+var sprw = 135;
+var sprh = 135;
 
 if (sprite_exists(global.chapter_icon.sprite)) {
     draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
