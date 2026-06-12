@@ -13,7 +13,6 @@ enum ePOPUP_TYPE {
 }
 
 function reset_popup_options() {
-	var callstack = debug_get_callstack();
     with (obj_popup) {
         options = [];
     }
