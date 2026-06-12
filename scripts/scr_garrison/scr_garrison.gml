@@ -36,80 +36,90 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
     members = [];
     time_on_planet = 0;
     viable_garrison = 0;
-    var operative, unit, member;
-    for (var ops = 0; ops < array_length(planet_operatives); ops++) {
-        var _op = planet_operatives[ops];
-        if (_op.type == "squad") {
-            if (_op.job != type) {
-                continue;
-            }
-            //marine garrison on planet
-            var _squad = fetch_squad(_op.reference);
-            if (array_length(_squad.members) <= 0) {
-                array_delete(planet_operatives, ops, 1);
-                ops--;
-                continue;
-            }
 
-            operative = _squad;
-            array_push(garrison_squads, operative);
-            total_garrison += array_length(operative.members);
+    static evaluate_operative_squad = function(operative_squad_index){
+        //marine garrison on planet
+        var _operative = planet_operatives[operative_squad_index];
+        var _squad = fetch_squad(garrison.reference);
+        if (array_length(_squad.members) > 0) {
+            array_push(garrison_squads, _squad);
+            total_garrison += array_length(_squad.members);
             garrison_force = true;
-            for (var i = 0; i < array_length(operative.members); i++) {
-                unit = operative.fetch_member(i);
-                if (!is_struct(unit)) {
+            for (var i = 0; i < array_length(_squad.members); i++) {
+                var _unit = _squad.fetch_member(i);
+                if (!is_struct(_unit)) {
                     continue;
                 }
-                if (unit.name() == "") {
+                if (_unit.name() == "") {
                     continue;
                 }
                 array_push(members, unit);
-                if (unit.hp() > 0) {
+                if (_unit.hp() > 0) {
                     viable_garrison++;
                 }
-            }
+            } 
             if (turn_end) {
-                _op.task_time++;
+                _operative.task_time++;
             }
-            if (_op.task_time > time_on_planet) {
-                time_on_planet = _op.task_time;
+            if (_operative.task_time > time_on_planet) {
+                time_on_planet = _operative.task_time;
             }
+        } else {
+            array_delete(operatives, operative_squad_index, 1);
         }
     }
+
+    static update = function(operatives,turn_end){
+        members = [];
+        garrison_force = false;
+        self.turn_end = turn_end;
+        var _op_num = array_length(planet_operatives);
+        for (var _ops = _op_num - 1; _ops >= 0; _ops--) {
+            var _op = planet_operatives[_ops];
+            if (_op.type == "squad") {
+                if (_op.job != type) {
+                    continue;
+                }
+                evaluate_operative_squad(_ops);
+            }
+        }
+        self.turn_end = false;
+    }
+
+    update(planet_operatives,turn_end);
 
     static garrison_sustain_damages = function(win_or_loss) {
         var unit;
         var member_count = array_length(members);
         var members_lost = 0;
-        for (var i = 0; i < member_count; i++) {
+        for (var i = member_count - 1; i >= 0; i--) {
             unit = members[i];
-            if (unit.hp() > 0) {
-                if (win_or_loss == "win") {
-                    if (irandom(1) == 0) {
-                        unit.add_or_sub_health(-40);
+            if (unit.hp() <= 0) {
+                continue;
+            }
+
+            if (win_or_loss == "win") {
+                if (irandom(1) == 0) {
+                    unit.add_or_sub_health(-40);
+                }
+                if (unit.hp() < 0) {
+                    if (unit.calculate_death()) {
+                        kill_and_recover(unit.company, unit.marine_number);
+                        members_lost++;
+                        array_delete(members, i, 1);
                     }
-                    if (unit.hp() < 0) {
-                        if (unit.calculate_death()) {
-                            kill_and_recover(unit.company, unit.marine_number);
-                            members_lost++;
-                            array_delete(members, i, 1);
-                            i--;
-                            member_count--;
-                        }
-                    }
-                } else if (win_or_loss == "loose") {
-                    unit.add_or_sub_health(-50);
-                    if (unit.hp() < 0) {
-                        if (unit.calculate_death()) {
-                            kill_and_recover(unit.company, unit.marine_number);
-                            array_delete(members, i, 1);
-                            i--;
-                            members--;
-                            members_lost++;
-                        }
+                }
+            } else if (win_or_loss == "loose") {
+                unit.add_or_sub_health(-50);
+                if (unit.hp() < 0) {
+                    if (unit.calculate_death()) {
+                        kill_and_recover(unit.company, unit.marine_number);
+                        array_delete(members, i, 1);
+                        members_lost++;
                     }
                 }
             }
+
         }
         return members_lost;
     };

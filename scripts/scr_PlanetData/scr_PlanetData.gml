@@ -165,6 +165,14 @@ function PlanetData(planet, system) constructor {
         return pop_value;
     };
 
+    static population_as_small = function(){
+        if (large_population) {
+            return population * large_pop_conversion;
+        } else {
+            return population;
+        }
+    }
+
     static end_turn_population_growth = function(){
         if ((population < max_population) && (planet_type != "Dead") && (planet_type != "Craftworld") && (current_owner <= 5) && (planet_forces[eFACTION.HERETICS] == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.ORK] == 0) && (planet_forces[eFACTION.NECRONS] == 0) && (planet_forces[eFACTION.TYRANIDS] == 0)) {
             if (!large_population) {

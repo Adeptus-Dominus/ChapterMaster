@@ -1,11 +1,115 @@
+
+function PlayerPurge(action_type, action_score, planet_data){
+	pop_before = 0;
+	max_kill = 0;
+	pop_after = 0;
+	overkill = 0;
+	self.planet_data = planet_data;
+	self.action_type = action_type;
+	self.action_score = action_score;
+	population_reduction_percentage = 0;
+
+	heres_after = 0;
+	heres_before = 0;
+
+
+	static calculate_max_kills(){
+		switch (action_type){
+			case eDROP_TYPE.PURGEBOMBARD:
+				max_kill = 15000000 * action_score;
+				if (pop_before > 0){
+					overkill = max(pop_before * 0.1, ((heres_before / 200) * pop_before));
+				}
+				break;
+			case eDROP_TYPE.PURGEFIRE:
+				max_kill = 12000 * action_score;
+				if (pop_before > 0){
+					overkill = max(pop_before * 0.1, ((heres_before / 200) * pop_before));
+				}
+				break;
+			case eDROP_TYPE.PURGESELECTIVE:
+				kill=action_score * 30;
+				break;
+		}	
+		kill=min(kill, pop_before);
+
+		if (overkill > 0){
+			kill=min(kill, overkill);
+		}
+	}
+
+	calculate_influence_reduction = function(){
+		switch (action_type){
+			case eDROP_TYPE.PURGEBOMBARD:
+			    if (population_reduction_percentage>0){
+			    	influence_reduction=min((population_reduction_percentage*2), action_score*2);// How much hurresy to get rid of
+			    }
+			    break;
+			case eDROP_TYPE.PURGEFIRE:
+				influence_reduction = min((population_reduction_percentage * 2), round(action_score / 25));
+				break;
+			case eDROP_TYPE.PURGESELECTIVE:
+				influence_reduction = round(action_score / 50);
+				break;			    
+		}
+		influence_reduction = min(influence_reduction, heres_before);
+	}
+
+	static calculate_deaths = function(){
+
+
+		calculate_max_kills();
+
+		pop_after = (pop_before - kill);
+    
+	    population_reduction_percentage = (pop_after/pop_before)*100;// Relative % of people murderized
+
+
+	    calculate_influence_reduction();
+
+	    heres_after = heres_before - influence_reduction;
+	}
+
+	static population_death_string = function(){
+        var _prev_pop_string = "\n\nThe planet had a population of "
+        if (!planet_data.large_population){
+        	_prev_pop_string += $"{scr_display_number(floor(pop_before))} and {string(scr_display_number(floor(kill)))}";
+        } else {
+        	_prev_pop_string+="{pop_before} billion and {scr_display_number(action_score*12000)}";
+        }
+
+        var _prev_pop_string += " were purged";
+	}
+}
+
 function scr_purge_world(action_type, action_score) {
 
-	var population_reduction_percentage,influence_reduction, max_kill, heres_before, heres_after, kill;
-	var isquest=0,thequest="",questnum=0,pop_after=0,txt1="",txt2="",overkill=0;
+	var _purge = new PlayerPurge(action_type, action_score, self);
+	var isquest=0,thequest="",questnum=0,txt1="",txt2="";
 
 
-	var _pop_before = population;
-	var _no_chaos = (planet_forces[eFACTION.HERETICS] + planet_forces[eFACTION.CHAOS])==0
+	_purge.pop_before = population_as_small();
+
+	_purge.heres_before = max(total_corruption(),population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS]);// Starting heresy
+
+	_purge.calculate_deaths();
+
+
+	var _heres_target = "corruption";
+
+	if (max(population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS])  > total_corruption()){
+		if  (population_influences[eFACTION.TAU] > population_influences[eFACTION.TYRANIDS]){
+			_heres_target = "tau";
+		} else{
+			_heres_target = "genestealers";
+		}
+		
+	}
+
+	purge.heres_target = _heres_target;
+
+
+	var _no_chaos = (planet_forces[eFACTION.HERETICS] + planet_forces[eFACTION.CHAOS]) == 0;
 	if ((action_type==eDROP_TYPE.PURGEFIRE || action_type==eDROP_TYPE.PURGESELECTIVE) && _no_chaos && obj_controller.turn>=obj_controller.chaos_turn){
 	    if (has_feature(P_features.WARLORD10) && obj_controller.known[10]=0 && obj_controller.faction_gender[10]=1){
 	    	with(obj_drop_select){
@@ -47,19 +151,6 @@ function scr_purge_world(action_type, action_score) {
 	    }
 	}
 
-	var heres_before = max(total_corruption(),population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS]);// Starting heresy
-
-	var heres_target = "corruption";
-
-	if (max(population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS])  > total_corruption()){
-		if  (population_influences[eFACTION.TAU]>population_influences[eFACTION.TYRANIDS]){
-			heres_target = "tau";
-		} else{
-			heres_target = "genestealers";
-		}
-		
-	}
-
 
 	// TODO - while I don't expect Surface to Orbit weapons retaliating against player's purge bombardment, it might still be worthwhile to consider possible situations
 
@@ -69,32 +160,7 @@ function scr_purge_world(action_type, action_score) {
 	    txt1+=choose(" position themselves over the target in close orbit, and unleash", " unload");
 	    var _adjective = choose("tearing ground", "hammering", "battering", "thundering");
 		txt1+= $" annihilation upon {name()}. Even from space the explosions can be seen, {_adjective} across the planet's surface.";
- 	
- 		max_kill = population_small_conversion(0.015) * max_kill;
-    
-	    // Minimum kills
-	    overkill=max(_pop_before*0.1,((heres_before/200)*_pop_before));
-
-    
-	    kill=min(max_kill,overkill,_pop_before);// How many people ARE going to be killed
-    
-	    pop_after=max(_pop_before-kill,0);
-	    population_reduction_percentage=0;
-	    influence_reduction=0;
-    
-	    population_reduction_percentage=(pop_after/_pop_before)*100;// Relative % of people murderized
-
-	    if (population_reduction_percentage>0){
-	    	influence_reduction=min((population_reduction_percentage*2),action_score*2);// How much hurresy to get rid of
-	    }
-	    heres_after=heres_before-influence_reduction;
-
-    
-	    if (!population_large){
-	    	pop_after=round(pop_after);   
-	    } 
 	    
- 
 		var _displayed_population = display_population();
 		var _displayed_killed = large_population ? $"{kill} billion" : scr_display_number(floor(kill));
 	    txt1 += $"\n\nThe world had {_displayed_population} Imperium subjects. {_displayed_killed} were purged over the duration of the bombardment.\n\nHeresy has fallen down to {max(0, heres_after)}%.";
@@ -154,32 +220,6 @@ function scr_purge_world(action_type, action_score) {
 				$"Your forces scour {name()}, burning homes and towns that reek of heresy. The screams and wails of the damned carry through the air."
 			);
      	
-     		max_kill = population_large_conversion(12000) *action_score;
-        
-	        // Minimum kills
-	         overkill=min(_pop_before*0.01,((heres_before/200)*_pop_before));
-        
-	        kill=min(max_kill,overkill,_pop_before);// How many people ARE going to be killed
-        
-	        if (!population_large){
-	        	pop_after=max(_pop_before-kill,0);
-	        }
-	        if (large_population){
-	        	pop_after=_pop_before;
-	        }
-        
-	        population_reduction_percentage=0;
-	        influence_reduction=0;
-	        if (_pop_before>0) {
-	         population_reduction_percentage=(pop_after/_pop_before)*100;// Relative % of people murderized
-	     	}
-	        if (population_reduction_percentage>0){
-	        	influence_reduction=min((population_reduction_percentage*2),round(action_score/25));// How much hurresy to get rid of
-	        }
-	        heres_after=heres_before-influence_reduction;
-	        if (_pop_before>0 && pop_after=0) {
-	         heres_after=0;
-	     	}
 
 	        var nid_influence = population_influences[eFACTION.TYRANIDS];
             if (has_feature( P_features.GENE_STEALER_CULT)) {
@@ -195,15 +235,15 @@ function scr_purge_world(action_type, action_score) {
                     txt1 += " There are signs of a genestealer infestation but the cultists are too unorganized to do any real damage to their influence on this world";
                 }
             }
-	        if (!population_large){
-	        	pop_after=round(pop_after);
-	        }
-	        
-	        if (!population_large){
-	        	txt1+="\n\nThe planet had a population of "+string(scr_display_number(floor(_pop_before)))+" and "+string(scr_display_number(floor(kill)))+" were purged over the duration of the cleansing.\n\nHeresy has fallen down to "+string(max(0,heres_after))+"%.";
+
+	        var _prev_pop_string = "\n\nThe planet had a population of "
+	        if (!large_population){
+	        	_prev_pop_string += $"{scr_display_number(floor(_purge.pop_before))} and {string(scr_display_number(floor(kill)))}";
 	        }else {
-	        	txt1+="\n\nThe planet had a population of "+string(_pop_before)+" billion and "+string(scr_display_number(action_score*12000))+" were purged over the duration of the cleansing.\n\nHeresy has fallen down to "+string(max(0,heres_after))+"%.";
+	        	_prev_pop_string+="{_purge.pop_before} billion and {scr_display_number(action_score*12000)}";
 	        }
+
+	        _prev_pop_string += $" were purged over the duration of the cleansing.\n\nHeresy has fallen down to {string(max(0,heres_after))}%.";
 	    }
 	}
 
@@ -229,40 +269,15 @@ function scr_purge_world(action_type, action_score) {
 	    }
 	    else if (isquest=0){ // TODO add more variation, with planets, features, possibly marine equipment
 	        txt1=choose(
-				$"Your marines move across {star.name} {scr_roman(planet)}, searching for high profile targets. Once found, they are dragged outside from their lairs. Their execution would soon follow.",
-				$"Your marines move across {star.name} {scr_roman(planet)}, rooting out sources of corruption. Heretics are dragged from their lairs and executed in the streets."
+				$"Your marines move across {name()}, searching for high profile targets. Once found, they are dragged outside from their lairs. Their execution would soon follow.",
+				$"Your marines move across {name()}, rooting out sources of corruption. Heretics are dragged from their lairs and executed in the streets."
 			);
-    
-	        if (!population_large) {
-	         max_kill=action_score*30;// Population if normal
-	     	}
-	        if (large_population) {
-	         max_kill=0;// Population if large
-	     	}
-        
-	        _pop_before=population;
-        
-	        // Minimum kills
-	        kill=min(action_score*30,_pop_before);// How many people ARE going to be killed
-        
-	        if (!population_large) {
-	         pop_after=max(_pop_before-kill,0);
-	     	}
-	        influence_reduction=round(action_score/50);
-	        heres_after=heres_before-influence_reduction;
-	        if (_pop_before>0 && pop_after=0) {
-	         heres_after=0;
-	     	}
-        
-	        if (!population_large) {
-	         pop_after=round(pop_after);    
-	     	}
 	        
-	        if (!population_large) {
-	          txt1+=$"\n\nThe planet had a population of "+string(scr_display_number(floor(_pop_before)))+" and "+string(scr_display_number(floor(kill)))+" die over the duration of the search.\n\nHeresy has fallen to "+string(max(0,heres_after))+"%.";
+	        if (!large_population) {
+	          txt1+=$"\n\nThe planet had a population of "+string(scr_display_number(floor(_purge.pop_before)))+" and "+string(scr_display_number(floor(kill)))+" die over the duration of the search.\n\nHeresy has fallen to "+string(max(0,heres_after))+"%.";
 	     	}
 	        if (large_population) {
-	          txt1+=$"\n\nThe planet had a population of {_pop_before} billion and {action_score*30} die over the duration of the search.\n\nHeresy has fallen to "+string(max(0,heres_after))+"%.";
+	          txt1+=$"\n\nThe planet had a population of {_purge.pop_before} billion and {action_score*30} die over the duration of the search.\n\nHeresy has fallen to "+string(max(0,heres_after))+"%.";
 	     	}
 	    }
 	}
@@ -276,19 +291,19 @@ function scr_purge_world(action_type, action_score) {
 	if (action_type!=eDROP_TYPE.PURGEASSASSINATE){
 	    if (isquest=0){// DO EET
 	        txt2=txt1;
-	        if (heres_target == "corruption"){
-	        	alter_corruption(-influence_reduction);
-	        }else if (heres_target == "tau"){
-	        	alter_influence(eFACTION.TAU , -influence_reduction);
-	        }else if (heres_target == "genestealers"){
-				alter_influence(eFACTION.TYRANIDS , -influence_reduction);
+	        if (_purge.heres_target == "corruption"){
+	        	alter_corruption(-_purge.influence_reduction);
+	        }else if (_purge.heres_target == "tau"){
+	        	alter_influence(eFACTION.TAU , -_purge.influence_reduction);
+	        }else if (_purge.heres_target == "genestealers"){
+				alter_influence(eFACTION.TYRANIDS , -_purge.influence_reduction);
 	        }
 
 	        if (action_type<eDROP_TYPE.PURGESELECTIVE){
-	        	set_population(pop_after);
+	        	set_population(_purge.pop_after);
 	        }
-	        if (action_type==eDROP_TYPE.PURGESELECTIVE && !population_large){
-	        	set_population(pop_after);
+	        if (action_type==eDROP_TYPE.PURGESELECTIVE && !large_population){
+	        	set_population(_purge.pop_after);
 	        }
         
 	        var pip=instance_create(0,0,obj_popup);
