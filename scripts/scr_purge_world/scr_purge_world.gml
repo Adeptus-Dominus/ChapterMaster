@@ -13,7 +13,7 @@ function PlayerPurge(action_type, action_score, planet_data){
 	heres_before = 0;
 
 
-	static calculate_max_kills(){
+	static calculate_max_kills = function(){
 		switch (action_type){
 			case eDROP_TYPE.PURGEBOMBARD:
 				max_kill = 15000000 * action_score;
@@ -212,7 +212,7 @@ function scr_purge_world(action_type, action_score) {
 	// TODO - while I don't expect Surface to Orbit weapons retaliating against player's purge bombardment, it might still be worthwhile to consider possible situations
 
 	if (action_type=eDROP_TYPE.PURGEBOMBARD){// Bombardment
-		var _ship = string_plural("ship",ships_selected);
+		var _ship = string_plural("ship", obj_drop_select.ships_selected);
 	    _popup_text=choose($"Your cruiser and larger {_ship}", $"The heavens rumble and thunder as your {_ship}");
 	    _popup_text+=choose(" position themselves over the target in close orbit, and unleash", " unload");
 	    var _adjective = choose("tearing ground", "hammering", "battering", "thundering");
