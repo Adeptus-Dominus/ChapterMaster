@@ -1628,9 +1628,9 @@ function PlanetData(planet, system) constructor {
                 // Necron fleets, woooo
                 //necrons kill populatin
                 if ((population > 0) && (player_forces + pdf  + guardsmen + planet_forces[eFACTION.TYRANIDS] == 0)) {
-                    population = population * 0.75;
+                    set_population(population * 0.75);
                     if ((large_population == 0) && (population <= 5000)) {
-                        population = 0;
+                        set_population(0);
                     }
                 }
 
