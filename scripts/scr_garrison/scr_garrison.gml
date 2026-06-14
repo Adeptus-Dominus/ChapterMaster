@@ -69,6 +69,8 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
 
     static update = function(){
         members = [];
+        total_garrison = 0;
+        viable_garrison = 0;
         garrison_force = false;
         var _op_num = array_length(operatives);
         for (var _ops = _op_num - 1; _ops >= 0; _ops--) {
@@ -90,11 +92,11 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
         var _op_num = array_length(operatives);
         for (var _ops = 0; _ops < _op_num; _ops++) {
             var _operative_squad = operatives[_ops];
-            if (turn_end) {
-                operative_squad.task_time++;
-            }
 
-            time_on_planet = max(operative_squad.task_time , time_on_planet);
+            _operative_squad.task_time++;
+
+
+            time_on_planet = max(_operative_squad.task_time , time_on_planet);
         }
     }
 
@@ -136,14 +138,14 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
 
     static find_leader = function() {
         //find leader of garrison by finding most senior squad leader
-        garrison_leader = "none";
+        garrison_leader = false;
         var hierarchy = role_hierarchy();
         var leader_hier_pos = array_length(hierarchy);
         var unit;
         for (var _squad = 0; _squad < array_length(garrison_squads); _squad++) {
             var _leader = garrison_squads[_squad].determine_leader();
             unit = fetch_unit(_leader);
-            if (garrison_leader == "none") {
+            if (garrison_leader == false) {
                 garrison_leader = unit;
                 for (var r = 0; r < array_length(hierarchy); r++) {
                     if (hierarchy[r] == unit.role()) {
@@ -207,9 +209,9 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
         return report_string;
     };
 
-    static garrison_disposition_change = function(star, planet, up_or_down = false) {
+    static garrison_disposition_change = function(up_or_down = false) {
         dispo_change = 0;
-        var _pdata = new PlanetData(planet, star);
+        var _pdata = system.get_planet_data(planet);
         if (array_contains(obj_controller.imperial_factions, _pdata.current_owner)) {
             var _planet_disposition = _pdata.player_disposition;
 
@@ -229,9 +231,9 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
             if (is_struct(garrison_leader)) {
                 _diplomatic_leader = garrison_leader.has_trait("honorable");
             } else {
-                scr_alert("yellow", "DEBUG", $"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!", 0, 0);
-                scr_event_log("yellow", $"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!");
-                LOGGER.error($"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!");
+                scr_alert("yellow", "DEBUG", $"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!", 0, 0);
+                scr_event_log("yellow", $"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!");
+                LOGGER.error($"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!");
             }
             var _garrison_size_mod = total_garrison / 10;
 
@@ -354,7 +356,7 @@ function determine_pdf_defence(pdf, garrison = "none", planet_forti = 0, enemy =
         defence_mult += garrison_mult;
         var leader_bonus = garrison.garrison_leader.wisdom / 30;
         defence_mult *= leader_bonus; //modified by how good a commander the garrison _leader is
-        explanations += $"     Garrison _Leader Bonus:X{leader_bonus}(WIS/30)#";
+        explanations += $"     Garrison Leader Bonus:X{leader_bonus}(WIS/30)#";
         //makes pdf more effective if planet has defences or marines present
     }
 

@@ -265,7 +265,7 @@ try {
                 draw_set_font(fnt_40k_14);
                 if (!garrison.garrison_leader) {
                     garrison.find_leader();
-                    garrison.garrison_disposition_change(target, obj_controller.selecting_planet, true);
+                    garrison.garrison_disposition_change(true);
                     garrison_data_slate.sub_title = $"Garrison Leader {garrison.garrison_leader.name_role()}";
                     garrison_data_slate.body_text = garrison.garrison_report();
                 }

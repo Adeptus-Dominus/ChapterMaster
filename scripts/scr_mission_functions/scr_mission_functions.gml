@@ -359,7 +359,7 @@ function complete_garrison_mission(targ_planet, problem_index) {
         if (planet.current_owner == eFACTION.IMPERIUM && system_garrison[targ_planet - 1].garrison_force) {
             var _mission_string = $"The garrison on {planet_numeral_name(targ_planet)} has finished the period of garrison support agreed with the planetary governor.";
             var p_garrison = system_garrison[targ_planet - 1];
-            var result = p_garrison.garrison_disposition_change(id, targ_planet);
+            var result = p_garrison.garrison_disposition_change();
             if (!p_garrison.garrison_leader) {
                 p_garrison.find_leader();
             }
