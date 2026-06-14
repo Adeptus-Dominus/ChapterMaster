@@ -1918,7 +1918,7 @@ function PlanetData(planet, system) constructor {
                         traitor_mod = 2;
                     }
 
-                    planet_forces[eFACTION.HERETICS] = traitor_mod;
+                    edit_forces(eFACTION.HERETICS, traitor_mod);
                     tixt = $"Heretic cults have appeared in {name()}.";
                 } else if ((_rando >= 81) && (_rando < 91) && (planet_forces[eFACTION.HERETICS] < 3)) {
                     // Minor uprising
