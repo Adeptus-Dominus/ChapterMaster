@@ -832,7 +832,7 @@ function scr_ui_manage() {
         var skin = obj_ini.skin_color;
         static stats_displayed = false;
 
-        if (managing < 0) {
+        if (managing < 0 && selection_data != false) {
             if (struct_exists(selection_data, "purpose")) {
                 draw_text(xx + 800, yy + 74, $"{selection_data.purpose}");
             }
