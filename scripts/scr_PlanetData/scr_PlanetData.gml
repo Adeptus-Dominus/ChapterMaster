@@ -1635,7 +1635,6 @@ function PlanetData(planet, system) constructor {
                 }
 
                 var fleet_spawn_chance = roll_dice_chapter(1, 100, "high");
-                onceh = 0;
 
                 if (fleet_spawn_chance <= 15) {
                     if (system.present_fleet[eFACTION.NECRONS] > 0) {
