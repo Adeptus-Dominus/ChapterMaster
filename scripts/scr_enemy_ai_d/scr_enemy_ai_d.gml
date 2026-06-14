@@ -537,7 +537,7 @@ function scr_enemy_ai_d() {
     var planet;
     for (var i = 1; i <= planets; i++) {
         if (i < array_length(system_garrison)) {
-            var garrison = system_garrison[i];
+            var garrison = get_garrison(i);
             if (garrison.garrison_force) {
                 if (garrison.garrison_disposition_change(self, planet) != "none") {
                     dispo[planet] += garrison.dispo_change;

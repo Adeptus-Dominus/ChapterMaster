@@ -1493,7 +1493,7 @@ function PlanetData(planet, system) constructor {
                 exit;
             }
         } else if (!_loading) {
-            obj_star_select.garrison = new GarrisonForce(operatives);
+            obj_star_select.garrison = system.get_garrison(planet);
             system.garrison = obj_star_select.garrison.garrison_force;
             obj_star_select.feature = "";
             buttons_selected = false;

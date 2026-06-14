@@ -28,7 +28,7 @@ function disposition_description_chart(dispo) {
     }
 }
 
-function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") constructor {
+function GarrisonForce(system, planet, type = "garrison") constructor {
     garrison_squads = [];
     total_garrison = 0;
     garrison_leader = false;
@@ -36,6 +36,11 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
     members = [];
     time_on_planet = 0;
     viable_garrison = 0;
+    self.type = type;
+    self.system = system;
+    self.planet = planet;
+
+    operatives = system.p_operatives[planet];
 
     static evaluate_operative_squad = function(operative_squad){
         //marine garrison on planet
@@ -52,31 +57,24 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
                 if (_unit.name() == "") {
                     continue;
                 }
-                array_push(members, unit);
+                array_push(members, _unit);
                 if (_unit.hp() > 0) {
                     viable_garrison++;
                 }
             } 
-            if (turn_end) {
-                operative_squad.task_time++;
-            }
-            if (operative_squad.task_time > time_on_planet) {
-                time_on_planet = operative_squad.task_time;
-            }
         } else {
             return "delete";
         }
     }
 
-    static update = function(operatives,turn_end){
+    static update = function(){
         members = [];
         garrison_force = false;
-        self.turn_end = turn_end;
         var _op_num = array_length(operatives);
         for (var _ops = _op_num - 1; _ops >= 0; _ops--) {
             var _op = operatives[_ops];
             if (_op.type == "squad") {
-                if (_op.job != type) {
+                if (_op.job != type){
                     continue;
                 }
                 if (evaluate_operative_squad(_op) == "delete"){
@@ -84,10 +82,21 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
                 }
             }
         }
-        self.turn_end = false;
     }
 
-    update(planet_operatives,turn_end);
+    update();
+
+    static increase_time_on_planet = function(){
+        var _op_num = array_length(operatives);
+        for (var _ops = 0; _ops < _op_num; _ops++) {
+            var _operative_squad = operatives[_ops];
+            if (turn_end) {
+                operative_squad.task_time++;
+            }
+
+            time_on_planet = max(operative_squad.task_time , time_on_planet);
+        }
+    }
 
     static garrison_sustain_damages = function(win_or_loss) {
         var unit;

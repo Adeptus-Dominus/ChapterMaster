@@ -2,7 +2,8 @@
 function scr_enemy_ai_a() {
     for (var i = 1; i <= planets; i++) {
         var _ops = p_operatives[i];
-        get_garrison(i);
+        var _garrison = get_garrison(i);
+        _garrison.increase_time_on_planet();
         get_sabatours(i);
         get_planet_data(i);
     }

@@ -80,10 +80,12 @@ system_sabatours = array_create(8, 0);
 get_garrison = function(planet){
     var _gar = system_garrison[planet];
     if (_gar == false){
-        system_garrison[planet] = new GarrisonForce(p_operatives[planet], true);
+        system_garrison[planet] = new GarrisonForce(self, planet);
         _gar = system_garrison[planet];
+        _gar.star = self;
+        _gar.planet = planet;
     } else  {
-        _gar.update(p_operatives[planet]);
+        _gar.update();
     }
     return _gar;
 }
@@ -91,10 +93,12 @@ get_garrison = function(planet){
 get_sabatours = function(planet){
     var _gar = system_sabatours[planet];
     if (_gar == false){
-        system_sabatours[planet] = new GarrisonForce(p_operatives[planet], true, "sabotage");
+        system_sabatours[planet] = new GarrisonForce(self, planet, "sabotage");
         _gar = system_sabatours[planet];
+        _gar.star = self;
+        _gar.planet = planet;
     } else  {
-        _gar.update(p_operatives[planet]);
+        _gar.update();
     }
     return _gar;
 }
