@@ -1845,7 +1845,7 @@ function PlanetData(planet, system) constructor {
             }
 
             if (success && (pdf  == 0) && (guardsmen == 0) && (planet_forces[eFACTION.TAU] == 0) && (planet_forces[eFACTION.ORK] == 0)) {
-                current_owner = 10;
+                set_new_owner(eFACTION.HERETICS);
                 scr_alert("red", "owner", $"{name()} has fallen to heretics!", x, y);
 
                 if (system.visited == 1) {
