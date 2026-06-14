@@ -74,8 +74,41 @@ p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
 
 
 system_datas = array_create(8, 0);
-system_garrison = array_create(8, 0);
-system_sabatours = array_create(8, 0)
+system_garrison = array_create(8, false);
+system_sabatours = array_create(8, 0);
+
+get_garrison = function(planet){
+    var _gar = system_garrison[planet];
+    if (_gar == false){
+        system_garrison[planet] = new GarrisonForce(p_operatives[planet], true);
+        _gar = system_garrison[planet];
+    } else  {
+        _gar.update(p_operatives[planet]);
+    }
+    return _gar;
+}
+
+get_sabatours = function(planet){
+    var _gar = system_sabatours[planet];
+    if (_gar == false){
+        system_sabatours[planet] = new GarrisonForce(p_operatives[planet], true, "sabotage");
+        _gar = system_sabatours[planet];
+    } else  {
+        _gar.update(p_operatives[planet]);
+    }
+    return _gar;
+}
+
+get_planet_data = function(planet){
+    var _gar = system_datas[planet];
+    if (_gar == false){
+        system_datas[planet] = new PlanetData(planet, self);
+        _gar = system_datas[planet];
+    } else  {
+        _gar.refresh_data();
+    }
+    return _gar;    
+}
 
 add_feature = function(planet, feature){
     array_push(p_feature[planet], feature);

@@ -340,7 +340,6 @@ function scr_purge_world(action_type, action_score) {
 			}
 			instance_destroy();
 		}
-		instance_destroy();
 	}
 
 

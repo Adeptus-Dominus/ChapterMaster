@@ -2,21 +2,9 @@
 function scr_enemy_ai_a() {
     for (var i = 1; i <= planets; i++) {
         var _ops = p_operatives[i];
-        if (system_garrison[i] == false){
-            system_garrison[i] = new GarrisonForce(_ops, true);
-        } else {
-            system_garrison[i].update(_ops, true)
-        }
-        if (system_sabatours[i] == false){
-            system_sabatours[i] = new GarrisonForce(_ops, true, "sabotage");
-        } else {
-            system_sabatours[i].update(_ops, true)
-        }
-        if (system_datas[i] == false){
-            system_datas[i] = new PlanetData(i, self)
-        } else {
-            system_datas[i].refresh_data();
-        }
+        get_garrison(i);
+        get_sabatours(i);
+        get_planet_data(i);
     }
     // guardsmen hop from planet to planet
     //not sure we really need this as it's handled with tht navy fleet functions but fuck it updated it and leaving it fot the sec

@@ -354,12 +354,6 @@ function drop_select_unit_selection() {
                             exit;
                         }
                     }
-
-                    _p_data = p_target.system_datas[planet_number];
-
-                    _p_data.refresh_data();
-
-                    _p_data.purge(purge, _purge_score);
                 }
             }
 
@@ -379,7 +373,12 @@ function drop_select_unit_selection() {
                 _purge_score = roster.selected_count();
             }
 
-            scr_purge_world(p_target, planet_number, purge, _purge_score);
+
+            _p_data = p_target.system_datas[planet_number];
+
+            _p_data.refresh_data();
+
+            _p_data.purge(purge, _purge_score);
         }
     }
 }

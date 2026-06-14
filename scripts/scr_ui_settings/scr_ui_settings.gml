@@ -316,11 +316,6 @@ function setup_ui_chapter_settings(){
     _sets.auto_board_multi.toggles[1].active = command_set[26];
 }
 
-    _sets.auto_board_multi.toggles[0].active = command_set[25];
-
-    _sets.auto_board_multi.toggles[1].active = command_set[26];
-}
-
 function scr_ui_settings() {
 
     var romanNumerals = scr_roman_numerals();
@@ -561,15 +556,6 @@ function scr_ui_settings() {
     }
 }
 
-
-function scr_select_company_settings_ui(){
-// Company Settings
-    var _comp_buttons = settings_buttons_ui_components.company_settings_selection_buttons;
-    for (var i = 0; i<array_length(_comp_buttons); i++){
-        var _button = _comp_buttons[i];
-        if (!_button.draw()){
-            continue;
-        }
 
 
 function scr_select_company_settings_ui(){
@@ -853,6 +839,7 @@ function scr_draw_mass_equip_gui(){
     /*  */
 
 }
+
 function scr_draw_role_settings_ui(){
     if (menu == eMENU.ROLE_SETTINGS) {
         if (settings > 0) {

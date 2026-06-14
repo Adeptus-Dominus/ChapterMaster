@@ -117,7 +117,7 @@ function scr_new_governor_mission(planet, problem = "") {
     };
     if (problem != "") {
         if (problem == "provide_garrison") {
-            if (system_garrison[planet - 1].garrison_force) {
+            if (get_garrison().garrison_force) {
                 exit;
             }
             mission_data.reason = choose("stability", "importance");

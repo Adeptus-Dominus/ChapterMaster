@@ -37,10 +37,9 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
     time_on_planet = 0;
     viable_garrison = 0;
 
-    static evaluate_operative_squad = function(operative_squad_index){
+    static evaluate_operative_squad = function(operative_squad){
         //marine garrison on planet
-        var _operative = planet_operatives[operative_squad_index];
-        var _squad = fetch_squad(garrison.reference);
+        var _squad = fetch_squad(operative_squad.reference);
         if (array_length(_squad.members) > 0) {
             array_push(garrison_squads, _squad);
             total_garrison += array_length(_squad.members);
@@ -59,13 +58,13 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
                 }
             } 
             if (turn_end) {
-                _operative.task_time++;
+                operative_squad.task_time++;
             }
-            if (_operative.task_time > time_on_planet) {
-                time_on_planet = _operative.task_time;
+            if (operative_squad.task_time > time_on_planet) {
+                time_on_planet = operative_squad.task_time;
             }
         } else {
-            array_delete(operatives, operative_squad_index, 1);
+            return "delete";
         }
     }
 
@@ -73,14 +72,16 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
         members = [];
         garrison_force = false;
         self.turn_end = turn_end;
-        var _op_num = array_length(planet_operatives);
+        var _op_num = array_length(operatives);
         for (var _ops = _op_num - 1; _ops >= 0; _ops--) {
-            var _op = planet_operatives[_ops];
+            var _op = operatives[_ops];
             if (_op.type == "squad") {
                 if (_op.job != type) {
                     continue;
                 }
-                evaluate_operative_squad(_ops);
+                if (evaluate_operative_squad(_op) == "delete"){
+                    array_delete(operatives, _ops, 1);
+                }
             }
         }
         self.turn_end = false;
