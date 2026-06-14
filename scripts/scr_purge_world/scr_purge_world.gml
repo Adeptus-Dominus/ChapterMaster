@@ -75,18 +75,18 @@ function PlayerPurge(action_type, action_score, planet_data) constructor{
         if (!planet_data.large_population){
         	_death_string += $"{scr_display_number(floor(pop_before))} and {scr_display_number(floor(kill))}";
         } else {
-        	_death_string+="{pop_before / LARGE_PLANET_MOD} billion and {scr_display_number(kill)}";
+        	_death_string += $"{pop_before / LARGE_PLANET_MOD} billion and {scr_display_number(kill)}";
         }
 
 		switch (action_type){
 			case eDROP_TYPE.PURGEBOMBARD:
-			    _death_string += "were purged over the duration of the bombardment.";
+			    _death_string +=  "were purged over the duration of the bombardment.";
 			    break;
 			case eDROP_TYPE.PURGEFIRE:
-				_death_string += "over the duration of the cleansing."
+				_death_string += " over the duration of the cleansing."
 				break;
 			case eDROP_TYPE.PURGESELECTIVE:
-				_death_string += "over the duration of the search.";
+				_death_string += " over the duration of the search.";
 				break;			    
 		}
 
@@ -94,13 +94,13 @@ function PlayerPurge(action_type, action_score, planet_data) constructor{
 
         switch(heres_target){
         	case "corruption":
-        		_death_string += "\n\nHeresy has fallen to {heres_after}%.";
+        		_death_string += $"\n\nHeresy has fallen to {heres_after}%.";
         		break;
         	case "tau":
-        		_death_string += "\n\Tau influence is now effecting {heres_after}% of the population.";
+        		_death_string += $"\n\Tau influence is now effecting {heres_after}% of the population.";
         		break;
         	case "genestealers":
-        		_death_string += "\n\Genestealer influence is now effecting {heres_after}% of the population.";
+        		_death_string += $"\n\Genestealer influence is now effecting {heres_after}% of the population.";
         		break;
         } 
 
@@ -168,7 +168,7 @@ function scr_purge_world(action_type, action_score) {
 
 	var _no_chaos = (planet_forces[eFACTION.HERETICS] + planet_forces[eFACTION.CHAOS]) == 0;
 	if ((action_type==eDROP_TYPE.PURGEFIRE || action_type==eDROP_TYPE.PURGESELECTIVE) && _no_chaos && obj_controller.turn>=obj_controller.chaos_turn){
-	    if (has_feature(P_FEATURES.WARLORD10) && obj_controller.known[10]=0 && obj_controller.faction_gender[10]=1){
+	    if (has_feature(eP_FEATURES.WARLORD10) && obj_controller.known[10]=0 && obj_controller.faction_gender[10]=1){
 	    	with(obj_drop_select){
 		        var pop=instance_create(0,0,obj_popup);
 		        pop.image="chaos_symbol";
@@ -177,7 +177,7 @@ function scr_purge_world(action_type, action_score) {
 		        exit;   
 		    }
 		}
-	    if (has_feature(P_FEATURES.WARLORD10) && obj_controller.known[10]>=2 && obj_controller.faction_gender[10]=1){
+	    if (has_feature(eP_FEATURES.WARLORD10) && obj_controller.known[10]>=2 && obj_controller.faction_gender[10]=1){
 	    	with(obj_drop_select){
 
 				attacking=10;
@@ -248,8 +248,8 @@ function scr_purge_world(action_type, action_score) {
      	
 
 	        var nid_influence = population_influences[eFACTION.TYRANIDS];
-            if (has_feature(P_FEATURES.GENE_STEALER_CULT)) {
-                var cult = get_features(P_FEATURES.GENE_STEALER_CULT)[0];
+            if (has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
+                var cult = get_features(eP_FEATURES.GENE_STEALER_CULT)[0];
                 if (cult.hiding) {
 
                 }
@@ -334,10 +334,10 @@ function scr_purge_world(action_type, action_score) {
 
 
 	if instance_exists(obj_drop_select){
-		if (instance_exists(sh_target)){
-			sh_target.acted=5;
-		}
 		with(obj_drop_select){
+			if (instance_exists(sh_target)){
+				sh_target.acted=5;
+			}
 			instance_destroy();
 		}
 		instance_destroy();

@@ -194,10 +194,10 @@ function drop_select_unit_selection() {
     btn_attack.y1 = btn_back.y1;
     if (purge == eDROP_TYPE.RAIDATTACK) {
         btn_attack.str1 = (attack) ? "ATTACK!" : "RAID!";
-        btn_attack.active = array_length(roster.selected_units) > 0 && race_quantity > 0;
+        btn_attack.active = roster.selected_count() > 0 && race_quantity > 0;
     } else if (purge > 1) {
         btn_attack.str1 = "PURGE";
-        btn_attack.active = array_length(roster.selected_units) > 0;
+        btn_attack.active = roster.selected_count() > 0;
     }
     btn_attack.update();
     btn_attack.draw();
@@ -371,12 +371,12 @@ function drop_select_unit_selection() {
             draw_rectangle(954, 556, 1043, 579, 0);
             draw_set_alpha(1);
             var _purge_score = 0;
-            if (purge == 2) {
+            if (purge == eDROP_TYPE.PURGEBOMBARD) {
                 _purge_score = roster.purge_bombard_score();
             }
 
-            if (purge >= 3) {
-                _purge_score = array_length(roster.selected_units);
+            if (purge >= eDROP_TYPE.PURGEFIRE) {
+                _purge_score = roster.selected_count();
             }
 
             scr_purge_world(p_target, planet_number, purge, _purge_score);
