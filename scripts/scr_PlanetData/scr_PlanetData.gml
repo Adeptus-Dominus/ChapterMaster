@@ -184,7 +184,7 @@ function PlanetData(planet, system) constructor {
     }
 
     static alter_influence = function(faction,value){
-        adjust_influence(eFACTION.TYRANIDS, -1, planet,system);
+        adjust_influence(faction, value, planet, system);
         population_influences = system.p_influence[planet];
     }
 
