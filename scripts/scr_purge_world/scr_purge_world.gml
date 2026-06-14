@@ -1,5 +1,5 @@
 
-function PlayerPurge(action_type, action_score, planet_data){
+function PlayerPurge(action_type, action_score, planet_data) constructor{
 	pop_before = 0;
 	max_kill = 0;
 	pop_after = 0;
@@ -28,10 +28,10 @@ function PlayerPurge(action_type, action_score, planet_data){
 				}
 				break;
 			case eDROP_TYPE.PURGESELECTIVE:
-				kill=action_score * 30;
+				max_kill=action_score * 30;
 				break;
 		}	
-		kill=min(kill, pop_before);
+		kill=min(max_kill, pop_before);
 
 		if (overkill > 0){
 			kill=min(kill, overkill);
@@ -111,7 +111,7 @@ function PlayerPurge(action_type, action_score, planet_data){
 		var _type = planet_data.planet_type;
 
 	    if (pop_after <=0 ){
-	        if (planet_data.current_owner == 2 && obj_controller.faction_status[2]!="War"){
+	        if (planet_data.current_owner == eFACTION.IMPERIUM && planet_data.owner_status() != "War"){
 	            if (_type == "Temperate" || _type == "Hive" || _type == "Desert"){
 	            	var _disp_hit = -10;
 		            if (_type = "Temperate"){
@@ -124,7 +124,7 @@ function PlayerPurge(action_type, action_score, planet_data){
 	            }
 	        }
 	    }
-	    if (planet_data.current_owner == 3 && obj_controller.faction_status[3] != "War"){
+	    if (planet_data.current_owner == eFACTION.MECHANICUS && planet_data.owner_status() != "War"){
 
 	    	if (_type="Forge"){
 	    		_disp_hit =-15;
@@ -163,12 +163,12 @@ function scr_purge_world(action_type, action_score) {
 		
 	}
 
-	purge.heres_target = _heres_target;
+	_purge.heres_target = _heres_target;
 
 
 	var _no_chaos = (planet_forces[eFACTION.HERETICS] + planet_forces[eFACTION.CHAOS]) == 0;
 	if ((action_type==eDROP_TYPE.PURGEFIRE || action_type==eDROP_TYPE.PURGESELECTIVE) && _no_chaos && obj_controller.turn>=obj_controller.chaos_turn){
-	    if (has_feature(P_features.WARLORD10) && obj_controller.known[10]=0 && obj_controller.faction_gender[10]=1){
+	    if (has_feature(P_FEATURES.WARLORD10) && obj_controller.known[10]=0 && obj_controller.faction_gender[10]=1){
 	    	with(obj_drop_select){
 		        var pop=instance_create(0,0,obj_popup);
 		        pop.image="chaos_symbol";
@@ -177,7 +177,7 @@ function scr_purge_world(action_type, action_score) {
 		        exit;   
 		    }
 		}
-	    if (has_feature(P_features.WARLORD10) && obj_controller.known[10]>=2 && obj_controller.faction_gender[10]=1){
+	    if (has_feature(P_FEATURES.WARLORD10) && obj_controller.known[10]>=2 && obj_controller.faction_gender[10]=1){
 	    	with(obj_drop_select){
 
 				attacking=10;
@@ -232,7 +232,7 @@ function scr_purge_world(action_type, action_score) {
 
 	    if (_isquest){
 	        if (_thequest="cleanse" && action_score>=20){
-	        	remove_planet_problem(planet,_thequest,star);
+	        	remove_problem(_thequest);
             	
             	alter_disposition(eFACTION.INQUISITION,obj_controller.demanding ? choose(0,0,1) :1);
             
@@ -248,8 +248,8 @@ function scr_purge_world(action_type, action_score) {
      	
 
 	        var nid_influence = population_influences[eFACTION.TYRANIDS];
-            if (has_feature( P_features.GENE_STEALER_CULT)) {
-                var cult = get_features(P_features.GENE_STEALER_CULT)[0];
+            if (has_feature(P_FEATURES.GENE_STEALER_CULT)) {
+                var cult = get_features(P_FEATURES.GENE_STEALER_CULT)[0];
                 if (cult.hiding) {
 
                 }
@@ -270,7 +270,7 @@ function scr_purge_world(action_type, action_score) {
 
 	if (action_type=eDROP_TYPE.PURGESELECTIVE){// Blam!
 	    var i=0;
-	    if (has_problem_planet(planet, "purge", star)){
+	    if (has_problem("purge")){
         	_isquest=1;
         	_thequest="purge";
         	_questnum=i;
@@ -278,7 +278,7 @@ function scr_purge_world(action_type, action_score) {
 
 	    if (_isquest=1){
 	        if (_thequest="purge" && action_score>=10){
-	        	remove_planet_problem(planet, "purge", star);
+	        	remove_problem("purge");
             
 	            alter_disposition(eFACTION.INQUISITION,obj_controller.demanding ? choose(0,0,1) :1);
             

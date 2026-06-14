@@ -219,6 +219,7 @@ function PlanetData(planet, system) constructor {
         }
     };
 
+    //players diplomatic status in relation to planets owner
     static owner_status = function() {
         return obj_controller.faction_status[current_owner];
     };
