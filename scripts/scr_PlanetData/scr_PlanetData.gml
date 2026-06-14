@@ -1968,7 +1968,7 @@ function PlanetData(planet, system) constructor {
 
     static purge = scr_purge_world;
 
-    static assasinate_governor_setup = function(){
+    static assasinate_governor_setup = function(action_score){
         var aroll=roll_dice_chapter(1, 100, "high");
         var chance = 100;
         // var siz_penalty=0;
@@ -1976,7 +1976,7 @@ function PlanetData(planet, system) constructor {
         var yep=0;
     
         // Disposition
-        aroll += floor(star.dispo[planet] / 10);
+        aroll += floor(player_disposition / 10);
 
         // Advantages
         if (scr_has_adv("Ambushers")){
@@ -1999,7 +1999,9 @@ function PlanetData(planet, system) constructor {
         txt+="Once the time is right their target is ambushed "
         txt+=choose("in their home","in the streets","while driving","taking a piss")+" and tranquilized.  ";
     
-        if(scr_has_disadv("Never Forgive")) then spec1=1;
+        if (scr_has_disadv("Never Forgive")){
+            spec1=1;
+        }
         if (global.chapter_name="Space Wolves" || obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
             spec1=3;
         }
@@ -2009,31 +2011,35 @@ function PlanetData(planet, system) constructor {
         if (obj_ini.omophagea=1){
             spec1=choose(spec1,20);
         }
+
+        var _gov_gender = _set_gender();
+        var _gender_third = string_gender_third_person(_gov_gender);
+        var _gender_pronouns = string_gender_pronouns(_gov_gender);
     
-        if (spec1=1) then txt+="They are brought to the already-prepared facilities for Fallen, tortured to make "+string(choose("him","him","her"))+" appear a heretic, and then incinerated.  ";
-        if (spec1=3) then txt+=string(choose("He","He","She"))+" is tossed to the Fenrisian Wolves and viciously mauled, torn apart, and eaten.  The beasts leave nothing but bloody scraps.  ";
-        if (spec1=6) then txt+=string(choose("He","He","She"))+" is stuck in with the other criminals, and scum, to be turned into a servitor.  Soon nothing remains that could be likened to the former Governor.  ";
+        if (spec1=1) then txt+=$"They are brought to the already-prepared facilities for Fallen, tortured to make {_gender_pronouns} appear a heretic, and then incinerated.  ";
+        if (spec1=3) then txt+=$"{_gender_third} is tossed to the Fenrisian Wolves and viciously mauled, torn apart, and eaten.  The beasts leave nothing but bloody scraps.  ";
+        if (spec1=6) then txt+=$"{_gender_third} is stuck in with the other criminals, and scum, to be turned into a servitor.  Soon nothing remains that could be likened to the former Governor.  ";
         if (spec1=20){
-            if (action_score>1) then txt+="Things get out of hand, and the Governor is torn limb from limb and consumed.  "+string(choose("His","His","Her"))+" flesh is torn off and eaten, bone pulverized, and marrow sucked free.  ";
-            if (action_score=1) then txt+="Your battle brother chops apart the Governor and eats a sizeable portion of "+string(choose("his","his","her"))+" flesh, focusing upon the eyes, teeth, and fingers.  Once full the rest is disposed of.  ";
+            if (action_score>1) then txt+=$"Things get out of hand, and the Governor is torn limb from limb and consumed.  {_gender_pronouns}flesh is torn off and eaten, bone pulverized, and marrow sucked free.  ";
+            if (action_score=1) then txt+=$"Your battle brother chops apart the Governor and eats a sizeable portion of {_gender_pronouns} flesh, focusing upon the eyes, teeth, and fingers.  Once full the rest is disposed of.  ";
         }
     
         if (spec1=0){
             spec2=choose(1,2,3,4,5,5,5);
-            if (spec2=1) then txt+="Their still-living body is disintegrated by acid.  ";
-            if (spec2=2) then txt+="The Governor is jettisoned into the local star at the first opportunity.  ";
-            if (spec2=3) then txt+=string(choose("He","He","She"))+" is burned as fuel for one of your vessels.  ";
-            if (spec2=4) then txt+="A few grenades is all it takes to blow "+string(choose("his","his","her"))+" body to smithereens.  ";
-            if (spec2=5) then txt+=string(choose("He","He","She"))+" is executed in a mundane fashion and buried.  ";
+            if (spec2=1) then txt+=$"Their still-living body is disintegrated by acid.  ";
+            if (spec2=2) then txt+=$"The Governor is jettisoned into the local star at the first opportunity.  ";
+            if (spec2=3) then txt+=$"{_gender_third} is burned as fuel for one of your vessels.  ";
+            if (spec2=4) then txt+=$"A few grenades is all it takes to blow {_gender_pronouns} body to smithereens.  ";
+            if (spec2=5) then txt+=$"{_gender_third} is executed in a mundane fashion and buried.  ";
         }
     
         txt+="What is thy will?";
     
-        var pip=instance_create(0,0,obj_popup);
-        pip.title="Planetary Governor Assassinated";
-        pip.text=txt;
-        pip.planet=planet;
-        pip.p_data = new PlanetData(planet,star);
+        var pip = instance_create(0,0,obj_popup);
+        pip.title = "Planetary Governor Assassinated";
+        pip.text = txt;
+        pip.planet = planet;
+        pip.p_data = self;
         var options = [
             {
                 str1 : "Allow the official successor to become Planetary Governor.",

@@ -301,7 +301,7 @@ function scr_purge_world(action_type, action_score) {
 
 
 	if (action_type=eDROP_TYPE.PURGEASSASSINATE){
-		assasinate_governor_setup();
+		assasinate_governor_setup(action_score);
 	}
 
 	if (action_type!=eDROP_TYPE.PURGEASSASSINATE){
