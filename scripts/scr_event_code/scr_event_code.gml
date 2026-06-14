@@ -161,7 +161,7 @@ function event_end_turn_action() {
                 var marine_name = _event.name;
                 var comp = _event.company;
                 var marine_num = _event.marine;
-                var _unit = fetch_unit([marine_num, comp]);
+                var _unit = fetch_unit([comp, marine_num]);
                 var item = _event.crafted;
 
                 LOGGER.warning($"comp: {comp}, marine_num: {marine_num}");
