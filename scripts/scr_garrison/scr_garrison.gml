@@ -68,6 +68,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     }
 
     static update = function(){
+        garrison_squads = [];
         members = [];
         total_garrison = 0;
         viable_garrison = 0;
