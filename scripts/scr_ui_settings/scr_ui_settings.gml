@@ -617,7 +617,7 @@ function setup_role_settings_buttons(){
     role_settings_ui.secondary_weapon_button = new UnitButtonObject({
         style : "pixel",
         x1 : _button_x,
-        y1 : role_settings_ui.secondary_weapon_button.y2,
+        y1 : role_settings_ui.main_weapon_button.y2,
         label : "Secondary Weapon: {obj_ini.wep2[100][settings]}",
         set_width : true,
         w : 250,
@@ -931,7 +931,7 @@ function scr_draw_role_settings_ui(){
                 var _armour = obj_ini.armour[100][_index];
                 var _armour_tags = gear_weapon_data("armour",  _armour, "tags");
                 if (_armour_tags !=0 ){
-                    if (array_contains(_armour_tags, "terminator") || array_contains(_armour_tags, "dreadought")){
+                    if (array_contains(_armour_tags, "terminator") || array_contains(_armour_tags, "dreadnought")){
                         _allow_click = false;
                     }
                 }
