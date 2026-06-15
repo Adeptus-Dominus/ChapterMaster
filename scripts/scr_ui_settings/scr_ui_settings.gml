@@ -134,7 +134,7 @@ function setup_ui_chapter_settings(){
     );
 
 
-    var _toggle_dam_sys = new ToggleButton({
+    var _to_slot_clickedle_dam_sys = new To_slot_clickedleButton({
         style : "box",
         tooltip : "Your Astartes will attempt to disable the ship by attacking the ship bridge and systems.",
         str1 : "Damage Systems",
@@ -144,35 +144,35 @@ function setup_ui_chapter_settings(){
         clicked_check_default : true
     });
 
-    settings_buttons_ui_components.boarding_damage_systems = _toggle_dam_sys;
+    settings_buttons_ui_components.boarding_damage_systems = _to_slot_clickedle_dam_sys;
 
-    var _toggle_use_plasma = new ToggleButton({
+    var _to_slot_clickedle_use_plasma = new To_slot_clickedleButton({
         style : "box",
         tooltip : "Your Astartes will use equipped Plasma Bombs to massively damage the boarded ship.",
         str1 : "Use Plasma Bombs",
-        x1 : _toggle_dam_sys.x2 + 10,
+        x1 : _to_slot_clickedle_dam_sys.x2 + 10,
         y1 : 604,
         active : command_set[21],
         clicked_check_default : true
     });
 
-    settings_buttons_ui_components.boarding_plasma_bombs = _toggle_use_plasma;
+    settings_buttons_ui_components.boarding_plasma_bombs = _to_slot_clickedle_use_plasma;
 
-    var _toggle_commandeer = new ToggleButton({
+    var _to_slot_clickedle_commandeer = new To_slot_clickedleButton({
         style : "box",
         tooltip : "Your Astartes will attempt to commandeer the vessel, to be permenantely used or salvaged.",
         str1 : "Commandeer Ship",
-        x1 : _toggle_use_plasma.x2 + 10,
+        x1 : _to_slot_clickedle_use_plasma.x2 + 10,
         y1 : 604,
         active : command_set[22],
         clicked_check_default : true
     });
 
-    settings_buttons_ui_components.boarding_commandeer = _toggle_commandeer;
+    settings_buttons_ui_components.boarding_commandeer = _to_slot_clickedle_commandeer;
 
     var _sets = settings_buttons_ui_components;
 
-    _sets.progenitor_livery = new ToggleButton({
+    _sets.progenitor_livery = new To_slot_clickedleButton({
         x1 : 50,
         y1 : 140,
         str1 : "Progenitor Livery",
@@ -182,7 +182,7 @@ function setup_ui_chapter_settings(){
         clicked_check_default : true
     });
 
-    _sets.astartes_transfer_toggle = new ToggleButton({
+    _sets.astartes_transfer_to_slot_clickedle = new To_slot_clickedleButton({
         x1 : _sets.progenitor_livery.x2 + 10,
         y1 : 140,
         str1 : "Allow Astartes Transfer",
@@ -192,8 +192,8 @@ function setup_ui_chapter_settings(){
         clicked_check_default : true
     });
 
-    _sets.codex_compliant = new ToggleButton({
-        x1 : _sets.astartes_transfer_toggle.x2 + 10,
+    _sets.codex_compliant = new To_slot_clickedleButton({
+        x1 : _sets.astartes_transfer_to_slot_clickedle.x2 + 10,
         y1 : 140,
         str1 : "Codex Compliant Organization",
         tooltip : "When enabled, marine promotions are limited based on their current company and EXP, overall following the Codex Astartes promotion sequence.",
@@ -203,7 +203,7 @@ function setup_ui_chapter_settings(){
     });
 
     var _y = _sets.progenitor_livery.y2 + 10;
-    _sets.modest_livery = new ToggleButton({
+    _sets.modest_livery = new To_slot_clickedleButton({
         x1 : 50,
         y1 : _y,
         str1 : "Modest Livery",
@@ -213,12 +213,12 @@ function setup_ui_chapter_settings(){
         clicked_check_default : true
     });
 
-    _sets.tagged_training = new ToggleButton({
-        x1 : _sets.astartes_transfer_toggle.x1,
+    _sets.ta_slot_clickeded_training = new To_slot_clickedleButton({
+        x1 : _sets.astartes_transfer_to_slot_clickedle.x1,
         y1 : _y,
-        str1 : "Tagged Training Livery",
-        tooltip : "Turned off by default, makes specialist training select only tagged marines, click on their potential indicators to tag.",
-        active : tagged_training,
+        str1 : "Ta_slot_clickeded Training Livery",
+        tooltip : "Turned off by default, makes specialist training select only ta_slot_clickeded marines, click on their potential indicators to tag.",
+        active : ta_slot_clickeded_training,
         style : "box",
         clicked_check_default : true
     });
@@ -259,8 +259,8 @@ function setup_ui_chapter_settings(){
         }
     );
 
-    for (var i=0;i<array_length(_command_mult.toggles);i++){
-        var _tog = _command_mult.toggles[i];
+    for (var i=0;i<array_length(_command_mult.to_slot_clickedles);i++){
+        var _tog = _command_mult.to_slot_clickedles[i];
         _tog.active = bool(command_set[3 + i]);
     }
 
@@ -311,9 +311,9 @@ function setup_ui_chapter_settings(){
         }
     );
 
-    _sets.auto_board_multi.toggles[0].active = command_set[25];
+    _sets.auto_board_multi.to_slot_clickedles[0].active = command_set[25];
 
-    _sets.auto_board_multi.toggles[1].active = command_set[26];
+    _sets.auto_board_multi.to_slot_clickedles[1].active = command_set[26];
 }
 
 function scr_ui_settings() {
@@ -370,8 +370,8 @@ function scr_ui_settings() {
         _ui_feats.progenitor_livery.draw();
         progenitor_visuals = _ui_feats.progenitor_livery.active;
 
-        _ui_feats.astartes_transfer_toggle.draw();
-        command_set[1] = _ui_feats.astartes_transfer_toggle.active; 
+        _ui_feats.astartes_transfer_to_slot_clickedle.draw();
+        command_set[1] = _ui_feats.astartes_transfer_to_slot_clickedle.active; 
 
         _ui_feats.codex_compliant.draw();  
         command_set[2] = _ui_feats.codex_compliant.active;
@@ -379,42 +379,42 @@ function scr_ui_settings() {
         _ui_feats.modest_livery.draw();
         modest_livery = _ui_feats.modest_livery.active; 
 
-        _ui_feats.tagged_training.draw();
-        tagged_training = _ui_feats.tagged_training.active; 
+        _ui_feats.ta_slot_clickeded_training.draw();
+        ta_slot_clickeded_training = _ui_feats.ta_slot_clickeded_training.active; 
         
         var _com_multi = _ui_feats.comany_command_structure;
 
         _com_multi.draw();
 
-        for (var i=0;i<array_length(_com_multi.toggles);i++){
-            command_set[3 + i] = _com_multi.toggles[i].active;
+        for (var i=0;i<array_length(_com_multi.to_slot_clickedles);i++){
+            command_set[3 + i] = _com_multi.to_slot_clickedles[i].active;
         }
 
         _ui_feats.boarding_objectives.draw();
 
-        var _toggl_dam_sys = _ui_feats.boarding_damage_systems;
-        if (_toggl_dam_sys.draw()){
-            command_set[20] = _toggl_dam_sys.active;
-            if (_toggl_dam_sys.active){
+        var _to_slot_clickedl_dam_sys = _ui_feats.boarding_damage_systems;
+        if (_to_slot_clickedl_dam_sys.draw()){
+            command_set[20] = _to_slot_clickedl_dam_sys.active;
+            if (_to_slot_clickedl_dam_sys.active){
                 command_set[22] = false;
                 command_set[21] = false;
             }
         }
 
-        var _toggle_use_plasma = _ui_feats.boarding_plasma_bombs;
+        var _to_slot_clickedle_use_plasma = _ui_feats.boarding_plasma_bombs;
 
-        if (_toggle_use_plasma.draw()){
-            command_set[21] = _toggle_use_plasma.active;
-            if (_toggle_use_plasma.active){
+        if (_to_slot_clickedle_use_plasma.draw()){
+            command_set[21] = _to_slot_clickedle_use_plasma.active;
+            if (_to_slot_clickedle_use_plasma.active){
                 command_set[22] = false;
                 command_set[20] = false;
             }
         }
 
-        var _toggle_commandeer = settings_buttons_ui_components.boarding_commandeer;
+        var _to_slot_clickedle_commandeer = settings_buttons_ui_components.boarding_commandeer;
 
-        if (_toggle_commandeer.draw()){
-            if (_toggle_commandeer.active){
+        if (_to_slot_clickedle_commandeer.draw()){
+            if (_to_slot_clickedle_commandeer.active){
                 command_set[22] = 1;
                 command_set[20] = 0;
                 command_set[21] = 0;  
@@ -436,16 +436,16 @@ function scr_ui_settings() {
 
         _post_board.draw();
 
-        command_set[23] = _post_board.toggles[0].active;
-        command_set[24] = _post_board.toggles[1].active;
+        command_set[23] = _post_board.to_slot_clickedles[0].active;
+        command_set[24] = _post_board.to_slot_clickedles[1].active;
 
         var _auto_board = settings_buttons_ui_components.auto_board_multi;
 
         _auto_board.draw();
 
-        command_set[25] = _auto_board.toggles[0].active;
+        command_set[25] = _auto_board.to_slot_clickedles[0].active;
 
-        command_set[26] = _auto_board.toggles[1].active;
+        command_set[26] = _auto_board.to_slot_clickedles[1].active;
 
         draw_text(937 - 341, 207, "Battle Formations");
         draw_text(937, 207, "Company Settings");
@@ -597,6 +597,66 @@ function scr_select_role_settings_ui(){
         }
         instance_create(0, 0, obj_mass_equip);      
     }
+}
+
+function setup_role_settings_buttons(){
+    role_settings_ui = {};
+    var _button_x = 830;
+    role_settings_ui.main_weapon_button = new UnitButtonObject({
+        style : "pixel",
+        x1 : _button_x,
+        y1 : 185,
+        label : "Main Weapon: {obj_ini.wep1[100][settings]}",
+        set_width : true,
+        w : 250,
+        active : true,
+        tooltip : "click to change main weapon",
+        slot_index : eEQUIPMENT_SLOT.WEAPON_ONE
+    });
+    role_settings_ui.secondary_weapon_button = new UnitButtonObject({
+        style : "pixel",
+        x1 : _button_x,
+        y1 : role_settings_ui.secondary_weapon_button.y2,
+        label : "Secondary Weapon: {obj_ini.wep2[100][settings]}",
+        set_width : true,
+        w : 250,
+        active : true,
+        tooltip : "click to change secondary weapon",
+        slot_index : eEQUIPMENT_SLOT.WEAPON_TWO
+    });
+    role_settings_ui.armour_button = new UnitButtonObject({
+        style : "pixel",
+        x1 : _button_x,
+        y1 : role_settings_ui.secondary_weapon_button.y2,
+        label : "Armour: {obj_ini.armour[100][settings]}",
+        set_width : true,
+        w : 250,
+        active : true,
+        tooltip : "click to change armour",
+        slot_index : eEQUIPMENT_SLOT.ARMOUR
+    });
+    role_settings_ui.gear_button = new UnitButtonObject({
+        style : "pixel",
+        x1 : _button_x,
+        y1 : role_settings_ui.armour_button.y2,
+        label : "Special Item: {obj_ini.gear[100][settings]}",
+        set_width : true,
+        w : 250,
+        active : true,
+        tooltip : "click to Special Item",
+        slot_index : eEQUIPMENT_SLOT.GEAR
+    });
+    role_settings_ui.mobi_button = new UnitButtonObject({
+        style : "pixel",
+        x1 : _button_x,
+        y1 : role_settings_ui.gear_button.y2,
+        label : "Mobility Item: {obj_ini.mobi[100][settings]}",
+        set_width : true,
+        w : 250,
+        active : true,
+        tooltip : "click to change Mobility Item",
+        slot_index : eEQUIPMENT_SLOT.MOBILITY
+    });
 }
 
 function scr_draw_mass_equip_gui(){
@@ -841,110 +901,68 @@ function scr_draw_mass_equip_gui(){
 }
 
 function scr_draw_role_settings_ui(){
-    if (menu == eMENU.ROLE_SETTINGS) {
-        if (settings > 0) {
-            with (obj_mass_equip){
-                scr_draw_mass_equip_gui();
+    if (menu != eMENU.ROLE_SETTINGS) {
+        return;
+    }
+    
+    if (settings > 0) {
+        with (obj_mass_equip){
+            scr_draw_mass_equip_gui();
+        }
+        var _index = settings;
+
+        var _roles = active_roles();
+
+        var _buttons = [
+            role_settings_ui.main_weapon_button,
+            role_settings_ui.secondary_weapon_button,
+            role_settings_ui.armour_button,
+            role_settings_ui.gear_button,
+            role_settings_ui.mobi_button
+        ]
+
+        var _button_clicked = false;
+        var _slot_clicked = -1;
+        for (var i=0;i<array_length(_buttons);i++){
+            var _but = _buttons[i];
+            var _allow_click = true;
+            if (i == eEQUIPMENT_SLOT.GEAR){
+                var _armour = obj_ini.armour[_co][_index];
+                var _armour_tags = gear_weapon_data("armour",  _armour, "tags");
+                if (_armour_tags !=0 ){
+                    if (array_contains(_armour_tags, "terminator") || array_contains(_armour_tags, "dreadought")){
+                        _allow_click = false;
+                    }
+                }
+            } else if (i == eEQUIPMENT_SLOT.ARMOUR || _slot_clicked == eEQUIPMENT_SLOT.MOBILITY) {
+                _allow_click = _index != eROLE.DREADNOUGHT;
             }
-            var _index = settings;
-
-            var _roles = active_roles();
-
-            draw_set_halign(fa_center);
-            draw_set_color(c_gray);
-            draw_set_font(fnt_40k_30b);
-            draw_text_transformed(800, 66, "{_roles[settings]} Settings", 1, 1, 0);
-
-            // New: 678,160
-            // Old: 444,550
-            // Dif: 234,-390
-
-            draw_set_font(fnt_40k_30b);
-            draw_set_color(c_gray);
-            draw_set_halign(fa_left);
-
-            draw_text_transformed(678, 160, _roles[_index], 0.6, 0.6, 0);
-
-            var _hei = string_height_ext("{_roles[_index]}Q", -1, 580) * 0.6;
-            draw_rectangle(678 - 1, 160 - 1, 1056, 160 + _hei, 1);
-            draw_set_color(c_gray);
-            draw_set_font(fnt_40k_14b);
-            draw_set_halign(fa_right);
-
-            var _title = "";
-            var geh = "";
-            var spacing = 22;
-            x5 = 830;
-            y5 = 207 - spacing;
-
-            var _co = 100;
-            for (var gg = 0; gg <= 4; gg++) {
-                y5 += spacing;
-                if (gg == 0) {
-                    _title = "Main Weapon: ";
-                    geh = obj_ini.wep1[_co][_index];
-                }
-                else if (gg == 1) {
-                    _title = "Secondary Weapon: ";
-                    geh = obj_ini.wep2[_co][_index];
-                }
-                else if (gg == 2) {
-                    _title = "Armour: ";
-                    geh = obj_ini.armour[_co][_index];
-                }
-                else if (gg == 3) {
-                    _title = "Special Item: ";
-                    geh = obj_ini.gear[_co][_index];
-                }
-                else if (gg == 4) {
-                    _title = "Mobility Item: ";
-                    geh = obj_ini.mobi[_co][_index];
-                }
-
-                draw_set_halign(fa_right);
-                draw_set_color(c_gray);
-                draw_rectangle(x5, y5, x5 - string_width(_title), y5 + string_height(_title) - 2, 0);
-                draw_set_color(0);
-                draw_text(x5, y5, string(_title));
-
-                if (scr_hit(x5 - string_width(_title), y5, x5, y5 + string_height(_title) - 2) == true) {
-                    draw_set_color(c_white);
-                    draw_set_alpha(0.2);
-                    draw_rectangle(x5, y5, x5 - string_width(_title), y5 + string_height(_title) - 2, 0);
-
-                    var nep = false;
-
-                    var _armour = obj_ini.armour[_co][_index];
-                    if (((_armour == "Terminator Armour") || (_armour == "Dreadnought")) && (gg == 3)) {
-                        nep = true;
-                    }
-                    if ((_index == 6) && ((gg == 2) || (gg == 4))) {
-                        nep = true;
-                    }
-
-                    if (mouse_button_clicked() && !nep) {
-                        if (obj_mass_equip.tab != -1) {
-                            obj_mass_equip.refresh = true;
-                        } else if (obj_mass_equip.tab == -1) {
-                            obj_mass_equip.tab = gg;
-                            obj_mass_equip.item_name = [];
-                            var is_hand_slot = gg == 0 || gg == 1;
-                            scr_get_item_names(
-                                obj_mass_equip.item_name,
-                                obj_controller.settings, // eROLE
-                                gg, // slot
-                                is_hand_slot ? (obj_mass_equip.tab == 0 ? eENGAGEMENT.RANGED : eENGAGEMENT.MELEE) : eENGAGEMENT.NONE,
-                                true, // include company standard
-                                false // show all regardless of inventory
-                            );
-                        }
-                    }
-                }
-                draw_set_alpha(1);
-                draw_set_color(c_gray);
-                draw_set_halign(fa_left);
-                draw_text(x5 + 5, y5, string(geh));
+            if (_but.draw(_allow_click)){
+                _button_clicked = true;
+                _slot_clicked = _but.slot_index;
             }
         }
+
+        if (!_button_clicked){
+            return;
+        }
+
+        if (obj_mass_equip.tab != -1) {
+            obj_mass_equip.refresh = true;
+        } else if (obj_mass_equip.tab == -1) {
+            obj_mass_equip.tab = _slot_clicked;
+            obj_mass_equip.item_name = [];
+            var is_hand_slot = _slot_clicked == eEQUIPMENT_SLOT.WEAPON_ONE || _slot_clicked == eEQUIPMENT_SLOT.WEAPON_TWO;
+            scr_get_item_names(
+                obj_mass_equip.item_name,
+                obj_controller.settings, // eROLE
+                _slot_clicked, // slot
+                is_hand_slot ? (obj_mass_equip.tab == 0 ? eENGAGEMENT.RANGED : eENGAGEMENT.MELEE) : eENGAGEMENT.NONE,
+                true, // include company standard
+                false // show all regardless of inventory
+            );
+        }
+        
     }
+
 }
