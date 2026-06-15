@@ -32,8 +32,8 @@ function set_zoom_to_default() {
 /// @self obj_controller
 function scr_zoom_keys() {
     var zoom_speed = 0.1;
-    var min_zoom = 0.3;
-    var max_zoom = 2.5;
+    static min_zoom = 0.3;
+    static max_zoom = 2.5;
 
     if (keyboard_check(vk_shift)) {
         zoom_speed *= 2;
