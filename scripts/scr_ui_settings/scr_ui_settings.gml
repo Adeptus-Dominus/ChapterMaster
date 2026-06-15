@@ -306,14 +306,10 @@ function setup_ui_chapter_settings(){
         ], 
         "Automatic Boarding", 
         {
-            x1 : 370,
+            x1 : 400,
             y1 : 710,
         }
     );
-
-    _sets.auto_board_multi.toggles[0].active = command_set[25];
-
-    _sets.auto_board_multi.toggles[1].active = command_set[26];
 }
 
 function scr_ui_settings() {
@@ -440,6 +436,10 @@ function scr_ui_settings() {
         command_set[24] = _post_board.toggles[1].active;
 
         var _auto_board = settings_buttons_ui_components.auto_board_multi;
+
+        _auto_board.toggles[0].active = command_set[25];
+
+        _auto_board.toggles[1].active = command_set[26];
 
         _auto_board.draw();
 
@@ -886,6 +886,7 @@ function scr_draw_mass_equip_gui(){
                     }
                     tab = -1;
                     refresh = true;
+                    setup_role_settings_buttons();
                 }
             }
             y3 += space;
