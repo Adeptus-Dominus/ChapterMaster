@@ -147,7 +147,7 @@ function scr_purge_world(action_type, action_score) {
 
 	_purge.pop_before = population_as_small();
 
-	_purge.heres_before = max(total_corruption(),population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS]);// Starting heresy
+	_purge.heres_before = max(total_corruption(), population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS]);// Starting heresy
 
 
 	if (!action_type == eDROP_TYPE.PURGEASSASSINATE){

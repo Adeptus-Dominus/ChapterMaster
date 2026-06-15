@@ -277,7 +277,6 @@ function handle_discovered_governor_assasinations() {
             }
             if (_event.variant == 1) {
                 alter_dispositions([[eFACTION.IMPERIUM, -7], [eFACTION.INQUISITION, -10], [eFACTION.ECCLESIARCHY, -5]]);
-
                 if (obj_controller.disposition[4] > 0 && obj_controller.disposition[2] > 0) {
                     _event.e_id = "assassination_angryish";
                 }
