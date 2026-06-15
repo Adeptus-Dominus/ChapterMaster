@@ -144,35 +144,35 @@ function setup_ui_chapter_settings(){
         clicked_check_default : true
     });
 
-    settings_buttons_ui_components.boarding_damage_systems = _to_slot_clickedle_dam_sys;
+    settings_buttons_ui_components.boarding_damage_systems = _toggle_dam_sys;
 
-    var _to_slot_clickedle_use_plasma = new To_slot_clickedleButton({
+    var _toggle_use_plasma = new ToggleButton({
         style : "box",
         tooltip : "Your Astartes will use equipped Plasma Bombs to massively damage the boarded ship.",
         str1 : "Use Plasma Bombs",
-        x1 : _to_slot_clickedle_dam_sys.x2 + 10,
+        x1 : _toggle_dam_sys.x2 + 10,
         y1 : 604,
         active : command_set[21],
         clicked_check_default : true
     });
 
-    settings_buttons_ui_components.boarding_plasma_bombs = _to_slot_clickedle_use_plasma;
+    settings_buttons_ui_components.boarding_plasma_bombs = _toggle_use_plasma;
 
-    var _to_slot_clickedle_commandeer = new To_slot_clickedleButton({
+    var _toggle_commandeer = new ToggleButton({
         style : "box",
         tooltip : "Your Astartes will attempt to commandeer the vessel, to be permenantely used or salvaged.",
         str1 : "Commandeer Ship",
-        x1 : _to_slot_clickedle_use_plasma.x2 + 10,
+        x1 : _toggle_use_plasma.x2 + 10,
         y1 : 604,
         active : command_set[22],
         clicked_check_default : true
     });
 
-    settings_buttons_ui_components.boarding_commandeer = _to_slot_clickedle_commandeer;
+    settings_buttons_ui_components.boarding_commandeer = _toggle_commandeer;
 
     var _sets = settings_buttons_ui_components;
 
-    _sets.progenitor_livery = new To_slot_clickedleButton({
+    _sets.progenitor_livery = new ToggleButton({
         x1 : 50,
         y1 : 140,
         str1 : "Progenitor Livery",
@@ -182,7 +182,7 @@ function setup_ui_chapter_settings(){
         clicked_check_default : true
     });
 
-    _sets.astartes_transfer_to_slot_clickedle = new To_slot_clickedleButton({
+    _sets.astartes_transfer_toggle = new ToggleButton({
         x1 : _sets.progenitor_livery.x2 + 10,
         y1 : 140,
         str1 : "Allow Astartes Transfer",
@@ -192,8 +192,8 @@ function setup_ui_chapter_settings(){
         clicked_check_default : true
     });
 
-    _sets.codex_compliant = new To_slot_clickedleButton({
-        x1 : _sets.astartes_transfer_to_slot_clickedle.x2 + 10,
+    _sets.codex_compliant = new ToggleButton({
+        x1 : _sets.astartes_transfer_toggle.x2 + 10,
         y1 : 140,
         str1 : "Codex Compliant Organization",
         tooltip : "When enabled, marine promotions are limited based on their current company and EXP, overall following the Codex Astartes promotion sequence.",
@@ -203,7 +203,7 @@ function setup_ui_chapter_settings(){
     });
 
     var _y = _sets.progenitor_livery.y2 + 10;
-    _sets.modest_livery = new To_slot_clickedleButton({
+    _sets.modest_livery = new ToggleButton({
         x1 : 50,
         y1 : _y,
         str1 : "Modest Livery",
@@ -213,12 +213,12 @@ function setup_ui_chapter_settings(){
         clicked_check_default : true
     });
 
-    _sets.ta_slot_clickeded_training = new To_slot_clickedleButton({
-        x1 : _sets.astartes_transfer_to_slot_clickedle.x1,
+    _sets.tagged_training = new ToggleButton({
+        x1 : _sets.astartes_transfer_toggle.x1,
         y1 : _y,
-        str1 : "Ta_slot_clickeded Training Livery",
-        tooltip : "Turned off by default, makes specialist training select only ta_slot_clickeded marines, click on their potential indicators to tag.",
-        active : ta_slot_clickeded_training,
+        str1 : "Tagged Training Livery",
+        tooltip : "Turned off by default, makes specialist training select only tagged marines, click on their potential indicators to tag.",
+        active : tagged_training,
         style : "box",
         clicked_check_default : true
     });
@@ -259,8 +259,8 @@ function setup_ui_chapter_settings(){
         }
     );
 
-    for (var i=0;i<array_length(_command_mult.to_slot_clickedles);i++){
-        var _tog = _command_mult.to_slot_clickedles[i];
+    for (var i=0;i<array_length(_command_mult.toggles);i++){
+        var _tog = _command_mult.toggles[i];
         _tog.active = bool(command_set[3 + i]);
     }
 
@@ -311,9 +311,9 @@ function setup_ui_chapter_settings(){
         }
     );
 
-    _sets.auto_board_multi.to_slot_clickedles[0].active = command_set[25];
+    _sets.auto_board_multi.toggles[0].active = command_set[25];
 
-    _sets.auto_board_multi.to_slot_clickedles[1].active = command_set[26];
+    _sets.auto_board_multi.toggles[1].active = command_set[26];
 }
 
 function scr_ui_settings() {
@@ -370,8 +370,8 @@ function scr_ui_settings() {
         _ui_feats.progenitor_livery.draw();
         progenitor_visuals = _ui_feats.progenitor_livery.active;
 
-        _ui_feats.astartes_transfer_to_slot_clickedle.draw();
-        command_set[1] = _ui_feats.astartes_transfer_to_slot_clickedle.active; 
+        _ui_feats.astartes_transfer_toggle.draw();
+        command_set[1] = _ui_feats.astartes_transfer_toggle.active; 
 
         _ui_feats.codex_compliant.draw();  
         command_set[2] = _ui_feats.codex_compliant.active;
@@ -379,42 +379,42 @@ function scr_ui_settings() {
         _ui_feats.modest_livery.draw();
         modest_livery = _ui_feats.modest_livery.active; 
 
-        _ui_feats.ta_slot_clickeded_training.draw();
-        ta_slot_clickeded_training = _ui_feats.ta_slot_clickeded_training.active; 
+        _ui_feats.tagged_training.draw();
+        tagged_training = _ui_feats.tagged_training.active; 
         
         var _com_multi = _ui_feats.comany_command_structure;
 
         _com_multi.draw();
 
-        for (var i=0;i<array_length(_com_multi.to_slot_clickedles);i++){
-            command_set[3 + i] = _com_multi.to_slot_clickedles[i].active;
+        for (var i=0;i<array_length(_com_multi.toggles);i++){
+            command_set[3 + i] = _com_multi.toggles[i].active;
         }
 
         _ui_feats.boarding_objectives.draw();
 
-        var _to_slot_clickedl_dam_sys = _ui_feats.boarding_damage_systems;
-        if (_to_slot_clickedl_dam_sys.draw()){
-            command_set[20] = _to_slot_clickedl_dam_sys.active;
-            if (_to_slot_clickedl_dam_sys.active){
+        var _toggl_dam_sys = _ui_feats.boarding_damage_systems;
+        if (_toggl_dam_sys.draw()){
+            command_set[20] = _toggl_dam_sys.active;
+            if (_toggl_dam_sys.active){
                 command_set[22] = false;
                 command_set[21] = false;
             }
         }
 
-        var _to_slot_clickedle_use_plasma = _ui_feats.boarding_plasma_bombs;
+        var _toggle_use_plasma = _ui_feats.boarding_plasma_bombs;
 
-        if (_to_slot_clickedle_use_plasma.draw()){
-            command_set[21] = _to_slot_clickedle_use_plasma.active;
-            if (_to_slot_clickedle_use_plasma.active){
+        if (_toggle_use_plasma.draw()){
+            command_set[21] = _toggle_use_plasma.active;
+            if (_toggle_use_plasma.active){
                 command_set[22] = false;
                 command_set[20] = false;
             }
         }
 
-        var _to_slot_clickedle_commandeer = settings_buttons_ui_components.boarding_commandeer;
+        var _toggle_commandeer = settings_buttons_ui_components.boarding_commandeer;
 
-        if (_to_slot_clickedle_commandeer.draw()){
-            if (_to_slot_clickedle_commandeer.active){
+        if (_toggle_commandeer.draw()){
+            if (_toggle_commandeer.active){
                 command_set[22] = 1;
                 command_set[20] = 0;
                 command_set[21] = 0;  
@@ -436,16 +436,16 @@ function scr_ui_settings() {
 
         _post_board.draw();
 
-        command_set[23] = _post_board.to_slot_clickedles[0].active;
-        command_set[24] = _post_board.to_slot_clickedles[1].active;
+        command_set[23] = _post_board.toggles[0].active;
+        command_set[24] = _post_board.toggles[1].active;
 
         var _auto_board = settings_buttons_ui_components.auto_board_multi;
 
         _auto_board.draw();
 
-        command_set[25] = _auto_board.to_slot_clickedles[0].active;
+        command_set[25] = _auto_board.toggles[0].active;
 
-        command_set[26] = _auto_board.to_slot_clickedles[1].active;
+        command_set[26] = _auto_board.toggles[1].active;
 
         draw_text(937 - 341, 207, "Battle Formations");
         draw_text(937, 207, "Company Settings");
