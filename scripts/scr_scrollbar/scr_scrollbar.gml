@@ -40,7 +40,7 @@ function scr_scrollbar(argument0, argument1, argument2, argument3, argument4, ar
                 tmv = 0;
                 cp = 0;
 
-                click_y = window_mouse_get_y();
+                click_y = device_mouse_y_to_gui(0);
 
                 center = click_y - (siz2 / 2);
 
@@ -92,7 +92,7 @@ function scr_scrollbar(argument0, argument1, argument2, argument3, argument4, ar
                 tmv = 0;
                 cp = 0;
 
-                click_y = window_mouse_get_y();
+                click_y = device_mouse_y_to_gui(0);
 
                 center = click_y - (siz2 / 2);
 
