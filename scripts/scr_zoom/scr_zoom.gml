@@ -31,7 +31,7 @@ function set_zoom_to_default() {
 /// @description This script will zoom in and out of the game view based on the keys pressed.
 /// @self obj_controller
 function scr_zoom_keys() {
-    var zoom_speed = 0.1;
+    static zoom_speed = 0.1;
     static min_zoom = 0.3;
     static max_zoom = 2.5;
 
