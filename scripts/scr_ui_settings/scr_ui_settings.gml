@@ -616,7 +616,7 @@ function setup_role_settings_buttons(){
     role_settings_ui.secondary_weapon_button = new UnitButtonObject({
         style : "pixel",
         x1 : _button_x,
-        y1 : role_settings_ui.secondary_weapon_button.y2,
+        y1 : role_settings_ui.main_weapon_button.y2,
         label : "Secondary Weapon: {obj_ini.wep2[100][settings]}",
         set_width : true,
         w : 250,
