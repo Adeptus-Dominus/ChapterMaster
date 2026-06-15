@@ -183,7 +183,7 @@ function scr_toggle_setting() {
                 try{
                     setup_ui_chapter_settings();
                 } catch (_exception){
-                    handle_exception(_exception);
+                    ERROR_HANDLER.handle_exception(_exception);
                     scr_toggle_setting();
                 }
             } else if (settings) {

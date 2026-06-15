@@ -134,7 +134,7 @@ function setup_ui_chapter_settings(){
     );
 
 
-    var _to_slot_clickedle_dam_sys = new To_slot_clickedleButton({
+    var _toggle_dam_sys = new ToggleButton({
         style : "box",
         tooltip : "Your Astartes will attempt to disable the ship by attacking the ship bridge and systems.",
         str1 : "Damage Systems",
