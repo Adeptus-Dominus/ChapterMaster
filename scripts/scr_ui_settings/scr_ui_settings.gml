@@ -846,13 +846,14 @@ function scr_draw_role_settings_ui(){
             with (obj_mass_equip){
                 scr_draw_mass_equip_gui();
             }
-            var co = 100;
-            var index = settings;
+            var _index = settings;
+
+            var _roles = active_roles();
 
             draw_set_halign(fa_center);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_30b);
-            draw_text_transformed(800, 66, string(obj_ini.role[100][settings]) + " Settings", 1, 1, 0);
+            draw_text_transformed(800, 66, "{_roles[settings]} Settings", 1, 1, 0);
 
             // New: 678,160
             // Old: 444,550
@@ -862,61 +863,62 @@ function scr_draw_role_settings_ui(){
             draw_set_color(c_gray);
             draw_set_halign(fa_left);
 
-            draw_text_transformed(678, 160, obj_ini.role[co][ide], 0.6, 0.6, 0);
+            draw_text_transformed(678, 160, _roles[_index], 0.6, 0.6, 0);
 
-            var wid = 0;
-            var hei = string_height_ext(string(obj_ini.role[co][ide]) + "Q", -1, 580) * 0.6;
-            draw_rectangle(678 - 1, 160 - 1, 1056, 160 + hei, 1);
+            var _hei = string_height_ext("{_roles[_index]}Q", -1, 580) * 0.6;
+            draw_rectangle(678 - 1, 160 - 1, 1056, 160 + _hei, 1);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_14b);
             draw_set_halign(fa_right);
 
-            var title = "";
+            var _title = "";
             var geh = "";
             var spacing = 22;
             x5 = 830;
             y5 = 207 - spacing;
 
+            var _co = 100;
             for (var gg = 0; gg <= 4; gg++) {
                 y5 += spacing;
                 if (gg == 0) {
-                    title = "Main Weapon: ";
-                    geh = obj_ini.wep1[co][index];
+                    _title = "Main Weapon: ";
+                    geh = obj_ini.wep1[_co][_index];
                 }
-                if (gg == 1) {
-                    title = "Secondary Weapon: ";
-                    geh = obj_ini.wep2[co][index];
+                else if (gg == 1) {
+                    _title = "Secondary Weapon: ";
+                    geh = obj_ini.wep2[_co][_index];
                 }
-                if (gg == 2) {
-                    title = "Armour: ";
-                    geh = obj_ini.armour[co][index];
+                else if (gg == 2) {
+                    _title = "Armour: ";
+                    geh = obj_ini.armour[_co][_index];
                 }
-                if (gg == 3) {
-                    title = "Special Item: ";
-                    geh = obj_ini.gear[co][index];
+                else if (gg == 3) {
+                    _title = "Special Item: ";
+                    geh = obj_ini.gear[_co][_index];
                 }
-                if (gg == 4) {
-                    title = "Mobility Item: ";
-                    geh = obj_ini.mobi[co][index];
+                else if (gg == 4) {
+                    _title = "Mobility Item: ";
+                    geh = obj_ini.mobi[_co][_index];
                 }
 
                 draw_set_halign(fa_right);
                 draw_set_color(c_gray);
-                draw_rectangle(x5, y5, x5 - string_width(title), y5 + string_height(title) - 2, 0);
+                draw_rectangle(x5, y5, x5 - string_width(_title), y5 + string_height(_title) - 2, 0);
                 draw_set_color(0);
-                draw_text(x5, y5, string(title));
+                draw_text(x5, y5, string(_title));
 
-                if (scr_hit(x5 - string_width(title), y5, x5, y5 + string_height(title) - 2) == true) {
+                if (scr_hit(x5 - string_width(_title), y5, x5, y5 + string_height(_title) - 2) == true) {
                     draw_set_color(c_white);
                     draw_set_alpha(0.2);
-                    draw_rectangle(x5, y5, x5 - string_width(title), y5 + string_height(title) - 2, 0);
+                    draw_rectangle(x5, y5, x5 - string_width(_title), y5 + string_height(_title) - 2, 0);
 
                     var nep = false;
 
-                    if (((obj_ini.armour[co][index] == "Terminator Armour") || (obj_ini.armour[co][index] == "Dreadnought")) && (gg == 3)) {
+                    var _armour = obj_ini.armour[_co][_index];
+                    if (((_armour == "Terminator Armour") || (_armour == "Dreadnought")) && (gg == 3)) {
                         nep = true;
                     }
-                    if ((index == 6) && ((gg == 2) || (gg == 4))) {
+                    if ((_index == 6) && ((gg == 2) || (gg == 4))) {
                         nep = true;
                     }
 
