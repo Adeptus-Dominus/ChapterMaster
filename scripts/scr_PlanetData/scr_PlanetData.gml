@@ -1711,10 +1711,9 @@ function PlanetData(planet, system) constructor {
 
                             var _valid_owners = false;
                             for (var plan = 1; plan <= planets; plan++) {
-                                    if (p_owner[plan] <= 5) {
-                                        _valid_owners = true;
-                                        break;
-                                    }
+                                if (p_owner[plan] <= 5) {
+                                    _valid_owners = true;
+                                    break;
                                 }
                             }
 
