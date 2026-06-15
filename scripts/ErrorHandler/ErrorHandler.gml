@@ -70,10 +70,10 @@ function GameError(_header, _message, _stacktrace = "", _critical = false, _repo
 
     /// @description Builds player-facing error message
     static build_player_message = function() {
-        var _path_hint = string_replace_all(game_save_id, "/", "\\");
+        var _path_hint = (os_type == os_windows) ? string_replace_all(game_save_id, "/", "\\") : game_save_id;
         var _msg = $"{header}\n\n{message}\n\n";
 
-        _msg += $"The error log was saved at:\n{_path_hint}Logs\\\n\n";
+        _msg += (os_type == os_windows) ? $"The error log was saved at:\n{_path_hint}Logs\\\n\n" : $"The error log was saved at:\n{_path_hint}Logs/\n\n";
 
         if (UPDATE_CHECKER.compiled) {
             _msg += "You are using a debug build. Automated bug reports disabled.\n\n";

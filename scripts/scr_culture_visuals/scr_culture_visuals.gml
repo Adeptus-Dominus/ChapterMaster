@@ -1,7 +1,7 @@
 function load_visual_sets() {
-    var _vis_set_directory = working_directory + "\\main\\visual_sets";
+    var _vis_set_directory = working_directory + "/main/visual_sets";
     if (directory_exists(_vis_set_directory)) {
-        var _file_buffer = buffer_load($"{_vis_set_directory}\\use_sets.json");
+        var _file_buffer = buffer_load($"{_vis_set_directory}/use_sets.json");
         if (_file_buffer == -1) {
             throw "Could not open file";
         }
@@ -16,7 +16,7 @@ function load_visual_sets() {
             // LOGGER.debug(_raw_data[i]);
             if (directory_exists(_sepcific_vis_set)) {
                 // LOGGER.debug(_raw_data[i]);
-                var _data_buffer = buffer_load($"{_sepcific_vis_set}\\data.json");
+                var _data_buffer = buffer_load($"{_sepcific_vis_set}/data.json");
                 if (_data_buffer == -1) {
                     buffer_delete(_data_buffer);
                     continue;
@@ -37,10 +37,10 @@ function load_visual_sets() {
 }
 
 function load_symbol_sets(global_area, main_key, sub_sets) {
-    var _cons_directory = working_directory + $"\\main\\{main_key}";
+    var _cons_directory = working_directory + $"/main/{main_key}";
     if (directory_exists(_cons_directory)) {
         // LOGGER.debug($"{_cons_directory}")
-        var _file_buffer = buffer_load($"{_cons_directory}\\load_sets.json");
+        var _file_buffer = buffer_load($"{_cons_directory}/load_sets.json");
         if (_file_buffer == -1) {
             throw false;
         }
@@ -56,7 +56,7 @@ function load_symbol_sets(global_area, main_key, sub_sets) {
             if (directory_exists(_sepcific_vis_set)) {
                 for (var s = 0; s < array_length(sub_sets); s++) {
                     var _sub = sub_sets[s];
-                    var sub_direct = $"{_sepcific_vis_set}\\{_sub}.png";
+                    var sub_direct = $"{_sepcific_vis_set}/{_sub}.png";
                     load_new_icon(_sprite_double_surface, sub_direct, global_area[$ _sub], _raw_data[i]);
                 }
             }
@@ -105,15 +105,15 @@ function load_vis_set_to_global(directory, data) {
         var _sprite_item = data[i];
         // LOGGER.debug(_sprite_item);
 
-        if (directory_exists(directory + $"\\{_sprite_item.name}")) {
-            var _sprite_direct = directory + $"\\{_sprite_item.name}";
+        if (directory_exists(directory + $"/{_sprite_item.name}")) {
+            var _sprite_direct = directory + $"/{_sprite_item.name}";
 
             // --- MAIN SPRITE LOADING ---
-            if (file_exists($"{_sprite_direct}\\1.png")) {
-                var _new_sprite = sprite_add(_sprite_direct + "\\1.png", 1, 0, 0, 0, 0);
+            if (file_exists($"{_sprite_direct}/1.png")) {
+                var _new_sprite = sprite_add(_sprite_direct + "/1.png", 1, 0, 0, 0, 0);
                 var s = 2;
-                while (file_exists(_sprite_direct + $"\\{s}.png")) {
-                    var _merge_sprite = sprite_add(_sprite_direct + $"\\{s}.png", 1, 0, 0, 0, 0);
+                while (file_exists(_sprite_direct + $"/{s}.png")) {
+                    var _merge_sprite = sprite_add(_sprite_direct + $"/{s}.png", 1, 0, 0, 0, 0);
                     if (_merge_sprite == -1) {
                         sprite_delete(_new_sprite);
                         continue;
@@ -126,11 +126,11 @@ function load_vis_set_to_global(directory, data) {
 
             // --- SHADOW SPRITE LOADING ---
             var _new_shadow = -1;
-            if (file_exists($"{_sprite_direct}\\shadow1.png")) {
-                _new_shadow = sprite_add(_sprite_direct + "\\shadow1.png", 1, 0, 0, 0, 0);
+            if (file_exists($"{_sprite_direct}/shadow1.png")) {
+                _new_shadow = sprite_add(_sprite_direct + "/shadow1.png", 1, 0, 0, 0, 0);
                 var sh = 2;
-                while (file_exists(_sprite_direct + $"\\shadow{sh}.png")) {
-                    var _merge_shadow = sprite_add(_sprite_direct + $"\\shadow{sh}.png", 1, 0, 0, 0, 0);
+                while (file_exists(_sprite_direct + $"/shadow{sh}.png")) {
+                    var _merge_shadow = sprite_add(_sprite_direct + $"/shadow{sh}.png", 1, 0, 0, 0, 0);
                     if (_merge_shadow == -1) {
                         sprite_delete(_new_shadow);
                         continue;

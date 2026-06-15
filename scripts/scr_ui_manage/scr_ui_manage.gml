@@ -574,7 +574,7 @@ function alternative_manage_views(x1, y1) {
             surface_reset_target();
 
             // save to local game folder
-            var base_name = working_directory + $"\\main\\marine_capture_{_unit.name()}_{_unit.marine_number}{_unit.company}";
+            var base_name = working_directory + $"/main/marine_capture_{_unit.name()}_{_unit.marine_number}{_unit.company}";
             var extension = ".png";
             var index = 0;
             var path;

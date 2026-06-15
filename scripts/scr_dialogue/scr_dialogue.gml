@@ -1,6 +1,6 @@
 function initialize_dialogue() {
     global.dialogue = {};
-    global.dialogue.sisters = json_to_gamemaker(working_directory + "\\data\\dialogue\\sisters.json", json_parse);
+    global.dialogue.sisters = json_to_gamemaker(working_directory + "/data/dialogue/sisters.json", json_parse);
 }
 
 function interpret_diag_string(string_data, data) {

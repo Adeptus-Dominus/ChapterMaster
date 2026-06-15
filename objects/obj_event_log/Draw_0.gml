@@ -118,7 +118,7 @@ if (help == 1) {
                 draw_set_alpha(1);
                 if (mouse_button_clicked()) {
                     topic = topics[t];
-                    ini_open("main\\help.ini");
+                    ini_open("main/help.ini");
                     info = ini_read_string(string(t), "info", "");
                     strategy = ini_read_string(string(t), "strategy", "");
                     main_info = ini_read_string(string(t), "main_info", "");
