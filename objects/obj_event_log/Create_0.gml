@@ -23,8 +23,8 @@ repeat (101) {
     e += 1;
     topics[e] = "";
 }
-if (file_exists("main\\help.ini")) {
-    ini_open("main\\help.ini");
+if (file_exists("main/help.ini")) {
+    ini_open("main/help.ini");
     var ch;
     ch = 0;
     repeat (100) {

@@ -275,11 +275,11 @@ function Disadvantage(trait) : ChapterTrait(trait) constructor {
 // TODO all the chapter start data should be ramed in here as well rather than being hardcoded
 
 function generate_disadvantages() {
-    return json_to_gamemaker(working_directory + $"main\\chapter_disadvantages.json", json_parse);
+    return json_to_gamemaker(working_directory + $"main/chapter_disadvantages.json", json_parse);
 }
 
 function generate_advantages() {
-    return json_to_gamemaker(working_directory + $"main\\chapter_advantages.json", json_parse);
+    return json_to_gamemaker(working_directory + $"main/chapter_advantages.json", json_parse);
 }
 
 function setup_chapter_traits() {

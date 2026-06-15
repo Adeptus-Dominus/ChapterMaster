@@ -20,8 +20,8 @@ global.psy_disciplines_starting = [
 #macro PSY_CAST_DIFFICULTY_MIN 1
 #macro PSY_CAST_DIFFICULTY_BASE 40
 
-global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
-global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
+global.disciplines_data = json_to_gamemaker(working_directory + "/data/psychic_disciplines.json", json_parse);
+global.powers_data = json_to_gamemaker(working_directory + "/data/psychic_powers.json", json_parse);
 
 /// @param {Struct.TTRPG_stats} unit
 function generate_marine_powers_description_string(unit) {

@@ -17,7 +17,7 @@ function NameTracker(set_name) constructor {
 
         var file_loader = new JsonFileListLoader();
 
-        var load_result = file_loader.load_list_from_json_file($"main\\names\\{file_name}.json", [json_names_property_name]);
+        var load_result = file_loader.load_list_from_json_file($"main/names/{file_name}.json", [json_names_property_name]);
 
         if (load_result.is_success) {
             names = load_result.values[$ json_names_property_name];
@@ -48,7 +48,7 @@ function NameTracker(set_name) constructor {
 
         var file_loader = new JsonFileListLoader();
 
-        var load_result = file_loader.load_list_from_json_file($"main\\names\\{file_name}.json", json_names_property_names);
+        var load_result = file_loader.load_list_from_json_file($"main/names/{file_name}.json", json_names_property_names);
 
         var result = {};
 
@@ -186,7 +186,7 @@ function NameTracker(set_name) constructor {
 
 function NameGenerator() constructor {
     // TODO after save rework is finished, check if these static can be converted to instance version
-    var _simple_names = json_to_gamemaker(working_directory + $"main\\name_loader.json", json_parse);
+    var _simple_names = json_to_gamemaker(working_directory + $"main/name_loader.json", json_parse);
 
     if (_simple_names == "") {
         _simple_names = [
