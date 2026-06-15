@@ -592,6 +592,7 @@ function scr_select_role_settings_ui(){
         }
         settings = _button.role_id;
         menu = eMENU.ROLE_SETTINGS;
+        setup_role_settings_buttons();
         with (obj_mass_equip) {
             instance_destroy();
         }
@@ -904,7 +905,7 @@ function scr_draw_role_settings_ui(){
     if (menu != eMENU.ROLE_SETTINGS) {
         return;
     }
-    
+
     if (settings > 0) {
         with (obj_mass_equip){
             scr_draw_mass_equip_gui();
@@ -927,14 +928,14 @@ function scr_draw_role_settings_ui(){
             var _but = _buttons[i];
             var _allow_click = true;
             if (i == eEQUIPMENT_SLOT.GEAR){
-                var _armour = obj_ini.armour[_co][_index];
+                var _armour = obj_ini.armour[100][_index];
                 var _armour_tags = gear_weapon_data("armour",  _armour, "tags");
                 if (_armour_tags !=0 ){
                     if (array_contains(_armour_tags, "terminator") || array_contains(_armour_tags, "dreadought")){
                         _allow_click = false;
                     }
                 }
-            } else if (i == eEQUIPMENT_SLOT.ARMOUR || _slot_clicked == eEQUIPMENT_SLOT.MOBILITY) {
+            } else if (i == eEQUIPMENT_SLOT.ARMOUR || i == eEQUIPMENT_SLOT.MOBILITY) {
                 _allow_click = _index != eROLE.DREADNOUGHT;
             }
             if (_but.draw(_allow_click)){
