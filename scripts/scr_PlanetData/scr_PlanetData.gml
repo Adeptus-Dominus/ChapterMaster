@@ -2024,14 +2024,14 @@ function PlanetData(planet, system) constructor {
         if (global.chapter_name="Space Wolves" || obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
             spec1=3;
         }
-        else if (global.chapter_name="Iron Hands" || obj_ini.progenitor == ePROGENITOR.IRON_HANDS) {
+        else if (scr_has_adv("Tech-Brothers")) {
             spec1=6;
         }
         if (obj_ini.omophagea=1){
             spec1=choose(spec1,20);
         }
 
-        var _gov_gender = _set_gender();
+        var _gov_gender = set_gender();
         var _gender_third = string_gender_third_person(_gov_gender);
         var _gender_pronouns = string_gender_pronouns(_gov_gender);
     

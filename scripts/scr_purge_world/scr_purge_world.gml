@@ -149,9 +149,10 @@ function scr_purge_world(action_type, action_score) {
 
 	_purge.heres_before = max(total_corruption(),population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS]);// Starting heresy
 
-	_purge.calculate_deaths();
 
-
+	if (!action_type == eDROP_TYPE.PURGEASSASSINATE){
+		_purge.calculate_deaths();
+	}
 	var _heres_target = "corruption";
 
 	if (max(population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS])  > total_corruption()){
@@ -300,11 +301,11 @@ function scr_purge_world(action_type, action_score) {
 
 
 
-	if (action_type=eDROP_TYPE.PURGEASSASSINATE){
+	if (action_type == eDROP_TYPE.PURGEASSASSINATE){
 		assasinate_governor_setup(action_score);
 	}
 
-	if (action_type!=eDROP_TYPE.PURGEASSASSINATE){
+	else if (action_type!=eDROP_TYPE.PURGEASSASSINATE){
 	    if (_isquest=0){// DO EET
 	        var _txt2=_popup_text;
 	        switch(_purge.heres_target){
