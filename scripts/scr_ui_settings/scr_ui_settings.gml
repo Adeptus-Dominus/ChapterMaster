@@ -930,7 +930,7 @@ function scr_draw_role_settings_ui(){
                 var _armour = obj_ini.armour[_co][_index];
                 var _armour_tags = gear_weapon_data("armour",  _armour, "tags");
                 if (_armour_tags !=0 ){
-                    if (array_contains(_armour_tags, "terminator") || array_contains(_armour_tags, "dreadought")){
+                    if (array_contains(_armour_tags, "terminator") || array_contains(_armour_tags, "dreadnought")){
                         _allow_click = false;
                     }
                 }
