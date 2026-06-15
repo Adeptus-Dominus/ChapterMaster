@@ -1614,9 +1614,9 @@ function PlanetData(planet, system) constructor {
             }
             if (has_awake_tomb) {
                 if (planet_forces[eFACTION.NECRONS] < 3) {
-                    planet_forces[eFACTION.NECRONS] += 2;
+                    add_forces(eFACTION.NECRONS, 2);
                 } else if (planet_forces[eFACTION.NECRONS] < 6) {
-                    planet_forces[eFACTION.NECRONS] += 1;
+                    add_forces(eFACTION.NECRONS, 1);
                 }
             }
             if (sabotage_force && irandom(2) < 2) {
@@ -1694,27 +1694,48 @@ function PlanetData(planet, system) constructor {
                         necron_fleet.capital_number -= 1;
                         necron_fleet.frigate_number -= necron_fleet2.frigate_number;
                         necron_fleet.escort_number -= necron_fleet2.escort_number;
-                        var nearest_planet_coords = [0, 0];
-                        var found_near_planet = false;
+                        var _nearest_planet = undefined;
+                        var _found_near_planet = false;
+                        var _distance = 0;
+                        var _start_star = system.id;
                         with(obj_star) {
-                            if (present_fleet[eFACTION.NECRONS] == 0) {
-                                if (!array_contains(p_type, "Dead")) {
-                                    for (var plan = 1; plan <= planets; plan++) {
-                                        if (p_owner[plan] <= 5) {
-                                            found_near_planet = true;
-                                            nearest_planet_coords = [x, y];
-                                            break;
-                                        }
+                            if (id == _start_star){
+                                continue;
+                            }
+                            if (present_fleet[eFACTION.NECRONS] > 0) {
+                                continue;
+                            }
+                            if (array_contains(p_type, "Dead")) {
+                                continue;
+                            }
+
+                            var _valid_owners = false;
+                            for (var plan = 1; plan <= planets; plan++) {
+                                    if (p_owner[plan] <= 5) {
+                                        _valid_owners = true;
+                                        break;
                                     }
                                 }
                             }
+
+                            if (!_valid_owners){
+                                continue;
+                            }
+
+                            var _point_dist = object_distance(_start_star, self);
+
+                            if (_distance == 0 || _point_dist < _distance){
+                                _nearest_planet = self.id;
+                                _found_near_planet = true;
+                                _distance = _point_dist;
+                            }
                         }
 
-                        if (found_near_planet) {
+                        if (_found_near_planet) {
                             var tgt1, tgt2;
 
-                            necron_fleet2.action_x = nearest_planet_coords[0];
-                            necron_fleet2.action_y = nearest_planet_coords[1];
+                            necron_fleet2.action_x = _nearest_planet.x;
+                            necron_fleet2.action_y = _nearest_planet.y;
                             with (necron_fleet2){
                                 set_fleet_movement();
                             }
