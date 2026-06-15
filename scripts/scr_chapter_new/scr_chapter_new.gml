@@ -156,7 +156,7 @@ function ChapterData() constructor {
         if (use_app_data) {
             load_result = file_loader.load_struct_from_json_file($"chaptersave#{chapter_id}.json", "chapter", true);
         } else {
-            load_result = file_loader.load_struct_from_json_file($"main\\chapters\\{chapter_id}.json", "chapter", false);
+            load_result = file_loader.load_struct_from_json_file($"main/chapters/{chapter_id}.json", "chapter", false);
         }
         if (!load_result.is_success) {
             // LOGGER.error($"No chapter json exits for chapter_id {chapter_id}");
