@@ -603,11 +603,12 @@ function scr_select_role_settings_ui(){
 function setup_role_settings_buttons(){
     role_settings_ui = {};
     var _button_x = 830;
+    var _settings = obj_controller.settings;
     role_settings_ui.main_weapon_button = new UnitButtonObject({
         style : "pixel",
         x1 : _button_x,
         y1 : 185,
-        label : $"Main Weapon: {obj_ini.wep1[100][settings]}",
+        label : $"Main Weapon: {obj_ini.wep1[100][_settings]}",
         set_width : true,
         w : 250,
         active : true,
@@ -618,7 +619,7 @@ function setup_role_settings_buttons(){
         style : "pixel",
         x1 : _button_x,
         y1 : role_settings_ui.main_weapon_button.y2,
-        label : $"Secondary Weapon: {obj_ini.wep2[100][settings]}",
+        label : $"Secondary Weapon: {obj_ini.wep2[100][_settings]}",
         set_width : true,
         w : 250,
         active : true,
@@ -629,7 +630,7 @@ function setup_role_settings_buttons(){
         style : "pixel",
         x1 : _button_x,
         y1 : role_settings_ui.secondary_weapon_button.y2,
-        label : $"Armour: {obj_ini.armour[100][settings]}",
+        label : $"Armour: {obj_ini.armour[100][_settings]}",
         set_width : true,
         w : 250,
         active : true,
@@ -640,7 +641,7 @@ function setup_role_settings_buttons(){
         style : "pixel",
         x1 : _button_x,
         y1 : role_settings_ui.armour_button.y2,
-        label : $"Special Item: {obj_ini.gear[100][settings]}",
+        label : $"Special Item: {obj_ini.gear[100][_settings]}",
         set_width : true,
         w : 250,
         active : true,
@@ -651,7 +652,7 @@ function setup_role_settings_buttons(){
         style : "pixel",
         x1 : _button_x,
         y1 : role_settings_ui.gear_button.y2,
-        label : $"Mobility Item: {obj_ini.mobi[100][settings]}",
+        label : $"Mobility Item: {obj_ini.mobi[100][_settings]}",
         set_width : true,
         w : 250,
         active : true,
@@ -886,7 +887,9 @@ function scr_draw_mass_equip_gui(){
                     }
                     tab = -1;
                     refresh = true;
-                    setup_role_settings_buttons();
+                    with (obj_controller){
+                        setup_role_settings_buttons();
+                    }
                 }
             }
             y3 += space;
