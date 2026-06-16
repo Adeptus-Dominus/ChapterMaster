@@ -334,7 +334,7 @@ function setup_chapter_traits() {
 function ChapterGameData(data = {}) constructor {
     chapter_suspicion = 0;
 
-    faction_disp_mods = array_create(14, {"int_mod": 0, "mult": 1});
+    faction_disp_mods = array_create(14, {"int_mod": 0, "mult": 1, "strings" : []});
 
     equipment_tag_mods = {};
 
@@ -420,6 +420,13 @@ function ChapterGameData(data = {}) constructor {
             alter_value = floor(alter_value * _mods.mult);
         }
 
+        //ensure alter value never brings disposition higher thann 100 or lower than 0
+        var _final_disp_val =  alter_value + obj_controller.disposition[faction];
+        if (_final_disp_val > 100){
+            alter_value -= _final_disp_val - 100;
+        } else if (_final_disp_val < 0){
+            alter_value += (_final_disp_val * -1);
+        }
         return alter_value;
     };
 
