@@ -372,26 +372,6 @@ try {
         exit;
     }
     // Default view
-    if (menu == 1 && (managing > 0 || managing < 0)) {
-        if (!view_squad) {
-            var c = 0, fx = "";
-            var bb = "";
-            var xx = camera_get_view_x(view_camera[0]);
-            var yy = camera_get_view_y(view_camera[0]);
-
-            if (managing <= 10) {
-                c = managing;
-            }
-            if (managing > 20) {
-                c = managing - 10;
-            }
-
-            var top, sel, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "", force_tool = 0;
-            top = man_current;
-            sel = top;
-            yy += 77;
-        }
-    }
 
     if (global.load >= 0) {
         exit;
@@ -476,21 +456,20 @@ try {
         cooldown = 8;
         var b = selecting_ship;
 
-        var unit, company, unit_id;
         for (var q = 0; q < array_length(display_unit); q++) {
             if ((man[q] == "man") && (ma_loc[q] == selecting_location) && (ma_wid[q] < 1) && (man_sel[q] != 0)) {
                 if (b == -1) {
                     b = ma_lid[q];
                 }
-                unit = display_unit[q];
+                var unit = display_unit[q];
                 if (!is_struct(unit)) {
                     continue;
                 }
                 if (unit.name() == "") {
                     continue;
                 }
-                unit_id = unit.marine_number;
-                company = unit.company;
+                var unit_id = unit.marine_number;
+                var company = unit.company;
                 unit.location_string = obj_ini.ship_location[b];
                 unit.ship_location = -1;
                 unit.planet_location = unload;

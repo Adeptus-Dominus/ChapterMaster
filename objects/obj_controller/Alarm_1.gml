@@ -503,7 +503,7 @@ if (did != 0) {
 
 // Eldar craftworld here
 
-var go = 0, xx = 0, yy = 0;
+var go = 0;
 
 craftworld = 1;
 
