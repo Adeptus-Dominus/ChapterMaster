@@ -4,9 +4,8 @@ try {
     //read
     // 850,860
 
-    var xx, yy;
-    xx = 375;
-    yy = 10;
+    var xx = 375;
+    var yy = 10;
 
     tooltip = "";
     tooltip2 = "";
@@ -17,7 +16,7 @@ try {
     // draw_sprite(spr_creation_slate,1,xx,yy);
     scr_image("creation/slate", 2, xx, yy, 850, 860);
 
-    draw_set_color(5998382);
+    draw_set_color(#5B872E);
     if (slate2 > 0) {
         if (slate2 <= 10) {
             draw_set_alpha(slate2 / 10);
@@ -47,9 +46,6 @@ try {
         }
     }
 
-    var yar;
-    yar = 0;
-
     if (slide >= 2) {
         tooltip = "";
         tooltip2 = "";
@@ -66,7 +62,7 @@ try {
             draw_rectangle(0, 68, 374, 781, 1);
         }
 
-        draw_set_color(0);
+        draw_set_color(c_black);
 
         var sprx = 436, spry = 74, sprw = 128, sprh = 128;
         if (sprite_exists(global.chapter_icon.sprite)) {
@@ -419,8 +415,6 @@ try {
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
         draw_set_alpha(1);
-        var yar;
-        yar = 0;
 
         tooltip = "";
         tooltip2 = "";
@@ -515,13 +509,7 @@ try {
             if (melee_choice_order == 8) {
                 melee_choice_weapon = "Force Staff";
             }
-
-            yar = 0;
-            if (chapter_master_melee == melee_choice_order) {
-                yar = 1;
-            }
-            draw_sprite(spr_creation_check, yar, x6, y6);
-            yar = 0;
+            draw_sprite(spr_creation_check, (chapter_master_melee == melee_choice_order), x6, y6);
             if (point_and_click([x6, y6, x6 + 32, y6 + 32]) && (custom != eCHAPTER_TYPE.PREMADE) && (restarted == 0) && (!instance_exists(obj_creation_popup))) {
                 var onceh;
                 onceh = 0;
@@ -559,12 +547,7 @@ try {
         }
         repeat (7) {
             ranged_choice_order += 1;
-            yar = 0;
-            if (chapter_master_ranged == ranged_choice_order) {
-                yar = 1;
-            }
-            draw_sprite(spr_creation_check, yar, x6, y6);
-            yar = 0;
+            draw_sprite(spr_creation_check, (chapter_master_ranged == ranged_choice_order), x6, y6);
             if (point_and_click([x6, y6, x6 + 32, y6 + 32]) && (custom != eCHAPTER_TYPE.PREMADE) && (restarted == 0) && (!instance_exists(obj_creation_popup)) && (!array_contains([1, 2, 7], chapter_master_melee))) {
                 var onceh = 0;
                 if (chapter_master_ranged == ranged_choice_order) {
@@ -682,7 +665,6 @@ try {
 
     // 850,860
 
-    var xx, yy;
     xx = 375;
     yy = 10;
 
@@ -707,7 +689,7 @@ try {
         draw_rectangle(518, 750, 1075, 820, 0);
     }
 
-    draw_set_color(5998382);
+    draw_set_color(#5B872E);
     if (slate5 > 0) {
         if (slate5 <= 30) {
             draw_set_alpha(slate5 / 30);
@@ -729,7 +711,7 @@ try {
 
     if (fade_in > 0) {
         draw_set_alpha(fade_in / 50);
-        draw_set_color(0);
+        draw_set_color(c_black);
         draw_rectangle(0, 0, room_width, room_height, 0);
     }
     draw_set_alpha(1);
@@ -842,7 +824,7 @@ try {
 
     if (tooltip != "" && tooltip2 != "" && change_slide <= 0) {
         draw_set_alpha(1);
-        draw_set_color(0);
+        draw_set_color(c_black);
         draw_set_halign(fa_left);
         draw_set_font(fnt_40k_14b);
         var _width1 = string_width_ext(string_hash_to_newline(tooltip), -1, 500);
