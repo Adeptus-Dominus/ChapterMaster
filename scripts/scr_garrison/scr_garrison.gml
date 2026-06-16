@@ -147,7 +147,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
             var _leader = garrison_squads[_squad].determine_leader();
             _unit = fetch_unit(_leader);
             if (garrison_leader == false) {
-                garrison_leader = unit;
+                garrison_leader = _unit;
                 for (var r = 0; r < array_length(hierarchy); r++) {
                     if (hierarchy[r] == _unit.role()) {
                         leader_hier_pos = r;
@@ -172,11 +172,11 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
 
     static exp_rewards = function() {
         var m;
-        var unit;
+        var _unit;
         for (var s = 0; s < array_length(garrison_squads); s++) {
             _squad = garrison_squads[s];
             for (m = 0; m < array_length(_squad.members); m++) {
-                unit = fetch_unit(_squad.members[m]);
+                _unit = fetch_unit(_squad.members[m]);
             }
         }
     };
