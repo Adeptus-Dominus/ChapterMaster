@@ -189,7 +189,7 @@ function NameGenerator() constructor {
     var _simple_names = json_to_gamemaker(working_directory + $"main\\name_loader.json", json_parse);
 
     if (_simple_names == "") {
-        var _simple_names = [
+        _simple_names = [
             "sector",
             "star",
             {
@@ -257,13 +257,14 @@ function NameGenerator() constructor {
         var _load_name = _name;
         var _load_as_composite = false;
         var _preffered = "simple";
+        var _composites = {};
         if (is_struct(_name)) {
             var _struc = _name;
             _name = _struc.load_as;
             _load_name = _struc.load_set;
             if (struct_exists(_struc, "composites")) {
                 _load_as_composite = true;
-                var _composites = _struc.composites;
+                _composites = _struc.composites;
             }
             if (struct_exists(_struc, "preffered_method")) {
                 _preffered = _struc.preffered_method;
@@ -307,12 +308,10 @@ function NameGenerator() constructor {
 
             _styles = array_shuffle(_styles);
 
-            while (array_length(_styles)) {
-                var _style = array_pop(_styles);
-                var _set = get_name_set(_style);
+            for (var i = 0; i < array_length(_styles); i++) {
+                var _set = get_name_set(_styles[i]);
                 if (is_struct(_set)) {
-                    var _name = _set.UsePreffered();
-                    break;
+                    _name = _set.UsePreffered();
                 }
             }
 
