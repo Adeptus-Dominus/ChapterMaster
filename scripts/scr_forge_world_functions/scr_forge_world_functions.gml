@@ -37,7 +37,7 @@ function imperial_navy_fleet_construction() {
             var good=true;
             for(var o = 1; o <= _sys.planets; o++) {
                 
-                if (_sys[p_type] == "Forge"){
+                if (_sys.p_type[o] == "Forge"){
                     var _nearest = instance_nearest(x,y,obj_en_fleet)
                     if (_nearest.x == x && _nearest.y == y && _nearest.navy){
                         good=false;
