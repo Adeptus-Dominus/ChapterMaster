@@ -41,6 +41,25 @@ function scr_cheatcode(argument0) {
 
         if (cheat_code != "") {
             switch (cheat_code) {
+                case "embarkguard":
+                    with (obj_controller) {
+                        var _n = embark_guardsmen(obj_ini.home_name, obj_ini.home_planet);
+                        show_message("Embarked " + string(_n) + " Guard from your homeworld.#Total embarked: " + string(player_guardsmen_embarked()));
+                    }
+                    break;
+                case "deployguard":
+                    with (obj_controller) {
+                        var _n = deploy_guardsmen(obj_ini.home_name, obj_ini.home_planet);
+                        show_message("Deployed " + string(_n) + " Guard onto your homeworld.");
+                    }
+                    break;
+                case "titheguard":
+                    with (obj_controller) {
+                        var _amt = real(cheat_arguments[0]);
+                        var _n = tithe_guardsmen(obj_ini.home_name, obj_ini.home_planet, _amt);
+                        show_message("Raised " + string(_n) + " Guard from your homeworld's population.");
+                    }
+                    break;
                 case "finishforge":
                     with (obj_controller) {
                         specialist_point_handler.forge_points = 1000000;

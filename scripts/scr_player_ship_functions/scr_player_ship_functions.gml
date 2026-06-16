@@ -143,6 +143,8 @@ function new_player_ship_defaults() {
         array_push(ship_carrying, 0);
         array_push(ship_contents, "");
         array_push(ship_turrets, 0);
+        array_push(ship_guardsmen, 0);
+        array_push(ship_guardsmen_max, 0);
     }
     return array_length(obj_ini.ship) - 1;
 }
@@ -286,6 +288,8 @@ function new_player_ship(type, start_loc = "home", new_name = "") {
         obj_ini.ship_wep_facing[index][5] = "most";
         obj_ini.ship_wep_condition[index][5] = "";
         obj_ini.ship_capacity[index] = 600;
+        obj_ini.ship_guardsmen_max[index] = 500000;  // Battle Barge: Guard auxilia capacity
+        obj_ini.ship_guardsmen[index] = 0;
         obj_ini.ship_carrying[index] = 0;
         obj_ini.ship_contents[index] = "";
         obj_ini.ship_turrets[index] = 3;
@@ -315,6 +319,8 @@ function new_player_ship(type, start_loc = "home", new_name = "") {
         obj_ini.ship_wep_facing[index][4] = "most";
         obj_ini.ship_wep_condition[index][4] = "";
         obj_ini.ship_capacity[index] = 250;
+        obj_ini.ship_guardsmen_max[index] = 150000;  // Strike Cruiser: Guard auxilia capacity
+        obj_ini.ship_guardsmen[index] = 0;
         obj_ini.ship_carrying[index] = 0;
         obj_ini.ship_contents[index] = "";
         obj_ini.ship_turrets[index] = 1;
@@ -334,6 +340,8 @@ function new_player_ship(type, start_loc = "home", new_name = "") {
         obj_ini.ship_wep_facing[index][1] = "most";
         obj_ini.ship_wep_condition[index][1] = "";
         obj_ini.ship_capacity[index] = 30;
+        obj_ini.ship_guardsmen_max[index] = 0;       // Gladius escort: no Guard capacity
+        obj_ini.ship_guardsmen[index] = 0;
         obj_ini.ship_carrying[index] = 0;
         obj_ini.ship_contents[index] = "";
         obj_ini.ship_turrets[index] = 1;
@@ -356,6 +364,8 @@ function new_player_ship(type, start_loc = "home", new_name = "") {
         obj_ini.ship_wep_facing[index][2] = "most";
         obj_ini.ship_wep_condition[index][2] = "";
         obj_ini.ship_capacity[index] = 25;
+        obj_ini.ship_guardsmen_max[index] = 0;       // Hunter escort: no Guard capacity
+        obj_ini.ship_guardsmen[index] = 0;
         obj_ini.ship_carrying[index] = 0;
         obj_ini.ship_contents[index] = "";
         obj_ini.ship_turrets[index] = 1;
@@ -391,6 +401,8 @@ function new_player_ship(type, start_loc = "home", new_name = "") {
         obj_ini.ship_wep_facing[index][5] = "most";
         obj_ini.ship_wep_condition[index][5] = "";
         obj_ini.ship_capacity[index] = 800;
+        obj_ini.ship_guardsmen_max[index] = 1000000; // Gloriana: Guard auxilia capacity
+        obj_ini.ship_guardsmen[index] = 0;
         obj_ini.ship_carrying[index] = 0;
         obj_ini.ship_contents[index] = "";
         obj_ini.ship_turrets[index] = 8;
@@ -454,4 +466,121 @@ function ship_bombard_score(ship_id) {
     }
 
     return _bomb_score;
+}
+
+// =====================================================================
+//  Imperial Guard Auxilia  -  player embark / deploy / raise
+//  Added by mod. Uses the same p_guardsmen planetary force the Imperial
+//  Navy uses, so deployed Guard plug straight into the ground-war AI.
+// =====================================================================
+
+/// @description Total Imperial Guard auxilia currently embarked across all player ships.
+/// @returns {real}
+function player_guardsmen_embarked() {
+    var _total = 0;
+    with (obj_ini) {
+        for (var i = 0; i < array_length(ship_guardsmen); i++) {
+            _total += ship_guardsmen[i];
+        }
+    }
+    return _total;
+}
+
+/// @description Embark Guard from a world you own onto your ships in that system.
+///              Pulls from the planet garrison (p_guardsmen) and fills each ship up
+///              to its ship_guardsmen_max. Returns the number actually loaded.
+/// @param {string} system_name  Star system name (e.g. obj_ini.home_name)
+/// @param {real}   planet       Planet index in that system (e.g. obj_ini.home_planet)
+/// @returns {real}
+function embark_guardsmen(system_name, planet) {
+    var _star = find_star_by_name(system_name);
+    if (_star == "none") {
+        return 0;
+    }
+    if (_star.p_owner[planet] != eFACTION.PLAYER) {
+        return 0; // only from worlds you control
+    }
+
+    var _pdata = new PlanetData(planet, _star);
+    var _available = _pdata.guardsmen;
+    if (_available <= 0) {
+        return 0; // nothing garrisoned to pick up
+    }
+
+    var _loaded = 0;
+    with (obj_ini) {
+        for (var i = 0; i < array_length(ship); i++) {
+            if (ship[i] == "") continue;                   // empty roster slot
+            if (ship_location[i] != system_name) continue; // ship must be here
+            var _space = ship_guardsmen_max[i] - ship_guardsmen[i];
+            if (_space <= 0) continue;                      // no hull room (escorts = 0)
+            var _take = min(_space, _available - _loaded);
+            if (_take <= 0) break;
+            ship_guardsmen[i] += _take;
+            _loaded += _take;
+            if (_loaded >= _available) break;
+        }
+    }
+
+    _pdata.edit_guardsmen(-_loaded); // remove what we embarked from the planet
+    return _loaded;
+}
+
+/// @description Deploy all embarked Guard from your ships in a system onto a planet.
+///              Adds them to p_guardsmen so the ground-war AI fields them.
+/// @param {string} system_name  Star system the fleet is in
+/// @param {real}   planet       Planet index to garrison
+/// @returns {real}
+function deploy_guardsmen(system_name, planet) {
+    var _star = find_star_by_name(system_name);
+    if (_star == "none") {
+        return 0;
+    }
+
+    var _unloaded = 0;
+    with (obj_ini) {
+        for (var i = 0; i < array_length(ship); i++) {
+            if (ship[i] == "") continue;
+            if (ship_location[i] != system_name) continue;
+            if (ship_guardsmen[i] <= 0) continue;
+            _unloaded += ship_guardsmen[i];
+            ship_guardsmen[i] = 0;
+        }
+    }
+    if (_unloaded <= 0) {
+        return 0;
+    }
+
+    var _pdata = new PlanetData(planet, _star);
+    _pdata.edit_guardsmen(_unloaded);
+    return _unloaded;
+}
+
+/// @description OPTIONAL: raise fresh Guard from a controlled world's population,
+///              adding them to that world's garrison so you can then embark them.
+///              Mirrors the Imperial Navy recruit idiom, so it is safe on both
+///              "small" and "large" population worlds.
+/// @param {string} system_name
+/// @param {real}   planet
+/// @param {real}   amount      headcount of Guard to raise
+/// @returns {real}
+function tithe_guardsmen(system_name, planet, amount) {
+    var _star = find_star_by_name(system_name);
+    if (_star == "none") {
+        return 0;
+    }
+    if (_star.p_owner[planet] != eFACTION.PLAYER) {
+        return 0;
+    }
+
+    var _pdata = new PlanetData(planet, _star);
+    var _headcount = _pdata.population_as_small();
+    if (_headcount <= 0) {
+        return 0;
+    }
+
+    amount = min(amount, _headcount);
+    _pdata.edit_population(-_pdata.population_large_conversion(amount));
+    _pdata.edit_guardsmen(amount);
+    return amount;
 }

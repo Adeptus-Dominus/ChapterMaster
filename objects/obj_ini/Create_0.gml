@@ -94,6 +94,8 @@ ship_capacity = [];
 ship_carrying = [];
 ship_contents = [];
 ship_turrets = [];
+ship_guardsmen = [];     // Imperial Guard auxilia currently embarked on this ship
+ship_guardsmen_max = []; // Max Guard auxilia this ship hull can carry
 ship_lost = [];
 
 // Vehicle Init

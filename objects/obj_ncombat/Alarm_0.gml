@@ -3154,6 +3154,49 @@ try {
         u.sprite_index = spr_weapon_blank;
     }
 
+    // ===== Friendly Imperial Guard / PDF on the player's side =====
+    // Mirrors the enemy "Imperial Guard Force" spawn, but as obj_pnunit (player side).
+    // Fires only on an ordinary DEFENSIVE planetary battle where you are not at War
+    // with the Imperium and the attacker is not the Guard themselves. The model
+    // counts are read from the planet's p_guardsmen / p_pdf pools, which the deploy
+    // patch fills. "Imperial Guardsman" and "Leman Russ Battle Tank" are existing
+    // battlefield profiles, so no new unit content is needed.
+    if ((defending == true) && (enemy != 2) && (battle_special == "") && (battle_object != 0)
+        && (obj_controller.faction_status[eFACTION.IMPERIUM] != "War")) {
+
+        var _gd  = battle_object.p_guardsmen[battle_id];
+        var _pdf = battle_object.p_pdf[battle_id];
+
+        // Friendly Guardsmen, plus armour if the garrison is large.
+        if (_gd > 0) {
+            var _guar = _gd / 10;
+            u = instance_create(-60, 240, obj_pnunit);
+            u.dudes[1] = "Imperial Guardsman";
+            u.dudes_num[1] = max(1, round(_guar / 5));
+            if (_gd > 20000) {
+                u.dudes[2] = "Leman Russ Battle Tank";
+                u.dudes_num[2] = max(1, round(_gd / 20000));
+            }
+        }
+
+        // Friendly PDF: a lighter levy. Reuses the Guardsman profile in fewer numbers.
+        if (_pdf > 0) {
+            u = instance_create(-70, 240, obj_pnunit);
+            u.dudes[1] = "Imperial Guardsman";
+            u.dudes_num[1] = max(1, round((_pdf / 10) / 8));
+        }
+
+        // Anti-farm: committing the garrison to a pitched battle costs lives, so a
+        // share is spent each fight. This drains the pool you would otherwise reuse
+        // for free. Tune the 0.2, or move to outcome-based attrition in Alarm_5.
+        if (_gd > 0)  battle_object.p_guardsmen[battle_id] = max(0, _gd  - round(_gd  * 0.2));
+        if (_pdf > 0) battle_object.p_pdf[battle_id]       = max(0, _pdf - round(_pdf * 0.2));
+
+        // The real units now stand in for that force, so clear the abstract allies
+        // bonus to avoid counting the same Guard twice.
+        allies = 0;
+    }
+
     instance_activate_object(obj_enunit);
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
