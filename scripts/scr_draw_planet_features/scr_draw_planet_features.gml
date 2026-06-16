@@ -11,7 +11,7 @@ function FeatureSelected(_feature, _system, _planet) constructor {
     destroy = false;
     exit_count = 0;
     enter_count = 18;
-    planet_data = new PlanetData(_planet, _system);
+    planet_data = _system.get_planet_data(_planet);
 
     if (feature.f_type == eP_FEATURES.FORGE) {
         var _worker_caps = [
@@ -196,7 +196,7 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                 generic = true;
                 var _planet = planet_data.planet;
                 var _star = obj_star_select.target;
-                var p_data = new PlanetData(_planet, _star);
+                var p_data = _star.get_planet_data(_planet);
                 var _recruit_world = p_data.get_features(eP_FEATURES.RECRUITING_WORLD)[0];
                 var _spare_apoth_points = p_data.get_local_apothecary_points();
                 title = "Marine Recruitment";

@@ -121,7 +121,7 @@ function event_end_turn_action() {
                     if (owner == eFACTION.MECHANICUS) {
                         for (f = 1; f <= planets; f++) {
                             if ((p_type[f] == "Forge") && (p_owner[f] == eFACTION.MECHANICUS)) {
-                                array_push(active_forges, new PlanetData(f, self));
+                                array_push(active_forges, get_planet_data(f));
                             }
                         }
                     }

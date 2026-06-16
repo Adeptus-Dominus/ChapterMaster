@@ -289,7 +289,7 @@ function imperial_navy_bombard() {
         if (guardsmen_unloaded) {
             navy_load_guardsmen();
         }
-        var _p_data = new PlanetData(_bombard, orbiting);
+        var _p_data = _orbiting.get_planet_data(_bombard);
         scare = (capital_number * 3) + frigate_number;
         _p_data.suffer_navy_bombard(scare);
         end_sequence_finished = true;
@@ -456,7 +456,7 @@ function navy_finish_destroying_player_world() {
         action = "";
     } else {
         //this was always a dead path previously since tar could never be bigger than i, now it will
-        var _targ = new PlanetData(tar, orbiting);
+        var _targ = orbiting.get_planet_data(tar);
         if (orbiting.p_owner[tar] == eFACTION.PLAYER && orbiting.p_player[tar] == 0 && planet_feature_bool(orbiting.p_feature[tar], eP_FEATURES.MONASTERY) == 0) {
             _targ.return_to_first_owner();
             _targ.add_disposition(-50);
@@ -541,7 +541,7 @@ function navy_bombard_player_world() {
                 }
 
                 if (bombard) {
-                    var _orbiting_data = new PlanetData(bombard, orbiting);
+                    var _orbiting_data = orbiting.get_planet_data(bombard);
                     scare = (capital_number * 3) + frigate_number;
 
                     if (scare > 2) {
@@ -823,7 +823,7 @@ function scr_navy_planet_action() {
 /// @self Asset.GMObject.obj_en_fleet
 function navy_load_up_guardsmen_or_move_planet(planet, valid_next_planet) {
     var _player_war = false;
-    var _pdata = new PlanetData(planet, orbiting);
+    var _pdata = orbiting.get_planet_data(planet);
     if (_pdata.player_forces > 0 && obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
         _player_war = true;
     }
@@ -912,7 +912,7 @@ function scr_navy_recruit_new_guard() {
 
     var guard_wanted = fleet_max_guard() - fleet_guard_current();
 
-    var recruit_planet = new PlanetData(that, orbiting);
+    var recruit_planet = orbiting.get_planet_data(that);
 
     // if (orbiting.p_population[that]<guard_wanted && orbiting.p_large[that]=0) then trade_goods="";
     if (recruit_planet.population > guard_wanted || recruit_planet.large_population) {
