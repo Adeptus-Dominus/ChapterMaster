@@ -142,27 +142,27 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
         garrison_leader = false;
         var hierarchy = role_hierarchy();
         var leader_hier_pos = array_length(hierarchy);
-        var unit;
+        var _unit;
         for (var _squad = 0; _squad < array_length(garrison_squads); _squad++) {
             var _leader = garrison_squads[_squad].determine_leader();
-            unit = fetch_unit(_leader);
+            _unit = fetch_unit(_leader);
             if (garrison_leader == false) {
                 garrison_leader = unit;
                 for (var r = 0; r < array_length(hierarchy); r++) {
-                    if (hierarchy[r] == unit.role()) {
+                    if (hierarchy[r] == _unit.role()) {
                         leader_hier_pos = r;
                         break;
                     }
                 }
-            } else if (hierarchy[leader_hier_pos] == unit.role()) {
-                if (garrison_leader.experience < unit.experience) {
-                    garrison_leader = unit;
+            } else if (hierarchy[leader_hier_pos] == _unit.role()) {
+                if (garrison_leader.experience < _unit.experience) {
+                    garrison_leader = _unit;
                 }
             } else {
                 for (var r = 0; r < leader_hier_pos; r++) {
-                    if (hierarchy[r] == unit.role()) {
+                    if (hierarchy[r] == _unit.role()) {
                         leader_hier_pos = r;
-                        garrison_leader = unit;
+                        garrison_leader = _unit;
                         break;
                     }
                 }
@@ -225,7 +225,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
 
             var _time_modifier = max(time_on_planet / 2.5, 10);
 
-            if (!garrison_leader) {
+            if (!is_struct(garrison_leader)) {
                 find_leader();
             }
             var _diplomatic_leader = false;
@@ -246,8 +246,14 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
                     dispo_change = 50;
                 }
             } else {
-                var charisma_test = global.character_tester.standard_test(garrison_leader, "charisma", final_modifier);
-                if (!charisma_test[0]) {
+                var _charisma_test;
+                if (is_struct(garrison_leader)){
+                    _charisma_test = global.character_tester.standard_test(garrison_leader, "charisma", final_modifier);
+                }  else {
+                    _charisma_test = [bool(irandom(1,0)),irandom_range(25)];
+                }
+                var dispo_change = _charisma_test[1] / 10;
+                if (!_charisma_test[0]) {
                     if (_diplomatic_leader) {
                         dispo_change = "none";
                     } else {
@@ -258,7 +264,6 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
                         }
                     }
                 } else {
-                    dispo_change = charisma_test[1] / 10;
                     _pdata.add_disposition(dispo_change);
                 }
             }
