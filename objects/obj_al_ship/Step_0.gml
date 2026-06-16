@@ -75,7 +75,7 @@ if (owner != 6) {
             }
         }
         if (owner == eFACTION.TYRANIDS) {
-            effect_create_above(ef_firework, x, y, 1, c_purple);
+            effect_create_depth(depth - 1, ef_firework, x, y, 1, c_purple);
         }
         instance_destroy();
     }

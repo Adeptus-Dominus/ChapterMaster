@@ -1,3 +1,3 @@
 if (combat_end == 170) {
-    room_speed = 30;
+    game_set_speed(30, gamespeed_fps);
 }
