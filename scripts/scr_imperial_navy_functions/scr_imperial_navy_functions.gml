@@ -289,7 +289,7 @@ function imperial_navy_bombard() {
         if (guardsmen_unloaded) {
             navy_load_guardsmen();
         }
-        var _p_data = _orbiting.get_planet_data(_bombard);
+        var _p_data = orbiting.get_planet_data(_bombard);
         scare = (capital_number * 3) + frigate_number;
         _p_data.suffer_navy_bombard(scare);
         end_sequence_finished = true;
