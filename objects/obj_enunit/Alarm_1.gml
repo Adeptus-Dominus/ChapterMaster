@@ -175,9 +175,12 @@ for (var j = 1; j <= 20; j++) {
 neww = 0;
 
 if ((men == 1) && (veh == 0) && (instance_number(obj_enunit) == 1)) {
-    if (dudes_num[1] == 1) {
-        obj_ncombat.display_p2 = dudes_hp[1];
-        obj_ncombat.display_p2n = string(dudes[1]);
+    for (var i = 1; i <= 20; i++) {
+        if (dudes_num[i] == 1) {
+            obj_ncombat.display_p2 = dudes_hp[i];
+            obj_ncombat.display_p2n = string(dudes[i]);
+            break;
+        }
     }
 }
 
@@ -191,7 +194,7 @@ if (obj_ncombat.enemy == 1) {
         }
     }
 
-    for (var i = 1; i<= 100; i++) {
+    for (var i = 1; i <= 100; i++) {
         att[i] = 0;
         apa[i] = 0;
         wep_num[i] = 0;

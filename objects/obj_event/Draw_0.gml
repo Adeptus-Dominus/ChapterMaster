@@ -1,6 +1,5 @@
 var xx = camera_get_view_x(view_camera[0]) + 317;
 var yy = camera_get_view_y(view_camera[0]) + 144;
-var ii = 0;
 
 draw_set_alpha(fade_alpha);
 
@@ -41,14 +40,11 @@ if (avatars > 0) {
     draw_set_halign(fa_center);
     draw_set_color(c_black);
 
-    repeat (8) {
-        ii += 1;
+    for (var i = 1; i <= 8; i++) {
         x5 += 120;
-        if (avatar_name[ii] != "") {
-            // draw_sprite(spr_popup_event_avatar,avatar_image[ii],x5,y5);
-            scr_image("event", avatar_image[ii], x5, y5, 97, 95);
-            draw_text_transformed(x5 + 47, y5 + 99, string_hash_to_newline(string(avatar_name[ii])), 0.75, 1, 0);
-            // draw_text(x5+45,y5+100,string(avatar_name[ii])+"#"+string(avatar_rank[ii]));
+        if (avatar_name[i] != "") {
+            scr_image("event", avatar_image[i], x5, y5, 97, 95);
+            draw_text_transformed(x5 + 47, y5 + 99, string_hash_to_newline(string(avatar_name[i])), 0.75, 1, 0);
         }
     }
 
@@ -64,8 +60,7 @@ draw_set_halign(fa_left);
 draw_set_font(fnt_40k_14);
 
 if (exit_fade >= 0) {
-    var ealpha;
-    ealpha = exit_fade / 30;
+    var ealpha = exit_fade / 30;
     draw_set_alpha(min(fade_alpha, ealpha));
 
     if (exit_fade < 30) {
@@ -89,11 +84,9 @@ if (exit_fade >= 0) {
 
 draw_set_color(c_gray);
 draw_set_alpha(fade_alpha);
-ii = 0;
-y5 = yy + 120 - 21;
-repeat (17) {
+y5 = yy + 99;
+for (var i = 1; i <= 17; i++) {
     y5 += 21;
-    ii += 1;
-    draw_text_ext(xx + 25, y5, string_hash_to_newline(string(line[ii])), -1, 916);
+    draw_text_ext(xx + 25, y5, string_hash_to_newline(string(line[i])), -1, 916);
 }
 draw_set_alpha(1);

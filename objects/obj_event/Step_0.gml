@@ -25,10 +25,8 @@ if ((closing == true) && (fading == -1) && (fade_alpha <= 0)) {
         }
     }
 
-    var ide = 0, unit;
-    repeat (700) {
-        ide += 1;
-        unit = obj_ini.TTRPG[attend_co[ide]][attend_id[ide]];
+    for (var ide = 1; ide <= 700; ide++) {
+        var unit = obj_ini.TTRPG[attend_co[ide]][attend_id[ide]];
         if ((attend_corrupted[ide] == 0) && (attend_id[ide] > 0)) {
             if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "chaos")) {
                 unit.corruption += choose(1, 2, 3, 4);
@@ -44,17 +42,9 @@ if ((closing == true) && (fading == -1) && (fade_alpha <= 0)) {
     if (obj_controller.fest_repeats <= 0) {
         obj_controller.fest_scheduled = 0;
 
-        var p1, p2, p3;
-        p1 = obj_controller.fest_type;
-        p3 = "";
-        p2 = obj_controller.fest_planet;
-
-        if (p2 > 0) {
-            p3 = string(obj_controller.fest_star) + " " + scr_roman(obj_controller.fest_wid);
-        }
-        if (p2 <= 0) {
-            p3 = +" the vessel '" + string(obj_ini.ship[obj_controller.fest_sid]) + "'";
-        }
+        var p1 = obj_controller.fest_type;
+        var p2 = obj_controller.fest_planet;
+        var p3 = (p2 > 0) ? string(obj_controller.fest_star) + " " + scr_roman(obj_controller.fest_wid) : " the vessel '" + string(obj_ini.ship[obj_controller.fest_sid]) + "'";
 
         scr_alert("green", "event", string(p1) + " on " + string(p3) + " ends.", 0, 0);
         scr_event_log("green", string(p1) + " on " + string(p3) + " ends.", p3);
@@ -85,6 +75,7 @@ if (ticked == 1) {
     }
 
     if ((lines_acted == 18) && (part2 != "")) {
+        var textt = "";
         if (part2 == "fish") {
             if (attendants <= 30) {
                 textt = "Chapter Serfs ferry out several large, covered dishes, the scent of seafood filling the air.  Once they are set front and center the silver cloches are removed, revealing a banquet of exotic fish.  Raw rolls of meat with rice, pufferfish, and even a massive broadbill are contained within.";
@@ -102,10 +93,10 @@ if (ticked == 1) {
         ticks = -120;
         ticked = 0;
         stage = 6;
-        textt = "";
         exit;
     }
     if ((lines_acted == 36) && (part3 != "")) {
+        var textt = "";
         if (part3 == "lobster") {
             textt = "A small army of Chapter Serfs and servitors enter the room, carrying with them a truly massive silver plate.  Bore much like a palanquin, the massive dish is covered by an equally large and decorated cloche.  As the main course inches across the room it gathers quite the number of looks.  After struggling a bit the dish is set front and center in the room, the lid removed.  Contained within is a giant, boiled Deathcoleri from Zeriah II.  The once spikey carapace is now a healthily cooked red, the crustacean smelling absolutely delicious.";
         }
@@ -115,81 +106,49 @@ if (ticked == 1) {
         ticks = -210;
         ticked = 0;
         stage = 7;
-        textt = "";
         exit;
     }
 
-    var ide, good, dire, orig, dice1, dice2, dice3, dice4, txtt, rando, doso, activity;
-    good = false;
-    doso = false;
-    activity = "";
-    dire = 0;
-    orig = 0;
-    rando = choose(1, 2);
-    dice1 = floor(random(100)) + 1;
-    dice2 = floor(random(100)) + 1;
-    dice3 = floor(random(100)) + 1;
+    var ide = floor(random(attendants)) + 1;
     var unit = obj_ini.TTRPG[attend_co[ide]][attend_id[ide]];
-
-    repeat (20) {
-        if (good == false) {
-            good = true;
-            ide = floor(random(attendants)) + 1;
-            if (unit.IsSpecialist(SPECIALISTS_HEADS)) {
-                good = false;
-            }
-        }
-    }
-    if (good == false) {
-        good = true;
-    }
+    var textt = "";
+    var doso = false;
+    var activity = "";
+    var dire = 0;
+    var orig = 0;
+    var rando = choose(1, 2);
+    var dice1 = floor(random(100)) + 1;
+    var dice2 = floor(random(100)) + 1;
+    var dice3 = floor(random(100)) + 1;
+    var dice4 = floor(random(100)) + 1;
+    var good = true;
 
     // If this marine has already acted then look for a nearby marine that has yet to act
     if (attend_displayed[ide] > 0) {
-        if (attend_displayed[ide] <= attendants / 2) {
-            dire = -1;
-        }
-        if (attend_displayed[ide] > attendants / 2) {
-            dire = 1;
-        }
+        dire = (attend_displayed[ide] <= attendants / 2) ? -1 : 1;
         orig = ide;
     }
 
     // Cycle downward
     if (dire == -1) {
         good = false;
-        var resp;
-        resp = ide;
-
-        repeat (resp) {
-            if (good == false) {
-                ide -= 1;
-                if (attend_displayed[ide] == 0) {
-                    good = true;
-                }
+        for (var resp = ide - 1; resp >= 0; resp--) {
+            if (attend_displayed[resp] == 0) {
+                good = true;
+                break;
             }
         }
 
-        if (good == false) {
-            dire = 1;
-        }
-        if (good == true) {
-            dire = 0;
-        }
+        dire = (good) ? 0 : 1;
     }
 
     // Cycle upward
     if (dire == 1) {
         good = false;
-        var resp;
-        resp = attendants;
-
-        repeat (resp) {
-            if (good == false) {
-                ide += 1;
-                if (attend_displayed[ide] == 0) {
-                    good = true;
-                }
+        for (var resp = 0; resp < attendants; resp++) {
+            if (attend_displayed[resp] == 0) {
+                good = true;
+                break;
             }
         }
     }
@@ -213,7 +172,6 @@ if (ticked == 1) {
     if ((attend_confused[ide] <= 0) && (activity == "")) {
         doso = true;
     }
-    var unit = obj_ini.TTRPG[attend_co[ide]][attend_id[ide]];
     if (doso == true) {
         dice1 = floor(random(100)) + 1;
         dice2 = floor(random(100)) + 1;
@@ -222,21 +180,16 @@ if (ticked == 1) {
 
         if (obj_controller.fest_type == "Great Feast") {
             // Get chances of random crap when in a Great Feast
-            var mod1, mod2, mod3, rep1, rep2, rep3;
-            mod1 = 0;
-            mod2 = 0;
-            mod3 = 0;
+            var mod1 = 0;
+            var mod2 = unit.corruption / 5;
+            var mod3 = unit.corruption / 10;
 
-            rep1 = 1; // attend_feasted[ide]+1;
-            rep2 = attend_drunk[ide] + 1;
-            rep3 = attend_high[ide] + 1;
-
-            mod2 = unit.corruption / 5;
-            mod3 = unit.corruption / 10;
+            var rep1 = 1;
+            var rep2 = attend_drunk[ide] + 1;
+            var rep3 = attend_high[ide] + 1;
 
             activity = "talk";
 
-            // show_message("roll needed for eating: >="+string((((obj_controller.fest_feasts*30)-10)+mod1)/rep1)+", rolled:"+string(dice1));
             if ((dice3 <= min(75, (((obj_controller.fest_drugses * 10) - 10) + mod3) / rep3)) && (obj_controller.fest_feature3 > 0)) {
                 activity = "drugs";
             }
@@ -368,8 +321,7 @@ if (ticked == 1) {
         attend_feasted[ide] += 1;
     }
     if (activity == "drink") {
-        var eater_type;
-        eater_type = 1;
+        var eater_type = 1;
         if (global.chapter_name == "Space Wolves" || obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
             eater_type = 2;
         }
@@ -386,8 +338,6 @@ if (ticked == 1) {
             }
         }
         if (eater_type == 2) {
-            // if (attend_drunk[ide]<=0) then textt=unit.name_role()+" hails a serf and has "+choose("him","her")+" bring him a tankard of Mjod.";
-            // if (attend_drunk[ide]>0){
             rando = choose(1, 2, 3);
             if (rando == 1) {
                 textt = unit.name_role() + " pounds down Mjod, the concoction already beginning to inebriate the astartes.";
@@ -398,7 +348,6 @@ if (ticked == 1) {
             if (rando == 3) {
                 textt = unit.name_role() + " begins to drink down Mjod, a large frothing glass of the substance in each hand.  He alternates between the two.";
             }
-            // }
         }
         if (eater_type == 3) {
             if (attend_drunk[ide] <= 0) {
@@ -422,8 +371,6 @@ if (ticked == 1) {
         }
     }
 
-    // show_message("activity:"+string(activity)+", text:"+string(textt));
-
     if (activity == "talk") {
         textt = scr_event_gossip(ide);
     }
@@ -431,14 +378,7 @@ if (ticked == 1) {
     if (activity == "artifact") {
         var spesh = "";
         var woa = string(obj_ini.artifact[obj_controller.fest_display]);
-        var nerves_spesh = [
-            "GOAT",
-            "CHE",
-            "THI",
-            "TENTACLES",
-            "JUM",
-            "PRE"
-        ];
+        var nerves_spesh = ["GOAT", "CHE", "THI", "TENTACLES", "JUM", "PRE"];
         for (var sp = 0; sp < array_length(nerves_spesh); sp++) {
             if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], nerves_spesh[sp])) {
                 spesh = "nerves";
@@ -453,8 +393,7 @@ if (ticked == 1) {
         if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "MNR")) {
             spesh = "minor";
         }
-        var unit = obj_ini.TTRPG[attend_co[ide]][attend_id[ide]];
-        var textt = unit.name_role();
+        textt = unit.name_role();
 
         if (spesh == "") {
             rando = choose(1, 2, 3, 4, 5);
@@ -508,54 +447,6 @@ if (ticked == 1) {
             }
             attend_corrupted[ide] = 1;
         }
-
-        /*
-        
-        
-        
-        if (t1="Weapon"){
-            // gold, glowing, underslung bolter, underslung flamer
-            t5=choose("GOLD","GLOW","UBOLT","UFL");
-            // Runes, scope, adamantium, void
-            t4=choose("RUN","SCO","ADAMANTINE","VOI");
-            if ((t2="Power Sword") or (t2="Power Axe") or (t2="Power Spear")) and (t4="SCO") then t4="CHB";// chainblade
-            if ((t2="Power Fist") or (t2="Power Claw")) and (t4="SCO") then t4="DUB";// doubled up
-            if (t2="Relic Blade") and (t4="SCO") then t4="UFL";// underslung flamer
-        }
-        if (t1="Armour"){
-            // golden filigree, glowing optics, purity seals
-            t5=choose("GOLD","GLOW","PUR");
-            // articulated plates, spikes, runes, drake scales
-            t4=choose("ART","SPIKES","RUN","DRA");
-        }
-        if (t1="Gear"){
-            // supreme construction, adamantium, gold
-            t4=choose("SUP","ADAMANTINE","GOLD");// bur = ever burning
-            if (t2="Rosarius") then t5=choose("GOLD","GLOW","BIG","BUR");
-            if (t2="Bionics") then t5=choose("GOLD","GLOW","RUN","SOO");// Soothing appearance
-            if (t2="Psychic Hood") then t5=choose("FIN","GOLD","BUR","MASK");// fine cloth, gold, ever burning, mask
-            if (t2="Jump Pack") then t5=choose("SPIKES","SKRE","WHI","SILENT");// spikes, screaming, white flame, silent
-            if (t2="Servo-arm") then t5=choose("GOLD","TENTACLES","GOR","SOO");// gold, tentacles, gorilla build, soothing appearance
-        }
-        if (t1="Device") and (t2!="Robot"){
-            t4=choose("GOLD","CRU","GLOW","ADAMANTINE");// skulls, falling angel, thin, tentacle, mindfuck
-            if (t2!="Statue") then t5=choose("SKU","FAL","THI","TENTACLES","MIN");
-            // goat, speechless, dying angel, jumping into magma, cheshire grunx
-            if (t2="Statue") then t5=choose("GOAT","SPE","DYI","JUM","CHE");
-            // Gold, glowing, preserved flesh, adamantium
-            if (t2="Tome") then t4=choose("GOLD","GLOW","PRE","ADAMANTINE","SAL","BUR");
-            if (t4="PRE") and (t3="") then t3=choose("","Chaos","Daemonic");
-        }
-        if (t1="Device") and (t2="Robot"){// human/robutt/shivarah
-            t4=choose("HU","RO","SHI");
-            t5=choose("ADAMANTINE","JAD","BRO","RUNE");
-        }
-        
-        
-        if (string_count("Chaos",obj_ini.artifact_tags[obj_controller.fest_display])>0) then spesh="chaos";
-        if (string_count("Daem",obj_ini.artifact_tags[obj_controller.fest_display])>0) then spesh="daemonic";
-        
-        */
     }
 
     if (textt != "") {
@@ -576,14 +467,6 @@ if (ticked == 1) {
 }
 
 if (liness > (attendants / 2)) {
-    var i;
-    i = -1;
-    repeat (1501) {
-        i += 1;
-        attend_displayed[i] = 0;
-    }
+    attend_displayed = array_create(1500, 0);
     liness = 0;
 }
-
-/* */
-/*  */
