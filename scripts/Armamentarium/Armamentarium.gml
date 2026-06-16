@@ -445,8 +445,10 @@ function Armamentarium(_controller) constructor {
 
     // --- Components ---
     slate_panel = new DataSlate();
+    // feather ignore once GM2043
     slate_panel.inside_method = method(self, _draw_slate_contents);
 
+    // feather ignore once GM2043
     stc_panel = new STCResearchPanel(controller, method(self, refresh_catalog));
 
     enter_forge_button = new ShutterButton();

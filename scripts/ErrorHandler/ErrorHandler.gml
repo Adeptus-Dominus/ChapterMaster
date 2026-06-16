@@ -22,8 +22,11 @@ function GameError(_header, _message, _stacktrace = "", _critical = false, _repo
     commit_hash = global.commit_hash;
     username = global.settings.username ?? "";
 
+    // feather ignore once GM2043
     full_log = build_full_log();
+    // feather ignore once GM2043
     error_file_text = build_error_file_text();
+    // feather ignore once GM2043
     player_message = build_player_message();
 
     /// @description Builds the full log content
