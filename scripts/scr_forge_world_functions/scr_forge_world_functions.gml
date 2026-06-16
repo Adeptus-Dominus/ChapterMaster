@@ -24,7 +24,7 @@ function imperial_navy_fleet_construction() {
         } 
 
         //if system needs more navy fleets get forge world to make some
-    } else if (navy_fleet_count<target_navy_number) {
+    } else if (navy_fleet_count < target_navy_number) {
         //TODO make standadised system for collating active forge worlds as we  do this a lot       
         var _forge_systems = get_imperium_forge_systems();
 

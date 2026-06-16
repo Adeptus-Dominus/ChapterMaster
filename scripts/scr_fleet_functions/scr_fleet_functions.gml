@@ -12,6 +12,13 @@ function distribute_strength_to_fleet(strength, fleet) {
     }
 }
 
+function standard_fleet_strength_calc(fleet = undefined){
+    if (is_undefined(fleet)){
+        fleet = self;
+    }
+    return fleet.capital_number + (fleet.frigate_number/2) + (fleet.escort_number/4);
+}
+
 /// @self Asset.GMObject.obj_en_fleet
 function random_sector_exit_point() {
     action_x = choose(room_width * -1, room_width * 2);
