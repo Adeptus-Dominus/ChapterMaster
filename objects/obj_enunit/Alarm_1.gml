@@ -174,21 +174,12 @@ for (var j = 1; j <= 20; j++) {
 
 neww = 0;
 
-/* // This is always going to do nothing since h is never changed?
-if ((men + veh == 1) && (instance_number(obj_enunit) == 1)) {
-    if ((men == 1) && (veh == 0)) {
-        var h = 0;
-        for (var i = 1; i <= 20; i++) {
-            if (h == 0) {
-                if (dudes_num[i] == 1) {
-                    h = dudes_hp[i];
-                    obj_ncombat.display_p2 = h;
-                    obj_ncombat.display_p2n = string(dudes[i]);
-                }
-            }
-        }
+if ((men == 1) && (veh == 0) && (instance_number(obj_enunit) == 1)) {
+    if (dudes_num[1] == 1) {
+        obj_ncombat.display_p2 = dudes_hp[1];
+        obj_ncombat.display_p2n = string(dudes[1]);
     }
-}*/
+}
 
 if (obj_ncombat.enemy == 1) {
     men = 0;
@@ -1292,13 +1283,6 @@ if (obj_ncombat.enemy == eFACTION.CHAOS || obj_ncombat.enemy == eFACTION.HERETIC
             dudes_hp[j] = 150;
             men += dudes_num[j];
             dudes_dr[j] = 0.75;
-        }
-        if (dudes[j] == "Possessed") {
-            scr_en_weapon("Possessed Claws", true, dudes_num[j], dudes[j], j);
-            dudes_ac[j] = 15;
-            dudes_hp[j] = 150;
-            dudes_dr[j] = 0.6;
-            men += dudes_num[j];
         }
         if (dudes[j] == "Chaos Space Marine") {
             scr_en_weapon("Bolter", true, dudes_num[j], dudes[j], j);
