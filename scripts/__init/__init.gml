@@ -6,6 +6,7 @@
 #macro PATH_LOG_DIRECTORY "Logs/"
 #macro LAST_MESSAGES_LOG "last_messages.log"
 #macro PATH_LAST_MESSAGES PATH_LOG_DIRECTORY + LAST_MESSAGES_LOG
+#macro PATH_HELP_INI "main/help.ini"
 
 /// @desc Called via gml_pragma("global") at startup, before any room.
 function __init() {
