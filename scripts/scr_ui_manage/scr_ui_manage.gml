@@ -578,7 +578,7 @@ function alternative_manage_views(x1, y1) {
             if (!directory_exists(main_dir)) {
                 directory_create(main_dir);
             }
-            var base_name = working_directory + $"/main/marine_capture_{_unit.name()}_{_unit.marine_number}{_unit.company}";
+            var base_name = main_dir + $"/marine_capture_{_unit.name()}_{_unit.marine_number}{_unit.company}";
             var extension = ".png";
             var index = 0;
             var path;
