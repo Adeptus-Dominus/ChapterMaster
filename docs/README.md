@@ -2,7 +2,8 @@
   <img src="https://github.com/user-attachments/assets/47772b42-59ad-4fdf-84de-ae9bcba999be" alt="Chapter Master - Adeptus Dominus Logo"/>
 </p>
 
-# Chapter Master - Adeptus Dominus
+# Chapter Master - Adeptus Dominus - Imperial Guard mod
+**NOTE:**in this version, to get guard you need to press P then "titheguard X" (x being the number), "embarkguard" and then you can deploy them via the menu selection on the planet screen. That's it for now until further implementation arrives. Fixing basic stuff with the guardsmen first.
 
 [![Release-Development](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/release_dev.yml/badge.svg)](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/release_dev.yml)
 [![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
