@@ -3,6 +3,7 @@
 </p>
 
 # Chapter Master - Adeptus Dominus
+
 [![Release-Development](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/release_dev.yml/badge.svg)](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/release_dev.yml)
 [![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
 [![GitHub repo size](https://img.shields.io/github/repo-size/Adeptus-Dominus/ChapterMaster?style=flat&label=Repo%20Size&labelColor=4493f8&color=545454)](https://github.com/Adeptus-Dominus/ChapterMaster)
@@ -28,7 +29,26 @@ This project aims to continue development on the game, fix any bugs, expand and 
 - Main repository: [Adeptus-Dominus/ChapterMaster](https://github.com/Adeptus-Dominus/ChapterMaster)
 
 ## Playing
+
+### Windows
+
 Just download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/releases/latest) or a [development pre-release](https://github.com/Adeptus-Dominus/ChapterMaster/releases), unzip it and launch the .exe.
+
+### Linux
+
+Pre-compiled Linux binaries are not currently supported. However, you can run the game on Linux in two ways:
+
+#### Option 1: Run the Windows build via WINE (Recommended for players)
+
+You can download the Windows release `.exe` and run it using **WINE** (or **Proton** / **Steam Play**). This has been reported to work well.
+
+#### Option 2: Run from source using GameMaker for Linux (Recommended for developers)
+
+1. Clone the repository.
+2. Install the **GameMaker** IDE for Linux (available on Steam or the GameMaker website).
+3. Open the `ChapterMaster.yyp` project file in GameMaker.
+4. Select **Linux** as the target platform in the IDE.
+5. Press **Run** (F5) to play/debug the game.
 
 ## Compiling
 
@@ -40,6 +60,7 @@ Everything else **must** be covered by [paid **GameMaker** subscriptions](https:
 ## Contributing
 
 Best bet is to ask about everything in our Discord, because things bellow are probably not very helpful at the moment.
+
 - [Working with GameMaker projects](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Working-with-GameMaker-projects)
 - [Useful Tools/Resources](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Useful-resources)
 - [Contributing](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Contributing) wiki page (not filled properly)
