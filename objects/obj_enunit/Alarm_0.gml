@@ -299,6 +299,33 @@ if (!engaged) {
     // if (no_ap=30) and (enemy.men=0) and (flank=0){// Next turn?
 
     // }
+} else {
+    // Engaged in melee. The original code skipped every attack once an enemy was
+    // collision-locked against a player block, so a unit pinned against a line it
+    // could not shoot through (for example Meganobs against a Guard rank whose
+    // bayonets cannot pierce mega-armour) just stood there and the round stalled at a
+    // fixed enemy percentage. Run the melee weapons here so a fully engaged enemy
+    // still fights in close combat. engaged is computed once per turn, so this never
+    // double-attacks alongside the not-engaged branch above.
+    for (var i = 0; i < array_length(wep); i++) {
+        if (!instance_exists(obj_pnunit)) {
+            exit;
+        }
+        var melee_target = flank ? get_leftmost() : get_rightmost();
+        if ((melee_target == "none") || (!target_block_is_valid(melee_target, obj_pnunit))) {
+            continue;
+        }
+        // Melee weapons only: range 1, 2, or fractional.
+        if ((range[i] <= 2) || (floor(range[i]) != range[i])) {
+            if ((apa[i] > 0) && block_has_armour(melee_target)) {
+                scr_shoot(i, melee_target, 1, "arp", "melee");
+            } else if (melee_target.men > 0) {
+                scr_shoot(i, melee_target, 1, "att", "melee");
+            } else if (block_has_armour(melee_target)) {
+                scr_shoot(i, melee_target, 1, "arp", "melee");
+            }
+        }
+    }
 }
 
 instance_activate_object(obj_pnunit);

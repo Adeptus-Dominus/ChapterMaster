@@ -133,10 +133,8 @@ function scr_player_combat_weapon_stacks() {
     if (guard == 1) {
         var _gi = 0;
         var _pg = men;    // current Guardsmen in this block
-        var _tk = veh;    // current Leman Russ tanks in this block
 
-        // Massed lasguns, identical to the enemy Guardsman profile in scr_en_weapon:
-        // one Lasgun per man, attack 60, armour pierce 1, range 6, 30 rounds.
+        // Massed lasguns: one per man, attack 60, armour pierce 1, range 6, 30 rounds.
         _gi += 1;
         wep[_gi] = "Lasgun";
         wep_num[_gi] = max(1, _pg);
@@ -146,7 +144,22 @@ function scr_player_combat_weapon_stacks() {
         ammo[_gi] = 30;
         splash[_gi] = 0;
 
-        // Heavy weapons teams. Real Heavy Bolter profile: attack 120, range 16.
+        // Bayonets (melee, range 1). Required or the block locks up in melee: once an
+        // enemy is adjacent the fire logic disables every ranged weapon, and with no
+        // melee weapon the Guard can neither shoot nor swing. Guardsmen are poor in
+        // melee, so this is a weak profile.
+        _gi += 1;
+        wep[_gi] = "Bayonet";
+        wep_num[_gi] = max(1, _pg);
+        range[_gi] = 1;
+        att[_gi] = 12 * wep_num[_gi];
+        apa[_gi] = 0;
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
+
+        // Heavy bolters: attack 120, range 16. Anti-infantry support only. The Guard
+        // carry no anti-tank weapon by design, so a pure-infantry force cannot crack
+        // armour; they bleed against vehicles unless a Leman Russ tank line is present.
         _gi += 1;
         wep[_gi] = "Heavy Bolter";
         wep_num[_gi] = max(1, round(_pg / 200));
@@ -156,27 +169,34 @@ function scr_player_combat_weapon_stacks() {
         ammo[_gi] = -1;
         splash[_gi] = 0;
 
-        // Leman Russ guns, scaled to the tanks still alive: Battle Cannon 300 (AP)
-        // and Lascannon 200 (AP).
-        if (_tk > 0) {
-            _gi += 1;
-            wep[_gi] = "Battle Cannon";
-            wep_num[_gi] = _tk;
-            range[_gi] = 12;
-            att[_gi] = 300 * wep_num[_gi];
-            apa[_gi] = round(att[_gi] * 0.6);
-            ammo[_gi] = -1;
-            splash[_gi] = 0;
+        exit;
+    }
 
-            _gi += 1;
-            wep[_gi] = "Lascannon";
-            wep_num[_gi] = _tk;
-            range[_gi] = 20;
-            att[_gi] = 200 * wep_num[_gi];
-            apa[_gi] = round(att[_gi] * 0.8);
-            ammo[_gi] = -1;
-            splash[_gi] = 0;
-        }
+    if (guard == 2) {
+        // Leman Russ tank line, fielded as its own block separate from the infantry,
+        // the way the enemy Imperial Guard keep tanks out of their soldier lines.
+        // Battle Cannon 300 and Lascannon 200, both armour-piercing, scaled to the
+        // tanks still alive. This is the Guard's only anti-armour.
+        var _gi = 0;
+        var _tk = veh;
+
+        _gi += 1;
+        wep[_gi] = "Battle Cannon";
+        wep_num[_gi] = max(1, _tk);
+        range[_gi] = 12;
+        att[_gi] = 300 * wep_num[_gi];
+        apa[_gi] = round(att[_gi] * 0.6);
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
+
+        _gi += 1;
+        wep[_gi] = "Lascannon";
+        wep_num[_gi] = max(1, _tk);
+        range[_gi] = 20;
+        att[_gi] = 200 * wep_num[_gi];
+        apa[_gi] = round(att[_gi] * 0.8);
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
 
         exit;
     }
