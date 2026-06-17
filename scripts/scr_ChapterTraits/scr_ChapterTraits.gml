@@ -334,7 +334,10 @@ function setup_chapter_traits() {
 function ChapterGameData(data = {}) constructor {
     chapter_suspicion = 0;
 
-    faction_disp_mods = array_create(14, {"int_mod": 0, "mult": 1, "strings" : []});
+    faction_disp_mods = [];
+    for (var _i = 0; _i < 14; _i++) {
+        faction_disp_mods[_i] = {"int_mod": 0, "mult": 1, "strings": []};
+    }
 
     equipment_tag_mods = {};
 
