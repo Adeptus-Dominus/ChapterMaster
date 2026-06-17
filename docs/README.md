@@ -11,51 +11,44 @@
 **Chapter Master** (aka CM) is a strategy/simulation game, written in **Game Maker Language**, originally designed and developed by Duke.\
 This project aims to continue development on the game, fix any bugs, expand and add features.
 
-**Adeptus Dominus** is just how the team of primordial collaborators decided to call themselves.
+**Adeptus Dominus** is just how the team of primordial collaborators decided to call themselves and the new version of the game.
 
-- Our discord server: [Chapter Master Discord](https://discord.gg/zAGpqHzsXQ)
+## Links
+
+Our discord server: [Chapter Master Discord](https://discord.gg/zAGpqHzsXQ)
   - Where most of the development talk, feature suggestion and bug-reporting takes place.
   - GitHub issues are not used at the moment, as such we use #bug-report-forum in this server to handle bug reports.
   - If you can code, draw, design, help with the GitHub stuff or just want to help in any way possible - you'll be welcomed with open arms.
   - If you just love WH40K and want to chat - you'll have a great time in the server as well.
 
-- 1d6Chan Wiki: [Chapter Master: Adeptus Dominus](https://1d6chan.miraheze.org/wiki/Chapter_Master:_Adeptus_Dominus)
+1d6Chan Wiki: [Chapter Master: Adeptus Dominus](https://1d6chan.miraheze.org/wiki/Chapter_Master:_Adeptus_Dominus)
   - With some helpful pages that explain some of the new systems added in the Adeptus Dominus version.
   - Help with expanding it will be welcomed.
 
-- Don't forget about the [GitHub Wiki (WIP)](https://github.com/Adeptus-Dominus/ChapterMaster/wiki)
-  - Help with expanding this one will be welcomed as well.
-
-- Main repository: [Adeptus-Dominus/ChapterMaster](https://github.com/Adeptus-Dominus/ChapterMaster)
+Main repository: [Adeptus-Dominus/ChapterMaster](https://github.com/Adeptus-Dominus/ChapterMaster)
 
 ## Playing
 
 ### Windows
 
-Just download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/releases/latest) or a [development pre-release](https://github.com/Adeptus-Dominus/ChapterMaster/releases), unzip it and launch the .exe.
+Download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/releases/latest) or a [development pre-release](https://github.com/Adeptus-Dominus/ChapterMaster/releases), unzip it and launch the .exe.
 
 ### Linux
 
-Pre-compiled Linux binaries are not currently supported. However, you can run the game on Linux in two ways:
+Pre-compiled Linux binaries are not currently supported. However, you can run the game on Linux by downloading the Windows release `.exe` and running it using **WINE** (or **Proton** / **Steam Play**). This has been reported to work well. Alternatively, you can compile from source.
 
-#### Option 1: Run the Windows build via WINE (Recommended for players)
+### macOS
 
-You can download the Windows release `.exe` and run it using **WINE** (or **Proton** / **Steam Play**). This has been reported to work well.
+Same as with Linux.
 
-#### Option 2: Run from source using GameMaker for Linux (Recommended for developers)
+## Compiling from source
 
-1. Clone the repository.
-2. Install the **GameMaker** IDE for Linux (available on Steam or the GameMaker website).
-3. Open the `ChapterMaster.yyp` project file in GameMaker.
-4. Select **Linux** as the target platform in the IDE.
-5. Press **Run** (F5) to play/debug the game.
-
-## Compiling
-
-See [Compiling](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Compiling) wiki page or the [GameMaker tutorial](https://help.gamemaker.io/hc/en-us/articles/235186048-Setting-Up-For-Windows).
-
-Creating packages (i.e., creating an .exe with the game) and exporting them is allowed by YoYo Games for non-commercial use.\
-Everything else **must** be covered by [paid **GameMaker** subscriptions](https://gamemaker.io/en/get).
+1. Install the **GameMaker** IDE matching your system (available on the [GameMaker website](https://releases.gamemaker.io/release-notes/2026/0) or [Steam](https://store.steampowered.com/app/1670460/GameMaker/)).
+2. Clone or download the repository (find the green **<>Code** button and select **Download ZIP**).
+3. Find **ChapterMaster.yyp** in the downloaded folder and open it with **GameMaker**.
+4. Select the target platform in the IDE: **Windows, macOS, Ubuntu**.
+5. Select the output: **GMS2 VM** (no requirments; fast to compile; worse performance) or **GMS2 YYC** (requires a dedicated compiler; slow to compile; better performance).
+5. Press **Run** (F5) to play the game or **Debug** (F6) to use debugger features.
 
 ## Contributing
 
