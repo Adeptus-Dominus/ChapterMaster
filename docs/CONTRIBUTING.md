@@ -1,16 +1,17 @@
-## Introduction
-TODO.
+# Contributing
+
+WIP.
 
 ## GameMaker vs VSCode+Stitch
 
-There are generally two main ways of working with a **GameMaker** project: through **Visual Studio Code** or through **GameMaker**.
+There are generally two main ways of working with a **GameMaker** project: through **Visual Studio Code** or through **GameMaker IDE**.
 
-- Working through **GameMaker** may prove to be a pure torture, as their IDE is very bad and the app itself generally has very bad performance, as such generally is not recommended if you plan on working with the code. Only use if you have to.
+- Working with the code through **GameMaker IDE** is not recommended for people used to normal IDEs. Use if you have to or like it.
 - The preferred alternative is to use [Visual Studio Code](https://code.visualstudio.com/) with the [Stitch](https://github.com/bscotch/stitch) extension, that is available via the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=bscotch.bscotch-stitch-vscode).
 - You can also use any other IDE to work with the code, but you'll have to use one of the above apps to build, as no other building method is available at the moment.
 - Other IDEs have no extended support for **GML** and as such typically are not recommended, unless you know what you're doing.
 
-Nonetheless, some things will have to be done through **GameMaker**, even if you use other IDEs, including VSCode, such as:
+Nonetheless, some things will have to be done through **GameMaker IDE**, even if you use other IDEs, including VSCode, such as:
 
 - Most of the sprite management.
 - Debugging with breakpoints, function steps and real-time debugging.
@@ -20,7 +21,8 @@ Nonetheless, some things will have to be done through **GameMaker**, even if you
 Here we'll only look at the VSCode. If you're interested in using the GameMaker IDE instead, see [this](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Compiling) and just skip the 1st step in that instruction.
 
 ## Preparations
-1. Learn what is Git, source control, GitHub and how to use them. There is no way around it.
+
+1. Learn what Git, source control, and GitHub are, how to use them. There is no way around it.
    - If you are new to Git, then it's recommended to read the [Pro Git](https://git-scm.com/book/en/v2) book. You only need to read the first 3 chapters to comfortably work with Git, optionally chapter 6 to get more info on GitHub.
    - If you prefer a more comfortable, graphical user interface based approach to Git, instead of command line, then it's recommended to use one of the options below, both are free and popular:
      - [GitKraken](https://www.gitkraken.com/) + [Tutorials](https://www.gitkraken.com/learn/git/tutorials)
@@ -29,6 +31,7 @@ Here we'll only look at the VSCode. If you're interested in using the GameMaker 
 3. Clone your fork locally through Git CLI or any other GUI wrapper you've chosen.
 
 ## Setting up the Visual Studio Code
+
 1. Get the Visual Studio Code (VSCode) installed, if not already.
    - (Optional) It's recommended to get the Insider version, as it's the most frequently updated one and gets all new features first.
    - (Optional) Get a hang of VSCode by reading some guides on the internet, installing some useful QoL extensions, configuring various settings, etc.
@@ -41,6 +44,7 @@ Here we'll only look at the VSCode. If you're interested in using the GameMaker 
 5. Ensure that the game launches and works, exit.
 
 ## Working with the code
+
 - Read the code, modify it, test, repeat.
 - Check some general [GML hints](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/General-GML-hints-from-@sinthorion).
 - Get accustomed to some [basic styling guidelines](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CODE_STYLE.md).
