@@ -34,7 +34,6 @@ function PlanetData(planet, system) constructor {
         is_hulk = system.space_hulk;
         x = system.x;
         y = system.y;
-        player_disposition = system.dispo[planet];
         planet_type = system.p_type[planet];
         operatives = system.p_operatives[planet];
         pdf = system.p_pdf[planet];
@@ -78,10 +77,6 @@ function PlanetData(planet, system) constructor {
 
         heretic_timer = system.p_hurssy_time[planet];
 
-        secret_corruption = system.p_heresy_secret[planet];
-
-        corruption = system.p_heresy[planet];
-
         population_influences = system.p_influence[planet];
 
         raided_this_turn = system.p_raided[planet];
@@ -105,9 +100,10 @@ function PlanetData(planet, system) constructor {
             system.dispo[planet] = 100;
         }
 
-        garrisons = system.system_garrison[planet];
-        sabatours = system.system_sabatours[planet];
-        system.system_datas[planet] = self;
+        player_disposition = system.dispo[planet];
+
+        garrisons = get_garrison(planet, system);
+        sabatours = get_sabatours(planet, system);
 
         // current planet heresy
         if (population == 0) {
@@ -117,6 +113,10 @@ function PlanetData(planet, system) constructor {
                 system.p_influence[planet][i] = 0;
             }
         }
+
+        secret_corruption = system.p_heresy_secret[planet];
+
+        corruption = system.p_heresy[planet];
     }
 
     refresh_data();
@@ -253,8 +253,10 @@ function PlanetData(planet, system) constructor {
         guardsmen = system.p_guardsmen[planet];
     };
 
-    pdf = system.p_pdf[planet];
-    fortification_level = system.p_fortified[planet];
+    static edit_pdf = function(edit_val){
+        system.p_pdf[planet] = max(0, system.p_pdf[planet] + edit_val);
+        pdf = system.p_pdf[planet]
+    }
 
     static alter_fortification = function(alteration) {
         system.p_fortified[planet] += alteration;
@@ -264,11 +266,8 @@ function PlanetData(planet, system) constructor {
     static recruit_pdf = function(percentage_pop) {
         var new_pdf = population * (percentage_pop / 100);
         edit_population(new_pdf * -1);
-        if (large_population) {
-            new_pdf *= large_pop_conversion;
-        }
-        pdf += new_pdf;
-        system.p_pdf[planet] = pdf;
+        new_pdf = population_as_small(new_pdf);
+        edit_pdf(new_pdf)
         return new_pdf;
     };
 
