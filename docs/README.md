@@ -48,7 +48,7 @@ Same as with Linux.
 3. Find **ChapterMaster.yyp** in the downloaded folder and open it with **GameMaker**.
 4. Select the target platform in the IDE: **Windows, macOS, Ubuntu**.
 5. Select the output: **GMS2 VM** (no requirements; fast to compile; worse performance) or **GMS2 YYC** (requires a dedicated compiler; slow to compile; better performance).
-5. Press **Run** (F5) to play the game or **Debug** (F6) to use debugger features.
+6. Press **Run** (F5) to play the game or **Debug** (F6) to use debugger features.
 
 ## Contributing
 
