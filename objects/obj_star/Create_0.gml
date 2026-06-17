@@ -85,7 +85,16 @@ get_garrison = function(planet){
         _gar.star = self;
         _gar.planet = planet;
     } else  {
-        _gar.update();
+        try {
+            _gar.update();
+        } catch (_garrison_reload_error) {
+            // A garrison restored from a save keeps its data but loses its struct
+            // methods, so rebuild it from the planet's operatives, which persist.
+            system_garrison[planet] = new GarrisonForce(self, planet);
+            _gar = system_garrison[planet];
+            _gar.star = self;
+            _gar.planet = planet;
+        }
     }
     return _gar;
 }
@@ -98,7 +107,14 @@ get_sabatours = function(planet){
         _gar.star = self;
         _gar.planet = planet;
     } else  {
-        _gar.update();
+        try {
+            _gar.update();
+        } catch (_sabotage_reload_error) {
+            system_sabatours[planet] = new GarrisonForce(self, planet, "sabotage");
+            _gar = system_sabatours[planet];
+            _gar.star = self;
+            _gar.planet = planet;
+        }
     }
     return _gar;
 }
@@ -109,7 +125,12 @@ get_planet_data = function(planet){
         system_datas[planet] = new PlanetData(planet, self);
         _gar = system_datas[planet];
     } else  {
-        _gar.refresh_data();
+        try {
+            _gar.refresh_data();
+        } catch (_planetdata_reload_error) {
+            system_datas[planet] = new PlanetData(planet, self);
+            _gar = system_datas[planet];
+        }
     }
     return _gar;    
 }

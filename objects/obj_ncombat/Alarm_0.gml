@@ -3164,18 +3164,34 @@ try {
         player_guard = battle_object.p_guardsmen[battle_id];
     }
     if (player_guard > 0) {
-        // Place the Guard in the front column, matching the rightmost existing
-        // block. Stepping ahead of the line breaks the advance on an attack (they
-        // march out past the engagement), so they sit in the line and move with it.
-        var _frontx = -50;
+        // Place the Guard as the front rank in both attack and defence. They must be
+        // the leading block, never a rear one: the player advance (move_unit_block
+        // "east") refuses to move a block when another block sits directly ahead of it,
+        // so Guard placed behind the Marines on attack can never step forward, and the
+        // Marines simply advance off and leave them standing at the rear (the Marines
+        // "pass them by"). As the front rank the Guard have open ground ahead, so they
+        // lead the charge on attack and hold the line on defence, and either way they
+        // reach the enemy and fight. Front rank is just east of the Marines and still
+        // west of the enemy spawn (rightmost block + 10).
+        var _maxx = -50;
+        var _minx = 1000000;
         with (obj_pnunit) {
-            if (x > _frontx) _frontx = x;
+            if (x > _maxx) _maxx = x;
+            if (x < _minx) _minx = x;
+        }
+        var _frontx;
+        if (_maxx < 0) {
+            _frontx = 100;   // no other player blocks: stand-alone Guard force
+        } else {
+            _frontx = _maxx + 5;   // front rank, attack and defence alike
         }
         u = instance_create(_frontx, 240, obj_pnunit);
         u.guard = 1;
 
-        // The mass of Guardsmen are men, so they render and take losses per man,
-        // the same way the enemy Guard do.
+        // Guardsmen line: pure infantry, no tanks, the way the enemy Imperial Guard
+        // keep their soldier lines tank-free. They render and take losses per man like
+        // the enemy Guard. They have no anti-tank weapon, so against armour they can
+        // only bleed and die unless a Leman Russ line is present.
         u.men = player_guard;
         u.dudes[1] = "Imperial Guardsman";
         u.dudes_num[1] = player_guard;
@@ -3183,37 +3199,43 @@ try {
         u.dudes_hp[1] = 5;
         u.dudes_vehicle[1] = 0;
 
-        // Leman Russ armour for a large garrison: real vehicles, like the enemy's.
+        // Keep the default obj_pnunit sprite (do not blank it): the block needs its
+        // collision mask, or the enemy advance walks straight through the Guard.
+
+        // Count the infantry toward player forces. The normal accumulation only runs
+        // during setup and this block spawns too late for it; obj_pnunit's Alarm_3
+        // skips its auto-add for guard blocks so this is not double counted.
+        player_forces += u.men;
+        player_max += u.men;
+
+        // Leman Russ tanks form their own separate block (guard == 2), placed just
+        // behind the infantry line so the Guardsmen screen them. Tanks are the only
+        // anti-armour the Guard field, kept out of the soldier line like the enemy's.
         var _tanks = min(30, round(player_guard / 5000));
         if (_tanks > 0) {
+            var _tankx = max(5, _frontx - 10);
+            var t = instance_create(_tankx, 240, obj_pnunit);
+            t.guard = 2;
+            t.men = 0;
             for (var i = 1; i <= _tanks; i++) {
-                u.veh_co[i] = 0;
-                u.veh_id[i] = 0;
-                u.veh_type[i] = "Leman Russ Battle Tank";
-                u.veh_hp[i] = 250;
-                u.veh_ac[i] = 40;
-                u.veh_dead[i] = 0;
-                u.veh_hp_multiplier[i] = 1;
-                u.veh_wep1[i] = "Battle Cannon";
+                t.veh_co[i] = 0;
+                t.veh_id[i] = 0;
+                t.veh_type[i] = "Leman Russ Battle Tank";
+                t.veh_hp[i] = 250;
+                t.veh_ac[i] = 40;
+                t.veh_dead[i] = 0;
+                t.veh_hp_multiplier[i] = 1;
+                t.veh_wep1[i] = "Battle Cannon";
             }
-            u.veh = _tanks;
-            u.dudes[2] = "Leman Russ Battle Tank";
-            u.dudes_num[2] = _tanks;
-            u.dudes_ac[2] = 40;
-            u.dudes_hp[2] = 250;
-            u.dudes_vehicle[2] = 1;
+            t.veh = _tanks;
+            t.dudes[1] = "Leman Russ Battle Tank";
+            t.dudes_num[1] = _tanks;
+            t.dudes_ac[1] = 40;
+            t.dudes_hp[1] = 250;
+            t.dudes_vehicle[1] = 1;
+            player_forces += t.veh;
+            player_max += t.veh;
         }
-        // Keep the default obj_pnunit sprite (do not blank it): the block needs its
-        // collision mask, or the enemy advance walks straight through the Guard
-        // without stopping to fight, which is what sent the enemy off the screen.
-
-        // Count the Guard toward the battle's player forces. The normal accumulation
-        // only runs during setup and this block spawns too late for it, so the win/
-        // loss check never saw them and the battle ended when the Marines died. Add
-        // them here; obj_pnunit's Alarm_3 skips its auto-add for guard blocks so this
-        // is not double counted.
-        player_forces += u.men + u.veh;
-        player_max += u.men + u.veh;
     }
 
     instance_activate_object(obj_enunit);

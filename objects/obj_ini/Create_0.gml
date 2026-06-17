@@ -273,7 +273,7 @@ deserialize = function(save_data) {
     var all_names = struct_get_names(save_data);
 
     if (!array_contains(all_names, "chapter_squad_arrangement")) {
-        obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main\\squads\\company_squad_builds.json", json_parse);
+        obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/company_squad_builds.json", json_parse);
     }
 
     var _len = array_length(all_names);

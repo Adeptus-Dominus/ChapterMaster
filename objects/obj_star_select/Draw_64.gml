@@ -260,15 +260,13 @@ try {
                     exit;
                 }
             }
-        } else if (garrison != "" && !population) {
+        } else if (garrison != "" && !population && garrison.planet == obj_controller.selecting_planet) {
             if (garrison.garrison_force) {
                 draw_set_font(fnt_40k_14);
-                if (!garrison.garrison_leader) {
-                    garrison.find_leader();
-                    garrison.garrison_disposition_change(true);
-                    garrison_data_slate.sub_title = $"Garrison Leader {garrison.garrison_leader.name_role()}";
-                    garrison_data_slate.body_text = garrison.garrison_report();
-                }
+
+                garrison_data_slate.sub_title = $"Garrison Leader {garrison.garrison_leader.name_role()}";
+                garrison_data_slate.body_text = garrison.garrison_report();
+
                 garrison_data_slate.inside_method = function() {
                     garrison_data_slate.title = "Garrison Report";
                     draw_set_color(c_gray);
@@ -284,15 +282,15 @@ try {
                     if (scr_hit(xx + 20, half_way + 10, xx + 20 + string_width(defence_string), half_way + 10 + 20)) {
                         tooltip_draw(defence_data[1], 400);
                     }
-                    if (garrison.dispo_change != "none") {
-                        if (garrison.dispo_change > 55) {
-                            draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Positive");
-                        } else if (garrison.dispo_change > 44) {
-                            draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Neutral");
-                        } else {
-                            draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Negative");
-                        }
+
+                    if (garrison.dispo_change > 55) {
+                        draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Positive");
+                    } else if (garrison.dispo_change > 44 || garrison.dispo_change == 0) {
+                        draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Neutral");
+                    } else {
+                        draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Negative");
                     }
+
                 };
                 garrison_data_slate.draw(340 + main_data_slate.width, 160, 0.6, 0.6);
             }

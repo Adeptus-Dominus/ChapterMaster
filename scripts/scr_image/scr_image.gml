@@ -484,23 +484,23 @@ function scr_image(path, image_id, x1, y1, width, height) {
             }
 
             if (single_image == true) {
-                if ((path == "creation") && file_exists(working_directory + "\\images\\creation\\creation_icons.png")) {
-                    creation[1] = sprite_add(working_directory + "\\images\\creation\\creation_icons.png", 24, false, false, 0, 0);
+                if ((path == "creation") && file_exists(working_directory + "/images/creation/creation_icons.png")) {
+                    creation[1] = sprite_add(working_directory + "/images/creation/creation_icons.png", 24, false, false, 0, 0);
                     creation_exists[1] = true;
                     creation_good = true;
                 }
-                if ((path == "diplomacy_icon") && file_exists(working_directory + "\\images\\diplomacy\\diplomacy_icons.png")) {
-                    diplomacy_icon[1] = sprite_add(working_directory + "\\images\\diplomacy\\diplomacy_icons.png", 28, false, false, 0, 0);
+                if ((path == "diplomacy_icon") && file_exists(working_directory + "/images/diplomacy/diplomacy_icons.png")) {
+                    diplomacy_icon[1] = sprite_add(working_directory + "/images/diplomacy/diplomacy_icons.png", 28, false, false, 0, 0);
                     diplomacy_icon_exists[1] = true;
                     diplomacy_icon_good = true;
                 }
-                if ((path == "menu") && file_exists(working_directory + "\\images\\ui\\ingame_menu.png")) {
-                    menu[1] = sprite_add(working_directory + "\\images\\ui\\ingame_menu.png", 2, false, false, 0, 0);
+                if ((path == "menu") && file_exists(working_directory + "/images/ui/ingame_menu.png")) {
+                    menu[1] = sprite_add(working_directory + "/images/ui/ingame_menu.png", 2, false, false, 0, 0);
                     menu_exists[1] = true;
                     menu_good = true;
                 }
-                if ((path == "title_splash") && file_exists(working_directory + "\\images\\title_splash.png")) {
-                    title_splash[1] = sprite_add(working_directory + "\\images\\title_splash.png", 1, false, false, 0, 0);
+                if ((path == "title_splash") && file_exists(working_directory + "/images/title_splash.png")) {
+                    title_splash[1] = sprite_add(working_directory + "/images/title_splash.png", 1, false, false, 0, 0);
                     title_splash_exists[1] = true;
                     title_splash_good = true;
                 }
@@ -514,8 +514,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                 repeat (40) {
                     i += 1;
                     if (path == "main_splash") {
-                        if (file_exists(working_directory + "\\images\\creation\\main" + string(i) + ".png")) {
-                            main[i - 1] = sprite_add(working_directory + "\\images\\creation\\main" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/creation/main" + string(i) + ".png")) {
+                            main[i - 1] = sprite_add(working_directory + "/images/creation/main" + string(i) + ".png", 1, false, false, 0, 0);
                             main_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -524,8 +524,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                         }
                     }
                     if (path == "existing_splash") {
-                        if (file_exists(working_directory + "\\images\\creation\\existing" + string(i) + ".png")) {
-                            existing[i - 1] = sprite_add(working_directory + "\\images\\creation\\existing" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/creation/existing" + string(i) + ".png")) {
+                            existing[i - 1] = sprite_add(working_directory + "/images/creation/existing" + string(i) + ".png", 1, false, false, 0, 0);
                             existing_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -534,8 +534,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                         }
                     }
                     if (path == "other_splash") {
-                        if (file_exists(working_directory + "\\images\\creation\\other" + string(i) + ".png")) {
-                            others[i - 1] = sprite_add(working_directory + "\\images\\creation\\other" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/creation/other" + string(i) + ".png")) {
+                            others[i - 1] = sprite_add(working_directory + "/images/creation/other" + string(i) + ".png", 1, false, false, 0, 0);
                             others_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -545,8 +545,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "advisor") {
-                        if (file_exists(working_directory + "\\images\\diplomacy\\advisor" + string(i) + ".png")) {
-                            advisor[i - 1] = sprite_add(working_directory + "\\images\\diplomacy\\advisor" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/diplomacy/advisor" + string(i) + ".png")) {
+                            advisor[i - 1] = sprite_add(working_directory + "/images/diplomacy/advisor" + string(i) + ".png", 1, false, false, 0, 0);
                             advisor_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -556,8 +556,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "diplomacy_splash") {
-                        if (file_exists(working_directory + "\\images\\diplomacy\\diplomacy" + string(i) + ".png")) {
-                            diplomacy_splash[i - 1] = sprite_add(working_directory + "\\images\\diplomacy\\diplomacy" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/diplomacy/diplomacy" + string(i) + ".png")) {
+                            diplomacy_splash[i - 1] = sprite_add(working_directory + "/images/diplomacy/diplomacy" + string(i) + ".png", 1, false, false, 0, 0);
                             diplomacy_splash_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -567,8 +567,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "diplomacy_daemon") {
-                        if (file_exists(working_directory + "\\images\\diplomacy\\daemon" + string(i) + ".png")) {
-                            diplomacy_daemon[i - 1] = sprite_add(working_directory + "\\images\\diplomacy\\daemon" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/diplomacy/daemon" + string(i) + ".png")) {
+                            diplomacy_daemon[i - 1] = sprite_add(working_directory + "/images/diplomacy/daemon" + string(i) + ".png", 1, false, false, 0, 0);
                             diplomacy_daemon_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -578,8 +578,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
                     // loading screen error arg
                     if (path == "loading") {
-                        if (file_exists(working_directory + "\\images\\loading\\loading" + string(i) + ".png")) {
-                            loading[i - 1] = sprite_add(working_directory + "\\images\\loading\\loading" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/loading/loading" + string(i) + ".png")) {
+                            loading[i - 1] = sprite_add(working_directory + "/images/loading/loading" + string(i) + ".png", 1, false, false, 0, 0);
                             loading_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -589,8 +589,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "postbattle") {
-                        if (file_exists(working_directory + "\\images\\ui\\postbattle" + string(i) + ".png")) {
-                            postbattle[i - 1] = sprite_add(working_directory + "\\images\\ui\\postbattle" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/ui/postbattle" + string(i) + ".png")) {
+                            postbattle[i - 1] = sprite_add(working_directory + "/images/ui/postbattle" + string(i) + ".png", 1, false, false, 0, 0);
                             postbattle_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -600,8 +600,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "postspace") {
-                        if (file_exists(working_directory + "\\images\\ui\\postspace" + string(i) + ".png")) {
-                            postspace[i - 1] = sprite_add(working_directory + "\\images\\ui\\postspace" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/ui/postspace" + string(i) + ".png")) {
+                            postspace[i - 1] = sprite_add(working_directory + "/images/ui/postspace" + string(i) + ".png", 1, false, false, 0, 0);
                             postspace_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -611,8 +611,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "formation") {
-                        if (file_exists(working_directory + "\\images\\ui\\formation" + string(i) + ".png")) {
-                            formation[i - 1] = sprite_add(working_directory + "\\images\\ui\\formation" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/ui/formation" + string(i) + ".png")) {
+                            formation[i - 1] = sprite_add(working_directory + "/images/ui/formation" + string(i) + ".png", 1, false, false, 0, 0);
                             formation_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -622,8 +622,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "popup") {
-                        if (file_exists(working_directory + "\\images\\popup\\popup" + string(i) + ".png")) {
-                            popup[i - 1] = sprite_add(working_directory + "\\images\\popup\\popup" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/popup/popup" + string(i) + ".png")) {
+                            popup[i - 1] = sprite_add(working_directory + "/images/popup/popup" + string(i) + ".png", 1, false, false, 0, 0);
                             popup_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -633,8 +633,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "commander") {
-                        if (file_exists(working_directory + "\\images\\ui\\commander" + string(i) + ".png")) {
-                            commander[i - 1] = sprite_add(working_directory + "\\images\\ui\\commander" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/ui/commander" + string(i) + ".png")) {
+                            commander[i - 1] = sprite_add(working_directory + "/images/ui/commander" + string(i) + ".png", 1, false, false, 0, 0);
                             commander_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -644,8 +644,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "planet") {
-                        if (file_exists(working_directory + "\\images\\ui\\planet" + string(i) + ".png")) {
-                            planet[i - 1] = sprite_add(working_directory + "\\images\\ui\\planet" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/ui/planet" + string(i) + ".png")) {
+                            planet[i - 1] = sprite_add(working_directory + "/images/ui/planet" + string(i) + ".png", 1, false, false, 0, 0);
                             planet_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -655,8 +655,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "attacked") {
-                        if (file_exists(working_directory + "\\images\\ui\\attacked" + string(i) + ".png")) {
-                            attacked[i - 1] = sprite_add(working_directory + "\\images\\ui\\attacked" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/ui/attacked" + string(i) + ".png")) {
+                            attacked[i - 1] = sprite_add(working_directory + "/images/ui/attacked" + string(i) + ".png", 1, false, false, 0, 0);
                             attacked_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -666,8 +666,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "force") {
-                        if (file_exists(working_directory + "\\images\\ui\\force" + string(i) + ".png")) {
-                            force[i - 1] = sprite_add(working_directory + "\\images\\ui\\force" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/ui/force" + string(i) + ".png")) {
+                            force[i - 1] = sprite_add(working_directory + "/images/ui/force" + string(i) + ".png", 1, false, false, 0, 0);
                             force_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -677,8 +677,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "purge") {
-                        if (file_exists(working_directory + "\\images\\ui\\purge" + string(i) + ".png")) {
-                            purge[i - 1] = sprite_add(working_directory + "\\images\\ui\\purge" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/ui/purge" + string(i) + ".png")) {
+                            purge[i - 1] = sprite_add(working_directory + "/images/ui/purge" + string(i) + ".png", 1, false, false, 0, 0);
                             purge_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -688,8 +688,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "event") {
-                        if (file_exists(working_directory + "\\images\\ui\\event" + string(i) + ".png")) {
-                            event[i - 1] = sprite_add(working_directory + "\\images\\ui\\event" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/ui/event" + string(i) + ".png")) {
+                            event[i - 1] = sprite_add(working_directory + "/images/ui/event" + string(i) + ".png", 1, false, false, 0, 0);
                             event_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -699,8 +699,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "symbol") {
-                        if (file_exists(working_directory + "\\images\\diplomacy\\symbol" + string(i) + ".png")) {
-                            symbol[i - 1] = sprite_add(working_directory + "\\images\\diplomacy\\symbol" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/diplomacy/symbol" + string(i) + ".png")) {
+                            symbol[i - 1] = sprite_add(working_directory + "/images/diplomacy/symbol" + string(i) + ".png", 1, false, false, 0, 0);
                             symbol_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -710,8 +710,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "defeat") {
-                        if (file_exists(working_directory + "\\images\\ui\\defeat" + string(i) + ".png")) {
-                            defeat[i - 1] = sprite_add(working_directory + "\\images\\ui\\defeat" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/ui/defeat" + string(i) + ".png")) {
+                            defeat[i - 1] = sprite_add(working_directory + "/images/ui/defeat" + string(i) + ".png", 1, false, false, 0, 0);
                             defeat_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -721,8 +721,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
                     }
 
                     if (path == "slate") {
-                        if (file_exists(working_directory + "\\images\\creation\\slate" + string(i) + ".png")) {
-                            slate[i - 1] = sprite_add(working_directory + "\\images\\creation\\slate" + string(i) + ".png", 1, false, false, 0, 0);
+                        if (file_exists(working_directory + "/images/creation/slate" + string(i) + ".png")) {
+                            slate[i - 1] = sprite_add(working_directory + "/images/creation/slate" + string(i) + ".png", 1, false, false, 0, 0);
                             slate_exists[i - 1] = 1;
                             w += 1;
                         }
@@ -953,12 +953,12 @@ function scr_image_cache(path, image_id, use_app_data = false) {
         if (sprite_exists(existing_sprite)) {
             drawing_sprite = existing_sprite;
         } else if (image_id > -1) {
-            var folders = string_replace_all(path, "/", "\\");
+            var folders = string_replace_all(path, "\\", "/");
             var dir;
             if (use_app_data) {
                 dir = $"{folders}{string(image_id)}.png";
             } else {
-                dir = $"{working_directory}\\images\\{folders}\\{string(image_id)}.png";
+                dir = $"{working_directory}/images/{folders}/{string(image_id)}.png";
             }
             if (file_exists(dir)) {
                 drawing_sprite = sprite_add(dir, 1, false, false, 0, 0);

@@ -54,7 +54,7 @@ function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
         // Lazy-load JSON from disk once
         if (_loot_registry == undefined) {
             _loot_registry = {};
-            var _path = working_directory + "\\data\\ruins_loot.json";
+            var _path = working_directory + "/data/ruins_loot.json";
             var _raw_json = json_to_gamemaker(_path, json_parse);
 
             var _keys = struct_get_names(_raw_json);

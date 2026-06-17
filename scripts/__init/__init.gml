@@ -1,11 +1,12 @@
-#macro PATH_SAVE_FILES "Save Files\\save{0}.json"
-#macro PATH_AUTOSAVE_FILE "Save Files\\save0.json"
-#macro PATH_CUSTOM_ICONS "Custom Files\\Custom Icons\\"
-#macro PATH_CHAPTER_ICONS working_directory + "\\images\\creation\\chapters\\icons\\"
-#macro PATH_INCLUDED_ICONS working_directory + "\\images\\creation\\customicons\\"
+#macro PATH_SAVE_FILES "Save Files/save{0}.json"
+#macro PATH_AUTOSAVE_FILE "Save Files/save0.json"
+#macro PATH_CUSTOM_ICONS "Custom Files/Custom Icons/"
+#macro PATH_CHAPTER_ICONS working_directory + "/images/creation/chapters/icons/"
+#macro PATH_INCLUDED_ICONS working_directory + "/images/creation/customicons/"
 #macro PATH_LOG_DIRECTORY "Logs/"
 #macro LAST_MESSAGES_LOG "last_messages.log"
 #macro PATH_LAST_MESSAGES PATH_LOG_DIRECTORY + LAST_MESSAGES_LOG
+#macro PATH_HELP_INI "main/help.ini"
 
 /// @desc Called via gml_pragma("global") at startup, before any room.
 function __init() {
@@ -33,8 +34,8 @@ function __init() {
     if (!directory_exists("Logs")) {
         directory_create("Logs");
     }
-    if (!directory_exists("Custom Files\\Custom Icons")) {
-        directory_create("Custom Files\\Custom Icons");
+    if (!directory_exists("Custom Files/Custom Icons")) {
+        directory_create("Custom Files/Custom Icons");
     }
     if (!directory_exists("Save Files")) {
         directory_create("Save Files");
@@ -82,7 +83,7 @@ function __init() {
     global.game_version = "unknown version";
     global.commit_hash = "unknown hash";
 
-    var _version_file_path = working_directory + "\\main\\version.json";
+    var _version_file_path = working_directory + "/main/version.json";
     var _parsed_json = json_to_gamemaker(_version_file_path, json_parse);
 
     if (_parsed_json != undefined) {
@@ -112,18 +113,18 @@ function __init() {
         global.update_checker.compiled = true;
     }
 
-    global.weapons = json_to_gamemaker(working_directory + "\\data\\weapons.json", json_parse);
+    global.weapons = json_to_gamemaker(working_directory + "/data/weapons.json", json_parse);
     global.gear = {
-        "armour": json_to_gamemaker(working_directory + "\\data\\armour.json", json_parse),
-        "gear": json_to_gamemaker(working_directory + "\\data\\gear.json", json_parse),
-        "mobility": json_to_gamemaker(working_directory + "\\data\\mobility.json", json_parse),
+        "armour": json_to_gamemaker(working_directory + "/data/armour.json", json_parse),
+        "gear": json_to_gamemaker(working_directory + "/data/gear.json", json_parse),
+        "mobility": json_to_gamemaker(working_directory + "/data/mobility.json", json_parse),
     };
-    global.vehicles = json_to_gamemaker(working_directory + "\\data\\vehicles.json", json_parse);
-    global.vehicle_gear = json_to_gamemaker(working_directory + "\\data\\vehicle_gear.json", json_parse);
-    global.ships = json_to_gamemaker(working_directory + "\\data\\ships.json", json_parse);
-    global.technologies = json_to_gamemaker(working_directory + "\\data\\technologies.json", json_parse);
+    global.vehicles = json_to_gamemaker(working_directory + "/data/vehicles.json", json_parse);
+    global.vehicle_gear = json_to_gamemaker(working_directory + "/data/vehicle_gear.json", json_parse);
+    global.ships = json_to_gamemaker(working_directory + "/data/ships.json", json_parse);
+    global.technologies = json_to_gamemaker(working_directory + "/data/technologies.json", json_parse);
 
-    global.base_stats = json_to_gamemaker(working_directory + "\\data\\unit_stats.json", json_parse);
+    global.base_stats = json_to_gamemaker(working_directory + "/data/unit_stats.json", json_parse);
 
     layer_force_draw_depth(true, 0); // force all layers to draw at depth 0
     draw_set_colour(c_black);

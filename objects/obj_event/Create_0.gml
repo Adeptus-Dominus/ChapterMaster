@@ -14,10 +14,7 @@ closing = false;
 
 attendants = 0;
 avatars = 0;
-var i;
-i = -1;
-repeat (2501) {
-    i += 1;
+for (var i = 0; i <= 2500; i++) {
     attend_co[i] = 0;
     attend_id[i] = 0;
     attend_mood[i] = "";
@@ -64,23 +61,13 @@ scr_colors_initialize();
 scr_shader_initialize();
 
 if (obj_controller.fest_display > 0) {
-    var q, yep;
-    q = 0;
-    yep = 0;
     if (obj_ini.artifact_tags[obj_controller.fest_display] != obj_controller.fest_display_tags) {
-        repeat (20) {
-            q += 1;
-            if (yep == 0) {
-                if (obj_ini.artifact_tags[q] == obj_controller.fest_display_tags) {
-                    yep = q;
-                }
+        obj_controller.fest_display = 0;
+        for (var q = 1; q <= 20; q++) {
+            if (obj_ini.artifact_tags[q] == obj_controller.fest_display_tags) {
+                obj_controller.fest_display = q;
+                break;
             }
-        }
-        if (yep > 0) {
-            obj_controller.fest_display = q;
-        }
-        if (yep == 0) {
-            obj_controller.fest_display = 0;
         }
     }
 }
