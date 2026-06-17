@@ -26,7 +26,7 @@ Here we'll only look at the VSCode. If you're interested in using the GameMaker 
      - [GitKraken](https://www.gitkraken.com/) + [Tutorials](https://www.gitkraken.com/learn/git/tutorials)
      - [SourceTree](https://www.sourcetreeapp.com/) + [Tutorials](https://confluence.atlassian.com/get-started-with-sourcetree)
 2. Fork the repository.
-3. Clone your fork locally through Git CL or any other GUI wrapper you've chosen.
+3. Clone your fork locally through Git CLI or any other GUI wrapper you've chosen.
 
 ## Setting up the Visual Studio Code
 1. Get the Visual Studio Code (VSCode) installed, if not already.
