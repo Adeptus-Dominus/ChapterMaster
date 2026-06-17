@@ -12,7 +12,7 @@ function load_visual_sets() {
             throw "use_sets.json File Wrong Format";
         }
         for (var i = 0; i < array_length(_raw_data); i++) {
-            var _sepcific_vis_set = $"{_vis_set_directory}\\{_raw_data[i]}";
+            var _sepcific_vis_set = $"{_vis_set_directory}/{_raw_data[i]}";
             // LOGGER.debug(_raw_data[i]);
             if (directory_exists(_sepcific_vis_set)) {
                 // LOGGER.debug(_raw_data[i]);
@@ -52,7 +52,7 @@ function load_symbol_sets(global_area, main_key, sub_sets) {
         }
         var _sprite_double_surface = surface_create(200, 200);
         for (var i = 0; i < array_length(_raw_data); i++) {
-            var _sepcific_vis_set = $"{_cons_directory}\\{_raw_data[i]}";
+            var _sepcific_vis_set = $"{_cons_directory}/{_raw_data[i]}";
             if (directory_exists(_sepcific_vis_set)) {
                 for (var s = 0; s < array_length(sub_sets); s++) {
                     var _sub = sub_sets[s];
