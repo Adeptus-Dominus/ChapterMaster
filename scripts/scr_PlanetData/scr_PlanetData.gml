@@ -253,6 +253,11 @@ function PlanetData(planet, system) constructor {
         guardsmen = system.p_guardsmen[planet];
     };
 
+    static edit_pdf = function(edit_val){
+        system.p_pdf[planet] = max(0, system.p_pdf[planet] + edit_val);
+        pdf = system.p_pdf[planet]
+    }
+    
     pdf = system.p_pdf[planet];
     fortification_level = system.p_fortified[planet];
 
