@@ -50,7 +50,7 @@ function alter_disposition(faction, alter_value, return_string = false) {
     obj_controller.disposition[faction] += alter_value;
 
     if (return_string){
-        return "{global.faction_names[faction]} : {string_plus_minus(alter_value)}{alter_value}";
+        return $"{global.faction_names[faction]} : {string_plus_minus(alter_value)}{alter_value}";
     }
 }
 
