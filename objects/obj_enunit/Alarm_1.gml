@@ -43,7 +43,7 @@ for (var j = 1; j <= 700; j++) {
         dudes_vehicle[j + 1] = 0;
         dudes_damage[j + 1] = 0;
         dudes_ranged[j + 1] = 1;
-        dudges_defense[j + 1] = 1;
+        dudes_defense[j + 1] = 1;
         dudes_attack[j + 1] = 1;
     }
 }
