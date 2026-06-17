@@ -211,6 +211,61 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
         }
     }
 
+    // Bulk man-block with no individual model structs (Guard auxilia): take losses
+    // straight off the men count, the way the enemy's ranks do, since there are no
+    // marine structs for the normal path to kill. Scoped to guard blocks only.
+    if (guard == 1 && array_length(valid_marines) == 0 && men > 0) {
+        // Identical to the enemy Guardsman casualty math in scr_shoot. Reduce each
+        // shot by armour, pool the survivable damage across all shots, convert it to
+        // dead men at dudes_hp each, and cap the kills at the shot count. With
+        // dudes_ac 40 the rank shrugs off low-AP fire (basic Choppaz, Shootas) the
+        // same way the enemy Guardsmen you fight do, and only armour-piercing weapons
+        // cut them down in numbers. Armour is what gives them their staying power, so
+        // there is no separate cohesion cap here.
+        var _g_ac = (array_length(dudes_ac) > 1) ? dudes_ac[1] : 40;
+        var _g_hp = (array_length(dudes_hp) > 1) ? dudes_hp[1] : 5;
+        if (_g_hp <= 0) {
+            _g_hp = 5;
+        }
+        var _g_after = _damage - (_g_ac * _armour_mod);
+        if (_g_after < 0) {
+            _g_after = 0;
+        }
+        var _g_pool = _shots * _g_after;
+        var _g_total = min(floor(_g_pool / _g_hp), _shots);
+        _g_total = min(_g_total, men);
+        if (_g_total < 0) {
+            _g_total = 0;
+        }
+        _damage_data.hits += _shots;
+        // Always name the block, even on a zero-casualty hit, or the enemy attack
+        // flavor prints "fire at ." with a blank target whenever armour soaks the shot.
+        _damage_data.unit_type = "Imperial Guardsman";
+        if (_g_total > 0) {
+            men -= _g_total;
+            if (array_length(dudes_num) > 1) {
+                dudes_num[1] = max(0, dudes_num[1] - _g_total);
+            }
+            // Report through the same lost/lost_num summary the marines use.
+            _damage_data.units_lost += _g_total;
+            _damage_data.unit_type = "Imperial Guardsman";
+            var _g_idx = -1;
+            for (var gk = 0, gl = array_length(lost); gk < gl; gk++) {
+                if (lost[gk] == "Imperial Guardsman") {
+                    _g_idx = gk;
+                    break;
+                }
+            }
+            if (_g_idx >= 0) {
+                lost_num[_g_idx] += _g_total;
+            } else {
+                array_push(lost, "Imperial Guardsman");
+                array_push(lost_num, _g_total);
+            }
+        }
+        return;
+    }
+
     // Apply damage for each shot
     for (var shot = 0; shot < _shots; shot++) {
         if (array_length(valid_marines) == 0) {

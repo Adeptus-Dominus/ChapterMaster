@@ -183,6 +183,9 @@ function scr_fleet_advisor() {
                     location.contents = obj_ini.ship_location[i];
                     hp.contents = $"{round(obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i] * 100)}%";
                     carrying.contents = $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}";
+                    if (obj_ini.ship_guardsmen[i] > 0) {
+                        carrying.contents += $" +{scr_display_number(obj_ini.ship_guardsmen[i])} IG";
+                    }
                 }
 
                 for (var g = 0; g < array_length(_columns_array); g++) {
@@ -234,7 +237,8 @@ function scr_fleet_advisor() {
                             cn.temp[119] = scr_ship_occupants(i);
                         }
                     }
-                    tooltip_draw($"Carrying ({cn.temp[118]}): {cn.temp[119]}");
+                    var _ig_line = (obj_ini.ship_guardsmen[i] > 0) ? $" | Imperial Guard embarked: {scr_display_number(obj_ini.ship_guardsmen[i])}" : "";
+                    tooltip_draw($"Carrying ({cn.temp[118]}): {cn.temp[119]}{_ig_line}");
                     if (_goto_button.click()) {
                         with (obj_p_fleet) {
                             var _fleet_ships = fleet_full_ship_array();

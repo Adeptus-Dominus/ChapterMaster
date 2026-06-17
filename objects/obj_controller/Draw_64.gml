@@ -248,7 +248,7 @@ function draw_line(x1, y1, y_slide, variable) {
             l_why = min(variable - 96, 11);
         }
 
-        draw_line(view_xview[0] + variable + x1, view_yview[0] + 10 + 1 + l_why, view_xview[0] + variable + x1, view_yview[0] + 10 + 37 - l_why);
+        draw_line(view_xport[0] + variable + x1, view_yport[0] + 11 + l_why, view_xport[0] + variable + x1, view_yport[0] + 47 - l_why);
     }
 }
 

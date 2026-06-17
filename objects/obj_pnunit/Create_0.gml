@@ -9,6 +9,7 @@ attacked_dudes = 0;
 dreads = 0;
 jetpack_destroy = 0;
 defenses = 0;
+guard = 0;
 
 unit_count = 0;
 unit_count_old = 0;

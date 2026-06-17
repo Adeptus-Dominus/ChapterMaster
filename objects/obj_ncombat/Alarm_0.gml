@@ -3154,47 +3154,66 @@ try {
         u.sprite_index = spr_weapon_blank;
     }
 
-    // ===== Friendly Imperial Guard / PDF on the player's side =====
-    // Mirrors the enemy "Imperial Guard Force" spawn, but as obj_pnunit (player side).
-    // Fires only on an ordinary DEFENSIVE planetary battle where you are not at War
-    // with the Imperium and the attacker is not the Guard themselves. The model
-    // counts are read from the planet's p_guardsmen / p_pdf pools, which the deploy
-    // patch fills. "Imperial Guardsman" and "Leman Russ Battle Tank" are existing
-    // battlefield profiles, so no new unit content is needed.
-    if ((defending == true) && (enemy != 2) && (battle_special == "") && (battle_object != 0)
-        && (obj_controller.faction_status[eFACTION.IMPERIUM] != "War")) {
+    // ** Set up friendly Imperial Guard auxilia **
+    // Bulk player force modelled on the defenses above. Reads the world's deployed
+    // garrison (p_guardsmen). It renders and is durable via veh blocks; its firepower
+    // is injected in scr_player_combat_weapon_stacks, scaled to player_guard. No roster
+    // coupling, so no per-model casualty writes.
+    player_guard = 0;
+    if ((battle_object != 0) && (battle_special == "")) {
+        player_guard = battle_object.p_guardsmen[battle_id];
+    }
+    if (player_guard > 0) {
+        // Place the Guard in the front column, matching the rightmost existing
+        // block. Stepping ahead of the line breaks the advance on an attack (they
+        // march out past the engagement), so they sit in the line and move with it.
+        var _frontx = -50;
+        with (obj_pnunit) {
+            if (x > _frontx) _frontx = x;
+        }
+        u = instance_create(_frontx, 240, obj_pnunit);
+        u.guard = 1;
 
-        var _gd  = battle_object.p_guardsmen[battle_id];
-        var _pdf = battle_object.p_pdf[battle_id];
+        // The mass of Guardsmen are men, so they render and take losses per man,
+        // the same way the enemy Guard do.
+        u.men = player_guard;
+        u.dudes[1] = "Imperial Guardsman";
+        u.dudes_num[1] = player_guard;
+        u.dudes_ac[1] = 40;   // match the enemy Guardsman: flak armour value 40
+        u.dudes_hp[1] = 5;
+        u.dudes_vehicle[1] = 0;
 
-        // Friendly Guardsmen, plus armour if the garrison is large.
-        if (_gd > 0) {
-            var _guar = _gd / 10;
-            u = instance_create(-60, 240, obj_pnunit);
-            u.dudes[1] = "Imperial Guardsman";
-            u.dudes_num[1] = max(1, round(_guar / 5));
-            if (_gd > 20000) {
-                u.dudes[2] = "Leman Russ Battle Tank";
-                u.dudes_num[2] = max(1, round(_gd / 20000));
+        // Leman Russ armour for a large garrison: real vehicles, like the enemy's.
+        var _tanks = min(30, round(player_guard / 5000));
+        if (_tanks > 0) {
+            for (var i = 1; i <= _tanks; i++) {
+                u.veh_co[i] = 0;
+                u.veh_id[i] = 0;
+                u.veh_type[i] = "Leman Russ Battle Tank";
+                u.veh_hp[i] = 250;
+                u.veh_ac[i] = 40;
+                u.veh_dead[i] = 0;
+                u.veh_hp_multiplier[i] = 1;
+                u.veh_wep1[i] = "Battle Cannon";
             }
+            u.veh = _tanks;
+            u.dudes[2] = "Leman Russ Battle Tank";
+            u.dudes_num[2] = _tanks;
+            u.dudes_ac[2] = 40;
+            u.dudes_hp[2] = 250;
+            u.dudes_vehicle[2] = 1;
         }
+        // Keep the default obj_pnunit sprite (do not blank it): the block needs its
+        // collision mask, or the enemy advance walks straight through the Guard
+        // without stopping to fight, which is what sent the enemy off the screen.
 
-        // Friendly PDF: a lighter levy. Reuses the Guardsman profile in fewer numbers.
-        if (_pdf > 0) {
-            u = instance_create(-70, 240, obj_pnunit);
-            u.dudes[1] = "Imperial Guardsman";
-            u.dudes_num[1] = max(1, round((_pdf / 10) / 8));
-        }
-
-        // Anti-farm: committing the garrison to a pitched battle costs lives, so a
-        // share is spent each fight. This drains the pool you would otherwise reuse
-        // for free. Tune the 0.2, or move to outcome-based attrition in Alarm_5.
-        if (_gd > 0)  battle_object.p_guardsmen[battle_id] = max(0, _gd  - round(_gd  * 0.2));
-        if (_pdf > 0) battle_object.p_pdf[battle_id]       = max(0, _pdf - round(_pdf * 0.2));
-
-        // The real units now stand in for that force, so clear the abstract allies
-        // bonus to avoid counting the same Guard twice.
-        allies = 0;
+        // Count the Guard toward the battle's player forces. The normal accumulation
+        // only runs during setup and this block spawns too late for it, so the win/
+        // loss check never saw them and the battle ended when the Marines died. Add
+        // them here; obj_pnunit's Alarm_3 skips its auto-add for guard blocks so this
+        // is not double counted.
+        player_forces += u.men + u.veh;
+        player_max += u.men + u.veh;
     }
 
     instance_activate_object(obj_enunit);

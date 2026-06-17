@@ -8,13 +8,12 @@ try {
     var marine_company = 0;
     var warn = "", w5 = 0;
     var g1 = 0, g2 = 0;
-    var onceh = 0, stahp = 0;
+    var stahp = 0;
     var disc = 0, droll = 0;
     var rund = 0;
     var spikky = 0;
     var roll = 0;
     var novice_type = "";
-    var unit;
 
     var times = max(1, round(turn / 150));
     if ((known[eFACTION.CHAOS] == 2) && (faction_defeated[eFACTION.CHAOS] == 0)) {
@@ -88,10 +87,8 @@ try {
     var recruits_finished = 0, recruit_first = "";
 
     var total_recruits = 0;
-    var i = 0;
-    while (i < array_length(recruit_name)) {
+    for (var i = array_length(recruit_name) - 1; i >= 0; i--) {
         if (recruit_name[i] == "") {
-            i++;
             continue;
         }
         if (recruit_distance[i] <= 0) {
@@ -113,7 +110,6 @@ try {
         } else {
             total_recruits++;
         }
-        i++;
     }
     with (obj_ini) {
         scr_company_order(10);
@@ -299,11 +295,11 @@ try {
             }
         }
     }
-    var p = 0, penitorium = 0, unit;
+    var p = 0, penitorium = 0;
     for (var c = 0; c < 11; c++) {
         for (var e = 0; e < array_length(obj_ini.god[c]); e++) {
             if (obj_ini.god[c][e] == 10) {
-                unit = fetch_unit([c, e]);
+                var unit = fetch_unit([c, e]);
                 p += 1;
                 penit_co[p] = c;
                 penit_id[p] = e;

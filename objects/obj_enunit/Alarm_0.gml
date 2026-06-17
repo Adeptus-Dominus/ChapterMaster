@@ -94,22 +94,29 @@ if (!engaged) {
                         scr_shoot(i, enemy, target_unit_index, "arp", "ranged");
                         // LOGGER.debug($"I'm shooting at a vehicle! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                         continue;
-                    } else if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != 7)) {
-                        var x2 = enemy.x;
-                        repeat (instance_number(obj_pnunit) - 1) {
-                            x2 += flank == 0 ? -10 : 10;
-                            var enemy2 = instance_nearest(x2, y, obj_pnunit);
-                            if (!target_block_is_valid(enemy2, obj_pnunit)) {
-                                continue;
-                            }
-                            if (range[i] < get_block_distance(enemy2)) {
-                                break;
-                            }
-                            if (block_has_armour(enemy2)) {
-                                scr_shoot(i, enemy2, target_unit_index, "arp", "ranged");
-                                // LOGGER.debug($"I'm shooting at a vehicle in another row! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
-                                _shot = true;
-                                break;
+                    } else {
+                        // Front block has no armour. If there are other blocks behind,
+                        // look for a vehicle to hit. If none is found anywhere (including
+                        // a single men-only block, such as a lone Guard rank), fall back
+                        // to shooting the men instead of idling. The original code gated
+                        // this whole fallback behind a multi-block check, so a lone
+                        // men-only block left every AP weapon firing zero shots.
+                        if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != 7)) {
+                            var x2 = enemy.x;
+                            repeat (instance_number(obj_pnunit) - 1) {
+                                x2 += flank == 0 ? -10 : 10;
+                                var enemy2 = instance_nearest(x2, y, obj_pnunit);
+                                if (!target_block_is_valid(enemy2, obj_pnunit)) {
+                                    continue;
+                                }
+                                if (range[i] < get_block_distance(enemy2)) {
+                                    break;
+                                }
+                                if (block_has_armour(enemy2)) {
+                                    scr_shoot(i, enemy2, target_unit_index, "arp", "ranged");
+                                    _shot = true;
+                                    break;
+                                }
                             }
                         }
                         if (!_shot) {

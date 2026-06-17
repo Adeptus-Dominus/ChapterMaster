@@ -86,6 +86,7 @@ leader = 0;
 thirsty = 0;
 really_thirsty = 0;
 allies = 0;
+player_attack_guard = 0; // embarked Guard committed to an assault from the attacking fleet
 present_inquisitor = 0;
 sorcery_seen = 0;
 inquisitor_ship = 0;
@@ -129,6 +130,7 @@ player_forces = 0;
 player_max = 0;
 player_defenses = 0;
 player_silos = 0;
+player_guard = 0;
 
 enemy_forces = 0;
 enemy_max = 0;

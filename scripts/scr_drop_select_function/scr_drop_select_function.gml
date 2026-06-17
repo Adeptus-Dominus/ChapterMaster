@@ -238,6 +238,24 @@ function drop_select_unit_selection() {
             obj_ncombat.defending = false;
             obj_ncombat.local_forces = roster.local_button.active;
 
+            // Bring embarked Imperial Guard from the attacking fleet into the assault.
+            // They disembark for the battle, so they are spent from the ships here.
+            obj_ncombat.player_attack_guard = 0;
+            if (attack == 1) {
+                var _sysname = p_target.name;
+                var _ig = player_guardsmen_at(_sysname);
+                if (_ig > 0) {
+                    obj_ncombat.player_attack_guard = _ig;
+                    with (obj_ini) {
+                        for (var _gi = 0; _gi < array_length(ship); _gi++) {
+                            if (ship_location[_gi] == _sysname) {
+                                ship_guardsmen[_gi] = 0;
+                            }
+                        }
+                    }
+                }
+            }
+
             var _planet = obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id];
             if (obj_ncombat.battle_object.space_hulk == 1) {
                 obj_ncombat.battle_special = "space_hulk";

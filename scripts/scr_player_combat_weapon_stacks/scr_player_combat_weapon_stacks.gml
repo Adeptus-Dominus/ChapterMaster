@@ -130,6 +130,57 @@ function scr_player_combat_weapon_stacks() {
         exit;
     }
 
+    if (guard == 1) {
+        var _gi = 0;
+        var _pg = men;    // current Guardsmen in this block
+        var _tk = veh;    // current Leman Russ tanks in this block
+
+        // Massed lasguns, identical to the enemy Guardsman profile in scr_en_weapon:
+        // one Lasgun per man, attack 60, armour pierce 1, range 6, 30 rounds.
+        _gi += 1;
+        wep[_gi] = "Lasgun";
+        wep_num[_gi] = max(1, _pg);
+        range[_gi] = 6;
+        att[_gi] = 60 * wep_num[_gi];
+        apa[_gi] = 1;
+        ammo[_gi] = 30;
+        splash[_gi] = 0;
+
+        // Heavy weapons teams. Real Heavy Bolter profile: attack 120, range 16.
+        _gi += 1;
+        wep[_gi] = "Heavy Bolter";
+        wep_num[_gi] = max(1, round(_pg / 200));
+        range[_gi] = 16;
+        att[_gi] = 120 * wep_num[_gi];
+        apa[_gi] = 0;
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
+
+        // Leman Russ guns, scaled to the tanks still alive: Battle Cannon 300 (AP)
+        // and Lascannon 200 (AP).
+        if (_tk > 0) {
+            _gi += 1;
+            wep[_gi] = "Battle Cannon";
+            wep_num[_gi] = _tk;
+            range[_gi] = 12;
+            att[_gi] = 300 * wep_num[_gi];
+            apa[_gi] = round(att[_gi] * 0.6);
+            ammo[_gi] = -1;
+            splash[_gi] = 0;
+
+            _gi += 1;
+            wep[_gi] = "Lascannon";
+            wep_num[_gi] = _tk;
+            range[_gi] = 20;
+            att[_gi] = 200 * wep_num[_gi];
+            apa[_gi] = round(att[_gi] * 0.8);
+            ammo[_gi] = -1;
+            splash[_gi] = 0;
+        }
+
+        exit;
+    }
+
     var i, g = 0;
     veh = 0;
     men = 0;

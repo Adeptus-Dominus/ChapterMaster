@@ -102,31 +102,31 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     }
 
     static garrison_sustain_damages = function(win_or_loss) {
-        var unit;
+        var _unit;
         var member_count = array_length(members);
         var members_lost = 0;
         for (var i = member_count - 1; i >= 0; i--) {
-            unit = members[i];
-            if (unit.hp() <= 0) {
+            _unit = members[i];
+            if (_unit.hp() <= 0) {
                 continue;
             }
 
             if (win_or_loss == "win") {
                 if (irandom(1) == 0) {
-                    unit.add_or_sub_health(-40);
+                    _unit.add_or_sub_health(-40);
                 }
-                if (unit.hp() < 0) {
-                    if (unit.calculate_death()) {
-                        kill_and_recover(unit.company, unit.marine_number);
+                if (_unit.hp() < 0) {
+                    if (_unit.calculate_death()) {
+                        kill_and_recover(_unit.company, _unit.marine_number);
                         members_lost++;
                         array_delete(members, i, 1);
                     }
                 }
             } else if (win_or_loss == "loose") {
-                unit.add_or_sub_health(-50);
-                if (unit.hp() < 0) {
-                    if (unit.calculate_death()) {
-                        kill_and_recover(unit.company, unit.marine_number);
+                _unit.add_or_sub_health(-50);
+                if (_unit.hp() < 0) {
+                    if (_unit.calculate_death()) {
+                        kill_and_recover(_unit.company, _unit.marine_number);
                         array_delete(members, i, 1);
                         members_lost++;
                     }
@@ -142,27 +142,27 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
         garrison_leader = false;
         var hierarchy = role_hierarchy();
         var leader_hier_pos = array_length(hierarchy);
-        var unit;
+        var _unit;
         for (var _squad = 0; _squad < array_length(garrison_squads); _squad++) {
             var _leader = garrison_squads[_squad].determine_leader();
-            unit = fetch_unit(_leader);
+            _unit = fetch_unit(_leader);
             if (garrison_leader == false) {
-                garrison_leader = unit;
+                garrison_leader = _unit;
                 for (var r = 0; r < array_length(hierarchy); r++) {
-                    if (hierarchy[r] == unit.role()) {
+                    if (hierarchy[r] == _unit.role()) {
                         leader_hier_pos = r;
                         break;
                     }
                 }
-            } else if (hierarchy[leader_hier_pos] == unit.role()) {
-                if (garrison_leader.experience < unit.experience) {
-                    garrison_leader = unit;
+            } else if (hierarchy[leader_hier_pos] == _unit.role()) {
+                if (garrison_leader.experience < _unit.experience) {
+                    garrison_leader = _unit;
                 }
             } else {
                 for (var r = 0; r < leader_hier_pos; r++) {
-                    if (hierarchy[r] == unit.role()) {
+                    if (hierarchy[r] == _unit.role()) {
                         leader_hier_pos = r;
-                        garrison_leader = unit;
+                        garrison_leader = _unit;
                         break;
                     }
                 }
@@ -172,11 +172,11 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
 
     static exp_rewards = function() {
         var m;
-        var unit;
+        var _unit;
         for (var s = 0; s < array_length(garrison_squads); s++) {
             _squad = garrison_squads[s];
             for (m = 0; m < array_length(_squad.members); m++) {
-                unit = fetch_unit(_squad.members[m]);
+                _unit = fetch_unit(_squad.members[m]);
             }
         }
     };
@@ -225,7 +225,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
 
             var _time_modifier = max(time_on_planet / 2.5, 10);
 
-            if (!garrison_leader) {
+            if (!is_struct(garrison_leader)) {
                 find_leader();
             }
             var _diplomatic_leader = false;
@@ -246,8 +246,14 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
                     dispo_change = 50;
                 }
             } else {
-                var charisma_test = global.character_tester.standard_test(garrison_leader, "charisma", final_modifier);
-                if (!charisma_test[0]) {
+                var _charisma_test;
+                if (is_struct(garrison_leader)){
+                    _charisma_test = global.character_tester.standard_test(garrison_leader, "charisma", final_modifier);
+                }  else {
+                    _charisma_test = [bool(irandom(1)), irandom_range(0, 25)];
+                }
+                var dispo_change = _charisma_test[1] / 10;
+                if (!_charisma_test[0]) {
                     if (_diplomatic_leader) {
                         dispo_change = "none";
                     } else {
@@ -258,7 +264,6 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
                         }
                     }
                 } else {
-                    dispo_change = charisma_test[1] / 10;
                     _pdata.add_disposition(dispo_change);
                 }
             }
@@ -276,7 +281,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
             //var squad_positions;
             var _leader;
             var m;
-            var unit;
+            var _unit;
             var effort = "failed";
             switch (enemy) {
                 case eFACTION.ORK: //trying to come up with how we might auto evaluate a squads fate in a battle
@@ -295,30 +300,30 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
                                 case 1:
                                     for (m = 0; m < array_length(_squad.members); m++) {
                                         //see how _squad members faired in their circumstances
-                                        unit = _squad.fetch_member(m);
-                                        if (irandom(unit.weapon_skill) > margin) {
-                                            //if unit "wins" in combat test against weapon skill as this is a cc enagement
-                                            if (irandom(4999) < sqr(unit.weapon_skill - 35) + unit.luck) {
-                                                //chance unit does something heroic
+                                        _unit = _squad.fetch_member(m);
+                                        if (irandom(_unit.weapon_skill) > margin) {
+                                            //if _unit "wins" in combat test against weapon skill as this is a cc enagement
+                                            if (irandom(4999) < sqr(_unit.weapon_skill - 35) + _unit.luck) {
+                                                //chance _unit does something heroic
                                                 //wonder if luck should be renamed to fate ??
                                                 var alligience = "imperial";
                                                 switch (choose("still_standing", "slay_champion", "hold_breach")) {
                                                     //feats and traits are stored seperatly but use very similar mechanics
-                                                    //this is because i am not linking feats to indepth mecanics theyre just logs of unit deeps
-                                                    //however a unit that collects a couple of slay_champion feats may earn the warlord_slayer trait with built in mechanics
+                                                    //this is because i am not linking feats to indepth mecanics theyre just logs of _unit deeps
+                                                    //however a _unit that collects a couple of slay_champion feats may earn the warlord_slayer trait with built in mechanics
                                                     //think of it as a more story lead skill tree
                                                     //equally a feat does not be stored anywhere you can just makeem up on the fly where as a trait has to be stored in teh global trait list
                                                     //this may all be subject to change but in my head it's coming together
                                                     case "hold_breach":
-                                                        unit.add_feat({ident: "hold_breach", title: "Held breach", planet: planet, grade: 5, location: "location", text: $"Single Handedly held a breach in the {alligience} during the {effort} {attack_defend} of {location} {scr_roman_numeral[planet - 1]} from the Orks"});
+                                                        _unit.add_feat({ident: "hold_breach", title: "Held breach", planet: planet, grade: 5, location: "location", text: $"Single Handedly held a breach in the {alligience} during the {effort} {attack_defend} of {location} {scr_roman_numeral[planet - 1]} from the Orks"});
                                                         break;
                                                     case "still_standing":
-                                                        unit.add_feat({ident: "still_standing", planet: planet, location: "location", text: $"Was pullled from beneath the carcesses of his slain {alligience} during the {effort} {attack_defend} of {location} {scr_roman_numeral[planet - 1]} from the Orks"});
+                                                        _unit.add_feat({ident: "still_standing", planet: planet, location: "location", text: $"Was pullled from beneath the carcesses of his slain {alligience} during the {effort} {attack_defend} of {location} {scr_roman_numeral[planet - 1]} from the Orks"});
                                                 }
                                             }
                                         } else {
-                                            //unit "looses combat"
-                                            var toughness_check = irandom(99) - (floor(unit.constitution) / 8); //we can build some static test functions for these sorts of things
+                                            //_unit "looses combat"
+                                            var toughness_check = irandom(99) - (floor(_unit.constitution) / 8); //we can build some static test functions for these sorts of things
                                             //now we need some sort of toughness to chart to check against
                                             //then take a roll against a seperate injury chart or some such thing
                                             //roll against piett??? chance or a miracle ??

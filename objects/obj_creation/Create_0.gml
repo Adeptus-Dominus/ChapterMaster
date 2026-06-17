@@ -150,8 +150,6 @@ cooperation = 5;
 purity = 5;
 stability = 90;
 
-var i = 9;
-
 homeworld = "Temperate";
 homeworld_name = global.name_generator.GenerateFromSet("star", false);
 recruiting = "Death";

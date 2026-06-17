@@ -359,8 +359,6 @@ y_slide = 0;
 new_banner_x = 0;
 hide_banner = 0;
 // ui stuff
-var xx = camera_get_view_x(view_camera[0]);
-var yy = camera_get_view_y(view_camera[0]);
 menu_lock = false;
 menu_buttons = {
     "chapter_manage": new MainMenuButton(spr_ui_but_1, spr_ui_hov_1,,, ord("M"), scr_toggle_manage),
@@ -1217,7 +1215,7 @@ if (global.load >= 0) {
 ///! ************************************************************ */
 ///! ************************************************************ */
 
-var xx, yy, me, dist, go, planet;
+var me, dist, go, planet;
 global.custom = eCHAPTER_TYPE.RANDOM;
 
 // ** Sets up base training level and trainees at game start **
@@ -1330,11 +1328,11 @@ if (is_test_map == true) {
     planet = 20;
 }
 
-var xx, yy, nearest_star, repeats;
+var nearest_star, repeats;
 mask_index = spr_star;
 while (instance_number(obj_star) < planet) {
-    xx = irandom_range(200, room_width - 150); // dictates how far away from the edge stars spawn
-    yy = irandom_range(130, room_height - 130);
+    var xx = irandom_range(200, room_width - 150); // dictates how far away from the edge stars spawn
+    var yy = irandom_range(130, room_height - 130);
     nearest_star = instance_nearest(xx, yy, obj_star);
     repeats = 0;
     while (point_distance(xx, yy, nearest_star.x, nearest_star.y) < 130 && repeats < 100) {

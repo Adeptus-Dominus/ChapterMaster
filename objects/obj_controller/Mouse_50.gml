@@ -215,10 +215,9 @@ if ((zoomed == 0) && (cooldown <= 0) && (menu == eMENU.DIPLOMACY) && (diplomacy 
 
 // End Turn
 scr_menu_clear_up(function() {
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
     if ((zoomed == 0) && (menu == 40) && (cooldown <= 0)) {
-        xx = xx + 0;
-        yy = yy + 0;
-
         if ((mouse_x >= xx + 73) && (mouse_y >= yy + 69) && (mouse_x < xx + 305) && (mouse_y < yy + 415)) {
             menu = 41;
             cooldown = 8000;
@@ -231,9 +230,6 @@ scr_menu_clear_up(function() {
 
     // This is the back button at LOADING TO SHIPS
     if ((zoomed == 0) && (menu == 30) && (managing > 0 || managing == -1) && (cooldown <= 0)) {
-        xx = xx + 0;
-        yy = yy + 0;
-
         if ((mouse_x >= xx + 22) && (mouse_y >= yy + 84) && (mouse_x < xx + 98) && (mouse_y < yy + 126)) {
             menu = eMENU.MANAGE;
             cooldown = 8000;
@@ -243,8 +239,6 @@ scr_menu_clear_up(function() {
     if ((menu == eMENU.MANAGE) && (managing > 0) || (managing < 0) && (!view_squad || !company_report)) {
         var unit;
         var eventing = false, bb = "";
-        xx = camera_get_view_x(view_camera[0]);
-        yy = camera_get_view_y(view_camera[0]);
         var top = man_current, sel, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "", squad_sel = 0;
         var stop = 0;
 

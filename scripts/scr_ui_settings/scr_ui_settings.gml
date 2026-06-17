@@ -694,7 +694,7 @@ function scr_draw_mass_equip_gui(){
             if (mouse_button_clicked() && (good1 + good2 + good3 + good4 + good5 == 5)) {
                 engage = true;
                 refresh = true;
-                effect_create_above(ef_firework,  800,  400, 5, c_yellow);
+                effect_create_depth(depth - 1, ef_firework,  800,  400, 5, c_yellow);
             }
         }
         draw_set_alpha(1);

@@ -584,3 +584,18 @@ function tithe_guardsmen(system_name, planet, amount) {
     _pdata.edit_guardsmen(amount);
     return amount;
 }
+
+/// @description Total embarked Guard on player ships currently at a given system.
+/// @param {string} system_name
+/// @returns {real}
+function player_guardsmen_at(system_name) {
+    var _total = 0;
+    with (obj_ini) {
+        for (var i = 0; i < array_length(ship); i++) {
+            if (ship[i] == "") continue;
+            if (ship_location[i] != system_name) continue;
+            _total += ship_guardsmen[i];
+        }
+    }
+    return _total;
+}

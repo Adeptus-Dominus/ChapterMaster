@@ -44,20 +44,26 @@ function scr_cheatcode(argument0) {
                 case "embarkguard":
                     with (obj_controller) {
                         var _n = embark_guardsmen(obj_ini.home_name, obj_ini.home_planet);
-                        show_message("Embarked " + string(_n) + " Guard from your homeworld.#Total embarked: " + string(player_guardsmen_embarked()));
+                        scr_popup("Imperial Guard", "Embarked " + string(_n) + " Guard from your homeworld. Total embarked: " + string(player_guardsmen_embarked()), "");
                     }
                     break;
                 case "deployguard":
                     with (obj_controller) {
-                        var _n = deploy_guardsmen(obj_ini.home_name, obj_ini.home_planet);
-                        show_message("Deployed " + string(_n) + " Guard onto your homeworld.");
+                        if (instance_exists(obj_star_select) && (selecting_planet > 0)) {
+                            var _star = obj_star_select.target;
+                            var _n = deploy_guardsmen(_star.name, selecting_planet);
+                            scr_popup("Imperial Guard", "Deployed " + string(_n) + " Guard onto " + string(_star.name) + " " + string(selecting_planet) + ". (Unloads from your ships orbiting that world.)", "");
+                        } else {
+                            var _n = deploy_guardsmen(obj_ini.home_name, obj_ini.home_planet);
+                            scr_popup("Imperial Guard", "No world selected, so deployed " + string(_n) + " Guard at your homeworld. Open a system and click a planet first to target another world.", "");
+                        }
                     }
                     break;
                 case "titheguard":
                     with (obj_controller) {
                         var _amt = real(cheat_arguments[0]);
                         var _n = tithe_guardsmen(obj_ini.home_name, obj_ini.home_planet, _amt);
-                        show_message("Raised " + string(_n) + " Guard from your homeworld's population.");
+                        scr_popup("Imperial Guard", "Raised " + string(_n) + " Guard from your homeworld's population.", "");
                     }
                     break;
                 case "finishforge":

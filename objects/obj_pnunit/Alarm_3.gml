@@ -5,8 +5,10 @@ try {
             instance_destroy();
         }
         // if (veh+dreads>0) then instance_destroy();
-        obj_ncombat.player_forces += self.men + self.veh + self.dreads;
-        obj_ncombat.player_max += self.men + self.veh + self.dreads;
+        if (guard == 0) {
+            obj_ncombat.player_forces += self.men + self.veh + self.dreads;
+            obj_ncombat.player_max += self.men + self.veh + self.dreads;
+        }
 
         //TODO centralise a method for moving units between columns
         /*if (men<=4) and (veh=0) and (dreads=0){// Squish leftt
