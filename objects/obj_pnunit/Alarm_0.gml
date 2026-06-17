@@ -75,7 +75,13 @@ try {
             }
 
             if ((range[i] >= dist) && (ammo[i] != 0 || range[i] == 1)) {
-                if ((range[i] != 1) && (engaged == 0)) {
+                // Guard blocks (guard > 0) keep firing their ranged weapons even when
+                // engaged: Guardsmen empty lasguns and heavy bolters into the enemy at
+                // point-blank, and the tank line keeps its main guns firing once a unit
+                // reaches it instead of standing mute. Marines keep the vanilla rule of
+                // ranged only while not engaged. The bayonet (range 1) still resolves on
+                // the melee line below, so engaged Guard both shoot and stab.
+                if ((range[i] != 1) && ((engaged == 0) || (guard > 0))) {
                     range_shoot = "ranged";
                 }
                 if ((range[i] != floor(range[i]) || floor(range[i]) == 1) && engaged == 1) {
