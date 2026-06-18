@@ -44,6 +44,20 @@ colonist_button.bind_method = function() {
     new_colony_fleet(doner[0], doner[1], target.id, obj_controller.selecting_planet, "bolster_population");
 };
 
+// Recruit Guard: raise Imperial Guard from this world's Defense Force (PDF) in fixed
+// elements of 1000, so it cannot be spammed off civilians and is bounded by the PDF on
+// hand. Costs a small 50 requisition per 1000. Recruited Guard go into the deployable
+// pool (p_guardsmen) to embark and deploy.
+guard_recruit_button = new PurchaseButton(50);
+guard_recruit_button.update({tooltip: "Raise 1000 Imperial Guard from this world's Defense Force (PDF). They join the deployable Guard pool, ready to embark and deploy. Drawn in fixed elements of 1000. /n Costs 50 requisition, requires at least 1000 PDF", label: "Recruit Guard", target: target});
+guard_recruit_button.bind_method = function() {
+    var _p = obj_controller.selecting_planet;
+    if (target.p_pdf[_p] >= 1000) {
+        target.p_pdf[_p] -= 1000;
+        target.p_guardsmen[_p] += 1000;
+    }
+};
+
 recruiting_button = new PurchaseButton(0);
 recruiting_button.update({tooltip: "Enable recruiting", label: "Recruiting", target: target});
 recruiting_button.bind_method = function() {

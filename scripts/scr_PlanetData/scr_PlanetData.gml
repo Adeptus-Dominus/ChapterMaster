@@ -1685,6 +1685,17 @@ function PlanetData(planet, system) constructor {
 
                 _col_button.draw(array_length(obj_star_select.potential_donors));
 
+                // Recruit Guard sits directly below Request Colonists (same column, one
+                // row down). Player worlds only, since you can only mobilise your own PDF.
+                // Clicking is gated on the PDF holding at least 1000 (here) and on having
+                // the 50 requisition (the PurchaseButton's own check), so a click can never
+                // spend the 50 without actually raising the 1000.
+                if (current_owner == eFACTION.PLAYER) {
+                    var _guard_button = obj_star_select.guard_recruit_button;
+                    _guard_button.update({x1: xx + 35, y1: _half_way + spacing_y, allow_click: true});
+                    _guard_button.draw(pdf >= 1000);
+                }
+
                 var _recruit_button = obj_star_select.recruiting_button;
 
                 _recruit_button.update({x1: xx + (spacing_x * 2) + 15, y1: _half_way, allow_click: true});
