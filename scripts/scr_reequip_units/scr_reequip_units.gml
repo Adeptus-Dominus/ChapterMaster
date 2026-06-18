@@ -608,13 +608,13 @@ function draw_popup_equip() {
             }
 
             if (is_struct(armour_data) && is_struct(gear_data)) {
-                if (armour_data.has_tag("terminator") && !gear_data.has_tag("terminator")) {
+                if (armour_data.has_tag("terminator") && !gear_data.has_tag("terminator") && !gear_data.has_tag("terminator_only")) {
                     n_good4 = 0;
                     warning = "Cannot use this with Terminator Armour.";
                 } else if (!armour_data.has_tag("terminator") && gear_data.has_tag("terminator_only")) {
                     n_good4 = 0;
                     warning = "Cannot use this without Terminator Armour.";
-                } else if (armour_data.has_tag("dreadnought") && !gear_data.has_tag("dreadnought")) {
+                } else if (armour_data.has_tag("dreadnought") && !gear_data.has_tag("dreadnought") && !gear_data.has_tag("dreadnought_only")) {
                     n_good4 = 0;
                     warning = "Cannot use this with Dreadnought Armour.";
                 } else if (!armour_data.has_tag("dreadnought") && gear_data.has_tag("dreadnought_only")) {
@@ -646,16 +646,24 @@ function draw_popup_equip() {
             }
 
             if (is_struct(armour_data) && is_struct(mobility_data)) {
-                if (armour_data.has_tag("terminator") && !mobility_data.has_tag("terminator")) {
+                if (armour_data.has_tag("terminator") && !mobility_data.has_tag("terminator") && !mobility_data.has_tag("terminator_only")) {
                     n_good5 = 0;
                     warning = "Cannot use this with Terminator Armour.";
                 } else if (!armour_data.has_tag("terminator") && mobility_data.has_tag("terminator_only")) {
                     n_good5 = 0;
                     warning = "Cannot use this without Terminator Armour.";
-                } else if (armour_data.has_tag("dreadnought") && !mobility_data.has_tag("dreadnought")) {
+                } else if (armour_data.has_tag("dreadnought") && !mobility_data.has_tag("dreadnought") && !mobility_data.has_tag("dreadnought_only")) {
                     n_good5 = 0;
                     warning = "Cannot use this with Dreadnought Armour.";
                 } else if (!armour_data.has_tag("dreadnought") && mobility_data.has_tag("dreadnought_only")) {
+                    n_good5 = 0;
+                    warning = "Cannot use this without Dreadnought Armour.";
+                }
+            } else if (!is_struct(armour_data) && is_struct(mobility_data)) {
+                if (mobility_data.has_tag("terminator") || mobility_data.has_tag("terminator_only")) {
+                    n_good5 = 0;
+                    warning = "Cannot use this without Terminator Armour.";
+                } else if (mobility_data.has_tag("dreadnought") || mobility_data.has_tag("dreadnought_only")) {
                     n_good5 = 0;
                     warning = "Cannot use this without Dreadnought Armour.";
                 }
