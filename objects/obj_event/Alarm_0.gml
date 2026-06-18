@@ -1,5 +1,4 @@
-var intro;
-intro = "";
+var intro = "";
 
 if (obj_controller.fest_type == "Great Feast") {
     if (obj_controller.fest_feasts == 0) {

@@ -36,6 +36,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     members = [];
     time_on_planet = 0;
     viable_garrison = 0;
+    dispo_change = 0;
     self.type = type;
     self.system = system;
     self.planet = planet;
@@ -213,63 +214,64 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     static garrison_disposition_change = function(up_or_down = false) {
         dispo_change = 0;
         var _pdata = system.get_planet_data(planet);
-        if (array_contains(obj_controller.imperial_factions, _pdata.current_owner)) {
-            var _planet_disposition = _pdata.player_disposition;
+        if (!array_contains(obj_controller.imperial_factions, _pdata.current_owner)) {
+            return dispo_change;
+        }
+        
+        var _planet_disposition = _pdata.player_disposition;
 
-            var _main_faction_disp = _pdata.owner_faction_disposition();
+        var _main_faction_disp = _pdata.owner_faction_disposition();
 
-            //basivally it is easier to increase dispositioon the nearer you are to 50 but becomminig greatly hated or greaty liked is much harder
-            var _disposition_modifier = _planet_disposition <= 50 ? (_planet_disposition / 10) : ((_planet_disposition - 50) / 10) % 5;
+        //basivally it is easier to increase dispositioon the nearer you are to 50 but becomminig greatly hated or greaty liked is much harder
+        var _disposition_modifier = _planet_disposition <= 50 ? (_planet_disposition / 10) : ((_planet_disposition - 50) / 10) % 5;
 
-            _disposition_modifier /= 10;
+        _disposition_modifier /= 10;
 
-            var _time_modifier = max(time_on_planet / 2.5, 10);
+        var _time_modifier = max(time_on_planet / 2.5, 10);
 
-            if (!is_struct(garrison_leader)) {
-                find_leader();
-            }
-            var _diplomatic_leader = false;
-            if (is_struct(garrison_leader)) {
-                _diplomatic_leader = garrison_leader.has_trait("honorable");
-            } else {
-                scr_alert("yellow", "DEBUG", $"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!", 0, 0);
-                scr_event_log("yellow", $"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!");
-                LOGGER.error($"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!");
-            }
-            var _garrison_size_mod = total_garrison / 10;
+        if (!is_struct(garrison_leader)) {
+            find_leader();
+        }
+        var _diplomatic_leader = false;
+        if (is_struct(garrison_leader)) {
+            _diplomatic_leader = garrison_leader.has_trait("honorable");
+        } else {
+            scr_alert("yellow", "DEBUG", $"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!", 0, 0);
+            scr_event_log("yellow", $"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!");
+            LOGGER.error($"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!");
+        }
+        var _garrison_size_mod = total_garrison / 10;
 
-            var final_modifier = 5 + _garrison_size_mod - _disposition_modifier + _time_modifier;
+        var final_modifier = 5 + _garrison_size_mod - _disposition_modifier + _time_modifier;
 
-            if (up_or_down) {
-                dispo_change = garrison_leader.charisma + final_modifier;
-                if (dispo_change < 50 && ((_planet_disposition < _main_faction_disp) || _diplomatic_leader)) {
-                    dispo_change = 50;
-                }
-            } else {
-                var _charisma_test;
-                if (is_struct(garrison_leader)){
-                    _charisma_test = global.character_tester.standard_test(garrison_leader, "charisma", final_modifier);
-                }  else {
-                    _charisma_test = [bool(irandom(1)), irandom_range(0, 25)];
-                }
-                var dispo_change = _charisma_test[1] / 10;
-                if (!_charisma_test[0]) {
-                    if (_diplomatic_leader) {
-                        dispo_change = "none";
-                    } else {
-                        if (_planet_disposition > _main_faction_disp) {
-                            _pdata.add_disposition(dispo_change);
-                        } else {
-                            dispo_change = 0;
-                        }
-                    }
-                } else {
-                    _pdata.add_disposition(dispo_change);
-                }
+        if (up_or_down) {
+            dispo_change = garrison_leader.charisma + final_modifier;
+            if (dispo_change < 50 && ((_planet_disposition < _main_faction_disp) || _diplomatic_leader)) {
+                dispo_change = 50;
             }
         } else {
-            dispo_change = "none";
+            var _charisma_test;
+            if (is_struct(garrison_leader)){
+                _charisma_test = global.character_tester.standard_test(garrison_leader, "charisma", final_modifier);
+            }  else {
+                _charisma_test = [bool(irandom(1)), irandom_range(0, 25)];
+            }
+            var dispo_change = _charisma_test[1] / 10;
+            if (!_charisma_test[0]) {
+                if (_diplomatic_leader) {
+                    dispo_change = 0;
+                } else {
+                    if (_planet_disposition > _main_faction_disp) {
+                        _pdata.add_disposition(dispo_change);
+                    } else {
+                        dispo_change = 0;
+                    }
+                }
+            } else {
+                _pdata.add_disposition(dispo_change);
+            }
         }
+
         return dispo_change;
     };
 

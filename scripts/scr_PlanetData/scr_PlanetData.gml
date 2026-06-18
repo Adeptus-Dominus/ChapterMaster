@@ -101,6 +101,15 @@ function PlanetData(planet, system) constructor {
         }
 
         player_disposition = system.dispo[planet];
+        garrisons = system.system_garrison[planet];
+        if (garrisons == 0){
+            garrisons = system.get_garrison(planet)
+        }
+        sabatours = system.system_sabatours[planet];
+        if (sabatours == 0){
+            sabatours = system.get_sabatours(planet)
+        }
+        system.system_datas[planet] = self;
 
         garrisons = get_garrison(planet, system);
         sabatours = get_sabatours(planet, system);
@@ -257,6 +266,9 @@ function PlanetData(planet, system) constructor {
         system.p_pdf[planet] = max(0, system.p_pdf[planet] + edit_val);
         pdf = system.p_pdf[planet]
     }
+    
+    pdf = system.p_pdf[planet];
+    fortification_level = system.p_fortified[planet];
 
     static alter_fortification = function(alteration) {
         system.p_fortified[planet] += alteration;
@@ -1580,6 +1592,18 @@ function PlanetData(planet, system) constructor {
         instance_destroy(obj_star_select);
     };
 
+    static set_star_select_planet = function(){
+        obj_star_select.garrison = garrisons;
+        system.garrison = garrisons.garrison_force;
+        obj_star_select.feature = "";
+        buttons_selected = false;
+        garrisons.update();
+        if (garrisons.garrison_force){
+            garrisons.find_leader();
+            garrisons.garrison_disposition_change(true);            
+        }     
+    }
+
     static planet_selection_logic = function() {
         var planet_is_allies = scr_is_planet_owned_by_allies(system, planet);
         var garrison_issue = !planet_is_allies || pdf <= 0;
@@ -1601,10 +1625,7 @@ function PlanetData(planet, system) constructor {
                 exit;
             }
         } else if (!_loading) {
-            obj_star_select.garrison = system.get_garrison(planet);
-            system.garrison = obj_star_select.garrison.garrison_force;
-            obj_star_select.feature = "";
-            buttons_selected = false;
+            set_star_select_planet();
         } else if (_loading && planet > 0) {
             obj_controller.unload = planet;
             obj_controller.return_object = system;

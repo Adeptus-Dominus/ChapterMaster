@@ -81,8 +81,6 @@ if (obj_ncombat.enemy == 1) {
     alarm[6] = 10;
 }
 
-// if (obj_ncombat.enemy=1){alarm[1]=8;alarm[5]=10;}
-
 hit = function() {
     return scr_hit(x1, y1, x2, y2) && obj_ncombat.fadein <= 0;
 };

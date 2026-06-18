@@ -25,11 +25,10 @@ if (draw_size > 0) {
             if (obj_ncombat.enemy != 1) {
                 composition_string = block_composition_string();
             } else {
-                var variety, variety_num, sofar, compl;
-                variety = [];
-                variety_num = [];
-                sofar = 0;
-                compl = "";
+                var variety = [];
+                var variety_num = [];
+                var sofar = 0;
+                var compl = "";
 
                 var variety_len = array_length(variety);
                 for (var q = 0; q < variety_len; q++) {
@@ -47,10 +46,10 @@ if (draw_size > 0) {
                     }
                 }
 
-                var dudes_len = array_length(dudes);
+                dudes_len = array_length(dudes);
                 for (var q = 0; q < dudes_len; q++) {
                     if (dudes[q] != "") {
-                        var variety_len = array_length(variety);
+                        variety_len = array_length(variety);
                         for (var i = 0; i < variety_len; i++) {
                             if (dudes[q] == variety[i]) {
                                 variety_num[i] += dudes_num[q];
