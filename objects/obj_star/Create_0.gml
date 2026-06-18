@@ -196,7 +196,10 @@ serialize = function() {
         "temp",
         "serialize",
         "deserialize",
-        "arraysum"
+        "arraysum",
+        "system_garrison",
+        "system_sabatours",
+        "system_datas"
     ];
     var excluded_from_save_start = ["p_"];
 
@@ -265,13 +268,6 @@ function deserialize(save_data) {
                 // variable_struct_set(self, var_name, planet[$var_name]);
             }
         }
-    }
-
-    if (struct_exists(save_data, "system_sabatours")) {
-        variable_struct_set(self, "system_sabatours", save_data.system_sabatours);
-    }
-    if (struct_exists(save_data, "system_garrison")) {
-        variable_struct_set(self, "system_garrison", save_data.system_garrison);
     }
 
     if (struct_exists(save_data, "p_governor")) {
