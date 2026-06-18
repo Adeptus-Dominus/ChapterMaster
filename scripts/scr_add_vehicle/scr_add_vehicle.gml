@@ -127,7 +127,6 @@ function scr_add_vehicle(vehicle_type, target_company, otherdata = {}, weapon1 =
 
             obj_ini.veh_hp[target_company][good] = 100;
             obj_ini.veh_chaos[target_company][good] = 0;
-            obj_ini.veh_pilots[target_company][good] = 0;
         }
 
         return [target_company, good];
@@ -140,7 +139,6 @@ function destroy_vehicle(co, num) {
     try {
         obj_ini.veh_race[co][num] = 0;
         obj_ini.veh_loc[co][num] = "";
-        obj_ini.veh_name[co][num] = "";
         obj_ini.veh_role[co][num] = "";
         obj_ini.veh_wep1[co][num] = "";
         obj_ini.veh_wep2[co][num] = "";
@@ -149,7 +147,6 @@ function destroy_vehicle(co, num) {
         obj_ini.veh_acc[co][num] = "";
         obj_ini.veh_hp[co][num] = 100;
         obj_ini.veh_chaos[co][num] = 0;
-        obj_ini.veh_pilots[co][num] = 0;
         obj_ini.veh_lid[co][num] = -1;
         obj_ini.veh_wid[co][num] = 0;
     } catch (_exception) {
