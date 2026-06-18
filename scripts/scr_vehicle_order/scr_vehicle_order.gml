@@ -4,7 +4,6 @@
 function reset_vehicle_variable_arrays(company_number, i) {
     veh_race[company_number][i] = 0;
     veh_loc[company_number][i] = "";
-    veh_name[company_number][i] = "";
     veh_role[company_number][i] = "";
     veh_lid[company_number][i] = -1;
     veh_wid[company_number][i] = 0;
@@ -54,7 +53,6 @@ function scr_vehicle_order(company_number) {
         if (_is_vehicle_role) {
             temp_race[company_number][vehicle_count] = veh_race[company_number][i];
             temp_loc[company_number][vehicle_count] = veh_loc[company_number][i];
-            temp_name[company_number][vehicle_count] = veh_name[company_number][i];
             temp_role[company_number][vehicle_count] = veh_role[company_number][i];
             temp_lid[company_number][vehicle_count] = veh_lid[company_number][i];
             temp_wid[company_number][vehicle_count] = veh_wid[company_number][i];
@@ -75,7 +73,6 @@ function scr_vehicle_order(company_number) {
     for (var i = 0; i < vehicle_count; i++) {
         veh_race[company_number][i] = temp_race[company_number][i];
         veh_loc[company_number][i] = temp_loc[company_number][i];
-        veh_name[company_number][i] = temp_name[company_number][i];
         veh_role[company_number][i] = temp_role[company_number][i];
         veh_lid[company_number][i] = temp_lid[company_number][i];
         veh_wid[company_number][i] = temp_wid[company_number][i];

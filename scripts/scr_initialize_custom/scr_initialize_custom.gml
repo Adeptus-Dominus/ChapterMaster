@@ -3038,7 +3038,6 @@ function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, acce
     obj_ini.veh_acc[company][slot] = accessory;
     obj_ini.veh_hp[company][slot] = 100;
     obj_ini.veh_chaos[company][slot] = 0;
-    obj_ini.veh_pilots[company][slot] = 0;
     obj_ini.veh_lid[company][slot] = -1;
     obj_ini.veh_wid[company][slot] = 2;
 }
