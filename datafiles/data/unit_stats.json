@@ -581,6 +581,59 @@
             1
         ]
     },
+    "guardsman": {
+        "ballistic_skill": [
+            25,
+            1
+        ],
+        "base_group": "human",
+        "charisma": [
+            15,
+            1
+        ],
+        "constitution": [
+            20,
+            1
+        ],
+        "dexterity": [
+            20,
+            1
+        ],
+        "intelligence": [
+            15,
+            1
+        ],
+        "luck": 5,
+        "piety": [
+            25,
+            1
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Flak Armour",
+            "gear": "",
+            "mobi": "",
+            "wep1": "Lasgun",
+            "wep2": ""
+        },
+        "strength": [
+            20,
+            1
+        ],
+        "technology": [
+            10,
+            1
+        ],
+        "title": "Guardsman",
+        "weapon_skill": [
+            15,
+            1
+        ],
+        "wisdom": [
+            15,
+            1
+        ]
+    },
     "skitarii": {
         "ballistic_skill": [
             20,

@@ -10,7 +10,8 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         "Sister Hospitaler",
         "Ranger",
         "Ork Sniper",
-        "Flash Git"
+        "Flash Git",
+        "Guardsman"
     ];
     var _gear = {};
     var _company_slot = 0;
@@ -26,6 +27,11 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
             // TODO: Implement logic for Auxiliary Soldier (Race 2.5, Renegade stats)
 
             switch (man_role) {
+                case "Guardsman":
+                    spawn_exp = 10;
+                    obj_ini.race[target_company][_company_slot] = eFACTION.IMPERIUM;
+                    _unit = new TTRPG_stats("imperial_guard", target_company, _company_slot, "guardsman");
+                    break;
                 case "Skitarii":
                     spawn_exp = 10;
                     obj_ini.race[target_company][_company_slot] = 3;
@@ -100,6 +106,10 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
             case "Sister of Battle":
             case "Sister Hospitaler":
                 obj_ini.name[target_company][_company_slot] = global.name_generator.GenerateFromSet("imperial_female");
+                break;
+
+            case "Guardsman":
+                obj_ini.name[target_company][_company_slot] = global.name_generator.GenerateFromSet("imperial_male");
                 break;
         }
 

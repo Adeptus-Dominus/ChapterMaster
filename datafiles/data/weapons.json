@@ -1610,6 +1610,25 @@
         ],
         "value": 15
     },
+    "Lasgun": {
+        "abbreviation": "Lasgun",
+        "ammo": 40,
+        "arp": 1,
+        "attack": {
+            "artifact": 26,
+            "master_crafted": 22,
+            "standard": 18
+        },
+        "description": "The standard-issue weapon of the Astra Militarum. A rugged two-handed las weapon firing coherent energy beams, prized for its reliability and the ease of recharging its power packs in the field. Common, dependable, and unremarkable on its own.",
+        "melee_hands": 0,
+        "range": 12,
+        "ranged_hands": 1,
+        "spli": 2,
+        "tags": [
+            "las"
+        ],
+        "value": 2
+    },
     "Laspistol": {
         "abbreviation": "Lpstl",
         "ammo": 30,
