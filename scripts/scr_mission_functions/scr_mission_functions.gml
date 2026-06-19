@@ -262,7 +262,8 @@ function problem_end_turn_checks(){
 
         if (struct_exists(problem_functions, _problem)){
             try {
-                problem_functions[$ _problem](i);
+                var _problem_action = method(self, problem_functions[$ _problem]);
+                _problem_action(i);
             } catch (_exception) {
                 ERROR_HANDLER.handle_exception(_exception);
             }

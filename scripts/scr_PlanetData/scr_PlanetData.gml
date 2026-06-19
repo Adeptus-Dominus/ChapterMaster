@@ -111,9 +111,6 @@ function PlanetData(planet, system) constructor {
         }
         system.system_datas[planet] = self;
 
-        garrisons = get_garrison(planet, system);
-        sabatours = get_sabatours(planet, system);
-
         // current planet heresy
         if (population == 0) {
             system.p_heresy[planet] = 0;
@@ -468,7 +465,7 @@ function PlanetData(planet, system) constructor {
     
         var pip = instance_create(0,0,obj_popup);
         pip.title = "Planetary Governor Assassinated";
-        pip.text = txt;
+        pip._text = txt;
         pip.planet = planet;
         pip.p_data = self;
         var options = [
@@ -2114,17 +2111,45 @@ function PlanetData(planet, system) constructor {
 
     }
 
+    static create_alert(){
+        return instance_create(system.x + 16, system.y - 24, obj_star_event);
+    }
+
     static init_war_of_succession = function(){
         add_feature(eP_FEATURES.SUCCESSION_WAR);
         add_problem("succession", irandom(6) + 4);
         set_player_disposition(-5000);
 
-        var text = name();
-        scr_popup("War of Succession", $"The planetary governor of {text} has died.  Several subordinates and other parties each claim to be the true heir and successor- war has erupted across the planet as a result.  Heresy thrives in chaos.", "succession", "");
-        var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
+        scr_popup("War of Succession", $"The planetary governor of {name()} has died.  Several subordinates and other parties each claim to be the true heir and successor- war has erupted across the planet as a result.  Heresy thrives in chaos.", "succession", "");
+        var _star_alert = create_alert();
+        _star_alert.image_alpha = 1;
+        _star_alert.image_speed = 1;
+        _star_alert.col = "red";
+        scr_event_log("red", $"War of Succession on {name()}");   
+    }
+
+
+    static init_fallen_marines = function(){
+
+        var _eta = scr_mission_eta(system.x, system.y, 1);
+
+        LOGGER.info($"Fallen: found star {name()} as candidate");
+
+        var assigned_problem = add_problem("fallen", _eta);
+        LOGGER.info($"assigned_problem {assigned_problem}");
+
+        if (!assigned_problem) {
+            LOGGER.error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
+            return;
+        }
+
+        var _text = $"Sources indicate one of the Fallen may be upon {name()}.  We have {_eta} months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
+        scr_popup("Hunt the Fallen", _text, "fallen", "");
+        scr_event_log("", $"Sources indicate one of the Fallen may be upon {name()}.  We have {eta} months to investigate.");
+        var star_alert = create_alert();
         star_alert.image_alpha = 1;
         star_alert.image_speed = 1;
-        star_alert.col = "red";
-        scr_event_log("red", "War of Succession on {name()}");   
+        star_alert.col = "purple";        
     }
+
 }

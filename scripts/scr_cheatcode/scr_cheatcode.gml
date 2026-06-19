@@ -496,6 +496,7 @@ function draw_planet_debug_problems() {
         if (scr_hit(38, _y, 337, _y + 20)) {
             tooltip_draw(mission_name_key(_keys[i]));
             if (mouse_button_clicked()) {
+                var _p_data = obj_star_select.p_data;
                 switch (_keys[i]) {
                     case "inquisitor":
                         mission_inquistion_hunt_inquisitor(target.id);
@@ -513,8 +514,11 @@ function draw_planet_debug_problems() {
                         spawn_mechanicus_mission("mech_bionics");
                         break;
                     case "succession":
-                        obj_star_select.p_data.init_war_of_succession();
+                        _p_data.init_war_of_succession();
                         break;
+                    case "fallen":
+                        _p_data.init_fallen_marines();
+                        break
                     default:
                         scr_popup("error", "no specific debug action created please consider helping to make one", "");
                         break;

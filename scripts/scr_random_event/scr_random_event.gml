@@ -754,25 +754,9 @@ function event_fallen() {
 
     var star = choose_array(stars);
     var planet = scr_get_planet_with_owner(star, eFACTION.IMPERIUM);
-    var eta = scr_mission_eta(star.x, star.y, 1);
 
-    if (planet > 0) {
-        LOGGER.info($"Fallen: found star {star.name} planet {planet} as candidate");
-
-        var assigned_problem = add_new_problem(planet, "fallen", eta, star);
-        LOGGER.info($"assigned_problem {assigned_problem}");
-
-        if (!assigned_problem) {
-            LOGGER.error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
-            return;
-        }
-
-        var text = "Sources indicate one of the Fallen may be upon " + string(star.name) + " " + string(scr_roman(planet)) + ".  We have " + string(eta) + " months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
-        scr_popup("Hunt the Fallen", text, "fallen", "");
-        scr_event_log("", "Sources indicate one of the Fallen may be upon " + string(star.name) + " " + string(scr_roman(planet)) + ".  We have " + string(eta) + " months to investigate.");
-        var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
-        star_alert.image_alpha = 1;
-        star_alert.image_speed = 1;
-        star_alert.col = "purple";
+    if (planet > 0 && instance_exists(star)) {
+        var _p_data = star.get_planet_data(planet);
+        _p_data.init_fallen_marines();
     }
 }
