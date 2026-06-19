@@ -287,8 +287,8 @@ if (obj_ncombat.enemy == 1) {
 if (obj_ncombat.enemy == eFACTION.IMPERIUM) {
     for (var j = 1; j <= 20; j++) {
         if (dudes[j] == "Imperial Guardsman") {
-            dudes_ac[j] = 40;
-            dudes_hp[j] = 5;
+            dudes_ac[j] = 5;
+            dudes_hp[j] = 40;
             men += dudes_num[j];
         }
 
