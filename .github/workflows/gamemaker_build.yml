@@ -110,7 +110,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Install GameMaker CLI
         shell: pwsh
@@ -124,7 +124,7 @@ jobs:
         run: |
           $suffix = "${{ steps.version_info.outputs.suffix }}"
           $outputName = "ChapterMaster-${suffix}-${{ matrix.platform }}.zip"
-          gm-cli package --target "${{ matrix.target }}" --runtime "$env:RUNTIME" --output $outputName "${{ steps.find_yyp.outputs.yyp-path }}"
+          gm-cli package --target "${{ matrix.target }}" --runtime "$env:RUNTIME" --toolchain GMS2 --output $outputName "${{ steps.find_yyp.outputs.yyp-path }}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
