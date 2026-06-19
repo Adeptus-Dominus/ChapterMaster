@@ -61,15 +61,16 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     target_squad.update_fulfilment();
 
     static sort = function() {
-        // Build the set of weapon slots this squad's loadout actively manages,
-        // across all roles (required + option + random_pick).
-        // Only wep1/wep2 are cleared — other slots (armour, gear, mobi) are
-        // intentionally left as-is since they may carry meaningful defaults.
+        // For each role, clear only the weapon slots that role's loadout actively manages
+        // (required + option + random_pick). Slots not mentioned in a role's own loadout
+        // are left untouched — e.g. a role that only defines armour won't have wep1/wep2 cleared.
         var _weapon_slots = ["wep1", "wep2"];
-        var _managed_slots = {};
         for (var _ri = 0; _ri < array_length(squad_unit_types); _ri++) {
-            var _role_data = full_squad_data[$ squad_unit_types[_ri]];
+            var _role_key = squad_unit_types[_ri];
+            var _role_data = full_squad_data[$ _role_key];
             if (!struct_exists(_role_data, "loadout")) continue;
+
+            var _managed_slots = {};
             var _ld = _role_data.loadout;
             if (struct_exists(_ld, "required")) {
                 var _slots = struct_get_names(_ld.required);
@@ -89,15 +90,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                         _managed_slots[$ _slots[_s]] = true;
                 }
             }
-        }
-        // Clear managed weapon slots only on members whose role defines a loadout,
-        // so pre-initialization defaults don't interfere with the encumbrance check.
-        // Roles without a loadout (e.g. Captain, Ancient) are skipped entirely.
-        // Search by key name (e.g. "Terminator") not the "role" field rename
-        // (e.g. "Assault Terminator") — marines are stored under the key name.
-        for (var _ri = 0; _ri < array_length(squad_unit_types); _ri++) {
-            var _role_key = squad_unit_types[_ri];
-            if (!struct_exists(full_squad_data[$ _role_key], "loadout")) continue;
+
             var _role_members = members_UnitGroup.get_from({roles: [_role_key, role_key_to_actual[$ _role_key]]});
             while (_role_members.number() > 0) {
                 var _u = _role_members.pop();

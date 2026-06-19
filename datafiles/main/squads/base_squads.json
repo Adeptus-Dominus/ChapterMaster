@@ -102,13 +102,20 @@
         },
         "option": {
           "wep1": [
-            [["Power Fist", "Chainfist"], 4]
-          ],
-          "wep2": [
-            ["{WEAPON_LIST_RANGED_COMBI}", 3],
-            ["{WEAPON_LIST_RANGED_HEAVY_TERMINATOR}", 1]
+            [["Power Fist", "Chainfist"], 7, {"wep2": "Storm Bolter"}] //if option group 3rd element is struct random pick ignores it
           ]
-        }
+        },
+        "random_pick": [
+          {
+            "wep1": ["Power Fist", "Chainfist"],
+            "wep2": "Storm Bolter",
+            "mobi": "Cyclone Missile System"
+          },
+          {
+            "wep1": ["Power Fist", "Chainfist"],
+            "wep2": ["Heavy Flamer", "Assault Cannon"]
+          }
+        ]
       }
     },
     "type_data": {
@@ -143,14 +150,19 @@
       "role": "Assault Terminator",
       "loadout": {
         "required": {
-          "wep1": ["Thunder Hammer", 1],
-          "wep2": ["Storm Shield", 1]
+          "wep1": ["", 0],
+          "wep2": ["", 0]
         },
-        "option": {
-          "wep1": [
-            [["Lightning Claw"], 3, { "wep2": "Lightning Claw" }]
-          ]
-        }
+        "random_pick": [
+          {
+            "wep1": ["Thunder Hammer"],
+            "wep2": ["Storm Shield"]
+          },
+          {
+            "wep1": ["Lightning Claw"],
+            "wep2": ["Lightning Claw"]
+          }
+        ]
       }
     },
     "type_data": {
@@ -400,6 +412,7 @@
     "type_data": {
       "display_data": "Scout {squad_name}",
       "class": ["scout"],
+      "base": "scout",
       "formation_options": [
         "scout",
         "tactical",
