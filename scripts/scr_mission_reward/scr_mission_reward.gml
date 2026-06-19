@@ -143,7 +143,6 @@ function scr_mission_reward(mission, star, planet) {
                             onceh = 1;
                             obj_ini.veh_race[com][i] = 0;
                             obj_ini.veh_loc[com][i] = "";
-                            obj_ini.veh_name[com][i] = "";
                             obj_ini.veh_role[com][i] = "";
                             obj_ini.veh_lid[com][i] = -1;
                             obj_ini.veh_wid[com][i] = 0;

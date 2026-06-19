@@ -368,6 +368,10 @@ try {
     var stop = 0;
     // Which menu is highlighted
 
+    if ((cooldown >= 0) && (cooldown < 9000)) {
+        cooldown -= 1;
+    }
+
     if (instance_exists(obj_ingame_menu) || instance_exists(obj_saveload)) {
         exit;
     }
@@ -380,9 +384,6 @@ try {
         otha = 0;
     }
     // Sound controls
-    if ((cooldown >= 0) && (cooldown < 9000)) {
-        cooldown -= 1;
-    }
     if (click > 0) {
         click = -1;
         audio_play_sound(snd_click, -80, false);

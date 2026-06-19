@@ -105,7 +105,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
         }
 
         //fetch company vehicles
-        for (var _unit = 1; _unit < array_length(obj_ini.veh_role[_comp]); _unit++) {
+        for (var _unit = 0; _unit < array_length(obj_ini.veh_role[_comp]); _unit++) {
             if (array_contains(_vehicles, obj_ini.veh_role[_comp][_unit])) {
                 var _vehic_size = scr_unit_size(false, obj_ini.veh_role[_comp][_unit], false, false);
                 total_vehic_size += _vehic_size;
