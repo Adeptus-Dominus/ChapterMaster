@@ -1,4 +1,5 @@
 name: Build GameMaker Project
+
 on:
   workflow_dispatch:
     inputs:
@@ -18,8 +19,22 @@ on:
 
 jobs:
   build:
-    name: Build
-    runs-on: windows-2022
+    name: Build (${{ matrix.platform }})
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: windows
+            platform: Windows
+            runs-on: windows-latest
+          - target: mac
+            platform: macOS
+            runs-on: macos-latest
+          - target: linux
+            platform: Linux
+            runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -37,17 +52,10 @@ jobs:
           $content = [regex]::Replace($content, [regex]::Escape($placeholder), $url)
           Set-Content $file -Value $content -NoNewline
 
-      # Causing issues with the stable release workflow;
-      # - name: fetch tags
-      #   run: git fetch --tags origin
-
       - name: Set date-time and version info
         id: version_info
         shell: pwsh
         run: |
-          # Generate current date-time directly in the format you want
-          Write-Output "GITHUB_EVENT_NAME is: $env:GITHUB_EVENT_NAME"
-
           if (-not "${{ inputs.build_date }}") {
             $BuildDate = (Get-Date).ToString("yyyy-MM-dd-HHmm")
             Write-Output "No build date provided. Using current date: $BuildDate"
@@ -57,16 +65,13 @@ jobs:
           }
 
           $CommitHash = git rev-parse --short HEAD
-
           try {
             $Version = "${{ github.ref_name }}".Split('/')[-1]
           } catch {
-            # If no tags exist, use the commit hash as the version
             Write-Warning "No tags found, using commit hash as version."
             $Version = $CommitHash
           }
 
-          # Set the version number
           if ($Version -match "^v") {
             $suffix = $Version
           } else {
@@ -75,62 +80,55 @@ jobs:
 
           Add-Content -Path $env:GITHUB_OUTPUT -Value "suffix=$suffix"
           Write-Output "Suffix: $suffix"
-  
-          # Create the version.json content
+
           $VersionJson = @{
             version     = $Version
             build_date  = $BuildDate
             commit_hash = $CommitHash
           } | ConvertTo-Json
-      
-          # Write the version.json to disk
+
           Set-Content -Path datafiles/main/version.json -Value $VersionJson
 
-      # This step finds the yyp file in the repository and saves the path to an output
       - id: find_yyp
-        name: Find The yyp File
+        name: Find the .yyp file
+        shell: pwsh
         run: |
-          # Search for .yyp file recursively in the repository
           $yypFiles = Get-ChildItem -Path ${{ github.workspace }} -Recurse -Filter ChapterMaster.yyp
-          
-          # Check if the file was found
           if ($yypFiles.Count -eq 0) {
             Write-Error "No .yyp file found in the repository"
             exit 1
           }
-
           $yypPath = $yypFiles[0].FullName
-          
           if ($yypFiles.Count -gt 1) {
             Write-Host "::warning:: Multiple .yyp files found. Using the first one: $yypPath"
           }
-
-          # If found, output the path of the .yyp file
           Write-Output "YYP file found at: $yypPath"
           "yyp-path=$yypPath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          
-      # This step sets up the GameMaker build CLI tool Igor https://github.com/bscotch/igor-setup
-      - id: igor_setup
-        name: Setup Igor
-        uses: bscotch/igor-setup@v1.3.0
-        with:
-          target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
-          access-key: ${{ secrets.GM_ACCESS_KEY }}
+          $yypDir = Split-Path $yypPath
+          "yyp-dir=$yypDir" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 
-      # Update the version.json file with build date and other versioning information
-      - id: igor_build
-        name: Build with Igor
-        uses: bscotch/igor-build@v1.3.2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          yyp-path: ${{ steps.find_yyp.outputs.yyp-path }}
-          user-dir: ${{ steps.igor_setup.outputs.user-dir }}
-          name: ChapterMaster-${{ steps.version_info.outputs.suffix }}-Windows.zip
-          yyc: ${{ inputs.yyc }}
-          
-      # Upload built file as an artifact
-      - name: Upload built file as artifact
+          node-version: 20
+
+      - name: Install GameMaker CLI
+        shell: pwsh
+        run: npm install -g @gamemaker/gm-cli@latest
+
+      - name: Build and package for ${{ matrix.platform }}
+        shell: pwsh
+        working-directory: ${{ steps.find_yyp.outputs.yyp-dir }}
+        env:
+          RUNTIME: ${{ inputs.yyc && 'native' || 'vm' }}
+        run: |
+          $suffix = "${{ steps.version_info.outputs.suffix }}"
+          $outputName = "ChapterMaster-${suffix}-${{ matrix.platform }}.zip"
+          gm-cli package --target "${{ matrix.target }}" --runtime "$env:RUNTIME" --output $outputName "${{ steps.find_yyp.outputs.yyp-path }}"
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: built-file
-          path: ${{ steps.igor_build.outputs.out-dir }}
+          name: ChapterMaster-${{ steps.version_info.outputs.suffix }}-${{ matrix.platform }}
+          path: ${{ steps.find_yyp.outputs.yyp-dir }}/ChapterMaster-${{ steps.version_info.outputs.suffix }}-${{ matrix.platform }}.zip
           retention-days: 1
