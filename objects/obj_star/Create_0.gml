@@ -72,10 +72,9 @@ p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
 p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
 
-
-system_datas = array_create(8, 0);
+system_datas = array_create(8, false);
 system_garrison = array_create(8, false);
-system_sabatours = array_create(8, 0);
+system_sabatours = array_create(8, false);
 
 get_garrison = function(planet){
     var _gar = system_garrison[planet];
@@ -273,7 +272,9 @@ function deserialize(save_data) {
     if (struct_exists(save_data, "p_governor")) {
         variable_struct_set(self, "p_governor", save_data.p_governor);
     }
-
+    system_datas = array_create(8, false);
+    system_garrison = array_create(8, false);
+    system_sabatours = array_create(8, false);
 
 }
 
