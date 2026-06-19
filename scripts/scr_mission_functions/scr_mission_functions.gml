@@ -84,6 +84,193 @@ function mission_name_key(mission) {
     }
 }
 
+/// @self Struct.PlanetData
+function problem_end_turn_checks(){
+    static problem_functions = {
+        "succession" : function(problem_index){
+            if (problem_timers[problem_index] > 0){
+                return;
+            }
+            var result, _alert_text;
+            var dice1 = roll_dice(1, 100);
+            var dice2 = roll_dice(1, 100);
+
+            result = eFACTION.IMPERIUM;
+            _alert_text = "";
+            if (dice1 <= (corruption * 2)) {
+                result = eFACTION.CHAOS;
+            }
+            if (dice2 <= (population_influences[eFACTION.TAU] * 2)) {
+                result = eFACTION.TAU;
+            }
+
+            if (current_owner == eFACTION.IMPERIUM && result != eFACTION.IMPERIUM){
+                edit_pdf(guardsmen);
+                edit_guardsmen(-guardsmen);
+                set_new_owner(result);
+            }
+
+            _alert_text = $"War of Succession on {name()} has ended";
+
+            if (result == eFACTION.CHAOS) {
+                _alert_text += " with Chaos in control.";
+                set_player_disposition(0);
+                scr_alert("red", "succession", _alert_text, x, y);
+                scr_event_log("purple", _alert_text);
+            } else if (result == eFACTION.TAU) {
+                _alert_text += " with a Tau sympathizer in control.";
+                set_player_disposition(10 + choose(1, 2, 3, 4, 5, 6));
+                add_forces(eFACTION.TAU, 2)
+                scr_alert("red", "succession", _alert_text, x, y);
+                scr_event_log("red", _alert_text);
+            } else if (result == eFACTION.IMPERIUM) {
+                _alert_text += " The resultant governor is the most staunch pillar of the imperium.";
+                _alert_text += ".";
+                scr_alert("green", "succession", _alert_text, x, y);
+                scr_event_log("", _alert_text);
+            } else {
+                //At the moment does not fire but a worty flavour option for down the line
+                _alert_text += " Word is the new Governor has Heretical leanings and sympathises with xenos.";
+            }
+
+            delete_feature(eP_FEATURES.SUCCESSION_WAR);
+            remove_problem("succession");            
+        },
+        "recon" : function(problem_index){
+            if (problem_timers[problem_index] > 0){
+                return;
+            }            
+            var _alert_text = "Inquisition Mission Failed: Investigate ";
+            var _disp_string = alter_dispostion(eFACTION.INQUISITION, -5);
+            _alert_text += $"{name()}. {_disp_string}";
+            scr_alert("red", "mission_failed", _alert_text, 0, 0);
+            scr_event_log("red", _alert_text);
+            remove_problem("recon");            
+        },
+
+        "great_crusade" : function(problem_index){
+            if (problem_timers[problem_index] > 0){
+                return;
+            }            
+            var _crusade_direction;
+            var _join_crusade = false;
+            var _player_fleet = instance_nearest(system.x, system.y, obj_p_fleet);
+
+            if (_player_fleet.action == "") {
+                if (point_distance(system.x, system.y, _player_fleet.x, _player_fleet.y) < 10) {
+                    _join_crusade = true;
+                }
+            }
+
+            if (_join_crusade) {
+                _crusade_direction = point_direction(room_width / 2, room_height / 2, x, y);
+                with (_player_fleet) {
+                    action_x = x + lengthdir_x(1200, _crusade_direction);
+                    action_y = y + lengthdir_y(1200, _crusade_direction);
+                    set_fleet_movement(false, "crusade1");
+                }
+
+                scr_alert("green", "crusade", "Fleet embarks upon Crusade.", x, y);
+                scr_event_log("", "Fleet embarks upon Crusade.");
+            } else {
+                // hit loyalty here
+                var _disp_hits = alter_dispostions([
+                    [eFACTION.INQUISITION , -10],
+                    [eFACTION.IMPERIUM, -5],
+                ])
+                var _string = "No ships designated for Crusade. {_disp_hits}"
+                if (obj_controller.penitent == 1) {
+                    obj_controller.penitent_current = 0;
+                    _string += "Your penitence crusade has been lengthened for your failings";
+                }
+
+                scr_alert("red", "crusade", _string, system.x, system.y);
+                scr_loyalty("Refusing to Crusade", "+");
+                scr_event_log("red", "No ships designated for Crusade.");
+            }
+            remove_problem("great_crusade");            
+        },
+        "necron" : function(problem_index){
+            if (problem_timers[problem_index] > 0){
+                return;
+            }
+            var _alert_text = "The Necron Tomb of planet ";
+
+            var _disp_string = alter_dispostion(eFACTION.INQUISITION, -8);
+            _alert_text += $"{numeral_name} has not been deactivated in time.  It has awakened, rank upon rank of Necrons pouring out to the planet's surface.  The Inquisition is not pleased with your failure. {_disp_string}";
+            scr_popup("Inquisition Mission Failed", _alert_text, "necron_army", "");
+            scr_event_log("red", $"Inquisition Mission Failed: Bombing run failed; the Necron Tomb on {name()} has become active.");
+
+            add_forces(eFACTION.NECRONS, 4);
+            if (awake_tomb_world(features) == 0) {
+                awaken_tomb_world(features);
+            }
+            remove_problem("necron");
+            // scr_alert("red","mission_failed",_alert_text,0,0);
+        },
+
+        "spyrer" : function(problem_index){
+            if (problem_timers[problem_index] > 0){
+                return;
+            }
+            var _planet_name = name();
+            var _disp_string = alter_dispostion(eFACTION.INQUISITION, -3);
+            var _alert_text = $"The Spyrer on {_planet_name} has been left unchecked.  In the ensuing carnage some high-ranking officials have been killed, along with several Nobles.  Panic is running amock in several parts of the hives and the Inquisition is less than pleased.{_disp_string}";
+            var _text = "Inquisition Mission Failed: The Spyrer on {_planet_name} was not removed.";
+            scr_popup("Inquisition Mission Failed", _alert_text, "spyrer", "");
+            scr_event_log("red", _text);
+            remove_problem("spyrer");       
+        },
+
+        "fallen" : function(problem_index){
+            //TODO marker point for cohesion mechanics
+            if (problem_timers[problem_index] > 0){
+                return;
+            }
+            var alert_text = "";
+            var _unit;
+            if (irandom(100) > 33) {
+                // Give all marines +3d6 corruption and reduce loyalty by 20*/
+                var me = 0;
+                for (var co = 0; co <= obj_ini.companies; co++) {
+                    me = 0;
+                    for (me = 0; me < array_length(obj_ini.role[co]); me++) {
+                        if ((obj_ini.race[co][me] == 1) && (obj_ini.role[co][me] != "")) {
+                            _unit = fetch_unit([co, me]);
+                            _unit.edit_corruption(irandom_range(3, 6));
+                            _unit.alter_loyalty(-10);
+                        }
+                    }
+                }
+            }
+            alert_text = $"Any Fallen that may have been on {name()} ";
+            alert_text += "have been given sufficient time to escape.  Morale within your chapter has plummeted; some of your battle brothers have become restless and speak among eachother in hushed tones.";
+            scr_popup("Hunt the Fallen Failed", alert_text + "\n\n(Chapter wide loyalty: -10)\nChaplains note marked changes in behaviour of some brothers", "fallen", "");
+            obj_controller.loyalty -= 10;
+            obj_controller.loyalty_hidden -= 10;
+            remove_problem("fallen");
+            scr_event_log("red", $"Mission Failed: Any Fallen within the {system.name} system have been given time to escape.");          
+        },
+        "provide_garrison" : complete_garrison_mission,
+    }
+
+    for (var i = 0; i <array_length(problems);i++){
+        var _problem = problems[i];
+        if (_problem == ""){
+            return;
+        }
+
+        if (struct_exists(problem_functions, _problem)){
+            try {
+                var _problem_action = method(self, problem_functions[$ _problem]);
+                _problem_action(i);
+            } catch (_exception) {
+                ERROR_HANDLER.handle_exception(_exception);
+            }
+        }
+    }
+}
+
 /// @self Asset.GMObject.obj_star
 function scr_new_governor_mission(planet, problem = "") {
     if (p_owner[planet] != eFACTION.IMPERIUM) {
@@ -353,54 +540,66 @@ function init_train_forces_mission(planet, star, mission_slot, marine) {
 }
 
 /// @self Asset.GMObject.obj_star
-function complete_garrison_mission(targ_planet, problem_index) {
-    var planet = get_planet_data(targ_planet);
-    if (problem_has_key_and_value(targ_planet, problem_index, "stage", "active")) {
-        if (planet.current_owner == eFACTION.IMPERIUM && system_garrison[targ_planet - 1].garrison_force) {
-            var _mission_string = $"The garrison on {planet_numeral_name(targ_planet)} has finished the period of garrison support agreed with the planetary governor.";
-            var p_garrison = system_garrison[targ_planet - 1];
-            var result = p_garrison.garrison_disposition_change();
-            if (!p_garrison.garrison_leader) {
-                p_garrison.find_leader();
-            }
-            if (result == "none") {
-                //TODO make a dedicated plus minus string function if there isn't one already
-            } else if (!result) {
-                var effect = result * irandom_range(1, 5);
-                dispo[targ_planet] += effect;
-                _mission_string += $"A number of diplomatic incidents occured over the period which had considerable negative effects on our disposition with the planetary governor (disposition -{effect})";
-            } else {
-                var effect = result * irandom_range(1, 5);
-                dispo[targ_planet] += result * effect;
-                _mission_string += $"As a diplomatic mission the duration of the stay was a success with our political position with the planet being enhanced greatly (disposition +{effect})";
-            }
-            var tester = global.character_tester;
-            var widom_test = tester.standard_test(p_garrison.garrison_leader, "wisdom", 0, ["siege"]);
-            if (widom_test[0]) {
-                p_fortified[targ_planet]++;
-                _mission_string += $"while stationed {p_garrison.garrison_leader.name_role()} makes several notable observations and is able to instruct the planets defense core leaving the world better defended (fortifications++).";
-            }
-            //TODO just generall apply this each turn with a garrison to see if a cult is found
-            if (planet_feature_bool(p_feature[targ_planet], eP_FEATURES.GENE_STEALER_CULT)) {
-                var cult = return_planet_features(planet.features, eP_FEATURES.GENE_STEALER_CULT)[0];
-                if (cult.hiding) {
-                    widom_test = tester.standard_test(p_garrison.garrison_leader, "wisdom", 0, ["tyranids"]);
-                    if (widom_test[0]) {
-                        cult.hiding = false;
-                        _mission_string += "Most alarmingly signs of a genestealer cult are noted by the garrison. how far the rot has gone will now need to be investigated and the xenos taint purged.";
-                    }
-                }
-            }
-            scr_popup($"Agreed Garrison of {planet_numeral_name(targ_planet)} complete", _mission_string, "", "");
-        } else {
-            planet.add_disposition(-20);
-            scr_popup($"Agreed Garrison of {planet_numeral_name(targ_planet)}", $"your agreed garrison of  {planet_numeral_name(targ_planet)} was cut short by your chapter the planetary governor has expressed his displeasure (disposition -20)", "", "");
-        }
-        remove_planet_problem(targ_planet, "provide_garrison");
-    } else {
-        remove_planet_problem(targ_planet, "provide_garrison");
+function complete_garrison_mission(problem_index) {
+    if (problem_timers[problem_index] > 0){
+        return;
     }
+    var _problem_data = problems_data[problem_index];
+    if (!struct_has_value(_problem_data, "stage", "active")){
+        remove_problem("provide_garrison");
+        return;
+    }
+    var planet = new PlanetData(targ_planet, self);
+
+    garrisons.update();
+    if (current_owner != eFACTION.IMPERIUM || !garrisons.garrison_force) {
+        remove_problem("provide_garrison");
+        add_disposition(-20);
+        scr_popup($"Agreed Garrison of {name()}", $"your agreed garrison of  {name()} was cut short by your chapter the planetary governor has expressed his displeasure (disposition -20)", "", "");
+        return;
+    }
+
+    var _mission_string = $"The garrison on {name()} has finished the period of garrison support agreed with the planetary governor.";
+    var _result = garrisons.garrison_disposition_change();
+    if (!garrisons.garrison_leader) {
+        garrisons.find_leader();
+    }
+
+    var _effect = 0;
+    if (_result == "none") {
+        //TODO make a dedicated plus minus string function if there isn't one already
+    } else if (_result < 0) {
+        var _effect = _result * irandom_range(1, 5);
+        _mission_string += $"A number of diplomatic incidents occured over the period which had considerable negative effects on our disposition with the planetary governor (disposition -{_effect})";
+    } else {
+        var _effect = _result * irandom_range(1, 5);
+        _mission_string += $"As a diplomatic mission the duration of the stay was a success with our political position with the planet being enhanced greatly (disposition +{_effect})";
+    }
+
+    add_disposition(_effect);
+    var tester = global.character_tester;
+    var widom_test = tester.standard_test(garrisons.garrison_leader, "wisdom", 0, ["siege"]);
+
+    if (widom_test[0]) {
+        alter_fortification(1);
+        _mission_string += $"while stationed {garrisons.garrison_leader.name_role()} makes several notable observations and is able to instruct the planets defense core leaving the world better defended (fortifications+1).";
+    }
+    //TODO just generall apply this each turn with a garrison to see if a cult is found
+    if (has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
+        var cult = get_features(eP_FEATURES.GENE_STEALER_CULT)[0];
+        if (cult.hiding) {
+            widom_test = tester.standard_test(garrisons.garrison_leader, "wisdom", 0, ["tyranids"]);
+            if (widom_test[0]) {
+                cult.hiding = false;
+                _mission_string += "Most alarmingly signs of a genestealer cult are noted by the garrison. how far the rot has gone will now need to be investigated and the xenos taint purged.";
+            }
+        }
+    }
+    scr_popup($"Agreed Garrison of {name()} complete", _mission_string, "", "");
+     
+    remove_problem("provide_garrison");
 }
+
 
 function complete_train_forces_mission(targ_planet, problem_index) {
     var planet = get_planet_data(targ_planet);

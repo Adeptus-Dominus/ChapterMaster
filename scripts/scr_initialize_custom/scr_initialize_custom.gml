@@ -1662,19 +1662,19 @@ function scr_initialize_custom() {
     switch (obj_creation.squad_distribution) {
         case 1: // equal specialists only
             obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main\\squads\\equal_specialists.json", json_parse);
+                working_directory + $"main/squads/equal_specialists.json", json_parse);
             break;
         case 2: // equal scouts only
             obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main\\squads\\equal_scouts.json", json_parse);
+                working_directory + $"main/squads/equal_scouts.json", json_parse);
             break;
         case 3: // equal specialists and equal scouts
             obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main\\squads\\equal_spescout.json", json_parse);
+                working_directory + $"main/squads/equal_spescout.json", json_parse);
             break;
         default: // 0 = standard
             obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main\\squads\\company_squad_builds.json", json_parse);
+                working_directory + $"main/squads/company_squad_builds.json", json_parse);
             break;
     }
 
@@ -1691,7 +1691,7 @@ function scr_initialize_custom() {
         _squad_name = obj_creation.squad_name;
     }
 
-    squad_types = json_to_gamemaker(working_directory + $"main\\squads\\base_squads.json", json_parse);
+    squad_types = json_to_gamemaker(working_directory + $"main/squads/base_squads.json", json_parse);
     var _swaps = [
         // ── Heavy Ranged ──────────────────────────────────────────────
         {
@@ -3038,7 +3038,6 @@ function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, acce
     obj_ini.veh_acc[company][slot] = accessory;
     obj_ini.veh_hp[company][slot] = 100;
     obj_ini.veh_chaos[company][slot] = 0;
-    obj_ini.veh_pilots[company][slot] = 0;
     obj_ini.veh_lid[company][slot] = -1;
     obj_ini.veh_wid[company][slot] = 2;
 }

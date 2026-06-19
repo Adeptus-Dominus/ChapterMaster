@@ -34,7 +34,6 @@ function PlanetData(planet, system) constructor {
         is_hulk = system.space_hulk;
         x = system.x;
         y = system.y;
-        player_disposition = system.dispo[planet];
         planet_type = system.p_type[planet];
         operatives = system.p_operatives[planet];
         pdf = system.p_pdf[planet];
@@ -78,10 +77,6 @@ function PlanetData(planet, system) constructor {
 
         heretic_timer = system.p_hurssy_time[planet];
 
-        secret_corruption = system.p_heresy_secret[planet];
-
-        corruption = system.p_heresy[planet];
-
         population_influences = system.p_influence[planet];
 
         raided_this_turn = system.p_raided[planet];
@@ -105,8 +100,15 @@ function PlanetData(planet, system) constructor {
             system.dispo[planet] = 100;
         }
 
+        player_disposition = system.dispo[planet];
         garrisons = system.system_garrison[planet];
+        if (garrisons == 0){
+            garrisons = system.get_garrison(planet)
+        }
         sabatours = system.system_sabatours[planet];
+        if (sabatours == 0){
+            sabatours = system.get_sabatours(planet)
+        }
         system.system_datas[planet] = self;
 
         // current planet heresy
@@ -117,6 +119,10 @@ function PlanetData(planet, system) constructor {
                 system.p_influence[planet][i] = 0;
             }
         }
+
+        secret_corruption = system.p_heresy_secret[planet];
+
+        corruption = system.p_heresy[planet];
     }
 
     refresh_data();
@@ -253,6 +259,11 @@ function PlanetData(planet, system) constructor {
         guardsmen = system.p_guardsmen[planet];
     };
 
+    static edit_pdf = function(edit_val){
+        system.p_pdf[planet] = max(0, system.p_pdf[planet] + edit_val);
+        pdf = system.p_pdf[planet]
+    }
+    
     pdf = system.p_pdf[planet];
     fortification_level = system.p_fortified[planet];
 
@@ -267,8 +278,7 @@ function PlanetData(planet, system) constructor {
         if (large_population) {
             new_pdf *= large_pop_conversion;
         }
-        pdf += new_pdf;
-        system.p_pdf[planet] = pdf;
+        edit_pdf(new_pdf)
         return new_pdf;
     };
 
@@ -457,7 +467,7 @@ function PlanetData(planet, system) constructor {
     
         var pip = instance_create(0,0,obj_popup);
         pip.title = "Planetary Governor Assassinated";
-        pip.text = txt;
+        pip._text = txt;
         pip.planet = planet;
         pip.p_data = self;
         var options = [
@@ -1581,6 +1591,18 @@ function PlanetData(planet, system) constructor {
         instance_destroy(obj_star_select);
     };
 
+    static set_star_select_planet = function(){
+        obj_star_select.garrison = garrisons;
+        system.garrison = garrisons.garrison_force;
+        obj_star_select.feature = "";
+        buttons_selected = false;
+        garrisons.update();
+        if (garrisons.garrison_force){
+            garrisons.find_leader();
+            garrisons.garrison_disposition_change(true);            
+        }     
+    }
+
     static planet_selection_logic = function() {
         var planet_is_allies = scr_is_planet_owned_by_allies(system, planet);
         var garrison_issue = !planet_is_allies || pdf <= 0;
@@ -1602,10 +1624,7 @@ function PlanetData(planet, system) constructor {
                 exit;
             }
         } else if (!_loading) {
-            obj_star_select.garrison = system.get_garrison(planet);
-            system.garrison = obj_star_select.garrison.garrison_force;
-            obj_star_select.feature = "";
-            buttons_selected = false;
+            set_star_select_planet();
         } else if (_loading && planet > 0) {
             obj_controller.unload = planet;
             obj_controller.return_object = system;
@@ -2093,4 +2112,46 @@ function PlanetData(planet, system) constructor {
         }
 
     }
+
+    static create_alert = function(){
+        return instance_create(system.x + 16, system.y - 24, obj_star_event);
+    }
+
+    static init_war_of_succession = function(){
+        add_feature(eP_FEATURES.SUCCESSION_WAR);
+        add_problem("succession", irandom(6) + 4);
+        set_player_disposition(-5000);
+
+        scr_popup("War of Succession", $"The planetary governor of {name()} has died.  Several subordinates and other parties each claim to be the true heir and successor- war has erupted across the planet as a result.  Heresy thrives in chaos.", "succession", "");
+        var _star_alert = create_alert();
+        _star_alert.image_alpha = 1;
+        _star_alert.image_speed = 1;
+        _star_alert.col = "red";
+        scr_event_log("red", $"War of Succession on {name()}");   
+    }
+
+
+    static init_fallen_marines = function(){
+
+        var _eta = scr_mission_eta(system.x, system.y, 1);
+
+        LOGGER.info($"Fallen: found star {name()} as candidate");
+
+        var assigned_problem = add_problem("fallen", _eta);
+        LOGGER.info($"assigned_problem {assigned_problem}");
+
+        if (!assigned_problem) {
+            LOGGER.error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
+            return;
+        }
+
+        var _text = $"Sources indicate one of the Fallen may be upon {name()}.  We have {_eta} months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
+        scr_popup("Hunt the Fallen", _text, "fallen", "");
+        scr_event_log("", $"Sources indicate one of the Fallen may be upon {name()}.  We have {_eta} months to investigate.");
+        var star_alert = create_alert();
+        star_alert.image_alpha = 1;
+        star_alert.image_speed = 1;
+        star_alert.col = "purple";        
+    }
+
 }

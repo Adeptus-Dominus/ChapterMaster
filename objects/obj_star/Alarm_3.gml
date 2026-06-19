@@ -54,7 +54,8 @@ try {
             if (struct_exists(_data, "planet")) {
                 obj_controller.selecting_planet = _data.planet;
                 if (obj_controller.selecting_planet > 0 && obj_controller.selecting_planet < 5) {
-                    obj_star_select.garrison = get_garrison(obj_controller.selecting_planet);
+                    var _pdata = get_planet_data(obj_controller.selecting_planet);
+                    _pdata.set_star_select_planet();
                 }
             }
             obj_controller.selection_data = false;

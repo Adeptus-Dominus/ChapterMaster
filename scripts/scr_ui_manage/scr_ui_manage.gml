@@ -574,7 +574,11 @@ function alternative_manage_views(x1, y1) {
             surface_reset_target();
 
             // save to local game folder
-            var base_name = working_directory + $"\\main\\marine_capture_{_unit.name()}_{_unit.marine_number}{_unit.company}";
+            var main_dir = working_directory + "/main";
+            if (!directory_exists(main_dir)) {
+                directory_create(main_dir);
+            }
+            var base_name = main_dir + $"/marine_capture_{_unit.name()}_{_unit.marine_number}{_unit.company}";
             var extension = ".png";
             var index = 0;
             var path;
@@ -592,7 +596,11 @@ function alternative_manage_views(x1, y1) {
             // cleanup
             surface_free(surf);
 
-            LOGGER.debug("Marine image saved to: " + path);
+            if (file_exists(path)) {
+                LOGGER.debug("Marine image saved to: " + path);
+            } else {
+                LOGGER.error("Failed to save marine image to: " + path);
+            }
         }
     }
 }

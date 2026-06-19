@@ -297,7 +297,7 @@ function spawn_chaos_warlord() {
         var tix = $"Chaos Lord {faction_leader[eFACTION.CHAOS]} continues his Black Crusade into Sector {obj_ini.sector_name}.";
         scr_alert("purple", "lol", tix, nfleet.x, nfleet.y);
         scr_event_log("purple", tix, fleet_target.name);
-        scr_popup("Black Crusade", "A Black Crusade led by the Chaos Lord {faction_leader[eFACTION.CHAOS]} has arrived in {obj_ini.sector_name}.  His forces have already carved a bloody path through many sectors and yours is next.  {faction_leader[eFACTION.CHAOS]} also seems to be set on killing you.  The Black Crusade's current target is system {fleet_target.name}.", "", "");
+        scr_popup("Black Crusade", $"A Black Crusade led by the Chaos Lord {faction_leader[eFACTION.CHAOS]} has arrived in {obj_ini.sector_name}.  His forces have already carved a bloody path through many sectors and yours is next.  {faction_leader[eFACTION.CHAOS]} also seems to be set on killing you.  The Black Crusade's current target is system {fleet_target.name}.", "", "");
         // title / text / image / speshul
     }
 }

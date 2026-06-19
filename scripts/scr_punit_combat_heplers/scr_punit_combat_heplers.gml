@@ -1,39 +1,20 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
 function squeeze_map_forces() {
     try {
         var _player_front_row = get_rightmost();
         var _enemy_front = get_leftmost(obj_enunit, false);
-        if (_player_front_row != "none" && _enemy_front != "none") {
+        if (_player_front_row != noone && _enemy_front != noone) {
             if (!collision_point(_player_front_row.x + 10, _player_front_row.y, obj_enunit, 0, 1)) {
-                var _enemy_front = get_leftmost(obj_enunit, false);
-                if (_enemy_front != "none") {
-                    var _move_distance = calculate_block_distances(_player_front_row, _enemy_front) - 2;
-                    with (obj_pnunit) {
-                        move_unit_block("east", _move_distance, true);
-                    }
+                var _move_distance = calculate_block_distances(_player_front_row, _enemy_front) - 2;
+                with (obj_pnunit) {
+                    move_unit_block("east", _move_distance, true);
                 }
             }
         }
 
-        /* var _enemy_front =  get_leftmost(obj_enunit, false);
-		if (_enemy_front!="none"){
-			var _player_front_row=get_rightmost();
-			if (_player_front_row!="none"){
-				var _move_distance = calculate_block_distances(_player_front_row, _enemy_front) -1;
-				with (obj_enunit){
-					if (!flank && _player_front_row.x<x){
-						move_unit_block("west", _move_distance);
-					}
-				}
-			}
-		}*/
-
         var _player_rear = get_leftmost();
-        if (_player_rear != "none") {
+        if (_player_rear != noone) {
             var _enemy_flank = get_rightmost(obj_enunit, true, false);
-            if (_enemy_flank != "none") {
+            if (_enemy_flank != noone) {
                 if (_enemy_flank.flank) {
                     var _move_distance = calculate_block_distances(_player_rear, _enemy_flank) - 1;
                     with (obj_enunit) {
@@ -52,8 +33,8 @@ function squeeze_map_forces() {
 function target_block_is_valid(target, desired_type) {
     try {
         var _is_valid = false;
-        if (target == "none") {
-            return false;
+        if (target == noone) {
+            return _is_valid;
         }
         if (instance_exists(target)) {
             if (target.x > 0 && target.object_index == desired_type) {
@@ -73,7 +54,7 @@ function target_block_is_valid(target, desired_type) {
 
 function get_rightmost(block_type = obj_pnunit, include_flanking = true, include_main_force = true) {
     try {
-        var rightmost = "none";
+        var rightmost = noone;
         if (instance_exists(block_type)) {
             with (block_type) {
                 if (!include_flanking && flank) {
@@ -92,7 +73,7 @@ function get_rightmost(block_type = obj_pnunit, include_flanking = true, include
                         continue;
                     }
                 }
-                if (rightmost == "none" && x > 0) {
+                if (rightmost == noone && x > 0) {
                     rightmost = block_type.id;
                 } else {
                     if (x > rightmost.x) {
@@ -117,7 +98,7 @@ function block_has_armour(target) {
 
 function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
     try {
-        var left_most = "none";
+        var left_most = noone;
         if (instance_exists(block_type)) {
             with (block_type) {
                 if (!include_flanking && flank) {
@@ -133,7 +114,7 @@ function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
                         continue;
                     }
                 }
-                if (left_most == "none" && x > 0) {
+                if (left_most == noone && x > 0) {
                     left_most = block_type.id;
                 } else {
                     if (x < left_most.x && x > 0) {
@@ -241,9 +222,7 @@ function move_enemy_blocks() {
 
 /// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit
 function block_composition_string() {
-    var _composition_string = "";
-
-    _composition_string = $"{unit_count}x Total; ";
+    var _composition_string = $"{unit_count}x Total; ";
     if (men > 0) {
         _composition_string += $"{string_plural_count("Normal Unit", men)}; ";
     }

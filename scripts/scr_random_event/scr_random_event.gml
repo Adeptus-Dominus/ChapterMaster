@@ -475,18 +475,12 @@ function scr_random_event(execute_now) {
             }
         }
 
-        array_push(star.p_feature[planet], new NewPlanetFeature(eP_FEATURES.SUCCESSION_WAR));
-        add_new_problem(planet, "succession", irandom(6) + 4, star);
-        star.dispo[planet] = -5000;
+        if (planet > 0 && instance_exists(star)){
+            var _pdata = star.get_planet_data(planet);
+            _pdata.init_war_of_succession();
+            _evented = true;
+        }
 
-        var text = string(star.name) + scr_roman(planet);
-        scr_popup("War of Succession", "The planetary governor of " + string(text) + " has died.  Several subordinates and other parties each claim to be the true heir and successor- war has erupted across the planet as a result.  Heresy thrives in chaos.", "succession", "");
-        var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
-        star_alert.image_alpha = 1;
-        star_alert.image_speed = 1;
-        star_alert.col = "red";
-        scr_event_log("red", "War of Succession on " + string(text));
-        _evented = true;
     } else if (chosen_event == eEVENT.RANDOM_FUN) {
         // Flavor text/events
         LOGGER.info("RE: Random");
@@ -760,25 +754,9 @@ function event_fallen() {
 
     var star = choose_array(stars);
     var planet = scr_get_planet_with_owner(star, eFACTION.IMPERIUM);
-    var eta = scr_mission_eta(star.x, star.y, 1);
 
-    if (planet > 0) {
-        LOGGER.info($"Fallen: found star {star.name} planet {planet} as candidate");
-
-        var assigned_problem = add_new_problem(planet, "fallen", eta, star);
-        LOGGER.info($"assigned_problem {assigned_problem}");
-
-        if (!assigned_problem) {
-            LOGGER.error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
-            return;
-        }
-
-        var text = "Sources indicate one of the Fallen may be upon " + string(star.name) + " " + string(scr_roman(planet)) + ".  We have " + string(eta) + " months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
-        scr_popup("Hunt the Fallen", text, "fallen", "");
-        scr_event_log("", "Sources indicate one of the Fallen may be upon " + string(star.name) + " " + string(scr_roman(planet)) + ".  We have " + string(eta) + " months to investigate.");
-        var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
-        star_alert.image_alpha = 1;
-        star_alert.image_speed = 1;
-        star_alert.col = "purple";
+    if (planet > 0 && instance_exists(star)) {
+        var _p_data = star.get_planet_data(planet);
+        _p_data.init_fallen_marines();
     }
 }
