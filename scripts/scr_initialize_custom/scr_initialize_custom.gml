@@ -2358,22 +2358,16 @@ function scr_initialize_custom() {
         /// comp 10: tac 40: scout 50;
         if (squad_distribution == 1 || squad_distribution == 3) {
             if (_coy.coy >= 2 && _coy.coy <= 9) {
-                // Scout distribution logic for equal_scouts (sd==2) and equal_spescout (sd==3).
+                // Scout distribution logic for equal_spescout (sd==3).
                 //
-                // For standard equal_scouts (sd==2) or equal_spescout without LW (sd==3, !_lw):
-                //   10 scouts are moved from the 10th company bank into each battle company so
-                //   that the JSON template's scout_squad proportion can fill at game start.
-                //
-                // For LW + equal_spescout (sd==3, _lw==true) scouts are NOT drained from 10th:
-                //   - 10th company retains its full scout bank (~90) so its own scout_squad
-                //     proportions (from the equal_spescout override) fill correctly.
-                //   - Companies 2-9 receive no scout marines at game start; the scout_squad(1)
-                //     proportion in their JSON template simply produces no squads initially.
-                //     Scouts can be recruited into those companies naturally during the campaign.
+                // 10 scouts are moved from the 10th company bank into each battle company (2-9)
+                // so that the JSON template's scout_squad proportion can fill at game start.
+                // This applies regardless of whether Lightning Warriors is active; LW+equal_spescout
+                // distributes 10 scouts per company just like the non-LW case.
                 //
                 // Note: for LW + equal_scouts (sd==2) this branch is not reached at all because
                 //   sd==2 does not satisfy (sd==1 || sd==3), so it falls to the else block below.
-                if (equal_scouts && !(squad_distribution == 3 && _lw)) {
+                if (equal_scouts) {
                     if (companies.tenth.scouts > 10) {
                         //theoretically this keeps track of moving scouts from the bank of them in 10th
                         _coy.scouts = 10;
@@ -2390,13 +2384,10 @@ function scr_initialize_custom() {
                 _coy.assaults = assault;
                 _coy.devastators = devastator;
             }
-            // For equal_scouts or equal_spescout (without LW), replace the scouts that were moved
-            // out of 10th company with an equivalent number of tacticals so the 10th's total
-            // marine count stays consistent. _moved_scouts tracks the cumulative scouts transferred
-            // to other companies during the loop above.
-            // Skipped for LW + equal_spescout (sd==3, _lw==true) because no scouts were moved in
-            // that path; 10th company retains its scouts and needs no tactical swap.
-            if (equal_scouts && _coy.coy == 10 && !(squad_distribution == 3 && _lw)) {
+            // Replace the scouts that were moved out of 10th company with an equivalent number
+            // of tacticals so the 10th's total marine count stays consistent.
+            // _moved_scouts tracks the cumulative scouts transferred to other companies above.
+            if (equal_scouts && _coy.coy == 10) {
                 // theoretically this swaps moved scouts with tacticals
                 _coy.tacticals = _moved_scouts;
             }
@@ -2406,10 +2397,12 @@ function scr_initialize_custom() {
             if (_coy.coy >= 2 && _coy.coy <= 5) {
                 if (equal_scouts) {
                     if (companies.tenth.scouts > 10) {
-                        _coy.scouts = 10;
+                        // LW needs 20 scouts per company to fill proportion:2 scout squads.
+                        // Non-LW equal_scouts uses 10 (proportion:1).
+                        _coy.scouts = _lw ? 20 : 10;
                         _moved_scouts += _coy.scouts;
                         _coy.tacticals = max(0, (_coy.total - (assault + devastator + _coy.scouts)));
-                        companies.tenth.scouts -= _moved_scouts;
+                        companies.tenth.scouts -= _coy.scouts; // fix: subtract this company's amount, not the cumulative total
                     } else {
                         // if 10th is run out somehow, revert to normal behaviour
                         _coy.tacticals = max(0, (_coy.total - (assault + devastator)));
@@ -2466,7 +2459,8 @@ function scr_initialize_custom() {
             }
             if (real(_coy.coy) == 10 && equal_scouts) {
                 _coy.tacticals = _moved_scouts;
-                _coy.scouts = _coy.scouts - _coy.tacticals;
+                // _coy.scouts is already the correct bank remainder after per-company
+                // deductions above — do not subtract tacticals again or it double-counts.
             }
         }
 

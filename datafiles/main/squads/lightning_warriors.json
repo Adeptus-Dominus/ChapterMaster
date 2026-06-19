@@ -150,7 +150,7 @@
           "company": 10,
           "squads": [
             { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
-            { "squad": "scout_squad", "proportion": 5 },
+            { "squad": "scout_squad", "proportion": 1 },
             { "squad": "bike_squad", "proportion": 4 }
           ]
         }
@@ -219,6 +219,7 @@
           "company": 10,
           "squads": [
             { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
+            { "squad": "scout_squad", "proportion": 1 },
             { "squad": "bike_squad", "proportion": 4 }
           ]
         }
