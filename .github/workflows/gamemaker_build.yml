@@ -138,10 +138,6 @@ jobs:
 
           $cmd = "gm-cli package --target ${{ matrix.target }} --runtime $env:RUNTIME --output $outputName --verbose"
 
-          if ("${{ matrix.target }}" -eq "mac") {
-            $cmd += ' --toolchain-options ''{"signingIdentity":""}'''
-          }
-
           $cmd += " `"$yypPath`""
           Write-Host "Running: $cmd"
           Invoke-Expression $cmd
