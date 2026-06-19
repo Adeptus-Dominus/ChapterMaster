@@ -592,8 +592,9 @@
             1
         ],
         "constitution": [
-            20,
-            1
+            28,
+            1,
+            "max"
         ],
         "dexterity": [
             20,

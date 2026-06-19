@@ -3154,89 +3154,14 @@ try {
         u.sprite_index = spr_weapon_blank;
     }
 
-    // ** Set up friendly Imperial Guard auxilia **
-    // Bulk player force modelled on the defenses above. Reads the world's deployed
-    // garrison (p_guardsmen). It renders and is durable via veh blocks; its firepower
-    // is injected in scr_player_combat_weapon_stacks, scaled to player_guard. No roster
-    // coupling, so no per-model casualty writes.
+    // ** Imperial Guard auxilia **
+    // The old p_guardsmen bolt-on block was retired here. Guardsmen are now fielded
+    // through the standard roster: station them on a world (ship_location -1) and the
+    // Local Forces toggle deploys them into the Hirelings block like any other unit,
+    // so the engine handles placement, targeting and casualties. player_guard is kept
+    // at 0 so the dormant firepower-injection path in scr_player_combat_weapon_stacks
+    // stays inert.
     player_guard = 0;
-    if ((battle_object != 0) && (battle_special == "")) {
-        player_guard = battle_object.p_guardsmen[battle_id];
-    }
-    if (player_guard > 0) {
-        // Place the Guard as the front rank in both attack and defence. They must be
-        // the leading block, never a rear one: the player advance (move_unit_block
-        // "east") refuses to move a block when another block sits directly ahead of it,
-        // so Guard placed behind the Marines on attack can never step forward, and the
-        // Marines simply advance off and leave them standing at the rear (the Marines
-        // "pass them by"). As the front rank the Guard have open ground ahead, so they
-        // lead the charge on attack and hold the line on defence, and either way they
-        // reach the enemy and fight. Front rank is just east of the Marines and still
-        // west of the enemy spawn (rightmost block + 10).
-        var _maxx = -50;
-        var _minx = 1000000;
-        with (obj_pnunit) {
-            if (x > _maxx) _maxx = x;
-            if (x < _minx) _minx = x;
-        }
-        var _frontx;
-        if (_maxx < 0) {
-            _frontx = 100;   // no other player blocks: stand-alone Guard force
-        } else {
-            _frontx = _maxx + 5;   // front rank, attack and defence alike
-        }
-        u = instance_create(_frontx, 240, obj_pnunit);
-        u.guard = 1;
-
-        // Guardsmen line: pure infantry, no tanks, the way the enemy Imperial Guard
-        // keep their soldier lines tank-free. They render and take losses per man like
-        // the enemy Guard. They have no anti-tank weapon, so against armour they can
-        // only bleed and die unless a Leman Russ line is present.
-        u.men = player_guard;
-        u.dudes[1] = "Imperial Guardsman";
-        u.dudes_num[1] = player_guard;
-        u.dudes_ac[1] = 40;   // match the enemy Guardsman: flak armour value 40
-        u.dudes_hp[1] = 5;
-        u.dudes_vehicle[1] = 0;
-
-        // Keep the default obj_pnunit sprite (do not blank it): the block needs its
-        // collision mask, or the enemy advance walks straight through the Guard.
-
-        // Count the infantry toward player forces. The normal accumulation only runs
-        // during setup and this block spawns too late for it; obj_pnunit's Alarm_3
-        // skips its auto-add for guard blocks so this is not double counted.
-        player_forces += u.men;
-        player_max += u.men;
-
-        // Leman Russ tanks form their own separate block (guard == 2), placed just
-        // behind the infantry line so the Guardsmen screen them. Tanks are the only
-        // anti-armour the Guard field, kept out of the soldier line like the enemy's.
-        var _tanks = min(30, round(player_guard / 5000));
-        if (_tanks > 0) {
-            var _tankx = max(5, _frontx - 10);
-            var t = instance_create(_tankx, 240, obj_pnunit);
-            t.guard = 2;
-            t.men = 0;
-            for (var i = 1; i <= _tanks; i++) {
-                t.veh_co[i] = 0;
-                t.veh_id[i] = 0;
-                t.veh_type[i] = "Leman Russ Battle Tank";
-                t.veh_hp[i] = 250;
-                t.veh_ac[i] = 40;
-                t.veh_dead[i] = 0;
-                t.veh_hp_multiplier[i] = 1;
-                t.veh_wep1[i] = "Battle Cannon";
-            }
-            t.veh = _tanks;
-            t.dudes[1] = "Leman Russ Battle Tank";
-            t.dudes_num[1] = _tanks;
-            t.dudes_ac[1] = 40;
-            t.dudes_hp[1] = 250;
-            t.dudes_vehicle[1] = 1;
-            player_forces += t.veh;
-            player_max += t.veh;
-        }
-    }
 
     instance_activate_object(obj_enunit);
 } catch (_exception) {
