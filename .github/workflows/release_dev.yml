@@ -192,11 +192,11 @@ jobs:
     permissions:
       contents: write # Needed for softprops/action-gh-release
     steps:
-      - name: Download built file artifact
+      - name: Download all built artifacts
         uses: actions/download-artifact@v4
         with:
-          name: built-file
           path: ./build_output
+          merge-multiple: true
 
       - name: List downloaded files # Debug step
         run: ls -R ./build_output
@@ -264,4 +264,4 @@ jobs:
           prerelease: false
           make_latest: true
           files: |
-            ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*
+            ./build_output/**/*.zip
