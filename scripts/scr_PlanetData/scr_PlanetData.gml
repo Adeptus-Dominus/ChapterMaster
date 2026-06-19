@@ -2113,4 +2113,18 @@ function PlanetData(planet, system) constructor {
         }
 
     }
+
+    static init_war_of_succession = function(){
+        add_feature(eP_FEATURES.SUCCESSION_WAR);
+        add_problem("succession", irandom(6) + 4);
+        set_player_disposition(-5000);
+
+        var text = name();
+        scr_popup("War of Succession", $"The planetary governor of {text} has died.  Several subordinates and other parties each claim to be the true heir and successor- war has erupted across the planet as a result.  Heresy thrives in chaos.", "succession", "");
+        var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
+        star_alert.image_alpha = 1;
+        star_alert.image_speed = 1;
+        star_alert.col = "red";
+        scr_event_log("red", "War of Succession on {name()}");   
+    }
 }

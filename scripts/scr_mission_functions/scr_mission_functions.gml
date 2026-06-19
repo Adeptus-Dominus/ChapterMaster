@@ -85,11 +85,11 @@ function mission_name_key(mission) {
 }
 
 /// @self Struct.PlanetData
-fuction problem_end_turn_checks(){
+function problem_end_turn_checks(){
     static problem_functions = {
         "succession" : function(problem_index){
             if (problem_timers[problem_index] > 0){
-                continue;
+                return;
             }
             var result, _alert_text;
             var dice1 = roll_dice(1, 100);
@@ -138,10 +138,10 @@ fuction problem_end_turn_checks(){
         },
         "recon" : function(problem_index){
             if (problem_timers[problem_index] > 0){
-                continue;
+                return;
             }            
             var _alert_text = "Inquisition Mission Failed: Investigate ";
-            var _disp_string = alter_dispostion(eFACTION.INQUISITON, -5);
+            var _disp_string = alter_dispostion(eFACTION.INQUISITION, -5);
             _alert_text += "{name()}. {_disp_string}";
             scr_alert("red", "mission_failed", _alert_text, 0, 0);
             scr_event_log("red", _alert_text);
@@ -150,7 +150,7 @@ fuction problem_end_turn_checks(){
 
         "great_crusade" : function(problem_index){
             if (problem_timers[problem_index] > 0){
-                continue;
+                return;
             }            
             var _crusade_direction;
             var _join_crusade = false;
@@ -175,7 +175,7 @@ fuction problem_end_turn_checks(){
             } else {
                 // hit loyalty here
                 var _disp_hits = alter_dispostions([
-                    [eFACTION.INQUISITON , -10],
+                    [eFACTION.INQUISITION , -10],
                     [eFACTION.IMPERIUM, -5],
                 ])
                 var _string = "No ships designated for Crusade. {_disp_hits}"
@@ -192,11 +192,11 @@ fuction problem_end_turn_checks(){
         },
         "necron" : function(problem_index){
             if (problem_timers[problem_index] > 0){
-                continue;
+                return;
             }
             var _alert_text = "The Necron Tomb of planet ";
 
-            var _disp_string = alter_dispostion(eFACTION.INQUISITON, -8);
+            var _disp_string = alter_dispostion(eFACTION.INQUISITION, -8);
             _alert_text += $"{numeral_name} has not been deactivated in time.  It has awakened, rank upon rank of Necrons pouring out to the planet's surface.  The Inquisition is not pleased with your failure. {_disp_string}";
             scr_popup("Inquisition Mission Failed", _alert_text, "necron_army", "");
             scr_event_log("red", $"Inquisition Mission Failed: Bombing run failed; the Necron Tomb on {name()} has become active.");
@@ -211,10 +211,10 @@ fuction problem_end_turn_checks(){
 
         "spyrer" : function(problem_index){
             if (problem_timers[problem_index] > 0){
-                continue;
+                return;
             }
             var _planet_name = name();
-            var _disp_string = alter_dispostion(eFACTION.INQUISITON, -3);
+            var _disp_string = alter_dispostion(eFACTION.INQUISITION, -3);
             var _alert_text = $"The Spyrer on {_planet_name} has been left unchecked.  In the ensuing carnage some high-ranking officials have been killed, along with several Nobles.  Panic is running amock in several parts of the hives and the Inquisition is less than pleased.{_disp_string}";
             var _text = "Inquisition Mission Failed: The Spyrer on {_planet_name} was not removed.";
             scr_popup("Inquisition Mission Failed", _alert_text, "spyrer", "");
@@ -225,7 +225,7 @@ fuction problem_end_turn_checks(){
         "fallen" : function(problem_index){
             //TODO marker point for cohesion mechanics
             if (problem_timers[problem_index] > 0){
-                continue;
+                return;
             }
             var alert_text = "";
             var _unit;
@@ -250,16 +250,14 @@ fuction problem_end_turn_checks(){
             obj_controller.loyalty_hidden -= 10;
             remove_problem("fallen");
             scr_event_log("red", $"Mission Failed: Any Fallen within the {system.name} system have been given time to escape.");          
-        }
-
-    },
-
-    "provide_garrison" : complete_garrison_mission,
+        },
+        "provide_garrison" : complete_garrison_mission,
+    }
 
     for (var i = 0; i <array_length(problems);i++){
         var _problem = problems[i];
         if (_problem == ""){
-            continue;
+            return;
         }
 
         if (struct_exists(problem_functions, _problem)){

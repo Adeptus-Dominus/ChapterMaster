@@ -475,18 +475,12 @@ function scr_random_event(execute_now) {
             }
         }
 
-        array_push(star.p_feature[planet], new NewPlanetFeature(eP_FEATURES.SUCCESSION_WAR));
-        add_new_problem(planet, "succession", irandom(6) + 4, star);
-        star.dispo[planet] = -5000;
+        if (planet > 0 && instance_exists(star)){
+            var _pdata = star.get_planet_data(planet);
+            _pdata.init_war_of_succession();
+            _evented = true;
+        }
 
-        var text = string(star.name) + scr_roman(planet);
-        scr_popup("War of Succession", "The planetary governor of " + string(text) + " has died.  Several subordinates and other parties each claim to be the true heir and successor- war has erupted across the planet as a result.  Heresy thrives in chaos.", "succession", "");
-        var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
-        star_alert.image_alpha = 1;
-        star_alert.image_speed = 1;
-        star_alert.col = "red";
-        scr_event_log("red", "War of Succession on " + string(text));
-        _evented = true;
     } else if (chosen_event == eEVENT.RANDOM_FUN) {
         // Flavor text/events
         LOGGER.info("RE: Random");
