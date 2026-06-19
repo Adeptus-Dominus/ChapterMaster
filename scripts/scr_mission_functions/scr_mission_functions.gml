@@ -142,7 +142,7 @@ function problem_end_turn_checks(){
             }            
             var _alert_text = "Inquisition Mission Failed: Investigate ";
             var _disp_string = alter_dispostion(eFACTION.INQUISITION, -5);
-            _alert_text += "{name()}. {_disp_string}";
+            _alert_text += $"{name()}. {_disp_string}";
             scr_alert("red", "mission_failed", _alert_text, 0, 0);
             scr_event_log("red", _alert_text);
             remove_problem("recon");            

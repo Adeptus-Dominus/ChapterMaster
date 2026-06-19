@@ -2113,7 +2113,7 @@ function PlanetData(planet, system) constructor {
 
     }
 
-    static create_alert(){
+    static create_alert = function(){
         return instance_create(system.x + 16, system.y - 24, obj_star_event);
     }
 
@@ -2147,7 +2147,7 @@ function PlanetData(planet, system) constructor {
 
         var _text = $"Sources indicate one of the Fallen may be upon {name()}.  We have {_eta} months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
         scr_popup("Hunt the Fallen", _text, "fallen", "");
-        scr_event_log("", $"Sources indicate one of the Fallen may be upon {name()}.  We have {eta} months to investigate.");
+        scr_event_log("", $"Sources indicate one of the Fallen may be upon {name()}.  We have {_eta} months to investigate.");
         var star_alert = create_alert();
         star_alert.image_alpha = 1;
         star_alert.image_speed = 1;
