@@ -130,6 +130,12 @@ jobs:
         if: matrix.target == 'linux'
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
+      - name: Install Steam Runtime (Linux YYC)
+        if: matrix.target == 'linux' && inputs.yyc
+        run: |
+          sudo mkdir -p /opt/steam-runtime
+          curl -sL https://repo.steampowered.com/steamrt-images-scout/snapshots/latest-steam-client-general-availability/com.valvesoftware.SteamRuntime.Sdk-amd64,i386-scout-sysroot.tar.gz | sudo tar -xzf - -C /opt/steam-runtime --strip-components=1
+
       - name: Workaround GameMaker Xcode GUI wait (macOS)
         if: matrix.target == 'mac'
         shell: bash
@@ -140,6 +146,7 @@ jobs:
         working-directory: ${{ steps.find_yyp.outputs.yyp-dir }}
         env:
           RUNTIME: ${{ inputs.yyc && 'native' || 'vm' }}
+          SEE_MASK_NOZONECHECKS: "1"
         run: |
           $suffix = "${{ steps.version_info.outputs.suffix }}"
           $outputName = "ChapterMaster-${suffix}-${{ matrix.platform }}.zip"
