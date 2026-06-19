@@ -116,6 +116,16 @@ jobs:
         shell: pwsh
         run: npm install -g @gamemaker/gm-cli@latest
 
+      - name: Unblock GameMaker tools (Windows)
+        if: matrix.target == 'windows'
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse -Filter GMAssetCompiler.dll | Unblock-File
+
+      - name: Install ffmpeg (Linux)
+        if: matrix.target == 'linux'
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
       - name: Build and package for ${{ matrix.platform }}
         shell: pwsh
         working-directory: ${{ steps.find_yyp.outputs.yyp-dir }}
@@ -124,7 +134,17 @@ jobs:
         run: |
           $suffix = "${{ steps.version_info.outputs.suffix }}"
           $outputName = "ChapterMaster-${suffix}-${{ matrix.platform }}.zip"
-          gm-cli package --target "${{ matrix.target }}" --runtime "$env:RUNTIME" --toolchain GMS2 --output $outputName "${{ steps.find_yyp.outputs.yyp-path }}"
+          $yypPath = "${{ steps.find_yyp.outputs.yyp-path }}"
+
+          $cmd = "gm-cli package --target ${{ matrix.target }} --runtime $env:RUNTIME --output $outputName --verbose"
+
+          if ("${{ matrix.target }}" -eq "mac") {
+            $cmd += ' --toolchain-options ''{"signingIdentity":""}'''
+          }
+
+          $cmd += " `"$yypPath`""
+          Write-Host "Running: $cmd"
+          Invoke-Expression $cmd
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
