@@ -151,10 +151,10 @@ jobs:
           $outputName = "ChapterMaster-${suffix}-${{ matrix.platform }}.zip"
           $yypPath = "${{ steps.find_yyp.outputs.yyp-path }}"
 
-          $cmd = "gm-cli package --target ${{ matrix.target }} --runtime $env:RUNTIME --output $outputName --verbose"
+          $cmd = "gm-cli package --target ${{ matrix.target }} --runtime $env:RUNTIME --toolchain gms2 --output $outputName --verbose"
 
           if ("${{ matrix.target }}" -eq "windows" -and $env:RUNTIME -eq "native") {
-              $vsPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+              $vsPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
               $options = @{ gms2 = @{ windows = @{ visualStudioSdk = $vsPath } } }
               $options | ConvertTo-Json -Depth 5 | Out-File "gm-options.json"
               Write-Host "Generated gm-options.json for Visual Studio SDK"
