@@ -18,7 +18,7 @@ function new_ork_fleet(xx, yy) {
 
 function orks_end_turn_growth() {
     for (i = 1; i <= planets; i++) {
-        var _pdata = new PlanetData(i, self);
+        var _pdata = get_planet_data(i);
         if (!p_orks[i]) {
             var _strongholds = _pdata.get_features(eP_FEATURES.ORKSTRONGHOLD);
             for (var s = 0; s < array_length(_strongholds); s++) {
@@ -77,7 +77,7 @@ function ork_fleet_arrive_target() {
         if (ork_attack_planet > 0) {
             p_tyranids[ork_attack_planet] -= floor(_ork_fleet.capital_number + (_ork_fleet.frigate_number / 2));
 
-            var _pdata = new PlanetData(ork_attack_planet, self);
+            var _pdata = get_planet_data(ork_attack_planet);
 
             //generate refugee ships to spread tyranids
             if (p_tyranids[ork_attack_planet] <= 0) {
@@ -217,7 +217,7 @@ function init_ork_waagh(override = false) {
     }
 
     if (_waaagh_star_found) {
-        var _pdata = new PlanetData(_waaagh_star[1], _waaagh_star[0]);
+        var _pdata = _waaagh_star[0].get_planet_data(_waaagh_star[1]);
 
         var _boss = _pdata.add_feature(eP_FEATURES.ORKWARBOSS);
         if (override) {

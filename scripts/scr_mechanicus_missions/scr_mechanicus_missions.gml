@@ -281,7 +281,7 @@ function accept_mechanicus_tomb_mission() {
         }
     }
     if (_planet > 0) {
-        _planet = new PlanetData(_planet, _star);
+        _planet = _star.get_planet_data(_planet);
         _planet.add_problem("mech_tomb1", 17);
         var _name = _planet.name();
         text = $"The Adeptus Mechanicus await your forces at {_name}.  They are expecting at least two squads of Astartes and have placed the testing on hold until their arrival.  {global.chapter_name} have 16 months to arrive.";
@@ -301,7 +301,7 @@ function accept_mechanicus_land_raider_mission() {
     var _star = pop_data.star;
     var _forge_planet = scr_get_planet_with_type(_star, "Forge");
     if (_forge_planet > 0) {
-        var _planet = new PlanetData(_forge_planet, _star);
+        var _planet = _star.get_planet_data(_forge_planet);
 
         var _mission_loc = _planet.name();
         var _nearest_fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);
@@ -325,7 +325,7 @@ function accept_mechanicus_bionics_mission() {
     var _star = pop_data.star;
     var _forge_planet = scr_get_planet_with_type(_star, "Forge");
     if (_forge_planet > 0) {
-        var _planet = new PlanetData(_forge_planet, _star);
+        var _planet = _star.get_planet_data(_forge_planet);
 
         var _mission_loc = _planet.name();
         var _nearest_fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);
@@ -349,7 +349,7 @@ function accept_mechanicus_mars_mission() {
     var _star = pop_data.star;
     var _forge_planet = scr_get_planet_with_type(_star, "Forge");
     if (_forge_planet > 0) {
-        var _planet = new PlanetData(_forge_planet, _star);
+        var _planet = _star.get_planet_data(_forge_planet);
 
         var _mission_loc = _planet.name();
         var _nearest_fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);

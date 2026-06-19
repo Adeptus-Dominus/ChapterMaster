@@ -405,7 +405,7 @@ function init_protect_raider_mission(squad) {
     var _squad_dex = stat_average(_squad_units, "dexterity");
     var _tester = global.character_tester;
 
-    var _pdata = new PlanetData(selection_data.planet, selection_data.system);
+    var _pdata = selection_data.system.get_planet_data(selection_data.planet);
     var _mod = _squad_wisdom + _squad_dex / 20;
     if (scr_has_adv("Ambushers")) {
         _mod += 10;
@@ -511,7 +511,7 @@ function protect_raiders_hold_memorial() {
 }
 
 function init_train_forces_mission(planet, star, mission_slot, marine) {
-    var _pdata = new PlanetData(planet, star);
+    var _pdata = star.get_planet_data(planet);
     var mission_data = _pdata.problems_data[mission_slot];
     if (mission_data.stage == "preliminary") {
         var numeral_name = _pdata.name();
@@ -602,7 +602,7 @@ function complete_garrison_mission(problem_index) {
 
 
 function complete_train_forces_mission(targ_planet, problem_index) {
-    var planet = new PlanetData(targ_planet, self);
+    var planet = get_planet_data(targ_planet);
     if (problem_has_key_and_value(targ_planet, problem_index, "stage", "active")) {
         var man_conditions = {
             "job": "train_forces",
@@ -708,7 +708,7 @@ function complete_train_forces_mission(targ_planet, problem_index) {
 
 
 function complete_beast_hunt_mission(targ_planet, problem_index) {
-    var planet = new PlanetData(targ_planet, self);
+    var planet = get_planet_data(targ_planet);
     if (problem_has_key_and_value(targ_planet, problem_index, "stage", "active")) {
         var _mission_string = "";
         var man_conditions = {

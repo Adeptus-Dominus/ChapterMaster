@@ -75,7 +75,7 @@ global.techmarine_training_tiers = [
 ];
 
 function find_recruit_success_chance(local_apothecary_points, system, planet, ui = 0) {
-    var p_data = new PlanetData(planet, system);
+    var p_data = system.get_planet_data(planet);
     var _recruit_world = p_data.get_features(eP_FEATURES.RECRUITING_WORLD)[0];
     var _recruit_cost = _recruit_world.recruit_cost;
 

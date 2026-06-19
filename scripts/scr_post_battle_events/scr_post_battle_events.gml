@@ -61,7 +61,7 @@ function protect_raiders_battle_aftermath() {
     // title / text / image / speshul
     var cur_star = battle_object;
     var planet = battle_id;
-    var _planet = new PlanetData(planet, cur_star);
+    var _planet = cur_star.get_planet_data(planet);
     var _planet_string = _planet.name();
     _planet.remove_problem("protect_raiders");
     if (!defeat) {

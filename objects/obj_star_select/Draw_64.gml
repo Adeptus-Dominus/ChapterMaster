@@ -157,10 +157,10 @@ try {
 
     draw_set_font(fnt_40k_14b);
 
-    if (obj_controller.selecting_planet != 0) {
-        if (p_data.planet != obj_controller.selecting_planet) {
-            p_data = new PlanetData(obj_controller.selecting_planet, target);
-            target.system_datas[obj_controller.selecting_planet] = p_data;
+    var _planet = obj_controller.selecting_planet;
+    if (_planet != 0) {
+        if (p_data.planet != _planet) {
+            p_data = target.get_planet_data(_planet);
         }
         // Buttons that are available
         if (!buttons_selected) {
