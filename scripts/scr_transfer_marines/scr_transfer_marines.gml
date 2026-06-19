@@ -99,7 +99,6 @@ function transfer_marines() {
                     obj_ini.veh_acc[target_comp][vehi] = obj_ini.veh_acc[veh_data[0]][veh_data[1]];
                     obj_ini.veh_hp[target_comp][vehi] = obj_ini.veh_hp[veh_data[0]][veh_data[1]];
                     obj_ini.veh_chaos[target_comp][vehi] = obj_ini.veh_chaos[veh_data[0]][veh_data[1]];
-                    obj_ini.veh_pilots[target_comp][vehi] = 0;
                     obj_ini.veh_lid[target_comp][vehi] = obj_ini.veh_lid[veh_data[0]][veh_data[1]];
                     obj_ini.veh_wid[target_comp][vehi] = obj_ini.veh_wid[veh_data[0]][veh_data[1]];
 

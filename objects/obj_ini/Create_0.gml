@@ -108,13 +108,11 @@ last_ship = array_create_2d(_max_companies, _max_vehicles, {uid: "", name: ""});
 veh_race = array_create_2d(_max_companies, _max_vehicles, 0);
 veh_hp = array_create_2d(_max_companies, _max_vehicles, 100);
 veh_chaos = array_create_2d(_max_companies, _max_vehicles, 0);
-veh_pilots = array_create_2d(_max_companies, _max_vehicles, 0);
 veh_lid = array_create_2d(_max_companies, _max_vehicles, -1);
 veh_wid = array_create_2d(_max_companies, _max_vehicles, 2);
 veh_uid = array_create_2d(_max_companies, _max_vehicles, 0);
 
 veh_loc = array_create_2d(_max_companies, _max_vehicles, "");
-veh_name = array_create_2d(_max_companies, _max_vehicles, "");
 veh_role = array_create_2d(_max_companies, _max_vehicles, "");
 veh_wep1 = array_create_2d(_max_companies, _max_vehicles, "");
 veh_wep2 = array_create_2d(_max_companies, _max_vehicles, "");

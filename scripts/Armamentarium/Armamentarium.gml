@@ -13,6 +13,7 @@ function ShopItem(_name) constructor {
     name = _name;
     display_name = _name;
     area = "";
+    // TODO: Refactor into an enum; Add a separate VEHICLE type; Will break saved queues
     forge_type = "normal";
     item_tooltip = "";
 
@@ -1113,7 +1114,11 @@ function Armamentarium(_controller) constructor {
         var _btn_y = 225 + string_height_ext(advisor_report_text, -1, 536);
         if (enter_forge_button.draw_shutter(526, _btn_y, "Enter Forge", 0.5)) {
             is_in_forge = true;
-            refresh_catalog();
+            if (shop_type == "ships") {
+                _switch_tab("weapons")
+            } else {
+                refresh_catalog();
+            }
         }
     };
 
@@ -1125,9 +1130,9 @@ function Armamentarium(_controller) constructor {
 
             if (shop_type == "technologies") {
                 _switch_tab("weapons");
+            } else {
+                refresh_catalog();
             }
-
-            refresh_catalog();
         }
 
         controller.specialist_point_handler.draw_forge_queue(359, 132);
