@@ -1668,13 +1668,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var _melee_attack = melee_damage_data[0];
         var _melee_weapon = melee_damage_data[3];
 
-        var speed = new EquipmentStruct({attack: _melee_attack * 2, name: "Speed Force", range: 14, ammo: 12, spli: _melee_weapon.spli, arp: _melee_weapon.arp}, "weapon");
+        var speedf = new EquipmentStruct({attack: _melee_attack * 2, name: "Speed Force", range: 14, ammo: 12, spli: _melee_weapon.spli, arp: _melee_weapon.arp}, "weapon");
 
-        var speed_melee = new EquipmentStruct({attack: _melee_attack * 4, name: "Speed Force(M)", range: 1, ammo: 16, spli: _melee_weapon.spli, arp: _melee_weapon.arp}, "weapon");
+        var speedf_melee = new EquipmentStruct({attack: _melee_attack * 4, name: "Speed Force(M)", range: 1, ammo: 16, spli: _melee_weapon.spli, arp: _melee_weapon.arp}, "weapon");
 
-        speed.second_profiles = [speed_melee];
+        speedf.second_profiles = [speedf_melee];
 
-        return speed;
+        return speedf;
     };
 
     static armour_calc = function() {
