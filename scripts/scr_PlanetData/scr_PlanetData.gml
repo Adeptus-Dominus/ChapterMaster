@@ -2111,7 +2111,7 @@ function PlanetData(planet, system) constructor {
 
     }
 
-    static create_alert(){
+    static create_alert = function(){
         return instance_create(system.x + 16, system.y - 24, obj_star_event);
     }
 
