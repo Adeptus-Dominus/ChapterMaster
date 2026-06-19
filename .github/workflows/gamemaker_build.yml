@@ -36,7 +36,7 @@ jobs:
             runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           lfs: true
           fetch-depth: 0
@@ -108,7 +108,7 @@ jobs:
           "yyp-dir=$yypDir" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
 
@@ -143,7 +143,7 @@ jobs:
           Invoke-Expression $cmd
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ChapterMaster-${{ steps.version_info.outputs.suffix }}-${{ matrix.platform }}
           path: ${{ steps.find_yyp.outputs.yyp-dir }}/ChapterMaster-${{ steps.version_info.outputs.suffix }}-${{ matrix.platform }}.zip
