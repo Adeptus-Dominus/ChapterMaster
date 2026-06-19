@@ -116,11 +116,10 @@ jobs:
         shell: pwsh
         run: npm install -g @gamemaker/gm-cli@latest
 
-      - name: Unblock GameMaker tools (Windows)
+      - name: Disable Windows Defender for Build (Windows)
         if: matrix.target == 'windows'
         shell: pwsh
-        run: |
-          Get-ChildItem -Recurse -Filter GMAssetCompiler.dll | Unblock-File
+        run: Set-MpPreference -DisableRealtimeMonitoring $true
 
       - name: Disable AppArmor restriction for unprivileged user namespaces (Linux)
         if: matrix.target == 'linux'
