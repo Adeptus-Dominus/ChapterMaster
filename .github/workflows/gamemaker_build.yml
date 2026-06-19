@@ -134,7 +134,7 @@ jobs:
         if: matrix.target == 'linux' && inputs.yyc
         run: |
           sudo mkdir -p /opt/steam-runtime
-          curl -sL https://repo.steampowered.com/steamrt-images-scout/snapshots/latest-steam-client-general-availability/com.valvesoftware.SteamRuntime.Sdk-amd64,i386-scout-sysroot.tar.gz | sudo tar -xzf - -C /opt/steam-runtime --strip-components=1
+          curl -sL https://repo.steampowered.com/steamrt-images-scout/snapshots/latest-steam-client-general-availability/com.valvesoftware.SteamRuntime.Sdk-amd64,i386-scout-sysroot.tar.gz | sudo tar -xzf - -C /opt/steam-runtime
 
       - name: Workaround GameMaker Xcode GUI wait (macOS)
         if: matrix.target == 'mac'

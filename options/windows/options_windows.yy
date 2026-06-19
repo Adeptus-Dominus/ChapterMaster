@@ -29,6 +29,7 @@
   "option_windows_start_fullscreen":false,
   "option_windows_steam_use_alternative_launcher":true,
   "option_windows_texture_page":"2048x2048",
+  "option_windows_use_x64":true,
   "option_windows_use_raw_mouse":false,
   "option_windows_use_splash":false,
   "option_windows_version":"1.0.0.0",
