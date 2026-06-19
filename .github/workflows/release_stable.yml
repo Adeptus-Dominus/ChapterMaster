@@ -1,5 +1,6 @@
 name: Release-Stable
 on: 
+  workflow_dispatch:
   push:
     tags:        
       - v*.*.*
