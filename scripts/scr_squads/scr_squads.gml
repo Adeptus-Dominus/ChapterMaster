@@ -45,13 +45,11 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     squad_type = target_squad.type;
     squad_unit_types = squad.find_squad_unit_types();
     full_squad_data = obj_ini.squad_types[$ squad_type];
-    //build a map from JSON key
     role_key_to_actual = {};
     for (var _i = 0; _i < array_length(squad_unit_types); _i++) {
-    var _key = squad_unit_types[_i];
-    var _def = full_squad_data[$ _key];
-    var _actual = struct_exists(_def, "role") ? _def.role : _key;
-    role_key_to_actual[$ _key] = _actual;
+        var _key = squad_unit_types[_i];
+        var _def = full_squad_data[$ _key];
+        role_key_to_actual[$ _key] = struct_exists(_def, "role") ? _def.role : _key;
     }
     unit_role = "";
     members_UnitGroup = squad.get_members(true);
@@ -92,17 +90,23 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                 }
             }
         }
-        // Clear managed weapon slots on every member so pre-initialization
-        // defaults (e.g. a Bolt Pistol carried before squad assignment) don't
-        // interfere with the encumbrance check during loadout assignment.
-        var _all_members = target_squad.get_members(true);
-        for (var _mi = 0; _mi < _all_members.number(); _mi++) {
-            var _u = _all_members.units[_mi];
-            for (var _s = 0; _s < array_length(_weapon_slots); _s++) {
-                if (struct_exists(_managed_slots, _weapon_slots[_s])) {
-                    var _clear = {};
-                    _clear[$ _weapon_slots[_s]] = "";
-                    _u.alter_equipment(_clear, false, false);
+        // Clear managed weapon slots only on members whose role defines a loadout,
+        // so pre-initialization defaults don't interfere with the encumbrance check.
+        // Roles without a loadout (e.g. Captain, Ancient) are skipped entirely.
+        // Search by key name (e.g. "Terminator") not the "role" field rename
+        // (e.g. "Assault Terminator") — marines are stored under the key name.
+        for (var _ri = 0; _ri < array_length(squad_unit_types); _ri++) {
+            var _role_key = squad_unit_types[_ri];
+            if (!struct_exists(full_squad_data[$ _role_key], "loadout")) continue;
+            var _role_members = members_UnitGroup.get_from({roles: [_role_key, role_key_to_actual[$ _role_key]]});
+            while (_role_members.number() > 0) {
+                var _u = _role_members.pop();
+                for (var _s = 0; _s < array_length(_weapon_slots); _s++) {
+                    if (struct_exists(_managed_slots, _weapon_slots[_s])) {
+                        var _clear = {};
+                        _clear[$ _weapon_slots[_s]] = "";
+                        _u.alter_equipment(_clear, false, false);
+                    }
                 }
             }
         }
@@ -230,7 +234,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
 
     static equip_loudouts_specific_equip_slot = function(){
         var _actual_role = role_key_to_actual[$ unit_role];
-        var _members_with_role = members_UnitGroup.get_from({role: _actual_role});
+        var _members_with_role = members_UnitGroup.get_from({roles: [unit_role, _actual_role]});
         if (!struct_exists(current_unit_squad_data, "loadout")) {
             return;
         }
@@ -238,7 +242,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         var _loudouts = current_unit_squad_data[$ "loadout"];
         while (_members_with_role.number() > 0) {
             _unit = _members_with_role.pop();
-            if (_unit.role() != _actual_role) {
+            if (_unit.role() != unit_role && _unit.role() != _actual_role) {
                 continue;
             }
 
@@ -272,11 +276,11 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     //   ]
     static equip_random_pick_for_role = function(pick_options) {
         var _actual_role = role_key_to_actual[$ unit_role];
-        var _members_with_role = members_UnitGroup.get_from({role: _actual_role});
+        var _members_with_role = members_UnitGroup.get_from({roles: [unit_role, _actual_role]});
         while (_members_with_role.number() > 0) {
             var _unit = _members_with_role.pop();
             if (array_contains(ignore_units, _unit.uid)) continue;
-            if (_unit.role() != _actual_role) continue;
+            if (_unit.role() != unit_role && _unit.role() != _actual_role) continue;
 
             // Pick a random loadout category
             var _chosen = pick_options[irandom(array_length(pick_options) - 1)];
