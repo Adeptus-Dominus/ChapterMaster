@@ -180,12 +180,6 @@ serialize = function() {
         present_fleet: object_star.present_fleet,
         planet_data: planet_data,
     };
-    if (struct_exists(object_star, "system_garrison")) {
-        save_data.system_garrison = object_star.system_garrison;
-    }
-    if (struct_exists(object_star, "system_sabatours")) {
-        save_data.system_sabatours = object_star.system_sabatours;
-    }
 
     if (struct_exists(object_star, "p_governor")) {
         save_data.p_governor = object_star.p_governor;
@@ -272,10 +266,6 @@ function deserialize(save_data) {
     if (struct_exists(save_data, "p_governor")) {
         variable_struct_set(self, "p_governor", save_data.p_governor);
     }
-    system_datas = array_create(8, false);
-    system_garrison = array_create(8, false);
-    system_sabatours = array_create(8, false);
-
 }
 
 #endregion
