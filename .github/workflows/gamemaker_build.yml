@@ -122,9 +122,18 @@ jobs:
         run: |
           Get-ChildItem -Recurse -Filter GMAssetCompiler.dll | Unblock-File
 
+      - name: Disable AppArmor restriction for unprivileged user namespaces (Linux)
+        if: matrix.target == 'linux'
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
       - name: Install ffmpeg (Linux)
         if: matrix.target == 'linux'
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Workaround GameMaker Xcode GUI wait (macOS)
+        if: matrix.target == 'mac'
+        shell: bash
+        run: mkdir -p ~/gamemakerstudio2/GM_MAC/ChapterMaster/ChapterMaster/ChapterMaster.xcodeproj/xcuserdata
 
       - name: Build and package for ${{ matrix.platform }}
         shell: pwsh
@@ -137,6 +146,13 @@ jobs:
           $yypPath = "${{ steps.find_yyp.outputs.yyp-path }}"
 
           $cmd = "gm-cli package --target ${{ matrix.target }} --runtime $env:RUNTIME --output $outputName --verbose"
+
+          if ("${{ matrix.target }}" -eq "windows" -and $env:RUNTIME -eq "native") {
+              $vsPath = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\Tools\\VsDevCmd.bat"
+              $options = @{ gms2 = @{ windows = @{ visualStudioSdk = $vsPath } } }
+              $options | ConvertTo-Json -Depth 5 | Out-File "gm-options.json"
+              Write-Host "Generated gm-options.json for Visual Studio SDK"
+          }
 
           $cmd += " `"$yypPath`""
           Write-Host "Running: $cmd"
