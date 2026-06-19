@@ -72,10 +72,9 @@ p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
 p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
 
-
-system_datas = array_create(8, 0);
+system_datas = array_create(8, false);
 system_garrison = array_create(8, false);
-system_sabatours = array_create(8, 0);
+system_sabatours = array_create(8, false);
 
 get_garrison = function(planet){
     var _gar = system_garrison[planet];
@@ -202,12 +201,6 @@ serialize = function() {
         present_fleet: object_star.present_fleet,
         planet_data: planet_data,
     };
-    if (struct_exists(object_star, "system_garrison")) {
-        save_data.system_garrison = object_star.system_garrison;
-    }
-    if (struct_exists(object_star, "system_sabatours")) {
-        save_data.system_sabatours = object_star.system_sabatours;
-    }
 
     if (struct_exists(object_star, "p_governor")) {
         save_data.p_governor = object_star.p_governor;
@@ -217,7 +210,10 @@ serialize = function() {
         "temp",
         "serialize",
         "deserialize",
-        "arraysum"
+        "arraysum",
+        "system_garrison",
+        "system_sabatours",
+        "system_datas"
     ];
     var excluded_from_save_start = ["p_"];
 
@@ -288,18 +284,9 @@ function deserialize(save_data) {
         }
     }
 
-    if (struct_exists(save_data, "system_sabatours")) {
-        variable_struct_set(self, "system_sabatours", save_data.system_sabatours);
-    }
-    if (struct_exists(save_data, "system_garrison")) {
-        variable_struct_set(self, "system_garrison", save_data.system_garrison);
-    }
-
     if (struct_exists(save_data, "p_governor")) {
         variable_struct_set(self, "p_governor", save_data.p_governor);
     }
-
-
 }
 
 #endregion
