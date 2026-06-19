@@ -93,7 +93,7 @@
       }
     },
     "Terminator": {
-      "max": 4,
+      "max": 9,
       "min": 2,
       "loadout": {
         "required": {
@@ -138,7 +138,7 @@
       }
     },
     "Terminator": {
-      "max": 4,
+      "max": 9,
       "min": 2,
       "role": "Assault Terminator",
       "loadout": {
