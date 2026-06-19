@@ -275,7 +275,9 @@ function PlanetData(planet, system) constructor {
     static recruit_pdf = function(percentage_pop) {
         var new_pdf = population * (percentage_pop / 100);
         edit_population(new_pdf * -1);
-        new_pdf = population_as_small(new_pdf);
+        if (large_population) {
+            new_pdf *= large_pop_conversion;
+        }
         edit_pdf(new_pdf)
         return new_pdf;
     };

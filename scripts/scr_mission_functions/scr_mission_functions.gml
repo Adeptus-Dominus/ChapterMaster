@@ -551,8 +551,8 @@ function complete_garrison_mission(problem_index) {
     }
     var planet = new PlanetData(targ_planet, self);
 
-
-    if (current_owner != eFACTION.IMPERIUM || !garrison) {
+    garrisons.update();
+    if (current_owner != eFACTION.IMPERIUM || !garrisons.garrison_force) {
         remove_problem("provide_garrison");
         add_disposition(-20);
         scr_popup($"Agreed Garrison of {name()}", $"your agreed garrison of  {name()} was cut short by your chapter the planetary governor has expressed his displeasure (disposition -20)", "", "");
