@@ -1434,7 +1434,7 @@ temp[33] = string_upper(scr_thought()); // Thought of the day
 LOGGER.info("Game start welcoming message");
 var njm = 34, com = 0, vih = 0, word = "", masta = 0, forga = 0, chapla = 0, apa = 0, liba = 0, techa = 0, libra = 0, coda = 0, lexa = 0, apotha = 0, old_dudes = 0;
 
-var honoh = 0, termi = 0, veter = 0, capt = 0, chap = 0, apoth = 0, stand = 0, dread = 0, champ = 0, tact = 0, assa = 0, deva = 0, rhino = 0, speeder = 0, raider = 0, standard = 0, bike = 0, scou = 0, whirl = 0, pred = 0, lib = 0, serg = 0, vet_serg = 0;
+var honoh = 0, termi = 0, veter = 0, capt = 0, chap = 0, apoth = 0, stand = 0, dread = 0, champ = 0, tact = 0, assa = 0, deva = 0, rhino = 0, speeder = 0, raider = 0, standard = 0, bike = 0, scou = 0, whirl = 0, pred = 0, lib = 0, serg = 0, vet_serg = 0, bikers = 0, attack_bikers = 0;
 for (var mm = 0; mm <= 100; mm++) {
     if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
         masta = 1;
@@ -1545,12 +1545,14 @@ for (var company = 0; company < 10; company++) {
     standard = 0;
     bike = 0;
     scou = 0;
+    bikers = 0;
+    attack_bikers = 0;
     whirl = 0;
     pred = 0;
     lib = 0;
     serg = 0;
     vet_serg = 0;
-    for (var mm = 1; mm <= 400; mm++) {
+    for (var mm = 0; mm <= 400; mm++) {
         if (obj_ini.role[com][mm] == obj_ini.role[100][3]) {
             veter += 1;
         }
@@ -1570,20 +1572,26 @@ for (var company = 0; company < 10; company++) {
             champ += 1;
         }
 
-        if (obj_ini.role[com][mm] == obj_ini.role[100][8]) {
+        if (obj_ini.role[com][mm] == obj_ini.role[100][8] || obj_ini.role[com][mm] == "Tactical Sergeant") {
             tact += 1;
         }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][9]) {
+        if (obj_ini.role[com][mm] == obj_ini.role[100][9] || obj_ini.role[com][mm] == "Devastator Sergeant") {
             deva += 1;
         }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][10]) {
+        if (obj_ini.role[com][mm] == obj_ini.role[100][10] || obj_ini.role[com][mm] == "Assault Sergeant") {
             assa += 1;
         }
         if (obj_ini.role[com][mm] == obj_ini.role[100][11]) {
             standard += 1;
         }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][12]) {
+        if (obj_ini.role[com][mm] == obj_ini.role[100][12] || obj_ini.role[com][mm] == "Scout Sergeant") {
             scou += 1;
+        }
+        if (obj_ini.role[com][mm] == obj_ini.role[100][13] || obj_ini.role[com][mm] == "Biker Sergeant") {
+            bikers += 1;
+        }
+        if (obj_ini.role[com][mm] == obj_ini.role[100][20] || obj_ini.role[com][mm] == "Attack Bike Sergeant") {
+            attack_bikers += 1;
         }
 
         if (obj_ini.role[com][mm] == obj_ini.role[100][14]) {
@@ -1679,6 +1687,12 @@ for (var company = 0; company < 10; company++) {
     }
     if (scou > 0) {
         temp[njm] += $", {string_plural_count(obj_ini.role[100][12], scou)}";
+    }
+    if (bikers > 0) {
+        temp[njm] += $", {string_plural_count(obj_ini.role[100][13], bikers)}";
+    }
+    if (attack_bikers > 0) {
+        temp[njm] += $", {string_plural_count(obj_ini.role[100][20], attack_bikers)}";
     }
     if (dread > 0) {
         temp[njm] += $", {string_plural_count(obj_ini.role[100][6], dread)}";
