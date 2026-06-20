@@ -1898,6 +1898,15 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static allocate_unit_to_fresh_spawn = function(type = "default") {
         var homestar = "none";
         var spawn_location_chosen = false;
+        if (type == "home_planet") {
+            // Place directly on the chapter home planet and keep the unit off-ship. Used by
+            // bulk spawns so large numbers of units are not distributed across the fleet's
+            // ships, which is slow and clutters ship cargo.
+            planet_location = obj_ini.home_planet;
+            ship_location = -1;
+            location_string = obj_ini.home_name;
+            return;
+        }
         if (((type == "home") || (type == "default")) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
             var homestar = find_star_by_name(obj_ini.home_name);
         } else if (type != "ship") {

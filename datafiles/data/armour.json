@@ -175,9 +175,9 @@
     "Flak Armour": {
         "abbreviation": "FlkArm",
         "armour_value": {
-            "artifact": 7,
-            "master_crafted": 6,
-            "standard": 5
+            "artifact": 12,
+            "master_crafted": 11,
+            "standard": 10
         },
         "damage_resistance_mod": {
             "artifact": 0,

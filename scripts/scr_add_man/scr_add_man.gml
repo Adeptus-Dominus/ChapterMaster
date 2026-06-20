@@ -145,8 +145,14 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         _unit.add_exp(spawn_exp);
         _unit.allocate_unit_to_fresh_spawn(home_spot);
         _unit.update_role(man_role);
-        with (obj_ini) {
-            scr_company_order(target_company);
+        // Re-sorting the whole company after every spawn is O(n) per call, which makes a
+        // bulk spawn O(n^2) and freezes at high counts. Callers doing a batch can pass
+        // other_data.skip_company_order and run scr_company_order once when finished.
+        var _skip_order = is_struct(other_data) && variable_struct_exists(other_data, "skip_company_order") && other_data.skip_company_order;
+        if (!_skip_order) {
+            with (obj_ini) {
+                scr_company_order(target_company);
+            }
         }
         _unit.update_health(_unit.max_health());
         return _unit;

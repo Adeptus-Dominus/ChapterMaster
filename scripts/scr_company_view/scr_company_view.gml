@@ -49,6 +49,25 @@ function find_company_open_slot(target_company) {
             break;
         }
     }
+    if (good == -1) {
+        // No free slot left: grow the company by one fully-initialised blank slot so
+        // companies are effectively uncapped (HQ included). Only runs on overflow, so
+        // normal recruiting is unchanged. All parallel arrays are extended together to
+        // stay in sync, mirroring _init_marine_row for a single index.
+        good = array_length(obj_ini.name[target_company]);
+        obj_ini.race[target_company][good] = 1;
+        obj_ini.name[target_company][good] = "";
+        obj_ini.role[target_company][good] = "";
+        obj_ini.wep1[target_company][good] = "";
+        obj_ini.spe[target_company][good] = "";
+        obj_ini.wep2[target_company][good] = "";
+        obj_ini.armour[target_company][good] = "";
+        obj_ini.gear[target_company][good] = "";
+        obj_ini.mobi[target_company][good] = "";
+        obj_ini.age[target_company][good] = 0;
+        obj_ini.god[target_company][good] = 0;
+        obj_ini.TTRPG[target_company][good] = new TTRPG_stats("chapter", target_company, good, "blank");
+    }
     return good;
 }
 

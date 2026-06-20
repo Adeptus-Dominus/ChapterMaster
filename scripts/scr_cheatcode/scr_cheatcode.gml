@@ -105,12 +105,18 @@ function scr_cheatcode(argument0) {
                     break;
                 case "guardsman":
                     repeat (real(cheat_arguments[0])) {
-                        scr_add_man("Guardsman", 0, "", "", 0, true, "default");
+                        scr_add_man("Guardsman", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
+                    }
+                    with (obj_ini) {
+                        scr_company_order(0);
                     }
                     break;
                 case "guardsquad":
                     repeat (real(cheat_arguments[0])) {
-                        scr_add_man("Guard Squad", 0, "", "", 0, true, "default");
+                        scr_add_man("Guard Squad", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
+                    }
+                    with (obj_ini) {
+                        scr_company_order(0);
                     }
                     break;
                 case "chaosfleetspawn":
