@@ -132,8 +132,35 @@ jobs:
       - name: Install Steam Runtime (Linux YYC)
         if: matrix.target == 'linux' && inputs.yyc
         run: |
+          # Fetch the latest public stable version info and checksums from the official Steam repository
+          BASE_URL="https://repo.steampowered.com/steamrt-images-scout/snapshots/latest-public-stable"
+          
+          echo "Fetching latest SHA256SUMS from $BASE_URL..."
+          curl -sL -o SHA256SUMS "${BASE_URL}/SHA256SUMS"
+          
+          # Extract the expected checksum for the target sysroot archive
+          TARGET_FILE="com.valvesoftware.SteamRuntime.Sdk-amd64,i386-scout-sysroot.tar.gz"
+          EXPECTED_SHA256=$(grep "$TARGET_FILE" SHA256SUMS | cut -d' ' -f1)
+          
+          if [ -z "$EXPECTED_SHA256" ]; then
+            echo "Error: Could not find SHA256 checksum for $TARGET_FILE in SHA256SUMS!"
+            exit 1
+          fi
+          
+          echo "Latest stable SHA256 for $TARGET_FILE is $EXPECTED_SHA256"
+          
+          echo "Downloading latest stable Steam Runtime SDK..."
+          curl -sL -o steam-runtime-sdk.tar.gz "${BASE_URL}/${TARGET_FILE}"
+          
+          echo "${EXPECTED_SHA256}  steam-runtime-sdk.tar.gz" | sha256sum -c -
+          if [ $? -ne 0 ]; then
+            echo "Error: Steam Runtime SDK checksum verification failed!"
+            exit 1
+          fi
+          
           sudo mkdir -p /opt/steam-runtime
-          curl -sL https://repo.steampowered.com/steamrt-images-scout/snapshots/latest-steam-client-general-availability/com.valvesoftware.SteamRuntime.Sdk-amd64,i386-scout-sysroot.tar.gz | sudo tar -xzf - -C /opt/steam-runtime
+          sudo tar -xzf steam-runtime-sdk.tar.gz -C /opt/steam-runtime
+          rm steam-runtime-sdk.tar.gz SHA256SUMS
 
       - name: Workaround GameMaker Xcode GUI wait (macOS)
         if: matrix.target == 'mac'
@@ -154,7 +181,36 @@ jobs:
           $cmd = "gm-cli package --target ${{ matrix.target }} --runtime $env:RUNTIME --toolchain gms2 --output $outputName --verbose"
 
           if ("${{ matrix.target }}" -eq "windows" -and $env:RUNTIME -eq "native") {
-              $vsPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
+              $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+              $vsPath = $null
+              if (Test-Path $vswhere) {
+                  $installPath = & $vswhere -latest -property installationPath
+                  if ($installPath) {
+                      $vsPath = Join-Path $installPath "Common7\Tools\VsDevCmd.bat"
+                  }
+              }
+              
+              # Fallback check if vswhere failed or the file wasn't found
+              if (-not $vsPath -or -not (Test-Path $vsPath)) {
+                  $fallbacks = @(
+                      "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat",
+                      "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat",
+                      "C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\Tools\VsDevCmd.bat"
+                  )
+                  foreach ($fallback in $fallbacks) {
+                      if (Test-Path $fallback) {
+                          $vsPath = $fallback
+                          break
+                      }
+                  }
+              }
+              
+              if (-not $vsPath -or -not (Test-Path $vsPath)) {
+                  Write-Error "Could not locate VsDevCmd.bat using vswhere or fallback paths."
+                  exit 1
+              }
+
+              Write-Host "Using Visual Studio Command Prompt path: $vsPath"
               $options = @{ gms2 = @{ windows = @{ visualStudioSdk = $vsPath } } }
               $options | ConvertTo-Json -Depth 5 | Out-File "gm-options.json"
               Write-Host "Generated gm-options.json for Visual Studio SDK"
