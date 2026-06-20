@@ -396,6 +396,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             max_h += gear_weapon_data("weapon", weapon_one(), "hp_mod");
             max_h += gear_weapon_data("weapon", weapon_two(), "hp_mod");
         }
+        if (role() == "Guard Squad") {
+            max_h *= GUARD_SQUAD_SIZE; // a squad shares one pooled health bar and dies as a whole
+        }
         return max_h;
     };
 

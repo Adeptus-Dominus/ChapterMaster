@@ -61,6 +61,36 @@ function add_data_to_stack(stack_index, weapon, unit_damage = false, head_role =
 }
 
 /// @self Asset.GMObject.obj_pnunit
+/// Adds a single named weapon to the stacks, firing "count" times. Used for Guard
+/// Squads, where one unit struct stands for a whole squad: the default weapon (wep1)
+/// fires once per man and the special weapon (wep2) fires once for the squad. Mirrors
+/// the enemy horde firepower in scr_en_weapon (attack times the number firing) rather
+/// than the normal single-primary-weapon path, which would only fire the higher-attack gun.
+function add_squad_weapon(weapon_name, count, head_role = false, unit = "none") {
+    if (weapon_name == "") {
+        return;
+    }
+    var _w = gear_weapon_data("weapon", weapon_name, "all", false, "standard");
+    if (!is_struct(_w) || _w.name == "") {
+        return;
+    }
+    var _idx = find_stack_index(_w.name, head_role, unit);
+    if (_idx < 0) {
+        return;
+    }
+    att[_idx] += _w.attack * count;
+    apa[_idx] = _w.arp;
+    range[_idx] = _w.range;
+    wep_num[_idx] += count;
+    splash[_idx] = _w.spli;
+    wep[_idx] = _w.name;
+    if (obj_ncombat.started == 0) {
+        ammo[_idx] = _w.ammo;
+    }
+    wep_owner[_idx] = "assorted";
+}
+
+/// @self Asset.GMObject.obj_pnunit
 function find_stack_index(weapon_name, head_role = false, unit = "none") {
     final_index = -1;
     var allow = false;
@@ -312,12 +342,23 @@ function scr_player_combat_weapon_stacks() {
                 }
                 if (marine_casting[g] == false) {
                     var weapon_stack_index = 0;
-                    var primary_ranged = unit.ranged_damage_data[3]; //collect unit ranged data
-                    var weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
-                    if (weapon_stack_index > -1) {
-                        add_data_to_stack(weapon_stack_index, primary_ranged, unit.ranged_damage_data[0], head_role, unit);
-                        if (head_role) {
-                            player_head_role_stack(weapon_stack_index, unit);
+                    if (unit.role() == "Guard Squad") {
+                        // The squad thins as it takes losses: its surviving strength scales with
+                        // remaining health, so a half-health squad fires half its lasguns and a
+                        // squad on its last legs fires one. It fires wep1 once per surviving man
+                        // and its special weapon (wep2) once while the squad still lives.
+                        var _sq_max = unit.max_health();
+                        var _sq_men = (_sq_max > 0) ? max(1, ceil(GUARD_SQUAD_SIZE * unit.hp() / _sq_max)) : 1;
+                        add_squad_weapon(unit.weapon_one(), _sq_men, head_role, unit);
+                        add_squad_weapon(unit.weapon_two(), 1, head_role, unit);
+                    } else {
+                        var primary_ranged = unit.ranged_damage_data[3]; //collect unit ranged data
+                        weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
+                        if (weapon_stack_index > -1) {
+                            add_data_to_stack(weapon_stack_index, primary_ranged, unit.ranged_damage_data[0], head_role, unit);
+                            if (head_role) {
+                                player_head_role_stack(weapon_stack_index, unit);
+                            }
                         }
                     }
 

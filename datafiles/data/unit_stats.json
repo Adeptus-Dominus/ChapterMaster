@@ -581,6 +581,60 @@
             1
         ]
     },
+    "guard_squad": {
+        "ballistic_skill": [
+            25,
+            1
+        ],
+        "base_group": "human",
+        "charisma": [
+            15,
+            1
+        ],
+        "constitution": [
+            28,
+            1,
+            "max"
+        ],
+        "dexterity": [
+            20,
+            1
+        ],
+        "intelligence": [
+            15,
+            1
+        ],
+        "luck": 5,
+        "piety": [
+            25,
+            1
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Flak Armour",
+            "gear": "",
+            "mobi": "",
+            "wep1": "Lasgun",
+            "wep2": ""
+        },
+        "strength": [
+            20,
+            1
+        ],
+        "technology": [
+            10,
+            1
+        ],
+        "title": "Guard Squad",
+        "weapon_skill": [
+            15,
+            1
+        ],
+        "wisdom": [
+            15,
+            1
+        ]
+    },
     "guardsman": {
         "ballistic_skill": [
             25,
