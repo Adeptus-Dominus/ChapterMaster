@@ -17,7 +17,6 @@ function scr_enemy_ai_d() {
 
     for (var i = 1; i <= planets; i++) {
         //this will skip for given planet if no problems associated wiht planet
-        var numeral_name = planet_numeral_name(i);
         if ((p_necrons[i] > 0) && (p_necrons[i] < 6)) {
             p_necrons[i] += 1;
         }
@@ -91,201 +90,14 @@ function scr_enemy_ai_d() {
         if (planet_problemless(i)) {
             continue;
         }
-        numeral_name = planet_numeral_name(i);
 
-        if (has_problem_planet_and_time(i, "succession", 0)) {
-            var result, alert_text;
-            var dice1 = roll_dice(1, 100);
-            var dice2 = roll_dice(1, 100);
-
-            result = "";
-            alert_text = "";
-            if (dice1 <= (p_heresy[i] * 2)) {
-                result = "chaos";
-            }
-            if ((dice2 <= (p_influence[i][eFACTION.TAU] * 2)) && (result == "")) {
-                result = "tau";
-            }
-            if (result == "") {
-                result = "imperial";
-            }
-
-            alert_text = $"War of Succession on {planet_numeral_name(1)} has ended";
-
-            if ((p_owner[i] == 2) && (result == "chaos")) {
-                alert_text += " with Chaos in control.";
-                dispo[i] = 0;
-                p_owner[i] = 10;
-                p_pdf[i] += p_guardsmen[i];
-                p_guardsmen[i] = 0;
-                scr_alert("red", "succession", alert_text, x, y);
-            } else if ((p_owner[i] == 2) && (result == "tau")) {
-                alert_text += " with a Tau sympathizer in control.";
-                dispo[i] = 10 + choose(1, 2, 3, 4, 5, 6);
-                p_owner[i] = 8;
-                p_pdf[i] += p_guardsmen[i];
-                p_guardsmen[i] = 0;
-                p_tau[i] = 2;
-                scr_alert("red", "succession", alert_text, x, y);
-            } else if (result == "imperial") {
-                alert_text += " The resultant governor is the most staunch pillar of the imperium.";
-            } else {
-                alert_text += " Word is the new Governor has Heretical leanings and sympathises with xenos.";
-            }
-            if (result == "imperial") {
-                alert_text += ".";
-                scr_alert("green", "succession", alert_text, x, y);
-            }
-            delete_features(p_feature[i], eP_FEATURES.SUCCESSION_WAR);
-            if (result == "chaos") {
-                scr_event_log("purple", alert_text);
-            }
-            if (result == "tau") {
-                scr_event_log("red", alert_text);
-            }
-            if (result == "imperial") {
-                scr_event_log("", alert_text);
-            }
-            remove_planet_problem(i, "succession");
-        }
-        if (has_problem_planet_and_time(i, "recon", 0) > -1) {
-            var alert_text = "Inquisition Mission Failed: Investigate ";
-            alert_text += string(name) + " " + scr_roman(i) + ".";
-            scr_alert("red", "mission_failed", alert_text, 0, 0);
-            scr_event_log("red", alert_text);
-            obj_controller.disposition[4] -= 5;
-            remove_planet_problem(i, "recon");
-        }
-
-        if (has_problem_planet_and_time(i, "great_crusade", 0) > -1) {
-            var dir;
-            var join_crusade = false;
-            var _player_fleet = instance_nearest(x, y, obj_p_fleet);
-
-            if (_player_fleet.action == "") {
-                if (point_distance(x, y, _player_fleet.x, _player_fleet.y) < 10) {
-                    join_crusade = true;
-                }
-            }
-
-            if (join_crusade) {
-                dir = point_direction(room_width / 2, room_height / 2, x, y);
-                with (_player_fleet) {
-                    action_x = x + lengthdir_x(1200, dir);
-                    action_y = y + lengthdir_y(1200, dir);
-                    set_fleet_movement(false, "crusade1");
-                }
-
-                scr_alert("green", "crusade", "Fleet embarks upon Crusade.", x, y);
-                scr_event_log("", "Fleet embarks upon Crusade.");
-            } else {
-                // hit loyalty here
-                obj_controller.disposition[2] -= 5;
-                obj_controller.disposition[4] -= 10;
-                scr_alert("red", "crusade", "No ships designated for Crusade.", x, y);
-                scr_loyalty("Refusing to Crusade", "+");
-                scr_event_log("red", "No ships designated for Crusade.");
-                if (obj_controller.penitent == 1) {
-                    obj_controller.penitent_current = 0;
-                }
-            }
-            remove_planet_problem(i, "great_crusade");
+        var _pdata = get_planet_data(i);
+        with (_pdata){
+            problem_end_turn_checks();
         }
 
         mechanicus_missions_end_turn(i);
-        if (has_problem_planet_and_time(i, "bomb", 0) > -1) {
-            var alert_text = "The Necron Tomb of planet ";
 
-            alert_text += $"{numeral_name} has not been deactivated in time.  It has awakened, rank upon rank of Necrons pouring out to the planet's surface.  The Inquisition is not pleased with your failure.";
-            scr_popup("Inquisition Mission Failed", alert_text, "necron_army", "");
-            scr_event_log("red", $"Inquisition Mission Failed: Bombing run failed; the Necron Tomb on {planet_numeral_name(i)} has become active.");
-
-            p_necrons[i] = 4;
-            if (awake_tomb_world(p_feature[i]) == 0) {
-                awaken_tomb_world(p_feature[i]);
-            }
-            remove_planet_problem(i, "necron");
-            // scr_alert("red","mission_failed",alert_text,0,0);
-            obj_controller.disposition[4] -= 8;
-        }
-        if (has_problem_planet_and_time(i, "inquisitor1", 6) > -1 || has_problem_planet_and_time(i, "inquisitor2", 6) > -1) {
-            var flit, x7, y7, drr;
-            drr = random(floor(360)) + 1;
-            x7 = x + lengthdir_x(384, drr);
-            y7 = y + lengthdir_y(384, drr);
-
-            if ((x7 < 0) || (x7 > room_width) || (y7 > room_height) || (y7 < 0)) {
-                drr = point_direction(x, y, room_width / 2, room_height / 2);
-                x7 = x + lengthdir_x(384, drr);
-                y7 = y + lengthdir_y(384, drr);
-            }
-
-            // show_message("x1:"+string(x)+", y1:"+string(y)+"#x2:"+string(x7)+", y2:"+string(y7));
-
-            flit = instance_create(x7, y7, obj_en_fleet);
-            if (has_problem_planet_and_time(i, "inquisitor1", 6)) {
-                flit.trade_goods = "male_her";
-            }
-            if (has_problem_planet_and_time(i, "inquisitor2", 6)) {
-                flit.trade_goods = "female_her";
-            }
-            flit.action_x = x;
-            flit.action_y = y;
-            with (flit) {
-                owner = eFACTION.INQUISITION;
-                sprite_index = spr_fleet_inquisition;
-                image_index = 0;
-                action_spd = 128;
-                escort_number = 1;
-                set_fleet_movement();
-            }
-            remove_planet_problem(i, "inquisitor1");
-            remove_planet_problem(i, "inquisitor2");
-        }
-        if (has_problem_planet_and_time(i, "spyrer", 0) > -1) {
-            var alert_text, text;
-            var planet_name = planet_numeral_name(i, self);
-            alert_text = $"The Spyrer on {planet_name} has been left unchecked.  In the ensuing carnage some high-ranking officials have been killed, along with several Nobles.  Panic is running amock in several parts of the hives and the Inquisition is less than pleased.";
-            text = "Inquisition Mission Failed: The Spyrer on {planet_name} was not removed.";
-            scr_popup("Inquisition Mission Failed", alert_text, "spyrer", "");
-            obj_controller.disposition[eFACTION.INQUISITION] -= 3;
-            scr_event_log("red", text);
-            remove_planet_problem(i, "spyrer");
-        }
-        if (has_problem_planet_and_time(i, "fallen", 0) > -1) {
-            //TODO marker point for cohesion mechanics
-            var alert_text = "";
-            var unit;
-            if (irandom(100) > 33) {
-                // Give all marines +3d6 corruption and reduce loyalty by 20*/
-                var me = 0;
-                for (var co = 0; co <= obj_ini.companies; co++) {
-                    me = 0;
-                    for (me = 0; me < array_length(obj_ini.role[co]); me++) {
-                        if ((obj_ini.race[co][me] == 1) && (obj_ini.role[co][me] != "")) {
-                            unit = fetch_unit([co, me]);
-                            unit.edit_corruption(irandom_range(3, 6));
-                            unit.alter_loyalty(10);
-                        }
-                    }
-                }
-            }
-            alert_text = $"Any Fallen that may have been on {planet_numeral_name(i)} ";
-            alert_text += "have been given sufficient time to escape.  Morale within your chapter has plummeted; some of your battle brothers have become restless and speak among eachother in hushed tones.";
-            scr_popup("Hunt the Fallen Failed", alert_text + "\n\n(Chapter wide loyalty: -10)\nChaplains note marked changes in behaviour of some brothers", "fallen", "");
-            obj_controller.loyalty -= 10;
-            obj_controller.loyalty_hidden -= 10;
-            remove_planet_problem(i, "fallen");
-            scr_event_log("red", $"Mission Failed: Any Fallen within the {name} system have been given time to escape.");
-        }
-        var garrison_mission = has_problem_planet_and_time(i, "provide_garrison", 0);
-        if (garrison_mission > -1) {
-            try {
-                complete_garrison_mission(i, garrison_mission);
-            } catch (_exception) {
-                ERROR_HANDLER.handle_exception(_exception);
-            }
-        }
         var _beast_hunt = has_problem_planet_and_time(i, "hunt_beast", 0);
         if (_beast_hunt > -1) {
             try {

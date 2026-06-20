@@ -2,6 +2,14 @@ function struct_empty(_struct) {
     return array_length(variable_struct_get_names(_struct)) == 0;
 }
 
+function struct_has_value(struct, key, value){
+    if (!struct_exists(struct, key)){
+        return false;
+    }
+    
+    return struct[$ key] == value;
+}
+
 function move_data_to_current_scope(move_struct, overide = true) {
     if (!is_struct(move_struct)) {
         LOGGER.debug(move_struct);

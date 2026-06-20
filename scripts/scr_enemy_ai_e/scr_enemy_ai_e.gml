@@ -714,7 +714,7 @@ function scr_enemy_ai_e() {
         halfpop = p_max_population[run] / 2;
 
         if (array_length(p_feature[run])) {
-            var planet_data = new PlanetData(run, self);
+            var planet_data = get_planet_data(run);
 
             // Transforming billions pop number to a real number so the code can handle it
             // Otherwise, 3 and a half billions get translated as 3,50 instead of 3500000000
