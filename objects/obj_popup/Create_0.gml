@@ -214,6 +214,24 @@ get_unit_promotion_options = function() {
                 }
             }
 
+            if (array_contains([2, 3, 4, 5], target_comp)) {
+                i += 1;
+                role_name[i] = obj_ini.role[100][13]; //bikers
+                role_exp[i] = company_promote_data[target_comp].exp;
+                if (obj_controller.command_set[2] == 0) {
+                    role_exp[i] = 0;
+                }
+            }
+
+            if (array_contains([2, 3, 4, 5], target_comp)) {
+                i += 1;
+                role_name[i] = obj_ini.role[100][20]; //attack bikers
+                role_exp[i] = company_promote_data[target_comp].exp;
+                if (obj_controller.command_set[2] == 0) {
+                    role_exp[i] = 0;
+                }
+            }
+
             if (target_comp == 1) {
                 i += 1;
                 role_name[i] = obj_ini.role[100][4]; //terminators
@@ -253,6 +271,14 @@ get_unit_promotion_options = function() {
 
             i += 1;
             role_name[i] = obj_ini.role[100][12]; //scouts
+            role_exp[i] = 0;
+
+            i += 1;
+            role_name[i] = obj_ini.role[100][13]; //bikers
+            role_exp[i] = 0;
+
+            i += 1;
+            role_name[i] = obj_ini.role[100][20]; //attack bikers
             role_exp[i] = 0;
 
             i += 1;

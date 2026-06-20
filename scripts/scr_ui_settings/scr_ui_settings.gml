@@ -66,6 +66,8 @@ function setup_ui_chapter_settings(){
         eROLE.DEVASTATOR,
         eROLE.ASSAULT,
         eROLE.SCOUT,
+        eROLE.BIKER,
+        eROLE.ATTACK_BIKER,
         eROLE.SERGEANT,
         eROLE.VETERANSERGEANT,
     ];

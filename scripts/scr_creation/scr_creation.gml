@@ -39,7 +39,7 @@ function set_complex_livery_buttons() {
 function update_creation_roles_radio(start_role = 1) {
     var _role_data = [];
 
-    for (var i = start_role; i <= 19; i++) {
+    for (var i = start_role; i <= 20; i++) {
         if (race[100][i] != 0 && role[100][i] != "") {
             array_push(_role_data, {str1: role[100][i], font: fnt_40k_14b, role_id: i});
         }

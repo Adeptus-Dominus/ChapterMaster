@@ -466,13 +466,14 @@ load_default_gear(eROLE.DEVASTATOR, "Devastator", "", "Combat Knife", STR_ANY_PO
 load_default_gear(eROLE.ASSAULT, "Assault", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Jump Pack", "");
 load_default_gear(eROLE.ANCIENT, "Ancient", "Company Standard", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
 load_default_gear(eROLE.SCOUT, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
+load_default_gear(eROLE.BIKER, "Biker", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Bike", "");
 load_default_gear(eROLE.CHAPLAIN, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
 load_default_gear(eROLE.APOTHECARY, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
 load_default_gear(eROLE.TECHMARINE, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
 load_default_gear(eROLE.LIBRARIAN, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
 load_default_gear(eROLE.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
 load_default_gear(eROLE.VETERANSERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
-
+load_default_gear(eROLE.ATTACK_BIKER, "Attack Biker", "Heavy Bolter", "Chainsword", STR_ANY_POWER_ARMOUR, "Attack Bike", "");
 if (global.restart > 0) {
     fade_in = -1;
     slate1 = -1;
