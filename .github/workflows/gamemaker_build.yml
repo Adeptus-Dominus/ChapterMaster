@@ -152,8 +152,7 @@ jobs:
           echo "Downloading latest stable Steam Runtime SDK..."
           curl -sL -o steam-runtime-sdk.tar.gz "${BASE_URL}/${TARGET_FILE}"
           
-          echo "${EXPECTED_SHA256}  steam-runtime-sdk.tar.gz" | sha256sum -c -
-          if [ $? -ne 0 ]; then
+          if ! echo "${EXPECTED_SHA256}  steam-runtime-sdk.tar.gz" | sha256sum -c -; then
             echo "Error: Steam Runtime SDK checksum verification failed!"
             exit 1
           fi
