@@ -12,6 +12,7 @@
             "master_crafted": 30,
             "standard": 25
         },
+        "ranged_hands": -1,
         "melee_mod":{
             "artifact": 30,
             "master_crafted": 25,
@@ -38,10 +39,11 @@
         },
         "description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and respectable Twin-Linked Bolters for offensive action. Sports an additional sidecar with a heavy weapon of choice.",
         "hp_mod": {
-            "artifact": 50,
-            "master_crafted": 40,
-            "standard": 35
+            "artifact": 150,
+            "master_crafted": 120,
+            "standard": 100
         },
+        "ranged_hands": 1,
         "melee_mod":{
             "artifact": 20,
             "master_crafted": 15,
