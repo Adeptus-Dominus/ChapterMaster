@@ -116,6 +116,11 @@ jobs:
         shell: pwsh
         run: npm install -g @gamemaker/gm-cli@latest
 
+      - name: Login to GameMaker CLI
+        if: ${{ secrets.GAMEMAKER_ACCESS_KEY != '' }}
+        shell: pwsh
+        run: npx @gamemaker/gm-cli@latest login ${{ secrets.GAMEMAKER_ACCESS_KEY }}
+
       - name: Disable Windows Defender for Build (Windows)
         if: matrix.target == 'windows'
         shell: pwsh
