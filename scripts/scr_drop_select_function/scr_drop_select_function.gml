@@ -49,10 +49,10 @@ function drop_select_unit_selection() {
         // draw_rectangle(xx+1084,yy+215,xx+1142,yy+273,0);
 
         // Formation
-        formation.x1 = x1 + 420;
+        var _formation_str = $"Formation: {obj_controller.bat_formation[formation_possible[formation_current]]}";
+        formation.x1 = x2 - 40 - (string_width(_formation_str) + 4);
         formation.y1 = y1 + 80;
-        formation.str1 = $"Formation: {obj_controller.bat_formation[formation_possible[formation_current]]}";
-        formation.update();
+        formation.update({str1: _formation_str});
         formation.draw();
         if (formation.clicked()) {
             formation_current++;
@@ -155,15 +155,15 @@ function drop_select_unit_selection() {
         } else if (race_quantity >= 6) {
             target_threat = threat_levels[6];
         }
-        target.x1 = formation.x1;
-        target.y1 = formation.y2 + 10;
-        target.str1 = "Target: ";
+        var _target_str = "Target: ";
         if (race_quantity != 0) {
-            target.str1 += $"{target_race} ({target_threat} Threat)";
+            _target_str += $"{target_race} ({target_threat} Threat)";
         } else {
-            target.str1 += "None";
+            _target_str += "None";
         }
-        target.update();
+        target.x1 = x2 - 40 - (string_width(_target_str) + 4);
+        target.y1 = formation.y2 + 10;
+        target.update({str1: _target_str});
         target.draw();
         draw_sprite(spr_faction_icons, attacking, x2 - 100, y1 + 40);
         var q = 0;
