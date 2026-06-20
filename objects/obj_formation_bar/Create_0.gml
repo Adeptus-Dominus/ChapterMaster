@@ -29,6 +29,7 @@ bar_hit = function(){
 	    draw_set_color(c_gray);
 	    draw_set_font(fnt_40k_30b);
 	    draw_set_halign(fa_center);
+		draw_set_valign(fa_top); //test next time please
 	    draw_text_transformed(1398, 213, string(tooltip), 0.75, 0.75, 0);
 
 	    draw_set_halign(fa_left);

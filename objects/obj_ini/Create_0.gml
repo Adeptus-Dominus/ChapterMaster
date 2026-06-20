@@ -229,6 +229,8 @@ serialize = function() {
         squad_structs: squads,
         equipment: equipment,
         gene_slaves: gene_slaves, // squads // marines,
+        chapter_data: chapter_data,
+        chapter_squad_arrangement: chapter_squad_arrangement,
     };
 
     if (struct_exists(object_ini, "last_ship")) {
@@ -246,7 +248,9 @@ serialize = function() {
         "squad_structs",
         "squad_types",
         "marines",
-        "last_ship"
+        "last_ship",
+        "chapter_data",
+        "chapter_squad_arrangement"
     ];
 
     copy_serializable_fields(object_ini, save_data, excluded_from_save);
