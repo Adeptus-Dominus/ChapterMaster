@@ -140,7 +140,7 @@ jobs:
           
           # Extract the expected checksum for the target sysroot archive
           TARGET_FILE="com.valvesoftware.SteamRuntime.Sdk-amd64,i386-scout-sysroot.tar.gz"
-          EXPECTED_SHA256=$(grep "$TARGET_FILE" SHA256SUMS | cut -d' ' -f1)
+          EXPECTED_SHA256=$(grep -F "$TARGET_FILE" SHA256SUMS | cut -d' ' -f1)
           
           if [ -z "$EXPECTED_SHA256" ]; then
             echo "Error: Could not find SHA256 checksum for $TARGET_FILE in SHA256SUMS!"
