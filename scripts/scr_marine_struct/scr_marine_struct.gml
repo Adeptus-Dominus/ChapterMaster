@@ -1899,12 +1899,22 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var homestar = "none";
         var spawn_location_chosen = false;
         if (type == "home_planet") {
-            // Place directly on the chapter home planet and keep the unit off-ship. Used by
-            // bulk spawns so large numbers of units are not distributed across the fleet's
-            // ships, which is slow and clutters ship cargo.
-            planet_location = obj_ini.home_planet;
+            // Place on the chapter's actual owned planet in the home system and keep the unit
+            // off-ship, so bulk spawns are not scattered across the fleet's ships. Scan for a
+            // player-owned planet rather than trusting obj_ini.home_planet, which can be a
+            // stale index pointing at a planet that does not exist in this system.
             ship_location = -1;
             location_string = obj_ini.home_name;
+            planet_location = obj_ini.home_planet;
+            var homestar = find_star_by_name(obj_ini.home_name);
+            if (homestar != "none") {
+                for (var i = 1; i <= homestar.planets; i++) {
+                    if (homestar.p_owner[i] == eFACTION.PLAYER) {
+                        planet_location = i;
+                        break;
+                    }
+                }
+            }
             return;
         }
         if (((type == "home") || (type == "default")) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {

@@ -111,6 +111,11 @@ function Roster() constructor {
                             _valid_type = _allow_dreadnoughts;
                         }
                     }
+                    // Guardsmen answer to their own filter button rather than always passing
+                    var _grd_role = _unit.role();
+                    if (_grd_role == "Guardsman" || _grd_role == "Guard Squad") {
+                        _valid_type = array_contains(_valid_squad_types, "guardsman");
+                    }
                 }
 
                 if (_unit.ship_location > -1) {
@@ -158,7 +163,7 @@ function Roster() constructor {
     static new_squad_button = function(display, squad_id) {
         var _button = new ToggleButton();
         display = string_replace(display, " Squad", "");
-        if (display != "Command") {
+        if (display != "Command" && display != "Guardsmen") {
             display = string_plural(display);
         }
         _button.str1 = display;
@@ -289,6 +294,13 @@ function Roster() constructor {
                                 array_push(_squads, "dreadnought");
                                 new_squad_button("Dreadnought", "dreadnought");
                             }
+                        }
+                        // Guardsmen and Guard Squads have no squad type, so give them their
+                        // own filter button (added once) so they can be selected on their own.
+                        var _grd_role = _unit.role();
+                        if ((_grd_role == "Guardsman" || _grd_role == "Guard Squad") && !array_contains(_squads, "guardsman")) {
+                            array_push(_squads, "guardsman");
+                            new_squad_button("Guardsmen", "guardsman");
                         }
                     }
                 }
