@@ -58,6 +58,29 @@ guard_recruit_button.bind_method = function() {
     }
 };
 
+// Levy Guardsmen: raise 100 deployable Guardsmen as actual units (not the abstract PDF
+// pool). They muster on this world, stationed off-ship, so the deploy roster's Guardsmen
+// filter can bring them into a battle here, or they can be embarked onto ships and taken
+// on the offensive. Costs 10 requisition. Uses the batch spawn path (one sort at the end)
+// so raising 100 at once stays fast.
+guardsmen_levy_button = new PurchaseButton(10);
+guardsmen_levy_button.update({tooltip: "Levy 100 Guardsmen from this world as deployable troops. They muster here, ready to be brought into battle or embarked onto your ships. /n Costs 10 requisition", label: "Levy Guardsmen", target: target});
+guardsmen_levy_button.bind_method = function() {
+    var _star = target.name;
+    var _planet = obj_controller.selecting_planet;
+    repeat (100) {
+        var _u = scr_add_man("Guardsman", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
+        if (is_struct(_u)) {
+            _u.location_string = _star;
+            _u.planet_location = _planet;
+            _u.ship_location = -1;
+        }
+    }
+    with (obj_ini) {
+        scr_company_order(0);
+    }
+};
+
 recruiting_button = new PurchaseButton(0);
 recruiting_button.update({tooltip: "Enable recruiting", label: "Recruiting", target: target});
 recruiting_button.bind_method = function() {
