@@ -1694,12 +1694,6 @@ function PlanetData(planet, system) constructor {
                     var _guard_button = obj_star_select.guard_recruit_button;
                     _guard_button.update({x1: xx + 35, y1: _half_way + spacing_y, allow_click: true});
                     _guard_button.draw(pdf >= 1000);
-
-                    // Levy Guardsmen sits one row below Recruit Guard. Enabled whenever the
-                    // player can afford it (the PurchaseButton checks the 10 requisition).
-                    var _levy_button = obj_star_select.guardsmen_levy_button;
-                    _levy_button.update({x1: xx + 35, y1: _half_way + spacing_y * 2, allow_click: true});
-                    _levy_button.draw(true);
                 }
 
                 var _recruit_button = obj_star_select.recruiting_button;

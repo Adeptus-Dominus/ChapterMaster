@@ -17,6 +17,7 @@ function TradeAttempt(diplomacy) constructor {
         "Inferno Bolts": 5,
         "Sister of Battle": 40,
         "Sister Hospitaler": 75,
+        "Guardsman": 0.05,
         "Eldar Power Sword": 50,
         "Archeotech Laspistol": 150,
         "Ranger": 100,
@@ -90,6 +91,12 @@ function TradeAttempt(diplomacy) constructor {
                     quality: "standard",
                     number: _opt.number,
                 };
+                // Space Marines commandeering Imperial Guard is frowned upon since the
+                // Heresy and the reign of Goge Vandire, so the Sector Governor's regard
+                // dips a little each time. The hit is small and one-off per levy.
+                if (_type == "Guardsman") {
+                    alter_disposition(diplomacy_faction, -2);
+                }
             } else if (_opt.trade_type == "arti") {
                 scr_add_artifact("random", "minor", true);
             } else if (_opt.trade_type == "vehic") {
@@ -373,6 +380,7 @@ function TradeAttempt(diplomacy) constructor {
     switch (diplomacy_faction) {
         case 2:
             new_demand_buttons(0, "Requisition", "req");
+            new_demand_buttons(0, "Guardsman", "merc", 5000);
             new_demand_buttons(0, "Recruiting Planet", "license", 1);
             new_demand_buttons(0, "License: Repair", "license", 1);
             new_demand_buttons(0, "License: Crusade", "license", 1);
@@ -675,6 +683,33 @@ function TradeAttempt(diplomacy) constructor {
 
         deal_chance = (100 - penalty) - (their_worth - (my_worth * dif_penalty));
         //LOGGER.debug($"{their_worth},{my_worth},{deal_chance}");
+
+        // Guardsmen are abundant Imperial line troops the Sector Governor hands over by the
+        // thousand, not a haggled rarity, so the base trade overhead does not apply to a
+        // pure Guard levy. They cost a flat 0.05 requisition each (50 per 1000). If the
+        // offered requisition covers the guardsmen demanded the Governor obliges outright,
+        // otherwise he declines. Only triggers when guardsmen are the sole demand, so it
+        // cannot be used to slip other goods through cheaply.
+        var _guard_num = 0;
+        var _other_demand = false;
+        for (var gi = 0; gi < array_length(demand_options); gi++) {
+            if (demand_options[gi].number > 0) {
+                if (demand_options[gi].label == "Guardsman") {
+                    _guard_num += demand_options[gi].number;
+                } else {
+                    _other_demand = true;
+                }
+            }
+        }
+        if ((_guard_num > 0) && !_other_demand) {
+            var _req_offered = 0;
+            for (var ri = 0; ri < array_length(offer_options); ri++) {
+                if (offer_options[ri].label == "Requisition") {
+                    _req_offered += offer_options[ri].number;
+                }
+            }
+            deal_chance = _req_offered >= ceil(_guard_num * 0.05) ? 100 : 0;
+        }
         var _chance = clamp(floor((deal_chance / 20)), 0, 6);
 
         trade_likely = chance_chart[_chance];
