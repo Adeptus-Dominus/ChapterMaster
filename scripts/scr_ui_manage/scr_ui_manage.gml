@@ -808,7 +808,17 @@ function scr_ui_manage() {
             squad_sel = -1;
             squad_sel_action = -1;
         }
-        if (man_size < 1) {
+        // Only clear the selection when nothing is actually picked. The old check reset
+        // on any total below 1.0, which wiped fractional-size selections (guardsmen at
+        // 0.1) before they could reach a full marine's worth of space.
+        var _has_selection = false;
+        for (var _ms = 0; _ms < array_length(man_sel); _ms++) {
+            if (man_sel[_ms] == 1) {
+                _has_selection = true;
+                break;
+            }
+        }
+        if (man_size < 1 && !_has_selection) {
             reset_manage_selections();
         }
         var unit;

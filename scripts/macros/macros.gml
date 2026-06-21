@@ -1,6 +1,12 @@
 // Imperial Guard squad: how many guardsmen one Guard Squad unit represents.
 #macro GUARD_SQUAD_SIZE 10
 
+// Imperial Guard cover save: fraction of would-be ground-combat casualties treated as
+// missed, standing in for spacing, terrain use and a low profile that the combat model
+// does not simulate. Applied after armour, so it also blunts armour-piercing weapons
+// (choppaz, power klawz) that ignore Flak entirely. 0 = no save, 0.4 = 40% fewer losses.
+#macro GUARD_COVER_SAVE 0.4
+
 #macro MAX_STC_PER_SUBCATEGORY 6
 #macro DEFAULT_TOOLTIP_VIEW_OFFSET 32
 #macro DEFAULT_LINE_GAP -1

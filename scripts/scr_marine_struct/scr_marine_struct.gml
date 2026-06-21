@@ -361,6 +361,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var arm = armour();
         var sz = 0;
         sz = 1;
+        // Guardsmen are line infantry, racked aboard far denser than power-armoured
+        // Astartes, so a single trooper takes only a tenth of a marine's berth. A Guard
+        // Squad is left at a full slot, since one already stands in for a whole squad.
+        if (unit_role == "Guardsman") {
+            size = 0.1;
+            return size;
+        }
         if (string_count("Dread", arm) > 0) {
             sz += 5;
         } else if (array_contains(global.list_terminator_armour, arm)) {

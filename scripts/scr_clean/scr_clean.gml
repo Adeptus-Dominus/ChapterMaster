@@ -237,6 +237,13 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
         if (_g_total < 0) {
             _g_total = 0;
         }
+        // Cover / dispersion save (see GUARD_COVER_SAVE in macros.gml). A flat fraction
+        // of would-be casualties are treated as missed, standing in for spacing, terrain
+        // and a small profile. Applied after armour so it also blunts armour-piercing
+        // weapons (choppaz, power klawz) that ignore Flak entirely.
+        if (_g_total > 0 && GUARD_COVER_SAVE > 0) {
+            _g_total = floor(_g_total * (1 - GUARD_COVER_SAVE));
+        }
         _damage_data.hits += _shots;
         // Always name the block, even on a zero-casualty hit, or the enemy attack
         // flavor prints "fire at ." with a blank target whenever armour soaks the shot.

@@ -1613,7 +1613,7 @@
     "Lasgun": {
         "abbreviation": "Lasgun",
         "ammo": 40,
-        "arp": 1,
+        "arp": 2,
         "attack": {
             "artifact": 30,
             "master_crafted": 26,
