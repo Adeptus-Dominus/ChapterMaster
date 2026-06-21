@@ -1436,10 +1436,13 @@ function InteractiveButton(data = {}) constructor {
         
     static update = function(data = {}) {
         move_data_to_current_scope(data);
+        if (struct_exists(data, "str1") && !struct_exists(data, "width")) {
+            width = 0;
+        }
         if (width == 0) {
             width = string_width(str1) + 4;
         }
-        if (height == 0) {
+        if (!struct_exists(data, "height")) {
             height = string_height(str1) + 4;
         }
         x2 = x1 + width;

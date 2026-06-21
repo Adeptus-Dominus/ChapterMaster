@@ -1171,7 +1171,11 @@ serialize = function() {
         "tooltips",
         "last_unit",
         "unit_manage_constants",
-        "unit_manage_image"
+        "unit_manage_image",
+        "chapter_master",
+        "armamentarium",
+        "helpful_places_button",
+        "lair_styles"
     ];
     var excluded_from_save_start = ["restart_"];
 
