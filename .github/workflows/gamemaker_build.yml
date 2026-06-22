@@ -190,3 +190,4 @@ jobs:
           name: ChapterMaster-${{ steps.version_info.outputs.suffix }}-${{ matrix.platform }}
           path: ${{ steps.find_yyp.outputs.yyp-dir }}/ChapterMaster-${{ steps.version_info.outputs.suffix }}-${{ matrix.platform }}.zip
           retention-days: 1
+          if-no-files-found: error
