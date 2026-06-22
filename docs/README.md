@@ -29,17 +29,9 @@ Main repository: [Adeptus-Dominus/ChapterMaster](https://github.com/Adeptus-Domi
 
 ## Playing
 
-### Windows
+### Windows, Linux, macOS
 
-Download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/releases/latest) or a [development pre-release](https://github.com/Adeptus-Dominus/ChapterMaster/releases), unzip it and launch the .exe.
-
-### Linux
-
-Pre-compiled Linux binaries are not currently supported. However, you can run the game on Linux by downloading the Windows release `.exe` and running it using **WINE** (or **Proton** / **Steam Play**). This has been reported to work well. Alternatively, you can compile from source.
-
-### macOS
-
-Same as with Linux.
+Download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/releases/latest) or a [development pre-release](https://github.com/Adeptus-Dominus/ChapterMaster/releases), unzip and launch.
 
 ## Compiling from source
 
