@@ -352,6 +352,25 @@
         ],
         "value": 45
     },
+    "Bayonet": {
+        "abbreviation": "Bynt",
+        "ammo": 0,
+        "arp": 1,
+        "attack": {
+            "artifact": 22,
+            "master_crafted": 20,
+            "standard": 18
+        },
+        "description": "A short blade clamped to the muzzle of a lasgun. It gives a Guardsman something to thrust with when the foe closes, but against anything tougher than a grot it is little more than a desperate inconvenience.",
+        "melee_hands": 0,
+        "range": 1,
+        "ranged_hands": 0,
+        "spli": 0,
+        "tags": [
+            "knife"
+        ],
+        "value": 1
+    },
     "Combat Knife": {
         "abbreviation": "CbKnf",
         "ammo": 0,
@@ -1615,9 +1634,9 @@
         "ammo": 40,
         "arp": 2,
         "attack": {
-            "artifact": 30,
-            "master_crafted": 26,
-            "standard": 22
+            "artifact": 130,
+            "master_crafted": 110,
+            "standard": 90
         },
         "description": "The standard-issue weapon of the Astra Militarum. A rugged two-handed las weapon firing coherent energy beams, prized for its reliability and the ease of recharging its power packs in the field. Common, dependable, and unremarkable on its own.",
         "melee_hands": 0,

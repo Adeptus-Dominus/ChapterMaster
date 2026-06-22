@@ -439,8 +439,11 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
             special = is_specialist(unit_role, SPECIALISTS_HEADS) || unit_role == obj_ini.role[100][eROLE.CHAPTERMASTER] || unit_role == "Venerable " + string(obj_ini.role[100][eROLE.DREADNOUGHT]) || unit_role == obj_ini.role[100][eROLE.CAPTAIN] || obj_ncombat.player_max <= 6;
 
             if (!special) {
-                plural = units_lost > 1 ? "s" : "";
-                m2 += $"{units_lost} {unit_role}{plural}, ";
+                var _plural_name = unit_role;
+                if (units_lost > 1) {
+                    _plural_name = (unit_role == "Guardsman") ? "Guardsmen" : (unit_role + "s");
+                }
+                m2 += $"{units_lost} {_plural_name}, ";
             } else {
                 him = -1; // Find which unit this is
                 for (var marine = 0; marine < marine_length; marine++) {

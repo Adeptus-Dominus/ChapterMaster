@@ -84,29 +84,18 @@ function TradeAttempt(diplomacy) constructor {
             } else if (_opt.trade_type == "req") {
                 obj_controller.requisition += _opt.number;
             } else if (_opt.trade_type == "merc") {
+                if (!struct_exists(trading_object, "mercenaries")) {
+                    trading_object.mercenaries = {};
+                }
+                trading_object.mercenaries[$ _type] = {
+                    quality: "standard",
+                    number: _opt.number,
+                };
+                // Space Marines commandeering Imperial Guard is frowned upon since the
+                // Heresy and the reign of Goge Vandire, so the Sector Governor's regard
+                // dips a little each time. The hit is small and one-off per levy.
                 if (_type == "Guardsman") {
-                    // Guardsmen are not shipped in like off-world mercenaries. At the
-                    // Governor's word a regiment is raised on the spot from the homeworld's
-                    // own PDF, so they muster immediately on your home world rather than
-                    // travelling by trade convoy. Spawned off-ship via the home_planet path,
-                    // batched with a single company sort so a thousand stays fast.
-                    repeat (_opt.number) {
-                        scr_add_man("Guardsman", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
-                    }
-                    with (obj_ini) {
-                        scr_company_order(0);
-                    }
-                    // Commandeering Imperial Guard is frowned upon since the Heresy and the
-                    // reign of Goge Vandire, so the Sector Governor's regard dips a little.
                     alter_disposition(diplomacy_faction, -2);
-                } else {
-                    if (!struct_exists(trading_object, "mercenaries")) {
-                        trading_object.mercenaries = {};
-                    }
-                    trading_object.mercenaries[$ _type] = {
-                        quality: "standard",
-                        number: _opt.number,
-                    };
                 }
             } else if (_opt.trade_type == "arti") {
                 scr_add_artifact("random", "minor", true);
@@ -391,7 +380,7 @@ function TradeAttempt(diplomacy) constructor {
     switch (diplomacy_faction) {
         case 2:
             new_demand_buttons(0, "Requisition", "req");
-            new_demand_buttons(0, "Guardsman", "merc", 5000);
+            new_demand_buttons(0, "Guardsman", "merc", 2000);
             new_demand_buttons(0, "Recruiting Planet", "license", 1);
             new_demand_buttons(0, "License: Repair", "license", 1);
             new_demand_buttons(0, "License: Crusade", "license", 1);
