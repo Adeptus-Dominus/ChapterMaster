@@ -65,14 +65,17 @@ jobs:
           }
 
           $CommitHash = git rev-parse --short HEAD
+          $RefName = "${{ github.ref_name }}"
+          $RefType = "${{ github.ref_type }}"
+
           try {
-            $Version = "${{ github.ref_name }}".Split('/')[-1]
+            $Version = "$RefName".Split('/')[-1]
           } catch {
             Write-Warning "No tags found, using commit hash as version."
             $Version = $CommitHash
           }
 
-          if ($Version -match "^v") {
+          if ($RefType -eq 'tag' -and $RefName -match '^v\d+\.\d+\.\d+$') {
             $suffix = $Version
           } else {
             $suffix = "$Version-$BuildDate"
