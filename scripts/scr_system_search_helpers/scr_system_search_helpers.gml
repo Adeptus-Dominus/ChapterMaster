@@ -404,7 +404,7 @@ function is_dead_star(star = "none") {
     var dead_star = true;
     if (star == "none") {
         for (var i = 1; i <= planets; i++) {
-            if (p_type[i] != "dead") {
+            if (string_lower(p_type[i]) != "dead") {
                 dead_star = false;
                 break;
             }
