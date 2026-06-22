@@ -182,11 +182,7 @@ jobs:
           $outputName = "ChapterMaster-${suffix}-${{ matrix.platform }}.zip"
           $yypPath = "${{ steps.find_yyp.outputs.yyp-path }}"
 
-          $cmd = "gm-cli package --target ${{ matrix.target }} --runtime $env:RUNTIME --toolchain gms2 --output $outputName --verbose"
-
-          $cmd += " `"$yypPath`""
-          Write-Host "Running: $cmd"
-          Invoke-Expression $cmd
+          gm-cli package --target "${{ matrix.target }}" --runtime $env:RUNTIME --toolchain gms2 --output $outputName --verbose $yypPath
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
