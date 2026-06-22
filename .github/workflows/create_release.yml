@@ -280,6 +280,7 @@ jobs:
           make_latest: ${{ github.event.inputs.make_latest || 'true' }}
           files: |
             ./build_output/**/*.zip
+<<<<<<< HEAD:.github/workflows/create_release.yml
 
       - name: Send Discord Notification
         if: ${{ github.event.inputs.send_discord != 'false' && needs.build_needed.outputs.release_type == 'Development' }}
@@ -294,3 +295,5 @@ jobs:
           embed-description: |
             ${{ steps.build_changelog.outputs.changelog }}
           embed-footer-text: "Download: ${{ steps.create_release.outputs.html_url }}" 
+=======
+>>>>>>> ff1aa2fc2 (ci: Rewrite build pipeline to gm-cli (#1262)):.github/workflows/release_dev.yml
