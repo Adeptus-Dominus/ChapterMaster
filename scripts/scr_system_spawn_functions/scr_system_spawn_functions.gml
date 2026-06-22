@@ -25,6 +25,7 @@ enum ePLAYER_BASE {
 function find_player_spawn_star() {
     instance_activate_object(obj_star);
     var _spawn_star;
+    var _chosen_star = noone;
     var _allowable = false;
     var _allowables = [
         "Temperate",
@@ -36,7 +37,8 @@ function find_player_spawn_star() {
         "Lava"
     ];
     for (var i = 0; i < 100; i++) {
-        var y_loc, x_loc;
+        var x_loc = irandom_range(0 + (room_width / 2), room_width - (room_width / 2));
+        var y_loc = irandom_range(0 + (room_height / 2), room_height - (room_height / 2));
         if (obj_ini.homeworld_relative_loc == 0) {
             if (irandom(1)) {
                 y_loc = choose(0, room_height);
@@ -45,11 +47,8 @@ function find_player_spawn_star() {
                 x_loc = choose(0, room_width);
                 y_loc = irandom(room_height);
             }
-        } else {
-            x_loc = irandom_range(0 + (room_width / 2), room_width - (room_width / 2));
-            y_loc = irandom_range(0 + (room_height / 2), room_height - (room_height / 2));
         }
-        var _chosen_star = instance_nearest(x_loc, y_loc, obj_star);
+        _chosen_star = instance_nearest(x_loc, y_loc, obj_star);
         if (instance_exists(_chosen_star)) {
             for (var p = 0; p < array_length(_chosen_star.p_type); p++) {
                 if (array_contains(_allowables, _chosen_star.p_type[p])) {
@@ -75,7 +74,7 @@ function player_home_star(home_planet) {
     if (obj_ini.home_name != "random") {
         _star_names.AddUsedName(obj_ini.home_name);
         var _old_name_star = find_star_by_name(obj_ini.home_name);
-        if (_old_name_star != "none") {
+        if (_old_name_star != noone) {
             _old_name_star.name = global.name_generator.GenerateFromSet("star", false);
         }
         name = obj_ini.home_name;
@@ -114,10 +113,9 @@ function player_home_star(home_planet) {
 
     p_player[home_planet] = obj_ini.man_size;
 
-    var unit;
     for (var co = 0; co <= obj_ini.companies; co++) {
-        for (i = 0; i < array_length(obj_ini.name[co]); i++) {
-            unit = fetch_unit([co, i]);
+        for (var i = 0; i < array_length(obj_ini.name[co]) - 1; i++) {
+            var unit = fetch_unit([co, i]);
             if (unit.location_string == name) {
                 unit.planet_location = home_planet;
             }
@@ -133,7 +131,7 @@ function set_player_recruit_planet(recruit_planet) {
         var recruit_name = obj_ini.recruiting_name;
         if (recruit_name != "random") {
             _star_names.AddUsedName(recruit_name);
-            if (find_star_by_name(recruit_name) != "none") {
+            if (find_star_by_name(recruit_name) != noone) {
                 find_star_by_name(recruit_name).name = global.name_generator.GenerateFromSet("star", false);
             }
             name = recruit_name;
@@ -141,7 +139,7 @@ function set_player_recruit_planet(recruit_planet) {
     } else {
         if (obj_ini.home_name != "random") {
             _star_names.AddUsedName(obj_ini.home_name);
-            if (find_star_by_name(obj_ini.home_name) != "none") {
+            if (find_star_by_name(obj_ini.home_name) != noone) {
                 find_star_by_name(obj_ini.home_name).name = global.name_generator.GenerateFromSet("star", false);
             }
             name = obj_ini.home_name;

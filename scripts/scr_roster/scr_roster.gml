@@ -103,7 +103,7 @@ function Roster() constructor {
                     continue;
                 }
                 if (_unit.squad_type() != "none") {
-                    var _valid_type = array_contains(_valid_squad_types, _unit.squad_type());
+                    _valid_type = array_contains(_valid_squad_types, _unit.squad_type());
                 } else {
                     var _armour_data = _unit.get_armour_data();
                     if (is_struct(_armour_data)) {
@@ -225,7 +225,7 @@ function Roster() constructor {
 
         roster_local_string += "\n";
         roster_local_string += "Remaining\n";
-        var _roster_types = struct_get_names(possible_local_roster);
+        _roster_types = struct_get_names(possible_local_roster);
         for (var i = 0; i < array_length(_roster_types); i++) {
             var _roster_type_name = _roster_types[i];
             var _roster_type_count = possible_local_roster[$ _roster_type_name];
@@ -255,7 +255,7 @@ function Roster() constructor {
         var _company_present = false;
         for (var co = 0; co <= obj_ini.companies; co++) {
             _company_present = false;
-            for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
+            for (var i = 0; i < array_length(obj_ini.role[co]) - 1; i++) {
                 var _allow = false;
                 var _unit = fetch_unit([co, i]);
                 if (_unit.name() == "" || _unit.role() == "") {
@@ -369,13 +369,11 @@ function Roster() constructor {
         var size_count = 0;
         var _limit = obj_ncombat.man_size_limit;
         var _has_limit = _limit > 0;
-        var _add;
-        var _unit, _size;
         for (var i = 0; i < array_length(selected_units); i++) {
             if (_has_limit && _limit == size_count) {
                 break;
             }
-            _add = true;
+            var _add = true;
 
             if (is_struct(selected_units[i])) {
                 var _unit = selected_units[i];
@@ -505,9 +503,8 @@ function add_unit_to_battle(unit, meeting, is_local) {
 
     //Same as co/company and v, but with extra comprovations in case of a meeting (meeting?)
     var _role = obj_ini.role[100];
-    var cooh, va;
-    cooh = 0;
-    va = 0;
+    var cooh = 0;
+    var va = 0;
     var v = unit.marine_number;
     var company = unit.company;
     if (!meeting) {
@@ -633,12 +630,6 @@ function add_unit_to_battle(unit, meeting, is_local) {
         if (_unit_role == _role[7]) {
             new_combat.champions++;
         }
-
-        //if (company = 1) {
-        //    col = obj_controller.bat_veteran_column;
-        //    if (obj_ini.armour[cooh][va] = "Terminator Armour") then col = obj_controller.bat_terminator_column;
-        //    if (obj_ini.armour[cooh][va] = "Tartaros Armour") then col = obj_controller.bat_terminator_column;
-        //}
         if (company >= 2) {
             col = obj_controller.bat_tactical_column;
         }

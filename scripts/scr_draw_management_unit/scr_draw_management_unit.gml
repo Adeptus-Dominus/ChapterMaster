@@ -1,13 +1,15 @@
 /// @self Asset.GMObject.obj_controller
 function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_lock = false) {
     var assignment = "none";
-    var _unit;
+    var _unit = noone;
     var string_role = "";
     var health_string = "";
     var eventing = false;
     var jailed = false;
     var impossible = !is_struct(display_unit[selected]) && !is_array(display_unit[selected]);
     var is_man = false;
+    var unit_location_string = "";
+    var unit_specialist = false;
     if (man[selected] == "man" && is_struct(display_unit[selected])) {
         is_man = true;
         _unit = display_unit[selected];
@@ -32,8 +34,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                 return "continue";
             }
         }
-        var unit_specialist = is_specialist(_unit.role());
-        var unit_location_string = "";
+        unit_specialist = is_specialist(_unit.role());
         if (_unit.in_jail()) {
             jailed = true;
             unit_location_string = "=Penitorium=";
@@ -67,8 +68,6 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         }
         if (draw) {
             health_string = ma_health_string[selected];
-
-            var exp_string = $"{round(ma_exp[selected])} EXP";
 
             ma_ar = "";
             ma_we1 = "";
@@ -105,7 +104,6 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             }
         }
     } else if (man[selected] == "vehicle" && is_array(display_unit[selected]) && draw) {
-        // string_role="v "+string(managing)+"."+string(ide[selected]);
         string_role = string(ma_role[selected]);
         unit_location_string = string(ma_loc[selected]);
 
@@ -116,7 +114,6 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             unit_location_string = obj_ini.ship[ma_lid[selected]];
         }
         health_string = string(round(ma_health[selected])) + "% HP";
-        exp_string = "";
         // Need abbreviations here
 
         ma_ar = "";
@@ -150,7 +147,6 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         if (ma_wep2[selected] != "") {
             ma_we2 = gear_weapon_data("weapon", ma_wep2[selected], "abbreviation");
             ma_we2 = is_string(ma_we2) ? ma_we2 : "";
-            // temp5=string(ma_wep1[selected])+", "+string(ma_wep2[selected])+" + "+string(ma_gear[selected]);
         }
     }
 
@@ -174,13 +170,13 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         draw_set_alpha(1);
         draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 1);
         if (man[selected] == "man" && is_struct(display_unit[selected])) {
-            var _unit = display_unit[selected];
+            _unit = display_unit[selected];
             var _is_rank_file = is_specialist(_unit.role(), SPECIALISTS_RANK_AND_FILE);
             if (_is_rank_file) {
                 var _role = _unit.role();
                 var _experience = _unit.experience;
 
-                var _data, valid = false;
+                var _data;
                 var _circle_coords = [
                     xx + 321,
                     yy + 77
@@ -298,8 +294,6 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         }
 
         draw_line(xx + 25 + 8, yy + 64, xx + 25 + 8, yy + 85);
-        // was 885
-        // 974
 
         if ((man[selected] == "man") && (ma_ar == "")) {
             draw_set_alpha(0.5);
@@ -312,6 +306,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             }
         }
 
+        var exp_string = $"{round(ma_exp[selected])} EXP";
         var hpText = [
             xx + 240 + 8,
             yy + 66,
@@ -360,8 +355,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             draw_sprite(spr_loc_icon, 2, xx + 427 + 8, yy + 66);
         } else {
             if (man[selected] == "man") {
-                c = managing <= 10 ? managing : 0;
-                var _unit = display_unit[selected];
+                _unit = display_unit[selected];
 
                 if ((ma_lid[selected] > -1) && (ma_wid[selected] == 0)) {
                     draw_sprite(spr_loc_icon, _unit.is_boarder ? 2 : 1, xx + 427 + 8, yy + 66);

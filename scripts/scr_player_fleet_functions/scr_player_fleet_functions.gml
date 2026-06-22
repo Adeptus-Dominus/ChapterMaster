@@ -1,12 +1,9 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more informationype
 
-function fleet_has_roles(fleet = "none", roles) {
+function fleet_has_roles(fleet, roles = []) {
     var all_ships = fleet_full_ship_array(fleet);
-    var unit;
     for (var i = 0; i <= 10; i++) {
-        for (var s = 0; s < array_length(obj_ini.TTRPG[i]); s++) {
-            unit = fetch_unit([i, s]);
+        for (var s = 0; s < array_length(obj_ini.TTRPG[i]) - 1; s++) {
+            var unit = fetch_unit([i, s]);
             if (unit.planet_location < 1) {
                 if (array_contains(all_ships, unit.ship_location)) {
                     if (array_contains(roles, unit.role())) {
@@ -18,9 +15,8 @@ function fleet_has_roles(fleet = "none", roles) {
     }
 }
 
-function fleet_engaged(fleet = undefined) {
+function fleet_engaged(fleet) {
     var _engaged = false;
-	fleet ??= self;
     var _fleet_action = fleet.action;
     if (_fleet_action != "" && _fleet_action != "move") {
         //don't inspect if engaged in non negotiable actions
@@ -32,15 +28,14 @@ function fleet_engaged(fleet = undefined) {
     return _engaged;
 }
 
-function split_selected_into_new_fleet(start_fleet = "none") {
-    var new_fleet;
-    if (start_fleet == "none") {
-        new_fleet = instance_create(x, y, obj_p_fleet);
-        new_fleet.owner = eFACTION.PLAYER;
+function split_selected_into_new_fleet(start_fleet) {
+    var new_fleet = instance_create(x, y, obj_p_fleet);
+    new_fleet.owner = eFACTION.PLAYER;
+    with (start_fleet) {
         // Pass over ships to the new fleet, if they are selected
         var cap_number = array_length(capital);
 
-        for (i = 0; i < cap_number; i++) {
+        for (var i = 0; i < cap_number; i++) {
             if ((capital[i] != "") && capital_sel[i]) {
                 move_ship_between_player_fleets(self, new_fleet, "capital", i);
                 i--;
@@ -48,7 +43,7 @@ function split_selected_into_new_fleet(start_fleet = "none") {
             }
         }
         var frig_number = array_length(frigate);
-        for (i = 0; i < frig_number; i++) {
+        for (var i = 0; i < frig_number; i++) {
             if ((frigate[i] != "") && frigate_sel[i]) {
                 move_ship_between_player_fleets(self, new_fleet, "frigate", i);
                 i--;
@@ -56,7 +51,7 @@ function split_selected_into_new_fleet(start_fleet = "none") {
             }
         }
         var esc_number = array_length(escort);
-        for (i = 0; i < esc_number; i++) {
+        for (var i = 0; i < esc_number; i++) {
             if ((escort[i] != "") && escort_sel[i]) {
                 move_ship_between_player_fleets(self, new_fleet, "escort", i);
                 i--;
@@ -64,10 +59,6 @@ function split_selected_into_new_fleet(start_fleet = "none") {
             }
         }
         set_player_fleet_image();
-    } else {
-        with (start_fleet) {
-            new_fleet = split_selected_into_new_fleet();
-        }
     }
     return new_fleet;
 }
@@ -88,7 +79,7 @@ function set_new_player_fleet_course(target_array) {
         var target_planet = find_star_by_name(target_array[0]);
         var nearest_planet = instance_nearest(x, y, obj_star);
         var from_star = point_distance(nearest_planet.x, nearest_planet.y, x, y) < 75;
-        var valid = target_planet != "none";
+        var valid = target_planet != noone;
         if (valid) {
             valid = !(target_planet.id == nearest_planet.id && from_star);
         }
@@ -235,7 +226,7 @@ function set_player_fleet_image() {
 }
 
 function find_ships_fleet(index) {
-    var _chosen_fleet = "none";
+    var _chosen_fleet = noone;
     with (obj_p_fleet) {
         if (array_contains(capital_num, index) || array_contains(frigate_num, index) || array_contains(escort_num, index)) {
             _chosen_fleet = self;
@@ -244,7 +235,7 @@ function find_ships_fleet(index) {
     return _chosen_fleet;
 }
 
-function add_ship_to_fleet(index, fleet = "none") {
+function add_ship_to_fleet(index, fleet = noone) {
     var _escorts = [
         "Escort",
         "Hunter",
@@ -256,7 +247,7 @@ function add_ship_to_fleet(index, fleet = "none") {
     ];
     var _frigates = ["Strike Cruiser"];
 
-    if (fleet == "none") {
+    if (fleet == noone) {
         if (array_contains(_capitals, obj_ini.ship_class[index])) {
             array_push(capital, obj_ini.ship[index]);
             array_push(capital_num, index);
@@ -285,16 +276,14 @@ function add_ship_to_fleet(index, fleet = "none") {
 
 function player_retreat_from_fleet_combat() {
     try {
-        var p_strength, ratio, diceh, _roll_100;
         var mfleet = obj_turn_end.battle_pobject[obj_turn_end.current_battle];
-        var _fleet_ships = fleet_full_ship_array(mfleet);
         var en_strength = 0;
 
         var p_strength = mfleet.escort_number;
         p_strength += mfleet.frigate_number * 3;
         p_strength += mfleet.capital_number * 8;
 
-        _roll_100 = roll_dice_chapter(1, 100, "low");
+        var _roll_100 = roll_dice_chapter(1, 100, "low");
 
         var _loc_star = find_star_by_name(obj_turn_end.battle_location[obj_turn_end.current_battle]);
 
@@ -315,14 +304,13 @@ function player_retreat_from_fleet_combat() {
         en_strength += frig_total * 2;
         en_strength += escort_total;
 
-        ratio = 9999;
+        var ratio = 9999;
         if ((p_strength > 0) && (en_strength > 0)) {
             ratio = (en_strength / p_strength) * 100;
         }
 
         var esc_lost = 0, frig_lost = 0, cap_lost = 0, which = 0, sayd = 0;
 
-        i = -1; // var ship_lost,i;
         var ship_lost = [];
 
         if (scr_has_adv("Kings of Space")) {
@@ -334,7 +322,7 @@ function player_retreat_from_fleet_combat() {
 
         if (_roll_100 != -5) {
             repeat (50) {
-                diceh = roll_dice_chapter(1, 100, "high");
+                var diceh = roll_dice_chapter(1, 100, "high");
                 if (diceh <= ratio) {
                     ratio -= 100;
                     var onceh = 0;
@@ -373,7 +361,6 @@ function player_retreat_from_fleet_combat() {
                     if (!(mfleet.capital_number + mfleet.frigate_number + mfleet.escort_number)) {
                         break;
                     }
-                    // show_message("Ship lost");
                 }
             }
         }
@@ -409,6 +396,7 @@ function player_retreat_from_fleet_combat() {
             instance_destroy();
         }
 
+        var text = "Your fleet is given the command to fall back.  The vessels turn and prepare to enter the Warp, constantly under a hail of enemy fire. ";
         if ((esc_lost + frig_lost + cap_lost > 0) && (mfleet.escort_number + mfleet.frigate_number + mfleet.capital_number > 0)) {
             text = "Your fleet is given the command to fall back.  The vesels turn and prepare to enter the Warp, constantly under a hail of enemy fire.  Some of your ships remain behind to draw off the attack and give the rest of your fleet a chance to escape.  ";
 
@@ -432,7 +420,6 @@ function player_retreat_from_fleet_combat() {
                 text += string(esc_lost) + " Escorts were destroyed.  ";
             }
         }
-        var text = "Your fleet is given the command to fall back.  The vessels turn and prepare to enter the Warp, constantly under a hail of enemy fire. ";
         if (esc_lost + frig_lost + cap_lost == 0) {
             text += "The entire fleet manages to escape with minimal damage.";
         }
@@ -458,27 +445,26 @@ function player_retreat_from_fleet_combat() {
     }
 }
 
-function fleet_full_ship_array(fleet = "none", exclude_capitals = false, exclude_frigates = false, exclude_escorts = false) {
+function fleet_full_ship_array(fleet = noone, exclude_capitals = false, exclude_frigates = false, exclude_escorts = false) {
     var all_ships = [];
-    var i;
     var _ship_count = array_length(obj_ini.ship);
-    if (fleet == "none") {
+    if (fleet == noone) {
         if (!exclude_capitals) {
-            for (i = 0; i < array_length(capital_num); i++) {
+            for (var i = 0; i < array_length(capital_num); i++) {
                 if (capital_num[i] < _ship_count) {
                     array_push(all_ships, capital_num[i]);
                 }
             }
         }
         if (!exclude_frigates) {
-            for (i = 0; i < array_length(frigate_num); i++) {
+            for (var i = 0; i < array_length(frigate_num); i++) {
                 if (frigate_num[i] < _ship_count) {
                     array_push(all_ships, frigate_num[i]);
                 }
             }
         }
         if (!exclude_escorts) {
-            for (i = 0; i < array_length(escort_num); i++) {
+            for (var i = 0; i < array_length(escort_num); i++) {
                 if (escort_num[i] < _ship_count) {
                     array_push(all_ships, escort_num[i]);
                 }
@@ -494,17 +480,15 @@ function fleet_full_ship_array(fleet = "none", exclude_capitals = false, exclude
 
 function set_fleet_location(location) {
     var fleet_ships = fleet_full_ship_array();
-    var temp;
     for (var i = 0; i < array_length(fleet_ships); i++) {
-        temp = fleet_ships[i];
+        var temp = fleet_ships[i];
         if (temp >= 0 && temp < array_length(obj_ini.ship_location)) {
             obj_ini.ship_location[temp] = location;
         }
     }
-    var unit;
     for (var co = 0; co <= obj_ini.companies; co++) {
-        for (i = 0; i < array_length(obj_ini.name[co]); i++) {
-            unit = fetch_unit([co, i]);
+        for (var i = 0; i < array_length(obj_ini.name[co]) - 1; i++) {
+            var unit = fetch_unit([co, i]);
             if (array_contains(fleet_ships, unit.ship_location)) {
                 unit.location_string = location;
             }
@@ -513,20 +497,22 @@ function set_fleet_location(location) {
 }
 
 function selected_ship_types() {
-    var capitals = 0, frigates = 0, escorts = 0, i;
-    for (i = 0; i < array_length(capital); i++) {
+    var capitals = false;
+    var frigates = false;
+    var escorts = false;
+    for (var i = 0; i < array_length(capital); i++) {
         if (capital[i] != "" && capital_sel[i]) {
             capitals = true;
             break;
         }
     }
-    for (i = 0; i < array_length(frigate); i++) {
+    for (var i = 0; i < array_length(frigate); i++) {
         if (frigate[i] != "" && frigate_sel[i]) {
             frigates = true;
             break;
         }
     }
-    for (i = 0; i < array_length(escort); i++) {
+    for (var i = 0; i < array_length(escort); i++) {
         if (escort[i] != "" && escort_sel[i]) {
             escorts = true;
             break;
@@ -535,26 +521,26 @@ function selected_ship_types() {
     return [capitals, frigates, escorts];
 }
 
-function player_fleet_ship_count(fleet = "none") {
+function player_fleet_ship_count(fleet = noone) {
     var ship_count = 0;
-    if (fleet == "none") {
+    if (fleet == noone) {
         capital_number = 0;
         frigate_number = 0;
         escort_number = 0;
 
-        for (i = 0; i < array_length(capital); i++) {
+        for (var i = 0; i < array_length(capital); i++) {
             if (capital[i] != "") {
                 ship_count++;
                 capital_number++;
             }
         }
-        for (i = 0; i < array_length(frigate); i++) {
+        for (var i = 0; i < array_length(frigate); i++) {
             if (frigate[i] != "") {
                 ship_count++;
                 frigate_number++;
             }
         }
-        for (i = 0; i < array_length(escort); i++) {
+        for (var i = 0; i < array_length(escort); i++) {
             if (escort[i] != "") {
                 ship_count++;
                 escort_number++;
@@ -568,20 +554,20 @@ function player_fleet_ship_count(fleet = "none") {
     return ship_count;
 }
 
-function player_fleet_selected_count(fleet = "none") {
+function player_fleet_selected_count(fleet = noone) {
     var ship_count = 0;
-    if (fleet == "none") {
-        for (i = 0; i < array_length(capital); i++) {
+    if (fleet == noone) {
+        for (var i = 0; i < array_length(capital); i++) {
             if (capital[i] != "" && capital_sel[i]) {
                 ship_count++;
             }
         }
-        for (i = 0; i < array_length(frigate); i++) {
+        for (var i = 0; i < array_length(frigate); i++) {
             if (frigate[i] != "" && frigate_sel[i]) {
                 ship_count++;
             }
         }
-        for (i = 0; i < array_length(escort); i++) {
+        for (var i = 0; i < array_length(escort); i++) {
             if (escort[i] != "" && escort_sel[i]) {
                 ship_count++;
             }
@@ -595,7 +581,7 @@ function player_fleet_selected_count(fleet = "none") {
 }
 
 function get_nearest_player_fleet(nearest_x, nearest_y, is_static = false, is_moving = false, stop_complex_actions = true) {
-    var chosen_fleet = "none";
+    var chosen_fleet = noone;
     if (instance_exists(obj_p_fleet)) {
         with (obj_p_fleet) {
             var viable = !(is_static && action != "");
@@ -613,7 +599,7 @@ function get_nearest_player_fleet(nearest_x, nearest_y, is_static = false, is_mo
                 continue;
             }
             if (point_in_rectangle(x, y, 0, 0, room_width, room_height)) {
-                if (chosen_fleet == "none") {
+                if (chosen_fleet == noone) {
                     chosen_fleet = self;
                 }
                 if (point_distance(nearest_x, nearest_y, x, y) < point_distance(nearest_x, nearest_y, chosen_fleet.x, chosen_fleet.y)) {

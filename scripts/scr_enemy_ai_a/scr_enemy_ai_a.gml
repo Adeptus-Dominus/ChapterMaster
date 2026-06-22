@@ -1,8 +1,8 @@
 /// @self Asset.GMObject.obj_star
 function scr_enemy_ai_a() {
+    var _garrison = noone;
     for (var i = 1; i <= planets; i++) {
-        var _ops = p_operatives[i];
-        var _garrison = get_garrison(i);
+        _garrison = get_garrison(i);
         _garrison.increase_time_on_planet();
         get_sabatours(i);
         get_planet_data(i);
@@ -458,10 +458,9 @@ function scr_enemy_ai_a() {
                 }
 
                 if (guard_attack == "pdf") {
+                    var pdf_mod = irandom(5) + 1;
                     if (pdf_with_player) {
                         pdf_mod = irandom_range(1, 6 + _garrison.total_garrison * 0.1);
-                    } else {
-                        pdf_mod = irandom(5) + 1;
                     }
                     rand1 = (choose(3, 4, 5, 6) * guard_score) * choose(1, 1.25, 1.25);
                     rand2 = (pdf_mod * pdf_score) * choose(1, 1.25);
@@ -489,7 +488,7 @@ function scr_enemy_ai_a() {
                         if (_planet_data.population_influences[eFACTION.TYRANIDS] > 50 && _planet_data.has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
                             var _cur_influ = p_influence[_run][eFACTION.TYRANIDS];
                             var _influence_reduction = _cur_influ * (p_pdf[_run] / _pdf_before);
-                            adjust_influence(eFACTION.TYRANIDS, -min(_influence_reduction, _cur_influ - 3), _run);
+                            adjust_influence(eFACTION.TYRANIDS, -min(_influence_reduction, _cur_influ - 3), _run, self);
                             if (p_influence[_run][eFACTION.TYRANIDS] < 20) {
                                 _planet_data.delete_feature(eP_FEATURES.GENE_STEALER_CULT);
                             }
@@ -1190,7 +1189,7 @@ function scr_enemy_ai_a() {
             if (p_tyranids[_run] != after_combat_tyranids) {
                 p_tyranids[_run] = after_combat_tyranids;
                 if (_planet_data.has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
-                    adjust_influence(eFACTION.TYRANIDS, -min(p_influence[_run][eFACTION.TYRANIDS] - 4, 5), _run);
+                    adjust_influence(eFACTION.TYRANIDS, -min(p_influence[_run][eFACTION.TYRANIDS] - 4, 5), _run, self);
                     var _cult = _planet_data.get_features(eP_FEATURES.GENE_STEALER_CULT)[0];
                     if (p_influence[_run][eFACTION.TYRANIDS] < 5) {
                         _cult.hiding = true;
@@ -1228,7 +1227,7 @@ function scr_enemy_ai_a() {
                 who_cleansed = "Gene Stealer Cult";
                 make_alert = true;
                 delete_features(p_feature[_run], eP_FEATURES.GENE_STEALER_CULT);
-                adjust_influence(eFACTION.TYRANIDS, -25, _run);
+                adjust_influence(eFACTION.TYRANIDS, -25, _run, self);
             }
             if (make_alert) {
                 if (p_first[_run] == 1) {

@@ -1,5 +1,4 @@
 function SpecialistPointHandler() constructor {
-    static chapter_spread = calculate_full_chapter_spread;
     forge_queue = [];
     techs = [];
     apoths = [];
@@ -239,7 +238,7 @@ function SpecialistPointHandler() constructor {
                     var _new_pursuasion;
                     for (var i = 0; i < array_length(techs) && heretics_persuade_chances > 0; i++) {
                         _same_location = false;
-                        var _new_pursuasion = array_random_index(techs);
+                        _new_pursuasion = array_random_index(techs);
                         //if tech is also heretic skip
                         if (array_contains(heretics, _new_pursuasion)) {
                             continue;
@@ -291,7 +290,6 @@ function SpecialistPointHandler() constructor {
                                     _noticed_heresy = true;
                                     scr_event_log("purple", $"{techs[forge_master].name_role()} Has noticed signs of tech heresy amoung the Armentarium ranks");
                                     scr_alert("purple", "Tech Heresy", $"{techs[forge_master].name_role()} Has noticed signs of tech heresy amoung the Armentarium ranks");
-                                    //pip=instance_create(0,0,obj_popup);
                                 }
                             }
                         }
@@ -302,18 +300,10 @@ function SpecialistPointHandler() constructor {
                         }
                     }
                     //add check to see if tech heretic is anywhere near mechanicus forge if so maybe do stuff??
-                    /*if (_heretic_location==eLOCATION_TYPES.PLANET){
-                    if
-                }*/
                 }
                 if (array_length(techs) > array_length(heretics) && !_heritecs) {
                     if (array_length(heretics) / array_length(techs) >= 0.35) {
                         if (!irandom(9)) {
-                            /*var text_string = "You Recive an Urgent Transmision from";
-                        if (forge_master>-1){
-
-                        }*/
-
                             tech_uprising_event();
                         }
                     }
@@ -517,7 +507,4 @@ function SpecialistPointHandler() constructor {
             ERROR_HANDLER.handle_exception(_exception);
         }
     };
-    /*static apothecary_points_calc(){
-
-    }*/
 }

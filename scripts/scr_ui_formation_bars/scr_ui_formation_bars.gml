@@ -1,7 +1,7 @@
 /// @self Asset.GMObject.obj_controller
 function scr_ui_formation_bars() {
     var ui_formations_data = {
-        nbar: 0,
+        nbar: noone,
         abar: 0,
         te: 4700,
         x9: 49,

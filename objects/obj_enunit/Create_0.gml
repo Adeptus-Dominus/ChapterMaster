@@ -29,8 +29,8 @@ if (obj_ncombat.enemy < array_length(global.star_name_colors) && obj_ncombat.ene
     column_draw_colour = c_dkgrey;
 }
 
-enemy = 0;
-enemy2 = 0;
+enemy = noone;
+enemy2 = noone;
 
 avg_attack = 1;
 avg_ranged = 1;
@@ -76,10 +76,6 @@ dudes_gear = array_create(_array_size, "");
 dudges_mobi = array_create(_array_size, "");
 
 alarm[1] = 5;
-alarm[5] = 6;
-if (obj_ncombat.enemy == 1) {
-    alarm[6] = 10;
-}
 
 hit = function() {
     return scr_hit(x1, y1, x2, y2) && obj_ncombat.fadein <= 0;

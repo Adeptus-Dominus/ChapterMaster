@@ -42,10 +42,10 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
     shader_set(full_livery_shader);
 
     var _in_creation = instance_exists(obj_creation);
-
+    var data_set = {};
     var _is_unit = unit != "none";
     if (_in_creation) {
-        var data_set = variable_clone(obj_creation.livery_picker.map_colour);
+        data_set = variable_clone(obj_creation.livery_picker.map_colour);
         if (obj_creation.livery_selection_options.current_selection == 2) {
             var _base = obj_creation.full_liveries[0];
             var _component_names = struct_get_names(_base);
@@ -62,7 +62,7 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
     } else {
         var _full_liveries = obj_ini.full_liveries;
         var _roles = obj_ini.role[100];
-        var data_set = obj_ini.full_liveries[0];
+        data_set = obj_ini.full_liveries[0];
         if (is_specialist(setup_role, SPECIALISTS_LIBRARIANS)) {
             data_set = _full_liveries[eROLE.LIBRARIAN];
         } else if (is_specialist(setup_role, SPECIALISTS_HEADS)) {
@@ -325,7 +325,7 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
                 }
                 main_key = get_marine_icon_set(_data.type);
                 if (sub_key != "" && is_struct(main_key)) {
-                    var _tex_set = variable_clone(main_key[$ sub_key]);
+                    _tex_set = variable_clone(main_key[$ sub_key]);
                 }
                 if (is_struct(_tex_set)) {
                     if (struct_exists(_tex_set, _data.icon)) {
@@ -351,20 +351,19 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
 
 function get_shader_colour_from_arrays(colour) {
     var colours_instance = instance_exists(obj_creation) ? obj_creation : obj_controller;
+    var colour_set = [
+        0,
+        0,
+        0
+    ];
     try {
-        var colour_set = [
+        colour_set = [
             colours_instance.col_r[colour] / 255,
             colours_instance.col_g[colour] / 255,
             colours_instance.col_b[colour] / 255
         ];
-    }
-    catch (_exception) {
-        //ERROR_HANDLER.handle_exception(_exception);
-        var colour_set = [
-            0,
-            0,
-            0
-        ];
+    } catch (_exception) {
+        ERROR_HANDLER.assert_popup(_exception);
     }
 
     return colour_set;

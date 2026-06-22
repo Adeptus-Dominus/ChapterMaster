@@ -19,7 +19,6 @@ point_breakdown = single_loc_point_data();
 image_xscale = 1.25;
 image_yscale = 1.25;
 
-var i = -1;
 capital = [];
 capital_num = [];
 capital_sel = [];

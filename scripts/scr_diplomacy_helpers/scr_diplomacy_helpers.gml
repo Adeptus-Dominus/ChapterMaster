@@ -238,7 +238,7 @@ function evaluate_chosen_diplomacy_option(diplo_pressed) {
     }
 }
 
-function scr_diplomacy_hit(selection, new_path = undefined, complex_path = "none") {
+function scr_diplomacy_hit(selection, new_path = undefined, complex_path = undefined) {
     if (array_length(option_selections) > selection) {
         if (point_and_click(option_selections[selection])) {
             if (!is_method(complex_path)) {
@@ -277,7 +277,7 @@ function scr_emmisary_diplomacy_routes() {
             //grab a random librarian
             var lib = scr_random_marine(SPECIALISTS_LIBRARIANS, 0);
             if (lib != "none") {
-                var chapter_master = obj_ini.TTRPG[0][1];
+                chapter_master = obj_ini.TTRPG[0][1];
                 var dead_lib = obj_ini.TTRPG[lib[0]][lib[1]];
                 pop_up = instance_create(0, 0, obj_popup);
                 pop_up.title = "Skull for the Skull Throne";
@@ -308,9 +308,6 @@ function scr_emmisary_diplomacy_routes() {
                 pop_up.text = $"You summon {dead_champ.name_role()} to your personal chambers. Darting from the shadows towards {dead_champ.name()} who is a cunning warrior and reacts with precision to your attack, however eventually you prevail and strike him down. With the flesh removed from his skull you place it upon a hastily erected shrine.";
                 pop_up.type = 98;
                 pop_up.image = "chaos";
-                // obj_duel = instance_create(0,0,obj_duel);
-                // obj_duel.title = "Ambush Champion";
-                // pop.type="duel";
                 kill_and_recover(champ[0], champ[1]);
             } else {
                 diplomacy_pathway = "daemon_scorn";

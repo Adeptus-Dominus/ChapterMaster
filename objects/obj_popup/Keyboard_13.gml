@@ -15,7 +15,7 @@ if (cooldown > 0) {
         exit;
     }
 
-    if (array_length(options == 0) && type < 5) {
+    if (array_length(options) == 0 && type < 5) {
         obj_controller.cooldown = 10;
         if ((number != 0) && (obj_controller.complex_event == false)) {
             if (instance_exists(obj_turn_end)) {

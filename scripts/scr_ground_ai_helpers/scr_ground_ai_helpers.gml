@@ -1,5 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function system_guard_total() {
     var total = 0;
     for (var i = 1; i <= planets; i++) {
@@ -8,8 +6,8 @@ function system_guard_total() {
     return total;
 }
 
-function planet_imperial_base_enemies(planet, star = "none") {
-    if (star == "none") {
+function planet_imperial_base_enemies(planet, star = noone) {
+    if (star == noone) {
         return p_orks[planet] + p_tau[planet] + p_chaos[planet] + p_traitors[planet] + p_tyranids[planet] + p_necrons[planet];
     } else {
         with (star) {

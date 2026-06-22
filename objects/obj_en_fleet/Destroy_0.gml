@@ -1,12 +1,8 @@
-/*if (owner = eFACTION.CHAOS){
-    show_message("Trade Goods: "+string(trade_goods)+"#Alarms: "+string(alarm[0])+"|"+string(alarm[1])+"|"+string(alarm[2])+"|"+string(alarm[4]));
-}*/
-
-if ((action == "") && (orbiting != 0)) {
+if ((action == "") && (orbiting != noone)) {
     if (orbiting == instance_nearest(x, y, obj_star)) {
         orbiting.present_fleet[owner] -= 1;
     }
-    orbiting = 0;
+    orbiting = noone;
 }
 
 if (instance_exists(obj_controller)) {
@@ -21,6 +17,3 @@ if (instance_exists(obj_controller)) {
         }
     }
 }
-
-/* */
-/*  */

@@ -27,7 +27,7 @@ try {
                 var _col = picker.chosen;
                 if (start_colour == -1) {
                     if (is_numeric(type) && type >= 1 && type <= 7) {
-                        start_colour = variable_instance_get(obj_creation, type_fields[type]);
+                        start_colour = variable_instance_get(instance_find(obj_creation, 0), type_fields[type]);
                     } else if (is_string(type)) {
                         var role_data = obj_creation.complex_livery_data[$ role];
                         if (is_struct(role_data) && struct_exists(role_data, type)) {
@@ -46,7 +46,7 @@ try {
                     }
 
                     if (is_numeric(type) && type >= 1 && type <= 7) {
-                        variable_instance_set(obj_creation, type_fields[type], _col);
+                        variable_instance_set(instance_find(obj_creation, 0), type_fields[type], _col);
                     }
 
                     with (obj_creation) {

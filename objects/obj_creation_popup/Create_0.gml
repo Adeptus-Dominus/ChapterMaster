@@ -8,9 +8,13 @@ rows = 0;
 picker = new ColourPicker(20, 550, 350);
 picker.disable_textures = true;
 start_colour = -1;
+col_shift = false;
+bulk_buttons = [];
 
 tooltip = "";
 tooltip2 = "";
+item_name = [];
+role_names_all = "";
 
 type_names = {
     "1": "Primary Color",

@@ -1,5 +1,4 @@
 try {
-    // LOGGER.debug("alarm 7 start");
     audio_stop_sound(snd_battle);
     audio_play_sound(snd_royal, 0, true);
     audio_sound_gain(snd_royal, 1, 5000);
@@ -14,19 +13,14 @@ try {
     // If battling own dudes, then remove the loyalists after the fact
 
     if (enemy == 1) {
-        var j = -1;
         var cleann = array_create(11, false);
         with (obj_enunit) {
-            var q = 0;
-            repeat (700) {
-                q += 1;
+            for (var q = 1; q <= 700; q++) {
                 if (dude_id[q] > 0) {
                     var commandy = false;
                     var nco = dude_co[q];
                     var nid = dude_id[q];
                     cleann[nco] = true;
-
-                    // show_message("dude ID:"+string(q)+" ("+string(obj_ini.name[nco,nid])+") is being removed from the array");
 
                     commandy = is_specialist(obj_ini.role[nco][nid]);
                     if (commandy == true) {
@@ -44,7 +38,7 @@ try {
             }
         }
 
-        for (j = 0; j <= 10; j++) {
+        for (var j = 0; j <= 10; j++) {
             if (cleann[j]) {
                 with (obj_ini) {
                     scr_company_order(j);
@@ -60,16 +54,14 @@ try {
         with (obj_star) {
             if (name == obj_ncombat.battle_loc) {
                 instance_create(x, y, obj_temp_meeting);
-                var i = 0, ii = 0, otm, good = 0, master_present = 0;
-                var run = 0, s = 0, chaos_meeting = 0;
+                var master_present = 0;
 
                 var master_index = array_get_index(obj_ini.role[0], obj_ini.role[100][eROLE.CHAPTERMASTER]);
-                chaos_meeting = fetch_unit([0, master_index]).planet_location;
+                var chaos_meeting = fetch_unit([0, master_index]).planet_location;
 
-                // show_message("meeting planet:"+string(chaos_meeting));
                 for (var co = 0; co <= 10; co++) {
-                    for (var i = 0; i < array_length(obj_ini.TTRPG[co]); i++) {
-                        good = 0;
+                    for (var i = 0; i < array_length(obj_ini.TTRPG[co]) - 1; i++) {
+                        var good = 0;
                         _unit = fetch_unit([co, i]);
                         if (_unit.role() == "" || _unit.location_string != name) {
                             continue;
@@ -84,11 +76,9 @@ try {
                             good += 1;
                         }
 
-                        // if (good>=3) then show_message(string(obj_ini.role[co][i])+": "+string(co)+"."+string(i));
-
                         if (good >= 3) {
                             obj_temp_meeting.dudes += 1;
-                            otm = obj_temp_meeting.dudes;
+                            var otm = obj_temp_meeting.dudes;
                             obj_temp_meeting.present[otm] = 1;
                             obj_temp_meeting.co[otm] = co;
                             obj_temp_meeting.ide[otm] = i;
@@ -98,7 +88,6 @@ try {
                         }
                     }
                 }
-                // show_message("obj_temp_meeting.dudes:"+string(obj_temp_meeting.dudes));
             }
         }
     }
@@ -114,7 +103,6 @@ try {
         obj_ground_mission.defeat = defeat;
         obj_ground_mission.explore_feature.ruins_combat_end();
     } else if ((battle_special == "WL10_reveal") || (battle_special == "WL10_later")) {
-        var moar, ox, oy;
         with (obj_temp8) {
             instance_destroy();
         }
@@ -127,28 +115,24 @@ try {
 
         if (battle_special == "WL10_reveal") {
             instance_create(battle_object.x, battle_object.y, obj_temp8);
-            ox = battle_object.x;
-            oy = battle_object.y; // battle_object.owner = eFACTION.CHAOS;
+            var ox = battle_object.x;
+            var oy = battle_object.y;
             battle_object.p_traitors[battle_id] = 6;
             battle_object.p_chaos[battle_id] = 4;
             battle_object.p_pdf[battle_id] = 0;
             battle_object.p_owner[battle_id] = 10;
 
-            var corro;
-            corro = 0;
+            var corro = 0;
 
             repeat (100) {
-                var ii;
-                ii = 0;
                 if (corro <= 5) {
-                    moar = instance_nearest(ox, oy, obj_star);
+                    var moar = instance_nearest(ox, oy, obj_star);
 
                     if (moar.owner <= 3) {
                         corro += 1;
-                        repeat (4) {
-                            ii += 1;
-                            if (moar.p_owner[ii] <= 3) {
-                                moar.p_heresy[ii] = min(100, moar.p_heresy[ii] + floor(random_range(30, 50)));
+                        for (var i = 1; i <= 4; i++) {
+                            if (moar.p_owner[i] <= 3) {
+                                moar.p_heresy[i] = min(100, moar.p_heresy[i] + floor(random_range(30, 50)));
                             }
                         }
                     }
@@ -213,8 +197,6 @@ try {
 
     if ((battle_special == "study2a") || (battle_special == "study2b")) {
         if (defeat == 1) {
-            var ii = 0, good = 0;
-
             if (remove_planet_problem(battle_id, "mech_tomb", battle_object)) {
                 obj_controller.disposition[3] -= 10;
 
@@ -247,11 +229,6 @@ try {
 
     if ((string_count("mech", battle_special) > 0) && (defeat == 0)) {
         with (obj_ground_mission) {
-            var comp, plan, i;
-            i = 0;
-            comp = 0;
-            plan = 0;
-            plan = instance_nearest(x, y, obj_star);
             scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
             with (obj_ground_mission) {
                 instance_destroy();
@@ -315,7 +292,7 @@ try {
     if ((string_count("ruins", battle_special) > 0) && (defeat == 1)) {
         //TODO this logic is wrong assumes all player units died in ruins
         var _combat_star = find_star_by_name(obj_ncombat.battle_loc);
-        if (_combat_star != "none") {
+        if (_combat_star != noone) {
             _combat_star.p_player[obj_ncombat.battle_id] -= obj_ncombat.world_size;
         }
     }
@@ -324,10 +301,8 @@ try {
         necron_tomb_raid_post_battle_sequence();
     }
 
-    if ((string_count("spyrer", battle_special) > 0) /* and (string_count("demon",battle_special)>0))*/ && (defeat == 0)) {
+    if ((string_count("spyrer", battle_special) > 0) && (defeat == 0)) {
         instance_activate_object(obj_star);
-        // show_message(obj_turn_end.current_battle);
-        // show_message(obj_turn_end.battle_world[obj_turn_end.current_battle]);
         // title / text / image / speshul
         var cur_star = obj_turn_end.battle_object[obj_turn_end.current_battle];
         var planet = obj_turn_end.battle_world[obj_turn_end.current_battle];
@@ -356,13 +331,13 @@ try {
         hunt_fallen_battle_aftermath();
     } else if ((defeat == 0) && (enemy == 9) && (battle_special == "tyranid_org")) {
         if (captured_gaunt > 1) {
-            _pop = instance_create(0, 0, obj_popup);
+            var _pop = instance_create(0, 0, obj_popup);
             _pop.image = "inquisition";
             _pop.title = "Inquisition Mission Completed";
             _pop.text = "You have captured several Gaunt organisms.  The Inquisitor is pleased with your work, though she notes that only one is needed- the rest are to be purged.  It will be stored until it may be retrieved.  The mission is a success.";
         }
         if (captured_gaunt == 1) {
-            _pop = instance_create(0, 0, obj_popup);
+            var _pop = instance_create(0, 0, obj_popup);
             _pop.image = "inquisition";
             _pop.title = "Inquisition Mission Completed";
             _pop.text = "You have captured a Gaunt organism- the Inquisitor is pleased with your work.  The Tyranid will be stored until it may be retrieved.  The mission is a success.";
@@ -371,7 +346,7 @@ try {
         var diceh = roll_dice_chapter(1, 100, "high");
 
         if (diceh <= 15) {
-            var ship, ship_hp, i = -1;
+            var ship, ship_hp;
             for (var i = 0; i < array_length(obj_ini.ship); i++) {
                 ship[i] = obj_ini.ship[i];
                 ship_hp[i] = obj_ini.ship_hp[i];
@@ -418,7 +393,7 @@ try {
                 instance_destroy();
             }
             if (instance_exists(obj_turn_end)) {
-                obj_turn_end.combating = 0; // obj_turn_end.alarm[1]=1;
+                obj_turn_end.combating = 0;
             }
             var pip;
             pip = instance_create(0, 0, obj_popup);
@@ -442,7 +417,7 @@ try {
                 instance_destroy();
             }
             if (instance_exists(obj_turn_end)) {
-                obj_turn_end.combating = 0; // obj_turn_end.alarm[1]=1;
+                obj_turn_end.combating = 0;
             }
             var pip = instance_create(0, 0, obj_popup);
             pip.title = "Survived";
@@ -489,7 +464,7 @@ try {
                     instance_destroy();
                 }
                 if (instance_exists(obj_turn_end)) {
-                    obj_turn_end.combating = 0; // obj_turn_end.alarm[1]=1;
+                    obj_turn_end.combating = 0;
                 }
                 var pip = instance_create(0, 0, obj_popup);
                 pip.title = "Chaos Lord Killed";
@@ -544,7 +519,7 @@ try {
                 }
             }
             if (battle_special == "ChaosWarband") {
-                obj_controller.faction_defeated[10] = 1; // show_message("WL10 defeated");
+                obj_controller.faction_defeated[10] = 1;
                 if (instance_exists(obj_turn_end)) {
                     scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
                     scr_alert("", "ass", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " has been killed.", 0, 0);
@@ -581,9 +556,6 @@ try {
     }
 
     instance_destroy();
-
-    /* */
-    /*  */
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
 }

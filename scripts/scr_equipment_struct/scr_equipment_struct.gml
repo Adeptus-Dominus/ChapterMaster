@@ -68,9 +68,13 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
                     self[$ _struct_key] = self[$ _struct_key][$ quality];
                 }
             }
-            // _struct_key = "";
         }
     }
+
+    static has_tag = function(tag) {
+        return array_contains(tags, tag);
+    };
+
 
     // Placeholder maintenance values;
     if (maintenance == 0) {
@@ -266,7 +270,6 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
                                 array_push(special_properties_array, second_profiles[h]);
                             }
                         }
-                        //item_desc_tooltip += $"#Properties:#{special_properties_string}#"
                     }
 
                     if (is_struct(specials)) {
@@ -316,10 +319,6 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
             }
         }
         return item_desc_tooltip;
-    };
-
-    static has_tag = function(tag) {
-        return array_contains(tags, tag);
     };
 
     static special_value = function(special) {

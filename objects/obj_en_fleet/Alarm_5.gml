@@ -11,9 +11,6 @@ if (rep > 0) {
 }
 
 if (rep == 0) {
-    // if (id mod 2 == 0) then action_eta=obj_controller.temp[90];
-    // else{action_eta=obj_controller.temp[90]-1;}
-
     action_eta = obj_controller.temp[90] - choose(0, 1);
 
     rep = 3;

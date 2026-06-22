@@ -31,14 +31,8 @@ draw_text_transformed(802 - 200, 472, string_hash_to_newline("ASSISTANT ARTISTS"
 draw_text(802 - 200, 498, string_hash_to_newline("sinndogg#efngn#Toni ''TrashMan'' Stanicic"));
 
 draw_text_transformed(802, 373, string_hash_to_newline("SUPPORTERS AND LEGACY CODERS"), 0.85, 0.85, 0);
-// draw_text_transformed(802,472,"FORMER SUPPORTERS",0.85,0.85,0);
 
 draw_text(802, 397, string_hash_to_newline("Duke#Paul-Ross#MANDOZERTHEGREAT#Alex Norry#Carli"));
-// draw_text(802,496,"");
-
-draw_set_font(fnt_cul_18);
-draw_set_halign(fa_center);
-draw_text_ext(room_width / 2, 706 - 25, string_hash_to_newline(obj_main_menu.legal_text), -1, 1406);
 
 draw_set_font(fnt_cul_14);
 draw_set_halign(fa_left);
@@ -48,30 +42,8 @@ draw_text_ext(991, 92 + 15, string_hash_to_newline(@"  Late 2011 /tg/ came up wi
 
 -Duke"), -1, 570);
 
-// 253,96
-
-var bhih;
-bhih = 0;
-if ((scr_hit(319, 307, 393, 324) == false) && (obj_main_menu.browser == 1)) {
-    obj_main_menu.browser = 0;
-}
-if (scr_hit(319, 307, 393, 324) == true) {
-    bhih = 1;
-    if ((obj_main_menu.browser == 0) && mouse_button_clicked()) {
-        /*switch(show_question("Open your browser?")) {
-        case 1:*/
-        // url_open_ext( 'http://planetofthebrandons.com/donate.html', '_blank');browser=1;
-        if (obj_main_menu.blog_url != "Error") {
-            url_open_ext(obj_main_menu.blog_url, "_blank");
-        }
-        obj_main_menu.browser = 1;
-        // break;
-        // }
-    }
-}
 draw_text(257, 96, string_hash_to_newline("DukeFluffy"));
 draw_text_ext_transformed(257, 96, string_hash_to_newline("#A hobbyist game producer with insomnia and way too much time on his hands.  Duke has created several pen and paper RPG's, namely ChromeStrike and the Morrowind RPG.  He has aspirations of one day working on robots."), -1, 208 * 1.1, 0.9, 0.9, 0);
-draw_sprite(spr_blog, bhih, 319, 307);
 
 if (fade_in > 0) {
     draw_set_color(0);
@@ -88,5 +60,3 @@ if (instance_exists(obj_main_menu_buttons)) {
     }
     draw_set_alpha(1);
 }
-/* */
-/*  */

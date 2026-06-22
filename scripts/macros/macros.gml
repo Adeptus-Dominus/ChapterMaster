@@ -108,6 +108,7 @@ enum eLUCK {
 }
 
 enum eINQUISITION_MISSION {
+    NOTFOUND,
     PURGE,
     INQUISITOR,
     SPYRER,

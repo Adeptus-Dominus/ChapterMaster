@@ -1,13 +1,6 @@
 if (name != "") {
     draw_set_font(fnt_info);
     draw_set_halign(fa_center);
-
-    // 135;
-    /*if (action="broadside"){
-    draw_set_color(c_blue);if (instance_exists(target_l)) then draw_line(x,y,target_l.x,target_l.y);
-    draw_set_color(c_red);if (instance_exists(target_r)) then draw_line(x,y,target_r.x,target_r.y);
-    }draw_set_color(CM_GREEN_COLOR);*/
-
     draw_set_alpha(1);
 
     if ((lightning > 1) && instance_exists(target)) {

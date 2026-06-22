@@ -6,7 +6,7 @@ function ChapterData() constructor {
     points = 0;
     flavor = "";
     origin = eCHAPTER_ORIGINS.NONE;
-    founding = ePROGENITOR.NONE;
+    founding = eCHAPTERS.UNKNOWN;
     successors = 0;
     splash = 0;
     icon_name = "unknown";
@@ -159,7 +159,6 @@ function ChapterData() constructor {
             load_result = file_loader.load_struct_from_json_file($"main/chapters/{chapter_id}.json", "chapter", false);
         }
         if (!load_result.is_success) {
-            // LOGGER.error($"No chapter json exits for chapter_id {chapter_id}");
             return false;
         }
         var json_chapter = load_result.value.chapter;
@@ -203,7 +202,6 @@ function scr_chapter_new(chapter_identifier) {
     //9th captain =	relic_master_name
     //10th captain = recruiter_name
 
-    var i = 0;
     world = array_create(20, "");
     world_type = array_create(20, "");
     world_feature = array_create(20, "");

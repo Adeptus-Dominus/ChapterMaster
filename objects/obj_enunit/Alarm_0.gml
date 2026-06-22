@@ -84,7 +84,7 @@ if (!engaged) {
                         var x2 = enemy.x;
                         repeat (instance_number(obj_pnunit) - 1) {
                             x2 += flank == 0 ? -10 : 10;
-                            var enemy2 = instance_nearest(x2, y, obj_pnunit);
+                            enemy2 = instance_nearest(x2, y, obj_pnunit);
                             if (!target_block_is_valid(enemy2, obj_pnunit)) {
                                 continue;
                             }
@@ -123,7 +123,7 @@ if (!engaged) {
 
                     repeat (instance_number(obj_pnunit) - 1) {
                         x2 += !flank ? 10 : -10;
-                        var enemy2 = instance_nearest(x2, y, obj_pnunit);
+                        enemy2 = instance_nearest(x2, y, obj_pnunit);
                         if (!target_block_is_valid(enemy2, obj_pnunit)) {
                             continue;
                         }
@@ -161,7 +161,7 @@ if (!engaged) {
                             var x2 = enemy.x;
                             repeat (instance_number(obj_pnunit) - 1) {
                                 x2 += flank == 0 ? -10 : 10;
-                                var enemy2 = instance_nearest(x2, y, obj_pnunit);
+                                enemy2 = instance_nearest(x2, y, obj_pnunit);
                                 if (!target_block_is_valid(enemy2, obj_pnunit)) {
                                     continue;
                                 }
