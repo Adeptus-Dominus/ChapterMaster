@@ -34,6 +34,11 @@ fighters = 0;
 bombers = 0;
 thunderhawks = 0;
 
+capacity = 0;
+carrying = 0;
+leadership = 0;
+ship_size = 0;
+
 weapon = array_create(SHIP_WEAPON_SLOTS, "");
 weapon_facing = array_create(SHIP_WEAPON_SLOTS, "");
 weapon_cooldown = array_create(SHIP_WEAPON_SLOTS, 0);

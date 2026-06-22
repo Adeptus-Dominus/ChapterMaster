@@ -1,5 +1,3 @@
-var pressy;
-pressy = 0;
 sel_x1 = 0;
 sel_y1 = 0;
 

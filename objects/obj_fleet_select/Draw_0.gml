@@ -142,10 +142,9 @@ if (!instance_exists(obj_drop_select) && !instance_exists(obj_bomb_select)) {
                         } else {
                             move_fleet = split_selected_into_new_fleet(player_fleet);
                         }
+                        var final_course = star_travel.final_array_path();
                         if (keyboard_check(vk_shift)) {
                             final_course = [sys.name];
-                        } else {
-                            var final_course = star_travel.final_array_path();
                         }
                         with (move_fleet) {
                             set_new_player_fleet_course(final_course);

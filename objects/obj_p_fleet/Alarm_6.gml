@@ -5,6 +5,3 @@ with (obj_ini) {
 if (player_fleet_ship_count() == 0) {
     instance_destroy();
 }
-
-/* */
-/*  */

@@ -65,13 +65,8 @@ try {
             }
         }
 
-        // 1355;
-
         if (instance_exists(obj_crusade) && (owner == eFACTION.ORK) && (orbiting.owner == eFACTION.ORK)) {
             // Ork crusade AI
-            var max_dis;
-            max_dis = 400;
-
             var fleet_owner = owner;
             with (obj_crusade) {
                 if (owner != fleet_owner) {
@@ -127,45 +122,6 @@ try {
         instance_activate_object(obj_crusade);
         instance_activate_object(obj_en_fleet);
 
-        /*if (action="") and (owner = eFACTION.IMPERIUM){// Defend nearby systems and return when done
-            
-            with(obj_star){
-                // 137 ; might want for it to defend under other circumstances
-                if (present_fleet[8]>0) and (owner<=5) and (x>2) and (y>2) then instance_create(x,y,obj_temp3);
-            }
-            if (instance_number(obj_temp3)=0) then ret=1;
-            if (instance_number(obj_temp3)>0){
-                var you,dis,mem;
-                you=instance_nearest(x,y,obj_temp3);
-                dis=point_distance(x,y,you.x,you.y);
-                
-                if (dis<300) and (image_index>=3){
-                    action_x=you.x;action_y=you.y;
-                    home_x=instance_nearest(x,y,obj_star).x;
-                    home_y=instance_nearest(x,y,obj_star).y;
-                    set_fleet_movement();with(obj_temp3){instance_destroy();}
-                    exit;
-                }
-                if (dis>=300) then ret=1;
-            }
-            
-            if (instance_exists(obj_crusade)){
-                var cru;cru=instance_nearest(x,y,obj_crusade);
-                if (cru.owner=self.owner) and (point_distance(x,y,cru.x,cru.y)<cru.radius) then ret=0;
-            }
-            
-            if (ret=1){
-                var cls;cls=instance_nearest(x,y,obj_star);
-                if ((cls.x!=home_x) or (cls.y!=home_y)) and (home_x+home_y>0){
-                    action_x=home_x;
-                    action_y=home_y;
-                    set_fleet_movement();
-                }
-            }
-    
-            with(obj_temp3){instance_destroy();}
-        }*/
-
         if (owner == eFACTION.INQUISITION) {
             var valid = true;
             if (instance_exists(target)) {
@@ -188,28 +144,28 @@ try {
                     scr_loyalty("Heretic Homeworld", "+");
                 }
 
-                var whom = -1;
-                whom = inquisitor;
+                var whom = inquisitor;
                 var inquisitors = obj_controller.inquisitor;
                 var inquis_string = $"Inquisitor {whom > -1 ? inquisitors[whom] : inquisitors[0]}";
 
                 // INVESTIGATE DEAD HERE 137 ; INVESTIGATE DEAD HERE 137 ; INVESTIGATE DEAD HERE 137 ; INVESTIGATE DEAD HERE 137 ;
-                var cur_star, t, type, cha, dem, tem1, tem1_base, perc, popup;
-                t = 0;
-                type = 0;
-                cha = 0;
-                dem = 0;
-                tem1 = 0;
-                popup = 0;
-                perc = 0;
-                tem1_base = 0;
+                var t = 0;
+                var type = 0;
+                var cha = 0;
+                var dem = 0;
+                var tem1 = 0;
+                var popup = 0;
+                var perc = 0;
+                var tem1_base = 0;
 
-                cur_star = instance_nearest(x, y, obj_star);
+                var cur_star = instance_nearest(x, y, obj_star);
 
                 if (string_count("investigate", trade_goods) > 0) {
                     // Check for xenos or demon-equip items on those planets
                     //TODO update this to check weapon or artifact tags
-                    var e = 0, ia = -1, ca = 0;
+                    var e = 0;
+                    var ia = -1;
+                    var ca = 0;
                     var _unit;
                     repeat (4400) {
                         if ((ca <= 10) && (ca >= 0)) {
@@ -289,23 +245,6 @@ try {
                     obj_controller.known[eFACTION.TAU] = 1;
                 }
             }
-
-            /*if (image_index>=4){
-                with(obj_star){
-                    if (owner = eFACTION.TAU) and (present_fleets>0) and (tau_fleets=0){
-                        instance_create(x,y,obj_temp5);
-                    }
-                }
-                if (instance_exists(obj_temp5)){
-                    var wop;wop=instance_nearest(x,y,obj_temp5);
-                    if (wop!=0) and (point_distance(x,y,wop.x,wop.y)<300) and (wop.x>5) and (wop.y>5){
-                        target_x=wop.x;target_y=wop.y;
-                        home_x=x;home_y=y;
-                        set_fleet_movement();
-                    }
-                }
-                with(obj_temp5){instance_destroy();}
-            }*/
         }
 
         if (owner == eFACTION.TYRANIDS) {
@@ -344,12 +283,11 @@ try {
             }
 
             if (n) {
-                var xx, yy, good, plin, plin2;
-                xx = 0;
-                yy = 0;
-                good = 0;
-                plin = 0;
-                plin2 = 0;
+                var xx = 0;
+                var yy = 0;
+                var good = 0;
+                var plin = 0;
+                var plin2 = 0;
 
                 if (capital_number > 5) {
                     n = 5;
@@ -393,11 +331,6 @@ try {
                             new_fleet.owner = eFACTION.TYRANIDS;
                             new_fleet.sprite_index = spr_fleet_tyranid;
                             new_fleet.image_index = 1;
-
-                            /*with(new_fleet){
-                                var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
-                                if (ii<=1) then ii=1;image_index=ii;
-                            }*/
 
                             new_fleet.action_x = plin2.x;
                             new_fleet.action_y = plin2.y;
@@ -451,10 +384,6 @@ try {
         y = y + lengthdir_y(orbiting, dir);
 
         action_eta -= 1;
-
-        /*if (owner>5){
-            
-        }*/
 
         if ((action_eta == 2) && (owner == eFACTION.INQUISITION) && (inquisitor > -1)) {
             inquisitor_ship_approaches();
