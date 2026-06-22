@@ -45,6 +45,7 @@ draw_lines = function(_x, _y, increment, truncate_line) {
 
         draw_set_font(fnt_40k_12);
         var _draw_func = draw_text;
+        var _line = truncate_line ? string_truncate(line[l], 134) : line[l];
         var _is_struct = is_struct(line[l]);
         if (_is_struct) {
             var _struc = line[l];
@@ -54,9 +55,7 @@ draw_lines = function(_x, _y, increment, truncate_line) {
             if (_struc.bold) {
                 _draw_func = draw_text_bold;
             }
-            var _line = truncate_line ? string_truncate(_struc.str1, 134) : _struc.str1;
-        } else {
-            var _line = truncate_line ? string_truncate(line[l], 134) : line[l];
+            _line = truncate_line ? string_truncate(_struc.str1, 134) : _struc.str1;
         }
         _draw_func(_x, _y + _y_depth - scroll_offset, _line);
 

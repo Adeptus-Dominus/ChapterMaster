@@ -443,13 +443,13 @@ function ColourItem(_xx, _yy) constructor {
     };
 
     colour_pick = false;
-    dummy_marine = false;
-    dummy_image = false;
+    dummy_marine = undefined;
+    dummy_image = undefined;
 
     static reset_image = function() {
         if (is_struct(dummy_image)) {
             delete dummy_image;
-            dummy_image = false;
+            dummy_image = undefined;
         }
     };
 
@@ -524,7 +524,7 @@ function ColourItem(_xx, _yy) constructor {
                                 break;
                         }
                         delete dummy_image;
-                        dummy_image = false;
+                        dummy_image = undefined;
                     }
                 }
             }
@@ -554,8 +554,7 @@ function ColourItem(_xx, _yy) constructor {
             }
             image_location_maps.company_marks = move_location_relative(draw_unit_buttons([xx - 30, yy - 40], "Company Marks"), -xx, -yy);
 
-            //draw_sprite(sprite_index, 0, x, y);
-            if (dummy_marine == false) {
+            if (dummy_marine ?? true) {
                 dummy_marine = new DummyMarine();
             }
             if (!is_struct(dummy_image)) {

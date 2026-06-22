@@ -6,24 +6,19 @@ obj_controller.popup = 1; // 1: fleet, 2: other fleet, 3: other
 selected = 1;
 obj_controller.fleet_minimized = 0;
 
-var xx = x, yy = y;
-
 obj_controller.selected = id;
 if (instance_exists(obj_fleet_select)) {
     if (obj_controller.selected == obj_fleet_select.id) {
         exit;
     }
 }
-// obj_controller.selected=self;
 obj_controller.sel_owner = self.owner;
-// show_message(obj_controller.selected);
 obj_controller.cooldown = 8;
 
 if (obj_controller.zoomed) {
     scr_zoom();
 }
 
-// Pass variables to obj_controller.temp[t]=""; here
 with (obj_fleet_select) {
     instance_destroy();
 }
@@ -34,9 +29,7 @@ obj_fleet_select.escort = escort_number;
 obj_fleet_select.frigate = frigate_number;
 obj_fleet_select.capital = capital_number;
 
-var i = -1;
-repeat (91) {
-    i += 1;
+for (var i = 0; i <= 90; i++) {
     if (i <= 20) {
         capital_sel[i] = 1;
     }
@@ -57,9 +50,3 @@ repeat (91) {
         }
     }
 }
-
-/*var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
-if (ii<=1) then ii=1;image_index=ii;*/
-
-/* */
-/*  */

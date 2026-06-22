@@ -9,7 +9,7 @@ function return_lost_ships_chance() {
 function return_lost_ship() {
     var _return_id = get_valid_player_ship("Lost");
     if (_return_id != -1) {
-        var _lost_fleet = "none";
+        var _lost_fleet = noone;
         with (obj_p_fleet) {
             if (action == "Lost") {
                 _lost_fleet = id;
@@ -19,7 +19,7 @@ function return_lost_ship() {
         var _star = instance_find(obj_star, irandom(instance_number(obj_star) - 1));
         _new_fleet = instance_create(_star.x, _star.y, obj_p_fleet);
         _new_fleet.owner = eFACTION.PLAYER;
-        if (_lost_fleet != "none") {
+        if (_lost_fleet != noone) {
             find_and_move_ship_between_fleets(_lost_fleet, _new_fleet, _return_id);
             if (player_fleet_ship_count(_lost_fleet) == 0) {
                 with (_lost_fleet) {
@@ -92,7 +92,7 @@ function return_lost_ship() {
             //More scenarios needed but this is a good start
         }
         scr_popup("Ship Returns", _text, "lost_warp", "");
-        if (_lost_fleet != "none") {
+        if (_lost_fleet != noone) {
             if (!player_fleet_ship_count(_lost_fleet)) {
                 with (_lost_fleet) {
                     instance_destroy();
@@ -188,14 +188,14 @@ function loose_ship_to_warp_event() {
         text += $"  {marine_count} Battle Brothers were onboard.";
     }
     scr_event_log("red", text);
-    var _lost_ship_fleet = "none";
+    var _lost_ship_fleet = noone;
     with (obj_p_fleet) {
         if (action == "Lost") {
             _lost_ship_fleet = id;
         }
     }
-    if (_lost_ship_fleet == "none") {
-        var _lost_ship_fleet = instance_create(-500, -500, obj_p_fleet);
+    if (_lost_ship_fleet == noone) {
+        _lost_ship_fleet = instance_create(-500, -500, obj_p_fleet);
         _lost_ship_fleet.owner = eFACTION.PLAYER;
     }
 
@@ -236,7 +236,6 @@ function loose_ship_to_warp_event() {
 
 //TODO make method for setting ship weaponry
 function new_player_ship(type, start_loc = "home", new_name = "") {
-    var ship_names = "", index = 0;
     var index = new_player_ship_defaults();
 
     for (var k = 0; k <= 200; k++) {

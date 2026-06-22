@@ -36,7 +36,6 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     members = [];
     time_on_planet = 0;
     viable_garrison = 0;
-    dispo_change = 0;
     self.type = type;
     self.system = system;
     self.planet = planet;
@@ -212,10 +211,10 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     };
 
     static garrison_disposition_change = function(up_or_down = false) {
-        dispo_change = 0;
+        var _dispo_change = 0;
         var _pdata = system.get_planet_data(planet);
         if (!array_contains(obj_controller.imperial_factions, _pdata.current_owner)) {
-            return dispo_change;
+            return _dispo_change;
         }
         
         var _planet_disposition = _pdata.player_disposition;
@@ -245,9 +244,9 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
         var final_modifier = 5 + _garrison_size_mod - _disposition_modifier + _time_modifier;
 
         if (up_or_down) {
-            dispo_change = garrison_leader.charisma + final_modifier;
-            if (dispo_change < 50 && ((_planet_disposition < _main_faction_disp) || _diplomatic_leader)) {
-                dispo_change = 50;
+            _dispo_change = garrison_leader.charisma + final_modifier;
+            if (_dispo_change < 50 && ((_planet_disposition < _main_faction_disp) || _diplomatic_leader)) {
+                _dispo_change = 50;
             }
         } else {
             var _charisma_test;
@@ -259,20 +258,20 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
             dispo_change = _charisma_test[1] / 10;
             if (!_charisma_test[0]) {
                 if (_diplomatic_leader) {
-                    dispo_change = 0;
+                    _dispo_change = 0;
                 } else {
                     if (_planet_disposition > _main_faction_disp) {
-                        _pdata.add_disposition(dispo_change);
+                        _pdata.add_disposition(_dispo_change);
                     } else {
-                        dispo_change = 0;
+                        _dispo_change = 0;
                     }
                 }
             } else {
-                _pdata.add_disposition(dispo_change);
+                _pdata.add_disposition(_dispo_change);
             }
         }
 
-        return dispo_change;
+        return _dispo_change;
     };
 
     /* this is probably going to become infinatly complex with many different functions and far more complex inputs
@@ -280,7 +279,6 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     static determine_battle = function(attack_defend, win, margin, enemy, location, planet = 0, ship = 0) {
         var _sim = global.character_tester;
         if (win) {} else {
-            //var squad_positions;
             var _leader;
             var m;
             var _unit;
@@ -342,12 +340,12 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     };
 }
 
-function determine_pdf_defence(pdf, garrison = "none", planet_forti = 0, enemy = 0) {
+function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 0) {
     var explanations = "";
     var defence_mult = planet_forti * 0.1;
     var pdf_score = 0;
     explanations += $"Planet Defences:X{defence_mult + 1}#";
-    if (garrison != "none") {
+    if (garrison != noone) {
         //if player supports give garrison bonus
         var garrison_mult = garrison.viable_garrison * (0.008 + (0.001 * planet_forti));
         var siege_masters = scr_has_adv("Siege Masters");

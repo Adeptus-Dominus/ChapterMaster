@@ -41,15 +41,12 @@ if ((scr_hit(x, y, x + width, y + height) == true) && (obj_controller.dropdown_o
 }
 
 if (opened == 1) {
-    var ii, y5, yyy, hi;
-    ii = 0;
-    yyy = 24;
-    y5 = y;
-    hi = 24;
+    var yyy = 24;
+    var y5 = y;
+    var hi = 24;
 
-    repeat (options) {
-        ii += 1;
-        if ((ii != option_selected) && (ii <= options)) {
+    for (var i = 1; i <= options; i++) {
+        if ((i != option_selected) && (i <= options)) {
             y5 += hi;
             yyy += hi;
 
@@ -59,7 +56,7 @@ if (opened == 1) {
             draw_set_font(fnt_40k_14);
             draw_set_color(c_black);
             draw_set_halign(fa_center);
-            draw_text(x + (width / 2), y5 + 2, string_hash_to_newline(string(option[ii])));
+            draw_text(x + (width / 2), y5 + 2, string_hash_to_newline(string(option[i])));
             draw_rectangle(x, y5, x + width, y5 + hi, 1);
 
             if (scr_hit(x, y5, x + width, y5 + hi) == true) {
@@ -67,12 +64,12 @@ if (opened == 1) {
                 draw_set_color(c_white);
                 draw_rectangle(x, y5, x + width, y5 + hi, 0);
 
-                tooltip = option[ii];
-                if ((target == "event_display") && (option[ii] != "None")) {
-                    tooltip = option[ii];
-                    tooltip2 = fetch_artifact(option_id[ii]).description();
+                tooltip = option[i];
+                if ((target == "event_display") && (option[i] != "None")) {
+                    tooltip = option[i];
+                    tooltip2 = fetch_artifact(option_id[i]).description();
                 }
-                if ((target == "event_display") && (option[ii] == "None")) {
+                if ((target == "event_display") && (option[i] == "None")) {
                     tooltip = "Display";
                     tooltip2 = "There is no Artifact set to be displayed at the event.";
                 }
@@ -81,17 +78,16 @@ if (opened == 1) {
                     obj_controller.dropdown_open = 0;
                     opened = 0;
 
-                    var no;
-                    no = false;
-                    if ((target == "event_type") && (option[ii] != "Great Feast")) {
+                    var no = false;
+                    if ((target == "event_type") && (option[i] != "Great Feast")) {
                         no = true;
                     }
                     if (no == false) {
-                        option_selected = ii;
+                        option_selected = i;
                     }
 
-                    if ((target == "event_type") && (option[ii] == "Great Feast")) {
-                        obj_controller.fest_type = option[ii];
+                    if ((target == "event_type") && (option[i] == "Great Feast")) {
+                        obj_controller.fest_type = option[i];
                         with (obj_dropdown_sel) {
                             if (target == "event_public") {
                                 option[1] = "";
@@ -138,34 +134,34 @@ if (opened == 1) {
                         obj_controller.fest_display = option_id[option_selected];
                     }
                     if (target == "event_public") {
-                        obj_controller.fest_locals = ii - 1;
+                        obj_controller.fest_locals = i - 1;
                     }
                     if (target == "event_loc") {
                         if (obj_controller.fest_planet == 0) {
-                            obj_controller.fest_sid = option_id[ii];
+                            obj_controller.fest_sid = option_id[i];
                             obj_controller.fest_wid = 0;
-                            if (option_id[ii] > 0) {
-                                if ((obj_controller.fest_warp == 0) && (obj_ini.ship_location[option_id[ii]] == "Warp")) {
+                            if (option_id[i] > 0) {
+                                if ((obj_controller.fest_warp == 0) && (obj_ini.ship_location[option_id[i]] == "Warp")) {
                                     obj_controller.fest_warp = 1;
                                 }
-                                if ((obj_controller.fest_warp == 1) && (obj_ini.ship_location[option_id[ii]] != "Warp")) {
+                                if ((obj_controller.fest_warp == 1) && (obj_ini.ship_location[option_id[i]] != "Warp")) {
                                     obj_controller.fest_warp = 0;
                                 }
-                                obj_controller.fest_attend = scr_event_dudes(0, 0, "", option_id[ii]);
+                                obj_controller.fest_attend = scr_event_dudes(0, 0, "", option_id[i]);
                             }
-                            if (option[ii] == "None Selected") {
+                            if (option[i] == "None Selected") {
                                 obj_controller.fest_sid = 0;
                                 obj_controller.fest_attend = "";
                             }
                         }
                         if (obj_controller.fest_planet == 1) {
-                            obj_controller.fest_wid = option_id[ii];
+                            obj_controller.fest_wid = option_id[i];
                             obj_controller.fest_sid = 0;
-                            obj_controller.fest_star = option_star[ii];
-                            if (option[ii] != "None Selected") {
-                                obj_controller.fest_attend = scr_event_dudes(0, 1, option_star[ii], option_id[ii]);
+                            obj_controller.fest_star = option_star[i];
+                            if (option[i] != "None Selected") {
+                                obj_controller.fest_attend = scr_event_dudes(0, 1, option_star[i], option_id[i]);
                             }
-                            if (option[ii] == "None Selected") {
+                            if (option[i] == "None Selected") {
                                 obj_controller.fest_wid = 0;
                                 obj_controller.fest_star = "";
                                 obj_controller.fest_attend = "";
@@ -173,13 +169,13 @@ if (opened == 1) {
                         }
                     }
                     if (target == "event_lavish") {
-                        obj_controller.fest_lav = ii;
+                        obj_controller.fest_lav = i;
                     }
                     if (target == "event_repeat") {
-                        if (ii <= 4) {
-                            obj_controller.fest_repeats = ii;
+                        if (i <= 4) {
+                            obj_controller.fest_repeats = i;
                         }
-                        if (ii == 5) {
+                        if (i == 5) {
                             obj_controller.fest_repeats = 12;
                         }
                     }
@@ -202,20 +198,11 @@ if ((tooltip != "Great Feast") && (target == "event_type")) {
     tooltip2 = "(NOT COMPLETED YET)";
 }
 
-/*
-if (tooltip="Tournament") then tooltip2="Hosts a non-lethal tournament for friendly competition.";
-if (tooltip="Deathmatch") then tooltip2="Pits all those present to fight until one remains standing.  HQ are unable to participate.";
-if (tooltip="Imperial Mass") then tooltip2="Hosts Imperial Cult Mass for your astartes, in praise of the Emperor.";
-if (tooltip="Chapter Sermon") then tooltip2="Hosts a Chapter Cult sermon for your astartes, praising the "+string(global.chapter_name)+".";
-if (tooltip="Chapter Relic") then tooltip2="Instructs your "+string(obj_ini.role[100][16])+"s and "+string(obj_ini.role[100][14])+"s to construct a Chapter artifact.";
-if (tooltip="Triumphal March") then tooltip2="Present Astartes will participate in a massive march to present a show of arms and power.";
-*/
-
 if ((tooltip != "") && (tooltip2 != "")) {
     draw_set_alpha(1);
     draw_set_font(fnt_40k_14);
     draw_set_halign(fa_left);
-    draw_set_color(0);
+    draw_set_color(c_black);
     draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + string_width_ext(string_hash_to_newline(tooltip2), -1, 500) + 24, mouse_y + 44 + string_height_ext(string_hash_to_newline(tooltip2), -1, 500), 0);
     draw_set_color(c_gray);
     draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + string_width_ext(string_hash_to_newline(tooltip2), -1, 500) + 24, mouse_y + 44 + string_height_ext(string_hash_to_newline(tooltip2), -1, 500), 1);
@@ -224,6 +211,3 @@ if ((tooltip != "") && (tooltip2 != "")) {
     draw_set_font(fnt_40k_14);
     draw_text_ext(mouse_x + 22, mouse_y + 42, string_hash_to_newline(string(tooltip2)), -1, 500);
 }
-
-/* */
-/*  */

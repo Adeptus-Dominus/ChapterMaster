@@ -20,7 +20,7 @@ var coords = [
 ];
 var near_star = instance_nearest(x, y, obj_star);
 if (x == near_star.x && y == near_star.y) {
-    var coords = fleet_star_draw_offsets();
+    coords = fleet_star_draw_offsets();
 }
 
 if (image_index > 9) {
@@ -47,8 +47,6 @@ if (obj_controller.zoomed == 1) {
         within = 1;
     }
 }
-
-// if (obj_controller.selected!=0) and (selected=1) then within=1;
 
 if (obj_controller.selecting_planet > 0) {
     if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249)) {
@@ -79,7 +77,6 @@ if (action != "") {
     draw_set_alpha(1);
     draw_set_color(c_white);
     draw_line_width(x, y, action_x, action_y, 1);
-    //
     draw_set_font(fnt_40k_14b);
     if (obj_controller.zoomed == 0) {
         draw_text_transformed(x + 12, y, string_hash_to_newline("ETA " + string(action_eta)), 1, 1, 0);
@@ -88,9 +85,9 @@ if (action != "") {
         draw_text_transformed(x + 24, y, string_hash_to_newline("ETA " + string(action_eta)), 2, 2, 0);
     } // was 1.4
 }
+var _has_warboss = false;
 switch (owner) {
     case eFACTION.ORK:
-        var _has_warboss = false;
         if (fleet_has_cargo("ork_warboss")) {
             draw_icon = true;
             _has_warboss = true;
@@ -103,7 +100,6 @@ if ((within == 1) || (selected > 0)) {
     draw_set_font(fnt_40k_14b);
     draw_set_halign(fa_center);
 
-    var fleet_descript = "";
     if (owner == eFACTION.PLAYER) {
         fleet_descript = "Renegade Fleet";
     }
@@ -123,7 +119,6 @@ if ((within == 1) || (selected > 0)) {
             }
         }
     }
-    // if (navy=1) then fleet_descript=string(trade_goods)+" ("+string(guardsmen_unloaded)+"/"+string(guardsmen_ratio)+")";
     switch (owner) {
         case eFACTION.MECHANICUS:
             fleet_descript = "Mechanicus Fleet";
@@ -161,14 +156,9 @@ if ((within == 1) || (selected > 0)) {
             break;
     }
 
-    // if (owner = eFACTION.IMPERIUM) and (navy=1){fleet_descript=string(capital_max_imp[1]+frigate_max_imp[1]+escort_max_imp[1]);}
-
     if (global.cheat_debug == true) {
         fleet_descript += "C" + string(capital_number) + "|F" + string(frigate_number) + "|E" + string(escort_number);
     }
-
-    // fleet_descript=string(capital_number)+"|"+string(frigate_number)+"|"+string(escort_number);
-    // fleet_descript+="|"+string(trade_goods);
 
     draw_set_halign(fa_left);
 }
@@ -194,19 +184,9 @@ if (draw_icon) {
 }
 draw_sprite_ext(sprite_index, image_index, x + (coords[0] * scale), y + (coords[1] * scale), 1 * scale, 1 * scale, 0, c_white, 1);
 
-/*if (owner = eFACTION.ORK){
-    draw_set_font(fnt_small);
-    draw_set_halign(fa_center);
-    draw_set_color(c_white);
-    draw_text(x,y+32,string(escort_number)+"/"+string(frigate_number)+"/"+string(capital_number));
-}*/
-
 if (instance_exists(target)) {
     draw_set_color(c_red);
     draw_set_alpha(0.5);
     draw_line(x, y, target.x, target.y);
     draw_set_alpha(1);
 }
-
-/* */
-/*  */

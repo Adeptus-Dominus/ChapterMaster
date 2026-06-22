@@ -16,7 +16,7 @@ function UnitQuickFindPanel() constructor {
     static detail_slate = new DataSlateMKTwo();
 
     view_area = "fleets";
-    hover_item = "none";
+    hover_item = noone;
     travel_target = [];
     travel_time = 0;
     travel_increments = [];
@@ -43,7 +43,7 @@ function UnitQuickFindPanel() constructor {
         var _stars = [];
         for (var i = 0; i < array_length(_names); i++) {
             var _star = find_star_by_name(_names[i]);
-            if (_star != "none") {
+            if (_star != noone) {
                 array_push(_stars, _star);
             }
         }
@@ -128,7 +128,7 @@ function UnitQuickFindPanel() constructor {
             obj_controller.specialist_point_handler.calculate_research_points(false);
             ship_count = array_length(obj_ini.ship_carrying);
             for (var co = 0; co <= obj_ini.companies; co++) {
-                for (var u = 0; u < array_length(obj_ini.TTRPG[co]); u++) {
+                for (var u = 0; u < array_length(obj_ini.TTRPG[co]) - 1; u++) {
                     /// @type {Struct.TTRPG_stats}
                     _unit = fetch_unit([co, u]);
                     evaluate_unit_for_garrison_log(_unit);
@@ -250,11 +250,10 @@ function UnitQuickFindPanel() constructor {
     update_mission_log = function() {
         mission_log = [];
         var temp_log = [];
-        var p, i, problems;
         with (obj_star) {
-            for (i = 1; i <= planets; i++) {
-                problems = p_problem[i];
-                for (p = 0; p < array_length(problems); p++) {
+            for (var i = 1; i <= planets; i++) {
+                var problems = p_problem[i];
+                for (var p = 0; p < array_length(problems); p++) {
                     if (problems[p] == "") {
                         continue;
                     }
@@ -371,7 +370,7 @@ function UnitQuickFindPanel() constructor {
             var system_names = struct_get_names(garrison_log);
             var hover_entered = false;
             var any_hover = false;
-            if (hover_item != "none") {
+            if (hover_item != noone) {
                 var loc = hover_item.location;
                 hover_entered = scr_hit(loc[0], loc[1], loc[2], loc[3]);
             }
@@ -431,7 +430,7 @@ function UnitQuickFindPanel() constructor {
                 if (!hover_entered) {
                     if (point_and_click([xx + 10, yy + 90 + (20 * i) - 2, xx + main_panel.width, yy + 90 + (20 * i) + 18])) {
                         var star = find_star_by_name(system_names[i]);
-                        if (star != "none") {
+                        if (star != noone) {
                             travel_target = [
                                 star.x,
                                 star.y
@@ -459,8 +458,8 @@ function UnitQuickFindPanel() constructor {
             if (!any_hover && !hover_entered) {
                 current_hover = -1;
                 hover_count = 0;
-                hover_item = "none";
-            } else if (hover_item != "none") {
+                hover_item = noone;
+            } else if (hover_item != noone) {
                 if (point_and_click(hover_item.draw(xx + 10, yy + 90 + (20 * hover_item.root_item), "Manage"))) {
                     group_selection(garrison_log[$ system_names[hover_item.root_item]].units, {purpose: $"{system_names[hover_item.root_item]} Management", purpose_code: "manage", number: 0, system: find_star_by_name(system_names[hover_item.root_item]).id, feature: "none", planet: 0, selections: []});
                 }
@@ -541,7 +540,7 @@ function UnitQuickFindPanel() constructor {
 }
 
 function HoverBox() constructor {
-    root_item = "none";
+    root_item = noone;
     relative_x = 0;
     relative_y = 0;
     location = [
@@ -574,7 +573,7 @@ function update_garrison_manage() {
     var _planets = 0;
     if (struct_exists(selection_data, "system") && instance_exists(selection_data.system)) {
         if (struct_exists(location_viewer.garrison_log, selection_data.system.name)) {
-            var sys_name = selection_data.system.name;
+            sys_name = selection_data.system.name;
         }
     }
 
@@ -699,7 +698,7 @@ function unload_selection() {
         cooldown = 8000;
         var boba = 0;
         var unload_star = find_star_by_name(selecting_location);
-        if (unload_star != "none") {
+        if (unload_star != noone) {
             if (unload_star.space_hulk != 1) {
                 for (var t = 0; t < array_length(display_unit); t++) {
                     if (man_sel[t] == 1) {
@@ -725,12 +724,11 @@ function unload_selection() {
 
 /// @self Asset.GMObject.obj_controller
 function reset_selection_equipment() {
-    var _unit;
     for (var f = 0; f < array_length(display_unit); f++) {
         // If come across a man, set vih to 1
         if ((man[f] == "man") && (man_sel[f] == 1)) {
             if (is_struct(display_unit[f])) {
-                _unit = display_unit[f];
+                var _unit = display_unit[f];
                 _unit.set_default_equipment();
             }
         }
@@ -739,12 +737,11 @@ function reset_selection_equipment() {
 
 /// @self Asset.GMObject.obj_controller
 function add_tag_to_selection(new_tag) {
-    var _unit;
     for (var f = 0; f < array_length(display_unit); f++) {
         // If come across a man, set vih to 1
         if ((man[f] == "man") && (man_sel[f] == 1)) {
             if (is_struct(display_unit[f])) {
-                _unit = display_unit[f];
+                var _unit = display_unit[f];
                 _unit[$ new_tag] = !_unit[$ new_tag];
             }
         }

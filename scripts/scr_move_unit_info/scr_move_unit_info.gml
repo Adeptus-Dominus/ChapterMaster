@@ -26,7 +26,7 @@ function scr_move_unit_info(start_company, end_company, start_slot, end_slot, ev
     _temp_struct.company = start_company;
     _temp_struct.marine_number = start_slot;
 
-    var _temp_struct = fetch_unit([end_company, end_slot]);
+    _temp_struct = fetch_unit([end_company, end_slot]);
     if (is_struct(_temp_struct)) {
         _temp_struct.company = end_company;
         _temp_struct.marine_number = end_slot;

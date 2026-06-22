@@ -17,7 +17,7 @@
 
 /// @param {Enum.eEVENT} event
 /// @param {Enum.eINQUISITION_MISSION} forced_mission optional
-function scr_inquisition_mission(event, forced_mission = -1) {
+function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.NOTFOUND) {
     LOGGER.info($"RE: Inquisition Mission, event {event}, forced_mission {forced_mission}");
     if ((obj_controller.known[eFACTION.INQUISITION] == 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") && !global.cheat_debug) {
         LOGGER.info("Player is either hasn't met or is at war with Inquisition, not proceeding with inquisition mission");
@@ -52,7 +52,7 @@ function scr_inquisition_mission(event, forced_mission = -1) {
                 found_sleeping_necrons = true;
             }
 
-            if (star_has_planet_with_forces(_star, "Demons", 1)) {
+            if (star_has_planet_with_forces(_star, eFACTION.HERETICS, 1)) {
                 // array_push(demon_worlds, _star); // turning this off til i have a way to finish the mission
             }
 
@@ -81,25 +81,8 @@ function scr_inquisition_mission(event, forced_mission = -1) {
             LOGGER.info($"Couldn't find any planets with demons for inquisition mission");
         }
 
-        //if (string_count("Tau",obj_controller.useful_info)=0){
-        //	var found_tau = false;
-        //	with(obj_star){
-        //		if (found_tau){
-        //			break;
-        //		}
-        //		for(var i = 1; i <= planets; i++)
-        //		{
-        //			if (p_tau[i]>4) {
-        //				array_push(inquisition_missions, eINQUISITION_MISSION.ETHEREAL);
-        //				found_tau = true
-        //				break;
-        //			}
-        //		}
-        //	}
-        //}
-
         var chosen_mission = choose_array(inquisition_missions);
-        if (forced_mission != -1) {
+        if (forced_mission != eINQUISITION_MISSION.NOTFOUND) {
             chosen_mission = forced_mission;
         }
         switch (chosen_mission) {
@@ -188,7 +171,7 @@ function mission_inquisition_tyranid_organism(worlds) {
     }
 
     var eta = scr_mission_eta(_star.x, _star.y, 1);
-    var eta = min(max(eta, 6), 50);
+    eta = min(max(eta, 6), 50);
 
     var text = $"An Inquisitor is trusting you with a special mission.  The planet {string(_star.name)} {scr_roman(planet)}";
     text += " is ripe with Tyranid organisms.  They require that you capture one of the Gaunt species for research purposes.  Can your chapter handle this mission?";
@@ -197,8 +180,9 @@ function mission_inquisition_tyranid_organism(worlds) {
 
 function mission_inquisition_tomb_world(tomb_worlds) {
     LOGGER.info("RE: Necron Tomb Bombing");
+    var _star = noone;
     if (is_array(tomb_worlds)) {
-        var _star = array_random_element(tomb_worlds);
+        _star = array_random_element(tomb_worlds);
     } else {
         _star = tomb_worlds;
     }
@@ -242,7 +226,7 @@ function mission_inquisition_tomb_world(tomb_worlds) {
 /// @self Asset.GMObject.obj_popup
 function init_mission_inquisition_tomb_world() {
     mission_star = find_star_by_name(pop_data.system);
-    if (mission_star == "none") {
+    if (mission_star == noone) {
         popup_default_close();
         exit;
     }
@@ -274,21 +258,11 @@ function mission_inquisition_artifact() {
     scr_popup("Inquisition Mission", text, "inquisition", $"artifact|bop|0|{string(irandom_range(6, 26))}|");
 }
 
-function mission_inquistion_hunt_inquisitor(star_id = -1) {
+function mission_inquistion_hunt_inquisitor(star_id = noone) {
     LOGGER.info("RE: Inquisitor Hunt");
 
     var stars = scr_get_stars();
-    /*var _valid_stars = array_filter_ext(stars,
-    function(_star,index){
-        var _p_fleet = instance_nearest(_star.x,_star.y,obj_p_fleet);
-        if (instance_exists(_p_fleet)){
-            var _distance = point_distance(_star.x,_star.y,_p_fleet.x,_p_fleet.y);
-            if (100 <= _distance & _distance <= 300){
-                return true;
-            }
-        }
-        return false;
-    });*/
+    var _star = noone;
 
     if (star_id == -1) {
         var _valid_stars = stars;
@@ -298,7 +272,7 @@ function mission_inquistion_hunt_inquisitor(star_id = -1) {
             exit;
         }
 
-        var _star = array_random_element(_valid_stars);
+        _star = array_random_element(_valid_stars);
     } else {
         _star = star_id;
     }
@@ -351,7 +325,7 @@ function add_new_inquis_mission() {
 /// @self Asset.GMObject.obj_popup
 function init_mission_hunt_inquisitor() {
     mission_star = find_star_by_name(pop_data.system);
-    if (mission_star == "none") {
+    if (mission_star == noone) {
         popup_default_close();
         exit;
     }

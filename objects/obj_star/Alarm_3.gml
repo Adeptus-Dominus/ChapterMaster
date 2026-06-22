@@ -39,9 +39,9 @@ try {
         if (!struct_exists(_data, "system")) {
             _data.system = id;
         }
-        if (_data.system != "none") {
+        if (_data.system != noone) {
             if (struct_exists(_data, "feature")) {
-                if (_data.feature != " none") {
+                if (_data.feature != "none") {
                     if (is_struct(_data.feature)) {
                         if (struct_exists(_data.feature, "f_type")) {
                             if (_data.feature.f_type != "none") {

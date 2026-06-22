@@ -1,8 +1,8 @@
 /// @desc Copies simple (serializable) variables from one struct to another, excluding specified names and prefixes. Useful for building save-data structs.
-/// @param {struct} _source - The struct to copy variables from.
-/// @param {struct} _destination - The struct to copy variables into.
-/// @param {array<string>} _exclude - List of variable names to exclude.
-/// @param {array<string>} _exclude_start - List of string prefixes; variables starting with any of these will be excluded.
+/// @param {Id.Instance|Struct} _source - The struct to copy variables from.
+/// @param {Id.Instance|Struct} _destination - The struct to copy variables into.
+/// @param {Array<string>} _exclude - List of variable names to exclude.
+/// @param {Array<string>} _exclude_start - List of string prefixes; variables starting with any of these will be excluded.
 function copy_serializable_fields(_source, _destination, _exclude = [], _exclude_start = []) {
     /// Check all object variable values types and save the simple ones dynamically.
     /// simple types are numbers, strings, bools. arrays of only simple types are also considered simple.

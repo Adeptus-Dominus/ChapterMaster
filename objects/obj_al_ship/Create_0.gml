@@ -3,8 +3,8 @@ ship_id = 0;
 
 action = "";
 direction = 0;
-/// @type {Asset.GMObject.obj_en_ship}
-target = -50;
+/// @type {Id.Instance}
+target = noone;
 if (instance_exists(obj_en_ship)) {
     target = instance_nearest(x, y, obj_en_ship);
 }
@@ -33,6 +33,11 @@ turrets = 0;
 fighters = 0;
 bombers = 0;
 thunderhawks = 0;
+
+capacity = 0;
+carrying = 0;
+leadership = 0;
+ship_size = 0;
 
 weapon = array_create(SHIP_WEAPON_SLOTS, "");
 weapon_facing = array_create(SHIP_WEAPON_SLOTS, "");

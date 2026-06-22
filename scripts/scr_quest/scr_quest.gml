@@ -4,27 +4,22 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
     // quest_fac: faction
     // quest_end: duration before end
 
-    var quick_trade;
-    quick_trade = 0;
+    var quick_trade = 0;
 
     if (quest_satus == 0) {
         // Create
-        var first_quest, i;
-        first_quest = 0;
-        i = 0;
+        var _first_empty_quest_slot = 0;
 
-        repeat (30) {
-            if (first_quest == 0) {
-                i += 1;
-                if (obj_controller.quest[i] == "") {
-                    first_quest = i;
-                }
+        for (var i = 1; i <= 30; i++) {
+            if (obj_controller.quest[i] == "") {
+                _first_empty_quest_slot = i;
+                break;
             }
         }
 
-        obj_controller.quest[i] = quest_name;
-        obj_controller.quest_faction[i] = quest_fac;
-        obj_controller.quest_end[i] = obj_controller.turn + quest_end;
+        obj_controller.quest[_first_empty_quest_slot] = quest_name;
+        obj_controller.quest_faction[_first_empty_quest_slot] = quest_fac;
+        obj_controller.quest_end[_first_empty_quest_slot] = obj_controller.turn + quest_end;
     } else if (quest_satus > 0) {
         // 1 = Fail, 2 = Accomplish, 3 = Clear
         var que = 0;
@@ -71,7 +66,6 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
             } else {
                 var _result_text = "";
                 delete_artifact(wanted_arti);
-                i = wanted_arti;
                 if (obj_controller.demanding == 0) {
                     obj_controller.disposition[4] += 1;
                     obj_controller.inspection_passes++;
@@ -94,21 +88,10 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
         }
 
         if (quest_satus == 4) {
-            var first_quest, i;
-            first_quest = 0;
-            i = 0;
-
-            repeat (30) {
-                if (first_quest == 0) {
-                    i += 1;
-                    if (obj_controller.quest[i] == quest_name) {
-                        first_quest = i;
-                    }
+            for (var i = 1; i <= 30; i++) {
+                if (obj_controller.quest[i] == quest_name) {
+                    return i;
                 }
-            }
-
-            if (first_quest != 0) {
-                return first_quest;
             }
             exit;
         }
@@ -145,9 +128,7 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
             }
         }
 
-        var targ, flit, goods, i, chasing;
-        goods = "";
-        chasing = 0; // Set target
+        var targ = noone;
         if (instance_exists(obj_temp2)) {
             targ = instance_nearest(obj_temp2.x, obj_temp2.y, obj_temp3);
         }
@@ -157,7 +138,6 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
 
         // If player fleet is flying about then get their target for new target
         if ((!instance_exists(obj_temp2)) && (!instance_exists(obj_ground_mission)) && instance_exists(obj_p_fleet)) {
-            chasing = 1;
             with (obj_p_fleet) {
                 var pop;
                 if ((capital_number > 0) && (action != "")) {
@@ -177,7 +157,7 @@ function scr_quest(quest_satus = 0, quest_name, quest_fac, quest_end) {
             targ = instance_nearest(obj_ground_mission.x, obj_ground_mission.y, obj_temp3);
         }
 
-        flit = instance_create(targ.x, targ.y, obj_en_fleet);
+        var flit = instance_create(targ.x, targ.y, obj_en_fleet);
         flit.owner = quick_trade;
 
         if (quick_trade == 2) {

@@ -1,9 +1,8 @@
 /// @self Asset.GMObject.obj_popup
 function tech_uprising_event_aftermath() {
-    var tech, t, i, check_tech, location_techs, location_heretics, delete_positions;
-    techs = collect_role_group(SPECIALISTS_TECHS);
+    var techs = collect_role_group(SPECIALISTS_TECHS);
     var tech_count = array_length(techs);
-    for (i = 0; i < tech_count; i++) {
+    for (var i = 0; i < tech_count; i++) {
         var heretic_data = [
             0,
             0,
@@ -14,11 +13,11 @@ function tech_uprising_event_aftermath() {
             0,
             0
         ];
-        delete_positions = [];
-        location_techs = [];
-        location_heretics = [];
+        var delete_positions = [];
+        var location_techs = [];
+        var location_heretics = [];
         /// @type {Struct.TTRPG_stats}
-        tech = techs[i];
+        var tech = techs[i];
         if (tech.has_trait("tech_heretic")) {
             array_push(location_heretics, tech);
             heretic_data[0] += tech.weapon_skill;
@@ -31,8 +30,8 @@ function tech_uprising_event_aftermath() {
             loyal_data[2] += tech.ballistic_skill;
         }
         //loop techs to fins out which techs are in the same  location
-        for (t = i + 1; t < tech_count; t++) {
-            check_tech = techs[t].marine_location();
+        for (var t = i + 1; t < tech_count; t++) {
+            var check_tech = techs[t].marine_location();
             if (locations_are_equal(tech.marine_location(), check_tech)) {
                 if (techs[t].has_trait("tech_heretic")) {
                     array_push(location_heretics, techs[t]);
@@ -49,12 +48,11 @@ function tech_uprising_event_aftermath() {
             }
         }
         if (array_length(location_heretics) > 0 && array_length(location_techs) > 0) {
-            var purge_target = "none";
+            var purge_target = noone;
             if (press == 0) {
-                var tal;
                 var heretic_tally = 0;
                 var loyal_tally = 0;
-                for (tal = 0; tal < 3; tal++) {
+                for (var tal = 0; tal < 3; tal++) {
                     if (heretic_data[tal] > loyal_data[0]) {
                         heretic_tally++;
                     } else if (heretic_data[tal] < loyal_data[0]) {
@@ -66,7 +64,7 @@ function tech_uprising_event_aftermath() {
                 } else if (heretic_tally < loyal_tally) {
                     purge_target = location_heretics;
                 }
-                if (purge_target == "none") {
+                if (purge_target == noone) {
                     purge_target = choose(location_heretics, location_techs);
                 }
             } else if (press == 1) {
@@ -74,14 +72,14 @@ function tech_uprising_event_aftermath() {
             } else if (press == 2) {
                 purge_target = location_heretics;
             }
-            if (purge_target != "none") {
-                for (tal = 0; tal < array_length(purge_target); tal++) {
+            if (purge_target != noone) {
+                for (var tal = 0; tal < array_length(purge_target); tal++) {
                     kill_and_recover(purge_target[tal].company, purge_target[tal].marine_number);
                 }
             }
         }
         if (array_length(delete_positions) > 0) {
-            for (t = array_length(delete_positions) - 1; t >= 0; t--) {
+            for (var t = array_length(delete_positions) - 1; t >= 0; t--) {
                 array_delete(techs, delete_positions[t], 1);
                 tech_count--;
             }
@@ -140,7 +138,7 @@ function setup_new_forge_master_popup(techs) {
         }
     }
 
-    for (i = 1; i < array_length(techs); i++) {
+    for (var i = 1; i < array_length(techs); i++) {
         if (_pop_data.charisma_pick.charisma < techs[i].charisma) {
             _pop_data.charisma_pick = techs[i];
         }
@@ -230,10 +228,10 @@ function new_forge_master_chosen(pick) {
         }
     }
 
-    if (pick != "none") {
+    if (pick != noone) {
         pick.update_role("Forge Master");
 
-        var likability;
+        var likability = "";
         if (dislike <= 5) {
             likability = "He is generally well liked";
         }
@@ -276,10 +274,10 @@ function new_forge_master_chosen(pick) {
         if (pick.company > 0) {
             for (var i = 1; i < 500; i++) {
                 if (obj_ini.name[0][i] == "") {
+                    scr_move_unit_info(pick.company, 0, pick.marine_number, i);
                     break;
                 }
             }
-            scr_move_unit_info(pick.company, 0, pick.marine_number, i);
         }
     }
 }

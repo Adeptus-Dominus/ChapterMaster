@@ -8,9 +8,7 @@ instance_activate_all();
 // Lots of damn tyranids
 // Some damn orks and a few genestealer cults
 
-var field = "";
-
-field = "both"; //("orks","tyranids","both");
+var field = "both"; // "orks", "tyranids", "both"
 if (global.chapter_name == "Lamenters") {
     field = "both";
 }
@@ -20,7 +18,7 @@ if (is_test_map == true) {
 
 good_log = 1;
 
-var xx, yy, ok = 0, did = 0, _current_system = 0, px = 0, py = 0, rando = 0;
+var xx, yy, did = 0, _current_system = 0, px = 0, py = 0;
 // Set player set
 _current_system = find_player_spawn_star();
 
@@ -102,16 +100,6 @@ if (did) {
     _current_system.image_index = 4;
     _current_system.p_type[1] = "Forge";
     _current_system.p_type[2] = "Ice";
-    /*
-    _current_system.p_owner[1]=3;
-	_current_system.p_owner[2]=3;
-    _current_system.p_owner[3]=3;
-    _current_system.p_owner[4]=3;
-    _current_system.p_first[1]=3;
-	_current_system.p_first[2]=3;
-    _current_system.p_first[3]=3;
-    _current_system.p_first[4]=3;
-	*/
     _current_system.owner = eFACTION.MECHANICUS;
     _current_system.p_owner = array_create(5, _current_system.owner);
     _current_system.p_first = array_create(5, _current_system.owner);
@@ -121,7 +109,6 @@ if (did) {
     }
 
     with (_current_system) {
-        // with _current_system
         var a = 99, b = 99, c = 99, d = 99, e = "", f = 0;
         for (var i = 0; i < 10; i++) {
             e = p_type[1];
@@ -280,8 +267,6 @@ if (did) {
         }
     } // end with _current_system
 
-    // _current_system.explored=1;
-
     repeat (6) {
         instance_deactivate_object(instance_nearest(xx, yy, obj_star));
     }
@@ -326,7 +311,6 @@ if (did) {
 
         var tau_start_size = irandom(4) + 5;
         for (var i = 0; i <= tau_start_size; i++) {
-            rando = 1;
             _current_system = instance_nearest(xx, yy, obj_star);
             with (_current_system) {
                 if ((planets > 0) && (_current_system.p_type[1] != "Dead") && (_current_system.owner == eFACTION.IMPERIUM)) {
@@ -368,7 +352,7 @@ if (did) {
     ];
     with (obj_star) {
         if (array_contains(hell_holes, name)) {
-            rando = choose(1, 1); // make 1's 0's if you want less chaos
+            var rando = choose(1, 1); // make 1's 0's if you want less chaos
             if (rando == 1) {
                 owner = eFACTION.CHAOS;
                 p_owner = array_create(5, owner);
@@ -411,7 +395,6 @@ if (did) {
     if (field == "both") {
         orkz += 15;
     }
-    /*if (obj_ini.fleet_type==ePLAYER_BASE.PENITENT) then orkz+=2;*/
     if (is_test_map == true) {
         orkz = 4;
     }
@@ -514,7 +497,7 @@ for (var i = 0; i < 100; i++) {
         if (point_distance(room_width / 2, room_height / 2, xx, yy) >= 50) {
             go = 1;
         }
-        me = instance_nearest(xx, yy, obj_star);
+        var me = instance_nearest(xx, yy, obj_star);
         if ((go == 1) && (point_distance(me.x, me.y, xx, yy) >= 150)) {
             go = 2;
         }
@@ -582,41 +565,6 @@ with (obj_creation) {
 
 create_complex_star_routes(_player_star.id);
 
-/* //135 testing crusade object
-instance_create(x,y,obj_crusade);
-obj_crusade.placing=1;scr_zoom();*/
-
-// 135 ; testing artifacts with combat
-// argument0 : type
-// argument1 : tags
-// argument2 : identified
-// argument3: location
-// argument4: sid
-
-// scr_add_artifact("Weapon","",4,obj_ini.home_name,1);
-
-/*scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);*/
-
-// scr_add_item("Cyclonic Torpedo",5);
-// scr_add_item("Exterminatus",5);
-
-if (is_test_map == true) {
-    // scr_add_item("Exterminatus",5);
-    /*scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);*/
-}
-
 with (obj_temp7) {
     instance_destroy();
 }
@@ -634,10 +582,6 @@ if (instance_exists(obj_temp7)) {
         other.terra_direction = point_direction(x, y, room_width / 2, room_height / 2);
     }
 }
-
-/*with(obj_star){
-    scr_star_ownership(false);
-}*/
 
 // Save immediately after world gen
 if (global.load == -1 && global.settings.autosave == true) {

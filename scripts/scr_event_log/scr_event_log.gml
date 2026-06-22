@@ -1,4 +1,4 @@
-function scr_event_log(event_colour, event_text, target = "none") {
+function scr_event_log(event_colour, event_text, target = noone) {
     LOGGER.info($"Adding event to log: {event_text}");
     if (instance_exists(obj_event_log)) {
         var yf;

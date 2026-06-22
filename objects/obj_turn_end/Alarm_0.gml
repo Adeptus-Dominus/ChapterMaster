@@ -2,28 +2,21 @@ try {
     instance_activate_object(obj_star);
     combating = 0;
 
-    var i;
-
-    i = 50;
-    repeat (50) {
-        i -= 1;
-
+    for (var i = 49; i >= 0; i--) {
         if ((battles <= i) && (i >= 2)) {
-            if ((battle[i] != 0) && (battle[i - 1] != 0) && (battle_world[i] == -50) && (battle_world[i - 1] > 0)) {
-                var tem1, tem2, tem3, tem4, tem5, tem6, tem7;
-                tem1 = battle[i - 1];
-                tem2 = battle_location[i - 1];
-                tem3 = battle_world[i - 1];
-                tem4 = battle_opponent[i - 1];
-                tem5 = battle_object[i - 1];
-                tem6 = battle_pobject[i - 1];
-                tem7 = battle_special[i - 1];
+            if ((battle[i] != 0) && (battle[i - 1] != 0) && (battle_world[i] == noone) && (battle_world[i - 1] > 0)) {
+                var tem1 = battle[i - 1];
+                var tem2 = battle_location[i - 1];
+                var tem3 = battle_world[i - 1];
+                var tem4 = battle_opponent[i - 1];
+                var tem5 = battle_object[i - 1];
+                var tem6 = battle_pobject[i - 1];
+                var tem7 = battle_special[i - 1];
 
                 battle[i - 1] = battle[i];
                 battle_location[i - 1] = battle_location[i];
                 battle_world[i - 1] = battle_world[i];
                 battle_opponent[i - 1] = battle_opponent[i];
-                // battle_object[i-1]=battle_object[i];
                 battle_pobject[i - 1] = battle_pobject[i];
                 battle_special[i - 1] = battle_special[i];
 
@@ -43,19 +36,15 @@ try {
     // Ground battles after
 
     if ((battles > 0) && (current_battle <= battles)) {
-        var ii, xx, yy, good;
-        ii = 0;
-        good = 0;
-
         var battle_star = find_star_by_name(battle_location[current_battle]);
 
-        if (battle_star != "none") {
+        if (battle_star != noone) {
             // trying to find the star
             obj_controller.x = battle_star.x;
             obj_controller.y = battle_star.y;
             show = current_battle;
 
-            if (battle_world[current_battle] == -50) {
+            if (battle_world[current_battle] == noone) {
                 strin[1] = string(round(battle_pobject[current_battle].capital_number));
                 strin[2] = string(round(battle_pobject[current_battle].frigate_number));
                 strin[3] = string(round(battle_pobject[current_battle].escort_number));
@@ -66,9 +55,7 @@ try {
 
                 // pull enemy ships here
 
-                var e = 1;
-                repeat (10) {
-                    e += 1;
+                for (var e = 2; e <= 11; e++) {
                     if (e == 11) {
                         e = 13;
                     }
@@ -87,9 +74,8 @@ try {
                             }
                         }
 
-                        var l1, l2;
-                        l1 = 0;
-                        l2 = 0;
+                        var l1 = 0;
+                        var l2 = 0;
                         if (obj_controller.faction_status[e] != "War") {
                             repeat (10) {
                                 l1 += 1;
@@ -135,8 +121,7 @@ try {
 
                 strin[3] = "";
 
-                var tempy = 0;
-                tempy = battle_object[current_battle].p_owner[battle_world[current_battle]];
+                var tempy = battle_object[current_battle].p_owner[battle_world[current_battle]];
 
                 if ((tempy == 1) || (tempy == 2) || (tempy == 3)) {
                     var array_string = [
@@ -187,8 +172,6 @@ try {
                 if (tempy == 6) {
                     strin[4] = "Overwhelming";
                 }
-
-                // if (battle_opponent[current_battle]=2) then obj_controller.alarm[7]=1;
                 obj_controller.cooldown = 9999;
             }
 
@@ -211,9 +194,6 @@ try {
         }
         alarm[1] = 1;
     }
-
-    /* */
-    /*  */
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
 }

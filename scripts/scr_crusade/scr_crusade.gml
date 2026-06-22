@@ -89,7 +89,6 @@ function scr_crusade() {
                     death_determination -= 10;
                 }
 
-                var dead = false;
                 if (death_determination > death_data[0] || death_determination_2 > death_data[1]) {
                     dead = true;
                     if (unit.role() == obj_ini.role[100][5]) {
@@ -149,15 +148,11 @@ function scr_crusade() {
         obj_controller.gene_seed += seed;
     }
 
-    // i=-1;
-    // repeat(11){
-    // i+=1;
     with (obj_ini) {
         for (i = 0; i <= 10; i++) {
             scr_company_order(i);
         }
     }
-    // }
 
     if (roll3 <= 10) {
         artifacts += 1;
@@ -226,7 +221,7 @@ function launch_crusade() {
     } else {
         //TODO decide the target/purpose of the crusade to create more variety and to help with post crusade rewards
         var _nearest_player_fleet = get_nearest_player_fleet(star_id.x, star_id.y);
-        if (_nearest_player_fleet == "none") {
+        if (_nearest_player_fleet == noone) {
             return false;
         }
         var travel_leeway = 10;

@@ -38,8 +38,6 @@ with (obj_en_husk) {
 instance_activate_all();
 obj_controller.combat = 0;
 instance_activate_object(obj_turn_end);
-// instance_activate_object(obj_star_select);
-// show_message(obj_turn_end.current_battle);
 
 if (player_started == 0) {
     with (obj_turn_end) {
@@ -48,10 +46,7 @@ if (player_started == 0) {
     }
 }
 if (player_started == 1) {
-    var taxt;
-    taxt = "";
-
-    taxt = string(global.chapter_name) + " engage and destroy a";
+    var taxt = string(global.chapter_name) + " engage and destroy a";
     if ((enemy[1] == 2) || (enemy[1] == 4) || (enemy[1] == 5) || (enemy[1] == 6)) {
         taxt += "n";
     }
@@ -88,7 +83,6 @@ if (view_x + view_y > 0) {
     obj_controller.y = view_y;
 }
 
-// show_message(obj_turn_end.current_battle);
 with (obj_controller) {
     instance_activate_all();
 }

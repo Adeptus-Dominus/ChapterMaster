@@ -22,10 +22,7 @@ function scr_company_order(company) {
         // This sorts and crunches the marine variables for the company
         var co = company;
 
-        var i = -1;
-
         var _empty_squads = [];
-        var _squadless = {};
 
         var _roles = active_roles();
 
@@ -36,9 +33,9 @@ function scr_company_order(company) {
         // find units not in a _squad
 
         //at this point check that all squads have the right types and numbers of units in them
-        var _squad, wanted_roles;
+        var wanted_roles;
         var _squad_ids = get_squad_ids();
-        for (i = 0; i < array_length(_squad_ids); i++) {
+        for (var i = 0; i < array_length(_squad_ids); i++) {
             var _squad = fetch_squad(_squad_ids[i]);
             if (_squad.base_company != co) {
                 if (!bool(array_length(_squad.members))) {
@@ -69,7 +66,7 @@ function scr_company_order(company) {
             }
         }
 
-        var _squadless = _squadless_index.turn_to_UnitGroup();
+        _squadless = _squadless_index.turn_to_UnitGroup();
 
         if (_squadless.number() > 3) {
             var _squad_index = _company_marines.index_squads();
@@ -109,25 +106,17 @@ function scr_company_order(company) {
         var _squads = _company_marines.count_squads("all", true);
 
         for (var i = 0; i < array_length(_squads); i++) {
-            _squad = fetch_squad(_squads[i]);
+            var _squad = fetch_squad(_squads[i]);
             _squad.members = [];
         }
 
         var _temps = [];
-        for (i = 0; i < array_length(_company_marines.units); i++) {
+        for (var i = 0; i < array_length(_company_marines.units); i++) {
             var _unit = _company_marines.units[i];
             array_push(_temps, {unit: _unit, race: _unit.race(), name: _unit.name(), role: _unit.role(), wep1: _unit.weapon_one(true), wep2: _unit.weapon_two(true), armour: _unit.armour(true), gear: _unit.gear(true), mobi: _unit.mobility_item(true), age: _unit.age(), spe: _unit.specials(), god: _unit.god_status()});
         }
 
-        //position 2 in role order
-        /*if (global.chapter_name!="Space Wolves") and (global.chapter_name!="Iron Hands"){
-	i=0;repeat(300){i+=1;
-	    if (role[co][i]=_roles[Roles.CHAPLAIN]){v+=1;
-	        temp_marine_variables(co, i ,v);
-	    }
-	}*/
-
-        for (i = 0; i < array_length(_temps); i++) {
+        for (var i = 0; i < array_length(_temps); i++) {
             var _unit = _temps[i];
             var _struc = _unit.unit;
             TTRPG[co][i] = _struc;
@@ -156,21 +145,6 @@ function scr_company_order(company) {
             }
             _struc.movement_after_math(co, i, false);
         }
-        /*	i=0;repeat(300){i+=1;
-	    if (role[co][i]="Death Company"){
-	        if (string_count("Dreadnought",armour[co][i])>0){v+=1;
-	            temp_marine_variables(co, i ,v);
-	        }
-	    }
-	}
-
-	i=0;repeat(300){i+=1;
-	    if (role[co][i]="Death Company"){
-	        if (string_count("Dreadnought",armour[co][i])=0) and (string_count("Terminator",armour[co][i])=0) and (armour[co][i]!="Tartaros"){v+=1;
-	            temp_marine_variables(co, i ,v);
-	        }
-	    }
-	}*/
     } catch (_exception) {
         ERROR_HANDLER.handle_exception(_exception);
     }

@@ -1,4 +1,3 @@
-// if (battle_over=1) then exit;
 if (defeat_message == 1) {
     exit;
 }
@@ -7,28 +6,14 @@ if (wall_destroyed == 1) {
     wall_destroyed = 0;
 }
 
-var i, good, changed;
-i = 0;
-good = 0;
-changed = 0;
-
-// if (messages_to_show = 24) and (messages_shown=0) then alarm[6]=75;
-// if (messages_shown=105) then exit;
-
-/*i+=1;if (message[i]!="") then show_message(message[i]);
-i+=1;if (message[i]!="") then show_message(message[i]);
-i+=1;if (message[i]!="") then show_message(message[i]);
-i+=1;if (message[i]!="") then show_message(message[i]);
-i+=1;if (message[i]!="") then show_message(message[i]);
-i+=1;if (message[i]!="") then show_message(message[i]);*/
+var good = 0;
+var changed = 0;
 
 repeat (100) {
     if (good == 0) {
         changed = 0;
-        i = 0;
 
-        repeat (55) {
-            i += 1;
+        for (var i = 1; i <= 55; i++) {
 
             // Collide the messages if needed
             if ((message[i] == "") && (message[i + 1] != "")) {
@@ -82,13 +67,10 @@ repeat (100) {
 }
 
 if (((messages > 0) && (messages_shown < 24)) && (messages_shown <= 100)) {
-    var that_sz, that; // show_message("Largest Message");
-    that_sz = 0;
-    that = 0;
+    var that_sz = 0;
+    var that = 0;
 
-    i = 0;
-    repeat (60) {
-        i += 1;
+    for (var i = 1; i <= 60; i++) {
         if ((message[i] != "") && (message_sz[i] > that_sz)) {
             that_sz = message_sz[i];
             that = i;
@@ -137,13 +119,8 @@ if (messages == 0) {
     messages_shown = 999;
 }
 
-/*var noloss;noloss=instance_nearest(50,300,obj_pnunit);
-if (!instance_exists(noloss)) then player_forces=0;
-if (instance_exists(noloss)){if (point_distance(50,300,noloss.x,noloss.y)>500) then player_forces=0;}*/
-
 if (instance_exists(obj_pnunit)) {
-    var plnear;
-    plnear = instance_nearest(room_width, 240, obj_pnunit);
+    var plnear = instance_nearest(room_width, 240, obj_pnunit);
     if (plnear.x < -40) {
         player_forces = 0;
     }
@@ -175,10 +152,7 @@ if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
     }
     newline_color = "yellow";
     if (obj_ncombat.enemy == 6) {
-        var jims;
-        jims = 0;
-        repeat (20) {
-            jims += 1;
+        for (var jims = 1; jims <= 20; jims++) {
             if ((dead_jim[jims] != "") && (dead_jims > 0)) {
                 newline = dead_jim[jims];
                 newline_color = "red";
@@ -191,8 +165,7 @@ if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
             newline = string(global.chapter_name) + " at " + string(round((player_forces / player_max) * 100)) + "%";
             four_show = 0;
         }
-        var plnear;
-        plnear = instance_nearest(room_width, 240, obj_pnunit);
+        var plnear = instance_nearest(room_width, 240, obj_pnunit);
         if (((player_forces <= 0) || (plnear.x < -40)) && (defeat_message == 0)) {
             defeat_message = 1;
             newline = string(global.chapter_name) + " Defeated";
@@ -213,10 +186,7 @@ if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
 if (((messages_shown == 999) || (messages == 0)) && ((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0)) {
     newline_color = "yellow";
     if (obj_ncombat.enemy != 6) {
-        var jims;
-        jims = 0;
-        repeat (20) {
-            jims += 1;
+        for (var jims = 1; jims <= 20; jims++) {
             if ((dead_jim[jims] != "") && (dead_jims > 0)) {
                 newline = dead_jim[jims];
                 newline_color = "red";
@@ -229,8 +199,7 @@ if (((messages_shown == 999) || (messages == 0)) && ((timer_stage == 4) || (time
             newline = string(global.chapter_name) + " at " + string(round((player_forces / player_max) * 100)) + "%";
             four_show = 1;
         }
-        var plnear;
-        plnear = instance_nearest(room_width, 240, obj_pnunit);
+        var plnear = instance_nearest(room_width, 240, obj_pnunit);
         if (((player_forces <= 0) || (plnear.x < -40)) && (defeat_message == 0)) {
             defeat_message = 1;
             newline = string(global.chapter_name) + " Defeated";
@@ -261,6 +230,3 @@ if (((messages_shown == 999) || (messages == 0)) && ((timer_stage == 4) || (time
     timer_stage = 5;
     exit;
 }
-
-/* */
-/*  */

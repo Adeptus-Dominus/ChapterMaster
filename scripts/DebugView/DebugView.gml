@@ -29,19 +29,19 @@ function DebugView(view_name, obj) constructor {
         return self;
     };
 
-    static add_slider_int = function(_name, min, max, label = _name, step = 1) {
+    static add_slider_int = function(_name, _min, _max, label = _name, step = 1) {
         if (update) {
             return self;
         }
-        dbg_slider_int(ref_create(self.obj_ref, _name), min, max, label, step);
+        dbg_slider_int(ref_create(self.obj_ref, _name), _min, _max, label, step);
         return self;
     };
 
-    static add_slider = function(_name, min, max, label = _name, step = 0.01) {
+    static add_slider = function(_name, _min, _max, label = _name, step = 0.01) {
         if (update) {
             return self;
         }
-        dbg_slider(ref_create(self.obj_ref, _name), min, max, label == name, step);
+        dbg_slider(ref_create(self.obj_ref, _name), _min, _max, label, step);
         return self;
     };
 

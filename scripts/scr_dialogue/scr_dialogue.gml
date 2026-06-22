@@ -26,7 +26,7 @@ function interpret_diag_string(string_data, data) {
 
         // Relationship-based dialogue
         if (struct_exists(string_data, "relationship")) {
-            var _string = string_data.relationship[$ data.relationship];
+            _string = string_data.relationship[$ data.relationship];
             if (is_string(_string)) {
                 return string_interpolate_from_struct(_string, data);
             } else {
@@ -178,8 +178,8 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 
             // Option4 here if all the right conditions are met
             var born = false;
-            for (var ii = 1; i <= 200; i++) {
-                if ((obj_ini.role[0][ii] == obj_ini.role[100][eROLE.CHAPTERMASTER]) && (string_count("$", obj_ini.spe[0][ii]) > 0)) {
+            for (var i = 1; i <= 200; i++) {
+                if ((obj_ini.role[0][i] == obj_ini.role[100][eROLE.CHAPTERMASTER]) && (string_count("$", obj_ini.spe[0][i]) > 0)) {
                     born = true;
                 }
             }
@@ -221,10 +221,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             var _string = $"Stand with me my brothers! Fight for the future of your Chapter, and slay {_master_of_sanct.name()}!  [Battle loyalist  {global.chapter_name}";
             add_diplomacy_option({option_text: _string, goto: "cs_meeting_battle1", goto: "cs_meeting_battle1"});
 
-            var _string = $"{global.chapter_name}, I order you to hold your fire! {_master_of_sanct.name()}, if you doubt my leadership then let it be decided by single combat! [Duel your Master of Sanctity]";
+            _string = $"{global.chapter_name}, I order you to hold your fire! {_master_of_sanct.name()}, if you doubt my leadership then let it be decided by single combat! [Duel your Master of Sanctity]";
             add_diplomacy_option({option_text: _string, goto: "cs_meeting_battle2"});
 
-            var _string = $"I deny you {obj_controller.faction_leader[eFACTION.CHAOS]}.  And now I shall destroy you.  For the Emperor! [Attack Chaos forces]";
+            _string = $"I deny you {obj_controller.faction_leader[eFACTION.CHAOS]}.  And now I shall destroy you.  For the Emperor! [Attack Chaos forces]";
             add_diplomacy_option({option_text: _string, goto: "cs_meeting_battle5"});
         }
 
@@ -331,7 +331,6 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         if (diplo_keyphrase == "cs_meeting137") {
             diplo_text = $"When enough of your warriors have embraced Chaos, assemble them together in one place and then speak with me, and I will show you the beginning of the Eightfold Path. Now, begone.\n[[As you leave he calls out to you one more time.]]\nAnd {obj_ini.master_name}, I expect action within a few years. My patience, unlike Chaos, is not infinite.";
             complex_event = true;
-            current_eventing = "";
             force_goodbye = 1;
             faction_status[eFACTION.CHAOS] = "Antagonism";
 
@@ -368,7 +367,8 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 instance_destroy();
             }
             var _found = false;
-            var _star, _planet;
+            var _star = noone;
+            var _planet = noone;
             with (obj_star) {
                 if (has_problem_star("meeting") > 0 && has_problem_star("meeting") > 0) {
                     _found = true;
@@ -381,14 +381,13 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 var _master = fetch_unit([0, 0]);
                 if (_master.planet_location > 0) {
                     var _master_star = find_star_by_name(_master.location_string);
-                    if (_master_star != "none") {
+                    if (_master_star != noone) {
                         _found = true;
                         _planet = _master.planet_location;
                         _star = _master_star;
                     }
                 }
             }
-            // show_message(string(instance_number(obj_ground_mission)));
 
             if (_found) {
                 instance_create(0, 0, obj_ncombat);
@@ -2988,7 +2987,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                     instance_destroy();
                                 }
                                 with (obj_star) {
-                                    for (var i = 1; i <= 4; i++) {
+                                    for (var j = 1; j <= 4; j++) {
                                         if (planet_feature_bool(p_feature[1], eP_FEATURES.WARLORD10) == 1) {
                                             instance_create(x, y, obj_temp5);
                                         }
@@ -2998,9 +2997,9 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                     var you, nuum, plan = 0;
                                     you = instance_nearest(obj_temp5.x, obj_temp5.y, obj_star);
                                     nuum = you.name;
-                                    for (var i = 1; i <= you.planets; i++) {
+                                    for (var j = 1; j <= you.planets; j++) {
                                         if (planet_feature_bool(you.p_feature[1], eP_FEATURES.WARLORD10) == 1) {
-                                            plan = i;
+                                            plan = j;
                                         }
                                     }
                                     found = 1;
@@ -3023,7 +3022,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                 instance_destroy();
                             }
                             with (obj_star) {
-                                for (var i = 1; i <= 4; i++) {
+                                for (var j = 1; j <= 4; j++) {
                                     if (planet_feature_bool(p_feature[1], eP_FEATURES.ORKWARBOSS) == 1) {
                                         instance_create(x, y, obj_temp5);
                                     }
@@ -3033,9 +3032,9 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                 var you, nuum, plan = 0;
                                 you = instance_nearest(obj_temp5.x, obj_temp5.y, obj_star);
                                 nuum = you.name;
-                                for (var i = 1; i <= you.planets; i++) {
+                                for (var j = 1; j <= you.planets; j++) {
                                     if (planet_feature_bool(you.p_feature[1], eP_FEATURES.ORKWARBOSS) == 1) {
-                                        plan = i;
+                                        plan = j;
                                     }
                                 }
                                 if (you.p_orks[plan] < 6) {
@@ -3101,7 +3100,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                 }
                                 var that, good = 0;
                                 that = instance_nearest(random(room_width), random(room_height), obj_star);
-                                for (var i = 0; i < 5; i++) {
+                                for (var index = 0; index < 5; index++) {
                                     if (good == 0) {
                                         with (that) {
                                             var j = 0, onceh = 0;
@@ -3167,9 +3166,9 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                         with (that) {
                                             var onceh = 0;
                                             for (var k = 0; k < 10; k++) {
-                                                var i = floor(random(planets)) + 1;
-                                                if ((array_length(p_feature[i]) == 0) && (onceh == 0)) {
-                                                    onceh = i;
+                                                var l = floor(random(planets)) + 1;
+                                                if ((array_length(p_feature[l]) == 0) && (onceh == 0)) {
+                                                    onceh = l;
                                                 }
                                             }
                                             if (onceh != 0) {

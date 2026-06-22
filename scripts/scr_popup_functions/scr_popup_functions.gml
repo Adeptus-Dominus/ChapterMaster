@@ -152,10 +152,9 @@ function replace_options(option, if_empty = false, use_default_option = true) {
 
 function evaluate_popup_option(opt) {
     var _allow = true;
+    var _requirements = {};
     if (struct_exists(opt, "requires")) {
-        var _requirements = opt.requires;
-    } else {
-        return true;
+        _requirements = opt.requires;
     }
 
     if (struct_exists(_requirements, "req")) {
@@ -202,7 +201,7 @@ function draw_popup_options() {
                 _opt_string = _opt.str1;
             }
 
-            var _opt_string = $"{i + 1}. {_opt_string}";
+            _opt_string = $"{i + 1}. {_opt_string}";
             var _string_x = x1 + 25.5;
             var _string_y = y1 + 20 + sz;
 
@@ -258,7 +257,7 @@ function draw_popup_options() {
 
 /// @self Asset.GMObject.obj_popup
 function calculate_equipment_needs() {
-    var i = 0, rall = "", all_good = 0;
+    var all_good = 0;
 
     req_armour = "";
     req_armour_num = 0;
@@ -276,11 +275,8 @@ function calculate_equipment_needs() {
     req_wep2_num = 0;
     have_wep2_num = 0;
 
-    rall = role_name[target_role];
+    var rall = role_name[target_role];
 
-    /*if (rall=obj_ini.role[100][14]) and (global.chapter_name!="Space Wolves") and (global.chapter_name!="Iron Hands"){
-        req_armour="";req_armour_num=0;req_wep1="";req_wep1_num=0;req_wep2="";req_wep2_num=0;req_mobi="";req_mobi_num=0;
-    }*/
     if (rall == "Codiciery") {
         req_armour = "";
         req_armour_num = 0;
@@ -380,19 +376,17 @@ function calculate_equipment_needs() {
                 }
             }
         }
-
-        // if (n_wep1=n_wep2) and ((o_wep1!=n_wep1) or (o_wep2!=n_wep2)){have_wep1_num-=1;have_wep2_num-=1;}
     } // End Repeat
 
     // This checks to see if there is any more in the armoury
     if (req_armour == STR_ANY_POWER_ARMOUR) {
         var _armour_list = global.list_basic_power_armour;
-        for (i = 0; i < array_length(_armour_list); i++) {
+        for (var i = 0; i < array_length(_armour_list); i++) {
             have_armour_num += scr_item_count(_armour_list[i]);
         }
     } else if (req_armour == STR_ANY_TERMINATOR_ARMOUR) {
         var _armour_list = global.list_terminator_armour;
-        for (i = 0; i < array_length(_armour_list); i++) {
+        for (var i = 0; i < array_length(_armour_list); i++) {
             have_armour_num += scr_item_count(_armour_list[i]);
         }
     } else if (req_armour == "Dreadnought") {
@@ -584,7 +578,7 @@ function allow_governor_successor() {
         _text_last = "Regrettably he has a dim view of your chapter";
     }
     if (randa >= 95) {
-        _newdisp = max(p_data.player_disposition, 60 + choose(1, 2, 3, 4, 5, 6) * 3);
+        var _newdisp = max(p_data.player_disposition, 60 + choose(1, 2, 3, 4, 5, 6) * 3);
         p_data.set_player_disposition(_newdisp);
         _text_last = "Fortunately you already have good relations with the new governor";
     }

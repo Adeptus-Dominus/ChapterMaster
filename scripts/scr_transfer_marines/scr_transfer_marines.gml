@@ -20,31 +20,29 @@ function draw_popup_transfer() {
 }
 
 function transfer_marines() {
-    var mahreens = 0, w = 0, god = 0, vehi = 0, god2 = 0;
+    var vehi = 0;
 
-    mahreens = find_company_open_slot(target_comp);
+    var mahreens = find_company_open_slot(target_comp);
 
-    for (w = 1; w < 101; w++) {
+    for (var w = 1; w < 101; w++) {
         // Gets the number of vehicles in the target company
-        if (god2 == 0 && obj_ini.veh_role[target_comp][w] == "") {
-            god2 = 1;
+        if (obj_ini.veh_role[target_comp][w] == "") {
             vehi = w;
             break;
         }
     }
 
     // The MAHREENS and TARGET/FROM seems to check out
-    var unit, move_squad, move_members, moveable, squad;
-    for (w = 0; w < array_length(obj_controller.display_unit); w++) {
+    for (var w = 0; w < array_length(obj_controller.display_unit); w++) {
         if (obj_controller.man_sel[w] == 1) {
             if (obj_controller.man[w] == "man" && is_struct(obj_controller.display_unit[w])) {
-                moveable = true;
-                unit = obj_controller.display_unit[w];
+                var moveable = true;
+                var unit = obj_controller.display_unit[w];
                 if (unit.squad != "none") {
                     // this evaluates if you are tryin to move a whole squad and if so moves teh squad to a new company
                     var move_squad = unit.squad;
-                    squad = fetch_squad(move_squad);
-                    move_members = squad.members;
+                    var squad = fetch_squad(move_squad);
+                    var move_members = squad.members;
                     for (var mem = 0; mem < array_length(move_members); mem++) {
                         //check all members have been selected and are in the same company
                         if (w + mem < array_length(obj_controller.display_unit)) {
