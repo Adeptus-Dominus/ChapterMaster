@@ -279,13 +279,14 @@ function UnitGroup(units) constructor {
         /*and ((squad_fulfilment[$ obj_ini.role[100][8]] > 4)or (squad_fulfilment[$ obj_ini.role[100][10]] > 4) or (squad_fulfilment[$ obj_ini.role[100][9]] > 4)or (squad_fulfilment[$ obj_ini.role[100][3]] > 4) )*/
 
         var _members = squad.get_members(true);
+        var _exp_unit = 0;
         if (!bool(_members.number())) {
             return [false, squad.uid];
         }
         for (var s = 0; s < 2; s++) {
             var _sgt_type = sgt_types[s];
             if (struct_exists(squad_fulfilment, _sgt_type) && (!sergeant_found)) {
-                var _exp_unit = _members.highest_exp();
+                _exp_unit = _members.highest_exp();
 
                 squad_fulfilment[$ _sgt_type]++;
             }

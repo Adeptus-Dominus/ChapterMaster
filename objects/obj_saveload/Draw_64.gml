@@ -6,10 +6,7 @@ if (!hide) {
     if (save_part + load_part > 0) {
         draw_set_color(0);
 
-        //
-        // draw_sprite(spr_load_splash,splash,0+0,0+0);
         scr_image("loading", splash, 0, 0, 1600, 900);
-        //
 
         draw_sprite(spr_loadbar_empty, 0, 1047, 875);
         draw_sprite(spr_loadbar, 0, 1047, 875);
@@ -85,13 +82,12 @@ if (!hide) {
                     var _chapter_icon = scr_load_chapter_icon(save_icon[save[slot_index]]);
                     var _icon_size = 94;
                     draw_sprite_stretched(_chapter_icon, 0, slot_left + 147 - (_icon_size / 2), slot_top + 28, _icon_size, _icon_size);
-                    var ohboy, result, tsec, tmin, thour, tday;
-                    ohboy = save_time[save[slot_index]];
-                    result = "";
-                    tsec = 0;
-                    tmin = 0;
-                    thour = 0;
-                    tday = 0;
+                    var ohboy = save_time[save[slot_index]];
+                    var result = "";
+                    var tsec = 0;
+                    var tmin = 0;
+                    var thour = 0;
+                    var tday = 0;
                     if (ohboy > 0) {
                         tday = floor(ohboy / 86400);
                         if (tday >= 1) {
@@ -164,8 +160,7 @@ if (!hide) {
                     draw_set_alpha(1);
                     if (mouse_button_clicked(,, true) && !instance_exists(obj_popup)) {
                         // Clear
-                        var com;
-                        com = instance_create_depth(0, 0, -200010, obj_popup);
+                        var com = instance_create_depth(0, 0, -200010, obj_popup);
                         com.image = "fuklaw";
                         com.title = "Delete Save Game?";
                         com.text = "Are you sure you wish to delete Save " + string(save[slot_index]) + "- " + string(save_chapter[save[slot_index]]) + "?";
@@ -221,8 +216,6 @@ if (!hide) {
                         load_part = 1;
                         obj_cursor.image_alpha = 0;
                         splash = choose(0, 1, 2, 3, 4);
-
-                        // show_message("loading 'save"+string(save[slot_index])+".json'");
 
                         if (instance_exists(obj_main_menu)) {
                             with (obj_main_menu) {
@@ -316,7 +309,5 @@ if (!hide) {
             slot_index += 1;
             slot_top += 158;
         }
-
-        // 32,166
     }
 }

@@ -5,34 +5,9 @@ if (obj_controller.menu != my_menu) {
     instance_destroy();
 }
 
-/*
-
-
-
-
-option[1]="Great Feast";
-option[2]="Tournament";
-option[3]="Deathmatch";
-option[4]="Commision Relic";
-option[5]="Imperial Mass";
-option[6]="Cult Sermon";
-dro=instance_create(xx+1064,yy+126,obj_dropdown_sel);dro.target="event_type";
-            dro=instance_create(xx+1100,yy+184,obj_dropdown_sel);dro.target="event_loc";
-            dro=instance_create(xx+1088,yy+271,obj_dropdown_sel);dro.target="event_lavish";
-            dro=instance_create(xx+1041,yy+385,obj_dropdown_sel);dro.target="event_display";
-            dro=instance_create(xx+1041,yy+443,obj_dropdown_sel);dro.target="event_repeat";
-
-
-*/
-
 if (target == "event_type") {
     with (obj_controller) {
         fest_cost = 0;
-
-        /*
-        option[2]="Tournament";
-        option[3]="Deathmatch";
-        */
 
         if (fest_type == "Great Feast") {
             fest_cost = fest_lav * 20;
@@ -42,8 +17,7 @@ if (target == "event_type") {
             if (fest_locals > 0) {
                 fest_cost += 20 * fest_locals;
             }
-            var tt;
-            tt = fest_cost;
+            var tt = fest_cost;
             if (fest_feature1 == 0) {
                 fest_cost = 0;
             }
@@ -62,8 +36,7 @@ if (target == "event_type") {
             if (fest_locals > 0) {
                 fest_cost += 20 * fest_locals;
             }
-            var tt;
-            tt = fest_cost;
+            var tt = fest_cost;
 
             if (fest_feature2 > 0) {
                 fest_cost += 30;
@@ -71,10 +44,6 @@ if (target == "event_type") {
             if ((fest_type == "Tournament") && (fest_feature3 > 0)) {
                 fest_cost += 100;
             }
-
-            /*if (fest_feature1=0) then fest_cost=0;
-            if (fest_feature2>0) then fest_cost+=round(tt/2);
-            if (fest_feature3>0) then fest_cost+=tt;*/
         }
         if (fest_type == "Chapter Relic") {
             if (fest_feature1 == 1) {
@@ -99,8 +68,7 @@ if (target == "event_type") {
             if (fest_locals > 0) {
                 fest_cost += 40 * fest_locals;
             }
-            var tt;
-            tt = fest_cost;
+            var tt = fest_cost;
             if (fest_feature2 > 0) {
                 fest_cost += 100;
             }
@@ -116,8 +84,7 @@ if (target == "event_type") {
             if (fest_locals > 0) {
                 fest_cost += 20 * fest_locals;
             }
-            var tt;
-            tt = fest_cost;
+            var tt = fest_cost;
             if (fest_feature2 > 0) {
                 fest_cost += round(tt / 2);
             }
@@ -133,8 +100,7 @@ if (target == "event_type") {
             if (fest_locals > 0) {
                 fest_cost += 10 * fest_locals;
             }
-            var tt;
-            tt = fest_cost;
+            var tt = fest_cost;
             if (fest_feature1 > 0) {
                 fest_cost += tt;
             }
@@ -157,34 +123,21 @@ if (target == "event_honor") {
 if ((target == "event_loc") && (determined_planets == 0)) {
     // Fill out the options for planets
 
-    var coo, ide, q;
-    coo = -1;
-    ide = 0;
-    q = 0;
-
-    repeat (11) {
-        coo += 1;
-        ide = 0;
-
-        repeat (300) {
-            ide += 1;
+    for (var coo = 0; coo <= 10; coo++) {
+        for (var ide = 1; ide <= 300; ide++) {
             var _unit = fetch_unit([coo, ide]);
             if ((_unit.role() != obj_ini.role[100][6]) && (_unit.role() != "Venerable " + string(obj_ini.role[100][6])) && (_unit.planet_location > 0)) {
-                var stahp, first_open;
-                stahp = 0;
-                q = 0;
-                first_open = 0;
+                var stahp = 0;
+                var first_open = 0;
 
-                repeat (100) {
-                    if (stahp == 0) {
-                        q += 1;
-                        if ((star[q] == "") && (first_open == 0)) {
-                            first_open = q;
-                        }
-                        if (star[q] == _unit.location_string && star_planet[q] == _unit.planet_location) {
-                            stahp = 1;
-                            star_mahreens[q] += 1;
-                        }
+                for (var q = 1; q <= 100; q++) {
+                    if ((star[q] == "") && (first_open == 0)) {
+                        first_open = q;
+                    }
+                    if (star[q] == _unit.location_string && star_planet[q] == _unit.planet_location) {
+                        stahp = 1;
+                        star_mahreens[q] += 1;
+                        break;
                     }
                 }
                 if (stahp == 0) {
@@ -233,13 +186,8 @@ if (target == "event_public") {
 }
 
 if (option[1] == "") {
-    var ii;
-    ii = 0;
-    repeat (50) {
-        ii += 1;
-        option[ii] = "";
-        option_id[ii] = 0;
-    }
+    option = array_create(50, "");
+    option_id = array_create(50, 0);
 
     if (target == "event_type") {
         option[1] = "Great Feast";
@@ -253,10 +201,8 @@ if (option[1] == "") {
         option_selected = 1;
     }
     if (target == "event_loc") {
-        var q, works, thatone;
-        q = 0;
-        works = 1;
-        thatone = false;
+        var works = 1;
+        var thatone = false;
         option[1] = "None Selected";
         option_id[1] = -50;
         options = 1;
@@ -264,13 +210,12 @@ if (option[1] == "") {
 
         // Present ship options
         if (obj_controller.fest_planet == 0) {
-            repeat (70) {
-                q += 1;
+            for (var i = 1; i <= 70; i++) {
                 thatone = false;
-                if ((obj_ini.ship[q] != "") && (obj_ini.ship_carrying[q] > 0)) {
+                if ((obj_ini.ship[i] != "") && (obj_ini.ship_carrying[i] > 0)) {
                     works += 1;
-                    option[works] = obj_ini.ship[q];
-                    option_id[works] = q;
+                    option[works] = obj_ini.ship[i];
+                    option_id[works] = i;
                     options += 1;
                     thatone = false;
                 }
@@ -279,13 +224,12 @@ if (option[1] == "") {
 
         // Present planet options
         if (obj_controller.fest_planet == 1) {
-            repeat (80) {
-                q += 1;
-                if ((star[q] != "") && (star_mahreens[q] > 0)) {
+            for (var i = 1; i <= 80; i++) {
+                if ((star[i] != "") && (star_mahreens[i] > 0)) {
                     options += 1;
-                    option_star[options] = string(star[q]);
-                    option[options] = string(star[q]) + " " + scr_roman(star_planet[q]);
-                    option_id[options] = star_planet[q];
+                    option_star[options] = string(star[i]);
+                    option[options] = string(star[i]) + " " + scr_roman(star_planet[i]);
+                    option_id[options] = star_planet[i];
                 }
             }
         }
@@ -300,39 +244,37 @@ if (option[1] == "") {
         options = 5;
     }
     if (target == "event_display") {
-        var q, arti_work, thatone;
-        q = 0;
-        arti_work = 1;
-        thatone = false;
+        var arti_work = 1;
+        var thatone = false;
         option[1] = "None";
         option_id[1] = -50;
         options = 1;
         option_selected = 1;
 
-        repeat (obj_controller.artifacts) {
-            q += 1;
+        for (var i = 1; i <= obj_controller.artifacts; i++) {
+            i += 1;
             thatone = false;
 
-            if (obj_ini.artifact[q] == "Casket") {
+            if (obj_ini.artifact[i] == "Casket") {
                 thatone = true;
             }
-            if (obj_ini.artifact[q] == "Chalice") {
+            if (obj_ini.artifact[i] == "Chalice") {
                 thatone = true;
             }
-            if (obj_ini.artifact[q] == "Statue") {
+            if (obj_ini.artifact[i] == "Statue") {
                 thatone = true;
             }
-            if (obj_ini.artifact[q] == "Tome") {
+            if (obj_ini.artifact[i] == "Tome") {
                 thatone = true;
             }
-            if (obj_ini.artifact[q] == "Robot") {
+            if (obj_ini.artifact[i] == "Robot") {
                 thatone = true;
             }
 
             if (thatone == true) {
                 arti_work += 1;
-                option[arti_work] = obj_ini.artifact[q];
-                option_id[arti_work] = q;
+                option[arti_work] = obj_ini.artifact[i];
+                option_id[arti_work] = i;
                 options += 1;
                 thatone = false;
             }
@@ -391,6 +333,3 @@ if (option[1] == "") {
         options = 4;
     }
 }
-
-/* */
-/*  */

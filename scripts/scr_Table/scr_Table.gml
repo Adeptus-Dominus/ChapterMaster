@@ -34,7 +34,7 @@ function Table(data) constructor {
                 headings[i] = new ReactiveString(_heading, 0, 0, {scale_text: true});
             }
 
-            var _heading = headings[i];
+            _heading = headings[i];
 
             if (i < array_length(set_column_widths) && set_column_widths[i] > 0) {
                 array_push(column_widths, set_column_widths[i]);
@@ -65,7 +65,6 @@ function Table(data) constructor {
         }
 
         if (struct_exists(_row, "hover")) {
-            //LOGGER.debug($"click : {struct_exists(_row,"click_left")}");
             _row.hover();
         }
 

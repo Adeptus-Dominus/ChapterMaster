@@ -1,6 +1,4 @@
-// if (woohoo<60) then woohoo+=1;
-
-if (beg != 0) /* and (instance_exists(obj_fleet_controller))*/ {
+if (beg != 0) {
     if ((combat_end > -1) && (!instance_exists(obj_en_ship))) {
         combat_end -= 1;
         victory = true;
@@ -59,6 +57,3 @@ if (start == 5) {
         }
     }
 }
-
-/* */
-/*  */

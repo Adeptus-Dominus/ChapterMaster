@@ -276,15 +276,13 @@ deserialize = function(save_data) {
         obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/company_squad_builds.json", json_parse);
     }
 
-    var _len = array_length(all_names);
-    for (var i = 0; i < _len; i++) {
+    for (var i = 0; i < array_length(all_names); i++) {
         var var_name = all_names[i];
         if (array_contains(exclusions, var_name)) {
             continue;
         }
 
         var loaded_value = struct_get(save_data, var_name);
-        // LOGGER.debug($"obj_ini var: {var_name}  -  val: {loaded_value}");
         try {
             variable_struct_set(obj_ini, var_name, loaded_value);
         } catch (e) {

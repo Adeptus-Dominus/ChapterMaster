@@ -9,7 +9,7 @@ selected = 0;
 ret = 0;
 hurt = 0;
 /// @type {Asset.GMObject.obj_star}
-orbiting = 0;
+orbiting = noone;
 rep = 3;
 minimum_eta = 2;
 turns_static = 0;
@@ -116,7 +116,6 @@ deserialize = function(save_data) {
             continue;
         }
         var loaded_value = struct_get(save_data, var_name);
-        // LOGGER.debug($"en_fleet {en_fleet_instance.id}  - var: {var_name}  -  val: {loaded_value}");
         try {
             variable_struct_set(self, var_name, loaded_value);
         } catch (e) {
@@ -132,10 +131,8 @@ deserialize = function(save_data) {
         }
     }
 
-    if (save_data.orbiting != 0 && action == "") {
-        var nearest_star = instance_nearest(x, y, obj_star);
-        orbiting = nearest_star;
-        // LOGGER.debug($"p_fleet id {id} deserialized: {self}");
+    if (save_data.orbiting != 0 && save_data.orbiting != noone && action == "") {
+        orbiting = instance_nearest(x, y, obj_star);
     }
 };
 

@@ -8,9 +8,7 @@ obj_controller.fleet_minimized = 0;
 
 obj_controller.selected = instance_nearest(x, y, obj_en_fleet);
 
-// obj_controller.selected=self;
 obj_controller.sel_owner = self.owner;
-// show_message(obj_controller.selected);
 obj_controller.cooldown = 8;
 
 if (obj_controller.zoomed == 1) {
@@ -21,8 +19,6 @@ if (obj_controller.zoomed == 1) {
     obj_cursor.image_yscale = 1;
 }
 
-// Pass variables to obj_controller.temp[t]=""; here
-// Pass variables to obj_controller.temp[t]=""; here
 with (obj_fleet_select) {
     instance_destroy();
 }

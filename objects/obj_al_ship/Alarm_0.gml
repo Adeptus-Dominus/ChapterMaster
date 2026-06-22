@@ -876,8 +876,4 @@ if (owner != eFACTION.ELDAR) {
     shields = shields / 2;
     maxshields = shields;
 }
-// if (obj_fleet.enemy=2){hp=hp*0.75;maxhp=hp;shields=shields*0.75;maxshields=shields;}
-// hp=1;shields=1;
-// if (obj_fleet.enemy="orks") then name=global.name_generator.GenerateFromSet("ork_ship");
 name = "sdagdsagdasg";
-// show_message(string(class)); 
