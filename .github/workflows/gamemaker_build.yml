@@ -52,36 +52,41 @@ jobs:
           $content = [regex]::Replace($content, [regex]::Escape($placeholder), $url)
           Set-Content $file -Value $content -NoNewline
 
-      - name: Set version and build info
+      - name: Set date-time and version info
         id: version_info
         shell: pwsh
         run: |
-          $BuildNumber = "${{ github.run_number }}"
-          $CommitHash = git rev-parse --short HEAD
-          $RefName = "${{ github.ref_name }}"
-          $RefType = "${{ github.ref_type }}"  # 'branch' or 'tag'
-      
-          if ($RefType -eq 'tag' -and $RefName -match '^v\d+\.\d+\.\d+$') {
-            $suffix = $RefName
-          } elseif ($RefName -match '^main') {
-            $prefix = "development"
-            $suffix = "$prefix-$BuildNumber"
+          if (-not "${{ inputs.build_date }}") {
+            $BuildDate = (Get-Date).ToString("yyyy-MM-dd-HHmm")
+            Write-Output "No build date provided. Using current date: $BuildDate"
           } else {
-            $prefix = "test"
-            $suffix = "$prefix-$RefName-$BuildNumber"
+            $BuildDate = "${{ inputs.build_date }}"
+            Write-Output "Using provided build date: $BuildDate"
           }
-      
-          Write-Output "suffix=$suffix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          Write-Output "Build suffix: $suffix"
-      
+
+          $CommitHash = git rev-parse --short HEAD
+          try {
+            $Version = "${{ github.ref_name }}".Split('/')[-1]
+          } catch {
+            Write-Warning "No tags found, using commit hash as version."
+            $Version = $CommitHash
+          }
+
+          if ($Version -match "^v") {
+            $suffix = $Version
+          } else {
+            $suffix = "$Version-$BuildDate"
+          }
+
+          Add-Content -Path $env:GITHUB_OUTPUT -Value "suffix=$suffix"
+          Write-Output "Suffix: $suffix"
+
           $VersionJson = @{
-            version      = $suffix
-            build_date   = (Get-Date).ToString("yyyy-MM-dd-HHmm")
-            commit_hash  = $CommitHash
-            build_number = $BuildNumber
-            ref_type     = $RefType
-            ref_name     = $RefName
+            version     = $Version
+            build_date  = $BuildDate
+            commit_hash = $CommitHash
           } | ConvertTo-Json
+
           Set-Content -Path datafiles/main/version.json -Value $VersionJson
 
       - id: find_yyp
