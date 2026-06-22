@@ -50,13 +50,13 @@
             "standard": 10
         },
         "special_properties": [
-            "Speed Force"
+            "Speed Force (Ranged)"
         ],
         "second_profiles": [
             "Twin Linked Bolters"
         ],
         "tags":[
-            "bike"
+            "bike", "sf_ranged"
         ],
         "value": 95,
         "requires_to_forge": ["combi_1"]
