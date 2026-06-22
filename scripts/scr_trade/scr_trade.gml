@@ -84,18 +84,30 @@ function TradeAttempt(diplomacy) constructor {
             } else if (_opt.trade_type == "req") {
                 obj_controller.requisition += _opt.number;
             } else if (_opt.trade_type == "merc") {
-                if (!struct_exists(trading_object, "mercenaries")) {
-                    trading_object.mercenaries = {};
-                }
-                trading_object.mercenaries[$ _type] = {
-                    quality: "standard",
-                    number: _opt.number,
-                };
-                // Space Marines commandeering Imperial Guard is frowned upon since the
-                // Heresy and the reign of Goge Vandire, so the Sector Governor's regard
-                // dips a little each time. The hit is small and one-off per levy.
                 if (_type == "Guardsman") {
+                    // The Sector Governor raises the regiment straight from his homeworld
+                    // PDF, so they muster at the chapter's home planet at once with no
+                    // convoy. An earlier patch dropped this and routed them onto the
+                    // convoy stash instead, so they never arrived; this restores it.
+                    repeat (_opt.number) {
+                        scr_add_man("Guardsman", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
+                    }
+                    with (obj_ini) {
+                        scr_company_order(0);
+                    }
+                    // Space Marines commandeering Imperial Guard is frowned upon since the
+                    // Heresy and the reign of Goge Vandire, so the Sector Governor's regard
+                    // dips a little each time. The hit is small and one-off per levy.
                     alter_disposition(diplomacy_faction, -2);
+                } else {
+                    // Every other mercenary type arrives by trade convoy.
+                    if (!struct_exists(trading_object, "mercenaries")) {
+                        trading_object.mercenaries = {};
+                    }
+                    trading_object.mercenaries[$ _type] = {
+                        quality: "standard",
+                        number: _opt.number,
+                    };
                 }
             } else if (_opt.trade_type == "arti") {
                 scr_add_artifact("random", "minor", true);
