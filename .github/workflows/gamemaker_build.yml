@@ -117,7 +117,7 @@ jobs:
 
       - name: Install GameMaker CLI
         shell: pwsh
-        run: npm install -g @gamemaker/gm-cli@latest
+        run: npm install -g @gamemaker/gm-cli@2.2.0
 
       - name: Login to GameMaker CLI
         if: env.GM_ACCESS_KEY != ''
