@@ -151,7 +151,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
             // ### Marine + Dreadnought Processing ###
             if (target_is_infantry && (men + dreads > 0)) {
-                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position);
+                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash);
             }
 
             if (damage_data.hits < hostile_shots) {
@@ -162,7 +162,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
                 // ### Marine + Dreadnought Processing ###
                 if (!target_is_infantry && (men + dreads > 0)) {
-                    damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position);
+                    damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash);
                 }
             }
 
@@ -181,7 +181,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
+function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash) {
     var _armour_pierce = apa[_weapon_index];
     var _armour_mod = 0;
     switch (_armour_pierce) {
@@ -214,6 +214,10 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
     // Bulk man-block with no individual model structs (Guard auxilia): take losses
     // straight off the men count, the way the enemy's ranks do, since there are no
     // marine structs for the normal path to kill. Scoped to guard blocks only.
+    // ===== OBSOLETE: planetary Guard (iteration 1) =====
+    // Casualty math for the dead first-iteration men-block. The `guard` flag is never set
+    // to 1, so this never runs, and the cover-save inside it never applies. Live guardsmen
+    // take casualties through the normal marine path below. Left for reference only.
     if (guard == 1 && array_length(valid_marines) == 0 && men > 0) {
         // Identical to the enemy Guardsman casualty math in scr_shoot. Reduce each
         // shot by armour, pool the survivable damage across all shots, convert it to
@@ -332,6 +336,7 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
             var chunk = max(10, 62 - (marine_ac[marine_index] * 2));
             _modified_damage = (webr <= chunk) ? 5000 : 0;
         } */
+        var _hp_before = marine.hp();
         marine.add_or_sub_health(-_modified_damage);
 
         // Check if marine is dead
@@ -339,6 +344,39 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
             // Remove dead infantry from further hits
             valid_marines = array_delete_value(valid_marines, marine_index);
             _damage_data.units_lost++;
+
+            // ===== Splash carry-over =====
+            // Port of the enemy men-block math in scr_shoot onto the player's individual
+            // units. A blast weapon's lethal overkill spills onto adjacent units, capped at
+            // the weapon's splash, and every further kill is gated by that unit's own armour
+            // and HP. Low-HP ranks (guardsmen) get torn apart by a Kannon or Rokkit; Marines
+            // and bosses soak the leftover through armour and HP, so it cannot wipe them, and
+            // ordinary attrition does not rise because only overkill carries.
+            if (_splash > 1) {
+                var _carry = _modified_damage - _hp_before; // damage left after this kill
+                var _spread_left = _splash - 1;
+                while (_spread_left > 0 && _carry > 0 && array_length(valid_marines) > 0) {
+                    var _next_index = array_random_element(valid_marines);
+                    var _next = unit_struct[_next_index];
+                    var _next_net = _carry - (marine_ac[_next_index] * _armour_mod);
+                    if (_next_net > 0) {
+                        _next_net = round(_next_net * (1 - (_next.damage_resistance() / 100)));
+                    }
+                    if (_next_net <= 0) {
+                        break; // armour soaked the leftover; the blast is spent
+                    }
+                    var _next_hp_before = _next.hp();
+                    _next.add_or_sub_health(-_next_net);
+                    if (check_dead_marines(_next, _next_index)) {
+                        valid_marines = array_delete_value(valid_marines, _next_index);
+                        _damage_data.units_lost++;
+                        _carry = _next_net - _next_hp_before; // remaining overkill rolls on
+                    } else {
+                        break; // wounded but alive; the blast is spent on this body
+                    }
+                    _spread_left--;
+                }
+            }
         }
     }
 

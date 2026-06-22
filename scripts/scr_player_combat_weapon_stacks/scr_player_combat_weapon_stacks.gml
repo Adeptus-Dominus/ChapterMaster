@@ -160,6 +160,11 @@ function scr_player_combat_weapon_stacks() {
         exit;
     }
 
+    // ===== OBSOLETE: planetary Guard (iteration 1) =====
+    // First-iteration "planetary Guard" men-block (PDF / Imperial Navy). The obj_pnunit
+    // `guard` flag is never set to 1 anywhere in the project, so this branch is dead and
+    // never runs. Left for reference only. The live guardsmen are individual unit_struct
+    // units with role "Guardsman" and fire through the normal weapon path below, not here.
     if (guard == 1) {
         var _gi = 0;
         var _pg = men;    // current Guardsmen in this block
@@ -342,6 +347,10 @@ function scr_player_combat_weapon_stacks() {
                 }
                 if (marine_casting[g] == false) {
                     var weapon_stack_index = 0;
+                    // ===== RESERVED: Guard Squad (iteration 2) =====
+                    // Single pooled-HP squad entity (role "Guard Squad"). Not deployed in
+                    // normal play; the live guardsmen are individuals. Kept deliberately for
+                    // planned reuse as heavy weapons teams. Do not delete.
                     if (unit.role() == "Guard Squad") {
                         // The squad thins as it takes losses: its surviving strength scales with
                         // remaining health, so a half-health squad fires half its lasguns and a

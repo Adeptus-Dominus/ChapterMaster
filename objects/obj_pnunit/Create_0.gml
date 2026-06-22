@@ -9,7 +9,7 @@ attacked_dudes = 0;
 dreads = 0;
 jetpack_destroy = 0;
 defenses = 0;
-guard = 0;
+guard = 0; // OBSOLETE (iteration 1): flag for the dead planetary Guard men-block. Never set to 1 anywhere, so the guard==1 branches in scr_clean and scr_player_combat_weapon_stacks are dead. Live guardsmen are role "Guardsman" unit_struct units.
 
 unit_count = 0;
 unit_count_old = 0;

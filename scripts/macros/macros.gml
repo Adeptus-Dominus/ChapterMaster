@@ -1,4 +1,8 @@
 // Imperial Guard squad: how many guardsmen one Guard Squad unit represents.
+// RESERVED (iteration 2): the Guard Squad system (this macro, the guard_squad template,
+// scr_add_man, scr_marine_struct max_health(), scr_cheatcode, scr_roster, and the combat
+// hook in scr_player_combat_weapon_stacks) is not used in normal play. Kept for planned
+// reuse as heavy weapons teams. Do not delete.
 #macro GUARD_SQUAD_SIZE 10
 
 // Imperial Guard cover save: fraction of would-be ground-combat casualties treated as
