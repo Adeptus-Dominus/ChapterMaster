@@ -723,6 +723,20 @@ function add_unit_to_battle(unit, meeting, is_local) {
         col = max(obj_controller.bat_assault_column, obj_controller.bat_command_column, obj_controller.bat_honor_column, obj_controller.bat_dreadnought_column, obj_controller.bat_veteran_column);
     }
 
+    // ===== Individual Guardsmen (iteration 3): positional screen =====
+    // Deal guardsmen across the free front-most columns as separate positional blocks. Each
+    // column is its own obj_pnunit with its own distance and engagement, so the screen fires in
+    // waves and meets melee a block at a time ahead of the Marines, instead of merging the whole
+    // regiment into one lasgun volley in the hire column. Round-robin keeps the blocks even.
+    if (_unit_role == "Guardsman") {
+        if (variable_instance_exists(new_combat, "guard_screen_rotation")) {
+            new_combat.guard_screen_rotation += 1;
+        } else {
+            new_combat.guard_screen_rotation = 0;
+        }
+        col = GUARD_SCREEN_COLUMN_FIRST + (new_combat.guard_screen_rotation mod GUARD_SCREEN_COLUMN_COUNT);
+    }
+
     targ = instance_nearest(col * 10, 240, obj_pnunit);
 
     with (targ) {

@@ -11,6 +11,16 @@
 // (choppaz, power klawz) that ignore Flak entirely. 0 = no save, 0.4 = 40% fewer losses.
 #macro GUARD_COVER_SAVE 0.4
 
+// Imperial Guard auxilia screen: the front-most battle columns guardsmen are dealt across.
+// Ten obj_pnunit columns exist (1 back to 10 front, higher column = nearer the enemy); the
+// Marine and vehicle roles only use columns 1-7, so 8-10 are free front-most positions.
+// Guardsmen are spread across these as separate positional blocks so the screen sits ahead of
+// the Marines and engages the enemy in waves, instead of merging the whole regiment into one
+// lasgun volley in the hire column. FIRST is the rear-most screen column, COUNT how many
+// front columns the screen occupies (FIRST + COUNT - 1 must stay within the 10 columns).
+#macro GUARD_SCREEN_COLUMN_FIRST 8
+#macro GUARD_SCREEN_COLUMN_COUNT 3
+
 #macro MAX_STC_PER_SUBCATEGORY 6
 #macro DEFAULT_TOOLTIP_VIEW_OFFSET 32
 #macro DEFAULT_LINE_GAP -1
