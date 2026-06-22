@@ -182,6 +182,42 @@ jobs:
           $outputName = "ChapterMaster-${suffix}-${{ matrix.platform }}.zip"
           $yypPath = "${{ steps.find_yyp.outputs.yyp-path }}"
 
+          if ("${{ matrix.target }}" -eq "windows" -and $env:RUNTIME -eq "native") {
+              $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+              $vsPath = $null
+              if (Test-Path $vswhere) {
+                  $installPath = & $vswhere -latest -property installationPath
+                  if ($installPath) {
+                      $vsPath = Join-Path $installPath "Common7\Tools\VsDevCmd.bat"
+                  }
+              }
+              
+              # Fallback check if vswhere failed or the file wasn't found
+              if (-not $vsPath -or -not (Test-Path $vsPath)) {
+                  $fallbacks = @(
+                      "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat",
+                      "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat",
+                      "C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\Tools\VsDevCmd.bat"
+                  )
+                  foreach ($fallback in $fallbacks) {
+                      if (Test-Path $fallback) {
+                          $vsPath = $fallback
+                          break
+                      }
+                  }
+              }
+              
+              if (-not $vsPath -or -not (Test-Path $vsPath)) {
+                  Write-Error "Could not locate VsDevCmd.bat using vswhere or fallback paths."
+                  exit 1
+              }
+
+              Write-Host "Using Visual Studio Command Prompt path: $vsPath"
+              $options = @{ gms2 = @{ windows = @{ visualStudioSdk = $vsPath } } }
+              $options | ConvertTo-Json -Depth 5 | Out-File "gm-options.json"
+              Write-Host "Generated gm-options.json for Visual Studio SDK"
+          }
+
           gm-cli package --target "${{ matrix.target }}" --runtime $env:RUNTIME --toolchain gms2 --output $outputName --verbose $yypPath
 
       - name: Upload artifact
