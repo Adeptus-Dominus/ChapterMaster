@@ -3,17 +3,17 @@ function scr_destroy_planet(destruction_method) {
 
     var baid = 0;
     enemy9 = 0;
+    var you = noone;
+    var pip = instance_create(0, 0, obj_popup);
 
     if (destruction_method == 2) {
-        var pip;
-        pip = instance_create(0, 0, obj_popup);
         with (pip) {
             title = "Exterminatus";
             image = "exterminatus";
             text = "You give the order to fire the Cyclonic Torpedo.  After a short descent it lands upon the surface and detonates- the air itself igniting across ";
         }
 
-        var you = obj_star_select.target;
+        you = obj_star_select.target;
         pip.text += you.name;
         pip.text += " " + scr_roman(obj_controller.selecting_planet);
         baid = obj_controller.selecting_planet;
@@ -21,7 +21,6 @@ function scr_destroy_planet(destruction_method) {
         obj_star_select.torpedo -= 1;
         enemy9 = you.p_owner[obj_controller.selecting_planet];
     } else if (destruction_method == 1) {
-        var pip = instance_create(0, 0, obj_popup);
         with (pip) {
             title = "Exterminatus";
             image = "exterminatus";
@@ -31,7 +30,7 @@ function scr_destroy_planet(destruction_method) {
         }
 
         instance_activate_object(obj_star);
-        var you = battle_object;
+        you = battle_object;
         pip.text += planet_numeral_name(obj_ncombat.battle_id, battle_object);
 
         baid = obj_ncombat.battle_id;
@@ -41,10 +40,9 @@ function scr_destroy_planet(destruction_method) {
     }
 
     // No survivors!
-    var unit;
     for (var cah = 0; cah <= obj_ini.companies; cah++) {
         for (var ed = 0; ed < array_length(obj_ini.role[cah]); ed++) {
-            unit = fetch_unit([cah, ed]);
+            var unit = fetch_unit([cah, ed]);
             if ((unit.location_string == you.name) && (unit.planet_location == baid)) {
                 if (unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                     obj_controller.alarm[7] = 15;
@@ -56,7 +54,6 @@ function scr_destroy_planet(destruction_method) {
                 if (obj_ini.race[cah][ed] == 1) {
                     var comm = unit.IsSpecialist(, true);
 
-                    // if (obj_ini.race[cah,ed]=1) then obj_controller.marines-=1;
                     if (comm == false) {
                         obj_controller.marines -= 1;
                     }

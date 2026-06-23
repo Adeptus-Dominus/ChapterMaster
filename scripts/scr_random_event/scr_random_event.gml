@@ -157,27 +157,27 @@ function scr_random_event(execute_now) {
                         }
                         break;
                     case eEVENT.FLEET_DELAY:
-                        var has_moving_fleet = false;
+                        var _delayed_fleet_moving = false;
                         with (obj_p_fleet) {
                             if (action == "move") {
-                                has_moving_fleet = true;
+                                _delayed_fleet_moving = true;
                                 break;
                             }
                         }
-                        if (!has_moving_fleet) {
+                        if (!_delayed_fleet_moving) {
                             events_share[i] -= 1;
                             events_total -= 1;
                         }
                         break;
                     case eEVENT.SHIP_LOST:
-                        var has_moving_fleet = false;
+                        var _lost_fleet_moving = false;
                         with (obj_p_fleet) {
                             if (action == "move") {
-                                has_moving_fleet = true;
+                                _lost_fleet_moving = true;
                                 break;
                             }
                         }
-                        if (!has_moving_fleet) {
+                        if (!_lost_fleet_moving) {
                             events_share[i] -= 1;
                             events_total -= 1;
                         }

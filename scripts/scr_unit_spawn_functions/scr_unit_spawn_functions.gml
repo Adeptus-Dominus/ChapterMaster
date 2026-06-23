@@ -419,20 +419,20 @@ function scr_marine_game_spawn_constructions() {
             } else {
                 bionic_count = choose(1, 1, 1, 2, 3);
             }
+            var tech_heresy = irandom(49);
             if ((_chap_name == "Iron Hands") || (obj_ini.progenitor == ePROGENITOR.IRON_HANDS) || scr_has_disadv("Tech-Heresy")) {
                 add_bionics("right_arm", "standard", false);
                 bionic_count = choose(6, 6, 7, 7, 7, 8, 9);
                 add_trait("flesh_is_weak");
-                var tech_heresy = irandom(19);
+                tech_heresy = irandom(19);
             } else {
                 bionic_count = irandom(5) + 1;
                 if (irandom(2) == 0) {
                     add_trait("flesh_is_weak");
                 }
-                var tech_heresy = irandom(49);
             }
             if (scr_has_disadv("Tech-Heresy")) {
-                var tech_heresy = irandom(10);
+                tech_heresy = irandom(10);
                 technology += 4;
             }
             if (tech_heresy == 0) {

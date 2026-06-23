@@ -1,8 +1,8 @@
 /// @self Asset.GMObject.obj_star
 function scr_enemy_ai_a() {
+    var _garrison = noone;
     for (var i = 1; i <= planets; i++) {
-        var _ops = p_operatives[i];
-        var _garrison = get_garrison(i);
+        _garrison = get_garrison(i);
         _garrison.increase_time_on_planet();
         get_sabatours(i);
         get_planet_data(i);
@@ -458,10 +458,9 @@ function scr_enemy_ai_a() {
                 }
 
                 if (guard_attack == "pdf") {
+                    var pdf_mod = irandom(5) + 1;
                     if (pdf_with_player) {
                         pdf_mod = irandom_range(1, 6 + _garrison.total_garrison * 0.1);
-                    } else {
-                        pdf_mod = irandom(5) + 1;
                     }
                     rand1 = (choose(3, 4, 5, 6) * guard_score) * choose(1, 1.25, 1.25);
                     rand2 = (pdf_mod * pdf_score) * choose(1, 1.25);

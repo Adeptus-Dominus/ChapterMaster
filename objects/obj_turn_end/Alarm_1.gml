@@ -1,6 +1,7 @@
 var _is_audience = false;
+var current_audience = noone;
 if (array_length(audience_stack) > 0) {
-    var current_audience = audience_stack[0];
+    current_audience = audience_stack[0];
     _is_audience = true;
 }
 
@@ -41,14 +42,11 @@ if (_is_audience) {
     exit;
 }
 
-// if (current_audience<=audiences) then alarm[1]=5;
-
 if (!_is_audience) {
     current_popup += 1;
 
     if (popup[current_popup] != 0) {
-        var pip;
-        pip = instance_create(0, 0, obj_popup);
+        var pip = instance_create(0, 0, obj_popup);
         pip.title = popup_type[current_popup];
         pip.text = popup_text[current_popup];
         pip.image = popup_image[current_popup];
@@ -77,7 +75,6 @@ if (!_is_audience) {
                 explode_script(popup_special[current_popup], "|");
                 pip.mission = string(explode[0]);
                 pip.loc = string(explode[1]);
-                // "mech_raider!0!|"+string(you2.name));        "mech_bionics!0!|"+string(you2.name));
             }
             if (string_count("meeting_", popup_special[current_popup]) > 0) {
                 pip.mission = popup_special[current_popup];
@@ -98,25 +95,10 @@ if (!_is_audience) {
         if (popups_end == 0) {
             popups_end = 1;
         }
-        // obj_controller.x=first_x;
-        // obj_controller.y=first_y;
-        // instance_destroy();
     }
-
-    // obj_controller.x=first_x;
-    // obj_controller.y=first_y;
-    // instance_destroy();
 }
 
-// if (current_popup>popups) or (popup[1]=0) then popups_end=1;
-
 if (popups_end == 1) {
-    /*if (popups=0){
-        obj_controller.x=first_x;
-        obj_controller.y=first_y;
-        instance_destroy();
-    }*/
-
     obj_controller.x = first_x;
     obj_controller.y = first_y;
 
@@ -134,9 +116,5 @@ if (popups_end == 1) {
             millenium += 1;
             year -= 1000;
         }
-        // menu=0;
     }
 }
-
-/* */
-/*  */

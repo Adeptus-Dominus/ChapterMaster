@@ -107,14 +107,14 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
         } else if (p_data.at_war(0, 0, 0) && p_data.player_disposition < 0) {
             recruit_chance = 2000;
         } else if (p_data.player_disposition < -1000 && p_data.current_owner == eFACTION.PLAYER) {
-            var recruit_chance = 1500 - _recruit_cost * 100;
+            recruit_chance = 1500 - _recruit_cost * 100;
         } else {
             var _frictious = p_data.at_war(0, 1, 1) && p_data.player_disposition <= 50;
             var _disp_mod = -((_frictious ? 30 : 10) * p_data.player_disposition);
             var _faction_disp_mod = !_frictious ? 2000 : 3000;
             var _recruit_cost_mod = -_recruit_cost * 100;
 
-            var recruit_chance = _disp_mod + _recruit_cost_mod + _faction_disp_mod;
+            recruit_chance = _disp_mod + _recruit_cost_mod + _faction_disp_mod;
         }
 
         if (_recruit_world.recruit_type == 1) {
@@ -123,10 +123,9 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
                 recruit_chance = 300;
             }
             if (ui == 0) {
+                var droll = irandom(100);
                 if (scr_has_adv("Ambushers")) {
-                    var droll = irandom(400);
-                } else {
-                    var droll = irandom(100);
+                    droll = irandom(400);
                 }
 
                 if (droll == 0) {
@@ -158,10 +157,9 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
             }
         }
     }
+    var _success_chance = 0;
     if (recruit_chance != 0) {
-        var _success_chance = recruit_chance_total / recruit_chance;
-    } else {
-        var _success_chance = 0;
+        _success_chance = recruit_chance_total / recruit_chance;
     }
     return _success_chance;
 }
@@ -345,7 +343,6 @@ function planet_training_sequence(local_apothecary_points) {
             // xp gain for the recruit is here
             // as well as planet type buffs or nerfs
             if (aspirant) {
-                var i = 0;
                 var new_recruit = 0;
 
                 // gets the next empty recruit space on the array
