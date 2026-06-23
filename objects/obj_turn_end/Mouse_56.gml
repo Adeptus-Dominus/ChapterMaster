@@ -7,7 +7,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
     var xxx = camera_get_view_x(view_camera[0]) + 535;
     var yyy = camera_get_view_y(view_camera[0]) + 200;
 
-    if ((cooldown <= 0) && (battle_world[current_battle] == -50) && (combating == 0)) {
+    if ((cooldown <= 0) && (battle_world[current_battle] == noone) && (combating == 0)) {
         if ((mouse_x >= xxx + 132) && (mouse_y >= yyy + 354) && (mouse_x < xxx + 259) && (mouse_y < yyy + 389)) {
             // Run like hell, space
             with (obj_fleet_select) {

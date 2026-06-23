@@ -1,5 +1,4 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+/// @param {Asset.GMObject} fleet
 /// @param {Asset.GMObject.obj_fleet} combat
 function add_fleet_ships_to_combat(fleet, combat) {
     var capital_count = array_length(fleet.capital);
@@ -349,7 +348,7 @@ function setup_player_combat_ship() {
     var i = 0, unit, b = 0;
 
     for (var co = 0; co <= obj_ini.companies; co++) {
-        for (i = 0; i < array_length(obj_ini.name[co]); i++) {
+        for (i = 0; i < array_length(obj_ini.name[co]) - 1; i++) {
             if (obj_ini.name[co][i] == "") {
                 continue;
             }

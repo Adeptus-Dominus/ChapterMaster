@@ -60,7 +60,7 @@ try {
                 var chaos_meeting = fetch_unit([0, master_index]).planet_location;
 
                 for (var co = 0; co <= 10; co++) {
-                    for (var i = 0; i < array_length(obj_ini.TTRPG[co]); i++) {
+                    for (var i = 0; i < array_length(obj_ini.TTRPG[co]) - 1; i++) {
                         var good = 0;
                         _unit = fetch_unit([co, i]);
                         if (_unit.role() == "" || _unit.location_string != name) {
@@ -292,7 +292,7 @@ try {
     if ((string_count("ruins", battle_special) > 0) && (defeat == 1)) {
         //TODO this logic is wrong assumes all player units died in ruins
         var _combat_star = find_star_by_name(obj_ncombat.battle_loc);
-        if (_combat_star != "none") {
+        if (_combat_star != noone) {
             _combat_star.p_player[obj_ncombat.battle_id] -= obj_ncombat.world_size;
         }
     }

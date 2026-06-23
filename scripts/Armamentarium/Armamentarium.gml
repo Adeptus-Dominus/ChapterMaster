@@ -416,7 +416,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
 }
 
 /// @desc Primary controller for the Chapter's armory and technologies.
-/// @param {Asset.GMObject.obj_controller} _controller
+/// @param {Id.Instance} _controller
 /// @returns {Struct.Armamentarium}
 function Armamentarium(_controller) constructor {
     controller = _controller;

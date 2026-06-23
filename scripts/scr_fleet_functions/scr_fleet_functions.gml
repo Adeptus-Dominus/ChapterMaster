@@ -462,11 +462,11 @@ function scr_efleet_arrive_at_trade_loc() {
 
 /// @function scr_orbiting_fleet(faction, system)
 /// @description Returns the ID of a fleet orbiting the given system/star that matches the specified faction.
-/// @param {any|array} faction
+/// @param {Real|Array<Real>} faction
 /// The faction identifier to check against. Can be a single faction ID or an array of multiple factions.
-/// @param {any} [system=noone]
+/// @param {Asset.GMObject} system
 /// The system instance or star to check. If `noone`, the function uses the calling instance's position.
-/// @returns {obj_en_fleet} The ID of the matching fleet instance, or `noone` if no valid fleet is found.
+/// @returns {Id.Instance} The ID of the matching fleet instance, or `noone` if no valid fleet is found.
 ///
 /// @example
 /// ```gml
@@ -480,8 +480,6 @@ function scr_efleet_arrive_at_trade_loc() {
 /// var factions = [1, 2, 5];
 /// var fleet_id = scr_orbiting_fleet(factions, some_system);
 /// ```
-///
-
 function scr_orbiting_fleet(faction, system = noone) {
     var _found_fleet = noone;
     var _faction_list = is_array(faction);

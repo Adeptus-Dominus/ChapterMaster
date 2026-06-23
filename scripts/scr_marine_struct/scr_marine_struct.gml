@@ -625,6 +625,63 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         loyalty = clamp(loyalty + alt_val, 0, 100);
     };
 
+    static roll_psionics = function() {
+        var _dice_count = 1;
+        var _psionics_roll = roll_dice_chapter(_dice_count, 100);
+
+        if (scr_has_adv("Warp Touched")) {
+            if (_psionics_roll < 170) {
+                var _second_roll = roll_dice_chapter(_dice_count, 100, "high");
+                _psionics_roll = _second_roll > _psionics_roll ? _second_roll : _psionics_roll;
+            }
+        } else if (scr_has_disadv("Psyker Intolerant")) {
+            if (_psionics_roll >= 170) {
+                var _second_roll = roll_dice_chapter(_dice_count, 100, "low");
+                _psionics_roll = _second_roll < _psionics_roll ? _second_roll : _psionics_roll;
+            }
+        }
+
+        if (_psionics_roll == 200) {
+            psionic = 12;
+        } else if (_psionics_roll >= 199) {
+            psionic = 11;
+        } else if (_psionics_roll >= 198) {
+            psionic = 10;
+        } else if (_psionics_roll >= 196) {
+            psionic = 9;
+        } else if (_psionics_roll >= 194) {
+            psionic = 8;
+        } else if (_psionics_roll >= 190) {
+            psionic = 7;
+        } else if (_psionics_roll >= 186) {
+            psionic = 6;
+        } else if (_psionics_roll >= 182) {
+            psionic = 5;
+        } else if (_psionics_roll >= 178) {
+            psionic = 4;
+        } else if (_psionics_roll >= 174) {
+            psionic = 3;
+        } else if (_psionics_roll >= 170) {
+            psionic = 2;
+        } else if (_psionics_roll >= 22) {
+            psionic = 1;
+        } else if (_psionics_roll >= 17) {
+            psionic = 0;
+        } else if (_psionics_roll >= 12) {
+            psionic = -1;
+        } else if (_psionics_roll >= 8) {
+            psionic = -2;
+        } else if (_psionics_roll >= 5) {
+            psionic = -3;
+        } else if (_psionics_roll >= 3) {
+            psionic = -4;
+        } else if (_psionics_roll >= 2) {
+            psionic = -5;
+        } else {
+            psionic = -6;
+        }
+    };
+
     switch (base_group) {
         case "astartes": //basic marine class //adds specific mechanics not releveant to most units
             loyalty = 100;
@@ -653,10 +710,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
             if (faction == "chapter") {
                 allegiance = global.chapter_name;
-            }
-
-            if (gene_seed_mutations[$ "voice"] == 1) {
-                charisma -= 2;
             }
 
             static assign_inherent_mutations = function() {
@@ -710,6 +763,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
             assign_inherent_mutations();
             assign_random_mutations();
+
+            if (gene_seed_mutations[$ "voice"] == 1) {
+                charisma -= 2;
+            }
 
             if ((global.chapter_name == "Space Wolves") || (obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES)) {
                 religion_sub_cult = "The Allfather";
@@ -789,9 +846,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return false;
     };
 
-    /// @param {string} area
-    /// @param {string} bionic_quality
-    /// @param {bool} from_armoury
+    /// @param {string} _area
+    /// @param {string} _quality
+    /// @param {bool} _from_armoury
     static add_bionics = function(_area = "none", _quality = "any", _from_armoury = true) {
         if (bionics >= 10) {
             return false;
@@ -1065,63 +1122,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static roll_dice = function(dices = 1, faces = 6, player_benefit_at = "none") {
         return roll_dice_unit(dices, faces, player_benefit_at, self);
-    };
-
-    static roll_psionics = function() {
-        var _dice_count = 1;
-        var _psionics_roll = roll_dice_chapter(_dice_count, 100);
-
-        if (scr_has_adv("Warp Touched")) {
-            if (_psionics_roll < 170) {
-                var _second_roll = roll_dice_chapter(_dice_count, 100, "high");
-                _psionics_roll = _second_roll > _psionics_roll ? _second_roll : _psionics_roll;
-            }
-        } else if (scr_has_disadv("Psyker Intolerant")) {
-            if (_psionics_roll >= 170) {
-                var _second_roll = roll_dice_chapter(_dice_count, 100, "low");
-                _psionics_roll = _second_roll < _psionics_roll ? _second_roll : _psionics_roll;
-            }
-        }
-
-        if (_psionics_roll == 200) {
-            psionic = 12;
-        } else if (_psionics_roll >= 199) {
-            psionic = 11;
-        } else if (_psionics_roll >= 198) {
-            psionic = 10;
-        } else if (_psionics_roll >= 196) {
-            psionic = 9;
-        } else if (_psionics_roll >= 194) {
-            psionic = 8;
-        } else if (_psionics_roll >= 190) {
-            psionic = 7;
-        } else if (_psionics_roll >= 186) {
-            psionic = 6;
-        } else if (_psionics_roll >= 182) {
-            psionic = 5;
-        } else if (_psionics_roll >= 178) {
-            psionic = 4;
-        } else if (_psionics_roll >= 174) {
-            psionic = 3;
-        } else if (_psionics_roll >= 170) {
-            psionic = 2;
-        } else if (_psionics_roll >= 22) {
-            psionic = 1;
-        } else if (_psionics_roll >= 17) {
-            psionic = 0;
-        } else if (_psionics_roll >= 12) {
-            psionic = -1;
-        } else if (_psionics_roll >= 8) {
-            psionic = -2;
-        } else if (_psionics_roll >= 5) {
-            psionic = -3;
-        } else if (_psionics_roll >= 3) {
-            psionic = -4;
-        } else if (_psionics_roll >= 2) {
-            psionic = -5;
-        } else {
-            psionic = -6;
-        }
     };
 
     static role_refresh = function() {
@@ -1782,7 +1782,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return $"{scr_roman_numerals()[company - 1]}";
     };
 
-    static load_marine = function(ship, star = "none") {
+    static load_marine = function(ship, star = noone) {
         get_unit_size(); // make sure marines size given it's current equipment is correct
         var current_location = marine_location();
         var system = current_location[2];
@@ -1806,10 +1806,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 ship_location = ship; //id of ship marine is now loaded on
                 obj_ini.ship_carrying[ship] += size; //update ship capacity
 
-                if (star == "none") {
+                if (star == noone) {
                     star = find_star_by_name(system);
                 }
-                if (star != "none") {
+                if (star != noone) {
                     if (star.p_player[current_location[1]] > 0) {
                         star.p_player[current_location[1]] -= size;
                     }
@@ -2261,14 +2261,18 @@ function jsonify_marine_struct(company, marine, stringify = true) {
 }
 
 /// @param {Array<Real>} unit where unit[0] is company and unit[1] is the position
-/// @returns {Struct.TTRPG_stats} unit
+/// @returns {Struct} unit
 function fetch_unit(unit) {
-    return obj_ini.TTRPG[unit[0]][unit[1]];
+    try {
+        return obj_ini.TTRPG[unit[0]][unit[1]];
+    } catch (_exception) {
+        ERROR_HANDLER.assert_popup(_exception);
+    }
 }
 
 function fetch_unit_uid(uuid) {
     for (var i = 0; i < obj_ini.companies; i++) {
-        var _comp_length = array_length(obj_ini.TTRPG[i]);
+        var _comp_length = array_length(obj_ini.TTRPG[i]) - 1;
         for (var s = 0; s < _comp_length; s++) {
             var _unit = fetch_unit([i, s]);
             if (_unit.uid == uuid) {

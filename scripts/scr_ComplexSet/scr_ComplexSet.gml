@@ -28,10 +28,10 @@ function valid_sprite_transform_data(data) {
 
 ///@func sprite_get_uvs_transformed(sprite1, subimg1, sprite2, subimg2)
 ///@desc Returns a transform array that can be used in a shader to align the UVs of sprite2 with sprite1 (takes cropping into account)
-///@param spr1 {Sprite} The sprite align the UVs to
-///@param subimg1 {real} The sprite subimage to align the UVs to
-///@param spr2 {Sprite} The sprite with UVs that will be aligned
-///@param subimg1 {real} The sprite subimage with UVs that will be aligned
+///@param _spr1 {Sprite} The sprite align the UVs to
+///@param _subimg1 {real} The sprite subimage to align the UVs to
+///@param _spr2 {Sprite} The sprite with UVs that will be aligned
+///@param _subimg2 {real} The sprite subimage with UVs that will be aligned
 function sprite_get_uvs_transformed(_spr1, _subimg1, _spr2, _subimg2) {
     //Get the uvs of the sprites
     var _uv1 = sprite_get_uvs(_spr1, _subimg1);
@@ -85,6 +85,7 @@ function sprite_get_uvs_transformed(_spr1, _subimg1, _spr2, _subimg2) {
 function ComplexSet(_unit) constructor {
     overides = {};
     subcomponents = {};
+    shadow_set = {};
     unit_armour = _unit.armour();
     unit = _unit;
     draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
@@ -335,7 +336,7 @@ function ComplexSet(_unit) constructor {
             }
         }
 
-        _overides = "none";
+        _overides = {};
         if (struct_exists(_mod, "overides")) {
             _overides = {
                 overides: _mod.overides,
@@ -354,7 +355,7 @@ function ComplexSet(_unit) constructor {
                 }
             }
             if (_x != 0 || _y != 0) {
-                if (_overides == "none") {
+                if (_overides == {}) {
                     _overides = {
                         offsets: [
                             _x,
@@ -468,20 +469,31 @@ function ComplexSet(_unit) constructor {
         return true;
     };
 
-    static assign_modulars = function(modulars = global.modular_drawing_items, position = false) {
-        var _mod = {};
+    /// @description 
+    /// @param {Array<Struct>} modulars
+    /// @param {String} position
+    static assign_modulars = function(modulars, position) {
+        var _mod = {
+            sprite: undefined,
+            body_types: [],
+            position: "",
+            prevent_others: false,
+            ban: [],
+            role_type: [],
+            offsets: {}
+        };
 
         try {
             for (var i = 0; i < array_length(modulars); i++) {
-                _sub_comps = "none";
-                _shadows = "none";
+                _sub_comps = [];
+                _shadows = undefined;
                 _mod = modulars[i];
                 var _allowed = base_modulars_checks(_mod);
 
                 if (!_allowed) {
                     continue;
                 }
-                if (position != false) {
+                if (position != "") {
                     if (position == "weapon") {
                         var _weapon_map = _mod.weapon_map;
                         if (unit.weapon_one() == _weapon_map) {
@@ -492,11 +504,11 @@ function ComplexSet(_unit) constructor {
                         }
                     }
                 } else {
-                    add_to_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
+                    add_to_area(position, _mod.sprite, _overides, _sub_comps, _shadows);
                 }
                 if (struct_exists(_mod, "prevent_others")) {
-                    replace_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
-                    array_push(blocked, _mod.position);
+                    replace_area(position, _mod.sprite, _overides, _sub_comps, _shadows);
+                    array_push(blocked, position);
                     if (struct_exists(_mod, "ban")) {
                         for (var b = 0; b < array_length(_mod.ban); b++) {
                             if (!array_contains(banned, _mod.ban[b])) {
@@ -1015,11 +1027,11 @@ function ComplexSet(_unit) constructor {
         x_surface_offset += weapon.ui_xmod;
         y_surface_offset += weapon.ui_ymod;
 
-        var _subs = struct_exists(weapon, "subcomponents") ? weapon.subcomponents : "none";
+        var _subs = struct_exists(weapon, "subcomponents") ? weapon.subcomponents : [];
 
-        var _shadows = struct_exists(weapon, "shadows") ? weapon.shadows : "none";
+        var _shadows = struct_exists(weapon, "shadows") ? weapon.shadows : undefined;
 
-        add_to_area(position, weapon.sprite, "none", _subs, _shadows);
+        add_to_area(position, weapon.sprite, {}, _subs, _shadows);
 
         if (struct_exists(self, position)) {
             var _component_data = self[$ position];
@@ -1504,7 +1516,6 @@ function ComplexSet(_unit) constructor {
                 add_to_area("cloak_trim", spr_cloak_image_0);
             }
         }
-        assign_modulars();
         var wep_opts = format_weapon_visuals(unit.weapon_one());
         if (array_length(wep_opts)) {
             assign_modulars(wep_opts, "weapon");
@@ -1543,69 +1554,74 @@ function ComplexSet(_unit) constructor {
     /// @desc Add a sprite reference to an area without duplicating or merging pixel data.
     /// Stores source references in a composite struct. At draw time, resolve_area()
     /// maps a global frame choice to the correct source sprite + local frame.
-    /// @param area {string} Area name
-    /// @param add_sprite {sprite} Source sprite to add (not duplicated — we store the reference!)
-    /// @param overide_data {any} Override data for this sprite's frame range
-    /// @param sub_components {any} Sub-component data for this sprite's frame range
-    /// @param shadow {any} Shadow data for this sprite's frame range
-    static add_to_area = function(area, add_sprite, overide_data = "none", sub_components = "none", shadow = "none") {
-        if (sprite_exists(add_sprite)) {
-            var _add_sprite_length = sprite_get_number(add_sprite);
-            var _overide_start = 0;
-            if (!struct_exists(self, area)) {
-                self[$ area] = {
-                    sources: [add_sprite],
-                    offsets: [0],
-                    source_frames: [_add_sprite_length],
-                    total: _add_sprite_length,
-                };
-            } else {
-                var _existing_data = self[$ area];
-                if (is_struct(_existing_data)) {
-                    _overide_start = _existing_data.total;
-                    array_push(_existing_data.sources, add_sprite);
-                    array_push(_existing_data.offsets, _overide_start);
-                    array_push(_existing_data.source_frames, _add_sprite_length);
-                    _existing_data.total += _add_sprite_length;
+    /// @param {String} area Area name
+    /// @param {Asset.GMSprite} add_sprite Source sprite to add (not duplicated — we store the reference!)
+    /// @param {Struct} overide_data Override data for this sprite's frame range
+    /// @param {Array} sub_components Sub-component data for this sprite's frame range
+    /// @param {Asset.GMSprite} shadow Shadow data for this sprite's frame range
+    static add_to_area = function(area, add_sprite, overide_data = {}, sub_components = [], shadow = undefined) {
+        try {
+            if (sprite_exists(add_sprite)) {
+                var _add_sprite_length = sprite_get_number(add_sprite);
+                var _overide_start = 0;
+                if (!struct_exists(self, area)) {
+                    self[$ area] = {
+                        sources: [add_sprite],
+                        offsets: [0],
+                        source_frames: [_add_sprite_length],
+                        total: _add_sprite_length,
+                    };
                 } else {
-                    if (sprite_exists(_existing_data)) {
-                        _overide_start = sprite_get_number(_existing_data);
-                        self[$ area] = {
-                            sources: [
-                                _existing_data,
-                                add_sprite
-                            ],
-                            offsets: [
-                                0,
-                                _overide_start
-                            ],
-                            source_frames: [
-                                sprite_get_number(_existing_data),
-                                _add_sprite_length
-                            ],
-                            total: _overide_start + _add_sprite_length,
-                        };
+                    var _existing_data = self[$ area];
+                    if (is_struct(_existing_data)) {
+                        _overide_start = _existing_data.total;
+                        array_push(_existing_data.sources, add_sprite);
+                        array_push(_existing_data.offsets, _overide_start);
+                        array_push(_existing_data.source_frames, _add_sprite_length);
+                        _existing_data.total += _add_sprite_length;
                     } else {
-                        self[$ area] = {
-                            sources: [add_sprite],
-                            offsets: [0],
-                            source_frames: [_add_sprite_length],
-                            total: _add_sprite_length,
-                        };
-                        _overide_start = 0;
+                        if (sprite_exists(_existing_data)) {
+                            _overide_start = sprite_get_number(_existing_data);
+                            self[$ area] = {
+                                sources: [
+                                    _existing_data,
+                                    add_sprite
+                                ],
+                                offsets: [
+                                    0,
+                                    _overide_start
+                                ],
+                                source_frames: [
+                                    sprite_get_number(_existing_data),
+                                    _add_sprite_length
+                                ],
+                                total: _overide_start + _add_sprite_length,
+                            };
+                        } else {
+                            self[$ area] = {
+                                sources: [add_sprite],
+                                offsets: [0],
+                                source_frames: [_add_sprite_length],
+                                total: _add_sprite_length,
+                            };
+                            _overide_start = 0;
+                        }
                     }
                 }
+        
+                if (overide_data != {}) {
+                    add_overide(area, _overide_start, _add_sprite_length, overide_data);
+                }
+                if (sub_components != []) {
+                    add_sub_components(area, _overide_start, _add_sprite_length, sub_components);
+                }
+                if (shadow ?? true && sprite_exists(shadow)) {
+                    add_shadow_set(area, _overide_start, _add_sprite_length, shadow);
+                }
             }
-
-            if (overide_data != "none") {
-                add_overide(area, _overide_start, _add_sprite_length, overide_data);
-            }
-            if (sub_components != "none") {
-                add_sub_components(area, _overide_start, _add_sprite_length, sub_components);
-            }
-            if (shadow != "none" && sprite_exists(shadow)) {
-                add_shadow_set(area, _overide_start, _add_sprite_length, shadow);
-            }
+        } catch (_exception) {
+            ERROR_HANDLER.assert_popup(_exception);
+            return {};
         }
     };
 
@@ -1619,8 +1635,6 @@ function ComplexSet(_unit) constructor {
         }
         array_push(overides[$ area], [_overide_start, _overide_start + sprite_length, overide_data]);
     };
-
-    shadow_set = {};
 
     static add_shadow_set = function(area, _shadow_set_start, sprite_length, shadow_data) {
         if (!struct_exists(shadow_set, area)) {
@@ -1655,9 +1669,9 @@ function ComplexSet(_unit) constructor {
         array_push(subcomponents[$ area], [_overide_start, _overide_start + sprite_length, _accepted_subs]);
     };
 
-    static replace_area = function(area, add_sprite, overide_data = "none", sub_components = "none", shadow = "none") {
+    static replace_area = function(area, add_sprite, overide_data = {}, sub_components = [], shadow = undefined) {
         remove_area(area);
-        add_to_area(area, add_sprite, overide_data, sub_components);
+        add_to_area(area, add_sprite, overide_data, sub_components, shadow);
     };
 
     static remove_area = function(area) {

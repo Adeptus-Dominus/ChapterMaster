@@ -41,8 +41,8 @@ function new_colony_fleet(doner_star, doner_planet, target, target_planet, missi
     scr_event_log("green", $"New colony fleet departs from {doner_star.name}. for the {target.name} system", doner_star.name);
 }
 
-function fleet_has_cargo(desired_cargo, fleet = "none") {
-    if (fleet == "none") {
+function fleet_has_cargo(desired_cargo, fleet = noone) {
+    if (fleet == noone) {
         return struct_exists(cargo_data, desired_cargo);
     } else {
         var has_cargo = false;
@@ -53,8 +53,8 @@ function fleet_has_cargo(desired_cargo, fleet = "none") {
     }
 }
 
-function fleet_add_cargo(new_cargo, data, overwrite = false, fleet = "none") {
-    if (fleet == "none") {
+function fleet_add_cargo(new_cargo, data, overwrite = false, fleet = noone) {
+    if (fleet == noone) {
         var _add = true;
         if (fleet_has_cargo(new_cargo) && !overwrite) {
             _add = false;

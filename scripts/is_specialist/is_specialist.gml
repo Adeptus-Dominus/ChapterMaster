@@ -15,17 +15,17 @@
 #macro SPECIALISTS_HEADS "heads"
 
 /// @description Retrieves the active roles from the game, either from the obj_creation or obj_ini object.
-/// @returns {array}
+/// @returns {Array<String>}
 function active_roles() {
     var _roles = instance_exists(obj_creation) ? obj_creation.role[100] : obj_ini.role[100];
     return _roles;
 }
 
 /// @description Returns a list of roles based on the specified group, with optional inclusion of trainees and heads.
-/// @param {integer} group The group of roles to retrieve (e.g., SPECIALISTS_STANDARD, SPECIALISTS_LIBRARIANS).
-/// @param {bool} include_trainee Whether to include trainee roles (default is false).
-/// @param {bool} include_heads Whether to include head roles (default is true).
-/// @returns {array}
+/// @param {Real} group The group of roles to retrieve (e.g., SPECIALISTS_STANDARD, SPECIALISTS_LIBRARIANS).
+/// @param {Bool} include_trainee Whether to include trainee roles (default is false).
+/// @param {Bool} include_heads Whether to include head roles (default is true).
+/// @returns {Array<String>}
 function role_groups(group, include_trainee = false, include_heads = true) {
     var _role_list = [];
     var _roles = active_roles();
@@ -217,11 +217,11 @@ function role_groups(group, include_trainee = false, include_heads = true) {
 }
 
 /// @description Checks if a given unit's role is a specialist within a specific role group.
-/// @param {string} unit_role The role of the unit to check.
-/// @param {integer} type The type of specialist group to check (default is SPECIALISTS_STANDARD).
-/// @param {bool} include_trainee Whether to include trainee roles (default is false).
-/// @param {bool} include_heads Whether to include head roles (default is true).
-/// @returns {bool}
+/// @param {String} unit_role The role of the unit to check.
+/// @param {String} type The type of specialist group to check (default is SPECIALISTS_STANDARD).
+/// @param {Bool} include_trainee Whether to include trainee roles (default is false).
+/// @param {Bool} include_heads Whether to include head roles (default is true).
+/// @returns {Bool}
 function is_specialist(unit_role, type = SPECIALISTS_STANDARD, include_trainee = false, include_heads = true) {
     var _specialists = role_groups(type, include_trainee, include_heads);
 

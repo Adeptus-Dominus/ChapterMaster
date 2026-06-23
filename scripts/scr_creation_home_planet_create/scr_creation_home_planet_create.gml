@@ -29,11 +29,9 @@ function player_recruit_planet_selection() {
             recruiting = list_traveler(planet_types, recruiting, [1265, 285, 1265 + 32, 285 + 32], [1455, 285, 1455 + 32, 285 + 32]);
         }
 
-        // draw_sprite(spr_planet_splash,_cur_planet_index2,580+333,244);
         scr_image("ui/planet", _cur_planet_index2, 980 + 333, 244, 128, 128);
 
         draw_text_transformed(1044 + 333, 378, recruiting, 0.5, 0.5, 0);
-        // draw_text_transformed(644+333,398,string(recruiting_name),0.5,0.5,0);
 
         if (_recruit_world_type < 2) {
             recruiting_name = homeworld_name;
@@ -42,6 +40,7 @@ function player_recruit_planet_selection() {
                 recruiting_name = global.name_generator.GenerateFromSet("star", false);
             }
         }
+        var name_bad = 0;
         if ((fleet_type == 1 && _recruit_world_type < 2) && (homeworld_name == recruiting_name)) {
             name_bad = 1;
         }
@@ -83,7 +82,6 @@ function player_recruit_planet_selection() {
                 draw_unit_buttons(_refresh_rec_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
                 if (point_and_click(_refresh_rec_name_btn)) {
                     var _new_rec_name = global.name_generator.GenerateFromSet("star", false);
-                    //LOGGER.debug($"regen name of recruiting_name from {recruiting_name} to {_new_rec_name}");
                     recruiting_name = _new_rec_name;
                 }
             }
@@ -97,8 +95,6 @@ function scr_creation_home_planet_create() {
     var fleet_type_text = fleet_type == ePLAYER_BASE.HOME_WORLD ? "Homeworld" : "Flagship";
     draw_text_transformed(644, 218, fleet_type_text, 0.6, 0.6, 0);
 
-    var _cur_planet_index = 0, _cur_planet_index2 = 0, name_bad = 0;
-
     var _cur_planet_index = scr_planet_image_numbers(homeworld);
     if (fleet_type != 1) {
         _cur_planet_index = 16;
@@ -106,10 +102,8 @@ function scr_creation_home_planet_create() {
 
     if (fleet_type == ePLAYER_BASE.HOME_WORLD) {
         scr_image("ui/planet", _cur_planet_index, 580, 244, 128, 128);
-        // draw_sprite(spr_planet_splash,_cur_planet_index,580,244);
 
         draw_text_transformed(644, 378, homeworld, 0.5, 0.5, 0);
-        // draw_text_transformed(644,398,string(homeworld_name),0.5,0.5,0);
         if ((text_selected != "home_name") || (custom != eCHAPTER_TYPE.CUSTOM)) {
             draw_text_transformed(644, 398, homeworld_name, 0.5, 0.5, 0);
         }
@@ -141,7 +135,6 @@ function scr_creation_home_planet_create() {
             draw_unit_buttons(_refresh_hw_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
             if (point_and_click(_refresh_hw_name_btn)) {
                 var _new_hw_name = global.name_generator.GenerateFromSet("star", false);
-                //LOGGER.debug($"regen name of homeworld from {homeworld_name} to {_new_hw_name}");
                 homeworld_name = _new_hw_name;
             }
         }
@@ -158,11 +151,9 @@ function scr_creation_home_planet_create() {
         draw_set_font(fnt_40k_30b);
     }
     if (fleet_type != ePLAYER_BASE.HOME_WORLD) {
-        // draw_sprite(spr_planet_splash,_cur_planet_index,580,244);
         scr_image("ui/planet", _cur_planet_index, 580, 244, 128, 128);
 
         draw_text_transformed(644, 378, "Battle Barge", 0.5, 0.5, 0);
-        // draw_text_transformed(644,398,string(homeworld_name),0.5,0.5,0);
         if ((text_selected != "flagship_name") || (custom == eCHAPTER_TYPE.PREMADE)) {
             draw_text_transformed(644, 398, flagship_name, 0.5, 0.5, 0);
         }
@@ -212,7 +203,6 @@ function scr_creation_home_planet_create() {
     right_data_slate.draw(1210, 5, 0.45, 1);
 
     if (recruiting_exists == 0 && homeworld_exists == 1) {
-        // draw_sprite(spr_planet_splash,_cur_planet_index,580+333,244);
         scr_image("ui/planet", _cur_planet_index, 580 + 333, 244, 128, 128);
 
         draw_set_alpha(0.5);
@@ -238,9 +228,6 @@ function scr_creation_home_planet_create() {
     draw_line(445, 455, 1125, 455);
     draw_line(445, 456, 1125, 456);
     draw_line(445, 457, 1125, 457);
-
-    // homeworld_rule=0;
-    // aspirant_trial=eTRIALS.BLOODDUEL;
 
     draw_set_halign(fa_left);
 

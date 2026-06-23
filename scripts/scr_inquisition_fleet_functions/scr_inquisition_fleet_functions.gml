@@ -53,7 +53,6 @@ function radical_inquisitor_mission_ship_arrival() {
         _radical_inquisitor.inquisitor_ship = self.id;
         scr_popup("Inquisitor Located", _tixt, "inquisition", _radical_inquisitor);
     }
-    //instance_destroy();
     exit;
 }
 
@@ -66,7 +65,7 @@ function inquisition_fleet_inspection_chase() {
     if (reset) {
         // Reaquire target
         var target_player_fleet = get_largest_player_fleet();
-        if (target_player_fleet != "none") {
+        if (target_player_fleet != noone) {
             if (target_player_fleet.action == "") {
                 set_fleet_target(target_player_fleet.x, target_player_fleet.y, target_player_fleet);
             } else {
@@ -85,8 +84,6 @@ function inquisition_fleet_inspection_chase() {
             acty = "chase";
             scr_loyalty("Avoiding Inspections", "+");
         }
-
-        // if (string_count("!",trade_goods)>=3) then demand stop fleet
 
         //Inquisitor is pissed as hell
         if (string_count("!", trade_goods) == 5) {
@@ -140,10 +137,9 @@ function inquisition_fleet_inspection_chase() {
 
 // Sets up an inquisitor ship to do an inspection on the HomeWorld
 function new_inquisitor_inspection() {
-    var target_system = "none";
-    var new_inquis_fleet;
+    var target_system = noone;
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
-        var monestary_system = "none";
+        var monestary_system = noone;
         // If player does not own their homeworld than do a fleet inspection instead
         var player_stars = [];
         with (obj_star) {
@@ -154,21 +150,20 @@ function new_inquisitor_inspection() {
                 monestary_system = self;
             }
         }
-        if (monestary_system != "none") {
+        if (monestary_system != noone) {
             target_system = monestary_system;
         } else if (array_length(player_stars) > 0) {
             target_system = player_stars[0];
         }
 
-        if (target_system != "none") {
+        if (target_system != noone) {
             var target_star = target_system;
-            var tar, new_inquis_fleet;
             var xx = target_star.x;
             var yy = target_star.y;
 
             //get the second or third closest planet to launch inquisitor from
             var from_star = distance_removed_star(target_star.x, target_star.y);
-            new_inquis_fleet = instance_create(from_star.x, from_star.y, obj_en_fleet);
+            var new_inquis_fleet = instance_create(from_star.x, from_star.y, obj_en_fleet);
 
             with (new_inquis_fleet) {
                 base_inquis_fleet();
@@ -187,11 +182,11 @@ function new_inquisitor_inspection() {
     // otherwise, do a fleet inspection.
 
     var target_player_fleet = get_largest_player_fleet();
-    if (target_player_fleet != "none") {
+    if (target_player_fleet != noone) {
         //get the second or third closest planet to launch inquisitor from
         var from_star = distance_removed_star(target_player_fleet.x, target_player_fleet.y);
 
-        new_inquis_fleet = instance_create(from_star.x, from_star.y, obj_en_fleet);
+        var new_inquis_fleet = instance_create(from_star.x, from_star.y, obj_en_fleet);
         var obj;
         with (new_inquis_fleet) {
             base_inquis_fleet();
@@ -222,7 +217,7 @@ function inquisitor_ship_approaches() {
     var do_alert = false;
     if (string_count("fleet", trade_goods) > 0 && scr_valid_fleet_target(target)) {
         var player_fleet_location = fleets_next_location(target);
-        if (player_fleet_location != "none") {
+        if (player_fleet_location != noone) {
             if (approach_system.name == player_fleet_location.name) {
                 inquis_string = $"Our navigators report that an inquisitor's ship is currently warping towards our flagship. It is likely that the inquisitor on board (provided he/she makes it) will attempt to perform an inspection of our flagship.";
                 do_alert = true;
@@ -240,7 +235,7 @@ function inquisitor_ship_approaches() {
         }
     }
     if (do_alert) {
-        var approach_system = instance_nearest(action_x, action_y, obj_star).name;
+        approach_system = instance_nearest(action_x, action_y, obj_star).name;
         if (inquisitor == 0) {
             scr_alert("green", "duhuhuhu", $"Inquisitor Ship approaches {approach_system}.", x, y);
         } else {
@@ -297,7 +292,7 @@ function inquisitor_inspect_base() {
             var _current_planet_name = name;
             var launch_planet, launch_point_found = false;
             launch_planet = nearest_star_with_ownership(x, y, [eFACTION.IMPERIUM, eFACTION.MECHANICUS], self.id);
-            if (launch_planet != "none") {
+            if (launch_planet != noone) {
                 if (instance_exists(launch_planet)) {
                     flee = instance_create(launch_planet.x, launch_planet.y, obj_en_fleet);
                     with (flee) {

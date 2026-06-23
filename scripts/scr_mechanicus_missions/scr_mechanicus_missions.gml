@@ -104,7 +104,7 @@ function mechanicus_missions_end_turn(planet) {
         var _marines = collect_role_group("all", [name, planet, -1]);
         if (array_length(_marines) >= 20) {
             remove_planet_problem(planet, "mech_tomb1");
-            add_new_problem(planet, "mech_tomb2", 999, star == "none", other_data == {turns: 0});
+            add_new_problem(planet, "mech_tomb2", 999, noone, {turns: 0});
             scr_popup("Mechanicus Research", "The Mechanicus Research team on planet " + string(name) + " " + scr_roman(planet) + " has taken note of your Astartes and are now prepared to begin their research.  Your marines are to stay on the planet until further notice.", "necron_cave", "");
         } else {}
     }
@@ -378,7 +378,7 @@ function mechanicus_mars_mission_target_time_elapsed(planet) {
     ide = 0;
     ship_planet = "";
     for (com = 0; com <= 10; com++) {
-        for (ide = 0; ide < array_length(obj_ini.TTRPG[com]); ide++) {
+        for (ide = 0; ide < array_length(obj_ini.TTRPG[com]) - 1; ide++) {
             _unit = fetch_unit([com, ide]);
             if (_unit.name() == "") {
                 continue;

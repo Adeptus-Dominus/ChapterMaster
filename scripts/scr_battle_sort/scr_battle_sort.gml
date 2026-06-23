@@ -9,7 +9,7 @@ function scr_battle_sort() {
         i -= 1;
 
         if ((battles <= i) && (i >= 2) && (battles > 0)) {
-            if ((battle[i] != 0) && (battle[i - 1] != 0) && (battle_world[i] == -50) && (battle_world[i - 1] > 0)) {
+            if ((battle[i] != 0) && (battle[i - 1] != 0) && (battle_world[i] == noone) && (battle_world[i - 1] > 0)) {
                 var tem1, tem2, tem3, tem4, tem5, tem6, tem7;
                 tem1 = battle[i - 1];
                 tem2 = battle_location[i - 1];

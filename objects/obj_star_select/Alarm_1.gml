@@ -8,18 +8,10 @@ tau_fleet = target.present_fleet[8];
 tyranid_fleet = target.present_fleet[9];
 heretic_fleet = target.present_fleet[10];
 
-en_fleet[0] = 0;
-var i;
-i = -1;
-repeat (15) {
-    i += 1;
-    en_fleet[i] = 0;
-}
+en_fleet = array_create(15, 0);
 
 if ((player_fleet > 0) && (imperial_fleet + mechanicus_fleet + inquisitor_fleet + eldar_fleet + ork_fleet + tau_fleet + heretic_fleet > 0)) {
-    var open;
-    open = 1;
-    i = -1;
+    var open = 1;
 
     if (imperial_fleet > 0) {
         en_fleet[open] = 2;

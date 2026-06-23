@@ -181,7 +181,7 @@ function CompanyStruct(comp) constructor {
             _reset_surface = true;
         }
         for (var i = 0; i < array_length(_cur_squad.members); i++) {
-            var _member = _cur_squad.fetch_member(i);
+            _member = _cur_squad.fetch_member(i);
 
             if (_reset_surface) {
                 array_push(squad_draw_surfaces, [_member.uid, _member.draw_unit_image()]);
@@ -224,7 +224,7 @@ function CompanyStruct(comp) constructor {
         }
 
         if (is_struct(sprite_draw_delay)) {
-            var _member = sprite_draw_delay.unit;
+            _member = sprite_draw_delay.unit;
             unit_sprite_coords = sprite_draw_delay.draw_coords;
             var _surface = sprite_draw_delay.unit_surface;
             _surface.draw_part(unit_sprite_coords.x1, unit_sprite_coords.y1, 0, 0, 166, 231, true);
@@ -311,7 +311,7 @@ function CompanyStruct(comp) constructor {
                 if (point_and_click(garrison_but)) {
                     var garrrison_star = find_star_by_name(cur_assignment.location);
                     obj_controller.view_squad = false;
-                    if (garrrison_star != "none") {
+                    if (garrrison_star != noone) {
                         scr_toggle_manage();
                         obj_controller.x = garrrison_star.x;
                         obj_controller.y = garrrison_star.y;

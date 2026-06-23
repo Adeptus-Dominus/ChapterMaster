@@ -52,7 +52,7 @@ function event_end_turn_action() {
                 var _star_name = _event.system;
                 var _event_star = find_star_by_name(_event.system);
                 var _planet = _event.planet;
-                if (_event_star != "none") {
+                if (_event_star != noone) {
                     _event_star.dispo[_planet] = -10; // Resets
                     var twix = $"Inquisition executes Chapter Serf in control of {planet_numeral_name(_planet, _event_star)} and installs a new Planetary Governor.";
                     if (_event_star.p_owner[_planet] == eFACTION.PLAYER) {
@@ -357,7 +357,7 @@ function strange_build_event() {
         if (marine_is_planetside && heritical_item) {
             var _system = find_star_by_name(_unit.location_string);
             var _planet = _unit.planet_location;
-            if (_system != "none") {
+            if (_system != noone) {
                 with (_system) {
                     p_hurssy[_planet] += 6;
                     p_hurssy_time[_planet] = 2;
@@ -365,7 +365,7 @@ function strange_build_event() {
             }
         } else if (!marine_is_planetside && heritical_item) {
             var _fleet = find_ships_fleet(_unit.ship_location);
-            if (_fleet != "none") {
+            if (_fleet != noone) {
                 //the intended code for here was to add some sort of chaos event on the ship stashed up ready to fire in a few turns
             }
         }

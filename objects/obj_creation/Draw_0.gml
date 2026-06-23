@@ -2,7 +2,6 @@ add_draw_return_values();
 draw_set_valign(fa_top);
 try {
     //read
-    // 850,860
 
     var xx = 375;
     var yy = 10;
@@ -10,10 +9,8 @@ try {
     tooltip = "";
     tooltip2 = "";
     draw_set_alpha(1);
-    // draw_sprite(spr_creation_slate,0,xx,yy);
     scr_image("creation/slate", 1, xx, yy, 850, 860);
     draw_set_alpha(1 - (slate1 / 30));
-    // draw_sprite(spr_creation_slate,1,xx,yy);
     scr_image("creation/slate", 2, xx, yy, 850, 860);
 
     draw_set_color(#5B872E);
@@ -35,8 +32,6 @@ try {
         }
         draw_line(xx + 30, yy + 70 + (slate3 * 36), xx + 790, yy + 70 + (slate3 * 36));
     }
-
-    allow_colour_click = (custom == eCHAPTER_TYPE.CUSTOM) && (!instance_exists(obj_creation_popup));
 
     draw_set_alpha(slate4 / 30);
     if (slate4 > 0) {
@@ -311,8 +306,9 @@ try {
         ];
         x1 = 450;
         y1 = 260;
+        var allow_colour_click = (custom == eCHAPTER_TYPE.CUSTOM) && (!instance_exists(obj_creation_popup));
         for (var i = 0; i < array_length(mutations_defects); i++) {
-            mutation_data = mutations_defects[i];
+            var mutation_data = mutations_defects[i];
             draw_sprite(spr_creation_check, mutation_data.data, x1, y1);
             if (point_and_click([x1, y1, x1 + 32, y1 + 32]) && allow_colour_click) {
                 var onceh = 0;
@@ -438,7 +434,7 @@ try {
             var str_width, hei;
             str_width = max(350, string_width(string_hash_to_newline(chapter_master_name)));
             hei = string_height(string_hash_to_newline(chapter_master_name));
-            if (scr_hit(580 - 2, 144 - 2, 582 + str_width, 146 + hei)) {
+            if (scr_hit(578, 142, 582 + str_width, 146 + hei)) {
                 obj_cursor.image_index = 2;
                 if (mouse_button_clicked() && !instance_exists(obj_creation_popup)) {
                     text_selected = "cm";
@@ -448,7 +444,7 @@ try {
             if (text_selected == "cm") {
                 chapter_master_name = keyboard_string;
             }
-            draw_rectangle(580 - 2, 144 - 2, 582 + 350, 146 + hei, 1);
+            draw_rectangle(578, 142, 932, 146 + hei, 1);
 
             var _refresh_cm_name_btn = [
                 943,

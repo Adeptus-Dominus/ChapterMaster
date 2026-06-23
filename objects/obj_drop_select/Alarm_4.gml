@@ -7,7 +7,7 @@ ship_ide = array_create(61, -1);
 
 max_ships = 0;
 
-if (sh_target != -50) {
+if (sh_target != noone) {
     max_ships = sh_target.capital_number + sh_target.frigate_number + sh_target.escort_number;
 
     var i = 0;
