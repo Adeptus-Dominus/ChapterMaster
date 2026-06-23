@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
 <<<<<<< HEAD
+<<<<<<< HEAD
       - name: Download Gobo
         run: |
           gh release download v0.1.0 --repo EttyKitty/GoboCat --pattern "gobo-ubuntu.zip"
@@ -24,11 +25,19 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 =======
       - name: Download Latest Gobo Release
+=======
+      - name: Download Gobo
+>>>>>>> 921cbe348 (ci: Fix the gobo format workflow (#1264))
         run: |
-          curl -LO https://github.com/EttyKitty/Gobo/releases/download/v1.0.0/gobo-ubuntu.zip
+          gh release download v0.1.0 --repo EttyKitty/GoboCat --pattern "gobo-ubuntu.zip"
           unzip gobo-ubuntu.zip
           chmod +x ./gobo
+<<<<<<< HEAD
 >>>>>>> 3446d4272 (ci: Gobo format workflow (#1263))
+=======
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+>>>>>>> 921cbe348 (ci: Fix the gobo format workflow (#1264))
 
       - name: Run Formatter
         run: |
@@ -44,7 +53,12 @@ jobs:
           branch: automation/gobo-format-all
           delete-branch: true
 <<<<<<< HEAD
+<<<<<<< HEAD
           author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
           committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
 =======
 >>>>>>> 3446d4272 (ci: Gobo format workflow (#1263))
+=======
+          author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+>>>>>>> 921cbe348 (ci: Fix the gobo format workflow (#1264))
