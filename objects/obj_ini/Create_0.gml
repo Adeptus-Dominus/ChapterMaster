@@ -121,16 +121,6 @@ veh_acc = array_create_2d(_max_companies, _max_vehicles, "");
 // Unit Init
 defaults_slot = 100;
 
-load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
-    role[defaults_slot][_role_id] = _role_name;
-    wep1[defaults_slot][_role_id] = _wep1;
-    wep2[defaults_slot][_role_id] = _wep2;
-    armour[defaults_slot][_role_id] = _armour;
-    mobi[defaults_slot][_role_id] = _mobi;
-    gear[defaults_slot][_role_id] = _gear;
-    race[defaults_slot][_role_id] = 1;
-};
-
 /// @type {Array<Array>}
 race = [[]];
 /// @type {Array<Array<String>>}
@@ -156,12 +146,15 @@ god = [[]];
 /// @type {Array<Array<Struct.TTRPG_stats>>}
 TTRPG = [[]];
 
-/*if (obj_creation.fleet_type=3){
-    obj_controller.penitent=1;
-    obj_controller.penitent_max=(obj_creation.maximum_size*1000)+300;
-    if (obj_creation.chapter_name="Lamenters") then obj_controller.penitent_max=100300;
-    obj_controller.penitent_current=300;
-}*/
+load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
+    role[defaults_slot][_role_id] = _role_name;
+    wep1[defaults_slot][_role_id] = _wep1;
+    wep2[defaults_slot][_role_id] = _wep2;
+    armour[defaults_slot][_role_id] = _armour;
+    mobi[defaults_slot][_role_id] = _mobi;
+    gear[defaults_slot][_role_id] = _gear;
+    race[defaults_slot][_role_id] = 1;
+};
 
 check_number = 0;
 year_fraction = 0;
@@ -197,9 +190,8 @@ serialize = function() {
     var _marines = array_create(0);
     for (var _coy = 0; _coy <= 10; _coy++) {
         for (var _mar = 0; _mar <= 500; _mar++) {
-            var _marine_json;
             if (obj_ini.name[_coy][_mar] != "") {
-                _marine_json = jsonify_marine_struct(_coy, _mar, false);
+                var _marine_json = jsonify_marine_struct(_coy, _mar, false);
                 array_push(_marines, _marine_json);
             } else if (_mar > 0 && _mar <= 499 && obj_ini.name[_coy][_mar + 1] == "") {
                 break;
@@ -323,7 +315,7 @@ deserialize = function(save_data) {
     }
 
     obj_ini.TTRPG = array_create(11, array_create(501, []));
-    for (var _coy = 0; _coy < 11; _coy++) {
+    for (var _coy = 0; _coy <= 10; _coy++) {
         for (var _mar = 0; _mar <= 500; _mar++) {
             obj_ini.TTRPG[_coy][_mar] = new TTRPG_stats("chapter", _coy, _mar, "blank");
         }

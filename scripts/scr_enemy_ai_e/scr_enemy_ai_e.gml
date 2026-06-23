@@ -470,7 +470,7 @@ function scr_enemy_ai_e() {
                     // Quene battle
                     obj_turn_end.battles += 1;
                     obj_turn_end.battle[obj_turn_end.battles] = 1;
-                    obj_turn_end.battle_world[obj_turn_end.battles] = -50;
+                    obj_turn_end.battle_world[obj_turn_end.battles] = noone;
                     obj_turn_end.battle_opponent[obj_turn_end.battles] = i; // Who triggered it first
                     obj_turn_end.battle_location[obj_turn_end.battles] = name;
                     obj_turn_end.battle_pobject[obj_turn_end.battles] = instance_nearest(x, y, obj_p_fleet);

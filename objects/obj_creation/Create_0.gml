@@ -444,6 +444,14 @@ for (var slot = 99; slot <= 103; slot++) {
 
 defaults_slot = 100;
 
+/// @description 
+/// @param {Real} _role_id
+/// @param {String} _role_name
+/// @param {String} _wep1
+/// @param {String} _wep2
+/// @param {String} _armour
+/// @param {String} _mobi
+/// @param {String} _gear
 load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
     role[defaults_slot][_role_id] = _role_name;
     wep1[defaults_slot][_role_id] = _wep1;

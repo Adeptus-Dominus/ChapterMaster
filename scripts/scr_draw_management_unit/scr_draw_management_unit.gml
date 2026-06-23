@@ -69,8 +69,6 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         if (draw) {
             health_string = ma_health_string[selected];
 
-            var exp_string = $"{round(ma_exp[selected])} EXP";
-
             ma_ar = "";
             ma_we1 = "";
             ma_we2 = "";
@@ -308,6 +306,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             }
         }
 
+        var exp_string = $"{round(ma_exp[selected])} EXP";
         var hpText = [
             xx + 240 + 8,
             yy + 66,
@@ -315,7 +314,8 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         ]; // HP
         var xpText = [
             xx + 330 + 8,
-            yy + 66
+            yy + 66,
+            exp_string
         ]; // EXP
         var hpColor = c_gray;
         var xpColor = c_gray;

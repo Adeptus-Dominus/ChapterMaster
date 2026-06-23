@@ -1,3 +1,13 @@
+/// @function scr_add_vehicle(vehicle_type, target_company, otherdata, weapon1, weapon2, weapon3, upgrade, accessory)
+/// @description 
+/// @param {String} vehicle_type
+/// @param {Real} target_company
+/// @param {Struct} otherdata
+/// @param {String} weapon1
+/// @param {String} weapon2
+/// @param {String} weapon3
+/// @param {String} upgrade
+/// @param {String} accessory
 function scr_add_vehicle(vehicle_type, target_company, otherdata = {}, weapon1 = "standard", weapon2 = "standard", weapon3 = "standard", upgrade = "standard", accessory = "standard") {
     try {
         // That should be sufficient to add stuff in a highly modifiable fashion
@@ -135,6 +145,10 @@ function scr_add_vehicle(vehicle_type, target_company, otherdata = {}, weapon1 =
     }
 }
 
+/// @function destroy_vehicle(co, num)
+/// @description 
+/// @param {Real} co
+/// @param {Real} num
 function destroy_vehicle(co, num) {
     try {
         obj_ini.veh_race[co][num] = 0;

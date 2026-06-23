@@ -698,7 +698,7 @@ function unload_selection() {
         cooldown = 8000;
         var boba = 0;
         var unload_star = find_star_by_name(selecting_location);
-        if (unload_star != "none") {
+        if (unload_star != noone) {
             if (unload_star.space_hulk != 1) {
                 for (var t = 0; t < array_length(display_unit); t++) {
                     if (man_sel[t] == 1) {

@@ -2778,15 +2778,18 @@ function scr_initialize_custom() {
             var v = 0;
             repeat (_count) {
                 if (_is_vehicle) {
-                    add_veh_to_company(_rolename, _coy.coy, v, _wep1, _wep2, _wep3, _upgrade, _accessory);
-                    v++;
-                    man_size += 10;
+                    if (v < 205) {
+                        add_veh_to_company(_rolename, _coy.coy, v, _wep1, _wep2, _wep3, _upgrade, _accessory);
+                        man_size += 10;
+                    }
                 } else {
-                    add_unit_to_company(_unit_type, _coy.coy, k, _rolename, _erole, _wep1, _wep2, _gear, _mobi, _armour);
-                    k++;
-                    man_size++;
-                    if (_is_terminator(_armour)) {
+                    if (k < 501) {
+                        add_unit_to_company(_unit_type, _coy.coy, k, _rolename, _erole, _wep1, _wep2, _gear, _mobi, _armour);
+                        k++;
                         man_size++;
+                        if (_is_terminator(_armour)) {
+                            man_size++;
+                        }
                     }
                 }
             }
@@ -2910,8 +2913,7 @@ function scr_initialize_custom() {
     //Fixed Loot tagble
     if (scr_has_adv("Ancient Armoury")) {
         //armour
-        var armm5 = "";
-        armm5 = choose("Tartaros", "Cataphractii");
+        var armm5 = choose("Tartaros", "Cataphractii");
         scr_add_item("MK3 Iron Armour", irandom_range(2, 5));
         scr_add_item("MK4 Maximus", irandom_range(5, 10));
         scr_add_item("MK5 Heresy", irandom_range(5, 10));
@@ -2973,8 +2975,15 @@ function scr_initialize_custom() {
     game_start_squads();
 }
 
-/// @description helper function to streamline code inside of scr_initialize_custom, should only be used as part of
-/// game setup and not during normal gameplay
+/// @description helper function to streamline code inside of scr_initialize_custom, should only be used as part of game setup and not during normal gameplay
+/// @param {String} name
+/// @param {Real} company
+/// @param {Real} slot
+/// @param {String} wep1
+/// @param {String} wep2
+/// @param {String} wep3
+/// @param {String} upgrade
+/// @param {String} accessory
 function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, accessory) {
     obj_ini.veh_race[company][slot] = 1;
     obj_ini.veh_loc[company][slot] = obj_ini.home_name;

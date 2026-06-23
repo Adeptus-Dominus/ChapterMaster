@@ -1,12 +1,9 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more informationype
 
-function fleet_has_roles(fleet = "none", roles) {
+function fleet_has_roles(fleet, roles = []) {
     var all_ships = fleet_full_ship_array(fleet);
-    var unit;
     for (var i = 0; i <= 10; i++) {
         for (var s = 0; s < array_length(obj_ini.TTRPG[i]); s++) {
-            unit = fetch_unit([i, s]);
+            var unit = fetch_unit([i, s]);
             if (unit.planet_location < 1) {
                 if (array_contains(all_ships, unit.ship_location)) {
                     if (array_contains(roles, unit.role())) {
@@ -18,9 +15,8 @@ function fleet_has_roles(fleet = "none", roles) {
     }
 }
 
-function fleet_engaged(fleet = undefined) {
+function fleet_engaged(fleet) {
     var _engaged = false;
-	fleet ??= self;
     var _fleet_action = fleet.action;
     if (_fleet_action != "" && _fleet_action != "move") {
         //don't inspect if engaged in non negotiable actions
@@ -32,15 +28,14 @@ function fleet_engaged(fleet = undefined) {
     return _engaged;
 }
 
-function split_selected_into_new_fleet(start_fleet = "none") {
-    var new_fleet;
-    if (start_fleet == "none") {
-        new_fleet = instance_create(x, y, obj_p_fleet);
-        new_fleet.owner = eFACTION.PLAYER;
+function split_selected_into_new_fleet(start_fleet) {
+    var new_fleet = instance_create(x, y, obj_p_fleet);
+    new_fleet.owner = eFACTION.PLAYER;
+    with (start_fleet) {
         // Pass over ships to the new fleet, if they are selected
         var cap_number = array_length(capital);
 
-        for (i = 0; i < cap_number; i++) {
+        for (var i = 0; i < cap_number; i++) {
             if ((capital[i] != "") && capital_sel[i]) {
                 move_ship_between_player_fleets(self, new_fleet, "capital", i);
                 i--;
@@ -48,7 +43,7 @@ function split_selected_into_new_fleet(start_fleet = "none") {
             }
         }
         var frig_number = array_length(frigate);
-        for (i = 0; i < frig_number; i++) {
+        for (var i = 0; i < frig_number; i++) {
             if ((frigate[i] != "") && frigate_sel[i]) {
                 move_ship_between_player_fleets(self, new_fleet, "frigate", i);
                 i--;
@@ -56,7 +51,7 @@ function split_selected_into_new_fleet(start_fleet = "none") {
             }
         }
         var esc_number = array_length(escort);
-        for (i = 0; i < esc_number; i++) {
+        for (var i = 0; i < esc_number; i++) {
             if ((escort[i] != "") && escort_sel[i]) {
                 move_ship_between_player_fleets(self, new_fleet, "escort", i);
                 i--;
@@ -64,10 +59,6 @@ function split_selected_into_new_fleet(start_fleet = "none") {
             }
         }
         set_player_fleet_image();
-    } else {
-        with (start_fleet) {
-            new_fleet = split_selected_into_new_fleet();
-        }
     }
     return new_fleet;
 }
@@ -88,7 +79,7 @@ function set_new_player_fleet_course(target_array) {
         var target_planet = find_star_by_name(target_array[0]);
         var nearest_planet = instance_nearest(x, y, obj_star);
         var from_star = point_distance(nearest_planet.x, nearest_planet.y, x, y) < 75;
-        var valid = target_planet != "none";
+        var valid = target_planet != noone;
         if (valid) {
             valid = !(target_planet.id == nearest_planet.id && from_star);
         }
@@ -235,7 +226,7 @@ function set_player_fleet_image() {
 }
 
 function find_ships_fleet(index) {
-    var _chosen_fleet = "none";
+    var _chosen_fleet = noone;
     with (obj_p_fleet) {
         if (array_contains(capital_num, index) || array_contains(frigate_num, index) || array_contains(escort_num, index)) {
             _chosen_fleet = self;
@@ -244,7 +235,7 @@ function find_ships_fleet(index) {
     return _chosen_fleet;
 }
 
-function add_ship_to_fleet(index, fleet = "none") {
+function add_ship_to_fleet(index, fleet = noone) {
     var _escorts = [
         "Escort",
         "Hunter",
@@ -256,7 +247,7 @@ function add_ship_to_fleet(index, fleet = "none") {
     ];
     var _frigates = ["Strike Cruiser"];
 
-    if (fleet == "none") {
+    if (fleet == noone) {
         if (array_contains(_capitals, obj_ini.ship_class[index])) {
             array_push(capital, obj_ini.ship[index]);
             array_push(capital_num, index);
@@ -591,7 +582,7 @@ function player_fleet_selected_count(fleet = noone) {
 }
 
 function get_nearest_player_fleet(nearest_x, nearest_y, is_static = false, is_moving = false, stop_complex_actions = true) {
-    var chosen_fleet = "none";
+    var chosen_fleet = noone;
     if (instance_exists(obj_p_fleet)) {
         with (obj_p_fleet) {
             var viable = !(is_static && action != "");
@@ -609,7 +600,7 @@ function get_nearest_player_fleet(nearest_x, nearest_y, is_static = false, is_mo
                 continue;
             }
             if (point_in_rectangle(x, y, 0, 0, room_width, room_height)) {
-                if (chosen_fleet == "none") {
+                if (chosen_fleet == noone) {
                     chosen_fleet = self;
                 }
                 if (point_distance(nearest_x, nearest_y, x, y) < point_distance(nearest_x, nearest_y, chosen_fleet.x, chosen_fleet.y)) {

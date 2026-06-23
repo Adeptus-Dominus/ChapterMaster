@@ -26,7 +26,7 @@ if ((show > 0) && (current_battle <= battles)) {
     var i = current_battle;
 
     draw_sprite(spr_purge_panel, 0, xxx, yyy);
-    if (battle_world[i] == -50) {
+    if (battle_world[i] == noone) {
         scr_image("attacked", 1, xxx + 12, yyy + 54, 254, 174);
     }
     if (battle_world[i] > 0) {
@@ -44,7 +44,7 @@ if ((show > 0) && (current_battle <= battles)) {
     if (battle_world[i] > 0) {
         draw_text_transformed(xxx + 265, yyy + 11, string_hash_to_newline("Forces Attacked! (" + string(battle_location[i]) + " " + scr_roman(battle_world[i]) + ")"), 0.7, 0.7, 0);
     }
-    if (battle_world[i] == -50) {
+    if (battle_world[i] == noone) {
         draw_text_transformed(xxx + 265, yyy + 11, string_hash_to_newline("Fleet Attacked! (" + string(battle_location[i]) + " System)"), 0.7, 0.7, 0);
     }
 

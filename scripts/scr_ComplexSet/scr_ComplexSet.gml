@@ -85,6 +85,7 @@ function sprite_get_uvs_transformed(_spr1, _subimg1, _spr2, _subimg2) {
 function ComplexSet(_unit) constructor {
     overides = {};
     subcomponents = {};
+    shadow_set = {};
     unit_armour = _unit.armour();
     unit = _unit;
     draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
@@ -335,7 +336,7 @@ function ComplexSet(_unit) constructor {
             }
         }
 
-        _overides = "none";
+        _overides = {};
         if (struct_exists(_mod, "overides")) {
             _overides = {
                 overides: _mod.overides,
@@ -354,7 +355,7 @@ function ComplexSet(_unit) constructor {
                 }
             }
             if (_x != 0 || _y != 0) {
-                if (_overides == "none") {
+                if (_overides == {}) {
                     _overides = {
                         offsets: [
                             _x,
@@ -1019,7 +1020,7 @@ function ComplexSet(_unit) constructor {
 
         var _shadows = struct_exists(weapon, "shadows") ? weapon.shadows : "none";
 
-        add_to_area(position, weapon.sprite, "none", _subs, _shadows);
+        add_to_area(position, weapon.sprite, {}, _subs, _shadows);
 
         if (struct_exists(self, position)) {
             var _component_data = self[$ position];
@@ -1543,12 +1544,12 @@ function ComplexSet(_unit) constructor {
     /// @desc Add a sprite reference to an area without duplicating or merging pixel data.
     /// Stores source references in a composite struct. At draw time, resolve_area()
     /// maps a global frame choice to the correct source sprite + local frame.
-    /// @param area {string} Area name
-    /// @param add_sprite {sprite} Source sprite to add (not duplicated — we store the reference!)
-    /// @param overide_data {any} Override data for this sprite's frame range
-    /// @param sub_components {any} Sub-component data for this sprite's frame range
-    /// @param shadow {any} Shadow data for this sprite's frame range
-    static add_to_area = function(area, add_sprite, overide_data = "none", sub_components = "none", shadow = "none") {
+    /// @param {String} area Area name
+    /// @param {Asset.GMSprite} add_sprite Source sprite to add (not duplicated — we store the reference!)
+    /// @param {Struct} overide_data Override data for this sprite's frame range
+    /// @param {Array} sub_components Sub-component data for this sprite's frame range
+    /// @param {Asset.GMSprite} shadow Shadow data for this sprite's frame range
+    static add_to_area = function(area, add_sprite, overide_data = {}, sub_components = [], shadow = undefined) {
         if (sprite_exists(add_sprite)) {
             var _add_sprite_length = sprite_get_number(add_sprite);
             var _overide_start = 0;
@@ -1597,13 +1598,13 @@ function ComplexSet(_unit) constructor {
                 }
             }
 
-            if (overide_data != "none") {
+            if (overide_data != {}) {
                 add_overide(area, _overide_start, _add_sprite_length, overide_data);
             }
-            if (sub_components != "none") {
+            if (sub_components != []) {
                 add_sub_components(area, _overide_start, _add_sprite_length, sub_components);
             }
-            if (shadow != "none" && sprite_exists(shadow)) {
+            if (shadow != undefined && sprite_exists(shadow)) {
                 add_shadow_set(area, _overide_start, _add_sprite_length, shadow);
             }
         }
@@ -1619,8 +1620,6 @@ function ComplexSet(_unit) constructor {
         }
         array_push(overides[$ area], [_overide_start, _overide_start + sprite_length, overide_data]);
     };
-
-    shadow_set = {};
 
     static add_shadow_set = function(area, _shadow_set_start, sprite_length, shadow_data) {
         if (!struct_exists(shadow_set, area)) {
@@ -1655,9 +1654,9 @@ function ComplexSet(_unit) constructor {
         array_push(subcomponents[$ area], [_overide_start, _overide_start + sprite_length, _accepted_subs]);
     };
 
-    static replace_area = function(area, add_sprite, overide_data = "none", sub_components = "none", shadow = "none") {
+    static replace_area = function(area, add_sprite, overide_data = {}, sub_components = [], shadow = undefined) {
         remove_area(area);
-        add_to_area(area, add_sprite, overide_data, sub_components);
+        add_to_area(area, add_sprite, overide_data, sub_components, shadow);
     };
 
     static remove_area = function(area) {

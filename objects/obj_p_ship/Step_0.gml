@@ -18,10 +18,10 @@ if (board_cooldown >= 0) {
 
 if (instance_exists(target)) {
     if (((target.x < 3) && (target.y < 3)) || (target.hp < 0)) {
-        target = -50;
+        target = noone;
     }
 }
-if ((!instance_exists(target)) || (target == -50)) {
+if ((!instance_exists(target)) || (target == noone)) {
     with (obj_en_ship) {
         if (((x < 3) && (y < 3)) || (hp <= 0)) {
             instance_deactivate_object(id);

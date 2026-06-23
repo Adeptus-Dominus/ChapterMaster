@@ -4,9 +4,6 @@ try {
     scr_ui_advisors();
     scr_ui_tooltip();
     if (menu == eMENU.DIPLOMACY) {
-        /*if (audience > 0 && instance_exists(obj_turn_end)){
-	     menu = 20;
-		 }*/
         scr_ui_diplomacy();
     }
     if (menu == eMENU.SECRET_LAIR) {

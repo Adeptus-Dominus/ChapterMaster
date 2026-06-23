@@ -11,6 +11,8 @@ start_colour = -1;
 
 tooltip = "";
 tooltip2 = "";
+item_name = [];
+role_names_all = "";
 
 type_names = {
     "1": "Primary Color",

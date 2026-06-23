@@ -214,7 +214,7 @@ function drop_select_unit_selection() {
             instance_activate_object(obj_drop_select);
 
             // 135 ; temporary balancing
-            if (sh_target != -50) {
+            if (sh_target != noone) {
                 sh_target.acted += 1;
             }
 
@@ -475,7 +475,7 @@ function collect_local_units() {
     purge_d = ship_max[500];
 
     if (purge == 1) {
-        if (sh_target != -50) {
+        if (sh_target != noone) {
             max_ships = sh_target.capital_number + sh_target.frigate_number + sh_target.escort_number;
 
             if (sh_target.acted >= 1) {

@@ -712,10 +712,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 allegiance = global.chapter_name;
             }
 
-            if (gene_seed_mutations[$ "voice"] == 1) {
-                charisma -= 2;
-            }
-
             static assign_inherent_mutations = function() {
                 gene_seed_mutations = {
                     "preomnor": obj_ini.preomnor,
@@ -767,6 +763,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
             assign_inherent_mutations();
             assign_random_mutations();
+
+            if (gene_seed_mutations[$ "voice"] == 1) {
+                charisma -= 2;
+            }
 
             if ((global.chapter_name == "Space Wolves") || (obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES)) {
                 religion_sub_cult = "The Allfather";

@@ -4,7 +4,7 @@ try {
 
     for (var i = 49; i >= 0; i--) {
         if ((battles <= i) && (i >= 2)) {
-            if ((battle[i] != 0) && (battle[i - 1] != 0) && (battle_world[i] == -50) && (battle_world[i - 1] > 0)) {
+            if ((battle[i] != 0) && (battle[i - 1] != 0) && (battle_world[i] == noone) && (battle_world[i - 1] > 0)) {
                 var tem1 = battle[i - 1];
                 var tem2 = battle_location[i - 1];
                 var tem3 = battle_world[i - 1];
@@ -44,7 +44,7 @@ try {
             obj_controller.y = battle_star.y;
             show = current_battle;
 
-            if (battle_world[current_battle] == -50) {
+            if (battle_world[current_battle] == noone) {
                 strin[1] = string(round(battle_pobject[current_battle].capital_number));
                 strin[2] = string(round(battle_pobject[current_battle].frigate_number));
                 strin[3] = string(round(battle_pobject[current_battle].escort_number));

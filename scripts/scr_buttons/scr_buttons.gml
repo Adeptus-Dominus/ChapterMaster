@@ -51,16 +51,16 @@ function standard_loc_data() {
 /// @function draw_unit_buttons(position, text, size_mod, colour, halign, font, alpha_mult, bg, bg_color)
 /// @category Draw Helpers
 /// @description Draws a styled button with text, optional background and hover effects.
-/// @param {array} position Either [x, y] or [x1, y1, x2, y2].
-/// @param {string} text Text to display.
-/// @param {array} size_mod Text scaling.
-/// @param {color} colour Text color.
-/// @param {real} _halign Text horizontal alignment.
-/// @param {font} font Font resource.
-/// @param {real} alpha_mult Alpha multiplier.
-/// @param {bool} bg Draw background rectangle.
-/// @param {color} bg_color Background color.
-/// @returns {array} [x1, y1, x2, y2] bounding box.
+/// @param {Array<Real>} position Either [x, y] or [x1, y1, x2, y2].
+/// @param {String} text Text to display.
+/// @param {Array<Real>} size_mod Text scaling.
+/// @param {Constant.Color} colour Text color.
+/// @param {Constant.HAlign} _halign Text horizontal alignment.
+/// @param {Asset.GMFont} font Font resource.
+/// @param {Real} alpha_mult Alpha multiplier.
+/// @param {Bool} bg Draw background rectangle.
+/// @param {Constant.Color} bg_color Background color.
+/// @returns {Array<Real>} [x1, y1, x2, y2] bounding box.
 function draw_unit_buttons(position, text, size_mod = [1.5, 1.5], colour = c_gray, _halign = fa_center, font = fnt_40k_14b, alpha_mult = 1, bg = false, bg_color = c_black) {
     // TODO: fix halign usage
     add_draw_return_values();

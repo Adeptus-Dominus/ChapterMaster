@@ -166,7 +166,7 @@ function scr_star_has_planet_with_owner(star, owner) {
     return scr_get_planet_with_owner(star, owner) != -1;
 }
 
-/// @returns {Array<Id.Instance.obj_star>} stars
+/// @returns {Array<Id.Instance>} stars
 function scr_get_stars(shuffled = false, ownership = [], types = []) {
     var stars = [];
     var _owner_sort = array_length(ownership);
@@ -206,7 +206,7 @@ function planet_imperium_ground_total(planet_check) {
 /// @function find_star_by_name(search_name)
 /// @description Searches all `obj_star` instances and returns the one with a matching name.
 /// @param {String} search_name The name of the star to find.
-/// @returns {Id.Instance.obj_star | String} Returns the `obj_star` instance that matches `search_name`, or the 'noone' object reference if no matching star is found.
+/// @returns {Id.Instance | String} Returns the `obj_star` instance that matches `search_name`, or the 'noone' object reference if no matching star is found.
 function find_star_by_name(search_name) {
     if (!instance_exists(obj_star)) {
         ERROR_HANDLER.assert_popup("Not a single instance of obj_star exists!");

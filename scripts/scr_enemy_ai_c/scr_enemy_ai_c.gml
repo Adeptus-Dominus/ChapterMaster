@@ -1,8 +1,7 @@
 /// @self Asset.GMObject.obj_star
 function scr_enemy_ai_c() {
-    var rando, contin;
-    rando = 0;
-    contin = 0;
+    var rando = 0;
+    var contin = 0;
 
     with (obj_star) {
         if ((craftworld == 1) || (space_hulk == 1)) {
@@ -57,8 +56,7 @@ function scr_enemy_ai_c() {
                 if ((p_type[i] != "Dead") && (p_type[i] != "Lava")) {
                     if ((p_traitors[i] >= 2) && (p_heresy[i] >= 80)) {
                         // Have the proppa facilities and size
-                        var fleet;
-                        fleet = 0;
+                        var fleet = noone;
                         contin = 2;
                         if (!instance_exists(obj_en_fleet)) {
                             contin = 3;
@@ -68,8 +66,7 @@ function scr_enemy_ai_c() {
                         }
 
                         if (instance_exists(obj_p_fleet)) {
-                            var ppp;
-                            ppp = instance_nearest(x, y, obj_p_fleet);
+                            var ppp = instance_nearest(x, y, obj_p_fleet);
                             if ((point_distance(x, y, ppp.x, ppp.y) < 50) && (ppp.action == "")) {
                                 contin = 0;
                             }
@@ -77,7 +74,7 @@ function scr_enemy_ai_c() {
 
                         if (contin == 2) {
                             fleet = scr_orbiting_fleet(eFACTION.CHAOS);
-                            if (fleet == "none") {
+                            if (fleet == noone) {
                                 contin = 3;
                             } else if ((fleet.action == "") && (contin != 3)) {
                                 // Increase ship number for this object?
@@ -97,11 +94,9 @@ function scr_enemy_ai_c() {
 
                                 if (fleet.image_index >= 5) {
                                     // eh heh heh
-                                    var stue, stue2;
-                                    stue = 0;
-                                    stue2 = 0;
-                                    var goood;
-                                    goood = 0;
+                                    var stue = 0;
+                                    var stue2 = 0;
+                                    var goood = 0;
 
                                     with (obj_star) {
                                         if ((planets == 1) && (p_type[1] == "Dead")) {
@@ -160,16 +155,14 @@ function scr_enemy_ai_c() {
     }
 
     // This is the traitors corruption code
-    var boat, kay, temp5, temp6, temp7;
-    boat = 0;
-    kay = 0;
-    temp5 = 0;
-    temp6 = 0;
-    temp7 = 0;
+    var kay = 0;
+    var temp5 = 0;
+    var temp6 = 0;
+    var temp7 = 0;
 
-    boat = scr_orbiting_fleet(eFACTION.CHAOS);
+    var boat = scr_orbiting_fleet(eFACTION.CHAOS);
 
-    if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != "none") && (owner != eFACTION.CHAOS) && (planets > 0)) {
+    if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != noone) && (owner != eFACTION.CHAOS) && (planets > 0)) {
         for (var i = 0; i < 5; i++) {
             if ((p_type[1] != "Dead") && (p_owner[1] != 10)) {
                 kay = 1;
@@ -229,8 +222,7 @@ function scr_enemy_ai_c() {
 
             if ((kay > 0) && (kay != 50)) {
                 // Ere we go!
-                var cor;
-                cor = floor(image_index) + 1;
+                var cor = floor(image_index) + 1;
 
                 if (p_type[kay] == "Shrine") {
                     cor = round(cor / 3);
@@ -249,7 +241,7 @@ function scr_enemy_ai_c() {
     boat = scr_orbiting_fleet(eFACTION.CHAOS);
 
     var aler = 0;
-    if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != "none") && (planets > 0)) {
+    if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != noone) && (planets > 0)) {
         var ii = 0, gud = 0;
         repeat (planets) {
             ii += 1;
@@ -377,10 +369,10 @@ function scr_enemy_ai_c() {
                         if (contin == 2) {
                             fleet = scr_orbiting_fleet(eFACTION.TAU);
 
-                            if (fleet == "none") {
+                            if (fleet == noone) {
                                 contin = 3;
                             }
-                            if ((fleet != "none") && (contin != 3)) {
+                            if ((fleet != noone) && (contin != 3)) {
                                 // Increase ship number for this object?
                                 if ((rando <= 10) && (fleet.image_index < 5)) {
                                     rando = choose(1, 2, 2, 3, 3, 3, 3);
@@ -396,16 +388,13 @@ function scr_enemy_ai_c() {
                                 }
 
                                 if (fleet.image_index >= 5) {
-                                    var kawaii, think, xx, yy;
-                                    kawaii = 0;
-                                    think = 0;
-                                    xx = 0;
-                                    yy = 0;
+                                    var kawaii = 0;
+                                    var think = 0;
 
                                     repeat (50) {
                                         if ((think == 0) && (kawaii == 0)) {
-                                            xx = x + floor(choose(random(300), random(300) * -1));
-                                            yy = y + floor(choose(random(300), random(300) * -1));
+                                            var xx = x + floor(choose(random(300), random(300) * -1));
+                                            var yy = y + floor(choose(random(300), random(300) * -1));
                                             think = instance_nearest(xx, yy, obj_star);
                                             if ((think.owner != eFACTION.TAU) && (think.owner != eFACTION.ELDAR) && (think.present_fleet[8] + think.present_fleet[1] + think.present_fleet[2] == 0) && (think.planets > 0)) {
                                                 kawaii = 1;
@@ -428,10 +417,9 @@ function scr_enemy_ai_c() {
 
                                     if ((kawaii == 1) && instance_exists(obj_crusade)) {
                                         // NOPE, stay home and defend
-                                        var him, own, dis;
-                                        him = instance_nearest(x, y, obj_crusade);
-                                        own = him.owner;
-                                        dis = him.radius;
+                                        var him = instance_nearest(x, y, obj_crusade);
+                                        var own = him.owner;
+                                        var dis = him.radius;
                                         if (point_distance(x, y, him.x, him.y) <= dis) {
                                             kawaii = 0;
                                         }
@@ -467,7 +455,7 @@ function scr_enemy_ai_c() {
     for (var i = 1; i <= planets; i++) {
         if ((p_tyranids[i] >= 5) && (planets >= i) && (p_player[i] + p_orks[i] + p_guardsmen[i] + p_pdf[i] + p_chaos[i] == 0)) {
             var ship = scr_orbiting_fleet(eFACTION.TYRANIDS);
-            if ((ship != "none") && (p_type[i] != "Dead") && (array_length(p_feature[i]) != 0)) {
+            if ((ship != noone) && (p_type[i] != "Dead") && (array_length(p_feature[i]) != 0)) {
                 if (ship.capital_number > 0) {
                     if (planet_feature_bool(p_feature[i], eP_FEATURES.RECLAMATION_POOLS) == 1) {
                         p_tyranids[i] = 0;
