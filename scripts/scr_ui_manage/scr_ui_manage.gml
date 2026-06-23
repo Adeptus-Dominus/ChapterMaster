@@ -488,6 +488,9 @@ function company_specific_management() {
             case 15:
                 _company_name = "Armamentarium";
                 break;
+            case 16:
+                _company_name = "Auxilia";
+                break;
         }
     }
     // Draw the company followed by chapters name
@@ -1220,6 +1223,9 @@ function scr_ui_manage() {
                         break;
                     case 15:
                         fx = "Armamentarium";
+                        break;
+                    case 16:
+                        fx = "Auxilia";
                         break;
                     default:
                         fx = "Unknown";

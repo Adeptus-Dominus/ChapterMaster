@@ -150,4 +150,89 @@ function space_hulk_explore_battle_aftermath() {
             pop.text = "The fallen heretics wore several suits of Terminator Armour- a handful of them were found to be cleansible and worthy of use.  " + string(termi) + " Terminator Armour has been added to the Armamentarium.";
         }
     }
+
+    // Hulk fully cleared this battle: offer the salvage choice. The hulk is removed from the map
+    // by whichever option the player picks (space_hulk_strip / space_hulk_surrender).
+    if (!defeat && hulk_cleared) {
+        var _shi = 0, _loc = "";
+        var _shiyp = instance_nearest(battle_object.x, battle_object.y, obj_p_fleet);
+        if (_shiyp.x == battle_object.x && _shiyp.y == battle_object.y) {
+            _shi = fleet_full_ship_array(_shiyp)[0];
+            _loc = obj_ini.ship[_shi];
+        }
+
+        var pop = instance_create(0, 0, obj_popup);
+        pop.image = "space_hulk_done";
+        pop.title = "Space Hulk Cleared";
+        pop.text = "The last of the hulk's defenders are purged and the drifting wreck falls silent. It is yours to dispose of. Strip it for the Chapter, or tow it to the nearest Forge World for the Adeptus Mechanicus?";
+        pop.hulk_star = battle_object;
+        pop.hulk_loot_ship = _shi;
+        pop.hulk_loot_loc = _loc;
+        with (pop) {
+            replace_options([
+                { str1: "Strip it for the Chapter", choice_func: space_hulk_strip },
+                { str1: "Tow it to the nearest Forge World", choice_func: space_hulk_surrender }
+            ]);
+        }
+    }
+}
+
+/// @description Salvage choice: strip a cleared space hulk for the Chapter. Runs in obj_popup scope.
+/// Raises Inquisitorial suspicion and angers the Mechanicus, but yields requisition and a relic
+/// that carries the normal chance of chaos/daemonic taint. Removes the hulk from the map.
+function space_hulk_strip() {
+    obj_ini.chapter_data.chapter_suspicion = clamp(obj_ini.chapter_data.chapter_suspicion + 1, -5, 5);
+    obj_controller.disposition[eFACTION.MECHANICUS] = clamp(obj_controller.disposition[eFACTION.MECHANICUS] - 12, 0, 100);
+
+    var _reqi = irandom_range(20, 40) * 10;
+    obj_controller.requisition += _reqi;
+    scr_add_artifact("random", "random", 4, hulk_loot_loc, hulk_loot_ship + 500);
+
+    if (instance_exists(hulk_star)) {
+        with (hulk_star) {
+            instance_destroy();
+        }
+    }
+    if (instance_exists(obj_star_select)) {
+        with (obj_star_select) {
+            instance_destroy();
+        }
+    }
+    obj_controller.sel_system_x = 0;
+    obj_controller.sel_system_y = 0;
+
+    image = "space_hulk_done";
+    title = "Space Hulk Stripped";
+    text = $"Your Chapter strips the hulk for itself. Archeotech and a relic are hauled aboard and {_reqi} Requisition worth of materiel is salvaged. The unsanctioned claim will not go unnoticed: the Adeptus Mechanicus consider it theft from the Omnissiah, and the Inquisition's gaze lingers a little longer on your Chapter.";
+    reset_popup_options();
+    cooldown = 20;
+}
+
+/// @description Salvage choice: tow a cleared space hulk to the nearest Forge World. Runs in
+/// obj_popup scope. The sanctioned, expected course: the Mechanicus are grateful and send a
+/// token of thanks. Removes the hulk from the map.
+function space_hulk_surrender() {
+    obj_controller.disposition[eFACTION.MECHANICUS] = clamp(obj_controller.disposition[eFACTION.MECHANICUS] + 12, 0, 100);
+
+    var _reqi = irandom_range(5, 15) * 10;
+    obj_controller.requisition += _reqi;
+
+    if (instance_exists(hulk_star)) {
+        with (hulk_star) {
+            instance_destroy();
+        }
+    }
+    if (instance_exists(obj_star_select)) {
+        with (obj_star_select) {
+            instance_destroy();
+        }
+    }
+    obj_controller.sel_system_x = 0;
+    obj_controller.sel_system_y = 0;
+
+    image = "space_hulk_done";
+    title = "Space Hulk Surrendered";
+    text = $"The hulk is towed to the nearest Forge World for the Adeptus Mechanicus to pick apart at their leisure. They receive it gratefully and send a token of thanks worth {_reqi} Requisition.";
+    reset_popup_options();
+    cooldown = 20;
 }

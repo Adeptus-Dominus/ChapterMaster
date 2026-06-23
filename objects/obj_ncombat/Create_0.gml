@@ -79,6 +79,7 @@ done = 0;
 captured_gaunt = 0;
 ethereal = 0;
 hulk_treasure = 0;
+hulk_cleared = 0;
 four_show = 0;
 chaos_angry = 0;
 

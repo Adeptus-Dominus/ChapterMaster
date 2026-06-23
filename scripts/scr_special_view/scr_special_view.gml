@@ -72,6 +72,18 @@ function scr_special_view(command_group) {
         }
     }
 
+    if ((command_group == 16) || (command_group == 0)) {
+        // Auxilia (Guardsmen and other auxiliary mercs). Gathered by role, not specialist
+        // group, since they are mustered into company 0 with race IMPERIUM but are not Astartes
+        // specialists. auxilia_roles() is the single source of truth shared with the HQ exclusion.
+        var auxilia = collect_role_group("all", "", false, {roles: auxilia_roles()});
+        for (var i = 0; i < array_length(auxilia); i++) {
+            unit = auxilia[i];
+            array_push(_already_used, unit.marine_number);
+            add_man_to_manage_arrays(auxilia[i]);
+        }
+    }
+
     if ((command_group == 11) || (command_group == 0)) {
         //HQ units
         for (var v = 0; v < array_length(obj_ini.TTRPG[0]); v++) {
@@ -88,6 +100,8 @@ function scr_special_view(command_group) {
             }
 
             yep = !(_unit.IsSpecialist(SPECIALISTS_TECHS) || _unit.IsSpecialist(SPECIALISTS_CHAPLAINS) || _unit.IsSpecialist(SPECIALISTS_LIBRARIANS) || _unit.IsSpecialist(SPECIALISTS_APOTHECARIES));
+            // Auxilia mercs live in company 0 but belong to the Auxilia screen, not Headquarters.
+            yep = yep && !array_contains(auxilia_roles(), _unit.role());
             if (yep) {
                 add_man_to_manage_arrays(_unit);
             }

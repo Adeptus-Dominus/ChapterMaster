@@ -827,3 +827,14 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
         }
     }
 }
+
+/// @function auxilia_roles
+/// @description Single source of truth for which unit roles belong to the Auxilia company
+/// screen (managing 16). These are non-Astartes auxiliary mercenaries mustered into company 0
+/// alongside the Headquarters, but managed on their own screen. Add future merc roles here
+/// (Ogryn, heavy weapons team, etc.) and they will automatically appear under Auxilia and be
+/// excluded from the Headquarters detail view.
+/// @returns {array}
+function auxilia_roles() {
+    return ["Guardsman", "Guard Squad"];
+}

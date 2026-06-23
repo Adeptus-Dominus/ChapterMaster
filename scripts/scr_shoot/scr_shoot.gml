@@ -203,6 +203,15 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                 exit;
             }
 
+            // Guardsman accuracy: mirror the enemy's doom (the owner == eFACTION.IMPERIUM branch
+            // above) on the player side. Ranged, multi-shot lasgun stacks only, matching the enemy
+            // gating (shots_fired != 1 && not melee). Scaling shots_fired flows through total damage
+            // (c = shots_fired * final_hit_damage_value), the casualty cap, and the announced count,
+            // while damage_per_weapon stays divided by wep_num, so the cut is a clean linear share.
+            if ((weapon_index_position >= 0) && (shots_fired > 1) && (melee_or_ranged != "melee") && (wep[weapon_index_position] == "Lasgun")) {
+                shots_fired = max(1, floor(shots_fired * GUARD_DOOM));
+            }
+
             /*if (weapon_index_position<-40){
 				if (weapon_index_position=-53){
 					if (player_silos>30) then shots_fired=30;

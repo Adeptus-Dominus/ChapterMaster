@@ -524,13 +524,13 @@ function company_manage_actions() {
     }
     // Previous company
     if (point_and_click([xx + 424, yy + 80, xx + 496, yy + 128]) || (keyboard_check_pressed(ord(string("N"))) && allow_shortcuts)) {
-        var new_view = managing == 1 ? 15 : managing - 1;
+        var new_view = managing == 1 ? 16 : managing - 1;
         switch_view_company(new_view);
     }
 
     // Next company
     if (point_and_click([xx + 1105, yy + 80, xx + 1178, yy + 128]) || (keyboard_check_pressed(ord(string("M"))) && allow_shortcuts)) {
-        var new_view = managing == 15 ? 1 : managing + 1;
+        var new_view = managing == 16 ? 1 : managing + 1;
         switch_view_company(new_view);
     }
 }
@@ -554,6 +554,8 @@ function ui_manage_hotkeys() {
             switch_view_company(14);
         } else if (press_exclusive(ord("Y"))) {
             switch_view_company(15);
+        } else if (press_exclusive(ord("U"))) {
+            switch_view_company(16);
         }
     }
 }

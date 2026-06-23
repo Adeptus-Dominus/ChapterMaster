@@ -21,6 +21,15 @@
 #macro GUARD_SCREEN_COLUMN_FIRST 8
 #macro GUARD_SCREEN_COLUMN_COUNT 3
 
+// Imperial Guard accuracy ("doom"): mirrors the enemy's per-faction doom in scr_shoot (the
+// owner == eFACTION.IMPERIUM branch, e.g. Orks 0.2, Tyranids 0.4). Massed lasgun fire from raw
+// conscripts connects far less than disciplined Astartes fire, so the guard's ranged lasgun
+// volleys have their effective shots scaled by this fraction before damage. The player branch
+// divides damage_per_weapon by wep_num rather than the scaled count, so per-shot damage is
+// untouched and the cut is linear: the volley still fires in full but only this share lands.
+// 1 = no reduction (marine-grade), 0.35 = roughly a third of the lasguns connect.
+#macro GUARD_DOOM 0.35
+
 #macro MAX_STC_PER_SUBCATEGORY 6
 #macro DEFAULT_TOOLTIP_VIEW_OFFSET 32
 #macro DEFAULT_LINE_GAP -1
