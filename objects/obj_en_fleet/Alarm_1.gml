@@ -2,12 +2,12 @@ try {
     var orb = orbiting;
 
     if ((round(owner) != eFACTION.IMPERIUM) && (navy == 1)) {
-        owner = noone;
+        owner = 0;
     }
 
     //TODO centralise orbiting logic
     var _is_orbiting = is_orbiting();
-    if (orbiting != 0 && action == "" && owner != noone) {
+    if (orbiting != 0 && action == "" && owner != 0) {
         var orbiting_found = _is_orbiting;
         if (orbiting_found) {
             orbiting_found = variable_instance_exists(orbiting, "present_fleet");
@@ -215,9 +215,7 @@ try {
 
                 orbiting = instance_nearest(x, y, obj_star);
 
-                // 135;
                 if (obj_controller.loyalty_hidden <= 0) {
-                    // obj_controller.alarm[7]=1;global.defeat=2;
                     var moo = false;
                     if ((obj_controller.penitent == 1) && (moo == false)) {
                         obj_controller.alarm[8] = 1;

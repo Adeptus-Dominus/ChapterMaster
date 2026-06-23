@@ -415,8 +415,7 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
 /// @constructor
 /// @category UI
 /// @desc A clickable sprite-based button component that manages its own state and hover logic.
-/// @param {Asset.GMSprite} _sprite The default sprite to display.
-/// @param {Asset.GMSprite} _hover_sprite Optional sprite to show when hovered.
+/// @param {Struct} data The default sprite to display.
 /// @returns {Struct.SpriteButton}
 function SpriteButton(data) constructor {
     standard_loc_data();
@@ -449,8 +448,6 @@ function SpriteButton(data) constructor {
     update(data);
 
     /// @desc Updates interaction state and draws the button.
-    /// @param {real} _x The X position to draw at.
-    /// @param {real} _y The Y position to draw at.
     /// @param {bool} _enabled If false, interaction is disabled and the button appears faded.
     static draw = function(_enabled = true) {
 

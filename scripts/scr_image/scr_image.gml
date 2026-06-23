@@ -972,6 +972,7 @@ function scr_image_cache(path, image_id, use_app_data = false) {
 
 /// @description Simplified handling of chapter icon stuff for both Creation and player chapter icon
 /// attempting to keep things consistent and easy through save/load and etc
+/// @param {String} _name
 /// @param {Bool} update_global_var set to true when wanting to update the player's icon, false if you just want to return the sprite for further use
 function scr_load_chapter_icon(_name, update_global_var = false) {
     if (!ds_map_exists(global.chapter_icons_map, _name)) {

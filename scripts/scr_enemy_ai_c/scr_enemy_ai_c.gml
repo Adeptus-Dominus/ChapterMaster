@@ -1,9 +1,8 @@
 /// @self Asset.GMObject.obj_star
 function scr_enemy_ai_c() {
-    var rando, contin, i;
+    var rando, contin;
     rando = 0;
     contin = 0;
-    i = 0;
 
     with (obj_star) {
         if ((craftworld == 1) || (space_hulk == 1)) {
@@ -16,10 +15,9 @@ function scr_enemy_ai_c() {
     orks_end_turn_growth();
 
     // traitors below here
-    i = 0;
     if (array_sum(p_traitors)) {
         var traitor_system = true;
-        for (i = 1; i <= planets; i++) {
+        for (var i = 1; i <= planets; i++) {
             if (p_owner[i] != 10) {
                 traitor_system = false;
             } else if ((p_pdf[i] > 0) || (p_guardsmen[i] > 0) || (p_orks[i] > 0) || (p_tau[i] > 0)) {
@@ -29,10 +27,9 @@ function scr_enemy_ai_c() {
                 break;
             }
         }
-        for (i = 1; i <= planets; i++) {
+        for (var i = 1; i <= planets; i++) {
             contin = 0;
             rando = irandom(100) + 1; // This part handles the spreading
-            // if (rando<30){
             contin = floor(random(planets)) + 1;
             repeat (30) {
                 if ((p_type[contin] == "Dead") || (contin == i)) {
@@ -44,15 +41,12 @@ function scr_enemy_ai_c() {
                 contin = 500;
             }
 
-            // if (contin<100) then show_message(string(name)+"."+string(i)+" to "+string(contin));
-
             if (contin < 100) {
                 if ((p_traitors[i] >= 3) && (p_traitors[contin] < ceil(p_traitors[i] / 2)) && (p_type[contin] != "Dead")) {
                     p_traitors[contin] += 1;
                     contin = 500;
                 }
             }
-            // }
 
             contin = 0;
             rando = floor(random(100)) + 1; // This part handles the ship building
@@ -159,12 +153,6 @@ function scr_enemy_ai_c() {
                             present_fleet[10] += 1;
                             obj_controller.chaos_fleets += 1;
                         }
-                        /*if (fleet!=0){
-		                    if (instance_exists(fleet)) then with(fleet){
-		                        var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
-		                        if (ii<=1) then ii=1;image_index=ii;
-		                    }
-		                }*/
                     }
                 }
             }
@@ -182,8 +170,7 @@ function scr_enemy_ai_c() {
     boat = scr_orbiting_fleet(eFACTION.CHAOS);
 
     if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != "none") && (owner != eFACTION.CHAOS) && (planets > 0)) {
-        var i = 0;
-        repeat (5) {
+        for (var i = 0; i < 5; i++) {
             if ((p_type[1] != "Dead") && (p_owner[1] != 10)) {
                 kay = 1;
             }
@@ -255,18 +242,10 @@ function scr_enemy_ai_c() {
                     }
                 }
             }
-            i += 1;
-        } // End repeat
+        }
     } // End corruption code
 
     // This is the CSM landing code
-    var boat, kay, temp5, temp6, temp7;
-    boat = 0;
-    kay = 0;
-    temp5 = 0;
-    temp6 = 0;
-    temp7 = 0;
-
     boat = scr_orbiting_fleet(eFACTION.CHAOS);
 
     var aler = 0;
@@ -300,12 +279,8 @@ function scr_enemy_ai_c() {
     } // End landing portion of code
 
     // Tau Here
-    i = 0;
-
     if (array_sum(p_tau) > 0) {
-        repeat (4) {
-            i += 1;
-
+        for (var i = 1; i <= 4; i++) {
             contin = 0;
             rando = floor(random(100)) + 1; // This part handles the spreading
             // if (rando<30){
@@ -319,8 +294,6 @@ function scr_enemy_ai_c() {
             if ((p_pdf[i] > 0) || (p_guardsmen[i] > 0) || (p_orks[i] > 0) || (p_traitors[i] > 0) || (p_eldar[i] > 2) || (p_tau[i] < 2)) {
                 contin = 500;
             }
-
-            // if (contin<100) then show_message(string(name)+"."+string(i)+" to "+string(contin));
 
             if (contin < 100) {
                 if ((p_tau[i] == 3) && (p_tau[contin] < 2) && (p_type[contin] != "Dead") && (p_population[contin] > 0)) {
@@ -346,7 +319,6 @@ function scr_enemy_ai_c() {
                     contin = 500;
                 }
             }
-            // }
 
             contin = 0;
             rando = floor(random(100)) + 1; // This part handles the ship building
@@ -485,12 +457,6 @@ function scr_enemy_ai_c() {
                             present_fleet[8] += 1;
                             obj_controller.tau_fleets += 1;
                         }
-                        /*if (fleet!=0){
-	                    if (instance_exists(fleet)) then with(fleet){
-	                        var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
-	                        if (ii<=1) then ii=1;image_index=ii;
-	                    }
-	                }*/
                     }
                 }
             }
@@ -498,9 +464,7 @@ function scr_enemy_ai_c() {
     }
 
     // Tyranids here
-    var i = 0;
-    repeat (planets) {
-        i += 1;
+    for (var i = 1; i <= planets; i++) {
         if ((p_tyranids[i] >= 5) && (planets >= i) && (p_player[i] + p_orks[i] + p_guardsmen[i] + p_pdf[i] + p_chaos[i] == 0)) {
             var ship = scr_orbiting_fleet(eFACTION.TYRANIDS);
             if ((ship != "none") && (p_type[i] != "Dead") && (array_length(p_feature[i]) != 0)) {
@@ -514,7 +478,7 @@ function scr_enemy_ai_c() {
                         ship.escort_number += 3;
                         ship.image_index = floor(ship.capital_number + (ship.frigate_number / 2) + (ship.escort_number / 4));
                         p_type[i] = "Dead";
-                        delete_features(p_feature[i], eP_FEATURES.RECLAMATION_POOLS); // show_message("D");
+                        delete_features(p_feature[i], eP_FEATURES.RECLAMATION_POOLS);
                         if ((planets == 1) && (p_type[1] == "Dead")) {
                             image_alpha = 0.33;
                         }
@@ -536,10 +500,10 @@ function scr_enemy_ai_c() {
                     if ((planet_feature_bool(p_feature[i], eP_FEATURES.CAPILLARY_TOWERS) == 1) && (p_type[i] != "Dead")) {
                         p_feature[i] = [];
                         array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.CAPILLARY_TOWERS), new NewPlanetFeature(eP_FEATURES.RECLAMATION_POOLS));
-                        p_population[i] = 0; // show_message("C");
+                        p_population[i] = 0;
                     }
                     if ((planet_feature_bool(p_feature[i], eP_FEATURES.CAPILLARY_TOWERS) == 0) && (planet_feature_bool(p_feature[i], eP_FEATURES.RECLAMATION_POOLS) == 0) && (p_type[i] != "Dead")) {
-                        array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.CAPILLARY_TOWERS)); // show_message("B");
+                        array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.CAPILLARY_TOWERS));
                     }
                 }
             }

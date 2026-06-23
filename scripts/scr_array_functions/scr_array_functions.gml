@@ -128,13 +128,13 @@ function array_delete_random_index(choice_array) {
 
 /// @function array_to_string_list
 /// @description Converts an array into a string, with each element on a newline.
-/// @param {array} stacktrace stacktrace.
+/// @param {array} _array stacktrace.
 /// @return {string}
 function array_to_string_list(_array, _pop_last = false) {
     var _string_list = "";
 
     if (!is_array(_array)) {
-        return;
+        return _string_list;
     }
 
     if (_pop_last) {

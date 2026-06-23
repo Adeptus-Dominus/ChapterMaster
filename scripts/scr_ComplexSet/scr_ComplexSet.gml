@@ -28,10 +28,10 @@ function valid_sprite_transform_data(data) {
 
 ///@func sprite_get_uvs_transformed(sprite1, subimg1, sprite2, subimg2)
 ///@desc Returns a transform array that can be used in a shader to align the UVs of sprite2 with sprite1 (takes cropping into account)
-///@param spr1 {Sprite} The sprite align the UVs to
-///@param subimg1 {real} The sprite subimage to align the UVs to
-///@param spr2 {Sprite} The sprite with UVs that will be aligned
-///@param subimg1 {real} The sprite subimage with UVs that will be aligned
+///@param _spr1 {Sprite} The sprite align the UVs to
+///@param _subimg1 {real} The sprite subimage to align the UVs to
+///@param _spr2 {Sprite} The sprite with UVs that will be aligned
+///@param _subimg2 {real} The sprite subimage with UVs that will be aligned
 function sprite_get_uvs_transformed(_spr1, _subimg1, _spr2, _subimg2) {
     //Get the uvs of the sprites
     var _uv1 = sprite_get_uvs(_spr1, _subimg1);

@@ -2,7 +2,6 @@ function scr_add_vehicle(vehicle_type, target_company, otherdata = {}, weapon1 =
     try {
         // That should be sufficient to add stuff in a highly modifiable fashion
 
-        var i = 0;
         var e = 0;
         var good = 0;
         var wep1 = "";
@@ -32,7 +31,8 @@ function scr_add_vehicle(vehicle_type, target_company, otherdata = {}, weapon1 =
 
                 if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
                     // Need a more elaborate ship_carrying += here for the different types of units
-                    var first = -1, backup = -1, i = 0;
+                    var first = -1;
+                    var backup = -1;
                     for (var i = 0; i < array_length(obj_ini.ship_class); i++) {
                         if ((obj_ini.ship_class[i] == "Battle Barge") && (first == -1) && (obj_ini.ship_capacity[i] > obj_ini.ship_carrying[i])) {
                             first = i;

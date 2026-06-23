@@ -22,9 +22,6 @@ function drop_select_unit_selection() {
 
     if (purge == eDROP_TYPE.RAIDATTACK) {
         draw_set_font(fnt_40k_30b);
-
-        // var xx,yy;
-        // xx=view_xview[0]+545;yy=view_yview[0]+212;
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         var attack_type = attack ? "Attacking" : "Raiding";
@@ -138,12 +135,11 @@ function drop_select_unit_selection() {
         _x_offset += _button.width + 10;
     }
 
-    // draw_text(x2 + 14, y2 + 352, string_hash_to_newline("Selection: " + string(smin) + "/" + string(smax)));
-
     // Target
     var race_quantity = 0;
     if (purge == eDROP_TYPE.RAIDATTACK) {
-        var target_race = "", target_threat = "", race_quantity = 0;
+        var target_race = "";
+        var target_threat = "";
 
         if (attacking >= 5 && attacking <= 13) {
             race_quantity = race_quantities[attacking - 4];
@@ -413,7 +409,7 @@ function drop_select_draw() {
                 draw_text_transformed(x2 + 14, y2 + 12, string(_purge_strings[purge - 2], _planet_string), 0.6, 0.6, 0);
 
                 // Disposition here
-                var succession = 0, pp = planet_number;
+                var pp = planet_number;
 
                 var succession = has_problem_planet(pp, "succession", p_target);
 

@@ -35,7 +35,7 @@ function LootPool(_data) constructor {
 }
 
 /// @desc Processes rewards for exploring ancient ruins.
-/// @param {Asset.GMObject.obj_star} _star_system The star system object.
+/// @param {Asset.GMObject} _star_system The star system object.
 /// @param {Real} _pid_idx Planet index within the system.
 /// @param {Struct.NewPlanetFeature} _ruins The ruins feature struct.
 function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
@@ -104,7 +104,9 @@ function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
     };
 
     /// @desc Internal logic for handling Artifact retrieval.
-    /// @param {Asset.GMObject.obj_popup} _popup
+    /// @param {Asset.GMObject} _star
+    /// @param {String} _pidx
+    /// @param {Asset.GMObject} _popup
     static _process_artifact_reward = function(_star, _pidx, _popup) {
         var _chosen_ship = -1;
         var _fleet = scr_orbiting_player_fleet(_star);

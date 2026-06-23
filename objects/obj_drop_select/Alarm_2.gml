@@ -5,7 +5,7 @@ ship_max = array_create(31, 0);
 ship_ide = array_create(31, -1);
 
 max_ships = 0;
-if (sh_target != -50) {
+if (sh_target != noone) {
     max_ships = sh_target.capital_number + sh_target.frigate_number + sh_target.escort_number;
 }
 
@@ -19,7 +19,7 @@ if (l_size > 0) {
     l_size = l_size * -1;
 }
 
-if (sh_target != -50) {
+if (sh_target != noone) {
     var i = 0;
     for (var s = 0; s < sh_target.capital_number; s++) {
         if ((sh_target.capital[s] != "") && (obj_ini.ship_carrying[sh_target.capital_num[s]] > 0)) {

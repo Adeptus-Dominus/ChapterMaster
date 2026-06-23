@@ -209,7 +209,6 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
 
                     add_fleet_ships_to_combat(p_fleet, obj_fleet);
 
-                    // instance_deactivate_object(battle_object[current_battle]);
                     instance_deactivate_object(p_fleet);
 
                     obj_controller.combat = 1;
