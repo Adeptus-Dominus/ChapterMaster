@@ -113,7 +113,7 @@ function Roster() constructor {
                     }
                     // Guardsmen answer to their own filter button rather than always passing
                     var _grd_role = _unit.role();
-                    if (_grd_role == "Guardsman" || _grd_role == "Guard Squad") {
+                    if (_grd_role == "Guardsman" || _grd_role == "Guard Squad" || _grd_role == "Guard Sergeant") {
                         _valid_type = array_contains(_valid_squad_types, "guardsman");
                     }
                 }
@@ -298,7 +298,7 @@ function Roster() constructor {
                         // Guardsmen and Guard Squads have no squad type, so give them their
                         // own filter button (added once) so they can be selected on their own.
                         var _grd_role = _unit.role();
-                        if ((_grd_role == "Guardsman" || _grd_role == "Guard Squad") && !array_contains(_squads, "guardsman")) {
+                        if ((_grd_role == "Guardsman" || _grd_role == "Guard Squad" || _grd_role == "Guard Sergeant") && !array_contains(_squads, "guardsman")) {
                             array_push(_squads, "guardsman");
                             new_squad_button("Guardsmen", "guardsman");
                         }
@@ -729,7 +729,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
     // before the positional-screen experiment: every guardsman shares this one column instead of
     // being pinned to fixed front columns. bat_hire_column was resolved for this formation at the
     // top of this function and is driven by the Hirelings bar (bat_hire_for, unit_id 12).
-    if (_unit_role == "Guardsman") {
+    if (_unit_role == "Guardsman" || _unit_role == "Guard Sergeant") {
         col = obj_controller.bat_hire_column;
     }
 
@@ -832,5 +832,5 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
 /// excluded from the Headquarters detail view.
 /// @returns {array}
 function auxilia_roles() {
-    return ["Guardsman", "Guard Squad"];
+    return ["Guardsman", "Guard Squad", "Guard Sergeant"];
 }

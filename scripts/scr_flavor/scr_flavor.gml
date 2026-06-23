@@ -35,24 +35,24 @@ function display_battle_log_message() {
 /// @returns {string}
 function combat_damage_flavor(_severity, _is_vehicle, _is_single) {
     if (_is_vehicle) {
-        if (_severity < 0.10) return "but the hits spend themselves against its armour";
-        if (_severity < 0.35) return "scorching its plating";
-        if (_severity < 0.65) return "denting its hull";
-        if (_severity < 0.90) return "tearing gashes into its hull";
-        return "leaving it scorched and barely running";
+        if (_severity < 0.10) return choose("but the hits spend themselves against its armour", "barely chipping its paint", "pinging off its armour", "bouncing off its plating", "only scratching its armour");
+        if (_severity < 0.35) return choose("scorching its plating", "scuffing its armour", "leaving shallow dents in its hull");
+        if (_severity < 0.65) return choose("denting its hull", "cracking its armour", "punching into its plating");
+        if (_severity < 0.90) return choose("tearing gashes into its hull", "blowing holes in its plating", "ripping through its armour");
+        return choose("leaving it scorched and barely running", "all but wrecking it", "leaving it a smoking hulk");
     }
     if (_is_single) {
-        if (_severity < 0.10) return "but its armour turns the blows aside";
-        if (_severity < 0.35) return "but it is only grazed";
-        if (_severity < 0.65) return "and it is wounded";
-        if (_severity < 0.90) return "and it is gravely wounded";
-        return "and it is left maimed, clinging to life";
+        if (_severity < 0.10) return choose("but its armour turns the blows aside", "but it shrugs them off");
+        if (_severity < 0.35) return choose("but it is only grazed", "leaving only light wounds", "drawing a little blood");
+        if (_severity < 0.65) return choose("and it is wounded", "leaving it bloodied", "and it is hurt");
+        if (_severity < 0.90) return choose("and it is gravely wounded", "leaving it badly hurt", "and it is left reeling");
+        return choose("and it is left maimed, clinging to life", "and it barely clings to life", "leaving it all but dead");
     }
-    if (_severity < 0.10) return "but fail to penetrate their armour";
-    if (_severity < 0.35) return "drawing little more than scratches";
-    if (_severity < 0.65) return "wounding several";
-    if (_severity < 0.90) return "leaving deep wounds among them";
-    return "leaving the survivors maimed and reeling";
+    if (_severity < 0.10) return choose("but fail to penetrate their armour", "but their armour holds");
+    if (_severity < 0.35) return choose("drawing little more than scratches", "causing only light wounds", "leaving a few grazes");
+    if (_severity < 0.65) return choose("wounding several", "bloodying their ranks", "leaving wounded in their wake");
+    if (_severity < 0.90) return choose("leaving deep wounds among them", "savaging their ranks", "leaving many badly wounded");
+    return choose("leaving the survivors maimed and reeling", "all but breaking them", "leaving them maimed and scattered");
 }
 
 function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties, damage_done = -1) {
@@ -564,6 +564,40 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
     // 	}
     // 	obj_ncombat.dead_enemies = 0;
     // }
+
+    // Unified outcome phrasing, applied after the per-weapon branches above so every weapon reads
+    // consistently. A volley that kills nothing reports wound/damage severity rather than generic
+    // "no casualties" wording, and a volley that destroys vehicles says "destroy" instead of "kill"
+    // so mechanical targets stand out at a glance. Infantry kills keep their bespoke per-weapon
+    // verbs untouched.
+    if ((damage_done >= 0) && (attack_message != "")) {
+        var _pp_hp = target.dudes_hp[targeh];
+        var _pp_veh = (target.dudes_vehicle[targeh] == 1);
+        var _pp_single = (target.dudes_num[targeh] == 1);
+        var _pp_shots = (number_of_shots == 1) ? weapon_name : $"{number_of_shots} {weapon_name}s";
+        if (casulties == 0) {
+            var _pp_sev = (_pp_hp > 0) ? clamp(damage_done / _pp_hp, 0, 1) : 0;
+            var _pp_flav = combat_damage_flavor(_pp_sev, _pp_veh, _pp_single);
+            if (character_shot && (unit_name != "")) {
+                attack_message = _pp_single
+                    ? $"{unit_name} {weapon_name} strikes a {target_name}, {_pp_flav}."
+                    : $"{unit_name} {weapon_name} strikes the {target_name} ranks, {_pp_flav}.";
+            } else if (_pp_single) {
+                attack_message = $"A {target_name} is struck by {_pp_shots}, {_pp_flav}.";
+            } else {
+                attack_message = $"{_pp_shots} strike at the {target_name} ranks, {_pp_flav}.";
+            }
+        } else if (_pp_veh) {
+            var _pp_obj = (casulties == 1) ? $"a {target_name}" : $"{casulties} {target_name}s";
+            if (character_shot && (unit_name != "")) {
+                attack_message = $"{unit_name} {weapon_name} destroys {_pp_obj}.";
+            } else if (number_of_shots == 1) {
+                attack_message = $"{weapon_name} destroys {_pp_obj}.";
+            } else {
+                attack_message = $"{number_of_shots} {weapon_name}s destroy {_pp_obj}.";
+            }
+        }
+    }
 
     var message_priority = 0;
     if (obj_ncombat.enemy <= 10) {

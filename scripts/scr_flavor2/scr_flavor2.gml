@@ -9,17 +9,17 @@
 /// @returns {string}
 function incoming_damage_flavor(_severity, _is_vehicle) {
     if (_is_vehicle) {
-        if (_severity < 0.10) return "Only peeling the paint.";
-        if (_severity < 0.35) return "Barely putting a dent in the armour.";
-        if (_severity < 0.65) return "Piercing the armour.";
-        if (_severity < 0.90) return "Punching a huge hole in the armour.";
-        return "Almost destroying it.";
+        if (_severity < 0.10) return choose("Only peeling the paint.", "Just chipping the paint.", "Pinging off the armour.", "Bouncing off the hull.", "Only scratching the armour.");
+        if (_severity < 0.35) return choose("Barely putting a dent in the armour.", "Leaving a few dents in the hull.", "Only scuffing the armour.");
+        if (_severity < 0.65) return choose("Piercing the armour.", "Punching through the plating.", "Cracking the armour open.");
+        if (_severity < 0.90) return choose("Punching a huge hole in the armour.", "Tearing a gash through the hull.", "Blowing a hole in the plating.");
+        return choose("Almost destroying it.", "Leaving it a smoking wreck.", "Nearly tearing it apart.");
     }
-    if (_severity < 0.10) return "But the armour holds.";
-    if (_severity < 0.35) return "Drawing blood.";
-    if (_severity < 0.65) return "Wounding several.";
-    if (_severity < 0.90) return "Leaving deep wounds.";
-    return "Leaving the survivors maimed and reeling.";
+    if (_severity < 0.10) return choose("But the armour holds.", "But it is shrugged off.");
+    if (_severity < 0.35) return choose("Drawing blood.", "Causing light wounds.", "Leaving a few grazes.");
+    if (_severity < 0.65) return choose("Wounding several.", "Bloodying the ranks.", "Leaving wounded behind.");
+    if (_severity < 0.90) return choose("Leaving deep wounds.", "Savaging the ranks.", "Leaving many badly wounded.");
+    return choose("Leaving the survivors maimed and reeling.", "All but breaking them.", "Leaving them maimed and scattered.");
 }
 
 function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapon, hostile_shots, hostile_splash, damage_severity = 0, target_is_vehicle = false) {

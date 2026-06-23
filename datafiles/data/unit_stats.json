@@ -689,6 +689,60 @@
             1
         ]
     },
+    "guard_sergeant": {
+        "ballistic_skill": [
+            15,
+            1
+        ],
+        "base_group": "human",
+        "charisma": [
+            25,
+            1
+        ],
+        "constitution": [
+            45,
+            1,
+            "max"
+        ],
+        "dexterity": [
+            22,
+            1
+        ],
+        "intelligence": [
+            18,
+            1
+        ],
+        "luck": 8,
+        "piety": [
+            28,
+            1
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Flak Armour",
+            "gear": "",
+            "mobi": "",
+            "wep1": "Chainsword",
+            "wep2": "Laspistol"
+        },
+        "strength": [
+            30,
+            1
+        ],
+        "technology": [
+            10,
+            1
+        ],
+        "title": "Guard Sergeant",
+        "weapon_skill": [
+            35,
+            1
+        ],
+        "wisdom": [
+            20,
+            1
+        ]
+    },
     "skitarii": {
         "ballistic_skill": [
             20,

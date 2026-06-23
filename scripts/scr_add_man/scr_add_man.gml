@@ -12,7 +12,8 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         "Ork Sniper",
         "Flash Git",
         "Guardsman",
-        "Guard Squad"
+        "Guard Squad",
+        "Guard Sergeant"
     ];
     var _gear = {};
     var _company_slot = 0;
@@ -37,6 +38,11 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
                     spawn_exp = 10;
                     obj_ini.race[target_company][_company_slot] = eFACTION.IMPERIUM;
                     _unit = new TTRPG_stats("imperial_guard", target_company, _company_slot, "guard_squad");
+                    break;
+                case "Guard Sergeant":
+                    spawn_exp = 10;
+                    obj_ini.race[target_company][_company_slot] = eFACTION.IMPERIUM;
+                    _unit = new TTRPG_stats("imperial_guard", target_company, _company_slot, "guard_sergeant");
                     break;
                 case "Skitarii":
                     spawn_exp = 10;
@@ -119,6 +125,10 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
                 break;
 
             case "Guard Squad":
+                obj_ini.name[target_company][_company_slot] = global.name_generator.GenerateFromSet("imperial_male");
+                break;
+
+            case "Guard Sergeant":
                 obj_ini.name[target_company][_company_slot] = global.name_generator.GenerateFromSet("imperial_male");
                 break;
         }

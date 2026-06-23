@@ -92,6 +92,12 @@ function TradeAttempt(diplomacy) constructor {
                     repeat (_opt.number) {
                         scr_add_man("Guardsman", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
                     }
+                    // One Guard Sergeant musters with every full squad of GUARD_SQUAD_SIZE
+                    // guardsmen, raised from the same homeworld levy and attached to his men. He
+                    // rides the same path as a guardsman, just a tougher melee-focused profile.
+                    repeat (floor(_opt.number / GUARD_SQUAD_SIZE)) {
+                        scr_add_man("Guard Sergeant", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
+                    }
                     with (obj_ini) {
                         scr_company_order(0);
                     }
