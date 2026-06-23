@@ -221,7 +221,7 @@ function launch_crusade() {
     } else {
         //TODO decide the target/purpose of the crusade to create more variety and to help with post crusade rewards
         var _nearest_player_fleet = get_nearest_player_fleet(star_id.x, star_id.y);
-        if (_nearest_player_fleet == "none") {
+        if (_nearest_player_fleet == noone) {
             return false;
         }
         var travel_leeway = 10;

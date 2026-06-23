@@ -57,7 +57,7 @@ try {
                 }
                 var enemies = false;
                 for (var i = 6; i < 13; i++) {
-                    if (scr_orbiting_fleet(i) != "none") {
+                    if (scr_orbiting_fleet(i) != noone) {
                         enemies = true;
                         break;
                     }

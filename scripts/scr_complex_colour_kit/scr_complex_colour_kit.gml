@@ -363,7 +363,7 @@ function get_shader_colour_from_arrays(colour) {
             colours_instance.col_b[colour] / 255
         ];
     } catch (_exception) {
-        ERROR_HANDLER.handle_exception(_exception);
+        ERROR_HANDLER.assert_popup(_exception);
     }
 
     return colour_set;

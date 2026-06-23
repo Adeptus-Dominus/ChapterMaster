@@ -1,9 +1,10 @@
 function create_boarding_craft(target_ship) {
-    var first = 0, o = 1;
+    var first = 0;
 
     for (var o = 0; o < array_length(board_id); o++) {
-        if ((first == 0) && (board_id[o] != 0) && (board_location[o] == 0)) {
+        if ((board_id[o] != 0) && (board_location[o] == 0)) {
             first = o;
+            break;
         }
     }
 
@@ -11,7 +12,6 @@ function create_boarding_craft(target_ship) {
 
     var bear = instance_create(x, y, obj_p_assra);
     bear.apothecary = 0;
-    o = first;
 
     for (var o = 0; o < array_length(board_id); o++) {
         if ((board_id[o] != 0) && (board_location[o] == 0)) {

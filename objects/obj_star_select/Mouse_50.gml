@@ -95,7 +95,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
                 var p_fleet = get_nearest_player_fleet(x, y, true);
 
                 obj_controller.temp[1099] = target.name;
-                good = p_fleet != "none" && instance_exists(target);
+                good = p_fleet != noone && instance_exists(target);
 
                 if (good == 1) {
                     // trying to find the star
@@ -209,7 +209,6 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
 
                     add_fleet_ships_to_combat(p_fleet, obj_fleet);
 
-                    // instance_deactivate_object(battle_object[current_battle]);
                     instance_deactivate_object(p_fleet);
 
                     obj_controller.combat = 1;

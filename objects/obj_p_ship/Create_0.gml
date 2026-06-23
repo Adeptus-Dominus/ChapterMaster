@@ -16,7 +16,7 @@ action_dis = 0;
 action_dir = 0;
 action_fac = 0;
 direction = 0;
-target = -50;
+target = noone;
 if (instance_exists(obj_en_ship)) {
     target = instance_nearest(x, y, obj_en_ship);
 }

@@ -4,7 +4,7 @@ try {
     var ide;
     tooltip = "";
     tooltip2 = "";
-    col_shift = is_string(type);
+    var col_shift = is_string(type);
 
     if (!col_shift) {
         col_shift = type > 0;

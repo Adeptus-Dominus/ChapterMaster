@@ -340,7 +340,7 @@ try {
             }
             with (_stars[i]) {
                 if (owner == eFACTION.IMPERIUM && planets) {
-                    if (scr_orbiting_fleet(eFACTION.IMPERIUM) != "none") {
+                    if (scr_orbiting_fleet(eFACTION.IMPERIUM) != noone) {
                         _star_found = true;
                         _choice_star = self.id;
                         break;

@@ -93,8 +93,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
 
     if (board_cooldown == 0) {
         board_cooldown = 60;
-        var o, challenge, boarding_odds, boarding_advantage, boarding_disadvantage, gear_bonus, marine_bonus, outcome_roll, damage_roll, attack, arp, wep, ac, dr, co, i, hits, hurt, damaged_ship, bridge_damage;
-        o = firstest - 1;
+        var challenge, boarding_odds, boarding_advantage, boarding_disadvantage, gear_bonus, marine_bonus, outcome_roll, damage_roll, attack, arp, wep, ac, dr, co, i, hits, hurt, damaged_ship, bridge_damage;
         boarding_odds = 0;
         challenge = 0;
         outcome_roll = 0;
@@ -115,9 +114,6 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
             if (!instance_exists(target)) {
                 exit;
             }
-
-            // show_message(origin);
-            // show_message(string(origin.board_co[1]));
 
             co = origin.board_co[o];
             i = origin.board_id[o];
@@ -141,8 +137,8 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                 if (!is_struct(_weapons[0]) && !is_struct(_weapons[1])) {
                     gear_bonus -= 10;
                 } else {
-                    for (var i = 0; i <= 1; i++) {
-                        var _weapon = _weapons[i];
+                    for (var j = 0; j <= 1; j++) {
+                        var _weapon = _weapons[j];
                         if (!is_struct(_weapon)) {
                             continue;
                         }
@@ -566,16 +562,11 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                             apothecary_had -= 1;
                         }
                     }
-
-                    // show_message(string(obj_ini.role[co][i])+" "+string(obj_ini.role[co][i])+" hit by "+string(hits)+"x "+string(wep)+", "+string(obj_ini.hp[co][i])+" HP remaining");
                 }
             }
-
-            // board_co[i]=0;board_id[i]=0;board_location[i]=0;board_raft[i]=0;
         }
 
         if (experience > 0) {
-            var o = 0, co = 0, i = 0;
             var new_exp, unit_exp, exp_roll;
             for (var o = 0; o < array_length(origin.board_co); o++) {
                 co = origin.board_co[o];

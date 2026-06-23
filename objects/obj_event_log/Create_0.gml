@@ -9,7 +9,7 @@ topic = "";
 info = "";
 strategy = "";
 main_info = "";
-topics = array_create(100, "");
+topics = array_create(101, "");
 related = array_create(4, "");
 
 if (file_exists(PATH_HELP_INI)) {

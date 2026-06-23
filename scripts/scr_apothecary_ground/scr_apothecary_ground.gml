@@ -24,8 +24,8 @@ function calculate_full_chapter_spread() {
     var _apoth_spread = {};
     var _unit_spread = {};
     for (var company = 0; company < 11; company++) {
-        var _marine_len = array_length(obj_ini.name[company]);
-        var _veh_len = array_length(obj_ini.veh_hp[company]);
+        var _marine_len = array_length(obj_ini.name[company]) - 1;
+        var _veh_len = array_length(obj_ini.veh_hp[company]) - 1;
         var _company_length = max(_marine_len, _veh_len);
 
         for (var v = 0; v < _company_length; v++) {
@@ -174,7 +174,7 @@ function system_point_data_spawn() {
 
 /// @self Struct.SpecialistPointHandler
 function process_specialist_points() {
-    var _spreads = chapter_spread();
+    var _spreads = calculate_full_chapter_spread();
     var _tech_spread = _spreads[0];
     var _apoth_spread = _spreads[1];
     var _unit_spread = _spreads[2];

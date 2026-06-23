@@ -26,7 +26,7 @@ function interpret_diag_string(string_data, data) {
 
         // Relationship-based dialogue
         if (struct_exists(string_data, "relationship")) {
-            var _string = string_data.relationship[$ data.relationship];
+            _string = string_data.relationship[$ data.relationship];
             if (is_string(_string)) {
                 return string_interpolate_from_struct(_string, data);
             } else {

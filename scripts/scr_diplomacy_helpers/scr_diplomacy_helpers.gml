@@ -238,7 +238,7 @@ function evaluate_chosen_diplomacy_option(diplo_pressed) {
     }
 }
 
-function scr_diplomacy_hit(selection, new_path = undefined, complex_path = "none") {
+function scr_diplomacy_hit(selection, new_path = undefined, complex_path = undefined) {
     if (array_length(option_selections) > selection) {
         if (point_and_click(option_selections[selection])) {
             if (!is_method(complex_path)) {

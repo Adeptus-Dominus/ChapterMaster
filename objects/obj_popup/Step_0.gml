@@ -216,7 +216,7 @@ try {
             var onceh = 0;
             var mission_star = find_star_by_name(obj_controller.temp[200]);
             var mission_is_go = false;
-            if (mission_star != "none" && planet > 0) {
+            if (mission_star != noone && planet > 0) {
                 var _estimate = estimate;
                 var _planet = planet;
                 var _mission = mission;

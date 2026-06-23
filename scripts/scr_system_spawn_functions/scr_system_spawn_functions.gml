@@ -74,7 +74,7 @@ function player_home_star(home_planet) {
     if (obj_ini.home_name != "random") {
         _star_names.AddUsedName(obj_ini.home_name);
         var _old_name_star = find_star_by_name(obj_ini.home_name);
-        if (_old_name_star != "none") {
+        if (_old_name_star != noone) {
             _old_name_star.name = global.name_generator.GenerateFromSet("star", false);
         }
         name = obj_ini.home_name;
@@ -113,10 +113,9 @@ function player_home_star(home_planet) {
 
     p_player[home_planet] = obj_ini.man_size;
 
-    var unit;
     for (var co = 0; co <= obj_ini.companies; co++) {
-        for (i = 0; i < array_length(obj_ini.name[co]); i++) {
-            unit = fetch_unit([co, i]);
+        for (var i = 0; i < array_length(obj_ini.name[co]) - 1; i++) {
+            var unit = fetch_unit([co, i]);
             if (unit.location_string == name) {
                 unit.planet_location = home_planet;
             }
@@ -132,7 +131,7 @@ function set_player_recruit_planet(recruit_planet) {
         var recruit_name = obj_ini.recruiting_name;
         if (recruit_name != "random") {
             _star_names.AddUsedName(recruit_name);
-            if (find_star_by_name(recruit_name) != "none") {
+            if (find_star_by_name(recruit_name) != noone) {
                 find_star_by_name(recruit_name).name = global.name_generator.GenerateFromSet("star", false);
             }
             name = recruit_name;
@@ -140,7 +139,7 @@ function set_player_recruit_planet(recruit_planet) {
     } else {
         if (obj_ini.home_name != "random") {
             _star_names.AddUsedName(obj_ini.home_name);
-            if (find_star_by_name(obj_ini.home_name) != "none") {
+            if (find_star_by_name(obj_ini.home_name) != noone) {
                 find_star_by_name(obj_ini.home_name).name = global.name_generator.GenerateFromSet("star", false);
             }
             name = obj_ini.home_name;

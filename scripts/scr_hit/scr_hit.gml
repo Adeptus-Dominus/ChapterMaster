@@ -1,7 +1,12 @@
 /// @function scr_hit
 /// @description Returns true if mouse is hovering on the specified rectangle area.
-/// @returns {bool}
-function scr_hit(x1 = 0, y1 = 0, x2 = 0, y2 = 0, force_gui = false) {
+/// @param {Real|Array<Real>} x1
+/// @param {Real} y1
+/// @param {Real} x2
+/// @param {Real} y2
+/// @param {Bool} force_gui
+/// @returns {Bool}
+function scr_hit(x1, y1 = 0, x2 = 0, y2 = 0, force_gui = false) {
     var _mouse_consts = force_gui ? [device_mouse_x_to_gui(0), device_mouse_y_to_gui(0)] : return_mouse_consts();
     if (is_array(x1)) {
         return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], x1[0], x1[1], x1[2], x1[3]);
@@ -12,28 +17,52 @@ function scr_hit(x1 = 0, y1 = 0, x2 = 0, y2 = 0, force_gui = false) {
 
 /// @function sr_hit_struct
 /// @description Returns true if mouse is hovering on the specified rectangle area runs withi any valid strucct with x1, y1, x2, y2.
-/// @returns {bool}
+/// @param {Bool} force_gui
+/// @returns {Bool}
 /// @mixin
 function sr_hit_struct(force_gui = false){
     var _mouse_consts = force_gui ? [device_mouse_x_to_gui(0), device_mouse_y_to_gui(0)] : return_mouse_consts();
     return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], x1, y1, x2, y2);
 }
 
+/// @function scr_hit_object
+/// @description
+/// @param {Bool} force_gui
+/// @returns {Bool}
 function scr_hit_object(force_gui = false){
     var _mouse_consts = force_gui ? [device_mouse_x_to_gui(0), device_mouse_y_to_gui(0)] : return_mouse_consts();
     return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], x, y, x + width, y + height);    
 }
 
+/// @function scr_hit_relative
+/// @description
+/// @param {Array<Real>} x1
+/// @param {Array<Real>} relative
+/// @returns {Bool}
 function scr_hit_relative(x1, relative = [0, 0]) {
     var _mouse_consts = return_mouse_consts();
     return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], relative[0] + x1[0], relative[1] + x1[1], relative[0] + x1[2], relative[1] + x1[3]);
 }
 
+/// @function scr_hit_dimensions
+/// @description
+/// @param {Real} x1
+/// @param {Real} y1
+/// @param {Real} w
+/// @param {Real} h
+/// @returns {Bool}
 function scr_hit_dimensions(x1 = 0, y1 = 0, w = 0, h = 0) {
     var _mouse_consts = return_mouse_consts();
     return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], x1, y1, x1 + w, y1 + h);
 }
 
+/// @function _point_and_click_logic
+/// @description
+/// @param {Array<Real>} _rect
+/// @param {Real} _cooldown
+/// @param {Bool} _lock_bypass
+/// @param {Bool} _inverted
+/// @returns {Bool}
 function _point_and_click_logic(_rect, _cooldown = 60, _lock_bypass = false, _inverted = false) {
     if (!_lock_bypass && global.ui_click_lock) {
         return false;
@@ -105,12 +134,26 @@ function point_outside_and_click(_rect, _cooldown = 60, _lock_bypass = false) {
     return _point_and_click_logic(_rect, _cooldown, _lock_bypass, true);
 }
 
+/// @function point_and_click_sprite
+/// @description
+/// @param {Real} x1
+/// @param {Real} y1
+/// @param {Asset.GMSprite} sprite
+/// @param {Real} x_scale
+/// @param {Real} y_scale
+/// @returns {Bool}
 function point_and_click_sprite(x1, y1, sprite, x_scale = 1, y_scale = 1) {
     var _width = sprite_get_width(sprite) * x_scale;
     var _height = sprite_get_height(sprite) * y_scale;
     return point_and_click([x1, y1, x1 + _width, y1 + _height]);
 }
 
+/// @function mouse_button_clicked
+/// @description
+/// @param {Constant} button
+/// @param {Real} cooldown
+/// @param {Bool} lock_bypass
+/// @returns {Bool}
 function mouse_button_clicked(button = mb_left, cooldown = 60, lock_bypass = false) {
     if (lock_bypass == false && global.ui_click_lock == true) {
         return false;
@@ -165,6 +208,10 @@ function mouse_button_clicked(button = mb_left, cooldown = 60, lock_bypass = fal
     return mouse_clicked;
 }
 
+/// @function mouse_button_held
+/// @description
+/// @param {Constant} _button
+/// @returns {Bool}
 function mouse_button_held(_button = mb_left) {
     var mouse_held = event_number == ev_gui ? device_mouse_check_button(0, _button) : mouse_check_button(_button);
     if (!mouse_held) {
@@ -200,19 +247,21 @@ function mouse_button_held(_button = mb_left) {
     return mouse_held;
 }
 
+/// @function return_mouse_consts
+/// @description
+/// @returns {Array<Real>}
 function return_mouse_consts() {
-    var mouse_const_x;
-    var mouse_const_y;
-    if (event_number == ev_gui) {
-        mouse_const_x = device_mouse_x_to_gui(0);
-        mouse_const_y = device_mouse_y_to_gui(0);
-    } else {
-        mouse_const_x = mouse_x;
-        mouse_const_y = mouse_y;
-    }
+    var mouse_const_x = (event_number == ev_gui) ? device_mouse_x_to_gui(0) : mouse_x;
+    var mouse_const_y = (event_number == ev_gui) ? device_mouse_y_to_gui(0) : mouse_y;
     return [mouse_const_x, mouse_const_y];
 }
 
+/// @function mouse_distance_less
+/// @description
+/// @param {Real} xx
+/// @param {Real} yy
+/// @param {Real} distance
+/// @returns {Bool}
 function mouse_distance_less(xx, yy, distance) {
     var _mouse_consts = return_mouse_consts();
     return point_distance(xx, yy, _mouse_consts[0], _mouse_consts[1]) <= distance;
