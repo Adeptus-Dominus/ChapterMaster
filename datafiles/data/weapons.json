@@ -314,6 +314,28 @@
         ],
         "value": 4
     },
+    "Guard Chainsword": {
+        "abbreviation": "GdChSw",
+        "ammo": 0,
+        "arp": 1,
+        "attack": {
+            "artifact": 190,
+            "master_crafted": 150,
+            "standard": 120
+        },
+        "description": "A mass-produced chainsword issued to Astra Militarum officers and sergeants. Cruder and less potent than an Astartes blade, but a brutal close-quarters weapon in a guardsman's hands.",
+        "melee_hands": 1,
+        "range": 1,
+        "ranged_hands": 0,
+        "spli": 4,
+        "tags": [
+            "chain",
+            "sword",
+            "savage",
+            "boarding 1"
+        ],
+        "value": 3
+    },
     "Choppa": {
         "abbreviation": "Chop",
         "attack": {

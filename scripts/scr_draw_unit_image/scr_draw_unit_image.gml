@@ -539,6 +539,17 @@ function scr_draw_unit_image(_background = false) {
             draw_sprite(global.guardsman_portrait, 0, x_surface_offset, y_surface_offset);
         }
     }
+
+    // ===== Guard Sergeant portrait (mod) =====
+    // Same runtime-PNG approach as the guardsman above. The image ships at images\units\sarge.png.
+    if (role() == "Guard Sergeant") {
+        if (!variable_global_exists("sarge_portrait")) {
+            global.sarge_portrait = sprite_add(working_directory + "/images/units/sarge.png", 1, false, false, 0, 0);
+        }
+        if (sprite_exists(global.sarge_portrait)) {
+            draw_sprite(global.sarge_portrait, 0, x_surface_offset, y_surface_offset);
+        }
+    }
     surface_reset_target();
     shader_reset();
 

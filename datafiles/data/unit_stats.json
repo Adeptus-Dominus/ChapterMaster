@@ -691,30 +691,30 @@
     },
     "guard_sergeant": {
         "ballistic_skill": [
-            15,
+            20,
             1
         ],
         "base_group": "human",
         "charisma": [
-            25,
+            18,
             1
         ],
         "constitution": [
-            45,
+            34,
             1,
             "max"
         ],
         "dexterity": [
-            22,
+            24,
             1
         ],
         "intelligence": [
             18,
             1
         ],
-        "luck": 8,
+        "luck": 6,
         "piety": [
-            28,
+            30,
             1
         ],
         "religion": "imperial_cult",
@@ -722,24 +722,24 @@
             "armour": "Flak Armour",
             "gear": "",
             "mobi": "",
-            "wep1": "Chainsword",
+            "wep1": "Guard Chainsword",
             "wep2": "Laspistol"
         },
         "strength": [
-            30,
+            24,
             1
         ],
         "technology": [
-            10,
+            12,
             1
         ],
         "title": "Guard Sergeant",
         "weapon_skill": [
-            35,
+            18,
             1
         ],
         "wisdom": [
-            20,
+            18,
             1
         ]
     },

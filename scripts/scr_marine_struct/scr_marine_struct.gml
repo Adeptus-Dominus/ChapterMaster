@@ -363,8 +363,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         sz = 1;
         // Guardsmen are line infantry, racked aboard far denser than power-armoured
         // Astartes, so a single trooper takes only a tenth of a marine's berth. A Guard
-        // Squad is left at a full slot, since one already stands in for a whole squad.
-        if (unit_role == "Guardsman") {
+        // Squad is left at a full slot, since one already stands in for a whole squad. A
+        // Guard Sergeant bunks with his men, so he takes the same tenth-slot as a trooper.
+        if (unit_role == "Guardsman" || unit_role == "Guard Sergeant") {
             size = 0.1;
             return size;
         }
