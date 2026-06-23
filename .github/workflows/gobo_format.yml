@@ -14,11 +14,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Download Latest Gobo Release
+      - name: Download Gobo
         run: |
-          curl -LO https://github.com/EttyKitty/Gobo/releases/download/v1.0.0/gobo-ubuntu.zip
+          gh release download v0.1.0 --repo EttyKitty/GoboCat --pattern "gobo-ubuntu.zip"
           unzip gobo-ubuntu.zip
           chmod +x ./gobo
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Formatter
         run: |
@@ -33,3 +35,5 @@ jobs:
           body: "This is an automated PR containing formatting updates for all .gml files."
           branch: automation/gobo-format-all
           delete-branch: true
+          author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
