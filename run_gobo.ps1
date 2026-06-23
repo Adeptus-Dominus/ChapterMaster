@@ -1,9 +1,22 @@
 # --- CONFIGURATION ---
 $Repo = "EttyKitty/Gobo"
 $FormatterName = "Gobo"
-$Formatter = "gobo.exe"
-$ZipFile = "gobo-windows.zip"
 $Extension = "*.gml"
+
+# Detect operating system and set platform-specific variables
+if ($IsWindows) {
+    $Formatter = "gobo.exe"
+    $PlatformKeyword = "windows"
+} elseif ($IsLinux) {
+    $Formatter = "gobo"
+    $PlatformKeyword = "linux"
+} elseif ($IsMacOS) {
+    $Formatter = "gobo"
+    $PlatformKeyword = "mac"
+} else {
+    Write-Error "Unsupported operating system."
+    exit 1
+}
 
 Clear-Host
 Write-Host "=========================================" -ForegroundColor Cyan
@@ -12,13 +25,41 @@ Write-Host "=========================================" -ForegroundColor Cyan
 
 # --- AUTO-UPDATE ---
 if (!(Test-Path $Formatter)) {
-	Write-Host ""
+    Write-Host ""
     Write-Host "[INFO] Downloading latest release..." -ForegroundColor Yellow
     $ApiUrl = "https://api.github.com/repos/$Repo/releases/latest"
-    $Asset = (Invoke-RestMethod -Uri $ApiUrl).assets | Where-Object { $_.name -like "*windows*.zip" } | Select-Object -First 1
-    Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile "temp.zip"
-    Expand-Archive -Path "temp.zip" -DestinationPath "." -Force
-    Remove-Item "temp.zip"
+    $Assets = (Invoke-RestMethod -Uri $ApiUrl).assets
+    
+    # Match asset based on platform keyword
+    $Asset = $Assets | Where-Object { $_.name -like "*$PlatformKeyword*" } | Select-Object -First 1
+    
+    # Fallback for macOS if asset name uses "osx" instead of "mac"
+    if (!$Asset -and $IsMacOS) {
+        $Asset = $Assets | Where-Object { $_.name -like "*osx*" } | Select-Object -First 1
+    }
+    
+    if (!$Asset) {
+        Write-Error "Could not find a valid release asset for this platform."
+        exit 1
+    }
+    
+    $FileName = $Asset.name
+    Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile $FileName
+    
+    # Handle extraction based on file extension
+    if ($FileName -like "*.zip") {
+        Expand-Archive -Path $FileName -DestinationPath "." -Force
+    } elseif ($FileName -like "*.tar.gz" -or $FileName -like "*.tgz") {
+        tar -xzf $FileName
+    }
+    
+    Remove-Item $FileName
+    
+    # Set execution permissions on Linux and macOS
+    if (!$IsWindows) {
+        chmod +x "./$Formatter"
+    }
+    
     Write-Host "[SUCCESS] Formatter ready.`n" -ForegroundColor Green
 }
 
@@ -26,10 +67,9 @@ Write-Host ""
 Write-Host "[INFO] This script will run $FormatterName on all $Extension files in the project" -ForegroundColor Cyan
 Write-Host ""
 
-pause
+[void](Read-Host "Press Enter to continue")
 
 Write-Host ""
-
 Write-Host "[INFO] Formatting project..." -ForegroundColor Cyan
 
 $Stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
@@ -85,10 +125,10 @@ Write-Host ""
 
 if ($LASTEXITCODE -ne 0 -or $Errors -gt 0) {
     Write-Host "[TERMINATED] Finished with errors." -ForegroundColor Red
-    pause
+    [void](Read-Host "Press Enter to exit")
     exit 1
 } else {
-    Write-Host "[SUCCESS] Press any key to close..." -ForegroundColor Green
-    pause
+    Write-Host "[SUCCESS] Press Enter to close..." -ForegroundColor Green
+    [void](Read-Host "Press Enter to exit")
     exit 0
 }
