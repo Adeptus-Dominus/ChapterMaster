@@ -303,7 +303,7 @@ function navy_hunt_player_assets() {
     if (hold) {
         // Chase player fleets
         var chase_fleet = get_nearest_player_fleet(x, y, false, true);
-        if (chase_fleet != "none") {
+        if (chase_fleet != noone) {
             var thatp, my_dis;
             etah = chase_fleet.eta;
 

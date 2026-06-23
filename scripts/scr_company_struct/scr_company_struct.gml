@@ -311,7 +311,7 @@ function CompanyStruct(comp) constructor {
                 if (point_and_click(garrison_but)) {
                     var garrrison_star = find_star_by_name(cur_assignment.location);
                     obj_controller.view_squad = false;
-                    if (garrrison_star != "none") {
+                    if (garrrison_star != noone) {
                         scr_toggle_manage();
                         obj_controller.x = garrrison_star.x;
                         obj_controller.y = garrrison_star.y;

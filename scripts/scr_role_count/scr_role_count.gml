@@ -33,7 +33,7 @@ function scr_role_count(target_role, search_location = "", return_type = "count"
     }
 
     if (coom >= 0) {
-        for (var i = 0; i < array_length(obj_ini.TTRPG[coom]); i++) {
+        for (var i = 0; i < array_length(obj_ini.TTRPG[coom]) - 1; i++) {
             var unit = obj_ini.TTRPG[coom][i];
             if (unit.name() == "") {
                 continue;
@@ -49,7 +49,7 @@ function scr_role_count(target_role, search_location = "", return_type = "count"
 
     if (coom < 0) {
         for (var com = 0; com <= obj_ini.companies; com++) {
-            for (var i = 0; i < array_length(obj_ini.TTRPG[com]); i++) {
+            for (var i = 0; i < array_length(obj_ini.TTRPG[com]) - 1; i++) {
                 var match = false;
                 var unit = fetch_unit([com, i]);
                 if (unit.name() == "") {

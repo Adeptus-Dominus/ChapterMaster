@@ -1,14 +1,11 @@
 set_zoom_to_default(); //bandaid the purge screen flying off screen if zoomed out
 
 once_only = 0;
-if (!variable_instance_exists(self, "purge")) {
-    purge = 0;
-}
-if (!variable_instance_exists(self, "planet_number")) {
-    planet_number = 0;
-}
-if (!variable_instance_exists(self, "attack")) {
-    attack = 0;
+var _vars = ["purge", "planet_number", "attack"];
+for (var i = 0; i < array_length(_vars); i++) {
+    if (!variable_instance_exists(self, _vars[i])) {
+        variable_instance_set(self, _vars[i], 0);
+    }
 }
 
 raid_tact = 1;

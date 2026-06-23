@@ -6,15 +6,15 @@ function NameTracker(set_name) constructor {
 
     composite_names = [];
 
-    composite_components = {};
+    composite_components = {
+            prefixes : [],
+            suffixes : [],
+            special : []
+        };
 
     generic_counter = 0;
 
     static LoadSimpleNames = function(file_name, fallback_value, json_names_property_name = "names") {
-        if (json_names_property_name == noone) {
-            json_names_property_name = "names";
-        }
-
         var file_loader = new JsonFileListLoader();
 
         var load_result = file_loader.load_list_from_json_file($"main/names/{file_name}.json", [json_names_property_name]);
@@ -36,21 +36,17 @@ function NameTracker(set_name) constructor {
             "special"
         ]
     ) {
-        if (json_names_property_names == noone) {
-            json_names_property_names = [
-                "prefixes",
-                "suffixes",
-                "special"
-            ];
-        }
-
         composite_names = json_names_property_names;
 
         var file_loader = new JsonFileListLoader();
 
         var load_result = file_loader.load_list_from_json_file($"main/names/{file_name}.json", json_names_property_names);
 
-        var result = {};
+        var result = {
+            prefixes : [],
+            suffixes : [],
+            special : []
+        };
 
         for (var i = 0; i < array_length(json_names_property_names); i++) {
             var _property_name = json_names_property_names[i];

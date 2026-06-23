@@ -243,7 +243,7 @@ function mission_inquisition_tomb_world(tomb_worlds) {
 /// @self Asset.GMObject.obj_popup
 function init_mission_inquisition_tomb_world() {
     mission_star = find_star_by_name(pop_data.system);
-    if (mission_star == "none") {
+    if (mission_star == noone) {
         popup_default_close();
         exit;
     }
@@ -342,7 +342,7 @@ function add_new_inquis_mission() {
 /// @self Asset.GMObject.obj_popup
 function init_mission_hunt_inquisitor() {
     mission_star = find_star_by_name(pop_data.system);
-    if (mission_star == "none") {
+    if (mission_star == noone) {
         popup_default_close();
         exit;
     }

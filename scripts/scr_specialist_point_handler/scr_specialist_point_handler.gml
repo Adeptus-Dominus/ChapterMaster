@@ -1,5 +1,4 @@
 function SpecialistPointHandler() constructor {
-    static chapter_spread = calculate_full_chapter_spread;
     forge_queue = [];
     techs = [];
     apoths = [];

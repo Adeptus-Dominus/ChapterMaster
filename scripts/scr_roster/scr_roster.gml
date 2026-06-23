@@ -255,7 +255,7 @@ function Roster() constructor {
         var _company_present = false;
         for (var co = 0; co <= obj_ini.companies; co++) {
             _company_present = false;
-            for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
+            for (var i = 0; i < array_length(obj_ini.role[co]) - 1; i++) {
                 var _allow = false;
                 var _unit = fetch_unit([co, i]);
                 if (_unit.name() == "" || _unit.role() == "") {

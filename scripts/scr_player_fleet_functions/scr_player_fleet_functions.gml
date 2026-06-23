@@ -2,7 +2,7 @@
 function fleet_has_roles(fleet, roles = []) {
     var all_ships = fleet_full_ship_array(fleet);
     for (var i = 0; i <= 10; i++) {
-        for (var s = 0; s < array_length(obj_ini.TTRPG[i]); s++) {
+        for (var s = 0; s < array_length(obj_ini.TTRPG[i]) - 1; s++) {
             var unit = fetch_unit([i, s]);
             if (unit.planet_location < 1) {
                 if (array_contains(all_ships, unit.ship_location)) {
@@ -486,10 +486,9 @@ function set_fleet_location(location) {
             obj_ini.ship_location[temp] = location;
         }
     }
-    var unit;
     for (var co = 0; co <= obj_ini.companies; co++) {
-        for (var i = 0; i < array_length(obj_ini.name[co]); i++) {
-            unit = fetch_unit([co, i]);
+        for (var i = 0; i < array_length(obj_ini.name[co]) - 1; i++) {
+            var unit = fetch_unit([co, i]);
             if (array_contains(fleet_ships, unit.ship_location)) {
                 unit.location_string = location;
             }

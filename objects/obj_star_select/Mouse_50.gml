@@ -95,7 +95,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
                 var p_fleet = get_nearest_player_fleet(x, y, true);
 
                 obj_controller.temp[1099] = target.name;
-                good = p_fleet != "none" && instance_exists(target);
+                good = p_fleet != noone && instance_exists(target);
 
                 if (good == 1) {
                     // trying to find the star

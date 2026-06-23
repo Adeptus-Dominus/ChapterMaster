@@ -40,7 +40,7 @@ if (instance_exists(obj_controller)) {
         instance_create(0, 0, obj_ncombat);
         obj_ncombat.battle_special = "cs_meeting_battle10";
 
-        var meeting_star = "none";
+        var meeting_star = noone;
         var meeting_planet;
         with (obj_star) {
             var meeting = has_problem_star("meeting");
@@ -54,7 +54,7 @@ if (instance_exists(obj_controller)) {
                 }
             }
         }
-        if (meeting_star == "none") {
+        if (meeting_star == noone) {
             instance_activate_object(obj_star);
             with (obj_star) {
                 if (string_count(name, scr_master_loc()) > 0) {
@@ -63,7 +63,7 @@ if (instance_exists(obj_controller)) {
                 }
             }
         }
-        if (meeting_star != "none") {
+        if (meeting_star != noone) {
             obj_ncombat.battle_object = meeting_star;
             obj_ncombat.battle_loc = meeting_star.name;
             obj_ncombat.battle_id = meeting_planet;

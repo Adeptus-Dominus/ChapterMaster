@@ -1,5 +1,3 @@
-// Global singletons
-// global.NameGenerator = new NameGenerator();
 LOGGER.debug("Creating obj_ini");
 
 // normal stuff
@@ -19,8 +17,6 @@ commands = 0;
 heh1 = 0;
 heh2 = 0;
 
-// strin="";
-// strin2="";
 companies = 10;
 progenitor = ePROGENITOR.NONE;
 aspirant_trial = 0;
@@ -185,8 +181,6 @@ if (global.load == -1) {
 
 /// Called from save function to take all object variables and convert them to a json savable format and return it
 serialize = function() {
-    var object_ini = self;
-
     var _marines = array_create(0);
     for (var _coy = 0; _coy <= 10; _coy++) {
         for (var _mar = 0; _mar <= 500; _mar++) {
@@ -225,8 +219,8 @@ serialize = function() {
         chapter_squad_arrangement: chapter_squad_arrangement,
     };
 
-    if (struct_exists(object_ini, "last_ship")) {
-        save_data.last_ship = object_ini.last_ship;
+    if (variable_instance_exists(self, "last_ship")) {
+        save_data.last_ship = last_ship;
     }
 
     var excluded_from_save = [
@@ -245,7 +239,7 @@ serialize = function() {
         "chapter_squad_arrangement"
     ];
 
-    copy_serializable_fields(object_ini, save_data, excluded_from_save);
+    copy_serializable_fields(self, save_data, excluded_from_save);
 
     return save_data;
 };
@@ -314,7 +308,7 @@ deserialize = function(save_data) {
         obj_ini.TTRPG[company][marine].load_json_data(struct);
     }
 
-    obj_ini.TTRPG = array_create(11, array_create(501, []));
+    obj_ini.TTRPG = array_create(11, array_create(501, {}));
     for (var _coy = 0; _coy <= 10; _coy++) {
         for (var _mar = 0; _mar <= 500; _mar++) {
             obj_ini.TTRPG[_coy][_mar] = new TTRPG_stats("chapter", _coy, _mar, "blank");

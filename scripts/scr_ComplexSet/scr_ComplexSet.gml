@@ -469,20 +469,31 @@ function ComplexSet(_unit) constructor {
         return true;
     };
 
-    static assign_modulars = function(modulars = global.modular_drawing_items, position = false) {
-        var _mod = {};
+    /// @description 
+    /// @param {Array<Struct>} modulars
+    /// @param {String} position
+    static assign_modulars = function(modulars, position) {
+        var _mod = {
+            sprite: undefined,
+            body_types: [],
+            position: "",
+            prevent_others: false,
+            ban: [],
+            role_type: [],
+            offsets: {}
+        };
 
         try {
             for (var i = 0; i < array_length(modulars); i++) {
-                _sub_comps = "none";
-                _shadows = "none";
+                _sub_comps = [];
+                _shadows = undefined;
                 _mod = modulars[i];
                 var _allowed = base_modulars_checks(_mod);
 
                 if (!_allowed) {
                     continue;
                 }
-                if (position != false) {
+                if (position != "") {
                     if (position == "weapon") {
                         var _weapon_map = _mod.weapon_map;
                         if (unit.weapon_one() == _weapon_map) {
@@ -493,11 +504,11 @@ function ComplexSet(_unit) constructor {
                         }
                     }
                 } else {
-                    add_to_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
+                    add_to_area(position, _mod.sprite, _overides, _sub_comps, _shadows);
                 }
                 if (struct_exists(_mod, "prevent_others")) {
-                    replace_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
-                    array_push(blocked, _mod.position);
+                    replace_area(position, _mod.sprite, _overides, _sub_comps, _shadows);
+                    array_push(blocked, position);
                     if (struct_exists(_mod, "ban")) {
                         for (var b = 0; b < array_length(_mod.ban); b++) {
                             if (!array_contains(banned, _mod.ban[b])) {
@@ -1016,9 +1027,9 @@ function ComplexSet(_unit) constructor {
         x_surface_offset += weapon.ui_xmod;
         y_surface_offset += weapon.ui_ymod;
 
-        var _subs = struct_exists(weapon, "subcomponents") ? weapon.subcomponents : "none";
+        var _subs = struct_exists(weapon, "subcomponents") ? weapon.subcomponents : [];
 
-        var _shadows = struct_exists(weapon, "shadows") ? weapon.shadows : "none";
+        var _shadows = struct_exists(weapon, "shadows") ? weapon.shadows : undefined;
 
         add_to_area(position, weapon.sprite, {}, _subs, _shadows);
 
@@ -1505,7 +1516,6 @@ function ComplexSet(_unit) constructor {
                 add_to_area("cloak_trim", spr_cloak_image_0);
             }
         }
-        assign_modulars();
         var wep_opts = format_weapon_visuals(unit.weapon_one());
         if (array_length(wep_opts)) {
             assign_modulars(wep_opts, "weapon");
@@ -1550,63 +1560,68 @@ function ComplexSet(_unit) constructor {
     /// @param {Array} sub_components Sub-component data for this sprite's frame range
     /// @param {Asset.GMSprite} shadow Shadow data for this sprite's frame range
     static add_to_area = function(area, add_sprite, overide_data = {}, sub_components = [], shadow = undefined) {
-        if (sprite_exists(add_sprite)) {
-            var _add_sprite_length = sprite_get_number(add_sprite);
-            var _overide_start = 0;
-            if (!struct_exists(self, area)) {
-                self[$ area] = {
-                    sources: [add_sprite],
-                    offsets: [0],
-                    source_frames: [_add_sprite_length],
-                    total: _add_sprite_length,
-                };
-            } else {
-                var _existing_data = self[$ area];
-                if (is_struct(_existing_data)) {
-                    _overide_start = _existing_data.total;
-                    array_push(_existing_data.sources, add_sprite);
-                    array_push(_existing_data.offsets, _overide_start);
-                    array_push(_existing_data.source_frames, _add_sprite_length);
-                    _existing_data.total += _add_sprite_length;
+        try {
+            if (sprite_exists(add_sprite)) {
+                var _add_sprite_length = sprite_get_number(add_sprite);
+                var _overide_start = 0;
+                if (!struct_exists(self, area)) {
+                    self[$ area] = {
+                        sources: [add_sprite],
+                        offsets: [0],
+                        source_frames: [_add_sprite_length],
+                        total: _add_sprite_length,
+                    };
                 } else {
-                    if (sprite_exists(_existing_data)) {
-                        _overide_start = sprite_get_number(_existing_data);
-                        self[$ area] = {
-                            sources: [
-                                _existing_data,
-                                add_sprite
-                            ],
-                            offsets: [
-                                0,
-                                _overide_start
-                            ],
-                            source_frames: [
-                                sprite_get_number(_existing_data),
-                                _add_sprite_length
-                            ],
-                            total: _overide_start + _add_sprite_length,
-                        };
+                    var _existing_data = self[$ area];
+                    if (is_struct(_existing_data)) {
+                        _overide_start = _existing_data.total;
+                        array_push(_existing_data.sources, add_sprite);
+                        array_push(_existing_data.offsets, _overide_start);
+                        array_push(_existing_data.source_frames, _add_sprite_length);
+                        _existing_data.total += _add_sprite_length;
                     } else {
-                        self[$ area] = {
-                            sources: [add_sprite],
-                            offsets: [0],
-                            source_frames: [_add_sprite_length],
-                            total: _add_sprite_length,
-                        };
-                        _overide_start = 0;
+                        if (sprite_exists(_existing_data)) {
+                            _overide_start = sprite_get_number(_existing_data);
+                            self[$ area] = {
+                                sources: [
+                                    _existing_data,
+                                    add_sprite
+                                ],
+                                offsets: [
+                                    0,
+                                    _overide_start
+                                ],
+                                source_frames: [
+                                    sprite_get_number(_existing_data),
+                                    _add_sprite_length
+                                ],
+                                total: _overide_start + _add_sprite_length,
+                            };
+                        } else {
+                            self[$ area] = {
+                                sources: [add_sprite],
+                                offsets: [0],
+                                source_frames: [_add_sprite_length],
+                                total: _add_sprite_length,
+                            };
+                            _overide_start = 0;
+                        }
                     }
                 }
+        
+                if (overide_data != {}) {
+                    add_overide(area, _overide_start, _add_sprite_length, overide_data);
+                }
+                if (sub_components != []) {
+                    add_sub_components(area, _overide_start, _add_sprite_length, sub_components);
+                }
+                if (shadow ?? true && sprite_exists(shadow)) {
+                    add_shadow_set(area, _overide_start, _add_sprite_length, shadow);
+                }
             }
-
-            if (overide_data != {}) {
-                add_overide(area, _overide_start, _add_sprite_length, overide_data);
-            }
-            if (sub_components != []) {
-                add_sub_components(area, _overide_start, _add_sprite_length, sub_components);
-            }
-            if (shadow != undefined && sprite_exists(shadow)) {
-                add_shadow_set(area, _overide_start, _add_sprite_length, shadow);
-            }
+        } catch (_exception) {
+            ERROR_HANDLER.assert_popup(_exception);
+            return {};
         }
     };
 

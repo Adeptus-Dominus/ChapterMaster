@@ -1,3 +1,5 @@
+role_names_all = "";
+
 if (!is_string(type)) {
     var z = (type >= 100) ? type - 100 : type;
 

@@ -113,10 +113,9 @@ function player_home_star(home_planet) {
 
     p_player[home_planet] = obj_ini.man_size;
 
-    var unit;
     for (var co = 0; co <= obj_ini.companies; co++) {
-        for (i = 0; i < array_length(obj_ini.name[co]); i++) {
-            unit = fetch_unit([co, i]);
+        for (var i = 0; i < array_length(obj_ini.name[co]) - 1; i++) {
+            var unit = fetch_unit([co, i]);
             if (unit.location_string == name) {
                 unit.planet_location = home_planet;
             }

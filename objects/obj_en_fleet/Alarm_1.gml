@@ -389,7 +389,7 @@ try {
             action = "";
             if (array_length(complex_route) > 0) {
                 var target_loc = find_star_by_name(complex_route[0]);
-                if (target_loc != "none") {
+                if (target_loc != noone) {
                     array_delete(complex_route, 0, 1);
                     action_x = target_loc.x;
                     action_y = target_loc.y;

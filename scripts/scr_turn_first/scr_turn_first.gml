@@ -21,7 +21,7 @@ function scr_turn_first() {
 
                 if (instance_exists(obj_p_fleet) && (!_identifiable)) {
                     var _arti_fleet = find_ships_fleet(_cur_arti.ship_id());
-                    if (_arti_fleet != "none") {
+                    if (_arti_fleet != noone) {
                         if (array_length(_arti_fleet.capital_num)) {
                             _identifiable = true;
                             _cur_arti.set_ship_id(_arti_fleet.capital_num[0]);

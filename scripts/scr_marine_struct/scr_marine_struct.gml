@@ -1782,7 +1782,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return $"{scr_roman_numerals()[company - 1]}";
     };
 
-    static load_marine = function(ship, star = "none") {
+    static load_marine = function(ship, star = noone) {
         get_unit_size(); // make sure marines size given it's current equipment is correct
         var current_location = marine_location();
         var system = current_location[2];
@@ -1806,10 +1806,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 ship_location = ship; //id of ship marine is now loaded on
                 obj_ini.ship_carrying[ship] += size; //update ship capacity
 
-                if (star == "none") {
+                if (star == noone) {
                     star = find_star_by_name(system);
                 }
-                if (star != "none") {
+                if (star != noone) {
                     if (star.p_player[current_location[1]] > 0) {
                         star.p_player[current_location[1]] -= size;
                     }
@@ -2261,14 +2261,18 @@ function jsonify_marine_struct(company, marine, stringify = true) {
 }
 
 /// @param {Array<Real>} unit where unit[0] is company and unit[1] is the position
-/// @returns {Struct.TTRPG_stats} unit
+/// @returns {Struct} unit
 function fetch_unit(unit) {
-    return obj_ini.TTRPG[unit[0]][unit[1]];
+    try {
+        return obj_ini.TTRPG[unit[0]][unit[1]];
+    } catch (_exception) {
+        ERROR_HANDLER.assert_popup(_exception);
+    }
 }
 
 function fetch_unit_uid(uuid) {
     for (var i = 0; i < obj_ini.companies; i++) {
-        var _comp_length = array_length(obj_ini.TTRPG[i]);
+        var _comp_length = array_length(obj_ini.TTRPG[i]) - 1;
         for (var s = 0; s < _comp_length; s++) {
             var _unit = fetch_unit([i, s]);
             if (_unit.uid == uuid) {
