@@ -142,6 +142,8 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                 "units_lost": 0,
                 "unit_type": "",
                 "hits": 0,
+                "severity": 0,
+                "is_vehicle": false,
             };
 
             // ### Vehicle Damage Processing ###
@@ -166,7 +168,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                 }
             }
 
-            scr_flavor2(damage_data.units_lost, damage_data.unit_type, hostile_range, hostile_weapon, damage_data.hits, hostile_splash);
+            scr_flavor2(damage_data.units_lost, damage_data.unit_type, hostile_range, hostile_weapon, damage_data.hits, hostile_splash, damage_data.severity, damage_data.is_vehicle);
 
             // ### Cleanup ###
             // If the target_object got wiped out, move it off-screen
@@ -338,6 +340,9 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash) 
         } */
         var _hp_before = marine.hp();
         marine.add_or_sub_health(-_modified_damage);
+        if ((_hp_before > 0) && (_modified_damage > 0)) {
+            _damage_data.severity = max(_damage_data.severity, clamp(_modified_damage / _hp_before, 0, 1));
+        }
 
         // Check if marine is dead
         if (check_dead_marines(marine, marine_index)) {
@@ -434,8 +439,13 @@ function damage_vehicles(_damage_data, _shots, _damage, _weapon_index) {
         if (enemy == 13 && _modified_damage < 1) {
             _modified_damage = 1;
         }
+        var _veh_hp_before = veh_hp[veh_index];
         veh_hp[veh_index] -= _modified_damage;
         _damage_data.unit_type = veh_type[veh_index];
+        _damage_data.is_vehicle = true;
+        if (_veh_hp_before > 0) {
+            _damage_data.severity = max(_damage_data.severity, clamp(_modified_damage / _veh_hp_before, 0, 1));
+        }
 
         // Check if the vehicle is destroyed
         if (veh_hp[veh_index] <= 0 && veh_dead[veh_index] == 0) {

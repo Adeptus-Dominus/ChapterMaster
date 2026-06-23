@@ -116,6 +116,9 @@ if (((messages > 0) && (messages_shown < 24)) && (messages_shown <= 100)) {
         if (message_priority[that] == 137) {
             newline_color = "red";
         }
+        if (message_priority[that] == 136) {
+            newline_color = "yellow";
+        }
 
         scr_newtext();
         messages_shown += 1;

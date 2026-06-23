@@ -49,15 +49,24 @@ function drop_select_unit_selection() {
         // draw_rectangle(xx+1084,yy+215,xx+1142,yy+273,0);
 
         // Formation
-        var _formation_str = $"Formation: {obj_controller.bat_formation[formation_possible[formation_current]]}";
+        // Hardening: never index formation_possible without checking it is non-empty and the
+        // index is in range. A drifted or stale formation_current (e.g. across a load) would
+        // otherwise crash the whole drop screen on draw.
+        var _formation_str = "Formation: -";
+        if (array_length(formation_possible) > 0) {
+            formation_current = clamp(formation_current, 0, array_length(formation_possible) - 1);
+            _formation_str = $"Formation: {obj_controller.bat_formation[formation_possible[formation_current]]}";
+        }
         formation.x1 = x2 - 40 - (string_width(_formation_str) + 4);
         formation.y1 = y1 + 80;
         formation.update({str1: _formation_str});
         formation.draw();
         if (formation.clicked()) {
-            formation_current++;
-            if (formation_current >= array_length(formation_possible)) {
-                formation_current = 0;
+            if (array_length(formation_possible) > 0) {
+                formation_current++;
+                if (formation_current >= array_length(formation_possible)) {
+                    formation_current = 0;
+                }
             }
         }
 
@@ -205,11 +214,19 @@ function drop_select_unit_selection() {
         if (purge == 0) {
             combating = 1; // Start battle here
 
+            // Hardening: resolve the chosen formation through a single bounds-checked read so a
+            // bad formation_current cannot crash the drop launch. Falls back to formation 0 when
+            // no formations are available.
+            var _chosen_form = 0;
+            if (array_length(formation_possible) > 0) {
+                _chosen_form = formation_possible[clamp(formation_current, 0, array_length(formation_possible) - 1)];
+            }
+
             if (attack == 1) {
-                obj_controller.last_attack_form = formation_possible[formation_current];
+                obj_controller.last_attack_form = _chosen_form;
             }
             if (attack == 0) {
-                obj_controller.last_raid_form = formation_possible[formation_current];
+                obj_controller.last_raid_form = _chosen_form;
             }
 
             instance_deactivate_all(true);
@@ -234,7 +251,7 @@ function drop_select_unit_selection() {
             obj_ncombat.dropping = 1 - attack;
             obj_ncombat.attacking = attack;
             obj_ncombat.enemy = attacking;
-            obj_ncombat.formation_set = formation_possible[formation_current];
+            obj_ncombat.formation_set = _chosen_form;
             obj_ncombat.defending = false;
             obj_ncombat.local_forces = roster.local_button.active;
 

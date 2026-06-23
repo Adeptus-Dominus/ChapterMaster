@@ -22,7 +22,40 @@ function display_battle_log_message() {
     obj_ncombat.alarm[3] = 5;
 }
 
-function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties) {
+/// @function combat_damage_flavor
+/// @description Returns a combat-log fragment describing a NON-LETHAL hit, scaled by how close the
+/// volley came to a kill (_severity = damage dealt as a fraction of one target's current health,
+/// 0 = nothing got through, approaching 1 = almost a kill). Universal across weapons: infantry get
+/// wound language, vehicles get structural-damage language. The fragments slot in after a comma,
+/// e.g. "334 Lasguns strike at the Ork Boy ranks, {fragment}." Edit the wording freely; the tier
+/// thresholds are the only thing the rest of the code depends on.
+/// @param {real} _severity   0..1, damage this hit dealt over the target's current health
+/// @param {bool} _is_vehicle target is a vehicle (hull/armour language instead of wounds)
+/// @param {bool} _is_single  target is a single model rather than a rank of many
+/// @returns {string}
+function combat_damage_flavor(_severity, _is_vehicle, _is_single) {
+    if (_is_vehicle) {
+        if (_severity < 0.10) return "but the hits spend themselves against its armour";
+        if (_severity < 0.35) return "scorching its plating";
+        if (_severity < 0.65) return "denting its hull";
+        if (_severity < 0.90) return "tearing gashes into its hull";
+        return "leaving it scorched and barely running";
+    }
+    if (_is_single) {
+        if (_severity < 0.10) return "but its armour turns the blows aside";
+        if (_severity < 0.35) return "but it is only grazed";
+        if (_severity < 0.65) return "and it is wounded";
+        if (_severity < 0.90) return "and it is gravely wounded";
+        return "and it is left maimed, clinging to life";
+    }
+    if (_severity < 0.10) return "but fail to penetrate their armour";
+    if (_severity < 0.35) return "drawing little more than scratches";
+    if (_severity < 0.65) return "wounding several";
+    if (_severity < 0.90) return "leaving deep wounds among them";
+    return "leaving the survivors maimed and reeling";
+}
+
+function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties, damage_done = -1) {
     // Generates flavor based on the damage and casualties from scr_shoot, only for the player
 
     var attack_message, kill_message, leader_message, targeh;
@@ -455,25 +488,35 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
     if (flavoured == false) {
         flavoured = true;
         if (!character_shot) {
+            // Wound/damage severity for non-lethal hits: how close this volley came to a kill,
+            // measured as damage dealt over the target's current health. damage_done < 0 means the
+            // caller did not supply it, so keep the old flat "survives / no damage" wording.
+            var _flav_hp = target.dudes_hp[targeh];
+            var _flav_veh = (target.dudes_vehicle[targeh] == 1);
+            var _flav_sev = ((damage_done >= 0) && (_flav_hp > 0)) ? clamp(damage_done / _flav_hp, 0, 1) : -1;
+            var _flav_shots = (number_of_shots == 1) ? weapon_name : $"{number_of_shots} {weapon_name}s";
+
             if (target.dudes_num[targeh] == 1) {
-                if (number_of_shots == 1 && casulties == 0) {
-                    attack_message = $"A {target_name} is struck by {weapon_name} but survives.";
-                } else if (number_of_shots == 1 && casulties == 1) {
-                    attack_message = $"A {target_name} is struck down by {weapon_name}.";
-                } else if (number_of_shots > 1 && casulties == 0) {
-                    attack_message = $"A {target_name} is struck by {number_of_shots} {weapon_name}s but survives.";
-                } else if (number_of_shots > 1 && casulties == 1) {
-                    attack_message = $"A {target_name} is struck down by {number_of_shots} {weapon_name}s.";
+                if (casulties >= 1) {
+                    attack_message = $"A {target_name} is struck down by {_flav_shots}.";
+                } else if (_flav_sev < 0) {
+                    attack_message = $"A {target_name} is struck by {_flav_shots} but survives.";
+                } else {
+                    attack_message = $"A {target_name} is struck by {_flav_shots}, {combat_damage_flavor(_flav_sev, _flav_veh, true)}.";
                 }
             } else {
-                if (number_of_shots == 1 && casulties == 0) {
-                    attack_message = $"{weapon_name} strikes at {target_name} but they survive.";
-                } else if (number_of_shots == 1 && casulties > 0) {
-                    attack_message = $"{weapon_name} strikes at {target_name} and kills {casulties}";
-                } else if (number_of_shots > 1 && casulties == 0) {
-                    attack_message = $"{number_of_shots} {weapon_name}s strike at the {target_name} ranks, but fail to inflict damage.";
-                } else if (number_of_shots > 1 && casulties > 0) {
-                    attack_message = $"{number_of_shots} {weapon_name}s strike at the {target_name} ranks, killing {casulties}.";
+                if (casulties > 0) {
+                    attack_message = (number_of_shots == 1)
+                        ? $"{weapon_name} strikes at {target_name} and kills {casulties}."
+                        : $"{number_of_shots} {weapon_name}s strike at the {target_name} ranks, killing {casulties}.";
+                } else if (_flav_sev < 0) {
+                    attack_message = (number_of_shots == 1)
+                        ? $"{weapon_name} strikes at {target_name} but they survive."
+                        : $"{number_of_shots} {weapon_name}s strike at the {target_name} ranks, but fail to inflict damage.";
+                } else if (number_of_shots == 1) {
+                    attack_message = $"{weapon_name} strikes at {target_name}, {combat_damage_flavor(_flav_sev, _flav_veh, false)}.";
+                } else {
+                    attack_message = $"{number_of_shots} {weapon_name}s strike at the {target_name} ranks, {combat_damage_flavor(_flav_sev, _flav_veh, false)}.";
                 }
             }
         } else {
@@ -542,6 +585,16 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
                 leader_message = string_replace(leader_message, "it", "him");
             }
             message_priority = 5;
+        }
+    }
+
+    // Yellow when this volley wounded the target but killed nothing (damage, no destroy). Skips
+    // the "fail to penetrate" band (under 10% of a unit's health) so a shrugged-off volley stays
+    // the default colour, and skips leaders so their priority colour is preserved.
+    if ((message_priority == 0) && (casulties == 0) && (damage_done >= 0)) {
+        var _yhp = target.dudes_hp[targeh];
+        if ((_yhp > 0) && ((damage_done / _yhp) >= 0.10)) {
+            message_priority = 136;
         }
     }
 

@@ -27,8 +27,10 @@
 // volleys have their effective shots scaled by this fraction before damage. The player branch
 // divides damage_per_weapon by wep_num rather than the scaled count, so per-shot damage is
 // untouched and the cut is linear: the volley still fires in full but only this share lands.
-// 1 = no reduction (marine-grade), 0.35 = roughly a third of the lasguns connect.
-#macro GUARD_DOOM 0.35
+// 1 = no reduction (marine-grade, also what Elite Cultists fire at), 0.35 = roughly a third of
+// the lasguns connect. Kills scale about linearly with this value, so 0.7 is roughly double the
+// effectiveness of 0.35 with no change to damage or penetration.
+#macro GUARD_DOOM 0.7
 
 #macro MAX_STC_PER_SUBCATEGORY 6
 #macro DEFAULT_TOOLTIP_VIEW_OFFSET 32

@@ -533,7 +533,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                             }
                         }
                     } // End repeat 10
-                    scr_flavor(weapon_index_position, target_object, target_type, shots_fired - wep_rnum[weapon_index_position], casualties);
+                    scr_flavor(weapon_index_position, target_object, target_type, shots_fired - wep_rnum[weapon_index_position], casualties, c);
 
                     if ((target_object.dudes_num[target_type] == 1) && (c > 0)) {
                         target_object.dudes_hp[target_type] -= c;

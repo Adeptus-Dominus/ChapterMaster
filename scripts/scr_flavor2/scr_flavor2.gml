@@ -1,4 +1,28 @@
-function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapon, hostile_shots, hostile_splash) {
+/// @function incoming_damage_flavor
+/// @description Combat-log sentence for an enemy hit that did NOT kill, scaled by how close it came
+/// to a kill (_severity = damage over the target's health before the hit, 0..1). Vehicles get
+/// armour/hull language, infantry get wound language. Appended after the attack verb, e.g.
+/// "24 Big Shootaz roar and blast away at Rhino.  Piercing the armour." Edit the wording freely;
+/// only the tier thresholds matter to the rest of the code.
+/// @param {real} _severity 0..1
+/// @param {bool} _is_vehicle target is a vehicle
+/// @returns {string}
+function incoming_damage_flavor(_severity, _is_vehicle) {
+    if (_is_vehicle) {
+        if (_severity < 0.10) return "Only peeling the paint.";
+        if (_severity < 0.35) return "Barely putting a dent in the armour.";
+        if (_severity < 0.65) return "Piercing the armour.";
+        if (_severity < 0.90) return "Punching a huge hole in the armour.";
+        return "Almost destroying it.";
+    }
+    if (_severity < 0.10) return "But the armour holds.";
+    if (_severity < 0.35) return "Drawing blood.";
+    if (_severity < 0.65) return "Wounding several.";
+    if (_severity < 0.90) return "Leaving deep wounds.";
+    return "Leaving the survivors maimed and reeling.";
+}
+
+function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapon, hostile_shots, hostile_splash, damage_severity = 0, target_is_vehicle = false) {
     // Generates flavor based on the damage and casualties from scr_shoot, only for the opponent
 
     if (obj_ncombat.wall_destroyed == 1) {
@@ -33,6 +57,13 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     }
     if (hostile_splash == 1) {
         _hostile_shots = max(1, round(_hostile_shots / 3));
+    }
+
+    // Suppress empty attacks: no hits landed or no resolved target means there is nothing worth
+    // reporting. This is what produced lines like "0 rokkitz shoot at ." and "blasting into ."
+    // Walls are exempt; their own branch handles display.
+    if ((target_type != "wall") && ((hostile_shots <= 0) || (string(target_type) == ""))) {
+        exit;
     }
 
     // show_message(string(hostile_weapon)+"|"+string(_hostile_weapon)+"#"+string(los)+"#"+string(los_num));
@@ -382,17 +413,9 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     if (flavor == 0) {
         flavor = true;
         if (_hostile_shots == 1) {
-            if (lost_units_count == 0) {
-                m1 += $"{_hostile_weapon} strikes at {target_type}, no casualties.";
-            } else {
-                m1 += $"{_hostile_weapon} strikes at {target_type}. ";
-            }
+            m1 += $"{_hostile_weapon} strikes at {target_type}.  ";
         } else {
-            if (lost_units_count == 0) {
-                m1 += $"{_hostile_shots} {_hostile_weapon}s strike at {target_type}, no casualties.";
-            } else {
-                m1 += $"{_hostile_shots} {_hostile_weapon}s strike at {target_type}. ";
-            }
+            m1 += $"{_hostile_shots} {_hostile_weapon}s strike at {target_type}.  ";
         }
     }
 
@@ -520,14 +543,27 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         }
     }
 
+    // No kills but the attack connected: report the damage instead of a bare attack verb, scaled by
+    // how close it came to a kill. Severity is 0 for targets that do not track it (e.g. guardsmen),
+    // which lands on the lowest tier.
+    if ((m2 == "") && (lost_units_count == 0) && (hostile_shots > 0) && (target_type != "wall")) {
+        m2 = incoming_damage_flavor(damage_severity, target_is_vehicle);
+    }
+
     mes = m1 + m2 + m3;
     // show_message(mes);
 
     if (string_length(mes) > 3) {
+        // Yellow when the enemy hurt your forces but destroyed nothing (damage, no kill). Kills carry
+        // the word "lost" and are coloured red elsewhere, so they are left at priority 0 here.
+        var _enemy_priority = 0;
+        if ((lost_units_count == 0) && (hostile_shots > 0) && (damage_severity >= 0.10)) {
+            _enemy_priority = 136;
+        }
         obj_ncombat.messages += 1;
         obj_ncombat.message[obj_ncombat.messages] = mes;
         obj_ncombat.message_sz[obj_ncombat.messages] = lost_units_count + (0.5 - (obj_ncombat.messages / 100));
-        obj_ncombat.message_priority[obj_ncombat.messages] = 0;
+        obj_ncombat.message_priority[obj_ncombat.messages] = _enemy_priority;
         obj_ncombat.alarm[3] = 2;
     }
 }
