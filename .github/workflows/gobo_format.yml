@@ -16,7 +16,7 @@ jobs:
 
       - name: Download Latest Gobo Release
         run: |
-          curl -LO https://github.com/EttyKitty/Gobo/releases/download/v1.0.0/gobo-ubuntu.zip
+          gh release download v0.1.0 --repo EttyKitty/GoboCat --pattern "gobo-ubuntu.zip"
           unzip gobo-ubuntu.zip
           chmod +x ./gobo
 
