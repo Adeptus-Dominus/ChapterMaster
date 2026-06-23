@@ -14,7 +14,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Download Latest Gobo Release
+      - name: Download Gobo
         run: |
           gh release download v0.1.0 --repo EttyKitty/GoboCat --pattern "gobo-ubuntu.zip"
           unzip gobo-ubuntu.zip
