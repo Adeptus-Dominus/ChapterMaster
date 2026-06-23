@@ -749,7 +749,7 @@ function PlanetData(planet, system) constructor {
         if (_has_warboss) {
             _rando = roll_dice(1, 100) + 10;
             _ork_fleet = scr_orbiting_fleet(eFACTION.ORK, system);
-            if (_ork_fleet != "none" && _rando < _warboss.turns_static) {
+            if (_ork_fleet != noone && _rando < _warboss.turns_static) {
                 _warboss.turns_static = 0;
                 _ork_fleet.cargo_data.ork_warboss = _warboss;
                 delete_feature(eP_FEATURES.ORKWARBOSS);

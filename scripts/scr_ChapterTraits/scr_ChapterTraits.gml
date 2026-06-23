@@ -469,10 +469,11 @@ function ChapterGameData(data = {}) constructor {
 function draw_chapter_trait_list(type) {
     add_draw_return_values();
 
+    var _list = [];
     if (type) {
-        var _list = obj_creation.all_advantages;
+        _list = obj_creation.all_advantages;
     } else {
-        var _list = obj_creation.all_disadvantages;
+        _list = obj_creation.all_disadvantages;
     }
 
     var _title = type ? "Advantages" : "Disadvantage";
@@ -553,12 +554,14 @@ function draw_selected_chapter_traits(type) {
 
     add_draw_return_values();
 
+    var _title_x = 0;
+    var _advarray = [];
     if (bool(type)) {
-        var _title_x = 436;
-        var _advarray = obj_creation.all_advantages;
+        _title_x = 436;
+        _advarray = obj_creation.all_advantages;
     } else {
-        var _title_x = 810;
-        var _advarray = obj_creation.all_disadvantages;
+        _title_x = 810;
+        _advarray = obj_creation.all_disadvantages;
     }
 
     var _adv_txt = {
@@ -580,9 +583,10 @@ function draw_selected_chapter_traits(type) {
     var _advantages = 0;
     for (var i = 0; i < array_length(_advarray); i++) {
         var _adv = _advarray[i];
+        var _array = [];
         if (_adv.activated) {
             if (_advantages < _max_advantage_count) {
-                var _array = draw_unit_buttons([_adv_txt.x1, _adv_txt.y1 + (_advantages * _adv_txt.h)], $"[-] {_adv.name}", [0.75, 0.75], CM_GREEN_COLOR);
+                _array = draw_unit_buttons([_adv_txt.x1, _adv_txt.y1 + (_advantages * _adv_txt.h)], $"[-] {_adv.name}", [0.75, 0.75], CM_GREEN_COLOR);
                 _advantages++;
             } else {
                 _adv.remove();

@@ -242,10 +242,6 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     uid = scr_uuid_generate();
     allow_bulk_swap = true;
 
-    if (squad_type != undefined) {
-        change_type(squad_type);
-    }
-
     //TODO introduce loyalty hits from long periods of exile from hierarchy nodes
     // nodes will be captains chapter masters and other senior staff
     time_from_parent_node = 0;
@@ -285,6 +281,10 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         type = new_type;
         add_type_data(obj_ini.squad_types[$ type].type_data);
     };
+
+    if (squad_type != undefined) {
+        change_type(squad_type);
+    }
 
     static find_squad_unit_types = function() {
         //find out what type of units squad consists of
@@ -586,14 +586,13 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     //this means the highest ranking dude in a squad will always be the squad leader
     //failing that the highest experience dude
     static determine_leader = function() {
-        var _unit;
         var member_length = array_length(members);
         var hierarchy = role_hierarchy();
         var leader_hier_pos = array_length(hierarchy);
-        var leader = "none", _unit;
+        var leader = "none";
         var highest_exp = 0;
         for (var i = 0; i < member_length; i++) {
-            _unit = fetch_unit(members[i]);
+            var _unit = fetch_unit(members[i]);
             if (_unit.name() == "") {
                 array_delete(members, i, 1);
                 member_length--;
@@ -656,24 +655,23 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     static set_location = function(loc, lid, wid) {
         var member_length = array_length(members);
         var member_location;
-        var system = "none";
+        var system = noone;
         with (obj_star) {
             if (name == loc) {
                 system = self;
                 break;
             }
         }
-        if (system == "none") {
+        if (system == noone) {
             return "invalid system";
         }
         member_loop(set_member_loc, {loc: loc, lid: lid, wid: wid, system: system});
     };
 
     static member_loop = function(member_func, data_pack) {
-        var _unit;
         member_length = array_length(members);
         for (var i = 0; i < member_length; i++) {
-            _unit = fetch_unit(members[i]);
+            var _unit = fetch_unit(members[i]);
             if (_unit.name() == "") {
                 array_delete(members, i, 1);
                 member_length--;

@@ -89,7 +89,6 @@ function scr_crusade() {
                     death_determination -= 10;
                 }
 
-                var dead = false;
                 if (death_determination > death_data[0] || death_determination_2 > death_data[1]) {
                     dead = true;
                     if (unit.role() == obj_ini.role[100][5]) {
@@ -149,15 +148,11 @@ function scr_crusade() {
         obj_controller.gene_seed += seed;
     }
 
-    // i=-1;
-    // repeat(11){
-    // i+=1;
     with (obj_ini) {
         for (i = 0; i <= 10; i++) {
             scr_company_order(i);
         }
     }
-    // }
 
     if (roll3 <= 10) {
         artifacts += 1;

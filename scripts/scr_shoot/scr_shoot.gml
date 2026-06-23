@@ -190,7 +190,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
         }
 
         if (instance_exists(target_object) && (owner == eFACTION.PLAYER)) {
-            // LOGGER.debug("{0}, {1}, {2}, {3}, {4}", wep_num[weapon_index_position], wep[weapon_index_position], splash[weapon_index_position], range[weapon_index_position], att[weapon_index_position])
             var shots_fired = 0;
             var stop = 0;
             var damage_type = "";
@@ -202,16 +201,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             if (shots_fired == 0) {
                 exit;
             }
-
-            /*if (weapon_index_position<-40){
-				if (weapon_index_position=-53){
-					if (player_silos>30) then shots_fired=30;
-					if (player_silos<30) then shots_fired=player_silos;
-				}
-				if (weapon_index_position=-51) or (weapon_index_position=-52){
-					shots_fired=round(player_silos/2);
-				}
-			}*/
 
             while (target_type < array_length(target_object.dudes_hp)) {
                 if (target_object.dudes_hp[target_type] == 0) {
@@ -267,7 +256,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 
                 if (that_works == true) {
                     var damage_per_weapon = 0, c = 0, target_armour_value = 0, ap = 0, wii = "";
-                    attack_count_mod = 0;
+                    var attack_count_mod = 0;
 
                     if (weapon_index_position >= 0) {
                         damage_per_weapon = aggregate_damage / wep_num[weapon_index_position];
@@ -449,9 +438,9 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 
                                     c2 = b2 * shots_remaining; // New damage
 
-                                    var casualties2, ponies2, onceh2;
-                                    onceh2 = 0;
-                                    ponies2 = 0;
+                                    var casualties2 = 0;
+                                    var onceh2 = 0;
+                                    var ponies2 = 0;
                                     if (attack_count_mod <= 1) {
                                         casualties2 = min(floor(c2 / target_object.dudes_hp[godd]), shots_remaining);
                                     }
@@ -474,10 +463,9 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                                     }
 
                                     if ((casualties2 >= 1) && (shots_fired > 0)) {
-                                        var iii, found, openz;
-                                        iii = 0;
-                                        found = 0;
-                                        openz = 0;
+                                        var iii = 0;
+                                        var found = 0;
+                                        var openz = 0;
                                         repeat (40) {
                                             iii += 1;
                                             if (found == 0) {
@@ -496,29 +484,8 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                                             obj_ncombat.dead_ene_n[openz] = casualties;
                                         }
 
-                                        /*obj_ncombat.dead_enemies+=1;
-									if (casualties2=1) then obj_ncombat.dead_ene[obj_ncombat.dead_enemies]="1 "+string(target_object.dudes[godd]);
-									if (casualties2>1) then obj_ncombat.dead_ene[obj_ncombat.dead_enemies]=string(casualties2)+" "+string(target_object.dudes[godd]);
-									obj_ncombat.dead_enemies+=1;
-									obj_ncombat.dead_ene[obj_ncombat.dead_enemies]=string(target_object.dudes[godd]);
-									obj_ncombat.dead_ene_n[obj_ncombat.dead_enemies]=casualties;*/
-
                                         target_object.dudes_num[godd] -= casualties2;
                                         obj_ncombat.enemy_forces -= casualties2;
-                                    }
-
-                                    if (casualties2 >= 1) {
-                                        if (target_object.dudes_num[godd] <= 0) {
-                                            overkill = casualties2 - target_object.dudes_num[godd];
-                                            damage_remaining -= casualties2 * target_object.dudes_hp[godd];
-
-                                            var proportional_shots;
-                                            proportional_shots = round(damage_remaining / a2);
-                                            shots_remaining = proportional_shots;
-
-                                            // show_message("killed "+string(casualties2)+"x "+string(target_object.dudes[godd]));
-                                            // show_message("did "+string(c)+" damage with "+string(proportional_shots)+" shots fired, have "+string(damage_remaining)+" damage remaining");
-                                        }
                                     }
                                 }
                             }

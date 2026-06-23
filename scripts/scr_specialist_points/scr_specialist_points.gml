@@ -3,7 +3,7 @@ function unit_apothecary_points_gen(turn_end = false) {
     var reasons = {};
     var points = 0;
     if (_trained_person) {
-        var points = ((technology / 2) + (wisdom / 2) + intelligence) / 8;
+        points = ((technology / 2) + (wisdom / 2) + intelligence) / 8;
         reasons.points = points;
     }
     return [points, reasons];
@@ -15,7 +15,7 @@ function unit_forge_point_generation(turn_end = false) {
     var reasons = {};
     var points = 0;
     if (_trained_person) {
-        var points = technology / 5;
+        points = technology / 5;
         reasons.trained = points;
     }
     if (job != "none") {

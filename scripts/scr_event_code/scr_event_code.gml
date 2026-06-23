@@ -163,6 +163,7 @@ function event_end_turn_action() {
                 var marine_num = _event.marine;
                 var _unit = fetch_unit([comp, marine_num]);
                 var item = _event.crafted;
+                var _pop_data = {};
 
                 LOGGER.warning($"comp: {comp}, marine_num: {marine_num}");
 
@@ -235,14 +236,12 @@ function event_end_turn_action() {
                             choice_func: popup_default_close,
                         }
                     ];
-                    var _pop_data = {
+                    _pop_data = {
                         options: options,
                         marine_number: marine_num,
                         company: comp,
                         marine_name: marine_name,
                     };
-                } else {
-                    _pop_data = "";
                 }
 
                 scr_popup("He Built It", tixt, "tech_build", _pop_data);

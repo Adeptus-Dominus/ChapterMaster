@@ -55,8 +55,6 @@ function gift_artifact(give_to, known = true) {
     var artifact_struct = obj_ini.artifact_struct[arti_index];
     var cur_tags = obj_ini.artifact_tags[arti_index];
 
-    // obj_controller.artifacts-=1; // this is done by delete_artifact() that is run later;
-
     obj_controller.cooldown = 10;
     if (obj_controller.menu_artifact > obj_controller.artifacts) {
         obj_controller.menu_artifact = obj_controller.artifacts;
@@ -214,16 +212,13 @@ function setup_gift_popup() {
 
             fac_buttons = [];
 
+            var _y1 = 131;
             for (var i = 2; i <= 8; i++) {
                 if (i == 7) {
                     continue;
                 }
-                var _y1 = 131;
-                if (i > 2) {
-                    var _y1 = _last_y;
-                }
                 var _fac_but = new UnitButtonObject({x1: 660, w: 147, set_width: true, y1: _y1, style: "pixel", label: obj_controller.faction[i], faction: i, tooltip: $"Disposition : {obj_controller.disposition[i]}"});
-                var _last_y = _fac_but.y2;
+                _y1 = _fac_but.y2;
                 array_push(fac_buttons, _fac_but);
             }
         }
@@ -243,10 +238,9 @@ function setup_gift_stc_popup() {
 }
 
 function gift_stc_fragment() {
-    var r1, r2, cn;
-    r2 = 0;
-    cn = obj_controller;
-    r1 = floor(random(cn.stc_wargear_un + cn.stc_vehicles_un + cn.stc_ships_un)) + 1;
+    var r2 = 0;
+    var cn = obj_controller;
+    var r1 = floor(random(cn.stc_wargear_un + cn.stc_vehicles_un + cn.stc_ships_un)) + 1;
 
     if ((r1 < cn.stc_wargear_un) && (cn.stc_wargear_un > 0)) {
         r2 = 1;
@@ -301,8 +295,7 @@ function gift_stc_fragment() {
     scr_toggle_diplomacy();
     obj_controller.diplomacy = giveto;
     obj_controller.force_goodbye = -1;
-    var the;
-    the = "";
+    var the = "";
     if ((giveto != eFACTION.ORK) && (giveto != eFACTION.CHAOS)) {
         the = "the ";
     }

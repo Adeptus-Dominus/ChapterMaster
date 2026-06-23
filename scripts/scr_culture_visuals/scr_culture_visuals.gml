@@ -107,10 +107,11 @@ function load_vis_set_to_global(directory, data) {
 
         if (directory_exists(directory + $"/{_sprite_item.name}")) {
             var _sprite_direct = directory + $"/{_sprite_item.name}";
+            var _new_sprite = undefined;
 
             // --- MAIN SPRITE LOADING ---
             if (file_exists($"{_sprite_direct}/1.png")) {
-                var _new_sprite = sprite_add(_sprite_direct + "/1.png", 1, 0, 0, 0, 0);
+                _new_sprite = sprite_add(_sprite_direct + "/1.png", 1, 0, 0, 0, 0);
                 var s = 2;
                 while (file_exists(_sprite_direct + $"/{s}.png")) {
                     var _merge_sprite = sprite_add(_sprite_direct + $"/{s}.png", 1, 0, 0, 0, 0);
@@ -1945,9 +1946,10 @@ function DummyMarine() constructor {
     static armour = function() {
         var armours = global.list_basic_power_armour;
         var _last_armour = last_armour;
+        var _armour = "";
         with (obj_creation) {
             if (!livery_picker.freeze_armour) {
-                var _armour = armour[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.TACTICAL];
+                _armour = armour[100][livery_picker.role_set > 0 ? livery_picker.role_set : eROLE.TACTICAL];
                 if (array_contains(armours, _armour) || _armour == STR_ANY_POWER_ARMOUR) {
                     _armour = array_random_element(armours);
                 } else if (array_contains(global.list_terminator_armour, _armour) || _armour == STR_ANY_POWER_ARMOUR) {
@@ -2188,8 +2190,9 @@ function add_purity_seal_markers() {
 }
 
 function format_weapon_visuals(weapon_name) {
+    var _weapon_visual_data = {};
     if (struct_exists(global.weapon_visual_data, weapon_name)) {
-        var _weapon_visual_data = global.weapon_visual_data[$ weapon_name];
+        _weapon_visual_data = global.weapon_visual_data[$ weapon_name];
     } else {
         return [];
     }

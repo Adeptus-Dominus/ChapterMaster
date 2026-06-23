@@ -359,7 +359,6 @@ function TradeAttempt(diplomacy) constructor {
             _option.disabled = true;
             _option.tooltip = $"{trade_disp} disposition required";
         }
-        //_option.bind_scope = _option;
         array_push(demand_options, _option);
     };
 
@@ -388,7 +387,6 @@ function TradeAttempt(diplomacy) constructor {
             new_demand_buttons(60, "Cyclonic Torpedo", "equip", 1);
             break;
         case 5:
-            //new_demand_buttons(30, "Inferno Bolts", "equip");
             new_demand_buttons(40, "Sister of Battle", "merc", 5);
             new_demand_buttons(45, "Sister Hospitaler", "merc", 3);
             break;
@@ -468,7 +466,6 @@ function TradeAttempt(diplomacy) constructor {
         draw_set_font(fnt_40k_14);
         draw_set_color(CM_GREEN_COLOR);
         var _requested_count = 0;
-        //if (obj_controller.trading_artifact = 0){
         for (var i = 0; i < array_length(demand_options); i++) {
             var _opt = demand_options[i];
             if (_opt.number != _opt.number_last) {
@@ -496,9 +493,8 @@ function TradeAttempt(diplomacy) constructor {
                 _requested_count++;
             }
         }
-        //}
 
-        var _requested_count = 0;
+        _requested_count = 0;
         draw_text(507, 529, $"{global.chapter_name}:");
         for (var i = 0; i < array_length(offer_options); i++) {
             var _opt = offer_options[i];

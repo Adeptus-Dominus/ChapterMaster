@@ -201,75 +201,6 @@ function process_specialist_points() {
         array_push(_unit_spread[$ name], self);
     }
 
-    // --- Step 2: Process Locations ---
-    for (var i = 0; i < _loc_count; i++) {
-        var _cur_loc = _locations[i];
-        var _loc_slots = _unit_spread[$ _cur_loc];
-        var _star_inst = (array_length(_loc_slots) > STAR_INSTANCE_INDEX) ? _loc_slots[STAR_INSTANCE_INDEX] : pointer_null;
-
-        if (_star_inst != pointer_null) {
-            point_breakdown.systems[$ _star_inst.name] = system_point_data_spawn();
-        }
-
-        for (var _p = 0; _p < PLANET_SLOT_COUNT; _p++) {
-            var _cur_units = _loc_slots[_p];
-            var _unit_count = array_length(_cur_units);
-            if (_unit_count == 0) {
-                continue;
-            }
-
-            var _cur_apoths = _apoth_spread[$ _cur_loc][_p];
-            var _cur_techs = _tech_spread[$ _cur_loc][_p];
-
-            var _pool = {
-                heal: 0,
-                forge: 0,
-            };
-
-            // Calculate Generation
-            for (var a = 0, _al = array_length(_cur_apoths); a < _al; a++) {
-                _pool.heal += _cur_apoths[a].apothecary_point_generation(turn_end)[0];
-            }
-            for (var t = 0, _tl = array_length(_cur_techs); t < _tl; t++) {
-                _pool.forge += _cur_techs[t].forge_point_generation(turn_end)[0];
-            }
-
-            var _initial_heal = _pool.heal;
-            var _initial_forge = _pool.forge;
-
-            // Process Maintenance and Repairs/Heal
-            for (var u = 0; u < _unit_count; u++) {
-                var _unit = _cur_units[u];
-                if (is_array(_unit)) {
-                    _process_vehicle_maintenance(_unit, _pool);
-                } else if (is_struct(_unit)) {
-                    _process_marine_maintenance(_unit, _pool);
-                }
-            }
-
-            // Record Stats
-            var _stats = {
-                heal_points: _initial_heal,
-                forge_points: _initial_forge,
-                heal_points_use: _initial_heal - _pool.heal,
-                forge_points_use: _initial_forge - _pool.forge,
-            };
-
-            if (_star_inst != pointer_null) {
-                point_breakdown.systems[$ _star_inst.name][_p] = _stats;
-
-                // Planet specific logic (Orbit is 0, Planets are 1-4)
-                if (turn_end && _p > 0 && array_length(_star_inst.p_feature[_p]) > 0) {
-                    var _planet_data = _star_inst.get_planet_data(_p);
-                    _planet_data.recover_starship(_cur_techs);
-                    _planet_data.planet_training(_pool.heal);
-                }
-            } else if (_p == 0 && string_pos("ref instance", _cur_loc) > 0) {
-                _handle_instance_point_recording(_cur_loc, _stats);
-            }
-        }
-    }
-
     /// @param {Array} _unit
     /// @param {Struct} _pool
     static _process_vehicle_maintenance = function(_unit, _pool) {
@@ -355,4 +286,73 @@ function process_specialist_points() {
             LOGGER.error($"Failed to parse instance ID from location string: {_loc_str} | Error: {_ex.message}");
         }
     };
+    
+    // --- Step 2: Process Locations ---
+    for (var i = 0; i < _loc_count; i++) {
+        var _cur_loc = _locations[i];
+        var _loc_slots = _unit_spread[$ _cur_loc];
+        var _star_inst = (array_length(_loc_slots) > STAR_INSTANCE_INDEX) ? _loc_slots[STAR_INSTANCE_INDEX] : pointer_null;
+
+        if (_star_inst != pointer_null) {
+            point_breakdown.systems[$ _star_inst.name] = system_point_data_spawn();
+        }
+
+        for (var _p = 0; _p < PLANET_SLOT_COUNT; _p++) {
+            var _cur_units = _loc_slots[_p];
+            var _unit_count = array_length(_cur_units);
+            if (_unit_count == 0) {
+                continue;
+            }
+
+            var _cur_apoths = _apoth_spread[$ _cur_loc][_p];
+            var _cur_techs = _tech_spread[$ _cur_loc][_p];
+
+            var _pool = {
+                heal: 0,
+                forge: 0,
+            };
+
+            // Calculate Generation
+            for (var a = 0, _al = array_length(_cur_apoths); a < _al; a++) {
+                _pool.heal += _cur_apoths[a].apothecary_point_generation(turn_end)[0];
+            }
+            for (var t = 0, _tl = array_length(_cur_techs); t < _tl; t++) {
+                _pool.forge += _cur_techs[t].forge_point_generation(turn_end)[0];
+            }
+
+            var _initial_heal = _pool.heal;
+            var _initial_forge = _pool.forge;
+
+            // Process Maintenance and Repairs/Heal
+            for (var u = 0; u < _unit_count; u++) {
+                var _unit = _cur_units[u];
+                if (is_array(_unit)) {
+                    _process_vehicle_maintenance(_unit, _pool);
+                } else if (is_struct(_unit)) {
+                    _process_marine_maintenance(_unit, _pool);
+                }
+            }
+
+            // Record Stats
+            var _stats = {
+                heal_points: _initial_heal,
+                forge_points: _initial_forge,
+                heal_points_use: _initial_heal - _pool.heal,
+                forge_points_use: _initial_forge - _pool.forge,
+            };
+
+            if (_star_inst != pointer_null) {
+                point_breakdown.systems[$ _star_inst.name][_p] = _stats;
+
+                // Planet specific logic (Orbit is 0, Planets are 1-4)
+                if (turn_end && _p > 0 && array_length(_star_inst.p_feature[_p]) > 0) {
+                    var _planet_data = _star_inst.get_planet_data(_p);
+                    _planet_data.recover_starship(_cur_techs);
+                    _planet_data.planet_training(_pool.heal);
+                }
+            } else if (_p == 0 && string_pos("ref instance", _cur_loc) > 0) {
+                _handle_instance_point_recording(_cur_loc, _stats);
+            }
+        }
+    }
 }

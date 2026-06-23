@@ -6,9 +6,6 @@ function json_to_gamemaker(_json_path, _func) {
     var file_buffer = undefined;
     try {
         if (file_exists(_json_path)) {
-            var _json_string = "";
-            var _parsed_json = {};
-
             file_buffer = buffer_load(_json_path);
 
             if (file_buffer == -1) {

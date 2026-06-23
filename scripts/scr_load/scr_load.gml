@@ -1,6 +1,7 @@
 function scr_load(save_part, save_id) {
     var t1 = get_timer();
     var filename = string(PATH_SAVE_FILES, save_id);
+    var json_game_save = {};
     if (save_id == 0) {
         filename = string(PATH_AUTOSAVE_FILE);
         LOGGER.info("Loading from Autosave");
@@ -9,7 +10,7 @@ function scr_load(save_part, save_id) {
         var _gamesave_buffer = buffer_load(filename);
         var _gamesave_string = buffer_read(_gamesave_buffer, buffer_string);
         buffer_delete(_gamesave_buffer);
-        var json_game_save = json_parse(_gamesave_string);
+        json_game_save = json_parse(_gamesave_string);
     }
 
     if (!struct_exists(obj_saveload.GameSave, "Save")) {
@@ -63,7 +64,7 @@ function scr_load(save_part, save_id) {
                 "point_breakdown",
                 "apothecary_points",
                 "forge_points",
-                "chapter_master_data"
+                "chapter_master_data",
             ]; // skip automatic setting of certain vars, handle explicitly later
 
             // Automatic var setting
@@ -75,7 +76,6 @@ function scr_load(save_part, save_id) {
                     continue;
                 }
                 var loaded_value = struct_get(save_data, var_name);
-                // LOGGER.debug($"obj_controller var: {var_name}  -  val: {loaded_value}");
                 try {
                     variable_struct_set(obj_controller, var_name, loaded_value);
                 } catch (e) {
@@ -149,7 +149,6 @@ function scr_load(save_part, save_id) {
         global.load = -1;
         scr_image("force", -50, 0, 0, 0, 0);
         LOGGER.info("Loading completed");
-        // room_goto(rm_game);
     }
 
     var t2 = get_timer();

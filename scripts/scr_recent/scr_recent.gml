@@ -5,7 +5,6 @@ function scr_recent(recent_type = "", keyword = "", numerical_data = 0) {
 
     // Add an entry to the end of the argument2array
     if ((string(recent_type) != "") && (string(keyword) != "")) {
-        i = obj_controller.recent_happenings;
         array_push(obj_controller.recent_type, recent_type);
         array_push(obj_controller.recent_keyword, keyword);
         array_push(obj_controller.recent_turn, obj_controller.turn);
@@ -21,9 +20,8 @@ function scr_recent(recent_type = "", keyword = "", numerical_data = 0) {
                 array_push(delete_positions, i);
             }
         }
-        var del_pos;
         for (var i = 0; i < array_length(delete_positions); i++) {
-            del_pos = delete_positions[i];
+            var del_pos = delete_positions[i];
             array_delete(obj_controller.recent_type, del_pos, 1);
             array_delete(obj_controller.recent_keyword, del_pos, 1);
             array_delete(obj_controller.recent_turn, del_pos, 1);

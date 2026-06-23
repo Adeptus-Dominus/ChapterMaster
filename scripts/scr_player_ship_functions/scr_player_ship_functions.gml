@@ -188,14 +188,14 @@ function loose_ship_to_warp_event() {
         text += $"  {marine_count} Battle Brothers were onboard.";
     }
     scr_event_log("red", text);
-    var _lost_ship_fleet = "none";
+    var _lost_ship_fleet = noone;
     with (obj_p_fleet) {
         if (action == "Lost") {
             _lost_ship_fleet = id;
         }
     }
-    if (_lost_ship_fleet == "none") {
-        var _lost_ship_fleet = instance_create(-500, -500, obj_p_fleet);
+    if (_lost_ship_fleet == noone) {
+        _lost_ship_fleet = instance_create(-500, -500, obj_p_fleet);
         _lost_ship_fleet.owner = eFACTION.PLAYER;
     }
 
@@ -236,7 +236,6 @@ function loose_ship_to_warp_event() {
 
 //TODO make method for setting ship weaponry
 function new_player_ship(type, start_loc = "home", new_name = "") {
-    var ship_names = "", index = 0;
     var index = new_player_ship_defaults();
 
     for (var k = 0; k <= 200; k++) {
