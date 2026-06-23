@@ -61,7 +61,7 @@ function role_groups(group, include_trainee = false, include_heads = true) {
                 _roles[eROLE.TECHMARINE],
                 _roles[eROLE.LIBRARIAN],
                 "Codiciery",
-                "Lexicanum",
+                "Lexicanum"
             ];
             if (include_trainee) {
                 _role_list = array_concat(_role_list, role_groups(SPECIALISTS_TRAINEES));

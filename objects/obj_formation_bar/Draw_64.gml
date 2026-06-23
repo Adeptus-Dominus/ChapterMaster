@@ -4,7 +4,7 @@ if (tist=true){
     draw_set_color(c_purple);draw_set_alpha(1);
     if (instance_exists(col_parent)) and (!instance_exists(col_target)){draw_line_width(mouse_x,mouse_y,col_parent._x1,col_parent._y1,2);}
     if (instance_exists(col_target)){draw_line_width(mouse_x,mouse_y,col_target._x1,col_target._y1,5);}
-}*/ 
+}*/
 
 add_draw_return_values();
 
@@ -12,12 +12,11 @@ mouse_consts = return_mouse_consts();
 
 draw_set_alpha(1);
 
-
 var _x1 = x;
 var _y1 = y;
 
-if (dragging){
-    _y1 += 1000
+if (dragging) {
+    _y1 += 1000;
 }
 
 var max_hi = height - 4;

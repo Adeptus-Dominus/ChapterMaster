@@ -150,19 +150,19 @@ function Box(data) constructor {
     standard_loc_data();
     colour = CM_GREEN_COLOR;
 
-    static update = function(data){
+    static update = function(data) {
         move_data_to_current_scope(data, true);
 
-        if (w == 0 && x2 > 0){
+        if (w == 0 && x2 > 0) {
             w = x2 - x1;
         }
-        if (h == 0 && y2 > 0){
+        if (h == 0 && y2 > 0) {
             h = y2 - y1;
         }
 
         y2 = y1 + h;
         x2 = x1 + w;
-    }
+    };
 
     update(data);
 
@@ -273,70 +273,47 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
     };
 }
 
-function ValueShifter(value_text, data) constructor{
+function ValueShifter(value_text, data) constructor {
     standard_loc_data();
     string_tag = value_text;
     max_clamp = 1000;
     min_clamp = -1000;
-    reactive_string = new ReactiveString(value_text, 0, 0, {halign : fa_center});
+    reactive_string = new ReactiveString(value_text, 0, 0, {halign: fa_center});
 
     current_value = 0;
     shift_value = 1;
 
-
     draw_set_font(fnt_40k_14b);
     var _but_width = string_height("-") + 8;
 
-    decrease_button = new UnitButtonObject({
-        label:"-", 
-        color : c_red,
-        tooltip : "click to decrease",
-        set_width : true,
-        w : _but_width
-    });
+    decrease_button = new UnitButtonObject({label: "-", color: c_red, tooltip: "click to decrease", set_width: true, w: _but_width});
 
-    increase_button = new UnitButtonObject({
-        label:"-", 
-        color : c_green,
-        tooltip : "click to increase",
-        set_width : true,
-        w : _but_width
-    });
+    increase_button = new UnitButtonObject({label: "-", color: c_green, tooltip: "click to increase", set_width: true, w: _but_width});
 
-    static update = function(data = {}){
+    static update = function(data = {}) {
         move_data_to_current_scope(data, true);
-        reactive_string.update({
-            x1, 
-            y1, 
-            text : $"{string_tag}:{current_value}"
-        });
+        reactive_string.update({x1, y1, text: $"{string_tag}:{current_value}"});
 
         var _react_width_diff = (reactive_string.w / 2) + 10;
-        decrease_button.update({
-            x1 : x1 - _react_width_diff - decrease_button.w, 
-            y1 : y1
-        });
-        increase_button.update({
-            x1 : x1 + _react_width_diff, 
-            y1 : y1
-        });
-    }
+        decrease_button.update({x1: x1 - _react_width_diff - decrease_button.w, y1: y1});
+        increase_button.update({x1: x1 + _react_width_diff, y1: y1});
+    };
 
-    update(data)
+    update(data);
 
-    static draw = function(){
+    static draw = function() {
         update();
         reactive_string.draw();
         var _allow = current_value > min_clamp;
-        if (decrease_button.draw(_allow)){
+        if (decrease_button.draw(_allow)) {
             current_value -= shift_value;
         }
 
         _allow = current_value < max_clamp;
-        if (increase_button.draw(_allow)){
+        if (increase_button.draw(_allow)) {
             current_value += shift_value;
         }
-    }
+    };
 }
 
 /// @function LabeledIcon(icon, text, x1, y1, data)
@@ -365,10 +342,10 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
     h = icon_height;
     x2 = x1 + w;
     y2 = y1 + icon_height;
-	temp_font = draw_get_font();
-	draw_set_font(font);
-	text_width = string_width(text) + 2;
-	draw_set_font(temp_font);
+    temp_font = draw_get_font();
+    draw_set_font(font);
+    text_width = string_width(text) + 2;
+    draw_set_font(temp_font);
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
@@ -438,13 +415,13 @@ function SpriteButton(data) constructor {
     is_hovered = false;
     is_clicked = false;
 
-    static update = function(data){
-        move_data_to_current_scope(data,true);
+    static update = function(data) {
+        move_data_to_current_scope(data, true);
         width = sprite_get_width(sprite);
         height = sprite_get_height(sprite);
         x2 = x1 + (width * scale_x);
         y2 = y1 + (height * scale_y);
-    }
+    };
 
     update(data);
 
@@ -453,7 +430,6 @@ function SpriteButton(data) constructor {
     /// @param {real} _y The Y position to draw at.
     /// @param {bool} _enabled If false, interaction is disabled and the button appears faded.
     static draw = function(_enabled = true) {
-
         add_draw_return_values();
 
         is_hovered = sr_hit_struct();
@@ -505,7 +481,7 @@ function UnitButtonObject(data = {}) constructor {
     static update_loc = function() {
         if (label != "") {
             var temp_font = draw_get_font();
-           	draw_set_font(font);
+            draw_set_font(font);
             if (!set_width) {
                 w = string_width(label) + 10;
                 h = string_height(label) + 4;
@@ -522,7 +498,7 @@ function UnitButtonObject(data = {}) constructor {
         x2 = x1 + w;
         y2 = y1 + h;
     };
-    
+
     update_loc();
 
     static update = function(data = {}) {
@@ -594,7 +570,7 @@ function UnitButtonObject(data = {}) constructor {
             draw_set_valign(fa_middle);
             draw_set_color(color);
 
-            draw_text_transformed(_text_position_x, y1 + h/2, label, text_scale, text_scale, 0);
+            draw_text_transformed(_text_position_x, y1 + h / 2, label, text_scale, text_scale, 0);
 
             x2 = x1 + array_sum(_widths);
             y2 = y1 + h;
@@ -759,7 +735,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
 
     static render_logic = function() {
         add_draw_return_values();
-        
+
         draw_set_valign(fa_middle);
         draw_set_halign(fa_center);
         draw_set_alpha(1);
@@ -781,7 +757,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
                 draw_text(_cursor_x, _center_y, "|");
             }
         }
-        
+
         pop_draw_return_values();
     };
 
@@ -960,7 +936,7 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
         ];
 
         add_draw_return_values();
-        
+
         draw_set_alpha(0.95);
         draw_set_color(c_black);
         draw_rectangle_array(_list_rect, false);
@@ -1016,7 +992,7 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
     inactive_col = c_gray;
     max_width = 0;
     max_height = 0;
-    /// @type {Array<Struct.ToggleButton>} 
+    /// @type {Array<Struct.ToggleButton>}
     toggles = [];
     changed = false;
     draw_alighn = "horizontal";
@@ -1025,12 +1001,12 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
         _next_tog.active = false;
         array_push(toggles, _next_tog);
     }
-    
+
     static update = function(data = {}) {
         move_data_to_current_scope(data);
     };
 
-    update(data)
+    update(data);
 
     static draw_toggle = function(index) {
         var _cur_opt = toggles[index];
@@ -1168,12 +1144,12 @@ function RadioSet(options_array, title_param = "", data = {}) constructor {
     for (var i = 0; i < array_length(options_array); i++) {
         array_push(toggles, new ToggleButton(options_array[i]));
     }
-    
+
     static update = function(data = {}) {
         move_data_to_current_scope(data);
     };
 
-    update(data)
+    update(data);
 
     static draw_option = function(_x, _y, index) {
         var _cur_opt = toggles[index];
@@ -1300,7 +1276,7 @@ function ToggleButton(data = {}) constructor {
 
     //make true to run clicked() within draw sequence
     clicked_check_default = false;
-    
+
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         var temp_font = draw_get_font();
@@ -1433,7 +1409,7 @@ function InteractiveButton(data = {}) constructor {
     text_halign = fa_left;
     text_color = c_gray;
     button_color = c_gray;
-        
+
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         if (struct_exists(data, "str1") && !struct_exists(data, "width")) {
@@ -1475,7 +1451,7 @@ function InteractiveButton(data = {}) constructor {
         var text_x = x1 + text_padding;
         var text_y = y1 + text_padding;
         var total_alpha;
-        
+
         add_draw_return_values();
 
         if (text_halign == fa_center) {
@@ -1512,7 +1488,7 @@ function InteractiveButton(data = {}) constructor {
         draw_set_halign(text_halign);
         draw_set_valign(fa_top);
         draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
-        
+
         pop_draw_return_values();
     };
 }

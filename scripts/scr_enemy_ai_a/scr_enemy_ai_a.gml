@@ -43,10 +43,9 @@ function scr_enemy_ai_a() {
 
     var stop;
     var rand = 0;
-    var  total_garrison = 0;
+    var total_garrison = 0;
     var _planet_data;
     for (var _run = 1; _run <= planets; _run++) {
-
         _planet_data = system_datas[_run];
         _garrison = _planet_data.garrisons;
         _sabatours = _planet_data.sabatours;

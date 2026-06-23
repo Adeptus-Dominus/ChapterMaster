@@ -886,7 +886,6 @@ function scr_ui_manage() {
         draw_set_halign(fa_left);
         var top = man_current, sel = top, temp1 = "", temp2 = "", temp3 = "", temp4 = "";
 
-
         yy += 77;
 
         //TODO store these in global tooltip storage

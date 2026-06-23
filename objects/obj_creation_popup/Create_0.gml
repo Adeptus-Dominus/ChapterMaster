@@ -32,82 +32,82 @@ type_fields = [
     "right_pauldron",
     "main_trim",
     "lens_color",
-    "weapon_color",
+    "weapon_color"
 ];
 
 possible_custom_roles = [
     [
         "chapter_master",
-        eROLE.CHAPTERMASTER,
+        eROLE.CHAPTERMASTER
     ],
     [
         "honour_guard",
-        eROLE.HONOURGUARD,
+        eROLE.HONOURGUARD
     ],
     [
         "veteran",
-        eROLE.VETERAN,
+        eROLE.VETERAN
     ],
     [
         "terminator",
-        eROLE.TERMINATOR,
+        eROLE.TERMINATOR
     ],
     [
         "captain",
-        eROLE.CAPTAIN,
+        eROLE.CAPTAIN
     ],
     [
         "dreadnought",
-        eROLE.DREADNOUGHT,
+        eROLE.DREADNOUGHT
     ],
     [
         "champion",
-        eROLE.CHAMPION,
+        eROLE.CHAMPION
     ],
     [
         "tactical",
-        eROLE.TACTICAL,
+        eROLE.TACTICAL
     ],
     [
         "devastator",
-        eROLE.DEVASTATOR,
+        eROLE.DEVASTATOR
     ],
     [
         "assault",
-        eROLE.ASSAULT,
+        eROLE.ASSAULT
     ],
     [
         "ancient",
-        eROLE.ANCIENT,
+        eROLE.ANCIENT
     ],
     [
         "scout",
-        eROLE.SCOUT,
+        eROLE.SCOUT
     ],
     [
         "chaplain",
-        eROLE.CHAPLAIN,
+        eROLE.CHAPLAIN
     ],
     [
         "apothecary",
-        eROLE.APOTHECARY,
+        eROLE.APOTHECARY
     ],
     [
         "techmarine",
-        eROLE.TECHMARINE,
+        eROLE.TECHMARINE
     ],
     [
         "librarian",
-        eROLE.LIBRARIAN,
+        eROLE.LIBRARIAN
     ],
     [
         "sergeant",
-        eROLE.SERGEANT,
+        eROLE.SERGEANT
     ],
     [
         "veteran_sergeant",
-        eROLE.VETERANSERGEANT,
-    ],
+        eROLE.VETERANSERGEANT
+    ]
 ];
 
 slot_arrays = [
@@ -115,5 +115,5 @@ slot_arrays = [
     "wep2", // eEQUIPMENT_SLOT.WEAPON_TWO
     "armour", // eEQUIPMENT_SLOT.ARMOUR
     "gear", // eEQUIPMENT_SLOT.GEAR
-    "mobi", // eEQUIPMENT_SLOT.MOBILITY
+    "mobi" // eEQUIPMENT_SLOT.MOBILITY
 ];

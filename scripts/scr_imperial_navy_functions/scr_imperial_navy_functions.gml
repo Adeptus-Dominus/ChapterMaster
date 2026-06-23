@@ -1090,7 +1090,7 @@ function create_start_imperial_fleets() {
 
 function setup_start_imperial_navy_fleet(system) {
     var ii = 0;
-    /// @type {Asset.GMObject.obj_en_fleet} 
+    /// @type {Asset.GMObject.obj_en_fleet}
     var nav = instance_create(system.x, system.y, obj_en_fleet);
     var _star = system;
     _star.present_fleet[eFACTION.IMPERIUM] += 1;

@@ -373,7 +373,6 @@ function drop_select_unit_selection() {
                 _purge_score = roster.selected_count();
             }
 
-
             var _p_data = p_target.system_datas[planet_number];
 
             _p_data.refresh_data();

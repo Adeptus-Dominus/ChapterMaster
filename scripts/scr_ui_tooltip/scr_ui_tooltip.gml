@@ -49,7 +49,7 @@ function scr_ui_tooltip() {
     // Current Loyalty tooltip
     if (scr_hit(xx + 247, yy + 10, xx + 328, yy + 38)) {
         for (var i = 1; i <= 20; i++) {
-            if ((loyal_num[i] > 1)) {
+            if (loyal_num[i] > 1) {
                 tooltip += string(loyal[i]) + ": -" + string(loyal_num[i]) + "#";
             }
         }

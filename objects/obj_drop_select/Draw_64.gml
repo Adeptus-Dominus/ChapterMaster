@@ -10,17 +10,12 @@ try {
 
     w = 660;
     h = 520;
-    // Center of the screen
-    //setup
     var _x_center = (display_get_gui_width() / 2) - (w / 2);
     var _y_center = (display_get_gui_height() / 2) - (h / 2);
-    //draw main_slate
     if (purge != eDROP_TYPE.PURGESELECT && (local_content_slate.XX <= _x_center - local_content_slate.width)) {
         main_slate.inside_method = drop_select_draw;
         main_slate.draw(_x_center, _y_center, (660 / 860), (520 / 850));
     }
-
-    //left hand slate
     local_content_slate.inside_method = function() {
         var _xx = local_content_slate.XX;
         var _yy = local_content_slate.YY + 40;
@@ -40,12 +35,6 @@ try {
                 }
             }
             var _xx = local_content_slate.XX;
-
-            /*if (instance_exists(p_target)) {
-                if (p_target.p_type[planet_number] = "Shrine") then nup = true;
-            }
-            */
-            // 89,31
             draw_set_halign(fa_left);
             for (var i = 0; i < array_length(purge_options); i++) {
                 var _purge_button = purge_options[i];
@@ -120,6 +109,17 @@ try {
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
     instance_destroy();
-} finally {
+} finally // Center of the screen
+//setup
+//draw main_slate
+
+//left hand slate
+
+/*if (instance_exists(p_target)) {
+                if (p_target.p_type[planet_number] = "Shrine") then nup = true;
+            }
+            */
+// 89,31
+{
     pop_draw_return_values();
 }

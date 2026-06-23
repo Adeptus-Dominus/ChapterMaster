@@ -63,7 +63,7 @@ local_forces = 0;
 battle_loc = "";
 battle_climate = "";
 battle_id = 0;
-/// @type {Asset.GMObject.obj_star} 
+/// @type {Asset.GMObject.obj_star}
 battle_object = 0;
 battle_mission = "";
 battle_special = "";

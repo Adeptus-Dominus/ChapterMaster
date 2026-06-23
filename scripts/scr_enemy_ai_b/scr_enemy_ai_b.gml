@@ -7,8 +7,8 @@ function scr_enemy_ai_b() {
 
     i = 0;
     for (i = 1; i <= planets; i++) {
-       system_datas[i].refresh_data();
-       system_datas[i].end_of_turn_population_influence_and_enemy_growth();
+        system_datas[i].refresh_data();
+        system_datas[i].end_of_turn_population_influence_and_enemy_growth();
         // if (p_heresy[i]>0) and (owner != eFACTION.CHAOS) then p_heresy[i]-=2;
     }
     // Tau rebellions

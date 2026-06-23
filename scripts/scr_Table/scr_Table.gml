@@ -58,7 +58,7 @@ function Table(data) constructor {
     };
 
     update(data);
-	
+
     static row_method = function(_row, _row_entered) {
         if (!_row_entered) {
             return;

@@ -172,7 +172,7 @@ function set_up_transfer_popup() {
 
             var _type = man[f];
             var _role = ma_role[f];
-        
+
             if (_first) {
                 if (_type == "man") {
                     _first = false;
@@ -182,7 +182,7 @@ function set_up_transfer_popup() {
                     _selected_role = _role;
                 }
             }
-        
+
             if (_type == "man") {
                 _min_exp = min(_min_exp, ma_exp[f]);
                 _marine_count += 1;

@@ -76,46 +76,46 @@ system_datas = array_create(8, false);
 system_garrison = array_create(8, false);
 system_sabatours = array_create(8, false);
 
-get_garrison = function(planet){
+get_garrison = function(planet) {
     var _gar = system_garrison[planet];
-    if (_gar == false){
+    if (_gar == false) {
         system_garrison[planet] = new GarrisonForce(self, planet);
         _gar = system_garrison[planet];
         _gar.star = self;
         _gar.planet = planet;
-    } else  {
+    } else {
         _gar.update();
     }
     return _gar;
-}
+};
 
-get_sabatours = function(planet){
+get_sabatours = function(planet) {
     var _gar = system_sabatours[planet];
-    if (_gar == false){
+    if (_gar == false) {
         system_sabatours[planet] = new GarrisonForce(self, planet, "sabotage");
         _gar = system_sabatours[planet];
         _gar.star = self;
         _gar.planet = planet;
-    } else  {
+    } else {
         _gar.update();
     }
     return _gar;
-}
+};
 
-get_planet_data = function(planet){
+get_planet_data = function(planet) {
     var _gar = system_datas[planet];
-    if (_gar == false){
+    if (_gar == false) {
         system_datas[planet] = new PlanetData(planet, self);
         _gar = system_datas[planet];
-    } else  {
+    } else {
         _gar.refresh_data();
     }
-    return _gar;    
-}
+    return _gar;
+};
 
-add_feature = function(planet, feature){
+add_feature = function(planet, feature) {
     array_push(p_feature[planet], feature);
-}
+};
 
 system_player_ground_forces = 0;
 garrison = false;
@@ -206,7 +206,7 @@ function deserialize(save_data) {
         "id",
         "present_fleet",
         "planet_data",
-        "feature",
+        "feature"
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
@@ -236,7 +236,7 @@ function deserialize(save_data) {
             for (var v = 0; v < array_length(var_names); v++) {
                 var var_name = var_names[v];
 
-                if (var_name == "p_feature"){
+                if (var_name == "p_feature") {
                     var _planet_features = planet[$ var_name];
                     for (var f = 0; f < array_length(_planet_features); f++) {
                         var _feat = _planet_features[f];
@@ -250,7 +250,7 @@ function deserialize(save_data) {
 
                         array_push(self.p_feature[p], _new_feat);
                     }
-                     continue;
+                    continue;
                 }
                 var val = planet[$ var_name];
                 // var_name = "p_type"

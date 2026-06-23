@@ -475,12 +475,11 @@ function scr_random_event(execute_now) {
             }
         }
 
-        if (planet > 0 && instance_exists(star)){
+        if (planet > 0 && instance_exists(star)) {
             var _pdata = star.get_planet_data(planet);
             _pdata.init_war_of_succession();
             _evented = true;
         }
-
     } else if (chosen_event == eEVENT.RANDOM_FUN) {
         // Flavor text/events
         LOGGER.info("RE: Random");

@@ -535,8 +535,7 @@ function UnitQuickFindPanel() constructor {
                 }
             }
             pop_draw_return_values();
-        }
-        catch (_exception) {} //dangerous to handle wiljustmake game unplayable if crash does occur
+        } catch (_exception) {} //dangerous to handle wiljustmake game unplayable if crash does occur
     };
 }
 

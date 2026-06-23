@@ -12,11 +12,11 @@ function distribute_strength_to_fleet(strength, fleet) {
     }
 }
 
-function standard_fleet_strength_calc(fleet = undefined){
-    if (is_undefined(fleet)){
+function standard_fleet_strength_calc(fleet = undefined) {
+    if (is_undefined(fleet)) {
         fleet = self;
     }
-    return fleet.capital_number + (fleet.frigate_number/2) + (fleet.escort_number/4);
+    return fleet.capital_number + (fleet.frigate_number / 2) + (fleet.escort_number / 4);
 }
 
 /// @self Asset.GMObject.obj_en_fleet
@@ -27,7 +27,7 @@ function random_sector_exit_point() {
 
 /// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function in_room(object = undefined) {
-	object ??= self;
+    object ??= self;
     return !(object.x < 0 || object.x > room_width || object.y < 0 || object.y > room_height);
 }
 

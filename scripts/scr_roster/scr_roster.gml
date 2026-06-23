@@ -151,9 +151,9 @@ function Roster() constructor {
         format_roster_string();
     };
 
-    static selected_count = function(){
+    static selected_count = function() {
         return array_length(selected_units);
-    }
+    };
 
     static new_squad_button = function(display, squad_id) {
         var _button = new ToggleButton();

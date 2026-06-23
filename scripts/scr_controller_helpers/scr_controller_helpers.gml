@@ -180,9 +180,9 @@ function scr_toggle_setting() {
                 popup = 0;
                 selected = 0;
                 hide_banner = 1;
-                try{
+                try {
                     setup_ui_chapter_settings();
-                } catch (_exception){
+                } catch (_exception) {
                     ERROR_HANDLER.handle_exception(_exception);
                     scr_toggle_setting();
                 }

@@ -1,4 +1,3 @@
-
 enum ePROGENITOR {
     NONE,
     DARK_ANGELS,
@@ -1661,20 +1660,17 @@ function scr_initialize_custom() {
     #region Squad Loadouts
     switch (obj_creation.squad_distribution) {
         case 1: // equal specialists only
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/equal_specialists.json", json_parse);
+            obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/equal_specialists.json", json_parse);
             break;
         case 2: // equal scouts only
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/equal_scouts.json", json_parse);
+            obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/equal_scouts.json", json_parse);
             break;
         case 3: // equal specialists and equal scouts
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/equal_spescout.json", json_parse);
+            obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/equal_spescout.json", json_parse);
             break;
-        default: // 0 = standard
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/company_squad_builds.json", json_parse);
+        default:
+            // 0 = standard
+            obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/company_squad_builds.json", json_parse);
             break;
     }
 
@@ -2328,7 +2324,7 @@ function scr_initialize_custom() {
         load_default_gear(eROLE.SCOUT, "Neophyte", "Bolter", "", "Scout Armour", "", "");
     }
 
-    var equal_scouts = (squad_distribution == 2 || squad_distribution == 3);
+    var equal_scouts = squad_distribution == 2 || squad_distribution == 3;
     obj_ini.equal_scouts = equal_scouts; // for use in squad creation later
 
     var _moved_scouts = 0;
@@ -2337,7 +2333,10 @@ function scr_initialize_custom() {
     // ensure 10th company is processed last so _moved_scouts is fully accumulated before its tacticals are set
     var _tenth_idx = -1;
     for (var _i = 0; _i < array_length(_coys); _i++) {
-        if (_coys[_i] == "tenth") { _tenth_idx = _i; break; }
+        if (_coys[_i] == "tenth") {
+            _tenth_idx = _i;
+            break;
+        }
     }
     if (_tenth_idx != -1 && _tenth_idx != array_length(_coys) - 1) {
         array_delete(_coys, _tenth_idx, 1);

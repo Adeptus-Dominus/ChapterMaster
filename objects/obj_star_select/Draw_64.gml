@@ -290,7 +290,6 @@ try {
                     } else {
                         draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Negative");
                     }
-
                 };
                 garrison_data_slate.draw(340 + main_data_slate.width, 160, 0.6, 0.6);
             }

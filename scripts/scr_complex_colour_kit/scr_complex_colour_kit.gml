@@ -13,8 +13,6 @@ function move_location_relative(coords, relative_move_x, relative_move_y) {
     return coords;
 }
 
-
-
 enum eMARINE_ICONS {
     NONE,
     COMPANY,
@@ -381,5 +379,3 @@ global.textures = {
     "Checks4": spr_hazzard_texture,
     "Checks5": spr_checker_texture,
 };
-
-

@@ -406,7 +406,7 @@ function draw_planet_debug_options() {
         if (debug) {
             debug_slate.inside_method = function() {
                 debug_options.draw();
-                switch(debug_options.current_selection){
+                switch (debug_options.current_selection) {
                     case 0:
                         draw_planet_debug_forces();
                         break;
@@ -518,7 +518,7 @@ function draw_planet_debug_problems() {
                         break;
                     case "fallen":
                         _p_data.init_fallen_marines();
-                        break
+                        break;
                     default:
                         scr_popup("error", "no specific debug action created please consider helping to make one", "");
                         break;

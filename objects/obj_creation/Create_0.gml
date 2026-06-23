@@ -452,7 +452,7 @@ load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi,
     mobi[defaults_slot][_role_id] = _mobi;
     gear[defaults_slot][_role_id] = _gear;
     race[defaults_slot][_role_id] = 1;
-}
+};
 
 load_default_gear(eROLE.CHAPTERMASTER, "Chapter Master", "Power Sword", "Bolter", "Artificer Armour", "", "");
 load_default_gear(eROLE.HONOURGUARD, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
