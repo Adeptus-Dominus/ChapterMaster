@@ -127,11 +127,7 @@ function apothecary_training() {
         if (apothecary_recruit_points >= 48) {
             if (recruit_count > 0) {
                 var random_marine = scr_random_marine(novice_type, 0);
-                // show_message(marine_position);
-                // show_message(obj_ini.role[0,marine_position]);
                 if (random_marine != "none") {
-                    marine_position = random_marine[1];
-                    marine_company = random_marine[0];
                     apothecary_recruit_points -= 48;
                     /// @type {Struct.TTRPG_stats}
                     var unit = fetch_unit(random_marine);
@@ -211,7 +207,6 @@ function chaplain_training() {
                 if (recruit_count > 0) {
                     var random_marine = scr_random_marine(novice_type, 0);
                     if (random_marine != "none") {
-                        marine_position = random_marine[1];
                         var unit = fetch_unit(random_marine);
                         scr_alert("green", "recruitment", unit.name_role() + " has finished training.", 0, 0);
                         chaplain_points -= 48;
@@ -288,7 +283,6 @@ function librarian_training() {
         recruit_count = scr_role_count(novice_type, "");
         if (psyker_points >= goal) {
             if (recruit_count > 0) {
-                marine_position = 0;
                 var random_marine = scr_random_marine(novice_type, 0, {"stat": [["psionic", 2, "more"]]});
                 if (random_marine != "none") {
                     var unit = fetch_unit(random_marine);
@@ -357,11 +351,10 @@ function techmarine_training() {
     var novice_type = string("{0} Aspirant", obj_ini.role[100][16]);
     if (training_techmarine > 0) {
         recruit_count = scr_role_count(novice_type, "");
+        var _threshold = 252;
 
         if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
-            var _threshold = 360;
-        } else {
-            var _threshold = 252;
+            _threshold = 360;
         }
 
         if (tech_points >= _threshold) {

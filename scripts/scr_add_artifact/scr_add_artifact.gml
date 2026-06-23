@@ -539,11 +539,10 @@ function ArtifactStruct(Index) constructor {
                 var _b_type = determine_base_type();
                 var _bearer = false;
                 var _bearer_found = false;
-                var _unit;
                 if (_b_type == "weapon") {
                     for (var co = 0; co < obj_ini.companies; co++) {
                         for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
-                            _unit = fetch_unit([co, i]);
+                            var _unit = fetch_unit([co, i]);
                             if (_unit.weapon_one(true) == index) {
                                 _unit.update_weapon_one("", false, true);
                                 _bearer_found = true;
@@ -561,14 +560,15 @@ function ArtifactStruct(Index) constructor {
                     }
                 } else {
                     var _find_function = "";
+                    var _update_function = "";
                     if (_b_type == "gear") {
-                        var _update_function = "update_gear";
+                        _update_function = "update_gear";
                         _find_function = "gear";
                     } else if (_b_type == "armour") {
-                        var _update_function = "update_armour";
+                        _update_function = "update_armour";
                         _find_function = "armour";
                     } else if (_b_type == "mobility") {
-                        var _update_function = "update_mobility_item";
+                        _update_function = "update_mobility_item";
                         _find_function = "mobility_item";
                     }
                     if (_find_function != "") {

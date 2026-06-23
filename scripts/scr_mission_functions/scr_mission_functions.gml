@@ -569,10 +569,10 @@ function complete_garrison_mission(problem_index) {
     if (_result == "none") {
         //TODO make a dedicated plus minus string function if there isn't one already
     } else if (_result < 0) {
-        var _effect = _result * irandom_range(1, 5);
+        _effect = _result * irandom_range(1, 5);
         _mission_string += $"A number of diplomatic incidents occured over the period which had considerable negative effects on our disposition with the planetary governor (disposition -{_effect})";
     } else {
-        var _effect = _result * irandom_range(1, 5);
+        _effect = _result * irandom_range(1, 5);
         _mission_string += $"As a diplomatic mission the duration of the stay was a success with our political position with the planet being enhanced greatly (disposition +{_effect})";
     }
 

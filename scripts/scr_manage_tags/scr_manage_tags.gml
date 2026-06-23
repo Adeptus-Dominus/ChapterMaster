@@ -93,7 +93,7 @@ function draw_tag_manager() {
             }
             tag_selects = new MultiSelect(_selecs, "Tags", {max_width: 500, x1: 1040, y1: 210});
         }
-        var _tool = "Remove Tags from current Marine selection";
+        _tool = "Remove Tags from current Marine selection";
         remove_tag_button.disabled = false;
         if (!_addable) {
             _tool = "Make some tags to Remove them from marines";
@@ -127,7 +127,6 @@ function draw_tag_manager() {
                 }
             }
             tag_selects = new MultiSelect(_selecs, "Tags", {max_width: 500, x1: 1040, y1: 210});
-            //new_tag = "";
         }
     }
 

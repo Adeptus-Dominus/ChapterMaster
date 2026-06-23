@@ -1,7 +1,7 @@
 /// @self Asset.GMObject.obj_controller
 function set_up_equip_popup() {
     if (!instance_exists(obj_popup)) {
-        var f = 0, god = 0, nuuum = 0;
+        var nuuum = 0;
         var o_wep1 = "", o_wep2 = "", o_armour = "", o_gear = "", o_mobi = "";
         var b_wep1 = 0, b_wep2 = 0, b_armour = 0, b_gear = 0, b_mobi = 0;
         var vih = 0, _unit;
@@ -461,11 +461,9 @@ function draw_popup_equip() {
 
             //TODO wrap this up in a function
             if (weapon_one_data.req_exp > 0) {
-                var g = -1, exp_check = 0;
                 for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
                     if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
                         if (obj_controller.display_unit[g].experience < weapon_one_data.req_exp) {
-                            exp_check = 1;
                             n_good1 = 0;
                             warning = $"A unit must have {weapon_one_data.req_exp}+ EXP to use a {weapon_one_data.name}.";
                             break;
@@ -488,9 +486,7 @@ function draw_popup_equip() {
             // Check numbers
             req_wep2_num = units;
             have_wep2_num = 0;
-            var i = -1;
-            repeat (array_length(obj_controller.display_unit)) {
-                i += 1;
+            for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
                 if ((vehicle_equipment != -1) && (obj_controller.ma_wep2[i] == n_wep2)) {
                     have_wep2_num += 1;
                 }
@@ -508,13 +504,9 @@ function draw_popup_equip() {
             }
             //TODO standardise exp check
             if (weapon_two_data.req_exp > 0) {
-                var g, exp_check;
-                g = -1;
-                exp_check = 0;
                 for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
                     if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
                         if (obj_controller.display_unit[g].experience < weapon_two_data.req_exp) {
-                            exp_check = 1;
                             n_good2 = 0;
                             warning = $"A unit must have {weapon_two_data.req_exp}+ EXP to use a {weapon_two_data.name}.";
                             break;
@@ -543,10 +535,7 @@ function draw_popup_equip() {
             // Check numbers
             req_armour_num = units;
             have_armour_num = 0;
-            var i;
-            i = -1;
-            repeat (array_length(obj_controller.display_unit)) {
-                i += 1;
+            for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
                 if ((vehicle_equipment != -1) && (obj_controller.man_sel[i] == 1) && (obj_controller.ma_armour[i] == n_armour)) {
                     have_armour_num += 1;
                 }
@@ -561,16 +550,11 @@ function draw_popup_equip() {
                 warning = $"Not enough {n_armour} : {req_armour_num - have_armour_num} more are required.";
             }
 
-            var g = -1, exp_check = 0;
             if (armour_data.has_tag("terminator")) {
                 if (armour_data.req_exp > 0) {
-                    var g, exp_check;
-                    g = -1;
-                    exp_check = 0;
                     for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
                         if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
                             if (obj_controller.display_unit[g].experience < armour_data.req_exp) {
-                                exp_check = 1;
                                 n_good3 = 0;
                                 warning = $"A unit must have {armour_data.req_exp}+ EXP to use a {armour_data.name}.";
                                 break;
@@ -627,10 +611,7 @@ function draw_popup_equip() {
             // Check numbers
             req_mobi_num = units;
             have_mobi_num = 0;
-            var i;
-            i = -1;
-            repeat (array_length(obj_controller.display_unit)) {
-                i += 1;
+            for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
                 if ((vehicle_equipment != -1) && (obj_controller.man_sel[i] == 1) && (obj_controller.ma_mobi[i] == n_mobi)) {
                     have_mobi_num += 1;
                 }

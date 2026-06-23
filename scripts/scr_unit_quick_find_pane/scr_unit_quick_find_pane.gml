@@ -250,11 +250,10 @@ function UnitQuickFindPanel() constructor {
     update_mission_log = function() {
         mission_log = [];
         var temp_log = [];
-        var p, i, problems;
         with (obj_star) {
-            for (i = 1; i <= planets; i++) {
-                problems = p_problem[i];
-                for (p = 0; p < array_length(problems); p++) {
+            for (var i = 1; i <= planets; i++) {
+                var problems = p_problem[i];
+                for (var p = 0; p < array_length(problems); p++) {
                     if (problems[p] == "") {
                         continue;
                     }
@@ -574,7 +573,7 @@ function update_garrison_manage() {
     var _planets = 0;
     if (struct_exists(selection_data, "system") && instance_exists(selection_data.system)) {
         if (struct_exists(location_viewer.garrison_log, selection_data.system.name)) {
-            var sys_name = selection_data.system.name;
+            sys_name = selection_data.system.name;
         }
     }
 

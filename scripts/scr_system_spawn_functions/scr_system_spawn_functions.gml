@@ -25,6 +25,7 @@ enum ePLAYER_BASE {
 function find_player_spawn_star() {
     instance_activate_object(obj_star);
     var _spawn_star;
+    var _chosen_star = noone;
     var _allowable = false;
     var _allowables = [
         "Temperate",
@@ -36,7 +37,8 @@ function find_player_spawn_star() {
         "Lava"
     ];
     for (var i = 0; i < 100; i++) {
-        var y_loc, x_loc;
+        var x_loc = irandom_range(0 + (room_width / 2), room_width - (room_width / 2));
+        var y_loc = irandom_range(0 + (room_height / 2), room_height - (room_height / 2));
         if (obj_ini.homeworld_relative_loc == 0) {
             if (irandom(1)) {
                 y_loc = choose(0, room_height);
@@ -45,11 +47,8 @@ function find_player_spawn_star() {
                 x_loc = choose(0, room_width);
                 y_loc = irandom(room_height);
             }
-        } else {
-            x_loc = irandom_range(0 + (room_width / 2), room_width - (room_width / 2));
-            y_loc = irandom_range(0 + (room_height / 2), room_height - (room_height / 2));
         }
-        var _chosen_star = instance_nearest(x_loc, y_loc, obj_star);
+        _chosen_star = instance_nearest(x_loc, y_loc, obj_star);
         if (instance_exists(_chosen_star)) {
             for (var p = 0; p < array_length(_chosen_star.p_type); p++) {
                 if (array_contains(_allowables, _chosen_star.p_type[p])) {

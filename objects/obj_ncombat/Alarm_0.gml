@@ -7,9 +7,6 @@ try {
 
     instance_activate_object(obj_enunit);
 
-    // show_message("Leader?: "+string(leader));
-
-    // if (enemy=1) then show_message("exiting obj_ncombat_Alarm 0_2 due to enemy=1");
     if (enemy == 1) {
         instance_activate_object(obj_enunit);
         exit;
@@ -30,8 +27,7 @@ try {
         fortified = 0;
     }
 
-    var i = 0, u;
-    i = xxx / 10;
+    var u;
 
     if ((fortified > 1) && (enemy + threat != 17)) {
         u = instance_create(0, 0, obj_nfort);
@@ -63,10 +59,11 @@ try {
         u.maxhp[1] = u.hp[1];
     }
 
+    var _num = xxx / 10;
     for (var j = 0; j < 10; j++) {
-        i -= 1;
-        u = instance_create(i * 10, 240, obj_enunit);
-        u.column = i - ((xxx / 10) - 10);
+        _num -= 1;
+        u = instance_create(_num * 10, 240, obj_enunit);
+        u.column = _num - ((xxx / 10) - 10);
     }
     // *** Enemy Forces Special Event ***
     // * Malcadon Spyrer *
@@ -287,8 +284,8 @@ try {
     }
     // ** Space Hulk Forces **
     if (battle_special == "space_hulk") {
-        var make, modi;
-        // show_message("space hulk battle, player forces: "+string(player_forces));
+        var make;
+        var modi;
         with (obj_enunit) {
             instance_destroy();
         }
@@ -347,7 +344,6 @@ try {
         }
         // * CSM Space Hulk *
         if (enemy == 10) {
-            var make, modi;
             modi = random_range(0.80, 1.20) + 1;
             make = round(max(3, player_starting_dudes * modi));
 
@@ -374,7 +370,6 @@ try {
             hulk_forces = make;
         }
 
-        // show_message(string(instance_number(obj_enunit))+"x enemy blocks");
         instance_activate_object(obj_enunit);
         exit;
     }
@@ -397,11 +392,9 @@ try {
 
         u.dudes[5] = "Venerable Chaos Chosen";
         u.dudes_num[5] = 50;
-        // u.dudes[4]="Chaos Basilisk";u.dudes_num[4]=18;
         instance_deactivate_object(u);
 
         u = instance_nearest(xxx + 10, 240, obj_enunit);
-        // u.dudes[1]="Chaos Leman Russ";u.dudes_num[1]=40;
         u.dudes[1] = "Chaos Sorcerer";
         u.dudes_num[1] = 4;
         u.dudes[2] = "Chaos Space Marine";
@@ -412,7 +405,6 @@ try {
         u.dudes_num[4] = 20;
         u.dudes[5] = "Bloodletter";
         u.dudes_num[5] = 30;
-        // u.dudes[3]="Vindicator";u.dudes_num[3]=10;
         instance_deactivate_object(u);
 
         u = instance_nearest(xxx + 20, 240, obj_enunit);
@@ -427,16 +419,11 @@ try {
         u = instance_nearest(xxx + 30, 240, obj_enunit);
         u.dudes[1] = "Cultist Elite";
         u.dudes_num[1] = 1500;
-        // u.dudes[2]="Cultist Elite";u.dudes_num[2]=1500;
         u.dudes[2] = "Helbrute";
         u.dudes_num[2] = 3;
-        // u.dudes[3]="Predator";u.dudes_num[3]=6;
-        // u.dudes[4]="Vindicator";u.dudes_num[4]=3;
-        // u.dudes[5]="Land Raider";u.dudes_num[5]=2;
         instance_deactivate_object(u);
 
         u = instance_nearest(xxx + 40, 240, obj_enunit);
-        // u.dudes[1]="Mutant";u.dudes_num[1]=8000;
         u.dudes[1] = "Cultist";
         u.dudes_num[1] = 1500;
         u.dudes[2] = "Helbrute";
@@ -458,11 +445,9 @@ try {
         u.dudes_num[4] = 20;
         u.dudes[5] = "Venerable Chaos Chosen";
         u.dudes_num[5] = 50;
-        // u.dudes[4]="Chaos Basilisk";u.dudes_num[4]=18;
         instance_deactivate_object(u);
 
         u = instance_nearest(xxx + 10, 240, obj_enunit);
-        // u.dudes[1]="Chaos Leman Russ";u.dudes_num[1]=40;
         u.dudes[1] = "Chaos Sorcerer";
         u.dudes_num[1] = 2;
         u.dudes[1] = "Cultist";
@@ -475,15 +460,6 @@ try {
     if (enemy == 2) {
         guard_total = threat;
         guard_score = 6;
-
-        /*if (guard_total>=15000000) then guard_score=6;
-	if (guard_total<15000000) and (guard_total>=6000000) then guard_score=5;
-	if (guard_total<6000000) and (guard_total>=1000000) then guard_score=4;
-	if (guard_total<1000000) and (guard_total>=50000) then guard_score=3;
-	if (guard_total<50000) and (guard_total>=500) then guard_score=2;
-	if (guard_total<500) then guard_score=1;*/
-
-        // guard_effective=floor(guard_total)/8;
 
         var f = 0, guar = threat / 10;
 
@@ -569,16 +545,6 @@ try {
             u.flank = 1;
             u.flyer = 1;
         }
-
-        /*u=instance_nearest(xxx,240,obj_enunit);enemy_dudes=threat;
-	u.dudes[1]="Imperial Guardsman";u.dudes_num[1]=floor(guard_effective*0.6);enemies[1]=u.dudes[1];
-	u.dudes[2]="Heavy Weapons Team";u.dudes_num[2]=min(1000,floor(guard_effective*0.1));enemies[2]=u.dudes[2];
-	if (threat>1){u.dudes[3]="Leman Russ Battle Tank";u.dudes_num[3]=min(1000,floor(guard_effective*0.1));enemies[3]=u.dudes[3];}
-	
-	u=instance_nearest(xxx,240+10,obj_enunit);enemy_dudes=threat;
-	u.dudes[1]="Imperial Guardsman";u.dudes_num[1]=floor(guard_effective*0.6);enemies[1]=u.dudes[1];
-	u.dudes[2]="Heavy Weapons Team";u.dudes_num[2]=min(1000,floor(guard_effective*0.1));enemies[2]=u.dudes[2];
-	if (threat>1){u.dudes[3]="Leman Russ Battle Tank";u.dudes_num[3]=min(1000,floor(guard_effective*0.1));enemies[3]=u.dudes[3];}*/
     }
 
     // ** Aeldar Force **

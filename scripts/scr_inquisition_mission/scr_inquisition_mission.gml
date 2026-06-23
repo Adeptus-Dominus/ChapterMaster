@@ -188,7 +188,7 @@ function mission_inquisition_tyranid_organism(worlds) {
     }
 
     var eta = scr_mission_eta(_star.x, _star.y, 1);
-    var eta = min(max(eta, 6), 50);
+    eta = min(max(eta, 6), 50);
 
     var text = $"An Inquisitor is trusting you with a special mission.  The planet {string(_star.name)} {scr_roman(planet)}";
     text += " is ripe with Tyranid organisms.  They require that you capture one of the Gaunt species for research purposes.  Can your chapter handle this mission?";
@@ -197,8 +197,9 @@ function mission_inquisition_tyranid_organism(worlds) {
 
 function mission_inquisition_tomb_world(tomb_worlds) {
     LOGGER.info("RE: Necron Tomb Bombing");
+    var _star = noone;
     if (is_array(tomb_worlds)) {
-        var _star = array_random_element(tomb_worlds);
+        _star = array_random_element(tomb_worlds);
     } else {
         _star = tomb_worlds;
     }
@@ -274,21 +275,11 @@ function mission_inquisition_artifact() {
     scr_popup("Inquisition Mission", text, "inquisition", $"artifact|bop|0|{string(irandom_range(6, 26))}|");
 }
 
-function mission_inquistion_hunt_inquisitor(star_id = -1) {
+function mission_inquistion_hunt_inquisitor(star_id = noone) {
     LOGGER.info("RE: Inquisitor Hunt");
 
     var stars = scr_get_stars();
-    /*var _valid_stars = array_filter_ext(stars,
-    function(_star,index){
-        var _p_fleet = instance_nearest(_star.x,_star.y,obj_p_fleet);
-        if (instance_exists(_p_fleet)){
-            var _distance = point_distance(_star.x,_star.y,_p_fleet.x,_p_fleet.y);
-            if (100 <= _distance & _distance <= 300){
-                return true;
-            }
-        }
-        return false;
-    });*/
+    var _star = noone;
 
     if (star_id == -1) {
         var _valid_stars = stars;
@@ -298,7 +289,7 @@ function mission_inquistion_hunt_inquisitor(star_id = -1) {
             exit;
         }
 
-        var _star = array_random_element(_valid_stars);
+        _star = array_random_element(_valid_stars);
     } else {
         _star = star_id;
     }
