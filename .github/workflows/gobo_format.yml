@@ -1,0 +1,35 @@
+name: Gobo Formatter
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  format-all:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Latest Gobo Release
+        run: |
+          curl -LO https://github.com/EttyKitty/Gobo/releases/download/v1.0.0/gobo-ubuntu.zip
+          unzip gobo-ubuntu.zip
+          chmod +x ./gobo
+
+      - name: Run Formatter
+        run: |
+          ./gobo .
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "style: Automated Gobo format"
+          title: "style: Automated Gobo format"
+          body: "This is an automated PR containing formatting updates for all .gml files."
+          branch: automation/gobo-format-all
+          delete-branch: true
