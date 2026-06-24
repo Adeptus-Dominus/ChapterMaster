@@ -729,7 +729,7 @@ function scr_initialize_custom() {
     recruit_relative_loc = obj_creation.buttons.recruit_home_relationship.current_selection;
     culture_styles = obj_creation.buttons.culture_styles.selections();
 
-    if (struct_exists(obj_creation, "custom_advisors")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "custom_advisors")) {
         obj_ini.custom_advisors = obj_creation.custom_advisors;
     }
 
@@ -760,7 +760,7 @@ function scr_initialize_custom() {
         "",
         ""
     ];
-    if (struct_exists(obj_creation, "company_title")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "company_title")) {
         for (var ct = 0; ct < array_length(obj_creation.company_title); ct++) {
             company_title[ct] = obj_creation.company_title[ct];
         }
@@ -884,7 +884,7 @@ function scr_initialize_custom() {
     if (scr_has_adv("Boarders")) {
         strike_cruisers += 2;
     }
-    if (struct_exists(obj_creation, "extra_ships")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "extra_ships")) {
         battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
         strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;
         gladius = gladius + obj_creation.extra_ships.gladius;
@@ -1263,7 +1263,7 @@ function scr_initialize_custom() {
         _bm++;
     }
 
-    if (struct_exists(obj_creation, "extra_specialists")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "extra_specialists")) {
         var c_specialists = obj_creation.extra_specialists;
         var c_specialist_names = struct_get_names(c_specialists);
         for (var s = 0; s < array_length(c_specialist_names); s++) {
@@ -1320,7 +1320,7 @@ function scr_initialize_custom() {
         }
     }
 
-    if (struct_exists(obj_creation, "extra_marines")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "extra_marines")) {
         var c_marines = obj_creation.extra_marines;
         var c_marines_names = struct_get_names(c_marines);
         for (var s = 0; s < array_length(c_marines_names); s++) {
@@ -1494,7 +1494,7 @@ function scr_initialize_custom() {
     if (scr_has_disadv("Psyker Intolerant")) {
         race[defaults_slot][eROLE.LIBRARIAN] = 0;
     }
-    if (struct_exists(obj_creation, "custom_roles")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "custom_roles")) {
         var c_roles = obj_creation.custom_roles;
         var possible_custom_roles = [
             [
@@ -1669,7 +1669,7 @@ function scr_initialize_custom() {
             _squad_name = "Clave";
         }
     }
-    if (struct_exists(obj_creation, "squad_name")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "squad_name")) {
         _squad_name = obj_creation.squad_name;
     }
 
@@ -1779,7 +1779,7 @@ function scr_initialize_custom() {
         array_push(_swaps, _set);
     }
 
-    if (struct_exists(obj_creation, "squad_builder")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "squad_builder")) {
         for (var s = 0; s < array_length(obj_creation.squad_builder); s++) {
             var _custom_build = obj_creation.squad_builder[s];
             for (var i = 0; i < array_length(obj_ini.chapter_squad_arrangement.companies); i++) {
@@ -1791,7 +1791,7 @@ function scr_initialize_custom() {
         }
     }
 
-    if (struct_exists(obj_creation, "custom_squads")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "custom_squads")) {
         var _customs = obj_creation.custom_squads;
         with (squad_types) {
             move_data_to_current_scope(_customs);
@@ -2263,7 +2263,7 @@ function scr_initialize_custom() {
         "land_raider",
         "land_speeder"
     ];
-    if (struct_exists(obj_creation, "extra_vehicles")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "extra_vehicles")) {
         for (var v = 0; v < array_length(vehicle_keys); v++) {
             var key = vehicle_keys[v];
             if (struct_exists(obj_creation.extra_vehicles, key) && real(obj_creation.extra_vehicles[$ key]) > 0) {
@@ -2292,7 +2292,7 @@ function scr_initialize_custom() {
 
     var squad_distribution = obj_creation.squad_distribution;
     var scout_company_behaviour = 0;
-    if (struct_exists(obj_creation, "scout_company_behaviour")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "scout_company_behaviour")) {
         scout_company_behaviour = obj_creation.scout_company_behaviour;
     }
     if (scout_company_behaviour == 1) {
@@ -2443,7 +2443,7 @@ function scr_initialize_custom() {
             }
             return old_values;
         };
-        if (struct_exists(obj_creation, "companies")) {
+        if (variable_instance_exists(instance_find(obj_creation, 0), "companies")) {
             var _company_keys = [
                 "first",
                 "second",
@@ -2858,7 +2858,7 @@ function scr_initialize_custom() {
 
     scr_add_item("Bike", 40);
 
-    if (struct_exists(obj_creation, "extra_equipment")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "extra_equipment")) {
         for (var e = 0; e < array_length(obj_creation.extra_equipment); e++) {
             var e_name = obj_creation.extra_equipment[e][0];
             var e_qty = obj_creation.extra_equipment[e][1];
@@ -3161,7 +3161,7 @@ function load_chapter_master_equipment() {
     var arti;
 
     // From json
-    if (struct_exists(obj_creation, "artifact")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "artifact")) {
         if (is_struct(obj_creation.artifact) && struct_exists(obj_creation.artifact, "name")) {
             arti = obj_ini.artifact_struct[last_artifact];
             arti.name = obj_creation.artifact.name;
@@ -3206,7 +3206,7 @@ function load_chapter_master_equipment() {
         }
     }
 
-    if (struct_exists(obj_creation, "chapter_master")) {
+    if (variable_instance_exists(instance_find(obj_creation, 0), "chapter_master")) {
         if (struct_exists(obj_creation.chapter_master, "gear") && obj_creation.chapter_master.gear != "") {
             chapter_master_equip.gear = obj_creation.chapter_master.gear;
         }
