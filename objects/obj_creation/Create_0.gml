@@ -7,27 +7,27 @@ keyboard_string = "";
 #region Icon Grid settings for chapter selection
 icon_width = 48;
 icon_height = 48;
-/// distance between 2 rows of icons in the grid
+// distance between 2 rows of icons in the grid
 icon_row_gap = 60;
-/// distance between section heading and icon grid row
+// distance between section heading and icon grid row
 icon_gap_y = 34;
-/// distance between columns in icon grid
+// distance between columns in icon grid
 icon_gap_x = 53;
-/// x coord of left edge of the icon grid
+// x coord of left edge of the icon grid
 icon_grid_left_edge = 441;
-/// Max number of columns of icons until a new row is made
+// Max number of columns of icons until a new row is made
 max_cols = 10;
-/// x coord of the right edge of the icon grid
+// x coord of the right edge of the icon grid
 icon_grid_right_edge = function() {
     return icon_grid_left_edge + (icon_gap_x * max_cols - 1);
 }; // icon_gap_x * max number of desired columns - 1
-/// y coord of Founding section heading
+// y coord of Founding section heading
 founding_y = 133;
-/// y coord of Successor section heading
+// y coord of Successor section heading
 successor_y = 250;
-/// y coord of Custom section heading
+// y coord of Custom section heading
 custom_y = 463;
-/// y coord of Other section heading
+// y coord of Other section heading
 other_y = 593;
 
 var view = new DebugView("Obj Creation Grid", self);
@@ -60,6 +60,7 @@ company_liveries = "";
 complex_livery = false;
 complex_selection = "sgt";
 complex_depth_selection = 0;
+allow_colour_click = false;
 //TODO probably make this array based at some point ot match other unit data
 complex_livery_data = complex_livery_default();
 left_data_slate = new DataSlate();
@@ -131,6 +132,7 @@ temp = 0;
 target_gear = 0;
 tab = 0;
 role_names_all = "";
+custom_roles = {};
 
 chapter_name = "Unnamed";
 chapter_string = "Unnamed";
@@ -486,7 +488,6 @@ if (global.restart > 0) {
     global.restart = 0;
 }
 
-/* */
 col = [];
 col_r = [];
 col_g = [];

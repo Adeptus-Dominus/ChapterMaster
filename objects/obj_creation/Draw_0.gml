@@ -6,6 +6,7 @@ try {
     var xx = 375;
     var yy = 10;
 
+    allow_colour_click = (custom == eCHAPTER_TYPE.CUSTOM) && (!instance_exists(obj_creation_popup));
     tooltip = "";
     tooltip2 = "";
     draw_set_alpha(1);
@@ -176,6 +177,7 @@ try {
                 t_tip2: "Your Astartes lack the detoxifying gland called the Preomnor- they are more susceptible to poisons and toxins.",
                 data: preomnor,
                 mutation_points: 1,
+                disposition: [],
             },
             {
                 t_tip: "Disturbing Voice",
@@ -210,42 +212,49 @@ try {
                 t_tip2: "Lacking a working Lyman's ear, all deep-striked Astartes receive moderate penalties to both attack and defense.",
                 data: lyman,
                 mutation_points: 1,
+                disposition: [],
             },
             {
                 t_tip: "Hyper-Stimulated Omophagea",
                 t_tip2: "After every battle the Astartes have a chance to feast upon their fallen enemies, or seldom, their allies.",
                 data: omophagea,
                 mutation_points: 1,
+                disposition: [],
             },
             {
                 t_tip: "Hyperactive Ossmodula",
                 t_tip2: "Instead of wound tissue bone is generated; Apothecaries must spend twice the normal time healing your Astartes.",
                 data: ossmodula,
                 mutation_points: 1,
+                disposition: [],
             },
             {
                 t_tip: "Lost Zygote",
                 t_tip2: "One of the Zygotes is faulty or missing.  The Astartes only have one each and generate half the normal Gene-Seed.",
                 data: zygote,
                 mutation_points: 2,
+                disposition: [],
             },
             {
                 t_tip: "Inactive Sus-an Membrane",
                 t_tip2: "Your Astartes do not have a Sus-an Membrane; they cannot enter suspended animation and receive more casualties as a result.",
                 data: membrane,
                 mutation_points: 1,
+                disposition: [],
             },
             {
                 t_tip: "Missing Betchers Gland",
                 t_tip2: "Your Astartes cannot spit acid, and as a result, have slightly less attack in melee combat.",
                 data: betchers,
                 mutation_points: 1,
+                disposition: [],
             },
             {
                 t_tip: "Mutated Catalepsean Node",
                 t_tip2: "Your Astartes have reduced awareness when tired. Slightly less attack in ranged and melee combat.",
                 data: catalepsean,
                 mutation_points: 1,
+                disposition: [],
             },
             {
                 t_tip: "Oolitic Secretions",
@@ -306,7 +315,6 @@ try {
         ];
         x1 = 450;
         y1 = 260;
-        var allow_colour_click = (custom == eCHAPTER_TYPE.CUSTOM) && (!instance_exists(obj_creation_popup));
         for (var i = 0; i < array_length(mutations_defects); i++) {
             var mutation_data = mutations_defects[i];
             draw_sprite(spr_creation_check, mutation_data.data, x1, y1);

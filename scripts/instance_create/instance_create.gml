@@ -2,7 +2,7 @@
 /// @description Creates an instance of a given object at a given position.
 /// @param {Real} _x The x position the object will be created at.
 /// @param {Real} _y The y position the object will be created at.
-/// @param {Asset.GMObject} _obj The object to create an instance of.
+/// @param {Id.Instance} _obj The object to create an instance of.
 /// @returns {Id.Instance}
 function instance_create(_x, _y, _obj) {
     var myDepth = object_get_depth(_obj);

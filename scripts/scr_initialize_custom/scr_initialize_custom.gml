@@ -983,9 +983,9 @@ function scr_initialize_custom() {
     var epistolary = 2;
     var codiciery = 2;
     var lexicanum = 4;
-    var terminator = 40;
+    var terminator = 20;
     var dreadnought = 1;
-    var veteran = 70;
+    var veteran = 85;
     var assault = 20;
     var devastator = 20;
     var siege = 0;
@@ -2319,6 +2319,8 @@ function scr_initialize_custom() {
     }
 
     for (var _c = 0, _clen = array_length(_coys); _c < _clen; _c++) {
+        var k = 0, v = 0; //k = marine slot, v = vehicle slot (must reset per company)
+
         var _name = _coys[_c];
         var _coy = companies[$ _name];
         if (_coy.total <= 0) {
@@ -2775,21 +2777,17 @@ function scr_initialize_custom() {
                     }
                     break;
             }
-            var v = 0;
             repeat (_count) {
                 if (_is_vehicle) {
-                    if (v < 205) {
-                        add_veh_to_company(_rolename, _coy.coy, v, _wep1, _wep2, _wep3, _upgrade, _accessory);
-                        man_size += 10;
-                    }
+                    add_veh_to_company(_rolename, _coy.coy, v, _wep1, _wep2, _wep3, _upgrade, _accessory);
+                    v++;
+                    man_size += 10;
                 } else {
-                    if (k < 501) {
-                        add_unit_to_company(_unit_type, _coy.coy, k, _rolename, _erole, _wep1, _wep2, _gear, _mobi, _armour);
-                        k++;
+                    add_unit_to_company(_unit_type, _coy.coy, k, _rolename, _erole, _wep1, _wep2, _gear, _mobi, _armour);
+                    k++;
+                    man_size++;
+                    if (_is_terminator(_armour)) {
                         man_size++;
-                        if (_is_terminator(_armour)) {
-                            man_size++;
-                        }
                     }
                 }
             }

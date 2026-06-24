@@ -1,5 +1,5 @@
-/// @param {Asset.GMObject} fleet
-/// @param {Asset.GMObject.obj_fleet} combat
+/// @param {Id.Instance} fleet
+/// @param {Id.Instance} combat
 function add_fleet_ships_to_combat(fleet, combat) {
     var capital_count = array_length(fleet.capital);
     var _ship_id;
@@ -52,7 +52,7 @@ function add_fleet_ships_to_combat(fleet, combat) {
     }
 }
 
-/// @param {Asset.GMObject.obj_fleet} combat
+/// @param {Id.Instance} combat
 function sort_ships_into_columns(combat) {
     var col = 5;
     with (combat) {
@@ -128,7 +128,6 @@ function player_fleet_ship_spawner() {
                 hei = 160;
                 sizz = 3;
             }
-            // if (column[col]="Slaughtersong"){hei=200;sizz=3;}
             if (column[col] == "Strike Cruiser" || column[col] == "frigate") {
                 hei = 96;
                 sizz = 2;
@@ -149,7 +148,6 @@ function player_fleet_ship_spawner() {
                 temp2 += 20;
             }
 
-            // show_message(string(column_num[col])+" "+string(column[col])+" X:"+string(x2));
             for (var k = 0; k < array_length(ship_id); k++) {
                 if (ship_class[k] == column[col] || (player_ships_class(ship_id[k]) == column[col])) {
                     man = -1;

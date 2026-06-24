@@ -21,11 +21,12 @@ function check_for_next_inquisitor_inspection() {
     }
 
     if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
+        var _player_fleet = instance_nearest(x, y, obj_p_fleet);
         var _player_fleets = instance_number(obj_p_fleet);
         if (_player_fleets == 1) {
             //can't inspect if fleet not in room
             //can't innspect if on other non negotiable action e.g crusading
-            _inspec = in_room(obj_p_fleet) && !fleet_engaged(obj_p_fleet);
+            _inspec = in_room(_player_fleet) && !fleet_engaged(obj_p_fleet);
         } else if (_player_fleets == 0) {
             _inspec = false;
         }

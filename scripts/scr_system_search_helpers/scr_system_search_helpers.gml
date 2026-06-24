@@ -485,7 +485,7 @@ function scr_planet_image_numbers(p_type) {
     return 0;
 }
 
-/// @param {Id.Instance.obj_star} star
+/// @param {Id.Instance} star
 /// @param {Enum.eFACTION} faction
 /// @param {Real} minimum_strength
 function star_has_planet_with_forces(star, faction, minimum_strength = 1) {
@@ -501,7 +501,7 @@ function star_has_planet_with_forces(star, faction, minimum_strength = 1) {
     return found;
 }
 
-/// @param {Id.Instance.obj_star} star
+/// @param {Id.Instance} star
 /// @param {Real} planet_id
 /// @param {Enum.eFACTION} faction
 /// @param {Real} minimum_strength

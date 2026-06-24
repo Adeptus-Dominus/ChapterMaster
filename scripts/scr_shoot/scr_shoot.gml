@@ -1,11 +1,10 @@
+/// @param {Real} weapon_index_position Weapon number
+/// @param {Id.Instance} target_object Target object
+/// @param {Real} target_type Target dudes
+/// @param {String} damage_data "att" or "arp" or "highest"
+/// @param {String} melee_or_ranged melee or ranged
 function scr_shoot(weapon_index_position, target_object, target_type, damage_data, melee_or_ranged) {
     try {
-        // weapon_index_position: Weapon number
-        // target_object: Target object
-        // target_type: Target dudes
-        // damage_data: "att" or "arp" or "highest"
-        // melee_or_ranged: melee or ranged
-
         // This massive clusterfuck of a script uses the newly determined weapon and target data to attack and assign damage
         for (var j = 1; j <= 100; j++) {
             obj_ncombat.dead_ene[j] = "";
@@ -25,12 +24,11 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
         }
 
         if ((weapon_index_position >= 0) && instance_exists(target_object) && (owner == 2)) {
-            var stop, damage_type, doom;
             var shots_fired = wep_num[weapon_index_position];
             if (shots_fired == 0 || ammo[weapon_index_position] == 0) {
                 exit;
             }
-            doom = 0;
+            var doom = 0;
             if ((shots_fired != 1) && (melee_or_ranged != "melee")) {
                 switch (obj_ncombat.enemy) {
                     case eFACTION.ECCLESIARCHY:
@@ -58,8 +56,8 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                 doom = 1;
             }
 
-            damage_type = "";
-            stop = 0;
+            var damage_type = "";
+            var stop = 0;
 
             if (ammo[weapon_index_position] > 0) {
                 ammo[weapon_index_position] -= 1;

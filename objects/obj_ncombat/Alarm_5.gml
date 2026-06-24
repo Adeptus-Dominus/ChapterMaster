@@ -494,7 +494,7 @@ if (defeat == 0 && _reduce_power) {
                     who_cleansed = "Gene Stealer Cult";
                     make_alert = true;
                     delete_features(p_feature[battle_planet], eP_FEATURES.GENE_STEALER_CULT);
-                    adjust_influence(eFACTION.TYRANIDS, -25, battle_planet);
+                    adjust_influence(eFACTION.TYRANIDS, -25, battle_planet, self);
                 }
                 if (make_alert) {
                     if (p_first[battle_planet] == 1) {

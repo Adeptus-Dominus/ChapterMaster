@@ -1,6 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
 global.force_strength_descriptions = [
     "none",
     "Minimal",
@@ -11,8 +8,8 @@ global.force_strength_descriptions = [
     "Overwhelming",
 ];
 
-/// @param {real} planet
-/// @param {Asset.GMObject.obj_star} system
+/// @param {Real} planet
+/// @param {Id.Instance} system
 function PlanetData(planet, system) constructor {
     //safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
     //disposition
@@ -524,7 +521,6 @@ function PlanetData(planet, system) constructor {
     static grow_ork_forces = function() {
         var contin = 0;
         var _rando = roll_dice(1, 100); // This part handles the spreading
-        // if (_rando<30){
         var _non_deads = planets_without_type("dead", system);
 
         var _has_warboss = has_feature(eP_FEATURES.ORKWARBOSS);

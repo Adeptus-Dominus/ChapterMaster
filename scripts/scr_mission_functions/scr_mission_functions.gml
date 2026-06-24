@@ -549,7 +549,6 @@ function complete_garrison_mission(problem_index) {
         remove_problem("provide_garrison");
         return;
     }
-    var planet = new PlanetData(targ_planet, self);
 
     garrisons.update();
     if (current_owner != eFACTION.IMPERIUM || !garrisons.garrison_force) {
