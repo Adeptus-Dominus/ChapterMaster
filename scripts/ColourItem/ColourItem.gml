@@ -554,7 +554,7 @@ function ColourItem(_xx, _yy) constructor {
             }
             image_location_maps.company_marks = move_location_relative(draw_unit_buttons([xx - 30, yy - 40], "Company Marks"), -xx, -yy);
 
-            if (dummy_marine ?? true) {
+            if (!is_struct(dummy_marine)) {
                 dummy_marine = new DummyMarine();
             }
             if (!is_struct(dummy_image)) {
