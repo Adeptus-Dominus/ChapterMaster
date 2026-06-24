@@ -1664,7 +1664,7 @@
         "melee_hands": 0,
         "range": 12,
         "ranged_hands": 1,
-        "spli": 2,
+        "spli": 1,
         "tags": [
             "las"
         ],
