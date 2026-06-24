@@ -10,6 +10,18 @@ on:
         options:
           - YYC
           - VM
+      prerelease:
+        type: boolean
+        description: "Post as a pre-release?"
+        default: false
+      make_latest:
+        type: boolean
+        description: "Mark this release as latest?"
+        default: true
+      send_discord:
+        type: boolean
+        description: "Send Discord notification?"
+        default: true
   schedule:
     - cron: "0 */6 * * *"
 
@@ -254,14 +266,28 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - id: create_release
-        name: Create a release and upload the build
+        name: Create a release and upload files
         uses: softprops/action-gh-release@v2.3.2
         with:
           name: ${{ steps.prep_release_name.outputs.release_name }}
           body: ${{steps.build_changelog.outputs.changelog}}
           token: ${{ secrets.RELEASE_TOKEN_SECRET }}
           tag_name: ${{ needs.prepare_release.outputs.tag_name }}
-          prerelease: false
-          make_latest: true
+          prerelease: ${{ github.event.inputs.prerelease || 'false' }}
+          make_latest: ${{ github.event.inputs.make_latest || 'true' }}
           files: |
             ./build_output/**/*.zip
+
+      - name: Send Discord Notification
+        uses: tsickert/discord-webhook-action@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          username: "GitHub Releases"
+          content: |
+            <@&1318332223232938014>
+            -# :warning: These builds are auto-generated. They may be **heavily unstable**, in which case try using an older build (20 exist at the same time). :warning:
+          embed-title: "${{ steps.prep_release_name.outputs.release_name }}"
+          embed-url: ${{ steps.create_release.outputs.html_url }}
+          embed-description: |
+            **Changelog:**
+            ${{ steps.build_changelog.outputs.changelog }}
