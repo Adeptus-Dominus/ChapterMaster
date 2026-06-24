@@ -1669,7 +1669,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             // Attack Bike: scales off the "sidecar's" ranged weapon - single firepower profile, no melee option.
             var _attack = ranged_damage_data[0];
             var _weapon = ranged_damage_data[3];
-            return new EquipmentStruct({attack: _attack * 2, name: "Speed Force", range: 14, ammo: 12, spli: _weapon.spli, arp: _weapon.arp}, "weapon");
+            return new EquipmentStruct({attack: _attack * 2, name: "Speed Force (Ranged)", range: 14, ammo: 12, spli: _weapon.spli, arp: _weapon.arp}, "weapon");
         }
         // Standard Bike: scales off melee, dominant melee (M) profile while engaged in front.
         var _melee_attack = melee_damage_data[0];

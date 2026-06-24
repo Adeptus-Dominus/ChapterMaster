@@ -183,9 +183,10 @@ function scr_player_combat_weapon_stacks() {
                     }
                 }
                 if (is_struct(mobi_item) && mobi_item.has_tag("bike")) {
-                    var stack_index = find_stack_index("Speed Force", head_role, unit);
+                    var _speed_force = unit.speed_force(mobi_item.has_tag("sf_ranged"));
+                    var stack_index = find_stack_index(_speed_force.name, head_role, unit);
                     if (stack_index > -1) {
-                        add_data_to_stack(stack_index, unit.speed_force(mobi_item.has_tag("sf_ranged")), false, head_role, unit);
+                        add_data_to_stack(stack_index, _speed_force, false, head_role, unit);
                         if (head_role) {
                             player_head_role_stack(stack_index, unit);
                         }
