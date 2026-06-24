@@ -98,6 +98,12 @@ function TradeAttempt(diplomacy) constructor {
                     repeat (floor(_opt.number / GUARD_SQUAD_SIZE)) {
                         scr_add_man("Guard Sergeant", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
                     }
+                    // One Chimera transport is assigned per two squads (every 2 * GUARD_SQUAD_SIZE
+                    // guardsmen) to carry and screen the levy. Vehicles live in the new_vehicles
+                    // company; scr_add_vehicle berths them at the home planet or aboard a ship.
+                    repeat (floor(_opt.number / (GUARD_SQUAD_SIZE * 2))) {
+                        scr_add_vehicle("Chimera", obj_controller.new_vehicles);
+                    }
                     with (obj_ini) {
                         scr_company_order(0);
                     }

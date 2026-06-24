@@ -279,6 +279,10 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash) 
         return;
     }
 
+    // Per-role tally of kills this volley, used to relabel the attack after the loop.
+    var _killed_roles = [];
+    var _killed_counts = [];
+
     // Apply damage for each shot
     for (var shot = 0; shot < _shots; shot++) {
         if (array_length(valid_marines) == 0) {
@@ -350,6 +354,19 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash) 
             valid_marines = array_delete_value(valid_marines, marine_index);
             _damage_data.units_lost++;
 
+            // Record the fallen role so the headline can name who actually died.
+            var _arole = marine.role();
+            var _aidx = -1;
+            for (var _ai = 0; _ai < array_length(_killed_roles); _ai++) {
+                if (_killed_roles[_ai] == _arole) { _aidx = _ai; break; }
+            }
+            if (_aidx == -1) {
+                array_push(_killed_roles, _arole);
+                array_push(_killed_counts, 1);
+            } else {
+                _killed_counts[_aidx] += 1;
+            }
+
             // ===== Splash carry-over =====
             // Port of the enemy men-block math in scr_shoot onto the player's individual
             // units. A blast weapon's lethal overkill spills onto adjacent units, capped at
@@ -375,6 +392,18 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash) 
                     if (check_dead_marines(_next, _next_index)) {
                         valid_marines = array_delete_value(valid_marines, _next_index);
                         _damage_data.units_lost++;
+                        // Record the fallen role (splash victims count too).
+                        var _brole = _next.role();
+                        var _bidx = -1;
+                        for (var _bi = 0; _bi < array_length(_killed_roles); _bi++) {
+                            if (_killed_roles[_bi] == _brole) { _bidx = _bi; break; }
+                        }
+                        if (_bidx == -1) {
+                            array_push(_killed_roles, _brole);
+                            array_push(_killed_counts, 1);
+                        } else {
+                            _killed_counts[_bidx] += 1;
+                        }
                         _carry = _next_net - _next_hp_before; // remaining overkill rolls on
                     } else {
                         break; // wounded but alive; the blast is spent on this body
@@ -383,6 +412,20 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash) 
                 }
             }
         }
+    }
+
+    // The loop overwrote unit_type with a random *surviving* unit every shot, so a dying
+    // screen in front of a tanky unit (Dreadnought) let the survivor win the "strike at X"
+    // headline while the casualty list named the dead. If anything fell, relabel the attack
+    // with the role that took the most casualties so the headline and the losses agree.
+    if (array_length(_killed_roles) > 0) {
+        var _top = 0;
+        for (var _ti = 1; _ti < array_length(_killed_counts); _ti++) {
+            if (_killed_counts[_ti] > _killed_counts[_top]) {
+                _top = _ti;
+            }
+        }
+        _damage_data.unit_type = _killed_roles[_top];
     }
 
     return;

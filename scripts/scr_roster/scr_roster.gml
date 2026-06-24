@@ -751,6 +751,12 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
             col = obj_controller.bat_rhino_column;
             new_combat.rhinos++;
             break;
+        // Chimera (guard transport) screens like a Rhino. This first drop parks it in the Rhino
+        // column; the dedicated Imperial Armor column arrives with the formation drop.
+        case "Chimera":
+            col = obj_controller.bat_rhino_column;
+            new_combat.rhinos++;
+            break;
         case "Predator":
             col = obj_controller.bat_predator_column;
             new_combat.predators++;
@@ -798,6 +804,11 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
         targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 4;
         targ.veh_hp_multiplier[targ.veh] = 4;
         targ.veh_ac[targ.veh] = 40;
+    } else if (obj_ini.veh_role[company][v] == "Chimera") {
+        // Mirrors the enemy Chimera: HP 200 (base 100 x2), armour 30.
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 2;
+        targ.veh_hp_multiplier[targ.veh] = 2;
+        targ.veh_ac[targ.veh] = 30;
     }
 
     // STC Bonuses
