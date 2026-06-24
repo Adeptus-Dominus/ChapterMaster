@@ -141,7 +141,7 @@ function problem_end_turn_checks(){
                 return;
             }            
             var _alert_text = "Inquisition Mission Failed: Investigate ";
-            var _disp_string = alter_dispostion(eFACTION.INQUISITION, -5);
+            var _disp_string = alter_disposition(eFACTION.INQUISITION, -5);
             _alert_text += $"{name()}. {_disp_string}";
             scr_alert("red", "mission_failed", _alert_text, 0, 0);
             scr_event_log("red", _alert_text);
@@ -174,7 +174,7 @@ function problem_end_turn_checks(){
                 scr_event_log("", "Fleet embarks upon Crusade.");
             } else {
                 // hit loyalty here
-                var _disp_hits = alter_dispostions([
+                var _disp_hits = alter_dispositions([
                     [eFACTION.INQUISITION , -10],
                     [eFACTION.IMPERIUM, -5],
                 ])
@@ -196,7 +196,7 @@ function problem_end_turn_checks(){
             }
             var _alert_text = "The Necron Tomb of planet ";
 
-            var _disp_string = alter_dispostion(eFACTION.INQUISITION, -8);
+            var _disp_string = alter_disposition(eFACTION.INQUISITION, -8);
             _alert_text += $"{numeral_name} has not been deactivated in time.  It has awakened, rank upon rank of Necrons pouring out to the planet's surface.  The Inquisition is not pleased with your failure. {_disp_string}";
             scr_popup("Inquisition Mission Failed", _alert_text, "necron_army", "");
             scr_event_log("red", $"Inquisition Mission Failed: Bombing run failed; the Necron Tomb on {name()} has become active.");
@@ -214,7 +214,7 @@ function problem_end_turn_checks(){
                 return;
             }
             var _planet_name = name();
-            var _disp_string = alter_dispostion(eFACTION.INQUISITION, -3);
+            var _disp_string = alter_disposition(eFACTION.INQUISITION, -3);
             var _alert_text = $"The Spyrer on {_planet_name} has been left unchecked.  In the ensuing carnage some high-ranking officials have been killed, along with several Nobles.  Panic is running amock in several parts of the hives and the Inquisition is less than pleased.{_disp_string}";
             var _text = "Inquisition Mission Failed: The Spyrer on {_planet_name} was not removed.";
             scr_popup("Inquisition Mission Failed", _alert_text, "spyrer", "");
