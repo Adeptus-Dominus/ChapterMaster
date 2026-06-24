@@ -17,7 +17,7 @@
 
 /// @param {Enum.eEVENT} event
 /// @param {Enum.eINQUISITION_MISSION} forced_mission optional
-function scr_inquisition_mission(event, forced_mission = -1) {
+function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.NOTFOUND) {
     LOGGER.info($"RE: Inquisition Mission, event {event}, forced_mission {forced_mission}");
     if ((obj_controller.known[eFACTION.INQUISITION] == 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") && !global.cheat_debug) {
         LOGGER.info("Player is either hasn't met or is at war with Inquisition, not proceeding with inquisition mission");
@@ -52,7 +52,7 @@ function scr_inquisition_mission(event, forced_mission = -1) {
                 found_sleeping_necrons = true;
             }
 
-            if (star_has_planet_with_forces(_star, "Demons", 1)) {
+            if (star_has_planet_with_forces(_star, eFACTION.HERETICS, 1)) {
                 // array_push(demon_worlds, _star); // turning this off til i have a way to finish the mission
             }
 
@@ -81,25 +81,8 @@ function scr_inquisition_mission(event, forced_mission = -1) {
             LOGGER.info($"Couldn't find any planets with demons for inquisition mission");
         }
 
-        //if (string_count("Tau",obj_controller.useful_info)=0){
-        //	var found_tau = false;
-        //	with(obj_star){
-        //		if (found_tau){
-        //			break;
-        //		}
-        //		for(var i = 1; i <= planets; i++)
-        //		{
-        //			if (p_tau[i]>4) {
-        //				array_push(inquisition_missions, eINQUISITION_MISSION.ETHEREAL);
-        //				found_tau = true
-        //				break;
-        //			}
-        //		}
-        //	}
-        //}
-
         var chosen_mission = choose_array(inquisition_missions);
-        if (forced_mission != -1) {
+        if (forced_mission != eINQUISITION_MISSION.NOTFOUND) {
             chosen_mission = forced_mission;
         }
         switch (chosen_mission) {

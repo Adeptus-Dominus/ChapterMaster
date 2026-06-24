@@ -346,7 +346,7 @@ for (var i = 1; i <= planets; i++) {
         p_owner[i] = 5;
         p_first[i] = 5;
         p_sisters[i] = 4;
-        adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[i] * 10) - irandom(5), i);
+        adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[i] * 10) - irandom(5), i, self);
     }
     // if (p_owner[i]=3) or (p_owner[i]=5){p_feature[i]="Artifact|";}Testing ; 137
 }
@@ -404,7 +404,7 @@ if ((choose(0, 1) == 1) && (planets > 0)) {
                                     p_heresy[_ran_num] -= 10;
                                 }
                                 p_sisters[_ran_num] = choose(2, 2, 3);
-                                adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[_ran_num] * 10) - irandom(3), _ran_num);
+                                adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[_ran_num] * 10) - irandom(3), _ran_num, self);
                                 goo = 1;
                                 break;
                             case 2:

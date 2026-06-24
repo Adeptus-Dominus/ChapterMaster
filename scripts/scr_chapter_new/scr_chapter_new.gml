@@ -6,7 +6,7 @@ function ChapterData() constructor {
     points = 0;
     flavor = "";
     origin = eCHAPTER_ORIGINS.NONE;
-    founding = ePROGENITOR.NONE;
+    founding = eCHAPTERS.UNKNOWN;
     successors = 0;
     splash = 0;
     icon_name = "unknown";

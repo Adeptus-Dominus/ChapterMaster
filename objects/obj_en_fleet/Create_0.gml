@@ -8,7 +8,7 @@ home_y = 0;
 selected = 0;
 ret = 0;
 hurt = 0;
-/// @type {Asset.GMObject.obj_star}
+/// @type {Id.Instance}
 orbiting = noone;
 rep = 3;
 minimum_eta = 2;
@@ -117,13 +117,13 @@ deserialize = function(save_data) {
         }
         var loaded_value = struct_get(save_data, var_name);
         try {
-            variable_struct_set(self, var_name, loaded_value);
+            variable_instance_set(self, var_name, loaded_value);
         } catch (e) {
             LOGGER.exception("Deserialization failed", e);
         }
     }
     if (struct_exists(save_data, "cargo_data")) {
-        variable_struct_set(self, "cargo_data", save_data.cargo_data);
+        variable_instance_set(self, "cargo_data", save_data.cargo_data);
         if (fleet_has_cargo("ork_warboss")) {
             var _boss = new NewPlanetFeature(eP_FEATURES.ORKWARBOSS);
             _boss.load_json_data(cargo_data.ork_warboss);

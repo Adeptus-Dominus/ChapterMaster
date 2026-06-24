@@ -40,8 +40,8 @@ player_started = 0;
 player_lasers = 0;
 player_lasers_cd = 70;
 player_lasers_target = 0;
-pla_fleet = 0;
-ene_fleet = 0;
+pla_fleet = instance_nearest(x, y, obj_p_fleet);
+ene_fleet = instance_nearest(x, y, obj_en_fleet);
 victory = false;
 
 instance_deactivate_all(true);

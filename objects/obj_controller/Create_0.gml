@@ -101,6 +101,7 @@ unit_manage_constants = {};
 unit_manage_constants.current_data = "";
 management_buttons = false;
 
+diplo_buttons = {};
 diplomacy_pathway = "";
 option_selections = [];
 ready = false;
@@ -804,9 +805,6 @@ trade_attempt = false;
 // ** Sets income **
 income = 0;
 income_last = 0;
-/*income-=obj_ini.battle_barges;
-income-=obj_ini.strike_cruisers/2;
-income-=(obj_ini.gladius+obj_ini.hunters)/10;*/
 income_base = 0;
 income_home = 0;
 income_forge = 0;

@@ -488,7 +488,7 @@ function scr_enemy_ai_a() {
                         if (_planet_data.population_influences[eFACTION.TYRANIDS] > 50 && _planet_data.has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
                             var _cur_influ = p_influence[_run][eFACTION.TYRANIDS];
                             var _influence_reduction = _cur_influ * (p_pdf[_run] / _pdf_before);
-                            adjust_influence(eFACTION.TYRANIDS, -min(_influence_reduction, _cur_influ - 3), _run);
+                            adjust_influence(eFACTION.TYRANIDS, -min(_influence_reduction, _cur_influ - 3), _run, self);
                             if (p_influence[_run][eFACTION.TYRANIDS] < 20) {
                                 _planet_data.delete_feature(eP_FEATURES.GENE_STEALER_CULT);
                             }
@@ -1189,7 +1189,7 @@ function scr_enemy_ai_a() {
             if (p_tyranids[_run] != after_combat_tyranids) {
                 p_tyranids[_run] = after_combat_tyranids;
                 if (_planet_data.has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
-                    adjust_influence(eFACTION.TYRANIDS, -min(p_influence[_run][eFACTION.TYRANIDS] - 4, 5), _run);
+                    adjust_influence(eFACTION.TYRANIDS, -min(p_influence[_run][eFACTION.TYRANIDS] - 4, 5), _run, self);
                     var _cult = _planet_data.get_features(eP_FEATURES.GENE_STEALER_CULT)[0];
                     if (p_influence[_run][eFACTION.TYRANIDS] < 5) {
                         _cult.hiding = true;
@@ -1227,7 +1227,7 @@ function scr_enemy_ai_a() {
                 who_cleansed = "Gene Stealer Cult";
                 make_alert = true;
                 delete_features(p_feature[_run], eP_FEATURES.GENE_STEALER_CULT);
-                adjust_influence(eFACTION.TYRANIDS, -25, _run);
+                adjust_influence(eFACTION.TYRANIDS, -25, _run, self);
             }
             if (make_alert) {
                 if (p_first[_run] == 1) {

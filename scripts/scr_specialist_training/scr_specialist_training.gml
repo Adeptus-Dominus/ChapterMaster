@@ -1,4 +1,6 @@
 /// @self Struct.TTRPG_stats
+/// @param {String} specialist
+/// @param {Real} req_exp
 function specialistfunct(specialist, req_exp) {
     var spec_tips = [
         string("{0} Potential", obj_ini.role[100][16]),
@@ -92,6 +94,7 @@ function specialistfunct(specialist, req_exp) {
 // Parameters:
 //   specialist - Integer index (0: Techmarine, 1: Librarian, 2: Chaplain, 3: Apothecary)
 // Returns: Array containing company and position of selected marine, or "none" if no suitable marine found
+/// @param {Real} specialist
 function spec_data_set(specialist) {
     var _data = obj_controller.spec_train_data[specialist];
     var _search = {

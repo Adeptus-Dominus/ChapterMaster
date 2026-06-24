@@ -1,5 +1,5 @@
 try {
-    var _player_battle_fleet = 0;
+    var _player_battle_fleet = noone;
     var killer = false;
     var killer_tg = 0;
 

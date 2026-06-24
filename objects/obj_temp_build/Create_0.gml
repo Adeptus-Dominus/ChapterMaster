@@ -1,5 +1,5 @@
 target = noone;
-planet = noone;
+planet = (planet > 0) ? planet : 0;
 
 lair = false;
 arsenal = false;

@@ -724,12 +724,11 @@ function unload_selection() {
 
 /// @self Asset.GMObject.obj_controller
 function reset_selection_equipment() {
-    var _unit;
     for (var f = 0; f < array_length(display_unit); f++) {
         // If come across a man, set vih to 1
         if ((man[f] == "man") && (man_sel[f] == 1)) {
             if (is_struct(display_unit[f])) {
-                _unit = display_unit[f];
+                var _unit = display_unit[f];
                 _unit.set_default_equipment();
             }
         }
@@ -738,12 +737,11 @@ function reset_selection_equipment() {
 
 /// @self Asset.GMObject.obj_controller
 function add_tag_to_selection(new_tag) {
-    var _unit;
     for (var f = 0; f < array_length(display_unit); f++) {
         // If come across a man, set vih to 1
         if ((man[f] == "man") && (man_sel[f] == 1)) {
             if (is_struct(display_unit[f])) {
-                _unit = display_unit[f];
+                var _unit = display_unit[f];
                 _unit[$ new_tag] = !_unit[$ new_tag];
             }
         }

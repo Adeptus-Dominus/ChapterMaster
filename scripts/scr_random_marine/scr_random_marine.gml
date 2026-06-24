@@ -1,8 +1,7 @@
-function scr_random_marine(role, exp_req, search_params = "none") {
-    // role : role
-    // exp_req: exp
-    //search params : a struct giving extra search information defaults to "none"
-
+/// @param {Id.Instance} role
+/// @param {Real} exp_req
+/// @param {Struct} search_params a struct giving extra search information
+function scr_random_marine(role, exp_req, search_params = {}) {
     var company_list = [
         0,
         1,
@@ -16,7 +15,7 @@ function scr_random_marine(role, exp_req, search_params = "none") {
         9,
         10
     ];
-    if (role == SPECIALISTS_LIBRARIANS) {
+    if (!is_array(role) && role == SPECIALISTS_LIBRARIANS) {
         role = role_groups(SPECIALISTS_LIBRARIANS);
     }
     for (var comp_shuffle = 0; comp_shuffle < 11; comp_shuffle++) {

@@ -21,7 +21,7 @@ function radical_inquisitor_mission_ship_arrival() {
     //TODO make a centralised player_fleet present method
     var _p_fleet = instance_nearest(x, y, obj_p_fleet);
     var _intercept_fleet = -1;
-    if (point_distance(x, y, _p_fleet.x, _p_fleet.y) < 10 && is_orbiting(obj_p_fleet)) {
+    if (point_distance(x, y, _p_fleet.x, _p_fleet.y) < 10 && is_orbiting(_p_fleet)) {
         _intercept_fleet = _p_fleet;
     }
 
@@ -254,8 +254,6 @@ function inquisitor_inspect_base() {
     } else {
         chapter_asset_discovery = roll_dice_chapter(2, 100, "high");
     }
-
-    // 137 ; chapter_asset_discovery=floor(random(20))+1;
 
     var cur_planet = 0;
     if (chapter_asset_discovery <= 5) {

@@ -83,7 +83,7 @@ function ork_fleet_arrive_target() {
             if (p_tyranids[ork_attack_planet] <= 0) {
                 if (planet_feature_bool(p_feature[ork_attack_planet], eP_FEATURES.GENE_STEALER_CULT)) {
                     _pdata.delete_feature(eP_FEATURES.GENE_STEALER_CULT);
-                    adjust_influence(eFACTION.TYRANIDS, -25, ork_attack_planet);
+                    adjust_influence(eFACTION.TYRANIDS, -25, ork_attack_planet, self);
                     var nearest_imperial = nearest_star_with_ownership(x, y, eFACTION.IMPERIUM, self.id);
                     if (nearest_imperial != noone) {
                         var targ_planet = scr_get_planet_with_owner(nearest_imperial, eFACTION.IMPERIUM);

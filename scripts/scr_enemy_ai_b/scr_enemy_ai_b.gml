@@ -19,19 +19,19 @@ function scr_enemy_ai_b() {
             var tau_influence = p_influence[ran2][eFACTION.TAU];
             if (tau_influence < 90 && (p_type[ran2] != "Dead")) {
                 if ((flit.image_index == 1) && (ran1 <= 90)) {
-                    adjust_influence(eFACTION.TAU, choose(2, 3), ran2);
+                    adjust_influence(eFACTION.TAU, choose(2, 3), ran2, self);
                     if ((p_type[ran2] == "Forge") && (tau_influence >= 3)) {
-                        adjust_influence(eFACTION.TAU, -3, ran2);
+                        adjust_influence(eFACTION.TAU, -3, ran2, self);
                     }
                 } else if ((flit.image_index > 1) && (flit.image_index < 4) && (ran1 <= 90)) {
-                    adjust_influence(eFACTION.TAU, choose(7, 9, 11, 13), ran2);
+                    adjust_influence(eFACTION.TAU, choose(7, 9, 11, 13), ran2, self);
                     if ((p_type[ran2] == "Forge") && (tau_influence >= 10)) {
-                        adjust_influence(eFACTION.TAU, -10, ran2);
+                        adjust_influence(eFACTION.TAU, -10, ran2, self);
                     }
                 } else if (flit.image_index >= 4) {
-                    adjust_influence(eFACTION.TAU, choose(9, 11, 13, 15, 17), ran2);
+                    adjust_influence(eFACTION.TAU, choose(9, 11, 13, 15, 17), ran2, self);
                     if ((p_type[ran2] == "Forge") && (tau_influence >= 13)) {
-                        adjust_influence(eFACTION.TAU, -13, ran2);
+                        adjust_influence(eFACTION.TAU, -13, ran2, self);
                     }
                 }
             }
