@@ -279,6 +279,7 @@ jobs:
             ./build_output/**/*.zip
 
       - name: Send Discord Notification
+        if: ${{ github.event.inputs.send_discord != 'false' }}
         uses: tsickert/discord-webhook-action@v7.0.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
