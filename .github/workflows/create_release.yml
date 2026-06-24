@@ -290,8 +290,12 @@ jobs:
 
       - name: Send Discord Notification
         if: ${{ github.event.inputs.send_discord != 'false' }}
+<<<<<<< HEAD:.github/workflows/create_release.yml
         uses: tsickert/discord-webhook-action@v7.0.0
 >>>>>>> ac8084cba (ci: Optional build toggles; Explicit Discord step (#1267)):.github/workflows/release_dev.yml
+=======
+        uses: tsickert/discord-webhook@v7.0.0
+>>>>>>> 8f405053d (fix: Discord webhook action usage in workflow):.github/workflows/release_dev.yml
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           username: "GitHub Releases"
