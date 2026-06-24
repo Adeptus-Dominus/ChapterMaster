@@ -217,7 +217,6 @@ function scr_draw_unit_image(_background = false) {
         if ((name_role() != "") && (base_group == "astartes")) {
             var pauldron_trim = false;
             var armour_bypass = false;
-            var hide_bionics = false;
             var robes_bypass = false;
             var robes_hood_bypass = false;
             var halo_bypass = false;

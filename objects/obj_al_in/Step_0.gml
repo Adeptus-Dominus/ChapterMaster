@@ -20,10 +20,9 @@ if (cooldown1 > 0) {
     cooldown1 -= 1;
 }
 
-var dist, range;
 if (instance_exists(target)) {
-    dist = point_distance(x, y, target.x, target.y);
-    range = 100 + max(sprite_get_width(target.sprite_index), sprite_get_height(target.sprite_index));
+    var dist = point_distance(x, y, target.x, target.y);
+    var range = 100 + max(sprite_get_width(target.sprite_index), sprite_get_height(target.sprite_index));
 
     if (action == "close") {
         speed = 4;
@@ -46,12 +45,11 @@ if (instance_exists(target)) {
     }
 
     if ((action == "shoot") && (cooldown1 <= 0)) {
-        var bull;
         cooldown1 = 30;
         if (owner == 8) {
             cooldown1 = 20;
         }
-        bull = instance_create(x, y, obj_al_round);
+        var bull = instance_create(x, y, obj_al_round);
         bull.direction = self.direction;
         if ((owner == 8) || (owner == 6)) {
             bull.sprite_index = spr_pulse;
