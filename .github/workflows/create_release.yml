@@ -281,19 +281,34 @@ jobs:
           files: |
             ./build_output/**/*.zip
 <<<<<<< HEAD:.github/workflows/create_release.yml
+<<<<<<< HEAD:.github/workflows/create_release.yml
 
       - name: Send Discord Notification
         if: ${{ github.event.inputs.send_discord != 'false' && needs.build_needed.outputs.release_type == 'Development' }}
         uses: tsickert/discord-webhook@v7.0.0
+=======
+
+      - name: Send Discord Notification
+        if: ${{ github.event.inputs.send_discord != 'false' }}
+        uses: tsickert/discord-webhook-action@v7.0.0
+>>>>>>> ac8084cba (ci: Optional build toggles; Explicit Discord step (#1267)):.github/workflows/release_dev.yml
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           username: "GitHub Releases"
           content: |
             <@&1318332223232938014>
             -# :warning: These builds are auto-generated. They may be **heavily unstable**, in which case try using an older build (20 exist at the same time). :warning:
+<<<<<<< HEAD:.github/workflows/create_release.yml
           embed-title: "[${{ needs.prepare_release.outputs.release_name }}](${{ steps.create_release.outputs.html_url }})"
           embed-description: |
             ${{ steps.build_changelog.outputs.changelog }}
           embed-footer-text: "Download: ${{ steps.create_release.outputs.html_url }}" 
 =======
 >>>>>>> ff1aa2fc2 (ci: Rewrite build pipeline to gm-cli (#1262)):.github/workflows/release_dev.yml
+=======
+          embed-title: "${{ steps.prep_release_name.outputs.release_name }}"
+          embed-url: ${{ steps.create_release.outputs.html_url }}
+          embed-description: |
+            **Changelog:**
+            ${{ steps.build_changelog.outputs.changelog }}
+>>>>>>> ac8084cba (ci: Optional build toggles; Explicit Discord step (#1267)):.github/workflows/release_dev.yml
