@@ -121,6 +121,28 @@
         ],
         "value": 30
     },
+    "Battle Cannon": {
+        "abbreviation": "BtlCnn",
+        "ammo": 12,
+        "arp": 4,
+        "attack": {
+            "artifact": 1000,
+            "master_crafted": 800,
+            "standard": 650
+        },
+        "description": "The main armament of the Leman Russ battle tank. A high-calibre cannon firing massive shells that crack armour and scatter massed infantry alike, the versatile mainstay of Astra Militarum armoured companies.",
+        "melee_hands": 0,
+        "range": 18,
+        "ranged_hands": 0,
+        "spli": 8,
+        "tags": [
+            "vehicle",
+            "heavy_ranged",
+            "explosive",
+            "turret"
+        ],
+        "value": 40
+    },
     "Boarding Shield": {
         "abbreviation": "BrdShld",
         "armour_value": {

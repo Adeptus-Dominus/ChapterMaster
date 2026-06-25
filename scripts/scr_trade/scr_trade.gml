@@ -17,7 +17,8 @@ function TradeAttempt(diplomacy) constructor {
         "Inferno Bolts": 5,
         "Sister of Battle": 40,
         "Sister Hospitaler": 75,
-        "Guardsman": 0.2,
+        "Guardsman": 0.1,
+        "Leman Russ": 800,
         "Eldar Power Sword": 50,
         "Archeotech Laspistol": 150,
         "Ranger": 100,
@@ -114,6 +115,20 @@ function TradeAttempt(diplomacy) constructor {
                     // with the size of the levy: about 1 per 200 raised (so a full 2000 costs 10),
                     // floored at 1 so even a token request costs a little standing.
                     alter_disposition(diplomacy_faction, -max(1, round(_opt.number / 200)));
+                } else if (_type == "Leman Russ") {
+                    // The Adeptus Mechanicus forge and part with their tanks reluctantly. Each
+                    // Leman Russ musters into the Auxilia company (company 0) alongside the guard
+                    // levy so the force can field its own armour line, then the company is reordered
+                    // so the tanks settle into their slots.
+                    repeat (_opt.number) {
+                        scr_add_vehicle("Leman Russ", 0);
+                    }
+                    with (obj_ini) {
+                        scr_company_order(0);
+                    }
+                    // Handing over sacred war materiel costs the forge world some regard, one point
+                    // per tank with a floor of one, so a larger order stings their disposition more.
+                    alter_disposition(diplomacy_faction, -max(1, _opt.number));
                 } else {
                     // Every other mercenary type arrives by trade convoy.
                     if (!struct_exists(trading_object, "mercenaries")) {
@@ -416,6 +431,7 @@ function TradeAttempt(diplomacy) constructor {
             new_demand_buttons(40, "Minor Artifact", "arti", 1);
             new_demand_buttons(25, "Skitarii", "merc", 200);
             new_demand_buttons(55, "Techpriest", "merc", 3);
+            new_demand_buttons(40, "Leman Russ", "merc", 10);
             break;
         case 4:
             new_demand_buttons(25, "Crusader", "merc", 5);
@@ -713,7 +729,7 @@ function TradeAttempt(diplomacy) constructor {
 
         // Guardsmen are abundant Imperial line troops the Sector Governor hands over by the
         // thousand, not a haggled rarity, so the base trade overhead does not apply to a
-        // pure Guard levy. They cost a flat 0.05 requisition each (50 per 1000). If the
+        // pure Guard levy. They cost a flat 0.1 requisition each (100 per 1000). If the
         // offered requisition covers the guardsmen demanded the Governor obliges outright,
         // otherwise he declines. Only triggers when guardsmen are the sole demand, so it
         // cannot be used to slip other goods through cheaply.
@@ -735,7 +751,7 @@ function TradeAttempt(diplomacy) constructor {
                     _req_offered += offer_options[ri].number;
                 }
             }
-            deal_chance = _req_offered >= ceil(_guard_num * 0.05) ? 100 : 0;
+            deal_chance = _req_offered >= ceil(_guard_num * 0.1) ? 100 : 0;
         }
         var _chance = clamp(floor((deal_chance / 20)), 0, 6);
 

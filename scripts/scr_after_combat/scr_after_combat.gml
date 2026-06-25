@@ -70,6 +70,7 @@ function add_vehicles_to_recovery() {
         "Whirlwind": 4,
         "Rhino": 3,
         "Land Speeder": 3,
+        "Leman Russ": 3,
         "Chimera": 2,
         "Bike": 1,
     };

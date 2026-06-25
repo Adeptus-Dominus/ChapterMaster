@@ -761,6 +761,11 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
             col = obj_controller.bat_predator_column;
             new_combat.predators++;
             break;
+        // Leman Russ (guard battle tank) anchors the armour line alongside the Predators.
+        case "Leman Russ":
+            col = obj_controller.bat_predator_column;
+            new_combat.predators++;
+            break;
         case "Land Raider":
             col = obj_controller.bat_landraider_column;
             new_combat.land_raiders++;
@@ -809,6 +814,12 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
         targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 2;
         targ.veh_hp_multiplier[targ.veh] = 2;
         targ.veh_ac[targ.veh] = 30;
+    } else if (obj_ini.veh_role[company][v] == "Leman Russ") {
+        // Mirrors the enemy Leman Russ Battle Tank: heavy armour 40, HP 300 (base 100 x3),
+        // so it shrugs off small arms and trades blows with other tanks like a Predator.
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 3;
+        targ.veh_hp_multiplier[targ.veh] = 3;
+        targ.veh_ac[targ.veh] = 40;
     }
 
     // STC Bonuses
