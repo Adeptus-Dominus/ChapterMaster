@@ -120,7 +120,7 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
                     continue;
                 }
                 var _colour = data_set[$ spot_names[i]];
-                if (_colour == -1) {
+                if (_colour == -1 || is_array(_colour)) {
                     continue;
                 }
                 if (!array_contains(_distinct_colours, _colour)) {
@@ -130,8 +130,13 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
             var _choice = 0;
             if (array_length(_distinct_colours)) {
                 _choice = cloth_variation % array_length(_distinct_colours);
+<<<<<<< HEAD
+=======
+                set_complex_shader_area(["robes_colour_replace"], _distinct_colours[_choice]);
+            } else {
+                shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
+>>>>>>> a9f76956e (fix: Skip array colour values in shader setup)
             }
-            set_complex_shader_area(["robes_colour_replace"], _distinct_colours[_choice]);
         } else {
             shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
         }
