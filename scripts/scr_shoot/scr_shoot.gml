@@ -342,10 +342,9 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         if ((rank_num == 1) && (casualties == 0) && (total_damage > 0)) {
                             spill_block.dudes_hp[spill_rank] -= total_damage; // Chip a lone survivor
                             if (spill_block.dudes_hp[spill_rank] <= 0) {
-                                // Chipped to death: remove it now. Otherwise dudes_num stays 1 with
-                                // dudes_hp <= 0 — an unkillable "zombie" that find_next_alive_rank skips
-                                // but destroy_empty_column won't clear, keeping the formation (and the
-                                // whole battle) alive forever.
+                                // Chipped to death: remove it now and drop the force count. Otherwise
+                                // dudes_num stays 1 at dudes_hp <= 0 - a "zombie" that find_next_alive_rank
+                                // skips, so it's never finished off and keeps inflating enemy_forces.
                                 spill_block.dudes_num[spill_rank] = 0;
                                 obj_ncombat.enemy_forces -= 1;
                             }

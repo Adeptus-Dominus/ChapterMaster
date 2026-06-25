@@ -151,10 +151,10 @@ dead_ene_n = array_create(70, 0);
 crunch = array_create(70, 0);
 mucra = array_create(11, 0);
 
-// The combat-log queue must be large enough that a long turn fully drains. The status line
-// ("Enemy Forces at X%" / "Defeated") only renders once `messages` reaches 0, and Alarm_3 drains
-// the queue through fixed windows — anything past the window strands the tail, leaving messages > 0
-// forever so the status never shows. Size the message arrays generously to match those windows.
+// The combat-log queue must hold at least COMBAT_LOG_CAPACITY entries so a long turn fully drains.
+// The status line ("Enemy Forces at X%" / "Defeated") only renders once `messages` reaches 0, and
+// Alarm_3 drains the queue through a COMBAT_LOG_CAPACITY-wide window - anything past it strands the
+// tail, leaving messages > 0 forever so the status never shows. The +20 is headroom for compaction.
 for (var _m = 1; _m <= COMBAT_LOG_CAPACITY + 20; _m++) {
     message[_m] = "";
     message_sz[_m] = 0;

@@ -809,7 +809,7 @@ function format_kill_list(_kills) {
 }
 
 /// @desc Posts a single consolidated volley line: the deferred rich flavour for the first target,
-///       plus an "Also cut down: ..." list of everything the volley's overflow killed afterwards.
+///       plus a trailing list of everything the volley's overflow killed afterwards.
 /// @param {Struct} _primary Result returned by scr_flavor(..., _defer=true) for the first target (or undefined).
 /// @param {Array} _spill_kills Array of { name, count } for targets killed after the first.
 function emit_volley_flavour(_primary, _spill_kills) {
@@ -827,8 +827,8 @@ function emit_volley_flavour(_primary, _spill_kills) {
     combat_tally_flush();
 
     if (!is_struct(_primary)) {
-        // First target produced no line (hit but didn't kill, and didn't bounce). Spill-over only
-        // happens after a wipe, so there should be nothing to report, but stay defensive.
+        // No primary line (scr_flavor bailed on a dead target - shouldn't happen now that emptied
+        // formations are destroyed). Spill-over only happens after a wipe, so this is just defensive.
         if (_list != "") {
             add_battle_log_message("Overflowing fire cuts down " + _list + ".", 0, 0);
             display_battle_log_message();
