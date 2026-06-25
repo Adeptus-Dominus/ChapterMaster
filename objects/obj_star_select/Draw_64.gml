@@ -283,9 +283,10 @@ try {
                         tooltip_draw(defence_data[1], 400);
                     }
 
-                    if (garrison.dispo_change > 55) {
+                    var _dispo_change = garrison.dispo_change;
+                    if (_dispo_change > 55) {
                         draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Positive");
-                    } else if (garrison.dispo_change > 44 || garrison.dispo_change == 0) {
+                    } else if (_dispo_change > 44 || _dispo_change == 0) {
                         draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Neutral");
                     } else {
                         draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Negative");
