@@ -150,6 +150,23 @@ function ComplexSet(_unit) constructor {
         }
     ];
 
+    hand_scratchpads = [
+        {
+            total: 0,
+            sources: [0],
+            offsets: [0],
+            source_frames: [0],
+            flip_x: false
+        },
+        {
+            total: 0,
+            sources: [0],
+            offsets: [0],
+            source_frames: [0],
+            flip_x: true
+        }
+    ];
+
     // Tracks sprites that ComplexSet owns (e.g. weapon duplicates) for cleanup
     owned_sprites = [];
 
@@ -1334,7 +1351,11 @@ function ComplexSet(_unit) constructor {
                 draw_component(_draw_order[i], _texture_draws);
             }
         }
+<<<<<<< HEAD
         //purity_seals_and_hangings();
+=======
+        purity_seals_and_hangings();
+>>>>>>> f71a32e21 (fix: Texture support for hands, arms, weapons)
         draw_weapon_and_hands(_texture_draws);
 
         shader_reset();
