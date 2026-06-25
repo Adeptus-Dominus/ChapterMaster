@@ -120,7 +120,7 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
                     continue;
                 }
                 var _colour = data_set[$ spot_names[i]];
-                if (_colour == -1) {
+                if (_colour == -1 || is_array(_colour)) {
                     continue;
                 }
                 if (!array_contains(_distinct_colours, _colour)) {
@@ -129,9 +129,11 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
             }
             var _choice = 0;
             if (array_length(_distinct_colours)) {
-                var _choice = cloth_variation % array_length(_distinct_colours);
+                _choice = cloth_variation % array_length(_distinct_colours);
+                set_complex_shader_area(["robes_colour_replace"], _distinct_colours[_choice]);
+            } else {
+                shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
             }
-            set_complex_shader_area(["robes_colour_replace"], _distinct_colours[_choice]);
         } else {
             shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
         }
@@ -185,6 +187,16 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
             128 / 255,
             0,
             128 / 255
+        ],
+        right_thorax: [
+            0,
+            0.75,
+            0
+        ],
+        left_thorax: [
+            0,
+            0,
+            0.75
         ],
         right_trim: [
             0,
