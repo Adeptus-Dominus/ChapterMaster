@@ -181,12 +181,37 @@ function space_hulk_explore_battle_aftermath() {
 /// Raises Inquisitorial suspicion and angers the Mechanicus, but yields requisition and a relic
 /// that carries the normal chance of chaos/daemonic taint. Removes the hulk from the map.
 function space_hulk_strip() {
+    // --- Penalties (tunable) ---
+    // Inquisition takes note; the Mechanicus consider the claim theft from the Omnissiah.
     obj_ini.chapter_data.chapter_suspicion = clamp(obj_ini.chapter_data.chapter_suspicion + 1, -5, 5);
     obj_controller.disposition[eFACTION.MECHANICUS] = clamp(obj_controller.disposition[eFACTION.MECHANICUS] - 12, 0, 100);
+    // The uncancellable cost of hoarding forbidden discoveries: Chapter standing drops a tier
+    // (100 -> 75 leaves the >=85 "Loyal" band). Both visible and hidden loyalty fall, the same
+    // idiom the existing crime penalties use, so it persists through Inquisition inspections.
+    // Gifting any recovered STC to the Mechanicus can repair their disposition, never this.
+    var _loyalty_hit = 25;
+    obj_controller.loyalty = clamp(obj_controller.loyalty - _loyalty_hit, 0, 100);
+    obj_controller.loyalty_hidden = clamp(obj_controller.loyalty_hidden - _loyalty_hit, 0, 100);
 
-    var _reqi = irandom_range(20, 40) * 10;
+    // --- Rewards (tunable) ---
+    var _reqi = irandom_range(80, 120) * 10; // ~1000 Requisition
     obj_controller.requisition += _reqi;
-    scr_add_artifact("random", "random", 4, hulk_loot_loc, hulk_loot_ship + 500);
+
+    // 1-3 relics, most carrying chaos/daemonic taint. ~65% are forced daemonic; the rest still
+    // roll the normal ~30% taint chance, so the overall haul is dangerous more often than not.
+    var _arts = irandom_range(1, 3);
+    for (var _a = 0; _a < _arts; _a++) {
+        var _art_tags = (random(1) < 0.65) ? "daemonic" : "random";
+        scr_add_artifact("random", _art_tags, 4, hulk_loot_loc, hulk_loot_ship + 500);
+    }
+
+    // Rare STC fragment in the haul. Kept low on purpose: a guaranteed STC would let the player
+    // gift it back to the Mechanicus and buy back the disposition they just lost (the loyalty
+    // hit above is what they can never undo).
+    var _found_stc = (random(1) < 0.20);
+    if (_found_stc) {
+        scr_add_stc_fragment();
+    }
 
     if (instance_exists(hulk_star)) {
         with (hulk_star) {
@@ -203,7 +228,8 @@ function space_hulk_strip() {
 
     image = "space_hulk_done";
     title = "Space Hulk Stripped";
-    text = $"Your Chapter strips the hulk for itself. Archeotech and a relic are hauled aboard and {_reqi} Requisition worth of materiel is salvaged. The unsanctioned claim will not go unnoticed: the Adeptus Mechanicus consider it theft from the Omnissiah, and the Inquisition's gaze lingers a little longer on your Chapter.";
+    var _stc_line = _found_stc ? " An intact STC fragment is prised from the wreck and spirited away." : "";
+    text = $"Your Chapter strips the hulk for itself. {_arts} relic(s) and {_reqi} Requisition worth of archeotech are hauled aboard.{_stc_line} The unsanctioned claim will not go unnoticed: the Adeptus Mechanicus consider it theft from the Omnissiah, the Inquisition's gaze lingers, and the Chapter's standing suffers for hoarding forbidden discoveries.";
     reset_popup_options();
     cooldown = 20;
 }
@@ -212,10 +238,15 @@ function space_hulk_strip() {
 /// obj_popup scope. The sanctioned, expected course: the Mechanicus are grateful and send a
 /// token of thanks. Removes the hulk from the map.
 function space_hulk_surrender() {
+    // --- Rewards (tunable): the payoff here is Mechanicus favour, not loot. ---
     obj_controller.disposition[eFACTION.MECHANICUS] = clamp(obj_controller.disposition[eFACTION.MECHANICUS] + 12, 0, 100);
 
-    var _reqi = irandom_range(5, 15) * 10;
+    var _reqi = irandom_range(8, 12) * 10; // ~100 Requisition, a token of thanks
     obj_controller.requisition += _reqi;
+
+    // A single minor, untainted relic of the sort the Mechanicus part with in trade. No major
+    // relic wargear here: the Mechanicus are stingy and keep their best for themselves.
+    scr_add_artifact("random_nodemon", "minor", 4, hulk_loot_loc, hulk_loot_ship + 500);
 
     if (instance_exists(hulk_star)) {
         with (hulk_star) {
@@ -232,7 +263,7 @@ function space_hulk_surrender() {
 
     image = "space_hulk_done";
     title = "Space Hulk Surrendered";
-    text = $"The hulk is towed to the nearest Forge World for the Adeptus Mechanicus to pick apart at their leisure. They receive it gratefully and send a token of thanks worth {_reqi} Requisition.";
+    text = $"The hulk is towed to the nearest Forge World for the Adeptus Mechanicus to pick apart at their leisure. They receive it gratefully, their disposition toward your Chapter warms, and they send a token of thanks worth {_reqi} Requisition along with a minor relic from their archives.";
     reset_popup_options();
     cooldown = 20;
 }

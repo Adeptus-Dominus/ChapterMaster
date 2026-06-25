@@ -17,7 +17,7 @@ function TradeAttempt(diplomacy) constructor {
         "Inferno Bolts": 5,
         "Sister of Battle": 40,
         "Sister Hospitaler": 75,
-        "Guardsman": 0.05,
+        "Guardsman": 0.2,
         "Eldar Power Sword": 50,
         "Archeotech Laspistol": 150,
         "Ranger": 100,
@@ -99,18 +99,21 @@ function TradeAttempt(diplomacy) constructor {
                         scr_add_man("Guard Sergeant", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
                     }
                     // One Chimera transport is assigned per two squads (every 2 * GUARD_SQUAD_SIZE
-                    // guardsmen) to carry and screen the levy. Vehicles live in the new_vehicles
-                    // company; scr_add_vehicle berths them at the home planet or aboard a ship.
+                    // guardsmen) to carry and screen the levy. They muster into the Auxilia company
+                    // (company 0) alongside the guardsmen, not the transient new_vehicles staging
+                    // company, so they stay grouped with the levy and persist after the battle
+                    // instead of being reorganised out of the build-staging slot.
                     repeat (floor(_opt.number / (GUARD_SQUAD_SIZE * 2))) {
-                        scr_add_vehicle("Chimera", obj_controller.new_vehicles);
+                        scr_add_vehicle("Chimera", 0);
                     }
                     with (obj_ini) {
                         scr_company_order(0);
                     }
                     // Space Marines commandeering Imperial Guard is frowned upon since the
-                    // Heresy and the reign of Goge Vandire, so the Sector Governor's regard
-                    // dips a little each time. The hit is small and one-off per levy.
-                    alter_disposition(diplomacy_faction, -2);
+                    // Heresy and the reign of Goge Vandire, so the Sector Governor's regard dips
+                    // with the size of the levy: about 1 per 200 raised (so a full 2000 costs 10),
+                    // floored at 1 so even a token request costs a little standing.
+                    alter_disposition(diplomacy_faction, -max(1, round(_opt.number / 200)));
                 } else {
                     // Every other mercenary type arrives by trade convoy.
                     if (!struct_exists(trading_object, "mercenaries")) {
