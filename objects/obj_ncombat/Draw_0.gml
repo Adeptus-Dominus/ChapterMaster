@@ -71,6 +71,9 @@ repeat (45) {
     if (lines_color[l] == "blue") {
         draw_set_color(c_aqua);
     }
+    if (lines_color[l] == "lightgreen") {
+        draw_set_color(make_color_rgb(150, 255, 150));
+    }
     draw_text(x + 6, y - 10 + (l * 18), string_hash_to_newline(string(lines[l])));
 }
 
