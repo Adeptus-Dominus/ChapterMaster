@@ -474,6 +474,24 @@ function ship_bombard_score(ship_id) {
 //  Navy uses, so deployed Guard plug straight into the ground-war AI.
 // =====================================================================
 
+/// @description Pad the parallel Guard arrays out to ship[] length so that indexing
+///              ship_guardsmen[i] by a ship index is always safe. ship_guardsmen starts
+///              empty and only grows as ships are added during play, so a loaded save
+///              (especially one predating these arrays) can restore ship[] while leaving
+///              ship_guardsmen shorter or empty. Without this, reading ship_guardsmen[i]
+///              for a real ship throws "index out of range".
+function ensure_ship_guardsmen_arrays() {
+    with (obj_ini) {
+        var _n = array_length(ship);
+        while (array_length(ship_guardsmen) < _n) {
+            array_push(ship_guardsmen, 0);
+        }
+        while (array_length(ship_guardsmen_max) < _n) {
+            array_push(ship_guardsmen_max, 0);
+        }
+    }
+}
+
 /// @description Total Imperial Guard auxilia currently embarked across all player ships.
 /// @returns {real}
 function player_guardsmen_embarked() {
@@ -508,6 +526,7 @@ function embark_guardsmen(system_name, planet) {
     }
 
     var _loaded = 0;
+    ensure_ship_guardsmen_arrays();
     with (obj_ini) {
         for (var i = 0; i < array_length(ship); i++) {
             if (ship[i] == "") continue;                   // empty roster slot
@@ -538,6 +557,7 @@ function deploy_guardsmen(system_name, planet) {
     }
 
     var _unloaded = 0;
+    ensure_ship_guardsmen_arrays();
     with (obj_ini) {
         for (var i = 0; i < array_length(ship); i++) {
             if (ship[i] == "") continue;
@@ -589,6 +609,7 @@ function tithe_guardsmen(system_name, planet, amount) {
 /// @param {string} system_name
 /// @returns {real}
 function player_guardsmen_at(system_name) {
+    ensure_ship_guardsmen_arrays();
     var _total = 0;
     with (obj_ini) {
         for (var i = 0; i < array_length(ship); i++) {
