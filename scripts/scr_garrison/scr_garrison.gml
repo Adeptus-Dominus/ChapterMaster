@@ -256,7 +256,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
             }  else {
                 _charisma_test = [bool(irandom(1)), irandom_range(0, 25)];
             }
-            var dispo_change = _charisma_test[1] / 10;
+            dispo_change = _charisma_test[1] / 10;
             if (!_charisma_test[0]) {
                 if (_diplomatic_leader) {
                     dispo_change = 0;
