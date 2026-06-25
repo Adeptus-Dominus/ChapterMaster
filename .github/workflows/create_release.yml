@@ -1,10 +1,23 @@
-name: Release-Development
+name: Create Release
 on:
   workflow_dispatch:
     inputs:
+      release_type:
+        type: choice
+        description: "What type of release is this?"
+        required: true
+        default: Development
+        options:
+          - Development
+          - Stable
+      stable_version:
+        type: string
+        description: "Version string (e.g., v1.0.0). REQUIRED if Stable is selected."
+        required: false
+        default: ""
       compiler:
         type: choice
-        description: What compiler to use?
+        description: "What compiler to use?"
         required: true
         default: YYC
         options:
@@ -23,17 +36,16 @@ on:
         description: "Send Discord notification?"
         default: true
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 12 * * *"
 
 jobs:
   build_needed:
     name: Build needed?
     runs-on: ubuntu-latest
-    env:
-      COMPILER: ${{ github.event.inputs.compiler || 'YYC' }}
     outputs:
-      needed: ${{ steps.commit_check.outputs.needed }}  # Output for skipping
+      needed: ${{ steps.commit_check.outputs.needed }}
       last_tag: ${{ steps.commit_check.outputs.last_tag }}
+      release_type: ${{ steps.determine_type.outputs.release_type }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -41,56 +53,45 @@ jobs:
           fetch-tags: true
           lfs: true
 
+      - name: Determine Release Type
+        id: determine_type
+        run: |
+          TYPE="${{ github.event.inputs.release_type || 'Development' }}"
+          echo "Determined release type: $TYPE"
+          echo "release_type=$TYPE" >> $GITHUB_OUTPUT
+
       - name: Check commit range
         id: commit_check
         run: |
-          # default to no build
           echo "needed=false" >> $GITHUB_OUTPUT
-
-          # Use 2>/dev/null to suppress error if no tags exist
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          echo "last_tag=$LAST_TAG" >> $GITHUB_OUTPUT # Export it
+          echo "last_tag=$LAST_TAG" >> $GITHUB_OUTPUT
 
-          # manual override
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "Manually triggered → build."
+            echo "Manually triggered -> build."
             echo "needed=true" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          # determine commit range since last tag
           if [ -n "$LAST_TAG" ]; then
             RANGE="$LAST_TAG..HEAD"
             echo "Checking commits in range: $RANGE (since last tag '$LAST_TAG')"
           else
-            RANGE="HEAD" # If no tags, check all commits up to HEAD
+            RANGE="HEAD"
             echo "No previous tags found. Checking all commits up to HEAD."
           fi
 
-          # Check if there are *any* commits in the range.
-          # git log -n 1 --format=%H will return the latest commit SHA if there's at least one.
-          # If the range is empty (HEAD is same as LAST_TAG), it returns nothing.
           COMMITS_IN_RANGE=$(git log $RANGE -n 1 --format=%H 2>/dev/null || echo "")
-
           if [ -z "$COMMITS_IN_RANGE" ]; then
             echo "No new commits found in the range '$RANGE'. HEAD is likely the same as the last tag ($LAST_TAG)."
             echo "Skipping build as no changes since the last tagged build."
-            # needed is already defaulted to false, so we just exit.
             exit 0
           fi
 
-          # If we reached here, there are new commits in the range.
           echo "New commits found in range '$RANGE'. Checking their messages."
-
-          # collect all commit messages in range
           ALL_MSGS=$(git log $RANGE --pretty=%s)
           echo "Messages in range:"
-          # Use sed to indent messages for clarity in logs
           echo "$ALL_MSGS" | sed 's/^/  /'
-
-          # Only build if at least one message matches include pattern
-          # The -v option inverts the match; -E enables extended regex; -q suppresses output.
-          # The overall command exits successfully (0) if a non-matching line is found.
 
           INCLUDE="^(feat|fix)"
           if echo "$ALL_MSGS" | grep -Eq "$INCLUDE"; then
@@ -110,68 +111,83 @@ jobs:
     outputs:
       tag_name: ${{ steps.tag_info.outputs.tag_name }}
       build_date: ${{ steps.tag_info.outputs.build_date }}
+      release_name: ${{ steps.tag_info.outputs.release_name }}
       from_tag: ${{ needs.build_needed.outputs.last_tag }}
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Set tag name
+      - name: Set tag and release metadata
         id: tag_info
         run: |
-          BRANCH_SUFFIX="${GITHUB_REF_NAME##*/}"
-          DATE_TAG=$(date -u +"%Y-%m-%d-%H%M")
-          TAG_NAME="$BRANCH_SUFFIX/$DATE_TAG"
+          TYPE="${{ needs.build_needed.outputs.release_type }}"
+          
+          if [ "$TYPE" = "Stable" ]; then
+            TAG_NAME="${{ github.event.inputs.stable_version }}"
+            if [ -z "$TAG_NAME" ]; then
+              echo "ERROR: stable_version input is required for Stable releases."
+              exit 1
+            fi
+            RELEASE_NAME="ChapterMaster $TAG_NAME"
+            BUILD_DATE=""
+            echo "Resolved TAG_NAME=$TAG_NAME"
+            echo "Calculated release name: $RELEASE_NAME"
+          else
+            BRANCH_SUFFIX="${GITHUB_REF_NAME##*/}"
+            DATE_TAG=$(date -u +"%Y-%m-%d-%H%M")
+            TAG_NAME="$BRANCH_SUFFIX/$DATE_TAG"
+            formattedTagName="${TAG_NAME//\//-}"
+            RELEASE_NAME="$formattedTagName"
+            BUILD_DATE="$DATE_TAG"
+            echo "Resolved DATE_TAG=$DATE_TAG"
+            echo "Resolved BRANCH_SUFFIX=$BRANCH_SUFFIX"
+            echo "Resolved TAG_NAME=$TAG_NAME"
+            echo "Calculated release name: $RELEASE_NAME"
+          fi
 
-          echo "Resolved DATE_TAG=$DATE_TAG"
-          echo "Resolved BRANCH_SUFFIX=$BRANCH_SUFFIX"
-          echo "Resolved TAG_NAME=$TAG_NAME"
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
-          echo "build_date=$DATE_TAG" >> $GITHUB_OUTPUT
+          echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
+          echo "build_date=$BUILD_DATE" >> $GITHUB_OUTPUT
 
-      - name: Cleanup old releases
+      - name: Cleanup old dev releases
         run: |
-          set -euo pipefail # Exit immediately if a command exits with a non-zero status
+          set -euo pipefail
+          TYPE="${{ needs.build_needed.outputs.release_type }}"
+          
+          if [ "$TYPE" = "Stable" ]; then
+            echo "Stable release logic skipping old dev build cleanup."
+            exit 0
+          fi
 
-          # tag_name looks like: branch-name/date (e.g., main/2025-05-10-2220)
           TAG_NAME="${{ steps.tag_info.outputs.tag_name }}"
-
-          # Extract the branch prefix from the tag name (e.g., "main/")
-          # This assumes your tag format is always 'branch-name/date'
           BRANCH_PREFIX="${TAG_NAME%%/*}/"
 
           echo "Starting cleanup for releases with prefix: ${BRANCH_PREFIX}"
-
-          # --- Added Step: List all tag names found before filtering ---
           echo "--- All tag names found by 'gh release list --json tagName': ---"
-          # Get all tag names first
+
           ALL_TAG_NAMES=$(gh release list --limit 100 --json tagName | jq -r '.[].tagName' || true)
           if [ -z "$ALL_TAG_NAMES" ]; then
             echo "No releases found at all."
+            echo "-----------------------------------------------------------"
+            exit 0
           else
-             echo "$ALL_TAG_NAMES" | cat -n # List all found tags with line numbers
+            echo "$ALL_TAG_NAMES" | cat -n
           fi
           echo "-----------------------------------------------------------"
 
-
-          # Get tag names starting with the prefix, sort reverse chronologically by tag name.
-          # We use the previously fetched ALL_TAG_NAMES to avoid calling gh release list again
-          # Use || true at the end of the pipe to prevent the step from failing if no releases match the prefix
           TAGS_TO_PROCESS=$(echo "$ALL_TAG_NAMES" | grep "^${BRANCH_PREFIX}" | sort -r || true)
-
           if [ -z "$TAGS_TO_PROCESS" ]; then
             echo "No releases found matching prefix '${BRANCH_PREFIX}'. No cleanup needed."
             exit 0
           fi
 
-          # --- The rest of the logic (count, keep, delete) remains the same ---
-          # Count the filtered tags
           NUM_MATCHING=$(echo "$TAGS_TO_PROCESS" | wc -l)
-          RELEASES_TO_KEEP=20 # How many releases per branch prefix to keep
+          RELEASES_TO_KEEP=20
           echo "Found ${NUM_MATCHING} releases matching prefix '${BRANCH_PREFIX}'. Will keep the latest $RELEASES_TO_KEEP."
 
           COUNT=0
-          IFS=$'\n' # Set IFS to newline to correctly iterate over tags
+          IFS=$'\n'
           for TAG in $TAGS_TO_PROCESS; do
             COUNT=$((COUNT + 1))
             if [ $COUNT -gt $RELEASES_TO_KEEP ]; then
@@ -181,10 +197,9 @@ jobs:
               echo "Keeping release+tag: $TAG (it's within the latest $RELEASES_TO_KEEP)"
             fi
           done
-          unset IFS # Reset IFS
-
+          unset IFS
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needs permissions to delete releases/tags
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   gamemaker_build:
     name: Build
@@ -202,7 +217,7 @@ jobs:
     needs: [prepare_release, build_needed, gamemaker_build]
     if: needs.build_needed.outputs.needed == 'true'
     permissions:
-      contents: write # Needed for softprops/action-gh-release
+      contents: write
     steps:
       - name: Download all built artifacts
         uses: actions/download-artifact@v8
@@ -210,20 +225,8 @@ jobs:
           path: ./build_output
           merge-multiple: true
 
-      - name: List downloaded files # Debug step
+      - name: List downloaded files
         run: ls -R ./build_output
-
-      - name: Prepare Release Name
-        id: prep_release_name
-        run: |
-          rawTagName="${{ needs.prepare_release.outputs.tag_name }}"
-          # Use Bash parameter expansion: ${parameter//pattern/string}
-          # Replaces all occurrences of '/' with '-'
-          formattedTagName="${rawTagName//\//-}"
-          releaseName="$formattedTagName"
-          echo "Calculated release name: $releaseName"
-          # Set the output using standard Bash redirection to the GITHUB_OUTPUT file
-          echo "release_name=$releaseName" >> $GITHUB_OUTPUT
 
       - id: build_changelog
         name: Build Changelog
@@ -269,8 +272,8 @@ jobs:
         name: Create a release and upload files
         uses: softprops/action-gh-release@v2.3.2
         with:
-          name: ${{ steps.prep_release_name.outputs.release_name }}
-          body: ${{steps.build_changelog.outputs.changelog}}
+          name: ${{ needs.prepare_release.outputs.release_name }}
+          body: ${{ steps.build_changelog.outputs.changelog }}
           token: ${{ secrets.RELEASE_TOKEN_SECRET }}
           tag_name: ${{ needs.prepare_release.outputs.tag_name }}
           prerelease: ${{ github.event.inputs.prerelease || 'false' }}
@@ -286,8 +289,8 @@ jobs:
           username: "GitHub Releases"
           content: |
             <@&1318332223232938014>
-            -# :warning: These builds are auto-generated. They may be **heavily unstable**, in which case try using an older build (20 exist at the same time). :warning:
-          embed-title: "${{ steps.prep_release_name.outputs.release_name }}"
+            ${{ needs.build_needed.outputs.release_type == 'Stable' && '-# :white_check_mark: New Stable Release Production Build :white_check_mark:' || '-# :warning: These builds are auto-generated. They may be **heavily unstable**, in which case try using an older build (20 exist at the same time). :warning:' }}
+          embed-title: "${{ needs.prepare_release.outputs.release_name }}"
           embed-url: ${{ steps.create_release.outputs.html_url }}
           embed-description: |
             **Changelog:**
