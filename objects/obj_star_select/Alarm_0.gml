@@ -9,8 +9,7 @@ with (obj_star) {
     }
 }
 if (instance_exists(obj_temp2)) {
-    var tiber = instance_nearest(obj_temp2.x, obj_temp2.y, obj_star);
-    target = tiber;
+    target = instance_nearest(obj_temp2.x, obj_temp2.y, obj_star);
 }
 with (obj_temp2) {
     instance_destroy();

@@ -27,8 +27,6 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
     draw_set_color(c_white);
     draw_sprite_stretched(spr_data_slate, 1, bomb_window.x1 - 20, bomb_window.y1 - 20, bomb_window.w + 40, bomb_window.h + 46);
     draw_set_color(#34bc75);
-    // draw_rectangle(bomb_window.x1+1, bomb_window.y1+1, bomb_window.x2-1, bomb_window.y2-1, 1);
-    // draw_rectangle(bomb_window.x1+2, bomb_window.y1+2, bomb_window.x2-2, bomb_window.y2-2, 1);
 
     // Header
     draw_set_halign(fa_left);

@@ -67,7 +67,7 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
         _reset = true;
     }
     if (_reset) {
-        star_tag_surface = surface_create(256, 128);
+        var star_tag_surface = surface_create(256, 128);
         var xx = 64;
         var yy = 0;
         surface_set_target(star_tag_surface);
@@ -79,8 +79,8 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
             draw_sprite_ext(spr_faction_icons, _faction_index, xx + (panel_width / 2) - 30, yy + 25, 0.60, 0.60, 0, c_white, 1);
         } else {
             scr_shader_initialize();
-            var main_color = make_colour_from_array(obj_controller.body_colour_replace);
-            var right_pauldron = make_colour_from_array(obj_controller.pauldron_colour_replace);
+            var main_color = global.chapter_creation_object.colors.main;
+            var right_pauldron = global.chapter_creation_object.colors.pauldron_r;
             draw_sprite_general(spr_p_name_bg, 0, 0, 0, string_width(name) + 60, 32, xx - (panel_width / 2), yy + 30, 1, 1, 0, main_color, main_color, right_pauldron, right_pauldron, 1);
             var faction_sprite = global.chapter_icon.sprite;
             if (sprite_exists(faction_sprite)) {
@@ -88,8 +88,6 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
             } else {
                 LOGGER.error($"{global.chapter_icon.name} chapter icon not found in any icon directory. Chapter icon will not render.");
             }
-            //context.set_vertical_gradient(main_color, right_pauldron);
-            //draw_text_ext_transformed_color(gx + xoffset,gy + yoffset,text,sep,owner.width,xscale,yscale,angle ,col1, col2, col3, col4, alpha);
         }
         draw_set_color(c_white);
         draw_text(xx, yy + 33, name);

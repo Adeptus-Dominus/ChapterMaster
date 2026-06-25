@@ -2319,7 +2319,8 @@ function scr_initialize_custom() {
     }
 
     for (var _c = 0, _clen = array_length(_coys); _c < _clen; _c++) {
-        var k = 0, v = 0; //k = marine slot, v = vehicle slot (must reset per company)
+        k = 0;
+        var v = 0; //k = marine slot, v = vehicle slot (must reset per company)
 
         var _name = _coys[_c];
         var _coy = companies[$ _name];

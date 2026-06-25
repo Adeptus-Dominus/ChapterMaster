@@ -12,6 +12,7 @@ try {
     }
     
     if (col_shift) {
+        var _parent = instance_find(obj_creation, 0);
         if (!equip) {
             draw_set_font(fnt_40k_30b);
             var _type_key = string(type);
@@ -27,9 +28,9 @@ try {
                 var _col = picker.chosen;
                 if (start_colour == -1) {
                     if (is_numeric(type) && type >= 1 && type <= 7) {
-                        start_colour = variable_instance_get(instance_find(obj_creation, 0), type_fields[type]);
+                        start_colour = _parent[$ type_fields[type]];
                     } else if (is_string(type)) {
-                        var role_data = obj_creation.complex_livery_data[$ role];
+                        var role_data = _parent.complex_livery_data[$ role];
                         if (is_struct(role_data) && struct_exists(role_data, type)) {
                             start_colour = role_data[$ type];
                             }
@@ -38,7 +39,7 @@ try {
 
                 if (is_array(_col)) {
                     if (is_string(type)) {
-                        obj_creation.complex_livery_data[$ role][$ type] = _col;
+                        _parent.complex_livery_data[$ role][$ type] = _col;
                     }
                 } else {
                     if (_col == -1) {
@@ -46,18 +47,14 @@ try {
                     }
 
                     if (is_numeric(type) && type >= 1 && type <= 7) {
-                        variable_instance_set(instance_find(obj_creation, 0), type_fields[type], _col);
+                        variable_instance_set(_parent, type_fields[type], _col);
                     }
 
-                    with (obj_creation) {
-                        bulk_selection_buttons_setup();
-                    }
+                    _parent.bulk_selection_buttons_setup();
 
                     if (is_string(type)) {
-                        obj_creation.complex_livery_data[$ role][$ type] = _col;
-                        with (obj_creation) {
-                            set_complex_livery_buttons();
-                        }
+                        _parent.complex_livery_data[$ role][$ type] = _col;
+                        _parent.set_complex_livery_buttons();
                     }
                 }
             }
@@ -69,8 +66,8 @@ try {
     
             draw_set_font(fnt_40k_30b);
 
-            var _role_name = obj_creation.role[co][ide];
-            var _text_selected = obj_creation.text_selected;
+            var _role_name = _parent.role[co][ide];
+            var _text_selected = _parent.text_selected;
             var _sel_key = "unit_name" + string(ide);
 
             if (_role_name == "" || badname == 1) {
@@ -78,7 +75,7 @@ try {
             }
 
             var _display_text = string(_role_name);
-            if (_text_selected == _sel_key && obj_creation.text_bar <= 30) {
+            if (_text_selected == _sel_key && _parent.text_bar <= 30) {
                 _display_text += "|";
             }
 
@@ -90,13 +87,13 @@ try {
                 tooltip = "Astartes Role Name";
                 tooltip2 = $"The name of this Astartes Role.  The plural form will be ''{_role_name}s''.";
                 if (mouse_button_clicked()) {
-                    obj_creation.text_selected = _sel_key;
+                    _parent.text_selected = _sel_key;
                     keyboard_string = _role_name;
                 }
             }
 
             if (_text_selected == _sel_key) {
-                obj_creation.role[co][ide] = keyboard_string;
+                _parent.role[co][ide] = keyboard_string;
             }
 
             draw_rectangle(444 - 1, 550 - 1, 822, 550 + _height, 1);
@@ -142,7 +139,7 @@ try {
                 }
 
                 var _array_name = slot_arrays[_slot_count];
-                var _slot_array2d = variable_instance_get(obj_creation, _array_name);
+                var _slot_array2d = _parent[$ _array_name];
                 var _equipment_slot = _slot_array2d[co][ide];
 
                 draw_set_alpha(1);
@@ -164,22 +161,20 @@ try {
                     var _role_pair = possible_custom_roles[i];
                     if (_role_pair[1] == _role_id) {
                         var c_role = {
-                            name: obj_creation.role[100][_role_id],
-                            wep1: obj_creation.wep1[100][_role_id],
-                            wep2: obj_creation.wep2[100][_role_id],
-                            gear: obj_creation.gear[100][_role_id],
-                            mobi: obj_creation.mobi[100][_role_id],
-                            armour: obj_creation.armour[100][_role_id],
+                            name: _parent.role[100][_role_id],
+                            wep1: _parent.wep1[100][_role_id],
+                            wep2: _parent.wep2[100][_role_id],
+                            gear: _parent.gear[100][_role_id],
+                            mobi: _parent.mobi[100][_role_id],
+                            armour: _parent.armour[100][_role_id],
                         };
-                        variable_struct_set(obj_creation.custom_roles, _role_pair[0], c_role);
+                        variable_struct_set(_parent.custom_roles, _role_pair[0], c_role);
                         break;
                     }
                 }
     
+                _parent.update_creation_roles_radio(2);
                 instance_destroy();
-                with (obj_creation) {
-                    update_creation_roles_radio(2);
-                }
             }
     
             draw_set_halign(fa_left);

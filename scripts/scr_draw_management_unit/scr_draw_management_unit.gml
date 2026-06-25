@@ -1,7 +1,7 @@
 /// @self Asset.GMObject.obj_controller
 function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_lock = false) {
     var assignment = "none";
-    var _unit = noone;
+    var _unit = undefined;
     var string_role = "";
     var health_string = "";
     var eventing = false;

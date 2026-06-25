@@ -17,12 +17,13 @@ function scr_hit(x1, y1 = 0, x2 = 0, y2 = 0, force_gui = false) {
 
 /// @function sr_hit_struct
 /// @description Returns true if mouse is hovering on the specified rectangle area runs withi any valid strucct with x1, y1, x2, y2.
-/// @param {Bool} force_gui
+/// @param {Struct} _coords
+/// @param {Bool} _force_gui
 /// @returns {Bool}
 /// @mixin
-function sr_hit_struct(force_gui = false){
-    var _mouse_consts = force_gui ? [device_mouse_x_to_gui(0), device_mouse_y_to_gui(0)] : return_mouse_consts();
-    return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], x1, y1, x2, y2);
+function sr_hit_struct(_coords, _force_gui = false){
+    var _mouse_consts = _force_gui ? [device_mouse_x_to_gui(0), device_mouse_y_to_gui(0)] : return_mouse_consts();
+    return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], _coords[$ "x1"], _coords[$ "y1"], _coords[$ "x2"], _coords[$ "y2"]);
 }
 
 /// @function scr_hit_object

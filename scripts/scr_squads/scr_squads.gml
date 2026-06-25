@@ -1124,7 +1124,7 @@ function SquadArrangementEditor(company) constructor {
 
 function game_start_squads() {
     obj_ini.squads = {};
-    if (struct_exists(chapter_squad_arrangement, "companies")) {
+    if (struct_exists(obj_ini.chapter_squad_arrangement, "companies")) {
         var _comp_datas = obj_ini.chapter_squad_arrangement.companies;
         for (var i = 0; i < array_length(_comp_datas); i++) {
             var _company = collect_company(_comp_datas[i].company);

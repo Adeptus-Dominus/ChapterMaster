@@ -38,14 +38,11 @@ function scr_ui_advisors() {
         draw_rectangle(xx + 945, yy + 66, xx + 1580, yy + 818, 1);
 
         if (menu_adept == 0) {
-            // draw_sprite(spr_advisors,2,xx+16,yy+43);
             if (struct_exists(obj_ini.custom_advisors, "chaplain")) {
                 scr_image("advisor/splash", obj_ini.custom_advisors.chaplain, xx + 16, yy + 43, 310, 828);
             } else {
                 scr_image("advisor/splash", 3, xx + 16, yy + 43, 310, 828);
             }
-            // if (global.chapter_name = "Space Wolves") then scr_image("advisor", 11, xx + 16, yy + 43, 310, 828);
-            // draw_sprite(spr_advisors,11,xx+16,yy+16);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_30b);
@@ -53,7 +50,6 @@ function scr_ui_advisors() {
             draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Master of Sanctity " + string(obj_ini.name[0][2])), 0.6, 0.6, 0);
         }
         if (menu_adept == 1) {
-            // draw_sprite(spr_advisors,0,xx+16,yy+43);
             scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
@@ -71,7 +67,6 @@ function scr_ui_advisors() {
         if (temp[36] == "0") {
             blurp = "Sir!  You requested a report?  Currently, we have {temp[37]} {obj_ini.role[100, 14]}s who await only your order to carry the word to the troops.";
         }
-        //
         if ((global.chapter_name != "Space Wolves") && (global.chapter_name != "Iron Hands")) {
             blurp += "##Currently, we are training additional " + string(obj_ini.role[100][14]) + " at a ";
             var _recruit_rates = global.recruitment_rates;
@@ -327,62 +322,10 @@ function scr_ui_advisors() {
 
         draw_text_ext(xx + 336 + 16, yy + 477, string_hash_to_newline(string(blurp2)), -1, 536);
 
-        // draw_set_alpha(1);if (obj_controller.gene_seed<=0) or (obj_ini.zygote=1) then draw_set_alpha(0.5);
-
-        /*         if (menu = 12.1) or(fest_sid + fest_wid > 0) then draw_set_alpha(0.25);
-        draw_set_color(c_gray);
-        draw_rectangle(xx + 560, yy + 780, xx + 682, yy + 805, 0);
-        draw_set_alpha(1);
-        draw_set_color(c_black);
-        draw_text(xx + 567, yy + 783, string_hash_to_newline("Schedule Event"));
-
-        if (menu != 12.1) and(fest_sid + fest_wid = 0) and(mouse_x >= xx + 560) and(mouse_y >= yy + 780) and(mouse_x < xx + 682) and(mouse_y < yy + 805) {
-            draw_set_alpha(0.2);
-            draw_set_color(c_gray);
-            draw_rectangle(xx + 560, yy + 780, xx + 682, yy + 805, 0);
-
-            if (mouse_button_clicked()) {
-                menu = 12.1;
-                var dro = 0;
-                dro = instance_create(xx + 1064, yy + 124, obj_dropdown_sel);
-                dro.target = "event_type";
-                dro = instance_create(xx + 1100, yy + 183, obj_dropdown_sel);
-                dro.target = "event_loc";
-                dro.width = 186;
-                dro = instance_create(xx + 1088, yy + 264, obj_dropdown_sel);
-                dro.target = "event_lavish";
-                dro = instance_create(xx + 1041, yy + 377, obj_dropdown_sel);
-                dro.target = "event_display";
-                dro = instance_create(xx + 1041, yy + 433, obj_dropdown_sel);
-                dro.target = "event_repeat";
-                dro = instance_create(xx + 1325, yy + 433, obj_dropdown_sel);
-                dro.target = "event_honor";
-
-                dro = instance_create(xx + 1325, yy + 525, obj_dropdown_sel);
-                dro.target = "event_public";
-
-                fest_type = "Great Feast";
-                fest_star = "";
-                fest_sid = 0;
-                fest_wid = 0;
-
-                fest_planet = (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) ? 1 : -1;
-
-                fest_lav = 0;
-                fest_locals = 0;
-                fest_feature1 = 1;
-                fest_feature2 = 0;
-                fest_feature3 = 0;
-                fest_display = 0;
-                fest_repeats = 1;
-
-            }
-        } */
         draw_set_alpha(1);
         draw_set_font(fnt_40k_14);
 
         if (menu == 12.1) {
-            var che, cx, cy;
             draw_set_font(fnt_40k_14b);
             draw_set_color(c_gray);
             draw_text_transformed(xx + 962, yy + 126, string_hash_to_newline("Event Type: "), 1, 1, 0);
@@ -405,6 +348,7 @@ function scr_ui_advisors() {
             }
 
             // Location type
+            var che = 0;
             if (fest_planet != 1) {
                 che = 1;
             }
@@ -412,8 +356,8 @@ function scr_ui_advisors() {
                 che = 2;
             }
 
-            cx = xx + 990;
-            cy = yy + 212;
+            var cx = xx + 990;
+            var cy = yy + 212;
 
             draw_text(cx, cy, string_hash_to_newline("Planet"));
 
@@ -422,7 +366,6 @@ function scr_ui_advisors() {
 
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
-            // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
             if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked() && (dropdown_open == 0)) {
                 var onceh = 0;
                 if ((onceh == 0) && (fest_planet == 0)) {
@@ -459,7 +402,6 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
 
-            // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
             if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked() && (dropdown_open == 0)) {
                 var onceh = 0;
                 if ((onceh == 0) && (fest_planet == 1) && (fest_type != "Triumphal March")) {
@@ -521,7 +463,6 @@ function scr_ui_advisors() {
 
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
-            // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
             if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked() && (dropdown_open == 0)) {
                 var onceh = 0;
                 if ((fest_type == "Tournament") || (fest_type == "Deathmatch")) {
@@ -587,7 +528,6 @@ function scr_ui_advisors() {
             cy -= 4;
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
-            // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
             if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked() && (dropdown_open == 0)) {
                 var onceh = 0;
                 if ((fest_type == "Imperial Mass") && (known[5] == 0)) {
@@ -651,7 +591,6 @@ function scr_ui_advisors() {
             cy -= 4;
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
-            // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
             if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && mouse_button_clicked() && (dropdown_open == 0)) {
                 var onceh = 0;
                 if ((fest_type == "Imperial Mass") && (known[5] == 0)) {
@@ -710,7 +649,6 @@ function scr_ui_advisors() {
 
             draw_sprite_ext(spr_requisition, 0, xx + 1374, yy + 787, 1, 1, 0, c_white, 1);
             draw_set_color(c_blue);
-            // draw_set_color(16291875);
 
             if (requisition < fest_cost) {
                 draw_set_color(c_red);
@@ -734,9 +672,6 @@ function scr_ui_advisors() {
                     if (fest_display > 0) {
                         fest_display_tags = obj_ini.artifact_tags[fest_display];
                     }
-
-                    // show_message(string(fest_display));
-                    // show_message(string(fest_display_tags));
                 }
             }
 
@@ -820,7 +755,7 @@ function scr_ui_advisors() {
         draw_set_font(fnt_small);
         draw_set_halign(fa_left);
 
-        var eqp = "", tempe = "";
+        var eqp = "";
 
         draw_text(xx + 222, yy + 83, "Equipment:");
         draw_text(xx + 222.5, yy + 83.5, "Equipment:");
@@ -848,7 +783,6 @@ function scr_ui_advisors() {
     // ** Welcome menu **
     if (menu >= 500 && menu <= 510) {
         draw_sprite(spr_welcome_bg, 0, xx, yy);
-        // draw_sprite(spr_advisors,0,xx+16,yy+16);
         scr_image("advisor/splash", 1, xx + 16, yy + 16, 310, 828);
         draw_set_halign(fa_left);
         draw_set_color(0);

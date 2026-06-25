@@ -115,14 +115,15 @@ if ((change_slide == 35) || (change_slide == 36) || (chapter_name == "Doom Benef
         aspirant_trial = eTRIALS.BLOODDUEL;
         discipline = "librarius";
         battle_cry = "For the Emperor";
-        main_color = 1;
-        secondary_color = 1;
-        main_trim = 1;
+        main_color = eCOLORS.SILVER;
+        secondary_color = eCOLORS.SILVER;
+        main_trim = eCOLORS.SILVER;
         // Left/Right pauldron
-        left_pauldron = 1;
-        right_pauldron = 1;
-        lens_color = 1;
-        weapon_color = 1;
+        left_pauldron = eCOLORS.SILVER;
+        right_pauldron = eCOLORS.SILVER;
+        lens_color = eCOLORS.SILVER;
+        weapon_color = eCOLORS.SILVER;
+        trim = eCOLORS.SILVER;
         col_special = 0;
         color_to_main = "";
         color_to_secondary = "";
@@ -131,7 +132,6 @@ if ((change_slide == 35) || (change_slide == 36) || (chapter_name == "Doom Benef
         color_to_pauldron2 = "";
         color_to_lens = "";
         color_to_weapon = "";
-        trim = 1;
         hapothecary = global.name_generator.ChapterMemberNameGeneration();
         hchaplain = global.name_generator.ChapterMemberNameGeneration();
         clibrarian = global.name_generator.ChapterMemberNameGeneration();

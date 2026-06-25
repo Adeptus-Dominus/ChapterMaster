@@ -88,7 +88,7 @@ deserialize = function(save_data) {
         }
         var loaded_value = struct_get(save_data, var_name);
         try {
-            variable_struct_set(self, var_name, loaded_value);
+            variable_instance_set(self, var_name, loaded_value);
         } catch (e) {
             LOGGER.exception("Deserialization failed", e);
         }

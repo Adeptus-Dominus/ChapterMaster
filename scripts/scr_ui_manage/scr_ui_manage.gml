@@ -841,7 +841,7 @@ function scr_ui_manage() {
         var skin = obj_ini.skin_color;
         static stats_displayed = false;
 
-        if (managing < 0 && selection_data != false) {
+        if (managing < 0 && !is_undefined(selection_data)) {
             if (struct_exists(selection_data, "purpose")) {
                 draw_text(xx + 800, yy + 74, $"{selection_data.purpose}");
             }
@@ -1268,7 +1268,6 @@ function scr_ui_manage() {
         xx = camera_get_view_x(view_camera[0]);
         yy = camera_get_view_y(view_camera[0]);
 
-        // draw_text_transformed(xx + 488, yy + 426, "Selection Size: " + string(man_size), 0.4, 0.4, 0);
         scr_scrollbar(974, 172, 1005, 790, 34, ship_max, ship_current);
     }
 }
@@ -1481,8 +1480,8 @@ function draw_manage_selection_buttons(xx, yy) {
 
     button.label = "Reload";
     button.keystroke = false;
-    if (instance_exists(obj_controller) && is_struct(_unit_focus)) {
-        button.tooltip = $"{_unit_focus.last_ship.name}";
+    if (struct_exists(_unit_focus, last_ship)) {
+        button.tooltip = _unit_focus.last_ship.name;
     }
     reload_possible = man_size > 0 && sel_loading == -1;
     if (reload_possible) {

@@ -1,7 +1,7 @@
 function ColourPicker(xx, yy, max_width = 400) constructor {
     x = xx;
     y = yy;
-    chosen = -1;
+    chosen = undefined;
     count_destroy = false;
     box_size = 30;
     choose_textures = false;
@@ -116,7 +116,6 @@ function ColourPicker(xx, yy, max_width = 400) constructor {
                         draw_set_alpha(0.2);
                         draw_rectangle_array(box_coords, 0);
                         draw_set_alpha(1);
-                        chosen = i;
                         if (mouse_button_clicked()) {
                             if (markings_options.current_selection == 0) {
                                 count_destroy = true;

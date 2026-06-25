@@ -270,7 +270,7 @@ deserialize = function(save_data) {
 
         var loaded_value = struct_get(save_data, var_name);
         try {
-            variable_struct_set(obj_ini, var_name, loaded_value);
+            variable_instance_set(self, var_name, loaded_value);
         } catch (e) {
             LOGGER.exception("Deserialization failed", e);
         }
@@ -280,25 +280,25 @@ deserialize = function(save_data) {
     var livery_picker = new ColourItem(0, 0);
     livery_picker.scr_unit_draw_data();
     if (struct_exists(save_data, "full_liveries")) {
-        variable_struct_set(obj_ini, "full_liveries", save_data.full_liveries);
+        variable_instance_set(self, "full_liveries", save_data.full_liveries);
     } else {
-        variable_struct_set(obj_ini, "full_liveries", array_create(21, variable_clone(livery_picker.map_colour)));
+        variable_instance_set(self, "full_liveries", array_create(21, variable_clone(livery_picker.map_colour)));
     }
 
     livery_picker.scr_unit_draw_data(-1);
     if (struct_exists(save_data, "company_liveries")) {
-        variable_struct_set(obj_ini, "company_liveries", save_data.company_liveries);
+        variable_instance_set(self, "company_liveries", save_data.company_liveries);
     } else {
-        variable_struct_set(obj_ini, "company_liveries", array_create(11, variable_clone(livery_picker.map_colour)));
+        variable_instance_set(self, "company_liveries", array_create(11, variable_clone(livery_picker.map_colour)));
     }
 
     livery_picker.scr_unit_draw_data();
 
     if (struct_exists(save_data, "complex_livery_data")) {
-        variable_struct_set(obj_ini, "complex_livery_data", save_data.complex_livery_data);
+        variable_instance_set(self, "complex_livery_data", save_data.complex_livery_data);
     }
     if (struct_exists(save_data, "squad_types")) {
-        variable_struct_set(obj_ini, "squad_types", save_data.squad_types);
+        variable_instance_set(self, "squad_types", save_data.squad_types);
     }
 
     var _marine_structs = save_data[$ "marine_structs"];
@@ -363,7 +363,7 @@ deserialize = function(save_data) {
     }
 
     if (struct_exists(save_data, "gene_slaves")) {
-        variable_struct_set(obj_ini, "gene_slaves", save_data.gene_slaves);
+        variable_instance_set(self, "gene_slaves", save_data.gene_slaves);
     }
 
     if (struct_exists(save_data, "chapter_data")) {

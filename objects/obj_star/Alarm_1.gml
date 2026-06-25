@@ -120,7 +120,6 @@ for (var i = 1; i <= 4; i++) {
         warp_lanes = [];
         x2 = 0;
     }
-    // p_guardsmen[i]=0;
 }
 
 for (var i = 1; i <= 4; i++) {
@@ -173,8 +172,6 @@ if (owner == eFACTION.IMPERIUM || owner == eFACTION.ORK || owner == eFACTION.MEC
         fleet.capital_number = capital;
         fleet.frigate_number = frigate;
         fleet.escort_number = escort;
-
-        // present_fleet[2]+=1;
 
         // Create ships here
         fleet.image_speed = 0;
@@ -314,7 +311,6 @@ if (owner == eFACTION.TYRANIDS) {
                     p_tyranids[i] = choose(4, 5, 5);
                     break;
             }
-            //array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.GENE_STEALER_CULT));
         }
         p_owner[i] = eFACTION.IMPERIUM;
     }
@@ -348,7 +344,6 @@ for (var i = 1; i <= planets; i++) {
         p_sisters[i] = 4;
         adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[i] * 10) - irandom(5), i, self);
     }
-    // if (p_owner[i]=3) or (p_owner[i]=5){p_feature[i]="Artifact|";}Testing ; 137
 }
 
 if ((name == "Kim Jong") && (owner == eFACTION.CHAOS)) {

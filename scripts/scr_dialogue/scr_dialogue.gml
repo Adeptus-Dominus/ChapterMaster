@@ -57,11 +57,12 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         clear_diplo_choices();
 
         var event_log = "";
-        var rando = 0, tempd = "", sorc = false;
-        var rela, trade_msg;
+        var rando = 0;
+        var tempd = "";
+        var sorc = false;
 
-        rela = "neutral";
-        trade_msg = "[[Trade Accepted.  Shipment initialized.]]";
+        var rela = "neutral";
+        var trade_msg = "[[Trade Accepted.  Shipment initialized.]]";
 
         diplo_txt = "";
         diplo_text = "";
@@ -87,15 +88,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         }
 
         var dip_score = diplomacy;
-        // repeat(3){
-        // i+=1;
         rela = "neutral";
         if (diplomacy > 0) {
             rela = relationship_hostility_matrix(diplomacy);
-            // */
         }
-        // if (i<=5) and (fleet_type=3) and (rela="hostile") then rela="neutral";
-        // }
 
         // ** Chaos Meetings **
         if (diplo_keyphrase == "cs_meeting1") {
@@ -108,13 +104,11 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         if ((diplo_keyphrase == "cs_meeting2") || (diplo_keyphrase == "cs_meeting20")) {
             diplomacy = 10;
             // check for MoS here
-            var mos = false, ii = 0;
-            repeat (obj_temp_meeting.dudes) {
-                ii += 1;
-                if (mos == false) {
-                    if (obj_ini.role[obj_temp_meeting.co[ii]][obj_temp_meeting.ide[ii]] == "Master of Sanctity") {
-                        mos = true;
-                    }
+            var mos = false;
+            for (var i = 1; i <= obj_temp_meeting.dudes; i++) {
+                if (obj_ini.role[obj_temp_meeting.co[i]][obj_temp_meeting.ide[i]] == "Master of Sanctity") {
+                    mos = true;
+                    break;
                 }
             }
 
@@ -160,7 +154,6 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         if (diplo_keyphrase == "cs_meeting21") {
             event_log = string(obj_ini.master_name) + $" kills the {global.chapter_name} Master of Sanctity for " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + ".";
             scr_event_log("purple", event_log);
-            // scr_alert("purple","lol",string(tix),0,0);
 
             diplo_text = $"As the echoes fade, it becomes clear that the Master of Sanctity of {global.chapter_name} has fallen.";
             add_diplomacy_option({option_text: "[Continue]", goto: "cs_meeting135"});
@@ -310,9 +303,6 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         }
 
         // Finish the conversation
-        // 135
-        // 136
-        // 137
 
         if (diplo_keyphrase == "cs_meeting135") {
             disposition[10] = max(disposition[10] + 10, 10);
@@ -957,7 +947,8 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if ((diplo_keyphrase == "propose_alliance") && (obj_controller.faction_gender[10] == 1)) {
                 var _found = false;
-                var _star, _planet;
+                var _star = noone;
+                var _planet = noone;
                 with (obj_star) {
                     for (var i = 1; i <= 4;) {
                         for (var r = 1; r <= 4; r++) {

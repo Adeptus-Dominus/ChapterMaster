@@ -661,6 +661,7 @@ function setup_role_settings_buttons(){
     });
 }
 
+/// @self Asset.GMObject.obj_mass_equip
 function scr_draw_mass_equip_gui(){
 
     if (total_role_number > 0) {

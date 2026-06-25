@@ -515,8 +515,7 @@ try {
             }
             draw_sprite(spr_creation_check, (chapter_master_melee == melee_choice_order), x6, y6);
             if (point_and_click([x6, y6, x6 + 32, y6 + 32]) && (custom != eCHAPTER_TYPE.PREMADE) && (restarted == 0) && (!instance_exists(obj_creation_popup))) {
-                var onceh;
-                onceh = 0;
+                var onceh = 0;
                 if ((chapter_master_melee == melee_choice_order) && (onceh == 0)) {
                     chapter_master_melee = 0;
                     onceh = 1;
@@ -576,12 +575,10 @@ try {
 
         var psy_intolerance = scr_has_disadv("Psyker Intolerant");
         if ((chapter_master_specialty == 3) && ((race[100][17] == 0) || psy_intolerance)) {
-            chapter_master_speciality = choose(1, 2);
+            chapter_master_specialty = choose(1, 2);
         }
         x6 = 474;
         y6 = 500;
-        h = 0;
-        it = "";
         var leader_types = [
             [
                 "",
@@ -600,8 +597,7 @@ try {
                 "The impossible is nothing to you; despite being a Psyker you have slowly risen to lead a Chapter.  Chapter Master gains every Power within the chosen Discipline."
             ]
         ];
-        repeat (3) {
-            h += 1;
+        for (var h = 1; h <= 3; h++) {
             var cur_leader_type = leader_types[h];
             draw_set_alpha(1);
             var nope = (h == 3) && ((race[100][17] == 0) || psy_intolerance);
@@ -664,10 +660,6 @@ try {
             }
         }
     }
-
-    /* */
-
-    // 850,860
 
     xx = 375;
     yy = 10;

@@ -7,11 +7,6 @@ obj_controller.popup = 3; // 3: star system
 obj_controller.sel_system_x = x;
 obj_controller.sel_system_y = y;
 
-selected = 1;
-
-var xx = x, yy = y;
-
-obj_controller.selected = self.id;
 obj_controller.sel_owner = self.owner;
 obj_controller.cooldown = 8;
 obj_controller.selecting_planet = 0;
@@ -33,8 +28,7 @@ obj_star_select.owner = self.owner;
 obj_star_select.target = self.id;
 
 try {
-    if (obj_controller.selection_data != false) {
-        loading = false;
+    if (!is_undefined(obj_controller.selection_data)) {
         var _data = obj_controller.selection_data;
         if (!struct_exists(_data, "system")) {
             _data.system = id;
@@ -58,11 +52,11 @@ try {
                     _pdata.set_star_select_planet();
                 }
             }
-            obj_controller.selection_data = false;
+            obj_controller.selection_data = undefined;
         }
     }
-    obj_controller.selection_data = false;
+    obj_controller.selection_data = undefined;
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
-    obj_controller.selection_data = false;
+    obj_controller.selection_data = undefined;
 }

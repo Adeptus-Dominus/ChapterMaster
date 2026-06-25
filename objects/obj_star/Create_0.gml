@@ -160,7 +160,7 @@ serialize = function() {
             dispo: object_star.dispo[p],
             planet: object_star.planet[p],
         };
-        var var_names = variable_struct_get_names(object_star);
+        var var_names = variable_instance_get_names(object_star);
         for (var n = 0; n < array_length(var_names); n++) {
             var var_name = var_names[n];
             if (string_starts_with(var_name, "p_")) {
@@ -178,7 +178,7 @@ serialize = function() {
         planet_data: planet_data,
     };
 
-    if (struct_exists(object_star, "p_governor")) {
+    if (variable_instance_exists(object_star, "p_governor")) {
         save_data.p_governor = object_star.p_governor;
     }
 
@@ -214,12 +214,12 @@ function deserialize(save_data) {
             continue;
         }
         var loaded_value = struct_get(save_data, var_name);
-        variable_struct_set(self, var_name, loaded_value);
+        variable_instance_set(self, var_name, loaded_value);
     }
 
     // Set explicit vars here
     if (struct_exists(save_data, "present_fleet")) {
-        variable_struct_set(self, "present_fleet", save_data.present_fleet);
+        variable_instance_set(self, "present_fleet", save_data.present_fleet);
     }
 
     var _temp_features = false;
@@ -254,7 +254,7 @@ function deserialize(save_data) {
     }
 
     if (struct_exists(save_data, "p_governor")) {
-        variable_struct_set(self, "p_governor", save_data.p_governor);
+        variable_instance_set(self, "p_governor", save_data.p_governor);
     }
 }
 

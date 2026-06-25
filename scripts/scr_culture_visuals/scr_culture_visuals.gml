@@ -344,6 +344,7 @@ global.modular_drawing_items = [
             2
         ],
         position: "purity_seals",
+        ban: [],
     },
     {
         position: "crown",

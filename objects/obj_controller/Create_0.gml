@@ -94,7 +94,6 @@ complex_event = false;
 current_eventing = "";
 chaos_rating = 0;
 chapter_made = 0;
-// obj_cuicons.alarm[1]=1; // Clean up custom icons
 map_scale = 1;
 scale_mod = 1;
 unit_manage_constants = {};
@@ -413,6 +412,7 @@ ui_coloring = "";
 ui_melee_penalty = 0;
 ui_ranged_penalty = 0;
 management_tags = [];
+display_unit = [];
 
 // ** Sets default mouse vars **
 current_target = false;
@@ -540,7 +540,7 @@ player_forge_data = {
     player_forges: 0,
     vehicle_hanger: [],
 };
-selection_data = false;
+selection_data = undefined;
 selections = [];
 
 technologies_known = [];
@@ -646,7 +646,6 @@ last_mission = 0;
 // ** Inquisition inspection **
 last_inquisitor_inspection = 0; // Duhuhu
 
-// chaos_turn=100+((floor(random(10))+1)*choose(-1,1));
 // ** Sets when chaos will arrive **
 chaos_turn = 2;
 // ** Sets fleets**
@@ -657,6 +656,7 @@ tau_messenger = 0;
 imp_ships = 0;
 cooldown = 8;
 exit_all = 0;
+last_ship = undefined;
 // ** Sets diplomacy and trading **
 diplomacy = 0;
 trading = 0;

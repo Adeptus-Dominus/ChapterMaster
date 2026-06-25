@@ -343,11 +343,11 @@ function ValueShifter(value_text, data) constructor{
 /// @constructor
 /// @category UI
 /// @description UI element combining a sprite and text with optional tooltip.
-/// @param {sprite} icon_param The sprite asset.
-/// @param {string} text_param The text label.
-/// @param {real} x1_param X position.
-/// @param {real} y1_param Y position.
-/// @param {struct} data Optional struct of properties to apply.
+/// @param {Asset.GMSprite} icon_param The sprite asset.
+/// @param {String} text_param The text label.
+/// @param {Real} x1_param X position.
+/// @param {Real} y1_param Y position.
+/// @param {Struct} data Optional struct of properties to apply.
 function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = {}) constructor {
     x1 = x1_param;
     y1 = y1_param;
@@ -416,7 +416,7 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
 /// @category UI
 /// @desc A clickable sprite-based button component that manages its own state and hover logic.
 /// @param {Struct} data The default sprite to display.
-/// @returns {Struct.SpriteButton}
+/// @returns {Struct}
 function SpriteButton(data) constructor {
     standard_loc_data();
     sprite = spr_none;
@@ -448,12 +448,12 @@ function SpriteButton(data) constructor {
     update(data);
 
     /// @desc Updates interaction state and draws the button.
-    /// @param {bool} _enabled If false, interaction is disabled and the button appears faded.
+    /// @param {Bool} _enabled If false, interaction is disabled and the button appears faded.
     static draw = function(_enabled = true) {
 
         add_draw_return_values();
 
-        is_hovered = sr_hit_struct();
+        is_hovered = sr_hit_struct({x1, y1, x2, y2});
         is_clicked = _enabled && is_hovered && mouse_button_clicked();
 
         if (is_hovered) {
@@ -461,12 +461,12 @@ function SpriteButton(data) constructor {
                 tooltip_draw(tooltip_text, tooltip_w);
             }
 
-            if (is_clicked && sound_click != undefined) {
+            if (is_clicked && !is_undefined(sound_click)) {
                 audio_play_sound(sound_click, 10, false);
             }
         }
 
-        var _draw_sprite = (_enabled && is_hovered && hover_sprite != undefined) ? hover_sprite : sprite;
+        var _draw_sprite = (_enabled && is_hovered && !is_undefined(hover_sprite)) ? hover_sprite : sprite;
         var _draw_alpha = _enabled ? (is_hovered ? alpha_hover : alpha_idle) : alpha_disabled;
 
         draw_index = cycle_index ? draw_index + 1 : draw_index;
@@ -479,7 +479,7 @@ function SpriteButton(data) constructor {
 /// @constructor
 /// @category UI
 /// @description Represents an interactive UI button with styles, tooltips, and binding support.
-/// @param {struct} data Initial property overrides.
+/// @param {Struct} data Initial property overrides.
 function UnitButtonObject(data = {}) constructor {
     standard_loc_data();
     h_gap = 4;
@@ -1267,7 +1267,7 @@ function RadioSet(options_array, title_param = "", data = {}) constructor {
 
     static selection_val = function(value) {
         if (current_selection == -1) {
-            return noone;
+            return 0;
         }
         return toggles[current_selection][$ value];
     };

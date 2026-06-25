@@ -164,15 +164,15 @@ discipline = "librarius";
 
 battle_cry = "For the Emperor";
 
-main_color = 1;
-secondary_color = 1;
-main_trim = 1;
-left_pauldron = 1;
-right_pauldron = 1; // Left/Right pauldron
-lens_color = 1;
-weapon_color = 1;
+main_color = eCOLORS.SILVER;
+secondary_color = eCOLORS.SILVER;
+main_trim = eCOLORS.SILVER;
+left_pauldron = eCOLORS.SILVER;
+right_pauldron = eCOLORS.SILVER; // Left/Right pauldron
+lens_color = eCOLORS.SILVER;
+weapon_color = eCOLORS.SILVER;
+trim = eCOLORS.SILVER;
 col_special = 0;
-trim = 1;
 skin_color = 0;
 
 color_to_main = "";

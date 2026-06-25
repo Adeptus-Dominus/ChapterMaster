@@ -45,7 +45,6 @@ function ColourItem(_xx, _yy) constructor {
         switch (type_end) {
             case 1:
                 role_set = obj_creation.roles_radio.selection_val("role_id");
-                role_set = role_set == noone ? 0 : role_set;
                 map_colour = variable_clone(_full_livs[role_set]);
                 break;
             case 0:
@@ -62,7 +61,7 @@ function ColourItem(_xx, _yy) constructor {
         }
         shuffle_dummy();
         reset_image();
-        colour_pick = false;
+        colour_pick = undefined;
     };
 
     static scr_unit_draw_data = function(default_val = 0) {
@@ -442,12 +441,12 @@ function ColourItem(_xx, _yy) constructor {
         return variable_clone(map_colour);
     };
 
-    colour_pick = false;
+    colour_pick = undefined;
     dummy_marine = undefined;
     dummy_image = undefined;
 
     static reset_image = function() {
-        if (is_struct(dummy_image)) {
+        if (!is_undefined(dummy_image)) {
             delete dummy_image;
             dummy_image = undefined;
         }
@@ -459,13 +458,13 @@ function ColourItem(_xx, _yy) constructor {
         dummy_marine.update();
     };
 
-    hover_pos = false;
-    colour_return = false;
+    hover_pos = "";
+    colour_return = undefined;
 
     static draw_base = function() {
         data_slate.inside_method = function() {
-            if (hover_pos != false) {
-                if (colour_return != false) {
+            if (hover_pos != "") {
+                if (!is_undefined(colour_return)) {
                     if (colour_return[0] != hover_pos) {
                         map_colour[$ colour_return[0]] = colour_return[1];
                         colour_return = [
@@ -484,10 +483,10 @@ function ColourItem(_xx, _yy) constructor {
                     reset_image();
                 }
             }
-            if (is_struct(colour_pick)) {
+            if (!is_undefined(colour_pick)) {
                 var _action = colour_pick.draw();
                 if (_action == "destroy") {
-                    colour_pick = false;
+                    colour_pick = undefined;
                 } else {
                     var _reset = false;
                     if (!is_array(colour_pick.chosen)) {
@@ -523,8 +522,7 @@ function ColourItem(_xx, _yy) constructor {
                                 obj_creation.company_liveries[role_set] = variable_clone(map_colour);
                                 break;
                         }
-                        delete dummy_image;
-                        dummy_image = undefined;
+                        reset_image();
                     }
                 }
             }
@@ -554,14 +552,14 @@ function ColourItem(_xx, _yy) constructor {
             }
             image_location_maps.company_marks = move_location_relative(draw_unit_buttons([xx - 30, yy - 40], "Company Marks"), -xx, -yy);
 
-            if (!is_struct(dummy_marine)) {
+            if (is_undefined(dummy_marine)) {
                 dummy_marine = new DummyMarine();
             }
-            if (!is_struct(dummy_image)) {
+            if (is_undefined(dummy_image)) {
                 dummy_image = dummy_marine.draw_unit_image();
             }
             dummy_image.draw(xx, yy - 20);
-            hover_pos = false;
+            hover_pos = "";
             var map_names = struct_get_names(image_location_maps);
             for (var i = 0; i < array_length(map_names); i++) {
                 var _body_loc = map_names[i];
@@ -582,10 +580,10 @@ function ColourItem(_xx, _yy) constructor {
                     new_colour_pick(_body_loc);
                 }
             }
-            if (colour_return != false) {
+            if (colour_return != undefined) {
                 if (hover_pos != colour_return[0]) {
                     map_colour[$ colour_return[0]] = colour_return[1];
-                    colour_return = false;
+                    colour_return = undefined;
                     reset_image();
                 }
             }
