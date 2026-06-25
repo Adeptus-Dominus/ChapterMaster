@@ -99,12 +99,12 @@ function TradeAttempt(diplomacy) constructor {
                     repeat (floor(_opt.number / GUARD_SQUAD_SIZE)) {
                         scr_add_man("Guard Sergeant", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
                     }
-                    // One Chimera transport is assigned per two squads (every 2 * GUARD_SQUAD_SIZE
-                    // guardsmen) to carry and screen the levy. They muster into the Auxilia company
-                    // (company 0) alongside the guardsmen, not the transient new_vehicles staging
-                    // company, so they stay grouped with the levy and persist after the battle
-                    // instead of being reorganised out of the build-staging slot.
-                    repeat (floor(_opt.number / (GUARD_SQUAD_SIZE * 2))) {
+                    // One Chimera transport is assigned per 200 guardsmen to carry and screen the
+                    // levy. They muster into the Auxilia company (company 0) alongside the guardsmen,
+                    // not the transient new_vehicles staging company, so they stay grouped with the
+                    // levy and persist after the battle instead of being reorganised out of the
+                    // build-staging slot.
+                    repeat (floor(_opt.number / 200)) {
                         scr_add_vehicle("Chimera", 0);
                     }
                     with (obj_ini) {
@@ -422,7 +422,7 @@ function TradeAttempt(diplomacy) constructor {
     switch (diplomacy_faction) {
         case 2:
             new_demand_buttons(0, "Requisition", "req");
-            new_demand_buttons(0, "Guardsman", "merc", 2000);
+            new_demand_buttons(35, "Guardsman", "merc", 2000);
             new_demand_buttons(0, "Recruiting Planet", "license", 1);
             new_demand_buttons(0, "License: Repair", "license", 1);
             new_demand_buttons(0, "License: Crusade", "license", 1);
