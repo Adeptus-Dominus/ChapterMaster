@@ -63,10 +63,6 @@ function scr_zoom_keys() {
         var old_y = camera_get_view_y(view_camera[0]);
         var old_w = camera_get_view_width(view_camera[0]);
         var old_h = camera_get_view_height(view_camera[0]);
-        // Guard against an uninitialised/zero-size camera (seen transiently just
-        // after a save load): old_w/old_h of 0 makes new_w/old_w a 0/0 NaN, which
-        // is written into obj_controller.x/y and hard-crashes later when obj_cursor
-        // flushes the collision grid with a NaN bounding box.
         if (old_w > 0 && old_h > 0) {
             var zoom_factor = 1 - zoom_speed * zoom_delta;
             var new_w = old_w * zoom_factor;
