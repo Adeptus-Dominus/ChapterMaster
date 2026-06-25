@@ -256,7 +256,11 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
                 _charisma_test = [bool(irandom(1)), irandom_range(0, 25)];
             }
 <<<<<<< HEAD
+<<<<<<< HEAD
             _dispo_change = _charisma_test[1] / 10;
+=======
+            dispo_change = _charisma_test[1] / 10;
+>>>>>>> 1e98a3214 (fix: dispo_change in star select Draw event)
 =======
             dispo_change = _charisma_test[1] / 10;
 >>>>>>> 1e98a3214 (fix: dispo_change in star select Draw event)
