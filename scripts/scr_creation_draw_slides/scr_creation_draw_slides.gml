@@ -465,6 +465,7 @@ function draw_chapter_trait_select() {
         if (custom != eCHAPTER_TYPE.CUSTOM) {
             draw_set_alpha(0.5);
         }
+        chapter_type_radio.allow_changes = (custom == eCHAPTER_TYPE.CUSTOM);
         chapter_type_radio.draw();
         fleet_type = chapter_type_radio.current_selection + 1;
 
