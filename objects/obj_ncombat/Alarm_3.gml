@@ -13,7 +13,8 @@ repeat (100) {
     if (good == 0) {
         changed = 0;
 
-        for (var i = 1; i <= 55; i++) {
+        repeat (COMBAT_LOG_CAPACITY) {
+            i += 1;
 
             // Collide the messages if needed
             if ((message[i] == "") && (message[i + 1] != "")) {
@@ -27,37 +28,8 @@ repeat (100) {
                 changed = 1;
             }
 
-            // Move larger messages up
-            if ((message[i] != "") && (message[i + 1] != "") && (message_sz[i] < message_sz[i + 1]) && ((message_priority[i] < message_priority[i + 1]) || (message_priority[i] == 0))) {
-                message[100] = message[i];
-                message_sz[100] = message_sz[i];
-                message_priority[100] = message_priority[i];
-
-                message[i] = message[i + 1];
-                message_sz[i] = message_sz[i + 1];
-                message_priority[i] = message_priority[i + 1];
-
-                message[i + 1] = message[100];
-                message_sz[i + 1] = message_sz[100];
-                message_priority[i + 1] = message_priority[100];
-                changed = 1;
-            }
-
-            // Move messages with higher priority up
-            if ((message[i] != "") && (message[i + 1] != "") && (message_priority[i] < message_priority[i + 1])) {
-                message[100] = message[i];
-                message_sz[100] = message_sz[i];
-                message_priority[100] = message_priority[i];
-
-                message[i] = message[i + 1];
-                message_sz[i] = message_sz[i + 1];
-                message_priority[i] = message_priority[i + 1];
-
-                message[i + 1] = message[100];
-                message_sz[i + 1] = message_sz[100];
-                message_priority[i + 1] = message_priority[100];
-                changed = 1;
-            }
+            // Messages are shown in the order they happened, so we only compact gaps upward
+            // (above) and no longer reorder by size/priority.
 
             if (changed == 0) {
                 good = 1;
@@ -66,17 +38,20 @@ repeat (100) {
     }
 }
 
-if (((messages > 0) && (messages_shown < 24)) && (messages_shown <= 100)) {
-    var that_sz = 0;
+if (messages > 0) {
+    // Show messages in the order they happened (chronological), with no per-turn cap, so the
+    // whole exchange is visible right down to the closing "held fire" line.
     var that = 0;
 
-    for (var i = 1; i <= 60; i++) {
-        if ((message[i] != "") && (message_sz[i] > that_sz)) {
-            that_sz = message_sz[i];
+    i = 0;
+    repeat (COMBAT_LOG_CAPACITY) {
+        i += 1;
+        if (message[i] != "") {
             that = i;
+            break;
         }
     }
-    if ((that != 0) && (that_sz > 0)) {
+    if (that != 0) {
         newline = message[that];
         if (message_priority[that] > 0) {
             newline_color = "bright";
@@ -98,6 +73,12 @@ if (((messages > 0) && (messages_shown < 24)) && (messages_shown <= 100)) {
         if (message_priority[that] == 137) {
             newline_color = "red";
         }
+        if (message_priority[that] == MSG_COLOR_WHITE) {
+            newline_color = "white";
+        }
+        if (message_priority[that] == MSG_COLOR_LIGHTGREEN) {
+            newline_color = "lightgreen";
+        }
 
         scr_newtext();
         messages_shown += 1;
@@ -109,10 +90,6 @@ if (((messages > 0) && (messages_shown < 24)) && (messages_shown <= 100)) {
     }
 
     alarm[3] = 2;
-}
-
-if ((messages == 0) || (messages_shown >= 24)) {
-    messages_shown = 999;
 }
 
 if (messages == 0) {
@@ -132,23 +109,7 @@ if (!instance_exists(obj_pnunit)) {
 if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
     newline_color = "yellow";
     if (obj_ncombat.enemy != 6) {
-        if ((enemy_forces > 0) && (obj_ncombat.enemy != 30)) {
-            newline = "Enemy Forces at " + string(max(1, round((enemy_forces / enemy_max) * 100))) + "%";
-        }
-        if ((obj_ncombat.enemy == 30) && instance_exists(obj_enunit)) {
-            newline = "Enemy has ";
-            var yoo;
-            yoo = instance_nearest(0, 0, obj_enunit);
-            newline += string(round(yoo.dudes_hp[1])) + "HP remaining";
-        }
-        if ((enemy_forces <= 0) || (!instance_exists(obj_enunit)) && (defeat_message == 0)) {
-            defeat_message = 1;
-            newline = "Enemy Forces Defeated";
-            timer_maxspeed = 0;
-            timer_speed = 0;
-            started = 2;
-            instance_activate_object(obj_pnunit);
-        }
+        combat_emit_enemy_status();
     }
     newline_color = "yellow";
     if (obj_ncombat.enemy == 6) {

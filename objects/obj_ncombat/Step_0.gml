@@ -42,14 +42,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
     if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
         newline_color = "yellow";
         if (obj_ncombat.enemy != 6) {
-            if ((enemy_forces <= 0) || (!instance_exists(obj_enunit)) && (defeat_message == 0)) {
-                defeat_message = 1;
-                newline = "Enemy Forces Defeated";
-                timer_maxspeed = 0;
-                timer_speed = 0;
-                started = 2;
-                instance_activate_object(obj_pnunit);
-            }
+            combat_emit_enemy_status();
         }
         newline_color = "yellow";
         if (obj_ncombat.enemy == 6) {
@@ -106,7 +99,10 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
 if (timer_stage == 2) {
     fugg += 1;
 }
-if ((timer_stage == 2) && (fugg > 60)) {
+// Don't time out of stage 2 until the combat log has finished displaying - otherwise on a long turn
+// the stage advances before `messages` drains and the "Enemy Forces at X%" status line is skipped.
+// The large hard cap is anti-hang insurance in case the queue ever fails to drain.
+if ((timer_stage == 2) && (((fugg > 60) && (messages == 0)) || (fugg > COMBAT_STAGE_TIMEOUT_FRAMES))) {
     timer_stage = 3;
 }
 
@@ -116,7 +112,7 @@ if (timer_stage != 2) {
 if (timer_stage == 4) {
     fugg2 += 1;
 }
-if ((timer_stage == 4) && (fugg2 > 60)) {
+if ((timer_stage == 4) && (((fugg2 > 60) && (messages == 0)) || (fugg2 > COMBAT_STAGE_TIMEOUT_FRAMES))) {
     timer_stage = 5;
 }
 
