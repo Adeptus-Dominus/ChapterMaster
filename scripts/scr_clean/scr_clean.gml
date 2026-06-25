@@ -146,6 +146,17 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                 "is_vehicle": false,
             };
 
+            // Scope the casualty breakdown to THIS attack. lost[]/lost_num[] are the column's
+            // per-attack scratch tally that scr_flavor2 reads to build its "X Foo lost" text.
+            // scr_flavor2 clears them at its end, but fork-added early-exits (suppressed empty or
+            // zero-shot attacks, a destroyed wall) can return before that reset, leaving a previous
+            // attack's casualties in place. A later attack that inflicts nothing of its own (e.g.
+            // autoguns pinging off a Predator's AC40 armour for zero damage) would then read and
+            // mis-report those stale kills as "8 Autoguns strike at Predator. 4 Predators lost."
+            // Clearing here guarantees the breakdown reflects only what this attack actually kills.
+            lost = [];
+            lost_num = [];
+
             // ### Vehicle Damage Processing ###
             if (!target_is_infantry && veh > 0) {
                 damage_vehicles(damage_data, hostile_shots, hostile_damage, weapon_index_position);
