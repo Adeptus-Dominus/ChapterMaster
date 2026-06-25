@@ -186,6 +186,16 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
             0,
             128 / 255
         ],
+        right_thorax: [
+            0,
+            0.75,
+            0
+        ],
+        left_thorax: [
+            0,
+            0,
+            0.75
+        ],
         right_trim: [
             0,
             128 / 255,

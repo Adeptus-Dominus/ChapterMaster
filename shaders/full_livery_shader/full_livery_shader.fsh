@@ -174,6 +174,7 @@ void main() {
 
     vec4 col = col_orig;
 
+    //! Thorax is not here, because it crashes shader compilation for unknown reason
     // === Existing replacement logic ===
     if (col.rgb == vec3(0.0, 0.0, _128COL).rgb) {
         col.rgb = left_head.rgb;
