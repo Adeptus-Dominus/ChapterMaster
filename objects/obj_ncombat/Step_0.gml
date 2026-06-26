@@ -1,3 +1,38 @@
+// --- Combat-log scroll input -------------------------------------------------
+// Mouse wheel over the left log panel pages through retained history; the thin scrollbar in the
+// gutter can also be grabbed and dragged. log_scroll counts rows above the live bottom (0 = live).
+var _log_total = array_length(log_history);
+var _log_max_scroll = max(0, _log_total - log_view_lines);
+
+if ((mouse_x >= x) && (mouse_x <= x + 800) && (mouse_y >= y) && (mouse_y <= y + 900)) {
+    if (mouse_wheel_up()) {
+        log_scroll += 3;
+    }
+    if (mouse_wheel_down()) {
+        log_scroll -= 3;
+    }
+}
+
+var _sb_y1 = y + 8;
+var _sb_h = log_view_lines * 18;
+if (mouse_check_button_pressed(mb_left) && (_log_max_scroll > 0)
+    && (mouse_x >= x + 1) && (mouse_x <= x + 5)
+    && (mouse_y >= _sb_y1) && (mouse_y <= _sb_y1 + _sb_h)) {
+    log_dragging = true;
+}
+if (!mouse_check_button(mb_left)) {
+    log_dragging = false;
+}
+if (log_dragging && (_log_max_scroll > 0)) {
+    var _sb_thumb_h = max(20, _sb_h * (log_view_lines / _log_total));
+    var _sb_usable = max(1, _sb_h - _sb_thumb_h);
+    var _sb_rel = clamp((mouse_y - _sb_y1 - _sb_thumb_h * 0.5) / _sb_usable, 0, 1);
+    log_scroll = round((1 - _sb_rel) * _log_max_scroll);
+}
+
+log_scroll = clamp(log_scroll, 0, _log_max_scroll);
+// -----------------------------------------------------------------------------
+
 if (fadein > -30) {
     fadein -= 1;
 }

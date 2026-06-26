@@ -188,6 +188,16 @@ dead_jims = 0;
 newline = "";
 newline_color = "";
 liness = 0;
+
+// Combat-log scrollback. lines[] is only a rolling 45-row live window (older rows are discarded by
+// scr_lines_increase), so keep a separate capped history the player can scroll back through.
+// log_scroll counts rows above the live bottom: 0 = pinned to the newest line (live).
+log_history = [];
+log_history_max = 300;
+log_scroll = 0;
+log_view_lines = 45;
+log_dragging = false;
+
 world_size = 0;
 
 timer = 0;
