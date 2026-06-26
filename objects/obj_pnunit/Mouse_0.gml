@@ -46,10 +46,13 @@ show_message(blarg);*/
 "+string(dudes_num[15])+"x "+string(dudes[15])+"
 "+string(dudes_num[16])+"x "+string(dudes[16]));*/
 
-var i = 0;
-repeat (50) {
-    i += 1;
-    if (marine_type[i] != "") {
-        show_message(string(i) + ", " + string(marine_type[i]) + ", HP: " + string(marine_hp[i]));
+// Debug-only roster dump. Guarded behind cheat_debug so a stray left-click during combat (e.g. on
+// the log scrollbar, which overlaps the leftmost unit's sprite box) can't fire it in normal play,
+// and bounded by the real array length so it can't index past marine_type.
+if (global.cheat_debug == 1) {
+    for (var i = 0; i < array_length(marine_type); i++) {
+        if (marine_type[i] != "") {
+            show_message(string(i) + ", " + string(marine_type[i]) + ", HP: " + string(marine_hp[i]));
+        }
     }
 }
