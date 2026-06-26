@@ -382,6 +382,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
                 LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires power armour! (Current: {armour()})");
                 return false;
             }
+        }
     }
 
     var same_quality = quality == "any" || quality == mobility_item_quality;
