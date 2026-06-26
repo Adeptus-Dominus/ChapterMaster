@@ -22,41 +22,59 @@ function display_battle_log_message() {
     obj_ncombat.alarm[3] = 5;
 }
 
-/// @function combat_damage_flavor
-/// @description Returns a combat-log fragment describing a NON-LETHAL hit, scaled by how close the
-/// volley came to a kill (_severity = damage dealt as a fraction of one target's current health,
-/// 0 = nothing got through, approaching 1 = almost a kill). Universal across weapons: infantry get
-/// wound language, vehicles get structural-damage language. The fragments slot in after a comma,
-/// e.g. "334 Lasguns strike at the Ork Boy ranks, {fragment}." Edit the wording freely; the tier
-/// thresholds are the only thing the rest of the code depends on.
-/// @param {real} _severity   0..1, damage this hit dealt over the target's current health
-/// @param {bool} _is_vehicle target is a vehicle (hull/armour language instead of wounds)
-/// @param {bool} _is_single  target is a single model rather than a rank of many
+/// @desc Plural form of a weapon name. Names that are already plural (end in "s", e.g.
+///       "Twin Linked Bolters") are left as-is so we don't print "Bolterss".
+/// @param {string} _name The weapon name.
 /// @returns {string}
-function combat_damage_flavor(_severity, _is_vehicle, _is_single) {
-    if (_is_vehicle) {
-        if (_severity < 0.10) return choose("but the hits spend themselves against its armour", "barely chipping its paint", "pinging off its armour", "bouncing off its plating", "only scratching its armour");
-        if (_severity < 0.35) return choose("scorching its plating", "scuffing its armour", "leaving shallow dents in its hull");
-        if (_severity < 0.65) return choose("denting its hull", "cracking its armour", "punching into its plating");
-        if (_severity < 0.90) return choose("tearing gashes into its hull", "blowing holes in its plating", "ripping through its armour");
-        return choose("leaving it scorched and barely running", "all but wrecking it", "leaving it a smoking hulk");
-    }
-    if (_is_single) {
-        if (_severity < 0.10) return choose("but its armour turns the blows aside", "but it shrugs them off");
-        if (_severity < 0.35) return choose("but it is only grazed", "leaving only light wounds", "drawing a little blood");
-        if (_severity < 0.65) return choose("and it is wounded", "leaving it bloodied", "and it is hurt");
-        if (_severity < 0.90) return choose("and it is gravely wounded", "leaving it badly hurt", "and it is left reeling");
-        return choose("and it is left maimed, clinging to life", "and it barely clings to life", "leaving it all but dead");
-    }
-    if (_severity < 0.10) return choose("but fail to penetrate their armour", "but their armour holds");
-    if (_severity < 0.35) return choose("drawing little more than scratches", "causing only light wounds", "leaving a few grazes");
-    if (_severity < 0.65) return choose("wounding several", "bloodying their ranks", "leaving wounded in their wake");
-    if (_severity < 0.90) return choose("leaving deep wounds among them", "savaging their ranks", "leaving many badly wounded");
-    return choose("leaving the survivors maimed and reeling", "all but breaking them", "leaving them maimed and scattered");
+function weapon_name_plural(_name) {
+    return _name + ((string_char_at(_name, string_length(_name)) == "s") ? "" : "s");
 }
 
-function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties, damage_done = -1) {
+/// @desc Logs one "held fire" line for weapons that had no live target left to shoot at, e.g.
+///       when an earlier volley wiped the enemy before the rest of the squad fired.
+/// @param {Array} _weapon_names Raw weapon names (duplicates allowed) that never fired.
+function report_held_fire(_weapon_names) {
+    // Dedupe and pluralise.
+    var _unique = [];
+    for (var i = 0; i < array_length(_weapon_names); i++) {
+        var _p = weapon_name_plural(_weapon_names[i]);
+        if (array_get_index(_unique, _p) == -1) {
+            array_push(_unique, _p);
+        }
+    }
+
+    var _count = array_length(_unique);
+    if (_count == 0) {
+        return;
+    }
+
+    // Build "A, B, and C" (or "A and B", or "A").
+    var _list = _unique[0];
+    for (var i = 1; i < _count; i++) {
+        if (i == _count - 1) {
+            _list += (_count > 2 ? ", and " : " and ") + _unique[i];
+        } else {
+            _list += ", " + _unique[i];
+        }
+    }
+
+    add_battle_log_message($"{_list} held fire lacking live targets.", 0, 135);
+    display_battle_log_message();
+}
+
+function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties, shots_bounced = false, _defer = false) {
     // Generates flavor based on the damage and casualties from scr_shoot, only for the player
+    // shots_bounced: true when armour stopped the shots outright (AP too low) and nothing died,
+    // so the log can explain *why* instead of a flat "no casualties".
+    // _defer: when true, build the message but DON'T post it; return it so the caller can append a
+    // spill-over kill list and post a single consolidated line (see emit_volley_flavour).
+
+    // Clamp away any negative casualty count so it can never render as "-1". Every volley now earns
+    // a line: a kill, a wound (injured, no kill), or an armour-bounce. The latter two are consolidated
+    // per target by emit_volley_flavour / combat_tally_*.
+    if (casulties < 0) {
+        casulties = 0;
+    }
 
     var attack_message, kill_message, leader_message, targeh;
     targeh = target_type;
@@ -64,10 +82,19 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
     attack_message = $"";
     kill_message = "";
 
+    // Guard/diagnostic: a non-killing volley against a rank with no living models means we fired at a
+    // dead target. Shouldn't happen now that emptied formations are destroyed - log it if it does and
+    // bail, so it can never feed the consolidated non-pen / wound feed. (Spill-over kills, if any, are
+    // still reported by emit_volley_flavour's undefined-primary path.)
+    if (casulties <= 0 && (!instance_exists(target) || target.dudes_num[targeh] <= 0)) {
+        LOGGER.warning($"scr_flavor: shot at a dead target (weapon stack {id_of_attacking_weapons}, rank {targeh})");
+        exit;
+    }
+
     var weapon_name = wep[id_of_attacking_weapons];
 
     if (id_of_attacking_weapons == -51) {
-        weapon_name = "Heavy Bolter Emplacemelse ent";
+        weapon_name = "Heavy Bolter Emplacement";
     }
     if (id_of_attacking_weapons == -52) {
         weapon_name = "Missile Launcher Emplacement";
@@ -75,6 +102,9 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
     if (id_of_attacking_weapons == -53) {
         weapon_name = "Missile Silo";
     }
+
+    // Plural form for "{n} {weapon}s ..." lines (see weapon_name_plural).
+    var weapon_plural = weapon_name_plural(weapon_name);
 
     var weapon_data = gear_weapon_data("weapon", weapon_name, "all");
     if (!is_struct(weapon_data)) {
@@ -98,7 +128,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
                 if (array_length(full_names) == 1) {
                     unit_name = wep_title[id_of_attacking_weapons] + " " + wep_solo[id_of_attacking_weapons][0];
                 } else {
-                    unit_name = wep_title[id_of_attacking_weapons] + "'s";
+                    unit_name = wep_title[id_of_attacking_weapons];
                 }
             }
             if (wep_solo[id_of_attacking_weapons][0] == obj_ini.master_name) {
@@ -126,6 +156,22 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
         target_name = "flanking " + target_name;
     }
 
+    // Firing subject for consolidated lines: "<name> <weapon>" for a titled character, "The <weapon>"
+    // for a lone shot, or "<n> <weapons>" for a volley (also used when a unit has no title, e.g. Dreadnoughts).
+    var firing_subject;
+    if (character_shot && unit_name != "") {
+        if (number_of_shots > 1) {
+            // Grouped titled units (e.g. several Dreadnoughts share one "Dreadnought" title) — show the count.
+            firing_subject = $"{number_of_shots} {string(unit_name)} {weapon_plural}";
+        } else {
+            firing_subject = $"{string(unit_name)} {weapon_name}";
+        }
+    } else if (number_of_shots == 1) {
+        firing_subject = $"The {weapon_name}";
+    } else {
+        firing_subject = $"{number_of_shots} {weapon_plural}";
+    }
+
     var flavoured = false;
 
     if (weapon_data.has_tag("bolt")) {
@@ -137,29 +183,29 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
             if (number_of_shots < 200) {
                 if (target.dudes_num[targeh] == 1) {
                     if (casulties == 0) {
-                        attack_message += $"{number_of_shots} {weapon_name}s fire. The {target_name} is hit but survives.";
+                        attack_message += $"{number_of_shots} {weapon_plural} fire. The {target_name} is hit but survives.";
                     } else {
-                        attack_message += $"{number_of_shots} {weapon_name}s fire. The {target_name} is struck down.";
+                        attack_message += $"{number_of_shots} {weapon_plural} fire. The {target_name} is struck down.";
                     }
                 } else {
                     if (casulties == 0) {
-                        attack_message += $"{number_of_shots} {weapon_name}s fire hits {target_name} ranks without causing casualties.";
+                        attack_message += $"{number_of_shots} {weapon_plural} fire at {target_name} ranks without causing casualties.";
                     } else {
-                        attack_message += $"{number_of_shots} {weapon_name}s strike {target_name} ranks, taking down {casulties}.";
+                        attack_message += $"{number_of_shots} {weapon_plural} strike {target_name} ranks, taking down {casulties}.";
                     }
                 }
             } else {
                 if (target.dudes_num[targeh] == 1) {
                     if (casulties == 0) {
-                        attack_message += $"{number_of_shots} {weapon_name}s fire. Explosions rock the {target_name}'s armour but don't kill it.";
+                        attack_message += $"{number_of_shots} {weapon_plural} fire. Explosions rock the {target_name}'s armour but don't kill it.";
                     } else {
-                        attack_message += $"{number_of_shots} {weapon_name}s fire. Explosions take down the {target_name}.";
+                        attack_message += $"{number_of_shots} {weapon_plural} fire. Explosions take down the {target_name}.";
                     }
                 } else {
                     if (casulties == 0) {
-                        attack_message += $"{number_of_shots} {weapon_name}s hit {target_name} ranks, but no casualties are confirmed.";
+                        attack_message += $"{number_of_shots} {weapon_plural} hit {target_name} ranks, but no casualties are confirmed.";
                     } else {
-                        attack_message += $"{number_of_shots} {weapon_name}s tear through {target_name} ranks, instantly killing {casulties}.";
+                        attack_message += $"{number_of_shots} {weapon_plural} tear through {target_name} ranks, instantly killing {casulties}.";
                     }
                 }
             }
@@ -214,7 +260,87 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
                 if (casulties == 0) {
                     attack_message += $"but all survive the impact.";
                 } else {
-                    attack_message += $"killing {casulties} perish in the attack.";
+                    attack_message += $"and {casulties} are crushed in the impact.";
+                }
+            }
+        }
+    } else if (weapon_name == "Speed Force" || weapon_name == "Speed Force(M)") {
+        flavoured = true;
+        if (!character_shot) {
+            if (number_of_shots < 20) {
+                attack_message += $"{number_of_shots} Astartes on Bikes speed ahead, their Bikes roaring like beasts of old- ";
+            } else if (number_of_shots >= 20 && number_of_shots < 100) {
+                attack_message += $"Squads of {number_of_shots} Astartes thunder ahead on their Bikes. They descend upon the enemy- ";
+            } else {
+                attack_message += $"A massive wave of {number_of_shots} Astartes rolls ahead on top of their mighty Bikes. They crash into enemy lines, smashing their foe- ";
+            }
+            if (target.dudes_num[targeh] == 1) {
+                if (casulties == 0) {
+                    attack_message += $"but the {target_name} endures the onslaught.";
+                } else {
+                    attack_message += $"the {target_name} falls to the charge.";
+                }
+            } else {
+                if (casulties == 0) {
+                    attack_message += $"{target_name} ranks are hit, but no casualties are confirmed.";
+                } else {
+                    attack_message += $"{target_name} ranks are hit, killing {casulties} in an instant.";
+                }
+            }
+        } else {
+            if (target.dudes_num[targeh] == 1) {
+                attack_message += string(unit_name) + $" speeds on his bike, roaring and crashing into the {target_name}- ";
+                if (casulties == 0) {
+                    attack_message += $"but it endures the onslaught.";
+                } else {
+                    attack_message += $"and it falls to the charge.";
+                }
+            } else {
+                attack_message += string(unit_name) + $" speeds on his bike, slamming into {target_name} ranks- ";
+                if (casulties == 0) {
+                    attack_message += $"but all survive the impact.";
+                } else {
+                    attack_message += $"crushing {casulties} beneath his wheels.";
+                }
+            }
+        }
+    } else if (weapon_name == "Speed Force (Ranged)") {
+        flavoured = true;
+        if (!character_shot) {
+            if (number_of_shots < 20) {
+                attack_message += $"{number_of_shots} Attack Bikes race across the field, sidecar gunners hosing down the enemy on the move- ";
+            } else if (number_of_shots >= 20 && number_of_shots < 100) {
+                attack_message += $"A column of {number_of_shots} Attack Bikes sweeps past, heavy weapons hammering away in a thunderous strafing run- ";
+            } else {
+                attack_message += $"A roaring tide of {number_of_shots} Attack Bikes tears along the line, sidecar guns blazing without pause- ";
+            }
+            if (target.dudes_num[targeh] == 1) {
+                if (casulties == 0) {
+                    attack_message += $"but the {target_name} weathers the fusillade.";
+                } else {
+                    attack_message += $"and the {target_name} is gunned down where it stands.";
+                }
+            } else {
+                if (casulties == 0) {
+                    attack_message += $"{target_name} ranks are raked with fire, but none fall.";
+                } else {
+                    attack_message += $"cutting down {casulties} {target_name} in the pass.";
+                }
+            }
+        } else {
+            if (target.dudes_num[targeh] == 1) {
+                attack_message += string(unit_name) + $" guns his Attack Bike past the {target_name}, sidecar weapon roaring- ";
+                if (casulties == 0) {
+                    attack_message += $"but it endures the barrage.";
+                } else {
+                    attack_message += $"and it is torn apart.";
+                }
+            } else {
+                attack_message += string(unit_name) + $" sweeps his Attack Bike along {target_name} ranks, raking them with fire- ";
+                if (casulties == 0) {
+                    attack_message += $"but all survive the onslaught.";
+                } else {
+                    attack_message += $"cutting down {casulties} in the pass.";
                 }
             }
         }
@@ -223,15 +349,15 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
         if (!character_shot) {
             if (target.dudes_num[targeh] == 1) {
                 if (casulties == 0) {
-                    attack_message += $"{number_of_shots} {weapon_name}s roar, explosions clap across the armour of the {target_name} but it remains standing.";
+                    attack_message += $"{number_of_shots} {weapon_plural} roar, explosions clap across the armour of the {target_name} but it remains standing.";
                 } else {
-                    attack_message += $"{number_of_shots} {weapon_name}s fire at the {target_name} and rip it apart.";
+                    attack_message += $"{number_of_shots} {weapon_plural} fire at the {target_name} and rip it apart.";
                 }
             } else {
                 if (casulties == 0) {
-                    attack_message += $"{number_of_shots} {weapon_name}s thunder, {target_name} are rocked but unharmed.";
+                    attack_message += $"{number_of_shots} {weapon_plural} thunder, {target_name} are rocked but unharmed.";
                 } else {
-                    attack_message += $"{number_of_shots} {weapon_name}s mow down {casulties} {target_name}.";
+                    attack_message += $"{number_of_shots} {weapon_plural} mow down {casulties} {target_name}.";
                 }
             }
         } else {
@@ -254,15 +380,15 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
         if (!character_shot) {
             if (target.dudes_num[targeh] == 1) {
                 if (casulties == 0) {
-                    attack_message = $"{number_of_shots} {weapon_name}s fire upon the {target_name} but it remains standing.";
+                    attack_message = $"{number_of_shots} {weapon_plural} fire upon the {target_name} but it remains standing.";
                 } else {
-                    attack_message = $"{number_of_shots} {weapon_name}s blast the {target_name} to oblivion.";
+                    attack_message = $"{number_of_shots} {weapon_plural} blast the {target_name} to oblivion.";
                 }
             } else {
                 if (casulties == 0) {
-                    attack_message = $"{number_of_shots} {weapon_name}s hit {target_name} ranks but they hold firm.";
+                    attack_message = $"{number_of_shots} {weapon_plural} hit {target_name} ranks but they hold firm.";
                 } else {
-                    attack_message = $"{number_of_shots} {weapon_name}s pulverize {casulties} {target_name}.";
+                    attack_message = $"{number_of_shots} {weapon_plural} pulverize {casulties} {target_name}.";
                 }
             }
         } else {
@@ -424,10 +550,10 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
             attack_message = $"A {target_name} is struck down by a Battle Sister's {weapon_name}.";
         }
         if ((number_of_shots > 1) && (casulties == 0)) {
-            attack_message = $"Battle Sisters " + choose("howl out", "roar") + $" and hack at {target_name} ranks with their {weapon_name}s, but they survive.";
+            attack_message = $"Battle Sisters " + choose("howl out", "roar") + $" and hack at {target_name} ranks with their {weapon_plural}, but they survive.";
         }
         if ((number_of_shots > 1) && (casulties > 0)) {
-            attack_message = $"{number_of_shots} Battle Sisters " + choose("howl out", "roar") + $" as they hack away at the {target_name} ranks, killing {casulties} with their {weapon_name}s.";
+            attack_message = $"{number_of_shots} Battle Sisters " + choose("howl out", "roar") + $" as they hack away at the {target_name} ranks, killing {casulties} with their {weapon_plural}.";
         }
     } else if (weapon_name == "Eviscerator") {
         flavoured = true;
@@ -468,18 +594,18 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
             }
 
             if ((number_of_shots > 1) && (casulties == 0)) {
-                attack_message = $"A {target_name} is struck by {number_of_shots} {weapon_name}s but survives.";
+                attack_message = $"A {target_name} is struck by {number_of_shots} {weapon_plural} but survives.";
             }
             if ((number_of_shots > 1) && (casulties == 1)) {
-                attack_message = $"A {target_name} is struck down by {number_of_shots} {weapon_name}s.";
+                attack_message = $"A {target_name} is struck down by {number_of_shots} {weapon_plural}.";
             }
         }
         if (target.dudes_num[targeh] > 1) {
             if ((number_of_shots > 1) && (casulties == 0)) {
-                attack_message = $"{number_of_shots} {weapon_name}s crackle and spark, striking at the {target_name} ranks, inflicting no damage.";
+                attack_message = $"{number_of_shots} {weapon_plural} crackle and spark, striking at the {target_name} ranks, inflicting no damage.";
             }
             if ((number_of_shots > 1) && (casulties > 0)) {
-                attack_message = $"{number_of_shots} {weapon_name}s crackle and spark, hewing through the {target_name} ranks, {casulties} are cut down.";
+                attack_message = $"{number_of_shots} {weapon_plural} crackle and spark, hewing through the {target_name} ranks, {casulties} are cut down.";
             }
         }
     }
@@ -488,51 +614,60 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
     if (flavoured == false) {
         flavoured = true;
         if (!character_shot) {
-            // Wound/damage severity for non-lethal hits: how close this volley came to a kill,
-            // measured as damage dealt over the target's current health. damage_done < 0 means the
-            // caller did not supply it, so keep the old flat "survives / no damage" wording.
-            var _flav_hp = target.dudes_hp[targeh];
-            var _flav_veh = (target.dudes_vehicle[targeh] == 1);
-            var _flav_sev = ((damage_done >= 0) && (_flav_hp > 0)) ? clamp(damage_done / _flav_hp, 0, 1) : -1;
-            var _flav_shots = (number_of_shots == 1) ? weapon_name : $"{number_of_shots} {weapon_name}s";
-
             if (target.dudes_num[targeh] == 1) {
-                if (casulties >= 1) {
-                    attack_message = $"A {target_name} is struck down by {_flav_shots}.";
-                } else if (_flav_sev < 0) {
-                    attack_message = $"A {target_name} is struck by {_flav_shots} but survives.";
-                } else {
-                    attack_message = $"A {target_name} is struck by {_flav_shots}, {combat_damage_flavor(_flav_sev, _flav_veh, true)}.";
+                if (number_of_shots == 1 && casulties == 0) {
+                    attack_message = $"A {target_name} is struck by {weapon_name} but survives.";
+                } else if (number_of_shots == 1 && casulties == 1) {
+                    attack_message = $"A {target_name} is struck down by {weapon_name}.";
+                } else if (number_of_shots > 1 && casulties == 0) {
+                    attack_message = $"A {target_name} is struck by {number_of_shots} {weapon_plural} but survives.";
+                } else if (number_of_shots > 1 && casulties == 1) {
+                    attack_message = $"A {target_name} is struck down by {number_of_shots} {weapon_plural}.";
                 }
             } else {
-                if (casulties > 0) {
-                    attack_message = (number_of_shots == 1)
-                        ? $"{weapon_name} strikes at {target_name} and kills {casulties}."
-                        : $"{number_of_shots} {weapon_name}s strike at the {target_name} ranks, killing {casulties}.";
-                } else if (_flav_sev < 0) {
-                    attack_message = (number_of_shots == 1)
-                        ? $"{weapon_name} strikes at {target_name} but they survive."
-                        : $"{number_of_shots} {weapon_name}s strike at the {target_name} ranks, but fail to inflict damage.";
-                } else if (number_of_shots == 1) {
-                    attack_message = $"{weapon_name} strikes at {target_name}, {combat_damage_flavor(_flav_sev, _flav_veh, false)}.";
-                } else {
-                    attack_message = $"{number_of_shots} {weapon_name}s strike at the {target_name} ranks, {combat_damage_flavor(_flav_sev, _flav_veh, false)}.";
+                if (number_of_shots == 1 && casulties == 0) {
+                    attack_message = $"{weapon_name} strikes at {target_name} but they survive.";
+                } else if (number_of_shots == 1 && casulties > 0) {
+                    attack_message = $"{weapon_name} strikes at {target_name} and kills {casulties}";
+                } else if (number_of_shots > 1 && casulties == 0) {
+                    attack_message = $"{number_of_shots} {weapon_plural} strike at the {target_name} ranks, but fail to inflict damage.";
+                } else if (number_of_shots > 1 && casulties > 0) {
+                    attack_message = $"{number_of_shots} {weapon_plural} strike at the {target_name} ranks, killing {casulties}.";
                 }
             }
         } else {
             if (target.dudes_num[targeh] == 1) {
                 if (casulties == 0) {
-                    attack_message = $"{string(unit_name)} {weapon_name} strikes at a {target_name} but fails to kill it.";
+                    attack_message = $"{firing_subject} strikes at a {target_name} but fails to kill it.";
                 } else {
-                    attack_message = $"{string(unit_name)} {weapon_name} strikes at a {target_name}, killing it.";
+                    attack_message = $"{firing_subject} strikes at a {target_name}, killing it.";
                 }
             } else {
                 if (casulties == 0) {
-                    attack_message = $"{string(unit_name)} {weapon_name} strikes at the {target_name} ranks, failing to kill any.";
+                    attack_message = $"{firing_subject} strikes at the {target_name} ranks, failing to kill any.";
                 } else {
-                    attack_message = $"{string(unit_name)} {weapon_name} strikes at the {target_name} ranks and kills {casulties}.";
+                    attack_message = $"{firing_subject} strikes at the {target_name} ranks and kills {casulties}.";
                 }
             }
+        }
+    }
+
+    // Reason-aware override: armour stopped the shots cold (AP too low). Replaces whatever
+    // generic "no casualties" text the branches produced with something that explains why.
+    if (shots_bounced && casulties == 0) {
+        flavoured = true;
+        if (character_shot) {
+            attack_message = $"{string(unit_name)} {weapon_name} strikes the {target_name} but fails to penetrate its armour.";
+        } else if (number_of_shots == 1) {
+            attack_message = $"The {weapon_name} strikes the {target_name} but fails to penetrate its armour.";
+        } else if (weapon_data.has_tag("bolt")) {
+            attack_message = $"{number_of_shots} {weapon_plural} hammer the {target_name} but spark harmlessly off its armour.";
+        } else if (weapon_data.has_tag("flame")) {
+            attack_message = $"{number_of_shots} {weapon_plural} wash over the {target_name} but its armour endures the flames.";
+        } else if (weapon_data.has_tag("power")) {
+            attack_message = $"{number_of_shots} {weapon_plural} strike the {target_name} but glance off its armour.";
+        } else {
+            attack_message = $"{number_of_shots} {weapon_plural} strike the {target_name} but fail to penetrate its armour.";
         }
     }
 
@@ -565,40 +700,6 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
     // 	obj_ncombat.dead_enemies = 0;
     // }
 
-    // Unified outcome phrasing, applied after the per-weapon branches above so every weapon reads
-    // consistently. A volley that kills nothing reports wound/damage severity rather than generic
-    // "no casualties" wording, and a volley that destroys vehicles says "destroy" instead of "kill"
-    // so mechanical targets stand out at a glance. Infantry kills keep their bespoke per-weapon
-    // verbs untouched.
-    if ((damage_done >= 0) && (attack_message != "")) {
-        var _pp_hp = target.dudes_hp[targeh];
-        var _pp_veh = (target.dudes_vehicle[targeh] == 1);
-        var _pp_single = (target.dudes_num[targeh] == 1);
-        var _pp_shots = (number_of_shots == 1) ? weapon_name : $"{number_of_shots} {weapon_name}s";
-        if (casulties == 0) {
-            var _pp_sev = (_pp_hp > 0) ? clamp(damage_done / _pp_hp, 0, 1) : 0;
-            var _pp_flav = combat_damage_flavor(_pp_sev, _pp_veh, _pp_single);
-            if (character_shot && (unit_name != "")) {
-                attack_message = _pp_single
-                    ? $"{unit_name} {weapon_name} strikes a {target_name}, {_pp_flav}."
-                    : $"{unit_name} {weapon_name} strikes the {target_name} ranks, {_pp_flav}.";
-            } else if (_pp_single) {
-                attack_message = $"A {target_name} is struck by {_pp_shots}, {_pp_flav}.";
-            } else {
-                attack_message = $"{_pp_shots} strike at the {target_name} ranks, {_pp_flav}.";
-            }
-        } else if (_pp_veh) {
-            var _pp_obj = (casulties == 1) ? $"a {target_name}" : $"{casulties} {target_name}s";
-            if (character_shot && (unit_name != "")) {
-                attack_message = $"{unit_name} {weapon_name} destroys {_pp_obj}.";
-            } else if (number_of_shots == 1) {
-                attack_message = $"{weapon_name} destroys {_pp_obj}.";
-            } else {
-                attack_message = $"{number_of_shots} {weapon_name}s destroy {_pp_obj}.";
-            }
-        }
-    }
-
     var message_priority = 0;
     if (obj_ncombat.enemy <= 10) {
         if (target_name == obj_controller.faction_leader[obj_ncombat.enemy]) {
@@ -622,36 +723,209 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
         }
     }
 
-    // Yellow when this volley wounded the target but killed nothing (damage, no destroy). Skips
-    // the "fail to penetrate" band (under 10% of a unit's health) so a shrugged-off volley stays
-    // the default colour, and skips leaders so their priority colour is preserved.
-    if ((message_priority == 0) && (casulties == 0) && (damage_done >= 0)) {
-        var _yhp = target.dudes_hp[targeh];
-        if ((_yhp > 0) && ((damage_done / _yhp) >= 0.10)) {
-            message_priority = 136;
-        }
-    }
-
+    // Message size drives which lines survive the per-turn display cap (largest win).
     var message_size = 0;
     if (defenses == 1) {
         message_size = 999;
     } else if (casulties == 0) {
-        message_size = number_of_shots / 10;
+        // "Couldn't penetrate" lines must never outrank an actual kill (that's why a lone
+        // Warboss death used to get culled under its own bounce spam), so keep them tiny.
+        message_size = 0;
     } else {
+        // Weight kills by count *and* toughness so a single hard target (Warboss, Meganob) isn't
+        // buried under big trash-mob kills. Armour is the stable proxy: a lone survivor's HP gets
+        // chipped down before death, but its armour rating doesn't change.
+        message_size = casulties * (1 + target.dudes_ac[targeh]);
         if (target.dudes_vehicle[targeh] == 1) {
-            message_size = casulties * 10;
-        } else {
-            message_size = casulties;
+            message_size *= 10;
         }
     }
 
-    if (attack_message != "") {
-        add_battle_log_message(attack_message, message_size, message_priority);
-        display_battle_log_message();
+    // When deferred, hand the parts back to the caller instead of posting them, so the spill-over
+    // kill list can be appended and the whole volley posted as one line.
+    if (!_defer) {
+        if (attack_message != "") {
+            add_battle_log_message(attack_message, message_size, message_priority);
+            display_battle_log_message();
+        }
+
+        if (leader_message != "") {
+            add_battle_log_message(leader_message, message_size, message_priority);
+            display_battle_log_message();
+        }
     }
 
-    if (leader_message != "") {
-        add_battle_log_message(leader_message, message_size, message_priority);
+    return {
+        attack: attack_message,
+        leader: leader_message,
+        size: message_size,
+        priority: message_priority,
+        bounced: (shots_bounced && casulties == 0),
+        injured: (!shots_bounced && casulties == 0),
+        target: target_name,
+        subject: firing_subject,
+    };
+}
+
+/// @desc Formats a list of kills into "the X" / "N X", joined as "A, B, and C".
+/// @param {Array} _kills Array of { name, count } structs.
+/// @returns {string}
+function format_kill_list(_kills) {
+    // Merge entries that share a name so multiple ranks of one unit read as a single tally
+    // (e.g. "29 Slugga Boy and 223 Slugga Boy" -> "252 Slugga Boy").
+    var _merged = [];
+    for (var m = 0; m < array_length(_kills); m++) {
+        var _hit = false;
+        for (var n = 0; n < array_length(_merged); n++) {
+            if (_merged[n].name == _kills[m].name) {
+                _merged[n].count += _kills[m].count;
+                _hit = true;
+                break;
+            }
+        }
+        if (!_hit) {
+            array_push(_merged, { name: _kills[m].name, count: _kills[m].count });
+        }
+    }
+    _kills = _merged;
+    var _n = array_length(_kills);
+    if (_n == 0) {
+        return "";
+    }
+    var _parts = [];
+    for (var i = 0; i < _n; i++) {
+        var _k = _kills[i];
+        array_push(_parts, (_k.count == 1) ? ("the " + _k.name) : (string(_k.count) + " " + _k.name));
+    }
+    var _list = _parts[0];
+    for (var i = 1; i < _n; i++) {
+        if (i == _n - 1) {
+            _list += (_n > 2 ? ", and " : " and ") + _parts[i];
+        } else {
+            _list += ", " + _parts[i];
+        }
+    }
+    return _list;
+}
+
+/// @desc Posts a single consolidated volley line: the deferred rich flavour for the first target,
+///       plus a trailing list of everything the volley's overflow killed afterwards.
+/// @param {Struct} _primary Result returned by scr_flavor(..., _defer=true) for the first target (or undefined).
+/// @param {Array} _spill_kills Array of { name, count } for targets killed after the first.
+function emit_volley_flavour(_primary, _spill_kills) {
+    var _list = format_kill_list(_spill_kills);
+
+    // Non-killing volley (armour-bounce or a wound that dropped no-one, and nothing spilled):
+    // consolidate into one chronological line per target instead of one line per weapon.
+    if (is_struct(_primary) && (_primary.bounced || _primary.injured) && _list == "") {
+        combat_tally_add(_primary.target, _primary.subject, _primary.injured);
+        return;
+    }
+
+    // A killing volley posts immediately; flush any pending bounce/injure tally first so the log
+    // stays in chronological order.
+    combat_tally_flush();
+
+    if (!is_struct(_primary)) {
+        // No primary line (scr_flavor bailed on a dead target - shouldn't happen now that emptied
+        // formations are destroyed). Spill-over only happens after a wipe, so this is just defensive.
+        if (_list != "") {
+            add_battle_log_message("Overflowing fire cuts down " + _list + ".", 0, 0);
+            display_battle_log_message();
+        }
+        return;
+    }
+
+    var _message = _primary.attack;
+    if (_list != "") {
+        _message += " In the torrent of fire that reaches beyond those they slaughter: " + _list + ".";
+    }
+
+    if (_message != "") {
+        add_battle_log_message(_message, _primary.size, _primary.priority);
         display_battle_log_message();
+    }
+    if (_primary.leader != "") {
+        add_battle_log_message(_primary.leader, _primary.size, _primary.priority);
+        display_battle_log_message();
+    }
+}
+
+/// @desc Buffers a non-killing volley (wound or armour-bounce) against a target. Consecutive volleys
+///       on the same target merge; switching target flushes the previous one, keeping the log
+///       chronological. _injured true = penetrated but no kill; false = bounced off armour.
+function combat_tally_add(_target, _subject, _injured) {
+    if (!variable_global_exists("ctally_target")) {
+        global.ctally_target = undefined;
+        global.ctally_bounce = [];
+        global.ctally_injure = [];
+    }
+    if (global.ctally_target != _target) {
+        combat_tally_flush();
+        global.ctally_target = _target;
+    }
+    if (_injured) {
+        array_push(global.ctally_injure, _subject);
+    } else {
+        array_push(global.ctally_bounce, _subject);
+    }
+}
+
+/// @desc Posts the buffered wound/bounce lines for the current target (one each), then clears them.
+function combat_tally_flush() {
+    if (!variable_global_exists("ctally_target") || global.ctally_target == undefined) {
+        return;
+    }
+    var _t = global.ctally_target;
+    if (array_length(global.ctally_injure) > 0) {
+        add_battle_log_message($"Fire from {combat_subject_join(global.ctally_injure)} wounds the {_t} but cannot bring it down.", 0, MSG_COLOR_LIGHTGREEN);
+        display_battle_log_message();
+    }
+    if (array_length(global.ctally_bounce) > 0) {
+        add_battle_log_message($"Fire from {combat_subject_join(global.ctally_bounce)} cannot penetrate the {_t}'s armour.", 0, MSG_COLOR_WHITE);
+        display_battle_log_message();
+    }
+    global.ctally_target = undefined;
+    global.ctally_bounce = [];
+    global.ctally_injure = [];
+}
+
+/// @desc Joins firing subjects into "A", "A and B", or "A, B, and C".
+function combat_subject_join(_subjects) {
+    var _n = array_length(_subjects);
+    if (_n == 0) {
+        return "";
+    }
+    var _list = _subjects[0];
+    for (var i = 1; i < _n; i++) {
+        if (i == _n - 1) {
+            _list += (_n > 2 ? ", and " : " and ") + _subjects[i];
+        } else {
+            _list += ", " + _subjects[i];
+        }
+    }
+    return _list;
+}
+
+/// @self Asset.GMObject.obj_ncombat
+/// @desc Sets `newline` to the enemy strength readout (live %, boss HP, or "Defeated") and fires the
+///       enemy-defeated side-effects. Shared by obj_ncombat's Alarm_3 and Step_0 so the line can't
+///       drift between the two copies (that drift is what hid the % for so long).
+function combat_emit_enemy_status() {
+    if ((enemy_forces > 0) && (enemy != 30)) {
+        newline = "Enemy Forces at " + string(max(1, round((enemy_forces / enemy_max) * 100))) + "%";
+    }
+    if ((enemy == 30) && instance_exists(obj_enunit)) {
+        newline = "Enemy has ";
+        var yoo = instance_nearest(0, 0, obj_enunit);
+        newline += string(round(yoo.dudes_hp[1])) + "HP remaining";
+    }
+    if ((enemy_forces <= 0) || (!instance_exists(obj_enunit)) && (defeat_message == 0)) {
+        defeat_message = 1;
+        newline = "Enemy Forces Defeated";
+        timer_maxspeed = 0;
+        timer_speed = 0;
+        started = 2;
+        instance_activate_object(obj_pnunit);
     }
 }

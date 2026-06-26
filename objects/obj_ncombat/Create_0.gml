@@ -167,6 +167,16 @@ repeat (70) {
     }
 }
 
+// The combat-log queue must hold at least COMBAT_LOG_CAPACITY entries so a long turn fully drains.
+// The status line ("Enemy Forces at X%" / "Defeated") only renders once `messages` reaches 0, and
+// Alarm_3 drains the queue through a COMBAT_LOG_CAPACITY-wide window - anything past it strands the
+// tail, leaving messages > 0 forever so the status never shows. The +20 is headroom for compaction.
+for (var _m = 1; _m <= COMBAT_LOG_CAPACITY + 20; _m++) {
+    message[_m] = "";
+    message_sz[_m] = 0;
+    message_priority[_m] = 0;
+}
+
 post_equipment_lost = new EquipmentTracker();
 post_equipment_recovered = new EquipmentTracker();
 
