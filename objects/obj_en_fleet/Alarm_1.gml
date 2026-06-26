@@ -444,7 +444,7 @@ try {
 
         var dos = 0;
         dos = point_distance(x, y, action_x, action_y);
-        orbiting = dos / action_eta;
+        orbiting = dos / max(1, action_eta);
         dir = point_direction(x, y, action_x, action_y);
 
         x = x + lengthdir_x(orbiting, dir);

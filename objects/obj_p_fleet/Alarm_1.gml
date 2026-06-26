@@ -40,7 +40,7 @@ try {
         }
 
         spid = point_distance(x, y, action_x, action_y);
-        spid = spid / action_eta;
+        spid = spid / max(1, action_eta);
         dir = point_direction(x, y, action_x, action_y);
 
         x = x + lengthdir_x(spid, dir);
