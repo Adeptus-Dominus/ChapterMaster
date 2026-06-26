@@ -260,7 +260,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
                 if (casulties == 0) {
                     attack_message += $"but all survive the impact.";
                 } else {
-                    attack_message += $"killing {casulties} perish in the attack.";
+                    attack_message += $"and {casulties} are crushed in the impact.";
                 }
             }
         }
@@ -289,7 +289,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
             }
         } else {
             if (target.dudes_num[targeh] == 1) {
-                attack_message += string(unit_name) + $" speeds on his bike, soaring and crashing into the {target_name}- ";
+                attack_message += string(unit_name) + $" speeds on his bike, roaring and crashing into the {target_name}- ";
                 if (casulties == 0) {
                     attack_message += $"but it endures the onslaught.";
                 } else {
@@ -300,7 +300,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
                 if (casulties == 0) {
                     attack_message += $"but all survive the impact.";
                 } else {
-                    attack_message += $"killing {casulties} perish in the attack.";
+                    attack_message += $"crushing {casulties} beneath his wheels.";
                 }
             }
         }
