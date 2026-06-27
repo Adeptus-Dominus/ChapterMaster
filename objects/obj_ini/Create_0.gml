@@ -94,6 +94,8 @@ ship_capacity = [];
 ship_carrying = [];
 ship_contents = [];
 ship_turrets = [];
+ship_guardsmen = [];     // Imperial Guard auxilia currently embarked on this ship
+ship_guardsmen_max = []; // Max Guard auxilia this ship hull can carry
 ship_lost = [];
 
 // Vehicle Init
@@ -196,13 +198,16 @@ serialize = function() {
 
     var _marines = array_create(0);
     for (var _coy = 0; _coy <= 10; _coy++) {
-        for (var _mar = 0; _mar <= 500; _mar++) {
-            var _marine_json;
+        // Iterate the company's full restored length, not a fixed 0..500, so guardsmen in overflow
+        // slots past 500 (HQ grows uncapped once it fills) are serialized too. The old early-break
+        // on consecutive empty slots is dropped because guardsmen can leave gaps, and the break
+        // would skip every unit after the first gap, which is what desynced TTRPG from name[] on
+        // reload.
+        var _coy_len = array_length(obj_ini.name[_coy]);
+        for (var _mar = 0; _mar < _coy_len; _mar++) {
             if (obj_ini.name[_coy][_mar] != "") {
-                _marine_json = jsonify_marine_struct(_coy, _mar, false);
+                var _marine_json = jsonify_marine_struct(_coy, _mar, false);
                 array_push(_marines, _marine_json);
-            } else if (_mar > 0 && _mar <= 499 && obj_ini.name[_coy][_mar + 1] == "") {
-                break;
             }
         }
     }
@@ -324,9 +329,16 @@ deserialize = function(save_data) {
         obj_ini.TTRPG[company][marine].load_json_data(struct);
     }
 
-    obj_ini.TTRPG = array_create(11, array_create(501, []));
+    // Size each company's struct array to its restored roster length (minimum 501) so TTRPG can
+    // never be shorter than the flat name[] array. HQ can exceed 501 slots once guardsmen overflow
+    // it, and a fixed 501 here desynced from name[] after a load, sending fetch_unit out of range
+    // (Chapter Management crash). Building each company array separately also avoids the shared
+    // inner-array aliasing of the old array_create(11, array_create(501, [])) form.
+    obj_ini.TTRPG = array_create(11);
     for (var _coy = 0; _coy < 11; _coy++) {
-        for (var _mar = 0; _mar <= 500; _mar++) {
+        var _coy_len = max(501, array_length(obj_ini.name[_coy]));
+        obj_ini.TTRPG[_coy] = array_create(_coy_len);
+        for (var _mar = 0; _mar < _coy_len; _mar++) {
             obj_ini.TTRPG[_coy][_mar] = new TTRPG_stats("chapter", _coy, _mar, "blank");
         }
     }

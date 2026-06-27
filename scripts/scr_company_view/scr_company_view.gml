@@ -49,6 +49,25 @@ function find_company_open_slot(target_company) {
             break;
         }
     }
+    if (good == -1) {
+        // No free slot left: grow the company by one fully-initialised blank slot so
+        // companies are effectively uncapped (HQ included). Only runs on overflow, so
+        // normal recruiting is unchanged. All parallel arrays are extended together to
+        // stay in sync, mirroring _init_marine_row for a single index.
+        good = array_length(obj_ini.name[target_company]);
+        obj_ini.race[target_company][good] = 1;
+        obj_ini.name[target_company][good] = "";
+        obj_ini.role[target_company][good] = "";
+        obj_ini.wep1[target_company][good] = "";
+        obj_ini.spe[target_company][good] = "";
+        obj_ini.wep2[target_company][good] = "";
+        obj_ini.armour[target_company][good] = "";
+        obj_ini.gear[target_company][good] = "";
+        obj_ini.mobi[target_company][good] = "";
+        obj_ini.age[target_company][good] = 0;
+        obj_ini.god[target_company][good] = 0;
+        obj_ini.TTRPG[target_company][good] = new TTRPG_stats("chapter", target_company, good, "blank");
+    }
     return good;
 }
 
@@ -505,13 +524,13 @@ function company_manage_actions() {
     }
     // Previous company
     if (point_and_click([xx + 424, yy + 80, xx + 496, yy + 128]) || (keyboard_check_pressed(ord(string("N"))) && allow_shortcuts)) {
-        var new_view = managing == 1 ? 15 : managing - 1;
+        var new_view = managing == 1 ? 16 : managing - 1;
         switch_view_company(new_view);
     }
 
     // Next company
     if (point_and_click([xx + 1105, yy + 80, xx + 1178, yy + 128]) || (keyboard_check_pressed(ord(string("M"))) && allow_shortcuts)) {
-        var new_view = managing == 15 ? 1 : managing + 1;
+        var new_view = managing == 16 ? 1 : managing + 1;
         switch_view_company(new_view);
     }
 }
@@ -535,6 +554,8 @@ function ui_manage_hotkeys() {
             switch_view_company(14);
         } else if (press_exclusive(ord("Y"))) {
             switch_view_company(15);
+        } else if (press_exclusive(ord("U"))) {
+            switch_view_company(16);
         }
     }
 }

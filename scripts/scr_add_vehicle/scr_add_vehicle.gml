@@ -123,6 +123,16 @@ function scr_add_vehicle(vehicle_type, target_company, otherdata = {}, weapon1 =
                     obj_ini.veh_wep2[target_company][good] = "";
                     obj_ini.veh_upgrade[target_company][good] = "";
                 }
+                if (vehicle_type == "Chimera") {
+                    obj_ini.veh_wep1[target_company][good] = "Multi-Laser";
+                    obj_ini.veh_wep2[target_company][good] = "Heavy Bolter";
+                }
+                if (vehicle_type == "Leman Russ") {
+                    // Battle Cannon turret (anti-armour and anti-infantry blast) with a hull
+                    // Heavy Bolter, the standard Astra Militarum main battle tank loadout.
+                    obj_ini.veh_wep1[target_company][good] = "Battle Cannon";
+                    obj_ini.veh_wep2[target_company][good] = "Heavy Bolter";
+                }
             }
 
             obj_ini.veh_hp[target_company][good] = 100;

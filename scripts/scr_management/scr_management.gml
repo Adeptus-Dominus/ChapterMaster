@@ -65,6 +65,18 @@ function scr_management(argument0) {
 
         pane.line = array_join(pane.line, _lib_units.create_plural_strings_array());
 
+        pane = instance_create(1325, 180 - 48, obj_managment_panel);
+        pane.company = 0;
+        pane.manage = 16;
+        pane.header = 2;
+        pane.title = "AUXILIA";
+
+        var _auxilia_units = collect_role_group("all", "", false, {roles: auxilia_roles()}, true);
+
+        var _auxilia_units = _auxilia_units.index_roles();
+
+        pane.line = array_join(pane.line, _auxilia_units.create_plural_strings_array());
+
         pane = instance_create(700, 180 - 48, obj_managment_panel);
         pane.company = 0;
         pane.manage = 11;

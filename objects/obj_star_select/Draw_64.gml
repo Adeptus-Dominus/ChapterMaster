@@ -305,6 +305,10 @@ try {
         if (obj_controller.selecting_planet > 0) {
             main_data_slate.draw(344, 160, slate_draw_scale, slate_draw_scale + 0.1);
         }
+        // Deploy Guard auxilia: offer the 4th slot when guard-carrying ships orbit this world.
+        if ((button4 == "") && (obj_controller.selecting_planet > 0) && (player_guardsmen_at(target.name) > 0)) {
+            button4 = "Deploy Guard";
+        }
         var current_button = "";
         var shutter_x = main_data_slate.XX - 165;
         var shutter_y = 296 + 165;
@@ -375,6 +379,9 @@ try {
                         }
                     }
                 }
+            } else if (current_button == "Deploy Guard") {
+                var _n = deploy_guardsmen(target.name, obj_controller.selecting_planet);
+                scr_popup("Imperial Guard", "Deployed " + string(_n) + " Guard onto " + planet_numeral_name(obj_controller.selecting_planet, target) + ".", "");
             } else if (current_button == "+Recruiting") {
                 if (obj_controller.recruiting_worlds_bought > 0 && p_data.current_owner <= 5 && !p_data.at_war()) {
                     if (!p_data.has_feature(eP_FEATURES.RECRUITING_WORLD)) {

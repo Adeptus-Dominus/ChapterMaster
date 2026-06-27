@@ -3154,6 +3154,15 @@ try {
         u.sprite_index = spr_weapon_blank;
     }
 
+    // ** Imperial Guard auxilia **
+    // The old p_guardsmen bolt-on block was retired here. Guardsmen are now fielded
+    // through the standard roster: station them on a world (ship_location -1) and the
+    // Local Forces toggle deploys them into the Hirelings block like any other unit,
+    // so the engine handles placement, targeting and casualties. player_guard is kept
+    // at 0 so the dormant firepower-injection path in scr_player_combat_weapon_stacks
+    // stays inert.
+    player_guard = 0;
+
     instance_activate_object(obj_enunit);
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);

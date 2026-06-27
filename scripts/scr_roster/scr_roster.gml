@@ -111,6 +111,11 @@ function Roster() constructor {
                             _valid_type = _allow_dreadnoughts;
                         }
                     }
+                    // Guardsmen answer to their own filter button rather than always passing
+                    var _grd_role = _unit.role();
+                    if (_grd_role == "Guardsman" || _grd_role == "Guard Squad" || _grd_role == "Guard Sergeant") {
+                        _valid_type = array_contains(_valid_squad_types, "guardsman");
+                    }
                 }
 
                 if (_unit.ship_location > -1) {
@@ -158,7 +163,7 @@ function Roster() constructor {
     static new_squad_button = function(display, squad_id) {
         var _button = new ToggleButton();
         display = string_replace(display, " Squad", "");
-        if (display != "Command") {
+        if (display != "Command" && display != "Guardsmen") {
             display = string_plural(display);
         }
         _button.str1 = display;
@@ -289,6 +294,13 @@ function Roster() constructor {
                                 array_push(_squads, "dreadnought");
                                 new_squad_button("Dreadnought", "dreadnought");
                             }
+                        }
+                        // Guardsmen and Guard Squads have no squad type, so give them their
+                        // own filter button (added once) so they can be selected on their own.
+                        var _grd_role = _unit.role();
+                        if ((_grd_role == "Guardsman" || _grd_role == "Guard Squad" || _grd_role == "Guard Sergeant") && !array_contains(_squads, "guardsman")) {
+                            array_push(_squads, "guardsman");
+                            new_squad_button("Guardsmen", "guardsman");
                         }
                     }
                 }
@@ -711,6 +723,16 @@ function add_unit_to_battle(unit, meeting, is_local) {
         col = max(obj_controller.bat_assault_column, obj_controller.bat_command_column, obj_controller.bat_honor_column, obj_controller.bat_dreadnought_column, obj_controller.bat_veteran_column);
     }
 
+    // ===== Guardsmen: "Hirelings" formation =====
+    // Guardsmen go into the movable Hirelings block (bat_hire_column), so the player can position
+    // them anywhere from the formation screen as a single line. This restores the behaviour from
+    // before the positional-screen experiment: every guardsman shares this one column instead of
+    // being pinned to fixed front columns. bat_hire_column was resolved for this formation at the
+    // top of this function and is driven by the Hirelings bar (bat_hire_for, unit_id 12).
+    if (_unit_role == "Guardsman" || _unit_role == "Guard Sergeant") {
+        col = obj_controller.bat_hire_column;
+    }
+
     targ = instance_nearest(col * 10, 240, obj_pnunit);
 
     with (targ) {
@@ -729,7 +751,18 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
             col = obj_controller.bat_rhino_column;
             new_combat.rhinos++;
             break;
+        // Chimera (guard transport) screens like a Rhino. This first drop parks it in the Rhino
+        // column; the dedicated Imperial Armor column arrives with the formation drop.
+        case "Chimera":
+            col = obj_controller.bat_rhino_column;
+            new_combat.rhinos++;
+            break;
         case "Predator":
+            col = obj_controller.bat_predator_column;
+            new_combat.predators++;
+            break;
+        // Leman Russ (guard battle tank) anchors the armour line alongside the Predators.
+        case "Leman Russ":
             col = obj_controller.bat_predator_column;
             new_combat.predators++;
             break;
@@ -776,6 +809,17 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
         targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 4;
         targ.veh_hp_multiplier[targ.veh] = 4;
         targ.veh_ac[targ.veh] = 40;
+    } else if (obj_ini.veh_role[company][v] == "Chimera") {
+        // Mirrors the enemy Chimera: HP 200 (base 100 x2), armour 30.
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 2;
+        targ.veh_hp_multiplier[targ.veh] = 2;
+        targ.veh_ac[targ.veh] = 30;
+    } else if (obj_ini.veh_role[company][v] == "Leman Russ") {
+        // Mirrors the enemy Leman Russ Battle Tank: heavy armour 40, HP 300 (base 100 x3),
+        // so it shrugs off small arms and trades blows with other tanks like a Predator.
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 3;
+        targ.veh_hp_multiplier[targ.veh] = 3;
+        targ.veh_ac[targ.veh] = 40;
     }
 
     // STC Bonuses
@@ -800,4 +844,15 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
             targ.veh_ac[targ.veh] = round(targ.veh_ac[targ.veh] * 1.1);
         }
     }
+}
+
+/// @function auxilia_roles
+/// @description Single source of truth for which unit roles belong to the Auxilia company
+/// screen (managing 16). These are non-Astartes auxiliary mercenaries mustered into company 0
+/// alongside the Headquarters, but managed on their own screen. Add future merc roles here
+/// (Ogryn, heavy weapons team, etc.) and they will automatically appear under Auxilia and be
+/// excluded from the Headquarters detail view.
+/// @returns {array}
+function auxilia_roles() {
+    return ["Guardsman", "Guard Squad", "Guard Sergeant"];
 }

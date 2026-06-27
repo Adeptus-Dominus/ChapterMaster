@@ -121,6 +121,28 @@
         ],
         "value": 30
     },
+    "Battle Cannon": {
+        "abbreviation": "BtlCnn",
+        "ammo": 12,
+        "arp": 4,
+        "attack": {
+            "artifact": 1000,
+            "master_crafted": 800,
+            "standard": 650
+        },
+        "description": "The main armament of the Leman Russ battle tank. A high-calibre cannon firing massive shells that crack armour and scatter massed infantry alike, the versatile mainstay of Astra Militarum armoured companies.",
+        "melee_hands": 0,
+        "range": 18,
+        "ranged_hands": 0,
+        "spli": 8,
+        "tags": [
+            "vehicle",
+            "heavy_ranged",
+            "explosive",
+            "turret"
+        ],
+        "value": 40
+    },
     "Boarding Shield": {
         "abbreviation": "BrdShld",
         "armour_value": {
@@ -314,6 +336,28 @@
         ],
         "value": 4
     },
+    "Guard Chainsword": {
+        "abbreviation": "GdChSw",
+        "ammo": 0,
+        "arp": 1,
+        "attack": {
+            "artifact": 190,
+            "master_crafted": 150,
+            "standard": 120
+        },
+        "description": "A mass-produced chainsword issued to Astra Militarum officers and sergeants. Cruder and less potent than an Astartes blade, but a brutal close-quarters weapon in a guardsman's hands.",
+        "melee_hands": 1,
+        "range": 1,
+        "ranged_hands": 0,
+        "spli": 4,
+        "tags": [
+            "chain",
+            "sword",
+            "savage",
+            "boarding 1"
+        ],
+        "value": 3
+    },
     "Choppa": {
         "abbreviation": "Chop",
         "attack": {
@@ -351,6 +395,25 @@
             "fist"
         ],
         "value": 45
+    },
+    "Bayonet": {
+        "abbreviation": "Bynt",
+        "ammo": 0,
+        "arp": 1,
+        "attack": {
+            "artifact": 22,
+            "master_crafted": 20,
+            "standard": 18
+        },
+        "description": "A short blade clamped to the muzzle of a lasgun. It gives a Guardsman something to thrust with when the foe closes, but against anything tougher than a grot it is little more than a desperate inconvenience.",
+        "melee_hands": 0,
+        "range": 1,
+        "ranged_hands": 0,
+        "spli": 0,
+        "tags": [
+            "knife"
+        ],
+        "value": 1
     },
     "Combat Knife": {
         "abbreviation": "CbKnf",
@@ -1610,6 +1673,25 @@
         ],
         "value": 15
     },
+    "Lasgun": {
+        "abbreviation": "Lasgun",
+        "ammo": 40,
+        "arp": 1,
+        "attack": {
+            "artifact": 130,
+            "master_crafted": 110,
+            "standard": 70
+        },
+        "description": "The standard-issue weapon of the Astra Militarum. A rugged two-handed las weapon firing coherent energy beams, prized for its reliability and the ease of recharging its power packs in the field. Common, dependable, and unremarkable on its own.",
+        "melee_hands": 0,
+        "range": 12,
+        "ranged_hands": 1,
+        "spli": 1,
+        "tags": [
+            "las"
+        ],
+        "value": 2
+    },
     "Laspistol": {
         "abbreviation": "Lpstl",
         "ammo": 30,
@@ -1813,6 +1895,28 @@
             "dreadnought"
         ],
         "value": 70
+    },
+    "Multi-Laser": {
+        "abbreviation": "MultiLas",
+        "ammo": 30,
+        "arp": 2,
+        "attack": {
+            "artifact": 220,
+            "master_crafted": 180,
+            "standard": 150
+        },
+        "description": "A rapid-firing laser array mounted on light Imperial vehicles such as the Chimera. Pours volley after volley of coherent energy into massed infantry and light targets.",
+        "melee_hands": 0,
+        "range": 10,
+        "ranged_hands": 0,
+        "spli": 6,
+        "tags": [
+            "vehicle",
+            "heavy_ranged",
+            "las",
+            "turret"
+        ],
+        "value": 20
     },
     "Multi-Melta": {
         "abbreviation": "MltMelt",

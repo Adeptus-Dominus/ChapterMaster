@@ -524,6 +524,32 @@ function scr_draw_unit_image(_background = false) {
             draw_sprite(spr_skitarii, 0, x_surface_offset, y_surface_offset);
         }
     }
+
+    // ===== Guardsman portrait (mod) =====
+    // Guardsmen are base_group "human", so the Marine body-part composition above is
+    // skipped and the surface is left empty. Draw the static guardsman portrait here, the
+    // same way Skitarii and Sisters draw theirs, loaded once from a runtime PNG because the
+    // mod cannot add compiled sprite assets. The image ships at images\units\guardsman.png.
+    // If alignment needs nudging, offset the draw from x_surface_offset / y_surface_offset.
+    if (role() == "Guardsman") {
+        if (!variable_global_exists("guardsman_portrait")) {
+            global.guardsman_portrait = sprite_add(working_directory + "/images/units/guardsman.png", 1, false, false, 0, 0);
+        }
+        if (sprite_exists(global.guardsman_portrait)) {
+            draw_sprite(global.guardsman_portrait, 0, x_surface_offset, y_surface_offset);
+        }
+    }
+
+    // ===== Guard Sergeant portrait (mod) =====
+    // Same runtime-PNG approach as the guardsman above. The image ships at images\units\sarge.png.
+    if (role() == "Guard Sergeant") {
+        if (!variable_global_exists("sarge_portrait")) {
+            global.sarge_portrait = sprite_add(working_directory + "/images/units/sarge.png", 1, false, false, 0, 0);
+        }
+        if (sprite_exists(global.sarge_portrait)) {
+            draw_sprite(global.sarge_portrait, 0, x_surface_offset, y_surface_offset);
+        }
+    }
     surface_reset_target();
     shader_reset();
 

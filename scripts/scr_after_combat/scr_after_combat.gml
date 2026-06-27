@@ -70,6 +70,8 @@ function add_vehicles_to_recovery() {
         "Whirlwind": 4,
         "Rhino": 3,
         "Land Speeder": 3,
+        "Leman Russ": 3,
+        "Chimera": 2,
         "Bike": 1,
     };
 
@@ -240,7 +242,7 @@ function after_battle_part1() {
                 marine_dead[i] = 1;
                 marine_hp[i] = -50;
             }
-            if ((veh_type[i] != "") && (obj_ncombat.defeat == 1)) {
+            if ((i < array_length(veh_type)) && (veh_type[i] != "") && (obj_ncombat.defeat == 1)) {
                 veh_dead[i] = 1;
                 veh_hp[i] = -200;
             }

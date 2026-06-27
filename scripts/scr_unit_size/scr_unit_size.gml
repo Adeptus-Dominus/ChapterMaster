@@ -6,6 +6,8 @@ function get_vehicle_size_map() {
         "Land Raider": 20,
         "Land Speeder": 5,
         "Whirlwind": 10,
+        "Chimera": 10,
+        "Leman Russ": 10,
         "Harlequin Troupe": 5,
     };
 

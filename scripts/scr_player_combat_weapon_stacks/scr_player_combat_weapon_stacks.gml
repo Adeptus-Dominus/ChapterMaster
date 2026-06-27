@@ -61,6 +61,36 @@ function add_data_to_stack(stack_index, weapon, unit_damage = false, head_role =
 }
 
 /// @self Asset.GMObject.obj_pnunit
+/// Adds a single named weapon to the stacks, firing "count" times. Used for Guard
+/// Squads, where one unit struct stands for a whole squad: the default weapon (wep1)
+/// fires once per man and the special weapon (wep2) fires once for the squad. Mirrors
+/// the enemy horde firepower in scr_en_weapon (attack times the number firing) rather
+/// than the normal single-primary-weapon path, which would only fire the higher-attack gun.
+function add_squad_weapon(weapon_name, count, head_role = false, unit = "none") {
+    if (weapon_name == "") {
+        return;
+    }
+    var _w = gear_weapon_data("weapon", weapon_name, "all", false, "standard");
+    if (!is_struct(_w) || _w.name == "") {
+        return;
+    }
+    var _idx = find_stack_index(_w.name, head_role, unit);
+    if (_idx < 0) {
+        return;
+    }
+    att[_idx] += _w.attack * count;
+    apa[_idx] = _w.arp;
+    range[_idx] = _w.range;
+    wep_num[_idx] += count;
+    splash[_idx] = _w.spli;
+    wep[_idx] = _w.name;
+    if (obj_ncombat.started == 0) {
+        ammo[_idx] = _w.ammo;
+    }
+    wep_owner[_idx] = "assorted";
+}
+
+/// @self Asset.GMObject.obj_pnunit
 function find_stack_index(weapon_name, head_role = false, unit = "none") {
     final_index = -1;
     var allow = false;
@@ -130,6 +160,82 @@ function scr_player_combat_weapon_stacks() {
         exit;
     }
 
+    // ===== OBSOLETE: planetary Guard (iteration 1) =====
+    // First-iteration "planetary Guard" men-block (PDF / Imperial Navy). The obj_pnunit
+    // `guard` flag is never set to 1 anywhere in the project, so this branch is dead and
+    // never runs. Left for reference only. The live guardsmen are individual unit_struct
+    // units with role "Guardsman" and fire through the normal weapon path below, not here.
+    if (guard == 1) {
+        var _gi = 0;
+        var _pg = men;    // current Guardsmen in this block
+
+        // Massed lasguns: one per man, attack 60, armour pierce 1, range 6, 30 rounds.
+        _gi += 1;
+        wep[_gi] = "Lasgun";
+        wep_num[_gi] = max(1, _pg);
+        range[_gi] = 6;
+        att[_gi] = 60 * wep_num[_gi];
+        apa[_gi] = 1;
+        ammo[_gi] = 30;
+        splash[_gi] = 0;
+
+        // Bayonets (melee, range 1). Required or the block locks up in melee: once an
+        // enemy is adjacent the fire logic disables every ranged weapon, and with no
+        // melee weapon the Guard can neither shoot nor swing. Guardsmen are poor in
+        // melee, so this is a weak profile.
+        _gi += 1;
+        wep[_gi] = "Bayonet";
+        wep_num[_gi] = max(1, _pg);
+        range[_gi] = 1;
+        att[_gi] = 12 * wep_num[_gi];
+        apa[_gi] = 0;
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
+
+        // Heavy bolters: attack 120, range 16. Anti-infantry support only. The Guard
+        // carry no anti-tank weapon by design, so a pure-infantry force cannot crack
+        // armour; they bleed against vehicles unless a Leman Russ tank line is present.
+        _gi += 1;
+        wep[_gi] = "Heavy Bolter";
+        wep_num[_gi] = max(1, round(_pg / 200));
+        range[_gi] = 16;
+        att[_gi] = 120 * wep_num[_gi];
+        apa[_gi] = 0;
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
+
+        exit;
+    }
+
+    if (guard == 2) {
+        // Leman Russ tank line, fielded as its own block separate from the infantry,
+        // the way the enemy Imperial Guard keep tanks out of their soldier lines.
+        // Battle Cannon 300 and Lascannon 200, both armour-piercing, scaled to the
+        // tanks still alive. This is the Guard's only anti-armour.
+        var _gi = 0;
+        var _tk = veh;
+
+        _gi += 1;
+        wep[_gi] = "Battle Cannon";
+        wep_num[_gi] = max(1, _tk);
+        range[_gi] = 12;
+        att[_gi] = 300 * wep_num[_gi];
+        apa[_gi] = round(att[_gi] * 0.6);
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
+
+        _gi += 1;
+        wep[_gi] = "Lascannon";
+        wep_num[_gi] = max(1, _tk);
+        range[_gi] = 20;
+        att[_gi] = 200 * wep_num[_gi];
+        apa[_gi] = round(att[_gi] * 0.8);
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
+
+        exit;
+    }
+
     var i, g = 0;
     veh = 0;
     men = 0;
@@ -189,6 +295,16 @@ function scr_player_combat_weapon_stacks() {
                         }
                     }
                 }
+                if (is_struct(mobi_item) && mobi_item.has_tag("bike")) {
+                    var _speed_force = unit.speed_force(mobi_item.has_tag("sf_ranged"));
+                    var stack_index = find_stack_index(_speed_force.name, head_role, unit);
+                    if (stack_index > -1) {
+                        add_data_to_stack(stack_index, _speed_force, false, head_role, unit);
+                        if (head_role) {
+                            player_head_role_stack(stack_index, unit);
+                        }
+                    }
+                }
 
                 if (is_struct(mobi_item)) {
                     add_second_profiles_to_stack(mobi_item);
@@ -241,12 +357,27 @@ function scr_player_combat_weapon_stacks() {
                 }
                 if (marine_casting[g] == false) {
                     var weapon_stack_index = 0;
-                    var primary_ranged = unit.ranged_damage_data[3]; //collect unit ranged data
-                    var weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
-                    if (weapon_stack_index > -1) {
-                        add_data_to_stack(weapon_stack_index, primary_ranged, unit.ranged_damage_data[0], head_role, unit);
-                        if (head_role) {
-                            player_head_role_stack(weapon_stack_index, unit);
+                    // ===== RESERVED: Guard Squad (iteration 2) =====
+                    // Single pooled-HP squad entity (role "Guard Squad"). Not deployed in
+                    // normal play; the live guardsmen are individuals. Kept deliberately for
+                    // planned reuse as heavy weapons teams. Do not delete.
+                    if (unit.role() == "Guard Squad") {
+                        // The squad thins as it takes losses: its surviving strength scales with
+                        // remaining health, so a half-health squad fires half its lasguns and a
+                        // squad on its last legs fires one. It fires wep1 once per surviving man
+                        // and its special weapon (wep2) once while the squad still lives.
+                        var _sq_max = unit.max_health();
+                        var _sq_men = (_sq_max > 0) ? max(1, ceil(GUARD_SQUAD_SIZE * unit.hp() / _sq_max)) : 1;
+                        add_squad_weapon(unit.weapon_one(), _sq_men, head_role, unit);
+                        add_squad_weapon(unit.weapon_two(), 1, head_role, unit);
+                    } else {
+                        var primary_ranged = unit.ranged_damage_data[3]; //collect unit ranged data
+                        weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
+                        if (weapon_stack_index > -1) {
+                            add_data_to_stack(weapon_stack_index, primary_ranged, unit.ranged_damage_data[0], head_role, unit);
+                            if (head_role) {
+                                player_head_role_stack(weapon_stack_index, unit);
+                            }
                         }
                     }
 

@@ -1,3 +1,37 @@
+// Imperial Guard squad: how many guardsmen one Guard Squad unit represents.
+// RESERVED (iteration 2): the Guard Squad system (this macro, the guard_squad template,
+// scr_add_man, scr_marine_struct max_health(), scr_cheatcode, scr_roster, and the combat
+// hook in scr_player_combat_weapon_stacks) is not used in normal play. Kept for planned
+// reuse as heavy weapons teams. Do not delete.
+#macro GUARD_SQUAD_SIZE 10
+
+// Imperial Guard cover save: fraction of would-be ground-combat casualties treated as
+// missed, standing in for spacing, terrain use and a low profile that the combat model
+// does not simulate. Applied after armour, so it also blunts armour-piercing weapons
+// (choppaz, power klawz) that ignore Flak entirely. 0 = no save, 0.4 = 40% fewer losses.
+#macro GUARD_COVER_SAVE 0.4
+
+// Imperial Guard auxilia screen: the front-most battle columns guardsmen are dealt across.
+// Ten obj_pnunit columns exist (1 back to 10 front, higher column = nearer the enemy); the
+// Marine and vehicle roles only use columns 1-7, so 8-10 are free front-most positions.
+// Guardsmen are spread across these as separate positional blocks so the screen sits ahead of
+// the Marines and engages the enemy in waves, instead of merging the whole regiment into one
+// lasgun volley in the hire column. FIRST is the rear-most screen column, COUNT how many
+// front columns the screen occupies (FIRST + COUNT - 1 must stay within the 10 columns).
+#macro GUARD_SCREEN_COLUMN_FIRST 8
+#macro GUARD_SCREEN_COLUMN_COUNT 3
+
+// Imperial Guard accuracy ("doom"): mirrors the enemy's per-faction doom in scr_shoot (the
+// owner == eFACTION.IMPERIUM branch, e.g. Orks 0.2, Tyranids 0.4). Massed lasgun fire from raw
+// conscripts connects far less than disciplined Astartes fire, so the guard's ranged lasgun
+// volleys have their effective shots scaled by this fraction before damage. The player branch
+// divides damage_per_weapon by wep_num rather than the scaled count, so per-shot damage is
+// untouched and the cut is linear: the volley still fires in full but only this share lands.
+// 1 = no reduction (marine-grade, also what Elite Cultists fire at), 0.35 = roughly a third of
+// the lasguns connect. Kills scale about linearly with this value, so 0.7 is roughly double the
+// effectiveness of 0.35 with no change to damage or penetration.
+#macro GUARD_DOOM 0.7
+
 #macro MAX_STC_PER_SUBCATEGORY 6
 #macro DEFAULT_TOOLTIP_VIEW_OFFSET 32
 #macro DEFAULT_LINE_GAP -1
@@ -14,6 +48,14 @@
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
 #macro LARGE_PLANET_MOD 1000000000 // Population threshold for large planet classification
+
+// Ground combat message log: lines the display fully drains per turn (so the end-of-turn status
+// line shows even on long battles), and the per-stage frame timeout before force-advancing.
+#macro COMBAT_LOG_CAPACITY 500
+#macro COMBAT_STAGE_TIMEOUT_FRAMES 1200
+// Battle-log message_priority colour codes (extends the existing 134/135/137 set).
+#macro MSG_COLOR_WHITE 140
+#macro MSG_COLOR_LIGHTGREEN 141
 
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
@@ -70,12 +112,14 @@ enum eROLE {
     ASSAULT = 10,
     ANCIENT = 11,
     SCOUT = 12,
+    BIKER = 13,
     CHAPLAIN = 14,
     APOTHECARY = 15,
     TECHMARINE = 16,
     LIBRARIAN = 17,
     SERGEANT = 18,
     VETERANSERGEANT = 19,
+    ATTACK_BIKER = 20,
     LANDRAIDER = 50,
     RHINO = 51,
     PREDATOR = 52,

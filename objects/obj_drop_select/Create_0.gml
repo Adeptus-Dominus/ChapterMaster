@@ -134,6 +134,15 @@ if (!instance_exists(obj_saveload)) {
     if (formation_current == -1) {
         formation_current = 0;
     }
+    // Hardening: a stored last_raid_form / last_attack_form that is not among the formations
+    // valid for this drop type, or a value left over across a save/load, would otherwise leave
+    // formation_current as an out-of-range raw value. Clamp it so the selector can never index
+    // past the array, and pin it to 0 when there are no formations to choose from.
+    if (array_length(formation_possible) > 0) {
+        formation_current = clamp(formation_current, 0, array_length(formation_possible) - 1);
+    } else {
+        formation_current = 0;
+    }
 
     fighting = array_create(11, array_create(501));
     veh_fighting = array_create(11, array_create(501));

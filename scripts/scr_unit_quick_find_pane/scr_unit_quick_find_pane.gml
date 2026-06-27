@@ -685,8 +685,36 @@ function jail_selection() {
 }
 
 /// @self Asset.GMObject.obj_controller
+// Returns true if at least one unit is actually selected. Used so loading works for
+// fractional-size units (guardsmen at 0.1) whose summed total can read as 0 even
+// though units are picked. The real per-unit loader checks each unit's own size.
+function selection_has_units() {
+    if (man_size > 0) {
+        return true;
+    }
+    for (var i = 0; i < array_length(man_sel); i++) {
+        if (man_sel[i] == 1) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// @self Asset.GMObject.obj_controller
 function load_selection() {
-    if (man_size > 0 && !location_out_of_player_control(selecting_location)) {
+    // Recover the location anchor from the actual selection if it was lost. This keeps
+    // Load working for fractional-size units whose summed total can read 0.
+    if (selecting_location == "") {
+        for (var i = 0; i < array_length(man_sel); i++) {
+            if (man_sel[i] == 1) {
+                selecting_location = ma_loc[i];
+                selecting_planet = ma_wid[i];
+                selecting_ship = ma_lid[i];
+                break;
+            }
+        }
+    }
+    if (selection_has_units() && !location_out_of_player_control(selecting_location)) {
         scr_company_load(selecting_location);
         menu = 30;
         top = 1;
@@ -695,7 +723,7 @@ function load_selection() {
 
 /// @self Asset.GMObject.obj_controller
 function unload_selection() {
-    if (man_size > 0 && obj_controller.selecting_ship >= 0 && !instance_exists(obj_star_select) && !location_out_of_player_control(selecting_location) && selecting_location != "Warp") {
+    if (selection_has_units() && obj_controller.selecting_ship >= 0 && !instance_exists(obj_star_select) && !location_out_of_player_control(selecting_location) && selecting_location != "Warp") {
         cooldown = 8000;
         var boba = 0;
         var unload_star = find_star_by_name(selecting_location);

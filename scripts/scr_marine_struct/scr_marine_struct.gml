@@ -361,6 +361,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var arm = armour();
         var sz = 0;
         sz = 1;
+        // Guardsmen are line infantry, racked aboard far denser than power-armoured
+        // Astartes, so a single trooper takes only a tenth of a marine's berth. A Guard
+        // Squad is left at a full slot, since one already stands in for a whole squad. A
+        // Guard Sergeant bunks with his men, so he takes the same tenth-slot as a trooper.
+        if (unit_role == "Guardsman" || unit_role == "Guard Sergeant") {
+            size = 0.1;
+            return size;
+        }
         if (string_count("Dread", arm) > 0) {
             sz += 5;
         } else if (array_contains(global.list_terminator_armour, arm)) {
@@ -395,6 +403,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             max_h += gear_weapon_data("mobility", mobility_item(), "hp_mod");
             max_h += gear_weapon_data("weapon", weapon_one(), "hp_mod");
             max_h += gear_weapon_data("weapon", weapon_two(), "hp_mod");
+        }
+        if (role() == "Guard Squad") {
+            max_h *= GUARD_SQUAD_SIZE; // a squad shares one pooled health bar and dies as a whole
         }
         return max_h;
     };
@@ -1895,6 +1906,25 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static allocate_unit_to_fresh_spawn = function(type = "default") {
         var homestar = "none";
         var spawn_location_chosen = false;
+        if (type == "home_planet") {
+            // Place on the chapter's actual owned planet in the home system and keep the unit
+            // off-ship, so bulk spawns are not scattered across the fleet's ships. Scan for a
+            // player-owned planet rather than trusting obj_ini.home_planet, which can be a
+            // stale index pointing at a planet that does not exist in this system.
+            ship_location = -1;
+            location_string = obj_ini.home_name;
+            planet_location = obj_ini.home_planet;
+            var homestar = find_star_by_name(obj_ini.home_name);
+            if (homestar != "none") {
+                for (var i = 1; i <= homestar.planets; i++) {
+                    if (homestar.p_owner[i] == eFACTION.PLAYER) {
+                        planet_location = i;
+                        break;
+                    }
+                }
+            }
+            return;
+        }
         if (((type == "home") || (type == "default")) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
             var homestar = find_star_by_name(obj_ini.home_name);
         } else if (type != "ship") {

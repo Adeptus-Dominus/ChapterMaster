@@ -80,21 +80,48 @@ if (!engaged) {
                     if (block_has_armour(enemy) || (enemy.veh_type[1] == "Defenses")) {
                         scr_shoot(i, enemy, target_unit_index, "arp", "ranged");
                         continue;
-                    } else if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != 7)) {
-                        var x2 = enemy.x;
-                        repeat (instance_number(obj_pnunit) - 1) {
-                            x2 += flank == 0 ? -10 : 10;
-                            var enemy2 = instance_nearest(x2, y, obj_pnunit);
-                            if (!target_block_is_valid(enemy2, obj_pnunit)) {
-                                continue;
-                            }
-                            if (range[i] < get_block_distance(enemy2)) {
-                                break;
-                            }
-                            if (block_has_armour(enemy2)) {
-                                scr_shoot(i, enemy2, target_unit_index, "arp", "ranged");
-                                _shot = true;
-                                break;
+                    } else {
+                        // Front block has no armour. If there are other blocks behind,
+                        // look for a vehicle to hit. If none is found anywhere (including
+                        // a single men-only block, such as a lone Guard rank), fall back
+                        // to shooting the men instead of idling. The original code gated
+                        // this whole fallback behind a multi-block check, so a lone
+                        // men-only block left every AP weapon firing zero shots.
+                        if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != 7)) {
+                            var _column_size_value = enemy.column_size;
+                            var x2 = enemy.x;
+                            repeat (instance_number(obj_pnunit) - 1) {
+                                x2 += flank == 0 ? -10 : 10;
+                                var enemy2 = instance_nearest(x2, y, obj_pnunit);
+                                if (!target_block_is_valid(enemy2, obj_pnunit)) {
+                                    continue;
+                                }
+                                if (range[i] < get_block_distance(enemy2)) {
+                                    break;
+                                }
+                                if (block_has_armour(enemy2)) {
+                                    // Screening: a large front block (such as a wall of
+                                    // Guardsmen) shields the vehicles behind it from AP
+                                    // fire, the same way the men-targeting path below
+                                    // shields the men behind it. Without this every apa>0
+                                    // weapon looks straight past the men-only Guard rank
+                                    // to the Marines' vehicles, so the Guard screen
+                                    // nothing. When the back block is shielded the shot
+                                    // is not taken here; _shot stays false and the weapon
+                                    // falls back to firing on the front Guard block.
+                                    var _back_column_size_value = enemy2.column_size;
+                                    if (_back_column_size_value < _column_size_value) {
+                                        continue;
+                                    } else {
+                                        var _pass_chance = ((_back_column_size_value / _column_size_value) - 1) * 100;
+                                        if (irandom_range(1, 100) < min(_pass_chance, 80)) {
+                                            continue;
+                                        }
+                                    }
+                                    scr_shoot(i, enemy2, target_unit_index, "arp", "ranged");
+                                    _shot = true;
+                                    break;
+                                }
                             }
                         }
                         if (!_shot) {

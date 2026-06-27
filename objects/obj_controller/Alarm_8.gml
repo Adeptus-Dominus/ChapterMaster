@@ -20,22 +20,12 @@ with (obj_star) {
         heh.show = false;
         heh.placing = false;
         heh.alarm[1] = -1;
-        if (p_owner[1] == 1) {
-            p_pdf[1] += p_guardsmen[1];
-            p_guardsmen[1] = 0;
-        }
-        if (p_owner[2] == 1) {
-            p_pdf[2] += p_guardsmen[2];
-            p_guardsmen[2] = 0;
-        }
-        if (p_owner[3] == 1) {
-            p_pdf[3] += p_guardsmen[3];
-            p_guardsmen[3] = 0;
-        }
-        if (p_owner[4] == 1) {
-            p_pdf[4] += p_guardsmen[4];
-            p_guardsmen[4] = 0;
-        }
+        // The Guard-into-PDF fold was removed here. It used to run, every turn, for
+        // each player world: p_pdf += p_guardsmen; p_guardsmen = 0. That quietly ate the
+        // Imperial Guard you raise and deploy, folding them back into the abstract PDF and
+        // zeroing the deployable pool. Recruited Guard now persist as their own pool until
+        // you embark them, and recruitment pulls bodies the other way (PDF into Guard), so
+        // folding them back would undo it.
     }
 }
 

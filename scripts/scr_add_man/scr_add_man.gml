@@ -10,7 +10,10 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         "Sister Hospitaler",
         "Ranger",
         "Ork Sniper",
-        "Flash Git"
+        "Flash Git",
+        "Guardsman",
+        "Guard Squad",
+        "Guard Sergeant"
     ];
     var _gear = {};
     var _company_slot = 0;
@@ -26,6 +29,21 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
             // TODO: Implement logic for Auxiliary Soldier (Race 2.5, Renegade stats)
 
             switch (man_role) {
+                case "Guardsman":
+                    spawn_exp = 10;
+                    obj_ini.race[target_company][_company_slot] = eFACTION.IMPERIUM;
+                    _unit = new TTRPG_stats("imperial_guard", target_company, _company_slot, "guardsman");
+                    break;
+                case "Guard Squad":
+                    spawn_exp = 10;
+                    obj_ini.race[target_company][_company_slot] = eFACTION.IMPERIUM;
+                    _unit = new TTRPG_stats("imperial_guard", target_company, _company_slot, "guard_squad");
+                    break;
+                case "Guard Sergeant":
+                    spawn_exp = 10;
+                    obj_ini.race[target_company][_company_slot] = eFACTION.IMPERIUM;
+                    _unit = new TTRPG_stats("imperial_guard", target_company, _company_slot, "guard_sergeant");
+                    break;
                 case "Skitarii":
                     spawn_exp = 10;
                     obj_ini.race[target_company][_company_slot] = 3;
@@ -101,6 +119,18 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
             case "Sister Hospitaler":
                 obj_ini.name[target_company][_company_slot] = global.name_generator.GenerateFromSet("imperial_female");
                 break;
+
+            case "Guardsman":
+                obj_ini.name[target_company][_company_slot] = global.name_generator.GenerateFromSet("imperial_male");
+                break;
+
+            case "Guard Squad":
+                obj_ini.name[target_company][_company_slot] = global.name_generator.GenerateFromSet("imperial_male");
+                break;
+
+            case "Guard Sergeant":
+                obj_ini.name[target_company][_company_slot] = global.name_generator.GenerateFromSet("imperial_male");
+                break;
         }
 
         if (!array_contains(non_marine_roles, man_role)) {
@@ -125,8 +155,14 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         _unit.add_exp(spawn_exp);
         _unit.allocate_unit_to_fresh_spawn(home_spot);
         _unit.update_role(man_role);
-        with (obj_ini) {
-            scr_company_order(target_company);
+        // Re-sorting the whole company after every spawn is O(n) per call, which makes a
+        // bulk spawn O(n^2) and freezes at high counts. Callers doing a batch can pass
+        // other_data.skip_company_order and run scr_company_order once when finished.
+        var _skip_order = is_struct(other_data) && variable_struct_exists(other_data, "skip_company_order") && other_data.skip_company_order;
+        if (!_skip_order) {
+            with (obj_ini) {
+                scr_company_order(target_company);
+            }
         }
         _unit.update_health(_unit.max_health());
         return _unit;

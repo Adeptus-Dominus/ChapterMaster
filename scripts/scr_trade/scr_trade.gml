@@ -17,6 +17,8 @@ function TradeAttempt(diplomacy) constructor {
         "Inferno Bolts": 5,
         "Sister of Battle": 40,
         "Sister Hospitaler": 75,
+        "Guardsman": 0.1,
+        "Leman Russ": 800,
         "Eldar Power Sword": 50,
         "Archeotech Laspistol": 150,
         "Ranger": 100,
@@ -83,13 +85,60 @@ function TradeAttempt(diplomacy) constructor {
             } else if (_opt.trade_type == "req") {
                 obj_controller.requisition += _opt.number;
             } else if (_opt.trade_type == "merc") {
-                if (!struct_exists(trading_object, "mercenaries")) {
-                    trading_object.mercenaries = {};
+                if (_type == "Guardsman") {
+                    // The Sector Governor raises the regiment straight from his homeworld
+                    // PDF, so they muster at the chapter's home planet at once with no
+                    // convoy. An earlier patch dropped this and routed them onto the
+                    // convoy stash instead, so they never arrived; this restores it.
+                    repeat (_opt.number) {
+                        scr_add_man("Guardsman", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
+                    }
+                    // One Guard Sergeant musters with every full squad of GUARD_SQUAD_SIZE
+                    // guardsmen, raised from the same homeworld levy and attached to his men. He
+                    // rides the same path as a guardsman, just a tougher melee-focused profile.
+                    repeat (floor(_opt.number / GUARD_SQUAD_SIZE)) {
+                        scr_add_man("Guard Sergeant", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
+                    }
+                    // One Chimera transport is assigned per 200 guardsmen to carry and screen the
+                    // levy. They muster into the Auxilia company (company 0) alongside the guardsmen,
+                    // not the transient new_vehicles staging company, so they stay grouped with the
+                    // levy and persist after the battle instead of being reorganised out of the
+                    // build-staging slot.
+                    repeat (floor(_opt.number / 200)) {
+                        scr_add_vehicle("Chimera", 0);
+                    }
+                    with (obj_ini) {
+                        scr_company_order(0);
+                    }
+                    // Space Marines commandeering Imperial Guard is frowned upon since the
+                    // Heresy and the reign of Goge Vandire, so the Sector Governor's regard dips
+                    // with the size of the levy: about 1 per 200 raised (so a full 2000 costs 10),
+                    // floored at 1 so even a token request costs a little standing.
+                    alter_disposition(diplomacy_faction, -max(1, round(_opt.number / 200)));
+                } else if (_type == "Leman Russ") {
+                    // The Adeptus Mechanicus forge and part with their tanks reluctantly. Each
+                    // Leman Russ musters into the Auxilia company (company 0) alongside the guard
+                    // levy so the force can field its own armour line, then the company is reordered
+                    // so the tanks settle into their slots.
+                    repeat (_opt.number) {
+                        scr_add_vehicle("Leman Russ", 0);
+                    }
+                    with (obj_ini) {
+                        scr_company_order(0);
+                    }
+                    // Handing over sacred war materiel costs the forge world some regard, one point
+                    // per tank with a floor of one, so a larger order stings their disposition more.
+                    alter_disposition(diplomacy_faction, -max(1, _opt.number));
+                } else {
+                    // Every other mercenary type arrives by trade convoy.
+                    if (!struct_exists(trading_object, "mercenaries")) {
+                        trading_object.mercenaries = {};
+                    }
+                    trading_object.mercenaries[$ _type] = {
+                        quality: "standard",
+                        number: _opt.number,
+                    };
                 }
-                trading_object.mercenaries[$ _type] = {
-                    quality: "standard",
-                    number: _opt.number,
-                };
             } else if (_opt.trade_type == "arti") {
                 scr_add_artifact("random", "minor", true);
             } else if (_opt.trade_type == "vehic") {
@@ -373,6 +422,7 @@ function TradeAttempt(diplomacy) constructor {
     switch (diplomacy_faction) {
         case 2:
             new_demand_buttons(0, "Requisition", "req");
+            new_demand_buttons(35, "Guardsman", "merc", 2000);
             new_demand_buttons(0, "Recruiting Planet", "license", 1);
             new_demand_buttons(0, "License: Repair", "license", 1);
             new_demand_buttons(0, "License: Crusade", "license", 1);
@@ -381,6 +431,7 @@ function TradeAttempt(diplomacy) constructor {
             new_demand_buttons(40, "Minor Artifact", "arti", 1);
             new_demand_buttons(25, "Skitarii", "merc", 200);
             new_demand_buttons(55, "Techpriest", "merc", 3);
+            new_demand_buttons(40, "Leman Russ", "merc", 10);
             break;
         case 4:
             new_demand_buttons(25, "Crusader", "merc", 5);
@@ -675,6 +726,33 @@ function TradeAttempt(diplomacy) constructor {
 
         deal_chance = (100 - penalty) - (their_worth - (my_worth * dif_penalty));
         //LOGGER.debug($"{their_worth},{my_worth},{deal_chance}");
+
+        // Guardsmen are abundant Imperial line troops the Sector Governor hands over by the
+        // thousand, not a haggled rarity, so the base trade overhead does not apply to a
+        // pure Guard levy. They cost a flat 0.1 requisition each (100 per 1000). If the
+        // offered requisition covers the guardsmen demanded the Governor obliges outright,
+        // otherwise he declines. Only triggers when guardsmen are the sole demand, so it
+        // cannot be used to slip other goods through cheaply.
+        var _guard_num = 0;
+        var _other_demand = false;
+        for (var gi = 0; gi < array_length(demand_options); gi++) {
+            if (demand_options[gi].number > 0) {
+                if (demand_options[gi].label == "Guardsman") {
+                    _guard_num += demand_options[gi].number;
+                } else {
+                    _other_demand = true;
+                }
+            }
+        }
+        if ((_guard_num > 0) && !_other_demand) {
+            var _req_offered = 0;
+            for (var ri = 0; ri < array_length(offer_options); ri++) {
+                if (offer_options[ri].label == "Requisition") {
+                    _req_offered += offer_options[ri].number;
+                }
+            }
+            deal_chance = _req_offered >= ceil(_guard_num * 0.1) ? 100 : 0;
+        }
         var _chance = clamp(floor((deal_chance / 20)), 0, 6);
 
         trade_likely = chance_chart[_chance];

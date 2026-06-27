@@ -75,9 +75,19 @@ function compress_enemy_array(_target_column) {
 /// @description Destroys the column if it's empty
 /// @param {id.Instance} _target_column - The column instance to clean up
 function destroy_empty_column(_target_column) {
-    // Destroy empty non-player columns to conserve memory and processing
+    // Destroy empty non-player columns to conserve memory and processing.
     with (_target_column) {
-        if ((men + veh + medi == 0) && (owner != 1)) {
+        // Count living models straight from dudes_num. men/veh/medi are only refreshed on the enemy's
+        // own alarm, so during the player's firing phase they're stale and would leave a wiped-out
+        // formation standing - which then keeps getting fired at and blocks "held fire" reporting.
+        var _alive = 0;
+        for (var r = 1; r < array_length(dudes_num); r++) {
+            // A rank chipped to 0 HP but still showing dudes_num is a dead "zombie" - don't count it.
+            if (dudes_num[r] > 0 && dudes_hp[r] > 0) {
+                _alive += dudes_num[r];
+            }
+        }
+        if ((_alive == 0) && (owner != 1)) {
             instance_destroy();
         }
     }
@@ -142,7 +152,20 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                 "units_lost": 0,
                 "unit_type": "",
                 "hits": 0,
+                "severity": 0,
+                "is_vehicle": false,
             };
+
+            // Scope the casualty breakdown to THIS attack. lost[]/lost_num[] are the column's
+            // per-attack scratch tally that scr_flavor2 reads to build its "X Foo lost" text.
+            // scr_flavor2 clears them at its end, but fork-added early-exits (suppressed empty or
+            // zero-shot attacks, a destroyed wall) can return before that reset, leaving a previous
+            // attack's casualties in place. A later attack that inflicts nothing of its own (e.g.
+            // autoguns pinging off a Predator's AC40 armour for zero damage) would then read and
+            // mis-report those stale kills as "8 Autoguns strike at Predator. 4 Predators lost."
+            // Clearing here guarantees the breakdown reflects only what this attack actually kills.
+            lost = [];
+            lost_num = [];
 
             // ### Vehicle Damage Processing ###
             if (!target_is_infantry && veh > 0) {
@@ -151,7 +174,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
             // ### Marine + Dreadnought Processing ###
             if (target_is_infantry && (men + dreads > 0)) {
-                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position);
+                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash);
             }
 
             if (damage_data.hits < hostile_shots) {
@@ -162,11 +185,11 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
                 // ### Marine + Dreadnought Processing ###
                 if (!target_is_infantry && (men + dreads > 0)) {
-                    damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position);
+                    damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash);
                 }
             }
 
-            scr_flavor2(damage_data.units_lost, damage_data.unit_type, hostile_range, hostile_weapon, damage_data.hits, hostile_splash);
+            scr_flavor2(damage_data.units_lost, damage_data.unit_type, hostile_range, hostile_weapon, damage_data.hits, hostile_splash, damage_data.severity, damage_data.is_vehicle);
 
             // ### Cleanup ###
             // If the target_object got wiped out, move it off-screen
@@ -181,7 +204,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
+function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash) {
     var _armour_pierce = apa[_weapon_index];
     var _armour_mod = 0;
     switch (_armour_pierce) {
@@ -210,6 +233,76 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
             array_push(valid_marines, m);
         }
     }
+
+    // Bulk man-block with no individual model structs (Guard auxilia): take losses
+    // straight off the men count, the way the enemy's ranks do, since there are no
+    // marine structs for the normal path to kill. Scoped to guard blocks only.
+    // ===== OBSOLETE: planetary Guard (iteration 1) =====
+    // Casualty math for the dead first-iteration men-block. The `guard` flag is never set
+    // to 1, so this never runs, and the cover-save inside it never applies. Live guardsmen
+    // take casualties through the normal marine path below. Left for reference only.
+    if (guard == 1 && array_length(valid_marines) == 0 && men > 0) {
+        // Identical to the enemy Guardsman casualty math in scr_shoot. Reduce each
+        // shot by armour, pool the survivable damage across all shots, convert it to
+        // dead men at dudes_hp each, and cap the kills at the shot count. With
+        // dudes_ac 40 the rank shrugs off low-AP fire (basic Choppaz, Shootas) the
+        // same way the enemy Guardsmen you fight do, and only armour-piercing weapons
+        // cut them down in numbers. Armour is what gives them their staying power, so
+        // there is no separate cohesion cap here.
+        var _g_ac = (array_length(dudes_ac) > 1) ? dudes_ac[1] : 40;
+        var _g_hp = (array_length(dudes_hp) > 1) ? dudes_hp[1] : 5;
+        if (_g_hp <= 0) {
+            _g_hp = 5;
+        }
+        var _g_after = _damage - (_g_ac * _armour_mod);
+        if (_g_after < 0) {
+            _g_after = 0;
+        }
+        var _g_pool = _shots * _g_after;
+        var _g_total = min(floor(_g_pool / _g_hp), _shots);
+        _g_total = min(_g_total, men);
+        if (_g_total < 0) {
+            _g_total = 0;
+        }
+        // Cover / dispersion save (see GUARD_COVER_SAVE in macros.gml). A flat fraction
+        // of would-be casualties are treated as missed, standing in for spacing, terrain
+        // and a small profile. Applied after armour so it also blunts armour-piercing
+        // weapons (choppaz, power klawz) that ignore Flak entirely.
+        if (_g_total > 0 && GUARD_COVER_SAVE > 0) {
+            _g_total = floor(_g_total * (1 - GUARD_COVER_SAVE));
+        }
+        _damage_data.hits += _shots;
+        // Always name the block, even on a zero-casualty hit, or the enemy attack
+        // flavor prints "fire at ." with a blank target whenever armour soaks the shot.
+        _damage_data.unit_type = "Imperial Guardsman";
+        if (_g_total > 0) {
+            men -= _g_total;
+            if (array_length(dudes_num) > 1) {
+                dudes_num[1] = max(0, dudes_num[1] - _g_total);
+            }
+            // Report through the same lost/lost_num summary the marines use.
+            _damage_data.units_lost += _g_total;
+            _damage_data.unit_type = "Imperial Guardsman";
+            var _g_idx = -1;
+            for (var gk = 0, gl = array_length(lost); gk < gl; gk++) {
+                if (lost[gk] == "Imperial Guardsman") {
+                    _g_idx = gk;
+                    break;
+                }
+            }
+            if (_g_idx >= 0) {
+                lost_num[_g_idx] += _g_total;
+            } else {
+                array_push(lost, "Imperial Guardsman");
+                array_push(lost_num, _g_total);
+            }
+        }
+        return;
+    }
+
+    // Per-role tally of kills this volley, used to relabel the attack after the loop.
+    var _killed_roles = [];
+    var _killed_counts = [];
 
     // Apply damage for each shot
     for (var shot = 0; shot < _shots; shot++) {
@@ -270,14 +363,90 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
             var chunk = max(10, 62 - (marine_ac[marine_index] * 2));
             _modified_damage = (webr <= chunk) ? 5000 : 0;
         } */
+        var _hp_before = marine.hp();
         marine.add_or_sub_health(-_modified_damage);
+        if ((_hp_before > 0) && (_modified_damage > 0)) {
+            _damage_data.severity = max(_damage_data.severity, clamp(_modified_damage / _hp_before, 0, 1));
+        }
 
         // Check if marine is dead
         if (check_dead_marines(marine, marine_index)) {
             // Remove dead infantry from further hits
             valid_marines = array_delete_value(valid_marines, marine_index);
             _damage_data.units_lost++;
+
+            // Record the fallen role so the headline can name who actually died.
+            var _arole = marine.role();
+            var _aidx = -1;
+            for (var _ai = 0; _ai < array_length(_killed_roles); _ai++) {
+                if (_killed_roles[_ai] == _arole) { _aidx = _ai; break; }
+            }
+            if (_aidx == -1) {
+                array_push(_killed_roles, _arole);
+                array_push(_killed_counts, 1);
+            } else {
+                _killed_counts[_aidx] += 1;
+            }
+
+            // ===== Splash carry-over =====
+            // Port of the enemy men-block math in scr_shoot onto the player's individual
+            // units. A blast weapon's lethal overkill spills onto adjacent units, capped at
+            // the weapon's splash, and every further kill is gated by that unit's own armour
+            // and HP. Low-HP ranks (guardsmen) get torn apart by a Kannon or Rokkit; Marines
+            // and bosses soak the leftover through armour and HP, so it cannot wipe them, and
+            // ordinary attrition does not rise because only overkill carries.
+            if (_splash > 1) {
+                var _carry = _modified_damage - _hp_before; // damage left after this kill
+                var _spread_left = _splash - 1;
+                while (_spread_left > 0 && _carry > 0 && array_length(valid_marines) > 0) {
+                    var _next_index = array_random_element(valid_marines);
+                    var _next = unit_struct[_next_index];
+                    var _next_net = _carry - (marine_ac[_next_index] * _armour_mod);
+                    if (_next_net > 0) {
+                        _next_net = round(_next_net * (1 - (_next.damage_resistance() / 100)));
+                    }
+                    if (_next_net <= 0) {
+                        break; // armour soaked the leftover; the blast is spent
+                    }
+                    var _next_hp_before = _next.hp();
+                    _next.add_or_sub_health(-_next_net);
+                    if (check_dead_marines(_next, _next_index)) {
+                        valid_marines = array_delete_value(valid_marines, _next_index);
+                        _damage_data.units_lost++;
+                        // Record the fallen role (splash victims count too).
+                        var _brole = _next.role();
+                        var _bidx = -1;
+                        for (var _bi = 0; _bi < array_length(_killed_roles); _bi++) {
+                            if (_killed_roles[_bi] == _brole) { _bidx = _bi; break; }
+                        }
+                        if (_bidx == -1) {
+                            array_push(_killed_roles, _brole);
+                            array_push(_killed_counts, 1);
+                        } else {
+                            _killed_counts[_bidx] += 1;
+                        }
+                        _carry = _next_net - _next_hp_before; // remaining overkill rolls on
+                    } else {
+                        break; // wounded but alive; the blast is spent on this body
+                    }
+                    _spread_left--;
+                }
+            }
         }
+    }
+
+    // The loop overwrote unit_type with a random *surviving* unit every shot, so a dying
+    // screen in front of a tanky unit (Dreadnought) let the survivor win the "strike at X"
+    // headline while the casualty list named the dead. If anything fell, relabel the attack
+    // with the role that took the most casualties so the headline and the losses agree.
+    if (array_length(_killed_roles) > 0) {
+        var _top = 0;
+        for (var _ti = 1; _ti < array_length(_killed_counts); _ti++) {
+            if (_killed_counts[_ti] > _killed_counts[_top]) {
+                _top = _ti;
+            }
+        }
+        _damage_data.unit_type = _killed_roles[_top];
     }
 
     return;
@@ -334,8 +503,13 @@ function damage_vehicles(_damage_data, _shots, _damage, _weapon_index) {
         if (enemy == 13 && _modified_damage < 1) {
             _modified_damage = 1;
         }
+        var _veh_hp_before = veh_hp[veh_index];
         veh_hp[veh_index] -= _modified_damage;
         _damage_data.unit_type = veh_type[veh_index];
+        _damage_data.is_vehicle = true;
+        if (_veh_hp_before > 0) {
+            _damage_data.severity = max(_damage_data.severity, clamp(_modified_damage / _veh_hp_before, 0, 1));
+        }
 
         // Check if the vehicle is destroyed
         if (veh_hp[veh_index] <= 0 && veh_dead[veh_index] == 0) {

@@ -354,8 +354,21 @@ if ((!defeat) && (battle_special == "space_hulk")) {
     var enemy_power = 0, loot = 0, dicey = roll_dice_chapter(1, 100, "low");
     ex = 0;
 
-    if (enemy == eFACTION.ORK || enemy == eFACTION.TYRANIDS || enemy == eFACTION.HERETICS) {
-        enemy_power = p_data.add_forces(enemy, -1);
+    // Reduce the hulk garrison by one and read the strength left behind. A Chaos hulk keeps its
+    // strength in the traitor (p_traitors) slot, which edit_forces reaches through the HERETICS
+    // case, so it is reduced as HERETICS. This also lets Chaos hulks lose forces, clear, and roll
+    // loot at all, which they previously never could.
+    var _hulk_faction = enemy;
+    if (enemy == eFACTION.CHAOS) {
+        _hulk_faction = eFACTION.HERETICS;
+    }
+    if (enemy == eFACTION.ORK || enemy == eFACTION.TYRANIDS || enemy == eFACTION.HERETICS || enemy == eFACTION.CHAOS) {
+        enemy_power = p_data.add_forces(_hulk_faction, -1);
+        // Garrison wiped out: the hulk is cleared. The salvage choice is offered post-battle in
+        // space_hulk_explore_battle_aftermath (scr_post_battle_events).
+        if (enemy_power <= 0) {
+            hulk_cleared = 1;
+        }
     }
 
     part10 = "Space Hulk Exploration at ";
