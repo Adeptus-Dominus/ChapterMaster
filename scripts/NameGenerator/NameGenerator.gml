@@ -7,12 +7,20 @@ function NameTracker(set_name) constructor {
     composite_names = [];
 
     composite_components = {
-            prefixes : [],
-            suffixes : [],
-            special : []
-        };
+        prefixes : [],
+        suffixes : [],
+        special : []
+    };
+
+    multisyllable_components = {
+        first_syllables : [],
+        second_syllables : [],
+        third_syllables : []
+    };
 
     generic_counter = 0;
+
+    preffered_method = "simple";
 
     static LoadSimpleNames = function(file_name, fallback_value, json_names_property_name = "names") {
         var file_loader = new JsonFileListLoader();
@@ -63,6 +71,41 @@ function NameTracker(set_name) constructor {
         composite_components = result;
     };
 
+    static LoadSyllableNames = function(
+        file_name,
+        json_names_property_names = [
+            "first_syllables",
+            "second_syllables",
+            "third_syllables"
+        ]
+    ) {
+        composite_names = json_names_property_names;
+
+        var file_loader = new JsonFileListLoader();
+
+        var load_result = file_loader.load_list_from_json_file($"main/names/{file_name}.json", json_names_property_names);
+
+        var result = {
+            first_syllables : [],
+            second_syllables : [],
+            third_syllables : []
+        };
+
+        for (var i = 0; i < array_length(json_names_property_names); i++) {
+            var _property_name = json_names_property_names[i];
+            if (!is_string(_property_name)) {
+                continue;
+            }
+            if (load_result.is_success && struct_exists(load_result.values, _property_name)) {
+                result[$ _property_name] = load_result.values[$ _property_name];
+            } else {
+                result[$ _property_name] = array_create(1, $"{_property_name} 1");
+            }
+        }
+
+        multisyllable_components = result;
+    };
+
     static AddUsedName = function(name) {
         array_push(used_names, name);
     };
@@ -92,8 +135,6 @@ function NameTracker(set_name) constructor {
         }
     };
 
-    preffered_method = "simple";
-
     static CompositeNameGeneration = function(separate_components = true) {
         try {
             if (struct_exists(composite_components, "special") && is_array(composite_components.special) && array_length(composite_components.special) > 0) {
@@ -119,8 +160,8 @@ function NameTracker(set_name) constructor {
         }
     };
 
-    static MultiSyllableNameGeneration = function(syllable_amount) {
-        var syllables = composite_components;
+    static MultiSyllableNameGeneration = function(syllable_amount = 3) {
+        var syllables = multisyllable_components;
         try {
             var name = array_random_element(syllables.first_syllables, true);
 
@@ -174,6 +215,8 @@ function NameTracker(set_name) constructor {
                 return CompositeNameGeneration();
             case "complex":
                 return ComplexTitledName(composite_names);
+            case "syllables":
+                return MultiSyllableNameGeneration();
             default:
                 return SimpleNameGeneration();
         }
@@ -182,104 +225,42 @@ function NameTracker(set_name) constructor {
 
 function NameGenerator() constructor {
     // TODO after save rework is finished, check if these static can be converted to instance version
-    var _simple_names = json_to_gamemaker(working_directory + $"main/name_loader.json", json_parse);
-
-    if (_simple_names == "") {
-        _simple_names = [
-            "sector",
-            "star",
-            {
-                load_as: "imperial_male",
-                load_set: "space_marine",
-            },
-            {
-                load_as: "imperial_female",
-                load_set: "imperial",
-            },
-            "space_marine",
-            "chaos",
-            "imperial_ship",
-            "ork_ship",
-            {
-                load_as: "eldar",
-                load_set: "eldar",
-                composites: [
-                    "first_syllables",
-                    "second_syllables",
-                    "third_syllables"
-                ],
-            },
-            {
-                load_as: "ork",
-                load_set: "ork",
-                composites: [
-                    "prefixes",
-                    "suffixes",
-                    "special"
-                ],
-            },
-            {
-                load_as: "hulk",
-                load_set: "hulk",
-                composites: [
-                    "prefixes",
-                    "suffixes"
-                ],
-            },
-            {
-                load_as: "tau",
-                load_set: "tau",
-                composites: [
-                    "prefixes",
-                    "suffixes"
-                ],
-            },
-            {
-                load_as: "genestealercult",
-                load_set: "genestealercult",
-                composites: [
-                    "main",
-                    "embelishment",
-                    "title"
-                ],
-            }
-        ];
-    }
+    var _name_sets = json_to_gamemaker(working_directory + $"main/name_loader.json", json_parse);
 
     name_sets = {};
 
-    for (var i = 0; i < array_length(_simple_names); i++) {
-        var _name = _simple_names[i];
+    for (var i = 0; i < array_length(_name_sets); i++) {
+        var _name = _name_sets[i];
         var _load_name = _name;
-        var _load_as_composite = false;
         var _preffered = "simple";
         var _composites = {};
+        var _syllables = {};
         if (is_struct(_name)) {
             var _struc = _name;
             _name = _struc.load_as;
             _load_name = _struc.load_set;
+            _preffered = "composite";
             if (struct_exists(_struc, "composites")) {
-                _load_as_composite = true;
                 _composites = _struc.composites;
+            }
+            if (struct_exists(_struc, "syllables")) {
+                _syllables = _struc.syllables;
             }
             if (struct_exists(_struc, "preffered_method")) {
                 _preffered = _struc.preffered_method;
-            } else {
-                if (_load_as_composite) {
-                    _preffered = "composite";
-                }
             }
         }
 
         name_sets[$ _name] = new NameTracker(_name);
         var _fallback_name = string_replace_all(_name, "_", " ") + " 1";
 
-        var _set = name_sets[$ _name];
-        _set.preffered_method = _preffered;
-        if (!_load_as_composite) {
-            _set.LoadSimpleNames(_load_name, _fallback_name);
-        } else {
-            _set.LoadCompositeNames(_load_name, _composites);
+        name_sets[$ _name].preffered_method = _preffered;
+        if (_preffered == "simple") {
+            name_sets[$ _name].LoadSimpleNames(_load_name, _fallback_name);
+        } else if (_preffered == "composite") {
+            name_sets[$ _name].LoadCompositeNames(_load_name, _composites);
+        } else if (_preffered == "syllables") {
+            name_sets[$ _name].LoadSyllableNames(_load_name, _syllables);
         }
     }
 

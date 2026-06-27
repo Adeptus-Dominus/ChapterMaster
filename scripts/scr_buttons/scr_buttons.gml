@@ -149,6 +149,10 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords) {
 function Box(data) constructor {
     standard_loc_data();
     colour = CM_GREEN_COLOR;
+    x1 = data.x1
+    y1 = data.y1
+    x2 = data.x2
+    y2 = data.y2
 
     static update = function(data){
         move_data_to_current_scope(data, true);

@@ -1,5 +1,5 @@
 /// @desc Calculates the remaining iteration length for an array based on an offset.
-/// @param {Array} _array The target array.
+/// @param {Array<Any>} _array The target array.
 /// @param {Real} _offset The starting index.
 /// @param {Real} _length The requested length (0 for auto-calculation).
 /// @returns {Real}
@@ -104,16 +104,8 @@ function array_delete_values(choice_array, values) {
     return choice_array;
 }
 
-function array_random_element(choice_array, recursive = false) {
-    var _elem = choice_array[irandom(array_length(choice_array) - 1)];
-    if (!recursive) {
-        return _elem;
-    } else {
-        if (is_array(_elem) && array_length(_elem)) {
-            _elem = array_random_element(_elem, true);
-        }
-    }
-
+function array_random_element(choice_array) {
+    var _elem = (array_length(choice_array) >= 1) ? choice_array[irandom(array_length(choice_array) - 1)] : undefined;
     return _elem;
 }
 
@@ -128,8 +120,8 @@ function array_delete_random_index(choice_array) {
 
 /// @function array_to_string_list
 /// @description Converts an array into a string, with each element on a newline.
-/// @param {array} _array stacktrace.
-/// @return {string}
+/// @param {Array<String>} _array stacktrace.
+/// @return {String}
 function array_to_string_list(_array, _pop_last = false) {
     var _string_list = "";
 
@@ -143,7 +135,7 @@ function array_to_string_list(_array, _pop_last = false) {
 
     for (var i = 0; i < array_length(_array); i++) {
         _string_list += $"- {_array[i]}";
-        if (i < array_length(_array) - 1) {
+        if (i < array_length(_array)) {
             _string_list += "\n";
         }
     }
@@ -153,8 +145,8 @@ function array_to_string_list(_array, _pop_last = false) {
 
 /// @function array_to_string_order
 /// @description Converts an array into a string, with "," after each member and "and" before the last one.
-/// @param {array} _strings_array An array of strings.
-/// @return {string}
+/// @param {Array<String>} _strings_array An array of strings.
+/// @return {String}
 function array_to_string_order(_strings_array, _use_and = false, _dot_end = true) {
     var result = "";
     var length = array_length(_strings_array);
@@ -165,7 +157,7 @@ function array_to_string_order(_strings_array, _use_and = false, _dot_end = true
         result += _strings_array[i];
 
         // Check if it's the last string
-        if (i < length - 1) {
+        if (i < length) {
             // If it's the second last item, add " and " before the last one
             if (_use_and && i == length - 2) {
                 result += " and ";
@@ -181,11 +173,11 @@ function array_to_string_order(_strings_array, _use_and = false, _dot_end = true
 }
 
 /// @description Converts two parallel arrays into a formatted string with pluralized counts
-/// @param {array} _names_array Array of strings representing item names
-/// @param {array} _counts_array Array of integers representing counts for each name
-/// @param {bool} _exclude_null Whether to exclude entries with zero count
-/// @param {bool} _dot_end Whether to end the string with a period
-/// @return {string}
+/// @param {Array<String>} _names_array Array of strings representing item names
+/// @param {Array<Real>} _counts_array Array of integers representing counts for each name
+/// @param {Bool} _exclude_null Whether to exclude entries with zero count
+/// @param {Bool} _dot_end Whether to end the string with a period
+/// @return {String}
 function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null = false, _dot_end = true) {
     var _array_length = array_length(_names_array);
     var _result_string = "";
@@ -202,10 +194,10 @@ function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null
 }
 
 /// @description Converts the equipment struct into a formatted string with pluralized counts
-/// @param {struct} _equipment The equipment struct
-/// @param {bool} _exclude_null Whether to exclude entries with zero total
-/// @param {bool} _dot_end Whether to end the string with a period
-/// @return {string}
+/// @param {Struct} _equipment The equipment struct
+/// @param {Bool} _exclude_null Whether to exclude entries with zero total
+/// @param {Bool} _dot_end Whether to end the string with a period
+/// @return {String}
 function equipment_struct_to_string(_equipment, _exclude_null = false, _dot_end = true) {
     var _names_array = [];
     var _counts_array = [];
@@ -247,23 +239,23 @@ function equipment_struct_to_string(_equipment, _exclude_null = false, _dot_end 
 
 /// @function alter_deep_array
 /// @description Modifies a value in a deeply nested array structure.
-/// @param {array} array The array to modify
-/// @param {array} accessors Array of indices for traversing the nested structure
-/// @param {any} value The value to set at the specified location
+/// @param {Array<Any>} array The array to modify
+/// @param {Array<Real>} accessors Array of indices for traversing the nested structure
+/// @param {Any} value The value to set at the specified location
 function alter_deep_array(array, accessors, value) {
     var _array_step = array;
     var accessors_length = array_length(accessors);
-    for (var i = 0; i < accessors_length - 1; i++) {
+    for (var i = 0; i < accessors_length; i++) {
         _array_step = _array_step[accessors[i]];
     }
-    _array_step[@ accessors[accessors_length - 1]] = value;
+    _array_step[@ accessors[accessors_length]] = value;
 }
 
 /// @function fetch_deep_array
 /// @description Retrieves a value from a deeply nested array structure.
-/// @param {array} array The array to retrieve from
-/// @param {array} accessors Array of indices for traversing the nested structure
-/// @return {any} The value at the specified location
+/// @param {Array<Any>} array The array to retrieve from
+/// @param {Array<Real>} accessors Array of indices for traversing the nested structure
+/// @return {Any} The value at the specified location
 function fetch_deep_array(array, accessors) {
     var _array_step = array;
     var accessors_length = array_length(accessors);
@@ -275,14 +267,14 @@ function fetch_deep_array(array, accessors) {
 
 /// @description Choose either `.` or `,` based on the array length and current loop iteration.
 /// @param {array|real} _array_or_length Array or its length.
-/// @param {real} _loop_iteration Current loop iteration.
-/// @param {bool} _dot_end Whether to end with a period for the last element
-/// @return {string}
+/// @param {Real} _loop_iteration Current loop iteration.
+/// @param {Bool} _dot_end Whether to end with a period for the last element
+/// @return {String}
 function smart_delimeter_sign(_array_or_length, _loop_iteration, _dot_end = true) {
     var _delimeter = "";
     var _array_length = is_array(_array_or_length) ? array_length(_array_or_length) : _array_or_length;
 
-    if (_loop_iteration < _array_length - 1) {
+    if (_loop_iteration < _array_length) {
         _delimeter += ", ";
     } else if (_dot_end) {
         _delimeter += ".";
@@ -292,16 +284,16 @@ function smart_delimeter_sign(_array_or_length, _loop_iteration, _dot_end = true
 }
 
 /// @description Checks whether an array is "simple," meaning it does not exceed a specified depth and contains only simple variables. Recursively evaluates nested arrays.
-/// @param {array} _array - The array to check.
-/// @param {real} _max_depth - The maximum allowed depth for the array.
-/// @param {real} _current_depth (DON'T PASS ANYTHING) The current recursion depth, used internally.
-/// @returns {bool}
+/// @param {Array<Any>} _array - The array to check.
+/// @param {Real} _max_depth - The maximum allowed depth for the array.
+/// @param {Real} _current_depth (DON'T PASS ANYTHING) The current recursion depth, used internally.
+/// @returns {Bool}
 function is_basic_array(_array, _max_depth = 1, _current_depth = 1) {
     if (_current_depth > _max_depth) {
         return false;
     }
 
-    for (var i = 0, _len = array_length(_array); i < _len; i++) {
+    for (var i = 0; i < array_length(_array); i++) {
         var _var = _array[i];
         if (is_array(_var)) {
             if (!is_basic_array(_var, _max_depth, _current_depth + 1)) {
@@ -316,7 +308,7 @@ function is_basic_array(_array, _max_depth = 1, _current_depth = 1) {
 }
 
 /// @description Sets a range of elements in an array to a specific value.
-/// @param {Array} _array The array to modify.
+/// @param {Array<Any>} _array The array to modify.
 /// @param {Real} _start_index The starting index (inclusive).
 /// @param {Real} _end_index The ending index (inclusive).
 /// @param {Any} _value The value to set for the elements.
@@ -329,7 +321,7 @@ function array_set_range(_array, _start_index, _end_index, _value) {
 /// @description Similar to array_create, but uses `variable_clone()` to clone the default if it's a complex type (array/struct). Supports default with nesting.
 /// @param {Real} _size The size of the array to create.
 /// @param {Any} _default The value to set for the elements.
-function array_create_advanced(_size = 1, _default = 0) {
+function array_create_advanced(_size = 1, _default = undefined) {
     var _array = array_create(_size);
 
     for (var i = 0; i < _size; i++) {
@@ -339,7 +331,7 @@ function array_create_advanced(_size = 1, _default = 0) {
     return _array;
 }
 
-function max_array_length(arrays = []) {
+function max_array_length(arrays) {
     var _max = 0;
     for (var i = 0; i < array_length(arrays); i++) {
         var _arr_len = array_length(arrays[i]);

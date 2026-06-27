@@ -439,7 +439,7 @@ function SpecialistPointHandler() constructor {
                 _lost_inc_string += $"{i},";
             }
             scr_alert("", "test-slaves", _lost_inc_string, 0, 0);
-            scr_event_log("", "test-slaves", _lost_inc_string);
+            scr_event_log("", _lost_inc_string);
         }
         if (_lost_gene_slaves > 0) {
             scr_alert("", "test-slaves", $"{_lost_gene_slaves} gene slaves lost due to geneseed instability their incubators have been returned to the armoury", 0, 0);

@@ -1,22 +1,18 @@
 {
     "prefixes": [
-        [
-            "Por'O"
-        ]
+        "Por'O"
     ],
     "suffixes": [
-        [
-            "Ar",
-            "Cha",
-            "Doran",
-            "Eldi",
-            "Kais",
-            "Ko",
-            "Kunas",
-            "M'yen",
-            "Ro",
-            "Tsua'm",
-            "Ukos"
-        ]
+        "Ar",
+        "Cha",
+        "Doran",
+        "Eldi",
+        "Kais",
+        "Ko",
+        "Kunas",
+        "M'yen",
+        "Ro",
+        "Tsua'm",
+        "Ukos"
     ]
 }

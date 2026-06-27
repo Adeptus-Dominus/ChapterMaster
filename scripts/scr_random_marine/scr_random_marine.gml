@@ -1,4 +1,4 @@
-/// @param {Id.Instance} role
+/// @param {Array<String>} role
 /// @param {Real} exp_req
 /// @param {Struct} search_params a struct giving extra search information
 function scr_random_marine(role, exp_req, search_params = {}) {

@@ -100,7 +100,7 @@ unit_manage_constants = {};
 unit_manage_constants.current_data = "";
 management_buttons = false;
 
-diplo_buttons = {};
+diplo_buttons = undefined;
 diplomacy_pathway = "";
 option_selections = [];
 ready = false;
@@ -1011,13 +1011,6 @@ known[eFACTION.PLAYER] = 999;
 known[eFACTION.IMPERIUM] = 1;
 known[eFACTION.MECHANICUS] = 1;
 
-// UI testing
-// known[eFACTION.INQUISITION]=1;known[eFACTION.ECCLESIARCHY]=1;known[eFACTION.ELDAR]=1;known[eFACTION.ORK]=1;known[eFACTION.TAU]=1;known[eFACTION.TYRANIDS]=1;known[eFACTION.CHAOS]=1;
-
-// eldar mission testing
-// known[eFACTION.ELDAR]=2;
-// disposition[4]=90;
-// disposition[3]=60;
 // ** Sets diplomacy annoyed status **
 annoyed = array_create(14, 0);
 // ** Sets diplomacy ignore status **
@@ -1155,6 +1148,9 @@ serialize = function() {
         forge_queue: specialist_point_handler.forge_queue,
         chapter_master_data: chapter_master,
         event,
+        last_ship,
+        diplo_buttons,
+        selection_data
     };
     var excluded_from_save = [
         "temp",
