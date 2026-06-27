@@ -762,7 +762,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             undefined, // no range filter
                             false, // not master crafted
                             undefined, // no required tags
-                            ["vehicle"], // exclude vehicle gear
+                            ["vehicle", "no_equip"], // exclude vehicle gear + unequippable items
                             _with_none_if_not_skip,
                             true // with_any
                         );
