@@ -289,7 +289,7 @@ jobs:
           username: "GitHub Releases"
           content: |
             <@&1318332223232938014>
-            -# :warning: These builds are auto-generated. They may be **heavily unstable**, in which case try using an older build (20 exist at the same time). :warning:          embed-title: "[${{ needs.prepare_release.outputs.release_name }}](${{ steps.create_release.outputs.html_url }})"
+            -# :warning: These builds are auto-generated. They may be **heavily unstable**, in which case try using an older build (20 exist at the same time). :warning:
           embed-title: "[${{ needs.prepare_release.outputs.release_name }}](${{ steps.create_release.outputs.html_url }})"
           embed-description: |
             ${{ steps.build_changelog.outputs.changelog }}
