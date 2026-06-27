@@ -16,7 +16,6 @@
             "Twin Linked Bolters"
         ],
         "value": 35,
-        "tags": ["movement"],
         "requires_to_forge": ["combi_1"]
     },
     "Conversion Beamer Pack": {
@@ -29,6 +28,9 @@
         "renegade_buy": false,
         "second_profiles": [
             "Conversion Beam Projector"
+        ],
+        "tags": [
+            "terminator"
         ],
         "value": 180
     },
@@ -77,8 +79,7 @@
         ],
         "tags": [
             "power_only",
-            "jump",
-            "movement"
+            "jump"
         ],
         "value": 20
     },
@@ -96,8 +97,7 @@
         "tags": [
             "power_only",
             "jump",
-            "ancient",
-            "movement"
+            "ancient"
         ]
     },
     "Servo-arm": {
@@ -117,6 +117,9 @@
         "specials": {
             "combi_tool": 1
         },
+        "tags": [
+            "terminator"
+        ],
         "value": 30
     },
     "Servo-harness": {
@@ -139,6 +142,9 @@
         "specials": {
             "combi_tool": 2
         },
+        "tags": [
+            "terminator"
+        ],
         "value": 150
     }
 }

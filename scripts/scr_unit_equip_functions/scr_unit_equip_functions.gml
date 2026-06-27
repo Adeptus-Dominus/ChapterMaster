@@ -112,10 +112,7 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
     var new_arm_data = get_armour_data();
     if (is_struct(new_arm_data)) {
         if (new_arm_data.has_tag("terminator")) {
-            var _cur_mobility_data = gear_weapon_data("mobility", mobility_item());
-            if (is_struct(_cur_mobility_data) && _cur_mobility_data.has_tag("movement")) {
-                update_mobility_item("");
-            }
+            update_mobility_item("");
         }
 
         if (new_arm_data.has_tag("dreadnought")) {
@@ -370,7 +367,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 
         var _armour_data = get_armour_data();
         if (is_struct(_armour_data)) {
-            if (_armour_data.has_tag("terminator") && _mobility_data.has_tag("movement")) {
+            if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator") && !_mobility_data.has_tag("terminator_only")) {
                 LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - can't use with terminator armour! (Current: {armour()})");
                 return false;
             } else if (!_armour_data.has_tag("terminator") && _mobility_data.has_tag("terminator_only")) {
@@ -380,6 +377,15 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 
             if (_mobility_data.has_tag("power_only") && !_armour_data.has_tag("power_armour")) {
                 LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires power armour! (Current: {armour()})");
+                return false;
+            }
+        } else {
+            if (new_mobility_item == "Jump Pack") {
+                LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires armour!");
+                return false;
+            }
+            if (_mobility_data.has_tag("terminator") || _mobility_data.has_tag("terminator_only")) {
+                LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires terminator armour!");
                 return false;
             }
         }
