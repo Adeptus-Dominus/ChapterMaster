@@ -380,10 +380,6 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
                 return false;
             }
         } else {
-            if (new_mobility_item == "Jump Pack") {
-                LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires armour!");
-                return false;
-            }
             if (_mobility_data.has_tag("terminator") || _mobility_data.has_tag("terminator_only")) {
                 LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires terminator armour!");
                 return false;
