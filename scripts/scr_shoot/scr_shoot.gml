@@ -1,5 +1,6 @@
+/// @self Id.Instance.obj_enunit|Id.Instance.obj_pnunit
 /// @param {Real} weapon_index_position Weapon number
-/// @param {Id.Instance} target_object Target object
+/// @param {Id.Instance.obj_enunit|Id.Instance.obj_pnunit} target_object Target object
 /// @param {Real} target_type Target dudes
 /// @param {String} damage_data "att" or "arp" or "highest"
 /// @param {String} melee_or_ranged melee or ranged

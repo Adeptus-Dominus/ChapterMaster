@@ -1,5 +1,5 @@
-/// @param {Id.Instance} fleet
-/// @param {Id.Instance} combat
+/// @param {Id.Instance.obj_p_fleet} fleet
+/// @param {Id.Instance.obj_fleet} combat
 function add_fleet_ships_to_combat(fleet, combat) {
     var capital_count = array_length(fleet.capital);
     var _ship_id;
@@ -52,7 +52,7 @@ function add_fleet_ships_to_combat(fleet, combat) {
     }
 }
 
-/// @param {Id.Instance} combat
+/// @param {Id.Instance.obj_fleet} combat
 function sort_ships_into_columns(combat) {
     var col = 5;
     with (combat) {
@@ -346,7 +346,7 @@ function setup_player_combat_ship() {
     var i = 0, unit, b = 0;
 
     for (var co = 0; co <= obj_ini.companies; co++) {
-        for (i = 0; i < array_length(obj_ini.name[co]) - 1; i++) {
+        for (i = 0; i < array_length(obj_ini.name[co]); i++) {
             if (obj_ini.name[co][i] == "") {
                 continue;
             }

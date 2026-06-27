@@ -60,7 +60,7 @@ try {
                 var chaos_meeting = fetch_unit([0, master_index]).planet_location;
 
                 for (var co = 0; co <= 10; co++) {
-                    for (var i = 0; i < array_length(obj_ini.TTRPG[co]) - 1; i++) {
+                    for (var i = 0; i < array_length(obj_ini.TTRPG[co]); i++) {
                         var good = 0;
                         _unit = fetch_unit([co, i]);
                         if (_unit.role() == "" || _unit.location_string != name) {

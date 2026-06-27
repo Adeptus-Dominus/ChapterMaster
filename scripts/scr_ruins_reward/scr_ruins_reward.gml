@@ -35,7 +35,7 @@ function LootPool(_data) constructor {
 }
 
 /// @desc Processes rewards for exploring ancient ruins.
-/// @param {Id.Instance} _star_system The star system object.
+/// @param {Id.Instance.obj_star} _star_system The star system object.
 /// @param {Real} _pid_idx Planet index within the system.
 /// @param {Struct.NewPlanetFeature} _ruins The ruins feature struct.
 function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
@@ -47,7 +47,7 @@ function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
 
     /// @desc Internal logic for handling Gear distribution via JSON data.
     /// @param {Real} _race The ID of the ruins race.
-    /// @param {Id.Instance} _popup The popup instance to populate.
+    /// @param {Id.Instance.obj_popup} _popup The popup instance to populate.
     static _process_gear_reward = function(_race, _popup) {
         static _loot_registry = undefined;
 
@@ -104,9 +104,9 @@ function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
     };
 
     /// @desc Internal logic for handling Artifact retrieval.
-    /// @param {Id.Instance} _star
+    /// @param {Id.Instance.obj_star} _star
     /// @param {String} _pidx
-    /// @param {Id.Instance} _popup
+    /// @param {Id.Instance.obj_popup} _popup
     static _process_artifact_reward = function(_star, _pidx, _popup) {
         var _chosen_ship = -1;
         var _fleet = scr_orbiting_player_fleet(_star);
@@ -220,7 +220,7 @@ function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
     _ruins.ruins_explored();
 }
 
-/// @param {Id.Instance} _popup The popup instance to populate.
+/// @param {Id.Instance.obj_popup} _popup The popup instance to populate.
 function ancient_gene_lab_ruins_loot(_popup) {
     _popup.image = "geneseed_lab";
     _popup.title = "Ancient Ruins: Gene-seed";
@@ -268,10 +268,10 @@ function ancient_gene_lab_ruins_loot(_popup) {
     };
 }
 
-/// @param {Id.Instance} _star
+/// @param {Id.Instance.obj_star} _star
 /// @param {Real} _planet
 /// @param {Struct} _ruins
-/// @param {Id.Instance} _popup
+/// @param {Id.Instance.obj_popup} _popup
 function ancient_fortress_ruins_loot(_star, _planet, _ruins, _popup) {
     _popup.image = "ruins_fort";
     _popup.title = "Ancient Ruins: Fortress";

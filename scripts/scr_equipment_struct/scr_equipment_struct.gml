@@ -71,11 +71,6 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
         }
     }
 
-    static has_tag = function(tag) {
-        return array_contains(tags, tag);
-    };
-
-
     // Placeholder maintenance values;
     if (maintenance == 0) {
         var _maintenance_names = struct_get_names(global.tag_maintenance_values);
@@ -319,6 +314,10 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
             }
         }
         return item_desc_tooltip;
+    };
+
+    static has_tag = function(tag) {
+        return array_contains(tags, tag);
     };
 
     static special_value = function(special) {

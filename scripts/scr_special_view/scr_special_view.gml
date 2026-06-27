@@ -74,7 +74,7 @@ function scr_special_view(command_group) {
 
     if ((command_group == 11) || (command_group == 0)) {
         //HQ units
-        for (var v = 0; v < array_length(obj_ini.TTRPG[0]) - 1; v++) {
+        for (var v = 0; v < array_length(obj_ini.TTRPG[0]); v++) {
             bad = 0;
             if (obj_ini.name[0][v] == "") {
                 continue;

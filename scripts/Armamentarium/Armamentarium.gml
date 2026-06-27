@@ -161,11 +161,10 @@ function ShopItem(_name) constructor {
 }
 
 /// @desc Handles the display and interaction for STC fragment research and bonuses.
-/// @param {Id.Instance} _controller_ref Reference to the object holding STC data (usually obj_controller).
+/// @param {Id.Instance.obj_controller} _controller_ref Reference to the object holding STC data (usually obj_controller).
 /// @param {Function} _on_change_callback Callback after identification.
 /// @return {Struct.STCResearchPanel}
 function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
-    /// @type {Asset.GMObject.obj_controller}
     controller = _controller_ref;
     on_change = _on_change_callback;
 
@@ -416,7 +415,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
 }
 
 /// @desc Primary controller for the Chapter's armory and technologies.
-/// @param {Id.Instance} _controller
+/// @param {Id.Instance.obj_controller} _controller
 /// @returns {Struct.Armamentarium}
 function Armamentarium(_controller) constructor {
     controller = _controller;

@@ -17,7 +17,7 @@
 
 /// @param {Enum.eEVENT} event
 /// @param {Enum.eINQUISITION_MISSION} forced_mission optional
-function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.NOTFOUND) {
+function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.RANDOM) {
     LOGGER.info($"RE: Inquisition Mission, event {event}, forced_mission {forced_mission}");
     if ((obj_controller.known[eFACTION.INQUISITION] == 0 || obj_controller.faction_status[eFACTION.INQUISITION] == "War") && !global.cheat_debug) {
         LOGGER.info("Player is either hasn't met or is at war with Inquisition, not proceeding with inquisition mission");
@@ -81,9 +81,9 @@ function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.NO
             LOGGER.info($"Couldn't find any planets with demons for inquisition mission");
         }
 
-        var chosen_mission = choose_array(inquisition_missions);
-        if (forced_mission != eINQUISITION_MISSION.NOTFOUND) {
-            chosen_mission = forced_mission;
+        var chosen_mission = forced_mission;
+        if (chosen_mission == eINQUISITION_MISSION.RANDOM) {
+            chosen_mission = choose_array(inquisition_missions);
         }
         switch (chosen_mission) {
             case eINQUISITION_MISSION.PURGE:
@@ -264,7 +264,7 @@ function mission_inquistion_hunt_inquisitor(star_id = noone) {
     var stars = scr_get_stars();
     var _star = noone;
 
-    if (star_id == -1) {
+    if (star_id == noone) {
         var _valid_stars = stars;
 
         if (array_length(_valid_stars) == 0) {

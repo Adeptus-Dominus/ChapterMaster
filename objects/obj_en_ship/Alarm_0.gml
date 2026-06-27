@@ -1246,6 +1246,6 @@ if ((owner != eFACTION.ELDAR) && (owner != eFACTION.NECRONS)) {
 
 bridge = maxhp;
 
-shields = 1;
+// shields = 1;
 
 name = "sdagdsagdasg";

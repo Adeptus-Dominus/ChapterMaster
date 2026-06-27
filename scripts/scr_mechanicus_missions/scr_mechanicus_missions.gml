@@ -378,7 +378,7 @@ function mechanicus_mars_mission_target_time_elapsed(planet) {
     ide = 0;
     ship_planet = "";
     for (com = 0; com <= 10; com++) {
-        for (ide = 0; ide < array_length(obj_ini.TTRPG[com]) - 1; ide++) {
+        for (ide = 0; ide < array_length(obj_ini.TTRPG[com]); ide++) {
             _unit = fetch_unit([com, ide]);
             if (_unit.name() == "") {
                 continue;

@@ -3,7 +3,7 @@ ship_id = 0;
 
 action = "";
 direction = 0;
-/// @type {Id.Instance}
+/// @type {Id.Instance.obj_en_ship}
 target = noone;
 if (instance_exists(obj_en_ship)) {
     target = instance_nearest(x, y, obj_en_ship);

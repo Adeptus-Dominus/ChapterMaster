@@ -220,17 +220,17 @@ function scr_random_event(execute_now) {
         var own = choose(1, 1, 2);
 
         var star_id = scr_random_find(own, true, "", "");
-        if (star_id == undefined && own == 1) {
+        if (star_id == noone && own == 1) {
             // find the nearest star to a player fleet and user that one, dukecode did that
             // we could also try to find to find another star but this one is owned by the imperium and not the player, this code is doing that
             own = 2;
             star_id = scr_random_find(own, true, "", "");
         }
-        if (star_id == undefined && own == 2) {
+        if (star_id == noone && own == 2) {
             star_id = scr_random_find(0, true, "", ""); // try for litteraly any star
         }
 
-        if (star_id == undefined) {
+        if (star_id == noone) {
             LOGGER.error("RE: Space Hulk, couldn't find a star for the spacehulk");
             exit;
         } else {
@@ -300,12 +300,12 @@ function scr_random_event(execute_now) {
         own = choose(1, 2);
         var star_id = scr_random_find(own, true, "", "");
 
-        if (star_id == undefined && own == 1) {
+        if (star_id == noone && own == 1) {
             own = 2;
             star_id = scr_random_find(own, true, "", "");
         }
 
-        if (star_id == undefined) {
+        if (star_id == noone) {
             LOGGER.error("RE: Sororitas Company, couldn't find a star for the company");
             exit;
         } else {
@@ -555,16 +555,16 @@ function scr_random_event(execute_now) {
         }
 
         var star_id = scr_random_find(own, true, "", "");
-        if (star_id == undefined && own == 1) {
+        if (star_id == noone && own == 1) {
             own = 2;
             star_id = scr_random_find(own, true, "", "");
         }
-        if (star_id == undefined && own == 2) {
+        if (star_id == noone && own == 2) {
             own = 0;
             star_id = scr_random_find(own, true, "", "");
         }
 
-        if (star_id == undefined) {
+        if (star_id == noone) {
             LOGGER.error("RE: Warp Storm, couldn't pick a star for the warp storm");
             exit;
         } else {
@@ -586,16 +586,16 @@ function scr_random_event(execute_now) {
         }
 
         var star_id = scr_random_find(own, true, "", "");
-        if (star_id == undefined && own == 1) {
+        if (star_id == noone && own == 1) {
             own = 2;
             star_id = scr_random_find(own, true, "", "");
         }
-        if (star_id == undefined && own == 2) {
+        if (star_id == noone && own == 2) {
             own = 3;
             star_id = scr_random_find(own, true, "", "");
         }
 
-        if (star_id == undefined) {
+        if (star_id == noone) {
             LOGGER.error("RE: Enemy Forces, couldn't find a star for the enemy");
             exit;
         } else {

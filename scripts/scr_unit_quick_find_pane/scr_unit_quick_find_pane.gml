@@ -128,7 +128,7 @@ function UnitQuickFindPanel() constructor {
             obj_controller.specialist_point_handler.calculate_research_points(false);
             ship_count = array_length(obj_ini.ship_carrying);
             for (var co = 0; co <= obj_ini.companies; co++) {
-                for (var u = 0; u < array_length(obj_ini.TTRPG[co]) - 1; u++) {
+                for (var u = 0; u < array_length(obj_ini.TTRPG[co]); u++) {
                     /// @type {Struct.TTRPG_stats}
                     _unit = fetch_unit([co, u]);
                     evaluate_unit_for_garrison_log(_unit);

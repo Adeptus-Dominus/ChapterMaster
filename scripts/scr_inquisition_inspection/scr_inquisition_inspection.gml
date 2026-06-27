@@ -26,7 +26,7 @@ function check_for_next_inquisitor_inspection() {
         if (_player_fleets == 1) {
             //can't inspect if fleet not in room
             //can't innspect if on other non negotiable action e.g crusading
-            _inspec = in_room(_player_fleet) && !fleet_engaged(obj_p_fleet);
+            _inspec = in_room(_player_fleet) && !fleet_engaged(_player_fleet);
         } else if (_player_fleets == 0) {
             _inspec = false;
         }

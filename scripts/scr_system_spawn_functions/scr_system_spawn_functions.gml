@@ -65,6 +65,7 @@ function find_player_spawn_star() {
     return _chosen_star.id;
 }
 
+/// @self Id.Instance.obj_star
 function player_home_star(home_planet) {
     var _star_names = global.name_generator.name_sets.star;
     p_type[home_planet] = obj_ini.home_type;
@@ -114,7 +115,7 @@ function player_home_star(home_planet) {
     p_player[home_planet] = obj_ini.man_size;
 
     for (var co = 0; co <= obj_ini.companies; co++) {
-        for (var i = 0; i < array_length(obj_ini.name[co]) - 1; i++) {
+        for (var i = 0; i < array_length(obj_ini.name[co]); i++) {
             var unit = fetch_unit([co, i]);
             if (unit.location_string == name) {
                 unit.planet_location = home_planet;
