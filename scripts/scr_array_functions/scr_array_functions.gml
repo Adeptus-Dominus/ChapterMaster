@@ -105,8 +105,7 @@ function array_delete_values(choice_array, values) {
 }
 
 function array_random_element(choice_array) {
-    var _elem = (array_length(choice_array) >= 1) ? choice_array[irandom(array_length(choice_array) - 1)] : undefined;
-    return _elem;
+    return choice_array[irandom(array_length(choice_array) - 1)];
 }
 
 function array_random_index(choice_array) {
