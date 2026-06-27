@@ -290,8 +290,8 @@ jobs:
           content: |
             <@&1318332223232938014>
             ${{ needs.build_needed.outputs.release_type == 'Stable' && '-# :white_check_mark: New Stable Release Production Build :white_check_mark:' || '-# :warning: These builds are auto-generated. They may be **heavily unstable**, in which case try using an older build (20 exist at the same time). :warning:' }}
-          embed-title: "${{ needs.prepare_release.outputs.release_name }}"
-          embed-url: ${{ steps.create_release.outputs.html_url }}
+          embed-title: "[${{ needs.prepare_release.outputs.release_name }}](${{ steps.create_release.outputs.html_url }})"
           embed-description: |
             **Changelog:**
             ${{ steps.build_changelog.outputs.changelog }}
+          embed-footer-text: "Download: ${{ steps.create_release.outputs.html_url }}" 
