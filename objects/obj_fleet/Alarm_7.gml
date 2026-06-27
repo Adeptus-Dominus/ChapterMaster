@@ -97,6 +97,7 @@ try {
                             if (ofleet.capital_number + ofleet.frigate_number + ofleet.escort_number <= 0) {
                                 with (ofleet) {
                                     instance_destroy();
+                                    break;
                                 }
                             }
                         }
@@ -126,6 +127,7 @@ try {
             killer_tg = ofleet.inquisitor;
             with (ofleet) {
                 instance_destroy();
+                break;
             }
             with (obj_en_fleet) {
                 x += 10000;

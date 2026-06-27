@@ -1,15 +1,13 @@
 function draw_character_diplomacy_base_page() {
     obj_controller.menu_lock = true;
     if (!audience && !valid_diplomacy_options()) {
-        with (diplo_buttons) {
-            trade.draw();
-            demand.draw();
-            discuss.draw();
-            alliance.draw();
-            denounce.draw();
-            praise.draw();
-            declare_war.draw_shutter(praise.x1, alliance.y2, "WAR", 0.4);
-        }
+        diplo_buttons.trade.draw();
+        diplo_buttons.demand.draw();
+        diplo_buttons.discuss.draw();
+        diplo_buttons.alliance.draw();
+        diplo_buttons.denounce.draw();
+        diplo_buttons.praise.draw();
+        diplo_buttons.declare_war.draw_shutter(praise.x1, alliance.y2, "WAR", 0.4);
     } else {
         if (!valid_diplomacy_options()) {
             diplo_buttons.denounce.draw();
@@ -497,11 +495,6 @@ function scr_ui_diplomacy() {
             draw_rectangle(xx + 688, yy + 240, xx + 1028, yy + 281, 0);
             draw_set_alpha(1);
         }
-        var x6, y6, x7, y7;
-        x6 = 0;
-        y6 = 0;
-        x7 = 0;
-        y7 = 0;
         xx -= 55;
         yy += 20;
 

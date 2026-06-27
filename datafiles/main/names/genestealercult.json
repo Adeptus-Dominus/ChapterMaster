@@ -1,28 +1,44 @@
 {
-    "main": [
-        [
-            "The Ravening" ,
-               "The blessed",
-             "The many limbed",
-             "The devoted mouths",
-              "The sacred claws" ,
-               "The waiting feast" ,
-              "The pure genes" ,
-             "The bladed",
-              "The Innerwyrm" ,
-              "The Pauper" ,
-             "The Twisted",
-             "The bringers"
-        ]
+    "special": [
+        "The Ravening" ,
+        "The Blessed",
+        "The Many Limbed",
+        "The Devoted Mouths",
+        "The Sacred Claws" ,
+        "The Waiting Feast" ,
+        "The Pure Genes" ,
+        "The Bladed",
+        "The Innerwyrm" ,
+        "The Pauper" ,
+        "The Twisted",
+        "The Bringers"
     ],
-    "embelishment": [
-        [
-            "Maw","devouror","eternal","waiting","suffering","Silent","feasting","arms","hunger","flesh","cog","cult","Princes","Helix","Chittering"
-        ]
+    "prefixes": [
+        "Maw",
+        "Devouror",
+        "Eternal",
+        "Waiting",
+        "Suffering",
+        "Silent",
+        "Feasting",
+        "Arms",
+        "Hunger",
+        "Flesh",
+        "Cog",
+        "Cult",
+        "Princes",
+        "Helix",
+        "Chittering"
     ],
-    "title": [
-        [
-            "of Many","of the great","of the voyaging","of Pure" ,"of greedy gnawing","of penitent","of enraptured joy","of Brotherhood","of the All Seeing" 
-        ]
-    ],
+    "suffixes": [
+        "of Many",
+        "of The Great",
+        "of The Voyaging",
+        "of Pure",
+        "of Greedy Gnawing",
+        "of Penitent",
+        "of Enraptured Joy",
+        "of Brotherhood",
+        "of The All Seeing"
+    ]
 }

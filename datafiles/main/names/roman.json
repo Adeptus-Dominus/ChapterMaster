@@ -1,5 +1,5 @@
 {
-  "praenomen": [
+  "special": [
     "Gaius",
     "Marcus",
     "Lucius",
@@ -267,7 +267,7 @@
     "Constantianus",
     "Traianus"
   ],
-  "nomen": [
+  "prefixes": [
     "Julius",
     "Claudius",
     "Cornelius",
@@ -387,7 +387,7 @@
     "Claudianus",
     "Domitianus"
   ],
-  "cognomen": [
+  "suffixes": [
     "Cicero",
     "Scaevola",
     "Brutus",

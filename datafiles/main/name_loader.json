@@ -1,26 +1,25 @@
 [
     "sector",
     "star",
+    "imperial_male",
+    "imperial_female",
     {
-        "load_as": "imperial_male",
-        "load_set": "space_marine"
+        "load_as": "space_marine",
+        "load_set": "imperial_male",
+        "preffered_method" : "simple"
     },
-    {
-        "load_as": "imperial_female",
-        "load_set": "imperial"
-    },
-        "space_marine",
-        "chaos",
-        "imperial_ship",
-        "ork_ship",
+    "chaos",
+    "imperial_ship",
+    "ork_ship",
     {
         "load_as" : "eldar",
         "load_set": "eldar",
-        "composites" : [
+        "syllables" : [
             "first_syllables", 
             "second_syllables", 
             "third_syllables"
-        ]
+        ],
+        "preffered_method" : "syllables"
     },
     {
         "load_as" : "ork",
@@ -29,23 +28,26 @@
             "prefixes", 
             "suffixes", 
             "special"
-        ]
+        ],
+        "preffered_method" : "complex"
     },
     {
         "load_as" : "hulk",
         "load_set": "hulk",
         "composites" : [
             "prefixes", 
-            "suffixes", 
-        ]
+            "suffixes"
+        ],
+        "preffered_method" : "complex"
     },
     {
         "load_as" : "tau",
         "load_set": "tau",
         "composites" : [
             "prefixes", 
-            "suffixes", 
-        ]
+            "suffixes"
+        ],
+        "preffered_method" : "complex"
     },
     {
         "load_as" : "genestealercult",
@@ -54,14 +56,15 @@
             "main", 
             "embelishment", 
             "title"
-        ]
+        ],
+        "preffered_method" : "complex"
     },
     {
         "load_as" : "Knightly",
         "load_set": "knightly",
         "composites" : [
             "names", 
-            "surnames", 
+            "surnames"
         ],
         "preffered_method" : "complex"
     },
@@ -80,7 +83,7 @@
         "load_set": "mongol",
         "composites" : [
             "given_name", 
-            "tribal_or_house", 
+            "tribal_or_house"
         ],
         "preffered_method" : "complex"
     }

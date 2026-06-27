@@ -1,8 +1,7 @@
-function scr_random_marine(role, exp_req, search_params = "none") {
-    // role : role
-    // exp_req: exp
-    //search params : a struct giving extra search information defaults to "none"
-
+/// @param {Array<String>} role
+/// @param {Real} exp_req
+/// @param {Struct} search_params a struct giving extra search information
+function scr_random_marine(role, exp_req, search_params = {}) {
     var company_list = [
         0,
         1,
