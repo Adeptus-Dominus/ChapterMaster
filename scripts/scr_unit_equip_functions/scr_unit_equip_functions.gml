@@ -108,11 +108,13 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
     } else {
         armour_quality = quality;
     }
-
+    #region FIX HERE
     var new_arm_data = get_armour_data();
     if (is_struct(new_arm_data)) {
         if (new_arm_data.has_tag("terminator")) {
-            update_mobility_item("");
+            var _cur_mobility_data = gear_weapon_data("mobility", mobility_item());
+            if (is_struct(_cur_mobility_data) && !_cur_mobility_data.has_tag("terminator") && !_cur_mobility_data.has_tag("terminator_only"))
+                update_mobility_item("");
         }
 
         if (new_arm_data.has_tag("dreadnought")) {
