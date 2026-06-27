@@ -89,7 +89,7 @@ function event_end_turn_action() {
             if (_event.e_id == "chaos_invasion") {
                 var xx = 0, yy = 0, flee = 0, dirr = 0;
                 var star_id = scr_random_find(1, true, "", "");
-                if (star_id != undefined) {
+                if (star_id != noone) {
                     scr_event_log("purple", $"Chaos Fleets exit the warp near the {star_id.name} system.", star_id.name);
                     for (var j = 0; j < 4; j++) {
                         dirr += irandom_range(50, 100);

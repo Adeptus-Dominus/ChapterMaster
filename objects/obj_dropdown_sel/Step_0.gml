@@ -143,7 +143,7 @@ if ((target == "event_loc") && (determined_planets == 0)) {
                 if (stahp == 0) {
                     star[first_open] = _unit.location_string;
                     star_planet[first_open] = _unit.planet_location;
-                    star_marheens[first_open] = 1;
+                    star_mahreens[first_open] = 1;
                 }
             }
         }
@@ -252,7 +252,6 @@ if (option[1] == "") {
         option_selected = 1;
 
         for (var i = 1; i <= obj_controller.artifacts; i++) {
-            i += 1;
             thatone = false;
 
             if (obj_ini.artifact[i] == "Casket") {

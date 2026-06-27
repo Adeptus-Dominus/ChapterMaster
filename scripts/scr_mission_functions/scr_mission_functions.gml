@@ -234,7 +234,7 @@ function problem_end_turn_checks(){
                 var me = 0;
                 for (var co = 0; co <= obj_ini.companies; co++) {
                     me = 0;
-                    for (me = 0; me < array_length(obj_ini.role[co]) - 1; me++) {
+                    for (me = 0; me < array_length(obj_ini.role[co]); me++) {
                         if ((obj_ini.race[co][me] == 1) && (obj_ini.role[co][me] != "")) {
                             _unit = fetch_unit([co, me]);
                             _unit.edit_corruption(irandom_range(3, 6));

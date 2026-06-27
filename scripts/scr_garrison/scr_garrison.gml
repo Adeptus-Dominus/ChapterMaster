@@ -36,6 +36,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     members = [];
     time_on_planet = 0;
     viable_garrison = 0;
+    dispo_change = 0;
     self.type = type;
     self.system = system;
     self.planet = planet;
@@ -211,10 +212,10 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     };
 
     static garrison_disposition_change = function(up_or_down = false) {
-        var _dispo_change = 0;
+        dispo_change = 0;
         var _pdata = system.get_planet_data(planet);
         if (!array_contains(obj_controller.imperial_factions, _pdata.current_owner)) {
-            return _dispo_change;
+            return dispo_change;
         }
         
         var _planet_disposition = _pdata.player_disposition;
@@ -244,9 +245,9 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
         var final_modifier = 5 + _garrison_size_mod - _disposition_modifier + _time_modifier;
 
         if (up_or_down) {
-            _dispo_change = garrison_leader.charisma + final_modifier;
-            if (_dispo_change < 50 && ((_planet_disposition < _main_faction_disp) || _diplomatic_leader)) {
-                _dispo_change = 50;
+            dispo_change = garrison_leader.charisma + final_modifier;
+            if (dispo_change < 50 && ((_planet_disposition < _main_faction_disp) || _diplomatic_leader)) {
+                dispo_change = 50;
             }
         } else {
             var _charisma_test;
@@ -258,20 +259,20 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
             dispo_change = _charisma_test[1] / 10;
             if (!_charisma_test[0]) {
                 if (_diplomatic_leader) {
-                    _dispo_change = 0;
+                    dispo_change = 0;
                 } else {
                     if (_planet_disposition > _main_faction_disp) {
-                        _pdata.add_disposition(_dispo_change);
+                        _pdata.add_disposition(dispo_change);
                     } else {
-                        _dispo_change = 0;
+                        dispo_change = 0;
                     }
                 }
             } else {
-                _pdata.add_disposition(_dispo_change);
+                _pdata.add_disposition(dispo_change);
             }
         }
 
-        return _dispo_change;
+        return dispo_change;
     };
 
     /* this is probably going to become infinatly complex with many different functions and far more complex inputs

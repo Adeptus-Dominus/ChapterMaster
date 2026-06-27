@@ -151,7 +151,7 @@ function scr_company_view(company) {
     sel_uni[1] = "Command";
 
     // Processing marines
-    var company_length = array_length(obj_ini.TTRPG[company]) - 1;
+    var company_length = array_length(obj_ini.TTRPG[company]);
 
     for (var v = 0; v < company_length; v++) {
         unit = fetch_unit([company, v]);

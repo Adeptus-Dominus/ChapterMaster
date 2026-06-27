@@ -1,5 +1,5 @@
 /// @param {Real} strength
-/// @param {Id.Instance} fleet
+/// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} fleet
 function distribute_strength_to_fleet(strength, fleet) {
     while (strength > 0) {
         var ship_type = choose(1, 1, 1, 1, 2, 2, 3);
@@ -14,7 +14,8 @@ function distribute_strength_to_fleet(strength, fleet) {
     }
 }
 
-/// @param {Id.Instance} fleet
+/// @self Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet
+/// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} fleet
 function standard_fleet_strength_calc(fleet = noone){
     if (fleet == noone) {
         fleet = self;
@@ -27,7 +28,8 @@ function random_sector_exit_point() {
     action_y = choose(room_height * -1, room_height * 2);
 }
 
-/// @param {Id.Instance} object
+/// @self Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet
+/// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} object
 /// @return {Bool}
 function in_room(object = noone) {
 	if (object == noone) {
@@ -36,9 +38,10 @@ function in_room(object = noone) {
     return !(object.x < 0 || object.x > room_width || object.y < 0 || object.y > room_height);
 }
 
+/// @self Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet
 /// @param {Real} targ_x
 /// @param {Real} targ_y
-/// @param {Id.Instance} final_target
+/// @param {Id.Instance.obj_fleet} final_target
 function set_fleet_target(targ_x, targ_y, final_target) {
     action_x = targ_x;
     action_y = targ_y;
@@ -72,8 +75,8 @@ function get_fleet_uid(search_uid) {
     }
     return _fleet;
 }
-
-/// @param {Id.Instance} fleet
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
+/// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} fleet
 /// @param {Array<Id.Instance>} visited
 function fleets_next_location(fleet = noone, visited = []) {
     var targ_location = noone;
@@ -112,7 +115,8 @@ function fleets_next_location(fleet = noone, visited = []) {
     return targ_location;
 }
 
-/// @param {Id.Instance} target
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
+/// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} target
 function chase_fleet_target_set(target) {
     var targ_location = fleets_next_location(target);
     if (targ_location != noone) {
@@ -173,7 +177,7 @@ function is_orbiting(fleet = noone) {
                 orbiting = nearest.id;
                 return true;
             }
-            orbiting = false;
+            orbiting = noone;
         } catch (_exception) {
             return false;
         }
@@ -234,14 +238,14 @@ function set_fleet_movement(fastest_route = true, new_action = "move", minimum_e
                 }
             }
 
-            orbiting = false;
+            orbiting = noone;
             action = new_action;
             action_eta = clamp(action_eta, minimum_eta, maximum_eta);
         }
     }
 }
 
-/// @param {Id.Instance} fleet
+/// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} fleet
 /// @param {Struct} unit
 function load_unit_to_fleet(fleet, unit) {
     var loaded = false;
@@ -266,8 +270,8 @@ function load_unit_to_fleet(fleet, unit) {
 /// @param {Real} xxx
 /// @param {Real} yyy
 /// @param {Real} fleet_speed
-/// @param {Id.Instance} star1
-/// @param {Id.Instance} star2
+/// @param {Id.Instance.obj_star} star1
+/// @param {Id.Instance.obj_star} star2
 /// @param {Bool} warp_able
 function calculate_fleet_eta(xx, yy, xxx, yyy, fleet_speed, star1 = noone, star2 = noone, warp_able = false) {
     var warp_lane = 0;
@@ -300,7 +304,8 @@ function calculate_fleet_eta(xx, yy, xxx, yyy, fleet_speed, star1 = noone, star2
     return eta;
 }
 
-/// @param {Id.Instance} fleet
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
+/// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} fleet
 /// @param {Bool} selected
 function calculate_action_speed(fleet = noone, selected = false) {
     try {
@@ -346,6 +351,7 @@ function calculate_action_speed(fleet = noone, selected = false) {
     }
 }
 
+/// @self Asset.GMObject.obj_en_fleet
 function scr_efleet_arrive_at_trade_loc() {
     //if player fleet at star or player forces trade
     var chase_fleet = false;
@@ -474,9 +480,9 @@ function scr_efleet_arrive_at_trade_loc() {
 /// @description Returns the ID of a fleet orbiting the given system/star that matches the specified faction.
 /// @param {Real|Array<Real>} faction
 /// The faction identifier to check against. Can be a single faction ID or an array of multiple factions.
-/// @param {Id.Instance} system
+/// @param {Id.Instance.obj_star} system
 /// The system instance or star to check. If `noone`, the function uses the calling instance's position.
-/// @returns {Id.Instance} The ID of the matching fleet instance, or `noone` if no valid fleet is found.
+/// @returns {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} The ID of the matching fleet instance, or `noone` if no valid fleet is found.
 ///
 /// @example
 /// ```gml
@@ -533,9 +539,9 @@ function object_distance(obj_1, obj_2) {
 
 /// @function scr_orbiting_player_fleet(system)
 /// @description Returns the ID of the nearest player fleet orbiting the given system or star.
-/// @param {Id.Instance} system
+/// @param {Id.Instance.obj_star} system
 /// The system instance or identifier to check. If `noone`, the function checks the calling star instance.
-/// @returns {Id.Instance} The instance ID of the orbiting player fleet, or -1 if none is found.
+/// @returns {Id.Instance.obj_p_fleet} The instance ID of the orbiting player fleet, or -1 if none is found.
 ///
 /// @example
 /// ```gml
@@ -1131,6 +1137,7 @@ function fleet_arrival_logic() {
     exit;
 }
 
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function choose_fleet_sprite_image() {
     if (owner == eFACTION.IMPERIUM && !fleet_has_cargo("colonize")) {
         sprite_index = spr_fleet_imperial;
@@ -1156,8 +1163,8 @@ function choose_fleet_sprite_image() {
     image_speed = 0;
 }
 
-/// @param {Id.Instance} main_fleet
-/// @param {Id.Instance} merge_fleet
+/// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} main_fleet
+/// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} merge_fleet
 function merge_fleets(main_fleet, merge_fleet) {
     main_fleet.capital_number += merge_fleet.capital_number;
     main_fleet.frigate_number += merge_fleet.frigate_number;
@@ -1172,6 +1179,7 @@ function merge_fleets(main_fleet, merge_fleet) {
     instance_destroy(merge_fleet.id);
 }
 
+/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function fleet_respond_crusade() {
     if (owner != eFACTION.IMPERIUM) {
         exit;

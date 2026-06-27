@@ -12,7 +12,7 @@ try {
                 for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
                     if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
                         var _unit = fetch_unit([co, i]);
-                        if (_unit.squad != {}) {
+                        if (_unit.squad != "none") {
                             var _squad = fetch_squad(_unit.squad);
                             if (!_squad.allow_bulk_swap) {
                                 continue;

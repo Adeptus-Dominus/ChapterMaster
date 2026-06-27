@@ -1,5 +1,6 @@
+/// @self Id.Instance.obj_en_fleet
 function scr_trade_dep() {
-    var _goods = obj_en_fleet.cargo_data.player_goods;
+    var _goods = cargo_data.player_goods;
 
     //LOGGER.debug($"trade goods : {_goods}");
     if (struct_exists(_goods, "mercenaries")) {
@@ -40,7 +41,7 @@ function scr_trade_dep() {
         }
     }
 
-    struct_remove(obj_en_fleet.cargo_data, "player_goods");
+    struct_remove(cargo_data, "player_goods");
 }
 
 function setup_ai_trade_fleet(start_place, faction) {

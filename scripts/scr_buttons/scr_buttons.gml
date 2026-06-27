@@ -415,7 +415,7 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
 /// @constructor
 /// @category UI
 /// @desc A clickable sprite-based button component that manages its own state and hover logic.
-/// @param {Struct} data The default sprite to display.
+/// @param {Struct} data Property overrides (sprite, hover_sprite, scale_x/y, alpha_*, etc.).
 /// @returns {Struct.SpriteButton}
 function SpriteButton(data) constructor {
     standard_loc_data();

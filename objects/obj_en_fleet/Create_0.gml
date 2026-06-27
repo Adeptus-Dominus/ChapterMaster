@@ -8,7 +8,7 @@ home_y = 0;
 selected = 0;
 ret = 0;
 hurt = 0;
-/// @type {Id.Instance}
+/// @type {Id.Instance.obj_star}
 orbiting = noone;
 rep = 3;
 minimum_eta = 2;
@@ -131,7 +131,7 @@ deserialize = function(save_data) {
         }
     }
 
-    if (save_data.orbiting != 0 && save_data.orbiting != noone && action == "") {
+    if (save_data.orbiting != noone && action == "") {
         orbiting = instance_nearest(x, y, obj_star);
     }
 };

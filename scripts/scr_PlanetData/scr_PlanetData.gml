@@ -9,7 +9,7 @@ global.force_strength_descriptions = [
 ];
 
 /// @param {Real} planet
-/// @param {Id.Instance} system
+/// @param {Id.Instance.obj_star} system
 function PlanetData(planet, system) constructor {
     //safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
     //disposition
@@ -64,7 +64,7 @@ function PlanetData(planet, system) constructor {
 
             planet_forces[eFACTION.NECRONS] = system.p_necrons[planet];
         } catch (_exception) {
-            handle_exception(_exception);
+            ERROR_HANDLER.handle_exception(_exception);
         }
 
         fortification_level = system.p_fortified[planet];
@@ -289,14 +289,7 @@ function PlanetData(planet, system) constructor {
         player_forces = system.p_player[planet];
     };
 
-    static collect_planet_group = function(
-        group = "all",
-        opposite = false,
-        search_conditions = {
-            companies: "all",
-        },
-        return_as_UnitGroup = true,
-    ) {
+    static collect_planet_group = function(group = "all", opposite = false, search_conditions = {companies: "all"}, return_as_UnitGroup = true) {
         return collect_role_group(group, [system.name, planet], opposite, search_conditions, return_as_UnitGroup);
     };
 

@@ -77,7 +77,7 @@ function scr_load(save_part, save_id) {
                 }
                 var loaded_value = struct_get(save_data, var_name);
                 try {
-                    variable_instance_set(instance_find(obj_controller, 0), var_name, loaded_value);
+                    variable_instance_set(obj_controller, var_name, loaded_value);
                 } catch (e) {
                     LOGGER.debug(e);
                 }

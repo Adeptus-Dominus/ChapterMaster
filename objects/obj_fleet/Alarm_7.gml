@@ -66,9 +66,10 @@ try {
                 }
             }
 
-            var ofleet = instance_nearest(room_width / 2, room_height / 2, obj_en_fleet);
-            if (instance_exists(ofleet)) {
-                repeat (50) {
+            repeat (50) {
+                /// @type {Id.Instance.obj_en_fleet} 
+                var ofleet = instance_nearest(room_width / 2, room_height / 2, obj_en_fleet);
+                if (ofleet != noone) {
                     if (ofleet.trade_goods == "player_hold") {
                         ofleet.trade_goods = "";
                     }

@@ -7,14 +7,13 @@ try {
 
     //TODO centralise orbiting logic
     var _is_orbiting = is_orbiting();
-    if (orbiting != 0 && action == "" && owner != 0) {
-        var orbiting_found = _is_orbiting;
-        if (orbiting_found) {
-            orbiting_found = variable_instance_exists(orbiting, "present_fleet");
+    if (action == "" && owner != 0) {
+        if (_is_orbiting) {
+            var orbiting_found = variable_instance_exists(orbiting, "present_fleet");
             if (orbiting_found) {
                 orbiting.present_fleet[owner] += 1;
             }
-        } else if (!orbiting_found) {
+        } else if (!_is_orbiting) {
             orbiting = instance_nearest(x, y, obj_star);
             orbiting.present_fleet[owner]++;
         }

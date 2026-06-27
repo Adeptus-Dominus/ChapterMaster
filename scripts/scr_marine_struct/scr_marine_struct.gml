@@ -610,78 +610,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 	so as an example salamanders could have the chapter values as  */
     loyalty = 0;
 
-    static alter_loyalty = function(alt_val) {
-        if (alt_val < 0) {
-            if (has_trait("honorable")) {
-                alt_val /= 2;
-            }
-            if (has_trait("jaded")) {
-                alt_val *= 2;
-            }
-        }
-        if (has_trait("old_guard")) {
-            alt_val /= 2;
-        }
-        loyalty = clamp(loyalty + alt_val, 0, 100);
-    };
-
-    static roll_psionics = function() {
-        var _dice_count = 1;
-        var _psionics_roll = roll_dice_chapter(_dice_count, 100);
-
-        if (scr_has_adv("Warp Touched")) {
-            if (_psionics_roll < 170) {
-                var _second_roll = roll_dice_chapter(_dice_count, 100, "high");
-                _psionics_roll = _second_roll > _psionics_roll ? _second_roll : _psionics_roll;
-            }
-        } else if (scr_has_disadv("Psyker Intolerant")) {
-            if (_psionics_roll >= 170) {
-                var _second_roll = roll_dice_chapter(_dice_count, 100, "low");
-                _psionics_roll = _second_roll < _psionics_roll ? _second_roll : _psionics_roll;
-            }
-        }
-
-        if (_psionics_roll == 200) {
-            psionic = 12;
-        } else if (_psionics_roll >= 199) {
-            psionic = 11;
-        } else if (_psionics_roll >= 198) {
-            psionic = 10;
-        } else if (_psionics_roll >= 196) {
-            psionic = 9;
-        } else if (_psionics_roll >= 194) {
-            psionic = 8;
-        } else if (_psionics_roll >= 190) {
-            psionic = 7;
-        } else if (_psionics_roll >= 186) {
-            psionic = 6;
-        } else if (_psionics_roll >= 182) {
-            psionic = 5;
-        } else if (_psionics_roll >= 178) {
-            psionic = 4;
-        } else if (_psionics_roll >= 174) {
-            psionic = 3;
-        } else if (_psionics_roll >= 170) {
-            psionic = 2;
-        } else if (_psionics_roll >= 22) {
-            psionic = 1;
-        } else if (_psionics_roll >= 17) {
-            psionic = 0;
-        } else if (_psionics_roll >= 12) {
-            psionic = -1;
-        } else if (_psionics_roll >= 8) {
-            psionic = -2;
-        } else if (_psionics_roll >= 5) {
-            psionic = -3;
-        } else if (_psionics_roll >= 3) {
-            psionic = -4;
-        } else if (_psionics_roll >= 2) {
-            psionic = -5;
-        } else {
-            psionic = -6;
-        }
-    };
-
     switch (base_group) {
         case "astartes": //basic marine class //adds specific mechanics not releveant to most units
             loyalty = 100;
@@ -823,6 +751,21 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static race = function() {
         return obj_ini.race[company][marine_number];
+    };
+
+    static alter_loyalty = function(alt_val) {
+        if (alt_val < 0) {
+            if (has_trait("honorable")) {
+                alt_val /= 2;
+            }
+            if (has_trait("jaded")) {
+                alt_val *= 2;
+            }
+        }
+        if (has_trait("old_guard")) {
+            alt_val /= 2;
+        }
+        loyalty = clamp(loyalty + alt_val, 0, 100);
     };
 
     static update_loyalty = function(change_value) {
@@ -1122,6 +1065,63 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static roll_dice = function(dices = 1, faces = 6, player_benefit_at = "none") {
         return roll_dice_unit(dices, faces, player_benefit_at, self);
+    };
+
+    static roll_psionics = function() {
+        var _dice_count = 1;
+        var _psionics_roll = roll_dice_chapter(_dice_count, 100);
+
+        if (scr_has_adv("Warp Touched")) {
+            if (_psionics_roll < 170) {
+                var _second_roll = roll_dice_chapter(_dice_count, 100, "high");
+                _psionics_roll = _second_roll > _psionics_roll ? _second_roll : _psionics_roll;
+            }
+        } else if (scr_has_disadv("Psyker Intolerant")) {
+            if (_psionics_roll >= 170) {
+                var _second_roll = roll_dice_chapter(_dice_count, 100, "low");
+                _psionics_roll = _second_roll < _psionics_roll ? _second_roll : _psionics_roll;
+            }
+        }
+
+        if (_psionics_roll == 200) {
+            psionic = 12;
+        } else if (_psionics_roll >= 199) {
+            psionic = 11;
+        } else if (_psionics_roll >= 198) {
+            psionic = 10;
+        } else if (_psionics_roll >= 196) {
+            psionic = 9;
+        } else if (_psionics_roll >= 194) {
+            psionic = 8;
+        } else if (_psionics_roll >= 190) {
+            psionic = 7;
+        } else if (_psionics_roll >= 186) {
+            psionic = 6;
+        } else if (_psionics_roll >= 182) {
+            psionic = 5;
+        } else if (_psionics_roll >= 178) {
+            psionic = 4;
+        } else if (_psionics_roll >= 174) {
+            psionic = 3;
+        } else if (_psionics_roll >= 170) {
+            psionic = 2;
+        } else if (_psionics_roll >= 22) {
+            psionic = 1;
+        } else if (_psionics_roll >= 17) {
+            psionic = 0;
+        } else if (_psionics_roll >= 12) {
+            psionic = -1;
+        } else if (_psionics_roll >= 8) {
+            psionic = -2;
+        } else if (_psionics_roll >= 5) {
+            psionic = -3;
+        } else if (_psionics_roll >= 3) {
+            psionic = -4;
+        } else if (_psionics_roll >= 2) {
+            psionic = -5;
+        } else {
+            psionic = -6;
+        }
     };
 
     static role_refresh = function() {
@@ -2261,7 +2261,7 @@ function jsonify_marine_struct(company, marine, stringify = true) {
 }
 
 /// @param {Array<Real>} unit where unit[0] is company and unit[1] is the position
-/// @returns {Struct} unit
+/// @returns {Struct.TTRPG_stats} unit
 function fetch_unit(unit) {
     try {
         return obj_ini.TTRPG[unit[0]][unit[1]];
@@ -2272,7 +2272,7 @@ function fetch_unit(unit) {
 
 function fetch_unit_uid(uuid) {
     for (var i = 0; i < obj_ini.companies; i++) {
-        var _comp_length = array_length(obj_ini.TTRPG[i]) - 1;
+        var _comp_length = array_length(obj_ini.TTRPG[i]);
         for (var s = 0; s < _comp_length; s++) {
             var _unit = fetch_unit([i, s]);
             if (_unit.uid == uuid) {

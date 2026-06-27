@@ -12,7 +12,7 @@ try {
         }
         orbiting = spid;
 
-        if ((orbiting != 0) && instance_exists(orbiting)) {
+        if ((orbiting != noone) && instance_exists(orbiting)) {
             if (orbiting.visited == 0) {
                 for (var planet_num = 1; planet_num <= orbiting.planets; planet_num += 1) {
                     if (array_length(orbiting.p_feature[planet_num]) != 0) {
