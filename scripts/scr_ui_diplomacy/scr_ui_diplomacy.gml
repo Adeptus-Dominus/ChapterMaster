@@ -7,7 +7,7 @@ function draw_character_diplomacy_base_page() {
         diplo_buttons.alliance.draw();
         diplo_buttons.denounce.draw();
         diplo_buttons.praise.draw();
-        diplo_buttons.declare_war.draw_shutter(praise.x1, alliance.y2, "WAR", 0.4);
+        diplo_buttons.declare_war.draw_shutter(diplo_buttons.praise.x1, diplo_buttons.alliance.y2, "WAR", 0.4);
     } else {
         if (!valid_diplomacy_options()) {
             diplo_buttons.denounce.draw();

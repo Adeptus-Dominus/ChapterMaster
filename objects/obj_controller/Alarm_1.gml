@@ -18,16 +18,18 @@ if (is_test_map == true) {
 
 good_log = 1;
 
-var xx, yy, did = 0, _current_system = 0, px = 0, py = 0;
+var xx = 0;
+var yy = 0;
+var px = 0;
+var py = 0;
 // Set player set
-_current_system = find_player_spawn_star();
+var _current_system = find_player_spawn_star();
 
 instance_activate_object(obj_star);
-var _player_star;
+var _player_star = _current_system.id;
 // Set player homeworld
-did = instance_exists(_current_system);
+var did = instance_exists(_current_system);
 if (did) {
-    _player_star = _current_system.id;
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         set_player_homeworld_star(_current_system);
     }
@@ -417,7 +419,6 @@ if (did) {
         }
 
         for (var j = 0; j < orkz; j++) {
-            n = array_length(_imperial_planets);
             i = array_random_index(_imperial_planets);
             _current_system = _imperial_planets[i];
 
@@ -433,7 +434,7 @@ if (did) {
         if (is_dead_star() || planets == 0) {
             continue;
         }
-        if (owner <= 5) {
+        if (owner <= eFACTION.ECCLESIARCHY) {
             array_push(_non_xenos_chaos, id);
         }
     }
@@ -446,7 +447,8 @@ if (did) {
         orkz += 3;
         n = array_length(_non_xenos_chaos);
         for (var j = 0; j < orkz && j < n; j++) {
-            _current_system = array_random_element(_non_xenos_chaos);
+            i = array_random_index(_non_xenos_chaos);
+            _current_system = _non_xenos_chaos[i];
 
             _current_system.planet[1] = 1;
             _current_system.p_owner[1] = 90;

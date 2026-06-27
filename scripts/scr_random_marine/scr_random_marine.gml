@@ -95,7 +95,7 @@ function scr_random_marine(role, exp_req, search_params = {}) {
                     if (struct_exists(search_params, "trait")) {
                         //list of traits (all required) need an option for if only one is required
                         if (is_array(search_params[$ "trait"])) {
-                            if (!struct_exists(search_params, "trait_any")) {
+                            if (!array_contains(search_params, "trait_any")) {
                                 for (var trait = 0; trait < array_length(search_params[$ "trait"]); trait++) {
                                     if (!array_contains(unit.traits, search_params[$ "trait"][trait])) {
                                         match = false;

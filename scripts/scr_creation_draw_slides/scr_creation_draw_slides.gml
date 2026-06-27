@@ -320,7 +320,7 @@ function draw_chapter_select() {
         draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2, 0, c_white, 0.1);
 
         if (grid.clicked()) {
-            scr_load_chapter_icon(array_random_element(global.chapter_icons_array), true);
+            scr_load_chapter_icon(array_random_element(global.chapter_icons_array));
             change_slide = 1;
             goto_slide = 2;
             custom = eCHAPTER_TYPE.RANDOM;

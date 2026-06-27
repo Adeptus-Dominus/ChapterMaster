@@ -28,8 +28,7 @@
             "prefixes", 
             "suffixes", 
             "special"
-        ],
-        "preffered_method" : "complex"
+        ]
     },
     {
         "load_as" : "hulk",
@@ -37,8 +36,7 @@
         "composites" : [
             "prefixes", 
             "suffixes"
-        ],
-        "preffered_method" : "complex"
+        ]
     },
     {
         "load_as" : "tau",
@@ -46,45 +44,40 @@
         "composites" : [
             "prefixes", 
             "suffixes"
-        ],
-        "preffered_method" : "complex"
+        ]
     },
     {
         "load_as" : "genestealercult",
         "load_set": "genestealercult",
         "composites" : [
-            "main", 
-            "embelishment", 
-            "title"
-        ],
-        "preffered_method" : "complex"
+            "special", 
+            "prefixes", 
+            "suffixes"
+        ]
     },
     {
         "load_as" : "Knightly",
         "load_set": "knightly",
         "composites" : [
-            "names", 
-            "surnames"
-        ],
-        "preffered_method" : "complex"
+            "prefixes", 
+            "suffixes"
+        ]
     },
     {
         "load_as" : "Roman",
         "load_set": "roman",
         "composites" : [
-            "praenomen", 
-            "nomen", 
-            "cognomen"
-        ],
-        "preffered_method" : "complex"
+            "special", 
+            "prefixes", 
+            "suffixes"
+        ]
     },
     {
         "load_as" : "Mongol",
         "load_set": "mongol",
         "composites" : [
-            "given_name", 
-            "tribal_or_house"
-        ],
-        "preffered_method" : "complex"
+            "prefixes", 
+            "suffixes"
+        ]
     }
 ]

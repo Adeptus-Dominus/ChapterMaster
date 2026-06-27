@@ -1,5 +1,5 @@
 {
-  "given_name": [
+  "prefixes": [
     "Batu",
     "Berke",
     "Nogai",
@@ -218,7 +218,7 @@
     "Khorzai",
     "Darmunai"
   ],
-  "tribal_or_house": [
+  "suffixes": [
     "Borjigin",
     "Jochid",
     "Chagataid",

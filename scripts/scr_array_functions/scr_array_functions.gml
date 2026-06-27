@@ -135,7 +135,7 @@ function array_to_string_list(_array, _pop_last = false) {
 
     for (var i = 0; i < array_length(_array); i++) {
         _string_list += $"- {_array[i]}";
-        if (i < array_length(_array)) {
+        if (i < array_length(_array) - 1) {
             _string_list += "\n";
         }
     }
@@ -157,7 +157,7 @@ function array_to_string_order(_strings_array, _use_and = false, _dot_end = true
         result += _strings_array[i];
 
         // Check if it's the last string
-        if (i < length) {
+        if (i < length - 1) {
             // If it's the second last item, add " and " before the last one
             if (_use_and && i == length - 2) {
                 result += " and ";
@@ -274,7 +274,7 @@ function smart_delimeter_sign(_array_or_length, _loop_iteration, _dot_end = true
     var _delimeter = "";
     var _array_length = is_array(_array_or_length) ? array_length(_array_or_length) : _array_or_length;
 
-    if (_loop_iteration < _array_length) {
+    if (_loop_iteration < _array_length - 1) {
         _delimeter += ", ";
     } else if (_dot_end) {
         _delimeter += ".";

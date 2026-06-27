@@ -100,7 +100,7 @@ unit_manage_constants = {};
 unit_manage_constants.current_data = "";
 management_buttons = false;
 
-diplo_buttons = undefined;
+diplo_buttons = {};
 diplomacy_pathway = "";
 option_selections = [];
 ready = false;

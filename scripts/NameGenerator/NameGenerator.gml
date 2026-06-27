@@ -144,8 +144,8 @@ function NameTracker(set_name) constructor {
                 }
             }
 
-            var composite_one = array_random_element(composite_components.prefixes, true);
-            var composite_two = array_random_element(composite_components.suffixes, true);
+            var composite_one = array_random_element(composite_components.prefixes);
+            var composite_two = array_random_element(composite_components.suffixes);
 
             var separator = "";
 
@@ -163,14 +163,14 @@ function NameTracker(set_name) constructor {
     static MultiSyllableNameGeneration = function(syllable_amount = 3) {
         var syllables = multisyllable_components;
         try {
-            var name = array_random_element(syllables.first_syllables, true);
+            var name = array_random_element(syllables.first_syllables);
 
             if (syllable_amount >= 2) {
-                name += array_random_element(syllables.second_syllables, true);
+                name += array_random_element(syllables.second_syllables);
             }
 
             if (syllable_amount >= 3) {
-                name += array_random_element(syllables.third_syllables, true);
+                name += array_random_element(syllables.third_syllables);
             }
 
             return name;
@@ -199,7 +199,7 @@ function NameTracker(set_name) constructor {
                 }
                 if (struct_exists(composite_components, title_elements[i])) {
                     var _elem_set = composite_components[$ title_elements[i]];
-                    _name += array_random_element(_elem_set, true) + (i < _name_elem_length - 1 ? " " : "");
+                    _name += array_random_element(_elem_set) + (i < _name_elem_length - 1 ? " " : "");
                 }
             }
             return _name;
@@ -233,8 +233,8 @@ function NameGenerator() constructor {
         var _name = _name_sets[i];
         var _load_name = _name;
         var _preffered = "simple";
-        var _composites = {};
-        var _syllables = {};
+        var _composites = [];
+        var _syllables = [];
         if (is_struct(_name)) {
             var _struc = _name;
             _name = _struc.load_as;
