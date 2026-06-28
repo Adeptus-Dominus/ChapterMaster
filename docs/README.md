@@ -4,7 +4,7 @@
 
 # Chapter Master - Adeptus Dominus
 
-[![Release-Development](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/release_dev.yml/badge.svg)](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/release_dev.yml)
+[![Development Release](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/create_release.yml/badge.svg?branch=main)](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/create_release.yml)
 [![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
 [![GitHub repo size](https://img.shields.io/github/repo-size/Adeptus-Dominus/ChapterMaster?style=flat&label=Repo%20Size&labelColor=4493f8&color=545454)](https://github.com/Adeptus-Dominus/ChapterMaster)
 
