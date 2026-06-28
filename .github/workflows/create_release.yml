@@ -303,4 +303,4 @@ jobs:
           embed-title: "[${{ needs.prepare_release.outputs.release_name }}](${{ steps.create_release.outputs.url }})"
           embed-description: |
             ${{ steps.build_changelog.outputs.changelog }}
-          embed-footer-text: "Download: ${{ steps.create_release.outputs.outputs.url }}" 
+          embed-footer-text: "Download: ${{ steps.create_release.outputs.url }}"
