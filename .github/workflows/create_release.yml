@@ -246,7 +246,7 @@ jobs:
               "categories": [
                 {
                     "title": "### Save Breaking!",
-                    "labels": ["feat"]
+                    "labels": ["breaking"]
                 },
                 {
                     "title": "### Features",
