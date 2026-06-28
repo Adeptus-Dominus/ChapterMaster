@@ -245,6 +245,10 @@ jobs:
               },
               "categories": [
                 {
+                    "title": "### Save Breaking!",
+                    "labels": ["breaking"]
+                },
+                {
                     "title": "### Features",
                     "labels": ["feat"]
                 },
@@ -259,9 +263,15 @@ jobs:
               ],
               "label_extractor": [
                 {
-                  "pattern": "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test|merge){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
+                  "pattern": "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test|merge){1}(\\([\\w\\-\\.]+\\))?: ([\\w ])+([\\s\\S]*)",
                   "on_property": "title",
                   "target": "$1"
+                },
+                {
+                  "pattern": "^(breaking.*:|.*!.*:).*",
+                  "on_property": "title",
+                  "target": "breaking",
+                  "flags": "i"
                 }
               ]
             }
