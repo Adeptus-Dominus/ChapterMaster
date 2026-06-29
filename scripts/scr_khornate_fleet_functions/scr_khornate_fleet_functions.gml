@@ -1,3 +1,4 @@
+/// @self Id.Instance.obj_en_fleet
 function khorne_fleet_cargo() {
     //This handles khorne fleets killing planet popultions moving planet and then choosing a new target ot chase
     warband = cargo_data.warband;
@@ -160,7 +161,7 @@ function khorne_fleet_cargo() {
                         if ((chase_fleet != noone) && (action == "")) {
                             var intercept_time = fleet_intercept_time_calculate(chase_fleet);
                             if (chase_fleet.action != "") {
-                                if (intercept_time <= chase_fleet.eta) {
+                                if (intercept_time <= chase_fleet.action_eta) {
                                     target = chase_fleet;
                                     chase_fleet_target_set(target);
                                     target_chosen = true;
@@ -291,6 +292,7 @@ function spawn_chaos_warlord() {
 }
 
 //TODO make this make sense
+/// @self Id.Instance.obj_en_fleet
 function destroy_khorne_fleet() {
     var chaos_lord_killed = false;
     with (instance_nearest(x, y, obj_star)) {

@@ -305,7 +305,7 @@ function navy_hunt_player_assets() {
         var chase_fleet = get_nearest_player_fleet(x, y, false, true);
         if (chase_fleet != noone) {
             var thatp, my_dis;
-            etah = chase_fleet.eta;
+            etah = chase_fleet.action_eta;
 
             var intercept = fleet_intercept_time_calculate(chase_fleet);
             if (intercept) {
