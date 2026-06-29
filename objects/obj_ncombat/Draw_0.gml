@@ -7,7 +7,8 @@ draw_rectangle(818, 235, 1578, 666, 0);
 
 draw_set_color(CM_GREEN_COLOR);
 
-var l = 0;
+var l;
+l = 0;
 draw_set_alpha(1);
 draw_rectangle(0 + l, 0 + l, 800 - l, 900 - l, 1);
 l += 1;
@@ -138,6 +139,11 @@ if (click_stall_timer <= 0) {
 
 draw_set_halign(fa_left);
 draw_set_alpha(1);
+
+// Timer
+// draw_rectangle(16,464,min(16+(timer*2.026),624),472,0);
+
+// draw_text(320,300,"Turn: "+string(turns));
 
 draw_set_color(c_black);
 draw_set_alpha(fadein / 30);

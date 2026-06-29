@@ -42,6 +42,7 @@ if (cd >= 0) {
 if (click_stall_timer >= 0) {
     click_stall_timer -= 1;
 }
+// if (done>=1) then done+=1;
 
 if (!instance_exists(obj_enunit)) {
     enemy_forces = 0;
@@ -98,6 +99,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
         exit;
     }
 
+    // show_message("Shown: "+string(messages_shown)+"#Messages: "+string(messages)+"#Timer Stage: "+string(timer_stage));
     if (((messages_shown == 999) || (messages == 0)) && ((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0)) {
         newline_color = "yellow";
         if (obj_ncombat.enemy != 6) {
@@ -131,6 +133,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
     exit;
 }
 
+// if (player_forces>0) and (enemy_forces>0) and (battle_over=0){
 if (timer_stage == 2) {
     fugg += 1;
 }

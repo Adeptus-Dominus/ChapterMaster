@@ -1,3 +1,5 @@
+// Global singletons
+// global.NameGenerator = new NameGenerator();
 LOGGER.debug("Creating obj_ini");
 
 // normal stuff
@@ -17,6 +19,8 @@ commands = 0;
 heh1 = 0;
 heh2 = 0;
 
+// strin="";
+// strin2="";
 companies = 10;
 progenitor = ePROGENITOR.NONE;
 aspirant_trial = 0;
@@ -119,6 +123,16 @@ veh_acc = array_create_2d(_max_companies, _max_vehicles, "");
 // Unit Init
 defaults_slot = 100;
 
+load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
+    role[defaults_slot][_role_id] = _role_name;
+    wep1[defaults_slot][_role_id] = _wep1;
+    wep2[defaults_slot][_role_id] = _wep2;
+    armour[defaults_slot][_role_id] = _armour;
+    mobi[defaults_slot][_role_id] = _mobi;
+    gear[defaults_slot][_role_id] = _gear;
+    race[defaults_slot][_role_id] = 1;
+};
+
 /// @type {Array<Array>}
 race = [[]];
 /// @type {Array<Array<String>>}
@@ -144,15 +158,12 @@ god = [[]];
 /// @type {Array<Array<Struct.TTRPG_stats>>}
 TTRPG = [[]];
 
-load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
-    role[defaults_slot][_role_id] = _role_name;
-    wep1[defaults_slot][_role_id] = _wep1;
-    wep2[defaults_slot][_role_id] = _wep2;
-    armour[defaults_slot][_role_id] = _armour;
-    mobi[defaults_slot][_role_id] = _mobi;
-    gear[defaults_slot][_role_id] = _gear;
-    race[defaults_slot][_role_id] = 1;
-};
+/*if (obj_creation.fleet_type=3){
+    obj_controller.penitent=1;
+    obj_controller.penitent_max=(obj_creation.maximum_size*1000)+300;
+    if (obj_creation.chapter_name="Lamenters") then obj_controller.penitent_max=100300;
+    obj_controller.penitent_current=300;
+}*/
 
 check_number = 0;
 year_fraction = 0;
@@ -183,6 +194,8 @@ if (global.load == -1) {
 
 /// Called from save function to take all object variables and convert them to a json savable format and return it
 serialize = function() {
+    var object_ini = self;
+
     var _marines = array_create(0);
     for (var _coy = 0; _coy <= 10; _coy++) {
         // Iterate the company's full restored length, not a fixed 0..500, so guardsmen in overflow
@@ -225,8 +238,8 @@ serialize = function() {
         chapter_squad_arrangement: chapter_squad_arrangement,
     };
 
-    if (variable_instance_exists(self, "last_ship")) {
-        save_data.last_ship = last_ship;
+    if (struct_exists(object_ini, "last_ship")) {
+        save_data.last_ship = object_ini.last_ship;
     }
 
     var excluded_from_save = [
@@ -245,7 +258,7 @@ serialize = function() {
         "chapter_squad_arrangement"
     ];
 
-    copy_serializable_fields(self, save_data, excluded_from_save);
+    copy_serializable_fields(object_ini, save_data, excluded_from_save);
 
     return save_data;
 };
@@ -268,13 +281,15 @@ deserialize = function(save_data) {
         obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/company_squad_builds.json", json_parse);
     }
 
-    for (var i = 0; i < array_length(all_names); i++) {
+    var _len = array_length(all_names);
+    for (var i = 0; i < _len; i++) {
         var var_name = all_names[i];
         if (array_contains(exclusions, var_name)) {
             continue;
         }
 
         var loaded_value = struct_get(save_data, var_name);
+        // LOGGER.debug($"obj_ini var: {var_name}  -  val: {loaded_value}");
         try {
             variable_struct_set(obj_ini, var_name, loaded_value);
         } catch (e) {
