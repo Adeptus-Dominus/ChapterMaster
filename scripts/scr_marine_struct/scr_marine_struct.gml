@@ -363,7 +363,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static update_mobility_item = scr_update_unit_mobility_item;
 
     static max_health = function(base = false) {
-        var max_h = 100 * (1 + ((constitution - 40) * 0.05));
+        var max_h = max(1, 100 * (1 + ((constitution - 40) * 0.05)));
         if (!base) {
             max_h += gear_weapon_data("armour", armour(), "hp_mod");
             max_h += gear_weapon_data("gear", gear(), "hp_mod");
