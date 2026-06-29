@@ -317,11 +317,11 @@ function set_up_diplomacy_persons() {
             management_buttons = {
                 audience: new UnitButtonObject({
                     style: "pixel",
-                    label: "Request Audience", //tooltip: "."
+                    label: "Request Audience",
                 }),
                 ignore: new UnitButtonObject({
                     style: "pixel",
-                    label: "Ignore", //tooltip: "."
+                    label: "Ignore",
                 }),
                 unignore: new UnitButtonObject({style: "pixel", label: "Unignore", tooltip: "Click here or press B to Toggle Unit Biography."}),
                 screen_slate: new DataSlate(),
@@ -371,11 +371,6 @@ function set_up_diplomacy_persons() {
 
                     _ignore_status.update({x1: _audience.x2 + 1, y1: yy + 85});
                     _ignore_status.draw();
-
-                    /*var fis;fis="[Request Audience]";
-			        if (turns_ignored[2]>0) then fis="                  ";
-			        if (ignore[eFACTION.IMPERIUM]<1) then draw_text_transformed(xx+189,yy+354,string(fis)+"  [Ignore]",0.7,0.7,0);
-			        if (ignore[eFACTION.IMPERIUM]>=1) then draw_text_transformed(xx+189,yy+354,string(fis)+"[Unignore]",0.7,0.7,0);*/
                 }
             };
         }
@@ -417,17 +412,6 @@ function scr_ui_diplomacy() {
     if (diplomacy == 0) {
         // Main diplomacy screen
 
-        /*draw_set_color(CM_GREEN_COLOR);
-	    draw_rectangle(xx+31,yy+281,xx+438,yy+416,0);
-	    draw_rectangle(xx+31,yy+417,xx+438,yy+552,0);
-	    draw_rectangle(xx+31,yy+553,xx+438,yy+688,0);
-	    draw_rectangle(xx+31,yy+689,xx+438,yy+824,0);
-	    // 
-	    draw_rectangle(xx+451,yy+281,xx+858,yy+125,0);
-	    draw_rectangle(xx+451,yy+417,xx+858,yy+125+91,0);
-	    draw_rectangle(xx+451,yy+553,xx+858,yy+125+182,0);
-	    draw_rectangle(xx+451,yy+689,xx+858,yy+125+273,0);*/
-
         draw_set_color(CM_GREEN_COLOR);
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
@@ -456,27 +440,8 @@ function scr_ui_diplomacy() {
         scr_image("symbol", 1, xx + 525, yy + 174, 109, 54);
         scr_image("symbol", 2, xx + 1147, yy + 174, 217, 107);
 
-        //draws chapter diplomacy
-        /*draw_rectangle(xx+451,yy+281,xx+675,yy+416,1);
-		draw_line(xx+604,yy+281,xx+604,yy+416);
-	    draw_rectangle(xx+451,yy+417,xx+675,yy+552,1);
-		draw_line(xx+604,yy+417,xx+604,yy+553);
-	    draw_rectangle(xx+451,yy+553,xx+675,yy+688,1);
-		draw_line(xx+604,yy+553,xx+604,yy+689);
-	    draw_rectangle(xx+451,yy+689,xx+675,yy+824,1);
-		draw_line(xx+604,yy+689,xx+604,yy+824);
-		*/
-
         draw_set_font(fnt_40k_14b);
         draw_set_halign(fa_left);
-
-        //draw faction names, etc
-        /*
-		    draw_text(xx+609,yy+285,"Chapter 1");
-		    draw_text(xx+609,yy+421,"Chapter 2");
-		    draw_text(xx+609,yy+557,"Chapter 3");
-		    draw_text(xx+609,yy+693,"Chapter 4");
-	    */
 
         //render status, i.e. whether at war, that stuff
         draw_set_font(fnt_40k_14);
@@ -522,8 +487,6 @@ function scr_ui_diplomacy() {
         if (!is_struct(character_diplomacy)) {
             LOGGER.debug("no valid diplomacy target");
             diplomacy = 0;
-        } else {
-            // draw_sprite(spr_diplo_splash,diplomacy,xx+916,yy+33);
         }
     }
 
@@ -534,9 +497,7 @@ function scr_ui_diplomacy() {
         if ((diplomacy > 10) && (diplomacy < 11)) {
             daemon = true;
         }
-        // draw_sprite(spr_diplo_splash,diplomacy,xx+916,yy+33);
         if (diplomacy == 10.1) {
-            // if (diplomacy=10.1) then draw_sprite(spr_diplomacy_dae,0,xx+16,yy+43);
             daemon = true;
             scr_image("diplomacy_daemon", 0, xx + 16, yy + 43, 310, 828);
             show_stuff = false;
@@ -586,7 +547,6 @@ function scr_ui_diplomacy() {
         draw_set_font(fnt_40k_14);
         if (daemon == false) {
             _disposition_rating = $"Disposition: {faction_disposition_rating_string(diplomacy)} ({disposition[diplomacy]})";
-            // draw_set_halign(fa_center);
             draw_text(xx + 622, yy + 144, _disposition_rating);
             scr_draw_rainbow(xx + 366, yy + 165, xx + 871, yy + 175, (disposition[diplomacy] / 200) + 0.5);
         }
@@ -612,7 +572,5 @@ function scr_ui_diplomacy() {
         draw_rectangle(mouse_x - 2, mouse_y + 20, mouse_x + 2 + string_width_ext(warn, -1, 600), mouse_y + 24 + string_height_ext(warn, -1, 600), 1);
         draw_text_ext(mouse_x, mouse_y + 22, warn, -1, 600);
     }
-
-    //scr_dialogue(diplomacy_pathway);
     basic_diplomacy_screen();
 }

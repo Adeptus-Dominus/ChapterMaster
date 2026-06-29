@@ -5,7 +5,7 @@ global.psy_disciplines_starting = [
     "biomancy",
     "pyromancy",
     "telekinesis",
-    "rune_magic"
+    "rune_magic",
 ];
 
 #macro PSY_PERILS_CHANCE_MIN 1
@@ -383,13 +383,14 @@ function flush_psychic_summary(_psy_log) {
 function get_discipline_data(_discipline_name, _data_name) {
     // Check if the power exists in the global.disciplines_data
     if (struct_exists(global.disciplines_data, _discipline_name)) {
+        var _data_content = {};
         var _discipline_object = global.disciplines_data[$ _discipline_name];
         // Check if the data exists for that power
         if (struct_exists(_discipline_object, _data_name)) {
-            var _data_content = _discipline_object[$ _data_name];
+            _data_content = _discipline_object[$ _data_name];
         } else {
             _discipline_object = global.disciplines_data[$ "example"];
-            var _data_content = _discipline_object[$ _data_name];
+            _data_content = _discipline_object[$ _data_name];
         }
         return _data_content;
     } else {
@@ -405,16 +406,17 @@ function get_discipline_data(_discipline_name, _data_name) {
 function get_power_data(_power_id, _data_name = "") {
     // Check if the power exists in the global.powers_data
     if (struct_exists(global.powers_data, _power_id)) {
+        var _data_content = {};
         var _power_object = global.powers_data[$ _power_id];
 
         // Check if the data exists for that power
         if (_data_name == "") {
             return _power_object;
         } else if (struct_exists(_power_object, _data_name)) {
-            var _data_content = _power_object[$ _data_name];
+            _data_content = _power_object[$ _data_name];
         } else {
             _power_object = global.powers_data[$ "example"];
-            var _data_content = _power_object[$ _data_name];
+            _data_content = _power_object[$ _data_name];
         }
 
         if (_data_name == "flavour_text") {

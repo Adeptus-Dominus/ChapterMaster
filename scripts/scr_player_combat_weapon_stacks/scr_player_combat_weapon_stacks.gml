@@ -1,6 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
 /// @self Asset.GMObject.obj_pnunit
 function add_second_profiles_to_stack(weapon, head_role = false, unit = "none") {
     if (array_length(weapon.second_profiles) > 0) {
@@ -269,10 +266,8 @@ function scr_player_combat_weapon_stacks() {
     veh = 0;
     men = 0;
     dreads = 0;
-    for (i = 0; i < array_length(att); i++) {
-        // dudes[i]="";
+    for (var i = 0; i < array_length(att); i++) {
         dudes_num[i] = 0;
-        // dudes_vehicle[i]=0;
         att[i] = 0;
         apa[i] = 0;
         wep_num[i] = 0;
@@ -280,11 +275,10 @@ function scr_player_combat_weapon_stacks() {
         // if (wep_owner[i]!="") and (wep_num[i]>1) then wep_owner[i]="assorted";// What if they are using two ranged weapons?  Hmmmmm?
     }
 
-    var dreaded = false, unit;
+    var dreaded = false;
 
-    var mobi_item;
-    for (g = 0; g < array_length(unit_struct); g++) {
-        unit = unit_struct[g];
+    for (var g = 0; g < array_length(unit_struct); g++) {
+        var unit = unit_struct[g];
         if (is_struct(unit)) {
             if (unit.hp() > 0) {
                 marine_dead[g] = 0;
@@ -367,13 +361,10 @@ function scr_player_combat_weapon_stacks() {
                     }
                 }
 
-                var j = 0, good = 0, open = 0; // Counts the number and types of marines within this object
-                for (j = 0; j <= 40; j++) {
+                var good = 0, open = 0; // Counts the number and types of marines within this object
+                for (var j = 0; j <= 40; j++) {
                     if ((dudes[j] == "") && (open == 0)) {
                         open = j; // Determine if vehicle here
-
-                        //if (dudes[j]="Venerable "+string(obj_ini.role[100][6])) then dudes_vehicle[j]=1;
-                        //if (dudes[j]=obj_ini.role[100][6]) then dudes_vehicle[j]=1;
                     }
                     if (marine_type[g] == dudes[j]) {
                         good = 1;
@@ -419,7 +410,7 @@ function scr_player_combat_weapon_stacks() {
                     }
 
                     var primary_melee = unit.melee_damage_data[3]; //collect unit melee data
-                    var weapon_stack_index = find_stack_index(primary_melee.name, head_role, unit);
+                    weapon_stack_index = find_stack_index(primary_melee.name, head_role, unit);
                     if (weapon_stack_index > -1) {
                         if (range[weapon_stack_index] > 1.9) {
                             continue;
@@ -437,7 +428,7 @@ function scr_player_combat_weapon_stacks() {
             }
         }
     }
-    for (g = 0; g < array_length(veh_id); g++) {
+    for (var g = 0; g < array_length(veh_id); g++) {
         if ((veh_id[g] > 0) && (veh_hp[g] > 0) && (veh_dead[g] != 1)) {
             if ((veh_id[g] > 0) && (veh_hp[g] > 0)) {
                 veh_dead[g] = 0;
@@ -446,10 +437,11 @@ function scr_player_combat_weapon_stacks() {
                 veh++;
             }
 
-            var j = 0, good = 0, open = 0; // Counts the number and types of marines within this object
+            // Counts the number and types of marines within this object
             if (veh_dead[g] != 1) {
-                repeat (40) {
-                    j += 1;
+                var good = 0;
+                var open = 0; 
+                for (var j = 1; j <= 40; j++) {
                     if ((dudes[j] == "") && (open == 0)) {
                         open = j;
                     }
@@ -466,9 +458,8 @@ function scr_player_combat_weapon_stacks() {
                 }
             }
 
-            var j = 0, good = 0, open = 0, weapon, vehicle_weapon_set;
             if (veh_dead[g] != 1) {
-                vehicle_weapon_set = [
+                var vehicle_weapon_set = [
                     veh_wep1[g],
                     veh_wep2[g],
                     veh_wep3[g]
@@ -476,9 +467,9 @@ function scr_player_combat_weapon_stacks() {
                 for (var wep_slot = 0; wep_slot < 3; wep_slot++) {
                     var weapon_check = vehicle_weapon_set[wep_slot];
                     if (weapon_check != "") {
-                        weapon = gear_weapon_data("weapon", weapon_check, "all", false, "standard");
+                        var weapon = gear_weapon_data("weapon", weapon_check, "all", false, "standard");
                         if (is_struct(weapon)) {
-                            for (j = 0; j <= 40; j++) {
+                            for (var j = 0; j <= 40; j++) {
                                 if (wep[j] == "" || wep[j] == weapon.name) {
                                     add_data_to_stack(j, weapon,,, "vehicle");
                                     break;
@@ -502,7 +493,7 @@ function scr_player_combat_weapon_stacks() {
         var h = 0;
         for (var i = 0; i < array_length(unit_struct); i++) {
             if (h == 0) {
-                unit = unit_struct[i];
+                var unit = unit_struct[i];
                 if (!is_struct(unit)) {
                     continue;
                 }

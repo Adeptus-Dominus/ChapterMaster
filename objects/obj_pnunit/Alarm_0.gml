@@ -1,8 +1,4 @@
 try {
-    // with(obj_enunit){show_message(string(dudes[1])+"|"+string(dudes_num[1])+"|"+string(men+medi)+"|"+string(dudes_hp[1]));}
-
-    var rightest, charge = 0, enemy2 = 0; // psy=false;
-
     if (instance_number(obj_enunit) != 1) {
         obj_ncombat.flank_x = self.x;
         with (obj_enunit) {
@@ -12,9 +8,7 @@ try {
         }
     }
 
-    rightest = get_rightmost(); // Right most pnunit
     enemy = instance_nearest(0, y, obj_enunit); // Left most enemy
-    enemy2 = enemy;
 
     if (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)) {
         move_unit_block("east");
@@ -84,14 +78,12 @@ try {
             weapon_data = gear_weapon_data("weapon", wep[i]);
             once_only = 0;
             enemy = instance_nearest(0, y, obj_enunit);
-            enemy2 = enemy;
             if (enemy.men + enemy.veh + enemy.medi <= 0) {
                 var x5 = enemy.x;
                 with (enemy) {
                     instance_destroy();
                 }
                 enemy = instance_nearest(0, y, obj_enunit);
-                enemy2 = enemy;
             }
 
             // Speed Force sweeps the whole field - bypass normal targeting/range.
@@ -118,6 +110,7 @@ try {
             if ((range_shoot == "ranged") && (range[i] >= dist)) {
                 // Weapon meets preliminary checks
                 var ap = 0;
+                var good = 0;
                 if (apa[i] > att[i]) {
                     ap = 1;
                 } // Determines if it is AP or not
@@ -138,7 +131,7 @@ try {
 
                     if ((ap == 1) && (once_only == 0)) {
                         // Check for vehicles
-                        var enemy2, g = 0, good = 0;
+                        var g = 0;
 
                         if (enemy.veh > 0) {
                             good = scr_target(enemy, "veh"); // First target has vehicles, blow it to hell
@@ -150,7 +143,7 @@ try {
                             repeat (instance_number(obj_enunit) - 1) {
                                 if (good == 0) {
                                     x2 += 10;
-                                    enemy2 = instance_nearest(x2, y, obj_enunit);
+                                    var enemy2 = instance_nearest(x2, y, obj_enunit);
                                     if ((enemy2.veh > 0) && (good == 0)) {
                                         good = scr_target(enemy2, "veh"); // This target has vehicles, blow it to hell
                                         scr_shoot(i, enemy2, good, "arp", "ranged");
@@ -176,7 +169,7 @@ try {
                             repeat (instance_number(obj_enunit) - 1) {
                                 if (good == 0) {
                                     x2 += 10;
-                                    enemy2 = instance_nearest(x2, y, obj_enunit);
+                                    var enemy2 = instance_nearest(x2, y, obj_enunit);
                                     if ((enemy2.veh > 0) && (good == 0)) {
                                         good = scr_target(enemy2, "medi"); // This target has vehicles, blow it to hell
                                         scr_shoot(i, enemy2, good, "medi", "ranged");
@@ -195,8 +188,7 @@ try {
                 if (instance_exists(enemy)) {
                     if ((ap == 0) && (once_only == 0)) {
                         // Check for men
-                        var g, good, enemy2;
-                        g = 0;
+                        var g = 0;
                         good = 0;
 
                         if (enemy.men + enemy.medi > 0) {
@@ -205,12 +197,11 @@ try {
                         }
                         if ((good == 0) && (instance_number(obj_enunit) > 1)) {
                             // First target does not have vehicles, cycle through objects to find one that has vehicles
-                            var x2;
-                            x2 = enemy.x;
+                            var x2 = enemy.x;
                             repeat (instance_number(obj_enunit) - 1) {
                                 if (good == 0) {
                                     x2 += 10;
-                                    enemy2 = instance_nearest(x2, y, obj_enunit);
+                                    var enemy2 = instance_nearest(x2, y, obj_enunit);
                                     if ((enemy2.men > 0) && (good == 0)) {
                                         good = scr_target(enemy2, "men"); // This target has vehicles, blow it to hell
                                         scr_shoot(i, enemy2, good, "att", "ranged");
@@ -235,7 +226,7 @@ try {
 
                 if ((apa[i] == 1) && (once_only == 0)) {
                     // Check for vehicles
-                    var enemy2, g = 0, good = 0;
+                    var g = 0, good = 0;
 
                     if (enemy.veh > 0) {
                         good = scr_target(enemy, "veh"); // First target has vehicles, blow it to hell
@@ -253,7 +244,7 @@ try {
 
                 if ((enemy.veh == 0) && (enemy.medi > 0) && (once_only == 0)) {
                     // Check for vehicles
-                    var enemy2, g = 0, good = 0;
+                    var g = 0, good = 0;
 
                     if (enemy.medi > 0) {
                         good = scr_target(enemy, "medi"); // First target has vehicles, blow it to hell
@@ -271,10 +262,9 @@ try {
 
                 if ((ap == 0) && (once_only == 0)) {
                     // Check for men
-                    var g = 0, good = 0, enemy2;
+                    var g = 0, good = 0;
 
                     if ((enemy.men > 0) && (once_only == 0)) {
-                        // show_message(string(wep[i])+" attacking");
                         good = scr_target(enemy, "men");
                         if (range[i] == 1) {
                             scr_shoot(i, enemy, good, "att", "melee");
@@ -330,12 +320,6 @@ try {
         flush_psychic_summary(_psy_log);
     }
 }
-// LOGGER.debug($"known_powers: {known_powers}");
-// LOGGER.debug($"buff_powers: {buff_powers}");
-// LOGGER.debug($"buff_cast: {buff_cast}");
-// LOGGER.debug($"power_index: {power_index}");
-// LOGGER.debug($"known_attack_powers: {known_attack_powers}");
 catch (_exception) {
-    // LOGGER.debug($"known_buff_powers: {known_buff_powers}");
     ERROR_HANDLER.handle_exception(_exception);
 }

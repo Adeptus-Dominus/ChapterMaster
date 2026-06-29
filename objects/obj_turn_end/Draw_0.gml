@@ -26,7 +26,7 @@ if ((show > 0) && (current_battle <= battles)) {
     var i = current_battle;
 
     draw_sprite(spr_purge_panel, 0, xxx, yyy);
-    if (battle_world[i] == -50) {
+    if (battle_world[i] == noone) {
         scr_image("attacked", 1, xxx + 12, yyy + 54, 254, 174);
     }
     if (battle_world[i] > 0) {
@@ -44,12 +44,11 @@ if ((show > 0) && (current_battle <= battles)) {
     if (battle_world[i] > 0) {
         draw_text_transformed(xxx + 265, yyy + 11, string_hash_to_newline("Forces Attacked! (" + string(battle_location[i]) + " " + scr_roman(battle_world[i]) + ")"), 0.7, 0.7, 0);
     }
-    if (battle_world[i] == -50) {
+    if (battle_world[i] == noone) {
         draw_text_transformed(xxx + 265, yyy + 11, string_hash_to_newline("Fleet Attacked! (" + string(battle_location[i]) + " System)"), 0.7, 0.7, 0);
     }
 
     scr_image("ui/force", 1, xxx + 378 - 32, yyy + 86 - 32, 64, 64);
-    // draw_sprite(spr_force_icon,1,xxx+378,yyy+86);
 
     draw_set_font(fnt_40k_14);
     draw_set_halign(fa_left);
@@ -83,7 +82,6 @@ if ((show > 0) && (current_battle <= battles)) {
         draw_set_halign(fa_center);
 
         if (enemy_fleet[1] != 0) {
-            // draw_sprite(spr_force_icon,enemy_fleet[1],xxx+44,yyy+269);
             scr_image("ui/force", enemy_fleet[1], xxx + 44 - 32, yyy + 269 - 32, 64, 64);
             var shw;
             shw = "";
@@ -111,7 +109,6 @@ if ((show > 0) && (current_battle <= battles)) {
             draw_set_font(fnt_40k_14b);
         }
         if (enemy_fleet[2] != 0) {
-            // draw_sprite(spr_force_icon,enemy_fleet[2],xxx+154,yyy+269);
             scr_image("ui/force", enemy_fleet[2], xxx + 154 - 32, yyy + 269 - 32, 64, 64);
             var shw;
             shw = "";
@@ -139,7 +136,6 @@ if ((show > 0) && (current_battle <= battles)) {
             draw_set_font(fnt_40k_14b);
         }
         if (enemy_fleet[3] != 0) {
-            // draw_sprite(spr_force_icon,enemy_fleet[3],xxx+264,yyy+269);
             scr_image("ui/force", enemy_fleet[3], xxx + 264 - 32, yyy + 269 - 32, 64, 64);
             var shw;
             shw = "";
@@ -168,7 +164,6 @@ if ((show > 0) && (current_battle <= battles)) {
         }
 
         if (allied_fleet[1] != 0) {
-            // draw_sprite(spr_force_icon,allied_fleet[1],xxx+374,yyy+269);
             scr_image("ui/force", allied_fleet[1], xxx + 374 - 32, yyy + 269 - 32, 64, 64);
             var shw;
             shw = "";
@@ -196,7 +191,6 @@ if ((show > 0) && (current_battle <= battles)) {
             draw_set_font(fnt_40k_14b);
         }
         if (allied_fleet[2] != 0) {
-            // draw_sprite(spr_force_icon,allied_fleet[1],xxx+484,yyy+269);
             scr_image("ui/force", allied_fleet[1], xxx + 484 - 32, yyy + 269 - 32, 64, 64);
             var shw;
             shw = "";
@@ -261,7 +255,6 @@ if ((show > 0) && (current_battle <= battles)) {
         draw_text(xxx + 332, yyy + 237, string_hash_to_newline("Allies:"));
 
         draw_set_halign(fa_center);
-        // draw_sprite(spr_force_icon,battle_opponent[i],xxx+44,yyy+289);
         scr_image("ui/force", battle_opponent[i], xxx + 44 - 32, yyy + 289 - 32, 64, 64);
         draw_text_transformed(xxx + 44, yyy + 316, string_hash_to_newline(string(strin[4])), 0.75, 1, 0);
         draw_set_halign(fa_center);
@@ -288,99 +281,3 @@ if ((show > 0) && (current_battle <= battles)) {
         }
     }
 }
-
-/*
-
-if (show>0) and (current_battle<=battles){
-    var xxx,yyy,i;
-    xxx=view_xview[0];
-    yyy=view_yview[0];
-    i=current_battle;
-    
-    if (battle_world[i]>0) then draw_sprite(spr_attacked,0,xxx+90,yyy+101);
-    if (battle_world[i]=-50) then draw_sprite(spr_attacked,1,xxx+90,yyy+101);
-    
-    draw_set_font(fnt_info);draw_set_halign(fa_left);draw_set_color(CM_GREEN_COLOR);
-    draw_text(xxx+103,yyy+115,string(i)+"/"+string(battles));
-    
-    draw_set_halign(fa_center);
-    draw_set_font(fnt_fancy);
-    
-    if (battle_world[i]>0) then draw_text_transformed(xxx+313,yyy+111,"Forces Attacked!",1.5,1.5,0);
-    if (battle_world[i]=-50) then draw_text_transformed(xxx+313,yyy+111,"Fleet Attacked!",1.5,1.5,0);
-    
-    if (battle_world[i]>0) then draw_text_transformed(xxx+313,yyy+144,"Planet "+string(battle_location[i])+" "+string(battle_world[i]),1,1,0);
-    if (battle_world[i]=-50) then draw_text_transformed(xxx+313,yyy+144,string(battle_location[i])+" System",1,1,0);
-    
-    draw_sprite(spr_force_icon,1,xxx+340,yyy+191);
-    if (battle_world[i]>0) then draw_sprite(spr_force_icon,battle_opponent[i],xxx+340,yyy+285);
-    draw_set_font(fnt_40k_14);draw_set_halign(fa_left);
-    
-    
-    
-    
-    if (battle_world[i]=-50){
-        if (strin[1]!="0"){
-        if (string(strin[1])="1") then draw_text(xxx+367,yyy+210,string(strin[1])+" Battleship ("+string(strin[4])+"% HP)");
-        if (string(strin[1])!="1") then draw_text(xxx+367,yyy+210,string(strin[1])+" Battleships ("+string(strin[4])+"% HP)");}
-        
-        if (strin[2]!="0"){
-        if (string(strin[2])="1") then draw_text(xxx+367,yyy+222,string(strin[2])+" Cruiser ("+string(strin[5])+"% HP)");
-        if (string(strin[2])!="1") then draw_text(xxx+367,yyy+222,string(strin[2])+" Cruisers ("+string(strin[5])+"% HP)");}
-        
-        if (strin[3]!="0"){
-        if (string(strin[3])="1") then draw_text(xxx+367,yyy+234,string(strin[3])+" Escort ("+string(strin[6])+"% HP)");
-        if (string(strin[3])!="1") then draw_text(xxx+367,yyy+234,string(strin[3])+" Escorts ("+string(strin[6])+"% HP)");}
-        
-        
-        if (strin[7]!="0"){
-        if (string(strin[7])="1") draw_text(xxx+367,yyy+302,string(strin[7])+" Battleship ("+string(strin[10])+"% HP)");
-        if (string(strin[7])!="1") draw_text(xxx+367,yyy+302,string(strin[7])+" Battleships ("+string(strin[10])+"% HP)");}
-        
-        if (strin[8]!="0"){
-        if (string(strin[8])="1") draw_text(xxx+367,yyy+314,string(strin[8])+" Cruiser ("+string(strin[11])+"% HP)");
-        if (string(strin[8])!="1") draw_text(xxx+367,yyy+314,string(strin[8])+" Cruisers ("+string(strin[11])+"% HP)");}
-        
-        if (strin[9]!="0"){
-        if (string(strin[9])="1") draw_text(xxx+367,yyy+326,string(strin[9])+" Escort ("+string(strin[12])+"% HP)");
-        if (string(strin[9])!="1") draw_text(xxx+367,yyy+326,string(strin[9])+" Escorts ("+string(strin[12])+"% HP)");}
-        
-        draw_rectangle(xxx+188,yyy+350,xxx+297,yyy+372,1);draw_rectangle(xxx+328,yyy+350,xxx+437,yyy+372,1);
-        draw_set_alpha(0.5);
-        draw_rectangle(xxx+189,yyy+351,xxx+296,yyy+371,1);draw_rectangle(xxx+329,yyy+351,xxx+436,yyy+371,1);
-        draw_set_alpha(1);
-        
-        draw_set_halign(fa_center);
-        draw_text(xxx+241,yyy+353,"Fight");draw_text(xxx+383,yyy+353,"Retreat");
-        draw_set_halign(fa_left);
-    }
-    
-    
-    if (battle_world[i]>=1){
-        if (battle_opponent[i]<=20){
-            draw_text(xxx+367,yyy+210,string(strin[1])+" Marines");
-            draw_text(xxx+367,yyy+222,string(strin[2])+" Vehicles");
-            if (strin[3]!="") then draw_text(xxx+367,yyy+234,string(strin[3])+" Fortified");// Not / Barely / Lightly / Moderately / Highly / Maximally
-        }
-        
-        draw_set_halign(fa_center);
-        draw_text(xxx+440,yyy+302,string(strin[4]));
-        
-        draw_rectangle(xxx+188,yyy+350,xxx+297,yyy+372,1);draw_rectangle(xxx+328,yyy+350,xxx+437,yyy+372,1);
-        draw_set_alpha(0.5);
-        draw_rectangle(xxx+189,yyy+351,xxx+296,yyy+371,1);draw_rectangle(xxx+329,yyy+351,xxx+436,yyy+371,1);
-        draw_set_alpha(1);
-        
-        draw_text(xxx+241,yyy+353,"Offensive");draw_text(xxx+383,yyy+353,"Defensive");
-        draw_set_halign(fa_left);
-    }
-    
-
-
-
-}*/
-
-/* */
-
-/* */
-/*  */

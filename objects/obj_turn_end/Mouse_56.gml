@@ -7,7 +7,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
     var xxx = camera_get_view_x(view_camera[0]) + 535;
     var yyy = camera_get_view_y(view_camera[0]) + 200;
 
-    if ((cooldown <= 0) && (battle_world[current_battle] == -50) && (combating == 0)) {
+    if ((cooldown <= 0) && (battle_world[current_battle] == noone) && (combating == 0)) {
         if ((mouse_x >= xxx + 132) && (mouse_y >= yyy + 354) && (mouse_x < xxx + 259) && (mouse_y < yyy + 389)) {
             // Run like hell, space
             with (obj_fleet_select) {
@@ -31,7 +31,6 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
             combating = 1;
 
             instance_create(0, 0, obj_fleet);
-            //
             obj_fleet.enemy[1] = enemy_fleet[1];
             obj_fleet.enemy_status[1] = -1;
 
@@ -42,10 +41,8 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
             // Plug in all of the enemies first
             // And then plug in the allies after then with their status set to positive
 
-            var g = 1;
             ee = 1;
-            repeat (5) {
-                g += 1;
+            for (var g = 2; g <= 6; g++) {
                 if (enemy_fleet[g] != 0) {
                     ee += 1;
                     obj_fleet.enemy[ee] = enemy_fleet[g];
@@ -56,9 +53,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
                     obj_fleet.en_escort[ee] = eesc[g];
                 }
             }
-            var g = 0;
-            repeat (6) {
-                g += 1;
+            for (var g = 1; g <= 6; g++) {
                 if (allied_fleet[g] != 0) {
                     ee += 1;
                     obj_fleet.enemy[ee] = allied_fleet[g];
@@ -92,13 +87,11 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
             instance_activate_object(obj_ini);
             instance_activate_object(obj_fleet);
             instance_activate_object(obj_cursor);
-            // instance_deactivate_object(battle_pobject[current_battle]);
         }
     }
 
     if ((cooldown <= 0) && (battle_world[current_battle] > 0) && (combating == 0)) {
-        var tip;
-        tip = "";
+        var tip = "";
 
         if ((mouse_x >= xxx + 132) && (mouse_y >= yyy + 354) && (mouse_x < xxx + 259) && (mouse_y < yyy + 389)) {
             tip = "offensive";
@@ -163,14 +156,6 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
             obj_ncombat.battle_special = battle_special[current_battle];
             obj_ncombat.battle_climate = _planet_data.planet_type;
 
-            // show_message(string(battle_object[current_battle].p_feature[battle_world[current_battle]]));
-            /*if (scr_planetary_feature.plant_feature_bool(battle_object[current_battle].p_feature[battle_world[current_battle]], eP_FEATURES.MONASTERY)==1){
-	            // show_message(string(battle_object[current_battle].p_defenses[battle_world[current_battle]]));
-	            // show_message(string(battle_object[current_battle].p_silo[battle_world[current_battle]]));
-	            obj_ncombat.player_defenses+=battle_object[current_battle].p_defenses[battle_world[current_battle]];
-	            obj_ncombat.player_silos+=battle_object[current_battle].p_silo[battle_world[current_battle]];
-	        }*/
-
             if (_enemy == eFACTION.IMPERIUM) {
                 obj_ncombat.threat = min(1000000, _planet_data.guardsmen);
             } else if (obj_ncombat.enemy < 14 && _enemy > 5) {
@@ -179,7 +164,6 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
                 obj_ncombat.threat = 1;
             }
 
-            //
             _roster = new Roster();
             with (_roster) {
                 roster_location = _loc;

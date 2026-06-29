@@ -17,7 +17,7 @@ function scr_random_find(owner, is_planet, ship_action, feature) {
             var star = stars[star_index];
             return star; // use that to get the obj
         } else {
-            return undefined;
+            return noone;
         }
     } else if (!is_planet && instance_exists(obj_all_fleet)) {
         var ships = [];
@@ -35,9 +35,9 @@ function scr_random_find(owner, is_planet, ship_action, feature) {
             var ship = ships[ship_index];
             return ship;
         } else {
-            return undefined;
+            return noone;
         }
     } else {
-        return undefined; //?? I think it would return that regardless
+        return noone; //?? I think it would return that regardless
     }
 }

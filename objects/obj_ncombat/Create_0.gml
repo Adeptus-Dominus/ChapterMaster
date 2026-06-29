@@ -3,10 +3,6 @@ if (instance_number(obj_ncombat) > 1) {
 }
 
 set_zoom_to_default();
-var co, i;
-co = -1;
-co = 0;
-i = 0;
 hue = 0;
 
 turn_count = 0;
@@ -50,10 +46,9 @@ instance_activate_object(obj_cursor);
 instance_activate_object(obj_ini);
 instance_activate_object(obj_img);
 
-var i, u;
-i = 11;
-repeat (10) {
-    i -= 1; // This creates the objects to then be filled in
+var u = noone;
+for (var i = 10; i > 0; i--) {
+    // This creates the objects to then be filled in
     u = instance_create(i * 10, 240, obj_pnunit);
 }
 
@@ -137,7 +132,6 @@ enemy_forces = 0;
 enemy_max = 0;
 hulk_forces = 0;
 
-i = -1;
 messages = 0;
 messages_to_show = 24;
 messages_shown = 0;
@@ -149,23 +143,16 @@ dead_enemies = 0;
 units_lost_counts = {};
 vehicles_lost_counts = {};
 
-repeat (70) {
-    i += 1;
-    lines[i] = "";
-    lines_color[i] = "";
-    message[i] = "";
-    message_sz[i] = 0;
-    message_priority[i] = 0;
-    dead_jim[i] = "";
-    dead_ene[i] = "";
-    dead_ene_n[i] = 0;
-
-    crunch[i] = 0;
-
-    if (i <= 10) {
-        mucra[i] = 0;
-    }
-}
+lines = array_create(70, "");
+lines_color = array_create(70, "");
+message = array_create(70, "");
+message_sz = array_create(70, 0);
+message_priority = array_create(70, 0);
+dead_jim = array_create(70, "");
+dead_ene = array_create(70, "");
+dead_ene_n = array_create(70, 0);
+crunch = array_create(70, 0);
+mucra = array_create(11, 0);
 
 // The combat-log queue must hold at least COMBAT_LOG_CAPACITY entries so a long turn fully drains.
 // The status line ("Enemy Forces at X%" / "Defeated") only renders once `messages` reaches 0, and
@@ -223,8 +210,6 @@ timer_maxspeed = 1;
 timer_pause = -1;
 turns = 1;
 
-//
-
 scouts = 0;
 tacticals = 0;
 veterans = 0;
@@ -272,8 +257,6 @@ en_apothecaries = 0;
 
 en_big_mofo = 10;
 en_important_dudes = 0;
-
-//
 
 defending = true; // 1 is defensive
 dropping = 0; // 0 is was on ground
@@ -353,12 +336,12 @@ betchers = obj_ini.betchers; // slight melee penalty
 catalepsean = obj_ini.catalepsean; // minor global attack decrease
 occulobe = obj_ini.occulobe; // penalty if morning and susceptible to flash grenades
 mucranoid = obj_ini.mucranoid; // chance to short-circuit
-//
+
 global_melee = 1;
 global_bolter = 1;
 global_attack = 1;
 global_defense = 1;
-//
+
 if ((ambushers == 1) && (ambushers == 999)) {
     global_attack = global_attack * 1.1;
 }
@@ -405,7 +388,6 @@ if (lightning == 1) {
 if (melee == 1) {
     global_melee = global_melee * 1.15;
 }
-//
 if (shitty_luck == 1) {
     global_defense = global_defense * 0.9;
 }

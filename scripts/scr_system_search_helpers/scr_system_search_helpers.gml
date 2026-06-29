@@ -74,8 +74,8 @@ function scr_star_has_planet_with_feature(star, feature) {
     return scr_get_planet_with_feature(star, feature) != -1;
 }
 
-function scr_planet_owned_by_group(planet_id, group, star = "none") {
-    if (star == "none") {
+function scr_planet_owned_by_group(planet_id, group, star = noone) {
+    if (star == noone) {
         return array_contains(group, p_owner[planet_id]);
     } else {
         var is_in_group = false;
@@ -133,9 +133,9 @@ function stars_with_faction_fleets(search_faction) {
     return _stars_with_fleets;
 }
 
-function planets_without_type(type, star = "none") {
+function planets_without_type(type, star = noone) {
     var return_planets = [];
-    if (star == "none") {
+    if (star == noone) {
         for (var i = 1; i <= planets; i++) {
             if (p_type[i] != type) {
                 array_push(return_planets, i);
@@ -172,10 +172,8 @@ function scr_get_stars(shuffled = false, ownership = [], types = []) {
     var _owner_sort = array_length(ownership);
     var _types_sort = array_length(types);
     with (obj_star) {
-        if (!_owner_sort && !_types_sort) {
-            var _add = true;
-        } else {
-            var _add = true;
+        var _add = true;
+        if (_owner_sort || _types_sort) {
             if (_owner_sort && !array_contains(ownership, owner)) {
                 _add = false;
             }
@@ -208,11 +206,11 @@ function planet_imperium_ground_total(planet_check) {
 /// @function find_star_by_name(search_name)
 /// @description Searches all `obj_star` instances and returns the one with a matching name.
 /// @param {String} search_name The name of the star to find.
-/// @returns {Id.Instance.obj_star | String} Returns the `obj_star` instance that matches `search_name`, or the string `"none"` if no matching star is found.
+/// @returns {Id.Instance.obj_star | noone} Returns the `obj_star` instance that matches `search_name`, or the 'noone' object reference if no matching star is found.
 function find_star_by_name(search_name) {
     if (!instance_exists(obj_star)) {
         ERROR_HANDLER.assert_popup("Not a single instance of obj_star exists!");
-        return "none";
+        return noone;
     }
 
     with (obj_star) {
@@ -221,7 +219,7 @@ function find_star_by_name(search_name) {
         }
     }
 
-    return "none";
+    return noone;
 }
 
 //use this to quickly make a loop through a stars planets in an unordered way
@@ -308,7 +306,7 @@ function distance_removed_star(origional_x, origional_y, star_offset = choose(2,
 }
 
 function nearest_star_proper(xx, yy) {
-    var cur_star;
+    var cur_star = noone;
     for (var i = 0; i < 100; i++) {
         cur_star = instance_nearest(xx, yy, obj_star);
         if (!cur_star.craftworld && !cur_star.space_hulk) {
@@ -317,24 +315,24 @@ function nearest_star_proper(xx, yy) {
         }
         instance_deactivate_object(cur_star.id);
     }
-    return "none";
+    return noone;
 }
 
-function nearest_star_with_ownership(xx, yy, ownership, start_star = "none", ignore_dead = true) {
-    var nearest = "none";
+function nearest_star_with_ownership(xx, yy, ownership, start_star = noone, ignore_dead = true) {
+    var nearest = noone;
     var _deactivated = [];
     var total_stars = instance_number(obj_star);
     var i = 0;
     if (!is_array(ownership)) {
         ownership = [ownership];
     }
-    while (nearest == "none" && i < total_stars) {
+    while (nearest == noone && i < total_stars) {
         i++;
         var cur_star = instance_nearest(xx, yy, obj_star);
         if (!instance_exists(cur_star)) {
             break;
         }
-        if (start_star != "none") {
+        if (start_star != noone) {
             if (start_star.id == cur_star.id || (ignore_dead && is_dead_star(cur_star))) {
                 array_push(_deactivated, cur_star.id);
                 instance_deactivate_object(cur_star.id);
@@ -369,13 +367,11 @@ function find_population_doners(doner_to = 0) {
     return pop_doner_options;
 }
 
-function planet_numeral_name(planet, star = "none") {
-    if (star == "none") {
-        //LOGGER.debug($"{planet}, numeral name")
+function planet_numeral_name(planet, star = noone) {
+    if (star == noone) {
         return $"{name} {int_to_roman(planet)}";
     } else {
         with (star) {
-            //LOGGER.debug($"{planet}, numeral name")
             return $"{name} {int_to_roman(planet)}";
         }
     }
@@ -400,9 +396,9 @@ function nearest_from_array(xx, yy, list) {
     return _nearest;
 }
 
-function is_dead_star(star = "none") {
+function is_dead_star(star = noone) {
     var dead_star = true;
-    if (star == "none") {
+    if (star == noone) {
         for (var i = 1; i <= planets; i++) {
             if (string_lower(p_type[i]) != "dead") {
                 dead_star = false;
@@ -488,15 +484,6 @@ function scr_planet_image_numbers(p_type) {
     }
     return 0;
 }
-
-//function scr_get_player_fleets() {
-//	var player_fleets = [];
-//	with(obj_p_fleet){
-//		array_push(player_fleets,id);
-//	}
-//	return player_fleets;
-
-//}
 
 /// @param {Id.Instance.obj_star} star
 /// @param {Enum.eFACTION} faction

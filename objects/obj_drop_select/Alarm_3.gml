@@ -1,34 +1,22 @@
-var i;
-i = -1;
-repeat (61) {
-    i += 1;
-    ship[i] = "";
-    ship_all[i] = 0;
-    ship_use[i] = 0;
-    ship_max[i] = 0;
-    ship_ide[i] = -1;
-}
+ship = array_create(61, "");
+ship_all = array_create(61, 0);
+ship_use = array_create(61, 0);
+ship_max = array_create(61, 0);
+ship_ide = array_create(61, -1);
 
 max_ships = 0;
 
-if (sh_target != -50) {
+if (sh_target != noone) {
     max_ships = sh_target.capital_number + sh_target.frigate_number + sh_target.escort_number;
 
-    var tump;
-    tump = 0;
-
-    var i, q, b;
-    i = 0;
-    q = 0;
-    b = 0;
-    repeat (sh_target.capital_number) {
-        b += 1;
-        if (sh_target.capital[b] != "") {
+    var i = 0;
+    for (var s = 1; s <= sh_target.capital_number; s++) {
+        if (sh_target.capital[s] != "") {
             i += 1;
-            ship[i] = sh_target.capital[i];
+            ship[i] = sh_target.capital[s];
 
             ship_use[i] = 0;
-            tump = sh_target.capital_num[i];
+            var tump = sh_target.capital_num[s];
             ship_max[i] = obj_ini.ship_carrying[tump];
             ship_ide[i] = tump;
             ship_size[i] = 3;
@@ -38,15 +26,13 @@ if (sh_target != -50) {
             purge_c += ship_max[i];
         }
     }
-    q = 0;
-    repeat (sh_target.frigate_number) {
-        q += 1;
-        if (sh_target.frigate[q] != "") {
+    for (var s = 1; s <= sh_target.frigate_number; s++) {
+        if (sh_target.frigate[s] != "") {
             i += 1;
-            ship[i] = sh_target.frigate[q];
+            ship[i] = sh_target.frigate[s];
 
             ship_use[i] = 0;
-            tump = sh_target.frigate_num[q];
+            var tump = sh_target.frigate_num[s];
             ship_max[i] = obj_ini.ship_carrying[tump];
             ship_ide[i] = tump;
             ship_size[i] = 2;
@@ -56,15 +42,13 @@ if (sh_target != -50) {
             purge_c += ship_max[i];
         }
     }
-    q = 0;
-    repeat (sh_target.escort_number) {
-        q += 1;
-        if ((sh_target.escort[q] != "") && (obj_ini.ship_carrying[sh_target.escort_num[q]] > 0)) {
+    for (var s = 1; s <= sh_target.escort_number; s++) {
+        if ((sh_target.escort[s] != "") && (obj_ini.ship_carrying[sh_target.escort_num[s]] > 0)) {
             i += 1;
-            ship[i] = sh_target.escort[q];
+            ship[i] = sh_target.escort[s];
 
             ship_use[i] = 0;
-            tump = sh_target.escort_num[q];
+            var tump = sh_target.escort_num[s];
             ship_max[i] = obj_ini.ship_carrying[tump];
             ship_ide[i] = tump;
             ship_size[i] = 1;

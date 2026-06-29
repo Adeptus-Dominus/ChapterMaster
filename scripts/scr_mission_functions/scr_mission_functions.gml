@@ -568,10 +568,10 @@ function complete_garrison_mission(problem_index) {
     if (_result == "none") {
         //TODO make a dedicated plus minus string function if there isn't one already
     } else if (_result < 0) {
-        var _effect = _result * irandom_range(1, 5);
+        _effect = _result * irandom_range(1, 5);
         _mission_string += $"A number of diplomatic incidents occured over the period which had considerable negative effects on our disposition with the planetary governor (disposition -{_effect})";
     } else {
-        var _effect = _result * irandom_range(1, 5);
+        _effect = _result * irandom_range(1, 5);
         _mission_string += $"As a diplomatic mission the duration of the stay was a success with our political position with the planet being enhanced greatly (disposition +{_effect})";
     }
 
@@ -777,8 +777,8 @@ function complete_beast_hunt_mission(targ_planet, problem_index) {
 //TODO allow most of these functions to be condensed and allow arrays of problems or planets and maybe increase filtering options
 //filtering options could be done via universal methods that all the filters to be passed to many other game systems
 /// @self Asset.GMObject.obj_star
-function has_any_problem_planet(planet, star = "none") {
-    if (star == "none") {
+function has_any_problem_planet(planet, star = noone) {
+    if (star == noone) {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
             if (p_problem[planet][i] != "") {
                 return true;
@@ -793,9 +793,9 @@ function has_any_problem_planet(planet, star = "none") {
 }
 
 /// @self Asset.GMObject.obj_star
-function planet_problemless(planet, star = "none") {
+function planet_problemless(planet, star = noone) {
     var _problemless = true;
-    if (star == "none") {
+    if (star == noone) {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
             if (p_problem[planet][i] != "") {
                 _problemless = false;
@@ -818,9 +818,9 @@ function star_problemless(){
 
 // returns a bool for if any planet on a given star has the given problem
 /// @self Asset.GMObject.obj_star
-function has_problem_star(problem, star = "none") {
+function has_problem_star(problem, star = noone) {
     var has_problem = false;
-    if (star == "none") {
+    if (star == noone) {
         for (var i = 1; i <= planets; i++) {
             has_problem = has_problem_planet(i, problem);
             if (has_problem) {
@@ -838,8 +838,8 @@ function has_problem_star(problem, star = "none") {
 
 //returns a bool for if a planet has a given problem
 /// @self Asset.GMObject.obj_star
-function has_problem_planet(planet, problem, star = "none") {
-    if (star == "none") {
+function has_problem_planet(planet, problem, star = noone) {
+    if (star == noone) {
         return array_contains(p_problem[planet], problem);
     } else {
         with (star) {
@@ -850,9 +850,9 @@ function has_problem_planet(planet, problem, star = "none") {
 
 //returns the array position of a given problem on a given planet if the specfied time is given
 /// @self Asset.GMObject.obj_star
-function has_problem_planet_and_time(planet, problem, time, star = "none") {
+function has_problem_planet_and_time(planet, problem, time, star = noone) {
     var _had_problem = -1;
-    if (star == "none") {
+    if (star == noone) {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
             if (p_problem[planet][i] == problem) {
                 if (p_timer[planet][i] == time) {
@@ -870,9 +870,9 @@ function has_problem_planet_and_time(planet, problem, time, star = "none") {
 
 //returns the array position of a given problem on a given planet if the specfied time is above 0
 /// @self Asset.GMObject.obj_star
-function has_problem_planet_with_time(planet, problem, star = "none") {
+function has_problem_planet_with_time(planet, problem, star = noone) {
     var _had_problem = -1;
-    if (star == "none") {
+    if (star == noone) {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
             if (p_problem[planet][i] == problem) {
                 if (p_timer[planet][i] > 0) {
@@ -890,8 +890,8 @@ function has_problem_planet_with_time(planet, problem, star = "none") {
 
 //returns the array position of a gien problem on a given planet
 /// @self Asset.GMObject.obj_star
-function find_problem_planet(planet, problem, star = "none") {
-    if (star == "none") {
+function find_problem_planet(planet, problem, star = noone) {
+    if (star == noone) {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
             if (p_problem[planet][i] == problem) {
                 return i;
@@ -907,9 +907,9 @@ function find_problem_planet(planet, problem, star = "none") {
 
 ///removie all of a given problem from a planet
 /// @self Asset.GMObject.obj_star
-function remove_planet_problem(planet, problem, star = "none") {
+function remove_planet_problem(planet, problem, star = noone) {
     var _had_problem = -1;
-    if (star == "none") {
+    if (star == noone) {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
             if (p_problem[planet][i] == problem) {
                 p_problem[planet][i] = "";
@@ -928,8 +928,8 @@ function remove_planet_problem(planet, problem, star = "none") {
 
 //find an open problem slot on a given planet
 /// @self Asset.GMObject.obj_star
-function open_problem_slot(planet, star = "none") {
-    if (star == "none") {
+function open_problem_slot(planet, star = noone) {
+    if (star == noone) {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
             if (p_problem[planet][i] == "") {
                 return i;
@@ -945,8 +945,8 @@ function open_problem_slot(planet, star = "none") {
 
 //remove all of a given problem types from a star
 /// @self Asset.GMObject.obj_star
-function remove_star_problem(problem, star = "none") {
-    if (star == "none") {
+function remove_star_problem(problem, star = noone) {
+    if (star == noone) {
         for (var i = 1; i <= planets; i++) {
             remove_planet_problem(i, problem);
         }
@@ -973,9 +973,9 @@ function problem_count_down(planet, count_change = 1) {
 
 //add a new problem
 /// @self Asset.GMObject.obj_star
-function add_new_problem(planet, problem, timer, star = "none", other_data = {}) {
+function add_new_problem(planet, problem, timer, star = noone, other_data = {}) {
     var problem_added = false;
-    if (star == "none") {
+    if (star == noone) {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
             if (p_problem[planet][i] == "") {
                 p_problem[planet][i] = problem;
@@ -987,7 +987,7 @@ function add_new_problem(planet, problem, timer, star = "none", other_data = {})
         }
     } else {
         with (star) {
-            problem_added = add_new_problem(planet, problem, timer, "none", other_data);
+            problem_added = add_new_problem(planet, problem, timer, noone, other_data);
         }
     }
     return problem_added;
@@ -1009,9 +1009,9 @@ function increment_mission_completion(mission_data) {
 //search problem data for a given and key and iff applicable value on that key
 //TODO increase filtering and search options
 /// @self Asset.GMObject.obj_star
-function problem_has_key_and_value(planet, problem, key, value = "", star = "none") {
+function problem_has_key_and_value(planet, problem, key, value = "", star = noone) {
     var has_data = false;
-    if (star == "none") {
+    if (star == noone) {
         var problem_data = p_problem_other_data[planet][problem];
         if (struct_exists(problem_data, key)) {
             if (value == "") {

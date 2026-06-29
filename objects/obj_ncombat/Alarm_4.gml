@@ -1,8 +1,4 @@
-var jims;
-jims = 0;
-repeat (20) {
-    jims += 1;
-
+for (var jims = 1; jims <= 20; jims++) {
     if (dead_jim[jims] != "") {
         newline = dead_jim[jims];
         newline_color = "red";

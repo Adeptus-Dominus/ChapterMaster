@@ -31,10 +31,11 @@ function scr_kill_ship(index) {
             var in_warp = ship_location[index] == "Warp";
             var _available_ships = [];
             var _ship_fleet = find_ships_fleet(index);
+            var _nearest_star = noone;
             if (!in_warp) {
-                var _nearest_star = find_star_by_name(ship_location[index]);
+                _nearest_star = find_star_by_name(ship_location[index]);
             }
-            if (_ship_fleet != "none") {
+            if (_ship_fleet != noone) {
                 delete_ship_from_fleet(index, _ship_fleet);
                 _available_ships = fleet_full_ship_array(_ship_fleet);
             }
@@ -103,7 +104,7 @@ function scr_kill_ship(index) {
             array_delete(ship_guardsmen_max, index, 1);
 
             if (!in_warp) {
-                if (_nearest_star != "none") {
+                if (_nearest_star != noone) {
                     while (array_length(_units_on_ship) > 0) {
                         _unit = array_pop(_units_on_ship);
                         if (irandom(100) > 100 - _unit.luck) {

@@ -22,11 +22,11 @@ switch (effect) {
         var _sav = instance_create_depth(0, 0, -20005, obj_saveload);
         _sav.menu = (effect == eIN_GAME_MENU_EFFECT.SAVE) ? 1 : 2;
 
-        var _b = instance_create_depth(707, 830, -20010, obj_new_button);
-        _b.button_text = "Back";
-        _b.target = eIN_GAME_MENU_EFFECT.BACK_FROM_SAVELOAD;
-        _b.scaling = 1.5;
-        _b.button_id = 1;
+        var _load_button = instance_create_depth(707, 830, -20010, obj_new_button);
+        _load_button.button_text = "Back";
+        _load_button.target = eIN_GAME_MENU_EFFECT.BACK_FROM_SAVELOAD;
+        _load_button.scaling = 1.5;
+        _load_button.button_id = 1;
         break;
 
     case eIN_GAME_MENU_EFFECT.OPTIONS:
@@ -34,12 +34,12 @@ switch (effect) {
             x -= 2000;
             y -= 2000;
         }
-        var _b = instance_create_depth(653, 664, -20010, obj_new_button);
-        _b.sprite_index = spr_ui_but_1;
-        _b.button_text = "Back";
-        _b.target = eIN_GAME_MENU_EFFECT.BACK_FROM_SETTINGS;
-        _b.scaling = 1.5;
-        _b.button_id = 1;
+        var _options_button = instance_create_depth(653, 664, -20010, obj_new_button);
+        _options_button.sprite_index = spr_ui_but_1;
+        _options_button.button_text = "Back";
+        _options_button.target = eIN_GAME_MENU_EFFECT.BACK_FROM_SETTINGS;
+        _options_button.scaling = 1.5;
+        _options_button.button_id = 1;
 
         settings = 1;
         cooldown = 8;

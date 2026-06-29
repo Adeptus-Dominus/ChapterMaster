@@ -15,7 +15,7 @@ function scr_mission_eta(star_x, star_y, type = 1, leeway = 10) {
     if (instance_exists(obj_p_fleet)) {
         if (type == 1) {
             var nearest_fleet = get_nearest_player_fleet(star_x, star_y);
-            if (nearest_fleet != "none") {
+            if (nearest_fleet != noone) {
                 eta1 = get_viable_travel_time(leeway, nearest_fleet.x, nearest_fleet.y, star_x, star_y, nearest_fleet, false);
             }
             // n1=instance_nearest(x,y,obj_p_fleet);

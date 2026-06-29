@@ -128,8 +128,8 @@ function check_dead_marines(unit_struct, unit_index) {
     return unit_lost;
 }
 
-/// @self Asset.GMObject.obj_pnunit
-/// @param {Asset.GMObject.obj_pnunit} target_object
+/// @self Id.Instance.obj_pnunit
+/// @param {Id.Instance.obj_pnunit} target_object
 function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position) {
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //

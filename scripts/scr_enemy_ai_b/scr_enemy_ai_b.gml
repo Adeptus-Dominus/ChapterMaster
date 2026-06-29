@@ -3,39 +3,35 @@ function scr_enemy_ai_b() {
     // Imperial Repleneshes numbers
     // If no enemies and guard < pop /470 then increase guardsman
     // If no enemies and population < max_pop then increase by like 1%
-    var rando = 0, success = false, i = 0, is_garrison_force = false, total_garrison = 0, sabotage_force = false;
-
-    i = 0;
-    for (i = 1; i <= planets; i++) {
-       system_datas[i].refresh_data();
-       system_datas[i].end_of_turn_population_influence_and_enemy_growth();
-        // if (p_heresy[i]>0) and (owner != eFACTION.CHAOS) then p_heresy[i]-=2;
+    for (var i = 1; i <= planets; i++) {
+        system_datas[i].refresh_data();
+        system_datas[i].end_of_turn_population_influence_and_enemy_growth();
     }
     // Tau rebellions
     if ((present_fleet[8] >= 1) && (owner != eFACTION.TAU)) {
-        var flit, ran1, ran2, tau_chance;
-        flit = scr_orbiting_fleet(eFACTION.TAU);
-        ran1 = 0;
-        ran2 = floor(random(planets)) + 1;
+        var tau_chance;
+        var flit = scr_orbiting_fleet(eFACTION.TAU);
+        var ran1 = 0;
+        var ran2 = floor(random(planets)) + 1;
 
-        if (flit != "none") {
+        if (flit != noone) {
             ran1 = floor(random(100)) + 1;
             var tau_influence = p_influence[ran2][eFACTION.TAU];
             if (tau_influence < 90 && (p_type[ran2] != "Dead")) {
                 if ((flit.image_index == 1) && (ran1 <= 90)) {
-                    adjust_influence(eFACTION.TAU, choose(2, 3), ran2);
+                    adjust_influence(eFACTION.TAU, choose(2, 3), ran2, self);
                     if ((p_type[ran2] == "Forge") && (tau_influence >= 3)) {
-                        adjust_influence(eFACTION.TAU, -3, ran2);
+                        adjust_influence(eFACTION.TAU, -3, ran2, self);
                     }
                 } else if ((flit.image_index > 1) && (flit.image_index < 4) && (ran1 <= 90)) {
-                    adjust_influence(eFACTION.TAU, choose(7, 9, 11, 13), ran2);
+                    adjust_influence(eFACTION.TAU, choose(7, 9, 11, 13), ran2, self);
                     if ((p_type[ran2] == "Forge") && (tau_influence >= 10)) {
-                        adjust_influence(eFACTION.TAU, -10, ran2);
+                        adjust_influence(eFACTION.TAU, -10, ran2, self);
                     }
                 } else if (flit.image_index >= 4) {
-                    adjust_influence(eFACTION.TAU, choose(9, 11, 13, 15, 17), ran2);
+                    adjust_influence(eFACTION.TAU, choose(9, 11, 13, 15, 17), ran2, self);
                     if ((p_type[ran2] == "Forge") && (tau_influence >= 13)) {
-                        adjust_influence(eFACTION.TAU, -13, ran2);
+                        adjust_influence(eFACTION.TAU, -13, ran2, self);
                     }
                 }
             }
@@ -44,7 +40,7 @@ function scr_enemy_ai_b() {
             }
         }
 
-        for (i = 1; i <= planets; i++) {
+        for (var i = 1; i <= planets; i++) {
             var tau_influence = p_influence[i][eFACTION.TAU];
             tau_chance = floor(random(100)) + 1;
 
@@ -55,12 +51,8 @@ function scr_enemy_ai_b() {
                     }
                 }
 
-                if (flit != "none" && flit.owner == eFACTION.TAU) {
+                if (flit != noone && flit.owner == eFACTION.TAU) {
                     tau_chance += (flit.image_index * 5) - 5;
-                }
-
-                if (tau_chance >= 95) {
-                    /*obj_controller.x=self.x;obj_controller.y=self.y;show_message(string(tau_chance)+" |"+string(p_orks[i])+"|"+string(p_traitors[i]));*/
                 }
 
                 if ((tau_chance >= 95) && (p_orks[i] == 0) && (p_traitors[i] == 0) && (p_necrons[i] == 0) && (p_demons[i] == 0) && (p_chaos[i] == 0)) {
@@ -70,9 +62,10 @@ function scr_enemy_ai_b() {
                         p_guardsmen[i] = 0;
                     }
 
-                    var targ = 0, have = 0, badd = 1;
+                    var have = 0;
+                    var badd = 1;
 
-                    targ = planets;
+                    var targ = planets;
                     for (var s = 1; s <= planets; s++) {
                         if (p_type[s] == "Dead") {
                             targ -= 1;

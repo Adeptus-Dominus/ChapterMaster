@@ -280,7 +280,6 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     static determine_battle = function(attack_defend, win, margin, enemy, location, planet = 0, ship = 0) {
         var _sim = global.character_tester;
         if (win) {} else {
-            //var squad_positions;
             var _leader;
             var m;
             var _unit;
@@ -342,12 +341,12 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     };
 }
 
-function determine_pdf_defence(pdf, garrison = "none", planet_forti = 0, enemy = 0) {
+function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 0) {
     var explanations = "";
     var defence_mult = planet_forti * 0.1;
     var pdf_score = 0;
     explanations += $"Planet Defences:X{defence_mult + 1}#";
-    if (garrison != "none") {
+    if (garrison != noone) {
         //if player supports give garrison bonus
         var garrison_mult = garrison.viable_garrison * (0.008 + (0.001 * planet_forti));
         var siege_masters = scr_has_adv("Siege Masters");

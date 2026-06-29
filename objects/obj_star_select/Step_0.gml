@@ -7,6 +7,3 @@ if ((obj_controller.popup < 3) && (loading == 0)) {
         instance_destroy();
     }
 }
-
-/* */
-/*  */

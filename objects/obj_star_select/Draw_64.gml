@@ -19,16 +19,7 @@ draw_set_valign(fa_top);
 draw_set_color(0);
 
 try {
-    var temp1 = 0;
-    var xx = 0;
-    var yy = 0;
     if (loading == 1) {
-        xx = xx;
-        yy = yy;
-    } else if (loading == 1) {
-        var temp1, dist;
-        dist = 999;
-
         obj_controller.selecting_planet = 0;
         button1 = "";
         button2 = "";
@@ -48,11 +39,10 @@ try {
     var click_accepted = (!obj_controller.menu) && (!obj_controller.zoomed) && (!instance_exists(obj_bomb_select)) && (!instance_exists(obj_drop_select));
     if (click_accepted && (!debug || !debug_slate.entered())) {
         if (mouse_button_clicked(, 0)) {
-            var closes = 0, sta1 = 0, sta2 = 0;
             var mouse_consts = return_mouse_consts();
-            sta1 = instance_nearest(mouse_consts[0], mouse_consts[1], obj_star);
-            sta2 = point_distance(mouse_consts[0], mouse_consts[1], sta1.x, sta1.y);
-            closes = true;
+            var sta1 = instance_nearest(mouse_consts[0], mouse_consts[1], obj_star);
+            var sta2 = point_distance(mouse_consts[0], mouse_consts[1], sta1.x, sta1.y);
+            var closes = true;
             if (sta2 > 15) {
                 if (scr_hit(27, 165, 300, 165 + 294)) {
                     closes = false;
@@ -70,7 +60,6 @@ try {
                         }
                     }
                 }
-                var shutter_button;
                 var shutters = [
                     shutter_1,
                     shutter_2,
@@ -78,7 +67,7 @@ try {
                     shutter_4
                 ];
                 for (var i = 0; i < 4; i++) {
-                    shutter_button = shutters[i];
+                    var shutter_button = shutters[i];
                     if (shutter_button.hit()) {
                         closes = false;
                         break;
@@ -164,14 +153,13 @@ try {
         }
         // Buttons that are available
         if (!buttons_selected) {
+            var is_enemy = false;
             if ((obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && p_data.current_owner > 5) || (obj_controller.faction_status[eFACTION.IMPERIUM] == "War" && p_data.at_war(0, 1, 1) && p_data.player_disposition <= 50)) {
-                var is_enemy = true;
-            } else {
-                var is_enemy = false;
+                is_enemy = true;
             }
 
             if (p_data.planet > 0) {
-                if (target.present_fleet[1] == 0) /* and (target.p_type[obj_controller.selecting_planet]!="Dead")*/ {
+                if (target.present_fleet[1] == 0) {
                     if (p_data.player_forces > 0) {
                         if (is_enemy) {
                             button1 = "Attack";
@@ -181,7 +169,7 @@ try {
                         }
                     }
                 }
-                if (target.present_fleet[1] > 0) /* and (target.p_type[obj_controller.selecting_planet]!="Dead")*/ {
+                if (target.present_fleet[1] > 0) {
                     if (is_enemy) {
                         button1 = "Attack";
                         button2 = "Raid";
@@ -344,28 +332,31 @@ try {
                     instance_destroy();
                 }
             } else if (current_button == "Raid" && instance_nearest(x, y, obj_p_fleet).acted <= 1) {
+                // feather ignore once GM2064
                 instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, planet_number: obj_controller.selecting_planet, sh_target: instance_nearest(x, y, obj_p_fleet), purge: 0});
             } else if (current_button == "Attack") {
                 var _allow_attack = true;
-                var _targ = !target.present_fleet[1] ? -50 : instance_nearest(x, y, obj_p_fleet);
+                var _targ = !target.present_fleet[1] ? noone : instance_nearest(x, y, obj_p_fleet);
                 if (instance_exists(_targ)) {
                     if (_targ.acted >= 2) {
                         _allow_attack = false;
                     }
                 }
                 if (_allow_attack) {
+                    // feather ignore once GM2064
                     instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, planet_number: obj_controller.selecting_planet, attack: true, sh_target: _targ, purge: 0});
                 }
             } else if (current_button == "Purge") {
                 var _allow_attack = true;
-                var _targ = !target.present_fleet[1] ? -50 : instance_nearest(x, y, obj_p_fleet);
+                var _targ = !target.present_fleet[1] ? noone : instance_nearest(x, y, obj_p_fleet);
                 if (instance_exists(_targ)) {
                     if (_targ.acted >= 2) {
                         _allow_attack = false;
                     }
                 }
                 if (_allow_attack) {
-                    instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, purge: 1, planet_number: obj_controller.selecting_planet, sh_target: _targ});
+                    // feather ignore once GM2064
+                    instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, planet_number: obj_controller.selecting_planet, sh_target: _targ, purge: 1});
                 }
             } else if (current_button == "Bombard") {
                 instance_create(x, y, obj_bomb_select);
@@ -407,7 +398,7 @@ try {
                                 button4 = "";
                             }
                         }
-                        // 135 ; popup?
+                        // popup?
                     }
                 }
             } else if (current_button == "Cyclonic Torpedo") {
@@ -423,8 +414,6 @@ try {
             draw_rectangle(37, 413, 270, 452, 0);
             draw_set_alpha(1);
 
-            /*draw_set_color(CM_GREEN_COLOR);draw_rectangle(40,247,253,273,1);*/
-
             draw_set_halign(fa_left);
 
             draw_set_color(0);
@@ -435,12 +424,10 @@ try {
             draw_set_font(fnt_40k_14b);
             draw_text(37.5, 413.5, "Select Fleet Combat");
 
-            // x3=46;y3=252;
             var x3 = 49, y3 = 441;
 
             for (var i = 1; i <= 7; i++) {
                 if (en_fleet[i] > 0) {
-                    // draw_sprite_ext(spr_force_icon,en_fleet[i],x3,y3,0.5,0.5,0,c_white,1);
                     scr_image("ui/force", en_fleet[i], x3 - 16, y3 - 16, 32, 32);
                     x3 += 64;
                 }
@@ -453,7 +440,3 @@ try {
     ERROR_HANDLER.handle_exception(_exception);
     instance_destroy();
 }
-
-/* */
-
-/*  */

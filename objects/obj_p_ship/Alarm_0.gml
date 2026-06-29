@@ -1,12 +1,6 @@
 action = "";
 direction = 0;
 
-cooldown1 = 0;
-cooldown2 = 0;
-cooldown3 = 0;
-cooldown4 = 0;
-cooldown5 = 0;
-
 name = obj_ini.ship[ship_id];
 class = obj_ini.ship_class[ship_id];
 hp = obj_ini.ship_hp[ship_id] * 1;
@@ -18,7 +12,6 @@ armour_front = obj_ini.ship_front_armour[ship_id];
 armour_other = obj_ini.ship_other_armour[ship_id];
 weapons = obj_ini.ship_weapons[ship_id];
 turrets = 0;
-ship_colour = obj_controller.body_colour_replace;
 weapon = obj_ini.ship_wep[ship_id];
 
 weapon_facing[1] = "";
@@ -191,14 +184,12 @@ if (obj_controller.stc_bonus[6] == 2) {
     armour_other = round(armour_other * 1.1);
 }
 
-var i = 0, unit, b = 0;
-
 for (var co = 0; co <= obj_ini.companies; co++) {
-    for (i = 0; i < array_length(obj_ini.name[co]); i++) {
+    for (var i = 0; i < array_length(obj_ini.name[co]); i++) {
         if (obj_ini.name[co][i] == "") {
             continue;
         }
-        unit = fetch_unit([co, i]);
+        var unit = fetch_unit([co, i]);
         if (unit.ship_location == ship_id) {
             if (unit.is_boarder && unit.hp() > (unit.max_health() / 10)) {
                 array_push(board_co, co);

@@ -37,13 +37,12 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
     draw_text_transformed(bomb_window.x1 + 18, bomb_window.y1 + 30, "Initializing Bombardment...", 0.8, 0.8, 0);
 
     // Target info
-    var _total_hers, _influ;
     draw_set_font(fnt_info);
     draw_text_bold(bomb_window.x1 + 20, bomb_window.y1 + 70, $"Target planet: {p_data.name()}");
 
-    _total_hers = p_data.corruption + p_data.secret_corruption;
-
-    _influ = p_data.population_influences;
+    var _total_hers = p_data.corruption + p_data.secret_corruption;
+    var str = 0;
+    var _influ = p_data.population_influences;
 
     var population_string = $"Population: {p_data.display_population()} people";
     draw_text_bold(bomb_window.x1 + 20, bomb_window.y1 + 90, population_string);
@@ -91,7 +90,7 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
                 break;
         }
 
-        var str = 0, str_string = "";
+        var str_string = "";
         // TODO a centralised point to be able to fetch display names from factions identifying number
         str = floor(p_data.planet_forces[target]);
         if (target == 2.5) {
@@ -150,8 +149,7 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
     // Total selection number
     draw_set_halign(fa_left);
     draw_set_font(fnt_info);
-    var sel = "";
-    sel = ships_selected;
+    var sel = ships_selected;
     var curr_sel_string = $"Current Selection: {sel} ships";
     draw_text_bold(bomb_window.x1 + 20, bomb_window.y2 - 28, curr_sel_string);
 

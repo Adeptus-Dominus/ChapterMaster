@@ -65,7 +65,7 @@ try {
                     obj_controller.disposition[10] -= 10;
                     text = "The heretic is killed in a most violent fashion.  With a lack of go-between the meeting cannot proceed.";
                     reset_popup_options();
-                    mission = ""; // image="";
+                    mission = "";
                     if (obj_controller.blood_debt == 1) {
                         obj_controller.penitent_current += 1;
                         obj_controller.penitent_turn = 0;
@@ -199,8 +199,6 @@ try {
 
     if ((press == 0) && array_length(options) || ((demand == 1) && (mission != "") && (string_count("Inquisition", title) > 0)) || ((demand == 1) && (title == "Inquisition Recon"))) {
         if (title == "Inquisition Recon") {
-            var mission_star, onceh;
-            onceh = 0;
             obj_controller.temp[200] = string(loc);
             var mission_star = find_star_by_name(obj_controller.temp[200]);
             if (add_new_problem(planet, "recon", estimate, mission_star)) {
@@ -215,12 +213,10 @@ try {
 
         if ((mission != "") && (title == "Inquisition Mission")) {
             obj_controller.temp[200] = string(loc);
-            var mission_star, onceh;
-            mission_star = 0;
-            onceh = 0;
+            var onceh = 0;
             var mission_star = find_star_by_name(obj_controller.temp[200]);
             var mission_is_go = false;
-            if (mission_star != "none" && planet > 0) {
+            if (mission_star != noone && planet > 0) {
                 var _estimate = estimate;
                 var _planet = planet;
                 var _mission = mission;

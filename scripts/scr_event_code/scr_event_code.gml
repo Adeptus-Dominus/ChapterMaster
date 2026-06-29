@@ -52,7 +52,7 @@ function event_end_turn_action() {
                 var _star_name = _event.system;
                 var _event_star = find_star_by_name(_event.system);
                 var _planet = _event.planet;
-                if (_event_star != "none") {
+                if (_event_star != noone) {
                     _event_star.dispo[_planet] = -10; // Resets
                     var twix = $"Inquisition executes Chapter Serf in control of {planet_numeral_name(_planet, _event_star)} and installs a new Planetary Governor.";
                     if (_event_star.p_owner[_planet] == eFACTION.PLAYER) {
@@ -89,7 +89,7 @@ function event_end_turn_action() {
             if (_event.e_id == "chaos_invasion") {
                 var xx = 0, yy = 0, flee = 0, dirr = 0;
                 var star_id = scr_random_find(1, true, "", "");
-                if (star_id != undefined) {
+                if (star_id != noone) {
                     scr_event_log("purple", $"Chaos Fleets exit the warp near the {star_id.name} system.", star_id.name);
                     for (var j = 0; j < 4; j++) {
                         dirr += irandom_range(50, 100);
@@ -163,6 +163,7 @@ function event_end_turn_action() {
                 var marine_num = _event.marine;
                 var _unit = fetch_unit([comp, marine_num]);
                 var item = _event.crafted;
+                var _pop_data = {};
 
                 LOGGER.warning($"comp: {comp}, marine_num: {marine_num}");
 
@@ -235,14 +236,12 @@ function event_end_turn_action() {
                             choice_func: popup_default_close,
                         }
                     ];
-                    var _pop_data = {
+                    _pop_data = {
                         options: options,
                         marine_number: marine_num,
                         company: comp,
                         marine_name: marine_name,
                     };
-                } else {
-                    _pop_data = "";
                 }
 
                 scr_popup("He Built It", tixt, "tech_build", _pop_data);
@@ -358,7 +357,7 @@ function strange_build_event() {
         if (marine_is_planetside && heritical_item) {
             var _system = find_star_by_name(_unit.location_string);
             var _planet = _unit.planet_location;
-            if (_system != "none") {
+            if (_system != noone) {
                 with (_system) {
                     p_hurssy[_planet] += 6;
                     p_hurssy_time[_planet] = 2;
@@ -366,7 +365,7 @@ function strange_build_event() {
             }
         } else if (!marine_is_planetside && heritical_item) {
             var _fleet = find_ships_fleet(_unit.ship_location);
-            if (_fleet != "none") {
+            if (_fleet != noone) {
                 //the intended code for here was to add some sort of chaos event on the ship stashed up ready to fire in a few turns
             }
         }

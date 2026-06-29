@@ -1,15 +1,9 @@
 if (help == 0) {
-    var bad = 1;
-    if (instance_exists(obj_controller)) {
-        if (obj_controller.menu == eMENU.EVENT_LOG) {
-            bad = 0;
-        }
-    }
-    if (bad == 0) {
+    if (instance_exists(obj_controller) && (obj_controller.menu == eMENU.EVENT_LOG)) {
         var xx = camera_get_view_x(view_camera[0]);
         var yy = camera_get_view_y(view_camera[0]);
         draw_set_alpha(1);
-        draw_set_color(0);
+        draw_set_color(c_black);
         draw_rectangle(xx, yy, xx + 1600, yy + 900, 0);
         draw_set_alpha(0.5);
         draw_sprite(spr_rock_bg, 0, xx, yy);
@@ -19,26 +13,25 @@ if (help == 0) {
         draw_set_halign(fa_center);
         draw_text(xx + 800, yy + 74, string(global.chapter_name) + " Event Log");
         draw_set_halign(fa_left);
-        var t = 0, p = -1, cur_event;
         var ent = array_length(event);
         draw_set_color(CM_GREEN_COLOR);
         if (ent == 0) {
             draw_text(xx + 25, yy + 120, "No entries logged.");
         } else {
-            p = -1;
+            var p = -1;
             draw_set_font(fnt_40k_14);
             draw_set_alpha(0.8);
             for (var t = top - 1; t < ent; t++) {
                 p++;
-                cur_event = event[t];
+                var cur_event = event[t];
                 if (cur_event.text != "") {
                     // 1554
                     set_alert_draw_colour(cur_event.colour);
                     draw_text_ext(xx + 25, yy + 120 + (p * 26), $"{cur_event.date}  (Turn {cur_event.turn}) - {cur_event.text}", -1, 1554);
-                    if (cur_event.event_target != "none") {
+                    if (cur_event.event_target != noone) {
                         if (point_and_click(draw_unit_buttons([xx + 1400, yy + 120 + (p * 26)], "View", [1, 1], c_green,, fnt_40k_14b, 1, true))) {
                             var view_star = find_star_by_name(cur_event.event_target);
-                            if (view_star != "none") {
+                            if (view_star != noone) {
                                 main_map_defaults();
                                 obj_controller.x = view_star.x;
                                 obj_controller.y = view_star.y;
@@ -48,26 +41,25 @@ if (help == 0) {
                 }
             }
         }
-        var x1, y1, x2, y2, scrolly, chunk_size, my, y5;
-        x1 = xx + 1557;
-        y1 = yy + 117;
-        x2 = xx + 1583;
-        y2 = yy + 823;
+        var x1 = xx + 1557;
+        var y1 = yy + 117;
+        var x2 = xx + 1583;
+        var y2 = yy + 823;
         draw_rectangle(x1, y1, x2, y2, 1);
         cubey = 30;
-        scrolly = (y2 - y1) + 12; // The maximum amount of moving around that the cube does
-        my = max(1, ent - 24); // The maximum number of scroll chunks
-        chunk_size = scrolly / my;
-        y5 = (top - 1) * chunk_size;
+        var scrolly = (y2 - y1) + 12; // The maximum amount of moving around that the cube does
+        var my = max(1, ent - 24); // The maximum number of scroll chunks
+        var chunk_size = scrolly / my;
+        var y5 = (top - 1) * chunk_size;
         draw_rectangle(x1, y1 + y5, x2, y1 + y5 + cubey, 0);
+        draw_set_alpha(1);
     }
-    draw_set_alpha(1);
 }
 
 if (help == 1) {
     var xx = camera_get_view_x(view_camera[0]);
     var yy = camera_get_view_y(view_camera[0]);
-    draw_set_color(0);
+    draw_set_color(c_black);
     draw_set_alpha(0.75);
     draw_rectangle(0, 0, room_width, room_height, 0);
     draw_set_alpha(1);
@@ -87,10 +79,6 @@ if (help == 1) {
             help = 0;
         }
     }
-    var t, x1, y1;
-    x1 = 0;
-    y1 = 0;
-    t = 0;
     draw_set_color(c_black);
     draw_rectangle(xx + 466, yy + 136, xx + 644, yy + 166, 0);
     draw_set_color(c_gray);
@@ -99,10 +87,9 @@ if (help == 1) {
     draw_set_font(fnt_40k_14b);
     draw_set_halign(fa_left);
     draw_text(xx + 466 + 4, yy + 136 + 6, string_hash_to_newline("Topics"));
-    x1 = xx + 466;
-    y1 = yy + 166;
-    repeat (20) {
-        t += 1;
+    var x1 = xx + 466;
+    var y1 = yy + 166;
+    for (var t = 1; t <= 20; t++) {
         if (topics[t] != "") {
             draw_set_color(c_gray);
             draw_set_alpha(0.75);
@@ -132,7 +119,6 @@ if (help == 1) {
     draw_set_alpha(1);
     draw_set_color(c_gray);
     draw_set_halign(fa_center);
-    // draw_rectangle(xx+664,yy+148,xx+805,yy+316,0);
     if (topic != "") {
         draw_set_font(fnt_40k_14b);
         draw_text_transformed(xx + 897, yy + 131, string_hash_to_newline(string(topic)), 1.25, 1.25, 0);
@@ -141,9 +127,8 @@ if (help == 1) {
             draw_text(xx + 663, yy + 177, string_hash_to_newline("Game Info:"));
         }
         draw_set_font(fnt_40k_14);
-        var p1, y2;
-        y2 = 0;
-        p1 = string(info);
+        var y2 = 0;
+        var p1 = string(info);
         if (info != "") {
             draw_text_ext(xx + 663, yy + 197, string_hash_to_newline(string(p1)), -1, 469);
         }

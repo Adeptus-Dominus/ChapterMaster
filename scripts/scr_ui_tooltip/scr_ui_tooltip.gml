@@ -2,8 +2,8 @@
 /// @category UI
 /// @description Handles tooltip logics around the main play screen
 function scr_ui_tooltip() {
-    if ((selected != 0) && (!instance_exists(selected))) {
-        selected = 0;
+    if ((selected != noone) && (!instance_exists(selected))) {
+        selected = noone;
     }
     if (zoomed != 0) {
         exit;

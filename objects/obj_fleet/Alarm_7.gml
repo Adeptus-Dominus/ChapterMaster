@@ -1,12 +1,10 @@
 try {
-    var _player_battle_fleet, yeehaw2, tstar;
-    _player_battle_fleet = 0;
-    yeehaw2 = 0;
-    tstar = 0;
+    var _player_battle_fleet = noone;
+    var killer = false;
+    var killer_tg = 0;
 
     if (player_started == 1) {
         _player_battle_fleet = pla_fleet;
-        yeehaw2 = ene_fleet;
     }
 
     if ((player_started == 0) && instance_exists(obj_turn_end)) {
@@ -32,12 +30,6 @@ try {
         }
     }
 
-    var op, ii, killer, killer_tg;
-    op = 0;
-    killer = 0;
-    killer_tg = 0;
-    ii = -50;
-
     if ((player_started == 0) && instance_exists(obj_turn_end)) {
         with (obj_star) {
             if (name != obj_turn_end.battle_location[obj_turn_end.current_battle]) {
@@ -54,8 +46,8 @@ try {
             }
         }
     }
-    ii = instance_nearest(room_width, room_height, obj_star);
-    obj_controller.temp[1070] = ii.id;
+    var _random_star = instance_nearest(room_width, room_height, obj_star);
+    obj_controller.temp[1070] = _random_star.id;
     with (obj_star) {
         if ((x < -5000) && (y < -5000)) {
             x += 10000;
@@ -63,16 +55,9 @@ try {
         }
     }
 
-    op = 0;
-    var ofleet;
-    ofleet = 0;
-    repeat (5) {
-        op += 1;
+    for (var op = 1; op <= 5; op++) {
         if ((enemy[op] != 0) && (enemy[op] != 4)) {
-            ofleet = 0;
             obj_controller.temp[1071] = enemy[op];
-
-            // show_message("Hiding all but the fleet owned by "+string(obj_controller.temp[1071]));
 
             with (obj_en_fleet) {
                 if ((owner != obj_controller.temp[1071]) || (orbiting != obj_controller.temp[1070])) {
@@ -81,30 +66,23 @@ try {
                 }
             }
 
-            ofleet = instance_nearest(room_width / 2, room_height / 2, obj_en_fleet);
-            // show_message("Fleet: "+string(ofleet.capital_number)+"/"+string(ofleet.frigate_number)+"/"+string(ofleet.escort_number)+", lost "+string(en_capital_lost[op])+"/"+string(en_frigate_lost[op])+"/"+string(en_escort_lost[op]));
-
             repeat (50) {
-                if (!instance_exists(ofleet)) {
-                    ofleet = instance_nearest(room_width / 2, room_height / 2, obj_en_fleet);
-                }
-                if (instance_exists(ofleet)) {
+                /// @type {Id.Instance.obj_en_fleet} 
+                var ofleet = instance_nearest(room_width / 2, room_height / 2, obj_en_fleet);
+                if (ofleet != noone) {
                     if (ofleet.trade_goods == "player_hold") {
                         ofleet.trade_goods = "";
                     }
-                    // show_message("ofleet x:"+string(ofleet.x)+", ofleet y:"+string(ofleet.y)+", ofleet owner: "+string(ofleet.owner)+" wants "+string(enemy[op]));
                     if ((ofleet.x > -7000) && (ofleet.y > -7000) && (ofleet.owner == enemy[op])) {
                         if (en_capital_lost[op] + en_frigate_lost[op] + en_escort_lost[op] >= ofleet.capital_number + ofleet.frigate_number + ofleet.escort_number) {
                             en_capital_lost[op] -= ofleet.capital_number;
                             en_frigate_lost[op] -= ofleet.frigate_number;
                             en_escort_lost[op] -= ofleet.escort_number;
-                            // show_message("Fleet baleeted");
                             with (ofleet) {
                                 instance_destroy();
                             }
                         }
                         if ((en_capital_lost[op] + en_frigate_lost[op] + en_escort_lost[op] > 0) && instance_exists(ofleet)) {
-                            // show_message("Fleet: "+string(ofleet.capital_number)+"/"+string(ofleet.frigate_number)+"/"+string(ofleet.escort_number)+", lost "+string(en_capital_lost[op])+"/"+string(en_frigate_lost[op])+"/"+string(en_escort_lost[op]));
                             if ((en_capital_lost[op] > 0) && (ofleet.capital_number > 0)) {
                                 en_capital_lost[op] -= 1;
                                 ofleet.capital_number -= 1;
@@ -133,12 +111,7 @@ try {
                     y += 10000;
                 }
             }
-
-            // if (instance_exists(ofleet)){show_message("Fleet: "+string(ofleet.capital_number)+"/"+string(ofleet.frigate_number)+"/"+string(ofleet.escort_number));}
-            // if (!instance_exists(ofleet)){show_message("FlEET WAS DELETED");}
         }
-
-        // show_message("End ship removing");
 
         if ((enemy[op] == 4) && (enemy_status[op] < 0)) {
             obj_controller.temp[1071] = enemy[op];
@@ -148,8 +121,8 @@ try {
                     y -= 10000;
                 }
             }
-            ofleet = instance_nearest(room_width / 2, room_height / 2, obj_en_fleet);
-            killer = 1;
+            var ofleet = instance_nearest(room_width / 2, room_height / 2, obj_en_fleet);
+            killer = true;
             obj_controller.temp[1071] = enemy[op];
             killer_tg = ofleet.inquisitor;
             with (ofleet) {
@@ -164,7 +137,7 @@ try {
 
     obj_controller.cooldown = 20;
 
-    if (killer > 0) {
+    if (killer) {
         scr_loyalty("Inquisitor Killer", "+");
         if (obj_controller.loyalty >= 85) {
             obj_controller.last_inquisitor_inspection -= 44;
@@ -179,11 +152,11 @@ try {
             scr_loyalty("Inquisitor Killer", "+");
         }
 
-        var msg = "", msg2 = "", i = 0;
+        var msg = "";
+        var inquis_name = "";
         if (killer_tg > 0) {
-            var inquis_name = obj_controller.inquisitor[killer_tg];
-            msg += $"Inquisitor {inquis_name} has been killed!";
-            msg2 = $"Inquisitor {inquis_name}";
+            inquis_name = $"Inquisitor {obj_controller.inquisitor[killer_tg]}";
+            msg += $"{inquis_name} has been killed!";
         }
         if (obj_controller.inquisitor_type[killer_tg] == "Ordo Hereticus") {
             scr_loyalty("Inquisitor Killer", "+");
@@ -205,11 +178,10 @@ try {
         instance_activate_object(obj_turn_end);
 
         if (instance_exists(obj_turn_end)) {
-            scr_alert("red", "inqis", string(msg), ii.x + 16, ii.y - 24);
+            scr_alert("red", "inqis", string(msg), _random_star.x + 16, _random_star.y - 24);
         }
         if ((!instance_exists(obj_turn_end)) && (obj_controller.faction_status[eFACTION.INQUISITION] != "War")) {
-            var pip;
-            pip = instance_create(0, 0, obj_popup);
+            var pip = instance_create(0, 0, obj_popup);
             pip.title = "Inquisitor Killed";
             pip.text = msg;
             pip.image = "inquisition";
@@ -217,13 +189,10 @@ try {
 
             if (obj_controller.known[eFACTION.INQUISITION] < 3) {
                 pip.title = "EXCOMMUNICATUS TRAITORUS";
-                pip.text = $"The Inquisition has noticed your uncalled murder of {msg2} and declared your chapter Excommunicatus Traitorus.";
+                pip.text = $"The Inquisition has noticed your uncalled murder of {inquis_name} and declared your chapter Excommunicatus Traitorus.";
                 obj_controller.alarm[8] = 1;
             }
         }
-
-        // if (obj_controller.known[eFACTION.INQUISITION]<3) then with(obj_popup){instance_destroy();}
-
         // excommunicatus traitorus
     }
 

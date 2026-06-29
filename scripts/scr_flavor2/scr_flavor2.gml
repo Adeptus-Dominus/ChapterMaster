@@ -29,10 +29,10 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         exit;
     }
 
-    var m1, m2, m3, mes;
-    m1 = "";
-    m2 = "";
-    m3 = "";
+    var mes = "";
+    var m1 = "";
+    var m2 = "";
+    var m3 = "";
 
     var _hostile_range, _hostile_weapon, _hostile_shots;
     _hostile_range = 0;
@@ -69,19 +69,6 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     // show_message(string(hostile_weapon)+"|"+string(_hostile_weapon)+"#"+string(los)+"#"+string(los_num));
 
     var flavor = 0;
-
-    /*
-	if (lost_units_count="Venom Claws"){atta=200;arp=0;rang=1;spli=0;if (obj_ini.preomnor=1){atta=240;}}
-	if (lost_units_count="Web Spinner"){atta=40;arp=0;rang=2.1;spli=1;amm=1;}
-	if (lost_units_count="Warpsword"){atta=300;arp=200;rang=1;spli=1;}
-	if (lost_units_count="Iron Claw"){atta=300;arp=400;rang=1;spli=0;}
-	if (lost_units_count="Maulerfiend Claws"){atta=300;arp=300;rang=1;spli=1;}
-
-	if (lost_units_count="Eldritch Fire"){atta=80;arp=40;rang=5.1;}
-	if (lost_units_count="Khorne Demon Melee"){atta=350;arp=400;rang=1;spli=1;}
-	if (lost_units_count="Demon Melee"){atta=250;arp=300;rang=1;spli=1;}
-	if (lost_units_count="Lash Whip"){atta=80;arp=0;rang=2;}
-	*/
 
     if (_hostile_weapon == "Daemonette Melee") {
         flavor = 1;
@@ -161,8 +148,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         }
         if (_hostile_weapon == "Shoota") {
             flavor = 1;
-            var ranz;
-            ranz = choose(1, 2, 3, 4);
+            var ranz = choose(1, 2, 3, 4);
             if (ranz == 1) {
                 m1 = string(_hostile_shots) + " " + string(_hostile_weapon) + "z fire away at " + string(target_type) + ".  ";
             }
@@ -293,8 +279,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         }
         if (_hostile_weapon == "Slugga") {
             flavor = 1;
-            var ranz;
-            ranz = choose(1, 2, 3, 4);
+            var ranz = choose(1, 2, 3, 4);
             if (ranz == 1) {
                 m1 = string(_hostile_shots) + " " + string(_hostile_weapon) + "z fire away at " + string(target_type) + ".  ";
             }
@@ -339,8 +324,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         if (_hostile_weapon == "Staff of Light") {
             flavor = 1;
             if (_hostile_shots == 1) {
-                var ranz;
-                ranz = choose(1, 2, 3);
+                var ranz = choose(1, 2, 3);
                 if (ranz == 1) {
                     m1 = "A " + string(_hostile_weapon) + " crackles and is swung into " + string(target_type) + ".  ";
                 }
@@ -352,8 +336,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
                 }
             }
             if (_hostile_shots > 1) {
-                var ranz;
-                ranz = choose(1, 2, 3);
+                var ranz = choose(1, 2, 3);
                 if (ranz == 1) {
                     m1 = string(_hostile_shots) + " Staves of Light strike at " + string(target_type) + ".  ";
                 }
@@ -367,8 +350,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         }
         if (_hostile_weapon == "Warscythe") {
             flavor = 1;
-            var ranz;
-            ranz = choose(1, 2, 3);
+            var ranz = choose(1, 2, 3);
             if (ranz == 1) {
                 m1 = string(_hostile_shots) + " Warscythes strike at " + string(target_type) + ".  ";
             }
@@ -382,8 +364,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         if (_hostile_weapon == "Claws") {
             flavor = 1;
             if (_hostile_shots == 1) {
-                var ranz;
-                ranz = choose(1, 2, 3);
+                var ranz = choose(1, 2, 3);
                 if (ranz == 1) {
                     m1 = "A massive claw slices through " + string(target_type) + ".  ";
                 }
@@ -395,8 +376,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
                 }
             }
             if (_hostile_shots > 1) {
-                var ranz;
-                ranz = choose(1, 2, 3);
+                var ranz = choose(1, 2, 3);
                 if (ranz == 1) {
                     m1 = string(_hostile_shots) + " massive claws strike and slice at " + string(target_type) + ".  ";
                 }
@@ -419,10 +399,6 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         }
     }
 
-    // show_message(mes);
-
-    // m2="Blah blah blah";
-
     if (target_type == "wall") {
         var _wall_destroyed = obj_nfort.hp[1] <= 0 ? true : false;
 
@@ -440,8 +416,6 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
             obj_ncombat.alarm[3] = 2;
         }
         if (obj_nfort.hp[1] <= 0) {
-            s = 0;
-            him = 0;
             obj_ncombat.dead_jims += 1;
             obj_ncombat.dead_jim[obj_ncombat.dead_jims] = "The fortified wall has been breached!";
             obj_ncombat.wall_destroyed = 1;
@@ -495,21 +469,14 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     var unce = 0;
 
     if (string_count(", ", m2) > 1) {
-        // show_message(m2);
-
-        var lis, y1, y2;
-        lis = string_rpos(", ", m2);
+        var lis = string_rpos(", ", m2);
         m2 = string_delete(m2, lis, 3); // This clears the last ', ' and replaces it with the end statement
         if (lost_units_count > 0) {
             m2 += " lost.";
         }
 
-        // show_message(m2);
-
         lis = string_rpos(", ", m2); // Find the new last ', ' and replace it with the and part
         m2 = string_delete(m2, lis, 2);
-
-        // show_message(m2);
 
         if (string_count(",", m2) > 1) {
             m2 = string_insert(", and ", m2, lis);
@@ -518,22 +485,18 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
             m2 = string_insert(" and ", m2, lis);
         }
 
-        // show_message(m2);
-
         unce = 1;
     }
 
     if ((string_count(", ", m2) == 1) && (unce == 0) && (hostile_weapon != "Web Spinner")) {
-        var lis, y1, y2;
-        lis = string_rpos(", ", m2);
+        var lis = string_rpos(", ", m2);
         m2 = string_delete(m2, lis, 3);
         if (lost_units_count > 0) {
             m2 += " lost.";
         }
     }
     if ((string_count(", ", m2) == 1) && (unce == 0) && (hostile_weapon == "Web Spinner")) {
-        var lis, y1, y2;
-        lis = string_rpos(", ", m2);
+        var lis = string_rpos(", ", m2);
         m2 = string_delete(m2, lis, 3);
         if (lost_units_count > 1) {
             m2 += " have been incapacitated.";
@@ -551,7 +514,6 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     }
 
     mes = m1 + m2 + m3;
-    // show_message(mes);
 
     if (string_length(mes) > 3) {
         // Yellow when the enemy hurt your forces but destroyed nothing (damage, no kill). Kills carry

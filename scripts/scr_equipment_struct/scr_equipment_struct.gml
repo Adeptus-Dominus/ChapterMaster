@@ -68,7 +68,6 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
                     self[$ _struct_key] = self[$ _struct_key][$ quality];
                 }
             }
-            // _struct_key = "";
         }
     }
 
@@ -266,7 +265,6 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
                                 array_push(special_properties_array, second_profiles[h]);
                             }
                         }
-                        //item_desc_tooltip += $"#Properties:#{special_properties_string}#"
                     }
 
                     if (is_struct(specials)) {

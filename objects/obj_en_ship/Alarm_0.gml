@@ -1246,22 +1246,6 @@ if ((owner != eFACTION.ELDAR) && (owner != eFACTION.NECRONS)) {
 
 bridge = maxhp;
 
-/* 
-if (obj_fleet.enemy == 2) {
-	hp = hp * 0.75;
-	maxhp = hp;
-	shields = shields * 0.75;
-	maxshields = shields;
-}
- */
-// hp=1;
-shields = 1;
-
-// if (obj_fleet.enemy="orks") then name=global.name_generator.GenerateFromSet("ork_ship");
+// shields = 1;
 
 name = "sdagdsagdasg";
-
-// show_message(string(class));
-
-/* */
-/*  */

@@ -1,10 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-// function set_warp_point_data(){
-// 	warp_point_hover = true;
-// }
-// Main menu movement
-
 function in_camera_view(rect) {
     var x1 = camera_get_view_x(view_camera[0]);
     var y1 = camera_get_view_y(view_camera[0]);
@@ -66,25 +59,21 @@ function draw_warp_lanes() {
         routes = [];
         var star_degrade_list = [];
         var total_stars = instance_number(obj_star);
-        var cur_star, this_star, connection, i, check_star;
-        for (i = 0; i < total_stars; i++) {
+        for (var i = 0; i < total_stars; i++) {
             array_push(star_degrade_list, i);
         }
-        for (i = 0; i < total_stars; i++) {
-            cur_star = instance_find(obj_star, star_degrade_list[i]);
+        for (var i = 0; i < total_stars; i++) {
+            var cur_star = instance_find(obj_star, star_degrade_list[i]);
             var this_star = cur_star.id;
             var in_view = true;
 
-            //var in_view = in_camera_view(star_box_shape(this_star));
-            //if (!in_view) then  in_view = zoomed;
             if (array_length(cur_star.warp_lanes) > 0) {
                 for (var s = 0; s < total_stars; s++) {
                     if (s == i) {
                         continue;
                     }
-                    check_star = instance_find(obj_star, star_degrade_list[s]);
-                    //if (!in_view && !in_camera_view(star_box_shape(check_star))) then continue;
-                    connection = determine_warp_join(check_star.id, this_star);
+                    var check_star = instance_find(obj_star, star_degrade_list[s]);
+                    var connection = determine_warp_join(check_star.id, this_star);
                     if (connection) {
                         array_push(routes, [[check_star.x, check_star.y, this_star.x, this_star.y], connection]);
                     }
@@ -101,8 +90,6 @@ function draw_warp_lanes() {
     if (warp_image == 58) {
         warp_image = 0;
     }
-    // if (!warp_point_hover) then hover_time=0;
-    // warp_point_hover = false;
     for (var i = 0; i < array_length(routes); i++) {
         draw_set_color(c_gray);
         route = routes[i];
@@ -114,20 +101,15 @@ function draw_warp_lanes() {
         } else if (route[1] == 4) {
             draw_set_color(c_yellow);
             //TODO abstract code as a ratio distance function
-            //static debug_c = 0;
             var direction_x = route_coords[2] - route_coords[0];
             var direction_y = route_coords[3] - route_coords[1];
             var forward = direction_x >= 0 ? 1 : -1;
             var downward = direction_y >= 0 ? 1 : -1;
-            //var grade = direction_x/direction_y;
             var total_dist = 80;
             var pythag_dist = sqr(total_dist);
             var sum = (direction_x * forward) + (direction_y * downward);
             var x_ratio = direction_x * forward / sum;
             var y_ratio = direction_y * downward / sum;
-            /*if (debug_c<100){
-				LOGGER.debug($"{x_ratio},{forward},{y_ratio},{downward}");
-			}*/
             var dist_x = sqrt(pythag_dist * x_ratio) * forward;
             var dist_y = sqrt(pythag_dist * y_ratio) * downward;
 
@@ -167,20 +149,12 @@ function draw_warp_lanes() {
 
                 if (!star_overlap) {
                     var to = instance_nearest(route_coords[2], route_coords[3], obj_star);
-                    // warp_point_hover = true;
 
                     if (_allow_tooltips) {
                         tooltip_draw(string(warp_route_tooltip, to.name));
                     }
 
-                    /* if (array_equals(hover_loc,[route_coords[0] ,route_coords[1]])){
-					 	hover_time++;
-					 } else {
-					 	hover_loc = [route_coords[0] ,route_coords[1]];
-					 	hover_time = 0;
-					 }*/
-
-                    if (mouse_check_button_pressed(mb_left) && keyboard_check(vk_shift) /* || (instance_exists(obj_fleet_select) && hover_time>=30) */) {
+                    if (mouse_check_button_pressed(mb_left) && keyboard_check(vk_shift)) {
                         set_map_pan_to_loc(to);
                     }
                 }
@@ -207,25 +181,16 @@ function draw_warp_lanes() {
                 }
                 if (!star_overlap) {
                     var to = instance_nearest(route_coords[0], route_coords[1], obj_star);
-                    // warp_point_hover = true;
 
                     if (_allow_tooltips) {
                         tooltip_draw(string(warp_route_tooltip, to.name));
                     }
 
-                    // if (array_equals(hover_loc,[route_coords[2] ,route_coords[3]])){
-                    // 	hover_time++;
-                    // } else {
-                    // 	hover_loc = [route_coords[2] ,route_coords[3]];
-                    // 	hover_time = 0;
-                    // }
-
-                    if (mouse_check_button_pressed(mb_left) && keyboard_check(vk_shift) /*  || (instance_exists(obj_fleet_select) && hover_time>=30) */) {
+                    if (mouse_check_button_pressed(mb_left) && keyboard_check(vk_shift)) {
                         set_map_pan_to_loc(to);
                     }
                 }
             }
-            //debug_c++;
         }
     }
 }
@@ -302,9 +267,9 @@ function create_complex_star_routes(player_star) {
             continue;
         }
         if (player_hub_overide) {
-            for (var i = 0; i < array_length(set); i++) {
-                if (set[i] == player_star) {
-                    WarpHub = set[i];
+            for (var j = 0; j < array_length(set); j++) {
+                if (set[j] == player_star) {
+                    WarpHub = set[j];
                     break;
                 }
             }
@@ -321,10 +286,6 @@ function create_complex_star_routes(player_star) {
             if (s == i || set_count == 0) {
                 continue;
             }
-            /*//if (irandom(1)) then continue;
-			for (var i=0;i<array_length(full_loci[s])i++){
-				//if !(irandom(2)) then
-			}*/
             join_star = array_random_element(join_set);
             array_push(WarpHub.warp_lanes, [join_star.name, 4]);
             total_joins++;
@@ -350,12 +311,9 @@ function set_map_pan_to_loc(target) {
     }
 }
 
-/*function ration_distance(){
-
-}*/
-function star_box_shape(star = "none") {
+function star_box_shape(star = noone) {
     var scale = obj_controller.map_scale;
-    if (star == "none") {
+    if (star == noone) {
         return [x - (60 * scale), y + (5 * scale), x + 60 * scale, y - 40 * scale];
     } else {
         with (star) {

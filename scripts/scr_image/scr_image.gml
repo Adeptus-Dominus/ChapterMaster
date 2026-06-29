@@ -282,11 +282,8 @@ function scr_image(path, image_id, x1, y1, width, height) {
         with (obj_img) {
             // Initialize these images
 
-            var i, single_image;
-            i = -1;
-            single_image = false;
-            repeat (80) {
-                i += 1;
+            var single_image = false;
+            for (var i = 0; i < 80; i++) {
 
                 if ((path == "creation") && (creation_exists[i] > 0) && sprite_exists(creation[i])) {
                     sprite_delete(creation[i]);
@@ -507,12 +504,9 @@ function scr_image(path, image_id, x1, y1, width, height) {
             }
 
             if (single_image == false) {
-                var i, w;
-                i = 0;
-                w = 0;
+                var w = 0;
 
-                repeat (40) {
-                    i += 1;
+                for (var i = 1; i <= 40; i++) {
                     if (path == "main_splash") {
                         if (file_exists(working_directory + "/images/creation/main" + string(i) + ".png")) {
                             main[i - 1] = sprite_add(working_directory + "/images/creation/main" + string(i) + ".png", 1, false, false, 0, 0);
@@ -738,16 +732,15 @@ function scr_image(path, image_id, x1, y1, width, height) {
     if ((path != "") && (image_id >= 0) && (image_id != 666)) {
         with (obj_img) {
             // Draw the image
-            var drawing_sprite, drawing_exists, old_alpha, old_color, x13, y13, x14, y14;
-            drawing_sprite = 0;
-            drawing_exists = false;
-            x13 = 0;
-            y13 = 0;
-            x14 = 0;
-            y14 = 0;
+            var drawing_sprite = undefined;
+            var drawing_exists = false;
+            var x13 = 0;
+            var y13 = 0;
+            var x14 = 0;
+            var y14 = 0;
 
-            old_alpha = draw_get_alpha();
-            old_color = draw_get_colour();
+            var old_alpha = draw_get_alpha();
+            var old_color = draw_get_colour();
 
             if (path == "creation") {
                 if ((creation_exists[1] > 0) && sprite_exists(creation[1])) {
@@ -930,7 +923,7 @@ function scr_image(path, image_id, x1, y1, width, height) {
 /// @param {Bool} use_app_data determines whether reading from `datafiles` or `%LocalAppData%\ChapterMaster` folder
 function scr_image_cache(path, image_id, use_app_data = false) {
     try {
-        var drawing_sprite;
+        var drawing_sprite = undefined;
         var cache_arr_exists = struct_exists(obj_img.image_cache, path);
         if (!cache_arr_exists) {
             variable_struct_set(obj_img.image_cache, path, array_create(100, -1));
@@ -979,6 +972,7 @@ function scr_image_cache(path, image_id, use_app_data = false) {
 
 /// @description Simplified handling of chapter icon stuff for both Creation and player chapter icon
 /// attempting to keep things consistent and easy through save/load and etc
+/// @param {String} _name
 /// @param {Bool} update_global_var set to true when wanting to update the player's icon, false if you just want to return the sprite for further use
 function scr_load_chapter_icon(_name, update_global_var = false) {
     if (!ds_map_exists(global.chapter_icons_map, _name)) {

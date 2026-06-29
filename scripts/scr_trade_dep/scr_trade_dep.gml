@@ -1,3 +1,4 @@
+/// @self Id.Instance.obj_en_fleet
 function scr_trade_dep() {
     var _goods = cargo_data.player_goods;
 

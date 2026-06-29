@@ -3,11 +3,7 @@ function scr_management(argument0) {
     // Creates the company blocks in the main management screen and assigns text to them
 
     // Variable creation
-    var num = 0, nam = "", company = 50, q = 0;
-    var romanNumerals = scr_roman_numerals();
     var chapter_name = global.chapter_name;
-    var role_names = obj_ini.role[100];
-    var unit;
 
     if (argument0 == 1) {
         with (obj_managment_panel) {
@@ -25,7 +21,7 @@ function scr_management(argument0) {
 
         var _reclusium_units = _command_company.get_from({group: [SPECIALISTS_CHAPLAINS, true, true]}, true, true);
 
-        var _reclusium_units = _reclusium_units.index_roles();
+        _reclusium_units = _reclusium_units.index_roles();
 
         pane.line = array_join(pane.line, _reclusium_units.create_plural_strings_array());
 
@@ -37,7 +33,7 @@ function scr_management(argument0) {
 
         var _apothecary_units = _command_company.get_from({group: [SPECIALISTS_APOTHECARIES, true, true]}, true, true);
 
-        var _apothecary_units = _apothecary_units.index_roles();
+        _apothecary_units = _apothecary_units.index_roles();
 
         pane.line = array_join(pane.line, _apothecary_units.create_plural_strings_array());
 
@@ -48,7 +44,7 @@ function scr_management(argument0) {
         pane.title = "ARMOURY";
         var _armoury_units = _command_company.get_from({group: [SPECIALISTS_TECHS, true, true]}, true, true);
 
-        var _armoury_units = _armoury_units.index_roles();
+        _armoury_units = _armoury_units.index_roles();
 
         pane.line = array_join(pane.line, _armoury_units.create_plural_strings_array());
 
@@ -61,7 +57,7 @@ function scr_management(argument0) {
 
         var _lib_units = _command_company.get_from({group: [SPECIALISTS_LIBRARIANS, true, true]}, true, true);
 
-        var _lib_units = _lib_units.index_roles();
+        _lib_units = _lib_units.index_roles();
 
         pane.line = array_join(pane.line, _lib_units.create_plural_strings_array());
 
@@ -88,13 +84,14 @@ function scr_management(argument0) {
         pane.line = array_join(pane.line, _command_units.create_plural_strings_array());
 
         // Coordinates declaration and text initiation
-        var xx = 25, yy = 400 - 48, t;
+        var xx = 25;
+        var yy = 352;
 
         // Creates the first 10 companies using roman numerals
         for (var company = 1; company <= 10; company++) {
-            t = string_upper(scr_convert_company_to_string(company));
+            var t = string_upper(scr_convert_company_to_string(company));
 
-            var pane = instance_create(xx, yy, obj_managment_panel);
+            pane = instance_create(xx, yy, obj_managment_panel);
             pane.company = company;
             pane.manage = company;
             pane.header = 1;
@@ -125,7 +122,6 @@ function scr_management(argument0) {
                 if (num[d] > 0) {
                     if (d == 1) {
                         array_push(pane.line, {str1: nam[d], bold: true, italic: false});
-                        // obj_managment_panel.italic[q] = 1;
                     } else {
                         array_push(pane.line, nam[d], string_plural_count(nam[d], num[d], false));
                     }

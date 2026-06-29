@@ -1,5 +1,4 @@
-var a1;
-a1 = "";
+var a1 = "";
 
 if ((ally > 0) && (ally_forces > 0)) {
     if (ally == 3) {
@@ -39,8 +38,7 @@ temp += techmarines + honors + dreadnoughts + terminators + captains;
 temp += standard_bearers + champions + important_dudes + chaplains + apothecaries;
 temp += sgts + vet_sgts;
 
-var color_descr;
-color_descr = "";
+var color_descr = "";
 
 if (obj_ini.main_color != obj_ini.secondary_color) {
     color_descr = string(obj_controller.col[obj_ini.main_color]) + " and " + string(obj_controller.col[obj_ini.secondary_color]);
@@ -49,15 +47,8 @@ if (obj_ini.main_color == obj_ini.secondary_color) {
     color_descr = string(obj_controller.col[obj_ini.main_color]);
 }
 
-/*show_message(scouts+tacticals+veterans+devastators+assaults+librarians);
-show_message(techmarines+honors+dreadnoughts+terminators+captains);
-show_message(standard_bearers+important_dudes+chaplains+apothecaries);
-show_message(temp);*/
-
 // Random variations; dark out, rain pooling down, dawn shining off of the armour, etc.
-var variation;
-variation = "";
-variation = choose("", "dawn", "rain");
+var variation = choose("", "dawn", "rain");
 
 if (battle_special == "ship_demon") {
     p1 = "As the Artifact is smashed and melted down some foul smoke begins to erupt from it, spilling outward and upward.  After a sparse handful of seconds it takes form into a ";
@@ -102,12 +93,6 @@ if (battle_special == "") {
         if (temp - dreadnoughts > 0) {
             // lyman
             p1 = "The air rumbles and quakes as " + string(temp) + " " + string(global.chapter_name) + " descend in drop-pods.  ";
-
-            /*if (variation=""){
-                if (lyman=0) then p1="The air rumbles and quakes as "+string(temp)+" "+string(global.chapter_name)+" descend in drop-pods.  Before the enemy can bring their full ranged power to bear the pods smash down.  With practiced speed your marines pour on free.  Their ranks are made up of ";
-                if (lyman=1) then p1="The air rumbles and quakes as "+string(temp)+" "+string(global.chapter_name)+" descend in drop-pods.  Before the enemy can bring their full ranged power to bear the pods smash down.  Your marines exit the vehicles, shaking off their vertigo and nausea with varying degrees of success.  Your ranks are made up of ";
-            }
-            */
         }
     }
 }
@@ -308,17 +293,14 @@ if (temp6 > 0) {
     p2 += string(temp6) + " other various Astartes, ";
 }
 
-var woo;
-woo = string_length(p2);
+var woo = string_length(p2);
 p2 = string_delete(p2, woo - 1, 2);
 
 if (string_count(", ", p2) > 1) {
-    var woo;
     woo = string_rpos(", ", p2);
     p2 = string_insert(" and", p2, woo + 1);
 }
 if (string_count(", ", p2) == 1) {
-    var woo;
     woo = string_rpos(", ", p2);
     p2 = string_delete(p2, woo - 1, 2);
     p2 = string_insert(" and", p2, woo + 1);
@@ -375,17 +357,14 @@ if (dreadnoughts + predators + land_raiders > 3) {
 
     // Other vehicles here?
 
-    var woo;
     woo = string_length(p6);
     p6 = string_delete(p6, woo - 1, 2);
 
     if (string_count(", ", p6) > 1) {
-        var woo;
         woo = string_rpos(", ", p6);
         p6 = string_insert(" and", p6, woo + 1);
     }
     if (string_count(", ", p6) == 1) {
-        var woo;
         woo = string_rpos(", ", p6);
         p6 = string_delete(p6, woo - 1, 2);
         p6 = string_insert(" and", p6, woo + 1);
@@ -459,14 +438,6 @@ temp3 = 0;
 temp4 = 0;
 temp5 = 0;
 
-/*if (terrain=""){rand=choose(1,2,3);// Variations for terrain
-    if (rand<4) then 
-    // if (rand=2) then p1="Encroaching upon your forces are ";
-    // if (rand=3) then p1="Advancing upon your forces are ";
-}
-
-// p1+=string(enemy_dudes);// The number descriptor*/
-
 if (enemy == 2) {
     p1 = "Opposing your forces are a total of " + scr_display_number(floor(guard_effective)) + " Guardsmen, including Heavy Weapons and Armour.";
     p2 = "";
@@ -493,11 +464,10 @@ if ((enemy == 5) && (dropping == 0)) {
 }
 
 if ((enemy == 6) && (dropping == 0)) {
-    // p1+=" Eldar";// Need a few random descriptors here
+    // Need a few random descriptors here
     rand = choose(1, 2, 3);
 }
 if ((enemy == 7) && (dropping == 0)) {
-    // p1+=" Orks";
     rand = choose(1, 2, 3);
     if (rand < 4) {
         p1 = "Howls and grunts ring from the surrounding terrain as the Orks announce their presence.  ";
@@ -513,11 +483,9 @@ if ((enemy == 7) && (dropping == 1)) {
 }
 
 if ((enemy == 8) && (dropping == 0)) {
-    // p1+=" Tau";
     rand = choose(1, 2, 3);
 }
 if ((enemy == 9) && (dropping == 0)) {
-    // p1+=" Tyranids";
     rand = choose(1, 2, 3);
 }
 if ((enemy == 9) && (dropping == 1)) {
@@ -525,7 +493,6 @@ if ((enemy == 9) && (dropping == 1)) {
 }
 
 if ((enemy == 10) && (dropping == 0)) {
-    // p1+=" heretics";
     rand = choose(1, 2, 3);
 }
 
@@ -542,7 +509,6 @@ if ((enemy == 10) && (threat == 7)) {
 }
 
 if ((enemy == 11) && (dropping == 0)) {
-    // p1+=" Chaos Space Marines";
     rand = choose(1, 2, 3);
 }
 
@@ -632,7 +598,6 @@ if ((fortified > 1) && (dropping == 0) && (enemy + threat != 17)) {
 }
 
 // Check for battlecry here
-// if (temp>=100) and (threat>1) and (big_mofo!=10) and (dropping=0){
 if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && (dropping == 0)) {
     p1 = "";
     p2 = "";
@@ -659,11 +624,9 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && (dropp
         p1 = "A Chaplain ";
     }
 
-    var standard_cry;
-    standard_cry = 0;
+    var standard_cry = 0;
     if (global.chapter_name == "Salamanders") {
         standard_cry = 1;
-        var rand;
         rand = choose(1, 2, 3, 4, 5);
         if ((rand == 1) && (big_mofo != 1)) {
             p2 = "breaks the silence, begining the Chapter Battlecry-";
@@ -720,7 +683,6 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && (dropp
     }
     if (obj_ini.battle_cry == "...") {
         standard_cry = 1;
-        var rand;
         rand = choose(1, 2, 3);
         if ((rand == 1) && (big_mofo != 1)) {
             p2 = "remains silent as the Chapter forms for battle-";
@@ -764,11 +726,8 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && (dropp
         scr_newtext();
     }
 
-    // show_message(string(global.chapter_name)+"|"+string(global.custom)+"|"+string(standard_cry));
-
     if ((global.chapter_name == "Iron Warriors") && (global.custom == eCHAPTER_TYPE.PREMADE)) {
         standard_cry = 1;
-        var rand;
         rand = choose(1, 2, 3, 4, 5);
         if ((rand == 1) && (big_mofo != 1)) {
             p2 = "breaks the silence, begining the Chapter Battlecry-";
@@ -826,7 +785,6 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && (dropp
 
     if (standard_cry == 0) {
         standard_cry = 1;
-        var rand;
         rand = choose(1, 2, 3, 4);
         if (rand == 1) {
             if (big_mofo != 1) {
@@ -894,6 +852,3 @@ newline = line_break;
 scr_newtext();
 newline = line_break;
 scr_newtext();
-
-/* */
-/*  */

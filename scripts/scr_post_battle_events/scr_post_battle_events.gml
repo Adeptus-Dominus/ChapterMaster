@@ -30,7 +30,7 @@ function necron_tomb_raid_post_battle_sequence() {
         }
 
         var _star_obj = find_star_by_name(battle_loc);
-        if (_star_obj != "none") {
+        if (_star_obj != noone) {
             with (_star_obj) {
                 var planet = obj_ncombat.battle_id;
                 if (remove_planet_problem(planet, "necron")) {

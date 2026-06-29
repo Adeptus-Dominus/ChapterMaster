@@ -25,10 +25,10 @@ function ork_ship_production(planet) {
         }
         if (contin == 2) {
             fleet = scr_orbiting_fleet(eFACTION.ORK);
-            if (fleet == "none") {
+            if (fleet == noone) {
                 contin = 3;
             }
-            if ((fleet != "none") && (contin != 3)) {
+            if ((fleet != noone) && (contin != 3)) {
                 rando = choose(1, 1, 1, 1, 1, 2, 2, 2, 2);
                 switch (rando) {
                     case 1:

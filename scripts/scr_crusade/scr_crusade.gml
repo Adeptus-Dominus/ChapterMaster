@@ -1,3 +1,4 @@
+/// @self Id.Instance.obj_fleet
 function scr_crusade() {
     // Executed to kill the fuck out of the player's marines
     // Think it is ran in the obj_p_fleet object when arriving back from crusade
@@ -89,12 +90,12 @@ function scr_crusade() {
                     death_determination -= 10;
                 }
 
-                var dead = false;
+                var _dead = false;
                 if (death_determination > death_data[0] || death_determination_2 > death_data[1]) {
-                    dead = true;
+                    _dead = true;
                     if (unit.role() == obj_ini.role[100][5]) {
                         if (irandom(20) < unit.luck) {
-                            dead = false;
+                            _dead = false;
                         } else {
                             if (irandom(100) < unit.weapon_skill) {
                                 var heroic_deed = choose("holding a breach in imperial defenses allowing allied forces to regroup,", "slaying the enemy leader in glorious combat, while victorious he ultimately succumbed to his wounds,", "leading an imortant boarding mission,",);
@@ -107,10 +108,10 @@ function scr_crusade() {
                             }
                         }
                     } else if (unit.role() == obj_ini.role[100][11] || unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
-                        dead = false;
+                        _dead = false;
                     }
                 }
-                if (dead) {
+                if (_dead) {
                     var man_size = 0;
                     obj_ini.ship_carrying[unit.ship_location] -= unit.get_unit_size();
                     if (unit.IsSpecialist(SPECIALISTS_STANDARD, true)) {
@@ -149,15 +150,11 @@ function scr_crusade() {
         obj_controller.gene_seed += seed;
     }
 
-    // i=-1;
-    // repeat(11){
-    // i+=1;
     with (obj_ini) {
         for (i = 0; i <= 10; i++) {
             scr_company_order(i);
         }
     }
-    // }
 
     if (roll3 <= 10) {
         artifacts += 1;
@@ -220,13 +217,13 @@ function scr_crusade() {
 //TODO never place the star out of reach of a player fleet, eiter increase allowed response time or find nearer planet
 function launch_crusade() {
     var star_id = scr_random_find(2, true, "", "");
-    if (star_id == undefined) {
+    if (star_id == noone) {
         LOGGER.error("RE: Crusade, couldn't find a star for the crusade");
         return false;
     } else {
         //TODO decide the target/purpose of the crusade to create more variety and to help with post crusade rewards
         var _nearest_player_fleet = get_nearest_player_fleet(star_id.x, star_id.y);
-        if (_nearest_player_fleet == "none") {
+        if (_nearest_player_fleet == noone) {
             return false;
         }
         var travel_leeway = 10;

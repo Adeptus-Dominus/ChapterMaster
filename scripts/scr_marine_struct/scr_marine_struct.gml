@@ -1,23 +1,3 @@
-//in future would be better to store old guard data in a struct like this but for now while working out kinks have left hardcoded
-/*old_guard_equipment :{
-	role[100][5]:{"armour":[["MK3 Iron Armour",25]]},
-	role[100][14]:{"armour":[["MK3 Iron Armour",25]],
-	role[100][15]:{"armour":[["MK3 Iron Armour", 10]]}, //apothecary
-	role[100][16]:{"armour":},
-	obj_ini.role[100][11]:{"armour":[["MK3 Iron Armour", 3]]},
-	role[100][7]:{"armour":[]},  //company champion
-	role[100][8]:{"armour":[["MK8 Errant", 3],["MK3 Iron Armour", 3],["MK4 Maximus", 3],["MK5 Heresy", 3]]},     //tacticals
-	role[100][10]:{"armour":},		
-	role[100][9]:{"armour":},
-	role[100][12]:{"armour":},
-}*/
-
-/*
-		where the notation is[int,int, "string"] e.g [1,2,"max"]
-		the first int is a base or mean value the second int is a sd number to be passed to the gauss() function
-		the string (usually max) is guidance so in the instance of max it will pick the larger value of the mean and the gauss function return
-*/
-// will swap these out for enums or some better method as i develop where this is going
 global.unit_body_parts = [
     "left_leg",
     "right_leg",
@@ -359,8 +339,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static get_unit_size = function() {
         var unit_role = role();
         var arm = armour();
-        var sz = 0;
-        sz = 1;
+        var sz = 1;
         // Guardsmen are line infantry, racked aboard far denser than power-armoured
         // Astartes, so a single trooper takes only a tenth of a marine's berth. A Guard
         // Squad is left at a full slot, since one already stands in for a whole squad. A
@@ -374,10 +353,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         } else if (array_contains(global.list_terminator_armour, arm)) {
             sz += 1;
         }
-        //var mobi =  mobility_item();
-        /*if (mobi == "Jump Pack"){
-			sz++;
-		}*/
         if (unit_role == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
             sz++;
         }
@@ -466,12 +441,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     //adds a trait to a marines trait list
     static add_trait = function(trait, return_stat_diff = false, return_description = false) {
+        var _start_stats = {};
+        var _return_string = "";
         if (return_stat_diff) {
-            var _start_stats = get_stat_line();
+            _start_stats = get_stat_line();
         }
         if (struct_exists(global.trait_list, trait)) {
             if (!array_contains(traits, trait)) {
-                var _return_string = "";
+                var _stat_diff = {};
                 var selec_trait = global.trait_list[$ trait];
                 stat_boosts(selec_trait);
                 array_push(traits, trait);
@@ -479,7 +456,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 if (return_stat_diff) {
                     var _end_stats = get_stat_line();
 
-                    var _stat_diff = compare_stats(_end_stats, _start_stats);
+                    _stat_diff = compare_stats(_end_stats, _start_stats);
                 }
 
                 if (return_description) {
@@ -489,12 +466,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 if (return_stat_diff) {
                     _return_string += $", {print_stat_diffs(_stat_diff)}";
                 }
-
-                return _return_string;
             }
         }
 
-        return "";
+        return _return_string;
     };
 
     static has_trait = marine_has_trait;
@@ -543,7 +518,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     if (array_contains(variable_struct_get_names(global.base_stats), class)) {
         load_json_data(global.base_stats[$ class]);
     }
-    var edit_stat, stat_mod;
     var stats = [
         "constitution",
         "strength",
@@ -560,8 +534,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     for (var stat_iter = 0; stat_iter < array_length(stats); stat_iter++) {
         if (struct_exists(self, stats[stat_iter])) {
             if (is_array(variable_struct_get(self, stats[stat_iter]))) {
-                edit_stat = variable_struct_get(self, stats[stat_iter]);
-                stat_mod = floor(gauss(edit_stat[0], edit_stat[1]));
+                var edit_stat = variable_struct_get(self, stats[stat_iter]);
+                var stat_mod = floor(gauss(edit_stat[0], edit_stat[1]));
                 if (array_length(edit_stat) > 2) {
                     if (edit_stat[2] == "max") {
                         variable_struct_set(self, stats[stat_iter], max(stat_mod, edit_stat[0]));
@@ -650,21 +624,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 	so as an example salamanders could have the chapter values as  */
     loyalty = 0;
 
-    static alter_loyalty = function(alt_val) {
-        if (alt_val < 0) {
-            if (has_trait("honorable")) {
-                alt_val /= 2;
-            }
-            if (has_trait("jaded")) {
-                alt_val *= 2;
-            }
-        }
-        if (has_trait("old_guard")) {
-            alt_val /= 2;
-        }
-        loyalty = clamp(loyalty + alt_val, 0, 100);
-    };
-
     switch (base_group) {
         case "astartes": //basic marine class //adds specific mechanics not releveant to most units
             loyalty = 100;
@@ -693,13 +652,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
             if (faction == "chapter") {
                 allegiance = global.chapter_name;
-            }
-
-            assign_inherent_mutations();
-            assign_random_mutations();
-
-            if (gene_seed_mutations[$ "voice"] == 1) {
-                charisma -= 2;
             }
 
             static assign_inherent_mutations = function() {
@@ -751,9 +703,12 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 }
             };
 
-            //array index 0 == trait to add
-            // array index 1 == probability e.g 99,98 == if (irandom(99)>98){add_trait}
-            // array index 3 == probability modifiers
+            assign_inherent_mutations();
+            assign_random_mutations();
+
+            if (gene_seed_mutations[$ "voice"] == 1) {
+                charisma -= 2;
+            }
 
             if ((global.chapter_name == "Space Wolves") || (obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES)) {
                 religion_sub_cult = "The Allfather";
@@ -812,6 +767,21 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return obj_ini.race[company][marine_number];
     };
 
+    static alter_loyalty = function(alt_val) {
+        if (alt_val < 0) {
+            if (has_trait("honorable")) {
+                alt_val /= 2;
+            }
+            if (has_trait("jaded")) {
+                alt_val *= 2;
+            }
+        }
+        if (has_trait("old_guard")) {
+            alt_val /= 2;
+        }
+        loyalty = clamp(loyalty + alt_val, 0, 100);
+    };
+
     static update_loyalty = function(change_value) {
         loyalty = clamp(loyalty + change_value, 0, 100);
     };
@@ -833,9 +803,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return false;
     };
 
-    /// @param {string} area
-    /// @param {string} bionic_quality
-    /// @param {bool} from_armoury
+    /// @param {string} _area
+    /// @param {string} _quality
+    /// @param {bool} _from_armoury
     static add_bionics = function(_area = "none", _quality = "any", _from_armoury = true) {
         if (bionics >= 10) {
             return false;
@@ -968,7 +938,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     is_boarder = false;
 
     gear_quality = "standard";
-    static update_gear = scr_update_unit_gear;
 
     if (base_group != "none") {
         update_health(max_health()); //set marine unit_health to max
@@ -1795,6 +1764,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     //quick way of getting name and role combined in string
     static name_role = function(include_epithet = true, include_role = true) {
         var _name = name();
+        var _epithet = "";
 
         if (include_role) {
             var _temp_role = squad_role();
@@ -1802,7 +1772,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
 
         if (include_epithet) {
-            var _epithet = "";
             if (array_length(epithets)) {
                 _epithet += $"{epithets[0].title}";
             }
@@ -1827,7 +1796,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return $"{scr_roman_numerals()[company - 1]}";
     };
 
-    static load_marine = function(ship, star = "none") {
+    static load_marine = function(ship, star = noone) {
         get_unit_size(); // make sure marines size given it's current equipment is correct
         var current_location = marine_location();
         var system = current_location[2];
@@ -1851,10 +1820,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 ship_location = ship; //id of ship marine is now loaded on
                 obj_ini.ship_carrying[ship] += size; //update ship capacity
 
-                if (star == "none") {
+                if (star == noone) {
                     star = find_star_by_name(system);
                 }
-                if (star != "none") {
+                if (star != noone) {
                     if (star.p_player[current_location[1]] > 0) {
                         star.p_player[current_location[1]] -= size;
                     }
@@ -1907,7 +1876,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static allocate_unit_to_fresh_spawn = function(type = "default") {
-        var homestar = "none";
+        var homestar = noone;
         var spawn_location_chosen = false;
         if (type == "home_planet") {
             // Place on the chapter's actual owned planet in the home system and keep the unit
@@ -1929,14 +1898,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             return;
         }
         if (((type == "home") || (type == "default")) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
-            var homestar = find_star_by_name(obj_ini.home_name);
+            homestar = find_star_by_name(obj_ini.home_name);
         } else if (type != "ship") {
-            var homestar = find_star_by_name(type);
+            homestar = find_star_by_name(type);
         }
-        /* if (!spawn_location_chosen){
-
-	    }*/
-        if (homestar != "none") {
+        if (homestar != noone) {
             for (var i = 1; i <= homestar.planets; i++) {
                 if (homestar.p_owner[i] == eFACTION.PLAYER || (obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && array_contains(obj_controller.imperial_factions, homestar.p_owner[i]))) {
                     planet_location = i;
@@ -1947,14 +1913,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
         if (!spawn_location_chosen) {
             var player_fleet = get_largest_player_fleet();
-            if (player_fleet != "none") {
+            if (player_fleet != noone) {
                 get_unit_size();
                 load_unit_to_fleet(player_fleet, self);
                 spawn_location_chosen = true;
             }
             //TODO add more work arounds in case of no valid spawn point
             if (!spawn_location_chosen) {
-                if (player_fleet != "none") {}
+                if (player_fleet != noone) {}
             }
         }
     };
@@ -2010,11 +1976,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static roll_age = scr_marine_spawn_age;
 
     static roll_experience = function() {
-        var _exp = 0;
         var _age_bonus = age();
         var _gauss_sd_mod = 14;
 
-        _exp = _age_bonus;
+        var _exp = _age_bonus;
         _exp = max(0, floor(gauss(_exp, _exp / _gauss_sd_mod)));
         add_exp(_exp);
     };
@@ -2331,7 +2296,11 @@ function jsonify_marine_struct(company, marine, stringify = true) {
 /// @param {Array<Real>} unit where unit[0] is company and unit[1] is the position
 /// @returns {Struct.TTRPG_stats} unit
 function fetch_unit(unit) {
-    return obj_ini.TTRPG[unit[0]][unit[1]];
+    try {
+        return obj_ini.TTRPG[unit[0]][unit[1]];
+    } catch (_exception) {
+        ERROR_HANDLER.assert_popup(_exception);
+    }
 }
 
 function fetch_unit_uid(uuid) {

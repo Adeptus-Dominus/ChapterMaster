@@ -1,5 +1,5 @@
 function find_open_artifact_slot() {
-    var i = 0, last_artifact = -1;
+    var last_artifact = -1;
     for (var i = 0; i < array_length(obj_ini.artifact); i++) {
         if (last_artifact == -1) {
             if (obj_ini.artifact[i] == "") {
@@ -215,7 +215,6 @@ function scr_add_artifact(artifact_type = "random", artifact_tags = "", is_ident
     }
 
     var big = choose(1, 2);
-    // if (big=1 || artifact_tags="minor") then t5="";
     if (artifact_tags == "minor") {
         t4 = "";
         t5 = "";
@@ -241,7 +240,6 @@ function scr_add_artifact(artifact_type = "random", artifact_tags = "", is_ident
         array_push(tags, "daemonic");
         array_push(tags, "chaos_gift");
     }
-    // show_message(string(t3));
 
     if (artifact_location == "") {
         if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
@@ -254,8 +252,6 @@ function scr_add_artifact(artifact_type = "random", artifact_tags = "", is_ident
     }
     obj_ini.artifact[last_artifact] = base_type_detail;
     obj_ini.artifact_tags[last_artifact] = tags;
-
-    // show_message(string(obj_ini.artifact_tags[last_artifact]));
 
     obj_ini.artifact_identified[last_artifact] = is_identified;
     obj_ini.artifact_condition[last_artifact] = 100;
@@ -539,11 +535,10 @@ function ArtifactStruct(Index) constructor {
                 var _b_type = determine_base_type();
                 var _bearer = false;
                 var _bearer_found = false;
-                var _unit;
                 if (_b_type == "weapon") {
                     for (var co = 0; co < obj_ini.companies; co++) {
                         for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
-                            _unit = fetch_unit([co, i]);
+                            var _unit = fetch_unit([co, i]);
                             if (_unit.weapon_one(true) == index) {
                                 _unit.update_weapon_one("", false, true);
                                 _bearer_found = true;
@@ -561,14 +556,15 @@ function ArtifactStruct(Index) constructor {
                     }
                 } else {
                     var _find_function = "";
+                    var _update_function = "";
                     if (_b_type == "gear") {
-                        var _update_function = "update_gear";
+                        _update_function = "update_gear";
                         _find_function = "gear";
                     } else if (_b_type == "armour") {
-                        var _update_function = "update_armour";
+                        _update_function = "update_armour";
                         _find_function = "armour";
                     } else if (_b_type == "mobility") {
-                        var _update_function = "update_mobility_item";
+                        _update_function = "update_mobility_item";
                         _find_function = "mobility_item";
                     }
                     if (_find_function != "") {
@@ -868,12 +864,6 @@ function delete_artifact(index) {
             artifact_equipped[index] = false;
             artifact_struct[index] = new ArtifactStruct(index);
         }
-        /*for (var i=index;i<array_length(artifact_struct);i++){
-            var _arti = artifact_struct[i];
-            if (artifact_equipped[index]){
-
-            }
-        }*/
         obj_controller.artifacts -= 1;
         with (obj_controller) {
             set_chapter_arti_data();

@@ -6,13 +6,7 @@ function scr_mission_reward(mission, star, planet) {
     // "mech_bionics",id,i
     // "mech_raider",id,i
 
-    var cleanup, i;
-    cleanup = 0;
-    i = -1;
-    repeat (11) {
-        i += 1;
-        cleanup[i] = 0;
-    }
+    var cleanup = array_create(11, 0);
 
     if (mission == "mars_spelunk") {
         var roll1 = roll_dice_chapter(1, 100, "high"); // For the first STC
@@ -100,20 +94,14 @@ function scr_mission_reward(mission, star, planet) {
         if (_tech_point_gain) {
             tixt += $"\n{_tech_point_gain} {string_plural("Tech Point", _tech_point_gain)}  gained";
         }
-        // scr_alert("green","mission",tixt,star.x,star.y,);
         scr_event_log("green", tixt);
 
-        /*if (found_artifact=1) then scr_event_log("","Artifact recovered from Mars Catacombs.");
-	    if (found_artifact>1) then scr_event_log("",string(found_artifact)+" Artifacts recovered from Mars Catacombs.");
-	    if (found_stc=1) then scr_event_log("","STC Fragment recovered from Mars Catacombs.");
-	    if (found_stc>1) then scr_event_log("",string(found_artifact)+" STC Fragments recovered from Mars Catacombs.");*/
         sort_all_companies_to_map(cleanup);
     }
 
     if (mission == "mech_raider") {
-        var roll1, result;
-        roll1 = roll_dice_chapter(1, 100, "low");
-        result = "";
+        var roll1 = roll_dice_chapter(1, 100, "low");
+        var result = "";
 
         if (roll1 <= 33) {
             result = "New";
@@ -129,16 +117,10 @@ function scr_mission_reward(mission, star, planet) {
             scr_popup("Mechanicus Mission Completed", $"Your {obj_ini.role[100][16]} have worked with the Adeptus Mechanicus in a satisfactory manor.  The testing and training went well, but your Land Raider was ultimately lost.  300 Requisition has been given to your Chapter and relations are better than before.", "mechanicus", "");
             obj_controller.requisition += 300;
             obj_controller.disposition[3] += 2;
-            var com, i, onceh;
-            onceh = 0;
-            com = -1;
-            i = 0;
-            repeat (11) {
+            var onceh = 0;
+            for (var com = 0; com <= 10; com++) {
                 if (onceh == 0) {
-                    com += 1;
-                    i = 0;
-                    repeat (100) {
-                        i += 1;
+                    for (var i = 1; i <= 100; i++) {
                         if ((obj_ini.veh_role[com][i] == "Land Raider") && (obj_ini.veh_loc[com][i] == star.name) && (obj_ini.veh_wid[com][i] == planet)) {
                             onceh = 1;
                             obj_ini.veh_race[com][i] = 0;
@@ -158,27 +140,25 @@ function scr_mission_reward(mission, star, planet) {
                             star.p_player[planet] -= 20;
                         }
                     }
+                } else {
+                    break;
                 }
             }
         }
         if (result == "Land Raider") {
             scr_popup("Mechanicus Mission Completed", "Your " + string(obj_ini.role[100][16]) + " have worked with the Adeptus Mechanicus in a satisfactory manor.  The testing and training went well, but your Land Raider was ultimately lost.  A new Land Raider has been provided in return.", "mechanicus", "");
-            var com, i, onceh;
-            onceh = 0;
-            com = -1;
-            i = 0;
+            var onceh = 0;
             obj_controller.disposition[3] += 1;
-            repeat (11) {
+            for (var com = 0; com <= 10; com++) {
                 if (onceh == 0) {
-                    com += 1;
-                    i = 0;
-                    repeat (100) {
-                        i += 1;
+                    for (var i = 1; i <= 100; i++) {
                         if ((obj_ini.veh_role[com][i] == "Land Raider") && (obj_ini.veh_loc[com][i] == star.name) && (obj_ini.veh_wid[com][i] == planet)) {
                             onceh = 1;
                             obj_ini.veh_hp[com][i] = 100;
                         }
                     }
+                } else {
+                    break;
                 }
             }
         }
@@ -188,9 +168,7 @@ function scr_mission_reward(mission, star, planet) {
             obj_controller.disposition[3] += 1;
         }
 
-        i = -1;
-        repeat (11) {
-            i += 1;
+        for (var i = 0; i <= 10; i++) {
             if (cleanup[i] == 1) {
                 obj_controller.temp[3000] = real(i);
                 with (obj_ini) {
@@ -200,16 +178,11 @@ function scr_mission_reward(mission, star, planet) {
         }
     }
 
-    i = -1;
-    repeat (11) {
-        i += 1;
-        cleanup[i] = 0;
-    }
+    cleanup = array_create(11, 0);
 
     if (mission == "mech_bionics") {
-        var roll1, result;
-        roll1 = roll_dice_chapter(1, 100, "low");
-        result = "";
+        var roll1 = roll_dice_chapter(1, 100, "low");
+        var result = "";
 
         if (roll1 <= 33) {
             result = "Requisition";
@@ -229,7 +202,6 @@ function scr_mission_reward(mission, star, planet) {
             obj_controller.requisition += 150 * _marines.number();
             _marines.kill_percent(100);
         } else if (result == "Bionics" || result == "Requisition") {
-            var _new_bionics = irandom_range(40, 100);
             obj_controller.disposition[3] += 1;
             mech_disp_change = 1;
 

@@ -104,7 +104,7 @@ function mechanicus_missions_end_turn(planet) {
         var _marines = collect_role_group("all", [name, planet, -1]);
         if (array_length(_marines) >= 20) {
             remove_planet_problem(planet, "mech_tomb1");
-            add_new_problem(planet, "mech_tomb2", 999, star == "none", other_data == {turns: 0});
+            add_new_problem(planet, "mech_tomb2", 999, noone, {turns: 0});
             scr_popup("Mechanicus Research", "The Mechanicus Research team on planet " + string(name) + " " + scr_roman(planet) + " has taken note of your Astartes and are now prepared to begin their research.  Your marines are to stay on the planet until further notice.", "necron_cave", "");
         } else {}
     }
@@ -182,13 +182,13 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
         }
 
         var star = array_random_element(_forge_stars);
-
+        var text = "";
         var _mission_data = {
             star: star.id,
         };
         var _name = star.name;
         if (chosen_mission == "mech_raider") {
-            var text = $"The Adeptus Mechanicus are trusting you with a special mission.  They wish for you to bring a Land Raider and six {obj_ini.role[100][16]} to a Forge World in {_name} for testing and training, for a duration of 24 months. You have four years to complete this.  Can your chapter handle this mission?";
+            text = $"The Adeptus Mechanicus are trusting you with a special mission.  They wish for you to bring a Land Raider and six {obj_ini.role[100][16]} to a Forge World in {_name} for testing and training, for a duration of 24 months. You have four years to complete this.  Can your chapter handle this mission?";
             _mission_data.options = [
                 {
                     str1: "Accept",
@@ -201,7 +201,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
             ];
             _evented = true;
         } else if (chosen_mission == "mech_bionics") {
-            var text = $"The Adeptus Mechanicus are trusting you with a special mission.  They desire a squad of Astartes with bionics to stay upon a Forge World in {_name} for testing, for a duration of 24 months.  You have four years to complete this.  Can your chapter handle this mission?";
+            text = $"The Adeptus Mechanicus are trusting you with a special mission.  They desire a squad of Astartes with bionics to stay upon a Forge World in {_name} for testing, for a duration of 24 months.  You have four years to complete this.  Can your chapter handle this mission?";
             _mission_data.options = [
                 {
                     str1: "Accept",
@@ -214,7 +214,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
             ];
             _evented = true;
         } else {
-            var text = $"The local Adeptus Mechanicus are preparing to embark on a voyage to Mars, to delve into the catacombs in search of lost technology.  Due to your close relations they have made the offer to take some of your {obj_ini.role[100][16]}s with them for both their unique abilities to function as both scientific helpers and as helpers (high Weapon Skill and Technology is reccomended).  Can your chapter handle this mission?";
+            text = $"The local Adeptus Mechanicus are preparing to embark on a voyage to Mars, to delve into the catacombs in search of lost technology.  Due to your close relations they have made the offer to take some of your {obj_ini.role[100][16]}s with them for both their unique abilities to function as both scientific helpers and as helpers (high Weapon Skill and Technology is reccomended).  Can your chapter handle this mission?";
             _mission_data.options = [
                 {
                     str1: "Accept",
@@ -249,7 +249,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
             exit;
         }
         var star = array_random_element(valid_stars);
-        _mission_data = {
+        var _mission_data = {
             star: star.id,
             pathway_id: chosen_mission,
         };

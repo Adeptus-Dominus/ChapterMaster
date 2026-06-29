@@ -2,8 +2,6 @@ instance_deactivate_object(obj_star_select);
 instance_deactivate_object(obj_drop_select);
 instance_deactivate_object(obj_bomb_select);
 
-var i;
-i = -1;
 keywords = "";
 last_open = 1;
 
@@ -72,16 +70,13 @@ audience_stack = [];
 
 alert_alpha[1] = 0.2;
 alert_char[1] = 1;
-i = -1;
 
 handle_discovered_governor_assasinations();
 
 if (audiences > 0) {
     // This is a one-off change all messages to declare war
-    var i = 0;
     var war;
-    repeat (15) {
-        i += 1;
+    for (var i = 1; i <= 15; i++) {
         war[i] = 0;
     }
     for (var i = 0; i < array_length(audience_stack); i++) {
@@ -98,6 +93,3 @@ if (audiences > 0) {
 alerts = 0;
 fast = 0;
 show = 0;
-
-/* */
-/*  */

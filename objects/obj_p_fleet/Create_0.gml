@@ -3,7 +3,7 @@ capital_number = 0;
 frigate_number = 0;
 escort_number = 0;
 selected = 0;
-orbiting = 0;
+orbiting = noone;
 warp_able = true;
 ii_check = choose(8, 9, 10, 11, 12);
 
@@ -19,7 +19,6 @@ point_breakdown = single_loc_point_data();
 image_xscale = 1.25;
 image_yscale = 1.25;
 
-var i = -1;
 capital = [];
 capital_num = [];
 capital_sel = [];
@@ -95,7 +94,7 @@ deserialize = function(save_data) {
         }
     }
 
-    if (save_data.orbiting != 0) {
+    if (save_data.orbiting != noone) {
         var nearest_star = instance_nearest(x, y, obj_star);
         set_player_fleet_image();
         orbiting = nearest_star;

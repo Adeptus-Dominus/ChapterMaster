@@ -25,13 +25,13 @@ function setup_promotion_popup() {
             units = nuuum;
             promote_button = new UnitButtonObject({x1: 1450, y1: 491, style: "pixel", label: "Promote"});
             promote_button.bind_method = function() {
-                var mahreens = 0, i = -1;
+                var mahreens = 0;
 
                 if (target_comp > 10) {
                     target_comp = 0;
                 }
 
-                for (i = 0; i < 498; i++) {
+                for (var i = 0; i < 498; i++) {
                     if (obj_ini.name[target_comp][i] == "" && obj_ini.name[target_comp][i + 1] == "") {
                         mahreens = i;
                         break;
@@ -47,7 +47,7 @@ function setup_promotion_popup() {
                 variable_struct_set(role_squad_equivilances, obj_ini.role[100][3], "veteran_squad");
                 variable_struct_set(role_squad_equivilances, obj_ini.role[100][4], "terminator_squad");
 
-                for (i = 0; i < array_length(obj_controller.display_unit) && mahreens < 500; i++) {
+                for (var i = 0; i < array_length(obj_controller.display_unit) && mahreens < 500; i++) {
                     if ((obj_controller.man[i] == "man") && (obj_controller.man_sel[i] == 1) && (obj_controller.ma_exp[i] >= min_exp)) {
                         moveable = true;
                         unit = obj_controller.display_unit[i];
@@ -78,8 +78,8 @@ function setup_promotion_popup() {
                             }
                             //move squad
                             if (moveable) {
-                                var mem_unit;
-                                for (var mem = 0; mem < array_length(move_members); mem++) {
+                                var mem;
+                                for (mem = 0; mem < array_length(move_members); mem++) {
                                     var mem_unit = fetch_unit(move_members[mem]);
                                     if (mem_unit.company != target_comp) {
                                         scr_move_unit_info(mem_unit.company, target_comp, mem_unit.marine_number, mahreens, false);
@@ -210,7 +210,6 @@ function draw_popup_promotion() {
         target_role = 0;
         get_unit_promotion_options();
     }
-    // }
     draw_set_halign(fa_left);
     draw_text(1020, 290, "Target Role:"); //choose new role
     var role_x = 0;

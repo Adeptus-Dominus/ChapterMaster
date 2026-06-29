@@ -507,7 +507,7 @@ if (defeat == 0 && _reduce_power) {
                     who_cleansed = "Gene Stealer Cult";
                     make_alert = true;
                     delete_features(p_feature[battle_planet], eP_FEATURES.GENE_STEALER_CULT);
-                    adjust_influence(eFACTION.TYRANIDS, -25, battle_planet);
+                    adjust_influence(eFACTION.TYRANIDS, -25, battle_planet, self);
                 }
                 if (make_alert) {
                     if (p_first[battle_planet] == 1) {
@@ -697,9 +697,8 @@ if ((leader || ((battle_special == "ChaosWarband") && (!obj_controller.faction_d
     }
 }
 
-var endline, inq_eated;
-endline = 1;
-inq_eated = false;
+var endline = 1;
+var inq_eated = false;
 
 if (obj_ini.omophagea) {
     var eatme = roll_dice_chapter(1, 100, "high");
@@ -770,7 +769,6 @@ if (obj_ini.omophagea) {
         // check for inquisitor
         eatme = roll_dice_chapter(1, 100, "high");
         if ((eatme <= 40) && (present_inquisitor == 1)) {
-            var thatta = 0, remove = 0, i = 0;
             obj_controller.disposition[4] -= 10;
             inq_eated = true;
             instance_activate_object(obj_en_fleet);
@@ -792,7 +790,8 @@ if (obj_ini.omophagea) {
                     scr_loyalty("Inquisitor Killer", "+");
                 }
 
-                var msg = "", msg2 = "", i = 0, remove = 0;
+                var msg = "";
+                var remove = 0;
                 // if (string_count("Inqis",inquisitor_ship.trade_goods)>0) then show_message("B");
                 if (inquisitor_ship.inquisitor > 0) {
                     var inquis_name = obj_controller.inquisitor[inquisitor_ship.inquisitor];
@@ -807,7 +806,7 @@ if (obj_ini.omophagea) {
                     scr_loyalty("Inquisitor Killer", "+");
                 }
 
-                i = remove;
+                var i = remove;
                 repeat (10 - remove) {
                     if (i < 10) {
                         obj_controller.inquisitor_gender[i] = obj_controller.inquisitor_gender[i + 1];

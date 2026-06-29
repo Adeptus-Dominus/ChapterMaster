@@ -1,5 +1,5 @@
 // Creates all variables, sets up default variables for different planets and if there is a fleet orbiting a system/planet
-craftworld = 0; // orbit_angle=0;orbit_radius=0;
+craftworld = 0;
 space_hulk = 0;
 old_x = 0;
 old_y = 0;
@@ -10,9 +10,8 @@ if ((((x >= (room_width - 150)) && (y <= 450)) || (y < 100)) && (global.load == 
 }
 
 scale = 1;
-var run = 0;
 name = "";
-star = "";
+star = noone;
 planets = 0;
 owner = eFACTION.IMPERIUM;
 image_speed = 0;
@@ -145,8 +144,6 @@ var _array_size = 23;
 present_fleet = array_create(_array_size, 0);
 
 vision = 1;
-// present_fleets=0;
-// tau_fleets=0;
 
 ai_a = -1;
 ai_b = -1;
@@ -232,8 +229,7 @@ function deserialize(save_data) {
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);
-    var _len = array_length(all_names);
-    for (var i = 0; i < _len; i++) {
+    for (var i = 0; i < array_length(all_names); i++) {
         var var_name = all_names[i];
         if (array_contains(exclusions, var_name)) {
             continue;
@@ -250,8 +246,7 @@ function deserialize(save_data) {
     var _temp_features = false;
     if (struct_exists(save_data, "planet_data")) {
         var planet_arr = save_data.planet_data;
-        var _len = array_length(planet_arr);
-        for (var p = 1; p < _len; p++) {
+        for (var p = 1; p < array_length(planet_arr); p++) {
             var planet = planet_arr[p];
             var var_names = struct_get_names(planet);
             for (var v = 0; v < array_length(var_names); v++) {
@@ -274,12 +269,7 @@ function deserialize(save_data) {
                      continue;
                 }
                 var val = planet[$ var_name];
-                // var_name = "p_type"
-                // planet = {"p_type":"hive"};
-                // val = planet[$var_name] = "hive"
-
                 self[$ var_name][p] = val;
-                // variable_struct_set(self, var_name, planet[$var_name]);
             }
         }
     }

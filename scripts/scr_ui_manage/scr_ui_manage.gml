@@ -49,11 +49,12 @@ function load_marines_into_ship(system, ship, units, reload = false) {
                 }
             }
 
+            var _unit_size = 0;
             if (_is_marine) {
-                var _unit_size = man_size;
+                _unit_size = man_size;
             } else {
                 var _vehic_size = scr_unit_size("", ma_role[q], true);
-                var _unit_size = _vehic_size;
+                _unit_size = _vehic_size;
             }
 
             if (_unit_ship_id == -1) {
@@ -155,7 +156,7 @@ function reset_manage_unit_constants(unit) {
 
         // Gear
 
-        var _data = {
+        _data = {
             tooltip: $"==Gear==\n{is_struct(_equip_data.gear_data) ? _equip_data.gear_data.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.gear_quality),
             max_width: 187,
@@ -164,7 +165,7 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.gear_string = new ReactiveString(unit.equipments_qual_string("gear", true), 0, 0, _data);
 
         //mobility
-        var _data = {
+        _data = {
             tooltip: $"==Back/Mobilitiy==\n{is_struct(_equip_data.mobility_data) ? _equip_data.mobility_data.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.mobility_item_quality),
             max_width: 187,
@@ -172,7 +173,7 @@ function reset_manage_unit_constants(unit) {
 
         unit_manage_constants.mobi_string = new ReactiveString(unit.equipments_qual_string("mobi", true), 0, 0, _data);
 
-        var _data = {
+        _data = {
             tooltip: $"==First Weapon==\n{is_struct(_equip_data.weapon_one_data) ? _equip_data.weapon_one_data.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.weapon_one_quality),
             max_width: 187,
@@ -181,7 +182,7 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.wep1_string = new ReactiveString(unit.equipments_qual_string("wep1", true), 0, 0, _data);
 
         //mobility
-        var _data = {
+        _data = {
             tooltip: $"==Second Weapon==\n{is_struct(_equip_data.weapon_two_data) ? _equip_data.weapon_two_data.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.weapon_two_quality),
             max_width: 187,
@@ -342,7 +343,7 @@ function reset_manage_unit_constants(unit) {
         var _range = unit.ranged_attack();
         unit_manage_constants.ranged_attack = new LabeledIcon(spr_icon_ballistic_skill, $"{round(_range[0])}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Ranged Attack==\n{_range[1]}", colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR});
 
-        var _carry = _range[2];
+        _carry = _range[2];
         unit_manage_constants.ranged_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Ranged Burden==\n{_carry[2]}", colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR});
 
         // -------------------------
@@ -1103,8 +1104,6 @@ function scr_ui_manage() {
             sel_all = "";
 
             draw_set_color(c_black);
-            xx = camera_get_view_x(view_camera[0]);
-            yy = camera_get_view_y(view_camera[0]);
             draw_rectangle(xx + 974, yy + 165, xx + 1005, yy + 822, 0);
             draw_set_color(c_gray);
             draw_rectangle(xx + 974, yy + 165, xx + 1005, yy + 822, 1);
@@ -1122,17 +1121,6 @@ function scr_ui_manage() {
             draw_sprite_stretched(spr_arrow, 2, xx + 974, yy + 141, 31, 30);
             draw_sprite_stretched(spr_arrow, 3, xx + 974, yy + 791, 31, 30);
 
-            /*
-		    draw_set_color(c_black);draw_rectangle(xx+25,yy+400,xx+600,yy+417,0);
-		    draw_set_color(CM_GREEN_COLOR);draw_rectangle(xx+25,yy+400,xx+600,yy+417,1);
-		    draw_line(xx+160,yy+400,xx+160,yy+417);
-		    draw_line(xx+304,yy+400,xx+304,yy+417);
-		    draw_line(xx+448,yy+400,xx+448,yy+417);
-
-		    draw_set_font(fnt_menu);
-		    draw_set_halign(fa_center);
-		    */
-
             yy += 8;
             var _draw_selec_buttons = !obj_controller.unit_profile && !stats_displayed;
             if (_draw_selec_buttons && instance_exists(obj_popup)) {
@@ -1149,8 +1137,6 @@ function scr_ui_manage() {
             var selected_unit = obj_controller.unit_focus;
             if ((selected_unit.name() != "") && (selected_unit.race() != 0)) {
                 draw_set_alpha(1);
-                var xx = camera_get_view_x(view_camera[0]);
-                var yy = camera_get_view_y(view_camera[0]);
                 if (obj_controller.unit_profile && !instance_exists(obj_popup)) {
                     stats_displayed = true;
                     selected_unit.stat_display(true);
