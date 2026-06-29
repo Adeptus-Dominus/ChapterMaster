@@ -56,4 +56,15 @@ if (start == 5) {
             }
         }
     }
+
+    if (speed_button.is_clicked) {
+        speed_mode = (speed_mode + 1) % 3;
+        var new_speed = 0;
+        if (speed_mode == 0) {
+            new_speed = original_speed;
+        } else {
+            new_speed = original_speed + 30 * speed_mode;
+        }
+        game_set_speed(new_speed, gamespeed_fps);
+    }
 }

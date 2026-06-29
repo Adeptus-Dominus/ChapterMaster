@@ -424,6 +424,12 @@ function SpriteButton(data) constructor {
 
     cycle_index = false;
     draw_index = 0;
+    width = 0;
+    height = 0;
+    x1 = 0;
+    x2 = 0;
+    y1 = 0;
+    y2 = 0;
     scale_x = 1.0;
     scale_y = 1.0;
     alpha_hover = 1.0;
@@ -444,8 +450,6 @@ function SpriteButton(data) constructor {
         x2 = x1 + (width * scale_x);
         y2 = y1 + (height * scale_y);
     }
-
-    update(data);
 
     /// @desc Updates interaction state and draws the button.
     /// @param {bool} _enabled If false, interaction is disabled and the button appears faded.
@@ -473,6 +477,8 @@ function SpriteButton(data) constructor {
         draw_sprite_ext(_draw_sprite, draw_index, x1, y1, scale_x, scale_y, 0, c_white, _draw_alpha);
         pop_draw_return_values();
     };
+
+    update(data);
 }
 
 /// @function UnitButtonObject(data)

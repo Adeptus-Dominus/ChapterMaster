@@ -37,15 +37,3 @@ if (instance_exists(obj_p_ship) && (control == 1)) {
         sel_y2 = 0;
     }
 }
-
-//Why is this here?
-if ((start == 5) && (obj_controller.zoomed == 0)) {
-    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 12) && (mouse_y >= camera_get_view_y(view_camera[0]) + 436) && (mouse_x < camera_get_view_x(view_camera[0]) + 48) && (mouse_y < camera_get_view_y(view_camera[0]) + 480) && (game_get_speed(gamespeed_fps) < 90)) {
-        game_set_speed(game_get_speed(gamespeed_fps) + 30, gamespeed_fps);
-    }
-}
-if ((start == 5) && (obj_controller.zoomed == 1)) {
-    if ((mouse_x > 24) && (mouse_y > 872) && (mouse_x < 90) && (mouse_y < 960) && (game_get_speed(gamespeed_fps) < 90)) {
-        game_set_speed(game_get_speed(gamespeed_fps) + 30, gamespeed_fps);
-    }
-}
