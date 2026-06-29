@@ -17,7 +17,7 @@ function return_lost_ship() {
             }
         }
         var _star = instance_find(obj_star, irandom(instance_number(obj_star) - 1));
-        _new_fleet = instance_create(_star.x, _star.y, obj_p_fleet);
+        var _new_fleet = instance_create(_star.x, _star.y, obj_p_fleet);
         _new_fleet.owner = eFACTION.PLAYER;
         if (_lost_fleet != noone) {
             find_and_move_ship_between_fleets(_lost_fleet, _new_fleet, _return_id);
@@ -84,6 +84,11 @@ function return_lost_ship() {
             } else {
                 _text += $"The fate of your ship {obj_ini.ship[_return_id]} has now become clear. While it did not survive it's travels through the warp and tore itself apart somewhere in the  {_star.name} system. ";
                 scr_kill_ship(_return_id);
+                if (player_fleet_ship_count(_new_fleet) == 0) {
+                    with (_new_fleet) {
+                        instance_destroy();
+                    }
+                }
                 if (array_length(_units) > 0) {
                     _text += "Some of your astartes may have been able to jetison and survive the ships destruction";
                 }
