@@ -63,6 +63,17 @@ function split_selected_into_new_fleet(start_fleet) {
     return new_fleet;
 }
 
+/// @param {Id.Instance.obj_p_fleet} _fleet
+/// @param {Id.Instance.obj_star} _star
+function set_fleet_orbiting(_fleet, _star) {
+    _star.present_fleet[1] += 1;
+    if (_star.vision == 0) {
+        _star.vision = 1;
+    }
+    _fleet.orbiting = _star;
+}
+
+/// @self Id.Instance.obj_p_fleet
 function cancel_fleet_movement() {
     var nearest_star = instance_nearest(x, y, obj_star);
     action = "";
@@ -72,6 +83,8 @@ function cancel_fleet_movement() {
     action_y = 0;
     complex_route = [];
     just_left = false;
+    set_fleet_location(nearest_star.name);
+    set_fleet_orbiting(self, nearest_star);
 }
 
 function set_new_player_fleet_course(target_array) {

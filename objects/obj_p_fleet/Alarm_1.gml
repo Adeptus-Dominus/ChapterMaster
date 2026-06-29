@@ -6,11 +6,7 @@ try {
         exit;
     } else if (action == "") {
         var spid = instance_nearest(x, y, obj_star);
-        spid.present_fleet[1] += 1;
-        if (spid.vision == 0) {
-            spid.vision = 1;
-        }
-        orbiting = spid;
+        set_fleet_orbiting(self, spid);
 
         if ((orbiting != noone) && instance_exists(orbiting)) {
             if (orbiting.visited == 0) {
