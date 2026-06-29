@@ -580,6 +580,7 @@ function player_fleet_selected_count(fleet = noone) {
     return ship_count;
 }
 
+/// @returns {Id.Instance.obj_p_fleet} 
 function get_nearest_player_fleet(nearest_x, nearest_y, is_static = false, is_moving = false, stop_complex_actions = true) {
     var chosen_fleet = noone;
     if (instance_exists(obj_p_fleet)) {
