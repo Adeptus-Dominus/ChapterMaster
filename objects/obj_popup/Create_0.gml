@@ -120,14 +120,14 @@ company_promote_data = [
     } //10th company
 ];
 
-role_name = array_create(11, "");
-role_exp = array_create(11, 0);
+role_name = array_create(12, "");
+role_exp = array_create(12, 0);
 
 // TODO: connect this logic with the other_manage_data() to reduce verboseness;
 get_unit_promotion_options = function() {
     var spec = 0;
-    role_name = array_create(11, "");
-    role_exp = array_create(11, 0);
+    array_set_value(role_name, "");
+    array_set_value(role_exp, 0);
     var i = 0;
     // this area does the required exp for roles per company
     if (unit_role == obj_ini.role[100][16]) {
