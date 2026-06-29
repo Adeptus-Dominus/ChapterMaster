@@ -8,15 +8,15 @@ global.force_strength_descriptions = [
     "Overwhelming",
 ];
 
-/// @param {Real} planet
-/// @param {Id.Instance.obj_star} system
-function PlanetData(planet, system) constructor {
+/// @param {Real} _planet
+/// @param {Id.Instance.obj_star} _system
+function PlanetData(_planet, _system) constructor {
     //safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
     //disposition
     static large_pop_conversion = 1000000000;
 
-    self.planet = planet;
-    self.system = system;
+    planet = _planet;
+    system = _system;
 
     static refresh_data = function() {
         features = system.p_feature[planet];

@@ -1,3 +1,4 @@
+/// @param {Id.Instance.obj_star} star
 function adjust_influence(faction, value, planet, star) {
     with (star) {
         p_influence[planet][faction] += value;
@@ -28,6 +29,7 @@ function adjust_influence(faction, value, planet, star) {
     }
 }
 
+/// @self Id.Instance.obj_star
 function merge_influences(doner_influence, planet) {
     for (var i = 0; i < 15; i++) {
         if (i == 2) {
