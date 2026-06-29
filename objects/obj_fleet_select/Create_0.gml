@@ -184,8 +184,8 @@ selection_window.inside_method = function() {
                         }
                     }
                 }
-                if (obj_ini.ship_maxhp[current_ship] > 0) {
-                    ship_health = round((obj_ini.ship_hp[current_ship] / obj_ini.ship_maxhp[current_ship]) * 100);
+                if (obj_ini.ship_maxhp[full_id] > 0) {
+                    ship_health = round((obj_ini.ship_hp[full_id] / obj_ini.ship_maxhp[full_id]) * 100);
                 }
 
                 if (ship_select == 0) {
