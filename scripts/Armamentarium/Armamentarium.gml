@@ -1,4 +1,6 @@
-#macro SHOP_SELL_MOD 0.8
+#macro SHOP_SELL_MOD 0.5
+#macro SHOP_BUY_MIN_MOD 0.5
+#macro SHOP_SELL_MIN_MOD 0.1
 #macro ROGUE_TRADER_DISCOUNT 0.8
 #macro SHOP_FORGE_MOD 6
 #macro WAR_PENALTY 0.5
@@ -22,6 +24,7 @@ function ShopItem(_name) constructor {
     value = 0;
 
     buy_cost = 0;
+    sell_cost = 0;
     buyable = true;
     buy_cost_mod = 1;
     best_seller = "unknown";
@@ -95,7 +98,12 @@ function ShopItem(_name) constructor {
             forge_cost_mod = _forge_mod;
             forge_cost = round(value * SHOP_FORGE_MOD * forge_cost_mod);
         } else {
-            buy_cost = round(value * buy_cost_mod);
+            var _min_buy_cost = round(value * SHOP_BUY_MIN_MOD);
+            buy_cost = max(round(value * buy_cost_mod), _min_buy_cost);
+            var _sell_mod = SHOP_SELL_MOD * (2.0 - buy_cost_mod);
+            _sell_mod = clamp(_sell_mod, SHOP_SELL_MIN_MOD, 1.0);
+            sell_cost = round(value * _sell_mod);
+            sell_cost = min(sell_cost, buy_cost);
         }
     };
 
@@ -823,15 +831,14 @@ function Armamentarium(_controller) constructor {
     /// @desc Sells an item back to the market.
     /// @param {Struct.ShopItem} _item The item to sell.
     /// @param {real} _count Quantity to sell.
-    /// @param {real} _modifier Price multiplier for selling.
     /// @returns {bool} Success of the transaction.
-    static _sell_item = function(_item, _count, _modifier) {
+    static _sell_item = function(_item, _count) {
         if (_item.stocked < 1) {
             return false;
         }
 
         var _sold_count = min(_item.stocked, _count);
-        var _sell_price = round((_item.value * _modifier) * _sold_count);
+        var _sell_price = _item.sell_cost * _sold_count;
 
         scr_add_item(_item.name, -_sold_count, "standard");
         _item.stocked -= _sold_count;
@@ -1049,15 +1056,15 @@ function Armamentarium(_controller) constructor {
         var _can_sell = !array_contains(["ships", "vehicles"], shop_type) && _item.stocked > 0;
 
         sell_button.update({
-            tooltip_text : $"Sell for {round(_item.value * SHOP_SELL_MOD)} (x{SHOP_SELL_MOD} of value)",
+            tooltip_text : $"Sell for {_item.sell_cost * min(_item.stocked, _count)}",
             x1 : 1480,
             y1 : _y + 2
-        })
+        });
 
         sell_button.draw(_can_sell);
 
         if (sell_button.is_clicked) {
-            _sell_item(_item, _count, SHOP_SELL_MOD);
+            _sell_item(_item, _count);
         }
 
         draw_set_alpha(1);
