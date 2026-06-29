@@ -152,6 +152,8 @@ function setup_promotion_popup() {
             cancel_button = new UnitButtonObject({x1: 1061, y1: 491, style: "pixel", label: "Cancel"});
             main_slate = new DataSlate({style: "decorated", XX: 1006, YY: 143, set_width: true, width: 571, height: 350});
             target_company_radio(min_exp);
+            target_comp = 0;
+            get_unit_promotion_options();
         }
     }
 }
