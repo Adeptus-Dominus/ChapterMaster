@@ -144,6 +144,31 @@ function scr_load(save_part, save_id) {
         obj_event_log.event = obj_saveload.GameSave.EventLog;
         LOGGER.info("EVENT LOG Loaded");
 
+        // Sanitize NaN coordinates baked into older saves. A fleet whose x/y went NaN
+        // (from the pre-fix action_eta divide-by-zero) keeps re-baking that NaN into
+        // obj_controller through the fleet-focus copy, which then crashes the collision
+        // grid when obj_cursor is recreated on a room change. Snap any broken instance
+        // back to a valid star so the bad value can never reach the controller again.
+        var _anchor = instance_nearest(0, 0, obj_star);
+        var _ax = instance_exists(_anchor) ? _anchor.x : 0;
+        var _ay = instance_exists(_anchor) ? _anchor.y : 0;
+        with (obj_p_fleet) {
+            if (is_nan(x) || is_nan(y)) {
+                x = _ax;
+                y = _ay;
+            }
+        }
+        with (obj_en_fleet) {
+            if (is_nan(x) || is_nan(y)) {
+                x = _ax;
+                y = _ay;
+            }
+        }
+        if (is_nan(obj_controller.x) || is_nan(obj_controller.y)) {
+            obj_controller.x = _ax;
+            obj_controller.y = _ay;
+        }
+
         obj_saveload.alarm[1] = 5;
         obj_controller.invis = false;
         global.load = -1;
