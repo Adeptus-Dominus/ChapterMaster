@@ -48,7 +48,16 @@ if (!engaged) {
 
         if (range[i] >= dist) {
             // The weapon is in range;
-            var _target_vehicles = apa[i] > 0 ? true : false; // AP weapons target vehicles
+            // A weapon's armour pierce doubles as its role. Dedicated anti-tank guns
+            // (apa >= GUARD_ENEMY_ANTITANK_AP, the rokkit / lascannon / melta class) hunt
+            // vehicles. Everything lighter (general-purpose and pure anti-infantry) goes
+            // for the men first. This is preference by weapon role, not per-shot penetration
+            // knowledge: the enemy never checks whether a given shot would crack a specific
+            // target, it just sends tank-hunters at tanks and lighter guns at infantry.
+            // Either type still crosses over as a fallback through the paths below: an
+            // anti-tank gun with no vehicle in reach drops to the men path, and a lighter
+            // gun with no men in reach drops to the vehicle fallback inside the men path.
+            var _target_vehicles = apa[i] >= GUARD_ENEMY_ANTITANK_AP; // role-based target preference
 
             // Weird alpha strike mechanic, that changes target unit index to CM;
             if (((wep[i] == "Power Fist") || (wep[i] == "Bolter")) && (obj_ncombat.alpha_strike > 0) && (wep_num[i] > 5)) {

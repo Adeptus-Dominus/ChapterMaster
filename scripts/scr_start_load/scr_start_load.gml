@@ -55,7 +55,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
         }
     }
     // i feel like there definatly is or should be a generic function for this????
-    var _vehicles = ["Rhino", "Predator", "Land Speeder", "Land Raider", "Whirlwind", "Chimera", "Leman Russ"];
+    var _vehicles = ["Rhino", "Predator", "Land Speeder", "Land Raider", "Whirlwind", "Chimera", "Leman Russ", "Basilisk"];
     function load_vehicles(_companies, _equip, _ship, size) {
         obj_ini.veh_wid[_companies][_equip] = 0;
         obj_ini.veh_lid[_companies][_equip] = _ship;

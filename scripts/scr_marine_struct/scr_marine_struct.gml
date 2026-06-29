@@ -365,7 +365,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         // Astartes, so a single trooper takes only a tenth of a marine's berth. A Guard
         // Squad is left at a full slot, since one already stands in for a whole squad. A
         // Guard Sergeant bunks with his men, so he takes the same tenth-slot as a trooper.
-        if (unit_role == "Guardsman" || unit_role == "Guard Sergeant") {
+        if (unit_role == "Guardsman" || unit_role == "Guard Sergeant" || unit_role == "Veteran Guard" || unit_role == "Heavy Weapons Team") {
             size = 0.1;
             return size;
         }
@@ -406,6 +406,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
         if (role() == "Guard Squad") {
             max_h *= GUARD_SQUAD_SIZE; // a squad shares one pooled health bar and dies as a whole
+        }
+        if (role() == "Heavy Weapons Team") {
+            max_h *= GUARD_HEAVY_WEAPONS_TEAM_SIZE; // a 3-man weapons team shares one pooled health bar
         }
         return max_h;
     };

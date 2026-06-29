@@ -107,6 +107,14 @@ function TradeAttempt(diplomacy) constructor {
                     repeat (floor(_opt.number / 200)) {
                         scr_add_vehicle("Chimera", 0);
                     }
+                    // One Heavy Weapons Team musters per 100 guardsmen, a Heavy Bolter crew
+                    // drawn from the same homeworld levy to give the auxilia organic anti-heavy
+                    // fire. This mirrors how the enemy Guard field Heavy Weapons Teams, scaled to
+                    // the player at 1 per 100. They muster into the Auxilia company (company 0)
+                    // alongside the guardsmen. The /100 ratio is tunable.
+                    repeat (floor(_opt.number / 100)) {
+                        scr_add_man("Heavy Weapons Team", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
+                    }
                     with (obj_ini) {
                         scr_company_order(0);
                     }
@@ -128,6 +136,24 @@ function TradeAttempt(diplomacy) constructor {
                     }
                     // Handing over sacred war materiel costs the forge world some regard, one point
                     // per tank with a floor of one, so a larger order stings their disposition more.
+                    alter_disposition(diplomacy_faction, -max(1, _opt.number));
+                } else if (_type == "Basilisk") {
+                    // The Adeptus Mechanicus part with a Basilisk only grudgingly. Each musters
+                    // into the Auxilia company (company 0) alongside the guard armour line so the
+                    // force can field its own artillery. The Basilisk serves the Imperial Guard
+                    // auxilia, not the Chapter, so it is tagged eFACTION.IMPERIUM to match the
+                    // guardsmen it supports rather than the player's own colours.
+                    repeat (_opt.number) {
+                        scr_add_vehicle("Basilisk", 0);
+                    }
+                    for (var _bv = 1; _bv < array_length(obj_ini.veh_role[0]); _bv++) {
+                        if (obj_ini.veh_role[0][_bv] == "Basilisk") {
+                            obj_ini.veh_race[0][_bv] = eFACTION.IMPERIUM;
+                        }
+                    }
+                    with (obj_ini) {
+                        scr_company_order(0);
+                    }
                     alter_disposition(diplomacy_faction, -max(1, _opt.number));
                 } else {
                     // Every other mercenary type arrives by trade convoy.
@@ -432,6 +458,7 @@ function TradeAttempt(diplomacy) constructor {
             new_demand_buttons(25, "Skitarii", "merc", 200);
             new_demand_buttons(55, "Techpriest", "merc", 3);
             new_demand_buttons(40, "Leman Russ", "merc", 10);
+            new_demand_buttons(50, "Basilisk", "merc", 5);
             break;
         case 4:
             new_demand_buttons(25, "Crusader", "merc", 5);

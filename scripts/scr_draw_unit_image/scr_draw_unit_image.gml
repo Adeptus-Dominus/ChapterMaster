@@ -531,7 +531,7 @@ function scr_draw_unit_image(_background = false) {
     // same way Skitarii and Sisters draw theirs, loaded once from a runtime PNG because the
     // mod cannot add compiled sprite assets. The image ships at images\units\guardsman.png.
     // If alignment needs nudging, offset the draw from x_surface_offset / y_surface_offset.
-    if (role() == "Guardsman") {
+    if (role() == "Guardsman" || role() == "Veteran Guard" || role() == "Heavy Weapons Team") {
         if (!variable_global_exists("guardsman_portrait")) {
             global.guardsman_portrait = sprite_add(working_directory + "/images/units/guardsman.png", 1, false, false, 0, 0);
         }

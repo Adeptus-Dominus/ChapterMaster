@@ -112,6 +112,35 @@ function find_stack_index(weapon_name, head_role = false, unit = "none") {
 }
 
 /// @self Asset.GMObject.obj_pnunit
+/// Like find_stack_index, but caps how many shooters share a stack so a large body of
+/// identically-armed troops (a guard regiment of lasguns) splits into several smaller stacks
+/// instead of one regiment-wide one. Each capped stack fires and targets independently in
+/// combat, the way the enemy's obj_enunit blocks already do. Fills a partial chunk first,
+/// opens a fresh stack when the current one is full, and only as a last resort (all 71 stack
+/// slots used) merges over the cap so fire is never silently dropped.
+function find_capped_stack_index(weapon_name, cap) {
+    // 1. a matching, un-led chunk that still has room
+    for (var si = 1; si < array_length(wep); si++) {
+        if (wep[si] == weapon_name && wep_title[si] == "" && wep_num[si] < cap) {
+            return si;
+        }
+    }
+    // 2. no room left in any existing chunk: start a fresh one
+    for (var si = 1; si < array_length(wep); si++) {
+        if (wep[si] == "" && wep_title[si] == "") {
+            return si;
+        }
+    }
+    // 3. stack slots exhausted: merge over the cap rather than drop the shots
+    for (var si = 1; si < array_length(wep); si++) {
+        if (wep[si] == weapon_name && wep_title[si] == "") {
+            return si;
+        }
+    }
+    return -1;
+}
+
+/// @self Asset.GMObject.obj_pnunit
 function player_head_role_stack(stack_index, unit) {
     wep_title[stack_index] = unit.role();
     if (!array_contains(wep_solo[stack_index], unit.name())) {
@@ -372,7 +401,15 @@ function scr_player_combat_weapon_stacks() {
                         add_squad_weapon(unit.weapon_two(), 1, head_role, unit);
                     } else {
                         var primary_ranged = unit.ranged_damage_data[3]; //collect unit ranged data
-                        weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
+                        // Rank-and-file guardsmen split into enemy-block-sized volleys (capped
+                        // stacks) instead of merging the whole regiment into one lasgun stack, so
+                        // each volley fires and picks its target on its own. Everyone else (Marines,
+                        // sergeants, specialists) stacks normally.
+                        if (unit.role() == "Guardsman") {
+                            weapon_stack_index = find_capped_stack_index(primary_ranged.name, GUARD_VOLLEY_SIZE);
+                        } else {
+                            weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
+                        }
                         if (weapon_stack_index > -1) {
                             add_data_to_stack(weapon_stack_index, primary_ranged, unit.ranged_damage_data[0], head_role, unit);
                             if (head_role) {

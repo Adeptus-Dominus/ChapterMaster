@@ -176,6 +176,17 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
         }
     }
 
+    // Veteran-only weapon gate: some weapons are role-restricted (the Hellgun is Veteran
+    // Guard only). Reject and log before any armoury or slot mutation if the unit lacks the
+    // role. Skips unequip and artifacts. Mirrors the mobility tag-gate, keyed on role.
+    if (!unequipping && !is_artifact) {
+        var _wep_restrict_data = gear_weapon_data("weapon", new_weapon);
+        if (is_struct(_wep_restrict_data) && _wep_restrict_data.has_tag("veteran_guard_only") && role() != "Veteran Guard") {
+            LOGGER.error($"Failed to equip {new_weapon} for {name()} - restricted to Veteran Guard.");
+            return "restricted";
+        }
+    }
+
     if (from_armoury && !unequipping && !is_artifact) {
         var viability = weapon_viable(new_weapon, quality);
         if (viability[0]) {

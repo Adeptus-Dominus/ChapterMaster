@@ -121,6 +121,28 @@
         ],
         "value": 30
     },
+    "Earthshaker Cannon": {
+        "abbreviation": "Erthshk",
+        "ammo": 8,
+        "arp": 3,
+        "attack": {
+            "artifact": 1050,
+            "master_crafted": 850,
+            "standard": 700
+        },
+        "description": "The Earthshaker is the thunderous main gun of the Basilisk self-propelled artillery. It lobs enormous high-explosive shells in a high arc onto distant formations, shattering massed infantry and light armour from well beyond the firing line.",
+        "melee_hands": 0,
+        "range": 24,
+        "ranged_hands": 0,
+        "spli": 12,
+        "tags": [
+            "vehicle",
+            "heavy_ranged",
+            "explosive",
+            "turret"
+        ],
+        "value": 45
+    },
     "Battle Cannon": {
         "abbreviation": "BtlCnn",
         "ammo": 12,
@@ -1322,7 +1344,8 @@
         "ranged_hands": 1,
         "spli": 3,
         "tags": [
-            "las"
+            "las",
+            "veteran_guard_only"
         ]
     },
     "Hellrifle": {
@@ -1680,7 +1703,7 @@
         "attack": {
             "artifact": 130,
             "master_crafted": 110,
-            "standard": 70
+            "standard": 60
         },
         "description": "The standard-issue weapon of the Astra Militarum. A rugged two-handed las weapon firing coherent energy beams, prized for its reliability and the ease of recharging its power packs in the field. Common, dependable, and unremarkable on its own.",
         "melee_hands": 0,

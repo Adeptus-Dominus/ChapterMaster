@@ -133,6 +133,12 @@ function scr_add_vehicle(vehicle_type, target_company, otherdata = {}, weapon1 =
                     obj_ini.veh_wep1[target_company][good] = "Battle Cannon";
                     obj_ini.veh_wep2[target_company][good] = "Heavy Bolter";
                 }
+                if (vehicle_type == "Basilisk") {
+                    // Earthshaker Cannon (long-range artillery blast) with a Storm Bolter for
+                    // close defence, mirroring the enemy Basilisk loadout.
+                    obj_ini.veh_wep1[target_company][good] = "Earthshaker Cannon";
+                    obj_ini.veh_wep2[target_company][good] = "Storm Bolter";
+                }
             }
 
             obj_ini.veh_hp[target_company][good] = 100;

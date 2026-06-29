@@ -113,7 +113,7 @@ function Roster() constructor {
                     }
                     // Guardsmen answer to their own filter button rather than always passing
                     var _grd_role = _unit.role();
-                    if (_grd_role == "Guardsman" || _grd_role == "Guard Squad" || _grd_role == "Guard Sergeant") {
+                    if (_grd_role == "Guardsman" || _grd_role == "Guard Squad" || _grd_role == "Guard Sergeant" || _grd_role == "Veteran Guard" || _grd_role == "Heavy Weapons Team") {
                         _valid_type = array_contains(_valid_squad_types, "guardsman");
                     }
                 }
@@ -298,7 +298,7 @@ function Roster() constructor {
                         // Guardsmen and Guard Squads have no squad type, so give them their
                         // own filter button (added once) so they can be selected on their own.
                         var _grd_role = _unit.role();
-                        if ((_grd_role == "Guardsman" || _grd_role == "Guard Squad" || _grd_role == "Guard Sergeant") && !array_contains(_squads, "guardsman")) {
+                        if ((_grd_role == "Guardsman" || _grd_role == "Guard Squad" || _grd_role == "Guard Sergeant" || _grd_role == "Veteran Guard" || _grd_role == "Heavy Weapons Team") && !array_contains(_squads, "guardsman")) {
                             array_push(_squads, "guardsman");
                             new_squad_button("Guardsmen", "guardsman");
                         }
@@ -729,7 +729,12 @@ function add_unit_to_battle(unit, meeting, is_local) {
     // before the positional-screen experiment: every guardsman shares this one column instead of
     // being pinned to fixed front columns. bat_hire_column was resolved for this formation at the
     // top of this function and is driven by the Hirelings bar (bat_hire_for, unit_id 12).
-    if (_unit_role == "Guardsman" || _unit_role == "Guard Sergeant") {
+    if (_unit_role == "Heavy Weapons Team") {
+        // Heavy weapons teams fight from the Devastator formation, the chapter's own heavy-weapon
+        // line, instead of the Hirelings block, so the auxilia's heavy guns stand with the Marines'.
+        col = obj_controller.bat_devastator_column;
+        new_combat.devastators++;
+    } else if (_unit_role == "Guardsman" || _unit_role == "Guard Sergeant" || _unit_role == "Veteran Guard") {
         col = obj_controller.bat_hire_column;
     }
 
@@ -820,6 +825,13 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
         targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 3;
         targ.veh_hp_multiplier[targ.veh] = 3;
         targ.veh_ac[targ.veh] = 40;
+    } else if (obj_ini.veh_role[company][v] == "Basilisk") {
+        // Mirrors the enemy Basilisk: armour 30, HP 150 (base 100 x1.5). A self-propelled
+        // artillery piece, tougher than a Chimera but lighter than a Leman Russ, built to
+        // shell from the rear of the line rather than trade blows at the front.
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 1.5;
+        targ.veh_hp_multiplier[targ.veh] = 1.5;
+        targ.veh_ac[targ.veh] = 30;
     }
 
     // STC Bonuses
@@ -854,5 +866,33 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
 /// excluded from the Headquarters detail view.
 /// @returns {array}
 function auxilia_roles() {
-    return ["Guardsman", "Guard Squad", "Guard Sergeant"];
+    return ["Guardsman", "Guard Squad", "Guard Sergeant", "Veteran Guard", "Heavy Weapons Team"];
+}
+
+/// @description Promote every basic Guardsman to Veteran Guard, applying the veteran stat
+/// buff. Veterans keep all Guard behaviour (Auxilia screen, hireling line, volley fire,
+/// tenth-slot berth, guardsman portrait) through the role closure. They receive no free
+/// weapon; Hellguns are forged separately and equip-gated to this role. Intended to be wired
+/// to the Auxilia "Promote All" button. Pass a company index to limit promotion to one
+/// company, or leave it undefined to promote every auxilia Guardsman. The stat_boosts numbers
+/// are tunable. Additions are flat; stat_boosts rebalances constitution into current health.
+/// @param {real} [_company]  optional company index to limit promotion to
+/// @returns {real} number of troopers promoted
+function promote_auxilia_to_veteran(_company = undefined) {
+    var _troops = collect_role_group("all", "", false, { roles: ["Guardsman"] });
+    var _count = 0;
+    for (var _i = 0; _i < array_length(_troops); _i++) {
+        var _unit = _troops[_i];
+        if (_company != undefined && _unit.company != _company) {
+            continue;
+        }
+        _unit.update_role("Veteran Guard");
+        _unit.stat_boosts({
+            ballistic_skill: 8,
+            constitution: 6,
+            dexterity: 4
+        });
+        _count++;
+    }
+    return _count;
 }

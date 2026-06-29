@@ -5,6 +5,11 @@
 // reuse as heavy weapons teams. Do not delete.
 #macro GUARD_SQUAD_SIZE 10
 
+// Imperial Guard heavy weapons team: how many guardsmen one Heavy Weapons Team unit represents.
+// The team is a single pooled-HP entity (role "Heavy Weapons Team") crewing one heavy weapon, with
+// the health of this many guardsmen (see scr_marine_struct max_health()). 3 = a 3-man weapons team.
+#macro GUARD_HEAVY_WEAPONS_TEAM_SIZE 3
+
 // Imperial Guard cover save: fraction of would-be ground-combat casualties treated as
 // missed, standing in for spacing, terrain use and a low profile that the combat model
 // does not simulate. Applied after armour, so it also blunts armour-piercing weapons
@@ -20,6 +25,22 @@
 // front columns the screen occupies (FIRST + COUNT - 1 must stay within the 10 columns).
 #macro GUARD_SCREEN_COLUMN_FIRST 8
 #macro GUARD_SCREEN_COLUMN_COUNT 3
+
+// Enemy target preference: the minimum weapon armour pierce (apa, scale 0-4) that counts as
+// "anti-tank" and so hunts vehicles in obj_enunit\Alarm_0. Weapons below this prefer infantry
+// and only turn to vehicles as a fallback. 3 splits dedicated anti-tank (rokkit / lascannon /
+// melta tier) from general-purpose and anti-infantry guns. Raise toward 4 to make only the
+// heaviest guns chase tanks; drop toward 1 for the old behaviour where almost everything did.
+#macro GUARD_ENEMY_ANTITANK_AP 3
+
+// Guard volley size: how many rank-and-file guardsmen share one firing stack in combat. The
+// regiment splits into capped stacks of this size instead of merging into one giant lasgun
+// volley, so each chunk fires and targets independently like an enemy obj_enunit block (those
+// run ~32-40 strong). They still deploy as one movable hireling line; this only affects firing.
+// Lower for more, smaller volleys; raise toward one big stack. Keep it from making too many
+// stacks: a block has 71 stack slots shared with every other weapon.
+#macro GUARD_VOLLEY_SIZE 100
+
 
 // Imperial Guard accuracy ("doom"): mirrors the enemy's per-faction doom in scr_shoot (the
 // owner == eFACTION.IMPERIUM branch, e.g. Orks 0.2, Tyranids 0.4). Massed lasgun fire from raw
