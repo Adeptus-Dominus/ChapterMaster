@@ -47,7 +47,7 @@ function scr_menu_clear_up(specific_area_function) {
             } // 136 ;
 
             if (instance_exists(obj_temp_build)) {
-                if (obj_temp_build.isnew) {
+                if (variable_instance_exists(obj_temp_build, "isnew") && obj_temp_build.isnew) {
                     exit;
                 }
             }

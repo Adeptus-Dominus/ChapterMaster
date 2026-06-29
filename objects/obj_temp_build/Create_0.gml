@@ -1,5 +1,5 @@
 target = noone;
-planet = (planet > 0) ? planet : 0;
+planet = (variable_instance_exists(id, "planet") && planet > 0) ? planet : 0;
 
 lair = false;
 arsenal = false;
