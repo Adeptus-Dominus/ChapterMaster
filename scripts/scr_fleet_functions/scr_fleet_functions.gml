@@ -274,14 +274,15 @@ function load_unit_to_fleet(fleet, unit) {
 /// @param {Id.Instance.obj_star} star2
 /// @param {Bool} warp_able
 function calculate_fleet_eta(xx, yy, xxx, yyy, fleet_speed, star1 = noone, star2 = noone, warp_able = false) {
-    var warp_lane = 0;
-    if (star1 == noone && star2 == noone) {
-        star1 = instance_nearest(xx, yy, obj_star);
-        star2 = instance_nearest(xxx, yyy, obj_star);
-        warp_lane = determine_warp_join(star1.id, star2.id);
-    } else if (star1 == noone) {
-        star1 = instance_nearest(xx, yy, obj_star);
-    }
+    // Always resolve both endpoints to real star instances from the coordinates.
+    // Every real-travel caller historically passes booleans (from_star, is_orbiting(),
+    // true/false) in the star1/star2 slots, which left warp_lane at 0 and made actual
+    // jumps ignore lanes entirely (doubling the time and skipping the storm check), while
+    // the map preview, which omits these args, computed lanes correctly. Resolving from
+    // coords here ignores those bad args and keeps the preview and the real transit in sync.
+    star1 = instance_nearest(xx, yy, obj_star);
+    star2 = instance_nearest(xxx, yyy, obj_star);
+    var warp_lane = determine_warp_join(star1.id, star2.id);
     var eta = floor(point_distance(xx, yy, xxx, yyy) / fleet_speed) + 1;
     if (!warp_lane) {
         eta *= 2;
@@ -289,17 +290,10 @@ function calculate_fleet_eta(xx, yy, xxx, yyy, fleet_speed, star1 = noone, star2
     if (warp_lane && warp_able) {
         eta = ceil(eta / warp_lane);
     }
-    if (!star2) {
-        return eta;
-    }
 
     //check end location for warp storm
-    if (instance_exists(star2)) {
-        if (star2.object_index == obj_star) {
-            if (star2.storm) {
-                eta += 10000;
-            }
-        }
+    if (instance_exists(star2) && (star2.object_index == obj_star) && star2.storm) {
+        eta += 10000;
     }
     return eta;
 }
