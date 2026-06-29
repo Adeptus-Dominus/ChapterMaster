@@ -363,19 +363,20 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static update_mobility_item = scr_update_unit_mobility_item;
 
     static max_health = function(base = false) {
-        var max_h = max(1, 100 * (1 + ((constitution - 40) * 0.05)));
-        if (!base) {
-            max_h += gear_weapon_data("armour", armour(), "hp_mod");
-            max_h += gear_weapon_data("gear", gear(), "hp_mod");
-            max_h += gear_weapon_data("mobility", mobility_item(), "hp_mod");
-            max_h += gear_weapon_data("weapon", weapon_one(), "hp_mod");
-            max_h += gear_weapon_data("weapon", weapon_two(), "hp_mod");
-        }
-        return max_h;
-    };
+        var _max_h = max(1, constitution * 3);
 
-    static increase_max_health = function(increase) {
-        return max_health() + (increase * (1 + ((constitution - 40) * 0.05))); //calculate the effect of unit_health buffs
+        if (!base) {
+            var _gear_mod = 100;
+            _gear_mod += get_armour_data("hp_mod");
+            _gear_mod += get_gear_data("hp_mod");
+            _gear_mod += get_mobility_data("hp_mod");
+            _gear_mod += get_weapon_one_data("hp_mod");
+            _gear_mod += get_weapon_two_data("hp_mod");
+            _gear_mod /= 100;
+            _max_h *= _gear_mod;
+        }
+
+        return round(_max_h);
     };
 
     // used both to load unit data from save and to add preset base_stats
