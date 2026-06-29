@@ -132,10 +132,14 @@ function PlayerPurge(action_type, action_score, planet_data) constructor {
     };
 }
 
+/// @self Struct.PlanetData
 function scr_purge_world(action_type, action_score) {
     var _purge = new PlayerPurge(action_type, action_score, self);
 
-    var _isquest = 0, _thequest = "", _questnum = 0;
+    var _isquest = 0;
+    var _thequest = "";
+    var _questnum = 0;
+    var _popup_text = "";
 
     _purge.pop_before = population_as_small();
 
@@ -240,7 +244,7 @@ function scr_purge_world(action_type, action_score) {
             } else {
                 if (nid_influence > 25) {
                     _popup_text += " Scores of mutant offspring from a genestealer infestation are burnt, while we have damaged their influence over this world, the mutants appear to lack the organisation of a true cult";
-                    adjust_influence(eFACTION.TYRANIDS, -10, planet, star);
+                    adjust_influence(eFACTION.TYRANIDS, -10, planet, system);
                 } else if (nid_influence > 0) {
                     _popup_text += " There are signs of a genestealer infestation but the cultists are too unorganized to do any real damage to their influence on this world";
                 }
