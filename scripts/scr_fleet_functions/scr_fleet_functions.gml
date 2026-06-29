@@ -1181,118 +1181,143 @@ function merge_fleets(main_fleet, merge_fleet) {
 
 /// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function fleet_respond_crusade() {
-    if (owner != eFACTION.IMPERIUM) {
-        exit;
-    }
-    if (!navy) {
-        exit;
-    }
-    if (orbiting.owner > eFACTION.ECCLESIARCHY) {
-        exit;
-    }
-    if (trade_goods != "") {
-        exit;
-    }
-    if (action != "") {
-        exit;
-    }
-    if (guardsmen_unloaded > 0) {
-        exit;
-    }
-
-    // Crusade AI
-    obj_controller.temp[88] = owner;
-    with (obj_crusade) {
-        if (owner != obj_controller.temp[88]) {
-            y -= 20000;
+    try {
+        if (owner != eFACTION.IMPERIUM) {
+            exit;
         }
-    }
-
-    var enemu;
-    with (obj_star) {
-        var cs = instance_nearest(x, y, obj_crusade);
-
-        if (point_distance(x, y, cs.x, cs.y) > cs.radius) {
-            y -= 20000;
+        if (!navy) {
+            exit;
         }
-        enemu = 0;
-
-        var nids = array_reduce(
-            p_tyranids,
-            function(prev, curr) {
-                return prev || curr > 3;
-            },
-            false
-        );
-
-        var tau = array_reduce(
-            p_tau,
-            function(prev, curr) {
-                return prev || curr > 0;
-            },
-            false
-        );
-
-        enemu += nids + tau;
-
-        if (present_fleet[eFACTION.ELDAR] > 0) {
-            enemu += 2;
+        if (orbiting.owner > eFACTION.ECCLESIARCHY) {
+            exit;
         }
-        if (present_fleet[eFACTION.ORK] > 0) {
-            enemu += 2;
+        if (trade_goods != "") {
+            exit;
         }
-        if (present_fleet[eFACTION.TAU] > 0) {
-            enemu += 2;
+        if (action != "") {
+            exit;
         }
-        if (present_fleet[eFACTION.TYRANIDS] > 0) {
-            enemu += 2;
+        if (guardsmen_unloaded > 0) {
+            exit;
         }
-        if (present_fleet[eFACTION.CHAOS] > 0) {
-            enemu += 2;
-        }
-        //nothing for heritics faction
-        if (present_fleet[eFACTION.NECRONS] > 0) {
-            enemu += 2;
-        }
-    }
-    var ns = instance_nearest(x, y, obj_star);
-    var ok = false;
-    var max_dist = 800;
-    var min_dist = 40;
-    var to_ignore = [
-        eFACTION.IMPERIUM,
-        eFACTION.MECHANICUS,
-        eFACTION.INQUISITION,
-        eFACTION.ECCLESIARCHY
-    ];
-
-    var dist = point_distance(x, y, ns.x, ns.y);
-    var valid_target = !array_contains_ext(ns.p_owner, to_ignore, false);
-    if (valid_target && dist <= max_dist && dist >= min_dist && (owner == eFACTION.IMPERIUM)) {
-        ok = true;
-    }
-
-    // if ((ns.owner>5) or (ns.owner  = eFACTION.PLAYER)) and (point_distance(x,y,ns.x,ns.y)<=max_dis) and (point_distance(x,y,ns.x,ns.y)>40) and (owner = eFACTION.IMPERIUM){
-    if (ok) {
-        action_x = ns.x;
-        action_y = ns.y;
-        set_fleet_movement();
-        orbiting.present_fleet[owner] -= 1;
-        home_x = orbiting.x;
-        home_y = orbiting.y;
-
-        var i;
-        i = 0;
-        repeat (orbiting.planets) {
-            i += 1;
-            if ((orbiting.p_owner[i] == eFACTION.IMPERIUM) && (orbiting.p_guardsmen[i] > 500)) {
-                guardsmen += round(orbiting.p_guardsmen[i] / 2);
-                orbiting.p_guardsmen[i] = round(orbiting.p_guardsmen[i] / 2);
+    
+        // Crusade AI
+        obj_controller.temp[88] = owner;
+        with (obj_crusade) {
+            if (owner != obj_controller.temp[88]) {
+                y -= 20000;
             }
         }
-
-        alarm[5] = 2;
-
+    
+        var enemu;
+        with (obj_star) {
+            var cs = instance_nearest(x, y, obj_crusade);
+    
+            if (point_distance(x, y, cs.x, cs.y) > cs.radius) {
+                y -= 20000;
+            }
+            enemu = 0;
+    
+            var nids = array_reduce(
+                p_tyranids,
+                function(prev, curr) {
+                    return prev || curr > 3;
+                },
+                false
+            );
+    
+            var tau = array_reduce(
+                p_tau,
+                function(prev, curr) {
+                    return prev || curr > 0;
+                },
+                false
+            );
+    
+            enemu += nids + tau;
+    
+            if (present_fleet[eFACTION.ELDAR] > 0) {
+                enemu += 2;
+            }
+            if (present_fleet[eFACTION.ORK] > 0) {
+                enemu += 2;
+            }
+            if (present_fleet[eFACTION.TAU] > 0) {
+                enemu += 2;
+            }
+            if (present_fleet[eFACTION.TYRANIDS] > 0) {
+                enemu += 2;
+            }
+            if (present_fleet[eFACTION.CHAOS] > 0) {
+                enemu += 2;
+            }
+            //nothing for heritics faction
+            if (present_fleet[eFACTION.NECRONS] > 0) {
+                enemu += 2;
+            }
+        }
+        var ns = instance_nearest(x, y, obj_star);
+        var ok = false;
+        var max_dist = 800;
+        var min_dist = 40;
+        var to_ignore = [
+            eFACTION.IMPERIUM,
+            eFACTION.MECHANICUS,
+            eFACTION.INQUISITION,
+            eFACTION.ECCLESIARCHY
+        ];
+    
+        var dist = point_distance(x, y, ns.x, ns.y);
+        var valid_target = !array_contains_ext(ns.p_owner, to_ignore, false);
+        if (valid_target && dist <= max_dist && dist >= min_dist && (owner == eFACTION.IMPERIUM)) {
+            ok = true;
+        }
+    
+        // if ((ns.owner>5) or (ns.owner  = eFACTION.PLAYER)) and (point_distance(x,y,ns.x,ns.y)<=max_dis) and (point_distance(x,y,ns.x,ns.y)>40) and (owner = eFACTION.IMPERIUM){
+        if (ok) {
+            action_x = ns.x;
+            action_y = ns.y;
+            set_fleet_movement();
+            orbiting.present_fleet[owner] -= 1;
+            home_x = orbiting.x;
+            home_y = orbiting.y;
+    
+            var i;
+            i = 0;
+            repeat (orbiting.planets) {
+                i += 1;
+                if ((orbiting.p_owner[i] == eFACTION.IMPERIUM) && (orbiting.p_guardsmen[i] > 500)) {
+                    guardsmen += round(orbiting.p_guardsmen[i] / 2);
+                    orbiting.p_guardsmen[i] = round(orbiting.p_guardsmen[i] / 2);
+                }
+            }
+    
+            alarm[5] = 2;
+    
+            with (obj_crusade) {
+                if (y < -10000) {
+                    y += 20000;
+                }
+            }
+            with (obj_crusade) {
+                if (y < -10000) {
+                    y += 20000;
+                }
+            }
+            with (obj_star) {
+                if (y < -10000) {
+                    y += 20000;
+                }
+            }
+            with (obj_star) {
+                if (y < -10000) {
+                    y += 20000;
+                }
+            }
+    
+            exit;
+        }
+    
         with (obj_crusade) {
             if (y < -10000) {
                 y += 20000;
@@ -1312,29 +1337,14 @@ function fleet_respond_crusade() {
             if (y < -10000) {
                 y += 20000;
             }
+        }   
+    } catch (_ex) {
+        LOGGER.error(self);
+        LOGGER.error($"owner: {owner}");
+        LOGGER.error($"orbiting: {orbiting}");
+        if (instance_exists(orbiting)) {
+            LOGGER.error($"orbiting.present_fleet: {orbiting.present_fleet}");
         }
-
-        exit;
-    }
-
-    with (obj_crusade) {
-        if (y < -10000) {
-            y += 20000;
-        }
-    }
-    with (obj_crusade) {
-        if (y < -10000) {
-            y += 20000;
-        }
-    }
-    with (obj_star) {
-        if (y < -10000) {
-            y += 20000;
-        }
-    }
-    with (obj_star) {
-        if (y < -10000) {
-            y += 20000;
-        }
+        ERROR_HANDLER.handle_exception(_ex);
     }
 }
