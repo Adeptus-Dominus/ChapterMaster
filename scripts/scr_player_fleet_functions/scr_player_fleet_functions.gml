@@ -109,7 +109,7 @@ function set_new_player_fleet_course(target_array) {
         complex_route = target_array;
         var from_x = from_star ? nearest_planet.x : x;
         var from_y = from_star ? nearest_planet.y : y;
-        action_eta = calculate_fleet_eta(from_x, from_y, target_planet.x, target_planet.y, action_spd, from_star,, warp_able);
+        action_eta = calculate_fleet_eta(from_x, from_y, target_planet.x, target_planet.y, action_spd, from_star, true, warp_able);
         action_x = target_planet.x;
         action_y = target_planet.y;
         action = "move";

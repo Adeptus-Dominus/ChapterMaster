@@ -166,6 +166,7 @@ function get_largest_player_fleet() {
 }
 
 /// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
+/// @return {bool}
 function is_orbiting(fleet = noone) {
     if (fleet == noone) {
         if (action != "") {
@@ -265,43 +266,48 @@ function load_unit_to_fleet(fleet, unit) {
     return loaded;
 }
 
-/// @param {Real} xx
-/// @param {Real} yy
-/// @param {Real} xxx
-/// @param {Real} yyy
+/// @param {Real} self_x
+/// @param {Real} self_y
+/// @param {Real} target_x
+/// @param {Real} target_y
 /// @param {Real} fleet_speed
-/// @param {Id.Instance.obj_star} star1
-/// @param {Id.Instance.obj_star} star2
+/// @param {Bool} from_star
+/// @param {Bool} to_star
 /// @param {Bool} warp_able
-function calculate_fleet_eta(xx, yy, xxx, yyy, fleet_speed, star1 = noone, star2 = noone, warp_able = false) {
-    var warp_lane = 0;
-    if (star1 == noone && star2 == noone) {
-        star1 = instance_nearest(xx, yy, obj_star);
-        star2 = instance_nearest(xxx, yyy, obj_star);
-        warp_lane = determine_warp_join(star1.id, star2.id);
-    } else if (star1 == noone) {
-        star1 = instance_nearest(xx, yy, obj_star);
-    }
-    var eta = floor(point_distance(xx, yy, xxx, yyy) / fleet_speed) + 1;
-    if (!warp_lane) {
-        eta *= 2;
-    }
-    if (warp_lane && warp_able) {
-        eta = ceil(eta / warp_lane);
-    }
-    if (!star2) {
-        return eta;
+function calculate_fleet_eta(self_x, self_y, target_x, target_y, fleet_speed, from_star = true, to_star = true, warp_able = false) {
+    var _eta = floor(point_distance(self_x, self_y, target_x, target_y) / fleet_speed) + 1;
+    var _lane_strength = 0;
+    /// @type {Id.Instance.obj_star}
+    var _departure_star = noone;
+    /// @type {Id.Instance.obj_star}
+    var _destanation_star = noone;
+
+    if (from_star) {
+        _departure_star = instance_nearest(self_x, self_y, obj_star);
     }
 
-    //check end location for warp storm
-    if (instance_exists(star2)) {
-        if (star2.object_index == obj_star) {
-            if (star2.storm) {
-                eta += 10000;
-            }
+    if (to_star) {
+        _destanation_star = instance_nearest(target_x, target_y, obj_star);
+    }
+
+    if (_departure_star != noone && _destanation_star != noone) {
+        _lane_strength = determine_warp_join(_departure_star.id, _destanation_star.id);
+    }
+
+    if (_lane_strength > 0 && warp_able) {
+        _eta = ceil(_eta / _lane_strength);
+    } else {
+        _eta *= 2;
+    }
+
+    if (_destanation_star != noone) {
+        //check end location for warp storm
+        if (_destanation_star.storm) {
+            _eta += 10000;
         }
     }
-    return eta;
+
+    return _eta;
 }
 
 /// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
