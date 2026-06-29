@@ -150,7 +150,7 @@ function ShopItem(_name) constructor {
     static _get_tech_display_name = function(_tech_key) {
         static _name_cache = {};
 
-        if (variable_struct_exists(_name_cache, _tech_key)) {
+        if (struct_exists(_name_cache, _tech_key)) {
             return _name_cache[$ _tech_key];
         }
 
@@ -253,7 +253,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
             return;
         }
 
-        var _level = variable_instance_get(controller, $"stc_{_focus}");
+        var _level = variable_instance_get(controller, $"stc_{_focus}") ?? 0;
         var _remaining = (STC_POINTS_PER_LEVEL * (_level + 1)) - controller.stc_research[$ _focus];
         var _months = ceil(_remaining / _points_per_turn);
 
@@ -500,10 +500,10 @@ function Armamentarium(_controller) constructor {
             value: "technologies",
         }
     ];
-
+    
     category_dropdown = new UIDropdown(_cat_options, 200);
-
-    _cat_options = [];
+    
+    var _comp_options = [];
     var _roman = [
         "I",
         "II",
@@ -514,16 +514,16 @@ function Armamentarium(_controller) constructor {
         "VII",
         "VIII",
         "IX",
-        "X"
+        "X",
     ];
-
+    
     var _roman_length = array_length(_roman);
 
-    for (var i = 0; i < min(obj_ini.companies, _roman_length); i++) {
-        array_push(_cat_options, {label: $"{_roman[i]} Company", value: i + 1});
+    for (var i = 0, _limit = min(obj_ini.companies, _roman_length); i < _limit; i++) {
+        array_push(_comp_options, {label: $"{_roman[i]} Company", value: i + 1});
     }
 
-    company_dropdown = new UIDropdown(_cat_options, 180);
+    company_dropdown = new UIDropdown(_comp_options, 180);
 
     // --- Data Storage ---
     shop_items = {
@@ -642,7 +642,8 @@ function Armamentarium(_controller) constructor {
 
         forge_cost_mod = max(0.1, 1.0 - (discount_stc / 100));
 
-        var _has_hangars = array_length(controller.player_forge_data.vehicle_hanger) > 0;
+        var _hangers = controller.player_forge_data[$ "vehicle_hanger"] ?? [];
+        var _has_hangars = array_length(_hangers) > 0;
 
         for (var i = 0, len = array_length(master_catalog); i < len; i++) {
             /// @type {Struct.ShopItem}
@@ -859,11 +860,12 @@ function Armamentarium(_controller) constructor {
         // 1. Warships
         if (shop_type == "ships") {
             add_event({e_id: "ship_construction", ship_class: _item.name, duration: _item.request_duration});
+            audio_play_sound(snd_click, 10, false);
             return;
         }
 
         // 2. Vehicles
-        if (variable_struct_exists(global.vehicles, _item.name)) {
+        if (struct_exists(global.vehicles, _item.name)) {
             repeat (_count) {
                 scr_add_vehicle(_item.name, target_comp, {});
             }
@@ -1022,7 +1024,7 @@ function Armamentarium(_controller) constructor {
                 tooltip_text: _can_forge ? "Add to Forge Queue" : _item.get_missing_technologies_tooltip(),
                 x1: 1530,
                 y1 : _y + 2
-            })
+            });
             
             forge_button.draw(_can_forge);
 
@@ -1171,7 +1173,7 @@ function Armamentarium(_controller) constructor {
 
             for (var j = 0, _rlen = array_length(_reqs); j < _rlen; j++) {
                 var _tech_key = _reqs[j];
-                if (!variable_struct_exists(_unlock_map, _tech_key)) {
+                if (!struct_exists(_unlock_map, _tech_key)) {
                     _unlock_map[$ _tech_key] = [];
                 }
                 array_push(_unlock_map[$ _tech_key], _item.display_name);
