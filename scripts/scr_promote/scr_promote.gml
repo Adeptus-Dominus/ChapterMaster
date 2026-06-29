@@ -215,7 +215,7 @@ function draw_popup_promotion() {
     var role_x = 0;
     role_y = 0;
     if (target_comp != -1) {
-        for (var r = 1; r <= 11; r++) {
+        for (var r = 1; r < array_length(role_name); r++) {
             if (role_name[r] != "") {
                 draw_set_alpha(1);
                 check = " ";
