@@ -252,7 +252,7 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.damage_res = new LabeledIcon(spr_icon_iron_halo, $"{_damage_res}%", 0, 0, {icon_width: 24, icon_height: 24, tooltip: _res_tool});
         var _hp_val = $"{round(unit.hp())}/{round(unit.max_health())}";
         var _hp_tool = "A measure of how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\n";
-        _hp_tool += $"CON: {round(100 * (1 + ((unit.constitution - 40) * 0.025)))}\n";
+        _hp_tool += $"CON: {round(100 * (1 + ((unit.constitution - 40) * 0.05)))}\n";
 
         for (var i = 0; i < array_length(equipment_types); i++) {
             var equipment_type = equipment_types[i];
