@@ -187,17 +187,17 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         };
     }
 
+    //takes dict and plumbs dict values into unit struct
+    if (array_contains(variable_struct_get_names(global.base_stats), class)) {
+        load_json_data(global.base_stats[$ class]);
+    }
+
     if (struct_exists(self, "start_gear")) {
         if (base_group != "marine") {
             alter_equipment(start_gear, false, false);
         } else {
             alter_equipment(start_gear, true, true);
         }
-    }
-
-    //takes dict and plumbs dict values into unit struct
-    if (array_contains(variable_struct_get_names(global.base_stats), class)) {
-        load_json_data(global.base_stats[$ class]);
     }
 
     var stats = [
