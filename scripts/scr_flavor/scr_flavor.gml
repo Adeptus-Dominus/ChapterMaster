@@ -172,6 +172,10 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
         firing_subject = $"{number_of_shots} {weapon_plural}";
     }
 
+    // A plain volley line ("<n> <weapons>", no character title) can be summed with other volleys
+    // of the same weapon on the same target into one consolidated kill line (see emit_volley_flavour).
+    var _volley_line = (!(character_shot && unit_name != "")) && (number_of_shots > 1);
+
     var flavoured = false;
 
     if (weapon_data.has_tag("bolt")) {
@@ -764,6 +768,10 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
         injured: (!shots_bounced && casulties == 0),
         target: target_name,
         subject: firing_subject,
+        weapon: weapon_plural,
+        shots: number_of_shots,
+        kills: casulties,
+        volley: _volley_line,
     };
 }
 
@@ -818,13 +826,25 @@ function emit_volley_flavour(_primary, _spill_kills) {
     // Non-killing volley (armour-bounce or a wound that dropped no-one, and nothing spilled):
     // consolidate into one chronological line per target instead of one line per weapon.
     if (is_struct(_primary) && (_primary.bounced || _primary.injured) && _list == "") {
+        combat_kill_tally_flush();
         combat_tally_add(_primary.target, _primary.subject, _primary.injured);
         return;
     }
 
-    // A killing volley posts immediately; flush any pending bounce/injure tally first so the log
-    // stays in chronological order.
+    // Simple killing volley with no spill-over: buffer it so consecutive volleys of the same weapon
+    // on the same target (e.g. a split lasgun volley firing in sub-stacks) collapse into one summed
+    // line. A single unmerged volley keeps its original rich flavour on flush. Flush the wound/bounce
+    // tally first so the log stays chronological.
+    if (is_struct(_primary) && _list == "" && _primary.volley && _primary.kills > 0) {
+        combat_tally_flush();
+        combat_kill_tally_add(_primary.target, _primary.weapon, _primary.shots, _primary.kills, _primary.attack, _primary.size, _primary.priority, _primary.leader);
+        return;
+    }
+
+    // A killing volley with spill-over, or a titled/lone shot, posts immediately; flush both pending
+    // tallies first so the log stays in chronological order.
     combat_tally_flush();
+    combat_kill_tally_flush();
 
     if (!is_struct(_primary)) {
         // No primary line (scr_flavor bailed on a dead target - shouldn't happen now that emptied
@@ -888,6 +908,64 @@ function combat_tally_flush() {
     global.ctally_target = undefined;
     global.ctally_bounce = [];
     global.ctally_injure = [];
+}
+
+/// @desc Buffers killing volleys that share a weapon and target, summing shots and kills so a split
+///       volley (many sub-stacks firing at one target) collapses into one line. The first volley's
+///       rich flavour is kept and used verbatim if no second volley merges with it. Switching target
+///       flushes the previous target first, keeping the log chronological.
+function combat_kill_tally_add(_target, _weapon, _shots, _kills, _attack, _size, _priority, _leader) {
+    if (!variable_global_exists("ktally_target")) {
+        global.ktally_target = undefined;
+        global.ktally_weapons = {};
+        global.ktally_order = [];
+        global.ktally_leaders = [];
+    }
+    if (global.ktally_target != _target) {
+        combat_kill_tally_flush();
+        global.ktally_target = _target;
+        global.ktally_weapons = {};
+        global.ktally_order = [];
+        global.ktally_leaders = [];
+    }
+    if (!variable_struct_exists(global.ktally_weapons, _weapon)) {
+        global.ktally_weapons[$ _weapon] = { shots: 0, kills: 0, count: 0, attack: _attack, size: _size, priority: _priority };
+        array_push(global.ktally_order, _weapon);
+    }
+    var _acc = global.ktally_weapons[$ _weapon];
+    _acc.shots += _shots;
+    _acc.kills += _kills;
+    _acc.count += 1;
+    if (_leader != "") {
+        array_push(global.ktally_leaders, _leader);
+    }
+}
+
+/// @desc Posts the buffered kills for the current target: one line per weapon (the original rich
+///       line when only a single volley landed, otherwise a summed "<shots> <weapon> strike at the
+///       <target> ranks, killing <kills>"), then any deferred leader lines, and clears.
+function combat_kill_tally_flush() {
+    if (!variable_global_exists("ktally_target") || global.ktally_target == undefined) {
+        return;
+    }
+    var _t = global.ktally_target;
+    for (var _i = 0; _i < array_length(global.ktally_order); _i++) {
+        var _acc = global.ktally_weapons[$ global.ktally_order[_i]];
+        if (_acc.count == 1) {
+            add_battle_log_message(_acc.attack, _acc.size, _acc.priority);
+        } else {
+            add_battle_log_message($"{_acc.shots} {global.ktally_order[_i]} strike at the {_t} ranks, killing {_acc.kills}.", _acc.size, _acc.priority);
+        }
+        display_battle_log_message();
+    }
+    for (var _i = 0; _i < array_length(global.ktally_leaders); _i++) {
+        add_battle_log_message(global.ktally_leaders[_i], 0, 0);
+        display_battle_log_message();
+    }
+    global.ktally_target = undefined;
+    global.ktally_weapons = {};
+    global.ktally_order = [];
+    global.ktally_leaders = [];
 }
 
 /// @desc Joins firing subjects into "A", "A and B", or "A, B, and C".

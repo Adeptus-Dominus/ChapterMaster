@@ -60,6 +60,10 @@ try {
         global.ctally_target = undefined;
         global.ctally_bounce = [];
         global.ctally_injure = [];
+        global.ktally_target = undefined;
+        global.ktally_weapons = {};
+        global.ktally_order = [];
+        global.ktally_leaders = [];
         for (var i = 0; i < array_length(wep); i++) {
             // Enemies wiped before every weapon got to fire (e.g. spill-over cleared the line).
             // Report who held fire and stop, rather than swinging at empty air.
@@ -295,6 +299,7 @@ try {
     }
 
     combat_tally_flush();
+    combat_kill_tally_flush();
 
     instance_activate_object(obj_enunit);
 
