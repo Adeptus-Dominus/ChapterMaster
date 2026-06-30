@@ -12,6 +12,7 @@ var changed = 0;
 repeat (100) {
     if (good == 0) {
         changed = 0;
+        i = 0;
 
         repeat (COMBAT_LOG_CAPACITY) {
             i += 1;

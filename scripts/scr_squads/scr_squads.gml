@@ -377,6 +377,11 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
     static change_type = function(new_type) {
         type = new_type;
+        if (is_array(type)) {
+            show_debug_message($"[PROBE] change_type got ARRAY type (len {array_length(type)}): {type}");
+        } else if (!struct_exists(obj_ini.squad_types, type)) {
+            show_debug_message($"[PROBE] change_type unknown squad type: \"{type}\"");
+        }
         add_type_data(obj_ini.squad_types[$ type].type_data);
     };
 
@@ -920,13 +925,29 @@ function apply_squad_distribution_override(arrangement, override) {
 ///              individuals have been created by the count-based initialisation pass.
 /// @return {Undefined}
 function get_compay_squad_arrangement(company){
-    var _comp_datas = obj_ini.chapter_squad_arrangement.companies;
+    var _arrangement = obj_ini.chapter_squad_arrangement;
+    if (!struct_exists(_arrangement, "companies")) {
+        _arrangement.companies = [];
+    }
+    var _comp_datas = _arrangement.companies;
     for (var i = 0; i < array_length(_comp_datas); i++) {
         if (_comp_datas[i].company == company){
             return _comp_datas[i];
         }
     }
 
+    // No explicit entry: this company currently inherits default_squads. Promote it to its own
+    // explicit entry, deep-cloning default_squads so the editor's in-place edits can't mutate the
+    // shared array every other defaulted company also points at. Registering it persists the edits
+    // and lets resolve_company_arrangement pick this company up by its own entry from now on.
+    var _src = struct_exists(_arrangement, "default_squads") ? _arrangement.default_squads : [];
+    var _squads = array_create(array_length(_src));
+    for (var _i = 0; _i < array_length(_src); _i++) {
+        _squads[_i] = variable_clone(_src[_i]);
+    }
+    var _entry = { company: company, squads: _squads };
+    array_push(_comp_datas, _entry);
+    return _entry;
 }
 
 function ProportionalSquadEditor(data) constructor {

@@ -2417,27 +2417,15 @@ function scr_initialize_custom() {
                 _coy.devastators = devastator;
             }
 
-            // Companies 6-7: only receive scouts under the non-LW equal_scouts arrangement
-            // (company_squad_builds/equal_scouts.json gives 6-7 nothing but tactical_squad
-            // when Lightning Warriors is active - lightning_warriors.json's equal_scouts
-            // override does the same: companies 6 and 7 are tactical_squad-only, with no
-            // scout_squad entry at all). Granting _coy.scouts here for LW would create scout
-            // marines that the LW template can never organise into squads, leaving them as
-            // stray squadless scouts in companies that should be scout-free.
+            // Companies 6-7 are tactical-only reserves for every distribution. Both
+            // company_squad_builds/equal_scouts.json and lightning_warriors.json's equal_scouts
+            // override define companies 6 and 7 as tactical_squad-only, with no scout_squad entry
+            // at all - so handing them scout marines here (under any distribution) would leave
+            // stray squadless scouts the template can never organise into squads. Scouts stay
+            // confined to the battle companies 2-5 (which fall through to default_squads'
+            // scout_squad) and the 10th; the scouts not moved here simply remain in the 10th's bank.
             if (real(_coy.coy) >= 6 && real(_coy.coy) <= 7) {
-                if (equal_scouts && !_lw) {
-                    if (companies.tenth.scouts > 10) {
-                        _coy.scouts = 10;
-                        _moved_scouts += _coy.scouts;
-                        _coy.tacticals = _coy.total - _coy.scouts;
-                        companies.tenth.scouts -= _coy.scouts;
-                    } else {
-                        // if 10th is run out somehow, revert to normal behaviour
-                        _coy.tacticals = _coy.total;
-                    }
-                } else {
-                    _coy.tacticals = _coy.total;
-                }
+                _coy.tacticals = _coy.total;
                 _coy.assaults = 0;
                 _coy.devastators = 0;
             }
