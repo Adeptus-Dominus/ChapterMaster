@@ -94,6 +94,25 @@ function scr_management(argument0) {
             var _co_units = collect_company(company).index_roles();
             pane.line = array_join(pane.line, _co_units.create_plural_strings_array());
 
+            // collect_company() only indexes TTRPG marines, so vehicles must be counted
+            // separately from obj_ini.veh_role and appended after the role strings.
+            var _veh_names = ["Land Raider", "Predator", "Rhino", "Land Speeder", "Whirlwind"];
+            var _veh_count = array_create(array_length(_veh_names), 0);
+            for (var i = 0; i < array_length(obj_ini.veh_role[company]); i++) {
+                for (var s = 0; s < array_length(_veh_names); s++) {
+                    if (obj_ini.veh_role[company][i] == _veh_names[s]) {
+                        _veh_count[s]++;
+                    }
+                }
+            }
+            for (var d = 0; d < array_length(_veh_names); d++) {
+                if (_veh_count[d] == 1) {
+                    array_push(pane.line, {str1: _veh_names[d], bold: true, italic: false});
+                } else if (_veh_count[d] > 1) {
+                    array_push(pane.line, string_plural_count(_veh_names[d], _veh_count[d], false));
+                }
+            }
+
             xx += 156;
         }
     }

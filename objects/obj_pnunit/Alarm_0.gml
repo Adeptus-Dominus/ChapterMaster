@@ -61,7 +61,9 @@ try {
                 var _held_fire = [];
                 for (var hf = i; hf < array_length(wep); hf++) {
                     // Only ranged weapons "hold fire"; melee (range 1) never shoots, so skip it.
-                    if (wep[hf] != "" && wep_num[hf] > 0 && range[hf] > 1) {
+                    // Mirror the firing ammo gate (ammo != 0) so out-of-ammo weapons that could not
+                    // have fired aren't reported as having held fire.
+                    if (wep[hf] != "" && wep_num[hf] > 0 && range[hf] > 1 && ammo[hf] != 0) {
                         array_push(_held_fire, wep[hf]);
                     }
                 }
@@ -271,7 +273,9 @@ try {
         var _skipped_fire = [];
         for (var s = 0; s < array_length(wep); s++) {
             // Only ranged weapons "hold fire"; melee (range 1) never shoots, so skip it.
-            if (wep[s] != "" && wep_num[s] > 0 && range[s] > 1) {
+            // Mirror the firing ammo gate (ammo != 0) so out-of-ammo weapons that could not have
+            // fired aren't reported as having held fire.
+            if (wep[s] != "" && wep_num[s] > 0 && range[s] > 1 && ammo[s] != 0) {
                 array_push(_skipped_fire, wep[s]);
             }
         }

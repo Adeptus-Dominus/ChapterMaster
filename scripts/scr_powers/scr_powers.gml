@@ -368,7 +368,8 @@ function flush_psychic_summary(_psy_log) {
     for (var i = 0; i < array_length(_keys); i++) {
         var _e = _psy_log[$ _keys[i]];
         var _cast_word = (_e.casts == 1) ? "casting" : "castings";
-        var _message = $"{_e.casts} {_cast_word} of '{_e.power}'{_e.flavour} {_e.kills} {_e.target} are {_e.verb}.";
+        var _kills_word = (_e.kills == 1) ? $"a {_e.target} is {_e.verb}" : $"{_e.kills} {_e.target} are {_e.verb}";
+        var _message = $"{_e.casts} {_cast_word} of '{_e.power}'{_e.flavour} {_kills_word}.";
         var _size = _e.vehicle ? (_e.kills * 12) : (_e.kills * 3);
         add_battle_log_message(_message, _size, 134);
     }

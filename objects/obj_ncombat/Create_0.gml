@@ -68,6 +68,10 @@ defeat_message = 0;
 red_thirst = 0;
 fugg = 0;
 fugg2 = 0;
+// Hard-timeout counters for stages 2/4. Unlike fugg/fugg2 these are NOT reset by the 60-frame
+// status poll in Step, so they keep accumulating during a stall and the anti-hang cap can fire.
+stage_elapsed = 0;
+stage_elapsed2 = 0;
 battle_over = 0;
 done = 0;
 

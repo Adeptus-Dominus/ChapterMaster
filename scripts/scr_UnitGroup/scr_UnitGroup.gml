@@ -267,7 +267,9 @@ function UnitGroup(units) constructor {
             }
 
             var _sgt = _available_sgt.units[0];
-            squad.add_member(_sgt.company, _sgt.marine_number);
+            // Confirm this squad actually has a slot for this sergeant role BEFORE adding the
+            // candidate or marking sergeant_found. Otherwise a sergeant whose role the squad has
+            // no slot for would be added anyway and incorrectly suppress the promotion flow.
             var _sgt_group = "";
             for (var r = 0; r < array_length(squad_unit_types); r++) {
                 var _role_name = squad_unit_types[r];
@@ -278,14 +280,16 @@ function UnitGroup(units) constructor {
                     break;
                 }
             }
-            if (_sgt_group != "") {
-                squad_fulfilment[$ _sgt_group]++;
-                // Rename pre-existing sergeant to squad-specific role if needed
-                var _sgt_slot_def = _fill_squad[$ _sgt_group];
-                var _target_sgt_role = struct_exists(_sgt_slot_def, "role") ? _sgt_slot_def.role : _sgt_type;
-                if (_target_sgt_role != _sgt.role()) {
-                    _sgt.update_role(_target_sgt_role);
-                }
+            if (_sgt_group == "") {
+                continue;
+            }
+            squad.add_member(_sgt.company, _sgt.marine_number);
+            squad_fulfilment[$ _sgt_group]++;
+            // Rename pre-existing sergeant to squad-specific role if needed
+            var _sgt_slot_def = _fill_squad[$ _sgt_group];
+            var _target_sgt_role = struct_exists(_sgt_slot_def, "role") ? _sgt_slot_def.role : _sgt_type;
+            if (_target_sgt_role != _sgt.role()) {
+                _sgt.update_role(_target_sgt_role);
             }
             sergeant_found = true;
         }
@@ -385,14 +389,18 @@ function UnitGroup(units) constructor {
         /*and ((squad_fulfilment[$ obj_ini.role[100][8]] > 4)or (squad_fulfilment[$ obj_ini.role[100][10]] > 4) or (squad_fulfilment[$ obj_ini.role[100][9]] > 4)or (squad_fulfilment[$ obj_ini.role[100][3]] > 4) )*/
 
         var _members = squad.get_members(true);
-        var _exp_unit = 0;
         if (!bool(_members.number())) {
             return [false, squad.uid];
         }
+        // Select would-be sergeant candidates and reserve their fulfilment slot, but defer the
+        // actual role mutation (update_role / add_trait) until squad viability is confirmed below.
+        // update_role permanently rewrites obj_ini.role and applies stat/command changes, so
+        // promoting here — before _fulfilled is known — would leave marines mutated even when the
+        // squad creation attempt ultimately fails, causing persistent state drift.
+        var _pending_promotions = [];
         for (var s = 0; s < 2; s++) {
             var _sgt_type = sgt_types[s];
             var _sgt_group = "";
-            var _exp_unit = undefined;
             for (var r = 0; r < array_length(squad_unit_types); r++) {
                 var _role_name = squad_unit_types[r];
                 var _role_def = _fill_squad[$ _role_name];
@@ -401,16 +409,13 @@ function UnitGroup(units) constructor {
                     _sgt_group = _role_name;
                     break;
                 }
-            }            
+            }
                 if (_sgt_group != "" && struct_exists(squad_fulfilment, _sgt_group) && (!sergeant_found)) {
-                _exp_unit = _members.highest_exp();
+                var _candidate = _members.highest_exp();
                 var _sgt_role_def = _fill_squad[$ _sgt_group];
                 var _actual_sgt_role = struct_exists(_sgt_role_def, "role") ? _sgt_role_def.role : _sgt_type;
-                _exp_unit.update_role(_actual_sgt_role);
                 squad_fulfilment[$ _sgt_group]++;
-                if (game_start && irandom(1) == 0) {
-                    _exp_unit.add_trait("lead_example");
-                }
+                array_push(_pending_promotions, { unit: _candidate, role: _actual_sgt_role });
             }
         }
 
@@ -425,12 +430,12 @@ function UnitGroup(units) constructor {
             }
         }
         if (_fulfilled) {
-            for (var s = 0; s < 2; s++) {
-                if (struct_exists(squad_fulfilment, sgt_types[s]) && (sergeant_found == false) && (_exp_unit != undefined)) {
-                    _exp_unit.update_role(sgt_types[s]); //if squad is viable promote marine to sergeant
-                    if (game_start && irandom(1) == 0) {
-                        _exp_unit.add_trait("lead_example");
-                    }
+            // Squad is viable — now apply the deferred sergeant promotions.
+            for (var p = 0; p < array_length(_pending_promotions); p++) {
+                var _promo = _pending_promotions[p];
+                _promo.unit.update_role(_promo.role); //if squad is viable promote marine to sergeant
+                if (game_start && irandom(1) == 0) {
+                    _promo.unit.add_trait("lead_example");
                 }
             }
             //update units squad marker

@@ -920,7 +920,7 @@ function combat_emit_enemy_status() {
         var yoo = instance_nearest(0, 0, obj_enunit);
         newline += string(round(yoo.dudes_hp[1])) + "HP remaining";
     }
-    if ((enemy_forces <= 0) || (!instance_exists(obj_enunit)) && (defeat_message == 0)) {
+    if (((enemy_forces <= 0) || (!instance_exists(obj_enunit))) && (defeat_message == 0)) {
         defeat_message = 1;
         newline = "Enemy Forces Defeated";
         timer_maxspeed = 0;

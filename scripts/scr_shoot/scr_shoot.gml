@@ -484,7 +484,9 @@ function scr_shoot_spread(weapon_index_position) {
         with (obj_enunit) {
             array_push(_formations, id);
             for (var r = 1; r <= 30; r++) {
-                if (dudes[r] != "" && dudes_num[r] > 0) {
+                // Skip "zombie" ranks (dudes_num > 0 but dudes_hp <= 0): they would dilute _total and
+                // cause a divide-by-zero in the per-rank damage loop below.
+                if (dudes[r] != "" && dudes_num[r] > 0 && dudes_hp[r] > 0) {
                     _total += dudes_num[r];
                 }
             }
@@ -495,13 +497,16 @@ function scr_shoot_spread(weapon_index_position) {
 
         // Apply damage proportionally to each rank's share of the field; record every rank that lost models.
         var _hits = []; // [{ name, kills, bounced }]
+        var _wounded = undefined; // first rank that took fire but lost no models (wound/bounce fallback)
         for (var fi = 0; fi < array_length(_formations); fi++) {
             var _f = _formations[fi];
             if (!instance_exists(_f)) {
                 continue;
             }
             for (var r = 1; r <= 30; r++) {
-                if (_f.dudes[r] == "" || _f.dudes_num[r] <= 0) {
+                // Mirror the _total guard: skip empty/empty-ranked and "zombie" (hp <= 0) ranks so the
+                // proportional-damage division below can never divide by zero/negative HP.
+                if (_f.dudes[r] == "" || _f.dudes_num[r] <= 0 || _f.dudes_hp[r] <= 0) {
                     continue;
                 }
 
@@ -522,6 +527,10 @@ function scr_shoot_spread(weapon_index_position) {
                     _f.dudes_num[r] -= _kills;
                     obj_ncombat.enemy_forces -= _kills;
                     array_push(_hits, { name: _f.dudes[r], kills: _kills, bounced: (_final_hit <= 0), block: _f, rank: r });
+                } else if (_wounded == undefined) {
+                    // Volley spent ammo but killed no-one here; remember the first such rank so a
+                    // non-killing sweep still reports a wound/bounce instead of going silent.
+                    _wounded = { bounced: (_final_hit <= 0), block: _f, rank: r };
                 }
             }
         }
@@ -546,6 +555,10 @@ function scr_shoot_spread(weapon_index_position) {
             if (instance_exists(_p.block)) {
                 _primary = scr_flavor(weapon_index_position, _p.block, _p.rank, _shots, _p.kills, _p.bounced, true);
             }
+        } else if (_wounded != undefined && instance_exists(_wounded.block)) {
+            // Nothing died but the volley still landed: report a single wounded/bounced target so the
+            // consolidated flavour log records the shot (casualties = 0 -> injured or bounced).
+            _primary = scr_flavor(weapon_index_position, _wounded.block, _wounded.rank, _shots, 0, _wounded.bounced, true);
         }
         emit_volley_flavour(_primary, _spill);
 

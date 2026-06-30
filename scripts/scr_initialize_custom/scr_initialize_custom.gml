@@ -1546,6 +1546,14 @@ function scr_initialize_custom() {
                 eROLE.SCOUT
             ],
             [
+                "biker",
+                eROLE.BIKER
+            ],
+            [
+                "attack_biker",
+                eROLE.ATTACK_BIKER
+            ],
+            [
                 "chaplain",
                 eROLE.CHAPLAIN
             ],
@@ -1801,7 +1809,7 @@ function scr_initialize_custom() {
     // LOGGER.debug($"squads object for chapter {chapter_name}");
     // LOGGER.debug($"{custom_squads}");
 
-    if (struct_exists(obj_creation, "squad_builder")) {
+    if (variable_instance_exists(obj_creation, "squad_builder")) {
         if (!struct_exists(obj_ini.chapter_squad_arrangement, "companies")) {
             obj_ini.chapter_squad_arrangement.companies = [];
         }
@@ -2399,10 +2407,12 @@ function scr_initialize_custom() {
             /// and the assaults go into the 8th and devastators into the 9th
             if (_coy.coy >= 2 && _coy.coy <= 5) {
                 if (equal_scouts) {
-                    if (companies.tenth.scouts > 10) {
-                        // LW needs 20 scouts per company to fill proportion:2 scout squads.
-                        // Non-LW equal_scouts uses 10 (proportion:1).
-                        _coy.scouts = _lw ? 20 : 10;
+                    // LW needs 20 scouts per company to fill proportion:2 scout squads.
+                    // Non-LW equal_scouts uses 10 (proportion:1). Guard against the amount
+                    // actually subtracted so the 10th's bank never goes negative.
+                    var _coy_scout_draw = _lw ? 20 : 10;
+                    if (companies.tenth.scouts >= _coy_scout_draw) {
+                        _coy.scouts = _coy_scout_draw;
                         _moved_scouts += _coy.scouts;
                         _coy.tacticals = max(0, (_coy.total - (assault + devastator + _coy.scouts)));
                         companies.tenth.scouts -= _coy.scouts; // fix: subtract this company's amount, not the cumulative total

@@ -133,24 +133,30 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
 
 if (timer_stage == 2) {
     fugg += 1;
+    stage_elapsed += 1;
 }
 // Don't time out of stage 2 until the combat log has finished displaying - otherwise on a long turn
 // the stage advances before `messages` drains and the "Enemy Forces at X%" status line is skipped.
-// The large hard cap is anti-hang insurance in case the queue ever fails to drain.
-if ((timer_stage == 2) && (((fugg > 60) && (messages == 0)) || (fugg > COMBAT_STAGE_TIMEOUT_FRAMES))) {
+// The large hard cap is anti-hang insurance in case the queue ever fails to drain. It uses
+// stage_elapsed (not fugg) because the 60-frame status poll above resets fugg every time it fires,
+// so fugg can never reach the cap during a stall - stage_elapsed keeps counting regardless.
+if ((timer_stage == 2) && (((fugg > 60) && (messages == 0)) || (stage_elapsed > COMBAT_STAGE_TIMEOUT_FRAMES))) {
     timer_stage = 3;
 }
 
 if (timer_stage != 2) {
     fugg = 0;
+    stage_elapsed = 0;
 }
 if (timer_stage == 4) {
     fugg2 += 1;
+    stage_elapsed2 += 1;
 }
-if ((timer_stage == 4) && (((fugg2 > 60) && (messages == 0)) || (fugg2 > COMBAT_STAGE_TIMEOUT_FRAMES))) {
+if ((timer_stage == 4) && (((fugg2 > 60) && (messages == 0)) || (stage_elapsed2 > COMBAT_STAGE_TIMEOUT_FRAMES))) {
     timer_stage = 5;
 }
 
 if (timer_stage != 4) {
     fugg2 = 0;
+    stage_elapsed2 = 0;
 }

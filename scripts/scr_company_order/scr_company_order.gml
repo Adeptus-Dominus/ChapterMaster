@@ -199,11 +199,18 @@ function role_hierarchy() {
             if (!struct_exists(_role_def, "role")) continue;
             var _specific_role = _role_def.role;
             if (!array_contains(hierarchy, _specific_role)) {
-                if (string_count(_vsgt_base, _specific_role) > 0) {
+                // Classify by the slot's JSON key (_k), not the renamed role string. Veteran-sergeant
+                // variants are keyed "Veteran Sergeant" but get renamed to names like "Deathwing
+                // Sergeant" / "Proteus Watch Sergeant" that contain "Sergeant" but NOT the exact
+                // substring "Veteran Sergeant" — so a role-string match would mis-rank them as
+                // regular sergeants. Fall back to string matching only when the key isn't a sergeant.
+                var _is_vsgt = (_k == _vsgt_base) || (string_count(_vsgt_base, _specific_role) > 0);
+                var _is_sgt  = (_k == _sgt_base)  || (string_count(_sgt_base, _specific_role) > 0);
+                if (_is_vsgt) {
                     // Veteran-sergeant variant — insert just before _vsgt_base position
                     var _vpos = array_get_index(hierarchy, _vsgt_base);
                     array_insert(hierarchy, max(0, _vpos), _specific_role);
-                } else if (string_count(_sgt_base, _specific_role) > 0) {
+                } else if (_is_sgt) {
                     // Regular sergeant variant — insert just after _sgt_base position
                     var _spos = array_get_index(hierarchy, _sgt_base);
                     array_insert(hierarchy, _spos + 1, _specific_role);

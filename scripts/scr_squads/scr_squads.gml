@@ -61,10 +61,11 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     target_squad.update_fulfilment();
 
     static sort = function() {
-        // For each role, clear only the weapon slots that role's loadout actively manages
+        // For each role, clear every loadout slot that role actively manages
         // (required + option + random_pick). Slots not mentioned in a role's own loadout
         // are left untouched — e.g. a role that only defines armour won't have wep1/wep2 cleared.
-        var _weapon_slots = ["wep1", "wep2"];
+        // random_pick can manage mobi/gear/armour as well as weapons, so all managed slots are
+        // cleared before re-equipping to avoid stale equipment persisting after a reroll.
         for (var _ri = 0; _ri < array_length(squad_unit_types); _ri++) {
             var _role_key = squad_unit_types[_ri];
             var _role_data = full_squad_data[$ _role_key];
@@ -91,15 +92,14 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                 }
             }
 
+            var _managed_slot_names = struct_get_names(_managed_slots);
             var _role_members = members_UnitGroup.get_from({roles: [_role_key, role_key_to_actual[$ _role_key]]});
             while (_role_members.number() > 0) {
                 var _u = _role_members.pop();
-                for (var _s = 0; _s < array_length(_weapon_slots); _s++) {
-                    if (struct_exists(_managed_slots, _weapon_slots[_s])) {
-                        var _clear = {};
-                        _clear[$ _weapon_slots[_s]] = "";
-                        _u.alter_equipment(_clear, false, false);
-                    }
+                for (var _s = 0; _s < array_length(_managed_slot_names); _s++) {
+                    var _clear = {};
+                    _clear[$ _managed_slot_names[_s]] = "";
+                    _u.alter_equipment(_clear, false, false);
                 }
             }
         }
@@ -531,13 +531,31 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
             var _min_role_allowed = fill_squad[$ _wanted_unit_role][$ "min"];
 
             if (fill_from != undefined) {
-                var _fill_role = struct_exists(fill_squad[$ _wanted_unit_role], "role")
-                    ? fill_squad[$ _wanted_unit_role].role : _wanted_unit_role;
+                var _role_def = fill_squad[$ _wanted_unit_role];
+                var _fill_role = struct_exists(_role_def, "role")
+                    ? _role_def.role : _wanted_unit_role;
                 // Also try the JSON key itself as a source role (base role before squad rename)
                 var _fill_role_base = _wanted_unit_role;
+                // Build the ordered list of acceptable source roles: the mapped role, the JSON
+                // key, then any alternative_roles. create_squad considers alternative_roles when
+                // fetching/matching marines, so refill must too — otherwise valid replacement
+                // marines (e.g. bikers for a bike_squad) are ignored when scr_company_order
+                // updates existing squads.
+                var _fill_roles = [_fill_role, _fill_role_base];
+                if (struct_exists(_role_def, "alternative_roles")) {
+                    var _alts = _role_def.alternative_roles;
+                    for (var _ai = 0; _ai < array_length(_alts); _ai++) {
+                        array_push(_fill_roles, _alts[_ai]);
+                    }
+                }
                 while (_squad_role_current < _max_role_count) {
-                    var _pick_role = fill_from.has_role(_fill_role) ? _fill_role
-                        : (fill_from.has_role(_fill_role_base) ? _fill_role_base : "");
+                    var _pick_role = "";
+                    for (var _fri = 0; _fri < array_length(_fill_roles); _fri++) {
+                        if (fill_from.has_role(_fill_roles[_fri])) {
+                            _pick_role = _fill_roles[_fri];
+                            break;
+                        }
+                    }
                     if (_pick_role == "") break;
                     var _new_member = fill_from.pop_role_member(_pick_role);
                     add_member(_new_member.company, _new_member.marine_number);

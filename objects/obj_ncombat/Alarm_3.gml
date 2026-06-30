@@ -14,7 +14,10 @@ repeat (100) {
         changed = 0;
         i = 0;
 
-        repeat (COMBAT_LOG_CAPACITY) {
+        // Scan the whole allocated queue (COMBAT_LOG_CAPACITY + 20 slots, see Create), stopping one
+        // short of the top so the message[i + 1] lookahead stays in range. Compacting only the first
+        // COMBAT_LOG_CAPACITY slots would strand any tail entries so `messages` never reaches 0.
+        repeat (COMBAT_LOG_CAPACITY + 19) {
             i += 1;
 
             // Collide the messages if needed
@@ -45,7 +48,8 @@ if (messages > 0) {
     var that = 0;
 
     i = 0;
-    repeat (COMBAT_LOG_CAPACITY) {
+    // Scan the whole allocated queue so tail entries past COMBAT_LOG_CAPACITY still drain.
+    repeat (COMBAT_LOG_CAPACITY + 20) {
         i += 1;
         if (message[i] != "") {
             that = i;

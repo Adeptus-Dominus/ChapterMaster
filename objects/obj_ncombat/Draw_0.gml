@@ -50,12 +50,13 @@ if ((display_p2 > 0) && (enemy_forces > 0)) {
 
 draw_set_halign(fa_left);
 
-// When pinned to the bottom (log_scroll == 0) the live 45-row window is drawn exactly as before;
-// when scrolled up, page back through the retained log_history instead.
+// When pinned to the bottom (log_scroll == 0) the live window is drawn exactly as before;
+// when scrolled up, page back through the retained log_history instead. Render the same number of
+// rows the scroll/history math uses (log_view_lines) so the two never desync.
 var _log_total = array_length(log_history);
 var _log_start = (log_scroll <= 0) ? -1 : max(0, _log_total - log_view_lines - log_scroll);
 
-repeat (45) {
+repeat (log_view_lines) {
     l += 1;
 
     var _row_txt, _row_col;
