@@ -99,7 +99,8 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                 for (var _s = 0; _s < array_length(_managed_slot_names); _s++) {
                     var _clear = {};
                     _clear[$ _managed_slot_names[_s]] = "";
-                    _u.alter_equipment(_clear, false, false);
+                    // Clear via the squad's own from/to_armoury so items don't get destroyed
+                    _u.alter_equipment(_clear, from_armoury, to_armoury);
                 }
             }
         }

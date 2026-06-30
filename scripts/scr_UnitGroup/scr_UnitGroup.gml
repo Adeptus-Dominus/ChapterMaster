@@ -398,6 +398,7 @@ function UnitGroup(units) constructor {
         // promoting here — before _fulfilled is known — would leave marines mutated even when the
         // squad creation attempt ultimately fails, causing persistent state drift.
         var _pending_promotions = [];
+        var _promoted_units = []; // marines already queued for a leader slot, so a 2nd slot picks a distinct one
         for (var s = 0; s < 2; s++) {
             var _sgt_type = sgt_types[s];
             var _sgt_group = "";
@@ -410,8 +411,25 @@ function UnitGroup(units) constructor {
                     break;
                 }
             }
-                if (_sgt_group != "" && struct_exists(squad_fulfilment, _sgt_group) && (!sergeant_found)) {
-                var _candidate = _members.highest_exp();
+            if (_sgt_group != "" && struct_exists(squad_fulfilment, _sgt_group) && (!sergeant_found)) {
+                // Highest-experience member not already queued for another leader slot, so two
+                // leader slots (e.g. Sergeant + Veteran Sergeant) never promote the same marine.
+                var _candidate = undefined;
+                var _candidate_exp = -1;
+                for (var _mi = 0; _mi < _members.number(); _mi++) {
+                    var _m = _members.units[_mi];
+                    if (array_contains(_promoted_units, _m)) {
+                        continue;
+                    }
+                    if (_candidate == undefined || _m.experience > _candidate_exp) {
+                        _candidate = _m;
+                        _candidate_exp = _m.experience;
+                    }
+                }
+                if (_candidate == undefined) {
+                    continue; // no distinct member left for this leader slot
+                }
+                array_push(_promoted_units, _candidate);
                 var _sgt_role_def = _fill_squad[$ _sgt_group];
                 var _actual_sgt_role = struct_exists(_sgt_role_def, "role") ? _sgt_role_def.role : _sgt_type;
                 squad_fulfilment[$ _sgt_group]++;
