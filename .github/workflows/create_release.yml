@@ -298,7 +298,8 @@ jobs:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           username: "GitHub Releases"
           content: "<@&1318332223232938014>"
-          embed-title: "${{ steps.create_release.outputs.url }}"
+          embed-title: "${{ steps.create_release.outputs.release_name }}"
           embed-description: |
             ${{ steps.build_changelog.outputs.changelog }}
+            **Download:** ${{ steps.create_release.outputs.url }}
           embed-footer-text: "These builds are auto-generated every 12 hours. Their stability is unpredictable. 20 last builds retained at the same time. You can always revert to an older one."
