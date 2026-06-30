@@ -294,8 +294,10 @@ function calculate_fleet_eta(self_x, self_y, target_x, target_y, fleet_speed, fr
         _lane_strength = determine_warp_join(_departure_star.id, _destanation_star.id);
     }
 
-    if (_lane_strength > 0 && warp_able) {
-        _eta = ceil(_eta / _lane_strength);
+    if (_lane_strength > 0) {
+        if (warp_able) {
+            _eta = ceil(_eta / _lane_strength);
+        }
     } else {
         _eta *= 2;
     }
