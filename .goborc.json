@@ -1,0 +1,11 @@
+{
+  "useTabs": false,
+  "tabSize": 4,
+  "verticalStructs": true,
+  "verticalArrays": true,
+  "multilineTernary": false,
+  "blankLineAfterBlocks": false,
+  "flatExpressions": false,
+  "explicitUndefined": false,
+  "multilineArguments": 0
+}
