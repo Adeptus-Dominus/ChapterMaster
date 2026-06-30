@@ -12,7 +12,7 @@
             "master_crafted": 30,
             "standard": 25
         },
-        "ranged_hands": -1,
+        "ranged_hands": -0.5,
         "melee_mod":{
             "artifact": 30,
             "master_crafted": 25,
