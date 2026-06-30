@@ -20,7 +20,8 @@
       "company": 10,
       "squads": [
         { "squad": "command_squad", "max_count": 1, "min_count": 1, "require": true },
-        { "squad": "devastator_squad", "proportion": 1 }
+        { "squad": "scout_squad", "proportion": 5 },
+        { "squad": "tactical_squad", "proportion": 4 }
       ]
     }
   ]
