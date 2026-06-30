@@ -42,17 +42,30 @@ function relationship_hostility_matrix(faction) {
     return _rela;
 }
 
-function alter_disposition(faction, alter_value) {
+function alter_disposition(faction, alter_value, return_string = false) {
     chap_data = obj_ini.chapter_data;
 
     alter_value = chap_data.calc_final_disp_value(faction, alter_value);
 
-    obj_controller.disposition[faction] = clamp(obj_controller.disposition[faction] + alter_value, -100, 100);
+    obj_controller.disposition[faction] += alter_value;
+
+    if (return_string){
+        return $"{global.faction_names[faction]} : {string_plus_minus(alter_value)}{alter_value}";
+    }
 }
 
-function alter_dispositions(alterations) {
+function alter_dispositions(alterations, return_strings) {
+    var _string;
+    var _strings = [];
     for (var i = 0; i < array_length(alterations); i++) {
-        alter_disposition(alterations[i][0], alterations[i][1]);
+        _string = alter_disposition(alterations[i][0], alterations[i][1], return_strings);
+        if (return_strings){
+            array_push(_strings, _string);
+        }
+    }
+
+    if (return_strings){
+        return _strings;
     }
 }
 
