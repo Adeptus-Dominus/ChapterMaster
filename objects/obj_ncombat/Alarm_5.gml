@@ -572,7 +572,20 @@ if (defeat == 0 && _reduce_power) {
     }
 
     if (enemy >= 5) {
-        p_data.edit_forces(enemy, new_power);
+        // Combat numbers the Chaos/Heretic pair opposite to eFACTION. enemy 10 (eFACTION.CHAOS)
+        // is fought as the Heretic/traitor force and its strength is read from p_traitors above;
+        // enemy 11 (eFACTION.HERETICS) is fought as the Chaos Space Marine force read from p_chaos.
+        // edit_forces maps by eFACTION (CHAOS -> p_chaos, HERETICS -> p_traitors), so passing the
+        // raw combat enemy wrote the reduced strength into the OTHER slot, leaving the force that
+        // was actually fought untouched and often inflating the other one. Swap the pair so the
+        // reduction lands on the same force the battle was drawn from. Mirrors the space_hulk fix.
+        var _reduce_faction = enemy;
+        if (enemy == eFACTION.CHAOS) {
+            _reduce_faction = eFACTION.HERETICS;
+        } else if (enemy == eFACTION.HERETICS) {
+            _reduce_faction = eFACTION.CHAOS;
+        }
+        p_data.edit_forces(_reduce_faction, new_power);
     }
 
     if ((enemy != 2) && (string_count("cs_meeting_battle", battle_special) == 0)) {
