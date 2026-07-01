@@ -474,7 +474,6 @@
         "alternative_roles": ["Assault","Devastator","Tactical"],
         "loadout": {
           "required": {
-            "armour": ["", 0],
             "wep1": ["", 0],
             "wep2": ["", 0],
             "mobi": ["Bike", 7]
