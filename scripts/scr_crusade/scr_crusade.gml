@@ -48,7 +48,7 @@ function scr_crusade() {
     if (death_determination <= 50) {
         type = "normal";
         artifacts = choose(0, 0, 0, 0, 0, 1);
-    } else if (death_determination > 50) {
+    } else if (death_determination > 50 && death_determination <= 80) {
         type = "hard";
         artifacts = choose(0, 0, 1);
     } else if (death_determination > 80) {
