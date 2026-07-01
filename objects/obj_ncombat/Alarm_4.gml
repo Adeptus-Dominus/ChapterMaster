@@ -1,8 +1,6 @@
 for (var jims = 1; jims <= 20; jims++) {
     if (dead_jim[jims] != "") {
-        newline = dead_jim[jims];
-        newline_color = "red";
-        scr_newtext();
+        combat_log.push(dead_jim[jims], eMSG_COLOR.RED);
         dead_jim[jims] = "";
         dead_jims -= 1;
 

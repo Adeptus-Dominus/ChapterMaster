@@ -80,12 +80,8 @@ try {
             }
 
             if (r_lost > 0) {
-                obj_ncombat.newline = miss;
-                obj_ncombat.newline_color = "red";
+                obj_ncombat.combat_log.push(miss, eMSG_COLOR.RED);
                 obj_ncombat.timer_pause = 2;
-                with (obj_ncombat) {
-                    scr_newtext();
-                }
             }
         }
     }

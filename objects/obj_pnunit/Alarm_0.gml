@@ -51,9 +51,9 @@ try {
     }
 
     if (instance_exists(obj_enunit)) {
-        global.ctally_target = undefined;
-        global.ctally_bounce = [];
-        global.ctally_injure = [];
+        obj_ncombat.ctally_target = undefined;
+        obj_ncombat.ctally_bounce = [];
+        obj_ncombat.ctally_injure = [];
         for (var i = 0; i < array_length(wep); i++) {
             // Enemies wiped before every weapon got to fire (e.g. spill-over cleared the line).
             // Report who held fire and stop, rather than swinging at empty air.
