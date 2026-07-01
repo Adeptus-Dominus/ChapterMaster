@@ -378,10 +378,13 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
     static change_type = function(new_type) {
         type = new_type;
-        if (is_array(type)) {
-            show_debug_message($"[PROBE] change_type got ARRAY type (len {array_length(type)}): {type}");
-        } else if (!struct_exists(obj_ini.squad_types, type)) {
-            show_debug_message($"[PROBE] change_type unknown squad type: \"{type}\"");
+        // Guard an invalid squad type (a non-string slipped through, e.g. an array, or a key that
+        // isn't defined in squad_types). Dereferencing squad_types[$ type].type_data on those crashes
+        // ("I32 argument is array" / undefined). is_string is checked first so struct_exists never
+        // receives a non-string. Bail out so one bad arrangement entry can't crash squad generation.
+        if (!is_string(type) || !struct_exists(obj_ini.squad_types, type)) {
+            show_debug_message($"change_type: invalid squad type '{string(type)}' — skipping type data");
+            return;
         }
         add_type_data(obj_ini.squad_types[$ type].type_data);
     };
@@ -869,6 +872,11 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 /// @return {Struct|Undefined}  A company template struct with fields {Real} company and {Array} squads,
 ///                             or undefined if no template can be resolved.
 function resolve_company_arrangement(arrangement, company_number) {
+    // Arrangements are 1-based (companies 1-10); company 0 is the HQ/chapter tier and must never be
+    // reorganised into a battle template, so never match an entry or fall through to default_squads.
+    if (company_number < 1) {
+        return undefined;
+    }
     if (struct_exists(arrangement, "companies")) {
         var _companies = arrangement.companies;
         for (var i = 0; i < array_length(_companies); i++) {
@@ -919,16 +927,23 @@ function apply_squad_distribution_override(arrangement, override) {
         var _ovr_companies = override.companies;
         for (var oi = 0; oi < array_length(_ovr_companies); oi++) {
             var _ovr = _ovr_companies[oi];
+            // Deep-clone the override entry (mirroring the default_squads path above) so the live
+            // arrangement never aliases the override template — otherwise editing the arrangement
+            // later (squad editor / promote-to-explicit) would mutate distribution_overrides in place.
+            var _ovr_copy = { company: _ovr.company, squads: array_create(array_length(_ovr.squads)) };
+            for (var _si = 0; _si < array_length(_ovr.squads); _si++) {
+                _ovr_copy.squads[_si] = variable_clone(_ovr.squads[_si]);
+            }
             var _found = false;
             for (var ai = 0; ai < array_length(arrangement.companies); ai++) {
-                if (arrangement.companies[ai].company == _ovr.company) {
-                    arrangement.companies[ai] = _ovr;
+                if (arrangement.companies[ai].company == _ovr_copy.company) {
+                    arrangement.companies[ai] = _ovr_copy;
                     _found = true;
                     break;
                 }
             }
             if (!_found) {
-                array_push(arrangement.companies, _ovr);
+                array_push(arrangement.companies, _ovr_copy);
             }
         }
     }

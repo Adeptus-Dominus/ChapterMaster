@@ -287,17 +287,10 @@ try {
     instance_activate_object(obj_enunit);
 
     // Safety net: drop empty/zombie formations the firing loop never reached, so a lingering corpse
-    // can't keep the battle alive.
+    // can't keep the battle alive. Reuse destroy_empty_column so the scan covers every rank (not just
+    // 1-30) and the owner guard/cleanup exactly match the rest of combat.
     with (obj_enunit) {
-        var _alive = 0;
-        for (var _rr = 1; _rr <= 30; _rr++) {
-            if (dudes_num[_rr] > 0 && dudes_hp[_rr] > 0) {
-                _alive += dudes_num[_rr];
-            }
-        }
-        if ((_alive == 0) && (owner != 1)) {
-            instance_destroy();
-        }
+        destroy_empty_column(id);
     }
 
     if (instance_exists(obj_enunit)) {

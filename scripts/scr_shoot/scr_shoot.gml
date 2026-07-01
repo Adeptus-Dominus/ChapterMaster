@@ -279,11 +279,13 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 
                     // Never open fire on a dead rank/formation. Stale men/veh/medi (only refreshed on
                     // the enemy's own alarm) and scr_target's rank-1 fallback can aim us at corpses;
-                    // snap to a living rank instead, or clean up the empty formation and bail.
+                    // snap to a living rank instead, or clean up the empty formation and bail. A zombie
+                    // rank (models remain but hp <= 0) counts as dead too, matching find_next_alive_rank,
+                    // so the spill loop below never divides by zero/negative hp.
                     if (!instance_exists(target_object)) {
                         exit;
                     }
-                    if (target_object.dudes_num[target_type] <= 0) {
+                    if (target_object.dudes_num[target_type] <= 0 || target_object.dudes_hp[target_type] <= 0) {
                         var _alive_rank = find_next_alive_rank(target_object, -1);
                         if (_alive_rank == -1) {
                             destroy_empty_column(target_object);
@@ -469,10 +471,6 @@ function scr_shoot_spread(weapon_index_position) {
         var _ap = apa[weapon_index_position];
         var _dpw = att[weapon_index_position] / _shots; // per-bike damage
         var _mod = max(1, splash[weapon_index_position]);
-        if (ammo[weapon_index_position] > 0) {
-            ammo[weapon_index_position] -= 1;
-        }
-
         // Armour multiplier indexed by AP rating (1..4), matching scr_shoot's normal path.
         var _inf_ap = [1, 3, 2, 1.5, 0];
         var _veh_ap = [1, 6, 4, 2, 0];
@@ -493,6 +491,12 @@ function scr_shoot_spread(weapon_index_position) {
         }
         if (_total <= 0) {
             exit;
+        }
+
+        // Consume ammo only after confirming there's something on the field, so a volley into an
+        // empty battlefield doesn't burn a Speed Force charge for nothing.
+        if (ammo[weapon_index_position] > 0) {
+            ammo[weapon_index_position] -= 1;
         }
 
         // Apply damage proportionally to each rank's share of the field; record every rank that lost models.
