@@ -7,33 +7,11 @@ draw_rectangle(818, 235, 1578, 666, 0);
 
 draw_set_color(CM_GREEN_COLOR);
 
-var l = 0;
-draw_set_alpha(1);
-draw_rectangle(0 + l, 0 + l, 800 - l, 900 - l, 1);
-l += 1;
-draw_set_alpha(0.75);
-draw_rectangle(0 + l, 0 + l, 800 - l, 900 - l, 1);
-l += 1;
-draw_set_alpha(0.5);
-draw_rectangle(0 + l, 0 + l, 800 - l, 900 - l, 1);
-l += 1;
-draw_set_alpha(0.25);
-draw_rectangle(0 + l, 0 + l, 6800 - l, 900 - l, 1);
-
-l = 0;
-draw_set_alpha(1);
-draw_rectangle(818 + l, 235 + l, 1578 - l, 666 - l, 1);
-l += 1;
-draw_set_alpha(0.75);
-draw_rectangle(818 + l, 235 + l, 1578 - l, 666 - l, 1);
-l += 1;
-draw_set_alpha(0.5);
-draw_rectangle(818 + l, 235 + l, 1578 - l, 666 - l, 1);
-l += 1;
-draw_set_alpha(0.25);
-draw_rectangle(818 + l, 235 + l, 1578 - l, 666 - l, 1);
-
-l = 0;
+for (var l = 0; l <= 3; l++) {
+    draw_set_alpha(1 - (0.25 * l));
+    draw_rectangle(0 + l, 0 + l, 800 - l, 900 - l, 1);
+    draw_rectangle(818 + l, 235 + l, 1578 - l, 666 - l, 1);
+}
 draw_set_alpha(1);
 draw_set_font(fnt_40k_14);
 
@@ -50,20 +28,19 @@ if ((display_p2 > 0) && (enemy_forces > 0)) {
 
 draw_set_halign(fa_left);
 
-repeat (45) {
-    l += 1;
+for (var l = 1; l <= 45; l++) {
     draw_set_color(CM_GREEN_COLOR);
     if (lines_color[l] == "red") {
         draw_set_color(c_red);
     }
     if (lines_color[l] == "yellow") {
-        draw_set_color(3055825);
+        draw_set_color(#2EA0D1);
     }
     if (lines_color[l] == "purple") {
-        draw_set_color(16646566);
+        draw_set_color(#FE01A6);
     }
     if (lines_color[l] == "bright") {
-        draw_set_color(65280);
+        draw_set_color(#00FF00);
     }
     if (lines_color[l] == "white") {
         draw_set_color(c_silver);
@@ -94,7 +71,7 @@ if (click_stall_timer <= 0) {
 draw_set_halign(fa_left);
 draw_set_alpha(1);
 
-draw_set_color(c_black);
+draw_set_color(c_white);
 draw_set_alpha(fadein / 30);
 draw_rectangle(0, 0, 1600, 900, 0);
 draw_set_alpha(1);
