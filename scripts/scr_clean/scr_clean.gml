@@ -196,26 +196,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_infantry(_damage_data, _shots, _damage, _hostile_armour_pierce) {
-    var _armour_mod = 0;
-    switch (_hostile_armour_pierce) {
-        case 4:
-            _armour_mod = 0;
-            break;
-        case 3:
-            _armour_mod = 1.5;
-            break;
-        case 2:
-            _armour_mod = 2;
-            break;
-        case 1:
-            _armour_mod = 3;
-            break;
-        default:
-            _armour_mod = 3;
-            break;
-    }
-
+function damage_infantry(_damage_data, _shots, _damage, _armour_pierce) {
     // Find valid infantry targets
     var valid_marines = [];
     for (var m = 0, l = array_length(unit_struct); m < l; m++) {
@@ -243,7 +224,7 @@ function damage_infantry(_damage_data, _shots, _damage, _hostile_armour_pierce) 
         // Apply damage
         var _shot_luck = roll_dice_chapter(1, 100, "low");
         var _modified_damage = 0;
-        var _marine_armour = marine_ac[marine_index] * _armour_mod;
+        var _marine_armour = combat_rank_armour(marine_ac[marine_index], _armour_pierce, false);
         if (_shot_luck == 1) {
             _modified_damage = _damage - (2 * _marine_armour);
         } else if (_shot_luck == 100) {
@@ -305,26 +286,7 @@ function damage_infantry(_damage_data, _shots, _damage, _hostile_armour_pierce) 
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_vehicles(_damage_data, _shots, _damage, _hostile_armour_pierce) {
-    var _armour_mod = 0;
-    switch (_hostile_armour_pierce) {
-        case 4:
-            _armour_mod = 0;
-            break;
-        case 3:
-            _armour_mod = 2;
-            break;
-        case 2:
-            _armour_mod = 4;
-            break;
-        case 1:
-            _armour_mod = 6;
-            break;
-        default:
-            _armour_mod = 6;
-            break;
-    }
-
+function damage_vehicles(_damage_data, _shots, _damage, _armour_pierce) {
     var veh_index = -1;
 
     // Find valid vehicle targets
@@ -349,7 +311,7 @@ function damage_vehicles(_damage_data, _shots, _damage, _hostile_armour_pierce) 
         veh_index = array_random_element(valid_vehicles);
 
         // Apply damage
-        var _modified_damage = _damage - veh_ac[veh_index] * _armour_mod;
+        var _modified_damage = _damage - combat_rank_armour(veh_ac[veh_index], _armour_pierce, false);
         if (_modified_damage < 0) {
             _modified_damage = 0;
         }
