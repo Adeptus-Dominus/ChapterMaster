@@ -27,6 +27,7 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 
     obj_controller.bat_devastator_column = obj_controller.bat_deva_for[new_combat.formation_set];
     obj_controller.bat_assault_column = obj_controller.bat_assa_for[new_combat.formation_set];
+    obj_controller.bat_bike_column = obj_controller.bat_bike_for[new_combat.formation_set];
     obj_controller.bat_tactical_column = obj_controller.bat_tact_for[new_combat.formation_set];
     obj_controller.bat_veteran_column = obj_controller.bat_vete_for[new_combat.formation_set];
     obj_controller.bat_hire_column = obj_controller.bat_hire_for[new_combat.formation_set];
