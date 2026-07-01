@@ -85,7 +85,6 @@ function scr_powers(caster_id, _psy_log = undefined) {
 
     // Prepare the battlelog variables
     var _battle_log_message = "";
-    var _battle_log_priority = 0;
     var _cast_flavour_text = "";
     var _casualties_flavour_text = "";
 
@@ -133,7 +132,7 @@ function scr_powers(caster_id, _psy_log = undefined) {
     } else {
         _cast_flavour_text = $"{_unit.name_role()} failed to cast {_power_name}!";
         _battle_log_message = _cast_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 137);
+        add_battle_log_message(_battle_log_message, eMSG_COLOR.WHITE);
     }
 
     //* Buff powers casting code
@@ -210,7 +209,7 @@ function scr_powers(caster_id, _psy_log = undefined) {
         }
 
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 135);
+        add_battle_log_message(_battle_log_message, eMSG_COLOR.AQUA);
     } else if (_power_type == "attack" && _cast_successful) {
         //* Attack power casting
         //TODO: separate the code bellow into a separate function;
@@ -304,14 +303,13 @@ function scr_powers(caster_id, _psy_log = undefined) {
                 // attack cast folds into a per-power summary emitted at the end of the casting
                 // phase (flush_psychic_summary), so a wall of Librarians becomes one line.
                 // (We're always inside the _casualties > 0 branch here.)
-                _battle_log_priority = _target_is_vehicle ? (_casualties * 12) : (_casualties * 3);
                 var _is_leader = (obj_ncombat.enemy <= 10) && (_target_unit_name == obj_controller.faction_leader[obj_ncombat.enemy]);
 
                 if (is_struct(_psy_log) && !_is_leader) {
                     accumulate_psychic_cast(_psy_log, _power_name, _power_flavour_text, _target_unit_name, _destruction_verb, _target_is_vehicle, _casualties);
                 } else {
                     _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
-                    add_battle_log_message(_battle_log_message, _battle_log_priority, 134);
+                    add_battle_log_message(_battle_log_message, eMSG_COLOR.AQUA);
                 }
             }
         }
@@ -330,7 +328,7 @@ function scr_powers(caster_id, _psy_log = undefined) {
         check_dead_marines(_unit, caster_id);
 
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 137);
+        add_battle_log_message(_battle_log_message, eMSG_COLOR.RED);
     }
 
     display_battle_log_message();
@@ -370,8 +368,7 @@ function flush_psychic_summary(_psy_log) {
         var _cast_word = (_e.casts == 1) ? "casting" : "castings";
         var _kills_word = (_e.kills == 1) ? $"a {_e.target} is {_e.verb}" : $"{_e.kills} {_e.target} are {_e.verb}";
         var _message = $"{_e.casts} {_cast_word} of '{_e.power}'{_e.flavour} {_kills_word}.";
-        var _size = _e.vehicle ? (_e.kills * 12) : (_e.kills * 3);
-        add_battle_log_message(_message, _size, 134);
+        add_battle_log_message(_message, eMSG_COLOR.AQUA);
     }
     if (array_length(_keys) > 0) {
         display_battle_log_message();

@@ -362,21 +362,9 @@ function set_up_player_blocks_turn() {
 
 /// @self Asset.GMObject.obj_ncombat
 function reset_combat_message_arrays() {
-    messages = 0;
-    messages_to_show = 8;
-    largest = 0;
-    random_messages = 0;
-    priority = 0;
-    messages_shown = 0;
-    for (var i = 0; i < array_length(message); i++) {
-        message[i] = "";
-        message_sz[i] = 0;
-        message_priority[i] = 0;
-    }
     timer_stage = 4;
     timer = 0;
     done = 0;
-    messages_shown = 0;
 }
 
 /// @self Asset.GMObject.obj_pnunit

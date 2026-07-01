@@ -1,3 +1,4 @@
+/// @self Id.Instance.obj_pnunit
 function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapon, hostile_shots, hostile_splash) {
     // Generates flavor based on the damage and casualties from scr_shoot, only for the opponent
 
@@ -9,6 +10,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     var m1 = "";
     var m2 = "";
     var m3 = "";
+    var mes_color = eMSG_COLOR.DEFAULT;
 
     var _hostile_range, _hostile_weapon, _hostile_shots;
     _hostile_range = 0;
@@ -378,26 +380,22 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         var _wall_destroyed = obj_nfort.hp[1] <= 0 ? true : false;
 
         if (_wall_destroyed) {
+            mes_color = eMSG_COLOR.RED;
             mes = m1 + " Destroying the fortifications.";
-        } else {
-            mes = m1 + " Fortifications stand strong.";
-        }
-
-        if (string_length(mes) > 3) {
-            obj_ncombat.messages += 1;
-            obj_ncombat.message[obj_ncombat.messages] = mes;
-            obj_ncombat.message_sz[obj_ncombat.messages] = 999;
-            obj_ncombat.message_priority[obj_ncombat.messages] = 0;
-            obj_ncombat.alarm[3] = 2;
-        }
-        if (obj_nfort.hp[1] <= 0) {
             obj_ncombat.dead_jims += 1;
             obj_ncombat.dead_jim[obj_ncombat.dead_jims] = "The fortified wall has been breached!";
             obj_ncombat.wall_destroyed = 1;
             with (obj_nfort) {
                 instance_destroy();
             }
+        } else {
+            mes_color = eMSG_COLOR.YELLOW;
+            mes = m1 + " Fortifications stand strong.";
         }
+
+        obj_ncombat.combat_log.push(mes, mes_color);
+        obj_ncombat.alarm[3] = 2;
+
         exit;
     }
 
@@ -408,6 +406,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         unit_role = lost[role_index];
         units_lost = lost_num[role_index];
         if (unit_role != "" && units_lost > 0) {
+            mes_color = eMSG_COLOR.RED;
             special = is_specialist(unit_role, SPECIALISTS_HEADS) || unit_role == obj_ini.role[100][eROLE.CHAPTERMASTER] || unit_role == "Venerable " + string(obj_ini.role[100][eROLE.DREADNOUGHT]) || unit_role == obj_ini.role[100][eROLE.CAPTAIN] || obj_ncombat.player_max <= 6;
 
             if (!special) {
@@ -481,10 +480,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     mes = m1 + m2 + m3;
 
     if (string_length(mes) > 3) {
-        obj_ncombat.messages += 1;
-        obj_ncombat.message[obj_ncombat.messages] = mes;
-        obj_ncombat.message_sz[obj_ncombat.messages] = lost_units_count + (0.5 - (obj_ncombat.messages / 100));
-        obj_ncombat.message_priority[obj_ncombat.messages] = 0;
+        obj_ncombat.combat_log.push(mes, mes_color);
         obj_ncombat.alarm[3] = 2;
     }
 }

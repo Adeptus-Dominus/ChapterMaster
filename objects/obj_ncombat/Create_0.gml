@@ -137,37 +137,16 @@ enemy_forces = 0;
 enemy_max = 0;
 hulk_forces = 0;
 
-messages = 0;
-messages_to_show = 24;
-messages_shown = 0;
-largest = 0;
-priority = 0;
-random_messages = 0;
 dead_enemies = 0;
 
 units_lost_counts = {};
 vehicles_lost_counts = {};
 
-lines = array_create(70, "");
-lines_color = array_create(70, "");
-message = array_create(70, "");
-message_sz = array_create(70, 0);
-message_priority = array_create(70, 0);
 dead_jim = array_create(70, "");
 dead_ene = array_create(70, "");
 dead_ene_n = array_create(70, 0);
 crunch = array_create(70, 0);
 mucra = array_create(11, 0);
-
-// The combat-log queue must hold at least COMBAT_LOG_CAPACITY entries so a long turn fully drains.
-// The status line ("Enemy Forces at X%" / "Defeated") only renders once `messages` reaches 0, and
-// Alarm_3 drains the queue through a COMBAT_LOG_CAPACITY-wide window - anything past it strands the
-// tail, leaving messages > 0 forever so the status never shows. The +20 is headroom for compaction.
-for (var _m = 1; _m <= COMBAT_LOG_CAPACITY + 20; _m++) {
-    message[_m] = "";
-    message_sz[_m] = 0;
-    message_priority[_m] = 0;
-}
 
 post_equipment_lost = new EquipmentTracker();
 post_equipment_recovered = new EquipmentTracker();
@@ -192,18 +171,11 @@ final_command_deaths = 0;
 vehicle_deaths = 0;
 casualties = 0;
 dead_jims = 0;
-newline = "";
-newline_color = "";
-liness = 0;
 
-// Combat-log scrollback. lines[] is only a rolling 45-row live window (older rows are discarded by
-// scr_lines_increase), so keep a separate capped history the player can scroll back through.
-// log_scroll counts rows above the live bottom: 0 = pinned to the newest line (live).
-log_history = [];
-log_history_max = 300;
-log_scroll = 0;
-log_view_lines = 45;
-log_dragging = false;
+combat_log = new CombatLog(id);
+ctally_target = undefined;
+ctally_bounce = [];
+ctally_injure = [];
 
 world_size = 0;
 
