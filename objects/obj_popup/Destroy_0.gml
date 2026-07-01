@@ -15,7 +15,7 @@ if ((image == "chaos_symbol") && (title == "Concealed Heresy") && instance_exist
         obj_ncombat.battle_id = obj_controller.selecting_planet;
         obj_ncombat.dropping = 0;
         obj_ncombat.attacking = 10;
-        obj_ncombat.enemy = 10;
+        obj_ncombat.enemy = eFACTION.CHAOS;
         obj_ncombat.formation_set = 2;
         obj_ncombat.leader = 1;
         obj_ncombat.threat = 5;
@@ -72,7 +72,7 @@ if (instance_exists(obj_controller)) {
         obj_ncombat.dropping = 0;
         obj_ncombat.attacking = 1;
         obj_ncombat.local_forces = 0;
-        obj_ncombat.enemy = 10;
+        obj_ncombat.enemy = eFACTION.CHAOS;
         obj_ncombat.threat = 3;
 
         with (obj_star) {

@@ -728,7 +728,7 @@ function select_psychic_power(_unit) {
     // Flip anti-vehicle powers into smite;
     var _power_target_type = get_power_data(_power_id, "target_type");
     if (_power_target_type == "enemy_vehicle") {
-        if (obj_enunit.veh < 1 || obj_ncombat.enemy == 9) {
+        if (obj_enunit.veh < 1 || obj_ncombat.enemy == eFACTION.TYRANIDS) {
             _power_id = "smite";
         }
     }

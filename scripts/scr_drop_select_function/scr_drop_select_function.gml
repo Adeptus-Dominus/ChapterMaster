@@ -238,23 +238,23 @@ function drop_select_unit_selection() {
             if (obj_ncombat.battle_object.space_hulk == 1) {
                 obj_ncombat.battle_special = "space_hulk";
             }
-            if ((planet_feature_bool(_planet, eP_FEATURES.WARLORD6) == 1) && (obj_ncombat.enemy == 6) && (obj_controller.faction_defeated[6] == 0)) {
+            if ((planet_feature_bool(_planet, eP_FEATURES.WARLORD6) == 1) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
                 obj_ncombat.leader = 1;
             }
-            if ((obj_ncombat.enemy == 7) && (obj_controller.faction_defeated[7] <= 0)) {
+            if ((obj_ncombat.enemy == eFACTION.ORK) && (obj_controller.faction_defeated[7] <= 0)) {
                 if (planet_feature_bool(_planet, eP_FEATURES.ORKWARBOSS)) {
                     obj_ncombat.leader = 1;
                     obj_ncombat.Warlord = _planet[search_planet_features(_planet, eP_FEATURES.ORKWARBOSS)[0]];
                 }
             }
 
-            if ((obj_ncombat.enemy == 9) && (obj_ncombat.battle_object.space_hulk == 0)) {
+            if ((obj_ncombat.enemy == eFACTION.TYRANIDS) && (obj_ncombat.battle_object.space_hulk == 0)) {
                 if (has_problem_planet(planet_number, "tyranid_org", p_target)) {
                     obj_ncombat.battle_special = "tyranid_org";
                 }
             }
 
-            if (obj_ncombat.enemy == 11) {
+            if (obj_ncombat.enemy == eFACTION.HERETICS) {
                 if (planet_feature_bool(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id], eP_FEATURES.CHAOSWARBAND) == 1) {
                     obj_ncombat.battle_special = "ChaosWarband";
                     obj_ncombat.leader = 1;
@@ -277,14 +277,12 @@ function drop_select_unit_selection() {
                 demons,
                 necrons
             ];
-            if (obj_ncombat.enemy >= 5 && obj_ncombat.enemy <= 13) {
+            if (obj_ncombat.enemy >= eFACTION.ECCLESIARCHY && obj_ncombat.enemy <= eFACTION.NECRONS) {
                 obj_ncombat.threat = _threats[obj_ncombat.enemy];
             }
 
-            if (obj_ncombat.enemy == 8) {
-                var eth;
-                eth = 0;
-                eth = scr_quest(4, "ethereal_capture", 8, 0);
+            if (obj_ncombat.enemy == eFACTION.TAU) {
+                var eth = scr_quest(4, "ethereal_capture", 8, 0);
                 if ((eth > 0) && (obj_ncombat.battle_object.p_owner[obj_ncombat.battle_id] == 8)) {
                     var rolli;
                     rolli = irandom_range(1, 100);
@@ -301,17 +299,15 @@ function drop_select_unit_selection() {
                         obj_ncombat.ethereal = 1;
                     }
                 }
-                // show_message("Ethereal Quest?: "+string(eth)+"#Ethereal?: "+string(obj_ncombat.ethereal));
             }
 
-            // if (obj_ncombat.threat>1) and (obj_ncombat.enemy!=13) then obj_ncombat.threat-=1;
             if ((obj_ncombat.threat > 1) && (obj_ncombat.battle_special != "ChaosWarband") && (attack == 0)) {
                 obj_ncombat.threat -= 1;
             }
             if (obj_ncombat.threat < 1) {
                 obj_ncombat.threat = 1;
             }
-            if ((obj_ncombat.enemy == 10) && (obj_ncombat.battle_object.p_type[obj_ncombat.battle_id] == "Daemon")) {
+            if ((obj_ncombat.enemy == eFACTION.CHAOS) && (obj_ncombat.battle_object.p_type[obj_ncombat.battle_id] == "Daemon")) {
                 obj_ncombat.threat = 7;
             }
 
@@ -341,7 +337,7 @@ function drop_select_unit_selection() {
                     }
                     if (obj_controller.known[eFACTION.CHAOS] >= 2 && obj_controller.faction_gender[10] == 1) {
                         with (obj_drop_select) {
-                            obj_ncombat.enemy = 11;
+                            obj_ncombat.enemy = eFACTION.HERETICS;
                             obj_ncombat.threat = 0;
                             cancel_combat();
                             combating = 0;

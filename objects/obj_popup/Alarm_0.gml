@@ -12,7 +12,7 @@ if (battle_special == 3.1) {
     instance_activate_all();
 
     instance_create(0, 0, obj_ncombat);
-    obj_ncombat.enemy = 3;
+    obj_ncombat.enemy = eFACTION.MECHANICUS;
     obj_ncombat.battle_object = that;
     obj_ncombat.battle_loc = loc;
     obj_ncombat.battle_id = planet;
