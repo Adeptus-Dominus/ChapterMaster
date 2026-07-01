@@ -28,12 +28,12 @@ Nonetheless, some things will have to be done through **GameMaker IDE**, even if
 
 1. Get the Visual Studio Code (VSCode) installed, if not already.
    - (Optional) It's recommended to get the Insider version, as it's the most frequently updated one and gets all new features first.
-   - (Optional) Get a hang of VSCode by reading some guides on the internet, installing some useful QoL extensions, configuring various settings, etc.
+   - (Optional) Get the hang of VSCode by reading some guides on the internet, installing some useful QoL extensions, configuring various settings, etc.
 2. Add the project's folder that you've cloned to the workspace, wait for it to load.
 3. Get the Stitch extension installed.
    - (Optional) Watch [this guide video](https://youtu.be/N0wnHauUQjA?si=GPQ22a_LyZq3Y9LP) that covers basic features of **Stitch**, made by its creator.
    - (Optional) Edit various **Stitch** specific settings, to improve your QoL.
-   - (Optional) It's recommended to disable "Run in Terminal" **Stitch** option. This allows you to goto error lines that come up in the output window and custom color output lines. The explanation is in the "Stitch Runner Panel" section on [this page](https://marketplace.visualstudio.com/items?itemName=bscotch.bscotch-stitch-vscode).
+   - (Optional) It's recommended to disable "Run in Terminal" **Stitch** option. This allows you to go to error lines that come up in the output window and custom color output lines. The explanation is in the "Stitch Runner Panel" section on [this page](https://marketplace.visualstudio.com/items?itemName=bscotch.bscotch-stitch-vscode).
 4. Run the game by pressing F5 or finding the run button on the **Stitch** panel, wait for it to download the **GameMaker** version and build the game.
 5. Ensure that the game launches and works, exit.
 

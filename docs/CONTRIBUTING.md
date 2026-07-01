@@ -33,14 +33,17 @@ To keep the codebase manageable and safe, PRs must be immediately understandable
 
 - **Design Approval:** Changes affecting game balance, core mechanics, or user-facing features **require prior discussion and approval**. Discuss the proposal on Discord before writing code. Unapproved design changes **will likely be closed**.
 - **No Code Dumps:** Monolithic feature dumps that introduce thousands of lines of code without addressing existing debt **will likely not be accepted**. Focus on incremental, testable improvements.
-- **Single Change vs. Atomic Batches:** Pull requests should *ideally* address a single logical change. However, multi-system PRs are *permitted* under **strict conditions**:
-   - The PR must be structured as a **batch of independent, atomic commits**.
-   - Each commit must represent exactly **one logical change**, use **Conventional Commit** naming, and be **completely self-contained** (squashed clean of fixup commits).
-   - The maintainer must be able to **review the PR chronologically**, commit by commit, without encountering broken states between commits. 
-   - If a multi-system PR lacks this clean commit hygiene, you will be **required to split it** into separate branches.
 - **Self-Testing:** Verify that changes do not break existing functionality. Every PR must include a brief note on how you tested the change. For small fixes, "ran it locally and confirmed the bug no longer reproduces" is sufficient. For larger changes, describe what you checked and how.
-- **Clarity and Documentation:** Clearly document the specific problem being solved. Maintainers **will not** untangle changes made without an explanation; such pull requests **will require a complete description rewrite** or **will be closed**.
+- **Clarity and Documentation:** Clearly document the specific problem being solved. Maintainers **will not** untangle changes made without an explanation; such pull requests **will require a complete description rewrite** or **may be closed**.
 - **Code Style:** Review and adhere to the guidelines in `CODE_STYLE.md`.
+
+### Single Change vs. Atomic Batches
+
+Pull requests should *ideally* address a single logical change. However, multi-system PRs are *permitted* under **strict conditions**:
+- The PR must be structured as a **batch of independent, atomic commits**.
+- Each commit must represent exactly **one logical change**, use **Conventional Commit** naming, and be **completely self-contained** (squashed clean of fixup commits), so that the PR can be rebase-merged.
+- The maintainer must be able to **review the PR chronologically**, commit by commit, without encountering broken states between commits. 
+- If a multi-system PR lacks this clean commit hygiene, you will be **required to split it** into separate branches.
 
 ### On AI-Generated Code
 
