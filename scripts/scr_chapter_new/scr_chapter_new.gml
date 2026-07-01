@@ -30,7 +30,7 @@ function ChapterData() constructor {
     home_planets = 1;
 
     flagship_name = global.name_generator.GenerateFromSet("imperial_ship");
-    monastary_name = "";
+    monastery_name = "";
     advantages = array_create(9);
     disadvantages = array_create(9);
     discipline = "librarius"; // todo convert to enum
@@ -231,12 +231,14 @@ function scr_chapter_new(chapter_identifier) {
     load_default_gear(eROLE.ASSAULT, "Assault", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Jump Pack", "");
     load_default_gear(eROLE.ANCIENT, "Ancient", "Company Standard", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.SCOUT, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
+    load_default_gear(eROLE.BIKER, "Biker", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR,"Bike","");
     load_default_gear(eROLE.CHAPLAIN, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
     load_default_gear(eROLE.APOTHECARY, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
     load_default_gear(eROLE.TECHMARINE, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
     load_default_gear(eROLE.LIBRARIAN, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
     load_default_gear(eROLE.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.VETERANSERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
+    load_default_gear(eROLE.ATTACK_BIKER, "Attack Biker", "Heavy Bolter", "Chainsword", STR_ANY_POWER_ARMOUR, "Attack Bike", "");
 
     for (var c = 0; c < array_length(obj_creation.all_chapters); c++) {
         if (chapter_identifier == obj_creation.all_chapters[c].name && obj_creation.all_chapters[c].json == true) {

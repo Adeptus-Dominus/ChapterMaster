@@ -31,6 +31,7 @@ function scr_ui_formation_bars() {
         { unit_id: 11, for_arr: bat_drea_for, size: 2, image_index: 11, unit_type: "Dread",        tooltip: "Dreadnoughts",  tooltip2: "Dreadnoughts are the most durable and tough marines within your chapter.  They are best suited for the front lines." },
         { unit_id: 12, for_arr: bat_hire_for, size: 1, image_index: 7,  unit_type: "???",          tooltip: "Hirelings",     tooltip2: "Any and all units that you recieve from other factions are placed within this block." },
         { unit_id: 16, for_arr: bat_landspee_for, size: 2, image_index: 14, unit_type: "Land Speeder", tooltip: "Land Speeders", tooltip2: "Land Speeders are incredibly agile attack vehicles that offer a light highly mobile heavy weapon platform." },
+        { unit_id: 18, for_arr: bat_bike_for, size: 2, image_index: 14, unit_type: "Biker", tooltip: "Bikers", tooltip2: "Bikers are the swift deathbringers of the Astartes Chapters. Descending upon a foe with speed impossible to follow by mortal means, they decimate enemies in close range by a powerful assortment of melee weapons or heavy ranged weapons on their Attack Bikes." },
     ];
     var _attack_only_options = [
         { unit_id: 13, for_arr: bat_rhin_for, size: 4, image_index: 12, unit_type: "Rhino",      tooltip: "Rhinos",       tooltip2: "Rhinos offer protection for units behind them but are not well armoured and lacking in firepower." },
@@ -48,7 +49,7 @@ function scr_ui_formation_bars() {
         temp[ui_formations_data.te] = 0;
         temp[ui_formations_data.te + 100] = 0;
 
-        for (var unit_id = 0; unit_id <= 17; unit_id++) {
+        for (var unit_id = 0; unit_id <= 18; unit_id++) {
 
             for (var _i = 0; _i < array_length(_bar_configs); _i++) {
                 var _cfg = _bar_configs[_i];
@@ -74,6 +75,7 @@ function scr_ui_formation_bars() {
             if (temp[4800 + bar] > 10) {
                 bat_deva_for[bar] = 1;
                 bat_assa_for[bar] = 4;
+                bat_bike_for[bar] = 4;
                 bat_tact_for[bar] = 2;
                 bat_vete_for[bar] = 2;
                 bat_hire_for[bar] = 3;

@@ -68,6 +68,10 @@ defeat_message = 0;
 red_thirst = 0;
 fugg = 0;
 fugg2 = 0;
+// Hard-timeout counters for stages 2/4. Unlike fugg/fugg2 these are NOT reset by the 60-frame
+// status poll in Step, so they keep accumulating during a stall and the anti-hang cap can fire.
+stage_elapsed = 0;
+stage_elapsed2 = 0;
 battle_over = 0;
 done = 0;
 
@@ -151,6 +155,16 @@ dead_ene_n = array_create(70, 0);
 crunch = array_create(70, 0);
 mucra = array_create(11, 0);
 
+// The combat-log queue must hold at least COMBAT_LOG_CAPACITY entries so a long turn fully drains.
+// The status line ("Enemy Forces at X%" / "Defeated") only renders once `messages` reaches 0, and
+// Alarm_3 drains the queue through a COMBAT_LOG_CAPACITY-wide window - anything past it strands the
+// tail, leaving messages > 0 forever so the status never shows. The +20 is headroom for compaction.
+for (var _m = 1; _m <= COMBAT_LOG_CAPACITY + 20; _m++) {
+    message[_m] = "";
+    message_sz[_m] = 0;
+    message_priority[_m] = 0;
+}
+
 post_equipment_lost = new EquipmentTracker();
 post_equipment_recovered = new EquipmentTracker();
 
@@ -178,6 +192,16 @@ dead_jims = 0;
 newline = "";
 newline_color = "";
 liness = 0;
+
+// Combat-log scrollback. lines[] is only a rolling 45-row live window (older rows are discarded by
+// scr_lines_increase), so keep a separate capped history the player can scroll back through.
+// log_scroll counts rows above the live bottom: 0 = pinned to the newest line (live).
+log_history = [];
+log_history_max = 300;
+log_scroll = 0;
+log_view_lines = 45;
+log_dragging = false;
+
 world_size = 0;
 
 timer = 0;

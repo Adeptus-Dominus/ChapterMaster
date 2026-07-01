@@ -15,6 +15,14 @@
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
 #macro LARGE_PLANET_MOD 1000000000 // Population threshold for large planet classification
 
+// Ground combat message log: lines the display fully drains per turn (so the end-of-turn status
+// line shows even on long battles), and the per-stage frame timeout before force-advancing.
+#macro COMBAT_LOG_CAPACITY 500
+#macro COMBAT_STAGE_TIMEOUT_FRAMES 1200
+// Battle-log message_priority colour codes (extends the existing 134/135/137 set).
+#macro MSG_COLOR_WHITE 140
+#macro MSG_COLOR_LIGHTGREEN 141
+
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
 
@@ -70,12 +78,14 @@ enum eROLE {
     ASSAULT = 10,
     ANCIENT = 11,
     SCOUT = 12,
+    BIKER = 13,
     CHAPLAIN = 14,
     APOTHECARY = 15,
     TECHMARINE = 16,
     LIBRARIAN = 17,
     SERGEANT = 18,
     VETERANSERGEANT = 19,
+    ATTACK_BIKER = 20,
     LANDRAIDER = 50,
     RHINO = 51,
     PREDATOR = 52,

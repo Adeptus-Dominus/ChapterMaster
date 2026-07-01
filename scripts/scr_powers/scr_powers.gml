@@ -58,8 +58,11 @@ function generate_marine_powers_description_string(unit) {
 
 /// @desc Psychic powers execution mess. Called in the scope of obj_pnunit.
 /// @param {real} caster_id - ID of the caster in the player column from obj_pnunit.
+/// @param {Struct} [_psy_log] - Per-formation accumulator for attack casts. When provided, ordinary
+///        attack casts fold into a per-power summary (see flush_psychic_summary) instead of logging
+///        one line each. Leader kills, failed casts and Perils still log individually.
 /// @self Asset.GMObject.obj_pnunit
-function scr_powers(caster_id) {
+function scr_powers(caster_id, _psy_log = undefined) {
     // Gather unit data
     /// @type {Struct.TTRPG_stats}
     var _unit = unit_struct[caster_id];
@@ -297,18 +300,19 @@ function scr_powers(caster_id) {
                 compress_enemy_array(_target_data.column);
                 destroy_empty_column(_target_data.column);
 
-                // Log battle message to combat feed
-                _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
-                if (_casualties == 0) {
-                    _battle_log_priority = _final_damage / 50; // Just to have some priority here, as they don't have the usual "shots fired"
+                // Battle log: the enemy leader dying always earns its own callout; every other
+                // attack cast folds into a per-power summary emitted at the end of the casting
+                // phase (flush_psychic_summary), so a wall of Librarians becomes one line.
+                // (We're always inside the _casualties > 0 branch here.)
+                _battle_log_priority = _target_is_vehicle ? (_casualties * 12) : (_casualties * 3);
+                var _is_leader = (obj_ncombat.enemy <= 10) && (_target_unit_name == obj_controller.faction_leader[obj_ncombat.enemy]);
+
+                if (is_struct(_psy_log) && !_is_leader) {
+                    accumulate_psychic_cast(_psy_log, _power_name, _power_flavour_text, _target_unit_name, _destruction_verb, _target_is_vehicle, _casualties);
                 } else {
-                    if (_target_is_vehicle) {
-                        _battle_log_priority = _casualties * 12; // Vehicles are more juicy
-                    } else {
-                        _battle_log_priority = _casualties * 3; // More casualties = higher priority messages
-                    }
+                    _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
+                    add_battle_log_message(_battle_log_message, _battle_log_priority, 134);
                 }
-                add_battle_log_message(_battle_log_message, _battle_log_priority, 134);
             }
         }
     }
@@ -330,6 +334,48 @@ function scr_powers(caster_id) {
     }
 
     display_battle_log_message();
+}
+
+/// @desc Folds one attack-power cast into the per-formation psychic summary, keyed by power + target,
+///       so many identical Librarian casts collapse into a single battle-log line.
+/// @param {Struct} _psy_log The accumulator struct (one per formation casting phase).
+function accumulate_psychic_cast(_psy_log, _power_name, _power_flavour, _target_name, _verb, _is_vehicle, _kills) {
+    var _key = _power_name + "|" + _target_name;
+    if (!variable_struct_exists(_psy_log, _key)) {
+        _psy_log[$ _key] = {
+            power: _power_name,
+            flavour: _power_flavour,
+            target: _target_name,
+            verb: _verb,
+            vehicle: _is_vehicle,
+            casts: 0,
+            kills: 0,
+        };
+    }
+    var _entry = _psy_log[$ _key];
+    _entry.casts += 1;
+    _entry.kills += _kills;
+}
+
+/// @desc Emits one battle-log line per power+target accumulated during a formation's casting phase.
+///       Mirrors scr_powers' own concatenation so spacing matches the individual-cast lines.
+/// @param {Struct} _psy_log The accumulator filled by accumulate_psychic_cast.
+function flush_psychic_summary(_psy_log) {
+    if (!is_struct(_psy_log)) {
+        return;
+    }
+    var _keys = variable_struct_get_names(_psy_log);
+    for (var i = 0; i < array_length(_keys); i++) {
+        var _e = _psy_log[$ _keys[i]];
+        var _cast_word = (_e.casts == 1) ? "casting" : "castings";
+        var _kills_word = (_e.kills == 1) ? $"a {_e.target} is {_e.verb}" : $"{_e.kills} {_e.target} are {_e.verb}";
+        var _message = $"{_e.casts} {_cast_word} of '{_e.power}'{_e.flavour} {_kills_word}.";
+        var _size = _e.vehicle ? (_e.kills * 12) : (_e.kills * 3);
+        add_battle_log_message(_message, _size, 134);
+    }
+    if (array_length(_keys) > 0) {
+        display_battle_log_message();
+    }
 }
 
 /// @desc Function to get requested data from the disciplines_data structure. Returns The requested data, or undefined if not found.

@@ -2,9 +2,9 @@
   "$GMProject":"v1",
   "%Name":"ChapterMaster",
   "AudioGroups":[
-    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
-    {"$GMAudioGroup":"v1","%Name":"audiogroup_sfx","exportDir":"","name":"audiogroup_sfx","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
-    {"$GMAudioGroup":"v1","%Name":"audiogroup_music","exportDir":"","name":"audiogroup_music","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"","%Name":"audiogroup_sfx","name":"audiogroup_sfx","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"","%Name":"audiogroup_music","name":"audiogroup_music","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
     "children":[],
@@ -22,6 +22,7 @@
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Combat_Fleet","folderPath":"folders/Objects/Combat_Fleet.yy","name":"Combat_Fleet","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"New Combat","folderPath":"folders/Objects/New Combat.yy","name":"New Combat","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"New Ground","folderPath":"folders/Objects/New Ground.yy","name":"New Ground","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"New UI","folderPath":"folders/Objects/New UI.yy","name":"New UI","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Temp","folderPath":"folders/Objects/Temp.yy","name":"Temp","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Paths","folderPath":"folders/Paths.yy","name":"Paths","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -462,6 +463,7 @@
     {"$GMIncludedFile":"","%Name":"formation15.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"formation15.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"formation16.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"formation16.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"formation17.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"formation17.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"formation18.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"formation18.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"formation2.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"formation2.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"formation3.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"formation3.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"formation4.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"formation4.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -578,6 +580,7 @@
     {"$GMIncludedFile":"","%Name":"equal_scouts.json","CopyToMask":-1,"filePath":"datafiles/main/squads","name":"equal_scouts.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"equal_specialists.json","CopyToMask":-1,"filePath":"datafiles/main/squads","name":"equal_specialists.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"equal_spescout.json","CopyToMask":-1,"filePath":"datafiles/main/squads","name":"equal_spescout.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"lightning_warriors.json","CopyToMask":-1,"filePath":"datafiles/main/squads","name":"lightning_warriors.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"version.json","CopyToMask":-1,"filePath":"datafiles/main","name":"version.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"data.json","CopyToMask":-1,"filePath":"datafiles/main/visual_sets/Company_marks_roman_right_knee","name":"data.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"12.png","CopyToMask":-1,"filePath":"datafiles/main/visual_sets/Company_marks_roman_right_knee/one","name":"12.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -604,7 +607,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.5.1065",
+    "IDEVersion":"2024.1400.5.1055",
   },
   "name":"ChapterMaster",
   "resources":[

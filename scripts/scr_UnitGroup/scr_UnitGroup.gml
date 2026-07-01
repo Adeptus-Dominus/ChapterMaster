@@ -199,10 +199,11 @@ function UnitGroup(units) constructor {
 
     var _roles = active_roles();
 
-    static sgt_types = role_groups(SPECIALISTS_SQUAD_LEADERS);
+    static sgt_types = [];
 
     static create_squad = function(squad_type, squad_loadout = true, squad_uid = "", game_start = false) {
-        // LOGGER.info($"sgts : ${sgt_types}");
+        //LOGGER.info($"sgts : ${sgt_types}");
+        sgt_types  = role_groups(SPECIALISTS_SQUAD_LEADERS);
 
         var roles = active_roles();
 
@@ -222,20 +223,74 @@ function UnitGroup(units) constructor {
         var _fill_squad = obj_ini.squad_types[$ squad_type];
 
         var _fulfilled = false;
+        //adding multiple role sources on gen within a single squad
+        var _all_roles_to_fetch = array_create(0);
+            for (var r = 0; r < array_length(squad_unit_types); r++) {
+            var _primary_role = squad_unit_types[r];
+            var _primary_role_def = _fill_squad[$ _primary_role];
+            var _primary_role_name = struct_exists(_primary_role_def, "role") ? _primary_role_def.role : _primary_role;
+            if (!array_contains(_all_roles_to_fetch, _primary_role_name)) {
+                array_push(_all_roles_to_fetch, _primary_role_name);
+            }
+            // Always include the JSON key itself as a source — units carry their base role
+            // (e.g. "Terminator") before being renamed to the squad-specific role ("Deathwing Terminator")
+            if (!array_contains(_all_roles_to_fetch, _primary_role)) {
+                array_push(_all_roles_to_fetch, _primary_role);
+            }
 
-        var _squadless = get_from({squadless: true, roles: squad_unit_types});
+            //add alternative source roles to fetch list if this squad role defines them
+            if (struct_exists(_primary_role_def, "alternative_roles")) {
+                var _alternatives = _primary_role_def.alternative_roles;
+                for (var a = 0; a < array_length(_alternatives); a++) {
+                    if (!array_contains(_all_roles_to_fetch, _alternatives[a])) {
+                        array_push(_all_roles_to_fetch, _alternatives[a]);
+                    }
+                }
+            }
+        }
+        //ensure generic sergeant role names are always included in the pool
+        //JSON overrides with specific names "Tactical Sergeant"
+        for (var s = 0; s < 2; s++) {
+            if (!array_contains(_all_roles_to_fetch, sgt_types[s])) {
+                array_push(_all_roles_to_fetch, sgt_types[s]);
+            }
+        }
+
+        var _squadless = get_from({squadless: true, roles: _all_roles_to_fetch});
 
         for (var s = 0; s < 2; s++) {
             var _sgt_type = sgt_types[s];
-            var _available_sgt = _squadless.get_from({role: _sgt_type, max_wanted: 1});
+            var _available_sgt = _squadless.get_from({role: _sgt_type, max_wanted: 1}, true, true);
 
             if (_available_sgt.number() == 0) {
                 continue;
             }
 
             var _sgt = _available_sgt.units[0];
-            squad.add_member(_sgt);
-            squad_fulfilment[$ _sgt_type]++;
+            // Confirm this squad actually has a slot for this sergeant role BEFORE adding the
+            // candidate or marking sergeant_found. Otherwise a sergeant whose role the squad has
+            // no slot for would be added anyway and incorrectly suppress the promotion flow.
+            var _sgt_group = "";
+            for (var r = 0; r < array_length(squad_unit_types); r++) {
+                var _role_name = squad_unit_types[r];
+                var _role_def = _fill_squad[$ _role_name];
+                var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
+                if (_primary_role_name == _sgt_type || (_role_name == "Sergeant" && _sgt_type == sgt_types[0]) || (_role_name == "Veteran Sergeant" && _sgt_type == sgt_types[1])) {
+                    _sgt_group = _role_name;
+                    break;
+                }
+            }
+            if (_sgt_group == "") {
+                continue;
+            }
+            squad.add_member(_sgt.company, _sgt.marine_number);
+            squad_fulfilment[$ _sgt_group]++;
+            // Rename pre-existing sergeant to squad-specific role if needed
+            var _sgt_slot_def = _fill_squad[$ _sgt_group];
+            var _target_sgt_role = struct_exists(_sgt_slot_def, "role") ? _sgt_slot_def.role : _sgt_type;
+            if (_target_sgt_role != _sgt.role()) {
+                _sgt.update_role(_target_sgt_role);
+            }
             sergeant_found = true;
         }
 
@@ -252,8 +307,17 @@ function UnitGroup(units) constructor {
             var _has_sgt_requirements = false;
             for (var s = 0; s < 2; s++) {
                 var _sgt_type = sgt_types[s];
-                if (array_contains(squad_unit_types, _sgt_type)) {
-                    _has_sgt_requirements = true;
+                for (var r = 0; r < array_length(squad_unit_types); r++) {
+                    var _role_name = squad_unit_types[r];
+                    var _role_def = _fill_squad[$ _role_name];
+                    var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
+                    if (_primary_role_name == _sgt_type || _role_name == "Sergeant" && _sgt_type == sgt_types[0] || _role_name == "Veteran Sergeant" && _sgt_type == sgt_types[1]) {
+                        _has_sgt_requirements = true;
+                        break;
+                    }
+                }
+                if (_has_sgt_requirements) {
+                    break;
                 }
             }
 
@@ -262,15 +326,61 @@ function UnitGroup(units) constructor {
             }
 
             //clone or else keeps pushing up number
-            var _max = variable_clone(_fill_squad[$ _unit.role()][$ "max"]);
+            //EXPERIMENTAL Determine which role GROUP this marine belongs to
+            var _target_role = _unit.role();
+            var _role_group = "";  // default to the marine's own role
+            
+            // Search through defined role groups to find which one this marine belongs to
+            for (var r = 0; r < array_length(squad_unit_types); r++) {
+                var _role_name = squad_unit_types[r];
+                var _role_def = _fill_squad[$ _role_name];
+                var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
+
+                
+                // Check if marine matches this primary role (squad-specific rename target)
+                if (_target_role == _primary_role_name) {
+                    _role_group = _role_name;
+                    break;
+                }
+                // Check if marine matches the JSON key itself (base role before squad rename)
+                if (_target_role == _role_name) {
+                    _role_group = _role_name;
+                    break;
+                }
+
+                // Check if marine matches any alternative roles for this group
+                if (struct_exists(_role_def, "alternative_roles")) {
+                    var _alts = _role_def.alternative_roles;
+                    if (array_contains(_alts, _target_role)) {
+                        _role_group = _role_name;
+                        break;
+                    }
+                }
+            }
+
+            if (_role_group == "") {
+                continue;
+            }
+            
+            // NEW: Check max capacity for the ROLE GROUP (not the source role)
+            var _max = variable_clone(_fill_squad[$ _role_group][$ "max"]);
             if (_has_sgt_requirements) {
                 _max += 1;
             }
 
-            if (squad_fulfilment[$ _unit.role()] < _max) {
+            // NEW: Track fulfillment by role GROUP, allowing alternatives to fill the same slot
+            if (squad_fulfilment[$ _role_group] < _max) {
                 //if sergeants not required
-                squad_fulfilment[$ _unit.role()]++;
+                squad_fulfilment[$ _role_group]++;
                 squad.add_member(_unit.company, _unit.marine_number);
+                // Rename unit to the squad-specific role only for rank-and-file marines
+                // (Tactical/Assault/Devastator/Scout → Biker, Breacher, etc.)
+                // Specialists (Chaplain, Ancient, Champion, Veteran, etc.) keep their existing role
+                var _slot_def = _fill_squad[$ _role_group];
+                if (struct_exists(_slot_def, "role") && _slot_def.role != _unit.role()
+                    && _unit.IsSpecialist(SPECIALISTS_RANK_AND_FILE)) {
+                    _unit.update_role(_slot_def.role);
+                }
             }
         }
 
@@ -279,16 +389,51 @@ function UnitGroup(units) constructor {
         /*and ((squad_fulfilment[$ obj_ini.role[100][8]] > 4)or (squad_fulfilment[$ obj_ini.role[100][10]] > 4) or (squad_fulfilment[$ obj_ini.role[100][9]] > 4)or (squad_fulfilment[$ obj_ini.role[100][3]] > 4) )*/
 
         var _members = squad.get_members(true);
-        var _exp_unit = 0;
         if (!bool(_members.number())) {
             return [false, squad.uid];
         }
+        // Select would-be sergeant candidates and reserve their fulfilment slot, but defer the
+        // actual role mutation (update_role / add_trait) until squad viability is confirmed below.
+        // update_role permanently rewrites obj_ini.role and applies stat/command changes, so
+        // promoting here — before _fulfilled is known — would leave marines mutated even when the
+        // squad creation attempt ultimately fails, causing persistent state drift.
+        var _pending_promotions = [];
+        var _promoted_units = []; // marines already queued for a leader slot, so a 2nd slot picks a distinct one
         for (var s = 0; s < 2; s++) {
             var _sgt_type = sgt_types[s];
-            if (struct_exists(squad_fulfilment, _sgt_type) && (!sergeant_found)) {
-                _exp_unit = _members.highest_exp();
-
-                squad_fulfilment[$ _sgt_type]++;
+            var _sgt_group = "";
+            for (var r = 0; r < array_length(squad_unit_types); r++) {
+                var _role_name = squad_unit_types[r];
+                var _role_def = _fill_squad[$ _role_name];
+                var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
+                if (_primary_role_name == _sgt_type || (_role_name == "Sergeant" && _sgt_type == sgt_types[0]) || (_role_name == "Veteran Sergeant" && _sgt_type == sgt_types[1])) {
+                    _sgt_group = _role_name;
+                    break;
+                }
+            }
+            if (_sgt_group != "" && struct_exists(squad_fulfilment, _sgt_group) && (!sergeant_found)) {
+                // Highest-experience member not already queued for another leader slot, so two
+                // leader slots (e.g. Sergeant + Veteran Sergeant) never promote the same marine.
+                var _candidate = undefined;
+                var _candidate_exp = -1;
+                for (var _mi = 0; _mi < _members.number(); _mi++) {
+                    var _m = _members.units[_mi];
+                    if (array_contains(_promoted_units, _m)) {
+                        continue;
+                    }
+                    if (_candidate == undefined || _m.experience > _candidate_exp) {
+                        _candidate = _m;
+                        _candidate_exp = _m.experience;
+                    }
+                }
+                if (_candidate == undefined) {
+                    continue; // no distinct member left for this leader slot
+                }
+                array_push(_promoted_units, _candidate);
+                var _sgt_role_def = _fill_squad[$ _sgt_group];
+                var _actual_sgt_role = struct_exists(_sgt_role_def, "role") ? _sgt_role_def.role : _sgt_type;
+                squad_fulfilment[$ _sgt_group]++;
+                array_push(_pending_promotions, { unit: _candidate, role: _actual_sgt_role });
             }
         }
 
@@ -303,12 +448,12 @@ function UnitGroup(units) constructor {
             }
         }
         if (_fulfilled) {
-            for (var s = 0; s < 2; s++) {
-                if (struct_exists(squad_fulfilment, sgt_types[s]) && (sergeant_found == false)) {
-                    _exp_unit.update_role(sgt_types[s]); //if squad is viable promote marine to sergeant
-                    if (game_start && irandom(1) == 0) {
-                        _exp_unit.add_trait("lead_example");
-                    }
+            // Squad is viable — now apply the deferred sergeant promotions.
+            for (var p = 0; p < array_length(_pending_promotions); p++) {
+                var _promo = _pending_promotions[p];
+                _promo.unit.update_role(_promo.role); //if squad is viable promote marine to sergeant
+                if (game_start && irandom(1) == 0) {
+                    _promo.unit.add_trait("lead_example");
                 }
             }
             //update units squad marker

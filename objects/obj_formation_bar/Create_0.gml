@@ -191,6 +191,9 @@ mouse_release = function(){
 	            if (unit_id == 17) {
 	                obj_controller.bat_whirl_for[obj_controller.formating] = mah_target.col_parent;
 	            }
+	            if (unit_id == 18) {
+	                obj_controller.bat_bike_for[obj_controller.formating] = mah_target.col_parent;
+	            }
 	            obj_cursor.dragging = 0;
 	            obj_cursor.image_index = 0;
 

@@ -51,7 +51,25 @@ try {
     }
 
     if (instance_exists(obj_enunit)) {
+        global.ctally_target = undefined;
+        global.ctally_bounce = [];
+        global.ctally_injure = [];
         for (var i = 0; i < array_length(wep); i++) {
+            // Enemies wiped before every weapon got to fire (e.g. spill-over cleared the line).
+            // Report who held fire and stop, rather than swinging at empty air.
+            if (!instance_exists(obj_enunit)) {
+                var _held_fire = [];
+                for (var hf = i; hf < array_length(wep); hf++) {
+                    // Only ranged weapons "hold fire"; melee (range 1) never shoots, so skip it.
+                    // Mirror the firing ammo gate (ammo != 0) so out-of-ammo weapons that could not
+                    // have fired aren't reported as having held fire.
+                    if (wep[hf] != "" && wep_num[hf] > 0 && range[hf] > 1 && ammo[hf] != 0) {
+                        array_push(_held_fire, wep[hf]);
+                    }
+                }
+                report_held_fire(_held_fire);
+                break;
+            }
             if (wep[i] == "") {
                 continue;
             }
@@ -64,6 +82,12 @@ try {
                     instance_destroy();
                 }
                 enemy = instance_nearest(0, y, obj_enunit);
+            }
+
+            // Speed Force sweeps the whole field - bypass normal targeting/range.
+            if (wep[i] == "Speed Force" || wep[i] == "Speed Force (Ranged)") {
+                scr_shoot_spread(i);
+                continue;
             }
 
             if ((range[i] >= dist) && (ammo[i] != 0 || range[i] == 1)) {
@@ -246,15 +270,28 @@ try {
         }
     }
 
+    combat_tally_flush();
+
     instance_activate_object(obj_enunit);
 
+    // Safety net: drop empty/zombie formations the firing loop never reached, so a lingering corpse
+    // can't keep the battle alive. Reuse destroy_empty_column so the scan covers every rank (not just
+    // 1-30) and the owner guard/cleanup exactly match the rest of combat.
+    with (obj_enunit) {
+        destroy_empty_column(id);
+    }
+
     if (instance_exists(obj_enunit)) {
+        // Accumulate this formation's attack casts, then emit one summary line per power instead
+        // of one line per Librarian (see flush_psychic_summary in scr_powers).
+        var _psy_log = {};
         for (var i = 0; i < array_length(unit_struct); i++) {
             if (marine_dead[i] == 0 && marine_casting[i] == true) {
                 var caster_id = i;
-                scr_powers(caster_id);
+                scr_powers(caster_id, _psy_log);
             }
         }
+        flush_psychic_summary(_psy_log);
     }
 }
 catch (_exception) {

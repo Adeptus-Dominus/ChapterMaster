@@ -6,6 +6,11 @@ function scr_management(argument0) {
     var chapter_name = global.chapter_name;
 
     if (argument0 == 1) {
+        // Ensure TTRPG display data is up to date before drawing the overview
+        with (obj_ini) {
+            sort_all_companies();
+        }
+
         with (obj_managment_panel) {
             instance_destroy();
         }
@@ -85,36 +90,29 @@ function scr_management(argument0) {
             pane.header = 1;
             pane.title = t;
 
-            var _company_group = collect_company(company).index_roles();
+            // Populate company panel — same pattern as the HQ specialty panels above
+            var _co_units = collect_company(company).index_roles();
+            pane.line = array_join(pane.line, _co_units.create_plural_strings_array());
 
-            pane.line = array_join(pane.line, _company_group.create_plural_strings_array());
-
-            var num = array_create(5, 0);
-            var nam = [
-                "Land Raider",
-                "Predator",
-                "Rhino",
-                "Land Speeder",
-                "Whirlwind"
-            ];
-            // Vehicles
+            // collect_company() only indexes TTRPG marines, so vehicles must be counted
+            // separately from obj_ini.veh_role and appended after the role strings.
+            var _veh_names = ["Land Raider", "Predator", "Rhino", "Land Speeder", "Whirlwind"];
+            var _veh_count = array_create(array_length(_veh_names), 0);
             for (var i = 0; i < array_length(obj_ini.veh_role[company]); i++) {
-                for (var s = 0; s < array_length(nam); s++) {
-                    if (obj_ini.veh_role[company][i] == nam[s]) {
-                        num[s]++;
+                for (var s = 0; s < array_length(_veh_names); s++) {
+                    if (obj_ini.veh_role[company][i] == _veh_names[s]) {
+                        _veh_count[s]++;
                     }
+                }
+            }
+            for (var d = 0; d < array_length(_veh_names); d++) {
+                if (_veh_count[d] == 1) {
+                    array_push(pane.line, {str1: _veh_names[d], bold: true, italic: false});
+                } else if (_veh_count[d] > 1) {
+                    array_push(pane.line, string_plural_count(_veh_names[d], _veh_count[d], false));
                 }
             }
 
-            for (var d = 0; d < 5; d++) {
-                if (num[d] > 0) {
-                    if (d == 1) {
-                        array_push(pane.line, {str1: nam[d], bold: true, italic: false});
-                    } else {
-                        array_push(pane.line, nam[d], string_plural_count(nam[d], num[d], false));
-                    }
-                }
-            }
             xx += 156;
         }
     }
