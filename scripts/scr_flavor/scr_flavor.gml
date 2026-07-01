@@ -51,7 +51,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 
     var target_name = target.dudes[targeh];
 
-    if ((target_name == "Leader") && (obj_ncombat.enemy <= 10)) {
+    if ((target_name == "Leader") && (obj_ncombat.enemy <= eFACTION.CHAOS)) {
         target_name = obj_controller.faction_leader[obj_ncombat.enemy];
     }
 
@@ -523,7 +523,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
     // }
 
     var message_priority = 0;
-    if (obj_ncombat.enemy <= 10) {
+    if (obj_ncombat.enemy <= eFACTION.CHAOS) {
         if (target_name == obj_controller.faction_leader[obj_ncombat.enemy]) {
             // Cleaning up the message for the enemy leader
             leader_message = string_replace(leader_message, "a " + target_name, target_name);

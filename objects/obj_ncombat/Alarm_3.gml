@@ -63,6 +63,8 @@ repeat (100) {
                 good = 1;
             }
         }
+    } else {
+        break;
     }
 }
 
@@ -131,15 +133,9 @@ if (!instance_exists(obj_pnunit)) {
 
 if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
     newline_color = "yellow";
-    if (obj_ncombat.enemy != 6) {
-        if ((enemy_forces > 0) && (obj_ncombat.enemy != 30)) {
+    if (enemy != eFACTION.ELDAR) {
+        if ((enemy_forces > 0)) {
             newline = "Enemy Forces at " + string(max(1, round((enemy_forces / enemy_max) * 100))) + "%";
-        }
-        if ((obj_ncombat.enemy == 30) && instance_exists(obj_enunit)) {
-            newline = "Enemy has ";
-            var yoo;
-            yoo = instance_nearest(0, 0, obj_enunit);
-            newline += string(round(yoo.dudes_hp[1])) + "HP remaining";
         }
         if ((enemy_forces <= 0) || (!instance_exists(obj_enunit)) && (defeat_message == 0)) {
             defeat_message = 1;
@@ -151,7 +147,7 @@ if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
         }
     }
     newline_color = "yellow";
-    if (obj_ncombat.enemy == 6) {
+    if (enemy == eFACTION.ELDAR) {
         for (var jims = 1; jims <= 20; jims++) {
             if ((dead_jim[jims] != "") && (dead_jims > 0)) {
                 newline = dead_jim[jims];
@@ -185,7 +181,7 @@ if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
 
 if (((messages_shown == 999) || (messages == 0)) && ((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0)) {
     newline_color = "yellow";
-    if (obj_ncombat.enemy != 6) {
+    if (enemy != eFACTION.ELDAR) {
         for (var jims = 1; jims <= 20; jims++) {
             if ((dead_jim[jims] != "") && (dead_jims > 0)) {
                 newline = dead_jim[jims];
@@ -211,7 +207,7 @@ if (((messages_shown == 999) || (messages == 0)) && ((timer_stage == 4) || (time
         }
     }
     newline_color = "yellow";
-    if (obj_ncombat.enemy == 6) {
+    if (enemy == eFACTION.ELDAR) {
         if (enemy_forces > 0) {
             newline = "Enemy Forces at " + string(max(1, round((enemy_forces / enemy_max) * 100))) + "%";
         }

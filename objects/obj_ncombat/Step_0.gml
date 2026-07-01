@@ -1,9 +1,11 @@
 if (fadein > -30) {
     fadein -= 1;
 }
+
 if (cd >= 0) {
     cd -= 1;
 }
+
 if (click_stall_timer >= 0) {
     click_stall_timer -= 1;
 }
@@ -11,6 +13,7 @@ if (click_stall_timer >= 0) {
 if (!instance_exists(obj_enunit)) {
     enemy_forces = 0;
 }
+
 if (!instance_exists(obj_pnunit)) {
     player_forces = 0;
 }
@@ -18,6 +21,7 @@ if (!instance_exists(obj_pnunit)) {
 if (fack == 1) {
     instance_activate_object(obj_pnunit);
 }
+
 instance_activate_object(obj_centerline);
 instance_activate_object(obj_cursor);
 
@@ -41,7 +45,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
     }
     if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
         newline_color = "yellow";
-        if (obj_ncombat.enemy != 6) {
+        if (enemy != eFACTION.ELDAR) {
             if ((enemy_forces <= 0) || (!instance_exists(obj_enunit)) && (defeat_message == 0)) {
                 defeat_message = 1;
                 newline = "Enemy Forces Defeated";
@@ -52,7 +56,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
             }
         }
         newline_color = "yellow";
-        if (obj_ncombat.enemy == 6) {
+        if (enemy == eFACTION.ELDAR) {
             if (((player_forces <= 0) || (!instance_exists(obj_pnunit))) && (defeat_message == 0)) {
                 defeat_message = 1;
                 newline = string(global.chapter_name) + " Defeated";
@@ -72,7 +76,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
 
     if (((messages_shown == 999) || (messages == 0)) && ((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0)) {
         newline_color = "yellow";
-        if (obj_ncombat.enemy != 6) {
+        if (enemy != eFACTION.ELDAR) {
             if (((player_forces <= 0) || (!instance_exists(obj_pnunit))) && (defeat_message == 0)) {
                 defeat_message = 1;
                 newline = string(global.chapter_name) + " Defeated";
@@ -84,7 +88,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
             }
         }
         newline_color = "yellow";
-        if (obj_ncombat.enemy == 6) {
+        if (enemy == eFACTION.ELDAR) {
             if (((enemy_forces <= 0) || (!instance_exists(obj_enunit))) && (defeat_message == 0)) {
                 defeat_message = 1;
                 newline = "Enemy Forces Defeated";
@@ -106,6 +110,7 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
 if (timer_stage == 2) {
     fugg += 1;
 }
+
 if ((timer_stage == 2) && (fugg > 60)) {
     timer_stage = 3;
 }
@@ -113,9 +118,11 @@ if ((timer_stage == 2) && (fugg > 60)) {
 if (timer_stage != 2) {
     fugg = 0;
 }
+
 if (timer_stage == 4) {
     fugg2 += 1;
 }
+
 if ((timer_stage == 4) && (fugg2 > 60)) {
     timer_stage = 5;
 }

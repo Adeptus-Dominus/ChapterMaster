@@ -815,7 +815,7 @@ function necron_tomb_mission_sequence() {
         obj_ncombat.battle_id = pop_data.planet;
         obj_ncombat.dropping = 0;
         obj_ncombat.attacking = 0;
-        obj_ncombat.enemy = 13;
+        obj_ncombat.enemy = eFACTION.NECRONS;
         obj_ncombat.threat = 1;
         obj_ncombat.formation_set = 1;
         obj_ncombat.battle_mission = "necron_tomb_excursion";

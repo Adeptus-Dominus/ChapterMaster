@@ -56,9 +56,6 @@ if (!instance_exists(obj_popup)) {
                 timer_stage = 1;
                 timer = 100;
 
-                if (enemy == 30) {
-                    timer_stage = 3;
-                }
                 if (battle_special == "ship_demon") {
                     timer_stage = 3;
                 }
