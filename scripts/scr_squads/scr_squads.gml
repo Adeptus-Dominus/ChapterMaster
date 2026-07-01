@@ -259,16 +259,23 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         }
     };
 
-    // Picks ONE entry (loadout category) at random, then resolves each slot:
-    // string values are used directly; array values get one item picked at random.
-    // Any slot omitted from an entry is left unchanged on the unit.
-    //
-    // JSON example:
-    //   "random_pick": [
-    //     { "wep1": ["Sword","Axe","Mace"], "wep2": ["Pistol","Plasma","Volkite"] },
-    //     { "wep1": "Lightning Claw", "wep2": "Lightning Claw" }
-    //   ]
+    /// @desc Picks ONE entry (loadout category) at random for the current unit_role's members, then
+    ///       resolves each slot: string values are used directly; array values get one item picked at
+    ///       random. Any slot omitted from an entry is left unchanged on the unit.
+    ///       JSON example:
+    ///         "random_pick": [
+    ///           { "wep1": ["Sword","Axe","Mace"], "wep2": ["Pistol","Plasma","Volkite"] },
+    ///           { "wep1": "Lightning Claw", "wep2": "Lightning Claw" }
+    ///         ]
+    /// @self Struct.SquadEquipmentSorting
+    /// @param {Array} pick_options Array of loadout-category structs to pick from.
+    /// @returns {Undefined}
     static equip_random_pick_for_role = function(pick_options) {
+        // Guard: an empty or non-array pick list makes (array_length - 1) = -1 below, so irandom(-1)
+        // yields a negative index and crashes. With nothing to pick, there's nothing to do.
+        if (!is_array(pick_options) || array_length(pick_options) == 0) {
+            return;
+        }
         var _actual_role = role_key_to_actual[$ unit_role];
         var _members_with_role = members_UnitGroup.get_from({roles: [unit_role, _actual_role]});
         while (_members_with_role.number() > 0) {
@@ -598,6 +605,18 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 required[$ _req_key]--;
             }
         }
+
+        // The promotions above filled missing leader slots from existing members but didn't clear
+        // the `fulfilled = false` set during the deficit pass. Re-derive fulfilment from the updated
+        // deficits so a squad that only lacked a sergeant isn't left unfulfilled and emptied on return.
+        fulfilled = true;
+        var _deficit_keys = struct_get_names(required);
+        for (var _dk = 0; _dk < array_length(_deficit_keys); _dk++) {
+            if (required[$ _deficit_keys[_dk]] > 0) {
+                fulfilled = false;
+                break;
+            }
+        }
     };
 
     static empty_squad = function() {
@@ -909,16 +928,24 @@ function resolve_company_arrangement(arrangement, company_number) {
 ///                              (e.g. arrangement.distribution_overrides.equal_specialists).
 ///                              Expected optional fields: {Array} default_squads, {Array} companies.
 /// @return {Undefined}
+/// @desc Deep-clones an array of squad-definition structs (variable_clone per element) so the copy
+///       is fully independent of the source — used when materialising arrangement/override squad
+///       lists so editing one can never mutate the other.
+/// @param {Array} _src Array of squad-definition structs.
+/// @returns {Array}
+function clone_squad_defs(_src) {
+    var _clone = array_create(array_length(_src));
+    for (var _i = 0; _i < array_length(_src); _i++) {
+        _clone[_i] = variable_clone(_src[_i]);
+    }
+    return _clone;
+}
+
 function apply_squad_distribution_override(arrangement, override) {
     if (struct_exists(override, "default_squads")) {
         // Deep-clone so arrangement.default_squads is independent of the override sub-struct,
         // preventing any future in-place mutation of the array from corrupting both references.
-        var _src = override.default_squads;
-        var _clone = array_create(array_length(_src));
-        for (var _i = 0; _i < array_length(_src); _i++) {
-            _clone[_i] = variable_clone(_src[_i]);
-        }
-        arrangement.default_squads = _clone;
+        arrangement.default_squads = clone_squad_defs(override.default_squads);
     }
     if (struct_exists(override, "companies")) {
         if (!struct_exists(arrangement, "companies")) {
@@ -930,10 +957,7 @@ function apply_squad_distribution_override(arrangement, override) {
             // Deep-clone the override entry (mirroring the default_squads path above) so the live
             // arrangement never aliases the override template — otherwise editing the arrangement
             // later (squad editor / promote-to-explicit) would mutate distribution_overrides in place.
-            var _ovr_copy = { company: _ovr.company, squads: array_create(array_length(_ovr.squads)) };
-            for (var _si = 0; _si < array_length(_ovr.squads); _si++) {
-                _ovr_copy.squads[_si] = variable_clone(_ovr.squads[_si]);
-            }
+            var _ovr_copy = { company: _ovr.company, squads: clone_squad_defs(_ovr.squads) };
             var _found = false;
             for (var ai = 0; ai < array_length(arrangement.companies); ai++) {
                 if (arrangement.companies[ai].company == _ovr_copy.company) {
@@ -975,11 +999,7 @@ function get_compay_squad_arrangement(company){
     // shared array every other defaulted company also points at. Registering it persists the edits
     // and lets resolve_company_arrangement pick this company up by its own entry from now on.
     var _src = struct_exists(_arrangement, "default_squads") ? _arrangement.default_squads : [];
-    var _squads = array_create(array_length(_src));
-    for (var _i = 0; _i < array_length(_src); _i++) {
-        _squads[_i] = variable_clone(_src[_i]);
-    }
-    var _entry = { company: company, squads: _squads };
+    var _entry = { company: company, squads: clone_squad_defs(_src) };
     array_push(_comp_datas, _entry);
     return _entry;
 }

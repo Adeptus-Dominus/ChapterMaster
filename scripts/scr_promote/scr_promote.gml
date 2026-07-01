@@ -125,8 +125,13 @@ function setup_promotion_popup() {
                 if (struct_exists(role_squad_equivilances, role_name[target_role])) {
                     var _grp = collect_company(target_comp);
                     var _result = [true];
-                    while (_result[0]) {
+                    // Guard against an infinite loop / UI hang if create_squad ever keeps returning
+                    // success without exhausting members. No company holds anywhere near 100 squads
+                    // of one type, so this cap only trips on a genuine bug rather than normal play.
+                    var _squad_guard = 0;
+                    while (_result[0] && _squad_guard < 100) {
                         _result = _grp.create_squad(role_squad_equivilances[$ role_name[target_role]]);
+                        _squad_guard++;
                     }
                 }
 

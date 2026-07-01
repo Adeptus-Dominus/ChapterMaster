@@ -33,6 +33,7 @@ function weapon_name_plural(_name) {
 /// @desc Logs one "held fire" line for weapons that had no live target left to shoot at, e.g.
 ///       when an earlier volley wiped the enemy before the rest of the squad fired.
 /// @param {Array} _weapon_names Raw weapon names (duplicates allowed) that never fired.
+/// @returns {Undefined}
 function report_held_fire(_weapon_names) {
     // Dedupe and pluralise.
     var _unique = [];
@@ -854,6 +855,7 @@ function emit_volley_flavour(_primary, _spill_kills) {
 /// @desc Buffers a non-killing volley (wound or armour-bounce) against a target. Consecutive volleys
 ///       on the same target merge; switching target flushes the previous one, keeping the log
 ///       chronological. _injured true = penetrated but no kill; false = bounced off armour.
+/// @returns {Undefined}
 function combat_tally_add(_target, _subject, _injured) {
     if (!variable_global_exists("ctally_target")) {
         global.ctally_target = undefined;
@@ -872,6 +874,7 @@ function combat_tally_add(_target, _subject, _injured) {
 }
 
 /// @desc Posts the buffered wound/bounce lines for the current target (one each), then clears them.
+/// @returns {Undefined}
 function combat_tally_flush() {
     if (!variable_global_exists("ctally_target") || global.ctally_target == undefined) {
         return;

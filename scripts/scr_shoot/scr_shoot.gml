@@ -400,6 +400,16 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
     }
 }
 
+/// @desc Whether a formation rank has living models. A rank chipped to 0 HP but still showing
+///       dudes_num is a dead "zombie" and counts as not alive (callers divide by dudes_hp, so this
+///       is the single source of truth for the "alive" test).
+/// @param {Id.Instance} _block The obj_enunit formation.
+/// @param {Real} _rank The rank index.
+/// @returns {Bool}
+function is_rank_alive(_block, _rank) {
+    return _block.dudes_num[_rank] > 0 && _block.dudes_hp[_rank] > 0;
+}
+
 /// @function find_next_alive_rank
 /// @description Returns the index of the next living rank (dudes_num > 0 and dudes_hp > 0) in a
 ///              formation, preferring ranks that match the requested vehicle flag. Returns -1 if
@@ -413,7 +423,7 @@ function find_next_alive_rank(_block, _prefer_vehicle) {
     }
     var _fallback = -1;
     for (var f = 1; f <= 30; f++) {
-        if (_block.dudes_num[f] <= 0 || _block.dudes_hp[f] <= 0) {
+        if (!is_rank_alive(_block, f)) {
             continue;
         }
         if (_prefer_vehicle == -1 || _block.dudes_vehicle[f] == _prefer_vehicle) {
@@ -484,7 +494,7 @@ function scr_shoot_spread(weapon_index_position) {
             for (var r = 1; r <= 30; r++) {
                 // Skip "zombie" ranks (dudes_num > 0 but dudes_hp <= 0): they would dilute _total and
                 // cause a divide-by-zero in the per-rank damage loop below.
-                if (dudes[r] != "" && dudes_num[r] > 0 && dudes_hp[r] > 0) {
+                if (dudes[r] != "" && is_rank_alive(id, r)) {
                     _total += dudes_num[r];
                 }
             }
@@ -510,7 +520,7 @@ function scr_shoot_spread(weapon_index_position) {
             for (var r = 1; r <= 30; r++) {
                 // Mirror the _total guard: skip empty/empty-ranked and "zombie" (hp <= 0) ranks so the
                 // proportional-damage division below can never divide by zero/negative HP.
-                if (_f.dudes[r] == "" || _f.dudes_num[r] <= 0 || _f.dudes_hp[r] <= 0) {
+                if (_f.dudes[r] == "" || !is_rank_alive(_f, r)) {
                     continue;
                 }
 

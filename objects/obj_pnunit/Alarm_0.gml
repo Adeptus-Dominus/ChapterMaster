@@ -268,18 +268,6 @@ try {
                 }
             }
         }
-    } else {
-        // The field was already clear when this block's turn came up - its whole arsenal holds fire.
-        var _skipped_fire = [];
-        for (var s = 0; s < array_length(wep); s++) {
-            // Only ranged weapons "hold fire"; melee (range 1) never shoots, so skip it.
-            // Mirror the firing ammo gate (ammo != 0) so out-of-ammo weapons that could not have
-            // fired aren't reported as having held fire.
-            if (wep[s] != "" && wep_num[s] > 0 && range[s] > 1 && ammo[s] != 0) {
-                array_push(_skipped_fire, wep[s]);
-            }
-        }
-        report_held_fire(_skipped_fire);
     }
 
     combat_tally_flush();
