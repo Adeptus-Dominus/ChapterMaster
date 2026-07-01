@@ -9,35 +9,33 @@ if ((ally > 0) && (ally_forces > 0)) {
 }
 
 // Player crap here
-var p1, p2, p3, p4, p5, p6, p8, temp, temp2, temp3, temp4, temp5, temp6;
-p1 = "";
-p2 = "";
-p3 = "";
-p4 = "";
-p5 = "";
-p6 = "";
-p8 = "";
-temp = 0;
-temp2 = 0;
-temp3 = 0;
-temp4 = 0;
-temp5 = 0;
-temp6 = 0;
-var d1, d2, d3, d4, d5, d6, d7, d8;
-d1 = "";
-d2 = "";
-d3 = "";
-d4 = "";
-d5 = "";
-d6 = "";
-d7 = "";
-d8 = "";
+var p1 = "";
+var p2 = "";
+var p3 = "";
+var p4 = "";
+var p5 = "";
+var p6 = "";
+var p8 = "";
+var temp2 = 0;
+var temp3 = 0;
+var temp4 = 0;
+var temp5 = 0;
+var temp6 = 0;
+var d1 = "";
+var d2 = "";
+var d3 = "";
+var d4 = "";
+var d5 = "";
+var d6 = "";
+var d7 = "";
 
-temp = scouts + tacticals + veterans + devastators + assaults + librarians;
+var temp = scouts + tacticals + veterans + devastators + assaults + librarians;
 temp += techmarines + honors + dreadnoughts + terminators + captains;
 temp += standard_bearers + champions + important_dudes + chaplains + apothecaries;
 temp += sgts + vet_sgts;
 
+// Random variations; dark out, rain pooling down, dawn shining off of the armour, etc.
+var variation = choose("", "dawn", "rain");
 var color_descr = "";
 
 if (obj_ini.main_color != obj_ini.secondary_color) {
@@ -46,9 +44,6 @@ if (obj_ini.main_color != obj_ini.secondary_color) {
 if (obj_ini.main_color == obj_ini.secondary_color) {
     color_descr = string(obj_controller.col[obj_ini.main_color]);
 }
-
-// Random variations; dark out, rain pooling down, dawn shining off of the armour, etc.
-var variation = choose("", "dawn", "rain");
 
 if (battle_special == "ship_demon") {
     p1 = "As the Artifact is smashed and melted down some foul smoke begins to erupt from it, spilling outward and upward.  After a sparse handful of seconds it takes form into a ";
@@ -129,8 +124,7 @@ if (string_count("fallen", battle_special) > 0) {
 }
 
 if (string_count("_attack", battle_special) > 0) {
-    var wh;
-    wh = choose(1, 2);
+    var wh = choose(1, 2);
     if (wh == 1) {
         p1 = "Cave dirt crunches beneath the soles of your marines as they continue their descent.  There is little warning before ";
     }
@@ -272,7 +266,6 @@ if (scouts > 0) {
     }
 }
 
-// temp5=string_length(p2);p2=string_delete(p2,temp5-1,2);// p2+=".";
 temp6 = honors + captains + important_dudes + standard_bearers;
 if (temp >= 200) {
     temp6 += terminators;
@@ -408,16 +401,16 @@ if ((dropping == 1) && (battle_special != "space_hulk")) {
 if ((battle_special == "ruins") || (battle_special == "ruins_eldar")) {
     newline = "The enemy forces are made up of " + string(enemy_dudes);
 
-    if (enemy == 6) {
+    if (enemy == eFACTION.ELDAR) {
         newline += " Craftworld Eldar.";
     }
-    if (enemy == 10) {
+    if (enemy == eFACTION.CHAOS) {
         newline += " Cultists and Mutants.";
     }
-    if (enemy == 11) {
+    if (enemy == eFACTION.HERETICS) {
         newline += " Chaos Space Marines.";
     }
-    if (enemy == 12) {
+    if (enemy == eFACTION.CHAOS && threat == 7) {
         newline += " Daemons.";
     }
 
@@ -426,7 +419,7 @@ if ((battle_special == "ruins") || (battle_special == "ruins_eldar")) {
 }
 
 // Enemy crap here
-var rand;
+var rand = 0;
 p1 = "";
 p2 = "";
 p3 = "";
@@ -438,13 +431,13 @@ temp3 = 0;
 temp4 = 0;
 temp5 = 0;
 
-if (enemy == 2) {
+if (enemy == eFACTION.IMPERIUM) {
     p1 = "Opposing your forces are a total of " + scr_display_number(floor(guard_effective)) + " Guardsmen, including Heavy Weapons and Armour.";
     p2 = "";
     p3 = "";
 }
 
-if ((enemy == 5) && (dropping == 0)) {
+if ((enemy == eFACTION.ECCLESIARCHY) && (dropping == 0)) {
     p1 = "Marching to face your forces ";
     if (threat == 1) {
         p2 = "are a squad of Adepta Sororitas, back up by a dozen priests.  Forming up a protective shield around them are a large group of religious followers, gnashing and screaming out litanies to the Emperor.";
@@ -463,11 +456,11 @@ if ((enemy == 5) && (dropping == 0)) {
     }
 }
 
-if ((enemy == 6) && (dropping == 0)) {
+if ((enemy == eFACTION.ELDAR) && (dropping == 0)) {
     // Need a few random descriptors here
     rand = choose(1, 2, 3);
 }
-if ((enemy == 7) && (dropping == 0)) {
+if ((enemy == eFACTION.ORK) && (dropping == 0)) {
     rand = choose(1, 2, 3);
     if (rand < 4) {
         p1 = "Howls and grunts ring from the surrounding terrain as the Orks announce their presence.  ";
@@ -478,25 +471,25 @@ if ((enemy == 7) && (dropping == 0)) {
         p2 = string_upper(p2); // Capitalize the ENEMY DUDES first letter
     }
 }
-if ((enemy == 7) && (dropping == 1)) {
+if ((enemy == eFACTION.ORK) && (dropping == 1)) {
     p1 = "The " + string(enemy_dudes) + "-some Orks howl and roar at the oncoming marines.  Many of the beasts fire their weapons, more or less spraying rounds aimlessly into the sky.";
 }
 
-if ((enemy == 8) && (dropping == 0)) {
+if ((enemy == eFACTION.TAU) && (dropping == 0)) {
     rand = choose(1, 2, 3);
 }
-if ((enemy == 9) && (dropping == 0)) {
+if ((enemy == eFACTION.TYRANIDS) && (dropping == 0)) {
     rand = choose(1, 2, 3);
 }
-if ((enemy == 9) && (dropping == 1)) {
+if ((enemy == eFACTION.TYRANIDS) && (dropping == 1)) {
     p1 = "The " + string(enemy_dudes) + "-some Tyranids hiss and chitter as your marines rain down.  Blasts of acid and spikes fill the sky, but none seem to quite find their mark.";
 }
 
-if ((enemy == 10) && (dropping == 0)) {
+if ((enemy == eFACTION.CHAOS) && (dropping == 0)) {
     rand = choose(1, 2, 3);
 }
 
-if ((enemy == 10) && (threat == 7)) {
+if ((enemy == eFACTION.CHAOS) && (threat == 7)) {
     rand = choose(1, 2);
     if (rand == 1) {
         p1 = "Laying before them is a hellish landscape, fitting for nightmares.  Twisted, flesh-like spires reach for the sky, each containing a multitude of fanged maws or eyes.  Lightning crackles through the red sky.  ";
@@ -508,15 +501,11 @@ if ((enemy == 10) && (threat == 7)) {
     p8 = "The enemy forces are made up of over 3000 lesser Daemons.  Their front and rear ranks are made up of Maulerfiends and Soulgrinders, backed up by nearly a dozen Greater Daemons.  Each of the four Chaos Gods are represented.";
 }
 
-if ((enemy == 11) && (dropping == 0)) {
+if ((enemy == eFACTION.HERETICS) && (dropping == 0)) {
     rand = choose(1, 2, 3);
 }
 
-if ((enemy == 12) && (dropping == 0)) {
-    // Daemons
-}
-
-if ((enemy == 13) && (dropping == 0)) {
+if ((enemy == eFACTION.NECRONS) && (dropping == 0)) {
     rand = choose(1, 2, 3);
     if (rand < 4) {
         p1 = "Dirt crunches beneath the feet of the Necrons as they make their silent advance.  ";
@@ -570,7 +559,7 @@ if ((occulobe == 1) && (battle_special != "space_hulk")) {
     }
 }
 
-if ((fortified > 1) && (dropping == 0) && (enemy + threat != 17)) {
+if ((fortified > 1) && (dropping == 0) && !(enemy == eFACTION.CHAOS && threat == 7)) {
     if (fortified == 2) {
         newline = "An Aegis Defense Line protects your forces.";
     }

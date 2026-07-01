@@ -12,7 +12,7 @@ try {
 
     // If battling own dudes, then remove the loyalists after the fact
 
-    if (enemy == 1) {
+    if (enemy == eFACTION.PLAYER) {
         var cleann = array_create(11, false);
         with (obj_enunit) {
             for (var q = 1; q <= 700; q++) {
@@ -217,7 +217,7 @@ try {
         }
     }
 
-    if ((enemy == 5) && (obj_controller.faction_status[eFACTION.ECCLESIARCHY] != "War")) {
+    if ((enemy == eFACTION.ECCLESIARCHY) && (obj_controller.faction_status[eFACTION.ECCLESIARCHY] != "War")) {
         obj_controller.loyalty -= 50;
         obj_controller.loyalty_hidden -= 50;
         decare_war_on_imperium_audiences();
@@ -329,7 +329,7 @@ try {
         protect_raiders_battle_aftermath();
     } else if (string_count("fallen", battle_special) > 0) {
         hunt_fallen_battle_aftermath();
-    } else if ((defeat == 0) && (enemy == 9) && (battle_special == "tyranid_org")) {
+    } else if ((defeat == 0) && (enemy == eFACTION.TYRANIDS) && (battle_special == "tyranid_org")) {
         if (captured_gaunt > 1) {
             var _pop = instance_create(0, 0, obj_popup);
             _pop.image = "inquisition";
@@ -342,7 +342,7 @@ try {
             _pop.title = "Inquisition Mission Completed";
             _pop.text = "You have captured a Gaunt organism- the Inquisitor is pleased with your work.  The Tyranid will be stored until it may be retrieved.  The mission is a success.";
         }
-    } else if ((enemy == 1) && (on_ship == true) && (defeat == 0)) {
+    } else if ((enemy == eFACTION.PLAYER) && (on_ship == true) && (defeat == 0)) {
         var diceh = roll_dice_chapter(1, 100, "high");
 
         if (diceh <= 15) {
@@ -366,7 +366,7 @@ try {
         }
     }
 
-    if (enemy == 1) {
+    if (enemy == eFACTION.PLAYER) {
         if ((battle_special == "cs_meeting_battle1") || (battle_special == "cs_meeting_battle2")) {
             obj_controller.diplomacy = 10;
             scr_toggle_diplomacy();
@@ -402,7 +402,7 @@ try {
         }
     }
 
-    if (enemy == 10) {
+    if (enemy == eFACTION.CHAOS) {
         if ((battle_special == "cs_meeting_battle10") && (defeat == 0)) {
             obj_controller.complex_event = false;
             obj_controller.diplomacy = 0;

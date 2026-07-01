@@ -111,7 +111,7 @@ started = 0;
 charged = 0;
 
 fadein = 40;
-enemy = 0;
+enemy ??= eFACTION.PLAYER;
 threat = 0;
 fortified = 0;
 enemy_fortified = 0;
@@ -242,68 +242,22 @@ time = floor(random(24)) + 1;
 terrain = "";
 weather = "";
 
-ambushers = 0;
-if (scr_has_adv("Ambushers")) {
-    ambushers = 1;
-}
-bolter_drilling = 0;
-if (scr_has_adv("Bolter Drilling")) {
-    bolter_drilling = 1;
-}
-enemy_eldar = 0;
-if (scr_has_adv("Enemy: Eldar")) {
-    enemy_eldar = 1;
-}
-enemy_fallen = 0;
-if (scr_has_adv("Enemy: Fallen")) {
-    enemy_fallen = 1;
-}
-enemy_orks = 0;
-if (scr_has_adv("Enemy: Orks")) {
-    enemy_orks = 1;
-}
-enemy_tau = 0;
-if (scr_has_adv("Enemy: Tau")) {
-    enemy_tau = 1;
-}
-enemy_tyranids = 0;
-if (scr_has_adv("Enemy: Tyranids")) {
-    enemy_tyranids = 1;
-}
-enemy_necrons = 0;
-if (scr_has_adv("Enemy: Necrons")) {
-    enemy_necrons = 1;
-}
-lightning = 0;
-if (scr_has_adv("Lightning Warriors")) {
-    lightning = 1;
-}
-siege = 0;
-if (scr_has_adv("Siege Masters")) {
-    siege = 1;
-}
-slow = 0;
-if (scr_has_adv("Devastator Doctrine")) {
-    slow = 1;
-}
-melee = 0;
-if (scr_has_adv("Assault Doctrine")) {
-    melee = 1;
-}
-//
-black_rage = 0;
-if (scr_has_disadv("Black Rage")) {
-    black_rage = 1;
-    red_thirst = 1;
-}
-shitty_luck = 0;
-if (scr_has_disadv("Shitty Luck")) {
-    shitty_luck = 1;
-}
-favoured_by_the_warp = 0;
-if (scr_has_adv("Favoured By The Warp")) {
-    favoured_by_the_warp = 1;
-}
+ambushers = scr_has_adv("Ambushers") ? 1 : 0;
+bolter_drilling = scr_has_adv("Bolter Drilling") ? 1 : 0;
+enemy_eldar = scr_has_adv("Enemy: Eldar") ? 1 : 0;
+enemy_fallen = scr_has_adv("Enemy: Fallen") ? 1 : 0;
+enemy_orks = scr_has_adv("Enemy: Orks") ? 1 : 0;
+enemy_tau = scr_has_adv("Enemy: Tau") ? 1 : 0;
+enemy_tyranids = scr_has_adv("Enemy: Tyranids") ? 1 : 0;
+enemy_necrons = scr_has_adv("Enemy: Necrons") ? 1 : 0;
+lightning = scr_has_adv("Lightning Warriors") ? 1 : 0;
+siege = scr_has_adv("Siege Masters") ? 1 : 0;
+slow = scr_has_adv("Devastator Doctrine") ? 1 : 0;
+melee = scr_has_adv("Assault Doctrine") ? 1 : 0;
+black_rage = scr_has_disadv("Black Rage") ? 1 : 0;
+red_thirst = scr_has_disadv("Black Rage") ? 1 : 0;
+shitty_luck = scr_has_disadv("Shitty Luck") ? 1 : 0;
+favoured_by_the_warp = scr_has_adv("Favoured By The Warp") ? 1 : 0;
 
 lyman = obj_ini.lyman; // drop pod penalties
 omophagea = obj_ini.omophagea; // feast
@@ -325,27 +279,27 @@ if ((ambushers == 1) && (ambushers == 999)) {
 if (bolter_drilling == 1) {
     global_bolter = global_bolter * 1.1;
 }
-if ((enemy_eldar == 1) && (enemy == 6)) {
+if ((enemy_eldar == 1) && (enemy == eFACTION.ELDAR)) {
     global_attack = global_attack * 1.1;
     global_defense = global_defense * 1.1;
 }
-if ((enemy_fallen == 1) && (enemy == 10)) {
+if ((enemy_fallen == 1) && (enemy == eFACTION.CHAOS)) {
     global_attack = global_attack * 1.1;
     global_defense = global_defense * 1.1;
 }
-if ((enemy_orks == 1) && (enemy == 7)) {
+if ((enemy_orks == 1) && (enemy == eFACTION.ORK)) {
     global_attack = global_attack * 1.1;
     global_defense = global_defense * 1.1;
 }
-if ((enemy_tau == 1) && (enemy == 8)) {
+if ((enemy_tau == 1) && (enemy == eFACTION.TAU)) {
     global_attack = global_attack * 1.1;
     global_defense = global_defense * 1.1;
 }
-if ((enemy_tyranids == 1) && (enemy == 9)) {
+if ((enemy_tyranids == 1) && (enemy == eFACTION.TYRANIDS)) {
     global_attack = global_attack * 1.1;
     global_defense = global_defense * 1.1;
 }
-if ((enemy_necrons == 1) && (enemy == 13)) {
+if ((enemy_necrons == 1) && (enemy == eFACTION.NECRONS)) {
     global_attack = global_attack * 1.1;
     global_defense = global_defense * 1.1;
 }
