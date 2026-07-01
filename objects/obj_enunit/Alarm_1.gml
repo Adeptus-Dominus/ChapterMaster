@@ -184,7 +184,7 @@ if ((men == 1) && (veh == 0) && (instance_number(obj_enunit) == 1)) {
     }
 }
 
-if (obj_ncombat.enemy == 1) {
+if (obj_ncombat.enemy == eFACTION.PLAYER) {
     men = 0;
     for (var j = 1; j <= 100; j++) {
         veh = 0;

@@ -22,7 +22,7 @@ if (draw_size > 0) {
     if (hit()) {
         if (unit_count != unit_count_old) {
             unit_count_old = unit_count;
-            if (obj_ncombat.enemy != 1) {
+            if (obj_ncombat.enemy != eFACTION.PLAYER) {
                 composition_string = block_composition_string();
             } else {
                 var variety = [];

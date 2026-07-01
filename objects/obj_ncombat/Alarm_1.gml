@@ -71,7 +71,7 @@ if (battle_special == "space_hulk") {
 }
 
 if (battle_special == "") {
-    if (dropping == 0) {
+    if (!dropping) {
         if (temp - dreadnoughts > 0) {
             if (variation == "") {
                 p1 = "Dirt crunches beneath the soles of " + string(temp) + " " + string(global.chapter_name) + " as they form up.  Your ranks are made up of ";
@@ -84,7 +84,7 @@ if (battle_special == "") {
             }
         }
     }
-    if (dropping == 1) {
+    if (dropping) {
         if (temp - dreadnoughts > 0) {
             // lyman
             p1 = "The air rumbles and quakes as " + string(temp) + " " + string(global.chapter_name) + " descend in drop-pods.  ";
@@ -300,7 +300,7 @@ if (string_count(", ", p2) == 1) {
 }
 p2 += ".";
 
-if ((standard_bearers > 1) && (dropping == 0)) {
+if ((standard_bearers > 1) && (!dropping)) {
     p5 = "  Chapter Ancients hold your Chapter heraldry high and proud.";
 }
 
@@ -380,7 +380,7 @@ if (battle_special == "space_hulk") {
 
     exit;
 }
-if (dropping == 0) {
+if (!dropping) {
     newline = p1 + p2 + p3 + p4 + p5 + p6;
     scr_newtext();
     if (a1 != "") {
@@ -389,7 +389,7 @@ if (dropping == 0) {
     }
 }
 
-if ((dropping == 1) && (battle_special != "space_hulk")) {
+if ((dropping) && (battle_special != "space_hulk")) {
     d1 = p1;
     d2 = p2;
     d3 = p3;
@@ -404,7 +404,7 @@ if ((battle_special == "ruins") || (battle_special == "ruins_eldar")) {
     if (enemy == eFACTION.ELDAR) {
         newline += " Craftworld Eldar.";
     }
-    if (enemy == eFACTION.CHAOS) {
+    if (enemy == eFACTION.CHAOS && threat != 7) {
         newline += " Cultists and Mutants.";
     }
     if (enemy == eFACTION.HERETICS) {
@@ -437,7 +437,7 @@ if (enemy == eFACTION.IMPERIUM) {
     p3 = "";
 }
 
-if ((enemy == eFACTION.ECCLESIARCHY) && (dropping == 0)) {
+if ((enemy == eFACTION.ECCLESIARCHY) && (!dropping)) {
     p1 = "Marching to face your forces ";
     if (threat == 1) {
         p2 = "are a squad of Adepta Sororitas, back up by a dozen priests.  Forming up a protective shield around them are a large group of religious followers, gnashing and screaming out litanies to the Emperor.";
@@ -456,11 +456,11 @@ if ((enemy == eFACTION.ECCLESIARCHY) && (dropping == 0)) {
     }
 }
 
-if ((enemy == eFACTION.ELDAR) && (dropping == 0)) {
+if ((enemy == eFACTION.ELDAR) && (!dropping)) {
     // Need a few random descriptors here
     rand = choose(1, 2, 3);
 }
-if ((enemy == eFACTION.ORK) && (dropping == 0)) {
+if ((enemy == eFACTION.ORK) && (!dropping)) {
     rand = choose(1, 2, 3);
     if (rand < 4) {
         p1 = "Howls and grunts ring from the surrounding terrain as the Orks announce their presence.  ";
@@ -471,21 +471,21 @@ if ((enemy == eFACTION.ORK) && (dropping == 0)) {
         p2 = string_upper(p2); // Capitalize the ENEMY DUDES first letter
     }
 }
-if ((enemy == eFACTION.ORK) && (dropping == 1)) {
+if ((enemy == eFACTION.ORK) && (dropping)) {
     p1 = "The " + string(enemy_dudes) + "-some Orks howl and roar at the oncoming marines.  Many of the beasts fire their weapons, more or less spraying rounds aimlessly into the sky.";
 }
 
-if ((enemy == eFACTION.TAU) && (dropping == 0)) {
+if ((enemy == eFACTION.TAU) && (!dropping)) {
     rand = choose(1, 2, 3);
 }
-if ((enemy == eFACTION.TYRANIDS) && (dropping == 0)) {
+if ((enemy == eFACTION.TYRANIDS) && (!dropping)) {
     rand = choose(1, 2, 3);
 }
-if ((enemy == eFACTION.TYRANIDS) && (dropping == 1)) {
+if ((enemy == eFACTION.TYRANIDS) && (dropping)) {
     p1 = "The " + string(enemy_dudes) + "-some Tyranids hiss and chitter as your marines rain down.  Blasts of acid and spikes fill the sky, but none seem to quite find their mark.";
 }
 
-if ((enemy == eFACTION.CHAOS) && (dropping == 0)) {
+if ((enemy == eFACTION.CHAOS) && (!dropping)) {
     rand = choose(1, 2, 3);
 }
 
@@ -517,7 +517,7 @@ if ((enemy == eFACTION.NECRONS) && (dropping == 0)) {
     }
 }
 
-if (dropping == 0) {
+if (!dropping) {
     newline = p1 + p2 + p3 + p4 + p5 + p6;
     scr_newtext();
     if (a1 != "") {
@@ -530,7 +530,7 @@ if (dropping == 0) {
     }
 }
 
-if (dropping == 1) {
+if (dropping) {
     newline = d1 + p1;
     scr_newtext();
     if (lyman == 0) {
@@ -559,7 +559,7 @@ if ((occulobe == 1) && (battle_special != "space_hulk")) {
     }
 }
 
-if ((fortified > 1) && (dropping == 0) && !(enemy == eFACTION.CHAOS && threat == 7)) {
+if ((fortified > 1) && !dropping && !(enemy == eFACTION.CHAOS && threat == 7)) {
     if (fortified == 2) {
         newline = "An Aegis Defense Line protects your forces.";
     }
@@ -587,7 +587,7 @@ if ((fortified > 1) && (dropping == 0) && !(enemy == eFACTION.CHAOS && threat ==
 }
 
 // Check for battlecry here
-if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && (dropping == 0)) {
+if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && !dropping) {
     p1 = "";
     p2 = "";
     p3 = "";

@@ -188,7 +188,7 @@ function scr_purge_world(action_type, action_score) {
                 obj_ncombat.battle_id = obj_controller.selecting_planet;
                 obj_ncombat.dropping = 0;
                 obj_ncombat.attacking = 10;
-                obj_ncombat.enemy = 10;
+                obj_ncombat.enemy = eFACTION.CHAOS;
                 obj_ncombat.formation_set = 1;
 
                 obj_ncombat.leader = 1;

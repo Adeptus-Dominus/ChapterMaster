@@ -10,7 +10,7 @@ if (turn_count >= 50) {
     part1 = "Your forces make a fighting retreat \n";
 }
 
-p_data = battle_object.get_planet_data(battle_id);
+var p_data = battle_object.get_planet_data(battle_id);
 // check for wounded marines here to finish off, if defeated defending
 var roles = obj_ini.role[100];
 var ground_mission = instance_exists(obj_ground_mission);
@@ -19,7 +19,7 @@ with (obj_pnunit) {
     after_battle_part1();
 }
 
-if (obj_ncombat.defeat == 0) {
+if (defeat == 0) {
     marines_to_recover = ds_priority_create();
     vehicles_to_recover = ds_priority_create();
 
@@ -43,10 +43,10 @@ if (obj_ncombat.defeat == 0) {
             unit_recovery_score--;
             units_saved_count++;
 
-            if (!struct_exists(obj_ncombat.units_saved_counts, _unit_role)) {
-                obj_ncombat.units_saved_counts[$ _unit_role] = 1;
+            if (!struct_exists(units_saved_counts, _unit_role)) {
+                units_saved_counts[$ _unit_role] = 1;
             } else {
-                obj_ncombat.units_saved_counts[$ _unit_role]++;
+                units_saved_counts[$ _unit_role]++;
             }
             continue;
         }
@@ -80,10 +80,10 @@ if (obj_ncombat.defeat == 0) {
                 _column_id.veh_dead[_vehicle_id] = false;
                 vehicles_saved_count++;
 
-                if (!struct_exists(obj_ncombat.vehicles_saved_counts, _vehicle_type)) {
-                    obj_ncombat.vehicles_saved_counts[$ _vehicle_type] = 1;
+                if (!struct_exists(vehicles_saved_counts, _vehicle_type)) {
+                    vehicles_saved_counts[$ _vehicle_type] = 1;
                 } else {
-                    obj_ncombat.vehicles_saved_counts[$ _vehicle_type]++;
+                    vehicles_saved_counts[$ _vehicle_type]++;
                 }
                 continue;
             }
@@ -95,10 +95,10 @@ if (obj_ncombat.defeat == 0) {
             vehicle_recovery_score -= _candidate.priority;
             vehicles_saved_count++;
 
-            if (!struct_exists(obj_ncombat.vehicles_saved_counts, _vehicle_type)) {
-                obj_ncombat.vehicles_saved_counts[$ _vehicle_type] = 1;
+            if (!struct_exists(vehicles_saved_counts, _vehicle_type)) {
+                vehicles_saved_counts[$ _vehicle_type] = 1;
             } else {
-                obj_ncombat.vehicles_saved_counts[$ _vehicle_type]++;
+                vehicles_saved_counts[$ _vehicle_type]++;
             }
         }
     }
@@ -454,7 +454,7 @@ if (defeat == 0 && _reduce_power) {
     }
 
     if (enemy != eFACTION.IMPERIUM) {
-        if (dropping == true || defending == true) {
+        if (dropping || defending) {
             power_reduction = 1;
         } else {
             power_reduction = 2;
@@ -483,7 +483,7 @@ if (defeat == 0 && _reduce_power) {
                     who_cleansed = "Gene Stealer Cult";
                     make_alert = true;
                     delete_features(p_feature[battle_planet], eP_FEATURES.GENE_STEALER_CULT);
-                    adjust_influence(eFACTION.TYRANIDS, -25, battle_planet, self);
+                    adjust_influence(eFACTION.TYRANIDS, -25, battle_planet, id);
                 }
                 if (make_alert) {
                     if (p_first[battle_planet] == 1) {
@@ -589,10 +589,10 @@ if (defeat == 0 && _reduce_power) {
             seal_tomb_world(p_data.features);
         } else if (plasma_bomb <= 0) {
             p_data.edit_forces(enemy, 3);
-            if (dropping != 0) {
+            if (dropping) {
                 newline = "Deep Strike Ineffective; Plasma Bomb required";
             }
-            if (dropping == 0) {
+            if (!dropping) {
                 newline = "Attack Ineffective; Plasma Bomb required";
             }
             scr_newtext();
@@ -650,7 +650,7 @@ if ((leader || ((battle_special == "ChaosWarband") && (!obj_controller.faction_d
     }
     if (enemy == eFACTION.ORK) {
         scr_event_log("", "Enemy Leader Assassinated: Ork Warboss");
-        if (Warlord != 0) {
+        if (instance_exists(Warlord)) {
             with (Warlord) {
                 kill_warboss();
             }
@@ -821,14 +821,14 @@ if (obj_ini.omophagea) {
     }
 }
 
-if ((inq_eated == false) && (obj_ncombat.sorcery_seen >= 2)) {
+if ((inq_eated == false) && (sorcery_seen >= 2)) {
     scr_loyalty("Use of Sorcery", "+");
     newline = "Inquisitor " + string(obj_controller.inquisitor[1]) + " witnessed your Chapter using sorcery.";
     scr_event_log("green", string(newline));
     scr_newtext();
 }
 
-if ((exterminatus > 0) && (dropping != 0)) {
+if ((exterminatus > 0) && dropping) {
     newline = "Exterminatus has been succesfully placed.";
     newline_color = "yellow";
     endline = 0;
@@ -839,12 +839,12 @@ instance_activate_object(obj_star);
 instance_activate_object(obj_turn_end);
 
 //If not fleet based and...
-if ((obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) && (defeat == 1) && (dropping == 0)) {
-    var monastery_list = search_planet_features(battle_object.p_feature[obj_ncombat.battle_id], eP_FEATURES.MONASTERY);
+if ((obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) && (defeat == 1) && !dropping) {
+    var monastery_list = search_planet_features(battle_object.p_feature[battle_id], eP_FEATURES.MONASTERY);
     var monastery_count = array_length(monastery_list);
     if (monastery_count > 0) {
         for (var mon = 0; mon < monastery_count; mon++) {
-            battle_object.p_feature[obj_ncombat.battle_id][monastery_list[mon]].status = "destroyed";
+            battle_object.p_feature[battle_id][monastery_list[mon]].status = "destroyed";
         }
 
         if (obj_controller.und_gene_vaults == 0) {
@@ -867,48 +867,47 @@ if ((obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) && (defeat == 1) && (droppin
         if (player_defenses > 0) {
             defenses_lost = round(player_defenses * 0.75);
         }
-        if (battle_object.p_silo[obj_ncombat.battle_id] > 0) {
-            silos_lost = round(battle_object.p_silo[obj_ncombat.battle_id] * 0.75);
+        if (battle_object.p_silo[battle_id] > 0) {
+            silos_lost = round(battle_object.p_silo[battle_id] * 0.75);
         }
-        if (battle_object.p_lasers[obj_ncombat.battle_id] > 0) {
-            lasers_lost = round(battle_object.p_lasers[obj_ncombat.battle_id] * 0.75);
+        if (battle_object.p_lasers[battle_id] > 0) {
+            lasers_lost = round(battle_object.p_lasers[battle_id] * 0.75);
         }
 
         if (player_defenses < 30) {
             defenses_lost = player_defenses;
         }
-        if (battle_object.p_silo[obj_ncombat.battle_id] < 30) {
-            silos_lost = battle_object.p_silo[obj_ncombat.battle_id];
+        if (battle_object.p_silo[battle_id] < 30) {
+            silos_lost = battle_object.p_silo[battle_id];
         }
-        if (battle_object.p_lasers[obj_ncombat.battle_id] < 8) {
-            lasers_lost = battle_object.p_lasers[obj_ncombat.battle_id];
+        if (battle_object.p_lasers[battle_id] < 8) {
+            lasers_lost = battle_object.p_lasers[battle_id];
         }
 
-        var percent;
-        percent = 0;
+        var percent = 0;
         newline = "";
         if (defenses_lost > 0) {
             percent = round((defenses_lost / player_defenses) * 100);
             newline = string(defenses_lost) + " Weapon Emplacements have been lost (" + string(percent) + "%).";
         }
         if (silos_lost > 0) {
-            percent = round((silos_lost / battle_object.p_silo[obj_ncombat.battle_id]) * 100);
+            percent = round((silos_lost / battle_object.p_silo[battle_id]) * 100);
             if (defenses_lost > 0) {
                 newline += "  ";
             }
             newline += string(silos_lost) + $" Missile Silos have been lost ({percent}%).";
         }
         if (lasers_lost > 0) {
-            percent = round((lasers_lost / battle_object.p_lasers[obj_ncombat.battle_id]) * 100);
+            percent = round((lasers_lost / battle_object.p_lasers[battle_id]) * 100);
             if ((silos_lost > 0) || (defenses_lost > 0)) {
                 newline += "  ";
             }
             newline += string(lasers_lost) + " Defense Lasers have been lost (" + string(percent) + "%).";
         }
 
-        battle_object.p_defenses[obj_ncombat.battle_id] -= defenses_lost;
-        battle_object.p_silo[obj_ncombat.battle_id] -= silos_lost;
-        battle_object.p_lasers[obj_ncombat.battle_id] -= lasers_lost;
+        battle_object.p_defenses[battle_id] -= defenses_lost;
+        battle_object.p_silo[battle_id] -= silos_lost;
+        battle_object.p_lasers[battle_id] -= lasers_lost;
         if (defenses_lost + silos_lost + lasers_lost > 0) {
             newline_color = "red";
             scr_newtext();
@@ -942,11 +941,9 @@ if (defeat == 1) {
     }
 }
 
-gene_slaves = [];
+obj_ini.gene_slaves = [];
 
 instance_deactivate_object(obj_star);
 instance_deactivate_object(obj_ground_mission);
 
 LOGGER.debug($"{started}");
-/* */
-/*  */
