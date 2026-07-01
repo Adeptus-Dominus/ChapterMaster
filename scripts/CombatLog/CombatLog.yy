@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_newtext",
+  "%Name":"CombatLog",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_newtext",
+  "name":"CombatLog",
   "parent":{
-    "name":"Sys",
-    "path":"folders/Scripts/Sys.yy",
+    "name":"Constructors",
+    "path":"folders/Scripts/Constructors.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

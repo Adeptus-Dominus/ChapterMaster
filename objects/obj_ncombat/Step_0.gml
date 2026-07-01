@@ -1,37 +1,4 @@
-// --- Combat-log scroll input -------------------------------------------------
-// Mouse wheel over the left log panel pages through retained history; the thin scrollbar in the
-// gutter can also be grabbed and dragged. log_scroll counts rows above the live bottom (0 = live).
-var _log_total = array_length(log_history);
-var _log_max_scroll = max(0, _log_total - log_view_lines);
-
-if ((mouse_x >= x) && (mouse_x <= x + 800) && (mouse_y >= y) && (mouse_y <= y + 900)) {
-    if (mouse_wheel_up()) {
-        log_scroll += 3;
-    }
-    if (mouse_wheel_down()) {
-        log_scroll -= 3;
-    }
-}
-
-var _sb_y1 = y + 8;
-var _sb_h = log_view_lines * 18;
-if (mouse_check_button_pressed(mb_left) && (_log_max_scroll > 0)
-    && (mouse_x >= x + 1) && (mouse_x <= x + 5)
-    && (mouse_y >= _sb_y1) && (mouse_y <= _sb_y1 + _sb_h)) {
-    log_dragging = true;
-}
-if (!mouse_check_button(mb_left)) {
-    log_dragging = false;
-}
-if (log_dragging && (_log_max_scroll > 0)) {
-    var _sb_thumb_h = max(20, _sb_h * (log_view_lines / _log_total));
-    var _sb_usable = max(1, _sb_h - _sb_thumb_h);
-    var _sb_rel = clamp((mouse_y - _sb_y1 - _sb_thumb_h * 0.5) / _sb_usable, 0, 1);
-    log_scroll = round((1 - _sb_rel) * _log_max_scroll);
-}
-
-log_scroll = clamp(log_scroll, 0, _log_max_scroll);
-// -----------------------------------------------------------------------------
+combat_log.update_scroll(x, y, 800, 900);
 
 if (fadein > -30) {
     fadein -= 1;
@@ -60,7 +27,10 @@ if (fack == 1) {
 instance_activate_object(obj_centerline);
 instance_activate_object(obj_cursor);
 
-if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_show == 24) && (defeat_message == 0)) {
+var _newline = "";
+var _newline_color = eMSG_COLOR.DEFAULT;
+
+if ((((timer_stage == 2) && (fugg >= 60)) || (((timer_stage == 4) || (timer_stage == 5)) && (fugg2 >= 60) && (four_show == 0))) && (combat_log.pending_count == 0) && (defeat_message == 0)) {
     fugg = 0;
     fugg2 = 0;
     with (obj_pnunit) {
@@ -78,16 +48,16 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
             }
         }
     }
-    if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
-        newline_color = "yellow";
+    if ((combat_log.pending_count == 0) && (timer_stage == 2)) {
+        _newline_color = eMSG_COLOR.YELLOW;
         if (enemy != eFACTION.ELDAR) {
             combat_emit_enemy_status();
         }
-        newline_color = "yellow";
         if (enemy == eFACTION.ELDAR) {
             if (((player_forces <= 0) || (!instance_exists(obj_pnunit))) && (defeat_message == 0)) {
                 defeat_message = 1;
-                newline = string(global.chapter_name) + " Defeated";
+                _newline = string(global.chapter_name) + " Defeated";
+                combat_log.push(_newline, _newline_color);
                 timer_maxspeed = 0;
                 timer_speed = 0;
                 started = 4;
@@ -95,19 +65,18 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
                 instance_activate_object(obj_pnunit);
             }
         }
-        messages_shown = 105;
         done = 1;
-        scr_newtext();
         timer_stage = 3;
         exit;
     }
 
-    if (((messages_shown == 999) || (messages == 0)) && ((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0)) {
-        newline_color = "yellow";
+    if ((combat_log.pending_count == 0) && ((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0)) {
+        _newline_color = eMSG_COLOR.YELLOW;
         if (enemy != eFACTION.ELDAR) {
             if (((player_forces <= 0) || (!instance_exists(obj_pnunit))) && (defeat_message == 0)) {
                 defeat_message = 1;
-                newline = string(global.chapter_name) + " Defeated";
+                _newline = string(global.chapter_name) + " Defeated";
+                combat_log.push(_newline, _newline_color);
                 timer_maxspeed = 0;
                 timer_speed = 0;
                 started = 4;
@@ -115,20 +84,18 @@ if (((fugg >= 60) || (fugg2 >= 60)) && (messages_shown == 0) && (messages_to_sho
                 instance_activate_object(obj_pnunit);
             }
         }
-        newline_color = "yellow";
         if (enemy == eFACTION.ELDAR) {
             if (((enemy_forces <= 0) || (!instance_exists(obj_enunit))) && (defeat_message == 0)) {
                 defeat_message = 1;
-                newline = "Enemy Forces Defeated";
+                _newline = "Enemy Forces Defeated";
+                combat_log.push(_newline, _newline_color);
                 timer_maxspeed = 0;
                 timer_speed = 0;
                 started = 2;
                 instance_activate_object(obj_pnunit);
             }
         }
-        messages_shown = 105;
         done = 1;
-        scr_newtext();
         timer_stage = 5;
         exit;
     }
@@ -145,7 +112,7 @@ if (timer_stage == 2) {
 // stage_elapsed (not fugg) because the 60-frame status poll above resets fugg every time it fires,
 // so fugg can never reach the cap during a stall - stage_elapsed keeps counting regardless.
 
-if ((timer_stage == 2) && (((fugg > 60) && (messages == 0)) || (stage_elapsed > COMBAT_STAGE_TIMEOUT_FRAMES))) {
+if ((timer_stage == 2) && (((fugg > 60) && (combat_log.pending_count == 0)) || (stage_elapsed > COMBAT_STAGE_TIMEOUT_FRAMES))) {
     timer_stage = 3;
 }
 
@@ -159,7 +126,7 @@ if (timer_stage == 4) {
     stage_elapsed2 += 1;
 }
 
-if ((timer_stage == 4) && (((fugg2 > 60) && (messages == 0)) || (stage_elapsed2 > COMBAT_STAGE_TIMEOUT_FRAMES))) {
+if ((timer_stage == 4) && (((fugg2 > 60) && (combat_log.pending_count == 0)) || (stage_elapsed2 > COMBAT_STAGE_TIMEOUT_FRAMES))) {
     timer_stage = 5;
 }
 
