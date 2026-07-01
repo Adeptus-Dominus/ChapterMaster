@@ -530,6 +530,7 @@ function scr_ui_settings() {
                             bat_formation_type[formating] = 1;
                             bat_deva_for[formating] = 1;
                             bat_assa_for[formating] = 4;
+                            bat_bike_for[formating] = 4;
                             bat_tact_for[formating] = 2;
                             bat_vete_for[formating] = 2;
                             bat_hire_for[formating] = 3;
