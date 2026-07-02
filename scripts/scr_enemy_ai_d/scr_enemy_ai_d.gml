@@ -54,11 +54,11 @@ function scr_enemy_ai_d() {
                 enemy1 = "Tau";
                 enemies += 1;
             }
-            if (p_traitors[i] >= minimum) {
+            if (p_chaos[i] >= minimum) {
                 enemy1 = "Heretic";
                 enemies += 1;
             }
-            if (p_chaos[i] >= minimum) {
+            if (p_traitors[i] >= minimum) {
                 enemy1 = "Chaos Space Marine";
                 enemies += 1;
             }

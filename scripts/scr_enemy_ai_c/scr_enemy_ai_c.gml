@@ -253,7 +253,7 @@ function scr_enemy_ai_c() {
         }
 
         if ((gud != 0) && instance_exists(boat)) {
-            if (fleet_has_cargo("csm", boat)) {
+            if (fleet_has_cargo("chaos", boat)) {
                 if (p_chaos[gud] < 4) {
                     p_chaos[gud] += max(1, floor(boat.image_index * 0.5));
                     if (p_chaos[gud] > 4) {

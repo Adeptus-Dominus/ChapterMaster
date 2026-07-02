@@ -791,7 +791,7 @@ function fleet_arrival_logic() {
         if (fleet_has_cargo("ork_warboss")) {
             cancel = true;
         }
-        if (fleet_has_cargo("csm")) {
+        if (fleet_has_cargo("chaos")) {
             cancel = true;
         }
 
@@ -932,7 +932,7 @@ function fleet_arrival_logic() {
         mergus = 0;
     }
 
-    if ((owner == eFACTION.CHAOS) && fleet_has_cargo("csm") || fleet_has_cargo("warband")) {
+    if ((owner == eFACTION.CHAOS) && fleet_has_cargo("chaos") || fleet_has_cargo("warband")) {
         mergus = 0;
     }
 
@@ -1031,9 +1031,9 @@ function fleet_arrival_logic() {
     x = old_x;
     y = old_y;
 
-    var _csm = fleet_has_cargo("warband");
+    var _chaos = fleet_has_cargo("warband");
 
-    if ((cur_star.x == old_x) && (cur_star.y == old_y) && (cur_star.owner == self.owner) && (cur_star.action == "") && ((owner == eFACTION.TAU) || (owner == eFACTION.CHAOS)) && (mergus == 10) && (!_csm)) {
+    if ((cur_star.x == old_x) && (cur_star.y == old_y) && (cur_star.owner == self.owner) && (cur_star.action == "") && ((owner == eFACTION.TAU) || (owner == eFACTION.CHAOS)) && (mergus == 10) && (!_chaos)) {
         // Move somewhere new
         var stue2 = noone;
         var goood = 0;

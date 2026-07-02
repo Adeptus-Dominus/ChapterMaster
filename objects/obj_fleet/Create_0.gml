@@ -10,7 +10,7 @@ sel_y1 = 0;
 control = 0;
 ships_selected = 0;
 battle_special = "";
-csm_exp = 0;
+chaos_exp = 0;
 star_name = "";
 
 left_down = 0;
