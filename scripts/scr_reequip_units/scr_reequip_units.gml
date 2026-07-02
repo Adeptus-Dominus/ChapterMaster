@@ -523,12 +523,12 @@ function draw_popup_equip() {
                     n_good2 = 0;
                     warning = "Only " + string(obj_ini.role[100][6]) + " can use Close Combat Weapons.";
                 }
-                if (((string_count("Terminator", n_armour) > 0) || (string_count("Tartaros", n_armour) > 0) || (string_count("Dreadnought", n_armour) > 0)) && (n_mobi != "")) {
-                    n_good2 = 0;
-                }
-                if (((string_count("Terminator", o_armour) > 0) || (string_count("Tartaros", o_armour) > 0) || (string_count("Dreadnought", o_armour) > 0)) && (n_mobi != "")) {
-                    n_good2 = 0;
-                }
+                // Removed the blanket block that invalidated any weapon-two change for
+                // Terminator/Tartaros/Dreadnought armour whenever a mobility item was equipped.
+                // It hard-locked the second weapon slot for terminators with a Cyclone Missile
+                // System or Servo-arm/harness (with no warning text), even for light weapons.
+                // The burden system in scr_marine_struct already prices these items in via
+                // their melee_hands/ranged_hands cap maluses and encumbrance penalties.
             }
         }
         if ((equipmet_area == eEQUIPMENT_SLOT.ARMOUR) && is_struct(armour_data)) {
@@ -641,12 +641,32 @@ function draw_popup_equip() {
                     warning = "Cannot use this without Dreadnought Armour.";
                 }
             } else if (!is_struct(armour_data) && is_struct(mobility_data)) {
+                // Mixed armour selections collapse n_armour to "Assortment", so armour_data is
+                // not a struct even when every selected unit wears terminator plate (e.g. one in
+                // Tartaros and one in Indomitus). Check each selected unit's real armour tags
+                // instead of blanket-rejecting terminator/dreadnought mobility items.
                 if (mobility_data.has_tag("terminator") || mobility_data.has_tag("terminator_only")) {
-                    n_good5 = 0;
-                    warning = "Cannot use this without Terminator Armour.";
+                    for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
+                        if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
+                            var _unit_armour_data = obj_controller.display_unit[g].get_armour_data();
+                            if (!is_struct(_unit_armour_data) || !_unit_armour_data.has_tag("terminator")) {
+                                n_good5 = 0;
+                                warning = "Cannot use this without Terminator Armour.";
+                                break;
+                            }
+                        }
+                    }
                 } else if (mobility_data.has_tag("dreadnought") || mobility_data.has_tag("dreadnought_only")) {
-                    n_good5 = 0;
-                    warning = "Cannot use this without Dreadnought Armour.";
+                    for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
+                        if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
+                            var _unit_armour_data = obj_controller.display_unit[g].get_armour_data();
+                            if (!is_struct(_unit_armour_data) || !_unit_armour_data.has_tag("dreadnought")) {
+                                n_good5 = 0;
+                                warning = "Cannot use this without Dreadnought Armour.";
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }

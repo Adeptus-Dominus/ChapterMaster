@@ -2005,6 +2005,12 @@
         },
         "range": 1,
         "ranged_hands": 0,
+        "requires_to_forge": [
+            "power_1"
+        ],
+        "sellers": [
+            "mechanicus"
+        ],
         "specials": {
             "combi_tool": 1
         },
@@ -2014,7 +2020,8 @@
             "axe",
             "savage",
             "boarding 3"
-        ]
+        ],
+        "value": 80
     },
     "Phaestos Flamer": {
         "abbreviation": "PhFlmr",

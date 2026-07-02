@@ -1475,7 +1475,9 @@ function scr_initialize_custom() {
     load_default_gear(eROLE.VETERAN, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.TERMINATOR, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
     load_default_gear(eROLE.CAPTAIN, "Captain", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Iron Halo");
-    load_default_gear(eROLE.DREADNOUGHT, "Dreadnought", "Close Combat Weapon", "Lascannon", "Dreadnought", "", "");
+    // "Lascannon" is not in the dreadnought ranged weapon list (push_dreadnought_ranged_weapons_item_names),
+    // so start-of-game dreads spawned with it could never re-equip one. Use the dread-pattern twin-linked version.
+    load_default_gear(eROLE.DREADNOUGHT, "Dreadnought", "Close Combat Weapon", "Twin Linked Lascannon", "Dreadnought", "", "");
     load_default_gear(eROLE.CHAMPION, "Champion", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Combat Shield");
     load_default_gear(eROLE.TACTICAL, "Tactical", "Bolter", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.DEVASTATOR, "Devastator", "", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
