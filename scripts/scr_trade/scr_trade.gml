@@ -17,8 +17,12 @@ function TradeAttempt(diplomacy) constructor {
         "Inferno Bolts": 5,
         "Sister of Battle": 40,
         "Sister Hospitaler": 75,
-        "Guardsman": 0.1,
-        "Leman Russ": 800,
+        "Guardsman": 0.5,
+        "Leman Russ": 300,
+        // A Basilisk had no entry here at all; the worth calculation is guarded by
+        // struct_exists, so missing entries contribute 0 and Basilisks negotiated as
+        // free once the 50-disposition gate was passed.
+        "Basilisk": 400,
         "Eldar Power Sword": 50,
         "Archeotech Laspistol": 150,
         "Ranger": 100,
@@ -752,7 +756,9 @@ function TradeAttempt(diplomacy) constructor {
 
         // Guardsmen are abundant Imperial line troops the Sector Governor hands over by the
         // thousand, not a haggled rarity, so the base trade overhead does not apply to a
-        // pure Guard levy. They cost a flat 0.1 requisition each (100 per 1000). If the
+        // pure Guard levy. They cost a flat 0.5 requisition each (500 per 1000), priced
+        // for the full combined-arms levy that arrives with them: a Guard Sergeant per
+        // squad, a Heavy Weapons Team per 100, and a Chimera per 200. If the
         // offered requisition covers the guardsmen demanded the Governor obliges outright,
         // otherwise he declines. Only triggers when guardsmen are the sole demand, so it
         // cannot be used to slip other goods through cheaply.
@@ -774,7 +780,7 @@ function TradeAttempt(diplomacy) constructor {
                     _req_offered += offer_options[ri].number;
                 }
             }
-            deal_chance = _req_offered >= ceil(_guard_num * 0.1) ? 100 : 0;
+            deal_chance = _req_offered >= ceil(_guard_num * 0.5) ? 100 : 0;
         }
         var _chance = clamp(floor((deal_chance / 20)), 0, 6);
 
