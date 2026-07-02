@@ -1520,7 +1520,7 @@ function PlanetData(_planet, _system) constructor {
             strength = strength > 2 ? 2 : 0;
 
             if (system.p_chaos[planet] > 0) {
-                system.p_chaos[planet] = max(0, system.p_traitors[planet] - 1);
+                system.p_chaos[planet] = max(0, system.p_chaos[planet] - 1);
             } else if (system.p_traitors[planet] > 0) {
                 system.p_traitors[planet] = max(0, system.p_traitors[planet] - 2);
             }
