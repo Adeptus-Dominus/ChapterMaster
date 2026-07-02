@@ -1,7 +1,11 @@
 men = 0;
 veh = 0;
 medi = 0;
-for (var i = 1; i <= 20; i++) {
+// From 0: scr_en_weapon fills stacks scanning from index 0, so the block's first-ever
+// weapon lives in slot 0. These resets started at 1, so slot 0's att/apa/wep_num were
+// never cleared and accumulated across every rebuild for the whole battle: its shot
+// count and armour-pierce grew each turn while every other stack rebuilt fresh.
+for (var i = 0; i <= 20; i++) {
     att[i] = 0;
     apa[i] = 0;
     wep_num[i] = 0;
@@ -194,7 +198,7 @@ if (obj_ncombat.enemy == eFACTION.PLAYER) {
         }
     }
 
-    for (var i = 1; i <= 100; i++) {
+    for (var i = 0; i <= 100; i++) {
         att[i] = 0;
         apa[i] = 0;
         wep_num[i] = 0;

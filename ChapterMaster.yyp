@@ -511,6 +511,7 @@
     {"$GMIncludedFile":"","%Name":"purge8.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"purge8.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"raid1.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"raid1.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"resources.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"resources.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"Guardsman Test.png","CopyToMask":-1,"filePath":"datafiles/images/units","name":"Guardsman Test.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"guardsman.png","CopyToMask":-1,"filePath":"datafiles/images/units","name":"guardsman.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"Guardsman.png","CopyToMask":-1,"filePath":"datafiles/images/units","name":"Guardsman.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"sarge.png","CopyToMask":-1,"filePath":"datafiles/images/units","name":"sarge.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},

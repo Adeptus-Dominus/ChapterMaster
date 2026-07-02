@@ -1094,7 +1094,12 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     for (var b = 0; b < 30; b++) {
         if ((wep[b] == name) && (goody == 0)) {
             att[b] += atta * man_number;
-            apa[b] += arp;
+            // apa is the weapon's armour-pierce TIER, a property of the weapon, not a
+            // pool. It used to accumulate (+= arp) once per merged dude group and, via
+            // the un-reset slot 0, once per turn, so the tier drifted with block
+            // composition and battle length: two lascannon groups read as tier 2, four
+            // as tier 4 (ignore armour), five as junk. Set it, don't sum it.
+            apa[b] = arp;
             range[b] = rang;
             wep_num[b] += man_number;
             if (obj_ncombat.started == 0) {
@@ -1117,7 +1122,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
         wep[first] = name;
         splash[first] = spli;
         att[first] += atta * man_number;
-        apa[first] += arp;
+        apa[first] = arp;
         range[first] = rang;
         wep_num[first] += man_number;
         if (obj_ncombat.started == 0) {

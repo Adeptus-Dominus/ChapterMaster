@@ -130,7 +130,7 @@ function check_dead_marines(unit_struct, unit_index) {
 
 /// @self Id.Instance.obj_pnunit
 /// @param {Id.Instance.obj_pnunit} target_object
-function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position) {
+function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, hostile_arp = 0) {
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //
     // Parameters:
@@ -169,23 +169,29 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
             // ### Vehicle Damage Processing ###
             if (!target_is_infantry && veh > 0) {
-                damage_vehicles(damage_data, hostile_shots, hostile_damage, weapon_index_position);
+                damage_vehicles(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_arp);
             }
 
             // ### Marine + Dreadnought Processing ###
             if (target_is_infantry && (men + dreads > 0)) {
-                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash);
+                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp);
             }
 
             if (damage_data.hits < hostile_shots) {
+                // Spillover: only the shots the primary path did not spend carry over.
+                // This used to pass the full hostile_shots again, so a volley that had
+                // already resolved against the primary target fired its entire count a
+                // second time at the secondary one.
+                var _remaining_shots = hostile_shots - damage_data.hits;
+
                 // ### Vehicle Damage Processing ###
                 if (target_is_infantry && veh > 0) {
-                    damage_vehicles(damage_data, hostile_shots, hostile_damage, weapon_index_position);
+                    damage_vehicles(damage_data, _remaining_shots, hostile_damage, weapon_index_position, hostile_arp);
                 }
 
                 // ### Marine + Dreadnought Processing ###
                 if (!target_is_infantry && (men + dreads > 0)) {
-                    damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash);
+                    damage_infantry(damage_data, _remaining_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp);
                 }
             }
 
@@ -204,8 +210,14 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash) {
-    var _armour_pierce = apa[_weapon_index];
+function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, _arp = 0) {
+    // _arp is the ATTACKER's armour pierce, passed down from scr_shoot. This used to read
+    // apa[_weapon_index], but this function runs in the TARGET obj_pnunit's context, so
+    // that indexed the PLAYER's own weapon-stack arp table with the ENEMY's stack number.
+    // Whatever player stack shared the index decided the enemy's armour penetration: land
+    // on a stack with apa 4 and enemy lasguns ignored armour entirely (dreadnoughts and
+    // vehicles melting to small arms); land elsewhere and real anti-tank bounced off.
+    var _armour_pierce = _arp;
     var _armour_mod = 0;
     switch (_armour_pierce) {
         case 4:
@@ -453,8 +465,10 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash) 
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_vehicles(_damage_data, _shots, _damage, _weapon_index) {
-    var _armour_pierce = apa[_weapon_index];
+function damage_vehicles(_damage_data, _shots, _damage, _weapon_index, _arp = 0) {
+    // See damage_infantry: _arp is the attacker's real armour pierce. The old
+    // apa[_weapon_index] read pulled from the player's own stack table by index.
+    var _armour_pierce = _arp;
     var _armour_mod = 0;
     switch (_armour_pierce) {
         case 4:
@@ -467,7 +481,12 @@ function damage_vehicles(_damage_data, _shots, _damage, _weapon_index) {
             _armour_mod = 4;
             break;
         case 1:
-            _armour_mod = 6;
+            // Was 6, identical to no armour pierce at all. Nearly every enemy anti-tank
+            // weapon (Rokkit Launcha, Lascannon, Missile Launcher, Kannon) is arp 1, so
+            // enemy AT fire did literally nothing to player vehicles: a Rokkit at att 150
+            // against a Rhino (AC 30 x 6 = 180) resolved to 0. At mod 3 the same Rokkit
+            // does 60 per shot to a Rhino and still bounces off heavier hulls.
+            _armour_mod = 3;
             break;
         default:
             _armour_mod = 6;
@@ -475,6 +494,10 @@ function damage_vehicles(_damage_data, _shots, _damage, _weapon_index) {
     }
 
     var veh_index = -1;
+
+    // Pen-vs-armour debug trail (MOD_IDEAS P5): one line per volley so "my rockets did
+    // nothing" reports can be diagnosed from last_messages.log instead of guesswork.
+    LOGGER.debug($"veh volley: arp {_armour_pierce} mod {_armour_mod} dmg/shot {_damage} shots {_shots} target_ac {(array_length(veh_ac) > 1 ? veh_ac[1] : -1)}");
 
     // Find valid vehicle targets
     var valid_vehicles = [];
