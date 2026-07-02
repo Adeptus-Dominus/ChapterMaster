@@ -103,10 +103,12 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                     bombard_protection = 2;
                 }
                 break;
-            // case 11:
-            // txt2="##The Chaos Space Marine forces are difficult to bombard; ";
-            // bombard_protection=3;
-            // break;
+            case 11:
+                // Traitor Guard: renegade IG, "competent protection" tier like loyalist IG
+                // and standard chaos forces per the bombard_protect_scores comment below.
+                txt2 = "##The Traitor forces are suitably fortified; ";
+                bombard_protection = 2;
+                break;
             // case 12:
             // txt2="##The Daemonic forces are incredibly difficult to bombard; ";
             // bombard_protection=4;
@@ -170,22 +172,27 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
         // if (rel>0 && rel<=20 && (target_strength-strength_reduction)>0){
         //	txt2+=" minor losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
         // ?
-        if ((target_strength - strength_reduction) <= 0) {
-            txt2 += " total annihilation from the bombardment and are wiped clean from the planet.";
-        } else {
-            var _losses_text = "";
-            if (rel > 0 && rel <= 20) {
-                _losses_text = "minor losses";
-            } else if (rel > 20 && rel <= 40) {
-                _losses_text = "moderate losses";
-            } else if (rel > 40 && rel <= 60) {
-                _losses_text = "heavy losses";
-            } else if (rel > 60 && (target_strength - strength_reduction) > 0) {
-                _losses_text = "devastating losses";
+        // Only describe losses when there was a reduction; otherwise the "no losses" line
+        // above already covered it and this used to append a second, contradictory
+        // "some losses ... decreased by 0" sentence.
+        if (strength_reduction > 0) {
+            if ((target_strength - strength_reduction) <= 0) {
+                txt2 += " total annihilation from the bombardment and are wiped clean from the planet.";
             } else {
-                _losses_text = "some losses";
+                var _losses_text = "";
+                if (rel > 0 && rel <= 20) {
+                    _losses_text = "minor losses";
+                } else if (rel > 20 && rel <= 40) {
+                    _losses_text = "moderate losses";
+                } else if (rel > 40 && rel <= 60) {
+                    _losses_text = "heavy losses";
+                } else if (rel > 60 && (target_strength - strength_reduction) > 0) {
+                    _losses_text = "devastating losses";
+                } else {
+                    _losses_text = "some losses";
+                }
+                txt2 += $" {_losses_text} from the bombardment, having presence decreased by {strength_reduction}.";
             }
-            txt2 += $" {_losses_text} from the bombardment, having presence decreased by {strength_reduction}.";
         }
 
         // 135; ?
@@ -254,12 +261,23 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                 case 9:
                     system.p_tyranids[planet] -= strength_reduction;
                     break;
-                case 10:
-                    system.p_traitors[planet] -= strength_reduction;
+                case 10: {
+                    // planet_forces[eFACTION.CHAOS] (the strength this bombardment was aimed
+                    // and reported against) is p_chaos + p_demons, but this wrote p_traitors,
+                    // the eFACTION.HERETICS force. The bombarded Chaos force never shrank (and
+                    // p_traitors could go negative) while the report could claim total
+                    // annihilation. Reduce p_chaos first, spill any remainder into p_demons.
+                    var _chaos_cut = min(system.p_chaos[planet], strength_reduction);
+                    system.p_chaos[planet] -= _chaos_cut;
+                    var _demon_spill = strength_reduction - _chaos_cut;
+                    if (_demon_spill > 0) {
+                        system.p_demons[planet] = max(0, system.p_demons[planet] - _demon_spill);
+                    }
                     break;
-                // case 11:
-                // system.p_csm[planet]-=strength_reduction;
-                // break;
+                }
+                case 11:
+                    system.p_traitors[planet] = max(0, system.p_traitors[planet] - strength_reduction);
+                    break;
                 // case 12:
                 // system.p_demons[planet]-=strength_reduction;
                 // break;

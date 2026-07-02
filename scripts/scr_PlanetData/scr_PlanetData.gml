@@ -1524,7 +1524,9 @@ function PlanetData(planet, system) constructor {
             strength = strength > 2 ? 2 : 0;
 
             if (system.p_chaos[planet] > 0) {
-                system.p_chaos[planet] = max(0, system.p_traitors[planet] - 1);
+                // Was max(0, p_traitors - 1): read the wrong array, so a world with more
+                // traitors than chaos had its chaos force RAISED by navy bombardment.
+                system.p_chaos[planet] = max(0, system.p_chaos[planet] - 1);
             } else if (system.p_traitors[planet] > 0) {
                 system.p_traitors[planet] = max(0, system.p_traitors[planet] - 2);
             }
