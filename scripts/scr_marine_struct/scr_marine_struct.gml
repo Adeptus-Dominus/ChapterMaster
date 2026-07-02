@@ -192,14 +192,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         load_json_data(global.base_stats[$ class]);
     }
 
-    if (struct_exists(self, "start_gear")) {
-        if (base_group != "marine") {
-            alter_equipment(start_gear, false, false);
-        } else {
-            alter_equipment(start_gear, true, true);
-        }
-    }
-
+    // Roll array-form stats into numbers BEFORE any equipment is applied. Classes with
+    // ranged stats in unit_stats.json (e.g. guardsman constitution [28, 1, "max"]) used to
+    // keep the raw array until after alter_equipment below, but equipping armour runs
+    // hp_portion -> max_health, which since the max-health rework reads constitution
+    // directly. Multiplying the un-rolled array threw "Variable is malformed" and aborted
+    // unit creation (Governor-bought Guardsmen crashed and never arrived). Upstream main
+    // has the same latent ordering bug.
     var stats = [
         "constitution",
         "strength",
@@ -231,6 +230,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                     variable_struct_set(self, stats[stat_iter], stat_mod);
                 }
             }
+        }
+    }
+
+    if (struct_exists(self, "start_gear")) {
+        if (base_group != "marine") {
+            alter_equipment(start_gear, false, false);
+        } else {
+            alter_equipment(start_gear, true, true);
         }
     }
 
