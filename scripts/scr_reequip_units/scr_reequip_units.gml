@@ -205,6 +205,39 @@ function reload_items() {
     );
 }
 
+/// @param {Struct.EquipmentStruct} _armour_data
+/// @param {Struct.EquipmentStruct} _mobility_data
+/// @returns {Struct} { valid: bool, warning: string }
+function check_mobility_armour_compatibility(_armour_data, _mobility_data) {
+    var _result = { valid: true, warning: "" };
+    
+    if (is_struct(_armour_data) && is_struct(_mobility_data)) {
+        if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator") && !_mobility_data.has_tag("terminator_only")) {
+            _result.valid = false;
+            _result.warning = "Cannot use this with Terminator Armour.";
+        } else if (!_armour_data.has_tag("terminator") && _mobility_data.has_tag("terminator_only")) {
+            _result.valid = false;
+            _result.warning = "Cannot use this without Terminator Armour.";
+        } else if (_armour_data.has_tag("dreadnought") && !_mobility_data.has_tag("dreadnought") && !_mobility_data.has_tag("dreadnought_only")) {
+            _result.valid = false;
+            _result.warning = "Cannot use this with Dreadnought Armour.";
+        } else if (!_armour_data.has_tag("dreadnought") && _mobility_data.has_tag("dreadnought_only")) {
+            _result.valid = false;
+            _result.warning = "Cannot use this without Dreadnought Armour.";
+        }
+    } else if (!is_struct(_armour_data) && is_struct(_mobility_data)) {
+        if (_mobility_data.has_tag("terminator") || _mobility_data.has_tag("terminator_only")) {
+            _result.valid = false;
+            _result.warning = "Cannot use this without Terminator Armour.";
+        } else if (_mobility_data.has_tag("dreadnought") || _mobility_data.has_tag("dreadnought_only")) {
+            _result.valid = false;
+            _result.warning = "Cannot use this without Dreadnought Armour.";
+        }
+    }
+    
+    return _result;
+}
+
 /// @self Asset.GMObject.obj_popup
 function draw_popup_equip() {
     main_slate.draw_with_dimensions();
@@ -523,50 +556,55 @@ function draw_popup_equip() {
                     n_good2 = 0;
                     warning = "Only " + string(obj_ini.role[100][6]) + " can use Close Combat Weapons.";
                 }
-                if (((string_count("Terminator", n_armour) > 0) || (string_count("Tartaros", n_armour) > 0) || (string_count("Dreadnought", n_armour) > 0)) && (n_mobi != "")) {
-                    n_good2 = 0;
-                }
-                if (((string_count("Terminator", o_armour) > 0) || (string_count("Tartaros", o_armour) > 0) || (string_count("Dreadnought", o_armour) > 0)) && (n_mobi != "")) {
-                    n_good2 = 0;
-                }
             }
         }
-        if ((equipmet_area == eEQUIPMENT_SLOT.ARMOUR) && is_struct(armour_data)) {
-            // Check numbers
-            req_armour_num = units;
-            have_armour_num = 0;
-            for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
-                if ((vehicle_equipment != -1) && (obj_controller.man_sel[i] == 1) && (obj_controller.ma_armour[i] == n_armour)) {
-                    have_armour_num += 1;
+        if (equipmet_area == eEQUIPMENT_SLOT.ARMOUR) {
+            if (is_struct(armour_data)) {
+                // Check numbers
+                req_armour_num = units;
+                have_armour_num = 0;
+                for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
+                    if ((vehicle_equipment != -1) && (obj_controller.man_sel[i] == 1) && (obj_controller.ma_armour[i] == n_armour)) {
+                        have_armour_num += 1;
+                    }
                 }
-            }
-            have_armour_num += scr_item_count(n_armour);
+                have_armour_num += scr_item_count(n_armour);
 
-            if (have_armour_num >= req_armour_num || n_armour == ITEM_NAME_NONE) {
-                n_good3 = 1;
-            }
-            if (have_armour_num < req_armour_num && (n_armour != ITEM_NAME_ANY && n_armour != ITEM_NAME_NONE)) {
-                n_good3 = 0;
-                warning = $"Not enough {n_armour} : {req_armour_num - have_armour_num} more are required.";
-            }
+                if (have_armour_num >= req_armour_num || n_armour == ITEM_NAME_NONE) {
+                    n_good3 = 1;
+                }
+                if (have_armour_num < req_armour_num && (n_armour != ITEM_NAME_ANY && n_armour != ITEM_NAME_NONE)) {
+                    n_good3 = 0;
+                    warning = $"Not enough {n_armour} : {req_armour_num - have_armour_num} more are required.";
+                }
 
-            if (armour_data.has_tag("terminator")) {
-                if (armour_data.req_exp > 0) {
-                    for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
-                        if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
-                            if (obj_controller.display_unit[g].experience < armour_data.req_exp) {
-                                n_good3 = 0;
-                                warning = $"A unit must have {armour_data.req_exp}+ EXP to use a {armour_data.name}.";
-                                break;
+                if (armour_data.has_tag("terminator")) {
+                    if (armour_data.req_exp > 0) {
+                        for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
+                            if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
+                                if (obj_controller.display_unit[g].experience < armour_data.req_exp) {
+                                    n_good3 = 0;
+                                    warning = $"A unit must have {armour_data.req_exp}+ EXP to use a {armour_data.name}.";
+                                    break;
+                                }
                             }
                         }
                     }
                 }
+
+                if ((string_count("Dread", o_armour) > 0) && (string_count("Dread", n_armour) == 0)) {
+                    n_good4 = 0;
+                    warning = "Marines may not exit Dreadnoughts.";
+                }
             }
 
-            if ((string_count("Dread", o_armour) > 0) && (string_count("Dread", n_armour) == 0)) {
-                n_good4 = 0;
-                warning = "Marines may not exit Dreadnoughts.";
+            if (is_struct(mobility_data)) {
+                n_good5 = 1;
+                var _compat = check_mobility_armour_compatibility(armour_data, mobility_data);
+                if (!_compat.valid) {
+                    n_good5 = 0;
+                    warning = _compat.warning;
+                }
             }
         }
         if ((equipmet_area == eEQUIPMENT_SLOT.GEAR) && (n_gear != "Assortment") && (n_gear != ITEM_NAME_NONE)) {
@@ -626,27 +664,11 @@ function draw_popup_equip() {
                 warning = "Not enough " + string(n_mobi) + "; " + string(req_mobi_num - have_mobi_num) + " more are required.";
             }
 
-            if (is_struct(armour_data) && is_struct(mobility_data)) {
-                if (armour_data.has_tag("terminator") && !mobility_data.has_tag("terminator") && !mobility_data.has_tag("terminator_only")) {
+            if (is_struct(mobility_data)) {
+                var _compat = check_mobility_armour_compatibility(armour_data, mobility_data);
+                if (!_compat.valid) {
                     n_good5 = 0;
-                    warning = "Cannot use this with Terminator Armour.";
-                } else if (!armour_data.has_tag("terminator") && mobility_data.has_tag("terminator_only")) {
-                    n_good5 = 0;
-                    warning = "Cannot use this without Terminator Armour.";
-                } else if (armour_data.has_tag("dreadnought") && !mobility_data.has_tag("dreadnought") && !mobility_data.has_tag("dreadnought_only")) {
-                    n_good5 = 0;
-                    warning = "Cannot use this with Dreadnought Armour.";
-                } else if (!armour_data.has_tag("dreadnought") && mobility_data.has_tag("dreadnought_only")) {
-                    n_good5 = 0;
-                    warning = "Cannot use this without Dreadnought Armour.";
-                }
-            } else if (!is_struct(armour_data) && is_struct(mobility_data)) {
-                if (mobility_data.has_tag("terminator") || mobility_data.has_tag("terminator_only")) {
-                    n_good5 = 0;
-                    warning = "Cannot use this without Terminator Armour.";
-                } else if (mobility_data.has_tag("dreadnought") || mobility_data.has_tag("dreadnought_only")) {
-                    n_good5 = 0;
-                    warning = "Cannot use this without Dreadnought Armour.";
+                    warning = _compat.warning;
                 }
             }
         }
