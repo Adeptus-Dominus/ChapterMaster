@@ -40,7 +40,7 @@
         "spli": 20,
         "tags": [
             "heavy_ranged",
-            "terminator",
+            "terminator_only",
             "dreadnought"
         ],
         "value": 75
@@ -1532,7 +1532,7 @@
         "spli": 20,
         "tags": [
             "heavy_ranged",
-            "terminator",
+            "terminator_only",
             "dreadnought",
             "ancient"
         ]
