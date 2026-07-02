@@ -4,7 +4,7 @@ We welcome contributions that fix bugs, reduce technical debt, improve documenta
 
 ## Maintainer Capacity and Sustainability
 
-This project is most of the time maintained by a single (two at good days) active developer who handles fixes, features, CI workflows, releases, community management, and pull request review.
+This project is most of the time maintained by a single (two on good days) active developer who handles fixes, features, CI workflows, releases, community management, and pull request review.
 
 Because maintainer time and mental capacity is a finite resource, strict enforcement of contribution standards is necessary to ensure the project remains sustainable.
 
