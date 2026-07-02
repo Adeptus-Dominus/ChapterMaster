@@ -1,10 +1,15 @@
-function scr_shoot(weapon_index_position, target_object, target_type, damage_data, melee_or_ranged) {
+function scr_shoot(weapon_index_position, target_object, target_type, damage_data, melee_or_ranged, shot_override = -1, consume_ammo = true) {
     try {
         // weapon_index_position: Weapon number
         // target_object: Target object
         // target_type: Target dudes
         // damage_data: "att" or "arp" or "highest"
         // melee_or_ranged: melee or ranged
+        // shot_override: fire only this many of the stack's shots (-1 = full stack, the
+        //   default and the behaviour of every pre-existing caller). Used by enemy column
+        //   piercing to split one volley across several player blocks.
+        // consume_ammo: when one weapon stack fires several sub-volleys in the same alarm
+        //   (column piercing), only the first call spends the turn's ammo tick.
 
         // This massive clusterfuck of a script uses the newly determined weapon and target data to attack and assign damage
         var hostile_type;
@@ -21,6 +26,19 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
         if ((weapon_index_position >= 0) && instance_exists(target_object) && (owner == 2)) {
             var stop, damage_type, doom;
             var shots_fired = wep_num[weapon_index_position];
+            if (shot_override > -1) {
+                var _stack_shots = shots_fired;
+                shots_fired = min(shot_override, shots_fired);
+                // att[] is the stack's TOTAL damage (the builder accumulates
+                // atta * man_number), and per-hit damage is aggregate / hit count.
+                // A partial volley must carry a proportional slice of the aggregate,
+                // otherwise 50 shots deliver the whole stack's damage and chip fire
+                // one-shots vehicles it should bounce off. apa[] is per-weapon
+                // (set, not summed in the builder) and stays untouched.
+                if ((_stack_shots > 0) && (shots_fired < _stack_shots)) {
+                    aggregate_damage = (aggregate_damage * shots_fired) / _stack_shots;
+                }
+            }
             if (shots_fired == 0 || ammo[weapon_index_position] == 0) {
                 exit;
             }
@@ -55,7 +73,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             damage_type = "";
             stop = 0;
 
-            if (ammo[weapon_index_position] > 0) {
+            if (consume_ammo && (ammo[weapon_index_position] > 0)) {
                 ammo[weapon_index_position] -= 1;
             }
 

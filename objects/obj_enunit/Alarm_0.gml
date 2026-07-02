@@ -154,35 +154,114 @@ if (!engaged) {
                     continue;
                 } else if (instance_number(obj_pnunit) > 1) {
                     // There were no marines in the first column, looking behind;
-                    var _column_size_value = enemy.column_size;
-                    var x2 = enemy.x;
-
-                    repeat (instance_number(obj_pnunit) - 1) {
-                        x2 += !flank ? 10 : -10;
-                        var enemy2 = instance_nearest(x2, y, obj_pnunit);
+                    // Column piercing. This branch only runs when the front block has zero
+                    // men, i.e. a tank wall (or similar armour-only block) is screening the
+                    // infantry. The old code rolled a per-block "screening" chance that,
+                    // behind a small vehicle block, pinned at its 80% cap and skipped the
+                    // infantry, so ~4 of 5 anti-infantry volleys fell through to the vehicle
+                    // fallback and plinked the armour. One tank became a bullet sponge for a
+                    // thousand men behind it. Instead the volley now pierces by depth: the
+                    // first men-bearing block behind the wall is hit by ENEMY_PIERCE_RANK2_SHOTS
+                    // of the stack's shots, the second by ENEMY_PIERCE_RANK3_SHOTS, deeper
+                    // blocks by nothing, and the front armour takes the shots that failed to
+                    // pass. Men-behind-men screening is unaffected: a front block with men in
+                    // it still absorbs the whole volley above.
+                    // Finding the ranks: the old probe walked x2 in 10px steps with
+                    // instance_nearest, and inherited vanilla's direction bug: the men
+                    // look-behind stepped +10 for the main force (toward the enemy),
+                    // opposite to the -10 the vehicle look-behinds correctly use, so it
+                    // only ever resolved the front block itself and never reached the
+                    // ranks behind. Blocks behind the front are instead collected
+                    // directly (main force fronts are the rightmost block, so behind is
+                    // lower x; flank fronts are leftmost, behind is higher x), sorted
+                    // nearest-behind first, and the first two men-bearing blocks in
+                    // weapon range become rank 2 and rank 3.
+                    var _front_x = enemy.x;
+                    var _behind = [];
+                    with (obj_pnunit) {
+                        if (id == other.enemy) {
+                            continue;
+                        }
+                        if (x <= 0) {
+                            continue;
+                        }
+                        var _is_behind = other.flank ? (x > _front_x) : (x < _front_x);
+                        if (_is_behind) {
+                            array_push(_behind, id);
+                        }
+                    }
+                    if (flank) {
+                        array_sort(_behind, function(_a, _b) {
+                            return _a.x - _b.x;
+                        });
+                    } else {
+                        array_sort(_behind, function(_a, _b) {
+                            return _b.x - _a.x;
+                        });
+                    }
+                    var _rank_blocks = [];
+                    var _wall_blocks = [];
+                    if (block_has_armour(enemy) || (enemy.veh_type[1] == "Defenses")) {
+                        array_push(_wall_blocks, enemy);
+                    }
+                    for (var b = 0; b < array_length(_behind); b++) {
+                        var enemy2 = _behind[b];
                         if (!target_block_is_valid(enemy2, obj_pnunit)) {
                             continue;
                         }
-
                         if (range[i] < get_block_distance(enemy2)) {
                             break;
                         }
-
-                        var _back_column_size_value = enemy2.column_size;
-                        if (_back_column_size_value < _column_size_value) {
-                            continue;
-                        } else {
-                            // Calculate chance of shots passing through to back row
-                            // Higher ratio of back column size to front column size increases pass-through chance
-                            // Maximum chance capped at 40% to ensure some protection remains
-                            var _pass_chance = ((_back_column_size_value / _column_size_value) - 1) * 100;
-                            if (irandom_range(1, 100) < min(_pass_chance, 80)) {
-                                continue;
+                        if (enemy2.men > 0) {
+                            array_push(_rank_blocks, enemy2);
+                            if (array_length(_rank_blocks) >= 2) {
+                                break;
+                            }
+                        } else if ((array_length(_rank_blocks) == 0) && block_has_armour(enemy2)) {
+                            // A men-less armour line between the shooter and the first
+                            // infantry rank (Chimeras/Rhinos behind the Leman Russ line)
+                            // is part of the wall: it soaks a share of the stopped shots
+                            // instead of the front block eating them all.
+                            array_push(_wall_blocks, enemy2);
+                        }
+                    }
+                    if (array_length(_rank_blocks) > 0) {
+                        var _total_shots = wep_num[i];
+                        var _rank2_shots = floor(_total_shots * ENEMY_PIERCE_RANK2_SHOTS);
+                        var _rank3_shots = floor(_total_shots * ENEMY_PIERCE_RANK3_SHOTS);
+                        var _front_shots = _total_shots - _rank2_shots;
+                        var _ammo_spent = false;
+                        if (_rank2_shots > 0) {
+                            scr_shoot(i, _rank_blocks[0], target_unit_index, "att", "ranged", _rank2_shots, !_ammo_spent);
+                            _ammo_spent = true;
+                            _shot = true;
+                        }
+                        if ((array_length(_rank_blocks) > 1) && (_rank3_shots > 0)) {
+                            scr_shoot(i, _rank_blocks[1], target_unit_index, "att", "ranged", _rank3_shots, !_ammo_spent);
+                            _ammo_spent = true;
+                            _shot = true;
+                        }
+                        // The shots stopped by the wall still land on the wall, split
+                        // across every armour line in front of the infantry (Leman Russ
+                        // line, then Chimeras/Rhinos), so armour keeps taking chip fire
+                        // and no single front block eats the whole remainder.
+                        var _wall_count = array_length(_wall_blocks);
+                        if ((_front_shots > 0) && (_wall_count > 0)) {
+                            var _per_wall = floor(_front_shots / _wall_count);
+                            var _extra = _front_shots - (_per_wall * _wall_count);
+                            for (var w = 0; w < _wall_count; w++) {
+                                var _w_shots = _per_wall + ((w == 0) ? _extra : 0);
+                                if (_w_shots <= 0) {
+                                    continue;
+                                }
+                                scr_shoot(i, _wall_blocks[w], target_unit_index, "att", "ranged", _w_shots, !_ammo_spent);
+                                _ammo_spent = true;
+                                _shot = true;
                             }
                         }
-                        scr_shoot(i, enemy2, target_unit_index, "att", "ranged");
-                        _shot = true;
-                        break;
+                        if (_shot) {
+                            continue;
+                        }
                     }
                 }
 

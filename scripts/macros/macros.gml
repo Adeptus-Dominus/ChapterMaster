@@ -33,6 +33,15 @@
 // heaviest guns chase tanks; drop toward 1 for the old behaviour where almost everything did.
 #macro GUARD_ENEMY_ANTITANK_AP 3
 
+// Enemy column piercing: when the player's front block has no men (a tank wall), enemy
+// anti-infantry weapons no longer dump whole volleys into the armour. The volley splits by
+// depth: the first men-bearing block behind the wall is hit by RANK2 of the shots, the second
+// by RANK3, anything deeper by nothing, and the front armour takes the shots that failed to
+// pass (1 - RANK2). Tune both toward 0 to restore the old bullet-sponge wall, toward 1 to make
+// armour fully transparent to small-arms fire.
+#macro ENEMY_PIERCE_RANK2_SHOTS 0.66
+#macro ENEMY_PIERCE_RANK3_SHOTS 0.33
+
 // Guard volley size: how many rank-and-file guardsmen share one firing stack in combat. The
 // regiment splits into capped stacks of this size instead of merging into one giant lasgun
 // volley, so each chunk fires and targets independently like an enemy obj_enunit block (those
