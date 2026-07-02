@@ -22,7 +22,7 @@ try {
         if (men > 0) {
             var raar = 0, miss = "", r_lost = 0;
 
-            for (var raar; raar < (men + dreads); raar++) {
+            for (var raar = 0; raar < (men + dreads); raar++) {
                 r_roll = floor(random(1000)) + 1;
                 if (obj_ncombat.player_forces < (obj_ncombat.player_max * 0.75)) {
                     r_roll -= 8;
@@ -48,10 +48,10 @@ try {
                     //marine_ranged[raar]=0.75;
                     obj_ncombat.red_thirst += 1;
                     if (r_lost == 1) {
-                        miss += "Battle Brother " + string(obj_ini.name[marine_co[raar]][marine_id[raar]]) + ", ";
+                        miss += "Battle Brother " + string(unit_struct[raar].name()) + ", ";
                     }
                     if (r_lost > 1) {
-                        miss += string(obj_ini.name[marine_co[raar]][marine_id[raar]]) + ", ";
+                        miss += string(unit_struct[raar].name()) + ", ";
                     }
                 }
             }

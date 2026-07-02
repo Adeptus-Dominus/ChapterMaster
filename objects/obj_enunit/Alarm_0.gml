@@ -96,7 +96,7 @@ if (!engaged) {
                         // to shooting the men instead of idling. The original code gated
                         // this whole fallback behind a multi-block check, so a lone
                         // men-only block left every AP weapon firing zero shots.
-                        if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != 7)) {
+                        if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != eFACTION.ORK)) {
                             var _column_size_value = enemy.column_size;
                             var x2 = enemy.x;
                             repeat (instance_number(obj_pnunit) - 1) {
@@ -193,7 +193,7 @@ if (!engaged) {
                         if (block_has_armour(enemy) || (enemy.veh_type[1] == "Defenses")) {
                             scr_shoot(i, enemy, target_unit_index, "att", "ranged");
                             continue;
-                        } else if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != 7)) {
+                        } else if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != eFACTION.ORK)) {
                             var x2 = enemy.x;
                             repeat (instance_number(obj_pnunit) - 1) {
                                 x2 += flank == 0 ? -10 : 10;

@@ -49,11 +49,8 @@ if (start == 0) {
     draw_text(_begin_x, _begin_y, _begin_text);
 }
 
-// fast forward icon
-if (game_get_speed(gamespeed_fps) != 90 && start == 5) {
-    draw_set_alpha(1);
-    var _ff_h = sprite_get_height(spr_fast_forward);
-    draw_sprite(spr_fast_forward, 0, 12, (_surface_h / 2) - (_ff_h / 2));
+if (start == 5) {
+    speed_button.draw();
 }
 
 // battle stat box

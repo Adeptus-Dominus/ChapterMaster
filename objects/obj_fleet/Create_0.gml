@@ -20,7 +20,6 @@ view_y = obj_controller.y;
 obj_controller.x = 0;
 obj_controller.y = 240;
 obj_controller.combat = 1;
-is_zoomed = obj_controller.zoomed;
 start = 0;
 combat_end = 170;
 
@@ -29,6 +28,11 @@ if (obj_controller.zoomed == 0) {
         scr_zoom();
     }
 }
+
+var _surface_h = surface_get_height(application_surface);
+speed_button = new SpriteButton({sprite: spr_fast_forward, x1: 10, y1: _surface_h / 2});
+original_speed = game_get_speed(gamespeed_fps);
+speed_mode = 0;
 
 enemy = 0;
 enemy_status = "attacking";

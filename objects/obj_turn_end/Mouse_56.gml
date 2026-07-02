@@ -23,6 +23,12 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
 
         if ((mouse_x >= xxx + 272) && (mouse_y >= yyy + 354) && (mouse_x < xxx + 399) && (mouse_y < yyy + 389)) {
             // Fight fight fight, space
+            var _battle_fleet = battle_pobject[current_battle];
+            if (_battle_fleet.capital_number + _battle_fleet.frigate_number + _battle_fleet.escort_number <= 0) {
+                alarm[4] = 1;
+                exit;
+            }
+
             obj_controller.cooldown = 8000;
             instance_activate_all();
 
@@ -149,7 +155,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
                 obj_ncombat.fortified = _planet_data.fortification_level;
             }
 
-            if (obj_ncombat.enemy == 13) {
+            if (obj_ncombat.enemy == eFACTION.NECRONS) {
                 obj_ncombat.fortified = 0;
             }
 
@@ -158,10 +164,8 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
 
             if (_enemy == eFACTION.IMPERIUM) {
                 obj_ncombat.threat = min(1000000, _planet_data.guardsmen);
-            } else if (obj_ncombat.enemy < 14 && _enemy > 5) {
+            } else if (obj_ncombat.enemy <= eFACTION.NECRONS && _enemy >= eFACTION.ELDAR) {
                 obj_ncombat.threat = _planet_data.planet_forces[_enemy];
-            } else if (_enemy == 30) {
-                obj_ncombat.threat = 1;
             }
 
             _roster = new Roster();

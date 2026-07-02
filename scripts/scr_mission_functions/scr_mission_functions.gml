@@ -86,6 +86,7 @@ function mission_name_key(mission) {
 
 /// @self Struct.PlanetData
 function problem_end_turn_checks(){
+    /// @self Struct.PlanetData
     static problem_functions = {
         "succession" : function(problem_index){
             if (problem_timers[problem_index] > 0){
@@ -194,10 +195,9 @@ function problem_end_turn_checks(){
             if (problem_timers[problem_index] > 0){
                 return;
             }
-            var _alert_text = "The Necron Tomb of planet ";
 
             alter_disposition(eFACTION.INQUISITION, -8);
-            _alert_text += $"{numeral_name} has not been deactivated in time.  It has awakened, rank upon rank of Necrons pouring out to the planet's surface.  The Inquisition is not pleased with your failure.";
+            var _alert_text = $"The Necron Tomb of planet {name()} has not been deactivated in time.  It has awakened, rank upon rank of Necrons pouring out to the planet's surface.  The Inquisition is not pleased with your failure.";
             scr_popup("Inquisition Mission Failed", _alert_text, "necron_army", "");
             scr_event_log("red", $"Inquisition Mission Failed: Bombing run failed; the Necron Tomb on {name()} has become active.");
 
@@ -952,7 +952,7 @@ function remove_star_problem(problem, star = noone) {
         }
     } else {
         with (star) {
-            remove_remove_star_problem(problem);
+            remove_star_problem(problem);
         }
     }
 }

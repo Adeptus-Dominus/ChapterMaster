@@ -4,7 +4,7 @@
 
 # Chapter Master - Adeptus Dominus
 
-[![Release-Development](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/release_dev.yml/badge.svg)](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/release_dev.yml)
+[![Development Release](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/create_release.yml/badge.svg?branch=main)](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/create_release.yml)
 [![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
 [![GitHub repo size](https://img.shields.io/github/repo-size/Adeptus-Dominus/ChapterMaster?style=flat&label=Repo%20Size&labelColor=4493f8&color=545454)](https://github.com/Adeptus-Dominus/ChapterMaster)
 
@@ -46,11 +46,11 @@ Download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/r
 
 Best bet is to ask about everything in our Discord, because things bellow are probably not very helpful at the moment.
 
-- [Working with GameMaker projects](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Working-with-GameMaker-projects)
+- [CONTRIBUTING.md](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CONTRIBUTING.md)
+- [CODE_STYLE.md](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CODE_STYLE.md)
 - [Useful Tools/Resources](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Useful-resources)
-- [Contributing](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Contributing) wiki page (not filled properly)
-- [Code Style](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CODE_STYLE.md) (may be a bit dated)
-- [Code Guidance](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/code_guidance.md) (probably dated as well)
+- [Working with GameMaker projects](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Working-with-GameMaker-projects)
+- [Code Tips](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/code_guidance.md) (probably outdated)
 
 This project exists thanks to all the people who have contributed:
 

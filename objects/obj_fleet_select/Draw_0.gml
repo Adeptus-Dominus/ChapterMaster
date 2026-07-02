@@ -101,7 +101,7 @@ if (!instance_exists(obj_drop_select) && !instance_exists(obj_bomb_select)) {
                 draw_set_font(fnt_40k_14b);
                 var eta = 0;
 
-                eta = calculate_fleet_eta(mine.x, mine.y, sys.x, sys.y, selection_travel_speed,,, player_fleet.warp_able);
+                eta = calculate_fleet_eta(mine.x, mine.y, sys.x, sys.y, selection_travel_speed, true, true, player_fleet.warp_able);
 
                 if ((sys.storm > 0) || (instance_nearest(x, y, obj_star).storm > 0)) {
                     eta = "N/A";

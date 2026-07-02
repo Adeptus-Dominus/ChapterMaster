@@ -8,15 +8,15 @@ global.force_strength_descriptions = [
     "Overwhelming",
 ];
 
-/// @param {Real} planet
-/// @param {Id.Instance.obj_star} system
-function PlanetData(planet, system) constructor {
+/// @param {Real} _planet
+/// @param {Id.Instance.obj_star} _system
+function PlanetData(_planet, _system) constructor {
     //safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
     //disposition
     static large_pop_conversion = 1000000000;
 
-    self.planet = planet;
-    self.system = system;
+    planet = _planet;
+    system = _system;
 
     static refresh_data = function() {
         features = system.p_feature[planet];
@@ -1661,18 +1661,19 @@ function PlanetData(planet, system) constructor {
     };
 
     static draw_planet_population_controls = function() {
-        draw_set_color(c_gray);
-        var _gar_slate = obj_star_select.garrison_data_slate;
-        _gar_slate.sub_title = "";
-        _gar_slate.body_text = "";
-        _gar_slate.title = "";
-        var xx = _gar_slate.XX;
-        var yy = _gar_slate.YY;
-        var _half_way = _gar_slate.height / 2;
-        var spacing_x = 100;
-        var spacing_y = 65;
-        draw_set_halign(fa_left);
         if (!is_hulk) {
+            draw_set_color(c_gray);
+            var _gar_slate = obj_star_select.garrison_data_slate;
+            _gar_slate.sub_title = "";
+            _gar_slate.body_text = "";
+            _gar_slate.title = "";
+            var xx = _gar_slate.XX;
+            var yy = _gar_slate.YY;
+            var _half_way = _gar_slate.height / 2;
+            var spacing_x = 100;
+            var spacing_y = 65;
+            draw_set_halign(fa_left);
+
             var _imperium_status = obj_controller.faction_status[eFACTION.IMPERIUM];
             if ((_imperium_status != "War" && current_owner <= 5) || (_imperium_status == "War")) {
                 var _col_button = obj_star_select.colonist_button;

@@ -85,7 +85,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
                 case "Ork Sniper":
                     spawn_exp = 20;
                     obj_ini.race[target_company][_company_slot] = eFACTION.ORK;
-                    _unit = new TTRPG_stats("ork", target_company, _company_slot, "ork_Sniper");
+                    _unit = new TTRPG_stats("ork", target_company, _company_slot, "ork_sniper");
                     break;
                 case "Flash Git":
                     spawn_exp = 40;

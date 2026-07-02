@@ -1,5 +1,7 @@
+/// @self Id.Instance.obj_controller
 function setup_promotion_popup() {
     if ((sel_promoting == 1) && (!instance_exists(obj_popup))) {
+        /// @self Id.Instance.obj_popup
         var pip = instance_create(0, 0, obj_popup);
         pip.type = 5;
         pip.company = managing;
@@ -150,10 +152,13 @@ function setup_promotion_popup() {
             cancel_button = new UnitButtonObject({x1: 1061, y1: 491, style: "pixel", label: "Cancel"});
             main_slate = new DataSlate({style: "decorated", XX: 1006, YY: 143, set_width: true, width: 571, height: 350});
             target_company_radio(min_exp);
+            target_comp = 0;
+            get_unit_promotion_options();
         }
     }
 }
 
+/// @self Id.Instance.obj_popup
 function target_company_radio(min_exp = 0) {
     var _company_options = [
         {
@@ -179,6 +184,7 @@ function target_company_radio(min_exp = 0) {
     companies_select.current_selection = 0;
 }
 
+/// @self Id.Instance.obj_popup
 function draw_popup_promotion() {
     add_draw_return_values();
     manag = obj_controller.managing;
@@ -215,7 +221,7 @@ function draw_popup_promotion() {
     var role_x = 0;
     role_y = 0;
     if (target_comp != -1) {
-        for (var r = 1; r < array_length(role_name); r++) {
+        for (var r = 1, l = array_length(role_name); r < l; r++) {
             if (role_name[r] != "") {
                 draw_set_alpha(1);
                 check = " ";

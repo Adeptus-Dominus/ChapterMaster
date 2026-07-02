@@ -49,6 +49,8 @@ repeat (100) {
                 good = 1;
             }
         }
+    } else {
+        break;
     }
 }
 
@@ -127,11 +129,11 @@ if (!instance_exists(obj_pnunit)) {
 
 if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
     newline_color = "yellow";
-    if (obj_ncombat.enemy != 6) {
+    if (enemy != eFACTION.ELDAR) {
         combat_emit_enemy_status();
     }
     newline_color = "yellow";
-    if (obj_ncombat.enemy == 6) {
+    if (enemy == eFACTION.ELDAR) {
         var jims;
         jims = 0;
         repeat (20) {
@@ -169,7 +171,7 @@ if (((messages_shown == 999) || (messages == 0)) && (timer_stage == 2)) {
 
 if (((messages_shown == 999) || (messages == 0)) && ((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0)) {
     newline_color = "yellow";
-    if (obj_ncombat.enemy != 6) {
+    if (enemy != eFACTION.ELDAR) {
         var jims;
         jims = 0;
         repeat (20) {
@@ -199,7 +201,7 @@ if (((messages_shown == 999) || (messages == 0)) && ((timer_stage == 4) || (time
         }
     }
     newline_color = "yellow";
-    if (obj_ncombat.enemy == 6) {
+    if (enemy == eFACTION.ELDAR) {
         if (enemy_forces > 0) {
             newline = "Enemy Forces at " + string(max(1, round((enemy_forces / enemy_max) * 100))) + "%";
         }

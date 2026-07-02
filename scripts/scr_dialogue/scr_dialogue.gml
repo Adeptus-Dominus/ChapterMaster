@@ -402,27 +402,27 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 obj_ncombat.local_forces = 0;
 
                 if (diplo_keyphrase == "cs_meeting_battle1") {
-                    obj_ncombat.enemy = 1;
+                    obj_ncombat.enemy = eFACTION.PLAYER;
                     obj_ncombat.threat = 2;
                 }
                 if (diplo_keyphrase == "cs_meeting_battle2") {
-                    obj_ncombat.enemy = 1;
+                    obj_ncombat.enemy = eFACTION.PLAYER;
                     obj_ncombat.threat = 1;
                 }
                 if (diplo_keyphrase == "cs_meeting_battle5") {
-                    obj_ncombat.enemy = 10;
+                    obj_ncombat.enemy = eFACTION.CHAOS;
                     obj_ncombat.threat = 3;
                 }
                 if (diplo_keyphrase == "cs_meeting_battle6") {
-                    obj_ncombat.enemy = 10;
+                    obj_ncombat.enemy = eFACTION.CHAOS;
                     obj_ncombat.threat = 3;
                 }
                 if (diplo_keyphrase == "cs_meeting_battle7") {
-                    obj_ncombat.enemy = 1;
+                    obj_ncombat.enemy = eFACTION.PLAYER;
                     obj_ncombat.threat = 2;
                 }
 
-                if ((obj_ncombat.enemy == 10) && (obj_controller.faction_defeated[10] == 0)) {
+                if ((obj_ncombat.enemy == eFACTION.CHAOS) && (obj_controller.faction_defeated[10] == 0)) {
                     obj_ncombat.leader = 1;
 
                     with (obj_star) {

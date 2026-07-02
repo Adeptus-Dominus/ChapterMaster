@@ -85,8 +85,25 @@ enum eEQUIPMENT_SLOT {
     ALL,
 }
 
+enum eROLE_TAG {
+    Techmarine = 0,
+    Librarian = 1,
+    Chaplain = 2,
+    Apothecary = 3,
+}
+
 function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}) constructor {
+    // Metadata
     uid = scr_uuid_generate();
+    company = comp; //marine company
+    marine_number = mar; //marine number in company
+    squad = "none";
+    base_group = "none";
+    job = "none";
+    manage_tags = [];
+    spawn_data = other_spawn_data;
+
+    // Core RPG Stats
     constitution = 0;
     strength = 0;
     luck = 0;
@@ -98,60 +115,275 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     intelligence = 0;
     weapon_skill = 0;
     ballistic_skill = 0;
-    size = 0;
+
+    // Location Data
     planet_location = 0;
     location_string = "";
-    if (!instance_exists(obj_controller) && class != "blank") {
-        //game start unit planet location
-        planet_location = obj_ini.home_planet;
-    }
     ship_location = -1;
     last_ship = {
         uid: "",
         name: "",
     };
-    religion = "none";
-    job = "none";
-    psionic = 0;
-    corruption = 0;
-    religion_sub_cult = "none";
-    base_group = "none";
-    role_history = [];
+
+    // Lore
+    allegiance = faction; //faction alligience defaults to the chapter
+    loyalty = 0;
     epithets = [];
-    enum eROLE_TAG {
-        Techmarine = 0,
-        Librarian = 1,
-        Chaplain = 2,
-        Apothecary = 3,
-    }
+    role_history = [];
     role_tag = [
         0,
         0,
         0,
         0
-    ]; // [Techmarine, Librarian, Chaplain, Apothecary] // maybe add to list instead?
+    ]; // [Techmarine, Librarian, Chaplain, Apothecary] maybe add to list instead?
+
+    // Psy and religion
+    religion = "none";
+    religion_sub_cult = "none";
+    corruption = 0;
+    psionic = 0;
+    powers_known = [];
+
+    // Health
+    body = generate_marine_body();
+    unit_health = 0;
+    bionics = 0;
+    size = 0;
+
+    // Progression
+    experience = 0;
+    stat_point_exp_marker = 0;
+    turn_stat_gains = {};
+    traits = []; //marine trait list
+    feats = [];
+
+    // Customization
+    personal_livery = {};
+
+    // Equipment
+    gear_quality = "standard";
+    armour_quality = "standard";
+    mobility_item_quality = "standard";
+    weapon_one_quality = "standard";
+    weapon_two_quality = "standard";
+    weapon_one_data = {
+        quality: "standard",
+    };
+
+    // Combat States
     encumbered_ranged = false;
     encumbered_melee = false;
-    company = comp; //marine company
-    marine_number = mar; //marine number in company
-    squad = "none";
-    stat_point_exp_marker = 0;
-    bionics = 0;
-    spawn_data = other_spawn_data;
-    unit_health = 0;
+    is_boarder = false;
+
+    if (!instance_exists(obj_controller) && class != "blank") {
+        //game start unit planet location
+        planet_location = obj_ini.home_planet;
+    }
+
     if (faction == "chapter" && !struct_exists(spawn_data, "recruit_data")) {
         spawn_data.recruit_data = {
             recruit_world: obj_ini.recruiting_type,
             aspirant_trial: obj_ini.recruit_trial,
         };
     }
-    experience = 0;
-    turn_stat_gains = {};
-    powers_known = [];
 
-    personal_livery = {};
+    //takes dict and plumbs dict values into unit struct
+    if (array_contains(variable_struct_get_names(global.base_stats), class)) {
+        load_json_data(global.base_stats[$ class]);
+    }
 
-    manage_tags = [];
+    if (struct_exists(self, "start_gear")) {
+        if (base_group != "marine") {
+            alter_equipment(start_gear, false, false);
+        } else {
+            alter_equipment(start_gear, true, true);
+        }
+    }
+
+    var stats = [
+        "constitution",
+        "strength",
+        "luck",
+        "dexterity",
+        "wisdom",
+        "piety",
+        "charisma",
+        "technology",
+        "intelligence",
+        "weapon_skill",
+        "ballistic_skill"
+    ];
+
+    for (var stat_iter = 0; stat_iter < array_length(stats); stat_iter++) {
+        if (struct_exists(self, stats[stat_iter])) {
+            if (is_array(variable_struct_get(self, stats[stat_iter]))) {
+                var edit_stat = variable_struct_get(self, stats[stat_iter]);
+                var stat_mod = floor(gauss(edit_stat[0], edit_stat[1]));
+                if (array_length(edit_stat) > 2) {
+                    if (edit_stat[2] == "max") {
+                        variable_struct_set(self, stats[stat_iter], max(stat_mod, edit_stat[0]));
+                    } else if (edit_stat[2] == "min") {
+                        variable_struct_set(self, stats[stat_iter], min(stat_mod, edit_stat[0]));
+                    } else {
+                        variable_struct_set(self, stats[stat_iter], stat_mod);
+                    }
+                } else {
+                    variable_struct_set(self, stats[stat_iter], stat_mod);
+                }
+            }
+        }
+    }
+
+    /*ey so i got this concept where basically take away luck, ballistic_skill and weapon_skill 
+    there are 8 other stats each of which will have more attached aspects and game play elements 
+    they effect as time goes on, so that means between the 8 other stats if you had a choice of two 
+    there are 64 (or 56 if you exclude double counts) variations of a choice of two, this means each 
+    chapter could have two "values" maybe in terms of recruitment maybe in terms of just general chapter stuff. 
+    that could be chosen to give boostes to the other stats
+    so as an example salamanders could have the chapter values as  */
+
+    switch (base_group) {
+        case "astartes": //basic marine class //adds specific mechanics not releveant to most units
+            loyalty = 100;
+
+            var _astartes_trait_dist = global.astartes_trait_dist;
+            distribute_traits(_astartes_trait_dist);
+
+            if (instance_exists(obj_controller)) {
+                role_history = [
+                    [
+                        obj_ini.role[company][marine_number],
+                        obj_controller.turn
+                    ]
+                ]; //marines_promotion and demotion history
+                marine_ascension = (obj_controller.millenium * 1000) + obj_controller.year; // on what day did this marine begin to exist
+            } else {
+                role_history = [];
+                marine_ascension = 0; // on what turn did this marine begin to exist
+            }
+
+            roll_psionics();
+
+            alter_body("torso", "black_carapace", true);
+            if (class == "scout" && global.chapter_name != "Space Wolves") {
+                alter_body("torso", "black_carapace", false);
+            }
+            if (faction == "chapter") {
+                allegiance = global.chapter_name;
+            }
+
+            static assign_inherent_mutations = function() {
+                gene_seed_mutations = {
+                    "preomnor": obj_ini.preomnor,
+                    "lyman": obj_ini.lyman,
+                    "omophagea": obj_ini.omophagea,
+                    "ossmodula": obj_ini.ossmodula,
+                    "zygote": obj_ini.zygote,
+                    "betchers": obj_ini.betchers,
+                    "catalepsean": obj_ini.catalepsean,
+                    "occulobe": obj_ini.occulobe,
+                    "mucranoid": obj_ini.mucranoid,
+                    "membrane": obj_ini.membrane,
+                    "voice": obj_ini.voice,
+                };
+            };
+
+            static assign_random_mutations = function() {
+                var _mutation_roll = roll_dice_unit(1, 100, "high", self);
+                var _mutation_threshold = 100 - obj_ini.stability;
+                if (_mutation_roll <= _mutation_threshold) {
+                    var _mutation_names = struct_get_names(gene_seed_mutations);
+                    var _possible_mutations = [];
+                    for (var i = 0; i < array_length(_mutation_names); i++) {
+                        var _mutation = _mutation_names[i];
+                        if (gene_seed_mutations[$ _mutation] == 0) {
+                            array_push(_possible_mutations, _mutation);
+                        }
+                    }
+
+                    var _mutations_assigned = 0;
+                    repeat (array_length(_possible_mutations)) {
+                        if (array_length(_possible_mutations) > 0) {
+                            var _picked_mutation = array_random_index(_possible_mutations);
+                            gene_seed_mutations[$ _possible_mutations[_picked_mutation]] = 1;
+                            array_delete(_possible_mutations, _picked_mutation, 1);
+                            _mutations_assigned++;
+                            _mutation_threshold = max(_mutation_threshold - 5 * _mutations_assigned, 0);
+                            if (_mutation_roll <= _mutation_threshold) {
+                                continue;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            };
+
+            assign_inherent_mutations();
+            assign_random_mutations();
+
+            if (gene_seed_mutations[$ "voice"] == 1) {
+                charisma -= 2;
+            }
+
+            if ((global.chapter_name == "Space Wolves") || (obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES)) {
+                religion_sub_cult = "The Allfather";
+            } else if ((global.chapter_name == "Salamanders") || (obj_ini.progenitor == ePROGENITOR.SALAMANDERS)) {
+                religion_sub_cult = "The Promethean Cult";
+            } else if (global.chapter_name == "Iron Hands" || obj_ini.progenitor == ePROGENITOR.IRON_HANDS) {
+                religion_sub_cult = "The Cult of Iron";
+            }
+
+            if (global.chapter_name == "Deathwatch") {
+                personal_livery.right_pauldron = irandom(30);
+            }
+
+            var _robe_chance = 5;
+            if (global.chapter_name == "Black Templars") {
+                _robe_chance += 70;
+            } else if (scr_has_style("Knightly")) {
+                _robe_chance += 50;
+            }
+            if (irandom(100) <= _robe_chance) {
+                body.torso.robes = irandom(2);
+                if (body[$ "torso"].robes == 0 && irandom(1) == 0) {
+                    body[$ "head"].hood = 1;
+                }
+            }
+
+            var _cloak_chance = 5;
+            if (role() == obj_ini.role[100][eROLE.CHAPLAIN]) {
+                _cloak_chance += 25;
+            } else if (IsSpecialist(SPECIALISTS_LIBRARIANS)) {
+                _cloak_chance += 75;
+            }
+            if (irandom(100) <= _cloak_chance) {
+                if (global.chapter_name == "Salamanders") {
+                    body.cloak.type = "scale";
+                } else if (global.chapter_name == "Space Wolves") {
+                    body.cloak.type = "pelt";
+                } else {
+                    body.cloak.type = "cloth";
+                    body.cloak.variation = irandom(100);
+                    body.cloak.image_0 = irandom(100);
+                    body.cloak.image_1 = irandom(100);
+                }
+            }
+            break;
+        case "tech_priest":
+            loyalty = obj_controller.disposition[eFACTION.MECHANICUS] - 10;
+            religion = "cult_mechanicus";
+            bionics = irandom(5) + 4;
+            add_trait("flesh_is_weak");
+            psionic = irandom(4);
+            break;
+    }
+
+    if (base_group != "none") {
+        update_health(max_health()); //set marine unit_health to max
+    }
 
     static set_exp = function(new_val) {
         experience = new_val;
@@ -360,9 +592,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return size;
     };
 
-    mobility_item_quality = "standard";
-    armour_quality = "standard";
-
     //Unit update equip slot functions held in sscr_unit_equip_functions
     static update_armour = scr_update_unit_armour;
     static update_weapon_one = scr_update_unit_weapon_one;
@@ -371,25 +600,26 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static update_mobility_item = scr_update_unit_mobility_item;
 
     static max_health = function(base = false) {
-        var max_h = 100 * (1 + ((constitution - 40) * 0.05));
+        var _max_h = max(1, constitution * 3);
+
         if (!base) {
-            max_h += gear_weapon_data("armour", armour(), "hp_mod");
-            max_h += gear_weapon_data("gear", gear(), "hp_mod");
-            max_h += gear_weapon_data("mobility", mobility_item(), "hp_mod");
-            max_h += gear_weapon_data("weapon", weapon_one(), "hp_mod");
-            max_h += gear_weapon_data("weapon", weapon_two(), "hp_mod");
+            var _gear_mod = 100;
+            _gear_mod += get_armour_data("hp_mod");
+            _gear_mod += get_gear_data("hp_mod");
+            _gear_mod += get_mobility_data("hp_mod");
+            _gear_mod += get_weapon_one_data("hp_mod");
+            _gear_mod += get_weapon_two_data("hp_mod");
+            _gear_mod /= 100;
+            _max_h *= _gear_mod;
         }
         if (role() == "Guard Squad") {
-            max_h *= GUARD_SQUAD_SIZE; // a squad shares one pooled health bar and dies as a whole
+            _max_h *= GUARD_SQUAD_SIZE; // a squad shares one pooled health bar and dies as a whole
         }
         if (role() == "Heavy Weapons Team") {
-            max_h *= GUARD_HEAVY_WEAPONS_TEAM_SIZE; // a 3-man weapons team shares one pooled health bar
+            _max_h *= GUARD_HEAVY_WEAPONS_TEAM_SIZE; // a 3-man weapons team shares one pooled health bar
         }
-        return max_h;
-    };
 
-    static increase_max_health = function(increase) {
-        return max_health() + (increase * (1 + ((constitution - 40) * 0.05))); //calculate the effect of unit_health buffs
+        return round(_max_h);
     };
 
     // used both to load unit data from save and to add preset base_stats
@@ -404,10 +634,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             ERROR_HANDLER.handle_exception(_exception);
         }
     };
-
-    traits = []; //marine trait list
-    feats = [];
-    allegiance = faction; //faction alligience defaults to the chapter
 
     static stat_boosts = function(stat_boosters) {
         var stats = global.stat_list;
@@ -514,44 +740,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return equip_data;
     };
 
-    //takes dict and plumbs dict values into unit struct
-    if (array_contains(variable_struct_get_names(global.base_stats), class)) {
-        load_json_data(global.base_stats[$ class]);
-    }
-    var stats = [
-        "constitution",
-        "strength",
-        "luck",
-        "dexterity",
-        "wisdom",
-        "piety",
-        "charisma",
-        "technology",
-        "intelligence",
-        "weapon_skill",
-        "ballistic_skill"
-    ];
-    for (var stat_iter = 0; stat_iter < array_length(stats); stat_iter++) {
-        if (struct_exists(self, stats[stat_iter])) {
-            if (is_array(variable_struct_get(self, stats[stat_iter]))) {
-                var edit_stat = variable_struct_get(self, stats[stat_iter]);
-                var stat_mod = floor(gauss(edit_stat[0], edit_stat[1]));
-                if (array_length(edit_stat) > 2) {
-                    if (edit_stat[2] == "max") {
-                        variable_struct_set(self, stats[stat_iter], max(stat_mod, edit_stat[0]));
-                    } else if (edit_stat[2] == "min") {
-                        variable_struct_set(self, stats[stat_iter], min(stat_mod, edit_stat[0]));
-                    } else {
-                        variable_struct_set(self, stats[stat_iter], stat_mod);
-                    }
-                } else {
-                    variable_struct_set(self, stats[stat_iter], stat_mod);
-                }
-            }
-        }
-    }
-    body = generate_marine_body();
-
     //body parts list can be extended as much as people want
 
     static alter_body = function(body_slot, body_item_key, new_body_data, overwrite = true) {
@@ -566,14 +754,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static get_body_data = scr_get_body_data;
-
-    if (struct_exists(self, "start_gear")) {
-        if (base_group != "marine") {
-            alter_equipment(start_gear, false, false);
-        } else {
-            alter_equipment(start_gear, true, true);
-        }
-    }
 
     static equipment_has_tag = function(tag, area) {
         var _tags = [];
@@ -614,154 +794,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         burden /= 1 / (technology / 35);
         return burden;
     };
-
-    /*ey so i got this concept where basically take away luck, ballistic_skill and weapon_skill 
-	there are 8 other stats each of which will have more attached aspects and game play elements 
-	they effect as time goes on, so that means between the 8 other stats if you had a choice of two 
-	there are 64 (or 56 if you exclude double counts) variations of a choice of two, this means each 
-	chapter could have two "values" maybe in terms of recruitment maybe in terms of just general chapter stuff. 
-	that could be chosen to give boostes to the other stats
-	so as an example salamanders could have the chapter values as  */
-    loyalty = 0;
-
-    switch (base_group) {
-        case "astartes": //basic marine class //adds specific mechanics not releveant to most units
-            loyalty = 100;
-
-            var _astartes_trait_dist = global.astartes_trait_dist;
-            distribute_traits(_astartes_trait_dist);
-
-            if (instance_exists(obj_controller)) {
-                role_history = [
-                    [
-                        obj_ini.role[company][marine_number],
-                        obj_controller.turn
-                    ]
-                ]; //marines_promotion and demotion history
-                marine_ascension = (obj_controller.millenium * 1000) + obj_controller.year; // on what day did this marine begin to exist
-            } else {
-                role_history = [];
-                marine_ascension = 0; // on what turn did this marine begin to exist
-            }
-
-            roll_psionics();
-
-            alter_body("torso", "black_carapace", true);
-            if (class == "scout" && global.chapter_name != "Space Wolves") {
-                alter_body("torso", "black_carapace", false);
-            }
-            if (faction == "chapter") {
-                allegiance = global.chapter_name;
-            }
-
-            static assign_inherent_mutations = function() {
-                gene_seed_mutations = {
-                    "preomnor": obj_ini.preomnor,
-                    "lyman": obj_ini.lyman,
-                    "omophagea": obj_ini.omophagea,
-                    "ossmodula": obj_ini.ossmodula,
-                    "zygote": obj_ini.zygote,
-                    "betchers": obj_ini.betchers,
-                    "catalepsean": obj_ini.catalepsean,
-                    "occulobe": obj_ini.occulobe,
-                    "mucranoid": obj_ini.mucranoid,
-                    "membrane": obj_ini.membrane,
-                    "voice": obj_ini.voice,
-                };
-            };
-
-            static assign_random_mutations = function() {
-                var _mutation_roll = roll_dice_unit(1, 100, "high", self);
-                var _mutation_threshold = 100 - obj_ini.stability;
-                if (_mutation_roll <= _mutation_threshold) {
-                    var _mutation_names = struct_get_names(gene_seed_mutations);
-                    var _possible_mutations = [];
-                    for (var i = 0; i < array_length(_mutation_names); i++) {
-                        var _mutation = _mutation_names[i];
-                        if (gene_seed_mutations[$ _mutation] == 0) {
-                            array_push(_possible_mutations, _mutation);
-                        }
-                    }
-
-                    var _mutations_assigned = 0;
-                    repeat (array_length(_possible_mutations)) {
-                        if (array_length(_possible_mutations) > 0) {
-                            var _picked_mutation = array_random_index(_possible_mutations);
-                            gene_seed_mutations[$ _possible_mutations[_picked_mutation]] = 1;
-                            array_delete(_possible_mutations, _picked_mutation, 1);
-                            _mutations_assigned++;
-                            _mutation_threshold = max(_mutation_threshold - 5 * _mutations_assigned, 0);
-                            if (_mutation_roll <= _mutation_threshold) {
-                                continue;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                }
-            };
-
-            assign_inherent_mutations();
-            assign_random_mutations();
-
-            if (gene_seed_mutations[$ "voice"] == 1) {
-                charisma -= 2;
-            }
-
-            if ((global.chapter_name == "Space Wolves") || (obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES)) {
-                religion_sub_cult = "The Allfather";
-            } else if ((global.chapter_name == "Salamanders") || (obj_ini.progenitor == ePROGENITOR.SALAMANDERS)) {
-                religion_sub_cult = "The Promethean Cult";
-            } else if (global.chapter_name == "Iron Hands" || obj_ini.progenitor == ePROGENITOR.IRON_HANDS) {
-                religion_sub_cult = "The Cult of Iron";
-            }
-
-            if (global.chapter_name == "Deathwatch") {
-                personal_livery.right_pauldron = irandom(30);
-            }
-
-            var _robe_chance = 5;
-            if (global.chapter_name == "Black Templars") {
-                _robe_chance += 70;
-            } else if (scr_has_style("Knightly")) {
-                _robe_chance += 50;
-            }
-            if (irandom(100) <= _robe_chance) {
-                body.torso.robes = irandom(2);
-                if (body[$ "torso"].robes == 0 && irandom(1) == 0) {
-                    body[$ "head"].hood = 1;
-                }
-            }
-
-            var _cloak_chance = 5;
-            if (role() == obj_ini.role[100][eROLE.CHAPLAIN]) {
-                _cloak_chance += 25;
-            } else if (IsSpecialist(SPECIALISTS_LIBRARIANS)) {
-                _cloak_chance += 75;
-            }
-            if (irandom(100) <= _cloak_chance) {
-                if (global.chapter_name == "Salamanders") {
-                    body.cloak.type = "scale";
-                } else if (global.chapter_name == "Space Wolves") {
-                    body.cloak.type = "pelt";
-                } else {
-                    body.cloak.type = "cloth";
-                    body.cloak.variation = irandom(100);
-                    body.cloak.image_0 = irandom(100);
-                    body.cloak.image_1 = irandom(100);
-                }
-            }
-            break;
-        case "tech_priest":
-            loyalty = obj_controller.disposition[eFACTION.MECHANICUS] - 10;
-            religeon = "cult_mechanicus";
-            bionics = irandom(5) + 4;
-            add_trait("flesh_is_weak");
-            psionic = irandom(4);
-            break;
-    }
 
     static race = function() {
         return obj_ini.race[company][marine_number];
@@ -935,14 +967,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return obj_ini.artifact[wep];
     };
 
-    is_boarder = false;
-
-    gear_quality = "standard";
-
-    if (base_group != "none") {
-        update_health(max_health()); //set marine unit_health to max
-    }
-
     static weapon_one = function(raw = false) {
         var wep = obj_ini.wep1[company][marine_number];
         if (is_string(wep) || raw) {
@@ -991,11 +1015,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
     };
 
-    weapon_one_data = {
-        quality: "standard",
-    };
-    weapon_one_quality = "standard";
-
     static weapon_viable = function(new_weapon, quality) {
         viable = true;
         qual_string = quality;
@@ -1030,8 +1049,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
         return obj_ini.artifact[wep];
     };
-
-    weapon_two_quality = "standard";
 
     static specials = function() {
         return obj_ini.spe[company][marine_number];

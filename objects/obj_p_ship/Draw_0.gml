@@ -34,7 +34,6 @@ if (name != "") {
     draw_self();
 
     shader_reset();
-    draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_info);
     draw_set_halign(fa_center);
 
@@ -42,25 +41,10 @@ if (name != "") {
         // draw_sprite(spr_force_icon,0,x-16,y+12);
         scr_image("ui/force", 1, x - 16 - 32, y + 12 - 32, 64, 64);
 
-        draw_set_color(0);
-        draw_text(x - 16, y + 12, string_hash_to_newline(string(boarders)));
-        draw_text(x - 16 - 1, y + 12 - 1, string_hash_to_newline(string(boarders)));
-        draw_text(x - 16 + 1, y + 12 + 1, string_hash_to_newline(string(boarders)));
-        draw_text(x - 16 + 1, y + 12, string_hash_to_newline(string(boarders)));
-        draw_set_color(c_white);
-        draw_text(x - 16, y + 12, string_hash_to_newline(string(boarders)));
+        draw_text_outline(x - 16, y + 12, boarders,,c_white);
     }
-    draw_set_color(CM_GREEN_COLOR);
 
-    if (maxhp != 0) {
-        var _value = shields <= 0 ? hp / maxhp : shields / maxshields;
-
-        if (obj_controller.zoomed == 0) {
-            draw_text(x, y - sprite_height, string_hash_to_newline(string(floor(_value * 100)) + "%"));
-        } else {
-            draw_text_transformed(x, y - sprite_height, string_hash_to_newline(string(floor(_value * 100)) + "%"), 2, 2, 0);
-        }
-    }
+    draw_ship_status_overlay(self, CM_GREEN_COLOR, COL_REQUISITION);
 
     if (master_present != 0) {
         draw_sprite_ext(spr_popup_select, 0, x, y, 2, 2, 0, c_white, 1);
