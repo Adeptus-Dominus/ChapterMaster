@@ -589,7 +589,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
     }
     if (is_man) {
         force_tool = 0;
-        if ((temp[101] == $"{_unit.role()} {_unit.name}") && ((temp[102] != _unit.armour()) || (temp[104] != _unit.gear()) || (temp[106] == _unit.mobility_item()) || (temp[108] != _unit.weapon_one()) || (temp[110] != _unit.weapon_two()) || (temp[114] == "refresh"))) {
+        if ((temp[101] == $"{_unit.role()} {_unit.name}") && ((temp[102] != _unit.armour()) || (temp[104] != _unit.gear()) || (temp[106] != _unit.mobility_item()) || (temp[108] != _unit.weapon_one()) || (temp[110] != _unit.weapon_two()))) {
             force_tool = 1;
         }
 
