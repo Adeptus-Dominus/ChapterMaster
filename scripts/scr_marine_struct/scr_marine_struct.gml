@@ -583,8 +583,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         // Astartes, so a single trooper takes only a tenth of a marine's berth. A Guard
         // Squad is left at a full slot, since one already stands in for a whole squad. A
         // Guard Sergeant bunks with his men, so he takes the same tenth-slot as a trooper.
-        if (unit_role == "Guardsman" || unit_role == "Guard Sergeant" || unit_role == "Veteran Guard" || unit_role == "Heavy Weapons Team") {
+        if (unit_role == "Guardsman" || unit_role == "Guard Sergeant" || unit_role == "Veteran Guard") {
             size = 0.1;
+            return size;
+        }
+        // Heavy Weapons Team: three crew plus the gun and its ammunition. Half a marine
+        // berth rather than a lone trooper's tenth-slot.
+        if (unit_role == "Heavy Weapons Team") {
+            size = 0.5;
             return size;
         }
         if (string_count("Dread", arm) > 0) {
@@ -1249,6 +1255,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         } else if (base_group == "human") {
             ranged_hands_limit = 1;
         }
+        if (role() == "Heavy Weapons Team") {
+            // A weapons team is GUARD_HEAVY_WEAPONS_TEAM_SIZE crew serving one deployed
+            // emplacement, not one man hauling it. The human base of 1 left every
+            // ranged_hands 2 heavy weapon (Heavy Bolter, Lascannon, Autocannon) over the
+            // cap, so the team fired its own gun permanently encumbered. Give the unit
+            // the crew's combined hands instead.
+            ranged_hands_limit = GUARD_HEAVY_WEAPONS_TEAM_SIZE;
+        }
         carry_string += $"Base: {ranged_hands_limit}#";
         if (strength >= 50) {
             ranged_hands_limit += 0.5;
@@ -1445,7 +1459,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         } else if (base_group == "human") {
             melee_hands_limit = 1;
         }
-        carry_string += "Base: 2#";
+        if (role() == "Heavy Weapons Team") {
+            // Crew hands, matching the ranged cap above.
+            melee_hands_limit = GUARD_HEAVY_WEAPONS_TEAM_SIZE;
+        }
+        carry_string += $"Base: {melee_hands_limit}#";
         if (strength >= 50) {
             melee_hands_limit += 0.25;
             carry_string += "STR: +0.25#";
