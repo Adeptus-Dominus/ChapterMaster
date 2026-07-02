@@ -173,16 +173,16 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                         boarding_disadvantage -= 5;
                     }
                 }
-                if ((target.owner == eFACTION.IMPERIUM) || ((target.owner == eFACTION.CHAOS) && (obj_fleet.csm_exp == 0))) {
+                if ((target.owner == eFACTION.IMPERIUM) || ((target.owner == eFACTION.CHAOS) && (obj_fleet.chaos_exp == 0))) {
                     boarding_disadvantage -= 0;
                 } // Cultists/Pirates/Humans
                 if ((target.owner == eFACTION.PLAYER) || (target.owner == eFACTION.ECCLESIARCHY) || (target.owner == eFACTION.ORK) || (target.owner == eFACTION.ELDAR) || (target.owner == eFACTION.NECRONS)) {
                     boarding_disadvantage -= 10;
                 }
-                if ((target.owner == eFACTION.CHAOS) && (obj_fleet.csm_exp == 1)) {
+                if ((target.owner == eFACTION.CHAOS) && (obj_fleet.chaos_exp == 1)) {
                     boarding_disadvantage -= 20;
                 } //       Veteran marines
-                if (((target.owner == eFACTION.CHAOS) && (obj_fleet.csm_exp == 2)) || (target.owner == eFACTION.TYRANIDS)) {
+                if (((target.owner == eFACTION.CHAOS) && (obj_fleet.chaos_exp == 2)) || (target.owner == eFACTION.TYRANIDS)) {
                     boarding_disadvantage -= 30;
                 } // Daemons, veteran CSM, tyranids
 
@@ -226,10 +226,10 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                             if ((target.owner == eFACTION.ECCLESIARCHY) || (target.owner == eFACTION.ORK) || (target.owner == eFACTION.ELDAR) || (target.owner == eFACTION.NECRONS)) {
                                 experience += 1;
                             }
-                            if ((target.owner == eFACTION.CHAOS) && (obj_fleet.csm_exp == 1)) {
+                            if ((target.owner == eFACTION.CHAOS) && (obj_fleet.chaos_exp == 1)) {
                                 experience += 2;
                             }
-                            if ((target.owner == eFACTION.CHAOS) && (obj_fleet.csm_exp == 2)) {
+                            if ((target.owner == eFACTION.CHAOS) && (obj_fleet.chaos_exp == 2)) {
                                 experience += 3;
                             }
                             if (target.owner == eFACTION.TYRANIDS) {

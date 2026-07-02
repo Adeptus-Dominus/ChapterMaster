@@ -71,11 +71,11 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
                 }
             }
 
-            if (battle_special[current_battle] == "csm") {
-                obj_fleet.csm_exp = 1;
+            if (battle_special[current_battle] == "chaos") {
+                obj_fleet.chaos_exp = 1;
             }
             if (battle_special[current_battle] == "BLOOD") {
-                obj_fleet.csm_exp = 2;
+                obj_fleet.chaos_exp = 2;
             }
 
             instance_activate_all();

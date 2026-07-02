@@ -273,7 +273,7 @@ function drop_select_unit_selection() {
                 tau,
                 tyranids,
                 traitors,
-                csm,
+                chaos,
                 demons,
                 necrons
             ];

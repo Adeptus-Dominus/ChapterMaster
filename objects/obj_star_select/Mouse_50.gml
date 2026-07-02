@@ -115,7 +115,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
 
                     var e = 1;
                     var khorne_count = 0;
-                    var chaos_space_marine_count = 0;
+                    var chaos_count = 0;
                     var en_capitals, en_frigates, en_escorts;
                     repeat (9) {
                         e += 1;
@@ -134,8 +134,8 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
                                     if (fleet_has_cargo("warband")) {
                                         khorne_count++;
                                     }
-                                    if (fleet_has_cargo("csm")) {
-                                        chaos_space_marine_count++;
+                                    if (fleet_has_cargo("chaos")) {
+                                        chaos_count++;
                                     }
                                 }
                             }
@@ -193,11 +193,11 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
                     // Plug in all of the enemies first
                     // And then plug in the allies after then with their status set to positive
 
-                    if (chaos_space_marine_count) {
-                        obj_fleet.csm_exp = 1;
+                    if (chaos_count) {
+                        obj_fleet.chaos_exp = 1;
                     }
                     if (khorne_count) {
-                        obj_fleet.csm_exp = 2;
+                        obj_fleet.chaos_exp = 2;
                     }
 
                     for (var i = 0; i < target.planets; i++) {

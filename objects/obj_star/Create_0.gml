@@ -101,6 +101,7 @@ get_sabatours = function(planet){
     return _gar;
 }
 
+/// @returns {Struct.PlanetData}
 get_planet_data = function(planet){
     var _gar = system_datas[planet];
     if (_gar == false){

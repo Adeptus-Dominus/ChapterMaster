@@ -488,7 +488,7 @@ function scr_enemy_ai_e() {
                                 if (string_count("warband", trade_goods) > 0) {
                                     instance_create(x, y, obj_temp2);
                                 }
-                                if (string_lower(trade_goods) == "csm") {
+                                if (string_lower(trade_goods) == "chaos") {
                                     instance_create(x, y, obj_temp3);
                                 }
                             }
@@ -500,7 +500,7 @@ function scr_enemy_ai_e() {
                             }
                         }
                         if (instance_exists(obj_temp3)) {
-                            obj_turn_end.battle_special[obj_turn_end.battles] = "CSM";
+                            obj_turn_end.battle_special[obj_turn_end.battles] = "CHAOS";
                             with (obj_temp2) {
                                 instance_destroy();
                             }
@@ -632,13 +632,13 @@ function scr_enemy_ai_e() {
                         break;
                     case 10:
                         pause = has_problem_planet(run, "meeting") || has_problem_planet(run, "meeting_trap");
-                        if (p_guardsmen[run] + p_pdf[run] == 0 && p_player[run] > 0 && p_traitors[run] > 0 && !pause && obj_controller.faction_status[10] == "War") {
+                        if (p_guardsmen[run] + p_pdf[run] == 0 && p_player[run] > 0 && p_chaos[run] > 0 && !pause && obj_controller.faction_status[10] == "War") {
                             battle_opponent = 10;
                         }
                         break;
                     case 11:
                         pause = has_problem_planet(run, "meeting") || has_problem_planet(run, "meeting_trap");
-                        if (p_guardsmen[run] + p_pdf[run] == 0 && p_player[run] > 0 && p_chaos[run] > 0 && !pause && obj_controller.faction_status[10] == "War") {
+                        if (p_guardsmen[run] + p_pdf[run] == 0 && p_player[run] > 0 && p_traitors[run] > 0 && !pause && obj_controller.faction_status[10] == "War") {
                             battle_opponent = 11;
                         }
                         break;

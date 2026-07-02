@@ -434,13 +434,13 @@ if (defeat == 0 && _reduce_power) {
         enemy_power = battle_object.p_tyranids[battle_id];
         part10 = "Tyranid";
     } else if (enemy == eFACTION.CHAOS) {
-        enemy_power = battle_object.p_traitors[battle_id];
+        enemy_power = battle_object.p_chaos[battle_id];
         part10 = "Heretic";
         if (threat == 7) {
             part10 = "Daemon";
         }
     } else if (enemy == eFACTION.HERETICS) {
-        enemy_power = battle_object.p_chaos[battle_id];
+        enemy_power = battle_object.p_traitors[battle_id];
         part10 = "Chaos Space Marine";
     } else if (enemy == eFACTION.NECRONS) {
         enemy_power = battle_object.p_necrons[battle_id];
@@ -672,7 +672,7 @@ if (obj_ini.omophagea) {
     if ((enemy == eFACTION.NECRONS) || (enemy == eFACTION.TYRANIDS) || (battle_special == "ship_demon")) {
         eatme += 100;
     }
-    if ((enemy == eFACTION.CHAOS) && (battle_object.p_traitors[battle_id] == 7)) {
+    if ((enemy == eFACTION.CHAOS) && (battle_object.p_chaos[battle_id] == 7)) {
         eatme += 200;
     }
 

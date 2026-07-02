@@ -86,11 +86,11 @@ function scr_enemy_ai_a() {
         var pdf_score = 0;
         var eldar_score = 0;
 
-        var guard_attack = "", pdf_attack = "", ork_attack = "", tau_attack = "", traitors_attack = "", csm_attack = "";
+        var guard_attack = "", pdf_attack = "", ork_attack = "", tau_attack = "", traitors_attack = "", chaos_attack = "";
         var eldar_attack = "", tyranids_attack = "", necrons_attack = "", sisters_attack = "";
 
         var traitors_score = p_traitors[_run];
-        var csm_score = p_chaos[_run];
+        var chaos_score = p_chaos[_run];
         var tyranids_score = p_tyranids[_run];
         var necrons_score = p_necrons[_run];
         var sisters_score = p_sisters[_run];
@@ -167,7 +167,7 @@ function scr_enemy_ai_a() {
                     sisters_attack = "traitors";
                 }
                 if (p_chaos[_run] > 0) {
-                    sisters_attack = "csm";
+                    sisters_attack = "chaos";
                 }
                 if ((p_player[_run] > 0) && (obj_controller.faction_status[5] == "War")) {
                     sisters_attack = "player";
@@ -196,7 +196,7 @@ function scr_enemy_ai_a() {
                 ork_attack = "traitors";
             }
             if ((rand == 4) && (p_chaos[_run] > 0)) {
-                ork_attack = "csm";
+                ork_attack = "chaos";
             }
             if ((rand == 5) && (p_sisters[_run] > 0)) {
                 ork_attack = "sisters";
@@ -227,19 +227,19 @@ function scr_enemy_ai_a() {
         }
         if ((p_chaos[_run] > 0) && (stop != 1)) {
             if ((planet_forces[eFACTION.ORK] == 0) && (planet_forces[eFACTION.TAU] == 0)) {
-                csm_attack = "imp";
+                chaos_attack = "imp";
             }
             if ((planet_forces[eFACTION.ORK] > planet_forces[eFACTION.TAU]) && (planet_forces[eFACTION.ORK] > guard_score) && (planet_forces[eFACTION.ORK] > pdf_score)) {
-                csm_attack = "orks";
+                chaos_attack = "orks";
             }
             if ((sisters_score > planet_forces[eFACTION.TAU]) && (sisters_score > planet_forces[eFACTION.ORK]) && (sisters_score > pdf_score)) {
-                csm_attack = "sisters";
+                chaos_attack = "sisters";
             }
             if ((guard_score > planet_forces[eFACTION.TAU]) && (guard_score > planet_forces[eFACTION.ORK])) {
-                csm_attack = "imp";
+                chaos_attack = "imp";
             }
-            if ((csm_attack == "") && (p_player[_run] > 0)) {
-                csm_attack = "player";
+            if ((chaos_attack == "") && (p_player[_run] > 0)) {
+                chaos_attack = "player";
             }
         }
 
@@ -252,8 +252,8 @@ function scr_enemy_ai_a() {
             if (traitors_score > 0) {
                 tau_attack = "traitors";
             }
-            if (csm_score > 0) {
-                tau_attack = "csm";
+            if (chaos_score > 0) {
+                tau_attack = "chaos";
             }
             if (planet_forces[eFACTION.ORK] > 0) {
                 tau_attack = "ork";
@@ -264,11 +264,11 @@ function scr_enemy_ai_a() {
             if (traitors_score >= 4) {
                 tau_attack = "traitors";
             }
-            if ((csm_score >= 3) && (planet_forces[eFACTION.ORK] <= 2)) {
-                tau_attack = "csm";
+            if ((chaos_score >= 3) && (planet_forces[eFACTION.ORK] <= 2)) {
+                tau_attack = "chaos";
             }
-            if (csm_score >= 4) {
-                tau_attack = "csm";
+            if (chaos_score >= 4) {
+                tau_attack = "chaos";
             }
             if (planet_forces[eFACTION.ORK] >= 4) {
                 tau_attack = "ork";
@@ -295,8 +295,8 @@ function scr_enemy_ai_a() {
             if (traitors_score >= 4) {
                 tau_attack = "traitors";
             }
-            if (csm_score >= 4) {
-                tau_attack = "csm";
+            if (chaos_score >= 4) {
+                tau_attack = "chaos";
             }
             if (planet_forces[eFACTION.ORK] >= 4) {
                 tau_attack = "ork";
@@ -328,7 +328,7 @@ function scr_enemy_ai_a() {
                 tyranids_attack = "orks";
             }
             if ((rand == 5) && (p_chaos[_run] > 0)) {
-                tyranids_attack = "csm";
+                tyranids_attack = "chaos";
             }
             if ((rand == 6) && (p_sisters[_run] > 0)) {
                 tyranids_attack = "sisters";
@@ -358,7 +358,7 @@ function scr_enemy_ai_a() {
                 necrons_attack = "orks";
             }
             if ((rand == 5) && (p_chaos[_run] > 0)) {
-                necrons_attack = "csm";
+                necrons_attack = "chaos";
             }
             if ((rand == 6) && (p_sisters[_run] > 0)) {
                 necrons_attack = "sisters";
@@ -382,8 +382,8 @@ function scr_enemy_ai_a() {
                 traitors_attack = default_imperium_attack;
             }
 
-            if (csm_attack == "imp") {
-                csm_attack = default_imperium_attack;
+            if (chaos_attack == "imp") {
+                chaos_attack = default_imperium_attack;
             }
 
             if (necrons_attack == "imp") {
@@ -410,9 +410,9 @@ function scr_enemy_ai_a() {
             var after_combat_ork_force = planet_forces[eFACTION.ORK];
             var after_combat_tau = planet_forces[eFACTION.TAU];
             var after_combat_traitor = traitors_score;
-            var after_combat_csm = csm_score;
-            if (csm_score == 6.1) {
-                csm_score = 8;
+            var after_combat_chaos = chaos_score;
+            if (chaos_score == 6.1) {
+                chaos_score = 8;
             }
             var after_combat_necrons = necrons_score;
             var after_combat_tyranids = tyranids_score;
@@ -432,8 +432,8 @@ function scr_enemy_ai_a() {
                 if (guard_attack == "traitors") {
                     tempor = choose(1, 2, 3, 4, 5, 6) * traitors_score;
                 }
-                if (guard_attack == "csm") {
-                    tempor = choose(2, 3, 4, 5, 6, 7) * csm_score;
+                if (guard_attack == "chaos") {
+                    tempor = choose(2, 3, 4, 5, 6, 7) * chaos_score;
                 }
                 if (guard_attack == "tyranids") {
                     tempor = choose(2, 3, 4, 5, 6, 7) * tyranids_score;
@@ -450,7 +450,7 @@ function scr_enemy_ai_a() {
                 if ((guard_attack == "traitors") && (traitors_score > guard_score)) {
                     rand1 = 0;
                 }
-                if ((guard_attack == "csm") && (csm_score > guard_score)) {
+                if ((guard_attack == "chaos") && (chaos_score > guard_score)) {
                     rand1 = 0;
                 }
                 if ((guard_attack == "tyranids") && (tyranids_score > guard_score)) {
@@ -511,8 +511,8 @@ function scr_enemy_ai_a() {
                     if (guard_attack == "traitors") {
                         after_combat_traitor -= 1;
                     }
-                    if (guard_attack == "csm") {
-                        after_combat_csm -= 1;
+                    if (guard_attack == "chaos") {
+                        after_combat_chaos -= 1;
                     }
                     if (guard_attack == "tyranids") {
                         after_combat_tyranids -= 1;
@@ -531,8 +531,8 @@ function scr_enemy_ai_a() {
                 if (pdf_attack == "traitors") {
                     tempor = traitors_score;
                 }
-                if (pdf_attack == "csm") {
-                    tempor = csm_score;
+                if (pdf_attack == "chaos") {
+                    tempor = chaos_score;
                 }
                 if (pdf_attack == "guard") {
                     tempor = guard_score;
@@ -553,7 +553,7 @@ function scr_enemy_ai_a() {
                 if ((pdf_attack == "traitors") && (traitors_score >= 6)) {
                     rand2 = 1;
                 }
-                if ((pdf_attack == "csm") && (csm_score >= 3)) {
+                if ((pdf_attack == "chaos") && (chaos_score >= 3)) {
                     rand2 = 1;
                 }
                 if ((pdf_attack == "tyranids") && (tyranids_score >= pdf_score)) {
@@ -579,8 +579,8 @@ function scr_enemy_ai_a() {
                 if (pdf_attack == "traitors") {
                     after_combat_traitor = tempor;
                 }
-                if (pdf_attack == "csm") {
-                    after_combat_csm = tempor;
+                if (pdf_attack == "chaos") {
+                    after_combat_chaos = tempor;
                 }
                 if ((pdf_attack == "tyranids") && (tyranids_score >= 4)) {
                     after_combat_tyranids = tempor;
@@ -628,13 +628,13 @@ function scr_enemy_ai_a() {
                     if (rand1 > rand2) {
                         after_combat_traitor -= 1;
                     }
-                } else if (sisters_attack == "csm") {
-                    rand2 = (choose(2, 3, 4, 5, 6) * csm_score) * choose(1, 1.25);
-                    if (csm_score == 6.1) {
+                } else if (sisters_attack == "chaos") {
+                    rand2 = (choose(2, 3, 4, 5, 6) * chaos_score) * choose(1, 1.25);
+                    if (chaos_score == 6.1) {
                         rand2 = 999;
                     }
                     if (rand1 > rand2) {
-                        after_combat_csm -= 1;
+                        after_combat_chaos -= 1;
                     }
                 } else if (sisters_attack == "necrons") {
                     rand2 = (choose(4, 5, 6, 7) * necrons_score) * choose(1, 1.25);
@@ -649,25 +649,25 @@ function scr_enemy_ai_a() {
                 } else if (sisters_attack == "pdf") {
                     rand2 = (choose(1, 2, 3, 4, 5) * pdf_score) * choose(1, 1.25);
                     if (rand1 > rand2) {
-                        if (csm_score >= 6) {
+                        if (chaos_score >= 6) {
                             p_pdf[_run] = 0;
                         }
-                        if (csm_score <= 3) {
+                        if (chaos_score <= 3) {
                             p_pdf[_run] = floor(p_pdf[_run] * min(0.95, 0.75 + pdf_loss_reduction));
                         }
-                        if (csm_score >= 4) {
+                        if (chaos_score >= 4) {
                             p_pdf[_run] = floor(p_pdf[_run] * min(0.95, 0.65 + pdf_loss_reduction));
                         }
-                        if ((csm_score >= 4) && (p_pdf[_run] < 60000)) {
+                        if ((chaos_score >= 4) && (p_pdf[_run] < 60000)) {
                             p_pdf[_run] = 0;
                         }
-                        if ((csm_score >= 3) && (p_pdf[_run] < 20000)) {
+                        if ((chaos_score >= 3) && (p_pdf[_run] < 20000)) {
                             p_pdf[_run] = 0;
                         }
-                        if ((csm_score >= 2) && (p_pdf[_run] < 3000)) {
+                        if ((chaos_score >= 2) && (p_pdf[_run] < 3000)) {
                             p_pdf[_run] = 0;
                         }
-                        if ((csm_score >= 1) && (p_pdf[_run] < 1000)) {
+                        if ((chaos_score >= 1) && (p_pdf[_run] < 1000)) {
                             p_pdf[_run] = 0;
                         }
                     }
@@ -688,13 +688,13 @@ function scr_enemy_ai_a() {
                     if ((rand1 > rand2) && (traitors_score != 7)) {
                         after_combat_traitor -= 1;
                     }
-                } else if (tau_attack == "csm") {
-                    rand2 = (choose(1, 2, 3, 4, 5, 6) * csm_score) * choose(1, 1.25);
-                    if (csm_score == 6.1) {
+                } else if (tau_attack == "chaos") {
+                    rand2 = (choose(1, 2, 3, 4, 5, 6) * chaos_score) * choose(1, 1.25);
+                    if (chaos_score == 6.1) {
                         rand2 = 999;
                     }
                     if (rand1 > rand2) {
-                        after_combat_csm -= 1;
+                        after_combat_chaos -= 1;
                     }
                 } else if (tau_attack == "guard") {
                     rand2 = (choose(1, 2, 3, 4, 5, 6) * guard_score) * choose(1, 1.25);
@@ -738,10 +738,10 @@ function scr_enemy_ai_a() {
                     if ((rand1 > rand2) && (traitors_score < 6)) {
                         after_combat_traitor -= 1;
                     }
-                } else if (ork_attack == "csm") {
-                    rand2 = (choose(1, 2, 3, 4, 5, 6) * csm_score) * choose(1, 1.25);
-                    if ((rand1 > rand2) && (csm_score != 6)) {
-                        after_combat_csm -= 1;
+                } else if (ork_attack == "chaos") {
+                    rand2 = (choose(1, 2, 3, 4, 5, 6) * chaos_score) * choose(1, 1.25);
+                    if ((rand1 > rand2) && (chaos_score != 6)) {
+                        after_combat_chaos -= 1;
                     }
                 } else if (ork_attack == "guard") {
                     var onc = 0;
@@ -908,73 +908,73 @@ function scr_enemy_ai_a() {
             }
 
             // CSM attack
-            if ((csm_score > 0) && (csm_attack != "") && (csm_attack != "player")) {
-                rand1 = choose(2, 3, 4, 5, 6, 7) * csm_score;
-                if (csm_score >= 5) {
+            if ((chaos_score > 0) && (chaos_attack != "") && (chaos_attack != "player")) {
+                rand1 = choose(2, 3, 4, 5, 6, 7) * chaos_score;
+                if (chaos_score >= 5) {
                     rand1 = choose(30, 36);
                 }
 
-                if (csm_attack == "tau") {
+                if (chaos_attack == "tau") {
                     rand2 = (choose(1, 2, 3, 4, 5) * planet_forces[eFACTION.TAU]) * choose(1, 1.25);
                     if (rand1 > rand2) {
                         after_combat_tau -= 1;
                     }
-                } else if (csm_attack == "ork") {
+                } else if (chaos_attack == "ork") {
                     rand2 = (choose(1, 2, 3, 4, 5) * planet_forces[eFACTION.ORK]) * choose(1, 1.25);
                     if (rand1 > rand2) {
                         after_combat_ork_force -= 1;
                     }
-                } else if (csm_attack == "guard") {
+                } else if (chaos_attack == "guard") {
                     rand2 = (choose(1, 2, 3, 4, 5) * guard_score) * choose(1, 1.25);
                     if (rand1 > rand2) {
-                        if (csm_score <= 3) {
+                        if (chaos_score <= 3) {
                             p_guardsmen[_run] = floor(p_guardsmen[_run] * 0.7);
                         }
-                        if (csm_score >= 4) {
+                        if (chaos_score >= 4) {
                             p_guardsmen[_run] = floor(p_guardsmen[_run] * 0.6);
                         }
-                        if (csm_score >= 6) {
+                        if (chaos_score >= 6) {
                             p_guardsmen[_run] = floor(p_guardsmen[_run] * 0.3);
                         }
-                        if ((csm_score >= 4) && (p_guardsmen[_run] < 15000)) {
+                        if ((chaos_score >= 4) && (p_guardsmen[_run] < 15000)) {
                             p_guardsmen[_run] = 0;
                         }
-                        if ((csm_score >= 3) && (p_guardsmen[_run] < 5000)) {
+                        if ((chaos_score >= 3) && (p_guardsmen[_run] < 5000)) {
                             p_guardsmen[_run] = 0;
                         }
-                        if ((csm_score >= 2) && (p_guardsmen[_run] < 1000)) {
+                        if ((chaos_score >= 2) && (p_guardsmen[_run] < 1000)) {
                             p_guardsmen[_run] = 0;
                         }
-                        if ((csm_score >= 1) && (p_guardsmen[_run] < 500)) {
+                        if ((chaos_score >= 1) && (p_guardsmen[_run] < 500)) {
                             p_guardsmen[_run] = 0;
                         }
                     }
-                } else if (csm_attack == "pdf") {
+                } else if (chaos_attack == "pdf") {
                     rand2 = (choose(1, 2, 3, 4, 5) * pdf_score) * choose(1, 1.25);
                     if (rand1 > rand2) {
-                        if (csm_score >= 6) {
+                        if (chaos_score >= 6) {
                             p_pdf[_run] = 0;
                         }
-                        if (csm_score <= 3) {
+                        if (chaos_score <= 3) {
                             p_pdf[_run] = floor(p_pdf[_run] * min(0.95, 0.75 + pdf_loss_reduction));
                         }
-                        if (csm_score >= 4) {
+                        if (chaos_score >= 4) {
                             p_pdf[_run] = floor(p_pdf[_run] * min(0.95, 0.55 + pdf_loss_reduction));
                         }
-                        if ((csm_score >= 4) && (p_pdf[_run] < 60000)) {
+                        if ((chaos_score >= 4) && (p_pdf[_run] < 60000)) {
                             p_pdf[_run] = 0;
                         }
-                        if ((csm_score >= 3) && (p_pdf[_run] < 20000)) {
+                        if ((chaos_score >= 3) && (p_pdf[_run] < 20000)) {
                             p_pdf[_run] = 0;
                         }
-                        if ((csm_score >= 2) && (p_pdf[_run] < 3000)) {
+                        if ((chaos_score >= 2) && (p_pdf[_run] < 3000)) {
                             p_pdf[_run] = 0;
                         }
-                        if ((csm_score >= 1) && (p_pdf[_run] < 1000)) {
+                        if ((chaos_score >= 1) && (p_pdf[_run] < 1000)) {
                             p_pdf[_run] = 0;
                         }
                     }
-                } else if (csm_attack == "sisters") {
+                } else if (chaos_attack == "sisters") {
                     rand2 = (choose(2, 3, 4, 5, 6) * sisters_score) * choose(1, 1.25);
                     if (rand1 > rand2) {
                         after_combat_sisters -= 1;
@@ -1000,10 +1000,10 @@ function scr_enemy_ai_a() {
                     if (rand1 > rand2) {
                         after_combat_ork_force -= 1;
                     }
-                } else if (tyranids_attack == "csm") {
-                    rand2 = (choose(1, 2, 3, 4, 5) * csm_score) * choose(1, 1.25);
+                } else if (tyranids_attack == "chaos") {
+                    rand2 = (choose(1, 2, 3, 4, 5) * chaos_score) * choose(1, 1.25);
                     if (rand1 > rand2) {
-                        after_combat_csm -= 1;
+                        after_combat_chaos -= 1;
                     }
                 } else if (tyranids_attack == "traitors") {
                     rand2 = (choose(1, 2, 3, 4, 5) * traitors_score) * choose(1, 1.25);
@@ -1095,15 +1095,15 @@ function scr_enemy_ai_a() {
                     if (rand1 > rand2) {
                         after_combat_ork_force -= 1;
                     }
-                } else if (necrons_attack == "csm") {
-                    rand2 = (choose(1, 2, 3, 4, 5) * csm_score) * choose(1, 1.25);
+                } else if (necrons_attack == "chaos") {
+                    rand2 = (choose(1, 2, 3, 4, 5) * chaos_score) * choose(1, 1.25);
                     if (rand1 > rand2) {
-                        after_combat_csm -= 1;
+                        after_combat_chaos -= 1;
                     }
                 } else if (necrons_attack == "traitors") {
                     rand2 = (choose(1, 2, 3, 4, 5) * traitors_score) * choose(1, 1.25);
                     if ((rand1 > rand2) && (traitors_score != 7)) {
-                        after_combat_csm -= 1;
+                        after_combat_chaos -= 1;
                     }
                 } else if (necrons_attack == "imp") {
                     if (p_pdf[_run] > 0) {
@@ -1184,7 +1184,7 @@ function scr_enemy_ai_a() {
             p_orks[_run] = after_combat_ork_force;
             p_tau[_run] = after_combat_tau;
             p_traitors[_run] = after_combat_traitor;
-            p_chaos[_run] = after_combat_csm;
+            p_chaos[_run] = after_combat_chaos;
             p_necrons[_run] = after_combat_necrons;
             if (p_tyranids[_run] != after_combat_tyranids) {
                 p_tyranids[_run] = after_combat_tyranids;

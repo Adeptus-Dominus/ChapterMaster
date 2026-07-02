@@ -148,6 +148,9 @@ try {
                     tempy = battle_object[current_battle].p_tyranids[battle_world[current_battle]];
                 }
                 if (battle_opponent[current_battle] == 10) {
+                    tempy = battle_object[current_battle].p_chaos[battle_world[current_battle]];
+                }
+                if (battle_opponent[current_battle] == 11) {
                     tempy = battle_object[current_battle].p_traitors[battle_world[current_battle]];
                 }
                 if (battle_opponent[current_battle] == 13) {
