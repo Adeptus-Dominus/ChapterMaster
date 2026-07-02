@@ -1424,7 +1424,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         } else if (base_group == "human") {
             melee_hands_limit = 1;
         }
-        carry_string += "Base: 2#";
+        carry_string += $"Base: {melee_hands_limit}#";
         if (strength >= 50) {
             melee_hands_limit += 0.25;
             carry_string += "STR: +0.25#";
