@@ -224,7 +224,7 @@ function scr_chapter_new(chapter_identifier) {
     load_default_gear(eROLE.VETERAN, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.TERMINATOR, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
     load_default_gear(eROLE.CAPTAIN, "Captain", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Iron Halo");
-    load_default_gear(eROLE.DREADNOUGHT, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
+    load_default_gear(eROLE.DREADNOUGHT, "Dreadnought", "Dreadnought Lightning Claw", "Twin Linked Lascannon", "Dreadnought", "", "");
     load_default_gear(eROLE.CHAMPION, "Champion", "Power Sword", STR_ANY_POWER_ARMOUR, STR_ANY_POWER_ARMOUR, "", "Combat Shield");
     load_default_gear(eROLE.TACTICAL, "Tactical", "Bolter", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.DEVASTATOR, "Devastator", "", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
