@@ -1374,8 +1374,14 @@ function PlanetData(_planet, _system) constructor {
             "p_orks",
             "p_tau",
             "p_tyranids",
-            "p_traitors",
+            // "Chaos" must read p_chaos and "Traitors" p_traitors. These two were
+            // crossed (a merge casualty; upstream is aligned), so the panel showed
+            // Traitor Guard strength under the "Chaos" label and vice versa:
+            // bombarding the "Chaos" target then annihilated the real p_chaos while
+            // the mislabeled traitor 6 sat untouched on the panel, reported as
+            // "bombardment fails to damage chaos forces".
             "p_chaos",
+            "p_traitors",
             "p_demons",
             "p_necrons",
         ];
