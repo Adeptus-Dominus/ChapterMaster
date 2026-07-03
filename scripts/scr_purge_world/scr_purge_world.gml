@@ -163,11 +163,16 @@ function scr_purge_world(action_type, action_score) {
     var _no_chaos = (planet_forces[eFACTION.HERETICS] + planet_forces[eFACTION.CHAOS]) == 0;
     if ((action_type == eDROP_TYPE.PURGEFIRE || action_type == eDROP_TYPE.PURGESELECTIVE) && _no_chaos && obj_controller.turn >= obj_controller.chaos_turn) {
         if (has_feature(eP_FEATURES.WARLORD10) && obj_controller.known[10] == 0 && obj_controller.faction_gender[10] == 1) {
+            // {name()} was being interpolated inside with (obj_drop_select), where self
+            // is the drop-select instance and name() does not exist: a caught error and
+            // a blank popup every time a purge uncovered a concealed Chaos warlord.
+            // Capture the planet name in PlanetData scope before entering the with.
+            var _planet_name = name();
             with (obj_drop_select) {
                 var pop = instance_create(0, 0, obj_popup);
                 pop.image = "chaos_symbol";
                 pop.title = "Concealed Heresy";
-                pop.text = $"Your astartes set out and begin to cleanse {name()} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";
+                pop.text = $"Your astartes set out and begin to cleanse {_planet_name} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";
                 exit;
             }
         }
@@ -229,8 +234,8 @@ function scr_purge_world(action_type, action_score) {
 
                 alter_disposition(eFACTION.INQUISITION, obj_controller.demanding ? choose(0, 0, 1) : 1);
 
-                _popup_text = "Your marines scour the underhive of {name()}, spraying mutants down with promethium as they go.  It takes several days but a sizeable dent is put in their numbers.";
-                scr_event_log("", "Inquisition Mission Completed: The mutants of {name()} have been cleansed by promethium.");
+                _popup_text = $"Your marines scour the underhive of {name()}, spraying mutants down with promethium as they go.  It takes several days but a sizeable dent is put in their numbers.";
+                scr_event_log("", $"Inquisition Mission Completed: The mutants of {name()} have been cleansed by promethium.");
                 add_disposition(choose(1, 2, 3));
             }
         } else {
@@ -270,7 +275,7 @@ function scr_purge_world(action_type, action_score) {
                 alter_disposition(eFACTION.INQUISITION, obj_controller.demanding ? choose(0, 0, 1) : 1);
 
                 _popup_text = "Your marines drop fast and hard, blowing through guards and mercenaries with minimal resistance.  Before ten minutes have passed all your targets are executed.";
-                scr_event_log("", "Inquisition Mission Completed: The unruly Nobles of {name()} have been purged.");
+                scr_event_log("", $"Inquisition Mission Completed: The unruly Nobles of {name()} have been purged.");
                 add_disposition(choose(1, 2, 3));
             }
         } else if (_isquest == 0) {
