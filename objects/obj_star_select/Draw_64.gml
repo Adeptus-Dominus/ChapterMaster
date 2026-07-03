@@ -334,6 +334,10 @@ try {
             } else if (current_button == "Raid" && instance_nearest(x, y, obj_p_fleet).acted <= 1) {
                 // feather ignore once GM2064
                 instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, planet_number: obj_controller.selecting_planet, sh_target: instance_nearest(x, y, obj_p_fleet), purge: 0});
+            } else if (current_button == "Raid") {
+                // Blocked actions say why instead of silently doing nothing (players
+                // assumed the game broke when clicks had no effect).
+                scr_popup("Raid", "This fleet has already expended its actions this turn and cannot launch a raid. Raiding requires a fleet that has spent at most one action.", "");
             } else if (current_button == "Attack") {
                 var _allow_attack = true;
                 var _targ = !target.present_fleet[1] ? noone : instance_nearest(x, y, obj_p_fleet);
@@ -369,6 +373,8 @@ try {
                 if (instance_exists(_targ)) {
                     if (_targ.acted >= 2) {
                         _allow_attack = false;
+                        // Blocked actions say why instead of silently doing nothing.
+                        scr_popup("Purge", "This fleet has already expended its actions this turn and cannot conduct a purge.", "");
                     }
                 }
                 if (_allow_attack) {
@@ -385,6 +391,9 @@ try {
                         with (obj_bomb_select) {
                             instance_destroy();
                         }
+                        // Vanilla created the bombard screen and instantly destroyed it,
+                        // leaving the player with a dead click and no explanation.
+                        scr_popup("Bombardment", "This fleet has already acted this turn. Orbital bombardment must be the fleet's first action of the turn.", "");
                     }
                 }
             } else if (current_button == "Deploy Guard") {

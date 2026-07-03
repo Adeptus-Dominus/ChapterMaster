@@ -240,7 +240,14 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                     case "provide_garrison":
                         var reason;
                         if (feature.reason == "importance") {}
-                        mission_description = $"The governor of {planet_name} has requested a force of marines might stay behind following your departure.\n\n\n assign a squad to garrison to initiate mission, The garrison leeader will need to be capable of conducting himself in a diplomatic manner in order for the garrison duration to be a success";
+                        // The requirement here used to be vague ("capable of conducting
+                        // himself in a diplomatic manner"). The actual mechanics: the
+                        // garrison's leader is the most senior squad leader among the
+                        // garrisoned squads (rank does not gate the mission, it only
+                        // decides who is tested); the disposition outcome keys off the
+                        // leader having the Honorable trait, and a separate wisdom test
+                        // (siege specialists excel) can add fortifications.
+                        mission_description = $"The governor of {planet_name} has requested a force of marines might stay behind following your departure.\n\nAssign squads to Garrison Duty on this world to initiate the mission. Any squads qualify; the outcome rests on the garrison's leader, the most senior squad leader among those garrisoned. An Honorable leader will secure the diplomatic gains, while a leader lacking the trait risks incidents that sour relations. A wise leader (siege specialists excel) may also leave the world better fortified.";
 
                         break;
                     case "join_communion":
@@ -284,6 +291,12 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                 draw_text_transformed(xx + (area_width / 2), yy + 5, mission_name_key(feature.problem), 2, 2, 0);
                 draw_set_halign(fa_left);
                 draw_set_color(c_gray);
+                // Initiated missions are clearly marked so the player knows the
+                // assignment registered and the clock is running (mission structs flip
+                // stage from "preliminary" to "active" in their init functions).
+                if (variable_struct_exists(feature, "stage") && (feature.stage == "active")) {
+                    mission_description = "++MISSION IN PROGRESS++\n\n" + mission_description;
+                }
                 draw_text_ext(xx + 10, yy + 40, mission_description, -1, area_width - 20);
                 var text_body_height = string_height_ext(string_hash_to_newline(mission_description), -1, area_width - 20);
                 if (help != "none") {
