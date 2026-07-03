@@ -3,11 +3,14 @@ function Roster() constructor {
     selected_units = [];
     full_roster = {};
     selected_roster = {};
+    /// @type {Array<Struct.ToggleButton>}
     ships = [];
     roster_location = "";
     roster_planet = 0;
     roster_string = "";
+    /// @type {Array<Struct.ToggleButton>}
     squad_buttons = [];
+    /// @type {Array<Struct.ToggleButton>}
     company_buttons = [];
     roster_local_string = "";
     local_button = new ToggleButton({str1: "Local Forces", text_halign: fa_center, text_color: CM_GREEN_COLOR, button_color: CM_GREEN_COLOR, active: false});
@@ -165,13 +168,13 @@ function Roster() constructor {
         _button.text_halign = fa_center;
         _button.text_color = CM_GREEN_COLOR;
         _button.button_color = CM_GREEN_COLOR;
-        _button.width = string_width(display) + 10;
+        _button.w = string_width(display) + 10;
         _button.active = true;
         _button.squad = squad_id;
         array_push(squad_buttons, _button);
     };
 
-    ship_multi_selector = new MultiSelect([], "", {draw_alighn: "vertical", max_height: 200});
+    ship_multi_selector = new MultiSelect([], "", {is_horizontal: false, max_height: 160});
 
     static new_ship_button = function(display, ship_id) {
         var _button = new ToggleButton();
@@ -243,7 +246,7 @@ function Roster() constructor {
         _button.text_halign = fa_center;
         _button.text_color = CM_GREEN_COLOR;
         _button.button_color = CM_GREEN_COLOR;
-        _button.width = string_width(display) + 10;
+        _button.w = string_width(display) + 10;
         _button.active = true;
         _button.vehic_id = vehicle_type;
         array_push(vehicle_buttons, _button);
@@ -340,7 +343,7 @@ function Roster() constructor {
             _button.text_halign = fa_center;
             _button.text_color = _col;
             _button.button_color = _col;
-            _button.width = string_width(_display) + 10;
+            _button.w = max(30, string_width(_display) + 10);
             _button.active = _company_present;
             _button.company_id = co;
             _button.company_present = _company_present;
