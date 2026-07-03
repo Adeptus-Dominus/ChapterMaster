@@ -1377,8 +1377,9 @@ function ToggleButton(data = {}) constructor {
                 h *= 1 + (text_padding * 2);
             }
         } else if (style == "box") {
-            w = max(32, string_width(str1) * (1 + (text_padding * 2))) + 6;
-            h = 32 + (string_height(str1) * (1 + (text_padding * 2)));
+            var _text_w = string_width(str1) * (1 + (text_padding * 2));
+            w = max(32, _text_w) + 12; 
+            h = 32 + 4 + (string_height(str1) * (1 + (text_padding * 2)));
         }
         x2 = x1 + w;
         y2 = y1 + h;
@@ -1450,20 +1451,25 @@ function ToggleButton(data = {}) constructor {
         if (style == "default") {
             draw_rectangle_color_simple(x1, y1, x1 + w, y1 + h, 1, button_color, total_alpha);
             draw_set_halign(text_halign);
-            draw_set_valign(fa_top);
+            draw_set_valign(fa_middle);
+            var text_y = y1 + (h / 2);
             draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
             draw_set_alpha(1);
             draw_set_halign(fa_left);
         } else if (style == "box") {
-            // Icon with alpha
+            var _center_x = x1 + (w / 2);
+            var _sprite_x = _center_x - 16; 
+            
             draw_set_halign(fa_left);
-            draw_sprite_ext(spr_creation_check, active, x1 + 2, y1, 1, 1, 0, c_white, total_alpha);
-            // Label centred below icon
-            draw_set_alpha(total_alpha);
             draw_set_valign(fa_top);
+            draw_sprite_ext(spr_creation_check, active, _sprite_x, y1, 1, 1, 0, c_white, total_alpha);
+            
+            draw_set_alpha(total_alpha);
             draw_set_halign(fa_center);
-            var _label_y = y1 + 32 + 2;
-            draw_text_transformed(x1 + 18, _label_y, str1, 1, 1, 0);
+            draw_set_valign(fa_middle);
+            
+            var _label_y = y1 + 32 + ((h - 32) / 2);
+            draw_text_transformed(_center_x, _label_y, str1, 1, 1, 0);
             draw_set_alpha(1);
         }
 
