@@ -99,7 +99,13 @@ try {
                 // reaches it instead of standing mute. Marines keep the vanilla rule of
                 // ranged only while not engaged. The bayonet (range 1) still resolves on
                 // the melee line below, so engaged Guard both shoot and stab.
-                if ((range[i] != 1) && ((engaged == 0) || (guard > 0))) {
+                // Vehicle-only blocks (men <= 0: Whirlwinds, Land Speeders, tank
+                // remnants) also keep firing when engaged: they carry no melee weapons
+                // at all, so the vanilla rule left them sitting mute in contact while
+                // enemy knives chip uselessly at their hulls, the last-survivors
+                // stalemate the battle timer exists to paper over. A vehicle firing
+                // its guns point-blank is no stranger than the Guard doing it.
+                if ((range[i] != 1) && ((engaged == 0) || (guard > 0) || (men <= 0))) {
                     range_shoot = "ranged";
                 }
                 if ((range[i] != floor(range[i]) || floor(range[i]) == 1) && engaged == 1) {
