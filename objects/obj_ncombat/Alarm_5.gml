@@ -976,7 +976,13 @@ if (defeat == 1) {
     }
 }
 
-obj_ini.gene_slaves = [];
+// The line "obj_ini.gene_slaves = [];" was removed here. It ran unconditionally at
+// the end of EVERY battle resolution, silently deleting all Test-Slave Incubator
+// batches raw (no gene-seed recovery, no incubator item refund, no event) any time
+// the player fought anything while batches were maturing. The legitimate wipe (the
+// homeworld falling with no underground gene vaults) is already handled above via
+// destroy_all_gene_slaves(false) inside its proper guard. Present verbatim in
+// upstream main (objects\obj_ncombat\Alarm_5.gml).
 
 instance_deactivate_object(obj_star);
 instance_deactivate_object(obj_ground_mission);
