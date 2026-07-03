@@ -1,4 +1,11 @@
 try {
+    enemy = instance_nearest(0, y, obj_enunit); // Left most enemy
+
+    if (!instance_exists(enemy)) {
+        engaged = false;
+        exit;
+    }
+
     if (instance_number(obj_enunit) != 1) {
         obj_ncombat.flank_x = self.x;
         with (obj_enunit) {
@@ -8,18 +15,11 @@ try {
         }
     }
 
-    enemy = instance_nearest(0, y, obj_enunit); // Left most enemy
-
     if (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)) {
         move_unit_block("east");
     }
 
-    if (!instance_exists(enemy)) {
-        engaged = false;
-        exit;
-    }
-
-    engaged = collision_point(x - 14, y, obj_enunit, 0, 1) || collision_point(x + 14, y, obj_enunit, 0, 1);
+    engaged = collision_point(x - 14, y, obj_enunit, 0, 1) != noone || collision_point(x + 14, y, obj_enunit, 0, 1) != noone;
 
     var once_only = 0;
     var range_shoot = "";
@@ -55,7 +55,6 @@ try {
             if (wep[i] == "") {
                 continue;
             }
-            weapon_data = gear_weapon_data("weapon", wep[i]);
             once_only = 0;
             enemy = instance_nearest(0, y, obj_enunit);
             if (enemy.men + enemy.veh + enemy.medi <= 0) {

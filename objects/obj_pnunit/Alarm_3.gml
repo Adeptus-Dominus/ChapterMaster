@@ -16,27 +16,28 @@ try {
 
     if ((obj_ncombat.red_thirst >= 2) && (obj_ncombat.battle_over == 0)) {
         if (men > 0) {
-            var miss = "", r_lost = 0;
+            var miss = "";
+            var r_lost = 0;
 
             for (var raar = 0; raar < (men + dreads); raar++) {
-                r_roll = floor(random(1000)) + 1;
+                var _r_roll = floor(random(1000)) + 1;
                 if (obj_ncombat.player_forces < (obj_ncombat.player_max * 0.75)) {
-                    r_roll -= 8;
+                    _r_roll -= 8;
                 }
                 if (obj_ncombat.player_forces < (obj_ncombat.player_max / 2)) {
-                    r_roll -= 10;
+                    _r_roll -= 10;
                 }
                 if (obj_ncombat.player_forces < (obj_ncombat.player_max / 4)) {
-                    r_roll -= 24;
+                    _r_roll -= 24;
                 }
                 if (obj_ncombat.player_forces < (obj_ncombat.player_max / 7)) {
-                    r_roll -= 104;
+                    _r_roll -= 104;
                 }
                 if (obj_ncombat.player_forces < (obj_ncombat.player_max / 10)) {
-                    r_roll -= 350;
+                    _r_roll -= 350;
                 }
 
-                if ((marine_dead[raar] == 0) && (marine_type[raar] != "Death Company") && (marine_type[raar] != obj_ini.role[100][eROLE.CHAPTERMASTER]) && (r_roll <= 4)) {
+                if ((marine_dead[raar] == 0) && (marine_type[raar] != "Death Company") && (marine_type[raar] != obj_ini.role[100][eROLE.CHAPTERMASTER]) && (_r_roll <= 4)) {
                     r_lost += 1;
                     marine_type[raar] = "Death Company";
                     marine_defense[raar] = 0.75;
@@ -50,7 +51,7 @@ try {
                 }
             }
             if (r_lost > 1) {
-                string_replace(miss, "Battle Brother", "Battle Brothers");
+                miss = string_replace(miss, "Battle Brother", "Battle Brothers");
             }
 
             var woo = string_length(miss);
@@ -96,7 +97,7 @@ try {
     // Right here execute some sort of check- if left is open, and engaged, and enemy is only vehicles, and no weapons to hurt them...
 
     if (instance_exists(obj_enunit)) {
-        if (collision_point(x + 10, y, obj_enunit, 0, 1) && (!collision_point(x - 10, y, obj_pnunit, 0, 1))) {
+        if (collision_point(x + 10, y, obj_enunit, 0, 1) != noone && collision_point(x - 10, y, obj_pnunit, 0, 1)  == noone) {
             var neares = instance_nearest(x + 10, y, obj_enunit);
 
             if ((neares.men == 0) && (neares.veh > 0)) {
