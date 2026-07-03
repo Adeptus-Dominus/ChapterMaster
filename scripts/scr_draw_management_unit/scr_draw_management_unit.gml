@@ -595,6 +595,15 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
 
         if (((mouse_x >= xx + 25 && mouse_y >= yy + 64 && mouse_x < xx + 974 && mouse_y < yy + 85) || force_tool == 1) && is_struct(_unit)) {
             unit_focus = _unit; // unit_struct
+            // Hovering back onto a unit hands the portrait slot back to the unit image.
+            vehicle_portrait_role = "";
+        }
+    } else if ((man[selected] == "vehicle") && draw) {
+        // Vehicle portraits (mod): vehicles set no unit_focus, so the portrait slot
+        // never knew a vehicle was hovered. Store the role; the manage panel maps it
+        // to a runtime PNG (see draw_sprite_and_unit_equip_data in scr_ui_manage).
+        if (mouse_x >= xx + 25 && mouse_y >= yy + 64 && mouse_x < xx + 974 && mouse_y < yy + 85) {
+            vehicle_portrait_role = string(ma_role[selected]);
         }
     }
     if (!ma_view[selected]) {

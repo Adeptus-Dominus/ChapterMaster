@@ -663,7 +663,35 @@ function draw_sprite_and_unit_equip_data() {
 
             // Draw unit image
             draw_set_color(c_white);
-            if (is_struct(obj_controller.unit_manage_image)) {
+            // ===== Vehicle portraits (mod) =====
+            // Vehicles never route through scr_draw_unit_image and set no unit_focus, so
+            // they had no portrait anywhere. Hovering a vehicle row (see
+            // scr_draw_management_unit) stores its role in vehicle_portrait_role, and the
+            // portrait slot draws a runtime PNG from images\units\ instead of the last
+            // unit's image, scaled to fit the frame. Adding a new vehicle portrait is one
+            // line in the struct below: role name on the left, PNG filename on the right.
+            var _veh_portrait_files = {
+                Chimera: "chimera",
+            };
+            var _veh_p_role = variable_instance_exists(id, "vehicle_portrait_role") ? vehicle_portrait_role : "";
+            var _veh_p_drawn = false;
+            if ((_veh_p_role != "") && struct_exists(_veh_portrait_files, _veh_p_role)) {
+                if (!variable_global_exists("vehicle_portraits")) {
+                    global.vehicle_portraits = {};
+                }
+                if (!struct_exists(global.vehicle_portraits, _veh_p_role)) {
+                    global.vehicle_portraits[$ _veh_p_role] = sprite_add(working_directory + "/images/units/" + _veh_portrait_files[$ _veh_p_role] + ".png", 1, false, false, 0, 0);
+                }
+                var _veh_spr = global.vehicle_portraits[$ _veh_p_role];
+                if (sprite_exists(_veh_spr)) {
+                    var _vp_w = sprite_get_width(_veh_spr);
+                    var _vp_h = sprite_get_height(_veh_spr);
+                    var _vp_scale = min(1, 166 / _vp_w, 232 / _vp_h);
+                    draw_sprite_ext(_veh_spr, 0, xx + 320 + ((166 - (_vp_w * _vp_scale)) / 2), yy + 109 + ((232 - (_vp_h * _vp_scale)) / 2), _vp_scale, _vp_scale, 0, c_white, 1);
+                    _veh_p_drawn = true;
+                }
+            }
+            if (!_veh_p_drawn && is_struct(obj_controller.unit_manage_image)) {
                 obj_controller.unit_manage_image.draw(xx + 320, yy + 109);
             }
 
