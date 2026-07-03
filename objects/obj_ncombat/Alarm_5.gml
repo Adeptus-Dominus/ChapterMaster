@@ -460,6 +460,13 @@ if (defeat == 0 && _reduce_power) {
         part10 = "Necrons";
     }
 
+    // Eldar craftworld hunt: a ground victory over an Eldar warhost yields one piece
+    // of intelligence toward locating the hidden craftworld. Only while it remains
+    // hidden; battles after the reveal grant nothing.
+    if ((enemy == eFACTION.ELDAR) && (obj_controller.known[eFACTION.ELDAR] == 0)) {
+        eldar_intel_grant();
+    }
+
     if (instance_exists(battle_object) && (enemy_power > 2)) {
         if (awake_tomb_world(battle_object.p_feature[battle_id]) != 0) {
             scr_gov_disp(battle_object.name, battle_id, floor(enemy_power / 2));

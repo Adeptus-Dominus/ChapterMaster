@@ -460,6 +460,7 @@ function scr_end_turn() {
                     audio_play_sound(snd_end_turn, -50, false);
 
                     turn += 1;
+                    eldar_incursion_tick();
                     with (obj_star) {
                         for (var i = 0; i <= 21; i++) {
                             present_fleet[i] = 0;
@@ -515,4 +516,92 @@ function scr_end_turn() {
             }
         }
     });
+}
+
+/// @desc How many pieces of Eldar intelligence have been collected. Guarded read so
+/// old saves and fresh campaigns start at zero without any save-format changes.
+function eldar_intel_count() {
+    if (!variable_instance_exists(obj_controller, "eldar_intel")) {
+        return 0;
+    }
+    return obj_controller.eldar_intel;
+}
+
+/// @desc Grant one piece of Eldar intelligence after a ground victory over a warhost.
+/// At ELDAR_INTEL_REQUIRED pieces the craftworld is revealed. Called from the battle
+/// aftermath (obj_ncombat\Alarm_5), where most map instances are deactivated, so the
+/// reveal only flips obj_controller.known (the craftworld un-hides itself through its
+/// own Draw check) and defers the map alert and fleet un-hiding to the next end-turn
+/// tick via eldar_reveal_alert_pending.
+function eldar_intel_grant() {
+    if (obj_controller.known[eFACTION.ELDAR] != 0) {
+        return;
+    }
+    if (!variable_instance_exists(obj_controller, "eldar_intel")) {
+        obj_controller.eldar_intel = 0;
+    }
+    obj_controller.eldar_intel += 1;
+    var _n = obj_controller.eldar_intel;
+    var _clue_texts = [
+        "Among the alien dead your Apothecaries recover spirit stones that pulse in unison, all straining toward some distant point in the void. The Librarium begins triangulating.",
+        "A dying Warlock's staff yields a shard of wraithbone etched with webway routes. Cross-referenced with the spirit stones, the search narrows to a handful of sectors.",
+        "A captured wayseer's runes, broken under the Librarium's interrogation, complete the pattern. The hidden Craftworld's position is laid bare."
+    ];
+    var _text = _clue_texts[min(_n, array_length(_clue_texts)) - 1];
+    if (_n >= ELDAR_INTEL_REQUIRED) {
+        scr_popup("Eldar Intelligence", _text + $"\n\nIntelligence complete ({min(_n, ELDAR_INTEL_REQUIRED)}/{ELDAR_INTEL_REQUIRED}). The Eldar Craftworld has been located.", "");
+        obj_controller.known[eFACTION.ELDAR] = 1;
+        obj_controller.eldar_reveal_alert_pending = true;
+    } else {
+        scr_popup("Eldar Intelligence", _text + $"\n\nIntelligence gathered: {_n}/{ELDAR_INTEL_REQUIRED}.", "");
+    }
+}
+
+/// @desc End-of-turn Eldar processing: fires the deferred craftworld reveal alert,
+/// then every ELDAR_INCURSION_INTERVAL turns lands a warhost on a random inhabited
+/// imperial world. Warhost strength ramps with collected intelligence
+/// (FORCE_BASE + clues, capped at FORCE_MAX), keeping the strongest Eldar for the
+/// craftworld itself. The planetary AI never acts on p_eldar (its pdf_attack line is
+/// commented out upstream), so a landed warhost persists as a fightable target until
+/// the player clears it.
+function eldar_incursion_tick() {
+    if (variable_instance_exists(obj_controller, "eldar_reveal_alert_pending") && obj_controller.eldar_reveal_alert_pending) {
+        obj_controller.eldar_reveal_alert_pending = false;
+        with (obj_star) {
+            if (p_type[1] == "Craftworld") {
+                scr_alert("green", "elfs", "Eldar Craftworld discovered.", x, y);
+            }
+        }
+        with (obj_en_fleet) {
+            if (owner == eFACTION.ELDAR) {
+                image_alpha = 1;
+            }
+        }
+    }
+    if (obj_controller.faction_defeated[eFACTION.ELDAR] != 0) {
+        return;
+    }
+    if ((obj_controller.turn < ELDAR_INCURSION_INTERVAL) || ((obj_controller.turn % ELDAR_INCURSION_INTERVAL) != 0)) {
+        return;
+    }
+    var _force = min(ELDAR_INCURSION_FORCE_BASE + eldar_intel_count(), ELDAR_INCURSION_FORCE_MAX);
+    var _targets = [];
+    with (obj_star) {
+        if (craftworld || space_hulk) {
+            continue;
+        }
+        for (var i = 1; i <= planets; i++) {
+            if ((p_type[i] != "Dead") && (p_owner[i] >= 1) && (p_owner[i] <= 5) && (p_eldar[i] == 0)) {
+                array_push(_targets, [id, i]);
+            }
+        }
+    }
+    if (array_length(_targets) == 0) {
+        return;
+    }
+    var _pick = _targets[irandom(array_length(_targets) - 1)];
+    var _star = _pick[0];
+    var _planet = _pick[1];
+    _star.p_eldar[_planet] = _force;
+    scr_alert("red", "elfs", $"An Eldar warhost has struck {_star.name} {scr_roman(_planet)}.", _star.x, _star.y);
 }

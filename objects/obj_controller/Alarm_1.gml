@@ -514,14 +514,19 @@ for (var i = 0; i < 100; i++) {
         go = 999;
         array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.WARLORD6));
 
-        var elforce = instance_create(xx, yy, obj_en_fleet);
-        elforce.sprite_index = spr_fleet_eldar;
-        elforce.owner = eFACTION.ELDAR;
-        elforce.capital_number = choose(2, 3);
-        elforce.frigate_number = choose(4, 5, 6);
-        elforce.escort_number = floor(random_range(7, 11)) + 1;
-        elforce.image_alpha = 0;
-        elforce.orbiting = craft;
+        // Eldar naval combat is currently miserable to play against, so the
+        // craftworld's escort fleet is disabled until fleet battles get attention.
+        // Flip ELDAR_FLEET_ENABLED in macros.gml to restore it.
+        if (ELDAR_FLEET_ENABLED) {
+            var elforce = instance_create(xx, yy, obj_en_fleet);
+            elforce.sprite_index = spr_fleet_eldar;
+            elforce.owner = eFACTION.ELDAR;
+            elforce.capital_number = choose(2, 3);
+            elforce.frigate_number = choose(4, 5, 6);
+            elforce.escort_number = floor(random_range(7, 11)) + 1;
+            elforce.image_alpha = 0;
+            elforce.orbiting = craft;
+        }
     }
 }
 // End craftworld
