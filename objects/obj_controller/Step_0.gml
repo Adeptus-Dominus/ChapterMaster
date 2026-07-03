@@ -1,7 +1,7 @@
 try {
     // Handles most logic for main menus, audio and checks if cheats are enabled
     // TODO refactor will wait untill squads PR (#76) is merged
-    if (menu == 0 && zoomed == 0 && !instances_exist_any([obj_ingame_menu, obj_ncombat])) {
+    if (menu == eMENU.DEFAULT && zoomed == 0 && !instances_exist_any([obj_ingame_menu, obj_ncombat])) {
         scr_zoom_keys();
     }
     if (double_click >= 0) {
@@ -9,10 +9,10 @@ try {
     }
     if (text_bar > 0) {
         text_bar += 1;
-        if ((menu == 1) && (managing > 0)) {
+        if ((menu == eMENU.MANAGE) && (managing > 0)) {
             obj_ini.company_title[managing] = keyboard_string;
         }
-        if ((menu == 24) && (formating > 0) && (formating > 3)) {
+        if ((menu == eMENU.FORMATIONS_SETTINGS) && (formating > 0) && (formating > 3)) {
             bat_formation[formating] = keyboard_string;
         }
     }
@@ -24,7 +24,7 @@ try {
         scr_ui_formation_bars();
     }
     // TODO change this into a constructor which is in a separated script
-    if ((fest_scheduled == 0) && (fest_sid + fest_wid > 0) && (menu != 12.1)) {
+    if ((fest_scheduled == 0) && (fest_sid + fest_wid > 0) && (menu != eMENU.FESTIVAL)) {
         fest_sid = 0;
         fest_wid = 0;
         fest_planet = 0;
@@ -42,11 +42,11 @@ try {
         fest_attend = "";
     }
 
-    if ((menu != 24) && (formating > 0)) {
+    if ((menu != eMENU.FORMATIONS_SETTINGS) && (formating > 0)) {
         formating = 0;
     }
 
-    if (instance_exists(obj_formation_bar) && ((menu != 24) || (formating <= 0))) {
+    if (instance_exists(obj_formation_bar) && ((menu != eMENU.FORMATIONS_SETTINGS) || (formating <= 0))) {
         with (obj_formation_bar) {
             instance_destroy();
         }
@@ -75,52 +75,46 @@ try {
     if (cheatcode != "") {
         cheatyface = 1;
     }
-    if (cheatcode == "req" && global.cheat_req == 0) {
-        global.cheat_req = 1;
-        obj_controller.tempRequisition = obj_controller.requisition;
-        obj_controller.requisition = 51234;
-    } else if (cheatcode == "req" && global.cheat_req == 1) {
-        global.cheat_req = 0;
-        obj_controller.requisition = obj_controller.tempRequisition;
+    if (cheatcode == "req" && !global.cheat_req) {
+        global.cheat_req = true;
+        tempRequisition = requisition;
+        requisition = 51234;
+    } else if (cheatcode == "req" && global.cheat_req) {
+        global.cheat_req = false;
+        requisition = tempRequisition;
     }
-    if (cheatcode == "seed" && global.cheat_gene == 0) {
-        global.cheat_gene = 1;
-        obj_controller.tempGene_seed = obj_controller.gene_seed;
-        obj_controller.gene_seed = 9999;
-    } else if (cheatcode == "seed" && global.cheat_gene == 1) {
-        global.cheat_gene = 0;
-        obj_controller.gene_seed = obj_controller.tempGene_seed;
+    if (cheatcode == "seed" && !global.cheat_gene) {
+        global.cheat_gene = true;
+        tempGene_seed = gene_seed;
+        gene_seed = 9999;
+    } else if (cheatcode == "seed" && global.cheat_gene) {
+        global.cheat_gene = false;
+        gene_seed = tempGene_seed;
     }
     if (cheatcode == "dep") {
-        global.cheat_disp = 1;
-        obj_controller.disposition[2] = 100;
-        obj_controller.disposition[3] = 100;
-        obj_controller.disposition[4] = 100;
-        obj_controller.disposition[5] = 100;
-        obj_controller.disposition[6] = 100;
-        obj_controller.disposition[7] = 100;
-        obj_controller.disposition[8] = 100;
-        obj_controller.disposition[9] = 100;
-        obj_controller.disposition[10] = 100;
+        global.cheat_disp = true;
+        for (var i = 2; i <= 10; i++) {
+            disposition[i] = 100;
+        }
     }
-    if (cheatcode == "debug" && global.cheat_debug == 0) {
-        global.cheat_debug = 1;
-    } else if (cheatcode == "debug" && global.cheat_debug == 1) {
-        global.cheat_debug = 0;
+    if (cheatcode == "debug" && !global.cheat_debug) {
+        global.cheat_debug = true;
+    } else if (cheatcode == "debug" && global.cheat_debug) {
+        global.cheat_debug = false;
     }
     if (cheatcode == "test") {
         diplomacy = 10.5;
         scr_dialogue("test");
     }
-    if (global.cheat_req == 1 && obj_controller.requisition != 51234) {
-        obj_controller.requisition = 51234;
+    if (global.cheat_req && requisition != 51234) {
+        requisition = 51234;
     }
     cheatcode = "";
-    if (menu != 17.5 && instance_exists(obj_event_log)) {
-        obj_event_log.help = 0;
-    }
-    if ((!instance_exists(obj_event_log)) && instance_exists(obj_controller)) {
+    if (!instance_exists(obj_event_log)) {
         instance_activate_object(obj_event_log);
+    }
+    if (instance_exists(obj_event_log) && menu != eMENU.GAME_HELP) {
+        obj_event_log.help = 0;
     }
     if (!instance_exists(obj_ingame_menu)) {
         play_second += 1;
@@ -130,9 +124,9 @@ try {
         }
     }
     // Nope // Cleans up menu
-    if ((menu != 60) && instance_exists(obj_temp_build)) {
+    if ((menu != eMENU.SECRET_LAIR) && instance_exists(obj_temp_build)) {
         if (obj_temp_build.isnew) {
-            menu = 60;
+            menu = eMENU.SECRET_LAIR;
         }
         with (obj_managment_panel) {
             instance_destroy();
@@ -148,18 +142,18 @@ try {
         }
     }
     // Return to star selection
-    if ((menu == 0) && instance_exists(obj_temp_build)) {
-        obj_controller.selecting_planet = obj_temp_build.planet;
-        // Pass variables to obj_controller.temp[t]=""; here
+    if ((menu == eMENU.DEFAULT) && instance_exists(obj_temp_build)) {
+        selecting_planet = obj_temp_build.planet;
+        // Pass variables to temp[t]=""; here
         instance_create(obj_temp_build.x, obj_temp_build.y, obj_star_select);
-        obj_star_select.loading_name = obj_controller.selected.name;
+        obj_star_select.loading_name = selected.name;
         popup = 3;
         with (obj_temp_build) {
             instance_destroy();
         }
     }
     // REMOVE
-    if ((menu != 60) && instance_exists(obj_temp_build)) {
+    if ((menu != eMENU.SECRET_LAIR) && instance_exists(obj_temp_build)) {
         with (obj_temp_build) {
             instance_destroy();
         }
@@ -172,10 +166,10 @@ try {
         text_bar = 1;
     }
 
-    if ((obj_controller.disposition[4] <= 20) || (obj_controller.loyalty <= 33) && (demanding == 0)) {
+    if ((disposition[4] <= 20) || (loyalty <= 33) && (demanding == 0)) {
         demanding = 1;
     }
-    if ((obj_controller.disposition[4] > 20) && (obj_controller.loyalty > 33) && (demanding == 1)) {
+    if ((disposition[4] > 20) && (loyalty > 33) && (demanding == 1)) {
         demanding = 0;
     }
 
@@ -380,7 +374,7 @@ try {
     if (global.load >= 0) {
         exit;
     }
-    if (menu == 0) {
+    if (menu == eMENU.DEFAULT) {
         otha = 0;
     }
     // Sound controls
@@ -425,7 +419,7 @@ try {
         }
     }
     // Rrepair ships
-    if ((menu == 0) && (repair_ships > 0) && (!instance_exists(obj_turn_end)) && (!instance_exists(obj_popup))) {
+    if ((menu == eMENU.DEFAULT) && (repair_ships > 0) && (!instance_exists(obj_turn_end)) && (!instance_exists(obj_popup))) {
         repair_ships = 0;
 
         var pip = instance_create(0, 0, obj_popup);
@@ -512,11 +506,11 @@ try {
         }
     }
     // Resets selections
-    if ((managing > 0) && (man_size == 0) && ((selecting_location != "") || (selecting_types != "") || (selecting_planet != 0) || (selecting_ship != -1))) {
+    if ((managing > 0) && (man_size == 0) && ((selecting_location != "") || (selecting_types != "") || instance_exists(selecting_planet) || (selecting_ship != -1))) {
         reset_manage_selections();
     }
 
-    if (menu == 0 && !instances_exist_any([obj_ncombat, obj_fleet_controller])) {
+    if (menu == eMENU.DEFAULT && !instances_exist_any([obj_ncombat, obj_fleet_controller])) {
         if (!array_contains(obj_ini.role[0], obj_ini.role[100][eROLE.CHAPTERMASTER]) && (alarm[7] == -1)) {
             alarm[7] = 15;
         }

@@ -18,14 +18,17 @@ if (is_test_map == true) {
 
 good_log = 1;
 
-var xx, yy, did = 0, _current_system = 0, px = 0, py = 0;
+var xx = 0;
+var yy = 0;
+var px = 0;
+var py = 0;
 // Set player set
-_current_system = find_player_spawn_star();
+var _current_system = find_player_spawn_star();
 
 instance_activate_object(obj_star);
-var _player_star;
+var _player_star = noone;
 // Set player homeworld
-did = instance_exists(_current_system);
+var did = instance_exists(_current_system);
 if (did) {
     _player_star = _current_system.id;
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
@@ -485,43 +488,28 @@ if (did != 0) {
 }
 
 // Eldar craftworld here
-
-var go = 0;
-
 craftworld = 1;
 
 for (var i = 0; i < 100; i++) {
-    if (go == 0) {
-        xx = floor(random(1152 + 600)) + 104;
-        yy = floor(random(748 + 440)) + 104;
-        if (point_distance(room_width / 2, room_height / 2, xx, yy) >= 50) {
-            go = 1;
-        }
+    xx = floor(random(1152 + 600)) + 104;
+    yy = floor(random(748 + 440)) + 104;
+    if (point_distance(room_width / 2, room_height / 2, xx, yy) >= 50) {
         var me = instance_nearest(xx, yy, obj_star);
-        if ((go == 1) && (point_distance(me.x, me.y, xx, yy) >= 150)) {
-            go = 2;
+        if ((point_distance(me.x, me.y, xx, yy) >= 150) && (xx < 1690 && yy > 780)) {
+            var craft = instance_create(xx, yy, obj_star);
+            craft.craftworld = 1;
+            array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.WARLORD6));
+    
+            var elforce = instance_create(xx, yy, obj_en_fleet);
+            elforce.sprite_index = spr_fleet_eldar;
+            elforce.owner = eFACTION.ELDAR;
+            elforce.capital_number = choose(2, 3);
+            elforce.frigate_number = choose(4, 5, 6);
+            elforce.escort_number = floor(random_range(7, 11)) + 1;
+            elforce.image_alpha = 0;
+            elforce.orbiting = craft;
+            break;
         }
-        if (go == 1) {
-            go = 0;
-        }
-        if ((xx >= 1050 + 640) || (yy <= 300 + 480)) {
-            go = 0;
-        }
-    }
-    if (go == 2) {
-        var craft = instance_create(xx, yy, obj_star);
-        craft.craftworld = 1;
-        go = 999;
-        array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.WARLORD6));
-
-        var elforce = instance_create(xx, yy, obj_en_fleet);
-        elforce.sprite_index = spr_fleet_eldar;
-        elforce.owner = eFACTION.ELDAR;
-        elforce.capital_number = choose(2, 3);
-        elforce.frigate_number = choose(4, 5, 6);
-        elforce.escort_number = floor(random_range(7, 11)) + 1;
-        elforce.image_alpha = 0;
-        elforce.orbiting = craft;
     }
 }
 // End craftworld

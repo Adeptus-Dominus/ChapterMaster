@@ -77,7 +77,7 @@ LOGGER.info("Creating Controller");
 scr_colors_initialize();
 is_test_map = false;
 target_navy_number = 5;
-global.sound_playing = 0;
+global.sound_playing = undefined;
 global.defeat = 0;
 tutorial = 0;
 sound_in = 0;
@@ -100,6 +100,7 @@ scale_mod = 1;
 unit_manage_constants = {};
 unit_manage_constants.current_data = "";
 management_buttons = false;
+display_unit = undefined;
 
 diplo_buttons = {};
 diplomacy_pathway = "";
@@ -299,7 +300,7 @@ for (var i = 101; i < 103; i++) {
 }
 
 // ** Sets cheatcode values **
-cheatcode = 0;
+cheatcode = "";
 cheatyface = 0;
 if (is_test_map) {
     global.cheat_debug = true;
@@ -518,13 +519,12 @@ fleet_minimized = 0;
 fleet_all = 1;
 unload = 0;
 new_vehicles = 1;
-menu = 500;
+menu = eMENU.WELCOME_SCREEN1;
 settings = 0;
 text_bar = 0;
 text_selected = "";
 return_object = 0;
 return_size = 0;
-// menu=0;
 menu_artifact = 1;
 menu_artifact_type = 0;
 menu_adept = 0;
@@ -582,23 +582,19 @@ penitent_turnly = 0;
 penitent_turn = 0;
 penitent_end = 0;
 blood_debt = 0;
+penit_co = array_create(51, 0);
+penit_id = array_create(51, 0);
 
 // ** Sets penitent or blood debt if chapter disadvantage is selected **
 if (instance_exists(obj_ini)) {
-    var bloo = 0;
-    if (scr_has_disadv("Blood Debt")) {
-        bloo = 1;
-    }
-
     penitent = obj_ini.penitent;
     penitent_current = obj_ini.penitent_current;
     penitent_max = obj_ini.penitent_max;
 
-    if (bloo == 1) {
+    if (scr_has_disadv("Blood Debt")) {
         penitent_end = millenium + year + (obj_ini.penitent_end / 12);
         blood_debt = 1;
-    }
-    if (bloo == 0) {
+    } else {
         penitent_end = millenium + year + obj_ini.penitent_end;
     }
 
@@ -607,13 +603,6 @@ if (instance_exists(obj_ini)) {
     }
 }
 // ** Resets marines and other vars **
-
-for (var i = 0; i < 501; i++) {
-    if (i <= 50) {
-        penit_co[i] = 0;
-        penit_id[i] = 0;
-    }
-}
 event = [];
 // ship management arrays
 // they are used to display a paginated subset of ships
@@ -628,7 +617,7 @@ sh_cargo = [];
 sh_cargo_max = [];
 reset_manage_arrays();
 alll = 0;
-//
+
 popup = 0; // 1: fleet, 2: other, 3: system
 selected = 0;
 sel_owner = 0;
@@ -639,14 +628,12 @@ close_popups = true;
 unit_manage_image = false;
 // ** Sets starting turn **
 turn = 1;
-// turn=40;
 // ** Sets events and missions **
 last_event = 0;
 last_mission = 0;
 // ** Inquisition inspection **
 last_inquisitor_inspection = 0; // Duhuhu
 
-// chaos_turn=100+((floor(random(10))+1)*choose(-1,1));
 // ** Sets when chaos will arrive **
 chaos_turn = 2;
 // ** Sets fleets**
@@ -674,11 +661,7 @@ trade_chip = 0;
 trade_info = 0;
 zui = 0;
 // Variables for management
-var array_size = 9001;
-temp = array_create(array_size, 0);
-array_set_range(temp, 0, 199, "");
-temp[90] = 0;
-temp[9000] = "";
+temp = array_create(9001, "");
 // ** Resets all audiences **
 audience_stack = [];
 audiences = 0;
@@ -718,7 +701,7 @@ inquisitor_gender = array_create(11, 0);
 inquisitor_type = array_create(11, "");
 inquisitor = array_create(11, "");
 
-for (var i = 0, l = array_length(inquisitor_gender); i < l; i++) {
+for (var i = 0; i < array_length(inquisitor_gender); i++) {
     inquisitor_gender[i] = choose(0, 0, 0, 1, 1, 1, 1);
     inquisitor_type[i] = choose("Ordo Malleus", "Ordo Xenos", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus");
     var _gender = inquisitor_gender[i];
@@ -750,8 +733,6 @@ lair_styles = [
     {name: "Steel", description: "Stainless steel surfaces and water fountains.", tag: "STL"},
     {name: "Utilitarian", description: "Plaster or concrete surfaces with carpeting.", tag: "UTL"}
 ];
-
-
 
 // ** Sets the reason for loss of loyalty **
 var loyalReasons = [
@@ -1011,13 +992,6 @@ known[eFACTION.PLAYER] = 999;
 known[eFACTION.IMPERIUM] = 1;
 known[eFACTION.MECHANICUS] = 1;
 
-// UI testing
-// known[eFACTION.INQUISITION]=1;known[eFACTION.ECCLESIARCHY]=1;known[eFACTION.ELDAR]=1;known[eFACTION.ORK]=1;known[eFACTION.TAU]=1;known[eFACTION.TYRANIDS]=1;known[eFACTION.CHAOS]=1;
-
-// eldar mission testing
-// known[eFACTION.ELDAR]=2;
-// disposition[4]=90;
-// disposition[3]=60;
 // ** Sets diplomacy annoyed status **
 annoyed = array_create(14, 0);
 // ** Sets diplomacy ignore status **
@@ -1143,7 +1117,6 @@ serialize = function() {
         obj: object_get_name(object_index),
         x,
         y,
-        master_of_forge,
         stc_research,
         technologies_known,
         player_forge_data,
@@ -1194,7 +1167,6 @@ if (global.load >= 0) {
         instance_destroy();
     }
     instance_create(0, 0, obj_ini);
-    // obj_saveload.menu=2;
     obj_saveload.alarm[0] = 1;
     obj_saveload.load_part = 1;
     obj_cursor.image_alpha = 0;
@@ -1217,7 +1189,6 @@ if (global.load >= 0) {
 ///! ************************************************************ */
 ///! ************************************************************ */
 
-var me, dist, go, planet;
 global.custom = eCHAPTER_TYPE.RANDOM;
 
 // ** Sets up base training level and trainees at game start **
@@ -1318,25 +1289,18 @@ if (instance_exists(obj_ini)) {
     }
 }
 
-// 0: none      1: management
-// 11: apothecary       12: chaplain        13: librarium       14: armamentarium
 // ** Sets the star for the chapter ? **
 instance_create(irandom_range(400, room_width - 400), irandom_range(400, room_height - 400), obj_star);
-planet = floor(random(5)) + 19;
-planet = 30 * 1.5;
-planet = 100;
-
+var _number_of_systems = 100;
 if (is_test_map == true) {
-    planet = 20;
+    _number_of_systems = 20;
 }
-
-var nearest_star, repeats;
 mask_index = spr_star;
-while (instance_number(obj_star) < planet) {
+while (instance_number(obj_star) < _number_of_systems) {
     var xx = irandom_range(200, room_width - 150); // dictates how far away from the edge stars spawn
     var yy = irandom_range(130, room_height - 130);
-    nearest_star = instance_nearest(xx, yy, obj_star);
-    repeats = 0;
+    var nearest_star = instance_nearest(xx, yy, obj_star);
+    var repeats = 0;
     while (point_distance(xx, yy, nearest_star.x, nearest_star.y) < 130 && repeats < 100) {
         xx = irandom_range(200, room_width - 150); // dictates how far away from the edge stars spawn
         yy = irandom_range(130, room_height - 160);
@@ -1351,7 +1315,6 @@ while (instance_number(obj_star) < planet) {
 mask_index = -1;
 
 LOGGER.info("Set Fleet Type");
-
 fleet_type = "";
 if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
     fleet_type = "Homeworld";
@@ -1363,18 +1326,13 @@ if (obj_ini.fleet_type == ePLAYER_BASE.PENITENT) {
     fleet_type = "Crusade";
 }
 star_names = "";
+
 // ** Sets up the number of enemy factions to appear **
 tau = 1;
 tyranids = 1;
 ork = 1;
 eldar = 1;
-// if tau = 1 then tau spawn. also does eldar
-/*
-if (global.custom==eCHAPTER_TYPE.RANDOM){ 
-    tau=choose(0,0,1);
-    eldar=choose(0,1);
-}
-*/
+
 // ** Sets up loyalty **
 loyalty = 100;
 loyalty_hidden = 100; // Updated when inquisitors do an inspection
@@ -1401,6 +1359,7 @@ if (global.chapter_name == "Soul Drinkers") {
 }
 
 system_fleet_strength = 0;
+
 // **sets up starting forge_points
 LOGGER.info("set up the specialist points");
 specialist_point_handler = new SpecialistPointHandler();
@@ -1416,19 +1375,19 @@ marines = obj_ini.specials + obj_ini.firsts + obj_ini.seconds + obj_ini.thirds +
 marines += obj_ini.sixths + obj_ini.sevenths + obj_ini.eighths + obj_ini.ninths + obj_ini.tenths;
 command = 0;
 command = obj_ini.commands;
+
 // Removes the command marines from marine count
 if (global.load == -1) {
     marines -= command;
 }
+
 // **** INTRO SCREEN ****
 temp[30] = string(check_number) + " " + string(year_fraction) + " " + string(year) + ".M" + string(millenium); // Date
 temp[31] = string_upper(adept_name); // Adept name
 temp[32] = string_upper(obj_ini.name[0][0]); // Master name
 temp[33] = string_upper(scr_thought()); // Thought of the day
 
-//
 // Game start welcoming message
-//
 LOGGER.info("Game start welcoming message");
 var njm = 34, com = 0, vih = 0, word = "", masta = 0, forga = 0, chapla = 0, apa = 0, liba = 0, techa = 0, libra = 0, coda = 0, lexa = 0, apotha = 0, old_dudes = 0;
 
@@ -1779,8 +1738,6 @@ if (hunt > 0) {
     temp[62] += "\n";
 }
 
-// show_message(temp[61]);
-// show_message(temp[62]);
 // 61 : equipment
 // 62 : ships
 var lol = 240;
@@ -1794,7 +1751,6 @@ if (floor(welcome_pages) < welcome_pages) {
     welcome_pages = floor(welcome_pages);
 }
 
-// show_message(string(welcome_pages)+" pages");
 var tman = 65;
 temp[65] = string(temp[60]) + string(temp[61]) + string(temp[62]);
 for (var i = 0; i < welcome_pages; i++) {
@@ -1824,7 +1780,6 @@ if (welcome_pages >= 2) {
     }
 }
 remov = string_length(string(temp[65]) + string(temp[66])) + 1;
-// show_message(remov);
 
 if (welcome_pages >= 3) {
     temp[67] = string_delete(temp[67], 1, remov);

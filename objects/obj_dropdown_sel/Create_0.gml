@@ -4,7 +4,7 @@ options = 0;
 option_selected = 0;
 target = "";
 opened = 0;
-my_menu = 12.1;
+my_menu = eMENU.FESTIVAL;
 determined_planets = 0;
 
 option = array_create(51, "");
