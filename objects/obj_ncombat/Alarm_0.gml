@@ -101,28 +101,28 @@ try {
         u.image_alpha = 0.5;
 
         if (fortified == 2) {
-            u.ac[1] = 30;
-            u.hp[1] = 400;
+            u.ac = 30;
+            u.hp = 400;
         }
         if (fortified == 3) {
-            u.ac[1] = 40;
-            u.hp[1] = 800;
+            u.ac = 40;
+            u.hp = 800;
         }
         if (fortified == 4) {
-            u.ac[1] = 40;
-            u.hp[1] = 1250;
+            u.ac = 40;
+            u.hp = 1250;
         }
         if (fortified == 5) {
-            u.ac[1] = 40;
-            u.hp[1] = 1500;
+            u.ac = 40;
+            u.hp = 1500;
         }
 
         if (siege && (fortified > 0) && defending) {
             global_attack *= 1.1;
-            u.hp[1] = round(u.hp[1] * 1.2);
+            u.hp = round(u.hp * 1.2);
         }
 
-        u.maxhp[1] = u.hp[1];
+        u.maxhp = u.hp;
     }
 
     var _num = xxx / 10;

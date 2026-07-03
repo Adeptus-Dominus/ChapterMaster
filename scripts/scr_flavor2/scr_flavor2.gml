@@ -377,7 +377,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     }
 
     if (target_type == "wall") {
-        var _wall_destroyed = obj_nfort.hp[1] <= 0 ? true : false;
+        var _wall_destroyed = obj_nfort.hp <= 0 ? true : false;
 
         if (_wall_destroyed) {
             mes_color = eMSG_COLOR.RED;
@@ -395,6 +395,8 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 
         obj_ncombat.combat_log.push(mes, mes_color);
         obj_ncombat.alarm[3] = 2;
+
+        obj_ncombat.combat_log.push(mes, mes_color);
 
         exit;
     }

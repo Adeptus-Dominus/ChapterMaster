@@ -186,7 +186,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 
 /// @self Id.Instance.obj_enunit
 /// @description Handles enemy-side shooting (owner == 2).
-/// @param {Id.Instance.obj_pnunit} target_object
+/// @param {Id.Instance.obj_pnunit|Id.Instance.obj_nfort} target_object
 function scr_shoot_enemy(weapon_index_position, target_object, damage_data, melee_or_ranged, aggregate_damage, armour_pierce) {
     var _hit_count = wep_num[weapon_index_position];
     if (_hit_count == 0 || ammo[weapon_index_position] == 0) {
@@ -309,12 +309,12 @@ function scr_shoot_enemy(weapon_index_position, target_object, damage_data, mele
             if (melee_or_ranged == "wall") {
                 var dest = 0;
 
-                _damage -= target_object.ac[1];
+                _damage -= target_object.ac;
                 _damage = max(0, _damage);
                 _damage = round(_damage) * _hit_count;
-                target_object.hp[1] -= _damage;
+                target_object.hp -= _damage;
 
-                if (target_object.hp[1] <= 0) {
+                if (target_object.hp <= 0) {
                     dest = 1;
                 }
 
