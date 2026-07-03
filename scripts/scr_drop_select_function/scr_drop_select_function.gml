@@ -253,15 +253,22 @@ function drop_select_unit_selection() {
                 obj_controller.last_raid_form = _chosen_form;
             }
 
+            // The fleet action tick used to run AFTER instance_deactivate_all, writing
+            // to a deactivated instance by id. Whether that write lands is
+            // runtime-dependent, and the tester's repro (unlimited raids from a
+            // stationary fleet, third raid never blocked) matches it silently failing
+            // in the compiled build: acted never climbed, so the raid gate
+            // (acted <= 1) always passed. Ticked before deactivation instead, with a
+            // proof line for the session log.
+            if (sh_target != noone) {
+                sh_target.acted += 1;
+                LOGGER.info($"DROP LAUNCH {((attack == 1) ? "attack" : "raid")}: fleet acted now {sh_target.acted}");
+            }
+
             instance_deactivate_all(true);
             instance_activate_object(obj_controller);
             instance_activate_object(obj_ini);
             instance_activate_object(obj_drop_select);
-
-            // 135 ; temporary balancing
-            if (sh_target != noone) {
-                sh_target.acted += 1;
-            }
 
             // Ship assault economy: each distinct ship contributing units to this
             // ground assault spends one support use this turn (SHIP_ASSAULTS_PER_TURN
@@ -278,6 +285,7 @@ function drop_select_unit_selection() {
                         if (!array_contains(_spent_ships, _sel_ship)) {
                             array_push(_spent_ships, _sel_ship);
                             ship_assault_spend(_sel_ship);
+                            LOGGER.info($"ASSAULT SPEND ship {_sel_ship}: uses now {ship_assaults_used(_sel_ship)}/{SHIP_ASSAULTS_PER_TURN}");
                         }
                     } else {
                         _local_participated = true;
