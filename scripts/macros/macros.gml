@@ -42,6 +42,16 @@
 #macro ENEMY_PIERCE_RANK2_SHOTS 0.66
 #macro ENEMY_PIERCE_RANK3_SHOTS 0.33
 
+// Player-side column piercing, mirroring the enemy mechanic. Vanilla player targeting
+// gave anti-infantry weapons a 100% free pass through enemy tank walls (the men
+// look-behind fired the full volley at the first infantry block behind, no shots lost),
+// and silently wasted the volley entirely when no infantry was found. Now the wall
+// costs the same toll in both directions: the first enemy infantry rank behind armour
+// is hit by RANK2 of the shots, the second by RANK3, and the shots that fail to pass
+// chip the wall instead of vanishing.
+#macro PLAYER_PIERCE_RANK2_SHOTS 0.66
+#macro PLAYER_PIERCE_RANK3_SHOTS 0.33
+
 // Ship assault economy: how many ground assaults each ship can support per turn. The old
 // rule capped the whole fleet at 2 attacks per turn regardless of size, so deploying
 // everything on every assault cost nothing. Now each carrying ship supports this many

@@ -210,6 +210,13 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             if (weapon_index_position >= 0) {
                 shots_fired = wep_num[weapon_index_position];
             }
+            // Column piercing sub-volleys (player side). Unlike the enemy branch, no
+            // aggregate scaling is needed: player per-shot damage divides by wep_num
+            // (the full stack) rather than by shots fired, so a partial volley already
+            // deals a clean linear share of the stack's damage.
+            if (shot_override > -1) {
+                shots_fired = min(shot_override, shots_fired);
+            }
 
             if (shots_fired == 0) {
                 exit;
@@ -248,7 +255,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                 if (ammo[weapon_index_position] == 0) {
                     stop = 1;
                 }
-                if (ammo[weapon_index_position] > 0) {
+                if (consume_ammo && (ammo[weapon_index_position] > 0)) {
                     ammo[weapon_index_position] -= 1;
                 }
             }

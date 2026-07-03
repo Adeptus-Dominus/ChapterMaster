@@ -192,21 +192,114 @@ try {
                         good = 0;
 
                         if (enemy.men + enemy.medi > 0) {
-                            good = scr_target(enemy, "men"); // First target has vehicles, blow it to hell
+                            good = scr_target(enemy, "men"); // First target has infantry, engage it
                             scr_shoot(i, enemy, good, "att", "ranged");
                         }
                         if ((good == 0) && (instance_number(obj_enunit) > 1)) {
-                            // First target does not have vehicles, cycle through objects to find one that has vehicles
-                            var x2 = enemy.x;
-                            repeat (instance_number(obj_enunit) - 1) {
-                                if (good == 0) {
-                                    x2 += 10;
-                                    var enemy2 = instance_nearest(x2, y, obj_enunit);
-                                    if ((enemy2.men > 0) && (good == 0)) {
-                                        good = scr_target(enemy2, "men"); // This target has vehicles, blow it to hell
-                                        scr_shoot(i, enemy2, good, "att", "ranged");
-                                        once_only = 1;
+                            // Column piercing (player side), mirroring the enemy mechanic. The
+                            // front enemy block has no infantry (a tank wall). Vanilla walked a
+                            // 10px instance_nearest probe and fired the FULL volley at the first
+                            // men-bearing block found (a free 100% pass through armour), or
+                            // silently wasted the whole volley when the probe found nothing.
+                            // Instead: blocks beyond the front are collected along the
+                            // shooter-to-front axis (so main and flank fronts both walk the right
+                            // way), sorted nearest-first; the first infantry rank in range eats
+                            // PLAYER_PIERCE_RANK2_SHOTS of the volley, the second
+                            // PLAYER_PIERCE_RANK3_SHOTS, deeper ranks nothing, and the stopped
+                            // shots chip the armour wall instead of vanishing.
+                            var _front_x = enemy.x;
+                            var _dir = sign(_front_x - x);
+                            if (_dir == 0) {
+                                _dir = 1;
+                            }
+                            var _beyond = [];
+                            with (obj_enunit) {
+                                if (id == other.enemy) {
+                                    continue;
+                                }
+                                if (((x - _front_x) * _dir) <= 0) {
+                                    continue;
+                                }
+                                array_push(_beyond, id);
+                            }
+                            if (_dir > 0) {
+                                array_sort(_beyond, function(_a, _b) {
+                                    return _a.x - _b.x;
+                                });
+                            } else {
+                                array_sort(_beyond, function(_a, _b) {
+                                    return _b.x - _a.x;
+                                });
+                            }
+                            var _rank_blocks = [];
+                            var _wall_blocks = [];
+                            if (block_has_armour(enemy) > 0) {
+                                array_push(_wall_blocks, enemy);
+                            }
+                            for (var b = 0; b < array_length(_beyond); b++) {
+                                var enemy2 = _beyond[b];
+                                if (!target_block_is_valid(enemy2, obj_enunit)) {
+                                    continue;
+                                }
+                                if (range[i] < get_block_distance(enemy2)) {
+                                    break;
+                                }
+                                if (enemy2.men > 0) {
+                                    array_push(_rank_blocks, enemy2);
+                                    if (array_length(_rank_blocks) >= 2) {
+                                        break;
                                     }
+                                } else if ((array_length(_rank_blocks) == 0) && (block_has_armour(enemy2) > 0)) {
+                                    // A second armour line between the shooter and the enemy
+                                    // infantry shares the stopped shots with the front wall.
+                                    array_push(_wall_blocks, enemy2);
+                                }
+                            }
+                            if (array_length(_rank_blocks) > 0) {
+                                var _total_shots = wep_num[i];
+                                var _rank2_shots = floor(_total_shots * PLAYER_PIERCE_RANK2_SHOTS);
+                                var _rank3_shots = floor(_total_shots * PLAYER_PIERCE_RANK3_SHOTS);
+                                var _front_shots = _total_shots - _rank2_shots;
+                                var _ammo_spent = false;
+                                var _rank_target = scr_target(_rank_blocks[0], "men");
+                                if ((_rank2_shots > 0) && (_rank_target != 0)) {
+                                    scr_shoot(i, _rank_blocks[0], _rank_target, "att", "ranged", _rank2_shots, !_ammo_spent);
+                                    _ammo_spent = true;
+                                }
+                                if ((array_length(_rank_blocks) > 1) && (_rank3_shots > 0)) {
+                                    _rank_target = scr_target(_rank_blocks[1], "men");
+                                    if (_rank_target != 0) {
+                                        scr_shoot(i, _rank_blocks[1], _rank_target, "att", "ranged", _rank3_shots, !_ammo_spent);
+                                        _ammo_spent = true;
+                                    }
+                                }
+                                var _wall_count = array_length(_wall_blocks);
+                                if ((_front_shots > 0) && (_wall_count > 0)) {
+                                    var _per_wall = floor(_front_shots / _wall_count);
+                                    var _extra = _front_shots - (_per_wall * _wall_count);
+                                    for (var w = 0; w < _wall_count; w++) {
+                                        var _w_shots = _per_wall + ((w == 0) ? _extra : 0);
+                                        if (_w_shots <= 0) {
+                                            continue;
+                                        }
+                                        var _w_target = scr_target(_wall_blocks[w], "veh");
+                                        if (_w_target != 0) {
+                                            scr_shoot(i, _wall_blocks[w], _w_target, "att", "ranged", _w_shots, !_ammo_spent);
+                                            _ammo_spent = true;
+                                        }
+                                    }
+                                }
+                                if (_ammo_spent) {
+                                    once_only = 1;
+                                }
+                            } else if (block_has_armour(enemy) > 0) {
+                                // No infantry in range beyond the wall: the whole volley chips
+                                // the wall instead of vanishing silently (vanilla fired nothing
+                                // at all here and the shots were simply lost).
+                                var _w_target = scr_target(enemy, "veh");
+                                if (_w_target != 0) {
+                                    scr_shoot(i, enemy, _w_target, "att", "ranged");
+                                    once_only = 1;
                                 }
                             }
                         }
