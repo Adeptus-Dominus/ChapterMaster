@@ -1,3 +1,27 @@
+/// @function battle_log_tail_slot
+/// @desc First free slot AFTER the last queued message. The old posting scheme wrote
+/// at index `messages`, which is a COUNT, not a tail pointer: every displayed message
+/// clears a slot at the FRONT of the queue and decrements the count, so until the
+/// next compaction tick the count points AT the newest queued message. Any post
+/// landing in that window overwrote it (silently destroying lines, vehicle-loss
+/// lines in message-heavy piercing turns being the reported casualties) and inflated
+/// `messages` by one phantom per overwrite, which is how battles ended with the pump
+/// spinning on a nonzero count over empty slots, printing nothing.
+/// @returns {real} slot index, or -1 when the log is genuinely full (drop, never overwrite)
+function battle_log_tail_slot() {
+    var _last = 0;
+    for (var _m = COMBAT_LOG_CAPACITY; _m >= 1; _m--) {
+        if (obj_ncombat.message[_m] != "") {
+            _last = _m;
+            break;
+        }
+    }
+    if (_last >= COMBAT_LOG_CAPACITY) {
+        return -1;
+    }
+    return _last + 1;
+}
+
 /// @function add_battle_log_message
 /// @param {string} _message - The message text to add to the battle log
 /// @param {real} [_message_size=0] - The size/importance of the message (higher values = higher display priority; affects sorting order)
@@ -5,11 +29,14 @@
 /// @returns {real} The index of the newly added message
 function add_battle_log_message(_message, _message_size = 0, _message_priority = 0) {
     if (instance_exists(obj_ncombat)) {
+        var _message_index = battle_log_tail_slot();
+        if (_message_index < 0) {
+            return -1;
+        }
         obj_ncombat.messages++;
-        var _message_index = obj_ncombat.messages;
 
         obj_ncombat.message[_message_index] = _message;
-        obj_ncombat.message_sz[_message_index] = _message_size + (0.5 - (obj_ncombat.messages / 100));
+        obj_ncombat.message_sz[_message_index] = _message_size + (0.5 - (_message_index / 100));
         obj_ncombat.message_priority[_message_index] = _message_priority;
 
         return _message_index;

@@ -433,11 +433,15 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         }
 
         if (string_length(mes) > 3) {
-            obj_ncombat.messages += 1;
-            obj_ncombat.message[obj_ncombat.messages] = mes;
-            obj_ncombat.message_sz[obj_ncombat.messages] = 999;
-            obj_ncombat.message_priority[obj_ncombat.messages] = 0;
-            obj_ncombat.alarm[3] = 2;
+            // Tail slot, not the messages count; see battle_log_tail_slot in scr_flavor.
+            var _log_slot = battle_log_tail_slot();
+            if (_log_slot >= 0) {
+                obj_ncombat.messages += 1;
+                obj_ncombat.message[_log_slot] = mes;
+                obj_ncombat.message_sz[_log_slot] = 999;
+                obj_ncombat.message_priority[_log_slot] = 0;
+                obj_ncombat.alarm[3] = 2;
+            }
         }
         if (obj_nfort.hp[1] <= 0) {
             s = 0;
@@ -566,10 +570,16 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         } else if ((lost_units_count == 0) && (hostile_shots > 0) && target_is_vehicle && (damage_severity < 0.10)) {
             _enemy_priority = 135;
         }
-        obj_ncombat.messages += 1;
-        obj_ncombat.message[obj_ncombat.messages] = mes;
-        obj_ncombat.message_sz[obj_ncombat.messages] = lost_units_count + (0.5 - (obj_ncombat.messages / 100));
-        obj_ncombat.message_priority[obj_ncombat.messages] = _enemy_priority;
-        obj_ncombat.alarm[3] = 2;
+        // Posted through the tail slot, not the messages count: posting at the count
+        // overwrote the newest queued message whenever a display had just opened a
+        // front gap (see battle_log_tail_slot in scr_flavor).
+        var _log_slot = battle_log_tail_slot();
+        if (_log_slot >= 0) {
+            obj_ncombat.messages += 1;
+            obj_ncombat.message[_log_slot] = mes;
+            obj_ncombat.message_sz[_log_slot] = lost_units_count + (0.5 - (_log_slot / 100));
+            obj_ncombat.message_priority[_log_slot] = _enemy_priority;
+            obj_ncombat.alarm[3] = 2;
+        }
     }
 }

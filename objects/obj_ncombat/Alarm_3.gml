@@ -103,6 +103,12 @@ if (messages > 0) {
         message_sz[that] = 0;
         message_priority[that] = 0;
         messages -= 1;
+    } else {
+        // Self-heal: no queued content but a nonzero count means the counter drifted
+        // (phantom messages from the old post-at-count overwrite bug, or any future
+        // desync). Without this the pump spins forever on an empty queue and the log
+        // goes silent for the rest of the battle.
+        messages = 0;
     }
 
     alarm[3] = 2;
