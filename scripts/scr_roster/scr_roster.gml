@@ -364,6 +364,22 @@ function Roster() constructor {
             _ship_index = _ships[s];
             if (obj_ini.ship_carrying[_ship_index] > 0) {
                 new_ship_button(obj_ini.ship[_ship_index], _ship_index);
+                // Ship assault economy: a ship that has already supported its maximum
+                // ground assaults this turn stays listed but locked and red, so the
+                // player can see it is spent. The lock is enforced in
+                // scr_drop_select_function (clicks and Select All are forced back off),
+                // and update_roster only admits units whose ship toggle is active.
+                // Applies to attacks only; raids and purges do not spend uses.
+                if (instance_exists(obj_drop_select)) {
+                    if (obj_drop_select.attack && (ship_assaults_used(_ship_index) >= SHIP_ASSAULTS_PER_TURN)) {
+                        var _spent_btn = ships[array_length(ships) - 1];
+                        _spent_btn.assault_locked = true;
+                        _spent_btn.active = false;
+                        _spent_btn.text_color = c_red;
+                        _spent_btn.button_color = c_red;
+                        _spent_btn.tooltip = "This ship has already supported the maximum number of ground assaults this turn.";
+                    }
+                }
             }
         }
     };

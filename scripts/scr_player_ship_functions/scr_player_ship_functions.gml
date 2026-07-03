@@ -123,6 +123,93 @@ function get_player_ships(location = "", name = "") {
     return _ships;
 }
 
+/// @desc How many ground assaults this ship has supported this turn. The counters are
+/// keyed to obj_controller.turn: a stored count from any earlier turn reads as zero, so
+/// there is no per-turn reset pass and nothing new needs saving (after a load the
+/// counters simply start fresh). Out-of-range or missing arrays also read as zero.
+function ship_assaults_used(ship_index) {
+    if (ship_index < 0) {
+        return 0;
+    }
+    if (!variable_instance_exists(obj_ini, "ship_assault_uses") || !variable_instance_exists(obj_ini, "ship_assault_turn")) {
+        return 0;
+    }
+    if ((ship_index >= array_length(obj_ini.ship_assault_uses)) || (ship_index >= array_length(obj_ini.ship_assault_turn))) {
+        return 0;
+    }
+    if (obj_ini.ship_assault_turn[ship_index] != obj_controller.turn) {
+        return 0;
+    }
+    return obj_ini.ship_assault_uses[ship_index];
+}
+
+/// @desc Spend one ground assault support use on this ship for the current turn.
+function ship_assault_spend(ship_index) {
+    if (ship_index < 0) {
+        return;
+    }
+    if (!variable_instance_exists(obj_ini, "ship_assault_uses")) {
+        obj_ini.ship_assault_uses = [];
+    }
+    if (!variable_instance_exists(obj_ini, "ship_assault_turn")) {
+        obj_ini.ship_assault_turn = [];
+    }
+    while (array_length(obj_ini.ship_assault_uses) <= ship_index) {
+        array_push(obj_ini.ship_assault_uses, 0);
+    }
+    while (array_length(obj_ini.ship_assault_turn) <= ship_index) {
+        array_push(obj_ini.ship_assault_turn, -1);
+    }
+    if (obj_ini.ship_assault_turn[ship_index] != obj_controller.turn) {
+        obj_ini.ship_assault_turn[ship_index] = obj_controller.turn;
+        obj_ini.ship_assault_uses[ship_index] = 0;
+    }
+    obj_ini.ship_assault_uses[ship_index] += 1;
+}
+
+/// @desc How many ground assaults this planet's local forces have supported this turn.
+/// Same epoch-keyed pattern as the ship counters, stored on the star instance: counts
+/// from earlier turns read as zero, missing arrays read as zero, nothing new is saved.
+function local_assaults_used(star_object, planet_number) {
+    if (!instance_exists(star_object) || (planet_number < 0)) {
+        return 0;
+    }
+    if (!variable_instance_exists(star_object, "local_assault_uses") || !variable_instance_exists(star_object, "local_assault_turn")) {
+        return 0;
+    }
+    if ((planet_number >= array_length(star_object.local_assault_uses)) || (planet_number >= array_length(star_object.local_assault_turn))) {
+        return 0;
+    }
+    if (star_object.local_assault_turn[planet_number] != obj_controller.turn) {
+        return 0;
+    }
+    return star_object.local_assault_uses[planet_number];
+}
+
+/// @desc Spend one ground assault support use from this planet's local forces.
+function local_assault_spend(star_object, planet_number) {
+    if (!instance_exists(star_object) || (planet_number < 0)) {
+        return;
+    }
+    if (!variable_instance_exists(star_object, "local_assault_uses")) {
+        star_object.local_assault_uses = [];
+    }
+    if (!variable_instance_exists(star_object, "local_assault_turn")) {
+        star_object.local_assault_turn = [];
+    }
+    while (array_length(star_object.local_assault_uses) <= planet_number) {
+        array_push(star_object.local_assault_uses, 0);
+    }
+    while (array_length(star_object.local_assault_turn) <= planet_number) {
+        array_push(star_object.local_assault_turn, -1);
+    }
+    if (star_object.local_assault_turn[planet_number] != obj_controller.turn) {
+        star_object.local_assault_turn[planet_number] = obj_controller.turn;
+        star_object.local_assault_uses[planet_number] = 0;
+    }
+    star_object.local_assault_uses[planet_number] += 1;
+}
+
 function new_player_ship_defaults() {
     with (obj_ini) {
         array_push(ship, "");

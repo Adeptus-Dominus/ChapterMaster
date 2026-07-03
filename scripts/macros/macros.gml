@@ -42,6 +42,14 @@
 #macro ENEMY_PIERCE_RANK2_SHOTS 0.66
 #macro ENEMY_PIERCE_RANK3_SHOTS 0.33
 
+// Ship assault economy: how many ground assaults each ship can support per turn. The old
+// rule capped the whole fleet at 2 attacks per turn regardless of size, so deploying
+// everything on every assault cost nothing. Now each carrying ship supports this many
+// assaults per turn, one use spent per assault it contributes units to; bigger fleets
+// can clear a system in one turn, but every launch spends real capacity. Raids, purges,
+// and bombardment keep their old fleet-level rules.
+#macro SHIP_ASSAULTS_PER_TURN 2
+
 // Guard volley size: how many rank-and-file guardsmen share one firing stack in combat. The
 // regiment splits into capped stacks of this size instead of merging into one giant lasgun
 // volley, so each chunk fires and targets independently like an enemy obj_enunit block (those

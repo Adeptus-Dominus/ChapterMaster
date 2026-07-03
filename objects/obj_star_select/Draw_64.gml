@@ -337,10 +337,27 @@ try {
             } else if (current_button == "Attack") {
                 var _allow_attack = true;
                 var _targ = !target.present_fleet[1] ? noone : instance_nearest(x, y, obj_p_fleet);
+                // Ship assault economy: the old fleet-wide gate (acted >= 2) is
+                // replaced for ground assaults. An attack is possible while any
+                // carrying ship at this star still has support uses left this turn,
+                // or while planetside forces do and can fight without ship support.
+                // Local-only attacks (no fleet present) were previously ungated
+                // entirely; they now respect the planet's local exhaustion. Raid,
+                // Purge, and Bombard keep their fleet-level gates.
+                var _ship_available = false;
                 if (instance_exists(_targ)) {
-                    if (_targ.acted >= 2) {
-                        _allow_attack = false;
+                    var _gate_ships = get_player_ships(target.name);
+                    for (var _gs = 0; _gs < array_length(_gate_ships); _gs++) {
+                        if ((obj_ini.ship_carrying[_gate_ships[_gs]] > 0) && (ship_assaults_used(_gate_ships[_gs]) < SHIP_ASSAULTS_PER_TURN)) {
+                            _ship_available = true;
+                            break;
+                        }
                     }
+                }
+                var _local_available = (p_data.player_forces > 0) && (local_assaults_used(target, obj_controller.selecting_planet) < SHIP_ASSAULTS_PER_TURN);
+                if (!_ship_available && !_local_available) {
+                    _allow_attack = false;
+                    scr_popup("Ground Assault", "Your forces at this world have already supported the maximum number of ground assaults this turn.", "");
                 }
                 if (_allow_attack) {
                     // feather ignore once GM2064

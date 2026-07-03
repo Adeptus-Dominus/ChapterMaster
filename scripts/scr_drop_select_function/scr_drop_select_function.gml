@@ -78,11 +78,28 @@ function drop_select_unit_selection() {
 
     if (purge != eDROP_TYPE.PURGEBOMBARD) {
         var _local_button = roster.local_button;
+        // Local force exhaustion: planetside forces also support at most
+        // SHIP_ASSAULTS_PER_TURN ground assaults per turn, closing the loop of
+        // deploying troops to the surface and attacking endlessly for free. When
+        // spent, the button locks red like an exhausted ship. Attacks only.
+        var _locals_spent = (attack == 1) && (local_assaults_used(p_target, planet_number) >= SHIP_ASSAULTS_PER_TURN);
+        if (_locals_spent) {
+            if (_local_button.active) {
+                _local_button.active = false;
+                roster.update_roster();
+            }
+            _local_button.text_color = c_red;
+            _local_button.button_color = c_red;
+            _local_button.tooltip = "This planet's forces have already supported the maximum number of ground assaults this turn.";
+        }
         _local_button.x1 = _buttons_x;
         _local_button.y1 = _buttons_y;
         _local_button.update();
         _local_button.draw();
         if (_local_button.clicked()) {
+            if (_locals_spent) {
+                _local_button.active = false;
+            }
             roster.update_roster();
         }
     }
@@ -95,6 +112,17 @@ function drop_select_unit_selection() {
 
     if (roster.select_all_ships.draw()) {
         roster.ship_multi_selector.select_all();
+    }
+
+    // Ship assault economy: assault-exhausted ships are drawn locked and red (see
+    // scr_roster). ToggleButton clicks and Select All still flip their active flag,
+    // so force locked ships back off here before the selection is consumed.
+    for (var _ls = 0; _ls < array_length(roster.ships); _ls++) {
+        var _ls_btn = roster.ships[_ls];
+        if (variable_struct_exists(_ls_btn, "assault_locked") && _ls_btn.assault_locked && _ls_btn.active) {
+            _ls_btn.active = false;
+            roster.ship_multi_selector.changed = true;
+        }
     }
 
     if (roster.ship_multi_selector.changed) {
@@ -233,6 +261,34 @@ function drop_select_unit_selection() {
             // 135 ; temporary balancing
             if (sh_target != noone) {
                 sh_target.acted += 1;
+            }
+
+            // Ship assault economy: each distinct ship contributing units to this
+            // ground assault spends one support use this turn (SHIP_ASSAULTS_PER_TURN
+            // max). fleet.acted above still ticks so raid and bombardment gating are
+            // unchanged. Local planetside forces (ship id -1) cost nothing. Raids do
+            // not spend uses.
+            if (attack == 1) {
+                var _spent_ships = [];
+                var _local_participated = false;
+                for (var _su = 0; _su < array_length(roster.selected_units); _su++) {
+                    var _sel = roster.selected_units[_su];
+                    var _sel_ship = is_struct(_sel) ? _sel.ship_location : obj_ini.veh_lid[_sel[0]][_sel[1]];
+                    if (_sel_ship > -1) {
+                        if (!array_contains(_spent_ships, _sel_ship)) {
+                            array_push(_spent_ships, _sel_ship);
+                            ship_assault_spend(_sel_ship);
+                        }
+                    } else {
+                        _local_participated = true;
+                    }
+                }
+                // Planetside forces joining the assault spend one of the planet's
+                // local support uses, so troops cannot be dropped onto the surface
+                // and used for unlimited free attacks.
+                if (_local_participated) {
+                    local_assault_spend(p_target, planet_number);
+                }
             }
 
             if ((attacking == 10) || (attacking == 11)) {
