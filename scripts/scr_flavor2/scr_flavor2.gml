@@ -556,9 +556,15 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     if (string_length(mes) > 3) {
         // Yellow when the enemy hurt your forces but destroyed nothing (damage, no kill). Kills carry
         // the word "lost" and are coloured red elsewhere, so they are left at priority 0 here.
+        // Light blue (135 -> c_aqua) when your armour held: the chip tier against vehicles
+        // (severity < 0.10, "Bouncing off the hull" and friends), so wasted enemy fire can be
+        // skimmed past, mirroring the white player-side "cannot penetrate" lines. Vehicle-gated
+        // because non-tracking targets report severity 0 even when hits landed.
         var _enemy_priority = 0;
         if ((lost_units_count == 0) && (hostile_shots > 0) && (damage_severity >= 0.10)) {
             _enemy_priority = 136;
+        } else if ((lost_units_count == 0) && (hostile_shots > 0) && target_is_vehicle && (damage_severity < 0.10)) {
+            _enemy_priority = 135;
         }
         obj_ncombat.messages += 1;
         obj_ncombat.message[obj_ncombat.messages] = mes;
