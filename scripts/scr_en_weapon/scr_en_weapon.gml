@@ -23,6 +23,31 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     //if (obj_ncombat.enemy=5) then faith_bonus=faith[man_type];
 
     switch (name) {
+        // "Melee1" is the roster's generic sidearm-melee slot, carried by ten unit
+        // types across three factions (Eldar Guardians, Dire Avengers, Pathfinders,
+        // Fire Dragons, Dark Reapers and Exarchs; Ork Tankbustas; Chaos Havocs,
+        // Noise Marines, Rubric Marines). It never had stats anywhere (verbatim
+        // upstream), so every one of those units built an attack-0 range-0 weapon
+        // stack: "broken range" error spam each turn and no melee capability at all,
+        // a major silent contributor to the last-survivor melee stalemates. Statted
+        // here as a modest close-combat weapon; units with a real melee identity
+        // already carry proper weapons alongside it.
+        case "Melee1":
+            atta = 40;
+            arp = 1;
+            rang = 1;
+            break;
+        // Flesh Hooks are carried by Lictors (Tyranid battles) AND Mutants (Chaos
+        // and Heretic rosters). Their stats lived only under the Tyranid faction
+        // gate below, so Mutant flesh hooks were attack-0 range-0 in every battle
+        // mutants actually appear in. Weapon stats in this file are faction-gated;
+        // any weapon shared across factions must live in this ungated switch.
+        case "Flesh Hooks":
+            atta = 100;
+            arp = 2;
+            rang = 2;
+            amm = 1;
+            break;
         case "Venom Claws":
             atta = 200;
             arp = 4;
@@ -659,12 +684,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 atta = 300;
                 arp = 3;
                 rang = 1;
-                break;
-            case "Flesh Hooks":
-                atta = 100;
-                arp = 2;
-                rang = 2;
-                amm = 1;
                 break;
             default:
                 break;
