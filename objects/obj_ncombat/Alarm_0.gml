@@ -1818,59 +1818,94 @@ try {
         u.dudes_num[1] = 40;
         u.dudes[2] = "Hormagaunt";
         u.dudes_num[2] = 40;
-        // Small Genestealer Group
+        // Small Genestealer Cult Group
         if (threat == 1) {
-            u = instance_nearest(xxx, 240, obj_enunit);
-            enemy_dudes = "11";
-
-            u.dudes[1] = "Genestealer";
-            u.dudes_num[1] = 10;
-
-            u = instance_create(0, 240, obj_enunit);
-            u.dudes[1] = "Lictor";
-            u.dudes_num[1] = 1;
-            u.flank = 1;
-        }
-        // Medium Genestealer Group
-        if (threat == 2) {
             u = instance_nearest(xxx, 240, obj_enunit);
             enemy_dudes = "100";
 
-            u.dudes[1] = "Genestealer Patriarch";
+            u.dudes[1] = "Cultist";
+            u.dudes_num[1] = 50;
+            u.dudes[2] = "Hybrid";
+            u.dudes_num[2] = 25;
+
+            u = instance_create(0, 240, obj_enunit);
+            u.dudes[1] = "Jackal";
+            u.dudes_num[1] = 25;
+            u.flank = 1;
+        }
+        // Medium Genestealer Cult Group
+        if (threat == 2) {
+            u = instance_nearest(xxx, 240, obj_enunit);
+            enemy_dudes = "460";
+
+            u.dudes[1] = "Magus";
             u.dudes_num[1] = 1;
-            u.dudes[2] = "Genestealer";
-            u.dudes_num[2] = 30;
+            u.dudes[2] = "Primus";
+            u.dudes_num[2] = 1;
+            u.dudes[3] = "Aberrant";
+            u.dudes_num[3] = 30;
+            u.dudes[4] = "Goliath Truck";
+            u.dudes_num[4] = 5;
 
             instance_deactivate_object(u);
             u = instance_nearest(xxx + 10, 240, obj_enunit);
             u.dudes[1] = "Cultist";
-            u.dudes_num[1] = 150;
+            u.dudes_num[1] = 300;
+            u.dudes[2] = "Hybrid";
+            u.dudes_num[2] = 75;
+            u.dudes[3] = "Goliath Rockgrinder";
+            u.dudes_num[3] = 5;
 
             u = instance_create(0, 240, obj_enunit);
-            u.dudes[1] = "Lictor";
-            u.dudes_num[1] = 1;
+            u.dudes[1] = "Jackal";
+            u.dudes_num[1] = 40;
+            u.flank = 1;
+            u.dudes[2] = "Ridgerunner";
+            u.dudes_num[2] = 3;
             u.flank = 1;
         }
         // Large Genestealer Group
         if (threat == 3) {
             u = instance_nearest(xxx, 240, obj_enunit);
-            enemy_dudes = "100";
+            enemy_dudes = "969";
 
-            u.dudes[1] = "Genestealer Patriarch";
-            u.dudes_num[1] = 1;
-            u.dudes[2] = "Genestealer";
-            u.dudes_num[2] = 120;
-            u.dudes[3] = "Armoured Limousine";
-            u.dudes_num[3] = 20;
+            u.dudes[1] = "Magus";
+            u.dudes_num[1] = 3;
+            u.dudes[2] = "Aberrant";
+            u.dudes_num[2] = 60;
+            u.dudes[3] = "Primus";
+            u.dudes_num[3] = 3;
+            u.dudes[4] = "Goliath Truck";
+            u.dudes_num[4] = 8;
 
             instance_deactivate_object(u);
             u = instance_nearest(xxx + 10, 240, obj_enunit);
             u.dudes[1] = "Cultist";
-            u.dudes_num[1] = 600;
+            u.dudes_num[1] = 300;
+            u.dudes[2] = "Hybrid";
+            u.dudes_num[2] = 100;
+            u.dudes[3] = "Goliath Truck";
+            u.dudes_num[3] = 8;
+            u.dudes[4] = "Primus";
+            u.dudes_num[4] = 3;
+
+            instance_deactivate_object(u);
+            u = instance_nearest(xxx + 20, 240, obj_enunit);
+            u.dudes[1] = "Cultist";
+            u.dudes_num[1] = 300;
+            u.dudes[2] = "Hybrid";
+            u.dudes_num[2] = 100;
+            u.dudes[3] = "Goliath Rockgrinder";
+            u.dudes_num[3] = 10;
+            u.dudes[4] = "Primus";
+            u.dudes_num[4] = 3;
 
             u = instance_create(0, 240, obj_enunit);
-            u.dudes[1] = "Lictor";
-            u.dudes_num[1] = 6;
+            u.dudes[1] = "Jackal";
+            u.dudes_num[1] = 60;
+            u.flank = 1;
+            u.dudes[2] = "Ridgerunner";
+            u.dudes_num[2] = 8;
             u.flank = 1;
         }
         // Small Tyranid Army
