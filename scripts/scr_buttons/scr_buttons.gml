@@ -36,6 +36,7 @@ function pop_draw_return_values() {
     }
 }
 
+/// @mixin
 /// @function standard_loc_data()
 /// @category Draw Helpers
 /// @description Acts as an initializer for UI elements positions and size
@@ -1019,83 +1020,132 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
     inactive_col = c_gray;
     max_width = 0;
     max_height = 0;
-    /// @type {Array<Struct.ToggleButton>} 
+    /// @type {Array<Struct.ToggleButton>}
     toggles = [];
     changed = false;
-    draw_alighn = "horizontal";
+    is_horizontal = true; // If more than 2 types needed, convert to an enum
+    allow_changes = true;
+
     for (var i = 0; i < array_length(options_array); i++) {
         var _next_tog = new ToggleButton(options_array[i]);
         _next_tog.active = false;
         array_push(toggles, _next_tog);
     }
-    
+
+    update(data);
+
     static update = function(data = {}) {
         move_data_to_current_scope(data);
-    };
-
-    update(data)
-
-    static draw_toggle = function(index) {
-        var _cur_opt = toggles[index];
-        _cur_opt.x1 = next_draw.x1;
-        _cur_opt.y1 = next_draw.y1;
-        _cur_opt.update();
-        if (_cur_opt.clicked() && allow_changes) {
-            changed = true;
-        }
-        _cur_opt.button_color = _cur_opt.active ? active_col : inactive_col;
-        _cur_opt.draw();
-        next_draw.row_or_column_draw_count++;
-        //TODO probably set an enum up for this later
-        if (draw_alighn == "horizontal") {
-            next_draw.x1 = _cur_opt.x2 + x_gap;
-            x2 = next_draw.x1 > x2 ? next_draw.x1 : x2;
-            y2 = next_draw.y1 + _cur_opt.h;
-            if (max_width > 0) {
-                if (next_draw.x1 - x1 > max_width) {
-                    next_draw.x1 = x1;
-                    next_draw.y1 += _cur_opt.h + y_gap;
-                    next_draw.row_or_column_draw_count = 0;
-                }
-            }
-        } else {
-            next_draw.y1 = _cur_opt.y2 + y_gap;
-            y2 = next_draw.y1 > y2 ? next_draw.y1 : y2;
-            x2 = next_draw.x1 + _cur_opt.w;
-            if (max_height > 0) {
-                if (next_draw.y1 - y1 > max_height) {
-                    next_draw.y1 = y1;
-                    next_draw.x1 += _cur_opt.w + x_gap;
-                    next_draw.row_or_column_draw_count = 0;
-                }
-            }
-        }
-    };
-
-    static reset_next_draw = function() {
-        next_draw = {
-            x1: x1,
-            y1: y1,
-            row_or_column_draw_count: 0,
-        };
     };
 
     static draw = function(allow_changes_param = true) {
         changed = false;
         allow_changes = allow_changes_param;
-        has_change_method = is_callable(on_change);
-
-        reset_next_draw();
-
+        var _has_change_method = is_callable(on_change);
+    
+        var _start_y = y1;
         if (title != "") {
             draw_text(x1, y1, title);
-            next_draw.y1 += string_height(title) + 10;
+            _start_y += string_height(title) + 10;
         }
-
-        for (var i = 0; i < array_length(toggles); i++) {
-            draw_toggle(i);
+    
+        var _count = array_length(toggles);
+    
+        var _max_main = is_horizontal ? max_width : max_height;
+        var _main_gap = is_horizontal ? x_gap : y_gap;
+        var _cross_gap = is_horizontal ? y_gap : x_gap;
+        var _start_main = is_horizontal ? x1 : _start_y;
+    
+        var _lines = [];
+        var _current_line = [];
+        var _cur_main = _start_main;
+        var _line_max_cross = 0;
+    
+        // Pass 1: Pack items into lines (rows or columns) based on orientation boundaries
+        for (var i = 0; i < _count; i++) {
+            var _cur_opt = toggles[i];
+            _cur_opt.update();
+    
+            var _opt_main = is_horizontal ? _cur_opt.w : _cur_opt.h;
+            var _opt_cross = is_horizontal ? _cur_opt.h : _cur_opt.w;
+    
+            if (_max_main > 0 && (_cur_main + _opt_main - _start_main) > _max_main && array_length(_current_line) > 0) {
+                array_push(_lines, {toggles: _current_line, max_c: _line_max_cross});
+                _current_line = [];
+                _line_max_cross = 0;
+                _cur_main = _start_main;
+            }
+    
+            array_push(_current_line, _cur_opt);
+            if (_opt_cross > _line_max_cross) {
+                _line_max_cross = _opt_cross;
+            }
+    
+            _cur_main += _opt_main + _main_gap;
         }
-        if (changed && has_change_method) {
+    
+        if (array_length(_current_line) > 0) {
+            array_push(_lines, {toggles: _current_line, max_c: _line_max_cross});
+        }
+    
+        // Pass 2: Position, calculate boundaries, evaluate input, and draw
+        var _cur_cross = is_horizontal ? _start_y : x1;
+        var _total_max_main = _start_main;
+        var _lines_count = array_length(_lines);
+    
+        for (var l = 0; l < _lines_count; l++) {
+            var _line = _lines[l];
+            _cur_main = _start_main;
+            var _line_toggles_count = array_length(_line.toggles);
+    
+            for (var t = 0; t < _line_toggles_count; t++) {
+                var _cur_opt = _line.toggles[t];
+                var _orig_w = _cur_opt.w;
+    
+                if (is_horizontal) {
+                    _cur_opt.x1 = _cur_main;
+                    _cur_opt.y1 = _cur_cross;
+                    _cur_opt.x2 = _cur_main + _cur_opt.w;
+                    _cur_opt.y2 = _cur_cross + _cur_opt.h;
+                    if (_cur_opt.x2 > _total_max_main) {
+                        _total_max_main = _cur_opt.x2;
+                    }
+    
+                    _cur_main += _cur_opt.w + x_gap;
+                } else {
+                    _cur_opt.x1 = _cur_cross;
+                    _cur_opt.y1 = _cur_main;
+                    _cur_opt.w = _line.max_c;
+                    _cur_opt.x2 = _cur_cross + _cur_opt.w;
+                    _cur_opt.y2 = _cur_main + _cur_opt.h;
+                    if (_cur_opt.y2 > _total_max_main) {
+                        _total_max_main = _cur_opt.y2;
+                    }
+    
+                    _cur_main += _cur_opt.h + y_gap;
+                }
+    
+                if (_cur_opt.clicked() && allow_changes) {
+                    changed = true;
+                }
+    
+                _cur_opt.button_color = _cur_opt.active ? active_col : inactive_col;
+                _cur_opt.draw();
+                _cur_opt.w = _orig_w;
+            }
+    
+            _cur_cross += _line.max_c + _cross_gap;
+        }
+    
+        if (is_horizontal) {
+            x2 = _total_max_main;
+            y2 = _cur_cross - y_gap;
+        } else {
+            x2 = _cur_cross - x_gap;
+            y2 = _total_max_main;
+        }
+    
+        if (changed && _has_change_method) {
             on_change();
         }
     };
@@ -1106,23 +1156,31 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
             for (var i = 0; i < array_length(toggles); i++) {
                 var _cur_opt = toggles[i];
                 _cur_opt.active = _cur_opt.str1 == _setter;
-                if (_cur_opt.str1 == _setter) {}
             }
         }
     };
 
     static deselect_all = function() {
         for (var i = 0; i < array_length(toggles); i++) {
-            var _cur_opt = toggles[i];
-            _cur_opt.active = false;
+            toggles[i].active = false;
         }
     };
 
     static select_all = function() {
-        for (var i = 0; i < array_length(toggles); i++) {
-            var _cur_opt = toggles[i];
-            _cur_opt.active = true;
+        var _all_selected = true;
+        var _count = array_length(toggles);
+        
+        for (var i = 0; i < _count; i++) {
+            if (!toggles[i].active) {
+                _all_selected = false;
+                break;
+            }
         }
+
+        for (var i = 0; i < _count; i++) {
+            toggles[i].active = !_all_selected;
+        }
+
         changed = true;
     };
 
@@ -1134,6 +1192,7 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
                 array_push(_selecs, _cur_opt.str1);
             }
         }
+
         return _selecs;
     };
 }

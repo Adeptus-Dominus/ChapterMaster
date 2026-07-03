@@ -253,7 +253,7 @@ function setup_ui_chapter_settings(){
         _tog_buttons, 
         "Company Command Structure", 
         {
-            draw_alighn : "vertical",
+            is_horizontal : false,
             x1 : 75,
             y1 : 300,
         }
