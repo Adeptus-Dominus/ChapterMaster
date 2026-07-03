@@ -75,7 +75,14 @@
 #macro ELDAR_INCURSION_FORCE_BASE 3
 #macro ELDAR_INCURSION_FORCE_MAX 5
 #macro ELDAR_INTEL_REQUIRED 3
-#macro ELDAR_FLEET_ENABLED 0
+#macro ELDAR_FLEET_ENABLED 1
+
+// Eldar naval combat tuning. Vanilla Eldar ships move at spid 60-100 while every other
+// faction's ships run 20-45, which is why fights against them degenerate into endless
+// chase loops. This multiplier scales the whole Eldar speed table; at 0.65 they run
+// 39-65, still comfortably the fastest ships in the game but catchable. 1.0 restores
+// vanilla darting.
+#macro ELDAR_SHIP_SPEED_MULT 0.65
 
 // Guard volley size: how many rank-and-file guardsmen share one firing stack in combat. The
 // regiment splits into capped stacks of this size instead of merging into one giant lasgun

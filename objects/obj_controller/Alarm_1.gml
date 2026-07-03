@@ -514,16 +514,17 @@ for (var i = 0; i < 100; i++) {
         go = 999;
         array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.WARLORD6));
 
-        // Eldar naval combat is currently miserable to play against, so the
-        // craftworld's escort fleet is disabled until fleet battles get attention.
-        // Flip ELDAR_FLEET_ENABLED in macros.gml to restore it.
+        // Eldar naval combat is rough to play against, so the escort fleet is kept
+        // small (vanilla spawned 2-3 capitals, 4-6 frigates, 8-11 escorts) and Eldar
+        // ship speed is toned down via ELDAR_SHIP_SPEED_MULT. Set ELDAR_FLEET_ENABLED
+        // to 0 in macros.gml to remove the fleet entirely.
         if (ELDAR_FLEET_ENABLED) {
             var elforce = instance_create(xx, yy, obj_en_fleet);
             elforce.sprite_index = spr_fleet_eldar;
             elforce.owner = eFACTION.ELDAR;
-            elforce.capital_number = choose(2, 3);
-            elforce.frigate_number = choose(4, 5, 6);
-            elforce.escort_number = floor(random_range(7, 11)) + 1;
+            elforce.capital_number = 1;
+            elforce.frigate_number = choose(1, 2);
+            elforce.escort_number = choose(2, 3, 4);
             elforce.image_alpha = 0;
             elforce.orbiting = craft;
         }

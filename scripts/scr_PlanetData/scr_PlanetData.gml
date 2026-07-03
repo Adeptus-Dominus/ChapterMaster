@@ -1359,6 +1359,7 @@ function PlanetData(_planet, _system) constructor {
         var presence_text = "";
         var faction_names = [
             "Adeptas",
+            "Eldar",
             "Orks",
             "Tau",
             "Tyranids",
@@ -1369,6 +1370,7 @@ function PlanetData(_planet, _system) constructor {
         ];
         var faction_ids = [
             "p_sisters",
+            "p_eldar",
             "p_orks",
             "p_tau",
             "p_tyranids",

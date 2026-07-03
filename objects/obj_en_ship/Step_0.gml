@@ -559,6 +559,11 @@ if (owner == 6) {
             spid = 100;
         }
 
+        // Vanilla Eldar run spid 60-100 against everyone else's 20-45, producing
+        // endless chase loops. Scaled here so the whole class table tunes from one
+        // macro; they stay the fastest ships in the game.
+        spid *= ELDAR_SHIP_SPEED_MULT;
+
         if (target != 0) {
             if (speed < (spid / 10)) {
                 speed += 0.02;
