@@ -550,8 +550,8 @@ function draw_planet_debug_forces() {
         "Orks",
         "Tau",
         "Tyranids",
-        "Traitors",
-        "CSM",
+        "Chaos",
+        "Heretics",
         "Daemons",
         "Necrons",
         "Sisters"
@@ -560,8 +560,8 @@ function draw_planet_debug_forces() {
         "p_orks",
         "p_tau",
         "p_tyranids",
-        "p_traitors",
         "p_chaos",
+        "p_traitors",
         "p_demons",
         "p_necrons",
         "p_sisters"

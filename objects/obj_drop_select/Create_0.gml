@@ -94,7 +94,7 @@ if (!instance_exists(obj_saveload)) {
     tau = 0;
     traitors = 0;
     tyranids = 0;
-    csm = 0;
+    chaos = 0;
     necrons = 0;
     demons = 0;
 
@@ -174,7 +174,7 @@ if (purge == 0) {
     ork = p_target.p_orks[planet_number];
     tau = p_target.p_tau[planet_number];
     tyranids = p_target.p_tyranids[planet_number];
-    csm = p_target.p_chaos[planet_number];
+    chaos = p_target.p_chaos[planet_number];
     traitors = p_target.p_traitors[planet_number];
     necrons = p_target.p_necrons[planet_number];
     demons = p_target.p_demons[planet_number];
@@ -204,13 +204,13 @@ if (purge == 0) {
         bes = 9;
         bes_score = tyranids;
     }
-    if (traitors > bes_score) {
+    if (chaos > bes_score) {
         bes = 10;
-        bes_score = traitors;
+        bes_score = chaos;
     }
-    if (csm > bes_score) {
+    if (traitors > bes_score) {
         bes = 11;
-        bes_score = csm;
+        bes_score = traitors;
     }
     if (necrons > bes_score) {
         bes = 13;
@@ -255,11 +255,11 @@ if (purge == 0) {
         forces += 1;
         force_present[forces] = 9;
     }
-    if ((traitors > 0) || ((traitors == 0) && (spesh == true))) {
+    if (chaos > 0) {
         forces += 1;
         force_present[forces] = 10;
     }
-    if (csm > 0) {
+    if ((traitors > 0) || ((traitors == 0) && (spesh == true))) {
         forces += 1;
         force_present[forces] = 11;
     }
@@ -280,8 +280,8 @@ if (purge == 0) {
         ork,
         tau,
         tyranids,
+        chaos,
         traitors,
-        csm,
         demons,
         necrons
     ];
@@ -292,8 +292,8 @@ if (purge == 0) {
         "Orks",
         "Tau",
         "Tyranids",
+        "Chaos",
         "Heretics",
-        "CSMs",
         "Daemons",
         "Necrons"
     ];

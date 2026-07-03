@@ -346,16 +346,15 @@ if ((fortified > 0) && (!instance_exists(obj_nfort)) && (reduce_fortification ==
 if ((!defeat) && (battle_special == "space_hulk")) {
     var enemy_power = 0, loot = 0, dicey = roll_dice_chapter(1, 100, "low");
 
-    // Reduce the hulk garrison by one and read the strength left behind. A Chaos hulk keeps its
-    // strength in the traitor (p_traitors) slot, which edit_forces reaches through the HERETICS
-    // case, so it is reduced as HERETICS. This also lets Chaos hulks lose forces, clear, and roll
-    // loot at all, which they previously never could.
-    var _hulk_faction = enemy;
-    if (enemy == eFACTION.CHAOS) {
-        _hulk_faction = eFACTION.HERETICS;
-    }
+    // Reduce the hulk garrison by one and read the strength left behind. Chaos-rolled
+    // hulks store their garrison in p_traitors (obj_star Alarm_0), so under the
+    // corrected Chaos/Heretic numbering (upstream 173a6500) their battles arrive as
+    // eFACTION.HERETICS and the raw enemy id reaches the right slot; the old swap
+    // this fork carried predates the renumbering and would now misroute. This block
+    // also lets hulks lose forces, clear, and roll loot at all, which they
+    // previously never could.
     if (enemy == eFACTION.ORK || enemy == eFACTION.TYRANIDS || enemy == eFACTION.HERETICS || enemy == eFACTION.CHAOS) {
-        enemy_power = p_data.add_forces(_hulk_faction, -1);
+        enemy_power = p_data.add_forces(enemy, -1);
         // Garrison wiped out: the hulk is cleared. The salvage choice is offered post-battle in
         // space_hulk_explore_battle_aftermath (scr_post_battle_events).
         if (enemy_power <= 0) {
@@ -447,13 +446,13 @@ if (defeat == 0 && _reduce_power) {
         enemy_power = battle_object.p_tyranids[battle_id];
         part10 = "Tyranid";
     } else if (enemy == eFACTION.CHAOS) {
-        enemy_power = battle_object.p_traitors[battle_id];
+        enemy_power = battle_object.p_chaos[battle_id];
         part10 = "Heretic";
         if (threat == 7) {
             part10 = "Daemon";
         }
     } else if (enemy == eFACTION.HERETICS) {
-        enemy_power = battle_object.p_chaos[battle_id];
+        enemy_power = battle_object.p_traitors[battle_id];
         part10 = "Chaos Space Marine";
     } else if (enemy == eFACTION.NECRONS) {
         enemy_power = battle_object.p_necrons[battle_id];
@@ -568,22 +567,13 @@ if (defeat == 0 && _reduce_power) {
     }
 
     if (enemy >= eFACTION.ECCLESIARCHY) {
-        // Combat still numbers the Chaos/Heretic pair opposite to eFACTION even after the
-        // upstream eFACTION standardization: enemy eFACTION.CHAOS is fought as the
-        // Heretic/traitor force and its strength is read from p_traitors above, while enemy
-        // eFACTION.HERETICS is fought as the Chaos Space Marine force read from p_chaos.
-        // edit_forces maps by raw eFACTION (CHAOS -> p_chaos, HERETICS -> p_traitors), so
-        // passing the raw combat enemy wrote the reduced strength into the OTHER slot, leaving
-        // the force that was actually fought untouched and often inflating the other one. Swap
-        // the pair so the reduction lands on the same force the battle was drawn from.
-        // Mirrors the space_hulk fix.
-        var _reduce_faction = enemy;
-        if (enemy == eFACTION.CHAOS) {
-            _reduce_faction = eFACTION.HERETICS;
-        } else if (enemy == eFACTION.HERETICS) {
-            _reduce_faction = eFACTION.CHAOS;
-        }
-        p_data.edit_forces(_reduce_faction, new_power);
+        // Upstream commit 173a6500 ("fix: The entire chaos vs heretics standoff")
+        // renumbered the Chaos/Heretic pair to match eFACTION everywhere: enemy
+        // eFACTION.CHAOS now reads p_chaos above and eFACTION.HERETICS reads
+        // p_traitors, the same mapping edit_forces uses. The compensating swap this
+        // fork carried (translating the pair before edit_forces) is therefore
+        // removed; with the renumbering in place it would invert a correct pair.
+        p_data.edit_forces(enemy, new_power);
     }
 
     if ((enemy != eFACTION.IMPERIUM) && (string_count("cs_meeting_battle", battle_special) == 0)) {
@@ -707,7 +697,7 @@ if (obj_ini.omophagea) {
     if ((enemy == eFACTION.NECRONS) || (enemy == eFACTION.TYRANIDS) || (battle_special == "ship_demon")) {
         eatme += 100;
     }
-    if ((enemy == eFACTION.CHAOS) && (battle_object.p_traitors[battle_id] == 7)) {
+    if ((enemy == eFACTION.CHAOS) && (battle_object.p_chaos[battle_id] == 7)) {
         eatme += 200;
     }
 

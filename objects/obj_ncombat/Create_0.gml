@@ -57,8 +57,8 @@ instance_create(0, 0, obj_centerline);
 local_forces = 0;
 battle_loc = "";
 battle_climate = "";
-/// @type {Asset.GMObject.obj_star} 
 if (instance_exists(obj_star)) {
+    /// @type {Id.Instance.obj_star} 
     battle_object = instance_nearest(x, y, obj_star);
 } else {
     battle_object = noone;
