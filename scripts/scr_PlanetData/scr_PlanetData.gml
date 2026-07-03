@@ -486,14 +486,23 @@ function PlanetData(_planet, _system) constructor {
             {
                 str1: "Allow the official successor to become Planetary Governor.",
                 choice_func: allow_governor_successor,
+                hover: function() {
+                    tooltip_draw("The lawful heir takes power. Relations usually carry over unchanged, with a small chance the new governor arrives loving or loathing your chapter. No risk of discovery.");
+                },
             },
             {
                 str1: "Ensure that a sympathetic successor will be the one to rule.",
                 choice_func: install_sympathetic_successor,
+                hover: function() {
+                    tooltip_draw("A governor friendly to your chapter is quietly maneuvered into power. Disposition rises to a strong ally's. Small risk of Inquisition discovery, and discovered manipulation angers the Imperium, Inquisition, and Ecclesiarchy, sometimes years later.");
+                },
             },
             {
                 str1: "Remove all successors and install a loyal Chapter Serf.",
                 choice_func: install_chapter_surf,
+                hover: function() {
+                    tooltip_draw("The line of succession is erased and your serf takes the throne: the world comes under your chapter's direct control with maximum disposition (worlds originally of the Mechanicus keep their owner). The boldest option and the likeliest to be discovered by the Inquisition.");
+                },
             },
         ];
         pip.add_option(options);

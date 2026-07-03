@@ -493,6 +493,15 @@ function PurgeButton(purge_image, xx, yy, purge_type) constructor {
         shader_set_uniform_f(shader_get_uniform(light_dark_shader, "highlight"), bright_shader);
         scr_image("purge", purge_image, x1, y1, width, height);
         shader_reset();
+        // The description field existed but was never rendered. Drawn after the
+        // shader resets so the tooltip is not tinted; inactive buttons explain why.
+        if ((description != "") && hover()) {
+            var _tip = description;
+            if (!active) {
+                _tip += "\n\nYour selected force cannot perform this purge.";
+            }
+            tooltip_draw(_tip);
+        }
     };
 
     static clicked = function() {

@@ -301,6 +301,12 @@ try {
         var shutter_x = main_data_slate.XX - 165;
         var shutter_y = 296 + 165;
         if (!debug) {
+            // Every planet action explains itself on hover (the shutter class has
+            // always rendered tooltips; they were simply never set).
+            shutter_1.tooltip = planet_action_tooltip(button1);
+            shutter_2.tooltip = planet_action_tooltip(button2);
+            shutter_3.tooltip = planet_action_tooltip(button3);
+            shutter_4.tooltip = planet_action_tooltip(button4);
             if (shutter_1.draw_shutter(shutter_x, shutter_y, button1, 0.5, true)) {
                 current_button = button1;
             }

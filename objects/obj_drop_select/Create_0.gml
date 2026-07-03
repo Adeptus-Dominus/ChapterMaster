@@ -322,7 +322,7 @@ if (purge == 0) {
 
     assasinate_purge = new PurgeButton(7, 631, 450, eDROP_TYPE.PURGEASSASSINATE);
     assasinate_purge.active = _viable_ground_forces;
-    assasinate_purge.description = "Often the simplest solution is a single bolt shell or the swift knife the heart. Kill the Leader.";
+    assasinate_purge.description = "Often the simplest solution is a single bolt shell or the swift knife to the heart. Kill the Planetary Governor, then choose the succession: the lawful heir, a governor sympathetic to your chapter, or a Chapter Serf who places the world under your control. Manipulating the succession carries a risk of Inquisition discovery, with consequences that may surface months or years later.";
 
     purge_options = [
         bombard_purge,
