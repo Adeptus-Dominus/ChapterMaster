@@ -264,7 +264,7 @@ siege = scr_has_adv("Siege Masters");
 slow = scr_has_adv("Devastator Doctrine");
 melee = scr_has_adv("Assault Doctrine");
 black_rage = scr_has_disadv("Black Rage");
-red_thirst = scr_has_disadv("Black Rage");
+red_thirst = scr_has_disadv("Black Rage") ? 1 : 0; // red_thirst is used as a counter Real so it gets the ternary init
 shitty_luck = scr_has_disadv("Shitty Luck");
 favoured_by_the_warp = scr_has_adv("Favoured By The Warp");
 
