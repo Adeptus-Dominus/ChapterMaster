@@ -46,11 +46,12 @@ Download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/r
 
 Best bet is to ask about everything in our Discord, because things bellow are probably not very helpful at the moment.
 
-- [CONTRIBUTING.md](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CONTRIBUTING.md)
-- [CODE_STYLE.md](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CODE_STYLE.md)
+- [CONTRIBUTING.md](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CONTRIBUTING.md) (required read before any contribution)
+- [CODE_STYLE.md](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CODE_STYLE.md) (how we write our code)
+- [TIPS.md](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/TIPS.md) (about git and GameMaker)
+- [ARCHITECTURE](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/ARCHITECTURE.md) (explains the current code; probably outdated)
 - [Useful Tools/Resources](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Useful-resources)
 - [Working with GameMaker projects](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Working-with-GameMaker-projects)
-- [Code Tips](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/code_guidance.md) (probably outdated)
 
 This project exists thanks to all the people who have contributed:
 
