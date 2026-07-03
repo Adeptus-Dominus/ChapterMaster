@@ -570,6 +570,7 @@ function eldar_incursion_tick() {
         with (obj_star) {
             if (p_type[1] == "Craftworld") {
                 scr_alert("green", "elfs", "Eldar Craftworld discovered.", x, y);
+                scr_event_log("green", "Eldar Craftworld discovered.");
             }
         }
         with (obj_en_fleet) {
@@ -604,4 +605,5 @@ function eldar_incursion_tick() {
     var _planet = _pick[1];
     _star.p_eldar[_planet] = _force;
     scr_alert("red", "elfs", $"An Eldar warhost has struck {_star.name} {scr_roman(_planet)}.", _star.x, _star.y);
+    scr_event_log("red", $"An Eldar warhost has struck {_star.name} {scr_roman(_planet)}.");
 }
