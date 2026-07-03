@@ -16,9 +16,10 @@ These rules exist to prevent maintainer burnout and ensure the project continues
 
 The project relies on mutual respect and constructive communication. Adherence to the following standards is **required**:
 - **Maintainer Authority:** Maintainers **retain the final decision** on project direction, balance, design choices, and what code gets merged.
-- **Merit Ladder:** New contributors must **establish a track record of reliability** by addressing open bugs, refactoring debt, or documentation needs **before** proposing design changes. Unsolicited, opinionated design overhauls from unestablished contributors **likely will be met with skepticism**.
+- **Merit Ladder:** New contributors must **establish a track record of reliability and effort** by addressing open bugs, refactoring debt, or documentation needs **before** proposing design changes. Unsolicited, opinionated design overhauls from unestablished contributors **likely will be met with skepticism**.
 - **Scope Realism:** Contributions must align with **current project priorities**. PRs that add complex features while ignoring critical bug backlogs create maintenance debt and **may be rejected**.
 - **Constructive Communication:** Personal attacks, passive-aggressive remarks, and unconstructive criticism of the existing codebase **are not welcomed**. If a segment of code is inefficient, **propose** a concrete, actionable solution.
+- **Effort, Not Titles:** External credentials, professional titles, or proclaimed skill levels do not grant authority to bypass the contribution pipeline or override feedback from other community members. Peer interaction must remain constructive and collaborative; technical expertise must be used to guide others rather than dismiss them.
 - **Forks:** If your vision for the project fundamentally diverges from the design philosophy established by the maintainers, you are encouraged to **fork the repository** and maintain it yourself.
 
 Failure to follow these expectations may result in **closed pull requests** or a **restriction** from the contribution process.
