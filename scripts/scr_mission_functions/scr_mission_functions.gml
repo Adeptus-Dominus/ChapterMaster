@@ -257,7 +257,7 @@ function problem_end_turn_checks(){
     for (var i = 0; i <array_length(problems);i++){
         var _problem = problems[i];
         if (_problem == ""){
-            return;
+            continue;
         }
 
         if (struct_exists(problem_functions, _problem)){
@@ -608,7 +608,7 @@ function complete_train_forces_mission(targ_planet, problem_index) {
             "max": 1,
         };
         var _mission_string = "";
-        var _trainer = collect_role_group("all", [name, targ_planet, 0], false, man_conditions);
+        var _trainer = collect_role_group("all", [planet.system.name, targ_planet, 0], false, man_conditions);
         if (array_length(_trainer)) {
             var _unit_report_string = "";
             var _tester = global.character_tester;
@@ -714,7 +714,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index) {
             "job": "hunt_beast",
             "max": 3,
         };
-        var _hunters = collect_role_group("all", [name, targ_planet, 0], false, man_conditions);
+        var _hunters = collect_role_group("all", [planet.system.name, targ_planet, 0], false, man_conditions);
         var _success = false;
         var _tester = global.character_tester;
         var _unit_pass;
