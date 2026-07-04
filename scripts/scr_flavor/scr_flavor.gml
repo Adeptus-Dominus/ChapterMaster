@@ -5,6 +5,7 @@
 function add_battle_log_message(_message, _message_color = eMSG_COLOR.WHITE) {
     if (instance_exists(obj_ncombat)) {
         obj_ncombat.combat_log.push(_message, _message_color);
+        obj_ncombat.alarm[3] = 2;
         return true;
     }
     return false;
