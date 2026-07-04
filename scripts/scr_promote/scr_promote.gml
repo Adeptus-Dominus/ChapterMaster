@@ -45,7 +45,9 @@ function setup_promotion_popup() {
                 variable_struct_set(role_squad_equivilances, obj_ini.role[100][8], "tactical_squad");
                 variable_struct_set(role_squad_equivilances, obj_ini.role[100][9], "devastator_squad");
                 variable_struct_set(role_squad_equivilances, obj_ini.role[100][10], "assault_squad");
+                variable_struct_set(role_squad_equivilances, obj_ini.role[100][13], "bike_squad");
                 variable_struct_set(role_squad_equivilances, obj_ini.role[100][12], "scout_squad");
+                variable_struct_set(role_squad_equivilances, obj_ini.role[100][20], "attack_bike_squad");
                 variable_struct_set(role_squad_equivilances, obj_ini.role[100][3], "veteran_squad");
                 variable_struct_set(role_squad_equivilances, obj_ini.role[100][4], "terminator_squad");
 
@@ -119,6 +121,14 @@ function setup_promotion_popup() {
                         }
                     } // End that [i]
                 } // End repeat
+
+                if (struct_exists(role_squad_equivilances, role_name[target_role])) {
+                    var _grp = collect_company(target_comp);
+                    var _result = [true];
+                    while (_result[0]) {
+                        _result = _grp.create_squad(role_squad_equivilances[$ role_name[target_role]]);
+                    }
+                }
 
                 with (obj_controller) {
                     scr_management(1);

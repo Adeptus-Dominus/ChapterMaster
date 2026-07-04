@@ -172,6 +172,8 @@ function role_groups(group, include_trainee = false, include_heads = true) {
                 _roles[eROLE.TACTICAL],
                 _roles[eROLE.DEVASTATOR],
                 _roles[eROLE.ASSAULT],
+                _roles[eROLE.BIKER],
+                _roles[eROLE.ATTACK_BIKER],
                 _roles[eROLE.SCOUT]
             ];
             break;
