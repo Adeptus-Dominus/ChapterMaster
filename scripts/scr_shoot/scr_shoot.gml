@@ -408,8 +408,17 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         // Next target: a living rank in this formation, else the formation behind.
                         var next_rank = find_next_alive_rank(spill_block, spill_block.dudes_vehicle[spill_rank]);
                         if (next_rank == -1) {
+                            var _spent_x = spill_block.x;
                             spill_block = get_next_enemy_formation(spill_block);
                             if (spill_block == noone) {
+                                break;
+                            }
+                            // Overkill only spills into a formation standing directly
+                            // behind the one just wiped (touching columns). An air gap
+                            // stops it: the tester's cultists two rows back, with open
+                            // ground between them and the CSM, were being slaughtered
+                            // by thunder hammer spill leaping the gap.
+                            if (abs(spill_block.x - _spent_x) > OVERKILL_SPILL_MAX_GAP) {
                                 break;
                             }
                             array_push(touched_blocks, spill_block);

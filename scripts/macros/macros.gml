@@ -280,3 +280,9 @@ enum eIN_GAME_MENU_EFFECT {
     BACK_FROM_SETTINGS = 25,
     CLOSE_SAVELOAD = 30
 }
+
+// Overkill spill from a wiped enemy formation only reaches a formation standing
+// directly behind it (touching columns, 10px apart; 15 tolerates float jitter). An
+// air gap stops the spill: neither hammer blows nor the torrent of fire leap across
+// open ground to a formation two rows back.
+#macro OVERKILL_SPILL_MAX_GAP 15
