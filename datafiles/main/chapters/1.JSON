@@ -1722,7 +1722,7 @@
         },
         "option": {
           "wep2": [
-            [["Flamer", "Grav-Gun", "Meltagun", "Plasma Gun", "Plasma Pistol"], 2]
+            [["Hand Flamer", "Grav-Pistol", "Infernus Pistol", "Plasma Pistol"], 2]
           ]
         }
       }
@@ -1815,13 +1815,13 @@
       "role": "Black Knight",
       "loadout": {
         "required": {
-          "wep1": ["Chainsword", 4],
+          "wep1": ["Power Sword", 4],
           "wep2": ["Bolt Pistol", 2],
           "mobi": ["Bike", 4]
         },
         "option": {
           "wep2": [
-            [["Flamer", "Grav-Gun", "Meltagun", "Plasma Gun", "Plasma Pistol"], 2]
+            [["Hand Flamer", "Grav-Pistol", "Infernus Pistol", "Plasma Pistol", "Volkite Serpenta"], 2]
           ]
         }
       }
