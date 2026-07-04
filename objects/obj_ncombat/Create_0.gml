@@ -173,6 +173,7 @@ casualties = 0;
 dead_jims = 0;
 
 combat_log = new CombatLog(id);
+combat_log.log_font = fnt_aldrich_12;
 ctally_target = undefined;
 ctally_bounce = [];
 ctally_injure = [];
