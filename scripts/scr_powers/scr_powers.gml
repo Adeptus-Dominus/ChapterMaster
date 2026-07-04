@@ -306,7 +306,7 @@ function scr_powers(caster_id, _psy_log = undefined) {
                 // attack cast folds into a per-power summary emitted at the end of the casting
                 // phase (flush_psychic_summary), so a wall of Librarians becomes one line.
                 // (We're always inside the _casualties > 0 branch here.)
-                var _is_leader = (obj_ncombat.enemy <= 10) && (_target_unit_name == obj_controller.faction_leader[obj_ncombat.enemy]);
+                var _is_leader = (obj_ncombat.enemy <= 10) && ((_target_unit_name == "Leader") || (_target_unit_name == obj_controller.faction_leader[obj_ncombat.enemy]));
 
                 if (is_struct(_psy_log) && !_is_leader) {
                     accumulate_psychic_cast(_psy_log, _power_name, _power_flavour_text, _target_unit_name, _destruction_verb, _target_is_vehicle, _casualties);

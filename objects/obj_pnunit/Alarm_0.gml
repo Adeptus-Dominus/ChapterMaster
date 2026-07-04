@@ -283,7 +283,7 @@ try {
     // can't keep the battle alive.
     with (obj_enunit) {
         var _alive = 0;
-        for (var _rr = 1; _rr <= 30; _rr++) {
+        for (var _rr = 1; _rr < array_length(dudes_num); _rr++) {
             if (dudes_num[_rr] > 0 && dudes_hp[_rr] > 0) {
                 _alive += dudes_num[_rr];
             }
