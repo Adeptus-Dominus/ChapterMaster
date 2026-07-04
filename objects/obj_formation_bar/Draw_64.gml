@@ -51,7 +51,6 @@ if (dragging == false) {
     rel_mousey = 0;
     old_x = 0;
     old_y = 0;
-    col_parent = 0;
     col_target = 0;
     above_neighbor = 0;
     nearest_col = 0;
