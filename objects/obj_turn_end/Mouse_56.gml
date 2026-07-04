@@ -71,11 +71,11 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
                 }
             }
 
-            if (battle_special[current_battle] == "csm") {
-                obj_fleet.csm_exp = 1;
+            if (battle_special[current_battle] == "chaos") {
+                obj_fleet.chaos_exp = 1;
             }
             if (battle_special[current_battle] == "BLOOD") {
-                obj_fleet.csm_exp = 2;
+                obj_fleet.chaos_exp = 2;
             }
 
             instance_activate_all();
@@ -155,7 +155,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
                 obj_ncombat.fortified = _planet_data.fortification_level;
             }
 
-            if (obj_ncombat.enemy == 13) {
+            if (obj_ncombat.enemy == eFACTION.NECRONS) {
                 obj_ncombat.fortified = 0;
             }
 
@@ -164,10 +164,8 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
 
             if (_enemy == eFACTION.IMPERIUM) {
                 obj_ncombat.threat = min(1000000, _planet_data.guardsmen);
-            } else if (obj_ncombat.enemy < 14 && _enemy > 5) {
+            } else if (obj_ncombat.enemy <= eFACTION.NECRONS && _enemy >= eFACTION.ELDAR) {
                 obj_ncombat.threat = _planet_data.planet_forces[_enemy];
-            } else if (_enemy == 30) {
-                obj_ncombat.threat = 1;
             }
 
             _roster = new Roster();

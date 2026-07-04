@@ -12,7 +12,7 @@ try {
 
     // If battling own dudes, then remove the loyalists after the fact
 
-    if (enemy == 1) {
+    if (enemy == eFACTION.PLAYER) {
         var cleann = array_create(11, false);
         with (obj_enunit) {
             for (var q = 1; q <= 700; q++) {
@@ -217,13 +217,13 @@ try {
         }
     }
 
-    if ((enemy == 5) && (obj_controller.faction_status[eFACTION.ECCLESIARCHY] != "War")) {
+    if ((enemy == eFACTION.ECCLESIARCHY) && (obj_controller.faction_status[eFACTION.ECCLESIARCHY] != "War")) {
         obj_controller.loyalty -= 50;
         obj_controller.loyalty_hidden -= 50;
         decare_war_on_imperium_audiences();
     }
 
-    if ((exterminatus > 0) && (dropping != 0) && (string_count("mech", battle_special) == 0)) {
+    if ((exterminatus > 0) && dropping && (string_count("mech", battle_special) == 0)) {
         scr_destroy_planet(1);
     }
 
@@ -263,13 +263,13 @@ try {
         scr_recent("battle_defeat", $"{enemy}, {final_marine_deaths + final_command_deaths}");
     }
 
-    if (((dropping == 1) || (attacking == 1)) && (string_count("_attack", battle_special) == 0) && (string_count("mech", battle_special) == 0) && (string_count("ruins", battle_special) == 0) && (battle_special != "ship_demon")) {
+    if ((dropping || (attacking == 1)) && (string_count("_attack", battle_special) == 0) && (string_count("mech", battle_special) == 0) && (string_count("ruins", battle_special) == 0) && (battle_special != "ship_demon")) {
         obj_controller.combat = 0;
         with (obj_drop_select) {
             instance_destroy();
         }
     }
-    if ((dropping + attacking == 0) && (string_count("_attack", battle_special) == 0) && (string_count("mech", battle_special) == 0) && (string_count("ruins", battle_special) == 0) && (battle_special != "ship_demon") && (string_count("cs_meeting", battle_special) == 0)) {
+    if ((!dropping && attacking == 0) && (string_count("_attack", battle_special) == 0) && (string_count("mech", battle_special) == 0) && (string_count("ruins", battle_special) == 0) && (battle_special != "ship_demon") && (string_count("cs_meeting", battle_special) == 0)) {
         if (instance_exists(obj_turn_end)) {
             var _battle_index = obj_turn_end.current_battle;
             if (_battle_index < array_length(obj_turn_end.battle_object)) {
@@ -291,9 +291,9 @@ try {
     }
     if ((string_count("ruins", battle_special) > 0) && (defeat == 1)) {
         //TODO this logic is wrong assumes all player units died in ruins
-        var _combat_star = find_star_by_name(obj_ncombat.battle_loc);
+        var _combat_star = find_star_by_name(battle_loc);
         if (_combat_star != noone) {
-            _combat_star.p_player[obj_ncombat.battle_id] -= obj_ncombat.world_size;
+            _combat_star.p_player[battle_id] -= world_size;
         }
     }
 
@@ -321,7 +321,7 @@ try {
             obj_controller.disposition[4] += choose(0, 0, 1);
         }
 
-        scr_event_log("", "Inquisition Mission Completed: The Spyrer on {cur_star.name} {planet} has been removed.", cur_star.name);
+        scr_event_log("", $"Inquisition Mission Completed: The Spyrer on {cur_star.name} {planet} has been removed.", cur_star.name);
         scr_gov_disp(cur_star.name, planet, choose(1, 2, 3, 4));
 
         instance_deactivate_object(obj_star);
@@ -329,7 +329,7 @@ try {
         protect_raiders_battle_aftermath();
     } else if (string_count("fallen", battle_special) > 0) {
         hunt_fallen_battle_aftermath();
-    } else if ((defeat == 0) && (enemy == 9) && (battle_special == "tyranid_org")) {
+    } else if ((defeat == 0) && (enemy == eFACTION.TYRANIDS) && (battle_special == "tyranid_org")) {
         if (captured_gaunt > 1) {
             var _pop = instance_create(0, 0, obj_popup);
             _pop.image = "inquisition";
@@ -342,7 +342,7 @@ try {
             _pop.title = "Inquisition Mission Completed";
             _pop.text = "You have captured a Gaunt organism- the Inquisitor is pleased with your work.  The Tyranid will be stored until it may be retrieved.  The mission is a success.";
         }
-    } else if ((enemy == 1) && (on_ship == true) && (defeat == 0)) {
+    } else if ((enemy == eFACTION.PLAYER) && (on_ship == true) && (defeat == 0)) {
         var diceh = roll_dice_chapter(1, 100, "high");
 
         if (diceh <= 15) {
@@ -366,7 +366,7 @@ try {
         }
     }
 
-    if (enemy == 1) {
+    if (enemy == eFACTION.PLAYER) {
         if ((battle_special == "cs_meeting_battle1") || (battle_special == "cs_meeting_battle2")) {
             obj_controller.diplomacy = 10;
             scr_toggle_diplomacy();
@@ -402,7 +402,7 @@ try {
         }
     }
 
-    if (enemy == 10) {
+    if (enemy == eFACTION.CHAOS) {
         if ((battle_special == "cs_meeting_battle10") && (defeat == 0)) {
             obj_controller.complex_event = false;
             obj_controller.diplomacy = 0;
@@ -478,12 +478,7 @@ try {
 
     if (battle_special == "ship_demon") {
         if (defeat == 1) {
-            var ship, ship_hp, i;
-            i = -1;
-            repeat (51) {
-                i += 1;
-                ship[i] = obj_ini.ship[i];
-                ship_hp[i] = obj_ini.ship_hp[i];
+            for (var i = 0; i <= 50; i++) {
                 if (i == battle_id) {
                     obj_ini.ship_hp[i] = -50;
                     scr_recent("ship_destroyed", obj_ini.ship[i], i);
@@ -513,8 +508,8 @@ try {
 
             if (battle_special != "ChaosWarband") {
                 with (obj_star) {
-                    if (string_count("WL" + string(obj_ncombat.enemy), p_feature[obj_ncombat.battle_id]) > 0) {
-                        p_feature[obj_ncombat.battle_id] = string_replace(p_feature[obj_ncombat.battle_id], "WL" + string(obj_ncombat.enemy) + "|", "");
+                    if (string_count("WL" + string(other.enemy), p_feature[other.battle_id]) > 0) {
+                        p_feature[other.battle_id] = string_replace(p_feature[other.battle_id], "WL" + string(other.enemy) + "|", "");
                     }
                 }
             }

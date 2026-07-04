@@ -103,14 +103,10 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                     bombard_protection = 2;
                 }
                 break;
-            // case 11:
-            // txt2="##The Chaos Space Marine forces are difficult to bombard; ";
-            // bombard_protection=3;
-            // break;
-            // case 12:
-            // txt2="##The Daemonic forces are incredibly difficult to bombard; ";
-            // bombard_protection=4;
-            // break;
+            case 11:
+                txt2 = "##The Traitor forces are suitably fortified; ";
+                bombard_protection = 3;
+                break;
             case 13:
                 txt2 = "##The Necron forces are incredibly difficult to bombard; ";
                 bombard_protection = 4; // They are a hi-tech faction, so bombing them should be difficult
@@ -170,22 +166,25 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
         // if (rel>0 && rel<=20 && (target_strength-strength_reduction)>0){
         //	txt2+=" minor losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
         // ?
-        if ((target_strength - strength_reduction) <= 0) {
-            txt2 += " total annihilation from the bombardment and are wiped clean from the planet.";
-        } else {
-            var _losses_text = "";
-            if (rel > 0 && rel <= 20) {
-                _losses_text = "minor losses";
-            } else if (rel > 20 && rel <= 40) {
-                _losses_text = "moderate losses";
-            } else if (rel > 40 && rel <= 60) {
-                _losses_text = "heavy losses";
-            } else if (rel > 60 && (target_strength - strength_reduction) > 0) {
-                _losses_text = "devastating losses";
+        if (strength_reduction > 0) {
+            if ((target_strength - strength_reduction) <= 0) {
+                txt2 += " total annihilation from the bombardment and are wiped clean from the planet.";
             } else {
-                _losses_text = "some losses";
+                var _losses_text = "";
+                var _damage_pct = 100 - rel;
+                if (_damage_pct > 0 && _damage_pct <= 20) {
+                    _losses_text = "minor losses";
+                } else if (_damage_pct > 20 && _damage_pct <= 40) {
+                    _losses_text = "moderate losses";
+                } else if (_damage_pct > 40 && _damage_pct <= 60) {
+                    _losses_text = "heavy losses";
+                } else if (_damage_pct > 60) {
+                    _losses_text = "devastating losses";
+                } else {
+                    _losses_text = "some losses";
+                }
+                txt2 += $" {_losses_text} from the bombardment, having presence decreased by {strength_reduction}.";
             }
-            txt2 += $" {_losses_text} from the bombardment, having presence decreased by {strength_reduction}.";
         }
 
         // 135; ?
@@ -255,14 +254,16 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                     system.p_tyranids[planet] -= strength_reduction;
                     break;
                 case 10:
-                    system.p_traitors[planet] -= strength_reduction;
+                    var _chaos_cut = min(system.p_chaos[planet], strength_reduction);
+                    system.p_chaos[planet] -= _chaos_cut;
+                    var _demon_spill = strength_reduction - _chaos_cut;
+                    if (_demon_spill > 0) {
+                        system.p_demons[planet] = max(0, system.p_demons[planet] - _demon_spill);
+                    }
                     break;
-                // case 11:
-                // system.p_csm[planet]-=strength_reduction;
-                // break;
-                // case 12:
-                // system.p_demons[planet]-=strength_reduction;
-                // break;
+                case 11:
+                    system.p_traitors[planet] = max(0, system.p_traitors[planet] - strength_reduction);
+                    break;
                 case 13:
                     system.p_necrons[planet] -= strength_reduction;
                     break;

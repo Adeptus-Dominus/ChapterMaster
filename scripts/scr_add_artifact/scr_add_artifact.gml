@@ -832,7 +832,7 @@ function corrupt_artifact_collectors(last_artifact) {
                             _unit.edit_corruption(choose(0, 2, 4, 6, 8));
                         }
                     } else if (obj_controller.man[i] == "vehicle" && is_array(_unit)) {
-                        var _val = get_deep_array(obj_ini.veh_chaos, _unit);
+                        var _val = fetch_deep_array(obj_ini.veh_chaos, _unit);
                         _val += choose(0, 2, 4, 6, 8);
                         alter_deep_array(obj_ini.veh_chaos, _unit, _val);
                     }

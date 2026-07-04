@@ -192,14 +192,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         load_json_data(global.base_stats[$ class]);
     }
 
-    if (struct_exists(self, "start_gear")) {
-        if (base_group != "marine") {
-            alter_equipment(start_gear, false, false);
-        } else {
-            alter_equipment(start_gear, true, true);
-        }
-    }
-
     var stats = [
         "constitution",
         "strength",
@@ -231,6 +223,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                     variable_struct_set(self, stats[stat_iter], stat_mod);
                 }
             }
+        }
+    }
+
+    if (struct_exists(self, "start_gear")) {
+        if (base_group != "marine") {
+            alter_equipment(start_gear, false, false);
+        } else {
+            alter_equipment(start_gear, true, true);
         }
     }
 
@@ -1426,7 +1426,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         } else if (base_group == "human") {
             melee_hands_limit = 1;
         }
-        carry_string += "Base: 2#";
+        carry_string += $"Base: {melee_hands_limit}#";
         if (strength >= 50) {
             melee_hands_limit += 0.25;
             carry_string += "STR: +0.25#";

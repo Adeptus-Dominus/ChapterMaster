@@ -184,7 +184,7 @@ if ((men == 1) && (veh == 0) && (instance_number(obj_enunit) == 1)) {
     }
 }
 
-if (obj_ncombat.enemy == 1) {
+if (obj_ncombat.enemy == eFACTION.PLAYER) {
     men = 0;
     for (var j = 1; j <= 100; j++) {
         veh = 0;
@@ -1141,7 +1141,13 @@ if (obj_ncombat.enemy == eFACTION.TYRANIDS || obj_ncombat.enemy == eFACTION.GENE
             dudes_hp[j] = 25;
             men += dudes_num[j];
         }
-
+        if (dudes[j] == "Aberrant") {
+            scr_en_weapon("Heavy Maul", true, dudes_num[j], dudes[j], j);
+            dudes_ac[j] = 5;
+            dudes_hp[j] = 80;
+            dudes_dr[j] = 0.75;
+            men += dudes_num[j];
+        }
         if (dudes[j] == "Cultist") {
             scr_en_weapon("Autogun", true, dudes_num[j], dudes[j], j);
             scr_en_weapon("Melee Weapon", true, dudes_num[j], dudes[j], j);
@@ -1149,25 +1155,77 @@ if (obj_ncombat.enemy == eFACTION.TYRANIDS || obj_ncombat.enemy == eFACTION.GENE
             dudes_hp[j] = 35;
             men += dudes_num[j];
         }
+        if (dudes[j] == "Hybrid") {
+            scr_en_weapon("Autogun", true, dudes_num[j] * 2, dudes[j], j);
+            scr_en_weapon("Hand Flamer", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Hybrid Claws", true, dudes_num[j], dudes[j], j);
+            dudes_ac[j] = 10;
+            dudes_hp[j] = 50;
+            men += dudes_num[j];
+        }
         if (dudes[j] == "Genestealer") {
-            scr_en_weapon("Genestealer Claws", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Genestealer Claws", true, dudes_num[j] * 2, dudes[j], j);
             dudes_ac[j] = 10;
             dudes_hp[j] = 75;
             men += dudes_num[j];
         }
+                if (dudes[j] == "Magus") {
+            scr_en_weapon("Autogun", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Force Staff", true, dudes_num[j], dudes[j], j);
+            dudes_ac[j] = 10;
+            dudes_hp[j] = 100;
+            men += dudes_num[j];
+        }
+                if (dudes[j] == "Primus") {
+            scr_en_weapon("Autogun", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Bonesword", true, dudes_num[j], dudes[j], j);
+            dudes_ac[j] = 10;
+            dudes_hp[j] = 125;
+            dudes_dr[j] = 0.90;
+            men += dudes_num[j];
+        }
         if (dudes[j] == "Genestealer Patriarch") {
-            scr_en_weapon("Genestealer Claws", true, dudes_num[j], dudes[j], j);
-            scr_en_weapon("Witchfire", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Genestealer Claws", true, dudes_num[j] * 4, dudes[j], j);
             dudes_ac[j] = 15;
             dudes_hp[j] = 300;
             dudes_dr[j] = 0.65;
             men += dudes_num[j];
         }
-        if (dudes[j] == "Armoured Limousine") {
-            scr_en_weapon("Autogun", false, dudes_num[j] * 4, dudes[j], j);
+        if (dudes[j] == "Jackal") {
+            scr_en_weapon("Autogun", true, dudes_num[j] * 2, dudes[j], j);
+            scr_en_weapon("Melee Weapon", true, dudes_num[j], dudes[j], j);
+            dudes_ac[j] = 10;
+            dudes_hp[j] = 80;
+            dudes_dr[j] = 0.90;
+            men += dudes_num[j];
+        }
+        if (dudes[j] == "Ridgerunner") {
+            scr_en_weapon("Heavy Mining Laser", false, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Heavy Stubber", false, dudes_num[j] * 2, dudes[j], j);
             dudes_ac[j] = 20;
-            dudes_hp[j] = 150;
+            dudes_hp[j] = 175;
             dudes_dr[j] = 0.75;
+            veh += dudes_num[j];
+            dudes_vehicle[j] = 1;
+        }
+        if (dudes[j] == "Goliath Truck") {
+            scr_en_weapon("Autocannon", false, dudes_num[j] * 2, dudes[j], j);
+            scr_en_weapon("Heavy Stubber", false, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Demolition Charges", false, dudes_num[j], dudes[j], j);
+            dudes_ac[j] = 30;
+            dudes_hp[j] = 225;
+            dudes_dr[j] = 0.70;
+            veh += dudes_num[j];
+            dudes_vehicle[j] = 1;
+        }
+        if (dudes[j] == "Goliath Rockgrinder") {
+            scr_en_weapon("Drilldozer Blade", false, dudes_num[j] * 3, dudes[j], j);
+            scr_en_weapon("Heavy Mining Laser", false, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Heavy Stubber", false, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Demolition Charges", false, dudes_num[j] * 2, dudes[j], j);
+            dudes_ac[j] = 30;
+            dudes_hp[j] = 250;
+            dudes_dr[j] = 0.50;
             veh += dudes_num[j];
             dudes_vehicle[j] = 1;
         }

@@ -1,5 +1,5 @@
 // Shows the selected units to land or raid a planet
-if ((menu == 1) && (managing > 0)) {
+if ((menu == eMENU.MANAGE) && (managing > 0)) {
     // TODO look to serialize the vars in here and in the rest of the code with a data structure.
     // marine types
     var cap = 0, apo = 0, chap = 0, bear = 0, tct = 0, assa = 0, dev = 0, sco = 0, hon = 0, ve = 0, ter = 0, oth = 0, drea = 0, vdrea = 0, codi = 0, lexi = 0, lib = 0, tech = 0, sgt = 0, vet_sgt = 0, champ = 0;
@@ -11,7 +11,6 @@ if ((menu == 1) && (managing > 0)) {
     var manz = 0, vanz = 0, stahp = 0;
     sel_promoting = 1;
     for (var f = 0; f < array_length(display_unit); f++) {
-        // cooldown=8;
         if (man_sel[f] == 1) {
             if (man[f] == "man") {
                 unit = display_unit[f];

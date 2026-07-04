@@ -82,6 +82,9 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
             case 10:
                 t_name = "Chaos";
                 break;
+            case 11:
+                t_name = "Traitors";
+                break;
             case 13:
                 t_name = "Necrons";
                 break;

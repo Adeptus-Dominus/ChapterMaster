@@ -952,7 +952,7 @@ function remove_star_problem(problem, star = noone) {
         }
     } else {
         with (star) {
-            remove_remove_star_problem(problem);
+            remove_star_problem(problem);
         }
     }
 }

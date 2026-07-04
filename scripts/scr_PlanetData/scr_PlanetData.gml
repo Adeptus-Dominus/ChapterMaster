@@ -310,8 +310,8 @@ function PlanetData(_planet, _system) constructor {
         planet_forces[7] = system.p_orks[planet];
         planet_forces[8] = system.p_tau[planet];
         planet_forces[9] = system.p_tyranids[planet];
-        planet_forces[10] = system.p_traitors[planet];
-        planet_forces[11] = system.p_chaos[planet] + system.p_demons[planet];
+        planet_forces[10] = system.p_chaos[planet] + system.p_demons[planet];
+        planet_forces[11] = system.p_traitors[planet];
 
         planet_forces[13] = system.p_necrons[planet];
     } catch (_exception) {
@@ -1027,7 +1027,7 @@ function PlanetData(_planet, _system) constructor {
             }
         }
         if (planet_forces[eFACTION.CHAOS] > 0) {
-            guard_attack = "csm";
+            guard_attack = "chaos";
         }
         if ((pdf > 0) && (current_owner == eFACTION.TAU)) {
             guard_attack = "pdf";
@@ -1090,7 +1090,7 @@ function PlanetData(_planet, _system) constructor {
 
         if (_pdf_attack == "") {
             if (planet_forces[eFACTION.CHAOS] > 0) {
-                _pdf_attack = "csm";
+                _pdf_attack = "chaos";
             } else if (planet_forces[eFACTION.HERETICS] > 0) {
                 _pdf_attack = "traitors";
             } else if (planet_forces[eFACTION.ORK] > 0) {
@@ -1350,7 +1350,7 @@ function PlanetData(_planet, _system) constructor {
             "Tau",
             "Tyranids",
             "Chaos",
-            "Traitors",
+            "Heretics",
             "Daemons",
             "Necrons",
         ];
@@ -1359,8 +1359,8 @@ function PlanetData(_planet, _system) constructor {
             "p_orks",
             "p_tau",
             "p_tyranids",
-            "p_traitors",
             "p_chaos",
+            "p_traitors",
             "p_demons",
             "p_necrons",
         ];
@@ -1520,7 +1520,7 @@ function PlanetData(_planet, _system) constructor {
             strength = strength > 2 ? 2 : 0;
 
             if (system.p_chaos[planet] > 0) {
-                system.p_chaos[planet] = max(0, system.p_traitors[planet] - 1);
+                system.p_chaos[planet] = max(0, system.p_chaos[planet] - 1);
             } else if (system.p_traitors[planet] > 0) {
                 system.p_traitors[planet] = max(0, system.p_traitors[planet] - 2);
             }

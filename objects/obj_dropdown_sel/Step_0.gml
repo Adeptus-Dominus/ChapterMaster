@@ -1,4 +1,4 @@
-if ((obj_controller.menu != my_menu) && (my_menu == 12.1)) {
+if ((obj_controller.menu != my_menu) && (my_menu == eMENU.FESTIVAL)) {
     obj_controller.fest_repeats = 0;
 }
 if (obj_controller.menu != my_menu) {

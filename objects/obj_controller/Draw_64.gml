@@ -87,7 +87,7 @@ if (!zoomed && !zui) {
             }
         }
     }
-    draw_sprite(spr_new_ui, menu == 0, 0, 0);
+    draw_sprite(spr_new_ui, menu == eMENU.DEFAULT, 0, 0);
     draw_set_color(c_white);
 
     if (!instance_exists(obj_popup)) {
@@ -132,7 +132,7 @@ if (!zoomed && !zui) {
     draw_text(775.5, 17.5, _sector_string);
 
     // Checks if you are penitent
-    if (obj_controller.faction_status[eFACTION.IMPERIUM] != "War") {
+    if (faction_status[eFACTION.IMPERIUM] != "War") {
         if (penitent_max == 0) {
             draw_text(998, 17, string_hash_to_newline("Loyal"));
             draw_text(998, 17.5, string_hash_to_newline("Loyal"));
@@ -151,14 +151,14 @@ if (!zoomed && !zui) {
         }
     }
     // Sets you to renegade
-    if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
+    if (faction_status[eFACTION.IMPERIUM] == "War") {
         draw_set_color(255);
         draw_text(998, 17, string_hash_to_newline("Renegade"));
         draw_text(998, 17.5, string_hash_to_newline("Renegade"));
         draw_set_color(CM_GREEN_COLOR);
     }
-    if (menu == 0) {
-        if (obj_controller.imp_ships == 0 && obj_controller.turn < 2) {
+    if (menu == eMENU.DEFAULT) {
+        if (imp_ships == 0 && turn < 2) {
             sector_imperial_fleet_strength();
         }
         draw_text(850, 60, $"Sector Fleet Strength {imp_ships}/{max_fleet_strength}");

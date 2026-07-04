@@ -158,11 +158,11 @@ function roll_dice(dices = 1, faces = 6) {
 }
 
 /// @description Roll a custom dice, influenced by the chapter' luck, return sum of all rolls.
-/// @param {real} dices - how many dices to roll.
-/// @param {real} faces - how many faces each dice has.
-/// @param {real} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
-/// @returns {real}
-function roll_dice_chapter(dices = 1, faces = 6, player_benefit_at) {
+/// @param {Real} dices - how many dices to roll.
+/// @param {Real} faces - how many faces each dice has.
+/// @param {String} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
+/// @returns {Real}
+function roll_dice_chapter(dices = 1, faces = 6, player_benefit_at = "high") {
     var _total_roll = 0;
     var _roll = 0;
 

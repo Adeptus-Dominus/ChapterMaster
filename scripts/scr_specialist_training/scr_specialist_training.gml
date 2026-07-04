@@ -379,26 +379,28 @@ function techmarine_training() {
                     unit.religion = "cult_mechanicus";
                     if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
                         unit.add_trait("mars_trained");
+                        unit.update_weapon_one(obj_ini.wep1[100][eROLE.TECHMARINE], false);
+                        unit.update_weapon_two(obj_ini.wep2[100][eROLE.TECHMARINE], false);
+                        unit.update_mobility_item(obj_ini.mobi[100][eROLE.TECHMARINE], false);
                         scr_alert("green", "recruitment", $"{unit.name()} returns from Mars, a {unit.role()}.", 0, 0);
                     } else {
                         unit.add_trait("chapter_trained_tech");
                         scr_alert("green", "recruitment", $"{unit.name_role()} has finished training.", 0, 0);
-                    }
 
-                    var _warn = "";
-                    if (unit.update_weapon_one(obj_ini.wep1[100][16]) == "no_items") {
-                        _warn += $", {obj_ini.wep1[100][16]}";
-                    }
-                    if (unit.update_weapon_two(obj_ini.wep2[100][16]) == "no_items") {
-                        _warn += $", {obj_ini.wep2[100][16]}";
-                    }
-                    if (unit.update_gear(obj_ini.gear[100][16]) == "no_items") {
-                        _warn += $", {obj_ini.gear[100][16]}";
-                    }
-
-                    if (_warn != "") {
-                        _warn += ".";
-                        scr_alert("red", "recruitment", "Not enough equipment: " + string(_warn), 0, 0);
+                        var _warn = "";
+                        if (unit.update_weapon_one(obj_ini.wep1[100][eROLE.TECHMARINE]) == "no_items") {
+                            _warn += $", {obj_ini.wep1[100][eROLE.TECHMARINE]}";
+                        }
+                        if (unit.update_weapon_two(obj_ini.wep2[100][eROLE.TECHMARINE]) == "no_items") {
+                            _warn += $", {obj_ini.wep2[100][eROLE.TECHMARINE]}";
+                        }
+                        if (unit.update_gear(obj_ini.gear[100][eROLE.TECHMARINE]) == "no_items") {
+                            _warn += $", {obj_ini.gear[100][eROLE.TECHMARINE]}";
+                        }
+    
+                        if (_warn != "") {
+                            scr_alert("red", "recruitment", $"Not enough equipment: {_warn}!", 0, 0);
+                        }
                     }
 
                     if (unit.location_string == "Terra") {

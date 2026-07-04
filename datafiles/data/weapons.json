@@ -40,7 +40,7 @@
         "spli": 20,
         "tags": [
             "heavy_ranged",
-            "terminator",
+            "terminator_only",
             "dreadnought"
         ],
         "value": 75
@@ -211,32 +211,6 @@
         ],
         "value": 90
     },
-    "CCW Heavy Flamer": {
-        "abbreviation": "CCWHvyFlmr",
-        "ammo": 6,
-        "arp": 2,
-        "attack": {
-            "artifact": 600,
-            "master_crafted": 550,
-            "standard": 500
-        },
-        "description": "A powerful close combat weapon integrated with a flamer. Enemeies rarely expect a dreadnough claw to spew promethium.",
-        "melee_hands": 1,
-        "range": 2.1,
-        "ranged_hands": 0,
-        "requires_to_forge": [
-            "vehicle_armaments_1",
-            "flame_1"
-        ],
-        "spli": 20,
-        "tags": [
-            "vehicle",
-            "dreadnought",
-            "heavy_ranged",
-            "flame"
-        ],
-        "value": 55
-    },
     "Chainaxe": {
         "abbreviation": "ChAxe",
         "ammo": 0,
@@ -336,13 +310,16 @@
             "master_crafted": 450,
             "standard": 350
         },
-        "description": "While a variety of melee weapons are used by dreadnoughts, this power fist with an integrated flamer is the most common.",
+        "description": "While a variety of melee weapons are used by dreadnoughts, this power fist with an integrated Heavy Flamer is the most common.",
         "maintenance": 0.1,
         "melee_hands": 5,
         "range": 1,
         "requires_to_forge": [
             "vehicle_armaments_1",
             "flame_1"
+        ],
+        "second_profiles": [
+            "Heavy Flamer"
         ],
         "spli": 10,
         "tags": [
@@ -528,6 +505,9 @@
         "range": 1,
         "ranged_hands": 0,
         "spli": 15,
+        "second_profiles": [
+            "Twin Linked Bolters"
+        ],
         "tags": [
             "vehicle",
             "power",
@@ -1354,7 +1334,7 @@
     },
     "Inferno Cannon": {
         "abbreviation": "InfCann",
-        "ammo": 0,
+        "ammo": 10,
         "arp": 2,
         "attack": {
             "artifact": 1000,
@@ -1532,7 +1512,7 @@
         "spli": 20,
         "tags": [
             "heavy_ranged",
-            "terminator",
+            "terminator_only",
             "dreadnought",
             "ancient"
         ]
@@ -1972,7 +1952,7 @@
     },
     "Plasma Cutter": {
         "abbreviation": "PlsmCt",
-        "ammo": 0,
+        "ammo": 8,
         "arp": 3,
         "attack": {
             "artifact": 320,
@@ -3064,7 +3044,7 @@
     },
     "Underslung Bolter": {
         "abbreviation": "UndBltr",
-        "ammo": 0,
+        "ammo": 8,
         "arp": 1,
         "attack": {
             "artifact": 300,

@@ -7,7 +7,7 @@ if ((trading > 0) && (force_goodbye != 0)) {
 }
 
 // ** Reclusium Jail Marines**
-if ((menu == 12) && (cooldown <= 0) && (penitorium > 0)) {
+if ((menu == eMENU.RECLUSIAM) && (cooldown <= 0) && (penitorium > 0)) {
     var behav = 0, r_eta = 0, re = 0;
     for (var qp = 1; qp <= min(36, penitorium); qp++) {
         if ((qp <= penitorium) && (mouse_y >= yy + 100 + ((qp - 1) * 20)) && (mouse_y < yy + 100 + (qp * 20))) {
@@ -55,7 +55,7 @@ if ((menu == 12) && (cooldown <= 0) && (penitorium > 0)) {
             }
         }
     }
-} else if ((menu == 15) && (cooldown <= 0)) {
+} else if ((menu == eMENU.RECRUITING) && (cooldown <= 0)) {
     // ** Recruitement **
     if ((mouse_x >= xx + 748) && (mouse_x < xx + 772)) {
         if ((mouse_y >= yy + 355) && (mouse_y < yy + 373) && (recruiting < 1) && (gene_seed > 0) && (obj_ini.doomed == 0) && (penitent == 0)) {
@@ -80,7 +80,7 @@ if ((menu == 12) && (cooldown <= 0) && (penitorium > 0)) {
         }
         if ((mouse_y >= yy + 455) && (mouse_y < yy + 473) && (training_techmarine < 6)) {
             cooldown = 8000;
-            if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
+            if (faction_status[eFACTION.MECHANICUS] != "War") {
                 var _chapter_tech_count = scr_role_count("Techmarine", "");
                 if (_chapter_tech_count >= ((disposition[3] / 2) + 5)) {
                     training_techmarine = 0;
@@ -153,7 +153,7 @@ if ((menu == eMENU.DIPLOMACY) && (diplomacy > 0) || ((diplomacy < -5) && (diplom
                 click2 = 1;
                 clear_diplo_choices();
                 diplomacy = 0;
-                menu = 0;
+                menu = eMENU.DEFAULT;
                 force_goodbye = 0;
                 with (obj_popup) {
                     instance_destroy();
@@ -190,19 +190,9 @@ if ((zoomed == 0) && (cooldown <= 0) && (menu == eMENU.DIPLOMACY) && (diplomacy 
 scr_menu_clear_up(function() {
     var xx = camera_get_view_x(view_camera[0]);
     var yy = camera_get_view_y(view_camera[0]);
-    if ((zoomed == 0) && (menu == 40) && (cooldown <= 0)) {
-        if ((mouse_x >= xx + 73) && (mouse_y >= yy + 69) && (mouse_x < xx + 305) && (mouse_y < yy + 415)) {
-            menu = 41;
-            cooldown = 8000;
-        }
-        if ((mouse_x >= xx + 336) && (mouse_y >= yy + 69) && (mouse_x < xx + 568) && (mouse_y < yy + 415)) {
-            menu = 42;
-            cooldown = 8000;
-        }
-    }
 
     // This is the back button at LOADING TO SHIPS
-    if ((zoomed == 0) && (menu == 30) && (managing > 0 || managing == -1) && (cooldown <= 0)) {
+    if ((zoomed == 0) && (menu == eMENU.GAME_HELP) && (managing > 0 || managing == -1) && (cooldown <= 0)) {
         if ((mouse_x >= xx + 22) && (mouse_y >= yy + 84) && (mouse_x < xx + 98) && (mouse_y < yy + 126)) {
             menu = eMENU.MANAGE;
             cooldown = 8000;
@@ -233,7 +223,8 @@ scr_menu_clear_up(function() {
             }
         }
     }
-    if ((menu == 50) && (managing > 0) && (cooldown <= 0)) {
+
+    if ((menu == eMENU.CHAPTER_MASTER) && (managing > 0) && (cooldown <= 0)) {
         if ((mouse_x >= xx + 217) && (mouse_y >= yy + 28) && (mouse_x < xx + 250) && (mouse_y < yy + 59)) {
             cooldown = 8;
             menu = eMENU.MANAGE;

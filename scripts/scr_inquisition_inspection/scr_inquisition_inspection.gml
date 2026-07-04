@@ -509,7 +509,7 @@ function inquisitor_inspection_structure() constructor {
                         scr_alert("red", "inspect", _msg, 0, 0);
                     }
                 }
-                if (finds.daemonic == 0 && !_struct_exists(finds, "xenos_mercs")) {
+                if (finds.daemonic == 0 && !struct_exists(finds, "xenos_mercs")) {
                     scr_alert("red", "inspect", "Inquisitor discovers heretical material in your posession.", 0, 0);
                 }
 
