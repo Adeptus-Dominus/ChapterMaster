@@ -19,6 +19,8 @@ function string_upper_first(_string) {
 }
 
 function string_gender(gender = -1) {
+    var _string = "";
+
     if (gender == -1) {
         gender = set_gender();
     }
