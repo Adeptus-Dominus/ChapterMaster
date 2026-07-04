@@ -409,7 +409,11 @@ try {
             hulk_forces = make;
         }
         // * CSM Space Hulk *
-        if (enemy == eFACTION.CHAOS) {
+        if ((enemy == eFACTION.CHAOS) || (enemy == eFACTION.HERETICS)) {
+            // Hulk garrisons roll faction CHAOS but store strength in p_traitors
+            // (obj_star Alarm_0), so under the corrected numbering their battles
+            // arrive as HERETICS: without this the hulk spawned no defenders at all
+            // (reported four out of four boardings empty).
             modi = random_range(0.80, 1.20) + 1;
             make = round(max(3, player_starting_dudes * modi));
 
@@ -2051,7 +2055,12 @@ try {
     }
 
     // ** Chaos Forces **
-    if ((enemy == eFACTION.CHAOS) && (battle_special != "ship_demon") && (battle_special != "fallen1") && (battle_special != "fallen2") && (battle_special != "WL10_reveal") && (battle_special != "WL10_later") && (string_count("cs_meeting_battle", battle_special) == 0)) {
+    // Spawn-side half of the chaos/heretics renumbering (upstream 173a6500 flipped
+    // battle RESOLUTION but not these composition gates): the threat-scaled cult and
+    // traitor horde compositions belong to HERETICS worlds (p_traitors), which now
+    // arrive as eFACTION.HERETICS. Before this swap they received the small CSM
+    // warband below (a constant ~5 CSM + 30 cultists at every strength).
+    if ((enemy == eFACTION.HERETICS) && (battle_special != "ship_demon") && (battle_special != "fallen1") && (battle_special != "fallen2") && (battle_special != "WL10_reveal") && (battle_special != "WL10_later") && (string_count("cs_meeting_battle", battle_special) == 0)) {
         // Small Chaos Cult Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);
@@ -2491,7 +2500,9 @@ try {
     }
 
     // ** Chaos Space Marines Forces **
-    if ((enemy == eFACTION.HERETICS) && (battle_special != "ChaosWarband") && (string_count("cs_meeting_battle", battle_special) == 0)) {
+    // The CSM warband compositions belong to true Chaos forces (p_chaos), which now
+    // arrive as eFACTION.CHAOS. Second half of the spawn-side renumbering swap.
+    if ((enemy == eFACTION.CHAOS) && (battle_special != "ChaosWarband") && (string_count("cs_meeting_battle", battle_special) == 0)) {
         // Small CSM Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);
@@ -2712,7 +2723,7 @@ try {
     }
 
     // ** World Eaters Forces **
-    if ((enemy == eFACTION.HERETICS) && (battle_special == "ChaosWarband")) {
+    if ((enemy == eFACTION.CHAOS) && (battle_special == "ChaosWarband")) {
         // Small WE Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);

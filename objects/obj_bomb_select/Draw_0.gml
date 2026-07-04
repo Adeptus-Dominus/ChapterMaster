@@ -95,6 +95,20 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
 
         var str_string = "";
         // TODO a centralised point to be able to fetch display names from factions identifying number
+        // First-draw validation: if the default target has no force, advance to the
+        // first faction that does, so the screen never opens on a ghost target the
+        // player must cycle past.
+        if (target_initialized != 1) {
+            target_initialized = 1;
+            if (p_data.planet_forces[target] <= 0) {
+                for (var _t0 = 2; _t0 < array_length(p_data.planet_forces); _t0++) {
+                    if (p_data.planet_forces[_t0] > 0) {
+                        target = _t0;
+                        break;
+                    }
+                }
+            }
+        }
         str = floor(p_data.planet_forces[target]);
         if (target == 2.5) {
             str = determine_pdf_defence(p_data.pdf,, p_data.fortification_level)[0];

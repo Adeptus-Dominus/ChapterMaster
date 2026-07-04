@@ -523,7 +523,12 @@ function damage_vehicles(_damage_data, _shots, _damage, _weapon_index, _arp = 0)
         if (_modified_damage < 0) {
             _modified_damage = 0;
         }
-        if (enemy == 13 && _modified_damage < 1) {
+        // This ran in the obj_pnunit context, where `enemy` is the block's TARGET
+        // instance variable (set in its own Alarm_0), so enemy fire landing before
+        // the block's first tick crashed with an unset read; and comparing a target
+        // instance id to 13 was wrong regardless. The battle faction lives on
+        // obj_ncombat.
+        if (obj_ncombat.enemy == eFACTION.NECRONS && _modified_damage < 1) {
             _modified_damage = 1;
         }
         var _veh_hp_before = veh_hp[veh_index];

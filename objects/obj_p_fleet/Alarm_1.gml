@@ -94,7 +94,11 @@ try {
                 }
             }
             if ((steh.owner == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0) && (obj_controller.known[eFACTION.ELDAR] == 0)) {
-                obj_controller.known[eFACTION.ELDAR] = 1;
+                // Encountering an Eldar-held system yields one intelligence clue
+                // rather than instantly revealing the craftworld: the reveal stays
+                // gated behind ELDAR_INTEL_REQUIRED clues (tester's craftworld
+                // appeared at 2 clues by merely entering such a system).
+                eldar_intel_grant();
             }
             if ((steh.owner == eFACTION.TAU) && (obj_controller.faction_defeated[8] == 0) && (obj_controller.known[eFACTION.TAU] == 0)) {
                 obj_controller.known[eFACTION.TAU] = 1;
@@ -142,11 +146,11 @@ try {
                 dist = point_distance(x, y, steh.old_x, steh.old_y);
 
                 if ((rando >= 95) && (dist <= 300)) {
-                    obj_controller.known[eFACTION.ELDAR] = 1;
-                    scr_alert("green", "elfs", "Eldar Craftworld discovered.", steh.old_x, steh.old_y);
+                    // A lucky close pass grants a clue, never a full reveal.
+                    eldar_intel_grant();
                     with (obj_en_fleet) {
                         if (owner == eFACTION.ELDAR) {
-                            image_alpha = 1;
+                            // Un-hiding now happens in the intel reveal path only.
                         }
                     }
                 }

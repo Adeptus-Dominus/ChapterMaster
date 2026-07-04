@@ -1,6 +1,9 @@
 // Resets vars and also checks if target can be bombarded
 ship_names = "";
 p_target = 0;
+// Lazy initial-target validation flag (see Draw_0): honest presence numbers can
+// leave the default bombard target on a zero-strength faction ("Chaos, Strength: 0").
+target_initialized = 0;
 max_ships = 0;
 ships_selected = 0;
 target = 0;
