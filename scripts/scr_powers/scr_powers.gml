@@ -333,8 +333,6 @@ function scr_powers(caster_id, _psy_log = undefined) {
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
         add_battle_log_message(_battle_log_message, eMSG_COLOR.RED);
     }
-
-    display_battle_log_message();
 }
 
 /// @desc Folds one attack-power cast into the per-formation psychic summary, keyed by power + target,
@@ -372,9 +370,6 @@ function flush_psychic_summary(_psy_log) {
         var _kills_word = (_e.kills == 1) ? $"a {_e.target} is {_e.verb}" : $"{_e.kills} {_e.target} are {_e.verb}";
         var _message = $"{_e.casts} {_cast_word} of '{_e.power}'{_e.flavour} {_kills_word}.";
         add_battle_log_message(_message, eMSG_COLOR.AQUA);
-    }
-    if (array_length(_keys) > 0) {
-        display_battle_log_message();
     }
 }
 
