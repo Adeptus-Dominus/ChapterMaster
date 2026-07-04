@@ -468,3 +468,22 @@ function string_interpolate_from_struct(interpolate_string, data) {
 function string_contains(_substring, _string) {
     return string_count(_substring, _string) > 0;
 }
+
+/// @desc Joins an array of strings into an Oxford-comma list: "A", "A and B", or "A, B, and C".
+/// @param {Array} _items Array of strings to join.
+/// @returns {string}
+function string_join_oxford_comma(_items) {
+    var _n = array_length(_items);
+    if (_n == 0) {
+        return "";
+    }
+    var _list = _items[0];
+    for (var i = 1; i < _n; i++) {
+        if (i == _n - 1) {
+            _list += (_n > 2 ? ", and " : " and ") + _items[i];
+        } else {
+            _list += ", " + _items[i];
+        }
+    }
+    return _list;
+}

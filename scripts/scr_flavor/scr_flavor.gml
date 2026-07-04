@@ -42,14 +42,7 @@ function report_held_fire(_weapon_names) {
     }
 
     // Build "A, B, and C" (or "A and B", or "A").
-    var _list = _unique[0];
-    for (var i = 1; i < _count; i++) {
-        if (i == _count - 1) {
-            _list += (_count > 2 ? ", and " : " and ") + _unique[i];
-        } else {
-            _list += ", " + _unique[i];
-        }
-    }
+    var _list = string_join_oxford_comma(_unique);
 
     add_battle_log_message($"{_list} held fire lacking live targets.", eMSG_COLOR.WHITE);
     display_battle_log_message();
@@ -771,14 +764,7 @@ function format_kill_list(_kills) {
         var _k = _kills[i];
         array_push(_parts, (_k.count == 1) ? ("the " + _k.name) : (string(_k.count) + " " + _k.name));
     }
-    var _list = _parts[0];
-    for (var i = 1; i < _n; i++) {
-        if (i == _n - 1) {
-            _list += (_n > 2 ? ", and " : " and ") + _parts[i];
-        } else {
-            _list += ", " + _parts[i];
-        }
-    }
+    var _list = string_join_oxford_comma(_parts);
     return _list;
 }
 
@@ -861,19 +847,7 @@ function combat_tally_flush() {
 
 /// @desc Joins firing subjects into "A", "A and B", or "A, B, and C".
 function combat_subject_join(_subjects) {
-    var _n = array_length(_subjects);
-    if (_n == 0) {
-        return "";
-    }
-    var _list = _subjects[0];
-    for (var i = 1; i < _n; i++) {
-        if (i == _n - 1) {
-            _list += (_n > 2 ? ", and " : " and ") + _subjects[i];
-        } else {
-            _list += ", " + _subjects[i];
-        }
-    }
-    return _list;
+    return string_join_oxford_comma(_subjects);
 }
 
 /// @self Asset.GMObject.obj_ncombat
