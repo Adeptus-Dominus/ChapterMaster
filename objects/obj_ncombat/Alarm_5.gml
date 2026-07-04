@@ -459,12 +459,6 @@ if (defeat == 0 && _reduce_power) {
         part10 = "Necrons";
     }
 
-    // Eldar craftworld hunt: a ground victory over an Eldar warhost yields one piece
-    // of intelligence toward locating the hidden craftworld. Only while it remains
-    // hidden; battles after the reveal grant nothing.
-    if ((enemy == eFACTION.ELDAR) && (obj_controller.known[eFACTION.ELDAR] == 0)) {
-        eldar_intel_grant();
-    }
 
     if (instance_exists(battle_object) && (enemy_power > 2)) {
         if (awake_tomb_world(battle_object.p_feature[battle_id]) != 0) {
@@ -480,6 +474,15 @@ if (defeat == 0 && _reduce_power) {
         }
         new_power = enemy_power - power_reduction;
         new_power = max(new_power, 0);
+
+        // Eldar craftworld hunt: intelligence is recovered only when the warhost is
+        // wiped from the planet entirely (its force reaches zero), never per battle,
+        // so repeated raids against the same warhost cannot farm clues (tester found
+        // three raids on one world yielded three clues). Only while the craftworld
+        // remains hidden.
+        if ((enemy == eFACTION.ELDAR) && (new_power <= 0) && (obj_controller.known[eFACTION.ELDAR] == 0)) {
+            eldar_intel_grant();
+        }
 
         // Give some money for killing enemies?
         var _quad_factor = 6;
