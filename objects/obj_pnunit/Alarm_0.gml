@@ -10,8 +10,17 @@ try {
 
     enemy = instance_nearest(0, y, obj_enunit); // Left most enemy
 
-    if (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)) {
-        move_unit_block("east");
+    // Basic combat orders: every block carries a move_order ("advance" or "hold"),
+    // seeded on its first tick from the vanilla movement rule (raids and attacks
+    // advance, defense and the static formation hold) and toggled by clicking the
+    // block's bar (obj_pnunit Step_0). Advancing blocks may leapfrog over friendly
+    // blocks directly ahead. The Defenses pseudo-block takes no orders and never
+    // moves.
+    if (move_order == "") {
+        move_order = (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)) ? "advance" : "hold";
+    }
+    if ((move_order == "advance") && (veh_type[1] != "Defenses")) {
+        move_unit_block("east", 1, false, true);
     }
 
     if (!instance_exists(enemy)) {

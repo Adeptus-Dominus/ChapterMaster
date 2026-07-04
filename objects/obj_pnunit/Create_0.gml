@@ -17,6 +17,10 @@ composition_string = "";
 
 column_size = 0;
 
+// Basic combat orders: "" until seeded from the battle type on the block's first
+// Alarm_0 tick, then "advance" or "hold", toggled by clicking the block's bar.
+move_order = "";
+
 centerline_offset = 0;
 pos = 880;
 draw_size = 0;

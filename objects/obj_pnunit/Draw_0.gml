@@ -28,6 +28,21 @@ if (draw_size > 0) {
 
     draw_rectangle(x1, y1, x2, y2, 0);
 
+    // Order indicator (basic combat orders): a green chevron above advancing blocks,
+    // an orange bar above holding ones, so each column's order reads at a glance.
+    // The Defenses pseudo-block takes no orders and gets no marker.
+    if ((move_order != "") && (veh_type[1] != "Defenses")) {
+        draw_set_font(fnt_40k_14b);
+        if (move_order == "advance") {
+            draw_set_color(c_lime);
+            draw_text(x1, y1 - 20, ">");
+        } else {
+            draw_set_color(c_orange);
+            draw_text(x1, y1 - 20, "=");
+        }
+        draw_set_color(c_red);
+    }
+
     if (hit()) {
         if (unit_count != unit_count_old) {
             unit_count_old = unit_count;

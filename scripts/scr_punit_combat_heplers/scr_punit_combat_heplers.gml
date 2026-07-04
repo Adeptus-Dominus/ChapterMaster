@@ -170,25 +170,48 @@ function block_position_collision(position_x, position_y) {
 /// @param {string} direction In what direction to move ("east" or "west")
 /// @param {real} blocks How far to move (in unit blocks)
 /// @param {bool} allow_collision Are unit blocks allowed to passthrough other unit blocks
+/// @param {bool} leapfrog When the destination is blocked by a FRIENDLY block, hop over the
+/// contiguous friendly column(s) to the first free slot beyond (probing at most
+/// PLAYER_LEAPFROG_MAX_COLUMNS columns). Never lands on or vaults past an enemy block, so
+/// contact with the enemy is still made by normal one-step movement and engagement.
 /// @return {bool}
 /// @self Asset.GMObject.obj_pnunit
-function move_unit_block(direction, blocks = 1, allow_collision = false) {
+function move_unit_block(direction, blocks = 1, allow_collision = false, leapfrog = false) {
     try {
         var distance = 10 * blocks;
         var _new_pos = x;
+        var _step = 0;
 
         if (direction == "east") {
+            _step = distance;
             _new_pos = x + distance;
         } else if (direction == "west") {
+            _step = -distance;
             _new_pos = x - distance;
         }
 
         if (allow_collision == true || !block_position_collision(_new_pos, y)) {
             x = _new_pos;
             return true;
-        } else {
-            return false;
         }
+
+        // Leapfrogging (basic combat orders): only when the immediate blocker is a
+        // friendly block and not an enemy.
+        if (leapfrog && (_step != 0) && collision_point(_new_pos, y, obj_pnunit, 0, 1) && !collision_point(_new_pos, y, obj_enunit, 0, 1)) {
+            var _hop = _new_pos + _step;
+            repeat (PLAYER_LEAPFROG_MAX_COLUMNS) {
+                if (collision_point(_hop, y, obj_enunit, 0, 1)) {
+                    break;
+                }
+                if (!collision_point(_hop, y, obj_pnunit, 0, 1)) {
+                    x = _hop;
+                    return true;
+                }
+                _hop += _step;
+            }
+        }
+
+        return false;
     } catch (_exception) {
         ERROR_HANDLER.handle_exception(_exception);
     }

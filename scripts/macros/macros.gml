@@ -52,6 +52,11 @@
 #macro PLAYER_PIERCE_RANK2_SHOTS 0.66
 #macro PLAYER_PIERCE_RANK3_SHOTS 0.33
 
+// Basic combat orders: an advancing block that finds a friendly block directly
+// ahead may leapfrog over it, landing on the first free slot beyond, probing at
+// most this many columns. It never lands on or vaults past an enemy block.
+#macro PLAYER_LEAPFROG_MAX_COLUMNS 6
+
 // Ship assault economy: how many ground assaults each ship can support per turn. The old
 // rule capped the whole fleet at 2 attacks per turn regardless of size, so deploying
 // everything on every assault cost nothing. Now each carrying ship supports this many
