@@ -10,11 +10,6 @@ function add_battle_log_message(_message, _message_color = eMSG_COLOR.WHITE) {
     return false;
 }
 
-function display_battle_log_message() {
-    // Trigger the message processing alarm
-    obj_ncombat.alarm[3] = 5;
-}
-
 /// @desc Plural form of a weapon name. Names that are already plural (end in "s", e.g.
 ///       "Twin Linked Bolters") are left as-is so we don't print "Bolterss".
 /// @param {string} _name The weapon name.
@@ -45,7 +40,6 @@ function report_held_fire(_weapon_names) {
     var _list = string_join_oxford_comma(_unique);
 
     add_battle_log_message($"{_list} held fire lacking live targets.", eMSG_COLOR.WHITE);
-    display_battle_log_message();
 }
 
 function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties, shots_bounced = false, _defer = false) {
@@ -714,12 +708,10 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
     if (!_defer) {
         if (attack_message != "") {
             add_battle_log_message(attack_message, message_color);
-            display_battle_log_message();
         }
 
         if (leader_message != "") {
             add_battle_log_message(leader_message, message_color);
-            display_battle_log_message();
         }
     }
 
@@ -791,7 +783,6 @@ function emit_volley_flavour(_primary, _spill_kills) {
         // formations are destroyed). Spill-over only happens after a wipe, so this is just defensive.
         if (_list != "") {
             add_battle_log_message("Overflowing fire cuts down " + _list + ".");
-            display_battle_log_message();
         }
         return;
     }
@@ -803,11 +794,9 @@ function emit_volley_flavour(_primary, _spill_kills) {
 
     if (_message != "") {
         add_battle_log_message(_message, _primary.color);
-        display_battle_log_message();
     }
     if (_primary.leader != "") {
         add_battle_log_message(_primary.leader, _primary.color);
-        display_battle_log_message();
     }
 }
 
@@ -834,11 +823,9 @@ function combat_tally_flush() {
     var _t = obj_ncombat.ctally_target;
     if (array_length(obj_ncombat.ctally_injure) > 0) {
         add_battle_log_message($"Fire from {combat_subject_join(obj_ncombat.ctally_injure)} wounded the {_t} but didn't bring it down.", eMSG_COLOR.WHITE);
-        display_battle_log_message();
     }
     if (array_length(obj_ncombat.ctally_bounce) > 0) {
         add_battle_log_message($"Fire from {combat_subject_join(obj_ncombat.ctally_bounce)} cannot penetrate the {_t}'s armour.", eMSG_COLOR.WHITE);
-        display_battle_log_message();
     }
     obj_ncombat.ctally_target = undefined;
     obj_ncombat.ctally_bounce = [];
