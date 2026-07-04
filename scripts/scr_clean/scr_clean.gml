@@ -75,9 +75,19 @@ function compress_enemy_array(_target_column) {
 /// @description Destroys the column if it's empty
 /// @param {id.Instance} _target_column - The column instance to clean up
 function destroy_empty_column(_target_column) {
-    // Destroy empty non-player columns to conserve memory and processing
+    // Destroy empty non-player columns to conserve memory and processing.
     with (_target_column) {
-        if ((men + veh + medi == 0) && (owner != 1)) {
+        // Count living models straight from dudes_num. men/veh/medi are only refreshed on the enemy's
+        // own alarm, so during the player's firing phase they're stale and would leave a wiped-out
+        // formation standing - which then keeps getting fired at and blocks "held fire" reporting.
+        var _alive = 0;
+        for (var r = 1; r < array_length(dudes_num); r++) {
+            // A rank chipped to 0 HP but still showing dudes_num is a dead "zombie" - don't count it.
+            if (dudes_num[r] > 0 && dudes_hp[r] > 0) {
+                _alive += dudes_num[r];
+            }
+        }
+        if ((_alive == 0) && (owner != 1)) {
             instance_destroy();
         }
     }
