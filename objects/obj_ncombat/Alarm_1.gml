@@ -29,6 +29,9 @@ var d5 = "";
 var d6 = "";
 var d7 = "";
 
+var _newline = "";
+var _newline_color = eMSG_COLOR.DEFAULT;
+
 var temp = scouts + tacticals + veterans + devastators + assaults + librarians;
 temp += techmarines + honors + dreadnoughts + terminators + captains;
 temp += standard_bearers + champions + important_dudes + chaplains + apothecaries;
@@ -154,8 +157,8 @@ if (string_count("_attack", battle_special) > 0) {
     if (string_count("stalker", battle_special) > 0) {
         p1 += "the tunnel begins to shake and a massive Tomb Stalker scuttles into your midst.";
     }
-    newline = p1;
-    scr_newtext();
+    _newline = p1;
+    combat_log.push(_newline, _newline_color);
     exit;
 }
 
@@ -367,25 +370,25 @@ if (dreadnoughts + predators + land_raiders > 3) {
 // If less than three spell out the individual vehicles
 
 if (battle_special == "space_hulk") {
-    newline = p1 + p2;
-    scr_newtext();
+    _newline = p1 + p2;
+    combat_log.push(_newline, _newline_color);
     if (a1 != "") {
-        newline = a1;
-        scr_newtext();
+        _newline = a1;
+        combat_log.push(_newline, _newline_color);
     }
     if (hulk_forces > 0) {
-        newline = "There are " + string(hulk_forces) + " or so blips.";
-        scr_newtext();
+        _newline = "There are " + string(hulk_forces) + " or so blips.";
+        combat_log.push(_newline, _newline_color);
     }
 
     exit;
 }
 if (!dropping) {
-    newline = p1 + p2 + p3 + p4 + p5 + p6;
-    scr_newtext();
+    _newline = p1 + p2 + p3 + p4 + p5 + p6;
+    combat_log.push(_newline, _newline_color);
     if (a1 != "") {
-        newline = a1;
-        scr_newtext();
+        _newline = a1;
+        combat_log.push(_newline, _newline_color);
     }
 }
 
@@ -399,22 +402,22 @@ if ((dropping) && (battle_special != "space_hulk")) {
 }
 
 if ((battle_special == "ruins") || (battle_special == "ruins_eldar")) {
-    newline = "The enemy forces are made up of " + string(enemy_dudes);
+    _newline = "The enemy forces are made up of " + string(enemy_dudes);
 
     if (enemy == eFACTION.ELDAR) {
-        newline += " Craftworld Eldar.";
+        _newline += " Craftworld Eldar.";
     }
     if (enemy == eFACTION.CHAOS && threat != 7) {
-        newline += " Cultists and Mutants.";
+        _newline += " Cultists and Mutants.";
     }
     if (enemy == eFACTION.HERETICS) {
-        newline += " Chaos Space Marines.";
+        _newline += " Chaos Space Marines.";
     }
     if (enemy == eFACTION.CHAOS && threat == 7) {
-        newline += " Daemons.";
+        _newline += " Daemons.";
     }
 
-    scr_newtext();
+    combat_log.push(_newline, _newline_color);
     exit;
 }
 
@@ -518,72 +521,72 @@ if ((enemy == eFACTION.NECRONS) && (dropping == 0)) {
 }
 
 if (!dropping) {
-    newline = p1 + p2 + p3 + p4 + p5 + p6;
-    scr_newtext();
+    _newline = p1 + p2 + p3 + p4 + p5 + p6;
+    combat_log.push(_newline, _newline_color);
     if (a1 != "") {
-        newline = a1;
-        scr_newtext();
+        _newline = a1;
+        combat_log.push(_newline, _newline_color);
     }
     if (p8 != "") {
-        newline = p8;
-        scr_newtext();
+        _newline = p8;
+        combat_log.push(_newline, _newline_color);
     }
 }
 
 if (dropping) {
-    newline = d1 + p1;
-    scr_newtext();
+    _newline = d1 + p1;
+    combat_log.push(_newline, _newline_color);
     if (lyman == 0) {
         d7 = "After a brief descent all of the drop-pods smash down, followed quickly by your marines pouring free.  Their ranks are made up of ";
     }
     if (lyman == 1) {
         d7 = "After a brief descent all of the drop-pods smash down.  Your marines exit the vehicles, shaking off their vertigo and nausea with varying degrees of success.  Their ranks are made up of ";
     }
-    newline = d7 + d2 + d3 + d4 + d5 + d6;
-    scr_newtext();
+    _newline = d7 + d2 + d3 + d4 + d5 + d6;
+    combat_log.push(_newline, _newline_color);
     if (a1 != "") {
-        newline = a1;
-        scr_newtext();
+        _newline = a1;
+        combat_log.push(_newline, _newline_color);
     }
     if (p8 != "") {
-        newline = p8;
-        scr_newtext();
+        _newline = p8;
+        combat_log.push(_newline, _newline_color);
     }
 }
 
 if ((occulobe == 1) && (battle_special != "space_hulk")) {
     if ((time == 5) || (time == 6)) {
-        newline = "The morning light of dawn is blinding your marines!";
-        newline_color = "red";
-        scr_newtext();
+        _newline = "The morning light of dawn is blinding your marines!";
+        _newline_color = eMSG_COLOR.RED;
+        combat_log.push(_newline, _newline_color);
     }
 }
 
 if ((fortified > 1) && !dropping && !(enemy == eFACTION.CHAOS && threat == 7)) {
     if (fortified == 2) {
-        newline = "An Aegis Defense Line protects your forces.";
+        _newline = "An Aegis Defense Line protects your forces.";
     }
     if (fortified == 3) {
-        newline = "Thick plasteel walls protect your forces.";
+        _newline = "Thick plasteel walls protect your forces.";
     }
     if (fortified == 4) {
-        newline = "A series of thick plasteel walls protect your forces.";
+        _newline = "A series of thick plasteel walls protect your forces.";
     }
     if (fortified >= 5) {
-        newline = "A massive plasteel bastion protects your forces.";
+        _newline = "A massive plasteel bastion protects your forces.";
     }
 
     if ((player_defenses > 0) && (player_silos > 0)) {
-        newline += "  The front of your Monastery also boasts " + string(player_defenses) + " Weapon Emplacements and " + string(player_silos) + " Missile Silos.";
+        _newline += "  The front of your Monastery also boasts " + string(player_defenses) + " Weapon Emplacements and " + string(player_silos) + " Missile Silos.";
     }
     if ((player_defenses == 0) && (player_silos > 0)) {
-        newline += "  Your Monastery also boasts " + string(player_silos) + " Missile Silos.";
+        _newline += "  Your Monastery also boasts " + string(player_silos) + " Missile Silos.";
     }
     if ((player_defenses > 0) && (player_silos == 0)) {
-        newline += "  The front of your Monastery also boasts " + string(player_defenses) + " Weapon Emplacements.";
+        _newline += "  The front of your Monastery also boasts " + string(player_defenses) + " Weapon Emplacements.";
     }
 
-    scr_newtext();
+    combat_log.push(_newline, _newline_color);
 }
 
 // Check for battlecry here
@@ -661,14 +664,14 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && !dropp
             p4 = "The sound is deafening as the " + string(global.chapter_name) + " shout in unison-";
         }
         p5 = "''UNTO THE ANVIL OF WAR!''";
-        newline = p1 + p2;
-        scr_newtext();
-        newline = p3;
-        scr_newtext();
-        newline = p4;
-        scr_newtext();
-        newline = p5;
-        scr_newtext();
+        _newline = p1 + p2;
+        combat_log.push(_newline, _newline_color);
+        _newline = p3;
+        combat_log.push(_newline, _newline_color);
+        _newline = p4;
+        combat_log.push(_newline, _newline_color);
+        _newline = p5;
+        combat_log.push(_newline, _newline_color);
     }
     if (obj_ini.battle_cry == "...") {
         standard_cry = 1;
@@ -705,14 +708,14 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && !dropp
             p4 = "The fluidity is astounding as the " + string(global.chapter_name) + " move seamlessly into position ready for battle-";
         }
         p5 = "''They stand ready to engage the enemy''";
-        newline = p1 + p2;
-        scr_newtext();
-        newline = p3;
-        scr_newtext();
-        newline = p4;
-        scr_newtext();
-        newline = p5;
-        scr_newtext();
+        _newline = p1 + p2;
+        combat_log.push(_newline, _newline_color);
+        _newline = p3;
+        combat_log.push(_newline, _newline_color);
+        _newline = p4;
+        combat_log.push(_newline, _newline_color);
+        _newline = p5;
+        combat_log.push(_newline, _newline_color);
     }
 
     if ((global.chapter_name == "Iron Warriors") && (global.custom == eCHAPTER_TYPE.PREMADE)) {
@@ -762,14 +765,14 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && !dropp
             p4 = "The sound is deafening as the " + string(global.chapter_name) + " shout in unison-";
         }
         p5 = "''IRON WITHOUT!''";
-        newline = p1 + p2;
-        scr_newtext();
-        newline = p3;
-        scr_newtext();
-        newline = p4;
-        scr_newtext();
-        newline = p5;
-        scr_newtext();
+        _newline = p1 + p2;
+        combat_log.push(_newline, _newline_color);
+        _newline = p3;
+        combat_log.push(_newline, _newline_color);
+        _newline = p4;
+        combat_log.push(_newline, _newline_color);
+        _newline = p5;
+        combat_log.push(_newline, _newline_color);
     }
 
     if (standard_cry == 0) {
@@ -827,17 +830,17 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && !dropp
         if ((temp > 800) && (rand <= 2)) {
             p4 = "The sound is deafening as the " + string(global.chapter_name) + " return the cry and magnify it a thousand times.";
         }
-        newline = p1 + p2;
-        scr_newtext();
-        newline = p3;
-        scr_newtext();
-        newline = p4;
-        scr_newtext();
+        _newline = p1 + p2;
+        combat_log.push(_newline, _newline_color);
+        _newline = p3;
+        combat_log.push(_newline, _newline_color);
+        _newline = p4;
+        combat_log.push(_newline, _newline_color);
     }
 }
 
 var line_break = "------------------------------------------------------------------------------";
-newline = line_break;
-scr_newtext();
-newline = line_break;
-scr_newtext();
+_newline = line_break;
+combat_log.push(_newline, _newline_color);
+_newline = line_break;
+combat_log.push(_newline, _newline_color);

@@ -15,6 +15,9 @@
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
 #macro LARGE_PLANET_MOD 1000000000 // Population threshold for large planet classification
 
+// Ground combat message log: per-stage frame timeout before force-advancing.
+#macro COMBAT_STAGE_TIMEOUT_FRAMES 1200
+
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
 

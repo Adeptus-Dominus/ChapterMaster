@@ -593,7 +593,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.5.1065",
+    "IDEVersion":"2026.0.0.16",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -715,6 +715,7 @@
     {"id":{"name":"Armamentarium","path":"scripts/Armamentarium/Armamentarium.yy",},},
     {"id":{"name":"ColourItem","path":"scripts/ColourItem/ColourItem.yy",},},
     {"id":{"name":"ColourPicker","path":"scripts/ColourPicker/ColourPicker.yy",},},
+    {"id":{"name":"CombatLog","path":"scripts/CombatLog/CombatLog.yy",},},
     {"id":{"name":"DebugView","path":"scripts/DebugView/DebugView.yy",},},
     {"id":{"name":"DiploBasicNodes","path":"scripts/DiploBasicNodes/DiploBasicNodes.yy",},},
     {"id":{"name":"DiploCommonComponents","path":"scripts/DiploCommonComponents/DiploCommonComponents.yy",},},
@@ -840,8 +841,6 @@
     {"id":{"name":"scr_khornate_fleet_functions","path":"scripts/scr_khornate_fleet_functions/scr_khornate_fleet_functions.yy",},},
     {"id":{"name":"scr_kill_unit","path":"scripts/scr_kill_unit/scr_kill_unit.yy",},},
     {"id":{"name":"scr_librarium","path":"scripts/scr_librarium/scr_librarium.yy",},},
-    {"id":{"name":"scr_lines_increase","path":"scripts/scr_lines_increase/scr_lines_increase.yy",},},
-    {"id":{"name":"scr_lines","path":"scripts/scr_lines/scr_lines.yy",},},
     {"id":{"name":"scr_livery_setup","path":"scripts/scr_livery_setup/scr_livery_setup.yy",},},
     {"id":{"name":"scr_load_all","path":"scripts/scr_load_all/scr_load_all.yy",},},
     {"id":{"name":"scr_load_controller","path":"scripts/scr_load_controller/scr_load_controller.yy",},},
@@ -863,7 +862,6 @@
     {"id":{"name":"scr_move_unit_info","path":"scripts/scr_move_unit_info/scr_move_unit_info.yy",},},
     {"id":{"name":"scr_music","path":"scripts/scr_music/scr_music.yy",},},
     {"id":{"name":"scr_necron_tombs","path":"scripts/scr_necron_tombs/scr_necron_tombs.yy",},},
-    {"id":{"name":"scr_newtext","path":"scripts/scr_newtext/scr_newtext.yy",},},
     {"id":{"name":"scr_ork_fleet_functions","path":"scripts/scr_ork_fleet_functions/scr_ork_fleet_functions.yy",},},
     {"id":{"name":"scr_ork_planet_functions","path":"scripts/scr_ork_planet_functions/scr_ork_planet_functions.yy",},},
     {"id":{"name":"scr_pen_And_paper","path":"scripts/scr_pen_And_paper/scr_pen_And_paper.yy",},},

@@ -72,6 +72,10 @@ defeat = 0;
 defeat_message = 0;
 fugg = 0;
 fugg2 = 0;
+// Hard-timeout counters for stages 2/4. Unlike fugg/fugg2 these are NOT reset by the 60-frame
+// status poll in Step, so they keep accumulating during a stall and the anti-hang cap can fire.
+stage_elapsed = 0;
+stage_elapsed2 = 0;
 battle_over = 0;
 done = 0;
 
@@ -133,22 +137,11 @@ enemy_forces = 0;
 enemy_max = 0;
 hulk_forces = 0;
 
-messages = 0;
-messages_to_show = 24;
-messages_shown = 0;
-largest = 0;
-priority = 0;
-random_messages = 0;
 dead_enemies = 0;
 
 units_lost_counts = {};
 vehicles_lost_counts = {};
 
-lines = array_create(70, "");
-lines_color = array_create(70, "");
-message = array_create(70, "");
-message_sz = array_create(70, 0);
-message_priority = array_create(70, 0);
 dead_jim = array_create(70, "");
 dead_ene = array_create(70, "");
 dead_ene_n = array_create(70, 0);
@@ -178,9 +171,13 @@ final_command_deaths = 0;
 vehicle_deaths = 0;
 casualties = 0;
 dead_jims = 0;
-newline = "";
-newline_color = "";
-liness = 0;
+
+combat_log = new CombatLog(id);
+combat_log.log_font = fnt_aldrich_12;
+ctally_target = undefined;
+ctally_bounce = [];
+ctally_injure = [];
+
 world_size = 0;
 
 timer = 0;

@@ -51,7 +51,25 @@ try {
     }
 
     if (instance_exists(obj_enunit)) {
+        obj_ncombat.ctally_target = undefined;
+        obj_ncombat.ctally_bounce = [];
+        obj_ncombat.ctally_injure = [];
         for (var i = 0; i < array_length(wep); i++) {
+            // Enemies wiped before every weapon got to fire (e.g. spill-over cleared the line).
+            // Report who held fire and stop, rather than swinging at empty air.
+            if (!instance_exists(obj_enunit)) {
+                var _held_fire = [];
+                for (var hf = i; hf < array_length(wep); hf++) {
+                    // Only ranged weapons "hold fire"; melee (range 1) never shoots, so skip it.
+                    // Mirror the firing ammo gate (ammo != 0) so out-of-ammo weapons that could not
+                    // have fired aren't reported as having held fire.
+                    if (wep[hf] != "" && wep_num[hf] > 0 && range[hf] > 1 && ammo[hf] != 0) {
+                        array_push(_held_fire, wep[hf]);
+                    }
+                }
+                report_held_fire(_held_fire);
+                break;
+            }
             if (wep[i] == "") {
                 continue;
             }
@@ -243,17 +261,49 @@ try {
                 }
             }
         }
+    } else {
+        // The field was already clear when this block's turn came up - its whole arsenal holds fire.
+        var _skipped_fire = [];
+        for (var s = 0; s < array_length(wep); s++) {
+            // Only ranged weapons "hold fire"; melee (range 1) never shoots, so skip it.
+            // Mirror the firing ammo gate (ammo != 0) so out-of-ammo weapons that could not have
+            // fired aren't reported as having held fire.
+            if (wep[s] != "" && wep_num[s] > 0 && range[s] > 1 && ammo[s] != 0) {
+                array_push(_skipped_fire, wep[s]);
+            }
+        }
+        report_held_fire(_skipped_fire);
     }
+
+    combat_tally_flush();
 
     instance_activate_object(obj_enunit);
 
+    // Safety net: drop empty/zombie formations the firing loop never reached, so a lingering corpse
+    // can't keep the battle alive.
+    with (obj_enunit) {
+        var _alive = 0;
+        for (var _rr = 1; _rr < array_length(dudes_num); _rr++) {
+            if (dudes_num[_rr] > 0 && dudes_hp[_rr] > 0) {
+                _alive += dudes_num[_rr];
+            }
+        }
+        if ((_alive == 0) && (owner != 1)) {
+            instance_destroy();
+        }
+    }
+
     if (instance_exists(obj_enunit)) {
+        // Accumulate this formation's attack casts, then emit one summary line per power instead
+        // of one line per Librarian (see flush_psychic_summary in scr_powers).
+        var _psy_log = {};
         for (var i = 0; i < array_length(unit_struct); i++) {
             if (marine_dead[i] == 0 && marine_casting[i] == true) {
                 var caster_id = i;
-                scr_powers(caster_id);
+                scr_powers(caster_id, _psy_log);
             }
         }
+        flush_psychic_summary(_psy_log);
     }
 }
 catch (_exception) {

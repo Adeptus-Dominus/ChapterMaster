@@ -1,6 +1,5 @@
 // Final Screen
-var part1 = "", part2 = "", part3 = "", part4 = "", part9 = "";
-var part5 = "", part6 = "", part7 = "", part8 = "", part10 = "";
+var part10 = "";
 battle_over = 1;
 
 alarm[8] = 999999;
@@ -109,11 +108,13 @@ with (obj_pnunit) {
     after_battle_part2();
 }
 
+var _newline = "";
+
 var _total_deaths = final_marine_deaths + final_command_deaths;
 var _total_injured = _total_deaths + injured + units_saved_count;
 if (_total_injured > 0) {
-    newline = $"{string_plural_count("unit", _total_injured)} {smart_verb("was", _total_injured)} critically injured.";
-    scr_newtext();
+    _newline = $"{string_plural_count("unit", _total_injured)} {smart_verb("was", _total_injured)} critically injured.";
+    combat_log.push(_newline, eMSG_COLOR.DEFAULT);
 
     if (units_saved_count > 0) {
         var _units_saved_string = "";
@@ -126,14 +127,13 @@ if (_total_injured > 0) {
             _units_saved_string += smart_delimeter_sign(_unit_roles, i, false);
         }
 
-        newline = $"{units_saved_count}x {smart_verb("was", units_saved_count)} saved by the {string_plural(roles[eROLE.APOTHECARY], apothecaries_alive)}. ({_units_saved_string})";
-        scr_newtext();
+        _newline = $"{units_saved_count}x {smart_verb("was", units_saved_count)} saved by the {string_plural(roles[eROLE.APOTHECARY], apothecaries_alive)}. ({_units_saved_string})";
+        combat_log.push(_newline, eMSG_COLOR.DEFAULT);
     }
 
     if (injured > 0) {
-        newline = $"{injured}x survived thanks to the Sus-an Membrane.";
-        newline_color = "red";
-        scr_newtext();
+        _newline = $"{injured}x survived thanks to the Sus-an Membrane.";
+        combat_log.push(_newline, eMSG_COLOR.DEFAULT);
     }
 
     if (_total_deaths > 0) {
@@ -145,13 +145,11 @@ if (_total_injured > 0) {
             _units_lost_string += $"{string_plural_count(_unit_role, _lost_count)}";
             _units_lost_string += smart_delimeter_sign(_unit_roles, i, false);
         }
-        newline += $"{_total_deaths} units succumbed to their wounds! ({_units_lost_string})";
-        newline_color = "red";
-        scr_newtext();
+        _newline = $"{_total_deaths} units succumbed to their wounds! ({_units_lost_string})";
+        combat_log.push(_newline, eMSG_COLOR.RED);
     }
 
-    newline = " ";
-    scr_newtext();
+    combat_log.push();
 }
 
 if (ground_mission) {
@@ -162,23 +160,21 @@ if (ground_mission) {
 
 if (seed_lost > 0) {
     if (obj_ini.doomed) {
-        newline = $"Chapter mutation prevents retrieving gene-seed. {seed_lost} gene-seed lost.";
-        scr_newtext();
+        _newline = $"Chapter mutation prevents retrieving gene-seed. {seed_lost} gene-seed lost.";
     } else if (!apothecaries_alive) {
-        newline = $"No able-bodied {roles[eROLE.APOTHECARY]}. {seed_lost} gene-seed lost.";
-        scr_newtext();
+        _newline = $"No able-bodied {roles[eROLE.APOTHECARY]}. {seed_lost} gene-seed lost.";
     } else {
         seed_saved = min(seed_harvestable, apothecaries_alive * 40);
-        newline = $"{seed_saved} gene-seed was recovered; {seed_lost - seed_harvestable} was lost due damage; {seed_harvestable - seed_saved} was left to rot;";
-        scr_newtext();
+        _newline = $"{seed_saved} gene-seed was recovered; {seed_lost - seed_harvestable} was lost due damage; {seed_harvestable - seed_saved} was left to rot;";
     }
+
+    combat_log.push(_newline, eMSG_COLOR.RED);
 
     if (seed_saved > 0) {
         obj_controller.gene_seed += seed_saved;
     }
 
-    newline = " ";
-    scr_newtext();
+    combat_log.push();
 }
 
 if (red_thirst > 2) {
@@ -191,20 +187,15 @@ if (red_thirst > 2) {
         voodoo = string(red_thirst - 2) + " Battle Brothers lost to the Red Thirst.";
     }
 
-    newline = voodoo;
-    newline_color = "red";
-    scr_newtext();
-    newline = " ";
-    scr_newtext();
+    _newline = voodoo;
+    combat_log.push(_newline, eMSG_COLOR.RED);
+    combat_log.push();
 }
-
-newline = " ";
-scr_newtext();
 
 var _total_damaged_count = vehicle_deaths + vehicles_saved_count;
 if (_total_damaged_count > 0) {
-    newline = $"{string_plural_count("vehicle", _total_damaged_count)} {smart_verb("was", _total_damaged_count)} disabled during battle.";
-    scr_newtext();
+    _newline = $"{string_plural_count("vehicle", _total_damaged_count)} {smart_verb("was", _total_damaged_count)} disabled during battle.";
+    combat_log.push(_newline, eMSG_COLOR.DEFAULT);
 
     if (vehicles_saved_count > 0) {
         var _vehicles_saved_string = "";
@@ -217,8 +208,8 @@ if (_total_damaged_count > 0) {
             _vehicles_saved_string += smart_delimeter_sign(_vehicle_types, i, false);
         }
 
-        newline = $"{string_plural(roles[eROLE.TECHMARINE], techmarines_alive)} {smart_verb("was", techmarines_alive)} able to restore {vehicles_saved_count}. ({_vehicles_saved_string})";
-        scr_newtext();
+        _newline = $"{string_plural(roles[eROLE.TECHMARINE], techmarines_alive)} {smart_verb("was", techmarines_alive)} able to restore {vehicles_saved_count}. ({_vehicles_saved_string})";
+        combat_log.push(_newline, eMSG_COLOR.DEFAULT);
     }
 
     if (vehicle_deaths > 0) {
@@ -232,33 +223,28 @@ if (_total_damaged_count > 0) {
             _vehicles_lost_string += smart_delimeter_sign(_vehicle_types, i, false);
         }
 
-        newline += $"{vehicle_deaths} {smart_verb("was", vehicle_deaths)} lost forever. ({_vehicles_lost_string})";
-        newline_color = "red";
-        scr_newtext();
+        _newline = $"{vehicle_deaths} {smart_verb("was", vehicle_deaths)} lost forever. ({_vehicles_lost_string})";
+        combat_log.push(_newline, eMSG_COLOR.RED);
     }
 
-    newline = " ";
-    scr_newtext();
+    combat_log.push();
 }
 
 if (post_equipment_lost.item_count()) {
-    part6 = "Equipment Lost: ";
+    var _equip_text = "Equipment Lost: ";
 
-    part7 += post_equipment_lost.item_description_string();
+    _equip_text += post_equipment_lost.item_description_string();
     if (ground_mission) {
-        part7 += " Some may be recoverable.";
+        _equip_text += " Some may be recoverable.";
     }
-    newline = part6;
-    scr_newtext();
-    newline = part7;
-    scr_newtext();
-    newline = " ";
-    scr_newtext();
+    combat_log.push(_equip_text, eMSG_COLOR.RED);
+    combat_log.push();
 }
 
 if (post_equipment_recovered.item_count()) {
-    newline = $"Equipment Recovered: {post_equipment_lost.item_description_string()}";
-    scr_newtext();
+    var _equip_text = $"Equipment Recovered: {post_equipment_recovered.item_description_string()}";
+    combat_log.push(_equip_text, eMSG_COLOR.DEFAULT);
+    combat_log.push();
 }
 
 if (total_battle_exp_gain > 0) {
@@ -266,23 +252,22 @@ if (total_battle_exp_gain > 0) {
         assemble_alive_units();
     }
     average_battle_exp_gain = distribute_experience(end_alive_units, total_battle_exp_gain); // Due to cool alarm timer shitshow, I couldn't think of anything but to put it here.
-    newline = $"Each marine gained {average_battle_exp_gain} experience, reduced by their total experience.";
-    scr_newtext();
+    _newline = $"Each marine gained {average_battle_exp_gain} experience, reduced by their total experience.";
+    combat_log.push(_newline, eMSG_COLOR.DEFAULT);
 
     var _upgraded_librarians_count = array_length(upgraded_librarians);
     if (_upgraded_librarians_count > 0) {
         for (var i = 0; i < _upgraded_librarians_count; i++) {
             if (i > 0) {
-                newline += ", ";
+                _newline += ", ";
             }
-            newline += $"{upgraded_librarians[i].name_role()}";
+            _newline += $"{upgraded_librarians[i].name_role()}";
         }
-        newline += " learned new psychic powers after gaining enough experience.";
-        scr_newtext();
+        _newline += " learned new psychic powers after gaining enough experience.";
+        combat_log.push(_newline, eMSG_COLOR.DEFAULT);
     }
 
-    newline = " ";
-    scr_newtext();
+    combat_log.push();
 }
 
 if (ground_mission) {
@@ -291,12 +276,8 @@ if (ground_mission) {
 
 if (slime > 0) {
     var slime_string = $"Faulty Mucranoid and other afflictions have caused damage to the equipment. {slime} Forge Points will be allocated for repairs.";
-    newline = slime_string;
-    newline_color = "red";
-    scr_newtext();
-
-    newline = " ";
-    scr_newtext();
+    combat_log.push(slime_string, eMSG_COLOR.RED);
+    combat_log.push();
 }
 
 instance_activate_object(obj_star);
@@ -334,12 +315,10 @@ if (battle_special == "study2b") {
 }
 
 if ((fortified > 0) && (!instance_exists(obj_nfort)) && (reduce_fortification == true)) {
-    part9 = $"Fortification level of {p_data.name()}";
+    var _fortification_text = $"Fortification level of {p_data.name()}";
+    _fortification_text += $" has decreased to {fortified - 1} ({fortified}-1)";
 
-    part9 += $" has decreased to {fortified - 1} ({fortified}-1)";
-
-    newline = part9;
-    scr_newtext();
+    combat_log.push(_fortification_text, eMSG_COLOR.DEFAULT);
     battle_object.p_fortified[battle_id] -= 1;
 }
 
@@ -353,11 +332,8 @@ if ((!defeat) && (battle_special == "space_hulk")) {
     part10 = "Space Hulk Exploration at ";
     var ex = min(100, 100 - ((enemy_power - 1) * 20));
     part10 += string(ex) + "%";
-    newline = part10;
-    if (ex == 100) {
-        newline_color = "red";
-    }
-    scr_newtext();
+    _newline = part10;
+    combat_log.push(_newline, eMSG_COLOR.YELLOW);
 
     if (dicey <= (enemy_power * 10)) {
         loot = choose(1, 2, 3, 4);
@@ -366,25 +342,23 @@ if ((!defeat) && (battle_special == "space_hulk")) {
         }
         hulk_treasure = loot;
         if (loot > 1) {
-            newline = "Valuable items recovered.";
+            _newline = "Valuable items recovered.";
         }
         if (loot == 1) {
-            newline = "Resources have been recovered.";
+            _newline = "Resources have been recovered.";
         }
-        newline_color = "yellow";
-        scr_newtext();
+        combat_log.push(_newline, eMSG_COLOR.YELLOW);
     }
 }
 
 if (string_count("ruins", battle_special) > 0) {
     if (defeat == 0) {
-        newline = "Ancient Ruins cleared.";
+        _newline = "Ancient Ruins cleared.";
     }
     if (defeat == 1) {
-        newline = "Failed to clear Ancient Ruins.";
+        _newline = "Failed to clear Ancient Ruins.";
     }
-    newline_color = "yellow";
-    scr_newtext();
+    combat_log.push(_newline, eMSG_COLOR.YELLOW);
 }
 
 var _reduce_power = true;
@@ -558,11 +532,11 @@ if (defeat == 0 && _reduce_power) {
         } else {
             part10 += $" were reduced to {new_power} after this battle. Previous power: {enemy_power}. Reduction: {power_reduction}.";
         }
-        newline = part10;
-        scr_newtext();
+        _newline = part10;
+        combat_log.push(_newline, eMSG_COLOR.DEFAULT);
         part10 = $"Received {requisition_reward} requisition points as a reward for slaying enemies of the Imperium.";
-        newline = part10;
-        scr_newtext();
+        _newline = part10;
+        combat_log.push(_newline, eMSG_COLOR.DEFAULT);
 
         if ((new_power <= 0) && (enemy_power > 0)) {
             battle_object.p_raided[battle_id] = 1;
@@ -571,38 +545,36 @@ if (defeat == 0 && _reduce_power) {
     if (enemy == eFACTION.IMPERIUM) {
         part10 += $" Imperial Guard Forces on {p_data.name()}";
         part10 += " were reduced to " + string(battle_object.p_guardsmen[battle_id]) + " (" + string(enemy_power) + "-" + string(threat) + ")";
-        newline = part10;
-        scr_newtext();
+        _newline = part10;
+        combat_log.push(_newline, eMSG_COLOR.DEFAULT);
     }
 
     if ((enemy == eFACTION.TAU) && (ethereal > 0) && (defeat == 0)) {
-        newline = "Tau Ethereal Captured";
-        newline_color = "yellow";
-        scr_newtext();
+        _newline = "Tau Ethereal Captured";
+        combat_log.push(_newline, eMSG_COLOR.YELLOW);
     }
 
     if (enemy == eFACTION.NECRONS && p_data.planet_forces[eFACTION.NECRONS] < 3 && awake_tomb_world(p_data.features) == 1) {
         if (plasma_bomb > 0) {
-            newline = "Plasma Bomb used to seal the Necron Tomb.";
-            newline_color = "yellow";
-            scr_newtext();
+            _newline = "Plasma Bomb used to seal the Necron Tomb.";
+            combat_log.push(_newline, eMSG_COLOR.YELLOW);
             seal_tomb_world(p_data.features);
         } else if (plasma_bomb <= 0) {
             p_data.edit_forces(enemy, 3);
             if (dropping) {
-                newline = "Deep Strike Ineffective; Plasma Bomb required";
+                _newline = "Deep Strike Ineffective; Plasma Bomb required";
             }
             if (!dropping) {
-                newline = "Attack Ineffective; Plasma Bomb required";
+                _newline = "Attack Ineffective; Plasma Bomb required";
             }
-            scr_newtext();
+            combat_log.push(_newline, eMSG_COLOR.RED);
         }
     }
 }
 
 if ((defeat == 0) && (enemy == eFACTION.TYRANIDS) && (battle_special == "tyranid_org")) {
-    newline = $"{string_plural_count("Gaunt organism", captured_gaunt)} have been captured.";
-    scr_newtext();
+    _newline = $"{string_plural_count("Gaunt organism", captured_gaunt)} have been captured.";
+    combat_log.push(_newline, eMSG_COLOR.YELLOW);
 
     if (captured_gaunt > 0) {
         var why = 0, thatta = 0;
@@ -627,20 +599,19 @@ if ((defeat == 0) && (enemy == eFACTION.TYRANIDS) && (battle_special == "tyranid
     instance_deactivate_object(obj_star);
 }
 
-newline = line_break;
-scr_newtext();
-newline = line_break;
-scr_newtext();
+_newline = line_break;
+combat_log.push(_newline, eMSG_COLOR.DEFAULT);
+_newline = line_break;
+combat_log.push(_newline, eMSG_COLOR.DEFAULT);
 
 if ((leader || ((battle_special == "ChaosWarband") && (!obj_controller.faction_defeated[10]))) && (!defeat)) {
     var nep = false;
-    newline = "The enemy Leader has been killed!";
-    newline_color = "yellow";
-    scr_newtext();
-    newline = line_break;
-    scr_newtext();
-    newline = line_break;
-    scr_newtext();
+    _newline = "The enemy Leader has been killed!";
+    combat_log.push(_newline, eMSG_COLOR.YELLOW);
+    _newline = line_break;
+    combat_log.push(_newline, eMSG_COLOR.DEFAULT);
+    _newline = line_break;
+    combat_log.push(_newline, eMSG_COLOR.DEFAULT);
     instance_activate_object(obj_event_log);
     if (enemy == eFACTION.ECCLESIARCHY) {
         scr_event_log("", "Enemy Leader Assassinated: Ecclesiarchy Prioress");
@@ -701,35 +672,33 @@ if (obj_ini.omophagea) {
         if (!thirsty && !really_thirsty) {
             var ran;
             ran = choose(1, 2);
-            newline = "One of your marines slowly makes his way towards the fallen enemies, as if in a spell.  Once close enough the helmet is removed and he begins shoveling parts of their carcasses into his mouth.";
-            newline = "Two marines are sharing a quick discussion, and analysis of the battle, when one of the two suddenly drops down and begins shoveling parts of enemy corpses into his mouth.";
-            newline += choose("  Bone snaps and pops.", "  Strange-colored blood squirts from between his teeth.", "  Veins and tendons squish wetly.");
+            _newline = "One of your marines slowly makes his way towards the fallen enemies, as if in a spell.  Once close enough the helmet is removed and he begins shoveling parts of their carcasses into his mouth.";
+            _newline = "Two marines are sharing a quick discussion, and analysis of the battle, when one of the two suddenly drops down and begins shoveling parts of enemy corpses into his mouth.";
+            _newline += choose("  Bone snaps and pops.", "  Strange-colored blood squirts from between his teeth.", "  Veins and tendons squish wetly.");
         }
         if ((thirsty > 0) && (really_thirsty == 0)) {
             var ran = choose(1, 2);
-            newline = "One of your Death Company marines slowly makes his way towards the fallen enemies, as if in a spell.  Once close enough the helmet is removed and he begins shoveling parts of their carcasses into his mouth.";
-            newline = "A marine is observing and communicating with a Death Company marine, to ensure they are responsive, when that Death Company marine drops down and suddenly begins shoveling parts of enemy corpses into his mouth.";
-            newline += choose("  Bone snaps and pops.", "  Strange-colored blood squirts from between his teeth.", "  Veins and tendons squish wetly.");
+            _newline = "One of your Death Company marines slowly makes his way towards the fallen enemies, as if in a spell.  Once close enough the helmet is removed and he begins shoveling parts of their carcasses into his mouth.";
+            _newline = "A marine is observing and communicating with a Death Company marine, to ensure they are responsive, when that Death Company marine drops down and suddenly begins shoveling parts of enemy corpses into his mouth.";
+            _newline += choose("  Bone snaps and pops.", "  Strange-colored blood squirts from between his teeth.", "  Veins and tendons squish wetly.");
         }
         if (really_thirsty > 0) {
-            newline = $"One of your Death Company {roles[6]} blitzes to the fallen enemy lines.  Massive mechanical hands begin to rend and smash at the fallen corpses, trying to squeeze their flesh and blood through the sarcophogi opening.";
+            _newline = $"One of your Death Company {roles[6]} blitzes to the fallen enemy lines.  Massive mechanical hands begin to rend and smash at the fallen corpses, trying to squeeze their flesh and blood through the sarcophogi opening.";
         }
 
-        newline += $"  Almost at once most of the present {global.chapter_name} follow suit, joining in and starting a massive feeding frenzy.  The sight is gruesome to behold.";
-        scr_newtext();
+        _newline += $"  Almost at once most of the present {global.chapter_name} follow suit, joining in and starting a massive feeding frenzy.  The sight is gruesome to behold.";
+        combat_log.push(_newline, eMSG_COLOR.RED);
 
         // check for pdf/guardsmen
         eatme = roll_dice_chapter(1, 100, "high");
         if ((eatme <= 10) && (allies > 0)) {
             obj_controller.disposition[2] -= 2;
             if (allies == 1) {
-                newline = "Local PDF have been eaten!";
-                newline_color = "red";
-                scr_newtext();
+                _newline = "Local PDF have been eaten!";
+                combat_log.push(_newline, eMSG_COLOR.RED);
             } else if (allies == 2) {
-                newline = "Local Guardsmen have been eaten!";
-                newline_color = "red";
-                scr_newtext();
+                _newline = "Local Guardsmen have been eaten!";
+                combat_log.push(_newline, eMSG_COLOR.RED);
             }
         }
 
@@ -762,13 +731,12 @@ if (obj_ini.omophagea) {
                 // if (string_count("Inqis",inquisitor_ship.trade_goods)>0) then show_message("B");
                 if (inquisitor_ship.inquisitor > 0) {
                     var inquis_name = obj_controller.inquisitor[inquisitor_ship.inquisitor];
-                    newline = $"Inquisitor {inquis_name} has been eaten!";
+                    _newline = $"Inquisitor {inquis_name} has been eaten!";
                     msg = $"Inquisitor {inquis_name}";
                     remove = obj_controller.inquisitor[inquisitor_ship.inquisitor];
                     scr_event_log("red", $"Your Astartes consume {msg}.");
                 }
-                newline_color = "red";
-                scr_newtext();
+                combat_log.push(_newline, eMSG_COLOR.RED);
                 if (obj_controller.inquisitor_type[remove] == "Ordo Hereticus") {
                     scr_loyalty("Inquisitor Killer", "+");
                 }
@@ -823,16 +791,15 @@ if (obj_ini.omophagea) {
 
 if ((inq_eated == false) && (sorcery_seen >= 2)) {
     scr_loyalty("Use of Sorcery", "+");
-    newline = "Inquisitor " + string(obj_controller.inquisitor[1]) + " witnessed your Chapter using sorcery.";
-    scr_event_log("green", string(newline));
-    scr_newtext();
+    _newline = "Inquisitor " + string(obj_controller.inquisitor[1]) + " witnessed your Chapter using sorcery.";
+    scr_event_log("green", string(_newline));
+    combat_log.push(_newline, eMSG_COLOR.RED);
 }
 
 if ((exterminatus > 0) && dropping) {
-    newline = "Exterminatus has been succesfully placed.";
-    newline_color = "yellow";
+    _newline = "Exterminatus has been succesfully placed.";
     endline = 0;
-    scr_newtext();
+    combat_log.push(_newline, eMSG_COLOR.YELLOW);
 }
 
 instance_activate_object(obj_star);
@@ -848,16 +815,15 @@ if ((obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) && (defeat == 1) && !droppin
         }
 
         if (obj_controller.und_gene_vaults == 0) {
-            newline = "Your Fortress Monastery has been raided.  " + string(obj_controller.gene_seed) + " Gene-Seed has been destroyed or stolen.";
+            _newline = "Your Fortress Monastery has been raided.  " + string(obj_controller.gene_seed) + " Gene-Seed has been destroyed or stolen.";
         }
         if (obj_controller.und_gene_vaults > 0) {
-            newline = "Your Fortress Monastery has been raided.  " + string(floor(obj_controller.gene_seed / 10)) + " Gene-Seed has been destroyed or stolen.";
+            _newline = "Your Fortress Monastery has been raided.  " + string(floor(obj_controller.gene_seed / 10)) + " Gene-Seed has been destroyed or stolen.";
         }
 
-        scr_event_log("red", newline, battle_object.name);
+        scr_event_log("red", _newline, battle_object.name);
         instance_activate_object(obj_event_log);
-        newline_color = "red";
-        scr_newtext();
+        combat_log.push(_newline, eMSG_COLOR.RED);
 
         var lasers_lost, defenses_lost, silos_lost;
         lasers_lost = 0;
@@ -885,32 +851,31 @@ if ((obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) && (defeat == 1) && !droppin
         }
 
         var percent = 0;
-        newline = "";
+        _newline = "";
         if (defenses_lost > 0) {
             percent = round((defenses_lost / player_defenses) * 100);
-            newline = string(defenses_lost) + " Weapon Emplacements have been lost (" + string(percent) + "%).";
+            _newline = string(defenses_lost) + " Weapon Emplacements have been lost (" + string(percent) + "%).";
         }
         if (silos_lost > 0) {
             percent = round((silos_lost / battle_object.p_silo[battle_id]) * 100);
             if (defenses_lost > 0) {
-                newline += "  ";
+                _newline += "  ";
             }
-            newline += string(silos_lost) + $" Missile Silos have been lost ({percent}%).";
+            _newline += string(silos_lost) + $" Missile Silos have been lost ({percent}%).";
         }
         if (lasers_lost > 0) {
             percent = round((lasers_lost / battle_object.p_lasers[battle_id]) * 100);
             if ((silos_lost > 0) || (defenses_lost > 0)) {
-                newline += "  ";
+                _newline += "  ";
             }
-            newline += string(lasers_lost) + " Defense Lasers have been lost (" + string(percent) + "%).";
+            _newline += string(lasers_lost) + " Defense Lasers have been lost (" + string(percent) + "%).";
         }
 
         battle_object.p_defenses[battle_id] -= defenses_lost;
         battle_object.p_silo[battle_id] -= silos_lost;
         battle_object.p_lasers[battle_id] -= lasers_lost;
         if (defenses_lost + silos_lost + lasers_lost > 0) {
-            newline_color = "red";
-            scr_newtext();
+            combat_log.push(_newline, eMSG_COLOR.RED);
         }
 
         endline = 0;
@@ -928,10 +893,10 @@ instance_deactivate_object(obj_star);
 instance_deactivate_object(obj_turn_end);
 
 if (endline == 0) {
-    newline = line_break;
-    scr_newtext();
-    newline = line_break;
-    scr_newtext();
+    _newline = line_break;
+    combat_log.push(_newline, eMSG_COLOR.DEFAULT);
+    _newline = line_break;
+    combat_log.push(_newline, eMSG_COLOR.DEFAULT);
 }
 
 if (defeat == 1) {
