@@ -667,7 +667,7 @@ function SearchConditions(data) constructor {
             array_push(checks_order, stat_valuate);
         }
         if (struct_exists(self, "job")) {
-            array_push(checks_order, oposite_switch);
+            array_push(checks_order, job_valuate);
         }
 
         if (allegiance != "") {
