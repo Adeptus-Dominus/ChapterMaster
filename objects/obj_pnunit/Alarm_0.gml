@@ -101,6 +101,12 @@ try {
                 }
                 enemy = instance_nearest(0, y, obj_enunit);
             }
+            // That destroy may have removed the last active enemy block, leaving the
+            // reacquire with noone; and reads on noone throw. Skip the weapon; the
+            // held-fire check at the top of the next iteration reports and stops.
+            if (!instance_exists(enemy)) {
+                continue;
+            }
 
             // Speed Force sweeps the whole field - bypass normal targeting/range.
             if (wep[i] == "Speed Force" || wep[i] == "Speed Force (Ranged)") {
@@ -354,7 +360,11 @@ try {
                     } // Fuck it, shoot at infantry
                 }
 
-                if ((enemy.veh == 0) && (enemy.medi > 0) && (once_only == 0)) {
+                // instance_exists guard: the vehicle swing above can destroy the block
+                // (emptied enemy formations are destroyed immediately), and reading a
+                // destroyed instance throws. The ranged chain above already carries the
+                // same guards between its sub-branches; the melee chain was missing them.
+                if (instance_exists(enemy) && (enemy.veh == 0) && (enemy.medi > 0) && (once_only == 0)) {
                     // Check for vehicles
                     var g = 0, good = 0;
 
@@ -372,7 +382,7 @@ try {
                     } // Fuck it, shoot at infantry
                 }
 
-                if ((ap == 0) && (once_only == 0)) {
+                if ((ap == 0) && (once_only == 0) && instance_exists(enemy)) {
                     // Check for men
                     var g = 0, good = 0;
 
