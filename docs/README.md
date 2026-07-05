@@ -16,27 +16,27 @@ The campaign layer has also been expanded with Auxilia recruitment through diplo
 
 This is an unofficial fan fork intended to preserve and expand the spirit of *Chapter Master* while pushing it toward a larger, more dynamic Imperial command experience.
 
-## The biggest concrete changes I would advertise are these:
+## The biggest concrete changes
 
-Imperial Guard / Auxilia system. You added real Guard-side content: Guardsmen, Guard Squads, Heavy Weapons Teams, and Guard Sergeants, with human base stats, Flak Armour, Lasguns, Bayonets, Heavy Bolters, Guard Chainswords, and Laspistols.
+_Imperial Guard / Auxilia system_. Added real Guard-side content: Guardsmen, Guard Squads, Heavy Weapons Teams, and Guard Sergeants, with human base stats, Flak Armour, Lasguns, Bayonets, Heavy Bolters, Guard Chainswords, and Laspistols.
 
-Diplomatic recruitment and attached armour. Sector Governor trade now raises Guardsmen directly at the homeworld, adds one Guard Sergeant per full squad, one Chimera per 200 Guardsmen, and one Heavy Weapons Team per 100 Guardsmen; Mechanicus trade can now provide Leman Russ tanks and Basilisks for the Auxilia company.
+_Diplomatic recruitment and attached armour_. Sector Governor trade now raises Guardsmen directly at the homeworld, adds one Guard Sergeant per full squad, one Chimera per 200 Guardsmen, and one Heavy Weapons Team per 100 Guardsmen; Mechanicus trade can now provide Leman Russ tanks and Basilisks for the Auxilia company.
 
-New Astra Militarum wargear and vehicles. You added or integrated Flak Armour, Lasguns, Hellguns, Earthshaker Cannons, Battle Cannons, Multi-Lasers, Chimeras, Leman Russ loadouts, and Basilisk artillery loadouts.
+_New Astra Militarum wargear and vehicles_. Added or integrated Flak Armour, Lasguns, Hellguns, Earthshaker Cannons, Battle Cannons, Multi-Lasers, Chimeras, Leman Russ loadouts, and Basilisk artillery loadouts.
+_
+Combat model overhaul._ Guard screens occupy forward columns, anti-tank weapons now have a dedicated target-preference threshold, volleys pierce armour walls by depth instead of passing through for free or vanishing, and Guardsmen split into capped lasgun stacks instead of forming one giant unrealistic volley.
 
-Combat model overhaul. Guard screens occupy forward columns, anti-tank weapons now have a dedicated target-preference threshold, volleys pierce armour walls by depth instead of passing through for free or vanishing, and Guardsmen split into capped lasgun stacks instead of forming one giant unrealistic volley.
+_Better targeting, armour, and casualty logic_. Enemy weapons now prefer vehicles only when their AP role justifies it, Guard screens can actually shield vehicles behind them, column piercing works on both sides, partial volleys scale damage correctly, stale casualty reports are cleared, and vehicle armour penetration was fixed so enemy anti-tank weapons can actually hurt vehicles.
 
-Better targeting, armour, and casualty logic. Enemy weapons now prefer vehicles only when their AP role justifies it, Guard screens can actually shield vehicles behind them, column piercing works on both sides, partial volleys scale damage correctly, stale casualty reports are cleared, and vehicle armour penetration was fixed so enemy anti-tank weapons can actually hurt vehicles.
+_Fleet, assault, and campaign-layer additions._ Ships now have per-turn ground-assault support counters, planets have local assault counters, new ship defaults include Guard-related capacity fields, and lost-in-the-Warp ships can return with damage, corruption, mutiny, Chaos capture, or destruction outcomes.
 
-Fleet, assault, and campaign-layer additions. Ships now have per-turn ground-assault support counters, planets have local assault counters, new ship defaults include Guard-related capacity fields, and lost-in-the-Warp ships can return with damage, corruption, mutiny, Chaos capture, or destruction outcomes.
+_Eldar campaign restoration and improvement_. Eldar are no longer only a hidden craftworld oddity:  added incursion/intel settings, craftworld reveal requirements, first-contact clues, and Eldar ship speed tuning.
 
-Eldar campaign improvements. Eldar are no longer only a hidden craftworld oddity: you added incursion/intel settings, craftworld reveal requirements, first-contact clues, and Eldar ship speed tuning.
-
-Management UI and quality-of-life. The management screen now recognizes an Auxilia company, includes richer unit profile UI/tooltips, and has buttons for squad view, profile, bio, and capture image.
+_Management UI and quality-of-life_. The management screen now recognizes an Auxilia company, includes richer unit profile UI/tooltips, and has buttons for squad view, profile, bio, and capture image.
 
 ## Compiling from source
 
-1. Install the **GameMaker** IDE matching your system (available on the [GameMaker website](https://releases.gamemaker.io/release-notes/2026/0) or [Steam](https://store.steampowered.com/app/1670460/GameMaker/)).
+1. Install the **GameMaker** IDE matching r system (available on the [GameMaker website](https://releases.gamemaker.io/release-notes/2026/0) or [Steam](https://store.steampowered.com/app/1670460/GameMaker/)).
 2. Clone or download the repository (find the green **<>Code** button and select **Download ZIP**).
 3. Find **ChapterMaster.yyp** in the downloaded folder and open it with **GameMaker**.
 4. Select the target platform in the IDE: **Windows, macOS, Ubuntu**.
@@ -45,7 +45,7 @@ Management UI and quality-of-life. The management screen now recognizes an Auxil
 
 ## Contributing
 
-**To contribute to this fork please contact me on Discord, hopefully we can work together. I take ALL input and suggestions in, even if you're not a coder. If there's somethin you wanna personally see in the game then please tell me.** https://discord.com/channels/714022226810372107/1520160266120204409
+**To contribute to this fork please contact me on Discord, hopefully we can work together. I take ALL input and suggestions in, even if 're not a coder. If there's somethin  wanna personally see in the game then please tell me.** https://discord.com/channels/714022226810372107/1520160266120204409
 Best bet is to ask about everything in our Discord, because things bellow are probably not very helpful at the moment.
 
 - [CONTRIBUTING.md](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CONTRIBUTING.md) (required read before any contribution)
