@@ -596,7 +596,9 @@ if (defeat == 0 && _reduce_power) {
             // This message was assigned but never posted (dead newline under the
             // legacy log too); posted properly on the rebuilt log.
             add_battle_log_message(newline, eMSG_COLOR.YELLOW);
-            combat_log.push(_newline, eMSG_COLOR.RED);
+            // A blended merge hunk also pushed the stale _newline here in red,
+            // re-posting the previous log line on every plasma-ineffective result;
+            // removed.
         }
     }
 }
@@ -825,10 +827,10 @@ if ((inq_eated == false) && (sorcery_seen >= 2)) {
 }
 
 if ((exterminatus > 0) && dropping) {
-    newline = "Exterminatus has been succesfully placed.";
-    newline_color = "yellow";
     endline = 0;
-    combat_log.push(_newline, eMSG_COLOR.YELLOW);
+    // Was a legacy newline/newline_color assignment beside a blended push of the
+    // stale _newline, so the wrong text posted; posts its own line now.
+    combat_log.push("Exterminatus has been succesfully placed.", eMSG_COLOR.YELLOW);
 }
 
 instance_activate_object(obj_star);

@@ -54,11 +54,13 @@ function drop_select_unit_selection() {
             formation_current = clamp(formation_current, 0, array_length(formation_possible) - 1);
             _formation_str = $"Formation: {obj_controller.bat_formation[formation_possible[formation_current]]}";
         }
-        formation.x1 = x2 - 40 - (string_width(_formation_str) + 4);
-        formation.y1 = y1 + 80;
-        formation.update({str1: _formation_str});
-        formation.draw();
-        if (formation.clicked()) {
+        // Upstream renamed this button to btn_formation in obj_drop_select Create_0;
+        // the old name here crashed the whole attack screen on draw.
+        btn_formation.x1 = x2 - 40 - (string_width(_formation_str) + 4);
+        btn_formation.y1 = y1 + 80;
+        btn_formation.update({str1: _formation_str});
+        btn_formation.draw();
+        if (btn_formation.clicked()) {
             if (array_length(formation_possible) > 0) {
                 formation_current++;
                 if (formation_current >= array_length(formation_possible)) {
