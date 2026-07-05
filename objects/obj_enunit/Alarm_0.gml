@@ -160,12 +160,12 @@ if (!engaged) {
                     // behind a small vehicle block, pinned at its 80% cap and skipped the
                     // infantry, so ~4 of 5 anti-infantry volleys fell through to the vehicle
                     // fallback and plinked the armour. One tank became a bullet sponge for a
-                    // thousand men behind it. Instead the volley now pierces by depth: the
-                    // first men-bearing block behind the wall is hit by ENEMY_PIERCE_RANK2_SHOTS
-                    // of the stack's shots, the second by ENEMY_PIERCE_RANK3_SHOTS, deeper
-                    // blocks by nothing, and the front armour takes the shots that failed to
-                    // pass. Men-behind-men screening is unaffected: a front block with men in
-                    // it still absorbs the whole volley above.
+                    // thousand men behind it. Instead the volley now pierces by depth (see
+                    // PIERCE_LINE_SOAK / PIERCE_MAX_DEPTH in macros.gml): each armour line
+                    // soaks a third of the original volley as bounced chip fire, whatever
+                    // gets through lands on the first men-bearing line, and nothing reaches
+                    // past the third line. Men-behind-men screening is unaffected: a front
+                    // block with men in it still absorbs the whole volley above.
                     // Finding the ranks: the old probe walked x2 in 10px steps with
                     // instance_nearest, and inherited vanilla's direction bug: the men
                     // look-behind stepped +10 for the main force (toward the enemy),
@@ -199,12 +199,15 @@ if (!engaged) {
                             return _b.x - _a.x;
                         });
                     }
-                    var _rank_blocks = [];
                     var _wall_blocks = [];
-                    if (block_has_armour(enemy) || (enemy.veh_type[1] == "Defenses")) {
-                        array_push(_wall_blocks, enemy);
-                    }
+                    var _wall_shots = [];
+                    // Collect the lines the volley can interact with: the front wall plus
+                    // blocks behind it, valid and in range, capped at PIERCE_MAX_DEPTH.
+                    var _lines = [enemy];
                     for (var b = 0; b < array_length(_behind); b++) {
+                        if (array_length(_lines) >= PIERCE_MAX_DEPTH) {
+                            break;
+                        }
                         var enemy2 = _behind[b];
                         if (!target_block_is_valid(enemy2, obj_pnunit)) {
                             continue;
@@ -212,52 +215,40 @@ if (!engaged) {
                         if (range[i] < get_block_distance(enemy2)) {
                             break;
                         }
-                        if (enemy2.men > 0) {
-                            array_push(_rank_blocks, enemy2);
-                            if (array_length(_rank_blocks) >= 2) {
+                        array_push(_lines, enemy2);
+                    }
+                    var _total_shots = wep_num[i];
+                    var _soak_shots = max(1, floor(_total_shots * PIERCE_LINE_SOAK));
+                    var _remaining = _total_shots;
+                    var _rank_block = noone;
+                    for (var l = 0; l < array_length(_lines); l++) {
+                        var _line = _lines[l];
+                        if (_line.men > 0) {
+                            _rank_block = _line;
+                            break;
+                        }
+                        if (block_has_armour(_line) || (_line.veh_type[1] == "Defenses")) {
+                            var _w_soak = min(_soak_shots, _remaining);
+                            if (_w_soak > 0) {
+                                array_push(_wall_blocks, _line);
+                                array_push(_wall_shots, _w_soak);
+                                _remaining -= _w_soak;
+                            }
+                            if (_remaining <= 0) {
                                 break;
                             }
-                        } else if ((array_length(_rank_blocks) == 0) && block_has_armour(enemy2)) {
-                            // A men-less armour line between the shooter and the first
-                            // infantry rank (Chimeras/Rhinos behind the Leman Russ line)
-                            // is part of the wall: it soaks a share of the stopped shots
-                            // instead of the front block eating them all.
-                            array_push(_wall_blocks, enemy2);
                         }
                     }
-                    if (array_length(_rank_blocks) > 0) {
-                        var _total_shots = wep_num[i];
-                        var _rank2_shots = floor(_total_shots * ENEMY_PIERCE_RANK2_SHOTS);
-                        var _rank3_shots = floor(_total_shots * ENEMY_PIERCE_RANK3_SHOTS);
-                        var _front_shots = _total_shots - _rank2_shots;
+                    if ((_rank_block != noone) && (_remaining > 0)) {
                         var _ammo_spent = false;
-                        if (_rank2_shots > 0) {
-                            scr_shoot(i, _rank_blocks[0], target_unit_index, "att", "ranged", _rank2_shots, !_ammo_spent);
-                            _ammo_spent = true;
-                            _shot = true;
-                        }
-                        if ((array_length(_rank_blocks) > 1) && (_rank3_shots > 0)) {
-                            scr_shoot(i, _rank_blocks[1], target_unit_index, "att", "ranged", _rank3_shots, !_ammo_spent);
-                            _ammo_spent = true;
-                            _shot = true;
-                        }
-                        // The shots stopped by the wall still land on the wall, split
-                        // across every armour line in front of the infantry (Leman Russ
-                        // line, then Chimeras/Rhinos), so armour keeps taking chip fire
-                        // and no single front block eats the whole remainder.
-                        var _wall_count = array_length(_wall_blocks);
-                        if ((_front_shots > 0) && (_wall_count > 0)) {
-                            var _per_wall = floor(_front_shots / _wall_count);
-                            var _extra = _front_shots - (_per_wall * _wall_count);
-                            for (var w = 0; w < _wall_count; w++) {
-                                var _w_shots = _per_wall + ((w == 0) ? _extra : 0);
-                                if (_w_shots <= 0) {
-                                    continue;
-                                }
-                                scr_shoot(i, _wall_blocks[w], target_unit_index, "att", "ranged", _w_shots, !_ammo_spent);
-                                _ammo_spent = true;
-                                _shot = true;
-                            }
+                        scr_shoot(i, _rank_block, target_unit_index, "att", "ranged", _remaining, !_ammo_spent);
+                        _ammo_spent = true;
+                        _shot = true;
+                        // The soaked shots still land on the armour lines they bounced
+                        // off, so the walls keep taking chip fire instead of the stopped
+                        // shots vanishing.
+                        for (var w = 0; w < array_length(_wall_blocks); w++) {
+                            scr_shoot(i, _wall_blocks[w], target_unit_index, "att", "ranged", _wall_shots[w], !_ammo_spent);
                         }
                         if (_shot) {
                             continue;

@@ -33,24 +33,16 @@
 // heaviest guns chase tanks; drop toward 1 for the old behaviour where almost everything did.
 #macro GUARD_ENEMY_ANTITANK_AP 3
 
-// Enemy column piercing: when the player's front block has no men (a tank wall), enemy
-// anti-infantry weapons no longer dump whole volleys into the armour. The volley splits by
-// depth: the first men-bearing block behind the wall is hit by RANK2 of the shots, the second
-// by RANK3, anything deeper by nothing, and the front armour takes the shots that failed to
-// pass (1 - RANK2). Tune both toward 0 to restore the old bullet-sponge wall, toward 1 to make
-// armour fully transparent to small-arms fire.
-#macro ENEMY_PIERCE_RANK2_SHOTS 0.66
-#macro ENEMY_PIERCE_RANK3_SHOTS 0.33
-
-// Player-side column piercing, mirroring the enemy mechanic. Vanilla player targeting
-// gave anti-infantry weapons a 100% free pass through enemy tank walls (the men
-// look-behind fired the full volley at the first infantry block behind, no shots lost),
-// and silently wasted the volley entirely when no infantry was found. Now the wall
-// costs the same toll in both directions: the first enemy infantry rank behind armour
-// is hit by RANK2 of the shots, the second by RANK3, and the shots that fail to pass
-// chip the wall instead of vanishing.
-#macro PLAYER_PIERCE_RANK2_SHOTS 0.66
-#macro PLAYER_PIERCE_RANK3_SHOTS 0.33
+// Column piercing (both sides): when a front block has no men (an armour wall), an
+// anti-infantry volley pushes through by depth instead of dumping into the wall. The
+// volley reaches at most PIERCE_MAX_DEPTH lines, front included. Every armour line it
+// passes soaks PIERCE_LINE_SOAK of the ORIGINAL volley as bounced chip fire, and
+// everything still travelling lands on the first men-bearing line. Through one wall
+// ~66% of the shots reach the infantry, through two walls ~33%, and infantry behind
+// three or more lines cannot be reached at all. Men-behind-men screening is unchanged:
+// a front block with men in it still absorbs the whole volley.
+#macro PIERCE_LINE_SOAK 0.33
+#macro PIERCE_MAX_DEPTH 3
 
 // Basic combat orders: an advancing block that finds a friendly block directly
 // ahead may leapfrog over it, landing on the first free slot beyond, probing at

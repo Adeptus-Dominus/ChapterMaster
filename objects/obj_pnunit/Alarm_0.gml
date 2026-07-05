@@ -225,10 +225,10 @@ try {
                             // silently wasted the whole volley when the probe found nothing.
                             // Instead: blocks beyond the front are collected along the
                             // shooter-to-front axis (so main and flank fronts both walk the right
-                            // way), sorted nearest-first; the first infantry rank in range eats
-                            // PLAYER_PIERCE_RANK2_SHOTS of the volley, the second
-                            // PLAYER_PIERCE_RANK3_SHOTS, deeper ranks nothing, and the stopped
-                            // shots chip the armour wall instead of vanishing.
+                            // way), sorted nearest-first; the volley pierces by depth (see
+                            // PIERCE_LINE_SOAK / PIERCE_MAX_DEPTH in macros.gml), each armour
+                            // line soaking a third of the original volley, the rest landing on
+                            // the first infantry rank, nothing reaching past the third line.
                             var _front_x = enemy.x;
                             var _dir = sign(_front_x - x);
                             if (_dir == 0) {
@@ -253,12 +253,15 @@ try {
                                     return _b.x - _a.x;
                                 });
                             }
-                            var _rank_blocks = [];
                             var _wall_blocks = [];
-                            if (block_has_armour(enemy) > 0) {
-                                array_push(_wall_blocks, enemy);
-                            }
+                            var _wall_shots = [];
+                            // Lines the volley can interact with: front wall plus blocks
+                            // beyond, valid and in range, capped at PIERCE_MAX_DEPTH.
+                            var _lines = [enemy];
                             for (var b = 0; b < array_length(_beyond); b++) {
+                                if (array_length(_lines) >= PIERCE_MAX_DEPTH) {
+                                    break;
+                                }
                                 var enemy2 = _beyond[b];
                                 if (!target_block_is_valid(enemy2, obj_enunit)) {
                                     continue;
@@ -266,49 +269,43 @@ try {
                                 if (range[i] < get_block_distance(enemy2)) {
                                     break;
                                 }
-                                if (enemy2.men > 0) {
-                                    array_push(_rank_blocks, enemy2);
-                                    if (array_length(_rank_blocks) >= 2) {
+                                array_push(_lines, enemy2);
+                            }
+                            var _total_shots = wep_num[i];
+                            var _soak_shots = max(1, floor(_total_shots * PIERCE_LINE_SOAK));
+                            var _remaining = _total_shots;
+                            var _rank_block = noone;
+                            for (var l = 0; l < array_length(_lines); l++) {
+                                var _line = _lines[l];
+                                if (_line.men > 0) {
+                                    _rank_block = _line;
+                                    break;
+                                }
+                                if (block_has_armour(_line) > 0) {
+                                    var _w_soak = min(_soak_shots, _remaining);
+                                    if (_w_soak > 0) {
+                                        array_push(_wall_blocks, _line);
+                                        array_push(_wall_shots, _w_soak);
+                                        _remaining -= _w_soak;
+                                    }
+                                    if (_remaining <= 0) {
                                         break;
                                     }
-                                } else if ((array_length(_rank_blocks) == 0) && (block_has_armour(enemy2) > 0)) {
-                                    // A second armour line between the shooter and the enemy
-                                    // infantry shares the stopped shots with the front wall.
-                                    array_push(_wall_blocks, enemy2);
                                 }
                             }
-                            if (array_length(_rank_blocks) > 0) {
-                                var _total_shots = wep_num[i];
-                                var _rank2_shots = floor(_total_shots * PLAYER_PIERCE_RANK2_SHOTS);
-                                var _rank3_shots = floor(_total_shots * PLAYER_PIERCE_RANK3_SHOTS);
-                                var _front_shots = _total_shots - _rank2_shots;
+                            if ((_rank_block != noone) && (_remaining > 0)) {
                                 var _ammo_spent = false;
-                                var _rank_target = scr_target(_rank_blocks[0], "men");
-                                if ((_rank2_shots > 0) && (_rank_target != 0)) {
-                                    scr_shoot(i, _rank_blocks[0], _rank_target, "att", "ranged", _rank2_shots, !_ammo_spent);
+                                var _rank_target = scr_target(_rank_block, "men");
+                                if (_rank_target != 0) {
+                                    scr_shoot(i, _rank_block, _rank_target, "att", "ranged", _remaining, !_ammo_spent);
                                     _ammo_spent = true;
                                 }
-                                if ((array_length(_rank_blocks) > 1) && (_rank3_shots > 0)) {
-                                    _rank_target = scr_target(_rank_blocks[1], "men");
-                                    if (_rank_target != 0) {
-                                        scr_shoot(i, _rank_blocks[1], _rank_target, "att", "ranged", _rank3_shots, !_ammo_spent);
+                                // Soaked shots chip the armour lines they bounced off.
+                                for (var w = 0; w < array_length(_wall_blocks); w++) {
+                                    var _w_target = scr_target(_wall_blocks[w], "veh");
+                                    if (_w_target != 0) {
+                                        scr_shoot(i, _wall_blocks[w], _w_target, "att", "ranged", _wall_shots[w], !_ammo_spent);
                                         _ammo_spent = true;
-                                    }
-                                }
-                                var _wall_count = array_length(_wall_blocks);
-                                if ((_front_shots > 0) && (_wall_count > 0)) {
-                                    var _per_wall = floor(_front_shots / _wall_count);
-                                    var _extra = _front_shots - (_per_wall * _wall_count);
-                                    for (var w = 0; w < _wall_count; w++) {
-                                        var _w_shots = _per_wall + ((w == 0) ? _extra : 0);
-                                        if (_w_shots <= 0) {
-                                            continue;
-                                        }
-                                        var _w_target = scr_target(_wall_blocks[w], "veh");
-                                        if (_w_target != 0) {
-                                            scr_shoot(i, _wall_blocks[w], _w_target, "att", "ranged", _w_shots, !_ammo_spent);
-                                            _ammo_spent = true;
-                                        }
                                     }
                                 }
                                 if (_ammo_spent) {

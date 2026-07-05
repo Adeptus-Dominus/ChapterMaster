@@ -867,7 +867,9 @@ function combat_tally_flush() {
     }
     var _t = obj_ncombat.ctally_target;
     if (array_length(obj_ncombat.ctally_injure) > 0) {
-        add_battle_log_message($"Fire from {combat_subject_join(obj_ncombat.ctally_injure)} wounded the {_t} but didn't bring it down.", eMSG_COLOR.WHITE);
+        // Light green for wounded-but-standing, per Tavish's CM-Poligon color coding
+        // (CptMacTavish2224, tag LW_Beta_1.2).
+        add_battle_log_message($"Fire from {combat_subject_join(obj_ncombat.ctally_injure)} wounded the {_t} but didn't bring it down.", eMSG_COLOR.LIGHTGREEN);
     }
     if (array_length(obj_ncombat.ctally_bounce) > 0) {
         add_battle_log_message($"Fire from {combat_subject_join(obj_ncombat.ctally_bounce)} cannot penetrate the {_t}'s armour.", eMSG_COLOR.WHITE);

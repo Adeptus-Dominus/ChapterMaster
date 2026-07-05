@@ -4,6 +4,9 @@ enum eMSG_COLOR {
     AQUA = 5,
     RED = 6,
     YELLOW = 8,
+    // Light green tier ported from Tavish's CM-Poligon color coding (CptMacTavish2224,
+    // tag LW_Beta_1.2): hits that wounded without killing.
+    LIGHTGREEN = 9,
 }
 
 /// @param {Id.Instance} _owner The optional owning instance or controller.
@@ -119,6 +122,9 @@ function CombatLog(_owner = undefined) constructor {
                     break;
                 case eMSG_COLOR.YELLOW:
                     _final_color = 3055825;
+                    break;
+                case eMSG_COLOR.LIGHTGREEN:
+                    _final_color = c_lime;
                     break;
             }
 

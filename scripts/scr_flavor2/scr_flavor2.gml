@@ -40,6 +40,40 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         _hostile_shots = max(1, round(_hostile_shots / 3));
     }
 
+    // Target readout: the bare unit name ("strikes at Assault") says nothing about what
+    // was hit or how many stand there. Append the block's living strength for that unit
+    // type. scr_flavor2 runs in the target block's own scope, so the arrays are directly
+    // readable. Only the "wall" comparisons below care about the raw value, and walls
+    // are never modified here.
+    if ((target_type != "wall") && is_string(target_type) && (target_type != "")) {
+        var _target_count = 0;
+        if (target_is_vehicle) {
+            if (variable_instance_exists(id, "veh_type")) {
+                for (var _tc = 0; _tc < array_length(veh_type); _tc++) {
+                    if ((veh_type[_tc] == target_type) && (_tc < array_length(veh_dead)) && (veh_dead[_tc] == 0) && (_tc < array_length(veh_hp)) && (veh_hp[_tc] > 0)) {
+                        _target_count++;
+                    }
+                }
+            }
+            if (_target_count > 0) {
+                target_type = $"{target_type} ({_target_count} remaining)";
+            }
+        } else if (target_type == "Imperial Guardsman") {
+            if (variable_instance_exists(id, "men") && (men > 0)) {
+                target_type = $"{target_type} ranks ({men} strong)";
+            }
+        } else if (variable_instance_exists(id, "marine_type")) {
+            for (var _tc = 0; _tc < array_length(marine_type); _tc++) {
+                if ((marine_type[_tc] == target_type) && (_tc < array_length(marine_dead)) && (marine_dead[_tc] == 0)) {
+                    _target_count++;
+                }
+            }
+            if (_target_count > 0) {
+                target_type = $"{target_type} ranks ({_target_count} strong)";
+            }
+        }
+    }
+
     var flavor = 0;
 
     if (_hostile_weapon == "Daemonette Melee") {
@@ -480,6 +514,11 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     // which lands on the lowest tier.
     if ((m2 == "") && (lost_units_count == 0) && (hostile_shots > 0) && (target_type != "wall")) {
         m2 = incoming_damage_flavor(damage_severity, target_is_vehicle);
+        // Color coding ported from Tavish's CM-Poligon (CptMacTavish2224, tag
+        // LW_Beta_1.2): outcome reads at a glance against the red kill lines. Shots
+        // that bounced with no effect render white, hits that wounded without
+        // killing render light green.
+        mes_color = (damage_severity < 0.10) ? eMSG_COLOR.WHITE : eMSG_COLOR.LIGHTGREEN;
     }
 
     mes = m1 + m2 + m3;
