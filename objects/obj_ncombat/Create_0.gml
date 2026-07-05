@@ -180,6 +180,10 @@ combat_log.log_font = fnt_aldrich_12;
 ctally_target = undefined;
 ctally_bounce = [];
 ctally_injure = [];
+ktally_target = undefined;
+ktally_weapons = {};
+ktally_order = [];
+ktally_leaders = [];
 
 world_size = 0;
 
