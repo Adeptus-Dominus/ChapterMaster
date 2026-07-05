@@ -2304,13 +2304,19 @@ try {
         }
     }
 
+    // Hoisted above both Chaos-side composition blocks: the CSM warband block below
+    // reads slaa 39 times but the declaration only executed inside this daemon block,
+    // so any plain Chaos ground battle hit an uninitialized local at its first
+    // if (slaa) case (GM2043 was flagging a real latent crash, present in vanilla's
+    // old numbering too). If we want multiple story events for specific Chaos Gods,
+    // slaa could become a gods value instead (upstream TBD note preserved).
+    var slaa = false;
+    if (battle_special == "ruins_eldar") {
+        slaa = true;
+    }
+
     // ** Daemon Forces ** - The faction for the check is the Genestealers but the forces being setup are clearly Daemons.
     if (enemy == eFACTION.CHAOS && (battle_special == "ship_demon" || battle_special == "ruins_eldar")) {
-        // If we want to have multiple story events regarding specific Chaos Gods, we could name slaa into gods and just check the value? TBD
-        var slaa = false;
-        if (battle_special == "ruins_eldar") {
-            slaa = true;
-        }
         // Small Daemon Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);
@@ -2537,7 +2543,12 @@ try {
     // ** Chaos Space Marines Forces **
     // The CSM warband compositions belong to true Chaos forces (p_chaos), which now
     // arrive as eFACTION.CHAOS. Second half of the spawn-side renumbering swap.
-    if ((enemy == eFACTION.CHAOS) && (battle_special != "ChaosWarband") && (string_count("cs_meeting_battle", battle_special) == 0)) {
+    // The renumbering moved this block to CHAOS, whose battles include the daemon,
+    // fallen, and concealed-warlord specials (each with its own composition above);
+    // without these exclusions those battles would spawn a CSM warband on top of
+    // their special forces. The HERETICS block carries the same list for the same
+    // reason.
+    if ((enemy == eFACTION.CHAOS) && (battle_special != "ChaosWarband") && (battle_special != "ship_demon") && (battle_special != "ruins_eldar") && (battle_special != "fallen1") && (battle_special != "fallen2") && (battle_special != "WL10_reveal") && (battle_special != "WL10_later") && (string_count("cs_meeting_battle", battle_special) == 0)) {
         // Small CSM Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);
