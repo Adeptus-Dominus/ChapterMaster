@@ -542,8 +542,8 @@ function eldar_intel_grant() {
 
 /// @desc End-of-turn Eldar processing: fires the deferred craftworld reveal alert,
 /// then every ELDAR_INCURSION_INTERVAL turns processes warhosts on the ground
-/// (tainted worlds: fight the PDF and purge the taint; clean worlds: withdraw)
-/// and lands a new warhost on an inhabited imperial world, preferring worlds with
+/// (tainted worlds: scour the population, PDF and Guard while purging the taint;
+/// clean worlds: withdraw) and lands a new warhost on an inhabited imperial world, preferring worlds with
 /// heresy, chaos or traitor presence (ELDAR_TAINT_SPAWN_WEIGHT). Warhost strength
 /// ramps with collected intelligence (FORCE_BASE + clues, capped at FORCE_MAX),
 /// keeping the strongest Eldar for the craftworld itself. The planetary AI never
@@ -589,16 +589,24 @@ function eldar_incursion_tick() {
             }
             var _tainted = (p_hurssy[i] > 0) || (p_chaos[i] > 0) || (p_traitors[i] > 0);
             if (_tainted) {
-                if (p_pdf[i] > 0) {
-                    p_pdf[i] = max(0, p_pdf[i] - irandom_range(1, p_eldar[i]));
-                    if (irandom(2) == 0) {
-                        p_eldar[i] = max(1, p_eldar[i] - 1);
-                    }
-                    scr_event_log("red", $"The Eldar warhost on {name} {scr_roman(i)} battles the planetary defense forces.");
+                // The Eldar do not do proportionality. Any trace of the Great Enemy
+                // condemns the world: each incursion tick the warhost culls a large
+                // share of the population, cuts the defense forces and Guard down,
+                // and purges the taint itself, taking some attrition in return.
+                // Letting a warhost squat on a tainted world is therefore expensive,
+                // and clearing them off it is a real decision rather than free
+                // chaos-cleanup.
+                p_population[i] = max(0, p_population[i] - floor(p_population[i] * ELDAR_PURGE_POP_FRACTION));
+                p_pdf[i] = max(0, floor(p_pdf[i] * (1 - ELDAR_PURGE_DEFENSE_FRACTION)) - p_eldar[i]);
+                p_guardsmen[i] = max(0, floor(p_guardsmen[i] * (1 - ELDAR_PURGE_DEFENSE_FRACTION)));
+                if (irandom(2) == 0) {
+                    p_eldar[i] = max(1, p_eldar[i] - 1);
                 }
                 p_hurssy[i] = max(0, p_hurssy[i] - 1);
                 p_chaos[i] = max(0, p_chaos[i] - 1);
                 p_traitors[i] = max(0, p_traitors[i] - 1);
+                scr_alert("red", "elfs", $"The Eldar have judged {name} {scr_roman(i)} tainted and are putting its population to the sword.", x, y);
+                scr_event_log("red", $"The Eldar warhost scours {name} {scr_roman(i)}: the defense forces are cut down and the population culled.");
             } else {
                 p_eldar[i] = 0;
                 scr_event_log("green", $"The Eldar warhost on {name} {scr_roman(i)} has vanished as suddenly as it arrived.");

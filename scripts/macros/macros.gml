@@ -74,11 +74,16 @@
 #macro ELDAR_INTEL_REQUIRED 3
 #macro ELDAR_FLEET_ENABLED 1
 // Warhosts prefer worlds touched by the Great Enemy: a planet with heresy, chaos or
-// traitor presence is this many times likelier to be struck than a clean one. On
-// tainted worlds the warhost stays, battles the planetary defense force each
-// incursion tick and purges the taint; on clean worlds it withdraws after one
+// traitor presence is this many times likelier to be struck than a clean one. The
+// Eldar do not do proportionality: on a tainted world the warhost stays and scours
+// it each incursion tick, culling ELDAR_PURGE_POP_FRACTION of the population and
+// ELDAR_PURGE_DEFENSE_FRACTION of the PDF and Guard while purging the taint, so
+// leaving them to "clean up chaos for you" costs the world its people and clearing
+// them off is a real choice. On clean worlds the warhost withdraws after one
 // interval (its "secret mission" done) instead of garrisoning the sector forever.
 #macro ELDAR_TAINT_SPAWN_WEIGHT 5
+#macro ELDAR_PURGE_POP_FRACTION 0.25
+#macro ELDAR_PURGE_DEFENSE_FRACTION 0.5
 
 // Eldar naval combat tuning. Vanilla Eldar ships move at spid 60-100 while every other
 // faction's ships run 20-45, which is why fights against them degenerate into endless
