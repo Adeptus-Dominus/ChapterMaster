@@ -487,6 +487,11 @@ if (did != 0) {
 // Eldar craftworld here
 craftworld = 1;
 
+// Restored: upstream's initialization cleanup removed this declaration in an
+// auto-merged hunk while the placement loop below kept every read, so starting
+// any new campaign crashed instantly at "if (go == 0)" with an unset variable.
+var go = 0;
+
 for (var i = 0; i < 100; i++) {
     if (go == 0) {
         xx = floor(random(1152 + 600)) + 104;
