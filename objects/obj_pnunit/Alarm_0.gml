@@ -10,6 +10,15 @@ try {
 
     enemy = instance_nearest(0, y, obj_enunit); // Left most enemy
 
+    // Ported from upstream: instance_nearest returns noone when the last enemy
+    // block dies between the turn driver pulsing alarm[0] and this block's tick,
+    // and reading enemy.x below then throws "Unable to find instance for object
+    // index -4". Exit early; set_up_player_blocks_turn re-arms this alarm next turn.
+    if (!instance_exists(enemy)) {
+        engaged = false;
+        exit;
+    }
+
     // Basic combat orders: every block carries a move_order ("advance" or "hold"),
     // seeded on its first tick from the vanilla movement rule (raids and attacks
     // advance, defense and the static formation hold) and toggled by clicking the

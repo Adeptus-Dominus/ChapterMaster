@@ -690,6 +690,56 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 arp = 3;
                 rang = 1;
                 break;
+            // Genestealer Cult arsenal, ported verbatim from upstream scr_en_weapon.
+            // Cult revolt battles run under the TYRANIDS gate; without these cases
+            // every cult heavy weapon fell through with range 0 and never fired
+            // ("has broken range!" log spam, one-sided battles, no red loss lines).
+            case "Hand Flamer":
+                atta = 40;
+                arp = 1;
+                rang = 2;
+                amm = 5;
+                break;
+            case "Force Staff":
+                atta = 100;
+                arp = 3;
+                rang = 1;
+                break;
+            case "Heavy Maul":
+                atta = 80;
+                arp = 2;
+                rang = 1;
+                break;
+            case "Heavy Mining Laser":
+                atta = 100;
+                arp = 4;
+                rang = 4;
+                amm = 6;
+                break;
+            case "Heavy Stubber":
+                atta = 100;
+                arp = 1;
+                rang = 6;
+                amm = 8;
+                break;
+            case "Demolition Charges":
+                atta = 100;
+                arp = 3;
+                rang = 2;
+                amm = 3;
+                break;
+            case "Drilldozer Blade":
+                atta = 120;
+                arp = 3;
+                rang = 1;
+                spli = 2;
+                break;
+            case "Autocannon":
+                atta = 80;
+                arp = 3;
+                rang = 12;
+                amm = 10;
+                break;
             default:
                 break;
         }
