@@ -569,6 +569,9 @@ function eldar_incursion_tick() {
         obj_controller.eldar_reveal_alert_pending = false;
         with (obj_star) {
             if (p_type[1] == "Craftworld") {
+                // Grant fog-of-war vision with the reveal so the craftworld is
+                // immediately selectable and targetable (see obj_star Mouse_50).
+                vision = 1;
                 scr_alert("green", "elfs", "Eldar Craftworld discovered.", x, y);
                 scr_event_log("green", "Eldar Craftworld discovered.");
             }

@@ -12,8 +12,18 @@ if (!global.ui_click_lock) {
     if (obj_controller.location_viewer.is_entered) {
         exit;
     }
-    if ((p_type[1] == "Craftworld") && (obj_controller.known[eFACTION.ELDAR] == 0)) {
-        exit;
+    if (p_type[1] == "Craftworld") {
+        if (obj_controller.known[eFACTION.ELDAR] == 0) {
+            exit;
+        }
+        // A revealed craftworld is fully visible and clickable regardless of the
+        // fog-of-war vision flag. It spawns unseen at the galaxy's edge and nothing
+        // ever granted it vision, so the star drew after the reveal but rejected
+        // every click: it could not be selected, targeted for travel, or attacked
+        // (tester arrived "next to" it because move orders fell to the neighboring
+        // system). Setting vision here also self-heals saves where the reveal
+        // already happened.
+        vision = 1;
     }
     if (vision == 0) {
         exit;
