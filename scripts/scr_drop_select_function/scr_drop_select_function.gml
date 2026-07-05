@@ -178,6 +178,10 @@ function drop_select_unit_selection() {
     if (purge == eDROP_TYPE.RAIDATTACK) {
         var target_race = "";
         var target_threat = "";
+        // Ported from upstream: without this declaration, attacking a world with no
+        // enemy forces left (race_quantity 0) skips the only assignment below and the
+        // string_width read throws "not set before reading it".
+        var _target_str = "No Target";
 
         if (attacking >= 5 && attacking <= 13) {
             race_quantity = race_quantities[attacking - 4];
