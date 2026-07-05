@@ -9,8 +9,8 @@ enum eDROP_TYPE {
 
 /// @self Asset.GMObject.obj_drop_select
 function drop_select_unit_selection() {
-    w = 660;
-    h = 520;
+    w = 720;
+    h = 580;
     // Center of the screen
     var _x_center = main_slate.XX;
     var _y_center = main_slate.YY;
@@ -23,7 +23,7 @@ function drop_select_unit_selection() {
     if (purge == eDROP_TYPE.RAIDATTACK) {
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_left);
-        draw_set_color(c_gray);
+        draw_set_color(CM_GREEN_COLOR);
         var attack_type = attack ? "Attacking" : "Raiding";
         draw_text_transformed(x1 + 40, y1 + 38, $"{attack_type} ({planet_numeral_name(planet_number, p_target)} )", 0.6, 0.6, 0);
         var _offset = x1 + 40;
@@ -31,7 +31,7 @@ function drop_select_unit_selection() {
         for (var i = 0; i < array_length(roster.company_buttons); i++) {
             var _button = roster.company_buttons[i];
             _button.x1 = _offset;
-            _button.y1 = y1 + 60;
+            _button.y1 = y1 + 70;
             _button.update();
             _button.draw();
             if (_button.company_present) {
@@ -39,7 +39,7 @@ function drop_select_unit_selection() {
                     roster.update_roster();
                 }
             }
-            _offset += _button.width;
+            _offset += _button.w + 8;
         }
 
         // Planet icon here
@@ -68,14 +68,19 @@ function drop_select_unit_selection() {
         }
 
         // Ships Are Up, Fuck Me
-        draw_set_color(c_gray);
+        draw_set_color(CM_GREEN_COLOR);
         draw_text(x1 + 40, 273, "Available Forces:");
     }
-    var _buttons_x = 552;
+
+    var _buttons_x = x1 + 40;
     var _buttons_y = 299;
 
-    // Local force button;
+    roster.select_all_ships.update({x1: x1 + 200, y1: 273});
+    if (roster.select_all_ships.draw()) {
+        roster.ship_multi_selector.select_all();
+    }
 
+    // Local force button;
     if (purge != eDROP_TYPE.PURGEBOMBARD) {
         var _local_button = roster.local_button;
         // Local force exhaustion: planetside forces also support at most
@@ -103,16 +108,8 @@ function drop_select_unit_selection() {
             roster.update_roster();
         }
     }
-    _buttons_y += 21;
 
-    // Ship buttons;
-    roster.ship_multi_selector.update({x1: _buttons_x, y1: _buttons_y});
-
-    roster.ship_multi_selector.draw();
-
-    if (roster.select_all_ships.draw()) {
-        roster.ship_multi_selector.select_all();
-    }
+    _buttons_y += 30;
 
     // Ship assault economy: assault-exhausted ships are drawn locked and red (see
     // scr_roster). ToggleButton clicks and Select All still flip their active flag,
@@ -128,9 +125,11 @@ function drop_select_unit_selection() {
     if (roster.ship_multi_selector.changed) {
         roster.update_roster();
     }
+    roster.ship_multi_selector.update({x1: _buttons_x, y1: _buttons_y});
+    roster.ship_multi_selector.draw();
 
     draw_set_font(fnt_40k_14);
-    draw_set_color(c_gray);
+    draw_set_color(CM_GREEN_COLOR);
     draw_set_alpha(1);
     draw_set_halign(fa_left);
 
@@ -138,7 +137,7 @@ function drop_select_unit_selection() {
     var _squads_box = {
         header: "Selected Squads:",
         x1: x1 + 40,
-        y1: y2 - 180,
+        y1: y2 - 220,
     };
     draw_text(_squads_box.x1, _squads_box.y1, _squads_box.header);
     var _x_offset = 0;
@@ -156,7 +155,7 @@ function drop_select_unit_selection() {
             _button = roster.vehicle_buttons[i - _squad_length];
         }
 
-        if (_x_offset + _button.width > 590) {
+        if (_x_offset + _button.w > 590) {
             _row++;
             _x_offset = 0;
         }
@@ -169,7 +168,7 @@ function drop_select_unit_selection() {
             roster.update_roster();
         }
 
-        _x_offset += _button.width + 10;
+        _x_offset += _button.w + 10;
     }
 
     // Target
@@ -188,27 +187,44 @@ function drop_select_unit_selection() {
         } else if (race_quantity >= 6) {
             target_threat = threat_levels[6];
         }
-        var _target_str = "Target: ";
+
         if (race_quantity != 0) {
-            _target_str += $"{target_race} ({target_threat} Threat)";
-        } else {
-            _target_str += "None";
+            _target_str = $"{target_race} ({target_threat})";
         }
-        target.x1 = x2 - 40 - (string_width(_target_str) + 4);
-        target.y1 = formation.y2 + 10;
-        target.update({str1: _target_str});
-        target.draw();
-        draw_sprite(spr_faction_icons, attacking, x2 - 100, y1 + 40);
-        var q = 0;
-        repeat (20) {
-            q += 1;
-            if (target.clicked() && force_present[q] != 0) {
-                if (attacking != force_present[q] && force_present[q] > 0) {
-                    attacking = force_present[q];
+
+        btn_target.x1 = x2 - 50 - (string_width(_target_str));
+        btn_target.y1 = btn_formation.y2 + 10;
+        btn_target.button_color = CM_GREEN_COLOR;
+        btn_target.text_color = CM_GREEN_COLOR;
+        btn_target.update({str1: _target_str});
+        btn_target.draw();
+        btn_target.active = force_present[1] != 0;
+
+        if (btn_target.clicked()) {
+            var _current_i = 0;
+            for (var i = 1; i <= 20; i++) {
+                if (force_present[i] == attacking) {
+                    _current_i = i;
+                    break;
+                }
+            }
+            for (var i = _current_i + 1; i <= 20; i++) {
+                if (force_present[i] != 0) {
+                    attacking = force_present[i];
+                    break;
+                }
+            }
+            if (attacking == force_present[_current_i]) {
+                for (var i = 1; i <= 20; i++) {
+                    if (force_present[i] != 0) {
+                        attacking = force_present[i];
+                        break;
+                    }
                 }
             }
         }
-        target.locked = force_present[q] == 0;
+
+        draw_sprite(spr_faction_icons, attacking, x2 - 100, y1 + 20);
     }
 
     // Back / Purge buttons

@@ -2,7 +2,7 @@ unit = "";
 men = 0;
 veh = 0;
 charge = 0;
-engaged = 0;
+engaged = false;
 owner = eFACTION.PLAYER;
 medi = 0;
 attacked_dudes = 0;
@@ -34,10 +34,6 @@ y1 = 450 - (draw_size / 2);
 x2 = pos + (centerline_offset * 2) + 10;
 y2 = 450 + (draw_size / 2);
 
-// let="";let=string_delete(obj_ini.psy_powers,2,string_length(obj_ini.psy_powers)-1);let=string_upper(let);
-// LET might be different for each marine; need a way of determining this
-
-// show_message(let);
 // x determines column; maybe every 10 or so?
 // For fortified locations maybe create a wall unit for the player?
 

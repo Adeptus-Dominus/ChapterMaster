@@ -129,7 +129,8 @@ function setup_ui_chapter_settings(){
         110,
         570, 
         {
-            tooltip : "Boarding Objective\nThe objective of your Astartes once they board an enemy ship."
+            tooltip : "Boarding Objective\nThe objective of your Astartes once they board an enemy ship.",
+            font: fnt_40k_14
         }
     );
 
@@ -253,7 +254,7 @@ function setup_ui_chapter_settings(){
         _tog_buttons, 
         "Company Command Structure", 
         {
-            draw_alighn : "vertical",
+            is_horizontal : false,
             x1 : 75,
             y1 : 300,
         }
@@ -306,7 +307,7 @@ function setup_ui_chapter_settings(){
         ], 
         "Automatic Boarding", 
         {
-            x1 : 400,
+            x1 : 420,
             y1 : 710,
         }
     );

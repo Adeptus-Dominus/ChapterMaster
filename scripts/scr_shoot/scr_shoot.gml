@@ -24,7 +24,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
         }
 
         if ((weapon_index_position >= 0) && instance_exists(target_object) && (owner == 2)) {
-            var stop, damage_type, doom;
             var shots_fired = wep_num[weapon_index_position];
             if (shot_override > -1) {
                 var _stack_shots = shots_fired;
@@ -42,7 +41,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             if (shots_fired == 0 || ammo[weapon_index_position] == 0) {
                 exit;
             }
-            doom = 0;
+            var doom = 0;
             if ((shots_fired != 1) && (melee_or_ranged != "melee")) {
                 switch (obj_ncombat.enemy) {
                     case eFACTION.ECCLESIARCHY:
@@ -70,8 +69,8 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                 doom = 1;
             }
 
-            damage_type = "";
-            stop = 0;
+            var damage_type = "";
+            var stop = 0;
 
             if (consume_ammo && (ammo[weapon_index_position] > 0)) {
                 ammo[weapon_index_position] -= 1;
@@ -179,11 +178,11 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     if (melee_or_ranged == "wall") {
                         var dest = 0;
 
-                        hostile_damage -= target_object.ac[1];
+                        hostile_damage -= target_object.ac;
                         hostile_damage = max(0, hostile_damage);
                         hostile_damage = round(hostile_damage) * hit_number;
-                        target_object.hp[1] -= hostile_damage;
-                        if (target_object.hp[1] <= 0) {
+                        target_object.hp -= hostile_damage;
+                        if (target_object.hp <= 0) {
                             dest = 1;
                         }
                         obj_nfort.hostile_weapons = hostile_weapon;
@@ -202,7 +201,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
         }
 
         if (instance_exists(target_object) && (owner == eFACTION.PLAYER)) {
-            // LOGGER.debug("{0}, {1}, {2}, {3}, {4}", wep_num[weapon_index_position], wep[weapon_index_position], splash[weapon_index_position], range[weapon_index_position], att[weapon_index_position])
             var shots_fired = 0;
             var stop = 0;
             var damage_type = "";

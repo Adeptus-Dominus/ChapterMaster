@@ -668,6 +668,11 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 arp = 3;
                 rang = 1;
                 break;
+            case "Hybrid Claws":
+                atta = 50;
+                arp = 2;
+                rang = 1;
+                break;
             case "Witchfire":
                 atta = 100;
                 arp = 3;

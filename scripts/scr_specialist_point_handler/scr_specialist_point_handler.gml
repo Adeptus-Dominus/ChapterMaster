@@ -59,10 +59,6 @@ function SpecialistPointHandler() constructor {
             tech_locations[i] = techs[i].marine_location();
         }
 
-        if (forge_master > -1 && forge_master < total_techs) {
-            obj_controller.master_of_forge = techs[forge_master];
-        }
-
         var apothecary_string = "AP Production#";
         apothecary_string += $"Apothecaries: {apothecary_points}#";
 

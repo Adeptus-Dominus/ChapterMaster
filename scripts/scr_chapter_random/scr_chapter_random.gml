@@ -955,7 +955,7 @@ function scr_chapter_random(custom_or_random) {
     if (ran2 == 93) {
         phrase2 = "Wizards";
         col_second = "Purple";
-        name[100][eROLE.LIBRARIAN] = "Wizard";
+        role[100][eROLE.LIBRARIAN] = "Wizard";
         chapter_master_specialty = 3;
     }
     if (ran2 == 94) {

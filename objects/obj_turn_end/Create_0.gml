@@ -24,7 +24,7 @@ first_y = obj_controller.y;
 combating = 0;
 cooldown = 10;
 
-obj_controller.menu = 999; // show nothing, click nothing
+obj_controller.menu = eMENU.TURN_END; // show nothing, click nothing
 
 var _fleet_size = 11;
 enemy_fleet = array_create(_fleet_size, 0);

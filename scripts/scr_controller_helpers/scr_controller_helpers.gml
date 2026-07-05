@@ -5,13 +5,7 @@ function scr_menu_clear_up(specific_area_function) {
         var menu_action_allowed = !instance_exists(obj_saveload) && !instance_exists(obj_drop_select) && !instance_exists(obj_popup_dialogue) && !instance_exists(obj_ncombat);
 
         if (menu_action_allowed) {
-            if (combat != 0) {
-                exit;
-            }
-            if (scrollbar_engaged != 0) {
-                exit;
-            }
-            if (instance_exists(obj_ingame_menu)) {
+            if (combat != 0 || instance_exists(obj_bomb_select) || scrollbar_engaged != 0 || instance_exists(obj_ingame_menu)) {
                 exit;
             }
 
@@ -22,17 +16,14 @@ function scr_menu_clear_up(specific_area_function) {
                     }
                 }
             }
-            if (instance_exists(obj_bomb_select)) {
-                exit;
-            }
-            if ((zoomed == 0) && (cooldown <= 0) && (menu >= 500) && (menu <= 510)) {
+            if ((zoomed == 0) && (cooldown <= 0) && (menu >= eMENU.WELCOME_SCREEN1) && (menu <= eMENU.WELCOME_SCREEN4)) {
                 if (mouse_y >= camera_get_view_y(view_camera[0]) + 27) {
                     cooldown = 8000;
-                    if ((menu >= 500) && (temp[menu - 434] == "")) {
-                        menu = 0;
+                    if ((menu >= eMENU.WELCOME_SCREEN1) && (temp[65 + (menu - 2)] == "")) {
+                        menu = eMENU.DEFAULT;
                         exit;
                     }
-                    if ((menu < 503) && (menu != 0)) {
+                    if ((menu < eMENU.WELCOME_SCREEN4) && (menu != eMENU.DEFAULT)) {
                         menu += 1;
                     }
                 }
@@ -42,9 +33,9 @@ function scr_menu_clear_up(specific_area_function) {
             xx = camera_get_view_x(view_camera[0]);
             yy = camera_get_view_y(view_camera[0]);
 
-            if (menu == 0) {
+            if (menu == eMENU.DEFAULT) {
                 hide_banner = 0;
-            } // 136 ;
+            }
 
             if (instance_exists(obj_temp_build)) {
                 if (variable_instance_exists(obj_temp_build, "isnew") && obj_temp_build.isnew) {
@@ -54,7 +45,6 @@ function scr_menu_clear_up(specific_area_function) {
             return spec_func();
         }
     }
-    return false;
 }
 
 function scr_change_menu(wanted_menu, specific_area_function = undefined) {
@@ -70,9 +60,7 @@ function scr_change_menu(wanted_menu, specific_area_function = undefined) {
         main_map_defaults();
         set_zoom_to_default();
         continue_sequence = scr_menu_clear_up(function() {
-            //if ((zoomed == 0) && (diplomacy == 0)) {
             return true;
-            //}
         });
         if (continue_sequence) {
             with (obj_fleet_select) {
@@ -114,8 +102,8 @@ function scr_in_game_help() {
         with (obj_controller) {
             if ((zoomed == 0) && (!instance_exists(obj_ingame_menu)) && (!instance_exists(obj_popup))) {
                 set_zoom_to_default();
-                if (menu != 30) {
-                    menu = 30;
+                if (menu != eMENU.GAME_HELP) {
+                    menu = eMENU.GAME_HELP;
                     cooldown = 8000;
                     click = 1;
                     hide_banner = 0;
@@ -428,19 +416,14 @@ function scr_end_turn() {
                     location_viewer.hide_sequence++;
                 }
                 cooldown = 8;
-                menu = 0;
+                menu = eMENU.DEFAULT;
 
                 if (!instance_exists(obj_turn_end)) {
                     ok = 1;
                 }
-                /*if (instance_exists(obj_turn_end)) {
-                    if (obj_turn_end.popups_end == 1) {
-                        ok = 1;
-                    }
-                }*/
 
                 if (ok == 1) {
-                    obj_controller.menu = 0;
+                    obj_controller.menu = eMENU.DEFAULT;
                     obj_controller.zui = 0;
                     obj_controller.invis = false;
 

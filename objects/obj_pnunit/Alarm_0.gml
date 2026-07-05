@@ -27,12 +27,7 @@ try {
         move_unit_block("east", 1, false, order_manual);
     }
 
-    if (!instance_exists(enemy)) {
-        engaged = false;
-        exit;
-    }
-
-    engaged = collision_point(x - 14, y, obj_enunit, 0, 1) || collision_point(x + 14, y, obj_enunit, 0, 1);
+    engaged = collision_point(x - 14, y, obj_enunit, 0, 1) != noone || collision_point(x + 14, y, obj_enunit, 0, 1) != noone;
 
     var once_only = 0;
     var range_shoot = "";
@@ -88,7 +83,6 @@ try {
             if (wep[i] == "") {
                 continue;
             }
-            weapon_data = gear_weapon_data("weapon", wep[i]);
             once_only = 0;
             enemy = instance_nearest(0, y, obj_enunit);
             if (enemy.men + enemy.veh + enemy.medi <= 0) {

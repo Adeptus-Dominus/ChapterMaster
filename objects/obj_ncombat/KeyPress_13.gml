@@ -43,10 +43,13 @@ if (!instance_exists(obj_popup)) {
 
                 fack = 1;
 
-                newline = "------------------------------------------------------------------------------";
-                scr_newtext();
-                newline = "------------------------------------------------------------------------------";
-                scr_newtext();
+                var _newline = "";
+                var _newline_color = eMSG_COLOR.DEFAULT;
+
+                _newline = "------------------------------------------------------------------------------";
+                combat_log.push(_newline, _newline_color);
+                _newline = "------------------------------------------------------------------------------";
+                combat_log.push(_newline, _newline_color);
             }
 
             if ((fadein < 0) && (fadein > -100) && (started == 0)) {

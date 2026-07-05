@@ -1,51 +1,62 @@
-# Contributing
+# Contributing (WIP)
 
-WIP.
+We welcome contributions that fix bugs, reduce technical debt, improve documentation or readability. If you're new, start with bug reports or "help wanted" TODO tasks from Discord. For larger ideas, discuss on Discord before writing code.
 
-## GameMaker vs VSCode+Stitch
+## Maintainer Capacity and Sustainability
 
-There are generally two main ways of working with a **GameMaker** project: through **Visual Studio Code** or through **GameMaker IDE**.
+This project is most of the time maintained by a single (two on good days) active developer who handles fixes, features, CI workflows, releases, community management, and pull request review.
 
-- Working with the code through **GameMaker IDE** is not recommended for people used to normal IDEs. Use if you have to or like it.
-- The preferred alternative is to use [Visual Studio Code](https://code.visualstudio.com/) with the [Stitch](https://github.com/bscotch/stitch) extension, that is available via the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=bscotch.bscotch-stitch-vscode).
-- You can also use any other IDE to work with the code, but you'll have to use one of the above apps to build, as no other building method is available at the moment.
-- Other IDEs have no extended support for **GML** and as such typically are not recommended, unless you know what you're doing.
+Because maintainer time and mental capacity is a finite resource, strict enforcement of contribution standards is necessary to ensure the project remains sustainable.
 
-Nonetheless, some things will have to be done through **GameMaker IDE**, even if you use other IDEs, including VSCode, such as:
+These rules exist to prevent maintainer burnout and ensure the project continues to exist.
 
-- Most of the sprite management.
-- Debugging with breakpoints, function steps and real-time debugging.
-- Profiling.
-- Room management.
+---
 
-Here we'll only look at the VSCode. If you're interested in using the GameMaker IDE instead, see [this](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Compiling) and just skip the 1st step in that instruction.
+## Community Expectations
 
-## Preparations
+The project relies on mutual respect and constructive communication. Adherence to the following standards is **required**:
+- **Maintainer Authority:** Maintainers **retain the final decision** on project direction, balance, design choices, and what code gets merged.
+- **Merit Ladder:** New contributors must **establish a track record of reliability and effort** by addressing open bugs, refactoring debt, or documentation needs **before** proposing design changes. Unsolicited, opinionated design overhauls from unestablished contributors **likely will be met with skepticism**.
+- **Scope Realism:** Contributions must align with **current project priorities**. PRs that add complex features while ignoring critical bug backlogs create maintenance debt and **may be rejected**.
+- **Constructive Communication:** Personal attacks, passive-aggressive remarks, and unconstructive criticism of the existing codebase **are not welcomed**. If a segment of code is inefficient, **propose** a concrete, actionable solution.
+- **Effort, Not Titles:** External credentials, professional titles, or proclaimed skill levels do not grant authority to bypass the contribution pipeline or override feedback from other community members. Peer interaction must remain constructive and collaborative; technical expertise must be used to guide others rather than dismiss them.
+- **Forks:** If your vision for the project fundamentally diverges from the design philosophy established by the maintainers, you are encouraged to **fork the repository** and maintain it yourself.
 
-1. Learn what Git, source control, and GitHub are, how to use them. There is no way around it.
-   - If you are new to Git, then it's recommended to read the [Pro Git](https://git-scm.com/book/en/v2) book. You only need to read the first 3 chapters to comfortably work with Git, optionally chapter 6 to get more info on GitHub.
-   - If you prefer a more comfortable, graphical user interface based approach to Git, instead of command line, then it's recommended to use one of the options below, both are free and popular:
-     - [GitKraken](https://www.gitkraken.com/) + [Tutorials](https://www.gitkraken.com/learn/git/tutorials)
-     - [SourceTree](https://www.sourcetreeapp.com/) + [Tutorials](https://confluence.atlassian.com/get-started-with-sourcetree)
-2. Fork the repository.
-3. Clone your fork locally through Git CLI or any other GUI wrapper you've chosen.
+Failure to follow these expectations may result in **closed pull requests** or a **restriction** from the contribution process.
 
-## Setting up the Visual Studio Code
+---
 
-1. Get the Visual Studio Code (VSCode) installed, if not already.
-   - (Optional) It's recommended to get the Insider version, as it's the most frequently updated one and gets all new features first.
-   - (Optional) Get a hang of VSCode by reading some guides on the internet, installing some useful QoL extensions, configuring various settings, etc.
-2. Add the project's folder that you've cloned to the workspace, wait for it to load.
-3. Get the Stitch extension installed.
-   - (Optional) Watch [this guide video](https://youtu.be/N0wnHauUQjA?si=GPQ22a_LyZq3Y9LP) that covers basic features of **Stitch**, made by its creator.
-   - (Optional) Edit various **Stitch** specific settings, to improve your QoL.
-   - (Optional) It's recommended to disable "Run in Terminal" **Stitch** option. This allows you to goto error lines that come up in the output window and custom color output lines. The explanation is in the "Stitch Runner Panel" section on [this page](https://marketplace.visualstudio.com/items?itemName=bscotch.bscotch-stitch-vscode).
-4. Run the game by pressing F5 or finding the run button on the **Stitch** panel, wait for it to download the **GameMaker** version and build the game.
-5. Ensure that the game launches and works, exit.
+## Pull Requests
 
-## Working with the code
+To keep the codebase manageable and safe, PRs must be immediately understandable. If a PR is overly complex, touches too many systems, or lacks clear documentation, it cannot be safely merged.
 
-- Read the code, modify it, test, repeat.
-- Check some general [GML hints](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/General-GML-hints-from-@sinthorion).
-- Get accustomed to some [basic styling guidelines](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CODE_STYLE.md).
-- Check the list of some [useful resources](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Useful-resources).
+### Submission Rules
+
+- **Design Approval:** Changes affecting game balance, core mechanics, or user-facing features **require prior discussion and approval**. Discuss the proposal on Discord before writing code. Unapproved design changes **will likely be closed**.
+- **No Code Dumps:** Monolithic feature dumps that introduce thousands of lines of code without addressing existing debt **will likely not be accepted**. Focus on incremental, testable improvements.
+- **Self-Testing:** Verify that changes do not break existing functionality. Every PR must include a brief note on how you tested the change. For small fixes, "ran it locally and confirmed the bug no longer reproduces" is sufficient. For larger changes, describe what you checked and how.
+- **Clarity and Documentation:** Clearly document the specific problem being solved. Maintainers **will not** untangle changes made without an explanation; such pull requests **will require a complete description rewrite** or **may be closed**.
+- **Code Style:** Review and adhere to the guidelines in `CODE_STYLE.md`.
+
+### Single Change vs. Atomic Batches
+
+Pull requests should *ideally* address a single logical change. However, multi-system PRs are *permitted* under **strict conditions**:
+- The PR must be structured as a **batch of independent, atomic commits**.
+- Each commit must represent exactly **one logical change**, use **Conventional Commit** naming, and be **completely self-contained** (squashed clean of fixup commits), so that the PR can be rebase-merged.
+- The maintainer must be able to **review the PR chronologically**, commit by commit, without encountering broken states between commits. 
+- If a multi-system PR lacks this clean commit hygiene, you will be **required to split it** into separate branches.
+
+### On AI-Generated Code
+
+Pull requests generated primarily by AI tools without thorough human review, testing, and understanding of the codebase **will be treated as code dumps** and rejected. **You** are responsible for every line you submit, regardless of how it was produced.
+
+### Review Process
+
+- **Response Times:** Expect initial feedback within roughly a few days. If you haven't heard back after 3, a polite nudge on Discord is fine.
+- **Stale Policy:** Pull requests with no activity or unresolved change requests for 14 days will be marked stale. Stale PRs are no longer considered active, other contributors are free to work in the same area without conflict avoidance, and the PR will not block parallel efforts. The PR itself may remain open or be converted to a draft at the maintainer's discretion.
+
+---
+
+## Getting Help
+
+For clarifications regarding architectural decisions or contribution guidelines, reach out via the Discord server.

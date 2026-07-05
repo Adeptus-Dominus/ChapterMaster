@@ -1,14 +1,9 @@
 // Excommunicatus Traitorus
 instance_activate_object(obj_star);
 
-var witch = obj_controller;
-if (instance_exists(obj_turn_end)) {
-    witch = obj_turn_end;
-}
-
 decare_war_on_imperium_audiences();
 
-if ((obj_controller.faction_gender[10] == 1) && (obj_controller.known[eFACTION.CHAOS] == 0) && (obj_controller.faction_defeated[10] == 0)) {
+if ((faction_gender[10] == 1) && (known[eFACTION.CHAOS] == 0) && (faction_defeated[10] == 0)) {
     scr_audience(10, "intro");
 }
 

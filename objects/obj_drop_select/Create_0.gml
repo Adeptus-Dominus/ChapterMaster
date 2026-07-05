@@ -155,8 +155,8 @@ y1 = 0;
 x2 = 0;
 y2 = 0;
 
-formation = new InteractiveButton();
-target = new InteractiveButton();
+btn_formation = new InteractiveButton();
+btn_target = new InteractiveButton();
 
 btn_attack = new InteractiveButton();
 btn_attack.text_color = CM_GREEN_COLOR;

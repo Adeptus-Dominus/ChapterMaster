@@ -101,20 +101,20 @@ try {
         u.image_alpha = 0.5;
 
         if (fortified == 2) {
-            u.ac[1] = 30;
-            u.hp[1] = 400;
+            u.ac = 30;
+            u.hp = 400;
         }
         if (fortified == 3) {
-            u.ac[1] = 40;
-            u.hp[1] = 800;
+            u.ac = 40;
+            u.hp = 800;
         }
         if (fortified == 4) {
-            u.ac[1] = 40;
-            u.hp[1] = 1250;
+            u.ac = 40;
+            u.hp = 1250;
         }
         if (fortified == 5) {
-            u.ac[1] = 40;
-            u.hp[1] = 1500;
+            u.ac = 40;
+            u.hp = 1500;
         }
 
         if (siege && (fortified > 0) && defending) {
@@ -122,7 +122,7 @@ try {
             u.hp[1] = round(u.hp[1] * 1.2);
         }
 
-        u.maxhp[1] = u.hp[1];
+        u.maxhp = u.hp;
     }
 
     var _num = xxx / 10;
@@ -1825,56 +1825,91 @@ try {
         // Small Genestealer Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);
-            enemy_dudes = "11";
-
-            u.dudes[1] = "Genestealer";
-            u.dudes_num[1] = 10;
-
-            u = instance_create(0, 240, obj_enunit);
-            u.dudes[1] = "Lictor";
-            u.dudes_num[1] = 1;
-            u.flank = 1;
-        }
-        // Medium Genestealer Group
-        if (threat == 2) {
-            u = instance_nearest(xxx, 240, obj_enunit);
             enemy_dudes = "100";
 
-            u.dudes[1] = "Genestealer Patriarch";
+            u.dudes[1] = "Cultist";
+            u.dudes_num[1] = 50;
+            u.dudes[2] = "Hybrid";
+            u.dudes_num[2] = 25;
+
+            u = instance_create(0, 240, obj_enunit);
+            u.dudes[1] = "Jackal";
+            u.dudes_num[1] = 25;
+            u.flank = 1;
+        }
+        // Medium Genestealer Cult Group
+        if (threat == 2) {
+            u = instance_nearest(xxx, 240, obj_enunit);
+            enemy_dudes = "460";
+
+            u.dudes[1] = "Magus";
             u.dudes_num[1] = 1;
-            u.dudes[2] = "Genestealer";
-            u.dudes_num[2] = 30;
+            u.dudes[2] = "Primus";
+            u.dudes_num[2] = 1;
+            u.dudes[3] = "Aberrant";
+            u.dudes_num[3] = 30;
+            u.dudes[4] = "Goliath Truck";
+            u.dudes_num[4] = 5;
 
             instance_deactivate_object(u);
             u = instance_nearest(xxx + 10, 240, obj_enunit);
             u.dudes[1] = "Cultist";
-            u.dudes_num[1] = 150;
+            u.dudes_num[1] = 300;
+            u.dudes[2] = "Hybrid";
+            u.dudes_num[2] = 75;
+            u.dudes[3] = "Goliath Rockgrinder";
+            u.dudes_num[3] = 5;
 
             u = instance_create(0, 240, obj_enunit);
-            u.dudes[1] = "Lictor";
-            u.dudes_num[1] = 1;
+            u.dudes[1] = "Jackal";
+            u.dudes_num[1] = 40;
+            u.flank = 1;
+            u.dudes[2] = "Ridgerunner";
+            u.dudes_num[2] = 3;
             u.flank = 1;
         }
         // Large Genestealer Group
         if (threat == 3) {
             u = instance_nearest(xxx, 240, obj_enunit);
-            enemy_dudes = "100";
+            enemy_dudes = "969";
 
-            u.dudes[1] = "Genestealer Patriarch";
-            u.dudes_num[1] = 1;
-            u.dudes[2] = "Genestealer";
-            u.dudes_num[2] = 120;
-            u.dudes[3] = "Armoured Limousine";
-            u.dudes_num[3] = 20;
+            u.dudes[1] = "Magus";
+            u.dudes_num[1] = 3;
+            u.dudes[2] = "Aberrant";
+            u.dudes_num[2] = 60;
+            u.dudes[3] = "Primus";
+            u.dudes_num[3] = 3;
+            u.dudes[4] = "Goliath Truck";
+            u.dudes_num[4] = 8;
 
             instance_deactivate_object(u);
             u = instance_nearest(xxx + 10, 240, obj_enunit);
             u.dudes[1] = "Cultist";
-            u.dudes_num[1] = 600;
+            u.dudes_num[1] = 300;
+            u.dudes[2] = "Hybrid";
+            u.dudes_num[2] = 100;
+            u.dudes[3] = "Goliath Truck";
+            u.dudes_num[3] = 8;
+            u.dudes[4] = "Primus";
+            u.dudes_num[4] = 3;
+
+            instance_deactivate_object(u);
+            u = instance_nearest(xxx + 20, 240, obj_enunit);
+            u.dudes[1] = "Cultist";
+            u.dudes_num[1] = 300;
+            u.dudes[2] = "Hybrid";
+            u.dudes_num[2] = 100;
+            u.dudes[3] = "Goliath Rockgrinder";
+            u.dudes_num[3] = 10;
+            u.dudes[4] = "Primus";
+            u.dudes_num[4] = 3;
 
             u = instance_create(0, 240, obj_enunit);
-            u.dudes[1] = "Lictor";
-            u.dudes_num[1] = 6;
+            u.dudes[1] = "Jackal";
+            u.dudes_num[1] = 60;
+            u.flank = 1;
+            u.dudes[2] = "Ridgerunner";
+            u.dudes_num[2] = 8;
             u.flank = 1;
         }
         // Small Tyranid Army
@@ -2503,6 +2538,229 @@ try {
     // The CSM warband compositions belong to true Chaos forces (p_chaos), which now
     // arrive as eFACTION.CHAOS. Second half of the spawn-side renumbering swap.
     if ((enemy == eFACTION.CHAOS) && (battle_special != "ChaosWarband") && (string_count("cs_meeting_battle", battle_special) == 0)) {
+        // Small CSM Group
+        if (threat == 1) {
+            u = instance_nearest(xxx, 240, obj_enunit);
+            enemy_dudes = "5";
+
+            u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+            }
+            u.dudes_num[1] = 5;
+            enemies[1] = u.dudes[1];
+            u.dudes[2] = "Cultist Elite";
+            u.dudes_num[2] = 30;
+            enemies[2] = u.dudes[2];
+        }
+        // Medium Daemon Group
+        if (threat == 2) {
+            u = instance_nearest(xxx, 240, obj_enunit);
+            enemy_dudes = "90";
+
+            u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+            }
+            u.dudes_num[1] = 30;
+
+            instance_deactivate_object(u);
+            u = instance_nearest(xxx + 10, 240, obj_enunit);
+            u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+            }
+            u.dudes_num[1] = 30;
+            u.dudes[2] = "Defiler";
+            u.dudes_num[2] = 1;
+        }
+        // Large Daemon Group
+        if (threat == 3) {
+            u = instance_nearest(xxx, 240, obj_enunit);
+            enemy_dudes = "240";
+
+            u.dudes[1] = "Greater Daemon of " + choose("Tzeentch", "Slaanesh", "Nurgle", "Khorne");
+            if (slaa) {
+                u.dudes[1] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[1] = 1;
+            u.dudes[2] = "Chaos Sorcerer";
+            u.dudes_num[2] = 1;
+            u.dudes[3] = "Pink Horror";
+            if (slaa) {
+                u.dudes[3] = "Daemonette";
+            }
+            u.dudes_num[3] = 60;
+
+            instance_deactivate_object(u);
+            u = instance_nearest(xxx + 10, 240, obj_enunit);
+            u.dudes[1] = "Defiler";
+            u.dudes_num[1] = 2;
+
+            instance_deactivate_object(u);
+            u = instance_nearest(xxx + 20, 240, obj_enunit);
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+                u.dudes_num[1] = 240;
+            } else {
+                u.dudes[1] = "Bloodletter";
+                u.dudes_num[1] = 60;
+                u.dudes[2] = "Plaguebearer";
+                u.dudes_num[2] = 60;
+                u.dudes[3] = "Daemonette";
+                u.dudes_num[3] = 60;
+                u.dudes[4] = "Maulerfiend";
+                u.dudes_num[4] = 2;
+            }
+        }
+        // Small Daemon Army
+        if (threat == 4) {
+            u = instance_nearest(xxx + 40, 240, obj_enunit);
+            enemy_dudes = "400";
+            u.neww = 1;
+
+            u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch"));
+            if (slaa) {
+                u.dudes[1] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[1] = 1;
+            u.dudes[2] = "Chaos Sorcerer";
+            u.dudes_num[2] = 2;
+            u.dudes[3] = "Chaos Chosen";
+            u.dudes_num[3] = 10;
+
+            instance_deactivate_object(u);
+
+            u = instance_nearest(xxx + 20, 240, obj_enunit);
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+                u.dudes_num[1] = 400;
+                u.dudes[2] = "Maulerfiend";
+                u.dudes_num[2] = 2;
+            } else {
+                u.dudes[1] = "Bloodletter";
+                u.dudes_num[1] = 100;
+                u.dudes[2] = "Daemonette";
+                u.dudes_num[2] = 100;
+                u.dudes[3] = "Plaguebearer";
+                u.dudes_num[3] = 100;
+                u.dudes[4] = "Pink Horror";
+                u.dudes_num[4] = 100;
+                u.dudes[5] = "Maulerfiend";
+                u.dudes_num[5] = 2;
+            }
+            instance_deactivate_object(u);
+        }
+        // Medium Daemon Army
+        if (threat == 5) {
+            u = instance_nearest(xxx + 40, 240, obj_enunit);
+            enemy_dudes = "1000";
+            u.neww = 1;
+
+            u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[1] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[1] = 1;
+            u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[2] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[2] = 1;
+            u.dudes[3] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[3] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[3] = 1;
+            u.dudes[4] = "Soul Grinder";
+            u.dudes_num[4] = 2;
+            instance_deactivate_object(u);
+
+            u = instance_nearest(xxx + 20, 240, obj_enunit);
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+                u.dudes_num[1] = 1000;
+                u.dudes[2] = "Maulerfiend";
+                u.dudes_num[2] = 2;
+            } else {
+                u.dudes[1] = "Bloodletter";
+                u.dudes_num[1] = 250;
+                u.dudes[2] = "Daemonette";
+                u.dudes_num[2] = 250;
+                u.dudes[3] = "Plaguebearer";
+                u.dudes_num[3] = 250;
+                u.dudes[4] = "Pink Horror";
+                u.dudes_num[4] = 250;
+                u.dudes[5] = "Maulerfiend";
+                u.dudes_num[5] = 2;
+            }
+            instance_deactivate_object(u);
+        }
+        // Large Daemon Army
+        if (threat == 6) {
+            u = instance_nearest(xxx + 40, 240, obj_enunit);
+            enemy_dudes = "2000";
+            u.neww = 1;
+
+            u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[1] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[1] = 1;
+            u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[2] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[2] = 1;
+            u.dudes[3] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[3] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[3] = 1;
+            u.dudes[4] = "Soul Grinder";
+            u.dudes_num[4] = 1;
+            instance_deactivate_object(u);
+
+            u = instance_nearest(xxx + 30, 240, obj_enunit);
+            u.neww = 1;
+            u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[1] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[1] = 1;
+            u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[2] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[2] = 1;
+            u.dudes[3] = "Soul Grinder";
+            u.dudes_num[3] = 1;
+            instance_deactivate_object(u);
+
+            u = instance_nearest(xxx + 20, 240, obj_enunit);
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+                u.dudes_num[1] = 2000;
+                u.dudes[2] = "Maulerfiend";
+                u.dudes_num[2] = 3;
+            } else {
+                u.dudes[1] = "Bloodletter";
+                u.dudes_num[1] = 500;
+                u.dudes[2] = "Daemonette";
+                u.dudes_num[2] = 500;
+                u.dudes[3] = "Plaguebearer";
+                u.dudes_num[3] = 500;
+                u.dudes[4] = "Pink Horror";
+                u.dudes_num[4] = 500;
+                u.dudes[5] = "Maulerfiend";
+                u.dudes_num[5] = 3;
+            }
+            instance_deactivate_object(u);
+        }
+    }
+
+    // ** Chaos Space Marines Forces **
+    if ((enemy == eFACTION.HERETICS) && (battle_special != "ChaosWarband") && (string_count("cs_meeting_battle", battle_special) == 0)) {
         // Small CSM Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);

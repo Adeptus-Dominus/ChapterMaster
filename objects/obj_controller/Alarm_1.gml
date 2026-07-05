@@ -20,12 +20,12 @@ good_log = 1;
 
 var xx, yy, did = 0, _current_system = 0, px = 0, py = 0;
 // Set player set
-_current_system = find_player_spawn_star();
+var _current_system = find_player_spawn_star();
 
 instance_activate_object(obj_star);
-var _player_star;
+var _player_star = noone;
 // Set player homeworld
-did = instance_exists(_current_system);
+var did = instance_exists(_current_system);
 if (did) {
     _player_star = _current_system.id;
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
@@ -485,9 +485,6 @@ if (did != 0) {
 }
 
 // Eldar craftworld here
-
-var go = 0;
-
 craftworld = 1;
 
 for (var i = 0; i < 100; i++) {

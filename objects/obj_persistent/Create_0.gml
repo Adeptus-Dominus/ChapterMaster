@@ -10,7 +10,7 @@ USERNAME_PROMPT.prompt();
 
 global.save_version = 0;
 global.returned = 0;
-global.debug = 0;
+global.debug = false;
 global.current_music = -1;
 global.load = 0;
 global.restart = 0;

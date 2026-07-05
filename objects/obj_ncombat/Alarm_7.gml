@@ -508,8 +508,8 @@ try {
 
             if (battle_special != "ChaosWarband") {
                 with (obj_star) {
-                    if (string_count("WL" + string(enemy), p_feature[battle_id]) > 0) {
-                        p_feature[battle_id] = string_replace(p_feature[battle_id], "WL" + string(enemy) + "|", "");
+                    if (string_count("WL" + string(other.enemy), p_feature[other.battle_id]) > 0) {
+                        p_feature[other.battle_id] = string_replace(p_feature[other.battle_id], "WL" + string(other.enemy) + "|", "");
                     }
                 }
             }
