@@ -2,36 +2,19 @@
   <img src="https://github.com/user-attachments/assets/47772b42-59ad-4fdf-84de-ae9bcba999be" alt="Chapter Master - Adeptus Dominus Logo"/>
 </p>
 
-# Chapter Master - Adeptus Dominus
+# Chapter Master 1.5 – Adeptus Indomitus
 
-[![Development Release](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/create_release.yml/badge.svg?branch=main)](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/create_release.yml)
-[![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
-[![GitHub repo size](https://img.shields.io/github/repo-size/Adeptus-Dominus/ChapterMaster?style=flat&label=Repo%20Size&labelColor=4493f8&color=545454)](https://github.com/Adeptus-Dominus/ChapterMaster)
+**Chapter Master 1.5 – Adeptus Indomitus** is a major continuation fork of *Chapter Master: Adeptus Dominus*, expanding the game from a pure Space Marine Chapter command simulator into a broader Imperial war effort.
 
-**Chapter Master** (aka CM) is a strategy/simulation game, written in **Game Maker Language**, originally designed and developed by Duke.\
-This project aims to continue development on the game, fix any bugs, expand and add features.
+The central addition is a fieldable **Imperial Guard / Astra Militarum Auxilia** layer. The player can bargain with Imperial and Mechanicus authorities to raise Guardsmen, Guard Sergeants, Heavy Weapons Teams, Chimeras, Leman Russ tanks, and Basilisk artillery, then deploy them alongside the Chapter as a supporting Imperial force.
 
-**Adeptus Dominus** is just how the team of primordial collaborators decided to call themselves and the new version of the game.
+This fork adds new Guard unit profiles, Guard weapons, vehicle weapons, armour, Auxilia organization, and dedicated combat behaviour. Guardsmen are not just renamed Marines: they fight as mass infantry screens, split into capped lasgun volleys, shield more valuable forces behind them, and require armour, tanks, artillery, and Astartes support to survive serious threats.
 
-## Links
+Ground combat has been heavily reworked. Targeting now better distinguishes anti-infantry and anti-tank fire, armour walls no longer create absurd all-or-nothing shooting behaviour, partial volleys can pierce through vehicle screens, splash damage can carry over, vehicle weapons remain relevant at point-blank range, and dead or empty formations are cleaned up more reliably.
 
-Our discord server: [Chapter Master Discord](https://discord.gg/zAGpqHzsXQ)
-  - Where most of the development talk, feature suggestion and bug-reporting takes place.
-  - GitHub issues are not used at the moment, as such we use #bug-report-forum in this server to handle bug reports.
-  - If you can code, draw, design, help with the GitHub stuff or just want to help in any way possible - you'll be welcomed with open arms.
-  - If you just love WH40K and want to chat - you'll have a great time in the server as well.
+The campaign layer has also been expanded with Auxilia recruitment through diplomacy, Mechanicus armour support, per-ship assault capacity, local assault counters, lost-in-the-Warp ship events, Eldar incursion and craftworld-intel systems, improved fleet handling, better management UI, richer unit profile tooltips, and numerous bug fixes.
 
-1d6Chan Wiki: [Chapter Master: Adeptus Dominus](https://1d6chan.miraheze.org/wiki/Chapter_Master:_Adeptus_Dominus)
-  - With some helpful pages that explain some of the new systems added in the Adeptus Dominus version.
-  - Help with expanding it will be welcomed.
-
-Main repository: [Adeptus-Dominus/ChapterMaster](https://github.com/Adeptus-Dominus/ChapterMaster)
-
-## Playing
-
-### Windows, Linux, macOS
-
-Download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/releases/latest) or a [development pre-release](https://github.com/Adeptus-Dominus/ChapterMaster/releases), unzip and launch.
+This is an unofficial fan fork intended to preserve and expand the spirit of *Chapter Master* while pushing it toward a larger, more dynamic Imperial command experience.
 
 ## Compiling from source
 
