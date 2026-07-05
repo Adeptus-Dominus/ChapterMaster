@@ -68,11 +68,17 @@
 // Eldar for the craftworld itself (its garrison is 6). ELDAR_FLEET_ENABLED gates the
 // craftworld's orbiting fleet, disabled for now so the reveal never forces Eldar
 // naval combat; flip to 1 to restore it.
-#macro ELDAR_INCURSION_INTERVAL 15
+#macro ELDAR_INCURSION_INTERVAL 35
 #macro ELDAR_INCURSION_FORCE_BASE 3
 #macro ELDAR_INCURSION_FORCE_MAX 5
 #macro ELDAR_INTEL_REQUIRED 3
 #macro ELDAR_FLEET_ENABLED 1
+// Warhosts prefer worlds touched by the Great Enemy: a planet with heresy, chaos or
+// traitor presence is this many times likelier to be struck than a clean one. On
+// tainted worlds the warhost stays, battles the planetary defense force each
+// incursion tick and purges the taint; on clean worlds it withdraws after one
+// interval (its "secret mission" done) instead of garrisoning the sector forever.
+#macro ELDAR_TAINT_SPAWN_WEIGHT 5
 
 // Eldar naval combat tuning. Vanilla Eldar ships move at spid 60-100 while every other
 // faction's ships run 20-45, which is why fights against them degenerate into endless

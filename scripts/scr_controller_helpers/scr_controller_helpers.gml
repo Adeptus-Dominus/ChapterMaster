@@ -541,12 +541,14 @@ function eldar_intel_grant() {
 }
 
 /// @desc End-of-turn Eldar processing: fires the deferred craftworld reveal alert,
-/// then every ELDAR_INCURSION_INTERVAL turns lands a warhost on a random inhabited
-/// imperial world. Warhost strength ramps with collected intelligence
-/// (FORCE_BASE + clues, capped at FORCE_MAX), keeping the strongest Eldar for the
-/// craftworld itself. The planetary AI never acts on p_eldar (its pdf_attack line is
-/// commented out upstream), so a landed warhost persists as a fightable target until
-/// the player clears it.
+/// then every ELDAR_INCURSION_INTERVAL turns processes warhosts on the ground
+/// (tainted worlds: fight the PDF and purge the taint; clean worlds: withdraw)
+/// and lands a new warhost on an inhabited imperial world, preferring worlds with
+/// heresy, chaos or traitor presence (ELDAR_TAINT_SPAWN_WEIGHT). Warhost strength
+/// ramps with collected intelligence (FORCE_BASE + clues, capped at FORCE_MAX),
+/// keeping the strongest Eldar for the craftworld itself. The planetary AI never
+/// acts on p_eldar (its pdf_attack line is commented out upstream); the fighting
+/// on tainted worlds is handled here instead.
 function eldar_incursion_tick() {
     if (variable_instance_exists(obj_controller, "eldar_reveal_alert_pending") && obj_controller.eldar_reveal_alert_pending) {
         obj_controller.eldar_reveal_alert_pending = false;
@@ -571,6 +573,38 @@ function eldar_incursion_tick() {
     if ((obj_controller.turn < ELDAR_INCURSION_INTERVAL) || ((obj_controller.turn % ELDAR_INCURSION_INTERVAL) != 0)) {
         return;
     }
+    // Process warhosts already on the ground before landing a new one. On a world
+    // touched by the Great Enemy (heresy, chaos or traitor presence) the warhost
+    // stays: it battles the planetary defense force (whose loyalty it does not
+    // trust) and purges the taint itself, taking attrition. On a clean world its
+    // secret mission is done and it withdraws, so warhosts stop accumulating as
+    // permanent garrisons across the sector.
+    with (obj_star) {
+        if (craftworld || space_hulk) {
+            continue;
+        }
+        for (var i = 1; i <= planets; i++) {
+            if (p_eldar[i] <= 0) {
+                continue;
+            }
+            var _tainted = (p_hurssy[i] > 0) || (p_chaos[i] > 0) || (p_traitors[i] > 0);
+            if (_tainted) {
+                if (p_pdf[i] > 0) {
+                    p_pdf[i] = max(0, p_pdf[i] - irandom_range(1, p_eldar[i]));
+                    if (irandom(2) == 0) {
+                        p_eldar[i] = max(1, p_eldar[i] - 1);
+                    }
+                    scr_event_log("red", $"The Eldar warhost on {name} {scr_roman(i)} battles the planetary defense forces.");
+                }
+                p_hurssy[i] = max(0, p_hurssy[i] - 1);
+                p_chaos[i] = max(0, p_chaos[i] - 1);
+                p_traitors[i] = max(0, p_traitors[i] - 1);
+            } else {
+                p_eldar[i] = 0;
+                scr_event_log("green", $"The Eldar warhost on {name} {scr_roman(i)} has vanished as suddenly as it arrived.");
+            }
+        }
+    }
     var _force = min(ELDAR_INCURSION_FORCE_BASE + eldar_intel_count(), ELDAR_INCURSION_FORCE_MAX);
     var _targets = [];
     with (obj_star) {
@@ -580,6 +614,12 @@ function eldar_incursion_tick() {
         for (var i = 1; i <= planets; i++) {
             if ((p_type[i] != "Dead") && (p_owner[i] >= 1) && (p_owner[i] <= 5) && (p_eldar[i] == 0)) {
                 array_push(_targets, [id, i]);
+                // Tainted worlds draw the Eldar: weight them heavier in the pick.
+                if ((p_hurssy[i] > 0) || (p_chaos[i] > 0) || (p_traitors[i] > 0)) {
+                    repeat (ELDAR_TAINT_SPAWN_WEIGHT - 1) {
+                        array_push(_targets, [id, i]);
+                    }
+                }
             }
         }
     }
