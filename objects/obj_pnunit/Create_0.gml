@@ -20,6 +20,11 @@ column_size = 0;
 // Basic combat orders: "" until seeded from the battle type on the block's first
 // Alarm_0 tick, then "advance" or "hold", toggled by clicking the block's bar.
 move_order = "";
+// True only once the player has clicked this block. Leapfrogging is reserved for
+// manually ordered blocks: the seeded auto-advance must keep vanilla stall behavior
+// or formations scramble on their own (tester's raid reordered itself with no
+// orders given, tacticals vaulting the engaged front line).
+order_manual = false;
 
 centerline_offset = 0;
 pos = 880;

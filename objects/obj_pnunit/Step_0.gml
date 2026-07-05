@@ -13,4 +13,7 @@ update_block_unit_count();
 // (move_order != ""), and the Defenses pseudo-block is not orderable.
 if (mouse_check_button_pressed(mb_left) && (move_order != "") && (veh_type[1] != "Defenses") && hit()) {
     move_order = (move_order == "advance") ? "hold" : "advance";
+    // Player-issued orders unlock leapfrogging for this block; untouched blocks
+    // keep vanilla movement (stall behind friendlies) so formations hold shape.
+    order_manual = true;
 }

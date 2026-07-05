@@ -20,7 +20,11 @@ try {
         move_order = (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)) ? "advance" : "hold";
     }
     if ((move_order == "advance") && (veh_type[1] != "Defenses")) {
-        move_unit_block("east", 1, false, true);
+        // Leapfrogging only for blocks the player has clicked (order_manual):
+        // default auto-advance keeps vanilla stall behavior, otherwise same-tick
+        // processing order and an engaged front line make rear blocks vault their
+        // own formation with no orders given.
+        move_unit_block("east", 1, false, order_manual);
     }
 
     if (!instance_exists(enemy)) {
