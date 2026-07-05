@@ -18,21 +18,21 @@ This is an unofficial fan fork intended to preserve and expand the spirit of *Ch
 
 ## The biggest concrete changes
 
-_Imperial Guard / Auxilia system_. Added real Guard-side content: Guardsmen, Guard Squads, Heavy Weapons Teams, and Guard Sergeants, with human base stats, Flak Armour, Lasguns, Bayonets, Heavy Bolters, Guard Chainswords, and Laspistols.
+*****_Imperial Guard / Auxilia system_. Added real Guard-side content: Guardsmen, Guard Squads, Heavy Weapons Teams, and Guard Sergeants, with human base stats, Flak Armour, Lasguns, Bayonets, Heavy Bolters, Guard Chainswords, and Laspistols.
 
-_Diplomatic recruitment and attached armour_. Sector Governor trade now raises Guardsmen directly at the homeworld, adds one Guard Sergeant per full squad, one Chimera per 200 Guardsmen, and one Heavy Weapons Team per 100 Guardsmen; Mechanicus trade can now provide Leman Russ tanks and Basilisks for the Auxilia company.
+*****_Diplomatic recruitment and attached armour_. Sector Governor trade now raises Guardsmen directly at the homeworld, adds one Guard Sergeant per full squad, one Chimera per 200 Guardsmen, and one Heavy Weapons Team per 100 Guardsmen; Mechanicus trade can now provide Leman Russ tanks and Basilisks for the Auxilia company.
 
-_New Astra Militarum wargear and vehicles_. Added or integrated Flak Armour, Lasguns, Hellguns, Earthshaker Cannons, Battle Cannons, Multi-Lasers, Chimeras, Leman Russ loadouts, and Basilisk artillery loadouts.
-_
-Combat model overhaul._ Guard screens occupy forward columns, anti-tank weapons now have a dedicated target-preference threshold, volleys pierce armour walls by depth instead of passing through for free or vanishing, and Guardsmen split into capped lasgun stacks instead of forming one giant unrealistic volley.
+*****_New Astra Militarum wargear and vehicles_. Added or integrated Flak Armour, Lasguns, Hellguns, Earthshaker Cannons, Battle Cannons, Multi-Lasers, Chimeras, Leman Russ loadouts, and Basilisk artillery loadouts.
 
-_Better targeting, armour, and casualty logic_. Enemy weapons now prefer vehicles only when their AP role justifies it, Guard screens can actually shield vehicles behind them, column piercing works on both sides, partial volleys scale damage correctly, stale casualty reports are cleared, and vehicle armour penetration was fixed so enemy anti-tank weapons can actually hurt vehicles.
+*****_Combat model overhaul._ Guard screens occupy forward columns, anti-tank weapons now have a dedicated target-preference threshold, volleys pierce armour walls by depth instead of passing through for free or vanishing, and Guardsmen split into capped lasgun stacks instead of forming one giant unrealistic volley.
 
-_Fleet, assault, and campaign-layer additions._ Ships now have per-turn ground-assault support counters, planets have local assault counters, new ship defaults include Guard-related capacity fields, and lost-in-the-Warp ships can return with damage, corruption, mutiny, Chaos capture, or destruction outcomes.
+*****_Better targeting, armour, and casualty logic_. Enemy weapons now prefer vehicles only when their AP role justifies it, Guard screens can actually shield vehicles behind them, column piercing works on both sides, partial volleys scale damage correctly, stale casualty reports are cleared, and vehicle armour penetration was fixed so enemy anti-tank weapons can actually hurt vehicles.
 
-_Eldar campaign restoration and improvement_. Eldar are no longer only a hidden craftworld oddity:  added incursion/intel settings, craftworld reveal requirements, first-contact clues, and Eldar ship speed tuning.
+*****_Fleet, assault, and campaign-layer additions._ Ships now have per-turn ground-assault support counters, planets have local assault counters, new ship defaults include Guard-related capacity fields, and lost-in-the-Warp ships can return with damage, corruption, mutiny, Chaos capture, or destruction outcomes.
 
-_Management UI and quality-of-life_. The management screen now recognizes an Auxilia company, includes richer unit profile UI/tooltips, and has buttons for squad view, profile, bio, and capture image.
+*****_Eldar campaign restoration and improvement_. Eldar are no longer only a hidden craftworld oddity:  added incursion/intel settings, craftworld reveal requirements, first-contact clues, and Eldar ship speed tuning.
+
+*****_Management UI and quality-of-life_. The management screen now recognizes an Auxilia company, includes richer unit profile UI/tooltips, and has buttons for squad view, profile, bio, and capture image.
 
 ## Compiling from source
 
