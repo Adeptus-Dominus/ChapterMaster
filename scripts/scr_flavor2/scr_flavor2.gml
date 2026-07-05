@@ -490,8 +490,11 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     }
 }
 
-// Merge seam: fork-owned severity flavor retained on upstream's rebuilt log.
-function incoming_damage_flavor
+
+// Merge seam: fork-owned severity flavor (restored complete from the pre-merge
+// tree; the first restoration appended a truncated fragment that broke the whole
+// script's parse, degrading scr_flavor2 to a zero-argument function).
+/// @function incoming_damage_flavor
 /// @description Combat-log sentence for an enemy hit that did NOT kill, scaled by how close it came
 /// to a kill (_severity = damage over the target's health before the hit, 0..1). Vehicles get
 /// armour/hull language, infantry get wound language. Appended after the attack verb, e.g.
@@ -500,3 +503,17 @@ function incoming_damage_flavor
 /// @param {real} _severity 0..1
 /// @param {bool} _is_vehicle target is a vehicle
 /// @returns {string}
+function incoming_damage_flavor(_severity, _is_vehicle) {
+    if (_is_vehicle) {
+        if (_severity < 0.10) return choose("Only peeling the paint.", "Just chipping the paint.", "Pinging off the armour.", "Bouncing off the hull.", "Only scratching the armour.");
+        if (_severity < 0.35) return choose("Barely putting a dent in the armour.", "Leaving a few dents in the hull.", "Only scuffing the armour.");
+        if (_severity < 0.65) return choose("Piercing the armour.", "Punching through the plating.", "Cracking the armour open.");
+        if (_severity < 0.90) return choose("Punching a huge hole in the armour.", "Tearing a gash through the hull.", "Blowing a hole in the plating.");
+        return choose("Almost destroying it.", "Leaving it a smoking wreck.", "Nearly tearing it apart.");
+    }
+    if (_severity < 0.10) return choose("But the armour holds.", "But it is shrugged off.");
+    if (_severity < 0.35) return choose("Drawing blood.", "Causing light wounds.", "Leaving a few grazes.");
+    if (_severity < 0.65) return choose("Wounding several.", "Bloodying the ranks.", "Leaving wounded behind.");
+    if (_severity < 0.90) return choose("Leaving deep wounds.", "Savaging the ranks.", "Leaving many badly wounded.");
+    return choose("Leaving the survivors maimed and reeling.", "All but breaking them.", "Leaving them maimed and scattered.");
+}

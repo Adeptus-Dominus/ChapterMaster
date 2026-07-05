@@ -376,42 +376,9 @@ function flush_psychic_summary(_psy_log) {
 /// @desc Folds one attack-power cast into the per-formation psychic summary, keyed by power + target,
 ///       so many identical Librarian casts collapse into a single battle-log line.
 /// @param {Struct} _psy_log The accumulator struct (one per formation casting phase).
-function accumulate_psychic_cast(_psy_log, _power_name, _power_flavour, _target_name, _verb, _is_vehicle, _kills) {
-    var _key = _power_name + "|" + _target_name;
-    if (!variable_struct_exists(_psy_log, _key)) {
-        _psy_log[$ _key] = {
-            power: _power_name,
-            flavour: _power_flavour,
-            target: _target_name,
-            verb: _verb,
-            vehicle: _is_vehicle,
-            casts: 0,
-            kills: 0,
-        };
-    }
-    var _entry = _psy_log[$ _key];
-    _entry.casts += 1;
-    _entry.kills += _kills;
-}
-
-/// @desc Emits one battle-log line per power+target accumulated during a formation's casting phase.
-///       Mirrors scr_powers' own concatenation so spacing matches the individual-cast lines.
-/// @param {Struct} _psy_log The accumulator filled by accumulate_psychic_cast.
-function flush_psychic_summary(_psy_log) {
-    if (!is_struct(_psy_log)) {
-        return;
-    }
-    var _keys = variable_struct_get_names(_psy_log);
-    for (var i = 0; i < array_length(_keys); i++) {
-        var _e = _psy_log[$ _keys[i]];
-        var _cast_word = (_e.casts == 1) ? "casting" : "castings";
-        var _message = $"{_e.casts} {_cast_word} of '{_e.power}'{_e.flavour} {_e.kills} {_e.target} are {_e.verb}.";
-        var _size = _e.vehicle ? (_e.kills * 12) : (_e.kills * 3);
-        add_battle_log_message(_message, _size, 134);
-    }
-    if (array_length(_keys) > 0) {
-    }
-}
+// Duplicate accumulate_psychic_cast / flush_psychic_summary removed here: the
+// fork carried Tavish-lineage copies (legacy 3-argument add_battle_log_message)
+// alongside upstream's rebuilt versions above, producing duplicate script names.
 
 /// @desc Function to get requested data from the disciplines_data structure. Returns The requested data, or undefined if not found.
 /// @param _discipline_name - The name of the discipline
