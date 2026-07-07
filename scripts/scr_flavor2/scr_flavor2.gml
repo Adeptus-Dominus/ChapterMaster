@@ -521,11 +521,13 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     // which lands on the lowest tier.
     if ((m2 == "") && (lost_units_count == 0) && (hostile_shots > 0) && (target_type != "wall")) {
         m2 = incoming_damage_flavor(damage_severity, target_is_vehicle);
-        // Color coding ported from Tavish's CM-Poligon (CptMacTavish2224, tag
-        // LW_Beta_1.2): outcome reads at a glance against the red kill lines. Shots
-        // that bounced with no effect render white, hits that wounded without
-        // killing render light green.
-        mes_color = (damage_severity < 0.10) ? eMSG_COLOR.WHITE : eMSG_COLOR.LIGHTGREEN;
+        // Enemy fire reads in the red family, mirroring the player's green. A shot that
+        // bounces with no effect renders grey (neutral, same as armour-holds on both
+        // sides); a hit that wounds or pierces without killing renders bright red so
+        // incoming damage stands out as a threat rather than borrowing the player's
+        // light green. (Colour paradigm: green/light green = you dealing damage,
+        // red/bright red = the enemy dealing damage, grey = a save with no effect.)
+        mes_color = (damage_severity < 0.10) ? eMSG_COLOR.WHITE : eMSG_COLOR.BRIGHT_RED;
     }
 
     mes = m1 + m2 + m3;
