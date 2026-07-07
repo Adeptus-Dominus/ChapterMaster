@@ -476,6 +476,7 @@ function scr_end_turn() {
                     }
 
                     player_forge_data.player_forges = 0;
+                    player_forge_data.vehicle_hanger = [];
                     requisition += income;
                     scr_income();
                     gene_tithe -= 1;
