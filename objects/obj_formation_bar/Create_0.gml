@@ -6,7 +6,8 @@ old_y = 0;
 
 unit_type = "";
 unit_id = 0;
-for_arr = undefined; // reference to the controller's bat_*_for array, injected via move_data_to_current_scope in init_combat_bars
+/// @desc Reference to the controller's bat_*_for array, injected via move_data_to_current_scope in init_combat_bars
+bat_for = undefined;
 
 size = 0;
 col_parent = 0;
@@ -136,9 +137,7 @@ mouse_release = function(){
 	    if (_in_drop_zone && (obj_controller.temp[te] + size <= 10)) {
 	        obj_controller.temp[4800 + col_parent] -= size;
 	        obj_controller.click = 1;
-	        // [@ ] accessor: write through the reference — plain assignment would trigger a
-	        // copy-on-write duplicate (legacy COW arrays are enabled in this project)
-	        for_arr[@ obj_controller.formating] = mah_target.col_parent;
+	        bat_for[@ obj_controller.formating] = mah_target.col_parent;
 	        obj_cursor.dragging = 0;
 	        obj_cursor.image_index = 0;
 
