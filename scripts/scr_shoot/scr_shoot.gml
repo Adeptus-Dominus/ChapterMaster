@@ -315,13 +315,9 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 
                     attack_count_mod = max(1, splash[weapon_index_position]);
 
-                    final_hit_damage_value = damage_per_weapon - (target_armour_value * attack_count_mod); //damage armour reduction
+                    final_hit_damage_value = max(0, damage_per_weapon - target_armour_value); //damage armour reduction
 
                     final_hit_damage_value *= target_object.dudes_dr[target_type]; //damage_resistance mod
-
-                    if (final_hit_damage_value <= 0) {
-                        final_hit_damage_value = 0;
-                    } // Average after armour
 
                     c = shots_fired * final_hit_damage_value; // New damage
 
