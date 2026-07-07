@@ -16,12 +16,6 @@
 // armour-piercing weapons that ignore Flak. A successful save posts a combat-log line.
 // Astartes are bulky and hide poorly, so their save is much weaker than the Guard's.
 #macro GUARD_COVER_SAVE 0.4
-// Guardsman veterancy: a Guardsman who fights at the battle location and survives earns
-// GUARD_BATTLE_XP experience per victory. At GUARD_VETERAN_XP total they become eligible
-// for promotion to Veteran Guard, so a trooper must live through roughly
-// GUARD_VETERAN_XP / GUARD_BATTLE_XP battles (90 / 25 ~= 3-4). Both are tunable.
-#macro GUARD_BATTLE_XP 25
-#macro GUARD_VETERAN_XP 90
 #macro MARINE_COVER_SAVE 0.15
 
 // Cover fades as the enemy closes: the save is scaled by shooter distance (block units,
@@ -42,6 +36,16 @@
 #macro AT_PEN_AC_PENALTY 0.01
 #macro AT_PEN_MIN 0.1
 #macro AT_PEN_MAX 0.95
+
+// Range accuracy/damage falloff for ranged fire. Damage is scaled by how far the target
+// is relative to the weapon's range: at point blank it gets RANGE_POINT_BLANK_BONUS, and
+// it falls by up to RANGE_FALLOFF at maximum range, floored at RANGE_MIN_MULT. Short-range
+// weapons (Shotgun, Flamer) can only ever fire close, so they live in the bonus band and
+// hit hard; long-range weapons soften at the edge of their reach. Melee and wall fire are
+// exempt. Applied to dealt damage in scr_shoot.
+#macro RANGE_POINT_BLANK_BONUS 1.25
+#macro RANGE_FALLOFF 0.5
+#macro RANGE_MIN_MULT 0.6
 
 // Imperial Guard auxilia screen: the front-most battle columns guardsmen are dealt across.
 // Ten obj_pnunit columns exist (1 back to 10 front, higher column = nearer the enemy); the

@@ -28,6 +28,16 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
         // Shooter-to-target distance in block units, threaded into scr_clean so the cover
         // save can fade as the enemy closes (see damage_infantry / COVER_SAVE_FULL_RANGE).
         var _shot_dist = instance_exists(target_object) ? point_distance(x, y, target_object.x, target_object.y) / 10 : 0;
+
+        // Range accuracy/damage falloff. Ranged fire hits hardest up close and softens
+        // toward the weapon's maximum range; melee and wall fire are exempt (a knife does
+        // not care about distance). Applied to dealt damage below. See RANGE_* macros.
+        var _range_mult = 1;
+        if (melee_or_ranged == "ranged") {
+            var _weapon_range = range[weapon_index_position];
+            var _range_ratio = (_weapon_range > 0) ? clamp(_shot_dist / _weapon_range, 0, 1) : 0;
+            _range_mult = clamp(RANGE_POINT_BLANK_BONUS - _range_ratio * RANGE_FALLOFF, RANGE_MIN_MULT, RANGE_POINT_BLANK_BONUS);
+        }
         if (obj_ncombat.wall_destroyed == 1) {
             exit;
         }
@@ -116,7 +126,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     hostile_range = range[weapon_index_position];
                     hostile_splash = attack_count_mod;
 
-                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
+                    scr_clean(target_object, hostile_type, hit_number, (hostile_damage * _range_mult), hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
                 }
             } else if ((damage_type == "att") && (aggregate_damage > 0) && (stop == 0) && (shots_fired > 0)) {
                 var damage_per_weapon, hit_number;
@@ -152,7 +162,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     hostile_range = range[weapon_index_position];
                     hostile_splash = attack_count_mod;
 
-                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
+                    scr_clean(target_object, hostile_type, hit_number, (hostile_damage * _range_mult), hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
                 }
             } else if (((damage_type == "arp") || (damage_type == "dread")) && (armour_pierce > 0) && (stop == 0) && (shots_fired > 0)) {
                 var damage_per_weapon, hit_number;
@@ -203,7 +213,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         target_object.hostile_shooters = (wep_owner[weapon_index_position] == "assorted") ? 999 : 1;
                         hostile_type = 0;
 
-                        scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
+                        scr_clean(target_object, hostile_type, hit_number, (hostile_damage * _range_mult), hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
                     }
                 }
             }
@@ -368,7 +378,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                             var _ap_table = spill_block.dudes_vehicle[spill_rank] ? _veh_ap : _inf_ap;
                             _armour *= _ap_table[armour_pierce];
                         }
-                        var final_hit = max(0, (damage_per_weapon - (_armour * attack_count_mod)) * spill_block.dudes_dr[spill_rank]);
+                        var final_hit = max(0, (damage_per_weapon * _range_mult - (_armour * attack_count_mod)) * spill_block.dudes_dr[spill_rank]);
 
                         var rank_num = spill_block.dudes_num[spill_rank];
                         var rank_hp = spill_block.dudes_hp[spill_rank];
@@ -578,7 +588,7 @@ function scr_shoot_spread(weapon_index_position) {
                 }
 
                 var _rank_shots = _shots * (_f.dudes_num[r] / _total);
-                var _final_hit = max(0, (_dpw - (_armour * _mod)) * _f.dudes_dr[r]);
+                var _final_hit = max(0, (_dpw * _range_mult - (_armour * _mod)) * _f.dudes_dr[r]);
                 var _kills = min(floor((_rank_shots * _final_hit) / _f.dudes_hp[r]), _f.dudes_num[r]);
                 if (_kills < 0) {
                     _kills = 0;
