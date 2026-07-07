@@ -511,6 +511,11 @@ function scr_player_combat_weapon_stacks() {
 /// @self Asset.GMObject.obj_ncombat
 function set_up_player_blocks_turn() {
     if (instance_exists(obj_pnunit)) {
+        // Advance the line front-first as one ordered pass before any block fires, so a
+        // rear block never stalls behind a front block that has not moved yet (see
+        // move_player_blocks). Movement used to run per-block inside Alarm_0 in arbitrary
+        // instance order, which drifted rear vehicles out of the formation.
+        move_player_blocks();
         with (obj_pnunit) {
             alarm[3] = 2;
             wait_and_execute(3, scr_player_combat_weapon_stacks);

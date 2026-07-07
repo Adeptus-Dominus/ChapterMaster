@@ -256,6 +256,52 @@ function move_enemy_blocks() {
     ds_priority_destroy(_enemy_movement_queue);
 }
 
+/// @self Asset.GMObject.obj_pnunit
+/// @desc One player block's advance-to-contact step. Seeds this block's order on its
+/// first tick (raids/attacks advance, defense/static hold), advances one column east if
+/// ordered to (a personally ordered block leapfrogs; the auto-advancing body stops once
+/// the formation has met the enemy line), then latches formation contact so blocks
+/// processed later in the same front-first sweep hold instead of surging into gaps.
+/// Extracted from obj_pnunit Alarm_0 so movement can run in a single ordered pass.
+function move_player_block() {
+    if (move_order == "") {
+        move_order = (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)) ? "advance" : "hold";
+    }
+    if ((move_order == "advance") && (veh_type[1] != "Defenses")) {
+        if (order_manual) {
+            move_unit_block("east", 1, false, true);
+        } else if (!obj_ncombat.player_front_contact) {
+            move_unit_block("east", 1, false, false);
+        }
+    }
+    if (collision_point(x + 14, y, obj_enunit, 0, 1)) {
+        obj_ncombat.player_front_contact = true;
+    }
+}
+
+/// @self Asset.GMObject.obj_controller
+/// @desc Advance the whole player line front-first, mirroring move_enemy_blocks. Player
+/// front is the high-x (east) side, so the queue is drained highest-x first: the frontmost
+/// block advances and clears its column before the block behind it tries to move, so a rear
+/// block (a Rhino sitting behind the infantry) no longer stalls against a slot the front
+/// block has not vacated yet and drift out of the line. Replaces the old arbitrary
+/// instance-order per-block advance in obj_pnunit Alarm_0.
+function move_player_blocks() {
+    var _player_movement_queue = ds_priority_create();
+    with (obj_pnunit) {
+        ds_priority_add(_player_movement_queue, id, x);
+    }
+    while (!ds_priority_empty(_player_movement_queue)) {
+        var _player_block = ds_priority_delete_max(_player_movement_queue);
+        if (instance_exists(_player_block)) {
+            with (_player_block) {
+                move_player_block();
+            }
+        }
+    }
+    ds_priority_destroy(_player_movement_queue);
+}
+
 /// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit
 function block_composition_string() {
     var _composition_string = $"{unit_count}x Total; ";

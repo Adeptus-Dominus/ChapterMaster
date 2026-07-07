@@ -40,13 +40,11 @@ try {
     // gone froze mid-field with no order marker. A block the player has personally
     // ordered (order_manual) still advances and leapfrogs freely for manual maneuver,
     // ignoring the latch.
-    if ((move_order == "advance") && (veh_type[1] != "Defenses")) {
-        if (order_manual) {
-            move_unit_block("east", 1, false, true);
-        } else if (!obj_ncombat.player_front_contact) {
-            move_unit_block("east", 1, false, false);
-        }
-    }
+    // Advance-to-contact movement now runs once per turn in move_player_blocks (called
+    // from set_up_player_blocks_turn) as a front-first ordered sweep, so a rear block no
+    // longer stalls behind a front block that has not moved yet. By the time this alarm
+    // fires the line has already advanced; this event only resolves fire. The front-contact
+    // latch is still refreshed below from this block's post-move position.
 
     engaged = collision_point(x - 14, y, obj_enunit, 0, 1) != noone || collision_point(x + 14, y, obj_enunit, 0, 1) != noone;
 
