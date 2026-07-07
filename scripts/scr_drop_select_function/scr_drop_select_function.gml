@@ -293,11 +293,13 @@ function drop_select_unit_selection() {
             instance_activate_object(obj_drop_select);
 
             // Ship assault economy: each distinct ship contributing units to this
-            // ground assault spends one support use this turn (SHIP_ASSAULTS_PER_TURN
-            // max). fleet.acted above still ticks so raid and bombardment gating are
-            // unchanged. Local planetside forces (ship id -1) cost nothing. Raids do
-            // not spend uses.
-            if (attack == 1) {
+            // ground deployment spends one support use this turn (SHIP_ASSAULTS_PER_TURN
+            // max). This now covers raids as well as attacks (both are RAIDATTACK drops
+            // that land troops from ships), so a raid is gated per ship like an assault
+            // rather than by the fleet-wide acted counter. fleet.acted above still ticks
+            // for movement and the unconverted purge gate. Local planetside forces
+            // (ship id -1) cost nothing here; they spend a local use just below.
+            if (purge == eDROP_TYPE.RAIDATTACK) {
                 var _spent_ships = [];
                 var _local_participated = false;
                 for (var _su = 0; _su < array_length(roster.selected_units); _su++) {

@@ -56,6 +56,12 @@
 // can clear a system in one turn, but every launch spends real capacity. Raids, purges,
 // and bombardment keep their old fleet-level rules.
 #macro SHIP_ASSAULTS_PER_TURN 2
+// Disposition drop a full indiscriminate fire purge (100% of the population burned)
+// inflicts on a world's regard for the Chapter. Scaled down by the actual share killed
+// per purge, so a light burn costs a little and a total one costs this much. Selective
+// purges (targeted heretics) and governor assassinations carry no penalty. Tune down
+// toward 0 to soften, up for harsher consequences.
+#macro PURGE_FIRE_DISPO_PENALTY 40
 
 // Eldar craftworld hunt. The hidden craftworld and the full Eldar battle roster have
 // always been in the game; what was missing is any way for Eldar to appear (nothing

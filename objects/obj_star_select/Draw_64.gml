@@ -353,13 +353,21 @@ try {
                 with (obj_star_select) {
                     instance_destroy();
                 }
-            } else if (current_button == "Raid" && instance_nearest(x, y, obj_p_fleet).acted <= 1) {
-                // feather ignore once GM2064
-                instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, planet_number: obj_controller.selecting_planet, sh_target: instance_nearest(x, y, obj_p_fleet), purge: 0});
             } else if (current_button == "Raid") {
-                // Blocked actions say why instead of silently doing nothing (players
-                // assumed the game broke when clicks had no effect).
-                scr_popup("Raid", "This fleet has already expended its actions this turn and cannot launch a raid. Raiding requires a fleet that has spent at most one action.", "");
+                // Per-ship gate, matching Attack: a raid deploys troops from ships just
+                // like an assault, so it is allowed while any carrying ship at this star
+                // still has support uses left this turn (SHIP_ASSAULTS_PER_TURN, i.e. 2),
+                // or while local forces do. Replaces the old fleet-wide gate
+                // (fleet.acted <= 1) that blocked the whole fleet after two raids
+                // regardless of how many ships were involved.
+                if (can_ground_deploy(target, obj_controller.selecting_planet)) {
+                    // feather ignore once GM2064
+                    instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, planet_number: obj_controller.selecting_planet, sh_target: instance_nearest(x, y, obj_p_fleet), purge: 0});
+                } else {
+                    // Blocked actions say why instead of silently doing nothing (players
+                    // assumed the game broke when clicks had no effect).
+                    scr_popup("Raid", "Every ship and local force at this world has already supported the maximum number of raids and assaults this turn.", "");
+                }
             } else if (current_button == "Attack") {
                 var _allow_attack = true;
                 var _targ = !target.present_fleet[1] ? noone : instance_nearest(x, y, obj_p_fleet);
@@ -404,18 +412,20 @@ try {
                     instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, planet_number: obj_controller.selecting_planet, sh_target: _targ, purge: 1});
                 }
             } else if (current_button == "Bombard") {
-                instance_create(x, y, obj_bomb_select);
-                if (instance_exists(obj_bomb_select)) {
-                    obj_bomb_select.p_target = target;
-                    obj_bomb_select.sh_target = instance_nearest(x, y, obj_p_fleet);
-                    obj_bomb_select.p_data = p_data;
-                    if (instance_nearest(x, y, obj_p_fleet).acted > 0) {
-                        with (obj_bomb_select) {
-                            instance_destroy();
-                        }
-                        // Vanilla created the bombard screen and instantly destroyed it,
-                        // leaving the player with a dead click and no explanation.
-                        scr_popup("Bombardment", "This fleet has already acted this turn. Orbital bombardment must be the fleet's first action of the turn.", "");
+                // Per-ship gate: orbital bombardment is one per ship per turn and
+                // consumes that ship's whole support allowance, so it needs a ship at
+                // this star that has done nothing else this turn. Replaces the old
+                // fleet-wide gate (fleet.acted > 0) that let the whole fleet bombard
+                // only once regardless of ship count.
+                if (get_fresh_bombard_ship(target.name) == -1) {
+                    // Blocked actions say why instead of a dead click.
+                    scr_popup("Bombardment", "No ship in orbit is free to bombard this turn. Each ship can bombard once per turn, and a ship that has already raided or supported an assault cannot.", "");
+                } else {
+                    instance_create(x, y, obj_bomb_select);
+                    if (instance_exists(obj_bomb_select)) {
+                        obj_bomb_select.p_target = target;
+                        obj_bomb_select.sh_target = instance_nearest(x, y, obj_p_fleet);
+                        obj_bomb_select.p_data = p_data;
                     }
                 }
             } else if (current_button == "Deploy Guard") {

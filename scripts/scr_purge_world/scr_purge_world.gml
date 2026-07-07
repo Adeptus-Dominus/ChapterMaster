@@ -256,6 +256,21 @@ function scr_purge_world(action_type, action_score) {
             }
 
             _popup_text += _purge.population_death_string();
+
+            // Indiscriminate fire purges turn the surviving populace against the
+            // Chapter, scaled by the share of the population put to the torch. Before
+            // this, a fire purge of a world with no active Inquisition quest changed
+            // disposition not at all, so burning millions of your own citizens cost
+            // nothing. Selective purges (targeted heretics) and assassinations keep no
+            // penalty, matching the intent that precision killing of known enemies is
+            // tolerated while razing hab blocks is not.
+            if (_purge.pop_before > 0) {
+                var _fire_dispo_drop = round((_purge.kill / _purge.pop_before) * PURGE_FIRE_DISPO_PENALTY);
+                if (_fire_dispo_drop > 0) {
+                    add_disposition(-_fire_dispo_drop);
+                    _popup_text += "  Word of the burnings spreads, and the survivors' regard for your Chapter falls.";
+                }
+            }
         }
     }
 

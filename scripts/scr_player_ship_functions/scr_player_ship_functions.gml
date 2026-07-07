@@ -711,3 +711,48 @@ function player_guardsmen_at(system_name) {
     }
     return _total;
 }
+
+/// @desc Whether a ground deployment (attack or raid) can still be supported at this
+/// star this turn: any carrying ship with support uses left, or the planet's local
+/// forces with local uses left. Ships and local forces are tracked independently, so
+/// spending one ship does not lock the rest of the fleet (the point of the per-ship
+/// action economy).
+function can_ground_deploy(star_object, planet_number) {
+    if (!instance_exists(star_object)) {
+        return false;
+    }
+    var _ships = get_player_ships(star_object.name);
+    for (var i = 0; i < array_length(_ships); i++) {
+        if ((obj_ini.ship_carrying[_ships[i]] > 0) && (ship_assaults_used(_ships[i]) < SHIP_ASSAULTS_PER_TURN)) {
+            return true;
+        }
+    }
+    if ((star_object.p_player[planet_number] > 0) && (local_assaults_used(star_object, planet_number) < SHIP_ASSAULTS_PER_TURN)) {
+        return true;
+    }
+    return false;
+}
+
+/// @desc First ship at this star that has spent no support use this turn, or -1.
+/// Orbital bombardment is one per ship per turn and consumes the ship's whole support
+/// allowance for the turn, so it needs a completely fresh ship.
+function get_fresh_bombard_ship(location) {
+    var _ships = get_player_ships(location);
+    for (var i = 0; i < array_length(_ships); i++) {
+        if (ship_assaults_used(_ships[i]) == 0) {
+            return _ships[i];
+        }
+    }
+    return -1;
+}
+
+/// @desc Spend a ship's entire support allowance on an orbital bombardment (one per
+/// ship per turn, mutually exclusive with that ship's ground support for the turn).
+function ship_bombard_spend(ship_index) {
+    if (ship_index < 0) {
+        return;
+    }
+    repeat (SHIP_ASSAULTS_PER_TURN) {
+        ship_assault_spend(ship_index);
+    }
+}
