@@ -524,6 +524,9 @@ function eldar_intel_grant() {
         obj_controller.eldar_intel = 0;
     }
     obj_controller.eldar_intel += 1;
+    // Stamp the turn so the clue-expiry timer (see eldar_incursion_tick /
+    // ELDAR_CLUE_EXPIRY) measures from the most recent piece of intelligence.
+    obj_controller.eldar_intel_turn = obj_controller.turn;
     var _n = obj_controller.eldar_intel;
     var _clue_texts = [
         "Among the alien dead your Apothecaries recover spirit stones that pulse in unison, all straining toward some distant point in the void. The Librarium begins triangulating.",
@@ -540,8 +543,87 @@ function eldar_intel_grant() {
     }
 }
 
+/// @desc Move the hidden craftworld to a fresh location and reset the hunt: clears
+/// gathered intelligence, re-hides the craftworld (known -> 0) and its escort fleet,
+/// and relocates both to a new valid position under the same placement constraints as
+/// initial worldgen. Called when gathered clues expire (see ELDAR_CLUE_EXPIRY). If no
+/// valid site is found in the search budget the craftworld stays put but the hunt
+/// still resets.
+function eldar_craftworld_relocate() {
+    if (obj_controller.faction_defeated[eFACTION.ELDAR] != 0) {
+        return;
+    }
+    var _craft = noone;
+    with (obj_star) {
+        if (craftworld) {
+            _craft = id;
+            break;
+        }
+    }
+    if (_craft == noone) {
+        return;
+    }
+    // Move the craftworld off-map during the search so instance_nearest doesn't
+    // measure the placement distance against itself.
+    var _old_x = _craft.x;
+    var _old_y = _craft.y;
+    _craft.x = -99999;
+    _craft.y = -99999;
+    var _nx = _old_x;
+    var _ny = _old_y;
+    var _go = 0;
+    // Same constraints as the worldgen placement in obj_controller Alarm_1: away from
+    // the sector centre, at least 150px from the nearest star, inside the bounds.
+    for (var _i = 0; _i < 200; _i++) {
+        if (_go == 0) {
+            _nx = floor(random(1152 + 600)) + 104;
+            _ny = floor(random(748 + 440)) + 104;
+            if (point_distance(room_width / 2, room_height / 2, _nx, _ny) >= 50) {
+                _go = 1;
+            }
+            var _me = instance_nearest(_nx, _ny, obj_star);
+            if ((_go == 1) && (point_distance(_me.x, _me.y, _nx, _ny) >= 150)) {
+                _go = 2;
+            }
+            if (_go == 1) {
+                _go = 0;
+            }
+            if ((_nx >= 1050 + 640) || (_ny <= 300 + 480)) {
+                _go = 0;
+            }
+        }
+    }
+    if (_go != 2) {
+        // No valid site found: leave it where it was.
+        _nx = _old_x;
+        _ny = _old_y;
+    }
+    _craft.x = _nx;
+    _craft.y = _ny;
+    _craft.old_x = _nx;
+    _craft.old_y = _ny;
+    _craft.vision = 0;
+    // Move and re-hide the escort fleet(s) orbiting the craftworld.
+    with (obj_en_fleet) {
+        if ((owner == eFACTION.ELDAR) && (orbiting == _craft)) {
+            x = _nx;
+            y = _ny;
+            image_alpha = 0;
+        }
+    }
+    // Reset the hunt: re-lock targeting (known -> 0), clear clues, restamp the timer.
+    // No map ping is fired, so the new position stays hidden.
+    obj_controller.known[eFACTION.ELDAR] = 0;
+    obj_controller.eldar_intel = 0;
+    obj_controller.eldar_intel_turn = obj_controller.turn;
+    obj_controller.eldar_reveal_alert_pending = false;
+    scr_event_log("green", "The Eldar Craftworld has slipped away. The trail has gone cold and the gathered intelligence is lost.");
+    scr_popup("Eldar Intelligence", "The gathered intelligence has gone stale. The Craftworld has moved beyond the reach of the runes, and the hunt must begin anew.", "");
+}
+
 /// @desc End-of-turn Eldar processing: fires the deferred craftworld reveal alert,
-/// then every ELDAR_INCURSION_INTERVAL turns processes warhosts on the ground
+/// expires stale clues (relocating the craftworld), then on a random
+/// ELDAR_INTERVAL_MIN..ELDAR_INTERVAL_MAX cadence processes warhosts on the ground
 /// (tainted worlds: scour the population, PDF and Guard while purging the taint;
 /// clean worlds: withdraw) and lands a new warhost on an inhabited imperial world, preferring worlds with
 /// heresy, chaos or traitor presence (ELDAR_TAINT_SPAWN_WEIGHT). Warhost strength
@@ -570,9 +652,29 @@ function eldar_incursion_tick() {
     if (obj_controller.faction_defeated[eFACTION.ELDAR] != 0) {
         return;
     }
-    if ((obj_controller.turn < ELDAR_INCURSION_INTERVAL) || ((obj_controller.turn % ELDAR_INCURSION_INTERVAL) != 0)) {
+    // Clue expiry: intelligence gathered but not acted upon goes cold after
+    // ELDAR_CLUE_EXPIRY turns. The clues are lost and the craftworld relocates, so a
+    // located craftworld must be reached and assaulted within that window (well above
+    // a sector crossing of ~40-50 turns). Allied Eldar (known >= 2) are exempt. Runs
+    // every turn, before the incursion cadence gate below.
+    if (variable_instance_exists(obj_controller, "eldar_intel") && (obj_controller.eldar_intel > 0) && (obj_controller.known[eFACTION.ELDAR] < 2)) {
+        if (!variable_instance_exists(obj_controller, "eldar_intel_turn")) {
+            obj_controller.eldar_intel_turn = obj_controller.turn;
+        }
+        if ((obj_controller.turn - obj_controller.eldar_intel_turn) >= ELDAR_CLUE_EXPIRY) {
+            eldar_craftworld_relocate();
+        }
+    }
+    // Variable incursion cadence: schedule the next strike a random
+    // ELDAR_INTERVAL_MIN..ELDAR_INTERVAL_MAX turns out instead of a fixed modulo, so
+    // arrivals are not perfectly predictable. Lazy-init on first run.
+    if (!variable_instance_exists(obj_controller, "eldar_next_incursion")) {
+        obj_controller.eldar_next_incursion = obj_controller.turn + irandom_range(ELDAR_INTERVAL_MIN, ELDAR_INTERVAL_MAX);
+    }
+    if (obj_controller.turn < obj_controller.eldar_next_incursion) {
         return;
     }
+    obj_controller.eldar_next_incursion = obj_controller.turn + irandom_range(ELDAR_INTERVAL_MIN, ELDAR_INTERVAL_MAX);
     // Process warhosts already on the ground before landing a new one. On a world
     // touched by the Great Enemy (heresy, chaos or traitor presence) the warhost
     // stays: it battles the planetary defense force (whose loyalty it does not

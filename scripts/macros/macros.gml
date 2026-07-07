@@ -61,14 +61,19 @@
 // always been in the game; what was missing is any way for Eldar to appear (nothing
 // ever raised p_eldar on normal worlds) and any realistic way to find the craftworld
 // (a 5% roll when parking a fleet within 300px of an invisible star). Now an Eldar
-// warhost strikes an inhabited world every ELDAR_INCURSION_INTERVAL turns; each ground
+// warhost strikes an inhabited world on a random cadence between ELDAR_INTERVAL_MIN
+// and ELDAR_INTERVAL_MAX turns; each ground
 // victory against them yields one piece of intelligence, and at ELDAR_INTEL_REQUIRED
 // pieces the craftworld is revealed for invasion. Warhost strength starts at
 // FORCE_BASE and ramps by one per clue collected up to FORCE_MAX, keeping max-tier
 // Eldar for the craftworld itself (its garrison is 6). ELDAR_FLEET_ENABLED gates the
 // craftworld's orbiting fleet, disabled for now so the reveal never forces Eldar
-// naval combat; flip to 1 to restore it.
-#macro ELDAR_INCURSION_INTERVAL 35
+// naval combat; flip to 1 to restore it. Gathered intelligence goes stale after
+// ELDAR_CLUE_EXPIRY turns: the clues are lost and the craftworld slips away to a new
+// hidden location, so it must be located, reached and assaulted within that window.
+#macro ELDAR_INTERVAL_MIN 30
+#macro ELDAR_INTERVAL_MAX 60
+#macro ELDAR_CLUE_EXPIRY 400
 #macro ELDAR_INCURSION_FORCE_BASE 3
 #macro ELDAR_INCURSION_FORCE_MAX 5
 #macro ELDAR_INTEL_REQUIRED 3
