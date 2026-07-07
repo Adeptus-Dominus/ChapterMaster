@@ -153,8 +153,9 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
     var sel_all_button = draw_unit_buttons([bomb_window.x2 - 55, bomb_window.y1 + 150, bomb_window.x2 - 40, bomb_window.y1 + 165], sel_all_label, [1, 1], #34bc75, fa_center, fnt_40k_14b);
     if (point_and_click(sel_all_button)) {
         for (var i = 0; i < array_length(ship); i++) {
-            // Limit to the first 5 ships with buttons
-            if (ship[ship_index] != "" && ship_all[i] == all_sel) {
+            // Limit to the first 5 ships with buttons. Spent ships are skipped so
+            // Select All never toggles a ship that has already used its turn.
+            if (ship[ship_index] != "" && ship_all[i] == all_sel && !ship_spent[i]) {
                 ship_all[i] = !all_sel;
                 ships_selected += all_sel ? -1 : 1;
             }
@@ -194,8 +195,14 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
                 var buttonX = bomb_window.x1 + 24 + col * buttonSpacingX;
                 var buttonY = bomb_window.y1 + 172 + row * buttonSpacingY;
 
-                // Draw the unit buttons and handle selection
-                if (point_and_click(draw_unit_buttons([buttonX, buttonY, buttonX + 105, buttonY + 20], string_truncate(num, 200), [1, 1], ship_all[ship_index] ? #34bc75 : #bf4040, fa_center, fnt_40k_10, ship_all[ship_index] ? 1 : 0.5))) {
+                // Draw the unit buttons and handle selection. A ship that has already
+                // spent its support this turn shows locked in red and rejects clicks,
+                // matching the attack roster. Bombardment needs a fully fresh ship.
+                var _spent = ship_spent[ship_index];
+                var _btn_col = _spent ? c_red : (ship_all[ship_index] ? #34bc75 : #bf4040);
+                var _btn_alpha = _spent ? 0.5 : (ship_all[ship_index] ? 1 : 0.5);
+                var _ship_clicked = point_and_click(draw_unit_buttons([buttonX, buttonY, buttonX + 105, buttonY + 20], string_truncate(num, 200), [1, 1], _btn_col, fa_center, fnt_40k_10, _btn_alpha));
+                if (_ship_clicked && !_spent) {
                     ship_all[ship_index] = !ship_all[ship_index];
                     ships_selected += ship_all[ship_index] ? 1 : -1;
 

@@ -23,6 +23,7 @@ for (var i = 0; i < 31; i++) {
     ship_use[i] = 0;
     ship_max[i] = 0;
     ship_ide[i] = -1;
+    ship_spent[i] = 0;
 }
 
 menu = 0;

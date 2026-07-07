@@ -412,11 +412,20 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
         pip.text = txt1 + txt2 + txt3;
     }
 
-    // Fleet movement lock preserved (bombarding ends the fleet's turn for movement),
-    // and the bombarding ship spends its whole support allowance so it is one
-    // bombardment per ship per turn (see get_fresh_bombard_ship / the Bombard gate).
+    // Fleet movement lock preserved (bombarding ends the fleet's turn for movement).
+    // Every ship the player selected spends its whole support allowance, so each ship
+    // bombards at most once per turn. Previously only the first fresh ship was spent
+    // regardless of how many were selected, so the remaining selected ships stayed
+    // fresh and could be re-selected to bombard the same world again on the next
+    // Confirm, letting one fleet fire several times over.
     obj_bomb_select.sh_target.acted = 5;
-    ship_bombard_spend(get_fresh_bombard_ship(system.name));
+    with (obj_bomb_select) {
+        for (var _bspend = 0; _bspend < array_length(ship_ide); _bspend++) {
+            if ((ship_all[_bspend] == 1) && (ship_ide[_bspend] >= 0)) {
+                ship_bombard_spend(ship_ide[_bspend]);
+            }
+        }
+    }
     with (obj_bomb_select) {
         instance_destroy();
     }
