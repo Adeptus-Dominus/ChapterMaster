@@ -176,9 +176,25 @@ try {
                         button3 = "Bombard";
                     } else {
                         button1 = "Attack";
-                        button2 = "Raid";
-                        if (p_data.population) {
+                        // Raid while an enemy force is present, so invaders on an
+                        // imperial or unowned world can be struck proactively. Purge
+                        // used to overwrite Raid the moment the world had any
+                        // population, which made a landed-but-not-yet-winning enemy
+                        // unraidable. Purge returns once the world is clear of enemies.
+                        if (p_data.xenos_and_heretics() > 0) {
+                            button2 = "Raid";
+                            // Dead worlds have no friendly population to shield, so
+                            // orbital bombardment of the enemy force is offered here.
+                            // Dead worlds never register as enemy-owned, so this else
+                            // branch is the only one they reach and it never set
+                            // Bombard, which is why it was missing on dead enemy worlds.
+                            if (p_data.planet_type == "Dead") {
+                                button3 = "Bombard";
+                            }
+                        } else if (p_data.population) {
                             button2 = "Purge";
+                        } else {
+                            button2 = "Raid";
                         }
                     }
 
