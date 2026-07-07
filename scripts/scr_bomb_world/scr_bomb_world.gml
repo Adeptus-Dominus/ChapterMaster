@@ -1,17 +1,25 @@
 // ---------------------------------------------------------------------------------
 // Bombardment tuning. These govern how much of a world a single bombardment kills.
-// Casualties are a share of the world's population CAPACITY (its max population), not of
-// whoever is left, so a world is depopulated in a handful of bombards down to zero
-// rather than a fixed absolute figure that wipes small worlds in one shot or a fraction
-// of the survivors that only ever asymptotes. Bombardment never turns a world Dead; the
-// world keeps its type at zero population and can regrow once its enemies are cleared.
-// All values are macros so balance can be tuned without touching logic.
+// Casualties are a share of the world's population CAPACITY (its max population) so a
+// world is depopulated down to zero over repeated strikes rather than a fixed absolute
+// figure that wipes small worlds in one shot. The share scales with how much fleet
+// firepower is committed and is shaped by world type, enemy size, how far the enemy has
+// overrun the world, and the world's fortifications. Bombardment never turns a world
+// Dead; the world keeps its type at zero population and can regrow once its enemies are
+// cleared. All values are macros so balance can be tuned without touching logic.
 // ---------------------------------------------------------------------------------
 
-// BASE is the share of world capacity a bombardment kills before the factor multipliers.
-// MAX caps a single bombard, so the fastest a world can be emptied is 1 / MAX bombards.
-#macro BOMBARD_BASE_FRACTION 0.20
-#macro BOMBARD_MAX_FRACTION 0.34
+// Share of world capacity killed per point of bombard score, before the factor
+// multipliers. Bombard score is Battle Barge 3, Strike Cruiser 1, escorts 0, so more
+// ships (and bigger ships) do more population damage. Zero ships do nothing.
+#macro BOMBARD_POP_PER_POWER 0.06
+// Hard ceiling on a single bombard's share of capacity. At 1.0 an overwhelming fleet can
+// depopulate a world in one strike; a lone ship takes many.
+#macro BOMBARD_MAX_FRACTION 1.0
+// Each fortification level (0 none .. 5 fully fortified) cuts population casualties by
+// this much, down to the floor, since bunkers and shelters protect civilians.
+#macro BOMBARD_DEFENSE_REDUCTION 0.15
+#macro BOMBARD_DEFENSE_FLOOR 0.20
 
 /// @desc World-type multiplier on bombardment population casualties. Dense hive cities
 /// burn hardest; spread-out agri and feudal worlds lose fewer people per bombardment.
@@ -54,24 +62,34 @@ function bombard_ratio_pop_mult(_planet, _tier) {
     return clamp(1 + _diff * 0.15, 0.6, 1.5);
 }
 
-/// @desc Share of a world's population CAPACITY killed by one bombardment, from world
-/// type, enemy presence, and enemy-to-population ratio, capped at BOMBARD_MAX_FRACTION.
-function bombard_pop_kill_fraction(_planet, _enemy_tier) {
-    var _frac = BOMBARD_BASE_FRACTION;
+/// @desc Fortification multiplier on bombardment population casualties. Planet defenses
+/// (fortification_level 0 none .. 5 fully fortified) shelter civilians in bunkers, so a
+/// well-defended world loses far fewer people to orbital fire.
+function bombard_defense_pop_mult(_planet) {
+    var _level = clamp(_planet.fortification_level, 0, 5);
+    return clamp(1 - _level * BOMBARD_DEFENSE_REDUCTION, BOMBARD_DEFENSE_FLOOR, 1);
+}
+
+/// @desc Share of a world's population CAPACITY killed by one bombardment. Driven by the
+/// committed bombard score (ship count and type), then shaped by world type, enemy size,
+/// enemy-to-population ratio, and fortifications, capped at BOMBARD_MAX_FRACTION.
+function bombard_pop_kill_fraction(_planet, _enemy_tier, _bomb_power) {
+    var _frac = _bomb_power * BOMBARD_POP_PER_POWER;
     _frac *= bombard_planet_type_pop_mult(_planet.planet_type);
     _frac *= bombard_presence_pop_mult(_enemy_tier);
     _frac *= bombard_ratio_pop_mult(_planet, _enemy_tier);
+    _frac *= bombard_defense_pop_mult(_planet);
     return clamp(_frac, 0, BOMBARD_MAX_FRACTION);
 }
 
 /// @desc Population killed by one bombardment, in the planet's own population scale. A
-/// bombard removes a share of the world's capacity (max population), so repeated bombards
-/// grind a world down to zero in a handful of strikes regardless of its size, but never
-/// exceed the population actually present. Used by both scr_bomb_world and the dialog
-/// preview so the estimate and the real outcome always agree.
-function bombard_population_kill(_planet, _enemy_tier) {
+/// bombard removes a share of the world's capacity (max population) that grows with the
+/// fleet firepower committed, so a small strike chips away while an overwhelming fleet can
+/// depopulate a world in one blow, but never more than the population actually present.
+/// Used by both scr_bomb_world and the dialog preview so estimate and outcome agree.
+function bombard_population_kill(_planet, _enemy_tier, _bomb_power) {
     var _capacity = max(_planet.max_population, _planet.population);
-    var _kill = _capacity * bombard_pop_kill_fraction(_planet, _enemy_tier);
+    var _kill = _capacity * bombard_pop_kill_fraction(_planet, _enemy_tier, _bomb_power);
     return min(_planet.population, _kill);
 }
 
@@ -92,7 +110,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
     }
     txt1 += $" annihilation upon {name()}. Even from space the explosions can be seen, {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
 
-    kill = bombard_population_kill(self, target_strength);
+    kill = bombard_population_kill(self, target_strength, bombard_ment_power);
 
     var pop_before = population;
 
@@ -523,7 +541,7 @@ function bombard_effect_estimate(_planet, _target_faction, _bomb_power, _target_
     var _pop_pct = 0;
     var _pop_before = _planet.population;
     if ((_pop_before > 0) && (_planet.planet_type != "Space Hulk")) {
-        var _kill = bombard_population_kill(_planet, _target_strength);
+        var _kill = bombard_population_kill(_planet, _target_strength, _bomb_power);
         _pop_pct = (min(_pop_before, _kill) / _pop_before) * 100;
     }
 
