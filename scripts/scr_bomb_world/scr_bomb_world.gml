@@ -1,3 +1,80 @@
+// ---------------------------------------------------------------------------------
+// Bombardment tuning. These govern how much of a world a single bombardment kills.
+// Casualties are a share of the world's population CAPACITY (its max population), not of
+// whoever is left, so a world is depopulated in a handful of bombards down to zero
+// rather than a fixed absolute figure that wipes small worlds in one shot or a fraction
+// of the survivors that only ever asymptotes. Bombardment never turns a world Dead; the
+// world keeps its type at zero population and can regrow once its enemies are cleared.
+// All values are macros so balance can be tuned without touching logic.
+// ---------------------------------------------------------------------------------
+
+// BASE is the share of world capacity a bombardment kills before the factor multipliers.
+// MAX caps a single bombard, so the fastest a world can be emptied is 1 / MAX bombards.
+#macro BOMBARD_BASE_FRACTION 0.20
+#macro BOMBARD_MAX_FRACTION 0.34
+
+/// @desc World-type multiplier on bombardment population casualties. Dense hive cities
+/// burn hardest; spread-out agri and feudal worlds lose fewer people per bombardment.
+function bombard_planet_type_pop_mult(_type) {
+    switch (_type) {
+        case "Hive": return 1.5;
+        case "Desert": return 0.8;
+        case "Agri": return 0.6;
+        case "Feudal": return 0.5;
+    }
+    return 1.0; // Temperate / civilised and everything else
+}
+
+/// @desc Enemy-presence multiplier on bombardment population casualties. A larger, more
+/// deeply embedded enemy (strength tier 0 none .. 6 Overwhelming) means the bombardment
+/// has to hit more of the world to root it out, so more civilians die alongside it.
+function bombard_presence_pop_mult(_tier) {
+    var _mults = [0.6, 0.7, 0.85, 1.0, 1.2, 1.4, 1.6];
+    return _mults[clamp(_tier, 0, 6)];
+}
+
+/// @desc Ratio multiplier: how far the enemy has overrun the world. A large enemy on a
+/// lightly populated world drives collateral up; a small enemy on a teeming world keeps
+/// it down. Compares the enemy strength tier to a coarse population bucket.
+function bombard_ratio_pop_mult(_planet, _tier) {
+    var _pop = _planet.population_as_small();
+    var _pop_tier = 0;
+    if (_pop >= 1000000000) {
+        _pop_tier = 5;
+    } else if (_pop >= 100000000) {
+        _pop_tier = 4;
+    } else if (_pop >= 10000000) {
+        _pop_tier = 3;
+    } else if (_pop >= 1000000) {
+        _pop_tier = 2;
+    } else if (_pop >= 100000) {
+        _pop_tier = 1;
+    }
+    var _diff = clamp(_tier - _pop_tier, -3, 3);
+    return clamp(1 + _diff * 0.15, 0.6, 1.5);
+}
+
+/// @desc Share of a world's population CAPACITY killed by one bombardment, from world
+/// type, enemy presence, and enemy-to-population ratio, capped at BOMBARD_MAX_FRACTION.
+function bombard_pop_kill_fraction(_planet, _enemy_tier) {
+    var _frac = BOMBARD_BASE_FRACTION;
+    _frac *= bombard_planet_type_pop_mult(_planet.planet_type);
+    _frac *= bombard_presence_pop_mult(_enemy_tier);
+    _frac *= bombard_ratio_pop_mult(_planet, _enemy_tier);
+    return clamp(_frac, 0, BOMBARD_MAX_FRACTION);
+}
+
+/// @desc Population killed by one bombardment, in the planet's own population scale. A
+/// bombard removes a share of the world's capacity (max population), so repeated bombards
+/// grind a world down to zero in a handful of strikes regardless of its size, but never
+/// exceed the population actually present. Used by both scr_bomb_world and the dialog
+/// preview so the estimate and the real outcome always agree.
+function bombard_population_kill(_planet, _enemy_tier) {
+    var _capacity = max(_planet.max_population, _planet.population);
+    var _kill = _capacity * bombard_pop_kill_fraction(_planet, _enemy_tier);
+    return min(_planet.population, _kill);
+}
+
 function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_strength) {
     var pop_after = 0, reduced_bombard_score = 0, strength_reduction = 0, txt2 = "", txt3 = "", txt4 = "", max_kill, overkill, roll, kill;
 
@@ -15,7 +92,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
     }
     txt1 += $" annihilation upon {name()}. Even from space the explosions can be seen, {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
 
-    kill = population_small_conversion(0.15);
+    kill = bombard_population_kill(self, target_strength);
 
     var pop_before = population;
 
@@ -446,7 +523,7 @@ function bombard_effect_estimate(_planet, _target_faction, _bomb_power, _target_
     var _pop_pct = 0;
     var _pop_before = _planet.population;
     if ((_pop_before > 0) && (_planet.planet_type != "Space Hulk")) {
-        var _kill = _planet.population_small_conversion(0.15);
+        var _kill = bombard_population_kill(_planet, _target_strength);
         _pop_pct = (min(_pop_before, _kill) / _pop_before) * 100;
     }
 
