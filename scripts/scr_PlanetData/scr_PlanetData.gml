@@ -1,13 +1,3 @@
-global.force_strength_descriptions = [
-    "none",
-    "Minimal",
-    "Sparse",
-    "Moderate",
-    "Numerous",
-    "Very Numerous",
-    "Overwhelming",
-];
-
 /// @param {Real} _planet
 /// @param {Id.Instance.obj_star} _system
 function PlanetData(_planet, _system) constructor {
