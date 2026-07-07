@@ -431,3 +431,90 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
     }
     // show_message("Pop: "+string(pop_before)+" -> "+string(pop_after)+"#killed: "+string(kill)+"#Heresy: "+string(heres_before)+" -> "+string(heres_after));
 }
+
+/// @desc Rough, bracketed preview of a bombardment's effect for the selection dialog,
+/// so the player can see roughly what a bombard will do before committing. Mirrors the
+/// kill and strength_reduction math in scr_bomb_world above. Returns a struct with two
+/// labels, population and enemy, each one of None / Negligible / Low / Medium / High /
+/// Massive. It is an estimate: it ignores the sub-1 random reduction roll and the Ork
+/// Stronghold / Daemon-world specials.
+function bombard_effect_estimate(_planet, _target_faction, _bomb_power, _target_strength) {
+    // Population: scr_bomb_world kills a fixed slice (0.15) of the planet's own scale,
+    // subtracted straight from population, so it does not scale with ship count. On a
+    // small world that fixed slice dwarfs the whole population and wipes it out, which
+    // is the surprise this preview exists to warn about.
+    var _pop_pct = 0;
+    var _pop_before = _planet.population;
+    if ((_pop_before > 0) && (_planet.planet_type != "Space Hulk")) {
+        var _kill = _planet.population_small_conversion(0.15);
+        _pop_pct = (min(_pop_before, _kill) / _pop_before) * 100;
+    }
+
+    // Enemy: same reduction math as scr_bomb_world. The reduced score, scaled by the
+    // target's bombard protection, is how many strength stages come off.
+    var _en_pct = 0;
+    if (_target_strength > 0) {
+        var _reduced = _bomb_power / 3;
+        var _protection = clamp(bombard_protection_estimate(_target_faction), 0, 4);
+        var _protect_scores = [4, 0.9, 0.75, 0.5, 0.34];
+        var _stages = floor(_reduced * _protect_scores[_protection]);
+        _en_pct = (min(_stages, _target_strength) / _target_strength) * 100;
+    }
+
+    return {
+        population: bombard_effect_bracket(_pop_pct),
+        enemy: bombard_effect_bracket(_en_pct),
+    };
+}
+
+/// @desc Base bombard protection tier per target faction, matching the switch in
+/// scr_bomb_world (Ork Stronghold and Daemon-world bonuses are left out of the estimate).
+function bombard_protection_estimate(_faction) {
+    switch (_faction) {
+        case 2: return 2;
+        case 2.5: return 1;
+        case 3: return 3;
+        case 5: return 1;
+        case 6: return 4;
+        case 7: return 2;
+        case 8: return 3;
+        case 9: return 0;
+        case 10: return 2;
+        case 11: return 2;
+        case 13: return 4;
+    }
+    return 1;
+}
+
+/// @desc Map a 0-100 percentage to a coarse severity label for the bombard preview.
+function bombard_effect_bracket(_pct) {
+    if (_pct <= 0) {
+        return "None";
+    }
+    if (_pct < 5) {
+        return "Negligible";
+    }
+    if (_pct < 20) {
+        return "Low";
+    }
+    if (_pct < 45) {
+        return "Medium";
+    }
+    if (_pct < 80) {
+        return "High";
+    }
+    return "Massive";
+}
+
+/// @desc Colour for a bombard severity label so the worst outcomes read at a glance.
+function bombard_effect_bracket_color(_label) {
+    switch (_label) {
+        case "None": return c_gray;
+        case "Negligible": return #34bc75;
+        case "Low": return #34bc75;
+        case "Medium": return c_yellow;
+        case "High": return c_orange;
+        case "Massive": return c_red;
+    }
+    return c_white;
+}

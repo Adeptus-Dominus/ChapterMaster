@@ -214,6 +214,35 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
         }
     }
 
+    // Bombardment effect preview. Estimate what a bombard with the currently selected
+    // ships would do to this world and show it at a glance, so a small-population planet
+    // is not wiped out to shave a point off an entrenched enemy without the player
+    // seeing it coming. Population loss is fixed per world (the kill does not scale with
+    // ship count); enemy loss scales with the selected bombard score.
+    var _est_bomb = 0;
+    for (var i = 0; i < array_length(ship_ide); i++) {
+        if (ship_all[i] == 1) {
+            var _c = player_ships_class(ship_ide[i]);
+            if (_c == "capital") {
+                _est_bomb += 3;
+            } else if (_c == "frigate") {
+                _est_bomb += 1;
+            }
+        }
+    }
+    var _est = bombard_effect_estimate(p_data, target, _est_bomb, str);
+    var _rows_used = max(1, ceil(array_length(ship_ide) / 4));
+    var _est_y = min(bomb_window.y1 + 172 + _rows_used * buttonSpacingY + 16, bomb_window.y2 - 74);
+    draw_set_halign(fa_left);
+    draw_set_font(fnt_info);
+    draw_set_color(#34bc75);
+    draw_text_bold(bomb_window.x1 + 20, _est_y, "If bombarded now:");
+    draw_set_color(bombard_effect_bracket_color(_est.population));
+    draw_text_bold(bomb_window.x1 + 20, _est_y + 18, $"Population loss: {_est.population}");
+    draw_set_color(bombard_effect_bracket_color(_est.enemy));
+    draw_text_bold(bomb_window.x1 + 20, _est_y + 36, $"Enemy losses: {_est.enemy}");
+    draw_set_color(#34bc75);
+
     // Confirm and Cancel buttons
     var button_alpha = 1;
     if (!ships_selected) {
