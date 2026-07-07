@@ -56,7 +56,7 @@ if (!engaged) {
 
                 var cm_present = false;
                 var cm_index = -1;
-                var cm_block = false;
+                var cm_block = noone;
                 with (obj_pnunit) {
                     for (var u = 0; u < array_length(unit_struct); u++) {
                         if (marine_type[u] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {

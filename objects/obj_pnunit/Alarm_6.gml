@@ -1,6 +1,4 @@
-//
-// Handles marines dying on battle
-//
+/// @description Handles marines dying on battle
 
 // Remove from ships
 // Remove from the controller
@@ -23,7 +21,6 @@ for (var i = 0; i < array_length(unit_struct); i++) {
         if (unit.ship_location > -1) {
             obj_ini.ship_carrying[unit.ship_location] -= man_size;
         }
-        //
         scr_kill_unit(unit.company, unit.marine_number);
     }
 }
