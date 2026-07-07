@@ -46,6 +46,7 @@ This is an unofficial fan fork intended to preserve and expand the spirit of *Ch
 ## Contributing
 
 BIG thanks to **Tavish** for the combat changes adapted and worked on from his LGW 1.2 fork and **Chad Drywall** for the new guardsmen/vehicle graphics
+This mod was made with assistance from Claude Fable 5 and Opus 4.8 on code consultation
 
 **To contribute to this fork please contact me on Discord, hopefully we can work together. I take ALL input and suggestions in, even if 're not a coder. If there's somethin  wanna personally see in the game then please tell me.** https://discord.com/channels/714022226810372107/1520160266120204409
 Best bet is to ask about everything in our Discord, because things bellow are probably not very helpful at the moment.
