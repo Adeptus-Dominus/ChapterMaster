@@ -1398,8 +1398,6 @@ var _role_aliases = {
     "Devastator Sergeant":      _canon[eROLE.DEVASTATOR],
     "Assault Sergeant":         _canon[eROLE.ASSAULT],
     "Scout Sergeant":           _canon[eROLE.SCOUT],
-    "Biker Sergeant":           _canon[eROLE.BIKER],
-    "Attack Bike Sergeant":    _canon[eROLE.ATTACK_BIKER],
 };
 _role_aliases[$ $"Venerable {_canon[eROLE.DREADNOUGHT]}"] = _canon[eROLE.DREADNOUGHT];
 
@@ -1461,8 +1459,7 @@ var _role_display_order = [
     eROLE.CAPTAIN, eROLE.CHAPLAIN, eROLE.APOTHECARY, eROLE.TECHMARINE,
     eROLE.ANCIENT, eROLE.CHAMPION, eROLE.LIBRARIAN, eROLE.SERGEANT,
     eROLE.VETERANSERGEANT, eROLE.TERMINATOR, eROLE.VETERAN, eROLE.TACTICAL,
-    eROLE.ASSAULT, eROLE.DEVASTATOR, eROLE.SCOUT, eROLE.BIKER,
-    eROLE.ATTACK_BIKER, eROLE.DREADNOUGHT
+    eROLE.ASSAULT, eROLE.DEVASTATOR, eROLE.SCOUT, eROLE.DREADNOUGHT
 ];
 var _vehicle_display = ["Land Raider", "Predator", "Whirlwind", "Rhino", "Land Speeder"];
 
