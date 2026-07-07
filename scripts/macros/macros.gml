@@ -16,6 +16,12 @@
 // armour-piercing weapons that ignore Flak. A successful save posts a combat-log line.
 // Astartes are bulky and hide poorly, so their save is much weaker than the Guard's.
 #macro GUARD_COVER_SAVE 0.4
+// Guardsman veterancy: a Guardsman who fights at the battle location and survives earns
+// GUARD_BATTLE_XP experience per victory. At GUARD_VETERAN_XP total they become eligible
+// for promotion to Veteran Guard, so a trooper must live through roughly
+// GUARD_VETERAN_XP / GUARD_BATTLE_XP battles (90 / 25 ~= 3-4). Both are tunable.
+#macro GUARD_BATTLE_XP 25
+#macro GUARD_VETERAN_XP 90
 #macro MARINE_COVER_SAVE 0.15
 
 // Cover fades as the enemy closes: the save is scaled by shooter distance (block units,

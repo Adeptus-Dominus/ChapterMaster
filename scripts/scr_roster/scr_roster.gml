@@ -905,6 +905,12 @@ function promote_auxilia_to_veteran(_company = undefined) {
         if (_company != undefined && _unit.company != _company) {
             continue;
         }
+        // Only battle-hardened Guardsmen qualify: they must have earned GUARD_VETERAN_XP
+        // experience, roughly GUARD_VETERAN_XP / GUARD_BATTLE_XP survived battles. Fresh
+        // recruits are skipped until they have bled for it.
+        if (_unit.experience < GUARD_VETERAN_XP) {
+            continue;
+        }
         _unit.update_role("Veteran Guard");
         _unit.stat_boosts({
             ballistic_skill: 8,

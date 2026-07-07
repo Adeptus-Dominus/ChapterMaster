@@ -130,6 +130,22 @@ function scr_cheatcode(argument0) {
                     }
                     scr_popup("Veteran Guard", $"Promoted {_vet_promoted} Guardsmen to Veteran Guard.", "");
                     break;
+                case "guardxp":
+                    // Grant experience to every basic Guardsman for testing the veterancy
+                    // gate without fighting several battles. "guardxp" alone grants exactly
+                    // enough to promote (GUARD_VETERAN_XP); "guardxp N" grants N. Follow with
+                    // the veteranguard cheat (or the Promote All button) to promote the now
+                    // eligible troopers.
+                    var _xp_amt = real(cheat_arguments[0]);
+                    if (_xp_amt <= 1) {
+                        _xp_amt = GUARD_VETERAN_XP;
+                    }
+                    var _grd_all = collect_role_group("all", "", false, { roles: ["Guardsman"] });
+                    for (var _gx = 0; _gx < array_length(_grd_all); _gx++) {
+                        _grd_all[_gx].add_experience(_xp_amt);
+                    }
+                    scr_popup("Guard XP", $"Granted {_xp_amt} experience to {array_length(_grd_all)} Guardsmen.", "");
+                    break;
                 case "chaosfleetspawn":
                     spawn_chaos_warlord();
                     break;

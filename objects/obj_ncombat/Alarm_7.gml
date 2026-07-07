@@ -10,6 +10,21 @@ try {
 
     LOGGER.info($"Ground Combat - {(defeat ? "Defeat" : "Victory")} - Enemy:{enemy} ({battle_special})");
 
+    // Guardsman veterancy: award battle experience to Guardsmen who fought here and
+    // lived, identified as basic Guardsmen still on the roster at the battle location
+    // (the same star-name match the meeting muster below uses). Only on victory. Around
+    // GUARD_VETERAN_XP / GUARD_BATTLE_XP survived battles makes one eligible for
+    // promotion to Veteran Guard (see promote_auxilia_to_veteran).
+    if (!defeat) {
+        var _grd_survivors = collect_role_group("all", "", false, { roles: ["Guardsman"] });
+        for (var _gs = 0; _gs < array_length(_grd_survivors); _gs++) {
+            var _grd = _grd_survivors[_gs];
+            if (_grd.location_string == obj_ncombat.battle_loc) {
+                _grd.add_experience(GUARD_BATTLE_XP);
+            }
+        }
+    }
+
     // If battling own dudes, then remove the loyalists after the fact
 
     if (enemy == eFACTION.PLAYER) {

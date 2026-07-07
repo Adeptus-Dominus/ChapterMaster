@@ -1326,7 +1326,8 @@
         "tags": [
             "las",
             "veteran_guard_only"
-        ]
+        ],
+        "value": 8
     },
     "Hellrifle": {
         "abbreviation": "HllRifle",
