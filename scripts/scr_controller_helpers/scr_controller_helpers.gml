@@ -477,6 +477,13 @@ function scr_end_turn() {
                     }
 
                     player_forge_data.player_forges = 0;
+                    // Reset the hangar list too: the per-turn forge scan in
+                    // scr_enemy_ai_e re-pushes every forge hangar (player_forges is
+                    // recomputed the same way and reset just above). Without this reset
+                    // the array grew by one entry per hangar every turn, inflating the
+                    // Vehicle STC & Hangars discount by 3% per turn (hanger_bonus reads
+                    // its length) until vehicle costs bottomed out at the x0.10 clamp.
+                    player_forge_data.vehicle_hanger = [];
                     requisition += income;
                     scr_income();
                     gene_tithe -= 1;
