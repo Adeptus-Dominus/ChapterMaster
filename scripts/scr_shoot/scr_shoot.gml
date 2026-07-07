@@ -24,6 +24,10 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
         var hostile_splash;
         var aggregate_damage = att[weapon_index_position];
         var armour_pierce = apa[weapon_index_position];
+
+        // Shooter-to-target distance in block units, threaded into scr_clean so the cover
+        // save can fade as the enemy closes (see damage_infantry / COVER_SAVE_FULL_RANGE).
+        var _shot_dist = instance_exists(target_object) ? point_distance(x, y, target_object.x, target_object.y) / 10 : 0;
         if (obj_ncombat.wall_destroyed == 1) {
             exit;
         }
@@ -112,7 +116,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     hostile_range = range[weapon_index_position];
                     hostile_splash = attack_count_mod;
 
-                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce);
+                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
                 }
             } else if ((damage_type == "att") && (aggregate_damage > 0) && (stop == 0) && (shots_fired > 0)) {
                 var damage_per_weapon, hit_number;
@@ -148,7 +152,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     hostile_range = range[weapon_index_position];
                     hostile_splash = attack_count_mod;
 
-                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce);
+                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
                 }
             } else if (((damage_type == "arp") || (damage_type == "dread")) && (armour_pierce > 0) && (stop == 0) && (shots_fired > 0)) {
                 var damage_per_weapon, hit_number;
@@ -199,7 +203,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         target_object.hostile_shooters = (wep_owner[weapon_index_position] == "assorted") ? 999 : 1;
                         hostile_type = 0;
 
-                        scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce);
+                        scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
                     }
                 }
             }

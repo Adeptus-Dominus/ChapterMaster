@@ -128,9 +128,33 @@ function check_dead_marines(unit_struct, unit_index) {
     return unit_lost;
 }
 
+/// @desc True if a unit role is Guard auxilia rather than Astartes. Matches the guard
+/// role grouping in scr_marine_struct. Used to pick the cover-save rate (Guardsmen use
+/// cover well; bulky Astartes do not).
+function unit_role_is_guard(_role) {
+    return (_role == "Guardsman")
+        || (_role == "Guard Sergeant")
+        || (_role == "Veteran Guard")
+        || (_role == "Heavy Weapons Team");
+}
+
+/// @desc Per-shot anti-tank penetration roll. A shot that can already hurt the vehicle
+/// still has to roll to actually bite, so a large volley does not delete armour outright.
+/// Chance rises with the attacker's AP tier and falls with the target's armour class.
+/// Returns a damage multiplier: currently binary (1 penetrate, 0 bounce). A future tiered
+/// version can return partial bands (little / medium / severe) from the same roll without
+/// touching the caller.
+function at_penetration_multiplier(_arp, _veh_ac) {
+    var _chance = AT_PEN_BASE_CHANCE
+        + (_arp - 1) * AT_PEN_AP_BONUS
+        - max(0, _veh_ac - AT_PEN_AC_BASELINE) * AT_PEN_AC_PENALTY;
+    _chance = clamp(_chance, AT_PEN_MIN, AT_PEN_MAX);
+    return (random(1) < _chance) ? 1 : 0;
+}
+
 /// @self Id.Instance.obj_pnunit
 /// @param {Id.Instance.obj_pnunit} target_object
-function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, hostile_arp = 0) {
+function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, hostile_arp = 0, hostile_dist = 0) {
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //
     // Parameters:
@@ -174,7 +198,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
             // ### Marine + Dreadnought Processing ###
             if (target_is_infantry && (men + dreads > 0)) {
-                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp);
+                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp, hostile_dist);
             }
 
             if (damage_data.hits < hostile_shots) {
@@ -191,7 +215,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
                 // ### Marine + Dreadnought Processing ###
                 if (!target_is_infantry && (men + dreads > 0)) {
-                    damage_infantry(damage_data, _remaining_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp);
+                    damage_infantry(damage_data, _remaining_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp, hostile_dist);
                 }
             }
 
@@ -210,7 +234,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, _arp = 0) {
+function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, _arp = 0, _dist = 0) {
     // _arp is the ATTACKER's armour pierce, passed down from scr_shoot. This used to read
     // apa[_weapon_index], but this function runs in the TARGET obj_pnunit's context, so
     // that indexed the PLAYER's own weapon-stack arp table with the ENEMY's stack number.
@@ -316,6 +340,19 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, 
     var _killed_roles = [];
     var _killed_counts = [];
 
+    // Cover save. A fraction of incoming shots are treated as deflected by spacing,
+    // terrain and a low profile the model does not otherwise simulate. Guard auxilia are
+    // trained to use cover and get the full GUARD_COVER_SAVE; Astartes are bulky and hide
+    // poorly, so they get the weaker MARINE_COVER_SAVE. The rate is chosen per unit from
+    // its role, since the old block-level guard flag is dead and live guardsmen are just
+    // unit_struct units. The save fades as the enemy closes: it is scaled by shooter
+    // distance so hugging the line strips it (see COVER_SAVE_FULL_RANGE /
+    // COVER_SAVE_MIN_FACTOR). Rolled per shot below, after armour, so it also blunts
+    // armour-piercing weapons that ignore Flak entirely.
+    var _cover_dist_factor = clamp(_dist / COVER_SAVE_FULL_RANGE, COVER_SAVE_MIN_FACTOR, 1);
+    var _cover_saved = 0;
+    var _cover_role = "";
+
     // Apply damage for each shot
     for (var shot = 0; shot < _shots; shot++) {
         if (array_length(valid_marines) == 0) {
@@ -328,6 +365,16 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, 
         var marine_index = array_random_element(valid_marines);
         var marine = unit_struct[marine_index];
         _damage_data.unit_type = marine.role();
+
+        // Cover save: the shot is spent (counts as a hit above) but deflected, so it does
+        // no damage. Only whole shots are saved, so a save never partially wounds. Rate is
+        // the unit's own (Guard auxilia get more cover than bulky Astartes).
+        var _cover_save = (unit_role_is_guard(marine.role()) ? GUARD_COVER_SAVE : MARINE_COVER_SAVE) * _cover_dist_factor;
+        if ((_cover_save > 0) && (random(1) < _cover_save)) {
+            _cover_saved++;
+            _cover_role = marine.role();
+            continue;
+        }
 
         // Apply damage
         var _shot_luck = roll_dice_chapter(1, 100, "low");
@@ -461,6 +508,13 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, 
         _damage_data.unit_type = _killed_roles[_top];
     }
 
+    // Report the cover save in the combat log so a volley that hits little or nothing is
+    // explained rather than looking like a miss. Light blue, matching the non-lethal
+    // (armour-holds) family of lines.
+    if ((_cover_saved > 0) && (_cover_role != "")) {
+        obj_ncombat.combat_log.push($"The {_cover_role} weather the fire from effective cover!", make_color_rgb(120, 190, 225));
+    }
+
     return;
 }
 
@@ -522,6 +576,12 @@ function damage_vehicles(_damage_data, _shots, _damage, _weapon_index, _arp = 0)
         var _modified_damage = _damage - veh_ac[veh_index] * _armour_mod;
         if (_modified_damage < 0) {
             _modified_damage = 0;
+        }
+        // Anti-tank penetration roll: a shot that can bite still has to roll to do so, so
+        // a stack of many shots does not automatically shred armour. A failed roll bounces
+        // for no damage. Only capable shots roll; ones already soaked to zero just bounce.
+        if (_modified_damage > 0) {
+            _modified_damage *= at_penetration_multiplier(_armour_pierce, veh_ac[veh_index]);
         }
         // This ran in the obj_pnunit context, where `enemy` is the block's TARGET
         // instance variable (set in its own Alarm_0), so enemy fire landing before

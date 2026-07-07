@@ -10,11 +10,32 @@
 // the health of this many guardsmen (see scr_marine_struct max_health()). 3 = a 3-man weapons team.
 #macro GUARD_HEAVY_WEAPONS_TEAM_SIZE 3
 
-// Imperial Guard cover save: fraction of would-be ground-combat casualties treated as
-// missed, standing in for spacing, terrain use and a low profile that the combat model
-// does not simulate. Applied after armour, so it also blunts armour-piercing weapons
-// (choppaz, power klawz) that ignore Flak entirely. 0 = no save, 0.4 = 40% fewer losses.
+// Ground-combat cover save: fraction of would-be casualties treated as missed, standing
+// in for spacing, terrain use and a low profile the combat model does not simulate.
+// Rolled per incoming shot in damage_infantry, after armour, so it also blunts
+// armour-piercing weapons that ignore Flak. A successful save posts a combat-log line.
+// Astartes are bulky and hide poorly, so their save is much weaker than the Guard's.
 #macro GUARD_COVER_SAVE 0.4
+#macro MARINE_COVER_SAVE 0.15
+
+// Cover fades as the enemy closes: the save is scaled by shooter distance (block units,
+// point_distance / 10). At or beyond COVER_SAVE_FULL_RANGE the full save applies; point
+// blank it drops to COVER_SAVE_MIN_FACTOR of it, so hugging the line strips cover.
+#macro COVER_SAVE_FULL_RANGE 10
+#macro COVER_SAVE_MIN_FACTOR 0.25
+
+// Anti-tank penetration roll. A shot that can hurt a vehicle still has to roll to bite,
+// so a big volley (a stack of 50 Rokkits) no longer deletes armour outright. Chance
+// starts at BASE, rises with the weapon's AP tier, and falls the tougher the target hull
+// is (armour class above AC_BASELINE), clamped between MIN and MAX. Rolled per shot in
+// damage_vehicles; on a failed roll the shot bounces for no damage. Structured as a
+// damage multiplier so a future tiered result (little / medium / severe) can slot in.
+#macro AT_PEN_BASE_CHANCE 0.5
+#macro AT_PEN_AP_BONUS 0.12
+#macro AT_PEN_AC_BASELINE 30
+#macro AT_PEN_AC_PENALTY 0.01
+#macro AT_PEN_MIN 0.1
+#macro AT_PEN_MAX 0.95
 
 // Imperial Guard auxilia screen: the front-most battle columns guardsmen are dealt across.
 // Ten obj_pnunit columns exist (1 back to 10 front, higher column = nearer the enemy); the
