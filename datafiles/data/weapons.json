@@ -2739,8 +2739,7 @@
         "tags": [
             "vehicle",
             "heavy_ranged",
-            "pintle",
-            "dreadnought"
+            "pintle"
         ],
         "value": 60
     },
@@ -2833,7 +2832,6 @@
         "spli": 21,
         "tags": [
             "vehicle",
-            "dreadnought",
             "heavy_ranged",
             "bolt"
         ],
@@ -2862,7 +2860,6 @@
             "flame",
             "heavy_ranged",
             "vehicle",
-            "dreadnought",
             "sponson"
         ],
         "value": 150
@@ -2911,8 +2908,7 @@
             "las",
             "energy",
             "vehicle",
-            "heavy_ranged",
-            "dreadnought"
+            "heavy_ranged"
         ]
     },
     "Twin Linked Lascannon Sponsons": {
