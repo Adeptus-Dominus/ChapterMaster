@@ -1436,14 +1436,7 @@ if (_honour_guard_count > 0) {
     temp[35] += $"\n\nHonour Guard, having the {_honour_guard_count} most veteran {string_plural("marine", _honour_guard_count)} of your chapter serving in it.";
 };
 
-var _role_display_order = [
-    eROLE.CAPTAIN, eROLE.CHAPLAIN, eROLE.APOTHECARY, eROLE.TECHMARINE,
-    eROLE.ANCIENT, eROLE.CHAMPION, eROLE.LIBRARIAN, eROLE.SERGEANT,
-    eROLE.VETERANSERGEANT, eROLE.TERMINATOR, eROLE.VETERAN, eROLE.TACTICAL,
-    eROLE.ASSAULT, eROLE.DEVASTATOR, eROLE.SCOUT, eROLE.DREADNOUGHT
-];
 var _vehicle_display = ["Land Raider", "Predator", "Whirlwind", "Rhino", "Land Speeder"];
-var _venerable_dread = $"Venerable {_canon[eROLE.DREADNOUGHT]}";
 
 for (var _com = 1; _com <= 10; _com++) {
     var _index = collect_company(_com).index_roles();
@@ -1455,14 +1448,11 @@ for (var _com = 1; _com <= 10; _com++) {
         }
     }
     _parts = [];
-    for (var i = 0, l = array_length(_role_display_order); i < l; i++) {
-        var _role_name = _canon[_role_display_order[i]];
-        var _count = _index.has_role(_role_name) ? _index.role_count(_role_name) : 0;
-        if (_role_name == _canon[eROLE.DREADNOUGHT] && _index.has_role(_venerable_dread)) {
-            _count += _index.role_count(_venerable_dread);
-        }
+    var _keys = _index.hierarchy_keys();
+    for (var i = 0, l = array_length(_keys); i < l; i++) {
+        var _count = _index.role_count(_keys[i]);
         if (_count > 0) {
-            array_push(_parts, string_plural_count(_role_name, _count));
+            array_push(_parts, string_plural_count(_keys[i], _count));
         }
     }
     for (var i = 0, l = array_length(_vehicle_display); i < l; i++) {
