@@ -24,18 +24,10 @@
 #macro COVER_SAVE_FULL_RANGE 10
 #macro COVER_SAVE_MIN_FACTOR 0.25
 
-// Anti-tank penetration roll. A shot that can hurt a vehicle still has to roll to bite,
-// so a big volley (a stack of 50 Rokkits) no longer deletes armour outright. Chance
-// starts at BASE, rises with the weapon's AP tier, and falls the tougher the target hull
-// is (armour class above AC_BASELINE), clamped between MIN and MAX. Rolled per shot in
-// damage_vehicles; on a failed roll the shot bounces for no damage. Structured as a
-// damage multiplier so a future tiered result (little / medium / severe) can slot in.
-#macro AT_PEN_BASE_CHANCE 0.5
-#macro AT_PEN_AP_BONUS 0.12
-#macro AT_PEN_AC_BASELINE 30
-#macro AT_PEN_AC_PENALTY 0.01
-#macro AT_PEN_MIN 0.1
-#macro AT_PEN_MAX 0.95
+// Anti-tank penetration is now a per-vehicle, cost-tiered weak-spot chance defined in
+// vehicle_penetration_chance (scr_clean), not a weapon-AP formula: a capable shot rolls
+// that chance to get through, so an armour-ignoring volley cannot brute-force a heavy hull
+// (a Land Raider sits at 5%). Tune the chances there, per vehicle type.
 
 // Range accuracy/damage falloff for ranged fire. Damage is scaled by how far the target
 // is relative to the weapon's range: at point blank it gets RANGE_POINT_BLANK_BONUS, and

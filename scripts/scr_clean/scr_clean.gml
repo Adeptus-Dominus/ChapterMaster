@@ -138,18 +138,37 @@ function unit_role_is_guard(_role) {
         || (_role == "Heavy Weapons Team");
 }
 
-/// @desc Per-shot anti-tank penetration roll. A shot that can already hurt the vehicle
-/// still has to roll to actually bite, so a large volley does not delete armour outright.
-/// Chance rises with the attacker's AP tier and falls with the target's armour class.
-/// Returns a damage multiplier: currently binary (1 penetrate, 0 bounce). A future tiered
-/// version can return partial bands (little / medium / severe) from the same roll without
-/// touching the caller.
-function at_penetration_multiplier(_arp, _veh_ac) {
-    var _chance = AT_PEN_BASE_CHANCE
-        + (_arp - 1) * AT_PEN_AP_BONUS
-        - max(0, _veh_ac - AT_PEN_AC_BASELINE) * AT_PEN_AC_PENALTY;
-    _chance = clamp(_chance, AT_PEN_MIN, AT_PEN_MAX);
-    return (random(1) < _chance) ? 1 : 0;
+/// @desc Penetration (critical-hit) chance for a capable anti-tank shot, keyed to the
+/// vehicle's cost tier rather than the weapon's AP. Expensive war machines present almost
+/// no weak spot, so only a rare lucky hit to the right area gets through: a Land Raider
+/// (value 500) sits at 5%, cheaper hulls climb toward the light APCs. This is what stops a
+/// handful of Rokkits from deleting a Land Raider line: an arp-4 shot ignores armour and
+/// one-shots on a hit, so the CHANCE is the gate, not the damage. Values track
+/// vehicles.json costs (Land Raider 500, Predator 240, Whirlwind 180, Rhino/Land Speeder
+/// 120) and are the balance knob.
+function vehicle_penetration_chance(_veh_type) {
+    switch (_veh_type) {
+        case "Land Raider":  return 0.05; // value 500, tankiest hull
+        case "Leman Russ":   return 0.10; // Guard heavy battle tank
+        case "Predator":     return 0.15; // value 240
+        case "Whirlwind":    return 0.22; // value 180, armoured artillery
+        case "Basilisk":     return 0.28; // Guard artillery, thin armour
+        case "Chimera":      return 0.40; // Guard APC
+        case "Rhino":        return 0.45; // value 120, light APC
+        case "Land Speeder": return 0.55; // value 120, fast and lightly armoured
+    }
+    return 0.35; // any unlisted vehicle
+}
+
+/// @desc Anti-tank penetration roll for one capable shot. The caller only invokes this
+/// once the shot would deal damage, so this decides whether it actually gets through.
+/// Chance is the vehicle's cost-tiered weak-spot chance (see vehicle_penetration_chance),
+/// deliberately independent of the weapon's AP so a big AP volley cannot brute-force a
+/// heavy hull. Returns a damage multiplier: binary today (1 penetrate, 0 bounce); a future
+/// tiered result (little / medium / severe, or a disable band) can come from the same roll
+/// without touching the caller.
+function at_penetration_multiplier(_veh_type) {
+    return (random(1) < vehicle_penetration_chance(_veh_type)) ? 1 : 0;
 }
 
 /// @self Id.Instance.obj_pnunit
@@ -581,7 +600,7 @@ function damage_vehicles(_damage_data, _shots, _damage, _weapon_index, _arp = 0)
         // a stack of many shots does not automatically shred armour. A failed roll bounces
         // for no damage. Only capable shots roll; ones already soaked to zero just bounce.
         if (_modified_damage > 0) {
-            _modified_damage *= at_penetration_multiplier(_armour_pierce, veh_ac[veh_index]);
+            _modified_damage *= at_penetration_multiplier(veh_type[veh_index]);
         }
         // This ran in the obj_pnunit context, where `enemy` is the block's TARGET
         // instance variable (set in its own Alarm_0), so enemy fire landing before
