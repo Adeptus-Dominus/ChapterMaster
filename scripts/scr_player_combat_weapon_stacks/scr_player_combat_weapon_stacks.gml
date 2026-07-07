@@ -266,7 +266,7 @@ function scr_player_combat_weapon_stacks() {
     veh = 0;
     men = 0;
     dreads = 0;
-    for (var i = 0; i < array_length(att); i++) {
+    for (i = 0; i < array_length(att); i++) {
         dudes_num[i] = 0;
         att[i] = 0;
         apa[i] = 0;
@@ -277,7 +277,7 @@ function scr_player_combat_weapon_stacks() {
 
     var dreaded = false;
 
-    for (var g = 0; g < array_length(unit_struct); g++) {
+    for (g = 0; g < array_length(unit_struct); g++) {
         var unit = unit_struct[g];
         if (is_struct(unit)) {
             if (unit.hp() > 0) {
@@ -428,7 +428,7 @@ function scr_player_combat_weapon_stacks() {
             }
         }
     }
-    for (var g = 0; g < array_length(veh_id); g++) {
+    for (g = 0; g < array_length(veh_id); g++) {
         if ((veh_id[g] > 0) && (veh_hp[g] > 0) && (veh_dead[g] != 1)) {
             if ((veh_id[g] > 0) && (veh_hp[g] > 0)) {
                 veh_dead[g] = 0;
@@ -491,7 +491,7 @@ function scr_player_combat_weapon_stacks() {
 
     if ((men == 1) && (veh == 0) && (obj_ncombat.player_forces == 1)) {
         var h = 0;
-        for (var i = 0; i < array_length(unit_struct); i++) {
+        for (i = 0; i < array_length(unit_struct); i++) {
             if (h == 0) {
                 var unit = unit_struct[i];
                 if (!is_struct(unit)) {

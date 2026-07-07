@@ -9,6 +9,12 @@ if (enemy == noone) {
     exit;
 }
 
+// enemy2 is used across several sibling blocks below (the two column-piercing
+// passes and the older melee/vehicle chain). Declare it once here at event scope;
+// GML hoists var anyway, so this only makes the shared scope explicit and silences
+// the GM2043 "outside its scope" warnings.
+var enemy2 = noone;
+
 //In melee check
 engaged = collision_point(x - 10, y, obj_pnunit, 0, 1) || collision_point(x + 10, y, obj_pnunit, 0, 1);
 
@@ -101,7 +107,7 @@ if (!engaged) {
                             var x2 = enemy.x;
                             repeat (instance_number(obj_pnunit) - 1) {
                                 x2 += flank == 0 ? -10 : 10;
-                                var enemy2 = instance_nearest(x2, y, obj_pnunit);
+                                enemy2 = instance_nearest(x2, y, obj_pnunit);
                                 if (!target_block_is_valid(enemy2, obj_pnunit)) {
                                     continue;
                                 }
@@ -208,7 +214,7 @@ if (!engaged) {
                         if (array_length(_lines) >= PIERCE_MAX_DEPTH) {
                             break;
                         }
-                        var enemy2 = _behind[b];
+                        enemy2 = _behind[b];
                         if (!target_block_is_valid(enemy2, obj_pnunit)) {
                             continue;
                         }

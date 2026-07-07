@@ -12,6 +12,11 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
         //   (column piercing), only the first call spends the turn's ammo tick.
 
         // This massive clusterfuck of a script uses the newly determined weapon and target data to attack and assign damage
+        // attack_count_mod is declared once here at function scope. It is set in the
+        // early weapon block and reset/recomputed in the that_works damage block; GML
+        // hoists var to function scope anyway, so this only makes the shared scope
+        // explicit and silences the GM2043 "outside its scope" warnings.
+        var attack_count_mod = 1;
         var hostile_type;
         var hostile_damage;
         var hostile_weapon;
@@ -88,7 +93,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                 damage_type = "status";
             }
 
-            var attack_count_mod = max(1, splash[weapon_index_position]);
+            attack_count_mod = max(1, splash[weapon_index_position]);
 
             if ((damage_type == "status") && (stop == 0) && (shots_fired > 0)) {
                 var damage_per_weapon = 0, hit_number = shots_fired;

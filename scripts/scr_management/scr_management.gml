@@ -69,7 +69,7 @@ function scr_management(argument0) {
 
         var _auxilia_units = collect_role_group("all", "", false, {roles: auxilia_roles()}, true);
 
-        var _auxilia_units = _auxilia_units.index_roles();
+        _auxilia_units = _auxilia_units.index_roles();
 
         pane.line = array_join(pane.line, _auxilia_units.create_plural_strings_array());
 
