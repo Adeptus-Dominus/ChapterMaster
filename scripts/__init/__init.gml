@@ -173,4 +173,31 @@ function __init() {
     global.name_generator = new NameGenerator();
     global.star_sprites = ds_map_create();
     global.base_component_surface = -1;
+
+    global.force_strength_descriptions = [
+        "None",
+        "Minimal",
+        "Sparse",
+        "Moderate",
+        "Numerous",
+        "Very Numerous",
+        "Overwhelming",
+    ];
+
+    global.star_name_colors = [
+        c_gray,
+        c_white, // Player
+        c_gray, // Imperium
+        c_red, // Mechanicus
+        CM_GREEN_COLOR, // Inquisition (Default)
+        c_white, // Ecclesiarchy
+        #FF8000, // Eldar
+        #009500, // Orks
+        #FECB01, // Tau
+        #AD5272, // Tyranids
+        c_dkgray, // Chaos
+        CM_GREEN_COLOR, // Heretics (Default)
+        #AD5272, // why 12 is skipped in general, we will never know
+        #80FF00 // Necrons
+    ];
 }
