@@ -1393,26 +1393,6 @@ LOGGER.info("Game start welcoming message");
 
 var _canon = obj_ini.role[100];
 
-var _role_aliases = {
-    "Tactical Sergeant":        _canon[eROLE.TACTICAL],
-    "Devastator Sergeant":      _canon[eROLE.DEVASTATOR],
-    "Assault Sergeant":         _canon[eROLE.ASSAULT],
-    "Scout Sergeant":           _canon[eROLE.SCOUT],
-};
-_role_aliases[$ $"Venerable {_canon[eROLE.DREADNOUGHT]}"] = _canon[eROLE.DREADNOUGHT];
-
-var _count_roles = function(_com, _last_slot, _aliases) {
-    var _counts = {};
-    for (var _mm = 0; _mm <= _last_slot; _mm++) {
-        var _r = obj_ini.role[_com][_mm];
-        _r = _aliases[$ _r] ?? _r; //aliases are replaced with canon for clarity
-        if (_r != "") {
-            _counts [$ _r] = (_counts[$ _r] ?? 0) + 1;
-        }
-    }
-    return _counts;
-};
-
 var _build_clause = function(_prefix, _parts) {
     if (array_length(_parts) == 0) {
         return "";
@@ -1420,7 +1400,7 @@ var _build_clause = function(_prefix, _parts) {
     return $"{_prefix} {string_join_ext(", ", _parts)}.";
 };
 
-var _hq_counts = _count_roles(0, 100, _role_aliases);
+var _hq_index = collect_company(0).index_roles();
 var _command_staff = [
     { role: _canon[eROLE.CHAPTERMASTER],        name_slot: 0, prefix: "your majesty " },
     { role: "Forge Master",                     name_slot: 1, prefix: "" },
@@ -1430,9 +1410,9 @@ var _command_staff = [
 ];
 
 var _parts = [];
-for (var i = 0; i < array_length(_command_staff); i++) {
+for (var i = 0, l = array_length(_command_staff); i < l; i++) {
     var _officer = _command_staff[i];
-    if ((_hq_counts[$ _officer.role] ?? 0) > 0) {
+    if (_hq_index.has_role(_officer.role)) {
         array_push(_parts, $"{_officer.prefix}{_officer.role} {obj_ini.name[0][_officer.name_slot]}");
     }
 };
@@ -1443,16 +1423,17 @@ var _specialist_display = [
     _canon[eROLE.LIBRARIAN], "Codiciery", "Lexicanum",
 ];
 _parts = [];
-for (var i = 0; i < array_length(_specialist_display); i++) {
-    var _count = _hq_counts[$ _specialist_display[i]] ?? 0;
+for (var i = 0, l = array_length(_specialist_display); i < l; i++) {
+    var _role_name = _specialist_display[i];
+    var _count = _hq_index.has_role(_role_name) ? _hq_index.role_count(_role_name) : 0;
     if (_count > 0) {
-        array_push(_parts, string_plural_count(_specialist_display[i], _count));
+        array_push(_parts, string_plural_count(_role_name, _count));
     }
 };
 temp[35] = _build_clause("Specialist branches staffed by", _parts);
-var _honour_guards = _hq_counts[$ _canon[eROLE.HONOURGUARD]] ?? 0;
-if (_honour_guards > 0) {
-    temp[35] += $"\n\nHonour Guard, having the {_honour_guards} most veteran {string_plural("marine", _honour_guards)} of your chapter serving in it.";
+var _honour_guard_count = _hq_index.has_role(_canon[eROLE.HONOURGUARD]) ? _hq_index.role_count(_canon[eROLE.HONOURGUARD]) : 0;
+if (_honour_guard_count > 0) {
+    temp[35] += $"\n\nHonour Guard, having the {_honour_guard_count} most veteran {string_plural("marine", _honour_guard_count)} of your chapter serving in it.";
 };
 
 var _role_display_order = [
@@ -1462,9 +1443,10 @@ var _role_display_order = [
     eROLE.ASSAULT, eROLE.DEVASTATOR, eROLE.SCOUT, eROLE.DREADNOUGHT
 ];
 var _vehicle_display = ["Land Raider", "Predator", "Whirlwind", "Rhino", "Land Speeder"];
+var _venerable_dread = $"Venerable {_canon[eROLE.DREADNOUGHT]}";
 
 for (var _com = 1; _com <= 10; _com++) {
-    var _counts = _count_roles(_com, 400, _role_aliases);
+    var _index = collect_company(_com).index_roles();
     var _veh_counts = {};
     for (var v = 1; v <= 100; v++) {
         var _veh = obj_ini.veh_role[_com][v];
@@ -1473,14 +1455,17 @@ for (var _com = 1; _com <= 10; _com++) {
         }
     }
     _parts = [];
-    for (var i = 0; i < array_length(_role_display_order); i++) {
+    for (var i = 0, l = array_length(_role_display_order); i < l; i++) {
         var _role_name = _canon[_role_display_order[i]];
-        var _count = _counts[$ _role_name] ?? 0;
+        var _count = _index.has_role(_role_name) ? _index.role_count(_role_name) : 0;
+        if (_role_name == _canon[eROLE.DREADNOUGHT] && _index.has_role(_venerable_dread)) {
+            _count += _index.role_count(_venerable_dread);
+        }
         if (_count > 0) {
             array_push(_parts, string_plural_count(_role_name, _count));
         }
     }
-    for (var i = 0; i < array_length(_vehicle_display); i++) {
+    for (var i = 0, l = array_length(_vehicle_display); i < l; i++) {
         var _count = _veh_counts[$ _vehicle_display[i]] ?? 0;
         if (_count > 0) {
             array_push(_parts, string_plural_count(_vehicle_display[i], _count));
