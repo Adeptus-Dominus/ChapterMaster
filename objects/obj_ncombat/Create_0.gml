@@ -245,6 +245,11 @@ en_big_mofo = 10;
 
 defending = true; // 1 is defensive
 dropping = false; // 0 is was on ground
+// Basic combat orders: latched true the first time any player block reaches the
+// enemy line to its front (east), which stops the formation-wide auto-advance so
+// the line holds at contact instead of individual blocks surging into gaps as
+// enemies die. Reset per battle here.
+player_front_contact = false;
 attacking = 0; // 1 means attacked from space/local
 time = floor(random(24)) + 1;
 terrain = "";

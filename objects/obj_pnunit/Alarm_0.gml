@@ -1,4 +1,14 @@
 try {
+    // Basic combat orders: seed each block's move_order on its first tick from the
+    // vanilla movement rule (raids and attacks advance to contact, defense and the
+    // static formation hold), toggled by clicking the block's bar (obj_pnunit
+    // Step_0). Seeded here, above the dead-enemy early-exit below, so a block whose
+    // turn comes after the enemy is already destroyed still shows its order marker
+    // instead of a blank column.
+    if (move_order == "") {
+        move_order = (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)) ? "advance" : "hold";
+    }
+
     if (instance_number(obj_enunit) != 1) {
         obj_ncombat.flank_x = self.x;
         with (obj_enunit) {
@@ -19,24 +29,35 @@ try {
         exit;
     }
 
-    // Basic combat orders: every block carries a move_order ("advance" or "hold"),
-    // seeded on its first tick from the vanilla movement rule (raids and attacks
-    // advance, defense and the static formation hold) and toggled by clicking the
-    // block's bar (obj_pnunit Step_0). Advancing blocks may leapfrog over friendly
-    // blocks directly ahead. The Defenses pseudo-block takes no orders and never
-    // moves.
-    if (move_order == "") {
-        move_order = (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)) ? "advance" : "hold";
-    }
+    // Auto-advance to contact: the enemy never moves (its own movement is commented
+    // out below), so an advancing formation has to close the gap itself. It advances
+    // as a body, one column per tick, and the WHOLE formation stops the moment any
+    // block reaches the enemy line (obj_ncombat.player_front_contact latches once and
+    // is not reset during the battle). This replaces the per-block auto-advance that
+    // let the formation drift apart: when a block's own front enemy died it surged
+    // east into the vacated space while blocks still engaged held, opening gaps even
+    // with the line in correct order, and blocks whose turn came after the enemy was
+    // gone froze mid-field with no order marker. A block the player has personally
+    // ordered (order_manual) still advances and leapfrogs freely for manual maneuver,
+    // ignoring the latch.
     if ((move_order == "advance") && (veh_type[1] != "Defenses")) {
-        // Leapfrogging only for blocks the player has clicked (order_manual):
-        // default auto-advance keeps vanilla stall behavior, otherwise same-tick
-        // processing order and an engaged front line make rear blocks vault their
-        // own formation with no orders given.
-        move_unit_block("east", 1, false, order_manual);
+        if (order_manual) {
+            move_unit_block("east", 1, false, true);
+        } else if (!obj_ncombat.player_front_contact) {
+            move_unit_block("east", 1, false, false);
+        }
     }
 
     engaged = collision_point(x - 14, y, obj_enunit, 0, 1) != noone || collision_point(x + 14, y, obj_enunit, 0, 1) != noone;
+
+    // Latch formation contact the first time any block reaches the enemy line to its
+    // east (the front). Flankers spawn behind the formation to the west, so a west
+    // side (x - 14) touch must not trip the latch or the main body would stop closing
+    // with the enemy ahead. Never reset during the battle: once the line is met the
+    // formation holds instead of surging into gaps as enemies die.
+    if (collision_point(x + 14, y, obj_enunit, 0, 1)) {
+        obj_ncombat.player_front_contact = true;
+    }
 
     var once_only = 0;
     var range_shoot = "";

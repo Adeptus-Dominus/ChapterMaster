@@ -40,6 +40,13 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         _hostile_shots = max(1, round(_hostile_shots / 3));
     }
 
+    // A resolution that attributed no unit at all (damage_data.unit_type left empty:
+    // the shot landed on a block whose relevant pool was already gone) produces
+    // "X strikes at ." lines. They carry no information; skip them entirely.
+    if ((target_type == "") && (lost_units_count == 0)) {
+        exit;
+    }
+
     // Target readout: the bare unit name ("strikes at Assault") says nothing about what
     // was hit or how many stand there. Append the block's living strength for that unit
     // type. scr_flavor2 runs in the target block's own scope, so the arrays are directly
