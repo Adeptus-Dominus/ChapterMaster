@@ -1,4 +1,4 @@
-if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
+if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select) && !instance_exists(obj_bomb_select)) {
     if (obj_controller.diplomacy == 0) {
         draw_set_font(fnt_fancy);
         draw_set_halign(fa_center);
