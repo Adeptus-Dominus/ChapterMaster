@@ -183,10 +183,11 @@ function block_position_collision(position_x, position_y) {
 /// @param {string} direction In what direction to move ("east" or "west")
 /// @param {real} blocks How far to move (in unit blocks)
 /// @param {bool} allow_collision Are unit blocks allowed to passthrough other unit blocks
-/// @param {bool} leapfrog When the destination is blocked by a FRIENDLY block, hop over the
-/// contiguous friendly column(s) to the first free slot beyond (probing at most
-/// PLAYER_LEAPFROG_MAX_COLUMNS columns). Never lands on or vaults past an enemy block, so
-/// contact with the enemy is still made by normal one-step movement and engagement.
+/// @param {bool} leapfrog When the destination is blocked by a FRIENDLY block, step into a
+/// free parallel lane (offset from the home lane by PLAYER_LANE_OFFSET) and advance past it
+/// instead of stalling, keeping this formation's own order; the block re-forms onto the home
+/// lane once its column is clear (see move_player_block). Never steps onto a position an
+/// enemy holds, so contact is still made by normal one-step movement and engagement.
 /// @return {bool}
 /// @self Asset.GMObject.obj_pnunit
 function move_unit_block(direction, blocks = 1, allow_collision = false, leapfrog = false) {
@@ -208,19 +209,23 @@ function move_unit_block(direction, blocks = 1, allow_collision = false, leapfro
             return true;
         }
 
-        // Leapfrogging (basic combat orders): only when the immediate blocker is a
-        // friendly block and not an enemy.
+        // Lane side-step (basic combat orders): a personally ordered formation blocked by
+        // a friendly block ahead steps into a free parallel lane and advances past it,
+        // keeping its own order, instead of teleporting over the line. It re-forms onto the
+        // home lane once its column is clear (see move_player_block). It never steps onto a
+        // position an enemy holds. This replaces the old leapfrog teleport, which jumped the
+        // block to the next empty column and tangled formations (the back line snapping to
+        // the front). Only manual orders pass leapfrog == true, so the auto-advancing body
+        // never side-steps; it still advances to contact in lane.
         if (leapfrog && (_step != 0) && collision_point(_new_pos, y, obj_pnunit, 0, 1) && !collision_point(_new_pos, y, obj_enunit, 0, 1)) {
-            var _hop = _new_pos + _step;
-            repeat (PLAYER_LEAPFROG_MAX_COLUMNS) {
-                if (collision_point(_hop, y, obj_enunit, 0, 1)) {
-                    break;
-                }
-                if (!collision_point(_hop, y, obj_pnunit, 0, 1)) {
-                    x = _hop;
+            var _lane_tries = [PLAYER_LANE_OFFSET, -PLAYER_LANE_OFFSET, PLAYER_LANE_OFFSET * 2, -PLAYER_LANE_OFFSET * 2];
+            for (var _lt = 0; _lt < array_length(_lane_tries); _lt++) {
+                var _lane_y = COMBAT_HOME_LANE_Y + _lane_tries[_lt];
+                if (!block_position_collision(_new_pos, _lane_y)) {
+                    x = _new_pos;
+                    y = _lane_y;
                     return true;
                 }
-                _hop += _step;
             }
         }
 
@@ -273,6 +278,12 @@ function move_player_block() {
         } else if (!obj_ncombat.player_front_contact) {
             move_unit_block("east", 1, false, false);
         }
+    }
+    // Re-form: a formation that stepped into a parallel lane to pass slides back onto the
+    // home lane as soon as its column there is clear, so the line closes up instead of
+    // leaving blocks strung out in side lanes.
+    if ((y != COMBAT_HOME_LANE_Y) && !block_position_collision(x, COMBAT_HOME_LANE_Y)) {
+        y = COMBAT_HOME_LANE_Y;
     }
     if (collision_point(x + 14, y, obj_enunit, 0, 1)) {
         obj_ncombat.player_front_contact = true;

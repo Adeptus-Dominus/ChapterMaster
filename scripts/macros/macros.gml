@@ -29,6 +29,14 @@
 // that chance to get through, so an armour-ignoring volley cannot brute-force a heavy hull
 // (a Land Raider sits at 5%). Tune the chances there, per vehicle type.
 
+// Combat lane geometry. Blocks form up on the home lane (created at y = 240). When a
+// personally ordered formation has to pass a friendly block ahead, it steps into a
+// parallel lane this many pixels off the home lane, advances past, then re-forms onto the
+// home lane once its column is clear (see move_unit_block / move_player_block). The offset
+// must clear a block's drawn height so lanes do not overlap; tune if tall formations touch.
+#macro COMBAT_HOME_LANE_Y 240
+#macro PLAYER_LANE_OFFSET 40
+
 // Range accuracy/damage falloff for ranged fire. Damage is scaled by how far the target
 // is relative to the weapon's range: at point blank it gets RANGE_POINT_BLANK_BONUS, and
 // it falls by up to RANGE_FALLOFF at maximum range, floored at RANGE_MIN_MULT. Short-range
