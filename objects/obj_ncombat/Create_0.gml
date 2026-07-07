@@ -180,6 +180,10 @@ combat_log.log_font = fnt_aldrich_12;
 ctally_target = undefined;
 ctally_bounce = [];
 ctally_injure = [];
+// Grazing flavor: worst wound severity (0..1) and vehicle flag for the current injured
+// tally group, so the consolidated wound line can be graded like the enemy side's.
+ctally_injure_severity = 0;
+ctally_is_vehicle = false;
 ktally_target = undefined;
 ktally_weapons = {};
 ktally_order = [];

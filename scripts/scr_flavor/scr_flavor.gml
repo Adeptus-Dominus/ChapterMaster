@@ -67,7 +67,7 @@ function report_held_fire(_weapon_names) {
     add_battle_log_message($"{_list} held fire lacking live targets.", eMSG_COLOR.WHITE);
 }
 
-function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties, shots_bounced = false, _defer = false) {
+function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties, shots_bounced = false, _defer = false, _graze_severity = 0) {
     // Generates flavor based on the damage and casualties from scr_shoot, only for the player
     // shots_bounced: true when armour stopped the shots outright (AP too low) and nothing died,
     // so the log can explain *why* instead of a flat "no casualties".
@@ -750,6 +750,8 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
         color: message_color,
         bounced: (shots_bounced && casulties == 0),
         injured: (!shots_bounced && casulties == 0),
+        severity: _graze_severity,
+        is_vehicle: (instance_exists(target) ? (target.dudes_vehicle[targeh] != 0) : false),
         target: target_name,
         subject: firing_subject,
         weapon: weapon_plural,
@@ -804,7 +806,7 @@ function emit_volley_flavour(_primary, _spill_kills) {
     // consolidate into one chronological line per target instead of one line per weapon.
     if (is_struct(_primary) && (_primary.bounced || _primary.injured) && _list == "") {
         combat_kill_tally_flush();
-        combat_tally_add(_primary.target, _primary.subject, _primary.injured);
+        combat_tally_add(_primary.target, _primary.subject, _primary.injured, _primary.severity, _primary.is_vehicle);
         return;
     }
 
@@ -848,13 +850,17 @@ function emit_volley_flavour(_primary, _spill_kills) {
 /// @desc Buffers a non-killing volley (wound or armour-bounce) against a target. Consecutive volleys
 ///       on the same target merge; switching target flushes the previous one, keeping the log
 ///       chronological. _injured true = penetrated but no kill; false = bounced off armour.
-function combat_tally_add(_target, _subject, _injured) {
+function combat_tally_add(_target, _subject, _injured, _severity = 0, _is_vehicle = false) {
     if (obj_ncombat.ctally_target != _target) {
         combat_tally_flush();
         obj_ncombat.ctally_target = _target;
     }
     if (_injured) {
         array_push(obj_ncombat.ctally_injure, _subject);
+        // Keep the worst wound in the group so the consolidated line grades by the
+        // heaviest hit, and remember whether the target is a vehicle for the tier table.
+        obj_ncombat.ctally_injure_severity = max(obj_ncombat.ctally_injure_severity, _severity);
+        obj_ncombat.ctally_is_vehicle = _is_vehicle;
     } else {
         array_push(obj_ncombat.ctally_bounce, _subject);
     }
@@ -867,9 +873,13 @@ function combat_tally_flush() {
     }
     var _t = obj_ncombat.ctally_target;
     if (array_length(obj_ncombat.ctally_injure) > 0) {
-        // Light green for wounded-but-standing, per Tavish's CM-Poligon color coding
-        // (CptMacTavish2224, tag LW_Beta_1.2).
-        add_battle_log_message($"Fire from {combat_subject_join(obj_ncombat.ctally_injure)} wounded the {_t} but didn't bring it down.", eMSG_COLOR.LIGHTGREEN);
+        // Grade the wound by how much got through, reusing the enemy side's severity tiers
+        // (incoming_damage_flavor). Injured means damage landed, so floor the severity at the
+        // graze tier (0.10) so it never shows the "shrugged off" band. Light green for
+        // wounded-but-standing, per Tavish's CM-Poligon color coding (CptMacTavish2224,
+        // tag LW_Beta_1.2).
+        var _wound_grade = incoming_damage_flavor(max(0.10, obj_ncombat.ctally_injure_severity), obj_ncombat.ctally_is_vehicle);
+        add_battle_log_message($"Fire from {combat_subject_join(obj_ncombat.ctally_injure)} hits the {_t}. {_wound_grade}", eMSG_COLOR.LIGHTGREEN);
     }
     if (array_length(obj_ncombat.ctally_bounce) > 0) {
         add_battle_log_message($"Fire from {combat_subject_join(obj_ncombat.ctally_bounce)} cannot penetrate the {_t}'s armour.", eMSG_COLOR.WHITE);
@@ -877,6 +887,8 @@ function combat_tally_flush() {
     obj_ncombat.ctally_target = undefined;
     obj_ncombat.ctally_bounce = [];
     obj_ncombat.ctally_injure = [];
+    obj_ncombat.ctally_injure_severity = 0;
+    obj_ncombat.ctally_is_vehicle = false;
 }
 
 /// @desc Buffers killing volleys that share a weapon and target, summing shots and kills so a split

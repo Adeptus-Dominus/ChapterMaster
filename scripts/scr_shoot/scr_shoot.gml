@@ -377,7 +377,11 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         // the full weapon count); later targets just contribute to the kill list.
                         // final_hit <= 0 means armour stopped the shots cold (AP too low).
                         if (_first_target) {
-                            _primary_flavour = scr_flavor(weapon_index_position, spill_block, spill_rank, shots_fired, casualties, final_hit <= 0, true);
+                            // Grazing severity for the wound-no-kill case: how far this volley's
+                            // damage got toward killing one model (0..1), so scr_flavor can grade the
+                            // player's wound line the way the enemy side already grades incoming fire.
+                            var _graze_sev = ((final_hit > 0) && (casualties == 0) && (rank_hp > 0)) ? clamp(total_damage / rank_hp, 0, 1) : 0;
+                            _primary_flavour = scr_flavor(weapon_index_position, spill_block, spill_rank, shots_fired, casualties, final_hit <= 0, true, _graze_sev);
                             _first_target = false;
                         } else if (casualties > 0) {
                             array_push(_spill_kills, { name: spill_block.dudes[spill_rank], count: casualties });
