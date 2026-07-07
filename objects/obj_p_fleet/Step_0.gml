@@ -10,15 +10,15 @@ if ((action != "") && (orbiting != noone)) {
 
 action_spd = calculate_action_speed();
 
-if (ii_check == 0) {
-    // Refresh the map icon frame on a fixed 10-step cadence, matching obj_en_fleet.
-    // Without this reset the countdown hit 0 only once (roughly 10 steps after the
-    // fleet was created), so set_player_fleet_image ran a single time. A fleet loaded
-    // from a save has its ship counts populated by the load pass, and any fleet that
-    // gains or loses ships in play, so that one early frame calculation went stale and
-    // the icon stuck at the tiny frame regardless of real size.
-    ii_check = 10;
+if (ii_check <= 0) {
+    // Refresh the fleet's map sprite size, then rearm the timer. Previously this fired
+    // exactly once (ii_check hit 0 then went negative and never reset), so a fleet
+    // whose serialized ii_check was already negative never recomputed its size after a
+    // load and rendered as a single tiny blip regardless of its real strength. The
+    // enemy fleet (obj_en_fleet) already rearms this timer; the player fleet did not.
+    // Using <= 0 also lets a loaded fleet with a negative timer heal on the next step.
     set_player_fleet_image();
+    ii_check = 10;
 }
 
 if ((global.load >= 0) && (sprite_index != spr_fleet_tiny)) {
