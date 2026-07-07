@@ -347,7 +347,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         if (location_out_of_player_control(unit_location_string) || (unit_location_string == "=Penitorium=") || (assignment != "none")) {
             draw_set_alpha(0.5);
         }
-        var truncatedLocation = string_truncate(string(unit_location_string), 130); // Truncate the location string to 100 pixels
+        var truncatedLocation = string_truncate_planet(string(unit_location_string), 130); // Truncate but keep the planet numeral
         draw_text(xx + 430 + 8, yy + 66, truncatedLocation); // LOC
         draw_set_alpha(1);
 

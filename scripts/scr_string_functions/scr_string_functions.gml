@@ -127,6 +127,62 @@ function string_truncate(_string, _max_width) {
     }
 }
 
+/// @function string_truncate_planet
+/// @description Like string_truncate, but preserves a trailing planet numeral so a
+///              location such as "Mandragoran III" truncates to "Mandrag... III" instead
+///              of chopping the numeral off the end. Keeps squads assigned to different
+///              planets in the same system distinguishable in the management list.
+///              Strings with no planet numeral (ship names, "=Penitorium=", "=Event=")
+///              fall back to plain string_truncate.
+/// @param {string} _string
+/// @param {real} _max_width The maximum allowable pixel width for the string.
+/// @returns {string}
+function string_truncate_planet(_string, _max_width) {
+    _string = string(_string);
+    if (string_width(_string) <= _max_width) {
+        return _string;
+    }
+
+    // Detect a trailing planet numeral by matching the numerals the game actually
+    // appends (scr_roman). Longest match wins so "IV" is not mistaken for a bare
+    // trailing "V", and matching known tokens avoids splitting a name that merely ends
+    // in a roman-numeral letter.
+    var _numeral = "";
+    var _name = _string;
+    var _best_len = 0;
+    for (var n = 1; n <= 12; n++) {
+        var _r = scr_roman(n);
+        if (is_undefined(_r) || (_r == "")) {
+            continue;
+        }
+        var _rlen = string_length(_r);
+        if ((_rlen > _best_len) && (string_length(_string) > _rlen) && (string_copy(_string, string_length(_string) - _rlen + 1, _rlen) == _r)) {
+            _best_len = _rlen;
+            _numeral = _r;
+            _name = string_copy(_string, 1, string_length(_string) - _rlen);
+        }
+    }
+
+    if (_numeral == "") {
+        return string_truncate(_string, _max_width);
+    }
+
+    // Drop any spaces the name had before the numeral; a single separating space is
+    // re-added with the ellipsis.
+    while ((string_length(_name) > 0) && (string_char_at(_name, string_length(_name)) == " ")) {
+        _name = string_copy(_name, 1, string_length(_name) - 1);
+    }
+
+    var _tail = "... " + _numeral;
+    var _tail_width = string_width(_tail);
+    var _name_trunc = _name;
+    while (((string_width(_name_trunc) + _tail_width) > _max_width) && (string_length(_name_trunc) > 0)) {
+        _name_trunc = string_copy(_name_trunc, 1, string_length(_name_trunc) - 1);
+    }
+
+    return _name_trunc + _tail;
+}
+
 /// @function integer_to_words
 /// @description Converts an integer to an english word.
 /// @param {real} _integer

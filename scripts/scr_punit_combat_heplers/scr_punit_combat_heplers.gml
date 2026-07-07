@@ -74,7 +74,14 @@ function get_rightmost(block_type = obj_pnunit, include_flanking = true, include
                     }
                 }
                 if (rightmost == noone && x > 0) {
-                    rightmost = block_type.id;
+                    // Was block_type.id, which resolves to obj_pnunit.id (the first
+                    // instance in the list) rather than the current instance in this
+                    // with-loop, so the first valid block reaching here was recorded as
+                    // whatever block was created first. When that first-created block
+                    // was not the actual edge, get_rightmost returned the wrong block
+                    // and the enemy fired on the wrong column even with the formation
+                    // in correct order. Bug exists verbatim in upstream main.
+                    rightmost = id;
                 } else {
                     if (x > rightmost.x) {
                         rightmost = id;
@@ -115,7 +122,13 @@ function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
                     }
                 }
                 if (left_most == noone && x > 0) {
-                    left_most = block_type.id;
+                    // Same bug as get_rightmost above: block_type.id is the first
+                    // instance in the list, not the current one, so the first valid
+                    // block was recorded as the first-created block. This is why a
+                    // flanking force (which targets get_leftmost, the rear column) hit
+                    // the wrong line, striking the bulk block created first rather than
+                    // the block actually closest to it. Bug exists verbatim in upstream.
+                    left_most = id;
                 } else {
                     if (x < left_most.x && x > 0) {
                         left_most = id;
