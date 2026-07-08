@@ -1326,8 +1326,7 @@
         "tags": [
             "las",
             "veteran_guard_only"
-        ],
-        "value": 8
+        ]
     },
     "Hellrifle": {
         "abbreviation": "HllRifle",
@@ -1355,7 +1354,7 @@
     "HK Missile": {
         "abbreviation": "HKMssl",
         "ammo": 1,
-        "arp": 1,
+        "arp": 4,
         "attack": {
             "artifact": 450,
             "master_crafted": 400,

@@ -1210,10 +1210,16 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static get_weapon_one_data = function(type = "all") {
+        if (is_dreadnought()) {
+            return gear_weapon_data("weapon", dread_infantry_weapon(weapon_one()), type, false, weapon_one_quality, dread_infantry_weapon(weapon_one(true)));
+        }
         return gear_weapon_data("weapon", weapon_one(), type, false, weapon_one_quality, weapon_one(true));
     };
 
     static get_weapon_two_data = function(type = "all") {
+        if (is_dreadnought()) {
+            return gear_weapon_data("weapon", dread_infantry_weapon(weapon_two()), type, false, weapon_two_quality, dread_infantry_weapon(weapon_two(true)));
+        }
         return gear_weapon_data("weapon", weapon_two(), type, false, weapon_two_quality, weapon_two(true));
     };
 
@@ -2313,6 +2319,26 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         }
     };
+}
+
+/// @desc Maps a dreadnought's heavy Mount/Sponson weapon variant to its infantry
+/// equivalent. Per upstream direction, a dreadnought fires the infantry version of what it
+/// carries: the Mount/Sponson variants exist for vehicles and hit far harder, which was
+/// only ever a way to brute-force vehicle damage before the penetration roll existed.
+/// Weapons that are already infantry, or unique dreadnought weapons without an infantry
+/// counterpart (Kheres Assault Cannon, Inferno Cannon), pass through unchanged, as do
+/// non-string equips (artifacts).
+function dread_infantry_weapon(_weapon) {
+    if (!is_string(_weapon)) {
+        return _weapon;
+    }
+    switch (_weapon) {
+        case "Twin Linked Assault Cannon Mount":  return "Assault Cannon";
+        case "Twin Linked Heavy Bolter Mount":    return "Twin Linked Heavy Bolter";
+        case "Twin Linked Lascannon Mount":       return "Twin Linked Lascannon";
+        case "Twin Linked Heavy Flamer Sponsons": return "Heavy Flamer";
+    }
+    return _weapon;
 }
 
 function jsonify_marine_struct(company, marine, stringify = true) {
