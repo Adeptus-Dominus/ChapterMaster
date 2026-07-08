@@ -15,11 +15,8 @@ if (!hide) {
         if (save_part > 0) {
             draw_sprite(spr_load_text, 1, 1068, 821);
         }
-        if ((load_part > 0) && (global.restart == 0)) {
+        if (load_part > 0) {
             draw_sprite(spr_load_text, 0, 1068, 821);
-        }
-        if ((load_part > 0) && (global.restart > 0)) {
-            draw_sprite(spr_load_text, 2, 1068, 821);
         }
     }
 

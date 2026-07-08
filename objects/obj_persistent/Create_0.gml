@@ -13,7 +13,6 @@ global.returned = 0;
 global.debug = false;
 global.current_music = -1;
 global.load = 0;
-global.restart = 0;
 global.cheat_req = false;
 global.cheat_gene = false;
 global.cheat_disp = false;
