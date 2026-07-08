@@ -7,80 +7,37 @@ try {
     var _list_term_armour = global.list_terminator_armour;
 
     if (engage == true) {
+        var _done_squad_sergeants = {};
         for (var co = 0; co <= obj_ini.companies; co++) {
             if (role_number[co] > 0) {
                 for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
                     if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
                         var _unit = fetch_unit([co, i]);
+                        var _squad = undefined;
                         if (_unit.squad != "none") {
-                            var _squad = fetch_squad(_unit.squad);
+                            _squad = fetch_squad(_unit.squad);
                             if (!_squad.allow_bulk_swap) {
                                 continue;
                             }
                         }
 
-                        // ** Start Armour **
-                        var unit_armour = _unit.get_armour_data();
-                        var has_valid_armour = is_struct(unit_armour);
+                        apply_gear(_unit);
 
-                        // Check if unit_armour is a struct and evaluate tag-based or name-based compatibility
-                        if (has_valid_armour) {
-                            switch (req_armour) {
-                                case STR_ANY_POWER_ARMOUR:
-                                    has_valid_armour = array_contains(_list_basic_armour, unit_armour.name);
-                                    break;
-                                case STR_ANY_TERMINATOR_ARMOUR:
-                                    has_valid_armour = array_contains(_list_term_armour, unit_armour.name);
-                                    break;
-                                default:
-                                    has_valid_armour = req_armour == unit_armour.name;
-                            }
-                        }
-
-                        // Attempt to equip if not valid
-                        if (!has_valid_armour) {
-                            var result = _unit.update_armour(req_armour);
-
-                            // Fallback: If request was for Power Armour but update failed, try Terminator
-                            if (result != "complete" && req_armour == STR_ANY_POWER_ARMOUR) {
-                                _unit.update_armour(STR_ANY_TERMINATOR_ARMOUR);
-                            }
-
-                            // Refresh unit_armour after update
-                            unit_armour = _unit.get_armour_data();
-                        }
-                        // ** End Armour **
-
-                        // ** Start Weapons **
-                        if (_unit.weapon_one() != req_wep1) {
-                            if (is_string(_unit.weapon_one(true))) {
-                                if (can_assign_weapon(_unit, req_wep1)) {
-                                    _unit.update_weapon_one(req_wep1);
+                        // Equip this squad's Sergeant with the same kit, once per squad.
+                        // The Sergeant (role slot 18) or Veteran Sergeant (19) carries a
+                        // different role than the base role this loop keys on, so leaders
+                        // were being skipped: their battle brothers got the mass equip and
+                        // they did not. Only runs for bulk-swappable squads, same as above.
+                        if (is_struct(_squad) && !variable_struct_exists(_done_squad_sergeants, _unit.squad)) {
+                            _done_squad_sergeants[$ _unit.squad] = true;
+                            var _sgt_role = obj_ini.role[100][18];
+                            var _vet_sgt_role = obj_ini.role[100][19];
+                            var _members = _squad.members;
+                            for (var _m = 0; _m < array_length(_members); _m++) {
+                                var _member = fetch_unit(_members[_m]);
+                                if (is_struct(_member) && ((_member.role() == _sgt_role) || (_member.role() == _vet_sgt_role))) {
+                                    apply_gear(_member);
                                 }
-                            }
-                        }
-                        if (_unit.weapon_two() != req_wep2) {
-                            if (is_string(_unit.weapon_two(true))) {
-                                if (can_assign_weapon(_unit, req_wep2)) {
-                                    _unit.update_weapon_two(req_wep2);
-                                }
-                            }
-                        }
-                        // ** Start Gear **
-                        if (is_string(_unit.gear(true))) {
-                            _unit.update_gear(req_gear);
-                        }
-
-                        // ** Start Mobility Items **
-                        if (_unit.mobility_item() != req_mobi) {
-                            var _forbidden_tags = [
-                                "terminator",
-                                "dreadnought"
-                            ];
-                            if (is_struct(unit_armour) && unit_armour.has_tags(_forbidden_tags)) {
-                                _unit.update_mobility_item("");
-                            } else {
-                                _unit.update_mobility_item(req_mobi);
                             }
                         }
                         // ** End role check **
