@@ -399,8 +399,28 @@ function scr_cheatcode(argument0) {
                         array_insert(obj_controller.recruit_exp, i, 20);
                         array_insert(obj_controller.recruit_data, i, {});
                         array_insert(obj_controller.recruit_name, i, global.name_generator.GenerateFromSet("space_marine"));
-                        scr_alert("green", "recruitment", (string(obj_controller.recruit_name[i]) + "has started training."), 0, 0);
                     }
+                    // One summary alert instead of one per recruit. Firing hundreds of
+                    // alerts in a single frame (recruit 500) floods the notification
+                    // system and hangs the game.
+                    scr_alert("green", "recruitment", (string(real(cheat_arguments[0])) + " recruits have started training."), 0, 0);
+                    break;
+                case "spawnmarines":
+                    // Spawn N fully-formed marines straight into a company (1st by
+                    // default), bypassing the training queue, for testing large rosters.
+                    // Usage: "spawnmarines" (500 into company 1), "spawnmarines 800", or
+                    // "spawnmarines 500 3" for company 3. Uses the same default recruit
+                    // role the game grants on recruitment completion, and posts one
+                    // summary alert rather than one per marine, so a big count does not
+                    // flood the notification system the way the old recruit loop did.
+                    var _spawn_count = (array_length(cheat_arguments) > 0) ? real(cheat_arguments[0]) : 500;
+                    var _spawn_company = (array_length(cheat_arguments) > 1) ? real(cheat_arguments[1]) : 1;
+                    with (obj_controller) {
+                        repeat (_spawn_count) {
+                            scr_add_man(obj_ini.role[100][12], _spawn_company, 20, global.name_generator.GenerateFromSet("space_marine"), 0, false, "default", {});
+                        }
+                    }
+                    scr_alert("green", "recruitment", (string(_spawn_count) + " marines spawned in company " + string(_spawn_company) + "."), 0, 0);
                     break;
                 case "shiplostevent":
                     loose_ship_to_warp_event();
