@@ -473,21 +473,6 @@ load_default_gear(eROLE.LIBRARIAN, "Librarian", "Force Staff", "Bolt Pistol", ST
 load_default_gear(eROLE.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
 load_default_gear(eROLE.VETERANSERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
 
-if (global.restart > 0) {
-    fade_in = -1;
-    slate1 = -1;
-    slate = 22;
-    slate3 = 22;
-    slate4 = 50;
-
-    change_slide = 0;
-    slide = 2;
-    slide_show = 2;
-
-    reset_creation_variables();
-    global.restart = 0;
-}
-
 col = [];
 col_r = [];
 col_g = [];
