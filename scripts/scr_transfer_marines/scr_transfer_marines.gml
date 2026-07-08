@@ -68,7 +68,11 @@ function transfer_marines() {
                             _unit.squad = move_squad;
                             squad.members[mem][0] = target_comp;
                             squad.members[mem][1] = mahreens;
-                            mahreens++;
+                            // Re-find a genuinely empty slot for the next member rather
+                            // than blindly incrementing: incrementing can walk into an
+                            // occupied slot (a gap before the command squad) and overwrite
+                            // and wipe that marine, which was deleting squads on transfer.
+                            mahreens = find_company_open_slot(target_comp);
                         }
                         squad.base_company = target_comp;
                     }
@@ -78,7 +82,10 @@ function transfer_marines() {
                 //move individual
                 if (!moveable) {
                     scr_move_unit_info(unit.company, target_comp, unit.marine_number, mahreens, true);
-                    mahreens++;
+                    // Re-find the next empty slot rather than incrementing, so a marine is
+                    // never placed onto an occupied slot (which overwrites and wipes the
+                    // marine already there).
+                    mahreens = find_company_open_slot(target_comp);
                 }
                 var check = 0;
             } else if (obj_controller.man[w] == "vehicle" && is_array(obj_controller.display_unit[w])) {
