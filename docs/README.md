@@ -2,6 +2,8 @@
   <img src="https://github.com/user-attachments/assets/47772b42-59ad-4fdf-84de-ae9bcba999be" alt="Chapter Master - Adeptus Dominus Logo"/>
 </p>
 
+**NEW RELEASE HERE** https://github.com/KestasV/Chapter-Master-1.5-Adeptus-Indomitus/releases/tag/Exe1.1
+
 # Chapter Master 1.5 – Adeptus Indomitus
 
 **Chapter Master 1.5 – Adeptus Indomitus** is a major continuation fork of *Chapter Master: Adeptus Dominus*, expanding the game from a pure Space Marine Chapter command simulator into a broader Imperial war effort.
