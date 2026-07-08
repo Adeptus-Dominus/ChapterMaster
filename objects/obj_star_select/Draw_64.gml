@@ -176,9 +176,15 @@ try {
                         button3 = "Bombard";
                     } else {
                         button1 = "Attack";
-                        button2 = "Raid";
-                        if (p_data.population) {
+                        if (p_data.xenos_and_heretics() > 0) {
+                            button2 = "Raid";
+                            if (p_data.planet_type == "Dead") {
+                                button3 = "Bombard";
+                            }
+                        } else if (p_data.population) {
                             button2 = "Purge";
+                        } else {
+                            button2 = "Raid";
                         }
                     }
 
