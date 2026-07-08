@@ -48,7 +48,7 @@ if (!engaged) {
 
         if (range[i] >= dist) {
             // The weapon is in range;
-            var _target_vehicles = apa[i] > 0 ? true : false; // AP weapons target vehicles
+            var _target_vehicles = apa[i] > 2 ? true : false; // AP weapons target vehicles
 
             // Weird alpha strike mechanic, that changes target unit index to CM;
             if (((wep[i] == "Power Fist") || (wep[i] == "Bolter")) && (obj_ncombat.alpha_strike > 0) && (wep_num[i] > 5)) {
@@ -209,7 +209,7 @@ if (!engaged) {
 
         if ((range[i] <= 2) || (floor(range[i]) != range[i])) {
             // Weapon meets preliminary checks
-            if (apa[i] > 0) {
+            if (apa[i] > 2) {
                 _armour_piercing = true;
             } // Determines if it is _armour_piercing or not
             if (_armour_piercing && instance_exists(obj_nfort) && (!flank)) {

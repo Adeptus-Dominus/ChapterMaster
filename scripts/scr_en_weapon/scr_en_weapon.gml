@@ -1125,7 +1125,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     }
 
     atta = round(atta * obj_ncombat.global_defense);
-    arp = round(arp * obj_ncombat.global_defense);
 
     if (obj_ncombat.enemy == eFACTION.PLAYER) {
         // more attack crap here
@@ -1150,7 +1149,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     for (var b = 0; b < 30; b++) {
         if ((wep[b] == name) && (goody == 0)) {
             att[b] += atta * man_number;
-            apa[b] += arp;
+            apa[b] = arp;
             range[b] = rang;
             wep_num[b] += man_number;
             if (obj_ncombat.started == 0) {
@@ -1173,7 +1172,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
         wep[first] = name;
         splash[first] = spli;
         att[first] += atta * man_number;
-        apa[first] += arp;
+        apa[first] = arp;
         range[first] = rang;
         wep_num[first] += man_number;
         if (obj_ncombat.started == 0) {
