@@ -23,7 +23,7 @@ for (var i = 0; i < array_length(_ships); i++) {
         // A ship that has spent any support use this turn (bombarded, or supported a
         // ground assault or raid) cannot bombard, since bombardment needs a fully
         // fresh ship. Such ships are listed but locked in the selection grid.
-        array_push(ship_spent, ship_assaults_used(_ships[i]) > 0);
+        array_push(ship_spent, ship_bombards_used(_ships[i]) > 0);
     }
 }
 

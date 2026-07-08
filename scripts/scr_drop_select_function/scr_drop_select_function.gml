@@ -308,8 +308,9 @@ function drop_select_unit_selection() {
                     if (_sel_ship > -1) {
                         if (!array_contains(_spent_ships, _sel_ship)) {
                             array_push(_spent_ships, _sel_ship);
-                            ship_assault_spend(_sel_ship);
-                            LOGGER.info($"ASSAULT SPEND ship {_sel_ship}: uses now {ship_assaults_used(_sel_ship)}/{SHIP_ASSAULTS_PER_TURN}");
+                            var _drop_kind = (attack == 1) ? "assault" : "raid";
+                            ship_action_spend(_sel_ship, _drop_kind);
+                            LOGGER.info($"{string_upper(_drop_kind)} SPEND ship {_sel_ship}: uses now {ship_action_used(_sel_ship, _drop_kind)}/{SHIP_ASSAULTS_PER_TURN}");
                         }
                     } else {
                         _local_participated = true;

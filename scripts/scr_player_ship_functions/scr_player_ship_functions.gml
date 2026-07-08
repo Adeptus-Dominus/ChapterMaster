@@ -123,48 +123,84 @@ function get_player_ships(location = "", name = "") {
     return _ships;
 }
 
-/// @desc How many ground assaults this ship has supported this turn. The counters are
-/// keyed to obj_controller.turn: a stored count from any earlier turn reads as zero, so
-/// there is no per-turn reset pass and nothing new needs saving (after a load the
-/// counters simply start fresh). Out-of-range or missing arrays also read as zero.
-function ship_assaults_used(ship_index) {
+/// @desc Generic per-ship, per-turn action-use counter for the ship action economy. _kind
+/// is "assault" (ground assault), "bombard", or "raid"; each has its OWN independent
+/// counter (obj_ini.ship_<kind>_uses / obj_ini.ship_<kind>_turn), so spending one action
+/// never consumes another. Counters are keyed to obj_controller.turn, so a stored count
+/// from any earlier turn reads as zero: no per-turn reset pass and nothing new to save
+/// (after a load the counters simply start fresh). Out-of-range or missing arrays read as
+/// zero.
+function ship_action_used(ship_index, _kind) {
     if (ship_index < 0) {
         return 0;
     }
-    if (!variable_instance_exists(obj_ini, "ship_assault_uses") || !variable_instance_exists(obj_ini, "ship_assault_turn")) {
+    var _uses_var = "ship_" + _kind + "_uses";
+    var _turn_var = "ship_" + _kind + "_turn";
+    if (!variable_instance_exists(obj_ini, _uses_var) || !variable_instance_exists(obj_ini, _turn_var)) {
         return 0;
     }
-    if ((ship_index >= array_length(obj_ini.ship_assault_uses)) || (ship_index >= array_length(obj_ini.ship_assault_turn))) {
+    var _uses = variable_instance_get(obj_ini, _uses_var);
+    var _turn = variable_instance_get(obj_ini, _turn_var);
+    if ((ship_index >= array_length(_uses)) || (ship_index >= array_length(_turn))) {
         return 0;
     }
-    if (obj_ini.ship_assault_turn[ship_index] != obj_controller.turn) {
+    if (_turn[ship_index] != obj_controller.turn) {
         return 0;
     }
-    return obj_ini.ship_assault_uses[ship_index];
+    return _uses[ship_index];
+}
+
+/// @desc Spend one use of action _kind on this ship for the current turn.
+function ship_action_spend(ship_index, _kind) {
+    if (ship_index < 0) {
+        return;
+    }
+    var _uses_var = "ship_" + _kind + "_uses";
+    var _turn_var = "ship_" + _kind + "_turn";
+    if (!variable_instance_exists(obj_ini, _uses_var)) {
+        variable_instance_set(obj_ini, _uses_var, []);
+    }
+    if (!variable_instance_exists(obj_ini, _turn_var)) {
+        variable_instance_set(obj_ini, _turn_var, []);
+    }
+    var _uses = variable_instance_get(obj_ini, _uses_var);
+    var _turn = variable_instance_get(obj_ini, _turn_var);
+    while (array_length(_uses) <= ship_index) {
+        array_push(_uses, 0);
+    }
+    while (array_length(_turn) <= ship_index) {
+        array_push(_turn, -1);
+    }
+    if (_turn[ship_index] != obj_controller.turn) {
+        _turn[ship_index] = obj_controller.turn;
+        _uses[ship_index] = 0;
+    }
+    _uses[ship_index] += 1;
+    variable_instance_set(obj_ini, _uses_var, _uses);
+    variable_instance_set(obj_ini, _turn_var, _turn);
+}
+
+/// @desc How many ground assaults this ship has supported this turn (its own counter,
+/// independent of bombardment and raids).
+function ship_assaults_used(ship_index) {
+    return ship_action_used(ship_index, "assault");
 }
 
 /// @desc Spend one ground assault support use on this ship for the current turn.
 function ship_assault_spend(ship_index) {
-    if (ship_index < 0) {
-        return;
-    }
-    if (!variable_instance_exists(obj_ini, "ship_assault_uses")) {
-        obj_ini.ship_assault_uses = [];
-    }
-    if (!variable_instance_exists(obj_ini, "ship_assault_turn")) {
-        obj_ini.ship_assault_turn = [];
-    }
-    while (array_length(obj_ini.ship_assault_uses) <= ship_index) {
-        array_push(obj_ini.ship_assault_uses, 0);
-    }
-    while (array_length(obj_ini.ship_assault_turn) <= ship_index) {
-        array_push(obj_ini.ship_assault_turn, -1);
-    }
-    if (obj_ini.ship_assault_turn[ship_index] != obj_controller.turn) {
-        obj_ini.ship_assault_turn[ship_index] = obj_controller.turn;
-        obj_ini.ship_assault_uses[ship_index] = 0;
-    }
-    obj_ini.ship_assault_uses[ship_index] += 1;
+    ship_action_spend(ship_index, "assault");
+}
+
+/// @desc How many orbital bombardments this ship has run this turn (its own counter,
+/// independent of ground assaults and raids).
+function ship_bombards_used(ship_index) {
+    return ship_action_used(ship_index, "bombard");
+}
+
+/// @desc How many raids this ship has supported this turn (its own counter, independent
+/// of ground assaults and bombardment).
+function ship_raids_used(ship_index) {
+    return ship_action_used(ship_index, "raid");
 }
 
 /// @desc How many ground assaults this planet's local forces have supported this turn.
@@ -712,18 +748,17 @@ function player_guardsmen_at(system_name) {
     return _total;
 }
 
-/// @desc Whether a ground deployment (attack or raid) can still be supported at this
-/// star this turn: any carrying ship with support uses left, or the planet's local
-/// forces with local uses left. Ships and local forces are tracked independently, so
-/// spending one ship does not lock the rest of the fleet (the point of the per-ship
-/// action economy).
+/// @desc Whether a raid can still be supported at this star this turn: any carrying ship
+/// with raid uses left (its own counter), or the planet's local forces with local uses
+/// left. Ship raid uses are independent of ground-assault and bombardment uses, so
+/// bombarding or attacking with a ship does not block raiding with it.
 function can_ground_deploy(star_object, planet_number) {
     if (!instance_exists(star_object)) {
         return false;
     }
     var _ships = get_player_ships(star_object.name);
     for (var i = 0; i < array_length(_ships); i++) {
-        if ((obj_ini.ship_carrying[_ships[i]] > 0) && (ship_assaults_used(_ships[i]) < SHIP_ASSAULTS_PER_TURN)) {
+        if ((obj_ini.ship_carrying[_ships[i]] > 0) && (ship_raids_used(_ships[i]) < SHIP_ASSAULTS_PER_TURN)) {
             return true;
         }
     }
@@ -733,26 +768,24 @@ function can_ground_deploy(star_object, planet_number) {
     return false;
 }
 
-/// @desc First ship at this star that has spent no support use this turn, or -1.
-/// Orbital bombardment is one per ship per turn and consumes the ship's whole support
-/// allowance for the turn, so it needs a completely fresh ship.
+/// @desc First ship at this star that has not yet bombarded this turn, or -1. Bombardment
+/// is one per ship per turn on its own counter, independent of ground support.
 function get_fresh_bombard_ship(location) {
     var _ships = get_player_ships(location);
     for (var i = 0; i < array_length(_ships); i++) {
-        if (ship_assaults_used(_ships[i]) == 0) {
+        if (ship_bombards_used(_ships[i]) == 0) {
             return _ships[i];
         }
     }
     return -1;
 }
 
-/// @desc Spend a ship's entire support allowance on an orbital bombardment (one per
-/// ship per turn, mutually exclusive with that ship's ground support for the turn).
+/// @desc Spend a ship's one bombardment use for the turn, on its own counter. This is
+/// independent of the ship's ground assault and raid support, so a ship can bombard and
+/// still land troops (attack or raid) the same turn.
 function ship_bombard_spend(ship_index) {
     if (ship_index < 0) {
         return;
     }
-    repeat (SHIP_ASSAULTS_PER_TURN) {
-        ship_assault_spend(ship_index);
-    }
+    ship_action_spend(ship_index, "bombard");
 }

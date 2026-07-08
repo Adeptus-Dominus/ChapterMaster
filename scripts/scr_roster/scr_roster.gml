@@ -374,13 +374,17 @@ function Roster() constructor {
                 // and update_roster only admits units whose ship toggle is active.
                 // Applies to attacks only; raids and purges do not spend uses.
                 if (instance_exists(obj_drop_select)) {
-                    if (obj_drop_select.attack && (ship_assaults_used(_ship_index) >= SHIP_ASSAULTS_PER_TURN)) {
+                    // Attack rosters gate on the ship's assault counter, raid rosters on
+                    // its raid counter (each independent), so a ship spent on one action
+                    // still shows available for the other.
+                    var _dr_used = obj_drop_select.attack ? ship_assaults_used(_ship_index) : ship_raids_used(_ship_index);
+                    if (_dr_used >= SHIP_ASSAULTS_PER_TURN) {
                         var _spent_btn = ships[array_length(ships) - 1];
                         _spent_btn.assault_locked = true;
                         _spent_btn.active = false;
                         _spent_btn.text_color = c_red;
                         _spent_btn.button_color = c_red;
-                        _spent_btn.tooltip = "This ship has already supported the maximum number of ground assaults this turn.";
+                        _spent_btn.tooltip = obj_drop_select.attack ? "This ship has already supported the maximum number of ground assaults this turn." : "This ship has already supported the maximum number of raids this turn.";
                     }
                 }
             }
