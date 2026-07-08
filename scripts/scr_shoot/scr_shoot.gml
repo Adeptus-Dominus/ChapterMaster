@@ -51,7 +51,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             }
             if (obj_ncombat.enemy == eFACTION.HERETICS) {
                 aggregate_damage = round(aggregate_damage * 1.15);
-                armour_pierce = round(armour_pierce * 1.15);
             }
             if ((obj_ncombat.enemy == eFACTION.CHAOS) && (obj_ncombat.threat == 7)) {
                 doom = 1;
