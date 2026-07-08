@@ -190,12 +190,12 @@ function roll_dice_chapter(dices = 1, faces = 6, player_benefit_at = "high") {
 }
 
 /// @description Roll a custom dice, influenced by the unit' luck, return sum of all rolls.
+/// @param {Struct} unit - unit struct.
 /// @param {Real} dices - how many dices to roll.
 /// @param {Real} faces - how many faces each dice has.
 /// @param {String} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
-/// @param {Struct} unit - unit struct.
 /// @returns {Real}
-function roll_dice_unit(dices = 1, faces = 6, player_benefit_at = "none", unit) {
+function roll_dice_unit(unit, dices = 1, faces = 6, player_benefit_at = "none") {
     var _total_roll = 0;
     var _roll = 0;
 

@@ -132,7 +132,7 @@ function distribute_experience(_units, _total_exp) {
 function after_battle_slime_and_equipment_maintenance(unit) {
     if (unit.base_group == "astartes") {
         if (unit.gene_seed_mutations.mucranoid == 1) {
-            var muck = roll_dice_unit(1, 100, "high", unit);
+            var muck = roll_dice_unit(unit, 1, 100, "high");
             if (muck == 1) {
                 //slime  armour damaged due to mucranoid
                 if (unit.armour != "") {
