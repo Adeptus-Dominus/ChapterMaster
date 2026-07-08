@@ -119,8 +119,6 @@ try {
 
                 if ((ap == 1) && (once_only == 0)) {
                     // Check for vehicles
-                    var g = 0;
-
                     if (enemy.veh > 0) {
                         good = scr_target(enemy, "veh"); // First target has vehicles, blow it to hell
                         scr_shoot(i, enemy, good, "arp", "ranged");
@@ -143,6 +141,10 @@ try {
                     if (good == 0) {
                         ap = 0;
                     } // Fuck it, shoot at infantry
+                    if (!instance_exists(enemy)) {
+                        engaged = false;
+                        continue;
+                    }
                 }
 
                 if (once_only == 0) {
@@ -170,11 +172,14 @@ try {
                         } // Next up is infantry
                         // Was previously ap=1;
                     }
+                    if (!instance_exists(enemy)) {
+                        engaged = false;
+                        continue;
+                    }
                 }
 
                 if ((ap == 0) && (once_only == 0)) {
                     // Check for men
-                    var g = 0;
                     good = 0;
 
                     if (enemy.men + enemy.medi > 0) {
@@ -195,6 +200,10 @@ try {
                                 }
                             }
                         }
+                    }
+                    if (!instance_exists(enemy)) {
+                        engaged = false;
+                        continue;
                     }
                 }
             } else if ((range_shoot == "melee") && ((range[i] == 1) || (range[i] != floor(range[i])))) {
@@ -225,6 +234,10 @@ try {
                     if ((good == 0) && (att[i] > 0)) {
                         ap = 0;
                     } // Fuck it, shoot at infantry
+                    if (!instance_exists(enemy)) {
+                        engaged = false;
+                        continue;
+                    }
                 }
 
                 if ((enemy.veh == 0) && (enemy.medi > 0) && (once_only == 0)) {
@@ -243,6 +256,10 @@ try {
                     if ((good == 0) && (att[i] > 0)) {
                         ap = 0;
                     } // Fuck it, shoot at infantry
+                    if (!instance_exists(enemy)) {
+                        engaged = false;
+                        continue;
+                    }
                 }
 
                 if ((ap == 0) && (once_only == 0)) {
@@ -257,6 +274,10 @@ try {
                     }
                     if (good != 0) {
                         once_only = 1;
+                    }
+                    if (!instance_exists(enemy)) {
+                        engaged = false;
+                        continue;
                     }
                 }
             }
