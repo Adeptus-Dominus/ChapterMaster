@@ -1,40 +1,46 @@
 // Manages space combat, checks if ships are destroyed and does the targeting and pointing of the ship
+image_angle = direction;
 
-var bull, ok, targe = 0, rdir = 0, dist = 9999, xx = x, yy = y;
-var front = 0, right = 0, left = 0, rear = 0;
-var f = 0, facing = "", ammo = 0, range = 0, wep = "", dam = 0;
-var o_dist = 0, spid = 0;
+if (obj_fleet.start != 5) {
+    exit;
+}
+// Need to every couple of seconds check this
+// with obj_en_ship if not big then disable, check nearest, and activate once more
+if (instance_exists(obj_en_ship)) {
+    target = instance_nearest(x, y, obj_en_ship);
+}
+if (!instance_exists(target)) {
+    exit;
+}
+
+if ((shields > 0) && (shields < maxshields)) {
+    shields += (owner == eFACTION.ELDAR) ? 0.03 : 0.02;
+}
+
+var bull = noone;
+var ok = 0;
+var targe = noone;
+var dist = 9999;
+var front = 0;
+var right = 0;
+var left = 0;
+var rear = 0;
+var facing = "";
+var ammo = 0;
+var range = 0;
+var wep = "";
+var dam = 0;
+var o_dist = 0;
+var spid = 0;
 var gud = 0;
 
-if (owner != 6) {
-    image_angle = direction;
-
-    if (obj_fleet.start != 5) {
-        exit;
-    }
-
+if (owner != eFACTION.ELDAR) {
     if ((class == "Daemon") && (image_alpha < 1)) {
         image_alpha += 0.006;
     }
 
-    o_dist = 0;
-    spid = 0;
-
-    if ((shields > 0) && (shields < maxshields)) {
-        shields += 0.02;
-    }
-
-    // Need to every couple of seconds check this
-    // with obj_en_ship if not big then disable, check nearest, and activate once more
-    if (instance_exists(obj_en_ship)) {
-        target = instance_nearest(x, y, obj_en_ship);
-    }
-    if (!instance_exists(target)) {
-        exit;
-    }
     // Check if ship is destroyed
     if (hp <= 0) {
-        gud = 0;
         for (var wh = 1; wh <= 5; wh++) {
             if (obj_fleet.enemy[wh] == owner) {
                 gud = wh;
@@ -161,10 +167,10 @@ if (owner != 6) {
 
         dist = point_distance(x, y, target.x, target.y) - max(sprite_get_width(sprite_index), sprite_get_height(sprite_index));
         // For example here we could improve the options and how ships beheave...
-        if ((target != 0) && (action == "attack")) {
+        if ((target != noone) && (action == "attack")) {
             direction = turn_towards_point(direction, x, y, target.x, target.y, 0.1);
         }
-        if ((target != 0) && (action == "broadside") && (dist > o_dist)) {
+        if ((target != noone) && (action == "broadside") && (dist > o_dist)) {
             if (y >= target.y) {
                 dist = point_distance(x, y, target.x + lengthdir_x(64, target.direction - 180), target.y + lengthdir_y(128, target.direction - 90)) - max(sprite_get_width(sprite_index), sprite_get_height(sprite_index));
             }
@@ -223,11 +229,7 @@ if (owner != 6) {
             turret_cool -= 1;
         }
 
-        targe = 0;
-        rdir = 0;
         dist = 9999;
-        xx = x;
-        yy = y;
         // Turret targetting
         if ((turrets > 0) && instance_exists(obj_en_in) && (turret_cool == 0)) {
             targe = instance_nearest(x, y, obj_en_in);
@@ -248,10 +250,7 @@ if (owner != 6) {
                 bull.direction += choose(random(10), 1 * -random(10));
             }
         }
-        targe = 0;
         dist = 9999;
-        xx = lengthdir_x(64, direction + 90);
-        yy = lengthdir_y(64, direction + 90);
 
         // TODO we could implement facing with stronger shields or other stuff
         front = 0;
@@ -259,8 +258,6 @@ if (owner != 6) {
         left = 0;
         rear = 0;
 
-        targe = instance_nearest(xx, yy, obj_en_ship);
-        rdir = point_direction(x, y, target.x, target.y);
         target_l = instance_nearest(x + lengthdir_x(64, direction + 90), y + lengthdir_y(64, direction + 90), obj_en_ship);
         target_r = instance_nearest(x + lengthdir_x(64, direction + 270), y + lengthdir_y(64, direction + 270), obj_en_ship);
 
@@ -268,21 +265,14 @@ if (owner != 6) {
             front = 1;
         }
 
-        f = 0;
-        facing = "";
-        ammo = 0;
-        range = 0;
-        wep = "";
-        dam = 0;
-
         for (var gg = 1; gg <= weapons; gg++) {
             // Resets
             ok = 0;
-            f += 1;
             facing = "";
             ammo = 0;
             range = 0;
             wep = "";
+            dam = 0;
 
             if ((cooldown[gg] <= 0) && (weapon[gg] != "") && (weapon_ammo[gg] > 0)) {
                 ok = 1;
@@ -293,7 +283,6 @@ if (owner != 6) {
                 range = weapon_range[gg];
             }
 
-            targe = target;
             if ((facing == "front") && (front == 1)) {
                 ok = 2;
             }
@@ -303,10 +292,7 @@ if (owner != 6) {
             if (facing == "special") {
                 ok = 2;
             }
-            if (!instance_exists(targe)) {
-                exit;
-            }
-            dist = point_distance(x, y, targe.x, targe.y);
+            dist = point_distance(x, y, target.x, target.y);
             if ((facing == "right") && (point_direction(x, y, target_r.x, target_r.y) < 337) && (point_direction(x, y, target_r.x, target_r.y) > 203)) {
                 ok = 2;
             }
@@ -330,9 +316,6 @@ if (owner != 6) {
                     bull = instance_create(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), obj_al_round);
                     bull.speed = 20;
                     bull.dam = dam;
-                    if (targe == target) {
-                        bull.direction = point_direction(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), target.x, target.y);
-                    }
                     if (facing != "front") {
                         bull.direction = point_direction(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), target.x, target.y);
                     }
@@ -432,27 +415,8 @@ if (owner != 6) {
     }
 }
 // Checks if the enemy fleet is Eldar
-if (owner == 6) {
-    image_angle = direction;
-
-    if (obj_fleet.start != 5) {
-        exit;
-    }
-
-    o_dist = 0;
-    spid = 0;
-
-    if ((shields > 0) && (shields < maxshields)) {
-        shields += 0.03;
-    }
-    // Need to every couple of seconds check this
-    // with obj_en_ship if not big then disable, check nearest, and activate once more
-    if (instance_exists(obj_en_ship)) {
-        target = instance_nearest(x, y, obj_en_ship);
-    }
-
+if (owner == eFACTION.ELDAR) {
     if (hp <= 0) {
-        gud = 0;
         for (var wh = 1; wh <= 5; wh++) {
             if (obj_fleet.enemy[wh] == owner) {
                 gud = wh;
@@ -544,10 +508,7 @@ if (owner == 6) {
             turret_cool -= 1;
         }
 
-        targe = 0;
         dist = 9999;
-        xx = x;
-        yy = y;
 
         if ((turrets > 0) && instance_exists(obj_en_in) && (turret_cool == 0)) {
             targe = instance_nearest(x, y, obj_en_in);
@@ -572,20 +533,13 @@ if (owner == 6) {
                 bull.direction += choose(random(10), 1 * -random(10));
             }
         }
-        targe = 0;
-        rdir = 0;
         dist = 9999;
-
-        xx = lengthdir_x(64, direction + 90);
-        yy = lengthdir_y(64, direction + 90);
 
         front = 0;
         right = 0;
         left = 0;
         rear = 0;
 
-        targe = instance_nearest(xx, yy, obj_en_ship);
-        rdir = point_direction(x, y, target.x, target.y);
         target_l = instance_nearest(x + lengthdir_x(64, direction + 90), y + lengthdir_y(64, direction + 90), obj_en_ship);
         target_r = instance_nearest(x + lengthdir_x(64, direction + 270), y + lengthdir_y(64, direction + 270), obj_en_ship);
 
@@ -593,20 +547,13 @@ if (owner == 6) {
             front = 1;
         }
 
-        f = 0;
-        facing = "";
-        ammo = 0;
-        range = 0;
-        wep = "";
-        dam = 0;
-
         for (var gg = 1; gg <= weapons; gg++) {
             ok = 0;
-            f += 1;
             facing = "";
             ammo = 0;
             range = 0;
             wep = "";
+            dam = 0;
 
             if ((cooldown[gg] <= 0) && (weapon[gg] != "") && (weapon_ammo[gg] > 0)) {
                 ok = 1;
@@ -617,7 +564,6 @@ if (owner == 6) {
                 range = weapon_range[gg];
             }
 
-            targe = target;
             if ((facing == "front") && (front == 1)) {
                 ok = 2;
             }
@@ -627,10 +573,7 @@ if (owner == 6) {
             if (facing == "special") {
                 ok = 2;
             }
-            if (!instance_exists(targe)) {
-                exit;
-            }
-            dist = point_distance(x, y, targe.x, targe.y);
+            dist = point_distance(x, y, target.x, target.y);
 
             if ((facing == "right") && (point_direction(x, y, target_r.x, target_r.y) < 337) && (point_direction(x, y, target_r.x, target_r.y) > 203)) {
                 ok = 2;
@@ -655,9 +598,6 @@ if (owner == 6) {
                     bull = instance_create(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), obj_al_round);
                     bull.speed = 20;
                     bull.dam = dam;
-                    if (targe == target) {
-                        bull.direction = point_direction(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), target.x, target.y);
-                    }
                     if (facing != "front") {
                         bull.direction = point_direction(x + lengthdir_x(32, direction), y + lengthdir_y(32, direction), target.x, target.y);
                     }

@@ -24,6 +24,7 @@ class = "";
 hp = 0;
 maxhp = 0;
 conditions = "";
+owner = eFACTION.IMPERIUM;
 shields = 1;
 maxshields = 1;
 armour_front = 0;
