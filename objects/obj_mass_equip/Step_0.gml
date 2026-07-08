@@ -263,7 +263,10 @@ try {
         }
 
         // Add up messages
-        all_equip = $"In total they are equipped with: {_total_role_gear.get_total_string()}.";
+        var _totals_string = _total_role_gear.get_custom_string(function(_key, _count, _i, _keys) {
+            return $"{_count}x {_key}{smart_delimeter_sign(_keys, _i, false)}";
+        });
+        all_equip = $"In total they are equipped with: {_totals_string}.";
 
         refresh = false;
 
