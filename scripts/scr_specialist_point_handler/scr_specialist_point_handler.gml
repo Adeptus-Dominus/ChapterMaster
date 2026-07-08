@@ -463,12 +463,12 @@ function SpecialistPointHandler() constructor {
         if (master_craft_count > 0) {
             scr_add_item(_item.name, master_craft_count, "master_crafted");
             var numerical_string = master_craft_count == 1 ? "was" : "were";
-            quality_string = $"X{master_craft_count} {numerical_string} Completed to a Master Crafted standard";
+            quality_string = $"x{master_craft_count} {numerical_string} completed to a Master Crafted standard!";
         } else {
-            quality_string = $"all were completed to a standard STC compliant quality";
+            quality_string = $"All were completed to a standard STC compliant quality!";
         }
 
-        scr_popup("Forge Completed", $"{_item.display_name} X{_forge_order.count} construction finished {quality_string}", "", "");
+        scr_popup("Forge Completed", $"Construction of x{_forge_order.count} {_item.display_name} is finished! {quality_string}", "", "");
     };
 
     static scr_evaluate_forge_item_completion = function(_forge_order) {
@@ -481,18 +481,25 @@ function SpecialistPointHandler() constructor {
                 if (!is_vehicle) {
                     scr_forge_item(_forge_order);
                 } else {
-                    var _build_locs = [];
-
+                    var _loc_counts = new CountingMap();
+                
                     repeat (_forge_order.count) {
                         var vehicle = scr_add_vehicle(_item.name, obj_controller.new_vehicles);
                         var build_loc = array_random_element(obj_controller.player_forge_data.vehicle_hanger);
                         obj_ini.veh_loc[vehicle[0]][vehicle[1]] = build_loc[0];
                         obj_ini.veh_wid[vehicle[0]][vehicle[1]] = build_loc[1];
                         obj_ini.veh_lid[vehicle[0]][vehicle[1]] = -1;
-                        array_push(_build_locs, $"{build_loc[0]} {build_loc[1]}");
+                        _loc_counts.add($"{build_loc[0]} {build_loc[1]}");
                     }
-
-                    scr_popup("Forge Completed", $"{_item.display_name} x{_forge_order.count} construction finished! Vehicles waiting at hanger(s) on {string_join_ext(", ", _build_locs)}", "", "");
+                
+                    var _loc_summary = _loc_counts.get_custom_string(function(_key, _count) {
+                        return $"{_count} at {_key}\n";
+                    });
+                    
+                    var _company = obj_controller.new_vehicles;
+                    var _company_name = (_company >= 1 && _company <= 10) ? $"{int_to_roman(_company)} Company" : "Reserve";
+                    
+                    scr_popup("Forge Completed", $"Construction of x{_forge_order.count} {_item.display_name} is finished!\n\nAssigned to: {_company_name}\n\nReady at:\n{_loc_summary}", "", "");
                 }
             } else if (_item.forge_type == "research") {
                 scr_advance_research(_item.name);
