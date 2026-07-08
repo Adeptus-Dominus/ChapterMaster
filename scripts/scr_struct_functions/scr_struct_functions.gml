@@ -56,8 +56,12 @@ function gc_struct(vari) {
     delete vari;
 }
 
-function CountingMap() constructor {
+function CountingMap(_initial_array = undefined) constructor {
     map = {};
+
+    if (_initial_array != undefined) {
+        add_all(_initial_array);
+    }
 
     static add = function(_key, number = 1) {
         if (_key == "") {
@@ -75,16 +79,30 @@ function CountingMap() constructor {
         }
     };
 
-    static get_total_string = function() {
-        var result = "";
-        var keys = struct_get_names(map);
-
-        for (var i = 0; i < array_length(keys); i++) {
-            var key = keys[i];
-            result += $"{map[$ key]}x {key}{smart_delimeter_sign(keys, i, false)}";
+    static add_all = function(_array) {
+        if (!is_array(_array)) {
+            return;
         }
+        var _len = array_length(_array);
+        for (var _i = 0; _i < _len; _i++) {
+            add(_array[_i]);
+        }
+    };
 
-        return result;
+    static get_custom_string = function(_callback) {
+        var _keys = struct_get_names(map);
+        var _len = array_length(_keys);
+        if (_len == 0) {
+            return "";
+        }
+        
+        var _parts = array_create(_len);
+        for (var _i = 0; _i < _len; _i++) {
+            var _key = _keys[_i];
+            _parts[_i] = _callback(_key, map[$ _key], _i, _keys);
+        }
+        
+        return string_join_ext("", _parts);
     };
 
     static get_string = function(_key) {
