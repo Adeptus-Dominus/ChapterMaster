@@ -1256,9 +1256,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static ranged_attack = function(weapon_slot = 0) {
+        var ranged_damage_data = [];
         encumbered_ranged = false;
         //base modifyer based on unit skill set
-        ranged_att = 100 * ((ballistic_skill / 50) + (dexterity / 400) + (experience / 500));
+        var ranged_att = 100 * ((ballistic_skill / 50) + (dexterity / 400) + (experience / 500));
         var final_range_attack = 0;
         var explanation_string = $"Stat Mod: x{ranged_att / 100}#  BS: x{ballistic_skill / 50}#  DEX: x{dexterity / 400}#  EXP: x{experience / 500}#";
         //determine capavbility to weild bulky weapons
@@ -1624,14 +1625,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         }
 
-        melee_damage_data = [
+        var _melee_damage_data = [
             final_attack,
             explanation_string,
             melee_carrying,
             primary_weapon,
             secondary_weapon
         ];
-        return melee_damage_data;
+        return _melee_damage_data;
     };
 
     static has_force_weapon = function() {
@@ -1650,9 +1651,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     //TODO just did this so that we're not loosing featuring but this porbably needs a rethink
-    static hammer_of_wrath = function() {
-        var _melee_attack = melee_damage_data[0];
-        var _melee_weapon = melee_damage_data[3];
+    static hammer_of_wrath = function(_melee_damage_data = melee_attack()) {
+        var _melee_attack = _melee_damage_data[0];
+        var _melee_weapon = _melee_damage_data[3];
 
         var wrath = new EquipmentStruct({attack: _melee_attack * 0.75, name: "Hammer of Wrath", range: 2, ammo: 6, spli: _melee_weapon.spli, arp: _melee_weapon.arp}, "weapon");
 
@@ -1664,22 +1665,22 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static armour_calc = function() {
-        armour_rating = 0;
-        armour_rating += get_armour_data("armour_value");
-        armour_rating += get_weapon_one_data("armour_value");
-        armour_rating += get_mobility_data("armour_value");
-        armour_rating += get_gear_data("armour_value");
-        armour_rating += get_weapon_two_data("armour_value");
+        var _armour_rating = 0;
+        _armour_rating += get_armour_data("armour_value");
+        _armour_rating += get_weapon_one_data("armour_value");
+        _armour_rating += get_mobility_data("armour_value");
+        _armour_rating += get_gear_data("armour_value");
+        _armour_rating += get_weapon_two_data("armour_value");
         if (armour() != "" && allegiance == global.chapter_name) {
             // STC Bonuses
             if (obj_controller.stc_bonus[1] == 5) {
-                armour_rating *= 1.05;
+                _armour_rating *= 1.05;
             }
             if (obj_controller.stc_bonus[2] == 3) {
-                armour_rating *= 1.05;
+                _armour_rating *= 1.05;
             }
         }
-        return armour_rating;
+        return _armour_rating;
     };
 
     static in_squad = function() {
