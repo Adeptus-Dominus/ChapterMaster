@@ -6,7 +6,7 @@ if (number == 1) {
     }
 }
 
-if ((number > 0) && (owner != 1)) {
+if ((number > 0) && (owner != eFACTION.PLAYER)) {
     en_escort = obj_fleet.en_escort[number];
     en_frigate = obj_fleet.en_frigate[number];
     en_capital = obj_fleet.en_capital[number];
