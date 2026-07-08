@@ -174,7 +174,7 @@ function scr_player_combat_weapon_stacks() {
                         if (mobi_item.has_tag("jump")) {
                             var stack_index = find_stack_index("Hammer of Wrath", head_role, unit);
                             if (stack_index > -1) {
-                                add_data_to_stack(stack_index, unit.hammer_of_wrath(), false, head_role, unit);
+                                add_data_to_stack(stack_index, unit.hammer_of_wrath(marine_attack[g]), false, head_role, unit);
                                 if (head_role) {
                                     player_head_role_stack(stack_index, unit);
                                 }
@@ -230,23 +230,23 @@ function scr_player_combat_weapon_stacks() {
                     }
                 }
                 if (marine_casting[g] == false) {
-                    var primary_ranged = unit.ranged_damage_data[3]; //collect unit ranged data
+                    var primary_ranged = marine_ranged[g][3]; //collect unit ranged data
                     var weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
                     if (weapon_stack_index > -1) {
-                        add_data_to_stack(weapon_stack_index, primary_ranged, unit.ranged_damage_data[0], head_role, unit);
+                        add_data_to_stack(weapon_stack_index, primary_ranged, marine_ranged[g][0], head_role, unit);
                         if (head_role) {
                             player_head_role_stack(weapon_stack_index, unit);
                         }
                     }
 
-                    var primary_melee = unit.melee_damage_data[3]; //collect unit melee data
+                    var primary_melee = marine_attack[g][3]; //collect unit melee data
                     weapon_stack_index = find_stack_index(primary_melee.name, head_role, unit);
                     if (weapon_stack_index > -1) {
                         if (range[weapon_stack_index] > 1.9) {
                             continue;
                         } //creates secondary weapon stack for close combat ranged weaponry use
                         primary_melee.range = 1;
-                        add_data_to_stack(weapon_stack_index, primary_melee, unit.melee_damage_data[0], head_role, unit);
+                        add_data_to_stack(weapon_stack_index, primary_melee, marine_attack[g][0], head_role, unit);
                         if (head_role) {
                             player_head_role_stack(weapon_stack_index, unit);
                         }
