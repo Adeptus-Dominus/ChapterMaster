@@ -170,22 +170,12 @@ try {
                     }
                 }
                 if (target.present_fleet[1] > 0) {
-                    if (is_enemy) {
-                        button1 = "Attack";
-                        button2 = "Raid";
+                    button1 = "Attack";
+                    button2 = "Raid";
+                    if (is_enemy || p_data.xenos_and_heretics() > 0) {
                         button3 = "Bombard";
-                    } else {
-                        button1 = "Attack";
-                        if (p_data.xenos_and_heretics() > 0) {
-                            button2 = "Raid";
-                            if (p_data.planet_type == "Dead") {
-                                button3 = "Bombard";
-                            }
-                        } else if (p_data.population) {
-                            button2 = "Purge";
-                        } else {
-                            button2 = "Raid";
-                        }
+                    } else if (p_data.population > 0) {
+                        button3 = "Purge";
                     }
 
                     if (torpedo > 0) {
