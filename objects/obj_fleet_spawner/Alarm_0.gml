@@ -1,8 +1,6 @@
 if (number == 1) {
     // create blocks of infantry
 
-    var i = 0, k = 0, x2 = 224, hei = 0, man = 0, sizz = 0;
-
     sort_ships_into_columns(obj_fleet);
 
     with (obj_fleet) {
@@ -28,9 +26,7 @@ if ((number > 0) && (owner != 1)) {
             en_size[3] = 2;
         }
 
-        var i;
-        i = 0;
-        i = en_capital;
+        var i = en_capital;
         if (i > 0) {
             en_column[2] = "Apocalypse Class Battleship";
             en_num[2] = floor(random(i)) + 1;
@@ -73,9 +69,7 @@ if ((number > 0) && (owner != 1)) {
     }
 
     if (owner == eFACTION.ORK) {
-        var i;
-        i = 0;
-        i = en_capital;
+        var i = en_capital;
 
         if (i > 0) {
             en_column[1] = "Dethdeala";
@@ -89,32 +83,30 @@ if ((number > 0) && (owner != 1)) {
             en_num[2] = floor(random(i)) + 1;
             i -= en_num[2];
             en_size[2] = 3;
-        } // en_num[2]+=en_num[1]+1;
+        }
 
         if (i > 0) {
             en_column[3] = "Kroolboy";
             en_num[3] = i;
             i -= en_num[3];
             en_size[3] = 3;
-        } // en_num[3]+=en_num[2]+1;
+        }
 
         if (en_frigate > 0) {
             en_column[4] = "Battlekroozer";
             en_num[4] = en_frigate;
             en_size[4] = 2;
-        } // en_num[4]+=en_num[3]+1;
+        }
 
         if (en_escort > 0) {
             en_column[5] = "Ravager";
             en_num[5] = en_escort;
             en_size[5] = 1;
-        } // en_num[5]+=en_num[4]+1;
+        }
     }
 
     if (owner == eFACTION.TAU) {
-        var i;
-        i = 0;
-        i = en_frigate;
+        var i = en_frigate;
 
         if (en_capital > 0) {
             en_column[1] = "Custodian";
@@ -134,7 +126,7 @@ if ((number > 0) && (owner != 1)) {
             en_num[3] = i;
             i -= en_num[3];
             en_size[3] = 2;
-        } // en_num[3]+=en_num[2]+1;
+        }
 
         if (en_escort > 0) {
             en_column[4] = "Castellan";
@@ -150,9 +142,7 @@ if ((number > 0) && (owner != 1)) {
     }
 
     if (owner == eFACTION.TYRANIDS) {
-        var i;
-        i = 0;
-        i = en_escort;
+        var i = en_escort;
 
         if (en_capital > 0) {
             en_column[1] = "Leviathan";
@@ -171,19 +161,17 @@ if ((number > 0) && (owner != 1)) {
             en_column[3] = "Razorfiend";
             en_num[3] = en_frigate;
             en_size[3] = 2;
-        } // en_num[2]+=en_num[1]+1;
+        }
 
         if (i > 0) {
             en_column[4] = "Prowler";
             en_num[4] = i;
             en_size[4] = 1;
-        } // en_num[5]+=en_num[4]+1;
+        }
     }
 
     if (owner == eFACTION.CHAOS) {
-        var i;
-        i = 0;
-        i = en_frigate;
+        var i = en_frigate;
 
         if (en_capital > 0) {
             en_column[1] = "Desecrator";
@@ -203,26 +191,24 @@ if ((number > 0) && (owner != 1)) {
             en_num[3] = floor(random(i)) + 1;
             i -= en_num[3];
             en_size[3] = 2;
-        } // en_num[2]+=en_num[1]+1;
+        }
 
         if (i > 0) {
             en_column[4] = "Daemon";
             en_num[4] = i;
             i -= en_num[4];
             en_size[4] = 2;
-        } // en_num[3]+=en_num[2]+1;
+        }
 
         if (en_escort > 0) {
             en_column[5] = "Iconoclast";
             en_num[5] = en_escort;
             en_size[5] = 1;
-        } // en_num[5]+=en_num[4]+1;
+        }
     }
 
     if (owner == eFACTION.NECRONS) {
-        var i;
-        i = 0;
-        i = en_escort;
+        var i = en_escort;
 
         if (en_capital > 0) {
             en_column[1] = "Reaper Class";
@@ -250,10 +236,7 @@ if ((number > 0) && (owner != 1)) {
         }
     }
 
-    var i;
-    i = 0;
-    repeat (5) {
-        i += 1;
+    for (var i = 1; i <= 5; i++) {
         if (en_column[i] == "Avenger Class Grand Cruiser") {
             en_width[i] = 196;
             en_height[i] = 96;
