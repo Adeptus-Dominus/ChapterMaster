@@ -88,19 +88,7 @@ if ((combat_log.pending_count == 0) && ((timer_stage == 4) || (timer_stage == 5)
         }
     }
     if (enemy == eFACTION.ELDAR) {
-        if (enemy_forces > 0) {
-            _newline = "Enemy Forces at " + string(max(1, round((enemy_forces / enemy_max) * 100))) + "%";
-            combat_log.push(_newline, _newline_color);
-        }
-        if (((enemy_forces <= 0) || (!instance_exists(obj_enunit))) && (defeat_message == 0)) {
-            defeat_message = 1;
-            _newline = "Enemy Forces Defeated";
-            combat_log.push(_newline, _newline_color);
-            timer_maxspeed = 0;
-            timer_speed = 0;
-            started = 2;
-            instance_activate_object(obj_pnunit);
-        }
+        combat_emit_enemy_status();
     }
     done = 1;
     timer_stage = 5;
