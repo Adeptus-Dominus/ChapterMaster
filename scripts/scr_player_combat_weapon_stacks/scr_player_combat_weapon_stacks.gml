@@ -379,7 +379,6 @@ function scr_add_unit_to_roster(unit, is_local = false, is_ally = false) {
     array_push(marine_local, is_local);
     array_push(marine_casting, false);
     array_push(marine_casting_cooldown, 0);
-    array_push(marine_defense, 1);
 
     array_push(marine_dead, 0);
     array_push(marine_mshield, 0);

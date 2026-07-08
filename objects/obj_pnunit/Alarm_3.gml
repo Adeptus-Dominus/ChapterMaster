@@ -40,7 +40,6 @@ try {
                 if ((marine_dead[raar] == 0) && (marine_type[raar] != "Death Company") && (marine_type[raar] != obj_ini.role[100][eROLE.CHAPTERMASTER]) && (_r_roll <= 4)) {
                     r_lost += 1;
                     marine_type[raar] = "Death Company";
-                    marine_defense[raar] = 0.75;
                     obj_ncombat.red_thirst += 1;
                     if (r_lost == 1) {
                         miss += "Battle Brother " + string(unit_struct[raar].name()) + ", ";

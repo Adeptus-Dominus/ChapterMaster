@@ -44,7 +44,6 @@ marine_powers = [];
 marine_dead = [];
 marine_attack = [];
 marine_ranged = [];
-marine_defense = [];
 marine_casting = [];
 marine_casting_cooldown = [];
 marine_local = [];
