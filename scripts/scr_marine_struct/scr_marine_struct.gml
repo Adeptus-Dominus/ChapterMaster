@@ -2165,9 +2165,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         }
 
-        var arti, artifact_list = equipped_artifacts();
+        var artifact_list = equipped_artifacts();
         for (var i = 0; i < array_length(artifact_list); i++) {
-            arti = obj_ini.artifact_struct[artifact_list[i]];
+            var arti = obj_ini.artifact_struct[artifact_list[i]];
             arti.bearer = [
                 end_company,
                 end_slot
