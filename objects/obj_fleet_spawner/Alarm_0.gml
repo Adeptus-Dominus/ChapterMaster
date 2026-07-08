@@ -1,9 +1,7 @@
 if (number == 1) {
     // create blocks of infantry
-
-    sort_ships_into_columns(obj_fleet);
-
     with (obj_fleet) {
+        sort_ships_into_columns(id);
         player_fleet_ship_spawner();
     }
 }
