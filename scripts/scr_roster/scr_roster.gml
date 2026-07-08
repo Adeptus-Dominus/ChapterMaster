@@ -570,7 +570,12 @@ function add_unit_to_battle(unit, meeting, is_local) {
         //assualt marines
         col = obj_controller.bat_assault_column;
         new_combat.assaults++;
-
+    } else if (_unit_role == _role[13]) {
+        // bikers
+        col = obj_controller.bat_bike_column;
+    } else if (_unit_role == _role[20]) {
+        //assbikers
+        col = obj_controller.bat_bike_column;
         //librarium roles
     } else if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS, true)) {
         col = obj_controller.bat_librarian_column; //librarium

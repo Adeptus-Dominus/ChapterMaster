@@ -140,123 +140,96 @@ function scr_company_order(company) {
     }
 }
 
-function role_hierarchy() {
-    var _roles = obj_ini.role[100];
-    var hierarchy = [
-        _roles[eROLE.CHAPTERMASTER],
-        "Forge Master",
-        "Master of Sanctity",
-        "Master of the Apothecarion",
-        string("Chief {0}", _roles[eROLE.LIBRARIAN]),
-        _roles[eROLE.HONOURGUARD],
-        _roles[eROLE.CAPTAIN],
-        _roles[eROLE.CHAPLAIN],
-        string("{0} Aspirant", _roles[eROLE.CHAPLAIN]),
-        "Death Company",
-        _roles[eROLE.TECHMARINE],
-        string("{0} Aspirant", _roles[eROLE.TECHMARINE]),
-        "Techpriest",
-        _roles[eROLE.APOTHECARY],
-        string("{0} Aspirant", _roles[eROLE.APOTHECARY]),
-        "Sister Hospitaler",
-        _roles[eROLE.LIBRARIAN],
-        "Codiciery",
-        "Lexicanum",
-        string("{0} Aspirant", _roles[eROLE.LIBRARIAN]),
-        _roles[eROLE.ANCIENT],
-        _roles[eROLE.CHAMPION],
-        "Death Company",
-        _roles[eROLE.VETERANSERGEANT],
-        _roles[eROLE.SERGEANT],
-        _roles[eROLE.TERMINATOR],
-        _roles[eROLE.VETERAN],
-        _roles[eROLE.TACTICAL],
-        _roles[eROLE.ASSAULT],
-        _roles[eROLE.DEVASTATOR],
-        _roles[eROLE.SCOUT],
-        $"Venerable {_roles[eROLE.DREADNOUGHT]}",
-        _roles[eROLE.DREADNOUGHT],
-        "Skitarii",
-        "Crusader",
-        "Ranger",
-        "Sister of Battle",
-        "Flash Git",
-        "Ork Sniper"
-    ];
-
-    // Dynamically collect squad-specific sergeant role variants (e.g. "Biker Sergeant", "Tactical Sergeant")
-    // so they sort immediately after the generic sergeant, keeping them at the top of their squads
-    var _sgt_base  = _roles[eROLE.SERGEANT];
-    var _vsgt_base = _roles[eROLE.VETERANSERGEANT];
-    var _squad_type_names = struct_get_names(obj_ini.squad_types);
-    for (var _si = 0; _si < array_length(_squad_type_names); _si++) {
-        var _sq_data = obj_ini.squad_types[$ _squad_type_names[_si]];
-        var _sq_keys = struct_get_names(_sq_data);
-        for (var _ki = 0; _ki < array_length(_sq_keys); _ki++) {
-            var _k = _sq_keys[_ki];
-            if (_k == "type_data") continue;
-            var _role_def = _sq_data[$ _k];
-            if (!struct_exists(_role_def, "role")) continue;
-            var _specific_role = _role_def.role;
-            if (!array_contains(hierarchy, _specific_role)) {
-                // Classify by the slot's JSON key (_k), not the renamed role string. Veteran-sergeant
-                // variants are keyed "Veteran Sergeant" but get renamed to names like "Deathwing
-                // Sergeant" / "Proteus Watch Sergeant" that contain "Sergeant" but NOT the exact
-                // substring "Veteran Sergeant" — so a role-string match would mis-rank them as
-                // regular sergeants. Fall back to string matching only when the key isn't a sergeant.
-                var _is_vsgt = (_k == _vsgt_base) || (string_count(_vsgt_base, _specific_role) > 0);
-                var _is_sgt  = (_k == _sgt_base)  || (string_count(_sgt_base, _specific_role) > 0);
-                if (_is_vsgt) {
-                    // Veteran-sergeant variant — insert just before _vsgt_base position
-                    var _vpos = array_get_index(hierarchy, _vsgt_base);
-                    array_insert(hierarchy, max(0, _vpos), _specific_role);
-                } else if (_is_sgt) {
-                    // Regular sergeant variant — insert just after _sgt_base position
-                    var _spos = array_get_index(hierarchy, _sgt_base);
-                    array_insert(hierarchy, _spos + 1, _specific_role);
+// base role (JSON slot key) loads array of renamed "role"-override variants across all squad types
+// cached across calls; pass true to rebuild after squad_types is loaded
+function squad_role_renames(_rebuild = false) {
+    static _cache = undefined;
+    if (!instance_exists(obj_ini) || !variable_instance_exists(obj_ini, "squad_types")) {
+        return {};
+    }
+    if (_rebuild || _cache == undefined) {
+        _cache = {};
+        var _types = struct_get_names(obj_ini.squad_types);
+        for (var _si = 0; _si < array_length(_types); _si++) {
+            var _sq = obj_ini.squad_types[$ _types[_si]];
+            var _keys = struct_get_names(_sq);
+            for (var _ki = 0; _ki < array_length(_keys); _ki++) {
+                var _k = _keys[_ki];
+                if (_k == "type_data") continue;
+                if (!struct_exists(_sq[$ _k], "role")) continue;
+                _cache[$ _k] = _cache[$ _k] ?? [];
+                if (!array_contains(_cache[$ _k], _sq[$ _k].role)) {
+                    array_push(_cache[$ _k], _sq[$ _k].role);
                 }
             }
         }
     }
+    return _cache;
+}
 
-    // Also add non-sergeant squad-specific role variants so they appear after their base role
-    var _base_roles = [
-        _roles[eROLE.TERMINATOR], _roles[eROLE.VETERAN],
-        _roles[eROLE.TACTICAL], _roles[eROLE.ASSAULT],
-        _roles[eROLE.DEVASTATOR], _roles[eROLE.SCOUT],
-        _roles[eROLE.ANCIENT], _roles[eROLE.CHAMPION],
-        _roles[eROLE.CHAPLAIN], _roles[eROLE.APOTHECARY],
-        _roles[eROLE.TECHMARINE], _roles[eROLE.LIBRARIAN]
-    ];
-    for (var _si = 0; _si < array_length(_squad_type_names); _si++) {
-        var _sq_data = obj_ini.squad_types[$ _squad_type_names[_si]];
-        var _sq_keys = struct_get_names(_sq_data);
-        for (var _ki = 0; _ki < array_length(_sq_keys); _ki++) {
-            var _k = _sq_keys[_ki];
-            if (_k == "type_data") continue;
-            var _role_def = _sq_data[$ _k];
-            if (!struct_exists(_role_def, "role")) continue;
-            var _specific_role = _role_def.role;
-            if (array_contains(hierarchy, _specific_role)) continue;
-            // Skip sergeant variants (already handled above)
-            if (string_count(_sgt_base, _specific_role) > 0) continue;
-            // Find the closest matching base role and insert after it
-            for (var _bi = 0; _bi < array_length(_base_roles); _bi++) {
-                if (struct_exists(_role_def, "alternative_roles") &&
-                    array_contains(_role_def.alternative_roles, _base_roles[_bi])) {
-                    var _bpos = array_get_index(hierarchy, _base_roles[_bi]);
-                    if (_bpos >= 0) {
-                        array_insert(hierarchy, _bpos + 1, _specific_role);
-                        break;
-                    }
+function role_hierarchy(_rebuild = false) {
+    static _cache = undefined;
+    if (_rebuild || _cache == undefined) {
+        var _roles = obj_ini.role[100];
+        var _h = [
+            _roles[eROLE.CHAPTERMASTER],
+            "Forge Master",
+            "Master of Sanctity",
+            "Master of the Apothecarion",
+            string("Chief {0}", _roles[eROLE.LIBRARIAN]),
+            _roles[eROLE.HONOURGUARD],
+            _roles[eROLE.CAPTAIN],
+            _roles[eROLE.CHAPLAIN],
+            string("{0} Aspirant", _roles[eROLE.CHAPLAIN]),
+            "Death Company",
+            _roles[eROLE.TECHMARINE],
+            string("{0} Aspirant", _roles[eROLE.TECHMARINE]),
+            "Techpriest",
+            _roles[eROLE.APOTHECARY],
+            string("{0} Aspirant", _roles[eROLE.APOTHECARY]),
+            "Sister Hospitaler",
+            _roles[eROLE.LIBRARIAN],
+            "Codiciery",
+            "Lexicanum",
+            string("{0} Aspirant", _roles[eROLE.LIBRARIAN]),
+            _roles[eROLE.ANCIENT],
+            _roles[eROLE.CHAMPION],
+            _roles[eROLE.VETERANSERGEANT],
+            _roles[eROLE.SERGEANT],
+            _roles[eROLE.TERMINATOR],
+            _roles[eROLE.VETERAN],
+            _roles[eROLE.TACTICAL],
+            _roles[eROLE.ASSAULT],
+            _roles[eROLE.DEVASTATOR],
+            _roles[eROLE.SCOUT],
+            _roles[eROLE.BIKER],
+            _roles[eROLE.ATTACK_BIKER],
+            $"Venerable {_roles[eROLE.DREADNOUGHT]}",
+            _roles[eROLE.DREADNOUGHT],
+            "Skitarii",
+            "Crusader",
+            "Ranger",
+            "Sister of Battle",
+            "Flash Git",
+            "Ork Sniper"
+        ];
+
+        // Splice renamed squad roles in directly after their base role via JSON key
+        var _renames = squad_role_renames(_rebuild);
+        var _bases = struct_get_names(_renames);
+        for (var _bi = 0; _bi < array_length(_bases); _bi++) {
+            var _anchor = array_get_index(_h, _bases[_bi]);
+            var _variants = _renames[$ _bases[_bi]];
+            for (var _vi = 0; _vi < array_length(_variants); _vi++) {
+                if (array_contains(_h, _variants[_vi])) continue;
+                if (_anchor >= 0) {
+                    array_insert(_h, _anchor + 1, _variants[_vi]);
+                } else {
+                    array_push(_h, _variants[_vi]);
                 }
             }
-            // If not inserted via alternative_roles, just append before rank-and-file
-            if (!array_contains(hierarchy, _specific_role)) {
-                array_push(hierarchy, _specific_role);
-            }
         }
+        _cache = _h;
     }
-
-    return hierarchy;
+    return variable_clone(_cache); //here so cache isn't killed by rewording
 }

@@ -1705,7 +1705,7 @@
         },
         "option": {
           "wep2": [
-            [["Combiplasma", "Plasma Gun", "Meltagun"], 1]
+            [["Hand Flamer", "Grav-Pistol", "Infernus Pistol", "Plasma Pistol", "Volkite Serpenta"], 1]
           ]
         }
       }
@@ -1771,6 +1771,7 @@
       "role": "Ravenwing Ancient",
       "loadout": {
         "required": {
+          "wep2": ["Power Axe",1],
           "mobi": ["Bike", 1]
         }
       }
@@ -1781,6 +1782,7 @@
       "role": "Librarian",
       "loadout": {
         "required": {
+          "wep2": ["", 0],
           "mobi": ["Bike", 1]
         }
       }
@@ -1802,7 +1804,7 @@
       "loadout": {
         "required": {
           "wep1": ["Relic Blade", 1],
-          "wep2": ["Plasma Pistol", 1],
+          "wep2": ["", 0],
           "gear": ["Iron Halo", 1],
           "armour": ["Artificer Armour", 1],
           "mobi": ["Bike", 1]

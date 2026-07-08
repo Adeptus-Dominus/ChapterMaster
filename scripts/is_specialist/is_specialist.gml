@@ -182,6 +182,15 @@ function role_groups(group, include_trainee = false, include_heads = true) {
                 _roles[eROLE.SERGEANT],
                 _roles[eROLE.VETERANSERGEANT]
             ];
+            var _renames = squad_role_renames();
+            if (instance_exists(obj_ini)) {
+                // _renames keys are post-swap JSON names produced from obj_ini.role[100]
+                // look up in that same namespace not active_roles()
+                var _ini_roles = obj_ini.role[100];
+                _role_list = array_concat(_role_list,
+                    _renames[$ _ini_roles[eROLE.SERGEANT]] ?? [],
+                    _renames[$ _ini_roles[eROLE.VETERANSERGEANT]] ?? []);
+            }
             break;
         case SPECIALISTS_COMMAND:
             _role_list = [

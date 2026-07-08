@@ -55,8 +55,10 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     members_UnitGroup = squad.get_members(true);
     members_UnitGroup.shuffle();
     optional_load = undefined;
-    optional_fill_counts = {};   // flat struct: "slot_groupIndex" -> filled count
+    optional_fill_counts = {};   // flat struct: "slot_groupIndex" -> filled count, lazily populated
     required_load = undefined;
+    required_fill_counts = {};
+    required_targets = {};
 
     target_squad.update_fulfilment();
 
@@ -121,49 +123,33 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     ];
 
     static structure_role_optional_loadout = function(optional_data){
-
-        // Use the original data directly — no clone needed since optional_load is now read-only
-        // (all mutable state lives in optional_fill_counts). variable_clone can incorrectly
-        // flatten doubly-nested arrays in this GML version, corrupting the group structure.
+        //read-only alias into squad_types
         optional_load = optional_data;
-
-        // Initialise fill-count tracking in a flat struct (struct field writes are always
-        // in-place in GML — no copy-on-write issues unlike nested array element writes)
+        //mutable state through slot_groupIndex
         optional_fill_counts = {};
-        var _optional_loadout_slots = struct_get_names(optional_load);
-        for (var slot = 0; slot < array_length(_optional_loadout_slots); slot++) {
-            var _load_out_slot = _optional_loadout_slots[slot];
-            for (var i = 0; i < array_length(optional_load[$ _load_out_slot]); i++) {
-                optional_fill_counts[$ _load_out_slot + "_" + string(i)] = 0;
-            }
-        }
-    }
+    };
 
     static structure_role_required_loadout = function(required_data) {
-        //find out if the _unit type for the squad has required  equipment thresholds
-
-        required_load = variable_clone(required_data);
-        required_loadout_slots = struct_get_names(required_load);
-        for (var i = 0; i < array_length(required_loadout_slots); i++) {
-            var _current_load_slot = required_loadout_slots[i];
-            var _equip_slot = required_load[$ _current_load_slot];
-            if (is_string(required_load[$ _current_load_slot][1])) {
-                if (required_load[$ _current_load_slot][1] == "max") {
-                    required_load[$ _current_load_slot][1] = target_squad.squad_fulfilment[$ unit_role];
-                }
-            }
-            array_insert(required_load[$ _current_load_slot], 2, 0);
+        required_load = required_data;
+        required_fill_counts = {};
+        required_targets = {};
+        var _slots = struct_get_names(required_data);
+        for (var i = 0; i < array_length(_slots); i++) {
+            var _slot = _slots[i];
+            var _target = required_data[$ _slot][1];
+            required_targets[$ _slot] =
+                (_target == "max") ? target_squad.squad_fulfilment[$ unit_role] : _target;
+            required_fill_counts[$ _slot] = 0;
         }
     };
 
     static equip_required_for_role = function(_unit) {
-        if (required_load[$ current_load_slot][2] < required_load[$ current_load_slot][1]) {
+        if (required_fill_counts[$ current_load_slot] < required_targets[$ current_load_slot]) {
             //if the required amount of equipment is not in the squad already equip this marine with equipment
-            var _item_to_add = required_load[$ current_load_slot][0];
-            var required_load_set = {};
-            required_load_set[$ current_load_slot] = _item_to_add;
-            _unit.alter_equipment(required_load_set, from_armoury, to_armoury);
-            required_load[$ current_load_slot][2]++;
+            var _required_load_set = {};
+            _required_load_set[$ current_load_slot] = required_load[$ current_load_slot][0];
+            _unit.alter_equipment(_required_load_set, from_armoury, to_armoury);
+            required_fill_counts[$ current_load_slot]++;
             return true;
         } //if all required equipment is included in the squad start adding optional equipment
         return false;
@@ -175,7 +161,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         var _optional_groups = optional_load[$ current_load_slot];
         for (var i = 0; i < array_length(_optional_groups); i++) {
             var _count_key             = current_load_slot + "_" + string(i);
-            var _optionals_filled      = optional_fill_counts[$ _count_key];   // read from flat struct
+            var _optionals_filled = optional_fill_counts[$ _count_key] ?? 0;
             var _optionals_max_allowed = _optional_groups[i][1];
             var _optionals_equipment   = _optional_groups[i][0];
             var _item_to_add;
@@ -212,8 +198,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                 var _opt_load_out = {};
                 _opt_load_out[$ current_load_slot] = _item_to_add;
                 _unit.alter_equipment(_opt_load_out, from_armoury, to_armoury);
-                // Struct field write — guaranteed in-place, no copy-on-write in GML
-                optional_fill_counts[$ _count_key]++;
+                optional_fill_counts[$ _count_key] = _optionals_filled + 1;
                 if (_is_equipment_set) {
                     var _equip_set_data = _optional_groups[i][2];
                     if (is_struct(_equip_set_data)) {
@@ -378,11 +363,6 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
     static change_type = function(new_type) {
         type = new_type;
-        if (is_array(type)) {
-            show_debug_message($"[PROBE] change_type got ARRAY type (len {array_length(type)}): {type}");
-        } else if (!struct_exists(obj_ini.squad_types, type)) {
-            show_debug_message($"[PROBE] change_type unknown squad type: \"{type}\"");
-        }
         add_type_data(obj_ini.squad_types[$ type].type_data);
     };
 
@@ -406,16 +386,6 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
             }
             squad_fulfilment[$ _wanted_unit_role] = 0; //create a fulfilment structure to log members of squad
         }
-        //Mapping for role groups in alternative source; 
-        squad_role_alternatives = {};
-            for (var i =0; i < array_length(squad_unit_types); i++) {
-                var _role_name = squad_unit_types[i];
-                var _role_def = fill_squad[$ _role_name];
-                //alternative source presence check
-                if (struct_exists(_role_def, "alternative_roles")) {
-                    squad_role_alternatives[$ _role_name] = _role_def.alternative_roles;
-                }
-            }
         return squad_unit_types;
     };
 
@@ -903,14 +873,7 @@ function resolve_company_arrangement(arrangement, company_number) {
 /// @return {Undefined}
 function apply_squad_distribution_override(arrangement, override) {
     if (struct_exists(override, "default_squads")) {
-        // Deep-clone so arrangement.default_squads is independent of the override sub-struct,
-        // preventing any future in-place mutation of the array from corrupting both references.
-        var _src = override.default_squads;
-        var _clone = array_create(array_length(_src));
-        for (var _i = 0; _i < array_length(_src); _i++) {
-            _clone[_i] = variable_clone(_src[_i]);
-        }
-        arrangement.default_squads = _clone;
+        arrangement.default_squads = variable_clone(override.default_squads)
     }
     if (struct_exists(override, "companies")) {
         if (!struct_exists(arrangement, "companies")) {
@@ -960,11 +923,7 @@ function get_compay_squad_arrangement(company){
     // shared array every other defaulted company also points at. Registering it persists the edits
     // and lets resolve_company_arrangement pick this company up by its own entry from now on.
     var _src = struct_exists(_arrangement, "default_squads") ? _arrangement.default_squads : [];
-    var _squads = array_create(array_length(_src));
-    for (var _i = 0; _i < array_length(_src); _i++) {
-        _squads[_i] = variable_clone(_src[_i]);
-    }
-    var _entry = { company: company, squads: _squads };
+    var _entry = { company: company, squads: variable_clone(_src) };
     array_push(_comp_datas, _entry);
     return _entry;
 }

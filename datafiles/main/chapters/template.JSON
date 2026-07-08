@@ -390,7 +390,7 @@
           "right_thorax":20,
           "right_trim":20,
           "company_marks":20,
-         "company_marks_loc":20
+         "company_marks_loc":0
         },
         {//[8] Champion
           "weapon_primary":11,

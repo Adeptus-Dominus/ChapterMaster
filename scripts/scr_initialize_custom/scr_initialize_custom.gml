@@ -1837,6 +1837,7 @@ function scr_initialize_custom() {
     }
 
     json_inject_swaps(squad_types, _swaps);
+    role_hierarchy(true);
 
     if (global.chapter_name == "Salamanders") {
         squad_types.assault_squad.loadout = {
