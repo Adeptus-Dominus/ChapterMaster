@@ -130,7 +130,7 @@ function check_dead_marines(unit_struct, unit_index) {
 
 /// @self Id.Instance.obj_pnunit
 /// @param {Id.Instance.obj_pnunit} target_object
-function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position) {
+function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, hostile_armour_pierce) {
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //
     // Parameters:
@@ -156,23 +156,23 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
             // ### Vehicle Damage Processing ###
             if (!target_is_infantry && veh > 0) {
-                damage_vehicles(damage_data, hostile_shots, hostile_damage, weapon_index_position);
+                damage_vehicles(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
             }
 
             // ### Marine + Dreadnought Processing ###
             if (target_is_infantry && (men + dreads > 0)) {
-                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position);
+                damage_infantry(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
             }
 
             if (damage_data.hits < hostile_shots) {
                 // ### Vehicle Damage Processing ###
                 if (target_is_infantry && veh > 0) {
-                    damage_vehicles(damage_data, hostile_shots, hostile_damage, weapon_index_position);
+                    damage_vehicles(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
                 }
 
                 // ### Marine + Dreadnought Processing ###
                 if (!target_is_infantry && (men + dreads > 0)) {
-                    damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position);
+                    damage_infantry(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
                 }
             }
 
@@ -191,10 +191,9 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
-    var _armour_pierce = apa[_weapon_index];
+function damage_infantry(_damage_data, _shots, _damage, _hostile_armour_pierce) {
     var _armour_mod = 0;
-    switch (_armour_pierce) {
+    switch (_hostile_armour_pierce) {
         case 4:
             _armour_mod = 0;
             break;
@@ -294,10 +293,9 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_vehicles(_damage_data, _shots, _damage, _weapon_index) {
-    var _armour_pierce = apa[_weapon_index];
+function damage_vehicles(_damage_data, _shots, _damage, _hostile_armour_pierce) {
     var _armour_mod = 0;
-    switch (_armour_pierce) {
+    switch (_hostile_armour_pierce) {
         case 4:
             _armour_mod = 0;
             break;

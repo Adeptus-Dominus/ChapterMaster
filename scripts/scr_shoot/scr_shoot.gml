@@ -95,7 +95,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     hostile_range = range[weapon_index_position];
                     hostile_splash = attack_count_mod;
 
-                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position);
+                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, armour_pierce);
                 }
             } else if ((damage_type == "att") && (aggregate_damage > 0) && (stop == 0) && (shots_fired > 0)) {
                 var damage_per_weapon, hit_number;
@@ -131,7 +131,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     hostile_range = range[weapon_index_position];
                     hostile_splash = attack_count_mod;
 
-                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position);
+                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, armour_pierce);
                 }
             } else if (((damage_type == "arp") || (damage_type == "dread")) && (armour_pierce > 0) && (stop == 0) && (shots_fired > 0)) {
                 var damage_per_weapon, hit_number;
@@ -182,7 +182,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         target_object.hostile_shooters = (wep_owner[weapon_index_position] == "assorted") ? 999 : 1;
                         hostile_type = 0;
 
-                        scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position);
+                        scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, armour_pierce);
                     }
                 }
             }
