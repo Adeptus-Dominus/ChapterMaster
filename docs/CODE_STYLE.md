@@ -108,7 +108,7 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 
 ### Performance
 
-- **Precalculate array length for loops.** `for (var i = 0, l = array_length(array); i < l; i++)`.
+- **Precalculate array length for loops in hotpaths.** `for (var i = 0, l = array_length(array); i < l; i++)` if the loop runs somewhere where loop speed matters.
 - **Keep heavy logic (loops, allocations) out of Draw and Step events**. These events run every frame and can destroy performance.
 - **Prefer `arrays` and `structs` over `ds_*` structures** (`ds_map`, `ds_list`, `ds_grid`, `ds_stack`, `ds_queue`). If you must use a `ds_*` structure, always pair it with a corresponding `ds_destroy` call to avoid memory leaks.
 

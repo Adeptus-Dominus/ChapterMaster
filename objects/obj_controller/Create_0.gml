@@ -1382,6 +1382,7 @@ if (global.load == -1) {
 }
 
 // **** INTRO SCREEN ****
+#region Intro Scroll
 temp[30] = string(check_number) + " " + string(year_fraction) + " " + string(year) + ".M" + string(millenium); // Date
 temp[31] = string_upper(adept_name); // Adept name
 temp[32] = string_upper(obj_ini.name[0][0]); // Master name
@@ -1389,286 +1390,79 @@ temp[33] = string_upper(scr_thought()); // Thought of the day
 
 // Game start welcoming message
 LOGGER.info("Game start welcoming message");
-var njm = 34, com = 0, vih = 0, word = "", masta = 0, forga = 0, chapla = 0, apa = 0, liba = 0, techa = 0, libra = 0, coda = 0, lexa = 0, apotha = 0, old_dudes = 0;
 
-var honoh = 0, termi = 0, veter = 0, capt = 0, chap = 0, apoth = 0, stand = 0, dread = 0, champ = 0, tact = 0, assa = 0, deva = 0, rhino = 0, speeder = 0, raider = 0, standard = 0, bike = 0, scou = 0, whirl = 0, pred = 0, lib = 0, serg = 0, vet_serg = 0;
-for (var mm = 0; mm <= 100; mm++) {
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
-        masta = 1;
-    }
-    if (obj_ini.role[com][mm] == "Forge Master") {
-        forga = 1;
-    }
-    if (obj_ini.role[com][mm] == "Master of Sanctity") {
-        chapla = 1;
-    }
-    if (obj_ini.role[com][mm] == "Master of the Apothecarion") {
-        apa = 1;
-    }
-    if (obj_ini.role[com][mm] == "Chief " + string(obj_ini.role[100][eROLE.LIBRARIAN])) {
-        liba = 1;
-    }
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.TECHMARINE]) {
-        techa += 1;
-    }
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.LIBRARIAN]) {
-        libra += 1;
-    }
-    if (obj_ini.role[com][mm] == "Codiciery") {
-        coda += 1;
-    }
-    if (obj_ini.role[com][mm] == "Lexicanum") {
-        lexa += 1;
-    }
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.CHAPLAIN]) {
-        old_dudes += 1;
-    }
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.APOTHECARY]) {
-        apotha += 1;
-    }
-    if (obj_ini.role[com][mm] == obj_ini.role[100][eROLE.HONOURGUARD]) {
-        honoh += 1;
-    }
-}
+var _canon = obj_ini.role[100];
 
-temp[njm] = "Command staff made of";
+var _build_clause = function(_prefix, _parts) {
+    if (array_length(_parts) == 0) {
+        return "";
+    }
+    return $"{_prefix} {string_join_ext(", ", _parts)}.";
+};
 
-// Command staff names start at index 1 rather than 0 to align with the chapter company structure
-if (masta == 1) {
-    temp[njm] += $", your majesty Chapter Master {obj_ini.name[com][0]}";
-}
-if (forga == 1) {
-    temp[njm] += $", Forge Master {obj_ini.name[com][1]}";
-}
-if (chapla == 1) {
-    temp[njm] += $", Master of Sanctity {obj_ini.name[com][2]}";
-}
-if (apa == 1) {
-    temp[njm] += $", Master of the Apothecarion {obj_ini.name[com][3]}";
-}
-if (liba == 1) {
-    temp[njm] += $", and Chief Librarian {obj_ini.name[com][4]}.  ";
-}
+var _hq_index = collect_company(0).index_roles();
+var _command_staff = [
+    { role: _canon[eROLE.CHAPTERMASTER],        name_slot: 0, prefix: "your majesty " },
+    { role: "Forge Master",                     name_slot: 1, prefix: "" },
+    { role: "Master of Sanctity",               name_slot: 2, prefix: "" },
+    { role: "Master of the Apothecarion",       name_slot: 3, prefix: "" },
+    { role: $"Chief {_canon[eROLE.LIBRARIAN]}", name_slot: 4, prefix: "and " },
+];
 
-vih = string_pos(",", temp[njm]);
-temp[njm] = string_delete(temp[njm], vih, 1);
-njm += 1;
-temp[njm] = "Specialist branches staffed by";
-if (techa > 0) {
-    temp[njm] += $", {string_plural_count(obj_ini.role[100][16], techa)}";
-}
-if (old_dudes > 0) {
-    temp[njm] += $", {string_plural_count(obj_ini.role[100][14], old_dudes)}";
-}
-if (apotha > 0) {
-    temp[njm] += $", {string_plural_count(obj_ini.role[100][15], apotha)}";
-}
-if (libra > 0) {
-    temp[njm] += $", {string_plural_count(obj_ini.role[100][17], libra)}";
-}
-if (coda > 0) {
-    temp[njm] += $", {string_plural_count("Codiciery", coda)}";
-}
-if (lexa > 0) {
-    temp[njm] += $", {string_plural_count("Lexicanum", lexa)}.";
-}
+var _parts = [];
+for (var i = 0, l = array_length(_command_staff); i < l; i++) {
+    var _officer = _command_staff[i];
+    if (_hq_index.has_role(_officer.role)) {
+        array_push(_parts, $"{_officer.prefix}{_officer.role} {obj_ini.name[0][_officer.name_slot]}");
+    }
+};
+temp[34] = _build_clause("Command staff made of", _parts);
 
-vih = string_pos(",", temp[njm]);
-temp[njm] = string_delete(temp[njm], vih, 1);
+var _specialist_display = [
+    _canon[eROLE.TECHMARINE], _canon[eROLE.CHAPLAIN], _canon[eROLE.APOTHECARY],
+    _canon[eROLE.LIBRARIAN], "Codiciery", "Lexicanum",
+];
+_parts = [];
+for (var i = 0, l = array_length(_specialist_display); i < l; i++) {
+    var _role_name = _specialist_display[i];
+    var _count = _hq_index.has_role(_role_name) ? _hq_index.role_count(_role_name) : 0;
+    if (_count > 0) {
+        array_push(_parts, string_plural_count(_role_name, _count));
+    }
+};
+temp[35] = _build_clause("Specialist branches staffed by", _parts);
+var _honour_guard_count = _hq_index.has_role(_canon[eROLE.HONOURGUARD]) ? _hq_index.role_count(_canon[eROLE.HONOURGUARD]) : 0;
+if (_honour_guard_count > 0) {
+    temp[35] += $"\n\nHonour Guard, having the {_honour_guard_count} most veteran {string_plural("marine", _honour_guard_count)} of your chapter serving in it.";
+};
 
-if (honoh > 0) {
-    temp[njm] += $"\n\nHonour Guard, having the {honoh} most veteran {string_plural("marine", honoh)} of your chapter serving in it.";
-}
+var _vehicle_display = ["Land Raider", "Predator", "Whirlwind", "Rhino", "Land Speeder"];
 
-for (var company = 0; company < 10; company++) {
-    njm++;
-    com++;
-    fisted = 0;
-    techa = 0;
-    termi = 0;
-    veter = 0;
-    capt = 0;
-    chap = 0;
-    apoth = 0;
-    stand = 0;
-    dread = 0;
-    champ = 0;
-    tact = 0;
-    assa = 0;
-    deva = 0;
-    rhino = 0;
-    speeder = 0;
-    raider = 0;
-    standard = 0;
-    bike = 0;
-    scou = 0;
-    whirl = 0;
-    pred = 0;
-    lib = 0;
-    serg = 0;
-    vet_serg = 0;
-    for (var mm = 1; mm <= 400; mm++) {
-        if (obj_ini.role[com][mm] == obj_ini.role[100][3]) {
-            veter += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][4]) {
-            termi += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][5]) {
-            capt += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][6]) {
-            dread += 1;
-        }
-        if (obj_ini.role[com][mm] == "Venerable " + string(obj_ini.role[100][6])) {
-            dread += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][7]) {
-            champ += 1;
-        }
-
-        if (obj_ini.role[com][mm] == obj_ini.role[100][8]) {
-            tact += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][9]) {
-            deva += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][10]) {
-            assa += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][11]) {
-            standard += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][12]) {
-            scou += 1;
-        }
-
-        if (obj_ini.role[com][mm] == obj_ini.role[100][14]) {
-            chap += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][15]) {
-            apoth += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][16]) {
-            techa += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][17]) {
-            lib += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][18]) {
-            serg += 1;
-        }
-        if (obj_ini.role[com][mm] == obj_ini.role[100][19]) {
-            vet_serg += 1;
+for (var _com = 1; _com <= 10; _com++) {
+    var _index = collect_company(_com).index_roles();
+    var _veh_counts = {};
+    for (var v = 1; v <= 100; v++) {
+        var _veh = obj_ini.veh_role[_com][v];
+        if (_veh != "") {
+            _veh_counts[$ _veh] = (_veh_counts[$ _veh] ?? 0) + 1;
         }
     }
-    for (vih = 1; vih <= 100; vih++) {
-        if (obj_ini.veh_role[com][vih] == "Land Raider") {
-            raider += 1;
-        }
-        if (obj_ini.veh_role[com][vih] == "Rhino") {
-            rhino += 1;
-        }
-        if (obj_ini.veh_role[com][vih] == "Land Speeder") {
-            speeder += 1;
-        }
-        if (obj_ini.veh_role[com][vih] == "Bike") {
-            bike += 1;
-        }
-        if (obj_ini.veh_role[com][vih] == "Predator") {
-            pred += 1;
-        }
-        if (obj_ini.veh_role[com][vih] == "Whirlwind") {
-            whirl += 1;
+    _parts = [];
+    var _keys = _index.hierarchy_keys();
+    for (var i = 0, l = array_length(_keys); i < l; i++) {
+        var _count = _index.role_count(_keys[i]);
+        if (_count > 0) {
+            array_push(_parts, string_plural_count(_keys[i], _count));
         }
     }
-
-    if (com > 0) {
-        if (veter + termi + stand + dread + tact + assa + deva + rhino + raider + standard + scou + whirl > 0) {
-            temp[njm] = $"{integer_to_words(com, true, true)} company made of";
-        } else {
-            temp[njm] = "";
+    for (var i = 0, l = array_length(_vehicle_display); i < l; i++) {
+        var _count = _veh_counts[$ _vehicle_display[i]] ?? 0;
+        if (_count > 0) {
+            array_push(_parts, string_plural_count(_vehicle_display[i], _count));
         }
     }
-
-    if (capt > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][5], capt)}";
-    }
-    if (chap > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][14], chap)}";
-    }
-    if (apoth > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][15], apoth)}";
-    }
-    if (techa > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][16], techa)}";
-    }
-    if (standard > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][11], standard)}";
-    }
-    if (champ > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][7], champ)}";
-    }
-    if (lib > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][17], lib)}";
-    }
-
-    if (serg > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][18], serg)}";
-    }
-    if (vet_serg > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][19], vet_serg)}";
-    }
-    if (termi > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][4], termi)}";
-    }
-    if (veter > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][3], veter)}";
-    }
-    if (tact > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][8], tact)}";
-    }
-    if (assa > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][10], assa)}";
-    }
-    if (deva > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][9], deva)}";
-    }
-    if (scou > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][12], scou)}";
-    }
-    if (dread > 0) {
-        temp[njm] += $", {string_plural_count(obj_ini.role[100][6], dread)}";
-    }
-
-    if (raider > 0) {
-        temp[njm] += $", {string_plural_count("Land Raider", raider)}";
-    }
-    if (pred > 0) {
-        temp[njm] += $", {string_plural_count("Predator", pred)}";
-    }
-    if (whirl > 0) {
-        temp[njm] += $", {string_plural_count("Whirlwind", whirl)}";
-    }
-    if (rhino > 0) {
-        temp[njm] += $", {string_plural_count("Rhino", rhino)}";
-    }
-    if (speeder > 0) {
-        temp[njm] += $", {string_plural_count("Land Speeder", speeder)}";
-    }
-    if (bike > 0) {
-        temp[njm] += $", {string_plural_count("Attack Bike", bike)}";
-    }
-
-    if (string_length(temp[njm]) > 0) {
-        temp[njm] += ".";
-    }
-
-    if (njm != 0) {
-        vih = string_pos(",", temp[njm]);
-        temp[njm] = string_delete(temp[njm], vih, 1);
-    }
-}
+    temp[35 + _com] = _build_clause($"{integer_to_words(_com, true, true)} company made of", _parts);
+};
 
 LOGGER.info("create Ships");
 
@@ -1828,5 +1622,5 @@ alarm_set(0, 2);
 location_viewer.update_fleet_table();
 
 armamentarium = new Armamentarium(self);
-
+#endregion
 //**! DO NOT PUT THINGS AT THE BOTTOM OF THIS FILE IF YOU NEED THEM TO WORK AFTER LOADING FROM A SAVE, SEE LINE 1550 -ish   */ 

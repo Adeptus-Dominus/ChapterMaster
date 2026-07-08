@@ -18,25 +18,25 @@ function scr_ui_formation_bars() {
     }
 
     var _bar_configs = [
-        { unit_id: 1,  for_arr: bat_comm_for, size: 2, image_index: 0,  unit_type: "HQ",           tooltip: "Headquarters",  tooltip2: "You and your advisors will be placed within this section.  It is strongly advisable you give them backup in this same column." },
-        { unit_id: 2,  for_arr: bat_hono_for, size: 1, image_index: 1,  unit_type: "Hono",         tooltip: "Honour Guard",  tooltip2: "Any Honour Guard within your Headquarters will be placed here.  The best place for them within the formation depends on loadout." },
-        { unit_id: 3,  for_arr: bat_libr_for, size: 1, image_index: 8,  unit_type: "Lib",          tooltip: "Librarians",    tooltip2: "Epistolary, Lexicanum, and Codiciery make up this section.  They tend to deal decent damage and offer useful buffs for other units." },
-        { unit_id: 4,  for_arr: bat_tech_for, size: 1, image_index: 9,  unit_type: "Tech",         tooltip: "Techmarines",   tooltip2: "Techmarines and their servitors are placed within this block.  It is advisable that they are placed near your vehicles and armour." },
-        { unit_id: 5,  for_arr: bat_term_for, size: 1, image_index: 10, unit_type: "Term",         tooltip: "Terminators",   tooltip2: "Any Terminators that you may have will be placed here.  They can very easily soak lots of damage and dish it back in return." },
-        { unit_id: 6,  for_arr: bat_vete_for, size: 2, image_index: 6,  unit_type: "Veteran",      tooltip: "Veterans",      tooltip2: "Veterans, the most experienced tacticals of your Chapter, are placed here.  Their best position in the formation depends on loadout." },
-        { unit_id: 7,  for_arr: bat_tact_for, size: 6, image_index: 3,  unit_type: "Tactical",     tooltip: "Tacticals",     tooltip2: "The greater bulk of your Chapter, the tactical marines, go here.  Tactical marines may be situated nearly anywhere.  Note that Apothecaries and Chaplains without jump-packs will also be placed here." },
-        { unit_id: 8,  for_arr: bat_deva_for, size: 3, image_index: 2,  unit_type: "Devastator",   tooltip: "Devastators",   tooltip2: "Devastators offer much long ranged firepower.  As a result they are best placed in the rear of your formation." },
-        { unit_id: 9,  for_arr: bat_assa_for, size: 3, image_index: 5,  unit_type: "Assault",      tooltip: "Assaults",      tooltip2: "Assault marines are damage powerhouses, but tend to be squisher.  You may or may not wish for them to be on the front lines.  Note that Apothecaries and Chaplains with jump-packs will be placed here." },
-        { unit_id: 10, for_arr: bat_scou_for, size: 1, image_index: 4,  unit_type: "Sco",          tooltip: "Scouts",        tooltip2: "Scouts are not-yet full fledged Astartes.  Striking a balance between exposure to the enemy, for experience, and safety is key." },
-        { unit_id: 11, for_arr: bat_drea_for, size: 2, image_index: 11, unit_type: "Dread",        tooltip: "Dreadnoughts",  tooltip2: "Dreadnoughts are the most durable and tough marines within your chapter.  They are best suited for the front lines." },
-        { unit_id: 12, for_arr: bat_hire_for, size: 1, image_index: 7,  unit_type: "???",          tooltip: "Hirelings",     tooltip2: "Any and all units that you recieve from other factions are placed within this block." },
-        { unit_id: 16, for_arr: bat_landspee_for, size: 2, image_index: 14, unit_type: "Land Speeder", tooltip: "Land Speeders", tooltip2: "Land Speeders are incredibly agile attack vehicles that offer a light highly mobile heavy weapon platform." },
+        { unit_id: 1,  bat_for: bat_comm_for, size: 2, image_index: 0,  unit_type: "HQ",           tooltip: "Headquarters",  tooltip2: "You and your advisors will be placed within this section.  It is strongly advisable you give them backup in this same column." },
+        { unit_id: 2,  bat_for: bat_hono_for, size: 1, image_index: 1,  unit_type: "Hono",         tooltip: "Honour Guard",  tooltip2: "Any Honour Guard within your Headquarters will be placed here.  The best place for them within the formation depends on loadout." },
+        { unit_id: 3,  bat_for: bat_libr_for, size: 1, image_index: 8,  unit_type: "Lib",          tooltip: "Librarians",    tooltip2: "Epistolary, Lexicanum, and Codiciery make up this section.  They tend to deal decent damage and offer useful buffs for other units." },
+        { unit_id: 4,  bat_for: bat_tech_for, size: 1, image_index: 9,  unit_type: "Tech",         tooltip: "Techmarines",   tooltip2: "Techmarines and their servitors are placed within this block.  It is advisable that they are placed near your vehicles and armour." },
+        { unit_id: 5,  bat_for: bat_term_for, size: 1, image_index: 10, unit_type: "Term",         tooltip: "Terminators",   tooltip2: "Any Terminators that you may have will be placed here.  They can very easily soak lots of damage and dish it back in return." },
+        { unit_id: 6,  bat_for: bat_vete_for, size: 2, image_index: 6,  unit_type: "Veteran",      tooltip: "Veterans",      tooltip2: "Veterans, the most experienced tacticals of your Chapter, are placed here.  Their best position in the formation depends on loadout." },
+        { unit_id: 7,  bat_for: bat_tact_for, size: 6, image_index: 3,  unit_type: "Tactical",     tooltip: "Tacticals",     tooltip2: "The greater bulk of your Chapter, the tactical marines, go here.  Tactical marines may be situated nearly anywhere.  Note that Apothecaries and Chaplains without jump-packs will also be placed here." },
+        { unit_id: 8,  bat_for: bat_deva_for, size: 3, image_index: 2,  unit_type: "Devastator",   tooltip: "Devastators",   tooltip2: "Devastators offer much long ranged firepower.  As a result they are best placed in the rear of your formation." },
+        { unit_id: 9,  bat_for: bat_assa_for, size: 3, image_index: 5,  unit_type: "Assault",      tooltip: "Assaults",      tooltip2: "Assault marines are damage powerhouses, but tend to be squisher.  You may or may not wish for them to be on the front lines.  Note that Apothecaries and Chaplains with jump-packs will be placed here." },
+        { unit_id: 10, bat_for: bat_scou_for, size: 1, image_index: 4,  unit_type: "Sco",          tooltip: "Scouts",        tooltip2: "Scouts are not-yet full fledged Astartes.  Striking a balance between exposure to the enemy, for experience, and safety is key." },
+        { unit_id: 11, bat_for: bat_drea_for, size: 2, image_index: 11, unit_type: "Dread",        tooltip: "Dreadnoughts",  tooltip2: "Dreadnoughts are the most durable and tough marines within your chapter.  They are best suited for the front lines." },
+        { unit_id: 12, bat_for: bat_hire_for, size: 1, image_index: 7,  unit_type: "???",          tooltip: "Hirelings",     tooltip2: "Any and all units that you recieve from other factions are placed within this block." },
+        { unit_id: 16, bat_for: bat_landspee_for, size: 2, image_index: 14, unit_type: "Land Speeder", tooltip: "Land Speeders", tooltip2: "Land Speeders are incredibly agile attack vehicles that offer a light highly mobile heavy weapon platform." },
     ];
     var _attack_only_options = [
-        { unit_id: 13, for_arr: bat_rhin_for, size: 4, image_index: 12, unit_type: "Rhino",      tooltip: "Rhinos",       tooltip2: "Rhinos offer protection for units behind them but are not well armoured and lacking in firepower." },
-        { unit_id: 14, for_arr: bat_pred_for, size: 2, image_index: 13, unit_type: "Predator",   tooltip: "Predators",    tooltip2: "Predators offer protection for units behind them and have a decent amount of long ranged firepower." },
-        { unit_id: 15, for_arr: bat_landraid_for, size: 2, image_index: 14, unit_type: "Land Raider",tooltip: "Land Raiders", tooltip2: "Land Raiders are incredibly tanky war machines that protect rear columns and offer tremendous amounts of firepower.  Other super-heavy vehicles will also be placed here." },
-        { unit_id: 17, for_arr: bat_whirl_for, size: 2, image_index: 14, unit_type: "Whirlwind",  tooltip: "Whirlwinds",   tooltip2: "Whirlwinds are armoured fire-support capable of supporting assaults from a long range safe from enemy retaliation." },
+        { unit_id: 13, bat_for: bat_rhin_for, size: 4, image_index: 12, unit_type: "Rhino",      tooltip: "Rhinos",       tooltip2: "Rhinos offer protection for units behind them but are not well armoured and lacking in firepower." },
+        { unit_id: 14, bat_for: bat_pred_for, size: 2, image_index: 13, unit_type: "Predator",   tooltip: "Predators",    tooltip2: "Predators offer protection for units behind them and have a decent amount of long ranged firepower." },
+        { unit_id: 15, bat_for: bat_landraid_for, size: 2, image_index: 14, unit_type: "Land Raider",tooltip: "Land Raiders", tooltip2: "Land Raiders are incredibly tanky war machines that protect rear columns and offer tremendous amounts of firepower.  Other super-heavy vehicles will also be placed here." },
+        { unit_id: 17, bat_for: bat_whirl_for, size: 2, image_index: 14, unit_type: "Whirlwind",  tooltip: "Whirlwinds",   tooltip2: "Whirlwinds are armoured fire-support capable of supporting assaults from a long range safe from enemy retaliation." },
     ];
 
     for (var bar = 1; bar <= 10; bar++) {
@@ -52,7 +52,7 @@ function scr_ui_formation_bars() {
 
             for (var _i = 0; _i < array_length(_bar_configs); _i++) {
                 var _cfg = _bar_configs[_i];
-                if ((_cfg.unit_id == unit_id) && (_cfg.for_arr[_formatting] == bar)) {
+                if ((_cfg.unit_id == unit_id) && (_cfg.bat_for[_formatting] == bar)) {
                     init_combat_bars(bar, ui_formations_data, _cfg);
                     break;
                 }
@@ -60,7 +60,7 @@ function scr_ui_formation_bars() {
             if (bat_formation_type[_formatting] != 2) {
                 for (var _i = 0; _i < array_length(_attack_only_options); _i++) {
                     var _cfg = _attack_only_options[_i];
-                    if ((_cfg.unit_id == unit_id) && (_cfg.for_arr[_formatting] == bar)) {
+                    if ((_cfg.unit_id == unit_id) && (_cfg.bat_for[_formatting] == bar)) {
                         init_combat_bars(bar, ui_formations_data, _cfg);
                         break;
                     }
