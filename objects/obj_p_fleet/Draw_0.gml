@@ -66,29 +66,14 @@ if (!keyboard_check(vk_shift)) {
     }
 }
 
-if (obj_controller.selecting_planet > 0) {
-    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249)) {
-        if (instance_exists(obj_star_select)) {
-            if (obj_star_select.button1 != "") {
+    if (obj_controller.selecting_planet > 0 && instance_exists(obj_star_select)) {
+        var _btn_count = array_length(obj_star_select.buttons);
+        for (var i = 0; i < _btn_count; i++) {
+            if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234 + (16 * i)) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249 + (16 * i))) {
                 within = 0;
             }
         }
     }
-    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234 + 16) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249 + 16)) {
-        if (instance_exists(obj_star_select)) {
-            if (obj_star_select.button2 != "") {
-                within = 0;
-            }
-        }
-    }
-    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234 + 32) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249 + 32)) {
-        if (instance_exists(obj_star_select)) {
-            if (obj_star_select.button3 != "") {
-                within = 0;
-            }
-        }
-    }
-}
 
 var line_width = sqr(scale);
 var text_size = sqr(scale);

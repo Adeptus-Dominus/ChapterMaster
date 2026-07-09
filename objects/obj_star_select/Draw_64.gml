@@ -21,10 +21,7 @@ draw_set_color(0);
 try {
     if (loading == 1) {
         obj_controller.selecting_planet = 0;
-        button1 = "";
-        button2 = "";
-        button3 = "";
-        button4 = "";
+        buttons = [];
 
         if (instance_exists(target)) {
             if (target.space_hulk == 1) {
@@ -60,13 +57,7 @@ try {
                         }
                     }
                 }
-                var shutters = [
-                    shutter_1,
-                    shutter_2,
-                    shutter_3,
-                    shutter_4
-                ];
-                for (var i = 0; i < 4; i++) {
+                for (var i = 0; i < array_length(shutters); i++) {
                     var shutter_button = shutters[i];
                     if (shutter_button.hit()) {
                         closes = false;
@@ -151,62 +142,52 @@ try {
         if (p_data.planet != _planet) {
             p_data = target.get_planet_data(_planet);
         }
+    
         // Buttons that are available
         if (!buttons_selected) {
-            var is_enemy = false;
-            if ((obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && p_data.current_owner > 5) || (obj_controller.faction_status[eFACTION.IMPERIUM] == "War" && p_data.at_war(0, 1, 1) && p_data.player_disposition <= 50)) {
-                is_enemy = true;
-            }
+            buttons = [];
 
             if (p_data.planet > 0) {
-                if (target.present_fleet[1] == 0) {
-                    if (p_data.player_forces > 0) {
-                        if (is_enemy) {
-                            button1 = "Attack";
-                            if (p_data.population) {
-                                button2 = "Purge";
-                            }
-                        }
-                    }
-                }
                 if (target.present_fleet[1] > 0) {
-                    button1 = "Attack";
-                    button2 = "Raid";
-                    if (is_enemy || p_data.xenos_and_heretics() > 0) {
-                        button3 = "Bombard";
-                    } else if (p_data.population > 0) {
-                        button3 = "Purge";
+                    if (p_data.has_any_force()) {
+                        array_push(buttons, "Attack", "Raid", "Bombard");
+                    }
+
+                    if (p_data.population > 0) {
+                        array_push(buttons, "Purge");
                     }
 
                     if (torpedo > 0) {
                         var pfleet = instance_nearest(x, y, obj_p_fleet);
                         if (instance_exists(pfleet) && (point_distance(pfleet.x, pfleet.y, target.x, target.y) <= 40) && (pfleet.action == "")) {
-                            if ((pfleet.capital_number + pfleet.frigate_number > 0) && (button4 == "")) {
-                                button4 = "Cyclonic Torpedo";
+                            if (pfleet.capital_number + pfleet.frigate_number > 0) {
+                                array_push(buttons, "Cyclonic Torpedo");
                             }
                         }
+                    }
+                } else if (p_data.player_forces > 0) {
+                    if (p_data.has_any_force()) {
+                        array_push(buttons, "Attack");
+                    }
+
+                    if (p_data.population > 0) {
+                        array_push(buttons, "Purge");
                     }
                 }
             }
             var planet_upgrades = target.p_upgrades[obj_controller.selecting_planet];
             if (((p_data.planet_type == "Dead") || (array_length(p_data.upgrades) > 0)) && ((target.present_fleet[1] > 0) || (target.p_player[obj_controller.selecting_planet] > 0))) {
                 if ((array_length(p_data.features) == 0) || (array_length(planet_upgrades) > 0)) {
-                    chock = !p_data.xenos_and_heretics();
-                    if (chock == 1) {
-                        if (p_data.has_upgrade(eP_FEATURES.SECRET_BASE)) {
-                            button1 = "Base";
+                    if (!p_data.has_enemy_force()) {
+                        buttons = [];
+                        if (array_length(p_data.upgrades) == 0) {
+                            array_push(buttons, "Build");
+                        } else if (p_data.has_upgrade(eP_FEATURES.SECRET_BASE)) {
+                            array_push(buttons, "Base");
                         } else if (p_data.has_upgrade(eP_FEATURES.ARSENAL)) {
-                            button1 = "Arsenal";
+                            array_push(buttons, "Arsenal");
                         } else if (p_data.has_upgrade(eP_FEATURES.GENE_VAULT)) {
-                            button1 = "Gene-Vault";
-                        } else if (array_length(p_data.upgrades) == 0) {
-                            button1 = "Build";
-                        }
-                        if (array_contains(["Build", "Gene-Vault", "Arsenal", "Base"], button1)) {
-                            button2 = "";
-                            button3 = "";
-                            button4 = "";
-                            button5 = "";
+                            array_push(buttons, "Gene-Vault");
                         }
                     }
                 }
@@ -214,17 +195,23 @@ try {
 
             if (obj_controller.recruiting_worlds_bought > 0 && !p_data.at_war()) {
                 if (!p_data.has_feature(eP_FEATURES.RECRUITING_WORLD) && p_data.planet_type != "Dead" && !target.space_hulk) {
-                    button4 = "+Recruiting";
+                    array_push(buttons, "+Recruiting");
                 }
             }
             if (target.space_hulk) {
                 if (target.present_fleet[1] > 0) {
-                    button1 = "Raid";
-                    button2 = "Bombard";
-                    button3 = "";
-                    button4 = "";
+                    buttons = ["Raid", "Bombard"];
                 }
             }
+
+            while (array_length(shutters) < array_length(buttons)) {
+                array_push(shutters, new ShutterButton());
+            }
+
+            while (array_length(shutters) > array_length(buttons)) {
+                array_delete(shutters, array_length(shutters) - 1, 1);
+            }
+
             buttons_selected = true;
         }
 
@@ -293,17 +280,10 @@ try {
         var shutter_x = main_data_slate.XX - 165;
         var shutter_y = 296 + 165;
         if (!debug) {
-            if (shutter_1.draw_shutter(shutter_x, shutter_y, button1, 0.5, true)) {
-                current_button = button1;
-            }
-            if (shutter_2.draw_shutter(shutter_x, shutter_y + 47, button2, 0.5, true)) {
-                current_button = button2;
-            }
-            if (shutter_3.draw_shutter(shutter_x, shutter_y + (47 * 2), button3, 0.5, true)) {
-                current_button = button3;
-            }
-            if (shutter_4.draw_shutter(shutter_x, shutter_y + (47 * 3), button4, 0.5, true)) {
-                current_button = button4;
+            for (var i = 0; i < array_length(buttons); i++) {
+                if (shutters[i].draw_shutter(shutter_x, shutter_y + (47 * i), buttons[i], 0.5, true)) {
+                    current_button = buttons[i];
+                }
             }
         }
         if (current_button != "") {
@@ -374,17 +354,9 @@ try {
                             obj_controller.recruiting_worlds += planet_numeral_name(obj_controller.selecting_planet, target);
                         }
                         if (obj_controller.recruiting_worlds_bought == 0) {
-                            if (button1 == "+Recruiting") {
-                                button1 = "";
-                            }
-                            if (button2 == "+Recruiting") {
-                                button2 = "";
-                            }
-                            if (button3 == "+Recruiting") {
-                                button3 = "";
-                            }
-                            if (button4 == "+Recruiting") {
-                                button4 = "";
+                            var _idx = array_get_index(buttons, "+Recruiting");
+                            if (_idx > -1) {
+                                array_delete(buttons, _idx, 1);
                             }
                         }
                         // popup?

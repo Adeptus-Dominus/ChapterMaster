@@ -805,7 +805,7 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static has_enemy_force = function() {
-        for (var i = 1; i < array_length(planet_forces); i++) {
+        for (var i = 2; i < array_length(planet_forces); i++) {
             if (planet_forces[i] > 0 && obj_controller.faction_status[i] == "War") {
                 return true;
             }
@@ -814,7 +814,7 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static has_any_force = function() {
-        for (var i = 1; i < array_length(planet_forces); i++) {
+        for (var i = 2; i < array_length(planet_forces); i++) {
             if (planet_forces[i] > 0) {
                 return true;
             }
