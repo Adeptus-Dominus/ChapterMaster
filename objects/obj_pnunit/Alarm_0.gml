@@ -18,7 +18,7 @@ try {
         }
     }
 
-    enemy = instance_nearest(0, y, obj_enunit); // Left most enemy
+    enemy = block_fire_target(); // Left most enemy
 
     // Ported from upstream: instance_nearest returns noone when the last enemy
     // block dies between the turn driver pulsing alarm[0] and this block's tick,
@@ -112,13 +112,13 @@ try {
                 continue;
             }
             once_only = 0;
-            enemy = instance_nearest(0, y, obj_enunit);
+            enemy = block_fire_target();
             if (enemy.men + enemy.veh + enemy.medi <= 0) {
                 var x5 = enemy.x;
                 with (enemy) {
                     instance_destroy();
                 }
-                enemy = instance_nearest(0, y, obj_enunit);
+                enemy = block_fire_target();
             }
             // That destroy may have removed the last active enemy block, leaving the
             // reacquire with noone; and reads on noone throw. Skip the weapon; the
@@ -350,6 +350,10 @@ try {
                     }
                 }
             } else if ((range_shoot == "melee") && ((range[i] == 1) || (range[i] != floor(range[i])))) {
+                // Melee always swings at the adjacent enemy: a focus-fire target several
+                // lines back would fail the melee distance gate and silence an engaged
+                // block, so the focusing order applies to ranged fire only.
+                enemy = instance_nearest(0, y, obj_enunit);
                 // Weapon meets preliminary checks
                 var ap = 0;
                 if (apa[i] == 1) {

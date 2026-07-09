@@ -46,11 +46,12 @@ instance_activate_object(obj_cursor);
 instance_activate_object(obj_ini);
 instance_activate_object(obj_img);
 
-var u = noone;
-for (var i = 10; i > 0; i--) {
-    // This creates the objects to then be filled in
-    u = instance_create(i * 10, 240, obj_pnunit);
-}
+// Battle blocks are one per formation type (matching the formation editor's bars)
+// rather than one per column, so formations sharing a column remain separate,
+// individually orderable segments of that line. No blocks are pre-created here: the
+// bat_*_column values are resolved by the roster scripts at fill time (this Create can
+// run before this battle's formation is applied), so every block is created on demand
+// by formation_block() at its correct column as the first unit of its type arrives.
 
 instance_create(0, 0, obj_centerline);
 
@@ -114,7 +115,9 @@ display_p2n = "";
 
 alarm[0] = 2;
 alarm[1] = 3;
-obj_pnunit.alarm[3] = 1;
+if (instance_exists(obj_pnunit)) {
+    obj_pnunit.alarm[3] = 1;
+}
 alarm[2] = 8;
 
 started = 0;

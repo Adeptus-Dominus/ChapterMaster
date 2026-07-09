@@ -174,6 +174,11 @@ function at_penetration_multiplier(_veh_type) {
 /// @self Id.Instance.obj_pnunit
 /// @param {Id.Instance.obj_pnunit} target_object
 function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, hostile_arp = 0, hostile_dist = 0) {
+    // Retreating formations take heavily reduced damage as they withdraw (see
+    // RETREAT_DAMAGE_MULT): they cannot fight back, but they are hard to catch.
+    if (target_object.move_order == "retreat") {
+        hostile_damage *= RETREAT_DAMAGE_MULT;
+    }
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //
     // Parameters:

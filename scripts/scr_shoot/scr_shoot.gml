@@ -1,4 +1,9 @@
 function scr_shoot(weapon_index_position, target_object, target_type, damage_data, melee_or_ranged, shot_override = -1, consume_ammo = true) {
+    // A retreating player formation cannot fight: it withdraws under fire without
+    // shooting or swinging back (see the retreat order).
+    if ((object_index == obj_pnunit) && (move_order == "retreat")) {
+        return;
+    }
     try {
         // weapon_index_position: Weapon number
         // target_object: Target object
@@ -37,6 +42,11 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             var _weapon_range = range[weapon_index_position];
             var _range_ratio = (_weapon_range > 0) ? clamp(_shot_dist / _weapon_range, 0, 1) : 0;
             _range_mult = clamp(RANGE_POINT_BLANK_BONUS - _range_ratio * RANGE_FALLOFF, RANGE_MIN_MULT, RANGE_POINT_BLANK_BONUS);
+            // Devastators braced: a holding Devastator formation steadies its heavy
+            // weapons for more effective ranged fire.
+            if ((object_index == obj_pnunit) && (formation_type == "devastator") && (move_order == "hold")) {
+                _range_mult *= DEVASTATOR_BRACED_MULT;
+            }
         }
         if (obj_ncombat.wall_destroyed == 1) {
             exit;

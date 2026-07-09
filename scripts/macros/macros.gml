@@ -29,6 +29,15 @@
 // that chance to get through, so an armour-ignoring volley cannot brute-force a heavy hull
 // (a Land Raider sits at 5%). Tune the chances there, per vehicle type.
 
+// Formation order abilities. RETREAT_DAMAGE_MULT is the damage a retreating formation
+// still takes (0.2 = 80% reduced) while it withdraws unable to fight back.
+// DEVASTATOR_BRACED_MULT boosts a holding Devastator formation's ranged damage (braced
+// heavy weapons). ASSAULT_JUMP_RANGE is how far (x units, 10 per column) an ordered
+// Assault formation can leap to reach the enemy front in one bound.
+#macro RETREAT_DAMAGE_MULT 0.2
+#macro DEVASTATOR_BRACED_MULT 1.25
+#macro ASSAULT_JUMP_RANGE 30
+
 // Range accuracy/damage falloff for ranged fire. Damage is scaled by how far the target
 // is relative to the weapon's range: at point blank it gets RANGE_POINT_BLANK_BONUS, and
 // it falls by up to RANGE_FALLOFF at maximum range, floored at RANGE_MIN_MULT. Short-range

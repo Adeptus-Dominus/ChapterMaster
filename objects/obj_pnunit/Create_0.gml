@@ -11,6 +11,16 @@ jetpack_destroy = 0;
 defenses = 0;
 guard = 0; // OBSOLETE (iteration 1): flag for the dead planetary Guard men-block. Never set to 1 anywhere, so the guard==1 branches in scr_clean and scr_player_combat_weapon_stacks are dead. Live guardsmen are role "Guardsman" unit_struct units.
 
+// Which formation-editor bar this block embodies ("tactical", "rhino", "deathco",
+// or "colN" generic fallback). One battle block per type; see formation_block().
+formation_type = "";
+// Focus-fire order: 0 = nearest enemies (default), 1..3 = focus the Nth enemy line.
+fire_target_line = 0;
+// One leap per battle for an ordered Assault formation (see move_player_block).
+assault_jumped = false;
+// Set once a retreating formation reaches the field edge and withdraws.
+retreat_departed = false;
+
 unit_count = 0;
 unit_count_old = 0;
 composition_string = "";

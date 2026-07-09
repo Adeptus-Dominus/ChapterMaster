@@ -564,6 +564,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
     var _wearing_armour = is_struct(_armour_data);
 
     var col = 0, targ = 0, moov = 0;
+    var ftype = "";
     var _unit_role = unit.role();
 
     if (new_combat.battle_special == "space_hulk") {
@@ -571,52 +572,64 @@ function add_unit_to_battle(unit, meeting, is_local) {
     }
 
     if (_unit_role == obj_ini.role[100][18]) {
-        col = obj_controller.bat_tactical_column; //sergeants
+        col = obj_controller.bat_tactical_column;
+        ftype = "tactical"; //sergeants
         new_combat.sgts++;
     } else if (_unit_role == _role[19]) {
         col = obj_controller.bat_veteran_column;
+        ftype = "veteran";
         new_combat.vet_sgts++;
     }
     if (_unit_role == _role[12]) {
         //scouts
         col = obj_controller.bat_scout_column;
+        ftype = "scout";
         new_combat.scouts++;
     } else if (array_contains([obj_ini.role[100][8], $"{_role[15]} Aspirant", $"{_role[14]} Aspirant"], _unit_role)) {
-        col = obj_controller.bat_tactical_column; //tactical_marines
+        col = obj_controller.bat_tactical_column;
+        ftype = "tactical"; //tactical_marines
         new_combat.tacticals++;
     } else if (_unit_role == _role[3]) {
         //veterans and veteran sergeants
         col = obj_controller.bat_veteran_column;
+        ftype = "veteran";
         new_combat.veterans++;
     } else if (_unit_role == _role[9]) {
         //devastators
         col = obj_controller.bat_devastator_column;
+        ftype = "devastator";
         new_combat.devastators++;
     } else if (_unit_role == _role[10]) {
         //assualt marines
         col = obj_controller.bat_assault_column;
+        ftype = "assault";
         new_combat.assaults++;
 
         //librarium roles
     } else if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS, true)) {
-        col = obj_controller.bat_librarian_column; //librarium
+        col = obj_controller.bat_librarian_column;
+        ftype = "librarian"; //librarium
         new_combat.librarians++;
         moov = 1;
     } else if (_unit_role == _role[16]) {
         //techmarines
         col = obj_controller.bat_techmarine_column;
+        ftype = "techmarine";
         new_combat.techmarines++;
         moov = 2;
     } else if (_unit_role == _role[2]) {
         //honour guard
         col = obj_controller.bat_honor_column;
+        ftype = "honor";
         new_combat.honors++;
     } else if (unit.IsSpecialist(SPECIALISTS_DREADNOUGHTS)) {
-        col = obj_controller.bat_dreadnought_column; //dreadnoughts
+        col = obj_controller.bat_dreadnought_column;
+        ftype = "dreadnought"; //dreadnoughts
         new_combat.dreadnoughts++;
     } else if (_unit_role == obj_ini.role[100][4]) {
         //terminators
         col = obj_controller.bat_terminator_column;
+        ftype = "terminator";
         new_combat.terminators++;
     }
 
@@ -624,12 +637,15 @@ function add_unit_to_battle(unit, meeting, is_local) {
         if (((moov == 1) && (obj_controller.command_set[8] == 1)) || ((moov == 2) && (obj_controller.command_set[9] == 1))) {
             if (company >= 2) {
                 col = obj_controller.bat_tactical_column;
+                ftype = "tactical";
             }
             if (company == 10) {
                 col = obj_controller.bat_scout_column;
+                ftype = "scout";
             }
             if (obj_ini.mobi[cooh][va] == "Jump Pack") {
                 col = obj_controller.bat_assault_column;
+                ftype = "assault";
             }
         }
     }
@@ -637,6 +653,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
     if ((_unit_role == _role[15]) || (_unit_role == _role[14]) || unit.IsSpecialist(SPECIALISTS_TRAINEES)) {
         if (_unit_role == string(_role[14]) + " Aspirant") {
             col = obj_controller.bat_tactical_column;
+            ftype = "tactical";
             new_combat.tacticals++;
         }
 
@@ -651,13 +668,16 @@ function add_unit_to_battle(unit, meeting, is_local) {
         }
 
         col = obj_controller.bat_tactical_column;
+        ftype = "tactical";
         if (_wearing_armour) {
             if (_armour_data.has_tag("terminator")) {
                 col = obj_controller.bat_terminator_column;
+                ftype = "terminator";
             }
         }
         if (company == 10) {
             col = obj_controller.bat_scout_column;
+            ftype = "scout";
         }
     }
 
@@ -676,17 +696,21 @@ function add_unit_to_battle(unit, meeting, is_local) {
         }
         if (company >= 2) {
             col = obj_controller.bat_tactical_column;
+            ftype = "tactical";
         }
         if (company == 10) {
             col = obj_controller.bat_scout_column;
+            ftype = "scout";
         }
         if (obj_ini.mobi[cooh][va] == "Jump Pack") {
             col = obj_controller.bat_assault_column;
+            ftype = "assault";
         }
     }
 
     if (_unit_role == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
         col = obj_controller.bat_command_column;
+        ftype = "command";
         new_combat.important_dudes++;
         new_combat.big_mofo = 1;
         if (string_count("0", obj_ini.spe[cooh][va]) > 0) {
@@ -697,6 +721,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
     }
     if (unit.IsSpecialist(SPECIALISTS_HEADS)) {
         col = obj_controller.bat_command_column;
+        ftype = "command";
         new_combat.important_dudes++;
     }
     if (new_combat.big_mofo > 2) {
@@ -710,26 +735,33 @@ function add_unit_to_battle(unit, meeting, is_local) {
         switch (squad.formation_place) {
             case "assault":
                 col = obj_controller.bat_assault_column;
+                ftype = "assault";
                 break;
             case "veteran":
                 col = obj_controller.bat_veteran_column;
+                ftype = "veteran";
                 break;
             case "tactical":
                 col = obj_controller.bat_tactical_column;
+                ftype = "tactical";
                 break;
             case "devastator":
                 col = obj_controller.bat_devastator_column;
+                ftype = "devastator";
                 break;
             case "terminator":
                 col = obj_controller.bat_terminator_column;
+                ftype = "terminator";
                 break;
             case "command":
                 col = obj_controller.bat_command_column;
+                ftype = "command";
                 break;
         }
     }
     if (col == 0) {
         col = obj_controller.bat_hire_column;
+        ftype = "hire";
     }
     if (_unit_role == "Death Company") {
         // Ahahahahah
@@ -744,6 +776,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
             new_combat.really_thirsty++;
         }
         col = max(obj_controller.bat_assault_column, obj_controller.bat_command_column, obj_controller.bat_honor_column, obj_controller.bat_dreadnought_column, obj_controller.bat_veteran_column);
+        ftype = "deathco";
     }
 
     // ===== Guardsmen: "Hirelings" formation =====
@@ -756,12 +789,14 @@ function add_unit_to_battle(unit, meeting, is_local) {
         // Heavy weapons teams fight from the Devastator formation, the chapter's own heavy-weapon
         // line, instead of the Hirelings block, so the auxilia's heavy guns stand with the Marines'.
         col = obj_controller.bat_devastator_column;
+        ftype = "devastator";
         new_combat.devastators++;
     } else if (_unit_role == "Guardsman" || _unit_role == "Guard Sergeant" || _unit_role == "Veteran Guard") {
         col = obj_controller.bat_hire_column;
+        ftype = "hire";
     }
 
-    targ = instance_nearest(col * 10, 240, obj_pnunit);
+    targ = formation_block(ftype, col);
 
     with (targ) {
         scr_add_unit_to_roster(unit, is_local);
@@ -773,43 +808,51 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
     var v = veh_index;
     new_combat.veh_fighting[company][v] = 1;
     var col = 1, targ = 0;
+    var ftype = "";
 
     switch (obj_ini.veh_role[company][v]) {
         case "Rhino":
             col = obj_controller.bat_rhino_column;
+            ftype = "rhino";
             new_combat.rhinos++;
             break;
         // Chimera (guard transport) screens like a Rhino. This first drop parks it in the Rhino
         // column; the dedicated Imperial Armor column arrives with the formation drop.
         case "Chimera":
             col = obj_controller.bat_rhino_column;
+            ftype = "rhino";
             new_combat.rhinos++;
             break;
         case "Predator":
             col = obj_controller.bat_predator_column;
+            ftype = "predator";
             new_combat.predators++;
             break;
         // Leman Russ (guard battle tank) anchors the armour line alongside the Predators.
         case "Leman Russ":
             col = obj_controller.bat_predator_column;
+            ftype = "predator";
             new_combat.predators++;
             break;
         case "Land Raider":
             col = obj_controller.bat_landraider_column;
+            ftype = "landraider";
             new_combat.land_raiders++;
             break;
         case "Land Speeder":
             col = obj_controller.bat_landspeeder_column;
+            ftype = "landspeeder";
             new_combat.land_speeders++;
             break;
         case "Whirlwind":
             col = obj_controller.bat_whirlwind_column;
+            ftype = "whirlwind";
             new_combat.whirlwinds++;
             break;
     }
 
     /// @type {Asset.GMObject.obj_pnunit}
-    targ = instance_nearest(col * 10, 240 / 2, obj_pnunit);
+    targ = formation_block(ftype, col);
     targ.veh++;
     targ.veh_co[targ.veh] = company;
     targ.veh_id[targ.veh] = v;
