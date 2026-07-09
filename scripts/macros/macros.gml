@@ -18,6 +18,16 @@
 #macro GUARD_COVER_SAVE 0.4
 #macro MARINE_COVER_SAVE 0.15
 
+// Guardsman veterancy: a Guardsman who fights at the battle location and survives earns
+// GUARD_BATTLE_XP experience per victory. At GUARD_VETERAN_XP total they become eligible
+// for promotion to Veteran Guard, so a trooper must live through roughly
+// GUARD_VETERAN_XP / GUARD_BATTLE_XP battles (90 / 25 ~= 3-4). Both are tunable.
+// (Restored: these were accidentally dropped from macros.gml in a646b5ccc while
+// obj_ncombat Alarm_7, scr_roster, and the guardxp cheat still read them, crashing any
+// battle a Guardsman survived.)
+#macro GUARD_BATTLE_XP 25
+#macro GUARD_VETERAN_XP 90
+
 // Cover fades as the enemy closes: the save is scaled by shooter distance (block units,
 // point_distance / 10). At or beyond COVER_SAVE_FULL_RANGE the full save applies; point
 // blank it drops to COVER_SAVE_MIN_FACTOR of it, so hugging the line strips cover.
