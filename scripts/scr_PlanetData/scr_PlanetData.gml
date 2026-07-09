@@ -804,6 +804,24 @@ function PlanetData(_planet, _system) constructor {
         return xh_force;
     };
 
+    static has_enemy_force = function() {
+        for (var i = 1; i < array_length(planet_forces); i++) {
+            if (planet_forces[i] > 0 && obj_controller.faction_status[i] == "War") {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    static has_any_force = function() {
+        for (var i = 1; i < array_length(planet_forces); i++) {
+            if (planet_forces[i] > 0) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     static has_feature = function(feature) {
         return planet_feature_bool(features, feature);
     };
