@@ -716,6 +716,7 @@
     {"id":{"name":"Armamentarium","path":"scripts/Armamentarium/Armamentarium.yy",},},
     {"id":{"name":"ColourItem","path":"scripts/ColourItem/ColourItem.yy",},},
     {"id":{"name":"ColourPicker","path":"scripts/ColourPicker/ColourPicker.yy",},},
+    {"id":{"name":"CombatDebugger","path":"scripts/CombatDebugger/CombatDebugger.yy",},},
     {"id":{"name":"CombatLog","path":"scripts/CombatLog/CombatLog.yy",},},
     {"id":{"name":"DebugView","path":"scripts/DebugView/DebugView.yy",},},
     {"id":{"name":"DiploBasicNodes","path":"scripts/DiploBasicNodes/DiploBasicNodes.yy",},},
