@@ -1,5 +1,5 @@
 var _is_audience = false;
-var current_audience = noone;
+var current_audience = undefined;
 if (array_length(audience_stack) > 0) {
     current_audience = audience_stack[0];
     _is_audience = true;
@@ -64,9 +64,8 @@ if (!_is_audience) {
                 pip.estimate = real(explode[3]);
             }
             if (string_count("target_marine", popup_special[current_popup]) > 0) {
-                var aa;
                 explode_script(popup_special[current_popup], "|");
-                aa = string(explode[0]);
+                var aa = string(explode[0]);
                 pip.ma_name = string(explode[1]);
                 pip.ma_co = real(explode[2]);
                 pip.ma_id = real(explode[3]);
