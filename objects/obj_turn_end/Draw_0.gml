@@ -57,8 +57,8 @@ if ((show > 0) && (current_battle <= battles)) {
         draw_set_font(fnt_40k_14b);
         draw_set_halign(fa_left);
 
-        draw_text(xxx + 12, yyy + 237, string_hash_to_newline("Enemy Fleets:"));
-        draw_text(xxx + 332, yyy + 237, string_hash_to_newline("Allied Fleets:"));
+        draw_text(xxx + 12, yyy + 237, "Enemy Fleets:");
+        draw_text(xxx + 332, yyy + 237, "Allied Fleets:");
 
         if (string(strin[1]) == "1") {
             draw_text(xxx + 310, yyy + 118, string_hash_to_newline(string(strin[1]) + " Battleship (" + string(strin[4]) + "% HP)"));
@@ -216,7 +216,7 @@ if ((show > 0) && (current_battle <= battles)) {
         draw_set_color(c_gray);
         draw_rectangle(xxx + 132, yyy + 354, xxx + 259, yyy + 389, 0);
         draw_set_color(0);
-        draw_text_transformed(xxx + 195, yyy + 362, string_hash_to_newline("Retreat"), 1.1, 1.1, 0);
+        draw_text_transformed(xxx + 195, yyy + 362, "Retreat", 1.1, 1.1, 0);
         if (scr_hit(xxx + 132, yyy + 354, xxx + 259, yyy + 389)) {
             draw_set_alpha(0.2);
             draw_rectangle(xxx + 132, yyy + 354, xxx + 259, yyy + 389, 0);
@@ -226,7 +226,7 @@ if ((show > 0) && (current_battle <= battles)) {
         draw_set_color(c_gray);
         draw_rectangle(xxx + 272, yyy + 354, xxx + 399, yyy + 389, 0);
         draw_set_color(0);
-        draw_text_transformed(xxx + 335, yyy + 362, string_hash_to_newline("Fight"), 1.1, 1.1, 0);
+        draw_text_transformed(xxx + 335, yyy + 362, "Fight", 1.1, 1.1, 0);
         if (scr_hit(xxx + 272, yyy + 354, xxx + 399, yyy + 389)) {
             draw_set_alpha(0.2);
             draw_rectangle(xxx + 272, yyy + 354, xxx + 399, yyy + 389, 0);
@@ -246,8 +246,8 @@ if ((show > 0) && (current_battle <= battles)) {
         draw_set_font(fnt_40k_14b);
         draw_set_halign(fa_left);
 
-        draw_text(xxx + 12, yyy + 237, string_hash_to_newline("Enemy Factions:"));
-        draw_text(xxx + 332, yyy + 237, string_hash_to_newline("Allies:"));
+        draw_text(xxx + 12, yyy + 237, "Enemy Factions:");
+        draw_text(xxx + 332, yyy + 237, "Allies:");
 
         draw_set_halign(fa_center);
         scr_image("ui/force", battle_opponent[i], xxx + 12, yyy + 257, 64, 64);
@@ -258,7 +258,7 @@ if ((show > 0) && (current_battle <= battles)) {
         draw_set_color(c_gray);
         draw_rectangle(xxx + 132, yyy + 354, xxx + 259, yyy + 389, 0);
         draw_set_color(0);
-        draw_text_transformed(xxx + 195, yyy + 362, string_hash_to_newline("Offensive"), 1.1, 1.1, 0);
+        draw_text_transformed(xxx + 195, yyy + 362, "Offensive", 1.1, 1.1, 0);
         if (scr_hit(xxx + 132, yyy + 354, xxx + 259, yyy + 389)) {
             draw_set_alpha(0.2);
             draw_rectangle(xxx + 132, yyy + 354, xxx + 259, yyy + 389, 0);
@@ -268,7 +268,7 @@ if ((show > 0) && (current_battle <= battles)) {
         draw_set_color(c_gray);
         draw_rectangle(xxx + 272, yyy + 354, xxx + 399, yyy + 389, 0);
         draw_set_color(0);
-        draw_text_transformed(xxx + 335, yyy + 362, string_hash_to_newline("Defensive"), 1.1, 1.1, 0);
+        draw_text_transformed(xxx + 335, yyy + 362, "Defensive", 1.1, 1.1, 0);
         if (scr_hit(xxx + 272, yyy + 354, xxx + 399, yyy + 389)) {
             draw_set_alpha(0.2);
             draw_rectangle(xxx + 272, yyy + 354, xxx + 399, yyy + 389, 0);
