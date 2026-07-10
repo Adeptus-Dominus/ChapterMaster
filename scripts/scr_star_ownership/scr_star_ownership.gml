@@ -27,13 +27,13 @@ function scr_star_ownership(argument0) {
             }
         }
         var _set_to_first = false;
-        if (p_owner[run] == 7 && p_orks[run] <= 0) {
+        if (p_owner[run] == eFACTION.ORK && p_orks[run] <= 0) {
             _set_to_first = true;
         }
         if (_set_to_first) {
             var _first = p_first[run];
             if (p_first[run] == eFACTION.ORK) {
-                p_owner[run] = 2;
+                p_owner[run] = eFACTION.IMPERIUM;
             } else {
                 p_owner[run] = p_first[run];
             }
@@ -45,15 +45,15 @@ function scr_star_ownership(argument0) {
             p_owner[run] = eFACTION.IMPERIUM;
             p_influence[run][eFACTION.TAU] = round(p_influence[run][eFACTION.TAU] / 2);
         }
-        if (p_owner[run] == 10 && p_chaos[run] == 0 && p_traitors[run] == 0 && p_population[run] <= 0) {
+        if (p_owner[run] == eFACTION.CHAOS && p_chaos[run] == 0 && p_traitors[run] == 0 && p_population[run] <= 0) {
             p_owner[run] = p_first[run];
             p_heresy[run] = 0;
             if (p_owner[run] == 10) {
-                p_owner[run] = 2;
+                p_owner[run] = eFACTION.IMPERIUM;
             }
         }
         if (p_type[run] == "Daemon") {
-            p_owner[run] = 10;
+            p_owner[run] = eFACTION.CHAOS;
         }
 
         var _nid_chosen = false;
@@ -133,7 +133,7 @@ function scr_star_ownership(argument0) {
                         p_type[run] = "Daemon";
                         p_fortified[run] = 6;
                         p_traitors[run] = 7;
-                        p_owner[run] = 10;
+                        p_owner[run] = eFACTION.CHAOS;
                         delete_features(p_feature[run], eP_FEATURES.DAEMONIC_INCURSION);
                     }
                 }
