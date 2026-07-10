@@ -46,7 +46,7 @@ function scr_enemy_ai_a() {
     var  total_garrison = 0;
     var _planet_data;
     for (var _run = 1; _run <= planets; _run++) {
-
+        /// @type {Struct.PlanetData}
         _planet_data = system_datas[_run];
         _garrison = _planet_data.garrisons;
         _sabatours = _planet_data.sabatours;
@@ -1204,7 +1204,7 @@ function scr_enemy_ai_a() {
 
         // 135;
 
-        var planet_saved = (p_player[_run] + p_raided[_run]) > 0 && p_orks[_run] == 0 && p_tyranids[_run] < 4 && p_chaos[_run] == 0 && p_traitors[_run] == 0 && p_necrons[_run] == 0 && p_tau[_run] == 0;
+        var planet_saved = (p_player[_run] + p_raided[_run] > 0) && (p_orks[_run] + p_tyranids[_run] + p_chaos[_run] + p_traitors[_run] + p_necrons[_run] + p_tau[_run] <= 0);
 
         if (planet_saved) {
             var who_cleansed = "";
@@ -1217,18 +1217,22 @@ function scr_enemy_ai_a() {
             } else if (p_owner[_run] == 8 && p_pdf[_run] == 0) {
                 who_cleansed = "Tau";
                 make_alert = true;
+            } else if (p_owner[_run] == 9) {
+                who_cleansed = "Tyranids";
+                make_alert = true;
             } else if (p_owner[_run] == 13) {
                 who_cleansed = "Necrons";
                 make_alert = true;
             } else if (p_owner[_run] == 10) {
                 who_cleansed = "Chaos";
                 make_alert = true;
-            } else if (planet_feature_bool(p_feature[_run], eP_FEATURES.GENE_STEALER_CULT) && p_tyranids[_run] <= 0) {
+            } else if (planet_feature_bool(p_feature[_run], eP_FEATURES.GENE_STEALER_CULT)) {
                 who_cleansed = "Gene Stealer Cult";
                 make_alert = true;
                 delete_features(p_feature[_run], eP_FEATURES.GENE_STEALER_CULT);
                 adjust_influence(eFACTION.TYRANIDS, -25, _run, self);
             }
+
             if (make_alert) {
                 if (p_first[_run] == 1) {
                     p_owner[_run] = eFACTION.PLAYER;
