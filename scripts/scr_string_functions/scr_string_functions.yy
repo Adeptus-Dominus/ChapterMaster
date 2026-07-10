@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_string_functions",
   "parent":{
-    "name":"Text",
-    "path":"folders/Scripts/Helpers/Text.yy",
+    "name":"Global Functions",
+    "path":"folders/Scripts/Global Functions.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

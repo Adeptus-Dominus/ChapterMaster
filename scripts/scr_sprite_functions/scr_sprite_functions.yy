@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_sprite_functions",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Global Functions",
+    "path":"folders/Scripts/Global Functions.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
