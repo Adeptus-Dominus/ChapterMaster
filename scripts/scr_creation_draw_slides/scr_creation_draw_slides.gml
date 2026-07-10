@@ -398,7 +398,7 @@ function draw_chapter_select() {
 
 /// @self Asset.GMObject.obj_creation
 function setup_chapter_trait_select() {
-    chapter_type_radio = new RadioSet([{str1: "Homeworld", font: fnt_40k_14b, tooltip: "Homeworld\nYour chapter has a homeworld that they base on.  Contained upon it is a massive Fortress Monastery, which provides high levels of defense and automated weapons."}, {str1: "Fleet Based", font: fnt_40k_14b, tooltip: "Fleet Based\nRather than a homeworld your chapter begins near their recruiting world.  The fleet includes a Battle Barge, which serves as a mobile base, and powerful ship."}, {str1: "Penitent", font: fnt_40k_14b, tooltip: "Penitent\nAs with Fleet Based, but you must crusade and fight until your penitence meter runs out.  Note that recruiting is disabled until then."}], "Chapter Type", {x1: 445, y1: 211, max_width: 1125 - 445, center: true});
+    chapter_type_radio = new RadioSet([{str1: "Homeworld", font: fnt_40k_14b, tooltip: "Homeworld\nYour Chapter has a homeworld that they base on.  Contained upon it is a massive Fortress Monastery, which provides high levels of defense and automated weapons."}, {str1: "Fleet Based", font: fnt_40k_14b, tooltip: "Fleet Based\nRather than a homeworld, your Chapter begins near their recruiting world.  The fleet includes a Battle Barge, which serves as a mobile base, and powerful ship."}, {str1: "Penitent", font: fnt_40k_14b, tooltip: "Penitent\nAs with Fleet Based, but you must crusade and fight until your penitence meter runs out.  Note that recruiting is disabled until then."}], "Chapter Type", {x1: 445, y1: 211, max_width: 1125 - 445, center: true});
     chapter_type_radio.current_selection = fleet_type - 1;
 }
 
@@ -578,19 +578,19 @@ function draw_chapter_trait_select() {
 
         if (scr_hit(505, 325, 800, 357)) {
             tooltip = "Strength";
-            tooltip2 = "How many marines your chapter has. \nFor every score below five a company will be removed; conversely, each score higher grants 50 additional astartes.";
+            tooltip2 = "How many Space Marines your Chapter has. \nFor every score below five a company will be removed; conversely, each score higher grants 50 additional Astartes.";
         }
         if (scr_hit(505, 380, 800, 412)) {
             tooltip = "Cooperation";
-            tooltip2 = "How diplomatic your chapter is. \nA low score will lower starting dispositions of Imperial factions and make disposition increases less likely to occur.";
+            tooltip2 = "How diplomatic your Chapter is. \nA low score will lower starting dispositions of Imperial factions and make disposition increases less likely to occur.";
         }
         if (scr_hit(505, 435, 800, 467)) {
             tooltip = "Gene-Seed Purity";
-            tooltip2 = "How many inherent mutations your gene-seed has. \nEach score below ten means one mutations will need to be chosen.";
+            tooltip2 = "How many inherent mutations your gene-seed has. \nEach score below ten requires one mutation to be chosen.";
         }
         if (scr_hit(505, 490, 800, 522)) {
             tooltip = "Gene-Seed Stability";
-            tooltip2 = "How easily new mutations and corruption can occur with your chapter's gene seed. \nAffects the amount of random mutations your existing marines have, and the amount new aspirants get after the implantation is finished.";
+            tooltip2 = "How easily new mutations and corruption can occur with your Chapter's gene-seed. \nAffects the amount of random mutations your existing Space Marines have, and the amount new Aspirants get after the implantation is finished.";
         }
     }
 
@@ -609,11 +609,11 @@ function draw_chapter_trait_select() {
         draw_set_alpha(1);
         if (scr_hit(436, 564, 631, 583)) {
             tooltip = "Chapter Advantages";
-            tooltip2 = "Advantages cost points, and improve the performance of your chapter in a specific domain. You can only have 1 trait of the same category, shown in brackets.";
+            tooltip2 = "Advantages cost points, and improve the performance of your Chapter in a specific domain. You can only have one trait of the same category, shown in brackets.";
         }
         if (scr_hit(810, 564, 1030, 583)) {
             tooltip = "Chapter Disadvantages";
-            tooltip2 = "Disadvantages grant additional points, and penalize the performance of your chapter. You can only have 1 trait of the same category, shown in brackets.";
+            tooltip2 = "Disadvantages grant additional points, and penalize the performance of your Chapter. You can only have one trait of the same category, shown in brackets.";
         }
     } else if (popup == "icons") {
         draw_set_alpha(1);
@@ -763,7 +763,7 @@ function draw_chapter_homeworld_select() {
 
             if (scr_hit(50, 480, 950, 510)) {
                 tooltip = "Aspirant Trial";
-                tooltip2 = "A special challenge is needed for Aspirants to be judged worthy of becoming Astartes.  After completing the Trial they then become a Neophyte, beginning implantation and training (This can be changed once in game but the chosen trial here will effect the spawn characteristics of your starting marines).";
+                tooltip2 = "A special challenge is needed for Aspirants to be judged worthy of becoming Astartes.  After completing the Trial they then become a Neophyte, beginning implantation and training.  (This can be changed once in game, but the chosen trial here will effect the spawn characteristics of your starting Space Marines).";
             }
         } else {
             draw_set_font(fnt_40k_30b);

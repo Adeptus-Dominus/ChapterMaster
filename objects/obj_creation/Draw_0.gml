@@ -91,7 +91,7 @@ try {
             draw_set_font(fnt_40k_30b);
             if (scr_hit(1164 - 128, 74, 1164, 74 + 128)) {
                 tooltip = "Founding Chapter";
-                tooltip2 = "The parent Chapter whos Gene-Seed your own originates from.";
+                tooltip2 = "The parent Chapter whose gene-seed your own originates from.";
             }
 
             if (custom == eCHAPTER_TYPE.CUSTOM) {
@@ -174,14 +174,14 @@ try {
         var mutations_defects = [
             {
                 t_tip: "Anemic Preomnor",
-                t_tip2: "Your Astartes lack the detoxifying gland called the Preomnor- they are more susceptible to poisons and toxins.",
+                t_tip2: "Your Astartes lack the detoxifying gland called the Preomnor.  They are more susceptible to poisons and toxins.",
                 data: preomnor,
                 mutation_points: 1,
                 disposition: [],
             },
             {
                 t_tip: "Disturbing Voice",
-                t_tip2: "Your Astartes have a voice like a creaking door or a rumble.  Decreases Imperium and Imperial Guard disposition.",
+                t_tip2: "Your Astartes have a voice like a creaking door or a rumble.  Decreases Imperium disposition.",
                 data: voice,
                 mutation_points: 1,
                 disposition: [
@@ -193,7 +193,7 @@ try {
             },
             {
                 t_tip: "Doomed",
-                t_tip2: "Your Chapter cannot make more Astartes until enough research is generated.  Counts as four mutations.",
+                t_tip2: "Your Chapter cannot make more Astartes until enough research is generated.  Counts as four mutations and decreases Imperium disposition while increasing that of other Astartes.",
                 data: doomed,
                 mutation_points: 4,
                 disposition: [
@@ -230,14 +230,14 @@ try {
             },
             {
                 t_tip: "Lost Zygote",
-                t_tip2: "One of the Zygotes is faulty or missing.  The Astartes only have one each and generate half the normal Gene-Seed.",
+                t_tip2: "One of the Zygotes is faulty or missing.  Your Astartes only have one each, generating half the normal gene-seed.  Counts as two mutations.",
                 data: zygote,
                 mutation_points: 2,
                 disposition: [],
             },
             {
                 t_tip: "Inactive Sus-an Membrane",
-                t_tip2: "Your Astartes do not have a Sus-an Membrane; they cannot enter suspended animation and receive more casualties as a result.",
+                t_tip2: "Your Astartes do not have a Sus-an Membrane; they cannot enter suspended animation and receive more casualties.",
                 data: membrane,
                 mutation_points: 1,
                 disposition: [],
@@ -251,14 +251,14 @@ try {
             },
             {
                 t_tip: "Mutated Catalepsean Node",
-                t_tip2: "Your Astartes have reduced awareness when tired. Slightly less attack in ranged and melee combat.",
+                t_tip2: "Your Astartes have reduced awareness when tired.  Slightly less attack in ranged and melee combat.",
                 data: catalepsean,
                 mutation_points: 1,
                 disposition: [],
             },
             {
                 t_tip: "Oolitic Secretions",
-                t_tip2: "Either by secretions or radiation, your Astartes have an unusual or strange skin color.  Decreases disposition.",
+                t_tip2: "Either by secretions or radiation, your Astartes have an unusual or strange skin color.  Decreases Imperium disposition.",
                 data: secretions,
                 mutation_points: 1,
                 disposition: [
@@ -270,7 +270,7 @@ try {
             },
             {
                 t_tip: "Oversensitive Occulobe",
-                t_tip2: "Your Astartes are no longer immune to stun grenades, bright lights, and have a massive penalty during morning battles.",
+                t_tip2: "Your Astartes are no longer immune to stun grenades or bright lights, and have a massive penalty during morning battles.",
                 data: occulobe,
                 mutation_points: 1,
                 disposition: [
@@ -653,12 +653,12 @@ try {
             draw_text_transformed(_sc_box.x1 + 90, _sc_box.y1 + 5, string("Save Chapter"), 0.6, 0.6, 0);
             draw_set_font(fnt_40k_14b);
             if (scr_hit(_sc_box.x1, _sc_box.y1, _sc_box.x2, _sc_box.y2)) {
-                tooltip = "Do you want to save your chapter?";
-                tooltip2 = "Click to save your chapter";
+                tooltip = "Do you want to save your Chapter?";
+                tooltip2 = "Click to save your Chapter.";
                 if (mouse_button_clicked()) {
                     scr_save_chapter(global.chapter_id);
 
-                    tooltip = "Do you want to save your chapter?";
+                    tooltip = "Do you want to save your Chapter?";
                     tooltip2 = "Chapter Saved!";
                 }
             }
