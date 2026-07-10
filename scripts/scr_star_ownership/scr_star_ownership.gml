@@ -26,32 +26,38 @@ function scr_star_ownership(argument0) {
                 p_owner[run] = eFACTION.IMPERIUM;
             }
         }
-        var _set_to_first = false;
+
         if (p_owner[run] == eFACTION.ORK && p_orks[run] <= 0) {
-            _set_to_first = true;
-        }
-        if (_set_to_first) {
-            var _first = p_first[run];
-            if (p_first[run] == eFACTION.ORK) {
+            p_owner[run] = p_first[run];
+            if (p_owner[run] == eFACTION.ORK) {
                 p_owner[run] = eFACTION.IMPERIUM;
-            } else {
-                p_owner[run] = p_first[run];
             }
         }
+
+        if (p_owner[run] == eFACTION.TYRANIDS && p_tyranids[run] <= 0) {
+            p_owner[run] = p_first[run];
+            if (p_owner[run] == eFACTION.TYRANIDS) {
+                p_owner[run] = eFACTION.IMPERIUM;
+            }
+        }
+
+        if (p_owner[run] == eFACTION.CHAOS && p_chaos[run] == 0 && p_traitors[run] == 0 && p_population[run] <= 0) {
+            p_owner[run] = p_first[run];
+            p_heresy[run] = 0;
+            if (p_owner[run] == eFACTION.CHAOS) {
+                p_owner[run] = eFACTION.IMPERIUM;
+            }
+        }
+
         if (p_type[run] == "Dead" && p_owner[run] != eFACTION.IMPERIUM && p_first[run] != eFACTION.PLAYER && p_first[run] != eFACTION.ECCLESIARCHY) {
             p_owner[run] = eFACTION.IMPERIUM;
         }
+    
         if (p_owner[run] == eFACTION.TAU && p_tau[run] == 0 && p_pdf[run] == 0) {
             p_owner[run] = eFACTION.IMPERIUM;
             p_influence[run][eFACTION.TAU] = round(p_influence[run][eFACTION.TAU] / 2);
         }
-        if (p_owner[run] == eFACTION.CHAOS && p_chaos[run] == 0 && p_traitors[run] == 0 && p_population[run] <= 0) {
-            p_owner[run] = p_first[run];
-            p_heresy[run] = 0;
-            if (p_owner[run] == 10) {
-                p_owner[run] = eFACTION.IMPERIUM;
-            }
-        }
+    
         if (p_type[run] == "Daemon") {
             p_owner[run] = eFACTION.CHAOS;
         }
