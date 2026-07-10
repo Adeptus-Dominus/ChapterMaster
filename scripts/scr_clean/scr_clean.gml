@@ -206,7 +206,7 @@ function damage_infantry(_damage_data, _shots, _damage, _armour_pierce) {
         }
     }
 
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_infantry valid_marines={array_length(valid_marines)} shots={_shots} dmg={_damage} ap={_hostile_armour_pierce}");
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_infantry valid_marines={array_length(valid_marines)} shots={_shots} dmg={_damage} ap={_armour_pierce}");
 
     // Apply damage for each shot
     for (var shot = 0; shot < _shots; shot++) {
@@ -297,7 +297,7 @@ function damage_vehicles(_damage_data, _shots, _damage, _armour_pierce) {
         }
     }
 
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_vehicles valid_vehicles={array_length(valid_vehicles)} shots={_shots} dmg={_damage} ap={_hostile_armour_pierce}");
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_vehicles valid_vehicles={array_length(valid_vehicles)} shots={_shots} dmg={_damage} ap={_armour_pierce}");
 
     // Apply damage for each hostile shot, until we run out of targets
     for (var shot = 0; shot < _shots; shot++) {
@@ -311,7 +311,8 @@ function damage_vehicles(_damage_data, _shots, _damage, _armour_pierce) {
         veh_index = array_random_element(valid_vehicles);
 
         // Apply damage
-        var _modified_damage = _damage - combat_rank_armour(veh_ac[veh_index], _armour_pierce, false);
+        var _veh_armour = combat_rank_armour(veh_ac[veh_index], _armour_pierce, false);
+        var _modified_damage = _damage - _veh_armour;
         if (_modified_damage < 0) {
             _modified_damage = 0;
         }
@@ -327,7 +328,7 @@ function damage_vehicles(_damage_data, _shots, _damage, _armour_pierce) {
             veh_dead[veh_index] = 1;
             _damage_data.units_lost++;
             obj_ncombat.player_forces -= 1;
-            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_vehicles veh[{veh_index}] ({_damage_data.unit_type}) DESTROYED: armour={veh_ac[veh_index] * _armour_mod} raw_dmg={_damage} mod_dmg={_modified_damage} hp_before={_hp_before}");
+            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_vehicles veh[{veh_index}] ({_damage_data.unit_type}) DESTROYED: armour={_veh_armour} raw_dmg={_damage} mod_dmg={_modified_damage} hp_before={_hp_before}");
 
             // Record loss
             var existing_index = array_get_index(lost, veh_type[veh_index]);
