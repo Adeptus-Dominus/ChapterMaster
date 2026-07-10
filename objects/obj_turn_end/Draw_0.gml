@@ -187,7 +187,7 @@ if ((show > 0) && (current_battle <= battles)) {
             draw_set_font(fnt_40k_14b);
         }
         if (allied_fleet[2] != 0) {
-            scr_image("ui/force", allied_fleet[1], xxx + 452, yyy + 237, 64, 64);
+            scr_image("ui/force", allied_fleet[2], xxx + 452, yyy + 237, 64, 64);
             var shw = "";
             if (acap[2] == 1) {
                 shw += string(acap[2]) + " Battleship#";
