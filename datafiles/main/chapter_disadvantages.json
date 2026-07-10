@@ -10,7 +10,7 @@
     "points": 50
   },
   {
-    "name": "Depleted Gene-Seed Stocks",
+    "name": "Depleted Gene-seed Stocks",
     "description": "Your Chapter has lost its gene-seed stocks in recent engagement. You start with no gene-seed.",
     "points": 20
   },
@@ -177,7 +177,7 @@
     "meta": ["Status"]
   },
   {
-    "name": "Serpent's Delight",
+    "name": "Serpents Delight",
     "description": "Sleeper cells infiltrated your Chapter. When they rose up for the decapitation strike, they slew your five most experienced Companies and many of your HQ staff before being defeated.",
     "points": 50,
     "meta": ["Status"],

@@ -243,7 +243,7 @@
   {
     "name": "Inquisitorial Mandate",
     "description": "Your Chapter performs some service to the Inquisition that is of some specific value or mandate of the Inquisition",
-    "effects": "You will recieve less frequent inspections from the Inquisition, and actions that may not align with the Inquisition will cause less aggressive losses of disposition with the Inquisition",
+    "effects": "You will receive less frequent inspections from the Inquisition, and actions that may not align with the Inquisition will cause less aggressive losses of disposition with the Inquisition",
     "meta": ["Imperium Trust"],
     "points": 30,
     "faction_disp_mods": [

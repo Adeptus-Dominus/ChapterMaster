@@ -763,7 +763,7 @@ function draw_chapter_homeworld_select() {
 
             if (scr_hit(50, 480, 950, 510)) {
                 tooltip = "Aspirant Trial";
-                tooltip2 = "A special challenge is needed for Aspirants to be judged worthy of becoming Astartes.  After completing the Trial they then become a Neophyte, beginning implantation and training.  (This can be changed once in game, but the chosen trial here will effect the spawn characteristics of your starting Space Marines).";
+                tooltip2 = "A special challenge is needed for Aspirants to be judged worthy of becoming Astartes.  After completing the Trial they then become a Neophyte, beginning implantation and training.  (This can be changed once in game, but the chosen trial here will affect the spawn characteristics of your starting Space Marines).";
             }
         } else {
             draw_set_font(fnt_40k_30b);
