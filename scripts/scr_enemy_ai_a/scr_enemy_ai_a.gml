@@ -71,7 +71,7 @@ function scr_enemy_ai_a() {
             continue;
         } else if ((planet_forces[eFACTION.PLAYER] <= 0) && (planet_forces[eFACTION.ORK] > 0)) {
             //orks prevail  over other factions
-            if (p_owner[_run] == 2 || p_owner[_run] == 6) {
+            if (p_owner[_run] == eFACTION.IMPERIUM || p_owner[_run] == eFACTION.ELDAR) {
                 p_owner[_run] = eFACTION.ORK;
             }
         }
@@ -96,7 +96,7 @@ function scr_enemy_ai_a() {
         var sisters_score = p_sisters[_run];
         // if (p_eldar[_run]>0) then eldar_score=p_eldar[_run]+1;
 
-        if ((p_tyranids[_run] > 0) && (stop != 1) && (p_owner[_run] != 9)) {
+        if ((p_tyranids[_run] > 0) && (stop != 1) && (p_owner[_run] != eFACTION.TYRANIDS)) {
             // This might have been causing the problem
             /*if (p_tyranids[_run]<5) and (p_guardsmen[_run]>0){
 	            if (p_tyranids[_run]=4) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-100000);
@@ -145,7 +145,7 @@ function scr_enemy_ai_a() {
 
         if ((p_sisters[_run] > 0) && (stop != 1)) {
             // THEY MARCH FOR THE ECCLESIARCHY
-            if ((p_player[_run] > 0) && (obj_controller.faction_status[5] == "War")) {
+            if ((p_player[_run] > 0) && (obj_controller.faction_status[eFACTION.ECCLESIARCHY] == "War")) {
                 sisters_attack = "player";
             } else {
                 if (p_tau[_run] > 0) {
@@ -157,10 +157,10 @@ function scr_enemy_ai_a() {
                 if (p_necrons[_run] > 0) {
                     sisters_attack = "necrons";
                 }
-                if ((p_pdf[_run] > 0) && (p_owner[_run] == 8)) {
+                if ((p_pdf[_run] > 0) && (p_owner[_run] == eFACTION.TAU)) {
                     sisters_attack = "pdf";
                 }
-                if ((p_pdf[_run] > 0) && (p_owner[_run] == 1) && (obj_controller.faction_status[5] == "War")) {
+                if ((p_pdf[_run] > 0) && (p_owner[_run] == eFACTION.PLAYER) && (obj_controller.faction_status[eFACTION.ECCLESIARCHY] == "War")) {
                     sisters_attack = "pdf";
                 }
                 if (p_traitors[_run] > 0) {
@@ -169,7 +169,7 @@ function scr_enemy_ai_a() {
                 if (p_chaos[_run] > 0) {
                     sisters_attack = "chaos";
                 }
-                if ((p_player[_run] > 0) && (obj_controller.faction_status[5] == "War")) {
+                if ((p_player[_run] > 0) && (obj_controller.faction_status[eFACTION.ECCLESIARCHY] == "War")) {
                     sisters_attack = "player";
                 }
                 // Always goes after traitors first
@@ -243,7 +243,7 @@ function scr_enemy_ai_a() {
             }
         }
 
-        if ((p_tau[_run] > 0) && (stop != 1) && (p_owner[_run] != 8)) {
+        if ((p_tau[_run] > 0) && (stop != 1) && (p_owner[_run] != eFACTION.TAU)) {
             // They don't own the planet, go ham
             // if (eldar_score>0) then tau_attack="eldar";
             if (guard_score > 0) {
@@ -276,11 +276,11 @@ function scr_enemy_ai_a() {
             if ((tau_attack == "") && (p_sisters[_run] > 0)) {
                 tau_attack = "sisters";
             }
-            if ((tau_attack == "") && (obj_controller.faction_status[8] == "War") && (p_player[_run] > 0)) {
+            if ((tau_attack == "") && (obj_controller.faction_status[eFACTION.TAU] == "War") && (p_player[_run] > 0)) {
                 tau_attack = "player";
             }
         }
-        if ((p_tau[_run] > 0) && (stop != 1) && (p_owner[_run] == 8)) {
+        if ((p_tau[_run] > 0) && (stop != 1) && (p_owner[_run] == eFACTION.TAU)) {
             // They own the planet
             // if (eldar_score>0) then tau_attack="eldar";
             if (traitors_score > 0) {
@@ -304,7 +304,7 @@ function scr_enemy_ai_a() {
             if ((tau_attack == "") && (p_sisters[_run] > 0)) {
                 tau_attack = "sisters";
             }
-            if ((tau_attack == "") && (obj_controller.faction_status[8] == "War") && (p_player[_run] > 0)) {
+            if ((tau_attack == "") && (obj_controller.faction_status[eFACTION.TAU] == "War") && (p_player[_run] > 0)) {
                 tau_attack = "player";
             }
         }
@@ -496,7 +496,7 @@ function scr_enemy_ai_a() {
                     }
                     if ((p_pdf[_run] == 0) && pdf_with_player) {
                         if ((!_planet_data.has_feature(eP_FEATURES.MONASTERY)) && (p_player[_run] <= 0)) {
-                            p_owner[_run] = 2;
+                            p_owner[_run] = eFACTION.IMPERIUM;
                             dispo[_run] = -50;
                         }
                     }
@@ -1211,19 +1211,19 @@ function scr_enemy_ai_a() {
             var who_return = "";
             var make_alert = false;
             var planet_string = $"{name} {scr_roman(_run)}";
-            if (p_owner[_run] == 7) {
+            if (p_owner[_run] == eFACTION.ORK) {
                 who_cleansed = "Orks";
                 make_alert = true;
-            } else if (p_owner[_run] == 8 && p_pdf[_run] == 0) {
+            } else if (p_owner[_run] == eFACTION.TAU && p_pdf[_run] == 0) {
                 who_cleansed = "Tau";
                 make_alert = true;
-            } else if (p_owner[_run] == 9) {
+            } else if (p_owner[_run] == eFACTION.TYRANIDS) {
                 who_cleansed = "Tyranids";
                 make_alert = true;
-            } else if (p_owner[_run] == 13) {
+            } else if (p_owner[_run] == eFACTION.NECRONS) {
                 who_cleansed = "Necrons";
                 make_alert = true;
-            } else if (p_owner[_run] == 10) {
+            } else if (p_owner[_run] == eFACTION.CHAOS) {
                 who_cleansed = "Chaos";
                 make_alert = true;
             } else if (planet_feature_bool(p_feature[_run], eP_FEATURES.GENE_STEALER_CULT)) {
@@ -1252,7 +1252,7 @@ function scr_enemy_ai_a() {
                 scr_event_log("", $"{who_cleansed} cleansed from {planet_string}", name);
                 scr_alert("green", "owner", $"{who_cleansed} cleansed from {planet_string}. Control returned to {who_return}", x, y);
                 if (dispo[_run] >= 101) {
-                    p_owner[_run] = 1;
+                    p_owner[_run] = eFACTION.PLAYER;
                 }
             }
         }
@@ -1275,7 +1275,7 @@ function scr_enemy_ai_a() {
         i += 1;
         if (p_type[i] == "Daemon") {
             p_heresy[i] = 200;
-            p_owner[i] = 10;
+            p_owner[i] = eFACTION.CHAOS;
         }
 
         if ((p_population[i] <= 0) && (p_large[i] == 0) && (p_chaos[i] == 0) && (p_traitors[i] == 0) && (p_tau[i] == 0) && (p_type[i] != "Daemon")) {
@@ -1286,7 +1286,7 @@ function scr_enemy_ai_a() {
             p_large[i] = 0;
         }
 
-        if ((p_owner[i] == 2) && (p_type[i] != "Dead") && (planets >= i) && (p_tyranids[i] == 0) && (p_chaos[i] == 0) && (p_traitors[i] == 0) && (p_eldar[i] == 0) && (p_tau[i] == 0)) {
+        if ((p_owner[i] == eFACTION.IMPERIUM) && (p_type[i] != "Dead") && (planets >= i) && (p_tyranids[i] == 0) && (p_chaos[i] == 0) && (p_traitors[i] == 0) && (p_eldar[i] == 0) && (p_tau[i] == 0)) {
             var military, pdf, rando, contin;
             military = 0;
             pdf = 0;
