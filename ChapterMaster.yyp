@@ -32,6 +32,7 @@
     {"$GMFolder":"","%Name":"Diplomacy","folderPath":"folders/Scripts/Diplomacy.yy","name":"Diplomacy","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"events_and_missions","folderPath":"folders/Scripts/events_and_missions.yy","name":"events_and_missions","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"fleet","folderPath":"folders/Scripts/fleet.yy","name":"fleet","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Global Functions","folderPath":"folders/Scripts/Global Functions.yy","name":"Global Functions","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Helpers","folderPath":"folders/Scripts/Helpers.yy","name":"Helpers","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Draw Shapes","folderPath":"folders/Scripts/Helpers/Draw Shapes.yy","name":"Draw Shapes","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Text","folderPath":"folders/Scripts/Helpers/Text.yy","name":"Text","resourceType":"GMFolder","resourceVersion":"2.0",},
