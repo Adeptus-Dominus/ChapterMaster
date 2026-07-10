@@ -633,7 +633,6 @@
     {"id":{"name":"obj_defeat","path":"objects/obj_defeat/obj_defeat.yy",},},
     {"id":{"name":"obj_drop_select","path":"objects/obj_drop_select/obj_drop_select.yy",},},
     {"id":{"name":"obj_dropdown_sel","path":"objects/obj_dropdown_sel/obj_dropdown_sel.yy",},},
-    {"id":{"name":"obj_duel","path":"objects/obj_duel/obj_duel.yy",},},
     {"id":{"name":"obj_en_capital","path":"objects/obj_en_capital/obj_en_capital.yy",},},
     {"id":{"name":"obj_en_cruiser","path":"objects/obj_en_cruiser/obj_en_cruiser.yy",},},
     {"id":{"name":"obj_en_fleet","path":"objects/obj_en_fleet/obj_en_fleet.yy",},},
