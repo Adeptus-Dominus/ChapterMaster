@@ -70,20 +70,6 @@ alert_char[1] = 1;
 
 handle_discovered_governor_assasinations();
 
-if (audiences > 0) {
-    // This is a one-off change all messages to declare war
-    var war = array_create(16, 0);
-    for (var i = 0; i < array_length(audience_stack); i++) {
-        var _audience = audience_stack[i];
-        if ((_audience.topic != "declare_war") && (_audience.topic != "gene_xeno") && (_audience.topic != "") && (war[_audience.faction] == 0) && (obj_controller.faction_status[_audience.faction] != "War") && (_audience.faction != 10)) {
-            if ((obj_controller.disposition[_audience.faction] <= 0) && (_audience.faction < 6)) {
-                _audience.topic = "declare_war";
-                war[_audience.faction] = 1;
-            }
-        }
-    }
-}
-
 alerts = 0;
 fast = 0; // This is increased, once the alert[i]=1 and >=fast then it begins to fade in and get letters
 show = 0;
