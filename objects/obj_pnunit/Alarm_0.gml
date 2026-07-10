@@ -1,10 +1,14 @@
 try {
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SYSTEM, $"Player block {obj_ncombat.combat_debugger.resolve_label(id)} at x={x} is picking a target");
     enemy = instance_nearest(0, y, obj_enunit); // Left most enemy
 
     if (!instance_exists(enemy)) {
+        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"no enemy exists, exiting");
         engaged = false;
         exit;
     }
+
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"initial target {obj_ncombat.combat_debugger.resolve_label(enemy)} at x={enemy.x}");
 
     if (instance_number(obj_enunit) != 1) {
         obj_ncombat.flank_x = self.x;
@@ -118,9 +122,11 @@ try {
                 }
 
                 if ((ap == 1) && (once_only == 0)) {
+                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"weapon[{i}] ({wep[i]}) AP -> targeting vehicles");
                     // Check for vehicles
                     if (enemy.veh > 0) {
-                        good = scr_target(enemy, "veh"); // First target has vehicles, blow it to hell
+                        good = scr_target(enemy, "veh");
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"weapon[{i}] scr_target(veh) -> {enemy.dudes_vehicle[good]} in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
                         scr_shoot(i, enemy, good, "arp", "ranged");
                     }
                     if ((good == 0) && (instance_number(obj_enunit) > 1)) {
@@ -131,7 +137,8 @@ try {
                                 x2 += 10;
                                 var enemy2 = instance_nearest(x2, y, obj_enunit);
                                 if ((enemy2.veh > 0) && (good == 0)) {
-                                    good = scr_target(enemy2, "veh"); // This target has vehicles, blow it to hell
+                                    good = scr_target(enemy2, "veh");
+                                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"weapon[{i}] scr_target(veh) at next column -> {enemy2.dudes_vehicle[good]} in {obj_ncombat.combat_debugger.resolve_label(enemy2)}");
                                     scr_shoot(i, enemy2, good, "arp", "ranged");
                                     once_only = 1;
                                 }
@@ -140,7 +147,8 @@ try {
                     }
                     if (good == 0) {
                         ap = 0;
-                    } // Fuck it, shoot at infantry
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"weapon[{i}] ({wep[i]}) AP -> no vehicles found, falling back to infantry");
+                    }
                     if (!instance_exists(enemy)) {
                         engaged = false;
                         continue;
@@ -149,18 +157,20 @@ try {
 
                 if (once_only == 0) {
                     if ((enemy.medi > 0) && (enemy.veh == 0)) {
-                        good = scr_target(enemy, "medi"); // First target has vehicles, blow it to hell
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"weapon[{i}] ({wep[i]}) medi -> targeting monsters");
+                        good = scr_target(enemy, "medi");
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"weapon[{i}] scr_target(medi) -> {enemy.dudes[good]} in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
                         scr_shoot(i, enemy, good, "medi", "ranged");
 
                         if ((good == 0) && (instance_number(obj_enunit) > 1)) {
-                            // First target does not have vehicles, cycle through objects to find one that has vehicles
                             var x2 = enemy.x;
                             repeat (instance_number(obj_enunit) - 1) {
                                 if (good == 0) {
                                     x2 += 10;
                                     var enemy2 = instance_nearest(x2, y, obj_enunit);
                                     if ((enemy2.veh > 0) && (good == 0)) {
-                                        good = scr_target(enemy2, "medi"); // This target has vehicles, blow it to hell
+                                        good = scr_target(enemy2, "medi");
+                                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"weapon[{i}] scr_target(medi) at next column -> {enemy2.dudes[good]} in {obj_ncombat.combat_debugger.resolve_label(enemy2)}");
                                         scr_shoot(i, enemy2, good, "medi", "ranged");
                                         once_only = 1;
                                     }
@@ -169,8 +179,8 @@ try {
                         }
                         if (good == 0) {
                             ap = 0;
-                        } // Next up is infantry
-                        // Was previously ap=1;
+                            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"weapon[{i}] ({wep[i]}) medi -> no monsters found, falling back to infantry");
+                        }
                     }
                     if (!instance_exists(enemy)) {
                         engaged = false;
@@ -179,22 +189,23 @@ try {
                 }
 
                 if ((ap == 0) && (once_only == 0)) {
-                    // Check for men
+                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"weapon[{i}] ({wep[i]}) -> targeting infantry");
                     good = 0;
 
                     if (enemy.men + enemy.medi > 0) {
-                        good = scr_target(enemy, "men"); // First target has vehicles, blow it to hell
+                        good = scr_target(enemy, "men");
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"weapon[{i}] scr_target(men) -> {enemy.dudes[good]} in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
                         scr_shoot(i, enemy, good, "att", "ranged");
                     }
                     if ((good == 0) && (instance_number(obj_enunit) > 1)) {
-                        // First target does not have vehicles, cycle through objects to find one that has vehicles
                         var x2 = enemy.x;
                         repeat (instance_number(obj_enunit) - 1) {
                             if (good == 0) {
                                 x2 += 10;
                                 var enemy2 = instance_nearest(x2, y, obj_enunit);
                                 if ((enemy2.men > 0) && (good == 0)) {
-                                    good = scr_target(enemy2, "men"); // This target has vehicles, blow it to hell
+                                    good = scr_target(enemy2, "men");
+                                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"weapon[{i}] scr_target(men) at next column -> {enemy2.dudes[good]} in {obj_ncombat.combat_debugger.resolve_label(enemy2)}");
                                     scr_shoot(i, enemy2, good, "att", "ranged");
                                     once_only = 1;
                                 }
@@ -219,11 +230,13 @@ try {
                 }
 
                 if ((apa[i] == 1) && (once_only == 0)) {
+                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee weapon[{i}] ({wep[i]}) AP -> targeting vehicles");
                     // Check for vehicles
                     var g = 0, good = 0;
 
                     if (enemy.veh > 0) {
-                        good = scr_target(enemy, "veh"); // First target has vehicles, blow it to hell
+                        good = scr_target(enemy, "veh");
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee scr_target(veh) -> {enemy.dudes_vehicle[good]} in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
                         if (range[i] == 1) {
                             scr_shoot(i, enemy, good, "arp", "melee");
                         }
@@ -233,7 +246,8 @@ try {
                     }
                     if ((good == 0) && (att[i] > 0)) {
                         ap = 0;
-                    } // Fuck it, shoot at infantry
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee weapon[{i}] AP -> no vehicles, fallback to infantry");
+                    }
                     if (!instance_exists(enemy)) {
                         engaged = false;
                         continue;
@@ -241,11 +255,12 @@ try {
                 }
 
                 if ((enemy.veh == 0) && (enemy.medi > 0) && (once_only == 0)) {
-                    // Check for vehicles
+                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee weapon[{i}] ({wep[i]}) -> targeting monsters");
                     var g = 0, good = 0;
 
                     if (enemy.medi > 0) {
-                        good = scr_target(enemy, "medi"); // First target has vehicles, blow it to hell
+                        good = scr_target(enemy, "medi");
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee scr_target(medi) -> {enemy.dudes[good]} in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
                         if (range[i] == 1) {
                             scr_shoot(i, enemy, good, "medi", "melee");
                         }
@@ -255,7 +270,8 @@ try {
                     }
                     if ((good == 0) && (att[i] > 0)) {
                         ap = 0;
-                    } // Fuck it, shoot at infantry
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee weapon[{i}] medi -> no monsters, fallback to infantry");
+                    }
                     if (!instance_exists(enemy)) {
                         engaged = false;
                         continue;
@@ -263,11 +279,12 @@ try {
                 }
 
                 if ((ap == 0) && (once_only == 0)) {
-                    // Check for men
+                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee weapon[{i}] ({wep[i]}) -> targeting infantry");
                     var good = 0;
 
                     if ((enemy.men > 0) && (once_only == 0)) {
                         good = scr_target(enemy, "men");
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee scr_target(men) -> {enemy.dudes[good]} in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
                         if (range[i] == 1) {
                             scr_shoot(i, enemy, good, "att", "melee");
                         }

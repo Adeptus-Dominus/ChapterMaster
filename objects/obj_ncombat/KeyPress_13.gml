@@ -75,6 +75,7 @@ if (!instance_exists(obj_popup)) {
             }
 
             if ((timer_stage == 1) || (timer_stage == 5)) {
+                combat_debugger.add(eCOMBAT_CATEGORY.SYSTEM, $"=== Player Turn start (turn {turn_count}) ===");
                 if (global_perils > 0) {
                     global_perils -= 1;
                 }
@@ -105,6 +106,7 @@ if (!instance_exists(obj_popup)) {
                 reset_combat_message_arrays();
                 timer_stage = 2;
             } else if (timer_stage == 3) {
+                combat_debugger.add(eCOMBAT_CATEGORY.SYSTEM, $"=== Enemy Turn start (turn {turn_count}) ===");
                 if (battle_over != 1) {
                     alarm[8] = 15;
                 }
