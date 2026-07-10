@@ -84,7 +84,7 @@
   },
   {
     "name": "Enemy: Tyranids",
-    "description": "Tyranids are particularly hated by your Chapter. A large number of your veterans and marines are tyrannic war veterans and when fighting Tyranids damage is increased.",
+    "description": "Tyranids are particularly hated by your Chapter, owing to experience in the Tyrannic Wars or specialized training. When fighting Tyranids damage is increased.",
     "points": 20,
     "meta": ["Main Enemy"]
   },
