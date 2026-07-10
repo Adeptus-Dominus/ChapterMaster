@@ -3,21 +3,6 @@ exception_unhandled_handler(function(_exception) {
     return 0;
 });
 
-/// @desc Formats text as a code block.
-/// @param {string} _message The message to format.
-/// @param {string} _language (Optional) Code language prefix to add into the codeblock.
-/// @returns {string} The formatted string.
-function format_codeblock(_message, _language = "") {
-    return string_length(_message) > 0 ? $"```{_language}\n{_message}\n```" : "";
-}
-
-/// @desc Converts to string and adds a 0 at the start, if input is less than 10.
-/// @param {real} _time - Usually hours, minutes or seconds.
-/// @returns {string}
-function format_time(_time) {
-    return (_time < 10) ? $"0{_time}" : string(_time);
-}
-
 /// @desc Removes all GM prefixes from a string.
 /// @param {string} _string
 /// @returns {string}
