@@ -174,14 +174,13 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
 
             // Check if ship_index is still within range
             if (ship_index < array_length(ship) && ship[ship_index] != "") {
-                // Delete the string from the 20th character onwards
-                var num = string_delete(ship[ship_index], 20, 999);
+                var ship_name = ship[ship_index];
                 // Calculate button position based on row and column
                 var buttonX = bomb_window.x1 + 24 + col * buttonSpacingX;
                 var buttonY = bomb_window.y1 + 172 + row * buttonSpacingY;
 
                 // Draw the unit buttons and handle selection
-                if (point_and_click(draw_unit_buttons([buttonX, buttonY, buttonX + 105, buttonY + 20], string_truncate(num, 200), [1, 1], ship_all[ship_index] ? #34bc75 : #bf4040, fa_center, fnt_40k_10, ship_all[ship_index] ? 1 : 0.5))) {
+                if (point_and_click(draw_unit_buttons([buttonX, buttonY, buttonX + 105, buttonY + 20], string_truncate(ship_name, 200), [1, 1], ship_all[ship_index] ? #34bc75 : #bf4040, fa_center, fnt_40k_10, ship_all[ship_index] ? 1 : 0.5))) {
                     ship_all[ship_index] = !ship_all[ship_index];
                     ships_selected += ship_all[ship_index] ? 1 : -1;
 
