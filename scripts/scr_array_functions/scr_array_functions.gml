@@ -189,13 +189,23 @@ function array_to_string_order(_strings_array, _use_and = false, _dot_end = true
 function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null = false, _dot_end = true) {
     var _array_length = array_length(_names_array);
     var _result_string = "";
+    var _added_count = 0;
 
     for (var i = 0; i < _array_length; i++) {
         if (_exclude_null && _counts_array[i] == 0) {
             continue;
         }
+
+        if (_added_count > 0) {
+            _result_string += ", ";
+        }
+
         _result_string += string_plural_count(_names_array[i], _counts_array[i]);
-        _result_string += smart_delimeter_sign(_array_length, i, _dot_end);
+        _added_count++;
+    }
+
+    if (_dot_end && _added_count > 0) {
+        _result_string += ".";
     }
 
     return _result_string;
