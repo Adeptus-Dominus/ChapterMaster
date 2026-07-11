@@ -3445,6 +3445,21 @@ global.weapon_visual_data = {
             }
         ],
     },
+	"Executioner Power Axe": {
+        base: {
+            weapon_data: {
+                display_type: "melee_onehand",
+                hand_type: 3,
+                arm_type: 3,
+                single_left_right_profile: true,
+            },
+        },
+        variants: [
+            {
+                sprite: spr_weapon_powaxe,
+            }
+        ],
+    },
     "Power Mace": {
         base: {
             weapon_data: {
