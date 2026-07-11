@@ -270,3 +270,56 @@ function update_block_size() {
 function update_block_unit_count() {
     unit_count = men + medi + dreads + veh;
 }
+
+/// @description Check if a column has the given target type.
+/// @param {Id.Instance.obj_enunit} column  Enemy battle block to check
+/// @param {string} target_type  "veh", "medi", or "men"
+/// @param {string} mode  "ranged" or "melee"
+/// @returns {bool}  true if the column has units matching the target type
+function has_target_type(column, target_type, mode = "ranged") {
+    try {
+        switch (target_type) {
+            case "veh":
+                return column.veh > 0;
+            case "medi":
+                return column.medi > 0;
+            case "men":
+                return mode == "ranged" ? column.men + column.medi > 0 : column.men > 0;
+        }
+
+        return false;
+    } catch (_exception) {
+        ERROR_HANDLER.handle_exception(_exception);
+        return false;
+    }
+}
+
+/// @description Find an enemy column that has the given target type. Checks the current enemy column first, then cycles through other columns in ranged mode.
+/// @param {string} target_type  "veh", "medi", or "men"
+/// @param {string} mode  "ranged" or "melee"
+/// @returns {Id.Instance|undefined}  The column instance, or undefined if none found
+/// @self Asset.GMObject.obj_pnunit
+function pick_target_column(target_type, mode) {
+    try {
+        if (has_target_type(enemy, target_type, mode)) {
+            return enemy;
+        }
+
+        if (mode == "ranged" && instance_number(obj_enunit) > 1) {
+            var _x2 = enemy.x;
+            repeat (instance_number(obj_enunit) - 1) {
+                _x2 += 10;
+                var _enemy2 = instance_nearest(_x2, y, obj_enunit);
+
+                if (has_target_type(_enemy2, target_type, mode)) {
+                    return _enemy2;
+                }
+            }
+        }
+
+        return undefined;
+    } catch (_exception) {
+        ERROR_HANDLER.handle_exception(_exception);
+        return undefined;
+    }
+}

@@ -59,7 +59,7 @@ function add_data_to_stack(stack_index, weapon, unit_damage = false, head_role =
 
 /// @self Asset.GMObject.obj_pnunit
 function find_stack_index(weapon_name, head_role = false, unit = "none") {
-    final_index = -1;
+    var final_index = -1;
     var allow = false;
     for (var stack_index = 1; stack_index < array_length(wep); stack_index++) {
         allow = false;
@@ -242,15 +242,14 @@ function scr_player_combat_weapon_stacks() {
                     var primary_melee = marine_attack[g][3]; //collect unit melee data
                     weapon_stack_index = find_stack_index(primary_melee.name, head_role, unit);
                     if (weapon_stack_index > -1) {
-                        if (range[weapon_stack_index] > 1.9) {
+                        if (range[weapon_stack_index] >= 2) {
                             continue;
                         } //creates secondary weapon stack for close combat ranged weaponry use
-                        primary_melee.range = 1;
                         add_data_to_stack(weapon_stack_index, primary_melee, marine_attack[g][0], head_role, unit);
                         if (head_role) {
                             player_head_role_stack(weapon_stack_index, unit);
                         }
-                        if (floor(primary_melee.range) <= 1 && primary_melee.ammo == 0) {
+                        if (floor(primary_melee.range) < 2 && primary_melee.ammo == 0) {
                             ammo[weapon_stack_index] = -1; //no ammo limit
                         }
                     }
