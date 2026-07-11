@@ -60,9 +60,10 @@ function inquisitor_inspection_structure() constructor {
     };
 
     ships = -1;
-    planets = 0; // can be single integer or an array of planet indices
+    planets = undefined; // can be single integer or an array of planet indices
     location = ""; // location string for collect_role_group
-    star = -1; // star instance
+    /// @type {Id.Instance.obj_star}
+    star = noone; // star instance
     units = []; // collected units for inspection
 
     // convenience flags populated during inspection
@@ -83,7 +84,7 @@ function inquisitor_inspection_structure() constructor {
     };
 
     static planet_heresys = function() {
-        if (instance_exists(star)) {
+        if (instance_exists(star) && planets != undefined) {
             if (is_array(planets)) {
                 for (var i = 0; i < array_length(planets); i++) {
                     var _p = planets[i];
@@ -199,7 +200,7 @@ function inquisitor_inspection_structure() constructor {
     // ----- Inspection modules that use internal star & planets -----
 
     static inspect_secret_base = function() {
-        if (!instance_exists(star)) {
+        if (!instance_exists(star) || planets == undefined) {
             return;
         }
 
@@ -259,7 +260,7 @@ function inquisitor_inspection_structure() constructor {
     };
 
     static inspect_arsenal = function() {
-        if (!instance_exists(star)) {
+        if (!instance_exists(star) || planets == undefined) {
             return;
         }
 
@@ -324,7 +325,7 @@ function inquisitor_inspection_structure() constructor {
     };
 
     static inspect_gene_vault = function() {
-        if (!instance_exists(star)) {
+        if (!instance_exists(star) || planets == undefined) {
             return;
         }
 
@@ -389,12 +390,15 @@ function inquisitor_inspection_structure() constructor {
         }
 
         var planet_label = "";
-        if (is_array(planets)) {
-            // show first planet for display purposes
-            planet_label = scr_roman(planets[0]);
-        } else {
-            planet_label = scr_roman(planets);
+        if (planets != undefined) {
+            if (is_array(planets)) {
+                // show first planet for display purposes
+                planet_label = scr_roman(planets[0]);
+            } else {
+                planet_label = scr_roman(planets);
+            }
         }
+
         var star_planet = star.name + planet_label;
 
         // Logging
@@ -522,25 +526,27 @@ function inquisitor_inspection_structure() constructor {
     };
 }
 
+/// @self Id.Instance.obj_en_fleet
 function inquisition_inspection_loyalty(inspection_type) {
     if ((inspection_type == "inspect_world") || (inspection_type == "inspect_fleet")) {
         var _inspect_results = new inquisitor_inspection_structure();
 
-        that = instance_nearest(x, y, obj_star);
+        /// @type {Id.Instance.obj_star}
+        var _star = instance_nearest(x, y, obj_star);
 
         if (inspection_type == "inspect_world") {
-            var _monestary_planet = scr_get_planet_with_feature(that, eP_FEATURES.MONASTERY);
+            var _monestary_planet = scr_get_planet_with_feature(_star, eP_FEATURES.MONASTERY);
             if (_monestary_planet != -1) {
                 _inspect_results.planets = _monestary_planet;
             } else {
                 var _plans = [];
-                for (var i = 1; i <= that.planets; i++) {
+                for (var i = 1; i <= _star.planets; i++) {
                     array_push(_plans, i);
                 }
                 _inspect_results.planets = _plans;
             }
 
-            _inspect_results.star = that;
+            _inspect_results.star = _star;
 
             _inspect_results.planet_heresys();
 
@@ -720,6 +726,7 @@ function inquisition_inspection_loyalty(inspection_type) {
     }
 }
 
+/// @param {Id.Instance.obj_star} cur_star 
 function inquisitor_contraband_take_popup(cur_star, planet) {
     var _inspect = new inquisitor_inspection_structure();
 
@@ -747,6 +754,7 @@ function inquisitor_contraband_take_popup(cur_star, planet) {
     _inspect.finalize_contraband_popup();
 }
 
+/// @self Id.Instance.obj_en_fleet
 function inquisition_inspection_logic() {
     var inspec_alert_string = "";
     var cur_star = instance_nearest(x, y, obj_star);
