@@ -16,4 +16,6 @@ function scr_roman(argument0) {
     if (argument0 == 5) {
         return "V";
     }
+
+    return "??"
 }
