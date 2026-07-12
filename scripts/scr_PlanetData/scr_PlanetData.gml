@@ -89,11 +89,11 @@ function PlanetData(_planet, _system) constructor {
 
         player_disposition = system.dispo[planet];
         garrisons = system.system_garrison[planet];
-        if (garrisons == 0) {
+        if (is_undefined(garrisons)) {
             garrisons = system.get_garrison(planet);
         }
         sabatours = system.system_sabatours[planet];
-        if (sabatours == 0) {
+        if (is_undefined(sabatours)) {
             sabatours = system.get_sabatours(planet);
         }
         system.system_datas[planet] = self;

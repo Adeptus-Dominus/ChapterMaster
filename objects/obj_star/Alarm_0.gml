@@ -1,11 +1,10 @@
 // This will create a system, with all the planet setup. It also does naming of stars, eldar craft worlds and space hulks
 if ((obj_controller.craftworld == 0) && (space_hulk == 0)) {
-    var test, oldx, oldy;
-    oldx = x;
-    oldy = y;
+    var oldx = x;
+    var oldy = y;
     x -= 5000;
     y -= 5000;
-    test = instance_nearest(oldx + choose(random(200), 1 * -random(200)), oldy + choose(random(200), 1 * -random(200)), obj_star);
+    var test = instance_nearest(oldx + choose(random(200), 1 * -random(200)), oldy + choose(random(200), 1 * -random(200)), obj_star);
     x2 = test.x;
     y2 = test.y;
     x = oldx;
@@ -196,7 +195,12 @@ switch (name) {
         break;
 }
 
-var a = 99, b = 99, c = 99, d = 99, e = "", f = 0, g = "", h = 0;
+var a = 99;
+var b = 99;
+var c = 99;
+var d = 99;
+var e = "";
+var f = 0;
 // Sets up points value for each planet on the system
 // TODO in here the map generation should be called for each planet
 for (var i = 0; i < 10; i++) {
