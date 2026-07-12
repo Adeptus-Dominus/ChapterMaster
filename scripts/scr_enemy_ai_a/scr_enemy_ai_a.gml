@@ -8,11 +8,8 @@ function scr_enemy_ai_a() {
         get_planet_data(i);
     }
     // guardsmen hop from planet to planet
-    //not sure we really need this as it's handled with tht navy fleet functions but fuck it updated it and leaving it fot the sec
+    // not sure we really need this as it's handled with tht navy fleet functions but fuck it updated it and leaving it fot the sec
     if (system_guard_total() > 0 && present_fleet[eFACTION.IMPERIUM]) {
-        LOGGER.debug($"system_has_guard {p_guardsmen}");
-        var cur_planet = 0, most_enemies_found = 0, current_guard_planet = 0, most_enemies_planet = 0;
-
         var _guard_planets = guard_find_planet_with_most_enemy_forces(self);
 
         if (_guard_planets[0] > 0 && _guard_planets[1] > 0) {
@@ -21,13 +18,10 @@ function scr_enemy_ai_a() {
             p_guardsmen[_next] = p_guardsmen[_current];
             p_guardsmen[_current] = 0;
         }
-        LOGGER.debug($"system_has_guard {p_guardsmen}");
     }
 
     if ((obj_controller.faction_defeated[10] > 0) && (obj_controller.faction_gender[10] == 2)) {
-        var cur_planet = 0;
-        repeat (planets) {
-            cur_planet += 1;
+        for (var cur_planet = 1; cur_planet <= planets; cur_planet++) {
             if (array_length(p_feature[cur_planet]) != 0) {
                 if ((planet_feature_bool(p_feature[cur_planet], eP_FEATURES.CHAOSWARBAND) == 1) && (p_chaos[cur_planet] <= 0)) {
                     delete_features(p_feature[cur_planet], eP_FEATURES.CHAOSWARBAND);
@@ -41,18 +35,14 @@ function scr_enemy_ai_a() {
         inquisitor_inspect_base();
     }
 
-    var stop;
     var rand = 0;
-    var  total_garrison = 0;
-    var _planet_data;
     for (var _run = 1; _run <= planets; _run++) {
         /// @type {Struct.PlanetData}
-        _planet_data = system_datas[_run];
+        var _planet_data = system_datas[_run];
         _garrison = _planet_data.garrisons;
-        _sabatours = _planet_data.sabatours;
         var _garrison_force = _garrison.garrison_force;
 
-        stop = 0;
+        var stop = 0;
         ensure_no_planet_negatives(_run);
 
         planet_forces = _planet_data.planet_forces;
@@ -81,29 +71,26 @@ function scr_enemy_ai_a() {
                 continue;
             }
         }
-        var large = 0;
         var guard_score = 0;
         var pdf_score = 0;
-        var eldar_score = 0;
 
-        var guard_attack = "", pdf_attack = "", ork_attack = "", tau_attack = "", traitors_attack = "", chaos_attack = "";
-        var eldar_attack = "", tyranids_attack = "", necrons_attack = "", sisters_attack = "";
+        var guard_attack = "";
+        var pdf_attack = "";
+        var ork_attack = "";
+        var tau_attack = "";
+        var traitors_attack = "";
+        var chaos_attack = "";
+        var tyranids_attack = "";
+        var necrons_attack = "";
+        var sisters_attack = "";
 
         var traitors_score = p_traitors[_run];
         var chaos_score = p_chaos[_run];
         var tyranids_score = p_tyranids[_run];
         var necrons_score = p_necrons[_run];
         var sisters_score = p_sisters[_run];
-        // if (p_eldar[_run]>0) then eldar_score=p_eldar[_run]+1;
 
         if ((p_tyranids[_run] > 0) && (stop != 1) && (p_owner[_run] != eFACTION.TYRANIDS)) {
-            // This might have been causing the problem
-            /*if (p_tyranids[_run]<5) and (p_guardsmen[_run]>0){
-	            if (p_tyranids[_run]=4) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-100000);
-	            if (p_tyranids[_run]=3) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-20000);
-	            if (p_tyranids[_run]=2) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-5000);
-	            if (p_tyranids[_run]=1) then p_guardsmen[_run]=max(0,p_guardsmen[_run]-500);
-	        }*/
             if (p_tyranids[_run] >= 5) {
                 tyranids_score = 7;
             }
@@ -125,9 +112,6 @@ function scr_enemy_ai_a() {
             // Eldar don't get into pitched battles so nyuck nyuck nyuck
         }
         if (_planet_data.pdf > 0 && !stop) {
-            var pdf_mod;
-            var defence_mult = _planet_data.fortification_level * 0.1;
-
             try {
                 if (pdf_with_player && _garrison_force) {
                     //if player supports give _garrison bonus
@@ -138,8 +122,6 @@ function scr_enemy_ai_a() {
             } catch (_exception) {
                 ERROR_HANDLER.handle_exception(_exception, "Pdf defence error",, $"{_run}");
             }
-            //
-            // if (p_eldar[_run]>0) and (p_owner[_run]!=6) then pdf_attack="eldar";
             pdf_attack = _planet_data.pdf_attack_matrix();
         }
 
@@ -184,7 +166,6 @@ function scr_enemy_ai_a() {
                 ork_attack = "imp";
             }
             rand = choose(1, 2, 3, 4, 5);
-            // if (rand=1) and (ork_attack="imp") then ork_attack="imp";
             if ((ork_attack == "imp") && (p_guardsmen[_run] > 0)) {
                 ork_attack = "guard";
             }
@@ -201,8 +182,6 @@ function scr_enemy_ai_a() {
             if ((rand == 5) && (p_sisters[_run] > 0)) {
                 ork_attack = "sisters";
             }
-            // if (rand=5) and (p_necrons[_run]>0) then ork_attack="necrons";
-
             if ((ork_attack == "") && (p_player[_run] > 0)) {
                 ork_attack = "player";
             }
@@ -245,7 +224,6 @@ function scr_enemy_ai_a() {
 
         if ((p_tau[_run] > 0) && (stop != 1) && (p_owner[_run] != eFACTION.TAU)) {
             // They don't own the planet, go ham
-            // if (eldar_score>0) then tau_attack="eldar";
             if (guard_score > 0) {
                 tau_attack = "imp";
             }
@@ -282,7 +260,6 @@ function scr_enemy_ai_a() {
         }
         if ((p_tau[_run] > 0) && (stop != 1) && (p_owner[_run] == eFACTION.TAU)) {
             // They own the planet
-            // if (eldar_score>0) then tau_attack="eldar";
             if (traitors_score > 0) {
                 tau_attack = "traitors";
             }
@@ -392,21 +369,12 @@ function scr_enemy_ai_a() {
 
             if (tau_attack == "imp") {
                 tau_attack = default_imperium_attack;
-            } // if (tau_attack="imp") and (guard_score<=0) then tau_attack="pdf";
+            }
 
             if ((sisters_attack == "imp") && (pdf_score > 0)) {
                 sisters_attack = "pdf";
             }
 
-            // if (eldar_attack="imp") and (guard_score>0) then eldar_attack="guard";if (eldar_attack="imp") and (guard_score<=0) then eldar_attack="pdf";
-
-            // if (eldar_attack="guard") and ((guard_score<=0.5) and (pdf_score>1)) then eldar_attack="pdf";
-
-            // if ((traitors_attack="guard") or (traitors_attack="pdf")) and (traitors_score>=3){obj_controller.x=self.x;obj_controller.y=self.y;}
-
-            var after_combat_guard = guard_score;
-            var after_combat_guard_count = p_guardsmen[_run];
-            var after_combat_pdf = pdf_score;
             var after_combat_ork_force = planet_forces[eFACTION.ORK];
             var after_combat_tau = planet_forces[eFACTION.TAU];
             var after_combat_traitor = traitors_score;
@@ -417,12 +385,12 @@ function scr_enemy_ai_a() {
             var after_combat_necrons = necrons_score;
             var after_combat_tyranids = tyranids_score;
             var after_combat_sisters = sisters_score;
-            var tempor = 0, rand1 = 0, rand2 = 0;
-
+            var tempor = 0;
+            var rand1 = 0;
+            var rand2 = 0;
             var _active_garrison = pdf_with_player && _garrison.viable_garrison > 0;
             // Guard attack
             if ((guard_score > 0) && (guard_attack != "") && (guard_score > 0.5)) {
-                LOGGER.debug($"{name}:{guard_attack}");
                 if (guard_attack == "ork") {
                     tempor = choose(1, 2, 3, 4, 5, 6) * planet_forces[eFACTION.ORK];
                 }
@@ -464,7 +432,6 @@ function scr_enemy_ai_a() {
                     }
                     rand1 = (choose(3, 4, 5, 6) * guard_score) * choose(1, 1.25, 1.25);
                     rand2 = (pdf_mod * pdf_score) * choose(1, 1.25);
-                    LOGGER.debug($"{name} guard attack guard_Win:{rand1 > rand2}");
                     if (rand1 > rand2) {
                         var _pdf_before = p_pdf[_run];
                         if (guard_score <= 3) {
@@ -591,7 +558,6 @@ function scr_enemy_ai_a() {
 
                 if (pdf_attack == "guard") {
                     rand2 = (choose(1, 2, 3, 4, 5, 6) * guard_score) * choose(1, 1.25, 2);
-                    LOGGER.debug($"{name} : pdf attack ,pdf win {rand1 > rand2}");
                     if (rand1 > rand2) {
                         if (pdf_score <= 3) {
                             p_guardsmen[_run] = floor(p_guardsmen[_run] * 0.7);
@@ -776,7 +742,6 @@ function scr_enemy_ai_a() {
                                 tixt += $". {_garrison.garrison_sustain_damages("loose")} Marines Lost";
                             }
                             scr_alert("red", "owner", tixt, x, y);
-                            //_garrison.determine_battle(false,rand2-rand1, eFACTION.ORK);
                         }
                     } else {
                         if (_active_garrison) {
@@ -801,10 +766,10 @@ function scr_enemy_ai_a() {
                                     //visited variable check whether the star has been visisted or not 1 for true 0 for false
                                     if (p_type[_run] == "Forge") {
                                         dispo[_run] -= 5; // 10 Disposition decrease for the planet govrnor if it's overrun by orks
-                                        obj_controller.disposition[3] -= 5; // obj_controller.disposition[3] refer to the disposition of the toaster jocks.
+                                        obj_controller.disposition[eFACTION.MECHANICUS] -= 5;
                                     } else if (planet_feature_bool(p_feature[_run], eP_FEATURES.SORORITAS_CATHEDRAL) || (p_type[_run] == "Shrine")) {
                                         dispo[_run] -= 10; // diso[_run] is the disposition of the planet. where _run refer to the planet that is currently running the code.
-                                        obj_controller.disposition[5] -= 3; // obj_controller.disposition[2] refer to the disposition of the sororitas while 3 refer to mechanicus
+                                        obj_controller.disposition[eFACTION.ECCLESIARCHY] -= 3;
                                     } else {
                                         dispo[_run] -= 5;
                                     }
@@ -813,7 +778,6 @@ function scr_enemy_ai_a() {
                             if ((badd == 2) && (p_tyranids[_run] == 0) && (p_necrons[_run] == 0) && (p_sisters[_run] == 0)) {
                                 scr_popup("System Lost", "The " + string(name) + " system has been ovewhelmed by Orks!", "orks", "");
                                 scr_event_log("red", "System " + string(name) + " has been overwhelmed by Orkz.", name);
-                                // owner=7;p_owner[1]=7;p_owner[2]=7;p_owner[3]=7;p_owner[4]=7;
                             }
                         }
                     }
@@ -846,10 +810,6 @@ function scr_enemy_ai_a() {
                         after_combat_ork_force -= 1;
                     }
                 } else if (traitors_attack == "guard") {
-                    /*if (traitors_attack="eldar"){
-	            rand2=(choose(1,2,3,4,5)*eldar_score)*choose(1,1.25);
-	            if (rand1>rand2) then after_combat_csm-=1;
-	        }*/
                     rand2 = (choose(1, 2, 3, 4, 5) * guard_score) * choose(1, 1.25);
                     if (rand1 > rand2) {
                         if (traitors_score <= 3) {
@@ -984,7 +944,6 @@ function scr_enemy_ai_a() {
 
             // Tyranids attack
             if (((tyranids_score > 4) || (guard_attack == "tyranids")) && (tyranids_attack != "") && (tyranids_attack != "player")) {
-                // if (tyranids_score>4) and (tyranids_attack!="") and (tyranids_attack!="player"){
                 rand1 = choose(3, 4, 5, 6, 7) * tyranids_score;
                 if (tyranids_score >= 6) {
                     rand1 = choose(30, 36);
@@ -1021,8 +980,6 @@ function scr_enemy_ai_a() {
                     rand1 = (choose(1, 2, 3, 4, 5, 6, 7) * tyranids_score) * choose(1, 1.25);
                     rand2 = (choose(1, 2, 3, 4, 5) * guard_score) * choose(1, 1.25);
                     if (rand1 > rand2) {
-                        /*if (tyranids_score<=3) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.6);
-	                if (tyranids_score>=4) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.5);*/
                         var onh = 0;
                         if ((tyranids_score == 1) && (onh == 0)) {
                             p_guardsmen[_run] -= 2000;
@@ -1048,8 +1005,6 @@ function scr_enemy_ai_a() {
                             p_guardsmen[_run] -= max(floor(p_guardsmen[_run] * 0.2), 2000000);
                             onh = 1;
                         }
-                        // if (tyranids_score>=6) and (onh=0){p_guardsmen[_run]=floor(p_guardsmen[_run]*0.2);onh=1;}
-
                         if (p_guardsmen[_run] < 0) {
                             p_guardsmen[_run] = 0;
                         }
@@ -1157,10 +1112,10 @@ function scr_enemy_ai_a() {
                                 if (p_type[_run] == "Forge") {
                                     //visited variable check whether the star has been visisted or not 1 for true 0 for false
                                     dispo[_run] -= 10; // 10 Disposition decrease for the planet govrnor if it's overrun by necrons
-                                    obj_controller.disposition[3] -= 10; // 10 dis decrease for the faction mechanicus
+                                    obj_controller.disposition[eFACTION.MECHANICUS] -= 10;
                                 } else if (planet_feature_bool(p_feature[_run], eP_FEATURES.SORORITAS_CATHEDRAL) || (p_type[_run] == "Shrine")) {
                                     dispo[_run] -= 10; // 10 Disposition decrease for the planet govrnor if it's overrun by necrons
-                                    obj_controller.disposition[5] -= 5; // 5 dis decrease for the Nurses
+                                    obj_controller.disposition[eFACTION.ECCLESIARCHY] -= 5;
                                 } else {
                                     dispo[_run] -= 10;
                                 }
@@ -1201,8 +1156,6 @@ function scr_enemy_ai_a() {
 
             // End stop
         }
-
-        // 135;
 
         var planet_saved = (p_player[_run] + p_raided[_run] > 0) && (p_orks[_run] + p_tyranids[_run] + p_chaos[_run] + p_traitors[_run] + p_necrons[_run] + p_tau[_run] <= 0);
 
@@ -1269,10 +1222,7 @@ function scr_enemy_ai_a() {
     scr_star_ownership(true);
 
     // Restock PDF and military
-    var i;
-    i = 0;
-    repeat (planets) {
-        i += 1;
+    for (var i = 1; i <= planets; i++) {
         if (p_type[i] == "Daemon") {
             p_heresy[i] = 200;
             p_owner[i] = eFACTION.CHAOS;
@@ -1287,11 +1237,10 @@ function scr_enemy_ai_a() {
         }
 
         if ((p_owner[i] == eFACTION.IMPERIUM) && (p_type[i] != "Dead") && (planets >= i) && (p_tyranids[i] == 0) && (p_chaos[i] == 0) && (p_traitors[i] == 0) && (p_eldar[i] == 0) && (p_tau[i] == 0)) {
-            var military, pdf, rando, contin;
-            military = 0;
-            pdf = 0;
-            contin = 0;
-            rando = floor(random(100)) + 1;
+            var military = 0;
+            var pdf = 0;
+            var contin = 0;
+            var rando = floor(random(100)) + 1;
 
             if (p_population[i] >= 10000000) {
                 military = p_population[i] / 470;
@@ -1310,13 +1259,11 @@ function scr_enemy_ai_a() {
             }
             if (p_large[i] == 1) {
                 military = military * 1000000000;
-                pdf = pdf * 1000000000;
+                pdf *= 1000000000;
             }
 
             if ((p_large[i] == 0) && (rando < 50) && (military != 0) && (pdf != 0)) {
-                // if (p_guardsmen[i]<military) and (rando<50){rando=10;contin=max(floor(p_guardsmen[i]*1.05),500);p_population[i]-=contin;p_guardsmen[i]+=contin;}/
                 if ((p_pdf[i] < pdf) && (rando < 50)) {
-                    rando = 1;
                     rando = 10;
                     contin = max(floor(p_pdf[i] * 1.02), 1000);
                     p_population[i] -= contin;
@@ -1324,9 +1271,7 @@ function scr_enemy_ai_a() {
                 }
             }
             if ((p_large[i] == 1) && (rando < 50) && (military != 0) && (pdf != 0)) {
-                // if (p_guardsmen[i]<military) and (rando<50){rando=10;contin=0.01*p_population[i];p_guardsmen[i]+=contin*1250000;}
                 if ((p_pdf[i] < pdf) && (rando < 50)) {
-                    rando = 1;
                     rando = 10;
                     contin = 0.01 * p_population[i];
                     p_pdf[i] += contin * 1250000;
@@ -1339,28 +1284,20 @@ function scr_enemy_ai_a() {
             }
             if ((p_population[i] < 100000) && (p_population[i] > 5) && (p_large[i] == 0)) {
                 pdf = floor(p_population[i] / 25);
-                military = 0;
             }
             if ((p_population[i] < 2000) && (p_population[i] > 5) && (p_large[i] == 0)) {
                 pdf = floor(p_population[i] / 10);
-                military = 0;
             }
 
             if ((p_large[i] == 0) && (rando < 3)) {
-                // if (p_guardsmen[i]<military) and (rando<3){rando=1;contin=max(floor(p_guardsmen[i]*1.05),500);p_population[i]-=contin;p_guardsmen[i]+=contin;}
                 if ((p_pdf[i] < pdf) && (rando < 3)) {
-                    rando = 1;
-                    rando = 1;
                     contin = max(floor(p_pdf[i] * 1.02), 1000);
                     p_population[i] -= contin;
                     p_pdf[i] += contin;
                 }
             }
             if ((p_large[i] == 1) && (rando < 3)) {
-                // if (p_guardsmen[i]<military) and (rando<3){rando=1;contin=0.01*p_population[i];p_guardsmen[i]+=floor(contin*1250000);}
                 if ((p_pdf[i] < pdf) && (rando < 3)) {
-                    rando = 1;
-                    rando = 1;
                     contin = 0.01 * p_population[i];
                     p_pdf[i] += floor(contin * 1250000);
                 }
