@@ -1,8 +1,5 @@
 /// @self Asset.GMObject.obj_star
 function scr_enemy_ai_c() {
-    var rando = 0;
-    var contin = 0;
-
     with (obj_star) {
         if ((craftworld == 1) || (space_hulk == 1)) {
             x -= 20000;
@@ -17,19 +14,14 @@ function scr_enemy_ai_c() {
     if (array_sum(p_traitors)) {
         var traitor_system = true;
         for (var i = 1; i <= planets; i++) {
-            if (p_owner[i] != 10) {
+            if ((p_owner[i] != 10) || (p_pdf[i] > 0) || (p_guardsmen[i] > 0) || (p_orks[i] > 0) || (p_tau[i] > 0)) {
                 traitor_system = false;
-            } else if ((p_pdf[i] > 0) || (p_guardsmen[i] > 0) || (p_orks[i] > 0) || (p_tau[i] > 0)) {
-                traitor_system = false;
-            }
-            if (!traitor_system) {
                 break;
             }
         }
         for (var i = 1; i <= planets; i++) {
-            contin = 0;
-            rando = irandom(100) + 1; // This part handles the spreading
-            contin = floor(random(planets)) + 1;
+            var rando = irandom(100) + 1; // This part handles the spreading
+            var contin = floor(random(planets)) + 1;
             repeat (30) {
                 if ((p_type[contin] == "Dead") || (contin == i)) {
                     contin = floor(random(planets)) + 1;
@@ -43,13 +35,10 @@ function scr_enemy_ai_c() {
             if (contin < 100) {
                 if ((p_traitors[i] >= 3) && (p_traitors[contin] < ceil(p_traitors[i] / 2)) && (p_type[contin] != "Dead")) {
                     p_traitors[contin] += 1;
-                    contin = 500;
                 }
             }
 
-            contin = 0;
-            rando = floor(random(100)) + 1; // This part handles the ship building
-
+            // This part handles the ship building
             if (traitor_system) {
                 rando = floor(random(100)) + 1;
                 // Check for industrial facilities
@@ -156,10 +145,6 @@ function scr_enemy_ai_c() {
 
     // This is the traitors corruption code
     var kay = 0;
-    var temp5 = 0;
-    var temp6 = 0;
-    var temp7 = 0;
-
     var boat = scr_orbiting_fleet(eFACTION.CHAOS);
 
     if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != noone) && (owner != eFACTION.CHAOS) && (planets > 0)) {
@@ -238,34 +223,26 @@ function scr_enemy_ai_c() {
     } // End corruption code
 
     // This is the CSM landing code
-    boat = scr_orbiting_fleet(eFACTION.CHAOS);
-
-    var aler = 0;
     if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != noone) && (planets > 0)) {
-        var ii = 0, gud = 0;
-        repeat (planets) {
-            ii += 1;
-            if (gud == 0) {
-                if ((planets >= ii) && (p_type[ii] != "Dead") && (p_owner[ii] != 10)) {
-                    gud = ii;
-                }
-            }
-        }
-
-        if ((gud != 0) && instance_exists(boat)) {
-            if (fleet_has_cargo("chaos", boat)) {
-                if (p_chaos[gud] < 4) {
-                    p_chaos[gud] += max(1, floor(boat.image_index * 0.5));
-                    if (p_chaos[gud] > 4) {
-                        p_chaos[gud] = 4;
+        for (var i = 1; i <= planets; i++) {
+            if ((planets >= i) && (p_type[i] != "Dead") && (p_owner[i] != 10)) {
+                if (instance_exists(boat)) {
+                    if (fleet_has_cargo("chaos", boat)) {
+                        if (p_chaos[i] < 4) {
+                            p_chaos[i] += max(1, floor(boat.image_index * 0.5));
+                            if (p_chaos[i] > 4) {
+                                p_chaos[i] = 4;
+                            }
+                        }
+                        if (p_traitors[i] < 5) {
+                            p_traitors[i] += max(2, floor(boat.image_index * 0.5));
+                            if (p_traitors[i] > 5) {
+                                p_traitors[i] = 5;
+                            }
+                        }
                     }
                 }
-                if (p_traitors[gud] < 5) {
-                    p_traitors[gud] += max(2, floor(boat.image_index * 0.5));
-                    if (p_traitors[gud] > 5) {
-                        p_traitors[gud] = 5;
-                    }
-                }
+                break;
             }
         }
     } // End landing portion of code
@@ -273,10 +250,8 @@ function scr_enemy_ai_c() {
     // Tau Here
     if (array_sum(p_tau) > 0) {
         for (var i = 1; i <= 4; i++) {
-            contin = 0;
-            rando = floor(random(100)) + 1; // This part handles the spreading
-            // if (rando<30){
-            contin = floor(random(planets)) + 1;
+            var rando = floor(random(100)) + 1; // This part handles the spreading
+            var contin = floor(random(planets)) + 1;
             repeat (30) {
                 if ((p_type[contin] == "Dead") || (contin == i)) {
                     contin = floor(random(planets)) + 1;
@@ -349,8 +324,7 @@ function scr_enemy_ai_c() {
                 if ((p_type[i] != "Dead") && (p_type[i] != "Lava")) {
                     if ((p_tau[i] >= 2) && (p_influence[i][eFACTION.TAU] >= 70)) {
                         // Have the proppa facilities and size
-                        var fleet;
-                        fleet = 0;
+                        var fleet = noone;
                         contin = 2;
                         if (!instance_exists(obj_en_fleet)) {
                             contin = 3;
@@ -389,10 +363,10 @@ function scr_enemy_ai_c() {
 
                                 if (fleet.image_index >= 5) {
                                     var kawaii = 0;
-                                    var think = 0;
+                                    var think = noone;
 
                                     repeat (50) {
-                                        if ((think == 0) && (kawaii == 0)) {
+                                        if ((think == noone) && (kawaii == 0)) {
                                             var xx = x + floor(choose(random(300), random(300) * -1));
                                             var yy = y + floor(choose(random(300), random(300) * -1));
                                             think = instance_nearest(xx, yy, obj_star);
@@ -410,7 +384,7 @@ function scr_enemy_ai_c() {
                                             }
 
                                             if (kawaii == 0) {
-                                                think = 0;
+                                                think = noone;
                                             }
                                         }
                                     }
