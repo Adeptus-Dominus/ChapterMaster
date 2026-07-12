@@ -1832,6 +1832,21 @@ global.modular_drawing_items = [
         sprite: spr_mk6_complex_backpack,
         shadows: spr_mk6_complex_backpack_shadow,
     },
+	//MK4 Sprites
+	{
+        position: "armour",
+        armours: ["MK4 Maximus"],
+		body_types: [0],
+        sprite: spr_mk4_complex,
+        shadows: spr_mk4_complex_shadow,
+    },
+	{
+        position: "backpack",
+        armours: ["MK4 Maximus"],
+		body_types: [0],
+        sprite: spr_mk4_complex_backpack,
+        shadows: spr_mk4_complex_backpack_shadow,
+    },
     //Tartaros Sprites
     {
         position: "armour",
@@ -3445,18 +3460,19 @@ global.weapon_visual_data = {
             }
         ],
     },
-	"Executioner Power Axe": {
+    "Executioner Power Axe": {
         base: {
             weapon_data: {
                 display_type: "melee_onehand",
-                hand_type: 3,
-                arm_type: 3,
+                hand_type: 0,
                 single_left_right_profile: true,
             },
         },
         variants: [
             {
-                sprite: spr_weapon_powaxe,
+                sprite: spr_weapon_exec1,
+				sprite: spr_weapon_exec2,
+				sprite: spr_weapon_exec3,
             }
         ],
     },
