@@ -14,7 +14,6 @@ function scr_enemy_ai_d() {
     }
 
     // Planetary problems here
-
     for (var i = 1; i <= planets; i++) {
         //this will skip for given planet if no problems associated wiht planet
         if ((p_necrons[i] > 0) && (p_necrons[i] < 6)) {
@@ -133,17 +132,10 @@ function scr_enemy_ai_d() {
                     p_problem[i][firstest] = "Hive Fleet";
                     p_timer[i][firstest] = irandom_range(60, 120) + 1;
                     p_timer[i][firstest] += irandom_range(80, 120) + 1;
-                    // p_timer[i][firstest]=floor(random_range(3,6))+1;
-                    // show_message("Hive Fleet Destination: "+string(name)+"#ETA: "+string(p_timer[i][firstest]));
 
-                    var fleet, xx, yy;
-                    xx = random_range(room_width * 1.25, room_width * 2);
-                    xx = choose(xx * -1, xx);
-                    xx = x + xx;
-                    yy = random_range(room_height * 1.25, room_height * 2);
-                    yy = choose(yy * -1, yy);
-                    yy = y + yy;
-                    fleet = instance_create(xx, yy, obj_en_fleet);
+                    var xx = (random_range(room_width * 1.25, room_width * 2) * choose(-1, 1)) + x;
+                    var yy = (random_range(room_height * 1.25, room_height * 2) * choose(-1, 1)) + y;
+                    var fleet = instance_create(xx, yy, obj_en_fleet);
                     fleet.owner = eFACTION.TYRANIDS;
                     fleet.sprite_index = spr_fleet_tyranid;
                     fleet.image_speed = 0;
@@ -151,10 +143,6 @@ function scr_enemy_ai_d() {
                     fleet.capital_number = choose(7, 8, 9);
                     fleet.frigate_number = round(random_range(6, 12));
                     fleet.escort_number = round(random_range(12, 27));
-
-                    /*fleet.capital_number=choose(5,6);
-	                fleet.frigate_number=round(random_range(4,8));
-	                fleet.escort_number=round(random_range(8,18));*/
 
                     fleet.image_index = floor(fleet.capital_number + (fleet.frigate_number / 2) + (fleet.escort_number / 4));
                     fleet.image_alpha = 0;
@@ -170,39 +158,24 @@ function scr_enemy_ai_d() {
 
         if (has_problem_planet_and_time(i, "Hive Fleet", 3) > -1) {
             var woop = scr_role_count("Chief " + string(obj_ini.role[100][17]), "");
+            var yep = !scr_has_disadv("Psyker Intolerant");
 
-            var o, yep, yep2;
-            o = 0;
-            yep = true;
-            yep2 = false;
-            if (scr_has_disadv("Psyker Intolerant")) {
-                yep = false;
-            }
-
-            if ((obj_controller.known[eFACTION.TYRANIDS] == 0) && (woop != 0) && (yep != false)) {
+            if ((obj_controller.known[eFACTION.TYRANIDS] == 0) && (woop != 0) && yep) {
                 scr_popup("Shadow in the Warp", $"Chief {obj_ini.role[100][17]} " + string(obj_ini.name[0][5]) + " reports a disturbance in the warp.  He claims it is like a shadow.", "shadow", "");
                 scr_event_log("red", $"Chief {obj_ini.role[100][17]} reports a disturbance in the warp.  He claims it is like a shadow.");
             }
-            if ((obj_controller.known[eFACTION.TYRANIDS] == 0) && (woop == 0) && (yep != false)) {
-                var q = 0, q2 = 0;
-                repeat (90) {
-                    if (q2 == 0) {
-                        q += 1;
-                        if (obj_ini.role[0][q] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
-                            q2 = q;
-                            if (string_count("0", obj_ini.spe[0][q2]) > 0) {
-                                yep2 = true;
-                            }
+            if ((obj_controller.known[eFACTION.TYRANIDS] == 0) && (woop == 0) && yep) {
+                for (var q = 1; q <= 90; q++) {
+                    if (obj_ini.role[0][q] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
+                        if (string_count("0", obj_ini.spe[0][q]) > 0) {
+                            scr_popup("Shadow in the Warp", "You are distracted and bothered by a nagging sensation in the warp.  It feels as though a shadow descends upon your sector.", "shadow", "");
+                            scr_event_log("red", "You sense a disturbance in the warp.  It feels something like a massive shadow.");
                         }
+                        break;
                     }
-                }
-                if (yep2 == true) {
-                    scr_popup("Shadow in the Warp", "You are distracted and bothered by a nagging sensation in the warp.  It feels as though a shadow descends upon your sector.", "shadow", "");
-                    scr_event_log("red", "You sense a disturbance in the warp.  It feels something like a massive shadow.");
                 }
             }
 
-            g = 50;
             i = 50;
             obj_controller.known[eFACTION.TYRANIDS] = 1;
         }
@@ -271,8 +244,7 @@ function scr_enemy_ai_d() {
         var priority_requests = [];
         var non_priority_requests = [];
 
-        var r = 0, yep = 0;
-        for (r = 1; r <= planets; r++) {
+        for (var r = 1; r <= planets; r++) {
             // temp5: new hive, temp4: new planet
             if (!scr_planet_owned_by_group(r, fetch_faction_group())) {
                 continue;
@@ -308,13 +280,12 @@ function scr_enemy_ai_d() {
         }
 
         if (array_length(pop_doner_options) > 0 && (array_length(non_priority_requests) || array_length(priority_requests))) {
-            var onceh = 0;
             var random_chance = floor(random(100)) + 1;
             var doner_index = 0;
             // TODO check possible fixes for this logic
             // currently this only calculates for priority requests for pops
             for (var i = 1; i < array_length(pop_doner_options); i++) {
-                if (star_distace_calc(pop_doner_options[i], priority_requests[i]) < star_distace_calc(pop_doner_options[doner_index], priority_requests[doner_index])) {
+                if (star_distace_calc(pop_doner_options[i], priority_requests[0]) < star_distace_calc(pop_doner_options[doner_index], priority_requests[0])) {
                     doner_index = i;
                 }
             }
@@ -346,7 +317,6 @@ function scr_enemy_ai_d() {
     }
 
     // Local problems will go here
-    var planet;
     for (var i = 1; i <= planets; i++) {
         if (i < array_length(system_garrison)) {
             var garrison = get_garrison(i);
