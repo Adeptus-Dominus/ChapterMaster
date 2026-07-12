@@ -8,10 +8,9 @@ function scr_enemy_ai_e() {
 
     var imperium_fleets = present_fleet[2] + present_fleet[3];
 
-    var have_fleets, battle, battle2;
-    have_fleets = 0;
-    battle = 0;
-    battle2 = 0;
+    var have_fleets = 0;
+    var battle = 0;
+    var battle2 = 0;
 
     var attack = array_create(20, 0);
     var strength = array_create(20, 0);
@@ -157,12 +156,8 @@ function scr_enemy_ai_e() {
         } // This grabs the "strength" from all present fleets and adds it to the temporary variable for this AI battle
 
         // Determine who will attack who
-        var still_battling = true;
-        var rond = 0;
-
         repeat (5) {
-            rond += 1;
-            still_battling = false;
+            var still_battling = false;
             if ((strength[2] + strength[3] > 0) && (strength[6] + strength[7] + strength[8] + strength[9] + strength[10] + strength[13] > 0)) {
                 still_battling = true;
             }
@@ -455,18 +450,13 @@ function scr_enemy_ai_e() {
 
     if (battle > 0) {
         if ((present_fleet[1] > 0) && ((present_fleet[6] + present_fleet[7] + present_fleet[8] + present_fleet[9] + present_fleet[10] + present_fleet[13] > 0) || ((present_fleet[2] > 0) && (obj_controller.faction_status[2] == "War")))) {
-            var i, onceh;
-            i = 1;
-            onceh = 0;
-
-            repeat (9) {
-                i += 1;
+            for (var i = 2; i <= 10; i++) {
                 var special_stop = false;
-                if ((i == 10) || (i == 11)) {
+                if ((i == 10)) {
                     special_stop = has_problem_star("meeting") || has_problem_star("meeting_trap");
                 }
 
-                if ((obj_controller.faction_status[i] == "War") && (onceh == 0) && (!special_stop)) {
+                if ((obj_controller.faction_status[i] == "War") && (!special_stop)) {
                     // Quene battle
                     obj_turn_end.battles += 1;
                     obj_turn_end.battle[obj_turn_end.battles] = 1;
@@ -506,7 +496,7 @@ function scr_enemy_ai_e() {
                             }
                         }
                     }
-                    onceh = 1;
+                    break;
                 }
             }
         }
@@ -515,14 +505,9 @@ function scr_enemy_ai_e() {
     instance_activate_object(obj_p_fleet);
     instance_activate_object(obj_en_fleet);
 
-    var run = 0;
-    var force = 1;
-    var beetle = 0;
     var chaos_meeting = 0;
 
-    repeat (planets) {
-        run += 1;
-        force = 1;
+    for (var run = 1; run <= planets; run++) {
         var forces_list = [];
         var force_count = 0;
         if (p_player[run] > 0 && struct_exists(obj_controller.location_viewer.garrison_log, name)) {
@@ -531,10 +516,6 @@ function scr_enemy_ai_e() {
         }
 
         if (p_player[run] > 0 && force_count > 0) {
-            var spyrer, fallen;
-            spyrer = 0;
-            fallen = 0;
-
             if (p_player[run] > 0) {
                 if (has_problem_planet(run, "meeting")) {
                     chaos_meeting = run;
@@ -544,8 +525,7 @@ function scr_enemy_ai_e() {
             }
             if (has_problem_planet(run, "spyrer")) {
                 if (p_player[run] > 20) {
-                    var tixt = "The Spyrer on " + planet_numeral_name(run);
-                    tixt += " seems to have vanished, presumably gone into hiding.";
+                    var tixt = "The Spyrer on " + planet_numeral_name(run) + " seems to have vanished, presumably gone into hiding.";
                     scr_popup("Spyrer Rampage", tixt, "spyrer", "");
                 } else if (p_player[run] <= 20) {
                     obj_turn_end.battles += 1;
@@ -559,25 +539,21 @@ function scr_enemy_ai_e() {
             }
 
             if ((p_player[run] > 0) && has_problem_planet(run, "fallen")) {
-                var chan;
-                chan = choose(1, 2, 3, 4);
-                if (chan <= 2) {
+                if (choose(true, false)) {
                     obj_turn_end.battles += 1;
                     obj_turn_end.battle[obj_turn_end.battles] = 1;
                     obj_turn_end.battle_world[obj_turn_end.battles] = run;
                     obj_turn_end.battle_opponent[obj_turn_end.battles] = 10;
                     obj_turn_end.battle_location[obj_turn_end.battles] = name;
                     obj_turn_end.battle_object[obj_turn_end.battles] = id;
-                    if (chan == 1) {
+                    if (choose(true, false)) {
                         obj_turn_end.battle_special[obj_turn_end.battles] = "fallen1";
-                    }
-                    if (chan == 2) {
+                    } else {
                         obj_turn_end.battle_special[obj_turn_end.battles] = "fallen2";
                     }
-                } else if (chan >= 3) {
+                } else {
                     if (remove_planet_problem(run, "fallen")) {
-                        var tixt = "Your marines have scoured " + planet_numeral_name(run);
-                        tixt += " in search of the Fallen.  Despite their best efforts, and meticulous searching, none have been found.  It appears as though the information was faulty or out of date.";
+                        var tixt = "Your marines have scoured " + planet_numeral_name(run) + " in search of the Fallen.  Despite their best efforts, and meticulous searching, none have been found.  It appears as though the information was faulty or out of date.";
                         scr_popup("Hunt the Fallen", tixt, "fallen", "");
                         scr_event_log("", $"Mission Successful: No Fallen located upon {planet_numeral_name(run)}");
                     }
@@ -588,7 +564,7 @@ function scr_enemy_ai_e() {
             setup_necron_tomb_raid(run);
         }
         if ((p_player[run] > 0) && (force_count > 0)) {
-            for (force = 2; force < 14; force++) {
+            for (var force = 2; force < 14; force++) {
                 battle_opponent = 0;
                 var pause = false;
 
@@ -662,16 +638,7 @@ function scr_enemy_ai_e() {
         }
 
         // Other planetary stuff
-
-        var thirdpop;
-        var halfpop;
-
-        thirdpop = p_max_population[run] / 3;
-        halfpop = p_max_population[run] / 2;
-
         if (array_length(p_feature[run])) {
-            var planet_data = get_planet_data(run);
-
             // Transforming billions pop number to a real number so the code can handle it
             // Otherwise, 3 and a half billions get translated as 3,50 instead of 3500000000
 
@@ -680,12 +647,11 @@ function scr_enemy_ai_e() {
                 var monestary = search_planet_features(p_feature[run], eP_FEATURES.MONASTERY);
                 if (array_length(monestary) > 0) {
                     monestary = p_feature[run][monestary[0]];
-                    var md, ms, ml, build_rate, build_rate2;
-                    md = 225;
-                    ms = 300;
-                    ml = 32;
-                    build_rate = 4;
-                    build_rate2 = 6;
+                    var md = 225;
+                    var ms = 300;
+                    var ml = 32;
+                    var build_rate = 4;
+                    var build_rate2 = 6;
                     if (scr_has_adv("Siege Masters")) {
                         md = 300;
                         ms = 400;
@@ -728,12 +694,12 @@ function scr_enemy_ai_e() {
 
         // Work on upgrades
         if (array_length(p_upgrades[run]) > 0) {
-            var upgrade_type, tx, display_type, upgrade;
             for (var up = 0; up < array_length(p_upgrades[run]); up++) {
-                upgrade = p_upgrades[run][up];
+                var upgrade = p_upgrades[run][up];
                 if (struct_exists(upgrade, "built")) {
-                    upgrade_type = upgrade.f_type;
+                    var upgrade_type = upgrade.f_type;
                     if (upgrade.built == obj_controller.turn) {
+                        var display_type = "No Available Feature";
                         if (upgrade_type == eP_FEATURES.ARSENAL) {
                             display_type = "Arsenal";
                             obj_controller.und_armouries++;
@@ -744,7 +710,7 @@ function scr_enemy_ai_e() {
                             display_type = "Gene Vault";
                             obj_controller.und_gene_vaults++;
                         }
-                        tx = $"Hidden {display_type} on {name} {scr_roman(run)} has been completed.";
+                        var tx = $"Hidden {display_type} on {name} {scr_roman(run)} has been completed.";
                         scr_alert("green", "owner", string(tx), x, y);
                         scr_event_log("", string(tx));
                     }
@@ -767,40 +733,27 @@ function scr_enemy_ai_e() {
 
     if (chaos_meeting > 0) {
         // Run through forces and determine what all is there
+        var _meeting = instance_create(0, 0, obj_temp_meeting);
 
-        instance_create(0, 0, obj_temp_meeting);
-
-        var i, co, ii, otm, good, master_present;
-        ii = 0;
-        i = 0;
-        co = -1;
-        good = 0;
-        master_present = 0;
-        repeat (11) {
-            co += 1;
-            i = 0;
-            repeat (200) {
-                i += 1;
-                good = 0;
+        var otm = 0;
+        var master_present = false;
+        for (var co = 0; co <= 10; co++) {
+            for (var i = 1; i <= 200; i++) {
                 var _unit = fetch_unit([co, i]);
-                if ((_unit.role() != "" && _unit.location_string == name) && (_unit.planet_location == floor(chaos_meeting))) {
-                    good += 1;
-                }
-                if ((_unit.role() != obj_ini.role[100][6]) && (_unit.role() != "Venerable " + string(obj_ini.role[100][6]))) {
-                    good += 1;
-                }
-                if ((string_count("Dread", obj_ini.armour[co][i]) == 0) || (_unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER])) {
-                    good += 1;
-                }
-
-                if (good == 3) {
-                    obj_temp_meeting.dudes += 1;
-                    otm = obj_temp_meeting.dudes;
-                    obj_temp_meeting.present[otm] = 1;
-                    obj_temp_meeting.co[otm] = co;
-                    obj_temp_meeting.ide[otm] = i;
+                var _is_unit_real_and_here = _unit.role() != "" && _unit.location_string == name;
+                var _is_this_a_chaos_meeting = _unit.planet_location == floor(chaos_meeting);
+                var _unit_does_not_have_dreadnought_role = _unit.role() != obj_ini.role[100][6];
+                var _unit_is_not_venerable = _unit.role() != "Venerable " + string(obj_ini.role[100][6]);
+                var _unit_does_not_have_dreadnought_armour = string_count("Dread", obj_ini.armour[co][i]) == 0;
+                var _is_chapter_master = _unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER];
+                if (_is_unit_real_and_here && _is_this_a_chaos_meeting && _unit_does_not_have_dreadnought_role && _unit_is_not_venerable && (_unit_does_not_have_dreadnought_armour || _is_chapter_master)) {
+                    _meeting.dudes += 1;
+                    otm = _meeting.dudes;
+                    _meeting.present[otm] = 1;
+                    _meeting.co[otm] = co;
+                    _meeting.ide[otm] = i;
                     if (_unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
-                        master_present = 1;
+                        master_present = true;
                     }
                 }
             }
@@ -808,25 +761,20 @@ function scr_enemy_ai_e() {
 
         // title / text / image / speshul
         var popup_text = "A cloaked, ragged figure approaches your forces and hails you. ";
-        if ((master_present == 1) && (otm <= 21)) {
-            var effect;
-            effect = "meeting_1t";
+        if (master_present && (otm <= 21)) {
+            var effect = "meeting_1t";
             if (chaos_meeting == floor(chaos_meeting)) {
                 effect = "meeting_1";
             }
             scr_popup("Chaos Meeting", $"{popup_text}He is to bring you to meet with their master and you have few enough forces to be permitted.  What is thy will?", "chaos_messenger", effect);
         }
-        if ((master_present == 1) && (otm > 21)) {
+        if (master_present && (otm > 21)) {
             scr_popup("Chaos Meeting", $"{popup_text}He is to bring you to their master, but before the meeting proceeds, you must bring fewer forces.  Only yourself and up to two squads will be allowed in the presence of {obj_controller.faction_title[10]} {obj_controller.faction_leader[10]}.", "chaos_messenger", "meeting_2");
-            with (obj_temp_meeting) {
-                instance_destroy();
-            }
+        instance_destroy(_meeting);
         }
-        if ((master_present == 0) && (otm > 21)) {
+        if (!master_present && (otm > 21)) {
             scr_popup("Chaos Meeting", $"{popup_text}The meeting was supposed to be with the Chaos Lord, and yourself, but you are not planet-side.  Land on the planet with up to two squads and the meeting will proceed.", "chaos_messenger", "meeting_3");
-            with (obj_temp_meeting) {
-                instance_destroy();
-            }
+        instance_destroy(_meeting);
         }
     }
 
