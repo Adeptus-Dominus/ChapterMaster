@@ -205,62 +205,69 @@ if (!engaged) {
     obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Engaged, attacking in melee");
     //TODO: The melee code was not refactored;
     // Melee
-    engaged = 1;
     for (var i = 0; i < array_length(wep); i++) {
-        if (wep[i] == "" || wep_num[i] == 0) {
+        if (wep[i] == "" || wep_num[i] == 0 || (range[i] > 2 && floor(range[i]) == range[i])) {
             continue;
         }
-        var _armour_piercing = false;
+
         if (!flank) {
             enemy = get_rightmost();
             if (enemy == noone) {
+                engaged = false;
                 exit;
             }
         } else if (flank) {
             enemy = get_leftmost();
             if (enemy == noone) {
+                engaged = false;
                 exit;
             }
         }
 
-        if ((range[i] <= 2) || (floor(range[i]) != range[i])) {
-            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"{wep[i]}(i{i}) is striking");
-            // Weapon meets preliminary checks
-            if (apa[i] > 2) {
-                _armour_piercing = true;
-                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP=true");
-            }
-            if (_armour_piercing && instance_exists(obj_nfort) && (!flank)) {
-                // Huff and puff and blow the wall down
-                enemy = instance_nearest(x, y, obj_nfort);
-                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP -> wall");
-                scr_shoot(i, enemy, 1, "arp", "wall");
-                continue;
-            }
-            if (_armour_piercing) {
-                // Check for vehicles
-                var good = false;
+        var dist = get_block_distance(enemy);
+        if (dist > 1) {
+            engaged = false;
+            exit;
+        }
+    
+        var _armour_piercing = false;
 
-                if (block_has_armour(enemy)) {
-                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP -> vehicles in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
-                    scr_shoot(i, enemy, 1, "arp", "melee");
-                    good = true;
-                }
-                if (!good) {
-                    _armour_piercing = false;
-                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP -> no vehicles, falling back to infantry");
-                }
-            }
+        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"{wep[i]}(i{i}) is striking");
+        // Weapon meets preliminary checks
+        if (apa[i] > 2) {
+            _armour_piercing = true;
+            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP=true");
+        }
+        if (_armour_piercing && instance_exists(obj_nfort) && (!flank)) {
+            // Huff and puff and blow the wall down
+            enemy = instance_nearest(x, y, obj_nfort);
+            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP -> wall");
+            scr_shoot(i, enemy, 1, "arp", "wall");
+            continue;
+        }
+        if (_armour_piercing) {
+            // Check for vehicles
+            var good = false;
 
-            if ((!_armour_piercing) && target_block_is_valid(enemy, obj_pnunit)) {
-                // Check for men
-                if (enemy.men) {
-                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee -> infantry in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
-                    scr_shoot(i, enemy, 1, "att", "melee");
-                } else if (block_has_armour(enemy)) {
-                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee -> armour fallback in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
-                    scr_shoot(i, enemy, 1, "arp", "melee");
-                }
+            if (block_has_armour(enemy)) {
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP -> vehicles in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
+                scr_shoot(i, enemy, 1, "arp", "melee");
+                good = true;
+            }
+            if (!good) {
+                _armour_piercing = false;
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP -> no vehicles, falling back to infantry");
+            }
+        }
+
+        if ((!_armour_piercing) && target_block_is_valid(enemy, obj_pnunit)) {
+            // Check for men
+            if (enemy.men) {
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee -> infantry in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
+                scr_shoot(i, enemy, 1, "att", "melee");
+            } else if (block_has_armour(enemy)) {
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee -> armour fallback in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
+                scr_shoot(i, enemy, 1, "arp", "melee");
             }
         }
     }
