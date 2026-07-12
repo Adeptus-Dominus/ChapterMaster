@@ -109,10 +109,10 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         if (_hostile_weapon == "Kannon") {
             flavor = 1;
             if (_hostile_shots > 1) {
-                m1 = $"{_hostile_shots} {_hostile_weapon}z belch out large caliber shells.  ";
+                m1 = $"{_hostile_shots} {_hostile_weapon}z belch out large caliber shells at {target_type}.  ";
             }
             if (_hostile_shots == 1) {
-                m1 = $"A {_hostile_weapon}z belches out a large caliber shell.  ";
+                m1 = $"A {_hostile_weapon}z belches out a large caliber shell at {target_type}.  ";
             }
         }
         if (_hostile_weapon == "Shoota") {
@@ -150,7 +150,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
                 m1 = $"{_hostile_shots} rokkitz scream upward and then fall upon {target_type}.  ";
             }
             if (ranz == 3) {
-                m1 = $"{_hostile_shots} {_hostile_weapon}z roar and fire their payloads.  ";
+                m1 = $"{_hostile_shots} {_hostile_weapon}z roar and fire their payloads at {target_type}.  ";
             }
         }
 
@@ -209,10 +209,10 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         if (_hostile_weapon == "Doomsday Cannon") {
             flavor = 1;
             if (_hostile_shots == 1) {
-                m1 = $"A Doomsday Arc crackles with energy and then fires.  The resulting blast is blinding in intensity, the ground shaking before its might.  ";
+                m1 = $"A Doomsday Arc crackles with energy and then fires at {target_type}.  The resulting blast is blinding in intensity, the ground shaking before its might.  ";
             }
             if (_hostile_shots > 1) {
-                m1 = $"{_hostile_shots} Doomsday Arcs crackle with energy and then fire.  The resulting blasts are blinding in intensity, the ground shaking.  ";
+                m1 = $"{_hostile_shots} Doomsday Arcs crackle with energy and then fire at {target_type}.  The resulting blasts are blinding in intensity, the ground shaking.  ";
             }
         }
 
