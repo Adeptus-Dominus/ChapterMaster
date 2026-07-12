@@ -1853,8 +1853,8 @@ global.modular_drawing_items = [
         armours: ["Artificer Armour"],
 		assign_by_rank: 2,
 		body_types: [0],
-        sprite: spr_artificer_chest1,
-        shadows: spr_artificer_chest1_shadow,
+        sprite: spr_artificer_chest_variant,
+        shadows: spr_artificer_chest_variant_shadow,
     },
     //Tartaros Sprites
     {
