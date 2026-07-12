@@ -1847,6 +1847,15 @@ global.modular_drawing_items = [
         sprite: spr_mk4_complex_backpack,
         shadows: spr_mk4_complex_backpack_shadow,
     },
+	//Artificer Sprites
+	{
+        position: "chest_variants",
+        armours: ["Artificer Armour"],
+		assign_by_rank: 2,
+		body_types: [0],
+        sprite: spr_artificer_chest1,
+        shadows: spr_artificer_chest1_shadow,
+    },
     //Tartaros Sprites
     {
         position: "armour",
