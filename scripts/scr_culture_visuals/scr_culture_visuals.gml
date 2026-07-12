@@ -1817,6 +1817,21 @@ global.modular_drawing_items = [
         shadows: spr_indomitus_right_shin_shadows,
         flip: true,
     },
+	//Corvus MK6 Sprites
+	{
+        position: "armour",
+        armours: ["MK6 Corvus"],
+		body_types: [0],
+        sprite: spr_mk6_complex,
+        shadows: spr_mk6_complex_shadow,
+    },
+	{
+        position: "backpack",
+        armours: ["MK6 Corvus"],
+		body_types: [0],
+        sprite: spr_mk6_complex_backpack,
+        shadows: spr_mk6_complex_backpack_shadow,
+    },
     //Tartaros Sprites
     {
         position: "armour",

@@ -1612,7 +1612,7 @@ function ComplexSet(_unit) constructor {
                 armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK6 Corvus":
-                add_group({armour: spr_mk6_complex, backpack: spr_mk6_complex_backpack, left_trim: spr_mk7_left_trim, right_trim: spr_mk7_right_trim, mouth_variants: spr_mk6_mouth_variants, head: spr_mk6_head_variants});
+                add_group({left_trim: spr_mk7_left_trim, right_trim: spr_mk7_right_trim, mouth_variants: spr_mk6_mouth_variants, head: spr_mk6_head_variants});
                 armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK5 Heresy":
