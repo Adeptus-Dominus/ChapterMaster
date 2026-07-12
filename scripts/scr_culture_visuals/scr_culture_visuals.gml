@@ -3471,7 +3471,11 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_weapon_exec1,
+			},
+			{
 				sprite: spr_weapon_exec2,
+			},
+			{
 				sprite: spr_weapon_exec3,
             }
         ],
