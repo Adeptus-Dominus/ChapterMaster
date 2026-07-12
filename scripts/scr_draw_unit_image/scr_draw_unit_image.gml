@@ -399,7 +399,7 @@ function scr_draw_unit_image(_background = false) {
                 }
 
                 if (armour_type == eARMOUR_TYPE.NORMAL && complex_livery && unit_role == _role[2]) {
-                    complex_set.add_group({right_leg: spr_artificer_right_leg, left_leg: spr_artificer_left_leg, chest_variants: spr_artificer_chest, thorax_variants: spr_artificer_thorax, mouth_variants: spr_artificer_mouth});
+                    complex_set.add_group({right_leg: spr_artificer_right_leg, left_leg: spr_artificer_left_leg, thorax_variants: spr_artificer_thorax, mouth_variants: spr_artificer_mouth});
                 }
 
                 // Draw the Iron Halo
