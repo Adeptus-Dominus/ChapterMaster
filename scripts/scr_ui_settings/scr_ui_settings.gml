@@ -527,23 +527,23 @@ function scr_ui_settings() {
                         if (bat_formation[formating] == "") {
                             bat_formation[formating] = "Custom" + string(formating - 3);
                             bat_formation_type[formating] = 1;
-                            bat_deva_for[formating] = 1;
-                            bat_assa_for[formating] = 4;
-                            bat_tact_for[formating] = 2;
-                            bat_vete_for[formating] = 2;
+                            bat_deva_for[formating] = 3;
+                            bat_assa_for[formating] = 5;
+                            bat_tact_for[formating] = 4;
+                            bat_vete_for[formating] = 3;
                             bat_hire_for[formating] = 3;
-                            bat_libr_for[formating] = 3;
-                            bat_comm_for[formating] = 3;
-                            bat_tech_for[formating] = 3;
-                            bat_term_for[formating] = 3;
-                            bat_hono_for[formating] = 3;
-                            bat_drea_for[formating] = 5;
+                            bat_libr_for[formating] = 2;
+                            bat_comm_for[formating] = 2;
+                            bat_tech_for[formating] = 2;
+                            bat_term_for[formating] = 5;
+                            bat_hono_for[formating] = 2;
+                            bat_drea_for[formating] = 6;
                             bat_rhin_for[formating] = 6;
-                            bat_pred_for[formating] = 7;
-                            bat_landraid_for[formating] = 7;
-                            bat_landspee_for[formating] = 4;
+                            bat_pred_for[formating] = 6;
+                            bat_landraid_for[formating] = 6;
+                            bat_landspee_for[formating] = 5;
                             bat_whirl_for[formating] = 1;
-                            bat_scou_for[formating] = 1;
+                            bat_scou_for[formating] = 3;
                         }
                     }
                 }
