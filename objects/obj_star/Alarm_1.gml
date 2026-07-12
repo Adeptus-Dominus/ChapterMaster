@@ -70,7 +70,7 @@ for (var i = 1; i <= 4; i++) {
             break;
         case "Craftworld":
             p_population[i] = irandom_range(150000, 300000);
-            p_station = 6;
+            p_station[i] = 6;
             p_max_population[i] = p_population[i];
             break;
     }
@@ -120,14 +120,17 @@ for (var i = 1; i <= 4; i++) {
         warp_lanes = [];
         x2 = 0;
     }
-    // p_guardsmen[i]=0;
 }
 
 for (var i = 1; i <= 4; i++) {
     p_guardsmen[i] = 0;
 }
 
-var fleet, system_fleet = 0, capital = 0, frigate = 0, escort = 0;
+var fleet;
+var system_fleet = 0;
+var capital = 0;
+var frigate = 0;
+var escort = 0;
 // Create Imperium Fleet
 if (owner == eFACTION.IMPERIUM || owner == eFACTION.ORK || owner == eFACTION.MECHANICUS) {
     for (var g = 1; g <= 4; g++) {
@@ -314,7 +317,6 @@ if (owner == eFACTION.TYRANIDS) {
                     p_tyranids[i] = choose(4, 5, 5);
                     break;
             }
-            //array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.GENE_STEALER_CULT));
         }
         p_owner[i] = eFACTION.IMPERIUM;
     }
@@ -346,9 +348,8 @@ for (var i = 1; i <= planets; i++) {
         p_owner[i] = 5;
         p_first[i] = 5;
         p_sisters[i] = 4;
-        adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[i] * 10) - irandom(5), i, self);
+        adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[i] * 10) - irandom(5), i, id);
     }
-    // if (p_owner[i]=3) or (p_owner[i]=5){p_feature[i]="Artifact|";}Testing ; 137
 }
 
 if ((name == "Kim Jong") && (owner == eFACTION.CHAOS)) {
@@ -404,7 +405,7 @@ if ((choose(0, 1) == 1) && (planets > 0)) {
                                     p_heresy[_ran_num] -= 10;
                                 }
                                 p_sisters[_ran_num] = choose(2, 2, 3);
-                                adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[_ran_num] * 10) - irandom(3), _ran_num, self);
+                                adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[_ran_num] * 10) - irandom(3), _ran_num, id);
                                 goo = 1;
                                 break;
                             case 2:
