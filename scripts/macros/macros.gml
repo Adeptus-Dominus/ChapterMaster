@@ -207,18 +207,19 @@ global.alliance_grades = ["Hated", "Hostile","Suspicious","Uneasy","Neutral","Al
 
 enum eFACTION {
     PLAYER = 1,
-    IMPERIUM,
-    MECHANICUS,
-    INQUISITION,
-    ECCLESIARCHY,
-    ELDAR,
-    ORK,
-    TAU,
-    TYRANIDS,
-    CHAOS,
-    HERETICS,
-    GENESTEALER,
-    NECRONS = 13
+    IMPERIUM = 2,
+    MECHANICUS = 3,
+    INQUISITION = 4,
+    ECCLESIARCHY = 5,
+    ELDAR = 6,
+    ORK = 7,
+    TAU = 8,
+    TYRANIDS = 9,
+    CHAOS = 10,
+    HERETICS = 11,
+    GENESTEALER = 12,
+    NECRONS = 13,
+    _COUNT
 }
 
 

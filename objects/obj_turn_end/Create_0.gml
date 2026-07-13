@@ -6,23 +6,20 @@ keywords = "";
 last_open = 1;
 
 battles = 0;
-audiences = 0;
-popups = 0;
-alerts = 0;
 fadeout = 0;
+popups = 0;
 popups_end = 0;
 
+combating = 0;
+cooldown = 10;
 current_battle = 1;
 current_popup = 0;
 
-fast = 0; // This is increased, once the alert[i]=1 and >=fast then it begins to fade in and get letters
 info_mahreens = 0;
 info_vehicles = 0;
 
 first_x = obj_controller.x; // Return to this position once all the battles are done
 first_y = obj_controller.y;
-combating = 0;
-cooldown = 10;
 
 obj_controller.menu = eMENU.TURN_END; // show nothing, click nothing
 
@@ -57,7 +54,7 @@ battle_location = array_create(_popup_size, "");
 battle_world = array_create(_popup_size, 0);
 battle_opponent = array_create(_popup_size, 0);
 /// @type {Asset.GMObject.obj_star} 
-battle_object = array_create(_popup_size, 0);
+battle_object = array_create(_popup_size, noone);
 battle_pobject = array_create(_popup_size, 0);
 battle_special = array_create(_popup_size, "");
 
@@ -73,23 +70,6 @@ alert_char[1] = 1;
 
 handle_discovered_governor_assasinations();
 
-if (audiences > 0) {
-    // This is a one-off change all messages to declare war
-    var war;
-    for (var i = 1; i <= 15; i++) {
-        war[i] = 0;
-    }
-    for (var i = 0; i < array_length(audience_stack); i++) {
-        var _audience = audience_stack[i];
-        if ((_audience.topic != "declare_war") && (_audience.topic != "gene_xeno") && (_audience.topic != "") && (war[_audience.faction] == 0) && (obj_controller.faction_status[_audience.faction] != "War") && (_audience.faction != 10)) {
-            if ((obj_controller.disposition[_audience.faction] <= 0) && (_audience.faction < 6)) {
-                _audience.topic = "declare_war";
-                war[_audience.faction] = 1;
-            }
-        }
-    }
-}
-
 alerts = 0;
-fast = 0;
+fast = 0; // This is increased, once the alert[i]=1 and >=fast then it begins to fade in and get letters
 show = 0;

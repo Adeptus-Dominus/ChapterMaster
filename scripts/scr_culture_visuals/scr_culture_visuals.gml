@@ -1553,14 +1553,8 @@ global.modular_drawing_items = [
         sprite: spr_cata_shoulder_hanging_leather_right,
         body_types: [2],
         armours: ["Cataphractii"],
-        subcomponents: [
-            [
-                spr_blank,
-                spr_cata_shoulder_hanging_leather_right_tips
-            ]
-        ],
         overides: {
-            "left_pauldron_embeleshments": spr_cata_shoulder_hanging_leather_left,
+            "right_pauldron_embeleshments": spr_cata_shoulder_hanging_leather_right,
             "tabbard": spr_cata_tabbard_leather,
         },
         subcomponents: [
@@ -1569,18 +1563,24 @@ global.modular_drawing_items = [
                 spr_cata_shoulder_hanging_leather_right_tips
             ]
         ],
-        flip: true,
+        flip: false,
     },
     {
-        position: "right_pauldron_embeleshments",
-        sprite: spr_cata_shoulder_hanging_mail_right,
+        position: "left_pauldron_embeleshments",
+        sprite: spr_cata_shoulder_hanging_leather_left,
         body_types: [2],
         armours: ["Cataphractii"],
         overides: {
-            "left_pauldron_embeleshments": spr_cata_shoulder_hanging_mail_left,
-            "tabbard": spr_cata_tabbard_mail,
+            "left_pauldron_embeleshments": spr_cata_shoulder_hanging_leather_left,
+            "tabbard": spr_cata_tabbard_leather,
         },
-        flip: true,
+        subcomponents: [
+            [
+                spr_blank,
+                spr_cata_shoulder_hanging_leather_left_tips
+            ]
+        ],
+        flip: false,
     },
     {
         sprite: spr_blank,
@@ -1816,6 +1816,21 @@ global.modular_drawing_items = [
         armours: ["Terminator Armour"],
         shadows: spr_indomitus_right_shin_shadows,
         flip: true,
+    },
+	//Corvus MK6 Sprites
+	{
+        position: "armour",
+        armours: ["MK6 Corvus"],
+		body_types: [0],
+        sprite: spr_mk6_complex,
+        shadows: spr_mk6_complex_shadow,
+    },
+	{
+        position: "backpack",
+        armours: ["MK6 Corvus"],
+		body_types: [0],
+        sprite: spr_mk6_complex_backpack,
+        shadows: spr_mk6_complex_backpack_shadow,
     },
     //Tartaros Sprites
     {

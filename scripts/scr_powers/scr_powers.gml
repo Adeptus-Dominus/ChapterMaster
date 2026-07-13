@@ -195,8 +195,7 @@ function scr_powers(caster_id, _psy_log = undefined) {
                 _marine_index = _target_data.index;
                 _marine_column = _target_data.column;
                 if (_marine_index != -1) {
-                    marine_attack[_marine_index] += 1.5 * _total_psychic_amplification;
-                    marine_defense[_marine_index] -= 0.15 * _total_psychic_amplification;
+                    marine_attack[_marine_index][0] *= 1.5 * _total_psychic_amplification;
                 }
             }
         } else if (_power_id == "regenerate") {
@@ -660,7 +659,7 @@ function process_tome_mechanics(_unit, _unit_id) {
             // Apply corruption based on perils chance
             if (_result.perils_chance > 0) {
                 if ((_tome_roll > 90) && (_result.perils_chance > 0)) {
-                    _unit.corruption += roll_dice_unit(1, 6, "low", _unit);
+                    _unit.corruption += roll_dice_unit(_unit, 1, 6, "low");
                 }
             }
         }

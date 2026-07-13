@@ -11,10 +11,10 @@ enum eLOG_LEVEL {
 /// @function Logger() constructor
 /// @description A Python-inspired logger that traces the callsite and timestamp for every message.
 function Logger() constructor {
-    static active_level = eLOG_LEVEL.DEBUG;
-    static file_logging = true;
-    static file_logging_level = eLOG_LEVEL.INFO;
-    static log_filename = PATH_LAST_MESSAGES;
+    active_level = eLOG_LEVEL.DEBUG;
+    file_logging = true;
+    file_logging_level = eLOG_LEVEL.INFO;
+    log_filename = PATH_LAST_MESSAGES;
 
     /// @description Physically writes the queue to the file.
     /// @param {Any} _message

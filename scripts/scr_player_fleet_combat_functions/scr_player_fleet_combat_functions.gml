@@ -343,14 +343,14 @@ function setup_player_combat_ship() {
         armour_other = round(armour_other * 1.1);
     }
 
-    var i = 0, unit, b = 0;
+    var i = 0;
 
     for (var co = 0; co <= obj_ini.companies; co++) {
         for (i = 0; i < array_length(obj_ini.name[co]); i++) {
             if (obj_ini.name[co][i] == "") {
                 continue;
             }
-            unit = fetch_unit([co, i]);
+            var unit = fetch_unit([co, i]);
             if (unit.ship_location == ship_id) {
                 if (unit.is_boarder && unit.hp() > (unit.max_health() / 10)) {
                     array_push(board_co, co);

@@ -7,16 +7,15 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
     var xxx = camera_get_view_x(view_camera[0]) + 535;
     var yyy = camera_get_view_y(view_camera[0]) + 200;
 
-    if ((cooldown <= 0) && (battle_world[current_battle] == noone) && (combating == 0)) {
+    if ((cooldown <= 0) && (battle_world[current_battle] == 0) && (combating == 0)) {
         if ((mouse_x >= xxx + 132) && (mouse_y >= yyy + 354) && (mouse_x < xxx + 259) && (mouse_y < yyy + 389)) {
             // Run like hell, space
             with (obj_fleet_select) {
                 instance_destroy();
             }
-            var that, that2;
-            that = instance_nearest(battle_pobject[current_battle].x, battle_pobject[current_battle].y, obj_p_fleet);
+            var that = instance_nearest(battle_pobject[current_battle].x, battle_pobject[current_battle].y, obj_p_fleet);
             that.alarm[3] = 1;
-            that2 = instance_create(0, 0, obj_popup);
+            var that2 = instance_create(0, 0, obj_popup);
             that2.type = 99;
             obj_controller.force_scroll = 1;
         }
@@ -36,62 +35,58 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
 
             combating = 1;
 
-            instance_create(0, 0, obj_fleet);
-            obj_fleet.enemy[1] = enemy_fleet[1];
-            obj_fleet.enemy_status[1] = -1;
+            var _battle_instance = instance_create(0, 0, obj_fleet);
+            _battle_instance.enemy[1] = enemy_fleet[1];
+            _battle_instance.enemy_status[1] = -1;
 
-            obj_fleet.en_capital[1] = ecap[1];
-            obj_fleet.en_frigate[1] = efri[1];
-            obj_fleet.en_escort[1] = eesc[1];
+            _battle_instance.en_capital[1] = ecap[1];
+            _battle_instance.en_frigate[1] = efri[1];
+            _battle_instance.en_escort[1] = eesc[1];
 
             // Plug in all of the enemies first
             // And then plug in the allies after then with their status set to positive
 
-            ee = 1;
+            var _ship_index = 1;
             for (var g = 2; g <= 6; g++) {
                 if (enemy_fleet[g] != 0) {
-                    ee += 1;
-                    obj_fleet.enemy[ee] = enemy_fleet[g];
-                    obj_fleet.enemy_status[ee] = -1;
+                    _ship_index += 1;
+                    _battle_instance.enemy[_ship_index] = enemy_fleet[g];
+                    _battle_instance.enemy_status[_ship_index] = -1;
 
-                    obj_fleet.en_capital[ee] = ecap[g];
-                    obj_fleet.en_frigate[ee] = efri[g];
-                    obj_fleet.en_escort[ee] = eesc[g];
+                    _battle_instance.en_capital[_ship_index] = ecap[g];
+                    _battle_instance.en_frigate[_ship_index] = efri[g];
+                    _battle_instance.en_escort[_ship_index] = eesc[g];
                 }
             }
             for (var g = 1; g <= 6; g++) {
                 if (allied_fleet[g] != 0) {
-                    ee += 1;
-                    obj_fleet.enemy[ee] = allied_fleet[g];
-                    obj_fleet.enemy_status[ee] = 1;
+                    _ship_index += 1;
+                    _battle_instance.enemy[_ship_index] = allied_fleet[g];
+                    _battle_instance.enemy_status[_ship_index] = 1;
 
-                    obj_fleet.en_capital[ee] = acap[g];
-                    obj_fleet.en_frigate[ee] = afri[g];
-                    obj_fleet.en_escort[ee] = aesc[g];
+                    _battle_instance.en_capital[_ship_index] = acap[g];
+                    _battle_instance.en_frigate[_ship_index] = afri[g];
+                    _battle_instance.en_escort[_ship_index] = aesc[g];
                 }
             }
 
             if (battle_special[current_battle] == "chaos") {
-                obj_fleet.chaos_exp = 1;
+                _battle_instance.chaos_exp = 1;
             }
             if (battle_special[current_battle] == "BLOOD") {
-                obj_fleet.chaos_exp = 2;
+                _battle_instance.chaos_exp = 2;
             }
 
             instance_activate_all();
             var stahr = instance_nearest(battle_pobject[current_battle].x, battle_pobject[current_battle].y, obj_star);
-            obj_fleet.star_name = stahr.name;
+            _battle_instance.star_name = stahr.name;
 
-            for (var p_num = 1; p_num < stahr.planets; p_num++) {
-                //TODO fix this because this sounds rad
-                //if(planet_feature_bool(stahr.p_feature[p_num], eP_FEATURES.MONASTERY)==1)thenobj_fleet.player_lasers=stahr.p_lasers[p_num];
-            }
-            add_fleet_ships_to_combat(battle_pobject[current_battle], obj_fleet);
+            add_fleet_ships_to_combat(battle_pobject[current_battle], _battle_instance);
 
             instance_deactivate_all(true);
             instance_activate_object(obj_controller);
             instance_activate_object(obj_ini);
-            instance_activate_object(obj_fleet);
+            instance_activate_object(_battle_instance);
             instance_activate_object(obj_cursor);
         }
     }
@@ -168,7 +163,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
                 obj_ncombat.threat = _planet_data.planet_forces[_enemy];
             }
 
-            _roster = new Roster();
+            var _roster = new Roster();
             with (_roster) {
                 roster_location = _loc;
                 roster_planet = _planet;

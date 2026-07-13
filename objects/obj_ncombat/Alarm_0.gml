@@ -534,7 +534,7 @@ try {
 
         // Guardsmen
         u = instance_create(xxx, 240, obj_enunit);
-        enemy_dudes = threat;
+        enemy_dudes = string(threat);
         u.dudes[1] = "Imperial Guardsman";
         u.dudes_num[1] = round(guar / 5);
         enemies[1] = u.dudes[1];

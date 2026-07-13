@@ -1,6 +1,7 @@
 /// @self Asset.GMObject.obj_controller
 function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_lock = false) {
     var assignment = "none";
+    /// @type {Struct.TTRPG_stats|Array}
     var _unit = noone;
     var string_role = "";
     var health_string = "";
@@ -8,7 +9,8 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
     var jailed = false;
     var impossible = !is_struct(display_unit[selected]) && !is_array(display_unit[selected]);
     var is_man = false;
-    var unit_location_string = "";
+    var _loc_name = "";
+    var _loc_planet_num = "";
     var unit_specialist = false;
     if (man[selected] == "man" && is_struct(display_unit[selected])) {
         is_man = true;
@@ -37,32 +39,29 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         unit_specialist = is_specialist(_unit.role());
         if (_unit.in_jail()) {
             jailed = true;
-            unit_location_string = "=Penitorium=";
+            _loc_name = "=Penitorium=";
         } else {
             var unit_location = _unit.marine_location();
             string_role = _unit.name_role();
             unit_specialism_option = false;
             //TODO make static to handle
-            unit_location_string = string(ma_loc[selected]);
+            _loc_name = string(ma_loc[selected]);
             if (_unit.controllable()) {
                 if (unit_location[0] == eLOCATION_TYPES.PLANET) {
-                    unit_location_string = unit_location[2];
-                    //get roman numeral for system planet
-                    unit_location_string += scr_roman(unit_location[1]);
+                    _loc_name = unit_location[2];
+                    _loc_planet_num = scr_roman(unit_location[1]);
                 } else if (unit_location[0] == eLOCATION_TYPES.SHIP) {
-                    unit_location_string = obj_ini.ship[unit_location[1]];
+                    _loc_name = obj_ini.ship[unit_location[1]];
                 }
-            } else {
-                unit_location_string = ma_loc[selected];
             }
             assignment = _unit.assignment();
             if (assignment != "none") {
-                unit_location_string += $"({assignment})";
+                _loc_name += $"({assignment})";
             } else if ((fest_planet == 0) && (fest_sid > -1) && (fest_repeats > 0) && (ma_lid[selected] == fest_sid)) {
-                unit_location_string = "=Event=";
+                _loc_name = "=Event=";
                 eventing = true;
             } else if ((fest_planet == 1) && (fest_wid > 0) && (fest_repeats > 0) && (ma_wid[selected] == fest_wid) && (ma_loc[selected] == fest_star)) {
-                unit_location_string = "=Event=";
+                _loc_name = "=Event=";
                 eventing = true;
             }
         }
@@ -105,13 +104,12 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         }
     } else if (man[selected] == "vehicle" && is_array(display_unit[selected]) && draw) {
         string_role = string(ma_role[selected]);
-        unit_location_string = string(ma_loc[selected]);
+        _loc_name = string(ma_loc[selected]);
 
         if (ma_wid[selected] != 0) {
-            //numeral for vehicle planet
-            unit_location_string += scr_roman(ma_wid[selected]);
+            _loc_planet_num = scr_roman(ma_wid[selected]);
         } else if (ma_lid[selected] > -1) {
-            unit_location_string = obj_ini.ship[ma_lid[selected]];
+            _loc_name = obj_ini.ship[ma_lid[selected]];
         }
         health_string = string(round(ma_health[selected])) + "% HP";
         // Need abbreviations here
@@ -344,10 +342,18 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         draw_text_transformed(xx + 27.5 + 8, yy + 66.5, string_hash_to_newline(string(string_role)), name_xr, 1, 0);
 
         // Draw current location
-        if (location_out_of_player_control(unit_location_string) || (unit_location_string == "=Penitorium=") || (assignment != "none")) {
+        if (location_out_of_player_control(_loc_name) || (_loc_name == "=Penitorium=") || (assignment != "none")) {
             draw_set_alpha(0.5);
         }
-        var truncatedLocation = string_truncate_planet(string(unit_location_string), 130); // Truncate but keep the planet numeral
+
+        var truncatedLocation = "";
+        if (_loc_planet_num != "") {
+            var _avail = max(130 - string_width(_loc_planet_num), 0);
+            truncatedLocation = $"{string_truncate(_loc_name, _avail)} {_loc_planet_num}";
+        } else {
+            truncatedLocation = string_truncate(string(_loc_name), 130);
+        }
+
         draw_text(xx + 430 + 8, yy + 66, truncatedLocation); // LOC
         draw_set_alpha(1);
 

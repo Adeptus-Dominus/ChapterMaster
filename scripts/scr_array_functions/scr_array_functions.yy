@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_array_functions",
   "parent":{
-    "name":"Sys",
-    "path":"folders/Scripts/Sys.yy",
+    "name":"Global Functions",
+    "path":"folders/Scripts/Global Functions.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

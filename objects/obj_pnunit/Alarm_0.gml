@@ -62,29 +62,10 @@ try {
     var dist = point_distance(x, y, enemy.x, enemy.y) / 10;
 
     //* Psychic power buffs
-    for (var i = 0; i < array_length(unit_struct); i++) {
-        if (marine_mshield[i] > 0) {
-            marine_mshield[i] -= 1;
-        }
-        if (marine_quick[i] > 0) {
-            marine_quick[i] -= 1;
-        }
-        if (marine_might[i] > 0) {
-            marine_might[i] -= 1;
-        }
-        if (marine_fiery[i] > 0) {
-            marine_fiery[i] -= 1;
-        }
-        if (marine_fshield[i] > 0) {
-            marine_fshield[i] -= 1;
-        }
-        if (marine_dome[i] > 0) {
-            marine_dome[i] -= 1;
-        }
-        if (marine_spatial[i] > 0) {
-            marine_spatial[i] -= 1;
-        }
-    }
+    // Upstream (b5bee3cc5): tick every buff array via the Create_0 method. The old
+    // inline loop here missed marine_iron and marine_dementia, so those two never
+    // wore off once applied.
+    tick_psychic_buffs();
 
     if (instance_exists(obj_enunit)) {
         obj_ncombat.ctally_target = undefined;

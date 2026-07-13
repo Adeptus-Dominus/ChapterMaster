@@ -189,8 +189,9 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
 
             // Check if ship_index is still within range
             if (ship_index < array_length(ship) && ship[ship_index] != "") {
-                // Delete the string from the 20th character onwards
-                var num = string_delete(ship[ship_index], 20, 999);
+                // Upstream fix (b593a7837): pass the full name; string_truncate below
+                // handles fitting it, and string_delete threw warnings on short names.
+                var ship_name = ship[ship_index];
                 // Calculate button position based on row and column
                 var buttonX = bomb_window.x1 + 24 + col * buttonSpacingX;
                 var buttonY = bomb_window.y1 + 172 + row * buttonSpacingY;
@@ -201,7 +202,7 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
                 var _spent = ship_spent[ship_index];
                 var _btn_col = _spent ? c_red : (ship_all[ship_index] ? #34bc75 : #bf4040);
                 var _btn_alpha = _spent ? 0.5 : (ship_all[ship_index] ? 1 : 0.5);
-                var _ship_clicked = point_and_click(draw_unit_buttons([buttonX, buttonY, buttonX + 105, buttonY + 20], string_truncate(num, 200), [1, 1], _btn_col, fa_center, fnt_40k_10, _btn_alpha));
+                var _ship_clicked = point_and_click(draw_unit_buttons([buttonX, buttonY, buttonX + 105, buttonY + 20], string_truncate(ship_name, 200), [1, 1], _btn_col, fa_center, fnt_40k_10, _btn_alpha));
                 if (_ship_clicked && !_spent) {
                     ship_all[ship_index] = !ship_all[ship_index];
                     ships_selected += ship_all[ship_index] ? 1 : -1;

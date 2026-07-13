@@ -1143,7 +1143,8 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     }
 
     atta = round(atta * obj_ncombat.global_defense);
-    arp = round(arp * obj_ncombat.global_defense);
+    // Upstream fix (a03a95fd9): arp is the weapon's AP tier (0..4), not a damage pool,
+    // so it must not scale with global_defense (0.8x turned tier 3 anti-tank into tier 2).
 
     if (obj_ncombat.enemy == eFACTION.PLAYER) {
         // more attack crap here

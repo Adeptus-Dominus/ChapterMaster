@@ -152,23 +152,6 @@ ai_c = -1;
 ai_d = -1;
 ai_e = -1;
 
-global.star_name_colors = [
-    c_gray,
-    c_white, //player
-    c_gray, //imperium
-    c_red, // toaster fuckers
-    CM_GREEN_COLOR, //nothing for inquisition
-    c_white, //ecclesiarchy
-    #FF8000, //Hi, I'm Elfo
-    #009500, // waagh
-    #FECB01, // the greater good
-    #AD5272, // bug boys
-    c_dkgray, // chaos
-    CM_GREEN_COLOR, //nothing for heretics either
-    #AD5272, //why 12 is skipped in general, we will never know
-    #80FF00 // Sleepy robots
-];
-
 #region save/load serialization
 
 /// Called from save function to take all object variables and convert them to a json savable format and return it

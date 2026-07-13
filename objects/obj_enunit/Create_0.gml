@@ -1,4 +1,4 @@
-unit = "";
+unit = undefined;
 men = 0;
 veh = 0;
 dreads = 0;

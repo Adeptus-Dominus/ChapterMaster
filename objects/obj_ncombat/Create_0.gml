@@ -180,6 +180,9 @@ dead_jims = 0;
 
 combat_log = new CombatLog(id);
 combat_log.log_font = fnt_aldrich_12;
+
+combat_debugger = new CombatDebugger(false);
+
 ctally_target = undefined;
 ctally_bounce = [];
 ctally_injure = [];

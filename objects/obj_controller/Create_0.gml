@@ -1171,12 +1171,7 @@ if (global.load >= 0) {
     obj_saveload.load_part = 1;
     obj_cursor.image_alpha = 0;
     scr_colors_initialize();
-    if (global.restart == 0) {
-        LOGGER.info("Loading Game");
-    }
-    if (global.restart > 0) {
-        LOGGER.info("Restarting Game");
-    }
+    LOGGER.info("Loading Game");
     exit;
 }
 

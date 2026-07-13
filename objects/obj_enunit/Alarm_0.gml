@@ -71,7 +71,7 @@ if (!engaged) {
 
                 var cm_present = false;
                 var cm_index = -1;
-                var cm_block = false;
+                var cm_block = noone; // Upstream (528c918ff): instance handle, not bool
                 with (obj_pnunit) {
                     for (var u = 0; u < array_length(unit_struct); u++) {
                         if (marine_type[u] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
@@ -102,7 +102,7 @@ if (!engaged) {
                         // to shooting the men instead of idling. The original code gated
                         // this whole fallback behind a multi-block check, so a lone
                         // men-only block left every AP weapon firing zero shots.
-                        if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != eFACTION.ORK)) {
+                        if (instance_number(obj_pnunit) > 1) { // Upstream (4bd385330): Orks look behind the front line too
                             var _column_size_value = enemy.column_size;
                             var x2 = enemy.x;
                             repeat (instance_number(obj_pnunit) - 1) {
@@ -269,7 +269,7 @@ if (!engaged) {
                         if (block_has_armour(enemy) || (enemy.veh_type[1] == "Defenses")) {
                             scr_shoot(i, enemy, target_unit_index, "att", "ranged");
                             continue;
-                        } else if ((instance_number(obj_pnunit) > 1) && (obj_ncombat.enemy != eFACTION.ORK)) {
+                        } else if (instance_number(obj_pnunit) > 1) { // Upstream (4bd385330): Orks retarget like everyone else
                             var x2 = enemy.x;
                             repeat (instance_number(obj_pnunit) - 1) {
                                 x2 += flank == 0 ? -10 : 10;
@@ -321,9 +321,11 @@ if (!engaged) {
 
         if ((range[i] <= 2) || (floor(range[i]) != range[i])) {
             // Weapon meets preliminary checks
-            if (apa[i] > 0) {
+            if (apa[i] > 2) {
+                // Upstream (5dcd5a4f6 family): apa is the AP tier; only the dedicated
+                // anti-tank class (3+) counts as armour piercing in melee.
                 _armour_piercing = true;
-            } // Determines if it is _armour_piercing or not
+            }
             if (_armour_piercing && instance_exists(obj_nfort) && (!flank)) {
                 // Huff and puff and blow the wall down
                 enemy = instance_nearest(x, y, obj_nfort);
@@ -356,112 +358,3 @@ if (!engaged) {
 }
 
 instance_activate_object(obj_pnunit);
-
-//TODO: Everything bellow has to be scrapped and reworked;
-//! Commented out stuff bellow, until I understand why it exists;
-/*if (image_index == -500) {
-    var leftest, charge = 0,
-        enemy2 = 0;
-
-    with(obj_pnunit) {
-        if (x < -4000) {
-            instance_deactivate_object(id);
-        }
-    }
-
-    if (flank == 0) {
-        move_unit_block("west");
-        // instance_activate_object(obj_cursor);
-    }
-    if (flank == 1) {
-        enemy = instance_nearest(x, y, obj_pnunit); // Right most enemy
-        enemy2 = enemy;
-        // if (collision_point(x+10,y,obj_pnunit,0,1)) then engaged=1;
-        // if (!collision_point(x+10,y,obj_pnunit,0,1)) then engaged=0;
-        move_unit_block();
-
-        if (!position_empty(x + 10, y)) {
-            engaged = 1;
-        } // Quick smash
-        // instance_activate_object(obj_cursor);
-    }
-
-if (!collision_point(x+10,y,obj_pnunit,0,1)) and (!collision_point(x-10,y,obj_pnunit,0,1)) then engaged=0;
-if (collision_point(x+10,y,obj_pnunit,0,1)) or (collision_point(x-10,y,obj_pnunit,0,1)) then engaged=1;
-
-
-
-var range_shooti;
-
-    i=0;
-    
-    
-    repeat(30){i+=1;
-
-
-    
-    dist=floor(point_distance(enemy2.x,enemy2.y,x,y)/10);
-    
-    
-    
-    
-    
-    range_shoot="";
-    
-    if (wep[i]!="") and (range[i]>=dist) and (ammo[i]!=0){
-        if (range[i]!=1) and (engaged=0) then range_shoot="ranged";
-        if ((range[i]!=floor(range[i])) or (range[i]=1)) and (engaged=1) then range_shoot="melee";
-    }
-    
-    
-    
-    
-    
-    
-    
-    if (wep[i]!="") and (range_shoot="ranged") and (range[i]>=dist){// Weapon meets preliminary checks
-        var _armour_piercing;_armour_piercing=0;if (apa[i]>att[i]) then _armour_piercing=1;// Determines if it is _armour_piercing or not
-        
-        // if (wep[i]="Missile Launcher") then _armour_piercing=1;
-        
-        if (string_count("Gauss",wep[i])>0) then _armour_piercing=1;
-        
-        if (wep[i]="Missile Launcher") or (wep[i]="Rokkit Launcha") or (wep[i]="Kannon") then _armour_piercing=1;
-        if (wep[i]="Big Shoota") then _armour_piercing=0;if (wep[i]="Devourer") then _armour_piercing=0;
-        if (wep[i]="Gauss Particle Cannon") or (wep[i]="Overcharged Gauss Cannon") or (wep[i]="Particle Whip") then _armour_piercing=1;
-        
-        
-        if (instance_exists(enemy2)){
-            if (enemy2.veh+enemy2.dreads>0) and (enemy2.men=0) and (apa[i]>10) then _armour_piercing=1;
-            
-            if (_armour_piercing=1) and (once_only=0){// Check for vehicles
-                var g,good;g=0;good=0;
-                
-                if (enemy.veh>0){
-                    // good=scr_target(enemy,"veh");// First target has vehicles, blow it to hell
-                    scr_shoot(i,enemy2,good,"arp","ranged");
-                }
-                if (good=0) and (instance_number(obj_pnunit)>1){// First target does not have vehicles, cycle through objects to find one that has vehicles
-                    var x2;x2=enemy2.x;
-                    repeat(instance_number(obj_enunit)-1){
-                        if (good=0){
-                            x2+=10;enemy2=instance_nearest(x2,y,obj_pnunit);
-                            if (enemy2.veh+enemy2.dreads>0) and (good=0){
-                                good=scr_target(enemy2,"veh");// This target has vehicles, blow it to hell
-                                scr_shoot(i,enemy2,good,"arp","ranged");once_only=1;
-                            }
-                        }
-                    }
-                }
-                if (good=0) then _armour_piercing=0;// Fuck it, shoot at infantry
-            }
-        }
-
-    }
-
-
-
-}
-
-    instance_activate_object(obj_pnunit);
-} */

@@ -4,7 +4,7 @@ try {
 
     for (var i = 49; i >= 0; i--) {
         if ((battles <= i) && (i >= 2)) {
-            if ((battle[i] != 0) && (battle[i - 1] != 0) && (battle_world[i] == noone) && (battle_world[i - 1] > 0)) {
+            if ((battle[i] != 0) && (battle[i - 1] != 0) && (battle_world[i] == 0) && (battle_world[i - 1] > 0)) {
                 var tem1 = battle[i - 1];
                 var tem2 = battle_location[i - 1];
                 var tem3 = battle_world[i - 1];
@@ -44,7 +44,7 @@ try {
             obj_controller.y = battle_star.y;
             show = current_battle;
 
-            if (battle_world[current_battle] == noone) {
+            if (battle_world[current_battle] == 0) {
                 strin[1] = string(round(battle_pobject[current_battle].capital_number));
                 strin[2] = string(round(battle_pobject[current_battle].frigate_number));
                 strin[3] = string(round(battle_pobject[current_battle].escort_number));
@@ -74,31 +74,30 @@ try {
                             }
                         }
 
-                        var l1 = 0;
-                        var l2 = 0;
+                        var _fleet_index = 0;
                         if (obj_controller.faction_status[e] != "War") {
-                            repeat (10) {
-                                l1 += 1;
-                                if ((allied_fleet[l1] == 0) && (l2 == 0)) {
-                                    l2 = l1;
+                            for (var i = 1; i <= 10; i++) {
+                                if (allied_fleet[i] == 0) {
+                                    _fleet_index = i;
+                                    break;
                                 }
                             }
-                            allied_fleet[l2] = e;
-                            acap[l2] = obj_controller.temp[1072];
-                            afri[l2] = obj_controller.temp[1073];
-                            aesc[l2] = obj_controller.temp[1074];
+                            allied_fleet[_fleet_index] = e;
+                            acap[_fleet_index] = obj_controller.temp[1072];
+                            afri[_fleet_index] = obj_controller.temp[1073];
+                            aesc[_fleet_index] = obj_controller.temp[1074];
                         }
                         if ((obj_controller.faction_status[e] == "War") || (e == 9) || (e == 13)) {
-                            repeat (10) {
-                                l1 += 1;
-                                if ((enemy_fleet[l1] == 0) && (l2 == 0)) {
-                                    l2 = l1;
+                            for (var i = 1; i <= 10; i++) {
+                                if (enemy_fleet[i] == 0) {
+                                    _fleet_index = i;
+                                    break;
                                 }
                             }
-                            enemy_fleet[l2] = e;
-                            ecap[l2] = obj_controller.temp[1072];
-                            efri[l2] = obj_controller.temp[1073];
-                            eesc[l2] = obj_controller.temp[1074];
+                            enemy_fleet[_fleet_index] = e;
+                            ecap[_fleet_index] = obj_controller.temp[1072];
+                            efri[_fleet_index] = obj_controller.temp[1073];
+                            eesc[_fleet_index] = obj_controller.temp[1074];
                         }
                     }
                 }

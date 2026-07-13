@@ -12,7 +12,7 @@ if ((battles > 0) && (current_battle <= battles)) {
         obj_controller.y = battle_star.y;
         show = current_battle;
 
-        if (battle_world[current_battle] == noone) {
+        if (battle_world[current_battle] == 0) {
             strin[1] = string(battle_pobject[current_battle].capital_number);
             strin[2] = string(battle_pobject[current_battle].frigate_number);
             strin[3] = string(battle_pobject[current_battle].escort_number);
