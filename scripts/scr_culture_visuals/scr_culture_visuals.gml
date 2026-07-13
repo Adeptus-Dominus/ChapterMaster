@@ -3361,6 +3361,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_weapon_knife,
+				shadows: spr_weapon_knife_shadow,
             }
         ],
     },
@@ -3375,16 +3376,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_weapon_powswo,
-                subcomponents: [
-                    [
-                        spr_blank,
-                        spr_pow_sword_cross_guard
-                    ],
-                    [
-                        spr_blank,
-                        spr_pow_sword_blade_additions
-                    ]
-                ],
+				shadows: spr_weapon_powswo_shadow
             },
             {
                 cultures: ["Mongol"],
@@ -3466,6 +3458,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_weapon_powaxe,
+				shadows: spr_weapon_powaxe_shadow,
             }
         ],
     },
