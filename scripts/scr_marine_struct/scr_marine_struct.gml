@@ -1328,6 +1328,29 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (!is_struct(_wep2)) {
             _wep2 = new EquipmentStruct({}, "");
         }
+        // Hot-shot power draw: a weapon tagged requires_power_pack (the Hellgun) only
+        // reaches full output fed by a Power Pack in the gear slot. Without one it can
+        // merely sip from standard cells and performs as a plain Lasgun for the rest of
+        // this calculation, so the unit panel and the combat stacks both report honest
+        // numbers, and it recovers the moment a pack is equipped (this method is
+        // recomputed live by the panel and at every battle deployment). Skitarii are
+        // exempt, feeding the gun from their own augmetic reactors.
+        if (role() != "Skitarii" && gear() != "Power Pack") {
+            if (_wep1.has_tag("requires_power_pack")) {
+                var _cell_starved_1 = gear_weapon_data("weapon", "Lasgun", "all", false, "standard");
+                if (is_struct(_cell_starved_1)) {
+                    _wep1 = _cell_starved_1;
+                    explanation_string += "No Power Pack: Hellgun fires as a Lasgun#";
+                }
+            }
+            if (_wep2.has_tag("requires_power_pack")) {
+                var _cell_starved_2 = gear_weapon_data("weapon", "Lasgun", "all", false, "standard");
+                if (is_struct(_cell_starved_2)) {
+                    _wep2 = _cell_starved_2;
+                    explanation_string += "No Power Pack: Hellgun fires as a Lasgun#";
+                }
+            }
+        }
         if (allegiance == global.chapter_name) {
             _wep1.owner_data("chapter");
             _wep2.owner_data("chapter");

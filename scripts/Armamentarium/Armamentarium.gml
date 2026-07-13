@@ -881,6 +881,12 @@ function Armamentarium(_controller) constructor {
         } else {
             // 3. Standard Gear
             scr_add_item(_item.name, _count);
+            // Hot-shot pairing: every Hellgun leaves the forge with its gyro-stabilized
+            // Power Pack, the way Devastator heavy weapons pair with the Heavy Weapons
+            // Pack in squad loadouts. Packs also forge alone on the Gear tab as spares.
+            if (_item.name == "Hellgun") {
+                scr_add_item("Power Pack", _count);
+            }
         }
 
         _item.stocked += _count;

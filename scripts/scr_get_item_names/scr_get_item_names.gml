@@ -117,7 +117,7 @@ function push_marine_armour_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {void}
 function push_marine_gear_item_names(_item_names) {
-    var item_count = 4;
+    var item_count = 5;
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
@@ -125,8 +125,9 @@ function push_marine_gear_item_names(_item_names) {
     // _item_names[@ index++] = "Bionics";
     _item_names[@ index++] = "Iron Halo";
     _item_names[@ index++] = "Narthecium";
+    _item_names[@ index++] = "Power Pack";
     _item_names[@ index++] = "Psychic Hood";
-    _item_names[@ index++] = "Rosarius"; // 4
+    _item_names[@ index++] = "Rosarius"; // 5
 }
 
 /// @description This function appends the list of marine mobility items to the given list.

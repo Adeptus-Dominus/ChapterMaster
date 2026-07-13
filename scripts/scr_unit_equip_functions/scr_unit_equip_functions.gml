@@ -243,6 +243,20 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
 
     obj_ini.wep1[company][marine_number] = new_weapon;
 
+    // Hot-shot pairing: the moment a pack-hungry weapon (requires_power_pack) is
+    // equipped, slot a Power Pack from the armoury into an empty gear slot, mirroring
+    // how Devastator loadouts pair the Heavy Weapons Pack with the heavy weapon.
+    // Skitarii need none, an occupied gear slot is respected, and with no stock the
+    // trooper simply fires it as a Lasgun until a pack is forged and equipped.
+    if (!unequipping && !is_artifact && role() != "Skitarii" && gear() == "") {
+        var _new_wep_pairing = gear_weapon_data("weapon", new_weapon);
+        if (is_struct(_new_wep_pairing) && _new_wep_pairing.has_tag("requires_power_pack")) {
+            if (!from_armoury || scr_item_count("Power Pack") > 0) {
+                update_gear("Power Pack", from_armoury, to_armoury);
+            }
+        }
+    }
+
     if (is_artifact) {
         obj_ini.artifact_equipped[artifact_id] = true;
         var arti_struct = obj_ini.artifact_struct[artifact_id];

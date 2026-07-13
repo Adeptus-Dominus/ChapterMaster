@@ -82,7 +82,7 @@
     },
     "Power Pack": {
         "abbreviation": "PwrPck",
-        "description": "A rucksack-mounted high-capacity charge unit of the pattern issued to storm trooper kasrkin. Hot-shot weapons draw far more energy than a Lasgun cell can feed: a Hellgun cannot fire without one. Skitarii need no such pack, drawing power from their own augmetic reactors.",
+        "description": "A rucksack-mounted high-capacity charge unit of the pattern issued to storm trooper kasrkin. Hot-shot weapons draw far more energy than a Lasgun cell can feed: without one, a Hellgun puts out nothing better than common Lasgun fire. Skitarii need no such pack, drawing power from their own augmetic reactors.",
         "value": 2
     },
     "Psychic Hood": {
