@@ -4,7 +4,7 @@
 
 **NEW RELEASE HERE** https://github.com/KestasV/Chapter-Master-1.5-Adeptus-Indomitus/releases/tag/Exe1.1
 
-**FASTEST WAY TO PLAY THIS FORK WITH ATEST UPDATES**
+**FASTEST WAY TO PLAY THIS FORK WITH LATEST UPDATES**
 1. Install GameMaker 2.3 https://gamemaker.io/en/blog/gamemaker-studio-2-version-2-dot-3-0-release
 2. Download and extract the repository ZIP.
 3. Open ChapterMaster.yyp.
