@@ -23,6 +23,26 @@ try {
                 _grd.add_experience(GUARD_BATTLE_XP);
             }
         }
+
+        // Kill lottery: each Guard small-arms kill tallied during the battle
+        // (obj_ncombat.guard_kills, see scr_shoot) awards GUARD_KILL_XP to one random
+        // surviving Guard at the battle site. Guardsmen, Veterans, and Sergeants all
+        // hold tickets, so credit lands unevenly: veterancy diverges instead of the
+        // whole levy promoting in lockstep, and Veterans and Sergeants bank XP toward
+        // future promotion tiers.
+        var _grd_lottery = collect_role_group("all", "", false, { roles: ["Guardsman", "Veteran Guard", "Guard Sergeant"] });
+        var _grd_here = [];
+        for (var _gl = 0; _gl < array_length(_grd_lottery); _gl++) {
+            if (_grd_lottery[_gl].location_string == obj_ncombat.battle_loc) {
+                array_push(_grd_here, _grd_lottery[_gl]);
+            }
+        }
+        if (array_length(_grd_here) > 0) {
+            repeat (obj_ncombat.guard_kills) {
+                var _lucky = _grd_here[irandom(array_length(_grd_here) - 1)];
+                _lucky.add_experience(GUARD_KILL_XP);
+            }
+        }
     }
 
     // If battling own dudes, then remove the loyalists after the fact

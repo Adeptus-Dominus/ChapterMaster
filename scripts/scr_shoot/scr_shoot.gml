@@ -410,6 +410,15 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         var raw_kills = floor(total_damage / rank_hp);
                         var casualties = min(raw_kills, rank_num, shots_left * attack_count_mod);
 
+                        // Guardsman veterancy: tally kills made by Guard small-arms volleys.
+                        // Struct-based player blocks only: ally reinforcement blocks and
+                        // enemy fire carry no unit_struct entries, so they never tally.
+                        // Paid out as GUARD_KILL_XP per kill to random surviving Guard by
+                        // the battle-end lottery in obj_ncombat Alarm_7.
+                        if (casualties > 0 && variable_instance_exists(id, "unit_struct") && array_length(unit_struct) > 0 && wep_title[weapon_index_position] == "" && (wep[weapon_index_position] == "Lasgun" || wep[weapon_index_position] == "Autogun" || wep[weapon_index_position] == "Hellgun")) {
+                            obj_ncombat.guard_kills += casualties;
+                        }
+
                         // Surplus damage only spills once this rank is actually wiped out.
                         var next_shots = 0;
                         if ((casualties >= rank_num) && (rank_num > 0) && (raw_kills > rank_num)) {

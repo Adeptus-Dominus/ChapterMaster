@@ -18,14 +18,17 @@
 #macro GUARD_COVER_SAVE 0.4
 #macro MARINE_COVER_SAVE 0.15
 
-// Guardsman veterancy: a Guardsman who fights at the battle location and survives earns
-// GUARD_BATTLE_XP experience per victory. At GUARD_VETERAN_XP total they become eligible
-// for promotion to Veteran Guard, so a trooper must live through roughly
-// GUARD_VETERAN_XP / GUARD_BATTLE_XP battles (90 / 25 ~= 3-4). Both are tunable.
-// (Restored twice: first dropped in a646b5ccc, then lost again in the 13-Jul-2026
-// upstream merge resolution while obj_ncombat Alarm_7, scr_roster, and the guardxp
-// cheat still read them, crashing any battle a Guardsman survived.)
-#macro GUARD_BATTLE_XP 25
+// Guardsman veterancy: surviving a victory at the battle site earns GUARD_BATTLE_XP,
+// and every kill made by Guard small-arms volleys awards GUARD_KILL_XP to one random
+// surviving Guard there (the Alarm_7 kill lottery), so credit lands unevenly. At
+// GUARD_VETERAN_XP total a basic Guardsman is eligible for Veteran promotion: pure
+// survival takes ~18 victories (with 10 spawn XP: 16), while a trooper the lottery
+// favours needs roughly 6 kills. No more whole-levy promotions after 4 battles.
+// All three are tunable. (GUARD_BATTLE_XP/GUARD_VETERAN_XP were dropped twice: first
+// in a646b5ccc, again in the 13-Jul-2026 merge resolution, crashing Alarm_7,
+// scr_roster, and the guardxp cheat.)
+#macro GUARD_BATTLE_XP 5
+#macro GUARD_KILL_XP 15
 #macro GUARD_VETERAN_XP 90
 
 // Cover fades as the enemy closes: the save is scaled by shooter distance (block units,

@@ -5,6 +5,10 @@ if (instance_number(obj_ncombat) > 1) {
 set_zoom_to_default();
 LOGGER.info("Ground Combat Started");
 
+// Guardsman veterancy: kills made by Guard small-arms volleys this battle
+// (tallied in scr_shoot, paid out as GUARD_KILL_XP by the Alarm_7 kill lottery).
+guard_kills = 0;
+
 audio_stop_sound(snd_royal);
 audio_play_sound(snd_battle, 0, true);
 audio_sound_gain(snd_battle, 1, 5000);
