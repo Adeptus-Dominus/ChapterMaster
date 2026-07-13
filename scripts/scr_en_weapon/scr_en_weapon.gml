@@ -121,6 +121,13 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
             arp = 1;
             rang = 1;
             break;
+        case "RAM":
+            atta = 100;
+            arp = 3;
+            rang = 1;
+            amm = -1;
+            spli = 6;
+            break;
         default:
             break;
     }
