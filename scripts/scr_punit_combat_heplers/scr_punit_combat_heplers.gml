@@ -366,7 +366,7 @@ function move_player_block() {
         // the enemy front vaults straight to contact (once per battle) instead of
         // closing a column at a time. Lands just short of the frontmost enemy, never on
         // one; friendly blocks there coexist per the formation-merge rule.
-        if ((formation_type == "assault") && order_manual && !assault_jumped && instance_exists(obj_enunit)) {
+        if ((formation_type == "assault") && (fire_target_line == 1) && !assault_jumped && instance_exists(obj_enunit)) {
             var _front_x = 100000;
             with (obj_enunit) {
                 if (x < _front_x) {

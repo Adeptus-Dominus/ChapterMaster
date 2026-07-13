@@ -193,7 +193,9 @@ try {
                                     var enemy2 = instance_nearest(x2, y, obj_enunit);
                                     if ((enemy2.veh > 0) && (good == 0)) {
                                         good = scr_target(enemy2, "veh"); // This target has vehicles, blow it to hell
-                                        scr_shoot(i, enemy2, good, "arp", "ranged");
+                                        if (instance_exists(enemy2)) {
+                                            scr_shoot(i, enemy2, good, "arp", "ranged");
+                                        }
                                         once_only = 1;
                                     }
                                 }
@@ -219,7 +221,9 @@ try {
                                     var enemy2 = instance_nearest(x2, y, obj_enunit);
                                     if ((enemy2.veh > 0) && (good == 0)) {
                                         good = scr_target(enemy2, "medi"); // This target has vehicles, blow it to hell
-                                        scr_shoot(i, enemy2, good, "medi", "ranged");
+                                        if (instance_exists(enemy2)) {
+                                            scr_shoot(i, enemy2, good, "medi", "ranged");
+                                        }
                                         once_only = 1;
                                     }
                                 }
