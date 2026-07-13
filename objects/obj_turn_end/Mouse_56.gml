@@ -23,7 +23,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
         if ((mouse_x >= xxx + 272) && (mouse_y >= yyy + 354) && (mouse_x < xxx + 399) && (mouse_y < yyy + 389)) {
             // Fight fight fight, space
             var _battle_fleet = battle_pobject[current_battle];
-            if (_battle_fleet.capital_number + _battle_fleet.frigate_number + _battle_fleet.escort_number <= 0) {
+            if (!instance_exists(_battle_fleet) || (_battle_fleet.capital_number + _battle_fleet.frigate_number + _battle_fleet.escort_number <= 0)) {
                 alarm[4] = 1;
                 exit;
             }

@@ -362,9 +362,12 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     if (!instance_exists(target_object)) {
                         exit;
                     }
-                    // Shape guard: a spill or re-pick can land on a block with no infantry ranks
-                    // (vehicle-only or wrong-type target); such a shot spends into nothing.
-                    if (!variable_instance_exists(target_object, "dudes_num")) {
+                    // Shape guard (auto): skip when the target lacks dudes_num (wrong block type).
+                    if (!variable_instance_exists(target_object, "dudes_num")
+            || is_undefined(target_type)
+            || (target_type < 0)
+            || (target_type >= array_length(target_object.dudes_num))
+            || is_undefined(target_object.dudes_num[target_type])) {
                         return;
                     }
                     if (target_object.dudes_num[target_type] <= 0) {
