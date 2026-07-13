@@ -1,3 +1,13 @@
+global.force_strength_descriptions = [
+    "none",
+    "Minimal",
+    "Sparse",
+    "Moderate",
+    "Numerous",
+    "Very Numerous",
+    "Overwhelming",
+];
+
 /// @param {Real} _planet
 /// @param {Id.Instance.obj_star} _system
 function PlanetData(_planet, _system) constructor {
@@ -811,28 +821,10 @@ function PlanetData(_planet, _system) constructor {
 
     static xenos_and_heretics = function() {
         var xh_force = 0;
-        for (var i = 6; i < array_length(planet_forces); i++) {
+        for (var i = 5; i < array_length(planet_forces); i++) {
             xh_force += planet_forces[i];
         }
         return xh_force;
-    };
-
-    static has_enemy_force = function() {
-        for (var i = 2; i < array_length(planet_forces); i++) {
-            if (planet_forces[i] > 0 && obj_controller.faction_status[i] == "War") {
-                return true;
-            }
-        }
-        return false;
-    };
-
-    static has_any_force = function() {
-        for (var i = 2; i < array_length(planet_forces); i++) {
-            if (planet_forces[i] > 0) {
-                return true;
-            }
-        }
-        return false;
     };
 
     static has_feature = function(feature) {

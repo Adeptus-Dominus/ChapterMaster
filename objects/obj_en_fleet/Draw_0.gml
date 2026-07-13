@@ -48,29 +48,29 @@ if (obj_controller.zoomed == 1) {
     }
 }
 
-    if (obj_controller.selecting_planet > 0) {
-        if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249)) {
-            if (instance_exists(obj_star_select)) {
-                if (array_length(obj_star_select.buttons) > 0) {
-                    within = 0;
-                }
-            }
-        }
-        if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 250) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 265)) {
-            if (instance_exists(obj_star_select)) {
-                if (array_length(obj_star_select.buttons) > 1) {
-                    within = 0;
-                }
-            }
-        }
-        if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 266) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 281)) {
-            if (instance_exists(obj_star_select)) {
-                if (array_length(obj_star_select.buttons) > 2) {
-                    within = 0;
-                }
+if (obj_controller.selecting_planet > 0) {
+    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249)) {
+        if (instance_exists(obj_star_select)) {
+            if (obj_star_select.button1 != "") {
+                within = 0;
             }
         }
     }
+    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 250) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 265)) {
+        if (instance_exists(obj_star_select)) {
+            if (obj_star_select.button2 != "") {
+                within = 0;
+            }
+        }
+    }
+    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 266) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 281)) {
+        if (instance_exists(obj_star_select)) {
+            if (obj_star_select.button3 != "") {
+                within = 0;
+            }
+        }
+    }
+}
 
 if (action != "") {
     draw_set_halign(fa_left);
