@@ -100,9 +100,17 @@ recruitment_costup_button.bind_method = function() {
 };
 
 buttons_selected = false;
-buttons = [];
-shutters = [];
+button1 = "";
+button2 = "";
+button3 = "";
+button4 = "";
+button5 = "";
 button_manager = new UnitButtonObject();
+shutter_1 = new ShutterButton();
+shutter_2 = new ShutterButton();
+shutter_3 = new ShutterButton();
+shutter_4 = new ShutterButton();
+shutter_5 = new ShutterButton();
 attack = 0;
 raid = 0;
 bombard = 0;
