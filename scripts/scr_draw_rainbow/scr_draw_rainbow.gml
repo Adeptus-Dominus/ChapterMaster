@@ -2,9 +2,8 @@ function scr_draw_rainbow(x1, y1, x2, y2, colour_ratio) {
     // Draws a variable length and color rectangle based on a ratio of two variables
 
     with (obj_controller) {
-        var wid, rat;
-        wid = x2 - x1;
-        rat = colour_ratio;
+        var wid = x2 - x1;
+        var rat = colour_ratio;
 
         if ((menu != eMENU.DIPLOMACY) || (diplomacy != 0)) {
             if (colour_ratio <= 0.15) {
