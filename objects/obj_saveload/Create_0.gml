@@ -16,7 +16,7 @@ autosaving = false;
 /// number of frames between load sections to draw the progress bar
 trickle = 0;
 txt = "";
-hide = 0;
+hide = false;
 bar = 0;
 slow = 0;
 saves = 0;
