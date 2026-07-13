@@ -728,9 +728,15 @@ function reequip_selection() {
             if (is_struct(unit)) {
                 unit.update_armour(n_armour, true, true, standard);
                 unit.update_mobility_item(n_mobi, true, true, standard);
+                // Gear must apply before the weapons: equipping a pack-hungry weapon
+                // (the Hellgun) auto-slots a Power Pack into an empty gear slot, and
+                // applying the popup's gear value afterwards would strip that pack in
+                // the same click, because these dropdowns default to the unit's current
+                // gear, which is "" for most Guard. Gear-first also lets an explicit
+                // gear choice win: the pairing respects an occupied slot.
+                unit.update_gear(n_gear, true, true, standard);
                 unit.update_weapon_one(n_wep1, true, true, standard);
                 unit.update_weapon_two(n_wep2, true, true, standard);
-                unit.update_gear(n_gear, true, true, standard);
 
                 update_man_manage_array(i);
                 continue;

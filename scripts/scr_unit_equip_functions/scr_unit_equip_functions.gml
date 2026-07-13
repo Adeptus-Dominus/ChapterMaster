@@ -22,6 +22,24 @@ function guard_weapon_permitted(_role, _weapon) {
 }
 
 /// @self Struct.TTRPG_stats
+/// @description Hot-shot pairing: slot a Power Pack from the armoury into an empty gear
+/// slot when a pack-hungry weapon (requires_power_pack) is held, mirroring how Devastator
+/// loadouts pair the Heavy Weapons Pack with the heavy weapon. Skitarii need none, an
+/// occupied gear slot is respected, and with no stock the trooper simply fires it as a
+/// Lasgun until a pack is forged and equipped.
+function try_pair_power_pack(_weapon, from_armoury, to_armoury) {
+    if (role() == "Skitarii" || gear() != "") {
+        return;
+    }
+    var _pairing_data = gear_weapon_data("weapon", _weapon);
+    if (is_struct(_pairing_data) && _pairing_data.has_tag("requires_power_pack")) {
+        if (!from_armoury || scr_item_count("Power Pack") > 0) {
+            update_gear("Power Pack", from_armoury, to_armoury);
+        }
+    }
+}
+
+/// @self Struct.TTRPG_stats
 function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = true, quality = "any") {
     var is_artifact = !is_string(new_armour);
     var artifact_id = 0;
@@ -178,6 +196,11 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
             return "no change";
         }
     } else if (change_wep == new_weapon && same_quality) {
+        // Re-applying the same pack-hungry weapon still pairs a Power Pack, so a
+        // plain Re-equip pass retrofits packs onto already-armed Hellgunners.
+        if (!unequipping && !is_artifact) {
+            try_pair_power_pack(new_weapon, from_armoury, to_armoury);
+        }
         return "no change";
     }
 
@@ -243,18 +266,9 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
 
     obj_ini.wep1[company][marine_number] = new_weapon;
 
-    // Hot-shot pairing: the moment a pack-hungry weapon (requires_power_pack) is
-    // equipped, slot a Power Pack from the armoury into an empty gear slot, mirroring
-    // how Devastator loadouts pair the Heavy Weapons Pack with the heavy weapon.
-    // Skitarii need none, an occupied gear slot is respected, and with no stock the
-    // trooper simply fires it as a Lasgun until a pack is forged and equipped.
-    if (!unequipping && !is_artifact && role() != "Skitarii" && gear() == "") {
-        var _new_wep_pairing = gear_weapon_data("weapon", new_weapon);
-        if (is_struct(_new_wep_pairing) && _new_wep_pairing.has_tag("requires_power_pack")) {
-            if (!from_armoury || scr_item_count("Power Pack") > 0) {
-                update_gear("Power Pack", from_armoury, to_armoury);
-            }
-        }
+    // Hot-shot pairing: see try_pair_power_pack.
+    if (!unequipping && !is_artifact) {
+        try_pair_power_pack(new_weapon, from_armoury, to_armoury);
     }
 
     if (is_artifact) {
