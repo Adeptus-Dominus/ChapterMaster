@@ -120,6 +120,16 @@ function scr_special_view(command_group) {
     }
 
     squads = 0;
+    // Sergeant postings for the veterancy glow below: a Guardsman only glows as
+    // Promotion Recommended where a Guard Sergeant shares his location (mirrors the
+    // vox-discipline gate in promote_auxilia_to_veteran / setup_promotion_popup).
+    var _sgt_glow_locs = {};
+    for (var i = 0; i < array_length(display_unit); i++) {
+        if (man[i] == "man" && ma_role[i] == "Guard Sergeant" && is_struct(display_unit[i])) {
+            _sgt_glow_locs[$ string(display_unit[i].location_string)] = true;
+        }
+    }
+
     //TODO unify this data with other_manage_data() method
     for (var i = 0; i < array_length(display_unit); i++) {
         onceh = 0;
@@ -134,7 +144,8 @@ function scr_special_view(command_group) {
         // way other_manage_data does for marines: the EXP readout glows yellow with the
         // Promotion Recommended tooltip and the Promote button accepts the selection.
         // Sergeants, weapons teams, existing Veterans, and green troopers stay unflagged.
-        if (man[i] == "man" && ma_role[i] == "Guardsman" && ma_exp[i] >= GUARD_VETERAN_XP) {
+        if (man[i] == "man" && ma_role[i] == "Guardsman" && ma_exp[i] >= GUARD_VETERAN_XP
+            && is_struct(display_unit[i]) && struct_exists(_sgt_glow_locs, string(display_unit[i].location_string))) {
             ma_promote[i] = 1;
         }
         if (man[i] == "vehicle") {

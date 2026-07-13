@@ -1695,11 +1695,13 @@ function draw_manage_selection_buttons(xx, yy) {
 
 /// @self Asset.GMObject.obj_controller
 /// @desc Collapsed squad rows for the Auxilia view (managing 16). Each Guard squad
-/// (one Guard Sergeant plus up to GUARD_SQUAD_SIZE Guardsmen at the same location)
-/// renders as a single row; clicking it selects or deselects every member, mirroring
-/// the eligibility gates and selection side effects of scr_draw_management_unit so
-/// the normal Load-to-ships flow (man_sel / man_size / selecting_location) just works.
-/// Heavy Weapons Teams, Veteran Guard, and vehicles keep their normal individual rows.
+/// (one Guard Sergeant plus up to GUARD_SQUAD_SIZE Guardsmen and Veteran Guard at the
+/// same location) renders as a single row; clicking it selects or deselects every
+/// member, mirroring the eligibility gates and selection side effects of
+/// scr_draw_management_unit so the normal Load-to-ships flow just works. Veterans are
+/// seated FIRST when squads are paired, so they always land in the Sergeant-headed
+/// squads while any sergeant-less overflow rows hold plain Guardsmen only. Heavy
+/// Weapons Teams and vehicles keep their normal individual rows.
 function draw_auxilia_squad_rows(xx, yy, _stats_displayed = false) {
     // Select-all buttons still work through the standard per-unit path.
     if (sel_all != "" || squad_sel_count > 0) {
@@ -1719,14 +1721,16 @@ function draw_auxilia_squad_rows(xx, yy, _stats_displayed = false) {
         }
         var _is_unit = (man[i] == "man") && is_struct(display_unit[i]);
         var _role = _is_unit ? display_unit[i].role() : "";
-        if ((_role == "Guard Sergeant") || (_role == "Guardsman")) {
+        if ((_role == "Guard Sergeant") || (_role == "Guardsman") || (_role == "Veteran Guard")) {
             var _loc = string(ma_loc[i]);
             if (!struct_exists(_buckets, _loc)) {
-                _buckets[$ _loc] = {sgts: [], grds: []};
+                _buckets[$ _loc] = {sgts: [], vets: [], grds: []};
                 array_push(_locs, _loc);
             }
             if (_role == "Guard Sergeant") {
                 array_push(_buckets[$ _loc].sgts, i);
+            } else if (_role == "Veteran Guard") {
+                array_push(_buckets[$ _loc].vets, i);
             } else {
                 array_push(_buckets[$ _loc].grds, i);
             }
@@ -1740,15 +1744,22 @@ function draw_auxilia_squad_rows(xx, yy, _stats_displayed = false) {
     for (var l = 0; l < array_length(_locs); l++) {
         var _b = _buckets[$ _locs[l]];
         var _g = 0;
+        var _v = 0;
         var _sg = 0;
         var _sq = 0;
-        while ((_g < array_length(_b.grds)) || (_sg < array_length(_b.sgts))) {
+        while ((_g < array_length(_b.grds)) || (_v < array_length(_b.vets)) || (_sg < array_length(_b.sgts))) {
             var _members = [];
             if (_sg < array_length(_b.sgts)) {
                 array_push(_members, _b.sgts[_sg]);
                 _sg++;
             }
             var _take = 0;
+            // Veterans fill squad seats first, so they always serve under a Sergeant.
+            while ((_take < GUARD_SQUAD_SIZE) && (_v < array_length(_b.vets))) {
+                array_push(_members, _b.vets[_v]);
+                _v++;
+                _take++;
+            }
             while ((_take < GUARD_SQUAD_SIZE) && (_g < array_length(_b.grds))) {
                 array_push(_members, _b.grds[_g]);
                 _g++;
@@ -1795,12 +1806,16 @@ function draw_auxilia_squad_rows(xx, yy, _stats_displayed = false) {
         var _count = array_length(_members);
         var _sel_count = 0;
         var _size_sum = 0;
+        var _vet_count = 0;
         for (var m = 0; m < _count; m++) {
             if (man_sel[_members[m]] == 1) {
                 _sel_count++;
             }
             if (is_struct(display_unit[_members[m]])) {
                 _size_sum += display_unit[_members[m]].get_unit_size();
+                if (display_unit[_members[m]].role() == "Veteran Guard") {
+                    _vet_count++;
+                }
             }
         }
         var _all_sel = (_count > 0) && (_sel_count == _count);
@@ -1813,7 +1828,11 @@ function draw_auxilia_squad_rows(xx, yy, _stats_displayed = false) {
         } else {
             _label += " - no sergeant";
         }
-        _label += $"  |  {_count} troops  |  {string_format(_size_sum, 1, 1)} space  |  {_row.loc}";
+        _label += $"  |  {_count} troops";
+        if (_vet_count > 0) {
+            _label += $" ({_vet_count} vet)";
+        }
+        _label += $"  |  {string_format(_size_sum, 1, 1)} space  |  {_row.loc}";
         if ((_sel_count > 0) && !_all_sel) {
             _label += $"  ({_sel_count}/{_count} selected)";
         }

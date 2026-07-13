@@ -935,6 +935,20 @@ function auxilia_roles() {
     return ["Guardsman", "Guard Squad", "Guard Sergeant", "Veteran Guard", "Heavy Weapons Team"];
 }
 
+/// @description Vox discipline: a Guardsman may only be promoted to Veteran Guard where a
+/// Guard Sergeant is mustered at the same location to fold him into a led squad (the
+/// Auxilia squad view seats Veterans in Sergeant-headed squads first). Returns a struct
+/// set keyed by location_string of every posting that currently holds a Guard Sergeant.
+/// @returns {struct}
+function guard_sergeant_locations() {
+    var _set = {};
+    var _sgts = collect_role_group("all", "", false, { roles: ["Guard Sergeant"] });
+    for (var _i = 0; _i < array_length(_sgts); _i++) {
+        _set[$ string(_sgts[_i].location_string)] = true;
+    }
+    return _set;
+}
+
 /// @description Promote one basic Guardsman to Veteran Guard: role swap plus the veteran
 /// stat buff. Shared by promote_auxilia_to_veteran (veteranguard cheat, bulk path) and the
 /// Auxilia screen Promote button (setup_promotion_popup, selection path). No XP gate here;
@@ -963,6 +977,7 @@ function promote_guardsman_to_veteran(_unit) {
 /// @returns {real} number of troopers promoted
 function promote_auxilia_to_veteran(_company = undefined) {
     var _troops = collect_role_group("all", "", false, { roles: ["Guardsman"] });
+    var _sgt_locs = guard_sergeant_locations();
     var _count = 0;
     for (var _i = 0; _i < array_length(_troops); _i++) {
         var _unit = _troops[_i];
@@ -973,6 +988,11 @@ function promote_auxilia_to_veteran(_company = undefined) {
         // experience, roughly GUARD_VETERAN_XP / GUARD_BATTLE_XP survived battles. Fresh
         // recruits are skipped until they have bled for it.
         if (_unit.experience < GUARD_VETERAN_XP) {
+            continue;
+        }
+        // Vox discipline: no Sergeant at his posting, no Veteran stripes. See
+        // guard_sergeant_locations.
+        if (!struct_exists(_sgt_locs, string(_unit.location_string))) {
             continue;
         }
         promote_guardsman_to_veteran(_unit);

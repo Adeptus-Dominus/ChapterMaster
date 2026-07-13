@@ -8,10 +8,17 @@ function setup_promotion_popup() {
         // Veterans, and green troopers in the selection are skipped.
         if (managing == 16) {
             var _vets = 0;
+            var _no_sgt = 0;
+            var _sgt_locs = guard_sergeant_locations();
             for (var _g = 0; _g < array_length(display_unit); _g++) {
                 if (man_sel[_g] == 1 && man[_g] == "man" && ma_role[_g] == "Guardsman") {
                     var _grd = display_unit[_g];
                     if (is_struct(_grd) && _grd.experience >= GUARD_VETERAN_XP) {
+                        // Vox discipline: no Sergeant at his posting, no Veteran stripes.
+                        if (!struct_exists(_sgt_locs, string(_grd.location_string))) {
+                            _no_sgt++;
+                            continue;
+                        }
                         promote_guardsman_to_veteran(_grd);
                         _vets++;
                     }
@@ -25,7 +32,11 @@ function setup_promotion_popup() {
                 // and shed the promotion glow immediately.
                 scr_special_view(managing);
             }
-            scr_popup("Veteran Guard", $"Promoted {_vets} Guardsmen to Veteran Guard.", "");
+            var _promo_text = $"Promoted {_vets} Guardsmen to Veteran Guard.";
+            if (_no_sgt > 0) {
+                _promo_text += $"\n{_no_sgt} eligible Guardsmen were passed over: no Guard Sergeant is mustered at their posting.";
+            }
+            scr_popup("Veteran Guard", _promo_text, "");
             alarm[6] = 1;
             exit;
         }
