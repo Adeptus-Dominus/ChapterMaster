@@ -1,3 +1,4 @@
+/// @self Asset.GMObject.obj_star
 /// @param {Real} _planet
 /// @param {Id.Instance.obj_star} _system
 function PlanetData(_planet, _system) constructor {
@@ -291,19 +292,19 @@ function PlanetData(_planet, _system) constructor {
     planet_forces = array_create(14, 0);
 
     try {
-        planet_forces[1] = player_forces;
+        planet_forces[eFACTION.PLAYER] = player_forces;
 
-        planet_forces[2] = guardsmen;
+        planet_forces[eFACTION.IMPERIUM] = guardsmen;
 
-        planet_forces[5] = system.p_sisters[planet];
-        planet_forces[6] = system.p_eldar[planet];
-        planet_forces[7] = system.p_orks[planet];
-        planet_forces[8] = system.p_tau[planet];
-        planet_forces[9] = system.p_tyranids[planet];
-        planet_forces[10] = system.p_chaos[planet] + system.p_demons[planet];
-        planet_forces[11] = system.p_traitors[planet];
+        planet_forces[eFACTION.ECCLESIARCHY] = system.p_sisters[planet];
+        planet_forces[eFACTION.ELDAR] = system.p_eldar[planet];
+        planet_forces[eFACTION.ORK] = system.p_orks[planet];
+        planet_forces[eFACTION.TAU] = system.p_tau[planet];
+        planet_forces[eFACTION.TYRANIDS] = system.p_tyranids[planet];
+        planet_forces[eFACTION.CHAOS] = system.p_chaos[planet] + system.p_demons[planet];
+        planet_forces[eFACTION.HERETICS] = system.p_traitors[planet];
 
-        planet_forces[13] = system.p_necrons[planet];
+        planet_forces[eFACTION.NECRONS] = system.p_necrons[planet];
     } catch (_exception) {
         ERROR_HANDLER.handle_exception(_exception);
     }
@@ -347,8 +348,7 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static assasinate_governor = function(assaination_type, discovery_modifier) {
-        var randa = roll_dice_chapter(1, 100, "high");
-        var randa2 = roll_dice(1, 100);
+        var _discovery_threshold = roll_dice(1, 100);
         var _text = $"All of the successors for {name()} are removed or otherwise made indisposed.  Paperwork is slightly altered.  Rather than any sort of offical one of your Chapter Serfs is installed as the Planetary Governor.  The planet is effectively under your control.";
         var _discovery_rate = 25;
 
@@ -366,7 +366,7 @@ function PlanetData(_planet, _system) constructor {
             scr_event_log("", $"Planetary Governor of {name()} assassinated.  One of your Chapter Serfs take their position.");
         }
 
-        if (randa2 <= (_discovery_rate * discovery_modifier)) {
+        if (_discovery_threshold <= (_discovery_rate * discovery_modifier)) {
             var _duration = (choose(1, 2) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
             if (assaination_type == 1) {
                 _duration = ((choose(1, 2, 3, 4, 5, 6) + choose(1, 2, 3, 4, 5, 6)) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
@@ -381,7 +381,6 @@ function PlanetData(_planet, _system) constructor {
     static assasinate_governor_setup = function(action_score) {
         var aroll = roll_dice_chapter(1, 100, "high");
         var chance = 100;
-        var o = 0;
         var yep = 0;
 
         // Disposition
@@ -396,15 +395,10 @@ function PlanetData(_planet, _system) constructor {
         }
 
         // Size - unused
-        // if ((action_score > 5) && (action_score <= 10)) { siz_penalty = 5; }
-        // if ((action_score > 10) && (action_score <= 20)) { siz_penalty = 20; }
-        // if ((action_score > 20) && (action_score <= 50)) { siz_penalty = 30; }
-        // if ((action_score > 50) && (action_score <= 100)) { siz_penalty = 50; }
-        // if ((action_score > 100) && (action_score <= 200)) { siz_penalty = 75; }
-        // if (action_score > 200) { siz_penalty = 125; }
-
-        var spec1 = 0, spec2 = 0, txt = ""; // TODO consider making it a battle with Planetary governor's guards
-        txt = $"Your Astartes descend upon the surface of {name()} and plot the movements and schedule of the governor.  ";
+        // TODO consider making it a battle with Planetary governor's guards
+        var spec1 = 0;
+        var spec2 = 0;
+        var txt = $"Your Astartes descend upon the surface of {name()} and plot the movements and schedule of the governor.  ";
         txt += "Once the time is right their target is ambushed ";
         txt += choose("in their home", "in the streets", "while driving", "taking a piss") + " and tranquilized.  ";
 
@@ -502,7 +496,6 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static grow_ork_forces = function() {
-        var contin = 0;
         var _rando = roll_dice(1, 100); // This part handles the spreading
         var _non_deads = planets_without_type("dead", system);
 
@@ -569,7 +562,6 @@ function PlanetData(_planet, _system) constructor {
                 }
             }
         }
-        contin = 0;
         _rando = roll_dice(1, 100); // This part handles the ship building
         if ((population > 0 && pdf == 0 && guardsmen == 0 && planet_forces[10] == 0) && (planet_forces[eFACTION.TAU] == 0)) {
             if (!large_population) {
@@ -697,10 +689,7 @@ function PlanetData(_planet, _system) constructor {
                             break;
                     }
                 }
-                var ii = round(standard_fleet_strength_calc());
-                if (ii <= 1) {
-                    ii = 1;
-                }
+                var ii = max(round(standard_fleet_strength_calc()), 1);
                 image_index = ii;
                 //if big enough flee bugger off to new star
                 if (image_index >= 5) {
@@ -773,7 +762,7 @@ function PlanetData(_planet, _system) constructor {
     problem_timers = system.p_timer[planet];
 
     static has_problem = function(problem) {
-        has_problem_planet(planet, problem, system);
+        return has_problem_planet(planet, problem, system);
     };
 
     static remove_problem = function(problem) {
@@ -789,11 +778,7 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static name = function() {
-        var _name = "";
-
-        _name = planet_numeral_name(planet, system);
-
-        return _name;
+        return planet_numeral_name(planet, system);
     };
 
     static xenos_and_heretics = function() {
@@ -889,7 +874,6 @@ function PlanetData(_planet, _system) constructor {
                 //TODO allow total tech point usage here
                 var _starship = get_features(eP_FEATURES.STARSHIP)[0];
 
-                var _engineer_score_start = _starship.engineer_score;
                 if (_starship.engineer_score < 2000) {
                     for (var v = 0; v < engineer_count; v++) {
                         _starship.engineer_score += techs[v].technology / 2;
@@ -928,7 +912,7 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static guard_score_calc = function() {
-        guard_score = 0;
+        guard_score = 0.5;
         if (guardsmen < 500 && guardsmen > 0) {
             guard_score = 0.1;
         } else if (guardsmen >= 100000000) {
@@ -945,8 +929,6 @@ function PlanetData(_planet, _system) constructor {
             guard_score = 2;
         } else if (guardsmen >= 2000) {
             guard_score = 1;
-        } else {
-            guard_score = 0.5;
         }
 
         return guard_score;
@@ -967,7 +949,7 @@ function PlanetData(_planet, _system) constructor {
 
         if (stop) {
             if ((planet_forces[eFACTION.ORK] > 0) && (planet_forces[eFACTION.ECCLESIARCHY] > 0)) {
-                stop = 0;
+                stop = false;
             }
         }
 
@@ -975,7 +957,7 @@ function PlanetData(_planet, _system) constructor {
 
         if (stop) {
             if (planet_forces[eFACTION.NECRONS] >= 5 || planet_forces[eFACTION.TYRANIDS] >= 5 && imperium_forces) {
-                stop = 0;
+                stop = false;
             }
         }
 
@@ -983,20 +965,20 @@ function PlanetData(_planet, _system) constructor {
         if (stop) {
             if (current_owner == eFACTION.TAU) {
                 if (((guardsmen > 0) || (planet_forces[eFACTION.ECCLESIARCHY] > 0)) && ((pdf > 0) || (planet_forces[eFACTION.TAU] > 0))) {
-                    stop = 0;
+                    stop = false;
                 }
             }
         }
 
         // Attack heretics whenever possible, even player controlled ones
         if (stop) {
-            if ((player_forces + pdf > 0) && (guardsmen > 0) && (obj_controller.faction_status[2] == "War")) {
-                stop = 0;
+            if ((player_forces + pdf > 0) && (guardsmen > 0) && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
+                stop = false;
             }
         }
         if (stop) {
-            if ((player_forces + pdf > 0) && (planet_forces[eFACTION.ECCLESIARCHY] > 0) && (obj_controller.faction_status[5] == "War")) {
-                stop = 0;
+            if ((player_forces + pdf > 0) && (planet_forces[eFACTION.ECCLESIARCHY] > 0) && (obj_controller.faction_status[eFACTION.ECCLESIARCHY] == "War")) {
+                stop = false;
             }
         }
 
@@ -1011,7 +993,7 @@ function PlanetData(_planet, _system) constructor {
             return false;
         }
 
-        if ((current_owner == 1 || obj_controller.faction_status[2] != "War") && pdf) {
+        if ((current_owner == eFACTION.PLAYER || obj_controller.faction_status[eFACTION.IMPERIUM] != "War") && pdf) {
             return true;
         }
         return false;
@@ -1019,8 +1001,6 @@ function PlanetData(_planet, _system) constructor {
 
     static guard_attack_matrix = function() {
         var guard_attack = "";
-        // if (p_eldar[planet]>0) and (p_owner[planet]!=6) then guard_attack="eldar";
-        //if (planet_forces[eFACTION.TAU] + planet_forces[eFACTION.ORK] + planet_forces[eFACTION.HERETICS]+ planet_forces[eFACTION.CHAOS])
         if (planet_forces[eFACTION.TAU] > 0) {
             guard_attack = "tau";
         }
@@ -1049,7 +1029,6 @@ function PlanetData(_planet, _system) constructor {
         if ((planet_forces[eFACTION.TYRANIDS] <= 1) && (planet_forces[eFACTION.ORK] >= 4)) {
             guard_attack = "ork";
         }
-        // if (p_tyranids[planet]>0) and (guard_attack="") then guard_attack="tyranids";
         if (planet_forces[eFACTION.TYRANIDS] >= 4) {
             guard_attack = "tyranids";
         } else if (planet_forces[eFACTION.TYRANIDS] > 0) {
@@ -1144,31 +1123,28 @@ function PlanetData(_planet, _system) constructor {
         if (!instance_exists(obj_star_select)) {
             exit;
         }
+
         var improve = 0;
         var xx = 15;
         var yy = 25;
         var current_planet = planet;
-        var nm = scr_roman(current_planet), temp1 = 0;
+        var nm = scr_roman(current_planet);
+        var _succession = has_problem("succession");
+        var _xenos_and_heretics = xenos_and_heretics();
+
         draw_set_halign(fa_center);
         draw_set_valign(fa_top);
         draw_set_font(fnt_40k_14);
 
-        var _xenos_and_heretics = xenos_and_heretics();
         if ((current_owner <= 5) && (!_xenos_and_heretics)) {
-            if (planet_forces[eFACTION.PLAYER] > 0 || system.present_fleet[1] > 0) {
+            if (planet_forces[eFACTION.PLAYER] > 0 || system.present_fleet[eFACTION.PLAYER] > 0) {
                 if (fortification_level < 5) {
                     improve = 1;
                 }
             }
         }
 
-        // Draw disposition here
-        var yyy = 0;
-
-        var _succession = has_problem("succession");
-
-        if ((player_disposition >= 0 && current_owner <= 5 && population > 0) && (_succession == 0)) {
-            var wack = 0;
+        if ((player_disposition >= 0 && current_owner <= eFACTION.ECCLESIARCHY && population > 0) && !_succession) {
             draw_set_color(c_blue);
             draw_rectangle(xx + 349, yy + 175, xx + 349 + (min(100, player_disposition) * 3.68), yy + 192, 0);
         }
@@ -1177,13 +1153,13 @@ function PlanetData(_planet, _system) constructor {
         draw_set_color(c_white);
 
         if (!_succession) {
-            if ((player_disposition >= 0) && (origional_owner <= 5) && (current_owner <= 5) && (population > 0)) {
+            if ((player_disposition >= 0) && (origional_owner <= eFACTION.ECCLESIARCHY) && (current_owner <= eFACTION.ECCLESIARCHY) && (population > 0)) {
                 draw_text(xx + 534, yy + 176, "Disposition: " + string(min(100, player_disposition)) + "/100");
             }
-            if ((player_disposition > -30) && (player_disposition < 0) && (current_owner <= 5) && (population > 0)) {
+            if ((player_disposition > -30) && (player_disposition < 0) && (current_owner <= eFACTION.ECCLESIARCHY) && (population > 0)) {
                 draw_text(xx + 534, yy + 176, "Disposition: ???/100");
             }
-            if (((player_disposition >= 0) && (origional_owner <= 5) && (current_owner > 5)) || (population <= 0)) {
+            if (((player_disposition >= 0) && (origional_owner <= eFACTION.ECCLESIARCHY) && (current_owner > eFACTION.ECCLESIARCHY)) || (population <= 0)) {
                 draw_text(xx + 534, yy + 176, "-------------");
             }
 
@@ -1193,11 +1169,10 @@ function PlanetData(_planet, _system) constructor {
         } else if (_succession) {
             draw_text(xx + 534, yy + 176, "War of _Succession");
         }
-        draw_set_color(c_gray);
         // End draw disposition
         draw_set_color(c_gray);
         draw_rectangle(xx + 349, yy + 193, xx + 717, yy + 210, 0);
-        var bar_width = 717 - 349;
+        var bar_width = 368;
         var bar_start_point = xx + 349;
         var bar_percent_length = bar_width / 100;
         var current_bar_percent = 0;
@@ -1216,7 +1191,6 @@ function PlanetData(_planet, _system) constructor {
                 draw_rectangle(current_start, yy + 193, current_start + (bar_percent_length * population_influences[i]), yy + 210, 0);
                 current_bar_percent += population_influences[i];
             }
-            draw_set_color(c_gray);
         }
 
         draw_set_color(c_white);
@@ -1230,13 +1204,10 @@ function PlanetData(_planet, _system) constructor {
         if (is_craftworld) {
             draw_text(xx + 480, yy + 196, $"{system.name} (Craftworld)");
         }
-        // if (is_craftworld=0) and (is_hulk=0) then draw_text(xx+534,yy+214,string(planet_type)+" World");
-        // if (is_craftworld=1) then draw_text(xx+594,yy+214,"Craftworld");
         if (is_hulk) {
             draw_text(xx + 480, yy + 196, "Space Hulk");
         }
 
-        // draw_sprite(spr_planet_splash,temp1,xx+349,yy+194);
         scr_image("ui/planet", scr_planet_image_numbers(planet_type), xx + 349, yy + 194, 128, 128);
         draw_rectangle(xx + 349, yy + 194, xx + 477, yy + 322, 1);
         draw_set_font(fnt_40k_14);
@@ -1253,8 +1224,9 @@ function PlanetData(_planet, _system) constructor {
             }
         }
 
-        if ((is_craftworld == 0) && (is_hulk == 0)) {
-            var y7 = 240, temp3 = string(scr_display_number(guardsmen));
+        if (!is_craftworld && !is_hulk) {
+            var y7 = 240;
+            var temp3 = string(scr_display_number(guardsmen));
             if (guardsmen > 0) {
                 draw_text(xx + 480, yy + y7, $"Imperial Guard: {temp3}");
                 y7 += 20;
@@ -1276,16 +1248,16 @@ function PlanetData(_planet, _system) constructor {
                 draw_rectangle(xx + 481, yy + 280, xx + 716, yy + 298, 0);
                 draw_sprite(spr_requisition, 0, xx + 657, yy + 283);
 
-                var improve_cost = 1500, yep = 0, o = 0;
+                var improve_cost = 1500;
 
                 if (scr_has_adv("Siege Masters")) {
                     improve_cost = 1100;
                 }
 
-                draw_text_glow(xx + 671, yy + 281, improve_cost, 16291875, 0);
+                draw_text_glow(xx + 671, yy + 281, improve_cost, #F89823, 0);
 
                 if (scr_hit(xx + 481, yy + 282, xx + 716, yy + 300)) {
-                    draw_set_color(0);
+                    draw_set_color(c_black);
                     draw_set_alpha(0.2);
                     draw_rectangle(xx + 481, yy + 280, xx + 716, yy + 298, 0);
                     if (mouse_button_clicked() && (obj_controller.requisition >= improve_cost)) {
@@ -1298,7 +1270,7 @@ function PlanetData(_planet, _system) constructor {
                     }
                 }
                 draw_set_alpha(1);
-                draw_set_color(0);
+                draw_set_color(c_black);
             }
             var forti_string = [
                 "None",
@@ -1316,7 +1288,7 @@ function PlanetData(_planet, _system) constructor {
 
         draw_set_color(c_gray);
 
-        if (is_hulk == 1) {
+        if (is_hulk) {
             temp5 = "Integrity: " + string(floor(fortification_level * 20)) + "%";
             draw_text(xx + 480, yy + 280, temp5);
         }
@@ -1405,9 +1377,6 @@ function PlanetData(_planet, _system) constructor {
 
         draw_text(xx + 349, yy + 346, string_hash_to_newline(string(presence_text)));
 
-        var to_show = 0, temp9 = "";
-
-        var fit = array_create(11, "");
         var planet_displays = [];
         var feat_count = array_length(features);
         var upgrade_count = array_length(upgrades);
@@ -1475,7 +1444,9 @@ function PlanetData(_planet, _system) constructor {
             }
         }
 
-        var button_size, y_move = 0, button_colour;
+        var button_size;
+        var y_move = 0;
+        var button_colour;
         for (var i = 0; i < array_length(planet_displays); i++) {
             button_colour = c_green;
             if (planet_displays[i][0] == "????") {
@@ -1554,9 +1525,9 @@ function PlanetData(_planet, _system) constructor {
             }
         }
 
-        if ((population + pdf <= 0) && (current_owner == 1) && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
+        if ((population + pdf <= 0) && (current_owner == eFACTION.PLAYER) && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
             if (!has_feature(eP_FEATURES.MONASTERY)) {
-                current_owner = 2;
+                current_owner = eFACTION.IMPERIUM;
                 add_disposition(-50);
             }
         }
@@ -1788,13 +1759,9 @@ function PlanetData(_planet, _system) constructor {
                     var enemy_fleets = 0;
                     with (necron_fleet) {
                         if (owner == eFACTION.NECRONS) {
-                            var ii = 0;
-                            ii += capital_number;
+                            var ii = capital_number;
                             ii += round((frigate_number / 2));
                             ii += round((escort_number / 4));
-                            if (ii <= 1) {
-                                ii = 1;
-                            }
 
                             if ((ii >= 7) && (capital_number > 1)) {
                                 for (var fleet_n = 1; fleet_n <= 10; fleet_n++) {
@@ -1855,8 +1822,6 @@ function PlanetData(_planet, _system) constructor {
                         }
 
                         if (_found_near_planet) {
-                            var tgt1, tgt2;
-
                             necron_fleet2.action_x = _nearest_planet.x;
                             necron_fleet2.action_y = _nearest_planet.y;
                             with (necron_fleet2) {
@@ -1874,8 +1839,8 @@ function PlanetData(_planet, _system) constructor {
 
         // Spread influence on controlled sector
         if ((planet_type != "Space Hulk") && (planet_type != "Dead")) {
-            if (corruption < 70 && current_owner == 10) {
-                if (current_owner == 10) {
+            if (corruption < 70 && current_owner == eFACTION.CHAOS) {
+                if (current_owner == eFACTION.CHAOS) {
                     alter_corruption(2);
                 }
             }
@@ -1905,7 +1870,6 @@ function PlanetData(_planet, _system) constructor {
             alter_influence(eFACTION.TYRANIDS, cult.cult_age / 100);
             var planet_garrison = garrisons;
             if (cult.hiding) {
-                var find_nid_chance = 50 - planet_garrison.total_garrison;
                 if (population_influences[eFACTION.TYRANIDS] > 50) {
                     var find_cult_chance = irandom(50);
                     var alert_text = $"A hidden Genestealer Cult on {name()} Has suddenly burst forth from hiding!";
@@ -2113,10 +2077,7 @@ function PlanetData(_planet, _system) constructor {
     static init_fallen_marines = function() {
         var _eta = scr_mission_eta(system.x, system.y, 1);
 
-        LOGGER.info($"Fallen: found star {name()} as candidate");
-
         var assigned_problem = add_problem("fallen", _eta);
-        LOGGER.info($"assigned_problem {assigned_problem}");
 
         if (!assigned_problem) {
             LOGGER.error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");

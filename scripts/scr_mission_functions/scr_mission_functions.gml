@@ -981,7 +981,7 @@ function add_new_problem(planet, problem, timer, star = noone, other_data = {}) 
                 p_problem[planet][i] = problem;
                 p_problem_other_data[planet][i] = other_data;
                 p_timer[planet][i] = timer;
-                problem_added = i;
+                problem_added = bool(i);
                 break;
             }
         }
