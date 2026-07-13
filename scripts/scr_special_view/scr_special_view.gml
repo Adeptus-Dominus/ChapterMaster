@@ -129,6 +129,14 @@ function scr_special_view(command_group) {
                 ahuh = 1;
             }
         }
+        // Guardsman veterancy: a basic Guardsman with GUARD_VETERAN_XP banked is eligible
+        // for promotion to Veteran Guard (promote_auxilia_to_veteran), so flag the row the
+        // way other_manage_data does for marines: the EXP readout glows yellow with the
+        // Promotion Recommended tooltip and the Promote button accepts the selection.
+        // Sergeants, weapons teams, existing Veterans, and green troopers stay unflagged.
+        if (man[i] == "man" && ma_role[i] == "Guardsman" && ma_exp[i] >= GUARD_VETERAN_XP) {
+            ma_promote[i] = 1;
+        }
         if (man[i] == "vehicle") {
             if (ma_role[i] != "") {
                 ahuh = 1;

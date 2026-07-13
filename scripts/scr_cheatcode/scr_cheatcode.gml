@@ -121,9 +121,9 @@ function scr_cheatcode(argument0) {
                     break;
                 case "veteranguard":
                     // Promote every basic Guardsman to Veteran Guard (role swap, veteran
-                    // stat buff, Hellgun equip unlocked). promote_auxilia_to_veteran was
-                    // built but never wired to anything, so this is the test trigger; the
-                    // Auxilia "Promote All" button can call the same function.
+                    // stat buff, Hellgun equip unlocked). The Auxilia screen Promote button
+                    // covers the selection path (setup_promotion_popup); this cheat remains
+                    // the promote-everything bulk trigger.
                     var _vet_promoted = promote_auxilia_to_veteran();
                     with (obj_ini) {
                         scr_company_order(0);

@@ -935,11 +935,28 @@ function auxilia_roles() {
     return ["Guardsman", "Guard Squad", "Guard Sergeant", "Veteran Guard", "Heavy Weapons Team"];
 }
 
+/// @description Promote one basic Guardsman to Veteran Guard: role swap plus the veteran
+/// stat buff. Shared by promote_auxilia_to_veteran (veteranguard cheat, bulk path) and the
+/// Auxilia screen Promote button (setup_promotion_popup, selection path). No XP gate here;
+/// callers gate on GUARD_VETERAN_XP. The stat_boosts numbers are tunable; additions are
+/// flat, and stat_boosts rebalances constitution into current health.
+/// @param {Struct.TTRPG_stats} _unit  the Guardsman to promote
+function promote_guardsman_to_veteran(_unit) {
+    _unit.update_role("Veteran Guard");
+    _unit.stat_boosts({
+        ballistic_skill: 8,
+        constitution: 6,
+        dexterity: 4
+    });
+}
+
 /// @description Promote every basic Guardsman to Veteran Guard, applying the veteran stat
 /// buff. Veterans keep all Guard behaviour (Auxilia screen, hireling line, volley fire,
 /// tenth-slot berth, guardsman portrait) through the role closure. They receive no free
-/// weapon; Hellguns are forged separately and equip-gated to this role. Intended to be wired
-/// to the Auxilia "Promote All" button. Pass a company index to limit promotion to one
+/// weapon; Hellguns are forged separately and equip-gated to this role. The Auxilia screen
+/// Promote button wires the per-selection path through promote_guardsman_to_veteran
+/// (setup_promotion_popup); this bulk path serves the veteranguard cheat and future
+/// promote-everything hooks. Pass a company index to limit promotion to one
 /// company, or leave it undefined to promote every auxilia Guardsman. The stat_boosts numbers
 /// are tunable. Additions are flat; stat_boosts rebalances constitution into current health.
 /// @param {real} [_company]  optional company index to limit promotion to
@@ -958,12 +975,7 @@ function promote_auxilia_to_veteran(_company = undefined) {
         if (_unit.experience < GUARD_VETERAN_XP) {
             continue;
         }
-        _unit.update_role("Veteran Guard");
-        _unit.stat_boosts({
-            ballistic_skill: 8,
-            constitution: 6,
-            dexterity: 4
-        });
+        promote_guardsman_to_veteran(_unit);
         _count++;
     }
     return _count;
