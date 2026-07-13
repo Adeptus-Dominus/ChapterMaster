@@ -402,7 +402,7 @@ if ((dropping) && (battle_special != "space_hulk")) {
 }
 
 if ((battle_special == "ruins") || (battle_special == "ruins_eldar")) {
-    _newline = "The enemy forces are made up of " + enemy_dudes;
+    _newline = "The enemy forces are made up of " + string(enemy_dudes);
 
     if (enemy == eFACTION.ELDAR) {
         _newline += " Craftworld Eldar.";
@@ -467,7 +467,7 @@ if ((enemy == eFACTION.ORK) && (!dropping)) {
     rand = choose(1, 2, 3);
     if (rand < 4) {
         p1 = "Howls and grunts ring from the surrounding terrain as the Orks announce their presence.  ";
-        p2 = enemy_dudes + ", the bloodthirsty horde advances toward your Marines, ecstatic in their anticipation of carnage.  ";
+        p2 = string(enemy_dudes) + ", the bloodthirsty horde advances toward your Marines, ecstatic in their anticipation of carnage.  ";
         p3 = p2;
         p2 = string_delete(p2, 2, 999);
         p3 = string_delete(p3, 1, 1);
@@ -475,7 +475,7 @@ if ((enemy == eFACTION.ORK) && (!dropping)) {
     }
 }
 if ((enemy == eFACTION.ORK) && (dropping)) {
-    p1 = "The " + enemy_dudes + "-some Orks howl and roar at the oncoming marines.  Many of the beasts fire their weapons, more or less spraying rounds aimlessly into the sky.";
+    p1 = "The " + string(enemy_dudes) + "-some Orks howl and roar at the oncoming marines.  Many of the beasts fire their weapons, more or less spraying rounds aimlessly into the sky.";
 }
 
 if ((enemy == eFACTION.TAU) && (!dropping)) {
@@ -485,7 +485,7 @@ if ((enemy == eFACTION.TYRANIDS) && (!dropping)) {
     rand = choose(1, 2, 3);
 }
 if ((enemy == eFACTION.TYRANIDS) && (dropping)) {
-    p1 = "The " + enemy_dudes + "-some Tyranids hiss and chitter as your marines rain down.  Blasts of acid and spikes fill the sky, but none seem to quite find their mark.";
+    p1 = "The " + string(enemy_dudes) + "-some Tyranids hiss and chitter as your marines rain down.  Blasts of acid and spikes fill the sky, but none seem to quite find their mark.";
 }
 
 if ((enemy == eFACTION.CHAOS) && (!dropping)) {
@@ -512,7 +512,7 @@ if ((enemy == eFACTION.NECRONS) && (dropping == 0)) {
     rand = choose(1, 2, 3);
     if (rand < 4) {
         p1 = "Dirt crunches beneath the feet of the Necrons as they make their silent advance.  ";
-        p2 = enemy_dudes + ", the souless xeno advance toward your Marines, silent and pulsing with green energy.  ";
+        p2 = string(enemy_dudes) + ", the souless xeno advance toward your Marines, silent and pulsing with green energy.  ";
         p3 = p2;
         p2 = string_delete(p2, 2, 999);
         p3 = string_delete(p3, 1, 1);
