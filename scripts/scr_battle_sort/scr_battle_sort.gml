@@ -2,8 +2,8 @@ function scr_battle_sort() {
     // This is ran in order to sort the battles that have been quened up
     // Space battles are placed in front whenever possible
 
-    for (var i = 49; i >= 0; i--) {
-        if ((battles <= i) && (i >= 2) && (battles > 0)) {
+    for (var i = 49; i >= 2; i--) {
+        if ((battles <= i) && (battles > 0)) {
             if ((battle[i] != 0) && (battle[i - 1] != 0) && (battle_world[i] == 0) && (battle_world[i - 1] > 0)) {
                 var tem1 = battle[i - 1];
                 var tem2 = battle_location[i - 1];
