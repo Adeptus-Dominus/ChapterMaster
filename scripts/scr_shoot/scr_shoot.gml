@@ -1,4 +1,10 @@
 function scr_shoot(weapon_index_position, target_object, target_type, damage_data, melee_or_ranged, shot_override = -1, consume_ammo = true) {
+    // Universal target guard: a volley can destroy its target mid-loop (or a re-pick
+    // can return noone when nothing remains), so every caller funnels through this one
+    // check instead of guarding each call site. Firing at nothing does nothing.
+    if (!instance_exists(target_object)) {
+        return;
+    }
     // A retreating player formation cannot fight: it withdraws under fire without
     // shooting or swinging back (see the retreat order).
     if ((object_index == obj_pnunit) && (move_order == "retreat")) {
