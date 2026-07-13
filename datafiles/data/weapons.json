@@ -97,16 +97,16 @@
     },
     "Autogun": {
         "abbreviation": "Autogun",
-        "ammo": 16,
+        "ammo": 12,
         "arp": 1,
         "attack": {
             "artifact": 80,
             "master_crafted": 70,
             "standard": 60
         },
-        "description": "A rugged solid-slug rifle stamped out by the million on forge and hive worlds, the same pattern carried by cultist rabbles across the sector. Hits as hard as a Lasgun in a rattling burst, but the crude drum runs dry fast and there is little in it for an artificer to refine.",
+        "description": "A rugged solid-slug rifle stamped out by the million on forge and hive worlds, the same pattern carried by cultist rabbles across the sector. Hits as hard as a Lasgun in a rattling burst, but the crude drum holds a dozen rounds, and past mid range the spray wanders where a las-bolt still flies true.",
         "melee_hands": 0,
-        "range": 12,
+        "range": 10,
         "ranged_hands": 1,
         "spli": 3,
         "tags": [

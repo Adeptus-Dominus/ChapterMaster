@@ -296,7 +296,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             };
 
             static assign_random_mutations = function() {
-                var _mutation_roll = roll_dice_unit(1, 100, "high", self);
+                var _mutation_roll = roll_dice_unit(self, 1, 100, "high");
                 var _mutation_threshold = 100 - obj_ini.stability;
                 if (_mutation_roll <= _mutation_threshold) {
                     var _mutation_names = struct_get_names(gene_seed_mutations);
@@ -1118,7 +1118,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static roll_dice = function(dices = 1, faces = 6, player_benefit_at = "none") {
-        return roll_dice_unit(dices, faces, player_benefit_at, self);
+        return roll_dice_unit(self, dices, faces, player_benefit_at);
     };
 
     static roll_psionics = function() {
@@ -2157,11 +2157,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static perils_strength = function() {
-        var _perils_strength = roll_dice_unit(1, 100, "low", self);
+        var _perils_strength = roll_dice_unit(self, 1, 100, "low");
 
         // I hope you like demons
         if (has_trait("warp_tainted")) {
-            var _second_roll = roll_dice_unit(1, 100, "high", self);
+            var _second_roll = roll_dice_unit(self, 1, 100, "high");
             if (_second_roll > _perils_strength) {
                 _perils_strength = _second_roll;
             }
@@ -2173,7 +2173,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static perils_test = function() {
-        var _roll = roll_dice_unit(1, 1000, "high", self);
+        var _roll = roll_dice_unit(self, 1, 1000, "high");
         var _perils_threshold = perils_threshold();
 
         return _roll <= _perils_threshold;
@@ -2189,13 +2189,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static psychic_focus_test = function() {
-        var _cast_roll = roll_dice_unit(1, 100, "high", self);
+        var _cast_roll = roll_dice_unit(self, 1, 100, "high");
         var _cast_difficulty = psychic_focus_difficulty();
         var _test_successful = _cast_roll >= _cast_difficulty;
 
         if (_test_successful) {
             roll_psionic_increase();
-            if (roll_dice_unit(2, 10, "high", self) == 20) {
+            if (roll_dice_unit(self, 2, 10, "high") == 20) {
                 add_exp(1 * (_cast_difficulty / 100));
             }
         }
@@ -2207,7 +2207,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (psionic < 12) {
             var _psionic_difficulty = max(1, (psionic * 50) - experience);
 
-            var _dice_roll = roll_dice_unit(1, _psionic_difficulty, "high", self);
+            var _dice_roll = roll_dice_unit(self, 1, _psionic_difficulty, "high");
             if (_dice_roll == _psionic_difficulty) {
                 psionic++;
                 add_battle_log_message($"{name_role()} was touched by the warp!", eMSG_COLOR.AQUA);
