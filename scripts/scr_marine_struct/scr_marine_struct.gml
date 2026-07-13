@@ -296,7 +296,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             };
 
             static assign_random_mutations = function() {
-                var _mutation_roll = roll_dice_unit(self, 1, 100, "high");
+                var _mutation_roll = roll_dice_unit(1, 100, "high", self);
                 var _mutation_threshold = 100 - obj_ini.stability;
                 if (_mutation_roll <= _mutation_threshold) {
                     var _mutation_names = struct_get_names(gene_seed_mutations);
@@ -412,16 +412,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             return wep;
         }
         return obj_ini.artifact[wep];
-    };
-
-    /// @desc Add battle or mission experience to this unit. Used by Guardsman veterancy
-    /// (GUARD_BATTLE_XP per surviving victory; GUARD_VETERAN_XP gates promotion to
-    /// Veteran Guard), the guardxp cheat, and Techmarine mission rewards. (Restored:
-    /// the veterancy feature's call sites shipped without this definition, so any Guard
-    /// victory, guardxp use, or Techmarine mission reward crashed at runtime with
-    /// "Variable <unknown_object>.add_experience not set before reading it".)
-    static add_experience = function(_amount) {
-        experience += _amount;
     };
 
     static role = function() {
@@ -1118,7 +1108,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static roll_dice = function(dices = 1, faces = 6, player_benefit_at = "none") {
-        return roll_dice_unit(self, dices, faces, player_benefit_at);
+        return roll_dice_unit(dices, faces, player_benefit_at, self);
     };
 
     static roll_psionics = function() {
@@ -1307,10 +1297,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static ranged_attack = function(weapon_slot = 0) {
-        var ranged_damage_data = [];
         encumbered_ranged = false;
         //base modifyer based on unit skill set
-        var ranged_att = 100 * ((ballistic_skill / 50) + (dexterity / 400) + (experience / 500));
+        ranged_att = 100 * ((ballistic_skill / 50) + (dexterity / 400) + (experience / 500));
         var final_range_attack = 0;
         var explanation_string = $"Stat Mod: x{ranged_att / 100}#  BS: x{ballistic_skill / 50}#  DEX: x{dexterity / 400}#  EXP: x{experience / 500}#";
         //determine capavbility to weild bulky weapons
@@ -1680,14 +1669,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         }
 
-        var _melee_damage_data = [
+        melee_damage_data = [
             final_attack,
             explanation_string,
             melee_carrying,
             primary_weapon,
             secondary_weapon
         ];
-        return _melee_damage_data;
+        return melee_damage_data;
     };
 
     static has_force_weapon = function() {
@@ -1706,9 +1695,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     //TODO just did this so that we're not loosing featuring but this porbably needs a rethink
-    static hammer_of_wrath = function(_melee_damage_data = melee_attack()) {
-        var _melee_attack = _melee_damage_data[0];
-        var _melee_weapon = _melee_damage_data[3];
+    static hammer_of_wrath = function() {
+        var _melee_attack = melee_damage_data[0];
+        var _melee_weapon = melee_damage_data[3];
 
         var wrath = new EquipmentStruct({attack: _melee_attack * 0.75, name: "Hammer of Wrath", range: 2, ammo: 6, spli: _melee_weapon.spli, arp: _melee_weapon.arp}, "weapon");
 
@@ -1720,22 +1709,22 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static armour_calc = function() {
-        var _armour_rating = 0;
-        _armour_rating += get_armour_data("armour_value");
-        _armour_rating += get_weapon_one_data("armour_value");
-        _armour_rating += get_mobility_data("armour_value");
-        _armour_rating += get_gear_data("armour_value");
-        _armour_rating += get_weapon_two_data("armour_value");
+        armour_rating = 0;
+        armour_rating += get_armour_data("armour_value");
+        armour_rating += get_weapon_one_data("armour_value");
+        armour_rating += get_mobility_data("armour_value");
+        armour_rating += get_gear_data("armour_value");
+        armour_rating += get_weapon_two_data("armour_value");
         if (armour() != "" && allegiance == global.chapter_name) {
             // STC Bonuses
             if (obj_controller.stc_bonus[1] == 5) {
-                _armour_rating *= 1.05;
+                armour_rating *= 1.05;
             }
             if (obj_controller.stc_bonus[2] == 3) {
-                _armour_rating *= 1.05;
+                armour_rating *= 1.05;
             }
         }
-        return _armour_rating;
+        return armour_rating;
     };
 
     static in_squad = function() {
@@ -2158,11 +2147,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static perils_strength = function() {
-        var _perils_strength = roll_dice_unit(self, 1, 100, "low");
+        var _perils_strength = roll_dice_unit(1, 100, "low", self);
 
         // I hope you like demons
         if (has_trait("warp_tainted")) {
-            var _second_roll = roll_dice_unit(self, 1, 100, "high");
+            var _second_roll = roll_dice_unit(1, 100, "high", self);
             if (_second_roll > _perils_strength) {
                 _perils_strength = _second_roll;
             }
@@ -2174,7 +2163,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static perils_test = function() {
-        var _roll = roll_dice_unit(self, 1, 1000, "high");
+        var _roll = roll_dice_unit(1, 1000, "high", self);
         var _perils_threshold = perils_threshold();
 
         return _roll <= _perils_threshold;
@@ -2190,13 +2179,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static psychic_focus_test = function() {
-        var _cast_roll = roll_dice_unit(self, 1, 100, "high");
+        var _cast_roll = roll_dice_unit(1, 100, "high", self);
         var _cast_difficulty = psychic_focus_difficulty();
         var _test_successful = _cast_roll >= _cast_difficulty;
 
         if (_test_successful) {
             roll_psionic_increase();
-            if (roll_dice_unit(self, 2, 10, "high") == 20) {
+            if (roll_dice_unit(2, 10, "high", self) == 20) {
                 add_exp(1 * (_cast_difficulty / 100));
             }
         }
@@ -2208,7 +2197,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (psionic < 12) {
             var _psionic_difficulty = max(1, (psionic * 50) - experience);
 
-            var _dice_roll = roll_dice_unit(self, 1, _psionic_difficulty, "high");
+            var _dice_roll = roll_dice_unit(1, _psionic_difficulty, "high", self);
             if (_dice_roll == _psionic_difficulty) {
                 psionic++;
                 add_battle_log_message($"{name_role()} was touched by the warp!", eMSG_COLOR.AQUA);
@@ -2239,9 +2228,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         }
 
-        var artifact_list = equipped_artifacts();
+        var arti, artifact_list = equipped_artifacts();
         for (var i = 0; i < array_length(artifact_list); i++) {
-            var arti = obj_ini.artifact_struct[artifact_list[i]];
+            arti = obj_ini.artifact_struct[artifact_list[i]];
             arti.bearer = [
                 end_company,
                 end_slot

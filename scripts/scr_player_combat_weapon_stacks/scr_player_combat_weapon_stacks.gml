@@ -89,7 +89,7 @@ function add_squad_weapon(weapon_name, count, head_role = false, unit = "none") 
 
 /// @self Asset.GMObject.obj_pnunit
 function find_stack_index(weapon_name, head_role = false, unit = "none") {
-    var final_index = -1; // Upstream: local, was leaking onto the instance
+    final_index = -1;
     var allow = false;
     for (var stack_index = 1; stack_index < array_length(wep); stack_index++) {
         allow = false;
@@ -310,7 +310,7 @@ function scr_player_combat_weapon_stacks() {
                         if (mobi_item.has_tag("jump")) {
                             var stack_index = find_stack_index("Hammer of Wrath", head_role, unit);
                             if (stack_index > -1) {
-                                add_data_to_stack(stack_index, unit.hammer_of_wrath(marine_attack[g]), false, head_role, unit);
+                                add_data_to_stack(stack_index, unit.hammer_of_wrath(), false, head_role, unit);
                                 if (head_role) {
                                     player_head_role_stack(stack_index, unit);
                                 }
@@ -391,7 +391,7 @@ function scr_player_combat_weapon_stacks() {
                         add_squad_weapon(unit.weapon_one(), _sq_men, head_role, unit);
                         add_squad_weapon(unit.weapon_two(), 1, head_role, unit);
                     } else {
-                        var primary_ranged = marine_ranged[g][3]; //collect unit ranged data (upstream: cached at roster add, struct member removed)
+                        var primary_ranged = unit.ranged_damage_data[3]; //collect unit ranged data
                         // Rank-and-file guardsmen split into enemy-block-sized volleys (capped
                         // stacks) instead of merging the whole regiment into one lasgun stack, so
                         // each volley fires and picks its target on its own. Everyone else (Marines,
@@ -402,24 +402,25 @@ function scr_player_combat_weapon_stacks() {
                             weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
                         }
                         if (weapon_stack_index > -1) {
-                            add_data_to_stack(weapon_stack_index, primary_ranged, marine_ranged[g][0], head_role, unit);
+                            add_data_to_stack(weapon_stack_index, primary_ranged, unit.ranged_damage_data[0], head_role, unit);
                             if (head_role) {
                                 player_head_role_stack(weapon_stack_index, unit);
                             }
                         }
                     }
 
-                    var primary_melee = marine_attack[g][3]; //collect unit melee data (upstream: cached at roster add)
+                    var primary_melee = unit.melee_damage_data[3]; //collect unit melee data
                     weapon_stack_index = find_stack_index(primary_melee.name, head_role, unit);
                     if (weapon_stack_index > -1) {
-                        if (range[weapon_stack_index] >= 2) {
+                        if (range[weapon_stack_index] > 1.9) {
                             continue;
                         } //creates secondary weapon stack for close combat ranged weaponry use
-                        add_data_to_stack(weapon_stack_index, primary_melee, marine_attack[g][0], head_role, unit);
+                        primary_melee.range = 1;
+                        add_data_to_stack(weapon_stack_index, primary_melee, unit.melee_damage_data[0], head_role, unit);
                         if (head_role) {
                             player_head_role_stack(weapon_stack_index, unit);
                         }
-                        if (floor(primary_melee.range) < 2 && primary_melee.ammo == 0) {
+                        if (floor(primary_melee.range) <= 1 && primary_melee.ammo == 0) {
                             ammo[weapon_stack_index] = -1; //no ammo limit
                         }
                     }
@@ -553,6 +554,7 @@ function scr_add_unit_to_roster(unit, is_local = false, is_ally = false) {
     array_push(marine_local, is_local);
     array_push(marine_casting, false);
     array_push(marine_casting_cooldown, 0);
+    array_push(marine_defense, 1);
 
     array_push(marine_dead, 0);
     array_push(marine_mshield, 0);

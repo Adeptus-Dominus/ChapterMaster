@@ -92,9 +92,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             }
             if (obj_ncombat.enemy == eFACTION.HERETICS) {
                 aggregate_damage = round(aggregate_damage * 1.15);
-                // Upstream fix (79be1d987): armour_pierce is a tier (0..4), and scaling it
-                // 1.15x shifted tiers (4 rounded to 5, off the damage_* switch). Damage
-                // keeps the Heretic bonus; AP does not.
+                armour_pierce = round(armour_pierce * 1.15);
             }
             if ((obj_ncombat.enemy == eFACTION.CHAOS) && (obj_ncombat.threat == 7)) {
                 doom = 1;

@@ -1,4 +1,4 @@
-unit = undefined;
+unit = "";
 men = 0;
 veh = 0;
 charge = 0;
@@ -9,8 +9,6 @@ attacked_dudes = 0;
 dreads = 0;
 jetpack_destroy = 0;
 defenses = 0;
-/// @type {Id.Instance.obj_enunit}
-enemy = noone;
 guard = 0; // OBSOLETE (iteration 1): flag for the dead planetary Guard men-block. Never set to 1 anywhere, so the guard==1 branches in scr_clean and scr_player_combat_weapon_stacks are dead. Live guardsmen are role "Guardsman" unit_struct units.
 
 // Which formation-editor bar this block embodies ("tactical", "rhino", "deathco",
@@ -49,7 +47,6 @@ y2 = 450 + (draw_size / 2);
 // x determines column; maybe every 10 or so?
 // For fortified locations maybe create a wall unit for the player?
 
-/// @type {Array<Struct.TTRPG_stats} 
 unit_struct = [];
 marine_type = [];
 marine_co = [];
@@ -66,6 +63,7 @@ marine_powers = [];
 marine_dead = [];
 marine_attack = [];
 marine_ranged = [];
+marine_defense = [];
 marine_casting = [];
 marine_casting_cooldown = [];
 marine_local = [];
@@ -136,41 +134,3 @@ alarm[1] = 4;
 hit = function() {
     return scr_hit(x1, y1, x2, y2) && obj_ncombat.fadein <= 0;
 };
-
-/// @description Assemble an array of weapons that didn't get to shoot and combat log it.
-push_held_fire = function(_starting_i = 0) {
-    var _skipped_fire = [];
-    for (var i = _starting_i; i < array_length(wep); i++) {
-        if (wep[i] != "" && wep_num[i] > 0 && range[i] > 1 && ammo[i] != 0) {
-            array_push(_skipped_fire, wep[i]);
-        }
-    }
-    report_held_fire(_skipped_fire);
-}
-
-/// @description Tick down psychic buff durations for all marines in the calling player column.
-tick_psychic_buffs = function() {
-    try {
-        var _buffs = [
-            "marine_mshield",
-            "marine_quick",
-            "marine_might",
-            "marine_fiery",
-            "marine_fshield",
-            "marine_dome",
-            "marine_spatial",
-            "marine_iron",
-            "marine_dementia",
-        ];
-        for (var i = 0; i < array_length(unit_struct); i++) {
-            for (var b = 0; b < array_length(_buffs); b++) {
-                var _name = _buffs[b];
-                if (self[$ _name][i] > 0) {
-                    self[$ _name][i] -= 1;
-                }
-            }
-        }
-    } catch (_exception) {
-        ERROR_HANDLER.handle_exception(_exception);
-    }
-}
