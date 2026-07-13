@@ -22,7 +22,7 @@ function active_roles() {
 }
 
 /// @description Returns a list of roles based on the specified group, with optional inclusion of trainees and heads.
-/// @param {Real} group The group of roles to retrieve (e.g., SPECIALISTS_STANDARD, SPECIALISTS_LIBRARIANS).
+/// @param {String} group The group of roles to retrieve (e.g., SPECIALISTS_STANDARD, SPECIALISTS_LIBRARIANS).
 /// @param {Bool} include_trainee Whether to include trainee roles (default is false).
 /// @param {Bool} include_heads Whether to include head roles (default is true).
 /// @returns {Array<String>}
@@ -155,7 +155,7 @@ function role_groups(group, include_trainee = false, include_heads = true) {
                 "Master of Sanctity",
                 $"Chief {_roles[eROLE.LIBRARIAN]}",
                 "Forge Master",
-                obj_ini.role[100][eROLE.CHAPTERMASTER],
+                string(obj_ini.role[100][eROLE.CHAPTERMASTER]),
                 "Master of the Apothecarion"
             ];
             break;
