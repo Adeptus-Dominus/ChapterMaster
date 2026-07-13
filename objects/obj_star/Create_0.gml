@@ -66,6 +66,12 @@ p_governor = array_create(_planet_array_size, false);
 p_operatives = array_create_advanced(_planet_array_size, []);
 p_feature = array_create_advanced(_planet_array_size, []);
 p_upgrades = array_create_advanced(_planet_array_size, []);
+// Multi-region layer (Sector Governor roadmap B): each planet holds an array of Region records.
+// Named p_* so it serialises with every other planet array. See scr_region_functions.
+p_regions = array_create_advanced(_planet_array_size, []);
+// Player's chosen conquest-priority region per planet (index into that planet's regions).
+// 0 = no explicit focus (capital / auto-order). Named p_* so it saves like the other arrays.
+p_region_focus = array_create_advanced(_planet_array_size, 0);
 p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
 p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
@@ -132,6 +138,11 @@ get_planet_data = function(planet){
         }
     }
     return _gar;    
+}
+
+/// @returns {Array<Struct.Region>}
+get_regions = function(planet){
+    return regions_ensure(self, planet);
 }
 
 add_feature = function(planet, feature){

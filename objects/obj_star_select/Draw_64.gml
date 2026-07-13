@@ -59,6 +59,15 @@ try {
                             closes = false;
                         }
                     }
+
+                    // Keep the planet view open when interacting with the planetary-regions panel
+                    // or the construction box beneath it (covers the whole right column region).
+                    if (closes && (planet_region_count(target, obj_controller.selecting_planet) > 1)) {
+                        var _rp_h = 30 + (planet_region_count(target, obj_controller.selecting_planet) * 46) + 12;
+                        if (scr_hit(340 + main_data_slate.width, 160, 340 + main_data_slate.width + 300, 160 + _rp_h + 8 + 480)) {
+                            closes = false;
+                        }
+                    }
                 }
                 var shutters = [
                     shutter_1,
@@ -248,6 +257,18 @@ try {
             buttons_selected = true;
         }
 
+        // When a new multi-region planet is selected, default its right-column view to the
+        // Planetary Regions panel: it pops up on click and stays until you click off (or until you
+        // open Population/Garrison, which persist for that planet). Single-region planets keep their
+        // existing default. Feature panels (from jump-to navigation) are left untouched.
+        if (obj_controller.selecting_planet != region_view_planet) {
+            region_view_planet = obj_controller.selecting_planet;
+            if ((obj_controller.selecting_planet > 0) && (planet_region_count(target, obj_controller.selecting_planet) > 1)) {
+                population = false;
+                garrison = "";
+            }
+        }
+
         main_data_slate.inside_method = function() {
             p_data.planet_info_screen();
         };
@@ -305,6 +326,14 @@ try {
                 p_data.draw_planet_population_controls();
             };
             garrison_data_slate.draw(344 + main_data_slate.width - 4, 160, 0.6, 0.6);
+        } else if ((obj_controller.selecting_planet > 0) && (planet_region_count(target, obj_controller.selecting_planet) > 1)) {
+            // Right column is otherwise idle: show the planetary-regions overlay (Sector Governor).
+            // Click an outlying region to set the conquest focus; steers which region falls first
+            // and which region an assault lands on. See draw_regions_panel in scr_region_functions.
+            draw_regions_panel(target, obj_controller.selecting_planet, 340 + main_data_slate.width, 160);
+            // Construction box directly beneath it: build holos for the focused region.
+            var _rp_h = 30 + (planet_region_count(target, obj_controller.selecting_planet) * 46) + 12;
+            draw_region_construction_panel(target, obj_controller.selecting_planet, 340 + main_data_slate.width, 160 + _rp_h + 8);
         }
         if (obj_controller.selecting_planet > 0) {
             main_data_slate.draw(344, 160, slate_draw_scale, slate_draw_scale + 0.1);

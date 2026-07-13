@@ -863,6 +863,8 @@ function PlanetData(_planet, _system) constructor {
             var _point_data = _system_point_use[$ system.name][planet];
             _spare_apoth_points = _point_data.heal_points - _point_data.heal_points_use;
         }
+        // Region Candidate Stations add screening capacity without tying up apothecaries.
+        _spare_apoth_points += region_candidate_station_bonus(system, planet);
         return _spare_apoth_points;
     };
 
@@ -1606,6 +1608,16 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static set_star_select_planet = function() {
+        // Multi-region worlds default to the Planetary Regions panel when you click them (the
+        // per-region garrison, defences and Construction live there); clicking now "locks in" the
+        // regions view instead of opening the classic garrison report. Single-region worlds keep
+        // the garrison report on click.
+        if (planet_region_count(system, planet) > 1) {
+            obj_star_select.garrison = "";
+            obj_star_select.feature = "";
+            buttons_selected = false;
+            return;
+        }
         obj_star_select.garrison = garrisons;
         system.garrison = garrisons.garrison_force;
         obj_star_select.feature = "";

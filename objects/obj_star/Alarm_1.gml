@@ -475,3 +475,9 @@ if ((obj_controller.is_test_map != true) && (p_owner[2] != 1)) {
         p_guardsmen[i] = 0;
     }
 }
+
+// Seed the multi-region layer now that every planet scalar is finalised. Idempotent, and old
+// saves that predate this will generate regions lazily via get_regions/regions_ensure instead.
+for (var i = 1; i <= planets; i++) {
+    regions_ensure(self, i);
+}

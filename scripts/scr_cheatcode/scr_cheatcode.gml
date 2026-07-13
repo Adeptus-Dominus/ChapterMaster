@@ -56,6 +56,28 @@ function scr_cheatcode(argument0) {
                 case "newtech":
                     obj_controller.tech_points = 400;
                     break;
+                case "regions": {
+                    // Debug readout of the multi-region layer for the open/selected planet.
+                    var _rstar = noone;
+                    if (instance_exists(obj_star_select)) {
+                        _rstar = obj_star_select.target;
+                    }
+                    if (!instance_exists(_rstar) && instance_exists(obj_p_fleet)) {
+                        _rstar = instance_nearest(obj_p_fleet.x, obj_p_fleet.y, obj_star);
+                    }
+                    if (!instance_exists(_rstar)) {
+                        _rstar = instance_nearest(mouse_x, mouse_y, obj_star);
+                    }
+                    if (instance_exists(_rstar)) {
+                        var _rplanet = clamp(real(cheat_arguments[0]), 1, max(1, _rstar.planets));
+                        var _rdump = regions_debug_dump(_rstar, _rplanet);
+                        show_debug_message(_rdump);
+                        scr_popup("DEBUG", _rdump, "");
+                    } else {
+                        scr_popup("DEBUG", "regions: no star found", "");
+                    }
+                    break;
+                }
                 case "newchap":
                     obj_controller.chaplain_points = 50;
                     break;
@@ -634,6 +656,21 @@ function draw_planet_debug_forces() {
             target[$ key][current_planet] = clamp(target[$ key][current_planet] + 1, 0, 6);
         }
     }
+
+    // Region layer readout (Sector Governor roadmap B).
+    if (current_planet >= 1) {
+        var _regions = regions_ensure(target, current_planet);
+        var _region_count = array_length(_regions);
+        var _contested = planet_is_contested(target, current_planet) ? " [CONTESTED]" : "";
+        var _region_y = base_y + array_length(faction_names) * 20 + 8;
+        draw_text(38, _region_y, $"Regions ({_region_count}){_contested}:");
+        for (var r = 0; r < _region_count; r++) {
+            var _region = _regions[r];
+            var _cap = _region.is_capital ? "*" : "-";
+            draw_text(48, _region_y + 18 + r * 18, $"{_cap} {_region.name}: {region_faction_name(_region.owner)}, pop {_region.population}");
+        }
+    }
+
     pop_draw_return_values();
 }
 

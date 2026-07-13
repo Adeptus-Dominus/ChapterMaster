@@ -8,6 +8,7 @@ Arguments with stars `(argument*)` can be omitted.
 - `infreq` - infinite requisition.
 - `infseed`- gives 9999 Geneseed.
 - `debug` - turns the debug mode on.
+- `regions (planet*)` - prints the multi-region breakdown (owner, population, garrison, fortification) for the selected/open system's planet (defaults to planet 1). Shows an in-game popup and logs to the IDE Output window. Region counts also appear in the debug forces window.
 - `test` - does something unholy.
 - `req (number)` - sets Requisition to specified amount.
 - `seed (number)` - sets Geneseed to specified amount.

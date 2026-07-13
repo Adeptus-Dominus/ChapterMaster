@@ -28,6 +28,9 @@ torpedo = scr_item_count("Cyclonic Torpedo");
 feature = "";
 garrison = "";
 population = false;
+// Tracks which planet the right-column view was last set up for, so a freshly-selected
+// multi-region planet defaults to its Planetary Regions panel (see Draw_64).
+region_view_planet = -1;
 
 garrison_data_slate = new DataSlate();
 garrison_data_slate.title = "Garrison Report";

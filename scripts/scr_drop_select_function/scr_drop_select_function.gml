@@ -345,6 +345,12 @@ function drop_select_unit_selection() {
             //  Until then we do not touch the embarked Guard, so attacks cost nothing.)
             obj_ncombat.player_attack_guard = 0;
 
+            // Note: the region the player is pushing into is derived by the conquest overlay
+            // (region_assault_target / regions_sync), which handles per-region defence resistance
+            // and consume-on-capture without touching the fragile combat core. The tactical
+            // obj_ncombat fortification system assumes the PLAYER is the defender, so it is left
+            // alone here; making the battle screen itself region-aware is the deferred Option B.
+
             var _planet = obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id];
             if (obj_ncombat.battle_object.space_hulk == 1) {
                 obj_ncombat.battle_special = "space_hulk";
