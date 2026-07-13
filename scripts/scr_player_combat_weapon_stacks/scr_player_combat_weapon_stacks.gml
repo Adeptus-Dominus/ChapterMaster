@@ -392,11 +392,18 @@ function scr_player_combat_weapon_stacks() {
                         add_squad_weapon(unit.weapon_two(), 1, head_role, unit);
                     } else {
                         var primary_ranged = unit.ranged_damage_data[3]; //collect unit ranged data
+                        // Hot-shot power draw: a weapon tagged requires_power_pack (the Hellgun)
+                        // cannot fire unless the bearer carries a Power Pack in the gear slot.
+                        // Skitarii are exempt, drawing the charge from their own augmetic
+                        // reactors. The trooper still fights through the melee path below.
+                        var _pack_blocked = is_struct(primary_ranged) && primary_ranged.has_tag("requires_power_pack") && unit.role() != "Skitarii" && unit.gear() != "Power Pack";
                         // Rank-and-file guardsmen split into enemy-block-sized volleys (capped
                         // stacks) instead of merging the whole regiment into one lasgun stack, so
                         // each volley fires and picks its target on its own. Everyone else (Marines,
                         // sergeants, specialists) stacks normally.
-                        if (unit.role() == "Guardsman") {
+                        if (_pack_blocked) {
+                            weapon_stack_index = -1;
+                        } else if (unit.role() == "Guardsman") {
                             weapon_stack_index = find_capped_stack_index(primary_ranged.name, GUARD_VOLLEY_SIZE);
                         } else {
                             weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);

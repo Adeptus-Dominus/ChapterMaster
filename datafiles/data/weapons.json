@@ -1312,21 +1312,23 @@
     "Hellgun": {
         "abbreviation": "HllGun",
         "ammo": 20,
-        "arp": 1,
+        "arp": 2,
         "attack": {
-            "artifact": 40,
-            "master_crafted": 35,
-            "standard": 30
+            "artifact": 100,
+            "master_crafted": 85,
+            "standard": 70
         },
-        "description": "Known as a Hellgun or Hot-shot Lasgun, these high-energy weapons are more potent and destructive than common Lasguns, drawing more power for a more penetrative shot, but also more complex, requiring reinforced barrels, thermal-cooling cells and gyro-stabilized power packs.",
+        "description": "Known as a Hellgun or Hot-shot Lasgun, these high-energy weapons are more potent and destructive than common Lasguns, drawing more power for a more penetrative shot, but also more complex, requiring reinforced barrels, thermal-cooling cells and gyro-stabilized power packs. In the field the trooper must carry a dedicated Power Pack to fire it at all; Skitarii draw the charge from their own augmetic reactors instead.",
         "melee_hands": 0,
         "range": 12,
         "ranged_hands": 1,
-        "spli": 3,
+        "spli": 1,
         "tags": [
             "las",
-            "veteran_guard_only"
-        ]
+            "veteran_guard_only",
+            "requires_power_pack"
+        ],
+        "value": 8
     },
     "Hellrifle": {
         "abbreviation": "HllRifle",
