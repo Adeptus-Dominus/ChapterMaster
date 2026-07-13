@@ -404,6 +404,16 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return [0, _powers_learned];
     }; //change exp
 
+    /// @desc Add battle or mission experience to this unit. Used by Guardsman veterancy
+    /// (GUARD_BATTLE_XP per surviving victory; GUARD_VETERAN_XP gates promotion to
+    /// Veteran Guard), the guardxp cheat, and Techmarine mission rewards. (Restored:
+    /// lost in the 13-Jul-2026 upstream merge resolution while all three call sites
+    /// survived, so any Guard victory, guardxp use, or Techmarine mission reward
+    /// crashed at runtime with "Variable ... GUARD_BATTLE_XP not set before reading it".)
+    static add_experience = function(_amount) {
+        experience += _amount;
+    };
+
     static handle_stat_growth = unit_stat_growth;
 
     static armour = function(raw = false) {
