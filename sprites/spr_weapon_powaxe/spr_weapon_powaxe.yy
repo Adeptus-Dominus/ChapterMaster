@@ -3,8 +3,8 @@
   "%Name":"spr_weapon_powaxe",
   "bboxMode":0,
   "bbox_bottom":231,
-  "bbox_left":16,
-  "bbox_right":73,
+  "bbox_left":15,
+  "bbox_right":79,
   "bbox_top":82,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"45ac5706-a0cb-4b2b-aeee-ad707b9c98af","name":"45ac5706-a0cb-4b2b-aeee-ad707b9c98af","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a3a3361c-0f41-4746-baa0-5c0f9d1687bd","name":"a3a3361c-0f41-4746-baa0-5c0f9d1687bd","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":232,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"47b6aab9-0dc2-40bb-8df3-b32e803135d0","blendMode":0,"displayName":"default","isLocked":false,"name":"47b6aab9-0dc2-40bb-8df3-b32e803135d0","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"a348adc8-c446-467d-bb47-53f271ed3c25","blendMode":0,"displayName":"default","isLocked":false,"name":"a348adc8-c446-467d-bb47-53f271ed3c25","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_weapon_powaxe",
   "nineSlice":null,
@@ -68,7 +68,9 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"45ac5706-a0cb-4b2b-aeee-ad707b9c98af","path":"sprites/spr_weapon_powaxe/spr_weapon_powaxe.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"90a9b82b-dd4a-488d-87a8-50b3fff5dc34","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a3a3361c-0f41-4746-baa0-5c0f9d1687bd","path":"sprites/spr_weapon_powaxe/spr_weapon_powaxe.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"d28967a1-5cdb-4fff-811a-cc19c095cfe3","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
