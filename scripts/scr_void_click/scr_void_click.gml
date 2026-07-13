@@ -26,11 +26,30 @@ function scr_void_click() {
         }
     } else if (instance_exists(obj_star_select)) {
         if (obj_controller.selecting_planet > 0) {
-            var _shutters = obj_star_select.shutters;
-            for (var i = 0; i < array_length(_shutters); i++) {
-                if (_shutters[i].hit()) {
+            // This prevents clicking onto a new star by pressing the buttons or planet panel
+            if (scr_hit(xx + (27 * scale), yy + (166 * scale), xx + (727 * scale), yy + (458 * scale))) {
+                if (obj_star_select.button1 != "") {
                     good = false;
-                    break;
+                }
+            }
+            if (scr_hit(xx + (348 * scale), yy + (461 * scale), xx + (348 * scale) + (246 * scale), yy + (461 * scale) + (26 * scale))) {
+                if (obj_star_select.button1 != "") {
+                    good = false;
+                }
+            }
+            if (scr_hit(xx + (348 * scale), yy + (489 * scale), xx + (348 * scale) + (246 * scale), yy + (489 * scale) + (26 * scale))) {
+                if (obj_star_select.button2 != "") {
+                    good = false;
+                }
+            }
+            if (scr_hit(xx + (348 * scale), yy + (517 * scale), xx + (348 * scale) + (246 * scale), yy + (517 * scale) + (26 * scale))) {
+                if (obj_star_select.button3 != "") {
+                    good = false;
+                }
+            }
+            if (scr_hit(xx + (348 * scale), yy + (545 * scale), xx + (348 * scale) + (246 * scale), yy + (545 * scale) + (26 * scale))) {
+                if (obj_star_select.button4 != "") {
+                    good = false;
                 }
             }
         }
