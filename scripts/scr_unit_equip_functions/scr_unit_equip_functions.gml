@@ -1,4 +1,26 @@
 // TODO: Merge all update function into one;
+
+/// @description Guard armoury discipline: auxilia infantry may only equip Guard-pattern
+/// weapons; every Astartes weapon (Bolters included) is off limits. Heavy Weapons Teams
+/// additionally field their crewed heavy weapons. Any role outside the Guard infantry is
+/// unrestricted here. This gate also filters start_gear, so every weapon named in the
+/// guard unit templates (unit_stats.json) MUST stay on these lists or the unit spawns
+/// with an empty slot, the way the Skitarii once arrived empty handed.
+/// @param {string} _role    the unit role being equipped
+/// @param {string} _weapon  the weapon name being equipped
+/// @returns {bool}
+function guard_weapon_permitted(_role, _weapon) {
+    static _guard_infantry_weapons = ["Lasgun", "Autogun", "Hellgun", "Bayonet", "Guard Chainsword", "Laspistol"];
+    static _guard_heavy_weapons = ["Heavy Bolter"];
+    if (_role == "Guardsman" || _role == "Veteran Guard" || _role == "Guard Sergeant") {
+        return array_contains(_guard_infantry_weapons, _weapon);
+    }
+    if (_role == "Heavy Weapons Team") {
+        return array_contains(_guard_infantry_weapons, _weapon) || array_contains(_guard_heavy_weapons, _weapon);
+    }
+    return true;
+}
+
 /// @self Struct.TTRPG_stats
 function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = true, quality = "any") {
     var is_artifact = !is_string(new_armour);
@@ -188,6 +210,12 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
             LOGGER.error($"Failed to equip {new_weapon} for {name()} - restricted to Veteran Guard and Skitarii.");
             return "restricted";
         }
+        // Guard armoury discipline: auxilia infantry equip Guard-pattern weapons only,
+        // no Astartes wargear. See guard_weapon_permitted.
+        if (!guard_weapon_permitted(role(), new_weapon)) {
+            LOGGER.error($"Failed to equip {new_weapon} for {name()} - not Guard-issue.");
+            return "restricted";
+        }
     }
 
     if (from_armoury && !unequipping && !is_artifact) {
@@ -245,6 +273,14 @@ function scr_update_unit_weapon_two(new_weapon, from_armoury = true, to_armoury 
     var same_quality = quality == "any" || quality == weapon_two_quality;
     if (change_wep == new_weapon && same_quality) {
         return "no change";
+    }
+
+    // Guard armoury discipline: the sidearm slot obeys the same Guard-issue whitelist as
+    // the primary, so a Bolter (or any other Astartes weapon) cannot slip in as wep2.
+    // See guard_weapon_permitted. Skips unequip and artifacts.
+    if (!unequipping && !is_artifact && !guard_weapon_permitted(role(), new_weapon)) {
+        LOGGER.error($"Failed to equip {new_weapon} for {name()} - not Guard-issue.");
+        return "restricted";
     }
 
     if (from_armoury && !unequipping && !is_artifact) {

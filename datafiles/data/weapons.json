@@ -95,6 +95,25 @@
         ],
         "value": 80
     },
+    "Autogun": {
+        "abbreviation": "Autogun",
+        "ammo": 16,
+        "arp": 1,
+        "attack": {
+            "artifact": 80,
+            "master_crafted": 70,
+            "standard": 60
+        },
+        "description": "A rugged solid-slug rifle stamped out by the million on forge and hive worlds, the same pattern carried by cultist rabbles across the sector. Hits as hard as a Lasgun in a rattling burst, but the crude drum runs dry fast and there is little in it for an artificer to refine.",
+        "melee_hands": 0,
+        "range": 12,
+        "ranged_hands": 1,
+        "spli": 3,
+        "tags": [
+            "rifle"
+        ],
+        "value": 1
+    },
     "Autocannon Turret": {
         "abbreviation": "Autocnn",
         "ammo": 18,

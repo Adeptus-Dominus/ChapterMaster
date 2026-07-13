@@ -34,6 +34,14 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
                     spawn_exp = 10;
                     obj_ini.race[target_company][_company_slot] = eFACTION.IMPERIUM;
                     _unit = new TTRPG_stats("imperial_guard", target_company, _company_slot, "guardsman");
+                    // Levy small arms: roughly one trooper in five musters with an Autogun
+                    // instead of a Lasgun (200 per 1000 bought), the way tithed PDF levies
+                    // arrive with whatever pattern the local manufactorum last stamped.
+                    // start_gear equips the Lasgun in the constructor, so swap it here;
+                    // nothing returns to the armoury, the rifle never existed.
+                    if (irandom(99) < 20) {
+                        _unit.alter_equipment({wep1: "Autogun"}, false, false);
+                    }
                     break;
                 case "Guard Squad":
                     spawn_exp = 10;
