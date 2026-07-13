@@ -60,6 +60,12 @@ try {
             }
         }
 
+        // Speed Force sweeps the whole field - bypass normal targeting/range.
+        if (wep[i] == "Speed Force" || wep[i] == "Speed Force (Ranged)") {
+            scr_shoot_spread(i);
+            continue;
+        }
+
         var _is_ap = apa[i] > 2;
         var _dist = point_distance(x, y, enemy.x, enemy.y) / 10;
         var _mode = engaged ? "melee" : "ranged";

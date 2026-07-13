@@ -311,7 +311,7 @@ function pick_target_column(target_type, mode) {
                 _x2 += 10;
                 var _enemy2 = instance_nearest(_x2, y, obj_enunit);
 
-                if (has_target_type(_enemy2, target_type, mode)) {
+                if (has_target_type(_enemy2, target_type, mode) && check_column_obstruction(enemy.column_size, _enemy2.column_size)) {
                     return _enemy2;
                 }
             }
@@ -322,4 +322,17 @@ function pick_target_column(target_type, mode) {
         ERROR_HANDLER.handle_exception(_exception);
         return undefined;
     }
+}
+
+function check_column_obstruction(front_size, back_size) {
+    if (back_size < front_size) {
+        return true;
+    } else {
+        var _pass_chance = ((back_size / front_size) - 1) * 100;
+        if (irandom_range(1, 100) < min(_pass_chance, 80)) {
+            return true;
+        }
+    }
+
+    return false;
 }

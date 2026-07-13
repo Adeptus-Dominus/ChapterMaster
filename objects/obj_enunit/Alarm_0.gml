@@ -139,7 +139,7 @@ if (!engaged) {
                     var x2 = enemy.x;
 
                     repeat (instance_number(obj_pnunit) - 1) {
-                        x2 += !flank ? 10 : -10;
+                        x2 += !flank ? -10 : 10;
                         enemy2 = instance_nearest(x2, y, obj_pnunit);
                         if (!target_block_is_valid(enemy2, obj_pnunit)) {
                             continue;
@@ -150,21 +150,15 @@ if (!engaged) {
                         }
 
                         var _back_column_size_value = enemy2.column_size;
-                        if (_back_column_size_value < _column_size_value) {
-                            continue;
+
+                        if (!check_column_obstruction(_column_size_value, _back_column_size_value)) {
+                            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP -> infantry found in back column {obj_ncombat.combat_debugger.resolve_label(enemy2)}, firing");
+                            scr_shoot(i, enemy2, target_unit_index, "att", "ranged");
+                            _shot = true;
+                            break;
                         } else {
-                            // Calculate chance of shots passing through to back row
-                            // Higher ratio of back column size to front column size increases pass-through chance
-                            // Maximum chance capped at 40% to ensure some protection remains
-                            var _pass_chance = ((_back_column_size_value / _column_size_value) - 1) * 100;
-                            if (irandom_range(1, 100) < min(_pass_chance, 80)) {
-                                continue;
-                            }
+                            continue;
                         }
-                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP -> infantry found in back column {obj_ncombat.combat_debugger.resolve_label(enemy2)}, firing");
-                        scr_shoot(i, enemy2, target_unit_index, "att", "ranged");
-                        _shot = true;
-                        break;
                     }
                 }
 
