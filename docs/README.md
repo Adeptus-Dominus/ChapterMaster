@@ -4,6 +4,18 @@
 
 **NEW RELEASE HERE** https://github.com/KestasV/Chapter-Master-1.5-Adeptus-Indomitus/releases/tag/Exe1.1
 
+**FASTEST WAY TO PLAY THIS FORK WITH LATEST UPDATES**
+1. Install GameMaker 2.3 https://gamemaker.io/en/blog/gamemaker-studio-2-version-2-dot-3-0-release
+2. Download and extract the repository ZIP.
+3. Open ChapterMaster.yyp.
+4. Select Windows and GMS2 VM.
+5. Press F5.
+6. Select New Game.
+7. Choose a premade Chapter.
+8. Use the double-right arrow to skip detailed customization.
+9. Finish the Chapter Master screen.
+10. Start commanding your Chapter.
+
 # Chapter Master 1.5 – Adeptus Indomitus
 
 **Chapter Master 1.5 – Adeptus Indomitus** is a major continuation fork of *Chapter Master: Adeptus Dominus*, expanding the game from a pure Space Marine Chapter command simulator into a broader Imperial war effort.
