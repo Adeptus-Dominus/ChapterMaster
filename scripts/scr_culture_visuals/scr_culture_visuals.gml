@@ -947,6 +947,21 @@ global.modular_drawing_items = [
             "Tartaros"
         ],
     },
+	{
+        sprite: spr_victrix_mouth,
+        cultures: ["Ultra"],
+        body_types: [
+            0
+            
+        ],
+        assign_by_rank: 2,
+        position: "mouth_variants",
+        armours: [
+            "MK7 Aquila",
+            "MK8 Errant",
+            "Artificer Armour"
+        ],
+    },
     {
         cultures: [
             "Roman",
