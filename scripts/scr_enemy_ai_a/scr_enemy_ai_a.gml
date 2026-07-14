@@ -1201,12 +1201,9 @@ function scr_enemy_ai_a() {
                     }
                     p_owner[_run] = eFACTION.IMPERIUM;
                 }
-                dispo[_run] += 10;
+                scr_gov_disp(name, _run, 10);
                 scr_event_log("", $"{who_cleansed} cleansed from {planet_string}", name);
                 scr_alert("green", "owner", $"{who_cleansed} cleansed from {planet_string}. Control returned to {who_return}", x, y);
-                if (dispo[_run] >= 101) {
-                    p_owner[_run] = eFACTION.PLAYER;
-                }
             }
         }
 

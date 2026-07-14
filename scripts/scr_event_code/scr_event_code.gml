@@ -56,7 +56,8 @@ function event_end_turn_action() {
                     _event_star.dispo[_planet] = -10; // Resets
                     var twix = $"Inquisition executes Chapter Serf in control of {planet_numeral_name(_planet, _event_star)} and installs a new Planetary Governor.";
                     if (_event_star.p_owner[_planet] == eFACTION.PLAYER) {
-                        _event_star.p_owner[_planet] = _event_star.p_first[_planet];
+                        _event_star.p_first[_planet] = eFACTION.IMPERIUM;
+                        _event_star.p_owner[_planet] = eFACTION.IMPERIUM;
                     }
                     scr_alert("", "", twix, 0, 0);
                     scr_event_log("", twix, _star_name);
