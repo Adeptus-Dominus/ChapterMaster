@@ -8,7 +8,7 @@ if ((trading > 0) && (force_goodbye != 0)) {
 
 // ** Reclusium Jail Marines**
 if ((menu == eMENU.RECLUSIAM) && (cooldown <= 0) && (penitorium > 0)) {
-    var behav = 0, r_eta = 0, re = 0;
+    var re = 0;
     for (var qp = 1; qp <= min(36, penitorium); qp++) {
         if ((qp <= penitorium) && (mouse_y >= yy + 100 + ((qp - 1) * 20)) && (mouse_y < yy + 100 + (qp * 20))) {
             if ((mouse_x >= xx + 1433) && (mouse_x < xx + 1497)) {
@@ -16,7 +16,6 @@ if ((menu == eMENU.RECLUSIAM) && (cooldown <= 0) && (penitorium > 0)) {
                 var c = penit_co[qp], e = penit_id[qp];
 
                 if (obj_ini.role[c][e] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
-                    tek = "c";
                     alarm[7] = 5;
                     global.defeat = 3;
                 }
@@ -175,13 +174,11 @@ if ((menu == eMENU.DIPLOMACY) && (diplomacy > 0) || ((diplomacy < -5) && (diplom
 if ((zoomed == 0) && (cooldown <= 0) && (menu == eMENU.DIPLOMACY) && (diplomacy == 0)) {
     xx += 55;
     yy -= 20;
-    var onceh = 0;
     // Daemon emmissary
     if (point_in_rectangle(mouse_x, mouse_y, xx + 688, yy + 181, xx + 1028, yy + 281)) {
         diplomacy = 10.1;
         diplomacy_pathway = "intro";
         scr_dialogue(diplomacy_pathway);
-        onceh = 1;
         cooldown = 1;
     }
 }
@@ -200,11 +197,6 @@ scr_menu_clear_up(function() {
     }
     // Selecting individual marines
     if ((menu == eMENU.MANAGE) && (managing > 0) || (managing < 0) && (!view_squad || !company_report)) {
-        var unit;
-        var eventing = false, bb = "";
-        var top = man_current, sel, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "", squad_sel = 0;
-        var stop = 0;
-
         if (man_size == 0) {
             alll = 0;
         }
