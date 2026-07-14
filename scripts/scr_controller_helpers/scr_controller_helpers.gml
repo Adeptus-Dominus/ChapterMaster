@@ -9,7 +9,7 @@ function scr_menu_clear_up(specific_area_function) {
                 exit;
             }
 
-            if (instance_exists(obj_turn_end) && (obj_controller.complex_event != true) && (!instance_exists(obj_temp_meeting)) && array_length(obj_turn_end.audience_stack) == 0) {
+            if (instance_exists(obj_turn_end) && !obj_controller.complex_event && (!instance_exists(obj_temp_meeting)) && array_length(obj_turn_end.audience_stack) == 0) {
                 if ((obj_turn_end.popups_end == 1) && (audience == 0) && (cooldown <= 0)) {
                     with (obj_turn_end) {
                         instance_destroy();
@@ -28,10 +28,6 @@ function scr_menu_clear_up(specific_area_function) {
                     }
                 }
             }
-
-            diyst = 999;
-            xx = camera_get_view_x(view_camera[0]);
-            yy = camera_get_view_y(view_camera[0]);
 
             if (menu == eMENU.DEFAULT) {
                 hide_banner = 0;
@@ -280,16 +276,6 @@ function scr_toggle_armamentarium() {
 function scr_toggle_recruiting() {
     scr_change_menu(eMENU.RECRUITING, function() {
         with (obj_controller) {
-            var geh = 0, good = 0;
-            for (geh = 1; geh <= 50; geh++) {
-                geh += 1;
-                if (good == 0) {
-                    if ((obj_ini.role[10][geh] == obj_ini.role[100][5]) && (obj_ini.name[10][geh] == obj_ini.recruiter_name)) {
-                        good = geh;
-                    }
-                }
-            }
-
             if (menu != eMENU.RECRUITING) {
                 set_up_recruitment_view();
                 hide_banner = 1;
@@ -302,14 +288,6 @@ function scr_toggle_fleet_area() {
     scr_change_menu(eMENU.FLEET, function() {
         with (obj_controller) {
             menu_adept = 0;
-            var geh = 0, good = 0;
-            for (geh = 1; geh <= 50; geh++) {
-                if (good == 0) {
-                    if ((obj_ini.role[4][geh] == obj_ini.role[100][5]) && (obj_ini.name[10][geh] == obj_ini.lord_admiral_name)) {
-                        good = geh;
-                    }
-                }
-            }
             if (menu != eMENU.FLEET) {
                 hide_banner = 1;
                 //TODO rewrite all this shit when fleets finally become OOP
@@ -325,7 +303,10 @@ function scr_toggle_fleet_area() {
                     temp[i] = "";
                 }
 
-                var g = 0, u = 0, m = 0, d = 0;
+                var _ship_index = 0;
+                var _hp_percent = 0;
+                var _total_ships = 0;
+                var _crippled_ships = 0;
                 temp[37] = 0;
                 temp[38] = 0;
                 temp[39] = 0;
@@ -343,32 +324,31 @@ function scr_toggle_fleet_area() {
                     }
                 }
 
-                g = 0;
                 temp[41] = "1";
                 for (var i = 0; i < array_length(obj_ini.ship); i++) {
-                    if ((g != 0) && (obj_ini.ship[i] != "")) {
-                        if ((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) < u) {
-                            g = i;
-                            u = obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i];
+                    if ((_ship_index != 0) && (obj_ini.ship[i] != "")) {
+                        if ((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) < _hp_percent) {
+                            _ship_index = i;
+                            _hp_percent = obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i];
                         }
                     }
-                    if ((g == 0) && (obj_ini.ship[i] != "")) {
-                        g = i;
-                        u = obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i];
+                    if ((_ship_index == 0) && (obj_ini.ship[i] != "")) {
+                        _ship_index = i;
+                        _hp_percent = obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i];
                     }
                     if (obj_ini.ship[i] != "") {
-                        m = i;
+                        _total_ships = i;
                     }
                     if ((obj_ini.ship[i] != "") && ((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) < 0.25)) {
-                        d += 1;
+                        _crippled_ships += 1;
                     }
                 }
-                if (g != 0) {
-                    temp[40] = string(obj_ini.ship_class[g]) + " '" + string(obj_ini.ship[g]) + "'";
-                    temp[41] = string(u);
-                    temp[42] = string(d);
+                if (_ship_index != 0) {
+                    temp[40] = string(obj_ini.ship_class[_ship_index]) + " '" + string(obj_ini.ship[_ship_index]) + "'";
+                    temp[41] = string(_hp_percent);
+                    temp[42] = string(_crippled_ships);
                 }
-                man_max = m;
+                man_max = _total_ships;
                 man_current = 0;
             }
         }
@@ -419,19 +399,13 @@ function scr_end_turn() {
                 menu = eMENU.DEFAULT;
 
                 if (!instance_exists(obj_turn_end)) {
-                    ok = 1;
-                }
-
-                if (ok == 1) {
                     obj_controller.menu = eMENU.DEFAULT;
                     obj_controller.zui = 0;
                     obj_controller.invis = false;
 
-                    if (global.settings.autosave == true) {
-                        // Autosave every 10 turns
-                        if (obj_controller.turn % 10 == 0) {
-                            scr_autosave();
-                        }
+                    // Autosave every 10 turns
+                    if (global.settings.autosave && obj_controller.turn % 10 == 0) {
+                        scr_autosave();
                     }
                     obj_controller.end_turn_insights = {};
                     with (obj_turn_end) {
