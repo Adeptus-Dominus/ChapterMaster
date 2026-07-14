@@ -1,6 +1,6 @@
 {
   "$GMSprite":"v2",
-  "%Name":"spr_weapon_relic_blade",
+  "%Name":"spr_weapon_relic_blade_shadow",
   "bboxMode":0,
   "bbox_bottom":271,
   "bbox_left":0,
@@ -12,17 +12,17 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"c1a880c3-95c1-44ea-ba33-cb0581c65a51","name":"c1a880c3-95c1-44ea-ba33-cb0581c65a51","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"v1","%Name":"f686a119-a2c7-4775-9f26-07f43c98f59a","name":"f686a119-a2c7-4775-9f26-07f43c98f59a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a25f5806-3bac-4044-8b80-a23414062f99","name":"a25f5806-3bac-4044-8b80-a23414062f99","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"f43a89d2-2282-47c1-b3ae-0c699f99fb6c","name":"f43a89d2-2282-47c1-b3ae-0c699f99fb6c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":272,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"9180b66d-7502-4d9d-9b97-74bdb87e2849","blendMode":0,"displayName":"default","isLocked":false,"name":"9180b66d-7502-4d9d-9b97-74bdb87e2849","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"c1ae6861-44f3-4555-87c6-c77fbed42014","blendMode":0,"displayName":"default","isLocked":false,"name":"c1ae6861-44f3-4555-87c6-c77fbed42014","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_weapon_relic_blade",
+  "name":"spr_weapon_relic_blade_shadow",
   "nineSlice":null,
   "origin":9,
   "parent":{
@@ -34,12 +34,12 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"spr_weapon_relic_blade",
+    "%Name":"spr_weapon_relic_blade_shadow",
     "autoRecord":true,
-    "backdropHeight":1080,
+    "backdropHeight":768,
     "backdropImageOpacity":0.5,
     "backdropImagePath":"",
-    "backdropWidth":1920,
+    "backdropWidth":1366,
     "backdropXOffset":0.0,
     "backdropYOffset":0.0,
     "events":{
@@ -58,10 +58,10 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_weapon_relic_blade",
+    "name":"spr_weapon_relic_blade_shadow",
     "playback":1,
-    "playbackSpeed":1.0,
-    "playbackSpeedType":1,
+    "playbackSpeed":30.0,
+    "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
     "showBackdrop":true,
@@ -70,11 +70,11 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c1a880c3-95c1-44ea-ba33-cb0581c65a51","path":"sprites/spr_weapon_relic_blade/spr_weapon_relic_blade.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"56a506ff-3847-42e1-9a65-9167519b2341","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a25f5806-3bac-4044-8b80-a23414062f99","path":"sprites/spr_weapon_relic_blade_shadow/spr_weapon_relic_blade_shadow.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"463d0da8-296d-44b6-883a-1f94dac47113","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f686a119-a2c7-4775-9f26-07f43c98f59a","path":"sprites/spr_weapon_relic_blade/spr_weapon_relic_blade.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"911b0fb9-af94-4d45-9d50-dcbaaabcb1b6","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f43a89d2-2282-47c1-b3ae-0c699f99fb6c","path":"sprites/spr_weapon_relic_blade_shadow/spr_weapon_relic_blade_shadow.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"1667b531-9399-4ac9-8dc4-7fdde5c09590","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
@@ -83,7 +83,7 @@
     "yorigin":40,
   },
   "swatchColours":null,
-  "swfPrecision":2.525,
+  "swfPrecision":0.5,
   "textureGroupId":{
     "name":"MarineViewer",
     "path":"texturegroups/MarineViewer",
