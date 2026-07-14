@@ -118,13 +118,11 @@ function scr_income() {
 
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         with (obj_star) {
-            if (planet_feature_bool(p_feature[1], eP_FEATURES.MONASTERY)) {
-                obj_controller.income += 10;
-                instance_create(x, y, obj_temp1);
-            }
-            if (planet_feature_bool(p_feature[2], eP_FEATURES.MONASTERY)) {
-                obj_controller.income += 10;
-                instance_create(x, y, obj_temp1);
+            for (var i = 1; i <= planets; i++) {
+                if (planet_feature_bool(p_feature[i], eP_FEATURES.MONASTERY)) {
+                    obj_controller.income += 10;
+                    instance_create(x, y, obj_temp1);
+                }
             }
             if (owner == eFACTION.TAU) {
                 obj_controller.tau_stars += 1;
