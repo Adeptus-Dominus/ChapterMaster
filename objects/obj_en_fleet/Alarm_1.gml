@@ -52,10 +52,10 @@ try {
 
         if ((orbiting.owner == eFACTION.PLAYER) && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") && (owner == eFACTION.IMPERIUM)) {
             for (var i = 1; i <= orbiting.planets; i++) {
-                if (orbiting.p_owner[i] == 1) {
+                if (orbiting.p_owner[i] == eFACTION.PLAYER) {
                     orbiting.p_pdf[i] -= capital_number * 50000;
                 }
-                if (orbiting.p_owner[i] == 1) {
+                if (orbiting.p_owner[i] == eFACTION.PLAYER) {
                     orbiting.p_pdf[i] -= frigate_number * 10000;
                 }
                 if (orbiting.p_pdf[i] < 0) {
@@ -139,7 +139,7 @@ try {
                     scr_loyalty("Xeno Associate", "+");
                 }
 
-                if ((orbiting.p_owner[2] == 1) && (orbiting.p_heresy[2] >= 60)) {
+                if ((orbiting.p_owner[2] == eFACTION.PLAYER) && (orbiting.p_heresy[2] >= 60)) {
                     scr_loyalty("Heretic Homeworld", "+");
                 }
 

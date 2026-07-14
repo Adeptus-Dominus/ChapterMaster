@@ -110,7 +110,7 @@ function gift_artifact(give_to, known = true) {
                         add_event({e_id: "imperium_daemon", duration: 1});
                         with (obj_star) {
                             for (var i = 1; i <= planets; i++) {
-                                if (p_owner[i] == 2) {
+                                if (p_owner[i] == eFACTION.IMPERIUM) {
                                     p_heresy[i] += choose(30, 40, 50, 60);
                                 }
                             }
@@ -119,7 +119,7 @@ function gift_artifact(give_to, known = true) {
                     if (is_chaos) {
                         with (obj_star) {
                             for (var i = 1; i <= planets; i++) {
-                                if ((p_owner[i] == 2) && (p_heresy[i] > 0)) {
+                                if ((p_owner[i] == eFACTION.IMPERIUM) && (p_heresy[i] > 0)) {
                                     p_heresy[i] += 10;
                                 }
                             }
@@ -130,7 +130,7 @@ function gift_artifact(give_to, known = true) {
                     if (is_daemon) {
                         with (obj_star) {
                             for (var i = 1; i <= planets; i++) {
-                                if (p_owner[i] == 8) {
+                                if (p_owner[i] == eFACTION.TAU) {
                                     p_heresy[i] += 40;
                                 }
                             }

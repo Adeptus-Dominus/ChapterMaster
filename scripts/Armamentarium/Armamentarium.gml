@@ -729,7 +729,7 @@ function Armamentarium(_controller) constructor {
                 continue;
             }
 
-            if (array_contains(p_owner, 1)) {
+            if (array_contains(p_owner, eFACTION.PLAYER)) {
                 other.discount_rogue_trader = ROGUE_TRADER_DISCOUNT;
                 break;
             }

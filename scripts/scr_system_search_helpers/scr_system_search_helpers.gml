@@ -449,7 +449,7 @@ function scr_faction_string_name(faction) {
 function meet_system_governors(system) {
     with (system) {
         for (var i = 1; i <= planets; i++) {
-            if ((p_first[i] <= 5) && (dispo[i] > -30) && (dispo[i] < 0)) {
+            if ((p_first[i] <= eFACTION.ECCLESIARCHY) && (dispo[i] > -30) && (dispo[i] < 0)) {
                 dispo[i] = min(obj_ini.imperium_disposition, obj_controller.disposition[2]) + irandom(8) - 4;
             }
         }

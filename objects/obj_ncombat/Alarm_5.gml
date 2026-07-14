@@ -460,10 +460,10 @@ if (defeat == 0 && _reduce_power) {
                     adjust_influence(eFACTION.TYRANIDS, -25, battle_planet, id);
                 }
                 if (make_alert) {
-                    if (p_first[battle_planet] == 1) {
+                    if (p_first[battle_planet] == eFACTION.PLAYER) {
                         who_return = "your";
                         p_owner[battle_planet] = eFACTION.PLAYER;
-                    } else if (p_first[battle_planet] == 3 || p_type[battle_planet] == "Forge") {
+                    } else if (p_first[battle_planet] == eFACTION.MECHANICUS || p_type[battle_planet] == "Forge") {
                         who_return = "mechanicus";
                         obj_controller.disposition[3] += 10;
                         p_owner[battle_planet] = eFACTION.MECHANICUS;

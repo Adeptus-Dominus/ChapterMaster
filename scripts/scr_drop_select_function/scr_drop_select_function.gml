@@ -303,7 +303,7 @@ function drop_select_unit_selection() {
 
             if (obj_ncombat.enemy == eFACTION.TAU) {
                 var eth = scr_quest(4, "ethereal_capture", 8, 0);
-                if ((eth > 0) && (obj_ncombat.battle_object.p_owner[obj_ncombat.battle_id] == 8)) {
+                if ((eth > 0) && (obj_ncombat.battle_object.p_owner[obj_ncombat.battle_id] == eFACTION.TAU)) {
                     var rolli;
                     rolli = irandom_range(1, 100);
                     if ((obj_ncombat.threat == 6) && (rolli <= 80)) {
@@ -429,7 +429,7 @@ function drop_select_draw() {
 
                 var succession = has_problem_planet(pp, "succession", p_target);
 
-                if (((p_target.dispo[pp] >= 0) && (p_target.p_owner[pp] <= 5) && (p_target.p_population[pp] > 0)) && (!succession)) {
+                if (((p_target.dispo[pp] >= 0) && (p_target.p_owner[pp] <= eFACTION.ECCLESIARCHY) && (p_target.p_population[pp] > 0)) && (!succession)) {
                     var wack = 0;
                     draw_set_color(c_blue);
                     draw_rectangle(x2 + 12, y2 + 53, x2 + 12 + max(0, (min(100, p_target.dispo[pp]) * 4.37)), y2 + 71, 0);
@@ -441,13 +441,13 @@ function drop_select_draw() {
                 draw_set_font(fnt_40k_14b);
                 draw_set_halign(fa_center);
                 if (!succession) {
-                    if ((p_target.dispo[pp] >= 0) && (p_target.p_first[pp] <= 5) && (p_target.p_owner[pp] <= 5) && (p_target.p_population[pp] > 0)) {
+                    if ((p_target.dispo[pp] >= 0) && (p_target.p_first[pp] <= eFACTION.ECCLESIARCHY) && (p_target.p_owner[pp] <= eFACTION.ECCLESIARCHY) && (p_target.p_population[pp] > 0)) {
                         draw_text(x2 + 231, y2 + 54, string_hash_to_newline("Disposition: " + string(min(100, p_target.dispo[pp])) + "/100"));
                     }
-                    if ((p_target.dispo[pp] > -30) && (p_target.dispo[pp] < 0) && (p_target.p_owner[pp] <= 5) && (p_target.p_population[pp] > 0)) {
+                    if ((p_target.dispo[pp] > -30) && (p_target.dispo[pp] < 0) && (p_target.p_owner[pp] <= eFACTION.ECCLESIARCHY) && (p_target.p_population[pp] > 0)) {
                         draw_text(x2 + 231, y2 + 54, string_hash_to_newline("Disposition: ???/100"));
                     }
-                    if (((p_target.dispo[pp] >= 0) && (p_target.p_first[pp] <= 5) && (p_target.p_owner[pp] > 5)) || (p_target.p_population[pp] <= 0)) {
+                    if (((p_target.dispo[pp] >= 0) && (p_target.p_first[pp] <= eFACTION.ECCLESIARCHY) && (p_target.p_owner[pp] > eFACTION.ECCLESIARCHY)) || (p_target.p_population[pp] <= 0)) {
                         draw_text(x2 + 231, y2 + 54, string_hash_to_newline("-------------"));
                     }
                     if (p_target.dispo[pp] <= -3000) {

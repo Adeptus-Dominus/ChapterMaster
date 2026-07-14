@@ -27,12 +27,12 @@ function scr_enemy_ai_d() {
         }
 
         // Requesting help here
-        if (((p_halp[i] == 1) || (p_halp[i] == 1.1)) && (p_population[i] > 0) && (p_owner[i] < 6)) {
+        if (((p_halp[i] == 1) || (p_halp[i] == 1.1)) && (p_population[i] > 0) && (p_owner[i] <= eFACTION.ECCLESIARCHY)) {
             if ((p_orks[i] + p_tau[i] + p_traitors[i] + p_chaos[i] + p_necrons[i] == 0) && (p_tyranids[i] < 4)) {
                 p_halp[i] = 0;
             }
         }
-        if ((p_halp[i] == 0) && (p_population[i] > 0) && (p_owner[i] < 6) && (p_owner[i] != 1) && (present_fleet[1] <= 0) && (p_player[i] <= 0)) {
+        if ((p_halp[i] == 0) && (p_population[i] > 0) && (p_owner[i] <= eFACTION.ECCLESIARCHY) && (p_owner[i] != eFACTION.PLAYER) && (present_fleet[1] <= 0) && (p_player[i] <= 0)) {
             var enemy1 = "", enemies = 0, minimum = 5, tx = "";
 
             if (p_guardsmen[i] + p_pdf[i] <= 1000000) {

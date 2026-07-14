@@ -1187,10 +1187,10 @@ function scr_enemy_ai_a() {
             }
 
             if (make_alert) {
-                if (p_first[_run] == 1) {
+                if (p_first[_run] == eFACTION.PLAYER) {
                     p_owner[_run] = eFACTION.PLAYER;
                     who_return = "your";
-                } else if (p_first[_run] == 3 || p_type[_run] == "Forge") {
+                } else if (p_first[_run] == eFACTION.MECHANICUS || p_type[_run] == "Forge") {
                     who_return = "mechanicus";
                     obj_controller.disposition[3] += 10;
                     p_owner[_run] = eFACTION.MECHANICUS;

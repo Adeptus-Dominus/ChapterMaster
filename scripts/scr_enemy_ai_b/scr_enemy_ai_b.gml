@@ -41,9 +41,9 @@ function scr_enemy_ai_b() {
             var tau_influence = p_influence[i][eFACTION.TAU];
             var tau_chance = floor(random(100)) + 1;
 
-            if ((i <= planets) && (tau_influence >= 70) && (p_owner[i] != 8) && (p_owner[i] != 10) && (p_owner[i] != 7) && (p_owner[i] != 9) && (p_type[i] != "Space Hulk")) {
+            if ((i <= planets) && (tau_influence >= 70) && (p_owner[i] != eFACTION.TAU) && (p_owner[i] != eFACTION.CHAOS) && (p_owner[i] != eFACTION.ORK) && (p_owner[i] != eFACTION.TYRANIDS) && (p_type[i] != "Space Hulk")) {
                 for (var s = 1; s <= planets; s++) {
-                    if (p_owner[s] == 8) {
+                    if (p_owner[s] == eFACTION.TAU) {
                         tau_chance += 5;
                     }
                 }
@@ -53,7 +53,7 @@ function scr_enemy_ai_b() {
                 }
 
                 if ((tau_chance >= 95) && (p_orks[i] == 0) && (p_traitors[i] == 0) && (p_necrons[i] == 0) && (p_demons[i] == 0) && (p_chaos[i] == 0)) {
-                    p_owner[i] = 8;
+                    p_owner[i] = eFACTION.TAU;
                     if (p_guardsmen[i] > 0) {
                         p_pdf[i] += p_guardsmen[i];
                         p_guardsmen[i] = 0;
@@ -65,7 +65,7 @@ function scr_enemy_ai_b() {
                         if (p_type[s] == "Dead") {
                             targ -= 1;
                         }
-                        if (p_owner[s] == 8) {
+                        if (p_owner[s] == eFACTION.TAU) {
                             have += 1;
                         }
                     }
@@ -99,7 +99,7 @@ function scr_enemy_ai_b() {
                     }
                 }
             }
-            if ((p_owner[i] == 8) && (tau_influence < 80)) {
+            if ((p_owner[i] == eFACTION.TAU) && (tau_influence < 80)) {
                 if ((p_type[i] != "Forge") && (p_type[i] != "Shrine")) {
                     tau_influence += 2;
                 } else if ((p_type[i] == "Forge") || (p_type[i] == "Shrine")) {
