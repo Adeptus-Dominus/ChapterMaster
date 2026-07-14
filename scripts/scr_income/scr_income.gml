@@ -150,9 +150,9 @@ function scr_income() {
     }
 
     with (obj_star) {
-        for (var o = 1; o <= 4; o++) {
+        for (var o = 1; o <= planets; o++) {
             if (dispo[o] >= 100) {
-                if (planet_feature_bool(p_feature[1], eP_FEATURES.MONASTERY) == 0) {
+                if (planet_feature_bool(p_feature[o], eP_FEATURES.MONASTERY) == 0) {
                     obj_controller.income_controlled_planets += 1;
                     obj_controller.income_tribute += 1;
                     if (p_type[o] == "Feudal") {
