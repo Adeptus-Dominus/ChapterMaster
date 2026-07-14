@@ -87,6 +87,7 @@ function cancel_fleet_movement() {
     set_fleet_orbiting(self, nearest_star);
 }
 
+/// @self Id.Instance.obj_p_fleet
 function set_new_player_fleet_course(target_array) {
     if (array_length(target_array) > 0) {
         var target_planet = find_star_by_name(target_array[0]);
@@ -106,6 +107,11 @@ function set_new_player_fleet_course(target_array) {
         } else {
             array_delete(target_array, 0, 1);
         }
+
+        if (from_star) {
+            nearest_planet.present_fleet[1]--;
+        }
+    
         complex_route = target_array;
         var from_x = from_star ? nearest_planet.x : x;
         var from_y = from_star ? nearest_planet.y : y;
