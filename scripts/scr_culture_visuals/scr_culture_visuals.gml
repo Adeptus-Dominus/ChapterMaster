@@ -790,6 +790,7 @@ global.modular_drawing_items = [
     },
     {
         sprite: spr_crux_belt_fancy,
+		shadows: spr_crux_belt_fancy_shadow,
         body_types: [
             0,
             2
