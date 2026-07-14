@@ -1131,6 +1131,7 @@
     {"id":{"name":"spr_creation_slate","path":"sprites/spr_creation_slate/spr_creation_slate.yy",},},
     {"id":{"name":"spr_credits_bg","path":"sprites/spr_credits_bg/spr_credits_bg.yy",},},
     {"id":{"name":"spr_crusader","path":"sprites/spr_crusader/spr_crusader.yy",},},
+    {"id":{"name":"spr_crux_belt_fancy_shadow","path":"sprites/spr_crux_belt_fancy_shadow/spr_crux_belt_fancy_shadow.yy",},},
     {"id":{"name":"spr_crux_belt_fancy","path":"sprites/spr_crux_belt_fancy/spr_crux_belt_fancy.yy",},},
     {"id":{"name":"spr_crux_on_chain","path":"sprites/spr_crux_on_chain/spr_crux_on_chain.yy",},},
     {"id":{"name":"spr_cthonian_tabbard","path":"sprites/spr_cthonian_tabbard/spr_cthonian_tabbard.yy",},},
