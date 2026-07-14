@@ -1,13 +1,20 @@
 /// @description This alarm is responsible for the enemy target column selection
 
+obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SYSTEM, $"Enemy {obj_ncombat.combat_debugger.resolve_label(id)} at x={x}, flank={flank} is picking a target");
+
 if (!instance_exists(obj_pnunit)) {
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"No valid player blocks, exiting");
     exit;
 }
 
 enemy = flank ? get_leftmost() : get_rightmost();
-if (enemy == noone) {
+// Upstream (342798291): also bail when the block found is not a valid target.
+if (enemy == noone || !target_block_is_valid(enemy, obj_pnunit)) {
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Couldn't find valid player blocks, exiting");
     exit;
 }
+
+obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Initial target player block: {obj_ncombat.combat_debugger.resolve_label(enemy)} at x={enemy.x}");
 
 // enemy2 is used across several sibling blocks below (the two column-piercing
 // passes and the older melee/vehicle chain). Declare it once here at event scope;
@@ -19,6 +26,7 @@ var enemy2 = noone;
 engaged = collision_point(x - 10, y, obj_pnunit, 0, 1) || collision_point(x + 10, y, obj_pnunit, 0, 1);
 
 if (!engaged) {
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Not engaged, firing");
     // Shooting
     for (var i = 0; i < array_length(wep); i++) {
         if (wep[i] == "" || wep_num[i] == 0) {
@@ -34,9 +42,13 @@ if (!engaged) {
             continue;
         }
 
+        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"{wep[i]}(i{i}) is firing");
+
         if (!target_block_is_valid(enemy, obj_pnunit)) {
             enemy = flank == 0 ? get_rightmost() : get_leftmost();
+            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Target is invalid, flipped to {obj_ncombat.combat_debugger.resolve_label(enemy)}");
             if (!target_block_is_valid(enemy, obj_pnunit)) {
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Target is still invalid, exiting");
                 exit;
             }
         }
@@ -44,6 +56,7 @@ if (!engaged) {
         var dist = 0;
 
         if (instance_exists(obj_nfort) && !flank) {
+            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Targeting Fort");
             enemy = instance_nearest(x, y, obj_nfort);
             dist = 2;
         } else {
@@ -84,6 +97,7 @@ if (!engaged) {
                 if (cm_present) {
                     enemy = cm_block;
                     target_unit_index = cm_index;
+                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Alpha Strike: targeting Chapter Master at {obj_ncombat.combat_debugger.resolve_label(cm_block)} unit_index={cm_index}");
                 }
             }
 
@@ -93,6 +107,7 @@ if (!engaged) {
                 var _shot = false;
                 if ((!instance_exists(obj_nfort)) || flank) {
                     if (block_has_armour(enemy) || (enemy.veh_type[1] == "Defenses")) {
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"AP -> vehicle in column {obj_ncombat.combat_debugger.resolve_label(enemy)}, apa={apa[i]}, firing");
                         scr_shoot(i, enemy, target_unit_index, "arp", "ranged");
                         continue;
                     } else {
@@ -133,6 +148,7 @@ if (!engaged) {
                                             continue;
                                         }
                                     }
+                                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"AP -> vehicle found in next column {obj_ncombat.combat_debugger.resolve_label(enemy2)}, firing");
                                     scr_shoot(i, enemy2, target_unit_index, "arp", "ranged");
                                     _shot = true;
                                     break;
@@ -298,60 +314,74 @@ if (!engaged) {
         }
         LOGGER.error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
     }
-} else if ((engaged || enemy.engaged) && target_block_is_valid(enemy, obj_pnunit)) {
+} else if (engaged) {
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Engaged, attacking in melee");
     //TODO: The melee code was not refactored;
     // Melee
-    engaged = 1;
     for (var i = 0; i < array_length(wep); i++) {
-        if (wep[i] == "" || wep_num[i] == 0) {
+        if (wep[i] == "" || wep_num[i] == 0 || (range[i] > 2 && floor(range[i]) == range[i])) {
             continue;
         }
-        var _armour_piercing = false;
+
         if (!flank) {
             enemy = get_rightmost();
             if (enemy == noone) {
+                engaged = false;
                 exit;
             }
         } else if (flank) {
             enemy = get_leftmost();
             if (enemy == noone) {
+                engaged = false;
                 exit;
             }
         }
 
-        if ((range[i] <= 2) || (floor(range[i]) != range[i])) {
-            // Weapon meets preliminary checks
-            if (apa[i] > 2) {
-                // Upstream (5dcd5a4f6 family): apa is the AP tier; only the dedicated
-                // anti-tank class (3+) counts as armour piercing in melee.
-                _armour_piercing = true;
-            }
-            if (_armour_piercing && instance_exists(obj_nfort) && (!flank)) {
-                // Huff and puff and blow the wall down
+        var dist = get_block_distance(enemy);
+        if (dist > 1) {
+            engaged = false;
+            exit;
+        }
+    
+        var _armour_piercing = false;
+
+        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"{wep[i]}(i{i}) is striking");
+        // Weapon meets preliminary checks
+        if (apa[i] > 2) {
+            _armour_piercing = true;
+            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP=true");
+        }
+
+        if (_armour_piercing) {
+            // Huff and puff and blow the wall down
+            if (instance_exists(obj_nfort) && (!flank)) {
                 enemy = instance_nearest(x, y, obj_nfort);
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP -> wall");
                 scr_shoot(i, enemy, 1, "arp", "wall");
                 continue;
             }
-            if (_armour_piercing) {
-                // Check for vehicles
-                var good = false;
 
-                if (block_has_armour(enemy)) {
-                    scr_shoot(i, enemy, 1, "arp", "melee");
-                    good = true;
-                }
-                if (!good) {
-                    _armour_piercing = false;
-                } // Fuck it, shoot at infantry
+            // Check for vehicles
+            if (block_has_armour(enemy)) {
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP -> vehicles in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
+                scr_shoot(i, enemy, 1, "arp", "melee");
+                continue;
+            } else {
+                _armour_piercing = false;
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP -> no vehicles, falling back to infantry");
             }
+        }
 
-            if ((!_armour_piercing) && target_block_is_valid(enemy, obj_pnunit)) {
-                // Check for men
-                if (enemy.men) {
-                    scr_shoot(i, enemy, 1, "att", "melee");
-                } else if (block_has_armour(enemy)) {
-                    scr_shoot(i, enemy, 1, "arp", "melee"); // Swing anyways, maybe they'll get lucky
-                }
+        if (!_armour_piercing) {
+            // Check for men
+            if (enemy.men > 0) {
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee -> infantry in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
+                scr_shoot(i, enemy, 1, "att", "melee");
+                continue;
+            } else if (block_has_armour(enemy)) {
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee -> armour fallback in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
+                scr_shoot(i, enemy, 1, "arp", "melee");
+                continue;
             }
         }
     }

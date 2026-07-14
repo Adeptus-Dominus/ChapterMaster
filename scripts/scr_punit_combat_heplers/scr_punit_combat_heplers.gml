@@ -456,7 +456,7 @@ function draw_block_fadein() {
 
 /// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit
 function update_block_size() {
-    column_size = (men * 0.5) + medi + (dreads * 2) + (veh * 2.5);
+    column_size = men + (medi * 3) + (dreads * 6) + (veh * 8);
 }
 
 /// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit

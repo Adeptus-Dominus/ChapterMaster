@@ -8,7 +8,7 @@ if ((faction_gender[10] == 1) && (known[eFACTION.CHAOS] == 0) && (faction_defeat
 }
 
 with (obj_star) {
-    if ((p_owner[1] == 1) || (p_owner[2] == 1) || (p_owner[3] == 1) || (p_owner[4] == 1)) {
+    if ((p_owner[1] == eFACTION.PLAYER) || (p_owner[2] == eFACTION.PLAYER) || (p_owner[3] == eFACTION.PLAYER) || (p_owner[4] == eFACTION.PLAYER)) {
         var heh = instance_create(x, y, obj_crusade);
         heh.radius = 64;
         heh.duration = 9999;

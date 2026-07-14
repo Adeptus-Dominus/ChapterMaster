@@ -482,6 +482,16 @@ function scr_player_combat_weapon_stacks() {
                         }
                     }
                 }
+
+                var ram_weapon = create_vehicle_ram_weapon(veh_type[g]);
+                if (is_struct(ram_weapon)) {
+                    for (var j = 0; j <= 40; j++) {
+                        if (wep[j] == "" || wep[j] == ram_weapon.name) {
+                            add_data_to_stack(j, ram_weapon,,, "vehicle");
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
@@ -578,6 +588,66 @@ function scr_add_unit_to_roster(unit, is_local = false, is_ally = false) {
         dreads++;
     } else {
         men++;
+    }
+}
+
+function create_vehicle_ram_weapon(veh_type) {
+    switch (veh_type) {
+        case "Rhino":
+        case "Whirlwind":
+        case "Predator":
+            return new EquipmentStruct(
+                {
+                    attack: 100,
+                    name: "RAM",
+                    range: 1,
+                    ammo: -1,
+                    spli: 6,
+                    arp: 3,
+                },
+                "weapon",
+            );
+        case "Chimera":
+            // The Guard levy's APC rams like the Rhino it parallels, not like a
+            // skimmer: same chassis role, same RAM class.
+            return new EquipmentStruct(
+                {
+                    attack: 100,
+                    name: "RAM",
+                    range: 1,
+                    ammo: -1,
+                    spli: 6,
+                    arp: 3,
+                },
+                "weapon",
+            );
+        case "Leman Russ":
+            // A battle tank rams in the Land Raider's class, not the Land Speeder's.
+        case "Land Raider":
+            return new EquipmentStruct(
+                {
+                    attack: 200,
+                    name: "Heavy RAM",
+                    range: 1,
+                    ammo: -1,
+                    spli: 10,
+                    arp: 4,
+                },
+                "weapon",
+            );
+        default:
+        case "Land Speeder":
+            return new EquipmentStruct(
+                {
+                    attack: 60,
+                    name: "Light RAM",
+                    range: 1,
+                    ammo: -1,
+                    spli: 4,
+                    arp: 2,
+                },
+                "weapon",
+            );
     }
 }
 
