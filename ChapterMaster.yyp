@@ -1813,6 +1813,7 @@
     {"id":{"name":"spr_weapon_prim_mltg","path":"sprites/spr_weapon_prim_mltg/spr_weapon_prim_mltg.yy",},},
     {"id":{"name":"spr_weapon_prot_mmlt","path":"sprites/spr_weapon_prot_mmlt/spr_weapon_prot_mmlt.yy",},},
     {"id":{"name":"spr_weapon_relbla","path":"sprites/spr_weapon_relbla/spr_weapon_relbla.yy",},},
+    {"id":{"name":"spr_weapon_relic_blade_shadow","path":"sprites/spr_weapon_relic_blade_shadow/spr_weapon_relic_blade_shadow.yy",},},
     {"id":{"name":"spr_weapon_relic_blade","path":"sprites/spr_weapon_relic_blade/spr_weapon_relic_blade.yy",},},
     {"id":{"name":"spr_weapon_ryza_lasca","path":"sprites/spr_weapon_ryza_lasca/spr_weapon_ryza_lasca.yy",},},
     {"id":{"name":"spr_weapon_ryza_plasg","path":"sprites/spr_weapon_ryza_plasg/spr_weapon_ryza_plasg.yy",},},

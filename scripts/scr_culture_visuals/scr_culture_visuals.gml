@@ -3591,6 +3591,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_weapon_relic_blade,
+				shadows: spr_weapon_relic_blade_shadow,
             }
         ],
     },
