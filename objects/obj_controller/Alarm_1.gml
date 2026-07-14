@@ -64,8 +64,7 @@ if (did) {
         _current_system.p_player[2] += obj_ini.man_size;
     }
 
-    var fleet = instance_create(_current_system.x, _current_system.y, obj_p_fleet);
-    fleet.owner = eFACTION.PLAYER;
+    var fleet = create_player_fleet(_current_system.x, _current_system.y);
 
     for (var f = 0; f < array_length(obj_ini.ship); f++) {
         add_ship_to_fleet(f, fleet);
@@ -500,14 +499,13 @@ for (var i = 0; i < 100; i++) {
             craft.craftworld = 1;
             array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.WARLORD6));
     
-            var elforce = instance_create(xx, yy, obj_en_fleet);
+            var elforce = create_enemy_fleet(xx, yy, eFACTION.ELDAR);
+            fleet_register_at_star(elforce, craft);  // craft star has name="" so get_nearest_star in create_enemy_fleet won't find it
             elforce.sprite_index = spr_fleet_eldar;
-            elforce.owner = eFACTION.ELDAR;
             elforce.capital_number = choose(2, 3);
             elforce.frigate_number = choose(4, 5, 6);
             elforce.escort_number = floor(random_range(7, 11)) + 1;
             elforce.image_alpha = 0;
-            elforce.orbiting = craft;
             break;
         }
     }

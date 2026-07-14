@@ -6,7 +6,7 @@ guardsmen = 0;
 home_x = 0;
 home_y = 0;
 selected = 0;
-ret = 0;
+tau_fled = 0;
 hurt = 0;
 /// @type {Id.Instance.obj_star}
 orbiting = noone;
@@ -76,8 +76,6 @@ capital_health = 100;
 frigate_health = 100;
 escort_health = 100;
 
-alarm[8] = 1;
-
 #region save/load serialization
 
 /// Called from save function to take all object variables and convert them to a json savable format and return it
@@ -89,7 +87,6 @@ serialize = function() {
         x,
         y,
         cargo_data: cargo_data,
-        orbiting: instance_exists(orbiting) ? true : false,
     };
 
     var excluded_from_save = [
@@ -132,10 +129,6 @@ deserialize = function(save_data) {
             _boss.load_json_data(cargo_data.ork_warboss);
             cargo_data.ork_warboss = _boss;
         }
-    }
-
-    if (save_data.orbiting && (save_data.orbiting != noone)) {
-        orbiting = instance_nearest(x, y, obj_star);
     }
 };
 

@@ -331,7 +331,7 @@ function init_mission_hunt_inquisitor() {
     }
     scr_event_log("", $"Inquisition Mission Accepted: The radical Inquisitor {pop_data.mission_data.inquisitor_name} enroute to {mission_star.name} must be removed.  Estimated arrival in {pop_data.estimate} months.", mission_star.name);
 
-    var _radical_inquisitor_fleet = instance_create(mission_star.x - irandom_range(-400, 400), mission_star.y - irandom_range(-400, 400), obj_en_fleet);
+    var _radical_inquisitor_fleet = create_enemy_fleet(mission_star.x - irandom_range(-400, 400), mission_star.y - irandom_range(-400, 400), eFACTION.INQUISITION);
     with (_radical_inquisitor_fleet) {
         base_inquis_fleet();
     }

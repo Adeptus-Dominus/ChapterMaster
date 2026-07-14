@@ -2,17 +2,11 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
 function new_ork_fleet(xx, yy) {
-    fleet = instance_create(xx, yy, obj_en_fleet);
-    fleet.owner = eFACTION.ORK;
+    fleet = create_enemy_fleet(xx, yy, eFACTION.ORK);
     fleet.sprite_index = spr_fleet_ork;
     fleet.image_index = 1;
     fleet.capital_number = 1;
     fleet.frigate_number = 1;
-    if (!is_struct(self)) {
-        if (object_index == obj_star) {
-            present_fleet[7] = 1;
-        }
-    }
     return fleet;
 }
 

@@ -120,6 +120,13 @@ function scr_load(save_part, save_id) {
                 deserialize(deserialized);
             }
         }
+
+        with (obj_p_fleet) {
+            if (action == "") {
+                fleet_register_at_nearest_star(id);
+            }
+        }
+
         LOGGER.info("PLAYER FLEET OBJECTS loaded");
     }
 
@@ -134,6 +141,13 @@ function scr_load(save_part, save_id) {
                 deserialize(deserialized);
             }
         }
+
+        with (obj_en_fleet) {
+            if (action == "") {
+                fleet_register_at_nearest_star(id);
+            }
+        }
+
         LOGGER.info("ENEMY FLEET OBJECTS loaded");
 
         LOGGER.info("Loading EVENT LOG");
