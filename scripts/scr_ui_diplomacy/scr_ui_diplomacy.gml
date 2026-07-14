@@ -84,7 +84,8 @@ function exit_diplomacy_dialogue() {
         clear_diplo_choices();
     }
 
-    if ((liscensing == 2) && (repair_ships == 0)) {
+    // Owning the Repair license (repair_ships) must not block Crusade license placement.
+    if (liscensing == 2) {
         cooldown = 8;
         var cru = instance_create(mouse_x, mouse_y, obj_crusade);
         cru.owner = diplomacy;
@@ -166,7 +167,13 @@ function set_up_diplomacy_buttons() {
     };
 
     //Discuss button setup
-    diplo_buttons.discuss = new UnitButtonObject({x1: 800, y1: 720, label: "Discuss", tooltip: "Unfinished", bind_scope: obj_controller, style: "pixel"});
+    diplo_buttons.discuss = new UnitButtonObject({x1: 800, y1: 720, label: "Discuss", tooltip: "Discuss sector strategy (Imperium)", bind_scope: obj_controller, style: "pixel"});
+
+    diplo_buttons.discuss.bind_method = function() {
+        scr_dialogue(diplomacy == eFACTION.IMPERIUM ? "discuss_directives" : "discuss_unavailable");
+        cooldown = 8;
+        click2 = 1;
+    };
 
     //denounce button setup
     diplo_buttons.denounce = new UnitButtonObject({x1: 400, y1: diplo_buttons.trade.y2, label: "Denounce", bind_scope: obj_controller, style: "pixel"});

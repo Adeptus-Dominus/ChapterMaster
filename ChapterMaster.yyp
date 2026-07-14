@@ -878,6 +878,7 @@
     {"id":{"name":"scr_PlanetData","path":"scripts/scr_PlanetData/scr_PlanetData.yy",},},
     {"id":{"name":"Region","path":"scripts/Region/Region.yy",},},
     {"id":{"name":"scr_region_functions","path":"scripts/scr_region_functions/scr_region_functions.yy",},},
+    {"id":{"name":"scr_sector_directive","path":"scripts/scr_sector_directive/scr_sector_directive.yy",},},
     {"id":{"name":"scr_player_combat_weapon_stacks","path":"scripts/scr_player_combat_weapon_stacks/scr_player_combat_weapon_stacks.yy",},},
     {"id":{"name":"scr_player_fleet_combat_functions","path":"scripts/scr_player_fleet_combat_functions/scr_player_fleet_combat_functions.yy",},},
     {"id":{"name":"scr_player_fleet_functions","path":"scripts/scr_player_fleet_functions/scr_player_fleet_functions.yy",},},

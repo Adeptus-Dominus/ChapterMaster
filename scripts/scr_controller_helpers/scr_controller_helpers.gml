@@ -444,6 +444,7 @@ function scr_end_turn() {
 
                     turn += 1;
                     eldar_incursion_tick();
+                    sector_directive_tick();
                     with (obj_star) {
                         for (var i = 0; i <= 21; i++) {
                             present_fleet[i] = 0;

@@ -53,6 +53,14 @@
 // Minimum heresy/influence a purge that kills anyone removes. Keeps purges viable on
 // hive worlds and against the Daemonic Incursion +2/turn heresy pump.
 #macro PURGE_MIN_HERESY_DROP 3
+// Sector war directives (Discuss button, Imperium diplomacy): cooldown between
+// changes, disposition cost of a non-default order, and the per-turn effects.
+#macro SECTOR_DIRECTIVE_COOLDOWN 10
+#macro SECTOR_DIRECTIVE_DISPO_COST 3
+#macro SECTOR_DIRECTIVE_STRIKE_INTERVAL 6
+#macro SECTOR_RECLAIM_INTERVAL 8
+#macro SECTOR_DEFEND_PDF_GROWTH 100
+#macro SECTOR_DEFEND_PDF_CAP 6000
 
 // Range accuracy/damage falloff for ranged fire. Damage is scaled by how far the target
 // is relative to the weapon's range: at point blank it gets RANGE_POINT_BLANK_BONUS, and

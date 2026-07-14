@@ -81,6 +81,11 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             sorc = true;
         }
 
+        // Discuss is only implemented for the Imperium's Sector Commander; other
+        // audiences get a polite brushoff instead of a dead button.
+        if (diplo_keyphrase == "discuss_unavailable") {
+            diplo_text = "We have nothing further to discuss at this time.";
+        }
         if ((diplo_keyphrase == "intro") || (diplo_keyphrase == "intro1") || ((diplomacy == 10) && (diplo_keyphrase == "intro2"))) {
             event_log = $"Chapter Master {obj_ini.master_name} meets the {obj_controller.faction[diplomacy]} {obj_controller.faction_title[diplomacy]}, {obj_controller.faction_leader[diplomacy]}.";
             scr_event_log("", event_log);
@@ -1014,6 +1019,64 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 if (rela == "hostile") {
                     diplo_text = $"What do you want, Chapter Master? I have little time for glorified interplanetary brigands such as yourself.";
                 }
+            }
+            // Sector war directives: reached from the Discuss button. Reviews the
+            // standing order (see scr_sector_directive) and offers changes through a
+            // two-step menu so the choice list stays short.
+            if (diplo_keyphrase == "discuss_directives") {
+                sector_directive_ensure();
+                if (rela == "hostile") {
+                    diplo_text = "You presume to direct MY armies? Look to your own failings first, Chapter Master.";
+                } else {
+                    diplo_text = $"My forces are presently {sector_directive_label()}.";
+                    if (sector_directive_can_change()) {
+                        diplo_text += " Speak, and the sector's strategy shall follow.";
+                        add_diplomacy_option({option_text: "Stand in defense of the core worlds.", goto: "directive_defend"});
+                        add_diplomacy_option({option_text: "Reclaim the worlds the Imperium has lost.", goto: "directive_reclaim"});
+                        add_diplomacy_option({option_text: "Concentrate on containing a threat...", goto: "directive_contain_menu"});
+                        add_diplomacy_option({option_text: "[Leave the strategy as it stands]", goto: "directive_close"});
+                    } else {
+                        diplo_text += $" My regiments are still redeploying; I will hear new orders in {max(1, sector_directive_turn + SECTOR_DIRECTIVE_COOLDOWN - turn)} turns.";
+                        add_diplomacy_option({option_text: "[Very well]", goto: "directive_close"});
+                    }
+                }
+            }
+            if (diplo_keyphrase == "directive_contain_menu") {
+                diplo_text = "Which threat shall the sector's regiments grind down?";
+                if ((known[eFACTION.ORK] >= 1) && (!faction_defeated[eFACTION.ORK])) {
+                    add_diplomacy_option({option_text: "The Orks.", goto: "directive_contain_ork"});
+                }
+                if ((known[eFACTION.TAU] >= 1) && (!faction_defeated[eFACTION.TAU])) {
+                    add_diplomacy_option({option_text: "The T'au.", goto: "directive_contain_tau"});
+                }
+                if ((known[eFACTION.ELDAR] >= 1) && (!faction_defeated[eFACTION.ELDAR])) {
+                    add_diplomacy_option({option_text: "The Eldar.", goto: "directive_contain_eldar"});
+                }
+                if ((known[eFACTION.CHAOS] >= 1) && (!faction_defeated[eFACTION.CHAOS])) {
+                    add_diplomacy_option({option_text: "The forces of Chaos.", goto: "directive_contain_chaos"});
+                }
+                add_diplomacy_option({option_text: "[Back]", goto: "discuss_directives"});
+            }
+            if (diplo_keyphrase == "directive_defend") {
+                sector_directive_apply_choice("defend");
+            }
+            if (diplo_keyphrase == "directive_reclaim") {
+                sector_directive_apply_choice("reclaim");
+            }
+            if (diplo_keyphrase == "directive_contain_ork") {
+                sector_directive_apply_choice("contain_ork");
+            }
+            if (diplo_keyphrase == "directive_contain_tau") {
+                sector_directive_apply_choice("contain_tau");
+            }
+            if (diplo_keyphrase == "directive_contain_eldar") {
+                sector_directive_apply_choice("contain_eldar");
+            }
+            if (diplo_keyphrase == "directive_contain_chaos") {
+                sector_directive_apply_choice("contain_chaos");
+            }
+            if (diplo_keyphrase == "directive_close") {
+                diplo_text = "As you say. My staff will keep you appraised, Chapter Master.";
             }
             if (diplo_keyphrase == "trade_close") {
                 if (rela == "friendly") {
