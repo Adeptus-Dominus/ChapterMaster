@@ -35,6 +35,42 @@ if (click_stall_timer <= 0) {
 draw_set_halign(fa_left);
 draw_set_alpha(1);
 
+// ---- Formation orders legend ----
+// Teaches the battle controls on-screen. Toggled with the small header button; the
+// choice persists on obj_controller (reflective save), lazily initialised so saves
+// from before this feature work unchanged.
+if (!variable_instance_exists(obj_controller, "combat_orders_legend_hidden")) {
+    obj_controller.combat_orders_legend_hidden = false;
+}
+draw_set_font(fnt_40k_14);
+draw_set_halign(fa_right);
+draw_set_alpha(1);
+var _legend_x = 792;
+var _legend_y = 8;
+var _legend_header = obj_controller.combat_orders_legend_hidden ? "[+] Orders" : "[-] Orders";
+var _legend_hw = string_width(_legend_header);
+var _legend_hover = scr_hit(_legend_x - _legend_hw, _legend_y, _legend_x, _legend_y + 18);
+draw_set_color(_legend_hover ? c_white : c_yellow);
+draw_text(_legend_x, _legend_y, _legend_header);
+if (_legend_hover && mouse_check_button_pressed(mb_left)) {
+    obj_controller.combat_orders_legend_hidden = !obj_controller.combat_orders_legend_hidden;
+}
+if (!obj_controller.combat_orders_legend_hidden) {
+    draw_set_color(c_ltgray);
+    var _legend_lines = [
+        "Left-click a formation: advance / hold",
+        "Shift + left-click: retreat (no return)",
+        "Right-click: cycle fire target (nearest / line 1 / 2 / 3)",
+        "Devastators holding ground fire braced",
+        "Assault squads ordered onto line 1 leap in (once)",
+    ];
+    for (var _ll = 0; _ll < array_length(_legend_lines); _ll++) {
+        draw_text(_legend_x, _legend_y + 20 + (_ll * 16), _legend_lines[_ll]);
+    }
+}
+draw_set_color(c_white);
+draw_set_halign(fa_left);
+
 draw_set_color(c_black);
 draw_set_alpha(fadein / 30);
 draw_rectangle(0, 0, 1600, 900, 0);
