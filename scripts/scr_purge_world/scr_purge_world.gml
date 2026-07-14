@@ -229,8 +229,8 @@ function scr_purge_world(action_type, action_score) {
 
                 alter_disposition(eFACTION.INQUISITION, obj_controller.demanding ? choose(0, 0, 1) : 1);
 
-                _popup_text = "Your marines scour the underhive of {name()}, spraying mutants down with promethium as they go.  It takes several days but a sizeable dent is put in their numbers.";
-                scr_event_log("", "Inquisition Mission Completed: The mutants of {name()} have been cleansed by promethium.");
+                _popup_text = $"Your marines scour the underhive of {name()}, spraying mutants down with promethium as they go.  It takes several days but a sizeable dent is put in their numbers.";
+                scr_event_log("", $"Inquisition Mission Completed: The mutants of {name()} have been cleansed by promethium.");
                 add_disposition(choose(1, 2, 3));
             }
         } else {
@@ -270,7 +270,7 @@ function scr_purge_world(action_type, action_score) {
                 alter_disposition(eFACTION.INQUISITION, obj_controller.demanding ? choose(0, 0, 1) : 1);
 
                 _popup_text = "Your marines drop fast and hard, blowing through guards and mercenaries with minimal resistance.  Before ten minutes have passed all your targets are executed.";
-                scr_event_log("", "Inquisition Mission Completed: The unruly Nobles of {name()} have been purged.");
+                scr_event_log("", $"Inquisition Mission Completed: The unruly Nobles of {name()} have been purged.");
                 add_disposition(choose(1, 2, 3));
             }
         } else if (_isquest == 0) {
