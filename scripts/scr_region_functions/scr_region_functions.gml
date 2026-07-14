@@ -239,60 +239,24 @@ function regions_ensure(_star, _planet) {
 #region rollup
 
 /// @function regions_rollup
-/// @description Recomputes the legacy planet-level scalars from the region list so all existing
-///              non-region-aware code keeps reading correct values. Call after any region change.
-///              Population/pdf/guardsmen sum; fortification/defences take the max; the planet
-///              owner is the capital's owner; upgrades are the union across regions.
-///              NOTE: the per-faction level arrays (p_orks, p_tau, ...) are intentionally NOT
-///              rewritten here to avoid disturbing existing balance; a dedicated faction mapping
-///              will be added when invasion/combat are migrated to regions.
+/// @description Writes the one thing the region overlay legitimately owns planet-ward: who holds
+///              the planet (the capital's owner). Quantities (population, pdf, guardsmen,
+///              defences, fortification, upgrades) are owned by the PLANET scalars, which many
+///              vanilla systems write directly (defence purchases, Governor guard sales,
+///              population events). Regions carry display copies, and per-region gains credit the
+///              planet scalar at the moment they happen (see the building definitions). The old
+///              rollup blanket-overwrote the live scalars from region copies that were seeded once
+///              at generation, so building a turret snapped p_defenses back to stale values, and
+///              barracks gains never surfaced: the turret/barracks stomp Sellka reported.
 /// @param {Id.Instance.obj_star} _star
 /// @param {Real} _planet
 /// @returns {Undefined}
 function regions_rollup(_star, _planet) {
     var _regions = regions_ensure(_star, _planet);
-    var _n = array_length(_regions);
-    if (_n <= 0) {
+    if (array_length(_regions) <= 0) {
         return;
     }
-
-    var _population = 0;
-    var _max_population = 0;
-    var _pdf = 0;
-    var _guardsmen = 0;
-    var _fortified = 0;
-    var _defences = 0;
-    var _capital_owner = _regions[0].owner;
-    var _upgrades = [];
-
-    for (var i = 0; i < _n; i++) {
-        var _region = _regions[i];
-        _population += _region.population;
-        _max_population += _region.max_population;
-        _pdf += _region.pdf;
-        _guardsmen += _region.guardsmen;
-        _fortified = max(_fortified, _region.fortification);
-        _defences = max(_defences, _region.defences);
-        if (_region.is_capital) {
-            _capital_owner = _region.owner;
-        }
-        if (is_array(_region.upgrades)) {
-            for (var u = 0, ul = array_length(_region.upgrades); u < ul; u++) {
-                if (!array_contains(_upgrades, _region.upgrades[u])) {
-                    array_push(_upgrades, _region.upgrades[u]);
-                }
-            }
-        }
-    }
-
-    _star.p_population[_planet] = _population;
-    _star.p_max_population[_planet] = _max_population;
-    _star.p_pdf[_planet] = _pdf;
-    _star.p_guardsmen[_planet] = _guardsmen;
-    _star.p_fortified[_planet] = _fortified;
-    _star.p_defenses[_planet] = _defences;
-    _star.p_owner[_planet] = _capital_owner;
-    _star.p_upgrades[_planet] = _upgrades;
+    _star.p_owner[_planet] = _regions[0].owner;
 }
 
 #endregion
@@ -890,13 +854,19 @@ function region_building_catalogue() {
         {
             id: "bastion", name: "Bastion", sprite: spr_holo_pad, cost: 1500, max: 5, types: "all",
             desc: "Reinforced walls and bunkers. +1 fortification (max 5). Fortified regions resist capture and fall last.",
-            apply: function(_star, _planet, _region) { _region.fortification = min(5, _region.fortification + 1); },
+            apply: function(_star, _planet, _region) {
+                _region.fortification = min(5, _region.fortification + 1);
+                _star.p_fortified[_planet] = min(5, _star.p_fortified[_planet] + 1);
+            },
             on_turn: undefined,
         },
         {
             id: "turret_battery", name: "Turret Battery", sprite: spr_holo_pad, cost: 1000, max: 5, types: "all",
             desc: "Ground weapon emplacements. +1 defences. Ground down as the region is captured.",
-            apply: function(_star, _planet, _region) { _region.defences = min(10, _region.defences + 1); },
+            apply: function(_star, _planet, _region) {
+                _region.defences = min(10, _region.defences + 1);
+                _star.p_defenses[_planet] += 1;
+            },
             on_turn: undefined,
         },
         {
@@ -916,33 +886,47 @@ function region_building_catalogue() {
             id: "factory", name: "Factory", sprite: spr_forge_holo, cost: 2000, max: 1, types: ["Hive", "Forge", "Temperate"],
             desc: "War materiel factory. +4 requisition each turn while you hold this region.",
             apply: undefined,
-            on_turn: function(_star, _planet, _region) { obj_controller.requisition += 4; },
+            on_turn: function(_star, _planet, _region) {
+                obj_controller.requisition += 4;
+                region_income_note(4);
+            },
         },
         {
             id: "mine", name: "Mine", sprite: spr_def_mine, cost: 1500, max: 1, types: ["Desert", "Ice", "Lava", "Dead", "Death"],
             desc: "Resource extraction. +3 requisition each turn while you hold this region.",
             apply: undefined,
-            on_turn: function(_star, _planet, _region) { obj_controller.requisition += 3; },
+            on_turn: function(_star, _planet, _region) {
+                obj_controller.requisition += 3;
+                region_income_note(3);
+            },
         },
         {
             id: "industrial_farm", name: "Industrial Farms", sprite: spr_holo_pad, cost: 1200, max: 1, types: ["Agri", "Temperate", "Feudal"],
             desc: "Mechanised agriculture. Grows the region's population toward its maximum each turn.",
             apply: undefined,
             on_turn: function(_star, _planet, _region) {
-                _region.population = min(_region.max_population, _region.population + max(1, round(_region.population * 0.01)));
+                var _growth = max(1, round(_region.population * 0.01));
+                _region.population = min(_region.max_population, _region.population + _growth);
+                _star.p_population[_planet] = min(_star.p_max_population[_planet], _star.p_population[_planet] + _growth);
             },
         },
         {
             id: "pdf_barracks", name: "PDF Barracks", sprite: spr_holo_pad, cost: 1000, max: 1, types: "all",
             desc: "Trains local Planetary Defence Force. +200 PDF each turn while you hold this region.",
             apply: undefined,
-            on_turn: function(_star, _planet, _region) { _region.pdf += 200; },
+            on_turn: function(_star, _planet, _region) {
+                _region.pdf += 200;
+                _star.p_pdf[_planet] += 200; // planet scalar is authoritative; region copy is display
+            },
         },
         {
             id: "guard_barracks", name: "Guard Barracks", sprite: spr_holo_pad, cost: 1500, max: 1, types: "all",
             desc: "Raises Astra Militarum. +100 Guardsmen each turn while you hold this region.",
             apply: undefined,
-            on_turn: function(_star, _planet, _region) { _region.guardsmen += 100; },
+            on_turn: function(_star, _planet, _region) {
+                _region.guardsmen += 100;
+                _star.p_guardsmen[_planet] += 100; // feeds the Sector Governor's recruitment pool
+            },
         },
         {
             id: "training_ground", name: "Training Ground", sprite: spr_holo_pad, cost: 1200, max: 1, types: "all",
@@ -1468,6 +1452,37 @@ function draw_region_construction_panel(_star, _planet, _px, _py) {
     draw_set_valign(fa_top);
     draw_set_color(c_black);
     draw_set_alpha(1);
+}
+
+#endregion
+
+#region income tally
+
+/// Region factories and mines credit obj_controller.requisition directly the moment
+/// they tick, which keeps the money real but invisible to the end-of-turn income
+/// tally (income_last) the top bar shows. These helpers keep a parallel per-turn
+/// tally so the display can add it. Lazy-initialised: saves from before this
+/// existed simply show 0 until the first tick.
+function region_income_note(_amount) {
+    if (!variable_instance_exists(obj_controller, "region_income_accum")) {
+        obj_controller.region_income_accum = 0;
+    }
+    obj_controller.region_income_accum += _amount;
+}
+
+function region_income_reset() {
+    if (!variable_instance_exists(obj_controller, "region_income_accum")) {
+        obj_controller.region_income_accum = 0;
+    }
+    obj_controller.region_income_shown = obj_controller.region_income_accum;
+    obj_controller.region_income_accum = 0;
+}
+
+function region_income_last_shown() {
+    if (!variable_instance_exists(obj_controller, "region_income_shown")) {
+        return 0;
+    }
+    return obj_controller.region_income_shown;
 }
 
 #endregion
