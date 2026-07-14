@@ -133,7 +133,7 @@ function draw_diplomacy_diplo_text() {
     draw_set_alpha(1);
     draw_set_color(CM_GREEN_COLOR);
     draw_set_halign(fa_left);
-    draw_text_ext(336 + 16, 209, string_hash_to_newline(string(diplo_txt)), -1, 536);
+    draw_text_ext(352, 209, string_hash_to_newline(string(diplo_txt)), -1, 536);
     draw_set_halign(fa_center);
     draw_line(xx + 429, yy + 710, xx + 800, yy + 710);
 }
@@ -462,13 +462,6 @@ function scr_ui_diplomacy() {
             draw_rectangle(xx + 688, yy + 240, xx + 1028, yy + 281, 0);
             draw_set_alpha(1);
         }
-        var x6, y6, x7, y7;
-        x6 = 0;
-        y6 = 0;
-        x7 = 0;
-        y7 = 0;
-        xx -= 55;
-        yy += 20;
 
         #region faction talks/ignore stuff
 
@@ -492,8 +485,7 @@ function scr_ui_diplomacy() {
 
     if (diplomacy > 0) {
         // Diplomacy - Speaking
-        var daemon;
-        daemon = false;
+        var daemon = false;
         if ((diplomacy > 10) && (diplomacy < 11)) {
             daemon = true;
         }
@@ -506,7 +498,7 @@ function scr_ui_diplomacy() {
             }
         }
 
-        if (daemon == false) {
+        if (!daemon) {
             if (diplomacy != eFACTION.ELDAR) {
                 scr_image("diplomacy/splash", diplomacy, xx + 16, yy + 43, 310, 828);
             }
@@ -537,15 +529,15 @@ function scr_ui_diplomacy() {
 
         draw_text_transformed(xx + 622, yy + 66, _diplomacy_faction_name, 1, 1, 0);
 
-        if (daemon == true) {
+        if (daemon) {
             draw_text_transformed(xx + 622, yy + 104, "The Emmmisary", 0.6, 0.6, 0);
             show_stuff = true;
-        } else if (daemon == false) {
+        } else {
             draw_text_transformed(xx + 622, yy + 104, $"{faction_title[diplomacy]} {faction_leader[diplomacy]} {_diplomacy_faction_alligience}", 0.6, 0.6, 0);
         }
 
         draw_set_font(fnt_40k_14);
-        if (daemon == false) {
+        if (!daemon) {
             _disposition_rating = $"Disposition: {faction_disposition_rating_string(diplomacy)} ({disposition[diplomacy]})";
             draw_text(xx + 622, yy + 144, _disposition_rating);
             scr_draw_rainbow(xx + 366, yy + 165, xx + 871, yy + 175, (disposition[diplomacy] / 200) + 0.5);
