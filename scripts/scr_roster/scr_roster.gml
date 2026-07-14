@@ -202,6 +202,12 @@ function Roster() constructor {
             var _ship_loc = (is_struct(_unit)) ? _unit.ship_location : obj_ini.veh_lid[_unit[0]][_unit[1]];
             if (_ship_loc == ship_id) {
                 var _role = (is_struct(_unit)) ? _unit.role() : obj_ini.veh_role[_unit[0]][_unit[1]];
+                // Ghost entries (vehicle slots wiped by the hardcoded whitelists, or
+                // units mid-removal) can carry an empty role; struct keys cannot be
+                // empty strings, so skip them like the battle roster already does.
+                if (_role == "") {
+                    continue;
+                }
                 if (struct_exists(selected_local_roster, _role)) {
                     selected_local_roster[$ _role]++;
                 } else {
@@ -214,6 +220,12 @@ function Roster() constructor {
             var _ship_loc = (is_struct(_unit)) ? _unit.ship_location : obj_ini.veh_lid[_unit[0]][_unit[1]];
             if (_ship_loc == ship_id) {
                 var _role = (is_struct(_unit)) ? _unit.role() : obj_ini.veh_role[_unit[0]][_unit[1]];
+                // Ghost entries (vehicle slots wiped by the hardcoded whitelists, or
+                // units mid-removal) can carry an empty role; struct keys cannot be
+                // empty strings, so skip them like the battle roster already does.
+                if (_role == "") {
+                    continue;
+                }
                 if (struct_exists(possible_local_roster, _role)) {
                     possible_local_roster[$ _role]++;
                 } else {

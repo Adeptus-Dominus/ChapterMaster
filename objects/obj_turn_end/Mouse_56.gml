@@ -13,8 +13,19 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
             with (obj_fleet_select) {
                 instance_destroy();
             }
+            // The queued space battle can reference a fleet that no longer exists by
+            // the time the player clicks: merged, destroyed, or consumed by an event
+            // earlier in the end-turn stack. The Fight branch below already skips such
+            // stale entries via alarm[4]; mirror that here instead of crashing on a
+            // dead instance read.
+            if (!instance_exists(battle_pobject[current_battle])) {
+                alarm[4] = 1;
+                exit;
+            }
             var that = instance_nearest(battle_pobject[current_battle].x, battle_pobject[current_battle].y, obj_p_fleet);
-            that.alarm[3] = 1;
+            if (instance_exists(that)) {
+                that.alarm[3] = 1;
+            }
             var that2 = instance_create(0, 0, obj_popup);
             that2.type = 99;
             obj_controller.force_scroll = 1;

@@ -50,6 +50,9 @@
 #macro RETREAT_DAMAGE_MULT 0.2
 #macro DEVASTATOR_BRACED_MULT 1.25
 #macro ASSAULT_JUMP_RANGE 30
+// Minimum heresy/influence a purge that kills anyone removes. Keeps purges viable on
+// hive worlds and against the Daemonic Incursion +2/turn heresy pump.
+#macro PURGE_MIN_HERESY_DROP 3
 
 // Range accuracy/damage falloff for ranged fire. Damage is scaled by how far the target
 // is relative to the weapon's range: at point blank it gets RANGE_POINT_BLANK_BONUS, and

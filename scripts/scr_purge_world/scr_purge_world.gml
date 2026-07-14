@@ -50,6 +50,11 @@ function PlayerPurge(action_type, action_score, planet_data) constructor {
                 influence_reduction = round(action_score / 50);
                 break;
         }
+        // A purge that kills anyone always makes headway: targeted killings find the
+        // cult even when the dead are a rounding error against a hive world's billions.
+        if (kill > 0) {
+            influence_reduction = max(influence_reduction, PURGE_MIN_HERESY_DROP);
+        }
         influence_reduction = min(influence_reduction, heres_before);
     };
 
@@ -58,7 +63,11 @@ function PlayerPurge(action_type, action_score, planet_data) constructor {
 
         pop_after = pop_before - kill;
 
-        population_reduction_percentage = (pop_after / pop_before) * 100; // Relative % of people murderized
+        // Percent of the population actually killed. This used to be computed as
+        // pop_after / pop_before, the fraction that SURVIVED, so a light purge on a
+        // hive world reported ~99% "reduction" while a total extermination reported
+        // ~0%, inverting the heresy math this feeds.
+        population_reduction_percentage = (pop_before > 0) ? ((kill / pop_before) * 100) : 0;
 
         calculate_influence_reduction();
 
@@ -160,9 +169,18 @@ function scr_purge_world(action_type, action_score) {
 
     _purge.heres_target = _heres_target;
 
+    // Retroactive save cleanup: a dead Chaos Lord anchors nothing. Saves from before
+    // this fix could kill the warlord without the planet feature ever being removed,
+    // leaving the concealed-warlord duel respawning on every purge while the daemonic
+    // incursion pumped heresy back up forever.
+    if (has_feature(eP_FEATURES.WARLORD10) && (obj_controller.faction_defeated[10] == 1)) {
+        delete_feature(eP_FEATURES.WARLORD10);
+        delete_feature(eP_FEATURES.DAEMONIC_INCURSION);
+    }
+
     var _no_chaos = (planet_forces[eFACTION.HERETICS] + planet_forces[eFACTION.CHAOS]) == 0;
     if ((action_type == eDROP_TYPE.PURGEFIRE || action_type == eDROP_TYPE.PURGESELECTIVE) && _no_chaos && obj_controller.turn >= obj_controller.chaos_turn) {
-        if (has_feature(eP_FEATURES.WARLORD10) && obj_controller.known[10] == 0 && obj_controller.faction_gender[10] == 1) {
+        if (has_feature(eP_FEATURES.WARLORD10) && (obj_controller.faction_defeated[10] == 0) && obj_controller.known[10] == 0 && obj_controller.faction_gender[10] == 1) {
             // {name()} was being interpolated inside with (obj_drop_select), where self
             // is the drop-select instance and name() does not exist: a caught error and
             // a blank popup every time a purge uncovered a concealed Chaos warlord.
@@ -176,7 +194,7 @@ function scr_purge_world(action_type, action_score) {
                 exit;
             }
         }
-        if (has_feature(eP_FEATURES.WARLORD10) && obj_controller.known[10] >= 2 && obj_controller.faction_gender[10] == 1) {
+        if (has_feature(eP_FEATURES.WARLORD10) && (obj_controller.faction_defeated[10] == 0) && obj_controller.known[10] >= 2 && obj_controller.faction_gender[10] == 1) {
             with (obj_drop_select) {
                 attacking = 10;
                 obj_controller.cooldown = 30;

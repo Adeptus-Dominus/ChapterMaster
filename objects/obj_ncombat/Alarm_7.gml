@@ -212,15 +212,22 @@ try {
             }
         }
         if (defeat == 0) {
+            // Kill the warlord exactly once. Remove the concealed-warlord feature and
+            // the daemonic incursion he anchors from the battle planet, so repeat
+            // purges no longer respawn the duel (and re-announce his death) while the
+            // world pumps heresy forever. Mirrors the Ork warboss departure pattern.
+            var _first_kill = (obj_controller.faction_defeated[10] == 0);
+            delete_features(battle_object.p_feature[battle_id], eP_FEATURES.WARLORD10);
+            delete_features(battle_object.p_feature[battle_id], eP_FEATURES.DAEMONIC_INCURSION);
             obj_controller.known[eFACTION.CHAOS] = 2;
             obj_controller.faction_defeated[10] = 1;
 
-            if (instance_exists(obj_turn_end)) {
+            if (_first_kill && instance_exists(obj_turn_end)) {
                 scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
                 scr_alert("", "ass", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " has been killed.", 0, 0);
                 scr_popup("Chaos Lord Killed", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " has been slain in combat.  Without his leadership the various forces of Chaos in the sector will crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer as threatened by the forces of Chaos.", "", "");
             }
-            if (!instance_exists(obj_turn_end)) {
+            if (_first_kill && !instance_exists(obj_turn_end)) {
                 scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
                 var _pop = instance_create(0, 0, obj_popup);
                 _pop.image = "";
