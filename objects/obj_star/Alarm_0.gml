@@ -30,8 +30,8 @@ if (obj_controller.craftworld && (space_hulk == 0)) {
     planets = 1;
     p_type[1] = "Craftworld";
     heresy = -999;
-    p_owner[1] = 6;
-    p_first[1] = 6;
+    p_owner[1] = eFACTION.ELDAR;
+    p_first[1] = eFACTION.ELDAR;
     owner = eFACTION.ELDAR;
     p_population[1] = floor(random_range(150000, 300000));
     p_fortified[1] = 6;
@@ -49,7 +49,7 @@ if (space_hulk == 1) {
     planets = 1;
     p_type[1] = "Space Hulk";
     heresy = -999;
-    p_owner[1] = 2;
+    p_owner[1] = eFACTION.IMPERIUM;
     p_population[1] = 0;
     p_fortified[1] = 5;
 
@@ -128,8 +128,8 @@ switch (star) {
                 planet[rui] = 1;
                 p_type[rui] = choose("Temperate", "Temperate", choose("Temperate", "Shrine"), "Feudal", "Agri", "Death", "Desert", "Ice", "Hive");
                 if (p_type[rui] == "Agri" || p_type[rui] == "Hive") {
-                    p_owner[rui] = 2;
-                    p_first[rui] = 2;
+                    p_owner[rui] = eFACTION.IMPERIUM;
+                    p_first[rui] = eFACTION.IMPERIUM;
                 }
             }
         }
@@ -364,20 +364,20 @@ for (var i = 0; i < 10; i++) {
 }
 
 if (p_type[1] != "") {
-    p_owner[1] = 2;
-    p_first[1] = 2;
+    p_owner[1] = eFACTION.IMPERIUM;
+    p_first[1] = eFACTION.IMPERIUM;
 }
 if (p_type[2] != "") {
-    p_owner[2] = 2;
-    p_first[2] = 2;
+    p_owner[2] = eFACTION.IMPERIUM;
+    p_first[2] = eFACTION.IMPERIUM;
 }
 if (p_type[3] != "") {
-    p_owner[3] = 2;
-    p_first[3] = 2;
+    p_owner[3] = eFACTION.IMPERIUM;
+    p_first[3] = eFACTION.IMPERIUM;
 }
 if (p_type[4] != "") {
-    p_owner[4] = 2;
-    p_first[4] = 2;
+    p_owner[4] = eFACTION.IMPERIUM;
+    p_first[4] = eFACTION.IMPERIUM;
 }
 
 if (p_type[1] != "Dead") {

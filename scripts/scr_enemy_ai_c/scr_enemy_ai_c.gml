@@ -14,7 +14,7 @@ function scr_enemy_ai_c() {
     if (array_sum(p_traitors)) {
         var traitor_system = true;
         for (var i = 1; i <= planets; i++) {
-            if ((p_owner[i] != 10) || (p_pdf[i] > 0) || (p_guardsmen[i] > 0) || (p_orks[i] > 0) || (p_tau[i] > 0)) {
+            if ((p_owner[i] != eFACTION.CHAOS) || (p_pdf[i] > 0) || (p_guardsmen[i] > 0) || (p_orks[i] > 0) || (p_tau[i] > 0)) {
                 traitor_system = false;
                 break;
             }
@@ -149,55 +149,55 @@ function scr_enemy_ai_c() {
 
     if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != noone) && (owner != eFACTION.CHAOS) && (planets > 0)) {
         for (var i = 0; i < 5; i++) {
-            if ((p_type[1] != "Dead") && (p_owner[1] != 10)) {
+            if ((p_type[1] != "Dead") && (p_owner[1] != eFACTION.CHAOS)) {
                 kay = 1;
             }
-            if ((p_type[2] != "Dead") && (p_owner[2] != 10)) {
+            if ((p_type[2] != "Dead") && (p_owner[2] != eFACTION.CHAOS)) {
                 kay = 2;
             }
-            if ((p_type[3] != "Dead") && (p_owner[3] != 10)) {
+            if ((p_type[3] != "Dead") && (p_owner[3] != eFACTION.CHAOS)) {
                 kay = 3;
             }
-            if ((p_type[4] != "Dead") && (p_owner[4] != 10)) {
+            if ((p_type[4] != "Dead") && (p_owner[4] != eFACTION.CHAOS)) {
                 kay = 4;
             }
 
-            if ((p_type[4] == "Desert") && (p_owner[4] != 10)) {
+            if ((p_type[4] == "Desert") && (p_owner[4] != eFACTION.CHAOS)) {
                 kay = 14;
             }
-            if ((p_type[3] == "Desert") && (p_owner[3] != 10)) {
+            if ((p_type[3] == "Desert") && (p_owner[3] != eFACTION.CHAOS)) {
                 kay = 3;
             }
-            if ((p_type[2] == "Desert") && (p_owner[2] != 10)) {
+            if ((p_type[2] == "Desert") && (p_owner[2] != eFACTION.CHAOS)) {
                 kay = 12;
             }
-            if ((p_type[1] == "Desert") && (p_owner[1] != 10)) {
+            if ((p_type[1] == "Desert") && (p_owner[1] != eFACTION.CHAOS)) {
                 kay = 1;
             }
 
-            if ((p_type[4] == "Temperate") && (p_owner[4] != 10)) {
+            if ((p_type[4] == "Temperate") && (p_owner[4] != eFACTION.CHAOS)) {
                 kay = 4;
             }
-            if ((p_type[3] == "Temperate") && (p_owner[3] != 10)) {
+            if ((p_type[3] == "Temperate") && (p_owner[3] != eFACTION.CHAOS)) {
                 kay = 3;
             }
-            if ((p_type[2] == "Temperate") && (p_owner[2] != 10)) {
+            if ((p_type[2] == "Temperate") && (p_owner[2] != eFACTION.CHAOS)) {
                 kay = 2;
             }
-            if ((p_type[1] == "Temperate") && (p_owner[1] != 10)) {
+            if ((p_type[1] == "Temperate") && (p_owner[1] != eFACTION.CHAOS)) {
                 kay = 1;
             }
 
-            if ((p_type[4] == "Hive") && (p_owner[4] != 10)) {
+            if ((p_type[4] == "Hive") && (p_owner[4] != eFACTION.CHAOS)) {
                 kay = 4;
             }
-            if ((p_type[3] == "Hive") && (p_owner[3] != 10)) {
+            if ((p_type[3] == "Hive") && (p_owner[3] != eFACTION.CHAOS)) {
                 kay = 3;
             }
-            if ((p_type[2] == "Hive") && (p_owner[2] != 10)) {
+            if ((p_type[2] == "Hive") && (p_owner[2] != eFACTION.CHAOS)) {
                 kay = 2;
             }
-            if ((p_type[1] == "Hive") && (p_owner[1] != 10)) {
+            if ((p_type[1] == "Hive") && (p_owner[1] != eFACTION.CHAOS)) {
                 kay = 1;
             }
 
@@ -225,7 +225,7 @@ function scr_enemy_ai_c() {
     // This is the CSM landing code
     if ((present_fleet[10] > 0) && (present_fleet[1] + present_fleet[2] == 0) && (boat != noone) && (planets > 0)) {
         for (var i = 1; i <= planets; i++) {
-            if ((planets >= i) && (p_type[i] != "Dead") && (p_owner[i] != 10)) {
+            if ((planets >= i) && (p_type[i] != "Dead") && (p_owner[i] != eFACTION.CHAOS)) {
                 if (instance_exists(boat)) {
                     if (fleet_has_cargo("chaos", boat)) {
                         if (p_chaos[i] < 4) {
@@ -290,16 +290,16 @@ function scr_enemy_ai_c() {
             contin = 0;
             rando = floor(random(100)) + 1; // This part handles the ship building
 
-            if ((planets == 1) && (p_owner[1] == 8)) {
+            if ((planets == 1) && (p_owner[1] == eFACTION.TAU)) {
                 contin = 1;
             }
-            if ((planets == 2) && (p_owner[1] == 8) && (p_owner[2] == 8)) {
+            if ((planets == 2) && (p_owner[1] == eFACTION.TAU) && (p_owner[2] == eFACTION.TAU)) {
                 contin = 1;
             }
-            if ((planets == 3) && (p_owner[1] == 8) && (p_owner[2] == 8) && (p_owner[3] == 8)) {
+            if ((planets == 3) && (p_owner[1] == eFACTION.TAU) && (p_owner[2] == eFACTION.TAU) && (p_owner[3] == eFACTION.TAU)) {
                 contin = 1;
             }
-            if ((planets == 4) && (p_owner[1] == 8) && (p_owner[2] == 8) && (p_owner[3] == 8) && (p_owner[4] == 8)) {
+            if ((planets == 4) && (p_owner[1] == eFACTION.TAU) && (p_owner[2] == eFACTION.TAU) && (p_owner[3] == eFACTION.TAU) && (p_owner[4] == eFACTION.TAU)) {
                 contin = 1;
             }
 

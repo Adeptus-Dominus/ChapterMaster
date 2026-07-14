@@ -265,11 +265,11 @@ function imperial_navy_bombard() {
         if (orbiting.p_type[p] != "Daemon") {
             if (orbiting.p_population[p] == 0 && orbiting.p_tyranids[p] > 0) {
                 _bombard = p;
-            } else if (orbiting.p_population[p] == 0 && orbiting.p_orks[p] > 0 && orbiting.p_owner[p] == 7) {
+            } else if (orbiting.p_population[p] == 0 && orbiting.p_orks[p] > 0 && orbiting.p_owner[p] == eFACTION.ORK) {
                 _bombard = p;
-            } else if (orbiting.p_owner[p] == 8 && orbiting.p_tau[p] + orbiting.p_pdf[p] > 0) {
+            } else if (orbiting.p_owner[p] == eFACTION.TAU && orbiting.p_tau[p] + orbiting.p_pdf[p] > 0) {
                 _bombard = p;
-            } else if (orbiting.p_owner[p] == 10 && (orbiting.p_chaos[p] + orbiting.p_traitors[p] + orbiting.p_pdf[p] > 0 || orbiting.p_heresy[p] >= 50)) {
+            } else if (orbiting.p_owner[p] == eFACTION.CHAOS && (orbiting.p_chaos[p] + orbiting.p_traitors[p] + orbiting.p_pdf[p] > 0 || orbiting.p_heresy[p] >= 50)) {
                 _bombard = p;
             } else {
                 var _cults = return_planet_features(orbiting.p_feature[p], eP_FEATURES.GENE_STEALER_CULT);
@@ -683,7 +683,7 @@ function scr_navy_planet_action() {
             }
 
             if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
-                if (orbiting.p_owner[p] == 1 && orbiting.p_player[p] == 0 && highest == 0) {
+                if (orbiting.p_owner[p] == eFACTION.PLAYER && orbiting.p_player[p] == 0 && highest == 0) {
                     selected_planet = p;
                     highest = 0.5;
                 }
@@ -866,7 +866,7 @@ function scr_navy_has_unloaded_guardsmen_turn_end() {
 function scr_navy_recruit_new_guard() {
     var that = 0, te = 0, te_large = 0;
     for (var o = 1; o <= orbiting.planets; o++) {
-        if (orbiting.p_owner[o] <= 5) {
+        if (orbiting.p_owner[o] <= eFACTION.ECCLESIARCHY) {
             var _imp_enemies = has_imperial_enemies(o, orbiting);
             if (_imp_enemies) {
                 continue;

@@ -55,7 +55,7 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
                 t_name = "Imperial Forces";
                 break;
             case 2.5:
-                if (p_target.p_owner[obj_controller.selecting_planet] == 8) {
+                if (p_target.p_owner[obj_controller.selecting_planet] == eFACTION.TAU) {
                     t_name = "Gue'la Forces";
                 } else {
                     t_name = "PDF";

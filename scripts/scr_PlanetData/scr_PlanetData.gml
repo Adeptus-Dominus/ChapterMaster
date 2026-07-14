@@ -546,7 +546,7 @@ function PlanetData(_planet, _system) constructor {
         if (array_length(_non_deads) > 0 && _rando > 40) {
             var _ork_spread_planet = array_random_element(_non_deads);
             var _ork_target = system.p_orks[_ork_spread_planet];
-            var _spread_orks = current_owner == eFACTION.ORK && ((pdf + guardsmen + planet_forces[8] + planet_forces[10] + planet_forces[1]) == 0);
+            var _spread_orks = current_owner == eFACTION.ORK && ((pdf + guardsmen + planet_forces[eFACTION.TAU] + planet_forces[eFACTION.CHAOS] + planet_forces[eFACTION.PLAYER]) == 0);
             if (_spread_orks) {
                 // determine maximum Ork presence on the source planet
                 var _ork_max = planet_forces[eFACTION.ORK];
@@ -564,7 +564,7 @@ function PlanetData(_planet, _system) constructor {
             }
         }
         _rando = roll_dice(1, 100); // This part handles the ship building
-        if ((population > 0 && pdf == 0 && guardsmen == 0 && planet_forces[10] == 0) && (planet_forces[eFACTION.TAU] == 0)) {
+        if ((population > 0 && pdf == 0 && guardsmen == 0 && planet_forces[eFACTION.CHAOS] == 0) && (planet_forces[eFACTION.TAU] == 0)) {
             if (!large_population) {
                 set_population(population * 0.97);
             } else {
@@ -1803,7 +1803,7 @@ function PlanetData(_planet, _system) constructor {
 
                             var _valid_owners = false;
                             for (var plan = 1; plan <= planets; plan++) {
-                                if (p_owner[plan] <= 5) {
+                                if (p_owner[plan] <= eFACTION.ECCLESIARCHY) {
                                     _valid_owners = true;
                                     break;
                                 }

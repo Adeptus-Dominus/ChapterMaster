@@ -1006,7 +1006,7 @@ function send_stc_to_adeptus_mech() {
 
         if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
             with (obj_star) {
-                if ((owner == eFACTION.PLAYER) && ((p_owner[1] == 1) || (p_owner[2] == eFACTION.PLAYER))) {
+                if ((owner == eFACTION.PLAYER) && ((p_owner[1] == eFACTION.PLAYER) || (p_owner[2] == eFACTION.PLAYER))) {
                     instance_create(x, y, obj_temp2);
                 }
             }

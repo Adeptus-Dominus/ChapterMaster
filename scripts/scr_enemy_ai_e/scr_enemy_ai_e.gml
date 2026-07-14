@@ -579,10 +579,10 @@ function scr_enemy_ai_e() {
                     case 12:
                         continue;
                     case 2:
-                        if (p_player[run] > 0 && p_owner[run] == 1 && p_guardsmen[run] > 0 && obj_controller.faction_status[2] == "War") {
+                        if (p_player[run] > 0 && p_owner[run] == eFACTION.PLAYER && p_guardsmen[run] > 0 && obj_controller.faction_status[2] == "War") {
                             battle_opponent = 2;
                         }
-                        if (p_player[run] >= 10 && p_owner[run] != 1 && p_guardsmen[run] > 0 && obj_controller.faction_status[2] == "War") {
+                        if (p_player[run] >= 10 && p_owner[run] != eFACTION.PLAYER && p_guardsmen[run] > 0 && obj_controller.faction_status[2] == "War") {
                             battle_opponent = 2;
                         }
                         break;
@@ -648,7 +648,7 @@ function scr_enemy_ai_e() {
             // Otherwise, 3 and a half billions get translated as 3,50 instead of 3500000000
 
             //fortress monestary
-            if (p_owner[run] == 1) {
+            if (p_owner[run] == eFACTION.PLAYER) {
                 var monestary = search_planet_features(p_feature[run], eP_FEATURES.MONASTERY);
                 if (array_length(monestary) > 0) {
                     monestary = p_feature[run][monestary[0]];

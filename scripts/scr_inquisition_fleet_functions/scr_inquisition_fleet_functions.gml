@@ -259,8 +259,8 @@ function inquisitor_inspect_base() {
     if (chapter_asset_discovery <= 5) {
         repeat (planets) {
             cur_planet += 1;
-            if ((p_first[cur_planet] == 1) && (p_owner[cur_planet] == 2)) {
-                p_owner[cur_planet] = 1;
+            if ((p_first[cur_planet] == eFACTION.PLAYER) && (p_owner[cur_planet] == eFACTION.IMPERIUM)) {
+                p_owner[cur_planet] = eFACTION.PLAYER;
             }
             if ((p_type[cur_planet] == "Dead") && (array_length(p_upgrades[cur_planet]) > 0)) {
                 if (planet_feature_bool(p_feature[cur_planet], [eP_FEATURES.SECRET_BASE, eP_FEATURES.ARSENAL, eP_FEATURES.GENE_VAULT]) == 0) /*and (string_count(".0|",p_upgrades[cur_planet])>0)*/ {
