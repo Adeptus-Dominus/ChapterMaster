@@ -465,6 +465,11 @@ function scr_enemy_ai_e() {
                     obj_turn_end.battle_location[obj_turn_end.battles] = name;
                     obj_turn_end.battle_pobject[obj_turn_end.battles] = instance_nearest(x, y, obj_p_fleet);
 
+                    if (!instance_exists(obj_turn_end.battle_pobject[obj_turn_end.battles])) {
+                        obj_turn_end.battles -= 1;
+                        break;
+                    }
+
                     if (i == 10) {
                         obj_controller.temp[1049] = string(name);
                         with (obj_temp2) {

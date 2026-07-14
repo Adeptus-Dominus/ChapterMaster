@@ -89,12 +89,14 @@ serialize = function() {
         x,
         y,
         cargo_data: cargo_data,
+        orbiting: instance_exists(orbiting) ? true : false,
     };
 
     var excluded_from_save = [
         "temp",
         "serialize",
-        "deserialize"
+        "deserialize",
+        "orbiting",
     ];
 
     copy_serializable_fields(object_fleet, save_data, excluded_from_save);
@@ -104,7 +106,8 @@ serialize = function() {
 deserialize = function(save_data) {
     var exclusions = [
         "id",
-        "cargo_data"
+        "cargo_data",
+        "orbiting",
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
@@ -131,7 +134,7 @@ deserialize = function(save_data) {
         }
     }
 
-    if (save_data.orbiting != noone && action == "") {
+    if (save_data.orbiting && (save_data.orbiting != noone)) {
         orbiting = instance_nearest(x, y, obj_star);
     }
 };
