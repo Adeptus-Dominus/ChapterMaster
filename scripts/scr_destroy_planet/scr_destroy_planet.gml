@@ -136,8 +136,8 @@ function scr_destroy_planet(destruction_method) {
     with (you) {
         p_type[baid] = "Dead";
         p_feature[baid] = [];
-        p_owner[baid] = 0;
-        p_first[baid] = 0;
+        p_owner[baid] = eFACTION.NONE;
+        p_first[baid] = eFACTION.NONE;
         p_population[baid] = 0;
         p_max_population[baid] = 0;
         p_large[baid] = 0;

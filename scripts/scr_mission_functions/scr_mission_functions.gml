@@ -1,6 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
 function MissionHandler(planet, system) : PlanetData(planet, system) constructor {}
 
 function location_out_of_player_control(unit_loc) {
@@ -206,7 +203,6 @@ function problem_end_turn_checks(){
                 awaken_tomb_world(features);
             }
             remove_problem("necron");
-            // scr_alert("red","mission_failed",_alert_text,0,0);
         },
 
         "spyrer" : function(problem_index){
@@ -331,7 +327,6 @@ function scr_new_governor_mission(planet, problem = "") {
 }
 
 function init_marine_acting_strange() {
-    LOGGER.info("RE: Strange Behavior");
     var marine_and_company = scr_random_marine("", 0);
     if (marine_and_company == "none") {
         LOGGER.error("RE: Strange Behavior, couldn't pick a space marine");
@@ -359,12 +354,10 @@ function init_garrison_mission(planet, star, mission_slot) {
         mission_data.stage = "active";
         var garrison_length = 10 + irandom(6);
         star.p_timer[planet][mission_slot] = garrison_length;
-        //pop.image="ancient_ruins";
         var gar_pop = instance_create(0, 0, obj_popup);
         //TODO some new universal methods for popups
         gar_pop.title = $"Requested Garrison Provided to {numeral_name}";
         gar_pop.text = $"The governor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
-        //pip.image="event_march"
         gar_pop.add_option("Commence Garrison");
         gar_pop.image = "";
         gar_pop.cooldown = 8;
@@ -381,12 +374,10 @@ function init_beast_hunt_mission(planet, star, mission_slot) {
         mission_data.stage = "active";
         var _mission_length = irandom_range(2, 5);
         star.p_timer[planet][mission_slot] = _mission_length;
-        //pop.image="ancient_ruins";
         var gar_pop = instance_create(0, 0, obj_popup);
         //TODO some new universal methods for popups
         gar_pop.title = $"Marines assigned to hunt beasts around {numeral_name}";
         gar_pop.text = $"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.";
-        //pip.image="event_march"
         gar_pop.add_option("Happy Hunting");
         gar_pop.image = "";
         gar_pop.cooldown = 8;
@@ -416,14 +407,12 @@ function init_protect_raider_mission(squad) {
     var _wis_test = _tester.standard_test(_leader, "wisdom", _mod, ["ambush"]);
 
     if (!_wis_test[0]) {
-        var _mission_data = variable_clone(selection_data);
         if (_wis_test[1] < -25) {
             scr_toggle_manage();
             var gar_pop = instance_create(0, 0, obj_popup);
             gar_pop.title = $"Strange Disappearance";
             gar_pop.pdata = _pdata;
             gar_pop.text = $"Your Marines make planet fall and are directed to report to the governor for the duration of the operation after a period of reconnaissance dig in for their ambush. After a two weeks have passed A message from the governor reaches your astropaths that your marines have not been heard of for some time, The raiders also were not noted to have arrived onor left the planet";
-            //pip.image="event_march"
             var _dead_marine = array_random_index(_squad_units);
             for (var i = 0; i < array_length(_dead_marine); i++) {
                 if (i == _dead_marine) {
@@ -448,8 +437,6 @@ function init_protect_raider_mission(squad) {
             var gar_pop = instance_create(0, 0, obj_popup);
             gar_pop.title = $"Ineffective Ambush";
             gar_pop.text = $"Your Marines Are ineffective at setting up an ambush the assailants clearly got wind of the operation or the plan was otherwise so ill thought out that by the time your forces arrived there was little that could be done to intercept them";
-            //pip.image="event_march"
-            //var _dead_marine = array_random_index(_squad_units);
             gar_pop.text += $"";
             gar_pop.pathway = "protect_raiders_ineffective";
             gar_pop.pdata = _pdata;
@@ -810,12 +797,6 @@ function planet_problemless(planet, star = noone) {
     return _problemless;
 }
 
-/*
-//may not be needed but will be a loop of planet_problemless
-function star_problemless(){
-
-}*/
-
 // returns a bool for if any planet on a given star has the given problem
 /// @self Asset.GMObject.obj_star
 function has_problem_star(problem, star = noone) {
@@ -824,7 +805,7 @@ function has_problem_star(problem, star = noone) {
         for (var i = 1; i <= planets; i++) {
             has_problem = has_problem_planet(i, problem);
             if (has_problem) {
-                has_problem = i;
+                has_problem = true;
                 break;
             }
         }
@@ -908,7 +889,7 @@ function find_problem_planet(planet, problem, star = noone) {
 ///removie all of a given problem from a planet
 /// @self Asset.GMObject.obj_star
 function remove_planet_problem(planet, problem, star = noone) {
-    var _had_problem = -1;
+    var _had_problem = false;
     if (star == noone) {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
             if (p_problem[planet][i] == problem) {
@@ -923,7 +904,7 @@ function remove_planet_problem(planet, problem, star = noone) {
             _had_problem = remove_planet_problem(planet, problem);
         }
     }
-    return -1;
+    return _had_problem;
 }
 
 //find an open problem slot on a given planet
@@ -981,7 +962,7 @@ function add_new_problem(planet, problem, timer, star = noone, other_data = {}) 
                 p_problem[planet][i] = problem;
                 p_problem_other_data[planet][i] = other_data;
                 p_timer[planet][i] = timer;
-                problem_added = i;
+                problem_added = true;
                 break;
             }
         }

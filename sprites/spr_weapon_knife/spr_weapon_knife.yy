@@ -3,7 +3,7 @@
   "%Name":"spr_weapon_knife",
   "bboxMode":0,
   "bbox_bottom":164,
-  "bbox_left":33,
+  "bbox_left":32,
   "bbox_right":50,
   "bbox_top":61,
   "collisionKind":1,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"c5c496b3-8d87-42ea-9625-89bf253c33d0","name":"c5c496b3-8d87-42ea-9625-89bf253c33d0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"ca120e57-658e-4e03-8a7b-1e93f52c1aa3","name":"ca120e57-658e-4e03-8a7b-1e93f52c1aa3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":231,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"f2d036d3-3fd2-4d2b-ab43-81aa5a7ee3d3","blendMode":0,"displayName":"default","isLocked":false,"name":"f2d036d3-3fd2-4d2b-ab43-81aa5a7ee3d3","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"791c855a-7fa3-490f-9cb7-4f70a153683b","blendMode":0,"displayName":"default","isLocked":false,"name":"791c855a-7fa3-490f-9cb7-4f70a153683b","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_weapon_knife",
   "nineSlice":null,
@@ -70,7 +70,9 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"c5c496b3-8d87-42ea-9625-89bf253c33d0","path":"sprites/spr_weapon_knife/spr_weapon_knife.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"aa85f45a-777f-4198-a19d-33ec37678e1a","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"ca120e57-658e-4e03-8a7b-1e93f52c1aa3","path":"sprites/spr_weapon_knife/spr_weapon_knife.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"46b8b739-9a93-4409-a1f0-2e11c3809fd4","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

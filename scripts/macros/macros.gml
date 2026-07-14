@@ -212,6 +212,7 @@ global.alliance_grades = ["Hated", "Hostile","Suspicious","Uneasy","Neutral","Al
 #macro SHIP_WEAPON_SLOTS 8
 
 enum eFACTION {
+    NONE = 0,
     PLAYER = 1,
     IMPERIUM,
     MECHANICUS,

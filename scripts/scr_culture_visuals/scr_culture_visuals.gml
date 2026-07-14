@@ -790,6 +790,7 @@ global.modular_drawing_items = [
     },
     {
         sprite: spr_crux_belt_fancy,
+		shadows: spr_crux_belt_fancy_shadow,
         body_types: [
             0,
             2
@@ -945,6 +946,19 @@ global.modular_drawing_items = [
             "MK8 Errant",
             "Artificer Armour",
             "Tartaros"
+        ],
+    },
+	{
+        sprite: spr_victrix_mouth,
+        cultures: ["Ultra"],
+        body_types: [
+            0
+        ],
+        assign_by_rank: 2,
+        position: "mouth_variants",
+        armours: [
+            "MK7 Aquila",
+            "Artificer Armour"
         ],
     },
     {
@@ -1831,6 +1845,30 @@ global.modular_drawing_items = [
 		body_types: [0],
         sprite: spr_mk6_complex_backpack,
         shadows: spr_mk6_complex_backpack_shadow,
+    },
+	//MK4 Sprites
+	{
+        position: "armour",
+        armours: ["MK4 Maximus"],
+		body_types: [0],
+        sprite: spr_mk4_complex,
+        shadows: spr_mk4_complex_shadow,
+    },
+	{
+        position: "backpack",
+        armours: ["MK4 Maximus"],
+		body_types: [0],
+        sprite: spr_mk4_complex_backpack,
+        shadows: spr_mk4_complex_backpack_shadow,
+    },
+	//Artificer Sprites
+	{
+        position: "chest_variants",
+        armours: ["Artificer Armour"],
+		assign_by_rank: 2,
+		body_types: [0],
+        sprite: spr_artificer_chest_variant,
+        shadows: spr_artificer_chest_variant_shadow,
     },
     //Tartaros Sprites
     {
@@ -3337,6 +3375,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_weapon_knife,
+				shadows: spr_weapon_knife_shadow,
             }
         ],
     },
@@ -3351,16 +3390,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_weapon_powswo,
-                subcomponents: [
-                    [
-                        spr_blank,
-                        spr_pow_sword_cross_guard
-                    ],
-                    [
-                        spr_blank,
-                        spr_pow_sword_blade_additions
-                    ]
-                ],
+				shadows: spr_weapon_powswo_shadow
             },
             {
                 cultures: ["Mongol"],
@@ -3442,7 +3472,22 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_weapon_powaxe,
+				shadows: spr_weapon_powaxe_shadow,
             }
+        ],
+    },
+    "Executioner Power Axe": {
+        base: {
+            weapon_data: {
+                display_type: "melee_onehand",
+                hand_type: 0,
+                single_left_right_profile: true,
+            },
+        },
+        variants: [
+            {
+                sprite: spr_weapon_executioner,
+			}
         ],
     },
     "Power Mace": {
@@ -3560,6 +3605,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_weapon_relic_blade,
+				shadows: spr_weapon_relic_blade_shadow,
             }
         ],
     },

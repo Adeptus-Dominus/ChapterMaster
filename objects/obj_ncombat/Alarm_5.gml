@@ -482,10 +482,10 @@ if (defeat == 0 && _reduce_power) {
                     adjust_influence(eFACTION.TYRANIDS, -25, battle_planet, id);
                 }
                 if (make_alert) {
-                    if (p_first[battle_planet] == 1) {
+                    if (p_first[battle_planet] == eFACTION.PLAYER) {
                         who_return = "your";
                         p_owner[battle_planet] = eFACTION.PLAYER;
-                    } else if (p_first[battle_planet] == 3 || p_type[battle_planet] == "Forge") {
+                    } else if (p_first[battle_planet] == eFACTION.MECHANICUS || p_type[battle_planet] == "Forge") {
                         who_return = "mechanicus";
                         obj_controller.disposition[3] += 10;
                         p_owner[battle_planet] = eFACTION.MECHANICUS;
@@ -496,12 +496,9 @@ if (defeat == 0 && _reduce_power) {
                         }
                         p_owner[battle_planet] = eFACTION.IMPERIUM;
                     }
-                    dispo[battle_planet] += 10;
+                    scr_gov_disp(name, battle_planet, 10);
                     scr_event_log("", $"{who_cleansed} cleansed from {planet_string}", name);
                     scr_alert("green", "owner", $"{who_cleansed} cleansed from {planet_string}. Control returned to {who_return}", x, y);
-                    if (dispo[battle_planet] >= 101) {
-                        p_owner[battle_planet] = 1;
-                    }
                 }
             }
         }

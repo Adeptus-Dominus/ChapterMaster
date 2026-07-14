@@ -138,7 +138,7 @@ if ((traitors > ork) && (traitors >= chaos) && (traitors > eldar) && (traitors >
 if ((necrons > ork) && (necrons >= chaos) && (necrons > eldar) && (necrons > tau) && (necrons > tyranids) && (necrons > traitors)) {
     target = 13;
 }
-if (p_target.p_owner[obj_controller.selecting_planet] == 8) {
+if (p_target.p_owner[obj_controller.selecting_planet] == eFACTION.TAU) {
     if ((pdf > chaos) && (pdf > traitors) && (pdf > eldar) && (pdf > ork) && (pdf > tyranids) && (pdf > tau) && (pdf > necrons)) {
         target = 2.5;
     }

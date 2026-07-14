@@ -42,7 +42,7 @@ function reset_manage_arrays() {
 }
 
 function find_company_open_slot(target_company) {
-    good = -1;
+    var good = -1;
     for (var i = 0; i < array_length(obj_ini.name[target_company]); i++) {
         if ((obj_ini.name[target_company][i] == "") || (obj_ini.role[target_company][i] == "")) {
             good = i;
@@ -157,12 +157,9 @@ function scr_company_view(company) {
         show_error(error_message, true);
     }
 
-    var mans, squads, squad_type, squad_loc, squad_members, unit, unit_loc;
-    mans = 0;
-    squads = 0;
-    squad_type = "";
-    squad_loc = 0;
-    squad_members = 0;
+    var unit;
+    var unit_loc;
+    var mans = 0;
     reset_manage_arrays();
     sel_uni = array_create(20, "");
     sel_veh = array_create(20, "");
@@ -185,7 +182,8 @@ function scr_company_view(company) {
 
             mans += 1;
             add_man_to_manage_arrays(unit);
-            var go = 0, op = 0;
+            var go = 0;
+            var op = 0;
             if (!unit.IsSpecialist()) {
                 for (var j = 0; j < 20; j++) {
                     if (sel_uni[j] == "" && op == 0) {
@@ -220,7 +218,8 @@ function scr_company_view(company) {
         add_vehicle_to_manage_arrays([company, i]);
 
         // Select All Vehicle Setup
-        var go = 0, op = 0;
+        var go = 0;
+        var op = 0;
         for (var p = 0; p < 20; p++) {
             if (sel_veh[p] == "" && op == 0) {
                 op = p;
@@ -241,13 +240,12 @@ function scr_company_view(company) {
 
 /// @description Manages unit data, including squad assignments, promotions, and location-based grouping.
 function other_manage_data() {
-    var _mans, _bad, _squads, _squad_type, _squad_loc, _squad_members, _unit, _unit_loc;
-    _mans = 0;
-    _bad = 0;
-    _squads = 0;
-    _squad_type = "";
-    _squad_loc = 0;
-    _squad_members = 0;
+    var _unit;
+    var _unit_loc;
+    var _squads = 0;
+    var _squad_type = "";
+    var _squad_loc = 0;
+    var _squad_members = 0;
     for (var v = 0; v < array_length(display_unit); v++) {
         if (!is_struct(display_unit[v])) {
             continue;
@@ -382,7 +380,6 @@ function other_manage_data() {
 }
 
 function filter_and_sort_company(type, specific) {
-    var i, j, limit;
     function switchy(a, b) {
         var tempman = man[a];
         var tempide = ide[a];
@@ -445,28 +442,22 @@ function filter_and_sort_company(type, specific) {
         squad[b] = temp_squad;
     }
     if (type == "stat") {
-        var swapped;
         with (obj_controller) {
-            for (i = 0; i < array_length(display_unit); i++) {
-                //if (man[i] != "man") continue;
-                swapped = false;
-                limit = array_length(display_unit) - i;
-                for (j = 0; j < limit - 1; j++) {
+            for (var i = 0; i < array_length(display_unit); i++) {
+                var limit = array_length(display_unit) - i;
+                for (var j = 0; j < limit - 1; j++) {
                     if (man[j] != "man") {
                         if (man[j + 1] == "man") {
                             switchy(j, j + 1);
-                            swapped = true;
                         }
                     } else {
                         if (man[j + 1] == "man") {
                             if (display_unit[j][$ specific] < display_unit[j + 1][$ specific]) {
                                 switchy(j, j + 1);
-                                swapped = true;
                             }
                         }
                     }
                 }
-                //if (swapped == false) then break;
             }
         }
     }
@@ -506,7 +497,6 @@ function switch_view_company(new_view) {
 }
 
 function company_manage_actions() {
-    var onceh = 0;
     var xx = camera_get_view_x(view_camera[0]);
     var yy = camera_get_view_y(view_camera[0]);
 

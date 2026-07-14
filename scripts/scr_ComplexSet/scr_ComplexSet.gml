@@ -1620,7 +1620,7 @@ function ComplexSet(_unit) constructor {
                 armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK4 Maximus":
-                add_group({chest_variants: spr_mk4_chest_variants, armour: spr_mk4_complex, backpack: spr_mk4_complex_backpack, leg_variants: spr_mk4_leg_variants, left_trim: spr_mk4_left_trim, right_trim: spr_mk4_right_trim, mouth_variants: spr_mk4_mouth_variants, head: spr_mk4_head_variants});
+                add_group({chest_variants: spr_mk4_chest_variants, leg_variants: spr_mk4_leg_variants, left_trim: spr_mk4_left_trim, right_trim: spr_mk4_right_trim, mouth_variants: spr_mk4_mouth_variants, head: spr_mk4_head_variants});
                 armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK3 Iron Armour":

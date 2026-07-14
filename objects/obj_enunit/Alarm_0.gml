@@ -158,10 +158,12 @@ if (!engaged) {
                         if (!_shot) {
                             _no_vehicles_present = true;
                             _target_vehicles = false;
+                            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"AP -> no vehicles found, falling back to infantry");
                         }
                     }
                 } else {
                     enemy = instance_nearest(x, y, obj_nfort);
+                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"AP -> targeting wall");
                     scr_shoot(i, enemy, 1, "arp", "wall");
                     continue;
                 }
@@ -171,7 +173,7 @@ if (!engaged) {
             if ((!_target_vehicles) && ((!instance_exists(obj_nfort)) || flank)) {
                 var _shot = false;
                 if (enemy.men > 0) {
-                    // There are marines in the first column;
+                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP -> infantry in column {obj_ncombat.combat_debugger.resolve_label(enemy)}, men={enemy.men}, firing");
                     scr_shoot(i, enemy, target_unit_index, "att", "ranged");
                     continue;
                 } else if (instance_number(obj_pnunit) > 1) {
@@ -283,6 +285,7 @@ if (!engaged) {
                 if (!_shot && !_no_vehicles_present) {
                     if ((!instance_exists(obj_nfort)) || flank) {
                         if (block_has_armour(enemy) || (enemy.veh_type[1] == "Defenses")) {
+                            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP fallback -> armour in column {obj_ncombat.combat_debugger.resolve_label(enemy)}, firing");
                             scr_shoot(i, enemy, target_unit_index, "att", "ranged");
                             continue;
                         } else if (instance_number(obj_pnunit) > 1) { // Upstream (4bd385330): Orks retarget like everyone else

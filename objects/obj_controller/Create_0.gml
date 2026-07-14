@@ -806,23 +806,23 @@ LOGGER.info("Set Battle Formations");
 var _count = 16;
 bat_formation = array_create(_count, "");
 bat_formation_type = array_create(_count, 0);
-bat_deva_for = array_create(_count, 1);
-bat_assa_for = array_create(_count, 4);
-bat_tact_for = array_create(_count, 2);
-bat_vete_for = array_create(_count, 2);
+bat_deva_for = array_create(_count, 3);
+bat_assa_for = array_create(_count, 5);
+bat_tact_for = array_create(_count, 4);
+bat_vete_for = array_create(_count, 3);
 bat_hire_for = array_create(_count, 3);
-bat_libr_for = array_create(_count, 3);
-bat_comm_for = array_create(_count, 3);
-bat_tech_for = array_create(_count, 3);
-bat_term_for = array_create(_count, 3);
-bat_hono_for = array_create(_count, 3);
-bat_drea_for = array_create(_count, 5);
+bat_libr_for = array_create(_count, 2);
+bat_comm_for = array_create(_count, 2);
+bat_tech_for = array_create(_count, 2);
+bat_term_for = array_create(_count, 5);
+bat_hono_for = array_create(_count, 2);
+bat_drea_for = array_create(_count, 6);
 bat_rhin_for = array_create(_count, 6);
-bat_pred_for = array_create(_count, 7);
-bat_landraid_for = array_create(_count, 7);
-bat_landspee_for = array_create(_count, 4);
+bat_pred_for = array_create(_count, 6);
+bat_landraid_for = array_create(_count, 6);
+bat_landspee_for = array_create(_count, 5);
 bat_whirl_for = array_create(_count, 1);
-bat_scou_for = array_create(_count, 1);
+bat_scou_for = array_create(_count, 3);
 // ground=1    raid=2
 // 1: Attack        type=1
 // 2: Defend        type=1
@@ -831,23 +831,23 @@ bat_scou_for = array_create(_count, 1);
 default_bat_formation();
 // Defaults formations end here
 
-bat_devastator_column = 1;
-bat_assault_column = 4;
-bat_tactical_column = 2;
-bat_veteran_column = 2;
+bat_devastator_column = 3;
+bat_assault_column = 5;
+bat_tactical_column = 4;
+bat_veteran_column = 3;
 bat_hire_column = 3;
-bat_librarian_column = 3;
-bat_command_column = 3;
-bat_techmarine_column = 3;
-bat_terminator_column = 3;
-bat_honor_column = 3;
-bat_dreadnought_column = 5;
+bat_librarian_column = 2;
+bat_command_column = 2;
+bat_techmarine_column = 2;
+bat_terminator_column = 5;
+bat_honor_column = 2;
+bat_dreadnought_column = 6;
 bat_rhino_column = 6;
-bat_predator_column = 7;
-bat_landraider_column = 7;
+bat_predator_column = 6;
+bat_landraider_column = 6;
 bat_whirlwind_column = 1;
-bat_landspeeder_column = 4;
-bat_scout_column = 1;
+bat_landspeeder_column = 5;
+bat_scout_column = 3;
 // ** Sets up disposition per faction **
 
 LOGGER.info("Set Ai Faction data");

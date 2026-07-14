@@ -88,7 +88,7 @@ try {
 
             meet_system_governors(steh);
 
-            if ((steh.p_owner[1] == 5) || (steh.p_owner[2] == 5) || (steh.p_owner[3] == 5) || (steh.p_owner[4] == 5)) {
+            if ((steh.p_owner[1] == eFACTION.ECCLESIARCHY) || (steh.p_owner[2] == eFACTION.ECCLESIARCHY) || (steh.p_owner[3] == eFACTION.ECCLESIARCHY) || (steh.p_owner[4] == eFACTION.ECCLESIARCHY)) {
                 if ((obj_controller.faction_defeated[5] == 0) && (obj_controller.known[eFACTION.ECCLESIARCHY] == 0)) {
                     obj_controller.known[eFACTION.ECCLESIARCHY] = 1;
                 }

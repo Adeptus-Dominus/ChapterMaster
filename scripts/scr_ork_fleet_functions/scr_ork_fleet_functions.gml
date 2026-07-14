@@ -101,7 +101,7 @@ function ork_fleet_arrive_target() {
         if (_allow_landing) {
             for (var i = 0; i < planets; i++) {
                 var _planet = _planets[i];
-                if ((p_guardsmen[_planet] + p_pdf[_planet] + p_player[_planet] + p_traitors[_planet] + p_tau[_planet] > 0) || ((p_owner[_planet] != 7) && (p_orks[_planet] <= 0))) {
+                if ((p_guardsmen[_planet] + p_pdf[_planet] + p_player[_planet] + p_traitors[_planet] + p_tau[_planet] > 0) || ((p_owner[_planet] != eFACTION.ORK) && (p_orks[_planet] <= 0))) {
                     if ((p_type[_planet] != "Dead") && (p_orks[_planet] < 4) && (i <= planets)) {
                         p_orks[_planet] += max(2, floor(_ork_fleet.image_index * 0.8));
 

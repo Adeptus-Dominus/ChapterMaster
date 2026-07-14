@@ -1,6 +1,5 @@
+/// @self Asset.GMObject.obj_controller
 function scr_load_all(select_units) {
-    var sell = "", unit;
-
     // Load / Select All
     if (select_units) {
         man_size = 0;
@@ -21,7 +20,7 @@ function scr_load_all(select_units) {
         }
         // This sets the maximum size of marines in a company to 200 size
         for (var i = 0; i < array_length(display_unit); i++) {
-            unit = display_unit[i];
+            var unit = display_unit[i];
             if (is_struct(unit)) {
                 if ((man[i] == "man") && (ma_loc[i] == selecting_location) && (ma_wid[i] == selecting_planet) && (ma_god[i] < 10)) {
                     if (unit.assignment() == "none") {
@@ -30,7 +29,6 @@ function scr_load_all(select_units) {
                     }
                 }
             } else if (is_array(unit)) {
-                //if (i<=200){
                 if ((man[i] == "vehicle") && (ma_loc[i] == selecting_location) && (ma_wid[i] == selecting_planet)) {
                     man_sel[i] = 1;
                     if (selecting_location == "") {
@@ -41,7 +39,6 @@ function scr_load_all(select_units) {
                     man_size += scr_unit_size("", ma_role[i], true);
                 }
             }
-            //}
         }
     }
     // Unload / Unselect All

@@ -155,7 +155,7 @@ try {
             battle_object.p_traitors[battle_id] = 6;
             battle_object.p_chaos[battle_id] = 4;
             battle_object.p_pdf[battle_id] = 0;
-            battle_object.p_owner[battle_id] = 10;
+            battle_object.p_owner[battle_id] = eFACTION.CHAOS;
 
             var corro = 0;
 
@@ -163,10 +163,10 @@ try {
                 if (corro <= 5) {
                     var moar = instance_nearest(ox, oy, obj_star);
 
-                    if (moar.owner <= 3) {
+                    if (moar.owner <= eFACTION.MECHANICUS) {
                         corro += 1;
                         for (var i = 1; i <= 4; i++) {
-                            if (moar.p_owner[i] <= 3) {
+                            if (moar.p_owner[i] <= eFACTION.MECHANICUS) {
                                 moar.p_heresy[i] = min(100, moar.p_heresy[i] + floor(random_range(30, 50)));
                             }
                         }

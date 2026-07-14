@@ -403,6 +403,15 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         }
     }
 
+    if (flavor == 0 && string_contains("RAM", _hostile_weapon)) {
+        flavor = 1;
+        if (_hostile_shots == 1) {
+            m1 = $"A vehicle thunders forward, armoured hulls crashing into {target_type}.  ";
+        } else {
+            m1 = $"An armoured column of {_hostile_shots} vehicles smashes into {target_type}, grinding everything in its path.  ";
+        }
+    }
+
     if (flavor == 0) {
         flavor = true;
         if (_hostile_shots == 1) {

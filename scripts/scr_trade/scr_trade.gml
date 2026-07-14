@@ -254,7 +254,7 @@ function TradeAttempt(diplomacy) constructor {
     static find_trade_locations = function() {
         var _stars_with_player_control = [];
         with (obj_star) {
-            if (array_contains(p_owner, 1)) {
+            if (array_contains(p_owner, eFACTION.PLAYER)) {
                 array_push(_stars_with_player_control, id);
             }
         }
@@ -289,10 +289,10 @@ function TradeAttempt(diplomacy) constructor {
                 var ahuh = 0, q = 0;
                 repeat (planets) {
                     q += 1;
-                    if (p_owner[q] == 5) {
+                    if (p_owner[q] == eFACTION.ECCLESIARCHY) {
                         ahuh = 1;
                     }
-                    if ((p_owner[q] < 6) && (planet_feature_bool(p_feature[q], eP_FEATURES.SORORITAS_CATHEDRAL) == 1)) {
+                    if ((p_owner[q] <= eFACTION.ECCLESIARCHY) && (planet_feature_bool(p_feature[q], eP_FEATURES.SORORITAS_CATHEDRAL) == 1)) {
                         ahuh = 1;
                     }
                 }

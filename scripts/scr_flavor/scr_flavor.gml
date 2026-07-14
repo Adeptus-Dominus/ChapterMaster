@@ -353,6 +353,44 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
                 }
             }
         }
+    } else if (string_contains("RAM", weapon_name)) {
+        flavoured = true;
+        if (!character_shot) {
+            if (number_of_shots < 10) {
+                attack_message += $"{number_of_shots} vehicle{((number_of_shots > 1) ? "s" : "")} thunder forward, armoured hulls crashing into the enemy lines- ";
+            } else {
+                attack_message += $"An armoured column of {number_of_shots} vehicles smashes into the enemy, grinding everything in its path- ";
+            }
+            if (target.dudes_num[targeh] == 1) {
+                if (casulties == 0) {
+                    attack_message += $"but the {target_name} withstands the impact.";
+                } else {
+                    attack_message += $"the {target_name} is crushed beneath their treads.";
+                }
+            } else {
+                if (casulties == 0) {
+                    attack_message += $"{target_name} ranks scatter before the charge, but no casualties are confirmed.";
+                } else {
+                    attack_message += $"{target_name} ranks are crushed, killing {casulties} in the onslaught.";
+                }
+            }
+        } else {
+            if (target.dudes_num[targeh] == 1) {
+                attack_message += $"{unit_name} rams into the {target_name}- ";
+                if (casulties == 0) {
+                    attack_message += $"but it endures the impact.";
+                } else {
+                    attack_message += $"and it is shattered.";
+                }
+            } else {
+                attack_message += $"{unit_name} rams into {target_name} ranks- ";
+                if (casulties == 0) {
+                    attack_message += $"but they all survive the impact.";
+                } else {
+                    attack_message += $"crushing {casulties} beneath its hull.";
+                }
+            }
+        }
     } else if (weapon_name == "Assault Cannon") {
         flavoured = true;
         if (!character_shot) {

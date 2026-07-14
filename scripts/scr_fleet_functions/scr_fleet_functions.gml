@@ -614,7 +614,7 @@ function sector_imperial_fleet_strength() {
     }
     with (obj_star) {
         for (var i = 0; i <= planets; i++) {
-            var _owner_imperial = p_owner[i] < 5 && p_owner[i] > 1;
+            var _owner_imperial = p_owner[i] < eFACTION.ECCLESIARCHY && p_owner[i] > eFACTION.PLAYER;
             _imperial_planet_count += _owner_imperial;
         }
         if (owner == eFACTION.MECHANICUS) {
@@ -834,7 +834,7 @@ function fleet_arrival_logic() {
         if (sta.x=home_x) and (sta.y=home_y){
             repeat(4){i+=1;
                 en_p[i]=0;
-                if (sta.p_owner[i]<=5){en_p[i]=1;en_planets+=1;}
+                if (sta.p_owner[i]<=eFACTION.ECCLESIARCHY){en_p[i]=1;en_planets+=1;}
             }
             
             if (guardsmen>0) and (en_planets>0){

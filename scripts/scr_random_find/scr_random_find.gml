@@ -1,6 +1,5 @@
 function scr_random_find(owner, is_planet, ship_action, feature) {
     // This returns a star or fleet instanceID
-
     if (is_planet && instance_exists(obj_star)) {
         var stars = [];
         with (obj_star) {
@@ -16,8 +15,6 @@ function scr_random_find(owner, is_planet, ship_action, feature) {
             var star_index = irandom(array_length(stars) - 1);
             var star = stars[star_index];
             return star; // use that to get the obj
-        } else {
-            return noone;
         }
     } else if (!is_planet && instance_exists(obj_all_fleet)) {
         var ships = [];
@@ -34,10 +31,7 @@ function scr_random_find(owner, is_planet, ship_action, feature) {
             var ship_index = irandom(array_length(ships) - 1);
             var ship = ships[ship_index];
             return ship;
-        } else {
-            return noone;
         }
-    } else {
-        return noone; //?? I think it would return that regardless
     }
+    return noone;
 }

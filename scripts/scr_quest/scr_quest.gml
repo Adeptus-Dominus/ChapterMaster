@@ -109,7 +109,7 @@ function scr_quest(quest_satus, quest_name, quest_fac, quest_end) {
     if (quick_trade != 0) {
         if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
             with (obj_star) {
-                if ((owner == eFACTION.PLAYER) && ((p_owner[1] == 1) || (p_owner[2] == 1))) {
+                if ((owner == eFACTION.PLAYER) && ((p_owner[1] == eFACTION.PLAYER) || (p_owner[2] == eFACTION.PLAYER))) {
                     instance_create(x, y, obj_temp2);
                 }
             }

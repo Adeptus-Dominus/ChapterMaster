@@ -9,13 +9,10 @@ function scr_enemy_ai_b() {
     }
     // Tau rebellions
     if ((present_fleet[8] >= 1) && (owner != eFACTION.TAU)) {
-        var tau_chance;
         var flit = scr_orbiting_fleet(eFACTION.TAU);
-        var ran1 = 0;
-        var ran2 = floor(random(planets)) + 1;
-
         if (flit != noone) {
-            ran1 = floor(random(100)) + 1;
+            var ran1 = floor(random(100)) + 1;
+            var ran2 = floor(random(planets)) + 1;
             var tau_influence = p_influence[ran2][eFACTION.TAU];
             if (tau_influence < 90 && (p_type[ran2] != "Dead")) {
                 if ((flit.image_index == 1) && (ran1 <= 90)) {
@@ -42,11 +39,11 @@ function scr_enemy_ai_b() {
 
         for (var i = 1; i <= planets; i++) {
             var tau_influence = p_influence[i][eFACTION.TAU];
-            tau_chance = floor(random(100)) + 1;
+            var tau_chance = floor(random(100)) + 1;
 
-            if ((i <= planets) && (tau_influence >= 70) && (p_owner[i] != 8) && (p_owner[i] != 10) && (p_owner[i] != 7) && (p_owner[i] != 9) && (p_type[i] != "Space Hulk")) {
+            if ((i <= planets) && (tau_influence >= 70) && (p_owner[i] != eFACTION.TAU) && (p_owner[i] != eFACTION.CHAOS) && (p_owner[i] != eFACTION.ORK) && (p_owner[i] != eFACTION.TYRANIDS) && (p_type[i] != "Space Hulk")) {
                 for (var s = 1; s <= planets; s++) {
-                    if (p_owner[s] == 8) {
+                    if (p_owner[s] == eFACTION.TAU) {
                         tau_chance += 5;
                     }
                 }
@@ -56,30 +53,28 @@ function scr_enemy_ai_b() {
                 }
 
                 if ((tau_chance >= 95) && (p_orks[i] == 0) && (p_traitors[i] == 0) && (p_necrons[i] == 0) && (p_demons[i] == 0) && (p_chaos[i] == 0)) {
-                    p_owner[i] = 8;
+                    p_owner[i] = eFACTION.TAU;
                     if (p_guardsmen[i] > 0) {
                         p_pdf[i] += p_guardsmen[i];
                         p_guardsmen[i] = 0;
                     }
 
                     var have = 0;
-                    var badd = 1;
-
                     var targ = planets;
                     for (var s = 1; s <= planets; s++) {
                         if (p_type[s] == "Dead") {
                             targ -= 1;
                         }
-                        if (p_owner[s] == 8) {
+                        if (p_owner[s] == eFACTION.TAU) {
                             have += 1;
                         }
                     }
 
                     if (have == targ) {
-                        badd = 2;
-                    }
-
-                    if (badd == 1) {
+                        scr_popup("System Lost", $"The {name} system has been taken by the Tau Empire!", "tau", "");
+                        owner = eFACTION.TAU;
+                        scr_event_log("red", $"System {name} has been taken by the Tau Empire.", name);
+                    } else {
                         scr_alert("red", "owner", $"Planet {planet_numeral_name(i)} has succeeded to the Tau Empire!", x, y);
                         if (visited == 1) {
                             //visited variable checks whether the star has been visited by the chapter or not 1 for true 0 for false
@@ -95,11 +90,6 @@ function scr_enemy_ai_b() {
                         }
                     }
 
-                    if (badd == 2) {
-                        scr_popup("System Lost", $"The {name} system has been taken by the Tau Empire!", "tau", "");
-                        owner = eFACTION.TAU;
-                        scr_event_log("red", $"System {name} has been taken by the Tau Empire.", name);
-                    }
 
                     if (p_pdf[i] != 0) {
                         p_pdf[i] = round(p_pdf[i] * 0.75);
@@ -109,7 +99,7 @@ function scr_enemy_ai_b() {
                     }
                 }
             }
-            if ((p_owner[i] == 8) && (tau_influence < 80)) {
+            if ((p_owner[i] == eFACTION.TAU) && (tau_influence < 80)) {
                 if ((p_type[i] != "Forge") && (p_type[i] != "Shrine")) {
                     tau_influence += 2;
                 } else if ((p_type[i] == "Forge") || (p_type[i] == "Shrine")) {

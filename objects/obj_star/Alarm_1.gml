@@ -70,7 +70,7 @@ for (var i = 1; i <= 4; i++) {
             break;
         case "Craftworld":
             p_population[i] = irandom_range(150000, 300000);
-            p_station = 6;
+            p_station[i] = 6;
             p_max_population[i] = p_population[i];
             break;
     }
@@ -116,18 +116,21 @@ for (var i = 1; i <= 4; i++) {
         p_pdf[i] = 0;
         p_eldar[i] = 6;
         owner = eFACTION.ELDAR;
-        p_owner[1] = 6;
+        p_owner[1] = eFACTION.ELDAR;
         warp_lanes = [];
         x2 = 0;
     }
-    // p_guardsmen[i]=0;
 }
 
 for (var i = 1; i <= 4; i++) {
     p_guardsmen[i] = 0;
 }
 
-var fleet, system_fleet = 0, capital = 0, frigate = 0, escort = 0;
+var fleet;
+var system_fleet = 0;
+var capital = 0;
+var frigate = 0;
+var escort = 0;
 // Create Imperium Fleet
 if (owner == eFACTION.IMPERIUM || owner == eFACTION.ORK || owner == eFACTION.MECHANICUS) {
     for (var g = 1; g <= 4; g++) {
@@ -277,8 +280,8 @@ if (owner == eFACTION.TAU) {
     }
     for (var i = 1; i <= planets; i++) {
         if (p_tau[i] > 0) {
-            p_owner[i] = 8;
-            p_first[i] = 8;
+            p_owner[i] = eFACTION.TAU;
+            p_first[i] = eFACTION.TAU;
 
             switch (p_type[i]) {
                 case "Forge":
@@ -314,7 +317,6 @@ if (owner == eFACTION.TYRANIDS) {
                     p_tyranids[i] = choose(4, 5, 5);
                     break;
             }
-            //array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.GENE_STEALER_CULT));
         }
         p_owner[i] = eFACTION.IMPERIUM;
     }
@@ -332,23 +334,22 @@ if (owner > 20) {
                 new_cult.hiding = false;
             }
         }
-        p_owner[i] = 2;
+        p_owner[i] = eFACTION.IMPERIUM;
     }
     owner = eFACTION.TYRANIDS;
 }
 
 for (var i = 1; i <= planets; i++) {
-    if ((p_owner[i] == 8) && (p_guardsmen[i] > 0)) {
+    if ((p_owner[i] == eFACTION.TAU) && (p_guardsmen[i] > 0)) {
         p_pdf[i] += p_guardsmen[i];
         p_guardsmen[i] = 0;
     }
-    if ((p_type[i] == "Shrine") && (p_owner[i] != 1) && (p_first[i] != 1)) {
-        p_owner[i] = 5;
-        p_first[i] = 5;
+    if ((p_type[i] == "Shrine") && (p_owner[i] != eFACTION.PLAYER) && (p_first[i] != eFACTION.PLAYER)) {
+        p_owner[i] = eFACTION.ECCLESIARCHY;
+        p_first[i] = eFACTION.ECCLESIARCHY;
         p_sisters[i] = 4;
-        adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[i] * 10) - irandom(5), i, self);
+        adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[i] * 10) - irandom(5), i, id);
     }
-    // if (p_owner[i]=3) or (p_owner[i]=5){p_feature[i]="Artifact|";}Testing ; 137
 }
 
 if ((name == "Kim Jong") && (owner == eFACTION.CHAOS)) {
@@ -376,7 +377,7 @@ if ((choose(0, 1) == 1) && (planets > 0)) {
         nostart = true;
     }
 
-    if ((array_length(p_feature[_ran_num]) == 0) && (p_owner[_ran_num] != 1) && nostart) {
+    if ((array_length(p_feature[_ran_num]) == 0) && (p_owner[_ran_num] != eFACTION.PLAYER) && nostart) {
         var ranb = 0;
         var goo = 0;
         if (goo == 0) {
@@ -404,7 +405,7 @@ if ((choose(0, 1) == 1) && (planets > 0)) {
                                     p_heresy[_ran_num] -= 10;
                                 }
                                 p_sisters[_ran_num] = choose(2, 2, 3);
-                                adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[_ran_num] * 10) - irandom(3), _ran_num, self);
+                                adjust_influence(eFACTION.ECCLESIARCHY, (p_sisters[_ran_num] * 10) - irandom(3), _ran_num, id);
                                 goo = 1;
                                 break;
                             case 2:
@@ -458,9 +459,9 @@ for (var i = 1; i <= 4; i++) {
         p_pdf[i] = 0;
         p_population[i] = 0;
         hyu = true;
-        p_owner[i] = 9;
+        p_owner[i] = eFACTION.TYRANIDS;
     }
-    if ((p_first[i] <= 5) && (dispo[i] > -5000)) {
+    if ((p_first[i] <= eFACTION.ECCLESIARCHY) && (dispo[i] > -5000)) {
         dispo[i] = -20;
     }
 }
@@ -470,7 +471,7 @@ if ((!hyu) && (owner == eFACTION.TYRANIDS)) {
 
 scr_star_ownership(false);
 
-if ((obj_controller.is_test_map != true) && (p_owner[2] != 1)) {
+if ((obj_controller.is_test_map != true) && (p_owner[2] != eFACTION.PLAYER)) {
     for (var i = 1; i <= 4; i++) {
         p_guardsmen[i] = 0;
     }

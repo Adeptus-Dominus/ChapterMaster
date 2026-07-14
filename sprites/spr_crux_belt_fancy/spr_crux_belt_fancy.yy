@@ -12,18 +12,18 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"8a2b3d9f-db94-4f5a-8b6c-c14863b33cb4","name":"8a2b3d9f-db94-4f5a-8b6c-c14863b33cb4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b773de60-b175-4b7e-ac5b-a37d29ce6502","name":"b773de60-b175-4b7e-ac5b-a37d29ce6502","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":232,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"a3482820-22c0-4934-a6c1-87b382d13fad","blendMode":0,"displayName":"default","isLocked":false,"name":"a3482820-22c0-4934-a6c1-87b382d13fad","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"c359ddf5-52d2-41f7-8bce-d95f9f02a250","blendMode":0,"displayName":"default","isLocked":false,"name":"c359ddf5-52d2-41f7-8bce-d95f9f02a250","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_crux_belt_fancy",
   "nineSlice":null,
-  "origin":9,
+  "origin":0,
   "parent":{
     "name":"specialist",
     "path":"folders/Sprites/Marine Viewer/body_types/specialist.yy",
@@ -71,13 +71,13 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"8a2b3d9f-db94-4f5a-8b6c-c14863b33cb4","path":"sprites/spr_crux_belt_fancy/spr_crux_belt_fancy.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"9b724e95-f10f-4ea0-888a-549bb453f7be","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b773de60-b175-4b7e-ac5b-a37d29ce6502","path":"sprites/spr_crux_belt_fancy/spr_crux_belt_fancy.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"a98199f7-4840-494c-8835-88dea6fa79ac","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":-2,
+    "xorigin":0,
     "yorigin":0,
   },
   "swatchColours":null,

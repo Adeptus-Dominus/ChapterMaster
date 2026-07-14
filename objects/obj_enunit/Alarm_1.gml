@@ -1680,6 +1680,12 @@ if (obj_ncombat.enemy == eFACTION.NECRONS) {
     }
 }
 
+for (var j = 1; j <= 20; j++) {
+    if (dudes_vehicle[j] == 1 && dudes_hp[j] > 0 && dudes_num[j] > 0) {
+        scr_en_weapon("RAM", false, dudes_num[j], dudes[j], j);
+    }
+}
+
 if (men + veh + medi <= 0) {
     instance_destroy(id);
     exit;

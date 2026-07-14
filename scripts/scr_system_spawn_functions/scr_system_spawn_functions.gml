@@ -83,7 +83,7 @@ function player_home_star(home_planet) {
     array_push(p_feature[home_planet], new NewPlanetFeature(eP_FEATURES.MONASTERY));
     p_owner[home_planet] = eFACTION.PLAYER;
 
-    p_first[home_planet] = 1; //monestary
+    p_first[home_planet] = eFACTION.PLAYER; //monestary
     if (obj_ini.homeworld_rule != 1) {
         dispo[home_planet] = -5000;
     }

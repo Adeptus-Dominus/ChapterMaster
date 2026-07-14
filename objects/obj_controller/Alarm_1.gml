@@ -332,7 +332,7 @@ if (did) {
         with (_current_system) {
             if ((planets > 0) && (owner == eFACTION.IMPERIUM)) {
                 planet[1] = 1;
-                p_owner[1] = 10;
+                p_owner[1] = eFACTION.CHAOS;
                 owner = eFACTION.CHAOS;
             }
         }
@@ -422,7 +422,7 @@ if (did) {
             _current_system = _imperial_planets[i];
 
             _current_system.planet[1] = 1;
-            _current_system.p_owner[1] = 9;
+            _current_system.p_owner[1] = eFACTION.TYRANIDS;
             _current_system.owner = eFACTION.TYRANIDS;
 
             array_delete(_imperial_planets, i, 1);
@@ -433,7 +433,7 @@ if (did) {
         if (is_dead_star() || planets == 0) {
             continue;
         }
-        if (owner <= 5) {
+        if (owner <= eFACTION.ECCLESIARCHY) {
             array_push(_non_xenos_chaos, id);
         }
     }

@@ -122,7 +122,7 @@ function build_planet_defence_fleets() {
         }
         var _system_value = 0;
         for (var i = 0; i <= planets; i++) {
-            var _owner_imperial = p_owner[i] < 5 && p_owner[i] > 1;
+            var _owner_imperial = p_owner[i] < eFACTION.ECCLESIARCHY && p_owner[i] > eFACTION.PLAYER;
             _imperial_planet_count += _owner_imperial;
             if (p_type[i] == "Forge") {
                 continue;

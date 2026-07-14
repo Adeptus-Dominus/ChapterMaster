@@ -77,16 +77,16 @@ p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
 p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
 
-system_datas = array_create(8, false);
-system_garrison = array_create(8, false);
-system_sabatours = array_create(8, false);
+system_datas = array_create(8, undefined);
+system_garrison = array_create(8, undefined);
+system_sabatours = array_create(8, undefined);
 
 get_garrison = function(planet){
     var _gar = system_garrison[planet];
-    if (_gar == false){
-        system_garrison[planet] = new GarrisonForce(self, planet);
+    if (is_undefined(_gar)){
+        system_garrison[planet] = new GarrisonForce(id, planet);
         _gar = system_garrison[planet];
-        _gar.star = self;
+        _gar.star = id;
         _gar.planet = planet;
     } else  {
         try {
@@ -105,10 +105,10 @@ get_garrison = function(planet){
 
 get_sabatours = function(planet){
     var _gar = system_sabatours[planet];
-    if (_gar == false){
-        system_sabatours[planet] = new GarrisonForce(self, planet, "sabotage");
+    if (is_undefined(_gar)){
+        system_sabatours[planet] = new GarrisonForce(id, planet, "sabotage");
         _gar = system_sabatours[planet];
-        _gar.star = self;
+        _gar.star = id;
         _gar.planet = planet;
     } else  {
         try {
@@ -126,8 +126,8 @@ get_sabatours = function(planet){
 /// @returns {Struct.PlanetData}
 get_planet_data = function(planet){
     var _gar = system_datas[planet];
-    if (_gar == false){
-        system_datas[planet] = new PlanetData(planet, self);
+    if (is_undefined(_gar)){
+        system_datas[planet] = new PlanetData(planet, id);
         _gar = system_datas[planet];
     } else  {
         try {
@@ -167,8 +167,7 @@ ai_e = -1;
 
 /// Called from save function to take all object variables and convert them to a json savable format and return it
 serialize = function() {
-    var object_star = self;
-
+    var object_star = id;
     var planet_data = [];
 
     for (var p = 1; p <= object_star.planets; p++) {
@@ -176,7 +175,7 @@ serialize = function() {
             dispo: object_star.dispo[p],
             planet: object_star.planet[p],
         };
-        var var_names = variable_struct_get_names(object_star);
+        var var_names = variable_instance_get_names(object_star);
         for (var n = 0; n < array_length(var_names); n++) {
             var var_name = var_names[n];
             if (string_starts_with(var_name, "p_")) {
@@ -194,7 +193,7 @@ serialize = function() {
         planet_data: planet_data,
     };
 
-    if (struct_exists(object_star, "p_governor")) {
+    if (!is_undefined(object_star.p_governor)) {
         save_data.p_governor = object_star.p_governor;
     }
 
@@ -230,15 +229,14 @@ function deserialize(save_data) {
             continue;
         }
         var loaded_value = struct_get(save_data, var_name);
-        variable_struct_set(self, var_name, loaded_value);
+        variable_instance_set(id, var_name, loaded_value);
     }
 
     // Set explicit vars here
     if (struct_exists(save_data, "present_fleet")) {
-        variable_struct_set(self, "present_fleet", save_data.present_fleet);
+        variable_instance_set(id, "present_fleet", save_data.present_fleet);
     }
 
-    var _temp_features = false;
     if (struct_exists(save_data, "planet_data")) {
         var planet_arr = save_data.planet_data;
         for (var p = 1; p < array_length(planet_arr); p++) {
@@ -259,7 +257,7 @@ function deserialize(save_data) {
 
                         _new_feat.load_json_data(_feat);
 
-                        array_push(self.p_feature[p], _new_feat);
+                        array_push(p_feature[p], _new_feat);
                     }
                      continue;
                 }
@@ -270,7 +268,7 @@ function deserialize(save_data) {
     }
 
     if (struct_exists(save_data, "p_governor")) {
-        variable_struct_set(self, "p_governor", save_data.p_governor);
+        variable_instance_set(id, "p_governor", save_data.p_governor);
     }
 }
 

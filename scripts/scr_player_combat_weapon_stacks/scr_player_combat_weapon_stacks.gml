@@ -622,7 +622,22 @@ function create_vehicle_ram_weapon(veh_type) {
                 "weapon",
             );
         case "Leman Russ":
-            // A battle tank rams in the Land Raider's class, not the Land Speeder's.
+            // The Guard's battle tank rams between the Predator and the Land Raider,
+            // matching its slot in vehicle_penetration_chance (Raider 0.05, Russ 0.10,
+            // Predator 0.15): a heavier chassis than the Rhino family the Predator
+            // shares, lighter than the Raider. Distinct name so a mixed block never
+            // merges its stats into another hull's RAM slot.
+            return new EquipmentStruct(
+                {
+                    attack: 150,
+                    name: "Tank RAM",
+                    range: 1,
+                    ammo: -1,
+                    spli: 8,
+                    arp: 3,
+                },
+                "weapon",
+            );
         case "Land Raider":
             return new EquipmentStruct(
                 {

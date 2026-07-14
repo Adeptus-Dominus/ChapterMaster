@@ -18,7 +18,7 @@ function scr_random_marine(role, exp_req, search_params = {}) {
     if (!is_array(role) && role == SPECIALISTS_LIBRARIANS) {
         role = role_groups(SPECIALISTS_LIBRARIANS);
     }
-    for (var comp_shuffle = 0; comp_shuffle < 11; comp_shuffle++) {
+    for (var comp_shuffle = 0; comp_shuffle <= 10; comp_shuffle++) {
         // this ensures that companies are searched randomly
         var new_comp = irandom(array_length(company_list) - 1);
         var company = company_list[new_comp];
@@ -94,7 +94,7 @@ function scr_random_marine(role, exp_req, search_params = {}) {
                     //if searching for marines with particular traits
                     if (struct_exists(search_params, "trait")) {
                         //list of traits (all required) need an option for if only one is required
-                        if (is_array(search_params[$ "trait"])) {
+                        if (is_array(search_params.trait)) {
                             if (!struct_exists(search_params, "trait_any")) {
                                 for (var trait = 0; trait < array_length(search_params[$ "trait"]); trait++) {
                                     if (!array_contains(unit.traits, search_params[$ "trait"][trait])) {
@@ -137,22 +137,22 @@ function scr_random_marine(role, exp_req, search_params = {}) {
                         match = false;
                         switch (search_params.role_tag) {
                             case "Techmarine":
-                                if (unit.role_tag[eROLE_TAG.Techmarine] == true) {
+                                if (unit.role_tag[eROLE_TAG.Techmarine]) {
                                     match = true;
                                 }
                                 break;
                             case "Librarian":
-                                if (unit.role_tag[eROLE_TAG.Librarian] == true) {
+                                if (unit.role_tag[eROLE_TAG.Librarian]) {
                                     match = true;
                                 }
                                 break;
                             case "Chaplain":
-                                if (unit.role_tag[eROLE_TAG.Chaplain] == true) {
+                                if (unit.role_tag[eROLE_TAG.Chaplain]) {
                                     match = true;
                                 }
                                 break;
                             case "Apothecary":
-                                if (unit.role_tag[eROLE_TAG.Apothecary] == true) {
+                                if (unit.role_tag[eROLE_TAG.Apothecary]) {
                                     match = true;
                                 }
                                 break;
@@ -185,6 +185,5 @@ function scr_random_marine(role, exp_req, search_params = {}) {
             }
         }
     }
-
     return "none";
 }
