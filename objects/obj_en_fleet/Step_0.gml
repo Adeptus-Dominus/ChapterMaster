@@ -2,18 +2,8 @@ if ((global.load >= 0) || instance_exists(obj_saveload)) {
     exit;
 }
 
-if ((action != "") && (orbiting != noone)) {
-    if (instance_exists(orbiting)) {
-        if (variable_instance_exists(orbiting, "present_fleet")) {
-            orbiting.present_fleet[owner] -= 1;
-            orbiting = noone;
-        } else {
-            orbiting = instance_nearest(x, y, obj_star);
-            var cur_owner_fleet = orbiting.present_fleet[owner];
-            orbiting.present_fleet[owner] = cur_owner_fleet > 0 ? cur_owner_fleet - 1 : cur_owner_fleet == 0;
-            orbiting = noone;
-        }
-    }
+if ((action != "") && (instance_exists(orbiting))) {
+    fleet_unregister_from_star(id);
 }
 
 if (capital_number < 0) {
@@ -108,8 +98,7 @@ if ((owner == eFACTION.TAU) && (action == "") && (obj_controller.tau_messenger >
     fleet.present_fleets += 1;
     instance_deactivate_object(fleet);
 
-    fleet = instance_create(x, y, obj_en_fleet);
-    fleet.owner = eFACTION.TAU;
+    fleet = create_enemy_fleet(x, y, eFACTION.TAU);
     fleet.action_spd = 32;
     fleet.frigate_number = 1;
     fleet.sprite_index = spr_fleet_tau;

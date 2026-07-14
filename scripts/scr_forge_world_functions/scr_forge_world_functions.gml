@@ -104,7 +104,7 @@ function build_planet_defence_fleets() {
             var _imperial_fleet_defence_score = capital_number + (frigate_number / 2) + (escort_number / 4);
             obj_controller.imp_ships += _imperial_fleet_defence_score;
             //log this to prevent double work later figuring out if a planet has an orbiting defence fleet
-            if (!navy && action == "" && is_orbiting()) {
+            if (!navy && action == "" && instance_exists(orbiting)) {
                 _defence_fleet_log[$ orbiting.name] = _imperial_fleet_defence_score;
             }
         }
@@ -191,11 +191,10 @@ function build_planet_defence_fleets() {
                 _defence_fleet = true;
             }
         } else {
-            _current_imperial_fleet = instance_create(forge.x, forge.y, obj_en_fleet);
+            _current_imperial_fleet = create_enemy_fleet(forge.x, forge.y, eFACTION.IMPERIUM);
             _defence_fleet = true;
             with (_current_imperial_fleet) {
                 navy = false;
-                owner = eFACTION.IMPERIUM;
                 choose_fleet_sprite_image();
             }
         }

@@ -898,11 +898,8 @@ function PlanetData(_planet, _system) constructor {
 
                     var locy = $"{name()}";
 
-                    var flit = instance_create(system.x, system.y, obj_p_fleet);
-
                     var _slaughter = new_player_ship("Gloriana", system.name, "Slaughtersong");
-                    add_ship_to_fleet(_slaughter, flit);
-                    flit.oribiting = system.id;
+                    var flit = create_player_fleet(system.x, system.y, [_slaughter]);
 
                     scr_popup($"Ancient Ship Restored", $"The ancient ship within the ruins of {locy} has been fully repaired.  It is determined to be a Gloriana Class vessel and is bristling with golden age weaponry and armour.  Your {string(obj_ini.role[100][16])}s are excited; the Slaughtersong is ready for it's maiden voyage, at your command.", "", "");
                 }
@@ -1749,13 +1746,11 @@ function PlanetData(_planet, _system) constructor {
                             }
                         }
                     } else if (system.present_fleet[eFACTION.NECRONS] == 0) {
-                        necron_fleet = instance_create(x, y, obj_en_fleet);
-                        necron_fleet.owner = eFACTION.NECRONS;
+                        necron_fleet = create_enemy_fleet(x, y, eFACTION.NECRONS);
                         necron_fleet.capital_number = 1;
                         necron_fleet.sprite_index = spr_fleet_necron;
                         necron_fleet.image_speed = 0;
                         necron_fleet.image_index = 1;
-                        system.present_fleet[eFACTION.NECRONS] += 1;
                     }
                     var enemy_fleets = 0;
                     with (necron_fleet) {
@@ -1774,14 +1769,12 @@ function PlanetData(_planet, _system) constructor {
                         }
                     }
                     if (enemy_fleets > 0) {
-                        var necron_fleet2 = instance_create(x, y, obj_en_fleet);
-                        necron_fleet2.owner = eFACTION.NECRONS;
+                        var necron_fleet2 = create_enemy_fleet(x, y, eFACTION.NECRONS);
                         necron_fleet2.sprite_index = spr_fleet_necron;
                         necron_fleet.image_speed = 0;
                         necron_fleet2.capital_number = 1;
                         necron_fleet2.frigate_number = round(necron_fleet.frigate_number / 2);
                         necron_fleet2.escort_number = round(necron_fleet.escort_number / 2);
-                        system.present_fleet[eFACTION.NECRONS] += 1;
 
                         necron_fleet.capital_number -= 1;
                         necron_fleet.frigate_number -= necron_fleet2.frigate_number;

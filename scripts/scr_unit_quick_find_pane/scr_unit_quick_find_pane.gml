@@ -851,7 +851,7 @@ function HelpfulPlaces() constructor {
             remaining_guard: $"{_guard_percentage}%",
             action: trade_goods,
         };
-        if (is_orbiting()) {
+        if (instance_exists(orbiting)) {
             _data.location = orbiting.name;
         }
 

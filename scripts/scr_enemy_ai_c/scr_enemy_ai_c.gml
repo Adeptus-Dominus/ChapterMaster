@@ -128,13 +128,11 @@ function scr_enemy_ai_c() {
                         if ((contin == 3) && (rando <= 25) && ((obj_controller.chaos_fleets + 15) < instance_number(obj_star))) {
                             // Create a fleet
                             // fleet=instance_create
-                            fleet = instance_create(x, y, obj_en_fleet);
-                            fleet.owner = eFACTION.CHAOS;
+                            fleet = create_enemy_fleet(x, y, eFACTION.CHAOS);
                             fleet.sprite_index = spr_fleet_chaos;
                             fleet.image_index = 1;
                             fleet.frigate_number = 1;
                             fleet.escort_number = 2;
-                            present_fleet[10] += 1;
                             obj_controller.chaos_fleets += 1;
                         }
                     }
@@ -411,12 +409,10 @@ function scr_enemy_ai_c() {
                         }
                         if ((contin == 3) && (rando <= 25) && (obj_controller.tau_fleets < (obj_controller.tau_stars + 1))) {
                             // Create a fleet
-                            fleet = instance_create(x, y, obj_en_fleet);
-                            fleet.owner = eFACTION.TAU;
+                            fleet = create_enemy_fleet(x, y, eFACTION.TAU);
                             fleet.sprite_index = spr_fleet_tau;
                             fleet.image_index = 1;
                             fleet.capital_number = 1;
-                            present_fleet[8] += 1;
                             obj_controller.tau_fleets += 1;
                         }
                     }

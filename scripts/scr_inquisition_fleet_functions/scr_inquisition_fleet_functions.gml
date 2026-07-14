@@ -21,7 +21,7 @@ function radical_inquisitor_mission_ship_arrival() {
     //TODO make a centralised player_fleet present method
     var _p_fleet = instance_nearest(x, y, obj_p_fleet);
     var _intercept_fleet = -1;
-    if (point_distance(x, y, _p_fleet.x, _p_fleet.y) < 10 && is_orbiting(_p_fleet)) {
+    if (point_distance(x, y, _p_fleet.x, _p_fleet.y) < 10 && instance_exists(_p_fleet.orbiting)) {
         _intercept_fleet = _p_fleet;
     }
 
@@ -163,7 +163,7 @@ function new_inquisitor_inspection() {
 
             //get the second or third closest planet to launch inquisitor from
             var from_star = distance_removed_star(target_star.x, target_star.y);
-            var new_inquis_fleet = instance_create(from_star.x, from_star.y, obj_en_fleet);
+            var new_inquis_fleet = create_enemy_fleet(from_star.x, from_star.y, eFACTION.INQUISITION);
 
             with (new_inquis_fleet) {
                 base_inquis_fleet();
@@ -186,7 +186,7 @@ function new_inquisitor_inspection() {
         //get the second or third closest planet to launch inquisitor from
         var from_star = distance_removed_star(target_player_fleet.x, target_player_fleet.y);
 
-        var new_inquis_fleet = instance_create(from_star.x, from_star.y, obj_en_fleet);
+        var new_inquis_fleet = create_enemy_fleet(from_star.x, from_star.y, eFACTION.INQUISITION);
         var obj;
         with (new_inquis_fleet) {
             base_inquis_fleet();
@@ -292,7 +292,7 @@ function inquisitor_inspect_base() {
             launch_planet = nearest_star_with_ownership(x, y, [eFACTION.IMPERIUM, eFACTION.MECHANICUS], self.id);
             if (launch_planet != noone) {
                 if (instance_exists(launch_planet)) {
-                    flee = instance_create(launch_planet.x, launch_planet.y, obj_en_fleet);
+                    flee = create_enemy_fleet(launch_planet.x, launch_planet.y, eFACTION.INQUISITION);
                     with (flee) {
                         base_inquis_fleet();
                     }
