@@ -474,12 +474,9 @@ if (defeat == 0 && _reduce_power) {
                         }
                         p_owner[battle_planet] = eFACTION.IMPERIUM;
                     }
-                    dispo[battle_planet] += 10;
+                    scr_gov_disp(name, battle_planet, 10);
                     scr_event_log("", $"{who_cleansed} cleansed from {planet_string}", name);
                     scr_alert("green", "owner", $"{who_cleansed} cleansed from {planet_string}. Control returned to {who_return}", x, y);
-                    if (dispo[battle_planet] >= 101) {
-                        p_owner[battle_planet] = 1;
-                    }
                 }
             }
         }

@@ -361,8 +361,9 @@ function PlanetData(_planet, _system) constructor {
         } else {
             if (origional_owner != 3) {
                 set_new_owner(eFACTION.PLAYER);
+                system.p_first[planet] = eFACTION.PLAYER;
             }
-            set_player_disposition(101);
+            set_player_disposition(100);
             scr_event_log("", $"Planetary Governor of {name()} assassinated.  One of your Chapter Serfs take their position.");
         }
 
