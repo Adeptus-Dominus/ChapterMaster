@@ -53,7 +53,7 @@ if ((show > 0) && (current_battle <= battles)) {
     draw_set_font(fnt_40k_14);
     draw_set_halign(fa_left);
 
-    if (battle_world[i] < 0) {
+    if (battle_world[i] == 0) {
         draw_set_font(fnt_40k_14b);
         draw_set_halign(fa_left);
 
