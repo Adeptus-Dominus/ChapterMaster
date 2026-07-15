@@ -149,6 +149,8 @@ try {
                 with (obj_en_fleet) {
                     if ((navy == 0) && (owner == eFACTION.IMPERIUM) && (point_distance(x, y, obj_temp8.x, obj_temp8.y) < 40)) {
                         owner = eFACTION.CHAOS;
+                        other.battle_object.present_fleet[2] -= 1;
+                        other.battle_object.present_fleet[10] += 1;
                         sprite_index = spr_fleet_chaos;
                         if (image_index <= 2) {
                             escort_number += 3;
@@ -159,8 +161,6 @@ try {
                         }
                     }
                 }
-                battle_object.present_fleet[2] -= 1;
-                battle_object.present_fleet[10] += 1;
             }
             with (obj_temp8) {
                 instance_destroy();

@@ -94,8 +94,7 @@ if ((owner == eFACTION.TAU) && (action == "") && (obj_controller.tau_messenger >
     var good = 0;
 
     var fleet = instance_nearest(x, y, obj_star);
-    fleet.tau_fleets += 1;
-    fleet.present_fleets += 1;
+    obj_controller.tau_fleets += 1;
     instance_deactivate_object(fleet);
 
     fleet = create_enemy_fleet(x, y, eFACTION.TAU);
