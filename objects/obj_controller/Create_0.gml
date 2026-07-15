@@ -795,7 +795,6 @@ income_fleet = 0;
 income_trade = 0;
 income_leader = 0;
 income_tribute = 0;
-income_controlled_planets = 0;
 // ** Extra variables **
 info_chips = 0;
 inspection_passes = 0;
