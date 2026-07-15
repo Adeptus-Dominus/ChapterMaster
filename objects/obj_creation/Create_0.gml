@@ -271,6 +271,7 @@ enum eCHAPTERS {
     CUSTOM_8 = 28,
     CUSTOM_9 = 29,
     CUSTOM_10 = 30,
+    DEATHWATCH = 33,
 }
 enum eCHAPTER_ORIGINS {
     NONE,
@@ -389,6 +390,7 @@ all_chapters[eCHAPTERS.UNKNOWN].disabled = true; //this should always be disable
 all_chapters[eCHAPTERS.EMPERORS_NIGHTMARE].disabled = true;
 all_chapters[eCHAPTERS.STAR_KRAKENS].disabled = true;
 all_chapters[eCHAPTERS.CONSERVATORS].disabled = true;
+all_chapters[eCHAPTERS.DEATHWATCH].disabled = true;
 
 founding_chapters = array_filter(all_chapters, function(item) {
     return item.origin == eCHAPTER_ORIGINS.FOUNDING;
