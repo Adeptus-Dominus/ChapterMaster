@@ -190,7 +190,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
         if (array_length(garrison_squads) > 1) {
             report_string += $"The garrison is comprised of {array_length(garrison_squads)} squads,";
         } else {
-            report_string += "The garrison is comprised of a single _squad,";
+            report_string += "The garrison is comprised of a single squad,";
         }
 
         report_string += $" with a total man count of {total_garrison}.#";
