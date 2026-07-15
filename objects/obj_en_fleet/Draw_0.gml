@@ -2,6 +2,7 @@ if ((obj_controller.menu != 0) || !instance_exists(obj_star)) {
     exit;
 }
 var scale = obj_controller.scale_mod;
+
 if ((owner == eFACTION.ELDAR) && instance_exists(orbiting) && (obj_controller.is_test_map == true)) {
     draw_set_color(c_red);
     draw_line_width(x, y, orbiting.x, orbiting.y, 1);
@@ -72,18 +73,16 @@ if (obj_controller.zoomed == 1) {
         }
     }
 
+var line_width = 2 * scale;
+var text_size = obj_controller.zoomed ? 2 * scale : scale;
+
 if (action != "") {
     draw_set_halign(fa_left);
     draw_set_alpha(1);
-    draw_set_color(c_white);
-    draw_line_width(x, y, action_x, action_y, 1);
+    draw_set_color(CM_GREEN_COLOR);
+    draw_line_width(x, y, action_x, action_y, line_width);
     draw_set_font(fnt_40k_14b);
-    if (obj_controller.zoomed == 0) {
-        draw_text_transformed(x + 12, y, string_hash_to_newline("ETA " + string(action_eta)), 1, 1, 0);
-    }
-    if (obj_controller.zoomed == 1) {
-        draw_text_transformed(x + 24, y, string_hash_to_newline("ETA " + string(action_eta)), 2, 2, 0);
-    } // was 1.4
+    draw_text_transformed_outline(x + 12, y, $"ETA {action_eta}", text_size, text_size, 0);
 }
 var _has_warboss = false;
 switch (owner) {
@@ -187,6 +186,8 @@ draw_sprite_ext(sprite_index, image_index, x + (coords[0] * scale), y + (coords[
 if (instance_exists(target)) {
     draw_set_color(c_red);
     draw_set_alpha(0.5);
-    draw_line(x, y, target.x, target.y);
+    draw_line_width(x, y, target.x, target.y, line_width);
     draw_set_alpha(1);
 }
+
+draw_set_color(c_white);
