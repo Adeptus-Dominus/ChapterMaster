@@ -444,9 +444,7 @@ function scr_end_turn() {
 
                     turn += 1;
                     with (obj_star) {
-                        for (var i = 0; i <= 21; i++) {
-                            present_fleet[i] = 0;
-                        }
+                        present_fleet[20] = 0;
                     }
                     with (obj_p_fleet) {
                         if ((action == "move") && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
