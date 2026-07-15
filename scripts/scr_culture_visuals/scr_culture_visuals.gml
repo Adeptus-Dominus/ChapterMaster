@@ -515,6 +515,7 @@ global.modular_drawing_items = [
     },
     {
         sprite: spr_chap_trim_right,
+		shadows: spr_chap_trim_right_shadow,
         body_types: [0],
         position: "right_trim",
         role_type: [SPECIALISTS_CHAPLAINS],
@@ -1869,6 +1870,14 @@ global.modular_drawing_items = [
 		body_types: [0],
         sprite: spr_artificer_chest_variant,
         shadows: spr_artificer_chest_variant_shadow,
+    },
+		{
+        position: "thorax_variants",
+        armours: ["Artificer Armour"],
+		assign_by_rank: 2,
+		body_types: [0],
+        sprite: spr_artificer_thorax,
+        shadows: spr_artificer_thorax_shadow,
     },
     //Tartaros Sprites
     {
