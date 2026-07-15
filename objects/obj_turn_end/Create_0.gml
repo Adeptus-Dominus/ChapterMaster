@@ -53,7 +53,7 @@ battle = array_create(_popup_size, 0);
 battle_location = array_create(_popup_size, "");
 battle_world = array_create(_popup_size, 0);
 battle_opponent = array_create(_popup_size, 0);
-/// @type {Asset.GMObject.obj_star} 
+/// @type {Array<Id.Instance.obj_star>} 
 battle_object = array_create(_popup_size, noone);
 battle_pobject = array_create(_popup_size, 0);
 battle_special = array_create(_popup_size, "");
