@@ -119,7 +119,7 @@ function scr_income() {
         with (obj_star) {
             for (var i = 1; i <= planets; i++) {
                 if (planet_feature_bool(p_feature[i], eP_FEATURES.MONASTERY)) {
-                    obj_controller.income += 10;
+                    obj_controller.income_home += 10;
                     instance_create(x, y, obj_temp1);
                 }
             }
