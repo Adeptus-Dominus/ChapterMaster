@@ -41,8 +41,8 @@ function target_block_is_valid(target, desired_type) {
                 if (target.men + target.veh + target.dreads > 0) {
                     _is_valid = true;
                 } else {
-                    x = -5000;
-                    instance_deactivate_object(id);
+                    target.x = -5000;
+                    instance_deactivate_object(target);
                 }
             }
         }
