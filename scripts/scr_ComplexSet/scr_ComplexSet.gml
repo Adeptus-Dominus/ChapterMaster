@@ -840,7 +840,7 @@ function ComplexSet(_unit) constructor {
 
     /// @param {String} component_name
     /// @param {Real} choice
-    static handle_component_subcomponents = function(component_name, choice, flip_x = false) {
+    static handle_component_subcomponents = function(component_name, choice, flip_x = false, component_map_choice = 3) {
         if (struct_exists(subcomponents, component_name)) {
             var _component_set;
             var _subcomponents_found = false;
@@ -864,9 +864,9 @@ function ComplexSet(_unit) constructor {
                     }
 
                     if (_total_options > 0) {
-                        _sub_choice_final = _total_options == 1 ? 0 : _sub_choice % (_total_options + 1);
+                        var _sub_choice_final = _sub_choice % _total_options;
 
-                        _choice_count = 0;
+                        var _choice_count = 0;
                         for (var s = 0; s < array_length(_subcomponents); s++) {
                             if (_sub_choice_final >= _choice_count && _sub_choice_final < _choice_count + sprite_get_number(_subcomponents[s])) {
                                 if (flip_x) {
@@ -1012,7 +1012,7 @@ function ComplexSet(_unit) constructor {
                 draw_sprite(_resolved.sprite, _resolved.frame ?? 0, component_final_draw_x, component_final_draw_y);
             }
 
-            handle_component_subcomponents(component_name, _choice, _flip_x);
+            handle_component_subcomponents(component_name, _choice, _flip_x, component_map_choice);
         }
     };
 
