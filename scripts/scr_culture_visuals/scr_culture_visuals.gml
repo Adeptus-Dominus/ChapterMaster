@@ -2579,7 +2579,7 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_assca,
             },
             {
-                sprite: spr_weapon_assca,
+                sprite: spr_dread_assault_cannon,
                 body_types: [3],
                 armours: ["Dreadnought"],
                 single_left_right_profile: true,
