@@ -233,6 +233,8 @@ function scr_toggle_reclu() {
 function scr_toggle_lib() {
     scr_change_menu(eMENU.LIBRARIUM, function() {
         with (obj_controller) {
+            var xx = camera_get_view_x(view_camera[0]);
+            var yy = camera_get_view_y(view_camera[0]);
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Chief " + string(obj_ini.role[100][17]), "0") == 0) {

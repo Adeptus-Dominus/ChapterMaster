@@ -42,6 +42,9 @@ function add_new_gene_slave() {
 
 /// @self Asset.GMObject.obj_controller
 function scr_apothecarium() {
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
+
     draw_sprite(spr_rock_bg, 0, xx, yy);
 
     draw_set_alpha(0.75);
@@ -102,7 +105,7 @@ function scr_apothecarium() {
     if (training_apothecary > 0) {
         blurp += " pace and expect to graduate an additional " + string(obj_ini.role[100][15]) + " in ";
         var training_points_values = global.apothecary_training_tiers;
-        eta = floor((47 - apothecary_recruit_points) / training_points_values[training_apothecary]) + 1;
+        var eta = floor((47 - apothecary_recruit_points) / training_points_values[training_apothecary]) + 1;
         blurp += string(eta) + " months.";
     }
     //
