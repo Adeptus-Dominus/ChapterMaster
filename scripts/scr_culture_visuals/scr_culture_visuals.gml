@@ -695,13 +695,13 @@ global.modular_drawing_items = [
     {
         sprite: spr_gear_librarian,
         body_types: [0],
-        position: "right_pauldron_icons",
+        position: "right_pauldron_embeleshments",
         role_type: [SPECIALISTS_LIBRARIANS],
     },
     {
         sprite: spr_gear_librarian_term,
         body_types: [2],
-        position: "right_pauldron_icons",
+        position: "right_pauldron_embeleshments",
         role_type: [SPECIALISTS_LIBRARIANS],
     },
     {
