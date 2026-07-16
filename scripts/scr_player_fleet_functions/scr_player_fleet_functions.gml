@@ -136,20 +136,33 @@ function find_and_move_ship_between_fleets(out_fleet, in_fleet, index) {
 
 function merge_player_fleets(main_fleet, merge_fleet) {
     var _merge_ships = fleet_full_ship_array(merge_fleet);
+
     for (var i = 0; i < array_length(_merge_ships); i++) {
         if (_merge_ships[i] < array_length(obj_ini.ship)) {
             find_and_move_ship_between_fleets(merge_fleet, main_fleet, _merge_ships[i]);
         }
     }
+
     main_fleet.alarm[7] = 1;
+
     if (instance_exists(obj_fleet_select)) {
         if ((obj_fleet_select.x == merge_fleet.x) && (obj_fleet_select.y == merge_fleet.y)) {
             with (obj_fleet_select) {
                 instance_destroy();
             }
+
             main_fleet.alarm[3] = 1;
         }
     }
+
+    if (instance_exists(obj_turn_end)) {
+        for (var _bi = 0; _bi < array_length(obj_turn_end.battle_pobject); _bi++) {
+            if (obj_turn_end.battle_pobject[_bi] == merge_fleet.id && obj_turn_end.battle_world[_bi] == 0) {
+                obj_turn_end.battle_pobject[_bi] = main_fleet.id;
+            }
+        }
+    }
+
     with (merge_fleet) {
         instance_destroy();
     }
