@@ -3283,7 +3283,6 @@ global.weapon_visual_data = {
                 subcomponents: [
                     [
                         spr_weapon_storm_primary_decoration,
-                        spr_weapon_storm_boss
                     ]
                 ],
             },
