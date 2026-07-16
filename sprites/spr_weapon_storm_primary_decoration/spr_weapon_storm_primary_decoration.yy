@@ -20,7 +20,7 @@
   "height":232,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"03a56763-24bd-4b28-bd3a-89634a76eb6b","blendMode":0,"displayName":"default","isLocked":false,"name":"03a56763-24bd-4b28-bd3a-89634a76eb6b","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"19536b07-7fbc-4ba6-b72a-ba295ca71a28","blendMode":0,"displayName":"default","isLocked":false,"name":"19536b07-7fbc-4ba6-b72a-ba295ca71a28","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_weapon_storm_primary_decoration",
   "nineSlice":null,
