@@ -870,9 +870,7 @@ function ComplexSet(_unit) constructor {
                         for (var s = 0; s < array_length(_subcomponents); s++) {
                             if (_sub_choice_final >= _choice_count && _sub_choice_final < _choice_count + sprite_get_number(_subcomponents[s])) {
                                 if (flip_x) {
-                                    var _w = sprite_get_width(_subcomponents[s]);
-                                    var _ox = sprite_get_xoffset(_subcomponents[s]);
-                                    draw_sprite_ext(_subcomponents[s], _sub_choice_final - _choice_count ?? 0, component_final_draw_x + _w - _ox * 2, component_final_draw_y, -1, 1, 0, c_white, 1);
+                                    draw_sprite_flipped(_subcomponents[s], _sub_choice_final - _choice_count ?? 0, component_final_draw_x, component_final_draw_y);
                                 } else {
                                     draw_sprite(_subcomponents[s], _sub_choice_final - _choice_count ?? 0, component_final_draw_x, component_final_draw_y);
                                 }
@@ -939,9 +937,7 @@ function ComplexSet(_unit) constructor {
                 shader_set_uniform_f_array(texture_replace_col_uniform, _tex_data.areas[t]);
 
                 if (flip_x) {
-                    var _w = sprite_get_width(resolved_sprite);
-                    var _ox = sprite_get_xoffset(resolved_sprite);
-                    draw_sprite_ext(resolved_sprite, resolved_choice, component_final_draw_x + _w - _ox * 2, component_final_draw_y, -1, 1, 0, c_white, 1);
+                    draw_sprite_flipped(resolved_sprite, resolved_choice, component_final_draw_x, component_final_draw_y);
                 } else {
                     draw_sprite(resolved_sprite, resolved_choice, component_final_draw_x, component_final_draw_y);
                 }
@@ -956,9 +952,7 @@ function ComplexSet(_unit) constructor {
         set_component_shadow_packs(component_name, resolved_original_choice, resolved_sprite, resolved_choice);
 
         if (flip_x) {
-            var _w = sprite_get_width(resolved_sprite);
-            var _ox = sprite_get_xoffset(resolved_sprite);
-            draw_sprite_ext(resolved_sprite, resolved_choice ?? 0, component_final_draw_x + _w - _ox * 2, component_final_draw_y, -1, 1, 0, c_white, 1);
+            draw_sprite_flipped(resolved_sprite, resolved_choice ?? 0, component_final_draw_x, component_final_draw_y);
         } else {
             draw_sprite(resolved_sprite, resolved_choice ?? 0, component_final_draw_x, component_final_draw_y);
         }
@@ -1011,9 +1005,7 @@ function ComplexSet(_unit) constructor {
 
             var _tex_names = struct_get_names(texture_draws);
             if (_flip_x && array_length(_tex_names) == 0) {
-                var _w = sprite_get_width(_resolved.sprite);
-                var _ox = sprite_get_xoffset(_resolved.sprite);
-                draw_sprite_ext(_resolved.sprite, _resolved.frame ?? 0, component_final_draw_x + _w - _ox * 2, component_final_draw_y, -1, 1, 0, c_white, 1);
+                draw_sprite_flipped(_resolved.sprite, _resolved.frame ?? 0, component_final_draw_x, component_final_draw_y);
             } else if (array_length(_tex_names) > 0) {
                 draw_component_with_textures(_resolved.sprite, _resolved.frame, component_name, _flip_x);
             } else {
