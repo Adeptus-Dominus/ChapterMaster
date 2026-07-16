@@ -840,7 +840,7 @@ function ComplexSet(_unit) constructor {
 
     /// @param {String} component_name
     /// @param {Real} choice
-    static handle_component_subcomponents = function(component_name, choice) {
+    static handle_component_subcomponents = function(component_name, choice, flip_x = false) {
         if (struct_exists(subcomponents, component_name)) {
             var _component_set;
             var _subcomponents_found = false;
@@ -869,7 +869,13 @@ function ComplexSet(_unit) constructor {
                         _choice_count = 0;
                         for (var s = 0; s < array_length(_subcomponents); s++) {
                             if (_sub_choice_final >= _choice_count && _sub_choice_final < _choice_count + sprite_get_number(_subcomponents[s])) {
-                                draw_sprite(_subcomponents[s], _sub_choice_final - _choice_count ?? 0, component_final_draw_x, component_final_draw_y);
+                                if (flip_x) {
+                                    var _w = sprite_get_width(_subcomponents[s]);
+                                    var _ox = sprite_get_xoffset(_subcomponents[s]);
+                                    draw_sprite_ext(_subcomponents[s], _sub_choice_final - _choice_count ?? 0, component_final_draw_x + _w - _ox * 2, component_final_draw_y, -1, 1, 0, c_white, 1);
+                                } else {
+                                    draw_sprite(_subcomponents[s], _sub_choice_final - _choice_count ?? 0, component_final_draw_x, component_final_draw_y);
+                                }
                                 break;
                             } else {
                                 _choice_count += sprite_get_number(_subcomponents[s]);
@@ -1014,7 +1020,7 @@ function ComplexSet(_unit) constructor {
                 draw_sprite(_resolved.sprite, _resolved.frame ?? 0, component_final_draw_x, component_final_draw_y);
             }
 
-            handle_component_subcomponents(component_name, _choice);
+            handle_component_subcomponents(component_name, _choice, _flip_x);
         }
     };
 

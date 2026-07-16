@@ -3271,7 +3271,6 @@ global.weapon_visual_data = {
                 },
                 subcomponents: [
                     [
-                        spr_blank,
                         spr_weapon_storm_boss
                     ]
                 ],
@@ -3283,11 +3282,7 @@ global.weapon_visual_data = {
                 },
                 subcomponents: [
                     [
-                        spr_blank,
-                        spr_weapon_storm_primary_decoration
-                    ],
-                    [
-                        spr_blank,
+                        spr_weapon_storm_primary_decoration,
                         spr_weapon_storm_boss
                     ]
                 ],
