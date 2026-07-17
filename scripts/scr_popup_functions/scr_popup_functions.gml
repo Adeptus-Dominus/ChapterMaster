@@ -320,7 +320,7 @@ function calculate_equipment_needs() {
         req_wep2 = "Company Standard";
         req_wep2_num = units;
     } else {
-        for (var i = 2; i < 20; i++) {
+        for (var i = 2; i < 21; i++) {
             if (obj_ini.role[100][i] == rall) {
                 req_armour = obj_ini.armour[100][i];
                 req_armour_num = units;

@@ -440,16 +440,18 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                     stat_boosts({strength: 4, constitution: 4, dexterity: 4}); //will decide on if these are needed
                 }
             }
-            if (!is_specialist(role())) {
-                //logs changes too and from specialist status
-                if (is_specialist(new_role)) {
-                    obj_controller.marines -= 1;
-                    obj_controller.command += 1;
-                }
-            } else {
-                if (!is_specialist(new_role)) {
-                    obj_controller.marines += 1;
-                    obj_controller.command -= 1;
+            if (instance_exists(obj_controller)) {
+                if (!is_specialist(role())) {
+                    //logs changes too and from specialist status
+                    if (is_specialist(new_role)) {
+                        obj_controller.marines -= 1;
+                        obj_controller.command += 1;
+                    }
+                } else {
+                    if (!is_specialist(new_role)) {
+                        obj_controller.marines += 1;
+                        obj_controller.command -= 1;
+                    }
                 }
             }
         }
@@ -1662,6 +1664,25 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         wrath.second_profiles = [wrath_melee];
 
         return wrath;
+    };
+    static speed_force = function(_ranged = false) {
+        if (_ranged) {
+            // Attack Bike: scales off the "sidecar's" ranged weapon - single firepower profile, no melee option.
+            var _attack = ranged_damage_data[0];
+            var _weapon = ranged_damage_data[3];
+            return new EquipmentStruct({attack: _attack * 2, name: "Speed Force (Ranged)", range: 14, ammo: 12, spli: _weapon.spli, arp: _weapon.arp}, "weapon");
+        }
+        // Standard Bike: scales off melee, dominant melee (M) profile while engaged in front.
+        var _melee_attack = melee_damage_data[0];
+        var _melee_weapon = melee_damage_data[3];
+
+        var speedf = new EquipmentStruct({attack: _melee_attack * 2, name: "Speed Force", range: 14, ammo: 12, spli: _melee_weapon.spli, arp: _melee_weapon.arp}, "weapon");
+
+        var speedf_melee = new EquipmentStruct({attack: _melee_attack * 4, name: "Speed Force(M)", range: 1, ammo: 16, spli: _melee_weapon.spli, arp: _melee_weapon.arp}, "weapon");
+
+        speedf.second_profiles = [speedf_melee];
+
+        return speedf;
     };
 
     static armour_calc = function() {

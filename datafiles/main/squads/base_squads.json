@@ -7,27 +7,32 @@
     "Champion": {
       "max": 1,
       "min": 0,
-      "role": "Company Champion"
+      "role": "Company Champion",
+      "alternative_roles": ["Champion"]
     },
     "Apothecary": {
       "max": 1,
       "min": 0,
-      "role": "Company Apothecary"
+      "role": "Company Apothecary",
+      "alternative_roles": ["Apothecary"]
     },
     "Chaplain": {
       "max": 1,
       "min": 0,
-      "role": "Company Chaplain"
+      "role": "Company Chaplain",
+      "alternative_roles": ["Chaplain"]
     },
     "Ancient": {
       "max": 1,
       "min": 1,
-      "role": "Company Ancient"
+      "role": "Company Ancient",
+      "alternative_roles": ["Ancient"]
     },
     "Veteran": {
       "max": 5,
       "min": 0,
       "role": "Company Veteran",
+      "alternative_roles": ["Veteran"],
       "loadout": {
         "required": {
           "wep1": ["", 0],
@@ -43,12 +48,14 @@
     "Techmarine": {
       "max": 2,
       "min": 0,
-      "role": "Company Techmarine"
+      "role": "Company Techmarine",
+      "alternative_roles": ["Techmarine"]
     },
     "Librarian": {
       "max": 1,
       "min": 0,
-      "role": "Company Librarian"
+      "role": "Company Librarian",
+      "alternative_roles": ["Librarian"]
     },
     "type_data": {
       "display_data": "Command {squad_name}",
@@ -95,13 +102,20 @@
         },
         "option": {
           "wep1": [
-            [["Power Fist", "Chainfist"], 4]
-          ],
-          "wep2": [
-            ["{WEAPON_LIST_RANGED_COMBI}", 3],
-            ["{WEAPON_LIST_RANGED_HEAVY_TERMINATOR}", 1]
+            [["Power Fist", "Chainfist"], 7, {"wep2": "Storm Bolter"}] //if option group 3rd element is struct random pick ignores it
           ]
-        }
+        },
+        "random_pick": [
+          {
+            "wep1": ["Power Fist", "Chainfist"],
+            "wep2": "Storm Bolter",
+            "mobi": "Cyclone Missile System"
+          },
+          {
+            "wep1": ["Power Fist", "Chainfist"],
+            "wep2": ["Heavy Flamer", "Assault Cannon"]
+          }
+        ]
       }
     },
     "type_data": {
@@ -136,14 +150,19 @@
       "role": "Assault Terminator",
       "loadout": {
         "required": {
-          "wep1": ["Thunder Hammer", 1],
-          "wep2": ["Storm Shield", 1]
+          "wep1": ["", 0],
+          "wep2": ["", 0]
         },
-        "option": {
-          "wep1": [
-            [["Lightning Claw"], 3, { "wep2": "Lightning Claw" }]
-          ]
-        }
+        "random_pick": [
+          {
+            "wep1": ["Thunder Hammer"],
+            "wep2": ["Storm Shield"]
+          },
+          {
+            "wep1": ["Lightning Claw"],
+            "wep2": ["Lightning Claw"]
+          }
+        ]
       }
     },
     "type_data": {
@@ -210,14 +229,14 @@
   },
 
   "devastator_squad": {
-    "Devastator": {
+    "Devastator Marine": {
       "max": 9,
       "min": 4,
+      "role": "Devastator",
       "loadout": {
         "required": {
           "wep1": ["Bolter", 5],
-          "wep2": ["Combat Knife", 9],
-          "mobi": ["", 5]
+          "wep2": ["Combat Knife", 9]
         },
         "option": {
           "wep1": [
@@ -255,9 +274,10 @@
   },
 
   "tactical_squad": {
-    "Tactical": {
+    "Tactical Marine": {
       "max": 9,
       "min": 4,
+      "role": "Tactical",
       "loadout": {
         "required": {
           "wep1": ["wep1[8]", 7],
@@ -304,9 +324,10 @@
   },
 
   "assault_squad": {
-    "Assault": {
+    "Assault Marine": {
       "max": 9,
       "min": 4,
+      "role": "Assault",
       "loadout": {
         "required": {
           "wep1": ["wep1[10]", 5],
@@ -358,6 +379,7 @@
     "Scout": {
       "max": 9,
       "min": 4,
+      "role": "Scout",
       "loadout": {
         "required": {
           "wep1": ["", 0],
@@ -390,6 +412,7 @@
     "type_data": {
       "display_data": "Scout {squad_name}",
       "class": ["scout"],
+      "base": "scout",
       "formation_options": [
         "scout",
         "tactical",
@@ -398,39 +421,9 @@
       ]
     }
   },
-  "bike_squad": {
-      "Assault": {
-          "max": 9,
-          "min": 4,
-          "role": "Biker",
-          "loadout": {
-              "required": {
-                  "wep1": ["", "max"],
-                  "wep2": ["Chainsword", "max"],
-                  "mobi": ["Bike", "max"]
-              }
-          }
-      },
-      "Sergeant": {
-          "max": 1,
-          "min": 1,
-          "role": "Biker Sergeant",
-          "loadout": {
-              "required": {
-                  "wep1": ["", "max"],
-                  "wep2": ["Chainsword", "max"],
-                  "mobi": ["Bike", 1]
-              }
-          }
-      },
-      "type_data": {
-          "display_data": "Bike {squad_name}",
-          "class": ["bike"],
-          "formation_options": ["assault", "tactical"]
-      }
-  },
+
   "breacher_squad": {
-      "Tactical": {
+      "Tactical Marine": {
           "max": 9,
           "min": 4,
           "role": "Breacher",
@@ -471,5 +464,89 @@
           "display_data": "Breacher {squad_name}",
           "formation_options": ["tactical", "assault", "devastator", "scout"]
       }
-  }
+  },
+  
+  "bike_squad": {
+      "Tactical": {
+        "max": 7,
+        "min": 1,
+        "role": "Biker",
+        "alternative_roles": ["Assault","Devastator","Tactical"],
+        "loadout": {
+          "required": {
+            "wep1": ["", 0],
+            "wep2": ["", 0],
+            "mobi": ["Bike", 7]
+          },
+          "option": {
+            "wep1": [[["Chainsword","Chainaxe"],7,{"wep2":"Bolt Pistol"}]]
+          }
+        }
+      },
+      "Sergeant": {
+          "max": 1,
+          "min": 1,
+          "role": "Biker Sergeant",
+          "loadout": {
+              "required": {
+                "wep1": ["", 0],
+                "wep2": ["", 0],
+                "mobi": ["Bike", 1]
+              },
+              "option": {
+                  "wep1": [[["Power Sword", "Power Spear", "Power Axe", "Power Fist", "Chainaxe", "Chainsword"],1]],
+                  "wep2": [[["Volkite Serpenta", "Plasma Pistol", "Bolt Pistol", "Phobos Bolt Pistol", "Grav-Pistol", "Hand Flamer", "Infernus Pistol", "Ryza Plasma Pistol"],1]]
+                }
+          }
+      },
+      "type_data": {
+          "display_data": "Bike {squad_name}",
+          "class": ["bike"],
+          "formation_options": ["biker","assault", "tactical","devastator","scout"],
+          "base": "biker"
+      }
+  },
+
+  
+  "attack_bike_squad": {
+    "Tactical": {
+        "max": 2,
+        "min": 1,
+        "role": "Attack Biker",
+        "alternative_roles": ["Devastator", "Assault", "Tactical"],
+        "loadout": {
+            "required": {
+                "wep1": ["", 0],
+                "wep2": ["", 0],
+                "mobi": ["Attack Bike", "max"]
+            },
+            "option": {
+                "wep1": [[["Multi-Melta", "Heavy Bolter"], 2]],
+                "wep2": [[["Chainsword", "Chainaxe", "Combat Knife"],2]]
+            }
+        }
+    },
+    "Sergeant": {
+        "max": 1,
+        "min": 1,
+        "role": "Attack Bike Sergeant",
+        "loadout": {
+            "required": {
+                "wep1": ["", 0],
+                "wep2": ["", 0],
+                "mobi": ["Attack Bike", 1]
+            },
+            "option": {
+              "wep1": [[["Multi-Melta", "Plasma Cannon", "Lascannon"],1]],
+              "wep2": [[["Chainsword", "Chainaxe", "Power Sword", "Power Spear", "Power Axe"],1]]
+            }
+        }
+    },
+    "type_data": {
+        "display_data": "Attack Bike {squad_name}",
+        "class": ["bike"],
+        "formation_options": ["biker","assault", "tactical", "devastator", "scout"],
+        "base": "biker"
+    }
+}
 }

@@ -70,18 +70,8 @@ function scr_company_order(company) {
 
         if (_squadless.number() > 3) {
             var _squad_index = _company_marines.index_squads();
-            var _data_match = false;
-            var _data;
-            if (struct_exists(obj_ini.chapter_squad_arrangement, "companies")) {
-                var _comp_datas = obj_ini.chapter_squad_arrangement.companies;
-                for (var i = 0; i < array_length(_comp_datas); i++) {
-                    if (_comp_datas[i].company == co) {
-                        _data_match = true;
-                        _data = _comp_datas[i];
-                    }
-                }
-            }
-            if (_data_match) {
+            var _data = resolve_company_arrangement(obj_ini.chapter_squad_arrangement, co);
+            if (_data != undefined) {
                 _squadless.organise_by_template(_data, _squad_index, _empty_index, false);
             }
 
@@ -150,49 +140,96 @@ function scr_company_order(company) {
     }
 }
 
-function role_hierarchy() {
-    var _roles = obj_ini.role[100];
-    var hierarchy = [
-        _roles[eROLE.CHAPTERMASTER],
-        "Forge Master",
-        "Master of Sanctity",
-        "Master of the Apothecarion",
-        string("Chief {0}", _roles[eROLE.LIBRARIAN]),
-        _roles[eROLE.HONOURGUARD],
-        _roles[eROLE.CAPTAIN],
-        _roles[eROLE.CHAPLAIN],
-        string("{0} Aspirant", _roles[eROLE.CHAPLAIN]),
-        "Death Company",
-        _roles[eROLE.TECHMARINE],
-        string("{0} Aspirant", _roles[eROLE.TECHMARINE]),
-        "Techpriest",
-        _roles[eROLE.APOTHECARY],
-        string("{0} Aspirant", _roles[eROLE.APOTHECARY]),
-        "Sister Hospitaler",
-        _roles[eROLE.LIBRARIAN],
-        "Codiciery",
-        "Lexicanum",
-        string("{0} Aspirant", _roles[eROLE.LIBRARIAN]),
-        _roles[eROLE.ANCIENT],
-        _roles[eROLE.CHAMPION],
-        "Death Company",
-        _roles[eROLE.VETERANSERGEANT],
-        _roles[eROLE.SERGEANT],
-        _roles[eROLE.TERMINATOR],
-        _roles[eROLE.VETERAN],
-        _roles[eROLE.TACTICAL],
-        _roles[eROLE.ASSAULT],
-        _roles[eROLE.DEVASTATOR],
-        _roles[eROLE.SCOUT],
-        $"Venerable {_roles[eROLE.DREADNOUGHT]}",
-        _roles[eROLE.DREADNOUGHT],
-        "Skitarii",
-        "Crusader",
-        "Ranger",
-        "Sister of Battle",
-        "Flash Git",
-        "Ork Sniper"
-    ];
+// base role (JSON slot key) loads array of renamed "role"-override variants across all squad types
+// cached across calls; pass true to rebuild after squad_types is loaded
+function squad_role_renames(_rebuild = false) {
+    static _cache = undefined;
+    if (!instance_exists(obj_ini) || !variable_instance_exists(obj_ini, "squad_types")) {
+        return {};
+    }
+    if (_rebuild || _cache == undefined) {
+        _cache = {};
+        var _types = struct_get_names(obj_ini.squad_types);
+        for (var _si = 0; _si < array_length(_types); _si++) {
+            var _sq = obj_ini.squad_types[$ _types[_si]];
+            var _keys = struct_get_names(_sq);
+            for (var _ki = 0; _ki < array_length(_keys); _ki++) {
+                var _k = _keys[_ki];
+                if (_k == "type_data") continue;
+                if (!struct_exists(_sq[$ _k], "role")) continue;
+                _cache[$ _k] = _cache[$ _k] ?? [];
+                if (!array_contains(_cache[$ _k], _sq[$ _k].role)) {
+                    array_push(_cache[$ _k], _sq[$ _k].role);
+                }
+            }
+        }
+    }
+    return _cache;
+}
 
-    return hierarchy;
+function role_hierarchy(_rebuild = false) {
+    static _cache = undefined;
+    if (_rebuild || _cache == undefined) {
+        var _roles = obj_ini.role[100];
+        var _h = [
+            _roles[eROLE.CHAPTERMASTER],
+            "Forge Master",
+            "Master of Sanctity",
+            "Master of the Apothecarion",
+            string("Chief {0}", _roles[eROLE.LIBRARIAN]),
+            _roles[eROLE.HONOURGUARD],
+            _roles[eROLE.CAPTAIN],
+            _roles[eROLE.CHAPLAIN],
+            string("{0} Aspirant", _roles[eROLE.CHAPLAIN]),
+            "Death Company",
+            _roles[eROLE.TECHMARINE],
+            string("{0} Aspirant", _roles[eROLE.TECHMARINE]),
+            "Techpriest",
+            _roles[eROLE.APOTHECARY],
+            string("{0} Aspirant", _roles[eROLE.APOTHECARY]),
+            "Sister Hospitaler",
+            _roles[eROLE.LIBRARIAN],
+            "Codiciery",
+            "Lexicanum",
+            string("{0} Aspirant", _roles[eROLE.LIBRARIAN]),
+            _roles[eROLE.ANCIENT],
+            _roles[eROLE.CHAMPION],
+            _roles[eROLE.VETERANSERGEANT],
+            _roles[eROLE.SERGEANT],
+            _roles[eROLE.TERMINATOR],
+            _roles[eROLE.VETERAN],
+            _roles[eROLE.TACTICAL],
+            _roles[eROLE.ASSAULT],
+            _roles[eROLE.DEVASTATOR],
+            _roles[eROLE.SCOUT],
+            _roles[eROLE.BIKER],
+            _roles[eROLE.ATTACK_BIKER],
+            $"Venerable {_roles[eROLE.DREADNOUGHT]}",
+            _roles[eROLE.DREADNOUGHT],
+            "Skitarii",
+            "Crusader",
+            "Ranger",
+            "Sister of Battle",
+            "Flash Git",
+            "Ork Sniper"
+        ];
+
+        // Splice renamed squad roles in directly after their base role via JSON key
+        var _renames = squad_role_renames(_rebuild);
+        var _bases = struct_get_names(_renames);
+        for (var _bi = 0; _bi < array_length(_bases); _bi++) {
+            var _anchor = array_get_index(_h, _bases[_bi]);
+            var _variants = _renames[$ _bases[_bi]];
+            for (var _vi = 0; _vi < array_length(_variants); _vi++) {
+                if (array_contains(_h, _variants[_vi])) continue;
+                if (_anchor >= 0) {
+                    array_insert(_h, _anchor + 1, _variants[_vi]);
+                } else {
+                    array_push(_h, _variants[_vi]);
+                }
+            }
+        }
+        _cache = _h;
+    }
+    return variable_clone(_cache); //here so cache isn't killed by rewording
 }
