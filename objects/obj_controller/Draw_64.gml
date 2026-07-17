@@ -32,7 +32,7 @@ if (is_test_map == true) {
 try {
     if (menu == eMENU.ARMAMENTARIUM) {
         armamentarium.draw();
-    } else if (menu >= eMENU.SETTINGS && menu <= eMENU.FORMATIONS_SETTINGS){
+    } else if (menu >= eMENU.SETTINGS && menu <= eMENU.FORMATIONS_SETTINGS) {
         draw_sprite(spr_settings_bg, 0, 0, 0);
     }
 } catch (_exception) {
@@ -45,30 +45,30 @@ draw_set_valign(fa_top);
 draw_set_halign(fa_left);
 
 try {
-if (menu == eMENU.DIPLOMACY) {
-    add_draw_return_values();
-    if (diplomacy > 0) {
-        draw_diplomacy_diplo_text();
-        if (trading == true) {
-            if ((diplomacy > 1) && is_struct(trade_attempt)) {
-                try {
-                    trade_attempt.draw_trade_screen();
-                } catch (_exception) {
-                    ERROR_HANDLER.handle_exception(_exception);
-                    delete trade_attempt;
-                    trading = false;
+    if (menu == eMENU.DIPLOMACY) {
+        add_draw_return_values();
+        if (diplomacy > 0) {
+            draw_diplomacy_diplo_text();
+            if (trading == true) {
+                if ((diplomacy > 1) && is_struct(trade_attempt)) {
+                    try {
+                        trade_attempt.draw_trade_screen();
+                    } catch (_exception) {
+                        ERROR_HANDLER.handle_exception(_exception);
+                        delete trade_attempt;
+                        trading = false;
+                    }
                 }
+            } else if (diplomacy != 10.1) {
+                draw_character_diplomacy_base_page();
             }
-        } else if (diplomacy != 10.1) {
-            draw_character_diplomacy_base_page();
+        } else if (diplomacy == -1) {
+            if (is_struct(character_diplomacy)) {
+                draw_character_diplomacy();
+            }
         }
-    } else if (diplomacy == -1) {
-        if (is_struct(character_diplomacy)) {
-            draw_character_diplomacy();
-        }
+        pop_draw_return_values();
     }
-    pop_draw_return_values();
-}
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
     menu = eMENU.DEFAULT;
@@ -264,15 +264,15 @@ try {
         if (managing == -1 && !is_struct(selection_data)) {
             main_map_defaults();
         } else {
-        if (managing != 0) {
-            draw_sprite_and_unit_equip_data();
-        }
-        if (managing == -1) {
-            scr_manage_task_selector();
-        }
-        if (managing > 0) {
-            company_specific_management();
-        }
+            if (managing != 0) {
+                draw_sprite_and_unit_equip_data();
+            }
+            if (managing == -1) {
+                scr_manage_task_selector();
+            }
+            if (managing > 0) {
+                company_specific_management();
+            }
         }
     } else if (menu == eMENU.LIBRARIUM) {
         scr_librarium_gui();
