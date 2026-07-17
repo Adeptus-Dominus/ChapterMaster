@@ -26,6 +26,10 @@ function scr_income() {
     income_forge = 0;
     income_agri = 0;
     income_training = 0;
+    // Requisition from region buildings the player holds (Factory +4, Mine +3, ...).
+    // Counted here so it shows in the counter breakdown and is paid with the rest of
+    // income, instead of being added after the fact in regions_buildings_tick.
+    income_regions = regions_player_requisition_income();
 
     if (faction_status[eFACTION.MECHANICUS] != "War") {
         var _chapter_tech_count = scr_role_count(obj_ini.role[100][eROLE.TECHMARINE], "");

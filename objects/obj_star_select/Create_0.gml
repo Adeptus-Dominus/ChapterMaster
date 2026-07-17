@@ -32,6 +32,15 @@ population = false;
 // multi-region planet defaults to its Planetary Regions panel (see Draw_64).
 region_view_planet = -1;
 
+// Garrison drill-down menu (Sector Governor): clicking a region's garrison figure opens a
+// force-composition panel beside the regions list. region_force_view is the region index whose
+// breakdown is shown; both reset when the selected planet changes (see Draw_64).
+region_force_open = false;
+region_force_view = -1;
+// When >= 0, the force panel shows this faction's planet-wide roster (opened from a Planetary
+// Presence entry), overriding the region/planet view. -1 = not in faction mode.
+region_force_faction = -1;
+
 garrison_data_slate = new DataSlate();
 garrison_data_slate.title = "Garrison Report";
 main_data_slate = new DataSlate();

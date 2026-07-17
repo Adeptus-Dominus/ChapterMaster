@@ -157,6 +157,7 @@ y2 = 0;
 
 btn_formation = new InteractiveButton();
 btn_target = new InteractiveButton();
+btn_sector = new InteractiveButton();
 
 btn_attack = new InteractiveButton();
 btn_attack.text_color = CM_GREEN_COLOR;
@@ -167,6 +168,15 @@ btn_back.str1 = "BACK";
 btn_back.text_color = CM_GREEN_COLOR;
 btn_back.button_color = CM_GREEN_COLOR;
 btn_back.width = 90;
+
+// Behead the Warboss: a decapitation strike offered inside the raid screen, only when this world has an
+// actual Ork Warboss present (§16f). Drawn/hit-tested in drop_select_unit_selection.
+btn_behead = new InteractiveButton();
+btn_behead.str1 = "BEHEAD WARBOSS";
+btn_behead.text_color = c_red;
+btn_behead.button_color = c_red;
+btn_behead.width = 200;
+btn_behead.tooltip = "Send a strike force after the WAAAGH's Warboss. Kill him and, with no duel-victor to inherit, the Ork clans fall into a succession scramble - or an outright civil war. Spends this fleet's action; harder against a big Ork Stronghold.";
 
 if (purge == 0) {
     sisters = p_target.p_sisters[planet_number];

@@ -62,6 +62,9 @@ action_y = 0;
 target = noone;
 target_x = 0;
 target_y = 0;
+// A Tyranid fleet is invisible fog-of-war by default (see Step_0). A beacon-summoned Hive Fleet sets this
+// true so it stays VISIBLE as it screams across the map to answer the Ascension Beacon (§16n).
+revealed = false;
 action_spd = 64;
 if (owner <= 6) {
     action_spd = 128;

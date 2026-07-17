@@ -37,6 +37,12 @@ p_owner = array_create(_planet_array_size, 0);
 p_first = array_create(_planet_array_size, 0);
 p_population = array_create(_planet_array_size, 0);
 p_max_population = array_create(_planet_array_size, 0);
+// --- Sector Governor overhaul: population/force data model (p_* so they serialise; old saves back-fill) ---
+p_race_pop = array_create_advanced(_planet_array_size, array_create(15, 0)); // [planet][eFACTION] headcount
+p_infra_turns = array_create(_planet_array_size, 32);   // world development counter (drives force tier)
+p_ork_loot = array_create(_planet_array_size, 0);       // looted vehicles the Orks hold
+p_biomass = array_create(_planet_array_size, 0);        // Tyranid biomass reserve
+p_ork_clan = array_create_advanced(_planet_array_size, []); // per-planet array of Ork warband structs
 p_large = array_create(_planet_array_size, 0);
 p_pop = array_create(_planet_array_size, "");
 p_guardsmen = array_create(_planet_array_size, 0);
@@ -54,6 +60,7 @@ p_tyranids = array_create(_planet_array_size, 0);
 p_traitors = array_create(_planet_array_size, 0);
 p_chaos = array_create(_planet_array_size, 0);
 p_demons = array_create(_planet_array_size, 0);
+p_chaos_god = array_create(_planet_array_size, -1);      // which Chaos god a Chaos world flies (-1 = none) §16r
 p_sisters = array_create(_planet_array_size, 0);
 p_necrons = array_create(_planet_array_size, 0);
 p_halp = array_create(_planet_array_size, 0);
@@ -66,12 +73,9 @@ p_governor = array_create(_planet_array_size, false);
 p_operatives = array_create_advanced(_planet_array_size, []);
 p_feature = array_create_advanced(_planet_array_size, []);
 p_upgrades = array_create_advanced(_planet_array_size, []);
-// Multi-region layer (Sector Governor roadmap B): each planet holds an array of Region records.
-// Named p_* so it serialises with every other planet array. See scr_region_functions.
+// Multi-region layer: array of Region records per planet. MUST be declared here or deserialize crashes on load.
 p_regions = array_create_advanced(_planet_array_size, []);
-// Player's chosen conquest-priority region per planet (index into that planet's regions).
-// 0 = no explicit focus (capital / auto-order). Named p_* so it saves like the other arrays.
-p_region_focus = array_create_advanced(_planet_array_size, 0);
+p_region_focus = array_create_advanced(_planet_array_size, 0); // player's conquest-focus region index
 p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
 p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));

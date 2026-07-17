@@ -117,6 +117,9 @@ for (var i = 1; i <= 4; i++) {
         p_eldar[i] = 6;
         owner = eFACTION.ELDAR;
         p_owner[1] = eFACTION.ELDAR;
+        // A Craftworld is pure Eldar (no humans; PDF/Guard already zeroed above):
+        // mark the population as Eldar.
+        p_race_pop[i][eFACTION.ELDAR] = p_population[i];
         warp_lanes = [];
         x2 = 0;
     }
@@ -229,6 +232,16 @@ if (owner == eFACTION.ORK) {
             p_orks[4] = choose(4, 5);
         }
     }
+    // Orks are TOTAL-WAR — their POPULATION is their force. Seed a real Ork headcount (the Fungal Bloom)
+    // on each Ork world as the authoritative force size (§16b); grows via end_turn_race_population_growth
+    // and drives the roster via ork_composition. The 0-6 p_orks scalar stays for legacy readers.
+    for (var _oi = 1; _oi <= planets; _oi++) {
+        if (p_orks[_oi] > 0) {
+            p_race_pop[_oi][eFACTION.ORK] = ork_bloom_seed(p_type[_oi]);
+            add_feature(_oi, new NewPlanetFeature(eP_FEATURES.FUNGAL_BLOOM));
+            ork_seed_clans(id, _oi);   // assign the WAAAGH its clan mix (biggest clan leads) — §16e
+        }
+    }
 }
 
 system_fleet = 1;
@@ -301,6 +314,17 @@ if (owner == eFACTION.TAU) {
         p_owner[i] = eFACTION.TAU;
         p_first[i] = eFACTION.TAU;
         p_influence[i][eFACTION.TAU] = 65 + irandom(15);
+        // A Tau world carries BOTH a Tau population and the human populace it assimilated as Gue'Vesa
+        // ("Helpers") — the Tau accept humans, they don't replace them (§16). Additive: seed a Tau race
+        // population (billions on p_large worlds) and KEEP p_population as the Gue'Vesa human pool.
+        // TAU-DOMINANT starting world: the Tau are the great majority of the populace; the assimilated human
+        // population (Gue'Vesa) is a MINORITY (supersedes the additive-equal note above). Split the starting
+        // people ~78-90% Tau / the rest Gue'Vesa — Tau = the p_race_pop[TAU] headcount, and p_population is
+        // cut to the Gue'Vesa human minority (billions-units convention kept for p_large worlds).
+        var _tau_world_head = p_large[i] ? (p_population[i] * 1000000000) : p_population[i];
+        var _gue_frac = 0.10 + random(0.12);   // Gue'Vesa humans ~10-22% of a Tau world; the Tau are the rest
+        p_race_pop[i][eFACTION.TAU] = round(_tau_world_head * (1 - _gue_frac));
+        p_population[i] = p_large[i] ? (p_population[i] * _gue_frac) : max(1, round(p_population[i] * _gue_frac));
     }
 }
 // Create Nids
@@ -325,12 +349,19 @@ if (owner > 20) {
         if (p_population[i] > 0) {
             var new_cult = new NewPlanetFeature(eP_FEATURES.GENE_STEALER_CULT);
             array_push(p_feature[i], new_cult);
-            new_cult.cult_age = irandom(300);
-            p_influence[i][eFACTION.TYRANIDS] = new_cult.cult_age / 10 + irandom(30);
-            p_tyranids[i] = min(3, floor(p_influence[i][eFACTION.TYRANIDS] / 15));
-            if (p_tyranids[i] != 0) {
-                new_cult.hiding = false;
-            }
+            // Cults start YOUNG so they build up naturally over the mid-game; they only
+            // ascend around turn ~100-200, not turn 2. (Was irandom(300), which pre-aged
+            // most cults past the ascension gate.)
+            new_cult.cult_age = irandom(30);
+            p_influence[i][eFACTION.TYRANIDS] = new_cult.cult_age / 10 + irandom(20);
+            // Seed a population-scaled infiltration HOST matching the cult's age (the same
+            // curve end_turn_genestealer_cults grows toward) and derive the 0-6 level FROM
+            // it. Cults stay HIDDEN at worldgen; the concealment tick reveals them once
+            // their influence climbs, so the game opens with no visible cults.
+            var _mat = clamp(new_cult.cult_age / 40, 0, 1);
+            var _people = p_large[i] ? (p_population[i] * 1000000000) : p_population[i];
+            p_race_pop[i][eFACTION.TYRANIDS] = round(_people * 0.006 * _mat);
+            p_tyranids[i] = count_to_level(eFACTION.TYRANIDS, p_race_pop[i][eFACTION.TYRANIDS]);
         }
         p_owner[i] = eFACTION.IMPERIUM;
     }

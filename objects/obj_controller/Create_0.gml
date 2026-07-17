@@ -795,6 +795,7 @@ income_fleet = 0;
 income_trade = 0;
 income_leader = 0;
 income_tribute = 0;
+income_regions = 0; // requisition from player-held region buildings (Factory/Mine), shown in the counter
 // ** Extra variables **
 info_chips = 0;
 inspection_passes = 0;

@@ -187,16 +187,15 @@ if (!zoomed && !zui) {
         yf = string(year_fraction);
     }
     draw_text(1520 + new_banner_x, 228, string_hash_to_newline(string(check_number) + " " + string(yf) + " " + string(year) + ".M" + string(millenium)));
-    // Shows the income on the menu. Region buildings (factories, mines) credit
-    // requisition directly during the turn tick, outside the income tally, so the
-    // forecast adds last turn's region earnings to stay honest about what arrives.
+    // Shows the income on the menu. Region-building requisition now flows through
+    // the income system itself (income_regions in scr_income), so income_last is the
+    // whole truth again.
     var inc = "";
-    var _income_shown = income_last + region_income_last_shown();
-    if (_income_shown > 0) {
-        inc = "+" + string(round(_income_shown));
+    if (income_last > 0) {
+        inc = "+" + string(round(income_last));
     }
-    if (_income_shown < 0) {
-        inc = string(round(_income_shown));
+    if (income_last < 0) {
+        inc = string(round(income_last));
     }
     draw_set_font(fnt_40k_14);
     draw_set_halign(fa_left);

@@ -95,26 +95,37 @@ try {
 
     var u = noone;
 
-    if ((fortified > 1) && !(enemy == eFACTION.CHAOS && threat == 7)) {
+    if (((fortified > 1) || (bastion_bonus > 0)) && !(enemy == eFACTION.CHAOS && threat == 7)) {
         u = instance_create(0, 0, obj_nfort);
         u.image_speed = 0;
         u.image_alpha = 0.5;
 
+        // Base fortress HP/armour from the fortification TIER (the shared 0-6 scale the base-game "improve
+        // defences" upgrade fills). A Bastion-only world (tier 0-1) still raises a modest bunker to reinforce.
         if (fortified == 2) {
             u.ac = 30;
             u.hp = 400;
-        }
-        if (fortified == 3) {
+        } else if (fortified == 3) {
             u.ac = 40;
             u.hp = 800;
-        }
-        if (fortified == 4) {
+        } else if (fortified == 4) {
             u.ac = 40;
             u.hp = 1250;
-        }
-        if (fortified == 5) {
+        } else if (fortified >= 5) {
             u.ac = 40;
             u.hp = 1500;
+        } else {
+            u.ac = 25;
+            u.hp = 250;
+        }
+
+        // DISTINCT Bastion bonus (§16h): each Bastion region-building reinforces the fortress ON TOP of the
+        // fortification tier — UNCAPPED, so Bastions keep adding value even at maximum fortification (unlike
+        // the tier, which caps). +400 HP and +5 armour per Bastion. Counted from the world's regions at
+        // defend-setup (obj_turn_end/Mouse_56); save-safe (0 on old / region-less saves).
+        if (bastion_bonus > 0) {
+            u.hp += bastion_bonus * 400;
+            u.ac += bastion_bonus * 5;
         }
 
         if (siege && (fortified > 0) && defending) {
@@ -3429,6 +3440,11 @@ try {
         u = instance_create(-50, 240, obj_pnunit);
         u.defenses = 1;
 
+        // §16h: emplacement durability scales with how many ground defences the world mounts, so stacking
+        // Turret Battery region-buildings (+6 p_defenses each) actually hardens the defending fight instead
+        // of being a flat one-off. ~1x per battery, capped at 5x (a world's ~30 defence cap / a homeworld).
+        var _def_mult = clamp(player_defenses / 6, 1, 5);
+
         for (var i = 1; i <= 3; i++) {
             u.veh_co[i] = 0;
             u.veh_id[i] = 0;
@@ -3436,7 +3452,7 @@ try {
             u.veh_hp[i] = 1000;
             u.veh_ac[i] = 1000;
             u.veh_dead[i] = 0;
-            u.veh_hp_multiplier[i] = 1;
+            u.veh_hp_multiplier[i] = _def_mult;
         }
 
         u.veh_wep1[1] = "Heavy Bolter Emplacement";

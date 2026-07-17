@@ -2,6 +2,10 @@ function scr_turn_first() {
     try {
         // I believe this is ran at the start of the end of the turn.  That would make sense, right?
 
+        // The Chaos Great Game (§16r): a once-per-turn sector check. While Chaos is a minority its god-sects
+        // stay allied against the Imperium; once Chaos holds ~half the sector they turn on each other.
+        chaos_great_game_tick();
+
         var _unload_i = 0;
         for (var i = 0, l = array_length(obj_ini.artifact); i < l; i++) {
             _unload_i = i;

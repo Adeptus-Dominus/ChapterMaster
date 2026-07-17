@@ -400,7 +400,7 @@ try {
         clear_diplo_choices();
     }
 
-    income = income_base + income_home + income_forge + income_agri + income_training + income_fleet + income_trade + income_tribute;
+    income = income_base + income_home + income_forge + income_agri + income_training + income_fleet + income_trade + income_tribute + income_regions;
 
     if ((menu == eMENU.DIPLOMACY) && ((diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)))) {
         if (string_length(diplo_txt) < string_length(diplo_text)) {

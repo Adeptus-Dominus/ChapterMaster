@@ -174,6 +174,29 @@ function scr_cheatcode(argument0) {
                 case "waaagh":
                     init_ork_waagh(true);
                     break;
+                case "ascension":
+                case "ascensionday":
+                case "beacon": {
+                    // DEBUG: force ASCENSION DAY on the selected planet — reveal/seed a Genestealer Cult,
+                    // hand the world to the Tyranids and light the Ascension Beacon (summons the Hive Fleet).
+                    var _astar = noone;
+                    if (instance_exists(obj_star_select)) { _astar = obj_star_select.target; }
+                    if (!instance_exists(_astar) && instance_exists(obj_p_fleet)) {
+                        _astar = instance_nearest(obj_p_fleet.x, obj_p_fleet.y, obj_star);
+                    }
+                    if (!instance_exists(_astar)) {
+                        _astar = instance_nearest(mouse_x, mouse_y, obj_star);
+                    }
+                    if (instance_exists(_astar)) {
+                        var _aplanet = obj_controller.selecting_planet;
+                        if (_aplanet < 1) { _aplanet = real(cheat_arguments[0]); }
+                        _aplanet = clamp(_aplanet, 1, max(1, _astar.planets));
+                        force_ascension_day(_astar, _aplanet);
+                    } else {
+                        scr_popup("DEBUG", "ascension: no star selected", "");
+                    }
+                    break;
+                }
                 case "neworkfleet":
                     var p_fleet = get_largest_player_fleet();
                     with (instance_nearest(p_fleet.x, p_fleet.y, obj_star)) {

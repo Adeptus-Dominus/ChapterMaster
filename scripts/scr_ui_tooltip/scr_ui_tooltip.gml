@@ -40,6 +40,9 @@ function scr_ui_tooltip() {
         if (income_tribute != 0) {
             tooltip += string("#Planet Tithes: {0}{1}", income_tribute > 0 ? "+" : "", income_tribute);
         }
+        if (income_regions != 0) {
+            tooltip += string("#Planetary Industry: {0}{1}", income_regions > 0 ? "+" : "", income_regions);
+        }
 
         if (tooltip != "") {
             tooltip_draw(tooltip);

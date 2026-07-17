@@ -139,6 +139,7 @@ enem_sing = "Ork";
 threat = 0;
 fortified = 0;
 enemy_fortified = 0;
+bastion_bonus = 0;   // §16h: distinct Bastion fortress reinforcement (set at defend-setup; save-safe default 0)
 wall_destroyed = 0;
 flank_x = 0;
 

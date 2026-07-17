@@ -180,6 +180,194 @@ function PlanetData(_planet, _system) constructor {
         }
     };
 
+    // Additive civ-race population layer (p_race_pop): the seeded civilian pops (Tau, Eldar) grow while
+    // their OWN faction holds the world, capped at its carrying capacity. Total-war and corruption races
+    // seed no civilian pool, so nothing here moves them. Runs alongside end_turn_population_growth (which
+    // handles the legacy loyalist p_population and deliberately SKIPS Tau/Craftworld worlds — so the
+    // Gue'Vesa human pop on Tau worlds is grown here instead). See POPULATIONS_FORCE_PLAN §14 / growth.
+    static end_turn_race_population_growth = function() {
+        if (planet_type == "Dead") { return; }
+        if (!variable_instance_exists(system, "p_race_pop")) { return; } // old save without the layer
+
+        // Carrying capacity as a REAL headcount. Note p_race_pop is stored in raw headcount, unlike the
+        // legacy p_population which is in "billions" units on large worlds — so grow it multiplicatively.
+        var _cap_head = large_population ? (max_population * 1000000000) : max_population;
+
+        // T'au — steady growth of the caste population, plus the assimilated Gue'Vesa human populace.
+        if (current_owner == eFACTION.TAU) {
+            var _tau = system.p_race_pop[planet][eFACTION.TAU];
+            if (_tau > 0 && _tau < _cap_head) {
+                system.p_race_pop[planet][eFACTION.TAU] = min(_cap_head, round(_tau * 1.0008));
+            }
+            // Gue'Vesa: end_turn_population_growth skips Tau-held worlds, so grow the human pool here.
+            if (population > 0 && population < max_population) {
+                if (!large_population) {
+                    set_population(round(population * 1.0008));
+                } else if (large_population == 1) {
+                    edit_population(choose(0, 0.01));
+                }
+            }
+        }
+
+        // Aeldari — a slowly dying race: Craftworld population creeps up barely, capped at capacity.
+        if (current_owner == eFACTION.ELDAR) {
+            var _eld = system.p_race_pop[planet][eFACTION.ELDAR];
+            if (_eld > 0 && _eld < _cap_head) {
+                system.p_race_pop[planet][eFACTION.ELDAR] = min(_cap_head, round(_eld * 1.0002));
+            }
+        }
+
+        // Orks — the Fungal Bloom (§16b): total-war, so their population IS their force. The bloom
+        // spreads on ANY world it has taken root on — including an Imperial world it is infesting, NOT
+        // just Ork-owned ones — so the green tide keeps swelling even while the garrison fights it.
+        // The 0-6 p_orks scalar is kept in sync (count_to_level) for legacy readers.
+        if (system.p_race_pop[planet][eFACTION.ORK] > 0 && has_feature(eP_FEATURES.FUNGAL_BLOOM)) {
+            var _ork = system.p_race_pop[planet][eFACTION.ORK];
+            // SLAVE LABOUR: Orks enslave captured human populations (grot-herds, ammo-runners, forced
+            // labour), which accelerates the bloom. The more human heads per ork, the bigger the boost —
+            // and it fades as the orks consume/eclipse the populace. Base 6 %/turn, up to ~15 % with a
+            // world full of slaves.
+            var _human_head = large_population ? (population * 1000000000) : population;
+            var _slave_ratio = (_ork > 0) ? clamp(_human_head / _ork, 0, 3) : 0;
+            // Slow early, COMPOUNDS HARDER as the bloom entrenches (a bigger spore-mass spreads faster) —
+            // small for the first ~50 turns, then it snowballs. Acceleration tracks how long the Orks have
+            // held/built the world (planet_infra_turns). Plus the slave-labour boost.
+            var _accel = 1 + clamp(planet_infra_turns(system, planet) / 70, 0, 2.5);
+            var _rate = 1 + (0.02 + _slave_ratio * 0.015) * _accel;
+            // CAP scales to the WORLD'S carrying capacity (a hive sustains a vastly bigger WAAAGH than a
+            // barren rock) — much higher than a flat number. Small type floor for tiny/edge worlds.
+            var _cap_head = large_population ? (max_population * 1000000000) : max_population;
+            var _cap = max(ork_bloom_cap(planet_type), round(_cap_head * 0.1));
+            system.p_race_pop[planet][eFACTION.ORK] = min(_cap, round(_ork * _rate));
+            system.p_orks[planet] = count_to_level(eFACTION.ORK, system.p_race_pop[planet][eFACTION.ORK]);
+            // CATTLE: the WAAAGH eats the populace too — prisoners for the cookpots, squig-fodder. The
+            // larder empties faster when the horde is large relative to the people left. (Slaves boost
+            // growth above; cattle consume the population here — both are lore-accurate uses of captives.)
+            if (population > 0) {
+                var _eat = clamp((system.p_race_pop[planet][eFACTION.ORK] / max(_human_head, 1)) * 0.4, 0.01, 0.06);
+                if (large_population) {
+                    edit_population(-(population * _eat));
+                } else {
+                    set_population(round(population * (1 - _eat)));
+                }
+            }
+            // WARBANDS (§16e): grow the world's clans at their differing rates so leadership can be usurped.
+            ork_grow_clans(system, planet);
+        }
+
+        // Necrons — the tomb AWAKENING (§16b): while a tomb is active here (or the world is Necron-held),
+        // the legions rise SLOWLY from their vaults, the awakened population climbing toward the dynasty's
+        // full strength over many turns (they wake gradually, not in a boom). Their population IS their
+        // force; the 0-6 p_necrons scalar is kept in sync for legacy readers.
+        var _necron_active = (current_owner == eFACTION.NECRONS) || ((array_length(features) > 0) && (awake_tomb_world(features) == 1));
+        if (_necron_active) {
+            var _nec = system.p_race_pop[planet][eFACTION.NECRONS];
+            if (_nec <= 0) { _nec = necron_awaken_seed(planet_type); }   // an active tomb always has some
+            var _nec_cap_head = large_population ? (max_population * 1000000000) : max_population;
+            var _nec_cap = max(round(_nec_cap_head * 0.001), necron_awaken_seed(planet_type) * 15);
+            system.p_race_pop[planet][eFACTION.NECRONS] = min(_nec_cap, round(_nec * 1.04));   // +4 %/turn — slow
+            system.p_necrons[planet] = count_to_level(eFACTION.NECRONS, system.p_race_pop[planet][eFACTION.NECRONS]);
+        }
+
+        // Chaos HERETICS — corrupted humans (§16b): Chaos has NO population of its own; it FEEDS off the
+        // Imperial world. The heretic host is a slice of the world's OWN populace that swells as the
+        // corruption stat climbs (up to ~10 % of the people at full corruption), and dwindles if the world
+        // is cleansed. That whole heretic "population" is the uprising's force. (Chaos Marines and Daemons
+        // stay elite/summoned add-ons in the Chaos alliance, like the Sisters on the Imperial side.)
+        // Threshold: worldgen sprinkles EVERY planet with 1–10 background corruption (obj_star/Alarm_0), so
+        // a "corruption > 0" gate bred a heretic host on literally every world. A real cult only takes root
+        // once a world is MEANINGFULLY corrupted (>= HERETIC_CORRUPTION_FLOOR); below that the taint is just
+        // background noise and there are no heretics. Corruption has to climb (Chaos rule, incursions,
+        // events) before a world grows a host, so heretics stay a localised threat, not a sector-wide one.
+        var _her_floor = 25;
+        // A CHAOS/HERETIC-OWNED world is by definition corrupted enough to field the heretic garrison holding
+        // it, so it ALWAYS breeds a host — using AT LEAST the floor corruption. This fixes the "Chaos world
+        // shows Chaos Forces: 0" case: a world that turned Chaos by conquest / worldgen / the Great Game
+        // (not a cult revolt, which seeds its own brood) no longer sits empty until corruption slowly climbs.
+        // Worlds NOT held by Chaos still need real corruption (>= floor) before a hidden cult takes root.
+        var _her_chaos_held = (current_owner == eFACTION.CHAOS) || (current_owner == eFACTION.HERETICS);
+        var _her_corr = _her_chaos_held ? max(corruption, _her_floor) : corruption;
+        if (_her_corr >= _her_floor && population > 0 && planet_type != "Dead") {
+            var _human = large_population ? (population * 1000000000) : population;
+            // ~0.5 % of the populace take up arms at full corruption — roughly the Imperial militarisation
+            // rate, so the heretic host reaches parity with the garrison only on a heavily-corrupted world.
+            var _her_cap = round(_human * clamp(_her_corr / 100, 0, 1) * 0.005);
+            var _her = system.p_race_pop[planet][eFACTION.HERETICS];
+            // A Chaos-held world with no host yet gets its garrison SEEDED straight to the ceiling (no slow
+            // ramp from 0), so it fields the heretics holding it immediately instead of reading 0.
+            if (_her_chaos_held && _her <= 0) { _her = _her_cap; }
+            // The host converges on the corruption-set ceiling — closing ~10% of the gap each turn, so it
+            // tracks corruption as it rises, regrows after a battle suppresses it, and recedes if cleansed.
+            system.p_race_pop[planet][eFACTION.HERETICS] = round(_her + (_her_cap - _her) * 0.1);
+            system.p_traitors[planet] = count_to_level(eFACTION.HERETICS, system.p_race_pop[planet][eFACTION.HERETICS]);
+        } else if (system.p_race_pop[planet][eFACTION.HERETICS] > 0) {
+            system.p_race_pop[planet][eFACTION.HERETICS] = 0;   // not corrupt enough -> no heretic host
+        }
+
+        // Tyranids — the Hive Fleet answers the beacon (§16b), then works off the BIOMASS SYSTEM: the swarm
+        // does NOT grow a population of its own — it DEVOURS the world's living matter and CONVERTS it into
+        // swarm, so the swarm's size IS the biomass it has eaten. When the reserve (p_biomass) runs dry the
+        // world is a stripped husk and the swarm can grow no further. Total-war (pop = force). The populace
+        // is part of that biomass and vanishes in step with it. p_tyranids kept in sync (legacy readers).
+        var _nid_active = false;
+        if (has_feature(eP_FEATURES.ASCENSION_BEACON)) {
+            var _beacon = get_features(eP_FEATURES.ASCENSION_BEACON)[0];
+            // PLANETFALL fires when the summoned Hive Fleet actually reaches this system (it has crossed the
+            // map from the edge and made orbit -> present_fleet). The eta is only a safety fallback in case
+            // the fleet is intercepted or fails to spawn, so the ascension can never soft-lock.
+            var _fleet_here = variable_instance_exists(system, "present_fleet") && (system.present_fleet[eFACTION.TYRANIDS] > 0);
+            var _eta = variable_struct_exists(_beacon, "eta") ? _beacon.eta : 0;
+            if (!_fleet_here && _eta > 0) {
+                _beacon.eta = _eta - 1;   // Hive Fleet still crossing the sector
+            } else {
+                if (system.p_race_pop[planet][eFACTION.TYRANIDS] <= 0) {
+                    system.p_race_pop[planet][eFACTION.TYRANIDS] = tyranid_swarm_seed(planet_type);   // PLANETFALL
+                    // Seed the world's BIOMASS reserve ONCE — its people plus its native ecosystem. The swarm
+                    // strips this down over the coming turns; its final size is roughly this x efficiency.
+                    if (variable_instance_exists(system, "p_biomass") && system.p_biomass[planet] <= 0) {
+                        var _human0 = large_population ? (population * 1000000000) : population;
+                        system.p_biomass[planet] = tyranid_biomass_budget(planet_type, _human0, _cap_head);
+                    }
+                }
+                _nid_active = true;
+            }
+        } else if (current_owner == eFACTION.TYRANIDS && system.p_race_pop[planet][eFACTION.TYRANIDS] > 0 && !has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
+            _nid_active = true;   // an established Tyranid world keeps swarming — but a still-infiltrating
+                                  // Genestealer Cult (§16p) does NOT devour the world yet; that waits for
+                                  // Ascension (the beacon branch above), so its host just grows as a cult.
+        }
+        if (_nid_active) {
+            var _nid = system.p_race_pop[planet][eFACTION.TYRANIDS];
+            if (!variable_instance_exists(system, "p_biomass")) {
+                // Old save without the biomass layer — fall back to bounded explosive growth so nothing breaks.
+                system.p_race_pop[planet][eFACTION.TYRANIDS] = min(_cap_head, round(_nid * 1.12));
+            } else {
+                var _bio = system.p_biomass[planet];
+                if (_bio <= 0) {
+                    // Infested world whose reserve was never seeded (e.g. a pre-biomass save): reconstruct it,
+                    // treating the swarm already present as biomass it has already eaten.
+                    var _humanR = large_population ? (population * 1000000000) : population;
+                    _bio = max(1, tyranid_biomass_budget(planet_type, _humanR, _cap_head) - _nid);
+                    system.p_biomass[planet] = _bio;
+                }
+                // APPETITE: a bigger swarm strips biomass faster (explosive reproduction), bounded by what
+                // remains — ~0.55 of the swarm's mass per turn while food is plentiful, tapering to nothing as
+                // the reserve empties. EFFICIENCY ~0.9: biomass converts to swarm slightly lossily. The small
+                // seed-based floor keeps a fresh vanguard growing before it has mass of its own.
+                var _consume = min(_bio, _nid * 0.55 + tyranid_swarm_seed(planet_type) * 0.25);
+                system.p_biomass[planet] = max(0, _bio - _consume);
+                system.p_race_pop[planet][eFACTION.TYRANIDS] = _nid + round(_consume * 0.9);
+                // The populace is PART of that biomass — people vanish in step with the reserve draining.
+                if (population > 0) {
+                    var _keep = clamp(system.p_biomass[planet] / _bio, 0, 1);
+                    if (large_population) { edit_population(-(population * (1 - _keep))); }
+                    else { set_population(max(0, round(population * _keep))); }
+                }
+            }
+            system.p_tyranids[planet] = count_to_level(eFACTION.TYRANIDS, system.p_race_pop[planet][eFACTION.TYRANIDS]);
+        }
+    };
+
     static alter_influence = function(faction, value) {
         adjust_influence(faction, value, planet, system);
         population_influences = system.p_influence[planet];
@@ -839,8 +1027,6 @@ function PlanetData(_planet, _system) constructor {
             var _point_data = _system_point_use[$ system.name][planet];
             _spare_apoth_points = _point_data.heal_points - _point_data.heal_points_use;
         }
-        // Region Candidate Stations add screening capacity without tying up apothecaries.
-        _spare_apoth_points += region_candidate_station_bonus(system, planet);
         return _spare_apoth_points;
     };
 
@@ -1221,17 +1407,51 @@ function PlanetData(_planet, _system) constructor {
 
         if (!is_craftworld && !is_hulk) {
             var y7 = 240;
-            var temp3 = string(scr_display_number(guardsmen));
-            if (guardsmen > 0) {
-                draw_text(xx + 480, yy + y7, $"Imperial Guard: {temp3}");
-                y7 += 20;
-            }
-            var temp4 = string(scr_display_number(pdf));
-            if (current_owner != 8) {
-                draw_text(xx + 480, yy + y7, $"Defense Force: {temp4}");
-            }
-            if (current_owner == 8) {
-                draw_text(xx + 480, yy + y7, $"Gue'Vesa Force:  {temp4}");
+            if (current_owner <= 5) {
+                // Imperial-owned world: ONE combined "Imperial Forces" total folding in
+                // every Imperial arm (PDF + Guard + Astartes garrison + Sororitas +
+                // Skitarii + Inquisition), the same grouping the resolver fights as one
+                // side. Click to open the per-arm breakdown.
+                var _if_str = $"Imperial Forces: {scr_display_number(br_side_strength(system, current_planet, \"IMP\"))}";
+                var _if_hover = scr_hit(xx + 480, yy + y7, xx + 480 + string_width(_if_str), yy + y7 + 18);
+                draw_set_color(_if_hover ? c_yellow : c_white);
+                draw_text(xx + 480, yy + y7, _if_str);
+                draw_set_color(c_white);
+                if (_if_hover && mouse_button_clicked()) {
+                    obj_star_select.region_force_open = true;
+                    obj_star_select.region_force_view = -1;
+                    obj_star_select.region_force_faction = -1;
+                }
+            } else if (current_owner == 8) {
+                // Tau world: local human auxiliaries.
+                draw_text(xx + 480, yy + y7, $"Gue'Vesa Force:  {string(scr_display_number(pdf))}");
+            } else if (br_side_of_faction(current_owner) == "CHAOS") {
+                // Chaos-held world: ONE combined "Chaos Forces" total (Chaos Marines +
+                // Heretics + Daemons), mirroring the Imperial fold. Click opens the
+                // per-arm breakdown.
+                var _ch_str = $"Chaos Forces: {scr_display_number(br_side_strength(system, current_planet, \"CHAOS\"))}";
+                var _ch_hover = scr_hit(xx + 480, yy + y7, xx + 480 + string_width(_ch_str), yy + y7 + 18);
+                draw_set_color(_ch_hover ? c_yellow : c_white);
+                draw_text(xx + 480, yy + y7, _ch_str);
+                draw_set_color(c_white);
+                if (_ch_hover && mouse_button_clicked()) {
+                    obj_star_select.region_force_open = true;
+                    obj_star_select.region_force_view = -1;
+                    obj_star_select.region_force_faction = -1;
+                }
+            } else {
+                // Single-faction owner (Ork / Necron / Nid / Eldar): show the OWNER'S
+                // garrison so the world reads as theirs. Clickable to their breakdown.
+                var _ow_str = $"{region_faction_name(current_owner)} Forces: {scr_display_number(planet_faction_force_total(system, current_planet, current_owner))}";
+                var _ow_hover = scr_hit(xx + 480, yy + y7, xx + 480 + string_width(_ow_str), yy + y7 + 18);
+                draw_set_color(_ow_hover ? c_yellow : c_white);
+                draw_text(xx + 480, yy + y7, _ow_str);
+                draw_set_color(c_white);
+                if (_ow_hover && mouse_button_clicked()) {
+                    obj_star_select.region_force_open = true;
+                    obj_star_select.region_force_view = -1;
+                    obj_star_select.region_force_faction = current_owner;
+                }
             }
         }
 
@@ -1325,7 +1545,7 @@ function PlanetData(_planet, _system) constructor {
             "Orks",
             "Tau",
             "Tyranids",
-            "Chaos",
+            "Chaos Marines",
             "Heretics",
             "Daemons",
             "Necrons",
@@ -1356,29 +1576,68 @@ function PlanetData(_planet, _system) constructor {
             "Extremis",
         ];
 
+        // eFACTION per presence row (aligned with faction_names/faction_ids), so each
+        // entry can open that faction's roster. p_demons maps to GENESTEALER.
+        var faction_efaction = [
+            eFACTION.ECCLESIARCHY,
+            eFACTION.ELDAR,
+            eFACTION.ORK,
+            eFACTION.TAU,
+            eFACTION.TYRANIDS,
+            eFACTION.CHAOS,
+            eFACTION.HERETICS,
+            eFACTION.GENESTEALER,
+            eFACTION.NECRONS,
+        ];
+
+        // Each present faction is its own clickable roster row: click opens that
+        // faction's planet-wide force breakdown, mirroring the region rows.
+        var _pres_x = xx + 349;
+        var _pres_y = yy + 346;
+        var _pres_row = 0;
         for (var t = 0; t < array_length(faction_names); t++) {
             var faction = faction_names[t];
             var faction_id = faction_ids[t];
             var level = system[$ faction_id][current_planet];
-            var blurb = "";
 
             // Special condition for "Cultists" -> "Daemons"
             if (faction_id == "p_chaos" && level > 6) {
                 faction = "Daemons";
             }
 
+            var blurb = "";
             if (level >= 1 && level <= 6) {
                 blurb = blurbs[level - 1];
             } else if (level > 6) {
                 blurb = blurbs[5];
             }
 
-            if (faction != "" && level > 0) {
-                presence_text += $"{faction}: {blurb} ({level})\n";
+            // Fold the OWNER's whole alliance into the single headline total above: an
+            // Imperial world doesn't also list Adeptas, a Chaos world doesn't list
+            // Heretics / Daemons / Chaos Marines as separate rows.
+            var _owner_side = br_side_of_faction(current_owner);
+            var _hide_row = ((_owner_side == "IMP") || (_owner_side == "CHAOS")) && (br_side_of_faction(faction_efaction[t]) == _owner_side);
+            // A SECRET heretic cult shows NO force line: only the Heretic Activity tag.
+            if (!_hide_row && (faction_efaction[t] == eFACTION.HERETICS) && heretic_is_hidden(system, current_planet)) { _hide_row = true; }
+            // Likewise a still-hidden Genestealer Cult: the tag shows, not its numbers.
+            if (!_hide_row && (faction_efaction[t] == eFACTION.TYRANIDS) && genestealer_is_hidden(system, current_planet)) { _hide_row = true; }
+
+            if (faction != "" && level > 0 && !_hide_row) {
+                var _p_total = planet_faction_force_total(system, current_planet, faction_efaction[t]);
+                var _p_lbl = $"{faction} Forces: {scr_display_number(_p_total)}";
+                var _p_ly = _pres_y + (_pres_row * 16);
+                var _p_hover = scr_hit(_pres_x, _p_ly, _pres_x + string_width(_p_lbl), _p_ly + 15);
+                draw_set_color(_p_hover ? c_yellow : c_white);
+                draw_text(_pres_x, _p_ly, _p_lbl);
+                if (_p_hover && mouse_button_clicked()) {
+                    obj_star_select.region_force_open = true;
+                    obj_star_select.region_force_faction = faction_efaction[t];
+                    obj_star_select.region_force_view = -1;
+                }
+                _pres_row++;
             }
         }
-
-        draw_text(xx + 349, yy + 346, string_hash_to_newline(string(presence_text)));
+        draw_set_color(c_white);
 
         var planet_displays = [];
         var feat_count = array_length(features);
@@ -1395,9 +1654,10 @@ function PlanetData(_planet, _system) constructor {
                 try {
                     if (cur_feature.planet_display != 0) {
                         if (cur_feature.f_type == eP_FEATURES.GENE_STEALER_CULT) {
-                            if (!cur_feature.hiding) {
-                                array_push(planet_displays, [cur_feature.planet_display, cur_feature]);
-                            }
+                            // Always show the "Genestealer Cult" tag as the player's WARNING (§16p) — even
+                            // while the cult is still hidden. The tag + the Tyranid influence bar are the only
+                            // signals; the cult's actual numbers stay secret (genestealer_is_hidden).
+                            array_push(planet_displays, [cur_feature.planet_display, cur_feature]);
                         } else if (cur_feature.player_hidden == 1) {
                             array_push(planet_displays, ["????", ""]);
                         } else {
@@ -1567,10 +1827,9 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static set_star_select_planet = function() {
-        // Multi-region worlds default to the Planetary Regions panel when you click them (the
-        // per-region garrison, defences and Construction live there); clicking now "locks in" the
-        // regions view instead of opening the classic garrison report. Single-region worlds keep
-        // the garrison report on click.
+        // Multi-region worlds default to the Planetary Regions panel when clicked (per-region garrison,
+        // defences and Construction live there). Clicking "locks in" the regions view instead of the classic
+        // garrison report, and re-clicking the SAME world re-opens it. Single-region worlds keep the report.
         if (planet_region_count(system, planet) > 1) {
             obj_star_select.garrison = "";
             obj_star_select.feature = "";
@@ -1669,6 +1928,29 @@ function PlanetData(_planet, _system) constructor {
             var spacing_y = 65;
             draw_set_halign(fa_left);
 
+            // --- Local Population by race (Sector Governor): the world's actual inhabitants, so you can tell
+            // at a glance whether it's a human hive, a Tau protectorate, an Eldar craftworld, an Ork-infested
+            // world, a Necron tomb, etc. Reads the p_race_pop headcounts (+ the human/loyalist pool). ---
+            var _lp_y = yy + 34;
+            draw_set_color(c_white);
+            draw_text(xx + 35, _lp_y, "Local Population");
+            _lp_y += 22;
+            var _human_pop = large_population ? (population * 1000000000) : population;
+            if (_human_pop > 0) {
+                var _human_label = (current_owner == eFACTION.TAU) ? "Gue'Vesa (Human)" : "Human";
+                draw_text(xx + 45, _lp_y, $"{_human_label}: {scr_display_number(_human_pop)}");
+                _lp_y += 18;
+            }
+            var _lp_races = [[eFACTION.TAU, "Tau"], [eFACTION.ELDAR, "Eldar"], [eFACTION.ORK, "Ork"], [eFACTION.TYRANIDS, "Tyranid"], [eFACTION.NECRONS, "Necron"], [eFACTION.HERETICS, "Cultist"]];
+            for (var _lr = 0; _lr < array_length(_lp_races); _lr++) {
+                var _rpop = planet_race_pop(system, planet, _lp_races[_lr][0]);
+                if (_rpop > 0) {
+                    draw_text(xx + 45, _lp_y, $"{_lp_races[_lr][1]}: {scr_display_number(_rpop)}");
+                    _lp_y += 18;
+                }
+            }
+            draw_set_color(c_gray);
+
             var _imperium_status = obj_controller.faction_status[eFACTION.IMPERIUM];
             if ((_imperium_status != "War" && current_owner <= 5) || (_imperium_status == "War")) {
                 var _col_button = obj_star_select.colonist_button;
@@ -1735,6 +2017,9 @@ function PlanetData(_planet, _system) constructor {
         // Orks grow in number
 
         end_turn_population_growth();
+        // Additive per-race population growth (§16b): grows seeded Tau/Eldar civ pops, the Ork Fungal Bloom,
+        // the awakened Necron reserve, Chaos heretic feeding, and Tyranid biomass consumption.
+        end_turn_race_population_growth();
 
         // increasing necrons
         if (array_length(features) != 0) {
@@ -1864,6 +2149,10 @@ function PlanetData(_planet, _system) constructor {
 
         end_turn_heretics_and_corruption_growth();
 
+        // Keep heretic cults a SECRET (§16k): hide their numbers behind the "Heretic Activity" tag, reveal
+        // when strong enough to revolt, purge when a garrison catches them weak.
+        heretic_concealment_tick(system, planet);
+
         end_turn_genestealer_cults();
 
         // Spread influence on controlled sector
@@ -1896,22 +2185,68 @@ function PlanetData(_planet, _system) constructor {
         if (has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
             var cult = get_features(eP_FEATURES.GENE_STEALER_CULT)[0];
             cult.cult_age++;
+            // POPULATION-DRIVEN INFILTRATION: the cult is a hidden slice of the world's
+            // OWN populace that swells as it matures: a slow burn to full over ~40 turns,
+            // capped near the world's PDF militarisation rate (~0.6% of the populace) so
+            // a MATURE cult is "a good fight for the PDF". Its roster then scales off
+            // this host. At Ascension the biomass swarm takes over from this seed.
+            if (variable_instance_exists(system, "p_race_pop") && (population > 0)) {
+                var _mat = clamp(cult.cult_age / 40, 0, 1);
+                var _people = large_population ? (population * 1000000000) : population;
+                var _cap = round(_people * 0.006 * _mat);
+                var _host = system.p_race_pop[planet][eFACTION.TYRANIDS];
+                if (_cap > _host) {
+                    system.p_race_pop[planet][eFACTION.TYRANIDS] = round(_host + (_cap - _host) * 0.1);
+                    system.p_tyranids[planet] = count_to_level(eFACTION.TYRANIDS, system.p_race_pop[planet][eFACTION.TYRANIDS]);
+                }
+            }
             alter_influence(eFACTION.TYRANIDS, cult.cult_age / 100);
             var planet_garrison = garrisons;
+            // ASCENSION DAY: a RARE, standing threat, not an endgame flood. A cult ripens
+            // at its own rolled age (100-200), but the whole SECTOR shares a beacon
+            // cooldown, so at most ~1-2 Hive Fleets are summoned per ~200 turns even if
+            // a dozen cults are ripe. Ripe cults simply wait their window.
+            if (!variable_global_exists("last_ascension_turn")) { global.last_ascension_turn = -9999; }
+            var _asc_age = variable_struct_exists(cult, "ascension_age") ? cult.ascension_age : 150;
+            var _beacon_cooldown = 140;
+            if ((cult.cult_age >= _asc_age) && !has_feature(eP_FEATURES.ASCENSION_BEACON)
+                && ((obj_controller.turn - global.last_ascension_turn) >= _beacon_cooldown)) {
+                global.last_ascension_turn = obj_controller.turn;
+                cult.hiding = false;
+                set_new_owner(eFACTION.TYRANIDS);
+                scr_popup("Ascension Day", $"The Genestealer Cult on {name()} reaches critical mass and lights the Ascension Beacon. The Hive Fleet answers the call.", "Genestealer Cult", "");
+                scr_event_log("red", $"Ascension Day on {name()}: the Hive Fleet has been summoned.", system.name);
+                ascend_tyranid_world(self);
+            }
             if (cult.hiding) {
                 if (population_influences[eFACTION.TYRANIDS] > 50) {
+                    // STRONG ENOUGH TO WIN: the cult judges it can take the world, so it
+                    // reveals and rises. A garrison closing in forces their hand, so its
+                    // presence makes the uprising MORE likely, not less.
                     var find_cult_chance = irandom(50);
-                    var alert_text = $"A hidden Genestealer Cult on {name()} Has suddenly burst forth from hiding!";
+                    var alert_text = $"A hidden Genestealer Cult on {name()} has suddenly burst forth from hiding!";
                     if (planet_garrison.garrison_force) {
-                        alert_text = $"A hidden Genestealer Cult on {name()} Has been discovered by marine garrisons!";
+                        alert_text = $"A hidden Genestealer Cult on {name()} was discovered by the garrison and has risen in open revolt!";
                         find_cult_chance -= 25;
                     }
                     if (find_cult_chance < 1) {
                         cult.hiding = false;
                         scr_popup("System Lost", alert_text, "Genestealer Cult", "");
                         set_new_owner(eFACTION.TYRANIDS);
-                        scr_event_log("red", $"A hidden Genestealer Cult on {name()} has Started a revolt.", system.name);
+                        scr_event_log("red", $"A hidden Genestealer Cult on {name()} has started a revolt.", system.name);
                         edit_forces(eFACTION.TYRANIDS, 1);
+                        // REVEAL is an uprising, NOT Ascension: the Hive Fleet is only
+                        // summoned later, once the cult has fully entrenched.
+                    }
+                } else if (planet_garrison.garrison_force) {
+                    // DISCOVERED WHILE WEAK: a cult too small to win is rooted out by a
+                    // sweeping garrison before it can ever ascend. Found = wiped out.
+                    var _find_weak = irandom(60) - planet_garrison.total_garrison;
+                    if (_find_weak < 1) {
+                        delete_feature(eP_FEATURES.GENE_STEALER_CULT);
+                        alter_influence(eFACTION.TYRANIDS, -population_influences[eFACTION.TYRANIDS]);
+                        scr_popup("Cult Purged", $"The garrison on {name()} uncovered and exterminated a nascent Genestealer Cult before it could rise.", "Genestealer Cult", "");
+                        scr_event_log("green", $"A nascent Genestealer Cult on {name()} was discovered and purged.", system.name);
                     }
                 }
             }

@@ -244,96 +244,21 @@ try {
                 }
             }
 
-            if (capital_number > 0) {
-                var capitals_engaged = 0;
-                with (orbiting) {
-                    for (var i = 1; i <= planets; i++) {
-                        if (capitals_engaged == capital_number) {
-                            break;
-                        }
-                        if (p_type[i] != "Dead") {
-                            p_tyranids[4] = 5;
-                            capitals_engaged += 1;
-                        }
-                    }
-                }
+            // ENGAGE: the Hive Fleet devours the worlds it's orbiting: seed the swarm
+            // on up to capital_number food worlds so the biomass engine strips them over
+            // the coming turns, even after the fleet moves on. (Replaces the old
+            // p_tyranids[4]=5 engage, a hard-coded-index bug.)
+            if (capital_number > 0 && instance_exists(orbiting)) {
+                tyranid_fleet_engage(orbiting, capital_number);
             }
 
-            var n = false;
-            with (orbiting) {
-                n = is_dead_star();
-            }
-
-            if (n) {
-                var xx = 0;
-                var yy = 0;
-                var good = 0;
-                var plin = 0;
-                var plin2 = 0;
-
-                if (capital_number > 5) {
-                    n = 5;
-                }
-
-                instance_deactivate_object(orbiting);
-                var _abort_migration = false;
-
-                repeat (100) {
-                    if (good != 5) {
-                        xx = self.x + random_range(-300, 300);
-                        yy = self.y + random_range(-300, 300);
-                        if (good == 0) {
-                            plin = instance_nearest(xx, yy, obj_star);
-                        }
-                        if ((good == 1) && (n == 5)) {
-                            plin2 = instance_nearest(xx, yy, obj_star);
-                        }
-
-                        good = !array_contains(plin.p_type, "dead");
-
-                        if ((good == 1) && (n == 5)) {
-                            if (!instance_exists(plin2)) {
-                                _abort_migration = true;
-                                break;
-                            }
-                            if (!array_contains(plin.p_type, "dead")) {
-                                good++;
-                            }
-
-                            var new_fleet;
-                            new_fleet = create_enemy_fleet(x, y, eFACTION.TYRANIDS);
-                            new_fleet.capital_number = floor(capital_number * 0.4);
-                            new_fleet.frigate_number = floor(frigate_number * 0.4);
-                            new_fleet.escort_number = floor(escort_number * 0.4);
-
-                            capital_number -= new_fleet.capital_number;
-                            frigate_number -= new_fleet.frigate_number;
-                            escort_number -= new_fleet.escort_number;
-                            new_fleet.sprite_index = spr_fleet_tyranid;
-                            new_fleet.image_index = 1;
-
-                            new_fleet.action_x = plin2.x;
-                            new_fleet.action_y = plin2.y;
-                            with (new_fleet) {
-                                set_fleet_movement();
-                            }
-                            break;
-                        }
-
-                        if ((good == 1) && instance_exists(plin)) {
-                            action_x = plin.x;
-                            action_y = plin.y;
-                            set_fleet_movement();
-                            if (n != 5) {
-                                good = 5;
-                            }
-                        }
-                    }
-                }
-                instance_activate_object(obj_star);
-                if (_abort_migration) {
-                    exit;
-                }
+            // MIGRATE: once every food world here is infested (the biomass engine
+            // finishes stripping them with or without the fleet), the tendril advances
+            // to the nearest system with un-eaten worlds, leaving husks in its wake.
+            // (Old trigger was is_dead_star(), which the biomass system never sets, so
+            // the swarm never spread.)
+            if (instance_exists(orbiting) && !tyranid_system_needs_fleet(orbiting)) {
+                tyranid_fleet_migrate(id);
             }
         }
     }

@@ -159,6 +159,16 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
 
             if (_allow_fortifications) {
                 obj_ncombat.fortified = _planet_data.fortification_level;
+                // §16h: bridge the planet's ground defences (p_defenses -> ground_defences) into the
+                // defending battle. This was declared but never assigned (player_defenses hard-set to 0 in
+                // obj_ncombat Create_0), so Turret Battery region-buildings — and any p_defenses — never
+                // spawned the weapon-emplacement unit. Alarm_5 already writes battle losses back to
+                // p_defenses[battle_id], so the setup read was the missing half of the loop.
+                obj_ncombat.player_defenses = _planet_data.ground_defences;
+                // §16h: the world's Bastion region-buildings reinforce the fortress in this battle — a DISTINCT,
+                // uncapped bonus (each Bastion = +bunker HP/armour in obj_ncombat/Alarm_0), separate from the
+                // fortification tier above. Counted live from the serialised regions, so it covers old saves too.
+                obj_ncombat.bastion_bonus = planet_bastion_count(_planet_data.system, _planet_data.planet);
             }
 
             if (obj_ncombat.enemy == eFACTION.NECRONS) {

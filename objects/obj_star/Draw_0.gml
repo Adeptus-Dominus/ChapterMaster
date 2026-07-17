@@ -94,5 +94,20 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
 
     var _sprite = ds_map_find_value(global.star_sprites, name);
     draw_sprite_ext(_sprite, 0, x - (64 * scale), y, scale, scale, 1, c_white, 1);
+
+    // Ork clan icon: a small clan symbol on the green label so you can tell at a
+    // glance which clan runs this WAAAGH. Green stays (Ork identity); accent only.
+    if (owner == eFACTION.ORK) {
+        var _olead = system_leading_ork_warband(id);
+        if (is_struct(_olead)) {
+            var _px = x - (30 * scale);
+            var _py = y + (12 * scale);
+            var _pr = 6 * scale;
+            ork_warband_draw_icon(_olead, _px, _py, _pr);
+            if (scr_hit(_px - _pr, _py - _pr, _px + _pr, _py + _pr)) {
+                tooltip_draw(_olead.name + " leads this WAAAGH");
+            }
+        }
+    }
 }
 draw_set_valign(fa_top);

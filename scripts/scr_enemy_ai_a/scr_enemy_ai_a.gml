@@ -346,7 +346,13 @@ function scr_enemy_ai_a() {
             }
         }
 
-        if (!stop) {
+        if ((!stop) && ((!variable_global_exists("br_ai_battles")) || global.br_ai_battles)) {
+            // Sector Governor (§16): resolve this planet's battle as a REAL two-sided fight between the actual
+            // rosters — casualties both ways, ownership follows the result — instead of the one-sided
+            // choose(1..6)xscore attrition in the else branch. Toggle off with  global.br_ai_battles = false .
+            // The post-battle liberation + PDF-regen code after this block still runs either way. See scr_battle_resolver.
+            resolve_ai_planet_battle(id, _run);
+        } else if (!stop) {
             // Start stop
 
             default_imperium_attack = guard_score > 0 && !((guard_score <= 0.5) && (pdf_score > 0)) ? "guard" : "pdf";

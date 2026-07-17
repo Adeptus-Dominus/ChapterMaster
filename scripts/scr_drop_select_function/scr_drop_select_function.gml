@@ -231,6 +231,35 @@ function drop_select_unit_selection() {
         }
 
         draw_sprite(spr_faction_icons, attacking, x2 - 100, y1 + 20);
+
+        // Target SECTOR selector: which planetary region the assault lands on. Cycles the planet's
+        // conquest focus (shared with the system-view regions panel). Only on multi-region worlds.
+        if (planet_region_count(p_target, planet_number) > 1) {
+            var _seci = region_focus_get(p_target, planet_number);
+            var _secr = region_get(p_target, planet_number, _seci);
+            var _forti_n = ["None", "Sparse", "Light", "Moderate", "Heavy", "Major", "Extreme"];
+            var _sector_str = $"Sector: {_secr.name} ({region_faction_name(_secr.owner)}, Fort {_forti_n[clamp(_secr.fortification, 0, 6)]}, Def {_secr.defences})";
+            // Drawn directly (not via InteractiveButton, whose width-based text padding pushes a
+            // wide label to the box bottom): a centred box with the text centred both ways inside it.
+            // Click cycles the conquest focus (shared with the system-view regions panel).
+            draw_set_font(fnt_40k_14);
+            var _ssw = string_width(_sector_str);
+            var _ssh = string_height(_sector_str);
+            var _ssx1 = x3 - (_ssw / 2) - 8;
+            var _ssy1 = y1 + 150;
+            var _ssx2 = x3 + (_ssw / 2) + 8;
+            var _ssy2 = _ssy1 + _ssh + 8;
+            draw_set_color(CM_GREEN_COLOR);
+            draw_rectangle(_ssx1, _ssy1, _ssx2, _ssy2, true);
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_middle);
+            draw_text(x3, (_ssy1 + _ssy2) / 2, _sector_str);
+            draw_set_halign(fa_left);
+            draw_set_valign(fa_top);
+            if (scr_hit(_ssx1, _ssy1, _ssx2, _ssy2) && mouse_button_clicked()) {
+                region_focus_set(p_target, planet_number, (_seci + 1) mod planet_region_count(p_target, planet_number));
+            }
+        }
     }
 
     // Back / Purge buttons
@@ -242,6 +271,25 @@ function drop_select_unit_selection() {
         menu = 0;
         purge = 0;
         instance_destroy();
+    }
+
+    // Behead the Warboss (§16f): only in the raid screen, and only when this world actually has an Ork
+    // Warboss present. A decapitation strike — kills the boss (a non-duel death), throwing the clans into a
+    // succession scramble or civil war. Spends the fleet's action, like a raid.
+    if ((purge == eDROP_TYPE.RAIDATTACK) && planet_feature_bool(p_target.p_feature[planet_number], eP_FEATURES.ORKWARBOSS)) {
+        btn_behead.x1 = btn_back.x1;
+        btn_behead.y1 = btn_back.y1 - 45;
+        btn_behead.active = true;
+        btn_behead.update();
+        btn_behead.draw();
+        if (btn_behead.clicked()) {
+            if (sh_target != noone) { sh_target.acted += 1; }
+            var _bh_res = ork_decapitation_strike(p_target, planet_number);
+            scr_popup("Decapitation Strike", _bh_res.text, "waaagh");
+            menu = 0;
+            purge = 0;
+            instance_destroy();
+        }
     }
 
     // Attack / Raid buttons
@@ -488,6 +536,26 @@ function drop_select_unit_selection() {
             _p_data.refresh_data();
 
             _p_data.purge(purge, _purge_score);
+
+            // Cleanse by Fire ALSO scours a Fungal Bloom if one has taken root here (§16h): the same
+            // promethium that burns out heretics and xenos torches the Ork spore-bed — removes the bloom
+            // feature and most of the greenskin horde. (Behead's old standalone "Cleanse" button was removed.)
+            if ((purge == eDROP_TYPE.PURGEFIRE) && _p_data.has_feature(eP_FEATURES.FUNGAL_BLOOM)) {
+                var _cleanse_res = ork_cleanse_bloom(p_target, planet_number);
+                scr_popup("Cleanse by Fire", _cleanse_res.text, "");
+            }
+
+            // Bombardment grinds down the TARGETED sector's own defences (region-level), matching the
+            // sector shown/selected on the bombard screen. Guarded so old saves / no-region worlds
+            // are untouched.
+            if ((purge == eDROP_TYPE.PURGEBOMBARD) && variable_instance_exists(p_target, "p_regions")) {
+                var _bombsec = region_focus_get(p_target, planet_number);
+                var _bombrgn = region_get(p_target, planet_number, _bombsec);
+                _bombrgn.fortification = max(0, _bombrgn.fortification - 1);
+                if (_bombrgn.defences > 0) {
+                    _bombrgn.defences = max(0, _bombrgn.defences - 1);
+                }
+            }
         }
     }
 }
@@ -561,6 +629,33 @@ function drop_select_draw() {
 
                 // Planet icon here
                 draw_rectangle(x2 + 459, y2 + 14, x2 + 516, y2 + 71, 0);
+
+                // Target SECTOR for the bombardment (the region whose defences it grinds down).
+                if (planet_region_count(p_target, planet_number) > 1) {
+                    var _bseci = region_focus_get(p_target, planet_number);
+                    var _bsecr = region_get(p_target, planet_number, _bseci);
+                    var _bforti_n = ["None", "Sparse", "Light", "Moderate", "Heavy", "Major", "Extreme"];
+                    var _bsector_str = $"Sector: {_bsecr.name} ({region_faction_name(_bsecr.owner)}, Fort {_bforti_n[clamp(_bsecr.fortification, 0, 6)]}, Def {_bsecr.defences})";
+                    // Drawn directly (centred both ways), below the purge option buttons.
+                    draw_set_font(fnt_40k_14);
+                    var _bcx = x2 + 230;
+                    var _bsw = string_width(_bsector_str);
+                    var _bsh = string_height(_bsector_str);
+                    var _bsx1 = _bcx - (_bsw / 2) - 8;
+                    var _bsy1 = y2 + 340;
+                    var _bsx2 = _bcx + (_bsw / 2) + 8;
+                    var _bsy2 = _bsy1 + _bsh + 8;
+                    draw_set_color(CM_GREEN_COLOR);
+                    draw_rectangle(_bsx1, _bsy1, _bsx2, _bsy2, true);
+                    draw_set_halign(fa_center);
+                    draw_set_valign(fa_middle);
+                    draw_text(_bcx, (_bsy1 + _bsy2) / 2, _bsector_str);
+                    draw_set_halign(fa_left);
+                    draw_set_valign(fa_top);
+                    if (scr_hit(_bsx1, _bsy1, _bsx2, _bsy2) && mouse_button_clicked()) {
+                        region_focus_set(p_target, planet_number, (_bseci + 1) mod planet_region_count(p_target, planet_number));
+                    }
+                }
 
                 draw_set_font(fnt_40k_14);
                 draw_set_color(c_gray);

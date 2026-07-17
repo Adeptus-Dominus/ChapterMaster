@@ -187,10 +187,29 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                 title = "Ork Stronghold";
                 generic = true;
                 if (planet_data.planet_forces[eFACTION.ORK]) {
-                    body = $"For as long as this Stronghold stands the orks here will continue to fortify it. The larger it gets the greater the capacity of this planet to produce orkish machines of war and ships and the better protected the ork forces will be from bombardment";
+                    var _clan_line = "";
+                    if (planet_race_pop(planet_data.system, planet_data.planet, eFACTION.ORK) > 0) {
+                        _clan_line = "This WAAAGH is led by the " + ork_clan_summary(planet_data.system, planet_data.planet) + ". ";
+                    }
+                    body = _clan_line + $"For as long as this Stronghold stands the orks here will continue to fortify it. The larger it gets the greater the capacity of this planet to produce orkish machines of war and ships and the better protected the ork forces will be from bombardment";
                 } else {
                     body = "Without a force of orks to hold it together the fortress is slowly pulled apart from within by the inhabitants, It's capabilities will constantly decrease until soon there will be nothing left";
                 }
+                break;
+            case eP_FEATURES.FUNGAL_BLOOM:
+                title = "Fungal Bloom";
+                generic = true;
+                body = "The density of the fungal flora here is enough to sustain a great number of orks. Spores hang thick on every wind, and where they settle squigs, grots and boyz erupt from the loam faster than any bombardment can burn them back. Left unchecked, the bloom swells into a full WAAAGH.";
+                break;
+            case eP_FEATURES.ASCENSION_BEACON:
+                title = "Ascension Beacon";
+                generic = true;
+                body = "The Genestealer Cult has fulfilled its purpose. A psychic beacon screams into the warp, and the Hive Fleet answers. Spores rain from a darkening sky and the world's own biomass is devoured and reborn as the Great Devourer's brood — Termagants, Warriors, monstrous beasts. Every living thing here is now food or fuel for the swarm. Destroy the beacon, or the whole world is consumed.";
+                break;
+            case eP_FEATURES.HERETIC_ACTIVITY:
+                title = "Heretic Activity";
+                generic = true;
+                body = "Whispers of the Dark Gods have taken root here. A heretic cult festers in the under-hive and the shadowed places — its true numbers unknown, its leaders hidden among the loyal populace. It will not tip its hand until it believes it can win. A strong garrison may uncover and purge it before it rises; but let your grip slip and it will erupt into open revolt.";
                 break;
             case eP_FEATURES.RECRUITING_WORLD:
                 generic = true;

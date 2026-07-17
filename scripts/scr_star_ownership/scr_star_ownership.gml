@@ -113,13 +113,16 @@ function scr_star_ownership(argument0) {
             }
         }
 
-        // Derived conquest overlay: reflect how far this planet has been taken (Option A).
+        // Derived conquest overlay: reflect how far this planet has been taken (Option A). §16
         regions_sync(id, run);
 
         if (argument0 != false) {
-            // Per-turn effects of region buildings the player holds (income, garrison growth, etc.).
+            // Per-turn effects of region buildings the player holds (income, garrison growth, etc.). §16
             regions_buildings_tick(id, run);
-            // Anti-orbital guns fire for whoever holds their region (can turn on the player).
+            // Infrastructure develops the longer the current owner holds the world — drives the force tier
+            // (unit types unlocked) and the production ramp. Reset on capture (see set_new_owner).
+            p_infra_turns[run] = min(p_infra_turns[run] + 1, 999);
+            // Anti-orbital guns fire for whoever holds their region (can turn on the player). §16
             regions_orbital_guns_tick(id, run);
             if (array_length(p_feature[run]) != 0) {
                 if (planet_feature_bool(p_feature[run], eP_FEATURES.DAEMONIC_INCURSION)) {
