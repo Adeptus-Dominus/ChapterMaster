@@ -53,6 +53,8 @@ function return_sprite_mirrored(_spr, delete_sprite = true) {
     var _w = sprite_get_width(_spr);
     var _h = sprite_get_height(_spr);
     var _frames = sprite_get_number(_spr);
+    var _sprite_xoffset = sprite_get_xoffset(_spr);
+    var _sprite_yoffset = sprite_get_yoffset(_spr);
 
     // New mirrored sprite we’ll build
     var _new_sprite = undefined;
@@ -64,13 +66,13 @@ function return_sprite_mirrored(_spr, delete_sprite = true) {
         draw_clear_alpha(c_black, 0);
 
         // Draw sprite frame mirrored (scale_x = -1 flips horizontally)
-        draw_sprite_ext(_spr, _i, _w, 0, -1, 1, 0, c_white, 1);
+        draw_sprite_ext(_spr, _i, _w - _sprite_xoffset, _sprite_yoffset, -1, 1, 0, c_white, 1);
 
         surface_reset_target();
 
         // Add to new sprite (first frame creates, rest append)
         if (_i == 0) {
-            _new_sprite = sprite_create_from_surface(_surf, 0, 0, _w, _h, false, false, 0, 0);
+            _new_sprite = sprite_create_from_surface(_surf, 0, 0, _w, _h, false, false, _sprite_xoffset, _sprite_yoffset);
         } else {
             sprite_add_from_surface(_new_sprite, _surf, 0, 0, _w, _h, 0, 0);
         }
