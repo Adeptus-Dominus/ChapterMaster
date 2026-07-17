@@ -78,6 +78,66 @@ function scr_cheatcode(argument0) {
                     }
                     break;
                 }
+                case "spawnguard": {
+                    // Test cheat: pump p_guardsmen on a planet so barracks growth and
+                    // garrison combat (threat -> guard_total when fighting an Imperial
+                    // world) can be tested quickly. Also mirrors into the region
+                    // overlay's capital for display consistency.
+                    // Usage: spawnguard <planet> [amount=1000]
+                    var _gstar = noone;
+                    if (instance_exists(obj_star_select)) {
+                        _gstar = obj_star_select.target;
+                    }
+                    if (!instance_exists(_gstar) && instance_exists(obj_p_fleet)) {
+                        _gstar = instance_nearest(obj_p_fleet.x, obj_p_fleet.y, obj_star);
+                    }
+                    if (!instance_exists(_gstar)) {
+                        _gstar = instance_nearest(mouse_x, mouse_y, obj_star);
+                    }
+                    if (instance_exists(_gstar)) {
+                        var _gp = (array_length(cheat_arguments) > 0) ? clamp(real(cheat_arguments[0]), 1, max(1, _gstar.planets)) : 1;
+                        var _gn = (array_length(cheat_arguments) > 1) ? max(1, real(cheat_arguments[1])) : 1000;
+                        _gstar.p_guardsmen[_gp] += _gn;
+                        var _gregs = regions_ensure(_gstar, _gp);
+                        if (array_length(_gregs) > 0) {
+                            _gregs[0].guardsmen += _gn;
+                        }
+                        scr_popup("DEBUG", $"+{_gn} Guardsmen on {_gstar.name} {scr_roman(_gp)} (now {_gstar.p_guardsmen[_gp]}).", "");
+                    } else {
+                        scr_popup("DEBUG", "spawnguard: no star found", "");
+                    }
+                    break;
+                }
+                case "spawnbarracks": {
+                    // Test cheat: plant a barracks region building directly, no cost or
+                    // build UI. It ticks each end turn like a bought one (+100 Guard /
+                    // +200 PDF to both the region overlay and the planet scalar).
+                    // Usage: spawnbarracks <planet> [guard|pdf]  (default guard)
+                    var _bstar = noone;
+                    if (instance_exists(obj_star_select)) {
+                        _bstar = obj_star_select.target;
+                    }
+                    if (!instance_exists(_bstar) && instance_exists(obj_p_fleet)) {
+                        _bstar = instance_nearest(obj_p_fleet.x, obj_p_fleet.y, obj_star);
+                    }
+                    if (!instance_exists(_bstar)) {
+                        _bstar = instance_nearest(mouse_x, mouse_y, obj_star);
+                    }
+                    if (instance_exists(_bstar)) {
+                        var _bp = (array_length(cheat_arguments) > 0) ? clamp(real(cheat_arguments[0]), 1, max(1, _bstar.planets)) : 1;
+                        var _bkind = ((array_length(cheat_arguments) > 1) && (string_lower(cheat_arguments[1]) == "pdf")) ? "pdf_barracks" : "guard_barracks";
+                        var _bregs = regions_ensure(_bstar, _bp);
+                        if (array_length(_bregs) > 0) {
+                            array_push(_bregs[0].buildings, _bkind);
+                            scr_popup("DEBUG", $"Built {_bkind} in {_bregs[0].name} on {_bstar.name} {scr_roman(_bp)}. It ticks each end turn.", "");
+                        } else {
+                            scr_popup("DEBUG", "spawnbarracks: no regions on that planet", "");
+                        }
+                    } else {
+                        scr_popup("DEBUG", "spawnbarracks: no star found", "");
+                    }
+                    break;
+                }
                 case "newchap":
                     obj_controller.chaplain_points = 50;
                     break;

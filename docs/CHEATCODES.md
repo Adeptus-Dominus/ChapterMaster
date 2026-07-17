@@ -85,3 +85,6 @@ Arguments with stars `(argument*)` can be omitted.
 - `depcha (number*)` - sets disposition of Chaos to specified value.
 - `deptyr (number*)` - sets disposition of...Tyranids? (probably does nothing) to specified value.
 
+
+- `spawnguard <planet> [amount=1000]` — add Guardsmen to the viewed planet (planet scalar + region capital). For testing barracks growth and garrison combat.
+- `spawnbarracks <planet> [guard|pdf]` — plant a Guard/PDF Barracks region building on the viewed planet, free. Ticks each end turn.
