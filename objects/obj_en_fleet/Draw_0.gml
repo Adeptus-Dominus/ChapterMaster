@@ -1,4 +1,4 @@
-if ((obj_controller.menu != 0) || !instance_exists(obj_star)) {
+if ((obj_controller.menu != eMENU.DEFAULT && obj_controller.menu != eMENU.TURN_END) || !instance_exists(obj_star)) {
     exit;
 }
 var scale = obj_controller.scale_mod;
