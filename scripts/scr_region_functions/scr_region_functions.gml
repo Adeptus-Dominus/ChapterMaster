@@ -487,6 +487,30 @@ function regions_sync(_star, _planet) {
     }
 
     var _owner = _star.p_owner[_planet];
+
+    // EXTINCT-OWNER LIBERATION: a hostile faction that no longer exists on its own
+    // world (force level 0 AND, where its population is modelled, headcount 0) does
+    // not keep the deed. Without this, ownership set during an invasion (e.g. the
+    // Tyranid ascension's set_new_owner) outlived the swarm's destruction, and the
+    // regions panel painted every region under an owner with no forces (the
+    // Demetrius report). The world reverts to the capital's recorded first owner.
+    if (region_faction_is_hostile(_owner)) {
+        var _own_force = planet_faction_force_total(_star, _planet, _owner);
+        var _own_pop = 0;
+        if (variable_instance_exists(_star, "p_race_pop") && (count_to_level_anchors(_owner) != -1)) {
+            _own_pop = _star.p_race_pop[_planet][_owner];
+        }
+        if ((_own_force <= 0) && (_own_pop <= 0)) {
+            var _heir = eFACTION.IMPERIUM;
+            if ((array_length(_regions) > 0) && variable_struct_exists(_regions[0], "first_owner")) {
+                _heir = _regions[0].first_owner;
+            }
+            _star.p_owner[_planet] = _heir;
+            _owner = _heir;
+            scr_event_log("green", $"{region_faction_name(_heir)} authority is restored on {_star.name} {scr_roman(_planet)}: the occupiers are no more.", _star.name);
+        }
+    }
+
     var _enemy = region_planet_enemy(_star, _planet);
     var _enemy_faction = _enemy[0];
     var _enemy_force = _enemy[1];
