@@ -162,8 +162,7 @@ function scr_quest(quest_satus, quest_name, quest_fac, quest_end) {
             targ = instance_nearest(obj_ground_mission.x, obj_ground_mission.y, obj_temp3);
         }
 
-        var flit = instance_create(targ.x, targ.y, obj_en_fleet);
-        flit.owner = quick_trade;
+        var flit = create_enemy_fleet(targ.x, targ.y, quick_trade);
 
         if (quick_trade == 2) {
             flit.sprite_index = spr_fleet_imperial;

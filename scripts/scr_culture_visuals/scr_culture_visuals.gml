@@ -695,13 +695,13 @@ global.modular_drawing_items = [
     {
         sprite: spr_gear_librarian,
         body_types: [0],
-        position: "right_pauldron_icons",
+        position: "right_pauldron_embeleshments",
         role_type: [SPECIALISTS_LIBRARIANS],
     },
     {
         sprite: spr_gear_librarian_term,
         body_types: [2],
-        position: "right_pauldron_icons",
+        position: "right_pauldron_embeleshments",
         role_type: [SPECIALISTS_LIBRARIANS],
     },
     {
@@ -2579,7 +2579,7 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_assca,
             },
             {
-                sprite: spr_weapon_assca,
+                sprite: spr_dread_assault_cannon,
                 body_types: [3],
                 armours: ["Dreadnought"],
                 single_left_right_profile: true,
@@ -3271,7 +3271,6 @@ global.weapon_visual_data = {
                 },
                 subcomponents: [
                     [
-                        spr_blank,
                         spr_weapon_storm_boss
                     ]
                 ],
@@ -3283,12 +3282,7 @@ global.weapon_visual_data = {
                 },
                 subcomponents: [
                     [
-                        spr_blank,
-                        spr_weapon_storm_primary_decoration
-                    ],
-                    [
-                        spr_blank,
-                        spr_weapon_storm_boss
+                        spr_weapon_storm_primary_decoration,
                     ]
                 ],
             },

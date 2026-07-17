@@ -17,8 +17,7 @@ function return_lost_ship() {
             }
         }
         var _star = instance_find(obj_star, irandom(instance_number(obj_star) - 1));
-        var _new_fleet = instance_create(_star.x, _star.y, obj_p_fleet);
-        _new_fleet.owner = eFACTION.PLAYER;
+        var _new_fleet = create_player_fleet(_star.x, _star.y);
         if (_lost_fleet != noone) {
             find_and_move_ship_between_fleets(_lost_fleet, _new_fleet, _return_id);
             if (player_fleet_ship_count(_lost_fleet) == 0) {
@@ -325,8 +324,7 @@ function loose_ship_to_warp_event() {
         }
     }
     if (_lost_ship_fleet == noone) {
-        _lost_ship_fleet = instance_create(-500, -500, obj_p_fleet);
-        _lost_ship_fleet.owner = eFACTION.PLAYER;
+        _lost_ship_fleet = create_player_fleet(-500, -500);
     }
 
     find_and_move_ship_between_fleets(_fleet, _lost_ship_fleet, _ship_index);
@@ -353,6 +351,7 @@ function loose_ship_to_warp_event() {
     }
 
     _lost_ship_fleet.action = "Lost";
+    fleet_unregister_from_star(_lost_ship_fleet);
     _lost_ship_fleet.alarm[1] = 2;
 
     scr_popup("Ship Lost", text, "lost_warp", "");

@@ -90,17 +90,17 @@ if (obj_controller.selecting_planet > 0) {
     }
 }
 
-var line_width = sqr(scale);
-var text_size = sqr(scale);
+var line_width = 2 * scale;
+var text_size = obj_controller.zoomed ? 2 * scale : scale;
 
 if (action != "") {
     draw_set_halign(fa_left);
     draw_set_alpha(1);
-    draw_set_color(c_white);
+    draw_set_color(CM_GREEN_COLOR);
     draw_line_width(x, y, action_x, action_y, line_width);
     draw_set_font(fnt_40k_14b);
+    draw_text_transformed_outline(x + 12, y, $"ETA {action_eta}", text_size, text_size, 0);
 
-    draw_text_transformed(x + 12, y, string_hash_to_newline("ETA " + string(action_eta)), text_size, text_size, 0);
     if (array_length(complex_route) > 0) {
         var next_loc = instance_nearest(action_x, action_y, obj_star);
         for (var i = 0; i < array_length(complex_route); i++) {
@@ -143,4 +143,5 @@ if ((within == 1) || (selected > 0)) {
     draw_set_alpha(1);
 }
 
+draw_set_color(c_white);
 draw_sprite_ext(sprite_index, image_index, x + (coords[0] * scale), y + (coords[1] * scale), 1 * scale, 1 * scale, 0, c_white, 1);

@@ -5,30 +5,19 @@ try {
         owner = 0;
     }
 
-    //TODO centralise orbiting logic
-    var _is_orbiting = is_orbiting();
     if (action == "" && owner != 0) {
-        if (_is_orbiting) {
-            var orbiting_found = variable_instance_exists(orbiting, "present_fleet");
-            if (orbiting_found) {
-                orbiting.present_fleet[owner] += 1;
-            }
-        } else if (!_is_orbiting) {
-            orbiting = instance_nearest(x, y, obj_star);
-            orbiting.present_fleet[owner]++;
-        }
+        fleet_register_at_nearest_star(id);
     }
     var _khorne_cargo = fleet_has_cargo("warband");
     if (_khorne_cargo && owner == eFACTION.CHAOS) {
         khorne_fleet_cargo();
     }
 
-    if (_is_orbiting) {
+    if (instance_exists(orbiting)) {
         turns_static++;
         if (turns_static > 5 && owner == eFACTION.ORK) {
             if (!irandom(7)) {
                 ork_fleet_move();
-                _is_orbiting = false;
             }
         }
         if (instance_exists(obj_crusade)) {
@@ -43,11 +32,10 @@ try {
     }
 
     var dir = 0;
-    var ret = 0;
 
-    if (navy && action == "" && _is_orbiting) {
+    if (navy && action == "" && instance_exists(orbiting)) {
         navy_orbiting_planet_end_turn_action();
-    } else if (action == "" && _is_orbiting) {
+    } else if (action == "" && instance_exists(orbiting)) {
         var max_dis = 400;
 
         if ((orbiting.owner == eFACTION.PLAYER) && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") && (owner == eFACTION.IMPERIUM)) {
@@ -212,8 +200,6 @@ try {
                     obj_controller.known[eFACTION.INQUISITION] = 4;
                 }
 
-                orbiting = instance_nearest(x, y, obj_star);
-
                 if (obj_controller.loyalty_hidden <= 0) {
                     var moo = false;
                     if ((obj_controller.penitent == 1) && (moo == false)) {
@@ -228,7 +214,6 @@ try {
                 exit_star = distance_removed_star(x, y, choose(2, 3, 4));
                 action_x = exit_star.x;
                 action_y = exit_star.y;
-                orbiting = exit_star;
                 set_fleet_movement();
                 trade_goods = "|DELETE|";
                 exit;
@@ -316,7 +301,7 @@ try {
                             }
 
                             var new_fleet;
-                            new_fleet = instance_create(x, y, obj_en_fleet);
+                            new_fleet = create_enemy_fleet(x, y, eFACTION.TYRANIDS);
                             new_fleet.capital_number = floor(capital_number * 0.4);
                             new_fleet.frigate_number = floor(frigate_number * 0.4);
                             new_fleet.escort_number = floor(escort_number * 0.4);
@@ -324,8 +309,6 @@ try {
                             capital_number -= new_fleet.capital_number;
                             frigate_number -= new_fleet.frigate_number;
                             escort_number -= new_fleet.escort_number;
-
-                            new_fleet.owner = eFACTION.TYRANIDS;
                             new_fleet.sprite_index = spr_fleet_tyranid;
                             new_fleet.image_index = 1;
 
@@ -374,11 +357,11 @@ try {
 
         var dos = 0;
         dos = point_distance(x, y, action_x, action_y);
-        orbiting = dos / max(1, action_eta);
+        var _move_step = dos / max(1, action_eta); // keep the fork's div-by-zero guard on upstream's rename
         dir = point_direction(x, y, action_x, action_y);
 
-        x = x + lengthdir_x(orbiting, dir);
-        y = y + lengthdir_y(orbiting, dir);
+        x = x + lengthdir_x(_move_step, dir);
+        y = y + lengthdir_y(_move_step, dir);
 
         action_eta -= 1;
 

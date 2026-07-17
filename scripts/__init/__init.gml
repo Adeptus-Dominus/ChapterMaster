@@ -187,16 +187,16 @@ function __init() {
     global.star_name_colors = [
         c_gray,
         c_white, // Player
-        c_gray, // Imperium
-        c_red, // Mechanicus
-        CM_GREEN_COLOR, // Inquisition (Default)
+        #7a7a7a, // Imperium
+        #B22222, // Mechanicus
+        c_white, // Inquisition
         c_white, // Ecclesiarchy
         #FF8000, // Eldar
         #009500, // Orks
         #FECB01, // Tau
         #AD5272, // Tyranids
         c_dkgray, // Chaos
-        CM_GREEN_COLOR, // Heretics (Default)
+        c_dkgray, // Heretics
         #AD5272, // why 12 is skipped in general, we will never know
         #80FF00 // Necrons
     ];

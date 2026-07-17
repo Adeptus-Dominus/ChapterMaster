@@ -96,8 +96,7 @@ function event_end_turn_action() {
                         dirr += irandom_range(50, 100);
                         xx = star_id.x + lengthdir_x(72, dirr);
                         yy = star_id.y + lengthdir_y(72, dirr);
-                        flee = instance_create(xx, yy, obj_en_fleet);
-                        flee.owner = eFACTION.CHAOS;
+                        flee = create_enemy_fleet(xx, yy, eFACTION.CHAOS);
                         flee.sprite_index = spr_fleet_chaos;
                         flee.image_index = 4;
                         flee.capital_number = choose(0, 1);
@@ -129,12 +128,8 @@ function event_end_turn_action() {
                 }
                 if (array_length(active_forges) > 0) {
                     var ship_spawn = active_forges[irandom(array_length(active_forges) - 1)];
-                    var _new_player_fleet = instance_create(ship_spawn.system.x, ship_spawn.system.y, obj_p_fleet);
-
-                    // Creates the ship
                     var last_ship = new_player_ship(new_ship_event, ship_spawn.system.name);
-
-                    add_ship_to_fleet(last_ship, _new_player_fleet);
+                    var _new_player_fleet = create_player_fleet(ship_spawn.system.x, ship_spawn.system.y, [last_ship]);
 
                     // show_message(string(obj_ini.ship_class[last_ship])+":"+string(obj_ini.ship[last_ship]));
 

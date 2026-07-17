@@ -1,10 +1,7 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function relationship_hostility_matrix(faction) {
     var _rela = "neutral";
     var _disp = disposition[faction];
     with (obj_controller) {
-        // if (diplomacy!=8){
         if (_disp >= 60) {
             _rela = "friendly";
         }
@@ -14,7 +11,6 @@ function relationship_hostility_matrix(faction) {
         if (_disp < 20) {
             _rela = "hostile";
         }
-        // }
         if (diplomacy == 6) {
             if (_disp >= 60) {
                 _rela = "friendly";
@@ -112,7 +108,6 @@ function basic_diplomacy_screen() {
                 yy += 60;
             }
 
-            var left, top, right, base, opt;
             option_selections = [];
             var diplo_pressed = -1;
             for (var slot = 0; slot < opts; slot++) {
@@ -129,29 +124,16 @@ function basic_diplomacy_screen() {
             if (diplo_pressed > -1) {
                 evaluate_chosen_diplomacy_option(diplo_pressed);
             }
-            yy = camera_get_view_y(view_camera[0]);
         }
         if ((menu == eMENU.DIPLOMACY) && (diplomacy == 10.1)) {
             scr_emmisary_diplomacy_routes();
         }
-        /*if (force_goodbye=1){
-            draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
-            draw_set_color(0);
-            draw_text(xx+857.5,yy+797,"Exit");
-            draw_set_alpha(0.2);
-            if (mouse_x>=xx+818) and (mouse_y>=yy+796) and (mouse_x<=xx+897) and (mouse_y<=yy+815) then draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
-            draw_set_alpha(1);
-        }*/
     }
 }
 
 function draw_character_diplomacy() {
     var _diplo_unit = character_diplomacy;
     if (_diplo_unit.allegiance == global.chapter_name) {
-        /*if (advi="flee") {
-            _diplomacy_faction_name="Master of the Fleet "+string(obj_ini.lord_admiral_name);
-        }*/
-        var _splash = "";
         var _specific_splash = 0;
         _diplomacy_faction_name = _diplo_unit.name_role();
         _diplo_unit.IsSpecialist(SPECIALISTS_HEADS);
@@ -167,26 +149,21 @@ function draw_character_diplomacy() {
             _specific_splash = struct_exists(_customs, "forge_master") ? _customs.forge_master : 5;
         }
         scr_image("advisor/splash", _specific_splash, 16, 43, 310, 828);
-        /* else if (advi="") {
-            _diplomacy_faction_name="First Sergeant "+string(recruiter_name); 
-        }*/
     }
 
     var _main_slate = diplo_buttons.main_slate;
     var _meet = diplo_buttons.meet_slate;
     var _cm_slate = diplo_buttons.cm_slate;
-    with (_meet) {
-        XX = 0;
-        YY = 520;
-        width = 520;
-    }
+    _meet.XX = 0;
+    _meet.YY = 520;
+    _meet.width = 520;
 
     _meet.inside_method = function() {
         var _diplo_unit = obj_controller.character_diplomacy;
-        if (!struct_exists(obj_controller, "diplo_image")) {
+        if (!variable_instance_exists(obj_controller, "diplo_image")) {
             obj_controller.diplo_image = _diplo_unit.draw_unit_image();
         }
-        obj_controller.diplo_image.draw(210, 520 - 271, true, 1, 1, 0, CM_GREEN_COLOR, 1);
+        obj_controller.diplo_image.draw(210, 249, true, 1, 1, 0, CM_GREEN_COLOR, 1);
         _diplo_unit.stat_display(false, {x1: 10, y1: 520, w: 569, h: 303}, true);
         draw_sprite(spr_holo_pad, 0, 210, 520);
     };
@@ -201,19 +178,17 @@ function draw_character_diplomacy() {
     draw_text_transformed(622, 104, $"{_diplo_unit.name_role()}", 0.6, 0.6, 0);
     draw_set_halign(fa_left);
 
-    with (_cm_slate) {
-        XX = _main_slate.XX + _main_slate.width;
-        YY = 520;
-    }
+    _cm_slate.XX = _main_slate.XX + _main_slate.width;
+    _cm_slate.YY = 520;
     _cm_slate.inside_method = function() {
         var _master = fetch_unit([0, 0]);
 
-        if (!struct_exists(obj_controller, "master_image")) {
+        if (!variable_instance_exists(obj_controller, "master_image")) {
             obj_controller.master_image = _master.draw_unit_image();
         }
-        obj_controller.master_image.draw(1108 + 200, 520 - 271, true, 1, 1, 0, CM_GREEN_COLOR, 1);
+        obj_controller.master_image.draw(1308, 249, true, 1, 1, 0, CM_GREEN_COLOR, 1);
         _master.stat_display(false, {x1: 1108, y1: 520, w: 569, h: 303}, true);
-        draw_sprite(spr_holo_pad, 0, 1108 + 200, 520);
+        draw_sprite(spr_holo_pad, 0, 1308, 520);
     };
     _cm_slate.draw_with_dimensions();
 

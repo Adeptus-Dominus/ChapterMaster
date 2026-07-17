@@ -189,7 +189,6 @@ serialize = function() {
         obj: object_get_name(object_index),
         x,
         y,
-        present_fleet: object_star.present_fleet,
         planet_data: planet_data,
     };
 
@@ -204,7 +203,8 @@ serialize = function() {
         "arraysum",
         "system_garrison",
         "system_sabatours",
-        "system_datas"
+        "system_datas",
+        "present_fleet"
     ];
     var excluded_from_save_start = ["p_"];
 
@@ -230,11 +230,6 @@ function deserialize(save_data) {
         }
         var loaded_value = struct_get(save_data, var_name);
         variable_instance_set(id, var_name, loaded_value);
-    }
-
-    // Set explicit vars here
-    if (struct_exists(save_data, "present_fleet")) {
-        variable_instance_set(id, "present_fleet", save_data.present_fleet);
     }
 
     if (struct_exists(save_data, "planet_data")) {

@@ -424,10 +424,9 @@ function mechanicus_mars_mission_target_time_elapsed(planet) {
         var _text = $"Mechanicus Ship departs for the Mars catacombs.  Onboard are {techs_taken} of your {obj_ini.role[100][16]}s.";
         scr_alert("", "mission", _text, 0, 0);
         scr_event_log("green", _text);
-        var flit = instance_create(x, y, obj_en_fleet);
+        var flit = create_enemy_fleet(x, y, eFACTION.MECHANICUS);
 
         with (flit) {
-            owner = eFACTION.MECHANICUS;
             sprite_index = spr_fleet_mechanicus;
             capital_number = 1;
             image_index = 0;

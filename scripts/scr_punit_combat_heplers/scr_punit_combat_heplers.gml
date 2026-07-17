@@ -37,12 +37,12 @@ function target_block_is_valid(target, desired_type) {
             return _is_valid;
         }
         if (instance_exists(target)) {
-            if (target.x > 0 && target.object_index == desired_type) {
+            if (target.x > -100 && target.object_index == desired_type) {
                 if (target.men + target.veh + target.dreads > 0) {
                     _is_valid = true;
                 } else {
-                    x = -5000;
-                    instance_deactivate_object(id);
+                    target.x = -5000;
+                    instance_deactivate_object(target);
                 }
             }
         }
@@ -63,7 +63,7 @@ function get_rightmost(block_type = obj_pnunit, include_flanking = true, include
                 if (!include_main_force && !flank) {
                     continue;
                 }
-                if (x <= 0) {
+                if (x < -100) {
                     continue;
                 }
                 if (block_type == obj_pnunit) {
@@ -73,7 +73,7 @@ function get_rightmost(block_type = obj_pnunit, include_flanking = true, include
                         continue;
                     }
                 }
-                if (rightmost == noone && x > 0) {
+                if (rightmost == noone && x > -100) {
                     // Was block_type.id, which resolves to obj_pnunit.id (the first
                     // instance in the list) rather than the current instance in this
                     // with-loop, so the first valid block reaching here was recorded as
@@ -81,6 +81,9 @@ function get_rightmost(block_type = obj_pnunit, include_flanking = true, include
                     // was not the actual edge, get_rightmost returned the wrong block
                     // and the enemy fired on the wrong column even with the formation
                     // in correct order. Bug exists verbatim in upstream main.
+                    // Upstream (94ecc3f60) widened the bound from x > 0 to x > -100 so
+                    // nearly-off-field blocks stay targetable and the enemy never
+                    // disables itself hunting a valid edge.
                     rightmost = id;
                 } else {
                     if (x > rightmost.x) {
@@ -111,7 +114,7 @@ function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
                 if (!include_flanking && flank) {
                     continue;
                 }
-                if (x <= 0) {
+                if (x < -100) {
                     continue;
                 }
                 if (block_type == obj_pnunit) {
@@ -121,16 +124,19 @@ function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
                         continue;
                     }
                 }
-                if (left_most == noone && x > 0) {
+                if (left_most == noone && x > -100) {
                     // Same bug as get_rightmost above: block_type.id is the first
                     // instance in the list, not the current one, so the first valid
                     // block was recorded as the first-created block. This is why a
                     // flanking force (which targets get_leftmost, the rear column) hit
                     // the wrong line, striking the bulk block created first rather than
                     // the block actually closest to it. Bug exists verbatim in upstream.
+                    // Upstream (94ecc3f60) widened the bound from x > 0 to x > -100 so
+                    // nearly-off-field blocks stay targetable and the enemy never
+                    // disables itself hunting a valid edge.
                     left_most = id;
                 } else {
-                    if (x < left_most.x && x > 0) {
+                    if (x < left_most.x && x > -100) {
                         left_most = id;
                     }
                 }

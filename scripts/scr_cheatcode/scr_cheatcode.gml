@@ -730,12 +730,10 @@ function system_debug_enemy_invasion_spawn() {
         with (obj_star) {
             if ((choose(0, 1, 1) == 1) && (owner != eFACTION.ELDAR) && (owner != 1)) {
                 /// @type {Asset.GMObject.obj_en_fleet}
-                var fleet = instance_create(x, y, obj_en_fleet);
-                fleet.owner = obj_popup.invasion_faction;
+                var fleet = create_enemy_fleet(x, y, obj_popup.invasion_faction);
                 if (obj_popup.invasion_faction == 7) {
                     fleet.sprite_index = spr_fleet_ork;
                     fleet.capital_number = 3;
-                    present_fleet[7] += 1;
                 }
                 if (obj_popup.invasion_faction == 9) {
                     if (present_fleet[1] == 0) {
@@ -745,10 +743,8 @@ function system_debug_enemy_invasion_spawn() {
                     fleet.capital_number = 3;
                     fleet.frigate_number = 6;
                     fleet.escort_number = 16;
-                    present_fleet[9] += 1;
                 }
                 fleet.image_index = 4;
-                fleet.orbiting = id;
             }
         }
         instance_destroy();
@@ -780,28 +776,22 @@ function system_debug_spawn_fleet() {
 /// @self Asset.GMObject.obj_popup
 function debug_spawn_imperium_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
-    var fleet = instance_create(star.x, star.y, obj_en_fleet);
-    fleet.owner = eFACTION.IMPERIUM;
+    var fleet = create_enemy_fleet(star.x, star.y, eFACTION.IMPERIUM);
     fleet.sprite_index = spr_fleet_imperial;
     fleet.capital_number = 2;
     fleet.frigate_number = 5;
-    star.present_fleet[2] += 1;
     fleet.image_index = 4;
-    fleet.orbiting = id;
     instance_destroy();
 }
 
 /// @self Asset.GMObject.obj_popup
 function debug_spawn_heretic_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
-    var fleet = instance_create(star.x, star.y, obj_en_fleet);
-    fleet.owner = eFACTION.CHAOS;
+    var fleet = create_enemy_fleet(star.x, star.y, eFACTION.CHAOS);
     fleet.sprite_index = spr_fleet_chaos;
     fleet.capital_number = 2;
     fleet.frigate_number = 5;
-    star.present_fleet[10] += 1;
     fleet.image_index = 4;
-    fleet.orbiting = id;
     instance_destroy();
 }
 
@@ -814,28 +804,22 @@ function debug_add_xenos_fleet_options() {
 /// @self Asset.GMObject.obj_popup
 function debug_spawn_ork_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
-    var fleet = instance_create(star.x, star.y, obj_en_fleet);
-    fleet.owner = eFACTION.ORK;
+    var fleet = create_enemy_fleet(star.x, star.y, eFACTION.ORK);
     fleet.sprite_index = spr_fleet_ork;
     fleet.capital_number = 2;
     fleet.frigate_number = 5;
-    star.present_fleet[7] += 1;
     fleet.image_index = 4;
-    fleet.orbiting = id;
     instance_destroy();
 }
 
 /// @self Asset.GMObject.obj_popup
 function debug_spawn_tau_fleet() {
     /// @type {Asset.GMObject.obj_en_fleet}
-    var fleet = instance_create(star.x, star.y, obj_en_fleet);
-    fleet.owner = eFACTION.TAU;
+    var fleet = create_enemy_fleet(star.x, star.y, eFACTION.TAU);
     fleet.sprite_index = spr_fleet_tau;
     fleet.capital_number = 2;
     fleet.frigate_number = 5;
-    star.present_fleet[8] += 1;
     fleet.image_index = 4;
-    fleet.orbiting = id;
     instance_destroy();
 }
 

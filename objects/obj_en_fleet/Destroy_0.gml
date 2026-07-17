@@ -1,8 +1,5 @@
-if ((action == "") && (orbiting != noone)) {
-    if (orbiting == instance_nearest(x, y, obj_star)) {
-        orbiting.present_fleet[owner] -= 1;
-    }
-    orbiting = noone;
+if ((action == "") && (instance_exists(orbiting))) {
+    fleet_unregister_from_star(id);
 }
 
 if (instance_exists(obj_controller)) {

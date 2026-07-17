@@ -1,5 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function player_recruit_planet_selection() {
     add_draw_return_values();
     with (obj_creation) {
@@ -26,12 +24,12 @@ function player_recruit_planet_selection() {
         if (custom == eCHAPTER_TYPE.CUSTOM && _recruit_world_type > 0) {
             draw_sprite_stretched(spr_creation_arrow, 0, 1265, 285, 32, 32);
             draw_sprite_stretched(spr_creation_arrow, 1, 1455, 285, 32, 32);
-            recruiting = list_traveler(planet_types, recruiting, [1265, 285, 1265 + 32, 285 + 32], [1455, 285, 1455 + 32, 285 + 32]);
+            recruiting = list_traveler(planet_types, recruiting, [1265, 285, 1297, 317], [1455, 285, 1487, 317]);
         }
 
-        scr_image("ui/planet", _cur_planet_index2, 980 + 333, 244, 128, 128);
+        scr_image("ui/planet", _cur_planet_index2, 1313, 244, 128, 128);
 
-        draw_text_transformed(1044 + 333, 378, recruiting, 0.5, 0.5, 0);
+        draw_text_transformed(1377, 378, recruiting, 0.5, 0.5, 0);
 
         if (_recruit_world_type < 2) {
             recruiting_name = homeworld_name;
@@ -40,25 +38,21 @@ function player_recruit_planet_selection() {
                 recruiting_name = global.name_generator.GenerateFromSet("star", false);
             }
         }
-        var name_bad = 0;
-        if ((fleet_type == 1 && _recruit_world_type < 2) && (homeworld_name == recruiting_name)) {
-            name_bad = 1;
-        }
         //TODO make a centralised logic for player renaming things in the creation screen
-        if (name_bad == 1) {
+        if ((fleet_type == 1 && _recruit_world_type < 2) && (homeworld_name == recruiting_name)) {
             draw_set_color(c_red);
         }
         if ((text_selected != "recruiting_name") || (custom != eCHAPTER_TYPE.CUSTOM)) {
-            draw_text_transformed(1044 + 333, 398, recruiting_name, 0.5, 0.5, 0);
+            draw_text_transformed(1377, 398, recruiting_name, 0.5, 0.5, 0);
         }
         if (custom == eCHAPTER_TYPE.CUSTOM && _recruit_world_type == 2) {
             if ((text_selected == "recruiting_name") && (text_bar > 30)) {
-                draw_text_transformed(1044 + 333, 398, recruiting_name, 0.5, 0.5, 0);
+                draw_text_transformed(1377, 398, recruiting_name, 0.5, 0.5, 0);
             }
             if ((text_selected == "recruiting_name") && (text_bar <= 30)) {
-                draw_text_transformed(1044 + 333, 398, $"{recruiting_name}|", 0.5, 0.5, 0);
+                draw_text_transformed(1377, 398, $"{recruiting_name}|", 0.5, 0.5, 0);
             }
-            if (scr_text_hit(1044 + 333, 398, true, recruiting_name)) {
+            if (scr_text_hit(1377, 398, true, recruiting_name)) {
                 obj_cursor.image_index = 2;
                 if (mouse_button_clicked()) {
                     text_selected = "recruiting_name";
@@ -69,17 +63,17 @@ function player_recruit_planet_selection() {
                 recruiting_name = keyboard_string;
             }
             draw_set_alpha(0.75);
-            draw_rectangle(925 + 333, 398, 1160 + 333, 418, 1);
+            draw_rectangle(1258, 398, 1493, 418, 1);
             draw_set_alpha(1);
 
             if (_recruit_world_type == 2) {
                 var _refresh_rec_name_btn = [
                     1503,
                     398,
-                    1503 + 20,
-                    398 + 20
+                    1523,
+                    418
                 ];
-                draw_unit_buttons(_refresh_rec_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
+                draw_unit_buttons(_refresh_rec_name_btn, "?", [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
                 if (point_and_click(_refresh_rec_name_btn)) {
                     var _new_rec_name = global.name_generator.GenerateFromSet("star", false);
                     recruiting_name = _new_rec_name;
@@ -142,7 +136,7 @@ function scr_creation_home_planet_create() {
         if (custom == eCHAPTER_TYPE.CUSTOM) {
             draw_sprite_stretched(spr_creation_arrow, 0, 525, 285, 32, 32);
             draw_sprite_stretched(spr_creation_arrow, 1, 725, 285, 32, 32);
-            homeworld = list_traveler(planet_types, homeworld, [525, 285, 525 + 32, 285 + 32], [725, 285, 725 + 32, 285 + 32]);
+            homeworld = list_traveler(planet_types, homeworld, [525, 285, 557, 317], [725, 285, 757, 317]);
         }
         var _system_complex = buttons.complex_homeworld;
         _system_complex.update();
@@ -203,11 +197,11 @@ function scr_creation_home_planet_create() {
     right_data_slate.draw(1210, 5, 0.45, 1);
 
     if (recruiting_exists == 0 && homeworld_exists == 1) {
-        scr_image("ui/planet", _cur_planet_index, 580 + 333, 244, 128, 128);
+        scr_image("ui/planet", _cur_planet_index, 913, 244, 128, 128);
 
         draw_set_alpha(0.5);
-        draw_text_transformed(644 + 333, 378, homeworld, 0.5, 0.5, 0);
-        draw_text_transformed(644 + 333, 398, homeworld_name, 0.5, 0.5, 0);
+        draw_text_transformed(977, 378, homeworld, 0.5, 0.5, 0);
+        draw_text_transformed(977, 398, homeworld_name, 0.5, 0.5, 0);
         draw_set_alpha(1);
     }
 

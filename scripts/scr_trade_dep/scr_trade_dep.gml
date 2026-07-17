@@ -54,10 +54,9 @@ function scr_trade_dep() {
 }
 
 function setup_ai_trade_fleet(start_place, faction) {
-    var flit = instance_create(start_place.x, start_place.y, obj_en_fleet);
+    var flit = create_enemy_fleet(start_place.x, start_place.y, faction);
 
     with (flit) {
-        owner = faction;
         home_x = start_place.x;
         home_y = start_place.y;
 

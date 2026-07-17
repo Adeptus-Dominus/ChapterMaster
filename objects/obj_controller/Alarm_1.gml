@@ -61,8 +61,7 @@ if (did) {
         _current_system.p_player[2] += obj_ini.man_size;
     }
 
-    var fleet = instance_create(_current_system.x, _current_system.y, obj_p_fleet);
-    fleet.owner = eFACTION.PLAYER;
+    var fleet = create_player_fleet(_current_system.x, _current_system.y);
 
     for (var f = 0; f < array_length(obj_ini.ship); f++) {
         add_ship_to_fleet(f, fleet);
@@ -521,14 +520,17 @@ for (var i = 0; i < 100; i++) {
         // ship speed is toned down via ELDAR_SHIP_SPEED_MULT. Set ELDAR_FLEET_ENABLED
         // to 0 in macros.gml to remove the fleet entirely.
         if (ELDAR_FLEET_ENABLED) {
-            var elforce = instance_create(xx, yy, obj_en_fleet);
+            // Upstream (eaf1ee3cc): fleets are created and registered through the
+            // central helpers now; the craftworld star has name "" so nearest-star
+            // lookup fails and it is registered at the craftworld explicitly.
+            var elforce = create_enemy_fleet(xx, yy, eFACTION.ELDAR);
+            fleet_register_at_star(elforce, craft);
             elforce.sprite_index = spr_fleet_eldar;
             elforce.owner = eFACTION.ELDAR;
             elforce.capital_number = 1;
             elforce.frigate_number = choose(1, 2);
             elforce.escort_number = choose(2, 3, 4);
             elforce.image_alpha = 0;
-            elforce.orbiting = craft;
         }
     }
 }

@@ -8,14 +8,6 @@ orbiting = noone;
 warp_able = true;
 ii_check = choose(8, 9, 10, 11, 12);
 
-var wop = instance_nearest(x, y, obj_star);
-if (instance_exists(wop) && (y > 0) && (x > 0)) {
-    if (point_distance(x, y, wop.x, wop.y) <= 40) {
-        orbiting = wop;
-        orbiting.present_fleet[1] += 1;
-    }
-}
-
 point_breakdown = single_loc_point_data();
 image_xscale = 1.25;
 image_yscale = 1.25;
@@ -64,7 +56,6 @@ serialize = function() {
         x,
         y,
         point_breakdown: point_breakdown,
-        orbiting: instance_exists(orbiting) ? true : false,
     };
     var excluded_from_save = [
         "temp",
@@ -97,11 +88,7 @@ deserialize = function(save_data) {
         }
     }
 
-    if (save_data.orbiting && (save_data.orbiting != noone)) {
-        var nearest_star = instance_nearest(x, y, obj_star);
-        set_player_fleet_image();
-        orbiting = nearest_star;
-    }
+    set_player_fleet_image();
 };
 
 #endregion

@@ -165,42 +165,31 @@ function get_largest_player_fleet() {
     return chosen_fleet;
 }
 
-/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
-/// @return {bool}
-function is_orbiting(fleet = noone) {
-    if (fleet == noone) {
-        if (action != "") {
-            return false;
-        }
-        try {
-            var nearest = instance_nearest(x, y, obj_star);
-            if (point_distance(x, y, nearest.x, nearest.y) < 10 && nearest.name != "") {
-                orbiting = nearest.id;
-                return true;
-            }
-            orbiting = noone;
-        } catch (_exception) {
-            return false;
-        }
-        return false;
-    } else {
-        with (fleet) {
-            return is_orbiting();
-        }
+/// @desc Returns the nearest star within max_distance, or noone.
+/// @param {Real} _x
+/// @param {Real} _y
+/// @param {Real} _max_distance  Default 50
+/// @returns {Id.Instance.obj_star|noone}
+function get_nearest_star(_x, _y, _max_distance = 50) {
+    var _near = instance_nearest(_x, _y, obj_star);
+    if (instance_exists(_near) && point_distance(_x, _y, _near.x, _near.y) <= _max_distance && _near.name != "") {
+        return _near;
     }
+
+    return noone;
 }
 
 /// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function set_fleet_movement(fastest_route = true, new_action = "move", minimum_eta = 1, maximum_eta = 1000) {
     action = "";
+    var _at_star = instance_exists(orbiting);
 
     if (action == "") {
         turns_static = 0;
-        var mine, fleet;
-        var connected = 0, cont = 0, target_dist = 0;
+        var mine;
         if (fastest_route) {
             mine = instance_nearest(x, y, obj_star);
-            var star_travel = new FastestRouteAlgorithm(x, y, action_x, action_y, self.id, is_orbiting());
+            var star_travel = new FastestRouteAlgorithm(x, y, action_x, action_y, self.id, _at_star);
             var path = star_travel.final_array_path();
             if (array_length(path) > 1) {
                 var targ = find_star_by_name(path[1]);
@@ -226,20 +215,20 @@ function set_fleet_movement(fastest_route = true, new_action = "move", minimum_e
 
             mine = instance_nearest(x, y, obj_star);
 
-            var eta = calculate_fleet_eta(x, y, action_x, action_y, action_spd, _target_is_sys, is_orbiting(), warp_able);
+            var eta = calculate_fleet_eta(x, y, action_x, action_y, action_spd, _target_is_sys, _at_star, warp_able);
             action_eta = eta;
             if ((action_eta <= 0) || (owner != eFACTION.INQUISITION)) {
                 action_eta = eta;
             } else if ((owner == eFACTION.INQUISITION) && (action_eta < 2) && (string_count("_her", trade_goods) == 0)) {
                 action_eta = 2;
             }
-            if (is_orbiting()) {
+            if (_at_star) {
                 if (owner != eFACTION.ELDAR && mine.storm) {
                     action_eta += 10000;
                 }
             }
 
-            orbiting = noone;
+            fleet_unregister_from_star(id);
             action = new_action;
             action_eta = clamp(action_eta, minimum_eta, maximum_eta);
         }
@@ -698,12 +687,11 @@ function fleet_star_draw_offsets() {
 //TODO further split this shite up
 /// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 function fleet_arrival_logic() {
-    var cur_star, sta, steh_dist, old_x, old_y;
-    cur_star = instance_nearest(action_x, action_y, obj_star);
-    x = cur_star.x;
-    y = cur_star.y;
-    sta = instance_nearest(action_x, action_y, obj_star);
-    is_orbiting();
+    var _dest_star = instance_nearest(action_x, action_y, obj_star);
+    x = _dest_star.x;
+    y = _dest_star.y;
+    var sta = _dest_star;
+    fleet_register_at_star(id, _dest_star);
 
     if (owner == eFACTION.MECHANICUS) {
         if (trade_goods == "mars_spelunk1") {
@@ -722,7 +710,7 @@ function fleet_arrival_logic() {
 
     //TODO create oppertunity to purge new colonisers if they have taint and the player has garrisons or control of the planet
     if (fleet_has_cargo("colonize")) {
-        deploy_colonisers(cur_star);
+        deploy_colonisers(_dest_star);
     }
 
     if (trade_goods == "return") {
@@ -738,7 +726,7 @@ function fleet_arrival_logic() {
 
     if (!navy) {
         if (trade_goods == "merge") {
-            if (is_orbiting()) {
+            if (instance_exists(orbiting)) {
                 var _orbit = orbiting;
                 var _viable_merge = false;
                 var _merge_fleet = false;
@@ -803,23 +791,25 @@ function fleet_arrival_logic() {
     }
 
     if ((owner == eFACTION.INQUISITION) && (string_count("_her", trade_goods) == 0)) {
-        if ((cur_star.owner == eFACTION.PLAYER) && (trade_goods == "cancel_inspection")) {
-            instance_deactivate_object(cur_star);
+        if ((_dest_star.owner == eFACTION.PLAYER) && (trade_goods == "cancel_inspection")) {
+            fleet_unregister_from_star(id); // set_fleet_movement() below also unregisters. Unregister before deactivating the star for lifecycle clarity.
+            instance_deactivate_object(_dest_star);
+            var _pick;
             repeat (choose(1, 2)) {
-                orbiting = instance_nearest(x, y, obj_star);
-                instance_deactivate_object(orbiting);
+                _pick = instance_nearest(x, y, obj_star);
+                instance_deactivate_object(_pick);
             }
 
             repeat (5) {
-                orbiting = instance_nearest(x, y, obj_star);
-                if (orbiting.owner == eFACTION.ELDAR) {
-                    instance_deactivate_object(orbiting);
+                _pick = instance_nearest(x, y, obj_star);
+                if (_pick.owner == eFACTION.ELDAR) {
+                    instance_deactivate_object(_pick);
                 }
             }
 
-            orbiting = instance_nearest(x, y, obj_star);
-            action_x = orbiting.x;
-            action_y = orbiting.y;
+            _pick = instance_nearest(x, y, obj_star);
+            action_x = _pick.x;
+            action_y = _pick.y;
             set_fleet_movement();
             instance_activate_object(obj_star);
             trade_goods += "|DELETE|";
@@ -902,64 +892,44 @@ function fleet_arrival_logic() {
         inquisition_fleet_inspection_chase();
     }
 
-    old_x = x;
-    old_y = y;
+    var old_x = x;
+    var old_y = y;
     x = -100;
     y = -100;
 
-    cur_star = instance_nearest(old_x, old_y, obj_en_fleet);
-    var mergus = false;
+    var _near_fleet = instance_nearest(old_x, old_y, obj_en_fleet);
+    var _arrival_behaviour = _near_fleet.image_index;
 
-    mergus = cur_star.image_index;
-    if (mergus < 3) {
-        mergus = 0;
+    if (_arrival_behaviour < 3) {
+        _arrival_behaviour = 0;
     }
-    if (mergus >= 3) {
-        mergus = 10;
+    if (_arrival_behaviour >= 3) {
+        _arrival_behaviour = 10;
     }
-    if ((owner == eFACTION.TAU) && (mergus >= 3)) {
-        mergus = 0;
+    if ((owner == eFACTION.TAU) && (_arrival_behaviour >= 3)) {
+        _arrival_behaviour = 0;
     }
     if (string_count("_her", trade_goods) == 0) {
-        mergus = 99;
+        _arrival_behaviour = 99;
     } // was 999
 
     // Think this might be causing the crash
-    if ((owner == eFACTION.TAU) && (sta.present_fleet[eFACTION.IMPERIUM] + sta.present_fleet[eFACTION.PLAYER] >= 1) && (sta.present_fleet[eFACTION.TAU] == 1) && (image_index == 1) && (ret == 0)) {
-        mergus = 15;
+    if ((owner == eFACTION.TAU) && (sta.present_fleet[eFACTION.IMPERIUM] + sta.present_fleet[eFACTION.PLAYER] >= 1) && (sta.present_fleet[eFACTION.TAU] == 1) && (image_index == 1) && (tau_fled == 0)) {
+        _arrival_behaviour = 15;
     }
-    if ((cur_star.owner == eFACTION.TAU) && (owner == eFACTION.TAU) && (ret == 1)) {
-        mergus = 0;
-    }
-
-    if ((owner == eFACTION.CHAOS) && fleet_has_cargo("chaos") || fleet_has_cargo("warband")) {
-        mergus = 0;
+    if ((_near_fleet.owner == eFACTION.TAU) && (owner == eFACTION.TAU) && (tau_fled == 1)) {
+        _arrival_behaviour = 0;
     }
 
-    if ((cur_star.x == old_x) && (cur_star.y == old_y) && (cur_star.owner == self.owner) && (cur_star.action == "") && (mergus == 1999)) {
-        // Merge the fleets
-        cur_star.escort_number += self.escort_number;
-        cur_star.frigate_number += self.frigate_number;
-        cur_star.capital_number += self.capital_number;
-        cur_star.guardsmen += self.guardsmen;
+    if ((owner == eFACTION.CHAOS) && (fleet_has_cargo("chaos") || fleet_has_cargo("warband"))) {
+        _arrival_behaviour = 0;
+    }
 
-        cur_star = instance_nearest(old_x, old_y, obj_star);
-        if (owner == eFACTION.TAU) {
-            obj_controller.tau_fleets -= 1;
-            cur_star.tau_fleets -= 1;
-        }
-        if (owner == eFACTION.CHAOS) {
-            obj_controller.chaos_fleets -= 1;
-        }
-
-        instance_destroy();
-    } // End merge fleets
-
-    if ((owner == eFACTION.TAU) && (mergus == 15)) {
+    if ((owner == eFACTION.TAU) && (_arrival_behaviour == 15)) {
         // Get the fuck out
         var new_star = 0;
         var stue = 0;
-        ret = 1;
+        tau_fled = 1;
 
         instance_activate_object(obj_star); // new_star
         stue = instance_nearest(x, y, obj_star);
@@ -1033,7 +1003,7 @@ function fleet_arrival_logic() {
 
     var _chaos = fleet_has_cargo("warband");
 
-    if ((cur_star.x == old_x) && (cur_star.y == old_y) && (cur_star.owner == self.owner) && (cur_star.action == "") && ((owner == eFACTION.TAU) || (owner == eFACTION.CHAOS)) && (mergus == 10) && (!_chaos)) {
+    if ((_near_fleet.x == old_x) && (_near_fleet.y == old_y) && (_near_fleet.owner == self.owner) && (_near_fleet.action == "") && ((owner == eFACTION.TAU) || (owner == eFACTION.CHAOS)) && (_arrival_behaviour == 10) && (!_chaos)) {
         // Move somewhere new
         var stue2 = noone;
         var goood = 0;
@@ -1078,7 +1048,7 @@ function fleet_arrival_logic() {
     // If the connected planet is owned by orks then choose a random one within 400 not owned by orks
 
     if (owner == eFACTION.ORK) {
-        if (is_orbiting()) {
+        if (instance_exists(orbiting)) {
             with (orbiting) {
                 ork_fleet_arrive_target();
             }
@@ -1086,17 +1056,17 @@ function fleet_arrival_logic() {
 
         var kay = 0, temp5 = 0, temp6 = 0, temp7 = 0;
 
-        cur_star = instance_nearest(x, y, obj_star);
+        var _nearest_star = instance_nearest(x, y, obj_star);
 
         // This is the new check to go along code; if doesn't add up to all planets = 7 then they exit
-        if (!is_dead_star(cur_star)) {
+        if (!is_dead_star(_nearest_star)) {
             // KILL the enemy
-            if ((cur_star.present_fleet[1] > 1) || (cur_star.present_fleet[2] > 1)) {
+            if ((_nearest_star.present_fleet[1] > 1) || (_nearest_star.present_fleet[2] > 1)) {
                 exit;
             }
         }
 
-        if (((cur_star.owner == eFACTION.CHAOS) && (image_index >= 5) && (owner == eFACTION.CHAOS)) || ((owner == eFACTION.CHAOS) && (image_index >= 5) && (cur_star.planets == 0))) {
+        if (((_nearest_star.owner == eFACTION.CHAOS) && (image_index >= 5) && (owner == eFACTION.CHAOS)) || ((owner == eFACTION.CHAOS) && (image_index >= 5) && (_nearest_star.planets == 0))) {
             kay = 50;
         }
 
@@ -1136,7 +1106,7 @@ function fleet_arrival_logic() {
 
             instance_activate_object(obj_star);
         } else {
-            cur_star.present_fleet[eFACTION.ORK]++;
+            fleet_register_at_star(id, _nearest_star);
         }
 
         instance_activate_object(obj_star);
@@ -1286,7 +1256,6 @@ function fleet_respond_crusade() {
             action_x = ns.x;
             action_y = ns.y;
             set_fleet_movement();
-            orbiting.present_fleet[owner] -= 1;
             home_x = orbiting.x;
             home_y = orbiting.y;
     
@@ -1355,4 +1324,92 @@ function fleet_respond_crusade() {
         }
         ERROR_HANDLER.handle_exception(_ex);
     }
+}
+
+/// @desc Registers a fleet at a star: sets orbiting and increments present_fleet.
+/// @param {Id.Instance.obj_p_fleet|Id.Instance.obj_en_fleet} _fleet
+/// @param {Id.Instance.obj_star} _star
+function fleet_register_at_star(_fleet, _star) {
+    if (!instance_exists(_star) || !instance_exists(_fleet)) {
+        return;
+    }
+
+    if (_fleet.orbiting == _star) {
+        return;
+    }
+
+    if (instance_exists(_fleet.orbiting)) {
+        fleet_unregister_from_star(_fleet);
+    }
+
+    _fleet.orbiting = _star;
+    var _faction = _fleet.owner ?? eFACTION.PLAYER;
+    _star.present_fleet[_faction] += 1;
+
+    if (_faction == eFACTION.PLAYER && _star.vision == 0) {
+        _star.vision = 1;
+    }
+}
+
+/// @desc Unregisters a fleet from its orbiting star (if there is one), clears orbiting and decrements present_fleet.
+/// @param {Id.Instance.obj_p_fleet|Id.Instance.obj_en_fleet} _fleet
+function fleet_unregister_from_star(_fleet) {
+    if (!instance_exists(_fleet)) {
+        return;
+    }
+    var _star = _fleet.orbiting;
+    if (instance_exists(_star)) {
+        var _faction = _fleet.owner ?? eFACTION.PLAYER;
+        if (_star.present_fleet[_faction] > 0) {
+            _star.present_fleet[_faction] -= 1;
+        }
+    }
+    _fleet.orbiting = noone;
+}
+
+/// @desc Finds the nearest star within _max_distance and registers the fleet there.
+/// @param {Id.Instance.obj_p_fleet|Id.Instance.obj_en_fleet} _fleet  Fleet instance to register
+/// @returns {Id.Instance|noone} The star registered at, or noone if none in range
+function fleet_register_at_nearest_star(_fleet, _max_distance = undefined) {
+    if (!instance_exists(_fleet)) {
+        return noone;
+    }
+
+    var _near = get_nearest_star(_fleet.x, _fleet.y, _max_distance);
+    if (_near != noone) {
+        fleet_register_at_star(_fleet, _near);
+        return _near;
+    }
+
+    return noone;
+}
+
+/// @desc Creates a new player fleet, registering at the nearest star if within 50px.
+/// @param {Real} _x
+/// @param {Real} _y
+/// @param {Array} _ships  Optional array of ship IDs to add to the fleet
+/// @returns {Id.Instance.obj_p_fleet}
+function create_player_fleet(_x, _y, _ships = []) {
+    var _fleet = instance_create(_x, _y, obj_p_fleet);
+    _fleet.owner = eFACTION.PLAYER;
+    fleet_register_at_nearest_star(_fleet);
+
+    for (var _i = 0; _i < array_length(_ships); _i++) {
+        add_ship_to_fleet(_ships[_i], _fleet);
+    }
+
+    return _fleet;
+}
+
+/// @desc Creates a new enemy fleet, registering at the nearest star if within 50px.
+/// @param {Real} _x
+/// @param {Real} _y
+/// @param {Enum.eFACTION} _owner
+/// @returns {Id.Instance.obj_en_fleet}
+function create_enemy_fleet(_x, _y, _owner) {
+    var _fleet = instance_create(_x, _y, obj_en_fleet);
+    _fleet.owner = _owner;
+    fleet_register_at_nearest_star(_fleet);
+
+    return _fleet;
 }

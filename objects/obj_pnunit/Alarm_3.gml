@@ -102,8 +102,9 @@ try {
                 var norun = 0;
 
                 for (var i = 1; i <= 20; i++) {
-                    if (apa[i] >= 30) {
+                    if (apa[i] > 2) {
                         norun = 1;
+                        break;
                     }
                 }
 
@@ -115,9 +116,11 @@ try {
                 // last force left: alone there is nothing to fall back behind and no
                 // Marine front for the enemy to switch to. The Guard are meant to hold and
                 // die in place, so only non-guard blocks fall back here.
-                if (norun == 0 && guard == 0) {
+                // Upstream (c862e93bf) bounds the fallback at x > 10 so blocks stop walking
+                // backwards off the field; the Guard exclusion above still applies.
+                if (norun == 0 && guard == 0 && x > 10) {
                     x -= 10;
-                    engaged = 0;
+                    engaged = false;
                 }
             }
         }
