@@ -3073,6 +3073,7 @@ global.weapon_visual_data = {
             },
             {
                 sprite: spr_dread_plasma_cannon,
+				shadows: spr_dread_plasma_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
                 single_left_right_profile: true,

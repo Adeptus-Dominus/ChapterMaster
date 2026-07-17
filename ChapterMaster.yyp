@@ -1182,6 +1182,7 @@
     {"id":{"name":"spr_dread_lascannon_shadow","path":"sprites/spr_dread_lascannon_shadow/spr_dread_lascannon_shadow.yy",},},
     {"id":{"name":"spr_dread_lascannon","path":"sprites/spr_dread_lascannon/spr_dread_lascannon.yy",},},
     {"id":{"name":"spr_dread_missile","path":"sprites/spr_dread_missile/spr_dread_missile.yy",},},
+    {"id":{"name":"spr_dread_plasma_cannon_shadow","path":"sprites/spr_dread_plasma_cannon_shadow/spr_dread_plasma_cannon_shadow.yy",},},
     {"id":{"name":"spr_dread_plasma_cannon","path":"sprites/spr_dread_plasma_cannon/spr_dread_plasma_cannon.yy",},},
     {"id":{"name":"spr_dreadnought_chasis_colors","path":"sprites/spr_dreadnought_chasis_colors/spr_dreadnought_chasis_colors.yy",},},
     {"id":{"name":"spr_dreadnought_chasis_shadow","path":"sprites/spr_dreadnought_chasis_shadow/spr_dreadnought_chasis_shadow.yy",},},
