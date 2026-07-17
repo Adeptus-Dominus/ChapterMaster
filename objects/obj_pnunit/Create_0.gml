@@ -20,6 +20,8 @@ fire_target_line = 0;
 assault_jumped = false;
 // Set once a retreating formation reaches the field edge and withdraws.
 retreat_departed = false;
+// Movement passes spent as the last fighting formation (rear-guard delay).
+rearguard_ticks = 0;
 
 unit_count = 0;
 unit_count_old = 0;

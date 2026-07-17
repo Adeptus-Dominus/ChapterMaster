@@ -356,6 +356,16 @@ function move_player_block() {
     if (move_order == "") {
         move_order = (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)) ? "advance" : "hold";
     }
+    // Rear-guard delay: while this is the last fighting formation, it accrues hold
+    // time; after RETREAT_REARGUARD_HOLD passes it may withdraw too.
+    if ((move_order != "retreat") && (veh_type[1] != "Defenses") && instance_exists(obj_enunit)) {
+        if (player_fighting_blocks_count() <= 1) {
+            rearguard_ticks += 1;
+            if (rearguard_ticks == RETREAT_REARGUARD_HOLD) {
+                obj_ncombat.combat_log.push($"The {formation_display_name(formation_type)} have bought enough time; they may withdraw!", eMSG_COLOR.WHITE);
+            }
+        }
+    }
     if ((move_order == "retreat") && (veh_type[1] != "Defenses")) {
         // Retreat: withdraw one column west per turn, merging back through friendly
         // lines (never onto an enemy), unable to fire and heavily protected (see
@@ -365,6 +375,13 @@ function move_player_block() {
         } else if (!retreat_departed) {
             retreat_departed = true;
             obj_ncombat.combat_log.push($"The {formation_display_name(formation_type)} have withdrawn from the field.", eMSG_COLOR.WHITE);
+            // Actually leave play: park past the -100 targeting bound, invisible and
+            // out of melee reach. The instance stays alive so live-applied casualties
+            // and the survivor return keep working; player_all_departed() below ends
+            // the battle once no fighting blocks remain.
+            x = RETREAT_ESCAPED_X;
+            visible = false;
+            engaged = 0;
         }
     }
     if ((move_order == "advance") && (veh_type[1] != "Defenses")) {
@@ -468,4 +485,34 @@ function update_block_size() {
 /// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit
 function update_block_unit_count() {
     unit_count = men + medi + dreads + veh;
+}
+
+/// Fighting player formations: on the field, not retreating, not the Defenses
+/// pseudo-block. The retreat rules key off this count (rear-guard rule).
+function player_fighting_blocks_count() {
+    var _n = 0;
+    with (obj_pnunit) {
+        if ((veh_type[1] == "Defenses") || retreat_departed || (move_order == "retreat")) {
+            continue;
+        }
+        _n += 1;
+    }
+    return _n;
+}
+
+/// True when player blocks remain but every one of them has withdrawn off-field:
+/// the fighting withdrawal is complete and the battle should resolve as the field
+/// being ceded (survivors keep their live-applied casualties and return home).
+function player_all_departed() {
+    if (!instance_exists(obj_pnunit)) {
+        return false;
+    }
+    var _fighting = false;
+    with (obj_pnunit) {
+        if (!retreat_departed) {
+            _fighting = true;
+            break;
+        }
+    }
+    return !_fighting;
 }

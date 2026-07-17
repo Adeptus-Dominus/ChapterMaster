@@ -177,7 +177,13 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
     // Retreating formations take heavily reduced damage as they withdraw (see
     // RETREAT_DAMAGE_MULT): they cannot fight back, but they are hard to catch.
     if (target_object.move_order == "retreat") {
-        hostile_damage *= RETREAT_DAMAGE_MULT;
+        if (hostile_range <= 2) {
+            // Melee catch: a rout cut down from behind takes amplified damage,
+            // so parking at the field edge is never safe (RETREAT_MELEE_MULT).
+            hostile_damage *= RETREAT_MELEE_MULT;
+        } else {
+            hostile_damage *= RETREAT_DAMAGE_MULT;
+        }
     }
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //

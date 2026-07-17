@@ -60,6 +60,7 @@ if (!obj_controller.combat_orders_legend_hidden) {
     var _legend_lines = [
         "Left-click a formation: advance / hold",
         "Shift + left-click: retreat (no return)",
+        "R: general retreat (cursor block stays as rear guard)",
         "Right-click: cycle fire target (nearest / line 1 / 2 / 3)",
         "Devastators holding ground fire braced",
         "Assault squads ordered onto line 1 leap in (once)",

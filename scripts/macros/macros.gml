@@ -48,6 +48,14 @@
 // heavy weapons). ASSAULT_JUMP_RANGE is how far (x units, 10 per column) an ordered
 // Assault formation can leap to reach the enemy front in one bound.
 #macro RETREAT_DAMAGE_MULT 0.2
+// Caught in melee mid-rout, a retreating formation is cut down, not shielded:
+// melee damage against retreaters is amplified instead of reduced.
+#macro RETREAT_MELEE_MULT 1.5
+// Movement passes the last fighting formation must hold before it may also
+// retreat (the rear-guard delaying action), and where departed blocks wait
+// off-field (past the -100 targeting bound).
+#macro RETREAT_REARGUARD_HOLD 3
+#macro RETREAT_ESCAPED_X -150
 #macro DEVASTATOR_BRACED_MULT 1.25
 #macro ASSAULT_JUMP_RANGE 30
 // Minimum heresy/influence a purge that kills anyone removes. Keeps purges viable on

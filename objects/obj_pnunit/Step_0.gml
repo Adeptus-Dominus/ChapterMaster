@@ -14,9 +14,15 @@ update_block_unit_count();
 // Shift + left-click orders a retreat: the formation withdraws west off the field,
 // cannot fire, takes heavily reduced damage, and accepts no further orders.
 if (mouse_check_button_pressed(mb_left) && keyboard_check(vk_shift) && (move_order != "") && (move_order != "retreat") && (veh_type[1] != "Defenses") && hit()) {
-    move_order = "retreat";
-    order_manual = true;
-    obj_ncombat.combat_log.push($"The {formation_display_name(formation_type)} are retreating from the field!", eMSG_COLOR.YELLOW);
+    if ((player_fighting_blocks_count() <= 1) && (rearguard_ticks < RETREAT_REARGUARD_HOLD) && instance_exists(obj_enunit)) {
+        // The last fighting formation is the rear guard: it must delay the enemy
+        // before it may follow the withdrawal (see RETREAT_REARGUARD_HOLD).
+        obj_ncombat.combat_log.push($"The {formation_display_name(formation_type)} must hold as rear guard before they may withdraw!", eMSG_COLOR.YELLOW);
+    } else {
+        move_order = "retreat";
+        order_manual = true;
+        obj_ncombat.combat_log.push($"The {formation_display_name(formation_type)} are retreating from the field!", eMSG_COLOR.YELLOW);
+    }
 } else if (mouse_check_button_pressed(mb_left) && (move_order != "") && (move_order != "retreat") && (veh_type[1] != "Defenses") && hit()) {
     move_order = (move_order == "advance") ? "hold" : "advance";
     // Player-issued orders unlock formation merging for this block; untouched blocks

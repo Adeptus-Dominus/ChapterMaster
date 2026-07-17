@@ -2106,7 +2106,7 @@ function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots
         // The squad location alone read like "Warp" with no hint of the vessel; when
         // every member is aboard the same ship, name it right next to the location.
         if ((_squad_ship >= 0) && (_squad_ship < array_length(obj_ini.ship))) {
-            _label += $", aboard {obj_ini.ship[_squad_ship]}";
+            _label += $"  |  aboard {obj_ini.ship[_squad_ship]}";
         }
         if ((_sel_count > 0) && !_all_sel) {
             _label += $"  ({_sel_count}/{_count} selected)";
