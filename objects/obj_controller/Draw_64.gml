@@ -261,6 +261,9 @@ function draw_line(x1, y1, y_slide, variable) {
 
 try {
     if (menu == eMENU.MANAGE) {
+        if (managing == -1 && !is_struct(selection_data)) {
+            main_map_defaults();
+        } else {
         if (managing != 0) {
             draw_sprite_and_unit_equip_data();
         }
@@ -269,6 +272,7 @@ try {
         }
         if (managing > 0) {
             company_specific_management();
+        }
         }
     } else if (menu == eMENU.LIBRARIUM) {
         scr_librarium_gui();
