@@ -456,7 +456,7 @@ function scr_enemy_ai_e() {
                     special_stop = has_problem_star("meeting") || has_problem_star("meeting_trap");
                 }
 
-                if ((obj_controller.faction_status[i] == "War") && (!special_stop)) {
+                if ((obj_controller.faction_status[i] == "War") && (!special_stop) && (present_fleet[i] > 0)) {
                     // Quene battle
                     obj_turn_end.battles += 1;
                     obj_turn_end.battle[obj_turn_end.battles] = 1;
