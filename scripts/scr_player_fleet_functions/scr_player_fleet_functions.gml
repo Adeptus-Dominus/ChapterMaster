@@ -406,11 +406,6 @@ function player_retreat_from_fleet_combat(destination_star = noone) {
         }
 
         obj_controller.popup = 0;
-        if (obj_controller.zoomed == 1) {
-            with (obj_controller) {
-                scr_zoom();
-            }
-        }
 
         // Build popup text
         var _total_lost = 0;

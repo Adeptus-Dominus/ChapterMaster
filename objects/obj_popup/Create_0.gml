@@ -1,4 +1,3 @@
-set_zoom_to_default();
 type = 0;
 size = 2;
 y_scale = 1;
