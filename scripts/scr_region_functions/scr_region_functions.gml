@@ -3848,7 +3848,14 @@ function region_building_catalogue() {
                     for (var i = 0, l = array_length(_gar.members); i < l; i++) {
                         var _unit = _gar.members[i];
                         if (is_struct(_unit) && (_unit.role() == _scout_role)) {
-                            _unit.add_exp(10);
+                            // Drills only take a Scout so far: grounds teach up to
+                            // TRAINING_GROUND_XP_CAP, at TRAINING_GROUND_XP_PER_TURN per
+                            // ground per turn. Real combat covers the rest of the road
+                            // to veterancy. (Was a flat 10/turn uncapped: two grounds
+                            // made a full veteran out of a Scout in a few turns.)
+                            if (_unit.experience < TRAINING_GROUND_XP_CAP) {
+                                _unit.add_exp(min(TRAINING_GROUND_XP_PER_TURN, TRAINING_GROUND_XP_CAP - _unit.experience));
+                            }
                         }
                     }
                 }

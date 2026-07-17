@@ -58,7 +58,7 @@ function scr_cheatcode(argument0) {
                     break;
                 case "regions": {
                     // Debug readout of the multi-region layer for the open/selected planet.
-                    var _rstar = cheat_target_star();
+                    var _rstar = cheat_target_star(name);
                     if (instance_exists(_rstar)) {
                         var _rplanet = cheat_target_planet(_rstar, (array_length(cheat_arguments) > 0) ? cheat_arguments[0] : undefined);
                         var _rdump = regions_debug_dump(_rstar, _rplanet);
@@ -77,7 +77,7 @@ function scr_cheatcode(argument0) {
                     // Targets the last planet you clicked (open its panel, close, then
                     // enter the cheat). Usage: spawnguard [amount=1000]  or
                     // spawnguard <planet> <amount>
-                    var _gstar = cheat_target_star();
+                    var _gstar = cheat_target_star(name);
                     if (instance_exists(_gstar)) {
                         var _gp; var _gn;
                         if (array_length(cheat_arguments) >= 2) {
@@ -104,7 +104,7 @@ function scr_cheatcode(argument0) {
                     // +200 PDF to both the region overlay and the planet scalar).
                     // Targets the last planet you clicked. Usage:
                     // spawnbarracks [guard|pdf]  or  spawnbarracks <planet> [guard|pdf]
-                    var _bstar = cheat_target_star();
+                    var _bstar = cheat_target_star(name);
                     if (instance_exists(_bstar)) {
                         var _bp; var _bkind = "guard_barracks";
                         var _ba = array_length(cheat_arguments);
@@ -939,7 +939,14 @@ function system_debug_remove_fleet() {
 /// open while the planet screen is, so "what you're looking at" can't work: use
 /// the last system/planet the player clicked, then fall back to the star nearest
 /// the fleet, then the mouse.
-function cheat_target_star() {
+function cheat_target_star(_name = "") {
+    // A quoted star name wins outright: spawnguard "Demetrius" 2 5000
+    if (_name != "") {
+        var _named = find_star_by_name(_name);
+        if (instance_exists(_named)) {
+            return _named;
+        }
+    }
     if (variable_instance_exists(obj_controller, "last_selected_star") && instance_exists(obj_controller.last_selected_star)) {
         return obj_controller.last_selected_star;
     }

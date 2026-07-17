@@ -56,6 +56,15 @@
 // off-field (past the -100 targeting bound).
 #macro RETREAT_REARGUARD_HOLD 3
 #macro RETREAT_ESCAPED_X -150
+// Balance stabilisation for the population-driven faction levels: planet force
+// levels now sit at 5-6 permanently on big worlds, which inflated tactical battle
+// spawns far past the old "single engagement" scale (~1000 men). Clamp the level
+// used for battle sizing; 7 (Enormicus) and raw garrison counts are untouched.
+#macro ENEMY_BATTLE_THREAT_CAP 4
+// Training Ground pacing: per-turn XP per ground, and the ceiling past which
+// grounds teach nothing more (real fighting takes over from drills).
+#macro TRAINING_GROUND_XP_PER_TURN 5
+#macro TRAINING_GROUND_XP_CAP 45
 #macro DEVASTATOR_BRACED_MULT 1.25
 #macro ASSAULT_JUMP_RANGE 30
 // Minimum heresy/influence a purge that kills anyone removes. Keeps purges viable on

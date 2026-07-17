@@ -136,6 +136,13 @@ try {
         u.maxhp = u.hp;
     }
 
+    // Battle-size clamp (see ENEMY_BATTLE_THREAT_CAP in macros.gml): level-scale
+    // threats (1-6) are capped for spawn sizing; 7 (Enormicus) and raw garrison
+    // headcounts (Imperial worlds pass guardsmen counts through threat) pass free.
+    if ((threat >= 1) && (threat <= 6) && (threat > ENEMY_BATTLE_THREAT_CAP)) {
+        threat = ENEMY_BATTLE_THREAT_CAP;
+    }
+
     var _num = xxx / 10;
     for (var j = 1; j <= 10; j++) {
         u = instance_create((_num - j) * 10, 240, obj_enunit);
