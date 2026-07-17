@@ -913,7 +913,6 @@
     {"id":{"name":"scr_specialist_points","path":"scripts/scr_specialist_points/scr_specialist_points.yy",},},
     {"id":{"name":"scr_specialist_training","path":"scripts/scr_specialist_training/scr_specialist_training.yy",},},
     {"id":{"name":"scr_sprite_functions","path":"scripts/scr_sprite_functions/scr_sprite_functions.yy",},},
-    {"id":{"name":"scr_sprite_helpers","path":"scripts/scr_sprite_helpers/scr_sprite_helpers.yy",},},
     {"id":{"name":"scr_squads","path":"scripts/scr_squads/scr_squads.yy",},},
     {"id":{"name":"scr_star_ownership","path":"scripts/scr_star_ownership/scr_star_ownership.yy",},},
     {"id":{"name":"scr_star_travel_algorithm","path":"scripts/scr_star_travel_algorithm/scr_star_travel_algorithm.yy",},},
