@@ -4,7 +4,6 @@ function scr_income() {
 
     income_base = 32;
     income_tribute = 0;
-    income_controlled_planets = 0;
     if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
         income_base = 40;
     }
@@ -120,7 +119,7 @@ function scr_income() {
         with (obj_star) {
             for (var i = 1; i <= planets; i++) {
                 if (planet_feature_bool(p_feature[i], eP_FEATURES.MONASTERY)) {
-                    obj_controller.income += 10;
+                    obj_controller.income_home += 10;
                     instance_create(x, y, obj_temp1);
                 }
             }
@@ -153,7 +152,6 @@ function scr_income() {
         for (var o = 1; o <= planets; o++) {
             if (dispo[o] >= 100) {
                 if (planet_feature_bool(p_feature[o], eP_FEATURES.MONASTERY) == 0) {
-                    obj_controller.income_controlled_planets += 1;
                     obj_controller.income_tribute += 1;
                     if (p_type[o] == "Feudal") {
                         obj_controller.income_tribute += 1;

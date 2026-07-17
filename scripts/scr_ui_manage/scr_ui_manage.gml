@@ -630,7 +630,7 @@ function draw_sprite_and_unit_equip_data() {
             var button_coords;
             var _allow_alternative_views = managing >= 0;
             if (!_allow_alternative_views) {
-                _allow_alternative_views = selection_data.purpose_code == "manage";
+                _allow_alternative_views = is_struct(selection_data) && selection_data.purpose_code == "manage";
             }
             if (_allow_alternative_views) {
                 alternative_manage_views(xx + 5, yy + 6);

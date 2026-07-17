@@ -1,6 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
+/// @self Id.Instance.obj_controller
 function set_chapter_arti_data() {
     artifacts = 0;
     menu_artifact = -1;
@@ -18,6 +19,7 @@ function set_chapter_arti_data() {
     }
 }
 
+/// @self Id.Instance.obj_controller
 function scr_librarium_gui() {
     add_draw_return_values();
     if (artifacts == 0) {
@@ -157,6 +159,7 @@ function scr_librarium_gui() {
     pop_draw_return_values();
 }
 
+/// @self Id.Instance.obj_controller
 function scr_librarium() {
     add_draw_return_values();
     var blurp = "";

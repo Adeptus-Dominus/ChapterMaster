@@ -78,6 +78,7 @@ function scr_change_menu(wanted_menu, specific_area_function = undefined) {
 function main_map_defaults() {
     with (obj_controller) {
         menu = eMENU.DEFAULT;
+        menu_lock = false;
         hide_banner = 0;
         location_viewer.update_garrison_log();
         managing = 0;
@@ -164,9 +165,9 @@ function scr_toggle_setting() {
                 popup = 0;
                 selected = 0;
                 hide_banner = 1;
-                try{
+                try {
                     setup_ui_chapter_settings();
-                } catch (_exception){
+                } catch (_exception) {
                     ERROR_HANDLER.handle_exception(_exception);
                     scr_toggle_setting();
                 }
@@ -233,6 +234,8 @@ function scr_toggle_reclu() {
 function scr_toggle_lib() {
     scr_change_menu(eMENU.LIBRARIUM, function() {
         with (obj_controller) {
+            var xx = camera_get_view_x(view_camera[0]);
+            var yy = camera_get_view_y(view_camera[0]);
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Chief " + string(obj_ini.role[100][17]), "0") == 0) {
