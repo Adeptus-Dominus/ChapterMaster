@@ -223,8 +223,25 @@ function draw_popup_options() {
                     press = i;
                     if (_is_struct && struct_exists(_opt, "choice_func")) {
                         if (is_callable(_opt.choice_func)) {
+                            var _newest_popup = noone;
+                            with (obj_popup) {
+                                if (id > _newest_popup) {
+                                    _newest_popup = id;
+                                }
+                            }
                             script_execute(_opt.choice_func);
                             press = -1;
+                            if (instance_exists(id)) {
+                                var _replaced = false;
+                                with (obj_popup) {
+                                    if (id > _newest_popup) {
+                                        _replaced = true;
+                                    }
+                                }
+                                if (_replaced) {
+                                    instance_destroy();
+                                }
+                            }
                         }
                     }
                 }
