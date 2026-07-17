@@ -177,11 +177,11 @@ try {
                 obj_controller.cooldown = 9999;
             }
 
-            if (obj_controller.zoomed == 1) {
-                with (obj_controller) {
-                    scr_zoom();
-                }
-            }
+            // if (obj_controller.zoomed == 1) {
+            //     with (obj_controller) {
+            //         scr_zoom();
+            //     }
+            // }
         }
         instance_activate_object(obj_star);
     }

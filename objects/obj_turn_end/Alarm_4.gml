@@ -111,11 +111,11 @@ if ((battles > 0) && (current_battle <= battles)) {
             }
         }
 
-        if (obj_controller.zoomed == 1) {
-            with (obj_controller) {
-                scr_zoom();
-            }
-        }
+        // if (obj_controller.zoomed == 1) {
+        //     with (obj_controller) {
+        //         scr_zoom();
+        //     }
+        // }
     }
     instance_activate_object(obj_star);
 }

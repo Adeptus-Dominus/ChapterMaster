@@ -54,7 +54,6 @@ function scr_change_menu(wanted_menu, specific_area_function = undefined) {
     }
     with (obj_controller) {
         main_map_defaults();
-        set_zoom_to_default();
         continue_sequence = scr_menu_clear_up(function() {
             return true;
         });
@@ -149,6 +148,7 @@ function scr_toggle_manage() {
     scr_change_menu(eMENU.MANAGE, function() {
         with (obj_controller) {
             if (menu != eMENU.MANAGE) {
+                set_zoom_to_default();
                 hide_banner = 1;
                 basic_manage_settings();
                 scr_management(1);
@@ -161,6 +161,7 @@ function scr_toggle_setting() {
     scr_change_menu(eMENU.SETTINGS, function() {
         with (obj_controller) {
             if (menu != eMENU.SETTINGS) {
+                set_zoom_to_default();
                 menu = eMENU.SETTINGS;
                 popup = 0;
                 selected = 0;
@@ -185,6 +186,7 @@ function scr_toggle_setting() {
 function scr_toggle_apothecarion() {
     scr_change_menu(eMENU.APOTHECARION, function() {
         with (obj_controller) {
+            set_zoom_to_default();
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Master of the Apothecarion", "0") == 0) {
@@ -202,6 +204,7 @@ function scr_toggle_apothecarion() {
 function scr_toggle_reclu() {
     scr_change_menu(eMENU.RECLUSIAM, function() {
         with (obj_controller) {
+            set_zoom_to_default();
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Master of Sanctity", "0") == 0) {
@@ -234,6 +237,7 @@ function scr_toggle_reclu() {
 function scr_toggle_lib() {
     scr_change_menu(eMENU.LIBRARIUM, function() {
         with (obj_controller) {
+            set_zoom_to_default();
             var xx = camera_get_view_x(view_camera[0]);
             var yy = camera_get_view_y(view_camera[0]);
             menu_adept = 0;
@@ -265,6 +269,7 @@ function scr_toggle_armamentarium() {
     scr_change_menu(eMENU.ARMAMENTARIUM, function() {
         with (obj_controller) {
             if (menu != eMENU.ARMAMENTARIUM) {
+                set_zoom_to_default();
                 if (scr_role_count("Forge Master", "0") == 0) {
                     menu_adept = 1;
                 }
@@ -280,6 +285,7 @@ function scr_toggle_recruiting() {
     scr_change_menu(eMENU.RECRUITING, function() {
         with (obj_controller) {
             if (menu != eMENU.RECRUITING) {
+                set_zoom_to_default();
                 set_up_recruitment_view();
                 hide_banner = 1;
             }
@@ -290,6 +296,7 @@ function scr_toggle_recruiting() {
 function scr_toggle_fleet_area() {
     scr_change_menu(eMENU.FLEET, function() {
         with (obj_controller) {
+            set_zoom_to_default();
             menu_adept = 0;
             if (menu != eMENU.FLEET) {
                 hide_banner = 1;
@@ -362,6 +369,7 @@ function scr_toggle_diplomacy() {
     scr_change_menu(eMENU.DIPLOMACY, function() {
         with (obj_controller) {
             if (menu != eMENU.DIPLOMACY) {
+                set_zoom_to_default();
                 set_up_diplomacy_buttons();
                 menu = eMENU.DIPLOMACY;
                 audience = 0;
@@ -378,6 +386,7 @@ function scr_toggle_event_log() {
     scr_change_menu(eMENU.EVENT_LOG, function() {
         with (obj_controller) {
             if (menu != eMENU.EVENT_LOG) {
+                set_zoom_to_default();
                 menu = eMENU.EVENT_LOG;
 
                 hide_banner = 1;
