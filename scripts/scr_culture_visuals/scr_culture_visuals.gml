@@ -2732,6 +2732,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_plasma_cannon,
+				shadows: spr_dread_plasma_cannon_shadow,
             }
         ],
     },
@@ -2750,7 +2751,11 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_mmelta,
             },
             {
+				weapon_data: {
+                display_type: "dreadnought",
+				},
                 sprite: spr_dread_plasma_cannon,
+				shadows: spr_dread_plasma_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
                 single_left_right_profile: true,
@@ -2781,6 +2786,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_plasma_cannon,
+				shadows: spr_dread_plasma_cannon_shadow,
             }
         ],
     },
