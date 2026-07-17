@@ -1412,7 +1412,7 @@ function PlanetData(_planet, _system) constructor {
                 // every Imperial arm (PDF + Guard + Astartes garrison + Sororitas +
                 // Skitarii + Inquisition), the same grouping the resolver fights as one
                 // side. Click to open the per-arm breakdown.
-                var _if_str = $"Imperial Forces: {scr_display_number(br_side_strength(system, current_planet, \"IMP\"))}";
+                var _if_str = $"Imperial Forces: {scr_display_number(br_side_strength(system, current_planet, "IMP"))}";
                 var _if_hover = scr_hit(xx + 480, yy + y7, xx + 480 + string_width(_if_str), yy + y7 + 18);
                 draw_set_color(_if_hover ? c_yellow : c_white);
                 draw_text(xx + 480, yy + y7, _if_str);
@@ -1429,7 +1429,7 @@ function PlanetData(_planet, _system) constructor {
                 // Chaos-held world: ONE combined "Chaos Forces" total (Chaos Marines +
                 // Heretics + Daemons), mirroring the Imperial fold. Click opens the
                 // per-arm breakdown.
-                var _ch_str = $"Chaos Forces: {scr_display_number(br_side_strength(system, current_planet, \"CHAOS\"))}";
+                var _ch_str = $"Chaos Forces: {scr_display_number(br_side_strength(system, current_planet, "CHAOS"))}";
                 var _ch_hover = scr_hit(xx + 480, yy + y7, xx + 480 + string_width(_ch_str), yy + y7 + 18);
                 draw_set_color(_ch_hover ? c_yellow : c_white);
                 draw_text(xx + 480, yy + y7, _ch_str);
