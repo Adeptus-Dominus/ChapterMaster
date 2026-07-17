@@ -130,13 +130,22 @@ function exit_diplomacy_dialogue() {
 }
 
 function draw_diplomacy_diplo_text() {
+    // Upstream's extraction (964e3ff5c/808c2ac1b) left this reading xx/yy, which
+    // nothing sets on the diplomacy draw path, so opening any audience crashed
+    // (verbatim on upstream's own 2026-07-16 build, cc325f591). This runs in the
+    // GUI layer (obj_controller Draw_64): the text above already draws at absolute
+    // GUI coordinates, so the divider line does too, no camera offsets. The
+    // diplo_txt guard covers builds whose controller lost the init.
+    if (!variable_instance_exists(obj_controller, "diplo_txt")) {
+        diplo_txt = "";
+    }
     draw_set_font(fnt_40k_14);
     draw_set_alpha(1);
     draw_set_color(CM_GREEN_COLOR);
     draw_set_halign(fa_left);
     draw_text_ext(352, 209, string_hash_to_newline(string(diplo_txt)), -1, 536);
     draw_set_halign(fa_center);
-    draw_line(xx + 429, yy + 710, xx + 800, yy + 710);
+    draw_line(429, 710, 800, 710);
 }
 
 function set_up_diplomacy_buttons() {

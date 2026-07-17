@@ -1139,6 +1139,14 @@ serialize = function() {
         "specialist_point_handler",
         "spec_train_data",
         "tooltips",
+        // Diplomacy UI structs: rebuilt at runtime, never saved. Listed so the
+        // serializer's unserialized-struct warning stays quiet about them.
+        "diplo_buttons",
+        "audience_data",
+        "diplo_image",
+        "diplo_image_unit",
+        "master_image",
+        "master_image_unit",
         "last_unit",
         "unit_manage_constants",
         "unit_manage_image",
