@@ -1077,17 +1077,25 @@ function scr_ui_manage() {
             if (!variable_instance_exists(id, "marine_squad_collapse")) {
                 marine_squad_collapse = true;
             }
+            // Ship Management runs as a selection screen (managing -1, purpose set);
+            // the squad collapse machinery is list-driven (groups display_unit by
+            // unit.squad), so it works there unchanged. It was only ever gated to
+            // company/Auxilia contexts.
+            var _ship_mgmt_list = (managing < 0) && is_struct(selection_data)
+                && struct_exists(selection_data, "purpose")
+                && (selection_data.purpose == "Ship Management");
             if ((managing == 16) && auxilia_squad_collapse) {
                 draw_auxilia_squad_rows(xx, yy, stats_displayed);
-            } else if ((managing >= 1) && (managing <= 10) && marine_squad_collapse) {
+            } else if ((((managing >= 1) && (managing <= 10)) || _ship_mgmt_list) && marine_squad_collapse) {
                 // Marine squad collapse: same collapsed-row treatment as the Auxilia
                 // view, but grouped by the real squads system (unit.squad ids), with
                 // squad-type names ("Tactical Squad 2") instead of generic numbering.
-                draw_marine_squad_rows(xx, yy, stats_displayed, get_command_slots_data());
+                // Command-slot prompts are company furniture; the ship list passes none.
+                draw_marine_squad_rows(xx, yy, stats_displayed, _ship_mgmt_list ? [] : get_command_slots_data());
             } else {
             var repetitions = min(man_max, MANAGE_MAN_SEE);
             man_count = 0;
-            if ((managing == 16) || ((managing >= 1) && (managing <= 10))) {
+            if ((managing == 16) || ((managing >= 1) && (managing <= 10)) || _ship_mgmt_list) {
                 // First roster row becomes the view toggle, consuming a row slot the same
                 // way company command-slot prompts do. "Squad List" for marines to avoid
                 // clashing with the existing Squad View button in the unit panel.
