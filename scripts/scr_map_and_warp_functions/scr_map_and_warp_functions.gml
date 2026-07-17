@@ -6,14 +6,15 @@ function in_camera_view(rect) {
     return rectangle_in_rectangle(rect[0], rect[1], rect[2], rect[3], x1, y1, w, h);
 }
 
+/// @self Id.Instance.obj_controller
 function main_map_move_keys() {
     var view_w = camera_get_view_width(view_camera[0]);
     var view_h = camera_get_view_height(view_camera[0]);
     var x_limits = 0;
     var y_limits = 0;
-    if (((menu == 0) && (formating == 0)) || instance_exists(obj_fleet)) {
-        var spd = 12 * obj_controller.scale_mod, keyb = ""; // player move speed on campaign map
-        if (!instances_exist_any([obj_ingame_menu, obj_ncombat]) || instance_exists(obj_fleet)) {
+    if (((menu == eMENU.DEFAULT || menu == eMENU.TURN_END) && formating == 0) || instance_exists(obj_fleet)) {
+        var spd = 12 * obj_controller.scale_mod; // player move speed on campaign map
+        if (!instances_exist_any([obj_ingame_menu, obj_ncombat])) {
             if (keyboard_check(vk_shift)) {
                 spd *= 3;
             } // shift down, increase speed
