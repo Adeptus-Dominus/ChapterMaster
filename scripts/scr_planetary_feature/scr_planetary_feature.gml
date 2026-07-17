@@ -760,6 +760,7 @@ function ground_forces_collect_artifact() {
         obj_controller.menu = 0;
         instance_destroy();
     }
+    instance_destroy();
 }
 
 function governor_negotiate_artifact() {
