@@ -43,6 +43,8 @@ try {
 draw_set_alpha(1);
 draw_set_valign(fa_top);
 draw_set_halign(fa_left);
+
+try {
 if (menu == eMENU.DIPLOMACY) {
     add_draw_return_values();
     if (diplomacy > 0) {
@@ -67,6 +69,12 @@ if (menu == eMENU.DIPLOMACY) {
     }
     pop_draw_return_values();
 }
+} catch (_exception) {
+    ERROR_HANDLER.handle_exception(_exception);
+    menu = eMENU.DEFAULT;
+    menu_lock = false;
+}
+
 // Main UI
 if (!zoomed && !zui) {
     add_draw_return_values();
