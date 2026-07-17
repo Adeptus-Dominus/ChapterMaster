@@ -78,6 +78,7 @@ function scr_change_menu(wanted_menu, specific_area_function = undefined) {
 function main_map_defaults() {
     with (obj_controller) {
         menu = eMENU.DEFAULT;
+        menu_lock = false;
         hide_banner = 0;
         location_viewer.update_garrison_log();
         managing = 0;
