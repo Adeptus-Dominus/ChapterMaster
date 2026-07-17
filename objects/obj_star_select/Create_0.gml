@@ -1,5 +1,8 @@
 owner = 0;
 target = instance_nearest(x, y, obj_star);
+// Remember the last system the player opened: the cheat console can't be open at
+// the same time as this screen, so planet-targeting cheats act on this instead.
+obj_controller.last_selected_star = target;
 loading = 0;
 loading_name = "";
 alarm[0] = 1;

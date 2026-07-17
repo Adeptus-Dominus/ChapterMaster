@@ -1727,6 +1727,9 @@ function PlanetData(_planet, _system) constructor {
         }
         if (planet > 0) {
             current_planet = planet;
+            // Remember the last planet clicked for the planet-targeting cheats.
+            obj_controller.last_selected_star = system;
+            obj_controller.last_selected_planet = planet;
             draw_set_color(c_black);
             draw_set_halign(fa_center);
         }

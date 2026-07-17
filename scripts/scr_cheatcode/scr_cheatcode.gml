@@ -58,18 +58,9 @@ function scr_cheatcode(argument0) {
                     break;
                 case "regions": {
                     // Debug readout of the multi-region layer for the open/selected planet.
-                    var _rstar = noone;
-                    if (instance_exists(obj_star_select)) {
-                        _rstar = obj_star_select.target;
-                    }
-                    if (!instance_exists(_rstar) && instance_exists(obj_p_fleet)) {
-                        _rstar = instance_nearest(obj_p_fleet.x, obj_p_fleet.y, obj_star);
-                    }
-                    if (!instance_exists(_rstar)) {
-                        _rstar = instance_nearest(mouse_x, mouse_y, obj_star);
-                    }
+                    var _rstar = cheat_target_star();
                     if (instance_exists(_rstar)) {
-                        var _rplanet = clamp(real(cheat_arguments[0]), 1, max(1, _rstar.planets));
+                        var _rplanet = cheat_target_planet(_rstar, (array_length(cheat_arguments) > 0) ? cheat_arguments[0] : undefined);
                         var _rdump = regions_debug_dump(_rstar, _rplanet);
                         show_debug_message(_rdump);
                         scr_popup("DEBUG", _rdump, "");
@@ -83,20 +74,19 @@ function scr_cheatcode(argument0) {
                     // garrison combat (threat -> guard_total when fighting an Imperial
                     // world) can be tested quickly. Also mirrors into the region
                     // overlay's capital for display consistency.
-                    // Usage: spawnguard <planet> [amount=1000]
-                    var _gstar = noone;
-                    if (instance_exists(obj_star_select)) {
-                        _gstar = obj_star_select.target;
-                    }
-                    if (!instance_exists(_gstar) && instance_exists(obj_p_fleet)) {
-                        _gstar = instance_nearest(obj_p_fleet.x, obj_p_fleet.y, obj_star);
-                    }
-                    if (!instance_exists(_gstar)) {
-                        _gstar = instance_nearest(mouse_x, mouse_y, obj_star);
-                    }
+                    // Targets the last planet you clicked (open its panel, close, then
+                    // enter the cheat). Usage: spawnguard [amount=1000]  or
+                    // spawnguard <planet> <amount>
+                    var _gstar = cheat_target_star();
                     if (instance_exists(_gstar)) {
-                        var _gp = (array_length(cheat_arguments) > 0) ? clamp(real(cheat_arguments[0]), 1, max(1, _gstar.planets)) : 1;
-                        var _gn = (array_length(cheat_arguments) > 1) ? max(1, real(cheat_arguments[1])) : 1000;
+                        var _gp; var _gn;
+                        if (array_length(cheat_arguments) >= 2) {
+                            _gp = cheat_target_planet(_gstar, cheat_arguments[0]);
+                            _gn = max(1, real(cheat_arguments[1]));
+                        } else {
+                            _gp = cheat_target_planet(_gstar, undefined);
+                            _gn = (array_length(cheat_arguments) == 1) ? max(1, real(cheat_arguments[0])) : 1000;
+                        }
                         _gstar.p_guardsmen[_gp] += _gn;
                         var _gregs = regions_ensure(_gstar, _gp);
                         if (array_length(_gregs) > 0) {
@@ -112,20 +102,19 @@ function scr_cheatcode(argument0) {
                     // Test cheat: plant a barracks region building directly, no cost or
                     // build UI. It ticks each end turn like a bought one (+100 Guard /
                     // +200 PDF to both the region overlay and the planet scalar).
-                    // Usage: spawnbarracks <planet> [guard|pdf]  (default guard)
-                    var _bstar = noone;
-                    if (instance_exists(obj_star_select)) {
-                        _bstar = obj_star_select.target;
-                    }
-                    if (!instance_exists(_bstar) && instance_exists(obj_p_fleet)) {
-                        _bstar = instance_nearest(obj_p_fleet.x, obj_p_fleet.y, obj_star);
-                    }
-                    if (!instance_exists(_bstar)) {
-                        _bstar = instance_nearest(mouse_x, mouse_y, obj_star);
-                    }
+                    // Targets the last planet you clicked. Usage:
+                    // spawnbarracks [guard|pdf]  or  spawnbarracks <planet> [guard|pdf]
+                    var _bstar = cheat_target_star();
                     if (instance_exists(_bstar)) {
-                        var _bp = (array_length(cheat_arguments) > 0) ? clamp(real(cheat_arguments[0]), 1, max(1, _bstar.planets)) : 1;
-                        var _bkind = ((array_length(cheat_arguments) > 1) && (string_lower(cheat_arguments[1]) == "pdf")) ? "pdf_barracks" : "guard_barracks";
+                        var _bp; var _bkind = "guard_barracks";
+                        var _ba = array_length(cheat_arguments);
+                        if ((_ba >= 1) && ((string_lower(cheat_arguments[0]) == "pdf") || (string_lower(cheat_arguments[0]) == "guard"))) {
+                            _bp = cheat_target_planet(_bstar, undefined);
+                            if (string_lower(cheat_arguments[0]) == "pdf") { _bkind = "pdf_barracks"; }
+                        } else {
+                            _bp = cheat_target_planet(_bstar, (_ba >= 1) ? cheat_arguments[0] : undefined);
+                            if ((_ba >= 2) && (string_lower(cheat_arguments[1]) == "pdf")) { _bkind = "pdf_barracks"; }
+                        }
                         var _bregs = regions_ensure(_bstar, _bp);
                         if (array_length(_bregs) > 0) {
                             array_push(_bregs[0].buildings, _bkind);
@@ -944,4 +933,35 @@ function system_debug_remove_fleet() {
     replace_options(_opts, false, false);
 
     text = "Which fleet would you like to delete?";
+}
+
+/// Resolve the star a planet-targeting cheat should act on. The console can't be
+/// open while the planet screen is, so "what you're looking at" can't work: use
+/// the last system/planet the player clicked, then fall back to the star nearest
+/// the fleet, then the mouse.
+function cheat_target_star() {
+    if (variable_instance_exists(obj_controller, "last_selected_star") && instance_exists(obj_controller.last_selected_star)) {
+        return obj_controller.last_selected_star;
+    }
+    if (instance_exists(obj_star_select)) {
+        return obj_star_select.target;
+    }
+    if (instance_exists(obj_p_fleet)) {
+        return instance_nearest(obj_p_fleet.x, obj_p_fleet.y, obj_star);
+    }
+    return instance_nearest(mouse_x, mouse_y, obj_star);
+}
+
+/// Default planet for a planet-targeting cheat: explicit argument wins, else the
+/// last planet the player clicked (when it belongs to the resolved star), else 1.
+function cheat_target_planet(_star, _arg_planet) {
+    if (_arg_planet != undefined) {
+        return clamp(real(_arg_planet), 1, max(1, _star.planets));
+    }
+    if (variable_instance_exists(obj_controller, "last_selected_planet")
+    && variable_instance_exists(obj_controller, "last_selected_star")
+    && (obj_controller.last_selected_star == _star)) {
+        return clamp(obj_controller.last_selected_planet, 1, max(1, _star.planets));
+    }
+    return 1;
 }
