@@ -331,10 +331,3 @@ function star_box_shape(star = noone) {
         }
     }
 }
-
-function draw_sprite_centered(sprite, subimg, x, y, xscale, yscale, rot, col, alpha) {
-    draw_set_halign(fa_left);
-    var width = (sprite_get_width(sprite) * xscale) / 2;
-    var height = (sprite_get_height(sprite) * yscale) / 2;
-    draw_sprite_ext(sprite, subimg, x, y, xscale, yscale, rot, col, alpha);
-}
