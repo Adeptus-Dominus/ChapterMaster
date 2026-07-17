@@ -235,7 +235,7 @@ function UnitGroup(units) constructor {
 
             var _sgt = _available_sgt.units[0];
             squad.add_member(_sgt);
-            squad_fulfilment[$ _sgt_type]++;
+            squad_fulfilment[$ _sgt_type] = (squad_fulfilment[$ _sgt_type] ?? 0) + 1;
             sergeant_found = true;
         }
 
