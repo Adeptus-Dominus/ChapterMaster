@@ -403,7 +403,7 @@ function drop_select_draw() {
 
         // Purge shit happens bellow;
         // God, save us;
-        if (menu == 0) {
+        if (menu == eMENU.DEFAULT) {
             if (purge == 1) {} else if (purge >= 2) {
                 draw_set_halign(fa_center);
                 draw_set_font(fnt_40k_30b);

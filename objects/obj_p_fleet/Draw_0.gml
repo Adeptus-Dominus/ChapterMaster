@@ -49,7 +49,7 @@ if (!select_instance) {
 }
 if (!keyboard_check(vk_shift)) {
     if (within) {
-        if (mouse_check_button_pressed(mb_left) && obj_controller.menu == 0 && !selected) {
+        if (mouse_check_button_pressed(mb_left) && obj_controller.menu == eMENU.DEFAULT && !selected) {
             alarm[3] = 1;
         }
     } else {

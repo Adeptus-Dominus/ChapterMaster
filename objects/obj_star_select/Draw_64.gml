@@ -109,7 +109,7 @@ try {
         draw_planet_debug_options();
     }
 
-    if (obj_controller.menu == 0 && !debug) {
+    if (obj_controller.menu == eMENU.DEFAULT && !debug) {
         if (manage_units_button.draw(has_player_forces)) {
             var _viewer = obj_controller.location_viewer;
             _viewer.update_garrison_log();

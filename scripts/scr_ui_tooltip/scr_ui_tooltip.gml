@@ -72,7 +72,7 @@ function scr_ui_tooltip() {
         tooltip_draw(tooltip);
     }
     // Turn tooltip
-    if ((menu == 0) && (diplomacy <= 0)) {
+    if ((menu == eMENU.DEFAULT) && (diplomacy <= 0)) {
         if (scr_hit(xx + 1435, yy + 40, xx + 1580, yy + 267)) {
             tooltip = $"Turn :{obj_controller.turn}";
             tooltip_draw(tooltip);
