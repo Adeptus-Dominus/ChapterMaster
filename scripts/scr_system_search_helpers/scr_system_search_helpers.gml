@@ -215,7 +215,7 @@ function find_star_by_name(search_name) {
 
     with (obj_star) {
         if (name == search_name) {
-            return self;
+            return id;
         }
     }
 
