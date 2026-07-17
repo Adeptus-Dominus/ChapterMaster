@@ -8,7 +8,7 @@ if (!instance_exists(obj_drop_select) && !instance_exists(obj_bomb_select)) {
         } else if (mouse_y > camera_get_view_y(view_camera[0]) + 836) {
             exit;
         }
-        if (obj_controller.menu != 0) {
+        if (obj_controller.menu != eMENU.DEFAULT) {
             exit;
         }
     }

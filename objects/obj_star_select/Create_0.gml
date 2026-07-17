@@ -100,6 +100,6 @@ heretic_fleet = 0;
 
 en_fleet = array_create(15, 0);
 
-if (obj_controller.menu == 0) {
+if (obj_controller.menu == eMENU.DEFAULT) {
     alarm[1] = 1;
 }

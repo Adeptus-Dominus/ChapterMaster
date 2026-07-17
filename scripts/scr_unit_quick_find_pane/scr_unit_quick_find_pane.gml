@@ -473,7 +473,7 @@ function UnitQuickFindPanel() constructor {
     static draw = function() {
         try {
             add_draw_return_values();
-            if (obj_controller.menu == 0 && obj_controller.zoomed == 0) {
+            if (obj_controller.menu == eMENU.DEFAULT && obj_controller.zoomed == 0) {
                 if (!instances_exist_any([obj_fleet_select, obj_star_select])) {
                     var x_draw = 0;
                     var lower_draw = main_panel.height + 110;
