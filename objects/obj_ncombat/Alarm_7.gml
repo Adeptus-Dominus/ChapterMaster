@@ -217,8 +217,10 @@ try {
             // purges no longer respawn the duel (and re-announce his death) while the
             // world pumps heresy forever. Mirrors the Ork warboss departure pattern.
             var _first_kill = (obj_controller.faction_defeated[10] == 0);
-            delete_features(battle_object.p_feature[battle_id], eP_FEATURES.WARLORD10);
-            delete_features(battle_object.p_feature[battle_id], eP_FEATURES.DAEMONIC_INCURSION);
+            if (instance_exists(battle_object)) {
+                delete_features(battle_object.p_feature[battle_id], eP_FEATURES.WARLORD10);
+                delete_features(battle_object.p_feature[battle_id], eP_FEATURES.DAEMONIC_INCURSION);
+            }
             obj_controller.known[eFACTION.CHAOS] = 2;
             obj_controller.faction_defeated[10] = 1;
 

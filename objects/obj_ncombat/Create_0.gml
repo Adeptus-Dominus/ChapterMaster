@@ -67,7 +67,12 @@ if (instance_exists(obj_star)) {
     battle_object = instance_nearest(x, y, obj_star);
 } else {
     battle_object = noone;
-    LOGGER.error("No obj_star instance found for combat; battle_object defaulted to noone");
+    // Not an error: battles are created in the combat room, where no obj_star
+    // instance lives. Every spawner (drop_select, purge, missions, ruins, popup
+    // reinforcements) assigns obj_ncombat.battle_object right after creating this
+    // instance, so the nearest-star resolution above only matters for battles
+    // created in the map room.
+    LOGGER.info("No obj_star in this room; battle_object will be assigned by the battle spawner");
 }
 battle_id = 0;
 battle_mission = "";
@@ -183,6 +188,13 @@ casualties = 0;
 dead_jims = 0;
 
 combat_log = new CombatLog(id);
+
+// Upstream combat debug buffer (inert unless activated: add() returns immediately
+// when inactive). The fork ran without this initialization while the call sites
+// lived only in upstream-side files; the merged enemy targeting alarm now calls it
+// on its first line, so every battle crashed on the unset variable. Initialize
+// exactly as upstream's Create_0 does.
+combat_debugger = new CombatDebugger(false);
 combat_log.log_font = fnt_aldrich_12;
 ctally_target = undefined;
 ctally_bounce = [];
