@@ -1878,7 +1878,7 @@ global.modular_drawing_items = [
 		body_types: [0],
         sprite: spr_artificer_thorax,
         shadows: spr_artificer_thorax_shadow,
-    }
+    },
 	//Dreadnought Sprites
 	{
         position: "armour",
