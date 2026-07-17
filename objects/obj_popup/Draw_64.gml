@@ -28,13 +28,7 @@ try {
             draw_set_font(fnt_large);
             draw_set_halign(fa_center);
             draw_set_color(CM_GREEN_COLOR);
-
-            if (!obj_controller.zoomed) {
-                draw_text_transformed(camera_get_view_x(view_camera[0]) + 320, camera_get_view_y(view_camera[0]) + 60, "SELECT DESTINATION", 0.5, 0.5, 0);
-            } else {
-                draw_text_transformed(room_width / 2, 60 * 3, "SELECT DESTINATION", 1.5, 1.5, 0);
-            }
-
+            draw_text_transformed(320, 60, "SELECT DESTINATION", 0.5, 0.5, 0);
             draw_set_halign(fa_left);
         } else if (type == 10) {
             target_comp += 1;
@@ -45,11 +39,7 @@ try {
             exit;
         }
 
-        var zoom = 0;
-        if (instance_exists(obj_controller)) {
-            zoom = obj_controller.zoomed;
-        }
-        if (((zoom == 0) && (type <= 4)) || (type == 98)) {
+        if ((type <= 4) || (type == 98)) {
             image_bot = 0;
             y_scale_mod = 1;
 
