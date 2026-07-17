@@ -1,6 +1,6 @@
 {
   "$GMSprite":"v2",
-  "%Name":"spr_dreadnought_chasis_colors",
+  "%Name":"spr_dreadnought_chasis_shadow",
   "bboxMode":0,
   "bbox_bottom":207,
   "bbox_left":25,
@@ -12,16 +12,16 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"86d484fb-1413-4650-8a7c-af191d0bb09a","name":"86d484fb-1413-4650-8a7c-af191d0bb09a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"6b049966-a476-4555-a86c-a786af7cbea4","name":"6b049966-a476-4555-a86c-a786af7cbea4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":232,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"9ae487aa-8302-4438-95f8-f03ad7ba629e","blendMode":0,"displayName":"default","isLocked":false,"name":"9ae487aa-8302-4438-95f8-f03ad7ba629e","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"d4f60723-f651-4d25-b12a-bc0a5c519ce9","blendMode":0,"displayName":"default","isLocked":false,"name":"d4f60723-f651-4d25-b12a-bc0a5c519ce9","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_dreadnought_chasis_colors",
+  "name":"spr_dreadnought_chasis_shadow",
   "nineSlice":null,
   "origin":9,
   "parent":{
@@ -33,7 +33,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"spr_dreadnought_chasis_colors",
+    "%Name":"spr_dreadnought_chasis_shadow",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -57,22 +57,20 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_dreadnought_chasis_colors",
+    "name":"spr_dreadnought_chasis_shadow",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
-    "seqHeight":232.0,
-    "seqWidth":197.0,
     "showBackdrop":true,
     "showBackdropImage":false,
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"86d484fb-1413-4650-8a7c-af191d0bb09a","path":"sprites/spr_dreadnought_chasis_colors/spr_dreadnought_chasis_colors.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"8054cbda-dfba-4b65-b91b-bac5ee4e487d","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"6b049966-a476-4555-a86c-a786af7cbea4","path":"sprites/spr_dreadnought_chasis_shadow/spr_dreadnought_chasis_shadow.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"723519eb-55f9-452f-ae74-08b8fc169f70","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
@@ -81,7 +79,7 @@
     "yorigin":0,
   },
   "swatchColours":null,
-  "swfPrecision":2.525,
+  "swfPrecision":0.5,
   "textureGroupId":{
     "name":"MarineViewer",
     "path":"texturegroups/MarineViewer",

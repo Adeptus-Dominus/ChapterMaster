@@ -1870,6 +1870,14 @@ global.modular_drawing_items = [
         sprite: spr_artificer_chest_variant,
         shadows: spr_artificer_chest_variant_shadow,
     },
+	//Dreadnought Sprites
+	{
+        position: "armour",
+        armours: ["Dreadnought"],
+		body_types: [3],
+        sprite: spr_dreadnought_chasis_colors,
+        shadows: spr_dreadnought_chasis_shadow,
+    },
     //Tartaros Sprites
     {
         position: "armour",
@@ -2625,7 +2633,11 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_lasca,
             },
             {
+				weapon_data: {
+					display_type: "dreadnought",
+				},
                 sprite: spr_dread_lascannon,
+				shadows: spr_dread_lascannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
                 single_left_right_profile: true,
@@ -2639,11 +2651,12 @@ global.weapon_visual_data = {
                 display_type: "dreadnought",
             },
             armours: ["Dreadnought"],
-            single_left_right_profile: true,
+			single_left_right_profile: true,
         },
         variants: [
             {
                 sprite: spr_dread_claw,
+				shadows: spr_dread_claw_shadow,
             },
             {
                 sprite: spr_contemptor_CCW,
@@ -2674,6 +2687,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_claw,
+				shadows: spr_dread_claw_shadow,
             }
         ],
     },
@@ -2687,6 +2701,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_claw,
+				shadows: spr_dread_claw_shadow,
             }
         ],
     },
@@ -2700,6 +2715,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_claw,
+				shadows: spr_dread_claw_shadow,
             }
         ],
     },
@@ -2748,6 +2764,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_lascannon,
+				sprite: spr_dread_lascannon_shadow,
             }
         ],
     },
