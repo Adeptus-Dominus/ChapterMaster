@@ -135,7 +135,7 @@ function draw_diplomacy_diplo_text() {
     draw_set_halign(fa_left);
     draw_text_ext(352, 209, string_hash_to_newline(string(diplo_txt)), -1, 536);
     draw_set_halign(fa_center);
-    draw_line(xx + 429, yy + 710, xx + 800, yy + 710);
+    draw_line(429, 710, 800, 710);
 }
 
 function set_up_diplomacy_buttons() {
