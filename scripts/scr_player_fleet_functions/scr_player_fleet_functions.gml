@@ -29,8 +29,7 @@ function fleet_engaged(fleet) {
 }
 
 function split_selected_into_new_fleet(start_fleet) {
-    var new_fleet = instance_create(x, y, obj_p_fleet);
-    new_fleet.owner = eFACTION.PLAYER;
+    var new_fleet = create_player_fleet(x, y);
     with (start_fleet) {
         // Pass over ships to the new fleet, if they are selected
         var cap_number = array_length(capital);
@@ -63,16 +62,6 @@ function split_selected_into_new_fleet(start_fleet) {
     return new_fleet;
 }
 
-/// @param {Id.Instance.obj_p_fleet} _fleet
-/// @param {Id.Instance.obj_star} _star
-function set_fleet_orbiting(_fleet, _star) {
-    _star.present_fleet[1] += 1;
-    if (_star.vision == 0) {
-        _star.vision = 1;
-    }
-    _fleet.orbiting = _star;
-}
-
 /// @self Id.Instance.obj_p_fleet
 function cancel_fleet_movement() {
     var nearest_star = instance_nearest(x, y, obj_star);
@@ -84,18 +73,17 @@ function cancel_fleet_movement() {
     complex_route = [];
     just_left = false;
     set_fleet_location(nearest_star.name);
-    set_fleet_orbiting(self, nearest_star);
+    fleet_register_at_star(self, nearest_star);
 }
 
 /// @self Id.Instance.obj_p_fleet
 function set_new_player_fleet_course(target_array) {
     if (array_length(target_array) > 0) {
         var target_planet = find_star_by_name(target_array[0]);
-        var nearest_planet = instance_nearest(x, y, obj_star);
-        var from_star = point_distance(nearest_planet.x, nearest_planet.y, x, y) < 75;
+        var from_star = instance_exists(orbiting);
         var valid = target_planet != noone;
         if (valid) {
-            valid = !(target_planet.id == nearest_planet.id && from_star);
+            valid = !(from_star && target_planet.id == orbiting.id);
         }
         if (!valid) {
             if (array_length(target_array) > 1) {
@@ -108,19 +96,19 @@ function set_new_player_fleet_course(target_array) {
             array_delete(target_array, 0, 1);
         }
 
-        if (from_star) {
-            nearest_planet.present_fleet[1]--;
-        }
-    
         complex_route = target_array;
-        var from_x = from_star ? nearest_planet.x : x;
-        var from_y = from_star ? nearest_planet.y : y;
+        var from_x = from_star ? orbiting.x : x;
+        var from_y = from_star ? orbiting.y : y;
         action_eta = calculate_fleet_eta(from_x, from_y, target_planet.x, target_planet.y, action_spd, from_star, true, warp_able);
         action_x = target_planet.x;
         action_y = target_planet.y;
         action = "move";
         just_left = true;
-        orbiting = noone;
+
+        if (from_star) {
+            fleet_unregister_from_star(id);
+        }
+
         x = x + lengthdir_x(48, point_direction(x, y, action_x, action_y));
         y = y + lengthdir_y(48, point_direction(x, y, action_x, action_y));
         set_fleet_location("Warp");
@@ -148,20 +136,33 @@ function find_and_move_ship_between_fleets(out_fleet, in_fleet, index) {
 
 function merge_player_fleets(main_fleet, merge_fleet) {
     var _merge_ships = fleet_full_ship_array(merge_fleet);
+
     for (var i = 0; i < array_length(_merge_ships); i++) {
         if (_merge_ships[i] < array_length(obj_ini.ship)) {
             find_and_move_ship_between_fleets(merge_fleet, main_fleet, _merge_ships[i]);
         }
     }
+
     main_fleet.alarm[7] = 1;
+
     if (instance_exists(obj_fleet_select)) {
         if ((obj_fleet_select.x == merge_fleet.x) && (obj_fleet_select.y == merge_fleet.y)) {
             with (obj_fleet_select) {
                 instance_destroy();
             }
+
             main_fleet.alarm[3] = 1;
         }
     }
+
+    if (instance_exists(obj_turn_end)) {
+        for (var _bi = 0; _bi < array_length(obj_turn_end.battle_pobject); _bi++) {
+            if (obj_turn_end.battle_pobject[_bi] == merge_fleet.id && obj_turn_end.battle_world[_bi] == 0) {
+                obj_turn_end.battle_pobject[_bi] = main_fleet.id;
+            }
+        }
+    }
+
     with (merge_fleet) {
         instance_destroy();
     }

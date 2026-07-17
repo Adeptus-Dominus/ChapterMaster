@@ -37,12 +37,12 @@ function target_block_is_valid(target, desired_type) {
             return _is_valid;
         }
         if (instance_exists(target)) {
-            if (target.x > 0 && target.object_index == desired_type) {
+            if (target.x > -100 && target.object_index == desired_type) {
                 if (target.men + target.veh + target.dreads > 0) {
                     _is_valid = true;
                 } else {
-                    x = -5000;
-                    instance_deactivate_object(id);
+                    target.x = -5000;
+                    instance_deactivate_object(target);
                 }
             }
         }
@@ -63,7 +63,7 @@ function get_rightmost(block_type = obj_pnunit, include_flanking = true, include
                 if (!include_main_force && !flank) {
                     continue;
                 }
-                if (x <= 0) {
+                if (x < -100) {
                     continue;
                 }
                 if (block_type == obj_pnunit) {
@@ -73,8 +73,8 @@ function get_rightmost(block_type = obj_pnunit, include_flanking = true, include
                         continue;
                     }
                 }
-                if (rightmost == noone && x > 0) {
-                    rightmost = block_type.id;
+                if (rightmost == noone && x > -100) {
+                    rightmost = id;
                 } else {
                     if (x > rightmost.x) {
                         rightmost = id;
@@ -104,7 +104,7 @@ function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
                 if (!include_flanking && flank) {
                     continue;
                 }
-                if (x <= 0) {
+                if (x < -100) {
                     continue;
                 }
                 if (block_type == obj_pnunit) {
@@ -114,10 +114,10 @@ function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
                         continue;
                     }
                 }
-                if (left_most == noone && x > 0) {
-                    left_most = block_type.id;
+                if (left_most == noone && x > -100) {
+                    left_most = id;
                 } else {
-                    if (x < left_most.x && x > 0) {
+                    if (x < left_most.x && x > -100) {
                         left_most = id;
                     }
                 }

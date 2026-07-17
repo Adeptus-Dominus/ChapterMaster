@@ -1,7 +1,6 @@
 /// @self Asset.GMObject.obj_en_fleet
 function navy_orbiting_planet_end_turn_action() {
     end_sequence_finished = false;
-    orbiting = instance_nearest(x, y, obj_star);
 
     var _war_with_player = obj_controller.faction_status[eFACTION.IMPERIUM] == "War";
     if (trade_goods != "player_hold") {
@@ -104,21 +103,15 @@ function check_navy_guard_still_live() {
 
 function build_new_navy_fleet(construction_forge) {
     /// @type {Asset.GMObject.obj_en_fleet}
-    var new_navy_fleet = instance_create(construction_forge.x, construction_forge.y, obj_en_fleet);
+    var new_navy_fleet = create_enemy_fleet(construction_forge.x, construction_forge.y, eFACTION.IMPERIUM);
 
     with (new_navy_fleet) {
-        owner = eFACTION.IMPERIUM;
-
         capital_number = 0;
         frigate_number = 0;
         escort_number = 1;
         home_x = x;
         home_y = y;
         warp_able = true;
-        with (construction_forge) {
-            present_fleet[2] += 1;
-        }
-        orbiting = construction_forge;
         navy = 1;
 
         var total_ships = 0;
@@ -142,7 +135,6 @@ function new_navy_ships_forge() {
         var onceh = 0;
         var advance = false;
 
-        is_orbiting();
         for (var p = 1; p <= orbiting.planets; p++) {
             if (orbiting.p_type[p] == "Forge") {
                 //if no non-imperium,player, or eldar aligned fleets or ground forces, continue
@@ -487,7 +479,7 @@ function navy_attack_player_world() {
 /// @self Asset.GMObject.obj_en_fleet
 function navy_bombard_player_world() {
     var bombard = false;
-    if (orbiting != noone) {
+    if (instance_exists(orbiting)) {
         if (orbiting.object_index == obj_star) {
             bombard = true;
         }
@@ -620,7 +612,7 @@ function fleet_remaining_guard_ratio() {
     var _maxi = fleet_max_guard();
     guardsmen_ratio = 0;
     if (guardsmen_unloaded) {
-        if (is_orbiting()) {
+        if (instance_exists(orbiting)) {
             _curr = array_sum(orbiting.p_guardsmen);
         }
 
@@ -653,7 +645,7 @@ function scr_navy_unload_guard(planet) {
 
 /// @self Asset.GMObject.obj_en_fleet
 function scr_navy_planet_action() {
-    if (action == "" && is_orbiting() && !guardsmen_unloaded) {
+    if (action == "" && !guardsmen_unloaded && instance_exists(orbiting)) {
         // Unload if problem sector, otherwise patrol
         var selected_planet = 0, highest = 0, _target_pop = 0, _popu_large = false;
 
@@ -1064,13 +1056,8 @@ function create_start_imperial_fleets() {
 function setup_start_imperial_navy_fleet(system) {
     var ii = 0;
     /// @type {Asset.GMObject.obj_en_fleet} 
-    var nav = instance_create(system.x, system.y, obj_en_fleet);
-    var _star = system;
-    _star.present_fleet[eFACTION.IMPERIUM] += 1;
+    var nav = create_enemy_fleet(system.x, system.y, eFACTION.IMPERIUM);
     with (nav) {
-        orbiting = system;
-
-        owner = eFACTION.IMPERIUM;
         navy = 1;
 
         capital_number = choose(1, 2, 3);

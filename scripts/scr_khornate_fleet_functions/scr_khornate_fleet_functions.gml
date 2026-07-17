@@ -2,8 +2,7 @@
 function khorne_fleet_cargo() {
     //This handles khorne fleets killing planet popultions moving planet and then choosing a new target ot chase
     warband = cargo_data.warband;
-    var _is_orbiting = is_orbiting();
-    if (_is_orbiting && (action == "")) {
+    if (action == "" && instance_exists(orbiting)) {
         _orb = orbiting;
         if (_orb.present_fleet[1] + _orb.present_fleet[2] + _orb.present_fleet[3] + _orb.present_fleet[6] + _orb.present_fleet[7] + _orb.present_fleet[9] + _orb.present_fleet[13] == 0) {
             var good = 0;
@@ -215,9 +214,8 @@ function khorne_fleet_cargo() {
 }
 
 function spawn_chaos_fleet_at_system(system) {
-    var _new_fleet = instance_create(system.x, system.y, obj_en_fleet);
+    var _new_fleet = create_enemy_fleet(system.x, system.y, eFACTION.CHAOS);
     with (_new_fleet) {
-        owner = eFACTION.CHAOS;
         sprite_index = spr_fleet_chaos;
         image_index = 9;
     }
@@ -243,9 +241,8 @@ function spawn_chaos_warlord() {
         ox = width / 2 + lengthdir_x(len, fdir);
         oy = height / 2 + lengthdir_y(len, fdir);
 
-        var nfleet = instance_create(ox, oy, obj_en_fleet);
+        var nfleet = create_enemy_fleet(ox, oy, eFACTION.CHAOS);
         with (nfleet) {
-            owner = eFACTION.CHAOS;
             sprite_index = spr_fleet_chaos;
             image_index = 9;
             home_x = x + lengthdir_x(5000, point_direction(x, y, room_width / 2, room_height / 2));

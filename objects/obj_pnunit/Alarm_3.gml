@@ -99,14 +99,15 @@ try {
                 var norun = 0;
 
                 for (var i = 1; i <= 20; i++) {
-                    if (apa[i] >= 30) {
+                    if (apa[i] > 2) {
                         norun = 1;
+                        break;
                     }
                 }
 
-                if (norun == 0) {
+                if (norun == 0 && x > 10) {
                     x -= 10;
-                    engaged = 0;
+                    engaged = false;
                 }
             }
         }

@@ -54,6 +54,10 @@ function scr_map_scale() {
 function draw_warp_lanes() {
     static routes = [];
     static current_seed = global.game_seed;
+
+    var line_width = 2 * obj_controller.scale_mod;
+    var line_alpha = 0.4;
+
     if (array_length(routes) == 0 || current_seed != global.game_seed) {
         current_seed = global.game_seed;
         routes = [];
@@ -65,7 +69,6 @@ function draw_warp_lanes() {
         for (var i = 0; i < total_stars; i++) {
             var cur_star = instance_find(obj_star, star_degrade_list[i]);
             var this_star = cur_star.id;
-            var in_view = true;
 
             if (array_length(cur_star.warp_lanes) > 0) {
                 for (var s = 0; s < total_stars; s++) {
@@ -97,7 +100,9 @@ function draw_warp_lanes() {
         var route_coords = route[0];
 
         if (route[1] < 4) {
-            draw_line(route_coords[0], route_coords[1], route_coords[2], route_coords[3]);
+            draw_set_alpha(line_alpha);
+            draw_line_width(route_coords[0], route_coords[1], route_coords[2], route_coords[3], line_width);
+            draw_set_alpha(1);
         } else if (route[1] == 4) {
             draw_set_color(c_yellow);
             //TODO abstract code as a ratio distance function
@@ -117,7 +122,9 @@ function draw_warp_lanes() {
             var warp_height = sprite_get_height(spr_warp_storm) * 0.75;
 
             for (var s = 0; s < route[1]; s++) {
-                draw_line(route_coords[0], route_coords[1], route_coords[0] + dist_x, route_coords[1] + dist_y);
+                draw_set_alpha(line_alpha);
+                draw_line_width(route_coords[0], route_coords[1], route_coords[0] + dist_x, route_coords[1] + dist_y, line_width);
+                draw_set_alpha(1);
             }
 
             draw_sprite_centered(spr_warp_storm, warp_image + i, route_coords[0] + dist_x, route_coords[1] + dist_y, 0.75, 0.75, 0, c_white, 1);
@@ -161,7 +168,9 @@ function draw_warp_lanes() {
             }
 
             for (var s = 0; s < route[1]; s++) {
-                draw_line(route_coords[2] + s, route_coords[3] + s, (route_coords[2] - dist_x + s), (route_coords[3] + s - dist_y));
+                draw_set_alpha(line_alpha);
+                draw_line_width(route_coords[2] + s, route_coords[3] + s, (route_coords[2] - dist_x + s), (route_coords[3] + s - dist_y), line_width);
+                draw_set_alpha(1);
             }
             draw_sprite_centered(spr_warp_storm, warp_image + i, (route_coords[2] - dist_x), (route_coords[3] - dist_y), 0.75, 0.75, 0, c_white, 1);
 

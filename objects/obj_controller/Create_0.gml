@@ -795,7 +795,6 @@ income_fleet = 0;
 income_trade = 0;
 income_leader = 0;
 income_tribute = 0;
-income_controlled_planets = 0;
 // ** Extra variables **
 info_chips = 0;
 inspection_passes = 0;
@@ -1099,7 +1098,7 @@ if (instance_exists(obj_ini)) {
 }
 //Set player colour
 try {
-    global.star_name_colors[1] = make_color_rgb(body_colour_replace[0], body_colour_replace[1], body_colour_replace[2]);
+    global.star_name_colors[1] = make_color_rgb(col_r[main_color], col_g[main_color], col_b[main_color]);
 } catch (_exception) {
     global.star_name_colors[1] = make_color_rgb(col_r[1], col_g[1], col_b[1]);
 }

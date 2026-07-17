@@ -757,6 +757,7 @@ function ground_forces_collect_artifact() {
         obj_controller.menu = 0;
         instance_destroy();
     }
+    instance_destroy();
 }
 
 function governor_negotiate_artifact() {
@@ -1053,9 +1054,7 @@ function send_stc_to_adeptus_mech() {
         }
 
         if (is_struct(_target)) {
-            var _enemy_fleet = instance_create(_target.x, _target.y, obj_en_fleet);
-
-            _enemy_fleet.owner = obj_controller.diplomacy;
+            var _enemy_fleet = create_enemy_fleet(_target.x, _target.y, obj_controller.diplomacy);
             _enemy_fleet.home_x = _target.x;
             _enemy_fleet.home_y = _target.y;
             _enemy_fleet.sprite_index = spr_fleet_mechanicus;

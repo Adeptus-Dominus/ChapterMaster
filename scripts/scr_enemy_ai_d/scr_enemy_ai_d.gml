@@ -135,8 +135,7 @@ function scr_enemy_ai_d() {
 
                     var xx = (random_range(room_width * 1.25, room_width * 2) * choose(-1, 1)) + x;
                     var yy = (random_range(room_height * 1.25, room_height * 2) * choose(-1, 1)) + y;
-                    var fleet = instance_create(xx, yy, obj_en_fleet);
-                    fleet.owner = eFACTION.TYRANIDS;
+                    var fleet = create_enemy_fleet(xx, yy, eFACTION.TYRANIDS);
                     fleet.sprite_index = spr_fleet_tyranid;
                     fleet.image_speed = 0;
 

@@ -122,7 +122,7 @@ function stars_with_faction_fleets(search_faction) {
             instance_destroy();
             continue;
         }
-        if (is_orbiting()) {
+        if (instance_exists(orbiting)) {
             if (struct_exists(_stars_with_fleets, orbiting.name)) {
                 array_push(_stars_with_fleets[$ orbiting.name], id);
             } else {

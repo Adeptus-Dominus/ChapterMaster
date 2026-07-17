@@ -105,7 +105,7 @@ function scr_load(save_part, save_id) {
             scr_shader_initialize();
             armamentarium = new Armamentarium(self);
 
-            global.star_name_colors[1] = make_color_rgb(body_colour_replace[0], body_colour_replace[1], body_colour_replace[2]);
+            global.star_name_colors[1] = make_color_rgb(col_r[main_color], col_g[main_color], col_b[main_color]);
         }
         LOGGER.info("CONTROLLER loaded");
     }
@@ -120,6 +120,13 @@ function scr_load(save_part, save_id) {
                 deserialize(deserialized);
             }
         }
+
+        with (obj_p_fleet) {
+            if (action == "") {
+                fleet_register_at_nearest_star(id);
+            }
+        }
+
         LOGGER.info("PLAYER FLEET OBJECTS loaded");
     }
 
@@ -134,6 +141,13 @@ function scr_load(save_part, save_id) {
                 deserialize(deserialized);
             }
         }
+
+        with (obj_en_fleet) {
+            if (action == "") {
+                fleet_register_at_nearest_star(id);
+            }
+        }
+
         LOGGER.info("ENEMY FLEET OBJECTS loaded");
 
         LOGGER.info("Loading EVENT LOG");

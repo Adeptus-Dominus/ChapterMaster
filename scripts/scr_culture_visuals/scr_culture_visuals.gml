@@ -696,13 +696,13 @@ global.modular_drawing_items = [
     {
         sprite: spr_gear_librarian,
         body_types: [0],
-        position: "right_pauldron_icons",
+        position: "right_pauldron_embeleshments",
         role_type: [SPECIALISTS_LIBRARIANS],
     },
     {
         sprite: spr_gear_librarian_term,
         body_types: [2],
-        position: "right_pauldron_icons",
+        position: "right_pauldron_embeleshments",
         role_type: [SPECIALISTS_LIBRARIANS],
     },
     {
@@ -1878,6 +1878,14 @@ global.modular_drawing_items = [
 		body_types: [0],
         sprite: spr_artificer_thorax,
         shadows: spr_artificer_thorax_shadow,
+    }
+	//Dreadnought Sprites
+	{
+        position: "armour",
+        armours: ["Dreadnought"],
+		body_types: [3],
+        sprite: spr_dreadnought_chasis_colors,
+        shadows: spr_dreadnought_chasis_shadow,
     },
     //Tartaros Sprites
     {
@@ -2588,7 +2596,10 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_assca,
             },
             {
-                sprite: spr_weapon_assca,
+				weapon_data: {
+					display_type: "dreadnought",
+				},
+                sprite: spr_dread_assault_cannon,
                 body_types: [3],
                 armours: ["Dreadnought"],
                 single_left_right_profile: true,
@@ -2634,7 +2645,11 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_lasca,
             },
             {
+				weapon_data: {
+					display_type: "dreadnought",
+				},
                 sprite: spr_dread_lascannon,
+				shadows: spr_dread_lascannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
                 single_left_right_profile: true,
@@ -2648,11 +2663,12 @@ global.weapon_visual_data = {
                 display_type: "dreadnought",
             },
             armours: ["Dreadnought"],
-            single_left_right_profile: true,
+			single_left_right_profile: true,
         },
         variants: [
             {
                 sprite: spr_dread_claw,
+				shadows: spr_dread_claw_shadow,
             },
             {
                 sprite: spr_contemptor_CCW,
@@ -2683,6 +2699,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_claw,
+				shadows: spr_dread_claw_shadow,
             }
         ],
     },
@@ -2696,6 +2713,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_claw,
+				shadows: spr_dread_claw_shadow,
             }
         ],
     },
@@ -2709,6 +2727,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_claw,
+				shadows: spr_dread_claw_shadow,
             }
         ],
     },
@@ -2722,6 +2741,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_plasma_cannon,
+				shadows: spr_dread_plasma_cannon_shadow,
             }
         ],
     },
@@ -2740,7 +2760,11 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_mmelta,
             },
             {
+				weapon_data: {
+                display_type: "dreadnought",
+				},
                 sprite: spr_dread_plasma_cannon,
+				shadows: spr_dread_plasma_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
                 single_left_right_profile: true,
@@ -2757,6 +2781,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_lascannon,
+				shadows: spr_dread_lascannon_shadow,
             }
         ],
     },
@@ -2770,6 +2795,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_plasma_cannon,
+				shadows: spr_dread_plasma_cannon_shadow,
             }
         ],
     },
@@ -3062,6 +3088,7 @@ global.weapon_visual_data = {
             },
             {
                 sprite: spr_dread_plasma_cannon,
+				shadows: spr_dread_plasma_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
                 single_left_right_profile: true,
@@ -3280,7 +3307,6 @@ global.weapon_visual_data = {
                 },
                 subcomponents: [
                     [
-                        spr_blank,
                         spr_weapon_storm_boss
                     ]
                 ],
@@ -3292,12 +3318,7 @@ global.weapon_visual_data = {
                 },
                 subcomponents: [
                     [
-                        spr_blank,
-                        spr_weapon_storm_primary_decoration
-                    ],
-                    [
-                        spr_blank,
-                        spr_weapon_storm_boss
+                        spr_weapon_storm_primary_decoration,
                     ]
                 ],
             },

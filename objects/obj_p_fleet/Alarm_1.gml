@@ -6,9 +6,9 @@ try {
         exit;
     } else if (action == "") {
         var spid = instance_nearest(x, y, obj_star);
-        set_fleet_orbiting(self, spid);
+        fleet_register_at_star(self, spid);
 
-        if ((orbiting != noone) && instance_exists(orbiting)) {
+        if (instance_exists(orbiting)) {
             if (orbiting.visited == 0) {
                 for (var planet_num = 1; planet_num <= orbiting.planets; planet_num += 1) {
                     if (array_length(orbiting.p_feature[planet_num]) != 0) {
@@ -83,8 +83,7 @@ try {
             if (steh.vision == 0) {
                 steh.vision = 1;
             }
-            steh.present_fleet[1] += 1;
-            orbiting = steh;
+            fleet_register_at_star(id, steh);
 
             meet_system_governors(steh);
 

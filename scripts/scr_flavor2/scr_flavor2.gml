@@ -398,7 +398,6 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
                 instance_destroy();
             }
         } else {
-            mes_color = eMSG_COLOR.YELLOW;
             mes = m1 + " Fortifications stand strong.";
         }
 
