@@ -16,14 +16,20 @@ scale = min(camera_get_view_width(view_camera[0]) / global.default_view_width, 2
 draw_set_color(c_white);
 draw_set_alpha(0.25);
 
-if ((!craftworld) && (vision == 1)) {
+if ((!craftworld) && (!space_hulk) && (vision == 1)) {
     draw_sprite_ext(sprite_index, image_index, x, y, 1 * scale, 1 * scale, 0, c_white, 1);
 }
 if (craftworld) {
     draw_sprite_ext(spr_craftworld, 0, x, y, 1 * scale, 1 * scale, point_direction(x, y, room_width / 2, room_height / 2) + 90, c_white, 1);
 }
 if (space_hulk) {
-    draw_sprite_ext(spr_star_hulk, 0, x, y, 1 * scale, 1 * scale, 0, c_white, 1);
+    // Space hulks drew the default star sprite plus a 30x23 marker speck
+    // (spr_star_hulk), which read as a missing texture. Draw the actual hulk
+    // artwork (spr_ship_hulk, 326x425, previously unreferenced) at map scale
+    // instead, with a stable per-hulk drift angle derived from position so each
+    // wreck hangs at its own tilt without storing any state.
+    var _drift = (x * 7 + y * 13) mod 360;
+    draw_sprite_ext(spr_ship_hulk, 0, x, y, 0.16 * scale, 0.16 * scale, _drift, c_white, 1);
 }
 
 if (storm > 0) {
