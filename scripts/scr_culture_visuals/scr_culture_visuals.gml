@@ -2587,6 +2587,9 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_assca,
             },
             {
+				weapon_data: {
+					display_type: "dreadnought",
+				},
                 sprite: spr_dread_assault_cannon,
                 body_types: [3],
                 armours: ["Dreadnought"],
@@ -2764,7 +2767,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_lascannon,
-				sprite: spr_dread_lascannon_shadow,
+				shadows: spr_dread_lascannon_shadow,
             }
         ],
     },
