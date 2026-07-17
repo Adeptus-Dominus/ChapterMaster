@@ -1589,6 +1589,13 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static planet_selection_logic = function() {
+        // Unloading troops (the branch below) tears down obj_star_select while the
+        // per-planet loop in planet_selection_action is still iterating; the next
+        // planet's call then read obj_star_select.loading off a dead instance
+        // (caught error, verbatim upstream too). Bail once the screen is gone.
+        if (!instance_exists(obj_star_select)) {
+            return;
+        }
         var planet_is_allies = scr_is_planet_owned_by_allies(system, planet);
         var garrison_issue = !planet_is_allies || pdf <= 0;
         var _mission = variable_instance_exists(obj_star_select, "mission") ? obj_star_select.mission : "";

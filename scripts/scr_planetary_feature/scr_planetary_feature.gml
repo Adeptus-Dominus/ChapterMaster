@@ -495,6 +495,9 @@ function planet_selection_action() {
                     buttons_selected = false;
                 }
 
+                if (!instance_exists(obj_star_select)) {
+                    break; // an earlier planet's action (unload) closed the screen
+                }
                 try {
                     p_data.planet_selection_logic();
                 } catch (_exception) {
