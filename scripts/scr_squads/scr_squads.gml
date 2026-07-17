@@ -564,7 +564,9 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         } else if (same_loc_type) {
             if (loc_type == eLOCATION_TYPES.SHIP) {
                 if (exact_loc) {
-                    final_loc_status = $"aboard {obj_ini.ship[loc_id]}";
+                    // Show the system alongside the ship, so a squad in transit
+                    // reads "aboard Venom Sage (Warp)" instead of hiding either half.
+                    final_loc_status = $"aboard {obj_ini.ship[loc_id]} ({system})";
                 } else if (in_orbit) {
                     final_loc_status = $"various ships orbiting {system}";
                 }

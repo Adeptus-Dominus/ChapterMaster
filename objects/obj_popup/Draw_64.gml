@@ -59,7 +59,14 @@ try {
                 width -= image_wid + 10;
             }
 
-            x1 = (1600 - sprite_width) / 2;
+            // During ground battles the centered popup sat on top of the combat
+            // log and unit text; park it on the unused right side of the screen
+            // instead. Everywhere else it stays centered.
+            if (instance_exists(obj_ncombat)) {
+                x1 = 1600 - sprite_width - 16;
+            } else {
+                x1 = (1600 - sprite_width) / 2;
+            }
             y1 = (900 - sprite_height * y_scale_mod) / 2;
 
             draw_set_font(fnt_40k_14b);

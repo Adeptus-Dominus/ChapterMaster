@@ -2058,6 +2058,7 @@ function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots
         var _sel_count = 0;
         var _size_sum = 0;
         var _sgt = noone;
+        var _squad_ship = -1; // consensus ship: -1 none seen yet, -2 mixed or not aboard
         for (var m = 0; m < _count; m++) {
             if (man_sel[_members[m]] == 1) {
                 _sel_count++;
@@ -2067,6 +2068,17 @@ function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots
                 _size_sum += _mu.get_unit_size();
                 if ((_sgt == noone) && _mu.IsSpecialist(SPECIALISTS_SQUAD_LEADERS)) {
                     _sgt = _mu;
+                }
+                // Track whether the whole squad rides one ship so the row can say so.
+                var _ml = _mu.marine_location();
+                if (_ml[0] == eLOCATION_TYPES.SHIP) {
+                    if (_squad_ship == -1) {
+                        _squad_ship = _ml[1];
+                    } else if (_squad_ship != _ml[1]) {
+                        _squad_ship = -2;
+                    }
+                } else {
+                    _squad_ship = -2;
                 }
             }
         }
@@ -2083,6 +2095,11 @@ function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots
             _label += $" - Sgt. {_sgt.name()}";
         }
         _label += $"  |  {_count} troops  |  {string_format(_size_sum, 1, 1)} space  |  {_row.loc}";
+        // The squad location alone read like "Warp" with no hint of the vessel; when
+        // every member is aboard the same ship, name it right next to the location.
+        if ((_squad_ship >= 0) && (_squad_ship < array_length(obj_ini.ship))) {
+            _label += $", aboard {obj_ini.ship[_squad_ship]}";
+        }
         if ((_sel_count > 0) && !_all_sel) {
             _label += $"  ({_sel_count}/{_count} selected)";
         }
