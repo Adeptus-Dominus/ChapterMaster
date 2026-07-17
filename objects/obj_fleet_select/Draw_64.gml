@@ -1,8 +1,6 @@
 //TODO centralise draw logi
 try {
-    if (!obj_controller.zoomed) {
-        var zm = 1, tit = "", mnz = 0;
-
+    if (!obj_controller.zoomed && obj_controller.menu != eMENU.TURN_END) {
         draw_set_color(c_gray);
 
         fleet_min_button = "-";

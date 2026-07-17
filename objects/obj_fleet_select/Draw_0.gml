@@ -133,21 +133,25 @@ if (!instance_exists(obj_drop_select) && !instance_exists(obj_bomb_select)) {
 
                 draw_text_transformed(sys.x + 17, sys.y, string_hash_to_newline(eta), scale, scale, 0);
                 if (mouse_check_button(mb_right) && viable) {
-                    var ship_count = player_fleet_ship_count(player_fleet);
-                    var fleet_selected = player_fleet_selected_count(player_fleet);
-                    var move_fleet;
-                    if (ship_count && fleet_selected) {
-                        if (ship_count == fleet_selected) {
-                            move_fleet = player_fleet;
-                        } else {
-                            move_fleet = split_selected_into_new_fleet(player_fleet);
-                        }
-                        var final_course = star_travel.final_array_path();
-                        if (keyboard_check(vk_shift)) {
-                            final_course = [sys.name];
-                        }
-                        with (move_fleet) {
-                            set_new_player_fleet_course(final_course);
+                    if (obj_controller.menu == eMENU.TURN_END && instance_exists(obj_popup) && obj_popup.type == 99) {
+                        player_retreat_from_fleet_combat(sys);
+                    } else {
+                        var ship_count = player_fleet_ship_count(player_fleet);
+                        var fleet_selected = player_fleet_selected_count(player_fleet);
+                        var move_fleet;
+                        if (ship_count && fleet_selected) {
+                            if (ship_count == fleet_selected) {
+                                move_fleet = player_fleet;
+                            } else {
+                                move_fleet = split_selected_into_new_fleet(player_fleet);
+                            }
+                            var final_course = star_travel.final_array_path();
+                            if (keyboard_check(vk_shift)) {
+                                final_course = [sys.name];
+                            }
+                            with (move_fleet) {
+                                set_new_player_fleet_course(final_course);
+                            }
                         }
                     }
                     instance_destroy();
@@ -160,7 +164,7 @@ if (!instance_exists(obj_drop_select) && !instance_exists(obj_bomb_select)) {
         currently_entered = keyboard_check(vk_shift);
     }
     if (mouse_check_button_pressed(mb_left)) {
-        if (!currently_entered && point_distance(mouse_x, mouse_y, player_fleet.x, player_fleet.y) > 32 && !keyboard_check(vk_shift)) {
+        if (!currently_entered && point_distance(mouse_x, mouse_y, player_fleet.x, player_fleet.y) > 32 && !keyboard_check(vk_shift) && obj_controller.menu != eMENU.TURN_END) {
             instance_destroy();
         }
     }
