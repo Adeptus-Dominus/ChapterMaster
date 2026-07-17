@@ -1163,15 +1163,15 @@ function ComplexSet(_unit) constructor {
     /// @param {Struct} texture_draws
     static draw_weapon_and_hands = function(texture_draws = undefined) {
         texture_draws ??= {};
-        if (armour_type == eARMOUR_TYPE.DREADNOUGHT) {
-            if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
-                draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
-            }
-            if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite)) {
-                draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
-            }
-            exit;
-        }
+        //if (armour_type == eARMOUR_TYPE.DREADNOUGHT) {
+        //    if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
+        //        draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
+        //    }
+        //    if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite)) {
+        //        draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
+       //     }
+       //    exit;
+      //  }
         // Draw hands bellow the weapon sprite;
         if (!weapon_right.ui_twoh && !weapon_left.ui_twoh) {
             for (var i = 0; i <= 1; i++) {
@@ -1642,7 +1642,6 @@ function ComplexSet(_unit) constructor {
                 armour_type = eARMOUR_TYPE.TERMINATOR;
                 break;
             case "Dreadnought":
-                add_group({armour: spr_dreadnought_complex});
                 armour_type = eARMOUR_TYPE.DREADNOUGHT;
                 break;
             case "Contemptor Dreadnought":
