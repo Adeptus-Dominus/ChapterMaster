@@ -1,11 +1,12 @@
 {
   "useTabs": false,
   "tabSize": 4,
-  "verticalStructs": true,
-  "verticalArrays": true,
+  "multilineStructs": 2,
+  "multilineArrays": 2,
   "multilineTernary": false,
+  "multilineArguments": 0
   "blankLineAfterBlocks": false,
   "flatExpressions": false,
   "explicitUndefined": false,
-  "multilineArguments": 0
+
 }
