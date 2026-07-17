@@ -349,12 +349,14 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                     break;
                 case 7:
                     system.p_orks[planet] -= strength_reduction;
+                    faction_pop_clamp_to_level(system, planet, eFACTION.ORK);
                     break;
                 case 8:
                     system.p_tau[planet] -= strength_reduction;
                     break;
                 case 9:
                     system.p_tyranids[planet] -= strength_reduction;
+                    faction_pop_clamp_to_level(system, planet, eFACTION.TYRANIDS);
                     break;
                 case 10: {
                     // planet_forces[eFACTION.CHAOS] (the strength this bombardment was aimed
@@ -372,12 +374,14 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                 }
                 case 11:
                     system.p_traitors[planet] = max(0, system.p_traitors[planet] - strength_reduction);
+                    faction_pop_clamp_to_level(system, planet, eFACTION.HERETICS);
                     break;
                 // case 12:
                 // system.p_demons[planet]-=strength_reduction;
                 // break;
                 case 13:
                     system.p_necrons[planet] -= strength_reduction;
+                    faction_pop_clamp_to_level(system, planet, eFACTION.NECRONS);
                     break;
             }
         }

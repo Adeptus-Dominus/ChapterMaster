@@ -4450,3 +4450,47 @@ function draw_region_construction_panel(_star, _planet, _px, _py) {
 #endregion
 
 
+
+/// @function count_to_level_anchors
+/// @description The population anchor table count_to_level uses for a faction, or -1 for factions
+///              without a population model. Shared so the war-loss clamp below can invert the mapping.
+function count_to_level_anchors(_faction) {
+    switch (_faction) {
+        case eFACTION.ORK:      return [0, 100, 350, 1000, 3600, 7000, 11000];
+        case eFACTION.NECRONS:  return [0, 5000, 20000, 60000, 150000, 400000, 800000];
+        case eFACTION.HERETICS: return [0, 10000, 50000, 200000, 1000000, 5000000, 20000000];
+        case eFACTION.TYRANIDS: return [0, 50000, 200000, 1000000, 5000000, 20000000, 80000000];
+    }
+    return -1;
+}
+
+/// @function faction_pop_clamp_to_level
+/// @description WAR LOSSES MUST KILL PEOPLE, not just the 0-6 scalar. Player-driven kills (bombardment,
+///              ground battle victories, sector directive strikes) historically wrote only the legacy
+///              level arrays; the population engine then re-derived the level from the untouched
+///              p_race_pop next tick and the enemy "respawned" (figherhigher's bombed-clean planets).
+///              Call this after any such level write: it clamps the faction's real headcount into the
+///              band of the level just written (level 0 = annihilated here). The AI-vs-AI resolver
+///              already does its own pop accounting; this covers the player-facing paths.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _faction
+/// @returns {Undefined}
+function faction_pop_clamp_to_level(_star, _planet, _faction) {
+    if (!instance_exists(_star) || !variable_instance_exists(_star, "p_race_pop")) { return; }
+    var _anchors = count_to_level_anchors(_faction);
+    if (_anchors == -1) { return; }
+    var _lvl = 0;
+    switch (_faction) {
+        case eFACTION.ORK:      _lvl = _star.p_orks[_planet]; break;
+        case eFACTION.NECRONS:  _lvl = _star.p_necrons[_planet]; break;
+        case eFACTION.TYRANIDS: _lvl = _star.p_tyranids[_planet]; break;
+        case eFACTION.HERETICS: _lvl = _star.p_traitors[_planet]; break;
+    }
+    _lvl = clamp(_lvl, 0, 6);
+    if (_lvl <= 0) {
+        _star.p_race_pop[_planet][_faction] = 0;
+    } else if (_lvl < 6) {
+        _star.p_race_pop[_planet][_faction] = min(_star.p_race_pop[_planet][_faction], _anchors[_lvl + 1] - 1);
+    }
+}

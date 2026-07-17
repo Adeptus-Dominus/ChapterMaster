@@ -548,6 +548,10 @@ if (defeat == 0 && _reduce_power) {
         // fork carried (translating the pair before edit_forces) is therefore
         // removed; with the renumbering in place it would invert a correct pair.
         p_data.edit_forces(enemy, new_power);
+        // War losses kill people: clamp the faction's real headcount into the band of
+        // the level just written, or the population engine resurrects the garrison
+        // next tick (see faction_pop_clamp_to_level).
+        faction_pop_clamp_to_level(p_data.system, p_data.planet, enemy);
     }
 
     if ((enemy != eFACTION.IMPERIUM) && (string_count("cs_meeting_battle", battle_special) == 0)) {

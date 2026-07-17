@@ -105,15 +105,16 @@ function sector_directive_force_get(_star, _planet, _faction) {
 function sector_directive_force_reduce(_star, _planet, _faction) {
     with (_star) {
         switch (_faction) {
-            case eFACTION.ORK: p_orks[_planet] = max(0, p_orks[_planet] - 1); return true;
+            case eFACTION.ORK: p_orks[_planet] = max(0, p_orks[_planet] - 1); faction_pop_clamp_to_level(_star, _planet, eFACTION.ORK); return true;
             case eFACTION.TAU: p_tau[_planet] = max(0, p_tau[_planet] - 1); return true;
             case eFACTION.ELDAR: p_eldar[_planet] = max(0, p_eldar[_planet] - 1); return true;
-            case eFACTION.TYRANIDS: p_tyranids[_planet] = max(0, p_tyranids[_planet] - 1); return true;
-            case eFACTION.NECRONS: p_necrons[_planet] = max(0, p_necrons[_planet] - 1); return true;
+            case eFACTION.TYRANIDS: p_tyranids[_planet] = max(0, p_tyranids[_planet] - 1); faction_pop_clamp_to_level(_star, _planet, eFACTION.TYRANIDS); return true;
+            case eFACTION.NECRONS: p_necrons[_planet] = max(0, p_necrons[_planet] - 1); faction_pop_clamp_to_level(_star, _planet, eFACTION.NECRONS); return true;
             case eFACTION.CHAOS:
             case eFACTION.HERETICS:
                 if (p_traitors[_planet] >= p_chaos[_planet]) {
                     p_traitors[_planet] = max(0, p_traitors[_planet] - 1);
+                    faction_pop_clamp_to_level(_star, _planet, eFACTION.HERETICS);
                 } else {
                     p_chaos[_planet] = max(0, p_chaos[_planet] - 1);
                 }
