@@ -7,13 +7,12 @@ fallen_command = 0;
 obj_controller.cooldown = 20;
 sel_x1 = 0;
 sel_y1 = 0;
-control = 0;
-ships_selected = 0;
+control = false;
 battle_special = "";
 chaos_exp = 0;
 star_name = "";
 
-left_down = 0;
+drag_selecting = false;
 
 view_x = obj_controller.x;
 view_y = obj_controller.y;
@@ -151,7 +150,7 @@ if (obj_controller.stc_bonus[6] == 1) {
 
 // Kings of Space Bonus
 if (scr_has_adv("Kings of Space")) {
-    control = 1;
+    control = true;
     global_defense += 0.1;
     global_attack += 0.1;
 }

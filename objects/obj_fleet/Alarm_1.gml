@@ -1,4 +1,4 @@
-if (control == 1) {
+if (control) {
     instance_activate_object(obj_cursor);
 }
 

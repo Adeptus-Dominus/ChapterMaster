@@ -5,8 +5,6 @@ o_dist = 0;
 selected = 0;
 sel_x1 = 0;
 sel_y1 = 0;
-sel_x2 = 0;
-sel_y2 = 0;
 
 // if (x<0) then ship_id=2;
 
