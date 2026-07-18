@@ -51,51 +51,88 @@ Write-Host "=========================================" -ForegroundColor Cyan
 
 # --- AUTO-UPDATE ---
 if (!(Test-Path $Formatter)) {
-    Write-Host ""
-    Write-Host "[INFO] Downloading latest release..." -ForegroundColor Yellow
-    $ApiUrl = "https://api.github.com/repos/$Repo/releases/latest"
-    $Assets = (Invoke-RestMethod -Uri $ApiUrl -ErrorAction Stop).assets
-    
-    # 1. Attempt to match both platform and architecture keywords
-    $Asset = $Assets | Where-Object { $_.name -like "*$PlatformKeyword*" -and $_.name -like "*$ArchKeyword*" } | Select-Object -First 1
-    
-    # Fallback for macOS if asset name uses "osx" instead of "mac"
-    if (!$Asset -and $IsMacOS) {
-        $Asset = $Assets | Where-Object { $_.name -like "*osx*" -and $_.name -like "*$ArchKeyword*" } | Select-Object -First 1
+    try {
+        Write-Host ""
+        Write-Host "[INFO] Downloading latest release..." -ForegroundColor Yellow
+        $ApiUrl = "https://api.github.com/repos/$Repo/releases/latest"
+        $Assets = (Invoke-RestMethod -Uri $ApiUrl -ErrorAction Stop).assets
+        
+        # Filter assets matching the platform (including osx fallback for macOS)
+        $PlatformAssets = $Assets | Where-Object {
+            $_.name -like "*$PlatformKeyword*" -or ($IsMacOS -and $_.name -like "*osx*")
+        }
+        
+        # Define architecture patterns to search for
+        $ArchPatterns = @($ArchKeyword)
+        if ($ArchKeyword -eq "arm64") {
+            $ArchPatterns += "aarch64"
+        } elseif ($ArchKeyword -eq "x64") {
+            $ArchPatterns += @("x86_64", "amd64")
+        }
+        
+        # 1. Attempt to find an asset matching the system's architecture patterns
+        $Asset = $PlatformAssets | Where-Object {
+            $AssetName = $_.name
+            $Match = $false
+            foreach ($Pattern in $ArchPatterns) {
+                if ($AssetName -like "*$Pattern*") {
+                    $Match = $true
+                    break
+                }
+            }
+            $Match
+        } | Select-Object -First 1
+        
+        # 2. Fallback for arm64 systems to run x64 assets via emulation/translation if no native asset exists
+        if (!$Asset -and $ArchKeyword -eq "arm64") {
+            $FallbackPatterns = @("x64", "x86_64", "amd64")
+            $Asset = $PlatformAssets | Where-Object {
+                $AssetName = $_.name
+                $Match = $false
+                foreach ($Pattern in $FallbackPatterns) {
+                    if ($AssetName -like "*$Pattern*") {
+                        $Match = $true
+                        break
+                    }
+                }
+                $Match
+            } | Select-Object -First 1
+        }
+        
+        # 3. General fallback: select the first available platform asset
+        if (!$Asset) {
+            $Asset = $PlatformAssets | Select-Object -First 1
+        }
+        
+        if (!$Asset) {
+            throw "Could not find a valid release asset for this platform."
+        }
+        
+        $FileName = $Asset.name
+        Write-Host "[INFO] Downloading: $FileName" -ForegroundColor Gray
+        Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile $FileName -ErrorAction Stop
+        
+        # Handle extraction based on file extension
+        if ($FileName -like "*.zip") {
+            Expand-Archive -Path $FileName -DestinationPath "." -Force
+        } elseif ($FileName -like "*.tar.gz" -or $FileName -like "*.tgz") {
+            tar -xzf $FileName
+        }
+        
+        Remove-Item $FileName
+        
+        # Set execution permissions on Linux and macOS
+        if (!$IsWindows) {
+            chmod +x "./$Formatter"
+        }
+        
+        Write-Host "[SUCCESS] Formatter ready.`n" -ForegroundColor Green
     }
-    
-    # 2. General fallback if no architecture-specific match is found
-    if (!$Asset) {
-        $Asset = $Assets | Where-Object { $_.name -like "*$PlatformKeyword*" } | Select-Object -First 1
-    }
-    if (!$Asset -and $IsMacOS) {
-        $Asset = $Assets | Where-Object { $_.name -like "*osx*" } | Select-Object -First 1
-    }
-    
-    if (!$Asset) {
-        Write-Error "Could not find a valid release asset for this platform."
+    catch {
+        Write-Host "`n[FATAL ERROR] Could not setup formatter!" -ForegroundColor Red
+        Write-Host "Reason: $($_.Exception.Message)" -ForegroundColor White
         exit 1
     }
-    
-    $FileName = $Asset.name
-    Write-Host "[INFO] Downloading: $FileName" -ForegroundColor Gray
-    Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile $FileName -ErrorAction Stop
-    
-    # Handle extraction based on file extension
-    if ($FileName -like "*.zip") {
-        Expand-Archive -Path $FileName -DestinationPath "." -Force
-    } elseif ($FileName -like "*.tar.gz" -or $FileName -like "*.tgz") {
-        tar -xzf $FileName
-    }
-    
-    Remove-Item $FileName
-    
-    # Set execution permissions on Linux and macOS
-    if (!$IsWindows) {
-        chmod +x "./$Formatter"
-    }
-    
-    Write-Host "[SUCCESS] Formatter ready.`n" -ForegroundColor Green
 }
 
 Write-Host ""
