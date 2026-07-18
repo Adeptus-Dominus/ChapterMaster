@@ -36,22 +36,23 @@ draw_set_halign(fa_left);
 draw_set_alpha(1);
 
 // ---- Formation orders legend ----
-// MEASURED geometry, do not relocate on guesswork again: obj_ncombat is created at
-// (0,0) and the combat log draws from it, 45 lines x 18px = a full-height column
-// owning the LEFT side of the screen. The RIGHT side is the empty one (HP sits at
-// the bottom corners, popups dock right only transiently). Right-aligned, top.
-// Toggled with the small header button; persists on obj_controller.
+// Geometry measured from tester screenshots this time: the combat log box spans
+// x 0..~792 (its right edge is EXACTLY where the last attempt right-aligned this,
+// hence the overlap), and the battlefield frame starts around y 230 on the right
+// half. The empty pocket is x ~960..1590, y 0..~220: right of the log, above the
+// battlefield. Left-aligned there. Toggled with the header; persists on
+// obj_controller.
 if (!variable_instance_exists(obj_controller, "combat_orders_legend_hidden")) {
     obj_controller.combat_orders_legend_hidden = false;
 }
 draw_set_font(fnt_40k_14);
-draw_set_halign(fa_right);
+draw_set_halign(fa_left);
 draw_set_alpha(1);
-var _legend_x = 792;
+var _legend_x = 970;
 var _legend_y = 8;
 var _legend_header = obj_controller.combat_orders_legend_hidden ? "[+] Orders" : "[-] Orders";
 var _legend_hw = string_width(_legend_header);
-var _legend_hover = scr_hit(_legend_x - _legend_hw, _legend_y, _legend_x, _legend_y + 18);
+var _legend_hover = scr_hit(_legend_x, _legend_y, _legend_x + _legend_hw, _legend_y + 18);
 draw_set_color(_legend_hover ? c_white : c_yellow);
 draw_text(_legend_x, _legend_y, _legend_header);
 if (_legend_hover && mouse_check_button_pressed(mb_left)) {
