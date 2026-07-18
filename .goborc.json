@@ -4,7 +4,7 @@
   "multilineStructs": 2,
   "multilineArrays": 2,
   "multilineTernary": false,
-  "multilineArguments": 0
+  "multilineArguments": 0,
   "blankLineAfterBlocks": false,
   "flatExpressions": false,
   "explicitUndefined": false,
