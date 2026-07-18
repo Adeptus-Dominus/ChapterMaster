@@ -6,7 +6,6 @@ if (wall_destroyed == 1) {
     wall_destroyed = 0;
 }
 
-
 if (combat_log.pending_count > 0) {
     alarm[3] = 2;
 }

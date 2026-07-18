@@ -281,7 +281,10 @@ function UnitGroup(units) constructor {
         var _members = squad.get_members(true);
         var _exp_unit = 0;
         if (!bool(_members.number())) {
-            return [false, squad.uid];
+            return [
+                false,
+                squad.uid,
+            ];
         }
         for (var s = 0; s < 2; s++) {
             var _sgt_type = sgt_types[s];
@@ -324,7 +327,10 @@ function UnitGroup(units) constructor {
             }
         }
 
-        return [_fulfilled, squad.uid];
+        return [
+            _fulfilled,
+            squad.uid,
+        ];
     };
 
     /// @param {Struct} _template
@@ -953,8 +959,7 @@ function group_selection(group, selection_data = {}) {
             }
         }
         LOGGER.debug($"manage_success {obj_controller.menu}");
-    }
-    catch (_exception) {
+    } catch (_exception) {
         //handle and send player back to map
         ERROR_HANDLER.handle_exception(_exception);
         scr_toggle_manage();

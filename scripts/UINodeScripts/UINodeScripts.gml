@@ -154,7 +154,10 @@ function UINode(elem, gui_x, gui_y, padding = 0, margin = 0, parent = undefined)
                 yoffset += parent.height - height - margin - parent.padding;
             }
         }
-        return {xoffset, yoffset};
+        return {
+            xoffset,
+            yoffset,
+        };
     };
 
     static recalc = function() {

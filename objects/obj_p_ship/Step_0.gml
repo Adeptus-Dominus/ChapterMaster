@@ -410,7 +410,6 @@ if ((hp > 0) && instance_exists(target)) {
     }
 }
 
-
 //Deploy boarding craft logic
 if (instance_exists(obj_en_ship) && (boarders > 0) && (board_cooldown <= 0) && ((board_capital == true) || (board_frigate == true))) {
     for (var eh = 1; eh <= 2; eh++) {

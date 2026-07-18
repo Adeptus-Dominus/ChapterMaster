@@ -17,7 +17,7 @@ function FeatureSelected(_feature, _system, _planet) constructor {
         var _worker_caps = [
             2,
             4,
-            8
+            8,
         ];
         worker_capacity = _worker_caps[feature.size - 1];
         techs = collect_role_group(SPECIALISTS_TECHS, obj_star_select.target.name);
@@ -85,14 +85,14 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                 //TODO move over to using the draw button object ot streamline this
                 var next_position = [
                     xx + 10,
-                    yy + 95
+                    yy + 95,
                 ];
                 if (feature.size < 3) {
                     var upgrade_cost = 2000 * feature.size;
                     var last_button = draw_unit_buttons(next_position, $"Upgrade Forge ({upgrade_cost} req)", [1, 1], c_red);
                     next_position = [
                         last_button[0],
-                        last_button[3]
+                        last_button[3],
                     ];
                     if (point_and_click(last_button) && obj_controller.requisition >= upgrade_cost) {
                         obj_controller.requisition -= upgrade_cost;

@@ -102,7 +102,7 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
         var arti_struct = obj_ini.artifact_struct[artifact_id];
         arti_struct.bearer = [
             company,
-            marine_number
+            marine_number,
         ];
         armour_quality = obj_ini.artifact_quality[artifact_id];
     } else {
@@ -112,8 +112,9 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
     if (is_struct(new_arm_data)) {
         if (new_arm_data.has_tag("terminator")) {
             var _cur_mobility_data = gear_weapon_data("mobility", mobility_item());
-            if (is_struct(_cur_mobility_data) && !_cur_mobility_data.has_tag("terminator") && !_cur_mobility_data.has_tag("terminator_only"))
+            if (is_struct(_cur_mobility_data) && !_cur_mobility_data.has_tag("terminator") && !_cur_mobility_data.has_tag("terminator_only")) {
                 update_mobility_item("");
+            }
         }
 
         if (new_arm_data.has_tag("dreadnought")) {
@@ -150,7 +151,7 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
             "Multi-Melta",
             "Heavy Bolter",
             "Lascannon",
-            "Missile Launcher"
+            "Missile Launcher",
         ];
         if (array_contains(weapon_list, change_wep) && same_quality) {
             return "no change";
@@ -207,7 +208,7 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
         var arti_struct = obj_ini.artifact_struct[artifact_id];
         arti_struct.bearer = [
             company,
-            marine_number
+            marine_number,
         ];
         weapon_one_quality = obj_ini.artifact_quality[artifact_id];
     } else {
@@ -265,7 +266,7 @@ function scr_update_unit_weapon_two(new_weapon, from_armoury = true, to_armoury 
         var arti_struct = obj_ini.artifact_struct[artifact_id];
         arti_struct.bearer = [
             company,
-            marine_number
+            marine_number,
         ];
     } else {
         weapon_two_quality = quality;
@@ -330,7 +331,7 @@ function scr_update_unit_gear(new_gear, from_armoury = true, to_armoury = true, 
         var arti_struct = obj_ini.artifact_struct[artifact_id];
         arti_struct.bearer = [
             company,
-            marine_number
+            marine_number,
         ];
     } else {
         gear_quality = quality;
@@ -428,7 +429,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
         var arti_struct = obj_ini.artifact_struct[artifact_id];
         arti_struct.bearer = [
             company,
-            marine_number
+            marine_number,
         ];
     } else {
         mobility_item_quality = quality;

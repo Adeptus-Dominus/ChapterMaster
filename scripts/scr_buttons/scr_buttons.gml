@@ -100,7 +100,12 @@ function draw_unit_buttons(position, text, size_mod = [1.5, 1.5], colour = c_gra
 
     pop_draw_return_values();
 
-    return [position[0], position[1], x2, y2];
+    return [
+        position[0],
+        position[1],
+        x2,
+        y2,
+    ];
 }
 
 /// @function list_traveler(list, cur_val, move_up_coords, move_down_coords)
@@ -151,19 +156,19 @@ function Box(data) constructor {
     standard_loc_data();
     colour = CM_GREEN_COLOR;
 
-    static update = function(data){
+    static update = function(data) {
         move_data_to_current_scope(data, true);
 
-        if (w == 0 && x2 > 0){
+        if (w == 0 && x2 > 0) {
             w = x2 - x1;
         }
-        if (h == 0 && y2 > 0){
+        if (h == 0 && y2 > 0) {
             h = y2 - y1;
         }
 
         y2 = y1 + h;
         x2 = x1 + w;
-    }
+    };
 
     update(data);
 
@@ -274,70 +279,61 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
     };
 }
 
-function ValueShifter(value_text, data) constructor{
+function ValueShifter(value_text, data) constructor {
     standard_loc_data();
     string_tag = value_text;
     max_clamp = 1000;
     min_clamp = -1000;
-    reactive_string = new ReactiveString(value_text, 0, 0, {halign : fa_center});
+    reactive_string = new ReactiveString(value_text, 0, 0, {
+        halign: fa_center,
+    });
 
     current_value = 0;
     shift_value = 1;
-
 
     draw_set_font(fnt_40k_14b);
     var _but_width = string_height("-") + 8;
 
     decrease_button = new UnitButtonObject({
-        label:"-", 
-        color : c_red,
-        tooltip : "click to decrease",
-        set_width : true,
-        w : _but_width
+        label: "-",
+        color: c_red,
+        tooltip: "click to decrease",
+        set_width: true,
+        w: _but_width,
     });
 
     increase_button = new UnitButtonObject({
-        label:"-", 
-        color : c_green,
-        tooltip : "click to increase",
-        set_width : true,
-        w : _but_width
+        label: "-",
+        color: c_green,
+        tooltip: "click to increase",
+        set_width: true,
+        w: _but_width,
     });
 
-    static update = function(data = {}){
+    static update = function(data = {}) {
         move_data_to_current_scope(data, true);
-        reactive_string.update({
-            x1, 
-            y1, 
-            text : $"{string_tag}:{current_value}"
-        });
+        reactive_string.update({x1, y1, text: $"{string_tag}:{current_value}"});
 
         var _react_width_diff = (reactive_string.w / 2) + 10;
-        decrease_button.update({
-            x1 : x1 - _react_width_diff - decrease_button.w, 
-            y1 : y1
-        });
-        increase_button.update({
-            x1 : x1 + _react_width_diff, 
-            y1 : y1
-        });
-    }
+        decrease_button.update({x1: x1 - _react_width_diff - decrease_button.w, y1: y1});
+        increase_button.update({x1: x1 + _react_width_diff, y1: y1});
+    };
 
-    update(data)
+    update(data);
 
-    static draw = function(){
+    static draw = function() {
         update();
         reactive_string.draw();
         var _allow = current_value > min_clamp;
-        if (decrease_button.draw(_allow)){
+        if (decrease_button.draw(_allow)) {
             current_value -= shift_value;
         }
 
         _allow = current_value < max_clamp;
-        if (increase_button.draw(_allow)){
+        if (increase_button.draw(_allow)) {
             current_value += shift_value;
         }
-    }
+    };
 }
 
 /// @function LabeledIcon(icon, text, x1, y1, data)
@@ -366,10 +362,10 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
     h = icon_height;
     x2 = x1 + w;
     y2 = y1 + icon_height;
-	temp_font = draw_get_font();
-	draw_set_font(font);
-	text_width = string_width(text) + 2;
-	draw_set_font(temp_font);
+    temp_font = draw_get_font();
+    draw_set_font(font);
+    text_width = string_width(text) + 2;
+    draw_set_font(temp_font);
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
@@ -444,18 +440,17 @@ function SpriteButton(data) constructor {
     is_hovered = false;
     is_clicked = false;
 
-    static update = function(data){
-        move_data_to_current_scope(data,true);
+    static update = function(data) {
+        move_data_to_current_scope(data, true);
         width = sprite_get_width(sprite);
         height = sprite_get_height(sprite);
         x2 = x1 + (width * scale_x);
         y2 = y1 + (height * scale_y);
-    }
+    };
 
     /// @desc Updates interaction state and draws the button.
     /// @param {bool} _enabled If false, interaction is disabled and the button appears faded.
     static draw = function(_enabled = true) {
-
         add_draw_return_values();
 
         is_hovered = sr_hit_struct();
@@ -509,7 +504,7 @@ function UnitButtonObject(data = {}) constructor {
     static update_loc = function() {
         if (label != "") {
             var temp_font = draw_get_font();
-           	draw_set_font(font);
+            draw_set_font(font);
             if (!set_width) {
                 w = string_width(label) + 10;
                 h = string_height(label) + 4;
@@ -526,7 +521,7 @@ function UnitButtonObject(data = {}) constructor {
         x2 = x1 + w;
         y2 = y1 + h;
     };
-    
+
     update_loc();
 
     static update = function(data = {}) {
@@ -580,7 +575,7 @@ function UnitButtonObject(data = {}) constructor {
             var _widths = [
                 sprite_get_width(spr_pixel_button_left),
                 sprite_get_width(spr_pixel_button_middle),
-                sprite_get_width(spr_pixel_button_right)
+                sprite_get_width(spr_pixel_button_right),
             ];
 
             var height_scale = h / sprite_get_height(spr_pixel_button_left);
@@ -598,7 +593,7 @@ function UnitButtonObject(data = {}) constructor {
             draw_set_valign(fa_middle);
             draw_set_color(color);
 
-            draw_text_transformed(_text_position_x, y1 + h/2, label, text_scale, text_scale, 0);
+            draw_text_transformed(_text_position_x, y1 + h / 2, label, text_scale, text_scale, 0);
 
             x2 = x1 + array_sum(_widths);
             y2 = y1 + h;
@@ -606,7 +601,7 @@ function UnitButtonObject(data = {}) constructor {
                 x1,
                 y1,
                 x2,
-                y2
+                y2,
             ];
         }
 
@@ -706,7 +701,7 @@ function SliderBar(_x, _y, _w = 100, _h = 16, _limits = [0, 100], _inc = 1) cons
             xx,
             yy,
             xx + width,
-            yy + height
+            yy + height,
         ];
 
         if (point_and_click([_rect[0], _rect[1], _rect[2], _rect[3]])) {
@@ -763,7 +758,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
 
     static render_logic = function() {
         add_draw_return_values();
-        
+
         draw_set_valign(fa_middle);
         draw_set_halign(fa_center);
         draw_set_alpha(1);
@@ -785,7 +780,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
                 draw_text(_cursor_x, _center_y, "|");
             }
         }
-        
+
         pop_draw_return_values();
     };
 
@@ -906,7 +901,7 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
             _x,
             _y,
             _x + width,
-            _y + height
+            _y + height,
         ];
         var _is_hovering_main = scr_hit(_main_rect[0], _main_rect[1], _main_rect[2], _main_rect[3]);
 
@@ -960,11 +955,11 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
             _x,
             _y + height,
             _x + width,
-            _y + height + _total_h
+            _y + height + _total_h,
         ];
 
         add_draw_return_values();
-        
+
         draw_set_alpha(0.95);
         draw_set_color(c_black);
         draw_rectangle_array(_list_rect, false);
@@ -1042,66 +1037,66 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
         changed = false;
         allow_changes = allow_changes_param;
         var _has_change_method = is_callable(on_change);
-    
+
         var _start_y = y1;
         if (title != "") {
             draw_text(x1, y1, title);
             _start_y += string_height(title) + 10;
         }
-    
+
         var _count = array_length(toggles);
-    
+
         var _max_main = is_horizontal ? max_width : max_height;
         var _main_gap = is_horizontal ? x_gap : y_gap;
         var _cross_gap = is_horizontal ? y_gap : x_gap;
         var _start_main = is_horizontal ? x1 : _start_y;
-    
+
         var _lines = [];
         var _current_line = [];
         var _cur_main = _start_main;
         var _line_max_cross = 0;
-    
+
         // Pass 1: Pack items into lines (rows or columns) based on orientation boundaries
         for (var i = 0; i < _count; i++) {
             var _cur_opt = toggles[i];
             _cur_opt.update();
-    
+
             var _opt_main = is_horizontal ? _cur_opt.w : _cur_opt.h;
             var _opt_cross = is_horizontal ? _cur_opt.h : _cur_opt.w;
-    
+
             if (_max_main > 0 && (_cur_main + _opt_main - _start_main) > _max_main && array_length(_current_line) > 0) {
                 array_push(_lines, {toggles: _current_line, max_c: _line_max_cross});
                 _current_line = [];
                 _line_max_cross = 0;
                 _cur_main = _start_main;
             }
-    
+
             array_push(_current_line, _cur_opt);
             if (_opt_cross > _line_max_cross) {
                 _line_max_cross = _opt_cross;
             }
-    
+
             _cur_main += _opt_main + _main_gap;
         }
-    
+
         if (array_length(_current_line) > 0) {
             array_push(_lines, {toggles: _current_line, max_c: _line_max_cross});
         }
-    
+
         // Pass 2: Position, calculate boundaries, evaluate input, and draw
         var _cur_cross = is_horizontal ? _start_y : x1;
         var _total_max_main = _start_main;
         var _lines_count = array_length(_lines);
-    
+
         for (var l = 0; l < _lines_count; l++) {
             var _line = _lines[l];
             _cur_main = _start_main;
             var _line_toggles_count = array_length(_line.toggles);
-    
+
             for (var t = 0; t < _line_toggles_count; t++) {
                 var _cur_opt = _line.toggles[t];
                 var _orig_w = _cur_opt.w;
-    
+
                 if (is_horizontal) {
                     _cur_opt.x1 = _cur_main;
                     _cur_opt.y1 = _cur_cross;
@@ -1110,7 +1105,7 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
                     if (_cur_opt.x2 > _total_max_main) {
                         _total_max_main = _cur_opt.x2;
                     }
-    
+
                     _cur_main += _cur_opt.w + x_gap;
                 } else {
                     _cur_opt.x1 = _cur_cross;
@@ -1121,22 +1116,22 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
                     if (_cur_opt.y2 > _total_max_main) {
                         _total_max_main = _cur_opt.y2;
                     }
-    
+
                     _cur_main += _cur_opt.h + y_gap;
                 }
-    
+
                 if (_cur_opt.clicked() && allow_changes) {
                     changed = true;
                 }
-    
+
                 _cur_opt.button_color = _cur_opt.active ? active_col : inactive_col;
                 _cur_opt.draw();
                 _cur_opt.w = _orig_w;
             }
-    
+
             _cur_cross += _line.max_c + _cross_gap;
         }
-    
+
         if (is_horizontal) {
             x2 = _total_max_main;
             y2 = _cur_cross - y_gap;
@@ -1144,7 +1139,7 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
             x2 = _cur_cross - x_gap;
             y2 = _total_max_main;
         }
-    
+
         if (changed && _has_change_method) {
             on_change();
         }
@@ -1169,7 +1164,7 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
     static select_all = function() {
         var _all_selected = true;
         var _count = array_length(toggles);
-        
+
         for (var i = 0; i < _count; i++) {
             if (!toggles[i].active) {
                 _all_selected = false;
@@ -1230,12 +1225,12 @@ function RadioSet(options_array, title_param = "", data = {}) constructor {
     for (var i = 0; i < array_length(options_array); i++) {
         array_push(toggles, new ToggleButton(options_array[i]));
     }
-    
+
     static update = function(data = {}) {
         move_data_to_current_scope(data);
     };
 
-    update(data)
+    update(data);
 
     static draw_option = function(_x, _y, index) {
         var _cur_opt = toggles[index];
@@ -1362,7 +1357,7 @@ function ToggleButton(data = {}) constructor {
 
     //make true to run clicked() within draw sequence
     clicked_check_default = false;
-    
+
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         var temp_font = draw_get_font();
@@ -1378,7 +1373,7 @@ function ToggleButton(data = {}) constructor {
             }
         } else if (style == "box") {
             var _text_w = string_width(str1) * (1 + (text_padding * 2));
-            w = max(32, _text_w) + 12; 
+            w = max(32, _text_w) + 12;
             h = 32 + 4 + (string_height(str1) * (1 + (text_padding * 2)));
         }
         x2 = x1 + w;
@@ -1458,16 +1453,16 @@ function ToggleButton(data = {}) constructor {
             draw_set_halign(fa_left);
         } else if (style == "box") {
             var _center_x = x1 + (w / 2);
-            var _sprite_x = _center_x - 16; 
-            
+            var _sprite_x = _center_x - 16;
+
             draw_set_halign(fa_left);
             draw_set_valign(fa_top);
             draw_sprite_ext(spr_creation_check, active, _sprite_x, y1, 1, 1, 0, c_white, total_alpha);
-            
+
             draw_set_alpha(total_alpha);
             draw_set_halign(fa_center);
             draw_set_valign(fa_middle);
-            
+
             var _label_y = y1 + 32 + ((h - 32) / 2);
             draw_text_transformed(_center_x, _label_y, str1, 1, 1, 0);
             draw_set_alpha(1);
@@ -1501,7 +1496,7 @@ function InteractiveButton(data = {}) constructor {
     text_halign = fa_left;
     text_color = c_gray;
     button_color = c_gray;
-        
+
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         if (struct_exists(data, "str1") && !struct_exists(data, "width")) {
@@ -1543,7 +1538,7 @@ function InteractiveButton(data = {}) constructor {
         var text_x = x1 + text_padding;
         var text_y = y1 + text_padding;
         var total_alpha;
-        
+
         add_draw_return_values();
 
         if (text_halign == fa_center) {
@@ -1580,7 +1575,7 @@ function InteractiveButton(data = {}) constructor {
         draw_set_halign(text_halign);
         draw_set_valign(fa_top);
         draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
-        
+
         pop_draw_return_values();
     };
 }

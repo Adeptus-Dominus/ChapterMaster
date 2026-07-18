@@ -150,7 +150,7 @@ function integer_to_words(_integer, _capitalize_first = false, _ordinal = false)
             "sixth",
             "seventh",
             "eighth",
-            "ninth"
+            "ninth",
         ];
         _teens = [
             "tenth",
@@ -162,7 +162,7 @@ function integer_to_words(_integer, _capitalize_first = false, _ordinal = false)
             "sixteenth",
             "seventeenth",
             "eighteenth",
-            "nineteenth"
+            "nineteenth",
         ];
         _tens = [
             "",
@@ -174,13 +174,13 @@ function integer_to_words(_integer, _capitalize_first = false, _ordinal = false)
             "sixtieth",
             "seventieth",
             "eightieth",
-            "ninetieth"
+            "ninetieth",
         ];
         _thousands = [
             "",
             "thousandth",
             "millionth",
-            "billionth"
+            "billionth",
         ];
     } else {
         _ones = [
@@ -193,7 +193,7 @@ function integer_to_words(_integer, _capitalize_first = false, _ordinal = false)
             "six",
             "seven",
             "eight",
-            "nine"
+            "nine",
         ];
         _teens = [
             "ten",
@@ -205,7 +205,7 @@ function integer_to_words(_integer, _capitalize_first = false, _ordinal = false)
             "sixteen",
             "seventeen",
             "eighteen",
-            "nineteen"
+            "nineteen",
         ];
         _tens = [
             "",
@@ -217,13 +217,13 @@ function integer_to_words(_integer, _capitalize_first = false, _ordinal = false)
             "sixty",
             "seventy",
             "eighty",
-            "ninety"
+            "ninety",
         ];
         _thousands = [
             "",
             "thousand",
             "million",
-            "billion"
+            "billion",
         ];
     }
 
@@ -324,7 +324,7 @@ function scr_convert_company_to_string(company_num, possessive = false, flavour 
         "th",
         "th",
         "th",
-        "th"
+        "th",
     ];
     var _flavours = [
         "Veteran",
@@ -336,7 +336,7 @@ function scr_convert_company_to_string(company_num, possessive = false, flavour 
         "Reserve",
         "Reserve",
         "Reserve",
-        "Scout"
+        "Scout",
     ];
     var _str_company = possessive ? "Company's" : "Company";
 

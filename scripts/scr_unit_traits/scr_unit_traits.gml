@@ -12,1017 +12,1017 @@ global.astartes_trait_dist = [
         "beast_slayer",
         [
             500,
-            499
+            499,
         ],
         {
             recruit_world_type: [
                 [
                     "Ice",
-                    -2
+                    -2,
                 ],
                 [
                     "Lava",
-                    -1
+                    -1,
                 ],
                 [
                     "Death",
-                    -10
+                    -10,
                 ],
                 [
                     "Forge",
-                    1
+                    1,
                 ],
                 [
                     "Shrine",
-                    2
-                ]
+                    2,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.EXPOSURE,
-                    -1
+                    -1,
                 ],
                 [
                     eTRIALS.HUNTING,
-                    -3
+                    -3,
                 ],
                 [
                     eTRIALS.APPRENTICESHIP,
-                    1
+                    1,
                 ],
                 [
                     eTRIALS.KNOWLEDGE,
-                    1
-                ]
+                    1,
+                ],
             ],
-        }
+        },
     ],
     [
         "very_hard_to_kill",
         [
             400,
-            397
+            397,
         ],
         {
             recruit_world_type: [
                 [
                     "Ice",
-                    -1
+                    -1,
                 ],
                 [
                     "Lava",
-                    -4
+                    -4,
                 ],
                 [
                     "Death",
-                    -4
-                ]
+                    -4,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.EXPOSURE,
-                    -3
+                    -3,
                 ],
                 [
                     eTRIALS.SURVIVAL,
-                    -2
+                    -2,
                 ],
                 [
                     eTRIALS.APPRENTICESHIP,
-                    1
-                ]
+                    1,
+                ],
             ],
-        }
+        },
     ],
     [
         "harshborn",
         [
             149,
-            147
+            147,
         ],
         {
             recruit_world_type: [
                 [
                     "Ice",
-                    -2
+                    -2,
                 ],
                 [
                     "Lava",
-                    -1
+                    -1,
                 ],
                 [
                     "Death",
-                    -3
+                    -3,
                 ],
                 [
                     "Forge",
-                    1
+                    1,
                 ],
                 [
                     "Shrine",
-                    2
-                ]
+                    2,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.EXPOSURE,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "scholar",
         [
             150,
-            148
+            148,
         ],
         {
             recruit_world_type: [
                 [
                     "Feudal",
-                    -1
+                    -1,
                 ],
                 [
                     "Shrine",
-                    -4
-                ]
+                    -4,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.KNOWLEDGE,
-                    -2
+                    -2,
                 ],
                 [
                     eTRIALS.APPRENTICESHIP,
-                    -1
+                    -1,
                 ],
                 [
                     eTRIALS.BLOODDUEL,
-                    1
-                ]
+                    1,
+                ],
             ],
-        }
+        },
     ],
     [
         "feral",
         [
             299,
-            296
+            296,
         ],
         {
             recruit_world_type: [
                 [
                     "Ice",
-                    -2
+                    -2,
                 ],
                 [
                     "Lava",
-                    -1
+                    -1,
                 ],
                 [
                     "Death",
-                    -3
+                    -3,
                 ],
                 [
                     "Forge",
-                    50
+                    50,
                 ],
                 [
                     "Shrine",
-                    2
-                ]
+                    2,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.KNOWLEDGE,
-                    3
+                    3,
                 ],
                 [
                     eTRIALS.APPRENTICESHIP,
-                    10
+                    10,
                 ],
                 [
                     eTRIALS.BLOODDUEL,
-                    -1
+                    -1,
                 ],
                 [
                     eTRIALS.SURVIVAL,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "brawler",
         [
             99,
-            98
+            98,
         ],
         {
             chapter_name: [
                 "Space Wolves",
                 [
                     200,
-                    190
-                ]
+                    190,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.BLOODDUEL,
-                    -2
-                ]
+                    -2,
+                ],
             ],
-        }
+        },
     ],
     [
         "brute",
         [
             200,
-            198
+            198,
         ],
         {
             recruit_world_type: [
                 [
                     "Ice",
-                    -1
+                    -1,
                 ],
                 [
                     "Lava",
-                    -1
+                    -1,
                 ],
                 [
                     "Death",
-                    -1
-                ]
+                    -1,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.BLOODDUEL,
-                    -1
+                    -1,
                 ],
                 [
                     eTRIALS.APPRENTICESHIP,
-                    1
-                ]
+                    1,
+                ],
             ],
-        }
+        },
     ],
     [
         "charismatic",
         [
             99,
-            98
+            98,
         ],
         {
             recruit_world_type: [
                 [
                     "Shrine",
-                    -3
+                    -3,
                 ],
                 [
                     "Temperate",
-                    -2
+                    -2,
                 ],
                 [
                     "Agri",
-                    -2
-                ]
+                    -2,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.KNOWLEDGE,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "skeptic",
         [
             99,
-            98
-        ]
+            98,
+        ],
     ],
     [
         "blunt",
         [
             99,
-            98
-        ]
+            98,
+        ],
     ],
     [
         "nimble",
         [
             99,
-            98
+            98,
         ],
         {
             recruit_trial: [
                 [
                     eTRIALS.HUNTING,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "recluse",
         [
             199,
-            198
+            198,
         ],
         {
             recruit_trial: [
                 [
                     eTRIALS.HUNTING,
-                    -1
+                    -1,
                 ],
                 [
                     eTRIALS.EXPOSURE,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "perfectionist",
         [
             99,
-            98
+            98,
         ],
         {
             recruit_trial: [
                 [
                     eTRIALS.KNOWLEDGE,
-                    -3
+                    -3,
                 ],
                 [
                     eTRIALS.HUNTING,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "observant",
         [
             99,
-            98
+            98,
         ],
         {
             recruit_trial: [
                 [
                     eTRIALS.KNOWLEDGE,
-                    -1
+                    -1,
                 ],
                 [
                     eTRIALS.HUNTING,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "cunning",
         [
             99,
-            98
+            98,
         ],
         {
             recruit_world_type: [
                 [
                     "Hive",
-                    -4
-                ]
+                    -4,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.HUNTING,
-                    -3
-                ]
+                    -3,
+                ],
             ],
-        }
+        },
     ],
     [
         "guardian",
         [
             99,
-            98
-        ]
+            98,
+        ],
     ],
     [
         "observant",
         [
             99,
-            98
+            98,
         ],
         {
             recruit_trial: [
                 [
                     eTRIALS.HUNTING,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "technophobe",
         [
             99,
-            98
+            98,
         ],
         {
             "progenitor": [
                 ePROGENITOR.IRON_HANDS,
                 [
                     1000,
-                    999
-                ]
+                    999,
+                ],
             ],
             recruit_world_type: [
                 [
                     "Ice",
-                    -5
+                    -5,
                 ],
                 [
                     "Death",
-                    -2
+                    -2,
                 ],
                 [
                     "Forge",
-                    50
-                ]
+                    50,
+                ],
             ],
-        }
+        },
     ],
     [
         "jaded",
         [
             99,
-            98
-        ]
+            98,
+        ],
     ],
     [
         "strong",
         [
             99,
-            98
+            98,
         ],
         {
             recruit_trial: [
                 [
                     eTRIALS.CHALLENGE,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "fast_learner",
         [
             149,
-            148
-        ]
+            148,
+        ],
     ],
     [
         "feet_floor",
         [
             199,
-            198
+            198,
         ],
         {
             chapter_name: [
                 "Space Wolves",
                 [
                     100,
-                    70
-                ]
+                    70,
+                ],
             ],
-        }
+        },
     ],
     [
         "paragon",
         [
             999,
-            998
-        ]
+            998,
+        ],
     ],
     [
         "favoured_by_the_warp",
         [
             299,
-            298
+            298,
         ],
         {
             "disadvantage": [
                 "Favoured By The Warp",
                 [
                     10,
-                    9
-                ]
+                    9,
+                ],
             ],
-        }
+        },
     ],
     [
         "warp_tainted",
         [
             299,
-            298
+            298,
         ],
         {
             "disadvantage": [
                 "Warp Tainted",
                 [
                     20,
-                    1
-                ]
+                    1,
+                ],
             ],
-        }
+        },
     ],
     [
         "shitty_luck",
         [
             99,
-            98
+            98,
         ],
         {
             "disadvantage": [
                 "Shitty Luck",
                 [
                     3,
-                    2
-                ]
+                    2,
+                ],
             ],
-        }
+        },
     ],
     [
         "lucky",
         [
             99,
-            98
+            98,
         ],
         {
             "advantage": [
                 "Great Luck",
                 [
                     3,
-                    2
-                ]
+                    2,
+                ],
             ],
-        }
+        },
     ],
     [
         "natural_leader",
         [
             199,
-            198
+            198,
         ],
         {
             recruit_world_type: [
                 [
                     "Temperate",
-                    -2
+                    -2,
                 ],
                 [
                     "Shrine",
-                    -4
-                ]
+                    -4,
+                ],
             ],
-        }
+        },
     ],
     [
         "slow_and_purposeful",
         [
             99,
-            98
+            98,
         ],
         {
             "advantage": [
                 "Devastator Doctrine",
                 [
                     300,
-                    100
-                ]
+                    100,
+                ],
             ],
-        }
+        },
     ],
     [
         "melee_enthusiast",
         [
             99,
-            98
+            98,
         ],
         {
             "advantage": [
                 "Assault Doctrine",
                 [
                     300,
-                    100
-                ]
+                    100,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.BLOODDUEL,
-                    -1
+                    -1,
                 ],
                 [
                     eTRIALS.CHALLENGE,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "lightning_warriors",
         [
             99,
-            98
+            98,
         ],
         {
             "advantage": [
                 "Lightning Warriors",
                 [
                     300,
-                    100
-                ]
+                    100,
+                ],
             ],
-        }
+        },
     ],
     [
         "zealous_faith",
         [
             99,
-            98
+            98,
         ],
         {
             "advantage": [
                 "Psyker Intolerant",
                 [
                     300,
-                    200
-                ]
+                    200,
+                ],
             ],
             recruit_world_type: [
                 [
                     "Shrine",
-                    -15
-                ]
+                    -15,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.KNOWLEDGE,
-                    -2
-                ]
+                    -2,
+                ],
             ],
-        }
+        },
     ],
     [
         "faithless",
         [
             1000,
-            980
+            980,
         ],
         {
             "disadvantage": [
                 "Small Reclusiam",
                 [
                     1000,
-                    50
+                    50,
                 ],
-                "required"
+                "required",
             ],
-        }
+        },
     ],
     [
         "flesh_is_weak",
         [
             1000,
-            999
+            999,
         ],
         {
             chapter_name: [
                 "Iron Hands",
                 [
                     1000,
-                    600
+                    600,
                 ],
-                "required"
+                "required",
             ],
             progenitor: [
                 ePROGENITOR.IRON_HANDS,
                 [
                     1000,
-                    800
+                    800,
                 ],
-                "required"
+                "required",
             ],
             recruit_world_type: [
                 [
                     "Forge",
-                    -300
+                    -300,
                 ],
                 [
                     "Lava",
-                    -15
-                ]
+                    -15,
+                ],
             ],
-        }
+        },
     ],
     [
         "tinkerer",
         [
             199,
-            198
+            198,
         ],
         {
             chapter_name: [
                 "Iron Hands",
                 [
                     49,
-                    47
-                ]
+                    47,
+                ],
             ],
             recruit_world_type: [
                 [
                     "Forge",
-                    -15
+                    -15,
                 ],
                 [
                     "Hive",
-                    -7
-                ]
+                    -7,
+                ],
             ],
-        }
+        },
     ],
     [
         "crafter",
         [
             299,
-            298
+            298,
         ],
         {
             advantage: [
                 "Crafters",
                 [
                     299,
-                    297
-                ]
+                    297,
+                ],
             ],
             recruit_world_type: [
                 [
                     "Forge",
-                    -2
+                    -2,
                 ],
                 [
                     "Lava",
-                    -2
-                ]
+                    -2,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.APPRENTICESHIP,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "honorable",
         [
             299,
-            297
+            297,
         ],
         {
             recruit_world_type: [
                 [
                     "Feudal",
-                    -9
+                    -9,
                 ],
                 [
                     "Temperate",
-                    -3
+                    -3,
                 ],
                 [
                     "Desert",
-                    -9
-                ]
+                    -9,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.BLOODDUEL,
-                    1
-                ]
+                    1,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.CHALLENGE,
-                    -1
-                ]
+                    -1,
+                ],
             ],
-        }
+        },
     ],
     [
         "duelist",
         [
             299,
-            298
+            298,
         ],
         {
             chapter_name: [
                 "Black Templars",
                 [
                     199,
-                    197
-                ]
+                    197,
+                ],
             ],
             recruit_world_type: [
                 [
                     "Feudal",
-                    -9
-                ]
+                    -9,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.CHALLENGE,
-                    -2
-                ]
+                    -2,
+                ],
             ],
-        }
+        },
     ],
     [
         "siege_master",
         [
             299,
-            297
+            297,
         ],
         {
             recruit_world_type: [
                 [
                     "Feudal",
-                    -6
+                    -6,
                 ],
                 [
                     "hive",
-                    -2
+                    -2,
                 ],
                 [
                     "ice",
-                    1
-                ]
+                    1,
+                ],
             ],
             recruit_trial: [
                 [
                     eTRIALS.APPRENTICESHIP,
-                    -2
-                ]
+                    -2,
+                ],
             ],
-        }
+        },
     ],
     [
         "secretive_knights",
         [
             1,
-            1
+            1,
         ],
         {
             chapter_name: [
                 "Dark Angels",
                 [
                     500,
-                    0
-                ]
+                    0,
+                ],
             ],
-        }
+        },
     ],
     [
         "warriors_of_the_wind",
         [
             1,
-            1
+            1,
         ],
         {
             chapter_name: [
                 "White Scars",
                 [
                     500,
-                    0
-                ]
+                    0,
+                ],
             ],
-        }
+        },
     ],
     [
         "wolf_prince",
         [
             1,
-            1
+            1,
         ],
         {
             chapter_name: [
                 "Space Wolves",
                 [
                     500,
-                    0
-                ]
+                    0,
+                ],
             ],
-        }
+        },
     ],
     [
         "obstinate_defenders",
         [
             1,
-            1
+            1,
         ],
         {
             chapter_name: [
                 "Imperial Fists",
                 [
                     500,
-                    0
-                ]
+                    0,
+                ],
             ],
-        }
+        },
     ],
     [
         "host_of_angels",
         [
             1,
-            1
+            1,
         ],
         {
             chapter_name: [
                 "Blood Angels",
                 [
                     500,
-                    0
-                ]
+                    0,
+                ],
             ],
-        }
+        },
     ],
     [
         "will_of_iron",
         [
             1,
-            1
+            1,
         ],
         {
             chapter_name: [
                 "Iron Hands",
                 [
                     500,
-                    0
-                ]
+                    0,
+                ],
             ],
-        }
+        },
     ],
     [
         "students_of_war",
         [
             1,
-            1
+            1,
         ],
         {
             chapter_name: [
                 "Ultramarines",
                 [
                     500,
-                    0
-                ]
+                    0,
+                ],
             ],
-        }
+        },
     ],
     [
         "keepers_of_the_flame",
         [
             1,
-            1
+            1,
         ],
         {
             chapter_name: [
                 "Salamanders",
                 [
                     500,
-                    0
-                ]
+                    0,
+                ],
             ],
-        }
+        },
     ],
     [
         "shadow_masters",
         [
             1,
-            1
+            1,
         ],
         {
             chapter_name: [
                 "Raven Guard",
                 [
                     500,
-                    0
-                ]
+                    0,
+                ],
             ],
-        }
-    ]
+        },
+    ],
 ];
 
 function scr_marine_trait_spawning(distribution_set) {
@@ -1052,7 +1052,7 @@ function scr_marine_trait_spawning(distribution_set) {
                 } else if (is_state_required(dist_modifiers[$ "disadvantage"])) {
                     dist_rate = [
                         0,
-                        0
+                        0,
                     ];
                 }
             }
@@ -1062,7 +1062,7 @@ function scr_marine_trait_spawning(distribution_set) {
                 } else if (is_state_required(dist_modifiers[$ "advantage"])) {
                     dist_rate = [
                         0,
-                        0
+                        0,
                     ];
                 }
             }
@@ -1072,7 +1072,7 @@ function scr_marine_trait_spawning(distribution_set) {
                 } else if (is_state_required(dist_modifiers[$ "progenitor"])) {
                     dist_rate = [
                         0,
-                        0
+                        0,
                     ];
                 }
             }
@@ -1082,7 +1082,7 @@ function scr_marine_trait_spawning(distribution_set) {
                 } else if (is_state_required(dist_modifiers[$ "chapter_name"])) {
                     dist_rate = [
                         0,
-                        0
+                        0,
                     ];
                 }
             }

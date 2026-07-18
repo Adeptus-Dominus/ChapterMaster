@@ -70,7 +70,7 @@ if ((((timer_stage == 2) && (fugg >= 60)) || (((timer_stage == 4) || (timer_stag
         exit;
     }
 
-    if ((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0) {
+    if (((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0)) {
         _newline_color = eMSG_COLOR.YELLOW;
         if (enemy != eFACTION.ELDAR) {
             if (((player_forces <= 0) || (!instance_exists(obj_pnunit))) && (defeat_message == 0)) {

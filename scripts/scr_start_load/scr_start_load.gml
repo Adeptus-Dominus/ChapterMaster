@@ -4,7 +4,16 @@ function scr_start_load(fleet, load_from_star, load_options) {
 
     // this distributes the marines and vehicles to the correct ships if the chapter is fleet-based or a home-based chapter
 
-    var total_distribute_squads = [[], [], [], [], [], [], [], []];
+    var total_distribute_squads = [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+    ];
 
     var escort_load = load_options[0];
     var split_scouts = load_options[1];
@@ -55,7 +64,13 @@ function scr_start_load(fleet, load_from_star, load_options) {
         }
     }
     // i feel like there definatly is or should be a generic function for this????
-    var _vehicles = ["Rhino", "Predator", "Land Speeder", "Land Raider", "Whirlwind"];
+    var _vehicles = [
+        "Rhino",
+        "Predator",
+        "Land Speeder",
+        "Land Raider",
+        "Whirlwind",
+    ];
     function load_vehicles(_companies, _equip, _ship, size) {
         obj_ini.veh_wid[_companies][_equip] = 0;
         obj_ini.veh_lid[_companies][_equip] = _ship;

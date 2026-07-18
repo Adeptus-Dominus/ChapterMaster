@@ -71,7 +71,7 @@ function player_recruit_planet_selection() {
                     1503,
                     398,
                     1523,
-                    418
+                    418,
                 ];
                 draw_unit_buttons(_refresh_rec_name_btn, "?", [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
                 if (point_and_click(_refresh_rec_name_btn)) {
@@ -124,7 +124,7 @@ function scr_creation_home_planet_create() {
                 770,
                 398,
                 790,
-                418
+                418,
             ];
             draw_unit_buttons(_refresh_hw_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
             if (point_and_click(_refresh_hw_name_btn)) {
@@ -177,7 +177,7 @@ function scr_creation_home_planet_create() {
                 770,
                 398,
                 790,
-                418
+                418,
             ];
             draw_unit_buttons(_refresh_fs_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
             if (point_and_click(_refresh_fs_name_btn)) {
@@ -245,13 +245,13 @@ function scr_creation_home_planet_create() {
                 name: "Personal Rule",
                 tooltip: "Personal Rule",
                 tooltip2: "You personally take the rule of the Planetary Governer, ruling over your homeworld with an iron fist.  Your every word and directive, be they good or bad, are absolute law.",
-            }
+            },
         ];
         draw_text_transformed(445, 480, "Homeworld Rule", 0.6, 0.6, 0);
 
         var _coords = [
             445,
-            512
+            512,
         ];
         for (var i = 0; i < array_length(_homeworld_types); i++) {
             var _home_rule_type = _homeworld_types[i];

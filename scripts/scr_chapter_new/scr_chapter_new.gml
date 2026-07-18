@@ -219,7 +219,7 @@ function scr_chapter_new(chapter_identifier) {
             obj_creation.gear[i][_role_id] = _gear;
             obj_creation.race[i][_role_id] = 1;
         }
-    }
+    };
     load_default_gear(eROLE.HONOURGUARD, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
     load_default_gear(eROLE.VETERAN, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.TERMINATOR, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
@@ -424,14 +424,14 @@ function scr_chapter_new(chapter_identifier) {
         obj_creation.load_to_ships = [
             load.escort_load,
             load.split_scouts,
-            load.split_vets
+            load.split_vets,
         ];
         if (struct_exists(chapter_object, "squad_distribution")) {
             obj_creation.squad_distribution = chapter_object.squad_distribution;
         } else {
             // migrate old saves: reconstruct squad_distribution from legacy boolean fields
             var _legacy_specialists = struct_exists(chapter_object, "equal_specialists") ? chapter_object.equal_specialists : 0;
-            var _legacy_scouts      = struct_exists(chapter_object, "equal_scouts")      ? chapter_object.equal_scouts      : 0;
+            var _legacy_scouts = struct_exists(chapter_object, "equal_scouts") ? chapter_object.equal_scouts : 0;
             obj_creation.squad_distribution = (_legacy_specialists ? 1 : 0) + (_legacy_scouts ? 2 : 0);
         }
         if (struct_exists(chapter_object, "scout_company_behaviour")) {

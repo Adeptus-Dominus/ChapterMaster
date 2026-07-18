@@ -116,7 +116,7 @@ company_promote_data = [
     },
     {
         exp: 15,
-    } //10th company
+    }, //10th company
 ];
 
 role_name = array_create(12, "");

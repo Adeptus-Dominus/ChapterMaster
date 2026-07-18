@@ -230,7 +230,7 @@ function event_end_turn_action() {
                         {
                             str1: "I see no problem",
                             choice_func: popup_default_close,
-                        }
+                        },
                     ];
                     _pop_data = {
                         options: options,
@@ -296,7 +296,7 @@ function strange_build_event() {
     var _search_params = {
         trait: [
             "crafter",
-            "tinkerer"
+            "tinkerer",
         ],
         trait_any: true,
     };

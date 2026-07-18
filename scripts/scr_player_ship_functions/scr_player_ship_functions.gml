@@ -411,16 +411,16 @@ function player_ships_class(index) {
     var _escorts = [
         "Escort",
         "Hunter",
-        "Gladius"
+        "Gladius",
     ];
     var _capitals = [
         "Gloriana",
         "Battle Barge",
-        "Capital"
+        "Capital",
     ];
     var _frigates = [
         "Strike Cruiser",
-        "Frigate"
+        "Frigate",
     ];
     var _ship_name_class = obj_ini.ship_class[index];
     if (array_contains(_escorts, _ship_name_class)) {

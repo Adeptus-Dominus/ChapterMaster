@@ -269,7 +269,7 @@ function scr_player_combat_weapon_stacks() {
             // Counts the number and types of marines within this object
             if (veh_dead[g] != 1) {
                 var good = 0;
-                var open = 0; 
+                var open = 0;
                 for (var j = 1; j <= 40; j++) {
                     if ((dudes[j] == "") && (open == 0)) {
                         open = j;
@@ -291,7 +291,7 @@ function scr_player_combat_weapon_stacks() {
                 var vehicle_weapon_set = [
                     veh_wep1[g],
                     veh_wep2[g],
-                    veh_wep3[g]
+                    veh_wep3[g],
                 ];
                 for (var wep_slot = 0; wep_slot < 3; wep_slot++) {
                     var weapon_check = vehicle_weapon_set[wep_slot];

@@ -20,7 +20,7 @@ if (gc_timer > 0) {
             _gc_touched,
             _gc_collected,
             _gc_traversal_t,
-            _gc_collection_t
+            _gc_collection_t,
         ];
         // show_debug_message_time($"(GC{_gc_stats.gc_frame}) Garbage Collected!");
 

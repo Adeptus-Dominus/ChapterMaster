@@ -392,7 +392,7 @@ if (!dropping) {
     }
 }
 
-if ((dropping) && (battle_special != "space_hulk")) {
+if (dropping && (battle_special != "space_hulk")) {
     d1 = p1;
     d2 = p2;
     d3 = p3;
@@ -474,7 +474,7 @@ if ((enemy == eFACTION.ORK) && (!dropping)) {
         p2 = string_upper(p2); // Capitalize the ENEMY DUDES first letter
     }
 }
-if ((enemy == eFACTION.ORK) && (dropping)) {
+if ((enemy == eFACTION.ORK) && dropping) {
     p1 = "The " + enemy_dudes + "-some Orks howl and roar at the oncoming marines.  Many of the beasts fire their weapons, more or less spraying rounds aimlessly into the sky.";
 }
 
@@ -484,7 +484,7 @@ if ((enemy == eFACTION.TAU) && (!dropping)) {
 if ((enemy == eFACTION.TYRANIDS) && (!dropping)) {
     rand = choose(1, 2, 3);
 }
-if ((enemy == eFACTION.TYRANIDS) && (dropping)) {
+if ((enemy == eFACTION.TYRANIDS) && dropping) {
     p1 = "The " + enemy_dudes + "-some Tyranids hiss and chitter as your marines rain down.  Blasts of acid and spikes fill the sky, but none seem to quite find their mark.";
 }
 

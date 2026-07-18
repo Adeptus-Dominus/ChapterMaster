@@ -177,7 +177,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                 var _data;
                 var _circle_coords = [
                     xx + 321,
-                    yy + 77
+                    yy + 77,
                 ];
                 var _circle_radius = 3;
                 for (var s = 0; s <= 3; s++) {
@@ -189,14 +189,14 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                     unit_specialism_option = true;
                     var _draw_coords = [
                         _circle_coords[0] + _data.coord_offset[0],
-                        _circle_coords[1] + _data.coord_offset[1]
+                        _circle_coords[1] + _data.coord_offset[1],
                     ];
 
                     var _draw_coords_mouse = [
                         _draw_coords[0] - _circle_radius,
                         _draw_coords[1] - _circle_radius,
                         _draw_coords[0] + _circle_radius,
-                        _draw_coords[1] + _circle_radius
+                        _draw_coords[1] + _circle_radius,
                     ];
                     specialistdir = _unit.specialist_tooltips(_data.name, _data.min_exp);
 
@@ -257,7 +257,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             #6680ff, // Light Blue (HSL: 210, 50%, 50%)
             #6666ff, // Blue (HSL: 240, 50%, 50%)
             #b366ff, // Purple (HSL: 270, 50%, 50%)
-            #ff66ff // Magenta (HSL: 300, 50%, 50%)
+            #ff66ff, // Magenta (HSL: 300, 50%, 50%)
         ];
         if (squad[selected] != -1) {
             var _squad_modulo = squad[selected] % array_length(squad_colours);
@@ -308,12 +308,12 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         var hpText = [
             xx + 240 + 8,
             yy + 66,
-            string_hash_to_newline(string(health_string))
+            string_hash_to_newline(string(health_string)),
         ]; // HP
         var xpText = [
             xx + 330 + 8,
             yy + 66,
-            exp_string
+            exp_string,
         ]; // EXP
         var hpColor = c_gray;
         var xpColor = c_gray;
@@ -456,7 +456,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         var cols = [
             c_gray,
             c_gray,
-            881503
+            881503,
         ];
         if (man[selected] != "man") {
             var xoffset = 0;
@@ -552,7 +552,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                     mouse_x,
                     mouse_y,
                     mouse_x,
-                    mouse_y
+                    mouse_y,
                 ];
                 rectangle_action = !man_sel[selected];
                 man_sel[selected] = !man_sel[selected];

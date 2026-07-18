@@ -137,7 +137,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
             var _fort_factions = [
                 eFACTION.PLAYER,
                 eFACTION.TYRANIDS,
-                eFACTION.ORK
+                eFACTION.ORK,
             ];
             _allow_fortifications = array_contains(_fort_factions, _planet_data.current_owner);
 

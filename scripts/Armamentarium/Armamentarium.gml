@@ -183,8 +183,24 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
         ships: new SpeedingDot(0, 0, 0),
     };
 
-    gift_button = new UnitButtonObject({x1: 0, y1: 0, style: "pixel", label: "Gift", set_width: true, w: 90, color: c_red});
-    identify_button = new UnitButtonObject({x1: 0, y1: 0, style: "pixel", label: "Identify", set_width: true, w: 90, color: c_red});
+    gift_button = new UnitButtonObject({
+        x1: 0,
+        y1: 0,
+        style: "pixel",
+        label: "Gift",
+        set_width: true,
+        w: 90,
+        color: c_red,
+    });
+    identify_button = new UnitButtonObject({
+        x1: 0,
+        y1: 0,
+        style: "pixel",
+        label: "Identify",
+        set_width: true,
+        w: 90,
+        color: c_red,
+    });
 
     static LAYOUT = {
         COLUMN_WIDTH: 180,
@@ -215,7 +231,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
         {
             key: "ships",
             label: "Ships",
-        }
+        },
     ];
 
     advisor_eta_text = "";
@@ -279,7 +295,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
             _cx,
             _cy,
             _cx + (LAYOUT.COLUMN_WIDTH - 10),
-            _cy + LAYOUT.COLUMN_HEIGHT
+            _cy + LAYOUT.COLUMN_HEIGHT,
         ];
 
         if (scr_hit(_rect)) {
@@ -368,7 +384,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
                 "16% discount",
                 "Enhanced Fist Weapons",
                 "25% discount",
-                "Can produce Terminator Armour and Dreadnoughts."
+                "Can produce Terminator Armour and Dreadnoughts.",
             ],
             vehicles: [
                 "None",
@@ -377,7 +393,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
                 "16% discount",
                 "Enhanced Armour",
                 "25% discount",
-                "Can produce Land Speeders and Land Raiders."
+                "Can produce Land Speeders and Land Raiders.",
             ],
             ships: [
                 "None",
@@ -386,7 +402,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
                 "16% discount",
                 "Enhanced Armour",
                 "25% discount",
-                "Warp Speed is increased and ships self-repair."
+                "Warp Speed is increased and ships self-repair.",
             ],
         };
         return _data[$ _cat] ?? [];
@@ -462,9 +478,15 @@ function Armamentarium(_controller) constructor {
     enter_forge_button = new ShutterButton();
     enter_forge_button.cover_text = "FORGE";
 
-    forge_button = new SpriteButton({sprite:spr_build_tiny});
-    buy_button = new SpriteButton({sprite:spr_buy_tiny});
-    sell_button = new SpriteButton({sprite:spr_sell_tiny});
+    forge_button = new SpriteButton({
+        sprite: spr_build_tiny,
+    });
+    buy_button = new SpriteButton({
+        sprite: spr_buy_tiny,
+    });
+    sell_button = new SpriteButton({
+        sprite: spr_sell_tiny,
+    });
 
     var _cat_options = [
         {
@@ -498,11 +520,11 @@ function Armamentarium(_controller) constructor {
         {
             label: "Technologies",
             value: "technologies",
-        }
+        },
     ];
-    
+
     category_dropdown = new UIDropdown(_cat_options, 200);
-    
+
     var _comp_options = [];
     var _roman = [
         "I",
@@ -516,7 +538,7 @@ function Armamentarium(_controller) constructor {
         "IX",
         "X",
     ];
-    
+
     var _roman_length = array_length(_roman);
 
     for (var i = 0, _limit = min(obj_ini.companies, _roman_length); i < _limit; i++) {
@@ -571,7 +593,7 @@ function Armamentarium(_controller) constructor {
             "vehicles",
             "vehicle_gear",
             "ships",
-            "technologies"
+            "technologies",
         ];
 
         for (var c = 0, clen = array_length(_categories); c < clen; c++) {
@@ -1020,12 +1042,8 @@ function Armamentarium(_controller) constructor {
         if (is_in_forge) {
             var _can_forge = _item.meets_requirements || global.cheat_debug;
 
-            forge_button.update({
-                tooltip_text: _can_forge ? "Add to Forge Queue" : _item.get_missing_technologies_tooltip(),
-                x1: 1530,
-                y1 : _y + 2
-            });
-            
+            forge_button.update({tooltip_text: _can_forge ? "Add to Forge Queue" : _item.get_missing_technologies_tooltip(), x1: 1530, y1: _y + 2});
+
             forge_button.draw(_can_forge);
 
             if (forge_button.is_clicked) {
@@ -1043,11 +1061,7 @@ function Armamentarium(_controller) constructor {
         var _can_afford = (controller.requisition >= _cost) || global.cheat_debug;
         var _can_buy = _item.buyable || global.cheat_debug;
 
-        buy_button.update({
-            tooltip_text : !_can_buy ? "Unavailable for purchase" : (_can_afford ? "Buy" : "Insufficient Requisition"),
-            x1 : 1530,
-            y1 : _y + 2
-        });
+        buy_button.update({tooltip_text: !_can_buy ? "Unavailable for purchase" : (_can_afford ? "Buy" : "Insufficient Requisition"), x1: 1530, y1: _y + 2});
 
         buy_button.draw(_can_buy && _can_afford);
 
@@ -1057,11 +1071,7 @@ function Armamentarium(_controller) constructor {
 
         var _can_sell = !array_contains(["ships", "vehicles"], shop_type) && _item.stocked > 0;
 
-        sell_button.update({
-            tooltip_text : $"Sell for {_item.sell_cost * min(_item.stocked, _count)}",
-            x1 : 1480,
-            y1 : _y + 2
-        });
+        sell_button.update({tooltip_text: $"Sell for {_item.sell_cost * min(_item.stocked, _count)}", x1: 1480, y1: _y + 2});
 
         sell_button.draw(_can_sell);
 
@@ -1123,7 +1133,7 @@ function Armamentarium(_controller) constructor {
         if (enter_forge_button.draw_shutter(526, _btn_y, "Enter Forge", 0.5)) {
             is_in_forge = true;
             if (shop_type == "ships") {
-                _switch_tab("weapons")
+                _switch_tab("weapons");
             } else {
                 refresh_catalog();
             }

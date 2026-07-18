@@ -95,7 +95,7 @@ function scr_management(argument0) {
                 "Predator",
                 "Rhino",
                 "Land Speeder",
-                "Whirlwind"
+                "Whirlwind",
             ];
             // Vehicles
             for (var i = 0; i < array_length(obj_ini.veh_role[company]); i++) {

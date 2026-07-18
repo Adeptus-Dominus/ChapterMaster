@@ -187,8 +187,8 @@ try {
                 disposition: [
                     [
                         eFACTION.IMPERIUM,
-                        -8
-                    ]
+                        -8,
+                    ],
                 ],
             },
             {
@@ -199,12 +199,12 @@ try {
                 disposition: [
                     [
                         eFACTION.IMPERIUM,
-                        -8
+                        -8,
                     ],
                     [
                         6,
-                        8
-                    ]
+                        8,
+                    ],
                 ],
             },
             {
@@ -264,8 +264,8 @@ try {
                 disposition: [
                     [
                         eFACTION.IMPERIUM,
-                        -8
-                    ]
+                        -8,
+                    ],
                 ],
             },
             {
@@ -276,8 +276,8 @@ try {
                 disposition: [
                     [
                         eFACTION.IMPERIUM,
-                        -8
-                    ]
+                        -8,
+                    ],
                 ],
             },
             {
@@ -288,30 +288,30 @@ try {
                 disposition: [
                     [
                         1,
-                        -4
+                        -4,
                     ],
                     [
                         eFACTION.IMPERIUM,
-                        -8
+                        -8,
                     ],
                     [
                         3,
-                        -4
+                        -4,
                     ],
                     [
                         4,
-                        -4
+                        -4,
                     ],
                     [
                         5,
-                        -4
+                        -4,
                     ],
                     [
                         6,
-                        -4
-                    ]
+                        -4,
+                    ],
                 ],
-            }
+            },
         ];
         x1 = 450;
         y1 = 260;
@@ -458,7 +458,7 @@ try {
                 943,
                 142,
                 947 + hei,
-                146 + hei
+                146 + hei,
             ];
             draw_unit_buttons(_refresh_cm_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
             if (point_and_click(_refresh_cm_name_btn)) {
@@ -543,7 +543,7 @@ try {
             "Master Crafted Heavy Bolter",
             "Master Crafted Meltagun",
             "Storm Shield",
-            ""
+            "",
         ];
         if (array_contains([1, 2, 7], chapter_master_melee)) {
             draw_set_alpha(0.5);
@@ -585,20 +585,20 @@ try {
         var leader_types = [
             [
                 "",
-                ""
+                "",
             ],
             [
                 "Born Leader",
-                "You always know the right words to inspire your men or strike doubt in the hearts of the enemy.  Increases Disposition and Grants a +10% Requisition Income Bonus."
+                "You always know the right words to inspire your men or strike doubt in the hearts of the enemy.  Increases Disposition and Grants a +10% Requisition Income Bonus.",
             ],
             [
                 "Champion",
-                "Even before your rise to Chapter Master you were a renowned warrior, nearly without compare.  Increases Chapter Master Experience, Melee Damage, and Ranged Damage."
+                "Even before your rise to Chapter Master you were a renowned warrior, nearly without compare.  Increases Chapter Master Experience, Melee Damage, and Ranged Damage.",
             ],
             [
                 "Psyker",
-                "The impossible is nothing to you; despite being a Psyker you have slowly risen to lead a Chapter.  Chapter Master gains every Power within the chosen Discipline."
-            ]
+                "The impossible is nothing to you; despite being a Psyker you have slowly risen to lead a Chapter.  Chapter Master gains every Power within the chosen Discipline.",
+            ],
         ];
         repeat (3) {
             h += 1;

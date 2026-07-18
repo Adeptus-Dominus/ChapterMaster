@@ -142,7 +142,7 @@ try {
         if (p_data.planet != _planet) {
             p_data = target.get_planet_data(_planet);
         }
-    
+
         // Buttons that are available
         if (!buttons_selected) {
             buttons = [];
@@ -200,7 +200,10 @@ try {
             }
             if (target.space_hulk) {
                 if (target.present_fleet[1] > 0) {
-                    buttons = ["Raid", "Bombard"];
+                    buttons = [
+                        "Raid",
+                        "Bombard",
+                    ];
                 }
             }
 
@@ -262,7 +265,6 @@ try {
                     } else {
                         draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Negative");
                     }
-
                 };
                 garrison_data_slate.draw(340 + main_data_slate.width, 160, 0.6, 0.6);
             }

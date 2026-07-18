@@ -134,7 +134,7 @@ function draw_warp_lanes() {
                 route_coords[0] + dist_x - (warp_width / 2),
                 route_coords[1] + dist_y - (warp_height / 2),
                 route_coords[0] + dist_x + (warp_width / 2),
-                route_coords[1] + dist_y + (warp_height / 2)
+                route_coords[1] + dist_y + (warp_height / 2),
             ];
 
             var _allow_tooltips = !instance_exists(obj_star_select);
@@ -179,7 +179,7 @@ function draw_warp_lanes() {
                 (route_coords[2] - dist_x) - (warp_width / 2),
                 (route_coords[3] - dist_y) - (warp_height / 2),
                 (route_coords[2] - dist_x) + (warp_width / 2),
-                (route_coords[3] - dist_y) + (warp_height / 2)
+                (route_coords[3] - dist_y) + (warp_height / 2),
             ];
             if (scr_hit(hit_box)) {
                 var star_overlap = false;
@@ -251,7 +251,7 @@ function create_complex_star_routes(player_star) {
         east,
         west,
         south,
-        central
+        central,
     ];
     // here is where we set up the warp hubs
     var WarpHub, set, join_set, total_joins;
@@ -311,11 +311,11 @@ function set_map_pan_to_loc(target) {
     with (obj_controller) {
         location_viewer.travel_target = [
             target.x,
-            target.y
+            target.y,
         ];
         location_viewer.travel_increments = [
             (target.x - x) / 15,
-            (target.y - y) / 15
+            (target.y - y) / 15,
         ];
         location_viewer.travel_time = 0;
     }
@@ -324,10 +324,20 @@ function set_map_pan_to_loc(target) {
 function star_box_shape(star = noone) {
     var scale = obj_controller.map_scale;
     if (star == noone) {
-        return [x - (60 * scale), y + (5 * scale), x + 60 * scale, y - 40 * scale];
+        return [
+            x - (60 * scale),
+            y + (5 * scale),
+            x + 60 * scale,
+            y - 40 * scale,
+        ];
     } else {
         with (star) {
-            return [x - (60 * scale), y + (5 * scale), x + 60 * scale, y - 40 * scale];
+            return [
+                x - (60 * scale),
+                y + (5 * scale),
+                x + 60 * scale,
+                y - 40 * scale,
+            ];
         }
     }
 }

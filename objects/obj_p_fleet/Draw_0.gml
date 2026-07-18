@@ -17,14 +17,14 @@ if (image_alpha == 0) {
 
 var coords = [
     0,
-    0
+    0,
 ];
 
 var near_star = instance_nearest(x, y, obj_star);
 if (x == near_star.x && y == near_star.y) {
     coords = [
         24,
-        -24
+        -24,
     ];
 }
 
@@ -66,14 +66,14 @@ if (!keyboard_check(vk_shift)) {
     }
 }
 
-    if (obj_controller.selecting_planet > 0 && instance_exists(obj_star_select)) {
-        var _btn_count = array_length(obj_star_select.buttons);
-        for (var i = 0; i < _btn_count; i++) {
-            if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234 + (16 * i)) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249 + (16 * i))) {
-                within = 0;
-            }
+if (obj_controller.selecting_planet > 0 && instance_exists(obj_star_select)) {
+    var _btn_count = array_length(obj_star_select.buttons);
+    for (var i = 0; i < _btn_count; i++) {
+        if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234 + (16 * i)) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249 + (16 * i))) {
+            within = 0;
         }
     }
+}
 
 var line_width = 2 * scale;
 var text_size = obj_controller.zoomed ? 2 * scale : scale;

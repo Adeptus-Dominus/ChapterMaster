@@ -48,7 +48,7 @@ function radical_inquisitor_mission_ship_arrival() {
             {
                 str1: "Hear them out",
                 choice_func: mission_hunt_inquisitor_hear_out_radical_inquisitor,
-            }
+            },
         ];
         _radical_inquisitor.inquisitor_ship = self.id;
         scr_popup("Inquisitor Located", _tixt, "inquisition", _radical_inquisitor);
@@ -274,7 +274,7 @@ function inquisitor_inspect_base() {
     if (yep > 0) {
         var planet_coords = [
             x,
-            y
+            y,
         ];
         with (obj_en_fleet) {
             //checks if there is already an inquis ship investigating planet

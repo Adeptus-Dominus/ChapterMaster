@@ -11,21 +11,21 @@ function specialistfunct(specialist, req_exp) {
         string("{0} Applicant", obj_ini.role[100][15]),
         string("{0} Applicant", obj_ini.role[100][14]),
         string("{0} Applicant", obj_ini.role[100][17]),
-        string("Promote to Marine")
+        string("Promote to Marine"),
     ];
 
     var colors;
     var tips_list = [
         0,
         0,
-        spec_tips[8]
+        spec_tips[8],
     ];
     var spec_tip;
     switch (specialist) {
         case "Techmarine":
             colors = [
                 c_dkgray,
-                c_red
+                c_red,
             ];
             tips_list[0] = spec_tips[0];
             tips_list[1] = spec_tips[4];
@@ -36,7 +36,7 @@ function specialistfunct(specialist, req_exp) {
         case "Librarian":
             colors = [
                 c_white,
-                c_aqua
+                c_aqua,
             ];
             tips_list[0] = spec_tips[3];
             tips_list[1] = spec_tips[7];
@@ -47,7 +47,7 @@ function specialistfunct(specialist, req_exp) {
         case "Chaplain":
             colors = [
                 c_black,
-                c_yellow
+                c_yellow,
             ];
             tips_list[0] = spec_tips[2];
             tips_list[1] = spec_tips[6];
@@ -58,7 +58,7 @@ function specialistfunct(specialist, req_exp) {
         case "Apothecary":
             colors = [
                 c_red,
-                c_white
+                c_white,
             ];
             tips_list[0] = spec_tips[1];
             tips_list[1] = spec_tips[5];
@@ -86,7 +86,10 @@ function specialistfunct(specialist, req_exp) {
         spec_tip = tips_list[0];
     }
 
-    return {spec_tip: spec_tip, colors: colors};
+    return {
+        spec_tip: spec_tip,
+        colors: colors,
+    };
 }
 
 // Function: spec_data_set(specialist)
@@ -110,7 +113,7 @@ function spec_data_set(specialist) {
         // TODO LOW SEARCH_OPTIONAL // Make this function handle optional search_params
         [obj_ini.role[100][8], obj_ini.role[100][18], obj_ini.role[100][10], obj_ini.role[100][9]],
         _data.min_exp,
-        _search
+        _search,
     );
     return random_marine;
 }
@@ -140,7 +143,7 @@ function apothecary_training() {
                         0,
                         0,
                         0,
-                        0
+                        0,
                     ];
                     unit.add_exp(10);
 
@@ -218,7 +221,7 @@ function chaplain_training() {
                             0,
                             0,
                             0,
-                            0
+                            0,
                         ];
                         unit.add_exp(10);
                         chaplain_aspirant = 0;
@@ -298,7 +301,7 @@ function librarian_training() {
                         0,
                         0,
                         0,
-                        0
+                        0,
                     ];
                     with (obj_ini) {
                         scr_company_order(0);
@@ -348,7 +351,7 @@ function techmarine_training() {
         4,
         6,
         10,
-        14
+        14,
     ];
     tech_points += training_points_values[training_techmarine];
     var novice_type = string("{0} Aspirant", obj_ini.role[100][16]);
@@ -372,7 +375,7 @@ function techmarine_training() {
                         0,
                         0,
                         0,
-                        0
+                        0,
                     ];
                     unit.add_exp(30);
 
@@ -397,7 +400,7 @@ function techmarine_training() {
                         if (unit.update_gear(obj_ini.gear[100][eROLE.TECHMARINE]) == "no_items") {
                             _warn += $", {obj_ini.gear[100][eROLE.TECHMARINE]}";
                         }
-    
+
                         if (_warn != "") {
                             scr_alert("red", "recruitment", $"Not enough equipment: {_warn}!", 0, 0);
                         }

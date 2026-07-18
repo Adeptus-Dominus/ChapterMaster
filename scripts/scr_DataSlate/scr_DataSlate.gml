@@ -16,7 +16,7 @@ function DataSlate(data = {}) constructor {
 
     top_anchor = [
         340,
-        14
+        14,
     ];
 
     style = "default";
@@ -69,7 +69,7 @@ function DataSlate(data = {}) constructor {
                 var _mouse_consts = return_mouse_consts();
                 draw_offsets = [
                     _mouse_consts[0] - XX,
-                    _mouse_consts[1] - YY
+                    _mouse_consts[1] - YY,
                 ];
             }
         } else {

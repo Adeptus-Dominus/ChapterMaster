@@ -16,11 +16,11 @@ function distribute_strength_to_fleet(strength, fleet) {
 
 /// @self Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet
 /// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} fleet
-function standard_fleet_strength_calc(fleet = noone){
+function standard_fleet_strength_calc(fleet = noone) {
     if (fleet == noone) {
         fleet = self;
     }
-    return fleet.capital_number + (fleet.frigate_number/2) + (fleet.escort_number/4);
+    return fleet.capital_number + (fleet.frigate_number / 2) + (fleet.escort_number / 4);
 }
 
 function random_sector_exit_point() {
@@ -32,7 +32,7 @@ function random_sector_exit_point() {
 /// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} object
 /// @return {Bool}
 function in_room(object = noone) {
-	if (object == noone) {
+    if (object == noone) {
         object = self;
     }
     return !(object.x < 0 || object.x > room_width || object.y < 0 || object.y > room_height);
@@ -75,6 +75,7 @@ function get_fleet_uid(search_uid) {
     }
     return _fleet;
 }
+
 /// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
 /// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} fleet
 /// @param {Array<Id.Instance>} visited
@@ -616,68 +617,68 @@ function sector_imperial_fleet_strength() {
 function fleet_star_draw_offsets() {
     var coords = [
         0,
-        0
+        0,
     ];
     switch (owner) {
         case eFACTION.IMPERIUM:
             if (!navy) {
                 coords = [
                     0,
-                    -24
+                    -24,
                 ]; //
             } else {
                 coords = [
                     0,
-                    24
+                    24,
                 ];
             }
             break;
         case eFACTION.MECHANICUS:
             coords = [
                 0,
-                -32
+                -32,
             ]; //
             break;
         case eFACTION.INQUISITION:
             coords = [
                 0,
-                -32
+                -32,
             ]; //
             break;
         case eFACTION.ELDAR:
             coords = [
                 -24,
-                -24
+                -24,
             ]; //
             break;
         case eFACTION.ORK:
             coords = [
                 30,
-                0
+                0,
             ]; //
             break;
         case eFACTION.TAU:
             coords = [
                 -24,
-                -24
+                -24,
             ]; //
             break;
         case eFACTION.TYRANIDS:
             coords = [
                 0,
-                32
+                32,
             ]; //
             break;
         case eFACTION.CHAOS:
             coords = [
                 -30,
-                0
+                0,
             ]; //
             break;
         case eFACTION.NECRONS:
             coords = [
                 32,
-                32
+                32,
             ]; //
             break;
     }
@@ -1101,7 +1102,6 @@ function fleet_arrival_logic() {
                 action_x = temp7.x;
                 action_y = temp7.y;
                 set_fleet_movement();
-
             }
 
             instance_activate_object(obj_star);
@@ -1178,7 +1178,7 @@ function fleet_respond_crusade() {
         if (guardsmen_unloaded > 0) {
             exit;
         }
-    
+
         // Crusade AI
         obj_controller.temp[88] = owner;
         with (obj_crusade) {
@@ -1186,34 +1186,34 @@ function fleet_respond_crusade() {
                 y -= 20000;
             }
         }
-    
+
         var enemu;
         with (obj_star) {
             var cs = instance_nearest(x, y, obj_crusade);
-    
+
             if (point_distance(x, y, cs.x, cs.y) > cs.radius) {
                 y -= 20000;
             }
             enemu = 0;
-    
+
             var nids = array_reduce(
                 p_tyranids,
                 function(prev, curr) {
                     return prev || curr > 3;
                 },
-                false
+                false,
             );
-    
+
             var tau = array_reduce(
                 p_tau,
                 function(prev, curr) {
                     return prev || curr > 0;
                 },
-                false
+                false,
             );
-    
+
             enemu += nids + tau;
-    
+
             if (present_fleet[eFACTION.ELDAR] > 0) {
                 enemu += 2;
             }
@@ -1242,15 +1242,15 @@ function fleet_respond_crusade() {
             eFACTION.IMPERIUM,
             eFACTION.MECHANICUS,
             eFACTION.INQUISITION,
-            eFACTION.ECCLESIARCHY
+            eFACTION.ECCLESIARCHY,
         ];
-    
+
         var dist = point_distance(x, y, ns.x, ns.y);
         var valid_target = !array_contains_ext(ns.p_owner, to_ignore, false);
         if (valid_target && dist <= max_dist && dist >= min_dist && (owner == eFACTION.IMPERIUM)) {
             ok = true;
         }
-    
+
         // if ((ns.owner>5) or (ns.owner  = eFACTION.PLAYER)) and (point_distance(x,y,ns.x,ns.y)<=max_dis) and (point_distance(x,y,ns.x,ns.y)>40) and (owner = eFACTION.IMPERIUM){
         if (ok) {
             action_x = ns.x;
@@ -1258,7 +1258,7 @@ function fleet_respond_crusade() {
             set_fleet_movement();
             home_x = orbiting.x;
             home_y = orbiting.y;
-    
+
             var i;
             i = 0;
             repeat (orbiting.planets) {
@@ -1268,9 +1268,9 @@ function fleet_respond_crusade() {
                     orbiting.p_guardsmen[i] = round(orbiting.p_guardsmen[i] / 2);
                 }
             }
-    
+
             alarm[5] = 2;
-    
+
             with (obj_crusade) {
                 if (y < -10000) {
                     y += 20000;
@@ -1291,10 +1291,10 @@ function fleet_respond_crusade() {
                     y += 20000;
                 }
             }
-    
+
             exit;
         }
-    
+
         with (obj_crusade) {
             if (y < -10000) {
                 y += 20000;
@@ -1314,7 +1314,7 @@ function fleet_respond_crusade() {
             if (y < -10000) {
                 y += 20000;
             }
-        }   
+        }
     } catch (_ex) {
         LOGGER.error(self);
         LOGGER.error($"owner: {owner}");

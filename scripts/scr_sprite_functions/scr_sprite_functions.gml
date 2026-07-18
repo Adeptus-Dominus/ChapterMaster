@@ -47,7 +47,7 @@ function draw_sprite_flipped(_sprite, _subimg, _x, _y) {
 
 /// @function return_sprite_mirrored(sprite)
 /// @param {Asset.GMSprite} _spr The sprite index to mirror
-/// @param {Bool} delete_sprite 
+/// @param {Bool} delete_sprite
 /// @returns {Asset.GMSprite} A new sprite index that is the mirrored version
 function return_sprite_mirrored(_spr, delete_sprite = true) {
     var _w = sprite_get_width(_spr);

@@ -284,7 +284,6 @@ function scr_image(path, image_id, x1, y1, width, height) {
 
             var single_image = false;
             for (var i = 0; i < 80; i++) {
-
                 if ((path == "creation") && (creation_exists[i] > 0) && sprite_exists(creation[i])) {
                     sprite_delete(creation[i]);
                     creation_exists[i] = -1;

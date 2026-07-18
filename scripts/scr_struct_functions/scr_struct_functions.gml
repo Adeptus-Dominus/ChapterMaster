@@ -2,11 +2,11 @@ function struct_empty(_struct) {
     return array_length(variable_struct_get_names(_struct)) == 0;
 }
 
-function struct_has_value(struct, key, value){
-    if (!struct_exists(struct, key)){
+function struct_has_value(struct, key, value) {
+    if (!struct_exists(struct, key)) {
         return false;
     }
-    
+
     return struct[$ key] == value;
 }
 
@@ -95,13 +95,13 @@ function CountingMap(_initial_array = undefined) constructor {
         if (_len == 0) {
             return "";
         }
-        
+
         var _parts = array_create(_len);
         for (var _i = 0; _i < _len; _i++) {
             var _key = _keys[_i];
             _parts[_i] = _callback(_key, map[$ _key], _i, _keys);
         }
-        
+
         return string_join_ext("", _parts);
     };
 

@@ -44,14 +44,13 @@ good5 = 0;
 item_name = [];
 
 cancel_button = new UnitButtonObject({
-    x1 : 1347,
-    y1 : 721,
-    style: "pixel", 
+    x1: 1347,
+    y1: 721,
+    style: "pixel",
     label: "CANCEL",
-    font : fnt_40k_14b,
-    color : c_gray,
+    font: fnt_40k_14b,
+    color: c_gray,
 });
-
 
 //TODO get rid oof this and use weapon tags instead
 /// @param {Struct.TTRPG_stats} unit

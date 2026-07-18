@@ -9,7 +9,6 @@ if (owner != eFACTION.ELDAR) {
         image_alpha += 0.006;
     }
 
-
     if ((shields > 0) && (shields < maxshields)) {
         shields += 0.02;
     }
@@ -608,7 +607,6 @@ if (owner == 6) {
             turret_cool -= 1;
         }
 
-
         if ((turrets > 0) && instance_exists(obj_p_small) && (turret_cool == 0)) {
             var targe = instance_nearest(x, y, obj_p_small);
             if (instance_exists(targe)) {
@@ -630,8 +628,6 @@ if (owner == 6) {
                     bull.direction += choose(random(10), 1 * -random(10));
                 }
             }
-
-            
         }
 
         var front = 0;

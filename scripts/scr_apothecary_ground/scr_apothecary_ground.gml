@@ -75,21 +75,21 @@ function calculate_full_chapter_spread() {
                                 [],
                                 [],
                                 [],
-                                []
+                                [],
                             ];
                             _tech_spread[$ key_val] = [
                                 [],
                                 [],
                                 [],
                                 [],
-                                []
+                                [],
                             ];
                             _apoth_spread[$ key_val] = [
                                 [],
                                 [],
                                 [],
                                 [],
-                                []
+                                [],
                             ];
                         }
                         array_push(_unit_spread[$ key_val][array_slot], _unit);
@@ -137,21 +137,21 @@ function calculate_full_chapter_spread() {
                                 [],
                                 [],
                                 [],
-                                []
+                                [],
                             ];
                             _tech_spread[$ key_val] = [
                                 [],
                                 [],
                                 [],
                                 [],
-                                []
+                                [],
                             ];
                             _apoth_spread[$ key_val] = [
                                 [],
                                 [],
                                 [],
                                 [],
-                                []
+                                [],
                             ];
                         }
                         array_push(_unit_spread[$ key_val][array_slot], [company, v]);
@@ -160,16 +160,31 @@ function calculate_full_chapter_spread() {
             }
         }
     }
-    return [_tech_spread, _apoth_spread, _unit_spread];
+    return [
+        _tech_spread,
+        _apoth_spread,
+        _unit_spread,
+    ];
 }
 
 function single_loc_point_data() {
-    return {heal_points_use: 0, heal_points: 0, forge_points_use: 0, forge_points: 0};
+    return {
+        heal_points_use: 0,
+        heal_points: 0,
+        forge_points_use: 0,
+        forge_points: 0,
+    };
 }
 
 function system_point_data_spawn() {
     var _single_point_pos = single_loc_point_data();
-    return [variable_clone(_single_point_pos), variable_clone(_single_point_pos), variable_clone(_single_point_pos), variable_clone(_single_point_pos), variable_clone(_single_point_pos)];
+    return [
+        variable_clone(_single_point_pos),
+        variable_clone(_single_point_pos),
+        variable_clone(_single_point_pos),
+        variable_clone(_single_point_pos),
+        variable_clone(_single_point_pos),
+    ];
 }
 
 /// @self Struct.SpecialistPointHandler
@@ -286,7 +301,7 @@ function process_specialist_points() {
             LOGGER.error($"Failed to parse instance ID from location string: {_loc_str} | Error: {_ex.message}");
         }
     };
-    
+
     // --- Step 2: Process Locations ---
     for (var i = 0; i < _loc_count; i++) {
         var _cur_loc = _locations[i];

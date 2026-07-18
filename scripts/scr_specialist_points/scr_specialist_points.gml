@@ -6,7 +6,10 @@ function unit_apothecary_points_gen(turn_end = false) {
         points = ((technology / 2) + (wisdom / 2) + intelligence) / 8;
         reasons.points = points;
     }
-    return [points, reasons];
+    return [
+        points,
+        reasons,
+    ];
 }
 
 function unit_forge_point_generation(turn_end = false) {
@@ -51,7 +54,10 @@ function unit_forge_point_generation(turn_end = false) {
         var _tech_score_mod = 1 / (technology / 30);
         reasons.maintenance += $"\n    tech modifier : X{_tech_score_mod} (lower is better)";
     }
-    return [points, reasons];
+    return [
+        points,
+        reasons,
+    ];
 }
 
 /// @param {string} _research_name

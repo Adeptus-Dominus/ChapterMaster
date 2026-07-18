@@ -20,7 +20,7 @@ function scr_hit(x1, y1 = 0, x2 = 0, y2 = 0, force_gui = false) {
 /// @param {Bool} force_gui
 /// @returns {Bool}
 /// @mixin
-function sr_hit_struct(force_gui = false){
+function sr_hit_struct(force_gui = false) {
     var _mouse_consts = force_gui ? [device_mouse_x_to_gui(0), device_mouse_y_to_gui(0)] : return_mouse_consts();
     return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], x1, y1, x2, y2);
 }
@@ -29,9 +29,9 @@ function sr_hit_struct(force_gui = false){
 /// @description
 /// @param {Bool} force_gui
 /// @returns {Bool}
-function scr_hit_object(force_gui = false){
+function scr_hit_object(force_gui = false) {
     var _mouse_consts = force_gui ? [device_mouse_x_to_gui(0), device_mouse_y_to_gui(0)] : return_mouse_consts();
-    return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], x, y, x + width, y + height);    
+    return point_in_rectangle(_mouse_consts[0], _mouse_consts[1], x, y, x + width, y + height);
 }
 
 /// @function scr_hit_relative
@@ -253,7 +253,10 @@ function mouse_button_held(_button = mb_left) {
 function return_mouse_consts() {
     var mouse_const_x = (event_number == ev_gui) ? device_mouse_x_to_gui(0) : mouse_x;
     var mouse_const_y = (event_number == ev_gui) ? device_mouse_y_to_gui(0) : mouse_y;
-    return [mouse_const_x, mouse_const_y];
+    return [
+        mouse_const_x,
+        mouse_const_y,
+    ];
 }
 
 /// @function mouse_distance_less

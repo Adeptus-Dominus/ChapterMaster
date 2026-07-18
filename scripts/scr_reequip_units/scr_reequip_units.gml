@@ -154,10 +154,27 @@ function set_up_equip_popup() {
             pip.vehicle_equipment = vih;
             with (pip) {
                 equipment_area = -1;
-                cancel_button = new UnitButtonObject({x1: 1061, y1: 591, style: "pixel", label: "Cancel"});
-                equip_button = new UnitButtonObject({x1: 1450, y1: 591, style: "pixel", label: "Equip"});
+                cancel_button = new UnitButtonObject({
+                    x1: 1061,
+                    y1: 591,
+                    style: "pixel",
+                    label: "Cancel",
+                });
+                equip_button = new UnitButtonObject({
+                    x1: 1450,
+                    y1: 591,
+                    style: "pixel",
+                    label: "Equip",
+                });
 
-                main_slate = new DataSlate({style: "decorated", XX: 1006, YY: 143, set_width: true, width: 571, height: 450});
+                main_slate = new DataSlate({
+                    style: "decorated",
+                    XX: 1006,
+                    YY: 143,
+                    set_width: true,
+                    width: 571,
+                    height: 450,
+                });
 
                 var _quality_options = [
                     {
@@ -169,22 +186,66 @@ function set_up_equip_popup() {
                         str1: "Master Crafted",
                         font: fnt_40k_14b,
                         val: 1,
-                    }
+                    },
                 ];
-                quality_radio = new RadioSet(_quality_options, "", {max_width: 500, x1: 1040, y1: 318});
+                quality_radio = new RadioSet(_quality_options, "", {
+                    max_width: 500,
+                    x1: 1040,
+                    y1: 318,
+                });
 
-                range_melee_radio = new RadioSet([{str1: "Ranged", font: fnt_40k_14b, val: eENGAGEMENT.RANGED}, {str1: "Melee", font: fnt_40k_14b, val: eENGAGEMENT.MELEE}], "", {max_width: 500, x1: 1040, y1: 343});
+                range_melee_radio = new RadioSet([
+                    {
+                        str1: "Ranged",
+                        font: fnt_40k_14b,
+                        val: eENGAGEMENT.RANGED,
+                    },
+                    {
+                        str1: "Melee",
+                        font: fnt_40k_14b,
+                        val: eENGAGEMENT.MELEE,
+                    },
+                ], "", {
+                    max_width: 500,
+                    x1: 1040,
+                    y1: 343,
+                });
 
-                weapon1_select = new UnitButtonObject({x1: 1300, y1: 215, label: "", font: fnt_40k_12});
-                weapon2_select = new UnitButtonObject({x1: 1300, y1: 235, label: "", font: fnt_40k_12});
-                armour_select = new UnitButtonObject({x1: 1300, y1: 255, label: "", font: fnt_40k_12});
+                weapon1_select = new UnitButtonObject({
+                    x1: 1300,
+                    y1: 215,
+                    label: "",
+                    font: fnt_40k_12,
+                });
+                weapon2_select = new UnitButtonObject({
+                    x1: 1300,
+                    y1: 235,
+                    label: "",
+                    font: fnt_40k_12,
+                });
+                armour_select = new UnitButtonObject({
+                    x1: 1300,
+                    y1: 255,
+                    label: "",
+                    font: fnt_40k_12,
+                });
                 if (_unchangeable_armour) {
                     armour_select.inactive_col = CM_RED_COLOR;
                     armour_select.tooltip = "One or more Marine has Dreadnought armour and cannot be changed";
                     armour_select.active = false;
                 }
-                gear_select = new UnitButtonObject({x1: 1300, y1: 275, label: "", font: fnt_40k_12});
-                mobility_select = new UnitButtonObject({x1: 1300, y1: 295, label: "", font: fnt_40k_12});
+                gear_select = new UnitButtonObject({
+                    x1: 1300,
+                    y1: 275,
+                    label: "",
+                    font: fnt_40k_12,
+                });
+                mobility_select = new UnitButtonObject({
+                    x1: 1300,
+                    y1: 295,
+                    label: "",
+                    font: fnt_40k_12,
+                });
             }
         }
     }
@@ -201,7 +262,6 @@ function reload_items() {
         false, // include company standard
         true, // limit to available equipment
         quality_radio.selection_val("val"),
-
     );
 }
 
@@ -209,8 +269,11 @@ function reload_items() {
 /// @param {Struct.EquipmentStruct} _mobility_data
 /// @returns {Struct} { valid: bool, warning: string }
 function check_mobility_armour_compatibility(_armour_data, _mobility_data) {
-    var _result = { valid: true, warning: "" };
-    
+    var _result = {
+        valid: true,
+        warning: "",
+    };
+
     if (is_struct(_armour_data) && is_struct(_mobility_data)) {
         if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator") && !_mobility_data.has_tag("terminator_only")) {
             _result.valid = false;
@@ -234,7 +297,7 @@ function check_mobility_armour_compatibility(_armour_data, _mobility_data) {
             _result.warning = "Cannot use this without Dreadnought Armour.";
         }
     }
-    
+
     return _result;
 }
 
@@ -362,7 +425,7 @@ function draw_popup_equip() {
         weapon2_select,
         armour_select,
         gear_select,
-        mobility_select
+        mobility_select,
     ];
 
     var _area_change = false;
@@ -395,7 +458,7 @@ function draw_popup_equip() {
             n_wep2,
             n_armour,
             n_gear,
-            n_mobi
+            n_mobi,
         ];
         selected_item_name = selected_item_name[equipment_area];
 
@@ -406,7 +469,7 @@ function draw_popup_equip() {
                 box_x,
                 box_y,
                 box_x + 144,
-                box_y + 20
+                box_y + 20,
             ];
             check = selected_item_name == item_name[o] ? "x" : " ";
             item_string = $"[{check}] {item_name[o]}";

@@ -2,7 +2,7 @@ if ((global.load >= 0) || instance_exists(obj_saveload)) {
     exit;
 }
 
-if ((action != "") && (instance_exists(orbiting))) {
+if ((action != "") && instance_exists(orbiting)) {
     fleet_unregister_from_star(id);
 }
 

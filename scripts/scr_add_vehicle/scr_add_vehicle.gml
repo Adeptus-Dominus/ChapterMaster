@@ -1,5 +1,5 @@
 /// @function scr_add_vehicle(vehicle_type, target_company, otherdata, weapon1, weapon2, weapon3, upgrade, accessory)
-/// @description 
+/// @description
 /// @param {String} vehicle_type
 /// @param {Real} target_company
 /// @param {Struct} otherdata
@@ -139,14 +139,17 @@ function scr_add_vehicle(vehicle_type, target_company, otherdata = {}, weapon1 =
             obj_ini.veh_chaos[target_company][good] = 0;
         }
 
-        return [target_company, good];
+        return [
+            target_company,
+            good,
+        ];
     } catch (_exception) {
         ERROR_HANDLER.handle_exception(_exception);
     }
 }
 
 /// @function destroy_vehicle(co, num)
-/// @description 
+/// @description
 /// @param {Real} co
 /// @param {Real} num
 function destroy_vehicle(co, num) {

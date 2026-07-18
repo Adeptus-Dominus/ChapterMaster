@@ -30,7 +30,10 @@ function LootPool(_data) constructor {
             return undefined;
         }
 
-        return {name: options[irandom(array_length(options) - 1)], count: _count};
+        return {
+            name: options[irandom(array_length(options) - 1)],
+            count: _count,
+        };
     };
 }
 
@@ -263,7 +266,7 @@ function ancient_gene_lab_ruins_loot(_popup) {
                     //scr_play_sound(snd_cancel);
                     popup_default_close();
                 },
-            }
+            },
         ],
     };
 }
@@ -309,7 +312,7 @@ function ancient_fortress_ruins_loot(_star, _planet, _ruins, _popup) {
                     obj_controller.requisition += _requisition_gain;
                     reset_popup_options();
                 },
-            }
+            },
         ],
     };
 }

@@ -1,5 +1,10 @@
 function coord_relevative_positions(coords, xx, yy) {
-    return [coords[0] + xx, coords[1] + yy, coords[2] + xx, coords[3] + yy];
+    return [
+        coords[0] + xx,
+        coords[1] + yy,
+        coords[2] + xx,
+        coords[3] + yy,
+    ];
 }
 
 function move_location_relative(coords, relative_move_x, relative_move_y) {
@@ -12,8 +17,6 @@ function move_location_relative(coords, relative_move_x, relative_move_y) {
     }
     return coords;
 }
-
-
 
 enum eMARINE_ICONS {
     NONE,
@@ -108,7 +111,7 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
     var cloth_col = [
         201.0 / 255.0,
         178.0 / 255.0,
-        147.0 / 255.0
+        147.0 / 255.0,
     ];
     if (unit != "none") {
         var cloth_variation = unit.body.torso.cloth.variation;
@@ -146,147 +149,147 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
         left_head: [
             0,
             0,
-            128 / 255
+            128 / 255,
         ],
         right_backpack: [
             181 / 255,
             0,
-            255 / 255
+            255 / 255,
         ],
         left_backpack: [
             104 / 255,
             0,
-            168 / 255
+            168 / 255,
         ],
         right_head: [
             0,
             0,
-            1
+            1,
         ],
         left_muzzle: [
             128 / 255,
             64 / 255,
-            1
+            1,
         ],
         right_muzzle: [
             64 / 255,
             128 / 255,
-            1
+            1,
         ],
         eye_lense: [
             0,
             1,
-            0
+            0,
         ],
         right_chest: [
             1,
             20 / 255,
-            147 / 255
+            147 / 255,
         ],
         left_chest: [
             128 / 255,
             0,
-            128 / 255
+            128 / 255,
         ],
         right_thorax: [
             0,
             0.75,
-            0
+            0,
         ],
         left_thorax: [
             0,
             0,
-            0.75
+            0.75,
         ],
         right_trim: [
             0,
             128 / 255,
-            128 / 255
+            128 / 255,
         ],
         left_trim: [
             1,
             128 / 255,
-            0
+            0,
         ],
         metallic_trim: [
             135 / 255,
             130 / 255,
-            188 / 255
+            188 / 255,
         ],
         right_pauldron: [
             1,
             1,
-            1
+            1,
         ],
         left_pauldron: [
             1,
             1,
-            0
+            0,
         ],
         right_leg_upper: [
             0,
             128 / 255,
-            0
+            0,
         ],
         left_leg_upper: [
             255 / 255,
             112 / 255,
-            170 / 255
+            170 / 255,
         ],
         left_leg_knee: [
             1,
             0,
-            0
+            0,
         ],
         left_leg_lower: [
             128 / 255,
             0,
-            0
+            0,
         ],
         right_leg_knee: [
             214 / 255,
             194 / 255,
-            255 / 255
+            255 / 255,
         ],
         right_leg_lower: [
             165 / 255,
             84 / 255,
-            24 / 255
+            24 / 255,
         ],
         right_arm: [
             138 / 255,
             218 / 255,
-            140 / 255
+            140 / 255,
         ],
         right_hand: [
             46 / 255,
             169 / 255,
-            151 / 255
+            151 / 255,
         ],
         left_arm: [
             1,
             230 / 255,
-            140 / 255
+            140 / 255,
         ],
         left_hand: [
             1,
             160 / 255,
-            112 / 255
+            112 / 255,
         ],
         company_marks: [
             128 / 255,
             128 / 255,
-            0
+            0,
         ],
         weapon_primary: [
             0,
             1,
-            1
+            1,
         ],
         weapon_secondary: [
             1,
             0,
-            1
+            1,
         ],
     };
 
@@ -354,13 +357,13 @@ function get_shader_colour_from_arrays(colour) {
     var colour_set = [
         0,
         0,
-        0
+        0,
     ];
     try {
         colour_set = [
             colours_instance.col_r[colour] / 255,
             colours_instance.col_g[colour] / 255,
-            colours_instance.col_b[colour] / 255
+            colours_instance.col_b[colour] / 255,
         ];
     } catch (_exception) {
         ERROR_HANDLER.assert_popup(_exception);
@@ -392,5 +395,3 @@ global.textures = {
     "Checks4": spr_hazzard_texture,
     "Checks5": spr_checker_texture,
 };
-
-

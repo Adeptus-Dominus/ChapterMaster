@@ -142,7 +142,7 @@ if ((change_slide == 35) || (change_slide == 36) || (chapter_name == "Doom Benef
         load_to_ships = [
             2,
             0,
-            0
+            0,
         ];
         successors = 0;
         mutations = 0;

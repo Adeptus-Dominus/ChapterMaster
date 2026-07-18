@@ -10,7 +10,7 @@ function scr_unit_detail_text() {
         mutations: [],
         bionics: [
             [],
-            []
+            [],
         ],
     };
     var body_bionics = get_body_data("bionic");

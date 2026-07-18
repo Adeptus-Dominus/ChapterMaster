@@ -160,31 +160,33 @@ if (!hide) {
                         com.image = "fuklaw";
                         com.title = "Delete Save Game?";
                         com.text = "Are you sure you wish to delete Save " + string(save[slot_index]) + "- " + string(save_chapter[save[slot_index]]) + "?";
-                        com.add_option([
-                            {
-                                str1: "Yes",
-                                choice_func: function() {
-                                    var del = obj_saveload.save[save];
-                                    var _save_file = string(PATH_SAVE_FILES, del);
-                                    if (file_exists(_save_file)) {
-                                        file_delete(_save_file);
-                                        if (file_exists($"save{del}log.ini")) {
-                                            file_delete($"save{del}log.ini");
-                                        }
-                                        with (obj_saveload) {
+                        com.add_option(
+                            [
+                                {
+                                    str1: "Yes",
+                                    choice_func: function() {
+                                        var del = obj_saveload.save[save];
+                                        var _save_file = string(PATH_SAVE_FILES, del);
+                                        if (file_exists(_save_file)) {
+                                            file_delete(_save_file);
+                                            if (file_exists($"save{del}log.ini")) {
+                                                file_delete($"save{del}log.ini");
+                                            }
+                                            with (obj_saveload) {
+                                                instance_destroy();
+                                            }
+                                            var news = instance_create(0, 0, obj_saveload);
+                                            news.menu = woopwoopwoop;
+                                            news.top = owner;
+                                            news.alarm[4] = 1;
+
                                             instance_destroy();
                                         }
-                                        var news = instance_create(0, 0, obj_saveload);
-                                        news.menu = woopwoopwoop;
-                                        news.top = owner;
-                                        news.alarm[4] = 1;
-
-                                        instance_destroy();
-                                    }
-                                }
-                            },
-                            { str1:"No" }
-                        ]);
+                                    },
+                                },
+                                {str1: "No"},
+                            ],
+                        );
                         com.save = slot_index;
                         com.woopwoopwoop = menu;
                         com.owner = top;
