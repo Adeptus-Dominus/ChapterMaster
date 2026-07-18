@@ -23,6 +23,7 @@ var yy = 0;
 var px = 0;
 var py = 0;
 // Set player set
+/// @type {Id.Instance.obj_star}
 var _current_system = find_player_spawn_star();
 
 instance_activate_object(obj_star);
@@ -448,8 +449,8 @@ if (did) {
         orkz += 3;
         n = array_length(_non_xenos_chaos);
         for (var j = 0; j < orkz && j < n; j++) {
+            /// @type {Id.Instance.obj_star}
             _current_system = array_random_element(_non_xenos_chaos);
-
             _current_system.planet[1] = 1;
             _current_system.p_owner[1] = 90;
             _current_system.owner = 90;
@@ -461,10 +462,11 @@ if (did) {
     repeat (choose(3, 4, 5)) {
         xx = floor(random(1152 + 640)) + 64;
         yy = floor(random(748 + 480)) + 64;
+        /// @type {Id.Instance.obj_star}
         _current_system = instance_nearest(xx, yy, obj_star);
         if ((_current_system.planets > 0) && (_current_system.owner == eFACTION.IMPERIUM)) {
             var forge_planet = irandom(_current_system.planets - 1) + 1;
-            _current_system.plant[forge_planet] = 1;
+            _current_system.planet[forge_planet] = 1;
             _current_system.p_type[forge_planet] = "Forge";
             _current_system.owner = eFACTION.MECHANICUS;
             _current_system.p_owner[forge_planet] = _current_system.owner;
