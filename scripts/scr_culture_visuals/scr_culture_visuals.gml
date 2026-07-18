@@ -2689,8 +2689,7 @@ global.weapon_visual_data = {
             {
                 sprite: spr_dread_heavy_bolter,
 				shadows: spr_dread_heavy_bolter_shadow,
-            }
-			
+            }		
         ],
     },
     "Dreadnought Lightning Claw": {
