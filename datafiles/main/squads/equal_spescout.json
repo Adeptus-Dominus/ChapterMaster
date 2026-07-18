@@ -1,262 +1,262 @@
 {
-  "companies": [
-    {
-      "company": 1,
-      "squads": [
+    "companies": [
         {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
+            "company": 1,
+            "squads": [
+                {
+                    "max_count": 1,
+                    "min_count": 1,
+                    "require": true,
+                    "squad": "command_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "terminator_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "terminator_assault_squad"
+                },
+                {
+                    "proportion": 1,
+                    "squad": "veteran_squad"
+                }
+            ]
         },
         {
-          "squad": "terminator_squad",
-          "proportion": 2
+            "company": 2,
+            "squads": [
+                {
+                    "max_count": 1,
+                    "min_count": 1,
+                    "require": true,
+                    "squad": "command_squad"
+                },
+                {
+                    "proportion": 5,
+                    "squad": "tactical_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "devastator_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "assault_squad"
+                },
+                {
+                    "proportion": 1,
+                    "squad": "scout_squad"
+                }
+            ]
         },
         {
-          "squad": "terminator_assault_squad",
-          "proportion": 2
+            "company": 3,
+            "squads": [
+                {
+                    "max_count": 1,
+                    "min_count": 1,
+                    "require": true,
+                    "squad": "command_squad"
+                },
+                {
+                    "proportion": 5,
+                    "squad": "tactical_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "devastator_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "assault_squad"
+                },
+                {
+                    "proportion": 1,
+                    "squad": "scout_squad"
+                }
+            ]
         },
         {
-          "squad": "veteran_squad",
-          "proportion": 1
+            "company": 4,
+            "squads": [
+                {
+                    "max_count": 1,
+                    "min_count": 1,
+                    "require": true,
+                    "squad": "command_squad"
+                },
+                {
+                    "proportion": 5,
+                    "squad": "tactical_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "devastator_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "assault_squad"
+                },
+                {
+                    "proportion": 1,
+                    "squad": "scout_squad"
+                }
+            ]
+        },
+        {
+            "company": 5,
+            "squads": [
+                {
+                    "max_count": 1,
+                    "min_count": 1,
+                    "require": true,
+                    "squad": "command_squad"
+                },
+                {
+                    "proportion": 5,
+                    "squad": "tactical_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "devastator_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "assault_squad"
+                },
+                {
+                    "proportion": 1,
+                    "squad": "scout_squad"
+                }
+            ]
+        },
+        {
+            "company": 6,
+            "squads": [
+                {
+                    "max_count": 1,
+                    "min_count": 1,
+                    "require": true,
+                    "squad": "command_squad"
+                },
+                {
+                    "proportion": 5,
+                    "squad": "tactical_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "devastator_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "assault_squad"
+                },
+                {
+                    "proportion": 1,
+                    "squad": "scout_squad"
+                }
+            ]
+        },
+        {
+            "company": 7,
+            "squads": [
+                {
+                    "max_count": 1,
+                    "min_count": 1,
+                    "require": true,
+                    "squad": "command_squad"
+                },
+                {
+                    "proportion": 5,
+                    "squad": "tactical_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "devastator_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "assault_squad"
+                },
+                {
+                    "proportion": 1,
+                    "squad": "scout_squad"
+                }
+            ]
+        },
+        {
+            "company": 8,
+            "squads": [
+                {
+                    "max_count": 1,
+                    "min_count": 1,
+                    "require": true,
+                    "squad": "command_squad"
+                },
+                {
+                    "proportion": 5,
+                    "squad": "tactical_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "devastator_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "assault_squad"
+                },
+                {
+                    "proportion": 1,
+                    "squad": "scout_squad"
+                }
+            ]
+        },
+        {
+            "company": 9,
+            "squads": [
+                {
+                    "max_count": 1,
+                    "min_count": 1,
+                    "require": true,
+                    "squad": "command_squad"
+                },
+                {
+                    "proportion": 5,
+                    "squad": "tactical_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "devastator_squad"
+                },
+                {
+                    "proportion": 2,
+                    "squad": "assault_squad"
+                },
+                {
+                    "proportion": 1,
+                    "squad": "scout_squad"
+                }
+            ]
+        },
+        {
+            "company": 10,
+            "squads": [
+                {
+                    "max_count": 1,
+                    "min_count": 1,
+                    "require": true,
+                    "squad": "command_squad"
+                },
+                {
+                    "proportion": 5,
+                    "squad": "scout_squad"
+                },
+                {
+                    "proportion": 4,
+                    "squad": "tactical_squad"
+                }
+            ]
         }
-      ]
-    },
-    {
-      "company": 2,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 5
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "scout_squad",
-          "proportion": 1
-        }
-      ]
-    },
-    {
-      "company": 3,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 5
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "scout_squad",
-          "proportion": 1
-        }
-      ]
-    },
-    {
-      "company": 4,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 5
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "scout_squad",
-          "proportion": 1
-        }
-      ]
-    },
-    {
-      "company": 5,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 5
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "scout_squad",
-          "proportion": 1
-        }
-      ]
-    },
-    {
-      "company": 6,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 5
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "scout_squad",
-          "proportion": 1
-        }
-      ]
-    },
-    {
-      "company": 7,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 5
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "scout_squad",
-          "proportion": 1
-        }
-      ]
-    },
-    {
-      "company": 8,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 5
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "scout_squad",
-          "proportion": 1
-        }
-      ]
-    },
-    {
-      "company": 9,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 5
-        },
-        {
-          "squad": "devastator_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "assault_squad",
-          "proportion": 2
-        },
-        {
-          "squad": "scout_squad",
-          "proportion": 1
-        }
-      ]
-    },
-    {
-      "company": 10,
-      "squads": [
-        {
-          "squad": "command_squad",
-          "max_count": 1,
-          "min_count": 1,
-          "require": true
-        },
-        {
-          "squad": "scout_squad",
-          "proportion": 5
-        },
-        {
-          "squad": "tactical_squad",
-          "proportion": 4
-        }
-      ]
-    }
-  ]
+    ]
 }

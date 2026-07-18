@@ -1,7 +1,3 @@
-/* 
-TODO: Change flavour_text format from a struct with structs, to an array with structs;
-I see no reason to have these named structs, as their names are not used for anything and just make looping more difficult;
-*/
 {
     "assail": {
         "additional_kills": -1,

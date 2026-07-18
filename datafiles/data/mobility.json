@@ -12,11 +12,13 @@
             "master_crafted": 25,
             "standard": 25
         },
+        "requires_to_forge": [
+            "combi_1"
+        ],
         "second_profiles": [
             "Twin Linked Bolters"
         ],
-        "value": 35,
-        "requires_to_forge": ["combi_1"]
+        "value": 35
     },
     "Conversion Beamer Pack": {
         "abbreviation": "CnvBmr",

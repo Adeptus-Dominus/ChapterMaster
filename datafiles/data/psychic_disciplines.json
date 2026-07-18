@@ -46,7 +46,7 @@
     },
     "minor_biomancy": {
         "name": "Minor Biomancy",
-        "perils_chance": 0.10,
+        "perils_chance": 0.1,
         "perils_strength": 10,
         "powers": [
             "haemorrhage",
@@ -77,7 +77,7 @@
     },
     "minor_nu": {
         "name": "Minor Not Nurgle",
-        "perils_chance": 0.10,
+        "perils_chance": 0.1,
         "perils_strength": 10,
         "powers": [
             "wave_of_entropy",
@@ -93,7 +93,7 @@
     },
     "minor_nu_daemon": {
         "name": "Minor Nurgle",
-        "perils_chance": 0.30,
+        "perils_chance": 0.3,
         "perils_strength": 30,
         "powers": [
             "wave_of_entropy",
@@ -124,7 +124,7 @@
     },
     "minor_sl_daemon": {
         "name": "Minor Slaanesh",
-        "perils_chance": 0.30,
+        "perils_chance": 0.3,
         "perils_strength": 30,
         "powers": [
             "warp_bolts",
@@ -154,7 +154,7 @@
     },
     "minor_tz_daemon": {
         "name": "Minor Tzeentch",
-        "perils_chance": 0.30,
+        "perils_chance": 0.3,
         "perils_strength": 30,
         "powers": [
             "wave_of_change",
@@ -171,7 +171,7 @@
     },
     "minor_what_the_fuck_man": {
         "name": "Occultism",
-        "perils_chance": 0.20,
+        "perils_chance": 0.2,
         "perils_strength": 20,
         "powers": [
             "blood_dementia",

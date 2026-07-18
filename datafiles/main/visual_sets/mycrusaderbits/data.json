@@ -1,82 +1,122 @@
 [
-	{
-		"name" : "one",
-		"data" : {
-			"body_types" :[0],
-			"position" : "right_pauldron",
-			"company" : [1],        
-    	},
-	},
-	{
-		"name" : "two",
-		"data" : {
-			"body_types" :[0],
-			"position" : "right_pauldron",
-			"company" : [2],        
-    	},
-	},
-	{
-		"name" : "three",
-		"data" : {
-			"body_types" :[0],
-			"position" : "right_pauldron",
-			"company" : [3],        
-    	},
-	},
-	{
-		"name" : "four",
-		"data" : {
-			"body_types" :[0],
-			"position" : "right_pauldron",
-			"company" : [4],        
-    	},
-	},
-	{
-		"name" : "five",
-		"data" : {
-			"body_types" :[0],
-			"position" : "right_pauldron",
-			"company" : [5],        
-    	},
-	},
-	{
-		"name" : "six",
-		"data" : {
-			"body_types" :[0],
-			"position" : "right_pauldron",
-			"company" : [6],        
-    	},
-	},
-	{
-		"name" : "seven",
-		"data" : {
-			"body_types" :[0],
-			"position" : "right_pauldron",
-			"company" : [7],        
-    	},
-	},
-	{
-		"name" : "eight",
-		"data" : {
-			"body_types" :[0],
-			"position" : "right_pauldron",
-			"company" : [8],        
-    	},
-	},
-	{
-		"name" : "nine",
-		"data" : {
-			"body_types" :[0],
-			"position" : "right_pauldron",
-			"company" : [9],        
-    	},
-	},
-	{
-		"name" : "ten",
-		"data" : {
-			"body_types" :[0],
-			"position" : "right_pauldron",
-			"company" : [10],        
-    	},
-	},		
+    {
+        "data": {
+            "body_types": [
+                0
+            ],
+            "company": [
+                1
+            ],
+            "position": "right_pauldron"
+        },
+        "name": "one"
+    },
+    {
+        "data": {
+            "body_types": [
+                0
+            ],
+            "company": [
+                2
+            ],
+            "position": "right_pauldron"
+        },
+        "name": "two"
+    },
+    {
+        "data": {
+            "body_types": [
+                0
+            ],
+            "company": [
+                3
+            ],
+            "position": "right_pauldron"
+        },
+        "name": "three"
+    },
+    {
+        "data": {
+            "body_types": [
+                0
+            ],
+            "company": [
+                4
+            ],
+            "position": "right_pauldron"
+        },
+        "name": "four"
+    },
+    {
+        "data": {
+            "body_types": [
+                0
+            ],
+            "company": [
+                5
+            ],
+            "position": "right_pauldron"
+        },
+        "name": "five"
+    },
+    {
+        "data": {
+            "body_types": [
+                0
+            ],
+            "company": [
+                6
+            ],
+            "position": "right_pauldron"
+        },
+        "name": "six"
+    },
+    {
+        "data": {
+            "body_types": [
+                0
+            ],
+            "company": [
+                7
+            ],
+            "position": "right_pauldron"
+        },
+        "name": "seven"
+    },
+    {
+        "data": {
+            "body_types": [
+                0
+            ],
+            "company": [
+                8
+            ],
+            "position": "right_pauldron"
+        },
+        "name": "eight"
+    },
+    {
+        "data": {
+            "body_types": [
+                0
+            ],
+            "company": [
+                9
+            ],
+            "position": "right_pauldron"
+        },
+        "name": "nine"
+    },
+    {
+        "data": {
+            "body_types": [
+                0
+            ],
+            "company": [
+                10
+            ],
+            "position": "right_pauldron"
+        },
+        "name": "ten"
+    }
 ]
