@@ -2598,6 +2598,7 @@ global.weapon_visual_data = {
                     display_type: "dreadnought",
                 },
                 sprite: spr_dread_assault_cannon,
+				shadows: spr_dread_assault_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
                 single_left_right_profile: true,
@@ -2680,10 +2681,13 @@ global.weapon_visual_data = {
             weapon_data: {
                 display_type: "dreadnought",
             },
+			armours: ["Dreadnought"],
+			single_left_right_profile: true,
         },
         variants: [
             {
                 sprite: spr_dread_heavy_bolter,
+				shadows: spr_dread_heavy_bolter_shadow,
             },
         ],
     },
