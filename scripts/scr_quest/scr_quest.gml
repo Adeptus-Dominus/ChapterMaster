@@ -25,7 +25,6 @@ function scr_quest(quest_satus, quest_name, quest_fac, quest_end) {
         } else {
             LOGGER.error($"Warning: Quest log is full. Could not add: {quest_name}");
         }
-        
     } else if (quest_satus > 0) {
         // 1 = Fail, 2 = Accomplish, 3 = Clear, 4 = Check
         var que = -1;
@@ -39,14 +38,14 @@ function scr_quest(quest_satus, quest_name, quest_fac, quest_end) {
 
         if (que != -1 || quest_satus == 4) {
             if ((quest_name == "fund_elder") && (quest_satus == 1)) {
-            // obj_controller.disposition[6]-=2;// Player going 'maybe' and then waiting out the quest duration
+                // obj_controller.disposition[6]-=2;// Player going 'maybe' and then waiting out the quest duration
                 scr_audience(6, "mission1_failed", -2, "", 0, 0);
                 scr_event_log("red", "Eldar Mission Failed: Several years have passed since offering to assist the Eldar with resources.");
             } else if ((quest_name == "artifact_return") && (quest_satus == 1)) {
-            // Inq are now pissed
+                // Inq are now pissed
                 obj_controller.alarm[8] = 1;
             } else if ((quest_name == "artifact_loan") && (quest_satus == 1)) {
-            // Inq want the artifact back
+                // Inq want the artifact back
                 var wanted_arti = -1;
                 for (var i = 0; i < array_length(obj_ini.artifact); i++) {
                     if (obj_ini.artifact[i] != "") {

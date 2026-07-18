@@ -11,13 +11,13 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
     static qualities = [
         "standard",
         "master_crafted",
-        "artifact"
+        "artifact",
     ];
 
     static selections = [
         "any",
         "worst",
-        "best"
+        "best",
     ];
 
     static allowed_qualities = new Set(qualities);

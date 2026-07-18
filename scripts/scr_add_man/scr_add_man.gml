@@ -10,7 +10,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         "Sister Hospitaler",
         "Ranger",
         "Ork Sniper",
-        "Flash Git"
+        "Flash Git",
     ];
     var _gear = {};
     var _company_slot = 0;

@@ -1169,14 +1169,14 @@ if (obj_ncombat.enemy == eFACTION.TYRANIDS || obj_ncombat.enemy == eFACTION.GENE
             dudes_hp[j] = 75;
             men += dudes_num[j];
         }
-                if (dudes[j] == "Magus") {
+        if (dudes[j] == "Magus") {
             scr_en_weapon("Autogun", true, dudes_num[j], dudes[j], j);
             scr_en_weapon("Force Staff", true, dudes_num[j], dudes[j], j);
             dudes_ac[j] = 10;
             dudes_hp[j] = 100;
             men += dudes_num[j];
         }
-                if (dudes[j] == "Primus") {
+        if (dudes[j] == "Primus") {
             scr_en_weapon("Autogun", true, dudes_num[j], dudes[j], j);
             scr_en_weapon("Bonesword", true, dudes_num[j], dudes[j], j);
             dudes_ac[j] = 10;

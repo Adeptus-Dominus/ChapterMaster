@@ -30,7 +30,11 @@ if (obj_controller.zoomed == 0) {
 }
 
 var _surface_h = surface_get_height(application_surface);
-speed_button = new SpriteButton({sprite: spr_fast_forward, x1: 10, y1: _surface_h / 2});
+speed_button = new SpriteButton({
+    sprite: spr_fast_forward,
+    x1: 10,
+    y1: _surface_h / 2,
+});
 original_speed = game_get_speed(gamespeed_fps);
 speed_mode = 0;
 

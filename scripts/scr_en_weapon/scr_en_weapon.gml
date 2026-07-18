@@ -1259,7 +1259,7 @@ global.en_weapons = {
             40,
             60,
             80,
-            100
+            100,
         ],
         "armor_penetration": 0,
         "range": 5,
@@ -1308,7 +1308,7 @@ global.en_weapons = {
         "attack": [
             105,
             105,
-            130
+            130,
         ],
         "armor_penetration": 1,
         "range": 1,
@@ -1440,21 +1440,21 @@ global.en_weapons = {
     "Daemonhost Powers": {
         "attack": [
             100,
-            300
+            300,
         ],
         "armor_penetration": [
             100,
-            300
+            300,
         ],
         "range": [
             1,
-            6
+            6,
         ],
         "splash": [
             0,
             0,
             1,
-            1
+            1,
         ], // Doubled up to keep convention
     },
     // =====================
@@ -1486,7 +1486,7 @@ global.en_weapons = {
             30,
             50,
             50,
-            70
+            70,
         ],
         "armor_penetration": 1, // Original code had no armor penetration for this weapon, Flayer Array has arp 1 so will this does as well
         "range": 6.1,
@@ -1499,7 +1499,7 @@ global.en_weapons = {
             70,
             70,
             70,
-            100
+            100,
         ],
         "armor_penetration": [
             0,
@@ -1507,7 +1507,7 @@ global.en_weapons = {
             0,
             0,
             0,
-            1
+            1,
         ],
         "range": 6.1,
         "splash": 0,
@@ -2174,7 +2174,7 @@ global.en_weapons = {
             60,
             75,
             90,
-            105
+            105,
         ],
         "armor_penetration": 0,
         "range": 10,
@@ -2311,7 +2311,7 @@ global.en_weapons = {
             80,
             80,
             80,
-            150
+            150,
         ],
         "armor_penetration": 0,
         "range": 5,

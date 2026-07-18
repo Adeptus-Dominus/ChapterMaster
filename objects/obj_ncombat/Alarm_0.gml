@@ -54,7 +54,7 @@ try {
     if (siege && (enemy_fortified >= 3) && !defending) {
         global_attack *= 1.2;
     }
-    if ((lyman == 1) && (dropping)) {
+    if ((lyman == 1) && dropping) {
         global_attack *= 0.85;
         global_defense *= 0.9;
     }
@@ -74,7 +74,7 @@ try {
             global_defense *= 0.8;
         }
     }
-    
+
     global_defense = 2 - global_defense;
 
     // Sets up the number of enemies based on the threath level, enemy type and specific story events

@@ -197,7 +197,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
                 {
                     str1: "Refuse",
                     choice_func: popup_default_close,
-                }
+                },
             ];
             _evented = true;
         } else if (chosen_mission == "mech_bionics") {
@@ -210,7 +210,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
                 {
                     str1: "Refuse",
                     choice_func: popup_default_close,
-                }
+                },
             ];
             _evented = true;
         } else {
@@ -223,7 +223,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
                 {
                     str1: "Refuse",
                     choice_func: popup_default_close,
-                }
+                },
             ];
             _evented = true;
         }
@@ -261,7 +261,7 @@ function spawn_mechanicus_mission(chosen_mission = "random") {
             {
                 str1: "Refuse",
                 choice_func: popup_default_close,
-            }
+            },
         ];
         var text = $"Mechanicus Techpriests have established a research site on a Necron Tomb World in the {star.name} system.  They are requesting some of your forces to provide security for the research team until the tests may be completed.  Further information is on a need-to-know basis.  Can your chapter handle this mission?";
         scr_popup("Mechanicus Mission", text, "mechanicus", _mission_data);

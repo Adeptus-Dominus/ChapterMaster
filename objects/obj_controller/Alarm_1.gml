@@ -350,7 +350,7 @@ if (did) {
         "Stygia",
         "Nostromo",
         "Jhanna",
-        "Gangrenous Rot"
+        "Gangrenous Rot",
     ];
     with (obj_star) {
         if (array_contains(hell_holes, name)) {
@@ -498,9 +498,9 @@ for (var i = 0; i < 100; i++) {
             var craft = instance_create(xx, yy, obj_star);
             craft.craftworld = 1;
             array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.WARLORD6));
-    
+
             var elforce = create_enemy_fleet(xx, yy, eFACTION.ELDAR);
-            fleet_register_at_star(elforce, craft);  // craft star has name="" so get_nearest_star in create_enemy_fleet won't find it
+            fleet_register_at_star(elforce, craft); // craft star has name="" so get_nearest_star in create_enemy_fleet won't find it
             elforce.sprite_index = spr_fleet_eldar;
             elforce.capital_number = choose(2, 3);
             elforce.frigate_number = choose(4, 5, 6);

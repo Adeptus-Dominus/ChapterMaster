@@ -7,7 +7,6 @@ if ((alerts > 0) && (popups_end == 1)) {
         set_alert_draw_colour(alert_color[i]);
         draw_set_alpha(min(1, alert_alpha[i]));
         draw_text(32, 46 + (i * 20), string_hash_to_newline(string(alert_txt[i])));
-
     }
 }
 

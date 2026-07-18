@@ -47,7 +47,7 @@ function NSystemSearchHelpers() constructor {
         eFACTION.IMPERIUM,
         eFACTION.MECHANICUS,
         eFACTION.INQUISITION,
-        eFACTION.ECCLESIARCHY
+        eFACTION.ECCLESIARCHY,
     ];
 }
 
@@ -60,7 +60,7 @@ function fetch_faction_group(group = "imperium_default") {
                 eFACTION.IMPERIUM,
                 eFACTION.MECHANICUS,
                 eFACTION.INQUISITION,
-                eFACTION.ECCLESIARCHY
+                eFACTION.ECCLESIARCHY,
             ];
             if (obj_controller.faction_status[eFACTION.IMPERIUM] != "War") {
                 array_push(imperium, eFACTION.PLAYER);
@@ -475,7 +475,7 @@ function scr_planet_image_numbers(p_type) {
         "",
         "Space Hulk",
         "",
-        "Shrine"
+        "Shrine",
     ];
     for (var i = 0; i < array_length(image_map); i++) {
         if (image_map[i] == p_type) {

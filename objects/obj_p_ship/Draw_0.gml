@@ -41,7 +41,7 @@ if (name != "") {
         // draw_sprite(spr_force_icon,0,x-16,y+12);
         scr_image("ui/force", 1, x - 16 - 32, y + 12 - 32, 64, 64);
 
-        draw_text_outline(x - 16, y + 12, boarders,,c_white);
+        draw_text_outline(x - 16, y + 12, boarders,, c_white);
     }
 
     draw_ship_status_overlay(self, CM_GREEN_COLOR, COL_REQUISITION);

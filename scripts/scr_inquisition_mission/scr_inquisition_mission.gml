@@ -33,7 +33,7 @@ function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.RA
             eINQUISITION_MISSION.PURGE,
             eINQUISITION_MISSION.INQUISITOR,
             eINQUISITION_MISSION.SPYRER,
-            eINQUISITION_MISSION.ARTIFACT
+            eINQUISITION_MISSION.ARTIFACT,
         ];
 
         var found_sleeping_necrons = false;
@@ -206,7 +206,7 @@ function mission_inquisition_tomb_world(tomb_worlds) {
         {
             str1: "Refuse",
             choice_func: popup_default_close,
-        }
+        },
     ];
     var _pop_data = {
         system: _star.name,
@@ -295,7 +295,7 @@ function mission_inquistion_hunt_inquisitor(star_id = noone) {
         {
             str1: "Refuse",
             choice_func: popup_default_close,
-        }
+        },
     ];
 
     var _mission_data = {
@@ -372,8 +372,8 @@ function mission_hunt_inquisitor_hear_out_radical_inquisitor() {
                 {
                     str1: "Search their ship", //choice_func : instance_destroy, // TODO: Implement proper ship search logic
                 },
-                {str1: "Spare them", choice_func: mission_hunt_inquisitor_show_mercy}
-            ]
+                {str1: "Spare them", choice_func: mission_hunt_inquisitor_show_mercy},
+            ],
         );
         title = "Mercy Plea";
         text = $"The Inquisitor claims that {_gender_third} has key knowledge that would grant the Imperium vital power over the forces of Chaos.  If {global.chapter_name} allow {gender_pronoun} ship to leave the forces of Chaos within this sector will be weakened.";
@@ -682,7 +682,7 @@ function setup_necron_tomb_raid(planet) {
                 {
                     str1: "Not Yet",
                     choice_func: instance_destroy,
-                }
+                },
             ],
         };
         scr_popup("Necron Tomb Excursion", tixt, $"necron_cave", _pop_data);

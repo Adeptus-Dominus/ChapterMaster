@@ -79,7 +79,7 @@ function scr_secret_lair_view() {
         }
     }
 
-     //TODO add a PlanetData object to obj_temp_build so that planet nae can be generated with PlanetData.name()
+    //TODO add a PlanetData object to obj_temp_build so that planet nae can be generated with PlanetData.name()
     if (!lair_exists) {
         title = "Build (" + string(obj_temp_build.target.name) + " " + scr_roman(obj_temp_build.planet) + ")";
     } else {

@@ -75,7 +75,7 @@ try {
                         if (_unit.mobility_item() != req_mobi) {
                             var _forbidden_tags = [
                                 "terminator",
-                                "dreadnought"
+                                "dreadnought",
                             ];
                             if (is_struct(unit_armour) && unit_armour.has_tags(_forbidden_tags)) {
                                 _unit.update_mobility_item("");

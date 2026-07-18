@@ -5,7 +5,7 @@ function location_out_of_player_control(unit_loc) {
         "Terra",
         "Mechanicus Vessel",
         "Lost",
-        "Mars"
+        "Mars",
     ];
     return array_contains(_locs, unit_loc);
 }
@@ -38,7 +38,7 @@ global.planet_problem_keys = [
     "artifact_loan",
     "necron",
     "ethereal",
-    "demon_world"
+    "demon_world",
 ];
 
 function mission_name_key(mission) {
@@ -82,11 +82,11 @@ function mission_name_key(mission) {
 }
 
 /// @self Struct.PlanetData
-function problem_end_turn_checks(){
+function problem_end_turn_checks() {
     /// @self Struct.PlanetData
     static problem_functions = {
-        "succession" : function(problem_index){
-            if (problem_timers[problem_index] > 0){
+        "succession": function(problem_index) {
+            if (problem_timers[problem_index] > 0) {
                 return;
             }
             var result, _alert_text;
@@ -102,7 +102,7 @@ function problem_end_turn_checks(){
                 result = eFACTION.TAU;
             }
 
-            if (current_owner == eFACTION.IMPERIUM && result != eFACTION.IMPERIUM){
+            if (current_owner == eFACTION.IMPERIUM && result != eFACTION.IMPERIUM) {
                 edit_pdf(guardsmen);
                 edit_guardsmen(-guardsmen);
                 set_new_owner(result);
@@ -118,7 +118,7 @@ function problem_end_turn_checks(){
             } else if (result == eFACTION.TAU) {
                 _alert_text += " with a Tau sympathizer in control.";
                 set_player_disposition(10 + choose(1, 2, 3, 4, 5, 6));
-                add_forces(eFACTION.TAU, 2)
+                add_forces(eFACTION.TAU, 2);
                 scr_alert("red", "succession", _alert_text, x, y);
                 scr_event_log("red", _alert_text);
             } else if (result == eFACTION.IMPERIUM) {
@@ -132,24 +132,23 @@ function problem_end_turn_checks(){
             }
 
             delete_feature(eP_FEATURES.SUCCESSION_WAR);
-            remove_problem("succession");            
+            remove_problem("succession");
         },
-        "recon" : function(problem_index){
-            if (problem_timers[problem_index] > 0){
+        "recon": function(problem_index) {
+            if (problem_timers[problem_index] > 0) {
                 return;
-            }            
+            }
             var _alert_text = "Inquisition Mission Failed: Investigate ";
             alter_disposition(eFACTION.INQUISITION, -5);
             _alert_text += $"{name()}.";
             scr_alert("red", "mission_failed", _alert_text, 0, 0);
             scr_event_log("red", _alert_text);
-            remove_problem("recon");            
+            remove_problem("recon");
         },
-
-        "great_crusade" : function(problem_index){
-            if (problem_timers[problem_index] > 0){
+        "great_crusade": function(problem_index) {
+            if (problem_timers[problem_index] > 0) {
                 return;
-            }            
+            }
             var _crusade_direction;
             var _join_crusade = false;
             var _player_fleet = instance_nearest(system.x, system.y, obj_p_fleet);
@@ -172,10 +171,7 @@ function problem_end_turn_checks(){
                 scr_event_log("", "Fleet embarks upon Crusade.");
             } else {
                 // hit loyalty here
-                alter_dispositions([
-                    [eFACTION.INQUISITION , -10],
-                    [eFACTION.IMPERIUM, -5],
-                ]);
+                alter_dispositions([[eFACTION.INQUISITION, -10], [eFACTION.IMPERIUM, -5]]);
                 var _string = $"No ships designated for Crusade.";
                 if (obj_controller.penitent == 1) {
                     obj_controller.penitent_current = 0;
@@ -186,10 +182,10 @@ function problem_end_turn_checks(){
                 scr_loyalty("Refusing to Crusade", "+");
                 scr_event_log("red", "No ships designated for Crusade.");
             }
-            remove_problem("great_crusade");            
+            remove_problem("great_crusade");
         },
-        "necron" : function(problem_index){
-            if (problem_timers[problem_index] > 0){
+        "necron": function(problem_index) {
+            if (problem_timers[problem_index] > 0) {
                 return;
             }
 
@@ -204,9 +200,8 @@ function problem_end_turn_checks(){
             }
             remove_problem("necron");
         },
-
-        "spyrer" : function(problem_index){
-            if (problem_timers[problem_index] > 0){
+        "spyrer": function(problem_index) {
+            if (problem_timers[problem_index] > 0) {
                 return;
             }
             var _planet_name = name();
@@ -215,12 +210,11 @@ function problem_end_turn_checks(){
             var _text = "Inquisition Mission Failed: The Spyrer on {_planet_name} was not removed.";
             scr_popup("Inquisition Mission Failed", _alert_text, "spyrer", "");
             scr_event_log("red", _text);
-            remove_problem("spyrer");       
+            remove_problem("spyrer");
         },
-
-        "fallen" : function(problem_index){
+        "fallen": function(problem_index) {
             //TODO marker point for cohesion mechanics
-            if (problem_timers[problem_index] > 0){
+            if (problem_timers[problem_index] > 0) {
                 return;
             }
             var alert_text = "";
@@ -245,18 +239,18 @@ function problem_end_turn_checks(){
             obj_controller.loyalty -= 10;
             obj_controller.loyalty_hidden -= 10;
             remove_problem("fallen");
-            scr_event_log("red", $"Mission Failed: Any Fallen within the {system.name} system have been given time to escape.");          
+            scr_event_log("red", $"Mission Failed: Any Fallen within the {system.name} system have been given time to escape.");
         },
-        "provide_garrison" : complete_garrison_mission,
-    }
+        "provide_garrison": complete_garrison_mission,
+    };
 
-    for (var i = 0; i <array_length(problems);i++){
+    for (var i = 0; i < array_length(problems); i++) {
         var _problem = problems[i];
-        if (_problem == ""){
+        if (_problem == "") {
             continue;
         }
 
-        if (struct_exists(problem_functions, _problem)){
+        if (struct_exists(problem_functions, _problem)) {
             try {
                 var _problem_action = method(self, problem_functions[$ _problem]);
                 _problem_action(i);
@@ -528,11 +522,11 @@ function init_train_forces_mission(planet, star, mission_slot, marine) {
 
 /// @self Asset.GMObject.obj_star
 function complete_garrison_mission(problem_index) {
-    if (problem_timers[problem_index] > 0){
+    if (problem_timers[problem_index] > 0) {
         return;
     }
     var _problem_data = problems_data[problem_index];
-    if (!struct_has_value(_problem_data, "stage", "active")){
+    if (!struct_has_value(_problem_data, "stage", "active")) {
         remove_problem("provide_garrison");
         return;
     }
@@ -582,10 +576,9 @@ function complete_garrison_mission(problem_index) {
         }
     }
     scr_popup($"Agreed Garrison of {name()} complete", _mission_string, "", "");
-     
+
     remove_problem("provide_garrison");
 }
-
 
 function complete_train_forces_mission(targ_planet, problem_index) {
     var planet = get_planet_data(targ_planet);
@@ -668,7 +661,7 @@ function complete_train_forces_mission(targ_planet, problem_index) {
                         "blood_for_blood",
                         "blunt",
                         "brute",
-                        "brawler"
+                        "brawler",
                     ];
                     var _hard_loss = false;
                     for (var i = 0; i < array_length(_hard_loss_traits); i++) {
@@ -691,7 +684,6 @@ function complete_train_forces_mission(targ_planet, problem_index) {
         }
     }
 }
-
 
 function complete_beast_hunt_mission(targ_planet, problem_index) {
     var planet = get_planet_data(targ_planet);

@@ -24,7 +24,7 @@ if (room_get_name(room) == "rm_creation") {
         "NEW GAME",
         "LOAD",
         "SETTINGS",
-        "EXIT"
+        "EXIT",
     ];
     for (var i = 0; i < 4; i++) {
         var _button_data = {

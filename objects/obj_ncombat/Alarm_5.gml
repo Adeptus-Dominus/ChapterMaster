@@ -372,7 +372,7 @@ var _non_power_reduce_events = [
     "fallen2",
     "study2a",
     "study2b",
-    "protect_raiders"
+    "protect_raiders",
 ];
 
 // Disable power reduction for matching events
@@ -496,7 +496,7 @@ if (defeat == 0 && _reduce_power) {
                 95,
                 190,
                 375,
-                750
+                750,
             ];
 
             final_pow = min(enemy_power, 6) - 1;
@@ -512,7 +512,7 @@ if (defeat == 0 && _reduce_power) {
                 150,
                 300,
                 600,
-                1500
+                1500,
             ];
             obj_controller.penitent_current += penitent_crusade_chart[final_pow];
         }

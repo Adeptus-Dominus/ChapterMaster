@@ -12,7 +12,7 @@ global.planet_types = [
     "Hive",
     "Forge",
     "Desert",
-    "Lava"
+    "Lava",
 ];
 
 enum ePLAYER_BASE {
@@ -34,7 +34,7 @@ function find_player_spawn_star() {
         "Death",
         "Ice",
         "Desert",
-        "Lava"
+        "Lava",
     ];
     for (var i = 0; i < 100; i++) {
         var x_loc = irandom_range(0 + (room_width / 2), room_width - (room_width / 2));

@@ -9,24 +9,83 @@ function set_up_tag_manager() {
         for (var i = 0; i < array_length(obj_controller.management_tags); i++) {
             array_push(_tag_options, {str1: obj_controller.management_tags[i], font: fnt_40k_14b});
         }
-        tag_selects = new MultiSelect(_tag_options, "Tags", {max_width: 500, x1: 1040, y1: 210});
+        tag_selects = new MultiSelect(_tag_options, "Tags", {
+            max_width: 500,
+            x1: 1040,
+            y1: 210,
+        });
 
         tag_selects.set(obj_controller.manage_tags);
-        exit_button = new UnitButtonObject({x1: 1061, y1: 491, style: "pixel", label: "Exit", tooltip: "All tag filters will remain in place re-open the tag manager to add oor remove filters"});
-        main_slate = new DataSlate({style: "decorated", XX: 1006, YY: 143, set_width: true, width: 571, height: 350});
+        exit_button = new UnitButtonObject({
+            x1: 1061,
+            y1: 491,
+            style: "pixel",
+            label: "Exit",
+            tooltip: "All tag filters will remain in place re-open the tag manager to add oor remove filters",
+        });
+        main_slate = new DataSlate({
+            style: "decorated",
+            XX: 1006,
+            YY: 143,
+            set_width: true,
+            width: 571,
+            height: 350,
+        });
 
-        create_tag_button = new UnitButtonObject({x1: 1056, y1: 325, label: "Create Tag", tooltip: "Create more tags"});
-        delete_tag_button = new UnitButtonObject({x1: create_tag_button.x2, y1: 325, label: "Delete Tags", tooltip: "Delete tags permenantly"});
-        add_tag_button = new UnitButtonObject({x1: delete_tag_button.x2, y1: 325, label: "Add Tags", tooltip: "Add tags to current Marine selection"});
-        remove_tag_button = new UnitButtonObject({x1: add_tag_button.x2, y1: 325, label: "Remove Tags", tooltip: "Remove Tags from current Marine selection"});
+        create_tag_button = new UnitButtonObject({
+            x1: 1056,
+            y1: 325,
+            label: "Create Tag",
+            tooltip: "Create more tags",
+        });
+        delete_tag_button = new UnitButtonObject({
+            x1: create_tag_button.x2,
+            y1: 325,
+            label: "Delete Tags",
+            tooltip: "Delete tags permenantly",
+        });
+        add_tag_button = new UnitButtonObject({
+            x1: delete_tag_button.x2,
+            y1: 325,
+            label: "Add Tags",
+            tooltip: "Add tags to current Marine selection",
+        });
+        remove_tag_button = new UnitButtonObject({
+            x1: add_tag_button.x2,
+            y1: 325,
+            label: "Remove Tags",
+            tooltip: "Remove Tags from current Marine selection",
+        });
 
-        cancel_button = new UnitButtonObject({x1: create_tag_button.x2, y1: 350, label: "Cancel"});
+        cancel_button = new UnitButtonObject({
+            x1: create_tag_button.x2,
+            y1: 350,
+            label: "Cancel",
+        });
 
-        delete_tags = new UnitButtonObject({x1: delete_tag_button.x2, y1: 350, label: "Delete"});
-        create_tags = new UnitButtonObject({x1: delete_tag_button.x2, y1: 350, label: "Create"});
+        delete_tags = new UnitButtonObject({
+            x1: delete_tag_button.x2,
+            y1: 350,
+            label: "Delete",
+        });
+        create_tags = new UnitButtonObject({
+            x1: delete_tag_button.x2,
+            y1: 350,
+            label: "Create",
+        });
 
-        add_tags = new UnitButtonObject({x1: delete_tag_button.x2, y1: 350, label: "Add", tooltip: "The selected tags will be added to the current selection"});
-        remove_tags = new UnitButtonObject({x1: delete_tag_button.x2, y1: 325, label: "Remove", tooltip: "The selected tags will be removed from the current selection"});
+        add_tags = new UnitButtonObject({
+            x1: delete_tag_button.x2,
+            y1: 350,
+            label: "Add",
+            tooltip: "The selected tags will be added to the current selection",
+        });
+        remove_tags = new UnitButtonObject({
+            x1: delete_tag_button.x2,
+            y1: 325,
+            label: "Remove",
+            tooltip: "The selected tags will be removed from the current selection",
+        });
         new_tag_name = new TextBarArea(1285, 275, 530, true);
     }
 }
@@ -91,7 +150,11 @@ function draw_tag_manager() {
                     }
                 }
             }
-            tag_selects = new MultiSelect(_selecs, "Tags", {max_width: 500, x1: 1040, y1: 210});
+            tag_selects = new MultiSelect(_selecs, "Tags", {
+                max_width: 500,
+                x1: 1040,
+                y1: 210,
+            });
         }
         _tool = "Remove Tags from current Marine selection";
         remove_tag_button.disabled = false;
@@ -126,7 +189,11 @@ function draw_tag_manager() {
                     }
                 }
             }
-            tag_selects = new MultiSelect(_selecs, "Tags", {max_width: 500, x1: 1040, y1: 210});
+            tag_selects = new MultiSelect(_selecs, "Tags", {
+                max_width: 500,
+                x1: 1040,
+                y1: 210,
+            });
         }
     }
 

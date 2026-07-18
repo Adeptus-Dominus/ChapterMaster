@@ -685,7 +685,7 @@ function ground_forces_collect_artifact() {
             }
 
             if (pdata.current_owner >= 3 && pdata.current_owner <= 6) {
-                scr_audience(pdata.current_owner, "artifact_angry",);
+                scr_audience(pdata.current_owner, "artifact_angry");
             }
         }
 
@@ -848,7 +848,7 @@ function remove_stc_from_planet() {
             }
 
             if (pdata.current_owner > 3 && pdata.current_owner <= 6) {
-                scr_audience(pdata.current_owner, "artifact_angry",);
+                scr_audience(pdata.current_owner, "artifact_angry");
             }
             if (pdata.current_owner == eFACTION.MECHANICUS && obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
                 scr_audience(pdata.current_owner, "declare_war", -20);

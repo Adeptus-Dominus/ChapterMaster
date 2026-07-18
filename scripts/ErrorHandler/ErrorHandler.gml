@@ -49,7 +49,7 @@ function GameError(_header, _message, _stacktrace = "", _critical = false, _repo
             message,
             "",
             "### Stacktrace:",
-            stacktrace
+            stacktrace,
         ];
 
         var _full = "";

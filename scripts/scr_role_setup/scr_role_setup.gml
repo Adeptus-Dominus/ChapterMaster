@@ -1,12 +1,73 @@
 /// @self Asset.GMObject.obj_creation
 function role_setup_objects() {
-    specialist_distribution_box = new ToggleButton({str1: "Equal Specialist Distribution", font: fnt_40k_12, style: "box", x1: 500, y1: 250, tooltip: $"Specialist Distribution\nCheck if you wish for your Companies to be uniform and each contain {role[100][10]}s and {role[100][9]}s.", active: (squad_distribution == 1 || squad_distribution == 3), clicked_check_default: true});
-    scout_distribution_box      = new ToggleButton({str1: "Equal Scout Distribution",      font: fnt_40k_12, style: "box", x1: 710, y1: 250, tooltip: $"Scout Distribution\nCheck if you wish for Scouts to be distributed equally across your Battle Companies rather than concentrated in the 10th.",      active: (squad_distribution == 2 || squad_distribution == 3), clicked_check_default: true});
+    specialist_distribution_box = new ToggleButton({
+        str1: "Equal Specialist Distribution",
+        font: fnt_40k_12,
+        style: "box",
+        x1: 500,
+        y1: 250,
+        tooltip: $"Specialist Distribution\nCheck if you wish for your Companies to be uniform and each contain {role[100][10]}s and {role[100][9]}s.",
+        active: (squad_distribution == 1 || squad_distribution == 3),
+        clicked_check_default: true,
+    });
+    scout_distribution_box = new ToggleButton({
+        str1: "Equal Scout Distribution",
+        font: fnt_40k_12,
+        style: "box",
+        x1: 710,
+        y1: 250,
+        tooltip: $"Scout Distribution\nCheck if you wish for Scouts to be distributed equally across your Battle Companies rather than concentrated in the 10th.",
+        active: (squad_distribution == 2 || squad_distribution == 3),
+        clicked_check_default: true,
+    });
 
-    load_to_ship_radio = new RadioSet([{str1: "On Planet", font: fnt_40k_12, style: "box", tooltip: $"On Planet/nCheck to have your Astartes Start on your home planet."}, {str1: "Load to Ships", font: fnt_40k_12, style: "box", tooltip: $"Load to Ships\nCheck to have your Astartes automatically loaded into ships when the game starts."}, {str1: "Load (Sans Escorts)", font: fnt_40k_12, style: "box", tooltip: $"Load (Sans Escorts)\nCheck to have your Astartes automatically loaded into ships, except for Escorts, when the game starts."}], "", {x1: 445, y1: 310, x_gap: 20, center: true, max_width: 400});
+    load_to_ship_radio = new RadioSet([
+        {
+            str1: "On Planet",
+            font: fnt_40k_12,
+            style: "box",
+            tooltip: $"On Planet/nCheck to have your Astartes Start on your home planet.",
+        },
+        {
+            str1: "Load to Ships",
+            font: fnt_40k_12,
+            style: "box",
+            tooltip: $"Load to Ships\nCheck to have your Astartes automatically loaded into ships when the game starts.",
+        },
+        {
+            str1: "Load (Sans Escorts)",
+            font: fnt_40k_12,
+            style: "box",
+            tooltip: $"Load (Sans Escorts)\nCheck to have your Astartes automatically loaded into ships, except for Escorts, when the game starts.",
+        },
+    ], "", {
+        x1: 445,
+        y1: 310,
+        x_gap: 20,
+        center: true,
+        max_width: 400,
+    });
     load_to_ship_radio.current_selection = load_to_ships[0];
-    distribute_scouts_box = new ToggleButton({str1: "Distribute Scouts", font: fnt_40k_12, style: "box", x1: 540, y1: 370, tooltip: $"Distribute Scouts\nCheck to have your Scouts split across ships in the fleet.", active: load_to_ships[1], clicked_check_default: true});
-    distribute_vets_box = new ToggleButton({str1: "Distribute Veterans", font: fnt_40k_12, style: "box", x1: 690, y1: 370, tooltip: $"Distribute Veterans\nCheck to have your Veterans split across the fleet.", active: load_to_ships[2], clicked_check_default: true});
+    distribute_scouts_box = new ToggleButton({
+        str1: "Distribute Scouts",
+        font: fnt_40k_12,
+        style: "box",
+        x1: 540,
+        y1: 370,
+        tooltip: $"Distribute Scouts\nCheck to have your Scouts split across ships in the fleet.",
+        active: load_to_ships[1],
+        clicked_check_default: true,
+    });
+    distribute_vets_box = new ToggleButton({
+        str1: "Distribute Veterans",
+        font: fnt_40k_12,
+        style: "box",
+        x1: 690,
+        y1: 370,
+        tooltip: $"Distribute Veterans\nCheck to have your Veterans split across the fleet.",
+        active: load_to_ships[2],
+        clicked_check_default: true,
+    });
 }
 
 /// @self Asset.GMObject.obj_creation
@@ -120,7 +181,7 @@ function scr_role_setup() {
                     794,
                     574,
                     794 + 20,
-                    574 + 20
+                    574 + 20,
                 ];
                 draw_unit_buttons(_refresh_capoth_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
                 if (point_and_click(_refresh_capoth_name_btn)) {
@@ -165,7 +226,7 @@ function scr_role_setup() {
                     794,
                     597,
                     794 + 20,
-                    597 + 20
+                    597 + 20,
                 ];
                 draw_unit_buttons(_refresh_chap_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
                 if (point_and_click(_refresh_chap_name_btn)) {
@@ -210,7 +271,7 @@ function scr_role_setup() {
                     794,
                     619,
                     794 + 20,
-                    619 + 20
+                    619 + 20,
                 ];
                 draw_unit_buttons(_refresh_libra_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
                 if (point_and_click(_refresh_libra_name_btn)) {
@@ -255,7 +316,7 @@ function scr_role_setup() {
                     794,
                     641,
                     794 + 20,
-                    641 + 20
+                    641 + 20,
                 ];
                 draw_unit_buttons(_refresh_forge_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
                 if (point_and_click(_refresh_forge_name_btn)) {
@@ -299,7 +360,7 @@ function scr_role_setup() {
                 794,
                 663,
                 794 + 20,
-                663 + 20
+                663 + 20,
             ];
             draw_unit_buttons(_refresh_recr_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
             if (point_and_click(_refresh_recr_name_btn)) {
@@ -342,7 +403,7 @@ function scr_role_setup() {
                 794,
                 685,
                 794 + 20,
-                685 + 20
+                685 + 20,
             ];
             draw_unit_buttons(_refresh_admi_name_btn, "?", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b);
             if (point_and_click(_refresh_admi_name_btn)) {

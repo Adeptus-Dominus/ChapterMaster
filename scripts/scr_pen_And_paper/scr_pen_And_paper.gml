@@ -45,7 +45,10 @@ function PenAndPaperSim() constructor {
             pass_margin = unit1_val - stat1;
         }
 
-        return [winner, pass_margin];
+        return [
+            winner,
+            pass_margin,
+        ];
     };
 
     static evaluate_tags = function(unit, tags) {
@@ -112,7 +115,10 @@ function PenAndPaperSim() constructor {
             margin = unit[$ stat] + difficulty_mod - random_roll;
         }
 
-        return [passed, margin];
+        return [
+            passed,
+            margin,
+        ];
     };
 }
 

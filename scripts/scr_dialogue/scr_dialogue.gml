@@ -803,7 +803,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                         $"[{faction_leader[eFACTION.INQUISITION]} lets out an amused, extremely confident chuckle.]",
                         "Your soul will be mine.",
                         "Do not trifle with me, worm.",
-                        "I have travelled the stars for millennia.  Worlds have burned at my command, countless souls damned.  The ground trembles with every step.  Now I sit here and listen to you.  Where did it all go so wrong?"
+                        "I have travelled the stars for millennia.  Worlds have burned at my command, countless souls damned.  The ground trembles with every step.  Now I sit here and listen to you.  Where did it all go so wrong?",
                     ];
                     diplo_text = array_random_element(_diag_opts);
 

@@ -1,4 +1,3 @@
-
 function fleet_has_roles(fleet, roles = []) {
     var all_ships = fleet_full_ship_array(fleet);
     for (var i = 0; i <= 10; i++) {
@@ -259,11 +258,11 @@ function add_ship_to_fleet(index, fleet = noone) {
     var _escorts = [
         "Escort",
         "Hunter",
-        "Gladius"
+        "Gladius",
     ];
     var _capitals = [
         "Gloriana",
-        "Battle Barge"
+        "Battle Barge",
     ];
     var _frigates = ["Strike Cruiser"];
 
@@ -522,7 +521,11 @@ function selected_ship_types() {
             break;
         }
     }
-    return [capitals, frigates, escorts];
+    return [
+        capitals,
+        frigates,
+        escorts,
+    ];
 }
 
 function player_fleet_ship_count(fleet = noone) {
@@ -584,7 +587,7 @@ function player_fleet_selected_count(fleet = noone) {
     return ship_count;
 }
 
-/// @returns {Id.Instance.obj_p_fleet} 
+/// @returns {Id.Instance.obj_p_fleet}
 function get_nearest_player_fleet(nearest_x, nearest_y, is_static = false, is_moving = false, stop_complex_actions = true) {
     var chosen_fleet = noone;
     if (instance_exists(obj_p_fleet)) {

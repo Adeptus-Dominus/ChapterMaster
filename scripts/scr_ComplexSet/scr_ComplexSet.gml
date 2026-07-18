@@ -83,7 +83,12 @@ function sprite_get_uvs_transformed(_spr1, _subimg1, _spr2, _subimg2) {
     //It is also inversely applicable to transform uv1 to uv2 by subtraction and division
 
     //Pack the values into an array and return it
-    return [_x_offset, _y_offset, _x_scale, _y_scale];
+    return [
+        _x_offset,
+        _y_offset,
+        _x_scale,
+        _y_scale,
+    ];
 }
 
 /// @param {Struct.TTRPG_stats} _unit
@@ -108,15 +113,15 @@ function ComplexSet(_unit) constructor {
             sources: [0],
             offsets: [0],
             source_frames: [0],
-            flip_x: false
+            flip_x: false,
         },
         {
             total: 0,
             sources: [0],
             offsets: [0],
             source_frames: [0],
-            flip_x: true
-        }
+            flip_x: true,
+        },
     ];
 
     // Tracks sprites that ComplexSet owns (e.g. weapon duplicates) for cleanup
@@ -260,48 +265,48 @@ function ComplexSet(_unit) constructor {
             [
                 1.0,
                 218.0 / 255.0,
-                179.0 / 255.0
+                179.0 / 255.0,
             ],
             [
                 1.0,
                 192.0 / 255.0,
-                134.0 / 255.0
+                134.0 / 255.0,
             ],
             [
                 252.0 / 255.0,
                 206.0 / 255.0,
-                159.0 / 255.0
+                159.0 / 255.0,
             ],
             [
                 254.0 / 255.0,
                 206.0 / 255.0,
-                163.0 / 255.0
+                163.0 / 255.0,
             ],
             [
                 255.0 / 255.0,
                 221.0 / 255.0,
-                191.0 / 255.0
+                191.0 / 255.0,
             ],
             [
                 230.0 / 255.0,
                 177.0 / 255.0,
-                131.0 / 255.0
+                131.0 / 255.0,
             ],
             [
                 255.0 / 255.0,
                 205.0 / 255.0,
-                163.0 / 255.0
+                163.0 / 255.0,
             ],
             [
                 57.0 / 255.0,
                 37.0 / 255.0,
-                17.0 / 255.0
-            ]
+                17.0 / 255.0,
+            ],
         ],
         coal: [
             34.0 / 255.0,
             34.0 / 255.0,
-            34.0 / 255.0
+            34.0 / 255.0,
         ],
     };
 
@@ -312,7 +317,7 @@ function ComplexSet(_unit) constructor {
         "mouth_variants",
         "left_eye",
         "right_eye",
-        "crown"
+        "crown",
     ];
 
     /// @param {Any} exception_key
@@ -393,7 +398,7 @@ function ComplexSet(_unit) constructor {
             _mod.body_types = [
                 0,
                 1,
-                2
+                2,
             ];
         }
 
@@ -563,13 +568,13 @@ function ComplexSet(_unit) constructor {
                     _overides = {
                         offsets: [
                             _x,
-                            _y
+                            _y,
                         ],
                     };
                 } else {
                     _overides.offsets = [
                         _x,
-                        _y
+                        _y,
                     ];
                 }
             }
@@ -623,16 +628,16 @@ function ComplexSet(_unit) constructor {
                     "Forge Master",
                     "Master of Sanctity",
                     "Master of the Apothecarion",
-                    $"Chief {_roles[eROLE.LIBRARIAN]}"
+                    $"Chief {_roles[eROLE.LIBRARIAN]}",
                 ],
                 [
                     _roles[eROLE.CAPTAIN],
-                    _roles[eROLE.HONOURGUARD]
+                    _roles[eROLE.HONOURGUARD],
                 ],
                 [_roles[eROLE.CHAMPION]],
                 [
                     _roles[eROLE.ANCIENT],
-                    _roles[eROLE.VETERANSERGEANT]
+                    _roles[eROLE.VETERANSERGEANT],
                 ],
                 [_roles[eROLE.TERMINATOR]],
                 [
@@ -641,16 +646,16 @@ function ComplexSet(_unit) constructor {
                     _roles[eROLE.CHAPLAIN],
                     _roles[eROLE.APOTHECARY],
                     _roles[eROLE.TECHMARINE],
-                    _roles[eROLE.LIBRARIAN]
+                    _roles[eROLE.LIBRARIAN],
                 ],
                 [
                     "Codiciery",
                     "Lexicanum",
                     _roles[eROLE.TACTICAL],
                     _roles[eROLE.ASSAULT],
-                    _roles[eROLE.DEVASTATOR]
+                    _roles[eROLE.DEVASTATOR],
                 ],
-                [_roles[eROLE.SCOUT]]
+                [_roles[eROLE.SCOUT]],
             ];
 
             var _unit_tier = 8;
@@ -762,7 +767,10 @@ function ComplexSet(_unit) constructor {
             var _choice = _global_choice % _total;
             for (var i = 0; i < array_length(_area_data.sources); i++) {
                 if (_choice < _area_data.offsets[i] + _area_data.source_frames[i]) {
-                    return {sprite: _area_data.sources[i], frame: _choice - _area_data.offsets[i]};
+                    return {
+                        sprite: _area_data.sources[i],
+                        frame: _choice - _area_data.offsets[i],
+                    };
                 }
             }
 
@@ -774,7 +782,10 @@ function ComplexSet(_unit) constructor {
             return;
         }
 
-        return {sprite: _area_data, frame: _global_choice % sprite_get_number(_area_data)};
+        return {
+            sprite: _area_data,
+            frame: _global_choice % sprite_get_number(_area_data),
+        };
     };
 
     /// @desc Gets the total number of frames for an area
@@ -1035,12 +1046,12 @@ function ComplexSet(_unit) constructor {
                     if (_variant == 2) {
                         _bio = [
                             spr_terminator_complex_arms_upper_right,
-                            spr_terminator_complex_arms_upper_left
+                            spr_terminator_complex_arms_upper_left,
                         ];
                     } else if (_variant == 3) {
                         _bio = [
                             spr_terminator_complex_arm_hidden_right,
-                            spr_terminator_complex_arm_hidden_left
+                            spr_terminator_complex_arm_hidden_left,
                         ];
                     }
                 } else {
@@ -1052,12 +1063,12 @@ function ComplexSet(_unit) constructor {
                     if (armour_type == eARMOUR_TYPE.NORMAL) {
                         var _bio = [
                             spr_bionic_right_arm,
-                            spr_bionic_left_arm
+                            spr_bionic_left_arm,
                         ];
                     } else if (armour_type == eARMOUR_TYPE.TERMINATOR) {
                         _bio = [
                             spr_indomitus_right_arm_bionic,
-                            spr_indomitus_left_arm_bionic
+                            spr_indomitus_left_arm_bionic,
                         ];
                     }
                 }
@@ -1104,7 +1115,7 @@ function ComplexSet(_unit) constructor {
                 var _old_y = y_surface_offset;
                 x_surface_offset = offset_x;
                 y_surface_offset = offset_y;
-                
+
                 var _old_hand_struct = struct_exists(self, _hand_string) ? self[$ _hand_string] : undefined;
 
                 var _scratchpad = hand_scratchpads[right_left];
@@ -1112,11 +1123,11 @@ function ComplexSet(_unit) constructor {
                 _scratchpad.total = _num_frames;
                 _scratchpad.sources[0] = _hand_spr;
                 _scratchpad.source_frames[0] = _num_frames;
-                _scratchpad.flip_x = (right_left == 1);
-                
+                _scratchpad.flip_x = right_left == 1;
+
                 self[$ _hand_string] = _scratchpad;
                 draw_component(_hand_string, texture_draws, _spr_index);
-                
+
                 if (_old_hand_struct == undefined) {
                     struct_remove(self, _hand_string);
                 } else {
@@ -1135,7 +1146,7 @@ function ComplexSet(_unit) constructor {
                     var _old_y = y_surface_offset;
                     x_surface_offset = offset_x;
                     y_surface_offset = offset_y;
-                    
+
                     var _old_bionic_struct = struct_exists(self, _bionic_hand_string) ? self[$ _bionic_hand_string] : undefined;
 
                     var _scratchpad = hand_scratchpads[right_left];
@@ -1143,11 +1154,11 @@ function ComplexSet(_unit) constructor {
                     _scratchpad.total = _num_frames;
                     _scratchpad.sources[0] = spr_bionics_hand;
                     _scratchpad.source_frames[0] = _num_frames;
-                    _scratchpad.flip_x = (right_left == 1);
+                    _scratchpad.flip_x = right_left == 1;
 
                     self[$ _bionic_hand_string] = _scratchpad;
                     draw_component(_bionic_hand_string, texture_draws, bionic_spr_index);
-                    
+
                     if (_old_bionic_struct == undefined) {
                         struct_remove(self, _bionic_hand_string);
                     } else {
@@ -1169,9 +1180,9 @@ function ComplexSet(_unit) constructor {
         //    }
         //    if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite)) {
         //        draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
-       //     }
-       //    exit;
-      //  }
+        //     }
+        //    exit;
+        //  }
         // Draw hands bellow the weapon sprite;
         if (!weapon_right.ui_twoh && !weapon_left.ui_twoh) {
             for (var i = 0; i <= 1; i++) {
@@ -1267,7 +1278,7 @@ function ComplexSet(_unit) constructor {
 
         arms_data = [
             weapon_right,
-            weapon_left
+            weapon_left,
         ];
         for (var i = 0; i <= 1; i++) {
             var _arm = arms_data[i];
@@ -1293,7 +1304,7 @@ function ComplexSet(_unit) constructor {
                 "ui_twoh",
                 "ui_spec",
                 "sprite",
-                "display_type"
+                "display_type",
             ];
             for (var s = 0; s < array_length(_defaults); s++) {
                 if (!struct_exists(_arm, _defaults[s])) {
@@ -1393,7 +1404,7 @@ function ComplexSet(_unit) constructor {
             "robe",
             "belt",
             "left_personal_livery",
-            "foreground_item"
+            "foreground_item",
         ];
 
         if (unit_armour == "MK4 Maximus" || unit_armour == "MK3 Iron Armour") {
@@ -1429,7 +1440,7 @@ function ComplexSet(_unit) constructor {
                 "right_pauldron_hangings",
                 "left_pauldron_hangings",
                 "left_personal_livery",
-                "foreground_item"
+                "foreground_item",
             ];
         }
 
@@ -1473,31 +1484,31 @@ function ComplexSet(_unit) constructor {
                 var positions = [
                     [
                         117,
-                        115
+                        115,
                     ],
                     [
                         51,
-                        139
+                        139,
                     ],
                     [
                         131,
-                        136
-                    ]
+                        136,
+                    ],
                 ];
                 if (armour_type == eARMOUR_TYPE.NORMAL) {
                     positions = [
                         [
                             60,
-                            88
+                            88,
                         ],
                         [
                             90,
-                            84
+                            84,
                         ],
                         [
                             104,
-                            64
-                        ]
+                            64,
+                        ],
                     ];
                 }
                 for (var i = 0; i < array_length(_torso_purity_seals); i++) {
@@ -1518,27 +1529,27 @@ function ComplexSet(_unit) constructor {
                 var positions = [
                     [
                         163,
-                        92
+                        92,
                     ],
                     [
                         148,
-                        94
+                        94,
                     ],
                     [
                         126,
-                        84
-                    ]
+                        84,
+                    ],
                 ];
                 if (armour_type == eARMOUR_TYPE.NORMAL) {
                     positions = [
                         [
                             135,
-                            69
+                            69,
                         ],
                         [
                             121,
-                            73
-                        ]
+                            73,
+                        ],
                     ];
                 }
                 for (var i = 0; i < array_length(_arm_seals); i++) {
@@ -1559,31 +1570,31 @@ function ComplexSet(_unit) constructor {
                 var positions = [
                     [
                         11,
-                        91
+                        91,
                     ],
                     [
                         39,
-                        90
+                        90,
                     ],
                     [
                         66,
-                        86
-                    ]
+                        86,
+                    ],
                 ];
                 if (armour_type == eARMOUR_TYPE.NORMAL) {
                     positions = [
                         [
                             44,
-                            76
+                            76,
                         ],
                         [
                             30,
-                            71
+                            71,
                         ],
                         [
                             16,
-                            69
-                        ]
+                            69,
+                        ],
                     ];
                 }
                 for (var i = 0; i < array_length(_arm_seals); i++) {
@@ -1731,15 +1742,15 @@ function ComplexSet(_unit) constructor {
                         self[$ area] = {
                             sources: [
                                 _existing_data,
-                                add_sprite
+                                add_sprite,
                             ],
                             offsets: [
                                 0,
-                                _overide_start
+                                _overide_start,
                             ],
                             source_frames: [
                                 sprite_get_number(_existing_data),
-                                _add_sprite_length
+                                _add_sprite_length,
                             ],
                             total: _overide_start + _add_sprite_length,
                         };
@@ -1899,7 +1910,7 @@ function ComplexSet(_unit) constructor {
             surface_set_target(_head_surface);
             var _temp = [
                 x_surface_offset,
-                y_surface_offset
+                y_surface_offset,
             ];
             x_surface_offset = 0;
             y_surface_offset = 0;
@@ -1908,13 +1919,13 @@ function ComplexSet(_unit) constructor {
                 var _blend = [
                     obj_controller.col_r[data.helm_secondary] / 255,
                     obj_controller.col_g[data.helm_secondary] / 255,
-                    obj_controller.col_b[data.helm_secondary] / 255
+                    obj_controller.col_b[data.helm_secondary] / 255,
                 ];
             } else {
                 var _blend = [
                     obj_creation.col_r[data.helm_secondary] / 255,
                     obj_creation.col_g[data.helm_secondary] / 255,
-                    obj_creation.col_b[data.helm_secondary] / 255
+                    obj_creation.col_b[data.helm_secondary] / 255,
                 ];
             }
 

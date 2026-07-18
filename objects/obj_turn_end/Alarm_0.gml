@@ -130,7 +130,7 @@ try {
                         "Moderately",
                         "Highly",
                         "Extremely",
-                        "Maximally"
+                        "Maximally",
                     ];
                     var battle_fortification = battle_object[current_battle].p_fortified[battle_world[current_battle]];
                     strin[3] = array_string[clamp(battle_fortification, 1, 6)];

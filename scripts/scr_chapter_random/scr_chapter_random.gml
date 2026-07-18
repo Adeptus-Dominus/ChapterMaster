@@ -71,7 +71,7 @@ function scr_chapter_random(custom_or_random) {
     load_to_ships = [
         2,
         0,
-        0
+        0,
     ];
     successors = 0;
 

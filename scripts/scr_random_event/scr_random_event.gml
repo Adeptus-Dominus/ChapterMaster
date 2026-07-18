@@ -70,7 +70,7 @@ function scr_random_event(execute_now) {
                     eEVENT.ROGUE_TRADER,
                     eEVENT.INQUISITION_MISSION,
                     eEVENT.INQUISITION_PLANET,
-                    eEVENT.MECHANICUS_MISSION
+                    eEVENT.MECHANICUS_MISSION,
                 ];
             } else if (player_luck == eLUCK.NEUTRAL) {
                 events = [
@@ -78,7 +78,7 @@ function scr_random_event(execute_now) {
                     eEVENT.FLEET_DELAY,
                     eEVENT.HARLEQUINS,
                     eEVENT.SUCCESSION_WAR,
-                    eEVENT.RANDOM_FUN
+                    eEVENT.RANDOM_FUN,
                 ];
             } else if (player_luck == eLUCK.BAD) {
                 events = [
@@ -90,7 +90,7 @@ function scr_random_event(execute_now) {
                     eEVENT.SHIP_LOST, // Another save-scumming event, mainly due to rarity of player ships
                     //eEVENT.CHAOS_INVASION, // Spawns Chaos fleets way too close to player owned worlds with no warning and usually lots of big ships, save-scum galore and encourages fleet-based chapters // TODO LOW INVASION_EVENT // Make them spawn way farther with more warning, make them have a different goal or remove this event entirely
                     eEVENT.NECRON_AWAKEN, // Inquisitor check for this is inverted
-                    eEVENT.FALLEN // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
+                    eEVENT.FALLEN, // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
                 ];
             }
 
@@ -475,12 +475,11 @@ function scr_random_event(execute_now) {
             }
         }
 
-        if (planet > 0 && instance_exists(star)){
+        if (planet > 0 && instance_exists(star)) {
             var _pdata = star.get_planet_data(planet);
             _pdata.init_war_of_succession();
             _evented = true;
         }
-
     } else if (chosen_event == eEVENT.RANDOM_FUN) {
         // Flavor text/events
         LOGGER.info("RE: Random");
@@ -687,7 +686,7 @@ function scr_random_event(execute_now) {
                         scr_loyalty("Mutant Gene-Seed", "+");
                         popup_default_close();
                     },
-                }
+                },
             ],
         };
 

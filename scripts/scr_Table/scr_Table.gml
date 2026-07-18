@@ -31,7 +31,9 @@ function Table(data) constructor {
             var _col_width = 0;
             var _heading = headings[i];
             if (is_string(_heading)) {
-                headings[i] = new ReactiveString(_heading, 0, 0, {scale_text: true});
+                headings[i] = new ReactiveString(_heading, 0, 0, {
+                    scale_text: true,
+                });
             }
 
             _heading = headings[i];
@@ -58,7 +60,7 @@ function Table(data) constructor {
     };
 
     update(data);
-	
+
     static row_method = function(_row, _row_entered) {
         if (!_row_entered) {
             return;

@@ -7,10 +7,10 @@ function NameTracker(set_name) constructor {
     composite_names = [];
 
     composite_components = {
-            prefixes : [],
-            suffixes : [],
-            special : []
-        };
+        prefixes: [],
+        suffixes: [],
+        special: [],
+    };
 
     generic_counter = 0;
 
@@ -28,14 +28,7 @@ function NameTracker(set_name) constructor {
         }
     };
 
-    static LoadCompositeNames = function(
-        file_name,
-        json_names_property_names = [
-            "prefixes",
-            "suffixes",
-            "special"
-        ]
-    ) {
+    static LoadCompositeNames = function(file_name, json_names_property_names = ["prefixes", "suffixes", "special"]) {
         composite_names = json_names_property_names;
 
         var file_loader = new JsonFileListLoader();
@@ -43,9 +36,9 @@ function NameTracker(set_name) constructor {
         var load_result = file_loader.load_list_from_json_file($"main/names/{file_name}.json", json_names_property_names);
 
         var result = {
-            prefixes : [],
-            suffixes : [],
-            special : []
+            prefixes: [],
+            suffixes: [],
+            special: [],
         };
 
         for (var i = 0; i < array_length(json_names_property_names); i++) {
@@ -139,14 +132,7 @@ function NameTracker(set_name) constructor {
         }
     };
 
-    static ComplexTitledName = function(
-        title_elements = [
-            "mains",
-            "embelishments",
-            "titles"
-        ],
-        require_all = false
-    ) {
+    static ComplexTitledName = function(title_elements = ["mains", "embelishments", "titles"], require_all = false) {
         try {
             var _name = "";
             var _name_elem_length = array_length(title_elements);
@@ -206,7 +192,7 @@ function NameGenerator() constructor {
                 composites: [
                     "first_syllables",
                     "second_syllables",
-                    "third_syllables"
+                    "third_syllables",
                 ],
             },
             {
@@ -215,7 +201,7 @@ function NameGenerator() constructor {
                 composites: [
                     "prefixes",
                     "suffixes",
-                    "special"
+                    "special",
                 ],
             },
             {
@@ -223,7 +209,7 @@ function NameGenerator() constructor {
                 load_set: "hulk",
                 composites: [
                     "prefixes",
-                    "suffixes"
+                    "suffixes",
                 ],
             },
             {
@@ -231,7 +217,7 @@ function NameGenerator() constructor {
                 load_set: "tau",
                 composites: [
                     "prefixes",
-                    "suffixes"
+                    "suffixes",
                 ],
             },
             {
@@ -240,9 +226,9 @@ function NameGenerator() constructor {
                 composites: [
                     "main",
                     "embelishment",
-                    "title"
+                    "title",
                 ],
-            }
+            },
         ];
     }
 
@@ -349,14 +335,7 @@ function NameGenerator() constructor {
         }
     };
 
-    static GenerateComplexTitledName = function(
-        set_name,
-        title_elements = [
-            "mains",
-            "embelishments",
-            "titles"
-        ]
-    ) {
+    static GenerateComplexTitledName = function(set_name, title_elements = ["mains", "embelishments", "titles"]) {
         try {
             var _set = get_name_set(set_name);
             if (!is_struct(_set)) {

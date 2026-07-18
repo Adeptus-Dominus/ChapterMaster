@@ -54,7 +54,7 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
             }
             ds_map_delete(global.star_sprites, name);
         }
-        
+
         var _star_tag_surface = surface_create(256, 128);
         var xx = 64;
         var yy = 0;

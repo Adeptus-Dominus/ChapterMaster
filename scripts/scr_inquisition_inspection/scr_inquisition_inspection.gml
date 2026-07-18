@@ -480,7 +480,7 @@ function inquisitor_inspection_structure() constructor {
                         instance_destroy();
                         exit;
                     },
-                }
+                },
             ],
         };
 
@@ -726,7 +726,7 @@ function inquisition_inspection_loyalty(inspection_type) {
     }
 }
 
-/// @param {Id.Instance.obj_star} cur_star 
+/// @param {Id.Instance.obj_star} cur_star
 function inquisitor_contraband_take_popup(cur_star, planet) {
     var _inspect = new inquisitor_inspection_structure();
 

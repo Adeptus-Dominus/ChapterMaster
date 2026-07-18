@@ -39,7 +39,7 @@ function compress_enemy_array(_target_column) {
             {
                 arr: dudes_damage,
                 def: 0,
-            }
+            },
         ];
 
         // Track which slots are empty

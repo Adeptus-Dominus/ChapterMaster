@@ -58,7 +58,7 @@ local_forces = 0;
 battle_loc = "";
 battle_climate = "";
 if (instance_exists(obj_star)) {
-    /// @type {Id.Instance.obj_star} 
+    /// @type {Id.Instance.obj_star}
     battle_object = instance_nearest(x, y, obj_star);
 } else {
     battle_object = noone;
