@@ -6,8 +6,6 @@ var _padding_x = 16;
 var _padding_y = 8;
 var _text_draw_width;
 var _text_draw_height;
-var _text_draw_point_x;
-var _text_draw_point_y;
 var _bbox_x1;
 var _bbox_y1;
 var _bbox_x2;
@@ -15,20 +13,12 @@ var _bbox_y2;
 var _bbox_x_from_center;
 var _bbox_y_from_center;
 
-if (left_down) {
-    draw_set_alpha(0.5);
-    draw_set_color(_ui_green);
-    draw_rectangle(sel_x1, sel_y1, mouse_x, mouse_y, 1);
-}
-
 draw_set_font(fnt_menu);
 
 // begin box
 if (start == 0) {
     var _begin_x = _surface_w / 2;
     var _begin_y = 56;
-    var _begin_w_half = 128;
-    var _begin_h_half = 16;
     var _begin_text = "[ Enter ] to Begin";
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
@@ -149,9 +139,6 @@ if (start == 7) {
     _result_box_text += $"\nMarines Lost: {string(fallen)}";
 
     var _result_text_gap = 4;
-    var _x = string_width(_result_box_header);
-    var _a = string_width(_result_box_text);
-    var _b = string_width(_result_box_footer);
     var _result_text_header_height = string_height(_result_box_header);
     var _result_text_width = max(string_width(_result_box_header), string_width(_result_box_footer), string_width(_result_box_text));
     var _result_text_height = _result_text_header_height + string_height(_result_box_footer) + string_height(_result_box_text) + (2 * _result_text_gap);

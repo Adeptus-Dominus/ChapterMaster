@@ -8,11 +8,5 @@ if (battle_special > 0) {
     exit;
 }
 
-if (instance_exists(obj_controller)) {
-    if ((obj_controller.force_scroll == 1) && (type == 99) && instance_exists(obj_turn_end)) {
-        player_retreat_from_fleet_combat();
-    }
-}
-
 /* */
 /*  */

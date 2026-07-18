@@ -16,7 +16,7 @@ global.recruitment_pace_descriptions = [
     " is advancing moderately fast",
     " is advancing fast",
     " is advancing frenetically",
-    " is advancing as fast as possible"
+    " is advancing as fast as possible",
 ];
 
 global.recruitment_rates_caps = [
@@ -26,7 +26,7 @@ global.recruitment_rates_caps = [
     "MODERATE",
     "FAST",
     "FRENETIC",
-    "MAXIMUM"
+    "MAXIMUM",
 ];
 global.recruitment_rates = [
     "halted",
@@ -35,16 +35,16 @@ global.recruitment_rates = [
     "moderate",
     "fast",
     "frenetic",
-    "heretically fast"
+    "heretically fast",
 ];
 
 global.neophyte_rates_caps = [
     "HALTED",
-    "ONGOING"
+    "ONGOING",
 ];
 global.neophyte_rates = [
     "halted",
-    "ongoing"
+    "ongoing",
 ];
 global.apothecary_training_tiers = [
     0,
@@ -53,7 +53,7 @@ global.apothecary_training_tiers = [
     1,
     1.5,
     2,
-    4
+    4,
 ];
 global.chaplain_training_tiers = [
     0,
@@ -62,7 +62,7 @@ global.chaplain_training_tiers = [
     1,
     1.5,
     2,
-    4
+    4,
 ];
 global.techmarine_training_tiers = [
     0,
@@ -71,7 +71,7 @@ global.techmarine_training_tiers = [
     4,
     6,
     10,
-    14
+    14,
 ];
 
 function find_recruit_success_chance(local_apothecary_points, system, planet, ui = 0) {
@@ -172,61 +172,61 @@ function find_recruit_corruption(planet_type) {
         "Hive": {
             corruption_bonus: [
                 15,
-                2
+                2,
             ],
         },
         "Temperate": {
             corruption_bonus: [
                 10,
-                2
+                2,
             ],
         },
         "Feudal": {
             corruption_bonus: [
                 10,
-                2
+                2,
             ],
         },
         "Forge": {
             corruption_bonus: [
                 5,
-                2
+                2,
             ],
         },
         "Shrine": {
             corruption_bonus: [
                 -10,
-                2
+                2,
             ],
         },
         "Desert": {
             corruption_bonus: [
                 5,
-                2
+                2,
             ],
         },
         "Ice": {
             corruption_bonus: [
                 5,
-                2
+                2,
             ],
         },
         "Agri": {
             corruption_bonus: [
                 5,
-                2
+                2,
             ],
         },
         "Death": {
             corruption_bonus: [
                 5,
-                2
+                2,
             ],
         },
         "Lava": {
             corruption_bonus: [
                 5,
-                2
+                2,
             ],
         },
     };
@@ -376,7 +376,7 @@ function scr_trial_data(wanted = -1) {
             train_time: {
                 base: [
                     24,
-                    48
+                    48,
                 ],
             },
             recruit_count_modifier: {
@@ -385,7 +385,7 @@ function scr_trial_data(wanted = -1) {
             seed_waste: 0.1,
             corruption_bonus: [
                 10,
-                2
+                2,
             ],
             long_description: $"THE BLOOD DUEL?  HA DO I EVEN NEED TO EXPLAIN, CHAPTER MASTER?  ASPIRANTS ENTER.  NEOPHYTES LEAVE.  Those worthy of serving the Emperor are rewarded justly and those merely pretending at glory are lost in the BLOOD AND THUNDER of the dome.  Do not be alarmed at the carnage.  The Apothecarium has become quite adept at rebuilding those fit to serve.  The others are given to the {role_data[eROLE.TECHMARINE]}s.  The mind is a terrible thing to waste and the Emperor does hate waste.  Not every man is useful as an Astartes but every man is useful.",
         },
@@ -394,26 +394,26 @@ function scr_trial_data(wanted = -1) {
             train_time: {
                 base: [
                     72,
-                    80
+                    80,
                 ],
             },
             exp_bonus: {
                 base: [
                     0,
-                    0
+                    0,
                 ],
                 planets: {
                     Ice: [
                         7,
-                        10
+                        10,
                     ],
                     Desert: [
                         7,
-                        10
+                        10,
                     ],
                     Death: [
                         7,
-                        10
+                        10,
                     ],
                 },
             },
@@ -433,7 +433,7 @@ function scr_trial_data(wanted = -1) {
             train_time: {
                 base: [
                     72,
-                    80
+                    80,
                 ],
             },
             recruit_count_modifier: {
@@ -448,12 +448,12 @@ function scr_trial_data(wanted = -1) {
             exp_bonus: {
                 base: [
                     0,
-                    0
+                    0,
                 ],
             },
             corruption_bonus: [
                 5,
-                1
+                1,
             ],
             long_description: $"To become one of the Imperium’s finest warriors, the Space Marines, is the greatest glory that any human can aspire to. And is glory not worth fighting, bleeding or even dying for? It must be, for whole worlds of ice, ash and sand have buried generations of sons in pursuit of this glory and never once called the price too dear.  To ensure the necessary bloodshed, lies, paranoia and psychosis-inducing drugs have been introduced to .  This trial will seperate the weak from the strong and the chaff from the wheat.",
         },
@@ -462,48 +462,48 @@ function scr_trial_data(wanted = -1) {
             train_time: {
                 base: [
                     72,
-                    80
+                    80,
                 ],
                 planets: {
                     Desert: [
                         36,
-                        60
+                        60,
                     ],
                     Ice: [
                         36,
-                        60
+                        60,
                     ],
                     Forge: [
                         36,
-                        60
+                        60,
                     ],
                     Lava: [
                         36,
-                        60
+                        60,
                     ],
                     Death: [
                         36,
-                        60
+                        60,
                     ],
                 },
             },
             exp_bonus: {
                 base: [
                     0,
-                    0
+                    0,
                 ],
                 planets: {
                     Ice: [
                         2,
-                        4
+                        4,
                     ],
                     Desert: [
                         2,
-                        4
+                        4,
                     ],
                     Death: [
                         2,
-                        4
+                        4,
                     ],
                 },
             },
@@ -517,24 +517,24 @@ function scr_trial_data(wanted = -1) {
             train_time: {
                 base: [
                     90,
-                    108
+                    108,
                 ],
                 planets: {
                     Shrine: [
                         70,
-                        108
+                        108,
                     ],
                 },
             },
             exp_bonus: {
                 base: [
                     15,
-                    25
+                    25,
                 ],
                 planets: {
                     Temperate: [
                         20,
-                        35
+                        35,
                     ],
                 },
             },
@@ -543,7 +543,7 @@ function scr_trial_data(wanted = -1) {
             },
             corruption_bonus: [
                 -5,
-                1
+                1,
             ],
             long_description: $"An Aspirant’s spiritual and mental capability is every bit as important as his physical characteristics.  It is wise to impose Trials not upon their body, but on the mind.  Either through psychic powers, chemical agents, or endurance trials, the Aspirant’s willpower is tested.  Those unworthy do not survive the stress and trauma placed upon their hearts- only those whose minds are proven to be unbreakable are welcomed into our ranks.",
         },
@@ -552,12 +552,12 @@ function scr_trial_data(wanted = -1) {
             train_time: {
                 base: [
                     66,
-                    80
+                    80,
                 ],
                 planets: {
                     Shrine: [
                         70,
-                        108
+                        108,
                     ],
                 },
             },
@@ -565,12 +565,12 @@ function scr_trial_data(wanted = -1) {
                 base: [
                     10,
                     20,
-                    0.2
+                    0.2,
                 ],
             },
             corruption_bonus: [
                 5,
-                1
+                1,
             ],
             long_description: $"What better gauge of an Aspirant than in a duel with our astartes?  Our brother, unarmed and unarmoured, will face against the armed challenger until one cannot continue.  It is impossible for the Aspirant to actually succeed these trials, but demonstrates how far they can possibly go, and allow us to judge him accordingly.  As with most trials the Aspirant’s life is in their own hands.  He who has failed the duel- yet proven himself worthy- is rescued from the jaws of death by {role_data[eROLE.APOTHECARY]} and allowed to progress to the rank of Neophyte.",
         },
@@ -579,19 +579,19 @@ function scr_trial_data(wanted = -1) {
             train_time: {
                 base: [
                     120,
-                    140
+                    140,
                 ],
                 planets: {
                     Shrine: [
                         70,
-                        108
+                        108,
                     ],
                 },
             },
             exp_bonus: {
                 base: [
                     35,
-                    40
+                    40,
                 ],
             },
             recruit_count_modifier: {
@@ -602,10 +602,10 @@ function scr_trial_data(wanted = -1) {
             },
             corruption_bonus: [
                 -10,
-                1
+                1,
             ],
             long_description: $"What better way to cultivate astartes than to raise them from youth?  The capable children of our recruitment targets are apprenticed to our battle brothers.  Beneath their steady guidance the Aspirants spend several years learning the art of the smith.  The most able are judged by our Chapter’s {role_data[eROLE.APOTHECARY]}s and {role_data[eROLE.CHAPLAIN]} to deem if they are compatible with gene-seed implantation.  If so, the Aspirant’s trial culminates in hunting and slaying a massive beast.  Only the brightest and bravest are added to our ranks.",
-        }
+        },
     ];
     if (wanted > -1) {
         var train_traits = find_favoured_training_traits(wanted);
@@ -677,7 +677,11 @@ function find_favoured_training_traits(training_enum) {
             }
         }
     }
-    return [disfavoured_traits, favoured_traits, stat_diffs];
+    return [
+        disfavoured_traits,
+        favoured_traits,
+        stat_diffs,
+    ];
 }
 
 function scr_compile_trial_bonus_string(trial_data) {
@@ -836,7 +840,7 @@ function scr_draw_recruit_advisor() {
         xx + 326,
         yy + 480,
         xx + 887,
-        yy + 828
+        yy + 828,
     ];
     draw_set_alpha(0.75);
     draw_set_color(0);

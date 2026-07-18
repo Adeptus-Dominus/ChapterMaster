@@ -51,11 +51,13 @@ alert_color = array_create(_popup_size, "");
 
 battle = array_create(_popup_size, 0);
 battle_location = array_create(_popup_size, "");
-battle_world = array_create(_popup_size, 0);
+/// @desc 0 means space combat, 1+ means planet number (I hate this)
+battle_world = array_create(_popup_size, undefined);
 battle_opponent = array_create(_popup_size, 0);
-/// @type {Array<Id.Instance.obj_star>} 
+/// @type {Array<Id.Instance.obj_star>}
 battle_object = array_create(_popup_size, noone);
-battle_pobject = array_create(_popup_size, 0);
+/// @type {Array<Id.Instance.obj_p_fleet>}
+battle_pobject = array_create(_popup_size, noone);
 battle_special = array_create(_popup_size, "");
 
 var _string_size = 16;

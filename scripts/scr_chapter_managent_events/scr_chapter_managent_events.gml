@@ -6,12 +6,12 @@ function tech_uprising_event_aftermath() {
         var heretic_data = [
             0,
             0,
-            0
+            0,
         ];
         var loyal_data = [
             0,
             0,
-            0
+            0,
         ];
         var delete_positions = [];
         var location_techs = [];
@@ -112,7 +112,7 @@ function tech_uprising_event() {
         {
             str1: "Support the Cult mechanicus faithfuls",
             choice_func: tech_uprising_event_aftermath,
-        }
+        },
     ];
 
     _pop_data.options = _options;
@@ -176,7 +176,7 @@ function setup_new_forge_master_popup(techs) {
             hover: function() {
                 setup_popup_marine_stat_display(pop_data.talent_pick);
             },
-        }
+        },
     ];
     _pop_data.options = _options;
     scr_popup("New Forge Master", $"The Demise of Forge Master {last_master} means a replacement must be chosen. Several Options have already been put forward to you but it is ultimatly your decision.", "new_forge_master", _pop_data);

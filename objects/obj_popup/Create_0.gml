@@ -1,4 +1,3 @@
-set_zoom_to_default();
 type = 0;
 size = 2;
 y_scale = 1;
@@ -117,7 +116,7 @@ company_promote_data = [
     },
     {
         exp: 15,
-    } //10th company
+    }, //10th company
 ];
 
 role_name = array_create(12, "");

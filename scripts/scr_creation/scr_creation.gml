@@ -23,9 +23,36 @@ function set_complex_livery_buttons() {
 
         // --- Build button objects ---
         complex_livery_buttons = [
-            new UnitButtonObject({x1: 500, y1: 252, style: "pixel", tooltip: $"Primary Helm Colour\nPrimary helm colour of {_name}", label: $"Helm Primary : {get_colour_name(_data.helm_primary)}", area: "helm_primary", role_id: _type, alpha: _alpha}),
-            new UnitButtonObject({x1: 500, y1: 287, style: "pixel", tooltip: $"Secondary Helm Colour\nSecondary helm colour of {_name}", label: $"Helm Secondary : {get_colour_name(_data.helm_secondary)}", area: "helm_secondary", role_id: _type, alpha: _alpha}),
-            new UnitButtonObject({x1: 500, y1: 322, style: "pixel", tooltip: $"Helm Lens Colour\nHelm lens colour of {_name}", label: $"Lens : {get_colour_name(_data.helm_lens)}", area: "helm_lens", role_id: _type, alpha: _alpha})
+            new UnitButtonObject({
+                x1: 500,
+                y1: 252,
+                style: "pixel",
+                tooltip: $"Primary Helm Colour\nPrimary helm colour of {_name}",
+                label: $"Helm Primary : {get_colour_name(_data.helm_primary)}",
+                area: "helm_primary",
+                role_id: _type,
+                alpha: _alpha,
+            }),
+            new UnitButtonObject({
+                x1: 500,
+                y1: 287,
+                style: "pixel",
+                tooltip: $"Secondary Helm Colour\nSecondary helm colour of {_name}",
+                label: $"Helm Secondary : {get_colour_name(_data.helm_secondary)}",
+                area: "helm_secondary",
+                role_id: _type,
+                alpha: _alpha,
+            }),
+            new UnitButtonObject({
+                x1: 500,
+                y1: 322,
+                style: "pixel",
+                tooltip: $"Helm Lens Colour\nHelm lens colour of {_name}",
+                label: $"Lens : {get_colour_name(_data.helm_lens)}",
+                area: "helm_lens",
+                role_id: _type,
+                alpha: _alpha,
+            }),
         ];
 
         // --- Update current pattern selection ---
@@ -64,7 +91,7 @@ function bulk_selection_buttons_setup() {
             tooltip2: "The main color of your Astartes and their vehicles. And the colour of your chapters Ships",
             cords: [
                 500,
-                287
+                287,
             ],
         },
         {
@@ -73,7 +100,7 @@ function bulk_selection_buttons_setup() {
             tooltip2: "The secondary color of your Astartes and their vehicles.",
             cords: [
                 500,
-                322
+                322,
             ],
         },
         {
@@ -82,7 +109,7 @@ function bulk_selection_buttons_setup() {
             tooltip2: "The color of your Astartes' left Pauldron.  Normally this Pauldron displays their rank and designation.",
             cords: [
                 500,
-                357
+                357,
             ],
         },
         {
@@ -91,7 +118,7 @@ function bulk_selection_buttons_setup() {
             tooltip2: "The color of your Astartes' right Pauldron.  Normally this Pauldron contains the Chapter Insignia.",
             cords: [
                 500,
-                392
+                392,
             ],
         },
         {
@@ -100,7 +127,7 @@ function bulk_selection_buttons_setup() {
             tooltip2: "The trim color that appears on the Pauldrons, armour plating, and any decorations.",
             cords: [
                 500,
-                427
+                427,
             ],
         },
         {
@@ -109,7 +136,7 @@ function bulk_selection_buttons_setup() {
             tooltip2: "The color of your Astartes' lenses.  Most of the time this will be the visor color.",
             cords: [
                 500,
-                462
+                462,
             ],
         },
         {
@@ -118,15 +145,22 @@ function bulk_selection_buttons_setup() {
             tooltip2: "The primary color of your Astartes' weapons.",
             cords: [
                 500,
-                497
+                497,
             ],
-        }
+        },
     ];
     bulk_buttons = [];
     draw_set_font(fnt_40k_14b);
     for (var i = 0; i < array_length(_button_data); i++) {
         var _but = _button_data[i];
-        array_push(bulk_buttons, new UnitButtonObject({x1: _but.cords[0], y1: _but.cords[1], style: "pixel", tooltip: $"{_but.tooltip}\n{_but.tooltip2}", label: _but.text, alpha: custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1}),);
+        array_push(bulk_buttons, new UnitButtonObject({
+            x1: _but.cords[0],
+            y1: _but.cords[1],
+            style: "pixel",
+            tooltip: $"{_but.tooltip}\n{_but.tooltip2}",
+            label: _but.text,
+            alpha: custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1,
+        }));
     }
 }
 
@@ -172,18 +206,133 @@ function scr_creation(slide_num) {
 
         if (slide_num == eCREATION_SLIDES.CHAPTERHOME) {
             draw_set_font(fnt_40k_12);
-            complex_livery_radio = new RadioSet([{str1: "Sergeant Markers", font: fnt_40k_12, value: "sgt", display_name: "Sergeant"}, {str1: "Veteran Sergeant Markers", font: fnt_40k_12, value: "vet_sgt", display_name: "Veteran Sergeant"}, {str1: "Captain Markers", font: fnt_40k_12, value: "captain", display_name: "Captain"}, {str1: "Veteran Markers", font: fnt_40k_12, value: "veteran", display_name: "Veteran"}], "", {max_width: 50, x1: 862, y1: 225});
+            complex_livery_radio = new RadioSet([
+                {
+                    str1: "Sergeant Markers",
+                    font: fnt_40k_12,
+                    value: "sgt",
+                    display_name: "Sergeant",
+                },
+                {
+                    str1: "Veteran Sergeant Markers",
+                    font: fnt_40k_12,
+                    value: "vet_sgt",
+                    display_name: "Veteran Sergeant",
+                },
+                {
+                    str1: "Captain Markers",
+                    font: fnt_40k_12,
+                    value: "captain",
+                    display_name: "Captain",
+                },
+                {
+                    str1: "Veteran Markers",
+                    font: fnt_40k_12,
+                    value: "veteran",
+                    display_name: "Veteran",
+                },
+            ], "", {
+                max_width: 50,
+                x1: 862,
+                y1: 225,
+            });
 
-            bulk_armour_pattern = new RadioSet([{str1: "Single Colour", font: fnt_40k_12, style: "box"}, {str1: "Breastplate", font: fnt_40k_12, style: "box"}, {str1: "Vertical", font: fnt_40k_12, style: "box"}, {str1: "Quadrant", font: fnt_40k_12, style: "box"}], "", {x1: 477, y1: 515, max_width: 400});
+            bulk_armour_pattern = new RadioSet([
+                {
+                    str1: "Single Colour",
+                    font: fnt_40k_12,
+                    style: "box",
+                },
+                {
+                    str1: "Breastplate",
+                    font: fnt_40k_12,
+                    style: "box",
+                },
+                {
+                    str1: "Vertical",
+                    font: fnt_40k_12,
+                    style: "box",
+                },
+                {
+                    str1: "Quadrant",
+                    font: fnt_40k_12,
+                    style: "box",
+                },
+            ], "", {
+                x1: 477,
+                y1: 515,
+                max_width: 400,
+            });
 
-            advanced_helmet_livery = new RadioSet([{str1: "Single Colour", font: fnt_40k_12, style: "box"}, {str1: "Stripe", font: fnt_40k_12, style: "box"}, {str1: "Muzzle", font: fnt_40k_12, style: "box"}, {str1: "Pattern", font: fnt_40k_12, style: "box"}], "", {x1: 477, y1: 515, max_width: 400});
+            advanced_helmet_livery = new RadioSet([
+                {
+                    str1: "Single Colour",
+                    font: fnt_40k_12,
+                    style: "box",
+                },
+                {
+                    str1: "Stripe",
+                    font: fnt_40k_12,
+                    style: "box",
+                },
+                {
+                    str1: "Muzzle",
+                    font: fnt_40k_12,
+                    style: "box",
+                },
+                {
+                    str1: "Pattern",
+                    font: fnt_40k_12,
+                    style: "box",
+                },
+            ], "", {
+                x1: 477,
+                y1: 515,
+                max_width: 400,
+            });
 
             set_complex_livery_buttons();
 
             draw_set_font(fnt_40k_14b);
             bulk_selection_buttons_setup();
-            livery_selection_options = new RadioSet([{str1: "Default", tooltip: "The default livery all marines will be coloured in", font: fnt_menu}, {str1: "Role", tooltip: "Role specific livery that will overide default livery", font: fnt_menu}, {str1: "Company", tooltip: "company specific livery that will overide role livery", font: fnt_menu}]);
-            colour_selection_options = new RadioSet([{str1: "Standard", tooltip: "standard options to colour marine", font: fnt_menu}, {str1: "Bulk", tooltip: "bulk colouring for ease and speed", font: fnt_menu}, {str1: "Advanced", tooltip: "Advanced options for colouring", font: fnt_menu}]);
+            livery_selection_options = new RadioSet(
+                [
+                    {
+                        str1: "Default",
+                        tooltip: "The default livery all marines will be coloured in",
+                        font: fnt_menu,
+                    },
+                    {
+                        str1: "Role",
+                        tooltip: "Role specific livery that will overide default livery",
+                        font: fnt_menu,
+                    },
+                    {
+                        str1: "Company",
+                        tooltip: "company specific livery that will overide role livery",
+                        font: fnt_menu,
+                    },
+                ],
+            );
+            colour_selection_options = new RadioSet(
+                [
+                    {
+                        str1: "Standard",
+                        tooltip: "standard options to colour marine",
+                        font: fnt_menu,
+                    },
+                    {
+                        str1: "Bulk",
+                        tooltip: "bulk colouring for ease and speed",
+                        font: fnt_menu,
+                    },
+                    {
+                        str1: "Advanced",
+                        tooltip: "Advanced options for colouring",
+                        font: fnt_menu,
+                    },
+                ],
+            );
             if (full_liveries == "") {
                 var struct_cols = {
                     main_color: main_color,

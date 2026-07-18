@@ -10,14 +10,14 @@ function FastestRouteAlgorithm(start_x, start_y, xx, yy, fleet, start_from_star 
             start_star,
             -1,
             [],
-            false
+            false,
         ],
         [
             target,
             -1,
             [],
-            false
-        ]
+            false,
+        ],
     ];
 
     for (var i = 0; i < star_number; i++) {

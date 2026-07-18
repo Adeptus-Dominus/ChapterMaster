@@ -299,7 +299,7 @@ function ArtifactStruct(Index) constructor {
             "Statue",
             "Casket",
             "Chalice",
-            "Robot"
+            "Robot",
         ];
         if (array_contains(none_equips, type())) {
             _can_equip = false;
@@ -378,7 +378,7 @@ function ArtifactStruct(Index) constructor {
         var inquis_tags = [
             "daemonic",
             "chaos_gift",
-            "chaos"
+            "chaos",
         ];
         if (has_tag("inq")) {
             return false;
@@ -396,25 +396,25 @@ function ArtifactStruct(Index) constructor {
             "CHB",
             "UFL",
             "UBOLT",
-            "DUB"
+            "DUB",
         ];
         static art_mechanicus = [
             "PUR",
             "RO",
-            "CRU"
+            "CRU",
         ];
         static art_inquisition = ["PUR"];
         static art_ecclesiarchy = [
             "PUR",
             "ART",
-            "GOLD"
+            "GOLD",
         ];
         static art_eldar = [
             "SUP",
             "ART",
             "JAD",
             "SILENT",
-            "SCOPE"
+            "SCOPE",
         ];
         static art_ork = [];
         static art_tau = [
@@ -422,7 +422,7 @@ function ArtifactStruct(Index) constructor {
             "ART",
             "BIG",
             "SOO",
-            "SCOPE"
+            "SCOPE",
         ];
         static art_tyranids = []; // Tyranids, Genestealers
         static art_chaos = []; // Chaos, Heretics
@@ -442,7 +442,7 @@ function ArtifactStruct(Index) constructor {
             art_chaos,
             art_chaos,
             art_tyranids,
-            art_necrons
+            art_necrons,
         ];
 
         if (faction < 0 || faction >= array_length(faction_preferences)) {
@@ -879,10 +879,22 @@ function equip_artifact_popup_setup() {
     pop.cooldown = 8;
     with (pop) {
         target_company_radio(10000);
-        main_slate = new DataSlate({style: "decorated", XX: 945, YY: 66, set_width: true, width: 635, height: 400});
+        main_slate = new DataSlate({
+            style: "decorated",
+            XX: 945,
+            YY: 66,
+            set_width: true,
+            width: 635,
+            height: 400,
+        });
         companies_select.current_selection = -1;
         companies_select.YY = 110;
-        cancel_button = new UnitButtonObject({x1: 945, y1: main_slate.YY + main_slate.height, style: "pixel", label: "Cancel"});
+        cancel_button = new UnitButtonObject({
+            x1: 945,
+            y1: main_slate.YY + main_slate.height,
+            style: "pixel",
+            label: "Cancel",
+        });
         var _weapon_slot_options = [
             {
                 str1: "Weapon One",
@@ -893,9 +905,13 @@ function equip_artifact_popup_setup() {
                 str1: "Weapon Two",
                 font: fnt_40k_14b,
                 val: 0,
-            }
+            },
         ];
-        weapon_slot_select = new RadioSet(_weapon_slot_options, "Weapon slot", {max_width: 580, x1: 1200, y1: 130});
+        weapon_slot_select = new RadioSet(_weapon_slot_options, "Weapon slot", {
+            max_width: 580,
+            x1: 1200,
+            y1: 130,
+        });
         weapon_slot_select.current_selection = 0;
     }
 }

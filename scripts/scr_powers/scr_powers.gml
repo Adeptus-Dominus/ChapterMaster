@@ -73,7 +73,7 @@ function scr_powers(caster_id, _psy_log = undefined) {
         exit;
     }
     if (!instance_exists(obj_enunit)) {
-        exit
+        exit;
     }
 
     var _unit_armour = _unit.get_armour_data();

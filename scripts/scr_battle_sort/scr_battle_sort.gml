@@ -1,3 +1,4 @@
+/// @self Id.Instance.obj_turn_end
 function scr_battle_sort() {
     // This is ran in order to sort the battles that have been quened up
     // Space battles are placed in front whenever possible

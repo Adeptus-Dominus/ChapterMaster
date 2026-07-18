@@ -378,7 +378,10 @@ menu_buttons = {
     "menu": new MainMenuButton(spr_ui_but_4, spr_ui_hov_4,,,, scr_in_game_menu),
 };
 
-helpful_places_button = new UnitButtonObject({style: "pixel", label: "System Data"});
+helpful_places_button = new UnitButtonObject({
+    style: "pixel",
+    label: "System Data",
+});
 
 helpful_places = false;
 
@@ -408,7 +411,7 @@ manage_tags = [];
 pauldron_trim = 0;
 last_unit = [
     0,
-    0
+    0,
 ];
 ui_coloring = "";
 ui_melee_penalty = 0;
@@ -723,15 +726,51 @@ useful_info = "";
 
 // ** Secret Lair styles **
 lair_styles = [
-    {name: "Barbarian", description: "Heavy on leather, hides, and trophy body parts.", tag: "BRB"},
-    {name: "Disco", description: "Rainbow colored dance floor and steel rafters.", tag: "DIS"},
-    {name: "Feudal", description: "Lots of stone, metal filigree, and statues.", tag: "FEU"},
-    {name: "Gothic", description: "Lightly-dusty stone, mosaics, and statues throughout.", tag: "GTH"},
-    {name: "Mechanicus", description: "Grates, tubes, gears, and augmented reality.", tag: "MCH"},
-    {name: "Prospero", description: "Marble or sandstone surfaces and gold filigree.", tag: "PRS"},
-    {name: "Rave Club", description: "Large, open area with neon or strobe lights.", tag: "RAV"},
-    {name: "Steel", description: "Stainless steel surfaces and water fountains.", tag: "STL"},
-    {name: "Utilitarian", description: "Plaster or concrete surfaces with carpeting.", tag: "UTL"}
+    {
+        name: "Barbarian",
+        description: "Heavy on leather, hides, and trophy body parts.",
+        tag: "BRB",
+    },
+    {
+        name: "Disco",
+        description: "Rainbow colored dance floor and steel rafters.",
+        tag: "DIS",
+    },
+    {
+        name: "Feudal",
+        description: "Lots of stone, metal filigree, and statues.",
+        tag: "FEU",
+    },
+    {
+        name: "Gothic",
+        description: "Lightly-dusty stone, mosaics, and statues throughout.",
+        tag: "GTH",
+    },
+    {
+        name: "Mechanicus",
+        description: "Grates, tubes, gears, and augmented reality.",
+        tag: "MCH",
+    },
+    {
+        name: "Prospero",
+        description: "Marble or sandstone surfaces and gold filigree.",
+        tag: "PRS",
+    },
+    {
+        name: "Rave Club",
+        description: "Large, open area with neon or strobe lights.",
+        tag: "RAV",
+    },
+    {
+        name: "Steel",
+        description: "Stainless steel surfaces and water fountains.",
+        tag: "STL",
+    },
+    {
+        name: "Utilitarian",
+        description: "Plaster or concrete surfaces with carpeting.",
+        tag: "UTL",
+    },
 ];
 
 // ** Sets the reason for loss of loyalty **
@@ -758,7 +797,7 @@ var loyalReasons = [
     "Inquisitor Killer",
     "Crossing the Inquisition",
     "Avoiding Inspections",
-    "Lost Standard"
+    "Lost Standard",
 ];
 
 for (var i = 0; i < array_length(loyalReasons); i++) {
@@ -855,7 +894,7 @@ imperial_factions = [
     eFACTION.IMPERIUM,
     eFACTION.MECHANICUS,
     eFACTION.INQUISITION,
-    eFACTION.ECCLESIARCHY
+    eFACTION.ECCLESIARCHY,
 ];
 
 faction = array_create(14, "");
@@ -1154,7 +1193,7 @@ serialize = function() {
         "chapter_master",
         "armamentarium",
         "helpful_places_button",
-        "lair_styles"
+        "lair_styles",
     ];
     var excluded_from_save_start = ["restart_"];
 
@@ -1216,14 +1255,14 @@ spec_train_data = [
         min_exp: 30,
         coord_offset: [
             0,
-            0
+            0,
         ],
         req: [
             [
                 "technology",
                 34,
-                "exmore"
-            ]
+                "exmore",
+            ],
         ],
     },
     {
@@ -1231,14 +1270,14 @@ spec_train_data = [
         min_exp: 0,
         coord_offset: [
             0,
-            -7
+            -7,
         ],
         req: [
             [
                 "psionic",
                 1,
-                "exmore"
-            ]
+                "exmore",
+            ],
         ],
     },
     {
@@ -1246,19 +1285,19 @@ spec_train_data = [
         min_exp: 60,
         coord_offset: [
             7,
-            -7
+            -7,
         ],
         req: [
             [
                 "piety",
                 34,
-                "exmore"
+                "exmore",
             ],
             [
                 "charisma",
                 29,
-                "exmore"
-            ]
+                "exmore",
+            ],
         ],
     },
     {
@@ -1266,21 +1305,21 @@ spec_train_data = [
         min_exp: 60,
         coord_offset: [
             7,
-            0
+            0,
         ],
         req: [
             [
                 "technology",
                 29,
-                "exmore"
+                "exmore",
             ],
             [
                 "intelligence",
                 44,
-                "exmore"
-            ]
+                "exmore",
+            ],
         ],
-    }
+    },
 ];
 // Redefines training based on chapter
 if (instance_exists(obj_ini)) {
@@ -1405,11 +1444,31 @@ var _build_clause = function(_prefix, _parts) {
 
 var _hq_index = collect_company(0).index_roles();
 var _command_staff = [
-    { role: _canon[eROLE.CHAPTERMASTER],        name_slot: 0, prefix: "your majesty " },
-    { role: "Forge Master",                     name_slot: 1, prefix: "" },
-    { role: "Master of Sanctity",               name_slot: 2, prefix: "" },
-    { role: "Master of the Apothecarion",       name_slot: 3, prefix: "" },
-    { role: $"Chief {_canon[eROLE.LIBRARIAN]}", name_slot: 4, prefix: "and " },
+    {
+        role: _canon[eROLE.CHAPTERMASTER],
+        name_slot: 0,
+        prefix: "your majesty ",
+    },
+    {
+        role: "Forge Master",
+        name_slot: 1,
+        prefix: "",
+    },
+    {
+        role: "Master of Sanctity",
+        name_slot: 2,
+        prefix: "",
+    },
+    {
+        role: "Master of the Apothecarion",
+        name_slot: 3,
+        prefix: "",
+    },
+    {
+        role: $"Chief {_canon[eROLE.LIBRARIAN]}",
+        name_slot: 4,
+        prefix: "and ",
+    },
 ];
 
 var _parts = [];
@@ -1418,12 +1477,16 @@ for (var i = 0, l = array_length(_command_staff); i < l; i++) {
     if (_hq_index.has_role(_officer.role)) {
         array_push(_parts, $"{_officer.prefix}{_officer.role} {obj_ini.name[0][_officer.name_slot]}");
     }
-};
+}
 temp[34] = _build_clause("Command staff made of", _parts);
 
 var _specialist_display = [
-    _canon[eROLE.TECHMARINE], _canon[eROLE.CHAPLAIN], _canon[eROLE.APOTHECARY],
-    _canon[eROLE.LIBRARIAN], "Codiciery", "Lexicanum",
+    _canon[eROLE.TECHMARINE],
+    _canon[eROLE.CHAPLAIN],
+    _canon[eROLE.APOTHECARY],
+    _canon[eROLE.LIBRARIAN],
+    "Codiciery",
+    "Lexicanum",
 ];
 _parts = [];
 for (var i = 0, l = array_length(_specialist_display); i < l; i++) {
@@ -1432,14 +1495,20 @@ for (var i = 0, l = array_length(_specialist_display); i < l; i++) {
     if (_count > 0) {
         array_push(_parts, string_plural_count(_role_name, _count));
     }
-};
+}
 temp[35] = _build_clause("Specialist branches staffed by", _parts);
 var _honour_guard_count = _hq_index.has_role(_canon[eROLE.HONOURGUARD]) ? _hq_index.role_count(_canon[eROLE.HONOURGUARD]) : 0;
 if (_honour_guard_count > 0) {
     temp[35] += $"\n\nHonour Guard, having the {_honour_guard_count} most veteran {string_plural("marine", _honour_guard_count)} of your chapter serving in it.";
-};
+}
 
-var _vehicle_display = ["Land Raider", "Predator", "Whirlwind", "Rhino", "Land Speeder"];
+var _vehicle_display = [
+    "Land Raider",
+    "Predator",
+    "Whirlwind",
+    "Rhino",
+    "Land Speeder",
+];
 
 for (var _com = 1; _com <= 10; _com++) {
     var _index = collect_company(_com).index_roles();
@@ -1465,7 +1534,7 @@ for (var _com = 1; _com <= 10; _com++) {
         }
     }
     temp[35 + _com] = _build_clause($"{integer_to_words(_com, true, true)} company made of", _parts);
-};
+}
 
 LOGGER.info("create Ships");
 

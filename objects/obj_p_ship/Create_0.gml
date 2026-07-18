@@ -5,8 +5,6 @@ o_dist = 0;
 selected = 0;
 sel_x1 = 0;
 sel_y1 = 0;
-sel_x2 = 0;
-sel_y2 = 0;
 
 // if (x<0) then ship_id=2;
 
@@ -63,4 +61,4 @@ board_co = [];
 board_id = [];
 board_location = [];
 board_raft = [];
-//alarm_set(0, 1);
+//alarm_set(0, 1); 

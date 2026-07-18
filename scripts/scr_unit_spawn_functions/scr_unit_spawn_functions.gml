@@ -164,96 +164,96 @@ function scr_marine_spawn_armour() {
         normal_armour: [
             [
                 "MK7 Aquila",
-                95
+                95,
             ],
             [
                 "MK6 Corvus",
-                5
-            ]
+                5,
+            ],
         ],
         rare_armour: [
             [
                 "MK7 Aquila",
-                100
+                100,
             ],
             [
                 "MK6 Corvus",
-                30
+                30,
             ],
             [
                 "MK8 Errant",
-                2
+                2,
             ],
             [
                 "MK5 Heresy",
-                2
+                2,
             ],
             [
                 "MK4 Maximus",
-                1
+                1,
             ],
             [
                 "MK3 Iron Armour",
-                1
-            ]
+                1,
+            ],
         ],
         quality_armour: [
             [
                 "MK7 Aquila",
-                30
+                30,
             ],
             [
                 "MK6 Corvus",
-                5
+                5,
             ],
             [
                 "MK8 Errant",
-                5
+                5,
             ],
             [
                 "MK4 Maximus",
-                5
-            ]
+                5,
+            ],
         ],
         old_armour: [
             [
                 "MK6 Corvus",
-                4
+                4,
             ],
             [
                 "MK8 Errant",
-                2
+                2,
             ],
             [
                 "MK5 Heresy",
-                2
+                2,
             ],
             [
                 "MK4 Maximus",
-                1
+                1,
             ],
             [
                 "MK3 Iron Armour",
-                1
-            ]
+                1,
+            ],
         ],
         ancient_armour: [
             [
                 "MK6 Corvus",
-                5
+                5,
             ],
             [
                 "MK5 Heresy",
-                3
+                3,
             ],
             [
                 "MK4 Maximus",
-                1
+                1,
             ],
             [
                 "MK3 Iron Armour",
-                1
-            ]
+                1,
+            ],
         ],
     };
 
@@ -264,7 +264,7 @@ function scr_marine_spawn_armour() {
         obj_ini.role[100][eROLE.CHAPLAIN],
         obj_ini.role[100][eROLE.APOTHECARY],
         obj_ini.role[100][eROLE.LIBRARIAN],
-        obj_ini.role[100][eROLE.TECHMARINE]
+        obj_ini.role[100][eROLE.TECHMARINE],
     ];
 
     // terminator/tartaros should be decided in scr_initialize_custom

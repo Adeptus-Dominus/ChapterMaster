@@ -6,14 +6,15 @@ function in_camera_view(rect) {
     return rectangle_in_rectangle(rect[0], rect[1], rect[2], rect[3], x1, y1, w, h);
 }
 
+/// @self Id.Instance.obj_controller
 function main_map_move_keys() {
     var view_w = camera_get_view_width(view_camera[0]);
     var view_h = camera_get_view_height(view_camera[0]);
     var x_limits = 0;
     var y_limits = 0;
-    if (((menu == 0) && (formating == 0)) || instance_exists(obj_fleet)) {
-        var spd = 12 * obj_controller.scale_mod, keyb = ""; // player move speed on campaign map
-        if (!instances_exist_any([obj_ingame_menu, obj_ncombat]) || instance_exists(obj_fleet)) {
+    if (((menu == eMENU.DEFAULT || menu == eMENU.TURN_END) && formating == 0) || instance_exists(obj_fleet)) {
+        var spd = 12 * obj_controller.scale_mod; // player move speed on campaign map
+        if (!instances_exist_any([obj_ingame_menu, obj_ncombat])) {
             if (keyboard_check(vk_shift)) {
                 spd *= 3;
             } // shift down, increase speed
@@ -133,7 +134,7 @@ function draw_warp_lanes() {
                 route_coords[0] + dist_x - (warp_width / 2),
                 route_coords[1] + dist_y - (warp_height / 2),
                 route_coords[0] + dist_x + (warp_width / 2),
-                route_coords[1] + dist_y + (warp_height / 2)
+                route_coords[1] + dist_y + (warp_height / 2),
             ];
 
             var _allow_tooltips = !instance_exists(obj_star_select);
@@ -178,7 +179,7 @@ function draw_warp_lanes() {
                 (route_coords[2] - dist_x) - (warp_width / 2),
                 (route_coords[3] - dist_y) - (warp_height / 2),
                 (route_coords[2] - dist_x) + (warp_width / 2),
-                (route_coords[3] - dist_y) + (warp_height / 2)
+                (route_coords[3] - dist_y) + (warp_height / 2),
             ];
             if (scr_hit(hit_box)) {
                 var star_overlap = false;
@@ -250,7 +251,7 @@ function create_complex_star_routes(player_star) {
         east,
         west,
         south,
-        central
+        central,
     ];
     // here is where we set up the warp hubs
     var WarpHub, set, join_set, total_joins;
@@ -310,11 +311,11 @@ function set_map_pan_to_loc(target) {
     with (obj_controller) {
         location_viewer.travel_target = [
             target.x,
-            target.y
+            target.y,
         ];
         location_viewer.travel_increments = [
             (target.x - x) / 15,
-            (target.y - y) / 15
+            (target.y - y) / 15,
         ];
         location_viewer.travel_time = 0;
     }
@@ -323,17 +324,20 @@ function set_map_pan_to_loc(target) {
 function star_box_shape(star = noone) {
     var scale = obj_controller.map_scale;
     if (star == noone) {
-        return [x - (60 * scale), y + (5 * scale), x + 60 * scale, y - 40 * scale];
+        return [
+            x - (60 * scale),
+            y + (5 * scale),
+            x + 60 * scale,
+            y - 40 * scale,
+        ];
     } else {
         with (star) {
-            return [x - (60 * scale), y + (5 * scale), x + 60 * scale, y - 40 * scale];
+            return [
+                x - (60 * scale),
+                y + (5 * scale),
+                x + 60 * scale,
+                y - 40 * scale,
+            ];
         }
     }
-}
-
-function draw_sprite_centered(sprite, subimg, x, y, xscale, yscale, rot, col, alpha) {
-    draw_set_halign(fa_left);
-    var width = (sprite_get_width(sprite) * xscale) / 2;
-    var height = (sprite_get_height(sprite) * yscale) / 2;
-    draw_sprite_ext(sprite, subimg, x, y, xscale, yscale, rot, col, alpha);
 }

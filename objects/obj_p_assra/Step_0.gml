@@ -132,7 +132,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
 
                 var _weapons = [
                     unit.get_weapon_one_data(),
-                    unit.get_weapon_two_data()
+                    unit.get_weapon_two_data(),
                 ];
                 if (!is_struct(_weapons[0]) && !is_struct(_weapons[1])) {
                     gear_bonus -= 10;

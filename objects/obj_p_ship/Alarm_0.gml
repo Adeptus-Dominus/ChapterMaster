@@ -204,7 +204,7 @@ for (var co = 0; co <= obj_ini.companies; co++) {
             if (co == 0 && master_present == 0 && i < 100) {
                 if (unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER] && unit.ship_location == ship_id) {
                     master_present = 1;
-                    obj_fleet.control = 1;
+                    obj_fleet.control = true;
                 }
             }
         }

@@ -1,11 +1,11 @@
 if (array_length(audience_stack) > 0) {
     var current_audience = audience_stack[0];
 
-    with (obj_controller) {
-        if (zoomed == 1) {
-            scr_zoom();
-        }
-    }
+    // with (obj_controller) {
+    //     if (zoomed == 1) {
+    //         scr_zoom();
+    //     }
+    // }
 
     LOGGER.debug(current_audience);
 

@@ -43,7 +43,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
 
     operatives = system.p_operatives[planet];
 
-    static evaluate_operative_squad = function(operative_squad){
+    static evaluate_operative_squad = function(operative_squad) {
         //marine garrison on planet
         var _squad = fetch_squad(operative_squad.reference);
         if (array_length(_squad.members) > 0) {
@@ -62,13 +62,13 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
                 if (_unit.hp() > 0) {
                     viable_garrison++;
                 }
-            } 
+            }
         } else {
             return "delete";
         }
-    }
+    };
 
-    static update = function(){
+    static update = function() {
         garrison_squads = [];
         members = [];
         total_garrison = 0;
@@ -78,29 +78,28 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
         for (var _ops = _op_num - 1; _ops >= 0; _ops--) {
             var _op = operatives[_ops];
             if (_op.type == "squad") {
-                if (_op.job != type){
+                if (_op.job != type) {
                     continue;
                 }
-                if (evaluate_operative_squad(_op) == "delete"){
+                if (evaluate_operative_squad(_op) == "delete") {
                     array_delete(operatives, _ops, 1);
                 }
             }
         }
-    }
+    };
 
     update();
 
-    static increase_time_on_planet = function(){
+    static increase_time_on_planet = function() {
         var _op_num = array_length(operatives);
         for (var _ops = 0; _ops < _op_num; _ops++) {
             var _operative_squad = operatives[_ops];
 
             _operative_squad.task_time++;
 
-
-            time_on_planet = max(_operative_squad.task_time , time_on_planet);
+            time_on_planet = max(_operative_squad.task_time, time_on_planet);
         }
-    }
+    };
 
     static garrison_sustain_damages = function(win_or_loss) {
         var _unit;
@@ -133,7 +132,6 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
                     }
                 }
             }
-
         }
         return members_lost;
     };
@@ -217,7 +215,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
         if (!array_contains(obj_controller.imperial_factions, _pdata.current_owner)) {
             return dispo_change;
         }
-        
+
         var _planet_disposition = _pdata.player_disposition;
 
         var _main_faction_disp = _pdata.owner_faction_disposition();
@@ -251,10 +249,13 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
             }
         } else {
             var _charisma_test;
-            if (is_struct(garrison_leader)){
+            if (is_struct(garrison_leader)) {
                 _charisma_test = global.character_tester.standard_test(garrison_leader, "charisma", final_modifier);
-            }  else {
-                _charisma_test = [bool(irandom(1)), irandom_range(0, 25)];
+            } else {
+                _charisma_test = [
+                    bool(irandom(1)),
+                    irandom_range(0, 25),
+                ];
             }
             dispo_change = _charisma_test[1] / 10;
             if (!_charisma_test[0]) {
@@ -386,5 +387,8 @@ function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 
     }
     explanations += $"PDF Defence: {pdf_score}#";
     pdf_score *= 1 + defence_mult;
-    return [pdf_score, explanations];
+    return [
+        pdf_score,
+        explanations,
+    ];
 }

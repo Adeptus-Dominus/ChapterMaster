@@ -1,7 +1,11 @@
 set_zoom_to_default(); //bandaid the purge screen flying off screen if zoomed out
 
 once_only = 0;
-var _vars = ["purge", "planet_number", "attack"];
+var _vars = [
+    "purge",
+    "planet_number",
+    "attack",
+];
 for (var i = 0; i < array_length(_vars); i++) {
     if (!variable_instance_exists(self, _vars[i])) {
         variable_instance_set(self, _vars[i], 0);
@@ -293,7 +297,7 @@ if (purge == 0) {
         chaos,
         traitors,
         demons,
-        necrons
+        necrons,
     ];
     races = [
         "",
@@ -305,7 +309,7 @@ if (purge == 0) {
         "Chaos",
         "Heretics",
         "Daemons",
-        "Necrons"
+        "Necrons",
     ];
     threat_levels = [
         "",
@@ -314,7 +318,7 @@ if (purge == 0) {
         "Moderatus (3)",
         "Significus (4)",
         "Enormicus (5)",
-        "Extremis (6)"
+        "Extremis (6)",
     ];
 } else {
     var _viable_ground_forces = roster.marines_total();
@@ -338,6 +342,6 @@ if (purge == 0) {
         bombard_purge,
         fire_purge,
         selective_purge,
-        assasinate_purge
+        assasinate_purge,
     ];
 }

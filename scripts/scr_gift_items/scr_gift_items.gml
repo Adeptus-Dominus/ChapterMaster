@@ -192,7 +192,7 @@ function are_giftable_factions() {
         eFACTION.INQUISITION,
         eFACTION.ECCLESIARCHY,
         eFACTION.ELDAR,
-        eFACTION.TAU
+        eFACTION.TAU,
     ];
     for (var i = 0; i < array_length(giftable_factions); i++) {
         var gift_faction = giftable_factions[i];
@@ -208,7 +208,12 @@ function setup_gift_popup() {
         var pop = instance_create(0, 0, obj_popup);
         pop.type = 9;
         with (pop) {
-            cancel_button = new UnitButtonObject({x1: 700, y1: 370, style: "pixel", label: "Cancel"});
+            cancel_button = new UnitButtonObject({
+                x1: 700,
+                y1: 370,
+                style: "pixel",
+                label: "Cancel",
+            });
 
             fac_buttons = [];
 
@@ -217,7 +222,16 @@ function setup_gift_popup() {
                 if (i == 7) {
                     continue;
                 }
-                var _fac_but = new UnitButtonObject({x1: 660, w: 147, set_width: true, y1: _y1, style: "pixel", label: obj_controller.faction[i], faction: i, tooltip: $"Disposition : {obj_controller.disposition[i]}"});
+                var _fac_but = new UnitButtonObject({
+                    x1: 660,
+                    w: 147,
+                    set_width: true,
+                    y1: _y1,
+                    style: "pixel",
+                    label: obj_controller.faction[i],
+                    faction: i,
+                    tooltip: $"Disposition : {obj_controller.disposition[i]}",
+                });
                 _y1 = _fac_but.y2;
                 array_push(fac_buttons, _fac_but);
             }

@@ -345,7 +345,7 @@ if (!engaged) {
             engaged = false;
             exit;
         }
-    
+
         var _armour_piercing = false;
 
         obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"{wep[i]}(i{i}) is striking");

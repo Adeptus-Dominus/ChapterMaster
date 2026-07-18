@@ -23,7 +23,7 @@ function scr_start_allow(role_id, equip_area, equipment) {
         "Bolt Pistol",
         "Bolter",
         "Flamer",
-        "Sniper Rifle"
+        "Sniper Rifle",
     ];
     _allow = array_contains(_normal_equipment, equipment);
 
@@ -33,7 +33,7 @@ function scr_start_allow(role_id, equip_area, equipment) {
             "Meltagun",
             "Power Fist",
             "Power Sword",
-            "Power Axe"
+            "Power Axe",
         ];
         _allow = array_contains(_special_equipment, equipment);
     }

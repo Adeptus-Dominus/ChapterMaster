@@ -4,6 +4,27 @@ if (obj_fleet.start != 5) {
     exit;
 }
 
+if (mouse_check_button_pressed(mb_right) && (selected == 1) && (!instance_exists(obj_circular)) && (obj_fleet.control)) {
+    var stahp = 0;
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
+
+    if (obj_controller.zoomed == 0) {
+        if (point_in_rectangle(mouse_x, mouse_y, xx + 12, yy + 436, xx + 48, yy + 480)) {
+            stahp = 1;
+        }
+    } else if (obj_controller.zoomed == 1) {
+        if (point_in_rectangle(mouse_x, mouse_y, xx + 24, yy + 872, xx + 90, yy + 960)) {
+            stahp = 1;
+        }
+    }
+
+    if (stahp == 0) {
+        paction = "";
+        instance_create(20, 20, obj_circular);
+    }
+}
+
 var dist;
 
 if ((shields > 0) && (shields < maxshields)) {
@@ -276,7 +297,6 @@ if ((hp > 0) && instance_exists(target)) {
     var front = 0;
     var right = 0;
     var left = 0;
-    var rear = 0;
 
     var bull = noone;
     var targe = instance_nearest(xx, yy, obj_en_ship);
@@ -294,11 +314,10 @@ if ((hp > 0) && instance_exists(target)) {
             front = 1;
         }
 
-        var f = 0, facing = "", ammo = 0, range = 0, wep = "", dam = 0;
+        var facing = "", ammo = 0, range = 0, wep = "", dam = 0;
 
         for (var gg = 1; gg < array_length(weapon); gg++) {
             var ok = 0;
-            f += 1;
             facing = "";
             ammo = 0;
             range = 0;
@@ -409,7 +428,6 @@ if ((hp > 0) && instance_exists(target)) {
         }
     }
 }
-
 
 //Deploy boarding craft logic
 if (instance_exists(obj_en_ship) && (boarders > 0) && (board_cooldown <= 0) && ((board_capital == true) || (board_frigate == true))) {

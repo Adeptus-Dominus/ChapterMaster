@@ -17,14 +17,14 @@ if (image_alpha == 0) {
 
 var coords = [
     0,
-    0
+    0,
 ];
 
 var near_star = instance_nearest(x, y, obj_star);
 if (x == near_star.x && y == near_star.y) {
     coords = [
         24,
-        -24
+        -24,
     ];
 }
 
@@ -49,7 +49,7 @@ if (!select_instance) {
 }
 if (!keyboard_check(vk_shift)) {
     if (within) {
-        if (mouse_check_button_pressed(mb_left) && obj_controller.menu == 0 && !selected) {
+        if (mouse_check_button_pressed(mb_left) && obj_controller.menu == eMENU.DEFAULT && !selected) {
             alarm[3] = 1;
         }
     } else {
@@ -66,26 +66,11 @@ if (!keyboard_check(vk_shift)) {
     }
 }
 
-if (obj_controller.selecting_planet > 0) {
-    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249)) {
-        if (instance_exists(obj_star_select)) {
-            if (obj_star_select.button1 != "") {
-                within = 0;
-            }
-        }
-    }
-    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234 + 16) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249 + 16)) {
-        if (instance_exists(obj_star_select)) {
-            if (obj_star_select.button2 != "") {
-                within = 0;
-            }
-        }
-    }
-    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234 + 32) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249 + 32)) {
-        if (instance_exists(obj_star_select)) {
-            if (obj_star_select.button3 != "") {
-                within = 0;
-            }
+if (obj_controller.selecting_planet > 0 && instance_exists(obj_star_select)) {
+    var _btn_count = array_length(obj_star_select.buttons);
+    for (var i = 0; i < _btn_count; i++) {
+        if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234 + (16 * i)) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249 + (16 * i))) {
+            within = 0;
         }
     }
 }

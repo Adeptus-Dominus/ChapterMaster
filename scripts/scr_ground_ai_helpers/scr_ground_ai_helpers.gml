@@ -47,7 +47,10 @@ function guard_find_planet_with_most_enemy_forces(system, current_planet = 0) {
         _next_planet = 0;
     }
 
-    return [_next_planet, current_planet];
+    return [
+        _next_planet,
+        current_planet,
+    ];
 }
 
 function ensure_no_planet_negatives(planet) {
@@ -92,7 +95,7 @@ function planet_forces_array(planet) {
         p_chaos[planet],
         p_traitors[planet],
         p_tyranids[planet],
-        p_necrons[planet]
+        p_necrons[planet],
     ];
     return force_array;
 }

@@ -9,7 +9,7 @@ function scr_roman_numerals() {
         "VII",
         "VIII",
         "IX",
-        "X"
+        "X",
     ];
 
     return roman_numerals;
@@ -38,7 +38,7 @@ function int_to_roman(_num) {
         4,
         "IV",
         1,
-        "I"
+        "I",
     ];
 
     var _result = "";

@@ -24,12 +24,12 @@ if (settings == 1) {
     var _vols = [
         global.settings.master_volume,
         global.settings.sfx_volume,
-        global.settings.music_volume
+        global.settings.music_volume,
     ];
     var _vol_y = [
         224,
         282,
-        338
+        338,
     ];
 
     for (var i = 0; i < 3; i++) {

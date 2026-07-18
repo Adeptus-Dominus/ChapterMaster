@@ -90,7 +90,6 @@ function scr_enemy_ai_b() {
                         }
                     }
 
-
                     if (p_pdf[i] != 0) {
                         p_pdf[i] = round(p_pdf[i] * 0.75);
                     }

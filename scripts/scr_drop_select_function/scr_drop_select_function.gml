@@ -198,7 +198,7 @@ function drop_select_unit_selection() {
             _target_str = $"{target_race} ({target_threat})";
         }
 
-        btn_target.x1 = x2 - 50 - (string_width(_target_str));
+        btn_target.x1 = x2 - 50 - string_width(_target_str);
         btn_target.y1 = btn_formation.y2 + 10;
         btn_target.button_color = CM_GREEN_COLOR;
         btn_target.text_color = CM_GREEN_COLOR;
@@ -440,7 +440,7 @@ function drop_select_unit_selection() {
                 traitors,
                 chaos,
                 demons,
-                necrons
+                necrons,
             ];
             if (obj_ncombat.enemy >= eFACTION.ECCLESIARCHY && obj_ncombat.enemy <= eFACTION.NECRONS) {
                 obj_ncombat.threat = _threats[obj_ncombat.enemy];
@@ -530,7 +530,6 @@ function drop_select_unit_selection() {
                 _purge_score = roster.selected_count();
             }
 
-
             var _p_data = p_target.system_datas[planet_number];
 
             _p_data.refresh_data();
@@ -568,7 +567,7 @@ function drop_select_draw() {
 
         // Purge shit happens bellow;
         // God, save us;
-        if (menu == 0) {
+        if (menu == eMENU.DEFAULT) {
             if (purge == 1) {} else if (purge >= 2) {
                 draw_set_halign(fa_center);
                 draw_set_font(fnt_40k_30b);
@@ -584,7 +583,7 @@ function drop_select_draw() {
                     "Bombard Purging {0}",
                     "Fire Cleansing {0}",
                     "Selective Purging {0}",
-                    "Assassinate Governor ({0})"
+                    "Assassinate Governor ({0})",
                 ];
                 var _planet_string = planet_numeral_name(planet_number, p_target);
                 draw_text_transformed(x2 + 14, y2 + 12, string(_purge_strings[purge - 2], _planet_string), 0.6, 0.6, 0);

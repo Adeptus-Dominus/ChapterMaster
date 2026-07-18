@@ -15,9 +15,9 @@ if (instance_exists(obj_fleet_select)) {
 obj_controller.sel_owner = self.owner;
 obj_controller.cooldown = 8;
 
-if (obj_controller.zoomed) {
-    scr_zoom();
-}
+// if (obj_controller.zoomed) {
+//     scr_zoom();
+// }
 
 with (obj_fleet_select) {
     instance_destroy();

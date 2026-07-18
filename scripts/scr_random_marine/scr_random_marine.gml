@@ -13,7 +13,7 @@ function scr_random_marine(role, exp_req, search_params = {}) {
         7,
         8,
         9,
-        10
+        10,
     ];
     if (!is_array(role) && role == SPECIALISTS_LIBRARIANS) {
         role = role_groups(SPECIALISTS_LIBRARIANS);
@@ -180,7 +180,10 @@ function scr_random_marine(role, exp_req, search_params = {}) {
                 }
                 //if match made exit loop and return unit
                 if (match) {
-                    return [company, _dude_index];
+                    return [
+                        company,
+                        _dude_index,
+                    ];
                 }
             }
         }

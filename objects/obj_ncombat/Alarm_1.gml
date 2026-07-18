@@ -392,7 +392,7 @@ if (!dropping) {
     }
 }
 
-if ((dropping) && (battle_special != "space_hulk")) {
+if (dropping && (battle_special != "space_hulk")) {
     d1 = p1;
     d2 = p2;
     d3 = p3;

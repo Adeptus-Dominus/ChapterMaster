@@ -24,7 +24,10 @@ function scr_count_forces(_unit_location, _target_location, _is_planet, instance
             }
         }
         if (instance) {
-            return [info_mahreens, info_vehicles];
+            return [
+                info_mahreens,
+                info_vehicles,
+            ];
         } else {
             if (instance_exists(obj_turn_end)) {
                 obj_turn_end.info_mahreens = info_mahreens;

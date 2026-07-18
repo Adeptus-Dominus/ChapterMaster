@@ -127,7 +127,7 @@ try {
         draw_planet_debug_options();
     }
 
-    if (obj_controller.menu == 0 && !debug) {
+    if (obj_controller.menu == eMENU.DEFAULT && !debug) {
         if (manage_units_button.draw(has_player_forces)) {
             var _viewer = obj_controller.location_viewer;
             _viewer.update_garrison_log();
@@ -160,6 +160,7 @@ try {
         if (p_data.planet != _planet) {
             p_data = target.get_planet_data(_planet);
         }
+
         // Buttons that are available
         if (!buttons_selected) {
             var is_enemy = false;
@@ -248,10 +249,10 @@ try {
             }
             if (target.space_hulk) {
                 if (target.present_fleet[1] > 0) {
-                    button1 = "Raid";
-                    button2 = "Bombard";
-                    button3 = "";
-                    button4 = "";
+                    buttons = [
+                        "Raid",
+                        "Bombard",
+                    ];
                 }
             }
             buttons_selected = true;
@@ -320,7 +321,6 @@ try {
                     } else {
                         draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Negative");
                     }
-
                 };
                 garrison_data_slate.draw(340 + main_data_slate.width, 160, 0.6, 0.6);
             }

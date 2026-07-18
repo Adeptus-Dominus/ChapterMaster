@@ -527,7 +527,7 @@ function draw_chapter_trait_list(type) {
             column.x1,
             column.y1 + gap,
             column.x1 + dis_width,
-            column.y1 + column.h + gap
+            column.y1 + column.h + gap,
         ];
 
         //Tooltip

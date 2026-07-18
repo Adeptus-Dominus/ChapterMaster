@@ -65,7 +65,7 @@ if ((mission == "bad") && (plan.p_first[num] == eFACTION.MECHANICUS) && (plan.p_
     if (plan.p_owner[num]=eFACTION.TAU) then obj_controller.disposition[8]-=8;*/
 
     if ((plan.p_owner[num] > eFACTION.MECHANICUS) && (plan.p_owner[num] <= eFACTION.ELDAR)) {
-        scr_audience(plan.p_owner[num], "artifact_angry",);
+        scr_audience(plan.p_owner[num], "artifact_angry");
     }
     if ((plan.p_owner[num] == eFACTION.MECHANICUS) && (obj_controller.faction_status[eFACTION.MECHANICUS] != "War")) {
         scr_audience(plan.p_owner[num], "declare_war", -20);

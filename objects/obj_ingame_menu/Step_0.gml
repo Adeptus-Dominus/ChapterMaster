@@ -112,12 +112,12 @@ if (settings == 1 && mouse_button_clicked(mb_left, 0, true)) {
     var _vol_y = [
         223,
         281,
-        337
+        337,
     ];
     var _keys = [
         "master_volume",
         "sfx_volume",
-        "music_volume"
+        "music_volume",
     ];
 
     for (var i = 0; i < 3; i++) {

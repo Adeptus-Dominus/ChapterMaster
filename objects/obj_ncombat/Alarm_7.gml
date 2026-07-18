@@ -594,6 +594,10 @@ try {
         obj_cursor.image_index = 0;
     }
 
+    if (combat_debugger.active) {
+        combat_debugger.flush({enemy_name: enem, defeat: defeat, turns: turn_count, player_start: player_max, player_end: player_forces});
+    }
+
     instance_destroy();
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);

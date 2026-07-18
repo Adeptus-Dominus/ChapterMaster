@@ -52,12 +52,12 @@ function scr_star_ownership(argument0) {
         if (p_type[run] == "Dead" && p_owner[run] != eFACTION.IMPERIUM && p_first[run] != eFACTION.PLAYER && p_first[run] != eFACTION.ECCLESIARCHY) {
             p_owner[run] = eFACTION.IMPERIUM;
         }
-    
+
         if (p_owner[run] == eFACTION.TAU && p_tau[run] == 0 && p_pdf[run] == 0) {
             p_owner[run] = eFACTION.IMPERIUM;
             p_influence[run][eFACTION.TAU] = round(p_influence[run][eFACTION.TAU] / 2);
         }
-    
+
         if (p_type[run] == "Daemon") {
             p_owner[run] = eFACTION.CHAOS;
         }

@@ -254,7 +254,7 @@ function scr_librarium() {
                 xx + 400,
                 yy + 437,
                 xx + 445,
-                yy + 461
+                yy + 461,
             ];
             if (scr_hit(arrow[0], arrow[1], arrow[2], arrow[3])) {
                 arrow_hovered = true;
@@ -300,7 +300,7 @@ function scr_librarium() {
                 xx + 790,
                 yy + 437,
                 xx + 832,
-                yy + 461
+                yy + 461,
             ];
             if (scr_hit(arrow[0], arrow[1], arrow[2], arrow[3])) {
                 arrow_hovered = true;

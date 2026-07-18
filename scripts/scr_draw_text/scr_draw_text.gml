@@ -175,7 +175,10 @@ function calc_text_scale_confines(text, width, buffer = 0, allow_line_breaking =
         }
     }
 
-    return {text: _text, scale: _scale};
+    return {
+        text: _text,
+        scale: _scale,
+    };
 }
 
 /// @function draw_text_ext_shadow

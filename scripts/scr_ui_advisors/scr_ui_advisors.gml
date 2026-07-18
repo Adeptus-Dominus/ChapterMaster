@@ -104,7 +104,7 @@ function scr_ui_advisors() {
             draw_set_halign(fa_center);
             draw_text_transformed(xx + 1262, yy + 70, "Penitorium", 0.6, 0.6, 0);
 
-            if ((penitorium > 0)) {
+            if (penitorium > 0) {
                 draw_set_font(fnt_40k_14);
                 draw_set_halign(fa_left);
 

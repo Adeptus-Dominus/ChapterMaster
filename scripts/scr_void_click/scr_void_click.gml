@@ -8,7 +8,7 @@ function scr_void_click() {
     if (obj_controller.cooldown > 0) {
         return false;
     }
-    if (obj_controller.menu != 0) {
+    if (obj_controller.menu != eMENU.DEFAULT) {
         return false;
     }
     if (!obj_controller.zoomed) {

@@ -26,12 +26,12 @@ try {
         var _yy = local_content_slate.YY + 40;
         var _width = local_content_slate.width;
         var _heigth = local_content_slate.height;
-    
+
         if (purge == 0) {
             draw_set_halign(fa_left);
             draw_text_ext(_xx + 15, _yy, roster.roster_local_string, -1, local_content_slate.width - 40);
         }
-    
+
         if (purge != eDROP_TYPE.RAIDATTACK) {
             if (purge == eDROP_TYPE.PURGESELECT) {
                 draw_set_halign(fa_center);

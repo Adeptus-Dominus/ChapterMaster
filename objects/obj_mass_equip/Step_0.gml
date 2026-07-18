@@ -40,6 +40,30 @@ try {
                                 }
                             }
                         }
+                        if (_unit.weapon_two() != req_wep2) {
+                            if (is_string(_unit.weapon_two(true))) {
+                                if (can_assign_weapon(_unit, req_wep2)) {
+                                    _unit.update_weapon_two(req_wep2);
+                                }
+                            }
+                        }
+                        // ** Start Gear **
+                        if (is_string(_unit.gear(true))) {
+                            _unit.update_gear(req_gear);
+                        }
+
+                        // ** Start Mobility Items **
+                        if (_unit.mobility_item() != req_mobi) {
+                            var _forbidden_tags = [
+                                "terminator",
+                                "dreadnought",
+                            ];
+                            if (is_struct(unit_armour) && unit_armour.has_tags(_forbidden_tags)) {
+                                _unit.update_mobility_item("");
+                            } else {
+                                _unit.update_mobility_item(req_mobi);
+                            }
+                        }
                         // ** End role check **
                     }
                     // ** End this marine **

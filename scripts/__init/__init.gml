@@ -46,7 +46,7 @@ function __init() {
     var _icon_paths = [
         PATH_CHAPTER_ICONS,
         PATH_INCLUDED_ICONS,
-        PATH_CUSTOM_ICONS
+        PATH_CUSTOM_ICONS,
     ];
     for (var i = 0; i < array_length(_icon_paths); i++) {
         var _file_wildcard = _icon_paths[i] + "*.png";
@@ -158,7 +158,7 @@ function __init() {
         "Crusader",
         "Gothic",
         "Wolf Cult",
-        "Runic"
+        "Runic",
     ];
 
     try {
@@ -198,6 +198,6 @@ function __init() {
         c_dkgray, // Chaos
         c_dkgray, // Heretics
         #AD5272, // why 12 is skipped in general, we will never know
-        #80FF00 // Necrons
+        #80FF00, // Necrons
     ];
 }

@@ -91,7 +91,7 @@ function scr_enemy_ai_d() {
         }
 
         var _pdata = get_planet_data(i);
-        with (_pdata){
+        with (_pdata) {
             problem_end_turn_checks();
         }
 
@@ -255,7 +255,7 @@ function scr_enemy_ai_d() {
                 var priority_imperium = [
                     "Hive",
                     "Temperate",
-                    "Shrine"
+                    "Shrine",
                 ];
                 if ((p_owner[r] == eFACTION.IMPERIUM) && array_contains(priority_imperium, p_type[r])) {
                     array_push(priority_requests, r);
@@ -319,7 +319,7 @@ function scr_enemy_ai_d() {
     for (var i = 1; i <= planets; i++) {
         if (i < array_length(system_garrison)) {
             var garrison = get_garrison(i);
-            if (garrison.garrison_force){
+            if (garrison.garrison_force) {
                 garrison.garrison_disposition_change();
             }
         }

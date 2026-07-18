@@ -563,12 +563,16 @@ function draw_planet_debug_options() {
         if (debug) {
             debug_slate.inside_method = function() {
                 debug_options.draw();
-                if (debug_options.current_selection == 0) {
-                    draw_planet_debug_forces();
-                } else if (debug_options.current_selection == 1) {
-                    draw_planet_debug_problems();
-                } else if (debug_options.current_selection == 2) {
-                    draw_planet_debug_features();
+                switch (debug_options.current_selection) {
+                    case 0:
+                        draw_planet_debug_forces();
+                        break;
+                    case 1:
+                        draw_planet_debug_problems();
+                        break;
+                    case 2:
+                        draw_planet_debug_features();
+                        break;
                 }
             };
             debug_slate.draw();
@@ -621,7 +625,7 @@ function draw_planet_debug_features() {
         {
             e_num: eP_FEATURES.STARSHIP,
             name: "Ancient Starship",
-        }
+        },
     ];
 
     var base_y = 220;
@@ -665,7 +669,12 @@ function draw_planet_debug_problems() {
                     case "mech_bionics":
                         spawn_mechanicus_mission("mech_bionics");
                         break;
-
+                    case "succession":
+                        _p_data.init_war_of_succession();
+                        break;
+                    case "fallen":
+                        _p_data.init_fallen_marines();
+                        break;
                     default:
                         scr_popup("error", "no specific debug action created please consider helping to make one", "");
                         break;
@@ -695,7 +704,7 @@ function draw_planet_debug_forces() {
         "Heretics",
         "Daemons",
         "Necrons",
-        "Sisters"
+        "Sisters",
     ];
     var faction_keys = [
         "p_orks",
@@ -705,7 +714,7 @@ function draw_planet_debug_forces() {
         "p_traitors",
         "p_demons",
         "p_necrons",
-        "p_sisters"
+        "p_sisters",
     ];
 
     // Loop through each faction row
@@ -784,8 +793,8 @@ function system_debug_enemy_invasion() {
                     invasion_faction = eFACTION.TYRANIDS;
                     system_debug_enemy_invasion_spawn();
                 },
-            }
-        ]
+            },
+        ],
     );
 }
 
