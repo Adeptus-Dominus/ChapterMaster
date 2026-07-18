@@ -17,7 +17,7 @@ jobs:
       - name: Download Gobo
         run: |
           gh release download --repo EttyKitty/GoboCat --pattern "gobo-linux-x64.zip"
-          unzip gobo-ubuntu.zip
+          unzip gobo-linux-x64.zip
           chmod +x ./gobo
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
