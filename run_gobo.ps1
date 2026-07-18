@@ -1,7 +1,14 @@
 # --- CONFIGURATION ---
-$Repo = "EttyKitty/Gobo"
+$Repo = "EttyKitty/GoboCat"
 $FormatterName = "Gobo"
 $Extension = "*.gml"
+
+# Polyfill for Windows PowerShell 5.1 (which lacks built-in $IsWindows, $IsLinux, $IsMacOS)
+if ($null -eq $IsWindows -and $null -eq $IsLinux -and $null -eq $IsMacOS) {
+    $IsWindows = $true
+    $IsLinux = $false
+    $IsMacOS = $false
+}
 
 # Detect operating system and set platform-specific variables
 if ($IsWindows) {
@@ -18,9 +25,28 @@ if ($IsWindows) {
     exit 1
 }
 
+# Detect system architecture (defaulting to x64)
+$ArchKeyword = "x64"
+if ($IsWindows) {
+    if ($env:PROCESSOR_ARCHITECTURE -like "*ARM*") {
+        $ArchKeyword = "arm64"
+    }
+} else {
+    try {
+        $OSArch = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLower()
+        if ($OSArch -eq "arm64") {
+            $ArchKeyword = "arm64"
+        }
+    } catch {
+        if ((uname -m) -match "arm64|aarch64") {
+            $ArchKeyword = "arm64"
+        }
+    }
+}
+
 Clear-Host
 Write-Host "=========================================" -ForegroundColor Cyan
-Write-Host "         Gobo: GML Formatter             " -ForegroundColor White
+Write-Host "         GoboCat: GML Formatter             " -ForegroundColor White
 Write-Host "=========================================" -ForegroundColor Cyan
 
 # --- AUTO-UPDATE ---
@@ -30,10 +56,18 @@ if (!(Test-Path $Formatter)) {
     $ApiUrl = "https://api.github.com/repos/$Repo/releases/latest"
     $Assets = (Invoke-RestMethod -Uri $ApiUrl -ErrorAction Stop).assets
     
-    # Match asset based on platform keyword
-    $Asset = $Assets | Where-Object { $_.name -like "*$PlatformKeyword*" } | Select-Object -First 1
+    # 1. Attempt to match both platform and architecture keywords
+    $Asset = $Assets | Where-Object { $_.name -like "*$PlatformKeyword*" -and $_.name -like "*$ArchKeyword*" } | Select-Object -First 1
     
     # Fallback for macOS if asset name uses "osx" instead of "mac"
+    if (!$Asset -and $IsMacOS) {
+        $Asset = $Assets | Where-Object { $_.name -like "*osx*" -and $_.name -like "*$ArchKeyword*" } | Select-Object -First 1
+    }
+    
+    # 2. General fallback if no architecture-specific match is found
+    if (!$Asset) {
+        $Asset = $Assets | Where-Object { $_.name -like "*$PlatformKeyword*" } | Select-Object -First 1
+    }
     if (!$Asset -and $IsMacOS) {
         $Asset = $Assets | Where-Object { $_.name -like "*osx*" } | Select-Object -First 1
     }
@@ -44,6 +78,7 @@ if (!(Test-Path $Formatter)) {
     }
     
     $FileName = $Asset.name
+    Write-Host "[INFO] Downloading: $FileName" -ForegroundColor Gray
     Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile $FileName -ErrorAction Stop
     
     # Handle extraction based on file extension
