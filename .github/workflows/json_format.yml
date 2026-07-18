@@ -16,8 +16,9 @@ jobs:
 
       - name: Format and Sort JSON Files
         run: |
-          # Find all .json files, excluding node_modules and package-lock.json
-          find . -type f -name "*.json" ! -path "*/node_modules/*" ! -name "package-lock.json" -print0 | while IFS= read -r -d '' file; do
+          set -o pipefail
+
+          find . -type f -name "*.json" ! -path "*/node_modules/*" ! -path "*/.git/*" ! -name "package-lock.json" -print0 | while IFS= read -r -d '' file; do
             echo "Processing $file..."
             
             # 1. json5 parses lenient JSON (fixing trailing commas/comments) and outputs standard JSON
@@ -25,7 +26,7 @@ jobs:
             if npx json5 "$file" 2>/dev/null | jq --indent 4 -S . > "$file.tmp"; then
               mv "$file.tmp" "$file"
             else
-              echo "Warning: Could not process $file. It may contain syntax errors other than trailing commas."
+              echo "Warning: Could not process $file. It may contain syntax errors."
               rm -f "$file.tmp"
             fi
           done
