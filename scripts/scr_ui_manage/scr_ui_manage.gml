@@ -966,13 +966,9 @@ function scr_ui_manage() {
                         companies: managing,
                     },
                     role_group_params: {
-                        group: [
-                            SPECIALISTS_STANDARD,
-                            true,
-                            true,
-                        ],
+                        group: SPECIALISTS_CAPTAIN_CANDIDATES,
                         location: "",
-                        opposite: true,
+                        opposite: false,
                     },
                     purpose: $"{int_to_roman(managing)} Company Champion Candidates",
                     purpose_code: "champion_promote",
@@ -984,13 +980,9 @@ function scr_ui_manage() {
                         companies: managing,
                     },
                     role_group_params: {
-                        group: [
-                            SPECIALISTS_STANDARD,
-                            true,
-                            true,
-                        ],
+                        group: SPECIALISTS_CAPTAIN_CANDIDATES,
                         location: "",
-                        opposite: true,
+                        opposite: false,
                     },
                     purpose: $"{int_to_roman(managing)} Company Ancient Candidates",
                     purpose_code: "ancient_promote",
