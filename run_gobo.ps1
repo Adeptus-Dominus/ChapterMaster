@@ -83,27 +83,6 @@ if (!(Test-Path $Formatter)) {
             $Match
         } | Select-Object -First 1
         
-        # 2. Fallback for arm64 systems to run x64 assets via emulation/translation if no native asset exists
-        if (!$Asset -and $ArchKeyword -eq "arm64") {
-            $FallbackPatterns = @("x64", "x86_64", "amd64")
-            $Asset = $PlatformAssets | Where-Object {
-                $AssetName = $_.name
-                $Match = $false
-                foreach ($Pattern in $FallbackPatterns) {
-                    if ($AssetName -like "*$Pattern*") {
-                        $Match = $true
-                        break
-                    }
-                }
-                $Match
-            } | Select-Object -First 1
-        }
-        
-        # 3. General fallback: select the first available platform asset
-        if (!$Asset) {
-            $Asset = $PlatformAssets | Select-Object -First 1
-        }
-        
         if (!$Asset) {
             throw "Could not find a valid release asset for this platform."
         }
