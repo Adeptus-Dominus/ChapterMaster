@@ -1178,6 +1178,7 @@
     {"id":{"name":"spr_dread_claw_shadow","path":"sprites/spr_dread_claw_shadow/spr_dread_claw_shadow.yy",},},
     {"id":{"name":"spr_dread_claw","path":"sprites/spr_dread_claw/spr_dread_claw.yy",},},
     {"id":{"name":"spr_dread_colors","path":"sprites/spr_dread_colors/spr_dread_colors.yy",},},
+    {"id":{"name":"spr_dread_heavy_bolter_shadow","path":"sprites/spr_dread_heavy_bolter_shadow/spr_dread_heavy_bolter_shadow.yy",},},
     {"id":{"name":"spr_dread_heavy_bolter","path":"sprites/spr_dread_heavy_bolter/spr_dread_heavy_bolter.yy",},},
     {"id":{"name":"spr_dread_iron_clad","path":"sprites/spr_dread_iron_clad/spr_dread_iron_clad.yy",},},
     {"id":{"name":"spr_dread_lascannon_shadow","path":"sprites/spr_dread_lascannon_shadow/spr_dread_lascannon_shadow.yy",},},
