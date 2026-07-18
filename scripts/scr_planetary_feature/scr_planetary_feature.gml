@@ -324,7 +324,7 @@ function scr_planetary_feature(planet_num) {
         var feat = p_feature[planet_num][f];
         if (feat.player_hidden == 1) {
             feat.player_hidden = 0;
-            var numeral_n = planet_numeral_name(planet_num);
+            var numeral_n = planet_numeral_name(planet_num, id);
             var lop = "";
             switch (feat.f_type) {
                 case eP_FEATURES.SORORITAS_CATHEDRAL:

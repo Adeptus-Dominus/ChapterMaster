@@ -943,7 +943,7 @@ function fleet_arrival_logic() {
 
             with (stue) {
                 if (p_type[tau_influence_planet] != "Dead") {
-                    scr_alert("green", "owner", $"Tau ship broadcasts subversive messages to {planet_numeral_name(tau_influence_planet)}.", sta.x, sta.y);
+                    scr_alert("green", "owner", $"Tau ship broadcasts subversive messages to {planet_numeral_name(tau_influence_planet, stue)}.", sta.x, sta.y);
                     tau_influence = p_influence[tau_influence_planet][eFACTION.TAU];
 
                     if ((tau_influence_chance <= 70) && (tau_influence < 70)) {

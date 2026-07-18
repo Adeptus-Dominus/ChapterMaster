@@ -1,3 +1,4 @@
+/// @self Id.Instance.obj_creation
 function player_recruit_planet_selection() {
     add_draw_return_values();
     with (obj_creation) {

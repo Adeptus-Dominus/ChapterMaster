@@ -530,7 +530,7 @@ function scr_enemy_ai_e() {
             }
             if (has_problem_planet(run, "spyrer")) {
                 if (p_player[run] > 20) {
-                    var tixt = "The Spyrer on " + planet_numeral_name(run) + " seems to have vanished, presumably gone into hiding.";
+                    var tixt = "The Spyrer on " + planet_numeral_name(run, id) + " seems to have vanished, presumably gone into hiding.";
                     scr_popup("Spyrer Rampage", tixt, "spyrer", "");
                 } else if (p_player[run] <= 20) {
                     obj_turn_end.battles += 1;
@@ -558,9 +558,9 @@ function scr_enemy_ai_e() {
                     }
                 } else {
                     if (remove_planet_problem(run, "fallen")) {
-                        var tixt = "Your marines have scoured " + planet_numeral_name(run) + " in search of the Fallen.  Despite their best efforts, and meticulous searching, none have been found.  It appears as though the information was faulty or out of date.";
+                        var tixt = "Your marines have scoured " + planet_numeral_name(run, id) + " in search of the Fallen.  Despite their best efforts, and meticulous searching, none have been found.  It appears as though the information was faulty or out of date.";
                         scr_popup("Hunt the Fallen", tixt, "fallen", "");
-                        scr_event_log("", $"Mission Successful: No Fallen located upon {planet_numeral_name(run)}");
+                        scr_event_log("", $"Mission Successful: No Fallen located upon {planet_numeral_name(run, id)}");
                     }
                 }
             }

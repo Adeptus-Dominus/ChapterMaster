@@ -23,8 +23,6 @@ enum ePLAYER_BASE {
 }
 
 function find_player_spawn_star() {
-    instance_activate_object(obj_star);
-    var _spawn_star;
     var _chosen_star = noone;
     var _allowable = false;
     var _allowables = [
@@ -61,12 +59,13 @@ function find_player_spawn_star() {
         }
         instance_deactivate_object(_chosen_star);
     }
-    instance_activate_object(obj_star);
-    return _chosen_star.id;
+    instance_activate_all();
+    return _chosen_star;
 }
 
 /// @self Id.Instance.obj_star
-function player_home_star(home_planet) {
+/// @param {Real} home_planet
+function player_home_planet(home_planet) {
     var _star_names = global.name_generator.name_sets.star;
     p_type[home_planet] = obj_ini.home_type;
     planet[home_planet] = 1;
@@ -124,18 +123,18 @@ function player_home_star(home_planet) {
     }
 }
 
+/// @param {Real} recruit_planet
 function set_player_recruit_planet(recruit_planet) {
     var _star_names = global.name_generator.name_sets.star;
     p_type[recruit_planet] = obj_ini.recruiting_type;
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD && obj_ini.recruit_relative_loc == 2) {
         // Possibly a temporary fix, Fleet-based Chapters use Homeworld names for the Recruiting stars for some reason
-        var recruit_name = obj_ini.recruiting_name;
-        if (recruit_name != "random") {
-            _star_names.AddUsedName(recruit_name);
-            if (find_star_by_name(recruit_name) != noone) {
-                find_star_by_name(recruit_name).name = global.name_generator.GenerateFromSet("star", false);
+        if (obj_ini.recruiting_name != "random") {
+            _star_names.AddUsedName(obj_ini.recruiting_name);
+            if (find_star_by_name(obj_ini.recruiting_name) != noone) {
+                find_star_by_name(obj_ini.recruiting_name).name = global.name_generator.GenerateFromSet("star", false);
             }
-            name = recruit_name;
+            name = obj_ini.recruiting_name;
         }
     } else {
         if (obj_ini.home_name != "random") {
@@ -155,21 +154,22 @@ function set_player_recruit_planet(recruit_planet) {
     }
 }
 
+/// @param {Id.Instance.obj_star} chosen_star
 function set_player_homeworld_star(chosen_star) {
     with (chosen_star) {
         if (obj_ini.recruit_relative_loc == 1 && obj_ini.home_planet_count == 0) {
             obj_ini.home_planet_count++;
         }
         planets = obj_ini.home_planet_count + 1;
-        var _home_star = irandom_range(1, planets);
+        var _home_planet = irandom_range(1, planets);
 
-        player_home_star(_home_star);
+        player_home_planet(_home_planet);
         var _planet_types = global.planet_types;
 
         if (obj_ini.recruit_relative_loc == 1) {
             var _possible_planets = [];
             for (var i = 1; i <= planets; i++) {
-                if (i != _home_star) {
+                if (i != _home_planet) {
                     array_push(_possible_planets, i);
                     p_type[i] = array_random_element(_planet_types);
                 }
@@ -177,9 +177,9 @@ function set_player_homeworld_star(chosen_star) {
             var _recruit_star = array_random_element(_possible_planets);
             set_player_recruit_planet(_recruit_star);
         } else if (obj_ini.recruit_relative_loc == 0) {
-            array_push(p_feature[_home_star], new NewPlanetFeature(eP_FEATURES.RECRUITING_WORLD)); //recruiting world
+            array_push(p_feature[_home_planet], new NewPlanetFeature(eP_FEATURES.RECRUITING_WORLD)); //recruiting world
             for (var i = 1; i <= planets; i++) {
-                if (i != _home_star) {
+                if (i != _home_planet) {
                     p_type[i] = array_random_element(_planet_types);
                 }
             }
@@ -189,7 +189,7 @@ function set_player_homeworld_star(chosen_star) {
         } else if (obj_ini.recruit_relative_loc == 2) {
             create_recruit_system(distance_removed_star(chosen_star.x, chosen_star.y));
             for (var i = 1; i <= planets; i++) {
-                if (i != _home_star) {
+                if (i != _home_planet) {
                     p_type[i] = array_random_element(_planet_types);
                 }
             }
