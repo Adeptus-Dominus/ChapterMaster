@@ -2600,6 +2600,7 @@ global.weapon_visual_data = {
 					display_type: "dreadnought",
 				},
                 sprite: spr_dread_assault_cannon,
+				shadows: spr_dread_assault_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
                 single_left_right_profile: true,

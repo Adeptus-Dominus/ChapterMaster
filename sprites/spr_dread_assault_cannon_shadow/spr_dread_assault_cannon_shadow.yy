@@ -1,6 +1,6 @@
 {
   "$GMSprite":"v2",
-  "%Name":"spr_dread_assault_cannon",
+  "%Name":"spr_dread_assault_cannon_shadow",
   "bboxMode":0,
   "bbox_bottom":147,
   "bbox_left":25,
@@ -12,17 +12,17 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"f4c4da4c-d710-444e-b7d8-37d2e5267631","name":"f4c4da4c-d710-444e-b7d8-37d2e5267631","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"v1","%Name":"148ba20b-e5df-49a2-a7ab-43784ae3afc4","name":"148ba20b-e5df-49a2-a7ab-43784ae3afc4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"395c68b4-0391-4150-937f-8a7c95ba6391","name":"395c68b4-0391-4150-937f-8a7c95ba6391","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"59e00c86-abfa-4933-8200-1a8407a9d2d1","name":"59e00c86-abfa-4933-8200-1a8407a9d2d1","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":232,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"ceba5d93-052a-480e-90de-b0326babef39","blendMode":0,"displayName":"default","isLocked":false,"name":"ceba5d93-052a-480e-90de-b0326babef39","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"7fd46d2c-b784-49ef-a962-921569dc6d65","blendMode":0,"displayName":"default","isLocked":false,"name":"7fd46d2c-b784-49ef-a962-921569dc6d65","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_dread_assault_cannon",
+  "name":"spr_dread_assault_cannon_shadow",
   "nineSlice":null,
   "origin":9,
   "parent":{
@@ -34,7 +34,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"spr_dread_assault_cannon",
+    "%Name":"spr_dread_assault_cannon_shadow",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -58,25 +58,23 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_dread_assault_cannon",
+    "name":"spr_dread_assault_cannon_shadow",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
-    "seqHeight":232.0,
-    "seqWidth":197.0,
     "showBackdrop":true,
     "showBackdropImage":false,
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f4c4da4c-d710-444e-b7d8-37d2e5267631","path":"sprites/spr_dread_assault_cannon/spr_dread_assault_cannon.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"a55296c1-43f0-4bbe-8aba-f4aa5879309b","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"395c68b4-0391-4150-937f-8a7c95ba6391","path":"sprites/spr_dread_assault_cannon_shadow/spr_dread_assault_cannon_shadow.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"bd49ffb2-e09c-4a47-b421-5b821848c278","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"148ba20b-e5df-49a2-a7ab-43784ae3afc4","path":"sprites/spr_dread_assault_cannon/spr_dread_assault_cannon.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"1c441f4a-4735-4843-829b-1eafbcda428a","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"59e00c86-abfa-4933-8200-1a8407a9d2d1","path":"sprites/spr_dread_assault_cannon_shadow/spr_dread_assault_cannon_shadow.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"b9c76a8f-0d42-4052-9469-566445925014","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
@@ -85,7 +83,7 @@
     "yorigin":0,
   },
   "swatchColours":null,
-  "swfPrecision":2.525,
+  "swfPrecision":0.5,
   "textureGroupId":{
     "name":"MarineViewer",
     "path":"texturegroups/MarineViewer",
