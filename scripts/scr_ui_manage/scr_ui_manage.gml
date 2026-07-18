@@ -146,7 +146,7 @@ function reset_manage_unit_constants(unit) {
 
         //armour
         var _data = {
-            tooltip: $"==Armour==\n {is_struct(_equip_data.armour_data) ? _equip_data.armour_data.item_tooltip_desc_gen() : ""}",
+            tooltip: $"==Armour==\n {is_struct(_equip_data.armour) ? _equip_data.armour.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.armour_quality),
             max_width: 187,
         };
@@ -157,7 +157,7 @@ function reset_manage_unit_constants(unit) {
         // Gear
 
         _data = {
-            tooltip: $"==Gear==\n{is_struct(_equip_data.gear_data) ? _equip_data.gear_data.item_tooltip_desc_gen() : ""}",
+            tooltip: $"==Gear==\n{is_struct(_equip_data.gear) ? _equip_data.gear.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.gear_quality),
             max_width: 187,
         };
@@ -166,7 +166,7 @@ function reset_manage_unit_constants(unit) {
 
         //mobility
         _data = {
-            tooltip: $"==Back/Mobilitiy==\n{is_struct(_equip_data.mobility_data) ? _equip_data.mobility_data.item_tooltip_desc_gen() : ""}",
+            tooltip: $"==Back/Mobilitiy==\n{is_struct(_equip_data.mobi) ? _equip_data.mobi.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.mobility_item_quality),
             max_width: 187,
         };
@@ -174,7 +174,7 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.mobi_string = new ReactiveString(unit.equipments_qual_string("mobi", true), 0, 0, _data);
 
         _data = {
-            tooltip: $"==First Weapon==\n{is_struct(_equip_data.weapon_one_data) ? _equip_data.weapon_one_data.item_tooltip_desc_gen() : ""}",
+            tooltip: $"==First Weapon==\n{is_struct(_equip_data.wep1) ? _equip_data.wep1.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.weapon_one_quality),
             max_width: 187,
         };
@@ -183,7 +183,7 @@ function reset_manage_unit_constants(unit) {
 
         //mobility
         _data = {
-            tooltip: $"==Second Weapon==\n{is_struct(_equip_data.weapon_two_data) ? _equip_data.weapon_two_data.item_tooltip_desc_gen() : ""}",
+            tooltip: $"==Second Weapon==\n{is_struct(_equip_data.wep2) ? _equip_data.wep2.item_tooltip_desc_gen() : ""}",
             colour: quality_color(unit.weapon_two_quality),
             max_width: 187,
         };
