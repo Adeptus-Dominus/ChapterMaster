@@ -7,6 +7,6 @@
   "multilineArguments": 0,
   "blankLineAfterBlocks": false,
   "flatExpressions": false,
-  "explicitUndefined": false,
+  "explicitUndefined": false
 
 }
