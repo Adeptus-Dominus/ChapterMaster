@@ -44,7 +44,7 @@ if (!(Test-Path $Formatter)) {
     }
     
     $FileName = $Asset.name
-    Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile $FileName
+    Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile $FileName -ErrorAction Stop
     
     # Handle extraction based on file extension
     if ($FileName -like "*.zip") {
