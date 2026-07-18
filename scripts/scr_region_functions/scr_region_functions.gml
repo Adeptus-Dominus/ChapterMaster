@@ -4059,17 +4059,17 @@ function region_planet_building_count(_star, _planet, _id) {
 /// @returns {Bool}
 function region_building_can_build(_star, _planet, _region, _def) {
     if (_region.owner != eFACTION.PLAYER) {
-        // Allied worlds accept Chapter-funded DEFENSES and barracks once the Chapter
-        // has standing (ALLIED_REGION_BUILD_MIN_INFLUENCE). Without this, every
-        // player tool sat behind the 100-influence world flip (~20+ turns), while
-        // the new enemy pressure arrives from turn one. Economic improvements
-        // (factories, mines, manufactorums, stations) still require the flip.
+        // Allied worlds accept Chapter-funded DEFENSES and barracks when the world's
+        // DISPOSITION toward the Chapter is positive: standing is the permission,
+        // influence is the leverage (it discounts the price, see
+        // region_building_price). Without this, every player tool sat behind the
+        // 100-influence world flip (~20+ turns) while the new enemy pressure
+        // arrives from turn one. Economic improvements still require the flip.
         var _allied_owner = array_contains(global.SystemHelps.default_allies, _region.owner);
         var _fundable = region_building_is_defence(_def)
             || (_def.id == "pdf_barracks")
             || (_def.id == "guard_barracks");
-        if (!_allied_owner || !_fundable
-            || (_star.p_influence[_planet][eFACTION.PLAYER] < ALLIED_REGION_BUILD_MIN_INFLUENCE)) {
+        if (!_allied_owner || !_fundable || (_star.dispo[_planet] <= 0)) {
             return false;
         }
     }
@@ -4116,10 +4116,11 @@ function region_building_build(_star, _planet, _region_index, _id) {
     if (!region_building_can_build(_star, _planet, _region, _def)) {
         return false;
     }
-    if (obj_controller.requisition < _def.cost) {
+    var _price = region_building_price(_star, _planet, _def);
+    if (obj_controller.requisition < _price) {
         return false;
     }
-    obj_controller.requisition -= _def.cost;
+    obj_controller.requisition -= _price;
     array_push(_region.buildings, _id);
     if (is_callable(_def.apply)) {
         _def.apply(_star, _planet, _region);
@@ -4375,9 +4376,9 @@ function region_buildings_summary(_region) {
 /// @param {Real} _cell_w Tile width.
 /// @param {Struct} _def Catalogue entry.
 /// @returns {Bool}
-function draw_region_build_widget(_cx, _cy, _cell_w, _def) {
+function draw_region_build_widget(_cx, _cy, _cell_w, _def, _star, _planet) {
     var _cxc = _cx + (_cell_w * 0.5);
-    var _afford = obj_controller.requisition >= _def.cost;
+    var _afford = obj_controller.requisition >= region_building_price(_star, _planet, _def);
 
     // Name (wraps to at most two lines).
     draw_set_font(fnt_40k_14);
@@ -4404,7 +4405,7 @@ function draw_region_build_widget(_cx, _cy, _cell_w, _def) {
     draw_rectangle(_bx1, _by, _bx2, _by + 18, true);
     draw_set_color(_afford ? c_white : c_gray);
     draw_set_halign(fa_center);
-    draw_text(_cxc, _by + 2, string(_def.cost) + " req");
+    draw_text(_cxc, _by + 2, string(region_building_price(_star, _planet, _def)) + " req");
 
     return (_afford && _hover && mouse_button_clicked());
 }
@@ -4482,7 +4483,7 @@ function draw_region_construction_panel(_star, _planet, _px, _py) {
         var _cx = _px + 4 + ((i mod _cols) * _cell_w);
         var _cy = _grid_y + ((i div _cols) * _cell_h);
 
-        if (draw_region_build_widget(_cx, _cy, _cell_w, _def)) {
+        if (draw_region_build_widget(_cx, _cy, _cell_w, _def, _star, _planet)) {
             region_building_build(_star, _planet, _focus, _def.id);
         }
 
@@ -4566,4 +4567,19 @@ function beacon_teardown_if_cleansed(_star, _planet) {
             scr_event_log("green", $"The Ascension Beacon on {_star.name} {scr_roman(_planet)} is torn down.", _star.name);
         }
     } catch (_e) {}
+}
+
+/// @function region_building_price
+/// @description The requisition price of a building here: Chapter influence discounts
+///              construction (the locals subsidise their protectors), scaling linearly to
+///              REGION_BUILD_INFLUENCE_DISCOUNT_MAX at 100 influence. Applies on the
+///              player's own worlds too (influence there is typically 100 = full discount).
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Struct} _def
+/// @returns {Real}
+function region_building_price(_star, _planet, _def) {
+    var _infl = clamp(_star.p_influence[_planet][eFACTION.PLAYER], 0, 100);
+    var _disc = REGION_BUILD_INFLUENCE_DISCOUNT_MAX * (_infl / 100);
+    return max(1, round(_def.cost * (1 - _disc)));
 }
