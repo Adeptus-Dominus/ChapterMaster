@@ -943,9 +943,9 @@ function scr_ui_manage() {
         get_command_slots_data = function() {
             var _command_slots_data = [
                 {
-                    search_params: {},
+                    search_params: {companies: managing},
                     role_group_params: {
-                        group: "captain_candidates",
+                        group: SPECIALISTS_CAPTAIN_CANDIDATES,
                         location: "",
                         opposite: false,
                     },
