@@ -522,10 +522,32 @@ function unit_has_equipped(check_equippment) {
 
 function UnitEquipment(equipment_set){
     self.equipment = equipment_set;
-    equip_slots = 
+    satic equip_slots = UNIT_EQUIP_SLOTS;
+    item_names = [equipment.wep1.name, equipment.wep2.name, equipment.armour.name,equipment.gear.name,equipment.mobi..name];
 
-    function has_equipped(){
+    function has_equipped(slot = eEQUIPMENT_SLOT.ALL, item){
+        if (slot > eEQUIPMENT_SLOT.ALL || slot < 0){
+            LOGGER.error($"{slot} out of bounds for enum eEQUIPMENT_SLOT");
+        }
+        var _multi_items = (is_array(item));
 
+        if (slot == eEQUIPMENT_SLOT.ALL){
+            if (_multi_items){
+                for (var i = 0; i < array_length(item); i++){
+                    return array_contains(item_names, item[i]);
+                }
+            } else{
+                return array_contains(item_names, item);
+            }
+            
+        }
+        else if {
+            if (_multi_items){
+                return array_contains(item, item_names[slot]);
+            } else {
+                return item_names[slot] == item;
+            }
+        }
     }
 }
 
