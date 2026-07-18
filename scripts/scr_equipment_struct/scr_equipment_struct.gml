@@ -399,7 +399,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
         }
     };
 
-    static evaluate(evaluation_data){
+    static evaluate = function(evaluation_data){
         var _valid = true;
         var _eval_count = array_length(struct_get_names(evaluation_data));
         if (struct_exists(evaluation_data, "name")){

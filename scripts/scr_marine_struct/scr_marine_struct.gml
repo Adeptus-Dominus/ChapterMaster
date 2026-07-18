@@ -726,7 +726,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             wep1: weapon_one_data,
             wep2: weapon_two_data,
         };
-        return equip_data;
+        if(as_UnitEquipment){
+            return new UnitEquipment(equip_data, self);
+        } else {
+            return equip_data;
+        }
     };
 
     //body parts list can be extended as much as people want

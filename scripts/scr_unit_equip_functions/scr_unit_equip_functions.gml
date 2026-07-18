@@ -522,8 +522,7 @@ function unit_has_equipped(check_equippment) {
 
 function UnitEquipment(equipment_set, unit = noone) constructor{
     self.equipment = equipment_set;
-    self.unit = unit
-    satic equip_slots = UNIT_EQUIP_SLOTS;
+    self.unit = unit;
     item_names = [equipment.wep1.name, equipment.wep2.name, equipment.armour.name,equipment.gear.name,equipment.mobi.name];
 
     items = [equipment.wep1, equipment.wep2, equipment.armour,equipment.gear,equipment.mobi]
@@ -538,12 +537,12 @@ function UnitEquipment(equipment_set, unit = noone) constructor{
         "gear" : eEQUIPMENT_SLOT.GEAR
     }
 
-    static map_string_to_enum(slot){
+    static map_string_to_enum = function(slot){
         slot = slot_map[$ slot];
         return slot;
     }
 
-    static get_item(slot){
+    static get_item = function(slot){
         if (is_string(slot)){
             return self.equipment[$ slot]
         } else {
@@ -551,9 +550,9 @@ function UnitEquipment(equipment_set, unit = noone) constructor{
         }
     }
 
-    for (var i = 0;i<array_length(equip_slots)-1;i++){
-        if (is_struct(self.equipment[$equip_slots[i]])){
-            array_push(present_items, equip_slots[i]);
+    for (var i = 0;i<array_length(UNIT_EQUIP_SLOTS)-1;i++){
+        if (is_struct(self.equipment[$UNIT_EQUIP_SLOTS[i]])){
+            array_push(present_items, UNIT_EQUIP_SLOTS[i]);
         }
     }
 
@@ -582,7 +581,7 @@ function UnitEquipment(equipment_set, unit = noone) constructor{
                 }
             }
         }
-        else if {
+        else {
             if (_multi_items){
                 for (var i = 0; i < array_length(item); i++){
                     if (is_struct(item[i])){

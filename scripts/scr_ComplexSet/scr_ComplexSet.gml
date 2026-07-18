@@ -538,7 +538,7 @@ function ComplexSet(_unit) constructor {
                 }
             }
         }
-        if (struct_exists(_mod, "equipment_has_rarity")){
+        /*if (struct_exists(_mod, "equipment_has_rarity")){
             var _rarities = _mod.equipment_has_rarity
             var _items = struct_get_names(_rarities);
             for (var i = 0; i < array_length(_items); i++){
@@ -550,7 +550,7 @@ function ComplexSet(_unit) constructor {
                         break;
                 }
             }
-        }
+        }*/
         if (struct_exists(_mod, "chapter")) {
             var chap_name = instance_exists(obj_creation) ? obj_creation.chapter_name : global.chapter_name;
             if (chap_name != _mod.chapter) {
