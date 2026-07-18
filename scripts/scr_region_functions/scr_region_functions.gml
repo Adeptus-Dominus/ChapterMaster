@@ -494,7 +494,11 @@ function regions_sync(_star, _planet) {
     // Tyranid ascension's set_new_owner) outlived the swarm's destruction, and the
     // regions panel painted every region under an owner with no forces (the
     // Demetrius report). The world reverts to the capital's recorded first owner.
-    if (region_faction_is_hostile(_owner)) {
+    if (region_faction_is_hostile(_owner) && (obj_controller.turn > 1)) {
+        // The turn gate matters: during worldgen the sync runs before hostile
+        // starting forces are seeded, and the liberation stripped freshly created
+        // enemy worlds at game start ("authority is restored" spam on turn 1,
+        // including Vraks). From turn 2 on, an extinct owner is genuinely extinct.
         var _own_force = planet_faction_force_total(_star, _planet, _owner);
         var _own_pop = 0;
         if (variable_instance_exists(_star, "p_race_pop") && (count_to_level_anchors(_owner) != -1)) {

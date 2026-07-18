@@ -146,6 +146,11 @@ recruitment_costup_button.bind_method = function() {
 };
 
 buttons_selected = false;
+// Upstream initialises the action-button array here (their buttons[] refactor);
+// this line was lost in the sync5 merge, so obj_p_fleet/obj_en_fleet Draw read an
+// unset variable on fresh games and crashed instantly. The Draw_64 branches fill
+// it; it must always exist.
+buttons = [];
 button1 = "";
 button2 = "";
 button3 = "";
