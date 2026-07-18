@@ -28,7 +28,7 @@ if (!(Test-Path $Formatter)) {
     Write-Host ""
     Write-Host "[INFO] Downloading latest release..." -ForegroundColor Yellow
     $ApiUrl = "https://api.github.com/repos/$Repo/releases/latest"
-    $Assets = (Invoke-RestMethod -Uri $ApiUrl).assets
+    $Assets = (Invoke-RestMethod -Uri $ApiUrl -ErrorAction Stop).assets
     
     # Match asset based on platform keyword
     $Asset = $Assets | Where-Object { $_.name -like "*$PlatformKeyword*" } | Select-Object -First 1
