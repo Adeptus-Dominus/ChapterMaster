@@ -2687,7 +2687,7 @@ global.weapon_visual_data = {
         variants: [
             {
                 sprite: spr_dread_heavy_bolter,
-				        shadows: spr_dread_heavy_bolter_shadow,
+				shadows: spr_dread_heavy_bolter_shadow,
             },
         ],
     },
