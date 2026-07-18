@@ -75,6 +75,10 @@
 #macro TAINT_EXPORT_CHANCE_PCT 4
 #macro TAINT_EXPORT_MIN_CORRUPTION 75
 #macro TAINT_EXPORT_MAX_IN_FLIGHT 2
+// Chapter influence needed to fund DEFENSES and barracks in an allied (Imperial)
+// region. The full 100-influence world flip stays the gate for economic
+// improvements; the tools that matter in the early wars must not wait for it.
+#macro ALLIED_REGION_BUILD_MIN_INFLUENCE 40
 #macro DEVASTATOR_BRACED_MULT 1.25
 #macro ASSAULT_JUMP_RANGE 30
 // Minimum heresy/influence a purge that kills anyone removes. Keeps purges viable on

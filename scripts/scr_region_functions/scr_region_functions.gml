@@ -4059,7 +4059,19 @@ function region_planet_building_count(_star, _planet, _id) {
 /// @returns {Bool}
 function region_building_can_build(_star, _planet, _region, _def) {
     if (_region.owner != eFACTION.PLAYER) {
-        return false;
+        // Allied worlds accept Chapter-funded DEFENSES and barracks once the Chapter
+        // has standing (ALLIED_REGION_BUILD_MIN_INFLUENCE). Without this, every
+        // player tool sat behind the 100-influence world flip (~20+ turns), while
+        // the new enemy pressure arrives from turn one. Economic improvements
+        // (factories, mines, manufactorums, stations) still require the flip.
+        var _allied_owner = array_contains(global.SystemHelps.default_allies, _region.owner);
+        var _fundable = region_building_is_defence(_def)
+            || (_def.id == "pdf_barracks")
+            || (_def.id == "guard_barracks");
+        if (!_allied_owner || !_fundable
+            || (_star.p_influence[_planet][eFACTION.PLAYER] < ALLIED_REGION_BUILD_MIN_INFLUENCE)) {
+            return false;
+        }
     }
     // AI-only structures (e.g. the Ork Stronghold) never appear in the player build menu.
     if (variable_struct_exists(_def, "ai_only") && _def.ai_only) {
