@@ -36,21 +36,22 @@ draw_set_halign(fa_left);
 draw_set_alpha(1);
 
 // ---- Formation orders legend ----
-// Teaches the battle controls on-screen. Bottom-left strip above the P1 HP line:
-// verified empty (the combat log box owns the top-right, where this used to sit
-// and made the log unreadable). Toggled with the small header button; the choice
-// persists on obj_controller (reflective save), lazily initialised.
+// MEASURED geometry, do not relocate on guesswork again: obj_ncombat is created at
+// (0,0) and the combat log draws from it, 45 lines x 18px = a full-height column
+// owning the LEFT side of the screen. The RIGHT side is the empty one (HP sits at
+// the bottom corners, popups dock right only transiently). Right-aligned, top.
+// Toggled with the small header button; persists on obj_controller.
 if (!variable_instance_exists(obj_controller, "combat_orders_legend_hidden")) {
     obj_controller.combat_orders_legend_hidden = false;
 }
 draw_set_font(fnt_40k_14);
-draw_set_halign(fa_left);
+draw_set_halign(fa_right);
 draw_set_alpha(1);
-var _legend_x = 8;
-var _legend_y = 682;
+var _legend_x = 792;
+var _legend_y = 8;
 var _legend_header = obj_controller.combat_orders_legend_hidden ? "[+] Orders" : "[-] Orders";
 var _legend_hw = string_width(_legend_header);
-var _legend_hover = scr_hit(_legend_x, _legend_y, _legend_x + _legend_hw, _legend_y + 18);
+var _legend_hover = scr_hit(_legend_x - _legend_hw, _legend_y, _legend_x, _legend_y + 18);
 draw_set_color(_legend_hover ? c_white : c_yellow);
 draw_text(_legend_x, _legend_y, _legend_header);
 if (_legend_hover && mouse_check_button_pressed(mb_left)) {
