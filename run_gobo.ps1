@@ -93,7 +93,7 @@ if (!(Test-Path $Formatter)) {
         
         # Handle extraction based on file extension
         if ($FileName -like "*.zip") {
-            Expand-Archive -Path $FileName -DestinationPath "." -Force
+            Expand-Archive -Path $FileName -DestinationPath "." -Force -ErrorAction Stop
         } elseif ($FileName -like "*.tar.gz" -or $FileName -like "*.tgz") {
             tar -xzf $FileName
         }
