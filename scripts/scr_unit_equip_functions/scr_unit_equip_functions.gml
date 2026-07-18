@@ -520,34 +520,119 @@ function unit_has_equipped(check_equippment) {
 	}
 }*/
 
-function UnitEquipment(equipment_set){
+function UnitEquipment(equipment_set, unit = noone) constructor{
     self.equipment = equipment_set;
+    self.unit = unit
     satic equip_slots = UNIT_EQUIP_SLOTS;
-    item_names = [equipment.wep1.name, equipment.wep2.name, equipment.armour.name,equipment.gear.name,equipment.mobi..name];
+    item_names = [equipment.wep1.name, equipment.wep2.name, equipment.armour.name,equipment.gear.name,equipment.mobi.name];
 
-    function has_equipped(slot = eEQUIPMENT_SLOT.ALL, item){
+    items = [equipment.wep1, equipment.wep2, equipment.armour,equipment.gear,equipment.mobi]
+
+    present_items = [];
+
+    static slot_map = {
+        "wep1" : eEQUIPMENT_SLOT.WEAPON_ONE,
+        "wep2" : eEQUIPMENT_SLOT.WEAPON_TWO,
+        "armour" : eEQUIPMENT_SLOT.ARMOUR,
+        "mobi" : eEQUIPMENT_SLOT.MOBILITY,
+        "gear" : eEQUIPMENT_SLOT.GEAR
+    }
+
+    static map_string_to_enum(slot){
+        slot = slot_map[$ slot];
+        return slot;
+    }
+
+    static get_item(slot){
+        if (is_string(slot)){
+            return self.equipment[$ slot]
+        } else {
+            return items[slot];
+        }
+    }
+
+    for (var i = 0;i<array_length(equip_slots)-1;i++){
+        if (is_struct(self.equipment[$equip_slots[i]])){
+            array_push(present_items, equip_slots[i]);
+        }
+    }
+
+    static item_name = function(slot){
+        return get_item(slot).name;
+    }
+
+    evaluate_item(slot, item){
+        return get_item(slot).evaluate(item);
+    }
+
+    static has_equipped = function (slot = eEQUIPMENT_SLOT.ALL, item){
+        if (is_string(slot)){
+            slot = map_string_to_enum(slot);
+        }
         if (slot > eEQUIPMENT_SLOT.ALL || slot < 0){
             LOGGER.error($"{slot} out of bounds for enum eEQUIPMENT_SLOT");
+            return false;
         }
         var _multi_items = (is_array(item));
 
         if (slot == eEQUIPMENT_SLOT.ALL){
-            if (_multi_items){
-                for (var i = 0; i < array_length(item); i++){
-                    return array_contains(item_names, item[i]);
+            for (var i = 0; i < array_length(present_items); i++){
+                if (has_equipped(present_items[i], item)){
+                    return true;
                 }
-            } else{
-                return array_contains(item_names, item);
             }
-            
         }
         else if {
             if (_multi_items){
+                for (var i = 0; i < array_length(item); i++){
+                    if (is_struct(item[i])){
+                        if (evaluate_item(slot ,  item[i])){
+                            return true;
+                        }
+                    } else{
+                        if (item[i] == item_names[slot]){
+                            return true;
+                        }
+                    }
+                }
                 return array_contains(item, item_names[slot]);
             } else {
-                return item_names[slot] == item;
+                if (is_struct(item)){
+                    return evaluate_item(slot, item)
+                } else {
+                    return item_names[slot] == item;
+                }
             }
         }
+        return false;
+    }
+
+    static has_equipment_set = function (equipment_set){
+        var _found = true;
+        for (var i = 0; i < array_length(present_items); i++){
+            var _slot_key = equip_slots[i]
+            if (!struct_exists(equipment_set, _slot_key)){
+                continue;
+            }
+
+            var _wanted_data = equipment_set[$ _slot_key];
+            if (!is_struct(_wanted_data)){
+                _wanted_data = {name : _wanted_data, required : true};
+                var _has_item = has_equipped(_slot_key, _wanted_data.name);
+                if (!_has_item && _wanted_data.required){
+                    return false;
+                }
+            } else {
+                if (!struct_exists(_wanted_data, "required")){
+                    _wanted_data.required = true;
+                }
+                var _has_item = has_equipped(_slot_key, _wanted_data);
+                if (!_has_item && _wanted_data.required){
+                    return false;
+                }                
+            }
+        }
+        return _found;
     }
 }
 

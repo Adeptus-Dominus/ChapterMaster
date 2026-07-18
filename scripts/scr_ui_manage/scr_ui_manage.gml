@@ -134,61 +134,42 @@ function reset_manage_unit_constants(unit) {
 
         marine_armour[0] = unit.armour();
         fix_right = 0;
+
         var _equip_data = unit.unit_equipment_data();
         unit_manage_constants.faction_owner = "1";
         if (unit.race() != 1) {
             unit_manage_constants.owner = unit.race();
         }
-
         unit_manage_constants.current_data = unit.uid;
-
         var _damage_res = unit.damage_resistance();
 
-        //armour
-        var _data = {
-            tooltip: $"==Armour==\n {is_struct(_equip_data.armour) ? _equip_data.armour.item_tooltip_desc_gen() : ""}",
-            colour: quality_color(unit.armour_quality),
-            max_width: 187,
-        };
+        var _slot_defs = [
+            ["armour", "Armour"],
+            ["gear", "Gear" ],
+            ["mobi", "Back/Mobilitiy"],
+            ["wep1", "First Weapon" ],
+            ["wep2", "Second Weapon" ],
+        ];
 
-        unit_manage_constants.armour_string = new ReactiveString(unit.equipments_qual_string("armour", true), 0, 0, _data);
-        // Sets up the description for the equipement of current marine
+        for (var i = 0; i < array_length(_slot_defs); i++) {
+            var _slot = _slot_defs[i][0];
+            var _label = _slot_defs[i][1];
+            var _const_key = $"{_slot}_string"
 
-        // Gear
+            var _item = _equip_data.get_item(_slot);
+            var _is_struct = is_struct(_item);
+            var _desc = _is_struct ? _item.item_tooltip_desc_gen() : "";
 
-        _data = {
-            tooltip: $"==Gear==\n{is_struct(_equip_data.gear) ? _equip_data.gear.item_tooltip_desc_gen() : ""}",
-            colour: quality_color(unit.gear_quality),
-            max_width: 187,
-        };
+            var _quality = _is_struct ? _item.quality : "standard";
 
-        unit_manage_constants.gear_string = new ReactiveString(unit.equipments_qual_string("gear", true), 0, 0, _data);
+            var _data = {
+                tooltip: $"=={_label}==\n{_desc}",
+                colour: quality_color(_quality),
+                max_width: 187,
+            };
 
-        //mobility
-        _data = {
-            tooltip: $"==Back/Mobilitiy==\n{is_struct(_equip_data.mobi) ? _equip_data.mobi.item_tooltip_desc_gen() : ""}",
-            colour: quality_color(unit.mobility_item_quality),
-            max_width: 187,
-        };
-
-        unit_manage_constants.mobi_string = new ReactiveString(unit.equipments_qual_string("mobi", true), 0, 0, _data);
-
-        _data = {
-            tooltip: $"==First Weapon==\n{is_struct(_equip_data.wep1) ? _equip_data.wep1.item_tooltip_desc_gen() : ""}",
-            colour: quality_color(unit.weapon_one_quality),
-            max_width: 187,
-        };
-
-        unit_manage_constants.wep1_string = new ReactiveString(unit.equipments_qual_string("wep1", true), 0, 0, _data);
-
-        //mobility
-        _data = {
-            tooltip: $"==Second Weapon==\n{is_struct(_equip_data.wep2) ? _equip_data.wep2.item_tooltip_desc_gen() : ""}",
-            colour: quality_color(unit.weapon_two_quality),
-            max_width: 187,
-        };
-
-        unit_manage_constants.wep2_string = new ReactiveString(unit.equipments_qual_string("wep2", true), 0, 0, _data);
+            unit_manage_constants[$ _const_key] = new ReactiveString(unit.equipments_qual_string(_slot, true), 0, 0, _data);
+        }
 
         // Psyker things
         var _psionic = "";

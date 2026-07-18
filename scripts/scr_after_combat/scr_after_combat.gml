@@ -339,7 +339,7 @@ function after_combat_recover_marine_gene_seed(unit) {
 function after_combat_dead_marine_equipment_recovered(unit) {
     var _equipment = unit.unit_equipment_data();
 
-    var _equip_slots = struct_get_names(_equipment);
+    var _equip_slots = struct_get_names(_equipment.present_items);
 
     var basic_recover_chance = 40;
 
@@ -360,11 +360,7 @@ function after_combat_dead_marine_equipment_recovered(unit) {
     for (var i = 0; i < array_length(_equip_slots); i++) {
         var _recover = true;
         var _slot = _equip_slots[i];
-        var _item = _equipment[$ _slot];
-
-        if (!is_struct(_item)) {
-            continue;
-        }
+        var _item = _equipment.get_item(_slot)
 
         var _specific_item_chance = roll_dice_chapter(1, 100, "low");
 
