@@ -1,5 +1,5 @@
 {
     "build_date": "unknown build",
-    "version": "compiled",
-    "commit_hash": "unknown hash"
+    "commit_hash": "unknown hash",
+    "version": "compiled"
 }

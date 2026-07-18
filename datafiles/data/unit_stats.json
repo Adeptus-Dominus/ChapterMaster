@@ -411,25 +411,6 @@
             3
         ]
     },
-    /* TODO - check and tweak if necessary
-	"chapter_servitor":{
-			"title" : "Chapter Servitor",
-			"strength":[36,4],
-			"constitution":[36,3],
-			"weapon_skill" : [30,2,"max"],
-			"ballistic_skill" : [30,2,"max"],
-			"dexterity":[36,3],
-			"intelligence":0,
-			"wisdom":0,
-			"charisma" :[10,1],
-			"religion" : "imperial_cult",
-			"piety" : [28,3],
-			"luck" : 10,
-			"technology" :[30,3],
-			"start_gear":{"armour":"power_armour", "wep1":"Combat Knife", "gear":"Servo-arm"}, TODO - tweak and check if correct
-			"base_group" : "astartes",
-			traits:["lobotomized"],
-	},*/
     "sector_commander": {
         "ballistic_skill": [
             20,

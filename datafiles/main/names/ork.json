@@ -41,6 +41,9 @@
             "Zog"
         ]
     ],
+    "special": [
+        "Robih Killyums"
+    ],
     "suffixes": [
         [
             "arg",
@@ -82,8 +85,5 @@
             "wort",
             "zod"
         ]
-    ],
-    "special": [
-        "Robih Killyums"
     ]
 }

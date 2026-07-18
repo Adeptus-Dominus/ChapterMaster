@@ -504,10 +504,10 @@
         },
         "range": 1,
         "ranged_hands": 0,
-        "spli": 15,
         "second_profiles": [
             "Twin Linked Bolters"
         ],
+        "spli": 15,
         "tags": [
             "vehicle",
             "power",
@@ -1021,6 +1021,23 @@
         ],
         "value": 60
     },
+    "HK Missile": {
+        "abbreviation": "HKMssl",
+        "ammo": 1,
+        "arp": 4,
+        "attack": {
+            "artifact": 450,
+            "master_crafted": 400,
+            "standard": 350
+        },
+        "description": "A single shot hunter killer missile that serves as a powerful anti armour/aircraft deterent.",
+        "range": 50,
+        "spli": 1,
+        "tags": [
+            "vehicle"
+        ],
+        "value": 10
+    },
     "Hand Flamer": {
         "abbreviation": "HndFlmr",
         "ammo": 4,
@@ -1264,23 +1281,6 @@
             "arcane"
         ],
         "value": 20
-    },
-    "HK Missile": {
-        "abbreviation": "HKMssl",
-        "ammo": 1,
-        "arp": 4,
-        "attack": {
-            "artifact": 450,
-            "master_crafted": 400,
-            "standard": 350
-        },
-        "description": "A single shot hunter killer missile that serves as a powerful anti armour/aircraft deterent.",
-        "range": 50,
-        "spli": 1,
-        "tags": [
-            "vehicle"
-        ],
-        "value": 10
     },
     "Hurricane Bolter Sponsons": {
         "abbreviation": "HrcBltrs",
@@ -1537,7 +1537,7 @@
         "spli": 1,
         "tags": [
             "heavy_ranged",
-			"dreadnought",
+            "dreadnought",
             "las",
             "energy"
         ],
@@ -2706,9 +2706,9 @@
         "description": "Ancient Blades of various origins smited through arcane forging or lost techniques, these blades are deadly beyond belief. These peerless blades slice through ceramite and flesh with ease.",
         "melee_hands": 1,
         "melee_mod": {
-            "artifact": 1.0,
-            "master_crafted": 1.0,
-            "standard": 1.0
+            "artifact": 1,
+            "master_crafted": 1,
+            "standard": 1
         },
         "range": 1,
         "ranged_hands": 1,
