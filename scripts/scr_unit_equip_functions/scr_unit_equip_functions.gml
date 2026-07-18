@@ -519,3 +519,14 @@ function unit_has_equipped(check_equippment) {
 		return array_contains(tags, tag);
 	}
 }*/
+
+function UnitEquipment(equipment_set){
+    self.equipment = equipment_set;
+    equip_slots = 
+
+    function has_equipped(){
+
+    }
+}
+
+
