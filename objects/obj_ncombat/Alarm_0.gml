@@ -546,7 +546,9 @@ try {
     }
     // * Imperial Guard Force *
     if (enemy == eFACTION.IMPERIUM) {
-        guard_total = threat;
+        // Strategic garrison headcount -> tactical spawn cap (see ENEMY_GUARD_BATTLE_CAP):
+    // fighting an Imperial world with millions of PDF must not spawn millions.
+    guard_total = min(threat, ENEMY_GUARD_BATTLE_CAP);
 
         var guar = threat / 10;
 

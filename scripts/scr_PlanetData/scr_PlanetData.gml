@@ -1859,14 +1859,18 @@ function PlanetData(_planet, _system) constructor {
             return;
         }
         var planet_is_allies = scr_is_planet_owned_by_allies(system, planet);
-        var garrison_issue = !planet_is_allies || pdf <= 0;
+        // Garrisoning requires only a FRIENDLY world. The old pdf > 0 requirement
+        // blocked exactly the worlds that most need a garrison (fresh colonies,
+        // liberated or PDF-drained worlds) and killed expansion once the population
+        // engine made PDF a live, spendable quantity: marines ARE the garrison.
+        var garrison_issue = !planet_is_allies;
         var _mission = variable_instance_exists(obj_star_select, "mission") ? obj_star_select.mission : "";
 
         var _loading = obj_star_select.loading;
         var garrison_assignment = obj_controller.view_squad && _loading;
         if (garrison_assignment && (garrison_issue && _mission == "garrison")) {
             planet_draw = c_red;
-            tooltip_draw("Can't garrison on non-friendly planet or planet with no friendly PDF", 150);
+            tooltip_draw("Can't garrison a non-friendly planet", 150);
         }
         if (!mouse_check_button_pressed(mb_left)) {
             return;

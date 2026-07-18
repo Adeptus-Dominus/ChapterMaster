@@ -61,6 +61,10 @@
 // spawns far past the old "single engagement" scale (~1000 men). Clamp the level
 // used for battle sizing; 7 (Enormicus) and raw garrison counts are untouched.
 #macro ENEMY_BATTLE_THREAT_CAP 4
+// Imperial worlds pass their raw Guard garrison through threat (population-scaled,
+// sanity-capped at 1M strategically). A tactical battle fields at most this many of
+// them; the rest are the garrison you are NOT fighting today.
+#macro ENEMY_GUARD_BATTLE_CAP 1500
 // Training Ground pacing: per-turn XP per ground, and the ceiling past which
 // grounds teach nothing more (real fighting takes over from drills).
 #macro TRAINING_GROUND_XP_PER_TURN 5
