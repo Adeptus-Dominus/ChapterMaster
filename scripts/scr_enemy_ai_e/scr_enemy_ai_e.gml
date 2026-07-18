@@ -27,12 +27,12 @@ function scr_enemy_ai_e() {
         var battle_if_war = [
             8,
             eFACTION.MECHANICUS,
-            eFACTION.IMPERIUM
+            eFACTION.IMPERIUM,
         ];
 
         var always_battle = [
             7,
-            9
+            9,
         ];
 
         for (var i = 0; i < array_length(battle_if_war); i++) {
@@ -452,7 +452,7 @@ function scr_enemy_ai_e() {
         if ((present_fleet[1] > 0) && ((present_fleet[6] + present_fleet[7] + present_fleet[8] + present_fleet[9] + present_fleet[10] + present_fleet[13] > 0) || ((present_fleet[2] > 0) && (obj_controller.faction_status[2] == "War")))) {
             for (var i = 2; i <= 10; i++) {
                 var special_stop = false;
-                if ((i == 10)) {
+                if (i == 10) {
                     special_stop = has_problem_star("meeting") || has_problem_star("meeting_trap");
                 }
 
@@ -775,11 +775,11 @@ function scr_enemy_ai_e() {
         }
         if (master_present && (otm > 21)) {
             scr_popup("Chaos Meeting", $"{popup_text}He is to bring you to their master, but before the meeting proceeds, you must bring fewer forces.  Only yourself and up to two squads will be allowed in the presence of {obj_controller.faction_title[10]} {obj_controller.faction_leader[10]}.", "chaos_messenger", "meeting_2");
-        instance_destroy(_meeting);
+            instance_destroy(_meeting);
         }
         if (!master_present && (otm > 21)) {
             scr_popup("Chaos Meeting", $"{popup_text}The meeting was supposed to be with the Chaos Lord, and yourself, but you are not planet-side.  Land on the planet with up to two squads and the meeting will proceed.", "chaos_messenger", "meeting_3");
-        instance_destroy(_meeting);
+            instance_destroy(_meeting);
         }
     }
 

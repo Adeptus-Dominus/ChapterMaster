@@ -125,7 +125,7 @@ try {
 
             var _unit_i = scr_target(_column, _priority_data.type);
             if (_unit_i == undefined) {
-                continue
+                continue;
             }
 
             obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"unit {_column.dudes[_unit_i]}");

@@ -13,8 +13,7 @@ function fetch_marine_components_to_memory() {
             if (struct_exists(_element, "shadows")) {
                 sprite_prefetch(_element.shadows);
             }
-        }
-        catch (_exception) {
+        } catch (_exception) {
             // Sprite prefetch failure logged but non-fatal
             show_debug_message($"Sprite prefetch failed for element at index {_index}: {_exception}");
         }
@@ -109,67 +108,67 @@ function ColourItem(_xx, _yy) constructor {
             103,
             165,
             148,
-            217
+            217,
         ],
         left_leg_upper: [
             83,
             107,
             119,
-            134
+            134,
         ],
         left_leg_knee: [
             105,
             138,
             126,
-            159
+            159,
         ],
         right_leg_lower: [
             15,
             165,
             57,
-            218
+            218,
         ],
         right_leg_upper: [
             43,
             107,
             73,
-            139
+            139,
         ],
         right_leg_knee: [
             35,
             138,
             58,
-            160
+            160,
         ],
         metallic_trim: [
             70,
             53,
             100,
-            70
+            70,
         ],
         right_trim: [
             -100,
             31,
             string_width("R Trim"),
-            string_height("R Trim")
+            string_height("R Trim"),
         ],
         left_trim: [
             -150,
             31,
             string_width("L Trim"),
-            string_height("L Trim")
+            string_height("L Trim"),
         ],
         left_chest: [
             84,
             72,
             108,
-            92
+            92,
         ],
         right_chest: [
             50,
             73,
             82,
-            103
+            103,
         ],
         left_thorax: 0,
         right_thorax: 0,
@@ -179,85 +178,85 @@ function ColourItem(_xx, _yy) constructor {
             114,
             31,
             150,
-            67
+            67,
         ],
         right_pauldron: [
             19,
             31,
             43,
-            71
+            71,
         ],
         left_head: [
             81,
             15,
             94,
-            30
+            30,
         ],
         right_head: [
             68,
             15,
             81,
-            31
+            31,
         ],
         left_muzzle: [
             82,
             32,
             90,
-            42
+            42,
         ],
         right_muzzle: [
             73,
             32,
             82,
-            42
+            42,
         ],
         eye_lense: [
             40,
             -20,
             string_width("Lense"),
-            string_height("Lense")
+            string_height("Lense"),
         ],
         left_arm: [
             119,
             67,
             146,
-            105
+            105,
         ],
         left_hand: [
             128,
             109,
             146,
-            123
+            123,
         ],
         right_arm: [
             19,
             67,
             34,
-            106
+            106,
         ],
         right_hand: [
             18,
             109,
             33,
-            134
+            134,
         ],
         right_backpack: [
             32,
             17,
             60,
-            38
+            38,
         ],
         left_backpack: [
             97,
             17,
             130,
-            38
+            38,
         ],
         company_marks: [
             30,
             40,
             string_width("Company Marks"),
-            string_height("Company Marks")
+            string_height("Company Marks"),
         ],
     };
 
@@ -303,32 +302,32 @@ function ColourItem(_xx, _yy) constructor {
     static lower_left = [
         "left_leg_lower",
         "left_leg_upper",
-        "left_leg_knee"
+        "left_leg_knee",
     ];
 
     static lower_right = [
         "right_leg_lower",
         "right_leg_upper",
-        "right_leg_knee"
+        "right_leg_knee",
     ];
 
     static upper_left = [
         "left_chest",
         "left_arm",
         "left_hand",
-        "left_backpack"
+        "left_backpack",
     ];
 
     static chest = [
         "left_chest",
-        "right_chest"
+        "right_chest",
     ];
 
     static upper_right = [
         "right_chest",
         "right_arm",
         "right_hand",
-        "right_backpack"
+        "right_backpack",
     ];
 
     static legs = [
@@ -337,25 +336,25 @@ function ColourItem(_xx, _yy) constructor {
         "left_leg_knee",
         "right_leg_lower",
         "right_leg_upper",
-        "right_leg_knee"
+        "right_leg_knee",
     ];
 
     static head_set = [
         "left_head",
         "right_head",
         "left_muzzle",
-        "right_muzzle"
+        "right_muzzle",
     ];
 
     static backpack = [
         "right_backpack",
-        "left_backpack"
+        "left_backpack",
     ];
 
     static trim_all = [
         "right_trim",
         "left_trim",
-        "metallic_trim"
+        "metallic_trim",
     ];
 
     static full_body = array_join(lower_left, lower_right, upper_left, chest, upper_right, head_set);
@@ -470,7 +469,7 @@ function ColourItem(_xx, _yy) constructor {
                         map_colour[$ colour_return[0]] = colour_return[1];
                         colour_return = [
                             hover_pos,
-                            map_colour[$ hover_pos]
+                            map_colour[$ hover_pos],
                         ];
                         map_colour[$ hover_pos] = 0;
                         reset_image();
@@ -478,7 +477,7 @@ function ColourItem(_xx, _yy) constructor {
                 } else {
                     colour_return = [
                         hover_pos,
-                        map_colour[$ hover_pos]
+                        map_colour[$ hover_pos],
                     ];
                     map_colour[$ hover_pos] = 0;
                     reset_image();

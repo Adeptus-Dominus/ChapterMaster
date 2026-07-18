@@ -25,7 +25,12 @@ function setup_promotion_popup() {
         }
         with (pip) {
             units = nuuum;
-            promote_button = new UnitButtonObject({x1: 1450, y1: 491, style: "pixel", label: "Promote"});
+            promote_button = new UnitButtonObject({
+                x1: 1450,
+                y1: 491,
+                style: "pixel",
+                label: "Promote",
+            });
             promote_button.bind_method = function() {
                 var mahreens = 0;
 
@@ -149,8 +154,20 @@ function setup_promotion_popup() {
             };
 
             promote_button.bind_scope = pip;
-            cancel_button = new UnitButtonObject({x1: 1061, y1: 491, style: "pixel", label: "Cancel"});
-            main_slate = new DataSlate({style: "decorated", XX: 1006, YY: 143, set_width: true, width: 571, height: 350});
+            cancel_button = new UnitButtonObject({
+                x1: 1061,
+                y1: 491,
+                style: "pixel",
+                label: "Cancel",
+            });
+            main_slate = new DataSlate({
+                style: "decorated",
+                XX: 1006,
+                YY: 143,
+                set_width: true,
+                width: 571,
+                height: 350,
+            });
             target_company_radio(min_exp);
             target_comp = 0;
             get_unit_promotion_options();
@@ -165,7 +182,7 @@ function target_company_radio(min_exp = 0) {
             str1: "HQ",
             font: fnt_40k_14b,
             val: 0,
-        }
+        },
     ];
     for (var i = 1; i <= obj_ini.companies; i++) {
         var _dont_add = false;
@@ -179,7 +196,11 @@ function target_company_radio(min_exp = 0) {
             array_push(_company_options, {str1: int_to_roman(i), font: fnt_40k_14b, val: i});
         }
     }
-    companies_select = new RadioSet(_company_options, "Target Company", {max_width: 500, x1: 1040, y1: 210});
+    companies_select = new RadioSet(_company_options, "Target Company", {
+        max_width: 500,
+        x1: 1040,
+        y1: 210,
+    });
 
     companies_select.current_selection = 0;
 }

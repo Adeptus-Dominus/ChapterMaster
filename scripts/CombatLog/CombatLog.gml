@@ -51,7 +51,7 @@ function CombatLog(_owner = undefined) constructor {
         for (var i = 0; i < _word_count; i++) {
             var _word = _words[i];
             if (_word == "" && _current_line != "") {
-                continue; 
+                continue;
             }
 
             var _test_line = (_current_line == "") ? _word : (_current_line + " " + _word);
@@ -80,7 +80,7 @@ function CombatLog(_owner = undefined) constructor {
     /// @param {String} _text The text to log.
     /// @param {Real} _color Optional eMSG_COLOR enum.
     static push = function(_text = "", _color = eMSG_COLOR.WHITE) {
-        array_push(__pending_messages, { text: _text, color: _color });
+        array_push(__pending_messages, {text: _text, color: _color});
         pending_count++;
     };
 
@@ -127,7 +127,7 @@ function CombatLog(_owner = undefined) constructor {
             var _line_count = array_length(_wrapped_lines);
 
             for (var j = 0; j < _line_count; j++) {
-                array_push(__log_history, { text: _wrapped_lines[j], color: _final_color });
+                array_push(__log_history, {text: _wrapped_lines[j], color: _final_color});
                 log_size++;
             }
         }
@@ -147,7 +147,7 @@ function CombatLog(_owner = undefined) constructor {
         var _history_len = array_length(__log_history);
         if (_history_len > log_history_max) {
             array_delete(__log_history, 0, _history_len - log_history_max);
-            log_size -= (_history_len - log_history_max);
+            log_size -= _history_len - log_history_max;
         }
     };
 
@@ -199,7 +199,7 @@ function CombatLog(_owner = undefined) constructor {
             draw_set_alpha(1.0);
             draw_rectangle(_sb_x1, _sb_thumb_y1, _sb_x2, _sb_thumb_y1 + _sb_thumb_h, false);
         }
-    
+
         pop_draw_return_values();
     };
 

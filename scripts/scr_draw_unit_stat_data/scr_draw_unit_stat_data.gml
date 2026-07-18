@@ -44,48 +44,48 @@ function scr_draw_unit_stat_data(manage = false, data_block = {x1: 1008, y1: 520
     stat_display_list = [
         [
             "Measure of how quick and nimble unit is as well as their base ability to manipulate and do tasks with their hands.##Influences Ranged Attack",
-            "dexterity"
+            "dexterity",
         ],
         [
             "How strong a unit. Strong units can wield heavier equipment without penalties and are more deadly in close combat.##Influences Melee Attack#Influences Melee Burden Cap#Influences Ranged Burden Cap",
-            "strength"
+            "strength",
         ],
         [
             "Unit's general toughness and resistance to damage.##Influences Health#Influences Damage Resistance",
-            "constitution"
+            "constitution",
         ],
         [
             "Measure of learnt knowledge and specialist skill aptitude.##Influences esoteric knowledge and use of force weapons",
-            "intelligence"
+            "intelligence",
         ],
         [
             "Unit's perception and street smarts including certain types of battlefield knowledge.##Influences tactical decisions and garrison effects",
-            "wisdom"
+            "wisdom",
         ],
         [
             "Unit's faith in their given religion or general aptitude towards faith.##Influences resistance to corruption",
-            "piety"
+            "piety",
         ],
         [
             "General skill with close combat weaponry.##Influences Melee Attack#Influences Melee Burden Cap",
-            "weapon_skill"
+            "weapon_skill",
         ],
         [
             "General skill with ballistic and ranged weaponry.##Influences Ranged Attack#Influences Ranged Burden Cap",
-            "ballistic_skill"
+            "ballistic_skill",
         ],
         [
             "...Luck...",
-            "luck"
+            "luck",
         ],
         [
             "Skill and understanding of technology and various technical thingies and ability to interact with the machine spirit.##Influences Forge point output",
-            "technology"
+            "technology",
         ],
         [
             "General likeability and ability to interact with people.##Influences disposition increases and decreases#Influences ability to spread corruption",
-            "charisma"
-        ]
+            "charisma",
+        ],
     ];
     for (var i = 0; i < array_length(stat_display_list); i++) {
         var _stat_data = stat_display_list[i];

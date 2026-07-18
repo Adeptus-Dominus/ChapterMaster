@@ -1,7 +1,7 @@
 try {
     // Handles most logic for main menus, audio and checks if cheats are enabled
     // TODO refactor will wait untill squads PR (#76) is merged
-    if (menu == eMENU.DEFAULT && zoomed == 0 && !instances_exist_any([obj_ingame_menu, obj_ncombat])) {
+    if ((menu == eMENU.DEFAULT || menu == eMENU.TURN_END) && zoomed == 0 && !instances_exist_any([obj_ingame_menu, obj_ncombat])) {
         scr_zoom_keys();
     }
     if (double_click >= 0) {

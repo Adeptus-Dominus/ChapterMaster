@@ -205,7 +205,11 @@ function reset_manage_unit_constants(unit) {
             _psionic = $"{_psionic}\n{max(0, unit.corruption())}% Corruption.";
         }
 
-        unit_manage_constants.psy = new LabeledIcon(spr_icon_psyker, _psionic, 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Psychic Stats==\n{_tooltip}"});
+        unit_manage_constants.psy = new LabeledIcon(spr_icon_psyker, _psionic, 0, 0, {
+            icon_width: 24,
+            icon_height: 24,
+            tooltip: $"==Psychic Stats==\n{_tooltip}",
+        });
         // Damage Resistance
 
         var _res_tool = "Health damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.\n\nContributing factors:\n";
@@ -214,7 +218,7 @@ function reset_manage_unit_constants(unit) {
             "weapon_one",
             "weapon_two",
             "mobility",
-            "gear"
+            "gear",
         ];
 
         for (var i = 0; i < array_length(equipment_types); i++) {
@@ -249,7 +253,11 @@ function reset_manage_unit_constants(unit) {
         }
         _res_tool += $"CON: {round(unit.constitution / 2)}%";
 
-        unit_manage_constants.damage_res = new LabeledIcon(spr_icon_iron_halo, $"{_damage_res}%", 0, 0, {icon_width: 24, icon_height: 24, tooltip: _res_tool});
+        unit_manage_constants.damage_res = new LabeledIcon(spr_icon_iron_halo, $"{_damage_res}%", 0, 0, {
+            icon_width: 24,
+            icon_height: 24,
+            tooltip: _res_tool,
+        });
         var _hp_val = $"{round(unit.hp())}/{unit.max_health()}";
         var _hp_tool = "A measure of how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\n";
         _hp_tool += $"CON: {unit.constitution * 3}\n";
@@ -285,7 +293,11 @@ function reset_manage_unit_constants(unit) {
             }
         }
 
-        unit_manage_constants.hp = new LabeledIcon(spr_icon_health, _hp_val, 0, 0, {icon_width: 24, icon_height: 24, tooltip: _hp_tool});
+        unit_manage_constants.hp = new LabeledIcon(spr_icon_health, _hp_val, 0, 0, {
+            icon_width: 24,
+            icon_height: 24,
+            tooltip: _hp_tool,
+        });
 
         // -------------------------
         // Armour Rating
@@ -328,23 +340,51 @@ function reset_manage_unit_constants(unit) {
             _armour_tool += "STC Bonus: x1.05\n";
         }
 
-        unit_manage_constants.armour = new LabeledIcon(spr_icon_shield2, _armour_val, 0, 0, {icon_width: 24, icon_height: 24, tooltip: _armour_tool});
+        unit_manage_constants.armour = new LabeledIcon(spr_icon_shield2, _armour_val, 0, 0, {
+            icon_width: 24,
+            icon_height: 24,
+            tooltip: _armour_tool,
+        });
 
-        unit_manage_constants.exp = new LabeledIcon(spr_icon_veteran, string(floor(unit.experience)), 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Experience==\nA measurement of how battle-hardened the unit is. Provides various bonuses across the board. Every 15 EXP, a new stat is assigned. Hover over the unit’s stats in the marine profile to see projected growth over time."});
+        unit_manage_constants.exp = new LabeledIcon(spr_icon_veteran, string(floor(unit.experience)), 0, 0, {
+            icon_width: 24,
+            icon_height: 24,
+            tooltip: $"==Experience==\nA measurement of how battle-hardened the unit is. Provides various bonuses across the board. Every 15 EXP, a new stat is assigned. Hover over the unit’s stats in the marine profile to see projected growth over time.",
+        });
 
         // Melee Attack
         var _melee = unit.melee_attack();
-        unit_manage_constants.melee_attack = new LabeledIcon(spr_icon_weapon_skill, $"{round(_melee[0])}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Melee Attack==\n{_melee[1]}", colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR});
+        unit_manage_constants.melee_attack = new LabeledIcon(spr_icon_weapon_skill, $"{round(_melee[0])}", 0, 0, {
+            icon_width: 24,
+            icon_height: 24,
+            tooltip: $"==Melee Attack==\n{_melee[1]}",
+            colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR,
+        });
 
         var _carry = _melee[2];
-        unit_manage_constants.melee_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Melee Burden==\n{_carry[2]}", colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR});
+        unit_manage_constants.melee_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {
+            icon_width: 24,
+            icon_height: 24,
+            tooltip: $"==Melee Burden==\n{_carry[2]}",
+            colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR,
+        });
 
         // Ranged Attack
         var _range = unit.ranged_attack();
-        unit_manage_constants.ranged_attack = new LabeledIcon(spr_icon_ballistic_skill, $"{round(_range[0])}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Ranged Attack==\n{_range[1]}", colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR});
+        unit_manage_constants.ranged_attack = new LabeledIcon(spr_icon_ballistic_skill, $"{round(_range[0])}", 0, 0, {
+            icon_width: 24,
+            icon_height: 24,
+            tooltip: $"==Ranged Attack==\n{_range[1]}",
+            colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR,
+        });
 
         _carry = _range[2];
-        unit_manage_constants.ranged_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {icon_width: 24, icon_height: 24, tooltip: $"==Ranged Burden==\n{_carry[2]}", colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR});
+        unit_manage_constants.ranged_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {
+            icon_width: 24,
+            icon_height: 24,
+            tooltip: $"==Ranged Burden==\n{_carry[2]}",
+            colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR,
+        });
 
         // -------------------------
         // Bionics
@@ -389,7 +429,11 @@ function reset_manage_unit_constants(unit) {
             }
         }
 
-        unit_manage_constants.bionics = new LabeledIcon(spr_icon_bionics, _bionic_val, 0, 0, {icon_width: 24, icon_height: 24, tooltip: _bionic_tool});
+        unit_manage_constants.bionics = new LabeledIcon(spr_icon_bionics, _bionic_val, 0, 0, {
+            icon_width: 24,
+            icon_height: 24,
+            tooltip: _bionic_tool,
+        });
 
         if (is_struct(unit_manage_image)) {
             try {
@@ -887,7 +931,6 @@ function scr_ui_manage() {
         draw_set_halign(fa_left);
         var top = man_current, sel = top, temp1 = "", temp2 = "", temp3 = "", temp4 = "";
 
-
         yy += 77;
 
         //TODO store these in global tooltip storage
@@ -900,9 +943,9 @@ function scr_ui_manage() {
         get_command_slots_data = function() {
             var _command_slots_data = [
                 {
-                    search_params: {},
+                    search_params: {companies: managing},
                     role_group_params: {
-                        group: "captain_candidates",
+                        group: SPECIALISTS_CAPTAIN_CANDIDATES,
                         location: "",
                         opposite: false,
                     },
@@ -917,19 +960,15 @@ function scr_ui_manage() {
                             [
                                 "weapon_skill",
                                 44,
-                                "more"
-                            ]
+                                "more",
+                            ],
                         ],
                         companies: managing,
                     },
                     role_group_params: {
-                        group: [
-                            SPECIALISTS_STANDARD,
-                            true,
-                            true
-                        ],
+                        group: SPECIALISTS_CAPTAIN_CANDIDATES,
                         location: "",
-                        opposite: true,
+                        opposite: false,
                     },
                     purpose: $"{int_to_roman(managing)} Company Champion Candidates",
                     purpose_code: "champion_promote",
@@ -941,13 +980,9 @@ function scr_ui_manage() {
                         companies: managing,
                     },
                     role_group_params: {
-                        group: [
-                            SPECIALISTS_STANDARD,
-                            true,
-                            true
-                        ],
+                        group: SPECIALISTS_CAPTAIN_CANDIDATES,
                         location: "",
-                        opposite: true,
+                        opposite: false,
                     },
                     purpose: $"{int_to_roman(managing)} Company Ancient Candidates",
                     purpose_code: "ancient_promote",
@@ -958,14 +993,14 @@ function scr_ui_manage() {
                     search_params: {
                         companies: [
                             managing,
-                            0
+                            0,
                         ],
                     },
                     role_group_params: {
                         group: [
                             SPECIALISTS_CHAPLAINS,
                             false,
-                            false
+                            false,
                         ],
                         location: "",
                         opposite: false,
@@ -979,14 +1014,14 @@ function scr_ui_manage() {
                     search_params: {
                         companies: [
                             managing,
-                            0
+                            0,
                         ],
                     },
                     role_group_params: {
                         group: [
                             SPECIALISTS_APOTHECARIES,
                             false,
-                            false
+                            false,
                         ],
                         location: "",
                         opposite: false,
@@ -1000,14 +1035,14 @@ function scr_ui_manage() {
                     search_params: {
                         companies: [
                             managing,
-                            0
+                            0,
                         ],
                     },
                     role_group_params: {
                         group: [
                             SPECIALISTS_TECHS,
                             false,
-                            false
+                            false,
                         ],
                         location: "",
                         opposite: false,
@@ -1016,7 +1051,7 @@ function scr_ui_manage() {
                     purpose_code: "tech_marine_promote",
                     button_text: "Tech Marine Required",
                     unit_check: "tech_marine",
-                }
+                },
             ];
 
             if (!scr_has_disadv("Psyker Intolerant")) {
@@ -1242,7 +1277,7 @@ function scr_ui_manage() {
                     xx + 25,
                     yy + 64,
                     xx + 974,
-                    yy + 85
+                    yy + 85,
                 ];
 
                 draw_set_color(c_black);

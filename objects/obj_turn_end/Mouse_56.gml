@@ -4,11 +4,11 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
         exit;
     }
 
-    var xxx = camera_get_view_x(view_camera[0]) + 535;
-    var yyy = camera_get_view_y(view_camera[0]) + 200;
+    var xxx = 535;
+    var yyy = 200;
 
     if ((cooldown <= 0) && (battle_world[current_battle] == 0) && (combating == 0)) {
-        if ((mouse_x >= xxx + 132) && (mouse_y >= yyy + 354) && (mouse_x < xxx + 259) && (mouse_y < yyy + 389)) {
+        if (scr_hit(xxx + 132, yyy + 354, xxx + 259, yyy + 389, true)) {
             // Run like hell, space
             with (obj_fleet_select) {
                 instance_destroy();
@@ -20,7 +20,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
             obj_controller.force_scroll = 1;
         }
 
-        if ((mouse_x >= xxx + 272) && (mouse_y >= yyy + 354) && (mouse_x < xxx + 399) && (mouse_y < yyy + 389)) {
+        if (scr_hit(xxx + 272, yyy + 354, xxx + 399, yyy + 389, true)) {
             // Fight fight fight, space
             var _battle_fleet = battle_pobject[current_battle];
             if (_battle_fleet.capital_number + _battle_fleet.frigate_number + _battle_fleet.escort_number <= 0) {
@@ -94,11 +94,11 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
     if ((cooldown <= 0) && (battle_world[current_battle] > 0) && (combating == 0)) {
         var tip = "";
 
-        if ((mouse_x >= xxx + 132) && (mouse_y >= yyy + 354) && (mouse_x < xxx + 259) && (mouse_y < yyy + 389)) {
+        if (scr_hit(xxx + 132, yyy + 354, xxx + 259, yyy + 389, true)) {
             tip = "offensive";
         }
 
-        if ((mouse_x >= xxx + 272) && (mouse_y >= yyy + 354) && (mouse_x < xxx + 399) && (mouse_y < yyy + 389)) {
+        if (scr_hit(xxx + 272, yyy + 354, xxx + 399, yyy + 389, true)) {
             tip = "defensive";
         }
 
@@ -137,7 +137,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
             var _fort_factions = [
                 eFACTION.PLAYER,
                 eFACTION.TYRANIDS,
-                eFACTION.ORK
+                eFACTION.ORK,
             ];
             _allow_fortifications = array_contains(_fort_factions, _planet_data.current_owner);
 

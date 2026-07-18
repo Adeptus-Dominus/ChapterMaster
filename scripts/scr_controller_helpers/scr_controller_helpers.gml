@@ -54,7 +54,6 @@ function scr_change_menu(wanted_menu, specific_area_function = undefined) {
     }
     with (obj_controller) {
         main_map_defaults();
-        set_zoom_to_default();
         continue_sequence = scr_menu_clear_up(function() {
             return true;
         });
@@ -137,10 +136,26 @@ function basic_manage_settings() {
 
 function init_manage_buttons() {
     management_buttons = {
-        squad_toggle: new UnitButtonObject({style: "pixel", label: "Squad View", tooltip: "Click here or press S to toggle Squad View."}),
-        profile_toggle: new UnitButtonObject({style: "pixel", label: "Show Profile", tooltip: "Click here or press P to show unit profile."}),
-        bio_toggle: new UnitButtonObject({style: "pixel", label: "Show Bio", tooltip: "Click here or press B to Toggle Unit Biography."}),
-        capture_image: new UnitButtonObject({style: "pixel", label: "Capture Image", tooltip: "Click to create a local png of the given marine in the game folder."}),
+        squad_toggle: new UnitButtonObject({
+            style: "pixel",
+            label: "Squad View",
+            tooltip: "Click here or press S to toggle Squad View.",
+        }),
+        profile_toggle: new UnitButtonObject({
+            style: "pixel",
+            label: "Show Profile",
+            tooltip: "Click here or press P to show unit profile.",
+        }),
+        bio_toggle: new UnitButtonObject({
+            style: "pixel",
+            label: "Show Bio",
+            tooltip: "Click here or press B to Toggle Unit Biography.",
+        }),
+        capture_image: new UnitButtonObject({
+            style: "pixel",
+            label: "Capture Image",
+            tooltip: "Click to create a local png of the given marine in the game folder.",
+        }),
         company_namer: new TextBarArea(800, 98, 600, false),
     };
 }
@@ -149,6 +164,7 @@ function scr_toggle_manage() {
     scr_change_menu(eMENU.MANAGE, function() {
         with (obj_controller) {
             if (menu != eMENU.MANAGE) {
+                set_zoom_to_default();
                 hide_banner = 1;
                 basic_manage_settings();
                 scr_management(1);
@@ -161,6 +177,7 @@ function scr_toggle_setting() {
     scr_change_menu(eMENU.SETTINGS, function() {
         with (obj_controller) {
             if (menu != eMENU.SETTINGS) {
+                set_zoom_to_default();
                 menu = eMENU.SETTINGS;
                 popup = 0;
                 selected = 0;
@@ -185,6 +202,7 @@ function scr_toggle_setting() {
 function scr_toggle_apothecarion() {
     scr_change_menu(eMENU.APOTHECARION, function() {
         with (obj_controller) {
+            set_zoom_to_default();
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Master of the Apothecarion", "0") == 0) {
@@ -202,6 +220,7 @@ function scr_toggle_apothecarion() {
 function scr_toggle_reclu() {
     scr_change_menu(eMENU.RECLUSIAM, function() {
         with (obj_controller) {
+            set_zoom_to_default();
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Master of Sanctity", "0") == 0) {
@@ -234,6 +253,7 @@ function scr_toggle_reclu() {
 function scr_toggle_lib() {
     scr_change_menu(eMENU.LIBRARIUM, function() {
         with (obj_controller) {
+            set_zoom_to_default();
             var xx = camera_get_view_x(view_camera[0]);
             var yy = camera_get_view_y(view_camera[0]);
             menu_adept = 0;
@@ -255,7 +275,13 @@ function scr_toggle_lib() {
                 artifact_destroy = new ShutterButton();
                 artifact_namer = new TextBarArea(xx + 622, yy + 460, 350);
                 set_chapter_arti_data();
-                artifact_slate = new DataSlate({set_width: true, XX: 392, YY: 500, width: 460, height: 240});
+                artifact_slate = new DataSlate({
+                    set_width: true,
+                    XX: 392,
+                    YY: 500,
+                    width: 460,
+                    height: 240,
+                });
             }
         }
     });
@@ -265,6 +291,7 @@ function scr_toggle_armamentarium() {
     scr_change_menu(eMENU.ARMAMENTARIUM, function() {
         with (obj_controller) {
             if (menu != eMENU.ARMAMENTARIUM) {
+                set_zoom_to_default();
                 if (scr_role_count("Forge Master", "0") == 0) {
                     menu_adept = 1;
                 }
@@ -280,6 +307,7 @@ function scr_toggle_recruiting() {
     scr_change_menu(eMENU.RECRUITING, function() {
         with (obj_controller) {
             if (menu != eMENU.RECRUITING) {
+                set_zoom_to_default();
                 set_up_recruitment_view();
                 hide_banner = 1;
             }
@@ -290,6 +318,7 @@ function scr_toggle_recruiting() {
 function scr_toggle_fleet_area() {
     scr_change_menu(eMENU.FLEET, function() {
         with (obj_controller) {
+            set_zoom_to_default();
             menu_adept = 0;
             if (menu != eMENU.FLEET) {
                 hide_banner = 1;
@@ -362,6 +391,7 @@ function scr_toggle_diplomacy() {
     scr_change_menu(eMENU.DIPLOMACY, function() {
         with (obj_controller) {
             if (menu != eMENU.DIPLOMACY) {
+                set_zoom_to_default();
                 set_up_diplomacy_buttons();
                 menu = eMENU.DIPLOMACY;
                 audience = 0;
@@ -378,6 +408,7 @@ function scr_toggle_event_log() {
     scr_change_menu(eMENU.EVENT_LOG, function() {
         with (obj_controller) {
             if (menu != eMENU.EVENT_LOG) {
+                set_zoom_to_default();
                 menu = eMENU.EVENT_LOG;
 
                 hide_banner = 1;

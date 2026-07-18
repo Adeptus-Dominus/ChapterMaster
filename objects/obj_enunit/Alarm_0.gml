@@ -94,7 +94,7 @@ if (!engaged) {
                         obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"AP -> vehicle in column {obj_ncombat.combat_debugger.resolve_label(enemy)}, apa={apa[i]}, firing");
                         scr_shoot(i, enemy, target_unit_index, "arp", "ranged");
                         continue;
-                    } else if ((instance_number(obj_pnunit) > 1)) {
+                    } else if (instance_number(obj_pnunit) > 1) {
                         var x2 = enemy.x;
                         repeat (instance_number(obj_pnunit) - 1) {
                             x2 += flank == 0 ? -10 : 10;
@@ -170,7 +170,7 @@ if (!engaged) {
                             obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP fallback -> armour in column {obj_ncombat.combat_debugger.resolve_label(enemy)}, firing");
                             scr_shoot(i, enemy, target_unit_index, "att", "ranged");
                             continue;
-                        } else if ((instance_number(obj_pnunit) > 1)) {
+                        } else if (instance_number(obj_pnunit) > 1) {
                             var x2 = enemy.x;
                             repeat (instance_number(obj_pnunit) - 1) {
                                 x2 += flank == 0 ? -10 : 10;
@@ -229,7 +229,7 @@ if (!engaged) {
             engaged = false;
             exit;
         }
-    
+
         var _armour_piercing = false;
 
         obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"{wep[i]}(i{i}) is striking");

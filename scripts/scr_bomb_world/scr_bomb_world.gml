@@ -123,7 +123,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
             0.9,
             0.75,
             0.5,
-            0.34
+            0.34,
         ];
         bombard_protection = clamp(bombard_protection, 0, 4);
         i *= bombard_protect_scores[bombard_protection];
@@ -313,7 +313,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                     } else if (planet_type == "Hive") {
                         _disp_neg -= 10;
                     }
-                    scr_audience(eFACTION.IMPERIUM, "bombard_angry", _disp_neg,);
+                    scr_audience(eFACTION.IMPERIUM, "bombard_angry", _disp_neg);
                 }
             } else if ((current_owner == 3) && (obj_controller.faction_status[eFACTION.MECHANICUS] != "War")) {
                 var _disp_neg = 0;
@@ -322,7 +322,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                 } else if (planet_type == "Ice") {
                     _disp_neg -= 7;
                 }
-                scr_audience(eFACTION.MECHANICUS, "bombard_angry", _disp_neg,);
+                scr_audience(eFACTION.MECHANICUS, "bombard_angry", _disp_neg);
             }
             if (planet_feature_bool(system.p_feature[planet], eP_FEATURES.GENE_STEALER_CULT)) {
                 delete_features(system.p_feature[planet], eP_FEATURES.GENE_STEALER_CULT);
@@ -333,7 +333,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
             }
         }
         if ((bombard_target_faction == 8) && (obj_controller.faction_status[eFACTION.TAU] != "War")) {
-            scr_audience(eFACTION.TAU, choose("declare_war", "bombard_angry"), -15,);
+            scr_audience(eFACTION.TAU, choose("declare_war", "bombard_angry"), -15);
         }
     }
 

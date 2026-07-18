@@ -346,7 +346,7 @@ function other_manage_data() {
                 45,
                 35,
                 25,
-                0
+                0,
             ];
             var _promotion_limit = _company_promotion_limits[_target_company];
             if (_unit.experience >= _promotion_limit && _promotion_limit > 0) {

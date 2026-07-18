@@ -132,7 +132,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
                     "special_properties",
                     "req_exp",
                     "tags",
-                    "specials"
+                    "specials",
                 ];
                 break;
             case "weapon":
@@ -155,7 +155,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
                     "special_properties",
                     "req_exp",
                     "tags",
-                    "specials"
+                    "specials",
                 ];
                 break;
         }
@@ -407,7 +407,7 @@ function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_cl
     gear_areas = [
         "gear",
         "armour",
-        "mobility"
+        "mobility",
     ];
     if (search_area == "any") {
         data_found = false;

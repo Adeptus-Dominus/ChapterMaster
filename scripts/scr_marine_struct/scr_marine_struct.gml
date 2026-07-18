@@ -8,7 +8,7 @@ global.unit_body_parts = [
     "right_eye",
     "throat",
     "jaw",
-    "head"
+    "head",
 ];
 global.unit_body_parts_display = [
     "Left Leg",
@@ -20,7 +20,7 @@ global.unit_body_parts_display = [
     "Right Eye",
     "Throat",
     "Jaw",
-    "Head"
+    "Head",
 ];
 
 global.religions = {
@@ -63,7 +63,7 @@ global.arr_psy_levels = [
     "Alpha",
     "Alpha Plus",
     "Beta Plus",
-    "Gamma Plus"
+    "Gamma Plus",
 ];
 global.arr_negative_psy_levels = [
     "Rho",
@@ -73,7 +73,7 @@ global.arr_negative_psy_levels = [
     "Phi",
     "Chi",
     "Psi",
-    "Omega"
+    "Omega",
 ];
 
 enum eEQUIPMENT_SLOT {
@@ -134,7 +134,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         0,
         0,
         0,
-        0
+        0,
     ]; // [Techmarine, Librarian, Chaplain, Apothecary] maybe add to list instead?
 
     // Psy and religion
@@ -203,7 +203,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         "technology",
         "intelligence",
         "weapon_skill",
-        "ballistic_skill"
+        "ballistic_skill",
     ];
 
     for (var stat_iter = 0; stat_iter < array_length(stats); stat_iter++) {
@@ -253,8 +253,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 role_history = [
                     [
                         obj_ini.role[company][marine_number],
-                        obj_controller.turn
-                    ]
+                        obj_controller.turn,
+                    ],
                 ]; //marines_promotion and demotion history
                 marine_ascension = (obj_controller.millenium * 1000) + obj_controller.year; // on what day did this marine begin to exist
             } else {
@@ -394,7 +394,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
 
         // 0 is returned to have the same return format as in add_exp, to avoid confusion;
-        return [0, _powers_learned];
+        return [
+            0,
+            _powers_learned,
+        ];
     }; //change exp
 
     static handle_stat_growth = unit_stat_growth;
@@ -499,7 +502,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 "Missile Launcher",
                 "Plasma Cannon",
                 "Multi-Melta",
-                "Twin Linked Heavy Bolter"
+                "Twin Linked Heavy Bolter",
             ];
 
             if (!array_contains(dread_weapons, weapon_one())) {
@@ -1012,7 +1015,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
             quality = scr_add_item(new_weapon, -1, quality);
             if (quality == "no_item") {
-                return [false, "no_items"];
+                return [
+                    false,
+                    "no_items",
+                ];
             }
             qual_string = quality != undefined ? quality : "standard";
         } else {
@@ -1025,7 +1031,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 qual_string = "wrong_role";
             }
         }
-        return [viable, qual_string];
+        return [
+            viable,
+            qual_string,
+        ];
     };
 
     static weapon_two = function(raw = false) {
@@ -1166,7 +1175,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
         role_refresh();
 
-        return [instance_stat_point_gains, _powers_learned];
+        return [
+            instance_stat_point_gains,
+            _powers_learned,
+        ];
     };
 
     //get equipment data methods by deafult they garb all equipment data and return an equipment struct e.g new EquipmentStruct(item_data, core_type,quality="none")
@@ -1252,7 +1264,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             ranged_hands_limit += mobility_carry;
             carry_string += $"{mobility_item()}: {format_number_with_sign(mobility_carry)}#";
         }
-        return [ranged_carrying, ranged_hands_limit, carry_string];
+        return [
+            ranged_carrying,
+            ranged_hands_limit,
+            carry_string,
+        ];
     };
 
     static ranged_attack = function(weapon_slot = 0) {
@@ -1298,7 +1314,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                         explanation_string,
                         carry_data,
                         primary_weapon,
-                        secondary_weapon
+                        secondary_weapon,
                     ];
                 } else {
                     var other_profiles = array_concat(_wep1.second_profiles, _wep2.second_profiles);
@@ -1322,7 +1338,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                         explanation_string,
                         carry_data,
                         primary_weapon,
-                        secondary_weapon
+                        secondary_weapon,
                     ];
                 }
                 return ranged_damage_data;
@@ -1393,7 +1409,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             explanation_string,
             carry_data,
             primary_weapon,
-            secondary_weapon
+            secondary_weapon,
         ];
         return ranged_damage_data;
     };
@@ -1453,7 +1469,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             melee_hands_limit += mobility_carry;
             carry_string += $"{mobility_item()}: {format_number_with_sign(mobility_carry)}#";
         }
-        return [melee_carrying, melee_hands_limit, carry_string];
+        return [
+            melee_carrying,
+            melee_hands_limit,
+            carry_string,
+        ];
     };
 
     static melee_attack = function(weapon_slot = 0) {
@@ -1630,7 +1650,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             explanation_string,
             melee_carrying,
             primary_weapon,
-            secondary_weapon
+            secondary_weapon,
         ];
         return _melee_damage_data;
     };
@@ -1655,9 +1675,29 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var _melee_attack = _melee_damage_data[0];
         var _melee_weapon = _melee_damage_data[3];
 
-        var wrath = new EquipmentStruct({attack: _melee_attack * 0.75, name: "Hammer of Wrath", range: 2, ammo: 6, spli: _melee_weapon.spli, arp: _melee_weapon.arp}, "weapon");
+        var wrath = new EquipmentStruct(
+            {
+                attack: _melee_attack * 0.75,
+                name: "Hammer of Wrath",
+                range: 2,
+                ammo: 6,
+                spli: _melee_weapon.spli,
+                arp: _melee_weapon.arp,
+            },
+            "weapon",
+        );
 
-        var wrath_melee = new EquipmentStruct({attack: _melee_attack * 1.25, name: "Hammer of Wrath(M)", range: 1, ammo: 8, spli: _melee_weapon.spli, arp: _melee_weapon.arp}, "weapon");
+        var wrath_melee = new EquipmentStruct(
+            {
+                attack: _melee_attack * 1.25,
+                name: "Hammer of Wrath(M)",
+                range: 1,
+                ammo: 8,
+                spli: _melee_weapon.spli,
+                arp: _melee_weapon.arp,
+            },
+            "weapon",
+        );
 
         wrath.second_profiles = [wrath_melee];
 
@@ -1762,7 +1802,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 location_name = location_string;
             }
         }
-        return [location_type, location_id, location_name];
+        return [
+            location_type,
+            location_id,
+            location_name,
+        ];
     };
 
     //quick way of getting name and role combined in string
@@ -2002,7 +2046,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             weapon_two(true),
             gear(true),
             armour(true),
-            mobility_item(true)
+            mobility_item(true),
         ];
         var arti_length = array_length(artis);
         for (var i = 0; i < arti_length; i++) {
@@ -2030,7 +2074,19 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static get_stat_line = function() {
-        return {"constitution": constitution, "strength": strength, "luck": luck, "dexterity": dexterity, "wisdom": wisdom, "piety": piety, "charisma": charisma, "technology": technology, "intelligence": intelligence, "weapon_skill": weapon_skill, "ballistic_skill": ballistic_skill};
+        return {
+            "constitution": constitution,
+            "strength": strength,
+            "luck": luck,
+            "dexterity": dexterity,
+            "wisdom": wisdom,
+            "piety": piety,
+            "charisma": charisma,
+            "technology": technology,
+            "intelligence": intelligence,
+            "weapon_skill": weapon_skill,
+            "ballistic_skill": ballistic_skill,
+        };
     };
 
     //TODO: Make this into a universal stat gathering function from all gear, for any stat;
@@ -2042,7 +2098,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             get_gear_data(),
             get_mobility_data(),
             get_weapon_one_data(),
-            get_weapon_two_data()
+            get_weapon_two_data(),
         ];
 
         for (var i = 0; i < array_length(_all_data); i++) {
@@ -2157,7 +2213,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                     } else {
                         squad_data.members[r] = [
                             end_company,
-                            end_slot
+                            end_slot,
                         ];
                     }
                     break;
@@ -2170,7 +2226,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             var arti = obj_ini.artifact_struct[artifact_list[i]];
             arti.bearer = [
                 end_company,
-                end_slot
+                end_slot,
             ];
         }
     };
@@ -2211,7 +2267,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                     eEQUIPMENT_SLOT.WEAPON_ONE,
                     eEQUIPMENT_SLOT.WEAPON_TWO,
                     eEQUIPMENT_SLOT.GEAR,
-                    eEQUIPMENT_SLOT.MOBILITY
+                    eEQUIPMENT_SLOT.MOBILITY,
                 ];
                 break;
         }

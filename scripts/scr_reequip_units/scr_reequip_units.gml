@@ -153,11 +153,28 @@ function set_up_equip_popup() {
             //Forwards vih selection to the vehicle_equipment variable used in mouse_50 obj_popup and weapons_equip script
             pip.vehicle_equipment = vih;
             with (pip) {
-                equipmet_area = -1;
-                cancel_button = new UnitButtonObject({x1: 1061, y1: 591, style: "pixel", label: "Cancel"});
-                equip_button = new UnitButtonObject({x1: 1450, y1: 591, style: "pixel", label: "Equip"});
+                equipment_area = -1;
+                cancel_button = new UnitButtonObject({
+                    x1: 1061,
+                    y1: 591,
+                    style: "pixel",
+                    label: "Cancel",
+                });
+                equip_button = new UnitButtonObject({
+                    x1: 1450,
+                    y1: 591,
+                    style: "pixel",
+                    label: "Equip",
+                });
 
-                main_slate = new DataSlate({style: "decorated", XX: 1006, YY: 143, set_width: true, width: 571, height: 450});
+                main_slate = new DataSlate({
+                    style: "decorated",
+                    XX: 1006,
+                    YY: 143,
+                    set_width: true,
+                    width: 571,
+                    height: 450,
+                });
 
                 var _quality_options = [
                     {
@@ -169,22 +186,66 @@ function set_up_equip_popup() {
                         str1: "Master Crafted",
                         font: fnt_40k_14b,
                         val: 1,
-                    }
+                    },
                 ];
-                quality_radio = new RadioSet(_quality_options, "", {max_width: 500, x1: 1040, y1: 318});
+                quality_radio = new RadioSet(_quality_options, "", {
+                    max_width: 500,
+                    x1: 1040,
+                    y1: 318,
+                });
 
-                range_melee_radio = new RadioSet([{str1: "Ranged", font: fnt_40k_14b, val: eENGAGEMENT.RANGED}, {str1: "Melee", font: fnt_40k_14b, val: eENGAGEMENT.MELEE}], "", {max_width: 500, x1: 1040, y1: 343});
+                range_melee_radio = new RadioSet([
+                    {
+                        str1: "Ranged",
+                        font: fnt_40k_14b,
+                        val: eENGAGEMENT.RANGED,
+                    },
+                    {
+                        str1: "Melee",
+                        font: fnt_40k_14b,
+                        val: eENGAGEMENT.MELEE,
+                    },
+                ], "", {
+                    max_width: 500,
+                    x1: 1040,
+                    y1: 343,
+                });
 
-                weapon1_select = new UnitButtonObject({x1: 1300, y1: 215, label: "", font: fnt_40k_12});
-                weapon2_select = new UnitButtonObject({x1: 1300, y1: 235, label: "", font: fnt_40k_12});
-                armour_select = new UnitButtonObject({x1: 1300, y1: 255, label: "", font: fnt_40k_12});
+                weapon1_select = new UnitButtonObject({
+                    x1: 1300,
+                    y1: 215,
+                    label: "",
+                    font: fnt_40k_12,
+                });
+                weapon2_select = new UnitButtonObject({
+                    x1: 1300,
+                    y1: 235,
+                    label: "",
+                    font: fnt_40k_12,
+                });
+                armour_select = new UnitButtonObject({
+                    x1: 1300,
+                    y1: 255,
+                    label: "",
+                    font: fnt_40k_12,
+                });
                 if (_unchangeable_armour) {
                     armour_select.inactive_col = CM_RED_COLOR;
                     armour_select.tooltip = "One or more Marine has Dreadnought armour and cannot be changed";
                     armour_select.active = false;
                 }
-                gear_select = new UnitButtonObject({x1: 1300, y1: 275, label: "", font: fnt_40k_12});
-                mobility_select = new UnitButtonObject({x1: 1300, y1: 295, label: "", font: fnt_40k_12});
+                gear_select = new UnitButtonObject({
+                    x1: 1300,
+                    y1: 275,
+                    label: "",
+                    font: fnt_40k_12,
+                });
+                mobility_select = new UnitButtonObject({
+                    x1: 1300,
+                    y1: 295,
+                    label: "",
+                    font: fnt_40k_12,
+                });
             }
         }
     }
@@ -196,12 +257,11 @@ function reload_items() {
     scr_get_item_names(
         item_name,
         vehicle_equipment, // eROLE
-        equipmet_area, // slot
+        equipment_area, // slot
         range_melee_radio.selection_val("val"),
         false, // include company standard
         true, // limit to available equipment
         quality_radio.selection_val("val"),
-
     );
 }
 
@@ -209,8 +269,11 @@ function reload_items() {
 /// @param {Struct.EquipmentStruct} _mobility_data
 /// @returns {Struct} { valid: bool, warning: string }
 function check_mobility_armour_compatibility(_armour_data, _mobility_data) {
-    var _result = { valid: true, warning: "" };
-    
+    var _result = {
+        valid: true,
+        warning: "",
+    };
+
     if (is_struct(_armour_data) && is_struct(_mobility_data)) {
         if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator") && !_mobility_data.has_tag("terminator_only")) {
             _result.valid = false;
@@ -234,7 +297,7 @@ function check_mobility_armour_compatibility(_armour_data, _mobility_data) {
             _result.warning = "Cannot use this without Dreadnought Armour.";
         }
     }
-    
+
     return _result;
 }
 
@@ -362,24 +425,24 @@ function draw_popup_equip() {
         weapon2_select,
         armour_select,
         gear_select,
-        mobility_select
+        mobility_select,
     ];
 
     var _area_change = false;
     for (var i = 0; i <= 4; i++) {
         var _button = _buttons[i];
-        if (_button.draw(equipmet_area != i)) {
-            equipmet_area = i;
+        if (_button.draw(equipment_area != i)) {
+            equipment_area = i;
             _area_change = true;
         }
-        if (equipmet_area == i) {
+        if (equipment_area == i) {
             draw_text(1292, 195 + (20 * (i + 1)), "->");
         }
     }
 
     draw_set_alpha(1);
 
-    if (equipmet_area != -1) {
+    if (equipment_area != -1) {
         var check = " ";
         var mct = master_crafted == 1 ? 0.7 : 1;
         var column = 0;
@@ -395,9 +458,9 @@ function draw_popup_equip() {
             n_wep2,
             n_armour,
             n_gear,
-            n_mobi
+            n_mobi,
         ];
-        selected_item_name = selected_item_name[equipmet_area];
+        selected_item_name = selected_item_name[equipment_area];
 
         for (var o = 0; o < array_length(item_name); o++) {
             box_x = 1016 + (row * 154);
@@ -406,7 +469,7 @@ function draw_popup_equip() {
                 box_x,
                 box_y,
                 box_x + 144,
-                box_y + 20
+                box_y + 20,
             ];
             check = selected_item_name == item_name[o] ? "x" : " ";
             item_string = $"[{check}] {item_name[o]}";
@@ -426,7 +489,7 @@ function draw_popup_equip() {
 
         if (top != -1) {
             warning = "";
-            switch (equipmet_area) {
+            switch (equipment_area) {
                 case 0:
                     n_wep1 = item_name[top];
                     sel1 = top;
@@ -450,19 +513,19 @@ function draw_popup_equip() {
             }
         }
 
-        if (equipmet_area == eEQUIPMENT_SLOT.WEAPON_ONE && (n_wep1 == ITEM_NAME_NONE || n_wep1 == "")) {
+        if (equipment_area == eEQUIPMENT_SLOT.WEAPON_ONE && (n_wep1 == ITEM_NAME_NONE || n_wep1 == "")) {
             n_good1 = 1;
         }
-        if (equipmet_area == eEQUIPMENT_SLOT.WEAPON_TWO && (n_wep2 == ITEM_NAME_NONE || n_wep2 == "")) {
+        if (equipment_area == eEQUIPMENT_SLOT.WEAPON_TWO && (n_wep2 == ITEM_NAME_NONE || n_wep2 == "")) {
             n_good2 = 1;
         }
-        if (equipmet_area == eEQUIPMENT_SLOT.ARMOUR && (n_armour == ITEM_NAME_NONE || n_armour == "")) {
+        if (equipment_area == eEQUIPMENT_SLOT.ARMOUR && (n_armour == ITEM_NAME_NONE || n_armour == "")) {
             n_good3 = 1;
         }
-        if (equipmet_area == eEQUIPMENT_SLOT.GEAR && (n_gear == ITEM_NAME_NONE || n_gear == "")) {
+        if (equipment_area == eEQUIPMENT_SLOT.GEAR && (n_gear == ITEM_NAME_NONE || n_gear == "")) {
             n_good4 = 1;
         }
-        if (equipmet_area == eEQUIPMENT_SLOT.MOBILITY && (n_mobi == ITEM_NAME_NONE || n_mobi == "")) {
+        if (equipment_area == eEQUIPMENT_SLOT.MOBILITY && (n_mobi == ITEM_NAME_NONE || n_mobi == "")) {
             n_good5 = 1;
         }
 
@@ -472,7 +535,7 @@ function draw_popup_equip() {
         var gear_data = gear_weapon_data("gear", n_gear);
         var mobility_data = gear_weapon_data("mobility", n_mobi);
 
-        if ((equipmet_area == eEQUIPMENT_SLOT.WEAPON_ONE) && is_struct(weapon_one_data)) {
+        if ((equipment_area == eEQUIPMENT_SLOT.WEAPON_ONE) && is_struct(weapon_one_data)) {
             // Check numbers
             req_wep1_num = units;
             have_wep1_num = 0;
@@ -515,7 +578,7 @@ function draw_popup_equip() {
                 }
             }
         }
-        if ((equipmet_area == eEQUIPMENT_SLOT.WEAPON_TWO) && is_struct(weapon_two_data)) {
+        if ((equipment_area == eEQUIPMENT_SLOT.WEAPON_TWO) && is_struct(weapon_two_data)) {
             // Check numbers
             req_wep2_num = units;
             have_wep2_num = 0;
@@ -558,7 +621,7 @@ function draw_popup_equip() {
                 }
             }
         }
-        if (equipmet_area == eEQUIPMENT_SLOT.ARMOUR) {
+        if (equipment_area == eEQUIPMENT_SLOT.ARMOUR) {
             if (is_struct(armour_data)) {
                 // Check numbers
                 req_armour_num = units;
@@ -607,7 +670,7 @@ function draw_popup_equip() {
                 }
             }
         }
-        if ((equipmet_area == eEQUIPMENT_SLOT.GEAR) && (n_gear != "Assortment") && (n_gear != ITEM_NAME_NONE)) {
+        if ((equipment_area == eEQUIPMENT_SLOT.GEAR) && (n_gear != "Assortment") && (n_gear != ITEM_NAME_NONE)) {
             // Check numbers
             req_gear_num = units;
             have_gear_num = 0;
@@ -645,7 +708,7 @@ function draw_popup_equip() {
                 }
             }
         }
-        if ((equipmet_area == eEQUIPMENT_SLOT.MOBILITY) && (n_mobi != "Assortment") && (n_mobi != ITEM_NAME_NONE) && n_mobi != ITEM_NAME_ANY) {
+        if ((equipment_area == eEQUIPMENT_SLOT.MOBILITY) && (n_mobi != "Assortment") && (n_mobi != ITEM_NAME_NONE) && n_mobi != ITEM_NAME_ANY) {
             // Check numbers
             req_mobi_num = units;
             have_mobi_num = 0;
@@ -675,11 +738,11 @@ function draw_popup_equip() {
     }
 
     //draw_set_halign(fa_center);
-    if ((equipmet_area == eEQUIPMENT_SLOT.WEAPON_ONE) || (equipmet_area == eEQUIPMENT_SLOT.WEAPON_TWO)) {
+    if ((equipment_area == eEQUIPMENT_SLOT.WEAPON_ONE) || (equipment_area == eEQUIPMENT_SLOT.WEAPON_TWO)) {
         range_melee_radio.draw();
     }
 
-    if (equipmet_area != -1) {
+    if (equipment_area != -1) {
         quality_radio.draw();
     }
 

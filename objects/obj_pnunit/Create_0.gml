@@ -29,7 +29,7 @@ y2 = 450 + (draw_size / 2);
 // x determines column; maybe every 10 or so?
 // For fortified locations maybe create a wall unit for the player?
 
-/// @type {Array<Struct.TTRPG_stats} 
+/// @type {Array<Struct.TTRPG_stats}
 unit_struct = [];
 marine_type = [];
 marine_co = [];
@@ -126,7 +126,7 @@ push_held_fire = function(_starting_i = 0) {
         }
     }
     report_held_fire(_skipped_fire);
-}
+};
 
 /// @description Tick down psychic buff durations for all marines in the calling player column.
 tick_psychic_buffs = function() {
@@ -153,4 +153,4 @@ tick_psychic_buffs = function() {
     } catch (_exception) {
         ERROR_HANDLER.handle_exception(_exception);
     }
-}
+};

@@ -13,9 +13,21 @@ function Roster() constructor {
     /// @type {Array<Struct.ToggleButton>}
     company_buttons = [];
     roster_local_string = "";
-    local_button = new ToggleButton({str1: "Local Forces", text_halign: fa_center, text_color: CM_GREEN_COLOR, button_color: CM_GREEN_COLOR, active: false});
+    local_button = new ToggleButton({
+        str1: "Local Forces",
+        text_halign: fa_center,
+        text_color: CM_GREEN_COLOR,
+        button_color: CM_GREEN_COLOR,
+        active: false,
+    });
 
-    select_all_ships = new UnitButtonObject({x1: 700, y1: 299, label: "All Ships", text_color: CM_GREEN_COLOR, button_color: CM_GREEN_COLOR});
+    select_all_ships = new UnitButtonObject({
+        x1: 700,
+        y1: 299,
+        label: "All Ships",
+        text_color: CM_GREEN_COLOR,
+        button_color: CM_GREEN_COLOR,
+    });
 
     static only_locals = function() {
         for (var i = 0; i < array_length(ships); i++) {
@@ -154,9 +166,9 @@ function Roster() constructor {
         format_roster_string();
     };
 
-    static selected_count = function(){
+    static selected_count = function() {
         return array_length(selected_units);
-    }
+    };
 
     static new_squad_button = function(display, squad_id) {
         var _button = new ToggleButton();
@@ -174,7 +186,10 @@ function Roster() constructor {
         array_push(squad_buttons, _button);
     };
 
-    ship_multi_selector = new MultiSelect([], "", {is_horizontal: false, max_height: 160});
+    ship_multi_selector = new MultiSelect([], "", {
+        is_horizontal: false,
+        max_height: 160,
+    });
 
     static new_ship_button = function(display, ship_id) {
         var _button = new ToggleButton();

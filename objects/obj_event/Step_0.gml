@@ -378,7 +378,14 @@ if (ticked == 1) {
     if (activity == "artifact") {
         var spesh = "";
         var woa = string(obj_ini.artifact[obj_controller.fest_display]);
-        var nerves_spesh = ["GOAT", "CHE", "THI", "TENTACLES", "JUM", "PRE"];
+        var nerves_spesh = [
+            "GOAT",
+            "CHE",
+            "THI",
+            "TENTACLES",
+            "JUM",
+            "PRE",
+        ];
         for (var sp = 0; sp < array_length(nerves_spesh); sp++) {
             if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], nerves_spesh[sp])) {
                 spesh = "nerves";

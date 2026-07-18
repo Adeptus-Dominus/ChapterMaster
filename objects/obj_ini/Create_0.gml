@@ -28,7 +28,7 @@ sector_name = "Terra Nova";
 load_to_ships = [
     2,
     0,
-    0
+    0,
 ];
 if (instance_exists(obj_creation)) {
     load_to_ships = obj_creation.load_to_ships;
@@ -236,7 +236,7 @@ serialize = function() {
         "marines",
         "last_ship",
         "chapter_data",
-        "chapter_squad_arrangement"
+        "chapter_squad_arrangement",
     ];
 
     copy_serializable_fields(self, save_data, excluded_from_save);
@@ -252,7 +252,7 @@ deserialize = function(save_data) {
         "squad_types",
         "marine_structs",
         "squad_structs",
-        "chapter_data"
+        "chapter_data",
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting

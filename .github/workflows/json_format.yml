@@ -1,0 +1,44 @@
+name: JSON Formatter
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  format-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Format and Sort JSON Files
+        run: |
+          set -o pipefail
+
+          find . -type f -iname "*.json" ! -path "*/node_modules/*" ! -path "*/.git/*" ! -name "package-lock.json" -print0 | while IFS= read -r -d '' file; do
+            echo "Processing $file..."
+
+            # 1. json5 parses lenient JSON (fixing trailing commas/comments) and outputs standard JSON
+            # 2. jq sorts the keys (-S) and formats it with 4-space indentation
+            if npx json5 "$file" 2>/dev/null | jq --indent 4 -S . > "$file.tmp"; then
+              mv "$file.tmp" "$file"
+            else
+              echo "Warning: Could not process $file. It may contain syntax errors."
+              rm -f "$file.tmp"
+            fi
+          done
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "style: Format and sort JSON files"
+          title: "style: Automated JSON format and sort"
+          body: "This is an automated PR containing formatting and sorting updates for JSON files."
+          branch: automation/json-format
+          delete-branch: true
+          author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"

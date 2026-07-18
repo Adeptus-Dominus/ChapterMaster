@@ -420,7 +420,7 @@ function navy_finish_destroying_player_world() {
         function(prev, _curr, idx) {
             return _curr > 0 ? idx : prev;
         },
-        0
+        0,
     );
 
     if (tar == 0) {
@@ -981,7 +981,7 @@ function create_start_imperial_fleets() {
                 eFACTION.IMPERIUM,
                 eFACTION.MECHANICUS,
                 eFACTION.INQUISITION,
-                eFACTION.ECCLESIARCHY
+                eFACTION.ECCLESIARCHY,
             ];
 
             for (var b = 1; b <= 4; b++) {
@@ -1055,7 +1055,7 @@ function create_start_imperial_fleets() {
 
 function setup_start_imperial_navy_fleet(system) {
     var ii = 0;
-    /// @type {Asset.GMObject.obj_en_fleet} 
+    /// @type {Asset.GMObject.obj_en_fleet}
     var nav = create_enemy_fleet(system.x, system.y, eFACTION.IMPERIUM);
     with (nav) {
         navy = 1;

@@ -96,14 +96,145 @@ for (var i = 0; i < array_length(global.culture_styles); i++) {
 
 buttons = {
     home_world_recruit_share: new ToggleButton(),
-    complex_homeworld: new ToggleButton({x1: 550, y1: 422, active: false, str1: "Spawn System Options", tooltip: "Click for Complex Spawn System Options", button_color: CM_GREEN_COLOR}),
-    home_spawn_loc_options: new RadioSet([{str1: "Fringe", font: fnt_40k_30b, tooltip: "Your home system sits at the edge of the sector"}, {str1: "Central", font: fnt_40k_30b, tooltip: "Your home system is relativly central in the sector"}], "Home Spwan\nLocation"),
-    recruit_home_relationship: new RadioSet([{str1: "Share Planet", font: fnt_40k_14b, tooltip: "Your recruit world will be the same planet as your homeworld."}, {str1: "Share System", font: fnt_40k_14b, tooltip: "Your recruit world will be in the same system as your homeworld."}, {str1: "Separate", font: fnt_40k_14b, tooltip: "Your recruit world will be in a different system to your homeworld."}], "Recruit world"),
-    home_warp: new RadioSet([{str1: "Secluded", font: fnt_40k_14b, tooltip: "Your home system is logistically secluded with no major warp routes"}, {str1: "Connected", font: fnt_40k_14b, tooltip: "Your home system is connected to the larger imperium and system by warp routes"}, {str1: "Warp Hub", font: fnt_40k_14b, tooltip: "Your home system is in a very stable warp area, accessible by several warp lanes"}], "Home warp access"),
-    home_planets: new RadioSet([{str1: "one", font: fnt_40k_14b}, {str1: "two", font: fnt_40k_14b}, {str1: "three", font: fnt_40k_14b}, {str1: "four", font: fnt_40k_14b}], "Home System Planets"),
+    complex_homeworld: new ToggleButton({
+        x1: 550,
+        y1: 422,
+        active: false,
+        str1: "Spawn System Options",
+        tooltip: "Click for Complex Spawn System Options",
+        button_color: CM_GREEN_COLOR,
+    }),
+    home_spawn_loc_options: new RadioSet(
+        [
+            {
+                str1: "Fringe",
+                font: fnt_40k_30b,
+                tooltip: "Your home system sits at the edge of the sector",
+            },
+            {
+                str1: "Central",
+                font: fnt_40k_30b,
+                tooltip: "Your home system is relativly central in the sector",
+            },
+        ],
+        "Home Spwan\nLocation",
+    ),
+    recruit_home_relationship: new RadioSet(
+        [
+            {
+                str1: "Share Planet",
+                font: fnt_40k_14b,
+                tooltip: "Your recruit world will be the same planet as your homeworld.",
+            },
+            {
+                str1: "Share System",
+                font: fnt_40k_14b,
+                tooltip: "Your recruit world will be in the same system as your homeworld.",
+            },
+            {
+                str1: "Separate",
+                font: fnt_40k_14b,
+                tooltip: "Your recruit world will be in a different system to your homeworld.",
+            },
+        ],
+        "Recruit world",
+    ),
+    home_warp: new RadioSet(
+        [
+            {
+                str1: "Secluded",
+                font: fnt_40k_14b,
+                tooltip: "Your home system is logistically secluded with no major warp routes",
+            },
+            {
+                str1: "Connected",
+                font: fnt_40k_14b,
+                tooltip: "Your home system is connected to the larger imperium and system by warp routes",
+            },
+            {
+                str1: "Warp Hub",
+                font: fnt_40k_14b,
+                tooltip: "Your home system is in a very stable warp area, accessible by several warp lanes",
+            },
+        ],
+        "Home warp access",
+    ),
+    home_planets: new RadioSet(
+        [
+            {
+                str1: "one",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "two",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "three",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "four",
+                font: fnt_40k_14b,
+            },
+        ],
+        "Home System Planets",
+    ),
     culture_styles: new MultiSelect(_culture_styles_array, "Chapter Visual Styles"),
-    company_liveries_choice: new RadioSet([{str1: "HQ", font: fnt_40k_14b}, {str1: "I", font: fnt_40k_14b}, {str1: "II", font: fnt_40k_14b}, {str1: "III", font: fnt_40k_14b}, {str1: "IV", font: fnt_40k_14b}, {str1: "V", font: fnt_40k_14b}, {str1: "VI", font: fnt_40k_14b}, {str1: "VII", font: fnt_40k_14b}, {str1: "VIII", font: fnt_40k_14b}, {str1: "IX", font: fnt_40k_14b}, {str1: "X", font: fnt_40k_14b}], "Companies"),
-    livery_switch: new UnitButtonObject({x1: 570, y1: 215, label: "Simple Livery"}),
+    company_liveries_choice: new RadioSet(
+        [
+            {
+                str1: "HQ",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "I",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "II",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "III",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "IV",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "V",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "VI",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "VII",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "VIII",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "IX",
+                font: fnt_40k_14b,
+            },
+            {
+                str1: "X",
+                font: fnt_40k_14b,
+            },
+        ],
+        "Companies",
+    ),
+    livery_switch: new UnitButtonObject({
+        x1: 570,
+        y1: 215,
+        label: "Simple Livery",
+    }),
 };
 
 with (buttons) {
@@ -202,7 +333,7 @@ squad_distribution = 0;
 load_to_ships = [
     2,
     0,
-    0
+    0,
 ];
 
 successors = 0;
@@ -335,7 +466,7 @@ all_chapters = [
     new ChapterDataLite(eCHAPTERS.CUSTOM_7, eCHAPTER_ORIGINS.CUSTOM, eCHAPTERS.UNKNOWN, "Custom", "Your Chapter"),
     new ChapterDataLite(eCHAPTERS.CUSTOM_8, eCHAPTER_ORIGINS.CUSTOM, eCHAPTERS.UNKNOWN, "Custom", "Your Chapter"),
     new ChapterDataLite(eCHAPTERS.CUSTOM_9, eCHAPTER_ORIGINS.CUSTOM, eCHAPTERS.UNKNOWN, "Custom", "Your Chapter"),
-    new ChapterDataLite(eCHAPTERS.CUSTOM_10, eCHAPTER_ORIGINS.CUSTOM, eCHAPTERS.UNKNOWN, "Custom", "Your Chapter")
+    new ChapterDataLite(eCHAPTERS.CUSTOM_10, eCHAPTER_ORIGINS.CUSTOM, eCHAPTERS.UNKNOWN, "Custom", "Your Chapter"),
 ];
 
 var missing_splash = 99;
@@ -372,7 +503,7 @@ for (var c = 1; c < 40; c++) {
     var json_chapter = new ChapterData();
     var success = json_chapter.load_from_json(c, use_app_data);
     if (success) {
-        all_chapters[c] = new ChapterDataLite(json_chapter.id, json_chapter.origin, json_chapter.founding, json_chapter.name, json_chapter.flavor,);
+        all_chapters[c] = new ChapterDataLite(json_chapter.id, json_chapter.origin, json_chapter.founding, json_chapter.name, json_chapter.flavor);
         all_chapters[c].json = true;
         all_chapters[c].icon_name = json_chapter.icon_name;
         all_chapters[c].splash = json_chapter.splash;
@@ -438,7 +569,7 @@ for (var slot = 99; slot <= 103; slot++) {
 
 defaults_slot = 100;
 
-/// @description 
+/// @description
 /// @param {Real} _role_id
 /// @param {String} _role_name
 /// @param {String} _wep1
@@ -454,7 +585,7 @@ load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi,
     mobi[defaults_slot][_role_id] = _mobi;
     gear[defaults_slot][_role_id] = _gear;
     race[defaults_slot][_role_id] = 1;
-}
+};
 
 load_default_gear(eROLE.CHAPTERMASTER, "Chapter Master", "Power Sword", "Bolter", "Artificer Armour", "", "");
 load_default_gear(eROLE.HONOURGUARD, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
@@ -490,12 +621,12 @@ colour_to_set1 = shader_get_uniform(sReplaceColor, "f_Replace1");
 body_colour_find = [
     0 / 255,
     0 / 255,
-    255 / 255
+    255 / 255,
 ];
 body_colour_replace = [
     col_r[main_color] / 255,
     col_g[main_color] / 255,
-    col_b[main_color] / 255
+    col_b[main_color] / 255,
 ];
 
 colour_to_find2 = shader_get_uniform(sReplaceColor, "f_Colour2");
@@ -503,12 +634,12 @@ colour_to_set2 = shader_get_uniform(sReplaceColor, "f_Replace2");
 secondary_colour_find = [
     255 / 255,
     0 / 255,
-    0 / 255
+    0 / 255,
 ];
 secondary_colour_replace = [
     col_r[secondary_color] / 255,
     col_g[secondary_color] / 255,
-    col_b[secondary_color] / 255
+    col_b[secondary_color] / 255,
 ];
 
 colour_to_find3 = shader_get_uniform(sReplaceColor, "f_Colour3");
@@ -517,12 +648,12 @@ colour_to_set3 = shader_get_uniform(sReplaceColor, "f_Replace3");
 pauldron_colour_find = [
     255 / 255,
     255 / 255,
-    0 / 255
+    0 / 255,
 ];
 pauldron_colour_replace = [
     col_r[right_pauldron] / 255,
     col_g[right_pauldron] / 255,
-    col_b[right_pauldron] / 255
+    col_b[right_pauldron] / 255,
 ];
 
 colour_to_find4 = shader_get_uniform(sReplaceColor, "f_Colour4");
@@ -530,12 +661,12 @@ colour_to_set4 = shader_get_uniform(sReplaceColor, "f_Replace4");
 lens_colour_find = [
     0 / 255,
     255 / 255,
-    0 / 255
+    0 / 255,
 ];
 lens_colour_replace = [
     col_r[lens_color] / 255,
     col_g[lens_color] / 255,
-    col_b[lens_color] / 255
+    col_b[lens_color] / 255,
 ];
 
 colour_to_find5 = shader_get_uniform(sReplaceColor, "f_Colour5");
@@ -543,12 +674,12 @@ colour_to_set5 = shader_get_uniform(sReplaceColor, "f_Replace5");
 trim_colour_find = [
     255 / 255,
     0 / 255,
-    255 / 255
+    255 / 255,
 ];
 trim_colour_replace = [
     col_r[main_trim] / 255,
     col_g[main_trim] / 255,
-    col_b[main_trim] / 255
+    col_b[main_trim] / 255,
 ];
 
 colour_to_find6 = shader_get_uniform(sReplaceColor, "f_Colour6");
@@ -556,12 +687,12 @@ colour_to_set6 = shader_get_uniform(sReplaceColor, "f_Replace6");
 pauldron2_colour_find = [
     250 / 255,
     250 / 255,
-    250 / 255
+    250 / 255,
 ];
 pauldron2_colour_replace = [
     col_r[left_pauldron] / 255,
     col_g[left_pauldron] / 255,
-    col_b[left_pauldron] / 255
+    col_b[left_pauldron] / 255,
 ];
 
 colour_to_find7 = shader_get_uniform(sReplaceColor, "f_Colour7");
@@ -570,12 +701,12 @@ colour_to_set7 = shader_get_uniform(sReplaceColor, "f_Replace7");
 weapon_colour_find = [
     0 / 255,
     255 / 255,
-    255 / 255
+    255 / 255,
 ];
 weapon_colour_replace = [
     col_r[weapon_color] / 255,
     col_g[weapon_color] / 255,
-    col_b[weapon_color] / 255
+    col_b[weapon_color] / 255,
 ];
 
 alarm_set(1, 30);

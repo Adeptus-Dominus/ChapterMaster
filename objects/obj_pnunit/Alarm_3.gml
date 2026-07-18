@@ -92,7 +92,7 @@ try {
     // Right here execute some sort of check- if left is open, and engaged, and enemy is only vehicles, and no weapons to hurt them...
 
     if (instance_exists(obj_enunit)) {
-        if (collision_point(x + 10, y, obj_enunit, 0, 1) != noone && collision_point(x - 10, y, obj_pnunit, 0, 1)  == noone) {
+        if (collision_point(x + 10, y, obj_enunit, 0, 1) != noone && collision_point(x - 10, y, obj_pnunit, 0, 1) == noone) {
             var neares = instance_nearest(x + 10, y, obj_enunit);
 
             if ((neares.men == 0) && (neares.veh > 0)) {

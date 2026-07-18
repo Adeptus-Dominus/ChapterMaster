@@ -82,7 +82,12 @@ function UnitImage(_unit_sprite) constructor {
     };
 
     static box = function() {
-        return new Box({x1, y1, x2, y2});
+        return new Box({
+            x1,
+            y1,
+            x2,
+            y2,
+        });
     };
 
     static destroy_image = function() {
@@ -391,7 +396,7 @@ function scr_draw_unit_image(_background = false) {
                     "Dreadnought",
                     "Scout Armour",
                     "Cataphractii",
-                    "Contemptor Dreadnought"
+                    "Contemptor Dreadnought",
                 ];
                 if (array_contains(_complex_armours, unit_armour)) {
                     complex_set = new ComplexSet(self);
@@ -404,7 +409,7 @@ function scr_draw_unit_image(_background = false) {
 
                 // Draw the Iron Halo
                 if (halo == 1 && !halo_bypass) {
-					var halo_offset_x = 0;
+                    var halo_offset_x = 0;
                     var halo_offset_y = 0;
                     var halo_color = 0;
                     var halo_type = 2;
@@ -413,11 +418,11 @@ function scr_draw_unit_image(_background = false) {
                     }
                     if (unit_armour == "Terminator Armour") {
                         halo_type = 2;
-						halo_offset_x += 7
+                        halo_offset_x += 7;
                         halo_offset_y -= 20;
                     } else if (unit_armour == "Tartaros") {
                         halo_type = 2;
-						halo_offset_x += 7
+                        halo_offset_x += 7;
                         halo_offset_y -= 20;
                     }
                     draw_sprite(spr_gear_halo, halo_type + halo_color, x_surface_offset + halo_offset_x, y_surface_offset + halo_offset_y);
@@ -544,7 +549,7 @@ function scr_draw_unit_image(_background = false) {
     var _keep_alive = [
         "unit",
         "_texture_draws",
-        "texture_draws"
+        "texture_draws",
     ];
 
     for (var i = 0; i < array_length(_keep_alive); i++) {

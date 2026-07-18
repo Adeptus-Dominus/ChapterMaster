@@ -92,7 +92,7 @@ function hunt_fallen_battle_aftermath() {
             var _tex_options = [
                 "Suffering is the beginning to penance.",
                 "Their screams shall be the harbringer of their contrition.",
-                "The shame they inflicted upon us shall be written in their flesh."
+                "The shame they inflicted upon us shall be written in their flesh.",
             ];
             tixt += _tex_options[choose(0, 0, 1, 2)];
             scr_popup("Hunt the Fallen Completed", tixt, "fallen", "");

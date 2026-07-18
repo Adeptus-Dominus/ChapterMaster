@@ -406,7 +406,7 @@ function draw_planet_debug_options() {
         if (debug) {
             debug_slate.inside_method = function() {
                 debug_options.draw();
-                switch(debug_options.current_selection){
+                switch (debug_options.current_selection) {
                     case 0:
                         draw_planet_debug_forces();
                         break;
@@ -468,7 +468,7 @@ function draw_planet_debug_features() {
         {
             e_num: eP_FEATURES.STARSHIP,
             name: "Ancient Starship",
-        }
+        },
     ];
 
     var base_y = 220;
@@ -518,7 +518,7 @@ function draw_planet_debug_problems() {
                         break;
                     case "fallen":
                         _p_data.init_fallen_marines();
-                        break
+                        break;
                     default:
                         scr_popup("error", "no specific debug action created please consider helping to make one", "");
                         break;
@@ -548,7 +548,7 @@ function draw_planet_debug_forces() {
         "Heretics",
         "Daemons",
         "Necrons",
-        "Sisters"
+        "Sisters",
     ];
     var faction_keys = [
         "p_orks",
@@ -558,7 +558,7 @@ function draw_planet_debug_forces() {
         "p_traitors",
         "p_demons",
         "p_necrons",
-        "p_sisters"
+        "p_sisters",
     ];
 
     // Loop through each faction row
@@ -622,8 +622,8 @@ function system_debug_enemy_invasion() {
                     invasion_faction = eFACTION.TYRANIDS;
                     system_debug_enemy_invasion_spawn();
                 },
-            }
-        ]
+            },
+        ],
     );
 }
 

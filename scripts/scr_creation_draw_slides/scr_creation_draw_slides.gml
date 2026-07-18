@@ -375,7 +375,28 @@ function draw_chapter_select() {
 
 /// @self Asset.GMObject.obj_creation
 function setup_chapter_trait_select() {
-    chapter_type_radio = new RadioSet([{str1: "Homeworld", font: fnt_40k_14b, tooltip: "Homeworld\nYour Chapter has a homeworld that they base on.  Contained upon it is a massive Fortress Monastery, which provides high levels of defense and automated weapons."}, {str1: "Fleet Based", font: fnt_40k_14b, tooltip: "Fleet Based\nRather than a homeworld, your Chapter begins near their recruiting world.  The fleet includes a Battle Barge, which serves as a mobile base, and powerful ship."}, {str1: "Penitent", font: fnt_40k_14b, tooltip: "Penitent\nAs with Fleet Based, but you must crusade and fight until your penitence meter runs out.  Note that recruiting is disabled until then."}], "Chapter Type", {x1: 445, y1: 211, max_width: 1125 - 445, center: true});
+    chapter_type_radio = new RadioSet([
+        {
+            str1: "Homeworld",
+            font: fnt_40k_14b,
+            tooltip: "Homeworld\nYour Chapter has a homeworld that they base on.  Contained upon it is a massive Fortress Monastery, which provides high levels of defense and automated weapons.",
+        },
+        {
+            str1: "Fleet Based",
+            font: fnt_40k_14b,
+            tooltip: "Fleet Based\nRather than a homeworld, your Chapter begins near their recruiting world.  The fleet includes a Battle Barge, which serves as a mobile base, and powerful ship.",
+        },
+        {
+            str1: "Penitent",
+            font: fnt_40k_14b,
+            tooltip: "Penitent\nAs with Fleet Based, but you must crusade and fight until your penitence meter runs out.  Note that recruiting is disabled until then.",
+        },
+    ], "Chapter Type", {
+        x1: 445,
+        y1: 211,
+        max_width: 1125 - 445,
+        center: true,
+    });
     chapter_type_radio.current_selection = fleet_type - 1;
 }
 
@@ -437,7 +458,7 @@ function draw_chapter_trait_select() {
         if (custom != eCHAPTER_TYPE.CUSTOM) {
             draw_set_alpha(0.5);
         }
-        chapter_type_radio.allow_changes = (custom == eCHAPTER_TYPE.CUSTOM);
+        chapter_type_radio.allow_changes = custom == eCHAPTER_TYPE.CUSTOM;
         chapter_type_radio.draw();
         fleet_type = chapter_type_radio.current_selection + 1;
 
@@ -460,7 +481,7 @@ function draw_chapter_trait_select() {
             "Above Average",
             "Considerable",
             "Considerable",
-            "Overwhelming"
+            "Overwhelming",
         ];
         var _cooperation_ratings = [
             "",
@@ -473,7 +494,7 @@ function draw_chapter_trait_select() {
             "Trusted",
             "Trusted",
             "Trusted",
-            "Exemplary"
+            "Exemplary",
         ];
         var _geneseed_ratings = [
             "",
@@ -486,7 +507,7 @@ function draw_chapter_trait_select() {
             "Mediocre",
             "Good",
             "Good",
-            "Perfect"
+            "Perfect",
         ];
         draw_text_transformed(505, 332, $"Strength: {_strength_ratings[strength]} ({strength})", 0.5, 0.5, 0);
         draw_text_transformed(505, 387, $"Cooperation: {_cooperation_ratings[cooperation]}  ({cooperation})", 0.5, 0.5, 0);
@@ -497,25 +518,25 @@ function draw_chapter_trait_select() {
             strength,
             cooperation,
             purity,
-            stability
+            stability,
         ];
         var score_costs = [
             10,
             10,
             10,
-            1
+            1,
         ];
         var scores_max = [
             10,
             10,
             10,
-            99
+            99,
         ];
         var scores_min = [
             1,
             1,
             1,
-            1
+            1,
         ];
         var click_change = keyboard_check(vk_control) ? 10 : 1;
         if (custom == eCHAPTER_TYPE.CUSTOM) {

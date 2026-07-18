@@ -782,7 +782,7 @@ function format_kill_list(_kills) {
             }
         }
         if (!_hit) {
-            array_push(_merged, { name: _kills[m].name, count: _kills[m].count });
+            array_push(_merged, {name: _kills[m].name, count: _kills[m].count});
         }
     }
     _kills = _merged;

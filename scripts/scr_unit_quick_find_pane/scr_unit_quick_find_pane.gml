@@ -32,7 +32,16 @@ function UnitQuickFindPanel() constructor {
     var xx = main_panel.XX;
     var yy = main_panel.YY;
 
-    fleet_table = new Table({x1: xx + 10, y1: yy + 50, x2: xx + main_panel.width, y2: yy + main_panel.height, headings: ["Capitals", "Frigates", "Escorts", "Location"], row_key_draw: ["capitals", "frigates", "escorts", "location"], set_column_widths: [70, 70, 70, 100], row_h: 20});
+    fleet_table = new Table({
+        x1: xx + 10,
+        y1: yy + 50,
+        x2: xx + main_panel.width,
+        y2: yy + main_panel.height,
+        headings: ["Capitals", "Frigates", "Escorts", "Location"],
+        row_key_draw: ["capitals", "frigates", "escorts", "location"],
+        set_column_widths: [70, 70, 70, 100],
+        row_h: 20,
+    });
 
     static has_troops = function(name) {
         return struct_exists(garrison_log, name);
@@ -98,7 +107,7 @@ function UnitQuickFindPanel() constructor {
             unit_location = obj_ini.veh_loc[co][u];
             var _unit = [
                 co,
-                u
+                u,
             ];
             if (!struct_exists(garrison_log, unit_location)) {
                 garrison_log[$ unit_location] = {
@@ -333,18 +342,18 @@ function UnitQuickFindPanel() constructor {
             y2: yy + main_panel.height + 50,
             set_column_widths: [
                 70,
-                150
+                150,
             ],
             headings: [
                 "Location",
                 "Mission",
-                "Time\nRemaining"
+                "Time\nRemaining",
             ],
             row_data: mission_log,
             row_key_draw: [
                 "system",
                 "mission",
-                "time"
+                "time",
             ],
         };
         mission_table = new Table(_data);
@@ -433,11 +442,11 @@ function UnitQuickFindPanel() constructor {
                         if (star != noone) {
                             travel_target = [
                                 star.x,
-                                star.y
+                                star.y,
                             ];
                             travel_increments = [
                                 (travel_target[0] - obj_controller.x) / 15,
-                                (travel_target[1] - obj_controller.y) / 15
+                                (travel_target[1] - obj_controller.y) / 15,
                             ];
                             travel_time = 0;
                         }
@@ -534,8 +543,7 @@ function UnitQuickFindPanel() constructor {
                 }
             }
             pop_draw_return_values();
-        }
-        catch (_exception) {} //dangerous to handle wiljustmake game unplayable if crash does occur
+        } catch (_exception) {} //dangerous to handle wiljustmake game unplayable if crash does occur
     };
 }
 
@@ -547,7 +555,7 @@ function HoverBox() constructor {
         0,
         0,
         0,
-        0
+        0,
     ];
 
     static draw = function(xx, yy, button_text) {
@@ -794,7 +802,10 @@ function setup_planet_mission_group() {
 }
 
 function HelpfulPlaces() constructor {
-    main_panel = new DataSlate({draggable: true, cherub: true});
+    main_panel = new DataSlate({
+        draggable: true,
+        cherub: true,
+    });
     var _imperial_help_requests = stars_with_help_requests();
 
     var _help_requests = [];
@@ -835,7 +846,11 @@ function HelpfulPlaces() constructor {
         return main_panel.entered();
     };
 
-    help_table = new Table({row_key_draw: ["name", "system_count", "help_requests"], headings: ["System", "Planets", "Planets\nRequesting Help"], row_data: _help_requests});
+    help_table = new Table({
+        row_key_draw: ["name", "system_count", "help_requests"],
+        headings: ["System", "Planets", "Planets\nRequesting Help"],
+        row_data: _help_requests,
+    });
 
     var _navy_fleets = [];
 
@@ -870,7 +885,11 @@ function HelpfulPlaces() constructor {
         array_push(_navy_fleets, _data);
     }
 
-    navy_table = new Table({row_key_draw: ["location", "remaining_guard"], headings: ["Location", "Remaining\nGuard"], row_data: _navy_fleets});
+    navy_table = new Table({
+        row_key_draw: ["location", "remaining_guard"],
+        headings: ["Location", "Remaining\nGuard"],
+        row_data: _navy_fleets,
+    });
 
     var _forges = [];
 
@@ -906,9 +925,26 @@ function HelpfulPlaces() constructor {
     }
     array_push(_columns, _longest_name);
 
-    forges_table = new Table({row_key_draw: ["name", "owner_name", "owner_status"], headings: ["Name", "   Owner   ", "  Owner\nStatus  "], row_data: _forges, set_column_widths: _columns});
+    forges_table = new Table({
+        row_key_draw: ["name", "owner_name", "owner_status"],
+        headings: ["Name", "   Owner   ", "  Owner\nStatus  "],
+        row_data: _forges,
+        set_column_widths: _columns,
+    });
 
-    places_radio = new RadioSet([{str1: "Help Requests"}, {str1: "Navy Fleets"}, {str1: "Forge Worlds"}]);
+    places_radio = new RadioSet(
+        [
+            {
+                str1: "Help Requests",
+            },
+            {
+                str1: "Navy Fleets",
+            },
+            {
+                str1: "Forge Worlds",
+            },
+        ],
+    );
 
     main_panel.inside_method = function() {
         places_radio.update({x1: x1 + 30, y1: y1 + 25});

@@ -143,7 +143,13 @@ function set_up_diplomacy_buttons() {
     audience_data = {};
     set_up_diplomacy_persons();
     //Trade button setup
-    diplo_buttons.trade = new UnitButtonObject({x1: 400, y1: 720, label: "Trade", bind_scope: obj_controller, style: "pixel"});
+    diplo_buttons.trade = new UnitButtonObject({
+        x1: 400,
+        y1: 720,
+        label: "Trade",
+        bind_scope: obj_controller,
+        style: "pixel",
+    });
     diplo_buttons.trade.bind_method = function() {
         if ((audience == 0) && (force_goodbye == 0)) {
             trading = 1;
@@ -155,7 +161,13 @@ function set_up_diplomacy_buttons() {
     };
 
     //Demand button setup
-    diplo_buttons.demand = new UnitButtonObject({x1: 600, y1: 720, label: "Demand", bind_scope: obj_controller, style: "pixel"});
+    diplo_buttons.demand = new UnitButtonObject({
+        x1: 600,
+        y1: 720,
+        label: "Demand",
+        bind_scope: obj_controller,
+        style: "pixel",
+    });
     diplo_buttons.demand.bind_method = function() {
         if ((audience == 0) && (force_goodbye == 0)) {
             cooldown = 8;
@@ -166,10 +178,23 @@ function set_up_diplomacy_buttons() {
     };
 
     //Discuss button setup
-    diplo_buttons.discuss = new UnitButtonObject({x1: 800, y1: 720, label: "Discuss", tooltip: "Unfinished", bind_scope: obj_controller, style: "pixel"});
+    diplo_buttons.discuss = new UnitButtonObject({
+        x1: 800,
+        y1: 720,
+        label: "Discuss",
+        tooltip: "Unfinished",
+        bind_scope: obj_controller,
+        style: "pixel",
+    });
 
     //denounce button setup
-    diplo_buttons.denounce = new UnitButtonObject({x1: 400, y1: diplo_buttons.trade.y2, label: "Denounce", bind_scope: obj_controller, style: "pixel"});
+    diplo_buttons.denounce = new UnitButtonObject({
+        x1: 400,
+        y1: diplo_buttons.trade.y2,
+        label: "Denounce",
+        bind_scope: obj_controller,
+        style: "pixel",
+    });
 
     diplo_buttons.denounce.bind_method = function() {
         if (diplo_last != "denounced") {
@@ -179,7 +204,13 @@ function set_up_diplomacy_buttons() {
         }
     };
 
-    diplo_buttons.praise = new UnitButtonObject({x1: 600, y1: diplo_buttons.trade.y2, label: "Praise", bind_scope: obj_controller, style: "pixel"});
+    diplo_buttons.praise = new UnitButtonObject({
+        x1: 600,
+        y1: diplo_buttons.trade.y2,
+        label: "Praise",
+        bind_scope: obj_controller,
+        style: "pixel",
+    });
 
     diplo_buttons.praise.bind_method = function() {
         if (diplo_last != "praised") {
@@ -189,7 +220,13 @@ function set_up_diplomacy_buttons() {
         }
     };
 
-    diplo_buttons.alliance = new UnitButtonObject({x1: 800, y1: diplo_buttons.trade.y2, label: "Propose\nAlliance", bind_scope: obj_controller, style: "pixel"});
+    diplo_buttons.alliance = new UnitButtonObject({
+        x1: 800,
+        y1: diplo_buttons.trade.y2,
+        label: "Propose\nAlliance",
+        bind_scope: obj_controller,
+        style: "pixel",
+    });
 
     diplo_buttons.alliance.bind_method = function() {
         if (diplo_last != "propose_alliance") {
@@ -199,7 +236,13 @@ function set_up_diplomacy_buttons() {
         }
     };
 
-    diplo_buttons.exit_button = new UnitButtonObject({x1: 818, y1: 795, label: "Exit", bind_scope: obj_controller, color: CM_RED_COLOR});
+    diplo_buttons.exit_button = new UnitButtonObject({
+        x1: 818,
+        y1: 795,
+        label: "Exit",
+        bind_scope: obj_controller,
+        color: CM_RED_COLOR,
+    });
 
     diplo_buttons.exit_button.bind_method = exit_diplomacy_dialogue;
 
@@ -308,7 +351,7 @@ function set_up_diplomacy_persons() {
         _eldar,
         _orks,
         _tau,
-        _chaos
+        _chaos,
     ];
 
     for (var i = 0; i < array_length(_shutters); i++) {
@@ -323,7 +366,11 @@ function set_up_diplomacy_persons() {
                     style: "pixel",
                     label: "Ignore",
                 }),
-                unignore: new UnitButtonObject({style: "pixel", label: "Unignore", tooltip: "Click here or press B to Toggle Unit Biography."}),
+                unignore: new UnitButtonObject({
+                    style: "pixel",
+                    label: "Unignore",
+                    tooltip: "Click here or press B to Toggle Unit Biography.",
+                }),
                 screen_slate: new DataSlate(),
             };
             var _screen_slate = management_buttons.screen_slate;
@@ -343,7 +390,7 @@ function set_up_diplomacy_persons() {
                 draw_set_font(fnt_40k_14b);
                 draw_set_halign(fa_left);
                 draw_text(xx + 169, yy + 35, obj_controller.faction[_faction_enum]);
-                management_buttons.screen_slate.draw_with_dimensions(xx + 5, yy + 5,);
+                management_buttons.screen_slate.draw_with_dimensions(xx + 5, yy + 5);
                 draw_set_font(fnt_40k_14);
                 draw_set_halign(fa_right);
                 draw_text_transformed(xx + 420, yy + 20, obj_controller.faction_status[_faction_enum], 0.7, 0.7, 0);

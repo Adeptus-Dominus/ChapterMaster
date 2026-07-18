@@ -1,93 +1,185 @@
 # --- CONFIGURATION ---
-$Repo = "EttyKitty/Gobo"
+$Repo = "EttyKitty/GoboCat"
 $FormatterName = "Gobo"
-$Formatter = "gobo.exe"
-$ZipFile = "gobo-windows.zip"
-$Exclusions = "extensions|.git|.svn|prefabs"
 $Extension = "*.gml"
 
-Write-Host "--- Gobo: GML Formatter ---" -ForegroundColor Cyan
-Write-Host ""
+# Polyfill for Windows PowerShell 5.1 (which lacks built-in $IsWindows, $IsLinux, $IsMacOS)
+if ($null -eq $IsWindows -and $null -eq $IsLinux -and $null -eq $IsMacOS) {
+    $IsWindows = $true
+    $IsLinux = $false
+    $IsMacOS = $false
+}
 
-Write-Host "[INFO] This script will run $FormatterName on all $Extension files in the project" -ForegroundColor Cyan
-Write-Host "[INFO] The following patterns will be excluded: $Exclusions" -ForegroundColor Cyan
-Write-Host ""
+# Detect operating system and set platform-specific variables
+if ($IsWindows) {
+    $Formatter = "gobo.exe"
+    $PlatformKeyword = "windows"
+} elseif ($IsLinux) {
+    $Formatter = "gobo"
+    $PlatformKeyword = "linux"
+} elseif ($IsMacOS) {
+    $Formatter = "gobo"
+    $PlatformKeyword = "mac"
+} else {
+    Write-Error "Unsupported operating system."
+    exit 1
+}
 
-pause
+# Detect system architecture (defaulting to x64)
+$ArchKeyword = "x64"
+if ($IsWindows) {
+    if ($env:PROCESSOR_ARCHITECTURE -like "*ARM*") {
+        $ArchKeyword = "arm64"
+    }
+} else {
+    try {
+        $OSArch = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLower()
+        if ($OSArch -eq "arm64") {
+            $ArchKeyword = "arm64"
+        }
+    } catch {
+        if ((uname -m) -match "arm64|aarch64") {
+            $ArchKeyword = "arm64"
+        }
+    }
+}
 
-Write-Host ""
+Clear-Host
+Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host "         GoboCat: GML Formatter             " -ForegroundColor White
+Write-Host "=========================================" -ForegroundColor Cyan
 
 # --- AUTO-UPDATE ---
 if (!(Test-Path $Formatter)) {
-    Write-Host "[INFO] $Formatter not found. Fetching latest release info..." -ForegroundColor Yellow
-    
     try {
+        Write-Host ""
+        Write-Host "[INFO] Downloading latest release..." -ForegroundColor Yellow
         $ApiUrl = "https://api.github.com/repos/$Repo/releases/latest"
-        $ReleaseInfo = Invoke-RestMethod -Uri $ApiUrl -ErrorAction Stop
+        $Assets = (Invoke-RestMethod -Uri $ApiUrl -ErrorAction Stop).assets
         
-        $Asset = $ReleaseInfo.assets | Where-Object { $_.name -like "*windows*.zip" } | Select-Object -First 1
+        # Filter assets matching the platform (including osx fallback for macOS)
+        $PlatformAssets = $Assets | Where-Object {
+            $_.name -like "*$PlatformKeyword*" -or ($IsMacOS -and $_.name -like "*osx*")
+        }
         
-        if ($null -eq $Asset) { throw "Could not find a Windows zip in the latest release." }
+        # Define architecture patterns to search for
+        $ArchPatterns = @($ArchKeyword)
+        if ($ArchKeyword -eq "arm64") {
+            $ArchPatterns += "aarch64"
+        } elseif ($ArchKeyword -eq "x64") {
+            $ArchPatterns += @("x86_64", "amd64")
+        }
         
-        $DownloadUrl = $Asset.browser_download_url
-        Write-Host "[INFO] Found version $($ReleaseInfo.tag_name). Downloading..." -ForegroundColor Gray
-
-        Invoke-WebRequest -Uri $DownloadUrl -OutFile $ZipFile -ErrorAction Stop
+        # 1. Attempt to find an asset matching the system's architecture patterns
+        $Asset = $PlatformAssets | Where-Object {
+            $AssetName = $_.name
+            $Match = $false
+            foreach ($Pattern in $ArchPatterns) {
+                if ($AssetName -like "*$Pattern*") {
+                    $Match = $true
+                    break
+                }
+            }
+            $Match
+        } | Select-Object -First 1
         
-        Write-Host "[INFO] Extracting..." -ForegroundColor Gray
-        Expand-Archive -Path $ZipFile -DestinationPath "." -Force
-        Remove-Item $ZipFile
+        if (!$Asset) {
+            throw "Could not find a valid release asset for this platform."
+        }
         
-        Write-Host "[SUCCESS] Installed $Formatter (Version: $($ReleaseInfo.tag_name))`n" -ForegroundColor Green
-    } catch {
+        $FileName = $Asset.name
+        Write-Host "[INFO] Downloading: $FileName" -ForegroundColor Gray
+        Invoke-WebRequest -Uri $Asset.browser_download_url -OutFile $FileName -ErrorAction Stop
+        
+        # Handle extraction based on file extension
+        if ($FileName -like "*.zip") {
+            Expand-Archive -Path $FileName -DestinationPath "." -Force -ErrorAction Stop
+        } elseif ($FileName -like "*.tar.gz" -or $FileName -like "*.tgz") {
+            tar -xzf $FileName
+        }
+        
+        Remove-Item $FileName
+        
+        # Set execution permissions on Linux and macOS
+        if (!$IsWindows) {
+            chmod +x "./$Formatter"
+        }
+        
+        Write-Host "[SUCCESS] Formatter ready.`n" -ForegroundColor Green
+    }
+    catch {
         Write-Host "`n[FATAL ERROR] Could not setup formatter!" -ForegroundColor Red
         Write-Host "Reason: $($_.Exception.Message)" -ForegroundColor White
         exit 1
     }
 }
 
-# --- FILE GATHERING ---
-Write-Host "[INFO] Gathering files..." -ForegroundColor Cyan
+Write-Host ""
+Write-Host "[INFO] This script will run $FormatterName on all $Extension files in the project" -ForegroundColor Cyan
+Write-Host ""
 
-$Files = Get-ChildItem -Recurse -Filter $Extension | Where-Object { $_.FullName -notmatch $Exclusions }
-$Total = $Files.Count
-$Count = 0
-$Errors = 0
+[void](Read-Host "Press Enter to continue")
 
-if ($Total -eq 0) {
-    Write-Host "[WARN] No $Extension files found!" -ForegroundColor Yellow
-    pause; exit 0
-}
-
-Write-Host "[INFO] Found $Total files" -ForegroundColor Cyan
-
-# --- PROCESSING ---
-Write-Host "[INFO] Formatting..." -ForegroundColor Cyan
+Write-Host ""
+Write-Host "[INFO] Formatting project..." -ForegroundColor Cyan
 
 $Stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-foreach ($File in $Files) {
-    $Count++
-    $Host.UI.RawUI.WindowTitle = "$($File.Name) [$Count / $Total]"
-    
-    # Run the formatter
-    & "./$Formatter" $File.FullName | Out-Null
-    
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "[ERROR] Failed on $($File.FullName)" -ForegroundColor Red
-        $Errors++
-    }
-}
+# Run Gobo and capture ALL output (Stdout and Stderr) into an array of strings
+$Output = & "./$Formatter" . 2>&1
 
 $Stopwatch.Stop()
 
-# --- SUMMARY ---
+# --- PARSE RESULTS ---
+$Errors = 0
+$Warnings = 0
+$FilesProcessed = "Unknown"
+
+foreach ($Line in $Output) {
+    if ($Line -match "\[Error\]") {
+        Write-Host $Line -ForegroundColor Red
+        $Errors++
+    }
+    elseif ($Line -match "\[Warn\]") {
+        Write-Host $Line -ForegroundColor Yellow
+        $Warnings++
+    }
+    else {
+        Write-Host $Line -ForegroundColor Gray
+        if ($Line -match "Formatted (\d+) files") {
+            $FilesProcessed = $Matches[1]
+        }
+    }
+}
+
+# --- SUMMARY BLOCK ---
 $Time = $Stopwatch.Elapsed.ToString("hh\:mm\:ss\.ff")
 Write-Host ""
-Write-Host "[INFO] Formatting Complete!" -ForegroundColor Green
-Write-Host "[INFO] Total Processed: $Total" -ForegroundColor Cyan
-Write-Host "[INFO] Time Elapsed:    $Time" -ForegroundColor Cyan
-Write-Host "[INFO] Errors:          $Errors" -ForegroundColor $(if ($Errors -gt 0) { "Red" } else { "Cyan" })
+Write-Host "-----------------------------------------" -ForegroundColor Cyan
+Write-Host "[SUMMARY] Formatting Complete" -ForegroundColor Green
+Write-Host "-----------------------------------------" -ForegroundColor Cyan
+Write-Host "Files Processed: $FilesProcessed" -ForegroundColor White
+Write-Host "Time Elapsed:    $Time" -ForegroundColor White
+
+if ($Errors -gt 0) {
+    Write-Host "Errors:          $Errors" -ForegroundColor Red
+} else {
+    Write-Host "Errors:          0" -ForegroundColor Green
+}
+
+if ($Warnings -gt 0) {
+    Write-Host "Warnings:        $Warnings" -ForegroundColor Yellow
+}
+
+Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host ""
 
-pause
+if ($LASTEXITCODE -ne 0 -or $Errors -gt 0) {
+    Write-Host "[TERMINATED] Finished with errors." -ForegroundColor Red
+    [void](Read-Host "Press Enter to exit")
+    exit 1
+} else {
+    Write-Host "[SUCCESS] Press Enter to close..." -ForegroundColor Green
+    [void](Read-Host "Press Enter to exit")
+    exit 0
+}

@@ -1,4 +1,3 @@
-
 enum ePROGENITOR {
     NONE,
     DARK_ANGELS,
@@ -27,7 +26,7 @@ global.weapon_list_ranged_heavy_terminator = [
     "Assault Cannon",
     "Multi-Melta",
     "Plasma Cannon",
-    "Grav-Cannon"
+    "Grav-Cannon",
 ];
 global.weapon_list_ranged_heavy_long = [
     "Heavy Bolter",
@@ -40,13 +39,13 @@ global.weapon_list_ranged_heavy_long = [
     "Lascannon",
     "Lascannon",
     "Plasma Cannon",
-    "Grav-Cannon"
+    "Grav-Cannon",
 ];
 global.weapon_list_ranged_heavy_assault = [
     "Heavy Flamer",
     "Heavy Flamer",
     "Heavy Flamer",
-    "Multi-Melta"
+    "Multi-Melta",
 ];
 global.weapon_list_ranged_heavy = array_concat(global.weapon_list_ranged_heavy_long, global.weapon_list_ranged_heavy_assault);
 global.weapon_list_ranged_heavy_veteran = [
@@ -57,20 +56,20 @@ global.weapon_list_ranged_heavy_veteran = [
     "Lascannon",
     "Multi-Melta",
     "Plasma Cannon",
-    "Grav-Cannon"
+    "Grav-Cannon",
 ];
 
 global.weapon_list_ranged_special_long = [
     "Plasma Gun",
     "Plasma Gun",
     "Plasma Gun",
-    "Grav-Gun"
+    "Grav-Gun",
 ];
 global.weapon_list_ranged_special_assault = [
     "Flamer",
     "Flamer",
     "Flamer",
-    "Meltagun"
+    "Meltagun",
 ];
 global.weapon_list_ranged_special = array_concat(global.weapon_list_ranged_special_long, global.weapon_list_ranged_special_assault);
 
@@ -81,13 +80,13 @@ global.weapon_list_ranged_combi_long = [
     "Storm Bolter",
     "Combiplasma",
     "Combiplasma",
-    "Combigrav"
+    "Combigrav",
 ];
 global.weapon_list_ranged_combi_assault = [
     "Combiflamer",
     "Combiflamer",
     "Combiflamer",
-    "Combimelta"
+    "Combimelta",
 ];
 global.weapon_list_ranged_combi = array_concat(global.weapon_list_ranged_combi_long, global.weapon_list_ranged_combi_assault);
 
@@ -97,13 +96,13 @@ global.weapon_list_ranged_pistols_long = [
     "Bolt Pistol",
     "Plasma Pistol",
     "Plasma Pistol",
-    "Grav-Pistol"
+    "Grav-Pistol",
 ];
 global.weapon_list_ranged_pistols_assault = [
     "Hand Flamer",
     "Hand Flamer",
     "Hand Flamer",
-    "Infernus Pistol"
+    "Infernus Pistol",
 ];
 global.weapon_list_ranged_pistols = array_concat(global.weapon_list_ranged_pistols_long, global.weapon_list_ranged_pistols_assault);
 
@@ -113,7 +112,7 @@ global.weapon_list_ranged = array_concat(global.weapon_list_ranged_pistols_long,
 global.weapon_list_melee_basic = [
     "Chainsword",
     "Chainsword",
-    "Chainaxe"
+    "Chainaxe",
 ];
 global.weapon_list_melee_1h = [
     "Chainsword",
@@ -133,7 +132,7 @@ global.weapon_list_melee_1h = [
     "Lightning Claw",
     "Power Fist",
     "Power Fist",
-    "Thunder Hammer"
+    "Thunder Hammer",
 ];
 global.weapon_list_melee_heavy = [
     "Eviscerator",
@@ -141,7 +140,7 @@ global.weapon_list_melee_heavy = [
     "Eviscerator",
     "Eviscerator",
     "Eviscerator",
-    "Heavy Thunder Hammer"
+    "Heavy Thunder Hammer",
 ];
 global.weapon_list_melee_veteran = [
     "Chainsword",
@@ -155,22 +154,22 @@ global.weapon_list_melee_veteran = [
     "Lightning Claw",
     "Power Fist",
     "Power Fist",
-    "Thunder Hammer"
+    "Thunder Hammer",
 ];
 
 global.weapon_list_weighted_ranged_pistols = [
     [
         "Bolt Pistol",
-        4
+        4,
     ],
     [
         "Plasma Pistol",
-        2
+        2,
     ],
     [
         "Grav-Pistol",
-        1
-    ]
+        1,
+    ],
 ];
 
 function progenitor_map() {
@@ -184,7 +183,7 @@ function progenitor_map() {
         "Iron Hands",
         "Ultramarines",
         "Salamanders",
-        "Raven Guard"
+        "Raven Guard",
     ];
 
     for (var i = 1; i < 10; i++) {
@@ -197,7 +196,36 @@ function progenitor_map() {
 }
 
 function complex_livery_default() {
-    return {sgt: {helm_pattern: 3, helm_primary: 0, helm_secondary: 0, helm_detail: 0, helm_lens: 0}, vet_sgt: {helm_pattern: 3, helm_primary: 0, helm_secondary: 0, helm_detail: 0, helm_lens: 0}, captain: {helm_pattern: 3, helm_primary: 0, helm_secondary: 0, helm_detail: 0, helm_lens: 0}, veteran: {helm_pattern: 3, helm_primary: 0, helm_secondary: 0, helm_detail: 0, helm_lens: 0}};
+    return {
+        sgt: {
+            helm_pattern: 3,
+            helm_primary: 0,
+            helm_secondary: 0,
+            helm_detail: 0,
+            helm_lens: 0,
+        },
+        vet_sgt: {
+            helm_pattern: 3,
+            helm_primary: 0,
+            helm_secondary: 0,
+            helm_detail: 0,
+            helm_lens: 0,
+        },
+        captain: {
+            helm_pattern: 3,
+            helm_primary: 0,
+            helm_secondary: 0,
+            helm_detail: 0,
+            helm_lens: 0,
+        },
+        veteran: {
+            helm_pattern: 3,
+            helm_primary: 0,
+            helm_secondary: 0,
+            helm_detail: 0,
+            helm_lens: 0,
+        },
+    };
 }
 
 function select_livery_data(livery_data, specific) {
@@ -758,7 +786,7 @@ function scr_initialize_custom() {
         "",
         "",
         "",
-        ""
+        "",
     ];
     if (variable_instance_exists(obj_creation, "company_title")) {
         for (var ct = 0; ct < array_length(obj_creation.company_title); ct++) {
@@ -1407,7 +1435,7 @@ function scr_initialize_custom() {
         "sgt",
         "vet_sgt",
         "captain",
-        "veteran"
+        "veteran",
     ];
     for (var i = 0; i < array_length(complex_type); i++) {
         with (complex_livery_data[$ complex_type[i]]) {
@@ -1497,76 +1525,76 @@ function scr_initialize_custom() {
         var possible_custom_roles = [
             [
                 "chapter_master",
-                eROLE.CHAPTERMASTER
+                eROLE.CHAPTERMASTER,
             ],
             [
                 "honour_guard",
-                eROLE.HONOURGUARD
+                eROLE.HONOURGUARD,
             ],
             [
                 "veteran",
-                eROLE.VETERAN
+                eROLE.VETERAN,
             ],
             [
                 "terminator",
-                eROLE.TERMINATOR
+                eROLE.TERMINATOR,
             ],
             [
                 "captain",
-                eROLE.CAPTAIN
+                eROLE.CAPTAIN,
             ],
             [
                 "dreadnought",
-                eROLE.DREADNOUGHT
+                eROLE.DREADNOUGHT,
             ],
             [
                 "champion",
-                eROLE.CHAMPION
+                eROLE.CHAMPION,
             ],
             [
                 "tactical",
-                eROLE.TACTICAL
+                eROLE.TACTICAL,
             ],
             [
                 "devastator",
-                eROLE.DEVASTATOR
+                eROLE.DEVASTATOR,
             ],
             [
                 "assault",
-                eROLE.ASSAULT
+                eROLE.ASSAULT,
             ],
             [
                 "ancient",
-                eROLE.ANCIENT
+                eROLE.ANCIENT,
             ],
             [
                 "scout",
-                eROLE.SCOUT
+                eROLE.SCOUT,
             ],
             [
                 "chaplain",
-                eROLE.CHAPLAIN
+                eROLE.CHAPLAIN,
             ],
             [
                 "apothecary",
-                eROLE.APOTHECARY
+                eROLE.APOTHECARY,
             ],
             [
                 "techmarine",
-                eROLE.TECHMARINE
+                eROLE.TECHMARINE,
             ],
             [
                 "librarian",
-                eROLE.LIBRARIAN
+                eROLE.LIBRARIAN,
             ],
             [
                 "sergeant",
-                eROLE.SERGEANT
+                eROLE.SERGEANT,
             ],
             [
                 "veteran_sergeant",
-                eROLE.VETERANSERGEANT
-            ]
+                eROLE.VETERANSERGEANT,
+            ],
         ];
         var possible_custom_attributes = [
             "name",
@@ -1574,7 +1602,7 @@ function scr_initialize_custom() {
             "wep2",
             "mobi",
             "gear",
-            "armour"
+            "armour",
         ];
         /**
 		 * check whether the json structure exists to populate custom role names and 
@@ -1641,20 +1669,17 @@ function scr_initialize_custom() {
     #region Squad Loadouts
     switch (obj_creation.squad_distribution) {
         case 1: // equal specialists only
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/equal_specialists.json", json_parse);
+            obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/equal_specialists.json", json_parse);
             break;
         case 2: // equal scouts only
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/equal_scouts.json", json_parse);
+            obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/equal_scouts.json", json_parse);
             break;
         case 3: // equal specialists and equal scouts
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/equal_spescout.json", json_parse);
+            obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/equal_spescout.json", json_parse);
             break;
-        default: // 0 = standard
-            obj_ini.chapter_squad_arrangement = json_to_gamemaker(
-                working_directory + $"main/squads/company_squad_builds.json", json_parse);
+        default:
+            // 0 = standard
+            obj_ini.chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/company_squad_builds.json", json_parse);
             break;
     }
 
@@ -1745,7 +1770,7 @@ function scr_initialize_custom() {
         },
         {
             "{squad_name}": _squad_name,
-        }
+        },
     ];
     var _roles_player = obj_ini.role[100];
     var _default_player = obj_ini.role[101];
@@ -1803,11 +1828,11 @@ function scr_initialize_custom() {
             "required": {
                 "wep1": [
                     wep1[100][10],
-                    5
+                    5,
                 ],
                 "wep2": [
                     wep2[100][10],
-                    5
+                    5,
                 ],
             },
             "option": {
@@ -1817,14 +1842,14 @@ function scr_initialize_custom() {
                         2,
                         {
                             "wep2": "",
-                        }
-                    ]
+                        },
+                    ],
                 ],
                 "wep2": [
                     [
                         ["Flamer"],
-                        2
-                    ]
+                        2,
+                    ],
                 ],
             },
         };
@@ -2262,7 +2287,7 @@ function scr_initialize_custom() {
         "whirlwind",
         "predator",
         "land_raider",
-        "land_speeder"
+        "land_speeder",
     ];
     if (variable_instance_exists(obj_creation, "extra_vehicles")) {
         for (var i = 0; i < array_length(vehicle_keys); i++) {
@@ -2300,7 +2325,7 @@ function scr_initialize_custom() {
         load_default_gear(eROLE.SCOUT, "Neophyte", "Bolter", "", "Scout Armour", "", "");
     }
 
-    var equal_scouts = (squad_distribution == 2 || squad_distribution == 3);
+    var equal_scouts = squad_distribution == 2 || squad_distribution == 3;
     obj_ini.equal_scouts = equal_scouts; // for use in squad creation later
 
     var _moved_scouts = 0;
@@ -2309,7 +2334,10 @@ function scr_initialize_custom() {
     // ensure 10th company is processed last so _moved_scouts is fully accumulated before its tacticals are set
     var _tenth_idx = -1;
     for (var _i = 0; _i < array_length(_coys); _i++) {
-        if (_coys[_i] == "tenth") { _tenth_idx = _i; break; }
+        if (_coys[_i] == "tenth") {
+            _tenth_idx = _i;
+            break;
+        }
     }
     if (_tenth_idx != -1 && _tenth_idx != array_length(_coys) - 1) {
         array_delete(_coys, _tenth_idx, 1);
@@ -2457,7 +2485,7 @@ function scr_initialize_custom() {
                 "seventh",
                 "eighth",
                 "ninth",
-                "tenth"
+                "tenth",
             ];
             var _company_keys_count = array_length(_company_keys);
             for (var i = 0; i < _company_keys_count; i++) {
@@ -3173,7 +3201,7 @@ function load_chapter_master_equipment() {
             obj_ini.artifact[last_artifact] = obj_creation.artifact.base_weapon_type;
             arti.bearer = [
                 0,
-                1
+                1,
             ];
             obj_ini.artifact_identified[last_artifact] = 0;
             chapter_master_equip.wep1 = last_artifact;
@@ -3185,7 +3213,7 @@ function load_chapter_master_equipment() {
                 obj_ini.artifact[last_artifact] = obj_creation.artifact[a].base_weapon_type;
                 arti.bearer = [
                     0,
-                    1
+                    1,
                 ];
                 obj_ini.artifact_identified[last_artifact] = 0;
                 switch (obj_creation.artifact[a].slot) {

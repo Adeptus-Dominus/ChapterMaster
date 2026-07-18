@@ -19,8 +19,8 @@ function scr_crusade() {
             40,
             [
                 5,
-                10
-            ]
+                10,
+            ],
         ],
         hard: [
             60,
@@ -28,8 +28,8 @@ function scr_crusade() {
             30,
             [
                 20,
-                20
-            ]
+                20,
+            ],
         ],
         brutal: [
             20,
@@ -37,8 +37,8 @@ function scr_crusade() {
             20,
             [
                 40,
-                20
-            ]
+                20,
+            ],
         ],
     };
 
@@ -98,7 +98,7 @@ function scr_crusade() {
                             _dead = false;
                         } else {
                             if (irandom(100) < unit.weapon_skill) {
-                                var heroic_deed = choose("holding a breach in imperial defenses allowing allied forces to regroup,", "slaying the enemy leader in glorious combat, while victorious he ultimately succumbed to his wounds,", "leading an imortant boarding mission,",);
+                                var heroic_deed = choose("holding a breach in imperial defenses allowing allied forces to regroup,", "slaying the enemy leader in glorious combat, while victorious he ultimately succumbed to his wounds,", "leading an imortant boarding mission,");
                                 //TODO figure out a blance in reward for captains or high rnaking death on crusade
                                 //adds dynamacism as itt creates reward for the potential loss of men and talent during crusades
                                 //var consolations = ["ship", "req",""]

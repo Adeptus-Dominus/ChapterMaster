@@ -1,4 +1,4 @@
-if ((obj_controller.menu != 0) || !instance_exists(obj_star)) {
+if ((obj_controller.menu != eMENU.DEFAULT && obj_controller.menu != eMENU.TURN_END) || !instance_exists(obj_star)) {
     exit;
 }
 var scale = obj_controller.scale_mod;
@@ -17,7 +17,7 @@ if (image_alpha == 0) {
 
 var coords = [
     0,
-    0
+    0,
 ];
 var near_star = instance_nearest(x, y, obj_star);
 if (x == near_star.x && y == near_star.y) {
@@ -49,29 +49,29 @@ if (obj_controller.zoomed == 1) {
     }
 }
 
-    if (obj_controller.selecting_planet > 0) {
-        if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249)) {
-            if (instance_exists(obj_star_select)) {
-                if (array_length(obj_star_select.buttons) > 0) {
-                    within = 0;
-                }
-            }
-        }
-        if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 250) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 265)) {
-            if (instance_exists(obj_star_select)) {
-                if (array_length(obj_star_select.buttons) > 1) {
-                    within = 0;
-                }
-            }
-        }
-        if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 266) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 281)) {
-            if (instance_exists(obj_star_select)) {
-                if (array_length(obj_star_select.buttons) > 2) {
-                    within = 0;
-                }
+if (obj_controller.selecting_planet > 0) {
+    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 234) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 249)) {
+        if (instance_exists(obj_star_select)) {
+            if (array_length(obj_star_select.buttons) > 0) {
+                within = 0;
             }
         }
     }
+    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 250) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 265)) {
+        if (instance_exists(obj_star_select)) {
+            if (array_length(obj_star_select.buttons) > 1) {
+                within = 0;
+            }
+        }
+    }
+    if ((mouse_x >= camera_get_view_x(view_camera[0]) + 529) && (mouse_y >= camera_get_view_y(view_camera[0]) + 266) && (mouse_x < camera_get_view_x(view_camera[0]) + 611) && (mouse_y < camera_get_view_y(view_camera[0]) + 281)) {
+        if (instance_exists(obj_star_select)) {
+            if (array_length(obj_star_select.buttons) > 2) {
+                within = 0;
+            }
+        }
+    }
+}
 
 var line_width = 2 * scale;
 var text_size = obj_controller.zoomed ? 2 * scale : scale;

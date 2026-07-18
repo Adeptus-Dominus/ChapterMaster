@@ -114,7 +114,7 @@ if (!instance_exists(obj_drop_select) && !instance_exists(obj_bomb_select)) {
                 var types = [
                     0,
                     0,
-                    0
+                    0,
                 ];
                 with (player_fleet) {
                     types = selected_ship_types();

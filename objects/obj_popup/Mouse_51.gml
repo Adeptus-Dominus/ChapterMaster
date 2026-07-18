@@ -8,6 +8,5 @@ if (battle_special > 0) {
     exit;
 }
 
-
 /* */
 /*  */

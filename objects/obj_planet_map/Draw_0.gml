@@ -13,6 +13,6 @@ if (obj_controller.invis == true) {
     exit;
 }
 
-if (obj_controller.menu == 0) {
+if (obj_controller.menu == eMENU.DEFAULT || obj_controller.menu == eMENU.TURN_END) {
     draw_warp_lanes();
 }

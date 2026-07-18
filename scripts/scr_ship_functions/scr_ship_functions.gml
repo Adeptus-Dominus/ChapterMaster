@@ -24,5 +24,5 @@ function draw_ship_status_overlay(_ship, _hp_color, _shield_color) {
     var _scale = _zoomed ? 2 : 1;
     var _text = $"{floor(_display_value * 100)}%";
 
-    draw_text_transformed_outline(_ship.x, _ship.y - _ship.sprite_height, _text, _scale, _scale, 0,,_color);
+    draw_text_transformed_outline(_ship.x, _ship.y - _ship.sprite_height, _text, _scale, _scale, 0,, _color);
 }

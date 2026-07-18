@@ -100,7 +100,7 @@ function SpecialistPointHandler() constructor {
             {
                 key: "small_vehicles",
                 label: "Small Vehicle",
-            }
+            },
         ];
 
         for (var i = 0; i < array_length(_v_maintenance); i++) {
@@ -482,7 +482,7 @@ function SpecialistPointHandler() constructor {
                     scr_forge_item(_forge_order);
                 } else {
                     var _loc_counts = new CountingMap();
-                
+
                     repeat (_forge_order.count) {
                         var vehicle = scr_add_vehicle(_item.name, obj_controller.new_vehicles);
                         var build_loc = array_random_element(obj_controller.player_forge_data.vehicle_hanger);
@@ -491,14 +491,14 @@ function SpecialistPointHandler() constructor {
                         obj_ini.veh_lid[vehicle[0]][vehicle[1]] = -1;
                         _loc_counts.add($"{build_loc[0]} {build_loc[1]}");
                     }
-                
+
                     var _loc_summary = _loc_counts.get_custom_string(function(_key, _count) {
                         return $"{_count} at {_key}\n";
                     });
-                    
+
                     var _company = obj_controller.new_vehicles;
                     var _company_name = (_company >= 1 && _company <= 10) ? $"{int_to_roman(_company)} Company" : "Reserve";
-                    
+
                     scr_popup("Forge Completed", $"Construction of x{_forge_order.count} {_item.display_name} is finished!\n\nAssigned to: {_company_name}\n\nReady at:\n{_loc_summary}", "", "");
                 }
             } else if (_item.forge_type == "research") {

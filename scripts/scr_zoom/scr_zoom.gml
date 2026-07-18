@@ -49,7 +49,7 @@ function scr_zoom_keys() {
     }
     if (keyboard_check(vk_add) || mouse_wheel_up()) {
         if (obj_controller.map_scale < max_zoom) {
-            zoom_delta = +1
+            zoom_delta = +1;
         }
     }
     if (zoom_delta != 0) {
@@ -71,7 +71,7 @@ function scr_zoom_keys() {
             camera_set_view_size(view_camera[0], new_w, new_h);
             var new_x = mouse_x_ - (mouse_x_ - old_x) * (new_w / old_w);
             var new_y = mouse_y_ - (mouse_y_ - old_y) * (new_h / old_h);
-            camera_set_view_pos(view_camera[0], new_x, new_y)
+            camera_set_view_pos(view_camera[0], new_x, new_y);
 
             // update obj_controller as the new center of the view
             obj_controller.x = new_x + new_w / 2;

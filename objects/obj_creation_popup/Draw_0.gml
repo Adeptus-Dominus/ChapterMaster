@@ -10,15 +10,15 @@ try {
         col_shift = type > 0;
         equip = type > 20;
     }
-    
+
     if (col_shift) {
         if (!equip) {
             draw_set_font(fnt_40k_30b);
             var _type_key = string(type);
             var _colour_type = struct_exists(type_names, _type_key) ? type_names[$ _type_key] : "";
-    
+
             picker.title = _colour_type;
-    
+
             var _action = picker.draw();
             if (_action == "destroy") {
                 instance_destroy();
@@ -32,7 +32,7 @@ try {
                         var role_data = obj_creation.complex_livery_data[$ role];
                         if (is_struct(role_data) && struct_exists(role_data, type)) {
                             start_colour = role_data[$ type];
-                            }
+                        }
                     }
                 }
 
@@ -62,11 +62,11 @@ try {
                 }
             }
         }
-    
+
         if (equip) {
             co = 100;
             ide = type - 100;
-    
+
             draw_set_font(fnt_40k_30b);
 
             var _role_name = obj_creation.role[co][ide];
@@ -101,17 +101,17 @@ try {
 
             draw_rectangle(444 - 1, 550 - 1, 822, 550 + _height, 1);
             draw_set_color(CM_GREEN_COLOR);
-    
+
             draw_set_font(fnt_40k_14b);
             draw_set_halign(fa_right);
-    
+
             var _spacing = 22;
             var x5 = 594;
             var y5 = 597 - _spacing;
-    
+
             for (var _slot_count = 0; _slot_count <= 4; _slot_count++) {
                 y5 += _spacing;
-    
+
                 draw_set_halign(fa_right);
                 draw_set_color(CM_GREEN_COLOR);
 
@@ -122,16 +122,16 @@ try {
 
                 draw_rectangle(x5, y5, x5 - _title_width, y5 + _title_height, 1);
                 draw_text(x5, y5, _title);
-    
+
                 if (scr_hit(x5 - _title_width, y5, x5, y5 + _title_height)) {
                     draw_set_color(c_white);
                     draw_set_alpha(0.2);
                     draw_rectangle(x5, y5, x5 - _title_width, y5 + _title_height, 0);
-    
+
                     if (mouse_button_clicked()) {
                         var _unit_type = type - 100;
                         var _is_invalid = _unit_type == eROLE.DREADNOUGHT && _slot_count > eEQUIPMENT_SLOT.WEAPON_TWO;
-    
+
                         if (!_is_invalid) {
                             tab = 1;
                             target_gear = _slot_count;
@@ -150,7 +150,7 @@ try {
                 draw_set_halign(fa_left);
                 draw_text(600, y5, string_hash_to_newline(string(_equipment_slot)));
             }
-    
+
             var _confirm_gear_button = {
                 alpha: 1,
                 rects: [],
@@ -175,13 +175,13 @@ try {
                         break;
                     }
                 }
-    
+
                 instance_destroy();
                 with (obj_creation) {
                     update_creation_roles_radio(2);
                 }
             }
-    
+
             draw_set_halign(fa_left);
             if (scr_hit(434, 591, 594, 709)) {
                 tooltip = "Gear";
@@ -189,7 +189,7 @@ try {
             }
         }
     }
-    
+
     if (target_gear > -1) {
         draw_set_valign(fa_top);
         tab = 1;
@@ -200,38 +200,38 @@ try {
             target_gear, // slot
             tab, // eEngagement
             false, // no company standard
-            false // don't limit to available items
+            false, // don't limit to available items
         );
-    
+
         draw_set_color(0);
         draw_rectangle(851, 210, 1168, 749, 0);
-    
+
         draw_set_color(CM_GREEN_COLOR);
         draw_rectangle(844, 200, 1166, 748, 1);
         draw_rectangle(845, 201, 1165, 747, 1);
         draw_rectangle(846, 202, 1164, 746, 1);
-    
+
         draw_set_font(fnt_40k_30b);
         var slot_name = get_slot_name(type - 100, target_gear);
         draw_text_transformed(862, 215, $"Select {slot_name}", 0.6, 0.6, 0);
         draw_set_font(fnt_40k_14b);
-    
+
         var x3 = 862;
         var y3 = 245;
         var space = 18;
-    
+
         for (var h = 0; h < array_length(item_name); h++) {
             draw_set_color(CM_GREEN_COLOR);
             var scale = string_width(item_name[h]) >= 140 ? 0.75 : 1;
             draw_text_transformed(x3, y3, item_name[h], scale, 1, 0);
             y3 += space;
-    
+
             if (scr_hit(x3, y3 - space, x3 + 143, y3 + 17 - space)) {
                 draw_set_color(c_white);
                 draw_set_alpha(0.2);
                 draw_text_transformed(x3, y3 - space, string_hash_to_newline(item_name[h]), scale, 1, 0);
                 draw_set_alpha(1);
-    
+
                 if (mouse_button_clicked()) {
                     var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                     switch (target_gear) {
@@ -254,7 +254,7 @@ try {
                 }
             }
         }
-    
+
         if (target_gear == eEQUIPMENT_SLOT.WEAPON_ONE || target_gear == eEQUIPMENT_SLOT.WEAPON_TWO) {
             tab = 2;
             item_name = [];
@@ -264,18 +264,18 @@ try {
                 target_gear, // slot
                 tab, // eEngagement
                 false, // no company standard
-                false // don't limit to available items
+                false, // don't limit to available items
             );
-    
+
             x3 = 862 + 146;
             y3 = 245;
-    
+
             for (var h = 0; h < array_length(item_name); h++) {
                 draw_set_color(CM_GREEN_COLOR);
                 var scale = string_width(item_name[h]) >= 140 ? 0.75 : 1;
                 var _button = draw_unit_buttons([x3, y3], item_name[h], [scale, scale], CM_GREEN_COLOR);
                 y3 += space;
-    
+
                 if (point_and_click(_button)) {
                     var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                     switch (target_gear) {
@@ -299,12 +299,12 @@ try {
             }
             tab = 1;
         }
-    
+
         if (point_and_click(draw_unit_buttons([980, 716], "CLOSE", [1, 1], CM_GREEN_COLOR,, fnt_40k_14b, 1))) {
             target_gear = -1;
         }
     }
-    
+
     if ((tooltip != "") && (obj_creation.change_slide <= 0)) {
         draw_set_alpha(1);
         draw_set_font(fnt_40k_14);

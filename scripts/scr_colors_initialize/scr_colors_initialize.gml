@@ -47,242 +47,242 @@ function scr_colors_initialize() {
             "White",
             240,
             240,
-            240
+            240,
         ],
         [
             "Silver",
             178,
             178,
-            178
+            178,
         ],
         [
             "Fenrisian Grey",
             144,
             155,
-            183
+            183,
         ],
         [
             "Grey",
             127,
             127,
-            127
+            127,
         ],
         [
             "Codex Grey",
             112,
             117,
-            110
+            110,
         ],
         [
             "Dark Metal",
             105,
             105,
-            105
+            105,
         ],
         [
             "Dark Grey",
             70,
             70,
-            70
+            70,
         ],
         [
             "Lighter Black",
             52,
             52,
-            52
+            52,
         ],
         [
             "Black",
             30,
             32,
-            34
+            34,
         ],
         [
             "Red",
             220,
             41,
-            41
+            41,
         ],
         [
             "Sanguine Red",
             150,
             0,
-            0
+            0,
         ],
         [
             "Dark Red",
             124,
             0,
-            0
+            0,
         ],
         [
             "Gold",
             229,
             162,
-            22
+            22,
         ],
         [
             "Orange",
             255,
             156,
-            0
+            0,
         ],
         [
             "Brown",
             112,
             66,
-            0
+            0,
         ],
         [
             "Light Brown",
             160,
             117,
-            75
+            75,
         ],
         [
             "Lightest Brown",
             173,
             128,
-            82
+            82,
         ],
         [
             "Deathwing",
             218,
             184,
-            143
+            143,
         ],
         [
             "Bone",
             245,
             236,
-            205
+            205,
         ],
         [
             "Yellow",
             255,
             220,
-            0
+            0,
         ],
         [
             "Dark Gold",
             204,
             150,
-            38
+            38,
         ],
         [
             "Copper",
             184,
             115,
-            51
+            51,
         ],
         [
             "Lime",
             0,
             190,
-            0
+            0,
         ],
         [
             "Green",
             0,
             160,
-            0
+            0,
         ],
         [
             "Firedrake Green",
             27,
             115,
-            43
+            43,
         ],
         [
             "Light Caliban Green",
             30,
             102,
-            59
+            59,
         ],
         [
             "Caliban Green",
             6,
             63,
-            43
+            43,
         ],
         [
             "Dark Green",
             0,
             70,
-            0
+            0,
         ],
         [
             "Cyan",
             0,
             228,
-            255
+            255,
         ],
         [
             "Turqoise",
             0,
             131,
-            147
+            147,
         ],
         [
             "Light Blue",
             0,
             150,
-            255
+            255,
         ],
         [
             "Blue",
             0,
             0,
-            220
+            220,
         ],
         [
             "Enchanted Blue",
             58,
             110,
-            158
+            158,
         ],
         [
             "Ultramarine",
             4,
             78,
-            168
+            168,
         ],
         [
             "Dark Ultramarine",
             31,
             74,
-            127
+            127,
         ],
         [
             "Purple",
             138,
             45,
-            207
+            207,
         ],
         [
             "Pink",
             255,
             0,
-            198
+            198,
         ],
         [
             "Imperial Fists",
             255,
             200,
-            0
+            0,
         ],
         [
             "Raptors Green",
             65,
             74,
-            29
+            29,
         ],
         [
             "Screamer Pink",
             122,
             14,
-            68
-        ]
+            68,
+        ],
     ];
 
     global.colors_count = array_length(colors_array);
@@ -298,13 +298,13 @@ function get_shader_array(wanted_colour) {
     var _cols = [
         0,
         0,
-        0
+        0,
     ];
     with (obj_controller) {
         _cols = [
             col_r[wanted_colour] / 255,
             col_g[wanted_colour] / 255,
-            col_b[wanted_colour] / 255
+            col_b[wanted_colour] / 255,
         ];
     }
 

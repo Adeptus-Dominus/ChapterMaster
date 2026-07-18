@@ -4,7 +4,7 @@ if (!is_string(type)) {
     var z = (type >= 100) ? type - 100 : type;
 
     if (type >= 100) {
-        for (var i = 1 ; i <= 13; i++) {
+        for (var i = 1; i <= 13; i++) {
             var idd = 0;
             if (i == 1) {
                 idd = 15;

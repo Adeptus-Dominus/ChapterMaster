@@ -88,7 +88,7 @@ if (instance_exists(obj_controller)) {
             if (obj_temp_meeting.present[v] == 1) {
                 var _unit_array = [
                     obj_temp_meeting.co[v],
-                    obj_temp_meeting.ide[v]
+                    obj_temp_meeting.ide[v],
                 ];
                 add_unit_to_battle(_unit_array, meeting_star, true);
             }

@@ -44,8 +44,8 @@ draw_set_alpha(1);
 draw_set_valign(fa_top);
 draw_set_halign(fa_left);
 
-    if (menu == eMENU.DIPLOMACY) {
-        add_draw_return_values();
+if (menu == eMENU.DIPLOMACY) {
+    add_draw_return_values();
     try {
         if (diplomacy > 0) {
             draw_diplomacy_diplo_text();
@@ -165,7 +165,7 @@ if (!zoomed && !zui) {
         draw_text(998, 17.5, string_hash_to_newline("Renegade"));
         draw_set_color(CM_GREEN_COLOR);
     }
-    if (menu == eMENU.DEFAULT) {
+    if (menu == eMENU.DEFAULT || menu == eMENU.TURN_END) {
         if (imp_ships == 0 && turn < 2) {
             sector_imperial_fleet_strength();
         }

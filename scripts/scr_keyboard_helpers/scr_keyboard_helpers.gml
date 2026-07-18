@@ -45,7 +45,7 @@ global.virtual_keys_list = [
     vk_divide,
     vk_add,
     vk_subtract,
-    vk_decimal
+    vk_decimal,
 ];
 
 // vk_lshift,vk_lcontrol,vk_lalt,vk_rshift,vk_rcontrol,vk_ralt these ones can cause issues

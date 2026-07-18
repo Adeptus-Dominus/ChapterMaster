@@ -130,7 +130,7 @@ try {
                         "Moderately",
                         "Highly",
                         "Extremely",
-                        "Maximally"
+                        "Maximally",
                     ];
                     var battle_fortification = battle_object[current_battle].p_fortified[battle_world[current_battle]];
                     strin[3] = array_string[clamp(battle_fortification, 1, 6)];
@@ -177,11 +177,11 @@ try {
                 obj_controller.cooldown = 9999;
             }
 
-            if (obj_controller.zoomed == 1) {
-                with (obj_controller) {
-                    scr_zoom();
-                }
-            }
+            // if (obj_controller.zoomed == 1) {
+            //     with (obj_controller) {
+            //         scr_zoom();
+            //     }
+            // }
         }
         instance_activate_object(obj_star);
     }

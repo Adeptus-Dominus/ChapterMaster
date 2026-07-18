@@ -104,24 +104,59 @@ function CompanyStruct(comp) constructor {
     var yy = camera_get_view_y(view_camera[0]);
     center_width = [
         580,
-        1005
+        1005,
     ];
     center_height = [
         144,
-        957
+        957,
     ];
 
-    previous_squad_button = new UnitButtonObject({x1: xx + center_width[0], y1: yy + center_height[0] + 6, color: c_red, label: "<--", tooltip: "Press Left arrow to toggle"});
+    previous_squad_button = new UnitButtonObject({
+        x1: xx + center_width[0],
+        y1: yy + center_height[0] + 6,
+        color: c_red,
+        label: "<--",
+        tooltip: "Press Left arrow to toggle",
+    });
 
-    next_squad_button = new UnitButtonObject({x1: xx + center_width[1] - 44, y1: yy + center_height[0] + 6, color: c_red, label: "-->", tooltip: "Press tab to toggle"});
+    next_squad_button = new UnitButtonObject({
+        x1: xx + center_width[1] - 44,
+        y1: yy + center_height[0] + 6,
+        color: c_red,
+        label: "-->",
+        tooltip: "Press tab to toggle",
+    });
 
-    garrison_button = new UnitButtonObject({x1: xx + center_width[0] + 5, y1: yy + center_height[0] + 150, color: c_red, label: "Garrison Duty", tooltip: "Having squads assigned to Garrison Duty will increase relations with a planet over time, it will also bolster planet defence forces in case of attack, and reduce corruption growth. Press G to toggle"});
+    garrison_button = new UnitButtonObject({
+        x1: xx + center_width[0] + 5,
+        y1: yy + center_height[0] + 150,
+        color: c_red,
+        label: "Garrison Duty",
+        tooltip: "Having squads assigned to Garrison Duty will increase relations with a planet over time, it will also bolster planet defence forces in case of attack, and reduce corruption growth. Press G to toggle",
+    });
 
-    sabotage_button = new UnitButtonObject({x1: garrison_button.x2 + 5, y1: yy + center_height[0] + 150, color: c_red, label: "Sabotage", tooltip: "Sabotage missions can reduce enemy growth while avoiding direct enemy contact however they are not without risk."});
+    sabotage_button = new UnitButtonObject({
+        x1: garrison_button.x2 + 5,
+        y1: yy + center_height[0] + 150,
+        color: c_red,
+        label: "Sabotage",
+        tooltip: "Sabotage missions can reduce enemy growth while avoiding direct enemy contact however they are not without risk.",
+    });
 
-    reset_loadout_button = new UnitButtonObject({x1: xx + center_width[0] + 5, y1: yy + center_height[0] + 330, color: c_green, label: "Reset Squad Loadout"});
+    reset_loadout_button = new UnitButtonObject({
+        x1: xx + center_width[0] + 5,
+        y1: yy + center_height[0] + 330,
+        color: c_green,
+        label: "Reset Squad Loadout",
+    });
 
-    mass_equip_toggle = new ToggleButton({x1: xx + center_width[0] + 5, y1: yy + center_height[0] + 380, button_color: c_green, text_color: c_green, str1: "Allow mass equip"});
+    mass_equip_toggle = new ToggleButton({
+        x1: xx + center_width[0] + 5,
+        y1: yy + center_height[0] + 380,
+        button_color: c_green,
+        text_color: c_green,
+        str1: "Allow mass equip",
+    });
 
     mass_equip_toggle.update();
 
@@ -159,9 +194,19 @@ function CompanyStruct(comp) constructor {
 
         var x_overlap_mod = 0;
 
-        var _start_box = new Box({x1: xx + 25, y1: yy + 144, x2: xx + 925, y2: yy + 981});
+        var _start_box = new Box({
+            x1: xx + 25,
+            y1: yy + 144,
+            x2: xx + 925,
+            y2: yy + 981,
+        });
 
-        var _full_box = new Box({x1: xx + 25, y1: yy + 144, x2: xx + 525, y2: yy + 981});
+        var _full_box = new Box({
+            x1: xx + 25,
+            y1: yy + 144,
+            x2: xx + 525,
+            y2: yy + 981,
+        });
         if (unit_rollover) {
             if (_start_box.hit()) {
                 x_overlap_mod = 180;
@@ -421,11 +466,11 @@ function CompanyStruct(comp) constructor {
     static draw_squad_view = function() {
         center_width = [
             580,
-            1005
+            1005,
         ];
         center_height = [
             144,
-            957
+            957,
         ];
         xx = camera_get_view_x(view_camera[0]);
         yy = camera_get_view_y(view_camera[0]);

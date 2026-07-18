@@ -123,7 +123,7 @@ function scr_fleet_advisor() {
             "class",
             "location",
             "hp",
-            "carrying"
+            "carrying",
         ];
 
         for (var i = 0; i < array_length(_columns_array); i++) {
@@ -265,7 +265,7 @@ function scr_fleet_advisor() {
                 "Battle Barge",
                 "Strike Cruiser",
                 "Gladius",
-                "Hunter"
+                "Hunter",
             ];
             var ship_im = 0;
             for (var i = 0; i < array_length(ships); i++) {

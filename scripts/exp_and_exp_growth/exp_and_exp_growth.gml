@@ -11,7 +11,7 @@ global.stat_list = [
     "technology",
     "intelligence",
     "weapon_skill",
-    "ballistic_skill"
+    "ballistic_skill",
 ];
 
 global.stat_shorts = {
@@ -97,57 +97,57 @@ function unit_stat_growth(grow_stat = false) {
             "ballistic_skill",
             "wisdom",
             "weapon_skill",
-            "ballistic_skill"
+            "ballistic_skill",
         ],
         human: [
             "weapon_skill",
             "ballistic_skill",
             "piety",
-            "wisdom"
+            "wisdom",
         ],
         skitarii: [
             "weapon_skill",
             "ballistic_skill",
             "technology",
-            "wisdom"
+            "wisdom",
         ],
         tech_priest: [
             "weapon_skill",
             "ballistic_skill",
             "technology",
-            "intelligence"
+            "intelligence",
         ],
         Default: [
             "weapon_skill",
             "ballistic_skill",
-            "wisdom"
+            "wisdom",
         ],
     };
 
     var group_growths = [
         [
             SPECIALISTS_TECHS,
-            "technology"
+            "technology",
         ],
         [
             SPECIALISTS_LIBRARIANS,
-            "intelligence"
+            "intelligence",
         ],
         [
             SPECIALISTS_CHAPLAINS,
-            "charisma"
+            "charisma",
         ],
         [
             SPECIALISTS_APOTHECARIES,
-            "intelligence"
-        ]
+            "intelligence",
+        ],
     ];
 
     var role_growth = [
         [
             "Champion",
-            "weapon_skill"
-        ]
+            "weapon_skill",
+        ],
     ];
 
     var _role = role();
