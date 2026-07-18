@@ -75,7 +75,7 @@ function scr_enemy_ai_b() {
                         owner = eFACTION.TAU;
                         scr_event_log("red", $"System {name} has been taken by the Tau Empire.", name);
                     } else {
-                        scr_alert("red", "owner", $"Planet {planet_numeral_name(i)} has succeeded to the Tau Empire!", x, y);
+                        scr_alert("red", "owner", $"Planet {planet_numeral_name(i, id)} has succeeded to the Tau Empire!", x, y);
                         if (visited == 1) {
                             //visited variable checks whether the star has been visited by the chapter or not 1 for true 0 for false
                             if (p_type[i] == "Forge") {

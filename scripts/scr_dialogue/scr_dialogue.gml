@@ -3112,7 +3112,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                             }
                                             if (onceh != 0) {
                                                 array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
-                                                obj_controller.temp[90] = planet_numeral_name(onceh);
+                                                obj_controller.temp[90] = planet_numeral_name(onceh, that);
                                             }
                                         }
                                     }
@@ -3173,7 +3173,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                             }
                                             if (onceh != 0) {
                                                 array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
-                                                obj_controller.temp[90] = planet_numeral_name(onceh);
+                                                obj_controller.temp[90] = planet_numeral_name(onceh, that);
                                             }
                                         }
                                     }
