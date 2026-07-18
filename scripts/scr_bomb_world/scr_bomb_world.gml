@@ -357,6 +357,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                 case 9:
                     system.p_tyranids[planet] -= strength_reduction;
                     faction_pop_clamp_to_level(system, planet, eFACTION.TYRANIDS);
+                    beacon_teardown_if_cleansed(system, planet);
                     break;
                 case 10: {
                     // planet_forces[eFACTION.CHAOS] (the strength this bombardment was aimed

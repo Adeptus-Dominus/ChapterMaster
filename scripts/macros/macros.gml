@@ -69,6 +69,12 @@
 // grounds teach nothing more (real fighting takes over from drills).
 #macro TRAINING_GROUND_XP_PER_TURN 5
 #macro TRAINING_GROUND_XP_CAP 45
+// Taint trade ships ("Imperial Colonists" spreading heresy/cults): per-turn launch
+// chance per corrupted world, the corruption floor required to export at all, and
+// the sector-wide cap on such ships in flight at once.
+#macro TAINT_EXPORT_CHANCE_PCT 4
+#macro TAINT_EXPORT_MIN_CORRUPTION 75
+#macro TAINT_EXPORT_MAX_IN_FLIGHT 2
 #macro DEVASTATOR_BRACED_MULT 1.25
 #macro ASSAULT_JUMP_RANGE 30
 // Minimum heresy/influence a purge that kills anyone removes. Keeps purges viable on

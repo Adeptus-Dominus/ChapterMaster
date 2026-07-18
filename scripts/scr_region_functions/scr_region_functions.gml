@@ -508,6 +508,7 @@ function regions_sync(_star, _planet) {
             _star.p_owner[_planet] = _heir;
             _owner = _heir;
             scr_event_log("green", $"{region_faction_name(_heir)} authority is restored on {_star.name} {scr_roman(_planet)}: the occupiers are no more.", _star.name);
+            beacon_teardown_if_cleansed(_star, _planet);
         }
     }
 
@@ -1135,7 +1136,10 @@ function heretic_concealment_tick(_star, _planet) {
     // A deeply corrupted world EXPORTS the taint on its own — it periodically slips out a "trade ship" (a
     // colony fleet in all but name) that carries the corruption to another world. This spreads cults even
     // when the colonisation AI never sends a fleet (§16k), driven purely by the corruption level.
-    if (_pd.corruption >= 60 && irandom(9) < 1) { spawn_taint_trade_ship(_star, _planet); }
+    // Throttled (was 10%/turn at corruption 60+, which read as an endless colonist
+    // spam carrying heresy everywhere): higher corruption floor, lower chance, and a
+    // sector-wide in-flight cap enforced inside the spawner.
+    if (_pd.corruption >= TAINT_EXPORT_MIN_CORRUPTION && irandom(99) < TAINT_EXPORT_CHANCE_PCT) { spawn_taint_trade_ship(_star, _planet); }
 
     var _own = _star.p_owner[_planet];
     var _open = (_own == eFACTION.HERETICS) || (_own == eFACTION.CHAOS) || _pd.has_feature(eP_FEATURES.DAEMONIC_INCURSION);
@@ -1216,6 +1220,18 @@ function heretic_concealment_tick(_star, _planet) {
 /// @param {Real} _planet
 /// @returns {Bool}
 function spawn_taint_trade_ship(_star, _planet) {
+    // Sector-wide cap: at most TAINT_EXPORT_MAX_IN_FLIGHT taint ships travelling at
+    // once, so the spread reads as insidious trade, not a colonist flood.
+    var _in_flight = 0;
+    with (obj_en_fleet) {
+        if ((trade_goods == "colonize") && is_struct(cargo_data) && variable_struct_exists(cargo_data, "colonize")
+            && is_struct(cargo_data.colonize) && variable_struct_exists(cargo_data.colonize, "mission")
+            && (cargo_data.colonize.mission == "trade")) {
+            _in_flight += 1;
+        }
+    }
+    if (_in_flight >= TAINT_EXPORT_MAX_IN_FLIGHT) { return false; }
+
     // Pick the nearest OTHER system with a populated, not-yet-heavily-tainted world to infect.
     var _dest = noone, _dp = 0, _bestd = 1000000000;
     var _fx = _star.x, _fy = _star.y;
@@ -1240,8 +1256,9 @@ function spawn_taint_trade_ship(_star, _planet) {
         _cult = _pd.has_feature(eP_FEATURES.HERETIC_ACTIVITY) || _pd.has_feature(eP_FEATURES.GENE_STEALER_CULT);
     } catch (_e) { _cult = false; }
 
-    var _f = instance_create(_star.x, _star.y, obj_en_fleet);
-    _f.owner = eFACTION.IMPERIUM;
+    // Upstream (eaf1ee3cc): fleets are created and registered through the central
+    // helper; a raw instance_create left this ship untracked (phantom-fleet class).
+    var _f = create_enemy_fleet(_star.x, _star.y, eFACTION.IMPERIUM);
     _f.sprite_index = spr_fleet_civilian;
     _f.image_index = choose(1, 2);
     _f.warp_able = false;
@@ -4517,4 +4534,24 @@ function faction_pop_clamp_to_level(_star, _planet, _faction) {
     } else if (_lvl < 6) {
         _star.p_race_pop[_planet][_faction] = min(_star.p_race_pop[_planet][_faction], _anchors[_lvl + 1] - 1);
     }
+}
+
+/// @function beacon_teardown_if_cleansed
+/// @description The Ascension Beacon falls with the swarm: whenever a path zeroes the world's
+///              tyranid presence (liberation, ground reconquest, bombardment), the beacon is
+///              dismantled so ascended worlds are fully reclaimable. Without this the feature
+///              was indestructible, permanently marking (and re-gating) cleansed worlds.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Undefined}
+function beacon_teardown_if_cleansed(_star, _planet) {
+    if (!instance_exists(_star)) { return; }
+    if (_star.p_tyranids[_planet] > 0) { return; }
+    try {
+        var _pdb = _star.get_planet_data(_planet);
+        if (is_struct(_pdb) && _pdb.has_feature(eP_FEATURES.ASCENSION_BEACON)) {
+            _pdb.delete_feature(eP_FEATURES.ASCENSION_BEACON);
+            scr_event_log("green", $"The Ascension Beacon on {_star.name} {scr_roman(_planet)} is torn down.", _star.name);
+        }
+    } catch (_e) {}
 }

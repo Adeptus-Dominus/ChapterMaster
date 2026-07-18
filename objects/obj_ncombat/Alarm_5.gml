@@ -552,6 +552,9 @@ if (defeat == 0 && _reduce_power) {
         // the level just written, or the population engine resurrects the garrison
         // next tick (see faction_pop_clamp_to_level).
         faction_pop_clamp_to_level(p_data.system, p_data.planet, enemy);
+        if (enemy == eFACTION.TYRANIDS) {
+            beacon_teardown_if_cleansed(p_data.system, p_data.planet);
+        }
     }
 
     if ((enemy != eFACTION.IMPERIUM) && (string_count("cs_meeting_battle", battle_special) == 0)) {
