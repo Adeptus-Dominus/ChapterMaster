@@ -123,40 +123,32 @@ switch (star) {
 switch (star) {
     case "orange1":
     case "orange2":
-        for (rui = 1; rui <= 4; rui++) {
-            if (planets >= rui) {
-                planet[rui] = 1;
-                p_type[rui] = choose("Temperate", "Temperate", choose("Temperate", "Shrine"), "Feudal", "Agri", "Death", "Desert", "Ice", "Hive");
-                if (p_type[rui] == "Agri" || p_type[rui] == "Hive") {
-                    p_owner[rui] = eFACTION.IMPERIUM;
-                    p_first[rui] = eFACTION.IMPERIUM;
-                }
+        for (rui = 1; rui <= planets; rui++) {
+            planet[rui] = 1;
+            p_type[rui] = choose("Temperate", "Temperate", choose("Temperate", "Shrine"), "Feudal", "Agri", "Death", "Desert", "Ice", "Hive");
+            if (p_type[rui] == "Agri" || p_type[rui] == "Hive") {
+                p_owner[rui] = eFACTION.IMPERIUM;
+                p_first[rui] = eFACTION.IMPERIUM;
             }
         }
         break;
     case "red":
-        for (rui = 1; rui <= 4; rui++) {
-            if (planets >= rui) {
-                planet[rui] = 1;
-                p_type[rui] = choose(choose("Temperate", "Temperate", "Temperate", "Feudal", "Feudal", "Shrine"), "Desert", "Dead", "Hive", "Lava");
-            }
+        for (rui = 1; rui <= planets; rui++) {
+            planet[rui] = 1;
+            p_type[rui] = choose(choose("Temperate", "Temperate", "Temperate", "Feudal", "Feudal", "Shrine"), "Desert", "Dead", "Hive", "Lava");
         }
         break;
     case "white1":
     case "white2":
-        for (rui = 1; rui <= 4; rui++) {
-            if (planets >= rui) {
-                planet[rui] = 1;
-                p_type[rui] = choose(choose("Temperate", "Temperate", "Temperate", "Feudal", "Feudal", "Shrine"), "Death", "Ice", "Hive", "Dead");
-            }
+        for (rui = 1; rui <= planets; rui++) {
+            planet[rui] = 1;
+            p_type[rui] = choose(choose("Temperate", "Temperate", "Temperate", "Feudal", "Feudal", "Shrine"), "Death", "Ice", "Hive", "Dead");
         }
         break;
     case "blue":
-        for (rui = 1; rui <= 4; rui++) {
-            if (planets >= rui) {
-                planet[rui] = 1;
-                p_type[rui] = choose(choose("Temperate", "Temperate", "Temperate", "Feudal", "Feudal", "Shrine"), "Ice", "Ice", "Dead", "Dead");
-            }
+        for (rui = 1; rui <= planets; rui++) {
+            planet[rui] = 1;
+            p_type[rui] = choose(choose("Temperate", "Temperate", "Temperate", "Feudal", "Feudal", "Shrine"), "Ice", "Ice", "Dead", "Dead");
         }
         break;
 }
