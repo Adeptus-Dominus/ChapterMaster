@@ -1806,75 +1806,75 @@ global.modular_drawing_items = [
         sprite: spr_mk6_complex_backpack,
         shadows: spr_mk6_complex_backpack_shadow,
     },
-	//MK3 Iron Armour Sprites
-	{
-		position: "armour",
+    //MK3 Iron Armour Sprites
+    {
+        position: "armour",
         sprite: spr_mk3_complex,
-		shadows: spr_mk3_complex_shadow,
+        shadows: spr_mk3_complex_shadow,
         body_types: [0],
         armours: ["MK3 Iron Armour"],
     },
-	{
-		position: "right_trim",
+    {
+        position: "right_trim",
         sprite: spr_mk3_right_trim,
         body_types: [0],
         armours: ["MK3 Iron Armour"],
-		flip: true,
+        flip: true,
     },
-	{
+    {
         position: "backpack",
         armours: ["MK3 Iron Armour"],
         body_types: [0],
         sprite: spr_mk3_complex_backpack,
         shadows: spr_mk3_complex_backpack_shadow,
     },
-	{
+    {
         position: "belt",
         armours: ["MK3 Iron Armour"],
         body_types: [0],
         sprite: spr_mk3_belt,
         shadows: spr_mk3_belt_shadow,
     },
-	{
+    {
         position: "forehead",
         armours: ["MK3 Iron Armour"],
         body_types: [0],
         sprite: spr_mk3_forehead_variants,
         shadows: spr_mk3_forehead_variants_shadow,
     },
-	{
+    {
         position: "head",
         armours: ["MK3 Iron Armour"],
         body_types: [0],
         sprite: spr_mk3_head_variants,
         shadows: spr_mk3_head_variants_shadow,
     },
-	{
+    {
         sprite: spr_mk3_mouth,
-		shadows: spr_mk3_mouth_shadow,
+        shadows: spr_mk3_mouth_shadow,
         body_types: [0],
         position: "mouth_variants",
         armours: ["MK3 Iron Armour"],
     },
-	{
+    {
         sprite: spr_mk3_right_knee,
-		shadows: spr_mk3_right_knee_shadow,
+        shadows: spr_mk3_right_knee_shadow,
         body_types: [0],
         position: "right_knee",
         armours: ["MK3 Iron Armour"],
-		flip: true,
+        flip: true,
     },
-	{
+    {
         cultures: ["Runic"],
         sprite: spr_mk3_runic_chest,
         body_types: [0],
         position: "chest_variants",
         armours: ["MK3 Iron Armour"],
     },
-	{
+    {
         cultures: ["Flame Cult"],
         sprite: spr_mk3_mouth_flame_cult,
-		shadows: spr_mk3_mouth_shadow,
+        shadows: spr_mk3_mouth_shadow,
         body_types: [0],
         position: "mouth_variants",
         armours: ["MK3 Iron Armour"],
@@ -1886,7 +1886,7 @@ global.modular_drawing_items = [
         position: "mouth_variants",
         armours: ["MK3 Iron Armour"],
     },
-	{
+    {
         position: "right_arm",
         armours: [
             "MK3 Iron Armour",
@@ -1898,7 +1898,7 @@ global.modular_drawing_items = [
         flip: true,
         shadows: spr_mk3_right_arm_shadow,
     },
-	//MK4 Maximus Sprites
+    //MK4 Maximus Sprites
     {
         position: "armour",
         armours: ["MK4 Maximus"],
@@ -2651,7 +2651,7 @@ global.weapon_visual_data = {
                     display_type: "dreadnought",
                 },
                 sprite: spr_dread_assault_cannon,
-				shadows: spr_dread_assault_cannon_shadow,
+                shadows: spr_dread_assault_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
             },
@@ -2731,12 +2731,12 @@ global.weapon_visual_data = {
             weapon_data: {
                 display_type: "dreadnought",
             },
-			armours: ["Dreadnought"],
+            armours: ["Dreadnought"],
         },
         variants: [
             {
                 sprite: spr_dread_heavy_bolter,
-				shadows: spr_dread_heavy_bolter_shadow,
+                shadows: spr_dread_heavy_bolter_shadow,
             },
         ],
     },
@@ -3108,12 +3108,12 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_missile,
             },
             {
-				weapon_data: {
-					display_type: "dreadnought",
-					single_left_right_profile: false,
-				},
+                weapon_data: {
+                    display_type: "dreadnought",
+                    single_left_right_profile: false,
+                },
                 sprite: spr_dread_missile,
-				shadows: spr_dread_missile_shadow,
+                shadows: spr_dread_missile_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
             },
@@ -3339,12 +3339,12 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_autocannon2,
             },
             {
-				weapon_data: {
-					display_type: "dreadnought",
-					single_left_right_profile: false,
-				},
+                weapon_data: {
+                    display_type: "dreadnought",
+                    single_left_right_profile: false,
+                },
                 sprite: spr_dread_autocannon,
-				shadows: spr_dread_autocannon_shadow,
+                shadows: spr_dread_autocannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
             },

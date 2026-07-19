@@ -4,7 +4,7 @@ if (obj_fleet.start != 5) {
     exit;
 }
 
-if (mouse_check_button_pressed(mb_right) && (selected == 1) && (!instance_exists(obj_circular)) && (obj_fleet.control)) {
+if (mouse_check_button_pressed(mb_right) && (selected == 1) && (!instance_exists(obj_circular)) && obj_fleet.control) {
     var stahp = 0;
     var xx = camera_get_view_x(view_camera[0]);
     var yy = camera_get_view_y(view_camera[0]);
