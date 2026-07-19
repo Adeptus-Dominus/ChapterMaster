@@ -4574,16 +4574,19 @@ function beacon_teardown_if_cleansed(_star, _planet) {
 }
 
 /// @function region_building_price
-/// @description The requisition price of a building here: Chapter influence discounts
-///              construction (the locals subsidise their protectors), scaling linearly to
-///              REGION_BUILD_INFLUENCE_DISCOUNT_MAX at 100 influence. Applies on the
-///              player's own worlds too (influence there is typically 100 = full discount).
+/// @description The requisition price of a building here: the world's DISPOSITION toward
+///              the Chapter discounts construction (the locals subsidise their
+///              protectors), scaling linearly to REGION_BUILD_INFLUENCE_DISCOUNT_MAX at
+///              100 disposition. dispo is the stat the game actually tracks for player
+///              standing (tithes at >= 100, the world flip); the first version read a
+///              p_influence slot nothing ever writes, so no discount ever applied.
+///              Player-owned worlds sit at 100 = full discount.
 /// @param {Id.Instance.obj_star} _star
 /// @param {Real} _planet
 /// @param {Struct} _def
 /// @returns {Real}
 function region_building_price(_star, _planet, _def) {
-    var _infl = clamp(_star.p_influence[_planet][eFACTION.PLAYER], 0, 100);
-    var _disc = REGION_BUILD_INFLUENCE_DISCOUNT_MAX * (_infl / 100);
+    var _standing = clamp(_star.dispo[_planet], 0, 100);
+    var _disc = REGION_BUILD_INFLUENCE_DISCOUNT_MAX * (_standing / 100);
     return max(1, round(_def.cost * (1 - _disc)));
 }

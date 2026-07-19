@@ -76,8 +76,8 @@
 #macro TAINT_EXPORT_MIN_CORRUPTION 75
 #macro TAINT_EXPORT_MAX_IN_FLIGHT 2
 // Building on allied (Imperial) worlds: POSITIVE DISPOSITION is the permission
-// (they let the Chapter fortify), and Chapter INFLUENCE is the leverage: at 100
-// influence the locals cover this fraction of the construction bill.
+// (they let the Chapter fortify) and also the leverage: at 100 disposition the
+// locals cover this fraction of the construction bill.
 #macro REGION_BUILD_INFLUENCE_DISCOUNT_MAX 0.5
 #macro DEVASTATOR_BRACED_MULT 1.25
 #macro ASSAULT_JUMP_RANGE 30
