@@ -186,7 +186,7 @@ function ChapterData() constructor {
     }
 }
 
-/// @self Asset.GMObject.obj_creation
+/// @self Id.Instance.obj_creation
 /// @description called when a chapter's icon is clicked on the first page after the main menu.
 /// used to set up initialise the data that is later fed into `scr_initialize_custom` when the game starts
 function scr_chapter_new(chapter_identifier) {
@@ -194,7 +194,7 @@ function scr_chapter_new(chapter_identifier) {
 
     company_liveries = "";
 
-    obj_creation.use_chapter_object = false; // for the new json testing
+    use_chapter_object = false; // for the new json testing
     var chapter_id = eCHAPTERS.UNKNOWN;
 
     //1st captain =	honor_captain_name
@@ -213,15 +213,16 @@ function scr_chapter_new(chapter_identifier) {
 
     load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
         for (var i = 100; i <= 102; i++) {
-            obj_creation.role[i][_role_id] = _role_name;
-            obj_creation.wep1[i][_role_id] = _wep1;
-            obj_creation.wep2[i][_role_id] = _wep2;
-            obj_creation.armour[i][_role_id] = _armour;
-            obj_creation.mobi[i][_role_id] = _mobi;
-            obj_creation.gear[i][_role_id] = _gear;
-            obj_creation.race[i][_role_id] = 1;
+            role[i][_role_id] = _role_name;
+            wep1[i][_role_id] = _wep1;
+            wep2[i][_role_id] = _wep2;
+            armour[i][_role_id] = _armour;
+            mobi[i][_role_id] = _mobi;
+            gear[i][_role_id] = _gear;
+            race[i][_role_id] = 1;
         }
     };
+
     load_default_gear(eROLE.HONOURGUARD, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
     load_default_gear(eROLE.VETERAN, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.TERMINATOR, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
@@ -240,14 +241,14 @@ function scr_chapter_new(chapter_identifier) {
     load_default_gear(eROLE.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
     load_default_gear(eROLE.VETERANSERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
 
-    for (var c = 0; c < array_length(obj_creation.all_chapters); c++) {
-        if (chapter_identifier == obj_creation.all_chapters[c].name && obj_creation.all_chapters[c].json == true) {
-            obj_creation.use_chapter_object = true;
-            chapter_id = obj_creation.all_chapters[c].id;
+    for (var c = 0; c < array_length(all_chapters); c++) {
+        if (chapter_identifier == all_chapters[c].name && all_chapters[c].json == true) {
+            use_chapter_object = true;
+            chapter_id = all_chapters[c].id;
         }
     }
 
-    if (obj_creation.use_chapter_object) {
+    if (use_chapter_object) {
         var chapter_obj = new ChapterData();
         var successfully_loaded = chapter_obj.load_from_json(chapter_id);
         if (!successfully_loaded) {
@@ -264,7 +265,7 @@ function scr_chapter_new(chapter_identifier) {
     #region Custom Chapter
     //generates custom chapter if it exists
     if (is_real(chapter_identifier) && chapter_identifier >= eCHAPTERS.CUSTOM_1 && chapter_identifier <= eCHAPTERS.CUSTOM_10) {
-        obj_creation.use_chapter_object = true;
+        use_chapter_object = true;
         var chapter_obj = new ChapterData();
         var successfully_loaded = chapter_obj.load_from_json(chapter_identifier, true);
         if (!successfully_loaded) {
@@ -278,52 +279,52 @@ function scr_chapter_new(chapter_identifier) {
     }
     #endregion
 
-    if (obj_creation.use_chapter_object) {
+    if (use_chapter_object) {
         var chapter_object = global.chapter_creation_object;
 
         // * All of this obj_creation setting is just to keep things working
-        obj_creation.founding = chapter_object.founding;
-        obj_creation.successors = chapter_object.successors;
-        obj_creation.homeworld_rule = chapter_object.homeworld_rule;
-        obj_creation.chapter_name = chapter_object.name;
+        founding = chapter_object.founding;
+        successors = chapter_object.successors;
+        homeworld_rule = chapter_object.homeworld_rule;
+        chapter_name = chapter_object.name;
 
         global.chapter_icon.name = chapter_object.icon_name;
-        obj_creation.fleet_type = chapter_object.fleet_type;
+        fleet_type = chapter_object.fleet_type;
 
-        obj_creation.homeworld_exists = chapter_object.homeworld_exists;
-        obj_creation.homeworld = chapter_object.homeworld;
-        obj_creation.homeworld_rule = chapter_object.homeworld_rule;
-        obj_creation.homeworld_name = chapter_object.homeworld_name;
+        homeworld_exists = chapter_object.homeworld_exists;
+        homeworld = chapter_object.homeworld;
+        homeworld_rule = chapter_object.homeworld_rule;
+        homeworld_name = chapter_object.homeworld_name;
 
-        obj_creation.recruiting_exists = chapter_object.recruiting_exists;
-        obj_creation.recruiting = chapter_object.recruiting;
-        obj_creation.recruiting_name = chapter_object.recruiting_name;
+        recruiting_exists = chapter_object.recruiting_exists;
+        recruiting = chapter_object.recruiting;
+        recruiting_name = chapter_object.recruiting_name;
 
-        obj_creation.buttons.home_spawn_loc_options.current_selection = chapter_object.home_spawn_loc ?? 1;
-        obj_creation.buttons.recruit_home_relationship.current_selection = chapter_object.recruit_home_relationship ?? 1;
-        obj_creation.buttons.home_warp.current_selection = chapter_object.home_warp ?? 1;
-        obj_creation.buttons.home_planets.current_selection = chapter_object.home_planets ?? 1;
+        buttons.home_spawn_loc_options.current_selection = chapter_object.home_spawn_loc ?? 1;
+        buttons.recruit_home_relationship.current_selection = chapter_object.recruit_home_relationship ?? 1;
+        buttons.home_warp.current_selection = chapter_object.home_warp ?? 1;
+        buttons.home_planets.current_selection = chapter_object.home_planets ?? 1;
 
-        obj_creation.aspirant_trial = trial_map(chapter_object.aspirant_trial);
+        aspirant_trial = trial_map(chapter_object.aspirant_trial);
 
-        obj_creation.buttons.culture_styles.set(chapter_object.culture_styles);
-        obj_creation.full_liveries = chapter_object.full_liveries;
-        obj_creation.company_liveries = chapter_object.company_liveries;
-        obj_creation.complex_livery_data = chapter_object.complex_livery_data;
-        if (obj_creation.full_liveries != "") {
-            obj_creation.livery_picker.map_colour = full_liveries[0];
-            obj_creation.livery_picker.role_set = 0;
+        buttons.culture_styles.set(chapter_object.culture_styles);
+        full_liveries = chapter_object.full_liveries;
+        company_liveries = chapter_object.company_liveries;
+        complex_livery_data = chapter_object.complex_livery_data;
+        if (full_liveries != "") {
+            livery_picker.map_colour = full_liveries[0];
+            livery_picker.role_set = 0;
         }
 
-        obj_creation.color_to_main = chapter_object.colors.main;
-        obj_creation.color_to_secondary = chapter_object.colors.secondary;
-        obj_creation.color_to_pauldron = chapter_object.colors.pauldron_l;
-        obj_creation.color_to_pauldron2 = chapter_object.colors.pauldron_r;
-        obj_creation.color_to_trim = chapter_object.colors.trim;
-        obj_creation.color_to_lens = chapter_object.colors.lens;
-        obj_creation.color_to_weapon = chapter_object.colors.weapon;
-        obj_creation.col_special = chapter_object.colors.special;
-        //obj_creation.trim = chapter_object.colors.trim_on;
+        color_to_main = chapter_object.colors.main;
+        color_to_secondary = chapter_object.colors.secondary;
+        color_to_pauldron = chapter_object.colors.pauldron_l;
+        color_to_pauldron2 = chapter_object.colors.pauldron_r;
+        color_to_trim = chapter_object.colors.trim;
+        color_to_lens = chapter_object.colors.lens;
+        color_to_weapon = chapter_object.colors.weapon;
+        col_special = chapter_object.colors.special;
+        //trim = chapter_object.colors.trim_on;
         with (obj_creation) {
             if (array_length(col) > 0) {
                 if (color_to_main != "") {
@@ -419,97 +420,97 @@ function scr_chapter_new(chapter_identifier) {
             }
         });
 
-        obj_creation.battle_cry = chapter_object.battle_cry;
-        obj_creation.discipline = chapter_object.discipline;
+        battle_cry = chapter_object.battle_cry;
+        discipline = chapter_object.discipline;
 
         var load = chapter_object.load_to_ships;
-        obj_creation.load_to_ships = [
+        load_to_ships = [
             load.escort_load,
             load.split_scouts,
             load.split_vets,
         ];
+
         if (struct_exists(chapter_object, "squad_distribution")) {
-            obj_creation.squad_distribution = chapter_object.squad_distribution;
+            squad_distribution = chapter_object.squad_distribution;
         } else {
             // migrate old saves: reconstruct squad_distribution from legacy boolean fields
             var _legacy_specialists = struct_exists(chapter_object, "equal_specialists") ? chapter_object.equal_specialists : 0;
             var _legacy_scouts = struct_exists(chapter_object, "equal_scouts") ? chapter_object.equal_scouts : 0;
-            obj_creation.squad_distribution = (_legacy_specialists ? 1 : 0) + (_legacy_scouts ? 2 : 0);
-        }
-        if (struct_exists(chapter_object, "scout_company_behaviour")) {
-            obj_creation.scout_company_behaviour = chapter_object.scout_company_behaviour;
-        } else {
-            obj_creation.scout_company_behaviour = 0; //default
+            squad_distribution = (_legacy_specialists ? 1 : 0) + (_legacy_scouts ? 2 : 0);
         }
 
-        obj_creation.mutations = 0;
+        if (struct_exists(chapter_object, "scout_company_behaviour")) {
+            scout_company_behaviour = chapter_object.scout_company_behaviour;
+        }
+
+        mutations = 0;
         struct_foreach(chapter_object.mutations, function(key, val) {
             struct_set(obj_creation, key, val);
             if (val == 1) {
-                obj_creation.mutations += 1;
+                mutations += 1;
             }
         });
 
-        obj_creation.disposition = chapter_object.disposition;
+        disposition = chapter_object.disposition;
 
-        obj_creation.chapter_master = chapter_object.chapter_master;
+        chapter_master = chapter_object.chapter_master;
 
         if (chapter_object.chapter_master.name != "") {
-            obj_creation.chapter_master_name = chapter_object.chapter_master.name;
+            chapter_master_name = chapter_object.chapter_master.name;
         }
-        obj_creation.chapter_master_melee = chapter_object.chapter_master.melee;
-        obj_creation.chapter_master_ranged = chapter_object.chapter_master.ranged;
-        obj_creation.chapter_master_specialty = chapter_object.chapter_master.specialty;
+        chapter_master_melee = chapter_object.chapter_master.melee;
+        chapter_master_ranged = chapter_object.chapter_master.ranged;
+        chapter_master_specialty = chapter_object.chapter_master.specialty;
         if (struct_exists(chapter_object, "company_titles")) {
-            obj_creation.company_title = chapter_object.company_titles;
+            company_title = chapter_object.company_titles;
         }
 
         if (struct_exists(chapter_object, "artifact")) {
-            obj_creation.artifact = chapter_object.artifact;
+            artifact = chapter_object.artifact;
         }
 
-        obj_creation.flagship_name = chapter_object.flagship_name;
-        obj_creation.extra_ships = chapter_object.extra_ships;
-        obj_creation.extra_specialists = chapter_object.extra_specialists;
-        obj_creation.extra_marines = chapter_object.extra_marines;
-        obj_creation.extra_vehicles = chapter_object.extra_vehicles;
-        obj_creation.extra_equipment = chapter_object.extra_equipment;
+        flagship_name = chapter_object.flagship_name;
+        extra_ships = chapter_object.extra_ships;
+        extra_specialists = chapter_object.extra_specialists;
+        extra_marines = chapter_object.extra_marines;
+        extra_vehicles = chapter_object.extra_vehicles;
+        extra_equipment = chapter_object.extra_equipment;
 
-        obj_creation.squad_name = chapter_object.squad_name;
+        squad_name = chapter_object.squad_name;
         if (struct_exists(chapter_object, "custom_roles")) {
-            obj_creation.custom_roles = chapter_object.custom_roles;
+            custom_roles = chapter_object.custom_roles;
         }
         if (struct_exists(chapter_object, "custom_squads")) {
-            obj_creation.custom_squads = chapter_object.custom_squads;
+            custom_squads = chapter_object.custom_squads;
         }
 
         if (struct_exists(chapter_object, "squad_builder")) {
-            obj_creation.squad_builder = chapter_object.squad_builder;
+            squad_builder = chapter_object.squad_builder;
         }
 
         if (struct_exists(chapter_object, "custom_advisors")) {
-            obj_creation.custom_advisors = chapter_object.custom_advisors;
+            custom_advisors = chapter_object.custom_advisors;
         }
 
         if (struct_exists(chapter_object, "companies")) {
-            obj_creation.companies = chapter_object.companies;
+            companies = chapter_object.companies;
         }
 
         // Validate and clamp trait values to sane ranges (defaulting if missing/invalid)
-        obj_creation.strength = clamp(is_real(chapter_object.strength) ? chapter_object.strength : 5, 1, 10);
-        obj_creation.purity = clamp(is_real(chapter_object.purity) ? chapter_object.purity : 5, 1, 10);
-        obj_creation.stability = clamp(is_real(chapter_object.stability) ? chapter_object.stability : 90, 1, 99);
-        obj_creation.cooperation = clamp(is_real(chapter_object.cooperation) ? chapter_object.cooperation : 5, 1, 10);
+        strength = clamp(is_real(chapter_object.strength) ? chapter_object.strength : 5, 1, 10);
+        purity = clamp(is_real(chapter_object.purity) ? chapter_object.purity : 5, 1, 10);
+        stability = clamp(is_real(chapter_object.stability) ? chapter_object.stability : 90, 1, 99);
+        cooperation = clamp(is_real(chapter_object.cooperation) ? chapter_object.cooperation : 5, 1, 10);
         points = 0;
 
-        points += (obj_creation.strength - 5) * 10;
-        points += (obj_creation.purity - 5) * 10;
-        points += obj_creation.stability - 90;
-        points += (obj_creation.cooperation - 5) * 10;
+        points += (strength - 5) * 10;
+        points += (purity - 5) * 10;
+        points += stability - 90;
+        points += (cooperation - 5) * 10;
 
         var _open_adv = 0;
-        for (var i = 0; i < array_length(obj_creation.all_advantages); i++) {
-            var _adv = obj_creation.all_advantages[i];
+        for (var i = 0; i < array_length(all_advantages); i++) {
+            var _adv = all_advantages[i];
             if (array_contains(chapter_object.advantages, _adv.name)) {
                 _adv.add();
                 _open_adv++;
@@ -519,8 +520,8 @@ function scr_chapter_new(chapter_identifier) {
         }
 
         var _open_disadv = 0;
-        for (var i = 0; i < array_length(obj_creation.all_disadvantages); i++) {
-            var _disadv = obj_creation.all_disadvantages[i];
+        for (var i = 0; i < array_length(all_disadvantages); i++) {
+            var _disadv = all_disadvantages[i];
             if (array_contains(chapter_object.disadvantages, _disadv.name)) {
                 _disadv.add();
                 _open_disadv++;
