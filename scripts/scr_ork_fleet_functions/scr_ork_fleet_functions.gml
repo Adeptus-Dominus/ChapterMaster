@@ -213,8 +213,17 @@ function init_ork_waagh(override = false) {
     var _pdata = noone;
     if (_waaagh_star_found) {
         _pdata = _waaagh_star[0].get_planet_data(_waaagh_star[1]);
-
         var _boss = _pdata.add_feature(eP_FEATURES.ORKWARBOSS);
+        
+        with (obj_controller) {
+            if (faction_defeated[7] == 1) {
+                faction_leader[eFACTION.ORK] = _boss.name;
+                faction_title[7] = "Warboss";
+                faction_status[eFACTION.ORK] = "War";
+                scr_audience(eFACTION.ORK, "new_warboss", -40, "War", 0, 2);
+            }
+        }
+        
         if (override) {
             _boss.player_hidden = false;
             scr_event_log("red", $"boss on {_pdata.name()}", _pdata.system.name);
@@ -223,13 +232,11 @@ function init_ork_waagh(override = false) {
         if (_pdata.planet_forces[eFACTION.ORK] < 4) {
             _pdata.add_forces(eFACTION.ORK, 2);
         }
-    } else {
-        out_of_system_warboss(true);
-    }
 
-    if (_waaagh_star_found) {
         scr_popup("WAAAAGH!", "My lord, our Auspex scans indicate that the Ork Warboss is currently within the " + string(_pdata.system.name) + " system.We must strike swiftly before he relocates. ", "waaagh", "");
         scr_event_log("red", $"boss on {_pdata.name()}", _pdata.system.name);
+    } else {
+        out_of_system_warboss(true);
     }
 }
 
