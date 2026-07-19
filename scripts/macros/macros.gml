@@ -79,6 +79,11 @@
 // (they let the Chapter fortify) and also the leverage: at 100 disposition the
 // locals cover this fraction of the construction bill.
 #macro REGION_BUILD_INFLUENCE_DISCOUNT_MAX 0.5
+// Putting down a heretic revolt buys real peace: the world's corruption takes
+// this cut, and no new cult can seed there for the cooldown, giving purge fleets
+// their window instead of a fresh revolt every turn.
+#macro HERETIC_CLEANSE_CORRUPTION_CUT 35
+#macro HERETIC_RESEED_COOLDOWN 12
 #macro DEVASTATOR_BRACED_MULT 1.25
 #macro ASSAULT_JUMP_RANGE 30
 // Minimum heresy/influence a purge that kills anyone removes. Keeps purges viable on

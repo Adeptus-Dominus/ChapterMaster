@@ -555,6 +555,9 @@ if (defeat == 0 && _reduce_power) {
         if (enemy == eFACTION.TYRANIDS) {
             beacon_teardown_if_cleansed(p_data.system, p_data.planet);
         }
+        if (((enemy == eFACTION.HERETICS) || (enemy == eFACTION.CHAOS)) && (new_power <= 0)) {
+            heresy_cleansed_stamp(p_data.system, p_data.planet);
+        }
     }
 
     if ((enemy != eFACTION.IMPERIUM) && (string_count("cs_meeting_battle", battle_special) == 0)) {

@@ -505,6 +505,9 @@ function regions_sync(_star, _planet) {
             _own_pop = _star.p_race_pop[_planet][_owner];
         }
         if ((_own_force <= 0) && (_own_pop <= 0)) {
+            if ((_owner == eFACTION.HERETICS) || (_owner == eFACTION.CHAOS)) {
+                heresy_cleansed_stamp(_star, _planet);
+            }
             var _heir = eFACTION.IMPERIUM;
             if ((array_length(_regions) > 0) && variable_struct_exists(_regions[0], "first_owner")) {
                 _heir = _regions[0].first_owner;
@@ -1176,6 +1179,12 @@ function heretic_concealment_tick(_star, _planet) {
     // — that was the turn-2 log flood.
     if (!_pd.has_feature(eP_FEATURES.HERETIC_ACTIVITY)) {
         if ((_pd.corruption < 25) && (_pop <= 0)) { return; }
+        // Cleanse cooldown: a world that just put down its heretics cannot sprout a
+        // new cult for HERETIC_RESEED_COOLDOWN turns, however corrupt it remains.
+        if (variable_instance_exists(_star, "p_heresy_cleansed_turn")
+        && ((obj_controller.turn - _star.p_heresy_cleansed_turn[_planet]) < HERETIC_RESEED_COOLDOWN)) {
+            return;
+        }
         _pd.add_feature(eP_FEATURES.HERETIC_ACTIVITY);
     }
     // Seed a credible scaled brood once (§16l).
@@ -4589,4 +4598,30 @@ function region_building_price(_star, _planet, _def) {
     var _standing = clamp(_star.dispo[_planet], 0, 100);
     var _disc = REGION_BUILD_INFLUENCE_DISCOUNT_MAX * (_standing / 100);
     return max(1, round(_def.cost * (1 - _disc)));
+}
+
+/// @function heresy_cleansed_stamp
+/// @description Called when a heretic/chaos hold on a world is broken (liberation or ground
+///              reconquest at force 0): cuts the world's corruption by
+///              HERETIC_CLEANSE_CORRUPTION_CUT (the revolt spent the cult's networks) and
+///              stamps a reseed cooldown so the concealment tick cannot sprout a fresh cult
+///              immediately into the battle-drained garrison (the every-turn revolt loop).
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Undefined}
+function heresy_cleansed_stamp(_star, _planet) {
+    if (!instance_exists(_star)) { return; }
+    if (!variable_instance_exists(_star, "p_heresy_cleansed_turn")) {
+        _star.p_heresy_cleansed_turn = array_create(_star.planets + 1, -9999);
+    }
+    _star.p_heresy_cleansed_turn[_planet] = obj_controller.turn;
+    // corruption on PlanetData is a constructor-time COPY of p_heresy: the cut must
+    // hit the backing star array or it evaporates on the next panel rebuild.
+    _star.p_heresy[_planet] = max(0, _star.p_heresy[_planet] - HERETIC_CLEANSE_CORRUPTION_CUT);
+    try {
+        var _pdc = _star.get_planet_data(_planet);
+        if (is_struct(_pdc)) {
+            _pdc.corruption = _star.p_heresy[_planet];
+        }
+    } catch (_e) {}
 }
