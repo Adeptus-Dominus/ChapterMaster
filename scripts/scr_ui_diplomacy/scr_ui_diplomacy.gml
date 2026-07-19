@@ -70,7 +70,7 @@ function exit_diplomacy_dialogue() {
         cooldown = 8;
         if (trading_artifact == 2 && instance_exists(obj_ground_mission)) {
             with (obj_ground_mission) {
-                recieve_artifact_in_discussion();
+                receive_artifact_in_discussion();
             }
         }
         trading_artifact = 0;
