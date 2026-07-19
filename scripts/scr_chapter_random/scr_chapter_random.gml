@@ -9,9 +9,6 @@ function scr_chapter_random(custom_or_random) {
     // if custom_or_random=0 then it just gives a name
     var i;
     i = -1;
-    world = array_create(21, "");
-    world_type = array_create(21, "");
-    world_feature = array_create(21, "");
     company_title = array_create(11, "");
     adv = array_create(9, "");
     dis = array_create(9, "");
