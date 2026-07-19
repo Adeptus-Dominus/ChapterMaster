@@ -74,8 +74,10 @@ function exit_diplomacy_dialogue() {
             }
         }
         trading_artifact = 0;
+        with (obj_ground_mission) {
+            instance_destroy();
+        }
         with (obj_popup) {
-            obj_ground_mission.alarm[1] = 1;
             instance_destroy();
         }
     }
