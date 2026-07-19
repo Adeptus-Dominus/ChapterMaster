@@ -96,6 +96,12 @@ function TradeAttempt(diplomacy) constructor {
                 };
             } else if (_opt.trade_type == "arti") {
                 scr_add_artifact("random", "minor", true);
+            } else if (_opt.trade_type == "planet_arti") {
+                if (instance_exists(obj_ground_mission)) {
+                    with (obj_ground_mission) {
+                        receive_artifact_in_discussion();
+                    }
+                }
             } else if (_opt.trade_type == "vehic") {
                 if (!struct_exists(trading_object, "vehicles")) {
                     trading_object.vehicles = {};
@@ -413,6 +419,11 @@ function TradeAttempt(diplomacy) constructor {
             new_demand_buttons(-100, "Ork Sniper", "merc", 50);
             new_demand_buttons(-100, "Flash Git", "merc", 50);
             break;
+    }
+
+    if (obj_controller.trading_artifact == 1 && instance_exists(obj_ground_mission)) {
+        new_demand_buttons(-100, "Artifact", "planet_arti", 1);
+        demand_options[array_length(demand_options) - 1].number = 1;
     }
 
     static new_offer_option = function(trade_disp = -100, name, trade_type, max_count = 1) {
