@@ -90,6 +90,26 @@ function add_diplomacy_option(option = {}) {
     array_push(obj_controller.diplo_option, _button);
 }
 
+/// @desc Opens the trade screen during an artifact negotiation; TradeAttempt pre-lists the artifact while trading_artifact == 1.
+/// @returns {undefined}
+function open_artifact_trade() {
+    with (obj_controller) {
+        trading = 1;
+        scr_dialogue("open_trade");
+        cooldown = 8;
+        click2 = 1;
+        trade_attempt = new TradeAttempt(diplomacy);
+    }
+}
+
+/// @desc Leaves the artifact negotiation and cleans up the associated objects.
+/// @returns {undefined}
+function leave_artifact_negotiation() {
+    with (obj_ground_mission) {
+        instance_destroy();
+    }
+}
+
 function basic_diplomacy_screen() {
     var xx = camera_get_view_x(view_camera[0]);
     var yy = camera_get_view_y(view_camera[0]);
