@@ -573,20 +573,6 @@ global.modular_drawing_items = [
         ],
     },
     {
-        cultures: ["Flame Cult"],
-        sprite: spr_mk3_mouth_flame_cult,
-        body_types: [0],
-        position: "mouth_variants",
-        armours: ["MK3 Iron Armour"],
-    },
-    {
-        cultures: ["Prussian"],
-        sprite: spr_mk3_mouth_prussian,
-        body_types: [0],
-        position: "mouth_variants",
-        armours: ["MK3 Iron Armour"],
-    },
-    {
         cultures: ["Prussian"],
         sprite: spr_mk6_mouth_prussian,
         body_types: [0],
@@ -1370,19 +1356,6 @@ global.modular_drawing_items = [
         ],
     },
     {
-        cultures: ["Runic"],
-        sprite: spr_mk3_runic_chest,
-        body_types: [0],
-        position: "chest_variants",
-        armours: ["MK3 Iron Armour"],
-    },
-    {
-        sprite: spr_mk3_chest,
-        body_types: [0],
-        position: "chest_variants",
-        armours: ["MK3 Iron Armour"],
-    },
-    {
         sprite: spr_death_watch_pauldron,
         chapter: "Deathwatch",
         position: "left_pauldron_base",
@@ -1748,18 +1721,6 @@ global.modular_drawing_items = [
     {
         position: "right_arm",
         armours: [
-            "MK3 Iron Armour",
-            "Artificer Armour",
-            "MK5 Heresy",
-        ],
-        sprite: spr_mk3_right_arm,
-        body_types: [0],
-        flip: true,
-        shadows: spr_mk3_right_arm_shadow,
-    },
-    {
-        position: "right_arm",
-        armours: [
             "MK5 Heresy",
             "Artificer Armour",
         ],
@@ -1830,7 +1791,7 @@ global.modular_drawing_items = [
         shadows: spr_indomitus_right_shin_shadows,
         flip: true,
     },
-    //Corvus MK6 Sprites
+    //MK6 Corvus Sprites
     {
         position: "armour",
         armours: ["MK6 Corvus"],
@@ -1845,7 +1806,99 @@ global.modular_drawing_items = [
         sprite: spr_mk6_complex_backpack,
         shadows: spr_mk6_complex_backpack_shadow,
     },
-    //MK4 Sprites
+	//MK3 Iron Armour Sprites
+	{
+		position: "armour",
+        sprite: spr_mk3_complex,
+		shadows: spr_mk3_complex_shadow,
+        body_types: [0],
+        armours: ["MK3 Iron Armour"],
+    },
+	{
+		position: "right_trim",
+        sprite: spr_mk3_right_trim,
+        body_types: [0],
+        armours: ["MK3 Iron Armour"],
+		flip: true,
+    },
+	{
+        position: "backpack",
+        armours: ["MK3 Iron Armour"],
+        body_types: [0],
+        sprite: spr_mk3_complex_backpack,
+        shadows: spr_mk3_complex_backpack_shadow,
+    },
+	{
+        position: "belt",
+        armours: ["MK3 Iron Armour"],
+        body_types: [0],
+        sprite: spr_mk3_belt,
+        shadows: spr_mk3_belt_shadow,
+    },
+	{
+        position: "forehead",
+        armours: ["MK3 Iron Armour"],
+        body_types: [0],
+        sprite: spr_mk3_forehead_variants,
+        shadows: spr_mk3_forehead_variants_shadow,
+    },
+	{
+        position: "head",
+        armours: ["MK3 Iron Armour"],
+        body_types: [0],
+        sprite: spr_mk3_head_variants,
+        shadows: spr_mk3_head_variants_shadow,
+    },
+	{
+        sprite: spr_mk3_mouth,
+		shadows: spr_mk3_mouth_shadow,
+        body_types: [0],
+        position: "mouth_variants",
+        armours: ["MK3 Iron Armour"],
+    },
+	{
+        sprite: spr_mk3_right_knee,
+		shadows: spr_mk3_right_knee_shadow,
+        body_types: [0],
+        position: "right_knee",
+        armours: ["MK3 Iron Armour"],
+		flip: true,
+    },
+	{
+        cultures: ["Runic"],
+        sprite: spr_mk3_runic_chest,
+        body_types: [0],
+        position: "chest_variants",
+        armours: ["MK3 Iron Armour"],
+    },
+	{
+        cultures: ["Flame Cult"],
+        sprite: spr_mk3_mouth_flame_cult,
+		shadows: spr_mk3_mouth_shadow,
+        body_types: [0],
+        position: "mouth_variants",
+        armours: ["MK3 Iron Armour"],
+    },
+    {
+        cultures: ["Prussian"],
+        sprite: spr_mk3_mouth_prussian,
+        body_types: [0],
+        position: "mouth_variants",
+        armours: ["MK3 Iron Armour"],
+    },
+	{
+        position: "right_arm",
+        armours: [
+            "MK3 Iron Armour",
+            "Artificer Armour",
+            "MK5 Heresy",
+        ],
+        sprite: spr_mk3_right_arm,
+        body_types: [0],
+        flip: true,
+        shadows: spr_mk3_right_arm_shadow,
+    },
+	//MK4 Maximus Sprites
     {
         position: "armour",
         armours: ["MK4 Maximus"],

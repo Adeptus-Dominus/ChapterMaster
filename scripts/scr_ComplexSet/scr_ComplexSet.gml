@@ -1633,7 +1633,6 @@ function ComplexSet(_unit) constructor {
                 armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK3 Iron Armour":
-                add_group({armour: spr_mk3_complex, backpack: spr_mk3_complex_backpack, head: spr_mk3_head_variants, left_knee: spr_mk3_left_knee, right_knee: spr_mk3_right_knee, mouth_variants: spr_mk3_mouth, forehead: spr_mk3_forehead_variants, belt: spr_mk3_belt});
                 armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK8 Errant":
