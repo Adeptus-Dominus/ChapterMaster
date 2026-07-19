@@ -2601,7 +2601,6 @@ global.weapon_visual_data = {
 				shadows: spr_dread_assault_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
@@ -2651,7 +2650,6 @@ global.weapon_visual_data = {
                 shadows: spr_dread_lascannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
@@ -2662,7 +2660,6 @@ global.weapon_visual_data = {
                 display_type: "dreadnought",
             },
             armours: ["Dreadnought"],
-            single_left_right_profile: true,
         },
         variants: [
             {
@@ -2682,7 +2679,6 @@ global.weapon_visual_data = {
                 display_type: "dreadnought",
             },
 			armours: ["Dreadnought"],
-			single_left_right_profile: true,
         },
         variants: [
             {
@@ -2769,7 +2765,6 @@ global.weapon_visual_data = {
                 shadows: spr_dread_plasma_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
@@ -3063,7 +3058,6 @@ global.weapon_visual_data = {
                 sprite: spr_dread_missile,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
@@ -3093,7 +3087,6 @@ global.weapon_visual_data = {
                 shadows: spr_dread_plasma_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
@@ -3291,7 +3284,6 @@ global.weapon_visual_data = {
                 sprite: spr_dread_autocannon,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
