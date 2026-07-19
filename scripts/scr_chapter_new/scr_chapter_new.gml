@@ -145,6 +145,12 @@ function ChapterData() constructor {
     custom_squads = {};
 
     custom_advisors = {};
+    scout_company_behaviour = 0;
+    artifact = [];
+    squad_builder = [];
+    companies = {};
+    equal_specialists = 0;
+    equal_scouts = 0;
 
     /// @desc Returns true if loaded successfully, false if not.
     /// @param {Enum.eCHAPTERS} chapter_id
