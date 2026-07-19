@@ -73,192 +73,72 @@ if (obj_ini.load_to_ships[0] > 0) {
     }
 }
 
-// End player homeworld
 var px = _player_star.x;
 var py = _player_star.y;
 var xx = px;
 var yy = py;
 instance_deactivate_object(_player_star);
 
+// Mechanicus capital system
+
 /// @type {Id.Instance.obj_star}
 var _current_system = instance_nearest(px, py, obj_star);
-_current_system.star = "white2";
-_current_system.planet[1] = 1;
-_current_system.planet[2] = 1;
-_current_system.image_index = 4;
-_current_system.p_type[1] = "Forge";
-_current_system.p_type[2] = "Ice";
-_current_system.owner = eFACTION.MECHANICUS;
-_current_system.p_owner = array_create(5, _current_system.owner);
-_current_system.p_first = array_create(5, _current_system.owner);
-
-if (_current_system.planets < 2) {
-    _current_system.planets = 2;
-}
 
 with (_current_system) {
-    var a = 99;
-    var b = 99;
-    var c = 99;
-    var d = 99;
-    var e = "";
-    var f = 0;
-    for (var i = 0; i < 10; i++) {
-        e = p_type[1];
-        switch (e) {
-            case "Lava":
-                a = 1;
-                break;
-            case "Desert":
-                a = 2;
-                break;
-            case "Hive":
-                a = 3;
-                break;
-            case "Death":
-                a = 4;
-                break;
-            case "Agri":
-                a = 5;
-                break;
-            case "Temperate":
-                a = 6;
-                break;
-            case "Ice":
-                a = 7;
-                break;
-            case "Dead":
-                a = 1;
-                break;
-            case "Forge":
-                a = 1.5;
-                break;
-        }
-        e = p_type[2];
-        switch (e) {
-            case "Lava":
-                b = 1;
-                break;
-            case "Desert":
-                b = 2;
-                break;
-            case "Hive":
-                b = 3;
-                break;
-            case "Death":
-                b = 4;
-                break;
-            case "Agri":
-                b = 5;
-                break;
-            case "Temperate":
-                b = 6;
-                break;
-            case "Ice":
-                b = 7;
-                break;
-            case "Dead":
-                b = 2.5;
-                break;
-            case "Forge":
-                b = 1.5;
-                break;
-        }
-        e = p_type[3];
-        switch (e) {
-            case "Lava":
-                c = 1;
-                break;
-            case "Desert":
-                c = 2;
-                break;
-            case "Hive":
-                c = 3;
-                break;
-            case "Death":
-                c = 4;
-                break;
-            case "Agri":
-                c = 5;
-                break;
-            case "Temperate":
-                c = 6;
-                break;
-            case "Ice":
-                c = 7;
-                break;
-            case "Dead":
-                c = 3.5;
-                break;
-            case "Forge":
-                c = 1.5;
-                break;
-        }
-        e = p_type[4];
-        switch (e) {
-            case "Lava":
-                d = 1;
-                break;
-            case "Desert":
-                d = 2;
-                break;
-            case "Hive":
-                d = 3;
-                break;
-            case "Death":
-                d = 4;
-                break;
-            case "Agri":
-                d = 5;
-                break;
-            case "Temperate":
-                d = 6;
-                break;
-            case "Ice":
-                d = 7;
-                break;
-            case "Dead":
-                d = 4.5;
-                break;
-            case "Forge":
-                d = 1.5;
-                break;
-        }
+    star = "white2";
+    image_index = 4;
+    owner = eFACTION.MECHANICUS;
+    
+    if (planets < 2) {
+        planets = 2;
+    }
+    
+    p_type[1] = "Forge";
+    p_type[2] = "Ice";
 
-        if (d < c) {
-            f = c;
-            e = p_type[3];
-            c = d;
-            p_type[3] = p_type[4];
-            p_type[4] = e;
-            d = f;
-        }
-        if (c < b) {
-            f = b;
-            e = p_type[2];
-            b = c;
-            p_type[2] = p_type[3];
-            p_type[3] = e;
-            c = f;
-        }
-        if (b < a) {
-            f = a;
-            e = p_type[1];
-            a = b;
-            p_type[1] = p_type[2];
-            p_type[2] = e;
-            b = f;
-        }
-    } // end repeat
+    // Orbital sorting; hotter = Closer to sun
+    var weights = {
+        Lava: 1.0,
+        Forge: 1.5,
+        Desert: 2.0,
+        Hive: 3.0,
+        Death: 4.0,
+        Agri: 5.0,
+        Temperate: 6.0,
+        Ice: 7.0,
+    };
 
-    // important later on for having other chapters homeworlds or civil war imperiums
+    var get_weight = function(_type, _slot, _weights_dict) {
+        if (_type == "Dead") {
+            return (_slot == 1) ? 1.0 : (_slot - 0.5);
+        }
+        return _weights_dict[$ _type] ?? 99.0;
+    };
+
+    // Bubble sort
+    repeat (planets) {
+        for (var idx = planets - 1; idx >= 1; idx--) {
+            var type_a = p_type[idx];
+            var type_b = p_type[idx + 1];
+
+            var weight_a = get_weight(type_a, idx, weights);
+            var weight_b = get_weight(type_b, idx + 1, weights);
+
+            if (weight_b < weight_a) {
+                p_type[idx] = type_b;
+                p_type[idx + 1] = type_a;
+            }
+        }
+    }
+
     for (var p = 1; p <= planets; p++) {
-        if ((p_type[p] != "Forge") && (p_type[p] != "Ice")) {
-            p_owner[p] = eFACTION.IMPERIUM;
+        if (p_type[p] == "Forge" || p_type[p] == "Ice") {
+            p_owner[p] = eFACTION.MECHANICUS;
             p_first[p] = p_owner[p];
         }
     }
-} // end with _current_system
+}
+
 instance_deactivate_object(_current_system);
 
 if (tau == 1) {
