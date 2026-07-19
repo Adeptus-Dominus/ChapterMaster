@@ -95,15 +95,20 @@
         "wisdom": -5
     },
     "champion": {
-        "ballistic_skill": [
+        "display_name": "Champion",
+        "effect": "increase Melee Burden Cap",
+        "flavour_text": "Because of either natural talent, or obsessive training they are a master of melee weaponry",
+        "weapon_skill": [
             10,
             5,
             "max"
-        ],
-        "display_name": "Champion",
-        "effect": "increase Melee Burden Cap",
-        "flavour_text": "Because of either natural talent, or obsessive training they are a master of arms",
-        "weapon_skill": [
+        ]
+    },
+    "marksman": {
+        "display_name": "Marksman",
+        "effect": "increase Ranged Burden Cap",
+        "flavour_text": "Because of either natural talent, or obsessive training they are a master of ranged weaponry",
+        "ballistic_skill": [
             10,
             5,
             "max"

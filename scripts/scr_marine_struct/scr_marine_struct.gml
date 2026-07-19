@@ -1249,6 +1249,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             ranged_hands_limit += 0.25;
             carry_string += "BS: +0.25#";
         }
+        if (has_trait("marksman") || has_trait("paragon")) {
+            ranged_hands_limit += 0.25;
+            carry_string += "Traits: +0.25#";
+        }
+
         var armour_carry = get_armour_data("ranged_hands");
         if (armour_carry != 0) {
             ranged_hands_limit += armour_carry;
@@ -1450,9 +1455,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             melee_hands_limit += 0.25;
             carry_string += "WS: +0.25#";
         }
-        if (has_trait("champion")) {
+        if (has_trait("champion") || has_trait("paragon")) {
             melee_hands_limit += 0.25;
-            carry_string += "Champion: +0.25#";
+            carry_string += "Traits: +0.25#";
         }
         var armour_carry = get_armour_data("melee_hands");
         if (armour_carry != 0) {
