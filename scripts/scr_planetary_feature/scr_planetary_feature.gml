@@ -935,7 +935,7 @@ function remove_stc_from_planet() {
     instance_destroy();
 }
 
-function recieve_artifact_in_discussion() {
+function receive_artifact_in_discussion() {
     scr_return_ship(loc, self, num);
 
     var ship_id = get_valid_player_ship("", loc);

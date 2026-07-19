@@ -164,7 +164,7 @@ if ((menu == eMENU.DIPLOMACY) && (diplomacy > 0) || ((diplomacy < -5) && (diplom
                 }
                 if (trading_artifact == 2 && instance_exists(obj_ground_mission)) {
                     with (obj_ground_mission) {
-                        recieve_artifact_in_discussion();
+                        receive_artifact_in_discussion();
                     }
                 }
                 exit;
