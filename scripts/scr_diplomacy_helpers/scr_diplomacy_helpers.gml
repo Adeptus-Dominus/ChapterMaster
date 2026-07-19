@@ -90,9 +90,9 @@ function add_diplomacy_option(option = {}) {
     array_push(obj_controller.diplo_option, _button);
 }
 
-/// @desc Opens the trade screen during an artifact negotiation; TradeAttempt pre-lists the artifact while trading_artifact == 1.
+/// @desc Opens the trade screen for the current diplomacy faction.
 /// @returns {undefined}
-function open_artifact_trade() {
+function open_trade_screen() {
     with (obj_controller) {
         trading = 1;
         scr_dialogue("open_trade");
