@@ -8,6 +8,7 @@ function TradeAttempt(diplomacy) constructor {
         "License: Crusade": 1500,
         "Castellax Battle Automata": 1200,
         "Minor Artifact": 250,
+        "Artifact": 0, // For planetary artifacts
         "Skitarii": 15,
         "Techpriest": 450,
         //"Condemnor Boltgun" : 20,
