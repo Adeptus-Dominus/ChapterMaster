@@ -344,14 +344,6 @@ function TradeAttempt(diplomacy) constructor {
             trading = 0;
             scr_dialogue("trade_close");
             click2 = 1;
-            if (trading_artifact != 0) {
-                scr_toggle_diplomacy();
-                with (obj_popup) {
-                    instance_destroy();
-                }
-                obj_ground_mission.alarm[1] = 1;
-                exit;
-            }
         }
     };
     exit_button.bind_scope = self;
