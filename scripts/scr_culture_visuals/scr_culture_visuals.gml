@@ -299,14 +299,17 @@ function set_up_visual_overides() {
             }
 
             if (struct_exists(_flip_mod, "body_parts")) {
+                var _new_body_parts = {};
                 var _bp_keys = struct_get_names(_flip_mod.body_parts);
                 for (var b = 0; b < array_length(_bp_keys); b++) {
                     var _bp_key = _bp_keys[b];
                     if (struct_exists(flip_components, _bp_key)) {
-                        _flip_mod.body_parts[$ flip_components[$ _bp_key]] = _flip_mod.body_parts[$ _bp_key];
-                        struct_remove(_flip_mod.body_parts, _bp_key);
+                        _new_body_parts[$ flip_components[$ _bp_key]] = _flip_mod.body_parts[$ _bp_key];
+                    } else {
+                        _new_body_parts[$ _bp_key] = _flip_mod.body_parts[$ _bp_key];
                     }
                 }
+                _flip_mod.body_parts = _new_body_parts;
             }
 
             if (struct_exists(_flip_mod, "overides")) {
