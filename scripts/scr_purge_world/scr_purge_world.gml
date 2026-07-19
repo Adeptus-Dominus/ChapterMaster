@@ -354,7 +354,9 @@ function scr_purge_world(action_type, action_score) {
     if (instance_exists(obj_drop_select)) {
         with (obj_drop_select) {
             if (instance_exists(sh_target)) {
-                sh_target.acted = 5;
+                // Purges spend the fleet's PURGE budget, not its assault actions
+                // (was acted = 5, which ended every action for the turn).
+                sh_target.purges_done = (variable_instance_exists(sh_target, "purges_done") ? sh_target.purges_done : 0) + 1;
             }
             instance_destroy();
         }

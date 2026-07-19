@@ -1,5 +1,6 @@
 try {
     acted = 0;
+    purges_done = 0;
 
     if (action == "Lost") {
         set_fleet_location("Lost");

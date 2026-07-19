@@ -84,6 +84,9 @@
 // their window instead of a fresh revolt every turn.
 #macro HERETIC_CLEANSE_CORRUPTION_CUT 35
 #macro HERETIC_RESEED_COOLDOWN 12
+// Purges have their own per-fleet budget, independent of ground assaults: heresy
+// grows every turn now, so cleansing must not compete with fighting for actions.
+#macro PURGES_PER_FLEET_TURN 4
 #macro DEVASTATOR_BRACED_MULT 1.25
 #macro ASSAULT_JUMP_RANGE 30
 // Minimum heresy/influence a purge that kills anyone removes. Keeps purges viable on

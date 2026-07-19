@@ -45,6 +45,7 @@ action_spd = 128;
 action_eta = 0;
 connected = 0;
 acted = 0;
+purges_done = 0; // per-turn purge budget (PURGES_PER_FLEET_TURN)
 hurssy = 0;
 hurssy_time = 0;
 /// Called from save function to take all object variables and convert them to a json savable format and return it

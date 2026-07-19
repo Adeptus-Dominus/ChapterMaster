@@ -451,10 +451,16 @@ try {
                 var _allow_attack = true;
                 var _targ = !target.present_fleet[1] ? noone : instance_nearest(x, y, obj_p_fleet);
                 if (instance_exists(_targ)) {
-                    if (_targ.acted >= 2) {
+                    // Purges run on their OWN per-fleet budget (PURGES_PER_FLEET_TURN),
+                    // independent of the assault economy. The old gate read the
+                    // fleet-wide acted counter that every assault ticks, so two attacks
+                    // anywhere locked the whole fleet out of purging: exactly when
+                    // cleansing matters most.
+                    var _pdone = variable_instance_exists(_targ, "purges_done") ? _targ.purges_done : 0;
+                    if (_pdone >= PURGES_PER_FLEET_TURN) {
                         _allow_attack = false;
                         // Blocked actions say why instead of silently doing nothing.
-                        scr_popup("Purge", "This fleet has already expended its actions this turn and cannot conduct a purge.", "");
+                        scr_popup("Purge", $"This fleet has already conducted its {PURGES_PER_FLEET_TURN} purges this turn.", "");
                     }
                 }
                 if (_allow_attack) {

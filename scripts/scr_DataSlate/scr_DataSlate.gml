@@ -556,7 +556,7 @@ function planet_action_tooltip(_action) {
         case "Bombard":
             return "Orbital bombardment: devastating to enemy forces, the population, and the world itself. Must be the fleet's first action of the turn.";
         case "Purge":
-            return "Cleanse this world's population of heresy and xenos taint. Opens a choice of methods, from orbital purging to assassinating the Planetary Governor. Ends the fleet's actions for the turn.";
+            return $"Cleanse this world's population of heresy and xenos taint. Opens a choice of methods, from orbital purging to assassinating the Planetary Governor. Up to {PURGES_PER_FLEET_TURN} purges per fleet each turn, independent of assaults.";
         case "Cyclonic Torpedo":
             return "Exterminatus. Destroys the planet and everything on it, permanently. There is no taking this back.";
         case "Deploy Guard":
