@@ -720,11 +720,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var weapon_one_data = get_weapon_one_data();
         var weapon_two_data = get_weapon_two_data();
         var equip_data = {
-            armour_data: armour_data,
-            gear_data: gear_data,
-            mobility_data: mobility_data,
-            weapon_one_data: weapon_one_data,
-            weapon_two_data: weapon_two_data,
+            armour: armour_data,
+            gear: gear_data,
+            mobi: mobility_data,
+            wep1: weapon_one_data,
+            wep2: weapon_two_data,
         };
         return equip_data;
     };

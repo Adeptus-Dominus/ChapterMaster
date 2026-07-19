@@ -403,15 +403,15 @@ function after_combat_dead_marine_equipment_recovered(unit) {
         }
 
         switch (_slot) {
-            case "armour_data":
+            case "armour":
                 unit.update_armour("", false, _recover);
-            case "weapon_one_data":
+            case "wep1":
                 unit.weapon_one("", false, _recover);
-            case "weapon_two_data":
+            case "wep2":
                 unit.update_weapon_two("", false, _recover);
-            case "gear_data":
+            case "gear":
                 unit.update_gear("", false, _recover);
-            case "mobility_item_data":
+            case "mobi":
                 unit.update_mobility_item("", false, _recover);
         }
     }
