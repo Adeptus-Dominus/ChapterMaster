@@ -154,11 +154,7 @@ function set_up_diplomacy_buttons() {
     });
     diplo_buttons.trade.bind_method = function() {
         if ((audience == 0) && (force_goodbye == 0)) {
-            trading = 1;
-            scr_dialogue("open_trade");
-            cooldown = 8;
-            click2 = 1;
-            trade_attempt = new TradeAttempt(diplomacy);
+            open_trade_screen();
         }
     };
 
