@@ -6,13 +6,33 @@
 // Lots of damn tyranids
 // Some damn orks and a few genestealer cults
 
-var field = "both"; // "orks", "tyranids", "both"
-if (global.chapter_name == "Lamenters") {
-    field = "both";
-}
-if (is_test_map) {
-    field = "orks";
-}
+instance_activate_all();
+
+// Faction settings
+var _spawn_factions = [
+    {
+        enabled: true,
+        weight: 10,
+        faction_id: eFACTION.ORK,
+    },
+    {
+        enabled: false,
+        weight: 1,
+        faction_id: eFACTION.TYRANIDS,
+    },
+    {
+        enabled: false,
+        weight: 1,
+        faction_id: eFACTION.CHAOS,
+    },
+    {
+        enabled: !is_test_map,
+        weight: 1,
+        faction_id: eFACTION.GENESTEALER,
+    },
+];
+
+// if (global.chapter_name == "Lamenters") { // Was this supposed to be something?
 
 good_log = 1;
 
@@ -169,26 +189,6 @@ if (tau == 1) {
     }
 }
 
-// Chaos
-repeat (2 + irandom(4)) {
-    xx = floor(random(1152)) + 64;
-    yy = floor(random(748)) + 64;
-    _current_system = instance_nearest(xx, yy, obj_star);
-    with (_current_system) {
-        if ((planets > 0) && (owner == eFACTION.IMPERIUM)) {
-            owner = eFACTION.CHAOS;
-            for (var i = 1; i <= planets; i++) {
-                if (planet[i] == 1) {
-                    p_owner[i] = eFACTION.CHAOS;
-                    p_heresy[i] = 100;
-                    p_influence[i][eFACTION.CHAOS] = 70;
-                }
-            }
-        }
-    }
-    instance_deactivate_object(_current_system);
-}
-
 // More sneaky this way; you have to be noted of rising heresy or something, or have a ship in the system
 var hell_holes = [
     "Badab",
@@ -207,98 +207,66 @@ with (obj_star) {
         var rando = choose(true, true); // if you only want some of the hell holes to spawn change the trues to falses and vice versa
         if (rando) {
             owner = eFACTION.CHAOS;
-            p_owner = array_create(5, owner);
             for (var i = 1; i <= planets; i++) {
+                p_owner [i] = eFACTION.CHAOS;
                 p_heresy[i] = floor(random_range(75, 100));
+                p_traitors[i] = 6;
+                p_fortified[i] = choose(4, 5, 5, 4, 4, 3, 6);
+
                 if (p_type[i] == "Dead") {
                     p_type[i] = choose("Hive", "Temperate", "Desert", "Ice");
                 }
-
-                if (p_type[i] != "Dead") {
-                    p_traitors[i] = 6;
-                }
-                // give them big defences
-                if (p_type[i] != "Dead") {
-                    p_fortified[i] = choose(4, 5, 5, 4, 4, 3, 6);
-                }
             }
+
+            instance_deactivate_object(id);
         }
     }
-    instance_deactivate_object(id);
 }
 
-var _imperial_planets = [];
+var _imperial_systems = [];
 with (obj_star) {
     if (owner == eFACTION.IMPERIUM && !is_dead_star() && planets != 0) {
-        //this object simply acts as a counter of imperium owned planets
-        array_push(_imperial_planets, id);
+        array_push(_imperial_systems, id);
     }
 }
 
-// Ork planets here
-var orkz = choose(4, 5, 6) + 5;
-if (field == "orks") {
-    orkz += 20;
-}
-if (field == "both") {
-    orkz += 15;
-}
-if (is_test_map) {
-    orkz = 4;
+var _enemy_systems = 30;
+if (obj_ini.fleet_type == ePLAYER_BASE.PENITENT) {
+    _enemy_systems += 5;
 }
 
-var n = array_length(_imperial_planets);
-for (var j = 0; j < orkz && j < n; j++) {
-    var i = array_random_index(_imperial_planets);
-    _current_system = _imperial_planets[i];
+var _total_weight = 0;
+var _count = array_length(_spawn_factions);
 
-    _current_system.planet[1] = 1;
-    _current_system.owner = eFACTION.ORK;
-    _current_system.p_owner = array_create(5, _current_system.owner);
-    array_delete(_imperial_planets, i, 1);
-    instance_deactivate_object(_current_system);
-}
-
-if (field == "tyranids") {
-    orkz = choose(3, 4, 6) + 7;
-    if (obj_ini.fleet_type == ePLAYER_BASE.PENITENT) {
-        orkz += 2;
-    }
-
-    for (var j = 0; j < orkz; j++) {
-        var i = array_random_index(_imperial_planets);
-        _current_system = _imperial_planets[i];
-
-        _current_system.planet[1] = 1;
-        _current_system.p_owner[1] = eFACTION.TYRANIDS;
-        _current_system.owner = eFACTION.TYRANIDS;
-
-        array_delete(_imperial_planets, i, 1);
-        instance_deactivate_object(_current_system);
+for (var i = 0; i < _count; i++) {
+    var _faction = _spawn_factions[i];
+    if (_faction.enabled) {
+        _total_weight += _faction.weight;
     }
 }
 
-var _non_xenos_chaos = [];
-with (obj_star) {
-    if (owner <= eFACTION.ECCLESIARCHY && !is_dead_star() && planets != 0) {
-        array_push(_non_xenos_chaos, id);
-    }
-}
+if (_total_weight > 0) {
+    for (var f = 0; f < _count; f++) {
+        var _faction = _spawn_factions[f];
+        
+        if (!_faction.enabled) { 
+            continue;
+        }
+        
+        var _allocated_systems = round(_enemy_systems * (_faction.weight / _total_weight));
+        
+        for (var j = 0; j < _allocated_systems && array_length(_imperial_systems) > 0; j++) {
+            var s = array_random_index(_imperial_systems);
+            var _current_system = _imperial_systems[s];
+            
+            _current_system.owner = _faction.faction_id;
+            for (var p = 1; p <= _current_system.planets; p++) {
+                _current_system.p_owner[p] = _current_system.owner;
+            }
 
-if (field == "both") {
-    if (obj_ini.fleet_type == ePLAYER_BASE.PENITENT) {
-        orkz += 3;
-    }
-    orkz += 3;
-    n = array_length(_non_xenos_chaos);
-    for (var j = 0; j < orkz && j < n; j++) {
-        var i = array_random_index(_non_xenos_chaos);
-        _current_system = _non_xenos_chaos[i];
-        _current_system.planet[1] = 1;
-        _current_system.p_owner[1] = eFACTION.CHAOS;
-        _current_system.owner = eFACTION.CHAOS;
-        array_delete(_non_xenos_chaos, i, 1);
-        instance_deactivate_object(_current_system);
+            array_delete(_imperial_systems, s, 1);
+            instance_deactivate_object(_current_system);
+        }
     }
 }
 
@@ -327,7 +295,7 @@ with (obj_star) {
 // Eldar craftworld here
 craftworld = 1;
 
-for (var i = 0; i < 100; i++) {
+repeat (100) {
     xx = floor(random(1152 + 600)) + 104;
     yy = floor(random(748 + 440)) + 104;
     if (point_distance(room_width / 2, room_height / 2, xx, yy) >= 50) {
