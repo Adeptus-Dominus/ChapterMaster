@@ -799,7 +799,6 @@ function governor_negotiate_artifact() {
             with (obj_controller) {
                 scr_dialogue("artifact");
             }
-            instance_destroy();
             instance_destroy(obj_popup);
         }
     }

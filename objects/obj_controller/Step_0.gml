@@ -393,7 +393,12 @@ try {
     }
     // Diplomacy options
     if (diplomacy == 0) {
-        trading_artifact = 0;
+        if (trading_artifact != 0) {
+            with (obj_ground_mission) {
+                instance_destroy();
+            }
+            trading_artifact = 0;
+        }
     }
 
     if ((trading_artifact == 0) && (trading == 0) && (trading_artifact == 0) && (faction_justmet == 1) && (questing == 0) && (trading_demand == 0) && (complex_event == false)) {
