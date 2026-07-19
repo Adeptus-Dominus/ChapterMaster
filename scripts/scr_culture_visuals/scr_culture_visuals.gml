@@ -3055,7 +3055,12 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_missile,
             },
             {
+				weapon_data: {
+					display_type: "dreadnought",
+					single_left_right_profile: false,
+				},
                 sprite: spr_dread_missile,
+				shadows: spr_dread_missile_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
             },

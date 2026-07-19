@@ -1,6 +1,6 @@
 {
   "$GMSprite":"v2",
-  "%Name":"spr_dread_iron_clad",
+  "%Name":"spr_dread_iron_clad_shadow",
   "bboxMode":0,
   "bbox_bottom":126,
   "bbox_left":26,
@@ -12,17 +12,17 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"1edf1836-ddcb-4450-bf2b-73c6f5923a22","name":"1edf1836-ddcb-4450-bf2b-73c6f5923a22","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"v1","%Name":"24c25f96-c1e4-4a6b-ba31-60a257efbb5d","name":"24c25f96-c1e4-4a6b-ba31-60a257efbb5d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"6f345932-e962-4cab-ad5a-71f7fec7c806","name":"6f345932-e962-4cab-ad5a-71f7fec7c806","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"cd4cbd16-bd23-495d-aa67-68def65cc373","name":"cd4cbd16-bd23-495d-aa67-68def65cc373","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":232,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"9bfc346a-af58-444c-a3d3-025af143d5dd","blendMode":0,"displayName":"default","isLocked":false,"name":"9bfc346a-af58-444c-a3d3-025af143d5dd","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"766a472e-2f95-4854-bf28-4ce69828dac1","blendMode":0,"displayName":"default","isLocked":false,"name":"766a472e-2f95-4854-bf28-4ce69828dac1","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_dread_iron_clad",
+  "name":"spr_dread_iron_clad_shadow",
   "nineSlice":null,
   "origin":9,
   "parent":{
@@ -34,7 +34,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"spr_dread_iron_clad",
+    "%Name":"spr_dread_iron_clad_shadow",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -58,25 +58,23 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_dread_iron_clad",
+    "name":"spr_dread_iron_clad_shadow",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
-    "seqHeight":232.0,
-    "seqWidth":197.0,
     "showBackdrop":true,
     "showBackdropImage":false,
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"1edf1836-ddcb-4450-bf2b-73c6f5923a22","path":"sprites/spr_dread_iron_clad/spr_dread_iron_clad.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"f8f1bf31-0523-456a-bb23-a797d5c9236b","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"6f345932-e962-4cab-ad5a-71f7fec7c806","path":"sprites/spr_dread_iron_clad_shadow/spr_dread_iron_clad_shadow.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"84754dfa-c96e-4b54-b251-b95b7f14ea31","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"24c25f96-c1e4-4a6b-ba31-60a257efbb5d","path":"sprites/spr_dread_iron_clad/spr_dread_iron_clad.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"2296577c-0e8b-416d-bf5d-4a27d18f44fe","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"cd4cbd16-bd23-495d-aa67-68def65cc373","path":"sprites/spr_dread_iron_clad_shadow/spr_dread_iron_clad_shadow.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"d5bf5fe8-9670-46e7-a7f4-49aec769e47e","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
@@ -85,7 +83,7 @@
     "yorigin":0,
   },
   "swatchColours":null,
-  "swfPrecision":2.525,
+  "swfPrecision":0.5,
   "textureGroupId":{
     "name":"MarineViewer",
     "path":"texturegroups/MarineViewer",
