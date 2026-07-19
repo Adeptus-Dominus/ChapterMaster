@@ -123,12 +123,12 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             break;
         case eP_FEATURES.STC_FRAGMENT:
             player_hidden = 1;
-            Fragment_type = 0;
+            // fragment_type = 0;
             planet_display = "STC Fragment";
             break;
         case eP_FEATURES.CAVE_NETWORK:
             player_hidden = 1;
-            cave_depth = irandom(3); //allow_multiple levels of caves, option to go deeper
+            // cave_depth = irandom(3); //allow_multiple levels of caves, option to go deeper
             planet_display = "Unexplored Cave Network";
             break;
         case eP_FEATURES.SORORITAS_CATHEDRAL:
@@ -142,7 +142,7 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
         case eP_FEATURES.ORKWARBOSS:
             player_hidden = 1;
             planet_display = "Ork Warboss";
-            Warboss = "alive";
+            // warboss_status = "alive";
             name = global.name_generator.GenerateComposite("ork", false);
             turns_static = 0;
             break;
