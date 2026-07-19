@@ -16,9 +16,11 @@ if (instance_exists(obj_controller)) {
                     break;
                 }
             }
-            if (_warboss_alive) break;
+            if (_warboss_alive) {
+                break;
+            }
         }
-        
+
         if (_warboss_alive) {
             struct_remove(cargo_data, "ork_warboss");
         } else {

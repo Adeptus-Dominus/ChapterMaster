@@ -214,7 +214,7 @@ function init_ork_waagh(override = false) {
     if (_waaagh_star_found) {
         _pdata = _waaagh_star[0].get_planet_data(_waaagh_star[1]);
         var _boss = _pdata.add_feature(eP_FEATURES.ORKWARBOSS);
-        
+
         with (obj_controller) {
             if (faction_defeated[7] == 1) {
                 faction_leader[eFACTION.ORK] = _boss.name;
@@ -223,7 +223,7 @@ function init_ork_waagh(override = false) {
                 scr_audience(eFACTION.ORK, "new_warboss", -40, "War", 0, 2);
             }
         }
-        
+
         if (override) {
             _boss.player_hidden = false;
             scr_event_log("red", $"boss on {_pdata.name()}", _pdata.system.name);

@@ -108,11 +108,11 @@ with (_current_system) {
     star = "white2";
     image_index = 4;
     owner = eFACTION.MECHANICUS;
-    
+
     if (planets < 2) {
         planets = 2;
     }
-    
+
     p_type[1] = "Forge";
     p_type[2] = "Ice";
 
@@ -248,17 +248,17 @@ for (var i = 0; i < _count; i++) {
 if (_total_weight > 0) {
     for (var f = 0; f < _count; f++) {
         var _faction = _spawn_factions[f];
-        
-        if (!_faction.enabled) { 
+
+        if (!_faction.enabled) {
             continue;
         }
-        
+
         var _allocated_systems = round(_enemy_systems * (_faction.weight / _total_weight));
-        
+
         for (var j = 0; j < _allocated_systems && array_length(_imperial_systems) > 0; j++) {
             var s = array_random_index(_imperial_systems);
             var _current_system = _imperial_systems[s];
-            
+
             _current_system.owner = _faction.faction_id;
             for (var p = 1; p <= _current_system.planets; p++) {
                 _current_system.p_owner[p] = _current_system.owner;
