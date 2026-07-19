@@ -318,41 +318,6 @@ repeat (100) {
 }
 // End craftworld
 
-if ((!instance_exists(obj_saveload)) && instance_exists(obj_creation) && (global.load == -1)) {
-    for (var i = 1; i <= 10; i++) {
-        if (obj_creation.world[i] != "") {
-            var _wanted_stars = [];
-            with (obj_star) {
-                for (var run = 1; run <= planets; run++) {
-                    if (p_type[run] == obj_creation.world_type[i]) {
-                        array_push(_wanted_stars, id);
-                        break;
-                    }
-                }
-            }
-
-            /// @type {Id.Instance.obj_star} 
-            var _chosen_star = array_random_element(_wanted_stars);
-            if (!instance_exists(_chosen_star)) {
-                continue;
-            }
-
-            for (var run = 1; run <= _chosen_star.planets; run++) {
-                if (_chosen_star.p_type[run] == obj_creation.world_type[i]) {
-                    name = obj_creation.world[i];
-                    if (obj_creation.world_feature[i] != "") {
-                        _chosen_star.p_feature[run] = [];
-                    }
-                    obj_creation.world[i] = "";
-                    obj_creation.world_type[i] = "";
-                    obj_creation.world_feature[i] = "";
-                    break;
-                }
-            }
-        }
-    }
-}
-
 with (obj_creation) {
     instance_destroy();
 }
