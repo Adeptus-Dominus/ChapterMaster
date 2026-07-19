@@ -2601,7 +2601,6 @@ global.weapon_visual_data = {
 				shadows: spr_dread_assault_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
@@ -2651,7 +2650,6 @@ global.weapon_visual_data = {
                 shadows: spr_dread_lascannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
@@ -2662,7 +2660,6 @@ global.weapon_visual_data = {
                 display_type: "dreadnought",
             },
             armours: ["Dreadnought"],
-            single_left_right_profile: true,
         },
         variants: [
             {
@@ -2682,7 +2679,6 @@ global.weapon_visual_data = {
                 display_type: "dreadnought",
             },
 			armours: ["Dreadnought"],
-			single_left_right_profile: true,
         },
         variants: [
             {
@@ -2769,7 +2765,6 @@ global.weapon_visual_data = {
                 shadows: spr_dread_plasma_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
@@ -3060,10 +3055,14 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_missile,
             },
             {
+				weapon_data: {
+					display_type: "dreadnought",
+					single_left_right_profile: false,
+				},
                 sprite: spr_dread_missile,
+				shadows: spr_dread_missile_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
@@ -3093,7 +3092,6 @@ global.weapon_visual_data = {
                 shadows: spr_dread_plasma_cannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
@@ -3288,10 +3286,14 @@ global.weapon_visual_data = {
                 sprite: spr_weapon_autocannon2,
             },
             {
+				weapon_data: {
+					display_type: "dreadnought",
+					single_left_right_profile: false,
+				},
                 sprite: spr_dread_autocannon,
+				shadows: spr_dread_autocannon_shadow,
                 body_types: [3],
                 armours: ["Dreadnought"],
-                single_left_right_profile: true,
             },
         ],
     },
