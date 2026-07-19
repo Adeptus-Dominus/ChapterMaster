@@ -170,15 +170,18 @@ function TradeAttempt(diplomacy) constructor {
             }
         }
 
-        var flit = setup_ai_trade_fleet(trade_from_star, diplomacy_faction);
+        var _has_cargo = array_length(struct_get_names(trading_object)) > 0;
+        if (_has_cargo) {
+            var flit = setup_ai_trade_fleet(trade_from_star, diplomacy_faction);
 
-        flit.cargo_data.player_goods = trading_object;
+            flit.cargo_data.player_goods = trading_object;
 
-        flit.target = trade_to_obj;
-        with (flit) {
-            action_x = target.x;
-            action_y = target.y;
-            set_fleet_movement();
+            flit.target = trade_to_obj;
+            with (flit) {
+                action_x = target.x;
+                action_y = target.y;
+                set_fleet_movement();
+            }
         }
     };
 
