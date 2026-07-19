@@ -208,7 +208,7 @@ with (obj_star) {
         if (rando) {
             owner = eFACTION.CHAOS;
             for (var i = 1; i <= planets; i++) {
-                p_owner [i] = eFACTION.CHAOS;
+                p_owner[i] = eFACTION.CHAOS;
                 p_heresy[i] = floor(random_range(75, 100));
                 p_traitors[i] = 6;
                 p_fortified[i] = choose(4, 5, 5, 4, 4, 3, 6);
