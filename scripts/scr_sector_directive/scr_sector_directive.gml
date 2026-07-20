@@ -176,8 +176,26 @@ function sector_directive_reclaim() {
 }
 
 /// Runs once per turn from scr_end_turn.
+/// True once a non-default directive has stood past its duration and should revert.
+function sector_directive_has_lapsed() {
+    sector_directive_ensure();
+    if (obj_controller.sector_directive == "defend") {
+        return false;
+    }
+    return (obj_controller.turn - obj_controller.sector_directive_turn) >= SECTOR_DIRECTIVE_DURATION;
+}
+
 function sector_directive_tick() {
     sector_directive_ensure();
+    // Lapse: a war order the Commander was given expires after SECTOR_DIRECTIVE_DURATION
+    // turns and reverts to defend, so the player must return to renew it (or set a new
+    // one). The directive_turn stamp is left alone: the cooldown already elapsed long ago
+    // (duration > cooldown), so the player can immediately re-issue orders on the visit
+    // that follows a lapse.
+    if (sector_directive_has_lapsed()) {
+        obj_controller.sector_directive = "defend";
+        scr_event_log("yellow", "The Sector Commander's regiments have completed their campaign and returned to holding the core worlds. He awaits new orders.");
+    }
     var _d = obj_controller.sector_directive;
     if (_d == "defend") {
         with (obj_star) {

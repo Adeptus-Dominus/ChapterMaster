@@ -109,6 +109,13 @@
 // Sector war directives (Discuss button, Imperium diplomacy): cooldown between
 // changes, disposition cost of a non-default order, and the per-turn effects.
 #macro SECTOR_DIRECTIVE_COOLDOWN 10
+// How long a non-default sector directive stands before it LAPSES back to "defend".
+// A standing war order is a commitment the Guard march to, not a permanent setting:
+// after this many turns the Sector Commander's regiments have finished the campaign
+// he was given and revert to holding the core worlds until the player issues fresh
+// orders. Must exceed SECTOR_DIRECTIVE_COOLDOWN so a directive never lapses while the
+// player is still barred from renewing it. (See sector_directive_tick.)
+#macro SECTOR_DIRECTIVE_DURATION 50
 #macro SECTOR_DIRECTIVE_DISPO_COST 3
 #macro SECTOR_DIRECTIVE_STRIKE_INTERVAL 6
 #macro SECTOR_RECLAIM_INTERVAL 8
