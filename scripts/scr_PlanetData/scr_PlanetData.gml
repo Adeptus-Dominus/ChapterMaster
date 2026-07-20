@@ -44,7 +44,12 @@ function PlanetData(_planet, _system) constructor {
         try {
             planet_forces[eFACTION.PLAYER] = player_forces;
 
-            planet_forces[eFACTION.IMPERIUM] = guardsmen;
+            // Renegade traitor guard fight FOR the player on worlds they own; loyal guard stay Imperial.
+            if (guardsmen_are_renegade()) {
+                planet_forces[eFACTION.PLAYER] += guardsmen;
+            } else {
+                planet_forces[eFACTION.IMPERIUM] = guardsmen;
+            }
 
             planet_forces[eFACTION.ECCLESIARCHY] = system.p_sisters[planet];
             planet_forces[eFACTION.ELDAR] = system.p_eldar[planet];
@@ -493,7 +498,12 @@ function PlanetData(_planet, _system) constructor {
     try {
         planet_forces[eFACTION.PLAYER] = player_forces;
 
-        planet_forces[eFACTION.IMPERIUM] = guardsmen;
+        // Renegade traitor guard fight FOR the player on worlds they own; loyal guard stay Imperial.
+        if (guardsmen_are_renegade()) {
+            planet_forces[eFACTION.PLAYER] += guardsmen;
+        } else {
+            planet_forces[eFACTION.IMPERIUM] = guardsmen;
+        }
 
         planet_forces[eFACTION.ECCLESIARCHY] = system.p_sisters[planet];
         planet_forces[eFACTION.ELDAR] = system.p_eldar[planet];
@@ -1122,6 +1132,15 @@ function PlanetData(_planet, _system) constructor {
         return guard_score;
     };
 
+    /// @description True when this world's guardsmen are the PLAYER'S own renegade traitor guard
+    ///              rather than loyal Imperial Guard: the Chapter has turned renegade (at War with
+    ///              the Imperium) and holds this world. Such guard defend the player's world and
+    ///              never trigger combat against them. On worlds the player does not own, or while
+    ///              still loyal, guardsmen remain Imperial as before.
+    static guardsmen_are_renegade = function() {
+        return (current_owner == eFACTION.PLAYER) && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War");
+    };
+
     static continue_to_planet_battle = function(stop) {
         var _nids_real = planet_forces[eFACTION.TYRANIDS];
         var _nids_score = _nids_real < 4 ? 0 : _nids_real;
@@ -1160,7 +1179,7 @@ function PlanetData(_planet, _system) constructor {
 
         // Attack heretics whenever possible, even player controlled ones
         if (stop) {
-            if ((player_forces + pdf > 0) && (guardsmen > 0) && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
+            if ((player_forces + pdf > 0) && (guardsmen > 0) && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") && !guardsmen_are_renegade()) {
                 stop = false;
             }
         }
