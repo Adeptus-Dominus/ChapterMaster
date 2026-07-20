@@ -367,14 +367,8 @@ function find_population_doners(doner_to = 0) {
     return pop_doner_options;
 }
 
-function planet_numeral_name(planet, star = noone) {
-    if (star == noone) {
-        return $"{name} {int_to_roman(planet)}";
-    } else {
-        with (star) {
-            return $"{name} {int_to_roman(planet)}";
-        }
-    }
+function planet_numeral_name(planet, star) {
+    return $"{star.name} {int_to_roman(planet)}";
 }
 
 function new_star_event_marker(colour) {

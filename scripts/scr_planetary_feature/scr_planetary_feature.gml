@@ -123,12 +123,12 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             break;
         case eP_FEATURES.STC_FRAGMENT:
             player_hidden = 1;
-            Fragment_type = 0;
+            // fragment_type = 0;
             planet_display = "STC Fragment";
             break;
         case eP_FEATURES.CAVE_NETWORK:
             player_hidden = 1;
-            cave_depth = irandom(3); //allow_multiple levels of caves, option to go deeper
+            // cave_depth = irandom(3); //allow_multiple levels of caves, option to go deeper
             planet_display = "Unexplored Cave Network";
             break;
         case eP_FEATURES.SORORITAS_CATHEDRAL:
@@ -142,7 +142,7 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
         case eP_FEATURES.ORKWARBOSS:
             player_hidden = 1;
             planet_display = "Ork Warboss";
-            Warboss = "alive";
+            // warboss_status = "alive";
             name = global.name_generator.GenerateComposite("ork", false);
             turns_static = 0;
             break;
@@ -324,7 +324,7 @@ function scr_planetary_feature(planet_num) {
         var feat = p_feature[planet_num][f];
         if (feat.player_hidden == 1) {
             feat.player_hidden = 0;
-            var numeral_n = planet_numeral_name(planet_num);
+            var numeral_n = planet_numeral_name(planet_num, id);
             var lop = "";
             switch (feat.f_type) {
                 case eP_FEATURES.SORORITAS_CATHEDRAL:
@@ -799,7 +799,6 @@ function governor_negotiate_artifact() {
             with (obj_controller) {
                 scr_dialogue("artifact");
             }
-            instance_destroy();
             instance_destroy(obj_popup);
         }
     }
@@ -936,7 +935,7 @@ function remove_stc_from_planet() {
     instance_destroy();
 }
 
-function recieve_artifact_in_discussion() {
+function receive_artifact_in_discussion() {
     scr_return_ship(loc, self, num);
 
     var ship_id = get_valid_player_ship("", loc);

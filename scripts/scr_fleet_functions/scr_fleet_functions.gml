@@ -181,59 +181,50 @@ function get_nearest_star(_x, _y, _max_distance = 50) {
 }
 
 /// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
-function set_fleet_movement(fastest_route = true, new_action = "move", minimum_eta = 1, maximum_eta = 1000) {
-    action = "";
+/// @desc Sets up fleet movement parameters, handles route generation, and calculates ETAs.
+/// @param {Bool} _fastest_route  Whether to calculate a path using the pathfinding algorithm. (default=true)
+/// @param {String} _new_action The movement action type to assign. (default="move")
+/// @param {Real} _minimum_eta The minimum clamp threshold for movement duration. (default=1)
+/// @param {Real} _maximum_eta The maximum clamp threshold for movement duration. (default=1000)
+function set_fleet_movement(_fastest_route = true, _new_action = "move", _minimum_eta = 1, _maximum_eta = 1000) {
+    turns_static = 0;
     var _at_star = instance_exists(orbiting);
 
-    if (action == "") {
-        turns_static = 0;
-        var mine;
-        if (fastest_route) {
-            mine = instance_nearest(x, y, obj_star);
-            var star_travel = new FastestRouteAlgorithm(x, y, action_x, action_y, self.id, _at_star);
-            var path = star_travel.final_array_path();
-            if (array_length(path) > 1) {
-                var targ = find_star_by_name(path[1]);
-                if (targ != noone) {
-                    array_delete(path, 0, 2);
-                    complex_route = path;
-                    action_x = targ.x;
-                    action_y = targ.y;
-                    set_fleet_movement(false, new_action);
-                } else {
-                    set_fleet_movement(false, new_action);
-                }
-            } else {
-                set_fleet_movement(false, new_action);
-            }
-        } else {
-            var _target_sys = instance_nearest(action_x, action_y, obj_star);
-            var _target_is_sys = false;
+    // Pathfinding
+    if (_fastest_route) {
+        var _route_algo = new FastestRouteAlgorithm(x, y, action_x, action_y, id, _at_star);
+        var _path = _route_algo.final_array_path();
 
-            if (instance_exists(_target_sys)) {
-                _target_is_sys = point_distance(_target_sys.x, _target_sys.y, action_x, action_y) < 10;
+        if (array_length(_path) > 1) {
+            var _target = find_star_by_name(_path[1]);
+            if (_target != noone) {
+                array_delete(_path, 0, 2);
+                complex_route = _path;
+                action_x = _target.x;
+                action_y = _target.y;
             }
-
-            mine = instance_nearest(x, y, obj_star);
-
-            var eta = calculate_fleet_eta(x, y, action_x, action_y, action_spd, _target_is_sys, _at_star, warp_able);
-            action_eta = eta;
-            if ((action_eta <= 0) || (owner != eFACTION.INQUISITION)) {
-                action_eta = eta;
-            } else if ((owner == eFACTION.INQUISITION) && (action_eta < 2) && (string_count("_her", trade_goods) == 0)) {
-                action_eta = 2;
-            }
-            if (_at_star) {
-                if (owner != eFACTION.ELDAR && mine.storm) {
-                    action_eta += 10000;
-                }
-            }
-
-            fleet_unregister_from_star(id);
-            action = new_action;
-            action_eta = clamp(action_eta, minimum_eta, maximum_eta);
         }
     }
+
+    // ETA
+    var _target_sys = instance_nearest(action_x, action_y, obj_star);
+    var _target_is_sys = instance_exists(_target_sys) && (point_distance(_target_sys.x, _target_sys.y, action_x, action_y) < 10);
+    var _eta = calculate_fleet_eta(x, y, action_x, action_y, action_spd, _target_is_sys, _at_star, warp_able);
+
+    // Inquisition minimum speed penalty (unless transporting heretical goods)
+    if (owner == eFACTION.INQUISITION && _eta > 0 && _eta < 2 && string_count("_her", trade_goods) == 0) {
+        _eta = 2;
+    }
+
+    // Warp storm travel penalty (Eldar are immune)
+    if (_at_star && owner != eFACTION.ELDAR && orbiting.storm) {
+        _eta += 10000;
+    }
+
+    // Finalize Movement State
+    fleet_unregister_from_star(id);
+    action = _new_action;
+    action_eta = clamp(_eta, _minimum_eta, _maximum_eta);
 }
 
 /// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} fleet
@@ -692,6 +683,7 @@ function fleet_arrival_logic() {
     x = _dest_star.x;
     y = _dest_star.y;
     var sta = _dest_star;
+    action = "";
     fleet_register_at_star(id, _dest_star);
 
     if (owner == eFACTION.MECHANICUS) {
@@ -943,7 +935,7 @@ function fleet_arrival_logic() {
 
             with (stue) {
                 if (p_type[tau_influence_planet] != "Dead") {
-                    scr_alert("green", "owner", $"Tau ship broadcasts subversive messages to {planet_numeral_name(tau_influence_planet)}.", sta.x, sta.y);
+                    scr_alert("green", "owner", $"Tau ship broadcasts subversive messages to {planet_numeral_name(tau_influence_planet, stue)}.", sta.x, sta.y);
                     tau_influence = p_influence[tau_influence_planet][eFACTION.TAU];
 
                     if ((tau_influence_chance <= 70) && (tau_influence < 70)) {

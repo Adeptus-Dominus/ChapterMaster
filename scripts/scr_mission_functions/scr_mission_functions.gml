@@ -746,7 +746,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index) {
             _mission_string = $"The mission was a failiure. The governor is disapointed and the legend of your chapter has undoubtedly been diminished";
             _mission_string += $"\n{_unit_report_string}";
         }
-        scr_popup($"Beast Hunt on {planet_numeral_name(i)}", _mission_string, "", "");
+        scr_popup($"Beast Hunt on {planet_numeral_name(i, id)}", _mission_string, "", "");
         remove_planet_problem(targ_planet, "hunt_beast");
     } else {
         remove_planet_problem(targ_planet, "hunt_beast");
