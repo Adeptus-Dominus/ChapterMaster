@@ -323,7 +323,10 @@ if (owner == eFACTION.TAU) {
         // cut to the Gue'Vesa human minority (billions-units convention kept for p_large worlds).
         var _tau_world_head = p_large[i] ? (p_population[i] * 1000000000) : p_population[i];
         var _gue_frac = 0.10 + random(0.12);   // Gue'Vesa humans ~10-22% of a Tau world; the Tau are the rest
-        p_race_pop[i][eFACTION.TAU] = round(_tau_world_head * (1 - _gue_frac));
+        // Seed the T'au caste headcount, then clamp the FIELDABLE force to the world cap so a hive
+        // world does not start with billions of Fire Warriors (see tau_force_cap_for_world). The
+        // human Gue'Vesa pool (p_population) is untouched: the world can still hold billions of PEOPLE.
+        p_race_pop[i][eFACTION.TAU] = min(tau_force_cap_for_world(id, i), round(_tau_world_head * (1 - _gue_frac)));
         p_population[i] = p_large[i] ? (p_population[i] * _gue_frac) : max(1, round(p_population[i] * _gue_frac));
     }
 }

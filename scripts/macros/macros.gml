@@ -138,6 +138,22 @@
 // order lapses on its own after this many turns, returning the fleet to autonomous AI.
 #macro NAVY_ORDER_MIN_DISPOSITION 50
 #macro NAVY_FOLLOW_MAX_TURNS 40
+// Each active fleet order (hold/follow) costs the Governor this much disposition (abuse
+// avoidance: no infinite free orders). Cancelling ("As you were") is free.
+#macro NAVY_ORDER_DISPOSITION_COST 2
+
+// ---- T'au force cap ----
+// The T'au conflate population and army (p_race_pop[TAU] is both), and a hive world seeded
+// billions of "troops", making the war unwinnable. Cap the FIELDABLE T'au force to scale with
+// world size (a small fraction of carrying capacity) but never exceed TAU_FORCE_CAP. On a world
+// the T'au CAPTURED from the Imperium they raise no Fire Warriors from the human populace, only
+// Gue'Vesa auxiliaries: a small fraction of the former PDF (TAU_GUEVESA_PDF_FRACTION), capped at
+// TAU_GUEVESA_FORCE_CAP. Applied at planet_faction_pop (the single read all force paths use), the
+// worldgen seed, and the growth cap. See tau_force_cap_for_world / planet_faction_pop.
+#macro TAU_FORCE_CAP 2000000
+#macro TAU_MILITARY_FRACTION 0.05
+#macro TAU_GUEVESA_PDF_FRACTION 0.05
+#macro TAU_GUEVESA_FORCE_CAP 200000
 
 // ---- Dig In ----
 // A force (player OR enemy) that holds a region for DIG_IN_TURNS consecutive turns without

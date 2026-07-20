@@ -196,8 +196,15 @@ function PlanetData(_planet, _system) constructor {
         // T'au — steady growth of the caste population, plus the assimilated Gue'Vesa human populace.
         if (current_owner == eFACTION.TAU) {
             var _tau = system.p_race_pop[planet][eFACTION.TAU];
-            if (_tau > 0 && _tau < _cap_head) {
-                system.p_race_pop[planet][eFACTION.TAU] = min(_cap_head, round(_tau * 1.0008));
+            // Grow toward the T'au FORCE cap (scales with world size, ceiling TAU_FORCE_CAP; Gue'Vesa
+            // only on captured worlds), NOT the raw carrying capacity — otherwise the caste headcount
+            // creeps back into the billions over time. See tau_force_cap_for_world.
+            var _tau_cap = tau_force_cap_for_world(system, planet);
+            if (_tau > 0 && _tau < _tau_cap) {
+                system.p_race_pop[planet][eFACTION.TAU] = min(_tau_cap, round(_tau * 1.0008));
+            } else if (_tau > _tau_cap) {
+                // Already over cap (e.g. an old save): settle it down to the cap.
+                system.p_race_pop[planet][eFACTION.TAU] = _tau_cap;
             }
             // Gue'Vesa: end_turn_population_growth skips Tau-held worlds, so grow the human pool here.
             if (population > 0 && population < max_population) {

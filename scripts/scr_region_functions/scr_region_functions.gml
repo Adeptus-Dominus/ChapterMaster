@@ -1014,6 +1014,33 @@ function count_to_level(_faction, _count) {
     return _lv;
 }
 
+/// @function tau_force_cap_for_world
+/// @description The maximum FIELDABLE T'au force on a world. On a T'au HOME world (p_first == TAU)
+///              this scales with the world's carrying capacity (a small fraction) but never
+///              exceeds TAU_FORCE_CAP, so the biggest hive world tops out at the ceiling and
+///              smaller worlds field proportionally less. On a world the T'au CAPTURED from
+///              anyone else they raise only Gue'Vesa auxiliaries from the human populace: a small
+///              fraction of the former PDF, capped at TAU_GUEVESA_FORCE_CAP. Returns a real
+///              headcount used to clamp planet_faction_pop, the worldgen seed, and the growth cap.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Real}
+function tau_force_cap_for_world(_star, _planet) {
+    // Real-headcount carrying capacity (p_population/max_population use a billions unit on large worlds).
+    var _large = variable_instance_exists(_star, "p_large") && _star.p_large[_planet];
+    var _cap_real = _large ? (_star.p_max_population[_planet] * 1000000000) : _star.p_max_population[_planet];
+
+    // Captured-from-Imperium (or any non-T'au first owner): Gue'Vesa only, off the former PDF.
+    var _first = _star.p_first[_planet];
+    if (_first != eFACTION.TAU) {
+        var _pdf = _star.p_pdf[_planet];
+        return min(TAU_GUEVESA_FORCE_CAP, round(_pdf * TAU_GUEVESA_PDF_FRACTION));
+    }
+
+    // T'au home world: a fraction of capacity, hard-ceilinged.
+    return min(TAU_FORCE_CAP, round(_cap_real * TAU_MILITARY_FRACTION));
+}
+
 /// @function planet_faction_pop
 /// @description The AUTHORITATIVE headcount a faction fields on a world — its real population
 ///              (p_race_pop) where seeded, else a migration fallback derived from the legacy 0-6 level.
@@ -1025,8 +1052,17 @@ function count_to_level(_faction, _count) {
 /// @returns {Real}
 function planet_faction_pop(_star, _planet, _faction) {
     var _pop = planet_race_pop(_star, _planet, _faction);
-    if (_pop > 0) { return _pop; }
-    return level_to_count(_faction, faction_planet_level(_star, _planet, _faction));
+    if (_pop <= 0) {
+        _pop = level_to_count(_faction, faction_planet_level(_star, _planet, _faction));
+    }
+    // T'au fieldable-force cap: clamp the army the T'au can put in the field so a hive world
+    // does not muster billions. Home worlds scale with size (ceiling TAU_FORCE_CAP); captured
+    // worlds field only Gue'Vesa. Applied here so EVERY force path (garrison, display, combat)
+    // sees the capped number regardless of whether it came from p_race_pop or the tier fallback.
+    if (_faction == eFACTION.TAU) {
+        _pop = min(_pop, tau_force_cap_for_world(_star, _planet));
+    }
+    return _pop;
 }
 
 /// @function planet_faction_composition

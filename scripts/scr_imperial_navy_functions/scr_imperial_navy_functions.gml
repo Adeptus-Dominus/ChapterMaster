@@ -1227,16 +1227,25 @@ function navy_order_give(_fleet, _kind, _rule = "") {
     navy_order_ensure(_fleet);
     _fleet.navy_order_turns = 0;
 
+    // Cancelling an order ("As you were") is free; it just returns the fleet to autonomy.
     if (_kind == "release") {
         _fleet.navy_order = "";
         _fleet.navy_follow_uid = "";
         return true;
     }
+
+    // Every ACTIVE order (hold / follow) costs the Governor a little goodwill, so the player
+    // cannot spam orders for free. Deduct once the order is confirmed accepted below.
+    var _charge = function() {
+        obj_controller.disposition[eFACTION.IMPERIUM] = max(0, obj_controller.disposition[eFACTION.IMPERIUM] - NAVY_ORDER_DISPOSITION_COST);
+    };
+
     if (_kind == "hold") {
         _fleet.navy_order = "hold";
         _fleet.navy_follow_uid = "";
         _fleet.action = "";
         _fleet.target = noone;
+        _charge();
         return true;
     }
     if (_kind == "follow") {
@@ -1246,7 +1255,11 @@ function navy_order_give(_fleet, _kind, _rule = "") {
         }
         _fleet.navy_order = "follow";
         _fleet.navy_follow_uid = player_fleet_flagship_uid(_target);
-        return (_fleet.navy_follow_uid != "");
+        if (_fleet.navy_follow_uid == "") {
+            return false;
+        }
+        _charge();
+        return true;
     }
     return false;
 }
