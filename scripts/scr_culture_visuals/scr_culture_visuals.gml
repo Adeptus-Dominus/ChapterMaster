@@ -352,6 +352,18 @@ function set_up_visual_overides() {
 }
 
 global.modular_drawing_items = [
+	// MK7 Aquila Sprites
+	{
+        position: "chest_variants",
+        armours: ["MK7 Aquila",
+				  "MK8 Errant",
+				  "Artificer Armour"
+		],
+        body_types: [0],
+        sprite: spr_mk7_chest_variants,
+        shadows: spr_mk7_chest_variants_shadow,
+    },
+	// Other Stuff
     {
         sprite: spr_purity_seal,
         body_types: [
@@ -957,7 +969,7 @@ global.modular_drawing_items = [
         assign_by_rank: 2,
         position: "mouth_variants",
         armours: [
-            "MK7 Aquila",
+
             "Artificer Armour",
         ],
     },
@@ -1944,16 +1956,6 @@ global.modular_drawing_items = [
         body_types: [0],
         sprite: spr_artificer_thorax,
         shadows: spr_artificer_thorax_shadow,
-    },
-	// MK7 Aquila Sprites
-	{
-        position: "chest_variants",
-        armours: ["MK7 Aquila",
-				  "MK8 Errant"
-		],
-        body_types: [0],
-        sprite: spr_mk7_chest_variants,
-        shadows: spr_mk7_chest_variants_shadow,
     },
     //Dreadnought Sprites
     {
