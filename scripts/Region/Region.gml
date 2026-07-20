@@ -34,6 +34,14 @@ function Region(_name = "Region", _is_capital = false, _owner = eFACTION.IMPERIU
     fortification = 0;
     defences = 0;
 
+    // Dig-In tracking: how many consecutive turns the CURRENT owner has held this region
+    // without it changing hands. After DIG_IN_TURNS turns held, the occupier entrenches
+    // (+1 fortification, capped at DIG_IN_FORT_CAP), representing field works and light
+    // cover thrown up by a force that has had time to consolidate. Reset to the new owner
+    // with the counter at 0 whenever the region changes hands. See regions_dig_in_tick.
+    hold_owner = _owner;
+    hold_turns = 0;
+
     // Buildings/upgrades constructed in this region (array of eP_FEATURES values).
     upgrades = [];
 

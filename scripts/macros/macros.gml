@@ -116,6 +116,14 @@
 // rebuild on their highest-ranked gun-less qualifying world. See tau_orbital_gun_tick.
 #macro TAU_ORBITAL_GUN_CAP 3
 #macro TAU_ORBITAL_GUN_BUILD_TURNS 30
+
+// ---- Dig In ----
+// A force (player OR enemy) that holds a region for DIG_IN_TURNS consecutive turns without
+// it changing hands entrenches: +1 fortification, capped at DIG_IN_FORT_CAP. Light cover /
+// field works that make a settled position harder to take. Applies to both sides; the
+// counter resets whenever the region changes hands. See regions_dig_in_tick.
+#macro DIG_IN_TURNS 2
+#macro DIG_IN_FORT_CAP 5
 // Imperial worlds pass their raw Guard garrison through threat (population-scaled,
 // sanity-capped at 1M strategically). A tactical battle fields at most this many of
 // them; the rest are the garrison you are NOT fighting today.
