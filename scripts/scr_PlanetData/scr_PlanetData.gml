@@ -1228,11 +1228,10 @@ function PlanetData(_planet, _system) constructor {
             guard_attack = "pdf";
         }
 
-        if (current_owner == eFACTION.PLAYER) {
-            if (pdf > 0 && obj_controller.faction_status[2] == "War") {
-                guard_attack = "pdf";
-            }
-        }
+        // A renegade Chapter's own PDF stay loyal to it: on a player-owned world they defend
+        // the player rather than turning on them (matches pdf_will_support_player and the
+        // renegade traitor-guard behaviour). Only PDF on worlds the player does NOT own remain
+        // potential Imperial resistance.
         if ((planet_forces[eFACTION.TYRANIDS] <= 1) && (planet_forces[eFACTION.ORK] >= 4)) {
             guard_attack = "ork";
         }
