@@ -584,6 +584,20 @@ function regions_sync(_star, _planet) {
             _regions[i].owner = _new_owner;
         }
     }
+
+    // Positional siege bookkeeping (gun-worlds only). Establish the beachhead the moment
+    // the player holds the safe landing zone, and end the siege when the capital falls.
+    // The per-turn regions_ground_advance_tick moves the front inward from here.
+    if (planet_is_positional_siege(_star, _planet)) {
+        var _safe = planet_safe_landing_region(_star, _planet);
+        if ((_regions[_safe].owner == eFACTION.PLAYER) && (region_ground_front(_star, _planet) < 0)) {
+            region_ground_land(_star, _planet);
+            scr_event_log("c_aqua", $"Your forces establish a beachhead on {_star.name} {scr_roman(_planet)}, beneath the guns' arc. The advance to the capital begins.", _star.name);
+        }
+        if (_regions[0].is_capital && (_regions[0].owner == eFACTION.PLAYER) && (region_ground_front(_star, _planet) != -1)) {
+            region_ground_position_set(_star, _planet, -1);
+        }
+    }
 }
 
 /// @function regions_contest_order
@@ -809,9 +823,19 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         draw_set_color(c_dkgray);
         draw_rectangle(_rx, _ry + 2, _rx + 10, _ry + 14, true);
 
-        // Region name (capital marked) + owner.
+        // Region name (capital marked) + owner. On a siege world, tag the region the
+        // player's advance currently holds the line at (the only one they can assault).
         draw_set_color(c_white);
         var _name = _region.is_capital ? ("* " + _region.name) : _region.name;
+        if (planet_is_positional_siege(_star, _planet)) {
+            var _front_idx = region_ground_front(_star, _planet);
+            if ((_front_idx < 0) && (i == planet_safe_landing_region(_star, _planet))) {
+                _name += "  <LAND HERE>";
+            } else if ((_front_idx >= 0) && (i == _front_idx)) {
+                _name += "  <FRONT>";
+                draw_set_color(c_lime);
+            }
+        }
         draw_text(_rx + 18, _ry, _name);
         draw_set_color(_col);
         draw_text(_rx + 18, _ry + 16, region_faction_name(_region.owner));
@@ -4400,6 +4424,150 @@ function region_ground_position_set(_star, _planet, _region_index) {
     region_ground_position_ensure(_star, _planet);
     _star.p_ground_position[_planet] = _region_index;
 }
+
+/// @description True if this world runs the Vraks-style POSITIONAL siege: a working Orbital
+///              Gun Array is present, so the attacker cannot free-strike any region but must
+///              land in the safe zone and advance overland toward the capital. Worlds with no
+///              gun keep the old free-assault behaviour (no forced landing, no advance).
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Bool}
+function planet_is_positional_siege(_star, _planet) {
+    return planet_has_active_orbital_gun(_star, _planet) && (planet_region_count(_star, _planet) > 1);
+}
+
+/// @function region_ground_front
+/// @description The region index the player's landed force currently occupies on a siege
+///              world: -1 if no force has landed yet (must land in the safe zone first),
+///              else the region it has advanced to. On a non-siege world returns -1
+///              (irrelevant there).
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Real}
+function region_ground_front(_star, _planet) {
+    if (!planet_is_positional_siege(_star, _planet)) {
+        return -1;
+    }
+    return region_ground_position_get(_star, _planet);
+}
+
+/// @function region_can_assault_index
+/// @description Whether the player may launch a ground assault at region _index on this world
+///              right now. On a non-siege world: always (free assault). On a siege world:
+///              only the safe landing zone until a force has landed, then only the region the
+///              force currently occupies (you fight your way forward one region at a time).
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {Bool}
+function region_can_assault_index(_star, _planet, _index) {
+    if (!planet_is_positional_siege(_star, _planet)) {
+        return true;
+    }
+    var _front = region_ground_front(_star, _planet);
+    if (_front < 0) {
+        // No landing yet: only the safe landing zone can be assaulted (or bombarded clear).
+        return (_index == planet_safe_landing_region(_star, _planet));
+    }
+    // Landed: you can only assault the region you currently hold the line at.
+    return (_index == _front);
+}
+
+/// @function region_ground_land
+/// @description Records that the player's ground force has taken the safe landing zone: sets
+///              the front there. Called when an assault on the safe zone succeeds (the region
+///              flips to the player). Idempotent.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Undefined}
+function region_ground_land(_star, _planet) {
+    if (!planet_is_positional_siege(_star, _planet)) {
+        return;
+    }
+    region_ground_position_set(_star, _planet, planet_safe_landing_region(_star, _planet));
+}
+
+/// @function region_player_deepest_hold
+/// @description The lowest-index region (closest to the capital, capital = 0) the player
+///              currently holds on this planet, or the safe landing zone if they hold no
+///              region yet. This is where the spearhead has reached. Returns -1 if the
+///              player holds nothing and hasn't landed.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Real}
+function region_player_deepest_hold(_star, _planet) {
+    var _regions = regions_ensure(_star, _planet);
+    var _deepest = -1;
+    for (var i = 0; i < array_length(_regions); i++) {
+        if (_regions[i].owner == eFACTION.PLAYER) {
+            if ((_deepest < 0) || (i < _deepest)) {
+                _deepest = i;
+            }
+        }
+    }
+    return _deepest;
+}
+
+/// @function region_ground_advance
+/// @description Moves the front to the DEEPEST region the player now holds (closest to the
+///              capital). Composes with regions_sync, which flips the player's focused region
+///              first (safe zone inward), so the front tracks the real spearhead and never
+///              lags even if a large enemy collapse flips two regions in one turn. Returns
+///              true if the front moved inward. Called from the per-turn tick.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Bool}
+function region_ground_advance(_star, _planet) {
+    if (!planet_is_positional_siege(_star, _planet)) {
+        return false;
+    }
+    var _front = region_ground_front(_star, _planet);
+    if (_front < 0) {
+        return false; // no landing yet
+    }
+    var _deepest = region_player_deepest_hold(_star, _planet);
+    if ((_deepest >= 0) && (_deepest < _front)) {
+        region_ground_position_set(_star, _planet, _deepest);
+        return true;
+    }
+    return false;
+}
+
+/// @function regions_ground_advance_tick
+/// @description Per-turn: advance the player's landed force one region on every siege world
+///              where they hold the current front, and reset the front on worlds where the
+///              player has been pushed entirely off the ground (holds no region). Logs the
+///              advance so the player sees the push. Also clears the front once the capital
+///              falls (siege over).
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Undefined}
+function regions_ground_advance_tick(_star, _planet) {
+    if (!planet_is_positional_siege(_star, _planet)) {
+        // Not (or no longer) a siege world: clear any stale front so a future gun starts fresh.
+        if (region_ground_position_get(_star, _planet) != -1) {
+            region_ground_position_set(_star, _planet, -1);
+        }
+        return;
+    }
+    var _front = region_ground_front(_star, _planet);
+    if (_front < 0) {
+        return; // nothing landed yet
+    }
+    // Lost the foothold entirely? Reset to "must land again".
+    if (array_length(regions_owned_by(_star, _planet, eFACTION.PLAYER)) == 0) {
+        region_ground_position_set(_star, _planet, -1);
+        scr_event_log("yellow", $"Your beachhead on {_star.name} {scr_roman(_planet)} has been thrown back into the sea. The advance must begin again.", _star.name);
+        return;
+    }
+    if (region_ground_advance(_star, _planet)) {
+        var _new = region_ground_front(_star, _planet);
+        var _r = region_get(_star, _planet, _new);
+        var _rn = is_struct(_r) ? _r.name : "the next line";
+        scr_event_log("c_aqua", $"Your forces on {_star.name} {scr_roman(_planet)} advance to {_rn}.", _star.name);
+    }
+}
+
 
 /// @function regions_orbital_guns_tick
 /// @description Fires every Anti-Orbital Gun on the planet once per turn. The gun serves WHOEVER

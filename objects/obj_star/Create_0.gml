@@ -81,6 +81,10 @@ p_regions = array_create_advanced(_planet_array_size, []);
 // a save that captured it crashes at deserialize (array write into undefined).
 p_heresy_cleansed_turn = array_create(_planet_array_size, -9999);
 p_region_focus = array_create_advanced(_planet_array_size, 0); // player's conquest-focus region index
+// Positional-siege ground front: which region the player's landed force occupies on a
+// gun-world (-1 = no landing). MUST be declared here so the reflective serializer saves
+// it and deserialize does not crash on load (same rule as p_region_focus above).
+p_ground_position = array_create(_planet_array_size, -1);
 p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
 p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));

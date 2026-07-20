@@ -124,6 +124,7 @@ function scr_star_ownership(argument0) {
             p_infra_turns[run] = min(p_infra_turns[run] + 1, 999);
             // Anti-orbital guns fire for whoever holds their region (can turn on the player). §16
             regions_orbital_guns_tick(id, run);
+            regions_ground_advance_tick(id, run);
             if (array_length(p_feature[run]) != 0) {
                 if (planet_feature_bool(p_feature[run], eP_FEATURES.DAEMONIC_INCURSION)) {
                     p_heresy[run] += 2;

@@ -447,6 +447,24 @@ try {
                     _allow_attack = false;
                     scr_popup("Ground Assault", "Your forces at this world have already supported the maximum number of ground assaults this turn.", "");
                 }
+                // Positional siege (gun-world): you cannot free-strike any region. Until a
+                // force has landed you may only assault the safe landing zone; once landed
+                // you may only assault the region your force currently holds the line at.
+                // Advancing toward the capital happens one region per turn (per-turn tick).
+                var _og_focus = region_focus_get(target, obj_controller.selecting_planet);
+                if (_allow_attack && !region_can_assault_index(target, obj_controller.selecting_planet, _og_focus)) {
+                    _allow_attack = false;
+                    var _og_front = region_ground_front(target, obj_controller.selecting_planet);
+                    if (_og_front < 0) {
+                        var _safe_r = region_get(target, obj_controller.selecting_planet, planet_safe_landing_region(target, obj_controller.selecting_planet));
+                        var _safe_nm = is_struct(_safe_r) ? _safe_r.name : "the outer approaches";
+                        scr_popup("Orbital Gun Array", $"The capital's guns command the approaches. You must make planetfall at {_safe_nm} (the farthest zone) before you can push inland. Select that region, or bombard it to clear the way.", "");
+                    } else {
+                        var _front_r = region_get(target, obj_controller.selecting_planet, _og_front);
+                        var _front_nm = is_struct(_front_r) ? _front_r.name : "your current front";
+                        scr_popup("Ground Advance", $"Your forces can only press the attack at {_front_nm}, where they hold the line. They will advance toward the capital once it is secured.", "");
+                    }
+                }
                 if (_allow_attack) {
                     // feather ignore once GM2064
                     instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, planet_number: obj_controller.selecting_planet, attack: true, sh_target: _targ, purge: 0});
