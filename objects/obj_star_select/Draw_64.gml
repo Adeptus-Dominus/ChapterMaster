@@ -252,11 +252,22 @@ try {
                 }
             }
             if (target.space_hulk) {
+                // Space hulks are RAID-only (plus orbital Bombard); you cannot mount a full
+                // ground Attack on one, matching upstream. The fork draws button1..button4,
+                // so set THOSE (the old `buttons` array here was dead code and let button1's
+                // earlier "Attack" leak through).
                 if (target.present_fleet[1] > 0) {
-                    buttons = [
-                        "Raid",
-                        "Bombard",
-                    ];
+                    button1 = "Raid";
+                    button2 = "Bombard";
+                    button3 = "";
+                    button4 = "";
+                    button5 = "";
+                } else {
+                    button1 = "";
+                    button2 = "";
+                    button3 = "";
+                    button4 = "";
+                    button5 = "";
                 }
             }
             buttons_selected = true;

@@ -1619,6 +1619,20 @@ function PlanetData(_planet, _system) constructor {
                 blurb = blurbs[5];
             }
 
+            // T'au: the raw 0-6 level is independent of the capped headcount, so the tier name
+            // could contradict the number (an "Enormicus" world with fewer troops than a
+            // "Moderatus" one). Re-derive the T'au tier from the ACTUAL fieldable force so the
+            // blurb always tracks the number. Anchors sized to the T'au force cap (~2M ceiling).
+            if ((faction_efaction[t] == eFACTION.TAU) && (level >= 1)) {
+                var _tau_head = planet_faction_force_total(system, current_planet, eFACTION.TAU);
+                var _tau_anchors = [1, 40000, 150000, 400000, 800000, 1500000];  // 6 tiers -> blurbs[0..5]
+                var _tau_lv = 1;
+                for (var _ta = array_length(_tau_anchors) - 1; _ta >= 0; _ta--) {
+                    if (_tau_head >= _tau_anchors[_ta]) { _tau_lv = _ta + 1; break; }
+                }
+                blurb = blurbs[clamp(_tau_lv, 1, 6) - 1];
+            }
+
             // Fold the OWNER's whole alliance into the single headline total above: an
             // Imperial world doesn't also list Adeptas, a Chaos world doesn't list
             // Heretics / Daemons / Chaos Marines as separate rows.

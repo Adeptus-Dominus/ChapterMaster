@@ -293,8 +293,8 @@
 // naval combat; flip to 1 to restore it. Gathered intelligence goes stale after
 // ELDAR_CLUE_EXPIRY turns: the clues are lost and the craftworld slips away to a new
 // hidden location, so it must be located, reached and assaulted within that window.
-#macro ELDAR_INTERVAL_MIN 30
-#macro ELDAR_INTERVAL_MAX 60
+#macro ELDAR_INTERVAL_MIN 20
+#macro ELDAR_INTERVAL_MAX 50
 #macro ELDAR_CLUE_EXPIRY 400
 #macro ELDAR_INCURSION_FORCE_BASE 3
 #macro ELDAR_INCURSION_FORCE_MAX 5
