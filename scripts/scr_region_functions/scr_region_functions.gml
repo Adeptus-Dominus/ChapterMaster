@@ -3851,15 +3851,18 @@ function region_building_catalogue() {
         },
         {
             id: "manufactorum", name: "Manufactorum", sprite: spr_forge_holo, cost: 10000, max: 1, types: ["Hive", "Forge", "Desert"],
-            desc: "Major industrial complex feeding the Chapter's war production. Adds ~150 forge / industry points and +15 requisition each turn while you hold this region.",
+            desc: "Major industrial complex feeding the Chapter's war production. Adds ~60 forge / industry points and +15 requisition each turn while you hold this region.",
             apply: undefined,
-            // Dual producer. Requisition (+15) comes through the income system
-            // (regions_player_requisition_income -> income_regions in scr_income), same as
-            // the Factory, so it shows in the Requisition counter breakdown. Forge points
-            // are added here via on_turn: produced = 5 x player_forges
-            // (scr_specialist_point_handler), so +30 forges ~= +150 points/turn.
+            // Dual producer, priced against building the two equivalents separately: a
+            // maxed Large Chapter Forge (500 base + 6000 upgrades = 6500 req, 45 FP/turn)
+            // plus a Factory (2000 req, +15 req/turn) = 8500 req. The Manufactorum costs
+            // 10000 but needs no monastery and sits on any held region, so it produces a
+            // little more FP (60 vs 45) for that 1500 premium. Requisition (+15) flows
+            // through the income system (regions_player_requisition_income -> income_regions
+            // in scr_income), same as the Factory. Forge points are added here via on_turn:
+            // produced = 5 x player_forges, so +12 forges ~= +60 points/turn.
             req: 15,
-            on_turn: function(_star, _planet, _region) { obj_controller.player_forge_data.player_forges += 30; },
+            on_turn: function(_star, _planet, _region) { obj_controller.player_forge_data.player_forges += 12; },
         },
         {
             id: "factory", name: "Factory", sprite: spr_forge_holo, cost: 2000, max: 1, types: ["Hive", "Forge", "Temperate"],
