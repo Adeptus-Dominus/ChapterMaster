@@ -823,9 +823,11 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         draw_set_color(c_dkgray);
         draw_rectangle(_rx, _ry + 2, _rx + 10, _ry + 14, true);
 
-        // Region name (capital marked) + owner.
+        // Region name, numbered from the capital (1) outward to the farthest region (N), so
+        // the player can read the assault order at a glance. Capital keeps its * marker.
         draw_set_color(c_white);
-        var _name = _region.is_capital ? ("* " + _region.name) : _region.name;
+        var _num = string(i + 1) + ". ";
+        var _name = _region.is_capital ? (_num + "* " + _region.name) : (_num + _region.name);
         draw_text(_rx + 18, _ry, _name);
         draw_set_color(_col);
         draw_text(_rx + 18, _ry + 16, region_faction_name(_region.owner));
