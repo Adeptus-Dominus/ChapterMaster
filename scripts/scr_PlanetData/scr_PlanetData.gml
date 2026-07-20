@@ -1624,7 +1624,13 @@ function PlanetData(_planet, _system) constructor {
 
             if (faction != "" && level > 0 && !_hide_row) {
                 var _p_total = planet_faction_force_total(system, current_planet, faction_efaction[t]);
-                var _p_lbl = $"{faction} Forces: {scr_display_number(_p_total)}";
+                // Tier name leads, raw headcount demoted to parenthetical flavor: the tier
+                // (blurb, from the 1-6 level above) is what the player reads for danger and
+                // what combat actually sizes from; the number is background scale, not a
+                // figure the player's ~1000 marines are meant to grind down directly. blurb
+                // is empty only for out-of-range levels, in which case fall back to the count.
+                var _tier_txt = (blurb != "") ? $"{faction}: {blurb}" : $"{faction} Forces: {scr_display_number(_p_total)}";
+                var _p_lbl = (blurb != "") ? $"{_tier_txt}  (~{scr_display_number(_p_total)})" : _tier_txt;
                 var _p_ly = _pres_y + (_pres_row * 16);
                 var _p_hover = scr_hit(_pres_x, _p_ly, _pres_x + string_width(_p_lbl), _p_ly + 15);
                 draw_set_color(_p_hover ? c_yellow : c_white);
