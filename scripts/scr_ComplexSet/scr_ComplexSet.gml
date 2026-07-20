@@ -224,7 +224,6 @@ function ComplexSet(_unit) constructor {
         right_trim: spr_mk7_right_trim,
         mouth_variants: spr_mk7_mouth_variants,
         thorax_variants: spr_mk7_thorax_variants,
-        chest_variants: spr_mk7_chest_variants,
         head: spr_mk7_head_variants,
         right_knee: spr_mk7_complex_knees,
     };
