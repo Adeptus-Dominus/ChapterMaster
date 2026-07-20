@@ -219,9 +219,9 @@ function drop_select_unit_selection() {
             _hg_button.tooltip = "Keep the surviving attackers on the surface after the battle instead of returning them to orbit. They hold a foothold and fight the world's defenders each turn until you Recall them.";
             _hg_button.update();
             _hg_button.draw();
-            if (_hg_button.clicked()) {
-                _hg_button.active = !_hg_button.active;
-            }
+            // ToggleButton.clicked() already flips `active`; toggling again here cancelled it,
+            // so the button appeared to do nothing on click.
+            _hg_button.clicked();
         }
 
         if (btn_target.clicked()) {

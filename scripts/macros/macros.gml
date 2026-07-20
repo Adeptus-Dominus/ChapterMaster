@@ -269,7 +269,7 @@
 //  - GROUND (fighting from an established foothold; see Hold Ground) allows several strikes
 //    per turn, rewarding a beachhead: land once, then grind forward on the ground.
 // SHIP_ASSAULTS_PER_TURN is kept as an alias of the ORBITAL cap for any legacy call site.
-#macro ORBITAL_ASSAULTS_PER_TURN 1
+#macro ORBITAL_ASSAULTS_PER_TURN 2
 #macro GROUND_ASSAULTS_PER_TURN 3
 #macro SHIP_ASSAULTS_PER_TURN ORBITAL_ASSAULTS_PER_TURN
 // Disposition drop a full indiscriminate fire purge (100% of the population burned)
