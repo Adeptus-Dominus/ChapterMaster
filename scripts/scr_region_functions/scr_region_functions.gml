@@ -4433,15 +4433,16 @@ function region_planet_has_gun_building(_star, _planet) {
 /// @description Per-turn upkeep of the Tau's Orbital Gun Arrays across the sector, expressing
 ///              their "protect the civilians / greater good" doctrine:
 ///                * Only HIVE and FORGE worlds they hold with real Tau strength qualify.
-///                * Their highest-population qualifying world always has a gun (their capital
-///                  battery) and it is present from the start.
-///                * They maintain up to TAU_ORBITAL_GUN_CAP (3) guns total. The 2nd and 3rd
-///                  are BUILT over TAU_ORBITAL_GUN_BUILD_TURNS (30) turns on the next
-///                  highest-population qualifying worlds (the blitz-vs-trench window: rush
-///                  them before the secondary batteries come online).
-///                * If a gun-world is lost, the count drops and the highest-population
-///                  qualifying world without a gun begins building a replacement.
-///              The Eldar craftworld (their single world) simply always has one.
+///                * Worlds are ranked by Tau force tier first, population second (so the gun
+///                  goes to the strongest-garrisoned world, and among equal garrisons the
+///                  most populous).
+///                * They maintain up to TAU_ORBITAL_GUN_CAP (3) guns total, built ONE AT A
+///                  TIME, each over TAU_ORBITAL_GUN_BUILD_TURNS (30) turns. So the first gun
+///                  completes at ~turn 30, the second at ~turn 60, the third at ~turn 90 (a
+///                  clean blitz window: the Tau have NO orbital guns for the first ~30 turns).
+///                * If a gun-world is lost, the count drops and the highest-ranked qualifying
+///                  world without a gun begins building a replacement over the same 30 turns.
+///              The Eldar craftworld (their single world) simply always has one from the start.
 ///              Build progress is stored on obj_star as p_enemy_gun_progress[planet] (turns
 ///              accumulated), declared in obj_star Create for save safety.
 /// @returns {Undefined}
@@ -4476,18 +4477,25 @@ function tau_orbital_gun_tick() {
                 star: id,
                 planet: _pl,
                 pop: p_population[_pl],
+                force: p_tau[_pl],
                 has_gun: region_planet_has_gun_building(id, _pl),
             });
         }
     }
 
-    // Sort by population, highest first (greater good: defend the most civilians). Explicit
-    // selection sort rather than a comparator lambda, to match this codebase's array_sort
-    // usage (which only ever passes true/false, so lambda support is not relied on here).
+    // Sort by combined importance, most important first (greater good: defend the strongest,
+    // most populous worlds). Primary key is Tau force tier, secondary is population. Force
+    // tier is coarse (0-6), so many worlds share a tier and population is the real decider
+    // within a tier; this makes BOTH criteria matter (a population-only sort would render
+    // force moot since population is effectively unique per world). Explicit selection sort
+    // rather than a comparator lambda, to match this codebase's array_sort usage.
     for (var _si = 0; _si < array_length(_qualifying); _si++) {
         var _max_i = _si;
         for (var _sj = _si + 1; _sj < array_length(_qualifying); _sj++) {
-            if (_qualifying[_sj].pop > _qualifying[_max_i].pop) {
+            var _a = _qualifying[_sj];
+            var _b = _qualifying[_max_i];
+            var _better = (_a.force > _b.force) || ((_a.force == _b.force) && (_a.pop > _b.pop));
+            if (_better) {
                 _max_i = _sj;
             }
         }
@@ -4506,20 +4514,13 @@ function tau_orbital_gun_tick() {
         }
     }
 
-    // The single highest-population qualifying world is the capital battery: it always has a
-    // gun immediately (no build timer).
-    if (array_length(_qualifying) > 0) {
-        var _top = _qualifying[0];
-        if (!_top.has_gun) {
-            region_enemy_gun_add(_top.star, _top.planet);
-            _top.has_gun = true;
-            _gun_count++;
-        }
-    }
-
-    // Fill remaining slots up to the cap by BUILDING on the next highest-pop gun-less worlds
-    // over TAU_ORBITAL_GUN_BUILD_TURNS. Only one build advances per world per turn.
-    for (var i = 1; i < array_length(_qualifying); i++) {
+    // Build guns up to the cap, ONE AT A TIME, each over TAU_ORBITAL_GUN_BUILD_TURNS turns.
+    // No world starts with a gun: even the top (strongest/most populous) world builds its
+    // battery over 30 turns, so it completes at ~turn 30, the second at ~turn 60, the third
+    // at ~turn 90 (a clean blitz window: the Tau are gun-less for the first ~30 turns). If a
+    // gun-world is later lost, gun_count drops and the highest-importance gun-less world
+    // begins building a replacement over the same 30 turns.
+    for (var i = 0; i < array_length(_qualifying); i++) {
         if (_gun_count >= TAU_ORBITAL_GUN_CAP) {
             break;
         }
